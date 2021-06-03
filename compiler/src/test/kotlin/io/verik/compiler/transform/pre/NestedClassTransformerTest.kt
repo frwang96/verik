@@ -31,7 +31,7 @@ internal class NestedClassTransformerTest: BaseTest() {
             }
         """.trimIndent())
         assertElementEquals(
-            "File([BaseClass(C, []), BaseClass(C\$D, [])])",
+            "File([BaseClass(C, [], []), BaseClass(C\$D, [], [])])",
             projectContext.vkFiles.first()
         )
     }
@@ -44,7 +44,7 @@ internal class NestedClassTransformerTest: BaseTest() {
             }
         """.trimIndent())
         assertElementEquals(
-            "File([BaseClass(C, []), BaseClass(C\$Companion, [])])",
+            "File([BaseClass(C, [], []), BaseClass(C\$Companion, [], [])])",
             projectContext.vkFiles.first()
         )
     }

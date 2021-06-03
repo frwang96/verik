@@ -39,6 +39,7 @@ class ElementPrinter: Visitor() {
     override fun visitBaseClass(baseClass: VkBaseClass) {
         build("BaseClass") {
             build(baseClass.name.toString())
+            build(baseClass.typeParameters)
             build(baseClass.declarations)
         }
     }
@@ -54,6 +55,13 @@ class ElementPrinter: Visitor() {
         build("BaseProperty") {
             build(baseProperty.name.toString())
             build(baseProperty.type.toString())
+        }
+    }
+
+    override fun visitTypeParameter(typeParameter: VkTypeParameter) {
+        build("TypeParameter") {
+            build(typeParameter.name.toString())
+            build(typeParameter.type.toString())
         }
     }
 

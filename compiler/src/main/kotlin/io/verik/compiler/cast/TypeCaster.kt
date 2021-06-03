@@ -20,6 +20,7 @@ import io.verik.compiler.ast.common.Type
 import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
+import org.jetbrains.kotlin.descriptors.impl.AbstractTypeParameterDescriptor
 import org.jetbrains.kotlin.psi.KtTypeReference
 import org.jetbrains.kotlin.psi.KtUserType
 import org.jetbrains.kotlin.resolve.BindingContext
@@ -37,18 +38,18 @@ object TypeCaster {
     }
 
     fun castType(bindingContext: BindingContext, declarationMap: DeclarationMap, typeReference: KtTypeReference): Type {
-        val type = bindingContext.getSliceContents(BindingContext.TYPE)[typeReference]!!
-        if (type.isMarkedNullable)
-            m.error("Nullable type not supported: $type", typeReference)
-        val declarationDescriptor = type.constructor.declarationDescriptor!!
+        val kotlinType = bindingContext.getSliceContents(BindingContext.TYPE)[typeReference]!!
+        if (kotlinType.isMarkedNullable)
+            m.error("Nullable type not supported: $kotlinType", typeReference)
+        val declarationDescriptor = kotlinType.constructor.declarationDescriptor!!
         val declaration = declarationMap[declarationDescriptor, typeReference]
-        return if (declaration == CoreClass.CARDINAL) {
+        val userType = typeReference.typeElement as KtUserType
+        val arguments = userType.typeArgumentsAsTypes.map { castType(bindingContext, declarationMap, it) }
+
+        val type = Type(declaration, ArrayList(arguments))
+        return if (type.isCardinalType()) {
             castCardinalType(bindingContext, declarationMap, typeReference)
-        } else {
-            val userType = typeReference.typeElement as KtUserType
-            val arguments = userType.typeArgumentsAsTypes.map { castType(bindingContext, declarationMap, it) }
-            Type(declaration, ArrayList(arguments))
-        }
+        } else type
     }
 
     private fun castCardinalType(
@@ -60,10 +61,16 @@ object TypeCaster {
         val referenceExpression = userType.referenceExpression!!
         val referenceTarget = bindingContext.getSliceContents(BindingContext.REFERENCE_TARGET)[referenceExpression]!!
         val declaration = declarationMap[referenceTarget, typeReference]
+        if (declaration == CoreClass.CARDINAL)
+            m.error("Cardinal type expected", typeReference)
         val arguments = userType.typeArgumentsAsTypes.map { castCardinalType(bindingContext, declarationMap, it) }
         val type = Type(declaration, ArrayList(arguments))
-        if (type.toClassType() != CoreClass.CARDINAL.toNoArgumentsType())
-            m.error("Cardinal type expected", typeReference)
+        if (!type.isCardinalType()){
+            if (referenceTarget is AbstractTypeParameterDescriptor)
+                m.error("Cardinal type parameter expected", typeReference)
+            else
+                m.error("Cardinal type expected", typeReference)
+        }
         return type
     }
 }

@@ -19,6 +19,7 @@ package io.verik.compiler.ast.common
 import io.verik.compiler.ast.element.VkBaseClass
 import io.verik.compiler.ast.element.VkTypeParameter
 import io.verik.compiler.core.CoreCardinalDeclaration
+import io.verik.compiler.core.CoreCardinalLiteralDeclaration
 import io.verik.compiler.core.CoreClass
 import io.verik.compiler.core.CoreClassDeclaration
 import io.verik.compiler.main.m
@@ -28,13 +29,12 @@ class Type(
     val arguments: ArrayList<Type>
 ): Reference {
 
-    fun toClassType(): Type {
+    fun isCardinalType(): Boolean {
         return when (val reference = reference) {
-            is VkBaseClass -> this
-            is VkTypeParameter -> reference.type
-            is CoreClassDeclaration -> this
-            is CoreCardinalDeclaration -> CoreClass.CARDINAL.toNoArgumentsType()
-            else -> m.fatal("Unexpected reference declaration: $reference", null)
+            is VkTypeParameter -> reference.type.isCardinalType()
+            is CoreClassDeclaration -> reference == CoreClass.CARDINAL
+            is CoreCardinalDeclaration -> true
+            else -> false
         }
     }
 
@@ -60,7 +60,12 @@ class Type(
 
     private fun getSupertypes(): List<Type> {
         val supertypes = ArrayList<Type>()
-        var type: Type? = this.toClassType()
+        var type: Type? = when (val reference = reference) {
+            is VkBaseClass -> this
+            is CoreClassDeclaration -> this
+            is CoreCardinalLiteralDeclaration -> CoreClass.CARDINAL.toNoArgumentsType()
+            else -> m.fatal("Type reference not canonicalized: $reference", null)
+        }
         while (type != null) {
             supertypes.add(type)
             type = type.getSupertype()
@@ -78,6 +83,6 @@ class Type(
 
     companion object {
 
-        val NULL = Type(NullDeclaration, arrayListOf())
+        val NULL = NullDeclaration.toNoArgumentsType()
     }
 }

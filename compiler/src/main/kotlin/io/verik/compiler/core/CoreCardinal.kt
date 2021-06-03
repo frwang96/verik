@@ -14,25 +14,12 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element
+package io.verik.compiler.core
 
 import io.verik.compiler.ast.common.Name
-import io.verik.compiler.ast.common.TreeVisitor
-import io.verik.compiler.ast.common.Type
-import io.verik.compiler.ast.common.Visitor
-import io.verik.compiler.main.MessageLocation
 
-class VkModule(
-    location: MessageLocation,
-    name: Name,
-    type: Type,
-    supertype: Type,
-    declarations: ArrayList<VkDeclaration>
-): VkBaseClass(location, name, type, supertype, arrayListOf(), declarations) {
+object CoreCardinal {
 
-    override fun accept(visitor: Visitor) {
-        return visitor.visitModule(this)
-    }
-
-    override fun acceptChildren(visitor: TreeVisitor) {}
+    val ADD = CoreCardinalFunctionDeclaration(Name("ADD"))
+    val INC = CoreCardinalFunctionDeclaration(Name("INC"))
 }

@@ -32,6 +32,11 @@ object CoreDeclarationMap {
             if (property is CoreClassDeclaration)
                 declarationMap[property.qualifiedName] = property
         }
+        CoreCardinal::class.memberProperties.forEach {
+            val property = it.get(CoreCardinal)
+            if (property is CoreCardinalFunctionDeclaration)
+                declarationMap[property.qualifiedName] = property
+        }
     }
 
     operator fun get(declarationDescriptor: DeclarationDescriptor): CoreDeclaration? {

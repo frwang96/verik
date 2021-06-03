@@ -22,12 +22,15 @@ import io.verik.compiler.ast.common.PackageName
 import io.verik.compiler.ast.common.SourceSetType
 import io.verik.compiler.ast.element.*
 import io.verik.compiler.common.CastUtil
+import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.getMessageLocation
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.descriptorUtil.getSuperClassOrAny
+import org.jetbrains.kotlin.types.typeUtil.isNullableAny
+import org.jetbrains.kotlin.types.typeUtil.representativeUpperBound
 import java.nio.file.Paths
 
 class CasterVisitor(
@@ -86,6 +89,9 @@ class CasterVisitor(
         val descriptor = bindingContext.getSliceContents(BindingContext.CLASS)[classOrObject]!!
         val type = TypeCaster.castType(declarationMap, descriptor.defaultType, classOrObject)
         val supertype = TypeCaster.castType(declarationMap, descriptor.getSuperClassOrAny().defaultType, classOrObject)
+        val typeParameters = classOrObject.typeParameters.mapNotNull {
+            CastUtil.cast<VkTypeParameter>(it.accept(this, Unit))
+        }
         val body = classOrObject.body
         val declarations = body?.declarations?.mapNotNull {
             CastUtil.cast<VkDeclaration>(it.accept(this, Unit))
@@ -95,6 +101,7 @@ class CasterVisitor(
             ?: return null
         baseClass.type = type
         baseClass.supertype = supertype
+        baseClass.typeParameters.addAll(typeParameters)
         declarations.forEach { baseClass.addChild(it) }
         return baseClass
     }
@@ -134,5 +141,20 @@ class CasterVisitor(
             ?: return null
         baseProperty.type = type
         return baseProperty
+    }
+
+    override fun visitTypeParameter(parameter: KtTypeParameter, data: Unit?): VkElement? {
+        val descriptor = bindingContext.getSliceContents(BindingContext.TYPE_PARAMETER)[parameter]!!
+        val upperBound = descriptor.representativeUpperBound
+        val type = if (upperBound.isNullableAny()) {
+            CoreClass.ANY.toNoArgumentsType()
+        } else {
+            TypeCaster.castType(declarationMap, descriptor.representativeUpperBound, parameter)
+        }
+
+        val typeParameter = CastUtil.cast<VkTypeParameter>(declarationMap[descriptor, parameter], parameter)
+            ?: return null
+        typeParameter.type = type
+        return typeParameter
     }
 }

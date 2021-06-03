@@ -39,7 +39,7 @@ class IndexerVisitor(
         val descriptor = bindingContext.getSliceContents(BindingContext.CLASS)[classOrObject]!!
         val location = classOrObject.getMessageLocation()
         val name = Name(classOrObject.name!!)
-        val baseClass = VkBaseClass(location, name, Type.NULL, Type.NULL, arrayListOf())
+        val baseClass = VkBaseClass(location, name, Type.NULL, Type.NULL, arrayListOf(), arrayListOf())
         declarationMap[descriptor] = baseClass
     }
 

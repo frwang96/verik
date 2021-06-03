@@ -41,7 +41,7 @@ internal class ClassInterpreterTest: BaseTest() {
             class C
         """.trimIndent())
         assertElementEquals(
-            "BaseClass(C, [])",
+            "BaseClass(C, [], [])",
             projectContext.findDeclaration("C")
         )
     }

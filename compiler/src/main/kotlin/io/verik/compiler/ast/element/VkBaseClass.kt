@@ -29,6 +29,7 @@ open class VkBaseClass(
     override var name: Name,
     override var type: Type,
     var supertype: Type,
+    val typeParameters: ArrayList<VkTypeParameter>,
     val declarations: ArrayList<VkDeclaration>
 ): VkDeclaration() {
 

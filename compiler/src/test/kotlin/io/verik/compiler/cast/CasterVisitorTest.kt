@@ -38,7 +38,7 @@ internal class CasterVisitorTest: BaseTest() {
             class C
         """.trimIndent())
         assertElementEquals(
-            "File([BaseClass(C, [])])",
+            "File([BaseClass(C, [], [])])",
             projectContext.vkFiles.first()
         )
     }
@@ -52,8 +52,8 @@ internal class CasterVisitorTest: BaseTest() {
         assertElementEquals(
             """
                 File([
-                    BaseClass(C, []),
-                    BaseClass(D, [])
+                    BaseClass(C, [], []),
+                    BaseClass(D, [], [])
                 ])
             """.trimIndent(),
             projectContext.vkFiles.first()
@@ -68,7 +68,7 @@ internal class CasterVisitorTest: BaseTest() {
             }
         """.trimIndent())
         assertElementEquals(
-            "BaseClass(C, [BaseClass(D, [])])",
+            "BaseClass(C, [], [BaseClass(D, [], [])])",
             projectContext.findDeclaration("C")
         )
     }
@@ -81,7 +81,7 @@ internal class CasterVisitorTest: BaseTest() {
             }
         """.trimIndent())
         assertElementEquals(
-            "BaseClass(C, [BaseFunction(f, null)])",
+            "BaseClass(C, [], [BaseFunction(f, null)])",
             projectContext.findDeclaration("C")
         )
     }
@@ -94,7 +94,7 @@ internal class CasterVisitorTest: BaseTest() {
             }
         """.trimIndent())
         assertElementEquals(
-            "BaseClass(C, [BaseProperty(x, Boolean)])",
+            "BaseClass(C, [], [BaseProperty(x, Boolean)])",
             projectContext.findDeclaration("C")
         )
     }
@@ -105,7 +105,18 @@ internal class CasterVisitorTest: BaseTest() {
             class C { companion object }
         """.trimIndent())
         assertElementEquals(
-            "BaseClass(C, [BaseClass(Companion, [])])",
+            "BaseClass(C, [], [BaseClass(Companion, [], [])])",
+            projectContext.findDeclaration("C")
+        )
+    }
+
+    @Test
+    fun `class with type parameter`() {
+        val projectContext = TestDriver.cast("""
+            class C<T>
+        """.trimIndent())
+        assertElementEquals(
+            "BaseClass(C, [TypeParameter(T, Any)], [])",
             projectContext.findDeclaration("C")
         )
     }
