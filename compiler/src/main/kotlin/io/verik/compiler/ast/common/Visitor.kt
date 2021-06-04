@@ -62,6 +62,10 @@ abstract class Visitor {
         return visitExpression(blockExpression)
     }
 
+    open fun visitParenthesizedExpression(parenthesizedExpression: VkParenthesizedExpression) {
+        return visitExpression(parenthesizedExpression)
+    }
+
     open fun visitBinaryExpression(binaryExpression: VkBinaryExpression) {
         return visitExpression(binaryExpression)
     }

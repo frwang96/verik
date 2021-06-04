@@ -36,6 +36,17 @@ internal class CasterExpressionVisitorTest: BaseTest() {
     }
 
     @Test
+    fun `parenthesized expression`() {
+        val projectContext = TestDriver.cast("""
+            var x = (0)
+        """.trimIndent())
+        assertElementEquals(
+            "ParenthesizedExpression(Int, ConstantExpression(*))",
+            projectContext.findExpression("x")
+        )
+    }
+
+    @Test
     fun `binary expression`() {
         val projectContext = TestDriver.cast("""
             var x = 0 + 0

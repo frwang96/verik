@@ -75,6 +75,13 @@ class ElementPrinter: Visitor() {
         }
     }
 
+    override fun visitParenthesizedExpression(parenthesizedExpression: VkParenthesizedExpression) {
+        build("ParenthesizedExpression") {
+            build(parenthesizedExpression.type.toString())
+            build(parenthesizedExpression.expression)
+        }
+    }
+
     override fun visitBinaryExpression(binaryExpression: VkBinaryExpression) {
         build("BinaryExpression") {
             build(binaryExpression.type.toString())

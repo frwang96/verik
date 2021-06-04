@@ -22,11 +22,13 @@ import org.jetbrains.kotlin.com.intellij.psi.tree.IElementType
 
 enum class OperatorKind {
     EQ,
+    MUL,
     PLUS;
 
     fun serialize(): String {
         return when (this) {
             EQ -> "="
+            MUL -> "*"
             PLUS -> "+"
         }
     }
@@ -36,6 +38,7 @@ enum class OperatorKind {
         operator fun invoke(token: IElementType, location: MessageLocation): OperatorKind? {
             return when (token.toString()) {
                 "EQ" -> EQ
+                "MUL" -> MUL
                 "PLUS" -> PLUS
                 else -> {
                     m.error("Unrecognised operator kind: $token", location)

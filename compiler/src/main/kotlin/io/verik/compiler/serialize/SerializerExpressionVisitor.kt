@@ -33,6 +33,12 @@ class SerializerExpressionVisitor(private val sourceBuilder: SourceBuilder): Vis
         }
     }
 
+    override fun visitParenthesizedExpression(parenthesizedExpression: VkParenthesizedExpression) {
+        sourceBuilder.append("(", parenthesizedExpression)
+        parenthesizedExpression.expression.accept(this)
+        sourceBuilder.append(")", parenthesizedExpression)
+    }
+
     override fun visitBinaryExpression(binaryExpression: VkBinaryExpression) {
         binaryExpression.left.accept(this)
         sourceBuilder.hardBreak()

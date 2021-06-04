@@ -55,6 +55,14 @@ class CasterExpressionVisitor(
         return VkBlockExpression(location, type, ArrayList(statements))
     }
 
+    override fun visitParenthesizedExpression(expression: KtParenthesizedExpression, data: Unit?): VkElement? {
+        val location = expression.getMessageLocation()
+        val type = getType(expression)
+        val childExpression = getElement<VkExpression>(expression.expression!!)
+            ?: return null
+        return VkParenthesizedExpression(location, type, childExpression)
+    }
+
     override fun visitBinaryExpression(expression: KtBinaryExpression, data: Unit?): VkElement? {
         val location = expression.getMessageLocation()
         val type = getType(expression)
