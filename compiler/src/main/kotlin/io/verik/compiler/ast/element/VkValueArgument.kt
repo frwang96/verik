@@ -19,19 +19,18 @@ package io.verik.compiler.ast.element
 import io.verik.compiler.ast.common.*
 import io.verik.compiler.main.MessageLocation
 
-class VkCallExpression(
+class VkValueArgument(
     override val location: MessageLocation,
-    override var type: Type,
     override var reference: Declaration,
-    var name: Name,
-    val valueArguments: ArrayList<VkValueArgument>
-): VkExpression(), Reference {
+    var name: Name?,
+    var expression: VkExpression
+): VkElement(), Reference {
 
     override fun accept(visitor: Visitor) {
-        visitor.visitCallExpression(this)
+        visitor.visitValueArgument(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        valueArguments.forEach { it.accept(visitor) }
+        expression.accept(visitor)
     }
 }

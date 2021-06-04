@@ -130,7 +130,7 @@ class CasterBaseVisitor(
             }
         }
         val bodyBlockExpression = function.bodyBlockExpression?.let {
-            expressionVisitor.getExpression<VkBlockExpression>(it)
+            expressionVisitor.getElement<VkBlockExpression>(it)
         }
 
         val baseFunction = declarationMap[descriptor, function]
@@ -152,7 +152,7 @@ class CasterBaseVisitor(
             getType(descriptor.type, property)
         }
         val initializer = property.initializer?.let {
-            expressionVisitor.getExpression<VkExpression>(it)
+            expressionVisitor.getElement<VkExpression>(it)
         }
 
         val baseProperty = declarationMap[descriptor, property]

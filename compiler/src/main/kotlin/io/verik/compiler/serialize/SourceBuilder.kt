@@ -77,6 +77,10 @@ class SourceBuilder(
         sourceActions.add(SourceAction(SourceActionType.SOFT_BREAK, "", null))
     }
 
+    fun hardBreak() {
+        sourceActions.add(SourceAction(SourceActionType.HARD_BREAK, "", null))
+    }
+
     fun indent(block: () -> Unit) {
         sourceActions.add(SourceAction(SourceActionType.INDENT_IN, "", null))
         block()

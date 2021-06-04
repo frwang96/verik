@@ -86,6 +86,14 @@ class ElementPrinter: Visitor() {
         build("CallExpression") {
             build(callExpression.type.toString())
             build(callExpression.name.toString())
+            build(callExpression.valueArguments)
+        }
+    }
+
+    override fun visitValueArgument(valueArgument: VkValueArgument) {
+        build("ValueArgument") {
+            build(valueArgument.name.toString())
+            build(valueArgument.expression)
         }
     }
 

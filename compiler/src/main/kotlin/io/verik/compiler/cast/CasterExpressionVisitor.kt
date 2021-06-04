@@ -29,26 +29,26 @@ import org.jetbrains.kotlin.resolve.calls.callUtil.getType
 class CasterExpressionVisitor(
     projectContext: ProjectContext,
     private val declarationMap: DeclarationMap
-): KtVisitor<VkExpression, Unit>() {
+): KtVisitor<VkElement, Unit>() {
 
     private val bindingContext = projectContext.bindingContext
 
-    inline fun <reified T: VkExpression> getExpression(expression: KtExpression): T? {
-        return expression.accept(this, Unit).cast(expression)
+    inline fun <reified T: VkElement> getElement(element: KtElement): T? {
+        return element.accept(this, Unit).cast(element)
     }
 
     private fun getType(expression: KtExpression): Type {
         return TypeCaster.castType(declarationMap, expression.getType(bindingContext)!!, expression)
     }
 
-    override fun visitBlockExpression(expression: KtBlockExpression, data: Unit?): VkExpression {
+    override fun visitBlockExpression(expression: KtBlockExpression, data: Unit?): VkElement {
         val location = expression.getMessageLocation()
         val type = getType(expression)
-        val statements = expression.statements.mapNotNull { getExpression(it) }
+        val statements = expression.statements.mapNotNull { getElement<VkExpression>(it) }
         return VkBlockExpression(location, type, ArrayList(statements))
     }
 
-    override fun visitReferenceExpression(expression: KtReferenceExpression, data: Unit?): VkExpression {
+    override fun visitReferenceExpression(expression: KtReferenceExpression, data: Unit?): VkElement {
         val descriptor = bindingContext.getSliceContents(BindingContext.REFERENCE_TARGET)[expression]!!
         val location = expression.getMessageLocation()
         val type = getType(expression)
@@ -56,16 +56,29 @@ class CasterExpressionVisitor(
         return VkReferenceExpression(location, type, NullDeclaration, name)
     }
 
-    override fun visitCallExpression(expression: KtCallExpression, data: Unit?): VkExpression {
+    override fun visitCallExpression(expression: KtCallExpression, data: Unit?): VkElement {
         val descriptor = bindingContext
             .getSliceContents(BindingContext.REFERENCE_TARGET)[expression.calleeExpression]!!
         val location = expression.getMessageLocation()
         val type = getType(expression)
         val name = Name(descriptor.name.toString())
-        return VkCallExpression(location, type, NullDeclaration, name)
+        val valueArguments = expression.valueArguments.mapNotNull { getElement<VkValueArgument>(it) }
+        return VkCallExpression(location, type, NullDeclaration, name, ArrayList(valueArguments))
     }
 
-    override fun visitConstantExpression(expression: KtConstantExpression, data: Unit?): VkExpression {
+    override fun visitArgument(argument: KtValueArgument, data: Unit?): VkElement? {
+        val location = argument.getMessageLocation()
+        val expression = getElement<VkExpression>(argument.getArgumentExpression()!!)
+            ?: return null
+        return if (argument.isNamed()) {
+            val name = Name(argument.getArgumentName()!!.asName.toString())
+            VkValueArgument(location, NullDeclaration, name, expression)
+        } else {
+            VkValueArgument(location, NullDeclaration, null, expression)
+        }
+    }
+
+    override fun visitConstantExpression(expression: KtConstantExpression, data: Unit?): VkElement {
         val location = expression.getMessageLocation()
         val type = getType(expression)
         val value = ConstantExpressionCaster.cast(expression.text, type, location)

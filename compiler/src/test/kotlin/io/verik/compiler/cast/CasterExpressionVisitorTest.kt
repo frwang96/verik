@@ -54,7 +54,31 @@ internal class CasterExpressionVisitorTest: BaseTest() {
             var x = f()
         """.trimIndent())
         assertElementEquals(
-            "CallExpression(Unit, f)",
+            "CallExpression(Unit, f, [])",
+            projectContext.findExpression("x")
+        )
+    }
+
+    @Test
+    fun `value argument unnamed`() {
+        val projectContext = TestDriver.cast("""
+            fun f(x: Int) {}
+            var x = f(0)
+        """.trimIndent())
+        assertElementEquals(
+            "CallExpression(Unit, f, [ValueArgument(null, *)])",
+            projectContext.findExpression("x")
+        )
+    }
+
+    @Test
+    fun `value argument named`() {
+        val projectContext = TestDriver.cast("""
+            fun f(x: Int) {}
+            var x = f(x = 0)
+        """.trimIndent())
+        assertElementEquals(
+            "CallExpression(Unit, f, [ValueArgument(x, *)])",
             projectContext.findExpression("x")
         )
     }

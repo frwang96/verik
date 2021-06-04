@@ -17,10 +17,7 @@
 package io.verik.compiler.serialize
 
 import io.verik.compiler.ast.common.Visitor
-import io.verik.compiler.ast.element.VkBlockExpression
-import io.verik.compiler.ast.element.VkCallExpression
-import io.verik.compiler.ast.element.VkConstantExpression
-import io.verik.compiler.ast.element.VkReferenceExpression
+import io.verik.compiler.ast.element.*
 
 class SerializerExpressionVisitor(private val sourceBuilder: SourceBuilder): Visitor() {
 
@@ -36,9 +33,24 @@ class SerializerExpressionVisitor(private val sourceBuilder: SourceBuilder): Vis
     }
 
     override fun visitCallExpression(callExpression: VkCallExpression) {
-        sourceBuilder.append("${callExpression.name}(", callExpression)
-        sourceBuilder.softBreak()
-        sourceBuilder.append(")", callExpression)
+        sourceBuilder.append("${callExpression.name}", callExpression)
+        if (callExpression.valueArguments.isEmpty()) {
+            sourceBuilder.append("()", callExpression)
+        } else {
+            sourceBuilder.append("(", callExpression)
+            sourceBuilder.softBreak()
+            callExpression.valueArguments[0].accept(this)
+            callExpression.valueArguments.drop(1).forEach {
+                sourceBuilder.append(",", callExpression)
+                sourceBuilder.hardBreak()
+                it.accept(this)
+            }
+            sourceBuilder.append(")", callExpression)
+        }
+    }
+
+    override fun visitValueArgument(valueArgument: VkValueArgument) {
+        valueArgument.expression.accept(this)
     }
 
     override fun visitConstantExpression(constantExpression: VkConstantExpression) {
