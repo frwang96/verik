@@ -62,6 +62,10 @@ abstract class Visitor {
         return visitExpression(blockExpression)
     }
 
+    open fun visitBinaryExpression(binaryExpression: VkBinaryExpression) {
+        return visitExpression(binaryExpression)
+    }
+
     open fun visitReferenceExpression(referenceExpression: VkReferenceExpression) {
         return visitExpression(referenceExpression)
     }

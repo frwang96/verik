@@ -18,10 +18,10 @@ package count
 
 import io.verik.core.*
 
-val x = 0
+var x = 0
 
 fun f() {
-    x
+    x = 1
     println(x)
 }
 

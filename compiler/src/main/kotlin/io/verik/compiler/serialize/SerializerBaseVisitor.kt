@@ -25,6 +25,10 @@ class SerializerBaseVisitor(private val sourceBuilder: SourceBuilder): Visitor()
     private var first = true
     private val expressionVisitor = SerializerExpressionVisitor(sourceBuilder)
 
+    override fun visitElement(element: VkElement) {
+        m.error("Unable to serialize element: ${element::class.simpleName}", element)
+    }
+
     override fun visitFile(file: VkFile) {
         file.declarations.forEach { it.accept(this) }
     }

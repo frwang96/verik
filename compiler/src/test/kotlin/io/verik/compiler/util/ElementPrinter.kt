@@ -75,6 +75,15 @@ class ElementPrinter: Visitor() {
         }
     }
 
+    override fun visitBinaryExpression(binaryExpression: VkBinaryExpression) {
+        build("BinaryExpression") {
+            build(binaryExpression.type.toString())
+            build(binaryExpression.kind.toString())
+            build(binaryExpression.left)
+            build(binaryExpression.right)
+        }
+    }
+
     override fun visitReferenceExpression(referenceExpression: VkReferenceExpression) {
         build("ReferenceExpression") {
             build(referenceExpression.type.toString())

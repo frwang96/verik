@@ -18,10 +18,12 @@ package io.verik.compiler.cast
 
 import io.verik.compiler.ast.common.Name
 import io.verik.compiler.ast.common.NullDeclaration
+import io.verik.compiler.ast.common.OperatorKind
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.*
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.getMessageLocation
+import io.verik.compiler.main.m
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.calls.callUtil.getType
@@ -41,11 +43,28 @@ class CasterExpressionVisitor(
         return TypeCaster.castType(declarationMap, expression.getType(bindingContext)!!, expression)
     }
 
+    override fun visitKtElement(element: KtElement, data: Unit?): VkElement? {
+        m.error("Unrecognized element: ${element::class.simpleName}", element)
+        return null
+    }
+
     override fun visitBlockExpression(expression: KtBlockExpression, data: Unit?): VkElement {
         val location = expression.getMessageLocation()
         val type = getType(expression)
         val statements = expression.statements.mapNotNull { getElement<VkExpression>(it) }
         return VkBlockExpression(location, type, ArrayList(statements))
+    }
+
+    override fun visitBinaryExpression(expression: KtBinaryExpression, data: Unit?): VkElement? {
+        val location = expression.getMessageLocation()
+        val type = getType(expression)
+        val kind = OperatorKind(expression.operationToken, location)
+            ?: return null
+        val left = getElement<VkExpression>(expression.left!!)
+            ?: return null
+        val right = getElement<VkExpression>(expression.right!!)
+            ?: return null
+        return VkBinaryExpression(location, type, kind, left, right)
     }
 
     override fun visitReferenceExpression(expression: KtReferenceExpression, data: Unit?): VkElement {

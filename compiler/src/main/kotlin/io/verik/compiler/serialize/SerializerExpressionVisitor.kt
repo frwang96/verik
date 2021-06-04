@@ -18,14 +18,27 @@ package io.verik.compiler.serialize
 
 import io.verik.compiler.ast.common.Visitor
 import io.verik.compiler.ast.element.*
+import io.verik.compiler.main.m
 
 class SerializerExpressionVisitor(private val sourceBuilder: SourceBuilder): Visitor() {
+
+    override fun visitElement(element: VkElement) {
+        m.error("Unable to serialize element: ${element::class.simpleName}", element)
+    }
 
     override fun visitBlockExpression(blockExpression: VkBlockExpression) {
         blockExpression.statements.forEach {
             it.accept(this)
             sourceBuilder.appendLine(";", it)
         }
+    }
+
+    override fun visitBinaryExpression(binaryExpression: VkBinaryExpression) {
+        binaryExpression.left.accept(this)
+        sourceBuilder.hardBreak()
+        sourceBuilder.append(binaryExpression.kind.serialize(), binaryExpression)
+        sourceBuilder.append(" ", binaryExpression)
+        binaryExpression.right.accept(this)
     }
 
     override fun visitReferenceExpression(referenceExpression: VkReferenceExpression) {

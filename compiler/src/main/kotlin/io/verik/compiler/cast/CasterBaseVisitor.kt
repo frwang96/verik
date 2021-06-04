@@ -52,6 +52,11 @@ class CasterBaseVisitor(
         return TypeCaster.castType(bindingContext, declarationMap, typeReference)
     }
 
+    override fun visitKtElement(element: KtElement, data: Unit?): VkElement? {
+        m.error("Unrecognized element: ${element::class.simpleName}", element)
+        return null
+    }
+
     override fun visitKtFile(file: KtFile, data: Unit?): VkElement? {
         val location = file.getMessageLocation()
         val inputPath = Paths.get(file.virtualFilePath)

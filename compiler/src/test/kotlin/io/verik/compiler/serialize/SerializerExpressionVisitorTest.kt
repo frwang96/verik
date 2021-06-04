@@ -25,6 +25,23 @@ import org.junit.jupiter.api.Test
 internal class SerializerExpressionVisitorTest: BaseTest() {
 
     @Test
+    fun `binary expression`() {
+        val projectContext = TestDriver.serialize("""
+            var x = 0
+            var y = x + 1
+        """.trimIndent())
+        val expected = """
+            int x = 0;
+            
+            int y = x + 1;
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
     fun `reference expression`() {
         val projectContext = TestDriver.serialize("""
             var x = 0
