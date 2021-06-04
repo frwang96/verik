@@ -66,6 +66,10 @@ abstract class Visitor {
         return visitExpression(referenceExpression)
     }
 
+    open fun visitCallExpression(callExpression: VkCallExpression) {
+        return visitExpression(callExpression)
+    }
+
     open fun visitConstantExpression(constantExpression: VkConstantExpression) {
         return visitExpression(constantExpression)
     }

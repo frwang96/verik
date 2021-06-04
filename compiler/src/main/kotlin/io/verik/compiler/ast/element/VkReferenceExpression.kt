@@ -16,17 +16,15 @@
 
 package io.verik.compiler.ast.element
 
-import io.verik.compiler.ast.common.Name
-import io.verik.compiler.ast.common.TreeVisitor
-import io.verik.compiler.ast.common.Type
-import io.verik.compiler.ast.common.Visitor
+import io.verik.compiler.ast.common.*
 import io.verik.compiler.main.MessageLocation
 
 class VkReferenceExpression(
     override val location: MessageLocation,
     override var type: Type,
+    override var reference: Declaration,
     var name: Name
-): VkExpression() {
+): VkExpression(), Reference {
 
     override fun accept(visitor: Visitor) {
         visitor.visitReferenceExpression(this)

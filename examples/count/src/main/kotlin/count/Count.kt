@@ -22,6 +22,7 @@ val x = 0
 
 fun f() {
     x
+    println(x)
 }
 
 @top object Count: Module() {

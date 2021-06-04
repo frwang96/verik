@@ -14,9 +14,21 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.common
+package io.verik.compiler.ast.element
 
-enum class ConstantValueKind {
-    BOOLEAN,
-    INTEGER
+import io.verik.compiler.ast.common.*
+import io.verik.compiler.main.MessageLocation
+
+class VkCallExpression(
+    override val location: MessageLocation,
+    override var type: Type,
+    override var reference: Declaration,
+    var name: Name
+): VkExpression(), Reference {
+
+    override fun accept(visitor: Visitor) {
+        visitor.visitCallExpression(this)
+    }
+
+    override fun acceptChildren(visitor: TreeVisitor) {}
 }

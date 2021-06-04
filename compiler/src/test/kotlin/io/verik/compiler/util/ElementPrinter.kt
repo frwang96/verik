@@ -70,19 +70,28 @@ class ElementPrinter: Visitor() {
 
     override fun visitBlockExpression(blockExpression: VkBlockExpression) {
         build("BlockExpression") {
+            build(blockExpression.type.toString())
             build(blockExpression.statements)
         }
     }
 
     override fun visitReferenceExpression(referenceExpression: VkReferenceExpression) {
         build("ReferenceExpression") {
+            build(referenceExpression.type.toString())
             build(referenceExpression.name.toString())
+        }
+    }
+
+    override fun visitCallExpression(callExpression: VkCallExpression) {
+        build("CallExpression") {
+            build(callExpression.type.toString())
+            build(callExpression.name.toString())
         }
     }
 
     override fun visitConstantExpression(constantExpression: VkConstantExpression) {
         build("ConstantExpression") {
-            build(constantExpression.kind.toString())
+            build(constantExpression.type.toString())
             build(constantExpression.value)
         }
     }

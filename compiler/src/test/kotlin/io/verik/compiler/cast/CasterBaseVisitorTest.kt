@@ -150,7 +150,7 @@ internal class CasterBaseVisitorTest: BaseTest() {
                 @com @seq fun f() {}
             """.trimIndent())
         }.apply {
-            assertEquals("Conflicting annotations: COM, SEQ", message)
+            assertEquals("Conflicting annotations: com, seq", message)
         }
     }
 

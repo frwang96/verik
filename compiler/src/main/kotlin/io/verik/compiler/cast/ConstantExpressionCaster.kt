@@ -16,14 +16,21 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.common.ConstantValueKind
+import io.verik.compiler.ast.common.Type
+import io.verik.compiler.core.CoreClass
+import io.verik.compiler.main.MessageLocation
+import io.verik.compiler.main.m
 
 object ConstantExpressionCaster {
 
-    fun cast(value: String, kind: ConstantValueKind): String {
-        return when (kind) {
-            ConstantValueKind.BOOLEAN -> castBoolean(value)
-            ConstantValueKind.INTEGER -> castInteger(value)
+    fun cast(value: String, type: Type, location: MessageLocation): String {
+        return when (type) {
+            CoreClass.BOOLEAN.toNoArgumentsType() -> castBoolean(value)
+            CoreClass.INT.toNoArgumentsType() -> castInteger(value)
+            else -> {
+                m.error("Constant expression type not supported: $type", location)
+                ""
+            }
         }
     }
 

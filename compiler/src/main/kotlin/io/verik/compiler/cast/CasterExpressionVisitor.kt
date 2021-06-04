@@ -16,15 +16,13 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.common.ConstantValueKind
 import io.verik.compiler.ast.common.Name
+import io.verik.compiler.ast.common.NullDeclaration
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.*
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.getMessageLocation
-import io.verik.compiler.main.m
 import org.jetbrains.kotlin.psi.*
-import org.jetbrains.kotlin.psi.stubs.elements.KtStubElementTypes
 import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.calls.callUtil.getType
 
@@ -55,21 +53,22 @@ class CasterExpressionVisitor(
         val location = expression.getMessageLocation()
         val type = getType(expression)
         val name = Name(descriptor.name.toString())
-        return VkReferenceExpression(location, type, name)
+        return VkReferenceExpression(location, type, NullDeclaration, name)
     }
 
-    override fun visitConstantExpression(expression: KtConstantExpression, data: Unit?): VkExpression? {
+    override fun visitCallExpression(expression: KtCallExpression, data: Unit?): VkExpression {
+        val descriptor = bindingContext
+            .getSliceContents(BindingContext.REFERENCE_TARGET)[expression.calleeExpression]!!
         val location = expression.getMessageLocation()
         val type = getType(expression)
-        val kind = when(val elementType = expression.elementType) {
-            KtStubElementTypes.BOOLEAN_CONSTANT -> ConstantValueKind.BOOLEAN
-            KtStubElementTypes.INTEGER_CONSTANT-> ConstantValueKind.INTEGER
-            else -> {
-                m.error("Constant expression element type not supported: $elementType", expression)
-                return null
-            }
-        }
-        val value = ConstantExpressionCaster.cast(expression.text, kind)
-        return VkConstantExpression(location, type, kind, value)
+        val name = Name(descriptor.name.toString())
+        return VkCallExpression(location, type, NullDeclaration, name)
+    }
+
+    override fun visitConstantExpression(expression: KtConstantExpression, data: Unit?): VkExpression {
+        val location = expression.getMessageLocation()
+        val type = getType(expression)
+        val value = ConstantExpressionCaster.cast(expression.text, type, location)
+        return VkConstantExpression(location, type, value)
     }
 }

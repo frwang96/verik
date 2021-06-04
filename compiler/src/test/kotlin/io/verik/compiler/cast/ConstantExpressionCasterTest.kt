@@ -30,7 +30,7 @@ internal class ConstantExpressionCasterTest: BaseTest() {
             var x = false
         """.trimIndent())
         assertElementEquals(
-            "ConstantExpression(BOOLEAN, 1'b0)",
+            "ConstantExpression(Boolean, 1'b0)",
             projectContext.findExpression("x")
         )
     }
@@ -41,7 +41,7 @@ internal class ConstantExpressionCasterTest: BaseTest() {
             var x = 1_2
         """.trimIndent())
         assertElementEquals(
-            "ConstantExpression(INTEGER, 12)",
+            "ConstantExpression(Int, 12)",
             projectContext.findExpression("x")
         )
     }
@@ -52,7 +52,7 @@ internal class ConstantExpressionCasterTest: BaseTest() {
             var x = 0xaA_bB
         """.trimIndent())
         assertElementEquals(
-            "ConstantExpression(INTEGER, 43707)",
+            "ConstantExpression(Int, 43707)",
             projectContext.findExpression("x")
         )
     }
@@ -63,7 +63,7 @@ internal class ConstantExpressionCasterTest: BaseTest() {
             var x = 0b0000_1111
         """.trimIndent())
         assertElementEquals(
-            "ConstantExpression(INTEGER, 15)",
+            "ConstantExpression(Int, 15)",
             projectContext.findExpression("x")
         )
     }

@@ -16,7 +16,6 @@
 
 package io.verik.compiler.ast.element
 
-import io.verik.compiler.ast.common.ConstantValueKind
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.common.Visitor
@@ -25,7 +24,6 @@ import io.verik.compiler.main.MessageLocation
 class VkConstantExpression(
     override val location: MessageLocation,
     override var type: Type,
-    val kind: ConstantValueKind,
     val value: String
 ): VkExpression() {
 

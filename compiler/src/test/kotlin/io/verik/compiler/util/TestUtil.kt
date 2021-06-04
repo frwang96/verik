@@ -81,8 +81,11 @@ fun ProjectContext.findDeclaration(nameString: String): VkDeclaration {
     vkFiles.forEach {
         it.accept(declarationVisitor)
     }
-    if (declarationVisitor.declarations.size != 1)
-        throw IllegalArgumentException("Could not find unique declaration")
+    when (declarationVisitor.declarations.size) {
+        0 -> throw IllegalArgumentException("Could not find declaration")
+        1 -> {}
+        else -> throw IllegalArgumentException("Could not find unique declaration")
+    }
     return declarationVisitor.declarations[0]
 }
 
@@ -105,7 +108,10 @@ fun ProjectContext.findExpression(nameString: String): VkExpression {
     vkFiles.forEach {
         it.accept(expressionVisitor)
     }
-    if (expressionVisitor.expressions.size != 1)
-        throw IllegalArgumentException("Could not find unique expression")
+    when (expressionVisitor.expressions.size) {
+        0 -> throw IllegalArgumentException("Could not find expression")
+        1 -> {}
+        else -> throw IllegalArgumentException("Could not find unique expression")
+    }
     return expressionVisitor.expressions[0]
 }

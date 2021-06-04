@@ -30,7 +30,7 @@ internal class CasterExpressionVisitorTest: BaseTest() {
             fun f() {}
         """.trimIndent())
         assertElementEquals(
-            "BlockExpression([])",
+            "BlockExpression(Unit, [])",
             projectContext.findExpression("f")
         )
     }
@@ -42,8 +42,20 @@ internal class CasterExpressionVisitorTest: BaseTest() {
             var y = x
         """.trimIndent())
         assertElementEquals(
-            "ReferenceExpression(x)",
+            "ReferenceExpression(Int, x)",
             projectContext.findExpression("y")
+        )
+    }
+
+    @Test
+    fun `call expression`() {
+        val projectContext = TestDriver.cast("""
+            fun f() {}
+            var x = f()
+        """.trimIndent())
+        assertElementEquals(
+            "CallExpression(Unit, f)",
+            projectContext.findExpression("x")
         )
     }
 
@@ -53,7 +65,7 @@ internal class CasterExpressionVisitorTest: BaseTest() {
             var x = 0
         """.trimIndent())
         assertElementEquals(
-            "ConstantExpression(INTEGER, 0)",
+            "ConstantExpression(Int, 0)",
             projectContext.findExpression("x")
         )
     }
