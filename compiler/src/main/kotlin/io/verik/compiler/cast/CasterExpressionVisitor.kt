@@ -65,7 +65,7 @@ class CasterExpressionVisitor(
                 return null
             }
         }
-        val value = expression.text
+        val value = ConstantExpressionCaster.cast(expression.text, kind)
         return VkConstantExpression(location, type, kind, value)
     }
 }

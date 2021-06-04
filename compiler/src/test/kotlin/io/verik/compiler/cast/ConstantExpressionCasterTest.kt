@@ -22,26 +22,48 @@ import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
-internal class CasterExpressionVisitorTest: BaseTest() {
+internal class ConstantExpressionCasterTest: BaseTest() {
 
     @Test
-    fun `block expression empty`() {
+    fun `boolean false`() {
         val projectContext = TestDriver.cast("""
-            fun f() {}
+            fun f() { false }
         """.trimIndent())
         assertElementEquals(
-            "[]",
+            "[ConstantExpression(BOOLEAN, 1'b0)]",
             projectContext.findExpression("f")
         )
     }
 
     @Test
-    fun `constant expression integer`() {
+    fun `integer decimal`() {
         val projectContext = TestDriver.cast("""
-            fun f() { 0 }
+            fun f() { 1_2 }
         """.trimIndent())
         assertElementEquals(
-            "[ConstantExpression(INTEGER, 0)]",
+            "[ConstantExpression(INTEGER, 12)]",
+            projectContext.findExpression("f")
+        )
+    }
+
+    @Test
+    fun `integer hexadecimal`() {
+        val projectContext = TestDriver.cast("""
+            fun f() { 0xaA_bB }
+        """.trimIndent())
+        assertElementEquals(
+            "[ConstantExpression(INTEGER, 43707)]",
+            projectContext.findExpression("f")
+        )
+    }
+
+    @Test
+    fun `integer binary`() {
+        val projectContext = TestDriver.cast("""
+            fun f() { 0b0000_1111 }
+        """.trimIndent())
+        assertElementEquals(
+            "[ConstantExpression(INTEGER, 15)]",
             projectContext.findExpression("f")
         )
     }
