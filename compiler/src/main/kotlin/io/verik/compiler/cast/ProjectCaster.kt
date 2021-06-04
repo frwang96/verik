@@ -35,9 +35,9 @@ object ProjectCaster {
         m.flush()
 
         m.info("Cast: Cast syntax trees", null)
-        val casterVisitor = CasterVisitor(projectContext, declarationMap)
+        val baseVisitor = CasterBaseVisitor(projectContext, declarationMap)
         val files = projectContext.ktFiles.mapNotNull {
-            casterVisitor.getElement<VkFile>(it)
+            baseVisitor.getElement<VkFile>(it)
         }
         projectContext.vkFiles = files
         m.flush()

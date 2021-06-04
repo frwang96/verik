@@ -30,7 +30,7 @@ import org.jetbrains.kotlin.types.typeUtil.isNullableAny
 import org.jetbrains.kotlin.types.typeUtil.representativeUpperBound
 import java.nio.file.Paths
 
-class CasterVisitor(
+class CasterBaseVisitor(
     projectContext: ProjectContext,
     private val declarationMap: DeclarationMap
 ): KtVisitor<VkElement, Unit>() {
@@ -38,7 +38,7 @@ class CasterVisitor(
     private val mainPath = projectContext.config.projectDir.resolve("src/main/kotlin")
     private val testPath = projectContext.config.projectDir.resolve("src/test/kotlin")
     private val bindingContext = projectContext.bindingContext
-    private val expressionVisitor = ExpressionVisitor(projectContext, declarationMap)
+    private val expressionVisitor = CasterExpressionVisitor(projectContext, declarationMap)
 
     inline fun <reified T: VkElement> getElement(element: KtElement): T? {
         return element.accept(this, Unit).cast(element)

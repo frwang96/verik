@@ -41,7 +41,7 @@ object ProjectSerializer {
             val file = it.cast<VkOutputFile>()
             if (file != null) {
                 val sourceBuilder = SourceBuilder(projectContext, file)
-                file.accept(SourceSerializerVisitor(sourceBuilder))
+                file.accept(SerializerBaseVisitor(sourceBuilder))
                 outputTextFiles.add(sourceBuilder.toTextFile())
             }
         }

@@ -22,7 +22,7 @@ import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
-internal class ExpressionVisitorTest: BaseTest() {
+internal class CasterExpressionVisitorTest: BaseTest() {
 
     @Test
     fun `block expression empty`() {
@@ -31,6 +31,17 @@ internal class ExpressionVisitorTest: BaseTest() {
         """.trimIndent())
         assertElementEquals(
             "[]",
+            projectContext.findExpression("f")
+        )
+    }
+
+    @Test
+    fun `constant expression boolean`() {
+        val projectContext = TestDriver.cast("""
+            fun f() { false }
+        """.trimIndent())
+        assertElementEquals(
+            "[ConstantExpression(BOOLEAN, false)]",
             projectContext.findExpression("f")
         )
     }

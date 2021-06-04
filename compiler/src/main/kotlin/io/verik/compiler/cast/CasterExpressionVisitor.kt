@@ -24,13 +24,15 @@ import io.verik.compiler.ast.element.VkExpression
 import io.verik.compiler.ast.element.cast
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.getMessageLocation
+import io.verik.compiler.main.m
 import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtConstantExpression
 import org.jetbrains.kotlin.psi.KtExpression
 import org.jetbrains.kotlin.psi.KtVisitor
+import org.jetbrains.kotlin.psi.stubs.elements.KtStubElementTypes
 import org.jetbrains.kotlin.resolve.calls.callUtil.getType
 
-class ExpressionVisitor(
+class CasterExpressionVisitor(
     projectContext: ProjectContext,
     private val declarationMap: DeclarationMap
 ): KtVisitor<VkExpression, Unit>() {
@@ -52,9 +54,18 @@ class ExpressionVisitor(
         return VkBlockExpression(location, type, ArrayList(statements))
     }
 
-    override fun visitConstantExpression(expression: KtConstantExpression, data: Unit?): VkExpression {
+    override fun visitConstantExpression(expression: KtConstantExpression, data: Unit?): VkExpression? {
         val location = expression.getMessageLocation()
         val type = getType(expression)
-        return VkConstantExpression(location, type, ConstantValueKind.INTEGER, "0")
+        val kind = when(val elementType = expression.elementType) {
+            KtStubElementTypes.BOOLEAN_CONSTANT -> ConstantValueKind.BOOLEAN
+            KtStubElementTypes.INTEGER_CONSTANT-> ConstantValueKind.INTEGER
+            else -> {
+                m.error("Constant expression element type not supported: $elementType", expression)
+                return null
+            }
+        }
+        val value = expression.text
+        return VkConstantExpression(location, type, kind, value)
     }
 }

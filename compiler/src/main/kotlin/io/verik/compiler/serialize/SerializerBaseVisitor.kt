@@ -20,9 +20,10 @@ import io.verik.compiler.ast.common.Visitor
 import io.verik.compiler.ast.element.*
 import io.verik.compiler.main.m
 
-class SourceSerializerVisitor(private val sourceBuilder: SourceBuilder): Visitor() {
+class SerializerBaseVisitor(private val sourceBuilder: SourceBuilder): Visitor() {
 
     private var first = true
+    private val expressionVisitor = SerializerExpressionVisitor(sourceBuilder)
 
     override fun visitFile(file: VkFile) {
         file.declarations.forEach { it.accept(this) }
@@ -52,6 +53,12 @@ class SourceSerializerVisitor(private val sourceBuilder: SourceBuilder): Visitor
         appendLineIfNotFirst()
         val typeString = TypeSerializer.serialize(baseFunction)
         sourceBuilder.appendLine("function $typeString $baseFunction();", baseFunction)
+        val bodyBlockExpression = baseFunction.bodyBlockExpression
+        if (bodyBlockExpression != null) {
+            sourceBuilder.indent {
+                bodyBlockExpression.accept(expressionVisitor)
+            }
+        }
         sourceBuilder.appendLine("endfunction: $baseFunction", baseFunction)
     }
 
