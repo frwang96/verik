@@ -81,7 +81,7 @@ internal class CasterBaseVisitorTest: BaseTest() {
             }
         """.trimIndent())
         assertElementEquals(
-            "BaseClass(C, [], [BaseFunction(f, null, BlockExpression([]))])",
+            "BaseClass(C, [], [BaseFunction(f, Unit, null, *)])",
             projectContext.findDeclaration("C")
         )
     }
@@ -94,7 +94,7 @@ internal class CasterBaseVisitorTest: BaseTest() {
             }
         """.trimIndent())
         assertElementEquals(
-            "BaseClass(C, [], [BaseProperty(x, Boolean, ConstantExpression(BOOLEAN, 1'b0))])",
+            "BaseClass(C, [], [BaseProperty(x, Boolean, *)])",
             projectContext.findDeclaration("C")
         )
     }
@@ -127,7 +127,7 @@ internal class CasterBaseVisitorTest: BaseTest() {
             fun f() {}
         """.trimIndent())
         assertElementEquals(
-            "BaseFunction(f, null, BlockExpression([]))",
+            "BaseFunction(f, Unit, null, *)",
             projectContext.findDeclaration("f")
         )
     }
@@ -138,7 +138,7 @@ internal class CasterBaseVisitorTest: BaseTest() {
             @task fun f() {}
         """.trimIndent())
         assertElementEquals(
-            "BaseFunction(f, TASK, BlockExpression([]))",
+            "BaseFunction(f, Unit, TASK, *)",
             projectContext.findDeclaration("f")
         )
     }
@@ -160,7 +160,7 @@ internal class CasterBaseVisitorTest: BaseTest() {
             var x = false
         """.trimIndent())
         assertElementEquals(
-            "BaseProperty(x, Boolean, ConstantExpression(BOOLEAN, 1'b0))",
+            "BaseProperty(x, Boolean, *)",
             projectContext.findDeclaration("x")
         )
     }

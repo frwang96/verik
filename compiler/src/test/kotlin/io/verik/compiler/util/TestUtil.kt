@@ -24,15 +24,39 @@ import io.verik.compiler.main.TextFile
 import org.junit.jupiter.api.Assertions.assertEquals
 
 fun assertElementEquals(expected: String, actual: VkElement) {
-    val builder = StringBuilder()
+    val leftRoundBracketCount = expected.count { it == '(' }
+    val rightRoundBracketCount = expected.count { it == ')' }
+    val leftSquareBracketCount = expected.count { it == '[' }
+    val rightSquareBracketCount = expected.count { it == ']' }
+    assert(leftRoundBracketCount <= rightRoundBracketCount) { "Missing right round bracket" }
+    assert(leftRoundBracketCount >= rightRoundBracketCount) { "Missing left round bracket" }
+    assert(leftSquareBracketCount <= rightSquareBracketCount) { "Missing right square bracket" }
+    assert(leftSquareBracketCount >= rightSquareBracketCount) { "Missing left square bracket" }
+
+    val expectedBuilder = StringBuilder()
     expected.toCharArray().forEach {
-        when {
-            it.isWhitespace() -> {}
-            it == ',' -> builder.append(", ")
-            else -> builder.append(it)
+        when (it) {
+            in listOf(' ', '\n', '\t') -> {}
+            ',' -> expectedBuilder.append(", ")
+            else -> expectedBuilder.append(it)
         }
     }
-    assertEquals(builder.toString(), ElementPrinter.dump(actual))
+    val expectedString = expectedBuilder.toString()
+
+    val regexBuilder = StringBuilder()
+    expectedString.toCharArray().forEach {
+        when (it) {
+            '*' -> regexBuilder.append(".+")
+            in listOf('(', ')', '[', ']', '$') -> regexBuilder.append("\\$it")
+            else -> regexBuilder.append(it)
+        }
+    }
+    val regexString = regexBuilder.toString()
+
+    val actualString = ElementPrinter.dump(actual)
+    assert(actualString.matches(Regex(regexString))) {
+        "expected: <$expectedString> but was: <$actualString>"
+    }
 }
 
 fun assertOutputTextEquals(expected: String, actual: TextFile) {

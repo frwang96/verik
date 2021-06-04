@@ -30,7 +30,7 @@ internal class TypeCasterTest: BaseTest() {
             var x = 0
         """.trimIndent())
         assertElementEquals(
-            "BaseProperty(x, Int, ConstantExpression(INTEGER, 0))",
+            "BaseProperty(x, Int, *)",
             projectContext.findDeclaration("x")
         )
     }

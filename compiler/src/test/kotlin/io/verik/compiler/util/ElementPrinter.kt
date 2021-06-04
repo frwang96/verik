@@ -47,6 +47,7 @@ class ElementPrinter: Visitor() {
     override fun visitBaseFunction(baseFunction: VkBaseFunction) {
         build("BaseFunction") {
             build(baseFunction.name.toString())
+            build(baseFunction.type.toString())
             build(baseFunction.annotationType.toString())
             build(baseFunction.bodyBlockExpression)
         }

@@ -29,7 +29,7 @@ internal class KeywordTransformerTest: BaseTest() {
             const val alias = false
         """.trimIndent())
         assertElementEquals(
-            "File([BaseProperty(alias\$K, Boolean, ConstantExpression(BOOLEAN, 1'b0))])",
+            "File([BaseProperty(alias\$K, Boolean, *)])",
             projectContext.vkFiles.first()
         )
     }
