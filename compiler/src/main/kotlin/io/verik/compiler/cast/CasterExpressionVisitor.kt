@@ -17,19 +17,15 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.ast.common.ConstantValueKind
+import io.verik.compiler.ast.common.Name
 import io.verik.compiler.ast.common.Type
-import io.verik.compiler.ast.element.VkBlockExpression
-import io.verik.compiler.ast.element.VkConstantExpression
-import io.verik.compiler.ast.element.VkExpression
-import io.verik.compiler.ast.element.cast
+import io.verik.compiler.ast.element.*
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.getMessageLocation
 import io.verik.compiler.main.m
-import org.jetbrains.kotlin.psi.KtBlockExpression
-import org.jetbrains.kotlin.psi.KtConstantExpression
-import org.jetbrains.kotlin.psi.KtExpression
-import org.jetbrains.kotlin.psi.KtVisitor
+import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.psi.stubs.elements.KtStubElementTypes
+import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.calls.callUtil.getType
 
 class CasterExpressionVisitor(
@@ -52,6 +48,14 @@ class CasterExpressionVisitor(
         val type = getType(expression)
         val statements = expression.statements.mapNotNull { getExpression(it) }
         return VkBlockExpression(location, type, ArrayList(statements))
+    }
+
+    override fun visitReferenceExpression(expression: KtReferenceExpression, data: Unit?): VkExpression {
+        val descriptor = bindingContext.getSliceContents(BindingContext.REFERENCE_TARGET)[expression]!!
+        val location = expression.getMessageLocation()
+        val type = getType(expression)
+        val name = Name(descriptor.name.toString())
+        return VkReferenceExpression(location, type, name)
     }
 
     override fun visitConstantExpression(expression: KtConstantExpression, data: Unit?): VkExpression? {

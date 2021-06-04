@@ -19,6 +19,7 @@ package io.verik.compiler.serialize
 import io.verik.compiler.ast.common.Visitor
 import io.verik.compiler.ast.element.VkBlockExpression
 import io.verik.compiler.ast.element.VkConstantExpression
+import io.verik.compiler.ast.element.VkReferenceExpression
 
 class SerializerExpressionVisitor(private val sourceBuilder: SourceBuilder): Visitor() {
 
@@ -27,6 +28,10 @@ class SerializerExpressionVisitor(private val sourceBuilder: SourceBuilder): Vis
             it.accept(this)
             sourceBuilder.appendLine(";", it)
         }
+    }
+
+    override fun visitReferenceExpression(referenceExpression: VkReferenceExpression) {
+        sourceBuilder.append(referenceExpression.name.toString(), referenceExpression)
     }
 
     override fun visitConstantExpression(constantExpression: VkConstantExpression) {

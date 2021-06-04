@@ -38,14 +38,6 @@ object ElementParentChecker {
 
         private val parentStack = ArrayDeque<VkElement>()
 
-        override fun visitFile(file: VkFile) {
-            if (file.parent != null)
-                m.error("Parent element should be null", file)
-            parentStack.push(file)
-            file.acceptChildren(this)
-            parentStack.pop()
-        }
-
         override fun visitElement(element: VkElement) {
             if (element.parent == null)
                 m.error("Parent element should not be null", element)
@@ -53,6 +45,14 @@ object ElementParentChecker {
                 m.error("Parent element mismatch", element)
             parentStack.push(element)
             super.visitElement(element)
+            parentStack.pop()
+        }
+
+        override fun visitFile(file: VkFile) {
+            if (file.parent != null)
+                m.error("Parent element should be null", file)
+            parentStack.push(file)
+            file.acceptChildren(this)
             parentStack.pop()
         }
     }

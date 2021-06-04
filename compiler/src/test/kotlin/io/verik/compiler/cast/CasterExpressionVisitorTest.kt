@@ -36,6 +36,18 @@ internal class CasterExpressionVisitorTest: BaseTest() {
     }
 
     @Test
+    fun `reference expression`() {
+        val projectContext = TestDriver.cast("""
+            var x = 0
+            var y = x
+        """.trimIndent())
+        assertElementEquals(
+            "ReferenceExpression(x)",
+            projectContext.findExpression("y")
+        )
+    }
+
+    @Test
     fun `constant expression integer`() {
         val projectContext = TestDriver.cast("""
             var x = 0

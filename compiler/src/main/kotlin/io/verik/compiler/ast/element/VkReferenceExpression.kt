@@ -14,21 +14,23 @@
  * limitations under the License.
  */
 
-package count
+package io.verik.compiler.ast.element
 
-import io.verik.core.*
+import io.verik.compiler.ast.common.Name
+import io.verik.compiler.ast.common.TreeVisitor
+import io.verik.compiler.ast.common.Type
+import io.verik.compiler.ast.common.Visitor
+import io.verik.compiler.main.MessageLocation
 
-val x = 0
+class VkReferenceExpression(
+    override val location: MessageLocation,
+    override var type: Type,
+    var name: Name
+): VkExpression() {
 
-fun f() {
-    x
+    override fun accept(visitor: Visitor) {
+        visitor.visitReferenceExpression(this)
+    }
+
+    override fun acceptChildren(visitor: TreeVisitor) {}
 }
-
-@top object Count: Module() {
-
-    val y = false
-
-    @run fun g() {}
-}
-
-class Checker: Class()

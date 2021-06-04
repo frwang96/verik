@@ -29,14 +29,8 @@ class SerializerBaseVisitor(private val sourceBuilder: SourceBuilder): Visitor()
         file.declarations.forEach { it.accept(this) }
     }
 
-    override fun visitModule(module: VkModule) {
-        appendLineIfNotFirst()
-        sourceBuilder.appendLine("module $module;", module)
-        sourceBuilder.indent {
-            module.declarations.forEach { it.accept(this) }
-            sourceBuilder.appendLine()
-        }
-        sourceBuilder.appendLine("endmodule: $module", module)
+    override fun visitDeclaration(declaration: VkDeclaration) {
+        m.error("Unable to serialize declaration: $declaration", declaration)
     }
 
     override fun visitBaseClass(baseClass: VkBaseClass) {
@@ -47,6 +41,16 @@ class SerializerBaseVisitor(private val sourceBuilder: SourceBuilder): Visitor()
             sourceBuilder.appendLine()
         }
         sourceBuilder.appendLine("endclass: $baseClass", baseClass)
+    }
+
+    override fun visitModule(module: VkModule) {
+        appendLineIfNotFirst()
+        sourceBuilder.appendLine("module $module;", module)
+        sourceBuilder.indent {
+            module.declarations.forEach { it.accept(this) }
+            sourceBuilder.appendLine()
+        }
+        sourceBuilder.appendLine("endmodule: $module", module)
     }
 
     override fun visitBaseFunction(baseFunction: VkBaseFunction) {
@@ -74,10 +78,6 @@ class SerializerBaseVisitor(private val sourceBuilder: SourceBuilder): Visitor()
         } else {
             sourceBuilder.appendLine(";", baseProperty)
         }
-    }
-
-    override fun visitDeclaration(declaration: VkDeclaration) {
-        m.error("Unable to serialize declaration: $declaration", declaration)
     }
 
     private fun appendLineIfNotFirst() {

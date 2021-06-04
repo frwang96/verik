@@ -24,14 +24,29 @@ import org.junit.jupiter.api.Test
 internal class SerializerExpressionVisitorTest: BaseTest() {
 
     @Test
-    fun `constant expression integer`() {
+    fun `reference expression`() {
         val projectContext = TestDriver.serialize("""
-            fun f() { 0 }
+            var x = 0
+            var y = x
         """.trimIndent())
         val expected = """
-            function void f();
-                0;
-            endfunction: f
+            int x = 0;
+            
+            int y = x;
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
+    fun `constant expression`() {
+        val projectContext = TestDriver.serialize("""
+            var x = 0
+        """.trimIndent())
+        val expected = """
+            int x = 0;
         """.trimIndent()
         assertOutputTextEquals(
             expected,

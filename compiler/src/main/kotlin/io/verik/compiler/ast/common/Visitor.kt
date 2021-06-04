@@ -20,6 +20,8 @@ import io.verik.compiler.ast.element.*
 
 abstract class Visitor {
 
+    open fun visitElement(element: VkElement) {}
+
     open fun visitFile(file: VkFile) {
         return visitElement(file)
     }
@@ -28,12 +30,20 @@ abstract class Visitor {
         return visitElement(importDirective)
     }
 
-    open fun visitModule(module: VkModule) {
-        return visitBaseClass(module)
+    open fun visitExpression(expression: VkExpression) {
+        return visitElement(expression)
+    }
+
+    open fun visitDeclaration(declaration: VkDeclaration) {
+        return visitExpression(declaration)
     }
 
     open fun visitBaseClass(baseClass: VkBaseClass) {
         return visitDeclaration(baseClass)
+    }
+
+    open fun visitModule(module: VkModule) {
+        return visitBaseClass(module)
     }
 
     open fun visitBaseFunction(baseFunction: VkBaseFunction) {
@@ -48,21 +58,15 @@ abstract class Visitor {
         return visitDeclaration(typeParameter)
     }
 
-    open fun visitDeclaration(declaration: VkDeclaration) {
-        return visitExpression(declaration)
-    }
-
     open fun visitBlockExpression(blockExpression: VkBlockExpression) {
         return visitExpression(blockExpression)
+    }
+
+    open fun visitReferenceExpression(referenceExpression: VkReferenceExpression) {
+        return visitExpression(referenceExpression)
     }
 
     open fun visitConstantExpression(constantExpression: VkConstantExpression) {
         return visitExpression(constantExpression)
     }
-
-    open fun visitExpression(expression: VkExpression) {
-        return visitElement(expression)
-    }
-
-    open fun visitElement(element: VkElement) {}
 }

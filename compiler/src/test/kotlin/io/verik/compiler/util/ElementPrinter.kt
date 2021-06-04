@@ -30,17 +30,17 @@ class ElementPrinter: Visitor() {
         }
     }
 
-    override fun visitModule(module: VkModule) {
-        build("Module") {
-            build(module.name.toString())
-        }
-    }
-
     override fun visitBaseClass(baseClass: VkBaseClass) {
         build("BaseClass") {
             build(baseClass.name.toString())
             build(baseClass.typeParameters)
             build(baseClass.declarations)
+        }
+    }
+
+    override fun visitModule(module: VkModule) {
+        build("Module") {
+            build(module.name.toString())
         }
     }
 
@@ -71,6 +71,12 @@ class ElementPrinter: Visitor() {
     override fun visitBlockExpression(blockExpression: VkBlockExpression) {
         build("BlockExpression") {
             build(blockExpression.statements)
+        }
+    }
+
+    override fun visitReferenceExpression(referenceExpression: VkReferenceExpression) {
+        build("ReferenceExpression") {
+            build(referenceExpression.name.toString())
         }
     }
 
