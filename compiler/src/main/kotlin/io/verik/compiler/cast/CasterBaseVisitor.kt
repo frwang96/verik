@@ -150,12 +150,16 @@ class CasterBaseVisitor(
         } else {
             getType(descriptor.type, property)
         }
+        val initializer = property.initializer?.let {
+            expressionVisitor.getExpression<VkExpression>(it)
+        }
 
         val baseProperty = declarationMap[descriptor, property]
             .cast<VkBaseProperty>(property)
             ?: return null
 
         baseProperty.type = type
+        baseProperty.initializer = initializer
         return baseProperty
     }
 

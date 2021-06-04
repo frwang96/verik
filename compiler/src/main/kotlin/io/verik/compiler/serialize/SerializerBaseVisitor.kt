@@ -65,7 +65,15 @@ class SerializerBaseVisitor(private val sourceBuilder: SourceBuilder): Visitor()
     override fun visitBaseProperty(baseProperty: VkBaseProperty) {
         appendLineIfNotFirst()
         val typeString = TypeSerializer.serialize(baseProperty)
-        sourceBuilder.appendLine("$typeString $baseProperty;", baseProperty)
+        sourceBuilder.append("$typeString $baseProperty", baseProperty)
+        val initializer = baseProperty.initializer
+        if (initializer != null) {
+            sourceBuilder.append(" = ", baseProperty)
+            initializer.accept(expressionVisitor)
+            sourceBuilder.appendLine(";", initializer)
+        } else {
+            sourceBuilder.appendLine(";", baseProperty)
+        }
     }
 
     override fun visitDeclaration(declaration: VkDeclaration) {

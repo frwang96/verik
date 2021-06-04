@@ -81,7 +81,7 @@ internal class CasterBaseVisitorTest: BaseTest() {
             }
         """.trimIndent())
         assertElementEquals(
-            "BaseClass(C, [], [BaseFunction(f, null, [])])",
+            "BaseClass(C, [], [BaseFunction(f, null, BlockExpression([]))])",
             projectContext.findDeclaration("C")
         )
     }
@@ -94,7 +94,7 @@ internal class CasterBaseVisitorTest: BaseTest() {
             }
         """.trimIndent())
         assertElementEquals(
-            "BaseClass(C, [], [BaseProperty(x, Boolean)])",
+            "BaseClass(C, [], [BaseProperty(x, Boolean, ConstantExpression(BOOLEAN, 1'b0))])",
             projectContext.findDeclaration("C")
         )
     }
@@ -127,7 +127,7 @@ internal class CasterBaseVisitorTest: BaseTest() {
             fun f() {}
         """.trimIndent())
         assertElementEquals(
-            "BaseFunction(f, null, [])",
+            "BaseFunction(f, null, BlockExpression([]))",
             projectContext.findDeclaration("f")
         )
     }
@@ -138,7 +138,7 @@ internal class CasterBaseVisitorTest: BaseTest() {
             @task fun f() {}
         """.trimIndent())
         assertElementEquals(
-            "BaseFunction(f, task, [])",
+            "BaseFunction(f, TASK, BlockExpression([]))",
             projectContext.findDeclaration("f")
         )
     }
@@ -150,7 +150,7 @@ internal class CasterBaseVisitorTest: BaseTest() {
                 @com @seq fun f() {}
             """.trimIndent())
         }.apply {
-            assertEquals("Conflicting annotations: com, seq", message)
+            assertEquals("Conflicting annotations: COM, SEQ", message)
         }
     }
 
@@ -160,7 +160,7 @@ internal class CasterBaseVisitorTest: BaseTest() {
             var x = false
         """.trimIndent())
         assertElementEquals(
-            "BaseProperty(x, Boolean)",
+            "BaseProperty(x, Boolean, ConstantExpression(BOOLEAN, 1'b0))",
             projectContext.findDeclaration("x")
         )
     }

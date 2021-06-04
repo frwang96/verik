@@ -26,10 +26,6 @@ enum class FunctionAnnotationType {
     RUN,
     TASK;
 
-    override fun toString(): String {
-        return super.toString().toLowerCase()
-    }
-
     companion object {
 
         operator fun invoke(fqName: FqName?, element: KtElement): FunctionAnnotationType? {

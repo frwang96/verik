@@ -30,7 +30,7 @@ internal class CasterExpressionVisitorTest: BaseTest() {
             fun f() {}
         """.trimIndent())
         assertElementEquals(
-            "[]",
+            "BlockExpression([])",
             projectContext.findExpression("f")
         )
     }
@@ -38,11 +38,11 @@ internal class CasterExpressionVisitorTest: BaseTest() {
     @Test
     fun `constant expression integer`() {
         val projectContext = TestDriver.cast("""
-            fun f() { 0 }
+            var x = 0
         """.trimIndent())
         assertElementEquals(
-            "[ConstantExpression(INTEGER, 0)]",
-            projectContext.findExpression("f")
+            "ConstantExpression(INTEGER, 0)",
+            projectContext.findExpression("x")
         )
     }
 }

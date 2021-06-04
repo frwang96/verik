@@ -40,7 +40,7 @@ internal class SerializerBaseVisitorTest: BaseTest() {
     }
 
     @Test
-    fun `serialize basic class`() {
+    fun `serialize class`() {
         val projectContext = TestDriver.serialize("""
             class C
         """.trimIndent())
@@ -56,19 +56,27 @@ internal class SerializerBaseVisitorTest: BaseTest() {
     }
 
     @Test
-    fun `serialize basic function`() {
+    fun `serialize function`() {
         val projectContext = TestDriver.serialize("""
-            class C {
-                fun f() {}
-            }
+            fun f() {}
         """.trimIndent())
         val expected = """
-            class C;
-            
-                function void f();
-                endfunction: f
-            
-            endclass: C
+            function void f();
+            endfunction: f
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
+    fun `serialize property`() {
+        val projectContext = TestDriver.serialize("""
+            var x = false
+        """.trimIndent())
+        val expected = """
+            logic x = 1'b0;
         """.trimIndent()
         assertOutputTextEquals(
             expected,

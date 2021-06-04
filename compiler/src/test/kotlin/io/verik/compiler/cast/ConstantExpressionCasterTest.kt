@@ -27,44 +27,44 @@ internal class ConstantExpressionCasterTest: BaseTest() {
     @Test
     fun `boolean false`() {
         val projectContext = TestDriver.cast("""
-            fun f() { false }
+            var x = false
         """.trimIndent())
         assertElementEquals(
-            "[ConstantExpression(BOOLEAN, 1'b0)]",
-            projectContext.findExpression("f")
+            "ConstantExpression(BOOLEAN, 1'b0)",
+            projectContext.findExpression("x")
         )
     }
 
     @Test
     fun `integer decimal`() {
         val projectContext = TestDriver.cast("""
-            fun f() { 1_2 }
+            var x = 1_2
         """.trimIndent())
         assertElementEquals(
-            "[ConstantExpression(INTEGER, 12)]",
-            projectContext.findExpression("f")
+            "ConstantExpression(INTEGER, 12)",
+            projectContext.findExpression("x")
         )
     }
 
     @Test
     fun `integer hexadecimal`() {
         val projectContext = TestDriver.cast("""
-            fun f() { 0xaA_bB }
+            var x = 0xaA_bB
         """.trimIndent())
         assertElementEquals(
-            "[ConstantExpression(INTEGER, 43707)]",
-            projectContext.findExpression("f")
+            "ConstantExpression(INTEGER, 43707)",
+            projectContext.findExpression("x")
         )
     }
 
     @Test
     fun `integer binary`() {
         val projectContext = TestDriver.cast("""
-            fun f() { 0b0000_1111 }
+            var x = 0b0000_1111
         """.trimIndent())
         assertElementEquals(
-            "[ConstantExpression(INTEGER, 15)]",
-            projectContext.findExpression("f")
+            "ConstantExpression(INTEGER, 15)",
+            projectContext.findExpression("x")
         )
     }
 }

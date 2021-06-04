@@ -56,6 +56,7 @@ class ElementPrinter: Visitor() {
         build("BaseProperty") {
             build(baseProperty.name.toString())
             build(baseProperty.type.toString())
+            build(baseProperty.initializer)
         }
     }
 
@@ -67,8 +68,9 @@ class ElementPrinter: Visitor() {
     }
 
     override fun visitBlockExpression(blockExpression: VkBlockExpression) {
-        first = true
-        build(blockExpression.statements)
+        build("BlockExpression") {
+            build(blockExpression.statements)
+        }
     }
 
     override fun visitConstantExpression(constantExpression: VkConstantExpression) {
@@ -85,12 +87,13 @@ class ElementPrinter: Visitor() {
     }
 
     private fun build(element: VkElement?) {
-        if (!first) builder.append(", ")
         if (element != null)
             element.accept(this)
-        else
+        else {
+            if (!first) builder.append(", ")
             builder.append("null")
-        first = true
+            first = false
+        }
     }
 
     private fun build(name: String, content: () -> Unit) {
