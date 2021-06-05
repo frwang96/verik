@@ -14,13 +14,34 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
+@file:Suppress("unused", "UNUSED_PARAMETER")
 
 package io.verik.core
 
 /**
- * Exits the simulation with no error status.
+ * Logs [message] with severity fatal and exits the simulation with an error status.
  */
-fun finish(): Nothing {
+fun fatal(message: Any): Nothing {
+    throw VerikException()
+}
+
+/**
+ * Logs [message] with severity error.
+ */
+fun error(message: Any) {
+    throw VerikException()
+}
+
+/**
+ * Logs [message] with severity warning.
+ */
+fun warning(message: Any) {
+    throw VerikException()
+}
+
+/**
+ * Logs [message] with severity info.
+ */
+fun info(message: Any) {
     throw VerikException()
 }
