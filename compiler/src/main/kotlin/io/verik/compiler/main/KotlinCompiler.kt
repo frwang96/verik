@@ -40,7 +40,7 @@ class KotlinCompiler {
     private val MODULE_NAME = "verik"
 
     fun compile(projectContext: ProjectContext) {
-        m.info("Compile: Parse input files", null)
+        m.info("Compile: Parse input files")
         val environment = createKotlinCoreEnvironment()
         val psiFileFactory = KtPsiFactory(environment.project, false)
 
@@ -49,7 +49,7 @@ class KotlinCompiler {
         }
         m.flush()
 
-        m.info("Compile: Analyze input files", null)
+        m.info("Compile: Analyze input files")
         val analyzer = AnalyzerWithCompilerReport(environment.configuration)
         analyzer.analyzeAndReport(ktFiles) {
             TopDownAnalyzerFacadeForJVM.analyzeFilesWithJavaIntegration(
@@ -117,8 +117,6 @@ class KotlinCompiler {
                     m.error(message, messageLocation)
                 CompilerMessageSeverity.STRONG_WARNING, CompilerMessageSeverity.WARNING ->
                     m.warning(message, messageLocation)
-                CompilerMessageSeverity.INFO ->
-                    m.info(message, messageLocation)
                 else -> {}
             }
         }

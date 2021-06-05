@@ -46,20 +46,29 @@ class GradleMessageCollector(config: Config): MessageCollector() {
         if (debug) printStackTrace()
     }
 
-    override fun info(message: String, location: MessageLocation?) {
+    override fun info(message: String) {
         if (verbose) {
             print("i: ")
-            if (debug) {
-                val elapsed = (System.nanoTime() - startTime) / 1e9
-                val elapsedString = "%.3f".format(elapsed)
-                print("${elapsedString}s: ")
-            }
-            printMessage(message, location)
+            if (debug)
+                print("${getElapsedString()}: ")
+            printMessage(message, null)
+        }
+    }
+
+    override fun log(message: String) {
+        if (debug) {
+            print("i: ${getElapsedString()}: ")
+            printMessage(message, null)
         }
     }
 
     override fun flush() {
         if (errorCount != 0) throw GradleException("Verik compilation failed")
+    }
+
+    private fun getElapsedString(): String {
+        val elapsed = (System.nanoTime() - startTime) / 1e9
+        return "%.3fs".format(elapsed)
     }
 
     private fun printMessage(message: String, location: MessageLocation?) {

@@ -24,17 +24,17 @@ import io.verik.compiler.normalize.ProjectNormalizationChecker
 object ProjectCaster {
 
     fun cast(projectContext: ProjectContext) {
-        m.info("Cast: Check unsupported elements", null)
+        m.log("Cast: Check unsupported elements")
         UnsupportedElementChecker.check(projectContext)
         m.flush()
 
-        m.info("Cast: Index syntax trees", null)
+        m.log("Cast: Index syntax trees")
         val declarationMap = DeclarationMap()
         val indexerVisitor = IndexerVisitor(projectContext, declarationMap)
         projectContext.ktFiles.forEach { it.accept(indexerVisitor) }
         m.flush()
 
-        m.info("Cast: Cast syntax trees", null)
+        m.log("Cast: Cast syntax trees")
         val baseVisitor = CasterBaseVisitor(projectContext, declarationMap)
         val files = projectContext.ktFiles.mapNotNull {
             baseVisitor.getElement<VkFile>(it)
@@ -43,11 +43,11 @@ object ProjectCaster {
         m.flush()
         ProjectNormalizationChecker.check(projectContext)
 
-        m.info("Cast: Check file paths", null)
+        m.log("Cast: Check file paths")
         FileChecker.check(projectContext)
         m.flush()
 
-        m.info("Cast: Check import directives", null)
+        m.log("Cast: Check import directives")
         ImportDirectiveChecker.check(projectContext)
         m.flush()
     }

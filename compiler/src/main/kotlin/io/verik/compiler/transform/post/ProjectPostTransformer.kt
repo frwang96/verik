@@ -23,7 +23,7 @@ import io.verik.compiler.normalize.ProjectNormalizationChecker
 object ProjectPostTransformer {
 
     fun transform(projectContext: ProjectContext) {
-        m.info("Post-transform: Post-transform syntax trees", null)
+        m.log("Post-transform: Post-transform syntax trees")
         m.flush()
         ProjectNormalizationChecker.check(projectContext)
     }

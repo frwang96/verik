@@ -23,11 +23,11 @@ import io.verik.compiler.normalize.ProjectNormalizationChecker
 object ProjectCanonicalizer {
 
     fun canonicalize(projectContext: ProjectContext) {
-        m.info("Canonicalize: Canonicalize syntax trees", null)
+        m.log("Canonicalize: Canonicalize syntax trees")
         m.flush()
         ProjectNormalizationChecker.check(projectContext)
 
-        m.info("Canonicalize: Check types", null)
+        m.log("Canonicalize: Check types")
         CanonicalTypeChecker.check(projectContext)
         m.flush()
     }

@@ -23,12 +23,12 @@ import io.verik.compiler.normalize.ProjectNormalizationChecker
 object ProjectInterpreter {
 
     fun interpret(projectContext: ProjectContext) {
-        m.info("Interpret: Interpret classes", null)
+        m.log("Interpret: Interpret classes")
         ClassInterpreter.interpret(projectContext)
         m.flush()
         ProjectNormalizationChecker.check(projectContext)
 
-        m.info("Interpret: Split component and package files", null)
+        m.log("Interpret: Split component and package files")
         FileSplitter.split(projectContext)
         m.flush()
         ProjectNormalizationChecker.check(projectContext)

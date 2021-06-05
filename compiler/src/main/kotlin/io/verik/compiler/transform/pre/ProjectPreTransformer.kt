@@ -23,12 +23,12 @@ import io.verik.compiler.normalize.ProjectNormalizationChecker
 object ProjectPreTransformer {
 
     fun transform(projectContext: ProjectContext) {
-        m.info("Pre-transform: Rename keyword conflicts", null)
+        m.log("Pre-transform: Rename keyword conflicts")
         KeywordTransformer.transform(projectContext)
         m.flush()
         ProjectNormalizationChecker.check(projectContext)
 
-        m.info("Pre-transform: Separate nested classes", null)
+        m.log("Pre-transform: Separate nested classes")
         NestedClassTransformer.transform(projectContext)
         m.flush()
         ProjectNormalizationChecker.check(projectContext)

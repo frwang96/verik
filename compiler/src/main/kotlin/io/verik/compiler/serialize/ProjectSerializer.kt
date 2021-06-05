@@ -30,7 +30,7 @@ object ProjectSerializer {
             m.fatal("Output files empty: No declarations found", null)
 
         ProjectNormalizationChecker.check(projectContext)
-        m.info("Serialize: Serialize output files", null)
+        m.info("Serialize: Serialize output files")
         val packageTextFiles = PackageFileSerializer.serialize(projectContext)
         val orderTextFile = OrderFileSerializer.serialize(projectContext, packageTextFiles)
 
