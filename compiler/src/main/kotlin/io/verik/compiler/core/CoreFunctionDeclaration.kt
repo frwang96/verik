@@ -14,22 +14,19 @@
  * limitations under the License.
  */
 
-package count
+package io.verik.compiler.core
 
-import io.verik.core.*
+import io.verik.compiler.ast.common.Name
 
-var x = 0
+class CoreFunctionDeclaration private constructor(
+    override var name: Name,
+    override var qualifiedName: Name
+): CoreDeclaration() {
 
-fun f() {
-    x = 1
-    random()
+    companion object {
+
+        operator fun invoke(parent: String, name: String): CoreFunctionDeclaration {
+            return CoreFunctionDeclaration(Name(name), Name("$parent.$name"))
+        }
+    }
 }
-
-@top object Count: Module() {
-
-    val y = false
-
-    @run fun g() {}
-}
-
-class Checker: Class()

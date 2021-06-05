@@ -79,8 +79,9 @@ class CasterExpressionVisitor(
         val descriptor = bindingContext.getSliceContents(BindingContext.REFERENCE_TARGET)[expression]!!
         val location = expression.getMessageLocation()
         val type = getType(expression)
+        val declaration = declarationMap[descriptor, expression]
         val name = Name(descriptor.name.toString())
-        return VkReferenceExpression(location, type, NullDeclaration, name)
+        return VkReferenceExpression(location, type, declaration, name)
     }
 
     override fun visitCallExpression(expression: KtCallExpression, data: Unit?): VkElement {
@@ -88,9 +89,10 @@ class CasterExpressionVisitor(
             .getSliceContents(BindingContext.REFERENCE_TARGET)[expression.calleeExpression]!!
         val location = expression.getMessageLocation()
         val type = getType(expression)
+        val declaration = declarationMap[descriptor, expression]
         val name = Name(descriptor.name.toString())
         val valueArguments = expression.valueArguments.mapNotNull { getElement<VkValueArgument>(it) }
-        return VkCallExpression(location, type, NullDeclaration, name, ArrayList(valueArguments))
+        return VkCallExpression(location, type, declaration, name, ArrayList(valueArguments))
     }
 
     override fun visitArgument(argument: KtValueArgument, data: Unit?): VkElement? {

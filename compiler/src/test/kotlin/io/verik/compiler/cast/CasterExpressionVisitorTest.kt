@@ -70,13 +70,24 @@ internal class CasterExpressionVisitorTest: BaseTest() {
     }
 
     @Test
-    fun `call expression`() {
+    fun `call expression base function`() {
         val projectContext = TestDriver.cast("""
             fun f() {}
             var x = f()
         """.trimIndent())
         assertElementEquals(
             "CallExpression(Unit, f, [])",
+            projectContext.findExpression("x")
+        )
+    }
+
+    @Test
+    fun `call expression core`() {
+        val projectContext = TestDriver.cast("""
+            var x = random()
+        """.trimIndent())
+        assertElementEquals(
+            "CallExpression(Int, random, [])",
             projectContext.findExpression("x")
         )
     }

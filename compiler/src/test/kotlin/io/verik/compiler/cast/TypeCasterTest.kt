@@ -112,7 +112,6 @@ internal class TypeCasterTest: BaseTest() {
     }
 
     @Test
-    @Disabled
     fun `type reference cardinal invalid`() {
         assertThrows<TestException> {
             TestDriver.cast("""
@@ -124,13 +123,12 @@ internal class TypeCasterTest: BaseTest() {
     }
 
     @Test
-    @Disabled
     fun `type reference cardinal function`() {
         val projectContext = TestDriver.cast("""
             var x: Ubit<ADD<`8`, `16`>> = u(0)
         """.trimIndent())
         assertElementEquals(
-            "BaseProperty(x, Ubit<ADD<`8`, `16`>>)",
+            "BaseProperty(x, Ubit<ADD<`8`, `16`>>, *)",
             projectContext.findDeclaration("x")
         )
     }
@@ -147,7 +145,6 @@ internal class TypeCasterTest: BaseTest() {
     }
 
     @Test
-    @Disabled
     fun `type reference cardinal type parameter`() {
         val projectContext = TestDriver.cast("""
             class C<N: Cardinal> {
@@ -155,13 +152,12 @@ internal class TypeCasterTest: BaseTest() {
             }
         """.trimIndent())
         assertElementEquals(
-            "BaseProperty(x, Ubit<N>)",
+            "BaseProperty(x, Ubit<N>, *)",
             projectContext.findDeclaration("x")
         )
     }
 
     @Test
-    @Disabled
     fun `type reference cardinal type parameter invalid`() {
         assertThrows<TestException> {
             TestDriver.cast("""

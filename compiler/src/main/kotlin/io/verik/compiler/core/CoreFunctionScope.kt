@@ -14,22 +14,11 @@
  * limitations under the License.
  */
 
-package count
+package io.verik.compiler.core
 
-import io.verik.core.*
+import io.verik.compiler.ast.common.PackageName
 
-var x = 0
+open class CoreFunctionScope private constructor(protected val parent: String) {
 
-fun f() {
-    x = 1
-    random()
+    constructor(packageName: PackageName): this(packageName.name)
 }
-
-@top object Count: Module() {
-
-    val y = false
-
-    @run fun g() {}
-}
-
-class Checker: Class()

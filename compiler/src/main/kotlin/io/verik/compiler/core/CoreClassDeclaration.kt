@@ -19,7 +19,7 @@ package io.verik.compiler.core
 import io.verik.compiler.ast.common.Name
 import kotlin.reflect.KClass
 
-class CoreClassDeclaration(
+class CoreClassDeclaration private constructor(
     override var name: Name,
     override var qualifiedName: Name,
     val superclass: CoreClassDeclaration?

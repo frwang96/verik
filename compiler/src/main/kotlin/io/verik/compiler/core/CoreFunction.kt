@@ -14,22 +14,18 @@
  * limitations under the License.
  */
 
-package count
+package io.verik.compiler.core
 
-import io.verik.core.*
+import io.verik.compiler.ast.common.PackageName
 
-var x = 0
+object CoreFunction {
 
-fun f() {
-    x = 1
-    random()
+    object CORE {
+
+        object NULL: CoreFunctionScope(PackageName.CORE) {
+
+            val U = CoreFunctionDeclaration(parent, "u")
+            val RANDOM = CoreFunctionDeclaration(parent, "random")
+        }
+    }
 }
-
-@top object Count: Module() {
-
-    val y = false
-
-    @run fun g() {}
-}
-
-class Checker: Class()
