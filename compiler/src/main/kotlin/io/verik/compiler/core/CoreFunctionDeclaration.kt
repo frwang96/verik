@@ -20,13 +20,18 @@ import io.verik.compiler.ast.common.Name
 
 class CoreFunctionDeclaration private constructor(
     override var name: Name,
-    override var qualifiedName: Name
+    override val qualifiedName: Name,
+    val parameterTypeNames: List<Name>
 ): CoreDeclaration() {
 
     companion object {
 
-        operator fun invoke(parent: String, name: String): CoreFunctionDeclaration {
-            return CoreFunctionDeclaration(Name(name), Name("$parent.$name"))
+        operator fun invoke(parent: String, name: String, vararg parameterTypeNames: String): CoreFunctionDeclaration {
+            return CoreFunctionDeclaration(
+                Name(name),
+                Name("$parent.$name"),
+                parameterTypeNames.map { Name(it) }
+            )
         }
     }
 }

@@ -21,7 +21,7 @@ import kotlin.reflect.KClass
 
 class CoreClassDeclaration private constructor(
     override var name: Name,
-    override var qualifiedName: Name,
+    override val qualifiedName: Name,
     val superclass: CoreClassDeclaration?
 ): CoreDeclaration() {
 

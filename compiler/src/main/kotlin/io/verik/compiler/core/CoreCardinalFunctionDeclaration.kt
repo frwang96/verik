@@ -23,7 +23,7 @@ class CoreCardinalFunctionDeclaration(
     override var name: Name
 ): CoreCardinalDeclaration() {
 
-    override var qualifiedName = Name("${PackageName.CORE.name}.$name")
+    override val qualifiedName = Name("${PackageName.CORE.name}.$name")
 
     override fun equals(other: Any?): Boolean {
         return (other is CoreCardinalFunctionDeclaration) && (other.name == name)

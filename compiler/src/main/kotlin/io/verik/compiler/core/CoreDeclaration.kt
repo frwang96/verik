@@ -21,7 +21,7 @@ import io.verik.compiler.ast.common.Name
 
 abstract class CoreDeclaration: Declaration {
 
-    abstract var qualifiedName: Name
+    abstract val qualifiedName: Name
 
     override fun toString(): String {
         return "$name"

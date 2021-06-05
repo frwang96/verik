@@ -27,6 +27,7 @@ object CoreClass {
 
     val CARDINAL = CoreClassDeclaration(Cardinal::class, ANY)
     val UBIT = CoreClassDeclaration(Ubit::class, ANY)
+    val SBIT = CoreClassDeclaration(Sbit::class, ANY)
     val MODULE = CoreClassDeclaration(Module::class, ANY)
     val CLASS = CoreClassDeclaration(Class::class, ANY)
 }

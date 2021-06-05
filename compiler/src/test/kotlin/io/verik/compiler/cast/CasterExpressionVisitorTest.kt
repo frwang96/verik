@@ -84,10 +84,10 @@ internal class CasterExpressionVisitorTest: BaseTest() {
     @Test
     fun `call expression core`() {
         val projectContext = TestDriver.cast("""
-            var x = random()
+            var x = random(0)
         """.trimIndent())
         assertElementEquals(
-            "CallExpression(Int, random, [])",
+            "CallExpression(Int, random, *)",
             projectContext.findExpression("x")
         )
     }

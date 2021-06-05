@@ -20,6 +20,7 @@ import io.verik.compiler.ast.common.Name
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
 import org.jetbrains.kotlin.descriptors.SimpleFunctionDescriptor
 import org.jetbrains.kotlin.descriptors.impl.AbstractTypeAliasDescriptor
+import org.jetbrains.kotlin.js.descriptorUtils.getJetTypeFqName
 import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameOrNull
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.createType
@@ -71,9 +72,24 @@ object CoreDeclarationMap {
             ?: return null
         val functions = functionMap[qualifiedName]
             ?: return null
-        if (functions.isEmpty())
-            return null
-        return functions[0]
+        functions.forEach {
+            if (matchFunction(descriptor, it))
+                return it
+        }
+        return null
+    }
+
+    private fun matchFunction(descriptor: SimpleFunctionDescriptor, function: CoreFunctionDeclaration): Boolean {
+        val valueParameters = descriptor.valueParameters
+        val expectedParameterTypeNames = function.parameterTypeNames
+        if (valueParameters.size != expectedParameterTypeNames.size)
+            return false
+        valueParameters.zip(expectedParameterTypeNames).forEach { (valueParameter, expectedParameterTypeName) ->
+            val parameterTypeName = Name(valueParameter.type.getJetTypeFqName(false).substringAfterLast("."))
+            if (parameterTypeName != expectedParameterTypeName)
+                return false
+        }
+        return true
     }
 
     private fun getDeclaration(descriptor: DeclarationDescriptor): CoreDeclaration? {
