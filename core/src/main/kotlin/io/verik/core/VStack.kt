@@ -19,41 +19,34 @@
 package io.verik.core
 
 /**
- * A set of elements.
- * @param T the type of the set
+ * A stack of elements.
+ * @param E the type of the elements of the stack
  */
-class Set<T>: Collection(), Iterable<T> {
-
-    override fun iterator(): Iterator<T> {
-        throw VerikException()
-    }
+class VStack<E>: VCollection<E>() {
 
     /**
-     * Add an element to the set.
-     * @param x the element to add
+     * Push the specified [element] onto the stack.
      */
-    fun add(x: T) {
+    fun push(element: E) {
         throw VerikException()
     }
 
     /**
-     * Returns true if the set contains a particular element.
-     * @param x the element to search for
+     * Peek at the top of the stack.
      */
-    fun contains(x: T): Boolean {
+    fun peek(): E {
         throw VerikException()
     }
 
     /**
-     * Remove a particular element from the set.
-     * @param x the element to remove
+     * Pop from the top of the stack.
      */
-    fun remove(x: T) {
+    fun pop(): E {
         throw VerikException()
     }
 
     /**
-     * Clear the contents of the set.
+     * Clear the contents of the stack.
      */
     fun clear() {
         throw VerikException()

@@ -19,56 +19,37 @@
 package io.verik.core
 
 /**
- * An array of fixed size.
+ * An array of statically determined size.
  * @param N the size of the array
- * @param T the type of the array
+ * @param E the type of the elements of the array
  */
-class Array<N: Cardinal, T>: Collection(), Iterable<T> {
+class VArray<N: Cardinal, E>: VCollection<E>() {
 
-    override fun iterator(): Iterator<T> {
+    /**
+     * Returns the array element at the specified [index].
+     */
+    operator fun get(index: Int): E {
         throw VerikException()
     }
 
     /**
-     * Get an element of the array.
-     * @param n the index of the element
-     * @return the element at index [n]
+     * Returns the array element at the specified [index].
      */
-    operator fun get(n: Int): T {
+    operator fun get(index: Ubit<Cardinal>): E {
         throw VerikException()
     }
 
     /**
-     * Get an element of the array.
-     * @param n the index of the element
-     * @return the element at index [n]
+     * Sets the array element at the specified [index] to the specified [element].
      */
-    operator fun get(n: Ubit<Cardinal>): T {
+    operator fun set(index: Int, element: E) {
         throw VerikException()
     }
 
     /**
-     * Set an element of the array.
-     * @param n the index of the element
-     * @param x the value to set
+     * Sets the array element at the specified [index] to the specified [element].
      */
-    operator fun set(n: Int, x: T) {
-        throw VerikException()
-    }
-
-    /**
-     * Set an element of the array.
-     * @param n the index of the element
-     * @param x the value to set
-     */
-    operator fun set(n: Ubit<Cardinal>, x: T) {
-        throw VerikException()
-    }
-
-    /**
-     * Clear the contents of the array.
-     */
-    fun clear() {
+    operator fun set(index: Ubit<Cardinal>, element: E) {
         throw VerikException()
     }
 }

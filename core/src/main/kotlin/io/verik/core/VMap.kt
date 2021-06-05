@@ -14,42 +14,47 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNUSED_PARAMETER", "unused")
+@file:Suppress("unused", "UNUSED_PARAMETER")
 
 package io.verik.core
 
 /**
- * A stack of elements.
- * @param T the type of the stack
+ * A map from keys to values.
+ * @param K the type of the key
+ * @param V the type of the value
  */
-class Stack<T>: Collection() {
+class VMap<K, V> {
 
     /**
-     * Push an element onto the stack.
-     * @param x the element to push
+     * Checks if the map contains the specified [key].
      */
-    fun push(x: T) {
+    operator fun contains(key: K): Boolean {
         throw VerikException()
     }
 
     /**
-     * Peek at the top of the stack.
-     * @return the element at the top of the stack
+     * Returns the value corresponding to the specified [key].
      */
-    fun peek(x: T): T {
+    operator fun get(key: K): V {
         throw VerikException()
     }
 
     /**
-     * Pop from the top of the stack.
-     * @return the element at the top of the stack
+     * Sets the [value] corresponding to the specified [key].
      */
-    fun pop(x: T): T {
+    operator fun set(key: K, value: V) {
         throw VerikException()
     }
 
     /**
-     * Clear the contents of the stack.
+     * Removes the value with the specified [key].
+     */
+    fun remove(key: K) {
+        throw VerikException()
+    }
+
+    /**
+     * Clear the contents of the map.
      */
     fun clear() {
         throw VerikException()

@@ -19,32 +19,29 @@
 package io.verik.core
 
 /**
- * A queue of of elements.
- * @param T the type of the queue
+ * A queue of elements.
+ * @param E the type of the elements of the queue
  */
-class Queue<T>: Collection() {
+class VQueue<E>: VCollection<E>() {
 
     /**
-     * Add an element to the back of the queue.
-     * @param x the element to add
+     * Adds the specified [element] to the back of the queue.
      */
-    fun add(x: T) {
+    fun add(element: E) {
         throw VerikException()
     }
 
     /**
-     * Peek at the front of the queue.
-     * @return the element a the front of the queue
+     * Peeks at the front of the queue.
      */
-    fun peek(x: T): T {
+    fun peek(): E {
         throw VerikException()
     }
 
     /**
-     * Poll from the front of the queue.
-     * @return the element a the front of the queue
+     * Polls from the front of the queue.
      */
-    fun poll(x: T): T {
+    fun poll(): E {
         throw VerikException()
     }
 

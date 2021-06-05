@@ -14,14 +14,22 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
+@file:Suppress("unused", "UNUSED_PARAMETER")
 
 package io.verik.core
 
 /**
- * A generic collection.
+ * A generic collection of elements.
  */
-abstract class Collection {
+abstract class VCollection<E>: Iterable<E> {
+
+    override fun iterator(): Iterator<E> {
+        throw VerikException()
+    }
+
+    operator fun contains(element: E): Boolean {
+        throw VerikException()
+    }
 
     /**
      * The size of the collection.
@@ -31,7 +39,7 @@ abstract class Collection {
     }
 
     /**
-     * Returns true if the collection is empty.
+     * Checks if the collection is empty.
      */
     fun isEmpty(): Boolean {
         throw VerikException()

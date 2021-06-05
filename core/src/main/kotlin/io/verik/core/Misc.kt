@@ -21,7 +21,7 @@ package io.verik.core
 /**
  * Returns an list of [Int] from 0 to [n].
  */
-fun range(n: Int): List<Int> {
+fun range(n: Int): VList<Int> {
     throw VerikException()
 }
 

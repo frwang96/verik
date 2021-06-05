@@ -14,35 +14,34 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNUSED_PARAMETER")
+@file:Suppress("UNUSED_PARAMETER", "unused")
 
 package io.verik.core
 
 /**
- * An immutable list of elements.
- * @param T the type of the list.
+ * A set of elements.
+ * @param E the type of the set
  */
-class List<T>: Collection(), Iterable<T> {
+class VSet<E>: VCollection<E>() {
 
-    override fun iterator(): Iterator<T> {
+    /**
+     * Adds the specified [element] to the set.
+     */
+    fun add(element: E) {
         throw VerikException()
     }
 
     /**
-     * Get an element of the list.
-     * @param n the index of the element
-     * @return the element at index [n]
+     * Removes the specified [element] from the set.
      */
-    operator fun get(n: Int): T {
+    fun remove(element: E) {
         throw VerikException()
     }
 
     /**
-     * Get an element of the list.
-     * @param n the index of the element
-     * @return the element at index [n]
+     * Clears the contents of the set.
      */
-    operator fun get(n: Ubit<Cardinal>): T {
+    fun clear() {
         throw VerikException()
     }
 }
