@@ -20,10 +20,12 @@ package io.verik.kotlin
 
 /**
  * Prints the line separator to the standard output stream.
+ * See Kotlin [documentation](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.io/println.html).
  */
 fun println() {}
 
 /**
  * Prints the given [message] and the line separator to the standard output stream.
+ * See Kotlin [documentation](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.io/println.html).
  */
 fun println(message: Any?) {}
