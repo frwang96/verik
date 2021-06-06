@@ -50,5 +50,9 @@ object ProjectCaster {
         m.log("Cast: Check import directives")
         ImportDirectiveChecker.check(projectContext)
         m.flush()
+
+        if (projectContext.config.debug) {
+            ElementCounter.count(projectContext)
+        }
     }
 }
