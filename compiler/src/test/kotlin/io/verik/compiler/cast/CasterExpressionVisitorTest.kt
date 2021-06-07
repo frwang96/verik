@@ -20,6 +20,7 @@ import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.findExpression
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class CasterExpressionVisitorTest: BaseTest() {
@@ -105,6 +106,7 @@ internal class CasterExpressionVisitorTest: BaseTest() {
     }
 
     @Test
+    @Disabled
     fun `value argument named`() {
         val projectContext = TestDriver.cast("""
             fun f(x: Int) {}

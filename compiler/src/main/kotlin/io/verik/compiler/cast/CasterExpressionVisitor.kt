@@ -16,7 +16,6 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.common.Name
 import io.verik.compiler.ast.common.NullDeclaration
 import io.verik.compiler.ast.common.OperatorKind
 import io.verik.compiler.ast.common.Type
@@ -80,8 +79,7 @@ class CasterExpressionVisitor(
         val location = expression.getMessageLocation()
         val type = getType(expression)
         val declaration = declarationMap[descriptor, expression]
-        val name = Name(descriptor.name.toString())
-        return VkReferenceExpression(location, type, declaration, name)
+        return VkReferenceExpression(location, type, declaration)
     }
 
     override fun visitCallExpression(expression: KtCallExpression, data: Unit?): VkElement {
@@ -90,9 +88,8 @@ class CasterExpressionVisitor(
         val location = expression.getMessageLocation()
         val type = getType(expression)
         val declaration = declarationMap[descriptor, expression]
-        val name = Name(descriptor.name.toString())
         val valueArguments = expression.valueArguments.mapNotNull { getElement<VkValueArgument>(it) }
-        return VkCallExpression(location, type, declaration, name, ArrayList(valueArguments))
+        return VkCallExpression(location, type, declaration, ArrayList(valueArguments))
     }
 
     override fun visitArgument(argument: KtValueArgument, data: Unit?): VkElement? {
@@ -100,10 +97,12 @@ class CasterExpressionVisitor(
         val expression = getElement<VkExpression>(argument.getArgumentExpression()!!)
             ?: return null
         return if (argument.isNamed()) {
-            val name = Name(argument.getArgumentName()!!.asName.toString())
-            VkValueArgument(location, NullDeclaration, name, expression)
+            val descriptor = bindingContext
+                .getSliceContents(BindingContext.REFERENCE_TARGET)[argument.getArgumentName()!!.referenceExpression]!!
+            val declaration = declarationMap[descriptor, argument]
+            VkValueArgument(location, declaration, expression)
         } else {
-            VkValueArgument(location, NullDeclaration, null, expression)
+            VkValueArgument(location, NullDeclaration, expression)
         }
     }
 

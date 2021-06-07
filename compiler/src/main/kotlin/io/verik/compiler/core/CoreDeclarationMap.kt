@@ -81,12 +81,12 @@ object CoreDeclarationMap {
 
     private fun matchFunction(descriptor: SimpleFunctionDescriptor, function: CoreFunctionDeclaration): Boolean {
         val valueParameters = descriptor.valueParameters
-        val expectedParameterTypeNames = function.parameterTypeNames
-        if (valueParameters.size != expectedParameterTypeNames.size)
+        val expectedParameterClassNames = function.parameterClassNames
+        if (valueParameters.size != expectedParameterClassNames.size)
             return false
-        valueParameters.zip(expectedParameterTypeNames).forEach { (valueParameter, expectedParameterTypeName) ->
-            val parameterTypeName = Name(valueParameter.type.getJetTypeFqName(false).substringAfterLast("."))
-            if (parameterTypeName != expectedParameterTypeName)
+        valueParameters.zip(expectedParameterClassNames).forEach { (valueParameter, expectedParameterClassName) ->
+            val parameterClassName = Name(valueParameter.type.getJetTypeFqName(false).substringAfterLast("."))
+            if (parameterClassName != expectedParameterClassName)
                 return false
         }
         return true

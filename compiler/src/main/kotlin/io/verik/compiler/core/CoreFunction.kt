@@ -24,9 +24,9 @@ object CoreFunction {
 
         object NULL: CoreFunctionScope(PackageName.CORE) {
 
-            val U_INT = CoreFunctionDeclaration(parent, "u", "Int")
+            val U_INT = CoreFunctionDeclaration(parent, "u", CoreClass.INT)
             val RANDOM = CoreFunctionDeclaration(parent, "random")
-            val RANDOM_INT = CoreFunctionDeclaration(parent, "random", "Int")
+            val RANDOM_INT = CoreFunctionDeclaration(parent, "random", CoreClass.INT)
         }
     }
 }

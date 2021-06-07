@@ -94,21 +94,21 @@ class ElementPrinter: Visitor() {
     override fun visitReferenceExpression(referenceExpression: VkReferenceExpression) {
         build("ReferenceExpression") {
             build(referenceExpression.type.toString())
-            build(referenceExpression.name.toString())
+            build(referenceExpression.reference.toString())
         }
     }
 
     override fun visitCallExpression(callExpression: VkCallExpression) {
         build("CallExpression") {
             build(callExpression.type.toString())
-            build(callExpression.name.toString())
+            build(callExpression.reference.toString())
             build(callExpression.valueArguments)
         }
     }
 
     override fun visitValueArgument(valueArgument: VkValueArgument) {
         build("ValueArgument") {
-            build(valueArgument.name.toString())
+            build(valueArgument.reference.toString())
             build(valueArgument.expression)
         }
     }

@@ -22,8 +22,7 @@ import io.verik.compiler.main.MessageLocation
 class VkReferenceExpression(
     override val location: MessageLocation,
     override var type: Type,
-    override var reference: Declaration,
-    var name: Name
+    override var reference: Declaration
 ): VkExpression(), Reference {
 
     override fun accept(visitor: Visitor) {

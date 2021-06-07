@@ -48,11 +48,11 @@ class SerializerExpressionVisitor(private val sourceBuilder: SourceBuilder): Vis
     }
 
     override fun visitReferenceExpression(referenceExpression: VkReferenceExpression) {
-        sourceBuilder.append(referenceExpression.name.toString(), referenceExpression)
+        sourceBuilder.append(referenceExpression.reference.name.toString(), referenceExpression)
     }
 
     override fun visitCallExpression(callExpression: VkCallExpression) {
-        sourceBuilder.append("${callExpression.name}", callExpression)
+        sourceBuilder.append(callExpression.reference.name.toString(), callExpression)
         if (callExpression.valueArguments.isEmpty()) {
             sourceBuilder.append("()", callExpression)
         } else {

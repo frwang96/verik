@@ -23,7 +23,6 @@ class VkCallExpression(
     override val location: MessageLocation,
     override var type: Type,
     override var reference: Declaration,
-    var name: Name,
     val valueArguments: ArrayList<VkValueArgument>
 ): VkExpression(), Reference {
 

@@ -16,13 +16,15 @@
 
 package io.verik.compiler.ast.element
 
-import io.verik.compiler.ast.common.*
+import io.verik.compiler.ast.common.Declaration
+import io.verik.compiler.ast.common.Reference
+import io.verik.compiler.ast.common.TreeVisitor
+import io.verik.compiler.ast.common.Visitor
 import io.verik.compiler.main.MessageLocation
 
 class VkValueArgument(
     override val location: MessageLocation,
     override var reference: Declaration,
-    var name: Name?,
     var expression: VkExpression
 ): VkElement(), Reference {
 
