@@ -17,8 +17,6 @@
 package io.verik.compiler.serialize
 
 import io.verik.compiler.ast.common.SourceType
-import io.verik.compiler.ast.element.VkOutputFile
-import io.verik.compiler.ast.element.cast
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 import java.nio.file.Path
@@ -53,9 +51,8 @@ object OrderFileSerializer {
             paths.add(it.path)
         }
         projectContext.vkFiles.forEach {
-            val outputFile = it.cast<VkOutputFile>()
-            if (outputFile != null && outputFile.sourceType == SourceType.COMPONENT)
-                paths.add(outputFile.outputPath)
+            if (it.sourceType == SourceType.COMPONENT)
+                paths.add(it.getOutputPathNotNull())
         }
         return paths
     }

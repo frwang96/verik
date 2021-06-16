@@ -19,8 +19,7 @@ package io.verik.compiler.serialize
 import io.verik.compiler.ast.common.PackageName
 import io.verik.compiler.ast.common.SourceType
 import io.verik.compiler.ast.element.VkBaseClass
-import io.verik.compiler.ast.element.VkOutputFile
-import io.verik.compiler.ast.element.cast
+import io.verik.compiler.ast.element.VkFile
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 
@@ -33,23 +32,22 @@ object PackageFileSerializer {
         }
     }
 
-    private fun buildPackageMap(projectContext: ProjectContext): HashMap<PackageName, ArrayList<VkOutputFile>> {
-        val packageMap = HashMap<PackageName, ArrayList<VkOutputFile>>()
+    private fun buildPackageMap(projectContext: ProjectContext): HashMap<PackageName, ArrayList<VkFile>> {
+        val packageMap = HashMap<PackageName, ArrayList<VkFile>>()
         projectContext.vkFiles.forEach {
-            val file = it.cast<VkOutputFile>()
-            if (file != null && file.sourceType == SourceType.PACKAGE) {
-                if (file.packageName !in packageMap) {
-                    packageMap[file.packageName] = ArrayList()
+            if (it.sourceType == SourceType.PACKAGE) {
+                if (it.packageName !in packageMap) {
+                    packageMap[it.packageName] = ArrayList()
                 }
-                packageMap[file.packageName]!!.add(file)
+                packageMap[it.packageName]!!.add(it)
             }
         }
         return packageMap
     }
 
-    private fun buildPackageFile(projectContext: ProjectContext, files: List<VkOutputFile>): TextFile {
+    private fun buildPackageFile(projectContext: ProjectContext, files: List<VkFile>): TextFile {
         val inputPath = files[0].inputPath.parent
-        val outputPath = files[0].outputPath.parent.resolve("Pkg.sv")
+        val outputPath = files[0].getOutputPathNotNull().parent.resolve("Pkg.sv")
         val fileHeader = FileHeaderBuilder.build(
             projectContext,
             inputPath,
@@ -73,7 +71,7 @@ object PackageFileSerializer {
         }
         files.forEach {
             builder.appendLine()
-            builder.appendLine("`include \"${it.outputPath.fileName}\"")
+            builder.appendLine("`include \"${it.getOutputPathNotNull().fileName}\"")
         }
         builder.appendLine()
         builder.appendLine("endpackage: $serializedPackageName")

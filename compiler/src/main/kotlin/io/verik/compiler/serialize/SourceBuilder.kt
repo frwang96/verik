@@ -18,28 +18,28 @@ package io.verik.compiler.serialize
 
 import io.verik.compiler.ast.common.SourceType
 import io.verik.compiler.ast.element.VkElement
-import io.verik.compiler.ast.element.VkOutputFile
+import io.verik.compiler.ast.element.VkFile
 import io.verik.compiler.main.MessageLocation
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 
 class SourceBuilder(
     private val projectContext: ProjectContext,
-    private val outputFile: VkOutputFile
+    private val file: VkFile
 ) {
 
     private val sourceActions = ArrayList<SourceAction>()
 
     fun toTextFile(): TextFile {
         val sourceBuilder = StringBuilder()
-        val headerStyle = when (outputFile.sourceType) {
+        val headerStyle = when (file.sourceType) {
             SourceType.COMPONENT -> FileHeaderBuilder.HeaderStyle.SYSTEM_VERILOG_DECORATED
-            SourceType.PACKAGE -> FileHeaderBuilder.HeaderStyle.SYSTEM_VERILOG_UNDECORATED
+            else -> FileHeaderBuilder.HeaderStyle.SYSTEM_VERILOG_UNDECORATED
         }
         val fileHeader = FileHeaderBuilder.build(
             projectContext,
-            outputFile.inputPath,
-            outputFile.outputPath,
+            file.inputPath,
+            file.getOutputPathNotNull(),
             headerStyle
         )
         sourceBuilder.append(fileHeader)
@@ -57,7 +57,7 @@ class SourceBuilder(
         )
         sourceActions.forEach { sourceActionBuilder.build(it) }
 
-        return TextFile(outputFile.outputPath, sourceBuilder.toString())
+        return TextFile(file.getOutputPathNotNull(), sourceBuilder.toString())
     }
 
     fun appendLine(content: String, element: VkElement?) {

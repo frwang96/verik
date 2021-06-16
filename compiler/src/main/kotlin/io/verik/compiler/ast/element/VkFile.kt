@@ -16,10 +16,7 @@
 
 package io.verik.compiler.ast.element
 
-import io.verik.compiler.ast.common.PackageName
-import io.verik.compiler.ast.common.SourceSetType
-import io.verik.compiler.ast.common.TreeVisitor
-import io.verik.compiler.ast.common.Visitor
+import io.verik.compiler.ast.common.*
 import io.verik.compiler.main.MessageLocation
 import io.verik.compiler.main.m
 import java.nio.file.Path
@@ -27,8 +24,10 @@ import java.nio.file.Path
 open class VkFile(
     override val location: MessageLocation,
     val inputPath: Path,
+    private val outputPath: Path?,
     val relativePath: Path,
     val sourceSetType: SourceSetType,
+    val sourceType: SourceType?,
     val packageName: PackageName,
     val declarations: ArrayList<VkDeclaration>,
     private val importDirectives: List<VkImportDirective>
@@ -66,5 +65,10 @@ open class VkFile(
             newDeclaration.parent = this
             declarations.add(index + 1, newDeclaration)
         }
+    }
+
+    fun getOutputPathNotNull(): Path {
+        return outputPath
+            ?: m.fatal("File output path not specified", location)
     }
 }

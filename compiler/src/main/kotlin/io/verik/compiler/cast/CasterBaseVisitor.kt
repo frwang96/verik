@@ -75,8 +75,10 @@ class CasterBaseVisitor(
         return VkFile(
             location,
             inputPath,
+            null,
             relativePath,
             sourceSetType,
+            null,
             packageName,
             ArrayList(declarations),
             importDirectives

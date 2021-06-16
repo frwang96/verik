@@ -42,8 +42,8 @@ object FileChecker {
                 m.error("Package directive does not match file location", file)
             if (file.packageName == PackageName.ROOT)
                 m.error("Use of the root package is prohibited", file)
-            if (file.packageName == PackageName.CORE)
-                m.error("Package name not permitted: ${file.packageName}", file)
+            if (file.packageName.isReserved())
+                m.error("Package name is reserved: ${file.packageName}", file)
             if (file.inputPath.fileName == Paths.get("Pkg.kt"))
                 m.error("File name not permitted: ${file.inputPath.fileName}", file)
         }

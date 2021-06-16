@@ -29,4 +29,13 @@ object CoreFunction {
             val RANDOM_INT = CoreFunctionDeclaration(parent, "random", CoreClass.INT)
         }
     }
+
+    object SV {
+
+        object NULL: CoreFunctionScope(PackageName.SV) {
+
+            val DISPLAY = CoreFunctionDeclaration(parent, "\$display")
+            val RANDOM = CoreFunctionDeclaration(parent, "\$random")
+        }
+    }
 }

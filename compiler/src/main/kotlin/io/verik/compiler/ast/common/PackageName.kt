@@ -30,6 +30,10 @@ class PackageName(val name: String) {
         }
     }
 
+    fun isReserved(): Boolean {
+        return this in listOf(CORE, SV)
+    }
+
     override fun toString(): String {
         return if (this == ROOT) "<root>" else name
     }
@@ -46,5 +50,6 @@ class PackageName(val name: String) {
 
         val ROOT = PackageName("")
         val CORE = PackageName("io.verik.core")
+        val SV = PackageName("io.verik.sv")
     }
 }

@@ -35,30 +35,32 @@ object FileSplitter {
 
             if (splitDeclarationsResult.componentDeclarations.isNotEmpty()) {
                 val componentFilePath = baseFilePath.resolveSibling("$baseFileName.sv")
-                val componentFile = VkOutputFile(
+                val componentFile = VkFile(
                     it.location,
                     it.inputPath,
+                    componentFilePath,
                     it.relativePath,
                     it.sourceSetType,
+                    SourceType.COMPONENT,
                     PackageName.ROOT,
                     splitDeclarationsResult.componentDeclarations,
-                    componentFilePath,
-                    SourceType.COMPONENT
+                    listOf()
                 )
                 splitFiles.add(componentFile)
             }
 
             if (splitDeclarationsResult.packageDeclarations.isNotEmpty()) {
                 val packageFilePath = baseFilePath.resolveSibling("$baseFileName.svh")
-                val packageFile = VkOutputFile(
+                val packageFile = VkFile(
                     it.location,
                     it.inputPath,
+                    packageFilePath,
                     it.relativePath,
                     it.sourceSetType,
+                    SourceType.PACKAGE,
                     it.packageName,
                     splitDeclarationsResult.packageDeclarations,
-                    packageFilePath,
-                    SourceType.PACKAGE
+                    listOf()
                 )
                 splitFiles.add(packageFile)
             }
