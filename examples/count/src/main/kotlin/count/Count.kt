@@ -25,12 +25,12 @@ fun f() {
     random()
 }
 
-@top
+@Top
 object Count : Module() {
 
     val y = false
 
-    @run
+    @Run
     fun g() {
     }
 }

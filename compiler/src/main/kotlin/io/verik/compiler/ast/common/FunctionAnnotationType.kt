@@ -31,10 +31,10 @@ enum class FunctionAnnotationType {
         operator fun invoke(fqName: FqName?, element: KtElement): FunctionAnnotationType? {
             return if (fqName != null) {
                 when (fqName.toString()) {
-                    "io.verik.core.com" -> COM
-                    "io.verik.core.seq" -> SEQ
-                    "io.verik.core.run" -> RUN
-                    "io.verik.core.task" -> TASK
+                    "io.verik.core.Com" -> COM
+                    "io.verik.core.Seq" -> SEQ
+                    "io.verik.core.Run" -> RUN
+                    "io.verik.core.Task" -> TASK
                     else -> {
                         m.error("Annotation not recognized: ${fqName.shortName()}", element)
                         null

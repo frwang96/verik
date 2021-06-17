@@ -21,67 +21,66 @@ package io.verik.core
 /**
  * Annotates component instantiations.
  */
-annotation class ins
+annotation class Make
 
 /**
  * Annotates the top module of the hierarchy.
  */
-annotation class top
+annotation class Top
 
 /**
  * Annotates input ports of a component.
  */
-annotation class input
+annotation class In
 
 /**
  * Annotates output ports of a component.
  */
-annotation class output
-
-/**
- * Annotates bidirectional ports of a component.
- */
-annotation class bidir
+annotation class Out
 
 /**
  * Annotates combinational action blocks. Combinational action blocks are executed when the value of its contents
  * change and are used to model combinational logic. They correspond to SystemVerilog always_comb blocks.
  *
- *      @com fun f() {
+ *      @Com
+ *      fun f() {
  *          ...
  *      }
  */
-annotation class com
+annotation class Com
 
 /**
  * Annotates sequential action blocks. Sequential action blocks are executed when its event expression is triggered,
  * and are used to model sequential logic. Sequential action blocks must contain an [on] expression to specify its
  * event expression. They correspond to SystemVerilog always_ff blocks.
  *
- *      @seq fun f() {
+ *      @Seq
+ *      fun f() {
  *          on (posedge(clk)) {
  *              ...
  *          }
  *      }
  */
-annotation class seq
+annotation class Seq
 
 /**
  * Annotates run action blocks. Run action blocks are started at the beginning of the simulation and are executed only
  * once during the entire simulation. They correspond to SystemVerilog initial blocks.
  *
  *
- *      @run fun f() {
+ *      @Run
+ *      fun f() {
  *          ...
  *      }
  */
-annotation class run
+annotation class Run
 
 /**
  * Annotates tasks. Unlike functions, tasks can consume simulation time.
  *
- *      @task fun f() {
+ *      @Task
+ *      fun f() {
  *          ...
  *      }
  */
-annotation class task
+annotation class Task

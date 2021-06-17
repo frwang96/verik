@@ -152,7 +152,8 @@ internal class CasterBaseVisitorTest : BaseTest() {
     fun `function annotation`() {
         val projectContext = TestDriver.cast(
             """
-            @task fun f() {}
+            @Task
+            fun f() {}
             """.trimIndent()
         )
         assertElementEquals(
@@ -166,11 +167,13 @@ internal class CasterBaseVisitorTest : BaseTest() {
         assertThrows<TestException> {
             TestDriver.cast(
                 """
-                @com @seq fun f() {}
+                @Com
+                @Seq
+                fun f() {}
                 """.trimIndent()
             )
         }.apply {
-            assertEquals("Conflicting annotations: com, seq", message)
+            assertEquals("Conflicting annotations: COM, SEQ", message)
         }
     }
 

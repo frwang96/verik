@@ -131,7 +131,7 @@ class CasterBaseVisitor(
             0 -> null
             1 -> annotationTypes.first()
             else -> {
-                val annotationTypesString = annotationTypes.joinToString { it.name.toLowerCase() }
+                val annotationTypesString = annotationTypes.joinToString { it.toString() }
                 m.error("Conflicting annotations: $annotationTypesString", function)
                 null
             }
