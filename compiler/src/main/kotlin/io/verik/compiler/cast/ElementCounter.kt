@@ -34,7 +34,7 @@ object ElementCounter {
         m.log("Count: Properties: ${elementVisitor.propertyCount}")
     }
 
-    class ElementVisitor: TreeVisitor() {
+    class ElementVisitor : TreeVisitor() {
 
         var elementCount = 0
         var fileCount = 0

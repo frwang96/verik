@@ -20,5 +20,5 @@ import io.verik.compiler.ast.common.PackageName
 
 open class CoreFunctionScope private constructor(protected val parent: String) {
 
-    constructor(packageName: PackageName): this(packageName.name)
+    constructor(packageName: PackageName) : this(packageName.name)
 }

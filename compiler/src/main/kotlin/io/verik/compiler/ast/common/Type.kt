@@ -27,7 +27,7 @@ import io.verik.compiler.main.m
 class Type(
     override var reference: Declaration,
     val arguments: ArrayList<Type>
-): Reference {
+) : Reference {
 
     fun isCardinalType(): Boolean {
         return when (val reference = reference) {

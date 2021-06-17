@@ -21,7 +21,7 @@ package io.verik.core
 /**
  * A generic collection of elements.
  */
-abstract class VCollection<E>: Iterable<E> {
+abstract class VCollection<E> : Iterable<E> {
 
     override fun iterator(): Iterator<E> {
         throw VerikException()

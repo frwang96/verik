@@ -100,7 +100,7 @@ class KotlinCompiler {
         )
     }
 
-    private class KotlinCompilerMessageCollector: MessageCollector {
+    private class KotlinCompilerMessageCollector : MessageCollector {
 
         override fun clear() {}
 

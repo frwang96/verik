@@ -22,7 +22,7 @@ package io.verik.core
  * Represents an sequence of bits that is unsigned. Corresponds to SystemVerilog packed logic.
  * @param N the width in bits
  */
-class Ubit<N: Cardinal> private constructor() {
+class Ubit<N : Cardinal> private constructor() {
 
     /**
      * Returns true if any bit of the [Ubit] is unknown.
@@ -285,28 +285,28 @@ class Ubit<N: Cardinal> private constructor() {
     /**
      * Slice [M] bits starting at n.
      */
-    fun <M: Cardinal> slice(n: Int): Ubit<M> {
+    fun <M : Cardinal> slice(n: Int): Ubit<M> {
         throw VerikException()
     }
 
     /**
      * Slice [M] bits starting at n.
      */
-    fun <M: Cardinal> slice(n: Ubit<Cardinal>): Ubit<M> {
+    fun <M : Cardinal> slice(n: Ubit<Cardinal>): Ubit<M> {
         throw VerikException()
     }
 
     /**
      * Extend to [M] bits with zero extension.
      */
-    fun <M: Cardinal> ext(): Ubit<M> {
+    fun <M : Cardinal> ext(): Ubit<M> {
         throw VerikException()
     }
 
     /**
      * Truncate to [M] bits.
      */
-    fun <M: Cardinal> tru(): Ubit<M> {
+    fun <M : Cardinal> tru(): Ubit<M> {
         throw VerikException()
     }
 }
@@ -316,7 +316,7 @@ class Ubit<N: Cardinal> private constructor() {
  * @param N the width in bits
  * @param value the value
  */
-fun <N: Cardinal> u(value: Int): Ubit<N> {
+fun <N : Cardinal> u(value: Int): Ubit<N> {
     throw VerikException()
 }
 

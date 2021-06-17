@@ -30,7 +30,7 @@ open class VkBaseClass(
     var supertype: Type,
     var typeParameters: ArrayList<VkTypeParameter>,
     var declarations: ArrayList<VkDeclaration>
-): VkDeclaration() {
+) : VkDeclaration() {
 
     init {
         declarations.forEach { it.parent = this }

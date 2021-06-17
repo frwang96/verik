@@ -29,7 +29,7 @@ object KeywordTransformer {
         }
     }
 
-    object KeywordVisitor: TreeVisitor() {
+    object KeywordVisitor : TreeVisitor() {
 
         override fun visitDeclaration(declaration: VkDeclaration) {
             declaration.name = rename(declaration.name)

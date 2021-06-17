@@ -31,7 +31,7 @@ object FileChecker {
         }
     }
 
-    object FileVisitor: TreeVisitor() {
+    object FileVisitor : TreeVisitor() {
 
         override fun visitFile(file: VkFile) {
             val pathPackageName = (0 until (file.relativePath.nameCount - 1))

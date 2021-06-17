@@ -22,14 +22,16 @@ import io.verik.compiler.util.assertOutputTextEquals
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
-internal class SerializerExpressionVisitorTest: BaseTest() {
+internal class SerializerExpressionVisitorTest : BaseTest() {
 
     @Test
     fun `parenthesized expression`() {
-        val projectContext = TestDriver.serialize("""
+        val projectContext = TestDriver.serialize(
+            """
             var x = 0
             var y = (x + 1) * x
-        """.trimIndent())
+            """.trimIndent()
+        )
         val expected = """
             int x = 0;
             
@@ -43,10 +45,12 @@ internal class SerializerExpressionVisitorTest: BaseTest() {
 
     @Test
     fun `binary expression`() {
-        val projectContext = TestDriver.serialize("""
+        val projectContext = TestDriver.serialize(
+            """
             var x = 0
             var y = x + 1
-        """.trimIndent())
+            """.trimIndent()
+        )
         val expected = """
             int x = 0;
             
@@ -60,10 +64,12 @@ internal class SerializerExpressionVisitorTest: BaseTest() {
 
     @Test
     fun `reference expression`() {
-        val projectContext = TestDriver.serialize("""
+        val projectContext = TestDriver.serialize(
+            """
             var x = 0
             var y = x
-        """.trimIndent())
+            """.trimIndent()
+        )
         val expected = """
             int x = 0;
             
@@ -83,9 +89,11 @@ internal class SerializerExpressionVisitorTest: BaseTest() {
 
     @Test
     fun `constant expression`() {
-        val projectContext = TestDriver.serialize("""
+        val projectContext = TestDriver.serialize(
+            """
             var x = 0
-        """.trimIndent())
+            """.trimIndent()
+        )
         val expected = """
             int x = 0;
         """.trimIndent()

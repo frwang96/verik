@@ -31,7 +31,7 @@ import org.jetbrains.kotlin.resolve.BindingContext
 class IndexerVisitor(
     projectContext: ProjectContext,
     private val declarationMap: DeclarationMap
-): KtTreeVisitorVoid() {
+) : KtTreeVisitorVoid() {
 
     private val bindingContext = projectContext.bindingContext
     private val nameRegex = Regex("[_a-zA-Z][_a-zA-Z0-9]*")

@@ -23,7 +23,7 @@ class VkReferenceExpression(
     override val location: MessageLocation,
     override var type: Type,
     override var reference: Declaration
-): VkExpression(), Reference {
+) : VkExpression(), Reference {
 
     override fun accept(visitor: Visitor) {
         visitor.visitReferenceExpression(this)

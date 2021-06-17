@@ -16,4 +16,4 @@
 
 package io.verik.compiler.util
 
-class TestException(override val message: String): Exception(message)
+class TestException(override val message: String) : Exception(message)

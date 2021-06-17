@@ -26,7 +26,7 @@ class VkImportDirective(
     override val location: MessageLocation,
     val name: Name?,
     val packageName: PackageName
-): VkElement() {
+) : VkElement() {
 
     override fun accept(visitor: Visitor) {
         return visitor.visitImportDirective(this)

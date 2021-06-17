@@ -21,15 +21,17 @@ import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertElementEquals
 import org.junit.jupiter.api.Test
 
-internal class NestedClassTransformerTest: BaseTest() {
+internal class NestedClassTransformerTest : BaseTest() {
 
     @Test
     fun `nested class simple`() {
-        val projectContext = TestDriver.preTransform("""
+        val projectContext = TestDriver.preTransform(
+            """
             class C {
                 class D
             }
-        """.trimIndent())
+            """.trimIndent()
+        )
         assertElementEquals(
             "File([BaseClass(C, [], []), BaseClass(C\$D, [], [])])",
             projectContext.vkFiles.first()
@@ -38,11 +40,13 @@ internal class NestedClassTransformerTest: BaseTest() {
 
     @Test
     fun `companion object`() {
-        val projectContext = TestDriver.preTransform("""
+        val projectContext = TestDriver.preTransform(
+            """
             class C {
                 companion object            
             }
-        """.trimIndent())
+            """.trimIndent()
+        )
         assertElementEquals(
             "File([BaseClass(C, [], []), BaseClass(C\$Companion, [], [])])",
             projectContext.vkFiles.first()

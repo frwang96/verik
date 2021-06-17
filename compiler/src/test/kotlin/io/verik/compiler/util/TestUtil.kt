@@ -71,7 +71,7 @@ fun assertOutputTextEquals(expected: String, actual: TextFile) {
 }
 
 fun ProjectContext.findDeclaration(nameString: String): VkDeclaration {
-    val declarationVisitor = object: TreeVisitor() {
+    val declarationVisitor = object : TreeVisitor() {
         val declarations = ArrayList<VkDeclaration>()
         override fun visitDeclaration(declaration: VkDeclaration) {
             super.visitDeclaration(declaration)
@@ -90,7 +90,7 @@ fun ProjectContext.findDeclaration(nameString: String): VkDeclaration {
 }
 
 fun ProjectContext.findExpression(nameString: String): VkExpression {
-    val expressionVisitor = object: TreeVisitor() {
+    val expressionVisitor = object : TreeVisitor() {
         val expressions = ArrayList<VkExpression>()
         override fun visitBaseFunction(baseFunction: VkBaseFunction) {
             super.visitBaseFunction(baseFunction)
@@ -98,6 +98,7 @@ fun ProjectContext.findExpression(nameString: String): VkExpression {
                 baseFunction.bodyBlockExpression?.let { expressions.add(it) }
             }
         }
+
         override fun visitBaseProperty(baseProperty: VkBaseProperty) {
             super.visitBaseProperty(baseProperty)
             if (baseProperty.name == Name(nameString)) {

@@ -22,7 +22,7 @@ import io.verik.compiler.main.m
 
 class CoreCardinalConstantDeclaration(
     val cardinal: Int
-): CoreCardinalDeclaration() {
+) : CoreCardinalDeclaration() {
 
     init {
         if (cardinal < 1)

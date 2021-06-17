@@ -21,13 +21,13 @@ package io.verik.core
 /**
  * Pack the enum as a [Ubit].
  */
-fun <E: Enum<E>> Enum<E>.pack(): Ubit<Cardinal> {
+fun <E : Enum<E>> Enum<E>.pack(): Ubit<Cardinal> {
     throw VerikException()
 }
 
 /**
  * Returns true if the enum is unknown.
  */
-fun <E: Enum<E>> Enum<E>.isUnknown(): Boolean {
+fun <E : Enum<E>> Enum<E>.isUnknown(): Boolean {
     throw VerikException()
 }

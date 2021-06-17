@@ -44,7 +44,7 @@ object NestedClassTransformer {
         }
     }
 
-    class NestedClassVisitor(private val nestedClasses: ArrayList<VkBaseClass>): TreeVisitor() {
+    class NestedClassVisitor(private val nestedClasses: ArrayList<VkBaseClass>) : TreeVisitor() {
 
         override fun visitBaseClass(baseClass: VkBaseClass) {
             if (baseClass.parent !is VkFile)

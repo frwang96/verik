@@ -23,14 +23,16 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-internal class ImportDirectiveCheckerTest: BaseTest() {
+internal class ImportDirectiveCheckerTest : BaseTest() {
 
     @Test
     fun `import not found`() {
         assertThrows<TestException> {
-            TestDriver.cast("""
+            TestDriver.cast(
+                """
                 import java.time.LocalDateTime
-            """.trimIndent())
+                """.trimIndent()
+            )
         }.apply {
             assertEquals("Import package not found: java.time", message)
         }
@@ -39,9 +41,11 @@ internal class ImportDirectiveCheckerTest: BaseTest() {
     @Test
     fun `import not found all under`() {
         assertThrows<TestException> {
-            TestDriver.cast("""
+            TestDriver.cast(
+                """
                 import java.time.*
-            """.trimIndent())
+                """.trimIndent()
+            )
         }.apply {
             assertEquals("Import package not found: java.time", message)
         }

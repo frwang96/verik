@@ -33,13 +33,15 @@ object ClassInterpreter {
 
     private fun interpretBaseClass(baseClass: VkBaseClass) {
         if (baseClass.type.isType(CoreClass.MODULE.toNoArgumentsType())) {
-            baseClass.replace(VkModule(
-                baseClass.location,
-                baseClass.name,
-                baseClass.type,
-                baseClass.supertype,
-                baseClass.declarations
-            ))
+            baseClass.replace(
+                VkModule(
+                    baseClass.location,
+                    baseClass.name,
+                    baseClass.type,
+                    baseClass.supertype,
+                    baseClass.declarations
+                )
+            )
         }
     }
 }

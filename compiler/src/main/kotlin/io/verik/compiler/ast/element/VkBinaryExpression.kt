@@ -28,7 +28,7 @@ class VkBinaryExpression(
     var kind: OperatorKind,
     var left: VkExpression,
     var right: VkExpression
-): VkExpression() {
+) : VkExpression() {
 
     override fun accept(visitor: Visitor) {
         visitor.visitBinaryExpression(this)

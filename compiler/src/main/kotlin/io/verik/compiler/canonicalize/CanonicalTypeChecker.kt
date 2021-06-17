@@ -35,7 +35,7 @@ object CanonicalTypeChecker {
             m.error("Type has not been canonicalized: declaration $declaration type $type", declaration)
     }
 
-    object CanonicalTypeVisitor: TreeVisitor() {
+    object CanonicalTypeVisitor : TreeVisitor() {
 
         override fun visitDeclaration(declaration: VkDeclaration) {
             checkType(declaration.type, declaration)

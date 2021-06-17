@@ -33,6 +33,6 @@ abstract class Class
 /**
  * Returns the null object of class [C].
  */
-fun <C: Class> n(): C {
+fun <C : Class> n(): C {
     throw VerikException()
 }

@@ -30,11 +30,11 @@ interface Declaration {
     }
 }
 
-inline fun <reified T: Declaration> Declaration.cast(location: KtElement): T? {
+inline fun <reified T : Declaration> Declaration.cast(location: KtElement): T? {
     return this.cast(location.getMessageLocation())
 }
 
-inline fun <reified T: Declaration> Declaration.cast(location: MessageLocation): T? {
+inline fun <reified T : Declaration> Declaration.cast(location: MessageLocation): T? {
     return when (this) {
         is T -> this
         else -> {

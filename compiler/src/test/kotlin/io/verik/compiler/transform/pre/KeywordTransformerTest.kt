@@ -21,13 +21,15 @@ import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertElementEquals
 import org.junit.jupiter.api.Test
 
-internal class KeywordTransformerTest: BaseTest() {
+internal class KeywordTransformerTest : BaseTest() {
 
     @Test
     fun `keyword property`() {
-        val projectContext = TestDriver.preTransform("""
+        val projectContext = TestDriver.preTransform(
+            """
             const val alias = false
-        """.trimIndent())
+            """.trimIndent()
+        )
         assertElementEquals(
             "File([BaseProperty(alias\$K, Boolean, *)])",
             projectContext.vkFiles.first()

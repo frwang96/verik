@@ -22,7 +22,7 @@ package io.verik.core
  * A stack of elements.
  * @param E the type of the elements of the stack
  */
-class VStack<E>: VCollection<E>() {
+class VStack<E> : VCollection<E>() {
 
     /**
      * Push the specified [element] onto the stack.

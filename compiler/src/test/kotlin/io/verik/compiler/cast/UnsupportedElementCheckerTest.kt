@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-internal class UnsupportedElementCheckerTest: BaseTest() {
+internal class UnsupportedElementCheckerTest : BaseTest() {
 
     @Test
     fun `throw expression`() {
@@ -31,7 +31,8 @@ internal class UnsupportedElementCheckerTest: BaseTest() {
             TestDriver.cast(
                 """
                 fun f() { throw IllegalArgumentException() }
-            """.trimIndent())
+                """.trimIndent()
+            )
         }.apply {
             Assertions.assertEquals("Throw expression not supported", message)
         }

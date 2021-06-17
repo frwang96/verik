@@ -18,7 +18,7 @@ package io.verik.compiler.ast.element
 
 import io.verik.compiler.ast.common.Declaration
 
-abstract class VkDeclaration: VkExpression(), Declaration {
+abstract class VkDeclaration : VkExpression(), Declaration {
 
     override fun toString(): String {
         return "$name"

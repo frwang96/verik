@@ -21,13 +21,15 @@ import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertOutputTextEquals
 import org.junit.jupiter.api.Test
 
-internal class SerializerBaseVisitorTest: BaseTest() {
+internal class SerializerBaseVisitorTest : BaseTest() {
 
     @Test
     fun `serialize module`() {
-        val projectContext = TestDriver.serialize("""
+        val projectContext = TestDriver.serialize(
+            """
             class M: Module()
-        """.trimIndent())
+            """.trimIndent()
+        )
         val expected = """
             module M;
             
@@ -41,9 +43,11 @@ internal class SerializerBaseVisitorTest: BaseTest() {
 
     @Test
     fun `serialize class`() {
-        val projectContext = TestDriver.serialize("""
+        val projectContext = TestDriver.serialize(
+            """
             class C
-        """.trimIndent())
+            """.trimIndent()
+        )
         val expected = """
             class C;
             
@@ -57,9 +61,11 @@ internal class SerializerBaseVisitorTest: BaseTest() {
 
     @Test
     fun `serialize function`() {
-        val projectContext = TestDriver.serialize("""
+        val projectContext = TestDriver.serialize(
+            """
             fun f() {}
-        """.trimIndent())
+            """.trimIndent()
+        )
         val expected = """
             function void f();
             endfunction: f
@@ -72,9 +78,11 @@ internal class SerializerBaseVisitorTest: BaseTest() {
 
     @Test
     fun `serialize property`() {
-        val projectContext = TestDriver.serialize("""
+        val projectContext = TestDriver.serialize(
+            """
             var x = false
-        """.trimIndent())
+            """.trimIndent()
+        )
         val expected = """
             logic x = 1'b0;
         """.trimIndent()

@@ -22,7 +22,7 @@ object CoreFunction {
 
     object CORE {
 
-        object NULL: CoreFunctionScope(PackageName.CORE) {
+        object NULL : CoreFunctionScope(PackageName.CORE) {
 
             val U_INT = CoreFunctionDeclaration(parent, "u", CoreClass.INT)
             val RANDOM = CoreFunctionDeclaration(parent, "random")
@@ -32,7 +32,7 @@ object CoreFunction {
 
     object SV {
 
-        object NULL: CoreFunctionScope(PackageName.SV) {
+        object NULL : CoreFunctionScope(PackageName.SV) {
 
             val DISPLAY = CoreFunctionDeclaration(parent, "\$display")
             val RANDOM = CoreFunctionDeclaration(parent, "\$random")

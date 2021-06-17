@@ -22,7 +22,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 
 @Suppress("unused")
-class VerikPlugin: Plugin<Project> {
+class VerikPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         val extension = project.extensions.create("verik", VerikPluginExtension::class.java)

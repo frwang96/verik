@@ -16,6 +16,6 @@
 
 package io.verik.core
 
-internal class VerikException: Exception(
+internal class VerikException : Exception(
     "Verik declaration should not be run as Kotlin"
 )

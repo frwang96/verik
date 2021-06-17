@@ -23,29 +23,33 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-class KotlinCompilerTest: BaseTest() {
+class KotlinCompilerTest : BaseTest() {
 
     @Test
     fun `compile valid`() {
-        TestDriver.compile("""
+        TestDriver.compile(
+            """
             class C {
                 fun f() {
                     println()
                 }
             }
-        """.trimIndent())
+            """.trimIndent()
+        )
     }
 
     @Test
     fun `compile invalid`() {
         assertThrows<TestException> {
-            TestDriver.compile("""
-            class C {
-                fun f() {
-                    g()
+            TestDriver.compile(
+                """
+                class C {
+                    fun f() {
+                        g()
+                    }
                 }
-            }
-        """.trimIndent())
+                """.trimIndent()
+            )
         }.apply {
             assertEquals("Unresolved reference: g", message)
         }

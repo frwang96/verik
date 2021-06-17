@@ -22,7 +22,7 @@ package io.verik.core
  * Represents a sequence of bits that is signed. Corresponds to SystemVerilog packed signed logic.
  * @property N the width in bits
  */
-class Sbit<N: Cardinal> private constructor() {
+class Sbit<N : Cardinal> private constructor() {
 
     /**
      * Pack the [Sbit] as a [Ubit].
@@ -284,28 +284,28 @@ class Sbit<N: Cardinal> private constructor() {
     /**
      * Slice [M] bits starting at n.
      */
-    fun <M: Cardinal> slice(n: Int): Ubit<M> {
+    fun <M : Cardinal> slice(n: Int): Ubit<M> {
         throw VerikException()
     }
 
     /**
      * Slice [M] bits starting at n.
      */
-    fun <M: Cardinal> slice(n: Ubit<Cardinal>): Ubit<M> {
+    fun <M : Cardinal> slice(n: Ubit<Cardinal>): Ubit<M> {
         throw VerikException()
     }
 
     /**
      * Extend to [M] bits with sign extension.
      */
-    fun <M: Cardinal> ext(): Sbit<M> {
+    fun <M : Cardinal> ext(): Sbit<M> {
         throw VerikException()
     }
 
     /**
      * Truncate to [M] bits.
      */
-    fun <M: Cardinal> tru(): Sbit<M> {
+    fun <M : Cardinal> tru(): Sbit<M> {
         throw VerikException()
     }
 }
@@ -315,7 +315,7 @@ class Sbit<N: Cardinal> private constructor() {
  * @param N the width in bits
  * @param value the value
  */
-fun <N: Cardinal> s(value: Int): Sbit<N> {
+fun <N : Cardinal> s(value: Int): Sbit<N> {
     throw VerikException()
 }
 

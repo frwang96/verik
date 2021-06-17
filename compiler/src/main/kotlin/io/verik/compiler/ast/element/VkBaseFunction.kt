@@ -25,7 +25,7 @@ open class VkBaseFunction(
     override var type: Type,
     var annotationType: FunctionAnnotationType?,
     var bodyBlockExpression: VkBlockExpression?
-): VkDeclaration() {
+) : VkDeclaration() {
 
     override fun accept(visitor: Visitor) {
         return visitor.visitBaseFunction(this)

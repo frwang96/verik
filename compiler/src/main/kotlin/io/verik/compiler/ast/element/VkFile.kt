@@ -31,7 +31,7 @@ open class VkFile(
     val packageName: PackageName,
     val declarations: ArrayList<VkDeclaration>,
     private val importDirectives: List<VkImportDirective>
-): VkElement() {
+) : VkElement() {
 
     init {
         importDirectives.forEach { it.parent = this }

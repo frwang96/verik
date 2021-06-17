@@ -19,7 +19,7 @@ package io.verik.compiler.main
 import io.verik.plugin.Config
 import org.gradle.api.GradleException
 
-class GradleMessageCollector(config: Config): MessageCollector() {
+class GradleMessageCollector(config: Config) : MessageCollector() {
 
     private val verbose = config.verbose
     private val debug = config.debug

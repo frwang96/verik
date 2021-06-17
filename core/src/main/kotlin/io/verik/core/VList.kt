@@ -22,7 +22,7 @@ package io.verik.core
  * A list of fixed size.
  * @param E the type of the elements of the list.
  */
-class VList<E>: VCollection<E>() {
+class VList<E> : VCollection<E>() {
 
     /**
      * Returns the list element at the specified [index].

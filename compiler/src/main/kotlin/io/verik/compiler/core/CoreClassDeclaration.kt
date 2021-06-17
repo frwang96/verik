@@ -23,7 +23,7 @@ class CoreClassDeclaration private constructor(
     override var name: Name,
     override val qualifiedName: Name,
     val superclass: CoreClassDeclaration?
-): CoreDeclaration() {
+) : CoreDeclaration() {
 
     override fun equals(other: Any?): Boolean {
         return (other is CoreClassDeclaration) && (other.qualifiedName == qualifiedName)
@@ -35,7 +35,7 @@ class CoreClassDeclaration private constructor(
 
     companion object {
 
-        operator fun <T: Any> invoke(kClass: KClass<T>, superclass: CoreClassDeclaration?): CoreClassDeclaration {
+        operator fun <T : Any> invoke(kClass: KClass<T>, superclass: CoreClassDeclaration?): CoreClassDeclaration {
             val name = Name(kClass.simpleName!!)
             val qualifiedName = Name(kClass.qualifiedName!!)
             return CoreClassDeclaration(name, qualifiedName, superclass)

@@ -43,6 +43,6 @@ fun random(min: Int, max: Int): Int {
  * Returns a random enum.
  * @param T the type of the enum
  */
-fun <T: Enum<T>> randomEnum(): T {
+fun <T : Enum<T>> randomEnum(): T {
     throw VerikException()
 }

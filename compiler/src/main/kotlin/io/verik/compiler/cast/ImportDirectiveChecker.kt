@@ -43,7 +43,7 @@ object ImportDirectiveChecker {
         projectContext.vkFiles.forEach { it.accept(importDirectiveVisitor) }
     }
 
-    class ImportDirectiveVisitor(private val packageNameSet: Set<PackageName>): TreeVisitor() {
+    class ImportDirectiveVisitor(private val packageNameSet: Set<PackageName>) : TreeVisitor() {
 
         override fun visitImportDirective(importDirective: VkImportDirective) {
             if (importDirective.packageName !in packageNameSet && importDirective.packageName != PackageName.CORE) {

@@ -25,7 +25,7 @@ class VkParenthesizedExpression(
     override val location: MessageLocation,
     override var type: Type,
     var expression: VkExpression
-): VkExpression() {
+) : VkExpression() {
 
     override fun accept(visitor: Visitor) {
         visitor.visitParenthesizedExpression(this)

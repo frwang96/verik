@@ -22,7 +22,7 @@ class CoreFunctionDeclaration private constructor(
     override var name: Name,
     override val qualifiedName: Name,
     val parameterClassNames: List<Name>
-): CoreDeclaration() {
+) : CoreDeclaration() {
 
     companion object {
 

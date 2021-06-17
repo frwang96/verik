@@ -22,7 +22,7 @@ package io.verik.core
  * A queue of elements.
  * @param E the type of the elements of the queue
  */
-class VQueue<E>: VCollection<E>() {
+class VQueue<E> : VCollection<E>() {
 
     /**
      * Adds the specified [element] to the back of the queue.

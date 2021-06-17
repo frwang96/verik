@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-internal class IndexerVisitorTest: BaseTest() {
+internal class IndexerVisitorTest : BaseTest() {
 
     @Test
     fun `illegal name unicode`() {
@@ -32,7 +32,8 @@ internal class IndexerVisitorTest: BaseTest() {
                 """
                 @Suppress("ObjectPropertyName")
                 val αβγ = 0
-            """.trimIndent())
+                """.trimIndent()
+            )
         }.apply {
             Assertions.assertEquals("Illegal name: αβγ", message)
         }

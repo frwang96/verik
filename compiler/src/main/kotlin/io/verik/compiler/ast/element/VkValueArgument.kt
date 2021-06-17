@@ -26,7 +26,7 @@ class VkValueArgument(
     override val location: MessageLocation,
     override var reference: Declaration,
     var expression: VkExpression
-): VkElement(), Reference {
+) : VkElement(), Reference {
 
     override fun accept(visitor: Visitor) {
         visitor.visitValueArgument(this)

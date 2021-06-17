@@ -27,7 +27,7 @@ class VkBaseProperty(
     override var name: Name,
     override var type: Type,
     var initializer: VkExpression?
-): VkDeclaration() {
+) : VkDeclaration() {
 
     override fun accept(visitor: Visitor) {
         return visitor.visitBaseProperty(this)

@@ -18,7 +18,7 @@ package io.verik.compiler.ast.common
 
 import io.verik.compiler.ast.element.VkElement
 
-abstract class TreeVisitor: Visitor() {
+abstract class TreeVisitor : Visitor() {
 
     override fun visitElement(element: VkElement) {
         element.acceptChildren(this)

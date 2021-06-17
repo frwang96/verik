@@ -22,7 +22,7 @@ package io.verik.core
  * A vector of elements that can grow and shrink dynamically.
  * @param E the type of the elements of the vector
  */
-class VVector<E>: VCollection<E>() {
+class VVector<E> : VCollection<E>() {
 
     /**
      * Returns the vector element at the specified [index].

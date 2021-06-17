@@ -27,7 +27,7 @@ sealed class Cardinal
 /**
  * Returns the value of cardinal [N] as an integer.
  */
-fun <N: Cardinal> i(): Int {
+fun <N : Cardinal> i(): Int {
     throw VerikException()
 }
 

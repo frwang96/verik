@@ -65,7 +65,7 @@ object TypeCaster {
             m.error("Cardinal type expected", typeReference)
         val arguments = userType.typeArgumentsAsTypes.map { castCardinalType(bindingContext, declarationMap, it) }
         val type = Type(declaration, ArrayList(arguments))
-        if (!type.isCardinalType()){
+        if (!type.isCardinalType()) {
             if (referenceTarget is AbstractTypeParameterDescriptor)
                 m.error("Cardinal type parameter expected", typeReference)
             else

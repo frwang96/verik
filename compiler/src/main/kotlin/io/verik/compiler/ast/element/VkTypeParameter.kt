@@ -26,7 +26,7 @@ class VkTypeParameter(
     override val location: MessageLocation,
     override var name: Name,
     override var type: Type
-): VkDeclaration() {
+) : VkDeclaration() {
 
     override fun accept(visitor: Visitor) {
         return visitor.visitTypeParameter(this)

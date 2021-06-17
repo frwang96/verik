@@ -25,11 +25,14 @@ fun f() {
     random()
 }
 
-@top object Count: Module() {
+@top
+object Count : Module() {
 
     val y = false
 
-    @run fun g() {}
+    @run
+    fun g() {
+    }
 }
 
-class Checker: Class()
+class Checker : Class()

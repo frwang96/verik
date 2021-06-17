@@ -16,4 +16,4 @@
 
 package io.verik.compiler.core
 
-abstract class CoreCardinalDeclaration: CoreDeclaration()
+abstract class CoreCardinalDeclaration : CoreDeclaration()

@@ -25,7 +25,7 @@ class VkConstantExpression(
     override val location: MessageLocation,
     override var type: Type,
     val value: String
-): VkExpression() {
+) : VkExpression() {
 
     override fun accept(visitor: Visitor) {
         visitor.visitConstantExpression(this)

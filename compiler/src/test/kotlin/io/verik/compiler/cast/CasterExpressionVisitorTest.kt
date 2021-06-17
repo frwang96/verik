@@ -23,13 +23,15 @@ import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
-internal class CasterExpressionVisitorTest: BaseTest() {
+internal class CasterExpressionVisitorTest : BaseTest() {
 
     @Test
     fun `block expression empty`() {
-        val projectContext = TestDriver.cast("""
+        val projectContext = TestDriver.cast(
+            """
             fun f() {}
-        """.trimIndent())
+            """.trimIndent()
+        )
         assertElementEquals(
             "BlockExpression(Unit, [])",
             projectContext.findExpression("f")
@@ -38,9 +40,11 @@ internal class CasterExpressionVisitorTest: BaseTest() {
 
     @Test
     fun `parenthesized expression`() {
-        val projectContext = TestDriver.cast("""
+        val projectContext = TestDriver.cast(
+            """
             var x = (0)
-        """.trimIndent())
+            """.trimIndent()
+        )
         assertElementEquals(
             "ParenthesizedExpression(Int, ConstantExpression(*))",
             projectContext.findExpression("x")
@@ -49,9 +53,11 @@ internal class CasterExpressionVisitorTest: BaseTest() {
 
     @Test
     fun `binary expression`() {
-        val projectContext = TestDriver.cast("""
+        val projectContext = TestDriver.cast(
+            """
             var x = 0 + 0
-        """.trimIndent())
+            """.trimIndent()
+        )
         assertElementEquals(
             "BinaryExpression(Int, PLUS, ConstantExpression(*), ConstantExpression(*))",
             projectContext.findExpression("x")
@@ -60,10 +66,12 @@ internal class CasterExpressionVisitorTest: BaseTest() {
 
     @Test
     fun `reference expression`() {
-        val projectContext = TestDriver.cast("""
+        val projectContext = TestDriver.cast(
+            """
             var x = 0
             var y = x
-        """.trimIndent())
+            """.trimIndent()
+        )
         assertElementEquals(
             "ReferenceExpression(Int, x)",
             projectContext.findExpression("y")
@@ -72,10 +80,12 @@ internal class CasterExpressionVisitorTest: BaseTest() {
 
     @Test
     fun `call expression base function`() {
-        val projectContext = TestDriver.cast("""
+        val projectContext = TestDriver.cast(
+            """
             fun f() {}
             var x = f()
-        """.trimIndent())
+            """.trimIndent()
+        )
         assertElementEquals(
             "CallExpression(Unit, f, [])",
             projectContext.findExpression("x")
@@ -84,9 +94,11 @@ internal class CasterExpressionVisitorTest: BaseTest() {
 
     @Test
     fun `call expression core`() {
-        val projectContext = TestDriver.cast("""
+        val projectContext = TestDriver.cast(
+            """
             var x = random(0)
-        """.trimIndent())
+            """.trimIndent()
+        )
         assertElementEquals(
             "CallExpression(Int, random, *)",
             projectContext.findExpression("x")
@@ -95,10 +107,12 @@ internal class CasterExpressionVisitorTest: BaseTest() {
 
     @Test
     fun `value argument unnamed`() {
-        val projectContext = TestDriver.cast("""
+        val projectContext = TestDriver.cast(
+            """
             fun f(x: Int) {}
             var x = f(0)
-        """.trimIndent())
+            """.trimIndent()
+        )
         assertElementEquals(
             "CallExpression(Unit, f, [ValueArgument(null, *)])",
             projectContext.findExpression("x")
@@ -108,10 +122,12 @@ internal class CasterExpressionVisitorTest: BaseTest() {
     @Test
     @Disabled
     fun `value argument named`() {
-        val projectContext = TestDriver.cast("""
+        val projectContext = TestDriver.cast(
+            """
             fun f(x: Int) {}
             var x = f(x = 0)
-        """.trimIndent())
+            """.trimIndent()
+        )
         assertElementEquals(
             "CallExpression(Unit, f, [ValueArgument(x, *)])",
             projectContext.findExpression("x")
@@ -120,9 +136,11 @@ internal class CasterExpressionVisitorTest: BaseTest() {
 
     @Test
     fun `constant expression integer`() {
-        val projectContext = TestDriver.cast("""
+        val projectContext = TestDriver.cast(
+            """
             var x = 0
-        """.trimIndent())
+            """.trimIndent()
+        )
         assertElementEquals(
             "ConstantExpression(Int, 0)",
             projectContext.findExpression("x")

@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast.common
 
-object NullDeclaration: Declaration {
+object NullDeclaration : Declaration {
 
     override var name = Name("null")
 

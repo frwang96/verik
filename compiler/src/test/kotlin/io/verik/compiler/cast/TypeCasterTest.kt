@@ -22,13 +22,15 @@ import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-internal class TypeCasterTest: BaseTest() {
+internal class TypeCasterTest : BaseTest() {
 
     @Test
     fun `type class simple`() {
-        val projectContext = TestDriver.cast("""
+        val projectContext = TestDriver.cast(
+            """
             var x = 0
-        """.trimIndent())
+            """.trimIndent()
+        )
         assertElementEquals(
             "BaseProperty(x, Int, *)",
             projectContext.findDeclaration("x")
@@ -38,10 +40,12 @@ internal class TypeCasterTest: BaseTest() {
     @Test
     @Disabled
     fun `type class parameterized`() {
-        val projectContext = TestDriver.cast("""
+        val projectContext = TestDriver.cast(
+            """
             class C<T>
             var x = C<Int>()
-        """.trimIndent())
+            """.trimIndent()
+        )
         assertElementEquals(
             "BaseProperty(x, C<Int>)",
             projectContext.findDeclaration("x")
@@ -51,11 +55,13 @@ internal class TypeCasterTest: BaseTest() {
     @Test
     @Disabled
     fun `type type parameter`() {
-        val projectContext = TestDriver.cast("""
+        val projectContext = TestDriver.cast(
+            """
             class C<T> {
                 val x = C<T>()
             }
-        """.trimIndent())
+            """.trimIndent()
+        )
         assertElementEquals(
             "BaseProperty(x, C<T>)",
             projectContext.findDeclaration("x")
@@ -65,10 +71,12 @@ internal class TypeCasterTest: BaseTest() {
     @Test
     fun `type nullable`() {
         assertThrows<TestException> {
-            TestDriver.cast("""
+            TestDriver.cast(
+                """
                 @Suppress("ImplicitNullableNothingType")
                 var x = null
-            """.trimIndent())
+                """.trimIndent()
+            )
         }.apply {
             assertEquals("Nullable type not supported: Nothing?", message)
         }
@@ -76,9 +84,11 @@ internal class TypeCasterTest: BaseTest() {
 
     @Test
     fun `type reference simple`() {
-        val projectContext = TestDriver.cast("""
+        val projectContext = TestDriver.cast(
+            """
             var x: Int = 0
-        """.trimIndent())
+            """.trimIndent()
+        )
         assertElementEquals(
             "BaseProperty(x, Int, ConstantExpression(Int, 0))",
             projectContext.findDeclaration("x")
@@ -88,11 +98,13 @@ internal class TypeCasterTest: BaseTest() {
     @Test
     @Disabled
     fun `type reference type parameter`() {
-        val projectContext = TestDriver.cast("""
+        val projectContext = TestDriver.cast(
+            """
             class C<T> {
                 val x: C<T> = C()
             }
-        """.trimIndent())
+            """.trimIndent()
+        )
         assertElementEquals(
             "BaseProperty(x, C<T>)",
             projectContext.findDeclaration("x")
@@ -102,9 +114,11 @@ internal class TypeCasterTest: BaseTest() {
     @Test
     @Disabled
     fun `type reference cardinal simple`() {
-        val projectContext = TestDriver.cast("""
+        val projectContext = TestDriver.cast(
+            """
             var x: Ubit<`8`> = u(0)
-        """.trimIndent())
+            """.trimIndent()
+        )
         assertElementEquals(
             "BaseProperty(x, Ubit<`8`>)",
             projectContext.findDeclaration("x")
@@ -114,9 +128,11 @@ internal class TypeCasterTest: BaseTest() {
     @Test
     fun `type reference cardinal invalid`() {
         assertThrows<TestException> {
-            TestDriver.cast("""
-            var x: Ubit<Cardinal> = u(0)
-        """.trimIndent())
+            TestDriver.cast(
+                """
+                var x: Ubit<Cardinal> = u(0)
+                """.trimIndent()
+            )
         }.apply {
             assertEquals("Cardinal type expected", message)
         }
@@ -124,9 +140,11 @@ internal class TypeCasterTest: BaseTest() {
 
     @Test
     fun `type reference cardinal function`() {
-        val projectContext = TestDriver.cast("""
+        val projectContext = TestDriver.cast(
+            """
             var x: Ubit<ADD<`8`, `16`>> = u(0)
-        """.trimIndent())
+            """.trimIndent()
+        )
         assertElementEquals(
             "BaseProperty(x, Ubit<ADD<`8`, `16`>>, *)",
             projectContext.findDeclaration("x")
@@ -136,9 +154,11 @@ internal class TypeCasterTest: BaseTest() {
     @Test
     fun `type reference cardinal function invalid`() {
         assertThrows<TestException> {
-            TestDriver.cast("""
+            TestDriver.cast(
+                """
                 var x: Ubit<ADD<`8`, Int>> = u(0)
-            """.trimIndent())
+                """.trimIndent()
+            )
         }.apply {
             assertEquals("Cardinal type expected", message)
         }
@@ -146,11 +166,13 @@ internal class TypeCasterTest: BaseTest() {
 
     @Test
     fun `type reference cardinal type parameter`() {
-        val projectContext = TestDriver.cast("""
+        val projectContext = TestDriver.cast(
+            """
             class C<N: Cardinal> {
                 var x: Ubit<N> = u(0)
             }
-        """.trimIndent())
+            """.trimIndent()
+        )
         assertElementEquals(
             "BaseProperty(x, Ubit<N>, *)",
             projectContext.findDeclaration("x")
@@ -160,11 +182,13 @@ internal class TypeCasterTest: BaseTest() {
     @Test
     fun `type reference cardinal type parameter invalid`() {
         assertThrows<TestException> {
-            TestDriver.cast("""
+            TestDriver.cast(
+                """
                 class C<N> {
                     var x: Ubit<INC<N>> = u(0)
                 }
-            """.trimIndent())
+                """.trimIndent()
+            )
         }.apply {
             assertEquals("Cardinal type parameter expected", message)
         }

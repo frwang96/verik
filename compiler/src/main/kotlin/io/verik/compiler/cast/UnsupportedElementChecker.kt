@@ -20,13 +20,13 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.psi.*
 
-object UnsupportedElementChecker  {
+object UnsupportedElementChecker {
 
     fun check(projectContext: ProjectContext) {
         projectContext.ktFiles.forEach { it.accept(UnsupportedElementVisitor) }
     }
 
-    object UnsupportedElementVisitor: KtTreeVisitorVoid() {
+    object UnsupportedElementVisitor : KtTreeVisitorVoid() {
 
         override fun visitDestructuringDeclaration(destructuringDeclaration: KtDestructuringDeclaration) {
             m.error("Destructuring declaration not supported", destructuringDeclaration)

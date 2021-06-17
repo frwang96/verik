@@ -25,7 +25,7 @@ class VkBlockExpression(
     override val location: MessageLocation,
     override var type: Type,
     val statements: ArrayList<VkExpression>
-): VkExpression() {
+) : VkExpression() {
 
     override fun accept(visitor: Visitor) {
         visitor.visitBlockExpression(this)

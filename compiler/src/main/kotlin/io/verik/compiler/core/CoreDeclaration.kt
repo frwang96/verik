@@ -19,7 +19,7 @@ package io.verik.compiler.core
 import io.verik.compiler.ast.common.Declaration
 import io.verik.compiler.ast.common.Name
 
-abstract class CoreDeclaration: Declaration {
+abstract class CoreDeclaration : Declaration {
 
     abstract val qualifiedName: Name
 

@@ -33,14 +33,14 @@ import java.nio.file.Paths
 class CasterBaseVisitor(
     projectContext: ProjectContext,
     private val declarationMap: DeclarationMap
-): KtVisitor<VkElement, Unit>() {
+) : KtVisitor<VkElement, Unit>() {
 
     private val mainPath = projectContext.config.projectDir.resolve("src/main/kotlin")
     private val testPath = projectContext.config.projectDir.resolve("src/test/kotlin")
     private val bindingContext = projectContext.bindingContext
     private val expressionVisitor = CasterExpressionVisitor(projectContext, declarationMap)
 
-    inline fun <reified T: VkElement> getElement(element: KtElement): T? {
+    inline fun <reified T : VkElement> getElement(element: KtElement): T? {
         return element.accept(this, Unit).cast(element)
     }
 
@@ -131,7 +131,7 @@ class CasterBaseVisitor(
             0 -> null
             1 -> annotationTypes.first()
             else -> {
-                val annotationTypesString = annotationTypes.joinToString{ it.name.toLowerCase() }
+                val annotationTypesString = annotationTypes.joinToString { it.name.toLowerCase() }
                 m.error("Conflicting annotations: $annotationTypesString", function)
                 null
             }

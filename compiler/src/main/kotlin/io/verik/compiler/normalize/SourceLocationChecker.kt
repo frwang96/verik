@@ -31,7 +31,7 @@ object SourceLocationChecker {
         }
     }
 
-    class SourceLocationVisitor(val path: Path): TreeVisitor() {
+    class SourceLocationVisitor(val path: Path) : TreeVisitor() {
 
         override fun visitElement(element: VkElement) {
             super.visitElement(element)

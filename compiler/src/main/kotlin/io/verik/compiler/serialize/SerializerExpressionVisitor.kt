@@ -20,7 +20,7 @@ import io.verik.compiler.ast.common.Visitor
 import io.verik.compiler.ast.element.*
 import io.verik.compiler.main.m
 
-class SerializerExpressionVisitor(private val sourceBuilder: SourceBuilder): Visitor() {
+class SerializerExpressionVisitor(private val sourceBuilder: SourceBuilder) : Visitor() {
 
     override fun visitElement(element: VkElement) {
         m.error("Unable to serialize element: ${element::class.simpleName}", element)

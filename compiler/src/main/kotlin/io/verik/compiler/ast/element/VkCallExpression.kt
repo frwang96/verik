@@ -24,7 +24,7 @@ class VkCallExpression(
     override var type: Type,
     override var reference: Declaration,
     val valueArguments: ArrayList<VkValueArgument>
-): VkExpression(), Reference {
+) : VkExpression(), Reference {
 
     override fun accept(visitor: Visitor) {
         visitor.visitCallExpression(this)

@@ -30,11 +30,11 @@ import org.jetbrains.kotlin.resolve.calls.callUtil.getType
 class CasterExpressionVisitor(
     projectContext: ProjectContext,
     private val declarationMap: DeclarationMap
-): KtVisitor<VkElement, Unit>() {
+) : KtVisitor<VkElement, Unit>() {
 
     private val bindingContext = projectContext.bindingContext
 
-    inline fun <reified T: VkElement> getElement(element: KtElement): T? {
+    inline fun <reified T : VkElement> getElement(element: KtElement): T? {
         return element.accept(this, Unit).cast(element)
     }
 

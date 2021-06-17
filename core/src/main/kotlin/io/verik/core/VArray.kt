@@ -23,7 +23,7 @@ package io.verik.core
  * @param N the size of the array
  * @param E the type of the elements of the array
  */
-class VArray<N: Cardinal, E>: VCollection<E>() {
+class VArray<N : Cardinal, E> : VCollection<E>() {
 
     /**
      * Returns the array element at the specified [index].

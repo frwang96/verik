@@ -34,19 +34,19 @@ abstract class VkElement {
     abstract fun acceptChildren(visitor: TreeVisitor)
 }
 
-inline fun <reified T: VkElement> VkElement.cast(): T? {
+inline fun <reified T : VkElement> VkElement.cast(): T? {
     return this.cast(this.location)
 }
 
-inline fun <reified T: VkElement> VkElement?.cast(location: KtElement): T? {
+inline fun <reified T : VkElement> VkElement?.cast(location: KtElement): T? {
     return this.cast(location.getMessageLocation())
 }
 
-inline fun <reified T: VkElement> VkElement?.cast(location: VkElement): T? {
+inline fun <reified T : VkElement> VkElement?.cast(location: VkElement): T? {
     return this.cast(location.location)
 }
 
-inline fun <reified T: VkElement> VkElement?.cast(location: MessageLocation): T? {
+inline fun <reified T : VkElement> VkElement?.cast(location: MessageLocation): T? {
     val expectedName = T::class.simpleName
     return when (this) {
         null -> {

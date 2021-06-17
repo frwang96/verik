@@ -34,7 +34,7 @@ object ElementParentChecker {
         }
     }
 
-    class ElementParentVisitor: TreeVisitor() {
+    class ElementParentVisitor : TreeVisitor() {
 
         private val parentStack = ArrayDeque<VkElement>()
 

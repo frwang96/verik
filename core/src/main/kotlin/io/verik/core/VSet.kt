@@ -22,7 +22,7 @@ package io.verik.core
  * A set of elements.
  * @param E the type of the set
  */
-class VSet<E>: VCollection<E>() {
+class VSet<E> : VCollection<E>() {
 
     /**
      * Adds the specified [element] to the set.
