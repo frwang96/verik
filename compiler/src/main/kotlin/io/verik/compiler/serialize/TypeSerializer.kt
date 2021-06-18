@@ -28,10 +28,10 @@ object TypeSerializer {
     fun serialize(declaration: VkDeclaration): String {
         val type = declaration.type
         return when (type.reference) {
-            CoreClass.UNIT -> "void"
-            CoreClass.INT -> "int"
-            CoreClass.BOOLEAN -> "logic"
-            CoreClass.UBIT -> "logic ${serializeCardinalLittleEndian(type.arguments[0], declaration)}"
+            CoreClass.Kotlin.UNIT -> "void"
+            CoreClass.Kotlin.INT -> "int"
+            CoreClass.Kotlin.BOOLEAN -> "logic"
+            CoreClass.Core.UBIT -> "logic ${serializeCardinalLittleEndian(type.arguments[0], declaration)}"
             else -> {
                 m.error("Unable to serialize type: $type", declaration)
                 "void"

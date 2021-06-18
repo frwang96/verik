@@ -16,18 +16,24 @@
 
 package io.verik.compiler.core
 
-import io.verik.core.*
+import io.verik.compiler.ast.common.PackageName
 
 object CoreClass {
 
-    val ANY = CoreClassDeclaration(Any::class, null)
-    val UNIT = CoreClassDeclaration(Unit::class, ANY)
-    val INT = CoreClassDeclaration(Int::class, ANY)
-    val BOOLEAN = CoreClassDeclaration(Boolean::class, ANY)
+    object Kotlin : CoreScope(PackageName.KOTLIN) {
 
-    val CARDINAL = CoreClassDeclaration(Cardinal::class, ANY)
-    val UBIT = CoreClassDeclaration(Ubit::class, ANY)
-    val SBIT = CoreClassDeclaration(Sbit::class, ANY)
-    val MODULE = CoreClassDeclaration(Module::class, ANY)
-    val CLASS = CoreClassDeclaration(Class::class, ANY)
+        val ANY = CoreClassDeclaration(parent, "Any", null)
+        val UNIT = CoreClassDeclaration(parent, "Unit", ANY)
+        val INT = CoreClassDeclaration(parent, "Int", ANY)
+        val BOOLEAN = CoreClassDeclaration(parent, "Boolean", ANY)
+    }
+
+    object Core : CoreScope(PackageName.CORE) {
+
+        val CARDINAL = CoreClassDeclaration(parent, "Cardinal", Kotlin.ANY)
+        val UBIT = CoreClassDeclaration(parent, "Ubit", Kotlin.ANY)
+        val SBIT = CoreClassDeclaration(parent, "Sbit", Kotlin.ANY)
+        val MODULE = CoreClassDeclaration(parent, "Module", Kotlin.ANY)
+        val CLASS = CoreClassDeclaration(parent, "Class", Kotlin.ANY)
+    }
 }

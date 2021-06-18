@@ -32,7 +32,7 @@ class Type(
     fun isCardinalType(): Boolean {
         return when (val reference = reference) {
             is VkTypeParameter -> reference.type.isCardinalType()
-            is CoreClassDeclaration -> reference == CoreClass.CARDINAL
+            is CoreClassDeclaration -> reference == CoreClass.Core.CARDINAL
             is CoreCardinalDeclaration -> true
             else -> false
         }
@@ -72,7 +72,7 @@ class Type(
         var type: Type? = when (val reference = reference) {
             is VkBaseClass -> this
             is CoreClassDeclaration -> this
-            is CoreCardinalConstantDeclaration -> CoreClass.CARDINAL.toNoArgumentsType()
+            is CoreCardinalConstantDeclaration -> CoreClass.Core.CARDINAL.toNoArgumentsType()
             else -> m.fatal("Type reference not canonicalized: $reference", null)
         }
         while (type != null) {

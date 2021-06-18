@@ -46,8 +46,12 @@ object ImportDirectiveChecker {
     class ImportDirectiveVisitor(private val packageNameSet: Set<PackageName>) : TreeVisitor() {
 
         override fun visitImportDirective(importDirective: VkImportDirective) {
-            if (importDirective.packageName !in packageNameSet && importDirective.packageName != PackageName.CORE) {
-                m.error("Import package not found: ${importDirective.packageName}", importDirective)
+            if (importDirective.packageName.isReserved()) {
+                if (importDirective.packageName != PackageName.CORE)
+                    m.error("Illegal import package: ${importDirective.packageName}", importDirective)
+            } else {
+                if (importDirective.packageName !in packageNameSet)
+                    m.error("Import package not found: ${importDirective.packageName}", importDirective)
             }
         }
     }

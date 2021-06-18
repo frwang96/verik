@@ -32,10 +32,9 @@ object CoreDeclarationMap {
     private val functionMap = HashMap<Name, ArrayList<CoreFunctionDeclaration>>()
 
     init {
-        CoreClass::class.memberProperties.forEach {
-            val property = it.get(CoreClass)
-            if (property is CoreClassDeclaration)
-                declarationMap[property.qualifiedName] = property
+        CoreClass::class.nestedClasses.forEach { packageClass ->
+            val packageCoreScope = packageClass.objectInstance
+            if (packageCoreScope is CoreScope) addCoreClasses(packageCoreScope)
         }
 
         CoreCardinal::class.memberProperties.forEach {
@@ -45,16 +44,12 @@ object CoreDeclarationMap {
         }
 
         CoreFunction::class.nestedClasses.forEach { packageClass ->
-            packageClass.nestedClasses.forEach { classClass ->
-                val classObject = classClass.objectInstance!!
-                classObject::class.memberProperties.forEach {
-                    if (it.returnType == CoreFunctionDeclaration::class.createType()) {
-                        @Suppress("UNCHECKED_CAST")
-                        val property = (it as KProperty1<Any, *>).get(classObject) as CoreFunctionDeclaration
-                        if (property.qualifiedName !in functionMap)
-                            functionMap[property.qualifiedName] = ArrayList()
-                        functionMap[property.qualifiedName]!!.add(property)
-                    }
+            val packageCoreScope = packageClass.objectInstance
+            if (packageCoreScope is CoreScope) {
+                addCoreFunctions(packageCoreScope)
+                packageCoreScope::class.nestedClasses.forEach { classClass ->
+                    val classCoreScope = classClass.objectInstance
+                    if (classCoreScope is CoreScope) addCoreFunctions(classCoreScope)
                 }
             }
         }
@@ -64,6 +59,28 @@ object CoreDeclarationMap {
         return when (descriptor) {
             is SimpleFunctionDescriptor -> getFunction(descriptor)
             else -> getDeclaration(descriptor)
+        }
+    }
+
+    private fun addCoreClasses(coreScope: CoreScope) {
+        coreScope::class.memberProperties.forEach {
+            if (it.returnType == CoreClassDeclaration::class.createType()) {
+                @Suppress("UNCHECKED_CAST")
+                val property = (it as KProperty1<Any, *>).get(coreScope) as CoreClassDeclaration
+                declarationMap[property.qualifiedName] = property
+            }
+        }
+    }
+
+    private fun addCoreFunctions(coreScope: CoreScope) {
+        coreScope::class.memberProperties.forEach {
+            if (it.returnType == CoreFunctionDeclaration::class.createType()) {
+                @Suppress("UNCHECKED_CAST")
+                val property = (it as KProperty1<Any, *>).get(coreScope) as CoreFunctionDeclaration
+                if (property.qualifiedName !in functionMap)
+                    functionMap[property.qualifiedName] = ArrayList()
+                functionMap[property.qualifiedName]!!.add(property)
+            }
         }
     }
 

@@ -20,22 +20,21 @@ import io.verik.compiler.ast.common.PackageName
 
 object CoreFunction {
 
-    object CORE {
+    object Core : CoreScope(PackageName.CORE) {
 
-        object NULL : CoreFunctionScope(PackageName.CORE) {
+        val U_INT = CoreFunctionDeclaration(parent, "u", CoreClass.Kotlin.INT)
+        val RANDOM = CoreFunctionDeclaration(parent, "random")
+        val RANDOM_INT = CoreFunctionDeclaration(parent, "random", CoreClass.Kotlin.INT)
 
-            val U_INT = CoreFunctionDeclaration(parent, "u", CoreClass.INT)
-            val RANDOM = CoreFunctionDeclaration(parent, "random")
-            val RANDOM_INT = CoreFunctionDeclaration(parent, "random", CoreClass.INT)
+        object Ubit : CoreScope(CoreClass.Core.UBIT) {
+
+            val INV = CoreFunctionDeclaration(parent, "inv")
         }
     }
 
-    object SV {
+    object Sv : CoreScope(PackageName.SV) {
 
-        object NULL : CoreFunctionScope(PackageName.SV) {
-
-            val DISPLAY = CoreFunctionDeclaration(parent, "\$display")
-            val RANDOM = CoreFunctionDeclaration(parent, "\$random")
-        }
+        val DISPLAY = CoreFunctionDeclaration(parent, "\$display")
+        val RANDOM = CoreFunctionDeclaration(parent, "\$random")
     }
 }

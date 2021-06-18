@@ -31,7 +31,7 @@ class PackageName(val name: String) {
     }
 
     fun isReserved(): Boolean {
-        return this in listOf(CORE, SV)
+        return name == "io.verik" || name.startsWith("io.verik.")
     }
 
     override fun toString(): String {
@@ -49,6 +49,7 @@ class PackageName(val name: String) {
     companion object {
 
         val ROOT = PackageName("")
+        val KOTLIN = PackageName("kotlin")
         val CORE = PackageName("io.verik.core")
         val SV = PackageName("io.verik.sv")
     }

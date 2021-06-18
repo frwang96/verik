@@ -175,7 +175,7 @@ class CasterBaseVisitor(
         val descriptor = bindingContext.getSliceContents(BindingContext.TYPE_PARAMETER)[parameter]!!
         val upperBound = descriptor.representativeUpperBound
         val type = if (upperBound.isNullableAny()) {
-            CoreClass.ANY.toNoArgumentsType()
+            CoreClass.Kotlin.ANY.toNoArgumentsType()
         } else {
             getType(descriptor.representativeUpperBound, parameter)
         }

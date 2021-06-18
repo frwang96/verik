@@ -17,7 +17,6 @@
 package io.verik.compiler.core
 
 import io.verik.compiler.ast.common.Name
-import kotlin.reflect.KClass
 
 class CoreClassDeclaration private constructor(
     override var name: Name,
@@ -35,10 +34,12 @@ class CoreClassDeclaration private constructor(
 
     companion object {
 
-        operator fun <T : Any> invoke(kClass: KClass<T>, superclass: CoreClassDeclaration?): CoreClassDeclaration {
-            val name = Name(kClass.simpleName!!)
-            val qualifiedName = Name(kClass.qualifiedName!!)
-            return CoreClassDeclaration(name, qualifiedName, superclass)
+        operator fun invoke(parent: String, name: String, superclass: CoreClassDeclaration?): CoreClassDeclaration {
+            return CoreClassDeclaration(
+                Name(name),
+                Name("$parent.$name"),
+                superclass
+            )
         }
     }
 }
