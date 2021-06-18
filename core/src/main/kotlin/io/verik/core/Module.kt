@@ -34,4 +34,4 @@ package io.verik.core
  *          }
  *      }
  */
-abstract class Module
+abstract class Module : Component()

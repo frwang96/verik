@@ -14,24 +14,10 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core
+package io.verik.core
 
-import io.verik.compiler.ast.common.Name
-
-class CoreClassDeclaration private constructor(
-    override var name: Name,
-    override val qualifiedName: Name,
-    val superclass: CoreClassDeclaration?
-) : CoreDeclaration() {
-
-    companion object {
-
-        operator fun invoke(parent: String, name: String, superclass: CoreClassDeclaration?): CoreClassDeclaration {
-            return CoreClassDeclaration(
-                Name(name),
-                Name("$parent.$name"),
-                superclass
-            )
-        }
-    }
-}
+/**
+ * Components are statically instantiated hardware that may have input and output ports. They are declared with the
+ * [@Make][Make] annotation.
+ */
+abstract class Component

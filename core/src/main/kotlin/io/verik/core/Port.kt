@@ -31,4 +31,4 @@ package io.verik.core
  *          val p = P(x)
  *      }
  */
-abstract class Port
+abstract class Port : Component()

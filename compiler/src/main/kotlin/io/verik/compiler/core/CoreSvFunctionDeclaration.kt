@@ -18,19 +18,17 @@ package io.verik.compiler.core
 
 import io.verik.compiler.ast.common.Name
 
-class CoreClassDeclaration private constructor(
+class CoreSvFunctionDeclaration private constructor(
     override var name: Name,
-    override val qualifiedName: Name,
-    val superclass: CoreClassDeclaration?
-) : CoreDeclaration() {
+    override val qualifiedName: Name
+) : CoreFunctionDeclaration() {
 
     companion object {
 
-        operator fun invoke(parent: String, name: String, superclass: CoreClassDeclaration?): CoreClassDeclaration {
-            return CoreClassDeclaration(
+        operator fun invoke(parent: String, name: String): CoreSvFunctionDeclaration {
+            return CoreSvFunctionDeclaration(
                 Name(name),
-                Name("$parent.$name"),
-                superclass
+                Name("$parent.$name")
             )
         }
     }

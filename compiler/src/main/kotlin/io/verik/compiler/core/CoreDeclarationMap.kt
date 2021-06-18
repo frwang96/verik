@@ -29,7 +29,7 @@ import kotlin.reflect.full.memberProperties
 object CoreDeclarationMap {
 
     private val declarationMap = HashMap<Name, CoreDeclaration>()
-    private val functionMap = HashMap<Name, ArrayList<CoreFunctionDeclaration>>()
+    private val functionMap = HashMap<Name, ArrayList<CoreKtFunctionDeclaration>>()
 
     init {
         CoreClass::class.nestedClasses.forEach { packageClass ->
@@ -74,9 +74,9 @@ object CoreDeclarationMap {
 
     private fun addCoreFunctions(coreScope: CoreScope) {
         coreScope::class.memberProperties.forEach {
-            if (it.returnType == CoreFunctionDeclaration::class.createType()) {
+            if (it.returnType == CoreKtFunctionDeclaration::class.createType()) {
                 @Suppress("UNCHECKED_CAST")
-                val property = (it as KProperty1<Any, *>).get(coreScope) as CoreFunctionDeclaration
+                val property = (it as KProperty1<Any, *>).get(coreScope) as CoreKtFunctionDeclaration
                 if (property.qualifiedName !in functionMap)
                     functionMap[property.qualifiedName] = ArrayList()
                 functionMap[property.qualifiedName]!!.add(property)
@@ -96,7 +96,7 @@ object CoreDeclarationMap {
         return null
     }
 
-    private fun matchFunction(descriptor: SimpleFunctionDescriptor, function: CoreFunctionDeclaration): Boolean {
+    private fun matchFunction(descriptor: SimpleFunctionDescriptor, function: CoreKtFunctionDeclaration): Boolean {
         val valueParameters = descriptor.valueParameters
         val expectedParameterClassNames = function.parameterClassNames
         if (valueParameters.size != expectedParameterClassNames.size)

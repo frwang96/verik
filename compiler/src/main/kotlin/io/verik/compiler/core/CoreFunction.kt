@@ -22,19 +22,19 @@ object CoreFunction {
 
     object Core : CoreScope(PackageName.CORE) {
 
-        val U_INT = CoreFunctionDeclaration(parent, "u", CoreClass.Kotlin.INT)
-        val RANDOM = CoreFunctionDeclaration(parent, "random")
-        val RANDOM_INT = CoreFunctionDeclaration(parent, "random", CoreClass.Kotlin.INT)
+        val U_INT = CoreKtFunctionDeclaration(parent, "u", CoreClass.Kotlin.INT)
+        val RANDOM = CoreKtFunctionDeclaration(parent, "random")
+        val RANDOM_INT = CoreKtFunctionDeclaration(parent, "random", CoreClass.Kotlin.INT)
 
         object Ubit : CoreScope(CoreClass.Core.UBIT) {
 
-            val INV = CoreFunctionDeclaration(parent, "inv")
+            val INV = CoreKtFunctionDeclaration(parent, "inv")
         }
     }
 
     object Sv : CoreScope(PackageName.SV) {
 
-        val DISPLAY = CoreFunctionDeclaration(parent, "\$display")
-        val RANDOM = CoreFunctionDeclaration(parent, "\$random")
+        val DISPLAY = CoreSvFunctionDeclaration(parent, "\$display")
+        val RANDOM = CoreSvFunctionDeclaration(parent, "\$random")
     }
 }

@@ -29,4 +29,4 @@ package io.verik.core
  *          var x: Boolean = x()
  *      }
  */
-abstract class Bus
+abstract class Bus : Component()

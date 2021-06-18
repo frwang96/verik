@@ -33,7 +33,9 @@ object CoreClass {
         val CARDINAL = CoreClassDeclaration(parent, "Cardinal", Kotlin.ANY)
         val UBIT = CoreClassDeclaration(parent, "Ubit", Kotlin.ANY)
         val SBIT = CoreClassDeclaration(parent, "Sbit", Kotlin.ANY)
-        val MODULE = CoreClassDeclaration(parent, "Module", Kotlin.ANY)
         val CLASS = CoreClassDeclaration(parent, "Class", Kotlin.ANY)
+
+        val COMPONENT = CoreClassDeclaration(parent, "Component", Kotlin.ANY)
+        val MODULE = CoreClassDeclaration(parent, "Module", COMPONENT)
     }
 }

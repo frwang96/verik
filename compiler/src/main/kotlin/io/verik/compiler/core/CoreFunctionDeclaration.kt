@@ -16,26 +16,4 @@
 
 package io.verik.compiler.core
 
-import io.verik.compiler.ast.common.Name
-
-class CoreFunctionDeclaration private constructor(
-    override var name: Name,
-    override val qualifiedName: Name,
-    val parameterClassNames: List<Name>
-) : CoreDeclaration() {
-
-    companion object {
-
-        operator fun invoke(
-            parent: String,
-            name: String,
-            vararg parameterClassDeclarations: CoreClassDeclaration
-        ): CoreFunctionDeclaration {
-            return CoreFunctionDeclaration(
-                Name(name),
-                Name("$parent.$name"),
-                parameterClassDeclarations.map { it.name }
-            )
-        }
-    }
-}
+abstract class CoreFunctionDeclaration : CoreDeclaration()
