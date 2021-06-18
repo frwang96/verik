@@ -21,7 +21,7 @@ package io.verik.core
 /**
  * The base type for all user defined classes. They correspond to SystemVerilog classes.
  *
- *      class C: Class() {
+ *      class C : Class() {
  *
  *          fun f() {
  *              ...

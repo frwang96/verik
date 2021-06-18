@@ -14,21 +14,26 @@
  * limitations under the License.
  */
 
+@file:Suppress("UNUSED_PARAMETER")
+
 package io.verik.core
 
 /**
- * A bus port to bundle ports in [busses][Bus] and assign the directionality of signals. They correspond to
- * SystemVerilog modports.
+ * A clocking block to bundle signals synchronized on a clock edge. Clocking blocks can be instantiated in
+ * [modules][Module] and [buses][Bus]. They correspond to SystemVerilog clocking blocks.
  *
- *      class BP(
- *          @input var x: Boolean
- *      ): BusPort()
+ *      class CB(
+ *          event: Event,
+ *          @In var x: Boolean
+ *      ) : ClockingBlock(event)
  *
- *      class B: Bus() {
+ *      class M : Module() {
  *
+ *          var clk: Boolean = x()
  *          var x: Boolean = x()
  *
- *          @ins val bp = BP(x)
+ *          @Make
+ *          val cb = CB(posedge(clk), x)
  *      }
  */
-abstract class BusPort
+abstract class ClockingBlock(event: Event)

@@ -14,28 +14,21 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNUSED_PARAMETER")
-
 package io.verik.core
 
 /**
- * A clock port to bundle signals synchronized on a clock edge. Clock ports can be instantiated in [modules][Module] and
- * [buses][Bus]. They correspond to SystemVerilog clocking blocks.
+ * A port to bundle signals in [busses][Bus] and assign directionality. They correspond to SystemVerilog modports.
  *
- *      class CP(
- *          event: Event,
- *          @input var x: Boolean
- *      ): ClockPort(event)
+ *      class P(
+ *          @In var x: Boolean
+ *      ) : Port()
  *
- *      class M: Module() {
+ *      class B : Bus() {
  *
- *          var clk: Boolean = x()
  *          var x: Boolean = x()
  *
- *          @ins cp = CP(
- *              event = posedge(clk),
- *              x     = x
- *          )
+ *          @Make
+ *          val p = P(x)
  *      }
  */
-abstract class ClockPort(event: Event)
+abstract class Port

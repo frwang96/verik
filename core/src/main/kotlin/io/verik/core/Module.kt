@@ -21,11 +21,12 @@ package io.verik.core
 /**
  * Module that can be synthesized to hardware. They correspond to SystemVerilog modules.
  *
- *      class M: Module() {
+ *      class M : Module() {
  *
  *          var clk = false
  *
- *          @run fun toggle_clk() {
+ *          @Run
+ *          fun toggle_clk() {
  *              forever {
  *                  delay(1)
  *                  clk = !clk

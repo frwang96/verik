@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2020 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,22 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
+plugins {
+    kotlin("jvm") version "1.4.20"
+    id("io.verik.verik-plugin") version "1.0-SNAPSHOT"
+}
 
-package io.verik.core
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
 
-/**
- * A bus that carries signals between [modules][Module]. Buses can contain [ports][Port] to control signal direction.
- * They correspond to SystemVerilog interfaces.
- *
- *      class B(
- *          @In var clk: Boolean
- *      ) : Bus() {
- *
- *          var x: Boolean = x()
- *      }
- */
-abstract class Bus
+dependencies {
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.20")
+    implementation("io.verik:verik-core:1.0-SNAPSHOT")
+}
+
+verik {
+    top = "CacheTop"
+    debug = true
+}

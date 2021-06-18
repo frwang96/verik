@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2020 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,11 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
+rootProject.name = "verik-examples-cache"
 
-package io.verik.core
-
-/**
- * A bus that carries signals between [modules][Module]. Buses can contain [ports][Port] to control signal direction.
- * They correspond to SystemVerilog interfaces.
- *
- *      class B(
- *          @In var clk: Boolean
- *      ) : Bus() {
- *
- *          var x: Boolean = x()
- *      }
- */
-abstract class Bus
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenLocal()
+    }
+}

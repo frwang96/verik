@@ -14,19 +14,35 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
+package cache
 
-package io.verik.core
+import io.verik.core.*
 
-/**
- * A bus that carries signals between [modules][Module]. Buses can contain [ports][Port] to control signal direction.
- * They correspond to SystemVerilog interfaces.
- *
- *      class B(
- *          @In var clk: Boolean
- *      ) : Bus() {
- *
- *          var x: Boolean = x()
- *      }
- */
-abstract class Bus
+@Top
+object CacheTop : Module() {
+
+    var clk = false
+
+    @Make
+    val txnBus_tb_cache = TxnBus()
+
+    @Make
+    val txnBus_cache_mainMem = TxnBus()
+
+    @Make
+    val cache = Cache(clk, txnBus_tb_cache.rxp, txnBus_cache_mainMem.txp)
+
+    @Make
+    val mainMem = MainMem(clk, txnBus_cache_mainMem.rxp)
+
+    @Make
+    val tb = CacheTb(clk, txnBus_tb_cache.txp)
+
+    @Run
+    fun toggleClk() {
+        forever {
+            delay(1)
+            clk = !clk
+        }
+    }
+}

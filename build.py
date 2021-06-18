@@ -32,6 +32,9 @@ import subprocess
 
 import sys
 
+examples_excluded = ["cache"]
+
+
 script_dir = os.path.dirname(os.path.realpath(__file__))
 system_type = platform.system()
 if system_type in ["Darwin", "Linux"]:
@@ -54,8 +57,9 @@ def main():
                     for d in os.listdir(example_root_dir)
                     if os.path.isdir(os.path.join(example_root_dir, d))]
     for example_dir in example_dirs:
-        print_header("verik", os.path.relpath(example_dir, script_dir))
-        gradle(example_dir, "verik")
+        if os.path.basename(example_dir) not in examples_excluded:
+            print_header("verik", os.path.relpath(example_dir, script_dir))
+            gradle(example_dir, "verik")
 
 
 def print_header(task, name):
