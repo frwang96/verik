@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.normalize
+package io.verik.compiler.cast
 
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.element.VkElement
@@ -40,9 +40,9 @@ object ElementParentChecker {
 
         override fun visitElement(element: VkElement) {
             if (element.parent == null)
-                m.error("Parent element should not be null", element)
+                m.error("Parent element of ${element::class.simpleName} should not be null", element)
             if (element.parent != parentStack.peek())
-                m.error("Parent element mismatch", element)
+                m.error("Mismatch in parent element of ${element::class.simpleName}", element)
             parentStack.push(element)
             super.visitElement(element)
             parentStack.pop()

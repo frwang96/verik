@@ -19,7 +19,6 @@ package io.verik.compiler.serialize
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 import io.verik.compiler.main.m
-import io.verik.compiler.normalize.ProjectNormalizationChecker
 
 object ProjectSerializer {
 
@@ -27,7 +26,14 @@ object ProjectSerializer {
         if (projectContext.vkFiles.isEmpty())
             m.fatal("Output files empty: No declarations found", null)
 
-        ProjectNormalizationChecker.check(projectContext)
+        m.log("Serialize: Check function references")
+        FunctionReferenceChecker.check(projectContext)
+        m.flush()
+
+        m.log("Serialize: Check source locations")
+        SourceLocationChecker.check(projectContext)
+        m.flush()
+
         m.info("Serialize: Serialize output files")
         val packageTextFiles = PackageFileSerializer.serialize(projectContext)
         val orderTextFile = OrderFileSerializer.serialize(projectContext, packageTextFiles)

@@ -32,10 +32,6 @@ open class VkBaseClass(
     var declarations: ArrayList<VkDeclaration>
 ) : VkDeclaration() {
 
-    init {
-        declarations.forEach { it.parent = this }
-    }
-
     override fun accept(visitor: Visitor) {
         return visitor.visitBaseClass(this)
     }

@@ -143,6 +143,7 @@ class CasterBaseVisitor(
         val baseFunction = declarationMap[descriptor, function]
             .cast<VkBaseFunction>(function)
             ?: return null
+        bodyBlockExpression?.parent = baseFunction
 
         baseFunction.type = type
         baseFunction.annotationType = annotationType

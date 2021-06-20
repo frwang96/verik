@@ -18,7 +18,6 @@ package io.verik.compiler.transform.pre
 
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
-import io.verik.compiler.normalize.ProjectNormalizationChecker
 
 object ProjectPreTransformer {
 
@@ -26,11 +25,9 @@ object ProjectPreTransformer {
         m.log("Pre-transform: Rename keyword conflicts")
         KeywordTransformer.transform(projectContext)
         m.flush()
-        ProjectNormalizationChecker.check(projectContext)
 
         m.log("Pre-transform: Separate nested classes")
         NestedClassTransformer.transform(projectContext)
         m.flush()
-        ProjectNormalizationChecker.check(projectContext)
     }
 }

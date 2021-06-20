@@ -34,5 +34,7 @@ class VkModule(
         return visitor.visitModule(this)
     }
 
-    override fun acceptChildren(visitor: TreeVisitor) {}
+    override fun acceptChildren(visitor: TreeVisitor) {
+        declarations.forEach { it.accept(visitor) }
+    }
 }

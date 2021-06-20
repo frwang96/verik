@@ -18,14 +18,12 @@ package io.verik.compiler.canonicalize
 
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
-import io.verik.compiler.normalize.ProjectNormalizationChecker
 
 object ProjectCanonicalizer {
 
     fun canonicalize(projectContext: ProjectContext) {
         m.log("Canonicalize: Canonicalize syntax trees")
         m.flush()
-        ProjectNormalizationChecker.check(projectContext)
 
         m.log("Canonicalize: Check types")
         CanonicalTypeChecker.check(projectContext)

@@ -27,6 +27,10 @@ class VkBlockExpression(
     val statements: ArrayList<VkExpression>
 ) : VkExpression() {
 
+    init {
+        statements.forEach { it.parent = this }
+    }
+
     override fun accept(visitor: Visitor) {
         visitor.visitBlockExpression(this)
     }

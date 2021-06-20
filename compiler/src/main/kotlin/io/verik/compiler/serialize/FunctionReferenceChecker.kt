@@ -14,29 +14,28 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.normalize
+package io.verik.compiler.serialize
 
 import io.verik.compiler.ast.common.TreeVisitor
-import io.verik.compiler.ast.element.VkElement
+import io.verik.compiler.ast.element.VkCallExpression
+import io.verik.compiler.core.CoreKtFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
-import java.nio.file.Path
 
-object SourceLocationChecker {
+object FunctionReferenceChecker {
 
     fun check(projectContext: ProjectContext) {
         projectContext.vkFiles.forEach {
-            val sourceLocationVisitor = SourceLocationVisitor(it.inputPath)
-            it.accept(sourceLocationVisitor)
+            it.accept(FunctionReferenceVisitor)
         }
     }
 
-    class SourceLocationVisitor(val path: Path) : TreeVisitor() {
+    object FunctionReferenceVisitor : TreeVisitor() {
 
-        override fun visitElement(element: VkElement) {
-            super.visitElement(element)
-            if (element.location.path != path)
-                m.error("Mismatch in file path for source location", element)
+        override fun visitCallExpression(callExpression: VkCallExpression) {
+            super.visitCallExpression(callExpression)
+            if (callExpression.reference is CoreKtFunctionDeclaration)
+                m.error("Function ${callExpression.reference} has not been converted to SystemVerilog", callExpression)
         }
     }
 }

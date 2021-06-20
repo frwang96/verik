@@ -30,6 +30,11 @@ class VkBinaryExpression(
     var right: VkExpression
 ) : VkExpression() {
 
+    init {
+        left.parent = this
+        right.parent = this
+    }
+
     override fun accept(visitor: Visitor) {
         visitor.visitBinaryExpression(this)
     }

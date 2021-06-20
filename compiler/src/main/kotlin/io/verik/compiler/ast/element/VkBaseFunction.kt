@@ -31,5 +31,7 @@ open class VkBaseFunction(
         return visitor.visitBaseFunction(this)
     }
 
-    override fun acceptChildren(visitor: TreeVisitor) {}
+    override fun acceptChildren(visitor: TreeVisitor) {
+        bodyBlockExpression?.accept(visitor)
+    }
 }
