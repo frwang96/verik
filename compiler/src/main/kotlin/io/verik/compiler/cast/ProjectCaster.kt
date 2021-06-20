@@ -49,10 +49,6 @@ object ProjectCaster {
         ImportDirectiveChecker.check(projectContext)
         m.flush()
 
-        m.log("Cast: Check element parents")
-        ElementParentChecker.check(projectContext)
-        m.flush()
-
         if (projectContext.config.debug) {
             ElementCounter.count(projectContext)
         }

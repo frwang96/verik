@@ -27,6 +27,11 @@ open class VkBaseFunction(
     var bodyBlockExpression: VkBlockExpression?
 ) : VkDeclaration() {
 
+    init {
+        @Suppress("LeakingThis")
+        bodyBlockExpression?.parent = this
+    }
+
     override fun accept(visitor: Visitor) {
         return visitor.visitBaseFunction(this)
     }

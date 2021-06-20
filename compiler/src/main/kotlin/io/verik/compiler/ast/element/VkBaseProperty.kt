@@ -22,16 +22,23 @@ import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.common.Visitor
 import io.verik.compiler.main.MessageLocation
 
-class VkBaseProperty(
+open class VkBaseProperty(
     override val location: MessageLocation,
     override var name: Name,
     override var type: Type,
     var initializer: VkExpression?
 ) : VkDeclaration() {
 
+    init {
+        @Suppress("LeakingThis")
+        initializer?.parent = this
+    }
+
     override fun accept(visitor: Visitor) {
         return visitor.visitBaseProperty(this)
     }
 
-    override fun acceptChildren(visitor: TreeVisitor) {}
+    override fun acceptChildren(visitor: TreeVisitor) {
+        initializer?.accept(visitor)
+    }
 }

@@ -22,7 +22,8 @@ import io.verik.compiler.main.m
 object ProjectPostTransformer {
 
     fun transform(projectContext: ProjectContext) {
-        m.log("Post-transform: Post-transform syntax trees")
+        m.log("Post-transform: Transform function references")
+        FunctionReferenceTransformer.transform(projectContext)
         m.flush()
     }
 }

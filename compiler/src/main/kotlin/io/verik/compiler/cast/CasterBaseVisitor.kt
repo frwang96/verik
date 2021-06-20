@@ -100,6 +100,10 @@ class CasterBaseVisitor(
 
     override fun visitClassOrObject(classOrObject: KtClassOrObject, data: Unit?): VkElement? {
         val descriptor = bindingContext.getSliceContents(BindingContext.CLASS)[classOrObject]!!
+        val baseClass = declarationMap[descriptor, classOrObject]
+            .cast<VkBaseClass>(classOrObject)
+            ?: return null
+
         val type = getType(descriptor.defaultType, classOrObject)
         val supertype = getType(descriptor.getSuperClassOrAny().defaultType, classOrObject)
         val typeParameters = classOrObject.typeParameters.mapNotNull { getElement<VkTypeParameter>(it) }
@@ -107,10 +111,6 @@ class CasterBaseVisitor(
         val declarations = body?.declarations
             ?.mapNotNull { getElement<VkDeclaration>(it) }
             ?: listOf()
-
-        val baseClass = declarationMap[descriptor, classOrObject]
-            .cast<VkBaseClass>(classOrObject)
-            ?: return null
 
         baseClass.type = type
         baseClass.supertype = supertype
@@ -123,6 +123,10 @@ class CasterBaseVisitor(
 
     override fun visitNamedFunction(function: KtNamedFunction, data: Unit?): VkElement? {
         val descriptor = bindingContext.getSliceContents(BindingContext.FUNCTION)[function]!!
+        val baseFunction = declarationMap[descriptor, function]
+            .cast<VkBaseFunction>(function)
+            ?: return null
+
         val type = getType(descriptor.returnType!!, function)
         val annotationTypes = descriptor.annotations.mapNotNull {
             FunctionAnnotationType(it.fqName, function)
@@ -139,10 +143,6 @@ class CasterBaseVisitor(
         val bodyBlockExpression = function.bodyBlockExpression?.let {
             expressionVisitor.getElement<VkBlockExpression>(it)
         }
-
-        val baseFunction = declarationMap[descriptor, function]
-            .cast<VkBaseFunction>(function)
-            ?: return null
         bodyBlockExpression?.parent = baseFunction
 
         baseFunction.type = type
@@ -153,6 +153,10 @@ class CasterBaseVisitor(
 
     override fun visitProperty(property: KtProperty, data: Unit?): VkElement? {
         val descriptor = bindingContext.getSliceContents(BindingContext.VARIABLE)[property]!!
+        val baseProperty = declarationMap[descriptor, property]
+            .cast<VkBaseProperty>(property)
+            ?: return null
+
         val typeReference = property.typeReference
         val type = if (typeReference != null) {
             getType(typeReference)
@@ -162,10 +166,7 @@ class CasterBaseVisitor(
         val initializer = property.initializer?.let {
             expressionVisitor.getElement<VkExpression>(it)
         }
-
-        val baseProperty = declarationMap[descriptor, property]
-            .cast<VkBaseProperty>(property)
-            ?: return null
+        initializer?.parent = baseProperty
 
         baseProperty.type = type
         baseProperty.initializer = initializer
@@ -174,16 +175,16 @@ class CasterBaseVisitor(
 
     override fun visitTypeParameter(parameter: KtTypeParameter, data: Unit?): VkElement? {
         val descriptor = bindingContext.getSliceContents(BindingContext.TYPE_PARAMETER)[parameter]!!
+        val typeParameter = declarationMap[descriptor, parameter]
+            .cast<VkTypeParameter>(parameter)
+            ?: return null
+
         val upperBound = descriptor.representativeUpperBound
         val type = if (upperBound.isNullableAny()) {
             CoreClass.Kotlin.ANY.toNoArgumentsType()
         } else {
             getType(descriptor.representativeUpperBound, parameter)
         }
-
-        val typeParameter = declarationMap[descriptor, parameter]
-            .cast<VkTypeParameter>(parameter)
-            ?: return null
 
         typeParameter.type = type
         return typeParameter

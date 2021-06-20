@@ -27,6 +27,10 @@ class VkParenthesizedExpression(
     var expression: VkExpression
 ) : VkExpression() {
 
+    init {
+        expression.parent = this
+    }
+
     override fun accept(visitor: Visitor) {
         visitor.visitParenthesizedExpression(this)
     }
