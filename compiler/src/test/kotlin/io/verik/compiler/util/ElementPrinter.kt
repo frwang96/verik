@@ -69,11 +69,19 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitBaseProperty(baseProperty: VkBaseProperty) {
-        build("BaseProperty") {
-            build(baseProperty.name.toString())
-            build(baseProperty.type.toString())
-            build(baseProperty.initializer)
+    override fun visitKtProperty(ktProperty: VkKtProperty) {
+        build("KtProperty") {
+            build(ktProperty.name.toString())
+            build(ktProperty.type.toString())
+            build(ktProperty.initializer)
+        }
+    }
+
+    override fun visitSvProperty(svProperty: VkSvProperty) {
+        build("SvProperty") {
+            build(svProperty.name.toString())
+            build(svProperty.type.toString())
+            build(svProperty.initializer)
         }
     }
 

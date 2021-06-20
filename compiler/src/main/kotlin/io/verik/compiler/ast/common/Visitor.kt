@@ -70,6 +70,14 @@ abstract class Visitor {
         return visitDeclaration(baseProperty)
     }
 
+    open fun visitKtProperty(ktProperty: VkKtProperty) {
+        return visitBaseProperty(ktProperty)
+    }
+
+    open fun visitSvProperty(svProperty: VkSvProperty) {
+        return visitBaseProperty(svProperty)
+    }
+
     open fun visitTypeParameter(typeParameter: VkTypeParameter) {
         return visitDeclaration(typeParameter)
     }

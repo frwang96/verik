@@ -76,7 +76,7 @@ object FileSplitter {
                 is VkModule -> componentDeclarations.add(it)
                 is VkSvClass -> packageDeclarations.add(it)
                 is VkSvFunction -> packageDeclarations.add(it)
-                is VkBaseProperty -> packageDeclarations.add(it)
+                is VkSvProperty -> packageDeclarations.add(it)
                 else -> m.error("Unable to identify as component or package declaration: ${it.name}", it)
             }
         }

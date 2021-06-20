@@ -18,9 +18,9 @@ package io.verik.compiler.cast
 
 import io.verik.compiler.ast.common.Name
 import io.verik.compiler.ast.common.Type
-import io.verik.compiler.ast.element.VkBaseProperty
 import io.verik.compiler.ast.element.VkKtClass
 import io.verik.compiler.ast.element.VkKtFunction
+import io.verik.compiler.ast.element.VkKtProperty
 import io.verik.compiler.ast.element.VkTypeParameter
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.getMessageLocation
@@ -67,8 +67,8 @@ class IndexerVisitor(
         val location = property.getMessageLocation()
         val name = Name(property.name!!)
         checkDeclarationName(name, property)
-        val baseProperty = VkBaseProperty(location, name, Type.NULL, null)
-        declarationMap[descriptor] = baseProperty
+        val ktProperty = VkKtProperty(location, name, Type.NULL, null)
+        declarationMap[descriptor] = ktProperty
     }
 
     override fun visitTypeParameter(parameter: KtTypeParameter) {

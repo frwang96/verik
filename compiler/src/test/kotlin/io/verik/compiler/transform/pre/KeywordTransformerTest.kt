@@ -31,7 +31,7 @@ internal class KeywordTransformerTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "File([BaseProperty(alias\$K, Boolean, *)])",
+            "File([KtProperty(alias\$K, Boolean, *)])",
             projectContext.vkFiles.first()
         )
     }

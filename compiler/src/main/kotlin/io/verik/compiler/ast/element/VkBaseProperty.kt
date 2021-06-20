@@ -16,29 +16,11 @@
 
 package io.verik.compiler.ast.element
 
-import io.verik.compiler.ast.common.Name
-import io.verik.compiler.ast.common.TreeVisitor
-import io.verik.compiler.ast.common.Type
-import io.verik.compiler.ast.common.Visitor
-import io.verik.compiler.main.MessageLocation
+abstract class VkBaseProperty : VkDeclaration() {
 
-open class VkBaseProperty(
-    override val location: MessageLocation,
-    override var name: Name,
-    override var type: Type,
-    var initializer: VkExpression?
-) : VkDeclaration() {
+    abstract var initializer: VkExpression?
 
-    init {
-        @Suppress("LeakingThis")
-        initializer?.parent = this
-    }
-
-    override fun accept(visitor: Visitor) {
-        return visitor.visitBaseProperty(this)
-    }
-
-    override fun acceptChildren(visitor: TreeVisitor) {
-        initializer?.accept(visitor)
+    fun replace(baseProperty: VkBaseProperty) {
+        parent.cast<VkFile>(this)?.replaceChild(this, baseProperty)
     }
 }

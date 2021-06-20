@@ -61,8 +61,8 @@ object ElementCounter {
             functionCount++
         }
 
-        override fun visitBaseProperty(baseProperty: VkBaseProperty) {
-            super.visitBaseProperty(baseProperty)
+        override fun visitKtProperty(ktProperty: VkKtProperty) {
+            super.visitKtProperty(ktProperty)
             propertyCount++
         }
     }

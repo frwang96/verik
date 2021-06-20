@@ -104,7 +104,7 @@ internal class CasterBaseVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtClass(C, [], [BaseProperty(x, Boolean, *)])",
+            "KtClass(C, [], [KtProperty(x, Boolean, *)])",
             projectContext.findDeclaration("C")
         )
     }
@@ -185,7 +185,7 @@ internal class CasterBaseVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "BaseProperty(x, Boolean, *)",
+            "KtProperty(x, Boolean, *)",
             projectContext.findDeclaration("x")
         )
     }

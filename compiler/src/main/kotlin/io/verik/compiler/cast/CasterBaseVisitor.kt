@@ -153,8 +153,8 @@ class CasterBaseVisitor(
 
     override fun visitProperty(property: KtProperty, data: Unit?): VkElement? {
         val descriptor = bindingContext.getSliceContents(BindingContext.VARIABLE)[property]!!
-        val baseProperty = declarationMap[descriptor, property]
-            .cast<VkBaseProperty>(property)
+        val ktProperty = declarationMap[descriptor, property]
+            .cast<VkKtProperty>(property)
             ?: return null
 
         val typeReference = property.typeReference
@@ -166,11 +166,11 @@ class CasterBaseVisitor(
         val initializer = property.initializer?.let {
             expressionVisitor.getElement<VkExpression>(it)
         }
-        initializer?.parent = baseProperty
+        initializer?.parent = ktProperty
 
-        baseProperty.type = type
-        baseProperty.initializer = initializer
-        return baseProperty
+        ktProperty.type = type
+        ktProperty.initializer = initializer
+        return ktProperty
     }
 
     override fun visitTypeParameter(parameter: KtTypeParameter, data: Unit?): VkElement? {
