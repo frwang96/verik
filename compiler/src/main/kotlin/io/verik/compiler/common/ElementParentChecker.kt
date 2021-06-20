@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.serialize
+package io.verik.compiler.common
 
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.element.VkElement

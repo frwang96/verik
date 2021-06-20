@@ -28,6 +28,10 @@ class VkValueArgument(
     var expression: VkExpression
 ) : VkElement(), Reference {
 
+    init {
+        expression.parent = this
+    }
+
     override fun accept(visitor: Visitor) {
         visitor.visitValueArgument(this)
     }

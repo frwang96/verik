@@ -18,21 +18,23 @@ package io.verik.compiler.transform.pre
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestDriver
-import io.verik.compiler.util.assertElementEquals
+import io.verik.compiler.util.TestException
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
-internal class KeywordTransformerTest : BaseTest() {
+internal class KeywordCheckerTest : BaseTest() {
 
     @Test
     fun `keyword property`() {
-        val projectContext = TestDriver.preTransform(
-            """
-            const val alias = false
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "File([KtProperty(alias\$K, Boolean, *)])",
-            projectContext.vkFiles.first()
-        )
+        assertThrows<TestException> {
+            TestDriver.preTransform(
+                """
+                const val alias = false
+                """.trimIndent()
+            )
+        }.apply {
+            assertEquals("Conflict with SystemVerilog keyword: alias", message)
+        }
     }
 }

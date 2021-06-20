@@ -16,12 +16,12 @@
 
 package io.verik.compiler.transform.pre
 
-import io.verik.compiler.ast.common.Name
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.element.VkDeclaration
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.m
 
-object KeywordTransformer {
+object KeywordChecker {
 
     fun transform(projectContext: ProjectContext) {
         projectContext.vkFiles.forEach {
@@ -32,14 +32,9 @@ object KeywordTransformer {
     object KeywordVisitor : TreeVisitor() {
 
         override fun visitDeclaration(declaration: VkDeclaration) {
-            declaration.name = rename(declaration.name)
+            if (declaration.name.name in keywords)
+                m.error("Conflict with SystemVerilog keyword: ${declaration.name}", declaration)
         }
-    }
-
-    private fun rename(name: Name): Name {
-        return if (name.name in keywords) {
-            Name(name.name + "\$K")
-        } else name
     }
 
     private val keywords = setOf(

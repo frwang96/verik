@@ -26,6 +26,10 @@ class VkCallExpression(
     val valueArguments: ArrayList<VkValueArgument>
 ) : VkExpression(), Reference {
 
+    init {
+        valueArguments.forEach { it.parent = this }
+    }
+
     override fun accept(visitor: Visitor) {
         visitor.visitCallExpression(this)
     }

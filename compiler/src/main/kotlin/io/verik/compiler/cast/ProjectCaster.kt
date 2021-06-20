@@ -17,6 +17,7 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.ast.element.VkFile
+import io.verik.compiler.common.ElementParentChecker
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
@@ -41,12 +42,8 @@ object ProjectCaster {
         projectContext.vkFiles = files
         m.flush()
 
-        m.log("Cast: Check file paths")
-        FileChecker.check(projectContext)
-        m.flush()
-
-        m.log("Cast: Check import directives")
-        ImportDirectiveChecker.check(projectContext)
+        m.log("Cast: Check element parents")
+        ElementParentChecker.check(projectContext)
         m.flush()
 
         if (projectContext.config.debug) {

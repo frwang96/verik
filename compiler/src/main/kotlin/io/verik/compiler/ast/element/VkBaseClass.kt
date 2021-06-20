@@ -17,7 +17,6 @@
 package io.verik.compiler.ast.element
 
 import io.verik.compiler.ast.common.Type
-import io.verik.compiler.main.m
 
 abstract class VkBaseClass : VkDeclaration() {
 
@@ -27,14 +26,5 @@ abstract class VkBaseClass : VkDeclaration() {
 
     fun replace(baseClass: VkBaseClass) {
         parent.cast<VkFile>(this)?.replaceChild(this, baseClass)
-    }
-
-    fun removeChild(declaration: VkDeclaration) {
-        if (!declarations.remove(declaration))
-            m.error("Could not find declaration $declaration", declaration)
-    }
-
-    fun insertSibling(declaration: VkDeclaration) {
-        parent.cast<VkFile>(this)?.insertChild(this, declaration)
     }
 }

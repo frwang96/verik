@@ -22,12 +22,17 @@ import io.verik.compiler.main.m
 object ProjectPreTransformer {
 
     fun transform(projectContext: ProjectContext) {
-        m.log("Pre-transform: Rename keyword conflicts")
-        KeywordTransformer.transform(projectContext)
+
+        m.log("Pre-transform: Check file paths")
+        FileChecker.check(projectContext)
         m.flush()
 
-        m.log("Pre-transform: Separate nested classes")
-        NestedClassTransformer.transform(projectContext)
+        m.log("Pre-transform: Check import directives")
+        ImportDirectiveChecker.check(projectContext)
+        m.flush()
+
+        m.log("Pre-transform: Check keyword conflicts")
+        KeywordChecker.transform(projectContext)
         m.flush()
     }
 }

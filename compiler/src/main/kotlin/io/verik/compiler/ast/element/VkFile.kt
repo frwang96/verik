@@ -57,16 +57,6 @@ open class VkFile(
         }
     }
 
-    fun insertChild(oldDeclaration: VkDeclaration, newDeclaration: VkDeclaration) {
-        val index = declarations.indexOf(oldDeclaration)
-        if (index == -1) {
-            m.error("Could not find declaration $oldDeclaration", oldDeclaration)
-        } else {
-            newDeclaration.parent = this
-            declarations.add(index + 1, newDeclaration)
-        }
-    }
-
     fun getOutputPathNotNull(): Path {
         return outputPath
             ?: m.fatal("File output path not specified", location)
