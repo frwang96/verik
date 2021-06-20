@@ -56,8 +56,8 @@ object ElementCounter {
             classCount++
         }
 
-        override fun visitBaseFunction(baseFunction: VkBaseFunction) {
-            super.visitBaseFunction(baseFunction)
+        override fun visitKtFunction(ktFunction: VkKtFunction) {
+            super.visitKtFunction(ktFunction)
             functionCount++
         }
 

@@ -58,6 +58,14 @@ abstract class Visitor {
         return visitDeclaration(baseFunction)
     }
 
+    open fun visitKtFunction(ktFunction: VkKtFunction) {
+        return visitBaseFunction(ktFunction)
+    }
+
+    open fun visitSvFunction(svFunction: VkSvFunction) {
+        return visitBaseFunction(svFunction)
+    }
+
     open fun visitBaseProperty(baseProperty: VkBaseProperty) {
         return visitDeclaration(baseProperty)
     }

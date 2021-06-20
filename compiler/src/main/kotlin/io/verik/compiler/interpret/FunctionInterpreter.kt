@@ -16,19 +16,28 @@
 
 package io.verik.compiler.interpret
 
+import io.verik.compiler.ast.element.VkKtFunction
+import io.verik.compiler.ast.element.VkSvFunction
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
 
-object ProjectInterpreter {
+object FunctionInterpreter {
 
     fun interpret(projectContext: ProjectContext) {
-        m.log("Interpret: Interpret declarations")
-        ClassInterpreter.interpret(projectContext)
-        FunctionInterpreter.interpret(projectContext)
-        m.flush()
+        projectContext.vkFiles.forEach {
+            it.declarations.forEach { declaration ->
+                if (declaration is VkKtFunction) interpretFunction(declaration)
+            }
+        }
+    }
 
-        m.log("Interpret: Split component and package files")
-        FileSplitter.split(projectContext)
-        m.flush()
+    private fun interpretFunction(ktFunction: VkKtFunction) {
+        ktFunction.replace(
+            VkSvFunction(
+                ktFunction.location,
+                ktFunction.name,
+                ktFunction.type,
+                ktFunction.bodyBlockExpression
+            )
+        )
     }
 }

@@ -16,7 +16,6 @@
 
 package io.verik.compiler.main
 
-import io.verik.compiler.canonicalize.ProjectCanonicalizer
 import io.verik.compiler.cast.ProjectCaster
 import io.verik.compiler.interpret.ProjectInterpreter
 import io.verik.compiler.serialize.ProjectSerializer
@@ -37,7 +36,6 @@ object Main {
         KotlinCompiler().compile(projectContext)
         ProjectCaster.cast(projectContext)
         ProjectPreTransformer.transform(projectContext)
-        ProjectCanonicalizer.canonicalize(projectContext)
         ProjectInterpreter.interpret(projectContext)
         ProjectPostTransformer.transform(projectContext)
         ProjectSerializer.serialize(projectContext)

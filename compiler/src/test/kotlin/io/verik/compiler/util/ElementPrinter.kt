@@ -52,12 +52,20 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitBaseFunction(baseFunction: VkBaseFunction) {
-        build("BaseFunction") {
-            build(baseFunction.name.toString())
-            build(baseFunction.type.toString())
-            build(baseFunction.annotationType.toString())
-            build(baseFunction.bodyBlockExpression)
+    override fun visitKtFunction(ktFunction: VkKtFunction) {
+        build("KtFunction") {
+            build(ktFunction.name.toString())
+            build(ktFunction.type.toString())
+            build(ktFunction.bodyBlockExpression)
+            build(ktFunction.annotationType.toString())
+        }
+    }
+
+    override fun visitSvFunction(svFunction: VkSvFunction) {
+        build("SvFunction") {
+            build(svFunction.name.toString())
+            build(svFunction.type.toString())
+            build(svFunction.bodyBlockExpression)
         }
     }
 

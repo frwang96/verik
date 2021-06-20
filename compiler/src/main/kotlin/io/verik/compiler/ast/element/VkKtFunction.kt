@@ -16,11 +16,26 @@
 
 package io.verik.compiler.ast.element
 
-abstract class VkBaseFunction : VkDeclaration() {
+import io.verik.compiler.ast.common.*
+import io.verik.compiler.main.MessageLocation
 
-    abstract var bodyBlockExpression: VkBlockExpression?
+class VkKtFunction(
+    override val location: MessageLocation,
+    override var name: Name,
+    override var type: Type,
+    override var bodyBlockExpression: VkBlockExpression?,
+    var annotationType: FunctionAnnotationType?
+) : VkBaseFunction() {
 
-    fun replace(baseFunction: VkBaseFunction) {
-        parent.cast<VkFile>(this)?.replaceChild(this, baseFunction)
+    init {
+        bodyBlockExpression?.parent = this
+    }
+
+    override fun accept(visitor: Visitor) {
+        return visitor.visitKtFunction(this)
+    }
+
+    override fun acceptChildren(visitor: TreeVisitor) {
+        bodyBlockExpression?.accept(visitor)
     }
 }

@@ -16,7 +16,6 @@
 
 package io.verik.compiler.util
 
-import io.verik.compiler.canonicalize.ProjectCanonicalizer
 import io.verik.compiler.cast.ProjectCaster
 import io.verik.compiler.interpret.ProjectInterpreter
 import io.verik.compiler.main.KotlinCompiler
@@ -69,14 +68,8 @@ object TestDriver {
         return projectContext
     }
 
-    fun canonicalize(@Language("kotlin") content: String): ProjectContext {
-        val projectContext = preTransform(content)
-        ProjectCanonicalizer.canonicalize(projectContext)
-        return projectContext
-    }
-
     fun interpret(@Language("kotlin") content: String): ProjectContext {
-        val projectContext = canonicalize(content)
+        val projectContext = preTransform(content)
         ProjectInterpreter.interpret(projectContext)
         return projectContext
     }

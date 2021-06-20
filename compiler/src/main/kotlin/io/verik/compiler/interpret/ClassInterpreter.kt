@@ -27,12 +27,12 @@ object ClassInterpreter {
     fun interpret(projectContext: ProjectContext) {
         projectContext.vkFiles.forEach {
             it.declarations.forEach { declaration ->
-                if (declaration is VkKtClass) interpretKtClass(declaration)
+                if (declaration is VkKtClass) interpretClass(declaration)
             }
         }
     }
 
-    private fun interpretKtClass(ktClass: VkKtClass) {
+    private fun interpretClass(ktClass: VkKtClass) {
         if (ktClass.type.isType(CoreClass.Core.MODULE.toNoArgumentsType())) {
             ktClass.replace(
                 VkModule(

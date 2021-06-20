@@ -123,8 +123,8 @@ class CasterBaseVisitor(
 
     override fun visitNamedFunction(function: KtNamedFunction, data: Unit?): VkElement? {
         val descriptor = bindingContext.getSliceContents(BindingContext.FUNCTION)[function]!!
-        val baseFunction = declarationMap[descriptor, function]
-            .cast<VkBaseFunction>(function)
+        val ktFunction = declarationMap[descriptor, function]
+            .cast<VkKtFunction>(function)
             ?: return null
 
         val type = getType(descriptor.returnType!!, function)
@@ -143,12 +143,12 @@ class CasterBaseVisitor(
         val bodyBlockExpression = function.bodyBlockExpression?.let {
             expressionVisitor.getElement<VkBlockExpression>(it)
         }
-        bodyBlockExpression?.parent = baseFunction
+        bodyBlockExpression?.parent = ktFunction
 
-        baseFunction.type = type
-        baseFunction.annotationType = annotationType
-        baseFunction.bodyBlockExpression = bodyBlockExpression
-        return baseFunction
+        ktFunction.type = type
+        ktFunction.bodyBlockExpression = bodyBlockExpression
+        ktFunction.annotationType = annotationType
+        return ktFunction
     }
 
     override fun visitProperty(property: KtProperty, data: Unit?): VkElement? {

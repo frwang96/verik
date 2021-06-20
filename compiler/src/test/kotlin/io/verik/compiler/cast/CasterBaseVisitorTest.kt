@@ -89,7 +89,7 @@ internal class CasterBaseVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtClass(C, [], [BaseFunction(f, Unit, null, *)])",
+            "KtClass(C, [], [KtFunction(f, Unit, *, null)])",
             projectContext.findDeclaration("C")
         )
     }
@@ -143,7 +143,7 @@ internal class CasterBaseVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "BaseFunction(f, Unit, null, *)",
+            "KtFunction(f, Unit, *, null)",
             projectContext.findDeclaration("f")
         )
     }
@@ -157,7 +157,7 @@ internal class CasterBaseVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "BaseFunction(f, Unit, TASK, *)",
+            "KtFunction(f, Unit, *, TASK)",
             projectContext.findDeclaration("f")
         )
     }
