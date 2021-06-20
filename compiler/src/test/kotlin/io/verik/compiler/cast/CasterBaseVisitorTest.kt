@@ -40,7 +40,7 @@ internal class CasterBaseVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "File([BaseClass(C, [], [])])",
+            "File([KtClass(C, [], [])])",
             projectContext.vkFiles.first()
         )
     }
@@ -56,8 +56,8 @@ internal class CasterBaseVisitorTest : BaseTest() {
         assertElementEquals(
             """
                 File([
-                    BaseClass(C, [], []),
-                    BaseClass(D, [], [])
+                    KtClass(C, [], []),
+                    KtClass(D, [], [])
                 ])
             """.trimIndent(),
             projectContext.vkFiles.first()
@@ -74,7 +74,7 @@ internal class CasterBaseVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "BaseClass(C, [], [BaseClass(D, [], [])])",
+            "KtClass(C, [], [KtClass(D, [], [])])",
             projectContext.findDeclaration("C")
         )
     }
@@ -89,7 +89,7 @@ internal class CasterBaseVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "BaseClass(C, [], [BaseFunction(f, Unit, null, *)])",
+            "KtClass(C, [], [BaseFunction(f, Unit, null, *)])",
             projectContext.findDeclaration("C")
         )
     }
@@ -104,7 +104,7 @@ internal class CasterBaseVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "BaseClass(C, [], [BaseProperty(x, Boolean, *)])",
+            "KtClass(C, [], [BaseProperty(x, Boolean, *)])",
             projectContext.findDeclaration("C")
         )
     }
@@ -117,7 +117,7 @@ internal class CasterBaseVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "BaseClass(C, [], [BaseClass(Companion, [], [])])",
+            "KtClass(C, [], [KtClass(Companion, [], [])])",
             projectContext.findDeclaration("C")
         )
     }
@@ -130,7 +130,7 @@ internal class CasterBaseVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "BaseClass(C, [TypeParameter(T, Any)], [])",
+            "KtClass(C, [TypeParameter(T, Any)], [])",
             projectContext.findDeclaration("C")
         )
     }

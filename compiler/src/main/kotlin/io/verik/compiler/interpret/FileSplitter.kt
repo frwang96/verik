@@ -74,10 +74,10 @@ object FileSplitter {
         declarations.forEach {
             when (it) {
                 is VkModule -> componentDeclarations.add(it)
-                is VkBaseClass -> packageDeclarations.add(it)
+                is VkSvClass -> packageDeclarations.add(it)
                 is VkBaseFunction -> packageDeclarations.add(it)
                 is VkBaseProperty -> packageDeclarations.add(it)
-                else -> m.error("Unable to identify declaration: ${it.name}", it)
+                else -> m.error("Unable to identify as component or package declaration: ${it.name}", it)
             }
         }
         return SplitDeclarationsResult(componentDeclarations, packageDeclarations)

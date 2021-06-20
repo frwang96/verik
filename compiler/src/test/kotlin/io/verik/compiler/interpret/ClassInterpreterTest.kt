@@ -38,14 +38,14 @@ internal class ClassInterpreterTest : BaseTest() {
     }
 
     @Test
-    fun `interpret base class`() {
+    fun `interpret sv class`() {
         val projectContext = TestDriver.interpret(
             """
             class C
             """.trimIndent()
         )
         assertElementEquals(
-            "BaseClass(C, [], [])",
+            "SvClass(C, [], [])",
             projectContext.findDeclaration("C")
         )
     }

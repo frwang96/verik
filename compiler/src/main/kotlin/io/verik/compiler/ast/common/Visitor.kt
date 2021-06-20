@@ -42,6 +42,14 @@ abstract class Visitor {
         return visitDeclaration(baseClass)
     }
 
+    open fun visitKtClass(ktClass: VkKtClass) {
+        return visitBaseClass(ktClass)
+    }
+
+    open fun visitSvClass(svClass: VkSvClass) {
+        return visitBaseClass(svClass)
+    }
+
     open fun visitModule(module: VkModule) {
         return visitBaseClass(module)
     }

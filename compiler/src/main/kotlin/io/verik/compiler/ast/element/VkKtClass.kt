@@ -22,7 +22,7 @@ import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.common.Visitor
 import io.verik.compiler.main.MessageLocation
 
-class VkModule(
+class VkKtClass(
     override val location: MessageLocation,
     override var name: Name,
     override var type: Type,
@@ -31,8 +31,12 @@ class VkModule(
     override var declarations: ArrayList<VkDeclaration>
 ) : VkBaseClass() {
 
+    init {
+        declarations.forEach { it.parent = this }
+    }
+
     override fun accept(visitor: Visitor) {
-        return visitor.visitModule(this)
+        return visitor.visitKtClass(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {

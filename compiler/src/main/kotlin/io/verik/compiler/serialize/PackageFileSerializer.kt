@@ -18,8 +18,8 @@ package io.verik.compiler.serialize
 
 import io.verik.compiler.ast.common.PackageName
 import io.verik.compiler.ast.common.SourceType
-import io.verik.compiler.ast.element.VkBaseClass
 import io.verik.compiler.ast.element.VkFile
+import io.verik.compiler.ast.element.VkSvClass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 
@@ -62,7 +62,7 @@ object PackageFileSerializer {
         builder.appendLine("package $serializedPackageName;")
         files.forEach { file ->
             file.declarations.forEach {
-                if (it is VkBaseClass) {
+                if (it is VkSvClass) {
                     builder.appendLine()
                     builder.append(indent)
                     builder.appendLine("typedef class ${it.name};")

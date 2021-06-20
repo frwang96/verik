@@ -100,8 +100,8 @@ class CasterBaseVisitor(
 
     override fun visitClassOrObject(classOrObject: KtClassOrObject, data: Unit?): VkElement? {
         val descriptor = bindingContext.getSliceContents(BindingContext.CLASS)[classOrObject]!!
-        val baseClass = declarationMap[descriptor, classOrObject]
-            .cast<VkBaseClass>(classOrObject)
+        val ktClass = declarationMap[descriptor, classOrObject]
+            .cast<VkKtClass>(classOrObject)
             ?: return null
 
         val type = getType(descriptor.defaultType, classOrObject)
@@ -112,13 +112,13 @@ class CasterBaseVisitor(
             ?.mapNotNull { getElement<VkDeclaration>(it) }
             ?: listOf()
 
-        baseClass.type = type
-        baseClass.supertype = supertype
-        typeParameters.forEach { it.parent = baseClass }
-        baseClass.typeParameters = ArrayList(typeParameters)
-        declarations.forEach { it.parent = baseClass }
-        baseClass.declarations = ArrayList(declarations)
-        return baseClass
+        ktClass.type = type
+        ktClass.supertype = supertype
+        typeParameters.forEach { it.parent = ktClass }
+        ktClass.typeParameters = ArrayList(typeParameters)
+        declarations.forEach { it.parent = ktClass }
+        ktClass.declarations = ArrayList(declarations)
+        return ktClass
     }
 
     override fun visitNamedFunction(function: KtNamedFunction, data: Unit?): VkElement? {

@@ -18,15 +18,15 @@ package io.verik.compiler.transform.pre
 
 import io.verik.compiler.ast.common.Name
 import io.verik.compiler.ast.common.TreeVisitor
-import io.verik.compiler.ast.element.VkBaseClass
 import io.verik.compiler.ast.element.VkFile
+import io.verik.compiler.ast.element.VkKtClass
 import io.verik.compiler.ast.element.cast
 import io.verik.compiler.main.ProjectContext
 
 object NestedClassTransformer {
 
     fun transform(projectContext: ProjectContext) {
-        val nestedClasses = ArrayList<VkBaseClass>()
+        val nestedClasses = ArrayList<VkKtClass>()
         val nestedClassVisitor = NestedClassVisitor(nestedClasses)
         projectContext.vkFiles.forEach {
             it.accept(nestedClassVisitor)
@@ -34,22 +34,22 @@ object NestedClassTransformer {
         nestedClasses.forEach { unnestNestedClass(it) }
     }
 
-    private fun unnestNestedClass(baseClass: VkBaseClass) {
-        val parentClass = baseClass.parent.cast<VkBaseClass>(baseClass)
+    private fun unnestNestedClass(ktClass: VkKtClass) {
+        val parentClass = ktClass.parent.cast<VkKtClass>(ktClass)
         if (parentClass != null) {
-            val name = Name(parentClass.name.name + "\$" + baseClass.name.name)
-            baseClass.name = name
-            parentClass.removeChild(baseClass)
-            parentClass.insertSibling(baseClass)
+            val name = Name(parentClass.name.name + "\$" + ktClass.name.name)
+            ktClass.name = name
+            parentClass.removeChild(ktClass)
+            parentClass.insertSibling(ktClass)
         }
     }
 
-    class NestedClassVisitor(private val nestedClasses: ArrayList<VkBaseClass>) : TreeVisitor() {
+    class NestedClassVisitor(private val nestedClasses: ArrayList<VkKtClass>) : TreeVisitor() {
 
-        override fun visitBaseClass(baseClass: VkBaseClass) {
-            if (baseClass.parent !is VkFile)
-                nestedClasses.add(baseClass)
-            super.visitBaseClass(baseClass)
+        override fun visitKtClass(ktClass: VkKtClass) {
+            super.visitKtClass(ktClass)
+            if (ktClass.parent !is VkFile)
+                nestedClasses.add(ktClass)
         }
     }
 }

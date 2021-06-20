@@ -28,7 +28,6 @@ object ElementCounter {
         projectContext.vkFiles.forEach { it.accept(elementVisitor) }
         m.log("Count: Elements: ${elementVisitor.elementCount}")
         m.log("Count: Files: ${elementVisitor.fileCount}")
-        m.log("Count: Declarations: ${elementVisitor.declarationCount}")
         m.log("Count: Classes: ${elementVisitor.classCount}")
         m.log("Count: Functions: ${elementVisitor.functionCount}")
         m.log("Count: Properties: ${elementVisitor.propertyCount}")
@@ -38,7 +37,6 @@ object ElementCounter {
 
         var elementCount = 0
         var fileCount = 0
-        var declarationCount = 0
         var classCount = 0
         var functionCount = 0
         var propertyCount = 0
@@ -53,13 +51,8 @@ object ElementCounter {
             fileCount++
         }
 
-        override fun visitDeclaration(declaration: VkDeclaration) {
-            super.visitDeclaration(declaration)
-            declarationCount++
-        }
-
-        override fun visitBaseClass(baseClass: VkBaseClass) {
-            super.visitBaseClass(baseClass)
+        override fun visitKtClass(ktClass: VkKtClass) {
+            super.visitKtClass(ktClass)
             classCount++
         }
 

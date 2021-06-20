@@ -37,14 +37,14 @@ class SerializerBaseVisitor(private val sourceBuilder: SourceBuilder) : Visitor(
         m.error("Unable to serialize declaration: $declaration", declaration)
     }
 
-    override fun visitBaseClass(baseClass: VkBaseClass) {
+    override fun visitSvClass(svClass: VkSvClass) {
         appendLineIfNotFirst()
-        sourceBuilder.appendLine("class $baseClass;", baseClass)
+        sourceBuilder.appendLine("class $svClass;", svClass)
         sourceBuilder.indent {
-            baseClass.declarations.forEach { it.accept(this) }
+            svClass.declarations.forEach { it.accept(this) }
             sourceBuilder.appendLine()
         }
-        sourceBuilder.appendLine("endclass: $baseClass", baseClass)
+        sourceBuilder.appendLine("endclass: $svClass", svClass)
     }
 
     override fun visitModule(module: VkModule) {

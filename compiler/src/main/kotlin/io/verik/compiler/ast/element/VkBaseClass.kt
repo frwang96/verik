@@ -16,33 +16,14 @@
 
 package io.verik.compiler.ast.element
 
-import io.verik.compiler.ast.common.Name
-import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.common.Type
-import io.verik.compiler.ast.common.Visitor
-import io.verik.compiler.main.MessageLocation
 import io.verik.compiler.main.m
 
-open class VkBaseClass(
-    override val location: MessageLocation,
-    override var name: Name,
-    override var type: Type,
-    var supertype: Type,
-    var typeParameters: ArrayList<VkTypeParameter>,
-    var declarations: ArrayList<VkDeclaration>
-) : VkDeclaration() {
+abstract class VkBaseClass : VkDeclaration() {
 
-    init {
-        declarations.forEach { it.parent = this }
-    }
-
-    override fun accept(visitor: Visitor) {
-        return visitor.visitBaseClass(this)
-    }
-
-    override fun acceptChildren(visitor: TreeVisitor) {
-        declarations.forEach { it.accept(visitor) }
-    }
+    abstract var supertype: Type
+    abstract var typeParameters: ArrayList<VkTypeParameter>
+    abstract var declarations: ArrayList<VkDeclaration>
 
     fun replace(baseClass: VkBaseClass) {
         parent.cast<VkFile>(this)?.replaceChild(this, baseClass)

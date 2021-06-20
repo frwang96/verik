@@ -16,8 +16,9 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.VkBaseClass
+import io.verik.compiler.ast.element.VkKtClass
 import io.verik.compiler.ast.element.VkModule
+import io.verik.compiler.ast.element.VkSvClass
 import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.ProjectContext
 
@@ -26,20 +27,32 @@ object ClassInterpreter {
     fun interpret(projectContext: ProjectContext) {
         projectContext.vkFiles.forEach {
             it.declarations.forEach { declaration ->
-                if (declaration is VkBaseClass) interpretBaseClass(declaration)
+                if (declaration is VkKtClass) interpretKtClass(declaration)
             }
         }
     }
 
-    private fun interpretBaseClass(baseClass: VkBaseClass) {
-        if (baseClass.type.isType(CoreClass.Core.MODULE.toNoArgumentsType())) {
-            baseClass.replace(
+    private fun interpretKtClass(ktClass: VkKtClass) {
+        if (ktClass.type.isType(CoreClass.Core.MODULE.toNoArgumentsType())) {
+            ktClass.replace(
                 VkModule(
-                    baseClass.location,
-                    baseClass.name,
-                    baseClass.type,
-                    baseClass.supertype,
-                    baseClass.declarations
+                    ktClass.location,
+                    ktClass.name,
+                    ktClass.type,
+                    ktClass.supertype,
+                    ktClass.typeParameters,
+                    ktClass.declarations
+                )
+            )
+        } else {
+            ktClass.replace(
+                VkSvClass(
+                    ktClass.location,
+                    ktClass.name,
+                    ktClass.type,
+                    ktClass.supertype,
+                    ktClass.typeParameters,
+                    ktClass.declarations
                 )
             )
         }
