@@ -21,7 +21,7 @@ import io.verik.compiler.main.MessageLocation
 import io.verik.compiler.main.m
 import java.nio.file.Path
 
-open class VkFile(
+class VkFile(
     override val location: MessageLocation,
     val inputPath: Path,
     private val outputPath: Path?,
@@ -29,9 +29,9 @@ open class VkFile(
     val sourceSetType: SourceSetType,
     val sourceType: SourceType?,
     val packageName: PackageName,
-    val declarations: ArrayList<VkDeclaration>,
+    override var declarations: ArrayList<VkDeclaration>,
     private val importDirectives: List<VkImportDirective>
-) : VkElement() {
+) : VkElement(), VkDeclarationContainer {
 
     init {
         importDirectives.forEach { it.parent = this }
@@ -45,16 +45,6 @@ open class VkFile(
     override fun acceptChildren(visitor: TreeVisitor) {
         importDirectives.forEach { it.accept(visitor) }
         declarations.forEach { it.accept(visitor) }
-    }
-
-    fun replaceChild(oldDeclaration: VkDeclaration, newDeclaration: VkDeclaration) {
-        val index = declarations.indexOf(oldDeclaration)
-        if (index == -1) {
-            m.error("Could not find declaration $oldDeclaration", oldDeclaration)
-        } else {
-            newDeclaration.parent = this
-            declarations[index] = newDeclaration
-        }
     }
 
     fun getOutputPathNotNull(): Path {

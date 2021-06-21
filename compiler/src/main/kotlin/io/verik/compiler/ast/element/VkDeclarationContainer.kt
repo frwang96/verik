@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast.element
 
-abstract class VkBaseProperty : VkDeclaration() {
+interface VkDeclarationContainer {
 
-    abstract var initializer: VkExpression?
+    var declarations: ArrayList<VkDeclaration>
 }

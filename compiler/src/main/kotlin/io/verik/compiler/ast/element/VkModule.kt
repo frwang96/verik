@@ -31,6 +31,10 @@ class VkModule(
     override var declarations: ArrayList<VkDeclaration>
 ) : VkBaseClass() {
 
+    init {
+        declarations.forEach { it.parent = this }
+    }
+
     override fun accept(visitor: Visitor) {
         return visitor.visitModule(this)
     }

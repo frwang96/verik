@@ -16,28 +16,18 @@
 
 package io.verik.compiler.interpret
 
+import io.verik.compiler.ast.element.VkBaseProperty
 import io.verik.compiler.ast.element.VkKtProperty
 import io.verik.compiler.ast.element.VkSvProperty
-import io.verik.compiler.main.ProjectContext
 
 object PropertyInterpreter {
 
-    fun interpret(projectContext: ProjectContext) {
-        projectContext.vkFiles.forEach {
-            it.declarations.forEach { declaration ->
-                if (declaration is VkKtProperty) interpretProperty(declaration)
-            }
-        }
-    }
-
-    private fun interpretProperty(ktProperty: VkKtProperty) {
-        ktProperty.replace(
-            VkSvProperty(
-                ktProperty.location,
-                ktProperty.name,
-                ktProperty.type,
-                ktProperty.initializer
-            )
+    fun interpret(ktProperty: VkKtProperty): VkBaseProperty {
+            return VkSvProperty(
+            ktProperty.location,
+            ktProperty.name,
+            ktProperty.type,
+            ktProperty.initializer
         )
     }
 }

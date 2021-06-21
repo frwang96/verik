@@ -28,7 +28,7 @@ internal class TypeSerializerTest : BaseTest() {
     fun `type boolean`() {
         val projectContext = TestDriver.serialize(
             """
-            var x = false
+                var x = false
             """.trimIndent()
         )
         val expected = """
@@ -45,7 +45,7 @@ internal class TypeSerializerTest : BaseTest() {
     fun `type ubit`() {
         val projectContext = TestDriver.serialize(
             """
-            var x: Ubit<`8`> = x()
+                var x: Ubit<`8`> = u(0)
             """.trimIndent()
         )
         val expected = """

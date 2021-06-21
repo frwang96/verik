@@ -19,8 +19,4 @@ package io.verik.compiler.ast.element
 abstract class VkBaseFunction : VkDeclaration() {
 
     abstract var bodyBlockExpression: VkBlockExpression?
-
-    fun replace(baseFunction: VkBaseFunction) {
-        parent.cast<VkFile>(this)?.replaceChild(this, baseFunction)
-    }
 }

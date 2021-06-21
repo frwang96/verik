@@ -28,7 +28,7 @@ internal class TypeCasterTest : BaseTest() {
     fun `type class simple`() {
         val projectContext = TestDriver.cast(
             """
-            var x = 0
+                var x = 0
             """.trimIndent()
         )
         assertElementEquals(
@@ -42,8 +42,8 @@ internal class TypeCasterTest : BaseTest() {
     fun `type class parameterized`() {
         val projectContext = TestDriver.cast(
             """
-            class C<T>
-            var x = C<Int>()
+                class C<T>
+                var x = C<Int>()
             """.trimIndent()
         )
         assertElementEquals(
@@ -57,9 +57,9 @@ internal class TypeCasterTest : BaseTest() {
     fun `type type parameter`() {
         val projectContext = TestDriver.cast(
             """
-            class C<T> {
-                val x = C<T>()
-            }
+                class C<T> {
+                    val x = C<T>()
+                }
             """.trimIndent()
         )
         assertElementEquals(
@@ -73,8 +73,8 @@ internal class TypeCasterTest : BaseTest() {
         assertThrows<TestException> {
             TestDriver.cast(
                 """
-                @Suppress("ImplicitNullableNothingType")
-                var x = null
+                    @Suppress("ImplicitNullableNothingType")
+                    var x = null
                 """.trimIndent()
             )
         }.apply {
@@ -86,7 +86,7 @@ internal class TypeCasterTest : BaseTest() {
     fun `type reference simple`() {
         val projectContext = TestDriver.cast(
             """
-            var x: Int = 0
+                var x: Int = 0
             """.trimIndent()
         )
         assertElementEquals(
@@ -100,9 +100,9 @@ internal class TypeCasterTest : BaseTest() {
     fun `type reference type parameter`() {
         val projectContext = TestDriver.cast(
             """
-            class C<T> {
-                val x: C<T> = C()
-            }
+                class C<T> {
+                    val x: C<T> = C()
+                }
             """.trimIndent()
         )
         assertElementEquals(
@@ -112,15 +112,14 @@ internal class TypeCasterTest : BaseTest() {
     }
 
     @Test
-    @Disabled
     fun `type reference cardinal simple`() {
         val projectContext = TestDriver.cast(
             """
-            var x: Ubit<`8`> = u(0)
+                var x: Ubit<`8`> = u(0)
             """.trimIndent()
         )
         assertElementEquals(
-            "KtProperty(x, Ubit<`8`>)",
+            "KtProperty(x, Ubit<`8`>, *)",
             projectContext.findDeclaration("x")
         )
     }
@@ -130,7 +129,7 @@ internal class TypeCasterTest : BaseTest() {
         assertThrows<TestException> {
             TestDriver.cast(
                 """
-                var x: Ubit<Cardinal> = u(0)
+                    var x: Ubit<Cardinal> = u(0)
                 """.trimIndent()
             )
         }.apply {
@@ -142,7 +141,7 @@ internal class TypeCasterTest : BaseTest() {
     fun `type reference cardinal function`() {
         val projectContext = TestDriver.cast(
             """
-            var x: Ubit<ADD<`8`, `16`>> = u(0)
+                var x: Ubit<ADD<`8`, `16`>> = u(0)
             """.trimIndent()
         )
         assertElementEquals(
@@ -156,7 +155,7 @@ internal class TypeCasterTest : BaseTest() {
         assertThrows<TestException> {
             TestDriver.cast(
                 """
-                var x: Ubit<ADD<`8`, Int>> = u(0)
+                    var x: Ubit<ADD<`8`, Int>> = u(0)
                 """.trimIndent()
             )
         }.apply {
@@ -168,9 +167,9 @@ internal class TypeCasterTest : BaseTest() {
     fun `type reference cardinal type parameter`() {
         val projectContext = TestDriver.cast(
             """
-            class C<N: Cardinal> {
-                var x: Ubit<N> = u(0)
-            }
+                class C<N: Cardinal> {
+                    var x: Ubit<N> = u(0)
+                }
             """.trimIndent()
         )
         assertElementEquals(
@@ -184,9 +183,9 @@ internal class TypeCasterTest : BaseTest() {
         assertThrows<TestException> {
             TestDriver.cast(
                 """
-                class C<N> {
-                    var x: Ubit<INC<N>> = u(0)
-                }
+                    class C<N> {
+                        var x: Ubit<INC<N>> = u(0)
+                    }
                 """.trimIndent()
             )
         }.apply {

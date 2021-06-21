@@ -30,11 +30,11 @@ internal class KeywordCheckerTest : BaseTest() {
         assertThrows<TestException> {
             TestDriver.preTransform(
                 """
-                const val alias = false
+                    const val alias = false
                 """.trimIndent()
             )
         }.apply {
-            assertEquals("Conflict with SystemVerilog keyword: alias", message)
+            assertEquals("Conflict with SystemVerilog reserved keyword: alias", message)
         }
     }
 }

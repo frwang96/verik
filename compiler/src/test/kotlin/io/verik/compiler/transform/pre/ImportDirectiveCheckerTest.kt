@@ -30,7 +30,7 @@ internal class ImportDirectiveCheckerTest : BaseTest() {
         assertThrows<TestException> {
             TestDriver.preTransform(
                 """
-                import java.time.LocalDateTime
+                    import java.time.LocalDateTime
                 """.trimIndent()
             )
         }.apply {
@@ -43,7 +43,7 @@ internal class ImportDirectiveCheckerTest : BaseTest() {
         assertThrows<TestException> {
             TestDriver.preTransform(
                 """
-                import java.time.*
+                    import java.time.*
                 """.trimIndent()
             )
         }.apply {

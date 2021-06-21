@@ -16,44 +16,32 @@
 
 package io.verik.compiler.interpret
 
+import io.verik.compiler.ast.element.VkBaseClass
 import io.verik.compiler.ast.element.VkKtClass
 import io.verik.compiler.ast.element.VkModule
 import io.verik.compiler.ast.element.VkSvClass
 import io.verik.compiler.core.CoreClass
-import io.verik.compiler.main.ProjectContext
 
 object ClassInterpreter {
 
-    fun interpret(projectContext: ProjectContext) {
-        projectContext.vkFiles.forEach {
-            it.declarations.forEach { declaration ->
-                if (declaration is VkKtClass) interpretClass(declaration)
-            }
-        }
-    }
-
-    private fun interpretClass(ktClass: VkKtClass) {
-        if (ktClass.type.isType(CoreClass.Core.MODULE.toNoArgumentsType())) {
-            ktClass.replace(
-                VkModule(
-                    ktClass.location,
-                    ktClass.name,
-                    ktClass.type,
-                    ktClass.supertype,
-                    ktClass.typeParameters,
-                    ktClass.declarations
-                )
+    fun interpret(ktClass: VkKtClass): VkBaseClass {
+        return if (ktClass.type.isType(CoreClass.Core.MODULE.toNoArgumentsType())) {
+            VkModule(
+                ktClass.location,
+                ktClass.name,
+                ktClass.type,
+                ktClass.supertype,
+                ktClass.typeParameters,
+                ktClass.declarations
             )
         } else {
-            ktClass.replace(
-                VkSvClass(
-                    ktClass.location,
-                    ktClass.name,
-                    ktClass.type,
-                    ktClass.supertype,
-                    ktClass.typeParameters,
-                    ktClass.declarations
-                )
+            VkSvClass(
+                ktClass.location,
+                ktClass.name,
+                ktClass.type,
+                ktClass.supertype,
+                ktClass.typeParameters,
+                ktClass.declarations
             )
         }
     }

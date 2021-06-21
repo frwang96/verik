@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.interpret
+package io.verik.compiler.transform.post
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestDriver
@@ -22,31 +22,18 @@ import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class ClassInterpreterTest : BaseTest() {
+internal class FunctionReferenceTransformerTest : BaseTest() {
 
     @Test
-    fun `interpret module`() {
-        val projectContext = TestDriver.interpret(
+    fun `transform random`() {
+        val projectContext = TestDriver.postTransform(
             """
-                class M: Module()
+                val x = random()
             """.trimIndent()
         )
         assertElementEquals(
-            "Module(M)",
-            projectContext.findDeclaration("M")
-        )
-    }
-
-    @Test
-    fun `interpret class`() {
-        val projectContext = TestDriver.interpret(
-            """
-                class C
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "SvClass(C, [], [])",
-            projectContext.findDeclaration("C")
+            "SvProperty(x, Int, CallExpression(Int, \$random, []))",
+            projectContext.findDeclaration("x")
         )
     }
 }

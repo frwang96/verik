@@ -23,9 +23,7 @@ object ProjectInterpreter {
 
     fun interpret(projectContext: ProjectContext) {
         m.log("Interpret: Interpret declarations")
-        ClassInterpreter.interpret(projectContext)
-        FunctionInterpreter.interpret(projectContext)
-        PropertyInterpreter.interpret(projectContext)
+        DeclarationInterpreter.interpret(projectContext)
         m.flush()
 
         m.log("Interpret: Split component and package files")

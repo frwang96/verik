@@ -30,8 +30,8 @@ internal class IndexerVisitorTest : BaseTest() {
         assertThrows<TestException> {
             TestDriver.cast(
                 """
-                @Suppress("ObjectPropertyName")
-                val αβγ = 0
+                    @Suppress("ObjectPropertyName")
+                    val αβγ = 0
                 """.trimIndent()
             )
         }.apply {

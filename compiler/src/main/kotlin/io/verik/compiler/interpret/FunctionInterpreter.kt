@@ -16,28 +16,18 @@
 
 package io.verik.compiler.interpret
 
+import io.verik.compiler.ast.element.VkBaseFunction
 import io.verik.compiler.ast.element.VkKtFunction
 import io.verik.compiler.ast.element.VkSvFunction
-import io.verik.compiler.main.ProjectContext
 
 object FunctionInterpreter {
 
-    fun interpret(projectContext: ProjectContext) {
-        projectContext.vkFiles.forEach {
-            it.declarations.forEach { declaration ->
-                if (declaration is VkKtFunction) interpretFunction(declaration)
-            }
-        }
-    }
-
-    private fun interpretFunction(ktFunction: VkKtFunction) {
-        ktFunction.replace(
-            VkSvFunction(
-                ktFunction.location,
-                ktFunction.name,
-                ktFunction.type,
-                ktFunction.bodyBlockExpression
-            )
+    fun interpret(ktFunction: VkKtFunction): VkBaseFunction {
+        return VkSvFunction(
+            ktFunction.location,
+            ktFunction.name,
+            ktFunction.type,
+            ktFunction.bodyBlockExpression
         )
     }
 }

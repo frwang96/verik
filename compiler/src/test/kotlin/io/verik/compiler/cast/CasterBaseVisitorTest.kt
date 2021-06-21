@@ -36,7 +36,7 @@ internal class CasterBaseVisitorTest : BaseTest() {
     fun `file class`() {
         val projectContext = TestDriver.cast(
             """
-            class C
+                class C
             """.trimIndent()
         )
         assertElementEquals(
@@ -49,8 +49,8 @@ internal class CasterBaseVisitorTest : BaseTest() {
     fun `file classes`() {
         val projectContext = TestDriver.cast(
             """
-            class C
-            class D
+                class C
+                class D
             """.trimIndent()
         )
         assertElementEquals(
@@ -68,9 +68,9 @@ internal class CasterBaseVisitorTest : BaseTest() {
     fun `class with class`() {
         val projectContext = TestDriver.cast(
             """
-            class C {
-                class D
-            }
+                class C {
+                    class D
+                }
             """.trimIndent()
         )
         assertElementEquals(
@@ -83,9 +83,9 @@ internal class CasterBaseVisitorTest : BaseTest() {
     fun `class with function`() {
         val projectContext = TestDriver.cast(
             """
-            class C {
-                fun f() {}
-            }
+                class C {
+                    fun f() {}
+                }
             """.trimIndent()
         )
         assertElementEquals(
@@ -98,9 +98,9 @@ internal class CasterBaseVisitorTest : BaseTest() {
     fun `class with property`() {
         val projectContext = TestDriver.cast(
             """
-            class C {
-                val x = false
-            }
+                class C {
+                    val x = false
+                }
             """.trimIndent()
         )
         assertElementEquals(
@@ -113,7 +113,7 @@ internal class CasterBaseVisitorTest : BaseTest() {
     fun `class with companion object`() {
         val projectContext = TestDriver.cast(
             """
-            class C { companion object }
+                class C { companion object }
             """.trimIndent()
         )
         assertElementEquals(
@@ -126,7 +126,7 @@ internal class CasterBaseVisitorTest : BaseTest() {
     fun `class with type parameter`() {
         val projectContext = TestDriver.cast(
             """
-            class C<T>
+                class C<T>
             """.trimIndent()
         )
         assertElementEquals(
@@ -139,7 +139,7 @@ internal class CasterBaseVisitorTest : BaseTest() {
     fun `function simple`() {
         val projectContext = TestDriver.cast(
             """
-            fun f() {}
+                fun f() {}
             """.trimIndent()
         )
         assertElementEquals(
@@ -152,8 +152,8 @@ internal class CasterBaseVisitorTest : BaseTest() {
     fun `function annotation`() {
         val projectContext = TestDriver.cast(
             """
-            @Task
-            fun f() {}
+                @Task
+                fun f() {}
             """.trimIndent()
         )
         assertElementEquals(
@@ -167,9 +167,9 @@ internal class CasterBaseVisitorTest : BaseTest() {
         assertThrows<TestException> {
             TestDriver.cast(
                 """
-                @Com
-                @Seq
-                fun f() {}
+                    @Com
+                    @Seq
+                    fun f() {}
                 """.trimIndent()
             )
         }.apply {
@@ -181,7 +181,7 @@ internal class CasterBaseVisitorTest : BaseTest() {
     fun `property simple`() {
         val projectContext = TestDriver.cast(
             """
-            var x = false
+                var x = false
             """.trimIndent()
         )
         assertElementEquals(

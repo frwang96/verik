@@ -29,11 +29,11 @@ class KotlinCompilerTest : BaseTest() {
     fun `compile valid`() {
         TestDriver.compile(
             """
-            class C {
-                fun f() {
-                    println()
+                class C {
+                    fun f() {
+                        println()
+                    }
                 }
-            }
             """.trimIndent()
         )
     }
@@ -43,11 +43,11 @@ class KotlinCompilerTest : BaseTest() {
         assertThrows<TestException> {
             TestDriver.compile(
                 """
-                class C {
-                    fun f() {
-                        g()
+                    class C {
+                        fun f() {
+                            g()
+                        }
                     }
-                }
                 """.trimIndent()
             )
         }.apply {

@@ -30,7 +30,7 @@ internal class UnsupportedElementCheckerTest : BaseTest() {
         assertThrows<TestException> {
             TestDriver.cast(
                 """
-                fun f() { throw IllegalArgumentException() }
+                    fun f() { throw IllegalArgumentException() }
                 """.trimIndent()
             )
         }.apply {

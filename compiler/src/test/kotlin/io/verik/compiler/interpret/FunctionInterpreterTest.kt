@@ -22,31 +22,33 @@ import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class ClassInterpreterTest : BaseTest() {
+internal class FunctionInterpreterTest : BaseTest() {
 
     @Test
-    fun `interpret module`() {
+    fun `interpret function`() {
         val projectContext = TestDriver.interpret(
             """
-                class M: Module()
+                fun f() {}
             """.trimIndent()
         )
         assertElementEquals(
-            "Module(M)",
-            projectContext.findDeclaration("M")
+            "SvFunction(f, Unit, *)",
+            projectContext.findDeclaration("f")
         )
     }
 
     @Test
-    fun `interpret class`() {
+    fun `interpret function in class`() {
         val projectContext = TestDriver.interpret(
             """
-                class C
+                class C {
+                    fun f() {}
+                }
             """.trimIndent()
         )
         assertElementEquals(
-            "SvClass(C, [], [])",
-            projectContext.findDeclaration("C")
+            "SvFunction(f, Unit, *)",
+            projectContext.findDeclaration("f")
         )
     }
 }

@@ -27,7 +27,7 @@ internal class SerializerBaseVisitorTest : BaseTest() {
     fun `serialize module`() {
         val projectContext = TestDriver.serialize(
             """
-            class M: Module()
+                class M: Module()
             """.trimIndent()
         )
         val expected = """
@@ -45,7 +45,7 @@ internal class SerializerBaseVisitorTest : BaseTest() {
     fun `serialize class`() {
         val projectContext = TestDriver.serialize(
             """
-            class C
+                class C
             """.trimIndent()
         )
         val expected = """
@@ -63,7 +63,7 @@ internal class SerializerBaseVisitorTest : BaseTest() {
     fun `serialize function`() {
         val projectContext = TestDriver.serialize(
             """
-            fun f() {}
+                fun f() {}
             """.trimIndent()
         )
         val expected = """
@@ -80,7 +80,7 @@ internal class SerializerBaseVisitorTest : BaseTest() {
     fun `serialize property`() {
         val projectContext = TestDriver.serialize(
             """
-            var x = false
+                var x = false
             """.trimIndent()
         )
         val expected = """

@@ -32,12 +32,19 @@ object KeywordChecker {
     object KeywordVisitor : TreeVisitor() {
 
         override fun visitDeclaration(declaration: VkDeclaration) {
-            if (declaration.name.name in keywords)
-                m.error("Conflict with SystemVerilog keyword: ${declaration.name}", declaration)
+            if (declaration.name.name in vkKeywords)
+                m.error("Conflict with Verik reserved keyword: ${declaration.name}", declaration)
+            if (declaration.name.name in svKeywords)
+                m.error("Conflict with SystemVerilog reserved keyword: ${declaration.name}", declaration)
         }
     }
 
-    private val keywords = setOf(
+    private val vkKeywords = setOf(
+        "vinit",
+        "vnew"
+    )
+
+    private val svKeywords = setOf(
         "alias",
         "always",
         "always_comb",

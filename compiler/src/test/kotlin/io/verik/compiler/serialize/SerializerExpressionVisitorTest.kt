@@ -19,7 +19,6 @@ package io.verik.compiler.serialize
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertOutputTextEquals
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class SerializerExpressionVisitorTest : BaseTest() {
@@ -28,8 +27,8 @@ internal class SerializerExpressionVisitorTest : BaseTest() {
     fun `parenthesized expression`() {
         val projectContext = TestDriver.serialize(
             """
-            var x = 0
-            var y = (x + 1) * x
+                var x = 0
+                var y = (x + 1) * x
             """.trimIndent()
         )
         val expected = """
@@ -47,8 +46,8 @@ internal class SerializerExpressionVisitorTest : BaseTest() {
     fun `binary expression`() {
         val projectContext = TestDriver.serialize(
             """
-            var x = 0
-            var y = x + 1
+                var x = 0
+                var y = x + 1
             """.trimIndent()
         )
         val expected = """
@@ -66,8 +65,8 @@ internal class SerializerExpressionVisitorTest : BaseTest() {
     fun `reference expression`() {
         val projectContext = TestDriver.serialize(
             """
-            var x = 0
-            var y = x
+                var x = 0
+                var y = x
             """.trimIndent()
         )
         val expected = """
@@ -82,16 +81,26 @@ internal class SerializerExpressionVisitorTest : BaseTest() {
     }
 
     @Test
-    @Disabled
     fun `call expression`() {
-        TODO()
+        val projectContext = TestDriver.serialize(
+            """
+                var x = random()
+            """.trimIndent()
+        )
+        val expected = """
+            int x = ${"$"}random();
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
     }
 
     @Test
     fun `constant expression`() {
         val projectContext = TestDriver.serialize(
             """
-            var x = 0
+                var x = 0
             """.trimIndent()
         )
         val expected = """

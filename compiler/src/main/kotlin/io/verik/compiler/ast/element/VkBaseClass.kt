@@ -18,13 +18,9 @@ package io.verik.compiler.ast.element
 
 import io.verik.compiler.ast.common.Type
 
-abstract class VkBaseClass : VkDeclaration() {
+abstract class VkBaseClass : VkDeclaration(), VkDeclarationContainer {
 
     abstract var supertype: Type
     abstract var typeParameters: ArrayList<VkTypeParameter>
-    abstract var declarations: ArrayList<VkDeclaration>
-
-    fun replace(baseClass: VkBaseClass) {
-        parent.cast<VkFile>(this)?.replaceChild(this, baseClass)
-    }
+    abstract override var declarations: ArrayList<VkDeclaration>
 }
