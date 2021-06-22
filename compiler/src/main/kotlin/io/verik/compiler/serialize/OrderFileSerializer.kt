@@ -36,7 +36,7 @@ object OrderFileSerializer {
 
         val builder = StringBuilder()
         builder.append(fileHeader)
-        builder.appendLine("top: \"${projectContext.config.top}\"")
+        builder.appendLine("top: ${projectContext.config.top}")
         builder.appendLine("order:")
         paths.forEach {
             builder.appendLine("  - ${projectContext.config.buildDir.relativize(it)}")

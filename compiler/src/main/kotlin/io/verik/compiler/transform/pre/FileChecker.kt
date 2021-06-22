@@ -45,7 +45,7 @@ object FileChecker {
             if (file.packageName.isReserved())
                 m.error("Package name is reserved: ${file.packageName}", file)
             if (file.inputPath.fileName == Paths.get("Pkg.kt"))
-                m.error("File name not permitted: ${file.inputPath.fileName}", file)
+                m.error("File name is reserved: ${file.inputPath.fileName}", file)
         }
     }
 }
