@@ -16,9 +16,11 @@
 
 package io.verik.compiler.transform.pre
 
-import io.verik.compiler.ast.common.PackageName
+import io.verik.compiler.ast.common.Name
+import io.verik.compiler.ast.common.PackageDeclaration
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.element.VkFile
+import io.verik.compiler.core.CorePackage
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 import java.nio.file.Paths
@@ -34,16 +36,16 @@ object FileChecker {
     object FileVisitor : TreeVisitor() {
 
         override fun visitFile(file: VkFile) {
-            val pathPackageName = (0 until (file.relativePath.nameCount - 1))
+            val pathPackageDeclaration = (0 until (file.relativePath.nameCount - 1))
                 .joinToString(separator = ".") { file.relativePath.getName(it).toString() }
-                .let { PackageName(it) }
+                .let { PackageDeclaration(Name(it)) }
 
-            if (file.packageName != pathPackageName)
+            if (file.packageDeclaration != pathPackageDeclaration)
                 m.error("Package directive does not match file location", file)
-            if (file.packageName == PackageName.ROOT)
+            if (file.packageDeclaration == CorePackage.ROOT)
                 m.error("Use of the root package is prohibited", file)
-            if (file.packageName.isReserved())
-                m.error("Package name is reserved: ${file.packageName}", file)
+            if (file.packageDeclaration == CorePackage.VERIK_CORE)
+                m.error("Package name is reserved: ${file.packageDeclaration}", file)
             if (file.inputPath.fileName == Paths.get("Pkg.kt"))
                 m.error("File name is reserved: ${file.inputPath.fileName}", file)
         }

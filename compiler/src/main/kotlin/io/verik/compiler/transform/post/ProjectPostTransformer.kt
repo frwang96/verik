@@ -25,5 +25,9 @@ object ProjectPostTransformer {
         m.log("Post-transform: Transform function references")
         FunctionReferenceTransformer.transform(projectContext)
         m.flush()
+
+        m.log("Post-transform: Transform package names")
+        PackageNameTransformer.transform(projectContext)
+        m.flush()
     }
 }

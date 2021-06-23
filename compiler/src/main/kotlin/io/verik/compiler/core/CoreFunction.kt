@@ -16,16 +16,14 @@
 
 package io.verik.compiler.core
 
-import io.verik.compiler.ast.common.PackageName
-
 object CoreFunction {
 
-    object KotlinIo : CoreScope(PackageName.KOTLIN_IO) {
+    object KotlinIo : CoreScope(CorePackage.KOTLIN_IO) {
 
         val PRINTLN = CoreKtFunctionDeclaration(parent, "println")
     }
 
-    object Core : CoreScope(PackageName.CORE) {
+    object Core : CoreScope(CorePackage.VERIK_CORE) {
 
         val U_INT = CoreKtFunctionDeclaration(parent, "u", CoreClass.Kotlin.INT)
         val RANDOM = CoreKtFunctionDeclaration(parent, "random")
@@ -37,7 +35,7 @@ object CoreFunction {
         }
     }
 
-    object Sv : CoreScope(PackageName.SV) {
+    object Sv : CoreScope(CorePackage.VERIK_SV) {
 
         val DISPLAY = CoreSvFunctionDeclaration(parent, "\$display")
         val RANDOM = CoreSvFunctionDeclaration(parent, "\$random")

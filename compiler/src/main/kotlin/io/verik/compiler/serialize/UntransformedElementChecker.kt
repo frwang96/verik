@@ -22,20 +22,22 @@ import io.verik.compiler.core.CoreKtFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
-object FunctionReferenceChecker {
+object UntransformedElementChecker {
 
     fun check(projectContext: ProjectContext) {
         projectContext.vkFiles.forEach {
-            it.accept(FunctionReferenceVisitor)
+            it.accept(UntransformedElementVisitor)
         }
     }
 
-    object FunctionReferenceVisitor : TreeVisitor() {
+    object UntransformedElementVisitor : TreeVisitor() {
+
+        private const val message = "has not been transformed to SystemVerilog"
 
         override fun visitCallExpression(callExpression: VkCallExpression) {
             super.visitCallExpression(callExpression)
             if (callExpression.reference is CoreKtFunctionDeclaration)
-                m.error("Function ${callExpression.reference} has not been converted to SystemVerilog", callExpression)
+                m.error("Call expression ${callExpression.reference} $message", callExpression)
         }
     }
 }

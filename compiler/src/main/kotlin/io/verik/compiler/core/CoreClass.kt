@@ -16,11 +16,9 @@
 
 package io.verik.compiler.core
 
-import io.verik.compiler.ast.common.PackageName
-
 object CoreClass {
 
-    object Kotlin : CoreScope(PackageName.KOTLIN) {
+    object Kotlin : CoreScope(CorePackage.KOTLIN) {
 
         val ANY = CoreClassDeclaration(parent, "Any", null)
         val UNIT = CoreClassDeclaration(parent, "Unit", ANY)
@@ -28,7 +26,7 @@ object CoreClass {
         val BOOLEAN = CoreClassDeclaration(parent, "Boolean", ANY)
     }
 
-    object Core : CoreScope(PackageName.CORE) {
+    object Core : CoreScope(CorePackage.VERIK_CORE) {
 
         val CARDINAL = CoreClassDeclaration(parent, "Cardinal", Kotlin.ANY)
         val UBIT = CoreClassDeclaration(parent, "Ubit", Kotlin.ANY)

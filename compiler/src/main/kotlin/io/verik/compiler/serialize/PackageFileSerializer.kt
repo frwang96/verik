@@ -16,7 +16,7 @@
 
 package io.verik.compiler.serialize
 
-import io.verik.compiler.ast.common.PackageName
+import io.verik.compiler.ast.common.PackageDeclaration
 import io.verik.compiler.ast.common.SourceType
 import io.verik.compiler.ast.element.VkFile
 import io.verik.compiler.ast.element.VkSvClass
@@ -32,14 +32,14 @@ object PackageFileSerializer {
         }
     }
 
-    private fun buildPackageMap(projectContext: ProjectContext): HashMap<PackageName, ArrayList<VkFile>> {
-        val packageMap = HashMap<PackageName, ArrayList<VkFile>>()
+    private fun buildPackageMap(projectContext: ProjectContext): HashMap<PackageDeclaration, ArrayList<VkFile>> {
+        val packageMap = HashMap<PackageDeclaration, ArrayList<VkFile>>()
         projectContext.vkFiles.forEach {
             if (it.sourceType == SourceType.PACKAGE) {
-                if (it.packageName !in packageMap) {
-                    packageMap[it.packageName] = ArrayList()
+                if (it.packageDeclaration !in packageMap) {
+                    packageMap[it.packageDeclaration] = ArrayList()
                 }
-                packageMap[it.packageName]!!.add(it)
+                packageMap[it.packageDeclaration]!!.add(it)
             }
         }
         return packageMap
@@ -54,12 +54,12 @@ object PackageFileSerializer {
             outputPath,
             FileHeaderBuilder.HeaderStyle.SYSTEM_VERILOG_DECORATED
         )
-        val serializedPackageName = files[0].packageName.serialize()
+        val packageName = files[0].packageDeclaration.name
         val indent = " ".repeat(projectContext.config.indentLength)
 
         val builder = StringBuilder()
         builder.append(fileHeader)
-        builder.appendLine("package $serializedPackageName;")
+        builder.appendLine("package $packageName;")
         files.forEach { file ->
             file.declarations.forEach {
                 if (it is VkSvClass) {
@@ -74,7 +74,7 @@ object PackageFileSerializer {
             builder.appendLine("`include \"${it.getOutputPathNotNull().fileName}\"")
         }
         builder.appendLine()
-        builder.appendLine("endpackage: $serializedPackageName")
+        builder.appendLine("endpackage: $packageName")
 
         return TextFile(outputPath, builder.toString())
     }

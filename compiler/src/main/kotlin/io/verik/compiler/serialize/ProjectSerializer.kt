@@ -27,12 +27,12 @@ object ProjectSerializer {
         if (projectContext.vkFiles.isEmpty())
             m.fatal("Output files empty: No declarations found", null)
 
-        m.log("Serialize: Check element parents")
-        ElementParentChecker.check(projectContext)
+        m.log("Serialize: Check untransformed elements")
+        UntransformedElementChecker.check(projectContext)
         m.flush()
 
-        m.log("Serialize: Check function references")
-        FunctionReferenceChecker.check(projectContext)
+        m.log("Serialize: Check element parents")
+        ElementParentChecker.check(projectContext)
         m.flush()
 
         m.log("Serialize: Check source locations")

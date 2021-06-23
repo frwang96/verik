@@ -68,7 +68,7 @@ class CasterBaseVisitor(
                 return null
             }
         }
-        val packageName = PackageName(file.packageFqName.toString())
+        val packageDeclaration = PackageDeclaration(Name(file.packageFqName.toString()))
         val declarations = file.declarations.mapNotNull { getElement<VkDeclaration>(it) }
         val importDirectives = file.importDirectives.mapNotNull { getElement<VkImportDirective>(it) }
 
@@ -79,7 +79,7 @@ class CasterBaseVisitor(
             relativePath,
             sourceSetType,
             null,
-            packageName,
+            packageDeclaration,
             ArrayList(declarations),
             importDirectives
         )
@@ -87,15 +87,18 @@ class CasterBaseVisitor(
 
     override fun visitImportDirective(importDirective: KtImportDirective, data: Unit?): VkElement {
         val location = importDirective.getSourceLocation()
-        val (name, packageName) = if (importDirective.isAllUnder) {
-            Pair(null, PackageName(importDirective.importedFqName!!.toString()))
+        val (name, packageDeclaration) = if (importDirective.isAllUnder) {
+            Pair(
+                null,
+                PackageDeclaration(Name(importDirective.importedFqName!!.toString()))
+            )
         } else {
             Pair(
                 Name(importDirective.importedName!!.toString()),
-                PackageName(importDirective.importedFqName!!.parent().toString())
+                PackageDeclaration(Name(importDirective.importedFqName!!.parent().toString()))
             )
         }
-        return VkImportDirective(location, name, packageName)
+        return VkImportDirective(location, name, packageDeclaration)
     }
 
     override fun visitClassOrObject(classOrObject: KtClassOrObject, data: Unit?): VkElement? {

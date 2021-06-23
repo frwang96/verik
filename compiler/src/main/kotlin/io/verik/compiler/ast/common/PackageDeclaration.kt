@@ -14,13 +14,19 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core
+package io.verik.compiler.ast.common
 
-import io.verik.compiler.ast.common.Name
+class PackageDeclaration(override var name: Name) : Declaration {
 
-class CoreCardinalFunctionDeclaration(
-    override var name: Name
-) : CoreCardinalDeclaration() {
+    override fun toString(): String {
+        return "$name"
+    }
 
-    override val qualifiedName = Name("${CorePackage.VERIK_CORE}.$name")
+    override fun equals(other: Any?): Boolean {
+        return (other is PackageDeclaration) && (other.name == name)
+    }
+
+    override fun hashCode(): Int {
+        return name.hashCode()
+    }
 }

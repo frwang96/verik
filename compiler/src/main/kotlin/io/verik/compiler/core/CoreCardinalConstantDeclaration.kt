@@ -17,7 +17,6 @@
 package io.verik.compiler.core
 
 import io.verik.compiler.ast.common.Name
-import io.verik.compiler.ast.common.PackageName
 import io.verik.compiler.main.m
 
 class CoreCardinalConstantDeclaration(
@@ -30,7 +29,7 @@ class CoreCardinalConstantDeclaration(
     }
 
     override var name = Name("$cardinal")
-    override val qualifiedName = Name("${PackageName.CORE.name}.$cardinal")
+    override val qualifiedName = Name("${CorePackage.VERIK_CORE}.$cardinal")
 
     override fun toString(): String {
         return "`$cardinal`"

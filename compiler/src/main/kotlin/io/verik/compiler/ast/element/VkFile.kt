@@ -28,7 +28,7 @@ class VkFile(
     val relativePath: Path,
     val sourceSetType: SourceSetType,
     val sourceType: SourceType?,
-    val packageName: PackageName,
+    var packageDeclaration: PackageDeclaration,
     override var declarations: ArrayList<VkDeclaration>,
     private val importDirectives: List<VkImportDirective>
 ) : VkElement(), VkDeclarationContainer {

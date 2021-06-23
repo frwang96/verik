@@ -17,7 +17,7 @@
 package io.verik.compiler.ast.element
 
 import io.verik.compiler.ast.common.Name
-import io.verik.compiler.ast.common.PackageName
+import io.verik.compiler.ast.common.PackageDeclaration
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.common.Visitor
 import io.verik.compiler.main.SourceLocation
@@ -25,7 +25,7 @@ import io.verik.compiler.main.SourceLocation
 class VkImportDirective(
     override val location: SourceLocation,
     val name: Name?,
-    val packageName: PackageName
+    val packageDeclaration: PackageDeclaration
 ) : VkElement() {
 
     override fun accept(visitor: Visitor) {

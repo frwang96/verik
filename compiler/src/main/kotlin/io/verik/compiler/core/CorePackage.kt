@@ -17,10 +17,13 @@
 package io.verik.compiler.core
 
 import io.verik.compiler.ast.common.Name
+import io.verik.compiler.ast.common.PackageDeclaration
 
-class CoreCardinalFunctionDeclaration(
-    override var name: Name
-) : CoreCardinalDeclaration() {
+object CorePackage {
 
-    override val qualifiedName = Name("${CorePackage.VERIK_CORE}.$name")
+    val ROOT = PackageDeclaration(Name(""))
+    val KOTLIN = PackageDeclaration(Name("kotlin"))
+    val KOTLIN_IO = PackageDeclaration(Name("kotlin.io"))
+    val VERIK_CORE = PackageDeclaration(Name("io.verik.core"))
+    val VERIK_SV = PackageDeclaration(Name("io.verik.sv"))
 }

@@ -16,43 +16,43 @@
 
 package io.verik.compiler.transform.pre
 
-import io.verik.compiler.ast.common.PackageName
+import io.verik.compiler.ast.common.PackageDeclaration
 import io.verik.compiler.ast.common.SourceSetType
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.element.VkImportDirective
+import io.verik.compiler.core.CorePackage
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
 object ImportDirectiveChecker {
 
     fun check(projectContext: ProjectContext) {
-        val mainPackageNameSet = HashSet<PackageName>()
-        val testPackageNameSet = HashSet<PackageName>()
+        val mainPackageDeclarationSet = HashSet<PackageDeclaration>()
+        val testPackageDeclarationSet = HashSet<PackageDeclaration>()
         projectContext.vkFiles.forEach {
             when (it.sourceSetType) {
-                SourceSetType.MAIN -> mainPackageNameSet.add(it.packageName)
-                SourceSetType.TEST -> testPackageNameSet.add(it.packageName)
+                SourceSetType.MAIN -> mainPackageDeclarationSet.add(it.packageDeclaration)
+                SourceSetType.TEST -> testPackageDeclarationSet.add(it.packageDeclaration)
             }
         }
-        mainPackageNameSet.intersect(testPackageNameSet).forEach {
+        mainPackageDeclarationSet.intersect(testPackageDeclarationSet).forEach {
             m.error("Main and test packages must be distinct: $it", null)
         }
 
-        val packageNameSet = mainPackageNameSet.union(testPackageNameSet)
-        val importDirectiveVisitor = ImportDirectiveVisitor(packageNameSet)
+        val packageDeclarationSet = HashSet<PackageDeclaration>()
+        packageDeclarationSet.add(CorePackage.VERIK_CORE)
+        packageDeclarationSet.addAll(mainPackageDeclarationSet)
+        packageDeclarationSet.addAll(testPackageDeclarationSet)
+
+        val importDirectiveVisitor = ImportDirectiveVisitor(packageDeclarationSet)
         projectContext.vkFiles.forEach { it.accept(importDirectiveVisitor) }
     }
 
-    class ImportDirectiveVisitor(private val packageNameSet: Set<PackageName>) : TreeVisitor() {
+    class ImportDirectiveVisitor(private val packageDeclarationSet: Set<PackageDeclaration>) : TreeVisitor() {
 
         override fun visitImportDirective(importDirective: VkImportDirective) {
-            if (importDirective.packageName.isReserved()) {
-                if (importDirective.packageName != PackageName.CORE)
-                    m.error("Illegal import package: ${importDirective.packageName}", importDirective)
-            } else {
-                if (importDirective.packageName !in packageNameSet)
-                    m.error("Import package not found: ${importDirective.packageName}", importDirective)
-            }
+            if (importDirective.packageDeclaration !in packageDeclarationSet)
+                m.error("Import package not found: ${importDirective.packageDeclaration}", importDirective)
         }
     }
 }
