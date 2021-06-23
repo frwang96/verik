@@ -18,12 +18,12 @@ package io.verik.compiler.cast
 
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.core.CoreClass
-import io.verik.compiler.main.MessageLocation
+import io.verik.compiler.main.SourceLocation
 import io.verik.compiler.main.m
 
 object ConstantExpressionCaster {
 
-    fun cast(value: String, type: Type, location: MessageLocation): String {
+    fun cast(value: String, type: Type, location: SourceLocation): String {
         return when (type) {
             CoreClass.Kotlin.BOOLEAN.toNoArgumentsType() -> castBoolean(value)
             CoreClass.Kotlin.INT.toNoArgumentsType() -> castInteger(value)

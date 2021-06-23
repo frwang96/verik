@@ -17,12 +17,12 @@
 package io.verik.compiler.ast.element
 
 import io.verik.compiler.ast.common.*
-import io.verik.compiler.main.MessageLocation
+import io.verik.compiler.main.SourceLocation
 import io.verik.compiler.main.m
 import java.nio.file.Path
 
 class VkFile(
-    override val location: MessageLocation,
+    override val location: SourceLocation,
     val inputPath: Path,
     private val outputPath: Path?,
     val relativePath: Path,

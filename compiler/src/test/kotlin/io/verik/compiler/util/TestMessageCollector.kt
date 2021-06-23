@@ -17,15 +17,15 @@
 package io.verik.compiler.util
 
 import io.verik.compiler.main.MessageCollector
-import io.verik.compiler.main.MessageLocation
+import io.verik.compiler.main.SourceLocation
 
 class TestMessageCollector : MessageCollector() {
 
-    override fun fatal(message: String, location: MessageLocation?): Nothing {
+    override fun fatal(message: String, location: SourceLocation?): Nothing {
         throw TestException(message)
     }
 
-    override fun error(message: String, location: MessageLocation?) {
+    override fun error(message: String, location: SourceLocation?) {
         throw TestException(message)
     }
 }

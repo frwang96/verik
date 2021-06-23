@@ -18,14 +18,14 @@ package io.verik.compiler.ast.element
 
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.common.Visitor
-import io.verik.compiler.main.MessageLocation
-import io.verik.compiler.main.getMessageLocation
+import io.verik.compiler.main.SourceLocation
+import io.verik.compiler.main.getSourceLocation
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.psi.KtElement
 
 abstract class VkElement {
 
-    abstract val location: MessageLocation
+    abstract val location: SourceLocation
 
     var parent: VkElement? = null
 
@@ -39,14 +39,14 @@ inline fun <reified T : VkElement> VkElement.cast(): T? {
 }
 
 inline fun <reified T : VkElement> VkElement?.cast(location: KtElement): T? {
-    return this.cast(location.getMessageLocation())
+    return this.cast(location.getSourceLocation())
 }
 
 inline fun <reified T : VkElement> VkElement?.cast(location: VkElement): T? {
     return this.cast(location.location)
 }
 
-inline fun <reified T : VkElement> VkElement?.cast(location: MessageLocation): T? {
+inline fun <reified T : VkElement> VkElement?.cast(location: SourceLocation): T? {
     val expectedName = T::class.simpleName
     return when (this) {
         null -> {

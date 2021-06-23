@@ -23,15 +23,15 @@ open class MessageCollector {
 
     var errorCount = 0
 
-    open fun fatal(message: String, location: MessageLocation?): Nothing {
+    open fun fatal(message: String, location: SourceLocation?): Nothing {
         throw Exception(message)
     }
 
-    open fun error(message: String, location: MessageLocation?) {
+    open fun error(message: String, location: SourceLocation?) {
         errorCount++
     }
 
-    open fun warning(message: String, location: MessageLocation?) {}
+    open fun warning(message: String, location: SourceLocation?) {}
 
     open fun info(message: String) {}
 
@@ -44,6 +44,6 @@ open class MessageCollector {
     }
 
     fun error(message: String, element: KtElement) {
-        error(message, element.getMessageLocation())
+        error(message, element.getSourceLocation())
     }
 }

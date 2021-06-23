@@ -17,10 +17,10 @@
 package io.verik.compiler.ast.element
 
 import io.verik.compiler.ast.common.*
-import io.verik.compiler.main.MessageLocation
+import io.verik.compiler.main.SourceLocation
 
 class VkReferenceExpression(
-    override val location: MessageLocation,
+    override val location: SourceLocation,
     override var type: Type,
     override var reference: Declaration
 ) : VkExpression(), Reference {

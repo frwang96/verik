@@ -19,8 +19,8 @@ package io.verik.compiler.serialize
 import io.verik.compiler.ast.common.SourceType
 import io.verik.compiler.ast.element.VkElement
 import io.verik.compiler.ast.element.VkFile
-import io.verik.compiler.main.MessageLocation
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.SourceLocation
 import io.verik.compiler.main.TextFile
 
 class SourceBuilder(
@@ -89,7 +89,7 @@ class SourceBuilder(
 
     enum class SourceActionType { REGULAR, NEW_LINE, INDENT_IN, INDENT_OUT, SOFT_BREAK, HARD_BREAK }
 
-    data class SourceAction(val type: SourceActionType, val content: String, val location: MessageLocation?)
+    data class SourceAction(val type: SourceActionType, val content: String, val location: SourceLocation?)
 
     class SourceActionBuilder(
         private val sourceBuilder: StringBuilder,

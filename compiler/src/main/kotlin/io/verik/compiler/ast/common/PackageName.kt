@@ -50,6 +50,7 @@ class PackageName(val name: String) {
 
         val ROOT = PackageName("")
         val KOTLIN = PackageName("kotlin")
+        val KOTLIN_IO = PackageName("kotlin.io")
         val CORE = PackageName("io.verik.core")
         val SV = PackageName("io.verik.sv")
     }

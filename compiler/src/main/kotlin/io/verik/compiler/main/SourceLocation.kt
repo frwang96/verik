@@ -21,17 +21,17 @@ import org.jetbrains.kotlin.psi.KtElement
 import java.nio.file.Path
 import java.nio.file.Paths
 
-class MessageLocation(
+class SourceLocation(
     val column: Int,
     val line: Int,
     val path: Path
 )
 
-fun KtElement.getMessageLocation(): MessageLocation {
+fun KtElement.getSourceLocation(): SourceLocation {
     val lineAndColumn = PsiDiagnosticUtils.offsetToLineAndColumn(
         containingFile.viewProvider.document,
         textRange.startOffset
     )
     val path = Paths.get(containingFile.virtualFile.path)
-    return MessageLocation(lineAndColumn.column, lineAndColumn.line, path)
+    return SourceLocation(lineAndColumn.column, lineAndColumn.line, path)
 }

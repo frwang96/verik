@@ -20,7 +20,7 @@ import io.verik.compiler.ast.common.*
 import io.verik.compiler.ast.element.*
 import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.getMessageLocation
+import io.verik.compiler.main.getSourceLocation
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.resolve.BindingContext
@@ -58,7 +58,7 @@ class CasterBaseVisitor(
     }
 
     override fun visitKtFile(file: KtFile, data: Unit?): VkElement? {
-        val location = file.getMessageLocation()
+        val location = file.getSourceLocation()
         val inputPath = Paths.get(file.virtualFilePath)
         val (sourceSetType, relativePath) = when {
             inputPath.startsWith(mainPath) -> Pair(SourceSetType.MAIN, mainPath.relativize(inputPath))
@@ -86,7 +86,7 @@ class CasterBaseVisitor(
     }
 
     override fun visitImportDirective(importDirective: KtImportDirective, data: Unit?): VkElement {
-        val location = importDirective.getMessageLocation()
+        val location = importDirective.getSourceLocation()
         val (name, packageName) = if (importDirective.isAllUnder) {
             Pair(null, PackageName(importDirective.importedFqName!!.toString()))
         } else {

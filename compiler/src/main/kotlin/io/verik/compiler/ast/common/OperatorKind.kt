@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast.common
 
-import io.verik.compiler.main.MessageLocation
+import io.verik.compiler.main.SourceLocation
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.com.intellij.psi.tree.IElementType
 
@@ -35,7 +35,7 @@ enum class OperatorKind {
 
     companion object {
 
-        operator fun invoke(token: IElementType, location: MessageLocation): OperatorKind? {
+        operator fun invoke(token: IElementType, location: SourceLocation): OperatorKind? {
             return when (token.toString()) {
                 "EQ" -> EQ
                 "MUL" -> MUL

@@ -111,12 +111,12 @@ class KotlinCompiler {
             message: String,
             location: CompilerMessageSourceLocation?
         ) {
-            val messageLocation = location?.let { MessageLocation(it.column, it.line, Paths.get(it.path)) }
+            val sourceLocation = location?.let { SourceLocation(it.column, it.line, Paths.get(it.path)) }
             when (severity) {
                 CompilerMessageSeverity.EXCEPTION, CompilerMessageSeverity.ERROR ->
-                    m.error(message, messageLocation)
+                    m.error(message, sourceLocation)
                 CompilerMessageSeverity.STRONG_WARNING, CompilerMessageSeverity.WARNING ->
-                    m.warning(message, messageLocation)
+                    m.warning(message, sourceLocation)
                 else -> {}
             }
         }

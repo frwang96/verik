@@ -16,8 +16,8 @@
 
 package io.verik.compiler.ast.common
 
-import io.verik.compiler.main.MessageLocation
-import io.verik.compiler.main.getMessageLocation
+import io.verik.compiler.main.SourceLocation
+import io.verik.compiler.main.getSourceLocation
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.psi.KtElement
 
@@ -31,10 +31,10 @@ interface Declaration {
 }
 
 inline fun <reified T : Declaration> Declaration.cast(location: KtElement): T? {
-    return this.cast(location.getMessageLocation())
+    return this.cast(location.getSourceLocation())
 }
 
-inline fun <reified T : Declaration> Declaration.cast(location: MessageLocation): T? {
+inline fun <reified T : Declaration> Declaration.cast(location: SourceLocation): T? {
     return when (this) {
         is T -> this
         else -> {

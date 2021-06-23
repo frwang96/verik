@@ -20,10 +20,10 @@ import io.verik.compiler.ast.common.Declaration
 import io.verik.compiler.ast.common.Reference
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.common.Visitor
-import io.verik.compiler.main.MessageLocation
+import io.verik.compiler.main.SourceLocation
 
 class VkValueArgument(
-    override val location: MessageLocation,
+    override val location: SourceLocation,
     override var reference: Declaration,
     var expression: VkExpression
 ) : VkElement(), Reference {

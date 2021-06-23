@@ -32,6 +32,7 @@ object Count : Module() {
 
     @Run
     fun g() {
+        println()
     }
 }
 

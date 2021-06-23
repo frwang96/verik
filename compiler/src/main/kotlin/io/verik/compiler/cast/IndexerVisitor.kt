@@ -23,7 +23,7 @@ import io.verik.compiler.ast.element.VkKtFunction
 import io.verik.compiler.ast.element.VkKtProperty
 import io.verik.compiler.ast.element.VkTypeParameter
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.getMessageLocation
+import io.verik.compiler.main.getSourceLocation
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.resolve.BindingContext
@@ -44,7 +44,7 @@ class IndexerVisitor(
     override fun visitClassOrObject(classOrObject: KtClassOrObject) {
         super.visitClassOrObject(classOrObject)
         val descriptor = bindingContext.getSliceContents(BindingContext.CLASS)[classOrObject]!!
-        val location = classOrObject.getMessageLocation()
+        val location = classOrObject.getSourceLocation()
         val name = Name(classOrObject.name!!)
         checkDeclarationName(name, classOrObject)
         val ktClass = VkKtClass(location, name, Type.NULL, Type.NULL, arrayListOf(), arrayListOf())
@@ -54,7 +54,7 @@ class IndexerVisitor(
     override fun visitNamedFunction(function: KtNamedFunction) {
         super.visitNamedFunction(function)
         val descriptor = bindingContext.getSliceContents(BindingContext.FUNCTION)[function]!!
-        val location = function.getMessageLocation()
+        val location = function.getSourceLocation()
         val name = Name(function.name!!)
         checkDeclarationName(name, function)
         val ktFunction = VkKtFunction(location, name, Type.NULL, null, null)
@@ -64,7 +64,7 @@ class IndexerVisitor(
     override fun visitProperty(property: KtProperty) {
         super.visitProperty(property)
         val descriptor = bindingContext.getSliceContents(BindingContext.VARIABLE)[property]!!
-        val location = property.getMessageLocation()
+        val location = property.getSourceLocation()
         val name = Name(property.name!!)
         checkDeclarationName(name, property)
         val ktProperty = VkKtProperty(location, name, Type.NULL, null)
@@ -74,7 +74,7 @@ class IndexerVisitor(
     override fun visitTypeParameter(parameter: KtTypeParameter) {
         super.visitTypeParameter(parameter)
         val descriptor = bindingContext.getSliceContents(BindingContext.TYPE_PARAMETER)[parameter]!!
-        val location = parameter.getMessageLocation()
+        val location = parameter.getSourceLocation()
         val name = Name(parameter.name!!)
         checkDeclarationName(name, parameter)
         val typeParameter = VkTypeParameter(location, name, Type.NULL)

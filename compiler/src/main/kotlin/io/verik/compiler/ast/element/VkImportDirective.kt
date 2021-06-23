@@ -20,10 +20,10 @@ import io.verik.compiler.ast.common.Name
 import io.verik.compiler.ast.common.PackageName
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.common.Visitor
-import io.verik.compiler.main.MessageLocation
+import io.verik.compiler.main.SourceLocation
 
 class VkImportDirective(
-    override val location: MessageLocation,
+    override val location: SourceLocation,
     val name: Name?,
     val packageName: PackageName
 ) : VkElement() {

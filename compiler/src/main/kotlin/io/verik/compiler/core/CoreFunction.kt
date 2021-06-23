@@ -20,6 +20,11 @@ import io.verik.compiler.ast.common.PackageName
 
 object CoreFunction {
 
+    object KotlinIo : CoreScope(PackageName.KOTLIN_IO) {
+
+        val PRINTLN = CoreKtFunctionDeclaration(parent, "println")
+    }
+
     object Core : CoreScope(PackageName.CORE) {
 
         val U_INT = CoreKtFunctionDeclaration(parent, "u", CoreClass.Kotlin.INT)

@@ -27,12 +27,12 @@ class GradleMessageCollector(config: Config) : MessageCollector() {
 
     private val MAX_ERROR_COUNT = 20
 
-    override fun fatal(message: String, location: MessageLocation?): Nothing {
+    override fun fatal(message: String, location: SourceLocation?): Nothing {
         error(message, location)
         throw GradleException("Verik compilation failed")
     }
 
-    override fun error(message: String, location: MessageLocation?) {
+    override fun error(message: String, location: SourceLocation?) {
         super.error(message, location)
         print("e: ")
         printMessage(message, location)
@@ -40,7 +40,7 @@ class GradleMessageCollector(config: Config) : MessageCollector() {
         if (errorCount >= MAX_ERROR_COUNT) throw GradleException("Verik compilation failed")
     }
 
-    override fun warning(message: String, location: MessageLocation?) {
+    override fun warning(message: String, location: SourceLocation?) {
         print("w: ")
         printMessage(message, location)
         if (debug) printStackTrace()
@@ -71,7 +71,7 @@ class GradleMessageCollector(config: Config) : MessageCollector() {
         return "%.3fs".format(elapsed)
     }
 
-    private fun printMessage(message: String, location: MessageLocation?) {
+    private fun printMessage(message: String, location: SourceLocation?) {
         if (location != null) {
             print("${location.path}: (${location.line}, ${location.column}): ")
         }
