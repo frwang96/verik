@@ -16,28 +16,12 @@
 
 package io.verik.compiler.ast.element
 
-import io.verik.compiler.ast.common.OperatorKind
 import io.verik.compiler.ast.common.TreeVisitor
-import io.verik.compiler.ast.common.Type
-import io.verik.compiler.ast.common.Visitor
-import io.verik.compiler.main.SourceLocation
 
-class VkBinaryExpression(
-    override val location: SourceLocation,
-    override var type: Type,
-    var kind: OperatorKind,
-    var left: VkExpression,
-    var right: VkExpression
-) : VkExpression() {
+abstract class VkBinaryExpression : VkExpression() {
 
-    init {
-        left.parent = this
-        right.parent = this
-    }
-
-    override fun accept(visitor: Visitor) {
-        visitor.visitBinaryExpression(this)
-    }
+    abstract var left: VkExpression
+    abstract var right: VkExpression
 
     override fun acceptChildren(visitor: TreeVisitor) {
         left.accept(visitor)

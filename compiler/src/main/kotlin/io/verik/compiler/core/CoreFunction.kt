@@ -18,6 +18,14 @@ package io.verik.compiler.core
 
 object CoreFunction {
 
+    object Kotlin : CoreScope(CorePackage.KOTLIN) {
+
+        object Int : CoreScope(CoreClass.Kotlin.INT) {
+
+            val PLUS_INT = CoreKtFunctionDeclaration(parent, "plus", CoreClass.Kotlin.INT)
+        }
+    }
+
     object KotlinIo : CoreScope(CorePackage.KOTLIN_IO) {
 
         val PRINTLN = CoreKtFunctionDeclaration(parent, "println")

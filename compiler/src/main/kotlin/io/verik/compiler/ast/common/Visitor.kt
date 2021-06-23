@@ -94,6 +94,14 @@ abstract class Visitor {
         return visitExpression(binaryExpression)
     }
 
+    open fun visitKtBinaryExpression(ktBinaryExpression: VkKtBinaryExpression) {
+        return visitBinaryExpression(ktBinaryExpression)
+    }
+
+    open fun visitSvBinaryExpression(svBinaryExpression: VkSvBinaryExpression) {
+        return visitBinaryExpression(svBinaryExpression)
+    }
+
     open fun visitReferenceExpression(referenceExpression: VkReferenceExpression) {
         return visitExpression(referenceExpression)
     }

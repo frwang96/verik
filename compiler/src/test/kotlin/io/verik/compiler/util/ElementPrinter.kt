@@ -106,12 +106,21 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitBinaryExpression(binaryExpression: VkBinaryExpression) {
-        build("BinaryExpression") {
-            build(binaryExpression.type.toString())
-            build(binaryExpression.kind.toString())
-            build(binaryExpression.left)
-            build(binaryExpression.right)
+    override fun visitKtBinaryExpression(ktBinaryExpression: VkKtBinaryExpression) {
+        build("KtBinaryExpression") {
+            build(ktBinaryExpression.type.toString())
+            build(ktBinaryExpression.kind.toString())
+            build(ktBinaryExpression.left)
+            build(ktBinaryExpression.right)
+        }
+    }
+
+    override fun visitSvBinaryExpression(svBinaryExpression: VkSvBinaryExpression) {
+        build("SvBinaryExpression") {
+            build(svBinaryExpression.type.toString())
+            build(svBinaryExpression.kind.toString())
+            build(svBinaryExpression.left)
+            build(svBinaryExpression.right)
         }
     }
 

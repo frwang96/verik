@@ -39,12 +39,12 @@ class SerializerExpressionVisitor(private val sourceBuilder: SourceBuilder) : Vi
         sourceBuilder.append(")", parenthesizedExpression)
     }
 
-    override fun visitBinaryExpression(binaryExpression: VkBinaryExpression) {
-        binaryExpression.left.accept(this)
+    override fun visitSvBinaryExpression(svBinaryExpression: VkSvBinaryExpression) {
+        svBinaryExpression.left.accept(this)
         sourceBuilder.hardBreak()
-        sourceBuilder.append(binaryExpression.kind.serialize(), binaryExpression)
-        sourceBuilder.append(" ", binaryExpression)
-        binaryExpression.right.accept(this)
+        sourceBuilder.append(svBinaryExpression.kind.serialize(), svBinaryExpression)
+        sourceBuilder.append(" ", svBinaryExpression)
+        svBinaryExpression.right.accept(this)
     }
 
     override fun visitReferenceExpression(referenceExpression: VkReferenceExpression) {

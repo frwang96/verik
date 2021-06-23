@@ -16,35 +16,18 @@
 
 package io.verik.compiler.ast.common
 
-import io.verik.compiler.main.SourceLocation
-import io.verik.compiler.main.m
-import org.jetbrains.kotlin.com.intellij.psi.tree.IElementType
-
-enum class OperatorKind {
-    EQ,
+enum class SvOperatorKind {
+    ASSIGN,
+    BLOCK_ASSIGN,
     MUL,
     PLUS;
 
     fun serialize(): String {
         return when (this) {
-            EQ -> "="
+            ASSIGN -> "="
+            BLOCK_ASSIGN -> "<="
             MUL -> "*"
             PLUS -> "+"
-        }
-    }
-
-    companion object {
-
-        operator fun invoke(token: IElementType, location: SourceLocation): OperatorKind? {
-            return when (token.toString()) {
-                "EQ" -> EQ
-                "MUL" -> MUL
-                "PLUS" -> PLUS
-                else -> {
-                    m.error("Unrecognised operator kind: $token", location)
-                    null
-                }
-            }
         }
     }
 }

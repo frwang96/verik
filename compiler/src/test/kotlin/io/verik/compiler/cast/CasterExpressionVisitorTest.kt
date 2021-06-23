@@ -59,7 +59,7 @@ internal class CasterExpressionVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "BinaryExpression(Int, PLUS, ConstantExpression(*), ConstantExpression(*))",
+            "KtBinaryExpression(Int, PLUS, ConstantExpression(*), ConstantExpression(*))",
             projectContext.findExpression("x")
         )
     }

@@ -16,8 +16,8 @@
 
 package io.verik.compiler.cast
 
+import io.verik.compiler.ast.common.KtOperatorKind
 import io.verik.compiler.ast.common.NullDeclaration
-import io.verik.compiler.ast.common.OperatorKind
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.*
 import io.verik.compiler.main.ProjectContext
@@ -65,13 +65,13 @@ class CasterExpressionVisitor(
     override fun visitBinaryExpression(expression: KtBinaryExpression, data: Unit?): VkElement? {
         val location = expression.getSourceLocation()
         val type = getType(expression)
-        val kind = OperatorKind(expression.operationToken, location)
+        val kind = KtOperatorKind(expression.operationToken, location)
             ?: return null
         val left = getElement<VkExpression>(expression.left!!)
             ?: return null
         val right = getElement<VkExpression>(expression.right!!)
             ?: return null
-        return VkBinaryExpression(location, type, kind, left, right)
+        return VkKtBinaryExpression(location, type, left, right, kind)
     }
 
     override fun visitReferenceExpression(expression: KtReferenceExpression, data: Unit?): VkElement {

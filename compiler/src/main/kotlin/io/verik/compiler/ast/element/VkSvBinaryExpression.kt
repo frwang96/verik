@@ -16,25 +16,25 @@
 
 package io.verik.compiler.ast.element
 
-import io.verik.compiler.ast.common.Name
+import io.verik.compiler.ast.common.SvOperatorKind
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.common.Visitor
 import io.verik.compiler.main.SourceLocation
 
-class VkModule(
+class VkSvBinaryExpression(
     override val location: SourceLocation,
-    override var name: Name,
     override var type: Type,
-    override var supertype: Type,
-    override var typeParameters: ArrayList<VkTypeParameter>,
-    override var declarations: ArrayList<VkDeclaration>
-) : VkBaseClass() {
+    override var left: VkExpression,
+    override var right: VkExpression,
+    var kind: SvOperatorKind
+) : VkBinaryExpression() {
 
     init {
-        declarations.forEach { it.parent = this }
+        left.parent = this
+        right.parent = this
     }
 
     override fun accept(visitor: Visitor) {
-        return visitor.visitModule(this)
+        visitor.visitSvBinaryExpression(this)
     }
 }

@@ -16,7 +16,10 @@
 
 package io.verik.compiler.ast.element
 
-import io.verik.compiler.ast.common.*
+import io.verik.compiler.ast.common.FunctionAnnotationType
+import io.verik.compiler.ast.common.Name
+import io.verik.compiler.ast.common.Type
+import io.verik.compiler.ast.common.Visitor
 import io.verik.compiler.main.SourceLocation
 
 class VkKtFunction(
@@ -33,9 +36,5 @@ class VkKtFunction(
 
     override fun accept(visitor: Visitor) {
         return visitor.visitKtFunction(this)
-    }
-
-    override fun acceptChildren(visitor: TreeVisitor) {
-        bodyBlockExpression?.accept(visitor)
     }
 }

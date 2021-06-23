@@ -17,7 +17,6 @@
 package io.verik.compiler.ast.element
 
 import io.verik.compiler.ast.common.Name
-import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.common.Visitor
 import io.verik.compiler.main.SourceLocation
@@ -35,9 +34,5 @@ class VkSvFunction(
 
     override fun accept(visitor: Visitor) {
         return visitor.visitSvFunction(this)
-    }
-
-    override fun acceptChildren(visitor: TreeVisitor) {
-        bodyBlockExpression?.accept(visitor)
     }
 }

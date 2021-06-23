@@ -14,15 +14,11 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element
+package io.verik.compiler.transform.post
 
-import io.verik.compiler.ast.common.TreeVisitor
+import io.verik.compiler.main.ProjectContext
 
-abstract class VkBaseFunction : VkDeclaration() {
+object AssignmentTransformer {
 
-    abstract var bodyBlockExpression: VkBlockExpression?
-
-    override fun acceptChildren(visitor: TreeVisitor) {
-        bodyBlockExpression?.accept(visitor)
-    }
+    fun transform(projectContext: ProjectContext) {}
 }

@@ -16,6 +16,7 @@
 
 package io.verik.compiler.ast.element
 
+import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.common.Type
 
 abstract class VkBaseClass : VkDeclaration(), VkDeclarationContainer {
@@ -23,4 +24,8 @@ abstract class VkBaseClass : VkDeclaration(), VkDeclarationContainer {
     abstract var supertype: Type
     abstract var typeParameters: ArrayList<VkTypeParameter>
     abstract override var declarations: ArrayList<VkDeclaration>
+
+    override fun acceptChildren(visitor: TreeVisitor) {
+        declarations.forEach { it.accept(visitor) }
+    }
 }

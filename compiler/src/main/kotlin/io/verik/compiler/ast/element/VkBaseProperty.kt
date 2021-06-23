@@ -16,7 +16,13 @@
 
 package io.verik.compiler.ast.element
 
+import io.verik.compiler.ast.common.TreeVisitor
+
 abstract class VkBaseProperty : VkDeclaration() {
 
     abstract var initializer: VkExpression?
+
+    override fun acceptChildren(visitor: TreeVisitor) {
+        initializer?.accept(visitor)
+    }
 }
