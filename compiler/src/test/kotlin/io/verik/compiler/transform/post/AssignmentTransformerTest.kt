@@ -22,18 +22,21 @@ import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
-internal class FunctionReferenceTransformerTest : BaseTest() {
+internal class AssignmentTransformerTest : BaseTest() {
 
     @Test
-    fun `transform random`() {
+    fun `transform assignment blocking`() {
         val projectContext = TestDriver.postTransform(
             """
-                val x = random()
+                var x = 0
+                fun f() {
+                    x = 1
+                }
             """.trimIndent()
         )
         assertElementEquals(
-            "CallExpression(Int, \$random, [])",
-            projectContext.findExpression("x")
+            "BlockExpression(Unit, [SvBinaryExpression(Unit, ASSIGN, *)])",
+            projectContext.findExpression("f")
         )
     }
 }

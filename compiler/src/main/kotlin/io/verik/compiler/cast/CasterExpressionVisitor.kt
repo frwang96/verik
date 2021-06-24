@@ -20,8 +20,8 @@ import io.verik.compiler.ast.common.KtOperatorKind
 import io.verik.compiler.ast.common.NullDeclaration
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.*
+import io.verik.compiler.common.getSourceLocation
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.getSourceLocation
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.resolve.BindingContext

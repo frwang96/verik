@@ -22,8 +22,8 @@ import io.verik.compiler.ast.element.VkKtClass
 import io.verik.compiler.ast.element.VkKtFunction
 import io.verik.compiler.ast.element.VkKtProperty
 import io.verik.compiler.ast.element.VkTypeParameter
+import io.verik.compiler.common.getSourceLocation
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.getSourceLocation
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.resolve.BindingContext

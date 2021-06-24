@@ -29,19 +29,11 @@ class DeclarationReplacer(val projectContext: ProjectContext) {
     private val replacementMap = HashMap<VkDeclaration, VkDeclaration>()
 
     fun replace(oldDeclaration: VkDeclaration, newDeclaration: VkDeclaration) {
-        when (val parent = oldDeclaration.parent) {
-            is VkDeclarationContainer -> {
-                val index = parent.declarations.indexOf(oldDeclaration)
-                if (index != -1) {
-                    newDeclaration.parent = parent
-                    parent.declarations[index] = newDeclaration
-                } else {
-                    m.error("Could not find declaration $oldDeclaration", oldDeclaration)
-                }
-            }
-            else ->
-                m.error("Could not replace declaration $oldDeclaration", oldDeclaration)
-        }
+        val parent = oldDeclaration.parent
+        if (parent is VkDeclarationContainer)
+            parent.replaceChild(oldDeclaration, newDeclaration)
+        else
+            m.error("Could not replace declaration $oldDeclaration", oldDeclaration)
         replacementMap[oldDeclaration] = newDeclaration
     }
 

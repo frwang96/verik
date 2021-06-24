@@ -19,13 +19,15 @@ package io.verik.compiler.ast.element
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.common.Visitor
+import io.verik.compiler.common.replaceIfContains
 import io.verik.compiler.main.SourceLocation
+import io.verik.compiler.main.m
 
 class VkBlockExpression(
     override val location: SourceLocation,
     override var type: Type,
     val statements: ArrayList<VkExpression>
-) : VkExpression() {
+) : VkExpression(), VkExpressionContainer {
 
     init {
         statements.forEach { it.parent = this }
@@ -37,5 +39,11 @@ class VkBlockExpression(
 
     override fun acceptChildren(visitor: TreeVisitor) {
         statements.forEach { it.accept(visitor) }
+    }
+
+    override fun replaceChild(oldExpression: VkExpression, newExpression: VkExpression) {
+        newExpression.parent = this
+        if (!statements.replaceIfContains(oldExpression, newExpression))
+            m.error("Could not find ${oldExpression::class.simpleName} in block expression", this)
     }
 }

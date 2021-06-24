@@ -16,9 +16,36 @@
 
 package io.verik.compiler.transform.post
 
+import io.verik.compiler.ast.common.KtOperatorKind
+import io.verik.compiler.ast.common.SvOperatorKind
+import io.verik.compiler.ast.common.TreeVisitor
+import io.verik.compiler.ast.element.VkKtBinaryExpression
+import io.verik.compiler.ast.element.VkSvBinaryExpression
 import io.verik.compiler.main.ProjectContext
 
 object AssignmentTransformer {
 
-    fun transform(projectContext: ProjectContext) {}
+    fun transform(projectContext: ProjectContext) {
+        projectContext.vkFiles.forEach {
+            it.accept(AssignmentVisitor)
+        }
+    }
+
+    object AssignmentVisitor : TreeVisitor() {
+
+        override fun visitKtBinaryExpression(ktBinaryExpression: VkKtBinaryExpression) {
+            super.visitKtBinaryExpression(ktBinaryExpression)
+            if (ktBinaryExpression.kind == KtOperatorKind.EQ) {
+                ktBinaryExpression.replace(
+                    VkSvBinaryExpression(
+                        ktBinaryExpression.location,
+                        ktBinaryExpression.type,
+                        ktBinaryExpression.left,
+                        ktBinaryExpression.right,
+                        SvOperatorKind.ASSIGN
+                    )
+                )
+            }
+        }
+    }
 }

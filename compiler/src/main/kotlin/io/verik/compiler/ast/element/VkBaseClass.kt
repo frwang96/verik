@@ -18,14 +18,22 @@ package io.verik.compiler.ast.element
 
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.common.Type
+import io.verik.compiler.common.replaceIfContains
+import io.verik.compiler.main.m
 
 abstract class VkBaseClass : VkDeclaration(), VkDeclarationContainer {
 
     abstract var supertype: Type
     abstract var typeParameters: ArrayList<VkTypeParameter>
-    abstract override var declarations: ArrayList<VkDeclaration>
+    abstract var declarations: ArrayList<VkDeclaration>
 
     override fun acceptChildren(visitor: TreeVisitor) {
         declarations.forEach { it.accept(visitor) }
+    }
+
+    override fun replaceChild(oldDeclaration: VkDeclaration, newDeclaration: VkDeclaration) {
+        newDeclaration.parent = this
+        if (!declarations.replaceIfContains(oldDeclaration, newDeclaration))
+            m.error("Could not find declaration $oldDeclaration in class", this)
     }
 }

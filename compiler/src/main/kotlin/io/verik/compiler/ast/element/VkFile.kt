@@ -17,6 +17,7 @@
 package io.verik.compiler.ast.element
 
 import io.verik.compiler.ast.common.*
+import io.verik.compiler.common.replaceIfContains
 import io.verik.compiler.main.SourceLocation
 import io.verik.compiler.main.m
 import java.nio.file.Path
@@ -29,7 +30,7 @@ class VkFile(
     val sourceSetType: SourceSetType,
     val sourceType: SourceType?,
     var packageDeclaration: PackageDeclaration,
-    override var declarations: ArrayList<VkDeclaration>,
+    var declarations: ArrayList<VkDeclaration>,
     private val importDirectives: List<VkImportDirective>
 ) : VkElement(), VkDeclarationContainer {
 
@@ -45,6 +46,12 @@ class VkFile(
     override fun acceptChildren(visitor: TreeVisitor) {
         importDirectives.forEach { it.accept(visitor) }
         declarations.forEach { it.accept(visitor) }
+    }
+
+    override fun replaceChild(oldDeclaration: VkDeclaration, newDeclaration: VkDeclaration) {
+        newDeclaration.parent = this
+        if (!declarations.replaceIfContains(oldDeclaration, newDeclaration))
+            m.error("Could not find declaration $oldDeclaration in file", this)
     }
 
     fun getOutputPathNotNull(): Path {

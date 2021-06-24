@@ -18,8 +18,8 @@ package io.verik.compiler.ast.element
 
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.common.Visitor
+import io.verik.compiler.common.getSourceLocation
 import io.verik.compiler.main.SourceLocation
-import io.verik.compiler.main.getSourceLocation
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.psi.KtElement
 

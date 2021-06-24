@@ -18,9 +18,9 @@ package io.verik.compiler.cast
 
 import io.verik.compiler.ast.common.*
 import io.verik.compiler.ast.element.*
+import io.verik.compiler.common.getSourceLocation
 import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.getSourceLocation
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.resolve.BindingContext

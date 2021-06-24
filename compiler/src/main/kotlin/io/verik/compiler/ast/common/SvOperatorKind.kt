@@ -18,14 +18,14 @@ package io.verik.compiler.ast.common
 
 enum class SvOperatorKind {
     ASSIGN,
-    BLOCK_ASSIGN,
+    ARROW_ASSIGN,
     MUL,
     PLUS;
 
     fun serialize(): String {
         return when (this) {
             ASSIGN -> "="
-            BLOCK_ASSIGN -> "<="
+            ARROW_ASSIGN -> "<="
             MUL -> "*"
             PLUS -> "+"
         }

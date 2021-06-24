@@ -16,8 +16,8 @@
 
 package io.verik.compiler.ast.common
 
+import io.verik.compiler.common.getSourceLocation
 import io.verik.compiler.main.SourceLocation
-import io.verik.compiler.main.getSourceLocation
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.psi.KtElement
 

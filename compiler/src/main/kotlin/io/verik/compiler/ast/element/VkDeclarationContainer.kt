@@ -18,5 +18,5 @@ package io.verik.compiler.ast.element
 
 interface VkDeclarationContainer {
 
-    var declarations: ArrayList<VkDeclaration>
+    fun replaceChild(oldDeclaration: VkDeclaration, newDeclaration: VkDeclaration)
 }

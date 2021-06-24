@@ -14,12 +14,9 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.main
+package io.verik.compiler.ast.element
 
-import java.nio.file.Path
+interface VkExpressionContainer {
 
-class SourceLocation(
-    val column: Int,
-    val line: Int,
-    val path: Path
-)
+    fun replaceChild(oldExpression: VkExpression, newExpression: VkExpression)
+}
