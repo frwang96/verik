@@ -146,6 +146,14 @@ class ElementPrinter : Visitor() {
         }
     }
 
+    override fun visitDotQualifiedExpression(dotQualifiedExpression: VkDotQualifiedExpression) {
+        build("DotQualifiedExpression") {
+            build(dotQualifiedExpression.type.toString())
+            build(dotQualifiedExpression.receiver)
+            build(dotQualifiedExpression.selector)
+        }
+    }
+
     override fun visitConstantExpression(constantExpression: VkConstantExpression) {
         build("ConstantExpression") {
             build(constantExpression.type.toString())

@@ -106,6 +106,16 @@ class CasterExpressionVisitor(
         }
     }
 
+    override fun visitDotQualifiedExpression(expression: KtDotQualifiedExpression, data: Unit?): VkElement? {
+        val location = expression.getSourceLocation()
+        val type = getType(expression)
+        val receiver = getElement<VkExpression>(expression.receiverExpression)
+            ?: return null
+        val selector = getElement<VkExpression>(expression.selectorExpression!!)
+            ?: return null
+        return VkDotQualifiedExpression(location, type, receiver, selector)
+    }
+
     override fun visitConstantExpression(expression: KtConstantExpression, data: Unit?): VkElement {
         val location = expression.getSourceLocation()
         val type = getType(expression)

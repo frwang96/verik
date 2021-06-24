@@ -16,9 +16,18 @@
 
 package io.verik.compiler.transform.post
 
+import io.verik.compiler.ast.common.SvOperatorKind
+import io.verik.compiler.core.CoreFunction
+import io.verik.compiler.core.CoreKtFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 
 object BinaryOperatorTransformer {
+
+    private val operatorKindMap = HashMap<CoreKtFunctionDeclaration, SvOperatorKind>()
+
+    init {
+        operatorKindMap[CoreFunction.Kotlin.Int.PLUS_INT] = SvOperatorKind.PLUS
+    }
 
     fun transform(projectContext: ProjectContext) {}
 }

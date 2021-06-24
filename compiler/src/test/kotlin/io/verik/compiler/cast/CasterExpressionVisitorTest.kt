@@ -135,6 +135,20 @@ internal class CasterExpressionVisitorTest : BaseTest() {
     }
 
     @Test
+    fun `dot qualified expression`() {
+        val projectContext = TestDriver.cast(
+            """
+                var x = 0
+                var y = x.plus(1)
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "DotQualifiedExpression(Int, ReferenceExpression(*), CallExpression(*))",
+            projectContext.findExpression("y")
+        )
+    }
+
+    @Test
     fun `constant expression integer`() {
         val projectContext = TestDriver.cast(
             """

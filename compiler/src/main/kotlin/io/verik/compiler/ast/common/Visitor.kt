@@ -114,6 +114,10 @@ abstract class Visitor {
         return visitElement(valueArgument)
     }
 
+    open fun visitDotQualifiedExpression(dotQualifiedExpression: VkDotQualifiedExpression) {
+        return visitExpression(dotQualifiedExpression)
+    }
+
     open fun visitConstantExpression(constantExpression: VkConstantExpression) {
         return visitExpression(constantExpression)
     }

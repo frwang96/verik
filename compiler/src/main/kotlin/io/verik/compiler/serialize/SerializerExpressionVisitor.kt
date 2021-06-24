@@ -72,6 +72,12 @@ class SerializerExpressionVisitor(private val sourceBuilder: SourceBuilder) : Vi
         valueArgument.expression.accept(this)
     }
 
+    override fun visitDotQualifiedExpression(dotQualifiedExpression: VkDotQualifiedExpression) {
+        dotQualifiedExpression.receiver.accept(this)
+        sourceBuilder.append(".", dotQualifiedExpression)
+        dotQualifiedExpression.selector.accept(this)
+    }
+
     override fun visitConstantExpression(constantExpression: VkConstantExpression) {
         sourceBuilder.append(constantExpression.value, constantExpression)
     }
