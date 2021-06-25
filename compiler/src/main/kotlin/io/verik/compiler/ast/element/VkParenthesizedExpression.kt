@@ -20,12 +20,13 @@ import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.common.Visitor
 import io.verik.compiler.main.SourceLocation
+import io.verik.compiler.main.m
 
 class VkParenthesizedExpression(
     override val location: SourceLocation,
     override var type: Type,
     var expression: VkExpression
-) : VkExpression() {
+) : VkExpression(), VkExpressionContainer {
 
     init {
         expression.parent = this
@@ -37,5 +38,13 @@ class VkParenthesizedExpression(
 
     override fun acceptChildren(visitor: TreeVisitor) {
         expression.accept(visitor)
+    }
+
+    override fun replaceChild(oldExpression: VkExpression, newExpression: VkExpression) {
+        newExpression.parent = this
+        if (expression == oldExpression)
+            expression = newExpression
+        else
+            m.error("Could not find ${oldExpression::class.simpleName} in parenthesized expression", this)
     }
 }

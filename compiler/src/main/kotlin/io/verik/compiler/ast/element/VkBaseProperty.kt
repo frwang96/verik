@@ -17,12 +17,21 @@
 package io.verik.compiler.ast.element
 
 import io.verik.compiler.ast.common.TreeVisitor
+import io.verik.compiler.main.m
 
-abstract class VkBaseProperty : VkDeclaration() {
+abstract class VkBaseProperty : VkDeclaration(), VkExpressionContainer {
 
     abstract var initializer: VkExpression?
 
     override fun acceptChildren(visitor: TreeVisitor) {
         initializer?.accept(visitor)
+    }
+
+    override fun replaceChild(oldExpression: VkExpression, newExpression: VkExpression) {
+        newExpression.parent = this
+        if (initializer == oldExpression)
+            initializer = newExpression
+        else
+            m.error("Could not find ${oldExpression::class.simpleName} in property", this)
     }
 }

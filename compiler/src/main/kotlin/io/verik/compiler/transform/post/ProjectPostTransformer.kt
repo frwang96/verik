@@ -22,8 +22,8 @@ import io.verik.compiler.main.m
 object ProjectPostTransformer {
 
     fun transform(projectContext: ProjectContext) {
-        m.log("Post-transform: Reduce binary operators")
-        BinaryOperatorReducer.transform(projectContext)
+        m.log("Post-transform: Reduce binary expressions")
+        BinaryExpressionReducer.transform(projectContext)
         m.flush()
 
         m.log("Post-transform: Transform assignments")
@@ -34,8 +34,8 @@ object ProjectPostTransformer {
         FunctionReferenceTransformer.transform(projectContext)
         m.flush()
 
-        m.log("Post-transform: Transform binary operators")
-        BinaryOperatorTransformer.transform(projectContext)
+        m.log("Post-transform: Transform binary expressions")
+        BinaryExpressionTransformer.transform(projectContext)
         m.flush()
 
         m.log("Post-transform: Transform package names")

@@ -16,18 +16,25 @@
 
 package io.verik.compiler.transform.post
 
-import io.verik.compiler.ast.common.SvOperatorKind
-import io.verik.compiler.core.CoreFunction
-import io.verik.compiler.core.CoreKtFunctionDeclaration
-import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.util.BaseTest
+import io.verik.compiler.util.TestDriver
+import io.verik.compiler.util.assertElementEquals
+import io.verik.compiler.util.findExpression
+import org.junit.jupiter.api.Test
 
-object BinaryOperatorTransformer {
+internal class BinaryExpressionReducerTest : BaseTest() {
 
-    private val operatorKindMap = HashMap<CoreKtFunctionDeclaration, SvOperatorKind>()
-
-    init {
-        operatorKindMap[CoreFunction.Kotlin.Int.PLUS_INT] = SvOperatorKind.PLUS
+    @Test
+    fun `reduce plus`() {
+        val projectContext = TestDriver.postTransform(
+            """
+                var x = 0
+                var y = x + 0
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "SvBinaryExpression(Int, PLUS, ReferenceExpression(*), ConstantExpression(*))",
+            projectContext.findExpression("y")
+        )
     }
-
-    fun transform(projectContext: ProjectContext) {}
 }
