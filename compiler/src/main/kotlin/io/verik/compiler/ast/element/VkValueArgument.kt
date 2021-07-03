@@ -21,12 +21,13 @@ import io.verik.compiler.ast.common.Reference
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.common.Visitor
 import io.verik.compiler.main.SourceLocation
+import io.verik.compiler.main.m
 
 class VkValueArgument(
     override val location: SourceLocation,
     override var reference: Declaration,
     var expression: VkExpression
-) : VkElement(), Reference {
+) : VkElement(), VkExpressionContainer, Reference {
 
     init {
         expression.parent = this
@@ -38,5 +39,13 @@ class VkValueArgument(
 
     override fun acceptChildren(visitor: TreeVisitor) {
         expression.accept(visitor)
+    }
+
+    override fun replaceChild(oldExpression: VkExpression, newExpression: VkExpression) {
+        newExpression.parent = this
+        if (expression == oldExpression)
+            expression = newExpression
+        else
+            m.error("Could not find ${oldExpression::class.simpleName} in value argument", this)
     }
 }

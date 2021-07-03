@@ -14,28 +14,23 @@
  * limitations under the License.
  */
 
-package count
+package io.verik.compiler.ast.element
 
-import io.verik.core.*
+import io.verik.compiler.ast.common.TreeVisitor
+import io.verik.compiler.ast.common.Visitor
+import io.verik.compiler.core.CoreClass
+import io.verik.compiler.main.SourceLocation
 
-var x = 0
-var y = 0
+class VkStringExpression(
+    override val location: SourceLocation,
+    val text: String
+) : VkExpression() {
 
-fun f() {
-    x = y + 1
-    random()
-    println("abc")
-}
+    override var type = CoreClass.Kotlin.STRING.toNoArgumentsType()
 
-@Top
-object Count : Module() {
-
-    val y = false
-
-    @Run
-    fun g() {
-        println()
+    override fun accept(visitor: Visitor) {
+        visitor.visitStringExpression(this)
     }
-}
 
-class Checker : Class()
+    override fun acceptChildren(visitor: TreeVisitor) {}
+}

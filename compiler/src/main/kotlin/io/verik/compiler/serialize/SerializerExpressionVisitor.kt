@@ -81,4 +81,8 @@ class SerializerExpressionVisitor(private val sourceBuilder: SourceBuilder) : Vi
     override fun visitConstantExpression(constantExpression: VkConstantExpression) {
         sourceBuilder.append(constantExpression.value, constantExpression)
     }
+
+    override fun visitStringExpression(stringExpression: VkStringExpression) {
+        sourceBuilder.append("\"${stringExpression.text}\"", stringExpression)
+    }
 }

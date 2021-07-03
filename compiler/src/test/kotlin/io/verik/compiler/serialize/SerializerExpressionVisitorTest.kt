@@ -111,4 +111,20 @@ internal class SerializerExpressionVisitorTest : BaseTest() {
             projectContext.outputTextFiles.last()
         )
     }
+
+    @Test
+    fun `string expression`() {
+        val projectContext = TestDriver.serialize(
+            """
+                var x = "abc"
+            """.trimIndent()
+        )
+        val expected = """
+            string x = "abc";
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
 }

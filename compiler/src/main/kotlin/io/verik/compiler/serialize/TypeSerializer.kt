@@ -31,6 +31,7 @@ object TypeSerializer {
             CoreClass.Kotlin.UNIT -> "void"
             CoreClass.Kotlin.INT -> "int"
             CoreClass.Kotlin.BOOLEAN -> "logic"
+            CoreClass.Kotlin.STRING -> "string"
             CoreClass.Core.UBIT -> "logic ${serializeCardinalLittleEndian(type.arguments[0], declaration)}"
             else -> {
                 m.error("Unable to serialize type: $type", declaration)

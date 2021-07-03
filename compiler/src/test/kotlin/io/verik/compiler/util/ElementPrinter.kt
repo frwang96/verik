@@ -174,6 +174,13 @@ class ElementPrinter : Visitor() {
         }
     }
 
+    override fun visitStringExpression(stringExpression: VkStringExpression) {
+        build("StringExpression") {
+            build(stringExpression.type.toString())
+            build(stringExpression.text)
+        }
+    }
+
     private fun build(content: String) {
         if (!first) builder.append(", ")
         builder.append(content)

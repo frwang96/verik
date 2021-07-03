@@ -26,6 +26,10 @@ object ProjectPostTransformer {
         BinaryExpressionReducer.transform(projectContext)
         m.flush()
 
+        m.log("Post-transform: Reduce string template expressions")
+        StringTemplateExpressionReducer.transform(projectContext)
+        m.flush()
+
         m.log("Post-transform: Transform assignments")
         AssignmentTransformer.transform(projectContext)
         m.flush()

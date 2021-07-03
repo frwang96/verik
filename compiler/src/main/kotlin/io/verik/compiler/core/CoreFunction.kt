@@ -30,6 +30,7 @@ object CoreFunction {
     object KotlinIo : CoreScope(CorePackage.KOTLIN_IO) {
 
         val PRINTLN = CoreKtFunctionDeclaration(parent, "println")
+        val PRINTLN_ANY = CoreKtFunctionDeclaration(parent, "println", CoreClass.Kotlin.ANY)
     }
 
     object Core : CoreScope(CorePackage.VERIK_CORE) {

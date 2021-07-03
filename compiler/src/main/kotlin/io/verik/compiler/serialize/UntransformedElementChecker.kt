@@ -17,7 +17,7 @@
 package io.verik.compiler.serialize
 
 import io.verik.compiler.ast.common.TreeVisitor
-import io.verik.compiler.ast.element.VkCallExpression
+import io.verik.compiler.ast.element.*
 import io.verik.compiler.core.CoreKtFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
@@ -34,10 +34,35 @@ object UntransformedElementChecker {
 
         private const val message = "has not been transformed to SystemVerilog"
 
+        override fun visitKtClass(ktClass: VkKtClass) {
+            super.visitKtClass(ktClass)
+            m.error("Class $ktClass $message", ktClass)
+        }
+
+        override fun visitKtFunction(ktFunction: VkKtFunction) {
+            super.visitKtFunction(ktFunction)
+            m.error("Function $ktFunction $message", ktFunction)
+        }
+
+        override fun visitKtProperty(ktProperty: VkKtProperty) {
+            super.visitKtProperty(ktProperty)
+            m.error("Property $ktProperty $message", ktProperty)
+        }
+
+        override fun visitKtBinaryExpression(ktBinaryExpression: VkKtBinaryExpression) {
+            super.visitKtBinaryExpression(ktBinaryExpression)
+            m.error("Binary expression $message", ktBinaryExpression)
+        }
+
         override fun visitCallExpression(callExpression: VkCallExpression) {
             super.visitCallExpression(callExpression)
             if (callExpression.reference is CoreKtFunctionDeclaration)
                 m.error("Call expression ${callExpression.reference} $message", callExpression)
+        }
+
+        override fun visitStringTemplateExpression(stringTemplateExpression: VkStringTemplateExpression) {
+            super.visitStringTemplateExpression(stringTemplateExpression)
+            m.error("String template expression $message", stringTemplateExpression)
         }
     }
 }
