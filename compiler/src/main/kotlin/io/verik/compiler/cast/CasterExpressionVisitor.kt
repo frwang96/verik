@@ -134,4 +134,20 @@ class CasterExpressionVisitor(
         val text = entry.text
         return VkLiteralStringTemplateEntry(location, text)
     }
+
+    override fun visitEscapeStringTemplateEntry(entry: KtEscapeStringTemplateEntry, data: Unit?): VkElement {
+        val location = entry.getSourceLocation()
+        val text = entry.unescapedValue
+        return VkLiteralStringTemplateEntry(location, text)
+    }
+
+    override fun visitStringTemplateEntryWithExpression(
+        entry: KtStringTemplateEntryWithExpression,
+        data: Unit?
+    ): VkElement? {
+        val location = entry.getSourceLocation()
+        val expression = getElement<VkExpression>(entry.expression!!)
+            ?: return null
+        return VkExpressionStringTemplateEntry(location, expression)
+    }
 }

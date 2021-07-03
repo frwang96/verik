@@ -29,8 +29,12 @@ object FunctionReferenceTransformer {
 
     init {
         functionReferenceMap[CoreFunction.Core.RANDOM] = CoreFunction.Sv.RANDOM
+        functionReferenceMap[CoreFunction.KotlinIo.PRINT] = CoreFunction.Sv.WRITE
+        functionReferenceMap[CoreFunction.KotlinIo.PRINT_ANY] = CoreFunction.Sv.WRITE
+        functionReferenceMap[CoreFunction.KotlinIo.PRINT_INT] = CoreFunction.Sv.WRITE
         functionReferenceMap[CoreFunction.KotlinIo.PRINTLN] = CoreFunction.Sv.DISPLAY
         functionReferenceMap[CoreFunction.KotlinIo.PRINTLN_ANY] = CoreFunction.Sv.DISPLAY
+        functionReferenceMap[CoreFunction.KotlinIo.PRINTLN_INT] = CoreFunction.Sv.DISPLAY
     }
 
     fun transform(projectContext: ProjectContext) {

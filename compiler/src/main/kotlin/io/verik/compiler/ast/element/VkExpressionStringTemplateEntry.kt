@@ -14,28 +14,26 @@
  * limitations under the License.
  */
 
-package count
+package io.verik.compiler.ast.element
 
-import io.verik.core.*
+import io.verik.compiler.ast.common.TreeVisitor
+import io.verik.compiler.ast.common.Visitor
+import io.verik.compiler.main.SourceLocation
 
-var x = 0
-var y = 0
+class VkExpressionStringTemplateEntry(
+    override val location: SourceLocation,
+    var expression: VkExpression
+) : VkStringTemplateEntry() {
 
-fun f() {
-    x = y + 1
-    random()
-    print("x=$x\n")
-}
+    init {
+        expression.parent = this
+    }
 
-@Top
-object Count : Module() {
+    override fun accept(visitor: Visitor) {
+        visitor.visitExpressionStringTemplateEntry(this)
+    }
 
-    val y = false
-
-    @Run
-    fun g() {
-        println()
+    override fun acceptChildren(visitor: TreeVisitor) {
+        expression.accept(visitor)
     }
 }
-
-class Checker : Class()

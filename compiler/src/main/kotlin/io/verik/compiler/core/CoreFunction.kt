@@ -29,8 +29,13 @@ object CoreFunction {
 
     object KotlinIo : CoreScope(CorePackage.KOTLIN_IO) {
 
+        val PRINT = CoreKtFunctionDeclaration(parent, "print")
+        val PRINT_ANY = CoreKtFunctionDeclaration(parent, "print", CoreClass.Kotlin.ANY)
+        val PRINT_INT = CoreKtFunctionDeclaration(parent, "print", CoreClass.Kotlin.INT)
+
         val PRINTLN = CoreKtFunctionDeclaration(parent, "println")
         val PRINTLN_ANY = CoreKtFunctionDeclaration(parent, "println", CoreClass.Kotlin.ANY)
+        val PRINTLN_INT = CoreKtFunctionDeclaration(parent, "println", CoreClass.Kotlin.INT)
     }
 
     object Core : CoreScope(CorePackage.VERIK_CORE) {
@@ -48,6 +53,8 @@ object CoreFunction {
     object Sv : CoreScope(CorePackage.VERIK_SV) {
 
         val DISPLAY = CoreSvFunctionDeclaration(parent, "\$display")
+        val WRITE = CoreSvFunctionDeclaration(parent, "\$write")
+        val SFORMATF = CoreSvFunctionDeclaration(parent, "\$sformatf")
         val RANDOM = CoreSvFunctionDeclaration(parent, "\$random")
     }
 }

@@ -134,6 +134,10 @@ abstract class Visitor {
         return visitStringTemplateEntry(literalStringTemplateEntry)
     }
 
+    open fun visitExpressionStringTemplateEntry(expressionStringTemplateEntry: VkExpressionStringTemplateEntry) {
+        return visitStringTemplateEntry(expressionStringTemplateEntry)
+    }
+
     open fun visitStringExpression(stringExpression: VkStringExpression) {
         return visitExpression(stringExpression)
     }

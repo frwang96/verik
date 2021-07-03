@@ -16,11 +16,13 @@
 
 package io.verik.compiler.transform.post
 
+import io.verik.compiler.ast.common.NullDeclaration
 import io.verik.compiler.ast.common.TreeVisitor
-import io.verik.compiler.ast.element.VkLiteralStringTemplateEntry
-import io.verik.compiler.ast.element.VkStringExpression
-import io.verik.compiler.ast.element.VkStringTemplateExpression
+import io.verik.compiler.ast.element.*
+import io.verik.compiler.core.CoreClass
+import io.verik.compiler.core.CoreFunction
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.m
 
 object StringTemplateExpressionReducer {
 
@@ -30,21 +32,67 @@ object StringTemplateExpressionReducer {
         }
     }
 
+    private fun getFormatSpecifier(expression: VkExpression): String {
+        return when (expression.type.reference) {
+            CoreClass.Kotlin.INT -> "%d"
+            else -> {
+                m.error("Unable to get format specifier of type: ${expression.type}", expression)
+                ""
+            }
+        }
+    }
+
     object StringTemplateExpressionVisitor : TreeVisitor() {
 
         override fun visitStringTemplateExpression(stringTemplateExpression: VkStringTemplateExpression) {
             super.visitStringTemplateExpression(stringTemplateExpression)
+            val isStringExpression = stringTemplateExpression.entries.all { it is VkLiteralStringTemplateEntry }
             val builder = StringBuilder()
+            val valueArguments = ArrayList<VkValueArgument>()
             for (entry in stringTemplateExpression.entries) {
                 when (entry) {
-                    is VkLiteralStringTemplateEntry -> builder.append(entry.text)
+                    is VkLiteralStringTemplateEntry -> {
+                        entry.text.toCharArray().forEach {
+                            val text = when (it) {
+                                '\n' -> "\\n"
+                                '\t' -> "\\t"
+                                '\\' -> "\\\\"
+                                '\"' -> "\\\""
+                                '\'' -> "\\\'"
+                                '%' -> if (isStringExpression) "%" else "%%"
+                                else -> it
+                            }
+                            builder.append(text)
+                        }
+                    }
+                    is VkExpressionStringTemplateEntry -> {
+                        builder.append(getFormatSpecifier(entry.expression))
+                        valueArguments.add(VkValueArgument(entry.location, NullDeclaration, entry.expression))
+                    }
                 }
             }
-            val constantExpression = VkStringExpression(
+
+            val stringExpression = VkStringExpression(
                 stringTemplateExpression.location,
                 builder.toString()
             )
-            stringTemplateExpression.replace(constantExpression)
+            if (isStringExpression) {
+                stringTemplateExpression.replace(stringExpression)
+            } else {
+                val stringExpressionValueArgument = VkValueArgument(
+                    stringTemplateExpression.location,
+                    NullDeclaration,
+                    stringExpression
+                )
+                valueArguments.add(0, stringExpressionValueArgument)
+                val callExpression = VkCallExpression(
+                    stringTemplateExpression.location,
+                    stringTemplateExpression.type,
+                    CoreFunction.Sv.SFORMATF,
+                    valueArguments
+                )
+                stringTemplateExpression.replace(callExpression)
+            }
         }
     }
 }

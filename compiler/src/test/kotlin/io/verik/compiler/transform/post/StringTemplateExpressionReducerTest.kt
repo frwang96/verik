@@ -36,4 +36,55 @@ internal class StringTemplateExpressionReducerTest : BaseTest() {
             projectContext.findExpression("x")
         )
     }
+
+    @Test
+    fun `reduce expression entry`() {
+        val projectContext = TestDriver.postTransform(
+            """
+                var x = 0
+                var y = "${"$"}x"
+            """.trimIndent()
+        )
+        assertElementEquals(
+            """
+                CallExpression(
+                    String,
+                    ${"$"}sformatf,
+                    [
+                        ValueArgument(null, StringExpression(String, %d)),
+                        ValueArgument(null, ReferenceExpression(Int, x))
+                    ]
+                )
+            """.trimIndent(),
+            projectContext.findExpression("y")
+        )
+    }
+
+    @Test
+    fun `reduce expression entry escape percent`() {
+        val projectContext = TestDriver.postTransform(
+            """
+                var x = "${"$"}{0}%"
+            """.trimIndent()
+        )
+        assertElementEquals(
+            """
+                CallExpression(*, [ValueArgument(null, StringExpression(String, %d%%)), *])
+            """.trimIndent(),
+            projectContext.findExpression("x")
+        )
+    }
+
+    @Test
+    fun `reduce expression entry no escape percent`() {
+        val projectContext = TestDriver.postTransform(
+            """
+                var x = "%"
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "StringExpression(String, %)",
+            projectContext.findExpression("x")
+        )
+    }
 }
