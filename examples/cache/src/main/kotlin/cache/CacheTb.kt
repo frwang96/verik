@@ -20,19 +20,19 @@ import io.verik.core.*
 
 class CacheTb(
     @In var clk: Boolean,
-    val txp: TxnBus.TxnTxPort
+    val tx: TxnIf.TxnTx
 ) : Module() {
 
     val mem = VArray<EXP<ADDR_WIDTH>, UbitData>()
 
     @Make val cb = CacheTbClockingBlock(
         event = posedge(clk),
-        rst = txp.rst,
-        reqOp = txp.reqOp,
-        reqAddr = txp.reqAddr,
-        reqData = txp.reqData,
-        rspVld = txp.rspVld,
-        rspData = txp.rspData
+        rst = tx.rst,
+        reqOp = tx.reqOp,
+        reqAddr = tx.reqAddr,
+        reqData = tx.reqData,
+        rspVld = tx.rspVld,
+        rspData = tx.rspData
     )
 
     @Run

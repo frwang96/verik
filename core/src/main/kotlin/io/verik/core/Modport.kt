@@ -17,18 +17,19 @@
 package io.verik.core
 
 /**
- * A port to bundle signals in [busses][Bus] and assign directionality. They correspond to SystemVerilog modports.
+ * A modport to bundle signals in [interfaces][Interface] and assign directionality. They correspond to SystemVerilog
+ * modports.
  *
- *      class P(
+ *      class MP(
  *          @In var x: Boolean
- *      ) : Port()
+ *      ) : Modport()
  *
- *      class B : Bus() {
+ *      class I : Interface() {
  *
  *          var x: Boolean = x()
  *
  *          @Make
- *          val p = P(x)
+ *          val mp = MP(x)
  *      }
  */
-abstract class Port : Component()
+abstract class Modport : Component()

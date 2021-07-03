@@ -20,7 +20,7 @@ import io.verik.core.*
 
 class MainMem(
     @In val clk: Boolean,
-    val rxp: TxnBus.TxnRxPort
+    val rx: TxnIf.TxnRx
 ) : Module() {
 
     var mem = VArray<EXP<ADDR_WIDTH>, UbitData>()
@@ -28,19 +28,19 @@ class MainMem(
     @Seq
     fun update() {
         on (posedge(clk)) {
-            rxp.rspVld = false
-            if (rxp.rst) {
+            rx.rspVld = false
+            if (rx.rst) {
                 for (i in range(mem.size)) {
                     mem[i] = u(0)
                 }
             } else {
-                if (rxp.reqOp != Op.NOP) {
-                    println("mem received op=${rxp.reqOp} addr=0x${rxp.reqAddr} data=0x${rxp.reqData}")
-                    if (rxp.reqOp == Op.WRITE) {
-                        mem[rxp.reqAddr] = rxp.reqData
+                if (rx.reqOp != Op.NOP) {
+                    println("mem received op=${rx.reqOp} addr=0x${rx.reqAddr} data=0x${rx.reqData}")
+                    if (rx.reqOp == Op.WRITE) {
+                        mem[rx.reqAddr] = rx.reqData
                     } else {
-                        rxp.rspData = mem[rxp.reqAddr]
-                        rxp.rspVld = true
+                        rx.rspData = mem[rx.reqAddr]
+                        rx.rspVld = true
                     }
                 }
             }

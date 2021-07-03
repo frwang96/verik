@@ -59,7 +59,6 @@ tasks.register<Jar>("javadocJar") {
 tasks.dokkaHtml {
     dokkaSourceSets {
         configureEach {
-            sourceRoot("src")
             includes.from(files("core.md"))
         }
     }

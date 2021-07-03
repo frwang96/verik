@@ -19,14 +19,14 @@
 package io.verik.core
 
 /**
- * A bus that carries signals between [modules][Module]. Buses can contain [ports][Port] to control signal direction.
- * They correspond to SystemVerilog interfaces.
+ * An interface that carries signals between [modules][Module]. Interfaces can contain [modports][Modport] to control
+ * signal direction. They correspond to SystemVerilog interfaces.
  *
- *      class B(
+ *      class I(
  *          @In var clk: Boolean
- *      ) : Bus() {
+ *      ) : Interface() {
  *
  *          var x: Boolean = x()
  *      }
  */
-abstract class Bus : Component()
+abstract class Interface : Component()

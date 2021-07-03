@@ -20,7 +20,7 @@ package io.verik.core
 
 /**
  * A clocking block to bundle signals synchronized on a clock edge. Clocking blocks can be instantiated in
- * [modules][Module] and [buses][Bus]. They correspond to SystemVerilog clocking blocks.
+ * [modules][Module] and [interfaces][Interface]. They correspond to SystemVerilog clocking blocks.
  *
  *      class CB(
  *          event: Event,

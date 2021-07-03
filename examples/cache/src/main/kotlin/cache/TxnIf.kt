@@ -18,7 +18,7 @@ package cache
 
 import io.verik.core.*
 
-class TxnBus : Bus() {
+class TxnIf : Interface() {
 
     var rst: Boolean = x()
     var reqOp: Op = x()
@@ -28,7 +28,7 @@ class TxnBus : Bus() {
     var rspData: UbitData = x()
 
     @Make
-    val txp = TxnTxPort(
+    val tx = TxnTx(
         rst = rst,
         reqOp = reqOp,
         reqAddr = reqAddr,
@@ -38,7 +38,7 @@ class TxnBus : Bus() {
     )
 
     @Make
-    val rxp = TxnRxPort(
+    val rx = TxnRx(
         rst = rst,
         reqOp = reqOp,
         reqAddr = reqAddr,
@@ -47,21 +47,21 @@ class TxnBus : Bus() {
         rspData = rspData
     )
 
-    class TxnTxPort(
+    class TxnTx(
         @Out var rst: Boolean,
         @Out var reqOp: Op,
         @Out var reqAddr: UbitAddr,
         @Out var reqData: UbitData,
         @In  var rspVld: Boolean,
         @In  var rspData: UbitData
-    ) : Port()
+    ) : Modport()
 
-    class TxnRxPort(
+    class TxnRx(
         @In  var rst: Boolean,
         @In  var reqOp: Op,
         @In  var reqAddr: UbitAddr,
         @In  var reqData: UbitData,
         @Out var rspVld: Boolean,
         @Out var rspData: UbitData
-    ) : Port()
+    ) : Modport()
 }
