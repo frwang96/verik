@@ -24,6 +24,7 @@ object CoreClass {
         val UNIT = CoreClassDeclaration(parent, "Unit", ANY)
         val INT = CoreClassDeclaration(parent, "Int", ANY)
         val BOOLEAN = CoreClassDeclaration(parent, "Boolean", ANY)
+        val STRING = CoreClassDeclaration(parent, "String", ANY)
     }
 
     object Core : CoreScope(CorePackage.VERIK_CORE) {

@@ -17,24 +17,26 @@
 package io.verik.compiler.ast.element
 
 import io.verik.compiler.ast.common.TreeVisitor
-import io.verik.compiler.main.m
+import io.verik.compiler.ast.common.Visitor
+import io.verik.compiler.core.CoreClass
+import io.verik.compiler.main.SourceLocation
 
-abstract class VkBinaryExpression : VkExpression(), VkExpressionContainer {
+class VkStringTemplateExpression(
+    override val location: SourceLocation,
+    val entries: List<VkStringTemplateEntry>
+) : VkExpression() {
 
-    abstract var left: VkExpression
-    abstract var right: VkExpression
-
-    override fun acceptChildren(visitor: TreeVisitor) {
-        left.accept(visitor)
-        right.accept(visitor)
+    init {
+        entries.forEach { it.parent = this }
     }
 
-    override fun replaceChild(oldExpression: VkExpression, newExpression: VkExpression) {
-        newExpression.parent = this
-        when (oldExpression) {
-            left -> left = newExpression
-            right -> right = newExpression
-            else -> m.error("Could not find ${oldExpression::class.simpleName} in binary expression", this)
-        }
+    override var type = CoreClass.Kotlin.STRING.toNoArgumentsType()
+
+    override fun accept(visitor: Visitor) {
+        visitor.visitStringTemplateExpression(this)
+    }
+
+    override fun acceptChildren(visitor: TreeVisitor) {
+        entries.forEach { it.accept(visitor) }
     }
 }

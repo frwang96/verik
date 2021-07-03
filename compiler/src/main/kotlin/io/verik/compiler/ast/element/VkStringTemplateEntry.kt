@@ -16,22 +16,4 @@
 
 package io.verik.compiler.ast.element
 
-import io.verik.compiler.ast.common.Type
-import io.verik.compiler.main.m
-
-abstract class VkExpression : VkElement() {
-
-    abstract var type: Type
-
-    fun replace(expression: VkExpression) {
-        val parent = parent
-        if (parent is VkExpressionContainer) {
-            parent.replaceChild(this, expression)
-        } else {
-            if (parent != null)
-                m.error("Could not replace ${this::class.simpleName} in ${parent::class.simpleName}", this)
-            else
-                m.error("Could not replace ${this::class.simpleName}", this)
-        }
-    }
-}
+abstract class VkStringTemplateEntry : VkElement()

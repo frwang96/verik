@@ -161,6 +161,19 @@ class ElementPrinter : Visitor() {
         }
     }
 
+    override fun visitStringTemplateExpression(stringTemplateExpression: VkStringTemplateExpression) {
+        build("StringTemplateExpression") {
+            build(stringTemplateExpression.type.toString())
+            build(stringTemplateExpression.entries)
+        }
+    }
+
+    override fun visitLiteralStringTemplateEntry(literalStringTemplateEntry: VkLiteralStringTemplateEntry) {
+        build("LiteralStringTemplateEntry") {
+            build(literalStringTemplateEntry.text)
+        }
+    }
+
     private fun build(content: String) {
         if (!first) builder.append(", ")
         builder.append(content)

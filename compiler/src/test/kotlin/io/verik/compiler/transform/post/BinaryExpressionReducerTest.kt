@@ -37,4 +37,26 @@ internal class BinaryExpressionReducerTest : BaseTest() {
             projectContext.findExpression("y")
         )
     }
+
+    @Test
+    fun `reduce nested plus`() {
+        val projectContext = TestDriver.postTransform(
+            """
+                var x = 0
+                var y = 0
+                var z = x + y + 0
+            """.trimIndent()
+        )
+        assertElementEquals(
+            """
+                SvBinaryExpression(
+                    Int,
+                    PLUS,
+                    SvBinaryExpression(Int, PLUS, ReferenceExpression(*), ReferenceExpression(*)),
+                    ConstantExpression(*)
+                )
+            """.trimIndent(),
+            projectContext.findExpression("z")
+        )
+    }
 }

@@ -160,4 +160,17 @@ internal class CasterExpressionVisitorTest : BaseTest() {
             projectContext.findExpression("x")
         )
     }
+
+    @Test
+    fun `string template expression literal entry`() {
+        val projectContext = TestDriver.cast(
+            """
+                var x = "abc"
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "StringTemplateExpression(String, [LiteralStringTemplateEntry(abc)])",
+            projectContext.findExpression("x")
+        )
+    }
 }

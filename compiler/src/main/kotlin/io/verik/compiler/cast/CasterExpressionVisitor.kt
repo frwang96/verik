@@ -122,4 +122,16 @@ class CasterExpressionVisitor(
         val value = ConstantExpressionCaster.cast(expression.text, type, location)
         return VkConstantExpression(location, type, value)
     }
+
+    override fun visitStringTemplateExpression(expression: KtStringTemplateExpression, data: Unit?): VkElement {
+        val location = expression.getSourceLocation()
+        val entries = expression.entries.mapNotNull { getElement<VkStringTemplateEntry>(it) }
+        return VkStringTemplateExpression(location, entries)
+    }
+
+    override fun visitLiteralStringTemplateEntry(entry: KtLiteralStringTemplateEntry, data: Unit?): VkElement {
+        val location = entry.getSourceLocation()
+        val text = entry.text
+        return VkLiteralStringTemplateEntry(location, text)
+    }
 }

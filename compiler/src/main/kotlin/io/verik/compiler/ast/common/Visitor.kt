@@ -121,4 +121,16 @@ abstract class Visitor {
     open fun visitConstantExpression(constantExpression: VkConstantExpression) {
         return visitExpression(constantExpression)
     }
+
+    open fun visitStringTemplateExpression(stringTemplateExpression: VkStringTemplateExpression) {
+        return visitExpression(stringTemplateExpression)
+    }
+
+    open fun visitStringTemplateEntry(stringTemplateEntry: VkStringTemplateEntry) {
+        return visitElement(stringTemplateEntry)
+    }
+
+    open fun visitLiteralStringTemplateEntry(literalStringTemplateEntry: VkLiteralStringTemplateEntry) {
+        return visitStringTemplateEntry(literalStringTemplateEntry)
+    }
 }

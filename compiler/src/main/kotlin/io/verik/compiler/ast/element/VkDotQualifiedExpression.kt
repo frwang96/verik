@@ -20,13 +20,14 @@ import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.common.Visitor
 import io.verik.compiler.main.SourceLocation
+import io.verik.compiler.main.m
 
 class VkDotQualifiedExpression(
     override val location: SourceLocation,
     override var type: Type,
     var receiver: VkExpression,
     var selector: VkExpression
-) : VkExpression() {
+) : VkExpression(), VkExpressionContainer {
 
     init {
         receiver.parent = this
@@ -40,5 +41,14 @@ class VkDotQualifiedExpression(
     override fun acceptChildren(visitor: TreeVisitor) {
         receiver.accept(visitor)
         selector.accept(visitor)
+    }
+
+    override fun replaceChild(oldExpression: VkExpression, newExpression: VkExpression) {
+        newExpression.parent = this
+        when (oldExpression) {
+            receiver -> receiver = newExpression
+            selector -> selector = newExpression
+            else -> m.error("Could not find ${oldExpression::class.simpleName} in dot qualified expression", this)
+        }
     }
 }
