@@ -34,7 +34,7 @@ class DeclarationMap {
 
     operator fun get(declarationDescriptor: DeclarationDescriptor, element: KtElement): Declaration {
         val declaration = declarationMap[declarationDescriptor]
-            ?: CoreDeclarationMap[declarationDescriptor]
+            ?: CoreDeclarationMap[this, declarationDescriptor, element]
         return if (declaration == null) {
             val name = declarationDescriptor.name
             m.error("Could not identify declaration: $name", element)

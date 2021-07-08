@@ -21,6 +21,7 @@ object CoreClass {
     object Kotlin : CoreScope(CorePackage.KOTLIN) {
 
         val ANY = CoreClassDeclaration(parent, "Any", null)
+        val FUNCTION = CoreClassDeclaration(parent, "Function", null)
         val UNIT = CoreClassDeclaration(parent, "Unit", ANY)
         val INT = CoreClassDeclaration(parent, "Int", ANY)
         val BOOLEAN = CoreClassDeclaration(parent, "Boolean", ANY)

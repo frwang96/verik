@@ -43,6 +43,7 @@ object CoreFunction {
         val U_INT = CoreKtFunctionDeclaration(parent, "u", CoreClass.Kotlin.INT)
         val RANDOM = CoreKtFunctionDeclaration(parent, "random")
         val RANDOM_INT = CoreKtFunctionDeclaration(parent, "random", CoreClass.Kotlin.INT)
+        val FOREVER = CoreKtFunctionDeclaration(parent, "forever", CoreClass.Kotlin.FUNCTION)
 
         object Ubit : CoreScope(CoreClass.Core.UBIT) {
 

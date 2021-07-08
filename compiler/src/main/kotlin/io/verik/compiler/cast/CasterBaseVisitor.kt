@@ -45,11 +45,11 @@ class CasterBaseVisitor(
     }
 
     private fun getType(type: KotlinType, element: KtElement): Type {
-        return TypeCaster.castType(declarationMap, type, element)
+        return TypeCaster.castFromType(declarationMap, type, element)
     }
 
     private fun getType(typeReference: KtTypeReference): Type {
-        return TypeCaster.castType(bindingContext, declarationMap, typeReference)
+        return TypeCaster.castFromTypeReference(bindingContext, declarationMap, typeReference)
     }
 
     override fun visitKtElement(element: KtElement, data: Unit?): VkElement? {

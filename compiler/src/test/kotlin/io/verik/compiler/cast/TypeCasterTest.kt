@@ -69,12 +69,12 @@ internal class TypeCasterTest : BaseTest() {
     }
 
     @Test
+    @Disabled
     fun `type nullable`() {
         assertThrows<TestException> {
             TestDriver.cast(
                 """
-                    @Suppress("ImplicitNullableNothingType")
-                    var x = null
+                    fun f(x: Int?) {}
                 """.trimIndent()
             )
         }.apply {

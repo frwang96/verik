@@ -39,7 +39,7 @@ class CasterExpressionVisitor(
     }
 
     private fun getType(expression: KtExpression): Type {
-        return TypeCaster.castType(declarationMap, expression.getType(bindingContext)!!, expression)
+        return TypeCaster.castFromType(declarationMap, expression.getType(bindingContext)!!, expression)
     }
 
     override fun visitKtElement(element: KtElement, data: Unit?): VkElement? {
@@ -121,6 +121,11 @@ class CasterExpressionVisitor(
         val type = getType(expression)
         val value = ConstantExpressionCaster.cast(expression.text, type, location)
         return VkConstantExpression(location, type, value)
+    }
+
+    override fun visitLambdaExpression(expression: KtLambdaExpression, data: Unit?): VkElement {
+        val location = expression.getSourceLocation()
+        return VkLambdaExpression(location)
     }
 
     override fun visitStringTemplateExpression(expression: KtStringTemplateExpression, data: Unit?): VkElement {

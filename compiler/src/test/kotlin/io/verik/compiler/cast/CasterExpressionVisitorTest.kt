@@ -162,6 +162,21 @@ internal class CasterExpressionVisitorTest : BaseTest() {
     }
 
     @Test
+    fun `lambda expression`() {
+        val projectContext = TestDriver.cast(
+            """
+                fun f() {
+                    forever {}
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "BlockExpression(Unit, [CallExpression(Unit, forever, [ValueArgument(null, LambdaExpression(Function))])])",
+            projectContext.findExpression("f")
+        )
+    }
+
+    @Test
     fun `string template expression literal entry`() {
         val projectContext = TestDriver.cast(
             """

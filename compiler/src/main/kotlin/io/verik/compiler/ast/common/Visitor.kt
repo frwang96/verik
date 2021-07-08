@@ -122,6 +122,10 @@ abstract class Visitor {
         return visitExpression(constantExpression)
     }
 
+    open fun visitLambdaExpression(lambdaExpression: VkLambdaExpression) {
+        return visitExpression(lambdaExpression)
+    }
+
     open fun visitStringTemplateExpression(stringTemplateExpression: VkStringTemplateExpression) {
         return visitExpression(stringTemplateExpression)
     }

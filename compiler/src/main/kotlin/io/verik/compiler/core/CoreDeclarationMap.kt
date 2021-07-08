@@ -16,11 +16,14 @@
 
 package io.verik.compiler.core
 
+import io.verik.compiler.ast.common.Declaration
 import io.verik.compiler.ast.common.Name
+import io.verik.compiler.cast.DeclarationMap
+import io.verik.compiler.cast.TypeCaster
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
 import org.jetbrains.kotlin.descriptors.SimpleFunctionDescriptor
 import org.jetbrains.kotlin.descriptors.impl.AbstractTypeAliasDescriptor
-import org.jetbrains.kotlin.js.descriptorUtils.getJetTypeFqName
+import org.jetbrains.kotlin.psi.KtElement
 import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameOrNull
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.createType
@@ -55,10 +58,14 @@ object CoreDeclarationMap {
         }
     }
 
-    operator fun get(descriptor: DeclarationDescriptor): CoreDeclaration? {
-        return when (descriptor) {
-            is SimpleFunctionDescriptor -> getFunction(descriptor)
-            else -> getDeclaration(descriptor)
+    operator fun get(
+        declarationMap: DeclarationMap,
+        declarationDescriptor: DeclarationDescriptor,
+        element: KtElement
+    ): Declaration? {
+        return when (declarationDescriptor) {
+            is SimpleFunctionDescriptor -> getFunction(declarationMap, declarationDescriptor, element)
+            else -> getDeclaration(declarationDescriptor)
         }
     }
 
@@ -84,26 +91,37 @@ object CoreDeclarationMap {
         }
     }
 
-    private fun getFunction(descriptor: SimpleFunctionDescriptor): CoreDeclaration? {
+    private fun getFunction(
+        declarationMap: DeclarationMap,
+        descriptor: SimpleFunctionDescriptor,
+        element: KtElement
+    ): CoreDeclaration? {
         val qualifiedName = getQualifiedName(descriptor)
             ?: return null
         val functions = functionMap[qualifiedName]
             ?: return null
         functions.forEach {
-            if (matchFunction(descriptor, it))
+            if (matchFunction(declarationMap, descriptor, element, it))
                 return it
         }
         return null
     }
 
-    private fun matchFunction(descriptor: SimpleFunctionDescriptor, function: CoreKtFunctionDeclaration): Boolean {
+    private fun matchFunction(
+        declarationMap: DeclarationMap,
+        descriptor: SimpleFunctionDescriptor,
+        element: KtElement,
+        function: CoreKtFunctionDeclaration
+    ): Boolean {
         val valueParameters = descriptor.valueParameters
-        val expectedParameterClassNames = function.parameterClassNames
-        if (valueParameters.size != expectedParameterClassNames.size)
+        val parameterClassNames = function.parameterClassNames
+        if (valueParameters.size != parameterClassNames.size)
             return false
-        valueParameters.zip(expectedParameterClassNames).forEach { (valueParameter, expectedParameterClassName) ->
-            val parameterClassName = Name(valueParameter.type.getJetTypeFqName(false).substringAfterLast("."))
-            if (parameterClassName != expectedParameterClassName)
+        valueParameters.zip(parameterClassNames).forEach { (valueParameter, parameterClassName) ->
+            val type = TypeCaster.castFromType(declarationMap, valueParameter.type, element)
+            if (type.reference !is CoreClassDeclaration)
+                return false
+            if (type.reference.name != parameterClassName)
                 return false
         }
         return true
