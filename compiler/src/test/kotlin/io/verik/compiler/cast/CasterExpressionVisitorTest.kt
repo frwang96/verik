@@ -16,6 +16,7 @@
 
 package io.verik.compiler.cast
 
+import io.verik.compiler.ast.element.VkBlockExpression
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertElementEquals
@@ -171,8 +172,14 @@ internal class CasterExpressionVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "BlockExpression(Unit, [CallExpression(Unit, forever, [ValueArgument(null, LambdaExpression(Function))])])",
-            projectContext.findExpression("f")
+            """
+                CallExpression(
+                    Unit,
+                    forever,
+                    [ValueArgument(null, FunctionLiteralExpression(Function, BlockExpression(*)))]
+                )
+            """.trimIndent(),
+            (projectContext.findExpression("f") as VkBlockExpression).statements[0]
         )
     }
 

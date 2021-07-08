@@ -21,15 +21,22 @@ import io.verik.compiler.ast.common.Visitor
 import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.SourceLocation
 
-class VkLambdaExpression(
-    override val location: SourceLocation
+class VkFunctionLiteralExpression(
+    override val location: SourceLocation,
+    var bodyBlockExpression: VkBlockExpression
 ) : VkExpression() {
+
+    init {
+        bodyBlockExpression.parent = this
+    }
 
     override var type = CoreClass.Kotlin.FUNCTION.toNoArgumentsType()
 
     override fun accept(visitor: Visitor) {
-        visitor.visitLambdaExpression(this)
+        visitor.visitFunctionLiteralExpression(this)
     }
 
-    override fun acceptChildren(visitor: TreeVisitor) {}
+    override fun acceptChildren(visitor: TreeVisitor) {
+        bodyBlockExpression.accept(visitor)
+    }
 }

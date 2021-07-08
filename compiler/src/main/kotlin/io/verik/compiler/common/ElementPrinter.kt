@@ -161,9 +161,10 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitLambdaExpression(lambdaExpression: VkLambdaExpression) {
-        build("LambdaExpression") {
-            build(lambdaExpression.type.toString())
+    override fun visitFunctionLiteralExpression(functionLiteralExpression: VkFunctionLiteralExpression) {
+        build("FunctionLiteralExpression") {
+            build(functionLiteralExpression.type.toString())
+            build(functionLiteralExpression.bodyBlockExpression)
         }
     }
 

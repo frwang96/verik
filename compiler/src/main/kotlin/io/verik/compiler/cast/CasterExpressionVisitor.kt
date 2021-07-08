@@ -21,6 +21,7 @@ import io.verik.compiler.ast.common.NullDeclaration
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.*
 import io.verik.compiler.common.getSourceLocation
+import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.psi.*
@@ -125,7 +126,13 @@ class CasterExpressionVisitor(
 
     override fun visitLambdaExpression(expression: KtLambdaExpression, data: Unit?): VkElement {
         val location = expression.getSourceLocation()
-        return VkLambdaExpression(location)
+        val statements = expression.bodyExpression!!.statements.mapNotNull { getElement<VkExpression>(it) }
+        val bodyBlockExpression = VkBlockExpression(
+            location,
+            CoreClass.Kotlin.FUNCTION.toNoArgumentsType(),
+            ArrayList(statements)
+        )
+        return VkFunctionLiteralExpression(location, bodyBlockExpression)
     }
 
     override fun visitStringTemplateExpression(expression: KtStringTemplateExpression, data: Unit?): VkElement {
