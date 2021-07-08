@@ -29,7 +29,10 @@ class SerializerExpressionVisitor(private val sourceBuilder: SourceBuilder) : Vi
     override fun visitBlockExpression(blockExpression: VkBlockExpression) {
         blockExpression.statements.forEach {
             it.accept(this)
-            sourceBuilder.appendLine(";", it)
+            if (it !is VkSvLoopExpression)
+                sourceBuilder.appendLine(";", it)
+            else
+                sourceBuilder.appendLine()
         }
     }
 
@@ -84,5 +87,10 @@ class SerializerExpressionVisitor(private val sourceBuilder: SourceBuilder) : Vi
 
     override fun visitStringExpression(stringExpression: VkStringExpression) {
         sourceBuilder.append("\"${stringExpression.text}\"", stringExpression)
+    }
+
+    override fun visitSvForeverExpression(svForeverExpression: VkSvForeverExpression) {
+        sourceBuilder.append("forever", svForeverExpression)
+        svForeverExpression.bodyBlockExpression.accept(this)
     }
 }

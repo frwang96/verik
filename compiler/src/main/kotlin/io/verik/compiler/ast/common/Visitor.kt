@@ -145,4 +145,12 @@ abstract class Visitor {
     open fun visitStringExpression(stringExpression: VkStringExpression) {
         return visitExpression(stringExpression)
     }
+
+    open fun visitSvLoopExpression(svLoopExpression: VkSvLoopExpression) {
+        return visitExpression(svLoopExpression)
+    }
+
+    open fun visitSvForeverExpression(svForeverExpression: VkSvForeverExpression) {
+        return visitSvLoopExpression(svForeverExpression)
+    }
 }

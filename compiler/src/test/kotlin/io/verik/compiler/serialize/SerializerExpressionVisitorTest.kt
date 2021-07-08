@@ -127,4 +127,24 @@ internal class SerializerExpressionVisitorTest : BaseTest() {
             projectContext.outputTextFiles.last()
         )
     }
+
+    @Test
+    fun `forever expression`() {
+        val projectContext = TestDriver.serialize(
+            """
+                fun f() {
+                    forever {}
+                }
+            """.trimIndent()
+        )
+        val expected = """
+            function void f();
+                forever
+            endfunction: f
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
 }

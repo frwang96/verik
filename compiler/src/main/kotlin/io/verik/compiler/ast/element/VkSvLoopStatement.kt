@@ -14,31 +14,9 @@
  * limitations under the License.
  */
 
-package count
+package io.verik.compiler.ast.element
 
-import io.verik.core.*
+abstract class VkSvLoopExpression : VkExpression() {
 
-var x = 0
-var y = 0
-
-fun f() {
-    x = y + 1
-    random()
-    print("x=$x\n")
+    abstract var bodyBlockExpression: VkBlockExpression
 }
-
-@Top
-object Count : Module() {
-
-    val y = false
-
-    @Run
-    fun g() {
-        println()
-        forever {
-            println()
-        }
-    }
-}
-
-class Checker : Class()

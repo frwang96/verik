@@ -38,6 +38,10 @@ object ProjectPostTransformer {
         FunctionReferenceTransformer.transform(projectContext)
         m.flush()
 
+        m.log("Post-transform: Transform loop expressions")
+        LoopExpressionTransformer.transform(projectContext)
+        m.flush()
+
         m.log("Post-transform: Transform binary expressions")
         BinaryExpressionTransformer.transform(projectContext)
         m.flush()

@@ -194,6 +194,13 @@ class ElementPrinter : Visitor() {
         }
     }
 
+    override fun visitSvForeverExpression(svForeverExpression: VkSvForeverExpression) {
+        build("SvForeverExpression") {
+            build(svForeverExpression.type.toString())
+            build(svForeverExpression.bodyBlockExpression)
+        }
+    }
+
     private fun build(content: String) {
         if (!first) builder.append(", ")
         builder.append(content)
