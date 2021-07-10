@@ -35,7 +35,7 @@ internal class LoopExpressionTransformerTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SvForeverExpression(Unit, BlockExpression(*))",
+            "SForeverStatement(Unit, CBlockExpression(*))",
             (projectContext.findExpression("f") as CBlockExpression).statements[0]
         )
     }

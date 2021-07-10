@@ -32,7 +32,7 @@ internal class StringTemplateExpressionReducerTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "StringExpression(String, abc)",
+            "SStringExpression(String, abc)",
             projectContext.findExpression("x")
         )
     }
@@ -47,12 +47,12 @@ internal class StringTemplateExpressionReducerTest : BaseTest() {
         )
         assertElementEquals(
             """
-                CallExpression(
+                CCallExpression(
                     String,
                     ${"$"}sformatf,
                     [
-                        ValueArgument(null, StringExpression(String, %d)),
-                        ValueArgument(null, ReferenceExpression(Int, x))
+                        CValueArgument(null, SStringExpression(String, %d)),
+                        CValueArgument(null, CReferenceExpression(Int, x))
                     ]
                 )
             """.trimIndent(),
@@ -69,7 +69,7 @@ internal class StringTemplateExpressionReducerTest : BaseTest() {
         )
         assertElementEquals(
             """
-                CallExpression(*, [ValueArgument(null, StringExpression(String, %d%%)), *])
+                CCallExpression(*, [CValueArgument(null, SStringExpression(String, %d%%)), *])
             """.trimIndent(),
             projectContext.findExpression("x")
         )
@@ -83,7 +83,7 @@ internal class StringTemplateExpressionReducerTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "StringExpression(String, %)",
+            "SStringExpression(String, %)",
             projectContext.findExpression("x")
         )
     }

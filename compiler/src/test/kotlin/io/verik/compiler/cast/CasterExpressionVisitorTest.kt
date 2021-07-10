@@ -34,7 +34,7 @@ internal class CasterExpressionVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "BlockExpression(Unit, [])",
+            "CBlockExpression(Unit, [])",
             projectContext.findExpression("f")
         )
     }
@@ -47,7 +47,7 @@ internal class CasterExpressionVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "ParenthesizedExpression(Int, ConstantExpression(*))",
+            "CParenthesizedExpression(Int, CConstantExpression(*))",
             projectContext.findExpression("x")
         )
     }
@@ -60,7 +60,7 @@ internal class CasterExpressionVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtBinaryExpression(Int, PLUS, ConstantExpression(*), ConstantExpression(*))",
+            "KBinaryExpression(Int, PLUS, CConstantExpression(*), CConstantExpression(*))",
             projectContext.findExpression("x")
         )
     }
@@ -74,7 +74,7 @@ internal class CasterExpressionVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "ReferenceExpression(Int, x)",
+            "CReferenceExpression(Int, x)",
             projectContext.findExpression("y")
         )
     }
@@ -88,7 +88,7 @@ internal class CasterExpressionVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "CallExpression(Unit, f, [])",
+            "CCallExpression(Unit, f, [])",
             projectContext.findExpression("x")
         )
     }
@@ -101,7 +101,7 @@ internal class CasterExpressionVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "CallExpression(Int, random, *)",
+            "CCallExpression(Int, random, *)",
             projectContext.findExpression("x")
         )
     }
@@ -115,7 +115,7 @@ internal class CasterExpressionVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "CallExpression(Unit, f, [ValueArgument(null, *)])",
+            "CCallExpression(Unit, f, [CValueArgument(null, *)])",
             projectContext.findExpression("x")
         )
     }
@@ -130,7 +130,7 @@ internal class CasterExpressionVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "CallExpression(Unit, f, [ValueArgument(x, *)])",
+            "CCallExpression(Unit, f, [CValueArgument(x, *)])",
             projectContext.findExpression("x")
         )
     }
@@ -144,7 +144,7 @@ internal class CasterExpressionVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "DotQualifiedExpression(Int, ReferenceExpression(*), CallExpression(*))",
+            "CDotQualifiedExpression(Int, CReferenceExpression(*), CCallExpression(*))",
             projectContext.findExpression("y")
         )
     }
@@ -157,7 +157,7 @@ internal class CasterExpressionVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "ConstantExpression(Int, 0)",
+            "CConstantExpression(Int, 0)",
             projectContext.findExpression("x")
         )
     }
@@ -173,10 +173,10 @@ internal class CasterExpressionVisitorTest : BaseTest() {
         )
         assertElementEquals(
             """
-                CallExpression(
+                CCallExpression(
                     Unit,
                     forever,
-                    [ValueArgument(null, FunctionLiteralExpression(Function, BlockExpression(*)))]
+                    [CValueArgument(null, KFunctionLiteralExpression(Function, CBlockExpression(*)))]
                 )
             """.trimIndent(),
             (projectContext.findExpression("f") as CBlockExpression).statements[0]
@@ -191,7 +191,7 @@ internal class CasterExpressionVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "StringTemplateExpression(String, [LiteralStringTemplateEntry(abc)])",
+            "KStringTemplateExpression(String, [KLiteralStringTemplateEntry(abc)])",
             projectContext.findExpression("x")
         )
     }
@@ -204,7 +204,7 @@ internal class CasterExpressionVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "StringTemplateExpression(String, [LiteralStringTemplateEntry($)])",
+            "KStringTemplateExpression(String, [KLiteralStringTemplateEntry($)])",
             projectContext.findExpression("x")
         )
     }
@@ -218,7 +218,7 @@ internal class CasterExpressionVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "StringTemplateExpression(String, [ExpressionStringTemplateEntry(ReferenceExpression(*))])",
+            "KStringTemplateExpression(String, [KExpressionStringTemplateEntry(CReferenceExpression(*))])",
             projectContext.findExpression("y")
         )
     }

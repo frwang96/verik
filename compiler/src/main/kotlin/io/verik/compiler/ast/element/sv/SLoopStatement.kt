@@ -17,27 +17,9 @@
 package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.CBlockExpression
-import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.common.Visitor
-import io.verik.compiler.core.CoreClass
-import io.verik.compiler.main.SourceLocation
+import io.verik.compiler.ast.element.common.CExpression
 
-class SForeverExpression(
-    override val location: SourceLocation,
-    override var bodyBlockExpression: CBlockExpression
-) : SLoopExpression() {
+abstract class SLoopStatement : CExpression() {
 
-    init {
-        bodyBlockExpression.parent = this
-    }
-
-    override var type = CoreClass.Kotlin.UNIT.toNoArgumentsType()
-
-    override fun accept(visitor: Visitor) {
-        visitor.visitSForeverExpression(this)
-    }
-
-    override fun acceptChildren(visitor: TreeVisitor) {
-        bodyBlockExpression.accept(visitor)
-    }
+    abstract var bodyBlockExpression: CBlockExpression
 }

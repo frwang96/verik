@@ -32,7 +32,7 @@ internal class ClassInterpreterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "Module(M)",
+            "SModule(M)",
             projectContext.findDeclaration("M")
         )
     }
@@ -45,7 +45,7 @@ internal class ClassInterpreterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SvClass(C, [], [])",
+            "SBasicClass(C, [], [])",
             projectContext.findDeclaration("C")
         )
     }

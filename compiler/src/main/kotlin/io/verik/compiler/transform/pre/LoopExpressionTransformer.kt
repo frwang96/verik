@@ -19,7 +19,7 @@ package io.verik.compiler.transform.pre
 import io.verik.compiler.ast.element.common.CCallExpression
 import io.verik.compiler.ast.element.common.cast
 import io.verik.compiler.ast.element.kt.KFunctionLiteralExpression
-import io.verik.compiler.ast.element.sv.SForeverExpression
+import io.verik.compiler.ast.element.sv.SForeverStatement
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.CoreFunction
@@ -42,11 +42,11 @@ object LoopExpressionTransformer : ProjectPass {
                     .valueArguments[0]
                     .expression.cast<KFunctionLiteralExpression>()
                 if (functionLiteralExpression != null) {
-                    val foreverExpression = SForeverExpression(
+                    val foreverStatement = SForeverStatement(
                         callExpression.location,
                         functionLiteralExpression.bodyBlockExpression
                     )
-                    callExpression.replace(foreverExpression)
+                    callExpression.replace(foreverStatement)
                 }
             }
         }

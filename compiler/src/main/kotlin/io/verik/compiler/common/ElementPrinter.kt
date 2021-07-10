@@ -26,13 +26,13 @@ class ElementPrinter : Visitor() {
     private var first = true
 
     override fun visitCFile(file: CFile) {
-        build("File") {
+        build("CFile") {
             build(file.declarations)
         }
     }
 
     override fun visitKBasicClass(basicClass: KBasicClass) {
-        build("KtClass") {
+        build("KBasicClass") {
             build(basicClass.name.toString())
             build(basicClass.typeParameters)
             build(basicClass.declarations)
@@ -40,7 +40,7 @@ class ElementPrinter : Visitor() {
     }
 
     override fun visitSBasicClass(basicClass: SBasicClass) {
-        build("SvClass") {
+        build("SBasicClass") {
             build(basicClass.name.toString())
             build(basicClass.typeParameters)
             build(basicClass.declarations)
@@ -48,13 +48,13 @@ class ElementPrinter : Visitor() {
     }
 
     override fun visitSModule(module: SModule) {
-        build("Module") {
+        build("SModule") {
             build(module.name.toString())
         }
     }
 
     override fun visitKFunction(function: KFunction) {
-        build("KtFunction") {
+        build("KFunction") {
             build(function.name.toString())
             build(function.type.toString())
             build(function.bodyBlockExpression)
@@ -63,7 +63,7 @@ class ElementPrinter : Visitor() {
     }
 
     override fun visitSFunction(function: SFunction) {
-        build("SvFunction") {
+        build("SFunction") {
             build(function.name.toString())
             build(function.type.toString())
             build(function.bodyBlockExpression)
@@ -71,7 +71,7 @@ class ElementPrinter : Visitor() {
     }
 
     override fun visitKProperty(property: KProperty) {
-        build("KtProperty") {
+        build("KProperty") {
             build(property.name.toString())
             build(property.type.toString())
             build(property.initializer)
@@ -79,7 +79,7 @@ class ElementPrinter : Visitor() {
     }
 
     override fun visitSProperty(property: SProperty) {
-        build("SvProperty") {
+        build("SProperty") {
             build(property.name.toString())
             build(property.type.toString())
             build(property.initializer)
@@ -87,28 +87,28 @@ class ElementPrinter : Visitor() {
     }
 
     override fun visitCTypeParameter(typeParameter: CTypeParameter) {
-        build("TypeParameter") {
+        build("CTypeParameter") {
             build(typeParameter.name.toString())
             build(typeParameter.type.toString())
         }
     }
 
     override fun visitCBlockExpression(blockExpression: CBlockExpression) {
-        build("BlockExpression") {
+        build("CBlockExpression") {
             build(blockExpression.type.toString())
             build(blockExpression.statements)
         }
     }
 
     override fun visitCParenthesizedExpression(parenthesizedExpression: CParenthesizedExpression) {
-        build("ParenthesizedExpression") {
+        build("CParenthesizedExpression") {
             build(parenthesizedExpression.type.toString())
             build(parenthesizedExpression.expression)
         }
     }
 
     override fun visitKBinaryExpression(binaryExpression: KBinaryExpression) {
-        build("KtBinaryExpression") {
+        build("KBinaryExpression") {
             build(binaryExpression.type.toString())
             build(binaryExpression.kind.toString())
             build(binaryExpression.left)
@@ -117,7 +117,7 @@ class ElementPrinter : Visitor() {
     }
 
     override fun visitSBinaryExpression(binaryExpression: SBinaryExpression) {
-        build("SvBinaryExpression") {
+        build("SBinaryExpression") {
             build(binaryExpression.type.toString())
             build(binaryExpression.kind.toString())
             build(binaryExpression.left)
@@ -126,14 +126,14 @@ class ElementPrinter : Visitor() {
     }
 
     override fun visitCReferenceExpression(referenceExpression: CReferenceExpression) {
-        build("ReferenceExpression") {
+        build("CReferenceExpression") {
             build(referenceExpression.type.toString())
             build(referenceExpression.reference.toString())
         }
     }
 
     override fun visitCCallExpression(callExpression: CCallExpression) {
-        build("CallExpression") {
+        build("CCallExpression") {
             build(callExpression.type.toString())
             build(callExpression.reference.toString())
             build(callExpression.valueArguments)
@@ -141,14 +141,14 @@ class ElementPrinter : Visitor() {
     }
 
     override fun visitCValueArgument(valueArgument: CValueArgument) {
-        build("ValueArgument") {
+        build("CValueArgument") {
             build(valueArgument.reference.toString())
             build(valueArgument.expression)
         }
     }
 
     override fun visitCDotQualifiedExpression(dotQualifiedExpression: CDotQualifiedExpression) {
-        build("DotQualifiedExpression") {
+        build("CDotQualifiedExpression") {
             build(dotQualifiedExpression.type.toString())
             build(dotQualifiedExpression.receiver)
             build(dotQualifiedExpression.selector)
@@ -156,49 +156,49 @@ class ElementPrinter : Visitor() {
     }
 
     override fun visitCConstantExpression(constantExpression: CConstantExpression) {
-        build("ConstantExpression") {
+        build("CConstantExpression") {
             build(constantExpression.type.toString())
             build(constantExpression.value)
         }
     }
 
     override fun visitKFunctionLiteralExpression(functionLiteralExpression: KFunctionLiteralExpression) {
-        build("FunctionLiteralExpression") {
+        build("KFunctionLiteralExpression") {
             build(functionLiteralExpression.type.toString())
             build(functionLiteralExpression.bodyBlockExpression)
         }
     }
 
     override fun visitKStringTemplateExpression(stringTemplateExpression: KStringTemplateExpression) {
-        build("StringTemplateExpression") {
+        build("KStringTemplateExpression") {
             build(stringTemplateExpression.type.toString())
             build(stringTemplateExpression.entries)
         }
     }
 
     override fun visitKLiteralStringTemplateEntry(literalStringTemplateEntry: KLiteralStringTemplateEntry) {
-        build("LiteralStringTemplateEntry") {
+        build("KLiteralStringTemplateEntry") {
             build(literalStringTemplateEntry.text)
         }
     }
 
     override fun visitKExpressionStringTemplateEntry(expressionStringTemplateEntry: KExpressionStringTemplateEntry) {
-        build("ExpressionStringTemplateEntry") {
+        build("KExpressionStringTemplateEntry") {
             build(expressionStringTemplateEntry.expression)
         }
     }
 
     override fun visitSStringExpression(stringExpression: SStringExpression) {
-        build("StringExpression") {
+        build("SStringExpression") {
             build(stringExpression.type.toString())
             build(stringExpression.text)
         }
     }
 
-    override fun visitSForeverExpression(foreverExpression: SForeverExpression) {
-        build("SvForeverExpression") {
-            build(foreverExpression.type.toString())
-            build(foreverExpression.bodyBlockExpression)
+    override fun visitSForeverStatement(foreverStatement: SForeverStatement) {
+        build("SForeverStatement") {
+            build(foreverStatement.type.toString())
+            build(foreverStatement.bodyBlockExpression)
         }
     }
 

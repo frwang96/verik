@@ -32,7 +32,7 @@ internal class ConstantExpressionCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "ConstantExpression(Boolean, 1'b0)",
+            "CConstantExpression(Boolean, 1'b0)",
             projectContext.findExpression("x")
         )
     }
@@ -45,7 +45,7 @@ internal class ConstantExpressionCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "ConstantExpression(Int, 12)",
+            "CConstantExpression(Int, 12)",
             projectContext.findExpression("x")
         )
     }
@@ -58,7 +58,7 @@ internal class ConstantExpressionCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "ConstantExpression(Int, 43707)",
+            "CConstantExpression(Int, 43707)",
             projectContext.findExpression("x")
         )
     }
@@ -71,7 +71,7 @@ internal class ConstantExpressionCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "ConstantExpression(Int, 15)",
+            "CConstantExpression(Int, 15)",
             projectContext.findExpression("x")
         )
     }

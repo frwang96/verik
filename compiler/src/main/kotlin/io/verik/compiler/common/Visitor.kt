@@ -148,11 +148,11 @@ abstract class Visitor {
         return visitCExpression(stringExpression)
     }
 
-    open fun visitSLoopExpression(loopExpression: SLoopExpression) {
-        return visitCExpression(loopExpression)
+    open fun visitSLoopStatement(loopStatement: SLoopStatement) {
+        return visitCExpression(loopStatement)
     }
 
-    open fun visitSForeverExpression(foreverExpression: SForeverExpression) {
-        return visitSLoopExpression(foreverExpression)
+    open fun visitSForeverStatement(foreverStatement: SForeverStatement) {
+        return visitSLoopStatement(foreverStatement)
     }
 }

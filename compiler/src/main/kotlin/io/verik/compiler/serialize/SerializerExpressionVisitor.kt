@@ -18,7 +18,7 @@ package io.verik.compiler.serialize
 
 import io.verik.compiler.ast.element.common.*
 import io.verik.compiler.ast.element.sv.SBinaryExpression
-import io.verik.compiler.ast.element.sv.SForeverExpression
+import io.verik.compiler.ast.element.sv.SForeverStatement
 import io.verik.compiler.ast.element.sv.SStringExpression
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.m
@@ -119,8 +119,8 @@ class SerializerExpressionVisitor(private val sourceBuilder: SourceBuilder) : Vi
         sourceBuilder.append("\"${stringExpression.text}\"", stringExpression)
     }
 
-    override fun visitSForeverExpression(foreverExpression: SForeverExpression) {
-        sourceBuilder.append("forever ", foreverExpression)
-        serializeAsStatement(foreverExpression.bodyBlockExpression)
+    override fun visitSForeverStatement(foreverStatement: SForeverStatement) {
+        sourceBuilder.append("forever ", foreverStatement)
+        serializeAsStatement(foreverStatement.bodyBlockExpression)
     }
 }
