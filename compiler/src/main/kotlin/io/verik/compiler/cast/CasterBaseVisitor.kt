@@ -16,8 +16,17 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.common.*
-import io.verik.compiler.ast.element.*
+import io.verik.compiler.ast.element.common.*
+import io.verik.compiler.ast.element.kt.VkImportDirective
+import io.verik.compiler.ast.element.kt.VkKtClass
+import io.verik.compiler.ast.element.kt.VkKtFunction
+import io.verik.compiler.ast.element.kt.VkKtProperty
+import io.verik.compiler.ast.property.FunctionAnnotationType
+import io.verik.compiler.ast.property.Name
+import io.verik.compiler.ast.property.SourceSetType
+import io.verik.compiler.ast.property.Type
+import io.verik.compiler.common.PackageDeclaration
+import io.verik.compiler.common.cast
 import io.verik.compiler.common.getSourceLocation
 import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.ProjectContext

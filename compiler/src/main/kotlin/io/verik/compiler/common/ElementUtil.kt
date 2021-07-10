@@ -16,7 +16,7 @@
 
 package io.verik.compiler.common
 
-import io.verik.compiler.ast.element.VkElement
+import io.verik.compiler.ast.element.common.VkElement
 import io.verik.compiler.main.SourceLocation
 import org.jetbrains.kotlin.diagnostics.PsiDiagnosticUtils
 import org.jetbrains.kotlin.psi.KtElement

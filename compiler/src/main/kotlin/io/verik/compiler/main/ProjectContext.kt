@@ -16,7 +16,7 @@
 
 package io.verik.compiler.main
 
-import io.verik.compiler.ast.element.VkFile
+import io.verik.compiler.ast.element.common.VkFile
 import io.verik.plugin.Config
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.resolve.BindingContext

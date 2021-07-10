@@ -16,10 +16,10 @@
 
 package io.verik.compiler.util
 
-import io.verik.compiler.ast.common.Name
-import io.verik.compiler.ast.common.TreeVisitor
-import io.verik.compiler.ast.element.*
+import io.verik.compiler.ast.element.common.*
+import io.verik.compiler.ast.property.Name
 import io.verik.compiler.common.ElementPrinter
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 import org.junit.jupiter.api.Assertions.assertEquals

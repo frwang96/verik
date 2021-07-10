@@ -16,11 +16,11 @@
 
 package io.verik.compiler.check.pre
 
-import io.verik.compiler.ast.common.PackageDeclaration
-import io.verik.compiler.ast.common.SourceSetType
-import io.verik.compiler.ast.common.TreeVisitor
-import io.verik.compiler.ast.element.VkImportDirective
+import io.verik.compiler.ast.element.kt.VkImportDirective
+import io.verik.compiler.ast.property.SourceSetType
+import io.verik.compiler.common.PackageDeclaration
 import io.verik.compiler.common.ProjectPass
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.CorePackage
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m

@@ -16,12 +16,12 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.common.TreeVisitor
-import io.verik.compiler.ast.element.VkFile
-import io.verik.compiler.ast.element.VkKtClass
-import io.verik.compiler.ast.element.VkKtFunction
-import io.verik.compiler.ast.element.VkKtProperty
+import io.verik.compiler.ast.element.common.VkFile
+import io.verik.compiler.ast.element.kt.VkKtClass
+import io.verik.compiler.ast.element.kt.VkKtFunction
+import io.verik.compiler.ast.element.kt.VkKtProperty
 import io.verik.compiler.common.ProjectPass
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 

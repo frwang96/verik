@@ -16,9 +16,9 @@
 
 package io.verik.compiler.check.post
 
-import io.verik.compiler.ast.common.TreeVisitor
-import io.verik.compiler.ast.element.VkElement
+import io.verik.compiler.ast.element.common.VkElement
 import io.verik.compiler.common.ProjectPass
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 import java.nio.file.Path

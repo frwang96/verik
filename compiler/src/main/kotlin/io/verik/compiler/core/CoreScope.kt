@@ -16,7 +16,7 @@
 
 package io.verik.compiler.core
 
-import io.verik.compiler.ast.common.PackageDeclaration
+import io.verik.compiler.common.PackageDeclaration
 
 open class CoreScope private constructor(protected val parent: String) {
 

@@ -16,10 +16,10 @@
 
 package io.verik.compiler.core
 
-import io.verik.compiler.ast.common.Declaration
-import io.verik.compiler.ast.common.Name
+import io.verik.compiler.ast.property.Name
 import io.verik.compiler.cast.DeclarationMap
 import io.verik.compiler.cast.TypeCaster
+import io.verik.compiler.common.Declaration
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
 import org.jetbrains.kotlin.descriptors.SimpleFunctionDescriptor
 import org.jetbrains.kotlin.descriptors.impl.AbstractTypeAliasDescriptor

@@ -16,9 +16,9 @@
 
 package io.verik.compiler.transform.post
 
-import io.verik.compiler.ast.common.TreeVisitor
-import io.verik.compiler.ast.element.VkSvFunction
+import io.verik.compiler.ast.element.sv.VkSvFunction
 import io.verik.compiler.common.ProjectPass
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 
 object BlockExpressionDecorator : ProjectPass {

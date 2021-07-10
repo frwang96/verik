@@ -16,8 +16,8 @@
 
 package io.verik.compiler.core
 
-import io.verik.compiler.ast.common.Declaration
-import io.verik.compiler.ast.common.Name
+import io.verik.compiler.ast.property.Name
+import io.verik.compiler.common.Declaration
 
 abstract class CoreDeclaration : Declaration {
 

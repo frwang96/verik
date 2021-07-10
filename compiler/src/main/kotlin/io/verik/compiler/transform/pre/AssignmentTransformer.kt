@@ -16,12 +16,12 @@
 
 package io.verik.compiler.transform.pre
 
-import io.verik.compiler.ast.common.KtOperatorKind
-import io.verik.compiler.ast.common.SvOperatorKind
-import io.verik.compiler.ast.common.TreeVisitor
-import io.verik.compiler.ast.element.VkKtBinaryExpression
-import io.verik.compiler.ast.element.VkSvBinaryExpression
+import io.verik.compiler.ast.element.kt.VkKtBinaryExpression
+import io.verik.compiler.ast.element.sv.VkSvBinaryExpression
+import io.verik.compiler.ast.property.KtOperatorKind
+import io.verik.compiler.ast.property.SvOperatorKind
 import io.verik.compiler.common.ProjectPass
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 
 object AssignmentTransformer : ProjectPass {

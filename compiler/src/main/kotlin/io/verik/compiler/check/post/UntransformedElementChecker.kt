@@ -16,9 +16,10 @@
 
 package io.verik.compiler.check.post
 
-import io.verik.compiler.ast.common.TreeVisitor
-import io.verik.compiler.ast.element.*
+import io.verik.compiler.ast.element.common.VkCallExpression
+import io.verik.compiler.ast.element.kt.*
 import io.verik.compiler.common.ProjectPass
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.CoreKtFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m

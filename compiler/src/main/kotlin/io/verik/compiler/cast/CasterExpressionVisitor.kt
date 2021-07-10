@@ -16,10 +16,11 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.common.KtOperatorKind
-import io.verik.compiler.ast.common.NullDeclaration
-import io.verik.compiler.ast.common.Type
-import io.verik.compiler.ast.element.*
+import io.verik.compiler.ast.element.common.*
+import io.verik.compiler.ast.element.kt.*
+import io.verik.compiler.ast.property.KtOperatorKind
+import io.verik.compiler.ast.property.Type
+import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.getSourceLocation
 import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.ProjectContext

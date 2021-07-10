@@ -16,7 +16,7 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.common.Type
+import io.verik.compiler.ast.property.Type
 import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.builtins.isFunctionType

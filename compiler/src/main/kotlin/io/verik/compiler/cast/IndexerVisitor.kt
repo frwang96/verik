@@ -16,12 +16,12 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.common.Name
-import io.verik.compiler.ast.common.Type
-import io.verik.compiler.ast.element.VkKtClass
-import io.verik.compiler.ast.element.VkKtFunction
-import io.verik.compiler.ast.element.VkKtProperty
-import io.verik.compiler.ast.element.VkTypeParameter
+import io.verik.compiler.ast.element.common.VkTypeParameter
+import io.verik.compiler.ast.element.kt.VkKtClass
+import io.verik.compiler.ast.element.kt.VkKtFunction
+import io.verik.compiler.ast.element.kt.VkKtProperty
+import io.verik.compiler.ast.property.Name
+import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.getSourceLocation
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m

@@ -16,9 +16,9 @@
 
 package io.verik.compiler.transform.post
 
-import io.verik.compiler.ast.common.TreeVisitor
-import io.verik.compiler.ast.element.VkCallExpression
+import io.verik.compiler.ast.element.common.VkCallExpression
 import io.verik.compiler.common.ProjectPass
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.CoreFunction
 import io.verik.compiler.core.CoreKtFunctionDeclaration
 import io.verik.compiler.core.CoreSvFunctionDeclaration

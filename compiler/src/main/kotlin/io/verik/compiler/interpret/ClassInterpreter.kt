@@ -16,10 +16,10 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.VkBaseClass
-import io.verik.compiler.ast.element.VkKtClass
-import io.verik.compiler.ast.element.VkModule
-import io.verik.compiler.ast.element.VkSvClass
+import io.verik.compiler.ast.element.common.VkBaseClass
+import io.verik.compiler.ast.element.kt.VkKtClass
+import io.verik.compiler.ast.element.sv.VkModule
+import io.verik.compiler.ast.element.sv.VkSvClass
 import io.verik.compiler.core.CoreClass
 
 object ClassInterpreter {

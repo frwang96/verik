@@ -16,11 +16,11 @@
 
 package io.verik.compiler.transform.post
 
-import io.verik.compiler.ast.common.Name
-import io.verik.compiler.ast.common.PackageDeclaration
-import io.verik.compiler.ast.common.TreeVisitor
-import io.verik.compiler.ast.element.VkFile
+import io.verik.compiler.ast.element.common.VkFile
+import io.verik.compiler.ast.property.Name
+import io.verik.compiler.common.PackageDeclaration
 import io.verik.compiler.common.ProjectPass
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.CorePackage
 import io.verik.compiler.main.ProjectContext
 

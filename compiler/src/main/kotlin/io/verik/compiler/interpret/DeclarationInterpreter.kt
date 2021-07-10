@@ -16,10 +16,15 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.common.TreeVisitor
-import io.verik.compiler.ast.element.*
+import io.verik.compiler.ast.element.common.VkBaseClass
+import io.verik.compiler.ast.element.common.VkDeclaration
+import io.verik.compiler.ast.element.common.VkFile
+import io.verik.compiler.ast.element.kt.VkKtClass
+import io.verik.compiler.ast.element.kt.VkKtFunction
+import io.verik.compiler.ast.element.kt.VkKtProperty
 import io.verik.compiler.common.DeclarationReplacer
 import io.verik.compiler.common.ProjectPass
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 
 object DeclarationInterpreter : ProjectPass {

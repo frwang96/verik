@@ -16,9 +16,9 @@
 
 package io.verik.compiler.serialize
 
-import io.verik.compiler.ast.common.Type
-import io.verik.compiler.ast.element.VkDeclaration
-import io.verik.compiler.ast.element.VkElement
+import io.verik.compiler.ast.element.common.VkDeclaration
+import io.verik.compiler.ast.element.common.VkElement
+import io.verik.compiler.ast.property.Type
 import io.verik.compiler.core.CoreCardinalConstantDeclaration
 import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.m

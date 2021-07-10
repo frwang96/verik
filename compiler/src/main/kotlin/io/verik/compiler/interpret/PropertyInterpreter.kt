@@ -16,9 +16,9 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.VkBaseProperty
-import io.verik.compiler.ast.element.VkKtProperty
-import io.verik.compiler.ast.element.VkSvProperty
+import io.verik.compiler.ast.element.common.VkBaseProperty
+import io.verik.compiler.ast.element.kt.VkKtProperty
+import io.verik.compiler.ast.element.sv.VkSvProperty
 
 object PropertyInterpreter {
 

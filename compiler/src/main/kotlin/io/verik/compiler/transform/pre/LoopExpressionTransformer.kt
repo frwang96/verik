@@ -16,12 +16,12 @@
 
 package io.verik.compiler.transform.pre
 
-import io.verik.compiler.ast.common.TreeVisitor
-import io.verik.compiler.ast.element.VkCallExpression
-import io.verik.compiler.ast.element.VkFunctionLiteralExpression
-import io.verik.compiler.ast.element.VkSvForeverExpression
-import io.verik.compiler.ast.element.cast
+import io.verik.compiler.ast.element.common.VkCallExpression
+import io.verik.compiler.ast.element.common.cast
+import io.verik.compiler.ast.element.kt.VkFunctionLiteralExpression
+import io.verik.compiler.ast.element.sv.VkSvForeverExpression
 import io.verik.compiler.common.ProjectPass
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.CoreFunction
 import io.verik.compiler.main.ProjectContext
 

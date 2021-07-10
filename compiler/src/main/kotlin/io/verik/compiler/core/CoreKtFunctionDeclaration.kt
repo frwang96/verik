@@ -16,7 +16,7 @@
 
 package io.verik.compiler.core
 
-import io.verik.compiler.ast.common.Name
+import io.verik.compiler.ast.property.Name
 
 class CoreKtFunctionDeclaration private constructor(
     override var name: Name,

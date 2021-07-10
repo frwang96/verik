@@ -16,8 +16,11 @@
 
 package io.verik.compiler.serialize
 
-import io.verik.compiler.ast.common.Visitor
-import io.verik.compiler.ast.element.*
+import io.verik.compiler.ast.element.common.*
+import io.verik.compiler.ast.element.sv.VkStringExpression
+import io.verik.compiler.ast.element.sv.VkSvBinaryExpression
+import io.verik.compiler.ast.element.sv.VkSvForeverExpression
+import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.m
 
 class SerializerExpressionVisitor(private val sourceBuilder: SourceBuilder) : Visitor() {

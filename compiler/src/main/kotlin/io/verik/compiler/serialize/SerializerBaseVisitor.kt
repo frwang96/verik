@@ -16,8 +16,14 @@
 
 package io.verik.compiler.serialize
 
-import io.verik.compiler.ast.common.Visitor
-import io.verik.compiler.ast.element.*
+import io.verik.compiler.ast.element.common.VkDeclaration
+import io.verik.compiler.ast.element.common.VkElement
+import io.verik.compiler.ast.element.common.VkFile
+import io.verik.compiler.ast.element.sv.VkModule
+import io.verik.compiler.ast.element.sv.VkSvClass
+import io.verik.compiler.ast.element.sv.VkSvFunction
+import io.verik.compiler.ast.element.sv.VkSvProperty
+import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.m
 
 class SerializerBaseVisitor(private val sourceBuilder: SourceBuilder) : Visitor() {

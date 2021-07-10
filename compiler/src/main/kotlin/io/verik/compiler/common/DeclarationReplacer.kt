@@ -16,11 +16,9 @@
 
 package io.verik.compiler.common
 
-import io.verik.compiler.ast.common.Reference
-import io.verik.compiler.ast.common.TreeVisitor
-import io.verik.compiler.ast.element.VkDeclaration
-import io.verik.compiler.ast.element.VkDeclarationContainer
-import io.verik.compiler.ast.element.VkExpression
+import io.verik.compiler.ast.element.common.VkDeclaration
+import io.verik.compiler.ast.element.common.VkDeclarationContainer
+import io.verik.compiler.ast.element.common.VkExpression
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 

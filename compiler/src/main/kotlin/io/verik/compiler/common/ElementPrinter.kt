@@ -16,8 +16,9 @@
 
 package io.verik.compiler.common
 
-import io.verik.compiler.ast.common.Visitor
-import io.verik.compiler.ast.element.*
+import io.verik.compiler.ast.element.common.*
+import io.verik.compiler.ast.element.kt.*
+import io.verik.compiler.ast.element.sv.*
 
 class ElementPrinter : Visitor() {
 

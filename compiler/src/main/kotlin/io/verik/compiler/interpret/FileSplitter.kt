@@ -16,8 +16,13 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.common.SourceType
-import io.verik.compiler.ast.element.*
+import io.verik.compiler.ast.element.common.VkDeclaration
+import io.verik.compiler.ast.element.common.VkFile
+import io.verik.compiler.ast.element.sv.VkModule
+import io.verik.compiler.ast.element.sv.VkSvClass
+import io.verik.compiler.ast.element.sv.VkSvFunction
+import io.verik.compiler.ast.element.sv.VkSvProperty
+import io.verik.compiler.ast.property.SourceType
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.core.CorePackage
 import io.verik.compiler.main.ProjectContext

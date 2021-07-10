@@ -16,9 +16,9 @@
 
 package io.verik.compiler.serialize
 
-import io.verik.compiler.ast.common.SourceType
-import io.verik.compiler.ast.element.VkElement
-import io.verik.compiler.ast.element.VkFile
+import io.verik.compiler.ast.element.common.VkElement
+import io.verik.compiler.ast.element.common.VkFile
+import io.verik.compiler.ast.property.SourceType
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.SourceLocation
 import io.verik.compiler.main.TextFile

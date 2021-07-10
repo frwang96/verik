@@ -16,7 +16,7 @@
 
 package io.verik.compiler.serialize
 
-import io.verik.compiler.ast.common.SourceType
+import io.verik.compiler.ast.property.SourceType
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 import java.nio.file.Path

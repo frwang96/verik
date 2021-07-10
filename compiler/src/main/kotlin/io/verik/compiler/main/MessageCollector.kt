@@ -16,7 +16,7 @@
 
 package io.verik.compiler.main
 
-import io.verik.compiler.ast.element.VkElement
+import io.verik.compiler.ast.element.common.VkElement
 import io.verik.compiler.common.getSourceLocation
 import org.jetbrains.kotlin.psi.KtElement
 

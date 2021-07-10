@@ -16,9 +16,9 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.VkBaseFunction
-import io.verik.compiler.ast.element.VkKtFunction
-import io.verik.compiler.ast.element.VkSvFunction
+import io.verik.compiler.ast.element.common.VkBaseFunction
+import io.verik.compiler.ast.element.kt.VkKtFunction
+import io.verik.compiler.ast.element.sv.VkSvFunction
 
 object FunctionInterpreter {
 

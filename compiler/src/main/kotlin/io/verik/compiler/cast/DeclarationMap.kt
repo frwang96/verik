@@ -16,9 +16,9 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.common.Declaration
-import io.verik.compiler.ast.common.NullDeclaration
-import io.verik.compiler.ast.element.VkDeclaration
+import io.verik.compiler.ast.element.common.VkDeclaration
+import io.verik.compiler.common.Declaration
+import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.core.CoreDeclarationMap
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
