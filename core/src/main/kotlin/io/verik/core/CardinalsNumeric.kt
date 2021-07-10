@@ -18,6 +18,9 @@
 
 package io.verik.core
 
+typealias `*` = Cardinal
+
+typealias `0` = Cardinal
 typealias `1` = Cardinal
 typealias `2` = Cardinal
 typealias `3` = Cardinal

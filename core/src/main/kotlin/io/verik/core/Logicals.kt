@@ -19,38 +19,38 @@
 package io.verik.core
 
 /**
- * Base type representing the conditionals.
+ * Base type representing the logicals.
  */
-sealed class Conditional
+sealed class Logical
 
 /**
- * Returns the value of the conditional [X] as a boolean.
+ * Returns the value of the logical [X] as a boolean.
  */
-fun <X : Conditional> b(): Boolean {
+fun <X : Logical> b(): Boolean {
     throw VerikException()
 }
 
 /**
- * Conditional true value.
+ * Logical true value.
  */
-typealias TRUE = Conditional
+typealias TRUE = Logical
 
 /**
- * Conditional false value.
+ * Logical false value.
  */
-typealias FALSE = Conditional
+typealias FALSE = Logical
 
 /**
- * Inverts the conditional X.
+ * Inverts the logical X.
  */
-typealias NOT<X> = Conditional
+typealias NOT<X> = Logical
 
 /**
- * Takes the conjunction of the conditionals X and Y.
+ * Takes the conjunction of the logical X and Y.
  */
-typealias AND<X, Y> = Conditional
+typealias AND<X, Y> = Logical
 
 /**
- * Takes the disjunction of the conditionals X and Y.
+ * Takes the disjunction of the logical X and Y.
  */
-typealias OR<X, Y> = Conditional
+typealias OR<X, Y> = Logical
