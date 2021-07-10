@@ -16,7 +16,7 @@
 
 package io.verik.compiler.check.pre
 
-import io.verik.compiler.ast.element.kt.VkImportDirective
+import io.verik.compiler.ast.element.kt.KImportDirective
 import io.verik.compiler.ast.property.SourceSetType
 import io.verik.compiler.common.PackageDeclaration
 import io.verik.compiler.common.ProjectPass
@@ -30,7 +30,7 @@ object ImportDirectiveChecker : ProjectPass {
     override fun pass(projectContext: ProjectContext) {
         val mainPackageDeclarationSet = HashSet<PackageDeclaration>()
         val testPackageDeclarationSet = HashSet<PackageDeclaration>()
-        projectContext.vkFiles.forEach {
+        projectContext.verikFiles.forEach {
             when (it.sourceSetType) {
                 SourceSetType.MAIN -> mainPackageDeclarationSet.add(it.packageDeclaration)
                 SourceSetType.TEST -> testPackageDeclarationSet.add(it.packageDeclaration)
@@ -46,12 +46,12 @@ object ImportDirectiveChecker : ProjectPass {
         packageDeclarationSet.addAll(testPackageDeclarationSet)
 
         val importDirectiveVisitor = ImportDirectiveVisitor(packageDeclarationSet)
-        projectContext.vkFiles.forEach { it.accept(importDirectiveVisitor) }
+        projectContext.verikFiles.forEach { it.accept(importDirectiveVisitor) }
     }
 
     class ImportDirectiveVisitor(private val packageDeclarationSet: Set<PackageDeclaration>) : TreeVisitor() {
 
-        override fun visitImportDirective(importDirective: VkImportDirective) {
+        override fun visitKImportDirective(importDirective: KImportDirective) {
             if (importDirective.packageDeclaration !in packageDeclarationSet)
                 m.error("Import package not found: ${importDirective.packageDeclaration}", importDirective)
         }

@@ -16,11 +16,11 @@
 
 package io.verik.compiler.common
 
-import io.verik.compiler.ast.element.common.VkElement
+import io.verik.compiler.ast.element.common.CElement
 
 abstract class TreeVisitor : Visitor() {
 
-    override fun visitElement(element: VkElement) {
+    override fun visitCElement(element: CElement) {
         element.acceptChildren(this)
     }
 }

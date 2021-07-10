@@ -28,7 +28,7 @@ internal class CasterBaseVisitorTest : BaseTest() {
         val projectContext = TestDriver.cast("")
         assertElementEquals(
             "File([])",
-            projectContext.vkFiles.first()
+            projectContext.verikFiles.first()
         )
     }
 
@@ -41,7 +41,7 @@ internal class CasterBaseVisitorTest : BaseTest() {
         )
         assertElementEquals(
             "File([KtClass(C, [], [])])",
-            projectContext.vkFiles.first()
+            projectContext.verikFiles.first()
         )
     }
 
@@ -60,7 +60,7 @@ internal class CasterBaseVisitorTest : BaseTest() {
                     KtClass(D, [], [])
                 ])
             """.trimIndent(),
-            projectContext.vkFiles.first()
+            projectContext.verikFiles.first()
         )
     }
 

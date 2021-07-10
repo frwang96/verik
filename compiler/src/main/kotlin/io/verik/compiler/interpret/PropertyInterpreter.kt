@@ -16,18 +16,18 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.common.VkBaseProperty
-import io.verik.compiler.ast.element.kt.VkKtProperty
-import io.verik.compiler.ast.element.sv.VkSvProperty
+import io.verik.compiler.ast.element.common.CAbstractProperty
+import io.verik.compiler.ast.element.kt.KProperty
+import io.verik.compiler.ast.element.sv.SProperty
 
 object PropertyInterpreter {
 
-    fun interpret(ktProperty: VkKtProperty): VkBaseProperty {
-            return VkSvProperty(
-            ktProperty.location,
-            ktProperty.name,
-            ktProperty.type,
-            ktProperty.initializer
+    fun interpret(property: KProperty): CAbstractProperty {
+            return SProperty(
+            property.location,
+            property.name,
+            property.type,
+            property.initializer
         )
     }
 }

@@ -22,137 +22,137 @@ import io.verik.compiler.ast.element.sv.*
 
 abstract class Visitor {
 
-    open fun visitElement(element: VkElement) {}
+    open fun visitCElement(element: CElement) {}
 
-    open fun visitFile(file: VkFile) {
-        return visitElement(file)
+    open fun visitCFile(file: CFile) {
+        return visitCElement(file)
     }
 
-    open fun visitImportDirective(importDirective: VkImportDirective) {
-        return visitElement(importDirective)
+    open fun visitKImportDirective(importDirective: KImportDirective) {
+        return visitCElement(importDirective)
     }
 
-    open fun visitExpression(expression: VkExpression) {
-        return visitElement(expression)
+    open fun visitCExpression(expression: CExpression) {
+        return visitCElement(expression)
     }
 
-    open fun visitDeclaration(declaration: VkDeclaration) {
-        return visitExpression(declaration)
+    open fun visitCDeclaration(declaration: CDeclaration) {
+        return visitCExpression(declaration)
     }
 
-    open fun visitBaseClass(baseClass: VkBaseClass) {
-        return visitDeclaration(baseClass)
+    open fun visitCAbstractClass(abstractClass: CAbstractClass) {
+        return visitCDeclaration(abstractClass)
     }
 
-    open fun visitKtClass(ktClass: VkKtClass) {
-        return visitBaseClass(ktClass)
+    open fun visitKBasicClass(basicClass: KBasicClass) {
+        return visitCAbstractClass(basicClass)
     }
 
-    open fun visitSvClass(svClass: VkSvClass) {
-        return visitBaseClass(svClass)
+    open fun visitSBasicClass(basicClass: SBasicClass) {
+        return visitCAbstractClass(basicClass)
     }
 
-    open fun visitModule(module: VkModule) {
-        return visitBaseClass(module)
+    open fun visitSModule(module: SModule) {
+        return visitCAbstractClass(module)
     }
 
-    open fun visitBaseFunction(baseFunction: VkBaseFunction) {
-        return visitDeclaration(baseFunction)
+    open fun visitCAbstractFunction(abstractFunction: CAbstractFunction) {
+        return visitCDeclaration(abstractFunction)
     }
 
-    open fun visitKtFunction(ktFunction: VkKtFunction) {
-        return visitBaseFunction(ktFunction)
+    open fun visitKFunction(function: KFunction) {
+        return visitCAbstractFunction(function)
     }
 
-    open fun visitSvFunction(svFunction: VkSvFunction) {
-        return visitBaseFunction(svFunction)
+    open fun visitSFunction(function: SFunction) {
+        return visitCAbstractFunction(function)
     }
 
-    open fun visitBaseProperty(baseProperty: VkBaseProperty) {
-        return visitDeclaration(baseProperty)
+    open fun visitCAbstractProperty(abstractProperty: CAbstractProperty) {
+        return visitCDeclaration(abstractProperty)
     }
 
-    open fun visitKtProperty(ktProperty: VkKtProperty) {
-        return visitBaseProperty(ktProperty)
+    open fun visitKProperty(property: KProperty) {
+        return visitCAbstractProperty(property)
     }
 
-    open fun visitSvProperty(svProperty: VkSvProperty) {
-        return visitBaseProperty(svProperty)
+    open fun visitSProperty(property: SProperty) {
+        return visitCAbstractProperty(property)
     }
 
-    open fun visitTypeParameter(typeParameter: VkTypeParameter) {
-        return visitDeclaration(typeParameter)
+    open fun visitCTypeParameter(typeParameter: CTypeParameter) {
+        return visitCDeclaration(typeParameter)
     }
 
-    open fun visitBlockExpression(blockExpression: VkBlockExpression) {
-        return visitExpression(blockExpression)
+    open fun visitCBlockExpression(blockExpression: CBlockExpression) {
+        return visitCExpression(blockExpression)
     }
 
-    open fun visitParenthesizedExpression(parenthesizedExpression: VkParenthesizedExpression) {
-        return visitExpression(parenthesizedExpression)
+    open fun visitCParenthesizedExpression(parenthesizedExpression: CParenthesizedExpression) {
+        return visitCExpression(parenthesizedExpression)
     }
 
-    open fun visitBinaryExpression(binaryExpression: VkBinaryExpression) {
-        return visitExpression(binaryExpression)
+    open fun visitCAbstractBinaryExpression(binaryExpression: CAbstractBinaryExpression) {
+        return visitCExpression(binaryExpression)
     }
 
-    open fun visitKtBinaryExpression(ktBinaryExpression: VkKtBinaryExpression) {
-        return visitBinaryExpression(ktBinaryExpression)
+    open fun visitKBinaryExpression(binaryExpression: KBinaryExpression) {
+        return visitCAbstractBinaryExpression(binaryExpression)
     }
 
-    open fun visitSvBinaryExpression(svBinaryExpression: VkSvBinaryExpression) {
-        return visitBinaryExpression(svBinaryExpression)
+    open fun visitSBinaryExpression(binaryExpression: SBinaryExpression) {
+        return visitCAbstractBinaryExpression(binaryExpression)
     }
 
-    open fun visitReferenceExpression(referenceExpression: VkReferenceExpression) {
-        return visitExpression(referenceExpression)
+    open fun visitCReferenceExpression(referenceExpression: CReferenceExpression) {
+        return visitCExpression(referenceExpression)
     }
 
-    open fun visitCallExpression(callExpression: VkCallExpression) {
-        return visitExpression(callExpression)
+    open fun visitCCallExpression(callExpression: CCallExpression) {
+        return visitCExpression(callExpression)
     }
 
-    open fun visitValueArgument(valueArgument: VkValueArgument) {
-        return visitElement(valueArgument)
+    open fun visitCValueArgument(valueArgument: CValueArgument) {
+        return visitCElement(valueArgument)
     }
 
-    open fun visitDotQualifiedExpression(dotQualifiedExpression: VkDotQualifiedExpression) {
-        return visitExpression(dotQualifiedExpression)
+    open fun visitCDotQualifiedExpression(dotQualifiedExpression: CDotQualifiedExpression) {
+        return visitCExpression(dotQualifiedExpression)
     }
 
-    open fun visitConstantExpression(constantExpression: VkConstantExpression) {
-        return visitExpression(constantExpression)
+    open fun visitCConstantExpression(constantExpression: CConstantExpression) {
+        return visitCExpression(constantExpression)
     }
 
-    open fun visitFunctionLiteralExpression(functionLiteralExpression: VkFunctionLiteralExpression) {
-        return visitExpression(functionLiteralExpression)
+    open fun visitKFunctionLiteralExpression(functionLiteralExpression: KFunctionLiteralExpression) {
+        return visitCExpression(functionLiteralExpression)
     }
 
-    open fun visitStringTemplateExpression(stringTemplateExpression: VkStringTemplateExpression) {
-        return visitExpression(stringTemplateExpression)
+    open fun visitKStringTemplateExpression(stringTemplateExpression: KStringTemplateExpression) {
+        return visitCExpression(stringTemplateExpression)
     }
 
-    open fun visitStringTemplateEntry(stringTemplateEntry: VkStringTemplateEntry) {
-        return visitElement(stringTemplateEntry)
+    open fun visitKStringTemplateEntry(stringTemplateEntry: KStringTemplateEntry) {
+        return visitCElement(stringTemplateEntry)
     }
 
-    open fun visitLiteralStringTemplateEntry(literalStringTemplateEntry: VkLiteralStringTemplateEntry) {
-        return visitStringTemplateEntry(literalStringTemplateEntry)
+    open fun visitKLiteralStringTemplateEntry(literalStringTemplateEntry: KLiteralStringTemplateEntry) {
+        return visitKStringTemplateEntry(literalStringTemplateEntry)
     }
 
-    open fun visitExpressionStringTemplateEntry(expressionStringTemplateEntry: VkExpressionStringTemplateEntry) {
-        return visitStringTemplateEntry(expressionStringTemplateEntry)
+    open fun visitKExpressionStringTemplateEntry(expressionStringTemplateEntry: KExpressionStringTemplateEntry) {
+        return visitKStringTemplateEntry(expressionStringTemplateEntry)
     }
 
-    open fun visitStringExpression(stringExpression: VkStringExpression) {
-        return visitExpression(stringExpression)
+    open fun visitSStringExpression(stringExpression: SStringExpression) {
+        return visitCExpression(stringExpression)
     }
 
-    open fun visitSvLoopExpression(svLoopExpression: VkSvLoopExpression) {
-        return visitExpression(svLoopExpression)
+    open fun visitSLoopExpression(loopExpression: SLoopExpression) {
+        return visitCExpression(loopExpression)
     }
 
-    open fun visitSvForeverExpression(svForeverExpression: VkSvForeverExpression) {
-        return visitSvLoopExpression(svForeverExpression)
+    open fun visitSForeverExpression(foreverExpression: SForeverExpression) {
+        return visitSLoopExpression(foreverExpression)
     }
 }

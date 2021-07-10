@@ -16,6 +16,7 @@
 
 package io.verik.compiler.common
 
+import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.Name
 
 object NullDeclaration : Declaration {

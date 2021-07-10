@@ -16,9 +16,9 @@
 
 package io.verik.compiler.transform.post
 
-import io.verik.compiler.ast.element.common.VkCallExpression
-import io.verik.compiler.ast.element.common.VkDotQualifiedExpression
-import io.verik.compiler.ast.element.sv.VkSvBinaryExpression
+import io.verik.compiler.ast.element.common.CCallExpression
+import io.verik.compiler.ast.element.common.CDotQualifiedExpression
+import io.verik.compiler.ast.element.sv.SBinaryExpression
 import io.verik.compiler.ast.property.SvOperatorKind
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
@@ -37,24 +37,24 @@ object BinaryExpressionTransformer : ProjectPass {
     }
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.vkFiles.forEach {
+        projectContext.verikFiles.forEach {
             it.accept(BinaryExpressionVisitor)
         }
     }
 
     object BinaryExpressionVisitor : TreeVisitor() {
 
-        override fun visitDotQualifiedExpression(dotQualifiedExpression: VkDotQualifiedExpression) {
-            super.visitDotQualifiedExpression(dotQualifiedExpression)
+        override fun visitCDotQualifiedExpression(dotQualifiedExpression: CDotQualifiedExpression) {
+            super.visitCDotQualifiedExpression(dotQualifiedExpression)
             val selector = dotQualifiedExpression.selector
-            if (selector is VkCallExpression) {
+            if (selector is CCallExpression) {
                 val reference = selector.reference
                 val kind = operatorKindMap[reference]
                 if (kind != null) {
                     if (selector.valueArguments.size != 1)
                         m.error("Single value argument expected for call expression $reference", selector)
                     dotQualifiedExpression.replace(
-                        VkSvBinaryExpression(
+                        SBinaryExpression(
                             dotQualifiedExpression.location,
                             dotQualifiedExpression.type,
                             dotQualifiedExpression.receiver,

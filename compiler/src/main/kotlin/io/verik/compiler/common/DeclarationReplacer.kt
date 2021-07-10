@@ -16,19 +16,20 @@
 
 package io.verik.compiler.common
 
-import io.verik.compiler.ast.element.common.VkDeclaration
-import io.verik.compiler.ast.element.common.VkDeclarationContainer
-import io.verik.compiler.ast.element.common.VkExpression
+import io.verik.compiler.ast.element.common.CDeclaration
+import io.verik.compiler.ast.element.common.CExpression
+import io.verik.compiler.ast.interfaces.DeclarationContainer
+import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
 class DeclarationReplacer(val projectContext: ProjectContext) {
 
-    private val replacementMap = HashMap<VkDeclaration, VkDeclaration>()
+    private val replacementMap = HashMap<CDeclaration, CDeclaration>()
 
-    fun replace(oldDeclaration: VkDeclaration, newDeclaration: VkDeclaration) {
+    fun replace(oldDeclaration: CDeclaration, newDeclaration: CDeclaration) {
         val parent = oldDeclaration.parent
-        if (parent is VkDeclarationContainer)
+        if (parent is DeclarationContainer)
             parent.replaceChild(oldDeclaration, newDeclaration)
         else
             m.error("Could not replace declaration $oldDeclaration", oldDeclaration)
@@ -37,16 +38,16 @@ class DeclarationReplacer(val projectContext: ProjectContext) {
 
     fun updateReferences() {
         val referenceUpdateVisitor = ReferenceUpdateVisitor(replacementMap)
-        projectContext.vkFiles.forEach {
+        projectContext.verikFiles.forEach {
             it.accept(referenceUpdateVisitor)
         }
         replacementMap.clear()
     }
 
-    class ReferenceUpdateVisitor(private val replacementMap: Map<VkDeclaration, VkDeclaration>) : TreeVisitor() {
+    class ReferenceUpdateVisitor(private val replacementMap: Map<CDeclaration, CDeclaration>) : TreeVisitor() {
 
-        override fun visitExpression(expression: VkExpression) {
-            super.visitExpression(expression)
+        override fun visitCExpression(expression: CExpression) {
+            super.visitCExpression(expression)
             if (expression is Reference) {
                 val reference = replacementMap[expression.reference]
                 if (reference != null)

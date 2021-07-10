@@ -17,16 +17,16 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.ast.element.common.*
-import io.verik.compiler.ast.element.kt.VkImportDirective
-import io.verik.compiler.ast.element.kt.VkKtClass
-import io.verik.compiler.ast.element.kt.VkKtFunction
-import io.verik.compiler.ast.element.kt.VkKtProperty
+import io.verik.compiler.ast.element.kt.KBasicClass
+import io.verik.compiler.ast.element.kt.KFunction
+import io.verik.compiler.ast.element.kt.KImportDirective
+import io.verik.compiler.ast.element.kt.KProperty
+import io.verik.compiler.ast.interfaces.cast
 import io.verik.compiler.ast.property.FunctionAnnotationType
 import io.verik.compiler.ast.property.Name
 import io.verik.compiler.ast.property.SourceSetType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.PackageDeclaration
-import io.verik.compiler.common.cast
 import io.verik.compiler.common.getSourceLocation
 import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.ProjectContext
@@ -42,14 +42,14 @@ import java.nio.file.Paths
 class CasterBaseVisitor(
     projectContext: ProjectContext,
     private val declarationMap: DeclarationMap
-) : KtVisitor<VkElement, Unit>() {
+) : KtVisitor<CElement, Unit>() {
 
     private val mainPath = projectContext.config.projectDir.resolve("src/main/kotlin")
     private val testPath = projectContext.config.projectDir.resolve("src/test/kotlin")
     private val bindingContext = projectContext.bindingContext
     private val expressionVisitor = CasterExpressionVisitor(projectContext, declarationMap)
 
-    inline fun <reified T : VkElement> getElement(element: KtElement): T? {
+    inline fun <reified T : CElement> getElement(element: KtElement): T? {
         return element.accept(this, Unit).cast(element)
     }
 
@@ -61,12 +61,12 @@ class CasterBaseVisitor(
         return TypeCaster.castFromTypeReference(bindingContext, declarationMap, typeReference)
     }
 
-    override fun visitKtElement(element: KtElement, data: Unit?): VkElement? {
+    override fun visitKtElement(element: KtElement, data: Unit?): CElement? {
         m.error("Unrecognized element: ${element::class.simpleName}", element)
         return null
     }
 
-    override fun visitKtFile(file: KtFile, data: Unit?): VkElement? {
+    override fun visitKtFile(file: KtFile, data: Unit?): CElement? {
         val location = file.getSourceLocation()
         val inputPath = Paths.get(file.virtualFilePath)
         val (sourceSetType, relativePath) = when {
@@ -78,10 +78,10 @@ class CasterBaseVisitor(
             }
         }
         val packageDeclaration = PackageDeclaration(Name(file.packageFqName.toString()))
-        val declarations = file.declarations.mapNotNull { getElement<VkDeclaration>(it) }
-        val importDirectives = file.importDirectives.mapNotNull { getElement<VkImportDirective>(it) }
+        val declarations = file.declarations.mapNotNull { getElement<CDeclaration>(it) }
+        val importDirectives = file.importDirectives.mapNotNull { getElement<KImportDirective>(it) }
 
-        return VkFile(
+        return CFile(
             location,
             inputPath,
             null,
@@ -94,7 +94,7 @@ class CasterBaseVisitor(
         )
     }
 
-    override fun visitImportDirective(importDirective: KtImportDirective, data: Unit?): VkElement {
+    override fun visitImportDirective(importDirective: KtImportDirective, data: Unit?): CElement {
         val location = importDirective.getSourceLocation()
         val (name, packageDeclaration) = if (importDirective.isAllUnder) {
             Pair(
@@ -107,36 +107,36 @@ class CasterBaseVisitor(
                 PackageDeclaration(Name(importDirective.importedFqName!!.parent().toString()))
             )
         }
-        return VkImportDirective(location, name, packageDeclaration)
+        return KImportDirective(location, name, packageDeclaration)
     }
 
-    override fun visitClassOrObject(classOrObject: KtClassOrObject, data: Unit?): VkElement? {
+    override fun visitClassOrObject(classOrObject: KtClassOrObject, data: Unit?): CElement? {
         val descriptor = bindingContext.getSliceContents(BindingContext.CLASS)[classOrObject]!!
-        val ktClass = declarationMap[descriptor, classOrObject]
-            .cast<VkKtClass>(classOrObject)
+        val basicClass = declarationMap[descriptor, classOrObject]
+            .cast<KBasicClass>(classOrObject)
             ?: return null
 
         val type = getType(descriptor.defaultType, classOrObject)
         val supertype = getType(descriptor.getSuperClassOrAny().defaultType, classOrObject)
-        val typeParameters = classOrObject.typeParameters.mapNotNull { getElement<VkTypeParameter>(it) }
+        val typeParameters = classOrObject.typeParameters.mapNotNull { getElement<CTypeParameter>(it) }
         val body = classOrObject.body
         val declarations = body?.declarations
-            ?.mapNotNull { getElement<VkDeclaration>(it) }
+            ?.mapNotNull { getElement<CDeclaration>(it) }
             ?: listOf()
 
-        ktClass.type = type
-        ktClass.supertype = supertype
-        typeParameters.forEach { it.parent = ktClass }
-        ktClass.typeParameters = ArrayList(typeParameters)
-        declarations.forEach { it.parent = ktClass }
-        ktClass.declarations = ArrayList(declarations)
-        return ktClass
+        basicClass.type = type
+        basicClass.supertype = supertype
+        typeParameters.forEach { it.parent = basicClass }
+        basicClass.typeParameters = ArrayList(typeParameters)
+        declarations.forEach { it.parent = basicClass }
+        basicClass.declarations = ArrayList(declarations)
+        return basicClass
     }
 
-    override fun visitNamedFunction(function: KtNamedFunction, data: Unit?): VkElement? {
+    override fun visitNamedFunction(function: KtNamedFunction, data: Unit?): CElement? {
         val descriptor = bindingContext.getSliceContents(BindingContext.FUNCTION)[function]!!
-        val ktFunction = declarationMap[descriptor, function]
-            .cast<VkKtFunction>(function)
+        val kFunction = declarationMap[descriptor, function]
+            .cast<KFunction>(function)
             ?: return null
 
         val type = getType(descriptor.returnType!!, function)
@@ -153,20 +153,20 @@ class CasterBaseVisitor(
             }
         }
         val bodyBlockExpression = function.bodyBlockExpression?.let {
-            expressionVisitor.getElement<VkBlockExpression>(it)
+            expressionVisitor.getElement<CBlockExpression>(it)
         }
-        bodyBlockExpression?.parent = ktFunction
+        bodyBlockExpression?.parent = kFunction
 
-        ktFunction.type = type
-        ktFunction.bodyBlockExpression = bodyBlockExpression
-        ktFunction.annotationType = annotationType
-        return ktFunction
+        kFunction.type = type
+        kFunction.bodyBlockExpression = bodyBlockExpression
+        kFunction.annotationType = annotationType
+        return kFunction
     }
 
-    override fun visitProperty(property: KtProperty, data: Unit?): VkElement? {
+    override fun visitProperty(property: KtProperty, data: Unit?): CElement? {
         val descriptor = bindingContext.getSliceContents(BindingContext.VARIABLE)[property]!!
-        val ktProperty = declarationMap[descriptor, property]
-            .cast<VkKtProperty>(property)
+        val kProperty = declarationMap[descriptor, property]
+            .cast<KProperty>(property)
             ?: return null
 
         val typeReference = property.typeReference
@@ -176,19 +176,19 @@ class CasterBaseVisitor(
             getType(descriptor.type, property)
         }
         val initializer = property.initializer?.let {
-            expressionVisitor.getElement<VkExpression>(it)
+            expressionVisitor.getElement<CExpression>(it)
         }
-        initializer?.parent = ktProperty
+        initializer?.parent = kProperty
 
-        ktProperty.type = type
-        ktProperty.initializer = initializer
-        return ktProperty
+        kProperty.type = type
+        kProperty.initializer = initializer
+        return kProperty
     }
 
-    override fun visitTypeParameter(parameter: KtTypeParameter, data: Unit?): VkElement? {
+    override fun visitTypeParameter(parameter: KtTypeParameter, data: Unit?): CElement? {
         val descriptor = bindingContext.getSliceContents(BindingContext.TYPE_PARAMETER)[parameter]!!
         val typeParameter = declarationMap[descriptor, parameter]
-            .cast<VkTypeParameter>(parameter)
+            .cast<CTypeParameter>(parameter)
             ?: return null
 
         val upperBound = descriptor.representativeUpperBound

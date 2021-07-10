@@ -16,10 +16,10 @@
 
 package io.verik.compiler.transform.pre
 
-import io.verik.compiler.ast.element.common.VkCallExpression
-import io.verik.compiler.ast.element.common.VkDotQualifiedExpression
-import io.verik.compiler.ast.element.common.VkValueArgument
-import io.verik.compiler.ast.element.kt.VkKtBinaryExpression
+import io.verik.compiler.ast.element.common.CCallExpression
+import io.verik.compiler.ast.element.common.CDotQualifiedExpression
+import io.verik.compiler.ast.element.common.CValueArgument
+import io.verik.compiler.ast.element.kt.KBinaryExpression
 import io.verik.compiler.ast.property.KtOperatorKind
 import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.ProjectPass
@@ -42,7 +42,7 @@ object BinaryExpressionReducer : ProjectPass {
     }
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.vkFiles.forEach {
+        projectContext.verikFiles.forEach {
             it.accept(BinaryExpressionVisitor)
         }
     }
@@ -55,31 +55,31 @@ object BinaryExpressionReducer : ProjectPass {
 
     object BinaryExpressionVisitor : TreeVisitor() {
 
-        override fun visitKtBinaryExpression(ktBinaryExpression: VkKtBinaryExpression) {
-            super.visitKtBinaryExpression(ktBinaryExpression)
-            val receiverClass = ktBinaryExpression.left.type.reference
-            val selectorClass = ktBinaryExpression.right.type.reference
-            val kind = ktBinaryExpression.kind
+        override fun visitKBinaryExpression(binaryExpression: KBinaryExpression) {
+            super.visitKBinaryExpression(binaryExpression)
+            val receiverClass = binaryExpression.left.type.reference
+            val selectorClass = binaryExpression.right.type.reference
+            val kind = binaryExpression.kind
             if (receiverClass is CoreClassDeclaration && selectorClass is CoreClassDeclaration) {
                 val reference = referenceMap[ReducerEntry(receiverClass, selectorClass, kind)]
                 if (reference != null) {
-                    val callExpression = VkCallExpression(
-                        ktBinaryExpression.location,
-                        ktBinaryExpression.type,
+                    val callExpression = CCallExpression(
+                        binaryExpression.location,
+                        binaryExpression.type,
                         reference,
                         arrayListOf(
-                            VkValueArgument(
-                                ktBinaryExpression.right.location,
+                            CValueArgument(
+                                binaryExpression.right.location,
                                 NullDeclaration,
-                                ktBinaryExpression.right
+                                binaryExpression.right
                             )
                         )
                     )
-                    ktBinaryExpression.replace(
-                        VkDotQualifiedExpression(
-                            ktBinaryExpression.location,
-                            ktBinaryExpression.type,
-                            ktBinaryExpression.left,
+                    binaryExpression.replace(
+                        CDotQualifiedExpression(
+                            binaryExpression.location,
+                            binaryExpression.type,
+                            binaryExpression.left,
                             callExpression
                         )
                     )

@@ -16,32 +16,32 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.common.VkBaseClass
-import io.verik.compiler.ast.element.kt.VkKtClass
-import io.verik.compiler.ast.element.sv.VkModule
-import io.verik.compiler.ast.element.sv.VkSvClass
+import io.verik.compiler.ast.element.common.CAbstractClass
+import io.verik.compiler.ast.element.kt.KBasicClass
+import io.verik.compiler.ast.element.sv.SBasicClass
+import io.verik.compiler.ast.element.sv.SModule
 import io.verik.compiler.core.CoreClass
 
 object ClassInterpreter {
 
-    fun interpret(ktClass: VkKtClass): VkBaseClass {
-        return if (ktClass.type.isType(CoreClass.Core.MODULE.toNoArgumentsType())) {
-            VkModule(
-                ktClass.location,
-                ktClass.name,
-                ktClass.type,
-                ktClass.supertype,
-                ktClass.typeParameters,
-                ktClass.declarations
+    fun interpret(basicClass: KBasicClass): CAbstractClass {
+        return if (basicClass.type.isType(CoreClass.Core.MODULE.toNoArgumentsType())) {
+            SModule(
+                basicClass.location,
+                basicClass.name,
+                basicClass.type,
+                basicClass.supertype,
+                basicClass.typeParameters,
+                basicClass.declarations
             )
         } else {
-            VkSvClass(
-                ktClass.location,
-                ktClass.name,
-                ktClass.type,
-                ktClass.supertype,
-                ktClass.typeParameters,
-                ktClass.declarations
+            SBasicClass(
+                basicClass.location,
+                basicClass.name,
+                basicClass.type,
+                basicClass.supertype,
+                basicClass.typeParameters,
+                basicClass.declarations
             )
         }
     }

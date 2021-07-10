@@ -16,8 +16,8 @@
 
 package io.verik.compiler.common
 
-import io.verik.compiler.ast.element.common.VkElement
-import io.verik.compiler.ast.element.common.VkFile
+import io.verik.compiler.ast.element.common.CElement
+import io.verik.compiler.ast.element.common.CFile
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.backend.common.peek
@@ -28,26 +28,26 @@ object ElementParentChecker : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
         val elementParentVisitor = ElementParentVisitor()
-        projectContext.vkFiles.forEach {
+        projectContext.verikFiles.forEach {
             it.accept(elementParentVisitor)
         }
     }
 
     class ElementParentVisitor : TreeVisitor() {
 
-        private val parentStack = ArrayDeque<VkElement>()
+        private val parentStack = ArrayDeque<CElement>()
 
-        override fun visitElement(element: VkElement) {
+        override fun visitCElement(element: CElement) {
             if (element.parent == null)
                 m.error("Parent element of ${element::class.simpleName} should not be null", element)
             if (element.parent != parentStack.peek())
                 m.error("Mismatch in parent element of ${element::class.simpleName}", element)
             parentStack.push(element)
-            super.visitElement(element)
+            super.visitCElement(element)
             parentStack.pop()
         }
 
-        override fun visitFile(file: VkFile) {
+        override fun visitCFile(file: CFile) {
             if (file.parent != null)
                 m.error("Parent element should be null", file)
             parentStack.push(file)

@@ -16,7 +16,7 @@
 
 package io.verik.compiler.transform.pre
 
-import io.verik.compiler.ast.element.common.VkBlockExpression
+import io.verik.compiler.ast.element.common.CBlockExpression
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertElementEquals
@@ -36,7 +36,7 @@ internal class LoopExpressionTransformerTest : BaseTest() {
         )
         assertElementEquals(
             "SvForeverExpression(Unit, BlockExpression(*))",
-            (projectContext.findExpression("f") as VkBlockExpression).statements[0]
+            (projectContext.findExpression("f") as CBlockExpression).statements[0]
         )
     }
 }

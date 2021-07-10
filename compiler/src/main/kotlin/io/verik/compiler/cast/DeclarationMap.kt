@@ -16,8 +16,8 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.element.common.VkDeclaration
-import io.verik.compiler.common.Declaration
+import io.verik.compiler.ast.element.common.CDeclaration
+import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.core.CoreDeclarationMap
 import io.verik.compiler.main.m
@@ -26,9 +26,9 @@ import org.jetbrains.kotlin.psi.KtElement
 
 class DeclarationMap {
 
-    private val declarationMap = HashMap<DeclarationDescriptor, VkDeclaration>()
+    private val declarationMap = HashMap<DeclarationDescriptor, CDeclaration>()
 
-    operator fun set(declarationDescriptor: DeclarationDescriptor, declaration: VkDeclaration) {
+    operator fun set(declarationDescriptor: DeclarationDescriptor, declaration: CDeclaration) {
         declarationMap[declarationDescriptor] = declaration
     }
 

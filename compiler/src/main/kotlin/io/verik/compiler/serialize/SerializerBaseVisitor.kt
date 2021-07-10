@@ -16,13 +16,13 @@
 
 package io.verik.compiler.serialize
 
-import io.verik.compiler.ast.element.common.VkDeclaration
-import io.verik.compiler.ast.element.common.VkElement
-import io.verik.compiler.ast.element.common.VkFile
-import io.verik.compiler.ast.element.sv.VkModule
-import io.verik.compiler.ast.element.sv.VkSvClass
-import io.verik.compiler.ast.element.sv.VkSvFunction
-import io.verik.compiler.ast.element.sv.VkSvProperty
+import io.verik.compiler.ast.element.common.CDeclaration
+import io.verik.compiler.ast.element.common.CElement
+import io.verik.compiler.ast.element.common.CFile
+import io.verik.compiler.ast.element.sv.SBasicClass
+import io.verik.compiler.ast.element.sv.SFunction
+import io.verik.compiler.ast.element.sv.SModule
+import io.verik.compiler.ast.element.sv.SProperty
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.m
 
@@ -31,29 +31,29 @@ class SerializerBaseVisitor(private val sourceBuilder: SourceBuilder) : Visitor(
     private var first = true
     private val expressionVisitor = SerializerExpressionVisitor(sourceBuilder)
 
-    override fun visitElement(element: VkElement) {
+    override fun visitCElement(element: CElement) {
         m.error("Unable to serialize element: ${element::class.simpleName}", element)
     }
 
-    override fun visitFile(file: VkFile) {
+    override fun visitCFile(file: CFile) {
         file.declarations.forEach { it.accept(this) }
     }
 
-    override fun visitDeclaration(declaration: VkDeclaration) {
+    override fun visitCDeclaration(declaration: CDeclaration) {
         m.error("Unable to serialize declaration: $declaration", declaration)
     }
 
-    override fun visitSvClass(svClass: VkSvClass) {
+    override fun visitSBasicClass(basicClass: SBasicClass) {
         appendLineIfNotFirst()
-        sourceBuilder.appendLine("class $svClass;", svClass)
+        sourceBuilder.appendLine("class $basicClass;", basicClass)
         sourceBuilder.indent {
-            svClass.declarations.forEach { it.accept(this) }
+            basicClass.declarations.forEach { it.accept(this) }
             sourceBuilder.appendLine()
         }
-        sourceBuilder.appendLine("endclass: $svClass", svClass)
+        sourceBuilder.appendLine("endclass: $basicClass", basicClass)
     }
 
-    override fun visitModule(module: VkModule) {
+    override fun visitSModule(module: SModule) {
         appendLineIfNotFirst()
         sourceBuilder.appendLine("module $module;", module)
         sourceBuilder.indent {
@@ -63,30 +63,30 @@ class SerializerBaseVisitor(private val sourceBuilder: SourceBuilder) : Visitor(
         sourceBuilder.appendLine("endmodule: $module", module)
     }
 
-    override fun visitSvFunction(svFunction: VkSvFunction) {
+    override fun visitSFunction(function: SFunction) {
         appendLineIfNotFirst()
-        val typeString = TypeSerializer.serialize(svFunction)
-        sourceBuilder.appendLine("function $typeString $svFunction();", svFunction)
-        val bodyBlockExpression = svFunction.bodyBlockExpression
+        val typeString = TypeSerializer.serialize(function)
+        sourceBuilder.appendLine("function $typeString $function();", function)
+        val bodyBlockExpression = function.bodyBlockExpression
         if (bodyBlockExpression != null) {
             sourceBuilder.indent {
                 bodyBlockExpression.accept(expressionVisitor)
             }
         }
-        sourceBuilder.appendLine("endfunction: $svFunction", svFunction)
+        sourceBuilder.appendLine("endfunction: $function", function)
     }
 
-    override fun visitSvProperty(svProperty: VkSvProperty) {
+    override fun visitSProperty(property: SProperty) {
         appendLineIfNotFirst()
-        val typeString = TypeSerializer.serialize(svProperty)
-        sourceBuilder.append("$typeString $svProperty", svProperty)
-        val initializer = svProperty.initializer
+        val typeString = TypeSerializer.serialize(property)
+        sourceBuilder.append("$typeString $property", property)
+        val initializer = property.initializer
         if (initializer != null) {
-            sourceBuilder.append(" = ", svProperty)
+            sourceBuilder.append(" = ", property)
             expressionVisitor.serializeAsExpression(initializer)
             sourceBuilder.appendLine(";", initializer)
         } else {
-            sourceBuilder.appendLine(";", svProperty)
+            sourceBuilder.appendLine(";", property)
         }
     }
 

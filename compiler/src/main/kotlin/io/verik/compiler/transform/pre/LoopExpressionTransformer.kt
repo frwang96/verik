@@ -16,10 +16,10 @@
 
 package io.verik.compiler.transform.pre
 
-import io.verik.compiler.ast.element.common.VkCallExpression
+import io.verik.compiler.ast.element.common.CCallExpression
 import io.verik.compiler.ast.element.common.cast
-import io.verik.compiler.ast.element.kt.VkFunctionLiteralExpression
-import io.verik.compiler.ast.element.sv.VkSvForeverExpression
+import io.verik.compiler.ast.element.kt.KFunctionLiteralExpression
+import io.verik.compiler.ast.element.sv.SForeverExpression
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.CoreFunction
@@ -28,25 +28,25 @@ import io.verik.compiler.main.ProjectContext
 object LoopExpressionTransformer : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.vkFiles.forEach {
+        projectContext.verikFiles.forEach {
             it.accept(LoopExpressionVisitor)
         }
     }
 
     object LoopExpressionVisitor : TreeVisitor() {
 
-        override fun visitCallExpression(callExpression: VkCallExpression) {
-            super.visitCallExpression(callExpression)
+        override fun visitCCallExpression(callExpression: CCallExpression) {
+            super.visitCCallExpression(callExpression)
             if (callExpression.reference == CoreFunction.Core.FOREVER) {
                 val functionLiteralExpression = callExpression
                     .valueArguments[0]
-                    .expression.cast<VkFunctionLiteralExpression>()
+                    .expression.cast<KFunctionLiteralExpression>()
                 if (functionLiteralExpression != null) {
-                    val svForeverExpression = VkSvForeverExpression(
+                    val foreverExpression = SForeverExpression(
                         callExpression.location,
                         functionLiteralExpression.bodyBlockExpression
                     )
-                    callExpression.replace(svForeverExpression)
+                    callExpression.replace(foreverExpression)
                 }
             }
         }

@@ -16,12 +16,12 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.common.VkDeclaration
-import io.verik.compiler.ast.element.common.VkFile
-import io.verik.compiler.ast.element.sv.VkModule
-import io.verik.compiler.ast.element.sv.VkSvClass
-import io.verik.compiler.ast.element.sv.VkSvFunction
-import io.verik.compiler.ast.element.sv.VkSvProperty
+import io.verik.compiler.ast.element.common.CDeclaration
+import io.verik.compiler.ast.element.common.CFile
+import io.verik.compiler.ast.element.sv.SBasicClass
+import io.verik.compiler.ast.element.sv.SFunction
+import io.verik.compiler.ast.element.sv.SModule
+import io.verik.compiler.ast.element.sv.SProperty
 import io.verik.compiler.ast.property.SourceType
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.core.CorePackage
@@ -31,8 +31,8 @@ import io.verik.compiler.main.m
 object FileSplitter : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        val splitFiles = ArrayList<VkFile>()
-        projectContext.vkFiles.forEach {
+        val splitFiles = ArrayList<CFile>()
+        projectContext.verikFiles.forEach {
             val baseFilePath = projectContext.config.buildDir
                 .resolve("src")
                 .resolve(it.relativePath)
@@ -41,7 +41,7 @@ object FileSplitter : ProjectPass {
 
             if (splitDeclarationsResult.componentDeclarations.isNotEmpty()) {
                 val componentFilePath = baseFilePath.resolveSibling("$baseFileName.sv")
-                val componentFile = VkFile(
+                val componentFile = CFile(
                     it.location,
                     it.inputPath,
                     componentFilePath,
@@ -57,7 +57,7 @@ object FileSplitter : ProjectPass {
 
             if (splitDeclarationsResult.packageDeclarations.isNotEmpty()) {
                 val packageFilePath = baseFilePath.resolveSibling("$baseFileName.svh")
-                val packageFile = VkFile(
+                val packageFile = CFile(
                     it.location,
                     it.inputPath,
                     packageFilePath,
@@ -71,18 +71,18 @@ object FileSplitter : ProjectPass {
                 splitFiles.add(packageFile)
             }
         }
-        projectContext.vkFiles = splitFiles
+        projectContext.verikFiles = splitFiles
     }
 
-    private fun splitDeclarations(declarations: List<VkDeclaration>): SplitDeclarationsResult {
-        val componentDeclarations = ArrayList<VkDeclaration>()
-        val packageDeclarations = ArrayList<VkDeclaration>()
+    private fun splitDeclarations(declarations: List<CDeclaration>): SplitDeclarationsResult {
+        val componentDeclarations = ArrayList<CDeclaration>()
+        val packageDeclarations = ArrayList<CDeclaration>()
         declarations.forEach {
             when (it) {
-                is VkModule -> componentDeclarations.add(it)
-                is VkSvClass -> packageDeclarations.add(it)
-                is VkSvFunction -> packageDeclarations.add(it)
-                is VkSvProperty -> packageDeclarations.add(it)
+                is SModule -> componentDeclarations.add(it)
+                is SBasicClass -> packageDeclarations.add(it)
+                is SFunction -> packageDeclarations.add(it)
+                is SProperty -> packageDeclarations.add(it)
                 else -> m.error("Unable to identify as component or package declaration: ${it.name}", it)
             }
         }
@@ -90,7 +90,7 @@ object FileSplitter : ProjectPass {
     }
 
     data class SplitDeclarationsResult(
-        val componentDeclarations: ArrayList<VkDeclaration>,
-        val packageDeclarations: ArrayList<VkDeclaration>
+        val componentDeclarations: ArrayList<CDeclaration>,
+        val packageDeclarations: ArrayList<CDeclaration>
     )
 }

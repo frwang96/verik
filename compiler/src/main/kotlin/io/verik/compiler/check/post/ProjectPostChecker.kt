@@ -24,7 +24,7 @@ import io.verik.compiler.main.m
 object ProjectPostChecker : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        if (projectContext.vkFiles.isEmpty())
+        if (projectContext.verikFiles.isEmpty())
             m.fatal("Output files empty: No declarations found", null)
 
         m.log("PostCheck: Check element parents")

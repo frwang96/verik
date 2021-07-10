@@ -16,8 +16,8 @@
 
 package io.verik.compiler.transform.pre
 
-import io.verik.compiler.ast.element.kt.VkKtBinaryExpression
-import io.verik.compiler.ast.element.sv.VkSvBinaryExpression
+import io.verik.compiler.ast.element.kt.KBinaryExpression
+import io.verik.compiler.ast.element.sv.SBinaryExpression
 import io.verik.compiler.ast.property.KtOperatorKind
 import io.verik.compiler.ast.property.SvOperatorKind
 import io.verik.compiler.common.ProjectPass
@@ -27,22 +27,22 @@ import io.verik.compiler.main.ProjectContext
 object AssignmentTransformer : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.vkFiles.forEach {
+        projectContext.verikFiles.forEach {
             it.accept(AssignmentVisitor)
         }
     }
 
     object AssignmentVisitor : TreeVisitor() {
 
-        override fun visitKtBinaryExpression(ktBinaryExpression: VkKtBinaryExpression) {
-            super.visitKtBinaryExpression(ktBinaryExpression)
-            if (ktBinaryExpression.kind == KtOperatorKind.EQ) {
-                ktBinaryExpression.replace(
-                    VkSvBinaryExpression(
-                        ktBinaryExpression.location,
-                        ktBinaryExpression.type,
-                        ktBinaryExpression.left,
-                        ktBinaryExpression.right,
+        override fun visitKBinaryExpression(binaryExpression: KBinaryExpression) {
+            super.visitKBinaryExpression(binaryExpression)
+            if (binaryExpression.kind == KtOperatorKind.EQ) {
+                binaryExpression.replace(
+                    SBinaryExpression(
+                        binaryExpression.location,
+                        binaryExpression.type,
+                        binaryExpression.left,
+                        binaryExpression.right,
                         SvOperatorKind.ASSIGN
                     )
                 )

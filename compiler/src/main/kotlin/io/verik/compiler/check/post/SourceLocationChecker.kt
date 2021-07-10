@@ -16,7 +16,7 @@
 
 package io.verik.compiler.check.post
 
-import io.verik.compiler.ast.element.common.VkElement
+import io.verik.compiler.ast.element.common.CElement
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -26,7 +26,7 @@ import java.nio.file.Path
 object SourceLocationChecker : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.vkFiles.forEach {
+        projectContext.verikFiles.forEach {
             val sourceLocationVisitor = SourceLocationVisitor(projectContext, it.inputPath)
             it.accept(sourceLocationVisitor)
         }
@@ -34,8 +34,8 @@ object SourceLocationChecker : ProjectPass {
 
     class SourceLocationVisitor(val projectContext: ProjectContext, val path: Path) : TreeVisitor() {
 
-        override fun visitElement(element: VkElement) {
-            super.visitElement(element)
+        override fun visitCElement(element: CElement) {
+            super.visitCElement(element)
             if (element.location.path != path) {
                 val expectedPath = projectContext.config.projectDir.relativize(path)
                 val actualPath = projectContext.config.projectDir.relativize(element.location.path)

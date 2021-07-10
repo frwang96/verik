@@ -16,18 +16,18 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.common.VkBaseFunction
-import io.verik.compiler.ast.element.kt.VkKtFunction
-import io.verik.compiler.ast.element.sv.VkSvFunction
+import io.verik.compiler.ast.element.common.CAbstractFunction
+import io.verik.compiler.ast.element.kt.KFunction
+import io.verik.compiler.ast.element.sv.SFunction
 
 object FunctionInterpreter {
 
-    fun interpret(ktFunction: VkKtFunction): VkBaseFunction {
-        return VkSvFunction(
-            ktFunction.location,
-            ktFunction.name,
-            ktFunction.type,
-            ktFunction.bodyBlockExpression
+    fun interpret(function: KFunction): CAbstractFunction {
+        return SFunction(
+            function.location,
+            function.name,
+            function.type,
+            function.bodyBlockExpression
         )
     }
 }

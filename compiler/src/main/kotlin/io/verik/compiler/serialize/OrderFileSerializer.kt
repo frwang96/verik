@@ -50,7 +50,7 @@ object OrderFileSerializer {
         packageTextFiles.forEach {
             paths.add(it.path)
         }
-        projectContext.vkFiles.forEach {
+        projectContext.verikFiles.forEach {
             if (it.sourceType == SourceType.COMPONENT)
                 paths.add(it.getOutputPathNotNull())
         }

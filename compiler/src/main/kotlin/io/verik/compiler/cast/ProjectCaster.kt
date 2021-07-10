@@ -16,7 +16,7 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.element.common.VkFile
+import io.verik.compiler.ast.element.common.CFile
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
@@ -31,15 +31,15 @@ object ProjectCaster : ProjectPass {
         m.log("Cast: Index syntax trees")
         val declarationMap = DeclarationMap()
         val indexerVisitor = IndexerVisitor(projectContext, declarationMap)
-        projectContext.ktFiles.forEach { it.accept(indexerVisitor) }
+        projectContext.kotlinFiles.forEach { it.accept(indexerVisitor) }
         m.flush()
 
         m.log("Cast: Cast syntax trees")
         val baseVisitor = CasterBaseVisitor(projectContext, declarationMap)
-        val files = projectContext.ktFiles.mapNotNull {
-            baseVisitor.getElement<VkFile>(it)
+        val files = projectContext.kotlinFiles.mapNotNull {
+            baseVisitor.getElement<CFile>(it)
         }
-        projectContext.vkFiles = files
+        projectContext.verikFiles = files
         m.flush()
 
         if (projectContext.config.debug) {

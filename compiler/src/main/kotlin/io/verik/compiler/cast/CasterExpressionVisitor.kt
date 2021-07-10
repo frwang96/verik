@@ -32,11 +32,11 @@ import org.jetbrains.kotlin.resolve.calls.callUtil.getType
 class CasterExpressionVisitor(
     projectContext: ProjectContext,
     private val declarationMap: DeclarationMap
-) : KtVisitor<VkElement, Unit>() {
+) : KtVisitor<CElement, Unit>() {
 
     private val bindingContext = projectContext.bindingContext
 
-    inline fun <reified T : VkElement> getElement(element: KtElement): T? {
+    inline fun <reified T : CElement> getElement(element: KtElement): T? {
         return element.accept(this, Unit).cast(element)
     }
 
@@ -44,123 +44,123 @@ class CasterExpressionVisitor(
         return TypeCaster.castFromType(declarationMap, expression.getType(bindingContext)!!, expression)
     }
 
-    override fun visitKtElement(element: KtElement, data: Unit?): VkElement? {
+    override fun visitKtElement(element: KtElement, data: Unit?): CElement? {
         m.error("Unrecognized element: ${element::class.simpleName}", element)
         return null
     }
 
-    override fun visitBlockExpression(expression: KtBlockExpression, data: Unit?): VkElement {
+    override fun visitBlockExpression(expression: KtBlockExpression, data: Unit?): CElement {
         val location = expression.getSourceLocation()
         val type = getType(expression)
-        val statements = expression.statements.mapNotNull { getElement<VkExpression>(it) }
-        return VkBlockExpression(location, type, ArrayList(statements))
+        val statements = expression.statements.mapNotNull { getElement<CExpression>(it) }
+        return CBlockExpression(location, type, ArrayList(statements))
     }
 
-    override fun visitParenthesizedExpression(expression: KtParenthesizedExpression, data: Unit?): VkElement? {
+    override fun visitParenthesizedExpression(expression: KtParenthesizedExpression, data: Unit?): CElement? {
         val location = expression.getSourceLocation()
         val type = getType(expression)
-        val childExpression = getElement<VkExpression>(expression.expression!!)
+        val childExpression = getElement<CExpression>(expression.expression!!)
             ?: return null
-        return VkParenthesizedExpression(location, type, childExpression)
+        return CParenthesizedExpression(location, type, childExpression)
     }
 
-    override fun visitBinaryExpression(expression: KtBinaryExpression, data: Unit?): VkElement? {
+    override fun visitBinaryExpression(expression: KtBinaryExpression, data: Unit?): CElement? {
         val location = expression.getSourceLocation()
         val type = getType(expression)
         val kind = KtOperatorKind(expression.operationToken, location)
             ?: return null
-        val left = getElement<VkExpression>(expression.left!!)
+        val left = getElement<CExpression>(expression.left!!)
             ?: return null
-        val right = getElement<VkExpression>(expression.right!!)
+        val right = getElement<CExpression>(expression.right!!)
             ?: return null
-        return VkKtBinaryExpression(location, type, left, right, kind)
+        return KBinaryExpression(location, type, left, right, kind)
     }
 
-    override fun visitReferenceExpression(expression: KtReferenceExpression, data: Unit?): VkElement {
+    override fun visitReferenceExpression(expression: KtReferenceExpression, data: Unit?): CElement {
         val descriptor = bindingContext.getSliceContents(BindingContext.REFERENCE_TARGET)[expression]!!
         val location = expression.getSourceLocation()
         val type = getType(expression)
         val declaration = declarationMap[descriptor, expression]
-        return VkReferenceExpression(location, type, declaration)
+        return CReferenceExpression(location, type, declaration)
     }
 
-    override fun visitCallExpression(expression: KtCallExpression, data: Unit?): VkElement {
+    override fun visitCallExpression(expression: KtCallExpression, data: Unit?): CElement {
         val descriptor = bindingContext
             .getSliceContents(BindingContext.REFERENCE_TARGET)[expression.calleeExpression]!!
         val location = expression.getSourceLocation()
         val type = getType(expression)
         val declaration = declarationMap[descriptor, expression]
-        val valueArguments = expression.valueArguments.mapNotNull { getElement<VkValueArgument>(it) }
-        return VkCallExpression(location, type, declaration, ArrayList(valueArguments))
+        val valueArguments = expression.valueArguments.mapNotNull { getElement<CValueArgument>(it) }
+        return CCallExpression(location, type, declaration, ArrayList(valueArguments))
     }
 
-    override fun visitArgument(argument: KtValueArgument, data: Unit?): VkElement? {
+    override fun visitArgument(argument: KtValueArgument, data: Unit?): CElement? {
         val location = argument.getSourceLocation()
-        val expression = getElement<VkExpression>(argument.getArgumentExpression()!!)
+        val expression = getElement<CExpression>(argument.getArgumentExpression()!!)
             ?: return null
         return if (argument.isNamed()) {
             val descriptor = bindingContext
                 .getSliceContents(BindingContext.REFERENCE_TARGET)[argument.getArgumentName()!!.referenceExpression]!!
             val declaration = declarationMap[descriptor, argument]
-            VkValueArgument(location, declaration, expression)
+            CValueArgument(location, declaration, expression)
         } else {
-            VkValueArgument(location, NullDeclaration, expression)
+            CValueArgument(location, NullDeclaration, expression)
         }
     }
 
-    override fun visitDotQualifiedExpression(expression: KtDotQualifiedExpression, data: Unit?): VkElement? {
+    override fun visitDotQualifiedExpression(expression: KtDotQualifiedExpression, data: Unit?): CElement? {
         val location = expression.getSourceLocation()
         val type = getType(expression)
-        val receiver = getElement<VkExpression>(expression.receiverExpression)
+        val receiver = getElement<CExpression>(expression.receiverExpression)
             ?: return null
-        val selector = getElement<VkExpression>(expression.selectorExpression!!)
+        val selector = getElement<CExpression>(expression.selectorExpression!!)
             ?: return null
-        return VkDotQualifiedExpression(location, type, receiver, selector)
+        return CDotQualifiedExpression(location, type, receiver, selector)
     }
 
-    override fun visitConstantExpression(expression: KtConstantExpression, data: Unit?): VkElement {
+    override fun visitConstantExpression(expression: KtConstantExpression, data: Unit?): CElement {
         val location = expression.getSourceLocation()
         val type = getType(expression)
         val value = ConstantExpressionCaster.cast(expression.text, type, location)
-        return VkConstantExpression(location, type, value)
+        return CConstantExpression(location, type, value)
     }
 
-    override fun visitLambdaExpression(expression: KtLambdaExpression, data: Unit?): VkElement {
+    override fun visitLambdaExpression(expression: KtLambdaExpression, data: Unit?): CElement {
         val location = expression.getSourceLocation()
-        val statements = expression.bodyExpression!!.statements.mapNotNull { getElement<VkExpression>(it) }
-        val bodyBlockExpression = VkBlockExpression(
+        val statements = expression.bodyExpression!!.statements.mapNotNull { getElement<CExpression>(it) }
+        val bodyBlockExpression = CBlockExpression(
             location,
             CoreClass.Kotlin.FUNCTION.toNoArgumentsType(),
             ArrayList(statements)
         )
-        return VkFunctionLiteralExpression(location, bodyBlockExpression)
+        return KFunctionLiteralExpression(location, bodyBlockExpression)
     }
 
-    override fun visitStringTemplateExpression(expression: KtStringTemplateExpression, data: Unit?): VkElement {
+    override fun visitStringTemplateExpression(expression: KtStringTemplateExpression, data: Unit?): CElement {
         val location = expression.getSourceLocation()
-        val entries = expression.entries.mapNotNull { getElement<VkStringTemplateEntry>(it) }
-        return VkStringTemplateExpression(location, entries)
+        val entries = expression.entries.mapNotNull { getElement<KStringTemplateEntry>(it) }
+        return KStringTemplateExpression(location, entries)
     }
 
-    override fun visitLiteralStringTemplateEntry(entry: KtLiteralStringTemplateEntry, data: Unit?): VkElement {
+    override fun visitLiteralStringTemplateEntry(entry: KtLiteralStringTemplateEntry, data: Unit?): CElement {
         val location = entry.getSourceLocation()
         val text = entry.text
-        return VkLiteralStringTemplateEntry(location, text)
+        return KLiteralStringTemplateEntry(location, text)
     }
 
-    override fun visitEscapeStringTemplateEntry(entry: KtEscapeStringTemplateEntry, data: Unit?): VkElement {
+    override fun visitEscapeStringTemplateEntry(entry: KtEscapeStringTemplateEntry, data: Unit?): CElement {
         val location = entry.getSourceLocation()
         val text = entry.unescapedValue
-        return VkLiteralStringTemplateEntry(location, text)
+        return KLiteralStringTemplateEntry(location, text)
     }
 
     override fun visitStringTemplateEntryWithExpression(
         entry: KtStringTemplateEntryWithExpression,
         data: Unit?
-    ): VkElement? {
+    ): CElement? {
         val location = entry.getSourceLocation()
-        val expression = getElement<VkExpression>(entry.expression!!)
+        val expression = getElement<CExpression>(entry.expression!!)
             ?: return null
-        return VkExpressionStringTemplateEntry(location, expression)
+        return KExpressionStringTemplateEntry(location, expression)
     }
 }

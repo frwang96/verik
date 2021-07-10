@@ -24,7 +24,7 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 import org.junit.jupiter.api.Assertions.assertEquals
 
-fun assertElementEquals(expected: String, actual: VkElement) {
+fun assertElementEquals(expected: String, actual: CElement) {
     val leftRoundBracketCount = expected.count { it == '(' }
     val rightRoundBracketCount = expected.count { it == ')' }
     val leftSquareBracketCount = expected.count { it == '[' }
@@ -71,15 +71,15 @@ fun assertOutputTextEquals(expected: String, actual: TextFile) {
     assertEquals(expectedLines, actualLines)
 }
 
-fun ProjectContext.findDeclaration(nameString: String): VkDeclaration {
+fun ProjectContext.findDeclaration(nameString: String): CDeclaration {
     val declarationVisitor = object : TreeVisitor() {
-        val declarations = ArrayList<VkDeclaration>()
-        override fun visitDeclaration(declaration: VkDeclaration) {
-            super.visitDeclaration(declaration)
+        val declarations = ArrayList<CDeclaration>()
+        override fun visitCDeclaration(declaration: CDeclaration) {
+            super.visitCDeclaration(declaration)
             if (declaration.name == Name(nameString)) declarations.add(declaration)
         }
     }
-    vkFiles.forEach {
+    verikFiles.forEach {
         it.accept(declarationVisitor)
     }
     when (declarationVisitor.declarations.size) {
@@ -90,24 +90,24 @@ fun ProjectContext.findDeclaration(nameString: String): VkDeclaration {
     return declarationVisitor.declarations[0]
 }
 
-fun ProjectContext.findExpression(nameString: String): VkExpression {
+fun ProjectContext.findExpression(nameString: String): CExpression {
     val expressionVisitor = object : TreeVisitor() {
-        val expressions = ArrayList<VkExpression>()
-        override fun visitBaseFunction(baseFunction: VkBaseFunction) {
-            super.visitBaseFunction(baseFunction)
-            if (baseFunction.name == Name(nameString)) {
-                baseFunction.bodyBlockExpression?.let { expressions.add(it) }
+        val expressions = ArrayList<CExpression>()
+        override fun visitCAbstractFunction(abstractFunction: CAbstractFunction) {
+            super.visitCAbstractFunction(abstractFunction)
+            if (abstractFunction.name == Name(nameString)) {
+                abstractFunction.bodyBlockExpression?.let { expressions.add(it) }
             }
         }
 
-        override fun visitBaseProperty(baseProperty: VkBaseProperty) {
-            super.visitBaseProperty(baseProperty)
-            if (baseProperty.name == Name(nameString)) {
-                baseProperty.initializer?.let { expressions.add(it) }
+        override fun visitCAbstractProperty(abstractProperty: CAbstractProperty) {
+            super.visitCAbstractProperty(abstractProperty)
+            if (abstractProperty.name == Name(nameString)) {
+                abstractProperty.initializer?.let { expressions.add(it) }
             }
         }
     }
-    vkFiles.forEach {
+    verikFiles.forEach {
         it.accept(expressionVisitor)
     }
     when (expressionVisitor.expressions.size) {

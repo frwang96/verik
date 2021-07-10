@@ -16,7 +16,7 @@
 
 package io.verik.compiler.check.post
 
-import io.verik.compiler.ast.element.common.VkCallExpression
+import io.verik.compiler.ast.element.common.CCallExpression
 import io.verik.compiler.ast.element.kt.*
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
@@ -27,7 +27,7 @@ import io.verik.compiler.main.m
 object UntransformedElementChecker : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.vkFiles.forEach {
+        projectContext.verikFiles.forEach {
             it.accept(UntransformedElementVisitor)
         }
     }
@@ -36,34 +36,34 @@ object UntransformedElementChecker : ProjectPass {
 
         private const val message = "has not been transformed to SystemVerilog"
 
-        override fun visitKtClass(ktClass: VkKtClass) {
-            super.visitKtClass(ktClass)
-            m.error("Class $ktClass $message", ktClass)
+        override fun visitKBasicClass(basicClass: KBasicClass) {
+            super.visitKBasicClass(basicClass)
+            m.error("Class $basicClass $message", basicClass)
         }
 
-        override fun visitKtFunction(ktFunction: VkKtFunction) {
-            super.visitKtFunction(ktFunction)
-            m.error("Function $ktFunction $message", ktFunction)
+        override fun visitKFunction(function: KFunction) {
+            super.visitKFunction(function)
+            m.error("Function $function $message", function)
         }
 
-        override fun visitKtProperty(ktProperty: VkKtProperty) {
-            super.visitKtProperty(ktProperty)
-            m.error("Property $ktProperty $message", ktProperty)
+        override fun visitKProperty(property: KProperty) {
+            super.visitKProperty(property)
+            m.error("Property $property $message", property)
         }
 
-        override fun visitKtBinaryExpression(ktBinaryExpression: VkKtBinaryExpression) {
-            super.visitKtBinaryExpression(ktBinaryExpression)
-            m.error("Binary expression $message", ktBinaryExpression)
+        override fun visitKBinaryExpression(binaryExpression: KBinaryExpression) {
+            super.visitKBinaryExpression(binaryExpression)
+            m.error("Binary expression $message", binaryExpression)
         }
 
-        override fun visitCallExpression(callExpression: VkCallExpression) {
-            super.visitCallExpression(callExpression)
+        override fun visitCCallExpression(callExpression: CCallExpression) {
+            super.visitCCallExpression(callExpression)
             if (callExpression.reference is CoreKtFunctionDeclaration)
                 m.error("Call expression ${callExpression.reference} $message", callExpression)
         }
 
-        override fun visitStringTemplateExpression(stringTemplateExpression: VkStringTemplateExpression) {
-            super.visitStringTemplateExpression(stringTemplateExpression)
+        override fun visitKStringTemplateExpression(stringTemplateExpression: KStringTemplateExpression) {
+            super.visitKStringTemplateExpression(stringTemplateExpression)
             m.error("String template expression $message", stringTemplateExpression)
         }
     }

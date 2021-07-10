@@ -16,7 +16,7 @@
 
 package io.verik.compiler.transform.post
 
-import io.verik.compiler.ast.element.sv.VkSvFunction
+import io.verik.compiler.ast.element.sv.SFunction
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -24,15 +24,15 @@ import io.verik.compiler.main.ProjectContext
 object BlockExpressionDecorator : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.vkFiles.forEach {
+        projectContext.verikFiles.forEach {
             it.accept(BlockExpressionVisitor)
         }
     }
 
     object BlockExpressionVisitor : TreeVisitor() {
 
-        override fun visitSvFunction(svFunction: VkSvFunction) {
-            svFunction.bodyBlockExpression?.decorated = false
+        override fun visitSFunction(function: SFunction) {
+            function.bodyBlockExpression?.decorated = false
         }
     }
 }

@@ -16,12 +16,12 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.common.VkBaseClass
-import io.verik.compiler.ast.element.common.VkDeclaration
-import io.verik.compiler.ast.element.common.VkFile
-import io.verik.compiler.ast.element.kt.VkKtClass
-import io.verik.compiler.ast.element.kt.VkKtFunction
-import io.verik.compiler.ast.element.kt.VkKtProperty
+import io.verik.compiler.ast.element.common.CAbstractClass
+import io.verik.compiler.ast.element.common.CDeclaration
+import io.verik.compiler.ast.element.common.CFile
+import io.verik.compiler.ast.element.kt.KBasicClass
+import io.verik.compiler.ast.element.kt.KFunction
+import io.verik.compiler.ast.element.kt.KProperty
 import io.verik.compiler.common.DeclarationReplacer
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
@@ -32,7 +32,7 @@ object DeclarationInterpreter : ProjectPass {
     override fun pass(projectContext: ProjectContext) {
         val declarationReplacer = DeclarationReplacer(projectContext)
         val declarationVisitor = DeclarationVisitor(declarationReplacer)
-        projectContext.vkFiles.forEach {
+        projectContext.verikFiles.forEach {
             it.accept(declarationVisitor)
         }
         declarationReplacer.updateReferences()
@@ -40,21 +40,21 @@ object DeclarationInterpreter : ProjectPass {
 
     class DeclarationVisitor(private val declarationReplacer: DeclarationReplacer) : TreeVisitor() {
 
-        override fun visitFile(file: VkFile) {
+        override fun visitCFile(file: CFile) {
             file.declarations.forEach { interpretDeclaration(it) }
-            super.visitFile(file)
+            super.visitCFile(file)
         }
 
-        override fun visitBaseClass(baseClass: VkBaseClass) {
-            baseClass.declarations.forEach { interpretDeclaration(it) }
-            super.visitBaseClass(baseClass)
+        override fun visitCAbstractClass(abstractClass: CAbstractClass) {
+            abstractClass.declarations.forEach { interpretDeclaration(it) }
+            super.visitCAbstractClass(abstractClass)
         }
 
-        private fun interpretDeclaration(declaration: VkDeclaration) {
+        private fun interpretDeclaration(declaration: CDeclaration) {
             when (declaration) {
-                is VkKtClass -> declarationReplacer.replace(declaration, ClassInterpreter.interpret(declaration))
-                is VkKtFunction -> declarationReplacer.replace(declaration, FunctionInterpreter.interpret(declaration))
-                is VkKtProperty -> declarationReplacer.replace(declaration, PropertyInterpreter.interpret(declaration))
+                is KBasicClass -> declarationReplacer.replace(declaration, ClassInterpreter.interpret(declaration))
+                is KFunction -> declarationReplacer.replace(declaration, FunctionInterpreter.interpret(declaration))
+                is KProperty -> declarationReplacer.replace(declaration, PropertyInterpreter.interpret(declaration))
             }
         }
     }
