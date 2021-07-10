@@ -17,28 +17,13 @@
 package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.ast.interfaces.ExpressionContainer
-import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.common.Visitor
 import io.verik.compiler.common.replaceIfContains
-import io.verik.compiler.main.SourceLocation
 import io.verik.compiler.main.m
 
-class CBlockExpression(
-    override val location: SourceLocation,
-    override var type: Type,
-    val statements: ArrayList<CExpression>
-) : CExpression(), ExpressionContainer {
+abstract class CAbstractBlockExpression : CExpression(), ExpressionContainer {
 
-    var decorated = true
-
-    init {
-        statements.forEach { it.parent = this }
-    }
-
-    override fun accept(visitor: Visitor) {
-        visitor.visitCBlockExpression(this)
-    }
+    abstract val statements: ArrayList<CExpression>
 
     override fun acceptChildren(visitor: TreeVisitor) {
         statements.forEach { it.accept(visitor) }
@@ -47,6 +32,6 @@ class CBlockExpression(
     override fun replaceChild(oldExpression: CExpression, newExpression: CExpression) {
         newExpression.parent = this
         if (!statements.replaceIfContains(oldExpression, newExpression))
-            m.error("Could not find ${oldExpression::class.simpleName} in block expression", this)
+            m.error("Could not find ${oldExpression::class.simpleName} in ${this::class.simpleName}", this)
     }
 }

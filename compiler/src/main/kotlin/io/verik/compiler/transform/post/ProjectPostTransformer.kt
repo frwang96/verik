@@ -35,8 +35,8 @@ object ProjectPostTransformer : ProjectPass {
         PackageNameTransformer.pass(projectContext)
         m.flush()
 
-        m.log("PostTransform: Decorate block expressions")
-        BlockExpressionDecorator.pass(projectContext)
+        m.log("PostTransform: Transform block expressions")
+        BlockExpressionTransformer.pass(projectContext)
         m.flush()
     }
 }

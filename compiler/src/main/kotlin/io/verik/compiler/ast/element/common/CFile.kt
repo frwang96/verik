@@ -57,7 +57,7 @@ class CFile(
     override fun replaceChild(oldDeclaration: CDeclaration, newDeclaration: CDeclaration) {
         newDeclaration.parent = this
         if (!declarations.replaceIfContains(oldDeclaration, newDeclaration))
-            m.error("Could not find declaration $oldDeclaration in file", this)
+            m.error("Could not find declaration $oldDeclaration in ${this::class.simpleName}", this)
     }
 
     fun getOutputPathNotNull(): Path {

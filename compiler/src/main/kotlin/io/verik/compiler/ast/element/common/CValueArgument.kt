@@ -47,6 +47,6 @@ class CValueArgument(
         if (expression == oldExpression)
             expression = newExpression
         else
-            m.error("Could not find ${oldExpression::class.simpleName} in value argument", this)
+            m.error("Could not find ${oldExpression::class.simpleName} in ${this::class.simpleName}", this)
     }
 }

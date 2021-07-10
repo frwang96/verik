@@ -27,16 +27,16 @@ object ProjectPostChecker : ProjectPass {
         if (projectContext.verikFiles.isEmpty())
             m.fatal("Output files empty: No declarations found", null)
 
+        m.log("PostCheck: Check untransformed elements")
+        UntransformedElementChecker.pass(projectContext)
+        m.flush()
+
         m.log("PostCheck: Check element parents")
         ElementParentChecker.pass(projectContext)
         m.flush()
 
         m.log("PostCheck: Check source locations")
         SourceLocationChecker.pass(projectContext)
-        m.flush()
-
-        m.log("PostCheck: Check untransformed elements")
-        UntransformedElementChecker.pass(projectContext)
         m.flush()
     }
 }

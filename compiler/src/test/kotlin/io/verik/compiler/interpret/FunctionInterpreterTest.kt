@@ -63,7 +63,7 @@ internal class FunctionInterpreterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SInitialBlock(f, CBlockExpression(*))",
+            "SInitialBlock(f, KBlockExpression(*))",
             projectContext.findDeclaration("f")
         )
     }

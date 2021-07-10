@@ -16,8 +16,8 @@
 
 package io.verik.compiler.ast.element.kt
 
+import io.verik.compiler.ast.element.common.CAbstractBlockExpression
 import io.verik.compiler.ast.element.common.CAbstractFunction
-import io.verik.compiler.ast.element.common.CBlockExpression
 import io.verik.compiler.ast.property.FunctionAnnotationType
 import io.verik.compiler.ast.property.Name
 import io.verik.compiler.ast.property.Type
@@ -28,7 +28,7 @@ class KFunction(
     override val location: SourceLocation,
     override var name: Name,
     override var type: Type,
-    override var bodyBlockExpression: CBlockExpression?,
+    override var bodyBlockExpression: CAbstractBlockExpression?,
     var annotationType: FunctionAnnotationType?
 ) : CAbstractFunction() {
 

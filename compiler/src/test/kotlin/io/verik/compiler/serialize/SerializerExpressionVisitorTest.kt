@@ -141,7 +141,7 @@ internal class SerializerExpressionVisitorTest : BaseTest() {
             function void f();
                 forever begin
                 end
-            endfunction: f
+            endfunction : f
         """.trimIndent()
         assertOutputTextEquals(
             expected,

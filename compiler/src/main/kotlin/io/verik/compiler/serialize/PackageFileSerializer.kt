@@ -74,7 +74,7 @@ object PackageFileSerializer {
             builder.appendLine("`include \"${it.getOutputPathNotNull().fileName}\"")
         }
         builder.appendLine()
-        builder.appendLine("endpackage: $packageName")
+        builder.appendLine("endpackage : $packageName")
 
         return TextFile(outputPath, builder.toString())
     }

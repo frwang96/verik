@@ -35,7 +35,7 @@ internal class AssignmentTransformerTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "CBlockExpression(Unit, [SBinaryExpression(Unit, ASSIGN, *)])",
+            "KBlockExpression(Unit, [SBinaryExpression(Unit, ASSIGN, *)])",
             projectContext.findExpression("f")
         )
     }

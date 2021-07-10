@@ -35,6 +35,6 @@ abstract class CAbstractClass : CDeclaration(), DeclarationContainer {
     override fun replaceChild(oldDeclaration: CDeclaration, newDeclaration: CDeclaration) {
         newDeclaration.parent = this
         if (!declarations.replaceIfContains(oldDeclaration, newDeclaration))
-            m.error("Could not find declaration $oldDeclaration in class", this)
+            m.error("Could not find declaration $oldDeclaration in ${this::class.simpleName}", this)
     }
 }

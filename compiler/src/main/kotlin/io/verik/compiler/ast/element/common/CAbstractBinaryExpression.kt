@@ -35,7 +35,7 @@ abstract class CAbstractBinaryExpression : CExpression(), ExpressionContainer {
         when (oldExpression) {
             left -> left = newExpression
             right -> right = newExpression
-            else -> m.error("Could not find ${oldExpression::class.simpleName} in binary expression", this)
+            else -> m.error("Could not find ${oldExpression::class.simpleName} in ${this::class.simpleName}", this)
         }
     }
 }

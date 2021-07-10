@@ -49,7 +49,7 @@ class CDotQualifiedExpression(
         when (oldExpression) {
             receiver -> receiver = newExpression
             selector -> selector = newExpression
-            else -> m.error("Could not find ${oldExpression::class.simpleName} in dot qualified expression", this)
+            else -> m.error("Could not find ${oldExpression::class.simpleName} in ${this::class.simpleName}", this)
         }
     }
 }

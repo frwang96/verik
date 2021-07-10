@@ -16,13 +16,23 @@
 
 package io.verik.compiler.ast.element.common
 
+import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.main.m
 
-abstract class CAbstractFunction : CDeclaration() {
+abstract class CAbstractFunction : CDeclaration(), ExpressionContainer {
 
-    abstract var bodyBlockExpression: CBlockExpression?
+    abstract var bodyBlockExpression: CAbstractBlockExpression?
 
     override fun acceptChildren(visitor: TreeVisitor) {
         bodyBlockExpression?.accept(visitor)
+    }
+
+    override fun replaceChild(oldExpression: CExpression, newExpression: CExpression) {
+        newExpression.parent = this
+        if (bodyBlockExpression == oldExpression)
+            bodyBlockExpression = newExpression.cast()
+        else
+            m.error("Could not find ${oldExpression::class.simpleName} in ${this::class.simpleName}", this)
     }
 }

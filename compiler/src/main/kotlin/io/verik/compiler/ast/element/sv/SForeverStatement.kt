@@ -16,14 +16,14 @@
 
 package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.element.common.CBlockExpression
+import io.verik.compiler.ast.element.common.CAbstractBlockExpression
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.SourceLocation
 
 class SForeverStatement(
     override val location: SourceLocation,
-    override var bodyBlockExpression: CBlockExpression
+    override var bodyBlockExpression: CAbstractBlockExpression
 ) : SLoopStatement() {
 
     init {

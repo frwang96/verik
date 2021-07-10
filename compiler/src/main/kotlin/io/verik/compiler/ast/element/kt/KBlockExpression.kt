@@ -14,38 +14,25 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.common
+package io.verik.compiler.ast.element.kt
 
-import io.verik.compiler.ast.interfaces.ExpressionContainer
+import io.verik.compiler.ast.element.common.CAbstractBlockExpression
+import io.verik.compiler.ast.element.common.CExpression
 import io.verik.compiler.ast.property.Type
-import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.SourceLocation
-import io.verik.compiler.main.m
 
-class CParenthesizedExpression(
+class KBlockExpression (
     override val location: SourceLocation,
     override var type: Type,
-    var expression: CExpression
-) : CExpression(), ExpressionContainer {
+    override val statements: ArrayList<CExpression>
+) : CAbstractBlockExpression() {
 
     init {
-        expression.parent = this
+        statements.forEach { it.parent = this }
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitCParenthesizedExpression(this)
-    }
-
-    override fun acceptChildren(visitor: TreeVisitor) {
-        expression.accept(visitor)
-    }
-
-    override fun replaceChild(oldExpression: CExpression, newExpression: CExpression) {
-        newExpression.parent = this
-        if (expression == oldExpression)
-            expression = newExpression
-        else
-            m.error("Could not find ${oldExpression::class.simpleName} in ${this::class.simpleName}", this)
+        visitor.visitKBlockExpression(this)
     }
 }

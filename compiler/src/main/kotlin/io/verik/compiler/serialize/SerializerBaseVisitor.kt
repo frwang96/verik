@@ -47,7 +47,7 @@ class SerializerBaseVisitor(private val sourceBuilder: SourceBuilder) : Visitor(
             basicClass.declarations.forEach { it.accept(this) }
             sourceBuilder.appendLine()
         }
-        sourceBuilder.appendLine("endclass: $basicClass", basicClass)
+        sourceBuilder.appendLine("endclass : $basicClass", basicClass)
     }
 
     override fun visitSModule(module: SModule) {
@@ -57,7 +57,7 @@ class SerializerBaseVisitor(private val sourceBuilder: SourceBuilder) : Visitor(
             module.declarations.forEach { it.accept(this) }
             sourceBuilder.appendLine()
         }
-        sourceBuilder.appendLine("endmodule: $module", module)
+        sourceBuilder.appendLine("endmodule : $module", module)
     }
 
     override fun visitSFunction(function: SFunction) {
@@ -70,7 +70,7 @@ class SerializerBaseVisitor(private val sourceBuilder: SourceBuilder) : Visitor(
                 expressionVisitor.serializeAsStatement(bodyBlockExpression)
             }
         }
-        sourceBuilder.appendLine("endfunction: $function", function)
+        sourceBuilder.appendLine("endfunction : $function", function)
     }
 
     override fun visitSProperty(property: SProperty) {

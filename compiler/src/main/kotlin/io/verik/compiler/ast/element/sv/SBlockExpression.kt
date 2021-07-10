@@ -17,24 +17,26 @@
 package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.CAbstractBlockExpression
-import io.verik.compiler.ast.element.common.CAbstractFunction
+import io.verik.compiler.ast.element.common.CExpression
 import io.verik.compiler.ast.property.Name
-import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
+import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.SourceLocation
 
-class SFunction(
+class SBlockExpression (
     override val location: SourceLocation,
-    override var name: Name,
-    override var type: Type,
-    override var bodyBlockExpression: CAbstractBlockExpression?
-) : CAbstractFunction() {
+    override val statements: ArrayList<CExpression>,
+    val decorated: Boolean,
+    val name: Name?
+) : CAbstractBlockExpression() {
 
     init {
-        bodyBlockExpression?.parent = this
+        statements.forEach { it.parent = this }
     }
 
+    override var type = CoreClass.Kotlin.UNIT.toNoArgumentsType()
+
     override fun accept(visitor: Visitor) {
-        return visitor.visitSFunction(this)
+        visitor.visitSBlockExpression(this)
     }
 }

@@ -53,7 +53,7 @@ class CasterExpressionVisitor(
         val location = expression.getSourceLocation()
         val type = getType(expression)
         val statements = expression.statements.mapNotNull { getElement<CExpression>(it) }
-        return CBlockExpression(location, type, ArrayList(statements))
+        return KBlockExpression(location, type, ArrayList(statements))
     }
 
     override fun visitParenthesizedExpression(expression: KtParenthesizedExpression, data: Unit?): CElement? {
@@ -128,7 +128,7 @@ class CasterExpressionVisitor(
     override fun visitLambdaExpression(expression: KtLambdaExpression, data: Unit?): CElement {
         val location = expression.getSourceLocation()
         val statements = expression.bodyExpression!!.statements.mapNotNull { getElement<CExpression>(it) }
-        val bodyBlockExpression = CBlockExpression(
+        val bodyBlockExpression = KBlockExpression(
             location,
             CoreClass.Kotlin.FUNCTION.toNoArgumentsType(),
             ArrayList(statements)

@@ -16,7 +16,7 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.element.common.CBlockExpression
+import io.verik.compiler.ast.element.kt.KBlockExpression
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertElementEquals
@@ -34,7 +34,7 @@ internal class CasterExpressionVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "CBlockExpression(Unit, [])",
+            "KBlockExpression(Unit, [])",
             projectContext.findExpression("f")
         )
     }
@@ -176,10 +176,10 @@ internal class CasterExpressionVisitorTest : BaseTest() {
                 CCallExpression(
                     Unit,
                     forever,
-                    [CValueArgument(null, KFunctionLiteralExpression(Function, CBlockExpression(*)))]
+                    [CValueArgument(null, KFunctionLiteralExpression(Function, KBlockExpression(*)))]
                 )
             """.trimIndent(),
-            (projectContext.findExpression("f") as CBlockExpression).statements[0]
+            (projectContext.findExpression("f") as KBlockExpression).statements[0]
         )
     }
 

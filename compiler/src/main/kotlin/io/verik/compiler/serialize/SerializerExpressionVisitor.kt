@@ -18,6 +18,7 @@ package io.verik.compiler.serialize
 
 import io.verik.compiler.ast.element.common.*
 import io.verik.compiler.ast.element.sv.SBinaryExpression
+import io.verik.compiler.ast.element.sv.SBlockExpression
 import io.verik.compiler.ast.element.sv.SForeverStatement
 import io.verik.compiler.ast.element.sv.SStringExpression
 import io.verik.compiler.common.Visitor
@@ -54,13 +55,19 @@ class SerializerExpressionVisitor(private val sourceBuilder: SourceBuilder) : Vi
         m.error("Unable to serialize element: ${element::class.simpleName}", element)
     }
 
-    override fun visitCBlockExpression(blockExpression: CBlockExpression) {
+    override fun visitSBlockExpression(blockExpression: SBlockExpression) {
         if (blockExpression.decorated) {
-            sourceBuilder.appendLine("begin", blockExpression)
+            sourceBuilder.append("begin", blockExpression)
+            if (blockExpression.name != null)
+                sourceBuilder.append(" : ${blockExpression.name}", blockExpression)
+            sourceBuilder.appendLine()
             sourceBuilder.indent {
                 blockExpression.statements.forEach { serializeAsStatement(it) }
             }
-            sourceBuilder.appendLine("end", blockExpression)
+            sourceBuilder.append("end", blockExpression)
+            if (blockExpression.name != null)
+                sourceBuilder.append(" : ${blockExpression.name}", blockExpression)
+            sourceBuilder.appendLine()
         } else {
             blockExpression.statements.forEach { serializeAsStatement(it) }
         }

@@ -92,8 +92,16 @@ abstract class Visitor {
         visitSProceduralBlock(initialBlock)
     }
 
-    open fun visitCBlockExpression(blockExpression: CBlockExpression) {
-        visitCExpression(blockExpression)
+    open fun visitCAbstractBlockExpression(abstractBlockExpression: CAbstractBlockExpression) {
+        visitCExpression(abstractBlockExpression)
+    }
+
+    open fun visitKBlockExpression(blockExpression: KBlockExpression) {
+        visitCAbstractBlockExpression(blockExpression)
+    }
+
+    open fun visitSBlockExpression(blockExpression: SBlockExpression) {
+        visitCAbstractBlockExpression(blockExpression)
     }
 
     open fun visitCParenthesizedExpression(parenthesizedExpression: CParenthesizedExpression) {

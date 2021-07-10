@@ -33,6 +33,6 @@ abstract class CAbstractProperty : CDeclaration(), ExpressionContainer {
         if (initializer == oldExpression)
             initializer = newExpression
         else
-            m.error("Could not find ${oldExpression::class.simpleName} in property", this)
+            m.error("Could not find ${oldExpression::class.simpleName} in ${this::class.simpleName}", this)
     }
 }

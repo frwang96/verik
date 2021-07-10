@@ -16,7 +16,7 @@
 
 package io.verik.compiler.transform.pre
 
-import io.verik.compiler.ast.element.common.CBlockExpression
+import io.verik.compiler.ast.element.kt.KBlockExpression
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertElementEquals
@@ -35,8 +35,8 @@ internal class LoopExpressionTransformerTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SForeverStatement(Unit, CBlockExpression(*))",
-            (projectContext.findExpression("f") as CBlockExpression).statements[0]
+            "SForeverStatement(Unit, KBlockExpression(*))",
+            (projectContext.findExpression("f") as KBlockExpression).statements[0]
         )
     }
 }

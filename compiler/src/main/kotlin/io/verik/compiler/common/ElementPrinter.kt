@@ -100,9 +100,18 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitCBlockExpression(blockExpression: CBlockExpression) {
-        build("CBlockExpression") {
+    override fun visitKBlockExpression(blockExpression: KBlockExpression) {
+        build("KBlockExpression") {
             build(blockExpression.type.toString())
+            build(blockExpression.statements)
+        }
+    }
+
+    override fun visitSBlockExpression(blockExpression: SBlockExpression) {
+        build("SBlockExpression") {
+            build(blockExpression.type.toString())
+            build(blockExpression.decorated.toString())
+            build(blockExpression.name.toString())
             build(blockExpression.statements)
         }
     }

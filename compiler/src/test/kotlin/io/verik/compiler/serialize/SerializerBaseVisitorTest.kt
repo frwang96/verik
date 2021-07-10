@@ -33,7 +33,7 @@ internal class SerializerBaseVisitorTest : BaseTest() {
         val expected = """
             module M;
             
-            endmodule: M
+            endmodule : M
         """.trimIndent()
         assertOutputTextEquals(
             expected,
@@ -51,7 +51,7 @@ internal class SerializerBaseVisitorTest : BaseTest() {
         val expected = """
             class C;
             
-            endclass: C
+            endclass : C
         """.trimIndent()
         assertOutputTextEquals(
             expected,
@@ -68,7 +68,7 @@ internal class SerializerBaseVisitorTest : BaseTest() {
         )
         val expected = """
             function void f();
-            endfunction: f
+            endfunction : f
         """.trimIndent()
         assertOutputTextEquals(
             expected,
@@ -105,10 +105,10 @@ internal class SerializerBaseVisitorTest : BaseTest() {
         val expected = """
             class C;
             
-                initial begin
-                end
+                initial begin : f
+                end : f
             
-            endclass: C
+            endclass : C
         """.trimIndent()
         assertOutputTextEquals(
             expected,

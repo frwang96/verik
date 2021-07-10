@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast.element.kt
 
-import io.verik.compiler.ast.element.common.CBlockExpression
+import io.verik.compiler.ast.element.common.CAbstractBlockExpression
 import io.verik.compiler.ast.element.common.CExpression
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
@@ -25,7 +25,7 @@ import io.verik.compiler.main.SourceLocation
 
 class KFunctionLiteralExpression(
     override val location: SourceLocation,
-    var bodyBlockExpression: CBlockExpression
+    var bodyBlockExpression: CAbstractBlockExpression
 ) : CExpression() {
 
     init {

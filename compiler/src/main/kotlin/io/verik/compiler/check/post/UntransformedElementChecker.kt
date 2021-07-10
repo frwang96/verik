@@ -51,6 +51,11 @@ object UntransformedElementChecker : ProjectPass {
             m.error("Property $property $message", property)
         }
 
+        override fun visitKBlockExpression(blockExpression: KBlockExpression) {
+            super.visitKBlockExpression(blockExpression)
+            m.error("Block expression $message", blockExpression)
+        }
+
         override fun visitKBinaryExpression(binaryExpression: KBinaryExpression) {
             super.visitKBinaryExpression(binaryExpression)
             m.error("Binary expression $message", binaryExpression)
