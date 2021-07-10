@@ -16,18 +16,19 @@
 
 package io.verik.compiler.interpret
 
+import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
-object ProjectInterpreter {
+object ProjectInterpreter : ProjectPass {
 
-    fun interpret(projectContext: ProjectContext) {
+    override fun pass(projectContext: ProjectContext) {
         m.log("Interpret: Interpret declarations")
-        DeclarationInterpreter.interpret(projectContext)
+        DeclarationInterpreter.pass(projectContext)
         m.flush()
 
         m.log("Interpret: Split component and package files")
-        FileSplitter.split(projectContext)
+        FileSplitter.pass(projectContext)
         m.flush()
     }
 }

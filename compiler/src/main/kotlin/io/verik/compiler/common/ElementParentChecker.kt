@@ -25,9 +25,9 @@ import org.jetbrains.kotlin.backend.common.peek
 import org.jetbrains.kotlin.backend.common.pop
 import org.jetbrains.kotlin.backend.common.push
 
-object ElementParentChecker {
+object ElementParentChecker : ProjectPass {
 
-    fun check(projectContext: ProjectContext) {
+    override fun pass(projectContext: ProjectContext) {
         val elementParentVisitor = ElementParentVisitor()
         projectContext.vkFiles.forEach {
             it.accept(elementParentVisitor)

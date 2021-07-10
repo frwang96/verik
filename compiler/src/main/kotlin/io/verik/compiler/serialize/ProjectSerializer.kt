@@ -17,26 +17,27 @@
 package io.verik.compiler.serialize
 
 import io.verik.compiler.common.ElementParentChecker
+import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 import io.verik.compiler.main.m
 
-object ProjectSerializer {
+object ProjectSerializer : ProjectPass {
 
-    fun serialize(projectContext: ProjectContext) {
+    override fun pass(projectContext: ProjectContext) {
         if (projectContext.vkFiles.isEmpty())
             m.fatal("Output files empty: No declarations found", null)
 
         m.log("Serialize: Check untransformed elements")
-        UntransformedElementChecker.check(projectContext)
+        UntransformedElementChecker.pass(projectContext)
         m.flush()
 
         m.log("Serialize: Check element parents")
-        ElementParentChecker.check(projectContext)
+        ElementParentChecker.pass(projectContext)
         m.flush()
 
         m.log("Serialize: Check source locations")
-        SourceLocationChecker.check(projectContext)
+        SourceLocationChecker.pass(projectContext)
         m.flush()
 
         m.info("Serialize: Serialize output files")

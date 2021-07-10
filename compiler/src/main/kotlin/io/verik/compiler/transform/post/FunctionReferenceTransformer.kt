@@ -18,12 +18,13 @@ package io.verik.compiler.transform.post
 
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.element.VkCallExpression
+import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.core.CoreFunction
 import io.verik.compiler.core.CoreKtFunctionDeclaration
 import io.verik.compiler.core.CoreSvFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 
-object FunctionReferenceTransformer {
+object FunctionReferenceTransformer : ProjectPass {
 
     private val functionReferenceMap = HashMap<CoreKtFunctionDeclaration, CoreSvFunctionDeclaration>()
 
@@ -37,7 +38,7 @@ object FunctionReferenceTransformer {
         functionReferenceMap[CoreFunction.Core.RANDOM] = CoreFunction.Sv.RANDOM
     }
 
-    fun transform(projectContext: ProjectContext) {
+    override fun pass(projectContext: ProjectContext) {
         projectContext.vkFiles.forEach {
             it.accept(FunctionReferenceVisitor)
         }

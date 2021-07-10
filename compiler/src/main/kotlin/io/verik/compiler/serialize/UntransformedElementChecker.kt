@@ -18,13 +18,14 @@ package io.verik.compiler.serialize
 
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.element.*
+import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.core.CoreKtFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
-object UntransformedElementChecker {
+object UntransformedElementChecker : ProjectPass {
 
-    fun check(projectContext: ProjectContext) {
+    override fun pass(projectContext: ProjectContext) {
         projectContext.vkFiles.forEach {
             it.accept(UntransformedElementVisitor)
         }

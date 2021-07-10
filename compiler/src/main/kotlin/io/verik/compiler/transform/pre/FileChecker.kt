@@ -20,14 +20,15 @@ import io.verik.compiler.ast.common.Name
 import io.verik.compiler.ast.common.PackageDeclaration
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.element.VkFile
+import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.core.CorePackage
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 import java.nio.file.Paths
 
-object FileChecker {
+object FileChecker : ProjectPass {
 
-    fun check(projectContext: ProjectContext) {
+    override fun pass(projectContext: ProjectContext) {
         projectContext.vkFiles.forEach {
             it.accept(FileVisitor)
         }

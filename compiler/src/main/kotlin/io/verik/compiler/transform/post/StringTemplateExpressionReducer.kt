@@ -19,14 +19,15 @@ package io.verik.compiler.transform.post
 import io.verik.compiler.ast.common.NullDeclaration
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.element.*
+import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.core.CoreClass
 import io.verik.compiler.core.CoreFunction
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
-object StringTemplateExpressionReducer {
+object StringTemplateExpressionReducer : ProjectPass {
 
-    fun transform(projectContext: ProjectContext) {
+    override fun pass(projectContext: ProjectContext) {
         projectContext.vkFiles.forEach {
             it.accept(StringTemplateExpressionVisitor)
         }

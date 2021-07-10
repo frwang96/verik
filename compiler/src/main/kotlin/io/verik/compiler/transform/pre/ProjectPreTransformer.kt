@@ -16,23 +16,24 @@
 
 package io.verik.compiler.transform.pre
 
+import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
-object ProjectPreTransformer {
+object ProjectPreTransformer : ProjectPass {
 
-    fun transform(projectContext: ProjectContext) {
+    override fun pass(projectContext: ProjectContext) {
 
         m.log("Pre-transform: Check file paths")
-        FileChecker.check(projectContext)
+        FileChecker.pass(projectContext)
         m.flush()
 
         m.log("Pre-transform: Check import directives")
-        ImportDirectiveChecker.check(projectContext)
+        ImportDirectiveChecker.pass(projectContext)
         m.flush()
 
         m.log("Pre-transform: Check keyword conflicts")
-        KeywordChecker.transform(projectContext)
+        KeywordChecker.pass(projectContext)
         m.flush()
     }
 }

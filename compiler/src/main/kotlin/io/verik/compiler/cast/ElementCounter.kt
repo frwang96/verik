@@ -17,16 +17,19 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.ast.common.TreeVisitor
-import io.verik.compiler.ast.element.*
+import io.verik.compiler.ast.element.VkFile
+import io.verik.compiler.ast.element.VkKtClass
+import io.verik.compiler.ast.element.VkKtFunction
+import io.verik.compiler.ast.element.VkKtProperty
+import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
-object ElementCounter {
+object ElementCounter : ProjectPass {
 
-    fun count(projectContext: ProjectContext) {
+    override fun pass(projectContext: ProjectContext) {
         val elementVisitor = ElementVisitor()
         projectContext.vkFiles.forEach { it.accept(elementVisitor) }
-        m.log("Count: Elements: ${elementVisitor.elementCount}")
         m.log("Count: Files: ${elementVisitor.fileCount}")
         m.log("Count: Classes: ${elementVisitor.classCount}")
         m.log("Count: Functions: ${elementVisitor.functionCount}")
@@ -35,16 +38,10 @@ object ElementCounter {
 
     class ElementVisitor : TreeVisitor() {
 
-        var elementCount = 0
         var fileCount = 0
         var classCount = 0
         var functionCount = 0
         var propertyCount = 0
-
-        override fun visitElement(element: VkElement) {
-            super.visitElement(element)
-            elementCount++
-        }
 
         override fun visitFile(file: VkFile) {
             super.visitFile(file)

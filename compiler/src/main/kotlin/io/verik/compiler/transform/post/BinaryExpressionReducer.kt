@@ -23,13 +23,14 @@ import io.verik.compiler.ast.element.VkCallExpression
 import io.verik.compiler.ast.element.VkDotQualifiedExpression
 import io.verik.compiler.ast.element.VkKtBinaryExpression
 import io.verik.compiler.ast.element.VkValueArgument
+import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.core.CoreClass
 import io.verik.compiler.core.CoreClassDeclaration
 import io.verik.compiler.core.CoreFunction
 import io.verik.compiler.core.CoreKtFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 
-object BinaryExpressionReducer {
+object BinaryExpressionReducer : ProjectPass {
 
     private val referenceMap = HashMap<ReducerEntry, CoreKtFunctionDeclaration>()
 
@@ -40,7 +41,7 @@ object BinaryExpressionReducer {
             CoreFunction.Kotlin.Int.TIMES_INT
     }
 
-    fun transform(projectContext: ProjectContext) {
+    override fun pass(projectContext: ProjectContext) {
         projectContext.vkFiles.forEach {
             it.accept(BinaryExpressionVisitor)
         }

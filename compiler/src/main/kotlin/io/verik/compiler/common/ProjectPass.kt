@@ -14,25 +14,11 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.post
+package io.verik.compiler.common
 
-import io.verik.compiler.ast.common.TreeVisitor
-import io.verik.compiler.ast.element.VkSvFunction
-import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
 
-object BlockExpressionDecorator : ProjectPass {
+interface ProjectPass {
 
-    override fun pass(projectContext: ProjectContext) {
-        projectContext.vkFiles.forEach {
-            it.accept(BlockExpressionVisitor)
-        }
-    }
-
-    object BlockExpressionVisitor : TreeVisitor() {
-
-        override fun visitSvFunction(svFunction: VkSvFunction) {
-            svFunction.bodyBlockExpression?.decorated = false
-        }
-    }
+    fun pass(projectContext: ProjectContext)
 }

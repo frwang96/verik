@@ -16,42 +16,43 @@
 
 package io.verik.compiler.transform.post
 
+import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
-object ProjectPostTransformer {
+object ProjectPostTransformer : ProjectPass {
 
-    fun transform(projectContext: ProjectContext) {
+    override fun pass(projectContext: ProjectContext) {
         m.log("Post-transform: Reduce binary expressions")
-        BinaryExpressionReducer.transform(projectContext)
+        BinaryExpressionReducer.pass(projectContext)
         m.flush()
 
         m.log("Post-transform: Reduce string template expressions")
-        StringTemplateExpressionReducer.transform(projectContext)
+        StringTemplateExpressionReducer.pass(projectContext)
         m.flush()
 
         m.log("Post-transform: Transform assignments")
-        AssignmentTransformer.transform(projectContext)
+        AssignmentTransformer.pass(projectContext)
         m.flush()
 
         m.log("Post-transform: Transform function references")
-        FunctionReferenceTransformer.transform(projectContext)
+        FunctionReferenceTransformer.pass(projectContext)
         m.flush()
 
         m.log("Post-transform: Transform loop expressions")
-        LoopExpressionTransformer.transform(projectContext)
+        LoopExpressionTransformer.pass(projectContext)
         m.flush()
 
         m.log("Post-transform: Transform binary expressions")
-        BinaryExpressionTransformer.transform(projectContext)
+        BinaryExpressionTransformer.pass(projectContext)
         m.flush()
 
         m.log("Post-transform: Transform package names")
-        PackageNameTransformer.transform(projectContext)
+        PackageNameTransformer.pass(projectContext)
         m.flush()
 
         m.log("Post-transform: Decorate block expressions")
-        BlockExpressionDecorator.transform(projectContext)
+        BlockExpressionDecorator.pass(projectContext)
         m.flush()
     }
 }

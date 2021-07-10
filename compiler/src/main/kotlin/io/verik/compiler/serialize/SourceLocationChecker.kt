@@ -18,13 +18,14 @@ package io.verik.compiler.serialize
 
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.element.VkElement
+import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 import java.nio.file.Path
 
-object SourceLocationChecker {
+object SourceLocationChecker : ProjectPass {
 
-    fun check(projectContext: ProjectContext) {
+    override fun pass(projectContext: ProjectContext) {
         projectContext.vkFiles.forEach {
             val sourceLocationVisitor = SourceLocationVisitor(projectContext, it.inputPath)
             it.accept(sourceLocationVisitor)

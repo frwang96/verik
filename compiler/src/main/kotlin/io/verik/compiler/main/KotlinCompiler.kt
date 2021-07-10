@@ -16,6 +16,7 @@
 
 package io.verik.compiler.main
 
+import io.verik.compiler.common.ProjectPass
 import io.verik.core.*
 import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
 import org.jetbrains.kotlin.cli.common.environment.setIdeaIoUseFallback
@@ -35,11 +36,11 @@ import org.jetbrains.kotlin.resolve.lazy.declarations.FileBasedDeclarationProvid
 import java.io.File
 import java.nio.file.Paths
 
-class KotlinCompiler {
+class KotlinCompiler : ProjectPass {
 
     private val MODULE_NAME = "verik"
 
-    fun compile(projectContext: ProjectContext) {
+    override fun pass(projectContext: ProjectContext) {
         m.info("Compile: Parse input files")
         val environment = createKotlinCoreEnvironment()
         val psiFileFactory = KtPsiFactory(environment.project, false)

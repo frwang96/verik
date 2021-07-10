@@ -18,14 +18,15 @@ package io.verik.compiler.cast
 
 import io.verik.compiler.ast.element.VkFile
 import io.verik.compiler.common.ElementParentChecker
+import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
-object ProjectCaster {
+object ProjectCaster : ProjectPass {
 
-    fun cast(projectContext: ProjectContext) {
+    override fun pass(projectContext: ProjectContext) {
         m.log("Cast: Check unsupported elements")
-        UnsupportedElementChecker.check(projectContext)
+        UnsupportedElementChecker.pass(projectContext)
         m.flush()
 
         m.log("Cast: Index syntax trees")
@@ -43,11 +44,11 @@ object ProjectCaster {
         m.flush()
 
         m.log("Cast: Check element parents")
-        ElementParentChecker.check(projectContext)
+        ElementParentChecker.pass(projectContext)
         m.flush()
 
         if (projectContext.config.debug) {
-            ElementCounter.count(projectContext)
+            ElementCounter.pass(projectContext)
         }
     }
 }

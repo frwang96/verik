@@ -18,13 +18,14 @@ package io.verik.compiler.interpret
 
 import io.verik.compiler.ast.common.SourceType
 import io.verik.compiler.ast.element.*
+import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.core.CorePackage
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
-object FileSplitter {
+object FileSplitter : ProjectPass {
 
-    fun split(projectContext: ProjectContext) {
+    override fun pass(projectContext: ProjectContext) {
         val splitFiles = ArrayList<VkFile>()
         projectContext.vkFiles.forEach {
             val baseFilePath = projectContext.config.buildDir

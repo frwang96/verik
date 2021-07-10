@@ -20,13 +20,14 @@ import io.verik.compiler.ast.common.PackageDeclaration
 import io.verik.compiler.ast.common.SourceSetType
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.element.VkImportDirective
+import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.core.CorePackage
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
-object ImportDirectiveChecker {
+object ImportDirectiveChecker : ProjectPass {
 
-    fun check(projectContext: ProjectContext) {
+    override fun pass(projectContext: ProjectContext) {
         val mainPackageDeclarationSet = HashSet<PackageDeclaration>()
         val testPackageDeclarationSet = HashSet<PackageDeclaration>()
         projectContext.vkFiles.forEach {

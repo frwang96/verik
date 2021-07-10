@@ -21,12 +21,13 @@ import io.verik.compiler.ast.element.VkCallExpression
 import io.verik.compiler.ast.element.VkFunctionLiteralExpression
 import io.verik.compiler.ast.element.VkSvForeverExpression
 import io.verik.compiler.ast.element.cast
+import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.core.CoreFunction
 import io.verik.compiler.main.ProjectContext
 
-object LoopExpressionTransformer {
+object LoopExpressionTransformer : ProjectPass {
 
-    fun transform(projectContext: ProjectContext) {
+    override fun pass(projectContext: ProjectContext) {
         projectContext.vkFiles.forEach {
             it.accept(LoopExpressionVisitor)
         }

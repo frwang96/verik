@@ -16,13 +16,14 @@
 
 package io.verik.compiler.cast
 
+import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.psi.*
 
-object UnsupportedElementChecker {
+object UnsupportedElementChecker : ProjectPass {
 
-    fun check(projectContext: ProjectContext) {
+    override fun pass(projectContext: ProjectContext) {
         projectContext.ktFiles.forEach { it.accept(UnsupportedElementVisitor) }
     }
 

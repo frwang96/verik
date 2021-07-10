@@ -19,11 +19,12 @@ package io.verik.compiler.interpret
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.element.*
 import io.verik.compiler.common.DeclarationReplacer
+import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
 
-object DeclarationInterpreter {
+object DeclarationInterpreter : ProjectPass {
 
-    fun interpret(projectContext: ProjectContext) {
+    override fun pass(projectContext: ProjectContext) {
         val declarationReplacer = DeclarationReplacer(projectContext)
         val declarationVisitor = DeclarationVisitor(declarationReplacer)
         projectContext.vkFiles.forEach {

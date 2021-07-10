@@ -52,37 +52,37 @@ object TestDriver {
         )
         val projectContext = ProjectContext(config)
         projectContext.inputTextFiles = listOf(textFile)
-        KotlinCompiler().compile(projectContext)
+        KotlinCompiler().pass(projectContext)
         return projectContext
     }
 
     fun cast(@Language("kotlin") content: String): ProjectContext {
         val projectContext = compile(content)
-        ProjectCaster.cast(projectContext)
+        ProjectCaster.pass(projectContext)
         return projectContext
     }
 
     fun preTransform(@Language("kotlin") content: String): ProjectContext {
         val projectContext = cast(content)
-        ProjectPreTransformer.transform(projectContext)
+        ProjectPreTransformer.pass(projectContext)
         return projectContext
     }
 
     fun interpret(@Language("kotlin") content: String): ProjectContext {
         val projectContext = preTransform(content)
-        ProjectInterpreter.interpret(projectContext)
+        ProjectInterpreter.pass(projectContext)
         return projectContext
     }
 
     fun postTransform(@Language("kotlin") content: String): ProjectContext {
         val projectContext = interpret(content)
-        ProjectPostTransformer.transform(projectContext)
+        ProjectPostTransformer.pass(projectContext)
         return projectContext
     }
 
     fun serialize(@Language("kotlin") content: String): ProjectContext {
         val projectContext = postTransform(content)
-        ProjectSerializer.serialize(projectContext)
+        ProjectSerializer.pass(projectContext)
         return projectContext
     }
 }

@@ -18,12 +18,13 @@ package io.verik.compiler.transform.pre
 
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.element.VkDeclaration
+import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
-object KeywordChecker {
+object KeywordChecker : ProjectPass {
 
-    fun transform(projectContext: ProjectContext) {
+    override fun pass(projectContext: ProjectContext) {
         projectContext.vkFiles.forEach {
             it.accept(KeywordVisitor)
         }

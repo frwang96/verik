@@ -21,12 +21,13 @@ import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.element.VkCallExpression
 import io.verik.compiler.ast.element.VkDotQualifiedExpression
 import io.verik.compiler.ast.element.VkSvBinaryExpression
+import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.core.CoreFunction
 import io.verik.compiler.core.CoreKtFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
-object BinaryExpressionTransformer {
+object BinaryExpressionTransformer : ProjectPass {
 
     private val operatorKindMap = HashMap<CoreKtFunctionDeclaration, SvOperatorKind>()
 
@@ -35,7 +36,7 @@ object BinaryExpressionTransformer {
         operatorKindMap[CoreFunction.Kotlin.Int.TIMES_INT] = SvOperatorKind.MUL
     }
 
-    fun transform(projectContext: ProjectContext) {
+    override fun pass(projectContext: ProjectContext) {
         projectContext.vkFiles.forEach {
             it.accept(BinaryExpressionVisitor)
         }

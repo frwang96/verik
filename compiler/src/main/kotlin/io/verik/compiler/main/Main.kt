@@ -33,12 +33,12 @@ object Main {
         val projectContext = ProjectContext(config)
 
         readFiles(projectContext)
-        KotlinCompiler().compile(projectContext)
-        ProjectCaster.cast(projectContext)
-        ProjectPreTransformer.transform(projectContext)
-        ProjectInterpreter.interpret(projectContext)
-        ProjectPostTransformer.transform(projectContext)
-        ProjectSerializer.serialize(projectContext)
+        KotlinCompiler().pass(projectContext)
+        ProjectCaster.pass(projectContext)
+        ProjectPreTransformer.pass(projectContext)
+        ProjectInterpreter.pass(projectContext)
+        ProjectPostTransformer.pass(projectContext)
+        ProjectSerializer.pass(projectContext)
         writeFiles(projectContext)
     }
 
