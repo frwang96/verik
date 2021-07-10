@@ -115,4 +115,57 @@ internal class SerializerBaseVisitorTest : BaseTest() {
             projectContext.outputTextFiles.last()
         )
     }
+
+    @Test
+    fun `serialize always com block`() {
+        val projectContext = TestDriver.serialize(
+            """
+                class C {
+                    @Com
+                    fun f() {}
+                }
+            """.trimIndent()
+        )
+        val expected = """
+            class C;
+            
+                always_comb begin : f
+                end : f
+            
+            endclass : C
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
+    fun `serialize always seq block`() {
+        val projectContext = TestDriver.serialize(
+            """
+                class C {
+                    var x = false
+                    @Seq
+                    fun f() {
+                        on (posedge(x)) {}
+                    }
+                }
+            """.trimIndent()
+        )
+        val expected = """
+            class C;
+            
+                logic x = 1'b0;
+            
+                always_ff @(posedge x) begin : f
+                end : f
+            
+            endclass : C
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
 }

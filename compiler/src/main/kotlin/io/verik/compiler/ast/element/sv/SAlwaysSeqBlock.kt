@@ -14,43 +14,35 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.kt
+package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.CAbstractBlockExpression
-import io.verik.compiler.ast.element.common.CExpression
-import io.verik.compiler.ast.element.common.cast
-import io.verik.compiler.ast.interfaces.ExpressionContainer
+import io.verik.compiler.ast.property.Name
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.SourceLocation
-import io.verik.compiler.main.m
 
-class KFunctionLiteralExpression(
+class SAlwaysSeqBlock(
     override val location: SourceLocation,
-    var bodyBlockExpression: CAbstractBlockExpression
-) : CExpression(), ExpressionContainer {
+    override var name: Name,
+    override var bodyBlockExpression: CAbstractBlockExpression,
+    var eventControlExpression: SEventControlExpression
+) : SProceduralBlock() {
 
     init {
         bodyBlockExpression.parent = this
+        eventControlExpression.parent = this
     }
 
-    override var type = CoreClass.Kotlin.FUNCTION.toNoArgumentsType()
+    override var type = CoreClass.Kotlin.UNIT.toNoArgumentsType()
 
     override fun accept(visitor: Visitor) {
-        visitor.visitKFunctionLiteralExpression(this)
+        visitor.visitSAlwaysSeqBlock(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        bodyBlockExpression.accept(visitor)
-    }
-
-    override fun replaceChild(oldExpression: CExpression, newExpression: CExpression) {
-        newExpression.parent = this
-        if (bodyBlockExpression == oldExpression)
-            bodyBlockExpression = newExpression.cast()
-                ?: return
-        else
-            m.error("Could not find ${oldExpression::class.simpleName} in ${this::class.simpleName}", this)
+        super.acceptChildren(visitor)
+        eventControlExpression.accept(visitor)
     }
 }

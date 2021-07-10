@@ -19,7 +19,7 @@ package io.verik.compiler.check.post
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.TestException
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
@@ -30,7 +30,7 @@ internal class ProjectPostCheckerTest : BaseTest() {
         assertThrows<TestException> {
             TestDriver.postCheck("")
         }.apply {
-            Assertions.assertEquals("Output files empty: No declarations found", message)
+            assertEquals("Output files empty: No declarations found", message)
         }
     }
 }

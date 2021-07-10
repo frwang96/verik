@@ -64,7 +64,7 @@ object UntransformedElementChecker : ProjectPass {
         override fun visitCCallExpression(callExpression: CCallExpression) {
             super.visitCCallExpression(callExpression)
             if (callExpression.reference is CoreKtFunctionDeclaration)
-                m.error("Call expression ${callExpression.reference} $message", callExpression)
+                m.error("Call expression $message: ${callExpression.reference}", callExpression)
         }
 
         override fun visitKStringTemplateExpression(stringTemplateExpression: KStringTemplateExpression) {

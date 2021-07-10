@@ -24,6 +24,7 @@ import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.CoreFunction
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.m
 
 object FunctionSpecialTransformer : ProjectPass {
 
@@ -54,6 +55,10 @@ object FunctionSpecialTransformer : ProjectPass {
                 }
                 CoreFunction.Core.WAIT_EVENT -> {
                     SEventControlExpression(callExpression.location, callExpression.valueArguments[0].expression)
+                }
+                CoreFunction.Core.ON_EVENT_FUNCTION -> {
+                    m.error("On expression used out of context", callExpression)
+                    return
                 }
                 else -> null
             }

@@ -92,6 +92,14 @@ abstract class Visitor {
         visitSProceduralBlock(initialBlock)
     }
 
+    open fun visitSAlwaysComBlock(alwaysComBlock: SAlwaysComBlock) {
+        visitSProceduralBlock(alwaysComBlock)
+    }
+
+    open fun visitSAlwaysSeqBlock(alwaysSeqBlock: SAlwaysSeqBlock) {
+        visitSProceduralBlock(alwaysSeqBlock)
+    }
+
     open fun visitCAbstractBlockExpression(abstractBlockExpression: CAbstractBlockExpression) {
         visitCExpression(abstractBlockExpression)
     }

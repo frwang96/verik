@@ -35,8 +35,11 @@ object Count : Module() {
 
     @Seq
     fun update() {
-        wait(posedge(clk))
+        on (posedge(clk)) {}
     }
+
+    @Com
+    fun f() {}
 
     @Run
     fun g() {

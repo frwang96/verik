@@ -93,6 +93,20 @@ class SerializerBaseVisitor(private val sourceBuilder: SourceBuilder) : Visitor(
         statementVisitor.serializeAsStatement(initialBlock.bodyBlockExpression)
     }
 
+    override fun visitSAlwaysComBlock(alwaysComBlock: SAlwaysComBlock) {
+        appendLineIfNotFirst()
+        sourceBuilder.append("always_comb ", alwaysComBlock)
+        statementVisitor.serializeAsStatement(alwaysComBlock.bodyBlockExpression)
+    }
+
+    override fun visitSAlwaysSeqBlock(alwaysSeqBlock: SAlwaysSeqBlock) {
+        appendLineIfNotFirst()
+        sourceBuilder.append("always_ff ", alwaysSeqBlock)
+        statementVisitor.serializeAsExpression(alwaysSeqBlock.eventControlExpression)
+        sourceBuilder.append(" ", alwaysSeqBlock)
+        statementVisitor.serializeAsStatement(alwaysSeqBlock.bodyBlockExpression)
+    }
+
     private fun appendLineIfNotFirst() {
         if (first) {
             first = false

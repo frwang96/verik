@@ -16,11 +16,10 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestDriver
-import io.verik.compiler.util.assertElementEquals
-import io.verik.compiler.util.findDeclaration
+import io.verik.compiler.util.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 internal class FunctionInterpreterTest : BaseTest() {
 
@@ -66,5 +65,38 @@ internal class FunctionInterpreterTest : BaseTest() {
             "SInitialBlock(f, KBlockExpression(*))",
             projectContext.findDeclaration("f")
         )
+    }
+
+    @Test
+    fun `interpret always seq block`() {
+        val projectContext = TestDriver.interpret(
+            """
+                class M: Module() {
+                    var x = false
+                    @Seq
+                    fun f() {
+                        on (posedge(x)) {}
+                    }
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "SAlwaysBlock(f, SEventControlExpression(*), KBlockExpression(*))",
+            projectContext.findDeclaration("f")
+        )
+    }
+
+    @Test
+    fun `interpret always seq block illegal`() {
+        assertThrows<TestException> {
+            TestDriver.interpret(
+                """
+                class M: Module() {
+                    @Seq
+                    fun f() {}
+                }
+            """.trimIndent()
+            )
+        }.apply { assertEquals("On expression expected", message) }
     }
 }

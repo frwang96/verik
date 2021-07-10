@@ -100,6 +100,21 @@ class ElementPrinter : Visitor() {
         }
     }
 
+    override fun visitSAlwaysComBlock(alwaysComBlock: SAlwaysComBlock) {
+        build("SAlwaysComBlock") {
+            build(alwaysComBlock.name.toString())
+            build(alwaysComBlock.bodyBlockExpression)
+        }
+    }
+
+    override fun visitSAlwaysSeqBlock(alwaysSeqBlock: SAlwaysSeqBlock) {
+        build("SAlwaysSeqBlock") {
+            build(alwaysSeqBlock.name.toString())
+            build(alwaysSeqBlock.eventControlExpression)
+            build(alwaysSeqBlock.bodyBlockExpression)
+        }
+    }
+
     override fun visitKBlockExpression(blockExpression: KBlockExpression) {
         build("KBlockExpression") {
             build(blockExpression.type.toString())
