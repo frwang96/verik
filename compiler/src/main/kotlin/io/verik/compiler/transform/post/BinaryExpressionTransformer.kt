@@ -19,7 +19,7 @@ package io.verik.compiler.transform.post
 import io.verik.compiler.ast.element.common.CCallExpression
 import io.verik.compiler.ast.element.common.CDotQualifiedExpression
 import io.verik.compiler.ast.element.sv.SBinaryExpression
-import io.verik.compiler.ast.property.SvOperatorKind
+import io.verik.compiler.ast.property.SOperatorKind
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.CoreFunction
@@ -29,11 +29,11 @@ import io.verik.compiler.main.m
 
 object BinaryExpressionTransformer : ProjectPass {
 
-    private val operatorKindMap = HashMap<CoreKtFunctionDeclaration, SvOperatorKind>()
+    private val operatorKindMap = HashMap<CoreKtFunctionDeclaration, SOperatorKind>()
 
     init {
-        operatorKindMap[CoreFunction.Kotlin.Int.PLUS_INT] = SvOperatorKind.PLUS
-        operatorKindMap[CoreFunction.Kotlin.Int.TIMES_INT] = SvOperatorKind.MUL
+        operatorKindMap[CoreFunction.Kotlin.Int.PLUS_INT] = SOperatorKind.PLUS
+        operatorKindMap[CoreFunction.Kotlin.Int.TIMES_INT] = SOperatorKind.MUL
     }
 
     override fun pass(projectContext: ProjectContext) {

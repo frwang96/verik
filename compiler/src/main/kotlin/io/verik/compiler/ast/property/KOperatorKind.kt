@@ -20,14 +20,14 @@ import io.verik.compiler.main.SourceLocation
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.com.intellij.psi.tree.IElementType
 
-enum class KtOperatorKind {
+enum class KOperatorKind {
     EQ,
     MUL,
     PLUS;
 
     companion object {
 
-        operator fun invoke(token: IElementType, location: SourceLocation): KtOperatorKind? {
+        operator fun invoke(token: IElementType, location: SourceLocation): KOperatorKind? {
             return when (token.toString()) {
                 "EQ" -> EQ
                 "MUL" -> MUL

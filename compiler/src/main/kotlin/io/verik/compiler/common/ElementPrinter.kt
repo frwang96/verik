@@ -93,6 +93,13 @@ class ElementPrinter : Visitor() {
         }
     }
 
+    override fun visitSInitialBlock(initialBlock: SInitialBlock) {
+        build("SInitialBlock") {
+            build(initialBlock.name.toString())
+            build(initialBlock.bodyBlockExpression)
+        }
+    }
+
     override fun visitCBlockExpression(blockExpression: CBlockExpression) {
         build("CBlockExpression") {
             build(blockExpression.type.toString())

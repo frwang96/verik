@@ -53,7 +53,8 @@ object DeclarationInterpreter : ProjectPass {
         private fun interpretDeclaration(declaration: CDeclaration) {
             when (declaration) {
                 is KBasicClass -> declarationReplacer.replace(declaration, ClassInterpreter.interpret(declaration))
-                is KFunction -> declarationReplacer.replace(declaration, FunctionInterpreter.interpret(declaration))
+                is KFunction ->
+                    FunctionInterpreter.interpret(declaration)?.let { declarationReplacer.replace(declaration, it) }
                 is KProperty -> declarationReplacer.replace(declaration, PropertyInterpreter.interpret(declaration))
             }
         }

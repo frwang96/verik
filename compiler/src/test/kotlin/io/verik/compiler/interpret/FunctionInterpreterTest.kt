@@ -51,4 +51,20 @@ internal class FunctionInterpreterTest : BaseTest() {
             projectContext.findDeclaration("f")
         )
     }
+
+    @Test
+    fun `interpret initial block`() {
+        val projectContext = TestDriver.interpret(
+            """
+                class M: Module() {
+                    @Run
+                    fun f() {}
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "SInitialBlock(f, CBlockExpression(*))",
+            projectContext.findDeclaration("f")
+        )
+    }
 }

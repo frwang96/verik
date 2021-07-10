@@ -25,134 +25,142 @@ abstract class Visitor {
     open fun visitCElement(element: CElement) {}
 
     open fun visitCFile(file: CFile) {
-        return visitCElement(file)
+        visitCElement(file)
     }
 
     open fun visitKImportDirective(importDirective: KImportDirective) {
-        return visitCElement(importDirective)
+        visitCElement(importDirective)
     }
 
     open fun visitCExpression(expression: CExpression) {
-        return visitCElement(expression)
+        visitCElement(expression)
     }
 
     open fun visitCDeclaration(declaration: CDeclaration) {
-        return visitCExpression(declaration)
+        visitCExpression(declaration)
     }
 
     open fun visitCAbstractClass(abstractClass: CAbstractClass) {
-        return visitCDeclaration(abstractClass)
+        visitCDeclaration(abstractClass)
     }
 
     open fun visitKBasicClass(basicClass: KBasicClass) {
-        return visitCAbstractClass(basicClass)
+        visitCAbstractClass(basicClass)
     }
 
     open fun visitSBasicClass(basicClass: SBasicClass) {
-        return visitCAbstractClass(basicClass)
+        visitCAbstractClass(basicClass)
     }
 
     open fun visitSModule(module: SModule) {
-        return visitCAbstractClass(module)
+        visitCAbstractClass(module)
     }
 
     open fun visitCAbstractFunction(abstractFunction: CAbstractFunction) {
-        return visitCDeclaration(abstractFunction)
+        visitCDeclaration(abstractFunction)
     }
 
     open fun visitKFunction(function: KFunction) {
-        return visitCAbstractFunction(function)
+        visitCAbstractFunction(function)
     }
 
     open fun visitSFunction(function: SFunction) {
-        return visitCAbstractFunction(function)
+        visitCAbstractFunction(function)
     }
 
     open fun visitCAbstractProperty(abstractProperty: CAbstractProperty) {
-        return visitCDeclaration(abstractProperty)
+        visitCDeclaration(abstractProperty)
     }
 
     open fun visitKProperty(property: KProperty) {
-        return visitCAbstractProperty(property)
+        visitCAbstractProperty(property)
     }
 
     open fun visitSProperty(property: SProperty) {
-        return visitCAbstractProperty(property)
+        visitCAbstractProperty(property)
     }
 
     open fun visitCTypeParameter(typeParameter: CTypeParameter) {
-        return visitCDeclaration(typeParameter)
+        visitCDeclaration(typeParameter)
+    }
+
+    open fun visitSProceduralBlock(proceduralBlock: SProceduralBlock) {
+        visitCDeclaration(proceduralBlock)
+    }
+
+    open fun visitSInitialBlock(initialBlock: SInitialBlock) {
+        visitSProceduralBlock(initialBlock)
     }
 
     open fun visitCBlockExpression(blockExpression: CBlockExpression) {
-        return visitCExpression(blockExpression)
+        visitCExpression(blockExpression)
     }
 
     open fun visitCParenthesizedExpression(parenthesizedExpression: CParenthesizedExpression) {
-        return visitCExpression(parenthesizedExpression)
+        visitCExpression(parenthesizedExpression)
     }
 
     open fun visitCAbstractBinaryExpression(binaryExpression: CAbstractBinaryExpression) {
-        return visitCExpression(binaryExpression)
+        visitCExpression(binaryExpression)
     }
 
     open fun visitKBinaryExpression(binaryExpression: KBinaryExpression) {
-        return visitCAbstractBinaryExpression(binaryExpression)
+        visitCAbstractBinaryExpression(binaryExpression)
     }
 
     open fun visitSBinaryExpression(binaryExpression: SBinaryExpression) {
-        return visitCAbstractBinaryExpression(binaryExpression)
+        visitCAbstractBinaryExpression(binaryExpression)
     }
 
     open fun visitCReferenceExpression(referenceExpression: CReferenceExpression) {
-        return visitCExpression(referenceExpression)
+        visitCExpression(referenceExpression)
     }
 
     open fun visitCCallExpression(callExpression: CCallExpression) {
-        return visitCExpression(callExpression)
+        visitCExpression(callExpression)
     }
 
     open fun visitCValueArgument(valueArgument: CValueArgument) {
-        return visitCElement(valueArgument)
+        visitCElement(valueArgument)
     }
 
     open fun visitCDotQualifiedExpression(dotQualifiedExpression: CDotQualifiedExpression) {
-        return visitCExpression(dotQualifiedExpression)
+        visitCExpression(dotQualifiedExpression)
     }
 
     open fun visitCConstantExpression(constantExpression: CConstantExpression) {
-        return visitCExpression(constantExpression)
+        visitCExpression(constantExpression)
     }
 
     open fun visitKFunctionLiteralExpression(functionLiteralExpression: KFunctionLiteralExpression) {
-        return visitCExpression(functionLiteralExpression)
+        visitCExpression(functionLiteralExpression)
     }
 
     open fun visitKStringTemplateExpression(stringTemplateExpression: KStringTemplateExpression) {
-        return visitCExpression(stringTemplateExpression)
+        visitCExpression(stringTemplateExpression)
     }
 
     open fun visitKStringTemplateEntry(stringTemplateEntry: KStringTemplateEntry) {
-        return visitCElement(stringTemplateEntry)
+        visitCElement(stringTemplateEntry)
     }
 
     open fun visitKLiteralStringTemplateEntry(literalStringTemplateEntry: KLiteralStringTemplateEntry) {
-        return visitKStringTemplateEntry(literalStringTemplateEntry)
+        visitKStringTemplateEntry(literalStringTemplateEntry)
     }
 
     open fun visitKExpressionStringTemplateEntry(expressionStringTemplateEntry: KExpressionStringTemplateEntry) {
-        return visitKStringTemplateEntry(expressionStringTemplateEntry)
+        visitKStringTemplateEntry(expressionStringTemplateEntry)
     }
 
     open fun visitSStringExpression(stringExpression: SStringExpression) {
-        return visitCExpression(stringExpression)
+        visitCExpression(stringExpression)
     }
 
     open fun visitSLoopStatement(loopStatement: SLoopStatement) {
-        return visitCExpression(loopStatement)
+        visitCExpression(loopStatement)
     }
 
     open fun visitSForeverStatement(foreverStatement: SForeverStatement) {
-        return visitSLoopStatement(foreverStatement)
+        visitSLoopStatement(foreverStatement)
     }
 }

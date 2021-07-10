@@ -91,4 +91,28 @@ internal class SerializerBaseVisitorTest : BaseTest() {
             projectContext.outputTextFiles.last()
         )
     }
+
+    @Test
+    fun `serialize initial block`() {
+        val projectContext = TestDriver.serialize(
+            """
+                class C {
+                    @Run
+                    fun f() {}
+                }
+            """.trimIndent()
+        )
+        val expected = """
+            class C;
+            
+                initial begin
+                end
+            
+            endclass: C
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
 }

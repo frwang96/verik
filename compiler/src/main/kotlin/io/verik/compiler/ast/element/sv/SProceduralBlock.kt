@@ -14,20 +14,17 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.property
+package io.verik.compiler.ast.element.sv
 
-enum class SvOperatorKind {
-    ASSIGN,
-    ARROW_ASSIGN,
-    MUL,
-    PLUS;
+import io.verik.compiler.ast.element.common.CBlockExpression
+import io.verik.compiler.ast.element.common.CDeclaration
+import io.verik.compiler.common.TreeVisitor
 
-    fun serialize(): String {
-        return when (this) {
-            ASSIGN -> "="
-            ARROW_ASSIGN -> "<="
-            MUL -> "*"
-            PLUS -> "+"
-        }
+abstract class SProceduralBlock : CDeclaration() {
+
+    abstract var bodyBlockExpression: CBlockExpression
+
+    override fun acceptChildren(visitor: TreeVisitor) {
+        bodyBlockExpression.accept(visitor)
     }
 }

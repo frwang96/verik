@@ -18,7 +18,7 @@ package io.verik.compiler.ast.element.kt
 
 import io.verik.compiler.ast.element.common.CAbstractBinaryExpression
 import io.verik.compiler.ast.element.common.CExpression
-import io.verik.compiler.ast.property.KtOperatorKind
+import io.verik.compiler.ast.property.KOperatorKind
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.SourceLocation
@@ -28,7 +28,7 @@ class KBinaryExpression(
     override var type: Type,
     override var left: CExpression,
     override var right: CExpression,
-    var kind: KtOperatorKind
+    var kind: KOperatorKind
 ) : CAbstractBinaryExpression() {
 
     init {

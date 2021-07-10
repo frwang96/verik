@@ -31,7 +31,7 @@ class SerializerExpressionVisitor(private val sourceBuilder: SourceBuilder) : Vi
             m.error("SystemVerilog expression expected but got: ${element::class.simpleName}", element)
     }
 
-    private fun serializeAsStatement(element: CElement) {
+    fun serializeAsStatement(element: CElement) {
         element.accept(this)
         if (isSvExpression(element))
             sourceBuilder.appendLine(";", element)

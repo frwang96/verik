@@ -19,10 +19,7 @@ package io.verik.compiler.serialize
 import io.verik.compiler.ast.element.common.CDeclaration
 import io.verik.compiler.ast.element.common.CElement
 import io.verik.compiler.ast.element.common.CFile
-import io.verik.compiler.ast.element.sv.SBasicClass
-import io.verik.compiler.ast.element.sv.SFunction
-import io.verik.compiler.ast.element.sv.SModule
-import io.verik.compiler.ast.element.sv.SProperty
+import io.verik.compiler.ast.element.sv.*
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.m
 
@@ -40,7 +37,7 @@ class SerializerBaseVisitor(private val sourceBuilder: SourceBuilder) : Visitor(
     }
 
     override fun visitCDeclaration(declaration: CDeclaration) {
-        m.error("Unable to serialize declaration: $declaration", declaration)
+        m.error("Unable to serialize declaration $declaration: Found ${declaration::class.simpleName}", declaration)
     }
 
     override fun visitSBasicClass(basicClass: SBasicClass) {
@@ -70,7 +67,7 @@ class SerializerBaseVisitor(private val sourceBuilder: SourceBuilder) : Visitor(
         val bodyBlockExpression = function.bodyBlockExpression
         if (bodyBlockExpression != null) {
             sourceBuilder.indent {
-                bodyBlockExpression.accept(expressionVisitor)
+                expressionVisitor.serializeAsStatement(bodyBlockExpression)
             }
         }
         sourceBuilder.appendLine("endfunction: $function", function)
@@ -88,6 +85,12 @@ class SerializerBaseVisitor(private val sourceBuilder: SourceBuilder) : Visitor(
         } else {
             sourceBuilder.appendLine(";", property)
         }
+    }
+
+    override fun visitSInitialBlock(initialBlock: SInitialBlock) {
+        appendLineIfNotFirst()
+        sourceBuilder.append("initial ", initialBlock)
+        expressionVisitor.serializeAsStatement(initialBlock.bodyBlockExpression)
     }
 
     private fun appendLineIfNotFirst() {

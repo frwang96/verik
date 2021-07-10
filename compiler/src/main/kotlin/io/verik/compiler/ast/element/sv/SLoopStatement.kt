@@ -18,8 +18,13 @@ package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.CBlockExpression
 import io.verik.compiler.ast.element.common.CExpression
+import io.verik.compiler.common.TreeVisitor
 
 abstract class SLoopStatement : CExpression() {
 
     abstract var bodyBlockExpression: CBlockExpression
+
+    override fun acceptChildren(visitor: TreeVisitor) {
+        bodyBlockExpression.accept(visitor)
+    }
 }

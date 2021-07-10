@@ -16,18 +16,38 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.common.CAbstractFunction
+import io.verik.compiler.ast.element.common.CDeclaration
 import io.verik.compiler.ast.element.kt.KFunction
 import io.verik.compiler.ast.element.sv.SFunction
+import io.verik.compiler.ast.element.sv.SInitialBlock
+import io.verik.compiler.ast.property.FunctionAnnotationType
+import io.verik.compiler.main.m
 
 object FunctionInterpreter {
 
-    fun interpret(function: KFunction): CAbstractFunction {
-        return SFunction(
-            function.location,
-            function.name,
-            function.type,
-            function.bodyBlockExpression
-        )
+    fun interpret(function: KFunction): CDeclaration? {
+        return when (function.annotationType) {
+            FunctionAnnotationType.RUN -> {
+                val bodyBlockExpression = function.bodyBlockExpression
+                if (bodyBlockExpression != null) {
+                    SInitialBlock(
+                        function.location,
+                        function.name,
+                        bodyBlockExpression
+                    )
+                } else {
+                    m.error("Run block missing body: $function", function)
+                    null
+                }
+            }
+            else -> {
+                SFunction(
+                    function.location,
+                    function.name,
+                    function.type,
+                    function.bodyBlockExpression
+                )
+            }
+        }
     }
 }

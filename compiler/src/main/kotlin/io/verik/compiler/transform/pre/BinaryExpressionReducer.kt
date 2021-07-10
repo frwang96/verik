@@ -20,7 +20,7 @@ import io.verik.compiler.ast.element.common.CCallExpression
 import io.verik.compiler.ast.element.common.CDotQualifiedExpression
 import io.verik.compiler.ast.element.common.CValueArgument
 import io.verik.compiler.ast.element.kt.KBinaryExpression
-import io.verik.compiler.ast.property.KtOperatorKind
+import io.verik.compiler.ast.property.KOperatorKind
 import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
@@ -35,9 +35,9 @@ object BinaryExpressionReducer : ProjectPass {
     private val referenceMap = HashMap<ReducerEntry, CoreKtFunctionDeclaration>()
 
     init {
-        referenceMap[ReducerEntry(CoreClass.Kotlin.INT, CoreClass.Kotlin.INT, KtOperatorKind.PLUS)] =
+        referenceMap[ReducerEntry(CoreClass.Kotlin.INT, CoreClass.Kotlin.INT, KOperatorKind.PLUS)] =
             CoreFunction.Kotlin.Int.PLUS_INT
-        referenceMap[ReducerEntry(CoreClass.Kotlin.INT, CoreClass.Kotlin.INT, KtOperatorKind.MUL)] =
+        referenceMap[ReducerEntry(CoreClass.Kotlin.INT, CoreClass.Kotlin.INT, KOperatorKind.MUL)] =
             CoreFunction.Kotlin.Int.TIMES_INT
     }
 
@@ -50,7 +50,7 @@ object BinaryExpressionReducer : ProjectPass {
     data class ReducerEntry(
         val receiverClass: CoreClassDeclaration,
         val selectorClass: CoreClassDeclaration,
-        val kind: KtOperatorKind
+        val kind: KOperatorKind
     )
 
     object BinaryExpressionVisitor : TreeVisitor() {

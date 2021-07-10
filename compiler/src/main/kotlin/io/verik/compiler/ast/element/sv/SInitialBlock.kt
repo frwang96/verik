@@ -17,14 +17,16 @@
 package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.CBlockExpression
+import io.verik.compiler.ast.property.Name
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.SourceLocation
 
-class SForeverStatement(
+class SInitialBlock(
     override val location: SourceLocation,
+    override var name: Name,
     override var bodyBlockExpression: CBlockExpression
-) : SLoopStatement() {
+) : SProceduralBlock() {
 
     init {
         bodyBlockExpression.parent = this
@@ -33,6 +35,6 @@ class SForeverStatement(
     override var type = CoreClass.Kotlin.UNIT.toNoArgumentsType()
 
     override fun accept(visitor: Visitor) {
-        visitor.visitSForeverStatement(this)
+        visitor.visitSInitialBlock(this)
     }
 }

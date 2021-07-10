@@ -18,7 +18,7 @@ package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.CAbstractBinaryExpression
 import io.verik.compiler.ast.element.common.CExpression
-import io.verik.compiler.ast.property.SvOperatorKind
+import io.verik.compiler.ast.property.SOperatorKind
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.SourceLocation
@@ -28,7 +28,7 @@ class SBinaryExpression(
     override var type: Type,
     override var left: CExpression,
     override var right: CExpression,
-    var kind: SvOperatorKind
+    var kind: SOperatorKind
 ) : CAbstractBinaryExpression() {
 
     init {

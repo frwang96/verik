@@ -14,25 +14,20 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.sv
+package io.verik.compiler.ast.property
 
-import io.verik.compiler.ast.element.common.CBlockExpression
-import io.verik.compiler.common.Visitor
-import io.verik.compiler.core.CoreClass
-import io.verik.compiler.main.SourceLocation
+enum class SOperatorKind {
+    ASSIGN,
+    ARROW_ASSIGN,
+    MUL,
+    PLUS;
 
-class SForeverStatement(
-    override val location: SourceLocation,
-    override var bodyBlockExpression: CBlockExpression
-) : SLoopStatement() {
-
-    init {
-        bodyBlockExpression.parent = this
-    }
-
-    override var type = CoreClass.Kotlin.UNIT.toNoArgumentsType()
-
-    override fun accept(visitor: Visitor) {
-        visitor.visitSForeverStatement(this)
+    fun serialize(): String {
+        return when (this) {
+            ASSIGN -> "="
+            ARROW_ASSIGN -> "<="
+            MUL -> "*"
+            PLUS -> "+"
+        }
     }
 }
