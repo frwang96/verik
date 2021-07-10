@@ -21,7 +21,7 @@ import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertOutputTextEquals
 import org.junit.jupiter.api.Test
 
-internal class SerializerExpressionVisitorTest : BaseTest() {
+internal class SerializerStatementVisitorTest : BaseTest() {
 
     @Test
     fun `parenthesized expression`() {

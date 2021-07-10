@@ -26,7 +26,7 @@ import io.verik.compiler.main.m
 class SerializerBaseVisitor(private val sourceBuilder: SourceBuilder) : Visitor() {
 
     private var first = true
-    private val expressionVisitor = SerializerExpressionVisitor(sourceBuilder)
+    private val statementVisitor = SerializerStatementVisitor(sourceBuilder)
 
     override fun visitCElement(element: CElement) {
         m.error("Unable to serialize element: ${element::class.simpleName}", element)
@@ -67,7 +67,7 @@ class SerializerBaseVisitor(private val sourceBuilder: SourceBuilder) : Visitor(
         val bodyBlockExpression = function.bodyBlockExpression
         if (bodyBlockExpression != null) {
             sourceBuilder.indent {
-                expressionVisitor.serializeAsStatement(bodyBlockExpression)
+                statementVisitor.serializeAsStatement(bodyBlockExpression)
             }
         }
         sourceBuilder.appendLine("endfunction : $function", function)
@@ -80,7 +80,7 @@ class SerializerBaseVisitor(private val sourceBuilder: SourceBuilder) : Visitor(
         val initializer = property.initializer
         if (initializer != null) {
             sourceBuilder.append(" = ", property)
-            expressionVisitor.serializeAsExpression(initializer)
+            statementVisitor.serializeAsExpression(initializer)
             sourceBuilder.appendLine(";", initializer)
         } else {
             sourceBuilder.appendLine(";", property)
@@ -90,7 +90,7 @@ class SerializerBaseVisitor(private val sourceBuilder: SourceBuilder) : Visitor(
     override fun visitSInitialBlock(initialBlock: SInitialBlock) {
         appendLineIfNotFirst()
         sourceBuilder.append("initial ", initialBlock)
-        expressionVisitor.serializeAsStatement(initialBlock.bodyBlockExpression)
+        statementVisitor.serializeAsStatement(initialBlock.bodyBlockExpression)
     }
 
     private fun appendLineIfNotFirst() {

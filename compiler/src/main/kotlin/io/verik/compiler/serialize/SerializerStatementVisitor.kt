@@ -24,30 +24,21 @@ import io.verik.compiler.ast.element.sv.SStringExpression
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.m
 
-class SerializerExpressionVisitor(private val sourceBuilder: SourceBuilder) : Visitor() {
+class SerializerStatementVisitor(private val sourceBuilder: SourceBuilder) : Visitor() {
 
     fun serializeAsExpression(element: CElement) {
         element.accept(this)
-        if (!isSvExpression(element))
+        if (SerializationType.getType(element) != SerializationType.EXPRESSION)
             m.error("SystemVerilog expression expected but got: ${element::class.simpleName}", element)
     }
 
     fun serializeAsStatement(element: CElement) {
         element.accept(this)
-        if (isSvExpression(element))
-            sourceBuilder.appendLine(";", element)
-    }
-
-    private fun isSvExpression(element: CElement): Boolean {
-        return when (element) {
-            is CParenthesizedExpression -> true
-            is SBinaryExpression -> true
-            is CReferenceExpression -> true
-            is CCallExpression -> true
-            is CDotQualifiedExpression -> true
-            is CConstantExpression -> true
-            is SStringExpression -> true
-            else -> false
+        when (SerializationType.getType(element)) {
+            SerializationType.EXPRESSION -> sourceBuilder.appendLine(";", element)
+            SerializationType.STATEMENT -> {}
+            SerializationType.OTHER ->
+                m.error("SystemVerilog expression or statement expected but got: ${element::class.simpleName}", element)
         }
     }
 

@@ -35,6 +35,8 @@ object CoreClass {
         val SBIT = CoreClassDeclaration(parent, "Sbit", Kotlin.ANY)
         val CLASS = CoreClassDeclaration(parent, "Class", Kotlin.ANY)
 
+        val EVENT = CoreClassDeclaration(parent, "Event", Kotlin.ANY)
+
         val COMPONENT = CoreClassDeclaration(parent, "Component", Kotlin.ANY)
         val MODULE = CoreClassDeclaration(parent, "Module", COMPONENT)
     }
