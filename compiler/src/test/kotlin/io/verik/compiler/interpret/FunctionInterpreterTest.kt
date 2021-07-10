@@ -81,7 +81,7 @@ internal class FunctionInterpreterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SAlwaysBlock(f, SEventControlExpression(*), KBlockExpression(*))",
+            "SAlwaysSeqBlock(f, SEventControlExpression(*), KBlockExpression(*))",
             projectContext.findDeclaration("f")
         )
     }
