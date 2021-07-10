@@ -112,7 +112,7 @@ class KotlinCompiler : ProjectPass {
             message: String,
             location: CompilerMessageSourceLocation?
         ) {
-            val sourceLocation = location?.let { SourceLocation(it.column, it.line, Paths.get(it.path)) }
+            val sourceLocation = location?.let { SourceLocation(it.column, it.line, Paths.get(it.path), null) }
             when (severity) {
                 CompilerMessageSeverity.EXCEPTION, CompilerMessageSeverity.ERROR ->
                     m.error(message, sourceLocation)

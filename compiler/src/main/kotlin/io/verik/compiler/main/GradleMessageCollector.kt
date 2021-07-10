@@ -16,8 +16,12 @@
 
 package io.verik.compiler.main
 
+import io.verik.compiler.ast.element.common.CDeclaration
+import io.verik.compiler.ast.element.common.CElement
 import io.verik.plugin.Config
 import org.gradle.api.GradleException
+import org.jetbrains.kotlin.com.intellij.psi.PsiElement
+import org.jetbrains.kotlin.psi.KtNamedDeclaration
 
 class GradleMessageCollector(config: Config) : MessageCollector() {
 
@@ -66,14 +70,12 @@ class GradleMessageCollector(config: Config) : MessageCollector() {
         if (errorCount != 0) throw GradleException("Verik compilation failed")
     }
 
-    private fun getElapsedString(): String {
-        val elapsed = (System.nanoTime() - startTime) / 1e9
-        return "%.3fs".format(elapsed)
-    }
-
     private fun printMessage(message: String, location: SourceLocation?) {
         if (location != null) {
             print("${location.path}: (${location.line}, ${location.column}): ")
+            val qualifiedName = getQualifiedName(location.element)
+            if (qualifiedName != null)
+                print("$qualifiedName: ")
         }
         println(message)
     }
@@ -83,5 +85,36 @@ class GradleMessageCollector(config: Config) : MessageCollector() {
             if (it.className.startsWith("io.verik") && !it.className.contains("MessageCollector"))
                 println("at $it")
         }
+    }
+
+    private fun getElapsedString(): String {
+        val elapsed = (System.nanoTime() - startTime) / 1e9
+        return "%.3fs".format(elapsed)
+    }
+
+    private fun getQualifiedName(element: Any?): String? {
+        val names = ArrayList<String>()
+        when (element) {
+            is PsiElement -> {
+                var parent: PsiElement? = element
+                while (parent != null) {
+                    if (parent is KtNamedDeclaration)
+                        names.add(parent.name!!)
+                    parent = parent.parent
+                }
+            }
+            is CElement -> {
+                var parent: CElement? = element
+                while (parent != null) {
+                    if (parent is CDeclaration)
+                        names.add(parent.name.name)
+                    parent = parent.parent
+                }
+            }
+        }
+        return if (names.isNotEmpty()) {
+            names.reverse()
+            names.joinToString(separator = ".")
+        } else null
     }
 }

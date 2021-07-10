@@ -28,7 +28,7 @@ fun KtElement.getSourceLocation(): SourceLocation {
         textRange.startOffset
     )
     val path = Paths.get(containingFile.virtualFile.path)
-    return SourceLocation(lineAndColumn.column, lineAndColumn.line, path)
+    return SourceLocation(lineAndColumn.column, lineAndColumn.line, path, this)
 }
 
 fun <T : CElement> ArrayList<T>.replaceIfContains(oldElement: T, newElement: T): Boolean {

@@ -1,5 +1,5 @@
 # Verik
-![Build](https://github.com/frwang96/verik/actions/workflows/Build.yml/badge.svg)
+[![Build](https://github.com/frwang96/verik/actions/workflows/Build.yml/badge.svg)](https://github.com/frwang96/verik)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 Verik is a Hardware Description Language embedded in Kotlin that compiles transparently to SystemVerilog. It aims to
