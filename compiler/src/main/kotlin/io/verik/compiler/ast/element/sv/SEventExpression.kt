@@ -22,6 +22,7 @@ import io.verik.compiler.ast.property.EdgeType
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.SourceLocation
+import io.verik.compiler.main.m
 
 class SEventExpression(
     override val location: SourceLocation,
@@ -37,5 +38,10 @@ class SEventExpression(
 
     override fun accept(visitor: Visitor) {
         visitor.visitSEventExpression(this)
+    }
+
+    override fun copy(): SEventExpression? {
+        m.error("Unable to copy ${this::class.simpleName}", this)
+        return null
     }
 }

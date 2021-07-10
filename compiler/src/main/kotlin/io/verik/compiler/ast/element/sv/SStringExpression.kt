@@ -21,6 +21,7 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.SourceLocation
+import io.verik.compiler.main.m
 
 class SStringExpression(
     override val location: SourceLocation,
@@ -34,4 +35,9 @@ class SStringExpression(
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {}
+
+    override fun copy(): SStringExpression? {
+        m.error("Unable to copy ${this::class.simpleName}", this)
+        return null
+    }
 }

@@ -40,4 +40,9 @@ class KStringTemplateExpression(
     override fun acceptChildren(visitor: TreeVisitor) {
         entries.forEach { it.accept(visitor) }
     }
+
+    override fun copy(): KStringTemplateExpression? {
+        val copyEntries = entries.map { it.copy() ?: return null }
+        return KStringTemplateExpression(location, copyEntries)
+    }
 }

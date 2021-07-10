@@ -17,10 +17,16 @@
 package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.ast.interfaces.Declaration
+import io.verik.compiler.main.m
 
 abstract class CDeclaration : CExpression(), Declaration {
 
     override fun toString(): String {
         return "$name"
+    }
+
+    override fun copy(): CDeclaration? {
+        m.error("Unable to copy ${this::class.simpleName}", this)
+        return null
     }
 }

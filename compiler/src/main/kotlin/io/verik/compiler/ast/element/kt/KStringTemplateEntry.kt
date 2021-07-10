@@ -18,4 +18,7 @@ package io.verik.compiler.ast.element.kt
 
 import io.verik.compiler.ast.element.common.CElement
 
-abstract class KStringTemplateEntry : CElement()
+abstract class KStringTemplateEntry : CElement() {
+
+    abstract fun copy(): KStringTemplateEntry?
+}

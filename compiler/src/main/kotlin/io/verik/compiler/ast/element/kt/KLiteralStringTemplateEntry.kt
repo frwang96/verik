@@ -30,4 +30,8 @@ class KLiteralStringTemplateEntry(
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {}
+
+    override fun copy(): KLiteralStringTemplateEntry {
+        return KLiteralStringTemplateEntry(location, text)
+    }
 }

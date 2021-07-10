@@ -35,10 +35,12 @@ object BinaryExpressionReducer : ProjectPass {
     private val referenceMap = HashMap<ReducerEntry, CoreKtFunctionDeclaration>()
 
     init {
-        referenceMap[ReducerEntry(CoreClass.Kotlin.INT, CoreClass.Kotlin.INT, KOperatorKind.PLUS)] =
-            CoreFunction.Kotlin.Int.PLUS_INT
         referenceMap[ReducerEntry(CoreClass.Kotlin.INT, CoreClass.Kotlin.INT, KOperatorKind.MUL)] =
             CoreFunction.Kotlin.Int.TIMES_INT
+        referenceMap[ReducerEntry(CoreClass.Kotlin.INT, CoreClass.Kotlin.INT, KOperatorKind.PLUS)] =
+            CoreFunction.Kotlin.Int.PLUS_INT
+        referenceMap[ReducerEntry(CoreClass.Kotlin.INT, CoreClass.Kotlin.INT, KOperatorKind.MINUS)] =
+            CoreFunction.Kotlin.Int.MINUS_INT
     }
 
     override fun pass(projectContext: ProjectContext) {

@@ -21,6 +21,7 @@ import io.verik.compiler.ast.element.common.CExpression
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.SourceLocation
+import io.verik.compiler.main.m
 
 class SEventControlExpression(
     override val location: SourceLocation,
@@ -35,5 +36,10 @@ class SEventControlExpression(
 
     override fun accept(visitor: Visitor) {
         visitor.visitSEventControlExpression(this)
+    }
+
+    override fun copy(): SEventControlExpression? {
+        m.error("Unable to copy ${this::class.simpleName}", this)
+        return null
     }
 }

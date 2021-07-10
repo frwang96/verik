@@ -33,6 +33,7 @@ object BinaryExpressionTransformer : ProjectPass {
 
     init {
         operatorKindMap[CoreFunction.Kotlin.Int.PLUS_INT] = SOperatorKind.PLUS
+        operatorKindMap[CoreFunction.Kotlin.Int.MINUS_INT] = SOperatorKind.MINUS
         operatorKindMap[CoreFunction.Kotlin.Int.TIMES_INT] = SOperatorKind.MUL
     }
 

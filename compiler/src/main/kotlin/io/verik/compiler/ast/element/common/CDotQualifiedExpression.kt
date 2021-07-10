@@ -52,4 +52,10 @@ class CDotQualifiedExpression(
             else -> m.error("Could not find ${oldExpression::class.simpleName} in ${this::class.simpleName}", this)
         }
     }
+
+    override fun copy(): CDotQualifiedExpression? {
+        val copyReceiver = receiver.copy() ?: return null
+        val copySelector = selector.copy() ?: return null
+        return CDotQualifiedExpression(location, type, copyReceiver, copySelector)
+    }
 }

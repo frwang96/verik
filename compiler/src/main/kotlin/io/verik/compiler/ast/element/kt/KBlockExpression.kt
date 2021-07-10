@@ -35,4 +35,9 @@ class KBlockExpression (
     override fun accept(visitor: Visitor) {
         visitor.visitKBlockExpression(this)
     }
+
+    override fun copy(): KBlockExpression? {
+        val copyStatements = statements.map { it.copy() ?: return null }
+        return KBlockExpression(location, type, ArrayList(copyStatements))
+    }
 }

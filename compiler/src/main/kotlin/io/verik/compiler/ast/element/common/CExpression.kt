@@ -24,6 +24,8 @@ abstract class CExpression : CElement() {
 
     abstract var type: Type
 
+    abstract fun copy(): CExpression?
+
     fun replace(expression: CExpression) {
         val parent = parent
         if (parent is ExpressionContainer) {

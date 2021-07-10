@@ -20,7 +20,8 @@ enum class SOperatorKind {
     ASSIGN,
     ARROW_ASSIGN,
     MUL,
-    PLUS;
+    PLUS,
+    MINUS;
 
     fun serialize(): String {
         return when (this) {
@@ -28,6 +29,7 @@ enum class SOperatorKind {
             ARROW_ASSIGN -> "<="
             MUL -> "*"
             PLUS -> "+"
+            MINUS -> "-"
         }
     }
 }

@@ -32,4 +32,8 @@ class CConstantExpression(
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {}
+
+    override fun copy(): CConstantExpression {
+        return CConstantExpression(location, type, value)
+    }
 }

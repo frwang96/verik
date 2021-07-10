@@ -53,4 +53,9 @@ class KFunctionLiteralExpression(
         else
             m.error("Could not find ${oldExpression::class.simpleName} in ${this::class.simpleName}", this)
     }
+
+    override fun copy(): KFunctionLiteralExpression? {
+        val copyBodyBlockExpression = bodyBlockExpression.copy() ?: return null
+        return KFunctionLiteralExpression(location, copyBodyBlockExpression)
+    }
 }

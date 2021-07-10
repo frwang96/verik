@@ -23,7 +23,10 @@ import org.jetbrains.kotlin.com.intellij.psi.tree.IElementType
 enum class KOperatorKind {
     EQ,
     MUL,
-    PLUS;
+    PLUS,
+    MINUS,
+    PLUS_EQ,
+    MINUS_EQ;
 
     companion object {
 
@@ -32,6 +35,9 @@ enum class KOperatorKind {
                 "EQ" -> EQ
                 "MUL" -> MUL
                 "PLUS" -> PLUS
+                "MINUS" -> MINUS
+                "PLUSEQ" -> PLUS_EQ
+                "MINUSEQ" -> MINUS_EQ
                 else -> {
                     m.error("Unrecognised operator kind: $token", location)
                     null

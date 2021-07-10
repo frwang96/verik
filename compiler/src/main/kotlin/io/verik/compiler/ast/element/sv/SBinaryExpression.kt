@@ -22,6 +22,7 @@ import io.verik.compiler.ast.property.SOperatorKind
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.SourceLocation
+import io.verik.compiler.main.m
 
 class SBinaryExpression(
     override val location: SourceLocation,
@@ -38,5 +39,10 @@ class SBinaryExpression(
 
     override fun accept(visitor: Visitor) {
         visitor.visitSBinaryExpression(this)
+    }
+
+    override fun copy(): SBinaryExpression? {
+        m.error("Unable to copy ${this::class.simpleName}", this)
+        return null
     }
 }

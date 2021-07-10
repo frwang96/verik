@@ -34,4 +34,8 @@ class CReferenceExpression(
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {}
+
+    override fun copy(): CReferenceExpression {
+        return CReferenceExpression(location, type, reference)
+    }
 }

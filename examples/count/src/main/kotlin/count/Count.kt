@@ -39,7 +39,10 @@ object Count : Module() {
     }
 
     @Com
-    fun f() {}
+    fun f() {
+        x += 1
+        x -= 1
+    }
 
     @Run
     fun g() {

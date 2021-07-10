@@ -22,8 +22,9 @@ object CoreFunction {
 
         object Int : CoreScope(CoreClass.Kotlin.INT) {
 
-            val PLUS_INT = CoreKtFunctionDeclaration(parent, "plus", CoreClass.Kotlin.INT)
             val TIMES_INT = CoreKtFunctionDeclaration(parent, "times", CoreClass.Kotlin.INT)
+            val PLUS_INT = CoreKtFunctionDeclaration(parent, "plus", CoreClass.Kotlin.INT)
+            val MINUS_INT = CoreKtFunctionDeclaration(parent, "minus", CoreClass.Kotlin.INT)
         }
     }
 

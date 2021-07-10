@@ -53,6 +53,9 @@ tasks.test {
     useJUnitPlatform()
     systemProperties["junit.jupiter.execution.parallel.enabled"] = true
     systemProperties["junit.jupiter.execution.parallel.mode.default"] = "concurrent"
+    testLogging {
+        events("PASSED", "SKIPPED", "FAILED")
+    }
 }
 
 gradlePlugin {

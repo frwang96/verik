@@ -41,4 +41,9 @@ class CCallExpression(
     override fun acceptChildren(visitor: TreeVisitor) {
         valueArguments.forEach { it.accept(visitor) }
     }
+
+    override fun copy(): CCallExpression? {
+        val copyValueArguments = valueArguments.map { it.copy() ?: return null }
+        return CCallExpression(location, type, reference, ArrayList(copyValueArguments))
+    }
 }

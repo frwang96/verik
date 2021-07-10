@@ -25,6 +25,8 @@ abstract class CAbstractBlockExpression : CExpression(), ExpressionContainer {
 
     abstract val statements: ArrayList<CExpression>
 
+    abstract override fun copy(): CAbstractBlockExpression?
+
     override fun acceptChildren(visitor: TreeVisitor) {
         statements.forEach { it.accept(visitor) }
     }

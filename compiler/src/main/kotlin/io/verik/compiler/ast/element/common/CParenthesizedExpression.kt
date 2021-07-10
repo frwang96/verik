@@ -33,4 +33,9 @@ class CParenthesizedExpression(
     override fun accept(visitor: Visitor) {
         visitor.visitCParenthesizedExpression(this)
     }
+
+    override fun copy(): CParenthesizedExpression? {
+        val copyExpression = expression.copy() ?: return null
+        return CParenthesizedExpression(location, type, copyExpression)
+    }
 }

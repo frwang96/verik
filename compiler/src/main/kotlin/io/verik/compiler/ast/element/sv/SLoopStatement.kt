@@ -39,4 +39,9 @@ abstract class SLoopStatement : CExpression(), ExpressionContainer {
         else
             m.error("Could not find ${oldExpression::class.simpleName} in ${this::class.simpleName}", this)
     }
+
+    override fun copy(): SLoopStatement? {
+        m.error("Unable to copy ${this::class.simpleName}", this)
+        return null
+    }
 }

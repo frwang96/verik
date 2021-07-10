@@ -23,6 +23,10 @@ import io.verik.compiler.main.m
 object ProjectPreTransformer : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
+        m.log("PreTransform: Reduce assignment operators")
+        AssignmentOperatorReducer.pass(projectContext)
+        m.flush()
+
         m.log("PreTransform: Reduce binary expressions")
         BinaryExpressionReducer.pass(projectContext)
         m.flush()

@@ -39,4 +39,10 @@ class KBinaryExpression(
     override fun accept(visitor: Visitor) {
         visitor.visitKBinaryExpression(this)
     }
+
+    override fun copy(): KBinaryExpression? {
+        val copyLeft = left.copy() ?: return null
+        val copyRight = right.copy() ?: return null
+        return KBinaryExpression(location, type, copyLeft, copyRight, kind)
+    }
 }

@@ -37,4 +37,9 @@ class KExpressionStringTemplateEntry(
     override fun acceptChildren(visitor: TreeVisitor) {
         expression.accept(visitor)
     }
+
+    override fun copy(): KExpressionStringTemplateEntry? {
+        val copyExpression = expression.copy() ?: return null
+        return KExpressionStringTemplateEntry(location, copyExpression)
+    }
 }

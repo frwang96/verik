@@ -22,6 +22,7 @@ import io.verik.compiler.ast.property.Name
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.SourceLocation
+import io.verik.compiler.main.m
 
 class SBlockExpression (
     override val location: SourceLocation,
@@ -38,5 +39,10 @@ class SBlockExpression (
 
     override fun accept(visitor: Visitor) {
         visitor.visitSBlockExpression(this)
+    }
+
+    override fun copy(): SBlockExpression? {
+        m.error("Unable to copy ${this::class.simpleName}", this)
+        return null
     }
 }

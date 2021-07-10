@@ -49,4 +49,9 @@ class CValueArgument(
         else
             m.error("Could not find ${oldExpression::class.simpleName} in ${this::class.simpleName}", this)
     }
+
+    fun copy(): CValueArgument? {
+        val copyExpression = expression.copy() ?: return null
+        return CValueArgument(location, reference, copyExpression)
+    }
 }
