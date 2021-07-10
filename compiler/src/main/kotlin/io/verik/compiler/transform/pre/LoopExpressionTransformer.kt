@@ -37,7 +37,7 @@ object LoopExpressionTransformer : ProjectPass {
 
         override fun visitCCallExpression(callExpression: CCallExpression) {
             super.visitCCallExpression(callExpression)
-            if (callExpression.reference == CoreFunction.Core.FOREVER) {
+            if (callExpression.reference == CoreFunction.Core.FOREVER_FUNCTION) {
                 val functionLiteralExpression = callExpression
                     .valueArguments[0]
                     .expression.cast<KFunctionLiteralExpression>()

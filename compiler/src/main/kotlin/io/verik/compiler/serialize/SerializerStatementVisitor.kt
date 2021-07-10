@@ -17,10 +17,8 @@
 package io.verik.compiler.serialize
 
 import io.verik.compiler.ast.element.common.*
-import io.verik.compiler.ast.element.sv.SBinaryExpression
-import io.verik.compiler.ast.element.sv.SBlockExpression
-import io.verik.compiler.ast.element.sv.SForeverStatement
-import io.verik.compiler.ast.element.sv.SStringExpression
+import io.verik.compiler.ast.element.sv.*
+import io.verik.compiler.ast.property.EdgeType
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.m
 
@@ -120,5 +118,20 @@ class SerializerStatementVisitor(private val sourceBuilder: SourceBuilder) : Vis
     override fun visitSForeverStatement(foreverStatement: SForeverStatement) {
         sourceBuilder.append("forever ", foreverStatement)
         serializeAsStatement(foreverStatement.bodyBlockExpression)
+    }
+
+    override fun visitSEventExpression(eventExpression: SEventExpression) {
+        when (eventExpression.edgeType) {
+            EdgeType.POSEDGE -> sourceBuilder.append("posedge ", eventExpression)
+            EdgeType.NEGEDGE -> sourceBuilder.append("negedge ", eventExpression)
+            EdgeType.EDGE -> sourceBuilder.append("edge ", eventExpression)
+        }
+        serializeAsExpression(eventExpression.expression)
+    }
+
+    override fun visitSEventControlExpression(eventControlExpression: SEventControlExpression) {
+        sourceBuilder.append("@(", eventControlExpression)
+        serializeAsExpression(eventControlExpression.expression)
+        sourceBuilder.append(")", eventControlExpression)
     }
 }

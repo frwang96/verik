@@ -218,6 +218,21 @@ class ElementPrinter : Visitor() {
         }
     }
 
+    override fun visitSEventExpression(eventExpression: SEventExpression) {
+        build("SEdgeExpression") {
+            build(eventExpression.type.toString())
+            build(eventExpression.edgeType.toString())
+            build(eventExpression.expression)
+        }
+    }
+
+    override fun visitSEventControlExpression(eventControlExpression: SEventControlExpression) {
+        build("SEventControlExpression") {
+            build(eventControlExpression.type.toString())
+            build(eventControlExpression.expression)
+        }
+    }
+
     private fun build(content: String) {
         if (!first) builder.append(", ")
         builder.append(content)

@@ -30,7 +30,13 @@ fun f() {
 @Top
 object Count : Module() {
 
+    val clk = false
     val y = false
+
+    @Seq
+    fun update() {
+        wait(posedge(clk))
+    }
 
     @Run
     fun g() {

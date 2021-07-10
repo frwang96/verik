@@ -21,10 +21,9 @@ package io.verik.core
 /**
  * Specify the sensitivity list of a [sequential][Seq] action block.
  * @param x the event to trigger the sequential action block
- * @param y the additional events to trigger the sequential action block
  * @param block the block to execute when triggered
  */
-fun on(x: Event, vararg y: Event, block: () -> Unit) {
+fun on(x: Event, block: () -> Unit) {
     throw Exception()
 }
 

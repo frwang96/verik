@@ -104,8 +104,12 @@ abstract class Visitor {
         visitCAbstractBlockExpression(blockExpression)
     }
 
+    open fun visitCAbstractExpressionContainer(abstractExpressionContainer: CAbstractExpressionContainer) {
+        visitCExpression(abstractExpressionContainer)
+    }
+
     open fun visitCParenthesizedExpression(parenthesizedExpression: CParenthesizedExpression) {
-        visitCExpression(parenthesizedExpression)
+        visitCAbstractExpressionContainer(parenthesizedExpression)
     }
 
     open fun visitCAbstractBinaryExpression(binaryExpression: CAbstractBinaryExpression) {
@@ -170,5 +174,13 @@ abstract class Visitor {
 
     open fun visitSForeverStatement(foreverStatement: SForeverStatement) {
         visitSLoopStatement(foreverStatement)
+    }
+
+    open fun visitSEventExpression(eventExpression: SEventExpression) {
+        visitCAbstractExpressionContainer(eventExpression)
+    }
+
+    open fun visitSEventControlExpression(eventControlExpression: SEventControlExpression) {
+        visitCAbstractExpressionContainer(eventControlExpression)
     }
 }

@@ -14,23 +14,26 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.common
+package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.property.Type
+import io.verik.compiler.ast.element.common.CAbstractExpressionContainer
+import io.verik.compiler.ast.element.common.CExpression
 import io.verik.compiler.common.Visitor
+import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.SourceLocation
 
-class CParenthesizedExpression(
+class SEventControlExpression(
     override val location: SourceLocation,
-    override var type: Type,
     override var expression: CExpression
 ) : CAbstractExpressionContainer() {
+
+    override var type = CoreClass.Kotlin.UNIT.toNoArgumentsType()
 
     init {
         expression.parent = this
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitCParenthesizedExpression(this)
+        visitor.visitSEventControlExpression(this)
     }
 }

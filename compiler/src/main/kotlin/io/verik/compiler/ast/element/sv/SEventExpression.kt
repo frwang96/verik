@@ -14,23 +14,28 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.common
+package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.property.Type
+import io.verik.compiler.ast.element.common.CAbstractExpressionContainer
+import io.verik.compiler.ast.element.common.CExpression
+import io.verik.compiler.ast.property.EdgeType
 import io.verik.compiler.common.Visitor
+import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.SourceLocation
 
-class CParenthesizedExpression(
+class SEventExpression(
     override val location: SourceLocation,
-    override var type: Type,
-    override var expression: CExpression
+    override var expression: CExpression,
+    var edgeType: EdgeType
 ) : CAbstractExpressionContainer() {
+
+    override var type = CoreClass.Core.EVENT.toNoArgumentsType()
 
     init {
         expression.parent = this
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitCParenthesizedExpression(this)
+        visitor.visitSEventExpression(this)
     }
 }

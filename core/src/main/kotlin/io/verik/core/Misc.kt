@@ -28,7 +28,7 @@ fun range(n: Int): VList<Int> {
 /**
  * Returns the concatenation of the arguments.
  */
-fun cat(x: Any, vararg y: Any): Ubit<Cardinal> {
+fun cat(vararg x: Any): Ubit<Cardinal> {
     throw VerikException()
 }
 
@@ -42,42 +42,42 @@ fun rep(n: Int, x: Any): Ubit<Cardinal> {
 /**
  * Returns the maximum of the arguments.
  */
-fun max(x: Int, vararg y: Int): Int {
+fun max(vararg x: Int): Int {
     throw VerikException()
 }
 
 /**
  * Returns the maximum of the arguments.
  */
-fun max(x: Sbit<Cardinal>, vararg y: Sbit<Cardinal>): Sbit<Cardinal> {
+fun max(vararg x: Sbit<Cardinal>): Sbit<Cardinal> {
     throw VerikException()
 }
 
 /**
  * Returns the maximum of the arguments.
  */
-fun max(x: Ubit<Cardinal>, vararg y: Ubit<Cardinal>): Ubit<Cardinal> {
+fun max(vararg x: Ubit<Cardinal>): Ubit<Cardinal> {
     throw VerikException()
 }
 
 /**
  * Returns the minimum of the arguments.
  */
-fun min(x: Int, vararg y: Int): Int {
+fun min(vararg x: Int): Int {
     throw VerikException()
 }
 
 /**
  * Returns the minimum of the arguments.
  */
-fun min(x: Sbit<Cardinal>, vararg y: Sbit<Cardinal>): Sbit<Cardinal> {
+fun min(vararg x: Sbit<Cardinal>): Sbit<Cardinal> {
     throw VerikException()
 }
 
 /**
  * Returns the minimum of the arguments.
  */
-fun min(x: Ubit<Cardinal>, vararg y: Ubit<Cardinal>): Ubit<Cardinal> {
+fun min(vararg x: Ubit<Cardinal>): Ubit<Cardinal> {
     throw VerikException()
 }
 

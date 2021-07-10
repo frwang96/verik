@@ -17,10 +17,7 @@
 package io.verik.compiler.serialize
 
 import io.verik.compiler.ast.element.common.*
-import io.verik.compiler.ast.element.sv.SBinaryExpression
-import io.verik.compiler.ast.element.sv.SBlockExpression
-import io.verik.compiler.ast.element.sv.SLoopStatement
-import io.verik.compiler.ast.element.sv.SStringExpression
+import io.verik.compiler.ast.element.sv.*
 
 enum class SerializationType {
     EXPRESSION,
@@ -38,6 +35,8 @@ enum class SerializationType {
                 is CDotQualifiedExpression -> EXPRESSION
                 is CConstantExpression -> EXPRESSION
                 is SStringExpression -> EXPRESSION
+                is SEventExpression -> EXPRESSION
+                is SEventControlExpression -> EXPRESSION
                 is SBlockExpression -> STATEMENT
                 is SLoopStatement -> STATEMENT
                 else -> OTHER

@@ -14,23 +14,10 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.common
+package io.verik.compiler.ast.property
 
-import io.verik.compiler.ast.property.Type
-import io.verik.compiler.common.Visitor
-import io.verik.compiler.main.SourceLocation
-
-class CParenthesizedExpression(
-    override val location: SourceLocation,
-    override var type: Type,
-    override var expression: CExpression
-) : CAbstractExpressionContainer() {
-
-    init {
-        expression.parent = this
-    }
-
-    override fun accept(visitor: Visitor) {
-        visitor.visitCParenthesizedExpression(this)
-    }
+enum class EdgeType {
+    POSEDGE,
+    NEGEDGE,
+    EDGE
 }

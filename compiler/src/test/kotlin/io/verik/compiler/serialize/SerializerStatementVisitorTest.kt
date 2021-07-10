@@ -148,4 +148,27 @@ internal class SerializerStatementVisitorTest : BaseTest() {
             projectContext.outputTextFiles.last()
         )
     }
+
+    @Test
+    fun `event control expression`() {
+        val projectContext = TestDriver.serialize(
+            """
+                var x = false
+                fun f() {
+                    wait(posedge(x))
+                }
+            """.trimIndent()
+        )
+        val expected = """
+            logic x = 1'b0;
+            
+            function void f();
+                @(posedge x);
+            endfunction : f
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
 }

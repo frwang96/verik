@@ -27,6 +27,10 @@ object ProjectPostTransformer : ProjectPass {
         FunctionReferenceTransformer.pass(projectContext)
         m.flush()
 
+        m.log("PostTransform: Transform special functions")
+        FunctionSpecialTransformer.pass(projectContext)
+        m.flush()
+
         m.log("PostTransform: Transform binary expressions")
         BinaryExpressionTransformer.pass(projectContext)
         m.flush()

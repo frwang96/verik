@@ -43,11 +43,12 @@ object CoreFunction {
         val U_INT = CoreKtFunctionDeclaration(parent, "u", CoreClass.Kotlin.INT)
         val RANDOM = CoreKtFunctionDeclaration(parent, "random")
         val RANDOM_INT = CoreKtFunctionDeclaration(parent, "random", CoreClass.Kotlin.INT)
-        val FOREVER = CoreKtFunctionDeclaration(parent, "forever", CoreClass.Kotlin.FUNCTION)
-        val ON = CoreKtFunctionDeclaration(parent, "on", CoreClass.Core.EVENT, CoreClass.Kotlin.FUNCTION)
+        val FOREVER_FUNCTION = CoreKtFunctionDeclaration(parent, "forever", CoreClass.Kotlin.FUNCTION)
+        val ON_EVENT_FUNCTION = CoreKtFunctionDeclaration(parent, "on", CoreClass.Core.EVENT, CoreClass.Kotlin.FUNCTION)
 
-        val POSEDGE = CoreKtFunctionDeclaration(parent, "posedge", CoreClass.Kotlin.BOOLEAN)
-        val NEGEDGE = CoreKtFunctionDeclaration(parent, "negedge", CoreClass.Kotlin.BOOLEAN)
+        val POSEDGE_BOOLEAN = CoreKtFunctionDeclaration(parent, "posedge", CoreClass.Kotlin.BOOLEAN)
+        val NEGEDGE_BOOLEAN = CoreKtFunctionDeclaration(parent, "negedge", CoreClass.Kotlin.BOOLEAN)
+        val WAIT_EVENT = CoreKtFunctionDeclaration(parent, "wait", CoreClass.Core.EVENT)
 
         object Ubit : CoreScope(CoreClass.Core.UBIT) {
 
