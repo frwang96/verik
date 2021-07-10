@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.pre
+package io.verik.compiler.check.pre
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestDriver
@@ -28,7 +28,7 @@ internal class ImportDirectiveCheckerTest : BaseTest() {
     @Test
     fun `import not found`() {
         assertThrows<TestException> {
-            TestDriver.preTransform(
+            TestDriver.preCheck(
                 """
                     import java.time.LocalDateTime
                 """.trimIndent()
@@ -41,7 +41,7 @@ internal class ImportDirectiveCheckerTest : BaseTest() {
     @Test
     fun `import not found all under`() {
         assertThrows<TestException> {
-            TestDriver.preTransform(
+            TestDriver.preCheck(
                 """
                     import java.time.*
                 """.trimIndent()

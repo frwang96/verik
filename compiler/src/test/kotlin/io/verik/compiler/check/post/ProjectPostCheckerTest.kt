@@ -14,29 +14,23 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.mid
+package io.verik.compiler.check.post
 
-import io.verik.compiler.ast.element.VkBlockExpression
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestDriver
-import io.verik.compiler.util.assertElementEquals
-import io.verik.compiler.util.findExpression
+import io.verik.compiler.util.TestException
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
-internal class LoopExpressionTransformerTest : BaseTest() {
+internal class ProjectPostCheckerTest : BaseTest() {
 
     @Test
-    fun `transform forever`() {
-        val projectContext = TestDriver.midTransform(
-            """
-                fun f() {
-                    forever {}
-                }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "SvForeverExpression(Unit, BlockExpression(*))",
-            (projectContext.findExpression("f") as VkBlockExpression).statements[0]
-        )
+    fun `project empty`() {
+        assertThrows<TestException> {
+            TestDriver.postCheck("")
+        }.apply {
+            Assertions.assertEquals("Output files empty: No declarations found", message)
+        }
     }
 }

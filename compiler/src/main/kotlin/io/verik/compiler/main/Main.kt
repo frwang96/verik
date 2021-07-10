@@ -18,9 +18,10 @@ package io.verik.compiler.main
 
 import io.verik.compiler.canonicalize.ProjectCanonicalizer
 import io.verik.compiler.cast.ProjectCaster
+import io.verik.compiler.check.post.ProjectPostChecker
+import io.verik.compiler.check.pre.ProjectPreChecker
 import io.verik.compiler.interpret.ProjectInterpreter
 import io.verik.compiler.serialize.ProjectSerializer
-import io.verik.compiler.transform.mid.ProjectMidTransformer
 import io.verik.compiler.transform.post.ProjectPostTransformer
 import io.verik.compiler.transform.pre.ProjectPreTransformer
 import io.verik.plugin.Config
@@ -37,11 +38,12 @@ object Main {
         readFiles(projectContext)
         KotlinCompiler().pass(projectContext)
         ProjectCaster.pass(projectContext)
-        ProjectPreTransformer.pass(projectContext)
+        ProjectPreChecker.pass(projectContext)
         ProjectCanonicalizer.pass(projectContext)
         ProjectInterpreter.pass(projectContext)
-        ProjectMidTransformer.pass(projectContext)
+        ProjectPreTransformer.pass(projectContext)
         ProjectPostTransformer.pass(projectContext)
+        ProjectPostChecker.pass(projectContext)
         ProjectSerializer.pass(projectContext)
         writeFiles(projectContext)
     }

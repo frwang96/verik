@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.mid
+package io.verik.compiler.transform.pre
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestDriver
@@ -26,7 +26,7 @@ internal class StringTemplateExpressionReducerTest : BaseTest() {
 
     @Test
     fun `reduce literal entry`() {
-        val projectContext = TestDriver.midTransform(
+        val projectContext = TestDriver.preTransform(
             """
                 var x = "abc"
             """.trimIndent()
@@ -39,7 +39,7 @@ internal class StringTemplateExpressionReducerTest : BaseTest() {
 
     @Test
     fun `reduce expression entry`() {
-        val projectContext = TestDriver.midTransform(
+        val projectContext = TestDriver.preTransform(
             """
                 var x = 0
                 var y = "${"$"}x"
@@ -62,7 +62,7 @@ internal class StringTemplateExpressionReducerTest : BaseTest() {
 
     @Test
     fun `reduce expression entry escape percent`() {
-        val projectContext = TestDriver.midTransform(
+        val projectContext = TestDriver.preTransform(
             """
                 var x = "${"$"}{0}%"
             """.trimIndent()
@@ -77,7 +77,7 @@ internal class StringTemplateExpressionReducerTest : BaseTest() {
 
     @Test
     fun `reduce expression entry no escape percent`() {
-        val projectContext = TestDriver.midTransform(
+        val projectContext = TestDriver.preTransform(
             """
                 var x = "%"
             """.trimIndent()

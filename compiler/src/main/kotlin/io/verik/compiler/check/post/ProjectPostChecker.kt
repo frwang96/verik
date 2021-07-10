@@ -14,29 +14,29 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.pre
+package io.verik.compiler.check.post
 
+import io.verik.compiler.common.ElementParentChecker
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
-object ProjectPreTransformer : ProjectPass {
+object ProjectPostChecker : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        m.log("PreTransform: Reduce binary expressions")
-        BinaryExpressionReducer.pass(projectContext)
+        if (projectContext.vkFiles.isEmpty())
+            m.fatal("Output files empty: No declarations found", null)
+
+        m.log("PostCheck: Check element parents")
+        ElementParentChecker.pass(projectContext)
         m.flush()
 
-        m.log("PreTransform: Reduce string template expressions")
-        StringTemplateExpressionReducer.pass(projectContext)
+        m.log("PostCheck: Check source locations")
+        SourceLocationChecker.pass(projectContext)
         m.flush()
 
-        m.log("PreTransform: Transform assignments")
-        AssignmentTransformer.pass(projectContext)
-        m.flush()
-
-        m.log("PreTransform: Transform loop expressions")
-        LoopExpressionTransformer.pass(projectContext)
+        m.log("PostCheck: Check untransformed elements")
+        UntransformedElementChecker.pass(projectContext)
         m.flush()
     }
 }

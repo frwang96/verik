@@ -16,7 +16,6 @@
 
 package io.verik.compiler.serialize
 
-import io.verik.compiler.common.ElementParentChecker
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
@@ -25,25 +24,15 @@ import io.verik.compiler.main.m
 object ProjectSerializer : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        if (projectContext.vkFiles.isEmpty())
-            m.fatal("Output files empty: No declarations found", null)
-
-        m.log("Serialize: Check untransformed elements")
-        UntransformedElementChecker.pass(projectContext)
-        m.flush()
-
-        m.log("Serialize: Check element parents")
-        ElementParentChecker.pass(projectContext)
-        m.flush()
-
-        m.log("Serialize: Check source locations")
-        SourceLocationChecker.pass(projectContext)
-        m.flush()
-
-        m.info("Serialize: Serialize output files")
+        m.info("Serialize: Serialize package files")
         val packageTextFiles = PackageFileSerializer.serialize(projectContext)
-        val orderTextFile = OrderFileSerializer.serialize(projectContext, packageTextFiles)
+        m.flush()
 
+        m.info("Serialize: Serialize order file")
+        val orderTextFile = OrderFileSerializer.serialize(projectContext, packageTextFiles)
+        m.flush()
+
+        m.info("Serialize: Serialize source files")
         val outputTextFiles = ArrayList<TextFile>()
         outputTextFiles.addAll(packageTextFiles)
         outputTextFiles.add(orderTextFile)

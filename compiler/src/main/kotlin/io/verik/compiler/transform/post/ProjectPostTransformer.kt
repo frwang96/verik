@@ -23,19 +23,19 @@ import io.verik.compiler.main.m
 object ProjectPostTransformer : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        m.log("Post-transform: Transform function references")
+        m.log("PostTransform: Transform function references")
         FunctionReferenceTransformer.pass(projectContext)
         m.flush()
 
-        m.log("Post-transform: Transform binary expressions")
+        m.log("PostTransform: Transform binary expressions")
         BinaryExpressionTransformer.pass(projectContext)
         m.flush()
 
-        m.log("Post-transform: Transform package names")
+        m.log("PostTransform: Transform package names")
         PackageNameTransformer.pass(projectContext)
         m.flush()
 
-        m.log("Post-transform: Decorate block expressions")
+        m.log("PostTransform: Decorate block expressions")
         BlockExpressionDecorator.pass(projectContext)
         m.flush()
     }

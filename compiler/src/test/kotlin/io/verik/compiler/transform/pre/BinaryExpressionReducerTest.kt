@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.mid
+package io.verik.compiler.transform.pre
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestDriver
@@ -26,7 +26,7 @@ internal class BinaryExpressionReducerTest : BaseTest() {
 
     @Test
     fun `reduce plus`() {
-        val projectContext = TestDriver.midTransform(
+        val projectContext = TestDriver.preTransform(
             """
                 var x = 0
                 var y = x + 0
@@ -40,7 +40,7 @@ internal class BinaryExpressionReducerTest : BaseTest() {
 
     @Test
     fun `reduce nested plus`() {
-        val projectContext = TestDriver.midTransform(
+        val projectContext = TestDriver.preTransform(
             """
                 var x = 0
                 var y = 0

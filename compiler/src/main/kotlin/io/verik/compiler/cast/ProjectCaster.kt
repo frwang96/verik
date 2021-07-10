@@ -17,7 +17,6 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.ast.element.VkFile
-import io.verik.compiler.common.ElementParentChecker
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
@@ -41,10 +40,6 @@ object ProjectCaster : ProjectPass {
             baseVisitor.getElement<VkFile>(it)
         }
         projectContext.vkFiles = files
-        m.flush()
-
-        m.log("Cast: Check element parents")
-        ElementParentChecker.pass(projectContext)
         m.flush()
 
         if (projectContext.config.debug) {

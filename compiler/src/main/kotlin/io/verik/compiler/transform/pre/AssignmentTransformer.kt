@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.mid
+package io.verik.compiler.transform.pre
 
 import io.verik.compiler.ast.common.KtOperatorKind
 import io.verik.compiler.ast.common.SvOperatorKind

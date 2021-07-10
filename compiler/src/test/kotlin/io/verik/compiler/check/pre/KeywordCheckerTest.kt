@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.pre
+package io.verik.compiler.check.pre
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestDriver
@@ -28,7 +28,7 @@ internal class KeywordCheckerTest : BaseTest() {
     @Test
     fun `keyword property`() {
         assertThrows<TestException> {
-            TestDriver.preTransform(
+            TestDriver.preCheck(
                 """
                     const val alias = false
                 """.trimIndent()

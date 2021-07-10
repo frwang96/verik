@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.pre
+package io.verik.compiler.check.pre
 
 import io.verik.compiler.ast.common.Name
 import io.verik.compiler.ast.common.PackageDeclaration
