@@ -49,5 +49,9 @@ object ProjectPostTransformer {
         m.log("Post-transform: Transform package names")
         PackageNameTransformer.transform(projectContext)
         m.flush()
+
+        m.log("Post-transform: Decorate block expressions")
+        BlockExpressionDecorator.transform(projectContext)
+        m.flush()
     }
 }

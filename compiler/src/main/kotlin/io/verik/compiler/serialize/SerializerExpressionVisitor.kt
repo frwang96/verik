@@ -22,32 +22,59 @@ import io.verik.compiler.main.m
 
 class SerializerExpressionVisitor(private val sourceBuilder: SourceBuilder) : Visitor() {
 
+    fun serializeAsExpression(element: VkElement) {
+        element.accept(this)
+        if (!isSvExpression(element))
+            m.error("SystemVerilog expression expected but got: ${element::class.simpleName}", element)
+    }
+
+    private fun serializeAsStatement(element: VkElement) {
+        element.accept(this)
+        if (isSvExpression(element))
+            sourceBuilder.appendLine(";", element)
+    }
+
+    private fun isSvExpression(element: VkElement): Boolean {
+        return when (element) {
+            is VkParenthesizedExpression -> true
+            is VkSvBinaryExpression -> true
+            is VkReferenceExpression -> true
+            is VkCallExpression -> true
+            is VkDotQualifiedExpression -> true
+            is VkConstantExpression -> true
+            is VkStringExpression -> true
+            else -> false
+        }
+    }
+
     override fun visitElement(element: VkElement) {
         m.error("Unable to serialize element: ${element::class.simpleName}", element)
     }
 
     override fun visitBlockExpression(blockExpression: VkBlockExpression) {
-        blockExpression.statements.forEach {
-            it.accept(this)
-            if (it !is VkSvLoopExpression)
-                sourceBuilder.appendLine(";", it)
-            else
-                sourceBuilder.appendLine()
+        if (blockExpression.decorated) {
+            sourceBuilder.appendLine("begin", blockExpression)
+            sourceBuilder.indent {
+                blockExpression.statements.forEach { serializeAsStatement(it) }
+            }
+            sourceBuilder.appendLine("end", blockExpression)
+        } else {
+            blockExpression.statements.forEach { serializeAsStatement(it) }
         }
     }
 
     override fun visitParenthesizedExpression(parenthesizedExpression: VkParenthesizedExpression) {
         sourceBuilder.append("(", parenthesizedExpression)
-        parenthesizedExpression.expression.accept(this)
+        serializeAsExpression(parenthesizedExpression.expression)
         sourceBuilder.append(")", parenthesizedExpression)
     }
 
     override fun visitSvBinaryExpression(svBinaryExpression: VkSvBinaryExpression) {
-        svBinaryExpression.left.accept(this)
+        serializeAsExpression(svBinaryExpression.left)
         sourceBuilder.hardBreak()
         sourceBuilder.append(svBinaryExpression.kind.serialize(), svBinaryExpression)
         sourceBuilder.append(" ", svBinaryExpression)
-        svBinaryExpression.right.accept(this)
+        serializeAsExpression(svBinaryExpression.right)
     }
 
     override fun visitReferenceExpression(referenceExpression: VkReferenceExpression) {
@@ -61,24 +88,24 @@ class SerializerExpressionVisitor(private val sourceBuilder: SourceBuilder) : Vi
         } else {
             sourceBuilder.append("(", callExpression)
             sourceBuilder.softBreak()
-            callExpression.valueArguments[0].accept(this)
+            visitValueArgument(callExpression.valueArguments[0])
             callExpression.valueArguments.drop(1).forEach {
                 sourceBuilder.append(",", callExpression)
                 sourceBuilder.hardBreak()
-                it.accept(this)
+                visitValueArgument(it)
             }
             sourceBuilder.append(")", callExpression)
         }
     }
 
     override fun visitValueArgument(valueArgument: VkValueArgument) {
-        valueArgument.expression.accept(this)
+        serializeAsExpression(valueArgument.expression)
     }
 
     override fun visitDotQualifiedExpression(dotQualifiedExpression: VkDotQualifiedExpression) {
-        dotQualifiedExpression.receiver.accept(this)
+        serializeAsExpression(dotQualifiedExpression.receiver)
         sourceBuilder.append(".", dotQualifiedExpression)
-        dotQualifiedExpression.selector.accept(this)
+        serializeAsExpression(dotQualifiedExpression.selector)
     }
 
     override fun visitConstantExpression(constantExpression: VkConstantExpression) {
@@ -90,7 +117,7 @@ class SerializerExpressionVisitor(private val sourceBuilder: SourceBuilder) : Vi
     }
 
     override fun visitSvForeverExpression(svForeverExpression: VkSvForeverExpression) {
-        sourceBuilder.append("forever", svForeverExpression)
-        svForeverExpression.bodyBlockExpression.accept(this)
+        sourceBuilder.append("forever ", svForeverExpression)
+        serializeAsStatement(svForeverExpression.bodyBlockExpression)
     }
 }

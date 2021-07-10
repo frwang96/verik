@@ -77,7 +77,7 @@ class SerializerBaseVisitor(private val sourceBuilder: SourceBuilder) : Visitor(
         val initializer = svProperty.initializer
         if (initializer != null) {
             sourceBuilder.append(" = ", svProperty)
-            initializer.accept(expressionVisitor)
+            expressionVisitor.serializeAsExpression(initializer)
             sourceBuilder.appendLine(";", initializer)
         } else {
             sourceBuilder.appendLine(";", svProperty)

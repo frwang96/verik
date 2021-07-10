@@ -139,7 +139,8 @@ internal class SerializerExpressionVisitorTest : BaseTest() {
         )
         val expected = """
             function void f();
-                forever
+                forever begin
+                end
             endfunction: f
         """.trimIndent()
         assertOutputTextEquals(

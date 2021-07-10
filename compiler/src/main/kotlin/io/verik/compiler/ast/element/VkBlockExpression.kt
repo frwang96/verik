@@ -29,6 +29,8 @@ class VkBlockExpression(
     val statements: ArrayList<VkExpression>
 ) : VkExpression(), VkExpressionContainer {
 
+    var decorated = true
+
     init {
         statements.forEach { it.parent = this }
     }
