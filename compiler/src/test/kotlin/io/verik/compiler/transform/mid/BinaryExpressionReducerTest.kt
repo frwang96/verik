@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.post
+package io.verik.compiler.transform.mid
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestDriver
@@ -26,21 +26,21 @@ internal class BinaryExpressionReducerTest : BaseTest() {
 
     @Test
     fun `reduce plus`() {
-        val projectContext = TestDriver.postTransform(
+        val projectContext = TestDriver.midTransform(
             """
                 var x = 0
                 var y = x + 0
             """.trimIndent()
         )
         assertElementEquals(
-            "SvBinaryExpression(Int, PLUS, ReferenceExpression(*), ConstantExpression(*))",
+            "DotQualifiedExpression(Int, ReferenceExpression(*), CallExpression(Int, plus, *))",
             projectContext.findExpression("y")
         )
     }
 
     @Test
     fun `reduce nested plus`() {
-        val projectContext = TestDriver.postTransform(
+        val projectContext = TestDriver.midTransform(
             """
                 var x = 0
                 var y = 0
@@ -49,11 +49,10 @@ internal class BinaryExpressionReducerTest : BaseTest() {
         )
         assertElementEquals(
             """
-                SvBinaryExpression(
+                DotQualifiedExpression(
                     Int,
-                    PLUS,
-                    SvBinaryExpression(Int, PLUS, ReferenceExpression(*), ReferenceExpression(*)),
-                    ConstantExpression(*)
+                    DotQualifiedExpression(Int, ReferenceExpression(*), CallExpression(Int, plus, *)),
+                    CallExpression(Int, plus, *)
                 )
             """.trimIndent(),
             projectContext.findExpression("z")

@@ -14,29 +14,16 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.post
+package io.verik.compiler.canonicalize
 
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
-object ProjectPostTransformer : ProjectPass {
+object ProjectCanonicalizer : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        m.log("Post-transform: Transform function references")
-        FunctionReferenceTransformer.pass(projectContext)
-        m.flush()
-
-        m.log("Post-transform: Transform binary expressions")
-        BinaryExpressionTransformer.pass(projectContext)
-        m.flush()
-
-        m.log("Post-transform: Transform package names")
-        PackageNameTransformer.pass(projectContext)
-        m.flush()
-
-        m.log("Post-transform: Decorate block expressions")
-        BlockExpressionDecorator.pass(projectContext)
+        m.log("Canonicalize: Check types")
         m.flush()
     }
 }

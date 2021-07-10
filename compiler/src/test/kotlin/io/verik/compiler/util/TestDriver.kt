@@ -16,12 +16,14 @@
 
 package io.verik.compiler.util
 
+import io.verik.compiler.canonicalize.ProjectCanonicalizer
 import io.verik.compiler.cast.ProjectCaster
 import io.verik.compiler.interpret.ProjectInterpreter
 import io.verik.compiler.main.KotlinCompiler
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 import io.verik.compiler.serialize.ProjectSerializer
+import io.verik.compiler.transform.mid.ProjectMidTransformer
 import io.verik.compiler.transform.post.ProjectPostTransformer
 import io.verik.compiler.transform.pre.ProjectPreTransformer
 import io.verik.plugin.Config
@@ -68,14 +70,26 @@ object TestDriver {
         return projectContext
     }
 
-    fun interpret(@Language("kotlin") content: String): ProjectContext {
+    fun canonicalize(@Language("kotlin") content: String): ProjectContext {
         val projectContext = preTransform(content)
+        ProjectCanonicalizer.pass(projectContext)
+        return projectContext
+    }
+
+    fun interpret(@Language("kotlin") content: String): ProjectContext {
+        val projectContext = canonicalize(content)
         ProjectInterpreter.pass(projectContext)
         return projectContext
     }
 
-    fun postTransform(@Language("kotlin") content: String): ProjectContext {
+    fun midTransform(@Language("kotlin") content: String): ProjectContext {
         val projectContext = interpret(content)
+        ProjectMidTransformer.pass(projectContext)
+        return projectContext
+    }
+
+    fun postTransform(@Language("kotlin") content: String): ProjectContext {
+        val projectContext = midTransform(content)
         ProjectPostTransformer.pass(projectContext)
         return projectContext
     }

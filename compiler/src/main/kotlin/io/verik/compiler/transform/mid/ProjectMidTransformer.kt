@@ -14,29 +14,29 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.post
+package io.verik.compiler.transform.mid
 
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
-object ProjectPostTransformer : ProjectPass {
+object ProjectMidTransformer : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        m.log("Post-transform: Transform function references")
-        FunctionReferenceTransformer.pass(projectContext)
+        m.log("Mid-transform: Reduce binary expressions")
+        BinaryExpressionReducer.pass(projectContext)
         m.flush()
 
-        m.log("Post-transform: Transform binary expressions")
-        BinaryExpressionTransformer.pass(projectContext)
+        m.log("Mid-transform: Reduce string template expressions")
+        StringTemplateExpressionReducer.pass(projectContext)
         m.flush()
 
-        m.log("Post-transform: Transform package names")
-        PackageNameTransformer.pass(projectContext)
+        m.log("Mid-transform: Transform assignments")
+        AssignmentTransformer.pass(projectContext)
         m.flush()
 
-        m.log("Post-transform: Decorate block expressions")
-        BlockExpressionDecorator.pass(projectContext)
+        m.log("Mid-transform: Transform loop expressions")
+        LoopExpressionTransformer.pass(projectContext)
         m.flush()
     }
 }

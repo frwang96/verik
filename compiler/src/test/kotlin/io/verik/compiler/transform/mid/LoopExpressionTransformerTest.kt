@@ -14,29 +14,29 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.post
+package io.verik.compiler.transform.mid
 
+import io.verik.compiler.ast.element.VkBlockExpression
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
-internal class AssignmentTransformerTest : BaseTest() {
+internal class LoopExpressionTransformerTest : BaseTest() {
 
     @Test
-    fun `transform assignment blocking`() {
-        val projectContext = TestDriver.postTransform(
+    fun `transform forever`() {
+        val projectContext = TestDriver.midTransform(
             """
-                var x = 0
                 fun f() {
-                    x = 1
+                    forever {}
                 }
             """.trimIndent()
         )
         assertElementEquals(
-            "BlockExpression(Unit, [SvBinaryExpression(Unit, ASSIGN, *)])",
-            projectContext.findExpression("f")
+            "SvForeverExpression(Unit, BlockExpression(*))",
+            (projectContext.findExpression("f") as VkBlockExpression).statements[0]
         )
     }
 }
