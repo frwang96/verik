@@ -37,7 +37,7 @@ object CoreDeclarationMap {
     private val functionMap = HashMap<Name, ArrayList<CoreKtFunctionDeclaration>>()
 
     init {
-        addCoreDeclarations(Core::class)
+        addCoreDeclarations(C::class)
     }
 
     operator fun get(
@@ -52,23 +52,32 @@ object CoreDeclarationMap {
     }
 
     private fun addCoreDeclarations(kClass: KClass<*>) {
-        val kClassInstance = kClass.objectInstance ?: return
-        kClass.memberProperties.forEach {
-            if (it.returnType.isSubtypeOf(CoreDeclaration::class.createType())) {
-                @Suppress("UNCHECKED_CAST")
-                when (val property = (it as KProperty1<Any, *>).get(kClassInstance)) {
-                    is CoreCardinalDeclaration -> {
-                        declarationMap[property.qualifiedName] = property
+        val kClassInstance = kClass.objectInstance
+        if (kClassInstance is CoreScope) {
+            kClass.memberProperties.forEach {
+                if (it.returnType.isSubtypeOf(CoreDeclaration::class.createType())) {
+                    @Suppress("UNCHECKED_CAST")
+                    val property = (it as KProperty1<Any, *>).get(kClassInstance) as CoreDeclaration
+                    if (property.qualifiedName.name != "${kClassInstance.parent}.${property.name}") {
+                        val expectedString =
+                            "Expected ${kClassInstance.parent}.${property.name} actual ${property.qualifiedName.name}"
+                        throw IllegalArgumentException("Qualified name does not match scope parent: $expectedString")
                     }
-                    is CoreClassDeclaration -> {
-                        declarationMap[property.qualifiedName] = property
-                    }
-                    is CoreFunctionDeclaration -> {
-                        if (property is CoreKtFunctionDeclaration) {
-                            if (property.qualifiedName !in functionMap)
-                                functionMap[property.qualifiedName] = ArrayList()
-                            functionMap[property.qualifiedName]!!.add(property)
+                    when (property) {
+                        is CoreCardinalDeclaration -> {
+                            declarationMap[property.qualifiedName] = property
                         }
+                        is CoreClassDeclaration -> {
+                            declarationMap[property.qualifiedName] = property
+                        }
+                        is CoreAbstractFunctionDeclaration -> {
+                            if (property is CoreKtFunctionDeclaration) {
+                                if (property.qualifiedName !in functionMap)
+                                    functionMap[property.qualifiedName] = ArrayList()
+                                functionMap[property.qualifiedName]!!.add(property)
+                            }
+                        }
+                        else -> throw IllegalArgumentException("Unexpected declaration: ${property::class.simpleName}")
                     }
                 }
             }

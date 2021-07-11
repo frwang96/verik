@@ -16,11 +16,11 @@
 
 package io.verik.compiler.core.lang.vk
 
-import io.verik.compiler.core.common.Core
+import io.verik.compiler.core.common.C
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.core.common.CoreScope
 
-object CoreVkUbit : CoreScope(Core.Vk.UBIT) {
+object CoreVkUbit : CoreScope(C.Vk.UBIT) {
 
     val INV = CoreKtFunctionDeclaration(parent, "inv")
 }

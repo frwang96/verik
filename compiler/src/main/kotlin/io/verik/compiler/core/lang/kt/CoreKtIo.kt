@@ -16,7 +16,7 @@
 
 package io.verik.compiler.core.lang.kt
 
-import io.verik.compiler.core.common.Core
+import io.verik.compiler.core.common.C
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
@@ -24,10 +24,10 @@ import io.verik.compiler.core.common.CoreScope
 object CoreKtIo : CoreScope(CorePackage.KT_IO) {
 
     val PRINT = CoreKtFunctionDeclaration(parent, "print")
-    val PRINT_ANY = CoreKtFunctionDeclaration(parent, "print", Core.Kt.ANY)
-    val PRINT_INT = CoreKtFunctionDeclaration(parent, "print", Core.Kt.INT)
+    val PRINT_ANY = CoreKtFunctionDeclaration(parent, "print", C.Kt.ANY)
+    val PRINT_INT = CoreKtFunctionDeclaration(parent, "print", C.Kt.INT)
 
     val PRINTLN = CoreKtFunctionDeclaration(parent, "println")
-    val PRINTLN_ANY = CoreKtFunctionDeclaration(parent, "println", Core.Kt.ANY)
-    val PRINTLN_INT = CoreKtFunctionDeclaration(parent, "println", Core.Kt.INT)
+    val PRINTLN_ANY = CoreKtFunctionDeclaration(parent, "println", C.Kt.ANY)
+    val PRINTLN_INT = CoreKtFunctionDeclaration(parent, "println", C.Kt.INT)
 }

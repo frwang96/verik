@@ -14,6 +14,18 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.common
+package io.verik.compiler.core.lang.kt
 
-abstract class CoreFunctionDeclaration : CoreDeclaration()
+import io.verik.compiler.core.common.CoreClassDeclaration
+import io.verik.compiler.core.common.CorePackage
+import io.verik.compiler.core.common.CoreScope
+
+object CoreKtClass : CoreScope(CorePackage.KT) {
+
+    val ANY = CoreClassDeclaration(parent, "Any", null)
+    val FUNCTION = CoreClassDeclaration(parent, "Function", null)
+    val UNIT = CoreClassDeclaration(parent, "Unit", ANY)
+    val INT = CoreClassDeclaration(parent, "Int", ANY)
+    val BOOLEAN = CoreClassDeclaration(parent, "Boolean", ANY)
+    val STRING = CoreClassDeclaration(parent, "String", ANY)
+}

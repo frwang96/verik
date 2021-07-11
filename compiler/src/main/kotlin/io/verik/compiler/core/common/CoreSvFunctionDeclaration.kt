@@ -21,7 +21,7 @@ import io.verik.compiler.ast.property.Name
 class CoreSvFunctionDeclaration private constructor(
     override var name: Name,
     override val qualifiedName: Name
-) : CoreFunctionDeclaration() {
+) : CoreAbstractFunctionDeclaration() {
 
     companion object {
 

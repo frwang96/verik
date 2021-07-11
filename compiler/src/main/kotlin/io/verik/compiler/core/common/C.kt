@@ -16,30 +16,33 @@
 
 package io.verik.compiler.core.common
 
+import io.verik.compiler.core.lang.kt.CoreKtClass
 import io.verik.compiler.core.lang.kt.CoreKtInt
 import io.verik.compiler.core.lang.kt.CoreKtIo
 import io.verik.compiler.core.lang.sv.CoreSv
 import io.verik.compiler.core.lang.vk.CoreVk
+import io.verik.compiler.core.lang.vk.CoreVkClass
 import io.verik.compiler.core.lang.vk.CoreVkUbit
 
-object Core {
+object C {
 
-    object Kt {
+    object Kt : CoreScope(CorePackage.KT) {
 
-        val ANY = CoreClassDeclaration(CorePackage.KT.name.name, "Any", null)
-        val FUNCTION = CoreClassDeclaration(CorePackage.KT.name.name, "Function", null)
-        val UNIT = CoreClassDeclaration(CorePackage.KT.name.name, "Unit", ANY)
-        val INT = CoreClassDeclaration(CorePackage.KT.name.name, "Int", ANY)
-        val BOOLEAN = CoreClassDeclaration(CorePackage.KT.name.name, "Boolean", ANY)
-        val STRING = CoreClassDeclaration(CorePackage.KT.name.name, "String", ANY)
+        val ANY = CoreKtClass.ANY
+        val FUNCTION = CoreKtClass.FUNCTION
+        val UNIT = CoreKtClass.UNIT
+        val INT = CoreKtClass.INT
+        val BOOLEAN = CoreKtClass.BOOLEAN
+        val STRING = CoreKtClass.STRING
 
-        object Int {
+        object Int : CoreScope(INT) {
+
             val TIMES_INT = CoreKtInt.TIMES_INT
             val PLUS_INT = CoreKtInt.PLUS_INT
             val MINUS_INT = CoreKtInt.MINUS_INT
         }
 
-        object Io {
+        object Io : CoreScope(CorePackage.KT_IO) {
 
             val PRINT = CoreKtIo.PRINT
             val PRINT_ANY = CoreKtIo.PRINT_ANY
@@ -50,14 +53,14 @@ object Core {
         }
     }
 
-    object Vk {
+    object Vk : CoreScope(CorePackage.VK) {
 
-        val UBIT = CoreClassDeclaration(CorePackage.VK.name.name, "Ubit", Kt.ANY)
-        val SBIT = CoreClassDeclaration(CorePackage.VK.name.name, "Sbit", Kt.ANY)
-        val CLASS = CoreClassDeclaration(CorePackage.VK.name.name, "Class", Kt.ANY)
-        val EVENT = CoreClassDeclaration(CorePackage.VK.name.name, "Event", Kt.ANY)
-        val COMPONENT = CoreClassDeclaration(CorePackage.VK.name.name, "Component", Kt.ANY)
-        val MODULE = CoreClassDeclaration(CorePackage.VK.name.name, "Module", COMPONENT)
+        val UBIT = CoreVkClass.UBIT
+        val SBIT = CoreVkClass.SBIT
+        val CLASS = CoreVkClass.CLASS
+        val EVENT = CoreVkClass.EVENT
+        val COMPONENT = CoreVkClass.COMPONENT
+        val MODULE = CoreVkClass.MODULE
 
         val CARDINAL = CoreCardinalBaseDeclaration
         val ADD = CoreVk.ADD
@@ -72,13 +75,13 @@ object Core {
         val NEGEDGE_BOOLEAN = CoreVk.NEGEDGE_BOOLEAN
         val WAIT_EVENT = CoreVk.WAIT_EVENT
 
-        object Ubit {
+        object Ubit : CoreScope(UBIT) {
 
             val INV = CoreVkUbit.INV
         }
     }
 
-    object Sv {
+    object Sv : CoreScope(CorePackage.SV) {
 
         val DISPLAY = CoreSv.DISPLAY
         val WRITE = CoreSv.WRITE

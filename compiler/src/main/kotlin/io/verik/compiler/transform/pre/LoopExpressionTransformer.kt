@@ -22,7 +22,7 @@ import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.sv.EForeverStatement
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.common.Core
+import io.verik.compiler.core.common.C
 import io.verik.compiler.main.ProjectContext
 
 object LoopExpressionTransformer : ProjectPass {
@@ -37,7 +37,7 @@ object LoopExpressionTransformer : ProjectPass {
 
         override fun visitCallExpression(callExpression: ECallExpression) {
             super.visitCallExpression(callExpression)
-            if (callExpression.reference == Core.Vk.FOREVER_FUNCTION) {
+            if (callExpression.reference == C.Vk.FOREVER_FUNCTION) {
                 val functionLiteralExpression = callExpression
                     .valueArguments[0]
                     .expression.cast<EFunctionLiteralExpression>()

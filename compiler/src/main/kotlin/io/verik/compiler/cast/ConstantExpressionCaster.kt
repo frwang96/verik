@@ -17,7 +17,7 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.ast.property.Type
-import io.verik.compiler.core.common.Core
+import io.verik.compiler.core.common.C
 import io.verik.compiler.main.SourceLocation
 import io.verik.compiler.main.m
 
@@ -25,8 +25,8 @@ object ConstantExpressionCaster {
 
     fun cast(value: String, type: Type, location: SourceLocation): String {
         return when (type) {
-            Core.Kt.BOOLEAN.toNoArgumentsType() -> castBoolean(value)
-            Core.Kt.INT.toNoArgumentsType() -> castInteger(value)
+            C.Kt.BOOLEAN.toNoArgumentsType() -> castBoolean(value)
+            C.Kt.INT.toNoArgumentsType() -> castInteger(value)
             else -> {
                 m.error("Constant expression type not supported: $type", location)
                 ""
