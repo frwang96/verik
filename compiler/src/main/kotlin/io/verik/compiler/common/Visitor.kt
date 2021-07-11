@@ -176,6 +176,10 @@ abstract class Visitor {
         visitCExpression(stringExpression)
     }
 
+    open fun visitCIfExpression(ifExpression: CIfExpression) {
+        visitCExpression(ifExpression)
+    }
+
     open fun visitSLoopStatement(loopStatement: SLoopStatement) {
         visitCExpression(loopStatement)
     }

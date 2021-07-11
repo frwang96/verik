@@ -49,6 +49,10 @@ class CasterExpressionVisitor(
         return null
     }
 
+    override fun visitAnnotatedExpression(expression: KtAnnotatedExpression, data: Unit?): CElement? {
+        return getElement<CExpression>(expression.baseExpression!!)
+    }
+
     override fun visitBlockExpression(expression: KtBlockExpression, data: Unit?): CElement {
         val location = expression.getSourceLocation()
         val type = getType(expression)
@@ -162,5 +166,14 @@ class CasterExpressionVisitor(
         val expression = getElement<CExpression>(entry.expression!!)
             ?: return null
         return KExpressionStringTemplateEntry(location, expression)
+    }
+
+    override fun visitIfExpression(expression: KtIfExpression, data: Unit?): CElement? {
+        val location = expression.getSourceLocation()
+        val type = getType(expression)
+        val condition = getElement<CExpression>(expression.condition!!) ?: return null
+        val thenExpression = expression.then?.let { getElement<CExpression>(it) ?: return null }
+        val elseExpression = expression.`else`?.let { getElement<CExpression>(it) ?: return null }
+        return CIfExpression(location, type, condition, thenExpression, elseExpression)
     }
 }

@@ -226,6 +226,15 @@ class ElementPrinter : Visitor() {
         }
     }
 
+    override fun visitCIfExpression(ifExpression: CIfExpression) {
+        build("CIfExpression") {
+            build(ifExpression.type.toString())
+            build(ifExpression.condition)
+            build(ifExpression.thenExpression)
+            build(ifExpression.elseExpression)
+        }
+    }
+
     override fun visitSForeverStatement(foreverStatement: SForeverStatement) {
         build("SForeverStatement") {
             build(foreverStatement.type.toString())

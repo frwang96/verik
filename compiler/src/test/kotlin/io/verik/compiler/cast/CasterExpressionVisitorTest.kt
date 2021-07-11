@@ -222,4 +222,18 @@ internal class CasterExpressionVisitorTest : BaseTest() {
             projectContext.findExpression("y")
         )
     }
+
+    @Test
+    fun `if expression`() {
+        val projectContext = TestDriver.cast(
+            """
+                var x = false 
+                var y = if (x) 1 else 0
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "CIfExpression(Int, CReferenceExpression(*), CConstantExpression(*), CConstantExpression(*))",
+            projectContext.findExpression("y")
+        )
+    }
 }

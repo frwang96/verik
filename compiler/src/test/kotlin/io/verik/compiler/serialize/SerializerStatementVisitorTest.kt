@@ -129,6 +129,94 @@ internal class SerializerStatementVisitorTest : BaseTest() {
     }
 
     @Test
+    fun `if expression`() {
+        val projectContext = TestDriver.serialize(
+            """
+                var x = false
+                fun f() {
+                    if (x) 1 else 0
+                }
+            """.trimIndent()
+        )
+        val expected = """
+            logic x = 1'b0;
+            
+            function void f();
+                if (x)
+                    1;
+                else
+                    0;
+            endfunction : f
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
+    fun `if expression no then`() {
+        val projectContext = TestDriver.serialize(
+            """
+                var x = false
+                fun f() {
+                    @Suppress("ControlFlowWithEmptyBody")
+                    if (x);
+                }
+            """.trimIndent()
+        )
+        val expected = """
+            logic x = 1'b0;
+            
+            function void f();
+                if (x);
+            endfunction : f
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
+    fun `if expression nested`() {
+        val projectContext = TestDriver.serialize(
+            """
+                var x = false
+                fun f() {
+                    @Suppress("CascadeIf")
+                    if (x) {
+                        1
+                    } else if (x) {
+                        2
+                    } else {
+                        3
+                    }
+                }
+            """.trimIndent()
+        )
+        val expected = """
+            logic x = 1'b0;
+            
+            function void f();
+                if (x) begin
+                    1;
+                end
+                else if (x) begin
+                    2;
+                end
+                else begin
+                    3;
+                end
+            endfunction : f
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
     fun `forever expression`() {
         val projectContext = TestDriver.serialize(
             """

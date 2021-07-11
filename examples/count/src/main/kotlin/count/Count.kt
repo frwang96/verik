@@ -42,6 +42,7 @@ object Count : Module() {
     fun f() {
         x += 1
         x -= 1
+        if (y) println()
     }
 
     @Run

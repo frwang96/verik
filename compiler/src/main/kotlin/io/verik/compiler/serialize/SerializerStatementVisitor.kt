@@ -115,6 +115,39 @@ class SerializerStatementVisitor(private val sourceBuilder: SourceBuilder) : Vis
         sourceBuilder.append("\"${stringExpression.text}\"", stringExpression)
     }
 
+    override fun visitCIfExpression(ifExpression: CIfExpression) {
+        sourceBuilder.append("if (", ifExpression)
+        serializeAsExpression(ifExpression.condition)
+        sourceBuilder.append(")", ifExpression)
+        val thenExpression = ifExpression.thenExpression
+        if (thenExpression != null) {
+            if (thenExpression is SBlockExpression) {
+                sourceBuilder.append(" ", ifExpression)
+                serializeAsStatement(thenExpression)
+            }
+            else {
+                sourceBuilder.appendLine()
+                sourceBuilder.indent {
+                    serializeAsStatement(thenExpression)
+                }
+            }
+        } else {
+            sourceBuilder.appendLine(";", ifExpression)
+        }
+        val elseExpression = ifExpression.elseExpression
+        if (elseExpression != null) {
+            if (elseExpression is SBlockExpression || elseExpression is CIfExpression) {
+                sourceBuilder.append("else ", ifExpression)
+                serializeAsStatement(elseExpression)
+            } else {
+                sourceBuilder.appendLine("else", ifExpression)
+                sourceBuilder.indent {
+                    serializeAsStatement(elseExpression)
+                }
+            }
+        }
+    }
+
     override fun visitSForeverStatement(foreverStatement: SForeverStatement) {
         sourceBuilder.append("forever ", foreverStatement)
         serializeAsStatement(foreverStatement.bodyBlockExpression)

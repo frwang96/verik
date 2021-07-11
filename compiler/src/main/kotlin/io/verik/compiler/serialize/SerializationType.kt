@@ -38,6 +38,7 @@ enum class SerializationType {
                 is SEventExpression -> EXPRESSION
                 is SEventControlExpression -> EXPRESSION
                 is SBlockExpression -> STATEMENT
+                is CIfExpression -> STATEMENT
                 is SLoopStatement -> STATEMENT
                 else -> OTHER
             }
