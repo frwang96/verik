@@ -16,17 +16,17 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.common.CAbstractClass
-import io.verik.compiler.ast.element.kt.KBasicClass
-import io.verik.compiler.ast.element.sv.SBasicClass
-import io.verik.compiler.ast.element.sv.SModule
+import io.verik.compiler.ast.element.common.EAbstractClass
+import io.verik.compiler.ast.element.kt.EKtBasicClass
+import io.verik.compiler.ast.element.sv.EModule
+import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.core.CoreClass
 
 object ClassInterpreter {
 
-    fun interpret(basicClass: KBasicClass): CAbstractClass {
+    fun interpret(basicClass: EKtBasicClass): EAbstractClass {
         return if (basicClass.type.isType(CoreClass.Core.MODULE.toNoArgumentsType())) {
-            SModule(
+            EModule(
                 basicClass.location,
                 basicClass.name,
                 basicClass.type,
@@ -35,7 +35,7 @@ object ClassInterpreter {
                 basicClass.declarations
             )
         } else {
-            SBasicClass(
+            ESvBasicClass(
                 basicClass.location,
                 basicClass.name,
                 basicClass.type,

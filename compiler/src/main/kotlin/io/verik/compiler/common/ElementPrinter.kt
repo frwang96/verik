@@ -25,36 +25,36 @@ class ElementPrinter : Visitor() {
     private val builder = StringBuilder()
     private var first = true
 
-    override fun visitCFile(file: CFile) {
-        build("CFile") {
+    override fun visitFile(file: EFile) {
+        build("File") {
             build(file.declarations)
         }
     }
 
-    override fun visitKBasicClass(basicClass: KBasicClass) {
-        build("KBasicClass") {
+    override fun visitKtBasicClass(basicClass: EKtBasicClass) {
+        build("KtBasicClass") {
             build(basicClass.name.toString())
             build(basicClass.typeParameters)
             build(basicClass.declarations)
         }
     }
 
-    override fun visitSBasicClass(basicClass: SBasicClass) {
-        build("SBasicClass") {
+    override fun visitSvBasicClass(basicClass: ESvBasicClass) {
+        build("SvBasicClass") {
             build(basicClass.name.toString())
             build(basicClass.typeParameters)
             build(basicClass.declarations)
         }
     }
 
-    override fun visitSModule(module: SModule) {
-        build("SModule") {
+    override fun visitModule(module: EModule) {
+        build("Module") {
             build(module.name.toString())
         }
     }
 
-    override fun visitKFunction(function: KFunction) {
-        build("KFunction") {
+    override fun visitKtFunction(function: EKtFunction) {
+        build("KtFunction") {
             build(function.name.toString())
             build(function.type.toString())
             build(function.bodyBlockExpression)
@@ -62,68 +62,68 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitSFunction(function: SFunction) {
-        build("SFunction") {
+    override fun visitSvFunction(function: ESvFunction) {
+        build("SvFunction") {
             build(function.name.toString())
             build(function.type.toString())
             build(function.bodyBlockExpression)
         }
     }
 
-    override fun visitKProperty(property: KProperty) {
-        build("KProperty") {
+    override fun visitKtProperty(property: EKtProperty) {
+        build("KtProperty") {
             build(property.name.toString())
             build(property.type.toString())
             build(property.initializer)
         }
     }
 
-    override fun visitSProperty(property: SProperty) {
-        build("SProperty") {
+    override fun visitSvProperty(property: ESvProperty) {
+        build("SvProperty") {
             build(property.name.toString())
             build(property.type.toString())
             build(property.initializer)
         }
     }
 
-    override fun visitCTypeParameter(typeParameter: CTypeParameter) {
-        build("CTypeParameter") {
+    override fun visitTypeParameter(typeParameter: ETypeParameter) {
+        build("TypeParameter") {
             build(typeParameter.name.toString())
             build(typeParameter.type.toString())
         }
     }
 
-    override fun visitSInitialBlock(initialBlock: SInitialBlock) {
-        build("SInitialBlock") {
+    override fun visitInitialBlock(initialBlock: EInitialBlock) {
+        build("InitialBlock") {
             build(initialBlock.name.toString())
             build(initialBlock.bodyBlockExpression)
         }
     }
 
-    override fun visitSAlwaysComBlock(alwaysComBlock: SAlwaysComBlock) {
-        build("SAlwaysComBlock") {
+    override fun visitAlwaysComBlock(alwaysComBlock: EAlwaysComBlock) {
+        build("AlwaysComBlock") {
             build(alwaysComBlock.name.toString())
             build(alwaysComBlock.bodyBlockExpression)
         }
     }
 
-    override fun visitSAlwaysSeqBlock(alwaysSeqBlock: SAlwaysSeqBlock) {
-        build("SAlwaysSeqBlock") {
+    override fun visitAlwaysSeqBlock(alwaysSeqBlock: EAlwaysSeqBlock) {
+        build("AlwaysSeqBlock") {
             build(alwaysSeqBlock.name.toString())
             build(alwaysSeqBlock.eventControlExpression)
             build(alwaysSeqBlock.bodyBlockExpression)
         }
     }
 
-    override fun visitKBlockExpression(blockExpression: KBlockExpression) {
-        build("KBlockExpression") {
+    override fun visitKtBlockExpression(blockExpression: EKtBlockExpression) {
+        build("KtBlockExpression") {
             build(blockExpression.type.toString())
             build(blockExpression.statements)
         }
     }
 
-    override fun visitSBlockExpression(blockExpression: SBlockExpression) {
-        build("SBlockExpression") {
+    override fun visitSvBlockExpression(blockExpression: ESvBlockExpression) {
+        build("SvBlockExpression") {
             build(blockExpression.type.toString())
             build(blockExpression.decorated.toString())
             build(blockExpression.name.toString())
@@ -131,15 +131,15 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitCParenthesizedExpression(parenthesizedExpression: CParenthesizedExpression) {
-        build("CParenthesizedExpression") {
+    override fun visitParenthesizedExpression(parenthesizedExpression: EParenthesizedExpression) {
+        build("ParenthesizedExpression") {
             build(parenthesizedExpression.type.toString())
             build(parenthesizedExpression.expression)
         }
     }
 
-    override fun visitKBinaryExpression(binaryExpression: KBinaryExpression) {
-        build("KBinaryExpression") {
+    override fun visitKtBinaryExpression(binaryExpression: EKtBinaryExpression) {
+        build("KtBinaryExpression") {
             build(binaryExpression.type.toString())
             build(binaryExpression.kind.toString())
             build(binaryExpression.left)
@@ -147,8 +147,8 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitSBinaryExpression(binaryExpression: SBinaryExpression) {
-        build("SBinaryExpression") {
+    override fun visitSvBinaryExpression(binaryExpression: ESvBinaryExpression) {
+        build("SvBinaryExpression") {
             build(binaryExpression.type.toString())
             build(binaryExpression.kind.toString())
             build(binaryExpression.left)
@@ -156,78 +156,78 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitCReferenceExpression(referenceExpression: CReferenceExpression) {
-        build("CReferenceExpression") {
+    override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
+        build("ReferenceExpression") {
             build(referenceExpression.type.toString())
             build(referenceExpression.reference.toString())
         }
     }
 
-    override fun visitCCallExpression(callExpression: CCallExpression) {
-        build("CCallExpression") {
+    override fun visitCallExpression(callExpression: ECallExpression) {
+        build("CallExpression") {
             build(callExpression.type.toString())
             build(callExpression.reference.toString())
             build(callExpression.valueArguments)
         }
     }
 
-    override fun visitCValueArgument(valueArgument: CValueArgument) {
-        build("CValueArgument") {
+    override fun visitValueArgument(valueArgument: EValueArgument) {
+        build("ValueArgument") {
             build(valueArgument.reference.toString())
             build(valueArgument.expression)
         }
     }
 
-    override fun visitCDotQualifiedExpression(dotQualifiedExpression: CDotQualifiedExpression) {
-        build("CDotQualifiedExpression") {
+    override fun visitDotQualifiedExpression(dotQualifiedExpression: EDotQualifiedExpression) {
+        build("DotQualifiedExpression") {
             build(dotQualifiedExpression.type.toString())
             build(dotQualifiedExpression.receiver)
             build(dotQualifiedExpression.selector)
         }
     }
 
-    override fun visitCConstantExpression(constantExpression: CConstantExpression) {
-        build("CConstantExpression") {
+    override fun visitConstantExpression(constantExpression: EConstantExpression) {
+        build("ConstantExpression") {
             build(constantExpression.type.toString())
             build(constantExpression.value)
         }
     }
 
-    override fun visitKFunctionLiteralExpression(functionLiteralExpression: KFunctionLiteralExpression) {
-        build("KFunctionLiteralExpression") {
+    override fun visitFunctionLiteralExpression(functionLiteralExpression: EFunctionLiteralExpression) {
+        build("FunctionLiteralExpression") {
             build(functionLiteralExpression.type.toString())
             build(functionLiteralExpression.bodyBlockExpression)
         }
     }
 
-    override fun visitKStringTemplateExpression(stringTemplateExpression: KStringTemplateExpression) {
-        build("KStringTemplateExpression") {
+    override fun visitStringTemplateExpression(stringTemplateExpression: EStringTemplateExpression) {
+        build("StringTemplateExpression") {
             build(stringTemplateExpression.type.toString())
             build(stringTemplateExpression.entries)
         }
     }
 
-    override fun visitKLiteralStringTemplateEntry(literalStringTemplateEntry: KLiteralStringTemplateEntry) {
-        build("KLiteralStringTemplateEntry") {
+    override fun visitLiteralStringTemplateEntry(literalStringTemplateEntry: ELiteralStringTemplateEntry) {
+        build("LiteralStringTemplateEntry") {
             build(literalStringTemplateEntry.text)
         }
     }
 
-    override fun visitKExpressionStringTemplateEntry(expressionStringTemplateEntry: KExpressionStringTemplateEntry) {
-        build("KExpressionStringTemplateEntry") {
+    override fun visitExpressionStringTemplateEntry(expressionStringTemplateEntry: EExpressionStringTemplateEntry) {
+        build("ExpressionStringTemplateEntry") {
             build(expressionStringTemplateEntry.expression)
         }
     }
 
-    override fun visitSStringExpression(stringExpression: SStringExpression) {
-        build("SStringExpression") {
+    override fun visitStringExpression(stringExpression: EStringExpression) {
+        build("StringExpression") {
             build(stringExpression.type.toString())
             build(stringExpression.text)
         }
     }
 
-    override fun visitCIfExpression(ifExpression: CIfExpression) {
-        build("CIfExpression") {
+    override fun visitIfExpression(ifExpression: EIfExpression) {
+        build("IfExpression") {
             build(ifExpression.type.toString())
             build(ifExpression.condition)
             build(ifExpression.thenExpression)
@@ -235,23 +235,23 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitSForeverStatement(foreverStatement: SForeverStatement) {
-        build("SForeverStatement") {
+    override fun visitForeverStatement(foreverStatement: EForeverStatement) {
+        build("ForeverStatement") {
             build(foreverStatement.type.toString())
             build(foreverStatement.bodyBlockExpression)
         }
     }
 
-    override fun visitSEventExpression(eventExpression: SEventExpression) {
-        build("SEdgeExpression") {
+    override fun visitEventExpression(eventExpression: EEventExpression) {
+        build("EdgeExpression") {
             build(eventExpression.type.toString())
             build(eventExpression.edgeType.toString())
             build(eventExpression.expression)
         }
     }
 
-    override fun visitSEventControlExpression(eventControlExpression: SEventControlExpression) {
-        build("SEventControlExpression") {
+    override fun visitEventControlExpression(eventControlExpression: EEventControlExpression) {
+        build("EventControlExpression") {
             build(eventControlExpression.type.toString())
             build(eventControlExpression.expression)
         }
@@ -263,7 +263,7 @@ class ElementPrinter : Visitor() {
         first = false
     }
 
-    private fun build(element: CElement?) {
+    private fun build(element: EElement?) {
         if (element != null)
             element.accept(this)
         else {
@@ -282,7 +282,7 @@ class ElementPrinter : Visitor() {
         first = false
     }
 
-    private fun build(elements: List<CElement>) {
+    private fun build(elements: List<EElement>) {
         if (!first) builder.append(", ")
         builder.append("[")
         first = true
@@ -293,7 +293,7 @@ class ElementPrinter : Visitor() {
 
     companion object {
 
-        fun dump(element: CElement): String {
+        fun dump(element: EElement): String {
             val elementPrinter = ElementPrinter()
             element.accept(elementPrinter)
             return elementPrinter.builder.toString()

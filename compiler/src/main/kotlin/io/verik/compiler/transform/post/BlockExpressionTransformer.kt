@@ -16,10 +16,10 @@
 
 package io.verik.compiler.transform.post
 
-import io.verik.compiler.ast.element.kt.KBlockExpression
-import io.verik.compiler.ast.element.sv.SBlockExpression
-import io.verik.compiler.ast.element.sv.SFunction
-import io.verik.compiler.ast.element.sv.SProceduralBlock
+import io.verik.compiler.ast.element.kt.EKtBlockExpression
+import io.verik.compiler.ast.element.sv.EProceduralBlock
+import io.verik.compiler.ast.element.sv.ESvBlockExpression
+import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.property.Name
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
@@ -28,23 +28,23 @@ import io.verik.compiler.main.ProjectContext
 object BlockExpressionTransformer : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.verikFiles.forEach {
+        projectContext.files.forEach {
             it.accept(BlockExpressionVisitor)
         }
     }
 
     object BlockExpressionVisitor : TreeVisitor() {
 
-        override fun visitKBlockExpression(blockExpression: KBlockExpression) {
-            super.visitKBlockExpression(blockExpression)
+        override fun visitKtBlockExpression(blockExpression: EKtBlockExpression) {
+            super.visitKtBlockExpression(blockExpression)
             var decorated = true
             var name: Name? = null
             when (val parent = blockExpression.parent) {
-                is SFunction -> decorated = false
-                is SProceduralBlock -> name = parent.name
+                is ESvFunction -> decorated = false
+                is EProceduralBlock -> name = parent.name
             }
             blockExpression.replace(
-                SBlockExpression(
+                ESvBlockExpression(
                     blockExpression.location,
                     blockExpression.statements,
                     decorated,

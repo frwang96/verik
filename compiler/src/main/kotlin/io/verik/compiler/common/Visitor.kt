@@ -22,177 +22,201 @@ import io.verik.compiler.ast.element.sv.*
 
 abstract class Visitor {
 
-    open fun visitCElement(element: CElement) {}
+    open fun visitElement(element: EElement) {}
 
-    open fun visitCFile(file: CFile) {
-        visitCElement(file)
+    open fun visitFile(file: EFile) {
+        visitElement(file)
     }
 
-    open fun visitKImportDirective(importDirective: KImportDirective) {
-        visitCElement(importDirective)
+    open fun visitImportDirective(importDirective: EImportDirective) {
+        visitElement(importDirective)
     }
 
-    open fun visitCExpression(expression: CExpression) {
-        visitCElement(expression)
+    open fun visitExpression(expression: EExpression) {
+        visitElement(expression)
     }
 
-    open fun visitCDeclaration(declaration: CDeclaration) {
-        visitCExpression(declaration)
+    open fun visitDeclaration(declaration: EDeclaration) {
+        visitExpression(declaration)
     }
 
-    open fun visitCAbstractClass(abstractClass: CAbstractClass) {
-        visitCDeclaration(abstractClass)
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  CLASS
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    open fun visitAbstractClass(abstractClass: EAbstractClass) {
+        visitDeclaration(abstractClass)
     }
 
-    open fun visitKBasicClass(basicClass: KBasicClass) {
-        visitCAbstractClass(basicClass)
+    open fun visitKtBasicClass(basicClass: EKtBasicClass) {
+        visitAbstractClass(basicClass)
     }
 
-    open fun visitSBasicClass(basicClass: SBasicClass) {
-        visitCAbstractClass(basicClass)
+    open fun visitSvBasicClass(basicClass: ESvBasicClass) {
+        visitAbstractClass(basicClass)
     }
 
-    open fun visitSModule(module: SModule) {
-        visitCAbstractClass(module)
+    open fun visitModule(module: EModule) {
+        visitAbstractClass(module)
     }
 
-    open fun visitCAbstractFunction(abstractFunction: CAbstractFunction) {
-        visitCDeclaration(abstractFunction)
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  FUNCTION
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    open fun visitAbstractFunction(abstractFunction: EAbstractFunction) {
+        visitDeclaration(abstractFunction)
     }
 
-    open fun visitKFunction(function: KFunction) {
-        visitCAbstractFunction(function)
+    open fun visitKtFunction(function: EKtFunction) {
+        visitAbstractFunction(function)
     }
 
-    open fun visitSFunction(function: SFunction) {
-        visitCAbstractFunction(function)
+    open fun visitSvFunction(function: ESvFunction) {
+        visitAbstractFunction(function)
     }
 
-    open fun visitCAbstractProperty(abstractProperty: CAbstractProperty) {
-        visitCDeclaration(abstractProperty)
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  PROPERTY
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    open fun visitAbstractProperty(abstractProperty: EAbstractProperty) {
+        visitDeclaration(abstractProperty)
     }
 
-    open fun visitKProperty(property: KProperty) {
-        visitCAbstractProperty(property)
+    open fun visitKtProperty(property: EKtProperty) {
+        visitAbstractProperty(property)
     }
 
-    open fun visitSProperty(property: SProperty) {
-        visitCAbstractProperty(property)
+    open fun visitSvProperty(property: ESvProperty) {
+        visitAbstractProperty(property)
     }
 
-    open fun visitCTypeParameter(typeParameter: CTypeParameter) {
-        visitCDeclaration(typeParameter)
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  TYPE PARAMETER
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    open fun visitTypeParameter(typeParameter: ETypeParameter) {
+        visitDeclaration(typeParameter)
     }
 
-    open fun visitSProceduralBlock(proceduralBlock: SProceduralBlock) {
-        visitCDeclaration(proceduralBlock)
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  PROCEDURAL BLOCK
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    open fun visitProceduralBlock(proceduralBlock: EProceduralBlock) {
+        visitDeclaration(proceduralBlock)
     }
 
-    open fun visitSInitialBlock(initialBlock: SInitialBlock) {
-        visitSProceduralBlock(initialBlock)
+    open fun visitInitialBlock(initialBlock: EInitialBlock) {
+        visitProceduralBlock(initialBlock)
     }
 
-    open fun visitSAlwaysComBlock(alwaysComBlock: SAlwaysComBlock) {
-        visitSProceduralBlock(alwaysComBlock)
+    open fun visitAlwaysComBlock(alwaysComBlock: EAlwaysComBlock) {
+        visitProceduralBlock(alwaysComBlock)
     }
 
-    open fun visitSAlwaysSeqBlock(alwaysSeqBlock: SAlwaysSeqBlock) {
-        visitSProceduralBlock(alwaysSeqBlock)
+    open fun visitAlwaysSeqBlock(alwaysSeqBlock: EAlwaysSeqBlock) {
+        visitProceduralBlock(alwaysSeqBlock)
     }
 
-    open fun visitCAbstractBlockExpression(abstractBlockExpression: CAbstractBlockExpression) {
-        visitCExpression(abstractBlockExpression)
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  EXPRESSION
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    open fun visitAbstractBlockExpression(abstractBlockExpression: EAbstractBlockExpression) {
+        visitExpression(abstractBlockExpression)
     }
 
-    open fun visitKBlockExpression(blockExpression: KBlockExpression) {
-        visitCAbstractBlockExpression(blockExpression)
+    open fun visitKtBlockExpression(blockExpression: EKtBlockExpression) {
+        visitAbstractBlockExpression(blockExpression)
     }
 
-    open fun visitSBlockExpression(blockExpression: SBlockExpression) {
-        visitCAbstractBlockExpression(blockExpression)
+    open fun visitSvBlockExpression(blockExpression: ESvBlockExpression) {
+        visitAbstractBlockExpression(blockExpression)
     }
 
-    open fun visitCAbstractExpressionContainer(abstractExpressionContainer: CAbstractExpressionContainer) {
-        visitCExpression(abstractExpressionContainer)
+    open fun visitAbstractExpressionContainer(abstractExpressionContainer: EAbstractExpressionContainer) {
+        visitExpression(abstractExpressionContainer)
     }
 
-    open fun visitCParenthesizedExpression(parenthesizedExpression: CParenthesizedExpression) {
-        visitCAbstractExpressionContainer(parenthesizedExpression)
+    open fun visitParenthesizedExpression(parenthesizedExpression: EParenthesizedExpression) {
+        visitAbstractExpressionContainer(parenthesizedExpression)
     }
 
-    open fun visitCAbstractBinaryExpression(binaryExpression: CAbstractBinaryExpression) {
-        visitCExpression(binaryExpression)
+    open fun visitAbstractBinaryExpression(binaryExpression: EAbstractBinaryExpression) {
+        visitExpression(binaryExpression)
     }
 
-    open fun visitKBinaryExpression(binaryExpression: KBinaryExpression) {
-        visitCAbstractBinaryExpression(binaryExpression)
+    open fun visitKtBinaryExpression(binaryExpression: EKtBinaryExpression) {
+        visitAbstractBinaryExpression(binaryExpression)
     }
 
-    open fun visitSBinaryExpression(binaryExpression: SBinaryExpression) {
-        visitCAbstractBinaryExpression(binaryExpression)
+    open fun visitSvBinaryExpression(binaryExpression: ESvBinaryExpression) {
+        visitAbstractBinaryExpression(binaryExpression)
     }
 
-    open fun visitCReferenceExpression(referenceExpression: CReferenceExpression) {
-        visitCExpression(referenceExpression)
+    open fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
+        visitExpression(referenceExpression)
     }
 
-    open fun visitCCallExpression(callExpression: CCallExpression) {
-        visitCExpression(callExpression)
+    open fun visitCallExpression(callExpression: ECallExpression) {
+        visitExpression(callExpression)
     }
 
-    open fun visitCValueArgument(valueArgument: CValueArgument) {
-        visitCElement(valueArgument)
+    open fun visitValueArgument(valueArgument: EValueArgument) {
+        visitElement(valueArgument)
     }
 
-    open fun visitCDotQualifiedExpression(dotQualifiedExpression: CDotQualifiedExpression) {
-        visitCExpression(dotQualifiedExpression)
+    open fun visitDotQualifiedExpression(dotQualifiedExpression: EDotQualifiedExpression) {
+        visitExpression(dotQualifiedExpression)
     }
 
-    open fun visitCConstantExpression(constantExpression: CConstantExpression) {
-        visitCExpression(constantExpression)
+    open fun visitConstantExpression(constantExpression: EConstantExpression) {
+        visitExpression(constantExpression)
     }
 
-    open fun visitKFunctionLiteralExpression(functionLiteralExpression: KFunctionLiteralExpression) {
-        visitCExpression(functionLiteralExpression)
+    open fun visitFunctionLiteralExpression(functionLiteralExpression: EFunctionLiteralExpression) {
+        visitExpression(functionLiteralExpression)
     }
 
-    open fun visitKStringTemplateExpression(stringTemplateExpression: KStringTemplateExpression) {
-        visitCExpression(stringTemplateExpression)
+    open fun visitStringTemplateExpression(stringTemplateExpression: EStringTemplateExpression) {
+        visitExpression(stringTemplateExpression)
     }
 
-    open fun visitKStringTemplateEntry(stringTemplateEntry: KStringTemplateEntry) {
-        visitCElement(stringTemplateEntry)
+    open fun visitStringTemplateEntry(stringTemplateEntry: EStringTemplateEntry) {
+        visitElement(stringTemplateEntry)
     }
 
-    open fun visitKLiteralStringTemplateEntry(literalStringTemplateEntry: KLiteralStringTemplateEntry) {
-        visitKStringTemplateEntry(literalStringTemplateEntry)
+    open fun visitLiteralStringTemplateEntry(literalStringTemplateEntry: ELiteralStringTemplateEntry) {
+        visitStringTemplateEntry(literalStringTemplateEntry)
     }
 
-    open fun visitKExpressionStringTemplateEntry(expressionStringTemplateEntry: KExpressionStringTemplateEntry) {
-        visitKStringTemplateEntry(expressionStringTemplateEntry)
+    open fun visitExpressionStringTemplateEntry(expressionStringTemplateEntry: EExpressionStringTemplateEntry) {
+        visitStringTemplateEntry(expressionStringTemplateEntry)
     }
 
-    open fun visitSStringExpression(stringExpression: SStringExpression) {
-        visitCExpression(stringExpression)
+    open fun visitStringExpression(stringExpression: EStringExpression) {
+        visitExpression(stringExpression)
     }
 
-    open fun visitCIfExpression(ifExpression: CIfExpression) {
-        visitCExpression(ifExpression)
+    open fun visitIfExpression(ifExpression: EIfExpression) {
+        visitExpression(ifExpression)
     }
 
-    open fun visitSLoopStatement(loopStatement: SLoopStatement) {
-        visitCExpression(loopStatement)
+    open fun visitLoopStatement(loopStatement: ELoopStatement) {
+        visitExpression(loopStatement)
     }
 
-    open fun visitSForeverStatement(foreverStatement: SForeverStatement) {
-        visitSLoopStatement(foreverStatement)
+    open fun visitForeverStatement(foreverStatement: EForeverStatement) {
+        visitLoopStatement(foreverStatement)
     }
 
-    open fun visitSEventExpression(eventExpression: SEventExpression) {
-        visitCAbstractExpressionContainer(eventExpression)
+    open fun visitEventExpression(eventExpression: EEventExpression) {
+        visitAbstractExpressionContainer(eventExpression)
     }
 
-    open fun visitSEventControlExpression(eventControlExpression: SEventControlExpression) {
-        visitCAbstractExpressionContainer(eventControlExpression)
+    open fun visitEventControlExpression(eventControlExpression: EEventControlExpression) {
+        visitAbstractExpressionContainer(eventControlExpression)
     }
 }

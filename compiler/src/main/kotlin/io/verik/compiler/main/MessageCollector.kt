@@ -16,7 +16,7 @@
 
 package io.verik.compiler.main
 
-import io.verik.compiler.ast.element.common.CElement
+import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.common.getSourceLocation
 import org.jetbrains.kotlin.psi.KtElement
 
@@ -40,7 +40,7 @@ open class MessageCollector {
 
     open fun flush() {}
 
-    fun error(message: String, element: CElement) {
+    fun error(message: String, element: EElement) {
         error(message, element.location)
     }
 

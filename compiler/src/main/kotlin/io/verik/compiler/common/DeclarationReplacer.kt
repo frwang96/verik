@@ -16,8 +16,8 @@
 
 package io.verik.compiler.common
 
-import io.verik.compiler.ast.element.common.CDeclaration
-import io.verik.compiler.ast.element.common.CExpression
+import io.verik.compiler.ast.element.common.EDeclaration
+import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.DeclarationContainer
 import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.main.ProjectContext
@@ -25,9 +25,9 @@ import io.verik.compiler.main.m
 
 class DeclarationReplacer(val projectContext: ProjectContext) {
 
-    private val replacementMap = HashMap<CDeclaration, CDeclaration>()
+    private val replacementMap = HashMap<EDeclaration, EDeclaration>()
 
-    fun replace(oldDeclaration: CDeclaration, newDeclaration: CDeclaration) {
+    fun replace(oldDeclaration: EDeclaration, newDeclaration: EDeclaration) {
         val parent = oldDeclaration.parent
         if (parent is DeclarationContainer)
             parent.replaceChild(oldDeclaration, newDeclaration)
@@ -38,16 +38,16 @@ class DeclarationReplacer(val projectContext: ProjectContext) {
 
     fun updateReferences() {
         val referenceUpdateVisitor = ReferenceUpdateVisitor(replacementMap)
-        projectContext.verikFiles.forEach {
+        projectContext.files.forEach {
             it.accept(referenceUpdateVisitor)
         }
         replacementMap.clear()
     }
 
-    class ReferenceUpdateVisitor(private val replacementMap: Map<CDeclaration, CDeclaration>) : TreeVisitor() {
+    class ReferenceUpdateVisitor(private val replacementMap: Map<EDeclaration, EDeclaration>) : TreeVisitor() {
 
-        override fun visitCExpression(expression: CExpression) {
-            super.visitCExpression(expression)
+        override fun visitExpression(expression: EExpression) {
+            super.visitExpression(expression)
             if (expression is Reference) {
                 val reference = replacementMap[expression.reference]
                 if (reference != null)

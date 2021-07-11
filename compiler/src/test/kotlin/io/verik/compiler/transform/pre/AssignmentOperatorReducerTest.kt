@@ -16,7 +16,7 @@
 
 package io.verik.compiler.transform.pre
 
-import io.verik.compiler.ast.element.kt.KBlockExpression
+import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertElementEquals
@@ -37,14 +37,14 @@ internal class AssignmentOperatorReducerTest : BaseTest() {
         )
         assertElementEquals(
             """
-                SBinaryExpression(
+                SvBinaryExpression(
                     Unit,
                     ASSIGN,
-                    CReferenceExpression(*),
-                    CDotQualifiedExpression(Int, CReferenceExpression(*), CCallExpression(Int, plus, *))
+                    ReferenceExpression(*),
+                    DotQualifiedExpression(Int, ReferenceExpression(*), CallExpression(Int, plus, *))
                 )
             """.trimIndent(),
-            (projectContext.findExpression("f") as KBlockExpression).statements[0]
+            (projectContext.findExpression("f") as EKtBlockExpression).statements[0]
         )
     }
 }

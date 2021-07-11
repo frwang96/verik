@@ -26,20 +26,22 @@ enum class SerializationType {
 
     companion object {
 
-        fun getType(element: CElement): SerializationType {
+        fun getType(element: EElement): SerializationType {
             return when (element) {
-                is CParenthesizedExpression -> EXPRESSION
-                is SBinaryExpression -> EXPRESSION
-                is CReferenceExpression -> EXPRESSION
-                is CCallExpression -> EXPRESSION
-                is CDotQualifiedExpression -> EXPRESSION
-                is CConstantExpression -> EXPRESSION
-                is SStringExpression -> EXPRESSION
-                is SEventExpression -> EXPRESSION
-                is SEventControlExpression -> EXPRESSION
-                is SBlockExpression -> STATEMENT
-                is CIfExpression -> STATEMENT
-                is SLoopStatement -> STATEMENT
+                is EParenthesizedExpression -> EXPRESSION
+                is ESvBinaryExpression -> EXPRESSION
+                is EReferenceExpression -> EXPRESSION
+                is ECallExpression -> EXPRESSION
+                is EDotQualifiedExpression -> EXPRESSION
+                is EConstantExpression -> EXPRESSION
+                is EStringExpression -> EXPRESSION
+                is EEventExpression -> EXPRESSION
+                is EEventControlExpression -> EXPRESSION
+
+                is ESvBlockExpression -> STATEMENT
+                is EIfExpression -> STATEMENT
+                is ELoopStatement -> STATEMENT
+
                 else -> OTHER
             }
         }

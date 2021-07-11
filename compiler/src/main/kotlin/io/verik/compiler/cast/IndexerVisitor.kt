@@ -16,10 +16,10 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.element.common.CTypeParameter
-import io.verik.compiler.ast.element.kt.KBasicClass
-import io.verik.compiler.ast.element.kt.KFunction
-import io.verik.compiler.ast.element.kt.KProperty
+import io.verik.compiler.ast.element.common.ETypeParameter
+import io.verik.compiler.ast.element.kt.EKtBasicClass
+import io.verik.compiler.ast.element.kt.EKtFunction
+import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.property.Name
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.getSourceLocation
@@ -47,7 +47,7 @@ class IndexerVisitor(
         val location = classOrObject.getSourceLocation()
         val name = Name(classOrObject.name!!)
         checkDeclarationName(name, classOrObject)
-        val basicClass = KBasicClass(location, name, Type.NULL, Type.NULL, arrayListOf(), arrayListOf())
+        val basicClass = EKtBasicClass(location, name, Type.NULL, Type.NULL, arrayListOf(), arrayListOf())
         declarationMap[descriptor] = basicClass
     }
 
@@ -57,8 +57,8 @@ class IndexerVisitor(
         val location = function.getSourceLocation()
         val name = Name(function.name!!)
         checkDeclarationName(name, function)
-        val kFunction = KFunction(location, name, Type.NULL, null, null)
-        declarationMap[descriptor] = kFunction
+        val ktFunction = EKtFunction(location, name, Type.NULL, null, null)
+        declarationMap[descriptor] = ktFunction
     }
 
     override fun visitProperty(property: KtProperty) {
@@ -67,8 +67,8 @@ class IndexerVisitor(
         val location = property.getSourceLocation()
         val name = Name(property.name!!)
         checkDeclarationName(name, property)
-        val kProperty = KProperty(location, name, Type.NULL, null)
-        declarationMap[descriptor] = kProperty
+        val ktProperty = EKtProperty(location, name, Type.NULL, null)
+        declarationMap[descriptor] = ktProperty
     }
 
     override fun visitTypeParameter(parameter: KtTypeParameter) {
@@ -77,7 +77,7 @@ class IndexerVisitor(
         val location = parameter.getSourceLocation()
         val name = Name(parameter.name!!)
         checkDeclarationName(name, parameter)
-        val typeParameter = CTypeParameter(location, name, Type.NULL)
+        val typeParameter = ETypeParameter(location, name, Type.NULL)
         declarationMap[descriptor] = typeParameter
     }
 }

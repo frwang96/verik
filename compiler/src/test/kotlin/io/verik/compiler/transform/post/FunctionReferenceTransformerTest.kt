@@ -32,7 +32,7 @@ internal class FunctionReferenceTransformerTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "CCallExpression(Int, \$random, [])",
+            "CallExpression(Int, \$random, [])",
             projectContext.findExpression("x")
         )
     }

@@ -16,9 +16,9 @@
 
 package io.verik.compiler.serialize
 
-import io.verik.compiler.ast.element.common.CDeclaration
-import io.verik.compiler.ast.element.common.CElement
-import io.verik.compiler.ast.element.common.CFile
+import io.verik.compiler.ast.element.common.EDeclaration
+import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.sv.*
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.m
@@ -28,19 +28,19 @@ class SerializerBaseVisitor(private val sourceBuilder: SourceBuilder) : Visitor(
     private var first = true
     private val statementVisitor = SerializerStatementVisitor(sourceBuilder)
 
-    override fun visitCElement(element: CElement) {
+    override fun visitElement(element: EElement) {
         m.error("Unable to serialize element: ${element::class.simpleName}", element)
     }
 
-    override fun visitCFile(file: CFile) {
+    override fun visitFile(file: EFile) {
         file.declarations.forEach { it.accept(this) }
     }
 
-    override fun visitCDeclaration(declaration: CDeclaration) {
+    override fun visitDeclaration(declaration: EDeclaration) {
         m.error("Unable to serialize declaration $declaration: Found ${declaration::class.simpleName}", declaration)
     }
 
-    override fun visitSBasicClass(basicClass: SBasicClass) {
+    override fun visitSvBasicClass(basicClass: ESvBasicClass) {
         appendLineIfNotFirst()
         sourceBuilder.appendLine("class $basicClass;", basicClass)
         sourceBuilder.indent {
@@ -50,7 +50,7 @@ class SerializerBaseVisitor(private val sourceBuilder: SourceBuilder) : Visitor(
         sourceBuilder.appendLine("endclass : $basicClass", basicClass)
     }
 
-    override fun visitSModule(module: SModule) {
+    override fun visitModule(module: EModule) {
         appendLineIfNotFirst()
         sourceBuilder.appendLine("module $module;", module)
         sourceBuilder.indent {
@@ -60,7 +60,7 @@ class SerializerBaseVisitor(private val sourceBuilder: SourceBuilder) : Visitor(
         sourceBuilder.appendLine("endmodule : $module", module)
     }
 
-    override fun visitSFunction(function: SFunction) {
+    override fun visitSvFunction(function: ESvFunction) {
         appendLineIfNotFirst()
         val typeString = TypeSerializer.serialize(function)
         sourceBuilder.appendLine("function $typeString $function();", function)
@@ -73,7 +73,7 @@ class SerializerBaseVisitor(private val sourceBuilder: SourceBuilder) : Visitor(
         sourceBuilder.appendLine("endfunction : $function", function)
     }
 
-    override fun visitSProperty(property: SProperty) {
+    override fun visitSvProperty(property: ESvProperty) {
         appendLineIfNotFirst()
         val typeString = TypeSerializer.serialize(property)
         sourceBuilder.append("$typeString $property", property)
@@ -87,19 +87,19 @@ class SerializerBaseVisitor(private val sourceBuilder: SourceBuilder) : Visitor(
         }
     }
 
-    override fun visitSInitialBlock(initialBlock: SInitialBlock) {
+    override fun visitInitialBlock(initialBlock: EInitialBlock) {
         appendLineIfNotFirst()
         sourceBuilder.append("initial ", initialBlock)
         statementVisitor.serializeAsStatement(initialBlock.bodyBlockExpression)
     }
 
-    override fun visitSAlwaysComBlock(alwaysComBlock: SAlwaysComBlock) {
+    override fun visitAlwaysComBlock(alwaysComBlock: EAlwaysComBlock) {
         appendLineIfNotFirst()
         sourceBuilder.append("always_comb ", alwaysComBlock)
         statementVisitor.serializeAsStatement(alwaysComBlock.bodyBlockExpression)
     }
 
-    override fun visitSAlwaysSeqBlock(alwaysSeqBlock: SAlwaysSeqBlock) {
+    override fun visitAlwaysSeqBlock(alwaysSeqBlock: EAlwaysSeqBlock) {
         appendLineIfNotFirst()
         sourceBuilder.append("always_ff ", alwaysSeqBlock)
         statementVisitor.serializeAsExpression(alwaysSeqBlock.eventControlExpression)

@@ -16,7 +16,7 @@
 
 package io.verik.compiler.check.post
 
-import io.verik.compiler.ast.element.common.CCallExpression
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.kt.*
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
@@ -27,7 +27,7 @@ import io.verik.compiler.main.m
 object UntransformedElementChecker : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.verikFiles.forEach {
+        projectContext.files.forEach {
             it.accept(UntransformedElementVisitor)
         }
     }
@@ -36,39 +36,39 @@ object UntransformedElementChecker : ProjectPass {
 
         private const val message = "has not been transformed to SystemVerilog"
 
-        override fun visitKBasicClass(basicClass: KBasicClass) {
-            super.visitKBasicClass(basicClass)
+        override fun visitKtBasicClass(basicClass: EKtBasicClass) {
+            super.visitKtBasicClass(basicClass)
             m.error("Class $basicClass $message", basicClass)
         }
 
-        override fun visitKFunction(function: KFunction) {
-            super.visitKFunction(function)
+        override fun visitKtFunction(function: EKtFunction) {
+            super.visitKtFunction(function)
             m.error("Function $function $message", function)
         }
 
-        override fun visitKProperty(property: KProperty) {
-            super.visitKProperty(property)
+        override fun visitKtProperty(property: EKtProperty) {
+            super.visitKtProperty(property)
             m.error("Property $property $message", property)
         }
 
-        override fun visitKBlockExpression(blockExpression: KBlockExpression) {
-            super.visitKBlockExpression(blockExpression)
+        override fun visitKtBlockExpression(blockExpression: EKtBlockExpression) {
+            super.visitKtBlockExpression(blockExpression)
             m.error("Block expression $message", blockExpression)
         }
 
-        override fun visitKBinaryExpression(binaryExpression: KBinaryExpression) {
-            super.visitKBinaryExpression(binaryExpression)
+        override fun visitKtBinaryExpression(binaryExpression: EKtBinaryExpression) {
+            super.visitKtBinaryExpression(binaryExpression)
             m.error("Binary expression $message", binaryExpression)
         }
 
-        override fun visitCCallExpression(callExpression: CCallExpression) {
-            super.visitCCallExpression(callExpression)
+        override fun visitCallExpression(callExpression: ECallExpression) {
+            super.visitCallExpression(callExpression)
             if (callExpression.reference is CoreKtFunctionDeclaration)
                 m.error("Call expression $message: ${callExpression.reference}", callExpression)
         }
 
-        override fun visitKStringTemplateExpression(stringTemplateExpression: KStringTemplateExpression) {
-            super.visitKStringTemplateExpression(stringTemplateExpression)
+        override fun visitStringTemplateExpression(stringTemplateExpression: EStringTemplateExpression) {
+            super.visitStringTemplateExpression(stringTemplateExpression)
             m.error("String template expression $message", stringTemplateExpression)
         }
     }

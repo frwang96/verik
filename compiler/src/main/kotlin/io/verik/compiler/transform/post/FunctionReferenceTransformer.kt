@@ -16,7 +16,7 @@
 
 package io.verik.compiler.transform.post
 
-import io.verik.compiler.ast.element.common.CCallExpression
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.CoreFunction
@@ -39,15 +39,15 @@ object FunctionReferenceTransformer : ProjectPass {
     }
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.verikFiles.forEach {
+        projectContext.files.forEach {
             it.accept(FunctionReferenceVisitor)
         }
     }
 
     object FunctionReferenceVisitor : TreeVisitor() {
 
-        override fun visitCCallExpression(callExpression: CCallExpression) {
-            super.visitCCallExpression(callExpression)
+        override fun visitCallExpression(callExpression: ECallExpression) {
+            super.visitCallExpression(callExpression)
             val reference = functionReferenceMap[callExpression.reference]
             if (reference != null) {
                 callExpression.reference = reference

@@ -16,9 +16,9 @@
 
 package io.verik.compiler.transform.post
 
-import io.verik.compiler.ast.element.common.CCallExpression
-import io.verik.compiler.ast.element.sv.SEventControlExpression
-import io.verik.compiler.ast.element.sv.SEventExpression
+import io.verik.compiler.ast.element.common.ECallExpression
+import io.verik.compiler.ast.element.sv.EEventControlExpression
+import io.verik.compiler.ast.element.sv.EEventExpression
 import io.verik.compiler.ast.property.EdgeType
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
@@ -29,32 +29,32 @@ import io.verik.compiler.main.m
 object FunctionSpecialTransformer : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.verikFiles.forEach {
+        projectContext.files.forEach {
             it.accept(FunctionReferenceVisitor)
         }
     }
 
     object FunctionReferenceVisitor : TreeVisitor() {
 
-        override fun visitCCallExpression(callExpression: CCallExpression) {
-            super.visitCCallExpression(callExpression)
+        override fun visitCallExpression(callExpression: ECallExpression) {
+            super.visitCallExpression(callExpression)
             val newExpression = when (callExpression.reference) {
                 CoreFunction.Core.POSEDGE_BOOLEAN -> {
-                    SEventExpression(
+                    EEventExpression(
                         callExpression.location,
                         callExpression.valueArguments[0].expression,
                         EdgeType.POSEDGE
                     )
                 }
                 CoreFunction.Core.NEGEDGE_BOOLEAN -> {
-                    SEventExpression(
+                    EEventExpression(
                         callExpression.location,
                         callExpression.valueArguments[0].expression,
                         EdgeType.NEGEDGE
                     )
                 }
                 CoreFunction.Core.WAIT_EVENT -> {
-                    SEventControlExpression(callExpression.location, callExpression.valueArguments[0].expression)
+                    EEventControlExpression(callExpression.location, callExpression.valueArguments[0].expression)
                 }
                 CoreFunction.Core.ON_EVENT_FUNCTION -> {
                     m.error("On expression used out of context", callExpression)

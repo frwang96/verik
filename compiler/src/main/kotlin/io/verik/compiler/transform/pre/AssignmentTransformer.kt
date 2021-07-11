@@ -16,8 +16,8 @@
 
 package io.verik.compiler.transform.pre
 
-import io.verik.compiler.ast.element.kt.KBinaryExpression
-import io.verik.compiler.ast.element.sv.SBinaryExpression
+import io.verik.compiler.ast.element.kt.EKtBinaryExpression
+import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.property.KOperatorKind
 import io.verik.compiler.ast.property.SOperatorKind
 import io.verik.compiler.common.ProjectPass
@@ -27,18 +27,18 @@ import io.verik.compiler.main.ProjectContext
 object AssignmentTransformer : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.verikFiles.forEach {
+        projectContext.files.forEach {
             it.accept(AssignmentVisitor)
         }
     }
 
     object AssignmentVisitor : TreeVisitor() {
 
-        override fun visitKBinaryExpression(binaryExpression: KBinaryExpression) {
-            super.visitKBinaryExpression(binaryExpression)
+        override fun visitKtBinaryExpression(binaryExpression: EKtBinaryExpression) {
+            super.visitKtBinaryExpression(binaryExpression)
             if (binaryExpression.kind == KOperatorKind.EQ) {
                 binaryExpression.replace(
-                    SBinaryExpression(
+                    ESvBinaryExpression(
                         binaryExpression.location,
                         binaryExpression.type,
                         binaryExpression.left,

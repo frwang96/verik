@@ -16,7 +16,7 @@
 
 package io.verik.compiler.check.pre
 
-import io.verik.compiler.ast.element.common.CDeclaration
+import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -25,27 +25,27 @@ import io.verik.compiler.main.m
 object KeywordChecker : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.verikFiles.forEach {
+        projectContext.files.forEach {
             it.accept(KeywordVisitor)
         }
     }
 
     object KeywordVisitor : TreeVisitor() {
 
-        override fun visitCDeclaration(declaration: CDeclaration) {
-            if (declaration.name.name in vKeywords)
+        override fun visitDeclaration(declaration: EDeclaration) {
+            if (declaration.name.name in vkKeywords)
                 m.error("Conflict with Verik reserved keyword: ${declaration.name}", declaration)
-            if (declaration.name.name in sKeywords)
+            if (declaration.name.name in svKeywords)
                 m.error("Conflict with SystemVerilog reserved keyword: ${declaration.name}", declaration)
         }
     }
 
-    private val vKeywords = setOf(
+    private val vkKeywords = setOf(
         "vinit",
         "vnew"
     )
 
-    private val sKeywords = setOf(
+    private val svKeywords = setOf(
         "alias",
         "always",
         "always_comb",

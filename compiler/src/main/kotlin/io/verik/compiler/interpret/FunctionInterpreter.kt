@@ -16,12 +16,12 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.common.CAbstractBlockExpression
-import io.verik.compiler.ast.element.common.CCallExpression
-import io.verik.compiler.ast.element.common.CDeclaration
+import io.verik.compiler.ast.element.common.EAbstractBlockExpression
+import io.verik.compiler.ast.element.common.ECallExpression
+import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.cast
-import io.verik.compiler.ast.element.kt.KFunction
-import io.verik.compiler.ast.element.kt.KFunctionLiteralExpression
+import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
+import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.sv.*
 import io.verik.compiler.ast.property.FunctionAnnotationType
 import io.verik.compiler.core.CoreFunction
@@ -29,12 +29,12 @@ import io.verik.compiler.main.m
 
 object FunctionInterpreter {
 
-    fun interpret(function: KFunction): CDeclaration? {
+    fun interpret(function: EKtFunction): EDeclaration? {
         val bodyBlockExpression = function.bodyBlockExpression
         return when (function.annotationType) {
             FunctionAnnotationType.RUN -> {
                 if (bodyBlockExpression != null) {
-                    SInitialBlock(
+                    EInitialBlock(
                         function.location,
                         function.name,
                         bodyBlockExpression
@@ -46,7 +46,7 @@ object FunctionInterpreter {
             }
             FunctionAnnotationType.COM -> {
                 if (bodyBlockExpression != null) {
-                    SAlwaysComBlock(
+                    EAlwaysComBlock(
                         function.location,
                         function.name,
                         bodyBlockExpression
@@ -65,7 +65,7 @@ object FunctionInterpreter {
                 }
             }
             else -> {
-                SFunction(
+                ESvFunction(
                     function.location,
                     function.name,
                     function.type,
@@ -76,24 +76,24 @@ object FunctionInterpreter {
     }
 
     private fun getAlwaysSeqBlock(
-        function: KFunction,
-        bodyBlockExpression: CAbstractBlockExpression
-    ): SAlwaysSeqBlock? {
+        function: EKtFunction,
+        bodyBlockExpression: EAbstractBlockExpression
+    ): EAlwaysSeqBlock? {
         if (bodyBlockExpression.statements.size != 1) {
             m.error("On expression expected", bodyBlockExpression)
             return null
         }
         val onExpression = bodyBlockExpression.statements[0]
-        if (onExpression !is CCallExpression || onExpression.reference != CoreFunction.Core.ON_EVENT_FUNCTION) {
+        if (onExpression !is ECallExpression || onExpression.reference != CoreFunction.Core.ON_EVENT_FUNCTION) {
             m.error("On expression expected", bodyBlockExpression)
             return null
         }
         val eventExpression = onExpression.valueArguments[0].expression
-        val eventControlExpression = SEventControlExpression(eventExpression.location, eventExpression)
+        val eventControlExpression = EEventControlExpression(eventExpression.location, eventExpression)
         val alwaysSeqBlockBodyBlockExpression = onExpression.valueArguments[1].expression
-            .cast<KFunctionLiteralExpression>()?.bodyBlockExpression
+            .cast<EFunctionLiteralExpression>()?.bodyBlockExpression
             ?: return null
-        return SAlwaysSeqBlock(
+        return EAlwaysSeqBlock(
             function.location,
             function.name,
             alwaysSeqBlockBodyBlockExpression,

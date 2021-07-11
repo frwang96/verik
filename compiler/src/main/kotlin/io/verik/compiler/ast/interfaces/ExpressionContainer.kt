@@ -16,9 +16,9 @@
 
 package io.verik.compiler.ast.interfaces
 
-import io.verik.compiler.ast.element.common.CExpression
+import io.verik.compiler.ast.element.common.EExpression
 
 interface ExpressionContainer {
 
-    fun replaceChild(oldExpression: CExpression, newExpression: CExpression)
+    fun replaceChild(oldExpression: EExpression, newExpression: EExpression)
 }

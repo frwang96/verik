@@ -16,13 +16,13 @@
 
 package io.verik.compiler.transform.pre
 
-import io.verik.compiler.ast.element.common.CCallExpression
-import io.verik.compiler.ast.element.common.CExpression
-import io.verik.compiler.ast.element.common.CValueArgument
-import io.verik.compiler.ast.element.kt.KExpressionStringTemplateEntry
-import io.verik.compiler.ast.element.kt.KLiteralStringTemplateEntry
-import io.verik.compiler.ast.element.kt.KStringTemplateExpression
-import io.verik.compiler.ast.element.sv.SStringExpression
+import io.verik.compiler.ast.element.common.ECallExpression
+import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EValueArgument
+import io.verik.compiler.ast.element.kt.EExpressionStringTemplateEntry
+import io.verik.compiler.ast.element.kt.ELiteralStringTemplateEntry
+import io.verik.compiler.ast.element.kt.EStringTemplateExpression
+import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
@@ -34,12 +34,12 @@ import io.verik.compiler.main.m
 object StringTemplateExpressionReducer : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.verikFiles.forEach {
+        projectContext.files.forEach {
             it.accept(StringTemplateExpressionVisitor)
         }
     }
 
-    private fun getFormatSpecifier(expression: CExpression): String {
+    private fun getFormatSpecifier(expression: EExpression): String {
         return when (expression.type.reference) {
             CoreClass.Kotlin.INT -> "%d"
             else -> {
@@ -51,14 +51,14 @@ object StringTemplateExpressionReducer : ProjectPass {
 
     object StringTemplateExpressionVisitor : TreeVisitor() {
 
-        override fun visitKStringTemplateExpression(stringTemplateExpression: KStringTemplateExpression) {
-            super.visitKStringTemplateExpression(stringTemplateExpression)
-            val isStringExpression = stringTemplateExpression.entries.all { it is KLiteralStringTemplateEntry }
+        override fun visitStringTemplateExpression(stringTemplateExpression: EStringTemplateExpression) {
+            super.visitStringTemplateExpression(stringTemplateExpression)
+            val isStringExpression = stringTemplateExpression.entries.all { it is ELiteralStringTemplateEntry }
             val builder = StringBuilder()
-            val valueArguments = ArrayList<CValueArgument>()
+            val valueArguments = ArrayList<EValueArgument>()
             for (entry in stringTemplateExpression.entries) {
                 when (entry) {
-                    is KLiteralStringTemplateEntry -> {
+                    is ELiteralStringTemplateEntry -> {
                         entry.text.toCharArray().forEach {
                             val text = when (it) {
                                 '\n' -> "\\n"
@@ -72,27 +72,27 @@ object StringTemplateExpressionReducer : ProjectPass {
                             builder.append(text)
                         }
                     }
-                    is KExpressionStringTemplateEntry -> {
+                    is EExpressionStringTemplateEntry -> {
                         builder.append(getFormatSpecifier(entry.expression))
-                        valueArguments.add(CValueArgument(entry.location, NullDeclaration, entry.expression))
+                        valueArguments.add(EValueArgument(entry.location, NullDeclaration, entry.expression))
                     }
                 }
             }
 
-            val stringExpression = SStringExpression(
+            val stringExpression = EStringExpression(
                 stringTemplateExpression.location,
                 builder.toString()
             )
             if (isStringExpression) {
                 stringTemplateExpression.replace(stringExpression)
             } else {
-                val stringExpressionValueArgument = CValueArgument(
+                val stringExpressionValueArgument = EValueArgument(
                     stringTemplateExpression.location,
                     NullDeclaration,
                     stringExpression
                 )
                 valueArguments.add(0, stringExpressionValueArgument)
-                val callExpression = CCallExpression(
+                val callExpression = ECallExpression(
                     stringTemplateExpression.location,
                     stringTemplateExpression.type,
                     CoreFunction.Sv.SFORMATF,

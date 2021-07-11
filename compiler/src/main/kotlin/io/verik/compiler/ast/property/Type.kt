@@ -16,8 +16,8 @@
 
 package io.verik.compiler.ast.property
 
-import io.verik.compiler.ast.element.common.CAbstractClass
-import io.verik.compiler.ast.element.common.CTypeParameter
+import io.verik.compiler.ast.element.common.EAbstractClass
+import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.common.NullDeclaration
@@ -34,7 +34,7 @@ class Type(
 
     fun isCardinalType(): Boolean {
         return when (val reference = reference) {
-            is CTypeParameter -> reference.type.isCardinalType()
+            is ETypeParameter -> reference.type.isCardinalType()
             is CoreClassDeclaration -> reference == CoreClass.Core.CARDINAL
             is CoreCardinalDeclaration -> true
             else -> false
@@ -64,7 +64,7 @@ class Type(
     private fun getSupertypes(): List<Type> {
         val supertypes = ArrayList<Type>()
         var type: Type? = when (val reference = reference) {
-            is CAbstractClass -> this
+            is EAbstractClass -> this
             is CoreClassDeclaration -> this
             is CoreCardinalConstantDeclaration -> CoreClass.Core.CARDINAL.toNoArgumentsType()
             else -> m.fatal("Type reference not canonicalized: $reference", null)
@@ -78,7 +78,7 @@ class Type(
 
     private fun getSupertype(): Type? {
         return when (val reference = reference) {
-            is CAbstractClass -> reference.supertype
+            is EAbstractClass -> reference.supertype
             is CoreClassDeclaration -> reference.superclass?.toNoArgumentsType()
             else -> null
         }

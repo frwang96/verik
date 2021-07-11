@@ -27,8 +27,8 @@ internal class CasterBaseVisitorTest : BaseTest() {
     fun `file empty`() {
         val projectContext = TestDriver.cast("")
         assertElementEquals(
-            "CFile([])",
-            projectContext.verikFiles.first()
+            "File([])",
+            projectContext.files.first()
         )
     }
 
@@ -40,8 +40,8 @@ internal class CasterBaseVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "CFile([KBasicClass(C, [], [])])",
-            projectContext.verikFiles.first()
+            "File([KtBasicClass(C, [], [])])",
+            projectContext.files.first()
         )
     }
 
@@ -55,12 +55,12 @@ internal class CasterBaseVisitorTest : BaseTest() {
         )
         assertElementEquals(
             """
-                CFile([
-                    KBasicClass(C, [], []),
-                    KBasicClass(D, [], [])
+                File([
+                    KtBasicClass(C, [], []),
+                    KtBasicClass(D, [], [])
                 ])
             """.trimIndent(),
-            projectContext.verikFiles.first()
+            projectContext.files.first()
         )
     }
 
@@ -74,7 +74,7 @@ internal class CasterBaseVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KBasicClass(C, [], [KBasicClass(D, [], [])])",
+            "KtBasicClass(C, [], [KtBasicClass(D, [], [])])",
             projectContext.findDeclaration("C")
         )
     }
@@ -89,7 +89,7 @@ internal class CasterBaseVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KBasicClass(C, [], [KFunction(f, Unit, *, null)])",
+            "KtBasicClass(C, [], [KtFunction(f, Unit, *, null)])",
             projectContext.findDeclaration("C")
         )
     }
@@ -104,7 +104,7 @@ internal class CasterBaseVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KBasicClass(C, [], [KProperty(x, Boolean, *)])",
+            "KtBasicClass(C, [], [KtProperty(x, Boolean, *)])",
             projectContext.findDeclaration("C")
         )
     }
@@ -117,7 +117,7 @@ internal class CasterBaseVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KBasicClass(C, [], [KBasicClass(Companion, [], [])])",
+            "KtBasicClass(C, [], [KtBasicClass(Companion, [], [])])",
             projectContext.findDeclaration("C")
         )
     }
@@ -130,7 +130,7 @@ internal class CasterBaseVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KBasicClass(C, [CTypeParameter(T, Any)], [])",
+            "KtBasicClass(C, [TypeParameter(T, Any)], [])",
             projectContext.findDeclaration("C")
         )
     }
@@ -143,7 +143,7 @@ internal class CasterBaseVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KFunction(f, Unit, *, null)",
+            "KtFunction(f, Unit, *, null)",
             projectContext.findDeclaration("f")
         )
     }
@@ -157,7 +157,7 @@ internal class CasterBaseVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KFunction(f, Unit, *, TASK)",
+            "KtFunction(f, Unit, *, TASK)",
             projectContext.findDeclaration("f")
         )
     }
@@ -185,7 +185,7 @@ internal class CasterBaseVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KProperty(x, Boolean, *)",
+            "KtProperty(x, Boolean, *)",
             projectContext.findDeclaration("x")
         )
     }

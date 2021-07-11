@@ -24,7 +24,7 @@ import org.jetbrains.kotlin.psi.*
 object UnsupportedElementChecker : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.kotlinFiles.forEach { it.accept(UnsupportedElementVisitor) }
+        projectContext.ktFiles.forEach { it.accept(UnsupportedElementVisitor) }
     }
 
     object UnsupportedElementVisitor : KtTreeVisitorVoid() {

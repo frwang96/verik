@@ -16,7 +16,7 @@
 
 package io.verik.compiler.transform.pre
 
-import io.verik.compiler.ast.element.kt.KBinaryExpression
+import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.property.KOperatorKind
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
@@ -32,24 +32,24 @@ object AssignmentOperatorReducer : ProjectPass {
     }
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.verikFiles.forEach {
+        projectContext.files.forEach {
             it.accept(AssignmentOperatorVisitor)
         }
     }
 
     object AssignmentOperatorVisitor : TreeVisitor() {
 
-        override fun visitKBinaryExpression(binaryExpression: KBinaryExpression) {
-            super.visitKBinaryExpression(binaryExpression)
+        override fun visitKtBinaryExpression(binaryExpression: EKtBinaryExpression) {
+            super.visitKtBinaryExpression(binaryExpression)
             val kind = assignmentOperatorMap[binaryExpression.kind]
             if (kind != null) {
                 val copyExpression = binaryExpression.left.copy()
                     ?: return
-                val assignmentExpression = KBinaryExpression(
+                val assignmentExpression = EKtBinaryExpression(
                     binaryExpression.location,
                     binaryExpression.type,
                     binaryExpression.left,
-                    KBinaryExpression(
+                    EKtBinaryExpression(
                         binaryExpression.location,
                         copyExpression.type,
                         copyExpression,

@@ -16,8 +16,8 @@
 
 package io.verik.compiler.serialize
 
-import io.verik.compiler.ast.element.common.CDeclaration
-import io.verik.compiler.ast.element.common.CElement
+import io.verik.compiler.ast.element.common.EDeclaration
+import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.core.CoreCardinalConstantDeclaration
 import io.verik.compiler.core.CoreClass
@@ -25,7 +25,7 @@ import io.verik.compiler.main.m
 
 object TypeSerializer {
 
-    fun serialize(declaration: CDeclaration): String {
+    fun serialize(declaration: EDeclaration): String {
         val type = declaration.type
         return when (type.reference) {
             CoreClass.Kotlin.UNIT -> "void"
@@ -40,7 +40,7 @@ object TypeSerializer {
         }
     }
 
-    private fun serializeCardinalLittleEndian(type: Type, element: CElement): String {
+    private fun serializeCardinalLittleEndian(type: Type, element: EElement): String {
         val reference = type.reference
         return if (reference is CoreCardinalConstantDeclaration) {
             val cardinal = reference.cardinal

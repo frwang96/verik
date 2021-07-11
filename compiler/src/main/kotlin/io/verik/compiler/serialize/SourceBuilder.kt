@@ -16,8 +16,8 @@
 
 package io.verik.compiler.serialize
 
-import io.verik.compiler.ast.element.common.CElement
-import io.verik.compiler.ast.element.common.CFile
+import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.property.SourceType
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.SourceLocation
@@ -25,7 +25,7 @@ import io.verik.compiler.main.TextFile
 
 class SourceBuilder(
     private val projectContext: ProjectContext,
-    private val file: CFile
+    private val file: EFile
 ) {
 
     private val sourceActions = ArrayList<SourceAction>()
@@ -60,7 +60,7 @@ class SourceBuilder(
         return TextFile(file.getOutputPathNotNull(), sourceBuilder.toString())
     }
 
-    fun appendLine(content: String, element: CElement?) {
+    fun appendLine(content: String, element: EElement?) {
         append(content, element)
         appendLine()
     }
@@ -69,7 +69,7 @@ class SourceBuilder(
         sourceActions.add(SourceAction(SourceActionType.NEW_LINE, "", null))
     }
 
-    fun append(content: String, element: CElement?) {
+    fun append(content: String, element: EElement?) {
         sourceActions.add(SourceAction(SourceActionType.REGULAR, content, element?.location))
     }
 

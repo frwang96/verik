@@ -16,10 +16,10 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.element.common.CFile
-import io.verik.compiler.ast.element.kt.KBasicClass
-import io.verik.compiler.ast.element.kt.KFunction
-import io.verik.compiler.ast.element.kt.KProperty
+import io.verik.compiler.ast.element.common.EFile
+import io.verik.compiler.ast.element.kt.EKtBasicClass
+import io.verik.compiler.ast.element.kt.EKtFunction
+import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -29,7 +29,7 @@ object ElementCounter : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
         val elementVisitor = ElementVisitor()
-        projectContext.verikFiles.forEach { it.accept(elementVisitor) }
+        projectContext.files.forEach { it.accept(elementVisitor) }
         m.log("Count: Files: ${elementVisitor.fileCount}")
         m.log("Count: Classes: ${elementVisitor.classCount}")
         m.log("Count: Functions: ${elementVisitor.functionCount}")
@@ -43,23 +43,23 @@ object ElementCounter : ProjectPass {
         var functionCount = 0
         var propertyCount = 0
 
-        override fun visitCFile(file: CFile) {
-            super.visitCFile(file)
+        override fun visitFile(file: EFile) {
+            super.visitFile(file)
             fileCount++
         }
 
-        override fun visitKBasicClass(basicClass: KBasicClass) {
-            super.visitKBasicClass(basicClass)
+        override fun visitKtBasicClass(basicClass: EKtBasicClass) {
+            super.visitKtBasicClass(basicClass)
             classCount++
         }
 
-        override fun visitKFunction(function: KFunction) {
-            super.visitKFunction(function)
+        override fun visitKtFunction(function: EKtFunction) {
+            super.visitKtFunction(function)
             functionCount++
         }
 
-        override fun visitKProperty(property: KProperty) {
-            super.visitKProperty(property)
+        override fun visitKtProperty(property: EKtProperty) {
+            super.visitKtProperty(property)
             propertyCount++
         }
     }

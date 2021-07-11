@@ -16,7 +16,7 @@
 
 package io.verik.compiler.transform.post
 
-import io.verik.compiler.ast.element.common.CFile
+import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.property.Name
 import io.verik.compiler.common.PackageDeclaration
 import io.verik.compiler.common.ProjectPass
@@ -27,7 +27,7 @@ import io.verik.compiler.main.ProjectContext
 object PackageNameTransformer : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.verikFiles.forEach {
+        projectContext.files.forEach {
             it.accept(PackageNameVisitor)
         }
     }
@@ -44,7 +44,7 @@ object PackageNameTransformer : ProjectPass {
             }
         }
 
-        override fun visitCFile(file: CFile) {
+        override fun visitFile(file: EFile) {
             file.packageDeclaration = transformPackageName(file.packageDeclaration)
         }
     }

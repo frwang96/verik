@@ -45,17 +45,17 @@ class KotlinCompiler : ProjectPass {
         val environment = createKotlinCoreEnvironment()
         val psiFileFactory = KtPsiFactory(environment.project, false)
 
-        val kotlinFiles = projectContext.inputTextFiles.map {
+        val ktFiles = projectContext.inputTextFiles.map {
             psiFileFactory.createPhysicalFile(it.path.toString(), it.content)
         }
         m.flush()
 
         m.info("Compile: Analyze input files")
         val analyzer = AnalyzerWithCompilerReport(environment.configuration)
-        analyzer.analyzeAndReport(kotlinFiles) {
+        analyzer.analyzeAndReport(ktFiles) {
             TopDownAnalyzerFacadeForJVM.analyzeFilesWithJavaIntegration(
                 environment.project,
-                kotlinFiles,
+                ktFiles,
                 NoScopeRecordCliBindingTrace(),
                 environment.configuration,
                 environment::createPackagePartProvider,
@@ -63,7 +63,7 @@ class KotlinCompiler : ProjectPass {
             )
         }
 
-        projectContext.kotlinFiles = kotlinFiles
+        projectContext.ktFiles = ktFiles
         projectContext.bindingContext = analyzer.analysisResult.bindingContext
         m.flush()
     }

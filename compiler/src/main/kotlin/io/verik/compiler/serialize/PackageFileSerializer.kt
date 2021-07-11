@@ -16,8 +16,8 @@
 
 package io.verik.compiler.serialize
 
-import io.verik.compiler.ast.element.common.CFile
-import io.verik.compiler.ast.element.sv.SBasicClass
+import io.verik.compiler.ast.element.common.EFile
+import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.property.SourceType
 import io.verik.compiler.common.PackageDeclaration
 import io.verik.compiler.main.ProjectContext
@@ -32,9 +32,9 @@ object PackageFileSerializer {
         }
     }
 
-    private fun buildPackageMap(projectContext: ProjectContext): HashMap<PackageDeclaration, ArrayList<CFile>> {
-        val packageMap = HashMap<PackageDeclaration, ArrayList<CFile>>()
-        projectContext.verikFiles.forEach {
+    private fun buildPackageMap(projectContext: ProjectContext): HashMap<PackageDeclaration, ArrayList<EFile>> {
+        val packageMap = HashMap<PackageDeclaration, ArrayList<EFile>>()
+        projectContext.files.forEach {
             if (it.sourceType == SourceType.PACKAGE) {
                 if (it.packageDeclaration !in packageMap) {
                     packageMap[it.packageDeclaration] = ArrayList()
@@ -45,7 +45,7 @@ object PackageFileSerializer {
         return packageMap
     }
 
-    private fun buildPackageFile(projectContext: ProjectContext, files: List<CFile>): TextFile {
+    private fun buildPackageFile(projectContext: ProjectContext, files: List<EFile>): TextFile {
         val inputPath = files[0].inputPath.parent
         val outputPath = files[0].getOutputPathNotNull().parent.resolve("Pkg.sv")
         val fileHeader = FileHeaderBuilder.build(
@@ -62,7 +62,7 @@ object PackageFileSerializer {
         builder.appendLine("package $packageName;")
         files.forEach { file ->
             file.declarations.forEach {
-                if (it is SBasicClass) {
+                if (it is ESvBasicClass) {
                     builder.appendLine()
                     builder.append(indent)
                     builder.appendLine("typedef class ${it.name};")

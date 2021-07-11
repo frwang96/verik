@@ -16,10 +16,10 @@
 
 package io.verik.compiler.transform.pre
 
-import io.verik.compiler.ast.element.common.CCallExpression
-import io.verik.compiler.ast.element.common.CDotQualifiedExpression
-import io.verik.compiler.ast.element.common.CValueArgument
-import io.verik.compiler.ast.element.kt.KBinaryExpression
+import io.verik.compiler.ast.element.common.ECallExpression
+import io.verik.compiler.ast.element.common.EDotQualifiedExpression
+import io.verik.compiler.ast.element.common.EValueArgument
+import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.property.KOperatorKind
 import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.ProjectPass
@@ -44,7 +44,7 @@ object BinaryExpressionReducer : ProjectPass {
     }
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.verikFiles.forEach {
+        projectContext.files.forEach {
             it.accept(BinaryExpressionVisitor)
         }
     }
@@ -57,20 +57,20 @@ object BinaryExpressionReducer : ProjectPass {
 
     object BinaryExpressionVisitor : TreeVisitor() {
 
-        override fun visitKBinaryExpression(binaryExpression: KBinaryExpression) {
-            super.visitKBinaryExpression(binaryExpression)
+        override fun visitKtBinaryExpression(binaryExpression: EKtBinaryExpression) {
+            super.visitKtBinaryExpression(binaryExpression)
             val receiverClass = binaryExpression.left.type.reference
             val selectorClass = binaryExpression.right.type.reference
             val kind = binaryExpression.kind
             if (receiverClass is CoreClassDeclaration && selectorClass is CoreClassDeclaration) {
                 val reference = referenceMap[ReducerEntry(receiverClass, selectorClass, kind)]
                 if (reference != null) {
-                    val callExpression = CCallExpression(
+                    val callExpression = ECallExpression(
                         binaryExpression.location,
                         binaryExpression.type,
                         reference,
                         arrayListOf(
-                            CValueArgument(
+                            EValueArgument(
                                 binaryExpression.right.location,
                                 NullDeclaration,
                                 binaryExpression.right
@@ -78,7 +78,7 @@ object BinaryExpressionReducer : ProjectPass {
                         )
                     )
                     binaryExpression.replace(
-                        CDotQualifiedExpression(
+                        EDotQualifiedExpression(
                             binaryExpression.location,
                             binaryExpression.type,
                             binaryExpression.left,

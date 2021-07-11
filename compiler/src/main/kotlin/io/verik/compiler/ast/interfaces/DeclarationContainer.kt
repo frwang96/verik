@@ -16,9 +16,9 @@
 
 package io.verik.compiler.ast.interfaces
 
-import io.verik.compiler.ast.element.common.CDeclaration
+import io.verik.compiler.ast.element.common.EDeclaration
 
 interface DeclarationContainer {
 
-    fun replaceChild(oldDeclaration: CDeclaration, newDeclaration: CDeclaration)
+    fun replaceChild(oldDeclaration: EDeclaration, newDeclaration: EDeclaration)
 }

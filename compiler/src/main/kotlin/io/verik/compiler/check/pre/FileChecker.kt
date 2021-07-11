@@ -16,7 +16,7 @@
 
 package io.verik.compiler.check.pre
 
-import io.verik.compiler.ast.element.common.CFile
+import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.property.Name
 import io.verik.compiler.common.PackageDeclaration
 import io.verik.compiler.common.ProjectPass
@@ -29,14 +29,14 @@ import java.nio.file.Paths
 object FileChecker : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.verikFiles.forEach {
+        projectContext.files.forEach {
             it.accept(FileVisitor)
         }
     }
 
     object FileVisitor : TreeVisitor() {
 
-        override fun visitCFile(file: CFile) {
+        override fun visitFile(file: EFile) {
             val pathPackageDeclaration = (0 until (file.relativePath.nameCount - 1))
                 .joinToString(separator = ".") { file.relativePath.getName(it).toString() }
                 .let { PackageDeclaration(Name(it)) }

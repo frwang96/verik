@@ -31,7 +31,7 @@ internal class FunctionInterpreterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SFunction(f, Unit, *)",
+            "SvFunction(f, Unit, *)",
             projectContext.findDeclaration("f")
         )
     }
@@ -46,7 +46,7 @@ internal class FunctionInterpreterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SFunction(f, Unit, *)",
+            "SvFunction(f, Unit, *)",
             projectContext.findDeclaration("f")
         )
     }
@@ -62,7 +62,7 @@ internal class FunctionInterpreterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SInitialBlock(f, KBlockExpression(*))",
+            "InitialBlock(f, KtBlockExpression(*))",
             projectContext.findDeclaration("f")
         )
     }
@@ -81,7 +81,7 @@ internal class FunctionInterpreterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SAlwaysSeqBlock(f, SEventControlExpression(*), KBlockExpression(*))",
+            "AlwaysSeqBlock(f, EventControlExpression(*), KtBlockExpression(*))",
             projectContext.findDeclaration("f")
         )
     }

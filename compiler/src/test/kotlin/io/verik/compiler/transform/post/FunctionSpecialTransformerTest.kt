@@ -16,7 +16,7 @@
 
 package io.verik.compiler.transform.post
 
-import io.verik.compiler.ast.element.sv.SBlockExpression
+import io.verik.compiler.ast.element.sv.ESvBlockExpression
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertElementEquals
@@ -36,8 +36,8 @@ internal class FunctionSpecialTransformerTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SEventControlExpression(Unit, SEdgeExpression(Event, POSEDGE, CReferenceExpression(*)))",
-            (projectContext.findExpression("f") as SBlockExpression).statements[0]
+            "EventControlExpression(Unit, EdgeExpression(Event, POSEDGE, ReferenceExpression(*)))",
+            (projectContext.findExpression("f") as ESvBlockExpression).statements[0]
         )
     }
 }
