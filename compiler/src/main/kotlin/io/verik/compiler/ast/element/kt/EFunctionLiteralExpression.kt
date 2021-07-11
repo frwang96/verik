@@ -22,7 +22,7 @@ import io.verik.compiler.ast.element.common.cast
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.core.Core
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.SourceLocation
 import io.verik.compiler.main.m
 

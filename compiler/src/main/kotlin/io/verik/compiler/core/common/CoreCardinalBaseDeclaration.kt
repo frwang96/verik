@@ -14,13 +14,17 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core
+package io.verik.compiler.core.common
 
 import io.verik.compiler.ast.property.Name
 
-class CoreCardinalFunctionDeclaration(
-    override var name: Name
-) : CoreCardinalDeclaration() {
+object CoreCardinalBaseDeclaration : CoreCardinalDeclaration() {
+
+    override var name = Name("Cardinal")
 
     override val qualifiedName = Name("${CorePackage.VK}.$name")
+
+    override fun toString(): String {
+        return "`*`"
+    }
 }

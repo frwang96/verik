@@ -20,7 +20,7 @@ import io.verik.compiler.ast.element.common.EAbstractClass
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.ESvBasicClass
-import io.verik.compiler.core.Core
+import io.verik.compiler.core.common.Core
 
 object ClassInterpreter {
 

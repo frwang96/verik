@@ -24,7 +24,7 @@ import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.sv.*
 import io.verik.compiler.ast.property.FunctionAnnotationType
-import io.verik.compiler.core.Core
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.m
 
 object FunctionInterpreter {

@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core
+package io.verik.compiler.core.common
 
 abstract class CoreCardinalDeclaration : CoreDeclaration()

@@ -14,17 +14,28 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core
+package io.verik.compiler.core.common
 
 import io.verik.compiler.ast.property.Name
 
-object CoreCardinalBaseDeclaration : CoreCardinalDeclaration() {
+class CoreKtFunctionDeclaration private constructor(
+    override var name: Name,
+    override val qualifiedName: Name,
+    val parameterClassNames: List<Name>
+) : CoreFunctionDeclaration() {
 
-    override var name = Name("Cardinal")
+    companion object {
 
-    override val qualifiedName = Name("${CorePackage.VK}.$name")
-
-    override fun toString(): String {
-        return "`*`"
+        operator fun invoke(
+            parent: String,
+            name: String,
+            vararg parameterClassDeclarations: CoreClassDeclaration
+        ): CoreKtFunctionDeclaration {
+            return CoreKtFunctionDeclaration(
+                Name(name),
+                Name("$parent.$name"),
+                parameterClassDeclarations.map { it.name }
+            )
+        }
     }
 }

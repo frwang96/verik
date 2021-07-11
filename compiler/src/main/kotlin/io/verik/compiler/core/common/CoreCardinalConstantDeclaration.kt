@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core
+package io.verik.compiler.core.common
 
 import io.verik.compiler.ast.property.Name
 import io.verik.compiler.main.m

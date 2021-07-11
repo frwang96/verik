@@ -24,9 +24,9 @@ import io.verik.compiler.ast.property.KOperatorKind
 import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.Core
-import io.verik.compiler.core.CoreClassDeclaration
-import io.verik.compiler.core.CoreKtFunctionDeclaration
+import io.verik.compiler.core.common.Core
+import io.verik.compiler.core.common.CoreClassDeclaration
+import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 
 object BinaryExpressionReducer : ProjectPass {

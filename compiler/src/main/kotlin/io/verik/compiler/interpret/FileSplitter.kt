@@ -24,7 +24,7 @@ import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.property.SourceType
 import io.verik.compiler.common.ProjectPass
-import io.verik.compiler.core.CorePackage
+import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 

@@ -19,7 +19,7 @@ package io.verik.compiler.cast
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.common.NullDeclaration
-import io.verik.compiler.core.CoreDeclarationMap
+import io.verik.compiler.core.common.CoreDeclarationMap
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
 import org.jetbrains.kotlin.psi.KtElement

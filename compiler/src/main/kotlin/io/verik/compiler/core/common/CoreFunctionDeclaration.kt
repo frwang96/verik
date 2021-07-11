@@ -14,13 +14,6 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core
+package io.verik.compiler.core.common
 
-import io.verik.compiler.common.PackageDeclaration
-
-open class CoreScope private constructor(protected val parent: String) {
-
-    constructor(packageDeclaration: PackageDeclaration) : this(packageDeclaration.name.name)
-
-    constructor(classDeclaration: CoreClassDeclaration) : this(classDeclaration.qualifiedName.name)
-}
+abstract class CoreFunctionDeclaration : CoreDeclaration()

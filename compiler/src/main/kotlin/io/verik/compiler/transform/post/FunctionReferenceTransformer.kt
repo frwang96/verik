@@ -19,9 +19,9 @@ package io.verik.compiler.transform.post
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.Core
-import io.verik.compiler.core.CoreKtFunctionDeclaration
-import io.verik.compiler.core.CoreSvFunctionDeclaration
+import io.verik.compiler.core.common.Core
+import io.verik.compiler.core.common.CoreKtFunctionDeclaration
+import io.verik.compiler.core.common.CoreSvFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 
 object FunctionReferenceTransformer : ProjectPass {

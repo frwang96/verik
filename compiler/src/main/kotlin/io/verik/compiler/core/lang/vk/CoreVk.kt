@@ -17,7 +17,7 @@
 package io.verik.compiler.core.lang.vk
 
 import io.verik.compiler.ast.property.Name
-import io.verik.compiler.core.*
+import io.verik.compiler.core.common.*
 
 object CoreVk : CoreScope(CorePackage.VK) {
 

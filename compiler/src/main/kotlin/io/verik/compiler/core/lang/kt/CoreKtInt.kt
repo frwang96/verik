@@ -16,9 +16,9 @@
 
 package io.verik.compiler.core.lang.kt
 
-import io.verik.compiler.core.Core
-import io.verik.compiler.core.CoreKtFunctionDeclaration
-import io.verik.compiler.core.CoreScope
+import io.verik.compiler.core.common.Core
+import io.verik.compiler.core.common.CoreKtFunctionDeclaration
+import io.verik.compiler.core.common.CoreScope
 
 object CoreKtInt : CoreScope(Core.Kt.INT) {
 

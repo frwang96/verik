@@ -16,9 +16,9 @@
 
 package io.verik.compiler.core.lang.sv
 
-import io.verik.compiler.core.CorePackage
-import io.verik.compiler.core.CoreScope
-import io.verik.compiler.core.CoreSvFunctionDeclaration
+import io.verik.compiler.core.common.CorePackage
+import io.verik.compiler.core.common.CoreScope
+import io.verik.compiler.core.common.CoreSvFunctionDeclaration
 
 object CoreSv : CoreScope(CorePackage.SV) {
 

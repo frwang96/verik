@@ -25,7 +25,7 @@ import io.verik.compiler.ast.property.SourceSetType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.PackageDeclaration
 import io.verik.compiler.common.getSourceLocation
-import io.verik.compiler.core.Core
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.psi.*

@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core
+package io.verik.compiler.core.common
 
-import io.verik.compiler.ast.property.Name
 import io.verik.compiler.common.PackageDeclaration
 
-object CorePackage {
+open class CoreScope private constructor(protected val parent: String) {
 
-    val ROOT = PackageDeclaration(Name(""))
-    val KT = PackageDeclaration(Name("kotlin"))
-    val KT_IO = PackageDeclaration(Name("kotlin.io"))
-    val VK = PackageDeclaration(Name("io.verik.core"))
-    val SV = PackageDeclaration(Name("systemverilog"))
+    constructor(packageDeclaration: PackageDeclaration) : this(packageDeclaration.name.name)
+
+    constructor(classDeclaration: CoreClassDeclaration) : this(classDeclaration.qualifiedName.name)
 }

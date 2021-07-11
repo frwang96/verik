@@ -20,7 +20,7 @@ import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.kt.*
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.CoreKtFunctionDeclaration
+import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 

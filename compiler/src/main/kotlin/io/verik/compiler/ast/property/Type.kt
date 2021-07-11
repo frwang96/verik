@@ -22,9 +22,9 @@ import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.TypeVisitor
-import io.verik.compiler.core.CoreCardinalBaseDeclaration
-import io.verik.compiler.core.CoreCardinalDeclaration
-import io.verik.compiler.core.CoreClassDeclaration
+import io.verik.compiler.core.common.CoreCardinalBaseDeclaration
+import io.verik.compiler.core.common.CoreCardinalDeclaration
+import io.verik.compiler.core.common.CoreClassDeclaration
 import io.verik.compiler.main.m
 
 class Type(

@@ -19,8 +19,8 @@ package io.verik.compiler.serialize
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.property.Type
-import io.verik.compiler.core.Core
-import io.verik.compiler.core.CoreCardinalConstantDeclaration
+import io.verik.compiler.core.common.Core
+import io.verik.compiler.core.common.CoreCardinalConstantDeclaration
 import io.verik.compiler.main.m
 
 object TypeSerializer {

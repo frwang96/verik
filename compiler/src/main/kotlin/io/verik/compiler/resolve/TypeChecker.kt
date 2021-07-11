@@ -21,7 +21,7 @@ import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.TypeVisitor
-import io.verik.compiler.core.CoreCardinalConstantDeclaration
+import io.verik.compiler.core.common.CoreCardinalConstantDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 

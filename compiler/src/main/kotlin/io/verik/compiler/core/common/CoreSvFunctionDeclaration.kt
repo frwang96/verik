@@ -14,6 +14,22 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core
+package io.verik.compiler.core.common
 
-abstract class CoreFunctionDeclaration : CoreDeclaration()
+import io.verik.compiler.ast.property.Name
+
+class CoreSvFunctionDeclaration private constructor(
+    override var name: Name,
+    override val qualifiedName: Name
+) : CoreFunctionDeclaration() {
+
+    companion object {
+
+        operator fun invoke(parent: String, name: String): CoreSvFunctionDeclaration {
+            return CoreSvFunctionDeclaration(
+                Name(name),
+                Name("$parent.$name")
+            )
+        }
+    }
+}

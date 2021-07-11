@@ -21,7 +21,7 @@ import io.verik.compiler.ast.property.Name
 import io.verik.compiler.common.PackageDeclaration
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.CorePackage
+import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.main.ProjectContext
 
 object PackageNameTransformer : ProjectPass {

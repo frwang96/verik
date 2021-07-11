@@ -14,24 +14,16 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core
+package io.verik.compiler.core.common
 
 import io.verik.compiler.ast.property.Name
+import io.verik.compiler.common.PackageDeclaration
 
-class CoreClassDeclaration private constructor(
-    override var name: Name,
-    override val qualifiedName: Name,
-    val superclass: CoreClassDeclaration?
-) : CoreDeclaration() {
+object CorePackage {
 
-    companion object {
-
-        operator fun invoke(parent: String, name: String, superclass: CoreClassDeclaration?): CoreClassDeclaration {
-            return CoreClassDeclaration(
-                Name(name),
-                Name("$parent.$name"),
-                superclass
-            )
-        }
-    }
+    val ROOT = PackageDeclaration(Name(""))
+    val KT = PackageDeclaration(Name("kotlin"))
+    val KT_IO = PackageDeclaration(Name("kotlin.io"))
+    val VK = PackageDeclaration(Name("io.verik.core"))
+    val SV = PackageDeclaration(Name("systemverilog"))
 }

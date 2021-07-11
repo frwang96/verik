@@ -14,16 +14,24 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core
+package io.verik.compiler.core.common
 
-import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.Name
 
-abstract class CoreDeclaration : Declaration {
+class CoreClassDeclaration private constructor(
+    override var name: Name,
+    override val qualifiedName: Name,
+    val superclass: CoreClassDeclaration?
+) : CoreDeclaration() {
 
-    abstract val qualifiedName: Name
+    companion object {
 
-    override fun toString(): String {
-        return "$name"
+        operator fun invoke(parent: String, name: String, superclass: CoreClassDeclaration?): CoreClassDeclaration {
+            return CoreClassDeclaration(
+                Name(name),
+                Name("$parent.$name"),
+                superclass
+            )
+        }
     }
 }
