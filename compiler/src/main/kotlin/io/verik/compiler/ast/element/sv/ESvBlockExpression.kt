@@ -20,7 +20,7 @@ import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.property.Name
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.core.CoreClass
+import io.verik.compiler.core.Core
 import io.verik.compiler.main.SourceLocation
 import io.verik.compiler.main.m
 
@@ -35,7 +35,7 @@ class ESvBlockExpression (
         statements.forEach { it.parent = this }
     }
 
-    override var type = CoreClass.Kotlin.UNIT.toNoArgumentsType()
+    override var type = Core.Kt.UNIT.toNoArgumentsType()
 
     override fun accept(visitor: Visitor) {
         visitor.visitSvBlockExpression(this)

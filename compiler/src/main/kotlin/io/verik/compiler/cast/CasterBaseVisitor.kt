@@ -25,7 +25,7 @@ import io.verik.compiler.ast.property.SourceSetType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.PackageDeclaration
 import io.verik.compiler.common.getSourceLocation
-import io.verik.compiler.core.CoreClass
+import io.verik.compiler.core.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.psi.*
@@ -190,7 +190,7 @@ class CasterBaseVisitor(
 
         val upperBound = descriptor.representativeUpperBound
         val type = if (upperBound.isNullableAny()) {
-            CoreClass.Kotlin.ANY.toNoArgumentsType()
+            Core.Kt.ANY.toNoArgumentsType()
         } else {
             getType(descriptor.representativeUpperBound, parameter)
         }

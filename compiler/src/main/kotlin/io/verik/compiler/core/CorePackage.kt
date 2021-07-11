@@ -22,8 +22,8 @@ import io.verik.compiler.common.PackageDeclaration
 object CorePackage {
 
     val ROOT = PackageDeclaration(Name(""))
-    val KOTLIN = PackageDeclaration(Name("kotlin"))
-    val KOTLIN_IO = PackageDeclaration(Name("kotlin.io"))
-    val VERIK_CORE = PackageDeclaration(Name("io.verik.core"))
-    val VERIK_SV = PackageDeclaration(Name("io.verik.sv"))
+    val KT = PackageDeclaration(Name("kotlin"))
+    val KT_IO = PackageDeclaration(Name("kotlin.io"))
+    val VK = PackageDeclaration(Name("io.verik.core"))
+    val SV = PackageDeclaration(Name("systemverilog"))
 }

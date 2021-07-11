@@ -22,7 +22,7 @@ import io.verik.compiler.ast.element.common.cast
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.core.CoreClass
+import io.verik.compiler.core.Core
 import io.verik.compiler.main.SourceLocation
 import io.verik.compiler.main.m
 
@@ -35,7 +35,7 @@ class EFunctionLiteralExpression(
         bodyBlockExpression.parent = this
     }
 
-    override var type = CoreClass.Kotlin.FUNCTION.toNoArgumentsType()
+    override var type = Core.Kt.FUNCTION.toNoArgumentsType()
 
     override fun accept(visitor: Visitor) {
         visitor.visitFunctionLiteralExpression(this)

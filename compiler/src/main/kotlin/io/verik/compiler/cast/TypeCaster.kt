@@ -17,7 +17,7 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.ast.property.Type
-import io.verik.compiler.core.CoreClass
+import io.verik.compiler.core.Core
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.builtins.isFunctionType
 import org.jetbrains.kotlin.descriptors.impl.AbstractTypeParameterDescriptor
@@ -31,7 +31,7 @@ object TypeCaster {
 
     fun castFromType(declarationMap: DeclarationMap, type: KotlinType, element: KtElement): Type {
         if (type.isFunctionType)
-            return Type(CoreClass.Kotlin.FUNCTION, ArrayList())
+            return Type(Core.Kt.FUNCTION, ArrayList())
         val declarationDescriptor = type.constructor.declarationDescriptor!!
         val declaration = declarationMap[declarationDescriptor, element]
         val arguments = type.arguments.map { castFromType(declarationMap, it.type, element) }

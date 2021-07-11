@@ -14,25 +14,16 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.sv
+package io.verik.compiler.core.lang.sv
 
-import io.verik.compiler.ast.element.common.EAbstractBlockExpression
-import io.verik.compiler.common.Visitor
-import io.verik.compiler.core.Core
-import io.verik.compiler.main.SourceLocation
+import io.verik.compiler.core.CorePackage
+import io.verik.compiler.core.CoreScope
+import io.verik.compiler.core.CoreSvFunctionDeclaration
 
-class EForeverStatement(
-    override val location: SourceLocation,
-    override var bodyBlockExpression: EAbstractBlockExpression
-) : ELoopStatement() {
+object CoreSv : CoreScope(CorePackage.SV) {
 
-    init {
-        bodyBlockExpression.parent = this
-    }
-
-    override var type = Core.Kt.UNIT.toNoArgumentsType()
-
-    override fun accept(visitor: Visitor) {
-        visitor.visitForeverStatement(this)
-    }
+    val DISPLAY = CoreSvFunctionDeclaration(parent, "\$display")
+    val WRITE = CoreSvFunctionDeclaration(parent, "\$write")
+    val SFORMATF = CoreSvFunctionDeclaration(parent, "\$sformatf")
+    val RANDOM = CoreSvFunctionDeclaration(parent, "\$random")
 }

@@ -19,8 +19,8 @@ package io.verik.compiler.serialize
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.property.Type
+import io.verik.compiler.core.Core
 import io.verik.compiler.core.CoreCardinalConstantDeclaration
-import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.m
 
 object TypeSerializer {
@@ -28,11 +28,11 @@ object TypeSerializer {
     fun serialize(declaration: EDeclaration): String {
         val type = declaration.type
         return when (type.reference) {
-            CoreClass.Kotlin.UNIT -> "void"
-            CoreClass.Kotlin.INT -> "int"
-            CoreClass.Kotlin.BOOLEAN -> "logic"
-            CoreClass.Kotlin.STRING -> "string"
-            CoreClass.Core.UBIT -> "logic ${serializeCardinalLittleEndian(type.arguments[0], declaration)}"
+            Core.Kt.UNIT -> "void"
+            Core.Kt.INT -> "int"
+            Core.Kt.BOOLEAN -> "logic"
+            Core.Kt.STRING -> "string"
+            Core.Vk.UBIT -> "logic ${serializeCardinalLittleEndian(type.arguments[0], declaration)}"
             else -> {
                 m.error("Unable to serialize type: $type", declaration)
                 "void"

@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core
+package io.verik.compiler.core.lang.vk
 
-import io.verik.compiler.ast.property.Name
+import io.verik.compiler.core.Core
+import io.verik.compiler.core.CoreKtFunctionDeclaration
+import io.verik.compiler.core.CoreScope
 
-object CoreCardinal {
+object CoreVkUbit : CoreScope(Core.Vk.UBIT) {
 
-    val ADD = CoreCardinalFunctionDeclaration(Name("ADD"))
-    val INC = CoreCardinalFunctionDeclaration(Name("INC"))
+    val INV = CoreKtFunctionDeclaration(parent, "inv")
 }

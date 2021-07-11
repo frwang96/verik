@@ -30,7 +30,7 @@ class CoreCardinalConstantDeclaration(
 
     override var name = Name("Cardinal")
 
-    override val qualifiedName = Name("${CorePackage.VERIK_CORE}.$name")
+    override val qualifiedName = Name("${CorePackage.VK}.$name")
 
     override fun toString(): String {
         return "`$cardinal`"

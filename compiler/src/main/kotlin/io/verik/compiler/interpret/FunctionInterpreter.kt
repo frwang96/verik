@@ -24,7 +24,7 @@ import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.sv.*
 import io.verik.compiler.ast.property.FunctionAnnotationType
-import io.verik.compiler.core.CoreFunction
+import io.verik.compiler.core.Core
 import io.verik.compiler.main.m
 
 object FunctionInterpreter {
@@ -84,7 +84,7 @@ object FunctionInterpreter {
             return null
         }
         val onExpression = bodyBlockExpression.statements[0]
-        if (onExpression !is ECallExpression || onExpression.reference != CoreFunction.Core.ON_EVENT_FUNCTION) {
+        if (onExpression !is ECallExpression || onExpression.reference != Core.Vk.ON_EVENT_FUNCTION) {
             m.error("On expression expected", bodyBlockExpression)
             return null
         }

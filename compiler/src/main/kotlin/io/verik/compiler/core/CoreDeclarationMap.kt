@@ -25,8 +25,10 @@ import org.jetbrains.kotlin.descriptors.SimpleFunctionDescriptor
 import org.jetbrains.kotlin.descriptors.impl.AbstractTypeAliasDescriptor
 import org.jetbrains.kotlin.psi.KtElement
 import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameOrNull
+import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.createType
+import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.full.memberProperties
 
 object CoreDeclarationMap {
@@ -35,28 +37,7 @@ object CoreDeclarationMap {
     private val functionMap = HashMap<Name, ArrayList<CoreKtFunctionDeclaration>>()
 
     init {
-        CoreClass::class.nestedClasses.forEach { packageClass ->
-            val packageCoreScope = packageClass.objectInstance
-            if (packageCoreScope is CoreScope) addCoreClasses(packageCoreScope)
-        }
-
-        declarationMap[CoreCardinalBaseDeclaration.qualifiedName] = CoreCardinalBaseDeclaration
-        CoreCardinal::class.memberProperties.forEach {
-            val property = it.get(CoreCardinal)
-            if (property is CoreCardinalFunctionDeclaration)
-                declarationMap[property.qualifiedName] = property
-        }
-
-        CoreFunction::class.nestedClasses.forEach { packageClass ->
-            val packageCoreScope = packageClass.objectInstance
-            if (packageCoreScope is CoreScope) {
-                addCoreFunctions(packageCoreScope)
-                packageCoreScope::class.nestedClasses.forEach { classClass ->
-                    val classCoreScope = classClass.objectInstance
-                    if (classCoreScope is CoreScope) addCoreFunctions(classCoreScope)
-                }
-            }
-        }
+        addCoreDeclarations(Core::class)
     }
 
     operator fun get(
@@ -70,26 +51,29 @@ object CoreDeclarationMap {
         }
     }
 
-    private fun addCoreClasses(coreScope: CoreScope) {
-        coreScope::class.memberProperties.forEach {
-            if (it.returnType == CoreClassDeclaration::class.createType()) {
+    private fun addCoreDeclarations(kClass: KClass<*>) {
+        val kClassInstance = kClass.objectInstance ?: return
+        kClass.memberProperties.forEach {
+            if (it.returnType.isSubtypeOf(CoreDeclaration::class.createType())) {
                 @Suppress("UNCHECKED_CAST")
-                val property = (it as KProperty1<Any, *>).get(coreScope) as CoreClassDeclaration
-                declarationMap[property.qualifiedName] = property
+                when (val property = (it as KProperty1<Any, *>).get(kClassInstance)) {
+                    is CoreCardinalDeclaration -> {
+                        declarationMap[property.qualifiedName] = property
+                    }
+                    is CoreClassDeclaration -> {
+                        declarationMap[property.qualifiedName] = property
+                    }
+                    is CoreFunctionDeclaration -> {
+                        if (property is CoreKtFunctionDeclaration) {
+                            if (property.qualifiedName !in functionMap)
+                                functionMap[property.qualifiedName] = ArrayList()
+                            functionMap[property.qualifiedName]!!.add(property)
+                        }
+                    }
+                }
             }
         }
-    }
-
-    private fun addCoreFunctions(coreScope: CoreScope) {
-        coreScope::class.memberProperties.forEach {
-            if (it.returnType == CoreKtFunctionDeclaration::class.createType()) {
-                @Suppress("UNCHECKED_CAST")
-                val property = (it as KProperty1<Any, *>).get(coreScope) as CoreKtFunctionDeclaration
-                if (property.qualifiedName !in functionMap)
-                    functionMap[property.qualifiedName] = ArrayList()
-                functionMap[property.qualifiedName]!!.add(property)
-            }
-        }
+        kClass.nestedClasses.forEach { addCoreDeclarations(it) }
     }
 
     private fun getFunction(

@@ -19,7 +19,7 @@ package io.verik.compiler.transform.post
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.CoreFunction
+import io.verik.compiler.core.Core
 import io.verik.compiler.core.CoreKtFunctionDeclaration
 import io.verik.compiler.core.CoreSvFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
@@ -29,13 +29,13 @@ object FunctionReferenceTransformer : ProjectPass {
     private val functionReferenceMap = HashMap<CoreKtFunctionDeclaration, CoreSvFunctionDeclaration>()
 
     init {
-        functionReferenceMap[CoreFunction.KotlinIo.PRINT] = CoreFunction.Sv.WRITE
-        functionReferenceMap[CoreFunction.KotlinIo.PRINT_ANY] = CoreFunction.Sv.WRITE
-        functionReferenceMap[CoreFunction.KotlinIo.PRINT_INT] = CoreFunction.Sv.WRITE
-        functionReferenceMap[CoreFunction.KotlinIo.PRINTLN] = CoreFunction.Sv.DISPLAY
-        functionReferenceMap[CoreFunction.KotlinIo.PRINTLN_ANY] = CoreFunction.Sv.DISPLAY
-        functionReferenceMap[CoreFunction.KotlinIo.PRINTLN_INT] = CoreFunction.Sv.DISPLAY
-        functionReferenceMap[CoreFunction.Core.RANDOM] = CoreFunction.Sv.RANDOM
+        functionReferenceMap[Core.Kt.Io.PRINT] = Core.Sv.WRITE
+        functionReferenceMap[Core.Kt.Io.PRINT_ANY] = Core.Sv.WRITE
+        functionReferenceMap[Core.Kt.Io.PRINT_INT] = Core.Sv.WRITE
+        functionReferenceMap[Core.Kt.Io.PRINTLN] = Core.Sv.DISPLAY
+        functionReferenceMap[Core.Kt.Io.PRINTLN_ANY] = Core.Sv.DISPLAY
+        functionReferenceMap[Core.Kt.Io.PRINTLN_INT] = Core.Sv.DISPLAY
+        functionReferenceMap[Core.Vk.RANDOM] = Core.Sv.RANDOM
     }
 
     override fun pass(projectContext: ProjectContext) {

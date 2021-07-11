@@ -14,27 +14,15 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.sv
+package io.verik.compiler.core.lang.kt
 
-import io.verik.compiler.ast.element.common.EAbstractBlockExpression
-import io.verik.compiler.ast.property.Name
-import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.Core
-import io.verik.compiler.main.SourceLocation
+import io.verik.compiler.core.CoreKtFunctionDeclaration
+import io.verik.compiler.core.CoreScope
 
-class EInitialBlock(
-    override val location: SourceLocation,
-    override var name: Name,
-    override var bodyBlockExpression: EAbstractBlockExpression
-) : EProceduralBlock() {
+object CoreKtInt : CoreScope(Core.Kt.INT) {
 
-    init {
-        bodyBlockExpression.parent = this
-    }
-
-    override var type = Core.Kt.UNIT.toNoArgumentsType()
-
-    override fun accept(visitor: Visitor) {
-        visitor.visitInitialBlock(this)
-    }
+    val TIMES_INT = CoreKtFunctionDeclaration(parent, "times", Core.Kt.INT)
+    val PLUS_INT = CoreKtFunctionDeclaration(parent, "plus", Core.Kt.INT)
+    val MINUS_INT = CoreKtFunctionDeclaration(parent, "minus", Core.Kt.INT)
 }

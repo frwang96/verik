@@ -45,7 +45,7 @@ object FileChecker : ProjectPass {
                 m.error("Package directive does not match file location", file)
             if (file.packageDeclaration == CorePackage.ROOT)
                 m.error("Use of the root package is prohibited", file)
-            if (file.packageDeclaration == CorePackage.VERIK_CORE)
+            if (file.packageDeclaration in listOf(CorePackage.VK, CorePackage.SV))
                 m.error("Package name is reserved: ${file.packageDeclaration}", file)
             if (file.inputPath.fileName == Paths.get("Pkg.kt"))
                 m.error("File name is reserved: ${file.inputPath.fileName}", file)

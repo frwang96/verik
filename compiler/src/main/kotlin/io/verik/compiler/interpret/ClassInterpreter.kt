@@ -20,12 +20,12 @@ import io.verik.compiler.ast.element.common.EAbstractClass
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.ESvBasicClass
-import io.verik.compiler.core.CoreClass
+import io.verik.compiler.core.Core
 
 object ClassInterpreter {
 
     fun interpret(basicClass: EKtBasicClass): EAbstractClass {
-        return if (basicClass.type.isType(CoreClass.Core.MODULE.toNoArgumentsType())) {
+        return if (basicClass.type.isType(Core.Vk.MODULE.toNoArgumentsType())) {
             EModule(
                 basicClass.location,
                 basicClass.name,

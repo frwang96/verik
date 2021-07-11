@@ -41,7 +41,7 @@ object ImportDirectiveChecker : ProjectPass {
         }
 
         val packageDeclarationSet = HashSet<PackageDeclaration>()
-        packageDeclarationSet.add(CorePackage.VERIK_CORE)
+        packageDeclarationSet.add(CorePackage.VK)
         packageDeclarationSet.addAll(mainPackageDeclarationSet)
         packageDeclarationSet.addAll(testPackageDeclarationSet)
 

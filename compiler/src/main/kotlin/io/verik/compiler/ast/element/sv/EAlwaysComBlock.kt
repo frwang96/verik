@@ -19,7 +19,7 @@ package io.verik.compiler.ast.element.sv
 import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.property.Name
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.core.CoreClass
+import io.verik.compiler.core.Core
 import io.verik.compiler.main.SourceLocation
 
 class EAlwaysComBlock(
@@ -32,7 +32,7 @@ class EAlwaysComBlock(
         bodyBlockExpression.parent = this
     }
 
-    override var type = CoreClass.Kotlin.UNIT.toNoArgumentsType()
+    override var type = Core.Kt.UNIT.toNoArgumentsType()
 
     override fun accept(visitor: Visitor) {
         visitor.visitAlwaysComBlock(this)

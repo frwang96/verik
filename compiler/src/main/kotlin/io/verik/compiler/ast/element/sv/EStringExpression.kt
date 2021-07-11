@@ -19,7 +19,7 @@ package io.verik.compiler.ast.element.sv
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.core.CoreClass
+import io.verik.compiler.core.Core
 import io.verik.compiler.main.SourceLocation
 import io.verik.compiler.main.m
 
@@ -28,7 +28,7 @@ class EStringExpression(
     val text: String
 ) : EExpression() {
 
-    override var type = CoreClass.Kotlin.STRING.toNoArgumentsType()
+    override var type = Core.Kt.STRING.toNoArgumentsType()
 
     override fun accept(visitor: Visitor) {
         visitor.visitStringExpression(this)

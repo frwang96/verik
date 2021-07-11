@@ -22,5 +22,5 @@ class CoreCardinalFunctionDeclaration(
     override var name: Name
 ) : CoreCardinalDeclaration() {
 
-    override val qualifiedName = Name("${CorePackage.VERIK_CORE}.$name")
+    override val qualifiedName = Name("${CorePackage.VK}.$name")
 }
