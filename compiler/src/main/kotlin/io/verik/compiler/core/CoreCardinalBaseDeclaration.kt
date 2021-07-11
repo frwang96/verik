@@ -17,30 +17,14 @@
 package io.verik.compiler.core
 
 import io.verik.compiler.ast.property.Name
-import io.verik.compiler.main.m
 
-class CoreCardinalConstantDeclaration(
-    val cardinal: Int
-) : CoreCardinalDeclaration() {
-
-    init {
-        if (cardinal < 0)
-            m.error("Cardinal must be a natural number: $cardinal", null)
-    }
+object CoreCardinalBaseDeclaration : CoreCardinalDeclaration() {
 
     override var name = Name("Cardinal")
 
     override val qualifiedName = Name("${CorePackage.VERIK_CORE}.$name")
 
     override fun toString(): String {
-        return "`$cardinal`"
-    }
-
-    override fun equals(other: Any?): Boolean {
-        return (other is CoreCardinalConstantDeclaration) && (other.cardinal == cardinal)
-    }
-
-    override fun hashCode(): Int {
-        return cardinal
+        return "`*`"
     }
 }

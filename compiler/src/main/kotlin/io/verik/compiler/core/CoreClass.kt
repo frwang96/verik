@@ -30,7 +30,6 @@ object CoreClass {
 
     object Core : CoreScope(CorePackage.VERIK_CORE) {
 
-        val CARDINAL = CoreClassDeclaration(parent, "Cardinal", Kotlin.ANY)
         val UBIT = CoreClassDeclaration(parent, "Ubit", Kotlin.ANY)
         val SBIT = CoreClassDeclaration(parent, "Sbit", Kotlin.ANY)
         val CLASS = CoreClassDeclaration(parent, "Class", Kotlin.ANY)

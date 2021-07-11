@@ -40,6 +40,7 @@ object CoreDeclarationMap {
             if (packageCoreScope is CoreScope) addCoreClasses(packageCoreScope)
         }
 
+        declarationMap[CoreCardinalBaseDeclaration.qualifiedName] = CoreCardinalBaseDeclaration
         CoreCardinal::class.memberProperties.forEach {
             val property = it.get(CoreCardinal)
             if (property is CoreCardinalFunctionDeclaration)
@@ -136,7 +137,7 @@ object CoreDeclarationMap {
             descriptor is AbstractTypeAliasDescriptor -> {
                 val nameString = descriptor.name.toString()
                 if (nameString == "*") {
-                    CoreClass.Core.CARDINAL
+                    CoreCardinalBaseDeclaration
                 } else {
                     val cardinal = nameString.toIntOrNull()
                     if (cardinal != null) {

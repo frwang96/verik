@@ -43,12 +43,21 @@ fun assertElementEquals(expected: String, actual: EElement) {
         }
     }
     val expectedString = expectedBuilder.toString()
+    val expectedStringArray = expectedString.toCharArray()
 
     val regexBuilder = StringBuilder()
-    expectedString.toCharArray().forEach {
+
+    expectedStringArray.forEachIndexed { index, it ->
         when (it) {
-            '*' -> regexBuilder.append(".+")
-            in listOf('(', ')', '[', ']', '$') -> regexBuilder.append("\\$it")
+            '*' -> {
+                val previousIsBackTick = (index > 0) && (expectedStringArray[index - 1] == '`')
+                val nextIsBackTick = (index < expectedStringArray.size - 1) && (expectedStringArray[index + 1] == '`')
+                if (previousIsBackTick && nextIsBackTick)
+                    regexBuilder.append("\\*")
+                else
+                    regexBuilder.append(".+")
+            }
+            in listOf('(', ')', '[', ']', '$', '?') -> regexBuilder.append("\\$it")
             else -> regexBuilder.append(it)
         }
     }

@@ -22,9 +22,8 @@ import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.TypeVisitor
-import io.verik.compiler.core.CoreCardinalConstantDeclaration
+import io.verik.compiler.core.CoreCardinalBaseDeclaration
 import io.verik.compiler.core.CoreCardinalDeclaration
-import io.verik.compiler.core.CoreClass
 import io.verik.compiler.core.CoreClassDeclaration
 import io.verik.compiler.main.m
 
@@ -33,16 +32,9 @@ class Type(
     val arguments: ArrayList<Type>
 ) : Reference {
 
-    var parent: Type? = null
-
-    init {
-        arguments.forEach { it.parent = this }
-    }
-
     fun isCardinalType(): Boolean {
         return when (val reference = reference) {
             is ETypeParameter -> reference.type.isCardinalType()
-            is CoreClassDeclaration -> reference == CoreClass.Core.CARDINAL
             is CoreCardinalDeclaration -> true
             else -> false
         }
@@ -74,15 +66,7 @@ class Type(
 
     private fun getSupertypes(): List<Type> {
         val supertypes = ArrayList<Type>()
-        var supertype: Type? = when (val reference = reference) {
-            is EAbstractClass -> this
-            is CoreClassDeclaration -> this
-            is CoreCardinalConstantDeclaration -> CoreClass.Core.CARDINAL.toNoArgumentsType()
-            else -> {
-                m.error("Unexpected type reference: $reference", null)
-                return listOf()
-            }
-        }
+        var supertype: Type? = this
         while (supertype != null) {
             supertypes.add(supertype)
             supertype = supertype.getSupertype()
@@ -94,6 +78,7 @@ class Type(
         return when (val reference = reference) {
             is EAbstractClass -> reference.supertype
             is CoreClassDeclaration -> reference.superclass?.toNoArgumentsType()
+            is CoreCardinalBaseDeclaration -> null
             else -> {
                 m.error("Unexpected type reference: $reference", null)
                 return null

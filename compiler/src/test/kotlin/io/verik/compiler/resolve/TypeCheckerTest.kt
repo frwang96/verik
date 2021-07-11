@@ -33,6 +33,6 @@ internal class TypeCheckerTest : BaseTest() {
                 val x = u<`*`>(0)
             """.trimIndent()
             )
-        }.apply { assertEquals("Expression type has not been resolved: Ubit<Cardinal>", message) }
+        }.apply { assertEquals("Expression type has not been resolved: Ubit<`*`>", message) }
     }
 }

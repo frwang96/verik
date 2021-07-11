@@ -132,7 +132,7 @@ internal class TypeCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtProperty(x, Ubit<Cardinal>, *)",
+            "KtProperty(x, Ubit<`*`>, *)",
             projectContext.findDeclaration("x")
         )
     }
@@ -145,7 +145,7 @@ internal class TypeCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtProperty(x, Ubit<Cardinal>, *)",
+            "KtProperty(x, Ubit<`*`>, *)",
             projectContext.findDeclaration("x")
         )
     }

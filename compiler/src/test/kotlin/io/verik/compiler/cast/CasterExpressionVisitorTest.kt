@@ -94,7 +94,7 @@ internal class CasterExpressionVisitorTest : BaseTest() {
     }
 
     @Test
-    fun `call expression core`() {
+    fun `call expression simple`() {
         val projectContext = TestDriver.cast(
             """
                 var x = random(0)
