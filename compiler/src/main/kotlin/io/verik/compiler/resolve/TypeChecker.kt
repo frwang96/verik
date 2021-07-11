@@ -16,10 +16,50 @@
 
 package io.verik.compiler.resolve
 
+import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.ProjectPass
+import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.common.TypeVisitor
+import io.verik.compiler.core.CoreCardinalConstantDeclaration
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.m
 
 object TypeChecker : ProjectPass {
 
-    override fun pass(projectContext: ProjectContext) {}
+    override fun pass(projectContext: ProjectContext) {
+        val cardinalResolvedTypeVisitor = CardinalResolvedTypeVisitor()
+        val typeCheckerExpressionVisitor = TypeCheckerExpressionVisitor(cardinalResolvedTypeVisitor)
+        projectContext.files.forEach { it.accept(typeCheckerExpressionVisitor) }
+    }
+
+    class TypeCheckerExpressionVisitor(
+        private val cardinalResolvedTypeVisitor: CardinalResolvedTypeVisitor
+    ) : TreeVisitor() {
+
+        override fun visitExpression(expression: EExpression) {
+            super.visitExpression(expression)
+            if (!cardinalResolvedTypeVisitor.isResolved(expression.type))
+                m.error("Expression type has not been resolved: ${expression.type}", expression)
+        }
+    }
+
+    class CardinalResolvedTypeVisitor : TypeVisitor() {
+
+        private var isResolved = true
+
+        fun isResolved(type: Type): Boolean {
+            isResolved = true
+            type.accept(this)
+            return isResolved
+        }
+
+        override fun visit(type: Type) {
+            super.visit(type)
+            if (type.isCardinalType()) {
+                if (type.reference !is CoreCardinalConstantDeclaration)
+                    isResolved = false
+            }
+        }
+    }
 }
