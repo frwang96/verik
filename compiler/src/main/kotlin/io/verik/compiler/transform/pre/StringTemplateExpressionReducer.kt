@@ -96,6 +96,7 @@ object StringTemplateExpressionReducer : ProjectPass {
                     stringTemplateExpression.location,
                     stringTemplateExpression.type,
                     CoreFunction.Sv.SFORMATF,
+                    arrayListOf(),
                     valueArguments
                 )
                 stringTemplateExpression.replace(callExpression)

@@ -35,7 +35,8 @@ class EParenthesizedExpression(
     }
 
     override fun copy(): EParenthesizedExpression? {
+        val copyType = type.copy()
         val copyExpression = expression.copy() ?: return null
-        return EParenthesizedExpression(location, type, copyExpression)
+        return EParenthesizedExpression(location, copyType, copyExpression)
     }
 }

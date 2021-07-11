@@ -27,10 +27,12 @@ class ECallExpression(
     override val location: SourceLocation,
     override var type: Type,
     override var reference: Declaration,
+    val typeArguments: ArrayList<ETypeArgument>,
     val valueArguments: ArrayList<EValueArgument>
 ) : EExpression(), Reference {
 
     init {
+        typeArguments.forEach { it.parent = this }
         valueArguments.forEach { it.parent = this }
     }
 
@@ -39,11 +41,20 @@ class ECallExpression(
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
+        typeArguments.forEach { it.accept(visitor) }
         valueArguments.forEach { it.accept(visitor) }
     }
 
     override fun copy(): ECallExpression? {
+        val copyType = type.copy()
+        val copyTypeArguments = typeArguments.map { it.copy() }
         val copyValueArguments = valueArguments.map { it.copy() ?: return null }
-        return ECallExpression(location, type, reference, ArrayList(copyValueArguments))
+        return ECallExpression(
+            location,
+            copyType,
+            reference,
+            ArrayList(copyTypeArguments),
+            ArrayList(copyValueArguments)
+        )
     }
 }

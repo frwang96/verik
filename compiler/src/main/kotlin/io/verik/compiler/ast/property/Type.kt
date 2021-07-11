@@ -44,6 +44,11 @@ class Type(
         return getSupertypes().any { it == type }
     }
 
+    fun copy(): Type {
+        val copyArguments = arguments.map { it.copy() }
+        return Type(reference, ArrayList(copyArguments))
+    }
+
     fun accept(typeVisitor: TypeVisitor) {
         typeVisitor.visit(this)
     }

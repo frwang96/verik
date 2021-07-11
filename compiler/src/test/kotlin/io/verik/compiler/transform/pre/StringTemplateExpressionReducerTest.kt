@@ -50,6 +50,7 @@ internal class StringTemplateExpressionReducerTest : BaseTest() {
                 CallExpression(
                     String,
                     ${"$"}sformatf,
+                    [],
                     [
                         ValueArgument(null, StringExpression(String, %d)),
                         ValueArgument(null, ReferenceExpression(Int, x))

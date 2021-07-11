@@ -16,11 +16,7 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestDriver
-import io.verik.compiler.util.assertElementEquals
-import io.verik.compiler.util.findExpression
+import io.verik.compiler.util.*
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
@@ -34,8 +30,8 @@ internal class CasterExpressionVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtBlockExpression(Unit, [])",
-            projectContext.findExpression("f")
+            "KtFunction(f, Unit, KtBlockExpression(Unit, []), null)",
+            projectContext.findDeclaration("f")
         )
     }
 
@@ -88,7 +84,7 @@ internal class CasterExpressionVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "CallExpression(Unit, f, [])",
+            "CallExpression(Unit, f, [], [])",
             projectContext.findExpression("x")
         )
     }
@@ -97,11 +93,26 @@ internal class CasterExpressionVisitorTest : BaseTest() {
     fun `call expression simple`() {
         val projectContext = TestDriver.cast(
             """
-                var x = random(0)
+                fun f() {
+                    println()
+                }
             """.trimIndent()
         )
         assertElementEquals(
-            "CallExpression(Int, random, *)",
+            "CallExpression(Unit, println, *)",
+            projectContext.findExpression("f")
+        )
+    }
+
+    @Test
+    fun `type argument`() {
+        val projectContext = TestDriver.cast(
+            """
+                var x = u<`8`>(0)
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "CallExpression(Ubit<`*`>, u, [TypeArgument(null, `8`)], *)",
             projectContext.findExpression("x")
         )
     }
@@ -115,7 +126,7 @@ internal class CasterExpressionVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "CallExpression(Unit, f, [ValueArgument(null, *)])",
+            "CallExpression(Unit, f, [], [ValueArgument(null, *)])",
             projectContext.findExpression("x")
         )
     }
@@ -176,10 +187,11 @@ internal class CasterExpressionVisitorTest : BaseTest() {
                 CallExpression(
                     Unit,
                     forever,
+                    [],
                     [ValueArgument(null, FunctionLiteralExpression(Function, KtBlockExpression(*)))]
                 )
             """.trimIndent(),
-            (projectContext.findExpression("f") as EKtBlockExpression).statements[0]
+            projectContext.findExpression("f")
         )
     }
 

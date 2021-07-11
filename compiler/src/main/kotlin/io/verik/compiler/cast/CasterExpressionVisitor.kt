@@ -94,8 +94,13 @@ class CasterExpressionVisitor(
         val location = expression.getSourceLocation()
         val type = getType(expression)
         val declaration = declarationMap[descriptor, expression]
+        val typeArguments = expression.typeArguments.map {
+            val typeArgumentLocation = it.getSourceLocation()
+            val typeArgumentType = TypeCaster.castFromTypeReference(bindingContext, declarationMap, it.typeReference!!)
+            ETypeArgument(typeArgumentLocation, NullDeclaration, typeArgumentType)
+        }
         val valueArguments = expression.valueArguments.mapNotNull { getElement<EValueArgument>(it) }
-        return ECallExpression(location, type, declaration, ArrayList(valueArguments))
+        return ECallExpression(location, type, declaration, ArrayList(typeArguments), ArrayList(valueArguments))
     }
 
     override fun visitArgument(argument: KtValueArgument, data: Unit?): EElement? {

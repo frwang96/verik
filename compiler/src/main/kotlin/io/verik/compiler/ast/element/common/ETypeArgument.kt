@@ -16,25 +16,27 @@
 
 package io.verik.compiler.ast.element.common
 
+import io.verik.compiler.ast.interfaces.Declaration
+import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.SourceLocation
 
-class EConstantExpression(
+class ETypeArgument(
     override val location: SourceLocation,
-    override var type: Type,
-    val value: String
-) : EExpression() {
+    override var reference: Declaration,
+    var type: Type
+) : EElement(), Reference {
 
     override fun accept(visitor: Visitor) {
-        visitor.visitConstantExpression(this)
+        visitor.visitTypeArgument(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {}
 
-    override fun copy(): EConstantExpression {
+    fun copy(): ETypeArgument {
         val copyType = type.copy()
-        return EConstantExpression(location, copyType, value)
+        return ETypeArgument(location, reference, copyType)
     }
 }

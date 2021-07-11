@@ -41,8 +41,9 @@ class EKtBinaryExpression(
     }
 
     override fun copy(): EKtBinaryExpression? {
+        val copyType = type.copy()
         val copyLeft = left.copy() ?: return null
         val copyRight = right.copy() ?: return null
-        return EKtBinaryExpression(location, type, copyLeft, copyRight, kind)
+        return EKtBinaryExpression(location, copyType, copyLeft, copyRight, kind)
     }
 }

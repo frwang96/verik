@@ -167,7 +167,15 @@ class ElementPrinter : Visitor() {
         build("CallExpression") {
             build(callExpression.type.toString())
             build(callExpression.reference.toString())
+            build(callExpression.typeArguments)
             build(callExpression.valueArguments)
+        }
+    }
+
+    override fun visitTypeArgument(typeArgument: ETypeArgument) {
+        build("TypeArgument") {
+            build(typeArgument.reference.toString())
+            build(typeArgument.type.toString())
         }
     }
 

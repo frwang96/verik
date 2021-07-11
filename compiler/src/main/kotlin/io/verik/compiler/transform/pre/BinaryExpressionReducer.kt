@@ -69,6 +69,7 @@ object BinaryExpressionReducer : ProjectPass {
                         binaryExpression.location,
                         binaryExpression.type,
                         reference,
+                        arrayListOf(),
                         arrayListOf(
                             EValueArgument(
                                 binaryExpression.right.location,
