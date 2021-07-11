@@ -135,10 +135,14 @@ object CoreDeclarationMap {
             declaration != null -> declaration
             descriptor is AbstractTypeAliasDescriptor -> {
                 val nameString = descriptor.name.toString()
-                val cardinal = nameString.toIntOrNull()
-                if (cardinal != null) {
-                    CoreCardinalConstantDeclaration(cardinal)
-                } else null
+                if (nameString == "*") {
+                    CoreClass.Core.CARDINAL
+                } else {
+                    val cardinal = nameString.toIntOrNull()
+                    if (cardinal != null) {
+                        CoreCardinalConstantDeclaration(cardinal)
+                    } else null
+                }
             }
             else -> null
         }

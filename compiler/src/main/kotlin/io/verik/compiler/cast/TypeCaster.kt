@@ -68,8 +68,6 @@ object TypeCaster {
         val referenceExpression = userType.referenceExpression!!
         val referenceTarget = bindingContext.getSliceContents(BindingContext.REFERENCE_TARGET)[referenceExpression]!!
         val declaration = declarationMap[referenceTarget, typeReference]
-        if (declaration == CoreClass.Core.CARDINAL)
-            m.error("Cardinal type expected", typeReference)
         val arguments = userType.typeArgumentsAsTypes.map { castCardinalType(bindingContext, declarationMap, it) }
         val type = Type(declaration, ArrayList(arguments))
         if (!type.isCardinalType()) {

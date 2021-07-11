@@ -67,7 +67,7 @@ class Type(
             is EAbstractClass -> this
             is CoreClassDeclaration -> this
             is CoreCardinalConstantDeclaration -> CoreClass.Core.CARDINAL.toNoArgumentsType()
-            else -> m.fatal("Type reference not canonicalized: $reference", null)
+            else -> m.fatal("Type reference not resolved: $reference", null)
         }
         while (type != null) {
             supertypes.add(type)

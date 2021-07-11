@@ -78,7 +78,7 @@ internal class TypeCasterTest : BaseTest() {
                 """.trimIndent()
             )
         }.apply {
-            assertEquals("Nullable type not supported: Nothing?", message)
+            assertEquals("Nullable type not supported: Int?", message)
         }
     }
 
@@ -125,16 +125,29 @@ internal class TypeCasterTest : BaseTest() {
     }
 
     @Test
-    fun `type reference cardinal invalid`() {
-        assertThrows<TestException> {
-            TestDriver.cast(
-                """
-                    var x: Ubit<Cardinal> = u(0)
-                """.trimIndent()
-            )
-        }.apply {
-            assertEquals("Cardinal type expected", message)
-        }
+    fun `type reference cardinal auto`() {
+        val projectContext = TestDriver.cast(
+            """
+                var x: Ubit<`*`> = u(0)
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtProperty(x, Ubit<Cardinal>, *)",
+            projectContext.findDeclaration("x")
+        )
+    }
+
+    @Test
+    fun `type reference cardinal cardinal`() {
+        val projectContext = TestDriver.cast(
+            """
+                var x: Ubit<Cardinal> = u(0)
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtProperty(x, Ubit<Cardinal>, *)",
+            projectContext.findDeclaration("x")
+        )
     }
 
     @Test

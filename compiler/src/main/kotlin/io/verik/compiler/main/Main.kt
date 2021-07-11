@@ -16,11 +16,11 @@
 
 package io.verik.compiler.main
 
-import io.verik.compiler.canonicalize.ProjectCanonicalizer
 import io.verik.compiler.cast.ProjectCaster
 import io.verik.compiler.check.post.ProjectPostChecker
 import io.verik.compiler.check.pre.ProjectPreChecker
 import io.verik.compiler.interpret.ProjectInterpreter
+import io.verik.compiler.resolve.ProjectResolver
 import io.verik.compiler.serialize.ProjectSerializer
 import io.verik.compiler.transform.post.ProjectPostTransformer
 import io.verik.compiler.transform.pre.ProjectPreTransformer
@@ -39,7 +39,7 @@ object Main {
         KotlinCompiler().pass(projectContext)
         ProjectCaster.pass(projectContext)
         ProjectPreChecker.pass(projectContext)
-        ProjectCanonicalizer.pass(projectContext)
+        ProjectResolver.pass(projectContext)
         ProjectInterpreter.pass(projectContext)
         ProjectPreTransformer.pass(projectContext)
         ProjectPostTransformer.pass(projectContext)

@@ -14,16 +14,12 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.canonicalize
+package io.verik.compiler.resolve
 
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
 
-object ProjectCanonicalizer : ProjectPass {
+object TypeResolver : ProjectPass {
 
-    override fun pass(projectContext: ProjectContext) {
-        m.log("Canonicalize: Check types")
-        m.flush()
-    }
+    override fun pass(projectContext: ProjectContext) {}
 }

@@ -24,8 +24,8 @@ class CoreCardinalConstantDeclaration(
 ) : CoreCardinalDeclaration() {
 
     init {
-        if (cardinal < 1)
-            m.error("Cardinal must be a positive integer: $cardinal", null)
+        if (cardinal < 0)
+            m.error("Cardinal must be a natural number: $cardinal", null)
     }
 
     override var name = Name("$cardinal")
