@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.pre
+package io.verik.compiler.transform.mid
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestDriver
@@ -26,7 +26,7 @@ internal class AssignmentTransformerTest : BaseTest() {
 
     @Test
     fun `transform assignment blocking`() {
-        val projectContext = TestDriver.preTransform(
+        val projectContext = TestDriver.midTransform(
             """
                 var x = 0
                 fun f() {

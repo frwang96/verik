@@ -36,9 +36,9 @@ internal class AssignmentOperatorReducerTest : BaseTest() {
         )
         assertElementEquals(
             """
-                SvBinaryExpression(
+                KtBinaryExpression(
                     Unit,
-                    ASSIGN,
+                    EQ,
                     ReferenceExpression(*),
                     DotQualifiedExpression(Int, ReferenceExpression(*), CallExpression(Int, plus, *))
                 )

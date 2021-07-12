@@ -22,6 +22,7 @@ import io.verik.compiler.check.pre.ProjectPreChecker
 import io.verik.compiler.interpret.ProjectInterpreter
 import io.verik.compiler.resolve.ProjectResolver
 import io.verik.compiler.serialize.ProjectSerializer
+import io.verik.compiler.transform.mid.ProjectMidTransformer
 import io.verik.compiler.transform.post.ProjectPostTransformer
 import io.verik.compiler.transform.pre.ProjectPreTransformer
 import io.verik.plugin.Config
@@ -39,9 +40,10 @@ object Main {
         KotlinCompiler().pass(projectContext)
         ProjectCaster.pass(projectContext)
         ProjectPreChecker.pass(projectContext)
+        ProjectPreTransformer.pass(projectContext)
         ProjectResolver.pass(projectContext)
         ProjectInterpreter.pass(projectContext)
-        ProjectPreTransformer.pass(projectContext)
+        ProjectMidTransformer.pass(projectContext)
         ProjectPostTransformer.pass(projectContext)
         ProjectPostChecker.pass(projectContext)
         ProjectSerializer.pass(projectContext)

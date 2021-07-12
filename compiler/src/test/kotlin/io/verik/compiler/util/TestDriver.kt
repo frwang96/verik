@@ -25,6 +25,7 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 import io.verik.compiler.resolve.ProjectResolver
 import io.verik.compiler.serialize.ProjectSerializer
+import io.verik.compiler.transform.mid.ProjectMidTransformer
 import io.verik.compiler.transform.post.ProjectPostTransformer
 import io.verik.compiler.transform.pre.ProjectPreTransformer
 import io.verik.plugin.Config
@@ -71,8 +72,14 @@ object TestDriver {
         return projectContext
     }
 
-    fun resolve(@Language("kotlin") content: String): ProjectContext {
+    fun preTransform(@Language("kotlin") content: String): ProjectContext {
         val projectContext = preCheck(content)
+        ProjectPreTransformer.pass(projectContext)
+        return projectContext
+    }
+
+    fun resolve(@Language("kotlin") content: String): ProjectContext {
+        val projectContext = preTransform(content)
         ProjectResolver.pass(projectContext)
         return projectContext
     }
@@ -83,14 +90,14 @@ object TestDriver {
         return projectContext
     }
 
-    fun preTransform(@Language("kotlin") content: String): ProjectContext {
+    fun midTransform(@Language("kotlin") content: String): ProjectContext {
         val projectContext = interpret(content)
-        ProjectPreTransformer.pass(projectContext)
+        ProjectMidTransformer.pass(projectContext)
         return projectContext
     }
 
     fun postTransform(@Language("kotlin") content: String): ProjectContext {
-        val projectContext = preTransform(content)
+        val projectContext = midTransform(content)
         ProjectPostTransformer.pass(projectContext)
         return projectContext
     }

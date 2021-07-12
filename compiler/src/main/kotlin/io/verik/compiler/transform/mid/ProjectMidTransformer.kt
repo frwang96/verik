@@ -14,21 +14,25 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.pre
+package io.verik.compiler.transform.mid
 
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
-object ProjectPreTransformer : ProjectPass {
+object ProjectMidTransformer : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        m.log("PreTransform: Reduce assignment operators")
-        AssignmentOperatorReducer.pass(projectContext)
+        m.log("MidTransform: Reduce string template expressions")
+        StringTemplateExpressionReducer.pass(projectContext)
         m.flush()
 
-        m.log("PreTransform: Reduce binary expressions")
-        BinaryExpressionReducer.pass(projectContext)
+        m.log("MidTransform: Transform assignments")
+        AssignmentTransformer.pass(projectContext)
+        m.flush()
+
+        m.log("MidTransform: Transform loop expressions")
+        LoopExpressionTransformer.pass(projectContext)
         m.flush()
     }
 }

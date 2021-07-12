@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.pre
+package io.verik.compiler.transform.mid
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestDriver
@@ -26,7 +26,7 @@ internal class LoopExpressionTransformerTest : BaseTest() {
 
     @Test
     fun `transform forever`() {
-        val projectContext = TestDriver.preTransform(
+        val projectContext = TestDriver.midTransform(
             """
                 fun f() {
                     forever {}
