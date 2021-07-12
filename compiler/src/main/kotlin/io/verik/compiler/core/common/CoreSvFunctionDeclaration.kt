@@ -23,13 +23,8 @@ class CoreSvFunctionDeclaration private constructor(
     override val qualifiedName: Name
 ) : CoreAbstractFunctionDeclaration() {
 
-    companion object {
-
-        operator fun invoke(parent: String, name: String): CoreSvFunctionDeclaration {
-            return CoreSvFunctionDeclaration(
-                Name(name),
-                Name("$parent.$name")
-            )
-        }
-    }
+    constructor(parent: String, name: String): this(
+        Name(name),
+        Name("$parent.$name")
+    )
 }

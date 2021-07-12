@@ -16,26 +16,24 @@
 
 package io.verik.compiler.core.common
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.property.Name
 
-class CoreKtFunctionDeclaration private constructor(
+open class CoreKtFunctionDeclaration private constructor(
     override var name: Name,
     override val qualifiedName: Name,
     val parameterClassNames: List<Name>
 ) : CoreAbstractFunctionDeclaration() {
 
-    companion object {
+    open fun resolve(callExpression: ECallExpression) {}
 
-        operator fun invoke(
-            parent: String,
-            name: String,
-            vararg parameterClassDeclarations: CoreClassDeclaration
-        ): CoreKtFunctionDeclaration {
-            return CoreKtFunctionDeclaration(
-                Name(name),
-                Name("$parent.$name"),
-                parameterClassDeclarations.map { it.name }
-            )
-        }
-    }
+    constructor(
+        parent: String,
+        name: String,
+        vararg parameterClassDeclarations: CoreClassDeclaration
+    ): this(
+        Name(name),
+        Name("$parent.$name"),
+        parameterClassDeclarations.map { it.name }
+    )
 }

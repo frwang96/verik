@@ -36,6 +36,10 @@ class ECallExpression(
         valueArguments.forEach { it.parent = this }
     }
 
+    fun hasTypeArguments(): Boolean {
+        return typeArguments.isNotEmpty()
+    }
+
     override fun accept(visitor: Visitor) {
         visitor.visitCallExpression(this)
     }

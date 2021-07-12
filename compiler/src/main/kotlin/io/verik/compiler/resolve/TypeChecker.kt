@@ -40,7 +40,7 @@ object TypeChecker : ProjectPass {
         override fun visitExpression(expression: EExpression) {
             super.visitExpression(expression)
             if (!cardinalResolvedTypeVisitor.isResolved(expression.type))
-                m.error("Expression type has not been resolved: ${expression.type}", expression)
+               m.error("${expression::class.simpleName} type has not been resolved: ${expression.type}", expression)
         }
     }
 

@@ -16,6 +16,7 @@
 
 package io.verik.compiler.core.lang.vk
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.property.Name
 import io.verik.compiler.core.common.*
 
@@ -24,7 +25,15 @@ object CoreVk : CoreScope(CorePackage.VK) {
     val ADD = CoreCardinalFunctionDeclaration(Name("ADD"))
     val INC = CoreCardinalFunctionDeclaration(Name("INC"))
 
-    val U_INT = CoreKtFunctionDeclaration(parent, "u", C.Kt.INT)
+    val U_INT = object : CoreKtFunctionDeclaration(parent, "u", C.Kt.INT) {
+
+        override fun resolve(callExpression: ECallExpression) {
+            if (callExpression.hasTypeArguments()) {
+                callExpression.type = callExpression.typeArguments[0].type
+            }
+        }
+    }
+
     val RANDOM = CoreKtFunctionDeclaration(parent, "random")
     val RANDOM_INT = CoreKtFunctionDeclaration(parent, "random", C.Kt.INT)
     val FOREVER_FUNCTION = CoreKtFunctionDeclaration(parent, "forever", C.Kt.FUNCTION)

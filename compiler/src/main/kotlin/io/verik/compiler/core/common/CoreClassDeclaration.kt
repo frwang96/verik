@@ -24,14 +24,9 @@ class CoreClassDeclaration private constructor(
     val superclass: CoreClassDeclaration?
 ) : CoreDeclaration() {
 
-    companion object {
-
-        operator fun invoke(parent: String, name: String, superclass: CoreClassDeclaration?): CoreClassDeclaration {
-            return CoreClassDeclaration(
-                Name(name),
-                Name("$parent.$name"),
-                superclass
-            )
-        }
-    }
+    constructor(parent: String, name: String, superclass: CoreClassDeclaration?): this(
+        Name(name),
+        Name("$parent.$name"),
+        superclass
+    )
 }

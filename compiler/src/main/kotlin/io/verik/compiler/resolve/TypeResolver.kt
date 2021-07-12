@@ -16,10 +16,32 @@
 
 package io.verik.compiler.resolve
 
+import io.verik.compiler.ast.element.common.ECallExpression
+import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.common.ProjectPass
+import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 
 object TypeResolver : ProjectPass {
 
-    override fun pass(projectContext: ProjectContext) {}
+    override fun pass(projectContext: ProjectContext) {
+        projectContext.files.forEach { it.accept(TypeResolverVisitor) }
+    }
+
+    object TypeResolverVisitor : TreeVisitor() {
+
+        override fun visitKtBlockExpression(blockExpression: EKtBlockExpression) {
+            super.visitKtBlockExpression(blockExpression)
+            if (blockExpression.hasStatements())
+                blockExpression.type = blockExpression.statements.last().type
+        }
+
+        override fun visitCallExpression(callExpression: ECallExpression) {
+            super.visitCallExpression(callExpression)
+            val reference = callExpression.reference
+            if (reference is CoreKtFunctionDeclaration)
+                reference.resolve(callExpression)
+        }
+    }
 }
