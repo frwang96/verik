@@ -190,7 +190,7 @@ class CasterBaseVisitor(
 
         val upperBound = descriptor.representativeUpperBound
         val type = if (upperBound.isNullableAny()) {
-            C.Kt.ANY.toNoArgumentsType()
+            C.Kt.ANY.toType()
         } else {
             getType(descriptor.representativeUpperBound, parameter)
         }

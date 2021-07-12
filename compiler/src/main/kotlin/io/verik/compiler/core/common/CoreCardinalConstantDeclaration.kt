@@ -20,12 +20,12 @@ import io.verik.compiler.ast.property.Name
 import io.verik.compiler.main.m
 
 class CoreCardinalConstantDeclaration(
-    val cardinal: Int
+    val value: Int
 ) : CoreCardinalDeclaration() {
 
     init {
-        if (cardinal < 0)
-            m.error("Cardinal must be a natural number: $cardinal", null)
+        if (value < 0)
+            m.error("Cardinal must be a natural number: $value", null)
     }
 
     override var name = Name("Cardinal")
@@ -33,14 +33,14 @@ class CoreCardinalConstantDeclaration(
     override val qualifiedName = Name("${CorePackage.VK}.$name")
 
     override fun toString(): String {
-        return "`$cardinal`"
+        return "`$value`"
     }
 
     override fun equals(other: Any?): Boolean {
-        return (other is CoreCardinalConstantDeclaration) && (other.cardinal == cardinal)
+        return (other is CoreCardinalConstantDeclaration) && (other.value == value)
     }
 
     override fun hashCode(): Int {
-        return cardinal
+        return value
     }
 }

@@ -27,6 +27,10 @@ object ProjectMidTransformer : ProjectPass {
         StringTemplateExpressionReducer.pass(projectContext)
         m.flush()
 
+        m.log("MidTransform: Transform bit constants")
+        BitConstantTransformer.pass(projectContext)
+        m.flush()
+
         m.log("MidTransform: Transform assignments")
         AssignmentTransformer.pass(projectContext)
         m.flush()

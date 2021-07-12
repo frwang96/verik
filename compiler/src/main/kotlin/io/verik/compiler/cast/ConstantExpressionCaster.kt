@@ -25,8 +25,8 @@ object ConstantExpressionCaster {
 
     fun cast(value: String, type: Type, location: SourceLocation): String {
         return when (type) {
-            C.Kt.BOOLEAN.toNoArgumentsType() -> castBoolean(value)
-            C.Kt.INT.toNoArgumentsType() -> castInteger(value)
+            C.Kt.BOOLEAN.toType() -> castBoolean(value)
+            C.Kt.INT.toType() -> castInteger(value)
             else -> {
                 m.error("Constant expression type not supported: $type", location)
                 ""

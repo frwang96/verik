@@ -18,7 +18,7 @@ package io.verik.compiler.cast
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestDriver
-import io.verik.compiler.util.TestException
+import io.verik.compiler.util.TestErrorException
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -26,8 +26,8 @@ import org.junit.jupiter.api.assertThrows
 internal class IndexerVisitorTest : BaseTest() {
 
     @Test
-    fun `illegal name unicode`() {
-        assertThrows<TestException> {
+    fun `error name unicode`() {
+        assertThrows<TestErrorException> {
             TestDriver.cast(
                 """
                     @Suppress("ObjectPropertyName")

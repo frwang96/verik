@@ -28,7 +28,7 @@ class EEventControlExpression(
     override var expression: EExpression
 ) : EAbstractExpressionContainer() {
 
-    override var type = C.Kt.UNIT.toNoArgumentsType()
+    override var type = C.Kt.UNIT.toType()
 
     init {
         expression.parent = this

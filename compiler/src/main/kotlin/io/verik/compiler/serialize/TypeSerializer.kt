@@ -20,7 +20,6 @@ import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.core.common.C
-import io.verik.compiler.core.common.CoreCardinalConstantDeclaration
 import io.verik.compiler.main.m
 
 object TypeSerializer {
@@ -41,13 +40,7 @@ object TypeSerializer {
     }
 
     private fun serializeCardinalLittleEndian(type: Type, element: EElement): String {
-        val reference = type.reference
-        return if (reference is CoreCardinalConstantDeclaration) {
-            val cardinal = reference.cardinal
-            "[${cardinal - 1}:0]"
-        } else {
-            m.error("Could not get value of cardinal: $type", element)
-            "[0:0]"
-        }
+        val value = type.asCardinalValue(element)
+        return "[${value - 1}:0]"
     }
 }

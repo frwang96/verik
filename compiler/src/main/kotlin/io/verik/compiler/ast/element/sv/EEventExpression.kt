@@ -30,7 +30,7 @@ class EEventExpression(
     var edgeType: EdgeType
 ) : EAbstractExpressionContainer() {
 
-    override var type = C.Vk.EVENT.toNoArgumentsType()
+    override var type = C.Vk.EVENT.toType()
 
     init {
         expression.parent = this

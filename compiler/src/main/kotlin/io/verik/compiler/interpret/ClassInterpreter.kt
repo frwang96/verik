@@ -25,7 +25,7 @@ import io.verik.compiler.core.common.C
 object ClassInterpreter {
 
     fun interpret(basicClass: EKtBasicClass): EAbstractClass {
-        return if (basicClass.type.isType(C.Vk.MODULE.toNoArgumentsType())) {
+        return if (basicClass.type.isType(C.Vk.MODULE.toType())) {
             EModule(
                 basicClass.location,
                 basicClass.name,

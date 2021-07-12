@@ -18,7 +18,7 @@ package io.verik.compiler.main
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestDriver
-import io.verik.compiler.util.TestException
+import io.verik.compiler.util.TestErrorException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -26,7 +26,7 @@ import org.junit.jupiter.api.assertThrows
 class KotlinCompilerTest : BaseTest() {
 
     @Test
-    fun `compile valid`() {
+    fun `compile simple`() {
         TestDriver.compile(
             """
                 class C {
@@ -39,8 +39,8 @@ class KotlinCompilerTest : BaseTest() {
     }
 
     @Test
-    fun `compile invalid`() {
-        assertThrows<TestException> {
+    fun `compile error`() {
+        assertThrows<TestErrorException> {
             TestDriver.compile(
                 """
                     class C {

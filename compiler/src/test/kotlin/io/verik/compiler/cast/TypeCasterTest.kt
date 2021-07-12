@@ -71,7 +71,7 @@ internal class TypeCasterTest : BaseTest() {
     @Test
     @Disabled
     fun `type nullable`() {
-        assertThrows<TestException> {
+        assertThrows<TestErrorException> {
             TestDriver.cast(
                 """
                     fun f(x: Int?) {}
@@ -165,7 +165,7 @@ internal class TypeCasterTest : BaseTest() {
 
     @Test
     fun `type reference cardinal function invalid`() {
-        assertThrows<TestException> {
+        assertThrows<TestErrorException> {
             TestDriver.cast(
                 """
                     var x: Ubit<ADD<`8`, Int>> = u(0)
@@ -193,7 +193,7 @@ internal class TypeCasterTest : BaseTest() {
 
     @Test
     fun `type reference cardinal type parameter invalid`() {
-        assertThrows<TestException> {
+        assertThrows<TestErrorException> {
             TestDriver.cast(
                 """
                     class C<N> {

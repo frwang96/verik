@@ -17,28 +17,19 @@
 package io.verik.compiler.ast.property
 
 import io.verik.compiler.ast.element.common.EAbstractClass
+import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.TypeVisitor
-import io.verik.compiler.core.common.CoreCardinalBaseDeclaration
-import io.verik.compiler.core.common.CoreCardinalDeclaration
-import io.verik.compiler.core.common.CoreClassDeclaration
+import io.verik.compiler.core.common.*
 import io.verik.compiler.main.m
 
 class Type(
     override var reference: Declaration,
     val arguments: ArrayList<Type>
 ) : Reference {
-
-    fun isCardinalType(): Boolean {
-        return when (val reference = reference) {
-            is ETypeParameter -> reference.type.isCardinalType()
-            is CoreCardinalDeclaration -> true
-            else -> false
-        }
-    }
 
     fun isType(type: Type): Boolean {
         return getSupertypes().any { it == type }
@@ -51,6 +42,34 @@ class Type(
 
     fun accept(typeVisitor: TypeVisitor) {
         typeVisitor.visit(this)
+    }
+
+    fun isCardinalType(): Boolean {
+        return when (val reference = reference) {
+            is ETypeParameter -> reference.type.isCardinalType()
+            is CoreCardinalDeclaration -> true
+            else -> false
+        }
+    }
+
+    fun asCardinalValue(element: EElement): Int {
+        val reference = reference
+        return if (reference is CoreCardinalConstantDeclaration) {
+            reference.value
+        } else {
+            m.error("Could not get value as cardinal: $this", element)
+            1
+        }
+    }
+
+    fun asBitWidth(element: EElement): Int {
+        val reference = reference
+        return if (reference in listOf(C.Vk.UBIT, C.Vk.SBIT)) {
+            arguments[0].asCardinalValue(element)
+        } else {
+            m.error("Bit type expected: $this", element)
+            1
+        }
     }
 
     override fun toString(): String {
@@ -82,7 +101,7 @@ class Type(
     private fun getSupertype(): Type? {
         return when (val reference = reference) {
             is EAbstractClass -> reference.supertype
-            is CoreClassDeclaration -> reference.superclass?.toNoArgumentsType()
+            is CoreClassDeclaration -> reference.superclass?.toType()
             is CoreCardinalBaseDeclaration -> null
             else -> {
                 m.error("Unexpected type reference: $reference", null)
@@ -93,6 +112,6 @@ class Type(
 
     companion object {
 
-        val NULL = NullDeclaration.toNoArgumentsType()
+        val NULL = NullDeclaration.toType()
     }
 }

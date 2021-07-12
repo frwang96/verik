@@ -31,7 +31,7 @@ class EStringTemplateExpression(
         entries.forEach { it.parent = this }
     }
 
-    override var type = C.Kt.STRING.toNoArgumentsType()
+    override var type = C.Kt.STRING.toType()
 
     override fun accept(visitor: Visitor) {
         visitor.visitStringTemplateExpression(this)

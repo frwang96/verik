@@ -18,6 +18,7 @@ package io.verik.compiler.resolve
 
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
+import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
@@ -30,6 +31,13 @@ object TypeResolver : ProjectPass {
     }
 
     object TypeResolverVisitor : TreeVisitor() {
+
+        override fun visitKtProperty(property: EKtProperty) {
+            super.visitKtProperty(property)
+            val initializer = property.initializer
+            if (initializer != null)
+                property.type = initializer.type
+        }
 
         override fun visitKtBlockExpression(blockExpression: EKtBlockExpression) {
             super.visitKtBlockExpression(blockExpression)

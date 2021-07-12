@@ -164,7 +164,7 @@ internal class CasterBaseVisitorTest : BaseTest() {
 
     @Test
     fun `function annotations conflicting`() {
-        assertThrows<TestException> {
+        assertThrows<TestErrorException> {
             TestDriver.cast(
                 """
                     @Com

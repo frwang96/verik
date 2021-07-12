@@ -34,7 +34,7 @@ internal class TypeResolverTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "CallExpression(`8`, u, *)",
+            "ConstantExpression(Ubit<`8`>, *)",
             projectContext.findExpression("f")
         )
     }

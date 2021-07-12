@@ -29,7 +29,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
 
         override fun resolve(callExpression: ECallExpression) {
             if (callExpression.hasTypeArguments()) {
-                callExpression.type = callExpression.typeArguments[0].type
+                callExpression.type = C.Vk.UBIT.toType(callExpression.typeArguments[0].type)
             }
         }
     }

@@ -18,7 +18,7 @@ package io.verik.compiler.check.pre
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestDriver
-import io.verik.compiler.util.TestException
+import io.verik.compiler.util.TestErrorException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -27,7 +27,7 @@ internal class ImportDirectiveCheckerTest : BaseTest() {
 
     @Test
     fun `import not found`() {
-        assertThrows<TestException> {
+        assertThrows<TestErrorException> {
             TestDriver.preCheck(
                 """
                     import java.time.LocalDateTime
@@ -40,7 +40,7 @@ internal class ImportDirectiveCheckerTest : BaseTest() {
 
     @Test
     fun `import not found all under`() {
-        assertThrows<TestException> {
+        assertThrows<TestErrorException> {
             TestDriver.preCheck(
                 """
                     import java.time.*

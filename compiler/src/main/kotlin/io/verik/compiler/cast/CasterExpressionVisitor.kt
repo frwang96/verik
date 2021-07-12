@@ -139,7 +139,7 @@ class CasterExpressionVisitor(
         val statements = expression.bodyExpression!!.statements.mapNotNull { getElement<EExpression>(it) }
         val bodyBlockExpression = EKtBlockExpression(
             location,
-            C.Kt.FUNCTION.toNoArgumentsType(),
+            C.Kt.FUNCTION.toType(),
             ArrayList(statements)
         )
         return EFunctionLiteralExpression(location, bodyBlockExpression)

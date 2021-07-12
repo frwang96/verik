@@ -18,7 +18,7 @@ package io.verik.compiler.resolve
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestDriver
-import io.verik.compiler.util.TestException
+import io.verik.compiler.util.TestErrorException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -27,12 +27,12 @@ internal class TypeCheckerTest : BaseTest() {
 
     @Test
     fun `cardinal not resolved`() {
-        assertThrows<TestException> {
+        assertThrows<TestErrorException> {
             TestDriver.resolve(
                 """
                 val x = u<`*`>(0)
             """.trimIndent()
             )
-        }.apply { assertEquals("Expression type has not been resolved: Ubit<`*`>", message) }
+        }.apply { assertEquals("Type of ECallExpression has not been resolved: Ubit<`*`>", message) }
     }
 }

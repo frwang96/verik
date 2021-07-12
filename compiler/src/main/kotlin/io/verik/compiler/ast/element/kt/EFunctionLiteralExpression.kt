@@ -35,7 +35,7 @@ class EFunctionLiteralExpression(
         bodyBlockExpression.parent = this
     }
 
-    override var type = C.Kt.FUNCTION.toNoArgumentsType()
+    override var type = C.Kt.FUNCTION.toType()
 
     override fun accept(visitor: Visitor) {
         visitor.visitFunctionLiteralExpression(this)

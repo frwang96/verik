@@ -87,8 +87,8 @@ internal class FunctionInterpreterTest : BaseTest() {
     }
 
     @Test
-    fun `interpret always seq block illegal`() {
-        assertThrows<TestException> {
+    fun `interpret always seq block error`() {
+        assertThrows<TestErrorException> {
             TestDriver.interpret(
                 """
                 class M: Module() {

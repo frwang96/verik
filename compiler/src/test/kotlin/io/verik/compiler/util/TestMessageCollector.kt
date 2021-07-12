@@ -22,10 +22,10 @@ import io.verik.compiler.main.SourceLocation
 class TestMessageCollector : MessageCollector() {
 
     override fun fatal(message: String, location: SourceLocation?): Nothing {
-        throw TestException(message)
+        throw TestFatalException(message)
     }
 
     override fun error(message: String, location: SourceLocation?) {
-        throw TestException(message)
+        throw TestErrorException(message)
     }
 }

@@ -47,4 +47,8 @@ open class MessageCollector {
     fun error(message: String, element: KtElement) {
         error(message, element.getSourceLocation())
     }
+
+    fun warning(message: String, element: EElement) {
+        warning(message, element.location)
+    }
 }

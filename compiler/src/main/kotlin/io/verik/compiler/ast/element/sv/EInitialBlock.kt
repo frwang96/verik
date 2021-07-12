@@ -32,7 +32,7 @@ class EInitialBlock(
         bodyBlockExpression.parent = this
     }
 
-    override var type = C.Kt.UNIT.toNoArgumentsType()
+    override var type = C.Kt.UNIT.toType()
 
     override fun accept(visitor: Visitor) {
         visitor.visitInitialBlock(this)

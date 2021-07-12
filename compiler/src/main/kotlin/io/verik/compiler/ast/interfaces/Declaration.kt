@@ -27,8 +27,8 @@ interface Declaration {
 
     var name: Name
 
-    fun toNoArgumentsType(): Type {
-        return Type(this, arrayListOf())
+    fun toType(vararg arguments: Type): Type {
+        return Type(this, arrayListOf(*arguments))
     }
 }
 

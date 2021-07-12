@@ -42,6 +42,7 @@ object Count : Module() {
     fun f() {
         x += 1
         x -= 1
+        u<`8`>(255)
         if (y) println()
     }
 

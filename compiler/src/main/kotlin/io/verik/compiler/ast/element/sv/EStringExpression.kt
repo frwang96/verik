@@ -28,7 +28,7 @@ class EStringExpression(
     val text: String
 ) : EExpression() {
 
-    override var type = C.Kt.STRING.toNoArgumentsType()
+    override var type = C.Kt.STRING.toType()
 
     override fun accept(visitor: Visitor) {
         visitor.visitStringExpression(this)
