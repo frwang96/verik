@@ -37,7 +37,7 @@ object CoreDeclarationMap {
     private val functionMap = HashMap<Name, ArrayList<CoreKtFunctionDeclaration>>()
 
     init {
-        addCoreDeclarations(C::class)
+        addCoreDeclarations(Core::class)
     }
 
     operator fun get(

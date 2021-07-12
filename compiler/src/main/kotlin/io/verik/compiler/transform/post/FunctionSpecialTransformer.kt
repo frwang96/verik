@@ -22,7 +22,7 @@ import io.verik.compiler.ast.element.sv.EEventExpression
 import io.verik.compiler.ast.property.EdgeType
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.common.C
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
@@ -39,24 +39,24 @@ object FunctionSpecialTransformer : ProjectPass {
         override fun visitCallExpression(callExpression: ECallExpression) {
             super.visitCallExpression(callExpression)
             val newExpression = when (callExpression.reference) {
-                C.Vk.POSEDGE_BOOLEAN -> {
+                Core.Vk.POSEDGE_BOOLEAN -> {
                     EEventExpression(
                         callExpression.location,
                         callExpression.valueArguments[0].expression,
                         EdgeType.POSEDGE
                     )
                 }
-                C.Vk.NEGEDGE_BOOLEAN -> {
+                Core.Vk.NEGEDGE_BOOLEAN -> {
                     EEventExpression(
                         callExpression.location,
                         callExpression.valueArguments[0].expression,
                         EdgeType.NEGEDGE
                     )
                 }
-                C.Vk.WAIT_EVENT -> {
+                Core.Vk.WAIT_EVENT -> {
                     EEventControlExpression(callExpression.location, callExpression.valueArguments[0].expression)
                 }
-                C.Vk.ON_EVENT_FUNCTION -> {
+                Core.Vk.ON_EVENT_FUNCTION -> {
                     m.error("On expression used out of context", callExpression)
                     return
                 }

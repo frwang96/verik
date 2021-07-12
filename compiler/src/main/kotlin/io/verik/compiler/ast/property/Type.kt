@@ -64,7 +64,7 @@ class Type(
 
     fun asBitWidth(element: EElement): Int {
         val reference = reference
-        return if (reference in listOf(C.Vk.UBIT, C.Vk.SBIT)) {
+        return if (reference in listOf(Core.Vk.UBIT, Core.Vk.SBIT)) {
             arguments[0].asCardinalValue(element)
         } else {
             m.error("Bit type expected: $this", element)

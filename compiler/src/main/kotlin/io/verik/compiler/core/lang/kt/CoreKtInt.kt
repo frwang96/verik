@@ -16,13 +16,13 @@
 
 package io.verik.compiler.core.lang.kt
 
-import io.verik.compiler.core.common.C
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.core.common.CoreScope
 
-object CoreKtInt : CoreScope(C.Kt.INT) {
+object CoreKtInt : CoreScope(Core.Kt.INT) {
 
-    val TIMES_INT = CoreKtFunctionDeclaration(parent, "times", C.Kt.INT)
-    val PLUS_INT = CoreKtFunctionDeclaration(parent, "plus", C.Kt.INT)
-    val MINUS_INT = CoreKtFunctionDeclaration(parent, "minus", C.Kt.INT)
+    val TIMES_INT = CoreKtFunctionDeclaration(parent, "times", Core.Kt.INT)
+    val PLUS_INT = CoreKtFunctionDeclaration(parent, "plus", Core.Kt.INT)
+    val MINUS_INT = CoreKtFunctionDeclaration(parent, "minus", Core.Kt.INT)
 }

@@ -42,7 +42,7 @@ class KotlinCompiler : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
         m.info("Compile: Parse input files")
-        val environment = createKotlinCoreEnvironment()
+        val environment = createKotlinCoreEnvironment(projectContext)
         val psiFileFactory = KtPsiFactory(environment.project, false)
 
         val ktFiles = projectContext.inputTextFiles.map {
@@ -68,9 +68,9 @@ class KotlinCompiler : ProjectPass {
         m.flush()
     }
 
-    private fun createKotlinCoreEnvironment(): KotlinCoreEnvironment {
+    private fun createKotlinCoreEnvironment(projectContext: ProjectContext): KotlinCoreEnvironment {
         setIdeaIoUseFallback()
-        val configuration = createCompilerConfiguration()
+        val configuration = createCompilerConfiguration(projectContext)
         val disposable = Disposer.newDisposable()
         return KotlinCoreEnvironment.createForProduction(
             disposable,
@@ -79,7 +79,7 @@ class KotlinCompiler : ProjectPass {
         )
     }
 
-    private fun createCompilerConfiguration(): CompilerConfiguration {
+    private fun createCompilerConfiguration(projectContext: ProjectContext): CompilerConfiguration {
         val configuration = CompilerConfiguration()
         configuration.put(JVMConfigurationKeys.JVM_TARGET, JvmTarget.JVM_1_8)
         configuration.put(
@@ -87,7 +87,10 @@ class KotlinCompiler : ProjectPass {
             LanguageVersionSettingsImpl(LanguageVersion.KOTLIN_1_4, ApiVersion.KOTLIN_1_4)
         )
         configuration.put(CommonConfigurationKeys.MODULE_NAME, MODULE_NAME)
-        configuration.put(CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY, KotlinCompilerMessageCollector())
+        configuration.put(
+            CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY,
+            KotlinCompilerMessageCollector(projectContext.config.suppressCompileWarnings)
+        )
         getJvmClasspathRoots().forEach {
             configuration.addJvmClasspathRoot(it)
         }
@@ -101,7 +104,7 @@ class KotlinCompiler : ProjectPass {
         )
     }
 
-    private class KotlinCompilerMessageCollector : MessageCollector {
+    private class KotlinCompilerMessageCollector(private val suppressCompileWarnings: Boolean) : MessageCollector {
 
         override fun clear() {}
 
@@ -117,7 +120,8 @@ class KotlinCompiler : ProjectPass {
                 CompilerMessageSeverity.EXCEPTION, CompilerMessageSeverity.ERROR ->
                     m.error(message, sourceLocation)
                 CompilerMessageSeverity.STRONG_WARNING, CompilerMessageSeverity.WARNING ->
-                    m.warning(message, sourceLocation)
+                    if (!suppressCompileWarnings)
+                        m.warning(message, sourceLocation)
                 else -> {}
             }
         }

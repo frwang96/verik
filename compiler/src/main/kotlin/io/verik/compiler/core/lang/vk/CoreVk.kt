@@ -25,21 +25,21 @@ object CoreVk : CoreScope(CorePackage.VK) {
     val ADD = CoreCardinalFunctionDeclaration(Name("ADD"))
     val INC = CoreCardinalFunctionDeclaration(Name("INC"))
 
-    val U_INT = object : CoreKtFunctionDeclaration(parent, "u", C.Kt.INT) {
+    val U_INT = object : CoreKtFunctionDeclaration(parent, "u", Core.Kt.INT) {
 
         override fun resolve(callExpression: ECallExpression) {
             if (callExpression.hasTypeArguments()) {
-                callExpression.type = C.Vk.UBIT.toType(callExpression.typeArguments[0].type)
+                callExpression.type = Core.Vk.UBIT.toType(callExpression.typeArguments[0].type)
             }
         }
     }
 
     val RANDOM = CoreKtFunctionDeclaration(parent, "random")
-    val RANDOM_INT = CoreKtFunctionDeclaration(parent, "random", C.Kt.INT)
-    val FOREVER_FUNCTION = CoreKtFunctionDeclaration(parent, "forever", C.Kt.FUNCTION)
-    val ON_EVENT_FUNCTION = CoreKtFunctionDeclaration(parent, "on", C.Vk.EVENT, C.Kt.FUNCTION)
+    val RANDOM_INT = CoreKtFunctionDeclaration(parent, "random", Core.Kt.INT)
+    val FOREVER_FUNCTION = CoreKtFunctionDeclaration(parent, "forever", Core.Kt.FUNCTION)
+    val ON_EVENT_FUNCTION = CoreKtFunctionDeclaration(parent, "on", Core.Vk.EVENT, Core.Kt.FUNCTION)
 
-    val POSEDGE_BOOLEAN = CoreKtFunctionDeclaration(parent, "posedge", C.Kt.BOOLEAN)
-    val NEGEDGE_BOOLEAN = CoreKtFunctionDeclaration(parent, "negedge", C.Kt.BOOLEAN)
-    val WAIT_EVENT = CoreKtFunctionDeclaration(parent, "wait", C.Vk.EVENT)
+    val POSEDGE_BOOLEAN = CoreKtFunctionDeclaration(parent, "posedge", Core.Kt.BOOLEAN)
+    val NEGEDGE_BOOLEAN = CoreKtFunctionDeclaration(parent, "negedge", Core.Kt.BOOLEAN)
+    val WAIT_EVENT = CoreKtFunctionDeclaration(parent, "wait", Core.Vk.EVENT)
 }

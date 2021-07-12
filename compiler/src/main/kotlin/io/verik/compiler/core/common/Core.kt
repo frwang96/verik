@@ -24,7 +24,7 @@ import io.verik.compiler.core.lang.vk.CoreVk
 import io.verik.compiler.core.lang.vk.CoreVkClass
 import io.verik.compiler.core.lang.vk.CoreVkUbit
 
-object C {
+object Core {
 
     object Kt : CoreScope(CorePackage.KT) {
 

@@ -21,7 +21,7 @@ import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.common.C
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
@@ -63,7 +63,7 @@ object BitConstantTransformer : ProjectPass {
 
         override fun visitCallExpression(callExpression: ECallExpression) {
             super.visitCallExpression(callExpression)
-            if (callExpression.reference == C.Vk.U_INT) {
+            if (callExpression.reference == Core.Vk.U_INT) {
                 val expression = callExpression.valueArguments[0].expression
                 if (expression is EConstantExpression) {
                     val width = callExpression.type.asBitWidth(callExpression)

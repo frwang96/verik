@@ -26,7 +26,7 @@ import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.common.C
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
@@ -40,7 +40,7 @@ object StringTemplateExpressionReducer : ProjectPass {
 
     private fun getFormatSpecifier(expression: EExpression): String {
         return when (expression.type.reference) {
-            C.Kt.INT -> "%d"
+            Core.Kt.INT -> "%d"
             else -> {
                 m.error("Unable to get format specifier of type: ${expression.type}", expression)
                 ""
@@ -94,7 +94,7 @@ object StringTemplateExpressionReducer : ProjectPass {
                 val callExpression = ECallExpression(
                     stringTemplateExpression.location,
                     stringTemplateExpression.type,
-                    C.Sv.SFORMATF,
+                    Core.Sv.SFORMATF,
                     arrayListOf(),
                     valueArguments
                 )

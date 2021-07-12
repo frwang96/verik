@@ -51,6 +51,8 @@ class VerikPlugin : Plugin<Project> {
 
         task.group = "verik"
         task.inputs.property("top", { extension.top })
+        task.inputs.property("verbose", { extension.verbose })
+        task.inputs.property("debug", { extension.debug })
         task.inputs.property("labelLines", { extension.labelLines })
         task.inputs.property("wrapLength", { extension.wrapLength })
         task.inputs.property("indentLength", { extension.indentLength })

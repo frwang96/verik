@@ -32,6 +32,7 @@ data class Config(
     val top: String,
     val verbose: Boolean,
     val debug: Boolean,
+    val suppressCompileWarnings: Boolean,
     val labelLines: Boolean,
     val wrapLength: Int,
     val indentLength: Int
@@ -55,6 +56,7 @@ data class Config(
                 top,
                 extension.verbose || extension.debug,
                 extension.debug,
+                suppressCompileWarnings = false,
                 extension.labelLines,
                 extension.wrapLength,
                 extension.indentLength

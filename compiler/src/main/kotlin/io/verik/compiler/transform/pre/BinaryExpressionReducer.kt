@@ -24,7 +24,7 @@ import io.verik.compiler.ast.property.KOperatorKind
 import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.common.C
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreClassDeclaration
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
@@ -34,9 +34,9 @@ object BinaryExpressionReducer : ProjectPass {
     private val referenceMap = HashMap<ReducerEntry, CoreKtFunctionDeclaration>()
 
     init {
-        referenceMap[ReducerEntry(C.Kt.INT, C.Kt.INT, KOperatorKind.MUL)] = C.Kt.Int.TIMES_INT
-        referenceMap[ReducerEntry(C.Kt.INT, C.Kt.INT, KOperatorKind.PLUS)] = C.Kt.Int.PLUS_INT
-        referenceMap[ReducerEntry(C.Kt.INT, C.Kt.INT, KOperatorKind.MINUS)] = C.Kt.Int.MINUS_INT
+        referenceMap[ReducerEntry(Core.Kt.INT, Core.Kt.INT, KOperatorKind.MUL)] = Core.Kt.Int.TIMES_INT
+        referenceMap[ReducerEntry(Core.Kt.INT, Core.Kt.INT, KOperatorKind.PLUS)] = Core.Kt.Int.PLUS_INT
+        referenceMap[ReducerEntry(Core.Kt.INT, Core.Kt.INT, KOperatorKind.MINUS)] = Core.Kt.Int.MINUS_INT
     }
 
     override fun pass(projectContext: ProjectContext) {

@@ -22,7 +22,7 @@ import io.verik.compiler.ast.property.KOperatorKind
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.getSourceLocation
-import io.verik.compiler.core.common.C
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.psi.*
@@ -139,7 +139,7 @@ class CasterExpressionVisitor(
         val statements = expression.bodyExpression!!.statements.mapNotNull { getElement<EExpression>(it) }
         val bodyBlockExpression = EKtBlockExpression(
             location,
-            C.Kt.FUNCTION.toType(),
+            Core.Kt.FUNCTION.toType(),
             ArrayList(statements)
         )
         return EFunctionLiteralExpression(location, bodyBlockExpression)

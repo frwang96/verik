@@ -19,7 +19,7 @@ package io.verik.compiler.ast.element.kt
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.core.common.C
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.SourceLocation
 
 class EStringTemplateExpression(
@@ -31,7 +31,7 @@ class EStringTemplateExpression(
         entries.forEach { it.parent = this }
     }
 
-    override var type = C.Kt.STRING.toType()
+    override var type = Core.Kt.STRING.toType()
 
     override fun accept(visitor: Visitor) {
         visitor.visitStringTemplateExpression(this)

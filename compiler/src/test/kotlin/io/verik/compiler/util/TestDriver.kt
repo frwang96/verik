@@ -50,6 +50,7 @@ object TestDriver {
             "*",
             verbose = false,
             debug = true,
+            suppressCompileWarnings = true,
             labelLines = false,
             120,
             4

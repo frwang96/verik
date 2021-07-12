@@ -18,7 +18,6 @@ package io.verik.compiler.transform.mid
 
 import io.verik.compiler.util.*
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
@@ -62,7 +61,6 @@ internal class BitConstantTransformerTest : BaseTest() {
     }
 
     @Test
-    @Disabled
     fun `constant warning truncation`() {
         assertThrows<TestWarningException> {
             TestDriver.midTransform(

@@ -28,4 +28,8 @@ class TestMessageCollector : MessageCollector() {
     override fun error(message: String, location: SourceLocation?) {
         throw TestErrorException(message)
     }
+
+    override fun warning(message: String, location: SourceLocation?) {
+        throw TestWarningException(message)
+    }
 }
