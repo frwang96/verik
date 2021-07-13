@@ -16,34 +16,32 @@
 
 package io.verik.compiler.ast.element.kt
 
-import io.verik.compiler.ast.element.common.EAbstractBinaryExpression
+import io.verik.compiler.ast.element.common.EAbstractExpressionContainer
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.property.KtBinaryOperatorKind
+import io.verik.compiler.ast.property.KtUnaryOperatorKind
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.SourceLocation
 
-class EKtBinaryExpression(
+class EKtUnaryExpression(
     override val location: SourceLocation,
     override var type: Type,
-    override var left: EExpression,
-    override var right: EExpression,
-    var kind: KtBinaryOperatorKind
-) : EAbstractBinaryExpression() {
+    override var expression: EExpression,
+    val kind: KtUnaryOperatorKind
+) : EAbstractExpressionContainer() {
 
     init {
-        left.parent = this
-        right.parent = this
+        expression.parent = this
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitKtBinaryExpression(this)
+        visitor.visitKtUnaryExpression(this)
     }
 
-    override fun copy(): EKtBinaryExpression? {
-        val copyType = type.copy()
-        val copyLeft = left.copy() ?: return null
-        val copyRight = right.copy() ?: return null
-        return EKtBinaryExpression(location, copyType, copyLeft, copyRight, kind)
+    override fun copy(): EExpression? {
+        val copyExpression = expression.copy()
+            ?: return null
+        val typeCopy = type.copy()
+        return EKtUnaryExpression(location, typeCopy, copyExpression, kind)
     }
 }

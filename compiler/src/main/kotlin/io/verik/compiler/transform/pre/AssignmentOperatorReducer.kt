@@ -17,18 +17,18 @@
 package io.verik.compiler.transform.pre
 
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
-import io.verik.compiler.ast.property.KOperatorKind
+import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 
 object AssignmentOperatorReducer : ProjectPass {
 
-    private val assignmentOperatorMap = HashMap<KOperatorKind, KOperatorKind>()
+    private val assignmentOperatorMap = HashMap<KtBinaryOperatorKind, KtBinaryOperatorKind>()
 
     init {
-        assignmentOperatorMap[KOperatorKind.PLUS_EQ] = KOperatorKind.PLUS
-        assignmentOperatorMap[KOperatorKind.MINUS_EQ] = KOperatorKind.MINUS
+        assignmentOperatorMap[KtBinaryOperatorKind.PLUS_EQ] = KtBinaryOperatorKind.PLUS
+        assignmentOperatorMap[KtBinaryOperatorKind.MINUS_EQ] = KtBinaryOperatorKind.MINUS
     }
 
     override fun pass(projectContext: ProjectContext) {
@@ -56,7 +56,7 @@ object AssignmentOperatorReducer : ProjectPass {
                         binaryExpression.right,
                         kind
                     ),
-                    KOperatorKind.EQ
+                    KtBinaryOperatorKind.EQ
                 )
                 binaryExpression.replace(assignmentExpression)
             }

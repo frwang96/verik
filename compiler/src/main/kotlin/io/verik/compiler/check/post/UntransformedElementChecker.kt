@@ -56,6 +56,11 @@ object UntransformedElementChecker : ProjectPass {
             m.error("Block expression $message", blockExpression)
         }
 
+        override fun visitKtUnaryExpression(unaryExpression: EKtUnaryExpression) {
+            super.visitKtUnaryExpression(unaryExpression)
+            m.error("Unary expression $message", unaryExpression)
+        }
+
         override fun visitKtBinaryExpression(binaryExpression: EKtBinaryExpression) {
             super.visitKtBinaryExpression(binaryExpression)
             m.error("Binary expression $message", binaryExpression)

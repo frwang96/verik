@@ -18,7 +18,7 @@ package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EAbstractBinaryExpression
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.property.SOperatorKind
+import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.SourceLocation
@@ -29,7 +29,7 @@ class ESvBinaryExpression(
     override var type: Type,
     override var left: EExpression,
     override var right: EExpression,
-    var kind: SOperatorKind
+    var kind: SvBinaryOperatorKind
 ) : EAbstractBinaryExpression() {
 
     init {

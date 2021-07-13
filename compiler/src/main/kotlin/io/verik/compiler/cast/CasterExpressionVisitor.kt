@@ -18,7 +18,8 @@ package io.verik.compiler.cast
 
 import io.verik.compiler.ast.element.common.*
 import io.verik.compiler.ast.element.kt.*
-import io.verik.compiler.ast.property.KOperatorKind
+import io.verik.compiler.ast.property.KtBinaryOperatorKind
+import io.verik.compiler.ast.property.KtUnaryOperatorKind
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.getSourceLocation
@@ -68,10 +69,20 @@ class CasterExpressionVisitor(
         return EParenthesizedExpression(location, type, childExpression)
     }
 
+    override fun visitPrefixExpression(expression: KtPrefixExpression, data: Unit?): EElement? {
+        val location = expression.getSourceLocation()
+        val type = getType(expression)
+        val kind = KtUnaryOperatorKind(expression.operationToken, location)
+            ?: return null
+        val childExpression = getElement<EExpression>(expression.baseExpression!!)
+            ?: return null
+        return EKtUnaryExpression(location, type, childExpression, kind)
+    }
+
     override fun visitBinaryExpression(expression: KtBinaryExpression, data: Unit?): EElement? {
         val location = expression.getSourceLocation()
         val type = getType(expression)
-        val kind = KOperatorKind(expression.operationToken, location)
+        val kind = KtBinaryOperatorKind(expression.operationToken, location)
             ?: return null
         val left = getElement<EExpression>(expression.left!!)
             ?: return null

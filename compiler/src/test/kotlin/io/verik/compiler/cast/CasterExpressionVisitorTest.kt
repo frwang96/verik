@@ -49,6 +49,19 @@ internal class CasterExpressionVisitorTest : BaseTest() {
     }
 
     @Test
+    fun `unary expression`() {
+        val projectContext = TestDriver.cast(
+            """
+                var x = !false
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtUnaryExpression(Boolean, EXCL, ConstantExpression(*))",
+            projectContext.findExpression("x")
+        )
+    }
+
+    @Test
     fun `binary expression`() {
         val projectContext = TestDriver.cast(
             """

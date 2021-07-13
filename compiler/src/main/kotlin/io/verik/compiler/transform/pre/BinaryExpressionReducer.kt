@@ -20,7 +20,7 @@ import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EDotQualifiedExpression
 import io.verik.compiler.ast.element.common.EValueArgument
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
-import io.verik.compiler.ast.property.KOperatorKind
+import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
@@ -34,9 +34,9 @@ object BinaryExpressionReducer : ProjectPass {
     private val referenceMap = HashMap<ReducerEntry, CoreKtFunctionDeclaration>()
 
     init {
-        referenceMap[ReducerEntry(Core.Kt.INT, Core.Kt.INT, KOperatorKind.MUL)] = Core.Kt.Int.TIMES_INT
-        referenceMap[ReducerEntry(Core.Kt.INT, Core.Kt.INT, KOperatorKind.PLUS)] = Core.Kt.Int.PLUS_INT
-        referenceMap[ReducerEntry(Core.Kt.INT, Core.Kt.INT, KOperatorKind.MINUS)] = Core.Kt.Int.MINUS_INT
+        referenceMap[ReducerEntry(Core.Kt.INT, Core.Kt.INT, KtBinaryOperatorKind.MUL)] = Core.Kt.Int.TIMES_INT
+        referenceMap[ReducerEntry(Core.Kt.INT, Core.Kt.INT, KtBinaryOperatorKind.PLUS)] = Core.Kt.Int.PLUS_INT
+        referenceMap[ReducerEntry(Core.Kt.INT, Core.Kt.INT, KtBinaryOperatorKind.MINUS)] = Core.Kt.Int.MINUS_INT
     }
 
     override fun pass(projectContext: ProjectContext) {
@@ -48,7 +48,7 @@ object BinaryExpressionReducer : ProjectPass {
     data class ReducerEntry(
         val receiverClass: CoreClassDeclaration,
         val selectorClass: CoreClassDeclaration,
-        val kind: KOperatorKind
+        val kind: KtBinaryOperatorKind
     )
 
     object BinaryExpressionVisitor : TreeVisitor() {

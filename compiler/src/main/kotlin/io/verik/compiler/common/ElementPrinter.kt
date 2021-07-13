@@ -138,6 +138,14 @@ class ElementPrinter : Visitor() {
         }
     }
 
+    override fun visitKtUnaryExpression(unaryExpression: EKtUnaryExpression) {
+        build("KtUnaryExpression") {
+            build(unaryExpression.type.toString())
+            build(unaryExpression.kind.toString())
+            build(unaryExpression.expression)
+        }
+    }
+
     override fun visitKtBinaryExpression(binaryExpression: EKtBinaryExpression) {
         build("KtBinaryExpression") {
             build(binaryExpression.type.toString())

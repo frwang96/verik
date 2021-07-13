@@ -16,20 +16,23 @@
 
 package io.verik.compiler.ast.property
 
-enum class SOperatorKind {
-    ASSIGN,
-    ARROW_ASSIGN,
-    MUL,
-    PLUS,
-    MINUS;
+import io.verik.compiler.main.SourceLocation
+import io.verik.compiler.main.m
+import org.jetbrains.kotlin.com.intellij.psi.tree.IElementType
 
-    fun serialize(): String {
-        return when (this) {
-            ASSIGN -> "="
-            ARROW_ASSIGN -> "<="
-            MUL -> "*"
-            PLUS -> "+"
-            MINUS -> "-"
+enum class KtUnaryOperatorKind {
+    EXCL;
+
+    companion object {
+
+        operator fun invoke(token: IElementType, location: SourceLocation): KtUnaryOperatorKind? {
+            return when (token.toString()) {
+                "EXCL" -> EXCL
+                else -> {
+                    m.error("Unrecognised unary operator kind: $token", location)
+                    null
+                }
+            }
         }
     }
 }

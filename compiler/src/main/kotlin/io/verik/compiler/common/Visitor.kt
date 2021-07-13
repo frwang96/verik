@@ -144,6 +144,10 @@ abstract class Visitor {
         visitAbstractExpressionContainer(parenthesizedExpression)
     }
 
+    open fun visitKtUnaryExpression(unaryExpression: EKtUnaryExpression) {
+        visitAbstractExpressionContainer(unaryExpression)
+    }
+
     open fun visitAbstractBinaryExpression(binaryExpression: EAbstractBinaryExpression) {
         visitExpression(binaryExpression)
     }

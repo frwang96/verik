@@ -20,7 +20,7 @@ import io.verik.compiler.main.SourceLocation
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.com.intellij.psi.tree.IElementType
 
-enum class KOperatorKind {
+enum class KtBinaryOperatorKind {
     EQ,
     MUL,
     PLUS,
@@ -30,7 +30,7 @@ enum class KOperatorKind {
 
     companion object {
 
-        operator fun invoke(token: IElementType, location: SourceLocation): KOperatorKind? {
+        operator fun invoke(token: IElementType, location: SourceLocation): KtBinaryOperatorKind? {
             return when (token.toString()) {
                 "EQ" -> EQ
                 "MUL" -> MUL
@@ -39,7 +39,7 @@ enum class KOperatorKind {
                 "PLUSEQ" -> PLUS_EQ
                 "MINUSEQ" -> MINUS_EQ
                 else -> {
-                    m.error("Unrecognised operator kind: $token", location)
+                    m.error("Unrecognised binary operator kind: $token", location)
                     null
                 }
             }
