@@ -29,10 +29,12 @@ object Count : Module() {
     fun update() {
         on (posedge(clk)) {
             println("count=$count")
+            if (rst) count = u<`8`>(0)
+            else count += u<`8`>(1)
         }
     }
 
-    @Com
+    @Run
     fun toggleClk() {
         clk = false
         forever {

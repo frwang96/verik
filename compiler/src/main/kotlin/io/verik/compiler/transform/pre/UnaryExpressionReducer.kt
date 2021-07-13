@@ -26,6 +26,7 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreClassDeclaration
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.m
 
 object UnaryExpressionReducer : ProjectPass {
 
@@ -70,8 +71,10 @@ object UnaryExpressionReducer : ProjectPass {
                             callExpression
                         )
                     )
+                    return
                 }
             }
+            m.error("Unary expression could not be reduced", unaryExpression)
         }
     }
 }

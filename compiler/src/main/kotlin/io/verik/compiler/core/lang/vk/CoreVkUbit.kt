@@ -16,11 +16,29 @@
 
 package io.verik.compiler.core.lang.vk
 
+import io.verik.compiler.ast.element.common.ECallExpression
+import io.verik.compiler.ast.element.common.EDotQualifiedExpression
 import io.verik.compiler.core.common.Core
+import io.verik.compiler.core.common.CoreCardinalConstantDeclaration
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.core.common.CoreScope
+import java.lang.Integer.max
 
 object CoreVkUbit : CoreScope(Core.Vk.UBIT) {
 
     val INV = CoreKtFunctionDeclaration(parent, "inv")
+
+    val PLUS_UBIT = object : CoreKtFunctionDeclaration(parent, "plus", Core.Vk.UBIT) {
+
+        // TODO generalize resolution
+        override fun resolve(callExpression: ECallExpression) {
+            val leftWidth = (callExpression.parent as EDotQualifiedExpression)
+                .receiver.type.asBitWidthOrNull(callExpression)
+                ?: return
+            val rightWidth = callExpression.valueArguments[0].expression.type.asBitWidthOrNull(callExpression)
+                ?: return
+            val type = Core.Vk.UBIT.toType(CoreCardinalConstantDeclaration(max(leftWidth, rightWidth)).toType())
+            callExpression.type = type
+        }
+    }
 }

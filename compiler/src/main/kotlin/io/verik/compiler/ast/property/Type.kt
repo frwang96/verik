@@ -52,12 +52,29 @@ class Type(
         }
     }
 
-    fun asCardinalValue(element: EElement): Int {
+    private fun asCardinalValueOrNull(): Int? {
         val reference = reference
         return if (reference is CoreCardinalConstantDeclaration) {
             reference.value
+        } else null
+    }
+
+    private fun asCardinalValue(element: EElement): Int {
+        val value = asCardinalValueOrNull()
+        return if (value != null) {
+            value
         } else {
             m.error("Could not get value as cardinal: $this", element)
+            1
+        }
+    }
+
+    fun asBitWidthOrNull(element: EElement): Int? {
+        val reference = reference
+        return if (reference in listOf(Core.Vk.UBIT, Core.Vk.SBIT)) {
+            arguments[0].asCardinalValueOrNull()
+        } else {
+            m.error("Bit type expected: $this", element)
             1
         }
     }

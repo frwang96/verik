@@ -87,6 +87,7 @@ object Core {
         object Ubit : CoreScope(UBIT) {
 
             val INV = CoreVkUbit.INV
+            val PLUS_INT = CoreVkUbit.PLUS_UBIT
         }
     }
 

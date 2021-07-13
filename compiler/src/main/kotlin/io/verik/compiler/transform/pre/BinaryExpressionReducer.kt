@@ -28,6 +28,7 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreClassDeclaration
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.m
 
 object BinaryExpressionReducer : ProjectPass {
 
@@ -37,6 +38,7 @@ object BinaryExpressionReducer : ProjectPass {
         referenceMap[ReducerEntry(Core.Kt.INT, Core.Kt.INT, KtBinaryOperatorKind.MUL)] = Core.Kt.Int.TIMES_INT
         referenceMap[ReducerEntry(Core.Kt.INT, Core.Kt.INT, KtBinaryOperatorKind.PLUS)] = Core.Kt.Int.PLUS_INT
         referenceMap[ReducerEntry(Core.Kt.INT, Core.Kt.INT, KtBinaryOperatorKind.MINUS)] = Core.Kt.Int.MINUS_INT
+        referenceMap[ReducerEntry(Core.Vk.UBIT, Core.Vk.UBIT, KtBinaryOperatorKind.PLUS)] = Core.Vk.Ubit.PLUS_INT
     }
 
     override fun pass(projectContext: ProjectContext) {
@@ -82,8 +84,11 @@ object BinaryExpressionReducer : ProjectPass {
                             callExpression
                         )
                     )
+                    return
                 }
             }
+            if (kind != KtBinaryOperatorKind.EQ)
+                m.error("Binary expression could not be reduced", binaryExpression)
         }
     }
 }
