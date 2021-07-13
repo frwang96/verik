@@ -18,41 +18,34 @@ package count
 
 import io.verik.core.*
 
-var x = 0
-var y = 0
-
-fun f() {
-    x = y + 1
-    random()
-    print("x=$x\n")
-}
-
 @Top
 object Count : Module() {
 
-    val clk = false
-    val y = false
+    var clk = false
+    var rst = true
+    var count = u<`8`>(0)
 
     @Seq
     fun update() {
-        on (posedge(clk)) {}
+        on (posedge(clk)) {
+            println("count=$count")
+        }
     }
 
     @Com
-    fun f() {
-        x += 1
-        x -= 1
-        u<`8`>(255)
-        if (y) println()
+    fun toggleClk() {
+        clk = false
+        forever {
+            delay(1)
+        }
     }
 
     @Run
-    fun g() {
-        println()
-        forever {
-            println()
-        }
+    fun toggleRst() {
+        rst = true
+        delay(2)
+        rst = false
+        delay(16)
+        finish()
     }
 }
-
-class Checker : Class()

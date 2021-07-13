@@ -112,9 +112,9 @@ class GradleMessageCollector(config: Config) : MessageCollector() {
                 }
             }
         }
-        return if (names.isNotEmpty()) {
-            names.reverse()
-            names.joinToString(separator = ".")
+        val filteredNames = names.filter { it.matches(Regex("[a-zA-Z_]\\w*")) }
+        return if (filteredNames.isNotEmpty()) {
+            filteredNames.reversed().joinToString(separator = ".")
         } else null
     }
 }

@@ -26,4 +26,5 @@ object CoreSv : CoreScope(CorePackage.SV) {
     val WRITE = CoreSvFunctionDeclaration(parent, "\$write")
     val SFORMATF = CoreSvFunctionDeclaration(parent, "\$sformatf")
     val RANDOM = CoreSvFunctionDeclaration(parent, "\$random")
+    val FINISH = CoreSvFunctionDeclaration(parent, "\$finish")
 }

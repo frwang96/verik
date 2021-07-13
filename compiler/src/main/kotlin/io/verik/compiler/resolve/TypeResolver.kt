@@ -17,6 +17,8 @@
 package io.verik.compiler.resolve
 
 import io.verik.compiler.ast.element.common.ECallExpression
+import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.common.ProjectPass
@@ -43,6 +45,13 @@ object TypeResolver : ProjectPass {
             super.visitKtBlockExpression(blockExpression)
             if (blockExpression.hasStatements())
                 blockExpression.type = blockExpression.statements.last().type
+        }
+
+        override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
+            super.visitReferenceExpression(referenceExpression)
+            val reference = referenceExpression.reference
+            if (reference is EExpression)
+                referenceExpression.type = reference.type
         }
 
         override fun visitCallExpression(callExpression: ECallExpression) {

@@ -223,4 +223,8 @@ abstract class Visitor {
     open fun visitEventControlExpression(eventControlExpression: EEventControlExpression) {
         visitAbstractExpressionContainer(eventControlExpression)
     }
+
+    open fun visitDelayExpression(delayExpression: EDelayExpression) {
+        visitAbstractExpressionContainer(delayExpression)
+    }
 }

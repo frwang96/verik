@@ -29,6 +29,7 @@ object Core {
     object Kt : CoreScope(CorePackage.KT) {
 
         val ANY = CoreKtClass.ANY
+        val NOTHING = CoreKtClass.NOTHING
         val FUNCTION = CoreKtClass.FUNCTION
         val UNIT = CoreKtClass.UNIT
         val INT = CoreKtClass.INT
@@ -74,6 +75,8 @@ object Core {
         val POSEDGE_BOOLEAN = CoreVk.POSEDGE_BOOLEAN
         val NEGEDGE_BOOLEAN = CoreVk.NEGEDGE_BOOLEAN
         val WAIT_EVENT = CoreVk.WAIT_EVENT
+        val DELAY_INT = CoreVk.DELAY_INT
+        val FINISH = CoreVk.FINISH
 
         object Ubit : CoreScope(UBIT) {
 
@@ -87,5 +90,6 @@ object Core {
         val WRITE = CoreSv.WRITE
         val SFORMATF = CoreSv.SFORMATF
         val RANDOM = CoreSv.RANDOM
+        val FINISH = CoreSv.FINISH
     }
 }

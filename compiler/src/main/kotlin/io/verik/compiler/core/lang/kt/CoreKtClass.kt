@@ -23,6 +23,7 @@ import io.verik.compiler.core.common.CoreScope
 object CoreKtClass : CoreScope(CorePackage.KT) {
 
     val ANY = CoreClassDeclaration(parent, "Any", null)
+    val NOTHING = CoreClassDeclaration(parent, "Nothing", null)
     val FUNCTION = CoreClassDeclaration(parent, "Function", null)
     val UNIT = CoreClassDeclaration(parent, "Unit", ANY)
     val INT = CoreClassDeclaration(parent, "Int", ANY)

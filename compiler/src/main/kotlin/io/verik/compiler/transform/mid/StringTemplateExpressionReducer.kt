@@ -41,6 +41,7 @@ object StringTemplateExpressionReducer : ProjectPass {
     private fun getFormatSpecifier(expression: EExpression): String {
         return when (expression.type.reference) {
             Core.Kt.INT -> "%d"
+            Core.Vk.UBIT -> "%h"
             else -> {
                 m.error("Unable to get format specifier of type: ${expression.type}", expression)
                 ""

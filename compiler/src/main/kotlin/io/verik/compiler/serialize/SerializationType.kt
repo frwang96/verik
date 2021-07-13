@@ -37,6 +37,7 @@ enum class SerializationType {
                 is EStringExpression -> EXPRESSION
                 is EEventExpression -> EXPRESSION
                 is EEventControlExpression -> EXPRESSION
+                is EDelayExpression -> EXPRESSION
 
                 is ESvBlockExpression -> STATEMENT
                 is EIfExpression -> STATEMENT

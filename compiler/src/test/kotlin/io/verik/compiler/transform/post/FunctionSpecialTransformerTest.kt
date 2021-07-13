@@ -39,4 +39,20 @@ internal class FunctionSpecialTransformerTest : BaseTest() {
             projectContext.findExpression("f")
         )
     }
+
+    @Test
+    fun `transform delay`() {
+        val projectContext = TestDriver.postTransform(
+            """
+                var x = false
+                fun f() {
+                    delay(1)
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "DelayExpression(Unit, ConstantExpression(*))",
+            projectContext.findExpression("f")
+        )
+    }
 }

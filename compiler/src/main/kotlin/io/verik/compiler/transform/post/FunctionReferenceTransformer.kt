@@ -36,6 +36,7 @@ object FunctionReferenceTransformer : ProjectPass {
         functionReferenceMap[Core.Kt.Io.PRINTLN_ANY] = Core.Sv.DISPLAY
         functionReferenceMap[Core.Kt.Io.PRINTLN_INT] = Core.Sv.DISPLAY
         functionReferenceMap[Core.Vk.RANDOM] = Core.Sv.RANDOM
+        functionReferenceMap[Core.Vk.FINISH] = Core.Sv.FINISH
     }
 
     override fun pass(projectContext: ProjectContext) {

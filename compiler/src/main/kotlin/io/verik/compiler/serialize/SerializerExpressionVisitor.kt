@@ -22,7 +22,7 @@ import io.verik.compiler.ast.property.EdgeType
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.m
 
-class SerializerStatementVisitor(private val sourceBuilder: SourceBuilder) : Visitor() {
+class SerializerExpressionVisitor(private val sourceBuilder: SourceBuilder) : Visitor() {
 
     fun serializeAsExpression(element: EElement) {
         element.accept(this)
@@ -166,5 +166,11 @@ class SerializerStatementVisitor(private val sourceBuilder: SourceBuilder) : Vis
         sourceBuilder.append("@(", eventControlExpression)
         serializeAsExpression(eventControlExpression.expression)
         sourceBuilder.append(")", eventControlExpression)
+    }
+
+    override fun visitDelayExpression(delayExpression: EDelayExpression) {
+        sourceBuilder.append("#(", delayExpression)
+        serializeAsExpression(delayExpression.expression)
+        sourceBuilder.append(")", delayExpression)
     }
 }

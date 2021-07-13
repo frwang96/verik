@@ -265,6 +265,13 @@ class ElementPrinter : Visitor() {
         }
     }
 
+    override fun visitDelayExpression(delayExpression: EDelayExpression) {
+        build("DelayExpression") {
+            build(delayExpression.type.toString())
+            build(delayExpression.expression)
+        }
+    }
+
     private fun build(content: String) {
         if (!first) builder.append(", ")
         builder.append(content)

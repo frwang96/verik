@@ -17,6 +17,7 @@
 package io.verik.compiler.transform.post
 
 import io.verik.compiler.ast.element.common.ECallExpression
+import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EEventExpression
 import io.verik.compiler.ast.property.EdgeType
@@ -55,6 +56,9 @@ object FunctionSpecialTransformer : ProjectPass {
                 }
                 Core.Vk.WAIT_EVENT -> {
                     EEventControlExpression(callExpression.location, callExpression.valueArguments[0].expression)
+                }
+                Core.Vk.DELAY_INT -> {
+                    EDelayExpression(callExpression.location, callExpression.valueArguments[0].expression)
                 }
                 Core.Vk.ON_EVENT_FUNCTION -> {
                     m.error("On expression used out of context", callExpression)

@@ -42,4 +42,6 @@ object CoreVk : CoreScope(CorePackage.VK) {
     val POSEDGE_BOOLEAN = CoreKtFunctionDeclaration(parent, "posedge", Core.Kt.BOOLEAN)
     val NEGEDGE_BOOLEAN = CoreKtFunctionDeclaration(parent, "negedge", Core.Kt.BOOLEAN)
     val WAIT_EVENT = CoreKtFunctionDeclaration(parent, "wait", Core.Vk.EVENT)
+    val DELAY_INT = CoreKtFunctionDeclaration(parent, "delay", Core.Kt.INT)
+    val FINISH = CoreKtFunctionDeclaration(parent, "finish")
 }
