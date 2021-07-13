@@ -31,6 +31,10 @@ object ProjectPostTransformer : ProjectPass {
         FunctionSpecialTransformer.pass(projectContext)
         m.flush()
 
+        m.log("PostTransform: Transform unary expressions")
+        UnaryExpressionTransformer.pass(projectContext)
+        m.flush()
+
         m.log("PostTransform: Transform binary expressions")
         BinaryExpressionTransformer.pass(projectContext)
         m.flush()

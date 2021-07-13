@@ -46,8 +46,8 @@ object BinaryExpressionReducer : ProjectPass {
     }
 
     data class ReducerEntry(
-        val receiverClass: CoreClassDeclaration,
-        val selectorClass: CoreClassDeclaration,
+        val receiverDeclaration: CoreClassDeclaration,
+        val selectorDeclaration: CoreClassDeclaration,
         val kind: KtBinaryOperatorKind
     )
 
@@ -55,11 +55,11 @@ object BinaryExpressionReducer : ProjectPass {
 
         override fun visitKtBinaryExpression(binaryExpression: EKtBinaryExpression) {
             super.visitKtBinaryExpression(binaryExpression)
-            val receiverClass = binaryExpression.left.type.reference
-            val selectorClass = binaryExpression.right.type.reference
+            val receiverDeclaration = binaryExpression.left.type.reference
+            val selectorDeclaration = binaryExpression.right.type.reference
             val kind = binaryExpression.kind
-            if (receiverClass is CoreClassDeclaration && selectorClass is CoreClassDeclaration) {
-                val reference = referenceMap[ReducerEntry(receiverClass, selectorClass, kind)]
+            if (receiverDeclaration is CoreClassDeclaration && selectorDeclaration is CoreClassDeclaration) {
+                val reference = referenceMap[ReducerEntry(receiverDeclaration, selectorDeclaration, kind)]
                 if (reference != null) {
                     val callExpression = ECallExpression(
                         binaryExpression.location,

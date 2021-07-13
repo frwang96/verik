@@ -27,6 +27,10 @@ object ProjectPreTransformer : ProjectPass {
         AssignmentOperatorReducer.pass(projectContext)
         m.flush()
 
+        m.log("PreTransform: Reduce unary expressions")
+        UnaryExpressionReducer.pass(projectContext)
+        m.flush()
+
         m.log("PreTransform: Reduce binary expressions")
         BinaryExpressionReducer.pass(projectContext)
         m.flush()

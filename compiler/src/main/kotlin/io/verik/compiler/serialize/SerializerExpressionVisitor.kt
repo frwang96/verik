@@ -68,6 +68,11 @@ class SerializerExpressionVisitor(private val sourceBuilder: SourceBuilder) : Vi
         sourceBuilder.append(")", parenthesizedExpression)
     }
 
+    override fun visitSvUnaryExpression(unaryExpression: ESvUnaryExpression) {
+        sourceBuilder.append(unaryExpression.kind.serialize(), unaryExpression)
+        serializeAsExpression(unaryExpression.expression)
+    }
+
     override fun visitSvBinaryExpression(binaryExpression: ESvBinaryExpression) {
         serializeAsExpression(binaryExpression.left)
         sourceBuilder.hardBreak()

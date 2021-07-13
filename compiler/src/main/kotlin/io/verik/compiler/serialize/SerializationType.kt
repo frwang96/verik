@@ -29,6 +29,7 @@ enum class SerializationType {
         fun getType(element: EElement): SerializationType {
             return when (element) {
                 is EParenthesizedExpression -> EXPRESSION
+                is ESvUnaryExpression -> EXPRESSION
                 is ESvBinaryExpression -> EXPRESSION
                 is EReferenceExpression -> EXPRESSION
                 is ECallExpression -> EXPRESSION

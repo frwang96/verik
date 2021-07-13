@@ -146,6 +146,14 @@ class ElementPrinter : Visitor() {
         }
     }
 
+    override fun visitSvUnaryExpression(unaryExpression: ESvUnaryExpression) {
+        build("SvUnaryExpression") {
+            build(unaryExpression.type.toString())
+            build(unaryExpression.kind.toString())
+            build(unaryExpression.expression)
+        }
+    }
+
     override fun visitKtBinaryExpression(binaryExpression: EKtBinaryExpression) {
         build("KtBinaryExpression") {
             build(binaryExpression.type.toString())

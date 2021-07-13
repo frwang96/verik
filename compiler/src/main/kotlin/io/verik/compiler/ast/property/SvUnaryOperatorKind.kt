@@ -14,39 +14,14 @@
  * limitations under the License.
  */
 
-package count
+package io.verik.compiler.ast.property
 
-import io.verik.core.*
+enum class SvUnaryOperatorKind {
+    EXCL;
 
-@Top
-object Count : Module() {
-
-    var clk = false
-    var rst = true
-    var count = u<`8`>(0)
-
-    @Seq
-    fun update() {
-        on (posedge(clk)) {
-            println("count=$count")
+    fun serialize(): String {
+        return when (this) {
+            EXCL -> "!"
         }
-    }
-
-    @Com
-    fun toggleClk() {
-        clk = false
-        forever {
-            delay(1)
-            clk = !clk
-        }
-    }
-
-    @Run
-    fun toggleRst() {
-        rst = true
-        delay(2)
-        rst = false
-        delay(16)
-        finish()
     }
 }

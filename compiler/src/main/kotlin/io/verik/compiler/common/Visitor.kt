@@ -148,6 +148,10 @@ abstract class Visitor {
         visitAbstractExpressionContainer(unaryExpression)
     }
 
+    open fun visitSvUnaryExpression(unaryExpression: ESvUnaryExpression) {
+        visitAbstractExpressionContainer(unaryExpression)
+    }
+
     open fun visitAbstractBinaryExpression(binaryExpression: EAbstractBinaryExpression) {
         visitExpression(binaryExpression)
     }

@@ -43,6 +43,25 @@ internal class SerializerExpressionVisitorTest : BaseTest() {
     }
 
     @Test
+    fun `unary expression`() {
+        val projectContext = TestDriver.serialize(
+            """
+                var x = false
+                var y = !x
+            """.trimIndent()
+        )
+        val expected = """
+            logic x = 1'b0;
+            
+            logic y = !x;
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
     fun `binary expression`() {
         val projectContext = TestDriver.serialize(
             """

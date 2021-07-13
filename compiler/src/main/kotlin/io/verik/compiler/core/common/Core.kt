@@ -16,6 +16,7 @@
 
 package io.verik.compiler.core.common
 
+import io.verik.compiler.core.lang.kt.CoreKtBoolean
 import io.verik.compiler.core.lang.kt.CoreKtClass
 import io.verik.compiler.core.lang.kt.CoreKtInt
 import io.verik.compiler.core.lang.kt.CoreKtIo
@@ -41,6 +42,11 @@ object Core {
             val TIMES_INT = CoreKtInt.TIMES_INT
             val PLUS_INT = CoreKtInt.PLUS_INT
             val MINUS_INT = CoreKtInt.MINUS_INT
+        }
+
+        object Boolean : CoreScope(BOOLEAN) {
+
+            val NOT = CoreKtBoolean.NOT
         }
 
         object Io : CoreScope(CorePackage.KT_IO) {
