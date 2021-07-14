@@ -29,6 +29,15 @@ abstract class EElement {
 
     var parent: EElement? = null
 
+    fun parentNotNull(): EElement {
+        val parent = parent
+        return if (parent != null) parent
+        else {
+            m.error("Parent element of ${this::class.simpleName} should not be null", this)
+            ENullElement(location)
+        }
+    }
+
     abstract fun accept(visitor: Visitor)
 
     abstract fun acceptChildren(visitor: TreeVisitor)

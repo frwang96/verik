@@ -17,6 +17,7 @@
 package io.verik.compiler.check.post
 
 import io.verik.compiler.ast.element.common.ECallExpression
+import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.kt.*
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
@@ -35,6 +36,11 @@ object UntransformedElementChecker : ProjectPass {
     object UntransformedElementVisitor : TreeVisitor() {
 
         private const val message = "has not been transformed to SystemVerilog"
+
+        override fun visitNullElement(nullElement: EElement) {
+            super.visitNullElement(nullElement)
+            m.error("Unexpected null element", nullElement)
+        }
 
         override fun visitKtBasicClass(basicClass: EKtBasicClass) {
             super.visitKtBasicClass(basicClass)

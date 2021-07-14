@@ -25,6 +25,10 @@ class ElementPrinter : Visitor() {
     private val builder = StringBuilder()
     private var first = true
 
+    override fun visitNullElement(nullElement: EElement) {
+        build("NullElement") {}
+    }
+
     override fun visitFile(file: EFile) {
         build("File") {
             build(file.declarations)

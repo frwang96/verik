@@ -24,6 +24,10 @@ abstract class Visitor {
 
     open fun visitElement(element: EElement) {}
 
+    open fun visitNullElement(nullElement: EElement) {
+        visitElement(nullElement)
+    }
+
     open fun visitFile(file: EFile) {
         visitElement(file)
     }

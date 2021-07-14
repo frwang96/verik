@@ -20,7 +20,6 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
-import org.jetbrains.kotlin.backend.common.peek
 import org.jetbrains.kotlin.backend.common.pop
 import org.jetbrains.kotlin.backend.common.push
 
@@ -38,12 +37,10 @@ object ElementParentChecker : ProjectPass {
         private val parentStack = ArrayDeque<EElement>()
 
         override fun visitElement(element: EElement) {
-            if (element.parent == null)
-                m.error("Parent element of ${element::class.simpleName} should not be null", element)
-            if (element.parent != parentStack.peek()) {
-                val expected = parentStack.peek()!!::class.simpleName
-                val actual = element.parent!!::class.simpleName
-                val expectedString = "Expected $expected but was $actual"
+            val parent = element.parentNotNull()
+            val expectedParent = parentStack.last()
+            if (parent != expectedParent) {
+                val expectedString = "Expected ${expectedParent::class.simpleName} but was ${parent::class.simpleName}"
                 m.error("Mismatch in parent element of ${element::class.simpleName}: $expectedString", element)
             }
             parentStack.push(element)
