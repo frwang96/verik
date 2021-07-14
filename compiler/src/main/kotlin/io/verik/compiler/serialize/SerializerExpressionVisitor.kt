@@ -168,14 +168,12 @@ class SerializerExpressionVisitor(private val sourceBuilder: SourceBuilder) : Vi
     }
 
     override fun visitEventControlExpression(eventControlExpression: EEventControlExpression) {
-        sourceBuilder.append("@(", eventControlExpression)
+        sourceBuilder.append("@", eventControlExpression)
         serializeAsExpression(eventControlExpression.expression)
-        sourceBuilder.append(")", eventControlExpression)
     }
 
     override fun visitDelayExpression(delayExpression: EDelayExpression) {
-        sourceBuilder.append("#(", delayExpression)
+        sourceBuilder.append("#", delayExpression)
         serializeAsExpression(delayExpression.expression)
-        sourceBuilder.append(")", delayExpression)
     }
 }

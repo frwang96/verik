@@ -19,11 +19,14 @@ package io.verik.compiler.serialize
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertOutputTextEquals
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class SerializerExpressionVisitorTest : BaseTest() {
 
     @Test
+    @Disabled
+    // TODO parenthesize order of operations
     fun `parenthesized expression`() {
         val projectContext = TestDriver.serialize(
             """
@@ -271,6 +274,26 @@ internal class SerializerExpressionVisitorTest : BaseTest() {
             
             function void f();
                 @(posedge x);
+            endfunction : f
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
+    fun `delay expression`() {
+        val projectContext = TestDriver.serialize(
+            """
+                fun f() {
+                    delay(1)
+                }
+            """.trimIndent()
+        )
+        val expected = """
+            function void f();
+                #1;
             endfunction : f
         """.trimIndent()
         assertOutputTextEquals(

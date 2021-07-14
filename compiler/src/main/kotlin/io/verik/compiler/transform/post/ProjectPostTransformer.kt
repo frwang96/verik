@@ -43,6 +43,10 @@ object ProjectPostTransformer : ProjectPass {
         PackageNameTransformer.pass(projectContext)
         m.flush()
 
+        m.log("PostTransform: Insert parenthesis")
+        ParenthesisInsertionTransformer.pass(projectContext)
+        m.flush()
+
         m.log("PostTransform: Transform block expressions")
         BlockExpressionTransformer.pass(projectContext)
         m.flush()

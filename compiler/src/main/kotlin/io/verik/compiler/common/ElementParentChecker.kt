@@ -40,8 +40,12 @@ object ElementParentChecker : ProjectPass {
         override fun visitElement(element: EElement) {
             if (element.parent == null)
                 m.error("Parent element of ${element::class.simpleName} should not be null", element)
-            if (element.parent != parentStack.peek())
-                m.error("Mismatch in parent element of ${element::class.simpleName}", element)
+            if (element.parent != parentStack.peek()) {
+                val expected = parentStack.peek()!!::class.simpleName
+                val actual = element.parent!!::class.simpleName
+                val expectedString = "Expected $expected but was $actual"
+                m.error("Mismatch in parent element of ${element::class.simpleName}: $expectedString", element)
+            }
             parentStack.push(element)
             super.visitElement(element)
             parentStack.pop()

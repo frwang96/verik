@@ -54,19 +54,15 @@ class CasterExpressionVisitor(
         return getElement<EExpression>(expression.baseExpression!!)
     }
 
+    override fun visitParenthesizedExpression(expression: KtParenthesizedExpression, data: Unit?): EElement? {
+        return getElement<EExpression>(expression.expression!!)
+    }
+
     override fun visitBlockExpression(expression: KtBlockExpression, data: Unit?): EElement {
         val location = expression.getSourceLocation()
         val type = getType(expression)
         val statements = expression.statements.mapNotNull { getElement<EExpression>(it) }
         return EKtBlockExpression(location, type, ArrayList(statements))
-    }
-
-    override fun visitParenthesizedExpression(expression: KtParenthesizedExpression, data: Unit?): EElement? {
-        val location = expression.getSourceLocation()
-        val type = getType(expression)
-        val childExpression = getElement<EExpression>(expression.expression!!)
-            ?: return null
-        return EParenthesizedExpression(location, type, childExpression)
     }
 
     override fun visitPrefixExpression(expression: KtPrefixExpression, data: Unit?): EElement? {
