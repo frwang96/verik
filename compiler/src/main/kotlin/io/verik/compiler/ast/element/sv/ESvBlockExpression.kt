@@ -22,7 +22,6 @@ import io.verik.compiler.ast.property.Name
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.SourceLocation
-import io.verik.compiler.main.m
 
 class ESvBlockExpression (
     override val location: SourceLocation,
@@ -41,8 +40,8 @@ class ESvBlockExpression (
         visitor.visitSvBlockExpression(this)
     }
 
-    override fun copy(): ESvBlockExpression? {
-        m.error("Unable to copy ${this::class.simpleName}", this)
-        return null
+    override fun copy(): EExpression {
+        val copyStatements = statements.map { it.copy() }
+        return ESvBlockExpression(location, ArrayList(copyStatements), decorated, name)
     }
 }

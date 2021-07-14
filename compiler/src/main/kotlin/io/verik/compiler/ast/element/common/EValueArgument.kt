@@ -50,8 +50,8 @@ class EValueArgument(
             m.error("Could not find ${oldExpression::class.simpleName} in ${this::class.simpleName}", this)
     }
 
-    fun copy(): EValueArgument? {
-        val copyExpression = expression.copy() ?: return null
+    fun copy(): EValueArgument {
+        val copyExpression = expression.copy()
         return EValueArgument(location, reference, copyExpression)
     }
 }

@@ -17,6 +17,8 @@
 package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EAbstractBlockExpression
+import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.ENullExpression
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.SourceLocation
@@ -34,5 +36,12 @@ class EForeverStatement(
 
     override fun accept(visitor: Visitor) {
         visitor.visitForeverStatement(this)
+    }
+
+    override fun copy(): EExpression {
+        // TODO change bodyBlockExpression to expression
+        val copyBodyBlockExpression = bodyBlockExpression.copy().cast<EAbstractBlockExpression>()
+            ?: return ENullExpression(location)
+        return  EForeverStatement(location, copyBodyBlockExpression)
     }
 }

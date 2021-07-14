@@ -24,7 +24,7 @@ import io.verik.compiler.ast.property.Name
 import io.verik.compiler.ast.property.SourceSetType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.PackageDeclaration
-import io.verik.compiler.common.getSourceLocation
+import io.verik.compiler.common.location
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
@@ -47,7 +47,7 @@ class CasterBaseVisitor(
     private val expressionVisitor = CasterExpressionVisitor(projectContext, declarationMap)
 
     inline fun <reified T : EElement> getElement(element: KtElement): T? {
-        return element.accept(this, Unit).cast(element)
+        return element.accept(this, Unit).cast()
     }
 
     private fun getType(type: KotlinType, element: KtElement): Type {
@@ -58,20 +58,21 @@ class CasterBaseVisitor(
         return TypeCaster.castFromTypeReference(bindingContext, declarationMap, typeReference)
     }
 
-    override fun visitKtElement(element: KtElement, data: Unit?): EElement? {
+    override fun visitKtElement(element: KtElement, data: Unit?): EElement {
         m.error("Unrecognized element: ${element::class.simpleName}", element)
-        return null
+        val location = element.location()
+        return ENullElement(location)
     }
 
-    override fun visitKtFile(file: KtFile, data: Unit?): EElement? {
-        val location = file.getSourceLocation()
+    override fun visitKtFile(file: KtFile, data: Unit?): EElement {
+        val location = file.location()
         val inputPath = Paths.get(file.virtualFilePath)
         val (sourceSetType, relativePath) = when {
             inputPath.startsWith(mainPath) -> Pair(SourceSetType.MAIN, mainPath.relativize(inputPath))
             inputPath.startsWith(testPath) -> Pair(SourceSetType.TEST, testPath.relativize(inputPath))
             else -> {
                 m.error("Unable to identify as main or test source", file)
-                return null
+                return ENullElement(location)
             }
         }
         val packageDeclaration = PackageDeclaration(Name(file.packageFqName.toString()))
@@ -92,7 +93,7 @@ class CasterBaseVisitor(
     }
 
     override fun visitImportDirective(importDirective: KtImportDirective, data: Unit?): EElement {
-        val location = importDirective.getSourceLocation()
+        val location = importDirective.location()
         val (name, packageDeclaration) = if (importDirective.isAllUnder) {
             Pair(
                 null,
@@ -107,11 +108,12 @@ class CasterBaseVisitor(
         return EImportDirective(location, name, packageDeclaration)
     }
 
-    override fun visitClassOrObject(classOrObject: KtClassOrObject, data: Unit?): EElement? {
+    override fun visitClassOrObject(classOrObject: KtClassOrObject, data: Unit?): EElement {
+        val location = classOrObject.location()
         val descriptor = bindingContext.getSliceContents(BindingContext.CLASS)[classOrObject]!!
         val basicClass = declarationMap[descriptor, classOrObject]
             .cast<EKtBasicClass>(classOrObject)
-            ?: return null
+            ?: return ENullExpression(location)
 
         val type = getType(descriptor.defaultType, classOrObject)
         val supertype = getType(descriptor.getSuperClassOrAny().defaultType, classOrObject)
@@ -130,11 +132,12 @@ class CasterBaseVisitor(
         return basicClass
     }
 
-    override fun visitNamedFunction(function: KtNamedFunction, data: Unit?): EElement? {
+    override fun visitNamedFunction(function: KtNamedFunction, data: Unit?): EElement {
+        val location = function.location()
         val descriptor = bindingContext.getSliceContents(BindingContext.FUNCTION)[function]!!
         val ktFunction = declarationMap[descriptor, function]
             .cast<EKtFunction>(function)
-            ?: return null
+            ?: return ENullExpression(location)
 
         val type = getType(descriptor.returnType!!, function)
         val annotationTypes = descriptor.annotations.mapNotNull {
@@ -160,20 +163,19 @@ class CasterBaseVisitor(
         return ktFunction
     }
 
-    override fun visitProperty(property: KtProperty, data: Unit?): EElement? {
+    override fun visitProperty(property: KtProperty, data: Unit?): EElement {
+        val location = property.location()
         val descriptor = bindingContext.getSliceContents(BindingContext.VARIABLE)[property]!!
         val ktProperty = declarationMap[descriptor, property]
             .cast<EKtProperty>(property)
-            ?: return null
+            ?: return ENullExpression(location)
 
         val typeReference = property.typeReference
-        val type = if (typeReference != null) {
-            getType(typeReference)
-        } else {
-            getType(descriptor.type, property)
-        }
+        val type = if (typeReference != null) getType(typeReference)
+        else getType(descriptor.type, property)
+
         val initializer = property.initializer?.let {
-            expressionVisitor.getElement<EExpression>(it)
+            expressionVisitor.getExpression(it)
         }
         initializer?.parent = ktProperty
 
@@ -182,18 +184,16 @@ class CasterBaseVisitor(
         return ktProperty
     }
 
-    override fun visitTypeParameter(parameter: KtTypeParameter, data: Unit?): EElement? {
+    override fun visitTypeParameter(parameter: KtTypeParameter, data: Unit?): EElement {
+        val location = parameter.location()
         val descriptor = bindingContext.getSliceContents(BindingContext.TYPE_PARAMETER)[parameter]!!
         val typeParameter = declarationMap[descriptor, parameter]
             .cast<ETypeParameter>(parameter)
-            ?: return null
+            ?: return ENullExpression(location)
 
         val upperBound = descriptor.representativeUpperBound
-        val type = if (upperBound.isNullableAny()) {
-            Core.Kt.ANY.toType()
-        } else {
-            getType(descriptor.representativeUpperBound, parameter)
-        }
+        val type = if (upperBound.isNullableAny()) Core.Kt.ANY.toType()
+        else getType(descriptor.representativeUpperBound, parameter)
 
         typeParameter.type = type
         return typeParameter

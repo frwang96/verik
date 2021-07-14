@@ -22,7 +22,6 @@ import io.verik.compiler.ast.property.EdgeType
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.SourceLocation
-import io.verik.compiler.main.m
 
 class EEventExpression(
     override val location: SourceLocation,
@@ -40,8 +39,8 @@ class EEventExpression(
         visitor.visitEventExpression(this)
     }
 
-    override fun copy(): EEventExpression? {
-        m.error("Unable to copy ${this::class.simpleName}", this)
-        return null
+    override fun copy(): EExpression {
+        val copyExpression = expression.copy()
+        return EEventExpression(location, copyExpression, edgeType)
     }
 }

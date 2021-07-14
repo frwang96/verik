@@ -33,7 +33,7 @@ class EConstantExpression(
 
     override fun acceptChildren(visitor: TreeVisitor) {}
 
-    override fun copy(): EConstantExpression {
+    override fun copy(): EExpression {
         val copyType = type.copy()
         return EConstantExpression(location, copyType, value)
     }

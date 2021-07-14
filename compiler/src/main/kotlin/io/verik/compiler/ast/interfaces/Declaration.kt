@@ -18,8 +18,6 @@ package io.verik.compiler.ast.interfaces
 
 import io.verik.compiler.ast.property.Name
 import io.verik.compiler.ast.property.Type
-import io.verik.compiler.common.getSourceLocation
-import io.verik.compiler.main.SourceLocation
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.psi.KtElement
 
@@ -32,17 +30,13 @@ interface Declaration {
     }
 }
 
-inline fun <reified T : Declaration> Declaration.cast(location: KtElement): T? {
-    return this.cast(location.getSourceLocation())
-}
-
-inline fun <reified T : Declaration> Declaration.cast(location: SourceLocation): T? {
+inline fun <reified T : Declaration> Declaration.cast(element: KtElement): T? {
     return when (this) {
         is T -> this
         else -> {
             val expectedName = T::class.simpleName
             val actualName = this::class.simpleName
-            m.error("Could not cast declaration: Expected $expectedName actual $actualName", location)
+            m.error("Could not cast declaration: Expected $expectedName actual $actualName", element)
             null
         }
     }

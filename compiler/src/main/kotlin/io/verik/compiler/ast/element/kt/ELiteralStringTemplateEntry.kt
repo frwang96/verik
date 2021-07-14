@@ -31,7 +31,7 @@ class ELiteralStringTemplateEntry(
 
     override fun acceptChildren(visitor: TreeVisitor) {}
 
-    override fun copy(): ELiteralStringTemplateEntry {
+    override fun copy(): EStringTemplateEntry {
         return ELiteralStringTemplateEntry(location, text)
     }
 }

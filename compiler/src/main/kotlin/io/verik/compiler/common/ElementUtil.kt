@@ -22,7 +22,7 @@ import org.jetbrains.kotlin.diagnostics.PsiDiagnosticUtils
 import org.jetbrains.kotlin.psi.KtElement
 import java.nio.file.Paths
 
-fun KtElement.getSourceLocation(): SourceLocation {
+fun KtElement.location(): SourceLocation {
     val lineAndColumn = PsiDiagnosticUtils.offsetToLineAndColumn(
         containingFile.viewProvider.document,
         textRange.startOffset

@@ -53,10 +53,10 @@ class EDotQualifiedExpression(
         }
     }
 
-    override fun copy(): EDotQualifiedExpression? {
+    override fun copy(): EExpression {
         val copyType = type.copy()
-        val copyReceiver = receiver.copy() ?: return null
-        val copySelector = selector.copy() ?: return null
+        val copyReceiver = receiver.copy()
+        val copySelector = selector.copy()
         return EDotQualifiedExpression(location, copyType, copyReceiver, copySelector)
     }
 }

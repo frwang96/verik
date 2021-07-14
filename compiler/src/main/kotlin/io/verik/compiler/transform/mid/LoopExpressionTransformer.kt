@@ -17,7 +17,6 @@
 package io.verik.compiler.transform.mid
 
 import io.verik.compiler.ast.element.common.ECallExpression
-import io.verik.compiler.ast.element.common.cast
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.sv.EForeverStatement
 import io.verik.compiler.common.ProjectPass

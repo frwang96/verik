@@ -18,7 +18,7 @@ package io.verik.compiler.ast.element.kt
 
 import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.common.cast
+import io.verik.compiler.ast.element.common.ENullExpression
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
@@ -54,8 +54,10 @@ class EFunctionLiteralExpression(
             m.error("Could not find ${oldExpression::class.simpleName} in ${this::class.simpleName}", this)
     }
 
-    override fun copy(): EFunctionLiteralExpression? {
-        val copyBodyBlockExpression = bodyBlockExpression.copy() ?: return null
+    override fun copy(): EExpression {
+        // TODO change bodyBlockExpression to expression
+        val copyBodyBlockExpression = bodyBlockExpression.copy().cast<EAbstractBlockExpression>()
+            ?: return ENullExpression(location)
         return EFunctionLiteralExpression(location, copyBodyBlockExpression)
     }
 }

@@ -24,17 +24,13 @@ abstract class EExpression : EElement() {
 
     abstract var type: Type
 
-    abstract fun copy(): EExpression?
+    abstract fun copy(): EExpression
 
     fun replace(expression: EExpression) {
-        val parent = parent
-        if (parent is ExpressionContainer) {
+        val parent = parentNotNull()
+        if (parent is ExpressionContainer)
             parent.replaceChild(this, expression)
-        } else {
-            if (parent != null)
-                m.error("Could not replace ${this::class.simpleName} in ${parent::class.simpleName}", this)
-            else
-                m.error("Could not replace ${this::class.simpleName}", this)
-        }
+        else
+            m.error("Could not replace ${this::class.simpleName} in ${parent::class.simpleName}", this)
     }
 }

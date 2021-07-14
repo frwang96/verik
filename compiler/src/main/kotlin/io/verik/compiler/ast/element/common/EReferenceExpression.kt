@@ -35,7 +35,7 @@ class EReferenceExpression(
 
     override fun acceptChildren(visitor: TreeVisitor) {}
 
-    override fun copy(): EReferenceExpression {
+    override fun copy(): EExpression {
         val copyType = type.copy()
         return EReferenceExpression(location, copyType, reference)
     }

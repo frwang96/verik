@@ -18,10 +18,8 @@ package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.common.getSourceLocation
 import io.verik.compiler.main.SourceLocation
 import io.verik.compiler.main.m
-import org.jetbrains.kotlin.psi.KtElement
 
 abstract class EElement {
 
@@ -38,35 +36,19 @@ abstract class EElement {
         }
     }
 
+    inline fun <reified E> cast(): E? {
+        return when (this) {
+            is E -> this
+            else -> {
+                val expectedName = E::class.simpleName
+                val actualName = this::class.simpleName
+                m.error("Could not cast element: Expected $expectedName actual $actualName", location)
+                null
+            }
+        }
+    }
+
     abstract fun accept(visitor: Visitor)
 
     abstract fun acceptChildren(visitor: TreeVisitor)
-}
-
-inline fun <reified T : EElement> EElement.cast(): T? {
-    return this.cast(this.location)
-}
-
-inline fun <reified T : EElement> EElement?.cast(location: KtElement): T? {
-    return this.cast(location.getSourceLocation())
-}
-
-inline fun <reified T : EElement> EElement?.cast(location: EElement): T? {
-    return this.cast(location.location)
-}
-
-inline fun <reified T : EElement> EElement?.cast(location: SourceLocation): T? {
-    val expectedName = T::class.simpleName
-    return when (this) {
-        null -> {
-            m.error("Could not cast element: Expected $expectedName actual null", location)
-            null
-        }
-        is T -> this
-        else -> {
-            val actualName = this::class.simpleName
-            m.error("Could not cast element: Expected $expectedName actual $actualName", location)
-            null
-        }
-    }
 }

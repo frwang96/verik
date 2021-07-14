@@ -49,10 +49,10 @@ class ECallExpression(
         valueArguments.forEach { it.accept(visitor) }
     }
 
-    override fun copy(): ECallExpression? {
+    override fun copy(): EExpression {
         val copyType = type.copy()
         val copyTypeArguments = typeArguments.map { it.copy() }
-        val copyValueArguments = valueArguments.map { it.copy() ?: return null }
+        val copyValueArguments = valueArguments.map { it.copy() }
         return ECallExpression(
             location,
             copyType,

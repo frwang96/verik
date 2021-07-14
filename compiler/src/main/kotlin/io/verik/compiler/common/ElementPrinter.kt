@@ -29,6 +29,10 @@ class ElementPrinter : Visitor() {
         build("NullElement") {}
     }
 
+    override fun visitNullExpression(nullExpression: ENullExpression) {
+        build("NullExpression") {}
+    }
+
     override fun visitFile(file: EFile) {
         build("File") {
             build(file.declarations)

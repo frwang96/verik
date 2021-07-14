@@ -16,27 +16,24 @@
 
 package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.property.Type
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.SourceLocation
 
-class EParenthesizedExpression(
-    override val location: SourceLocation,
-    override var type: Type,
-    override var expression: EExpression
-) : EAbstractExpressionContainer() {
+class ENullExpression(
+    override val location: SourceLocation
+) : EExpression() {
 
-    init {
-        expression.parent = this
-    }
+    override var type = Core.Kt.UNIT.toType()
 
     override fun accept(visitor: Visitor) {
-        visitor.visitParenthesizedExpression(this)
+        visitor.visitNullExpression(this)
     }
 
+    override fun acceptChildren(visitor: TreeVisitor) {}
+
     override fun copy(): EExpression {
-        val copyType = type.copy()
-        val copyExpression = expression.copy()
-        return EParenthesizedExpression(location, copyType, copyExpression)
+        return ENullExpression(location)
     }
 }

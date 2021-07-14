@@ -28,20 +28,24 @@ abstract class Visitor {
         visitElement(nullElement)
     }
 
+    open fun visitExpression(expression: EExpression) {
+        visitElement(expression)
+    }
+
+    open fun visitNullExpression(nullExpression: ENullExpression) {
+        visitExpression(nullExpression)
+    }
+
+    open fun visitDeclaration(declaration: EDeclaration) {
+        visitExpression(declaration)
+    }
+
     open fun visitFile(file: EFile) {
         visitElement(file)
     }
 
     open fun visitImportDirective(importDirective: EImportDirective) {
         visitElement(importDirective)
-    }
-
-    open fun visitExpression(expression: EExpression) {
-        visitElement(expression)
-    }
-
-    open fun visitDeclaration(declaration: EDeclaration) {
-        visitExpression(declaration)
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -41,8 +41,8 @@ class EStringTemplateExpression(
         entries.forEach { it.accept(visitor) }
     }
 
-    override fun copy(): EStringTemplateExpression? {
-        val copyEntries = entries.map { it.copy() ?: return null }
+    override fun copy(): EExpression {
+        val copyEntries = entries.map { it.copy() }
         return EStringTemplateExpression(location, copyEntries)
     }
 }

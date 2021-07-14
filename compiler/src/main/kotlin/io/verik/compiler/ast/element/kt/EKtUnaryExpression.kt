@@ -38,9 +38,8 @@ class EKtUnaryExpression(
         visitor.visitKtUnaryExpression(this)
     }
 
-    override fun copy(): EExpression? {
+    override fun copy(): EExpression {
         val copyExpression = expression.copy()
-            ?: return null
         val typeCopy = type.copy()
         return EKtUnaryExpression(location, typeCopy, copyExpression, kind)
     }

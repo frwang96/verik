@@ -25,8 +25,8 @@ abstract class EDeclaration : EExpression(), Declaration {
         return "$name"
     }
 
-    override fun copy(): EDeclaration? {
+    override fun copy(): EExpression {
         m.error("Unable to copy ${this::class.simpleName}", this)
-        return null
+        return ENullExpression(location)
     }
 }

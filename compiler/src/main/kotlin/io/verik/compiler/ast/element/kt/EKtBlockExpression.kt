@@ -40,9 +40,9 @@ class EKtBlockExpression (
         visitor.visitKtBlockExpression(this)
     }
 
-    override fun copy(): EKtBlockExpression? {
+    override fun copy(): EExpression {
         val copyType = type.copy()
-        val copyStatements = statements.map { it.copy() ?: return null }
+        val copyStatements = statements.map { it.copy() }
         return EKtBlockExpression(location, copyType, ArrayList(copyStatements))
     }
 }

@@ -20,5 +20,5 @@ import io.verik.compiler.ast.element.common.EElement
 
 abstract class EStringTemplateEntry : EElement() {
 
-    abstract fun copy(): EStringTemplateEntry?
+    abstract fun copy(): EStringTemplateEntry
 }

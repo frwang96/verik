@@ -22,7 +22,6 @@ import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.SourceLocation
-import io.verik.compiler.main.m
 
 class ESvBinaryExpression(
     override val location: SourceLocation,
@@ -41,8 +40,10 @@ class ESvBinaryExpression(
         visitor.visitSvBinaryExpression(this)
     }
 
-    override fun copy(): ESvBinaryExpression? {
-        m.error("Unable to copy ${this::class.simpleName}", this)
-        return null
+    override fun copy(): ESvBinaryExpression {
+        val copyType = type.copy()
+        val copyLeft = left.copy()
+        val copyRight = right.copy()
+        return ESvBinaryExpression(location, copyType, copyLeft, copyRight, kind)
     }
 }

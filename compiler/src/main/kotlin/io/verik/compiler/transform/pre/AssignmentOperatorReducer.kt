@@ -44,7 +44,6 @@ object AssignmentOperatorReducer : ProjectPass {
             val kind = assignmentOperatorMap[binaryExpression.kind]
             if (kind != null) {
                 val copyExpression = binaryExpression.left.copy()
-                    ?: return
                 val assignmentExpression = EKtBinaryExpression(
                     binaryExpression.location,
                     binaryExpression.type,

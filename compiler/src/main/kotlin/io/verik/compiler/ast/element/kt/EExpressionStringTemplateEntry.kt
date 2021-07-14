@@ -38,8 +38,8 @@ class EExpressionStringTemplateEntry(
         expression.accept(visitor)
     }
 
-    override fun copy(): EExpressionStringTemplateEntry? {
-        val copyExpression = expression.copy() ?: return null
+    override fun copy(): EStringTemplateEntry {
+        val copyExpression = expression.copy()
         return EExpressionStringTemplateEntry(location, copyExpression)
     }
 }

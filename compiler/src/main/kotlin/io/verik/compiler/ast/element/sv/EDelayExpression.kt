@@ -21,7 +21,6 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.SourceLocation
-import io.verik.compiler.main.m
 
 class EDelayExpression(
     override val location: SourceLocation,
@@ -38,8 +37,8 @@ class EDelayExpression(
         visitor.visitDelayExpression(this)
     }
 
-    override fun copy(): EDelayExpression? {
-        m.error("Unable to copy ${this::class.simpleName}", this)
-        return null
+    override fun copy(): EExpression {
+        val copyExpression = expression.copy()
+        return EDelayExpression(location, copyExpression)
     }
 }

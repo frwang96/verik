@@ -57,11 +57,11 @@ class EIfExpression(
         }
     }
 
-    override fun copy(): EExpression? {
+    override fun copy(): EExpression {
         val copyType = type.copy()
-        val copyCondition = condition.copy() ?: return null
-        val copyThenExpression = thenExpression?.let { it.copy() ?: return null }
-        val copyElseExpression = elseExpression?.let { it.copy() ?: return null }
+        val copyCondition = condition.copy()
+        val copyThenExpression = thenExpression?.copy()
+        val copyElseExpression = elseExpression?.copy()
         return EIfExpression(location, copyType, copyCondition, copyThenExpression, copyElseExpression)
     }
 }

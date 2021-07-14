@@ -22,7 +22,6 @@ import io.verik.compiler.ast.property.SvUnaryOperatorKind
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.SourceLocation
-import io.verik.compiler.main.m
 
 class ESvUnaryExpression(
     override val location: SourceLocation,
@@ -39,8 +38,9 @@ class ESvUnaryExpression(
         visitor.visitSvUnaryExpression(this)
     }
 
-    override fun copy(): ESvUnaryExpression? {
-        m.error("Unable to copy ${this::class.simpleName}", this)
-        return null
+    override fun copy(): EExpression {
+        val copyType = type.copy()
+        val copyExpression = expression.copy()
+        return ESvUnaryExpression(location, copyType, copyExpression, kind)
     }
 }

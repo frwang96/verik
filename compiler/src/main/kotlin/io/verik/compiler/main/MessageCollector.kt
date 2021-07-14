@@ -17,7 +17,7 @@
 package io.verik.compiler.main
 
 import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.common.getSourceLocation
+import io.verik.compiler.common.location
 import org.jetbrains.kotlin.psi.KtElement
 
 open class MessageCollector {
@@ -45,7 +45,7 @@ open class MessageCollector {
     }
 
     fun error(message: String, element: KtElement) {
-        error(message, element.getSourceLocation())
+        error(message, element.location())
     }
 
     fun warning(message: String, element: EElement) {

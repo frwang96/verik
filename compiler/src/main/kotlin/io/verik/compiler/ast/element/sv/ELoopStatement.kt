@@ -18,7 +18,6 @@ package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.common.cast
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.m
@@ -38,10 +37,5 @@ abstract class ELoopStatement : EExpression(), ExpressionContainer {
                 ?: return
         else
             m.error("Could not find ${oldExpression::class.simpleName} in ${this::class.simpleName}", this)
-    }
-
-    override fun copy(): ELoopStatement? {
-        m.error("Unable to copy ${this::class.simpleName}", this)
-        return null
     }
 }

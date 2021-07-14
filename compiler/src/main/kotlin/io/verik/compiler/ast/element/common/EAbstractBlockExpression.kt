@@ -25,8 +25,6 @@ abstract class EAbstractBlockExpression : EExpression(), ExpressionContainer {
 
     abstract val statements: ArrayList<EExpression>
 
-    abstract override fun copy(): EAbstractBlockExpression?
-
     override fun acceptChildren(visitor: TreeVisitor) {
         statements.forEach { it.accept(visitor) }
     }

@@ -21,7 +21,6 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.SourceLocation
-import io.verik.compiler.main.m
 
 class EStringExpression(
     override val location: SourceLocation,
@@ -36,8 +35,7 @@ class EStringExpression(
 
     override fun acceptChildren(visitor: TreeVisitor) {}
 
-    override fun copy(): EStringExpression? {
-        m.error("Unable to copy ${this::class.simpleName}", this)
-        return null
+    override fun copy(): EExpression {
+        return EStringExpression(location, text)
     }
 }
