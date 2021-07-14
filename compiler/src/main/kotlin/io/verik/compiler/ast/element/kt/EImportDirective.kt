@@ -18,6 +18,7 @@ package io.verik.compiler.ast.element.kt
 
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.property.Name
+import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.common.PackageDeclaration
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
@@ -28,6 +29,8 @@ class EImportDirective(
     val name: Name?,
     val packageDeclaration: PackageDeclaration
 ) : EElement() {
+
+    override val serializationType = SvSerializationType.OTHER
 
     override fun accept(visitor: Visitor) {
         return visitor.visitImportDirective(this)

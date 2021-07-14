@@ -17,6 +17,7 @@
 package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.ast.property.Name
+import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
@@ -27,6 +28,8 @@ class ETypeParameter(
     override var name: Name,
     override var type: Type
 ) : EDeclaration() {
+
+    override val serializationType = SvSerializationType.OTHER
 
     override fun accept(visitor: Visitor) {
         return visitor.visitTypeParameter(this)

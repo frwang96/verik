@@ -19,6 +19,7 @@ package io.verik.compiler.ast.element.kt
 import io.verik.compiler.ast.element.common.EAbstractBinaryExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
+import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.SourceLocation
@@ -30,6 +31,8 @@ class EKtBinaryExpression(
     override var right: EExpression,
     var kind: KtBinaryOperatorKind
 ) : EAbstractBinaryExpression() {
+
+    override val serializationType = SvSerializationType.OTHER
 
     init {
         left.parent = this

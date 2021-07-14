@@ -19,6 +19,7 @@ package io.verik.compiler.serialize
 import io.verik.compiler.ast.element.common.*
 import io.verik.compiler.ast.element.sv.*
 import io.verik.compiler.ast.property.EdgeType
+import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.m
 
@@ -26,16 +27,16 @@ class SerializerExpressionVisitor(private val sourceBuilder: SourceBuilder) : Vi
 
     fun serializeAsExpression(element: EElement) {
         element.accept(this)
-        if (SerializationType.getType(element) != SerializationType.EXPRESSION)
+        if (element.serializationType != SvSerializationType.EXPRESSION)
             m.error("SystemVerilog expression expected but got: ${element::class.simpleName}", element)
     }
 
     fun serializeAsStatement(element: EElement) {
         element.accept(this)
-        when (SerializationType.getType(element)) {
-            SerializationType.EXPRESSION -> sourceBuilder.appendLine(";", element)
-            SerializationType.STATEMENT -> {}
-            SerializationType.OTHER ->
+        when (element.serializationType) {
+            SvSerializationType.EXPRESSION -> sourceBuilder.appendLine(";", element)
+            SvSerializationType.STATEMENT -> {}
+            SvSerializationType.OTHER ->
                 m.error("SystemVerilog expression or statement expected but got: ${element::class.simpleName}", element)
         }
     }

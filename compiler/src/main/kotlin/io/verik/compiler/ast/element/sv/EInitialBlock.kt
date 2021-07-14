@@ -28,11 +28,11 @@ class EInitialBlock(
     override var bodyBlockExpression: EAbstractBlockExpression
 ) : EProceduralBlock() {
 
+    override var type = Core.Kt.UNIT.toType()
+
     init {
         bodyBlockExpression.parent = this
     }
-
-    override var type = Core.Kt.UNIT.toType()
 
     override fun accept(visitor: Visitor) {
         visitor.visitInitialBlock(this)

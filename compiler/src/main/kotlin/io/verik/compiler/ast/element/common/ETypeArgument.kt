@@ -18,6 +18,7 @@ package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.Reference
+import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
@@ -28,6 +29,8 @@ class ETypeArgument(
     override var reference: Declaration,
     var type: Type
 ) : EElement(), Reference {
+
+    override val serializationType = SvSerializationType.OTHER
 
     override fun accept(visitor: Visitor) {
         visitor.visitTypeArgument(this)

@@ -16,6 +16,7 @@
 
 package io.verik.compiler.ast.element.common
 
+import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
@@ -26,6 +27,8 @@ class EConstantExpression(
     override var type: Type,
     val value: String
 ) : EExpression() {
+
+    override val serializationType = SvSerializationType.EXPRESSION
 
     override fun accept(visitor: Visitor) {
         visitor.visitConstantExpression(this)

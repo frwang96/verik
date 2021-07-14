@@ -28,11 +28,11 @@ class EForeverStatement(
     override var bodyBlockExpression: EAbstractBlockExpression
 ) : ELoopStatement() {
 
+    override var type = Core.Kt.UNIT.toType()
+
     init {
         bodyBlockExpression.parent = this
     }
-
-    override var type = Core.Kt.UNIT.toType()
 
     override fun accept(visitor: Visitor) {
         visitor.visitForeverStatement(this)

@@ -16,6 +16,7 @@
 
 package io.verik.compiler.ast.element.common
 
+import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
@@ -26,6 +27,8 @@ class ENullExpression(
 ) : EExpression() {
 
     override var type = Core.Kt.UNIT.toType()
+
+    override val serializationType = SvSerializationType.OTHER
 
     override fun accept(visitor: Visitor) {
         visitor.visitNullExpression(this)

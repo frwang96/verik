@@ -19,12 +19,15 @@ package io.verik.compiler.ast.element.sv
 import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.ExpressionContainer
+import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.m
 
 abstract class ELoopStatement : EExpression(), ExpressionContainer {
 
     abstract var bodyBlockExpression: EAbstractBlockExpression
+
+    override val serializationType = SvSerializationType.STATEMENT
 
     override fun acceptChildren(visitor: TreeVisitor) {
         bodyBlockExpression.accept(visitor)

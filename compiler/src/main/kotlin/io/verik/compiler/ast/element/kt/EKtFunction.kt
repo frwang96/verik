@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.EAbstractFunction
 import io.verik.compiler.ast.property.FunctionAnnotationType
 import io.verik.compiler.ast.property.Name
+import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.SourceLocation
@@ -31,6 +32,8 @@ class EKtFunction(
     override var bodyBlockExpression: EAbstractBlockExpression?,
     var annotationType: FunctionAnnotationType?
 ) : EAbstractFunction() {
+
+    override val serializationType = SvSerializationType.OTHER
 
     init {
         bodyBlockExpression?.parent = this

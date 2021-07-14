@@ -20,12 +20,15 @@ import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.ExpressionContainer
+import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.m
 
 abstract class EProceduralBlock : EDeclaration(), ExpressionContainer {
 
     abstract var bodyBlockExpression: EAbstractBlockExpression
+
+    override val serializationType = SvSerializationType.OTHER
 
     override fun acceptChildren(visitor: TreeVisitor) {
         bodyBlockExpression.accept(visitor)

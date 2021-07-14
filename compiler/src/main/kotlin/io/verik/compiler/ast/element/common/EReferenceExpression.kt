@@ -18,6 +18,7 @@ package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.Reference
+import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
@@ -28,6 +29,8 @@ class EReferenceExpression(
     override var type: Type,
     override var reference: Declaration
 ) : EExpression(), Reference {
+
+    override val serializationType = SvSerializationType.EXPRESSION
 
     override fun accept(visitor: Visitor) {
         visitor.visitReferenceExpression(this)

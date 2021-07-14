@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.ENullExpression
 import io.verik.compiler.ast.interfaces.ExpressionContainer
+import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
@@ -30,6 +31,8 @@ class EFunctionLiteralExpression(
     override val location: SourceLocation,
     var bodyBlockExpression: EAbstractBlockExpression
 ) : EExpression(), ExpressionContainer {
+
+    override val serializationType = SvSerializationType.OTHER
 
     init {
         bodyBlockExpression.parent = this

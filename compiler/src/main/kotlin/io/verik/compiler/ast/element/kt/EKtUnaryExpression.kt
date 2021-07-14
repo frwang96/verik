@@ -19,6 +19,7 @@ package io.verik.compiler.ast.element.kt
 import io.verik.compiler.ast.element.common.EAbstractExpressionContainer
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.property.KtUnaryOperatorKind
+import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.SourceLocation
@@ -29,6 +30,8 @@ class EKtUnaryExpression(
     override var expression: EExpression,
     val kind: KtUnaryOperatorKind
 ) : EAbstractExpressionContainer() {
+
+    override val serializationType = SvSerializationType.OTHER
 
     init {
         expression.parent = this

@@ -17,6 +17,7 @@
 package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.ast.interfaces.ExpressionContainer
+import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
@@ -30,6 +31,8 @@ class EIfExpression(
     var thenExpression: EExpression?,
     var elseExpression: EExpression?
 ) : EExpression(), ExpressionContainer {
+
+    override val serializationType = SvSerializationType.STATEMENT
 
     init {
         condition.parent = this

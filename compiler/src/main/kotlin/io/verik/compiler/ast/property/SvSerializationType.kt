@@ -14,22 +14,10 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.common
+package io.verik.compiler.ast.property
 
-import io.verik.compiler.ast.property.SvSerializationType
-import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.common.Visitor
-import io.verik.compiler.main.SourceLocation
-
-class ENullElement(
-    override val location: SourceLocation
-) : EElement() {
-
-    override val serializationType = SvSerializationType.OTHER
-
-    override fun accept(visitor: Visitor) {
-        visitor.visitNullElement(this)
-    }
-
-    override fun acceptChildren(visitor: TreeVisitor) {}
+enum class SvSerializationType {
+    EXPRESSION,
+    STATEMENT,
+    OTHER
 }

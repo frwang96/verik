@@ -17,6 +17,7 @@
 package io.verik.compiler.ast.element.kt
 
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
@@ -26,6 +27,8 @@ class EStringTemplateExpression(
     override val location: SourceLocation,
     val entries: List<EStringTemplateEntry>
 ) : EExpression() {
+
+    override val serializationType = SvSerializationType.OTHER
 
     init {
         entries.forEach { it.parent = this }

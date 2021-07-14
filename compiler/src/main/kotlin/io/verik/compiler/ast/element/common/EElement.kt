@@ -16,6 +16,7 @@
 
 package io.verik.compiler.ast.element.common
 
+import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.SourceLocation
@@ -24,6 +25,8 @@ import io.verik.compiler.main.m
 abstract class EElement {
 
     abstract val location: SourceLocation
+
+    abstract val serializationType: SvSerializationType
 
     var parent: EElement? = null
 

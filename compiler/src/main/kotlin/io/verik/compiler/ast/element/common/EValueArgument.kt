@@ -19,6 +19,7 @@ package io.verik.compiler.ast.element.common
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.interfaces.Reference
+import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.SourceLocation
@@ -29,6 +30,8 @@ class EValueArgument(
     override var reference: Declaration,
     var expression: EExpression
 ) : EElement(), ExpressionContainer, Reference {
+
+    override val serializationType = SvSerializationType.OTHER
 
     init {
         expression.parent = this

@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.common.EAbstractClass
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.property.Name
+import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.SourceLocation
@@ -32,6 +33,8 @@ class EKtBasicClass(
     override var typeParameters: ArrayList<ETypeParameter>,
     override var declarations: ArrayList<EDeclaration>
 ) : EAbstractClass() {
+
+    override val serializationType = SvSerializationType.OTHER
 
     init {
         declarations.forEach { it.parent = this }

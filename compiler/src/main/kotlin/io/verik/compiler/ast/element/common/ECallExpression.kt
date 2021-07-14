@@ -18,6 +18,7 @@ package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.Reference
+import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
@@ -30,6 +31,8 @@ class ECallExpression(
     val typeArguments: ArrayList<ETypeArgument>,
     val valueArguments: ArrayList<EValueArgument>
 ) : EExpression(), Reference {
+
+    override val serializationType = SvSerializationType.EXPRESSION
 
     init {
         typeArguments.forEach { it.parent = this }
