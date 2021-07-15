@@ -22,16 +22,16 @@ import io.verik.compiler.main.m
 
 abstract class EAbstractFunction : EDeclaration(), ExpressionContainer {
 
-    abstract var bodyBlockExpression: EAbstractBlockExpression?
+    abstract var body: EExpression?
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        bodyBlockExpression?.accept(visitor)
+        body?.accept(visitor)
     }
 
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
         newExpression.parent = this
-        if (bodyBlockExpression == oldExpression)
-            bodyBlockExpression = newExpression.cast()
+        if (body == oldExpression)
+            body = newExpression.cast()
         else
             m.error("Could not find ${oldExpression::class.simpleName} in ${this::class.simpleName}", this)
     }

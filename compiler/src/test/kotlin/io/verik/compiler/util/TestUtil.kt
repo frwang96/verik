@@ -105,11 +105,15 @@ fun ProjectContext.findExpression(nameString: String): EExpression {
         override fun visitAbstractFunction(abstractFunction: EAbstractFunction) {
             super.visitAbstractFunction(abstractFunction)
             if (abstractFunction.name == Name(nameString)) {
-                abstractFunction.bodyBlockExpression?.let {
-                    if (it.statements.size == 1)
-                        expressions.add(it.statements[0])
-                    else
-                        throw IllegalArgumentException("Function body block has more than one expression")
+                abstractFunction.body?.let {
+                    if (it is EAbstractBlockExpression) {
+                        if (it.statements.size == 1)
+                            expressions.add(it.statements[0])
+                        else
+                            throw IllegalArgumentException("Function body block has more than one expression")
+                    } else {
+                        expressions.add(it)
+                    }
                 }
             }
         }

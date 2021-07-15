@@ -16,8 +16,8 @@
 
 package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.EAbstractFunction
+import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.property.Name
 import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.ast.property.Type
@@ -28,13 +28,13 @@ class ESvFunction(
     override val location: SourceLocation,
     override var name: Name,
     override var type: Type,
-    override var bodyBlockExpression: EAbstractBlockExpression?
+    override var body: EExpression?
 ) : EAbstractFunction() {
 
     override val serializationType = SvSerializationType.OTHER
 
     init {
-        bodyBlockExpression?.parent = this
+        body?.parent = this
     }
 
     override fun accept(visitor: Visitor) {

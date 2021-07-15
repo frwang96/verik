@@ -16,7 +16,6 @@
 
 package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.ExpressionContainer
@@ -26,18 +25,18 @@ import io.verik.compiler.main.m
 
 abstract class EProceduralBlock : EDeclaration(), ExpressionContainer {
 
-    abstract var bodyBlockExpression: EAbstractBlockExpression
+    abstract var body: EExpression
 
     override val serializationType = SvSerializationType.OTHER
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        bodyBlockExpression.accept(visitor)
+        body.accept(visitor)
     }
 
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
         newExpression.parent = this
-        if (bodyBlockExpression == oldExpression)
-            bodyBlockExpression = newExpression.cast()
+        if (body == oldExpression)
+            body = newExpression.cast()
                 ?: return
         else
             m.error("Could not find ${oldExpression::class.simpleName} in ${this::class.simpleName}", this)

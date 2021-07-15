@@ -64,10 +64,10 @@ class SerializerBaseVisitor(private val sourceBuilder: SourceBuilder) : Visitor(
         appendLineIfNotFirst()
         val typeString = TypeSerializer.serialize(function)
         sourceBuilder.appendLine("function $typeString $function();", function)
-        val bodyBlockExpression = function.bodyBlockExpression
-        if (bodyBlockExpression != null) {
+        val body = function.body
+        if (body != null) {
             sourceBuilder.indent {
-                expressionVisitor.serializeAsStatement(bodyBlockExpression)
+                expressionVisitor.serializeAsStatement(body)
             }
         }
         sourceBuilder.appendLine("endfunction : $function", function)
@@ -90,13 +90,13 @@ class SerializerBaseVisitor(private val sourceBuilder: SourceBuilder) : Visitor(
     override fun visitInitialBlock(initialBlock: EInitialBlock) {
         appendLineIfNotFirst()
         sourceBuilder.append("initial ", initialBlock)
-        expressionVisitor.serializeAsStatement(initialBlock.bodyBlockExpression)
+        expressionVisitor.serializeAsStatement(initialBlock.body)
     }
 
     override fun visitAlwaysComBlock(alwaysComBlock: EAlwaysComBlock) {
         appendLineIfNotFirst()
         sourceBuilder.append("always_comb ", alwaysComBlock)
-        expressionVisitor.serializeAsStatement(alwaysComBlock.bodyBlockExpression)
+        expressionVisitor.serializeAsStatement(alwaysComBlock.body)
     }
 
     override fun visitAlwaysSeqBlock(alwaysSeqBlock: EAlwaysSeqBlock) {
@@ -104,7 +104,7 @@ class SerializerBaseVisitor(private val sourceBuilder: SourceBuilder) : Visitor(
         sourceBuilder.append("always_ff ", alwaysSeqBlock)
         expressionVisitor.serializeAsExpression(alwaysSeqBlock.eventControlExpression)
         sourceBuilder.append(" ", alwaysSeqBlock)
-        expressionVisitor.serializeAsStatement(alwaysSeqBlock.bodyBlockExpression)
+        expressionVisitor.serializeAsStatement(alwaysSeqBlock.body)
     }
 
     private fun appendLineIfNotFirst() {

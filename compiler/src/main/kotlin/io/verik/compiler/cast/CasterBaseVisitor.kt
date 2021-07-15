@@ -17,7 +17,10 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.ast.element.common.*
-import io.verik.compiler.ast.element.kt.*
+import io.verik.compiler.ast.element.kt.EImportDirective
+import io.verik.compiler.ast.element.kt.EKtBasicClass
+import io.verik.compiler.ast.element.kt.EKtFunction
+import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.interfaces.cast
 import io.verik.compiler.ast.property.FunctionAnnotationType
 import io.verik.compiler.ast.property.Name
@@ -152,13 +155,13 @@ class CasterBaseVisitor(
                 null
             }
         }
-        val bodyBlockExpression = function.bodyBlockExpression?.let {
-            expressionVisitor.getElement<EKtBlockExpression>(it)
+        val body = function.bodyBlockExpression?.let {
+            expressionVisitor.getElement<EExpression>(it)
         }
-        bodyBlockExpression?.parent = ktFunction
+        body?.parent = ktFunction
 
         ktFunction.type = type
-        ktFunction.bodyBlockExpression = bodyBlockExpression
+        ktFunction.body = body
         ktFunction.annotationType = annotationType
         return ktFunction
     }

@@ -144,12 +144,12 @@ class CasterExpressionVisitor(
     override fun visitLambdaExpression(expression: KtLambdaExpression, data: Unit?): EElement {
         val location = expression.location()
         val statements = expression.bodyExpression!!.statements.mapNotNull { getExpression(it) }
-        val bodyBlockExpression = EKtBlockExpression(
+        val body = EKtBlockExpression(
             location,
             Core.Kt.FUNCTION.toType(),
             ArrayList(statements)
         )
-        return EFunctionLiteralExpression(location, bodyBlockExpression)
+        return EFunctionLiteralExpression(location, body)
     }
 
     override fun visitStringTemplateExpression(expression: KtStringTemplateExpression, data: Unit?): EElement {

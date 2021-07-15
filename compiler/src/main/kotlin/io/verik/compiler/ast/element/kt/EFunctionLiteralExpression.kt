@@ -16,9 +16,7 @@
 
 package io.verik.compiler.ast.element.kt
 
-import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.common.ENullExpression
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.common.TreeVisitor
@@ -29,13 +27,13 @@ import io.verik.compiler.main.m
 
 class EFunctionLiteralExpression(
     override val location: SourceLocation,
-    var bodyBlockExpression: EAbstractBlockExpression
+    var body: EExpression
 ) : EExpression(), ExpressionContainer {
 
     override val serializationType = SvSerializationType.OTHER
 
     init {
-        bodyBlockExpression.parent = this
+        body.parent = this
     }
 
     override var type = Core.Kt.FUNCTION.toType()
@@ -45,22 +43,20 @@ class EFunctionLiteralExpression(
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        bodyBlockExpression.accept(visitor)
+        body.accept(visitor)
     }
 
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
         newExpression.parent = this
-        if (bodyBlockExpression == oldExpression)
-            bodyBlockExpression = newExpression.cast()
+        if (body == oldExpression)
+            body = newExpression.cast()
                 ?: return
         else
             m.error("Could not find ${oldExpression::class.simpleName} in ${this::class.simpleName}", this)
     }
 
     override fun copy(): EExpression {
-        // TODO change bodyBlockExpression to expression
-        val copyBodyBlockExpression = bodyBlockExpression.copy().cast<EAbstractBlockExpression>()
-            ?: return ENullExpression(location)
-        return EFunctionLiteralExpression(location, copyBodyBlockExpression)
+        val copyBody = body.copy()
+        return EFunctionLiteralExpression(location, copyBody)
     }
 }

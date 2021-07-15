@@ -65,7 +65,7 @@ class ElementPrinter : Visitor() {
         build("KtFunction") {
             build(function.name.toString())
             build(function.type.toString())
-            build(function.bodyBlockExpression)
+            build(function.body)
             build(function.annotationType.toString())
         }
     }
@@ -74,7 +74,7 @@ class ElementPrinter : Visitor() {
         build("SvFunction") {
             build(function.name.toString())
             build(function.type.toString())
-            build(function.bodyBlockExpression)
+            build(function.body)
         }
     }
 
@@ -104,14 +104,14 @@ class ElementPrinter : Visitor() {
     override fun visitInitialBlock(initialBlock: EInitialBlock) {
         build("InitialBlock") {
             build(initialBlock.name.toString())
-            build(initialBlock.bodyBlockExpression)
+            build(initialBlock.body)
         }
     }
 
     override fun visitAlwaysComBlock(alwaysComBlock: EAlwaysComBlock) {
         build("AlwaysComBlock") {
             build(alwaysComBlock.name.toString())
-            build(alwaysComBlock.bodyBlockExpression)
+            build(alwaysComBlock.body)
         }
     }
 
@@ -119,7 +119,7 @@ class ElementPrinter : Visitor() {
         build("AlwaysSeqBlock") {
             build(alwaysSeqBlock.name.toString())
             build(alwaysSeqBlock.eventControlExpression)
-            build(alwaysSeqBlock.bodyBlockExpression)
+            build(alwaysSeqBlock.body)
         }
     }
 
@@ -228,7 +228,7 @@ class ElementPrinter : Visitor() {
     override fun visitFunctionLiteralExpression(functionLiteralExpression: EFunctionLiteralExpression) {
         build("FunctionLiteralExpression") {
             build(functionLiteralExpression.type.toString())
-            build(functionLiteralExpression.bodyBlockExpression)
+            build(functionLiteralExpression.body)
         }
     }
 
@@ -270,7 +270,7 @@ class ElementPrinter : Visitor() {
     override fun visitForeverStatement(foreverStatement: EForeverStatement) {
         build("ForeverStatement") {
             build(foreverStatement.type.toString())
-            build(foreverStatement.bodyBlockExpression)
+            build(foreverStatement.body)
         }
     }
 

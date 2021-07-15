@@ -156,7 +156,7 @@ class SerializerExpressionVisitor(private val sourceBuilder: SourceBuilder) : Vi
 
     override fun visitForeverStatement(foreverStatement: EForeverStatement) {
         sourceBuilder.append("forever ", foreverStatement)
-        serializeAsStatement(foreverStatement.bodyBlockExpression)
+        serializeAsStatement(foreverStatement.body)
     }
 
     override fun visitEventExpression(eventExpression: EEventExpression) {

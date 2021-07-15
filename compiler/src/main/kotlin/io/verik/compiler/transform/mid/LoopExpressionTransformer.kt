@@ -43,7 +43,7 @@ object LoopExpressionTransformer : ProjectPass {
                 if (functionLiteralExpression != null) {
                     val foreverStatement = EForeverStatement(
                         callExpression.location,
-                        functionLiteralExpression.bodyBlockExpression
+                        functionLiteralExpression.body
                     )
                     callExpression.replace(foreverStatement)
                 }
