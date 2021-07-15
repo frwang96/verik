@@ -16,7 +16,6 @@
 
 package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.SourceLocation
@@ -24,8 +23,6 @@ import io.verik.compiler.main.SourceLocation
 class ENullElement(
     override val location: SourceLocation
 ) : EElement() {
-
-    override val serializationType = SvSerializationType.OTHER
 
     override fun accept(visitor: Visitor) {
         visitor.visitNullElement(this)

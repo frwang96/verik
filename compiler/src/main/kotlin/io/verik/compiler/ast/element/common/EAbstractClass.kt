@@ -17,6 +17,7 @@
 package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.ast.interfaces.DeclarationContainer
+import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.replaceIfContains
@@ -27,6 +28,8 @@ abstract class EAbstractClass : EDeclaration(), DeclarationContainer {
     abstract var supertype: Type
     abstract var typeParameters: ArrayList<ETypeParameter>
     abstract var declarations: ArrayList<EDeclaration>
+
+    override val serializationType = SvSerializationType.OTHER
 
     override fun acceptChildren(visitor: TreeVisitor) {
         declarations.forEach { it.accept(visitor) }

@@ -25,19 +25,19 @@ import io.verik.compiler.main.m
 
 class SerializerExpressionVisitor(private val sourceBuilder: SourceBuilder) : Visitor() {
 
-    fun serializeAsExpression(element: EElement) {
-        element.accept(this)
-        if (element.serializationType != SvSerializationType.EXPRESSION)
-            m.error("SystemVerilog expression expected but got: ${element::class.simpleName}", element)
+    fun serializeAsExpression(expression: EExpression) {
+        expression.accept(this)
+        if (expression.serializationType != SvSerializationType.EXPRESSION)
+            m.error("SystemVerilog expression expected but got: ${expression::class.simpleName}", expression)
     }
 
-    fun serializeAsStatement(element: EElement) {
-        element.accept(this)
-        when (element.serializationType) {
-            SvSerializationType.EXPRESSION -> sourceBuilder.appendLine(";", element)
+    fun serializeAsStatement(expression: EExpression) {
+        expression.accept(this)
+        when (expression.serializationType) {
+            SvSerializationType.EXPRESSION -> sourceBuilder.appendLine(";", expression)
             SvSerializationType.STATEMENT -> {}
             SvSerializationType.OTHER ->
-                m.error("SystemVerilog expression or statement expected but got: ${element::class.simpleName}", element)
+                m.error("SystemVerilog expression or statement expected but got: ${expression::class.simpleName}", expression)
         }
     }
 

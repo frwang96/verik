@@ -17,12 +17,15 @@
 package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.ast.interfaces.ExpressionContainer
+import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.main.m
 
 abstract class EExpression : EElement() {
 
     abstract var type: Type
+
+    abstract val serializationType: SvSerializationType
 
     abstract fun copy(): EExpression
 

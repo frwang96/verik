@@ -20,7 +20,6 @@ import io.verik.compiler.ast.element.kt.EImportDirective
 import io.verik.compiler.ast.interfaces.DeclarationContainer
 import io.verik.compiler.ast.property.SourceSetType
 import io.verik.compiler.ast.property.SourceType
-import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.common.PackageDeclaration
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
@@ -40,8 +39,6 @@ class EFile(
     var declarations: ArrayList<EDeclaration>,
     private val importDirectives: List<EImportDirective>
 ) : EElement(), DeclarationContainer {
-
-    override val serializationType = SvSerializationType.OTHER
 
     init {
         importDirectives.forEach { it.parent = this }

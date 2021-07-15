@@ -17,11 +17,8 @@
 package io.verik.compiler.ast.element.kt
 
 import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.ast.property.SvSerializationType
 
 abstract class EStringTemplateEntry : EElement() {
-
-    override val serializationType = SvSerializationType.OTHER
 
     abstract fun copy(): EStringTemplateEntry
 }

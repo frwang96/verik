@@ -39,6 +39,7 @@ internal class TypeCasterTest : BaseTest() {
 
     @Test
     @Disabled
+    // TODO resolve constructor
     fun `type class parameterized`() {
         val projectContext = TestDriver.cast(
             """
@@ -54,6 +55,7 @@ internal class TypeCasterTest : BaseTest() {
 
     @Test
     @Disabled
+    // TODO resolve constructor
     fun `type type parameter`() {
         val projectContext = TestDriver.cast(
             """
@@ -70,6 +72,7 @@ internal class TypeCasterTest : BaseTest() {
 
     @Test
     @Disabled
+    // TODO add function parameters
     fun `type nullable`() {
         assertThrows<TestErrorException> {
             TestDriver.cast(
@@ -97,6 +100,7 @@ internal class TypeCasterTest : BaseTest() {
 
     @Test
     @Disabled
+    // TODO resolve constructor
     fun `type reference type parameter`() {
         val projectContext = TestDriver.cast(
             """
