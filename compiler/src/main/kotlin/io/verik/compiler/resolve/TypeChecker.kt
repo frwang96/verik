@@ -17,49 +17,26 @@
 package io.verik.compiler.resolve
 
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.common.TypeVisitor
-import io.verik.compiler.core.common.CoreCardinalConstantDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
 object TypeChecker : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        val cardinalResolvedTypeVisitor = CardinalResolvedTypeVisitor()
-        val typeCheckerExpressionVisitor = TypeCheckerExpressionVisitor(cardinalResolvedTypeVisitor)
-        projectContext.files.forEach { it.accept(typeCheckerExpressionVisitor) }
+        projectContext.files.forEach { it.accept(TypeCheckerVisitor) }
     }
 
-    class TypeCheckerExpressionVisitor(
-        private val cardinalResolvedTypeVisitor: CardinalResolvedTypeVisitor
-    ) : TreeVisitor() {
+    object TypeCheckerVisitor : TreeVisitor() {
 
         override fun visitExpression(expression: EExpression) {
             super.visitExpression(expression)
-            if (!cardinalResolvedTypeVisitor.isResolved(expression.type))
-               m.error("Type of ${expression::class.simpleName} has not been resolved: ${expression.type}", expression)
-        }
-    }
-
-    class CardinalResolvedTypeVisitor : TypeVisitor() {
-
-        private var isResolved = true
-
-        fun isResolved(type: Type): Boolean {
-            isResolved = true
-            type.accept(this)
-            return isResolved
-        }
-
-        override fun visit(type: Type) {
-            super.visit(type)
-            if (type.isCardinalType()) {
-                if (type.reference !is CoreCardinalConstantDeclaration)
-                    isResolved = false
-            }
+            val expressionName = expression::class.simpleName
+            if (!expression.type.isResolved())
+                m.error("Type of $expressionName could not be resolved: ${expression.type}", expression)
+            else if (!expression.type.isSpecialized())
+                m.error("Type of $expressionName could not be specialized: ${expression.type}", expression)
         }
     }
 }

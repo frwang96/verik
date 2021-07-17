@@ -22,7 +22,6 @@ import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.common.NullDeclaration
-import io.verik.compiler.common.TypeVisitor
 import io.verik.compiler.core.common.*
 import io.verik.compiler.main.m
 
@@ -40,16 +39,24 @@ class Type(
         return Type(reference, ArrayList(copyArguments))
     }
 
-    fun accept(typeVisitor: TypeVisitor) {
-        typeVisitor.visit(this)
-    }
-
     fun isCardinalType(): Boolean {
         return when (val reference = reference) {
             is ETypeParameter -> reference.type.isCardinalType()
             is CoreCardinalDeclaration -> true
             else -> false
         }
+    }
+
+    fun isResolved(): Boolean {
+        if (isCardinalType() && reference is CoreCardinalBaseDeclaration)
+            return false
+        return arguments.all { it.isResolved() }
+    }
+
+    fun isSpecialized(): Boolean {
+        if (isCardinalType() && reference !is CoreCardinalConstantDeclaration)
+            return false
+        return arguments.all { it.isSpecialized() }
     }
 
     private fun asCardinalValueOrNull(): Int? {

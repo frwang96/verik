@@ -38,7 +38,7 @@ object BinaryExpressionReducer : ProjectPass {
         referenceMap[ReducerEntry(Core.Kt.INT, Core.Kt.INT, KtBinaryOperatorKind.MUL)] = Core.Kt.Int.TIMES_INT
         referenceMap[ReducerEntry(Core.Kt.INT, Core.Kt.INT, KtBinaryOperatorKind.PLUS)] = Core.Kt.Int.PLUS_INT
         referenceMap[ReducerEntry(Core.Kt.INT, Core.Kt.INT, KtBinaryOperatorKind.MINUS)] = Core.Kt.Int.MINUS_INT
-        referenceMap[ReducerEntry(Core.Vk.UBIT, Core.Vk.UBIT, KtBinaryOperatorKind.PLUS)] = Core.Vk.Ubit.PLUS_INT
+        referenceMap[ReducerEntry(Core.Vk.UBIT, Core.Vk.UBIT, KtBinaryOperatorKind.PLUS)] = Core.Vk.Ubit.PLUS_UBIT
     }
 
     override fun pass(projectContext: ProjectContext) {

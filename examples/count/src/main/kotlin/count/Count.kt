@@ -29,7 +29,7 @@ object Count : Module() {
     fun update() {
         on (posedge(clk)) {
             println("count=$count")
-            if (rst) count = u<`8`>(0)
+            if (rst) count = u(0)
             else count += u<`8`>(1)
         }
     }

@@ -35,7 +35,7 @@ object BinaryExpressionTransformer : ProjectPass {
         operatorKindMap[Core.Kt.Int.PLUS_INT] = SvBinaryOperatorKind.PLUS
         operatorKindMap[Core.Kt.Int.MINUS_INT] = SvBinaryOperatorKind.MINUS
         operatorKindMap[Core.Kt.Int.TIMES_INT] = SvBinaryOperatorKind.MUL
-        operatorKindMap[Core.Vk.Ubit.PLUS_INT] = SvBinaryOperatorKind.PLUS
+        operatorKindMap[Core.Vk.Ubit.PLUS_UBIT] = SvBinaryOperatorKind.PLUS
     }
 
     override fun pass(projectContext: ProjectContext) {
