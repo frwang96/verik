@@ -33,7 +33,7 @@ internal class BinaryExpressionReducerTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "DotQualifiedExpression(Int, ReferenceExpression(*), CallExpression(Int, plus, *))",
+            "DotQualifiedExpression(Int, SimpleNameExpression(*), CallExpression(Int, plus, *))",
             projectContext.findExpression("y")
         )
     }
@@ -51,7 +51,7 @@ internal class BinaryExpressionReducerTest : BaseTest() {
             """
                 DotQualifiedExpression(
                     Int,
-                    DotQualifiedExpression(Int, ReferenceExpression(*), CallExpression(Int, plus, *)),
+                    DotQualifiedExpression(Int, SimpleNameExpression(*), CallExpression(Int, plus, *)),
                     CallExpression(Int, plus, *)
                 )
             """.trimIndent(),

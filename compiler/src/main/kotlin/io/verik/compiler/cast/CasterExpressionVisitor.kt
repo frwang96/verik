@@ -90,12 +90,12 @@ class CasterExpressionVisitor(
         return EKtBinaryExpression(location, type, left, right, kind)
     }
 
-    override fun visitReferenceExpression(expression: KtReferenceExpression, data: Unit?): EElement {
+    override fun visitSimpleNameExpression(expression: KtSimpleNameExpression, data: Unit?): EElement {
         val descriptor = bindingContext.getSliceContents(BindingContext.REFERENCE_TARGET)[expression]!!
         val location = expression.location()
         val type = getType(expression)
         val declaration = declarationMap[descriptor, expression]
-        return EReferenceExpression(location, type, declaration)
+        return ESimpleNameExpression(location, type, declaration, null)
     }
 
     override fun visitCallExpression(expression: KtCallExpression, data: Unit?): EElement {
@@ -130,8 +130,20 @@ class CasterExpressionVisitor(
         val location = expression.location()
         val type = getType(expression)
         val receiver = getExpression(expression.receiverExpression)
-        val selector = getExpression(expression.selectorExpression!!)
-        return EDotQualifiedExpression(location, type, receiver, selector)
+        return when (val selector = expression.selectorExpression) {
+            is KtSimpleNameExpression -> {
+                val descriptor = bindingContext.getSliceContents(BindingContext.REFERENCE_TARGET)[selector]!!
+                val declaration = declarationMap[descriptor, expression]
+                ESimpleNameExpression(location, type, declaration, receiver)
+            }
+            is KtCallExpression -> {
+                EDotQualifiedExpression(location, type, receiver, getExpression(selector))
+            }
+            else -> {
+                m.error("Simple name expression or call expression expected", expression)
+                ENullExpression(location)
+            }
+        }
     }
 
     override fun visitConstantExpression(expression: KtConstantExpression, data: Unit?): EElement {

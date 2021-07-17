@@ -82,8 +82,13 @@ class SerializerExpressionVisitor(private val sourceBuilder: SourceBuilder) : Vi
         serializeAsExpression(binaryExpression.right)
     }
 
-    override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
-        sourceBuilder.append(referenceExpression.reference.name.toString(), referenceExpression)
+    override fun visitSimpleNameExpression(simpleNameExpression: ESimpleNameExpression) {
+        val receiver = simpleNameExpression.receiver
+        if (receiver != null) {
+            serializeAsExpression(receiver)
+            sourceBuilder.append(".", simpleNameExpression)
+        }
+        sourceBuilder.append(simpleNameExpression.reference.name.toString(), simpleNameExpression)
     }
 
     override fun visitCallExpression(callExpression: ECallExpression) {

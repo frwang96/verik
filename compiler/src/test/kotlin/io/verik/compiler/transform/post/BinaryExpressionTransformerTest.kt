@@ -33,7 +33,7 @@ internal class BinaryExpressionTransformerTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SvBinaryExpression(Int, PLUS, ReferenceExpression(*), ConstantExpression(*))",
+            "SvBinaryExpression(Int, PLUS, SimpleNameExpression(*), ConstantExpression(*))",
             projectContext.findExpression("y")
         )
     }

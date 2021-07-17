@@ -53,7 +53,7 @@ internal class StringTemplateExpressionReducerTest : BaseTest() {
                     [],
                     [
                         ValueArgument(null, StringExpression(String, %d)),
-                        ValueArgument(null, ReferenceExpression(Int, x))
+                        ValueArgument(null, SimpleNameExpression(Int, x, null))
                     ]
                 )
             """.trimIndent(),

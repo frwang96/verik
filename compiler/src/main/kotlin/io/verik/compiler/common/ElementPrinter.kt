@@ -180,10 +180,11 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
-        build("ReferenceExpression") {
-            build(referenceExpression.type.toString())
-            build(referenceExpression.reference.toString())
+    override fun visitSimpleNameExpression(simpleNameExpression: ESimpleNameExpression) {
+        build("SimpleNameExpression") {
+            build(simpleNameExpression.type.toString())
+            build(simpleNameExpression.reference.toString())
+            build(simpleNameExpression.receiver)
         }
     }
 

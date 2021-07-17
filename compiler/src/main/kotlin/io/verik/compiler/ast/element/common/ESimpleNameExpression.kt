@@ -24,22 +24,24 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.SourceLocation
 
-class EReferenceExpression(
+class ESimpleNameExpression(
     override val location: SourceLocation,
     override var type: Type,
-    override var reference: Declaration
+    override var reference: Declaration,
+    var receiver: EExpression?
 ) : EExpression(), Reference {
 
     override val serializationType = SvSerializationType.EXPRESSION
 
     override fun accept(visitor: Visitor) {
-        visitor.visitReferenceExpression(this)
+        visitor.visitSimpleNameExpression(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {}
 
     override fun copy(): EExpression {
         val copyType = type.copy()
-        return EReferenceExpression(location, copyType, reference)
+        val copyReceiver = receiver?.copy()
+        return ESimpleNameExpression(location, copyType, reference, copyReceiver)
     }
 }

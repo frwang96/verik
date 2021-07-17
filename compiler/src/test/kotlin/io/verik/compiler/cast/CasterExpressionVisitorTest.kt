@@ -70,7 +70,7 @@ internal class CasterExpressionVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "ReferenceExpression(Int, x)",
+            "SimpleNameExpression(Int, x, null)",
             projectContext.findExpression("y")
         )
     }
@@ -156,7 +156,7 @@ internal class CasterExpressionVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "DotQualifiedExpression(Int, ReferenceExpression(*), CallExpression(*))",
+            "DotQualifiedExpression(Int, SimpleNameExpression(*), CallExpression(*))",
             projectContext.findExpression("y")
         )
     }
@@ -231,7 +231,7 @@ internal class CasterExpressionVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "StringTemplateExpression(String, [ExpressionStringTemplateEntry(ReferenceExpression(*))])",
+            "StringTemplateExpression(String, [ExpressionStringTemplateEntry(SimpleNameExpression(*))])",
             projectContext.findExpression("y")
         )
     }
@@ -245,7 +245,7 @@ internal class CasterExpressionVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "IfExpression(Int, ReferenceExpression(*), ConstantExpression(*), ConstantExpression(*))",
+            "IfExpression(Int, SimpleNameExpression(*), ConstantExpression(*), ConstantExpression(*))",
             projectContext.findExpression("y")
         )
     }
