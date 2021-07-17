@@ -20,12 +20,15 @@ import io.verik.compiler.ast.element.common.*
 import io.verik.compiler.ast.element.kt.*
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.KtUnaryOperatorKind
+import io.verik.compiler.ast.property.Name
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.NullDeclaration
+import io.verik.compiler.common.PackageDeclaration
 import io.verik.compiler.common.location
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
+import org.jetbrains.kotlin.descriptors.PackageViewDescriptor
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.calls.callUtil.getType
@@ -48,6 +51,16 @@ class ExpressionCasterVisitor(
 
     private fun getType(expression: KtExpression): Type {
         return TypeCaster.castFromType(declarationMap, expression.getType(bindingContext)!!, expression)
+    }
+
+    private fun getPackageSimpleNameExpression(expression: KtExpression): ESimpleNameExpression? {
+        val location = expression.location()
+        val descriptor = bindingContext.getSliceContents(BindingContext.REFERENCE_TARGET)[expression]
+        return if (descriptor is PackageViewDescriptor) {
+            val declaration = PackageDeclaration(Name(descriptor.fqName.toString()))
+            val type = Type(declaration, arrayListOf())
+            ESimpleNameExpression(location, type, declaration, null)
+        } else null
     }
 
     override fun visitKtElement(element: KtElement, data: Unit?): EElement {
@@ -91,17 +104,18 @@ class ExpressionCasterVisitor(
     }
 
     override fun visitSimpleNameExpression(expression: KtSimpleNameExpression, data: Unit?): EElement {
-        val descriptor = bindingContext.getSliceContents(BindingContext.REFERENCE_TARGET)[expression]!!
+        getPackageSimpleNameExpression(expression)?.let { return it }
         val location = expression.location()
+        val descriptor = bindingContext.getSliceContents(BindingContext.REFERENCE_TARGET)[expression]!!
         val type = getType(expression)
         val declaration = declarationMap[descriptor, expression]
         return ESimpleNameExpression(location, type, declaration, null)
     }
 
     override fun visitCallExpression(expression: KtCallExpression, data: Unit?): EElement {
+        val location = expression.location()
         val descriptor = bindingContext
             .getSliceContents(BindingContext.REFERENCE_TARGET)[expression.calleeExpression]!!
-        val location = expression.location()
         val type = getType(expression)
         val declaration = declarationMap[descriptor, expression]
         val typeArguments = expression.typeArguments.map {
@@ -131,6 +145,7 @@ class ExpressionCasterVisitor(
     }
 
     override fun visitDotQualifiedExpression(expression: KtDotQualifiedExpression, data: Unit?): EElement {
+        getPackageSimpleNameExpression(expression.selectorExpression!!)?.let { return it }
         val location = expression.location()
         val type = getType(expression)
         val receiver = getExpression(expression.receiverExpression)

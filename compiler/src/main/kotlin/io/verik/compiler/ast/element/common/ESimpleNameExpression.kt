@@ -33,11 +33,17 @@ class ESimpleNameExpression(
 
     override val serializationType = SvSerializationType.EXPRESSION
 
+    init {
+        receiver?.parent = this
+    }
+
     override fun accept(visitor: Visitor) {
         visitor.visitSimpleNameExpression(this)
     }
 
-    override fun acceptChildren(visitor: TreeVisitor) {}
+    override fun acceptChildren(visitor: TreeVisitor) {
+        receiver?.accept(visitor)
+    }
 
     override fun copy(): EExpression {
         val copyType = type.copy()

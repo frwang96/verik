@@ -36,6 +36,7 @@ class ECallExpression(
     override val serializationType = SvSerializationType.EXPRESSION
 
     init {
+        receiver?.parent = this
         typeArguments.forEach { it.parent = this }
         valueArguments.forEach { it.parent = this }
     }
@@ -49,6 +50,7 @@ class ECallExpression(
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
+        receiver?.accept(visitor)
         typeArguments.forEach { it.accept(visitor) }
         valueArguments.forEach { it.accept(visitor) }
     }

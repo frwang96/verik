@@ -62,7 +62,7 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
     }
 
     @Test
-    fun `reference expression`() {
+    fun `simple name expression simple`() {
         val projectContext = TestDriver.cast(
             """
                 var x = 0
@@ -71,6 +71,20 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
         )
         assertElementEquals(
             "SimpleNameExpression(Int, x, null)",
+            projectContext.findExpression("y")
+        )
+    }
+
+    @Test
+    fun `simple name expression with package`() {
+        val projectContext = TestDriver.cast(
+            """
+                var x = 0
+                var y = verik.x
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "SimpleNameExpression(Int, x, SimpleNameExpression(verik, verik, null))",
             projectContext.findExpression("y")
         )
     }
@@ -101,6 +115,33 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
         assertElementEquals(
             "CallExpression(Int, plus, SimpleNameExpression(*), [], [ValueArgument(*)])",
             projectContext.findExpression("y")
+        )
+    }
+
+    @Test
+    fun `call expression with package simple`() {
+        val projectContext = TestDriver.cast(
+            """
+                fun f() {}
+                var x = verik.f()
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "CallExpression(Unit, f, SimpleNameExpression(verik, verik, null), [], [])",
+            projectContext.findExpression("x")
+        )
+    }
+
+    @Test
+    fun `call expression with package dot qualified`() {
+        val projectContext = TestDriver.cast(
+            """
+                var x = io.verik.core.random()
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "CallExpression(Int, random, SimpleNameExpression(io.verik.core, io.verik.core, null), [], [])",
+            projectContext.findExpression("x")
         )
     }
 

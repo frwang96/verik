@@ -16,10 +16,12 @@
 
 package io.verik.compiler.resolve
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 
 object TypeBackFiller : ProjectPass {
@@ -36,6 +38,15 @@ object TypeBackFiller : ProjectPass {
             if (binaryExpression.kind == KtBinaryOperatorKind.EQ) {
                 if (!binaryExpression.right.type.isResolved())
                     binaryExpression.right.type = binaryExpression.left.type
+            }
+        }
+
+        // TODO generalize back fill scheme
+        override fun visitCallExpression(callExpression: ECallExpression) {
+            super.visitCallExpression(callExpression)
+            if (callExpression.reference == Core.Vk.Ubit.PLUS_UBIT) {
+                if (!callExpression.valueArguments[0].expression.type.isResolved())
+                    callExpression.valueArguments[0].expression.type = callExpression.receiver!!.type
             }
         }
     }
