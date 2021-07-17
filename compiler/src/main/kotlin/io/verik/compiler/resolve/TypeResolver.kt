@@ -17,7 +17,6 @@
 package io.verik.compiler.resolve
 
 import io.verik.compiler.ast.element.common.ECallExpression
-import io.verik.compiler.ast.element.common.EDotQualifiedExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.ESimpleNameExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
@@ -60,11 +59,6 @@ object TypeResolver : ProjectPass {
             val reference = callExpression.reference
             if (reference is CoreKtFunctionDeclaration)
                 reference.resolve(callExpression)
-        }
-
-        override fun visitDotQualifiedExpression(dotQualifiedExpression: EDotQualifiedExpression) {
-            super.visitDotQualifiedExpression(dotQualifiedExpression)
-            dotQualifiedExpression.type = dotQualifiedExpression.selector.type
         }
     }
 }

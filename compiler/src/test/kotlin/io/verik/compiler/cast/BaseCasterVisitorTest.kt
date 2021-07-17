@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-internal class CasterBaseVisitorTest : BaseTest() {
+internal class BaseCasterVisitorTest : BaseTest() {
 
     @Test
     fun `file empty`() {

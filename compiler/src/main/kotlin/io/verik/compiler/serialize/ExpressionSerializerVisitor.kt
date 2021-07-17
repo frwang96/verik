@@ -23,7 +23,7 @@ import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.m
 
-class SerializerExpressionVisitor(private val sourceBuilder: SourceBuilder) : Visitor() {
+class ExpressionSerializerVisitor(private val sourceBuilder: SourceBuilder) : Visitor() {
 
     fun serializeAsExpression(expression: EExpression) {
         expression.accept(this)
@@ -92,6 +92,11 @@ class SerializerExpressionVisitor(private val sourceBuilder: SourceBuilder) : Vi
     }
 
     override fun visitCallExpression(callExpression: ECallExpression) {
+        val receiver = callExpression.receiver
+        if (receiver != null) {
+            serializeAsExpression(receiver)
+            sourceBuilder.append(".", callExpression)
+        }
         sourceBuilder.append(callExpression.reference.name.toString(), callExpression)
         if (callExpression.valueArguments.isEmpty()) {
             sourceBuilder.append("()", callExpression)
@@ -110,12 +115,6 @@ class SerializerExpressionVisitor(private val sourceBuilder: SourceBuilder) : Vi
 
     override fun visitValueArgument(valueArgument: EValueArgument) {
         serializeAsExpression(valueArgument.expression)
-    }
-
-    override fun visitDotQualifiedExpression(dotQualifiedExpression: EDotQualifiedExpression) {
-        serializeAsExpression(dotQualifiedExpression.receiver)
-        sourceBuilder.append(".", dotQualifiedExpression)
-        serializeAsExpression(dotQualifiedExpression.selector)
     }
 
     override fun visitConstantExpression(constantExpression: EConstantExpression) {

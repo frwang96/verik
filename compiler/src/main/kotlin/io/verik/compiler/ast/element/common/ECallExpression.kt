@@ -28,6 +28,7 @@ class ECallExpression(
     override val location: SourceLocation,
     override var type: Type,
     override var reference: Declaration,
+    val receiver: EExpression?,
     val typeArguments: ArrayList<ETypeArgument>,
     val valueArguments: ArrayList<EValueArgument>
 ) : EExpression(), Reference {
@@ -54,12 +55,14 @@ class ECallExpression(
 
     override fun copy(): EExpression {
         val copyType = type.copy()
+        val copyReceiver = receiver?.copy()
         val copyTypeArguments = typeArguments.map { it.copy() }
         val copyValueArguments = valueArguments.map { it.copy() }
         return ECallExpression(
             location,
             copyType,
             reference,
+            copyReceiver,
             ArrayList(copyTypeArguments),
             ArrayList(copyValueArguments)
         )

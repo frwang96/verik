@@ -17,7 +17,6 @@
 package io.verik.compiler.transform.post
 
 import io.verik.compiler.ast.element.common.ECallExpression
-import io.verik.compiler.ast.element.common.EDotQualifiedExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.common.ProjectPass
@@ -25,7 +24,6 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
 
 object BinaryExpressionTransformer : ProjectPass {
 
@@ -46,25 +44,20 @@ object BinaryExpressionTransformer : ProjectPass {
 
     object BinaryExpressionVisitor : TreeVisitor() {
 
-        override fun visitDotQualifiedExpression(dotQualifiedExpression: EDotQualifiedExpression) {
-            super.visitDotQualifiedExpression(dotQualifiedExpression)
-            val selector = dotQualifiedExpression.selector
-            if (selector is ECallExpression) {
-                val reference = selector.reference
-                val kind = operatorKindMap[reference]
-                if (kind != null) {
-                    if (selector.valueArguments.size != 1)
-                        m.error("Single value argument expected for call expression $reference", selector)
-                    dotQualifiedExpression.replace(
-                        ESvBinaryExpression(
-                            dotQualifiedExpression.location,
-                            dotQualifiedExpression.type,
-                            dotQualifiedExpression.receiver,
-                            selector.valueArguments[0].expression,
-                            kind
-                        )
+        override fun visitCallExpression(callExpression: ECallExpression) {
+            super.visitCallExpression(callExpression)
+            val reference = callExpression.reference
+            val kind = operatorKindMap[reference]
+            if (kind != null) {
+                callExpression.replace(
+                    ESvBinaryExpression(
+                        callExpression.location,
+                        callExpression.type,
+                        callExpression.receiver!!,
+                        callExpression.valueArguments[0].expression,
+                        kind
                     )
-                }
+                )
             }
         }
     }

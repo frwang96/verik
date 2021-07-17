@@ -17,7 +17,6 @@
 package io.verik.compiler.transform.pre
 
 import io.verik.compiler.ast.element.common.ECallExpression
-import io.verik.compiler.ast.element.common.EDotQualifiedExpression
 import io.verik.compiler.ast.element.common.EValueArgument
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
@@ -63,25 +62,20 @@ object BinaryExpressionReducer : ProjectPass {
             if (receiverDeclaration is CoreClassDeclaration && selectorDeclaration is CoreClassDeclaration) {
                 val reference = referenceMap[ReducerEntry(receiverDeclaration, selectorDeclaration, kind)]
                 if (reference != null) {
-                    val callExpression = ECallExpression(
-                        binaryExpression.location,
-                        binaryExpression.type,
-                        reference,
-                        arrayListOf(),
-                        arrayListOf(
-                            EValueArgument(
-                                binaryExpression.right.location,
-                                NullDeclaration,
-                                binaryExpression.right
-                            )
-                        )
-                    )
                     binaryExpression.replace(
-                        EDotQualifiedExpression(
+                        ECallExpression(
                             binaryExpression.location,
                             binaryExpression.type,
+                            reference,
                             binaryExpression.left,
-                            callExpression
+                            arrayListOf(),
+                            arrayListOf(
+                                EValueArgument(
+                                    binaryExpression.right.location,
+                                    NullDeclaration,
+                                    binaryExpression.right
+                                )
+                            )
                         )
                     )
                     return

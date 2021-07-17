@@ -188,10 +188,6 @@ abstract class Visitor {
         visitElement(valueArgument)
     }
 
-    open fun visitDotQualifiedExpression(dotQualifiedExpression: EDotQualifiedExpression) {
-        visitExpression(dotQualifiedExpression)
-    }
-
     open fun visitConstantExpression(constantExpression: EConstantExpression) {
         visitExpression(constantExpression)
     }

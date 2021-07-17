@@ -96,6 +96,7 @@ object StringTemplateExpressionReducer : ProjectPass {
                     stringTemplateExpression.location,
                     stringTemplateExpression.type,
                     Core.Sv.SFORMATF,
+                    null,
                     arrayListOf(),
                     valueArguments
                 )

@@ -30,7 +30,7 @@ import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.calls.callUtil.getType
 
-class CasterExpressionVisitor(
+class ExpressionCasterVisitor(
     projectContext: ProjectContext,
     private val declarationMap: DeclarationMap
 ) : KtVisitor<EElement, Unit>() {
@@ -105,12 +105,16 @@ class CasterExpressionVisitor(
         val type = getType(expression)
         val declaration = declarationMap[descriptor, expression]
         val typeArguments = expression.typeArguments.map {
-            val typeArgumentLocation = it.location()
-            val typeArgumentType = TypeCaster.castFromTypeReference(bindingContext, declarationMap, it.typeReference!!)
-            ETypeArgument(typeArgumentLocation, NullDeclaration, typeArgumentType)
+            getElement<ETypeArgument>(it) ?: return ENullExpression(location)
         }
         val valueArguments = expression.valueArguments.mapNotNull { getElement<EValueArgument>(it) }
-        return ECallExpression(location, type, declaration, ArrayList(typeArguments), ArrayList(valueArguments))
+        return ECallExpression(location, type, declaration, null, ArrayList(typeArguments), ArrayList(valueArguments))
+    }
+
+    override fun visitTypeProjection(typeProjection: KtTypeProjection, data: Unit?): EElement {
+        val location = typeProjection.location()
+        val type = TypeCaster.castFromTypeReference(bindingContext, declarationMap, typeProjection.typeReference!!)
+        return ETypeArgument(location, NullDeclaration, type)
     }
 
     override fun visitArgument(argument: KtValueArgument, data: Unit?): EElement {
@@ -137,7 +141,21 @@ class CasterExpressionVisitor(
                 ESimpleNameExpression(location, type, declaration, receiver)
             }
             is KtCallExpression -> {
-                EDotQualifiedExpression(location, type, receiver, getExpression(selector))
+                val descriptor = bindingContext
+                    .getSliceContents(BindingContext.REFERENCE_TARGET)[selector.calleeExpression]!!
+                val declaration = declarationMap[descriptor, expression]
+                val typeArguments = selector.typeArguments.map {
+                    getElement<ETypeArgument>(it) ?: return ENullExpression(location)
+                }
+                val valueArguments = selector.valueArguments.mapNotNull { getElement<EValueArgument>(it) }
+                return ECallExpression(
+                    location,
+                    type,
+                    declaration,
+                    receiver,
+                    ArrayList(typeArguments),
+                    ArrayList(valueArguments)
+                )
             }
             else -> {
                 m.error("Simple name expression or call expression expected", expression)

@@ -40,7 +40,7 @@ internal class AssignmentOperatorReducerTest : BaseTest() {
                     Unit,
                     EQ,
                     SimpleNameExpression(*),
-                    DotQualifiedExpression(Int, SimpleNameExpression(*), CallExpression(Int, plus, *))
+                    CallExpression(Int, plus, SimpleNameExpression(*), [], [ValueArgument(*)])
                 )
             """.trimIndent(),
             projectContext.findExpression("f")

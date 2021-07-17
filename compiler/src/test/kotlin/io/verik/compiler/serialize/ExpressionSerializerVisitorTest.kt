@@ -22,7 +22,7 @@ import io.verik.compiler.util.assertOutputTextEquals
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
-internal class SerializerExpressionVisitorTest : BaseTest() {
+internal class ExpressionSerializerVisitorTest : BaseTest() {
 
     @Test
     @Disabled

@@ -21,7 +21,7 @@ import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertOutputTextEquals
 import org.junit.jupiter.api.Test
 
-internal class SerializerBaseVisitorTest : BaseTest() {
+internal class BaseSerializerVisitorTest : BaseTest() {
 
     @Test
     fun `serialize module`() {

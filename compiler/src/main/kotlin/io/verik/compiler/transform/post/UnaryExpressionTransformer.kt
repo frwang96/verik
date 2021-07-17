@@ -17,7 +17,6 @@
 package io.verik.compiler.transform.post
 
 import io.verik.compiler.ast.element.common.ECallExpression
-import io.verik.compiler.ast.element.common.EDotQualifiedExpression
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.property.SvUnaryOperatorKind
 import io.verik.compiler.common.ProjectPass
@@ -25,7 +24,6 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
 
 object UnaryExpressionTransformer : ProjectPass {
 
@@ -43,24 +41,19 @@ object UnaryExpressionTransformer : ProjectPass {
 
     object UnaryExpressionVisitor : TreeVisitor() {
 
-        override fun visitDotQualifiedExpression(dotQualifiedExpression: EDotQualifiedExpression) {
-            super.visitDotQualifiedExpression(dotQualifiedExpression)
-            val selector = dotQualifiedExpression.selector
-            if (selector is ECallExpression) {
-                val reference = selector.reference
-                val kind = operatorKindMap[reference]
-                if (kind != null) {
-                    if (selector.valueArguments.isNotEmpty())
-                        m.error("No value arguments expected for call expression $reference", selector)
-                    dotQualifiedExpression.replace(
-                        ESvUnaryExpression(
-                            dotQualifiedExpression.location,
-                            dotQualifiedExpression.type,
-                            dotQualifiedExpression.receiver,
-                            kind
-                        )
+        override fun visitCallExpression(callExpression: ECallExpression) {
+            super.visitCallExpression(callExpression)
+            val reference = callExpression.reference
+            val kind = operatorKindMap[reference]
+            if (kind != null) {
+                callExpression.replace(
+                    ESvUnaryExpression(
+                        callExpression.location,
+                        callExpression.type,
+                        callExpression.receiver!!,
+                        kind
                     )
-                }
+                )
             }
         }
     }

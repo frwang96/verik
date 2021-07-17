@@ -192,6 +192,7 @@ class ElementPrinter : Visitor() {
         build("CallExpression") {
             build(callExpression.type.toString())
             build(callExpression.reference.toString())
+            build(callExpression.receiver)
             build(callExpression.typeArguments)
             build(callExpression.valueArguments)
         }
@@ -208,14 +209,6 @@ class ElementPrinter : Visitor() {
         build("ValueArgument") {
             build(valueArgument.reference.toString())
             build(valueArgument.expression)
-        }
-    }
-
-    override fun visitDotQualifiedExpression(dotQualifiedExpression: EDotQualifiedExpression) {
-        build("DotQualifiedExpression") {
-            build(dotQualifiedExpression.type.toString())
-            build(dotQualifiedExpression.receiver)
-            build(dotQualifiedExpression.selector)
         }
     }
 

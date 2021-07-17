@@ -23,10 +23,10 @@ import io.verik.compiler.ast.element.sv.*
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.m
 
-class SerializerBaseVisitor(private val sourceBuilder: SourceBuilder) : Visitor() {
+class BaseSerializerVisitor(private val sourceBuilder: SourceBuilder) : Visitor() {
 
     private var first = true
-    private val expressionVisitor = SerializerExpressionVisitor(sourceBuilder)
+    private val expressionSerializerVisitor = ExpressionSerializerVisitor(sourceBuilder)
 
     override fun visitElement(element: EElement) {
         m.error("Unable to serialize element: ${element::class.simpleName}", element)
@@ -67,7 +67,7 @@ class SerializerBaseVisitor(private val sourceBuilder: SourceBuilder) : Visitor(
         val body = function.body
         if (body != null) {
             sourceBuilder.indent {
-                expressionVisitor.serializeAsStatement(body)
+                expressionSerializerVisitor.serializeAsStatement(body)
             }
         }
         sourceBuilder.appendLine("endfunction : $function", function)
@@ -80,7 +80,7 @@ class SerializerBaseVisitor(private val sourceBuilder: SourceBuilder) : Visitor(
         val initializer = property.initializer
         if (initializer != null) {
             sourceBuilder.append(" = ", property)
-            expressionVisitor.serializeAsExpression(initializer)
+            expressionSerializerVisitor.serializeAsExpression(initializer)
             sourceBuilder.appendLine(";", initializer)
         } else {
             sourceBuilder.appendLine(";", property)
@@ -90,21 +90,21 @@ class SerializerBaseVisitor(private val sourceBuilder: SourceBuilder) : Visitor(
     override fun visitInitialBlock(initialBlock: EInitialBlock) {
         appendLineIfNotFirst()
         sourceBuilder.append("initial ", initialBlock)
-        expressionVisitor.serializeAsStatement(initialBlock.body)
+        expressionSerializerVisitor.serializeAsStatement(initialBlock.body)
     }
 
     override fun visitAlwaysComBlock(alwaysComBlock: EAlwaysComBlock) {
         appendLineIfNotFirst()
         sourceBuilder.append("always_comb ", alwaysComBlock)
-        expressionVisitor.serializeAsStatement(alwaysComBlock.body)
+        expressionSerializerVisitor.serializeAsStatement(alwaysComBlock.body)
     }
 
     override fun visitAlwaysSeqBlock(alwaysSeqBlock: EAlwaysSeqBlock) {
         appendLineIfNotFirst()
         sourceBuilder.append("always_ff ", alwaysSeqBlock)
-        expressionVisitor.serializeAsExpression(alwaysSeqBlock.eventControlExpression)
+        expressionSerializerVisitor.serializeAsExpression(alwaysSeqBlock.eventControlExpression)
         sourceBuilder.append(" ", alwaysSeqBlock)
-        expressionVisitor.serializeAsStatement(alwaysSeqBlock.body)
+        expressionSerializerVisitor.serializeAsStatement(alwaysSeqBlock.body)
     }
 
     private fun appendLineIfNotFirst() {

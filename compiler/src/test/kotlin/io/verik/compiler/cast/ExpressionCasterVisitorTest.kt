@@ -20,7 +20,7 @@ import io.verik.compiler.util.*
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
-internal class CasterExpressionVisitorTest : BaseTest() {
+internal class ExpressionCasterVisitorTest : BaseTest() {
 
     @Test
     fun `block expression empty`() {
@@ -76,20 +76,6 @@ internal class CasterExpressionVisitorTest : BaseTest() {
     }
 
     @Test
-    fun `call expression base function`() {
-        val projectContext = TestDriver.cast(
-            """
-                fun f() {}
-                var x = f()
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "CallExpression(Unit, f, [], [])",
-            projectContext.findExpression("x")
-        )
-    }
-
-    @Test
     fun `call expression simple`() {
         val projectContext = TestDriver.cast(
             """
@@ -105,6 +91,20 @@ internal class CasterExpressionVisitorTest : BaseTest() {
     }
 
     @Test
+    fun `call expression with receiver`() {
+        val projectContext = TestDriver.cast(
+            """
+                var x = 0
+                var y = x.plus(1)
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "CallExpression(Int, plus, SimpleNameExpression(*), [], [ValueArgument(*)])",
+            projectContext.findExpression("y")
+        )
+    }
+
+    @Test
     fun `type argument`() {
         val projectContext = TestDriver.cast(
             """
@@ -112,7 +112,7 @@ internal class CasterExpressionVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "CallExpression(Ubit<`*`>, u, [TypeArgument(null, `8`)], *)",
+            "CallExpression(Ubit<`*`>, u, null, [TypeArgument(null, `8`)], *)",
             projectContext.findExpression("x")
         )
     }
@@ -126,7 +126,7 @@ internal class CasterExpressionVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "CallExpression(Unit, f, [], [ValueArgument(null, *)])",
+            "CallExpression(Unit, f, null, [], [ValueArgument(null, *)])",
             projectContext.findExpression("x")
         )
     }
@@ -142,22 +142,8 @@ internal class CasterExpressionVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "CallExpression(Unit, f, [ValueArgument(x, *)])",
+            "CallExpression(Unit, f, null, [ValueArgument(x, *)])",
             projectContext.findExpression("x")
-        )
-    }
-
-    @Test
-    fun `dot qualified expression`() {
-        val projectContext = TestDriver.cast(
-            """
-                var x = 0
-                var y = x.plus(1)
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "DotQualifiedExpression(Int, SimpleNameExpression(*), CallExpression(*))",
-            projectContext.findExpression("y")
         )
     }
 
@@ -188,6 +174,7 @@ internal class CasterExpressionVisitorTest : BaseTest() {
                 CallExpression(
                     Unit,
                     forever,
+                    null,
                     [],
                     [ValueArgument(null, FunctionLiteralExpression(Function, KtBlockExpression(*)))]
                 )
