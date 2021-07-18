@@ -34,6 +34,6 @@ abstract class EExpression : EElement() {
         if (parent is ExpressionContainer)
             parent.replaceChild(this, expression)
         else
-            m.error("Could not replace ${this::class.simpleName} in ${parent::class.simpleName}", this)
+            m.error("Could not replace $this in $parent", this)
     }
 }

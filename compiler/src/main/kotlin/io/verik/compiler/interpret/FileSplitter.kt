@@ -83,7 +83,7 @@ object FileSplitter : ProjectPass {
                 is ESvBasicClass -> packageMembers.add(it)
                 is ESvFunction -> packageMembers.add(it)
                 is ESvProperty -> packageMembers.add(it)
-                else -> m.error("Unable to identify as component or package member: ${it::class.simpleName}", it)
+                else -> m.error("Unable to identify as component or package member: $it", it)
             }
         }
         return SplitMembersResult(componentMembers, packageMembers)

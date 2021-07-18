@@ -28,7 +28,7 @@ class ExpressionSerializerVisitor(private val sourceBuilder: SourceBuilder) : Vi
     fun serializeAsExpression(expression: EExpression) {
         expression.accept(this)
         if (expression.serializationType != SvSerializationType.EXPRESSION)
-            m.error("SystemVerilog expression expected but got: ${expression::class.simpleName}", expression)
+            m.error("SystemVerilog expression expected but got: $expression", expression)
     }
 
     fun serializeAsStatement(expression: EExpression) {
@@ -37,12 +37,12 @@ class ExpressionSerializerVisitor(private val sourceBuilder: SourceBuilder) : Vi
             SvSerializationType.EXPRESSION -> sourceBuilder.appendLine(";", expression)
             SvSerializationType.STATEMENT -> {}
             SvSerializationType.OTHER ->
-                m.error("SystemVerilog expression or statement expected but got: ${expression::class.simpleName}", expression)
+                m.error("SystemVerilog expression or statement expected but got: $expression", expression)
         }
     }
 
     override fun visitElement(element: EElement) {
-        m.error("Unable to serialize element: ${element::class.simpleName}", element)
+        m.error("Unable to serialize element: $element", element)
     }
 
     override fun visitSvBlockExpression(blockExpression: ESvBlockExpression) {

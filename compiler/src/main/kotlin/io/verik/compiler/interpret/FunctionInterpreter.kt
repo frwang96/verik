@@ -37,7 +37,7 @@ object FunctionInterpreter {
                 if (body != null) {
                     EInitialBlock(function.location, function.name, body)
                 } else {
-                    m.error("Run block missing body: $function", function)
+                    m.error("Run block missing body: ${function.name}", function)
                     ENullElement(function.location)
                 }
             }
@@ -45,7 +45,7 @@ object FunctionInterpreter {
                 if (body != null) {
                     EAlwaysComBlock(function.location, function.name, body)
                 } else {
-                    m.error("Com block missing body: $function", function)
+                    m.error("Com block missing body: ${function.name}", function)
                     ENullElement(function.location)
                 }
             }
@@ -54,7 +54,7 @@ object FunctionInterpreter {
                     getAlwaysSeqBlock(function, body)
                         ?: ENullElement(function.location)
                 } else {
-                    m.error("Seq block missing body: $function", function)
+                    m.error("Seq block missing body: ${function.name}", function)
                     ENullElement(function.location)
                 }
             }

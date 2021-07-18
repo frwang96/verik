@@ -42,7 +42,7 @@ class ElementPrinter : Visitor() {
 
     override fun visitKtBasicClass(basicClass: EKtBasicClass) {
         build("KtBasicClass") {
-            build(basicClass.name.toString())
+            build(basicClass.name)
             build(basicClass.typeParameters)
             build(basicClass.members)
         }
@@ -50,7 +50,7 @@ class ElementPrinter : Visitor() {
 
     override fun visitSvBasicClass(basicClass: ESvBasicClass) {
         build("SvBasicClass") {
-            build(basicClass.name.toString())
+            build(basicClass.name)
             build(basicClass.typeParameters)
             build(basicClass.members)
         }
@@ -58,13 +58,13 @@ class ElementPrinter : Visitor() {
 
     override fun visitModule(module: EModule) {
         build("Module") {
-            build(module.name.toString())
+            build(module.name)
         }
     }
 
     override fun visitKtFunction(function: EKtFunction) {
         build("KtFunction") {
-            build(function.name.toString())
+            build(function.name)
             build(function.returnType.toString())
             build(function.body)
             build(function.annotationType.toString())
@@ -73,7 +73,7 @@ class ElementPrinter : Visitor() {
 
     override fun visitSvFunction(function: ESvFunction) {
         build("SvFunction") {
-            build(function.name.toString())
+            build(function.name)
             build(function.returnType.toString())
             build(function.body)
         }
@@ -81,21 +81,21 @@ class ElementPrinter : Visitor() {
 
     override fun visitInitialBlock(initialBlock: EInitialBlock) {
         build("InitialBlock") {
-            build(initialBlock.name.toString())
+            build(initialBlock.name)
             build(initialBlock.body)
         }
     }
 
     override fun visitAlwaysComBlock(alwaysComBlock: EAlwaysComBlock) {
         build("AlwaysComBlock") {
-            build(alwaysComBlock.name.toString())
+            build(alwaysComBlock.name)
             build(alwaysComBlock.body)
         }
     }
 
     override fun visitAlwaysSeqBlock(alwaysSeqBlock: EAlwaysSeqBlock) {
         build("AlwaysSeqBlock") {
-            build(alwaysSeqBlock.name.toString())
+            build(alwaysSeqBlock.name)
             build(alwaysSeqBlock.eventControlExpression)
             build(alwaysSeqBlock.body)
         }
@@ -103,7 +103,7 @@ class ElementPrinter : Visitor() {
 
     override fun visitKtProperty(property: EKtProperty) {
         build("KtProperty") {
-            build(property.name.toString())
+            build(property.name)
             build(property.type.toString())
             build(property.initializer)
         }
@@ -111,7 +111,7 @@ class ElementPrinter : Visitor() {
 
     override fun visitSvProperty(property: ESvProperty) {
         build("SvProperty") {
-            build(property.name.toString())
+            build(property.name)
             build(property.type.toString())
             build(property.initializer)
         }
@@ -119,7 +119,7 @@ class ElementPrinter : Visitor() {
 
     override fun visitTypeParameter(typeParameter: ETypeParameter) {
         build("TypeParameter") {
-            build(typeParameter.name.toString())
+            build(typeParameter.name)
             build(typeParameter.typeConstraint.toString())
         }
     }

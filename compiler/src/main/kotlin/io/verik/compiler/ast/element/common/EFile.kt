@@ -57,7 +57,7 @@ class EFile(
     override fun replaceChild(oldElement: EElement, newElement: EElement) {
         newElement.parent = this
         if (!members.replaceIfContains(oldElement, newElement))
-            m.error("Could not find ${oldElement::class.simpleName} in ${this::class.simpleName}", this)
+            m.error("Could not find $oldElement in $this", this)
     }
 
     fun getOutputPathNotNull(): Path {

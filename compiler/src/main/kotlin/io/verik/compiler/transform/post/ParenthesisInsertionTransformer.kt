@@ -39,7 +39,7 @@ object ParenthesisInsertionTransformer : ProjectPass {
             val parenthesizedExpression = EParenthesizedExpression(expression.location, expression.type, expression)
             parent.replaceChild(expression, parenthesizedExpression)
         } else {
-            m.error("Could not parenthesize ${expression::class.simpleName} in ${parent::class.simpleName}", expression)
+            m.error("Could not parenthesize $expression in $parent", expression)
         }
     }
 

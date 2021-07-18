@@ -32,6 +32,6 @@ abstract class EAbstractBlockExpression : EExpression(), ExpressionContainer {
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
         newExpression.parent = this
         if (!statements.replaceIfContains(oldExpression, newExpression))
-            m.error("Could not find ${oldExpression::class.simpleName} in ${this::class.simpleName}", this)
+            m.error("Could not find $oldExpression in $this", this)
     }
 }

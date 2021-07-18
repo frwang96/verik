@@ -31,7 +31,7 @@ abstract class EElement {
         val parent = parent
         return if (parent != null) parent
         else {
-            m.error("Parent element of ${this::class.simpleName} should not be null", this)
+            m.error("Parent element of $this should not be null", this)
             ENullElement(location)
         }
     }
@@ -40,9 +40,7 @@ abstract class EElement {
         return when (this) {
             is E -> this
             else -> {
-                val expectedName = E::class.simpleName
-                val actualName = this::class.simpleName
-                m.error("Could not cast element: Expected $expectedName actual $actualName", location)
+                m.error("Could not cast element: Expected ${E::class.simpleName} actual $this", location)
                 null
             }
         }
@@ -51,4 +49,8 @@ abstract class EElement {
     abstract fun accept(visitor: Visitor)
 
     abstract fun acceptChildren(visitor: TreeVisitor)
+
+    override fun toString(): String {
+        return "${this::class.simpleName}"
+    }
 }

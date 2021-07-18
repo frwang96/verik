@@ -37,6 +37,6 @@ abstract class EAbstractFunction : EElement(), Declaration, ExpressionContainer 
         if (body == oldExpression)
             body = newExpression.cast()
         else
-            m.error("Could not find ${oldExpression::class.simpleName} in ${this::class.simpleName}", this)
+            m.error("Could not find $oldExpression in $this", this)
     }
 }

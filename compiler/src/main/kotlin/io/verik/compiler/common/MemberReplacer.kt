@@ -33,11 +33,11 @@ class MemberReplacer(val projectContext: ProjectContext) {
         if (parent is ElementContainer)
             parent.replaceChild(oldElement, newElement)
         else
-            m.error("Could not replace ${oldElement::class.simpleName}", oldElement)
+            m.error("Could not replace $oldElement", oldElement)
         if (oldElement !is Declaration)
-            m.fatal("Declaration expected but got: ${oldElement::class.simpleName}", oldElement)
+            m.fatal("Declaration expected but got: $oldElement", oldElement)
         if (newElement !is Declaration)
-            m.fatal("Declaration expected but got: ${oldElement::class.simpleName}", oldElement)
+            m.fatal("Declaration expected but got: $newElement", newElement)
         replacementMap[oldElement] = newElement
     }
 

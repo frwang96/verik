@@ -42,8 +42,7 @@ object ElementNormalizationChecker : ProjectPass {
             val parent = element.parentNotNull()
             val expectedParent = parentStack.last()
             if (parent != expectedParent) {
-                val expectedString = "Expected ${expectedParent::class.simpleName} but was ${parent::class.simpleName}"
-                m.error("Mismatch in parent element of ${element::class.simpleName}: $expectedString", element)
+                m.error("Mismatch in parent element of $element: Expected $expectedParent but was $parent", element)
             }
             parentStack.push(element)
             super.visitElement(element)
@@ -58,7 +57,7 @@ object ElementNormalizationChecker : ProjectPass {
             parentStack.pop()
             file.members.forEach {
                 if (it !is Declaration)
-                    m.fatal("Declaration expected but got: ${it::class.simpleName}", it)
+                    m.fatal("Declaration expected but got: $it", it)
             }
         }
 
@@ -66,7 +65,7 @@ object ElementNormalizationChecker : ProjectPass {
             super.visitAbstractClass(abstractClass)
             abstractClass.members.forEach {
                 if (it !is Declaration)
-                    m.fatal("Declaration expected but got: ${it::class.simpleName}", it)
+                    m.fatal("Declaration expected but got: $it", it)
             }
         }
     }

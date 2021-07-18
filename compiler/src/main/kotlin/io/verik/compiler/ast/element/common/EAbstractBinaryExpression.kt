@@ -35,7 +35,7 @@ abstract class EAbstractBinaryExpression : EExpression(), ExpressionContainer {
         when (oldExpression) {
             left -> left = newExpression
             right -> right = newExpression
-            else -> m.error("Could not find ${oldExpression::class.simpleName} in ${this::class.simpleName}", this)
+            else -> m.error("Could not find $oldExpression in $this", this)
         }
     }
 }

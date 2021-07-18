@@ -38,6 +38,6 @@ abstract class ELoopStatement : EExpression(), ExpressionContainer {
             body = newExpression.cast()
                 ?: return
         else
-            m.error("Could not find ${oldExpression::class.simpleName} in ${this::class.simpleName}", this)
+            m.error("Could not find $oldExpression in $this", this)
     }
 }

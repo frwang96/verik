@@ -53,7 +53,7 @@ object ImportDirectiveChecker : ProjectPass {
 
         override fun visitImportDirective(importDirective: EImportDirective) {
             if (importDirective.packageDeclaration !in packageDeclarationSet)
-                m.error("Import package not found: ${importDirective.packageDeclaration}", importDirective)
+                m.error("Import package not found: ${importDirective.packageDeclaration.name}", importDirective)
         }
     }
 }

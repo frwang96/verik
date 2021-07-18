@@ -28,7 +28,7 @@ class BaseSerializerVisitor(private val sourceBuilder: SourceBuilder) : Visitor(
     private val expressionSerializerVisitor = ExpressionSerializerVisitor(sourceBuilder)
 
     override fun visitElement(element: EElement) {
-        m.error("Unable to serialize element: ${element::class.simpleName}", element)
+        m.error("Unable to serialize element: $element", element)
     }
 
     override fun visitFile(file: EFile) {

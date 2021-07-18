@@ -47,7 +47,7 @@ class EValueArgument(
         if (expression == oldExpression)
             expression = newExpression
         else
-            m.error("Could not find ${oldExpression::class.simpleName} in ${this::class.simpleName}", this)
+            m.error("Could not find $oldExpression in $this", this)
     }
 
     fun copy(): EValueArgument {

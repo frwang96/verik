@@ -60,7 +60,7 @@ object CoreDeclarationMap {
                     val property = (it as KProperty1<Any, *>).get(kClassInstance) as CoreDeclaration
                     if (property.qualifiedName.name != "${kClassInstance.parent}.${property.name}") {
                         val expectedString =
-                            "Expected ${kClassInstance.parent}.${property.name} actual ${property.qualifiedName.name}"
+                            "Expected ${kClassInstance.parent}.${property.name} actual ${property.qualifiedName}"
                         throw IllegalArgumentException("Qualified name does not match scope parent: $expectedString")
                     }
                     when (property) {
@@ -77,7 +77,7 @@ object CoreDeclarationMap {
                                 functionMap[property.qualifiedName]!!.add(property)
                             }
                         }
-                        else -> throw IllegalArgumentException("Unexpected declaration: ${property::class.simpleName}")
+                        else -> throw IllegalArgumentException("Unexpected declaration: $property")
                     }
                 }
             }

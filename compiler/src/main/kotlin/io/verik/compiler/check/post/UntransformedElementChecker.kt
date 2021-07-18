@@ -44,17 +44,17 @@ object UntransformedElementChecker : ProjectPass {
 
         override fun visitKtBasicClass(basicClass: EKtBasicClass) {
             super.visitKtBasicClass(basicClass)
-            m.error("Class $basicClass $message", basicClass)
+            m.error("Class ${basicClass.name} $message", basicClass)
         }
 
         override fun visitKtFunction(function: EKtFunction) {
             super.visitKtFunction(function)
-            m.error("Function $function $message", function)
+            m.error("Function ${function.name} $message", function)
         }
 
         override fun visitKtProperty(property: EKtProperty) {
             super.visitKtProperty(property)
-            m.error("Property $property $message", property)
+            m.error("Property ${property.name} $message", property)
         }
 
         override fun visitKtBlockExpression(blockExpression: EKtBlockExpression) {
@@ -75,7 +75,7 @@ object UntransformedElementChecker : ProjectPass {
         override fun visitCallExpression(callExpression: ECallExpression) {
             super.visitCallExpression(callExpression)
             if (callExpression.reference is CoreKtFunctionDeclaration)
-                m.error("Call expression $message: ${callExpression.reference}", callExpression)
+                m.error("Call expression $message: ${callExpression.reference.name}", callExpression)
         }
 
         override fun visitStringTemplateExpression(stringTemplateExpression: EStringTemplateExpression) {

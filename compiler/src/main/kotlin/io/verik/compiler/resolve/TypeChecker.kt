@@ -32,11 +32,10 @@ object TypeChecker : ProjectPass {
 
         override fun visitExpression(expression: EExpression) {
             super.visitExpression(expression)
-            val expressionName = expression::class.simpleName
             if (!expression.type.isResolved())
-                m.error("Type of $expressionName could not be resolved: ${expression.type}", expression)
+                m.error("Type of $expression could not be resolved: ${expression.type}", expression)
             else if (!expression.type.isSpecialized())
-                m.error("Type of $expressionName could not be specialized: ${expression.type}", expression)
+                m.error("Type of $expression could not be specialized: ${expression.type}", expression)
         }
     }
 }

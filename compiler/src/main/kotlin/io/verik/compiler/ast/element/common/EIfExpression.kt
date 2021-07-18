@@ -56,7 +56,7 @@ class EIfExpression(
             condition -> condition = newExpression
             thenExpression -> thenExpression = newExpression
             elseExpression -> elseExpression = newExpression
-            else -> m.error("Could not find ${oldExpression::class.simpleName} in ${this::class.simpleName}", this)
+            else -> m.error("Could not find $oldExpression in $this", this)
         }
     }
 

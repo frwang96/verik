@@ -64,7 +64,7 @@ class ExpressionCasterVisitor(
     }
 
     override fun visitKtElement(element: KtElement, data: Unit?): EElement {
-        m.error("Unrecognized element: ${element::class.simpleName}", element)
+        m.error("Unrecognized element: $element", element)
         val location = element.location()
         return ENullElement(location)
     }
