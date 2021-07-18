@@ -18,7 +18,6 @@ package io.verik.compiler.util
 
 import io.verik.compiler.ast.element.common.*
 import io.verik.compiler.ast.interfaces.Declaration
-import io.verik.compiler.ast.property.Name
 import io.verik.compiler.common.ElementPrinter
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -81,12 +80,12 @@ fun assertOutputTextEquals(expected: String, actual: TextFile) {
     assertEquals(expectedLines, actualLines)
 }
 
-fun ProjectContext.findDeclaration(nameString: String): EElement {
+fun ProjectContext.findDeclaration(name: String): EElement {
     val declarationVisitor = object : TreeVisitor() {
         val declarations = ArrayList<Declaration>()
         override fun visitElement(element: EElement) {
             super.visitElement(element)
-            if (element is Declaration && element.name == Name(nameString))
+            if (element is Declaration && element.name == name)
                 declarations.add(element)
         }
     }
@@ -101,12 +100,12 @@ fun ProjectContext.findDeclaration(nameString: String): EElement {
     return declarationVisitor.declarations[0] as EElement
 }
 
-fun ProjectContext.findExpression(nameString: String): EExpression {
+fun ProjectContext.findExpression(name: String): EExpression {
     val expressionVisitor = object : TreeVisitor() {
         val expressions = ArrayList<EExpression>()
         override fun visitAbstractFunction(abstractFunction: EAbstractFunction) {
             super.visitAbstractFunction(abstractFunction)
-            if (abstractFunction.name == Name(nameString)) {
+            if (abstractFunction.name == name) {
                 abstractFunction.body?.let {
                     if (it is EAbstractBlockExpression) {
                         if (it.statements.size == 1)
@@ -119,10 +118,9 @@ fun ProjectContext.findExpression(nameString: String): EExpression {
                 }
             }
         }
-
         override fun visitAbstractProperty(abstractProperty: EAbstractProperty) {
             super.visitAbstractProperty(abstractProperty)
-            if (abstractProperty.name == Name(nameString)) {
+            if (abstractProperty.name == name) {
                 abstractProperty.initializer?.let { expressions.add(it) }
             }
         }

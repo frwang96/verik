@@ -17,13 +17,8 @@
 package io.verik.compiler.core.common
 
 import io.verik.compiler.ast.interfaces.Declaration
-import io.verik.compiler.ast.property.Name
 
-abstract class CoreDeclaration : Declaration {
+interface CoreDeclaration : Declaration {
 
-    abstract val qualifiedName: Name
-
-    override fun toString(): String {
-        return "$name"
-    }
+    val qualifiedName: String
 }

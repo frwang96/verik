@@ -16,11 +16,9 @@
 
 package io.verik.compiler.core.common
 
-import io.verik.compiler.ast.property.Name
-
 class CoreCardinalFunctionDeclaration(
-    override var name: Name
+    override var name: String
 ) : CoreCardinalDeclaration() {
 
-    override val qualifiedName = Name("${CorePackage.VK}.$name")
+    override val qualifiedName = "${CorePackage.VK.name}.$name"
 }

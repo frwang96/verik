@@ -17,13 +17,12 @@
 package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.property.Name
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.SourceLocation
 
 class EInitialBlock(
     override val location: SourceLocation,
-    override var name: Name,
+    override var name: String,
     override var body: EExpression
 ) : EProceduralBlock() {
 

@@ -16,7 +16,6 @@
 
 package io.verik.compiler.core.common
 
-import io.verik.compiler.ast.property.Name
 import io.verik.compiler.main.m
 
 class CoreCardinalConstantDeclaration(
@@ -28,9 +27,9 @@ class CoreCardinalConstantDeclaration(
             m.error("Cardinal must be a natural number: $value", null)
     }
 
-    override var name = Name("Cardinal")
+    override var name = "Cardinal"
 
-    override val qualifiedName = Name("${CorePackage.VK}.$name")
+    override val qualifiedName = "${CorePackage.VK.name}.$name"
 
     override fun displayName(): String {
         return "`$value`"

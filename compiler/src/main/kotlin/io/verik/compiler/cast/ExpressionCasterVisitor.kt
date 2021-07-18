@@ -20,7 +20,6 @@ import io.verik.compiler.ast.element.common.*
 import io.verik.compiler.ast.element.kt.*
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.KtUnaryOperatorKind
-import io.verik.compiler.ast.property.Name
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.PackageDeclaration
@@ -46,7 +45,7 @@ class ExpressionCasterVisitor(private val castContext: CastContext) : KtVisitor<
         val location = expression.location()
         val descriptor = castContext.bindingContext.getSliceContents(BindingContext.REFERENCE_TARGET)[expression]
         return if (descriptor is PackageViewDescriptor) {
-            val declaration = PackageDeclaration(Name(descriptor.fqName.toString()))
+            val declaration = PackageDeclaration(descriptor.fqName.asString())
             val type = Type(declaration, arrayListOf())
             ESimpleNameExpression(location, type, declaration, null)
         } else null

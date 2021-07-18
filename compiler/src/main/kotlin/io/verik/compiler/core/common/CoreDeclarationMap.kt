@@ -17,7 +17,6 @@
 package io.verik.compiler.core.common
 
 import io.verik.compiler.ast.interfaces.Declaration
-import io.verik.compiler.ast.property.Name
 import io.verik.compiler.cast.CastContext
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
 import org.jetbrains.kotlin.descriptors.SimpleFunctionDescriptor
@@ -32,8 +31,8 @@ import kotlin.reflect.full.memberProperties
 
 object CoreDeclarationMap {
 
-    private val declarationMap = HashMap<Name, CoreDeclaration>()
-    private val functionMap = HashMap<Name, ArrayList<CoreKtFunctionDeclaration>>()
+    private val declarationMap = HashMap<String, CoreDeclaration>()
+    private val functionMap = HashMap<String, ArrayList<CoreKtFunctionDeclaration>>()
 
     init {
         addCoreDeclarations(Core::class)
@@ -57,7 +56,7 @@ object CoreDeclarationMap {
                 if (it.returnType.isSubtypeOf(CoreDeclaration::class.createType())) {
                     @Suppress("UNCHECKED_CAST")
                     val property = (it as KProperty1<Any, *>).get(kClassInstance) as CoreDeclaration
-                    if (property.qualifiedName.name != "${kClassInstance.parent}.${property.name}") {
+                    if (property.qualifiedName != "${kClassInstance.parent}.${property.name}") {
                         val expectedString =
                             "Expected ${kClassInstance.parent}.${property.name} actual ${property.qualifiedName}"
                         throw IllegalArgumentException("Qualified name does not match scope parent: $expectedString")
@@ -89,7 +88,7 @@ object CoreDeclarationMap {
         descriptor: SimpleFunctionDescriptor,
         element: KtElement
     ): CoreDeclaration? {
-        val qualifiedName = getQualifiedName(descriptor)
+        val qualifiedName = descriptor.fqNameOrNull()?.asString()
             ?: return null
         val functions = functionMap[qualifiedName]
             ?: return null
@@ -121,17 +120,17 @@ object CoreDeclarationMap {
     }
 
     private fun getDeclaration(descriptor: DeclarationDescriptor): CoreDeclaration? {
-        val qualifiedName = getQualifiedName(descriptor)
+        val qualifiedName = descriptor.fqNameOrNull()?.asString()
             ?: return null
         val declaration = declarationMap[qualifiedName]
         return when {
             declaration != null -> declaration
             descriptor is AbstractTypeAliasDescriptor -> {
-                val nameString = descriptor.name.toString()
-                if (nameString == "*") {
+                val name = descriptor.name.asString()
+                if (name == "*") {
                     CoreCardinalBaseDeclaration
                 } else {
-                    val cardinal = nameString.toIntOrNull()
+                    val cardinal = name.toIntOrNull()
                     if (cardinal != null) {
                         CoreCardinalConstantDeclaration(cardinal)
                     } else null
@@ -139,9 +138,5 @@ object CoreDeclarationMap {
             }
             else -> null
         }
-    }
-
-    private fun getQualifiedName(descriptor: DeclarationDescriptor): Name? {
-        return descriptor.fqNameOrNull()?.let { Name(it.toString()) }
     }
 }

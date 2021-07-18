@@ -19,7 +19,6 @@ package io.verik.compiler.common
 import io.verik.compiler.ast.element.common.*
 import io.verik.compiler.ast.element.kt.*
 import io.verik.compiler.ast.element.sv.*
-import io.verik.compiler.ast.property.Name
 
 class ElementPrinter : Visitor() {
 
@@ -295,10 +294,6 @@ class ElementPrinter : Visitor() {
         if (!first) builder.append(", ")
         builder.append(content)
         first = false
-    }
-
-    private fun build(name: Name) {
-        build(name.toString())
     }
 
     private fun build(element: EElement?) {

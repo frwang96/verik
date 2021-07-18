@@ -18,7 +18,6 @@ package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.property.Name
 import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
@@ -28,7 +27,7 @@ class ESvBlockExpression (
     override val location: SourceLocation,
     override val statements: ArrayList<EExpression>,
     val decorated: Boolean,
-    val name: Name?
+    val name: String?
 ) : EAbstractBlockExpression() {
 
     override val serializationType = SvSerializationType.STATEMENT

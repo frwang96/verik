@@ -20,7 +20,6 @@ import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
-import io.verik.compiler.ast.property.Name
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.location
 import io.verik.compiler.main.ProjectContext
@@ -36,8 +35,8 @@ class IndexerVisitor(
     private val bindingContext = projectContext.bindingContext
     private val nameRegex = Regex("[_a-zA-Z][_a-zA-Z0-9]*")
 
-    private fun checkDeclarationName(name: Name, element: KtElement) {
-        if (!name.name.matches(nameRegex))
+    private fun checkDeclarationName(name: String, element: KtElement) {
+        if (!name.matches(nameRegex))
             m.error("Illegal name: $name", element)
     }
 
@@ -45,7 +44,7 @@ class IndexerVisitor(
         super.visitClassOrObject(classOrObject)
         val descriptor = bindingContext.getSliceContents(BindingContext.CLASS)[classOrObject]!!
         val location = classOrObject.location()
-        val name = Name(classOrObject.name!!)
+        val name = classOrObject.name!!
         checkDeclarationName(name, classOrObject)
         val basicClass = EKtBasicClass(location, name, Type.NULL, arrayListOf(), arrayListOf())
         castContext.addDeclaration(descriptor, basicClass)
@@ -55,7 +54,7 @@ class IndexerVisitor(
         super.visitNamedFunction(function)
         val descriptor = bindingContext.getSliceContents(BindingContext.FUNCTION)[function]!!
         val location = function.location()
-        val name = Name(function.name!!)
+        val name = function.name!!
         checkDeclarationName(name, function)
         val ktFunction = EKtFunction(location, name, Type.NULL, null, null)
         castContext.addDeclaration(descriptor, ktFunction)
@@ -65,7 +64,7 @@ class IndexerVisitor(
         super.visitProperty(property)
         val descriptor = bindingContext.getSliceContents(BindingContext.VARIABLE)[property]!!
         val location = property.location()
-        val name = Name(property.name!!)
+        val name = property.name!!
         checkDeclarationName(name, property)
         val ktProperty = EKtProperty(location, name, Type.NULL, null)
         castContext.addDeclaration(descriptor, ktProperty)
@@ -75,7 +74,7 @@ class IndexerVisitor(
         super.visitTypeParameter(parameter)
         val descriptor = bindingContext.getSliceContents(BindingContext.TYPE_PARAMETER)[parameter]!!
         val location = parameter.location()
-        val name = Name(parameter.name!!)
+        val name = parameter.name!!
         checkDeclarationName(name, parameter)
         val typeParameter = ETypeParameter(location, name, Type.NULL)
         castContext.addDeclaration(descriptor, typeParameter)

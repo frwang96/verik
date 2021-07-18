@@ -107,7 +107,7 @@ class GradleMessageCollector(config: Config) : MessageCollector() {
                 var parent: EElement? = element
                 while (parent != null) {
                     if (parent is Declaration)
-                        names.add(parent.name.name)
+                        names.add(parent.name)
                     parent = parent.parent
                 }
             }

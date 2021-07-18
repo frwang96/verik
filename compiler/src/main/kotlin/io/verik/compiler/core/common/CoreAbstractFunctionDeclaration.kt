@@ -16,4 +16,4 @@
 
 package io.verik.compiler.core.common
 
-abstract class CoreAbstractFunctionDeclaration : CoreDeclaration()
+abstract class CoreAbstractFunctionDeclaration : CoreDeclaration

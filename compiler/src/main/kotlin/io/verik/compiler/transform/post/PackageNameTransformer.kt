@@ -17,7 +17,6 @@
 package io.verik.compiler.transform.post
 
 import io.verik.compiler.ast.element.common.EFile
-import io.verik.compiler.ast.property.Name
 import io.verik.compiler.common.PackageDeclaration
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
@@ -35,12 +34,12 @@ object PackageNameTransformer : ProjectPass {
     object PackageNameVisitor : TreeVisitor() {
 
         private fun transformPackageName(packageDeclaration: PackageDeclaration): PackageDeclaration {
-            val name = packageDeclaration.name.name
+            val name = packageDeclaration.name
             return if (name == "") {
                 CorePackage.ROOT
             } else {
                 val names = name.split(".")
-                PackageDeclaration(Name(names.joinToString(separator = "_", postfix = "_pkg")))
+                PackageDeclaration(names.joinToString(separator = "_", postfix = "_pkg"))
             }
         }
 

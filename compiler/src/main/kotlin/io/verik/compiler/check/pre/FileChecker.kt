@@ -17,7 +17,6 @@
 package io.verik.compiler.check.pre
 
 import io.verik.compiler.ast.element.common.EFile
-import io.verik.compiler.ast.property.Name
 import io.verik.compiler.common.PackageDeclaration
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
@@ -38,7 +37,7 @@ object FileChecker : ProjectPass {
         override fun visitFile(file: EFile) {
             val pathPackageDeclaration = (0 until (file.relativePath.nameCount - 1))
                 .joinToString(separator = ".") { file.relativePath.getName(it).toString() }
-                .let { PackageDeclaration(Name(it)) }
+                .let { PackageDeclaration(it) }
 
             if (file.packageDeclaration != pathPackageDeclaration)
                 m.error("Package directive does not match file location", file)

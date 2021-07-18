@@ -20,7 +20,6 @@ import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.sv.EProceduralBlock
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
 import io.verik.compiler.ast.element.sv.ESvFunction
-import io.verik.compiler.ast.property.Name
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -38,7 +37,7 @@ object BlockExpressionTransformer : ProjectPass {
         override fun visitKtBlockExpression(blockExpression: EKtBlockExpression) {
             super.visitKtBlockExpression(blockExpression)
             var decorated = true
-            var name: Name? = null
+            var name: String? = null
             when (val parent = blockExpression.parent) {
                 is ESvFunction -> decorated = false
                 is EProceduralBlock -> name = parent.name

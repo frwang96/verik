@@ -22,7 +22,6 @@ import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.interfaces.cast
 import io.verik.compiler.ast.property.FunctionAnnotationType
-import io.verik.compiler.ast.property.Name
 import io.verik.compiler.common.PackageDeclaration
 import io.verik.compiler.common.location
 import io.verik.compiler.core.common.Core
@@ -63,7 +62,7 @@ class BaseCasterVisitor(
                 return ENullElement(location)
             }
         }
-        val packageDeclaration = PackageDeclaration(Name(file.packageFqName.toString()))
+        val packageDeclaration = PackageDeclaration(file.packageFqName.asString())
         val members = file.declarations.mapNotNull { getElement(it) }
 
         return EFile(

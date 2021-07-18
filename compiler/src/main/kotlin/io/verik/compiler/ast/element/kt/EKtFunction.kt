@@ -19,14 +19,13 @@ package io.verik.compiler.ast.element.kt
 import io.verik.compiler.ast.element.common.EAbstractFunction
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.property.FunctionAnnotationType
-import io.verik.compiler.ast.property.Name
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.SourceLocation
 
 class EKtFunction(
     override val location: SourceLocation,
-    override var name: Name,
+    override var name: String,
     override var returnType: Type,
     override var body: EExpression?,
     var annotationType: FunctionAnnotationType?

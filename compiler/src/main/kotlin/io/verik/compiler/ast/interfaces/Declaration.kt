@@ -16,14 +16,13 @@
 
 package io.verik.compiler.ast.interfaces
 
-import io.verik.compiler.ast.property.Name
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.psi.KtElement
 
 interface Declaration {
 
-    var name: Name
+    var name: String
 
     fun toType(vararg arguments: Type): Type {
         return Type(this, arrayListOf(*arguments))

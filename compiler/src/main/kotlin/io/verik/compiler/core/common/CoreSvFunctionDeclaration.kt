@@ -16,15 +16,10 @@
 
 package io.verik.compiler.core.common
 
-import io.verik.compiler.ast.property.Name
-
-class CoreSvFunctionDeclaration private constructor(
-    override var name: Name,
-    override val qualifiedName: Name
+class CoreSvFunctionDeclaration (
+    parent: String,
+    override var name: String
 ) : CoreAbstractFunctionDeclaration() {
 
-    constructor(parent: String, name: String): this(
-        Name(name),
-        Name("$parent.$name")
-    )
+    override val qualifiedName = "$parent.$name"
 }

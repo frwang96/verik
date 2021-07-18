@@ -16,17 +16,11 @@
 
 package io.verik.compiler.core.common
 
-import io.verik.compiler.ast.property.Name
-
-class CoreClassDeclaration private constructor(
-    override var name: Name,
-    override val qualifiedName: Name,
+class CoreClassDeclaration (
+    parent: String,
+    override var name: String,
     val superclass: CoreClassDeclaration?
-) : CoreDeclaration() {
+) : CoreDeclaration {
 
-    constructor(parent: String, name: String, superclass: CoreClassDeclaration?): this(
-        Name(name),
-        Name("$parent.$name"),
-        superclass
-    )
+    override val qualifiedName = "$parent.$name"
 }

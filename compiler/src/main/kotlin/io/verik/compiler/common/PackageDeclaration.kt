@@ -17,13 +17,8 @@
 package io.verik.compiler.common
 
 import io.verik.compiler.ast.interfaces.Declaration
-import io.verik.compiler.ast.property.Name
 
-class PackageDeclaration(override var name: Name) : Declaration {
-
-    override fun toString(): String {
-        return "$name"
-    }
+class PackageDeclaration(override var name: String) : Declaration {
 
     override fun equals(other: Any?): Boolean {
         return (other is PackageDeclaration) && (other.name == name)

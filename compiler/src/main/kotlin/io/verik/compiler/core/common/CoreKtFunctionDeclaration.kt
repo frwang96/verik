@@ -17,12 +17,11 @@
 package io.verik.compiler.core.common
 
 import io.verik.compiler.ast.element.common.ECallExpression
-import io.verik.compiler.ast.property.Name
 
 open class CoreKtFunctionDeclaration private constructor(
-    override var name: Name,
-    override val qualifiedName: Name,
-    val parameterClassNames: List<Name>
+    override var name: String,
+    override val qualifiedName: String,
+    val parameterClassNames: List<String>
 ) : CoreAbstractFunctionDeclaration() {
 
     open fun resolve(callExpression: ECallExpression) {}
@@ -32,8 +31,8 @@ open class CoreKtFunctionDeclaration private constructor(
         name: String,
         vararg parameterClassDeclarations: CoreClassDeclaration
     ): this(
-        Name(name),
-        Name("$parent.$name"),
+        name,
+        "$parent.$name",
         parameterClassDeclarations.map { it.name }
     )
 }

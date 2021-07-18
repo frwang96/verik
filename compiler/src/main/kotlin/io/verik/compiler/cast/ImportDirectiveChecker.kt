@@ -27,12 +27,12 @@ object ImportDirectiveChecker : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
         val packageNames = HashSet<String>()
-        packageNames.add(CorePackage.VK.name.name)
+        packageNames.add(CorePackage.VK.name)
         projectContext.ktFiles.forEach {
             val packageName = it.packageFqName.asString()
             if (packageName == "")
                 m.fatal("Use of the root package is prohibited", it)
-            if (packageName in listOf(CorePackage.VK.name.name, CorePackage.SV.name.name))
+            if (packageName in listOf(CorePackage.VK.name, CorePackage.SV.name))
                 m.fatal("Package name is reserved: $packageName", it)
             packageNames.add(it.packageFqName.toString())
         }

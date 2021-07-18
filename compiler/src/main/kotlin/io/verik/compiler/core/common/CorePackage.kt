@@ -16,14 +16,13 @@
 
 package io.verik.compiler.core.common
 
-import io.verik.compiler.ast.property.Name
 import io.verik.compiler.common.PackageDeclaration
 
 object CorePackage {
 
-    val ROOT = PackageDeclaration(Name(""))
-    val KT = PackageDeclaration(Name("kotlin"))
-    val KT_IO = PackageDeclaration(Name("kotlin.io"))
-    val VK = PackageDeclaration(Name("io.verik.core"))
-    val SV = PackageDeclaration(Name("systemverilog"))
+    val ROOT = PackageDeclaration("")
+    val KT = PackageDeclaration("kotlin")
+    val KT_IO = PackageDeclaration("kotlin.io")
+    val VK = PackageDeclaration("io.verik.core")
+    val SV = PackageDeclaration("systemverilog")
 }

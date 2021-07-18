@@ -17,13 +17,8 @@
 package io.verik.compiler.common
 
 import io.verik.compiler.ast.interfaces.Declaration
-import io.verik.compiler.ast.property.Name
 
 object NullDeclaration : Declaration {
 
-    override var name = Name("null")
-
-    override fun toString(): String {
-        return "$name"
-    }
+    override var name = "null"
 }

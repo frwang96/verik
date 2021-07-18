@@ -19,14 +19,13 @@ package io.verik.compiler.ast.element.sv
 import io.verik.compiler.ast.element.common.EAbstractClass
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypeParameter
-import io.verik.compiler.ast.property.Name
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.SourceLocation
 
 class EModule(
     override val location: SourceLocation,
-    override var name: Name,
+    override var name: String,
     override var supertype: Type,
     override var typeParameters: ArrayList<ETypeParameter>,
     override var members: ArrayList<EElement>

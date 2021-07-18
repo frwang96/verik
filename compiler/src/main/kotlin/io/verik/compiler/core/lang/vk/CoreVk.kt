@@ -17,13 +17,12 @@
 package io.verik.compiler.core.lang.vk
 
 import io.verik.compiler.ast.element.common.ECallExpression
-import io.verik.compiler.ast.property.Name
 import io.verik.compiler.core.common.*
 
 object CoreVk : CoreScope(CorePackage.VK) {
 
-    val ADD = CoreCardinalFunctionDeclaration(Name("ADD"))
-    val INC = CoreCardinalFunctionDeclaration(Name("INC"))
+    val ADD = CoreCardinalFunctionDeclaration("ADD")
+    val INC = CoreCardinalFunctionDeclaration("INC")
 
     val U_INT = object : CoreKtFunctionDeclaration(parent, "u", Core.Kt.INT) {
 

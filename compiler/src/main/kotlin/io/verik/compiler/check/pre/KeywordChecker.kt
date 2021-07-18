@@ -36,9 +36,9 @@ object KeywordChecker : ProjectPass {
         override fun visitElement(element: EElement) {
             super.visitElement(element)
             if (element is Declaration) {
-                if (element.name.name in vkKeywords)
+                if (element.name in vkKeywords)
                     m.error("Conflict with Verik reserved keyword: ${element.name}", element)
-                if (element.name.name in svKeywords)
+                if (element.name in svKeywords)
                     m.error("Conflict with SystemVerilog reserved keyword: ${element.name}", element)
             }
         }
