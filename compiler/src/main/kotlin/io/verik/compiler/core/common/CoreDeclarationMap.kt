@@ -18,7 +18,6 @@ package io.verik.compiler.core.common
 
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.Name
-import io.verik.compiler.cast.DeclarationMap
 import io.verik.compiler.cast.TypeCaster
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
 import org.jetbrains.kotlin.descriptors.SimpleFunctionDescriptor
@@ -41,12 +40,12 @@ object CoreDeclarationMap {
     }
 
     operator fun get(
-        declarationMap: DeclarationMap,
+        typeCaster: TypeCaster,
         declarationDescriptor: DeclarationDescriptor,
         element: KtElement
     ): Declaration? {
         return when (declarationDescriptor) {
-            is SimpleFunctionDescriptor -> getFunction(declarationMap, declarationDescriptor, element)
+            is SimpleFunctionDescriptor -> getFunction(typeCaster, declarationDescriptor, element)
             else -> getDeclaration(declarationDescriptor)
         }
     }
@@ -86,7 +85,7 @@ object CoreDeclarationMap {
     }
 
     private fun getFunction(
-        declarationMap: DeclarationMap,
+        typeCaster: TypeCaster,
         descriptor: SimpleFunctionDescriptor,
         element: KtElement
     ): CoreDeclaration? {
@@ -95,14 +94,14 @@ object CoreDeclarationMap {
         val functions = functionMap[qualifiedName]
             ?: return null
         functions.forEach {
-            if (matchFunction(declarationMap, descriptor, element, it))
+            if (matchFunction(typeCaster, descriptor, element, it))
                 return it
         }
         return null
     }
 
     private fun matchFunction(
-        declarationMap: DeclarationMap,
+        typeCaster: TypeCaster,
         descriptor: SimpleFunctionDescriptor,
         element: KtElement,
         function: CoreKtFunctionDeclaration
@@ -112,7 +111,7 @@ object CoreDeclarationMap {
         if (valueParameters.size != parameterClassNames.size)
             return false
         valueParameters.zip(parameterClassNames).forEach { (valueParameter, parameterClassName) ->
-            val type = TypeCaster.castFromType(declarationMap, valueParameter.type, element)
+            val type = typeCaster.cast(valueParameter.type, element)
             if (type.reference !is CoreClassDeclaration)
                 return false
             if (type.reference.name != parameterClassName)

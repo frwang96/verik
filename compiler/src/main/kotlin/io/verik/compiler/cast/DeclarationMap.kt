@@ -22,8 +22,11 @@ import io.verik.compiler.core.common.CoreDeclarationMap
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
 import org.jetbrains.kotlin.psi.KtElement
+import org.jetbrains.kotlin.resolve.BindingContext
 
-class DeclarationMap {
+class DeclarationMap(bindingContext: BindingContext) {
+
+    val typeCaster = TypeCaster(bindingContext, this)
 
     private val declarationMap = HashMap<DeclarationDescriptor, Declaration>()
 
@@ -33,7 +36,7 @@ class DeclarationMap {
 
     operator fun get(declarationDescriptor: DeclarationDescriptor, element: KtElement): Declaration {
         val declaration = declarationMap[declarationDescriptor]
-            ?: CoreDeclarationMap[this, declarationDescriptor, element]
+            ?: CoreDeclarationMap[typeCaster, declarationDescriptor, element]
         return if (declaration == null) {
             m.error("Could not identify declaration: ${declarationDescriptor.name}", element)
             NullDeclaration

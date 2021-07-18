@@ -29,7 +29,7 @@ object ProjectCaster : ProjectPass {
         m.flush()
 
         m.log("Cast: Index syntax trees")
-        val declarationMap = DeclarationMap()
+        val declarationMap = DeclarationMap(projectContext.bindingContext)
         val indexerVisitor = IndexerVisitor(projectContext, declarationMap)
         projectContext.ktFiles.forEach { it.accept(indexerVisitor) }
         m.flush()

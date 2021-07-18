@@ -22,27 +22,32 @@ import io.verik.compiler.main.m
 import org.jetbrains.kotlin.builtins.isFunctionType
 import org.jetbrains.kotlin.descriptors.impl.AbstractTypeParameterDescriptor
 import org.jetbrains.kotlin.psi.KtElement
+import org.jetbrains.kotlin.psi.KtExpression
 import org.jetbrains.kotlin.psi.KtTypeReference
 import org.jetbrains.kotlin.psi.KtUserType
 import org.jetbrains.kotlin.resolve.BindingContext
+import org.jetbrains.kotlin.resolve.calls.callUtil.getType
 import org.jetbrains.kotlin.types.KotlinType
 
-object TypeCaster {
+class TypeCaster(
+    private val bindingContext: BindingContext,
+    private val declarationMap: DeclarationMap
+) {
 
-    fun castFromType(declarationMap: DeclarationMap, type: KotlinType, element: KtElement): Type {
+    fun cast(expression: KtExpression): Type {
+        return cast(expression.getType(bindingContext)!!, expression)
+    }
+
+    fun cast(type: KotlinType, element: KtElement): Type {
         if (type.isFunctionType)
             return Type(Core.Kt.FUNCTION, ArrayList())
         val declarationDescriptor = type.constructor.declarationDescriptor!!
         val declaration = declarationMap[declarationDescriptor, element]
-        val arguments = type.arguments.map { castFromType(declarationMap, it.type, element) }
+        val arguments = type.arguments.map { cast(it.type, element) }
         return Type(declaration, ArrayList(arguments))
     }
 
-    fun castFromTypeReference(
-        bindingContext: BindingContext,
-        declarationMap: DeclarationMap,
-        typeReference: KtTypeReference
-    ): Type {
+    fun cast(typeReference: KtTypeReference): Type {
         val kotlinType = bindingContext.getSliceContents(BindingContext.TYPE)[typeReference]!!
         if (kotlinType.isMarkedNullable)
             m.error("Nullable type not supported: $kotlinType", typeReference)
@@ -51,24 +56,20 @@ object TypeCaster {
         val declarationDescriptor = kotlinType.constructor.declarationDescriptor!!
         val declaration = declarationMap[declarationDescriptor, typeReference]
         val userType = typeReference.typeElement as KtUserType
-        val arguments = userType.typeArgumentsAsTypes.map { castFromTypeReference(bindingContext, declarationMap, it) }
+        val arguments = userType.typeArgumentsAsTypes.map { cast(it) }
 
         val type = Type(declaration, ArrayList(arguments))
         return if (type.isCardinalType()) {
-            castCardinalType(bindingContext, declarationMap, typeReference)
+            castCardinalType(typeReference)
         } else type
     }
 
-    private fun castCardinalType(
-        bindingContext: BindingContext,
-        declarationMap: DeclarationMap,
-        typeReference: KtTypeReference
-    ): Type {
+    private fun castCardinalType(typeReference: KtTypeReference): Type {
         val userType = typeReference.typeElement as KtUserType
         val referenceExpression = userType.referenceExpression!!
         val referenceTarget = bindingContext.getSliceContents(BindingContext.REFERENCE_TARGET)[referenceExpression]!!
         val declaration = declarationMap[referenceTarget, typeReference]
-        val arguments = userType.typeArgumentsAsTypes.map { castCardinalType(bindingContext, declarationMap, it) }
+        val arguments = userType.typeArgumentsAsTypes.map { castCardinalType(it) }
         val type = Type(declaration, ArrayList(arguments))
         if (!type.isCardinalType()) {
             if (referenceTarget is AbstractTypeParameterDescriptor)

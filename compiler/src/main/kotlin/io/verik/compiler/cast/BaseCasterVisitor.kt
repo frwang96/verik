@@ -25,7 +25,6 @@ import io.verik.compiler.ast.interfaces.cast
 import io.verik.compiler.ast.property.FunctionAnnotationType
 import io.verik.compiler.ast.property.Name
 import io.verik.compiler.ast.property.SourceSetType
-import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.PackageDeclaration
 import io.verik.compiler.common.location
 import io.verik.compiler.core.common.Core
@@ -34,7 +33,6 @@ import io.verik.compiler.main.m
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.descriptorUtil.getSuperClassOrAny
-import org.jetbrains.kotlin.types.KotlinType
 import org.jetbrains.kotlin.types.typeUtil.isNullableAny
 import org.jetbrains.kotlin.types.typeUtil.representativeUpperBound
 import java.nio.file.Paths
@@ -47,18 +45,11 @@ class BaseCasterVisitor(
     private val mainPath = projectContext.config.projectDir.resolve("src/main/kotlin")
     private val testPath = projectContext.config.projectDir.resolve("src/test/kotlin")
     private val bindingContext = projectContext.bindingContext
+    private val typeCaster = declarationMap.typeCaster
     private val expressionCasterVisitor = ExpressionCasterVisitor(projectContext, declarationMap)
 
     inline fun <reified T : EElement> getElement(element: KtElement): T? {
         return element.accept(this, Unit).cast()
-    }
-
-    private fun getType(type: KotlinType, element: KtElement): Type {
-        return TypeCaster.castFromType(declarationMap, type, element)
-    }
-
-    private fun getType(typeReference: KtTypeReference): Type {
-        return TypeCaster.castFromTypeReference(bindingContext, declarationMap, typeReference)
     }
 
     override fun visitKtElement(element: KtElement, data: Unit?): EElement {
@@ -118,7 +109,7 @@ class BaseCasterVisitor(
             .cast<EKtBasicClass>(classOrObject)
             ?: return ENullExpression(location)
 
-        val supertype = getType(descriptor.getSuperClassOrAny().defaultType, classOrObject)
+        val supertype = typeCaster.cast(descriptor.getSuperClassOrAny().defaultType, classOrObject)
         val typeParameters = classOrObject.typeParameters.mapNotNull { getElement<ETypeParameter>(it) }
         val members = classOrObject.declarations.mapNotNull { getElement(it) }
 
@@ -137,7 +128,7 @@ class BaseCasterVisitor(
             .cast<EKtFunction>(function)
             ?: return ENullExpression(location)
 
-        val returnType = getType(descriptor.returnType!!, function)
+        val returnType = typeCaster.cast(descriptor.returnType!!, function)
         val annotationTypes = descriptor.annotations.mapNotNull {
             FunctionAnnotationType(it.fqName, function)
         }
@@ -169,8 +160,8 @@ class BaseCasterVisitor(
             ?: return ENullExpression(location)
 
         val typeReference = property.typeReference
-        val type = if (typeReference != null) getType(typeReference)
-        else getType(descriptor.type, property)
+        val type = if (typeReference != null) typeCaster.cast(typeReference)
+        else typeCaster.cast(descriptor.type, property)
 
         val initializer = property.initializer?.let {
             expressionCasterVisitor.getExpression(it)
@@ -191,7 +182,7 @@ class BaseCasterVisitor(
 
         val upperBound = descriptor.representativeUpperBound
         val typeConstraint = if (upperBound.isNullableAny()) Core.Kt.ANY.toType()
-        else getType(descriptor.representativeUpperBound, parameter)
+        else typeCaster.cast(descriptor.representativeUpperBound, parameter)
 
         typeParameter.typeConstraint = typeConstraint
         return typeParameter

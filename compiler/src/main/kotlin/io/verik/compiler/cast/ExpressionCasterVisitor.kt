@@ -31,7 +31,6 @@ import io.verik.compiler.main.m
 import org.jetbrains.kotlin.descriptors.PackageViewDescriptor
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.resolve.BindingContext
-import org.jetbrains.kotlin.resolve.calls.callUtil.getType
 
 class ExpressionCasterVisitor(
     projectContext: ProjectContext,
@@ -39,6 +38,7 @@ class ExpressionCasterVisitor(
 ) : KtVisitor<EElement, Unit>() {
 
     private val bindingContext = projectContext.bindingContext
+    private val typeCaster = declarationMap.typeCaster
 
     inline fun <reified T : EElement> getElement(element: KtElement): T? {
         return element.accept(this, Unit).cast()
@@ -47,10 +47,6 @@ class ExpressionCasterVisitor(
     fun getExpression(expression: KtExpression): EExpression {
         val location = expression.location()
         return getElement(expression) ?: ENullExpression(location)
-    }
-
-    private fun getType(expression: KtExpression): Type {
-        return TypeCaster.castFromType(declarationMap, expression.getType(bindingContext)!!, expression)
     }
 
     private fun getPackageSimpleNameExpression(expression: KtExpression): ESimpleNameExpression? {
@@ -79,14 +75,14 @@ class ExpressionCasterVisitor(
 
     override fun visitBlockExpression(expression: KtBlockExpression, data: Unit?): EElement {
         val location = expression.location()
-        val type = getType(expression)
+        val type = typeCaster.cast(expression)
         val statements = expression.statements.mapNotNull { getExpression(it) }
         return EKtBlockExpression(location, type, ArrayList(statements))
     }
 
     override fun visitPrefixExpression(expression: KtPrefixExpression, data: Unit?): EElement {
         val location = expression.location()
-        val type = getType(expression)
+        val type = typeCaster.cast(expression)
         val kind = KtUnaryOperatorKind(expression.operationToken, location)
             ?: return ENullExpression(location)
         val childExpression = getExpression(expression.baseExpression!!)
@@ -95,7 +91,7 @@ class ExpressionCasterVisitor(
 
     override fun visitBinaryExpression(expression: KtBinaryExpression, data: Unit?): EElement {
         val location = expression.location()
-        val type = getType(expression)
+        val type = typeCaster.cast(expression)
         val kind = KtBinaryOperatorKind(expression.operationToken, location)
             ?: return ENullExpression(location)
         val left = getExpression(expression.left!!)
@@ -107,7 +103,7 @@ class ExpressionCasterVisitor(
         getPackageSimpleNameExpression(expression)?.let { return it }
         val location = expression.location()
         val descriptor = bindingContext.getSliceContents(BindingContext.REFERENCE_TARGET)[expression]!!
-        val type = getType(expression)
+        val type = typeCaster.cast(expression)
         val declaration = declarationMap[descriptor, expression]
         return ESimpleNameExpression(location, type, declaration, null)
     }
@@ -116,7 +112,7 @@ class ExpressionCasterVisitor(
         val location = expression.location()
         val descriptor = bindingContext
             .getSliceContents(BindingContext.REFERENCE_TARGET)[expression.calleeExpression]!!
-        val type = getType(expression)
+        val type = typeCaster.cast(expression)
         val declaration = declarationMap[descriptor, expression]
         val typeArguments = expression.typeArguments.map {
             getElement<ETypeArgument>(it) ?: return ENullExpression(location)
@@ -127,7 +123,7 @@ class ExpressionCasterVisitor(
 
     override fun visitTypeProjection(typeProjection: KtTypeProjection, data: Unit?): EElement {
         val location = typeProjection.location()
-        val type = TypeCaster.castFromTypeReference(bindingContext, declarationMap, typeProjection.typeReference!!)
+        val type = typeCaster.cast(typeProjection.typeReference!!)
         return ETypeArgument(location, NullDeclaration, type)
     }
 
@@ -147,7 +143,7 @@ class ExpressionCasterVisitor(
     override fun visitDotQualifiedExpression(expression: KtDotQualifiedExpression, data: Unit?): EElement {
         getPackageSimpleNameExpression(expression.selectorExpression!!)?.let { return it }
         val location = expression.location()
-        val type = getType(expression)
+        val type = typeCaster.cast(expression)
         val receiver = getExpression(expression.receiverExpression)
         return when (val selector = expression.selectorExpression) {
             is KtSimpleNameExpression -> {
@@ -181,7 +177,7 @@ class ExpressionCasterVisitor(
 
     override fun visitConstantExpression(expression: KtConstantExpression, data: Unit?): EElement {
         val location = expression.location()
-        val type = getType(expression)
+        val type = typeCaster.cast(expression)
         val value = ConstantExpressionCaster.cast(expression.text, type, location)
         return EConstantExpression(location, type, value)
     }
@@ -226,7 +222,7 @@ class ExpressionCasterVisitor(
 
     override fun visitIfExpression(expression: KtIfExpression, data: Unit?): EElement {
         val location = expression.location()
-        val type = getType(expression)
+        val type = typeCaster.cast(expression)
         val condition = getExpression(expression.condition!!)
         val thenExpression = expression.then?.let { getExpression(it) }
         val elseExpression = expression.`else`?.let { getExpression(it) }
