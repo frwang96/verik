@@ -44,6 +44,10 @@ open class MessageCollector {
         fatal(message, element.location)
     }
 
+    fun fatal(message: String, element: KtElement): Nothing {
+        fatal(message, element.location())
+    }
+
     fun error(message: String, element: EElement) {
         error(message, element.location)
     }

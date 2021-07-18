@@ -21,7 +21,6 @@ import io.verik.compiler.ast.property.Name
 import io.verik.compiler.common.PackageDeclaration
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 import java.nio.file.Paths
@@ -43,10 +42,6 @@ object FileChecker : ProjectPass {
 
             if (file.packageDeclaration != pathPackageDeclaration)
                 m.error("Package directive does not match file location", file)
-            if (file.packageDeclaration == CorePackage.ROOT)
-                m.error("Use of the root package is prohibited", file)
-            if (file.packageDeclaration in listOf(CorePackage.VK, CorePackage.SV))
-                m.error("Package name is reserved: ${file.packageDeclaration.name}", file)
             if (file.inputPath.fileName == Paths.get("Pkg.kt"))
                 m.error("File name is reserved: ${file.inputPath.fileName}", file)
         }

@@ -16,9 +16,7 @@
 
 package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.element.kt.EImportDirective
 import io.verik.compiler.ast.interfaces.ElementContainer
-import io.verik.compiler.ast.property.SourceSetType
 import io.verik.compiler.ast.property.SourceType
 import io.verik.compiler.common.PackageDeclaration
 import io.verik.compiler.common.TreeVisitor
@@ -33,15 +31,12 @@ class EFile(
     val inputPath: Path,
     private val outputPath: Path?,
     val relativePath: Path,
-    val sourceSetType: SourceSetType,
     val sourceType: SourceType?,
     var packageDeclaration: PackageDeclaration,
-    var members: ArrayList<EElement>,
-    private val importDirectives: List<EImportDirective>
+    var members: ArrayList<EElement>
 ) : EElement(), ElementContainer {
 
     init {
-        importDirectives.forEach { it.parent = this }
         members.forEach { it.parent = this }
     }
 
@@ -50,7 +45,6 @@ class EFile(
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        importDirectives.forEach { it.accept(visitor) }
         members.forEach { it.accept(visitor) }
     }
 

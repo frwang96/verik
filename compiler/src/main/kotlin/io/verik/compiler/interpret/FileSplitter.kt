@@ -46,11 +46,9 @@ object FileSplitter : ProjectPass {
                     it.inputPath,
                     componentFilePath,
                     it.relativePath,
-                    it.sourceSetType,
                     SourceType.COMPONENT,
                     CorePackage.ROOT,
-                    splitMemberResult.componentMembers,
-                    listOf()
+                    splitMemberResult.componentMembers
                 )
                 splitFiles.add(componentFile)
             }
@@ -62,11 +60,9 @@ object FileSplitter : ProjectPass {
                     it.inputPath,
                     packageFilePath,
                     it.relativePath,
-                    it.sourceSetType,
                     SourceType.PACKAGE,
                     it.packageDeclaration,
-                    splitMemberResult.packageMembers,
-                    listOf()
+                    splitMemberResult.packageMembers
                 )
                 splitFiles.add(packageFile)
             }

@@ -32,10 +32,6 @@ object ProjectPreChecker : ProjectPass {
         FileChecker.pass(projectContext)
         m.flush()
 
-        m.log("PreCheck: Check import directives")
-        ImportDirectiveChecker.pass(projectContext)
-        m.flush()
-
         m.log("PreCheck: Check keyword conflicts")
         KeywordChecker.pass(projectContext)
         m.flush()

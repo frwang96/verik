@@ -28,6 +28,10 @@ object ProjectCaster : ProjectPass {
         UnsupportedElementChecker.pass(projectContext)
         m.flush()
 
+        m.log("Cast: Check import directives")
+        ImportDirectiveChecker.pass(projectContext)
+        m.flush()
+
         m.log("Cast: Index syntax trees")
         val declarationMap = DeclarationMap(projectContext.bindingContext)
         val indexerVisitor = IndexerVisitor(projectContext, declarationMap)

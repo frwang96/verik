@@ -17,14 +17,12 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.ast.element.common.*
-import io.verik.compiler.ast.element.kt.EImportDirective
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.interfaces.cast
 import io.verik.compiler.ast.property.FunctionAnnotationType
 import io.verik.compiler.ast.property.Name
-import io.verik.compiler.ast.property.SourceSetType
 import io.verik.compiler.common.PackageDeclaration
 import io.verik.compiler.common.location
 import io.verik.compiler.core.common.Core
@@ -43,7 +41,6 @@ class BaseCasterVisitor(
 ) : KtVisitor<EElement, Unit>() {
 
     private val mainPath = projectContext.config.projectDir.resolve("src/main/kotlin")
-    private val testPath = projectContext.config.projectDir.resolve("src/test/kotlin")
     private val bindingContext = projectContext.bindingContext
     private val typeCaster = declarationMap.typeCaster
     private val expressionCasterVisitor = ExpressionCasterVisitor(projectContext, declarationMap)
@@ -61,45 +58,25 @@ class BaseCasterVisitor(
     override fun visitKtFile(file: KtFile, data: Unit?): EElement {
         val location = file.location()
         val inputPath = Paths.get(file.virtualFilePath)
-        val (sourceSetType, relativePath) = when {
-            inputPath.startsWith(mainPath) -> Pair(SourceSetType.MAIN, mainPath.relativize(inputPath))
-            inputPath.startsWith(testPath) -> Pair(SourceSetType.TEST, testPath.relativize(inputPath))
+        val relativePath = when {
+            inputPath.startsWith(mainPath) -> mainPath.relativize(inputPath)
             else -> {
-                m.error("Unable to identify as main or test source", file)
+                m.error("File should be located under $mainPath", file)
                 return ENullElement(location)
             }
         }
         val packageDeclaration = PackageDeclaration(Name(file.packageFqName.toString()))
         val members = file.declarations.mapNotNull { getElement(it) }
-        val importDirectives = file.importDirectives.mapNotNull { getElement<EImportDirective>(it) }
 
         return EFile(
             location,
             inputPath,
             null,
             relativePath,
-            sourceSetType,
             null,
             packageDeclaration,
-            ArrayList(members),
-            importDirectives
+            ArrayList(members)
         )
-    }
-
-    override fun visitImportDirective(importDirective: KtImportDirective, data: Unit?): EElement {
-        val location = importDirective.location()
-        val (name, packageDeclaration) = if (importDirective.isAllUnder) {
-            Pair(
-                null,
-                PackageDeclaration(Name(importDirective.importedFqName!!.toString()))
-            )
-        } else {
-            Pair(
-                Name(importDirective.importedName!!.toString()),
-                PackageDeclaration(Name(importDirective.importedFqName!!.parent().toString()))
-            )
-        }
-        return EImportDirective(location, name, packageDeclaration)
     }
 
     override fun visitClassOrObject(classOrObject: KtClassOrObject, data: Unit?): EElement {
