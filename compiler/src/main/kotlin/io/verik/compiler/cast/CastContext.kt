@@ -17,29 +17,45 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.ast.interfaces.Declaration
+import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.core.common.CoreDeclarationMap
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
 import org.jetbrains.kotlin.psi.KtElement
+import org.jetbrains.kotlin.psi.KtExpression
+import org.jetbrains.kotlin.psi.KtTypeReference
 import org.jetbrains.kotlin.resolve.BindingContext
+import org.jetbrains.kotlin.types.KotlinType
 
-class DeclarationMap(bindingContext: BindingContext) {
-
-    val typeCaster = TypeCaster(bindingContext, this)
+class CastContext(
+    val bindingContext: BindingContext
+) {
 
     private val declarationMap = HashMap<DeclarationDescriptor, Declaration>()
 
-    operator fun set(declarationDescriptor: DeclarationDescriptor, declaration: Declaration) {
+    fun addDeclaration(declarationDescriptor: DeclarationDescriptor, declaration: Declaration) {
         declarationMap[declarationDescriptor] = declaration
     }
 
-    operator fun get(declarationDescriptor: DeclarationDescriptor, element: KtElement): Declaration {
+    fun getDeclaration(declarationDescriptor: DeclarationDescriptor, element: KtElement): Declaration {
         val declaration = declarationMap[declarationDescriptor]
-            ?: CoreDeclarationMap[typeCaster, declarationDescriptor, element]
+            ?: CoreDeclarationMap[this, declarationDescriptor, element]
         return if (declaration == null) {
             m.error("Could not identify declaration: ${declarationDescriptor.name}", element)
             NullDeclaration
         } else declaration
+    }
+
+    fun castType(expression: KtExpression): Type {
+        return TypeCaster.cast(this, expression)
+    }
+
+    fun castType(type: KotlinType, element: KtElement): Type {
+        return TypeCaster.cast(this, type, element)
+    }
+
+    fun castType(typeReference: KtTypeReference): Type {
+        return TypeCaster.cast(this, typeReference)
     }
 }

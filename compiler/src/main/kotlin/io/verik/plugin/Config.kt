@@ -38,6 +38,7 @@ data class Config(
     val indentLength: Int
 ) {
 
+    val mainDir: Path = projectDir.resolve("src/main/kotlin")
     val version = "verik:1.0-SNAPSHOT"
     val timescale = "1ns / 1ns"
 

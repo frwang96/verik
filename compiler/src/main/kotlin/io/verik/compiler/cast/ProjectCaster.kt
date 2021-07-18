@@ -33,13 +33,13 @@ object ProjectCaster : ProjectPass {
         m.flush()
 
         m.log("Cast: Index syntax trees")
-        val declarationMap = DeclarationMap(projectContext.bindingContext)
-        val indexerVisitor = IndexerVisitor(projectContext, declarationMap)
+        val castContext = CastContext(projectContext.bindingContext)
+        val indexerVisitor = IndexerVisitor(projectContext, castContext)
         projectContext.ktFiles.forEach { it.accept(indexerVisitor) }
         m.flush()
 
         m.log("Cast: Cast syntax trees")
-        val baseCasterVisitor = BaseCasterVisitor(projectContext, declarationMap)
+        val baseCasterVisitor = BaseCasterVisitor(projectContext, castContext)
         val files = projectContext.ktFiles.mapNotNull {
             baseCasterVisitor.getElement<EFile>(it)
         }

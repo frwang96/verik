@@ -30,7 +30,7 @@ import org.jetbrains.kotlin.resolve.BindingContext
 
 class IndexerVisitor(
     projectContext: ProjectContext,
-    private val declarationMap: DeclarationMap
+    private val castContext: CastContext
 ) : KtTreeVisitorVoid() {
 
     private val bindingContext = projectContext.bindingContext
@@ -48,7 +48,7 @@ class IndexerVisitor(
         val name = Name(classOrObject.name!!)
         checkDeclarationName(name, classOrObject)
         val basicClass = EKtBasicClass(location, name, Type.NULL, arrayListOf(), arrayListOf())
-        declarationMap[descriptor] = basicClass
+        castContext.addDeclaration(descriptor, basicClass)
     }
 
     override fun visitNamedFunction(function: KtNamedFunction) {
@@ -58,7 +58,7 @@ class IndexerVisitor(
         val name = Name(function.name!!)
         checkDeclarationName(name, function)
         val ktFunction = EKtFunction(location, name, Type.NULL, null, null)
-        declarationMap[descriptor] = ktFunction
+        castContext.addDeclaration(descriptor, ktFunction)
     }
 
     override fun visitProperty(property: KtProperty) {
@@ -68,7 +68,7 @@ class IndexerVisitor(
         val name = Name(property.name!!)
         checkDeclarationName(name, property)
         val ktProperty = EKtProperty(location, name, Type.NULL, null)
-        declarationMap[descriptor] = ktProperty
+        castContext.addDeclaration(descriptor, ktProperty)
     }
 
     override fun visitTypeParameter(parameter: KtTypeParameter) {
@@ -78,6 +78,6 @@ class IndexerVisitor(
         val name = Name(parameter.name!!)
         checkDeclarationName(name, parameter)
         val typeParameter = ETypeParameter(location, name, Type.NULL)
-        declarationMap[descriptor] = typeParameter
+        castContext.addDeclaration(descriptor, typeParameter)
     }
 }
