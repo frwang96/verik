@@ -30,7 +30,7 @@ class Type(
     val arguments: ArrayList<Type>
 ) : Reference {
 
-    fun isType(type: Type): Boolean {
+    fun isSubtype(type: Type): Boolean {
         return getSupertypes().any { it == type }
     }
 
@@ -41,7 +41,7 @@ class Type(
 
     fun isCardinalType(): Boolean {
         return when (val reference = reference) {
-            is ETypeParameter -> reference.type.isCardinalType()
+            is ETypeParameter -> reference.typeConstraint.isCardinalType()
             is CoreCardinalDeclaration -> true
             else -> false
         }
@@ -97,9 +97,12 @@ class Type(
     }
 
     override fun toString(): String {
+        val reference = reference
+        val referenceName = if (reference is CoreCardinalDeclaration) reference.displayName()
+        else "${reference.name}"
         return if (arguments.isNotEmpty()) {
-            "$reference<${arguments.joinToString()}>"
-        } else "$reference"
+            "$referenceName<${arguments.joinToString()}>"
+        } else referenceName
     }
 
     override fun equals(other: Any?): Boolean {

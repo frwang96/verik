@@ -16,7 +16,7 @@
 
 package io.verik.compiler.check.pre
 
-import io.verik.compiler.common.ElementParentChecker
+import io.verik.compiler.common.ElementNormalizationChecker
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
@@ -24,8 +24,8 @@ import io.verik.compiler.main.m
 object ProjectPreChecker : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        m.log("PreCheck: Check element parents")
-        ElementParentChecker.pass(projectContext)
+        m.log("PreCheck: Check element normalization")
+        ElementNormalizationChecker.pass(projectContext)
         m.flush()
 
         m.log("PreCheck: Check file paths")

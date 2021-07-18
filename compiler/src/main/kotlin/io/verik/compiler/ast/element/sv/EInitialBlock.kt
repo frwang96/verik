@@ -19,7 +19,6 @@ package io.verik.compiler.ast.element.sv
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.property.Name
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.SourceLocation
 
 class EInitialBlock(
@@ -27,8 +26,6 @@ class EInitialBlock(
     override var name: Name,
     override var body: EExpression
 ) : EProceduralBlock() {
-
-    override var type = Core.Kt.UNIT.toType()
 
     init {
         body.parent = this

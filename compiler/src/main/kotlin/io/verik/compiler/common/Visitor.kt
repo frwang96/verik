@@ -36,10 +36,6 @@ abstract class Visitor {
         visitExpression(nullExpression)
     }
 
-    open fun visitDeclaration(declaration: EDeclaration) {
-        visitExpression(declaration)
-    }
-
     open fun visitFile(file: EFile) {
         visitElement(file)
     }
@@ -53,7 +49,7 @@ abstract class Visitor {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     open fun visitAbstractClass(abstractClass: EAbstractClass) {
-        visitDeclaration(abstractClass)
+        visitElement(abstractClass)
     }
 
     open fun visitKtBasicClass(basicClass: EKtBasicClass) {
@@ -73,7 +69,7 @@ abstract class Visitor {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     open fun visitAbstractFunction(abstractFunction: EAbstractFunction) {
-        visitDeclaration(abstractFunction)
+        visitElement(abstractFunction)
     }
 
     open fun visitKtFunction(function: EKtFunction) {
@@ -85,11 +81,31 @@ abstract class Visitor {
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  PROCEDURAL BLOCK
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    open fun visitProceduralBlock(proceduralBlock: EProceduralBlock) {
+        visitElement(proceduralBlock)
+    }
+
+    open fun visitInitialBlock(initialBlock: EInitialBlock) {
+        visitProceduralBlock(initialBlock)
+    }
+
+    open fun visitAlwaysComBlock(alwaysComBlock: EAlwaysComBlock) {
+        visitProceduralBlock(alwaysComBlock)
+    }
+
+    open fun visitAlwaysSeqBlock(alwaysSeqBlock: EAlwaysSeqBlock) {
+        visitProceduralBlock(alwaysSeqBlock)
+    }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //  PROPERTY
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     open fun visitAbstractProperty(abstractProperty: EAbstractProperty) {
-        visitDeclaration(abstractProperty)
+        visitExpression(abstractProperty)
     }
 
     open fun visitKtProperty(property: EKtProperty) {
@@ -105,27 +121,7 @@ abstract class Visitor {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     open fun visitTypeParameter(typeParameter: ETypeParameter) {
-        visitDeclaration(typeParameter)
-    }
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  PROCEDURAL BLOCK
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    open fun visitProceduralBlock(proceduralBlock: EProceduralBlock) {
-        visitDeclaration(proceduralBlock)
-    }
-
-    open fun visitInitialBlock(initialBlock: EInitialBlock) {
-        visitProceduralBlock(initialBlock)
-    }
-
-    open fun visitAlwaysComBlock(alwaysComBlock: EAlwaysComBlock) {
-        visitProceduralBlock(alwaysComBlock)
-    }
-
-    open fun visitAlwaysSeqBlock(alwaysSeqBlock: EAlwaysSeqBlock) {
-        visitProceduralBlock(alwaysSeqBlock)
+        visitElement(typeParameter)
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

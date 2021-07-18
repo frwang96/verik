@@ -23,8 +23,8 @@ import io.verik.compiler.main.m
 object ProjectInterpreter : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        m.log("Interpret: Interpret declarations")
-        DeclarationInterpreter.pass(projectContext)
+        m.log("Interpret: Interpret file and class members")
+        MemberInterpreter.pass(projectContext)
         m.flush()
 
         m.log("Interpret: Split component and package files")

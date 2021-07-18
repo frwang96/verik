@@ -25,23 +25,21 @@ import io.verik.compiler.core.common.Core
 object ClassInterpreter {
 
     fun interpret(basicClass: EKtBasicClass): EAbstractClass {
-        return if (basicClass.type.isType(Core.Vk.MODULE.toType())) {
+        return if (basicClass.toType().isSubtype(Core.Vk.MODULE.toType())) {
             EModule(
                 basicClass.location,
                 basicClass.name,
-                basicClass.type,
                 basicClass.supertype,
                 basicClass.typeParameters,
-                basicClass.declarations
+                basicClass.members
             )
         } else {
             ESvBasicClass(
                 basicClass.location,
                 basicClass.name,
-                basicClass.type,
                 basicClass.supertype,
                 basicClass.typeParameters,
-                basicClass.declarations
+                basicClass.members
             )
         }
     }

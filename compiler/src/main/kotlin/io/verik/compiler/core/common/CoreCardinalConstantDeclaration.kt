@@ -32,7 +32,7 @@ class CoreCardinalConstantDeclaration(
 
     override val qualifiedName = Name("${CorePackage.VK}.$name")
 
-    override fun toString(): String {
+    override fun displayName(): String {
         return "`$value`"
     }
 

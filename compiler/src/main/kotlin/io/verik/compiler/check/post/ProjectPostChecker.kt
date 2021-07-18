@@ -16,7 +16,7 @@
 
 package io.verik.compiler.check.post
 
-import io.verik.compiler.common.ElementParentChecker
+import io.verik.compiler.common.ElementNormalizationChecker
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
@@ -31,8 +31,8 @@ object ProjectPostChecker : ProjectPass {
         UntransformedElementChecker.pass(projectContext)
         m.flush()
 
-        m.log("PostCheck: Check element parents")
-        ElementParentChecker.pass(projectContext)
+        m.log("PostCheck: Check element normalization")
+        ElementNormalizationChecker.pass(projectContext)
         m.flush()
 
         m.log("PostCheck: Check source locations")

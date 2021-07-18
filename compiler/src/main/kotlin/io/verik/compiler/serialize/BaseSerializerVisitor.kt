@@ -16,7 +16,6 @@
 
 package io.verik.compiler.serialize
 
-import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.sv.*
@@ -33,50 +32,46 @@ class BaseSerializerVisitor(private val sourceBuilder: SourceBuilder) : Visitor(
     }
 
     override fun visitFile(file: EFile) {
-        file.declarations.forEach { it.accept(this) }
-    }
-
-    override fun visitDeclaration(declaration: EDeclaration) {
-        m.error("Unable to serialize declaration $declaration: Found ${declaration::class.simpleName}", declaration)
+        file.members.forEach { it.accept(this) }
     }
 
     override fun visitSvBasicClass(basicClass: ESvBasicClass) {
         appendLineIfNotFirst()
-        sourceBuilder.appendLine("class $basicClass;", basicClass)
+        sourceBuilder.appendLine("class ${basicClass.name};", basicClass)
         sourceBuilder.indent {
-            basicClass.declarations.forEach { it.accept(this) }
+            basicClass.members.forEach { it.accept(this) }
             sourceBuilder.appendLine()
         }
-        sourceBuilder.appendLine("endclass : $basicClass", basicClass)
+        sourceBuilder.appendLine("endclass : ${basicClass.name}", basicClass)
     }
 
     override fun visitModule(module: EModule) {
         appendLineIfNotFirst()
-        sourceBuilder.appendLine("module $module;", module)
+        sourceBuilder.appendLine("module ${module.name};", module)
         sourceBuilder.indent {
-            module.declarations.forEach { it.accept(this) }
+            module.members.forEach { it.accept(this) }
             sourceBuilder.appendLine()
         }
-        sourceBuilder.appendLine("endmodule : $module", module)
+        sourceBuilder.appendLine("endmodule : ${module.name}", module)
     }
 
     override fun visitSvFunction(function: ESvFunction) {
         appendLineIfNotFirst()
-        val typeString = TypeSerializer.serialize(function)
-        sourceBuilder.appendLine("function $typeString $function();", function)
+        val typeString = TypeSerializer.serialize(function.returnType, function)
+        sourceBuilder.appendLine("function $typeString ${function.name}();", function)
         val body = function.body
         if (body != null) {
             sourceBuilder.indent {
                 expressionSerializerVisitor.serializeAsStatement(body)
             }
         }
-        sourceBuilder.appendLine("endfunction : $function", function)
+        sourceBuilder.appendLine("endfunction : ${function.name}", function)
     }
 
     override fun visitSvProperty(property: ESvProperty) {
         appendLineIfNotFirst()
-        val typeString = TypeSerializer.serialize(property)
-        sourceBuilder.append("$typeString $property", property)
+        val typeString = TypeSerializer.serialize(property.type, property)
+        sourceBuilder.append("$typeString ${property.name}", property)
         val initializer = property.initializer
         if (initializer != null) {
             sourceBuilder.append(" = ", property)

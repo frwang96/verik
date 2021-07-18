@@ -17,45 +17,44 @@
 package io.verik.compiler.interpret
 
 import io.verik.compiler.ast.element.common.EAbstractClass
-import io.verik.compiler.ast.element.common.EDeclaration
+import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
-import io.verik.compiler.common.DeclarationReplacer
+import io.verik.compiler.common.MemberReplacer
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 
-object DeclarationInterpreter : ProjectPass {
+object MemberInterpreter : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        val declarationReplacer = DeclarationReplacer(projectContext)
-        val declarationVisitor = DeclarationVisitor(declarationReplacer)
+        val memberReplacer = MemberReplacer(projectContext)
+        val memberVisitor = MemberVisitor(memberReplacer)
         projectContext.files.forEach {
-            it.accept(declarationVisitor)
+            it.accept(memberVisitor)
         }
-        declarationReplacer.updateReferences()
+        memberReplacer.updateReferences()
     }
 
-    class DeclarationVisitor(private val declarationReplacer: DeclarationReplacer) : TreeVisitor() {
+    class MemberVisitor(private val memberReplacer: MemberReplacer) : TreeVisitor() {
 
         override fun visitFile(file: EFile) {
-            file.declarations.forEach { interpretDeclaration(it) }
+            file.members.forEach { interpretMember(it) }
             super.visitFile(file)
         }
 
         override fun visitAbstractClass(abstractClass: EAbstractClass) {
-            abstractClass.declarations.forEach { interpretDeclaration(it) }
+            abstractClass.members.forEach { interpretMember(it) }
             super.visitAbstractClass(abstractClass)
         }
 
-        private fun interpretDeclaration(declaration: EDeclaration) {
-            when (declaration) {
-                is EKtBasicClass -> declarationReplacer.replace(declaration, ClassInterpreter.interpret(declaration))
-                is EKtFunction ->
-                    FunctionInterpreter.interpret(declaration)?.let { declarationReplacer.replace(declaration, it) }
-                is EKtProperty -> declarationReplacer.replace(declaration, PropertyInterpreter.interpret(declaration))
+        private fun interpretMember(member: EElement) {
+            when (member) {
+                is EKtBasicClass -> memberReplacer.replace(member, ClassInterpreter.interpret(member))
+                is EKtFunction -> memberReplacer.replace(member, FunctionInterpreter.interpret(member))
+                is EKtProperty -> memberReplacer.replace(member, PropertyInterpreter.interpret(member))
             }
         }
     }

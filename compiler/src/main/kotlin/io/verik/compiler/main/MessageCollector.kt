@@ -40,6 +40,10 @@ open class MessageCollector {
 
     open fun flush() {}
 
+    fun fatal(message: String, element: EElement): Nothing {
+        fatal(message, element.location)
+    }
+
     fun error(message: String, element: EElement) {
         error(message, element.location)
     }

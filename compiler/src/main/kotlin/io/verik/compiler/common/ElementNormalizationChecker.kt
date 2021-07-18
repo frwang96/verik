@@ -16,23 +16,25 @@
 
 package io.verik.compiler.common
 
+import io.verik.compiler.ast.element.common.EAbstractClass
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
+import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.backend.common.pop
 import org.jetbrains.kotlin.backend.common.push
 
-object ElementParentChecker : ProjectPass {
+object ElementNormalizationChecker : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        val elementParentVisitor = ElementParentVisitor()
+        val elementNormalizationVisitor = ElementNormalizationVisitor()
         projectContext.files.forEach {
-            it.accept(elementParentVisitor)
+            it.accept(elementNormalizationVisitor)
         }
     }
 
-    class ElementParentVisitor : TreeVisitor() {
+    class ElementNormalizationVisitor : TreeVisitor() {
 
         private val parentStack = ArrayDeque<EElement>()
 
@@ -54,6 +56,18 @@ object ElementParentChecker : ProjectPass {
             parentStack.push(file)
             file.acceptChildren(this)
             parentStack.pop()
+            file.members.forEach {
+                if (it !is Declaration)
+                    m.fatal("Declaration expected but got: ${it::class.simpleName}", it)
+            }
+        }
+
+        override fun visitAbstractClass(abstractClass: EAbstractClass) {
+            super.visitAbstractClass(abstractClass)
+            abstractClass.members.forEach {
+                if (it !is Declaration)
+                    m.fatal("Declaration expected but got: ${it::class.simpleName}", it)
+            }
         }
     }
 }

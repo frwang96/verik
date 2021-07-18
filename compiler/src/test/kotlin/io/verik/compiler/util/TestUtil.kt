@@ -17,6 +17,7 @@
 package io.verik.compiler.util
 
 import io.verik.compiler.ast.element.common.*
+import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.Name
 import io.verik.compiler.common.ElementPrinter
 import io.verik.compiler.common.TreeVisitor
@@ -80,12 +81,13 @@ fun assertOutputTextEquals(expected: String, actual: TextFile) {
     assertEquals(expectedLines, actualLines)
 }
 
-fun ProjectContext.findDeclaration(nameString: String): EDeclaration {
+fun ProjectContext.findDeclaration(nameString: String): EElement {
     val declarationVisitor = object : TreeVisitor() {
-        val declarations = ArrayList<EDeclaration>()
-        override fun visitDeclaration(declaration: EDeclaration) {
-            super.visitDeclaration(declaration)
-            if (declaration.name == Name(nameString)) declarations.add(declaration)
+        val declarations = ArrayList<Declaration>()
+        override fun visitElement(element: EElement) {
+            super.visitElement(element)
+            if (element is Declaration && element.name == Name(nameString))
+                declarations.add(element)
         }
     }
     files.forEach {
@@ -96,7 +98,7 @@ fun ProjectContext.findDeclaration(nameString: String): EDeclaration {
         1 -> {}
         else -> throw IllegalArgumentException("Could not find unique declaration")
     }
-    return declarationVisitor.declarations[0]
+    return declarationVisitor.declarations[0] as EElement
 }
 
 fun ProjectContext.findExpression(nameString: String): EExpression {

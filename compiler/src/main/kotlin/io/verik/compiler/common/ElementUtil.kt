@@ -16,7 +16,6 @@
 
 package io.verik.compiler.common
 
-import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.main.SourceLocation
 import org.jetbrains.kotlin.diagnostics.PsiDiagnosticUtils
 import org.jetbrains.kotlin.psi.KtElement
@@ -31,10 +30,10 @@ fun KtElement.location(): SourceLocation {
     return SourceLocation(lineAndColumn.column, lineAndColumn.line, path, this)
 }
 
-fun <T : EElement> ArrayList<T>.replaceIfContains(oldElement: T, newElement: T): Boolean {
-    val index = indexOf(oldElement)
+fun <T> ArrayList<T>.replaceIfContains(old: T, new: T): Boolean {
+    val index = indexOf(old)
     return if (index != -1) {
-        set(index, newElement)
+        set(index, new)
         true
     } else {
         false

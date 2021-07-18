@@ -17,7 +17,7 @@
 package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.ast.element.kt.EImportDirective
-import io.verik.compiler.ast.interfaces.DeclarationContainer
+import io.verik.compiler.ast.interfaces.ElementContainer
 import io.verik.compiler.ast.property.SourceSetType
 import io.verik.compiler.ast.property.SourceType
 import io.verik.compiler.common.PackageDeclaration
@@ -36,13 +36,13 @@ class EFile(
     val sourceSetType: SourceSetType,
     val sourceType: SourceType?,
     var packageDeclaration: PackageDeclaration,
-    var declarations: ArrayList<EDeclaration>,
+    var members: ArrayList<EElement>,
     private val importDirectives: List<EImportDirective>
-) : EElement(), DeclarationContainer {
+) : EElement(), ElementContainer {
 
     init {
         importDirectives.forEach { it.parent = this }
-        declarations.forEach { it.parent = this }
+        members.forEach { it.parent = this }
     }
 
     override fun accept(visitor: Visitor) {
@@ -51,13 +51,13 @@ class EFile(
 
     override fun acceptChildren(visitor: TreeVisitor) {
         importDirectives.forEach { it.accept(visitor) }
-        declarations.forEach { it.accept(visitor) }
+        members.forEach { it.accept(visitor) }
     }
 
-    override fun replaceChild(oldDeclaration: EDeclaration, newDeclaration: EDeclaration) {
-        newDeclaration.parent = this
-        if (!declarations.replaceIfContains(oldDeclaration, newDeclaration))
-            m.error("Could not find declaration $oldDeclaration in ${this::class.simpleName}", this)
+    override fun replaceChild(oldElement: EElement, newElement: EElement) {
+        newElement.parent = this
+        if (!members.replaceIfContains(oldElement, newElement))
+            m.error("Could not find ${oldElement::class.simpleName} in ${this::class.simpleName}", this)
     }
 
     fun getOutputPathNotNull(): Path {

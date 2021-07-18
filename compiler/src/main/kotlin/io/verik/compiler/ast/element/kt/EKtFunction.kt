@@ -27,7 +27,7 @@ import io.verik.compiler.main.SourceLocation
 class EKtFunction(
     override val location: SourceLocation,
     override var name: Name,
-    override var type: Type,
+    override var returnType: Type,
     override var body: EExpression?,
     var annotationType: FunctionAnnotationType?
 ) : EAbstractFunction() {

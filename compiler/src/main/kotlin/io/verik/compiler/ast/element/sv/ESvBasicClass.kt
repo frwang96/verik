@@ -17,7 +17,7 @@
 package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EAbstractClass
-import io.verik.compiler.ast.element.common.EDeclaration
+import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.property.Name
 import io.verik.compiler.ast.property.Type
@@ -27,14 +27,13 @@ import io.verik.compiler.main.SourceLocation
 class ESvBasicClass(
     override val location: SourceLocation,
     override var name: Name,
-    override var type: Type,
     override var supertype: Type,
     override var typeParameters: ArrayList<ETypeParameter>,
-    override var declarations: ArrayList<EDeclaration>
+    override var members: ArrayList<EElement>
 ) : EAbstractClass() {
 
     init {
-        declarations.forEach { it.parent = this }
+        members.forEach { it.parent = this }
     }
 
     override fun accept(visitor: Visitor) {

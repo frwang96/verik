@@ -16,24 +16,29 @@
 
 package io.verik.compiler.common
 
-import io.verik.compiler.ast.element.common.EDeclaration
+import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.interfaces.DeclarationContainer
+import io.verik.compiler.ast.interfaces.Declaration
+import io.verik.compiler.ast.interfaces.ElementContainer
 import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
-class DeclarationReplacer(val projectContext: ProjectContext) {
+class MemberReplacer(val projectContext: ProjectContext) {
 
-    private val replacementMap = HashMap<EDeclaration, EDeclaration>()
+    private val replacementMap = HashMap<Declaration, Declaration>()
 
-    fun replace(oldDeclaration: EDeclaration, newDeclaration: EDeclaration) {
-        val parent = oldDeclaration.parent
-        if (parent is DeclarationContainer)
-            parent.replaceChild(oldDeclaration, newDeclaration)
+    fun replace(oldElement: EElement, newElement: EElement) {
+        val parent = oldElement.parent
+        if (parent is ElementContainer)
+            parent.replaceChild(oldElement, newElement)
         else
-            m.error("Could not replace declaration $oldDeclaration", oldDeclaration)
-        replacementMap[oldDeclaration] = newDeclaration
+            m.error("Could not replace ${oldElement::class.simpleName}", oldElement)
+        if (oldElement !is Declaration)
+            m.fatal("Declaration expected but got: ${oldElement::class.simpleName}", oldElement)
+        if (newElement !is Declaration)
+            m.fatal("Declaration expected but got: ${oldElement::class.simpleName}", oldElement)
+        replacementMap[oldElement] = newElement
     }
 
     fun updateReferences() {
@@ -44,7 +49,7 @@ class DeclarationReplacer(val projectContext: ProjectContext) {
         replacementMap.clear()
     }
 
-    class ReferenceUpdateVisitor(private val replacementMap: Map<EDeclaration, EDeclaration>) : TreeVisitor() {
+    class ReferenceUpdateVisitor(private val replacementMap: Map<Declaration, Declaration>) : TreeVisitor() {
 
         override fun visitExpression(expression: EExpression) {
             super.visitExpression(expression)

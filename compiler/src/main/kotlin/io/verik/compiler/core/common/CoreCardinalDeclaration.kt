@@ -16,4 +16,9 @@
 
 package io.verik.compiler.core.common
 
-abstract class CoreCardinalDeclaration : CoreDeclaration()
+abstract class CoreCardinalDeclaration : CoreDeclaration() {
+
+    open fun displayName(): String {
+        return name.name
+    }
+}

@@ -16,28 +16,26 @@
 
 package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.interfaces.DeclarationContainer
-import io.verik.compiler.ast.property.SvSerializationType
+import io.verik.compiler.ast.interfaces.Declaration
+import io.verik.compiler.ast.interfaces.ElementContainer
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.replaceIfContains
 import io.verik.compiler.main.m
 
-abstract class EAbstractClass : EDeclaration(), DeclarationContainer {
+abstract class EAbstractClass : EElement(), Declaration, ElementContainer {
 
     abstract var supertype: Type
     abstract var typeParameters: ArrayList<ETypeParameter>
-    abstract var declarations: ArrayList<EDeclaration>
-
-    override val serializationType = SvSerializationType.OTHER
+    abstract var members: ArrayList<EElement>
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        declarations.forEach { it.accept(visitor) }
+        members.forEach { it.accept(visitor) }
     }
 
-    override fun replaceChild(oldDeclaration: EDeclaration, newDeclaration: EDeclaration) {
-        newDeclaration.parent = this
-        if (!declarations.replaceIfContains(oldDeclaration, newDeclaration))
-            m.error("Could not find declaration $oldDeclaration in ${this::class.simpleName}", this)
+    override fun replaceChild(oldElement: EElement, newElement: EElement) {
+        newElement.parent = this
+        if (!members.replaceIfContains(oldElement, newElement))
+            m.error("Could not find ${oldElement::class.simpleName} in ${this::class.simpleName}", this)
     }
 }

@@ -19,6 +19,7 @@ package io.verik.compiler.common
 import io.verik.compiler.ast.element.common.*
 import io.verik.compiler.ast.element.kt.*
 import io.verik.compiler.ast.element.sv.*
+import io.verik.compiler.ast.property.Name
 
 class ElementPrinter : Visitor() {
 
@@ -35,7 +36,7 @@ class ElementPrinter : Visitor() {
 
     override fun visitFile(file: EFile) {
         build("File") {
-            build(file.declarations)
+            build(file.members)
         }
     }
 
@@ -43,7 +44,7 @@ class ElementPrinter : Visitor() {
         build("KtBasicClass") {
             build(basicClass.name.toString())
             build(basicClass.typeParameters)
-            build(basicClass.declarations)
+            build(basicClass.members)
         }
     }
 
@@ -51,7 +52,7 @@ class ElementPrinter : Visitor() {
         build("SvBasicClass") {
             build(basicClass.name.toString())
             build(basicClass.typeParameters)
-            build(basicClass.declarations)
+            build(basicClass.members)
         }
     }
 
@@ -64,7 +65,7 @@ class ElementPrinter : Visitor() {
     override fun visitKtFunction(function: EKtFunction) {
         build("KtFunction") {
             build(function.name.toString())
-            build(function.type.toString())
+            build(function.returnType.toString())
             build(function.body)
             build(function.annotationType.toString())
         }
@@ -73,31 +74,8 @@ class ElementPrinter : Visitor() {
     override fun visitSvFunction(function: ESvFunction) {
         build("SvFunction") {
             build(function.name.toString())
-            build(function.type.toString())
+            build(function.returnType.toString())
             build(function.body)
-        }
-    }
-
-    override fun visitKtProperty(property: EKtProperty) {
-        build("KtProperty") {
-            build(property.name.toString())
-            build(property.type.toString())
-            build(property.initializer)
-        }
-    }
-
-    override fun visitSvProperty(property: ESvProperty) {
-        build("SvProperty") {
-            build(property.name.toString())
-            build(property.type.toString())
-            build(property.initializer)
-        }
-    }
-
-    override fun visitTypeParameter(typeParameter: ETypeParameter) {
-        build("TypeParameter") {
-            build(typeParameter.name.toString())
-            build(typeParameter.type.toString())
         }
     }
 
@@ -120,6 +98,29 @@ class ElementPrinter : Visitor() {
             build(alwaysSeqBlock.name.toString())
             build(alwaysSeqBlock.eventControlExpression)
             build(alwaysSeqBlock.body)
+        }
+    }
+
+    override fun visitKtProperty(property: EKtProperty) {
+        build("KtProperty") {
+            build(property.name.toString())
+            build(property.type.toString())
+            build(property.initializer)
+        }
+    }
+
+    override fun visitSvProperty(property: ESvProperty) {
+        build("SvProperty") {
+            build(property.name.toString())
+            build(property.type.toString())
+            build(property.initializer)
+        }
+    }
+
+    override fun visitTypeParameter(typeParameter: ETypeParameter) {
+        build("TypeParameter") {
+            build(typeParameter.name.toString())
+            build(typeParameter.typeConstraint.toString())
         }
     }
 
@@ -183,7 +184,7 @@ class ElementPrinter : Visitor() {
     override fun visitSimpleNameExpression(simpleNameExpression: ESimpleNameExpression) {
         build("SimpleNameExpression") {
             build(simpleNameExpression.type.toString())
-            build(simpleNameExpression.reference.toString())
+            build(simpleNameExpression.reference.name)
             build(simpleNameExpression.receiver)
         }
     }
@@ -191,7 +192,7 @@ class ElementPrinter : Visitor() {
     override fun visitCallExpression(callExpression: ECallExpression) {
         build("CallExpression") {
             build(callExpression.type.toString())
-            build(callExpression.reference.toString())
+            build(callExpression.reference.name)
             build(callExpression.receiver)
             build(callExpression.typeArguments)
             build(callExpression.valueArguments)
@@ -200,14 +201,14 @@ class ElementPrinter : Visitor() {
 
     override fun visitTypeArgument(typeArgument: ETypeArgument) {
         build("TypeArgument") {
-            build(typeArgument.reference.toString())
+            build(typeArgument.reference.name)
             build(typeArgument.type.toString())
         }
     }
 
     override fun visitValueArgument(valueArgument: EValueArgument) {
         build("ValueArgument") {
-            build(valueArgument.reference.toString())
+            build(valueArgument.reference.name)
             build(valueArgument.expression)
         }
     }
@@ -296,6 +297,10 @@ class ElementPrinter : Visitor() {
         first = false
     }
 
+    private fun build(name: Name) {
+        build(name.toString())
+    }
+
     private fun build(element: EElement?) {
         if (element != null)
             element.accept(this)
@@ -315,11 +320,11 @@ class ElementPrinter : Visitor() {
         first = false
     }
 
-    private fun build(elements: List<EElement>) {
+    private fun build(elements: List<Any>) {
         if (!first) builder.append(", ")
         builder.append("[")
         first = true
-        elements.forEach { it.accept(this) }
+        elements.forEach { if (it is EElement) it.accept(this) }
         builder.append("]")
         first = false
     }

@@ -16,7 +16,6 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.core.common.CoreDeclarationMap
@@ -26,9 +25,9 @@ import org.jetbrains.kotlin.psi.KtElement
 
 class DeclarationMap {
 
-    private val declarationMap = HashMap<DeclarationDescriptor, EDeclaration>()
+    private val declarationMap = HashMap<DeclarationDescriptor, Declaration>()
 
-    operator fun set(declarationDescriptor: DeclarationDescriptor, declaration: EDeclaration) {
+    operator fun set(declarationDescriptor: DeclarationDescriptor, declaration: Declaration) {
         declarationMap[declarationDescriptor] = declaration
     }
 
@@ -36,8 +35,7 @@ class DeclarationMap {
         val declaration = declarationMap[declarationDescriptor]
             ?: CoreDeclarationMap[this, declarationDescriptor, element]
         return if (declaration == null) {
-            val name = declarationDescriptor.name
-            m.error("Could not identify declaration: $name", element)
+            m.error("Could not identify declaration: ${declarationDescriptor.name}", element)
             NullDeclaration
         } else declaration
     }

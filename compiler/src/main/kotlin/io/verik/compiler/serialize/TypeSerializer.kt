@@ -16,22 +16,22 @@
 
 package io.verik.compiler.serialize
 
-import io.verik.compiler.ast.element.common.EDeclaration
+import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.property.Type
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.m
 
 object TypeSerializer {
 
-    fun serialize(declaration: EDeclaration): String {
-        val type = declaration.type
+    fun serialize(type: Type, element: EElement): String {
         return when (type.reference) {
             Core.Kt.UNIT -> "void"
             Core.Kt.INT -> "int"
             Core.Kt.BOOLEAN -> "logic"
             Core.Kt.STRING -> "string"
-            Core.Vk.UBIT -> "logic [${type.asBitWidth(declaration) - 1}:0]"
+            Core.Vk.UBIT -> "logic [${type.asBitWidth(element) - 1}:0]"
             else -> {
-                m.error("Unable to serialize type: $type", declaration)
+                m.error("Unable to serialize type: $type", element)
                 "void"
             }
         }

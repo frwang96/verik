@@ -16,7 +16,8 @@
 
 package io.verik.compiler.check.pre
 
-import io.verik.compiler.ast.element.common.EDeclaration
+import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -32,11 +33,14 @@ object KeywordChecker : ProjectPass {
 
     object KeywordVisitor : TreeVisitor() {
 
-        override fun visitDeclaration(declaration: EDeclaration) {
-            if (declaration.name.name in vkKeywords)
-                m.error("Conflict with Verik reserved keyword: ${declaration.name}", declaration)
-            if (declaration.name.name in svKeywords)
-                m.error("Conflict with SystemVerilog reserved keyword: ${declaration.name}", declaration)
+        override fun visitElement(element: EElement) {
+            super.visitElement(element)
+            if (element is Declaration) {
+                if (element.name.name in vkKeywords)
+                    m.error("Conflict with Verik reserved keyword: ${element.name}", element)
+                if (element.name.name in svKeywords)
+                    m.error("Conflict with SystemVerilog reserved keyword: ${element.name}", element)
+            }
         }
     }
 

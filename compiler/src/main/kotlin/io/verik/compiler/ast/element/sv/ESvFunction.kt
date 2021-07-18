@@ -26,8 +26,8 @@ import io.verik.compiler.main.SourceLocation
 class ESvFunction(
     override val location: SourceLocation,
     override var name: Name,
-    override var type: Type,
-    override var body: EExpression?
+    override var returnType: Type,
+    override var body: EExpression?,
 ) : EAbstractFunction() {
 
     init {

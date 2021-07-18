@@ -20,7 +20,6 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.property.Name
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.SourceLocation
 
 class EAlwaysSeqBlock(
@@ -34,8 +33,6 @@ class EAlwaysSeqBlock(
         body.parent = this
         eventControlExpression.parent = this
     }
-
-    override var type = Core.Kt.UNIT.toType()
 
     override fun accept(visitor: Visitor) {
         visitor.visitAlwaysSeqBlock(this)

@@ -14,19 +14,11 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.common
+package io.verik.compiler.ast.interfaces
 
-import io.verik.compiler.ast.interfaces.Declaration
-import io.verik.compiler.main.m
+import io.verik.compiler.ast.element.common.EElement
 
-abstract class EDeclaration : EExpression(), Declaration {
+interface ElementContainer {
 
-    override fun toString(): String {
-        return "$name"
-    }
-
-    override fun copy(): EExpression {
-        m.error("Unable to copy ${this::class.simpleName}", this)
-        return ENullExpression(location)
-    }
+    fun replaceChild(oldElement: EElement, newElement: EElement)
 }

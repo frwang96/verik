@@ -79,7 +79,7 @@ class BaseCasterVisitor(
             }
         }
         val packageDeclaration = PackageDeclaration(Name(file.packageFqName.toString()))
-        val declarations = file.declarations.mapNotNull { getElement<EDeclaration>(it) }
+        val members = file.declarations.mapNotNull { getElement(it) }
         val importDirectives = file.importDirectives.mapNotNull { getElement<EImportDirective>(it) }
 
         return EFile(
@@ -90,7 +90,7 @@ class BaseCasterVisitor(
             sourceSetType,
             null,
             packageDeclaration,
-            ArrayList(declarations),
+            ArrayList(members),
             importDirectives
         )
     }
@@ -118,20 +118,15 @@ class BaseCasterVisitor(
             .cast<EKtBasicClass>(classOrObject)
             ?: return ENullExpression(location)
 
-        val type = getType(descriptor.defaultType, classOrObject)
         val supertype = getType(descriptor.getSuperClassOrAny().defaultType, classOrObject)
         val typeParameters = classOrObject.typeParameters.mapNotNull { getElement<ETypeParameter>(it) }
-        val body = classOrObject.body
-        val declarations = body?.declarations
-            ?.mapNotNull { getElement<EDeclaration>(it) }
-            ?: listOf()
+        val members = classOrObject.declarations.mapNotNull { getElement(it) }
 
-        basicClass.type = type
         basicClass.supertype = supertype
         typeParameters.forEach { it.parent = basicClass }
         basicClass.typeParameters = ArrayList(typeParameters)
-        declarations.forEach { it.parent = basicClass }
-        basicClass.declarations = ArrayList(declarations)
+        members.forEach { it.parent = basicClass }
+        basicClass.members = ArrayList(members)
         return basicClass
     }
 
@@ -142,7 +137,7 @@ class BaseCasterVisitor(
             .cast<EKtFunction>(function)
             ?: return ENullExpression(location)
 
-        val type = getType(descriptor.returnType!!, function)
+        val returnType = getType(descriptor.returnType!!, function)
         val annotationTypes = descriptor.annotations.mapNotNull {
             FunctionAnnotationType(it.fqName, function)
         }
@@ -160,7 +155,7 @@ class BaseCasterVisitor(
         }
         body?.parent = ktFunction
 
-        ktFunction.type = type
+        ktFunction.returnType = returnType
         ktFunction.body = body
         ktFunction.annotationType = annotationType
         return ktFunction
@@ -195,10 +190,10 @@ class BaseCasterVisitor(
             ?: return ENullExpression(location)
 
         val upperBound = descriptor.representativeUpperBound
-        val type = if (upperBound.isNullableAny()) Core.Kt.ANY.toType()
+        val typeConstraint = if (upperBound.isNullableAny()) Core.Kt.ANY.toType()
         else getType(descriptor.representativeUpperBound, parameter)
 
-        typeParameter.type = type
+        typeParameter.typeConstraint = typeConstraint
         return typeParameter
     }
 }

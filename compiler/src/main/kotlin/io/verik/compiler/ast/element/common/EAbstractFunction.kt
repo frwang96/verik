@@ -16,16 +16,17 @@
 
 package io.verik.compiler.ast.element.common
 
+import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.ExpressionContainer
-import io.verik.compiler.ast.property.SvSerializationType
+import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.m
 
-abstract class EAbstractFunction : EDeclaration(), ExpressionContainer {
+abstract class EAbstractFunction : EElement(), Declaration, ExpressionContainer {
+
+    abstract var returnType: Type
 
     abstract var body: EExpression?
-
-    override val serializationType = SvSerializationType.OTHER
 
     override fun acceptChildren(visitor: TreeVisitor) {
         body?.accept(visitor)

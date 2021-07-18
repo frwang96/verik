@@ -47,7 +47,7 @@ class IndexerVisitor(
         val location = classOrObject.location()
         val name = Name(classOrObject.name!!)
         checkDeclarationName(name, classOrObject)
-        val basicClass = EKtBasicClass(location, name, Type.NULL, Type.NULL, arrayListOf(), arrayListOf())
+        val basicClass = EKtBasicClass(location, name, Type.NULL, arrayListOf(), arrayListOf())
         declarationMap[descriptor] = basicClass
     }
 

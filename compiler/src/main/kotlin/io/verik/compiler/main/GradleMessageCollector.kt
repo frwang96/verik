@@ -16,8 +16,8 @@
 
 package io.verik.compiler.main
 
-import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.plugin.Config
 import org.gradle.api.GradleException
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
@@ -106,7 +106,7 @@ class GradleMessageCollector(config: Config) : MessageCollector() {
             is EElement -> {
                 var parent: EElement? = element
                 while (parent != null) {
-                    if (parent is EDeclaration)
+                    if (parent is Declaration)
                         names.add(parent.name.name)
                     parent = parent.parent
                 }

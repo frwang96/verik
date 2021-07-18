@@ -17,8 +17,9 @@
 package io.verik.compiler.interpret
 
 import io.verik.compiler.ast.element.common.ECallExpression
-import io.verik.compiler.ast.element.common.EDeclaration
+import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.ENullElement
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtFunction
@@ -29,7 +30,7 @@ import io.verik.compiler.main.m
 
 object FunctionInterpreter {
 
-    fun interpret(function: EKtFunction): EDeclaration? {
+    fun interpret(function: EKtFunction): EElement {
         val body = function.body
         return when (function.annotationType) {
             FunctionAnnotationType.RUN -> {
@@ -37,7 +38,7 @@ object FunctionInterpreter {
                     EInitialBlock(function.location, function.name, body)
                 } else {
                     m.error("Run block missing body: $function", function)
-                    null
+                    ENullElement(function.location)
                 }
             }
             FunctionAnnotationType.COM -> {
@@ -45,22 +46,23 @@ object FunctionInterpreter {
                     EAlwaysComBlock(function.location, function.name, body)
                 } else {
                     m.error("Com block missing body: $function", function)
-                    null
+                    ENullElement(function.location)
                 }
             }
             FunctionAnnotationType.SEQ -> {
                 if (body != null) {
                     getAlwaysSeqBlock(function, body)
+                        ?: ENullElement(function.location)
                 } else {
                     m.error("Seq block missing body: $function", function)
-                    null
+                    ENullElement(function.location)
                 }
             }
             else -> {
                 ESvFunction(
                     function.location,
                     function.name,
-                    function.type,
+                    function.returnType,
                     function.body
                 )
             }
