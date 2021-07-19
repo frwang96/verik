@@ -24,24 +24,25 @@ import io.verik.compiler.main.m
 object ProjectSerializer : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
+        val outputTextFiles = ArrayList<TextFile>()
+
         m.info("Serialize: Serialize package files")
         val packageTextFiles = PackageFileSerializer.serialize(projectContext)
+        outputTextFiles.addAll(packageTextFiles)
         m.flush()
 
         m.info("Serialize: Serialize order file")
         val orderTextFile = OrderFileSerializer.serialize(projectContext, packageTextFiles)
+        outputTextFiles.add(orderTextFile)
         m.flush()
 
         m.info("Serialize: Serialize source files")
-        val outputTextFiles = ArrayList<TextFile>()
-        outputTextFiles.addAll(packageTextFiles)
-        outputTextFiles.add(orderTextFile)
         projectContext.project.files().forEach {
-            val sourceBuilder = SourceBuilder(projectContext, it)
-            it.accept(BaseSerializerVisitor(sourceBuilder))
-            outputTextFiles.add(sourceBuilder.toTextFile())
+            val sourceTextFile = SourceSerializer.serialize(projectContext, it)
+            outputTextFiles.add(sourceTextFile)
         }
-        projectContext.outputTextFiles = outputTextFiles
         m.flush()
+
+        projectContext.outputTextFiles = outputTextFiles
     }
 }
