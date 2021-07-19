@@ -73,8 +73,7 @@ fun assertOutputTextEquals(expected: String, actual: TextFile) {
     val expectedLines = expected.lines()
         .dropLastWhile { it.isEmpty() }
     val actualLines = actual.content.lines()
-        .let { it.subList(8, it.size) }
-        .let { if (it[0].startsWith("`timescale")) it.drop(2) else it }
+        .let { it.subList(13, it.size) }
         .dropLastWhile { it.isEmpty() }
 
     assertEquals(expectedLines, actualLines)

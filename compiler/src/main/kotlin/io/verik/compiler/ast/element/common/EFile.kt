@@ -17,7 +17,6 @@
 package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.ast.interfaces.ElementContainer
-import io.verik.compiler.ast.property.SourceType
 import io.verik.compiler.common.PackageDeclaration
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
@@ -31,7 +30,6 @@ class EFile(
     val inputPath: Path,
     private val outputPath: Path?,
     val relativePath: Path,
-    val sourceType: SourceType?,
     var packageDeclaration: PackageDeclaration,
     var members: ArrayList<EElement>
 ) : EElement(), ElementContainer {

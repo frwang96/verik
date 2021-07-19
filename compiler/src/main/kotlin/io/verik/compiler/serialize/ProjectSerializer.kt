@@ -27,19 +27,16 @@ object ProjectSerializer : ProjectPass {
         val outputTextFiles = ArrayList<TextFile>()
 
         m.info("Serialize: Serialize package files")
-        val packageTextFiles = PackageFileSerializer.serialize(projectContext)
-        outputTextFiles.addAll(packageTextFiles)
+        outputTextFiles.addAll(PackageFileSerializer.serialize(projectContext))
         m.flush()
 
         m.info("Serialize: Serialize order file")
-        val orderTextFile = OrderFileSerializer.serialize(projectContext, packageTextFiles)
-        outputTextFiles.add(orderTextFile)
+        outputTextFiles.add(OrderFileSerializer.serialize(projectContext))
         m.flush()
 
         m.info("Serialize: Serialize source files")
         projectContext.project.files().forEach {
-            val sourceTextFile = SourceSerializer.serialize(projectContext, it)
-            outputTextFiles.add(sourceTextFile)
+            outputTextFiles.add(SourceSerializer.serialize(projectContext, it))
         }
         m.flush()
 

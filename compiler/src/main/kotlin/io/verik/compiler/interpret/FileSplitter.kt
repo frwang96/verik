@@ -23,7 +23,6 @@ import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvProperty
-import io.verik.compiler.ast.property.SourceType
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.main.ProjectContext
@@ -52,7 +51,6 @@ object FileSplitter : ProjectPass {
                     it.inputPath,
                     componentFilePath,
                     it.relativePath,
-                    SourceType.COMPONENT,
                     CorePackage.ROOT,
                     splitMemberResult.componentMembers
                 )
@@ -66,7 +64,6 @@ object FileSplitter : ProjectPass {
                     it.inputPath,
                     packageFilePath,
                     it.relativePath,
-                    SourceType.PACKAGE,
                     it.packageDeclaration,
                     splitMemberResult.packageMembers
                 )

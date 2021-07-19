@@ -32,18 +32,17 @@ object FileHeaderBuilder {
 
         val builder = StringBuilder()
         when (headerStyle) {
-            HeaderStyle.SYSTEM_VERILOG_UNDECORATED, HeaderStyle.SYSTEM_VERILOG_DECORATED -> {
+            HeaderStyle.SV -> {
                 builder.appendLine("/*")
                 lines.forEach { builder.appendLine(" * $it") }
                 builder.appendLine(" */")
-                if (headerStyle == HeaderStyle.SYSTEM_VERILOG_DECORATED) {
-                    if (projectContext.config.labelLines) {
-                        builder.appendLine()
-                        builder.appendLine("`define _(N)")
-                    }
-                    builder.appendLine()
-                    builder.appendLine("`timescale ${projectContext.config.timescale}")
-                }
+                builder.appendLine()
+                builder.appendLine("`ifndef VERIK")
+                builder.appendLine("`define VERIK")
+                if (projectContext.config.labelLines)
+                    builder.appendLine("`define _(N)")
+                builder.appendLine("`timescale ${projectContext.config.timescale}")
+                builder.appendLine("`endif")
             }
             HeaderStyle.YAML -> {
                 lines.forEach { builder.appendLine("# $it") }
@@ -53,9 +52,5 @@ object FileHeaderBuilder {
         return builder.toString()
     }
 
-    enum class HeaderStyle {
-        SYSTEM_VERILOG_UNDECORATED,
-        SYSTEM_VERILOG_DECORATED,
-        YAML
-    }
+    enum class HeaderStyle { SV, YAML }
 }

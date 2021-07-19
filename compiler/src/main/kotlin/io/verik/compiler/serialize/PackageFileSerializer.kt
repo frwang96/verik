@@ -18,7 +18,6 @@ package io.verik.compiler.serialize
 
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.sv.ESvBasicClass
-import io.verik.compiler.ast.property.SourceType
 import io.verik.compiler.common.PackageDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
@@ -35,12 +34,10 @@ object PackageFileSerializer {
     private fun buildPackageMap(projectContext: ProjectContext): HashMap<PackageDeclaration, ArrayList<EFile>> {
         val packageMap = HashMap<PackageDeclaration, ArrayList<EFile>>()
         projectContext.project.files().forEach {
-            if (it.sourceType == SourceType.PACKAGE) {
-                if (it.packageDeclaration !in packageMap) {
-                    packageMap[it.packageDeclaration] = ArrayList()
-                }
-                packageMap[it.packageDeclaration]!!.add(it)
+            if (it.packageDeclaration !in packageMap) {
+                packageMap[it.packageDeclaration] = ArrayList()
             }
+            packageMap[it.packageDeclaration]!!.add(it)
         }
         return packageMap
     }
@@ -52,7 +49,7 @@ object PackageFileSerializer {
             projectContext,
             inputPath,
             outputPath,
-            FileHeaderBuilder.HeaderStyle.SYSTEM_VERILOG_DECORATED
+            FileHeaderBuilder.HeaderStyle.SV
         )
         val packageName = files[0].packageDeclaration.name
         val indent = " ".repeat(projectContext.config.indentLength)

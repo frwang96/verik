@@ -16,14 +16,13 @@
 
 package io.verik.compiler.serialize
 
-import io.verik.compiler.ast.property.SourceType
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 import java.nio.file.Path
 
 object OrderFileSerializer {
 
-    fun serialize(projectContext: ProjectContext, packageTextFiles: List<TextFile>): TextFile {
+    fun serialize(projectContext: ProjectContext): TextFile {
         val inputPath = projectContext.config.projectDir.resolve("src")
         val outputPath = projectContext.config.buildDir.resolve("order.yaml")
         val fileHeader = FileHeaderBuilder.build(
@@ -32,7 +31,7 @@ object OrderFileSerializer {
             outputPath,
             FileHeaderBuilder.HeaderStyle.YAML
         )
-        val paths = getPaths(projectContext, packageTextFiles)
+        val paths = getPaths(projectContext)
 
         val builder = StringBuilder()
         builder.append(fileHeader)
@@ -45,14 +44,10 @@ object OrderFileSerializer {
         return TextFile(outputPath, builder.toString())
     }
 
-    private fun getPaths(projectContext: ProjectContext, packageTextFiles: List<TextFile>): List<Path> {
+    private fun getPaths(projectContext: ProjectContext): List<Path> {
         val paths = ArrayList<Path>()
-        packageTextFiles.forEach {
-            paths.add(it.path)
-        }
         projectContext.project.files().forEach {
-            if (it.sourceType == SourceType.COMPONENT)
-                paths.add(it.getOutputPathNotNull())
+            paths.add(it.getOutputPathNotNull())
         }
         return paths
     }

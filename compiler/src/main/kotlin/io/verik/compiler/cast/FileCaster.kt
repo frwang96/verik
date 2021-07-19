@@ -44,7 +44,7 @@ object FileCaster {
 
         return FileCasterResult(
             packageName,
-            EFile(location, inputPath, null, relativePath, null, packageDeclaration, ArrayList(members))
+            EFile(location, inputPath, null, relativePath, packageDeclaration, ArrayList(members))
         )
     }
 

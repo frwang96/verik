@@ -18,7 +18,6 @@ package io.verik.compiler.serialize
 
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
-import io.verik.compiler.ast.property.SourceType
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.SourceLocation
 import io.verik.compiler.main.TextFile
@@ -32,15 +31,11 @@ class SourceBuilder(
 
     fun toTextFile(): TextFile {
         val sourceBuilder = StringBuilder()
-        val headerStyle = when (file.sourceType) {
-            SourceType.COMPONENT -> FileHeaderBuilder.HeaderStyle.SYSTEM_VERILOG_DECORATED
-            else -> FileHeaderBuilder.HeaderStyle.SYSTEM_VERILOG_UNDECORATED
-        }
         val fileHeader = FileHeaderBuilder.build(
             projectContext,
             file.inputPath,
             file.getOutputPathNotNull(),
-            headerStyle
+            FileHeaderBuilder.HeaderStyle.SV
         )
         sourceBuilder.append(fileHeader)
 
