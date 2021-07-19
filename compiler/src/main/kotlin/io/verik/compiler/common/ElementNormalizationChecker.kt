@@ -19,6 +19,7 @@ package io.verik.compiler.common
 import io.verik.compiler.ast.element.common.EAbstractClass
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
+import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
@@ -29,9 +30,7 @@ object ElementNormalizationChecker : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
         val elementNormalizationVisitor = ElementNormalizationVisitor()
-        projectContext.files.forEach {
-            it.accept(elementNormalizationVisitor)
-        }
+        projectContext.project.accept(elementNormalizationVisitor)
     }
 
     class ElementNormalizationVisitor : TreeVisitor() {
@@ -49,12 +48,16 @@ object ElementNormalizationChecker : ProjectPass {
             parentStack.pop()
         }
 
-        override fun visitFile(file: EFile) {
-            if (file.parent != null)
-                m.error("Parent element should be null", file)
-            parentStack.push(file)
-            file.acceptChildren(this)
+        override fun visitProject(project: EProject) {
+            if (project.parent != null)
+                m.error("Parent element should be null", project)
+            parentStack.push(project)
+            project.acceptChildren(this)
             parentStack.pop()
+        }
+
+        override fun visitFile(file: EFile) {
+            super.visitFile(file)
             file.members.forEach {
                 if (it !is Declaration)
                     m.fatal("Declaration expected but got: $it", it)

@@ -36,6 +36,14 @@ abstract class Visitor {
         visitExpression(nullExpression)
     }
 
+    open fun visitProject(project: EProject) {
+        visitElement(project)
+    }
+
+    open fun visitBasicPackage(basicPackage: EBasicPackage) {
+        visitElement(basicPackage)
+    }
+
     open fun visitFile(file: EFile) {
         visitElement(file)
     }

@@ -22,24 +22,17 @@ import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.interfaces.cast
 import io.verik.compiler.ast.property.FunctionAnnotationType
-import io.verik.compiler.common.PackageDeclaration
 import io.verik.compiler.common.location
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.descriptorUtil.getSuperClassOrAny
 import org.jetbrains.kotlin.types.typeUtil.isNullableAny
 import org.jetbrains.kotlin.types.typeUtil.representativeUpperBound
-import java.nio.file.Paths
 
-class BaseCasterVisitor(
-    projectContext: ProjectContext,
-    private val castContext: CastContext
-) : KtVisitor<EElement, Unit>() {
+class BaseCasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, Unit>() {
 
-    private val mainDir = projectContext.config.mainDir
     private val expressionCasterVisitor = ExpressionCasterVisitor(castContext)
 
     inline fun <reified T : EElement> getElement(element: KtElement): T? {
@@ -50,30 +43,6 @@ class BaseCasterVisitor(
         m.error("Unrecognized element: $element", element)
         val location = element.location()
         return ENullElement(location)
-    }
-
-    override fun visitKtFile(file: KtFile, data: Unit?): EElement {
-        val location = file.location()
-        val inputPath = Paths.get(file.virtualFilePath)
-        val relativePath = when {
-            inputPath.startsWith(mainDir) -> mainDir.relativize(inputPath)
-            else -> {
-                m.error("File should be located under main source directory", file)
-                return ENullElement(location)
-            }
-        }
-        val packageDeclaration = PackageDeclaration(file.packageFqName.asString())
-        val members = file.declarations.mapNotNull { getElement(it) }
-
-        return EFile(
-            location,
-            inputPath,
-            null,
-            relativePath,
-            null,
-            packageDeclaration,
-            ArrayList(members)
-        )
     }
 
     override fun visitClassOrObject(classOrObject: KtClassOrObject, data: Unit?): EElement {

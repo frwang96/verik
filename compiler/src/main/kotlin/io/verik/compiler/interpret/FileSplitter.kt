@@ -16,6 +16,7 @@
 
 package io.verik.compiler.interpret
 
+import io.verik.compiler.ast.element.common.EBasicPackage
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.sv.EModule
@@ -31,8 +32,13 @@ import io.verik.compiler.main.m
 object FileSplitter : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        val splitFiles = ArrayList<EFile>()
-        projectContext.files.forEach {
+        projectContext.project.basicPackages.forEach { splitBasicPackage(projectContext, it) }
+    }
+
+    // TODO handle root package separately
+    private fun splitBasicPackage(projectContext: ProjectContext, basicPackage: EBasicPackage) {
+        val files = ArrayList<EFile>()
+        basicPackage.files.forEach {
             val baseFilePath = projectContext.config.buildDir
                 .resolve("src")
                 .resolve(it.relativePath)
@@ -50,7 +56,7 @@ object FileSplitter : ProjectPass {
                     CorePackage.ROOT,
                     splitMemberResult.componentMembers
                 )
-                splitFiles.add(componentFile)
+                files.add(componentFile)
             }
 
             if (splitMemberResult.packageMembers.isNotEmpty()) {
@@ -64,10 +70,11 @@ object FileSplitter : ProjectPass {
                     it.packageDeclaration,
                     splitMemberResult.packageMembers
                 )
-                splitFiles.add(packageFile)
+                files.add(packageFile)
             }
         }
-        projectContext.files = splitFiles
+        files.forEach { it.parent = basicPackage }
+        basicPackage.files = files
     }
 
     private fun splitMembers(members: List<EElement>): SplitMembersResult {

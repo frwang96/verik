@@ -36,7 +36,7 @@ object ProjectSerializer : ProjectPass {
         val outputTextFiles = ArrayList<TextFile>()
         outputTextFiles.addAll(packageTextFiles)
         outputTextFiles.add(orderTextFile)
-        projectContext.files.forEach {
+        projectContext.project.files().forEach {
             val sourceBuilder = SourceBuilder(projectContext, it)
             it.accept(BaseSerializerVisitor(sourceBuilder))
             outputTextFiles.add(sourceBuilder.toTextFile())

@@ -28,9 +28,7 @@ import io.verik.compiler.main.m
 object ParenthesisInsertionTransformer : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.files.forEach {
-            it.accept(ParenthesisInsertionVisitor)
-        }
+        projectContext.project.accept(ParenthesisInsertionVisitor)
     }
 
     private fun parenthesize(expression: EExpression) {

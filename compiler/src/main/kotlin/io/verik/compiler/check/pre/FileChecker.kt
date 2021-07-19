@@ -27,9 +27,7 @@ import java.nio.file.Paths
 object FileChecker : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.files.forEach {
-            it.accept(FileVisitor)
-        }
+        projectContext.project.accept(FileVisitor)
     }
 
     object FileVisitor : TreeVisitor() {

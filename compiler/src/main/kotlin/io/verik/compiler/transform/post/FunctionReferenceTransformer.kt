@@ -40,9 +40,7 @@ object FunctionReferenceTransformer : ProjectPass {
     }
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.files.forEach {
-            it.accept(FunctionReferenceVisitor)
-        }
+        projectContext.project.accept(FunctionReferenceVisitor)
     }
 
     object FunctionReferenceVisitor : TreeVisitor() {

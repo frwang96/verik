@@ -26,9 +26,7 @@ import io.verik.compiler.main.ProjectContext
 object PackageNameTransformer : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.files.forEach {
-            it.accept(PackageNameVisitor)
-        }
+        projectContext.project.accept(PackageNameVisitor)
     }
 
     object PackageNameVisitor : TreeVisitor() {

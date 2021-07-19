@@ -36,9 +36,7 @@ object UnaryExpressionReducer : ProjectPass {
     }
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.files.forEach {
-            it.accept(UnaryExpressionVisitor)
-        }
+        projectContext.project.accept(UnaryExpressionVisitor)
     }
 
     data class ReducerEntry(

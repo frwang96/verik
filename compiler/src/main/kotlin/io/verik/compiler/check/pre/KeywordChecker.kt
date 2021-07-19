@@ -26,9 +26,7 @@ import io.verik.compiler.main.m
 object KeywordChecker : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.files.forEach {
-            it.accept(KeywordVisitor)
-        }
+        projectContext.project.accept(KeywordVisitor)
     }
 
     object KeywordVisitor : TreeVisitor() {

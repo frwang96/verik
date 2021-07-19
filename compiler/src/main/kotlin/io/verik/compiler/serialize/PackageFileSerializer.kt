@@ -34,7 +34,7 @@ object PackageFileSerializer {
 
     private fun buildPackageMap(projectContext: ProjectContext): HashMap<PackageDeclaration, ArrayList<EFile>> {
         val packageMap = HashMap<PackageDeclaration, ArrayList<EFile>>()
-        projectContext.files.forEach {
+        projectContext.project.files().forEach {
             if (it.sourceType == SourceType.PACKAGE) {
                 if (it.packageDeclaration !in packageMap) {
                     packageMap[it.packageDeclaration] = ArrayList()

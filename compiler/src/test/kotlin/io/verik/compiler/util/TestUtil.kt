@@ -89,9 +89,7 @@ fun ProjectContext.findDeclaration(name: String): EElement {
                 declarations.add(element)
         }
     }
-    files.forEach {
-        it.accept(declarationVisitor)
-    }
+    project.accept(declarationVisitor)
     when (declarationVisitor.declarations.size) {
         0 -> throw IllegalArgumentException("Could not find declaration")
         1 -> {}
@@ -125,9 +123,7 @@ fun ProjectContext.findExpression(name: String): EExpression {
             }
         }
     }
-    files.forEach {
-        it.accept(expressionVisitor)
-    }
+    project.accept(expressionVisitor)
     when (expressionVisitor.expressions.size) {
         0 -> throw IllegalArgumentException("Could not find expression")
         1 -> {}

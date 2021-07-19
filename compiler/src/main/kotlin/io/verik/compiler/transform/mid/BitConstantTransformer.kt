@@ -28,9 +28,7 @@ import io.verik.compiler.main.m
 object BitConstantTransformer : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.files.forEach {
-            it.accept(BitConstantVisitor)
-        }
+        projectContext.project.accept(BitConstantVisitor)
     }
 
     private fun toHexString(value: String, width: Int, element: EElement): String {

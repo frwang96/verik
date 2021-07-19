@@ -16,7 +16,7 @@
 
 package io.verik.compiler.main
 
-import io.verik.compiler.ast.element.common.EFile
+import io.verik.compiler.ast.element.common.EProject
 import io.verik.plugin.Config
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.resolve.BindingContext
@@ -28,6 +28,6 @@ class ProjectContext(
     lateinit var inputTextFiles: List<TextFile>
     lateinit var ktFiles: List<KtFile>
     lateinit var bindingContext: BindingContext
-    lateinit var files: List<EFile>
+    lateinit var project: EProject
     lateinit var outputTextFiles: List<TextFile>
 }

@@ -33,9 +33,7 @@ import io.verik.compiler.main.m
 object StringTemplateExpressionReducer : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.files.forEach {
-            it.accept(StringTemplateExpressionVisitor)
-        }
+        projectContext.project.accept(StringTemplateExpressionVisitor)
     }
 
     private fun getFormatSpecifier(expression: EExpression): String {

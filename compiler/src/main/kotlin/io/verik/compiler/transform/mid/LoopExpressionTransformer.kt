@@ -27,9 +27,7 @@ import io.verik.compiler.main.ProjectContext
 object LoopExpressionTransformer : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.files.forEach {
-            it.accept(LoopExpressionVisitor)
-        }
+        projectContext.project.accept(LoopExpressionVisitor)
     }
 
     object LoopExpressionVisitor : TreeVisitor() {

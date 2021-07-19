@@ -43,9 +43,7 @@ class MemberReplacer(val projectContext: ProjectContext) {
 
     fun updateReferences() {
         val referenceUpdateVisitor = ReferenceUpdateVisitor(replacementMap)
-        projectContext.files.forEach {
-            it.accept(referenceUpdateVisitor)
-        }
+        projectContext.project.accept(referenceUpdateVisitor)
         replacementMap.clear()
     }
 

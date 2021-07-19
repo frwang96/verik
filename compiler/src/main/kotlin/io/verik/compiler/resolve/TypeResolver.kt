@@ -29,7 +29,7 @@ import io.verik.compiler.main.ProjectContext
 object TypeResolver : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.files.forEach { it.accept(TypeResolverVisitor) }
+        projectContext.project.accept(TypeResolverVisitor)
     }
 
     object TypeResolverVisitor : TreeVisitor() {

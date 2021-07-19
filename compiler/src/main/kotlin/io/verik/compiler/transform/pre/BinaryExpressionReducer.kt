@@ -41,9 +41,7 @@ object BinaryExpressionReducer : ProjectPass {
     }
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.files.forEach {
-            it.accept(BinaryExpressionVisitor)
-        }
+        projectContext.project.accept(BinaryExpressionVisitor)
     }
 
     data class ReducerEntry(

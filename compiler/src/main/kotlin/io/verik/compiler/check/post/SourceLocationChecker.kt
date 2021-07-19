@@ -26,7 +26,7 @@ import java.nio.file.Path
 object SourceLocationChecker : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.files.forEach {
+        projectContext.project.files().forEach {
             val sourceLocationVisitor = SourceLocationVisitor(projectContext, it.inputPath)
             it.accept(sourceLocationVisitor)
         }

@@ -29,7 +29,7 @@ object ElementCounter : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
         val elementVisitor = ElementVisitor()
-        projectContext.files.forEach { it.accept(elementVisitor) }
+        projectContext.project.accept(elementVisitor)
         m.log("Count: Files: ${elementVisitor.fileCount}")
         m.log("Count: Classes: ${elementVisitor.classCount}")
         m.log("Count: Functions: ${elementVisitor.functionCount}")

@@ -32,9 +32,7 @@ object MemberInterpreter : ProjectPass {
     override fun pass(projectContext: ProjectContext) {
         val memberReplacer = MemberReplacer(projectContext)
         val memberVisitor = MemberVisitor(memberReplacer)
-        projectContext.files.forEach {
-            it.accept(memberVisitor)
-        }
+        projectContext.project.accept(memberVisitor)
         memberReplacer.updateReferences()
     }
 

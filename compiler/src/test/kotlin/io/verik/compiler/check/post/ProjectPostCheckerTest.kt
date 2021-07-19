@@ -30,7 +30,7 @@ internal class ProjectPostCheckerTest : BaseTest() {
         assertThrows<TestFatalException> {
             TestDriver.postCheck("")
         }.apply {
-            assertEquals("Output files empty: No declarations found", message)
+            assertEquals("Output empty: No project files found", message)
         }
     }
 }

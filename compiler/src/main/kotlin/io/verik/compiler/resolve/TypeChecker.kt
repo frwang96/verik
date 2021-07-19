@@ -25,7 +25,7 @@ import io.verik.compiler.main.m
 object TypeChecker : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.files.forEach { it.accept(TypeCheckerVisitor) }
+        projectContext.project.accept(TypeCheckerVisitor)
     }
 
     object TypeCheckerVisitor : TreeVisitor() {

@@ -16,9 +16,12 @@
 
 package io.verik.compiler.cast
 
+import io.verik.compiler.ast.element.common.EBasicPackage
 import io.verik.compiler.ast.element.common.EFile
+import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.SourceLocation
 import io.verik.compiler.main.m
 
 object ProjectCaster : ProjectPass {
@@ -39,11 +42,22 @@ object ProjectCaster : ProjectPass {
         m.flush()
 
         m.log("Cast: Cast syntax trees")
-        val baseCasterVisitor = BaseCasterVisitor(projectContext, castContext)
-        val files = projectContext.ktFiles.mapNotNull {
-            baseCasterVisitor.getElement<EFile>(it)
+        val files = HashMap<String, ArrayList<EFile>>()
+        projectContext.ktFiles.forEach {
+            val fileCasterResult = FileCaster.cast(projectContext, castContext, it)
+            if (fileCasterResult != null) {
+                if (fileCasterResult.packageName !in files)
+                    files[fileCasterResult.packageName] = ArrayList()
+                files[fileCasterResult.packageName]!!.add(fileCasterResult.file)
+            }
         }
-        projectContext.files = files
+        val basicPackages = ArrayList<EBasicPackage>()
+        files.forEach { (packageName, files) ->
+            val location = SourceLocation(0, 0, files[0].inputPath.parent, null)
+            basicPackages.add(EBasicPackage(location, packageName, files))
+        }
+        val project = EProject(SourceLocation(0, 0, projectContext.config.mainDir, null), basicPackages)
+        projectContext.project = project
         m.flush()
 
         if (projectContext.config.debug) {

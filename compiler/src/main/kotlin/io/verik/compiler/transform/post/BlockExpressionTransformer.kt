@@ -27,9 +27,7 @@ import io.verik.compiler.main.ProjectContext
 object BlockExpressionTransformer : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.files.forEach {
-            it.accept(BlockExpressionVisitor)
-        }
+        projectContext.project.accept(BlockExpressionVisitor)
     }
 
     object BlockExpressionVisitor : TreeVisitor() {

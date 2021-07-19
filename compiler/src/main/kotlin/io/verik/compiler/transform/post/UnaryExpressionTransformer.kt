@@ -34,9 +34,7 @@ object UnaryExpressionTransformer : ProjectPass {
     }
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.files.forEach {
-            it.accept(UnaryExpressionVisitor)
-        }
+        projectContext.project.accept(UnaryExpressionVisitor)
     }
 
     object UnaryExpressionVisitor : TreeVisitor() {

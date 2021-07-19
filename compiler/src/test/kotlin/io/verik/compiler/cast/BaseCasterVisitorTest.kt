@@ -24,47 +24,6 @@ import org.junit.jupiter.api.assertThrows
 internal class BaseCasterVisitorTest : BaseTest() {
 
     @Test
-    fun `file empty`() {
-        val projectContext = TestDriver.cast("")
-        assertElementEquals(
-            "File([])",
-            projectContext.files.first()
-        )
-    }
-
-    @Test
-    fun `file class`() {
-        val projectContext = TestDriver.cast(
-            """
-                class C
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "File([KtBasicClass(C, [], [])])",
-            projectContext.files.first()
-        )
-    }
-
-    @Test
-    fun `file classes`() {
-        val projectContext = TestDriver.cast(
-            """
-                class C
-                class D
-            """.trimIndent()
-        )
-        assertElementEquals(
-            """
-                File([
-                    KtBasicClass(C, [], []),
-                    KtBasicClass(D, [], [])
-                ])
-            """.trimIndent(),
-            projectContext.files.first()
-        )
-    }
-
-    @Test
     fun `class with class`() {
         val projectContext = TestDriver.cast(
             """

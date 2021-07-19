@@ -33,6 +33,19 @@ class ElementPrinter : Visitor() {
         build("NullExpression") {}
     }
 
+    override fun visitProject(project: EProject) {
+        build("Project") {
+            build(project.basicPackages)
+        }
+    }
+
+    override fun visitBasicPackage(basicPackage: EBasicPackage) {
+        build("BasicPackage") {
+            build(basicPackage.name)
+            build(basicPackage.files)
+        }
+    }
+
     override fun visitFile(file: EFile) {
         build("File") {
             build(file.members)

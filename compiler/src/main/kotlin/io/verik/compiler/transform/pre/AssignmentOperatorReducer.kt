@@ -32,9 +32,7 @@ object AssignmentOperatorReducer : ProjectPass {
     }
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.files.forEach {
-            it.accept(AssignmentOperatorVisitor)
-        }
+        projectContext.project.accept(AssignmentOperatorVisitor)
     }
 
     object AssignmentOperatorVisitor : TreeVisitor() {

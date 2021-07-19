@@ -24,8 +24,8 @@ import io.verik.compiler.main.m
 object ProjectPostChecker : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        if (projectContext.files.isEmpty())
-            m.fatal("Output files empty: No declarations found", null)
+        if (projectContext.project.files().isEmpty())
+            m.fatal("Output empty: No project files found", null)
 
         m.log("PostCheck: Check untransformed elements")
         UntransformedElementChecker.pass(projectContext)

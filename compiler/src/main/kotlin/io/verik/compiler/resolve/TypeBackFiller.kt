@@ -27,7 +27,7 @@ import io.verik.compiler.main.ProjectContext
 object TypeBackFiller : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.files.forEach { it.accept(TypeBackFillerVisitor) }
+        projectContext.project.accept(TypeBackFillerVisitor)
     }
 
     object TypeBackFillerVisitor : TreeVisitor() {

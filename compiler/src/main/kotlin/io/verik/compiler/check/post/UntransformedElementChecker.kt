@@ -28,9 +28,7 @@ import io.verik.compiler.main.m
 object UntransformedElementChecker : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.files.forEach {
-            it.accept(UntransformedElementVisitor)
-        }
+        projectContext.project.accept(UntransformedElementVisitor)
     }
 
     object UntransformedElementVisitor : TreeVisitor() {

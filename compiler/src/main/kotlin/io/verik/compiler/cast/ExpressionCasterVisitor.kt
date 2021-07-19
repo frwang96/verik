@@ -20,9 +20,7 @@ import io.verik.compiler.ast.element.common.*
 import io.verik.compiler.ast.element.kt.*
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.KtUnaryOperatorKind
-import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.NullDeclaration
-import io.verik.compiler.common.PackageDeclaration
 import io.verik.compiler.common.location
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.m
@@ -39,16 +37,6 @@ class ExpressionCasterVisitor(private val castContext: CastContext) : KtVisitor<
     fun getExpression(expression: KtExpression): EExpression {
         val location = expression.location()
         return getElement(expression) ?: ENullExpression(location)
-    }
-
-    private fun getPackageSimpleNameExpression(expression: KtExpression): ESimpleNameExpression? {
-        val location = expression.location()
-        val descriptor = castContext.bindingContext.getSliceContents(BindingContext.REFERENCE_TARGET)[expression]
-        return if (descriptor is PackageViewDescriptor) {
-            val declaration = PackageDeclaration(descriptor.fqName.asString())
-            val type = Type(declaration, arrayListOf())
-            ESimpleNameExpression(location, type, declaration, null)
-        } else null
     }
 
     override fun visitKtElement(element: KtElement, data: Unit?): EElement {
@@ -92,7 +80,6 @@ class ExpressionCasterVisitor(private val castContext: CastContext) : KtVisitor<
     }
 
     override fun visitSimpleNameExpression(expression: KtSimpleNameExpression, data: Unit?): EElement {
-        getPackageSimpleNameExpression(expression)?.let { return it }
         val location = expression.location()
         val descriptor = castContext.bindingContext.getSliceContents(BindingContext.REFERENCE_TARGET)[expression]!!
         val type = castContext.castType(expression)
@@ -133,10 +120,20 @@ class ExpressionCasterVisitor(private val castContext: CastContext) : KtVisitor<
     }
 
     override fun visitDotQualifiedExpression(expression: KtDotQualifiedExpression, data: Unit?): EElement {
-        getPackageSimpleNameExpression(expression.selectorExpression!!)?.let { return it }
         val location = expression.location()
         val type = castContext.castType(expression)
-        val receiver = getExpression(expression.receiverExpression)
+
+        // Drop receiver if reference target is a package
+        val packageViewDescriptor = when (val receiver = expression.receiverExpression) {
+            is KtSimpleNameExpression -> castContext.bindingContext
+                .getSliceContents(BindingContext.REFERENCE_TARGET)[receiver]
+            is KtDotQualifiedExpression -> castContext.bindingContext
+                .getSliceContents(BindingContext.REFERENCE_TARGET)[receiver.selectorExpression]
+            else -> null
+        }
+        val receiver = if (packageViewDescriptor is PackageViewDescriptor) null
+        else getExpression(expression.receiverExpression)
+
         return when (val selector = expression.selectorExpression) {
             is KtSimpleNameExpression -> {
                 val descriptor = castContext.bindingContext

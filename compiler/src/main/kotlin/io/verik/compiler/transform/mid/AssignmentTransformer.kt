@@ -27,9 +27,7 @@ import io.verik.compiler.main.ProjectContext
 object AssignmentTransformer : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.files.forEach {
-            it.accept(AssignmentVisitor)
-        }
+        projectContext.project.accept(AssignmentVisitor)
     }
 
     object AssignmentVisitor : TreeVisitor() {
