@@ -22,7 +22,9 @@ import io.verik.compiler.main.TextFile
 
 object SourceSerializer {
 
-    fun serialize(projectContext: ProjectContext, file: EFile): TextFile {
+    fun serialize(projectContext: ProjectContext, file: EFile): TextFile? {
+        if (file.members.isEmpty())
+            return null
         val sourceBuilder = SourceBuilder(projectContext, file)
         val baseSourceBuilder = BaseSerializerVisitor(sourceBuilder)
         file.accept(baseSourceBuilder)

@@ -16,7 +16,6 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.common.EBasicPackage
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.sv.EModule
@@ -31,47 +30,47 @@ import io.verik.compiler.main.m
 object FileSplitter : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.project.basicPackages.forEach { splitBasicPackage(projectContext, it) }
-    }
+        val componentFiles = ArrayList<EFile>()
+        projectContext.project.basicPackages.forEach { basicPackage ->
+            val packageFiles = ArrayList<EFile>()
+            basicPackage.files.forEach {
+                val baseFilePath = projectContext.config.buildDir
+                    .resolve("src")
+                    .resolve(it.relativePath)
+                val baseFileName = baseFilePath.fileName.toString().removeSuffix(".kt")
+                val splitMemberResult = splitMembers(it.members)
 
-    // TODO handle root package separately
-    private fun splitBasicPackage(projectContext: ProjectContext, basicPackage: EBasicPackage) {
-        val files = ArrayList<EFile>()
-        basicPackage.files.forEach {
-            val baseFilePath = projectContext.config.buildDir
-                .resolve("src")
-                .resolve(it.relativePath)
-            val baseFileName = baseFilePath.fileName.toString().removeSuffix(".kt")
-            val splitMemberResult = splitMembers(it.members)
+                if (splitMemberResult.componentMembers.isNotEmpty()) {
+                    val componentFilePath = baseFilePath.resolveSibling("$baseFileName.sv")
+                    val componentFile = EFile(
+                        it.location,
+                        it.inputPath,
+                        componentFilePath,
+                        it.relativePath,
+                        CorePackage.ROOT,
+                        splitMemberResult.componentMembers
+                    )
+                    componentFiles.add(componentFile)
+                }
 
-            if (splitMemberResult.componentMembers.isNotEmpty()) {
-                val componentFilePath = baseFilePath.resolveSibling("$baseFileName.sv")
-                val componentFile = EFile(
-                    it.location,
-                    it.inputPath,
-                    componentFilePath,
-                    it.relativePath,
-                    CorePackage.ROOT,
-                    splitMemberResult.componentMembers
-                )
-                files.add(componentFile)
+                if (splitMemberResult.packageMembers.isNotEmpty()) {
+                    val packageFilePath = baseFilePath.resolveSibling("$baseFileName.svh")
+                    val packageFile = EFile(
+                        it.location,
+                        it.inputPath,
+                        packageFilePath,
+                        it.relativePath,
+                        it.packageDeclaration,
+                        splitMemberResult.packageMembers
+                    )
+                    packageFiles.add(packageFile)
+                }
             }
-
-            if (splitMemberResult.packageMembers.isNotEmpty()) {
-                val packageFilePath = baseFilePath.resolveSibling("$baseFileName.svh")
-                val packageFile = EFile(
-                    it.location,
-                    it.inputPath,
-                    packageFilePath,
-                    it.relativePath,
-                    it.packageDeclaration,
-                    splitMemberResult.packageMembers
-                )
-                files.add(packageFile)
-            }
+            packageFiles.forEach { it.parent = basicPackage }
+            basicPackage.files = packageFiles
         }
-        files.forEach { it.parent = basicPackage }
-        basicPackage.files = files
+        componentFiles.forEach { it.parent = projectContext.project.rootPackage }
+        projectContext.project.rootPackage.files = componentFiles
     }
 
     private fun splitMembers(members: List<EElement>): SplitMembersResult {

@@ -38,4 +38,8 @@ class EBasicPackage(
     override fun acceptChildren(visitor: TreeVisitor) {
         files.forEach { it.accept(visitor) }
     }
+
+    fun isEmpty(): Boolean {
+        return files.all { it.members.isEmpty() }
+    }
 }

@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.common.EBasicPackage
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.common.ProjectPass
+import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.SourceLocation
 import io.verik.compiler.main.m
@@ -56,7 +57,9 @@ object ProjectCaster : ProjectPass {
             val location = SourceLocation(0, 0, files[0].inputPath.parent, null)
             basicPackages.add(EBasicPackage(location, packageName, files))
         }
-        val project = EProject(SourceLocation(0, 0, projectContext.config.mainDir, null), basicPackages)
+        val projectLocation = SourceLocation(0, 0, projectContext.config.mainDir, null)
+        val rootPackage = EBasicPackage(projectLocation, CorePackage.ROOT.name, ArrayList())
+        val project = EProject(projectLocation, basicPackages, rootPackage)
         projectContext.project = project
         m.flush()
 

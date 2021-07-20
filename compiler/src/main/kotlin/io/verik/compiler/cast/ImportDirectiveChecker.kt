@@ -32,7 +32,7 @@ object ImportDirectiveChecker : ProjectPass {
             val packageName = it.packageFqName.asString()
             if (packageName == "")
                 m.fatal("Use of the root package is prohibited", it)
-            if (packageName in listOf(CorePackage.VK.name, CorePackage.SV.name))
+            if (packageName in listOf(CorePackage.VK.name, CorePackage.SV.name, CorePackage.ROOT.name))
                 m.fatal("Package name is reserved: $packageName", it)
             packageNames.add(it.packageFqName.toString())
         }

@@ -20,8 +20,8 @@ import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.common.PackageDeclaration
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.m
 
 object PackageNameTransformer : ProjectPass {
 
@@ -34,7 +34,7 @@ object PackageNameTransformer : ProjectPass {
         private fun transformPackageName(packageDeclaration: PackageDeclaration): PackageDeclaration {
             val name = packageDeclaration.name
             return if (name == "") {
-                CorePackage.ROOT
+                m.fatal("Invalid package name: Package name cannot be empty", null)
             } else {
                 val names = name.split(".")
                 PackageDeclaration(names.joinToString(separator = "_", postfix = "_pkg"))

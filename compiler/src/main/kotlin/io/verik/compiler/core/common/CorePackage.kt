@@ -20,7 +20,7 @@ import io.verik.compiler.common.PackageDeclaration
 
 object CorePackage {
 
-    val ROOT = PackageDeclaration("")
+    val ROOT = PackageDeclaration("root")
     val KT = PackageDeclaration("kotlin")
     val KT_IO = PackageDeclaration("kotlin.io")
     val VK = PackageDeclaration("io.verik.core")

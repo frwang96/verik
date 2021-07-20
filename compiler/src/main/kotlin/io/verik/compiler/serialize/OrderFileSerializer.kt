@@ -46,8 +46,16 @@ object OrderFileSerializer {
 
     private fun getPaths(projectContext: ProjectContext): List<Path> {
         val paths = ArrayList<Path>()
-        projectContext.project.files().forEach {
-            paths.add(it.getOutputPathNotNull())
+        projectContext.project.basicPackages.forEach {
+            if (!it.isEmpty()) {
+                // TODO add path to EBasicPackage
+                val outputPath = it.files[0].getOutputPathNotNull().parent.resolve("Pkg.sv")
+                paths.add(outputPath)
+            }
+        }
+        projectContext.project.rootPackage.files.forEach {
+            if (it.members.isNotEmpty())
+                paths.add(it.getOutputPathNotNull())
         }
         return paths
     }
