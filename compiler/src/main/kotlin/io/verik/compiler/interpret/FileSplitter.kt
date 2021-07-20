@@ -34,19 +34,15 @@ object FileSplitter : ProjectPass {
         projectContext.project.basicPackages.forEach { basicPackage ->
             val packageFiles = ArrayList<EFile>()
             basicPackage.files.forEach {
-                val baseFilePath = projectContext.config.buildDir
-                    .resolve("src")
-                    .resolve(it.relativePath)
-                val baseFileName = baseFilePath.fileName.toString().removeSuffix(".kt")
+                val baseFileName = it.inputPath.fileName.toString().removeSuffix(".kt")
                 val splitMemberResult = splitMembers(it.members)
 
                 if (splitMemberResult.componentMembers.isNotEmpty()) {
-                    val componentFilePath = baseFilePath.resolveSibling("$baseFileName.sv")
+                    val componentFilePath = basicPackage.outputPath.resolve("$baseFileName.sv")
                     val componentFile = EFile(
                         it.location,
                         it.inputPath,
                         componentFilePath,
-                        it.relativePath,
                         CorePackage.ROOT,
                         splitMemberResult.componentMembers
                     )
@@ -54,12 +50,11 @@ object FileSplitter : ProjectPass {
                 }
 
                 if (splitMemberResult.packageMembers.isNotEmpty()) {
-                    val packageFilePath = baseFilePath.resolveSibling("$baseFileName.svh")
+                    val packageFilePath = basicPackage.outputPath.resolve("$baseFileName.svh")
                     val packageFile = EFile(
                         it.location,
                         it.inputPath,
                         packageFilePath,
-                        it.relativePath,
                         it.packageDeclaration,
                         splitMemberResult.packageMembers
                     )

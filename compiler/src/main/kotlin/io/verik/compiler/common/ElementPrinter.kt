@@ -36,6 +36,7 @@ class ElementPrinter : Visitor() {
     override fun visitProject(project: EProject) {
         build("Project") {
             build(project.basicPackages)
+            build(project.rootPackage)
         }
     }
 
@@ -43,6 +44,13 @@ class ElementPrinter : Visitor() {
         build("BasicPackage") {
             build(basicPackage.name)
             build(basicPackage.files)
+        }
+    }
+
+    override fun visitRootPackage(rootPackage: ERootPackage) {
+        build("RootPackage") {
+            build(rootPackage.name)
+            build(rootPackage.files)
         }
     }
 

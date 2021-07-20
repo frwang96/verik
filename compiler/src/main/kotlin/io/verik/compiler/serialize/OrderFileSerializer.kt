@@ -23,7 +23,7 @@ import java.nio.file.Path
 object OrderFileSerializer {
 
     fun serialize(projectContext: ProjectContext): TextFile {
-        val inputPath = projectContext.config.projectDir.resolve("src")
+        val inputPath = projectContext.config.inputSourceDir
         val outputPath = projectContext.config.buildDir.resolve("order.yaml")
         val fileHeader = FileHeaderBuilder.build(
             projectContext,
@@ -47,11 +47,8 @@ object OrderFileSerializer {
     private fun getPaths(projectContext: ProjectContext): List<Path> {
         val paths = ArrayList<Path>()
         projectContext.project.basicPackages.forEach {
-            if (!it.isEmpty()) {
-                // TODO add path to EBasicPackage
-                val outputPath = it.files[0].getOutputPathNotNull().parent.resolve("Pkg.sv")
-                paths.add(outputPath)
-            }
+            if (!it.isEmpty())
+                paths.add(it.outputPath.resolve("Pkg.sv"))
         }
         projectContext.project.rootPackage.files.forEach {
             if (it.members.isNotEmpty())

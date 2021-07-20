@@ -16,10 +16,7 @@
 
 package io.verik.compiler.check.pre
 
-import io.verik.compiler.ast.element.common.EFile
-import io.verik.compiler.common.PackageDeclaration
 import io.verik.compiler.common.ProjectPass
-import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 import java.nio.file.Paths
@@ -27,20 +24,13 @@ import java.nio.file.Paths
 object FileChecker : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.project.accept(FileVisitor)
-    }
-
-    object FileVisitor : TreeVisitor() {
-
-        override fun visitFile(file: EFile) {
-            val pathPackageDeclaration = (0 until (file.relativePath.nameCount - 1))
-                .joinToString(separator = ".") { file.relativePath.getName(it).toString() }
-                .let { PackageDeclaration(it) }
-
-            if (file.packageDeclaration != pathPackageDeclaration)
-                m.error("Package directive does not match file location", file)
-            if (file.inputPath.fileName == Paths.get("Pkg.kt"))
-                m.error("File name is reserved: ${file.inputPath.fileName}", file)
+        projectContext.project.basicPackages.forEach { basicPackage ->
+            basicPackage.files.forEach {
+                if (it.inputPath.parent != basicPackage.inputPath)
+                    m.error("Package directive does not match file location", it)
+                if (it.inputPath.fileName == Paths.get("Pkg.kt"))
+                    m.error("File name is reserved: ${it.inputPath.fileName}", it)
+            }
         }
     }
 }

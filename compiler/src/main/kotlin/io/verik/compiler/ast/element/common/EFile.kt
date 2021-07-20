@@ -29,7 +29,6 @@ class EFile(
     override val location: SourceLocation,
     val inputPath: Path,
     private val outputPath: Path?,
-    val relativePath: Path,
     var packageDeclaration: PackageDeclaration,
     var members: ArrayList<EElement>
 ) : EElement(), ElementContainer {

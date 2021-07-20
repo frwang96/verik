@@ -17,22 +17,21 @@
 package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.common.Visitor
+import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.main.SourceLocation
-import java.nio.file.Path
 
-class EBasicPackage(
+class ERootPackage(
     override val location: SourceLocation,
-    override var name: String,
-    override var files: ArrayList<EFile>,
-    val inputPath: Path,
-    val outputPath: Path
+    override var files: ArrayList<EFile>
 ) : EAbstractPackage() {
+
+    override var name = CorePackage.ROOT.name
 
     init {
         files.forEach { it.parent = this }
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitBasicPackage(this)
+        visitor.visitRootPackage(this)
     }
 }

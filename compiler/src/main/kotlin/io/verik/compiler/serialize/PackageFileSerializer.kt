@@ -27,9 +27,8 @@ object PackageFileSerializer {
         if (basicPackage.files.isEmpty())
             return null
 
-        // TODO add paths to EBasicPackage
-        val inputPath = basicPackage.files[0].inputPath.parent
-        val outputPath = basicPackage.files[0].getOutputPathNotNull().parent.resolve("Pkg.sv")
+        val inputPath = basicPackage.inputPath
+        val outputPath = basicPackage.outputPath.resolve("Pkg.sv")
         val fileHeader = FileHeaderBuilder.build(
             projectContext,
             inputPath,

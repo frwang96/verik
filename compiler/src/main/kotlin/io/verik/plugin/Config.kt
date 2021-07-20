@@ -38,7 +38,8 @@ data class Config(
     val indentLength: Int
 ) {
 
-    val mainDir: Path = projectDir.resolve("src/main/kotlin")
+    val inputSourceDir: Path = projectDir.resolve("src/main/kotlin")
+    val outputSourceDir: Path = buildDir.resolve("src")
     val version = "verik:1.0-SNAPSHOT"
     val timescale = "1ns / 1ns"
 
@@ -52,7 +53,7 @@ data class Config(
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss")),
                 project.name,
                 project.projectDir.toPath(),
-                getOutputDir(project),
+                getBuildDir(project),
                 getInputFiles(project),
                 top,
                 extension.verbose || extension.debug,
@@ -76,7 +77,7 @@ data class Config(
                 .sorted()
         }
 
-        fun getOutputDir(project: Project): Path {
+        fun getBuildDir(project: Project): Path {
             return project.buildDir.resolve("verik").toPath()
         }
     }

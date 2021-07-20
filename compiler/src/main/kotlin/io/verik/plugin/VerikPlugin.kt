@@ -57,6 +57,6 @@ class VerikPlugin : Plugin<Project> {
         task.inputs.property("wrapLength", { extension.wrapLength })
         task.inputs.property("indentLength", { extension.indentLength })
         Config.getInputFiles(project).forEach { task.inputs.file(it) }
-        task.outputs.dir(Config.getOutputDir(project))
+        task.outputs.dir(Config.getBuildDir(project))
     }
 }

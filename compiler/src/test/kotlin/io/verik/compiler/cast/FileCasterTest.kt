@@ -27,7 +27,7 @@ internal class FileCasterTest : BaseTest() {
     fun `project empty`() {
         val projectContext = TestDriver.cast("")
         assertElementEquals(
-            "Project([BasicPackage(verik, [File([])])])",
+            "Project([BasicPackage(verik, [File([])])], RootPackage(root, []))",
             projectContext.project
         )
     }

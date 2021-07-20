@@ -23,7 +23,7 @@ import io.verik.compiler.main.SourceLocation
 class EProject(
     override val location: SourceLocation,
     val basicPackages: ArrayList<EBasicPackage>,
-    val rootPackage: EBasicPackage
+    val rootPackage: ERootPackage
 ) : EElement() {
 
     init {

@@ -16,23 +16,18 @@
 
 package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.common.Visitor
-import io.verik.compiler.main.SourceLocation
-import java.nio.file.Path
+import io.verik.compiler.ast.interfaces.Declaration
+import io.verik.compiler.common.TreeVisitor
 
-class EBasicPackage(
-    override val location: SourceLocation,
-    override var name: String,
-    override var files: ArrayList<EFile>,
-    val inputPath: Path,
-    val outputPath: Path
-) : EAbstractPackage() {
+abstract class EAbstractPackage : EElement(), Declaration {
 
-    init {
-        files.forEach { it.parent = this }
+    abstract var files: ArrayList<EFile>
+
+    override fun acceptChildren(visitor: TreeVisitor) {
+        files.forEach { it.accept(visitor) }
     }
 
-    override fun accept(visitor: Visitor) {
-        visitor.visitBasicPackage(this)
+    fun isEmpty(): Boolean {
+        return files.all { it.members.isEmpty() }
     }
 }

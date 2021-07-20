@@ -19,11 +19,12 @@ package io.verik.compiler.cast
 import io.verik.compiler.ast.element.common.EBasicPackage
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.EProject
+import io.verik.compiler.ast.element.common.ERootPackage
 import io.verik.compiler.common.ProjectPass
-import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.SourceLocation
 import io.verik.compiler.main.m
+import java.nio.file.FileSystems
 
 object ProjectCaster : ProjectPass {
 
@@ -43,28 +44,34 @@ object ProjectCaster : ProjectPass {
         m.flush()
 
         m.log("Cast: Cast syntax trees")
-        val files = HashMap<String, ArrayList<EFile>>()
-        projectContext.ktFiles.forEach {
-            val fileCasterResult = FileCaster.cast(projectContext, castContext, it)
-            if (fileCasterResult != null) {
-                if (fileCasterResult.packageName !in files)
-                    files[fileCasterResult.packageName] = ArrayList()
-                files[fileCasterResult.packageName]!!.add(fileCasterResult.file)
-            }
-        }
-        val basicPackages = ArrayList<EBasicPackage>()
-        files.forEach { (packageName, files) ->
-            val location = SourceLocation(0, 0, files[0].inputPath.parent, null)
-            basicPackages.add(EBasicPackage(location, packageName, files))
-        }
-        val projectLocation = SourceLocation(0, 0, projectContext.config.mainDir, null)
-        val rootPackage = EBasicPackage(projectLocation, CorePackage.ROOT.name, ArrayList())
-        val project = EProject(projectLocation, basicPackages, rootPackage)
-        projectContext.project = project
+        castSyntaxTrees(projectContext, castContext)
         m.flush()
 
         if (projectContext.config.debug) {
             ElementCounter.pass(projectContext)
         }
+    }
+
+    private fun castSyntaxTrees(projectContext: ProjectContext, castContext: CastContext) {
+        val files = HashMap<String, ArrayList<EFile>>()
+        projectContext.ktFiles.forEach {
+            val fileCasterResult = FileCaster.cast(castContext, it)
+            if (fileCasterResult.packageName !in files)
+                files[fileCasterResult.packageName] = ArrayList()
+            files[fileCasterResult.packageName]!!.add(fileCasterResult.file)
+        }
+        val basicPackages = ArrayList<EBasicPackage>()
+        files.forEach { (packageName, files) ->
+            val relativePath = packageName.replace(".", FileSystems.getDefault().separator)
+            val inputPath = projectContext.config.inputSourceDir.resolve(relativePath)
+            val outputPath = projectContext.config.outputSourceDir.resolve(relativePath)
+            val location = SourceLocation(0, 0, inputPath, null)
+            val basicPackage = EBasicPackage(location, packageName, files, inputPath, outputPath)
+            basicPackages.add(basicPackage)
+        }
+        val projectLocation = SourceLocation(0, 0, projectContext.config.inputSourceDir, null)
+        val rootPackage = ERootPackage(projectLocation, ArrayList())
+        val project = EProject(projectLocation, basicPackages, rootPackage)
+        projectContext.project = project
     }
 }

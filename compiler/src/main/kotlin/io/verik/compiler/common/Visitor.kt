@@ -40,8 +40,16 @@ abstract class Visitor {
         visitElement(project)
     }
 
+    open fun visitAbstractPackage(abstractPackage: EAbstractPackage) {
+        visitElement(abstractPackage)
+    }
+
     open fun visitBasicPackage(basicPackage: EBasicPackage) {
-        visitElement(basicPackage)
+        visitAbstractPackage(basicPackage)
+    }
+
+    open fun visitRootPackage(rootPackage: ERootPackage) {
+        visitAbstractPackage(rootPackage)
     }
 
     open fun visitFile(file: EFile) {

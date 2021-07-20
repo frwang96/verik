@@ -19,32 +19,22 @@ package io.verik.compiler.cast
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.common.PackageDeclaration
 import io.verik.compiler.common.location
-import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
 import org.jetbrains.kotlin.psi.KtFile
 import java.nio.file.Paths
 
 object FileCaster {
 
-    fun cast(projectContext: ProjectContext, castContext: CastContext, file: KtFile): FileCasterResult? {
+    fun cast(castContext: CastContext, file: KtFile): FileCasterResult {
         val location = file.location()
-        val inputPath = Paths.get(file.virtualFilePath)
-        val relativePath = when {
-            inputPath.startsWith(projectContext.config.mainDir) ->
-                projectContext.config.mainDir.relativize(inputPath)
-            else -> {
-                m.error("File should be located under main source directory", file)
-                return null
-            }
-        }
         val packageName = file.packageFqName.asString()
+        val inputPath = Paths.get(file.virtualFilePath)
         val packageDeclaration = PackageDeclaration(packageName)
         val baseCasterVisitor = BaseCasterVisitor(castContext)
         val members = file.declarations.map { it.accept(baseCasterVisitor, Unit) }
 
         return FileCasterResult(
             packageName,
-            EFile(location, inputPath, null, relativePath, packageDeclaration, ArrayList(members))
+            EFile(location, inputPath, null, packageDeclaration, ArrayList(members))
         )
     }
 
