@@ -26,7 +26,6 @@ import io.verik.compiler.common.location
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.psi.*
-import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.descriptorUtil.getSuperClassOrAny
 import org.jetbrains.kotlin.types.typeUtil.isNullableAny
 import org.jetbrains.kotlin.types.typeUtil.representativeUpperBound
@@ -47,7 +46,7 @@ class BaseCasterVisitor(private val castContext: CastContext) : KtVisitor<EEleme
 
     override fun visitClassOrObject(classOrObject: KtClassOrObject, data: Unit?): EElement {
         val location = classOrObject.location()
-        val descriptor = castContext.bindingContext.getSliceContents(BindingContext.CLASS)[classOrObject]!!
+        val descriptor = castContext.sliceClass[classOrObject]!!
         val basicClass = castContext.getDeclaration(descriptor, classOrObject)
             .cast<EKtBasicClass>(classOrObject)
             ?: return ENullExpression(location)
@@ -66,7 +65,7 @@ class BaseCasterVisitor(private val castContext: CastContext) : KtVisitor<EEleme
 
     override fun visitNamedFunction(function: KtNamedFunction, data: Unit?): EElement {
         val location = function.location()
-        val descriptor = castContext.bindingContext.getSliceContents(BindingContext.FUNCTION)[function]!!
+        val descriptor = castContext.sliceFunction[function]!!
         val ktFunction = castContext.getDeclaration(descriptor, function)
             .cast<EKtFunction>(function)
             ?: return ENullExpression(location)
@@ -97,7 +96,7 @@ class BaseCasterVisitor(private val castContext: CastContext) : KtVisitor<EEleme
 
     override fun visitProperty(property: KtProperty, data: Unit?): EElement {
         val location = property.location()
-        val descriptor = castContext.bindingContext.getSliceContents(BindingContext.VARIABLE)[property]!!
+        val descriptor = castContext.sliceVariable[property]!!
         val ktProperty = castContext.getDeclaration(descriptor, property)
             .cast<EKtProperty>(property)
             ?: return ENullExpression(location)
@@ -118,7 +117,7 @@ class BaseCasterVisitor(private val castContext: CastContext) : KtVisitor<EEleme
 
     override fun visitTypeParameter(parameter: KtTypeParameter, data: Unit?): EElement {
         val location = parameter.location()
-        val descriptor = castContext.bindingContext.getSliceContents(BindingContext.TYPE_PARAMETER)[parameter]!!
+        val descriptor = castContext.sliceTypeParameter[parameter]!!
         val typeParameter = castContext.getDeclaration(descriptor, parameter)
             .cast<ETypeParameter>(parameter)
             ?: return ENullExpression(location)

@@ -22,17 +22,11 @@ import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.location
-import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.psi.*
-import org.jetbrains.kotlin.resolve.BindingContext
 
-class IndexerVisitor(
-    projectContext: ProjectContext,
-    private val castContext: CastContext
-) : KtTreeVisitorVoid() {
+class IndexerVisitor(private val castContext: CastContext) : KtTreeVisitorVoid() {
 
-    private val bindingContext = projectContext.bindingContext
     private val nameRegex = Regex("[_a-zA-Z][_a-zA-Z0-9]*")
 
     private fun checkDeclarationName(name: String, element: KtElement) {
@@ -42,7 +36,7 @@ class IndexerVisitor(
 
     override fun visitClassOrObject(classOrObject: KtClassOrObject) {
         super.visitClassOrObject(classOrObject)
-        val descriptor = bindingContext.getSliceContents(BindingContext.CLASS)[classOrObject]!!
+        val descriptor = castContext.sliceClass[classOrObject]!!
         val location = classOrObject.location()
         val name = classOrObject.name!!
         checkDeclarationName(name, classOrObject)
@@ -52,7 +46,7 @@ class IndexerVisitor(
 
     override fun visitNamedFunction(function: KtNamedFunction) {
         super.visitNamedFunction(function)
-        val descriptor = bindingContext.getSliceContents(BindingContext.FUNCTION)[function]!!
+        val descriptor = castContext.sliceFunction[function]!!
         val location = function.location()
         val name = function.name!!
         checkDeclarationName(name, function)
@@ -62,7 +56,7 @@ class IndexerVisitor(
 
     override fun visitProperty(property: KtProperty) {
         super.visitProperty(property)
-        val descriptor = bindingContext.getSliceContents(BindingContext.VARIABLE)[property]!!
+        val descriptor = castContext.sliceVariable[property]!!
         val location = property.location()
         val name = property.name!!
         checkDeclarationName(name, property)
@@ -72,7 +66,7 @@ class IndexerVisitor(
 
     override fun visitTypeParameter(parameter: KtTypeParameter) {
         super.visitTypeParameter(parameter)
-        val descriptor = bindingContext.getSliceContents(BindingContext.TYPE_PARAMETER)[parameter]!!
+        val descriptor = castContext.sliceTypeParameter[parameter]!!
         val location = parameter.location()
         val name = parameter.name!!
         checkDeclarationName(name, parameter)

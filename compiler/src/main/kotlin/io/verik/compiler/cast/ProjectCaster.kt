@@ -39,7 +39,7 @@ object ProjectCaster : ProjectPass {
 
         m.log("Cast: Index syntax trees")
         val castContext = CastContext(projectContext.bindingContext)
-        val indexerVisitor = IndexerVisitor(projectContext, castContext)
+        val indexerVisitor = IndexerVisitor(castContext)
         projectContext.ktFiles.forEach { it.accept(indexerVisitor) }
         m.flush()
 

@@ -29,8 +29,16 @@ import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.types.KotlinType
 
 class CastContext(
-    val bindingContext: BindingContext
+    bindingContext: BindingContext
 ) {
+
+    val sliceClass = bindingContext.getSliceContents(BindingContext.CLASS)
+    val sliceFunction = bindingContext.getSliceContents(BindingContext.FUNCTION)
+    val sliceVariable = bindingContext.getSliceContents(BindingContext.VARIABLE)
+    val sliceTypeParameter = bindingContext.getSliceContents(BindingContext.TYPE_PARAMETER)
+    val sliceReferenceTarget = bindingContext.getSliceContents(BindingContext.REFERENCE_TARGET)
+    val sliceType = bindingContext.getSliceContents(BindingContext.TYPE)
+    val sliceExpressionTypeInfo = bindingContext.getSliceContents(BindingContext.EXPRESSION_TYPE_INFO)
 
     private val declarationMap = HashMap<DeclarationDescriptor, Declaration>()
 

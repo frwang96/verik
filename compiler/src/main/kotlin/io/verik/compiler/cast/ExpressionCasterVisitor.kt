@@ -26,7 +26,6 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.descriptors.PackageViewDescriptor
 import org.jetbrains.kotlin.psi.*
-import org.jetbrains.kotlin.resolve.BindingContext
 
 class ExpressionCasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, Unit>() {
 
@@ -81,7 +80,7 @@ class ExpressionCasterVisitor(private val castContext: CastContext) : KtVisitor<
 
     override fun visitSimpleNameExpression(expression: KtSimpleNameExpression, data: Unit?): EElement {
         val location = expression.location()
-        val descriptor = castContext.bindingContext.getSliceContents(BindingContext.REFERENCE_TARGET)[expression]!!
+        val descriptor = castContext.sliceReferenceTarget[expression]!!
         val type = castContext.castType(expression)
         val declaration = castContext.getDeclaration(descriptor, expression)
         return ESimpleNameExpression(location, type, declaration, null)
@@ -89,8 +88,7 @@ class ExpressionCasterVisitor(private val castContext: CastContext) : KtVisitor<
 
     override fun visitCallExpression(expression: KtCallExpression, data: Unit?): EElement {
         val location = expression.location()
-        val descriptor = castContext.bindingContext
-            .getSliceContents(BindingContext.REFERENCE_TARGET)[expression.calleeExpression]!!
+        val descriptor = castContext.sliceReferenceTarget[expression.calleeExpression]!!
         val type = castContext.castType(expression)
         val declaration = castContext.getDeclaration(descriptor, expression)
         val typeArguments = expression.typeArguments.map {
@@ -110,8 +108,7 @@ class ExpressionCasterVisitor(private val castContext: CastContext) : KtVisitor<
         val location = argument.location()
         val expression = getExpression(argument.getArgumentExpression()!!)
         return if (argument.isNamed()) {
-            val descriptor = castContext.bindingContext
-                .getSliceContents(BindingContext.REFERENCE_TARGET)[argument.getArgumentName()!!.referenceExpression]!!
+            val descriptor = castContext.sliceReferenceTarget[argument.getArgumentName()!!.referenceExpression]!!
             val declaration = castContext.getDeclaration(descriptor, argument)
             EValueArgument(location, declaration, expression)
         } else {
@@ -125,10 +122,8 @@ class ExpressionCasterVisitor(private val castContext: CastContext) : KtVisitor<
 
         // Drop receiver if reference target is a package
         val packageViewDescriptor = when (val receiver = expression.receiverExpression) {
-            is KtSimpleNameExpression -> castContext.bindingContext
-                .getSliceContents(BindingContext.REFERENCE_TARGET)[receiver]
-            is KtDotQualifiedExpression -> castContext.bindingContext
-                .getSliceContents(BindingContext.REFERENCE_TARGET)[receiver.selectorExpression]
+            is KtSimpleNameExpression -> castContext.sliceReferenceTarget[receiver]
+            is KtDotQualifiedExpression -> castContext.sliceReferenceTarget[receiver.selectorExpression]
             else -> null
         }
         val receiver = if (packageViewDescriptor is PackageViewDescriptor) null
@@ -136,14 +131,12 @@ class ExpressionCasterVisitor(private val castContext: CastContext) : KtVisitor<
 
         return when (val selector = expression.selectorExpression) {
             is KtSimpleNameExpression -> {
-                val descriptor = castContext.bindingContext
-                    .getSliceContents(BindingContext.REFERENCE_TARGET)[selector]!!
+                val descriptor = castContext.sliceReferenceTarget[selector]!!
                 val declaration = castContext.getDeclaration(descriptor, expression)
                 ESimpleNameExpression(location, type, declaration, receiver)
             }
             is KtCallExpression -> {
-                val descriptor = castContext.bindingContext
-                    .getSliceContents(BindingContext.REFERENCE_TARGET)[selector.calleeExpression]!!
+                val descriptor = castContext.sliceReferenceTarget[selector.calleeExpression]!!
                 val declaration = castContext.getDeclaration(descriptor, expression)
                 val typeArguments = selector.typeArguments.map {
                     getElement<ETypeArgument>(it) ?: return ENullExpression(location)

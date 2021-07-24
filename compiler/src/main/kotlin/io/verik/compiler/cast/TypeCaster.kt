@@ -25,14 +25,13 @@ import org.jetbrains.kotlin.psi.KtElement
 import org.jetbrains.kotlin.psi.KtExpression
 import org.jetbrains.kotlin.psi.KtTypeReference
 import org.jetbrains.kotlin.psi.KtUserType
-import org.jetbrains.kotlin.resolve.BindingContext
-import org.jetbrains.kotlin.resolve.calls.callUtil.getType
 import org.jetbrains.kotlin.types.KotlinType
 
 object TypeCaster {
 
     fun cast(castContext: CastContext, expression: KtExpression): Type {
-        return cast(castContext, expression.getType(castContext.bindingContext)!!, expression)
+        val kotlinType = castContext.sliceExpressionTypeInfo[expression]!!.type!!
+        return cast(castContext, kotlinType, expression)
     }
 
     fun cast(castContext: CastContext, type: KotlinType, element: KtElement): Type {
@@ -45,7 +44,7 @@ object TypeCaster {
     }
 
     fun cast(castContext: CastContext, typeReference: KtTypeReference): Type {
-        val kotlinType = castContext.bindingContext.getSliceContents(BindingContext.TYPE)[typeReference]!!
+        val kotlinType: KotlinType = castContext.sliceType[typeReference]!!
         if (kotlinType.isMarkedNullable)
             m.error("Nullable type not supported: $kotlinType", typeReference)
         if (kotlinType.isFunctionType)
@@ -64,8 +63,7 @@ object TypeCaster {
     private fun castCardinalType(castContext: CastContext, typeReference: KtTypeReference): Type {
         val userType = typeReference.typeElement as KtUserType
         val referenceExpression = userType.referenceExpression!!
-        val referenceTarget = castContext.bindingContext
-            .getSliceContents(BindingContext.REFERENCE_TARGET)[referenceExpression]!!
+        val referenceTarget = castContext.sliceReferenceTarget[referenceExpression]!!
         val declaration = castContext.getDeclaration(referenceTarget, typeReference)
         val arguments = userType.typeArgumentsAsTypes.map { castCardinalType(castContext, it) }
         val type = Type(declaration, ArrayList(arguments))
