@@ -21,6 +21,6 @@ package io.verik.core
 /**
  * Pack the int as a [Ubit].
  */
-fun Int.pack(): Ubit<Cardinal> {
+fun Int.pack(): Ubit<`*`> {
     throw VerikException()
 }

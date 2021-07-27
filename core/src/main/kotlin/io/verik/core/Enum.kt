@@ -21,7 +21,7 @@ package io.verik.core
 /**
  * Pack the enum as a [Ubit].
  */
-fun <E : Enum<E>> Enum<E>.pack(): Ubit<Cardinal> {
+fun <E : Enum<E>> Enum<E>.pack(): Ubit<`*`> {
     throw VerikException()
 }
 

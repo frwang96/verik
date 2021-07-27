@@ -18,60 +18,58 @@
 
 package io.verik.core
 
-/**
- * Base type representing the cardinals. Cardinals may be specified with numbers enclosed in backticks, such as
- * ``1`` or ``256``.
- */
 sealed class Cardinal
+
+typealias `*` = Cardinal
 
 /**
  * Returns the value of cardinal [N] as an integer.
  */
-fun <N : Cardinal> i(): Int {
+fun <N : `*`> i(): Int {
     throw VerikException()
 }
 
 /**
  * Adds the cardinals N and M.
  */
-typealias ADD<N, M> = Cardinal
+typealias ADD<N, M> = `*`
 
 /**
  * Subtracts the cardinals N and M.
  */
-typealias SUB<N, M> = Cardinal
+typealias SUB<N, M> = `*`
 
 /**
  * Multiplies the cardinals N and M.
  */
-typealias MUL<N, M> = Cardinal
+typealias MUL<N, M> = `*`
 
 /**
  * Takes the maximum of the cardinals N and M.
  */
-typealias MAX<N, M> = Cardinal
+typealias MAX<N, M> = `*`
 
 /**
  * Takes the minimum of the cardinals N and M.
  */
-typealias MIN<N, M> = Cardinal
+typealias MIN<N, M> = `*`
 
 /**
  * Increments the cardinal N.
  */
-typealias INC<N> = Cardinal
+typealias INC<N> = `*`
 
 /**
  * Decrements the cardinal N.
  */
-typealias DEC<N> = Cardinal
+typealias DEC<N> = `*`
 
 /**
  * Takes the ceiling logarithm base two of the cardinal N.
  */
-typealias LOG<N> = Cardinal
+typealias LOG<N> = `*`
 
 /**
  * Takes the exponential base two of the cardinal N.
  */
-typealias EXP<N> = Cardinal
+typealias EXP<N> = `*`

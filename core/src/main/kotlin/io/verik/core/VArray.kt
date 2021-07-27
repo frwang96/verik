@@ -23,7 +23,7 @@ package io.verik.core
  * @param N the size of the array
  * @param E the type of the elements of the array
  */
-class VArray<N : Cardinal, E> : VCollection<E>() {
+class VArray<N : `*`, E> : VCollection<E>() {
 
     /**
      * Returns the array element at the specified [index].
@@ -35,7 +35,7 @@ class VArray<N : Cardinal, E> : VCollection<E>() {
     /**
      * Returns the array element at the specified [index].
      */
-    operator fun get(index: Ubit<Cardinal>): E {
+    operator fun get(index: Ubit<`*`>): E {
         throw VerikException()
     }
 
@@ -49,7 +49,7 @@ class VArray<N : Cardinal, E> : VCollection<E>() {
     /**
      * Sets the array element at the specified [index] to the specified [element].
      */
-    operator fun set(index: Ubit<Cardinal>, element: E) {
+    operator fun set(index: Ubit<`*`>, element: E) {
         throw VerikException()
     }
 }

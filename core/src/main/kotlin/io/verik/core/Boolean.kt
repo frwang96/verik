@@ -21,7 +21,7 @@ package io.verik.core
 /**
  * Pack the boolean as a [Ubit].
  */
-fun Boolean.pack(): Ubit<Cardinal> {
+fun Boolean.pack(): Ubit<`*`> {
     throw VerikException()
 }
 

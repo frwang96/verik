@@ -18,39 +18,38 @@
 
 package io.verik.core
 
-/**
- * Base type representing the logicals.
- */
 sealed class Logical
+
+typealias `?` = Logical
 
 /**
  * Returns the value of the logical [X] as a boolean.
  */
-fun <X : Logical> b(): Boolean {
+fun <X : `?`> b(): Boolean {
     throw VerikException()
 }
 
 /**
  * Logical true value.
  */
-typealias TRUE = Logical
+typealias TRUE = `?`
 
 /**
  * Logical false value.
  */
-typealias FALSE = Logical
+typealias FALSE = `?`
 
 /**
  * Inverts the logical X.
  */
-typealias NOT<X> = Logical
+typealias NOT<X> = `?`
 
 /**
  * Takes the conjunction of the logical X and Y.
  */
-typealias AND<X, Y> = Logical
+typealias AND<X, Y> = `?`
 
 /**
  * Takes the disjunction of the logical X and Y.
  */
-typealias OR<X, Y> = Logical
+typealias OR<X, Y> = `?`

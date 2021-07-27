@@ -23,7 +23,7 @@ package io.verik.core
  * @param N the size of the cluster
  * @param C the type of the components of the cluster
  */
-class Cluster<N : Cardinal, C : Component>(instantiator: (Int) -> C) : Component() {
+class Cluster<N : `*`, C : Component>(instantiator: (Int) -> C) : Component() {
 
     /**
      * Returns the component at the specified [index].

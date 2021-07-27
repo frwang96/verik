@@ -17,6 +17,7 @@
 package io.verik.compiler.transform.mid
 
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
+import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
@@ -27,21 +28,32 @@ import io.verik.compiler.main.ProjectContext
 object AssignmentTransformer : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.project.accept(AssignmentVisitor)
+        val assignmentVisitor = AssignmentVisitor()
+        projectContext.project.accept(assignmentVisitor)
     }
 
-    object AssignmentVisitor : TreeVisitor() {
+    class AssignmentVisitor : TreeVisitor() {
+
+        var inAlwaysSeqBlock = false
+
+        override fun visitAlwaysSeqBlock(alwaysSeqBlock: EAlwaysSeqBlock) {
+            inAlwaysSeqBlock = true
+            super.visitAlwaysSeqBlock(alwaysSeqBlock)
+            inAlwaysSeqBlock = false
+        }
 
         override fun visitKtBinaryExpression(binaryExpression: EKtBinaryExpression) {
             super.visitKtBinaryExpression(binaryExpression)
             if (binaryExpression.kind == KtBinaryOperatorKind.EQ) {
+                val kind = if (inAlwaysSeqBlock) SvBinaryOperatorKind.ARROW_ASSIGN
+                else SvBinaryOperatorKind.ASSIGN
                 binaryExpression.replace(
                     ESvBinaryExpression(
                         binaryExpression.location,
                         binaryExpression.type,
                         binaryExpression.left,
                         binaryExpression.right,
-                        SvBinaryOperatorKind.ASSIGN
+                        kind
                     )
                 )
             }

@@ -34,7 +34,7 @@ class VList<E> : VCollection<E>() {
     /**
      * Returns the list element at the specified [index].
      */
-    operator fun get(index: Ubit<Cardinal>): E {
+    operator fun get(index: Ubit<`*`>): E {
         throw VerikException()
     }
 
@@ -48,7 +48,7 @@ class VList<E> : VCollection<E>() {
     /**
      * Sets the list element at the specified [index] to the specified [element].
      */
-    operator fun set(index: Ubit<Cardinal>, element: E) {
+    operator fun set(index: Ubit<`*`>, element: E) {
         throw VerikException()
     }
 }

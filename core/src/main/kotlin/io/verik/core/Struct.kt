@@ -26,7 +26,7 @@ abstract class Struct {
     /**
      * Pack the struct as a [Ubit].
      */
-    fun pack(): Ubit<Cardinal> {
+    fun pack(): Ubit<`*`> {
         throw VerikException()
     }
 
