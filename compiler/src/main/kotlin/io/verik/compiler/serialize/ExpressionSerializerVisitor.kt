@@ -82,13 +82,13 @@ class ExpressionSerializerVisitor(private val sourceBuilder: SourceBuilder) : Vi
         serializeAsExpression(binaryExpression.right)
     }
 
-    override fun visitSimpleNameExpression(simpleNameExpression: ESimpleNameExpression) {
-        val receiver = simpleNameExpression.receiver
+    override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
+        val receiver = referenceExpression.receiver
         if (receiver != null) {
             serializeAsExpression(receiver)
-            sourceBuilder.append(".", simpleNameExpression)
+            sourceBuilder.append(".", referenceExpression)
         }
-        sourceBuilder.append(simpleNameExpression.reference.name.toString(), simpleNameExpression)
+        sourceBuilder.append(referenceExpression.reference.name, referenceExpression)
     }
 
     override fun visitCallExpression(callExpression: ECallExpression) {
@@ -97,7 +97,7 @@ class ExpressionSerializerVisitor(private val sourceBuilder: SourceBuilder) : Vi
             serializeAsExpression(receiver)
             sourceBuilder.append(".", callExpression)
         }
-        sourceBuilder.append(callExpression.reference.name.toString(), callExpression)
+        sourceBuilder.append(callExpression.reference.name, callExpression)
         if (callExpression.valueArguments.isEmpty()) {
             sourceBuilder.append("()", callExpression)
         } else {

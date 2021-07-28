@@ -18,7 +18,7 @@ package io.verik.compiler.resolve
 
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.common.ESimpleNameExpression
+import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.common.ProjectPass
@@ -47,11 +47,11 @@ object TypeResolver : ProjectPass {
                 blockExpression.type = blockExpression.statements.last().type
         }
 
-        override fun visitSimpleNameExpression(simpleNameExpression: ESimpleNameExpression) {
-            super.visitSimpleNameExpression(simpleNameExpression)
-            val reference = simpleNameExpression.reference
+        override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
+            super.visitReferenceExpression(referenceExpression)
+            val reference = referenceExpression.reference
             if (reference is EExpression)
-                simpleNameExpression.type = reference.type
+                referenceExpression.type = reference.type
         }
 
         override fun visitCallExpression(callExpression: ECallExpression) {

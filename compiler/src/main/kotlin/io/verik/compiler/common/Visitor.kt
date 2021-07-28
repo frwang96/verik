@@ -180,8 +180,8 @@ abstract class Visitor {
         visitAbstractBinaryExpression(binaryExpression)
     }
 
-    open fun visitSimpleNameExpression(simpleNameExpression: ESimpleNameExpression) {
-        visitExpression(simpleNameExpression)
+    open fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
+        visitExpression(referenceExpression)
     }
 
     open fun visitCallExpression(callExpression: ECallExpression) {

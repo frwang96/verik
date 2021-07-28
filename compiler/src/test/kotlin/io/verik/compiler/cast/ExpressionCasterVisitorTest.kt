@@ -62,7 +62,7 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
     }
 
     @Test
-    fun `simple name expression simple`() {
+    fun `reference expression simple`() {
         val projectContext = TestDriver.cast(
             """
                 var x = 0
@@ -70,13 +70,13 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SimpleNameExpression(Int, x, null)",
+            "ReferenceExpression(Int, x, null)",
             projectContext.findExpression("y")
         )
     }
 
     @Test
-    fun `simple name expression with package`() {
+    fun `reference expression with package`() {
         val projectContext = TestDriver.cast(
             """
                 var x = 0
@@ -84,7 +84,7 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SimpleNameExpression(Int, x, null)",
+            "ReferenceExpression(Int, x, null)",
             projectContext.findExpression("y")
         )
     }
@@ -113,7 +113,7 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "CallExpression(Int, plus, SimpleNameExpression(*), [], [ValueArgument(*)])",
+            "CallExpression(Int, plus, ReferenceExpression(*), [], [ValueArgument(*)])",
             projectContext.findExpression("y")
         )
     }
@@ -245,7 +245,7 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "StringTemplateExpression(String, [ExpressionStringTemplateEntry(SimpleNameExpression(*))])",
+            "StringTemplateExpression(String, [ExpressionStringTemplateEntry(ReferenceExpression(*))])",
             projectContext.findExpression("y")
         )
     }
@@ -259,7 +259,7 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "IfExpression(Int, SimpleNameExpression(*), ConstantExpression(*), ConstantExpression(*))",
+            "IfExpression(Int, ReferenceExpression(*), ConstantExpression(*), ConstantExpression(*))",
             projectContext.findExpression("y")
         )
     }

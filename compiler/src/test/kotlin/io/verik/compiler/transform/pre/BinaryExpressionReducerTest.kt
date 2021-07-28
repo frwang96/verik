@@ -33,7 +33,7 @@ internal class BinaryExpressionReducerTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "CallExpression(Int, plus, SimpleNameExpression(*), [], [ValueArgument(*)])",
+            "CallExpression(Int, plus, ReferenceExpression(*), [], [ValueArgument(*)])",
             projectContext.findExpression("y")
         )
     }
@@ -52,7 +52,7 @@ internal class BinaryExpressionReducerTest : BaseTest() {
                 CallExpression(
                     Int,
                     plus,
-                    CallExpression(Int, plus, SimpleNameExpression(*), [], [ValueArgument(*)]),
+                    CallExpression(Int, plus, ReferenceExpression(*), [], [ValueArgument(*)]),
                     [],
                     [ValueArgument(*)]
                 )

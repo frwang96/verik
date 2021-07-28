@@ -201,11 +201,11 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitSimpleNameExpression(simpleNameExpression: ESimpleNameExpression) {
-        build("SimpleNameExpression") {
-            build(simpleNameExpression.type.toString())
-            build(simpleNameExpression.reference.name)
-            build(simpleNameExpression.receiver)
+    override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
+        build("ReferenceExpression") {
+            build(referenceExpression.type.toString())
+            build(referenceExpression.reference.name)
+            build(referenceExpression.receiver)
         }
     }
 

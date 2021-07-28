@@ -39,8 +39,8 @@ internal class AssignmentOperatorReducerTest : BaseTest() {
                 KtBinaryExpression(
                     Unit,
                     EQ,
-                    SimpleNameExpression(*),
-                    CallExpression(Int, plus, SimpleNameExpression(*), [], [ValueArgument(*)])
+                    ReferenceExpression(*),
+                    CallExpression(Int, plus, ReferenceExpression(*), [], [ValueArgument(*)])
                 )
             """.trimIndent(),
             projectContext.findExpression("f")

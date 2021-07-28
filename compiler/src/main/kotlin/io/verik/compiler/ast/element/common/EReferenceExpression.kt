@@ -24,7 +24,7 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.SourceLocation
 
-class ESimpleNameExpression(
+class EReferenceExpression(
     override val location: SourceLocation,
     override var type: Type,
     override var reference: Declaration,
@@ -38,7 +38,7 @@ class ESimpleNameExpression(
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitSimpleNameExpression(this)
+        visitor.visitReferenceExpression(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
@@ -48,6 +48,6 @@ class ESimpleNameExpression(
     override fun copy(): EExpression {
         val copyType = type.copy()
         val copyReceiver = receiver?.copy()
-        return ESimpleNameExpression(location, copyType, reference, copyReceiver)
+        return EReferenceExpression(location, copyType, reference, copyReceiver)
     }
 }
