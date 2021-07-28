@@ -91,11 +91,11 @@ class ExpressionCasterVisitor(private val castContext: CastContext) : KtVisitor<
         val descriptor = castContext.sliceReferenceTarget[expression.calleeExpression]!!
         val type = castContext.castType(expression)
         val declaration = castContext.getDeclaration(descriptor, expression)
+        val valueArguments = expression.valueArguments.mapNotNull { getElement<EValueArgument>(it) }
         val typeArguments = expression.typeArguments.map {
             getElement<ETypeArgument>(it) ?: return ENullExpression(location)
         }
-        val valueArguments = expression.valueArguments.mapNotNull { getElement<EValueArgument>(it) }
-        return ECallExpression(location, type, declaration, null, ArrayList(typeArguments), ArrayList(valueArguments))
+        return EKtCallExpression(location, type, declaration, null, ArrayList(valueArguments), ArrayList(typeArguments))
     }
 
     override fun visitTypeProjection(typeProjection: KtTypeProjection, data: Unit?): EElement {
@@ -138,17 +138,17 @@ class ExpressionCasterVisitor(private val castContext: CastContext) : KtVisitor<
             is KtCallExpression -> {
                 val descriptor = castContext.sliceReferenceTarget[selector.calleeExpression]!!
                 val declaration = castContext.getDeclaration(descriptor, expression)
+                val valueArguments = selector.valueArguments.mapNotNull { getElement<EValueArgument>(it) }
                 val typeArguments = selector.typeArguments.map {
                     getElement<ETypeArgument>(it) ?: return ENullExpression(location)
                 }
-                val valueArguments = selector.valueArguments.mapNotNull { getElement<EValueArgument>(it) }
-                return ECallExpression(
+                return EKtCallExpression(
                     location,
                     type,
                     declaration,
                     receiver,
-                    ArrayList(typeArguments),
-                    ArrayList(valueArguments)
+                    ArrayList(valueArguments),
+                    ArrayList(typeArguments)
                 )
             }
             else -> {

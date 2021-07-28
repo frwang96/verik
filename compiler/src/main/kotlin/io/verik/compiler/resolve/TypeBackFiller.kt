@@ -16,8 +16,8 @@
 
 package io.verik.compiler.resolve
 
-import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
+import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
@@ -42,8 +42,8 @@ object TypeBackFiller : ProjectPass {
         }
 
         // TODO generalize back fill scheme
-        override fun visitCallExpression(callExpression: ECallExpression) {
-            super.visitCallExpression(callExpression)
+        override fun visitKtCallExpression(callExpression: EKtCallExpression) {
+            super.visitKtCallExpression(callExpression)
             if (callExpression.reference == Core.Vk.Ubit.PLUS_UBIT) {
                 if (!callExpression.valueArguments[0].expression.type.isResolved())
                     callExpression.valueArguments[0].expression.type = callExpression.receiver!!.type

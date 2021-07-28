@@ -192,8 +192,16 @@ abstract class Visitor {
         visitAbstractReferenceExpression(referenceExpression)
     }
 
-    open fun visitCallExpression(callExpression: ECallExpression) {
-        visitExpression(callExpression)
+    open fun visitAbstractCallExpression(abstractCallExpression: EAbstractCallExpression) {
+        visitExpression(abstractCallExpression)
+    }
+
+    open fun visitKtCallExpression(callExpression: EKtCallExpression) {
+        visitAbstractCallExpression(callExpression)
+    }
+
+    open fun visitSvCallExpression(callExpression: ESvCallExpression) {
+        visitAbstractCallExpression(callExpression)
     }
 
     open fun visitTypeArgument(typeArgument: ETypeArgument) {

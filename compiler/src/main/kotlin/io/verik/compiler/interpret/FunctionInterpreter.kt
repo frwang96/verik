@@ -16,12 +16,12 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.ENullElement
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
+import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.sv.*
 import io.verik.compiler.ast.property.FunctionAnnotationType
@@ -78,7 +78,7 @@ object FunctionInterpreter {
                 return null
             }
         } else body
-        if (onExpression !is ECallExpression || onExpression.reference != Core.Vk.ON_EVENT_FUNCTION) {
+        if (onExpression !is EKtCallExpression || onExpression.reference != Core.Vk.ON_EVENT_FUNCTION) {
             m.error("On expression expected", body)
             return null
         }

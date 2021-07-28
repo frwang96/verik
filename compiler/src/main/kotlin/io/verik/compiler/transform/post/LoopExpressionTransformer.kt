@@ -16,8 +16,8 @@
 
 package io.verik.compiler.transform.post
 
-import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
+import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.EForeverStatement
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
@@ -32,8 +32,8 @@ object LoopExpressionTransformer : ProjectPass {
 
     object LoopExpressionVisitor : TreeVisitor() {
 
-        override fun visitCallExpression(callExpression: ECallExpression) {
-            super.visitCallExpression(callExpression)
+        override fun visitKtCallExpression(callExpression: EKtCallExpression) {
+            super.visitKtCallExpression(callExpression)
             if (callExpression.reference == Core.Vk.FOREVER_FUNCTION) {
                 val functionLiteralExpression = callExpression
                     .valueArguments[0]

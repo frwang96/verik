@@ -16,7 +16,7 @@
 
 package io.verik.compiler.core.common
 
-import io.verik.compiler.ast.element.common.ECallExpression
+import io.verik.compiler.ast.element.kt.EKtCallExpression
 
 open class CoreKtFunctionDeclaration private constructor(
     override var name: String,
@@ -24,7 +24,7 @@ open class CoreKtFunctionDeclaration private constructor(
     val parameterClassNames: List<String>
 ) : CoreAbstractFunctionDeclaration() {
 
-    open fun resolve(callExpression: ECallExpression) {}
+    open fun resolve(callExpression: EKtCallExpression) {}
 
     constructor(
         parent: String,

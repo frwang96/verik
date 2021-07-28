@@ -16,7 +16,7 @@
 
 package io.verik.compiler.transform.post
 
-import io.verik.compiler.ast.element.common.ECallExpression
+import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.common.ProjectPass
@@ -42,8 +42,8 @@ object BinaryExpressionTransformer : ProjectPass {
 
     object BinaryExpressionVisitor : TreeVisitor() {
 
-        override fun visitCallExpression(callExpression: ECallExpression) {
-            super.visitCallExpression(callExpression)
+        override fun visitKtCallExpression(callExpression: EKtCallExpression) {
+            super.visitKtCallExpression(callExpression)
             val reference = callExpression.reference
             val kind = operatorKindMap[reference]
             if (kind != null) {

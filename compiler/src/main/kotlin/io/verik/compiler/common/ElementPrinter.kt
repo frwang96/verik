@@ -218,13 +218,23 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitCallExpression(callExpression: ECallExpression) {
-        build("CallExpression") {
+    override fun visitKtCallExpression(callExpression: EKtCallExpression) {
+        build("KtCallExpression") {
             build(callExpression.type.toString())
             build(callExpression.reference.name)
             build(callExpression.receiver)
             build(callExpression.typeArguments)
             build(callExpression.valueArguments)
+        }
+    }
+
+    override fun visitSvCallExpression(callExpression: ESvCallExpression) {
+        build("SvCallExpression") {
+            build(callExpression.type.toString())
+            build(callExpression.reference.name)
+            build(callExpression.receiver)
+            build(callExpression.valueArguments)
+            build(callExpression.isScopeResolution.toString())
         }
     }
 

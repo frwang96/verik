@@ -16,7 +16,7 @@
 
 package io.verik.compiler.core.lang.vk
 
-import io.verik.compiler.ast.element.common.ECallExpression
+import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.core.common.*
 
 object CoreVk : CoreScope(CorePackage.VK) {
@@ -26,7 +26,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
 
     val U_INT = object : CoreKtFunctionDeclaration(parent, "u", Core.Kt.INT) {
 
-        override fun resolve(callExpression: ECallExpression) {
+        override fun resolve(callExpression: EKtCallExpression) {
             if (callExpression.hasTypeArguments()) {
                 callExpression.type = Core.Vk.UBIT.toType(callExpression.typeArguments[0].type)
             }

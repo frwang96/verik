@@ -47,7 +47,7 @@ internal class StringTemplateExpressionReducerTest : BaseTest() {
         )
         assertElementEquals(
             """
-                CallExpression(
+                KtCallExpression(
                     String,
                     ${"$"}sformatf,
                     null,
@@ -71,7 +71,7 @@ internal class StringTemplateExpressionReducerTest : BaseTest() {
         )
         assertElementEquals(
             """
-                CallExpression(*, [ValueArgument(null, StringExpression(String, %d%%)), *])
+                KtCallExpression(*, [ValueArgument(null, StringExpression(String, %d%%)), *])
             """.trimIndent(),
             projectContext.findExpression("x")
         )

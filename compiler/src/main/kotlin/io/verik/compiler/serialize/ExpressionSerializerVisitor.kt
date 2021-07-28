@@ -86,19 +86,16 @@ class ExpressionSerializerVisitor(private val sourceBuilder: SourceBuilder) : Vi
         val receiver = referenceExpression.receiver
         if (receiver != null) {
             serializeAsExpression(receiver)
-            if (referenceExpression.isScopeResolution)
-                sourceBuilder.append("::", referenceExpression)
-            else
-                sourceBuilder.append(".", referenceExpression)
+            sourceBuilder.append(if (referenceExpression.isScopeResolution) "::" else ".", referenceExpression)
         }
         sourceBuilder.append(referenceExpression.reference.name, referenceExpression)
     }
 
-    override fun visitCallExpression(callExpression: ECallExpression) {
+    override fun visitSvCallExpression(callExpression: ESvCallExpression) {
         val receiver = callExpression.receiver
         if (receiver != null) {
             serializeAsExpression(receiver)
-            sourceBuilder.append(".", callExpression)
+            sourceBuilder.append(if (callExpression.isScopeResolution) "::" else ".", callExpression)
         }
         sourceBuilder.append(callExpression.reference.name, callExpression)
         if (callExpression.valueArguments.isEmpty()) {

@@ -99,7 +99,7 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "CallExpression(Unit, println, *)",
+            "KtCallExpression(Unit, println, *)",
             projectContext.findExpression("f")
         )
     }
@@ -113,7 +113,7 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "CallExpression(Int, plus, KtReferenceExpression(*), [], [ValueArgument(*)])",
+            "KtCallExpression(Int, plus, KtReferenceExpression(*), [], [ValueArgument(*)])",
             projectContext.findExpression("y")
         )
     }
@@ -126,7 +126,7 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "CallExpression(Int, random, null, [], [])",
+            "KtCallExpression(Int, random, null, [], [])",
             projectContext.findExpression("x")
         )
     }
@@ -139,7 +139,7 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "CallExpression(Ubit<`*`>, u, null, [TypeArgument(null, `8`)], *)",
+            "KtCallExpression(Ubit<`*`>, u, null, [TypeArgument(null, `8`)], *)",
             projectContext.findExpression("x")
         )
     }
@@ -153,7 +153,7 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "CallExpression(Unit, f, null, [], [ValueArgument(null, *)])",
+            "KtCallExpression(Unit, f, null, [], [ValueArgument(null, *)])",
             projectContext.findExpression("x")
         )
     }
@@ -169,7 +169,7 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "CallExpression(Unit, f, null, [ValueArgument(x, *)])",
+            "KtCallExpression(Unit, f, null, [ValueArgument(x, *)])",
             projectContext.findExpression("x")
         )
     }
@@ -198,7 +198,7 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
         )
         assertElementEquals(
             """
-                CallExpression(
+                KtCallExpression(
                     Unit,
                     forever,
                     null,

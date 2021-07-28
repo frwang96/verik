@@ -14,26 +14,29 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.common
+package io.verik.compiler.ast.element.kt
 
+import io.verik.compiler.ast.element.common.EAbstractCallExpression
+import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.ETypeArgument
+import io.verik.compiler.ast.element.common.EValueArgument
 import io.verik.compiler.ast.interfaces.Declaration
-import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.SourceLocation
 
-class ECallExpression(
+class EKtCallExpression(
     override val location: SourceLocation,
     override var type: Type,
     override var reference: Declaration,
-    val receiver: EExpression?,
-    val typeArguments: ArrayList<ETypeArgument>,
-    val valueArguments: ArrayList<EValueArgument>
-) : EExpression(), Reference {
+    override val receiver: EExpression?,
+    override val valueArguments: ArrayList<EValueArgument>,
+    val typeArguments: ArrayList<ETypeArgument>
+) : EAbstractCallExpression() {
 
-    override val serializationType = SvSerializationType.EXPRESSION
+    override val serializationType = SvSerializationType.OTHER
 
     init {
         receiver?.parent = this
@@ -46,27 +49,26 @@ class ECallExpression(
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitCallExpression(this)
+        visitor.visitKtCallExpression(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        receiver?.accept(visitor)
+        super.acceptChildren(visitor)
         typeArguments.forEach { it.accept(visitor) }
-        valueArguments.forEach { it.accept(visitor) }
     }
 
     override fun copy(): EExpression {
         val copyType = type.copy()
         val copyReceiver = receiver?.copy()
-        val copyTypeArguments = typeArguments.map { it.copy() }
         val copyValueArguments = valueArguments.map { it.copy() }
-        return ECallExpression(
+        val copyTypeArguments = typeArguments.map { it.copy() }
+        return EKtCallExpression(
             location,
             copyType,
             reference,
             copyReceiver,
-            ArrayList(copyTypeArguments),
-            ArrayList(copyValueArguments)
+            ArrayList(copyValueArguments),
+            ArrayList(copyTypeArguments)
         )
     }
 }

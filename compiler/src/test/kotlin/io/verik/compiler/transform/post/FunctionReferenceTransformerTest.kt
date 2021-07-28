@@ -32,7 +32,7 @@ internal class FunctionReferenceTransformerTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "CallExpression(Int, \$random, null, [], [])",
+            "SvCallExpression(Int, \$random, null, [], false)",
             projectContext.findExpression("x")
         )
     }

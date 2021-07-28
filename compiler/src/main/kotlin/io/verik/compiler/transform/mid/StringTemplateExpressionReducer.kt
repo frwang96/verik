@@ -16,10 +16,10 @@
 
 package io.verik.compiler.transform.mid
 
-import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EValueArgument
 import io.verik.compiler.ast.element.kt.EExpressionStringTemplateEntry
+import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.ELiteralStringTemplateEntry
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.sv.EStringExpression
@@ -90,13 +90,13 @@ object StringTemplateExpressionReducer : ProjectPass {
                     stringExpression
                 )
                 valueArguments.add(0, stringExpressionValueArgument)
-                val callExpression = ECallExpression(
+                val callExpression = EKtCallExpression(
                     stringTemplateExpression.location,
                     stringTemplateExpression.type,
                     Core.Sv.SFORMATF,
                     null,
-                    arrayListOf(),
-                    valueArguments
+                    valueArguments,
+                    arrayListOf()
                 )
                 stringTemplateExpression.replace(callExpression)
             }

@@ -16,9 +16,9 @@
 
 package io.verik.compiler.check.post
 
-import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.kt.*
+import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
@@ -75,8 +75,13 @@ object UntransformedElementChecker : ProjectPass {
             m.error("Reference expression $message", referenceExpression)
         }
 
-        override fun visitCallExpression(callExpression: ECallExpression) {
-            super.visitCallExpression(callExpression)
+        override fun visitKtCallExpression(callExpression: EKtCallExpression) {
+            super.visitKtCallExpression(callExpression)
+            m.error("Call expression $message", callExpression)
+        }
+
+        override fun visitSvCallExpression(callExpression: ESvCallExpression) {
+            super.visitSvCallExpression(callExpression)
             if (callExpression.reference is CoreKtFunctionDeclaration)
                 m.error("Call expression $message: ${callExpression.reference.name}", callExpression)
         }

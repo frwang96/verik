@@ -16,9 +16,9 @@
 
 package io.verik.compiler.transform.mid
 
-import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
@@ -59,8 +59,8 @@ object BitConstantTransformer : ProjectPass {
 
     object BitConstantVisitor : TreeVisitor() {
 
-        override fun visitCallExpression(callExpression: ECallExpression) {
-            super.visitCallExpression(callExpression)
+        override fun visitKtCallExpression(callExpression: EKtCallExpression) {
+            super.visitKtCallExpression(callExpression)
             if (callExpression.reference == Core.Vk.U_INT) {
                 val expression = callExpression.valueArguments[0].expression
                 if (expression is EConstantExpression) {

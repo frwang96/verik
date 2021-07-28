@@ -16,7 +16,7 @@
 
 package io.verik.compiler.transform.post
 
-import io.verik.compiler.ast.element.common.ECallExpression
+import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EEventExpression
@@ -35,8 +35,8 @@ object FunctionSpecialTransformer : ProjectPass {
 
     object FunctionReferenceVisitor : TreeVisitor() {
 
-        override fun visitCallExpression(callExpression: ECallExpression) {
-            super.visitCallExpression(callExpression)
+        override fun visitKtCallExpression(callExpression: EKtCallExpression) {
+            super.visitKtCallExpression(callExpression)
             val newExpression = when (callExpression.reference) {
                 Core.Vk.POSEDGE_BOOLEAN -> {
                     EEventExpression(

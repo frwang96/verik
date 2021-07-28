@@ -47,8 +47,8 @@ object ProjectPostTransformer : ProjectPass {
         PackageNameTransformer.pass(projectContext)
         m.flush()
 
-        m.log("PostTransform: Transform reference expressions")
-        ReferenceExpressionTransformer.pass(projectContext)
+        m.log("PostTransform: Transform reference and call expressions")
+        ReferenceAndCallExpressionTransformer.pass(projectContext)
         m.flush()
 
         m.log("PostTransform: Transform block expressions")

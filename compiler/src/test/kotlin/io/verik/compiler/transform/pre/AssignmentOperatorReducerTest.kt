@@ -40,7 +40,7 @@ internal class AssignmentOperatorReducerTest : BaseTest() {
                     Unit,
                     EQ,
                     KtReferenceExpression(*),
-                    CallExpression(Int, plus, KtReferenceExpression(*), [], [ValueArgument(*)])
+                    KtCallExpression(Int, plus, KtReferenceExpression(*), [], [ValueArgument(*)])
                 )
             """.trimIndent(),
             projectContext.findExpression("f")

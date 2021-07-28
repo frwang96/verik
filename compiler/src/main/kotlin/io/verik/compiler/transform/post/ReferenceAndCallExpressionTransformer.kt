@@ -16,19 +16,21 @@
 
 package io.verik.compiler.transform.post
 
+import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
+import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 
-object ReferenceExpressionTransformer : ProjectPass {
+object ReferenceAndCallExpressionTransformer : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.project.accept(ReferenceExpressionVisitor)
+        projectContext.project.accept(ReferenceAndCallExpressionVisitor)
     }
 
-    object ReferenceExpressionVisitor : TreeVisitor() {
+    object ReferenceAndCallExpressionVisitor : TreeVisitor() {
 
         override fun visitKtReferenceExpression(referenceExpression: EKtReferenceExpression) {
             super.visitKtReferenceExpression(referenceExpression)
@@ -38,6 +40,20 @@ object ReferenceExpressionTransformer : ProjectPass {
                     referenceExpression.type,
                     referenceExpression.reference,
                     referenceExpression.receiver,
+                    false
+                )
+            )
+        }
+
+        override fun visitKtCallExpression(callExpression: EKtCallExpression) {
+            super.visitKtCallExpression(callExpression)
+            callExpression.replace(
+                ESvCallExpression(
+                    callExpression.location,
+                    callExpression.type,
+                    callExpression.reference,
+                    callExpression.receiver,
+                    callExpression.valueArguments,
                     false
                 )
             )
