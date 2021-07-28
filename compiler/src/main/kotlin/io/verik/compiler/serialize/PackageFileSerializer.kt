@@ -35,7 +35,7 @@ object PackageFileSerializer {
             outputPath,
             FileHeaderBuilder.HeaderStyle.SV
         )
-        val packageName = basicPackage.files[0].packageDeclaration.name
+        val packageName = basicPackage.name
         val indent = " ".repeat(projectContext.config.indentLength)
 
         val builder = StringBuilder()

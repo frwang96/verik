@@ -16,13 +16,18 @@
 
 package io.verik.compiler.core.common
 
-import io.verik.compiler.common.PackageDeclaration
+class CorePackage(
+    override var name: String
+) : CoreDeclaration {
 
-object CorePackage {
+    override val qualifiedName = name
 
-    val ROOT = PackageDeclaration("root")
-    val KT = PackageDeclaration("kotlin")
-    val KT_IO = PackageDeclaration("kotlin.io")
-    val VK = PackageDeclaration("io.verik.core")
-    val SV = PackageDeclaration("systemverilog")
+    companion object {
+
+        val ROOT = CorePackage("root")
+        val KT = CorePackage("kotlin")
+        val KT_IO = CorePackage("kotlin.io")
+        val VK = CorePackage("io.verik.core")
+        val SV = CorePackage("systemverilog")
+    }
 }

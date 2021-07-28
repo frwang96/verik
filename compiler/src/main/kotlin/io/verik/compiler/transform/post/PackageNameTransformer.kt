@@ -16,8 +16,7 @@
 
 package io.verik.compiler.transform.post
 
-import io.verik.compiler.ast.element.common.EFile
-import io.verik.compiler.common.PackageDeclaration
+import io.verik.compiler.ast.element.common.EBasicPackage
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -31,18 +30,14 @@ object PackageNameTransformer : ProjectPass {
 
     object PackageNameVisitor : TreeVisitor() {
 
-        private fun transformPackageName(packageDeclaration: PackageDeclaration): PackageDeclaration {
-            val name = packageDeclaration.name
-            return if (name == "") {
-                m.fatal("Invalid package name: Package name cannot be empty", null)
+        override fun visitBasicPackage(basicPackage: EBasicPackage) {
+            val name = if (basicPackage.name == "") {
+                m.fatal("Package name cannot be empty", basicPackage)
             } else {
-                val names = name.split(".")
-                PackageDeclaration(names.joinToString(separator = "_", postfix = "_pkg"))
+                val names = basicPackage.name.split(".")
+                names.joinToString(separator = "_", postfix = "_pkg")
             }
-        }
-
-        override fun visitFile(file: EFile) {
-            file.packageDeclaration = transformPackageName(file.packageDeclaration)
+            basicPackage.name = name
         }
     }
 }

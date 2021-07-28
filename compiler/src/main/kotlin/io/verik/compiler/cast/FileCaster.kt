@@ -17,7 +17,6 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.ast.element.common.EFile
-import io.verik.compiler.common.PackageDeclaration
 import io.verik.compiler.common.location
 import org.jetbrains.kotlin.psi.KtFile
 import java.nio.file.Paths
@@ -28,13 +27,12 @@ object FileCaster {
         val location = file.location()
         val packageName = file.packageFqName.asString()
         val inputPath = Paths.get(file.virtualFilePath)
-        val packageDeclaration = PackageDeclaration(packageName)
         val baseCasterVisitor = BaseCasterVisitor(castContext)
         val members = file.declarations.map { it.accept(baseCasterVisitor, Unit) }
 
         return FileCasterResult(
             packageName,
-            EFile(location, inputPath, null, packageDeclaration, ArrayList(members))
+            EFile(location, inputPath, null, ArrayList(members))
         )
     }
 

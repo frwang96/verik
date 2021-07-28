@@ -16,11 +16,7 @@
 
 package io.verik.compiler.core.common
 
-import io.verik.compiler.common.PackageDeclaration
+open class CoreScope (coreDeclaration: CoreDeclaration) {
 
-open class CoreScope private constructor(val parent: String) {
-
-    constructor(packageDeclaration: PackageDeclaration) : this(packageDeclaration.name)
-
-    constructor(classDeclaration: CoreClassDeclaration) : this(classDeclaration.qualifiedName)
+    val parent = coreDeclaration.qualifiedName
 }

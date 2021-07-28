@@ -17,7 +17,6 @@
 package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.ast.interfaces.ElementContainer
-import io.verik.compiler.common.PackageDeclaration
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.common.replaceIfContains
@@ -29,7 +28,6 @@ class EFile(
     override val location: SourceLocation,
     val inputPath: Path,
     private val outputPath: Path?,
-    var packageDeclaration: PackageDeclaration,
     var members: ArrayList<EElement>
 ) : EElement(), ElementContainer {
 
