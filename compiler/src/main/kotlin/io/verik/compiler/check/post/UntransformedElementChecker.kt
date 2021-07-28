@@ -70,6 +70,11 @@ object UntransformedElementChecker : ProjectPass {
             m.error("Binary expression $message", binaryExpression)
         }
 
+        override fun visitKtReferenceExpression(referenceExpression: EKtReferenceExpression) {
+            super.visitKtReferenceExpression(referenceExpression)
+            m.error("Reference expression $message", referenceExpression)
+        }
+
         override fun visitCallExpression(callExpression: ECallExpression) {
             super.visitCallExpression(callExpression)
             if (callExpression.reference is CoreKtFunctionDeclaration)

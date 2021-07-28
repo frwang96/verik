@@ -14,40 +14,36 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.common
+package io.verik.compiler.ast.element.kt
 
+import io.verik.compiler.ast.element.common.EAbstractReferenceExpression
+import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.Declaration
-import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.ast.property.Type
-import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.SourceLocation
 
-class EReferenceExpression(
+class EKtReferenceExpression(
     override val location: SourceLocation,
     override var type: Type,
     override var reference: Declaration,
-    var receiver: EExpression?
-) : EExpression(), Reference {
+    override var receiver: EExpression?
+) : EAbstractReferenceExpression() {
 
-    override val serializationType = SvSerializationType.EXPRESSION
+    override val serializationType = SvSerializationType.OTHER
 
     init {
         receiver?.parent = this
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitReferenceExpression(this)
-    }
-
-    override fun acceptChildren(visitor: TreeVisitor) {
-        receiver?.accept(visitor)
+        visitor.visitKtReferenceExpression(this)
     }
 
     override fun copy(): EExpression {
         val copyType = type.copy()
         val copyReceiver = receiver?.copy()
-        return EReferenceExpression(location, copyType, reference, copyReceiver)
+        return EKtReferenceExpression(location, copyType, reference, copyReceiver)
     }
 }

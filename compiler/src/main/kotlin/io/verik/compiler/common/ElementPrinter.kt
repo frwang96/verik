@@ -201,11 +201,20 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
-        build("ReferenceExpression") {
+    override fun visitKtReferenceExpression(referenceExpression: EKtReferenceExpression) {
+        build("KtReferenceExpression") {
             build(referenceExpression.type.toString())
             build(referenceExpression.reference.name)
             build(referenceExpression.receiver)
+        }
+    }
+
+    override fun visitSvReferenceExpression(referenceExpression: ESvReferenceExpression) {
+        build("SvReferenceExpression") {
+            build(referenceExpression.type.toString())
+            build(referenceExpression.reference.name)
+            build(referenceExpression.receiver)
+            build(referenceExpression.isScopeResolution.toString())
         }
     }
 

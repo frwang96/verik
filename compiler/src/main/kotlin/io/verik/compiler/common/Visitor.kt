@@ -180,8 +180,16 @@ abstract class Visitor {
         visitAbstractBinaryExpression(binaryExpression)
     }
 
-    open fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
-        visitExpression(referenceExpression)
+    open fun visitAbstractReferenceExpression(abstractReferenceExpression: EAbstractReferenceExpression) {
+        visitExpression(abstractReferenceExpression)
+    }
+
+    open fun visitKtReferenceExpression(referenceExpression: EKtReferenceExpression) {
+        visitAbstractReferenceExpression(referenceExpression)
+    }
+
+    open fun visitSvReferenceExpression(referenceExpression: ESvReferenceExpression) {
+        visitAbstractReferenceExpression(referenceExpression)
     }
 
     open fun visitCallExpression(callExpression: ECallExpression) {

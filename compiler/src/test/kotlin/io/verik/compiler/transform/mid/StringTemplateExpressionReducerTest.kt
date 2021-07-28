@@ -54,7 +54,7 @@ internal class StringTemplateExpressionReducerTest : BaseTest() {
                     [],
                     [
                         ValueArgument(null, StringExpression(String, %d)),
-                        ValueArgument(null, ReferenceExpression(Int, x, null))
+                        ValueArgument(null, KtReferenceExpression(Int, x, null))
                     ]
                 )
             """.trimIndent(),

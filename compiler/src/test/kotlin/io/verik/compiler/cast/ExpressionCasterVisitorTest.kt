@@ -70,7 +70,7 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "ReferenceExpression(Int, x, null)",
+            "KtReferenceExpression(Int, x, null)",
             projectContext.findExpression("y")
         )
     }
@@ -84,7 +84,7 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "ReferenceExpression(Int, x, null)",
+            "KtReferenceExpression(Int, x, null)",
             projectContext.findExpression("y")
         )
     }
@@ -113,7 +113,7 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "CallExpression(Int, plus, ReferenceExpression(*), [], [ValueArgument(*)])",
+            "CallExpression(Int, plus, KtReferenceExpression(*), [], [ValueArgument(*)])",
             projectContext.findExpression("y")
         )
     }
@@ -245,7 +245,7 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "StringTemplateExpression(String, [ExpressionStringTemplateEntry(ReferenceExpression(*))])",
+            "StringTemplateExpression(String, [ExpressionStringTemplateEntry(KtReferenceExpression(*))])",
             projectContext.findExpression("y")
         )
     }
@@ -259,7 +259,7 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "IfExpression(Int, ReferenceExpression(*), ConstantExpression(*), ConstantExpression(*))",
+            "IfExpression(Int, KtReferenceExpression(*), ConstantExpression(*), ConstantExpression(*))",
             projectContext.findExpression("y")
         )
     }

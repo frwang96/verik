@@ -83,7 +83,7 @@ class ExpressionCasterVisitor(private val castContext: CastContext) : KtVisitor<
         val descriptor = castContext.sliceReferenceTarget[expression]!!
         val type = castContext.castType(expression)
         val declaration = castContext.getDeclaration(descriptor, expression)
-        return EReferenceExpression(location, type, declaration, null)
+        return EKtReferenceExpression(location, type, declaration, null)
     }
 
     override fun visitCallExpression(expression: KtCallExpression, data: Unit?): EElement {
@@ -133,7 +133,7 @@ class ExpressionCasterVisitor(private val castContext: CastContext) : KtVisitor<
             is KtSimpleNameExpression -> {
                 val descriptor = castContext.sliceReferenceTarget[selector]!!
                 val declaration = castContext.getDeclaration(descriptor, expression)
-                EReferenceExpression(location, type, declaration, receiver)
+                EKtReferenceExpression(location, type, declaration, receiver)
             }
             is KtCallExpression -> {
                 val descriptor = castContext.sliceReferenceTarget[selector.calleeExpression]!!

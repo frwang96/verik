@@ -33,7 +33,7 @@ internal class UnaryExpressionTransformerTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SvUnaryExpression(Boolean, EXCL, ReferenceExpression(*))",
+            "SvUnaryExpression(Boolean, EXCL, SvReferenceExpression(*))",
             projectContext.findExpression("y")
         )
     }

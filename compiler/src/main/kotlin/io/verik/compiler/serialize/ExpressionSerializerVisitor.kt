@@ -82,11 +82,14 @@ class ExpressionSerializerVisitor(private val sourceBuilder: SourceBuilder) : Vi
         serializeAsExpression(binaryExpression.right)
     }
 
-    override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
+    override fun visitSvReferenceExpression(referenceExpression: ESvReferenceExpression) {
         val receiver = referenceExpression.receiver
         if (receiver != null) {
             serializeAsExpression(receiver)
-            sourceBuilder.append(".", referenceExpression)
+            if (referenceExpression.isScopeResolution)
+                sourceBuilder.append("::", referenceExpression)
+            else
+                sourceBuilder.append(".", referenceExpression)
         }
         sourceBuilder.append(referenceExpression.reference.name, referenceExpression)
     }
