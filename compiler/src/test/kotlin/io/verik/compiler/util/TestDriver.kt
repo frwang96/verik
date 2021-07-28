@@ -25,6 +25,7 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 import io.verik.compiler.resolve.ProjectResolver
 import io.verik.compiler.serialize.ProjectSerializer
+import io.verik.compiler.specialize.ProjectSpecializer
 import io.verik.compiler.transform.mid.ProjectMidTransformer
 import io.verik.compiler.transform.post.ProjectPostTransformer
 import io.verik.compiler.transform.pre.ProjectPreTransformer
@@ -85,8 +86,14 @@ object TestDriver {
         return projectContext
     }
 
-    fun interpret(@Language("kotlin") content: String): ProjectContext {
+    fun specialize(@Language("kotlin") content: String): ProjectContext {
         val projectContext = resolve(content)
+        ProjectSpecializer.pass(projectContext)
+        return projectContext
+    }
+
+    fun interpret(@Language("kotlin") content: String): ProjectContext {
+        val projectContext = specialize(content)
         ProjectInterpreter.pass(projectContext)
         return projectContext
     }

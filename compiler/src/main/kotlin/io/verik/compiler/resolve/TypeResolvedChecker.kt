@@ -14,25 +14,26 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.mid
+package io.verik.compiler.resolve
 
+import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.common.ProjectPass
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
-object ProjectMidTransformer : ProjectPass {
+object TypeResolvedChecker : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        m.log("MidTransform: Reduce string template expressions")
-        StringTemplateExpressionReducer.pass(projectContext)
-        m.flush()
+        projectContext.project.accept(TypeCheckerVisitor)
+    }
 
-        m.log("MidTransform: Transform bit constants")
-        BitConstantTransformer.pass(projectContext)
-        m.flush()
+    object TypeCheckerVisitor : TreeVisitor() {
 
-        m.log("MidTransform: Transform assignments")
-        AssignmentTransformer.pass(projectContext)
-        m.flush()
+        override fun visitExpression(expression: EExpression) {
+            super.visitExpression(expression)
+            if (!expression.type.isResolved())
+                m.error("Type of $expression could not be resolved: ${expression.type}", expression)
+        }
     }
 }

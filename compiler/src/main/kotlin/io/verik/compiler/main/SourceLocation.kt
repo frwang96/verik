@@ -22,5 +22,5 @@ class SourceLocation(
     val column: Int,
     val line: Int,
     val path: Path,
-    val element: Any?
+    val parent: Any?
 )

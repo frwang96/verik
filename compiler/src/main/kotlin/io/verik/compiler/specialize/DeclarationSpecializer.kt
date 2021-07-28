@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.resolve
+package io.verik.compiler.specialize
 
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext

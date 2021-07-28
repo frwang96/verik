@@ -31,12 +31,8 @@ object ProjectResolver : ProjectPass {
         TypeBackFiller.pass(projectContext)
         m.flush()
 
-        m.log("Resolve: Specialize declarations")
-        DeclarationSpecializer.pass(projectContext)
-        m.flush()
-
-        m.log("Resolve: Check types")
-        TypeChecker.pass(projectContext)
+        m.log("Resolve: Check types resolved")
+        TypeResolvedChecker.pass(projectContext)
         m.flush()
     }
 }

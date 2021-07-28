@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.resolve
+package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.common.ProjectPass
@@ -22,7 +22,7 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
-object TypeChecker : ProjectPass {
+object TypeSpecializedChecker : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
         projectContext.project.accept(TypeCheckerVisitor)
@@ -32,9 +32,7 @@ object TypeChecker : ProjectPass {
 
         override fun visitExpression(expression: EExpression) {
             super.visitExpression(expression)
-            if (!expression.type.isResolved())
-                m.error("Type of $expression could not be resolved: ${expression.type}", expression)
-            else if (!expression.type.isSpecialized())
+            if (!expression.type.isSpecialized())
                 m.error("Type of $expression could not be specialized: ${expression.type}", expression)
         }
     }

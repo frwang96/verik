@@ -14,25 +14,21 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.mid
+package io.verik.compiler.specialize
 
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
-object ProjectMidTransformer : ProjectPass {
+object ProjectSpecializer : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        m.log("MidTransform: Reduce string template expressions")
-        StringTemplateExpressionReducer.pass(projectContext)
+        m.log("Specialize: Specialize declarations")
+        DeclarationSpecializer.pass(projectContext)
         m.flush()
 
-        m.log("MidTransform: Transform bit constants")
-        BitConstantTransformer.pass(projectContext)
-        m.flush()
-
-        m.log("MidTransform: Transform assignments")
-        AssignmentTransformer.pass(projectContext)
+        m.log("Specialize: Check types specialized")
+        TypeSpecializedChecker.pass(projectContext)
         m.flush()
     }
 }

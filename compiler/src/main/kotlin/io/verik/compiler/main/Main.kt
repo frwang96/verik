@@ -22,6 +22,7 @@ import io.verik.compiler.check.pre.ProjectPreChecker
 import io.verik.compiler.interpret.ProjectInterpreter
 import io.verik.compiler.resolve.ProjectResolver
 import io.verik.compiler.serialize.ProjectSerializer
+import io.verik.compiler.specialize.ProjectSpecializer
 import io.verik.compiler.transform.mid.ProjectMidTransformer
 import io.verik.compiler.transform.post.ProjectPostTransformer
 import io.verik.compiler.transform.pre.ProjectPreTransformer
@@ -42,6 +43,7 @@ object Main {
         ProjectPreChecker.pass(projectContext)
         ProjectPreTransformer.pass(projectContext)
         ProjectResolver.pass(projectContext)
+        ProjectSpecializer.pass(projectContext)
         ProjectInterpreter.pass(projectContext)
         ProjectMidTransformer.pass(projectContext)
         ProjectPostTransformer.pass(projectContext)

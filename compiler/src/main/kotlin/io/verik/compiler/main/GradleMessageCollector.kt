@@ -73,7 +73,7 @@ class GradleMessageCollector(config: Config) : MessageCollector() {
     private fun printMessage(message: String, location: SourceLocation?) {
         if (location != null) {
             print("${location.path}: (${location.line}, ${location.column}): ")
-            val qualifiedName = getQualifiedName(location.element)
+            val qualifiedName = getQualifiedName(location.parent)
             if (qualifiedName != null)
                 print("$qualifiedName: ")
         }

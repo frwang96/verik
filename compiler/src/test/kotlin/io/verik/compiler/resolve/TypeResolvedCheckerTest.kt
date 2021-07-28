@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-internal class TypeCheckerTest : BaseTest() {
+internal class TypeResolvedCheckerTest : BaseTest() {
 
     @Test
     fun `cardinal not resolved`() {

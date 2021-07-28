@@ -23,6 +23,10 @@ import io.verik.compiler.main.m
 object ProjectPostTransformer : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
+        m.log("PostTransform: Transform loop expressions")
+        LoopExpressionTransformer.pass(projectContext)
+        m.flush()
+
         m.log("PostTransform: Transform function references")
         FunctionReferenceTransformer.pass(projectContext)
         m.flush()
@@ -43,12 +47,12 @@ object ProjectPostTransformer : ProjectPass {
         PackageNameTransformer.pass(projectContext)
         m.flush()
 
-        m.log("PostTransform: Insert parenthesis")
-        ParenthesisInsertionTransformer.pass(projectContext)
-        m.flush()
-
         m.log("PostTransform: Transform block expressions")
         BlockExpressionTransformer.pass(projectContext)
+        m.flush()
+
+        m.log("PostTransform: Insert parenthesis")
+        ParenthesisInsertionTransformer.pass(projectContext)
         m.flush()
     }
 }

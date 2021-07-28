@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.mid
+package io.verik.compiler.transform.post
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestDriver
@@ -26,7 +26,7 @@ internal class LoopExpressionTransformerTest : BaseTest() {
 
     @Test
     fun `transform forever`() {
-        val projectContext = TestDriver.midTransform(
+        val projectContext = TestDriver.postTransform(
             """
                 fun f() {
                     forever {}
@@ -34,7 +34,7 @@ internal class LoopExpressionTransformerTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "ForeverStatement(Unit, KtBlockExpression(*))",
+            "ForeverStatement(Unit, SvBlockExpression(*))",
             projectContext.findExpression("f")
         )
     }
