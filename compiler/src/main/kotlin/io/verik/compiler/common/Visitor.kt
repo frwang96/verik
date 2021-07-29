@@ -128,6 +128,18 @@ abstract class Visitor {
         visitAbstractProperty(property)
     }
 
+    open fun visitAbstractEnumEntry(abstractEnumEntry: EAbstractEnumEntry) {
+        visitAbstractProperty(abstractEnumEntry)
+    }
+
+    open fun visitKtEnumEntry(enumEntry: EKtEnumEntry) {
+        visitAbstractEnumEntry(enumEntry)
+    }
+
+    open fun visitSvEnumEntry(enumEntry: ESvEnumEntry) {
+        visitAbstractEnumEntry(enumEntry)
+    }
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //  TYPE PARAMETER
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

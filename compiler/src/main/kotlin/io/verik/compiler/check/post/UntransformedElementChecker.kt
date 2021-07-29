@@ -55,6 +55,11 @@ object UntransformedElementChecker : ProjectPass {
             m.error("Property ${property.name} $message", property)
         }
 
+        override fun visitKtEnumEntry(enumEntry: EKtEnumEntry) {
+            super.visitKtEnumEntry(enumEntry)
+            m.error("Enum entry ${enumEntry.name} $message", enumEntry)
+        }
+
         override fun visitKtBlockExpression(blockExpression: EKtBlockExpression) {
             super.visitKtBlockExpression(blockExpression)
             m.error("Block expression $message", blockExpression)

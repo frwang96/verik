@@ -138,6 +138,20 @@ class ElementPrinter : Visitor() {
         }
     }
 
+    override fun visitKtEnumEntry(enumEntry: EKtEnumEntry) {
+        build("KtEnumEntry") {
+            build(enumEntry.name)
+            build(enumEntry.type.toString())
+        }
+    }
+
+    override fun visitSvEnumEntry(enumEntry: ESvEnumEntry) {
+        build("SvEnumEntry") {
+            build(enumEntry.name)
+            build(enumEntry.type.toString())
+        }
+    }
+
     override fun visitTypeParameter(typeParameter: ETypeParameter) {
         build("TypeParameter") {
             build(typeParameter.name)

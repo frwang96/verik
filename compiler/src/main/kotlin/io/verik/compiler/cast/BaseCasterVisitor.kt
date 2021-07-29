@@ -18,6 +18,7 @@ package io.verik.compiler.cast
 
 import io.verik.compiler.ast.element.common.*
 import io.verik.compiler.ast.element.kt.EKtBasicClass
+import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.interfaces.cast
@@ -27,6 +28,7 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.*
+import org.jetbrains.kotlin.resolve.descriptorUtil.classValueType
 import org.jetbrains.kotlin.resolve.descriptorUtil.getSuperClassOrAny
 import org.jetbrains.kotlin.types.typeUtil.isNullableAny
 import org.jetbrains.kotlin.types.typeUtil.representativeUpperBound
@@ -64,6 +66,18 @@ class BaseCasterVisitor(private val castContext: CastContext) : KtVisitor<EEleme
         basicClass.members = ArrayList(members)
         basicClass.isEnum = isEnum
         return basicClass
+    }
+
+    override fun visitEnumEntry(enumEntry: KtEnumEntry, data: Unit?): EElement {
+        val location = enumEntry.location()
+        val descriptor = castContext.sliceClass[enumEntry]!!
+        val ktEnumEntry = castContext.getDeclaration(descriptor, enumEntry)
+            .cast<EKtEnumEntry>(enumEntry)
+            ?: return ENullExpression(location)
+
+        val type = castContext.castType(descriptor.classValueType!!, enumEntry)
+        ktEnumEntry.type = type
+        return ktEnumEntry
     }
 
     override fun visitNamedFunction(function: KtNamedFunction, data: Unit?): EElement {

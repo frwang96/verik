@@ -18,6 +18,7 @@ package io.verik.compiler.cast
 
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.EKtBasicClass
+import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.property.Type
@@ -42,6 +43,16 @@ class IndexerVisitor(private val castContext: CastContext) : KtTreeVisitorVoid()
         checkDeclarationName(name, classOrObject)
         val basicClass = EKtBasicClass(location, name, Type.NULL, arrayListOf(), arrayListOf(), false)
         castContext.addDeclaration(descriptor, basicClass)
+    }
+
+    override fun visitEnumEntry(enumEntry: KtEnumEntry) {
+        super.visitEnumEntry(enumEntry)
+        val descriptor = castContext.sliceClass[enumEntry]!!
+        val location = enumEntry.location()
+        val name = enumEntry.name!!
+        checkDeclarationName(name, enumEntry)
+        val ktEnumEntry = EKtEnumEntry(location, name, Type.NULL)
+        castContext.addDeclaration(descriptor, ktEnumEntry)
     }
 
     override fun visitNamedFunction(function: KtNamedFunction) {

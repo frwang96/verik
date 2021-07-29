@@ -18,7 +18,6 @@ package io.verik.compiler.cast
 
 import io.verik.compiler.util.*
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
@@ -96,8 +95,6 @@ internal class BaseCasterVisitorTest : BaseTest() {
     }
 
     @Test
-    @Disabled
-    // TODO cast enum class
     fun `enum class`() {
         val projectContext = TestDriver.cast(
             """
@@ -105,7 +102,7 @@ internal class BaseCasterVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "",
+            "KtBasicClass(E, true, [], [KtEnumEntry(A, E)])",
             projectContext.findDeclaration("E")
         )
     }

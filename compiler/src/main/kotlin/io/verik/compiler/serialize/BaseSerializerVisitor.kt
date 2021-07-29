@@ -82,6 +82,9 @@ class BaseSerializerVisitor(private val sourceBuilder: SourceBuilder) : Visitor(
         }
     }
 
+    // Enum entries are serialized through the parent enum
+    override fun visitSvEnumEntry(enumEntry: ESvEnumEntry) {}
+
     override fun visitInitialBlock(initialBlock: EInitialBlock) {
         appendLineIfNotFirst()
         sourceBuilder.append("initial ", initialBlock)
