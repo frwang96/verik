@@ -26,6 +26,7 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.descriptors.PackageViewDescriptor
 import org.jetbrains.kotlin.psi.*
+import org.jetbrains.kotlin.resolve.lazy.descriptors.LazyClassDescriptor
 
 class ExpressionCasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, Unit>() {
 
@@ -120,14 +121,17 @@ class ExpressionCasterVisitor(private val castContext: CastContext) : KtVisitor<
         val location = expression.location()
         val type = castContext.castType(expression)
 
-        // Drop receiver if reference target is a package
-        val packageViewDescriptor = when (val receiver = expression.receiverExpression) {
+        // Drop receiver if reference target is a package or class
+        val receiverReferenceTarget = when (val receiver = expression.receiverExpression) {
             is KtSimpleNameExpression -> castContext.sliceReferenceTarget[receiver]
             is KtDotQualifiedExpression -> castContext.sliceReferenceTarget[receiver.selectorExpression]
             else -> null
         }
-        val receiver = if (packageViewDescriptor is PackageViewDescriptor) null
-        else getExpression(expression.receiverExpression)
+        val receiver = when (receiverReferenceTarget) {
+            is PackageViewDescriptor -> null
+            is LazyClassDescriptor -> null
+            else -> getExpression(expression.receiverExpression)
+        }
 
         return when (val selector = expression.selectorExpression) {
             is KtSimpleNameExpression -> {

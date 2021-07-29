@@ -39,7 +39,9 @@ object TypeCaster {
             return Type(Core.Kt.FUNCTION, ArrayList())
         val declarationDescriptor = type.constructor.declarationDescriptor!!
         val declaration = castContext.getDeclaration(declarationDescriptor, element)
-        val arguments = type.arguments.map { cast(castContext, it.type, element) }
+        val arguments = if (declaration != Core.Kt.ENUM) {
+            type.arguments.map { cast(castContext, it.type, element) }
+        } else listOf()
         return Type(declaration, ArrayList(arguments))
     }
 

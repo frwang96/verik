@@ -49,7 +49,7 @@ internal class FileCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "File([KtBasicClass(C, [], [])])",
+            "File([KtBasicClass(C, false, [], [])])",
             projectContext.project.files().first()
         )
     }
@@ -65,8 +65,8 @@ internal class FileCasterTest : BaseTest() {
         assertElementEquals(
             """
                 File([
-                    KtBasicClass(C, [], []),
-                    KtBasicClass(D, [], [])
+                    KtBasicClass(C, false, [], []),
+                    KtBasicClass(D, false, [], [])
                 ])
             """.trimIndent(),
             projectContext.project.files().first()

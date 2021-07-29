@@ -22,6 +22,7 @@ import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.interfaces.Declaration
+import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -43,7 +44,7 @@ object PackageReferenceInsertionTransformer : ProjectPass {
                 if (file is EFile) {
                     val basicPackage = file.parent
                     if (basicPackage is EBasicPackage && basicPackage != parentBasicPackage) {
-                        return EKtReferenceExpression(element.location, basicPackage.toType(), basicPackage, null)
+                        return EKtReferenceExpression(element.location, Type.NULL, basicPackage, null)
                     }
                 }
             }

@@ -36,6 +36,7 @@ object Core {
         val INT = CoreKtClass.INT
         val BOOLEAN = CoreKtClass.BOOLEAN
         val STRING = CoreKtClass.STRING
+        val ENUM = CoreKtClass.ENUM
 
         object Int : CoreScope(INT) {
 

@@ -40,7 +40,7 @@ class IndexerVisitor(private val castContext: CastContext) : KtTreeVisitorVoid()
         val location = classOrObject.location()
         val name = classOrObject.name!!
         checkDeclarationName(name, classOrObject)
-        val basicClass = EKtBasicClass(location, name, Type.NULL, arrayListOf(), arrayListOf())
+        val basicClass = EKtBasicClass(location, name, Type.NULL, arrayListOf(), arrayListOf(), false)
         castContext.addDeclaration(descriptor, basicClass)
     }
 

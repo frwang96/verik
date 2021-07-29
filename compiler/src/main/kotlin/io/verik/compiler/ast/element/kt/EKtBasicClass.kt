@@ -28,7 +28,8 @@ class EKtBasicClass(
     override var name: String,
     override var supertype: Type,
     override var typeParameters: ArrayList<ETypeParameter>,
-    override var members: ArrayList<EElement>
+    override var members: ArrayList<EElement>,
+    var isEnum: Boolean
 ) : EAbstractClass() {
 
     init {

@@ -90,6 +90,20 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
     }
 
     @Test
+    fun `reference expression with class`() {
+        val projectContext = TestDriver.cast(
+            """
+                enum class E { A }
+                var x = E.A
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtReferenceExpression(E, A, null)",
+            projectContext.findExpression("x")
+        )
+    }
+
+    @Test
     fun `call expression simple`() {
         val projectContext = TestDriver.cast(
             """

@@ -41,7 +41,7 @@ internal class PackageReferenceInsertionTransformerTest : BaseTest() {
                 SvReferenceExpression(
                     Boolean,
                     x,
-                    SvReferenceExpression(verik_pkg, verik_pkg, null, false),
+                    SvReferenceExpression(null, verik_pkg, null, false),
                     true
                 )
             """.trimIndent(),

@@ -18,6 +18,7 @@ package io.verik.compiler.cast
 
 import io.verik.compiler.util.*
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
@@ -33,7 +34,7 @@ internal class BaseCasterVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtBasicClass(C, [], [KtBasicClass(D, [], [])])",
+            "KtBasicClass(C, false, [], [KtBasicClass(D, false, [], [])])",
             projectContext.findDeclaration("C")
         )
     }
@@ -48,7 +49,7 @@ internal class BaseCasterVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtBasicClass(C, [], [KtFunction(f, Unit, *, null)])",
+            "KtBasicClass(C, false, [], [KtFunction(f, Unit, *, null)])",
             projectContext.findDeclaration("C")
         )
     }
@@ -63,7 +64,7 @@ internal class BaseCasterVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtBasicClass(C, [], [KtProperty(x, Boolean, *)])",
+            "KtBasicClass(C, false, [], [KtProperty(x, Boolean, *)])",
             projectContext.findDeclaration("C")
         )
     }
@@ -76,7 +77,7 @@ internal class BaseCasterVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtBasicClass(C, [], [KtBasicClass(Companion, [], [])])",
+            "KtBasicClass(C, false, [], [KtBasicClass(Companion, false, [], [])])",
             projectContext.findDeclaration("C")
         )
     }
@@ -89,8 +90,23 @@ internal class BaseCasterVisitorTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtBasicClass(C, [TypeParameter(T, Any)], [])",
+            "KtBasicClass(C, false, [TypeParameter(T, Any)], [])",
             projectContext.findDeclaration("C")
+        )
+    }
+
+    @Test
+    @Disabled
+    // TODO cast enum class
+    fun `enum class`() {
+        val projectContext = TestDriver.cast(
+            """
+                enum class E { A }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "",
+            projectContext.findDeclaration("E")
         )
     }
 

@@ -25,6 +25,7 @@ import io.verik.compiler.ast.property.FunctionAnnotationType
 import io.verik.compiler.common.location
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.m
+import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.resolve.descriptorUtil.getSuperClassOrAny
 import org.jetbrains.kotlin.types.typeUtil.isNullableAny
@@ -54,12 +55,14 @@ class BaseCasterVisitor(private val castContext: CastContext) : KtVisitor<EEleme
         val supertype = castContext.castType(descriptor.getSuperClassOrAny().defaultType, classOrObject)
         val typeParameters = classOrObject.typeParameters.mapNotNull { getElement<ETypeParameter>(it) }
         val members = classOrObject.declarations.mapNotNull { getElement(it) }
+        val isEnum = classOrObject.hasModifier(KtTokens.ENUM_KEYWORD)
 
         basicClass.supertype = supertype
         typeParameters.forEach { it.parent = basicClass }
         basicClass.typeParameters = ArrayList(typeParameters)
         members.forEach { it.parent = basicClass }
         basicClass.members = ArrayList(members)
+        basicClass.isEnum = isEnum
         return basicClass
     }
 

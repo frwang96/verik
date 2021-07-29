@@ -29,4 +29,5 @@ object CoreKtClass : CoreScope(CorePackage.KT) {
     val INT = CoreClassDeclaration(parent, "Int", ANY)
     val BOOLEAN = CoreClassDeclaration(parent, "Boolean", ANY)
     val STRING = CoreClassDeclaration(parent, "String", ANY)
+    val ENUM = CoreClassDeclaration(parent, "Enum", ANY)
 }
