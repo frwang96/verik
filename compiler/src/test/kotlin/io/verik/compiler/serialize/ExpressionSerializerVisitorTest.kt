@@ -16,9 +16,7 @@
 
 package io.verik.compiler.serialize
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestDriver
-import io.verik.compiler.util.assertOutputTextEquals
+import io.verik.compiler.util.*
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
@@ -127,6 +125,29 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
         )
         val expected = """
             int x = 0;
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
+    fun `injected expression`() {
+        val projectContext = TestDriver.serialize(
+            """
+                var x = 0
+                fun f() {
+                    sv("${"$"}x <= #1 !${"$"}x")
+                }
+            """.trimIndent()
+        )
+        val expected = """
+            int x = 0;
+            
+            function void f();
+                x <= #1 !x;
+            endfunction : f
         """.trimIndent()
         assertOutputTextEquals(
             expected,

@@ -273,6 +273,13 @@ class ElementPrinter : Visitor() {
         }
     }
 
+    override fun visitInjectedExpression(injectedExpression: EInjectedExpression) {
+        build("InjectedExpression") {
+            build(injectedExpression.type.toString())
+            build(injectedExpression.entries)
+        }
+    }
+
     override fun visitLiteralStringTemplateEntry(literalStringTemplateEntry: ELiteralStringTemplateEntry) {
         build("LiteralStringTemplateEntry") {
             build(literalStringTemplateEntry.text)

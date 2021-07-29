@@ -14,31 +14,30 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.kt
+package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EStringTemplateEntry
 import io.verik.compiler.ast.property.SvSerializationType
+import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.SourceLocation
 
-class EStringTemplateExpression(
+class EInjectedExpression(
     override val location: SourceLocation,
+    override var type: Type,
     val entries: List<EStringTemplateEntry>
 ) : EExpression() {
 
-    override val serializationType = SvSerializationType.OTHER
+    override val serializationType = SvSerializationType.EXPRESSION
 
     init {
         entries.forEach { it.parent = this }
     }
 
-    override var type = Core.Kt.STRING.toType()
-
     override fun accept(visitor: Visitor) {
-        visitor.visitStringTemplateExpression(this)
+        visitor.visitInjectedExpression(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
@@ -46,7 +45,8 @@ class EStringTemplateExpression(
     }
 
     override fun copy(): EExpression {
+        val typeCopy = type.copy()
         val copyEntries = entries.map { it.copy() }
-        return EStringTemplateExpression(location, copyEntries)
+        return EInjectedExpression(location, typeCopy, copyEntries)
     }
 }

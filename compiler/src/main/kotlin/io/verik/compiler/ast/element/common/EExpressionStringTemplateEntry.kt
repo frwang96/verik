@@ -14,24 +14,41 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.kt
+package io.verik.compiler.ast.element.common
 
+import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.SourceLocation
+import io.verik.compiler.main.m
 
-class ELiteralStringTemplateEntry(
+class EExpressionStringTemplateEntry(
     override val location: SourceLocation,
-    val text: String
-) : EStringTemplateEntry() {
+    var expression: EExpression
+) : EStringTemplateEntry(), ExpressionContainer {
 
-    override fun accept(visitor: Visitor) {
-        visitor.visitLiteralStringTemplateEntry(this)
+    init {
+        expression.parent = this
     }
 
-    override fun acceptChildren(visitor: TreeVisitor) {}
+    override fun accept(visitor: Visitor) {
+        visitor.visitExpressionStringTemplateEntry(this)
+    }
+
+    override fun acceptChildren(visitor: TreeVisitor) {
+        expression.accept(visitor)
+    }
 
     override fun copy(): EStringTemplateEntry {
-        return ELiteralStringTemplateEntry(location, text)
+        val copyExpression = expression.copy()
+        return EExpressionStringTemplateEntry(location, copyExpression)
+    }
+
+    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
+        newExpression.parent = this
+        if (expression == oldExpression)
+            expression = newExpression
+        else
+            m.error("Could not find $oldExpression in $this", this)
     }
 }

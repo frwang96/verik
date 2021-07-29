@@ -23,6 +23,10 @@ import io.verik.compiler.main.m
 object ProjectMidTransformer : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
+        m.log("MidTransform: Reduce injected expressions")
+        InjectedExpressionReducer.pass(projectContext)
+        m.flush()
+
         m.log("MidTransform: Reduce string template expressions")
         StringTemplateExpressionReducer.pass(projectContext)
         m.flush()

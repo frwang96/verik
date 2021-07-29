@@ -43,4 +43,6 @@ object CoreVk : CoreScope(CorePackage.VK) {
     val WAIT_EVENT = CoreKtFunctionDeclaration(parent, "wait", Core.Vk.EVENT)
     val DELAY_INT = CoreKtFunctionDeclaration(parent, "delay", Core.Kt.INT)
     val FINISH = CoreKtFunctionDeclaration(parent, "finish")
+
+    val SV_STRING = CoreKtFunctionDeclaration(parent, "sv", Core.Kt.STRING)
 }

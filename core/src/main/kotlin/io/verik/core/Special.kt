@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
+@file:Suppress("unused", "UNUSED_PARAMETER")
 
 package io.verik.core
 
@@ -31,5 +31,12 @@ fun <T> x(): T {
  * @param T the type of the value
  */
 fun <T> z(): T {
+    throw VerikException()
+}
+
+/**
+ * Inject [content] as SystemVerilog to use unsupported language constructs.
+ */
+fun sv(content: String) {
     throw VerikException()
 }

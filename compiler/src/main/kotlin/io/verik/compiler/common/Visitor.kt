@@ -224,6 +224,10 @@ abstract class Visitor {
         visitExpression(stringTemplateExpression)
     }
 
+    open fun visitInjectedExpression(injectedExpression: EInjectedExpression) {
+        visitExpression(injectedExpression)
+    }
+
     open fun visitStringTemplateEntry(stringTemplateEntry: EStringTemplateEntry) {
         visitElement(stringTemplateEntry)
     }

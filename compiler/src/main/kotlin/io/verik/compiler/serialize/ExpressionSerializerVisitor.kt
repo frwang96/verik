@@ -121,6 +121,17 @@ class ExpressionSerializerVisitor(private val sourceBuilder: SourceBuilder) : Vi
         sourceBuilder.append(constantExpression.value, constantExpression)
     }
 
+    override fun visitInjectedExpression(injectedExpression: EInjectedExpression) {
+        injectedExpression.entries.forEach {
+            when (it) {
+                is ELiteralStringTemplateEntry ->
+                    sourceBuilder.append(it.text, it)
+                is EExpressionStringTemplateEntry ->
+                    serializeAsExpression(it.expression)
+            }
+        }
+    }
+
     override fun visitStringExpression(stringExpression: EStringExpression) {
         sourceBuilder.append("\"${stringExpression.text}\"", stringExpression)
     }

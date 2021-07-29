@@ -83,6 +83,7 @@ object Core {
         val WAIT_EVENT = CoreVk.WAIT_EVENT
         val DELAY_INT = CoreVk.DELAY_INT
         val FINISH = CoreVk.FINISH
+        val SV_STRING = CoreVk.SV_STRING
 
         object Ubit : CoreScope(UBIT) {
 

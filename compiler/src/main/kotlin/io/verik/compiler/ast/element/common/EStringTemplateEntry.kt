@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.kt
-
-import io.verik.compiler.ast.element.common.EElement
+package io.verik.compiler.ast.element.common
 
 abstract class EStringTemplateEntry : EElement() {
 
