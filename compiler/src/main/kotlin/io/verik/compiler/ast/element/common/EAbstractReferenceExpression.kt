@@ -16,14 +16,24 @@
 
 package io.verik.compiler.ast.element.common
 
+import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.main.m
 
-abstract class EAbstractReferenceExpression : EExpression(), Reference {
+abstract class EAbstractReferenceExpression : EExpression(), Reference, ExpressionContainer {
 
     abstract var receiver: EExpression?
 
     override fun acceptChildren(visitor: TreeVisitor) {
         receiver?.accept(visitor)
+    }
+
+    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
+        newExpression.parent = this
+        if (receiver == oldExpression)
+            receiver = newExpression
+        else
+            m.error("Could not find $oldExpression in $this", this)
     }
 }

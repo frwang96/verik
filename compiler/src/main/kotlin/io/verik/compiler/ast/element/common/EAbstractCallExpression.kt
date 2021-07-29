@@ -16,16 +16,26 @@
 
 package io.verik.compiler.ast.element.common
 
+import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.main.m
 
-abstract class EAbstractCallExpression : EExpression(), Reference {
+abstract class EAbstractCallExpression : EExpression(), Reference, ExpressionContainer {
 
-    abstract val receiver: EExpression?
+    abstract var receiver: EExpression?
     abstract val valueArguments: ArrayList<EValueArgument>
 
     override fun acceptChildren(visitor: TreeVisitor) {
         receiver?.accept(visitor)
         valueArguments.forEach { it.accept(visitor) }
+    }
+
+    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
+        newExpression.parent = this
+        if (receiver == oldExpression)
+            receiver = newExpression
+        else
+            m.error("Could not find $oldExpression in $this", this)
     }
 }

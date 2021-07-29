@@ -47,6 +47,10 @@ object ProjectPostTransformer : ProjectPass {
         PackageNameTransformer.pass(projectContext)
         m.flush()
 
+        m.log("PostTransform: Insert package references")
+        PackageReferenceInsertionTransformer.pass(projectContext)
+        m.flush()
+
         m.log("PostTransform: Transform reference and call expressions")
         ReferenceAndCallExpressionTransformer.pass(projectContext)
         m.flush()

@@ -16,10 +16,13 @@
 
 package io.verik.compiler.transform.post
 
+import io.verik.compiler.ast.element.common.EBasicPackage
+import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.ast.element.sv.ESvReferenceExpression
+import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -32,6 +35,10 @@ object ReferenceAndCallExpressionTransformer : ProjectPass {
 
     object ReferenceAndCallExpressionVisitor : TreeVisitor() {
 
+        private fun getIsScopeResolution(receiver: EExpression?): Boolean {
+            return (receiver is ESvReferenceExpression && receiver.reference is EBasicPackage)
+        }
+
         override fun visitKtReferenceExpression(referenceExpression: EKtReferenceExpression) {
             super.visitKtReferenceExpression(referenceExpression)
             referenceExpression.replace(
@@ -40,7 +47,7 @@ object ReferenceAndCallExpressionTransformer : ProjectPass {
                     referenceExpression.type,
                     referenceExpression.reference,
                     referenceExpression.receiver,
-                    false
+                    getIsScopeResolution(referenceExpression.receiver)
                 )
             )
         }
@@ -54,7 +61,7 @@ object ReferenceAndCallExpressionTransformer : ProjectPass {
                     callExpression.reference,
                     callExpression.receiver,
                     callExpression.valueArguments,
-                    false
+                    getIsScopeResolution(callExpression.receiver)
                 )
             )
         }

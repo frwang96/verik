@@ -31,7 +31,7 @@ class EKtCallExpression(
     override val location: SourceLocation,
     override var type: Type,
     override var reference: Declaration,
-    override val receiver: EExpression?,
+    override var receiver: EExpression?,
     override val valueArguments: ArrayList<EValueArgument>,
     val typeArguments: ArrayList<ETypeArgument>
 ) : EAbstractCallExpression() {
