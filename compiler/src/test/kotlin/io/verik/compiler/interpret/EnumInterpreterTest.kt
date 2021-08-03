@@ -16,23 +16,23 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.common.ProjectPass
-import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
+import io.verik.compiler.util.BaseTest
+import io.verik.compiler.util.TestDriver
+import io.verik.compiler.util.assertElementEquals
+import org.junit.jupiter.api.Test
 
-object ProjectInterpreter : ProjectPass {
+internal class EnumInterpreterTest : BaseTest() {
 
-    override fun pass(projectContext: ProjectContext) {
-        m.log("Interpret: Interpret enums")
-        EnumInterpreter.pass(projectContext)
-        m.flush()
-
-        m.log("Interpret: Interpret file and class members")
-        MemberInterpreter.pass(projectContext)
-        m.flush()
-
-        m.log("Interpret: Split component and package files")
-        FileSplitter.pass(projectContext)
-        m.flush()
+    @Test
+    fun `interpret enum`() {
+        val projectContext = TestDriver.interpret(
+            """
+                enum class E { A }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "File([Enum(E, [A]), SvEnumEntry(A, E)])",
+            projectContext.project.files().first()
+        )
     }
 }

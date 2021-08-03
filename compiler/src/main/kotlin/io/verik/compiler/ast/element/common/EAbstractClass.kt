@@ -17,13 +17,13 @@
 package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.ast.interfaces.Declaration
-import io.verik.compiler.ast.interfaces.ElementContainer
+import io.verik.compiler.ast.interfaces.ResizableElementContainer
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.replaceIfContains
 import io.verik.compiler.main.m
 
-abstract class EAbstractClass : EElement(), Declaration, ElementContainer {
+abstract class EAbstractClass : EElement(), Declaration, ResizableElementContainer {
 
     abstract var supertype: Type
     abstract var typeParameters: ArrayList<ETypeParameter>
@@ -37,5 +37,10 @@ abstract class EAbstractClass : EElement(), Declaration, ElementContainer {
         newElement.parent = this
         if (!members.replaceIfContains(oldElement, newElement))
             m.error("Could not find $oldElement in $this", this)
+    }
+
+    override fun insertChild(element: EElement) {
+        element.parent = this
+        members.add(element)
     }
 }

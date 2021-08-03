@@ -16,6 +16,7 @@
 
 package io.verik.compiler.ast.interfaces
 
+import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.psi.KtElement
@@ -30,6 +31,18 @@ interface Declaration {
 }
 
 inline fun <reified T : Declaration> Declaration.cast(element: KtElement): T? {
+    return when (this) {
+        is T -> this
+        else -> {
+            val expectedName = T::class.simpleName
+            val actualName = this::class.simpleName
+            m.error("Could not cast declaration: Expected $expectedName actual $actualName", element)
+            null
+        }
+    }
+}
+
+inline fun <reified T : Declaration> Declaration.cast(element: EElement): T? {
     return when (this) {
         is T -> this
         else -> {

@@ -19,6 +19,7 @@ package io.verik.compiler.serialize
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.sv.*
+import io.verik.compiler.ast.interfaces.cast
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.m
 
@@ -53,6 +54,19 @@ class BaseSerializerVisitor(private val sourceBuilder: SourceBuilder) : Visitor(
             sourceBuilder.appendLine()
         }
         sourceBuilder.appendLine("endmodule : ${module.name}", module)
+    }
+
+    override fun visitEnum(enum: EEnum) {
+        appendLineIfNotFirst()
+        sourceBuilder.appendLine("typedef enum {", enum)
+        sourceBuilder.indent {
+            val entryReferences = enum.entryReferences.mapNotNull { it.cast<ESvEnumEntry>(enum) }
+            entryReferences.dropLast(1).forEach {
+                sourceBuilder.appendLine("${it.name},", it)
+            }
+            sourceBuilder.appendLine(entryReferences.last().name, entryReferences.last())
+        }
+        sourceBuilder.appendLine("} ${enum.name};", enum)
     }
 
     override fun visitSvFunction(function: ESvFunction) {

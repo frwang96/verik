@@ -83,6 +83,13 @@ class ElementPrinter : Visitor() {
         }
     }
 
+    override fun visitEnum(enum: EEnum) {
+        build("Enum") {
+            build(enum.name)
+            build(enum.entryReferences.map { it.name })
+        }
+    }
+
     override fun visitKtFunction(function: EKtFunction) {
         build("KtFunction") {
             build(function.name)
@@ -381,7 +388,12 @@ class ElementPrinter : Visitor() {
         if (!first) builder.append(", ")
         builder.append("[")
         first = true
-        elements.forEach { if (it is EElement) it.accept(this) }
+        elements.forEach {
+            when (it) {
+                is EElement -> it.accept(this)
+                is String -> build(it)
+            }
+        }
         builder.append("]")
         first = false
     }

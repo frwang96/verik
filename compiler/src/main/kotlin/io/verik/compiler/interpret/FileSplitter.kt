@@ -18,10 +18,7 @@ package io.verik.compiler.interpret
 
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
-import io.verik.compiler.ast.element.sv.EModule
-import io.verik.compiler.ast.element.sv.ESvBasicClass
-import io.verik.compiler.ast.element.sv.ESvFunction
-import io.verik.compiler.ast.element.sv.ESvProperty
+import io.verik.compiler.ast.element.sv.*
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
@@ -72,8 +69,10 @@ object FileSplitter : ProjectPass {
             when (it) {
                 is EModule -> componentMembers.add(it)
                 is ESvBasicClass -> packageMembers.add(it)
+                is EEnum -> packageMembers.add(it)
                 is ESvFunction -> packageMembers.add(it)
                 is ESvProperty -> packageMembers.add(it)
+                is ESvEnumEntry -> packageMembers.add(it)
                 else -> m.error("Unable to identify as component or package member: $it", it)
             }
         }

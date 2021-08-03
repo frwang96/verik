@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.interfaces.ElementContainer
+import io.verik.compiler.ast.interfaces.ResizableElementContainer
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.common.replaceIfContains
@@ -29,7 +29,7 @@ class EFile(
     val inputPath: Path,
     private val outputPath: Path?,
     var members: ArrayList<EElement>
-) : EElement(), ElementContainer {
+) : EElement(), ResizableElementContainer {
 
     init {
         members.forEach { it.parent = this }
@@ -47,6 +47,11 @@ class EFile(
         newElement.parent = this
         if (!members.replaceIfContains(oldElement, newElement))
             m.error("Could not find $oldElement in $this", this)
+    }
+
+    override fun insertChild(element: EElement) {
+        element.parent = this
+        members.add(element)
     }
 
     fun getOutputPathNotNull(): Path {

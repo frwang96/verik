@@ -60,6 +60,25 @@ internal class BaseSerializerVisitorTest : BaseTest() {
     }
 
     @Test
+    fun `serialize enum`() {
+        val projectContext = TestDriver.serialize(
+            """
+                enum class E { A, B }
+            """.trimIndent()
+        )
+        val expected = """
+            typedef enum {
+                A,
+                B
+            } E;
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
     fun `serialize function`() {
         val projectContext = TestDriver.serialize(
             """

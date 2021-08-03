@@ -29,11 +29,11 @@ class MemberReplacer(val projectContext: ProjectContext) {
     private val replacementMap = HashMap<Declaration, Declaration>()
 
     fun replace(oldElement: EElement, newElement: EElement) {
-        val parent = oldElement.parent
+        val parent = oldElement.parentNotNull()
         if (parent is ElementContainer)
             parent.replaceChild(oldElement, newElement)
         else
-            m.error("Could not replace $oldElement", oldElement)
+            m.error("Could not replace $oldElement in $parent", oldElement)
         if (oldElement !is Declaration)
             m.fatal("Declaration expected but got: $oldElement", oldElement)
         if (newElement !is Declaration)

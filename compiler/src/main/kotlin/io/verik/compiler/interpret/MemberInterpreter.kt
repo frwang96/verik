@@ -16,7 +16,6 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.common.EAbstractClass
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.kt.EKtBasicClass
@@ -39,13 +38,13 @@ object MemberInterpreter : ProjectPass {
     class MemberVisitor(private val memberReplacer: MemberReplacer) : TreeVisitor() {
 
         override fun visitFile(file: EFile) {
-            file.members.forEach { interpretMember(it) }
             super.visitFile(file)
+            file.members.forEach { interpretMember(it) }
         }
 
-        override fun visitAbstractClass(abstractClass: EAbstractClass) {
-            abstractClass.members.forEach { interpretMember(it) }
-            super.visitAbstractClass(abstractClass)
+        override fun visitKtBasicClass(basicClass: EKtBasicClass) {
+            super.visitKtBasicClass(basicClass)
+            basicClass.members.forEach { interpretMember(it) }
         }
 
         private fun interpretMember(member: EElement) {
