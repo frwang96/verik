@@ -17,6 +17,3 @@ Core library for Verik projects.
 
 #### `examples/`
 Example projects.
-
-#### `sim/`
-Scripts for building and running simulations with Vivado XSIM.
