@@ -16,15 +16,25 @@
 
 package io.verik.compiler.serialize
 
+import io.verik.compiler.ast.element.common.EBasicPackage
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EFile
+import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.m
+import org.jetbrains.kotlin.utils.addToStdlib.cast
 
 object TypeSerializer {
 
     fun serialize(type: Type, element: EElement): String {
-        return when (type.reference) {
+        return when (val reference = type.reference) {
+            is EEnum -> {
+                // TODO more general handling of scope resolution
+                val file = reference.parent.cast<EFile>()
+                val basicPackage = file.parent.cast<EBasicPackage>()
+                "${basicPackage.name}::${reference.name}"
+            }
             Core.Kt.UNIT -> "void"
             Core.Kt.INT -> "int"
             Core.Kt.BOOLEAN -> "logic"

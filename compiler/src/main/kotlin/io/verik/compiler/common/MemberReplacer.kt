@@ -21,6 +21,7 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.ElementContainer
 import io.verik.compiler.ast.interfaces.Reference
+import io.verik.compiler.ast.property.Type
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
@@ -49,8 +50,16 @@ class MemberReplacer(val projectContext: ProjectContext) {
 
     class ReferenceUpdateVisitor(private val replacementMap: Map<Declaration, Declaration>) : TreeVisitor() {
 
+        private fun updateTypeReferences(type: Type) {
+            val reference = replacementMap[type.reference]
+            if (reference != null)
+                type.reference = reference
+            type.arguments.forEach { updateTypeReferences(it) }
+        }
+
         override fun visitExpression(expression: EExpression) {
             super.visitExpression(expression)
+            updateTypeReferences(expression.type)
             if (expression is Reference) {
                 val reference = replacementMap[expression.reference]
                 if (reference != null)

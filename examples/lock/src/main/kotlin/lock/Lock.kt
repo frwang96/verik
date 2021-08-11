@@ -19,4 +19,20 @@ package lock
 import io.verik.core.*
 
 @Top
-object Lock : Module()
+object Lock : Module() {
+
+    var clk = false
+    var rst = false
+    var state = State.OPENED
+
+    @Seq fun updateState() {
+        on (posedge(clk)) {
+            @Suppress("LiftReturnOrAssignment")
+            if (rst) {
+                state = State.CLOSED
+            } else {
+                state = State.OPENED
+            }
+        }
+    }
+}

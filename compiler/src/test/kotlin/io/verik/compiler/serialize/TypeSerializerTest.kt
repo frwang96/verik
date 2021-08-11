@@ -19,7 +19,6 @@ package io.verik.compiler.serialize
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertOutputTextEquals
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class TypeSerializerTest : BaseTest() {
@@ -41,16 +40,14 @@ internal class TypeSerializerTest : BaseTest() {
     }
 
     @Test
-    @Disabled
-    // TODO resolve Ubit back fill
     fun `type ubit`() {
         val projectContext = TestDriver.serialize(
             """
-                var x: Ubit<`8`> = u(0)
+                var x = u<`8`>(0)
             """.trimIndent()
         )
         val expected = """
-            logic [7:0] x;
+            logic [7:0] x = 8'h00;
         """.trimIndent()
         assertOutputTextEquals(
             expected,
