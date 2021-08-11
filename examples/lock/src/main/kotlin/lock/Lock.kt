@@ -27,11 +27,10 @@ object Lock : Module() {
 
     @Seq fun updateState() {
         on (posedge(clk)) {
-            @Suppress("LiftReturnOrAssignment")
-            if (rst) {
-                state = State.CLOSED
+            state = if (rst) {
+                State.CLOSED
             } else {
-                state = State.OPENED
+                State.OPENED
             }
         }
     }

@@ -16,7 +16,9 @@
 
 package io.verik.compiler.serialize
 
-import io.verik.compiler.util.*
+import io.verik.compiler.util.BaseTest
+import io.verik.compiler.util.TestDriver
+import io.verik.compiler.util.assertOutputTextEquals
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
@@ -234,6 +236,7 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
                         2
                     } else {
                         3
+                        4
                     }
                 }
             """.trimIndent()
@@ -250,8 +253,28 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
                 end
                 else begin
                     3;
+                    4;
                 end
             endfunction : f
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
+    fun `inline if expression`() {
+        val projectContext = TestDriver.serialize(
+            """
+                var x = false
+                var y = if (x) 0 else 1
+            """.trimIndent()
+        )
+        val expected = """
+            logic x = 1'b0;
+            
+            int y = x ? 0 : 1;
         """.trimIndent()
         assertOutputTextEquals(
             expected,

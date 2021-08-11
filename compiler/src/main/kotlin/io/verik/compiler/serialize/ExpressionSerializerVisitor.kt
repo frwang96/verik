@@ -169,6 +169,16 @@ class ExpressionSerializerVisitor(private val sourceBuilder: SourceBuilder) : Vi
         }
     }
 
+    override fun visitInlineIfExpression(inlineIfExpression: EInlineIfExpression) {
+        serializeAsExpression(inlineIfExpression.condition)
+        sourceBuilder.hardBreak()
+        sourceBuilder.append("? ", inlineIfExpression)
+        serializeAsExpression(inlineIfExpression.thenExpression)
+        sourceBuilder.hardBreak()
+        sourceBuilder.append(": ", inlineIfExpression)
+        serializeAsExpression(inlineIfExpression.elseExpression)
+    }
+
     override fun visitForeverStatement(foreverStatement: EForeverStatement) {
         sourceBuilder.append("forever ", foreverStatement)
         serializeAsStatement(foreverStatement.body)

@@ -330,6 +330,15 @@ class ElementPrinter : Visitor() {
         }
     }
 
+    override fun visitInlineIfExpression(inlineIfExpression: EInlineIfExpression) {
+        build("InlineIfExpression") {
+            build(inlineIfExpression.type.toString())
+            build(inlineIfExpression.condition)
+            build(inlineIfExpression.thenExpression)
+            build(inlineIfExpression.elseExpression)
+        }
+    }
+
     override fun visitForeverStatement(foreverStatement: EForeverStatement) {
         build("ForeverStatement") {
             build(foreverStatement.type.toString())

@@ -27,6 +27,10 @@ object ProjectPostTransformer : ProjectPass {
         LoopExpressionTransformer.pass(projectContext)
         m.flush()
 
+        m.log("PostTransform: Transform inline if expressions")
+        InlineIfExpressionTransformer.pass(projectContext)
+        m.flush()
+
         m.log("PostTransform: Transform function references")
         FunctionReferenceTransformer.pass(projectContext)
         m.flush()

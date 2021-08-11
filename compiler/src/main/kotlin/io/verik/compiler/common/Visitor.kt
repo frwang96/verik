@@ -268,6 +268,10 @@ abstract class Visitor {
         visitExpression(ifExpression)
     }
 
+    open fun visitInlineIfExpression(inlineIfExpression: EInlineIfExpression) {
+        visitExpression(inlineIfExpression)
+    }
+
     open fun visitLoopStatement(loopStatement: ELoopStatement) {
         visitExpression(loopStatement)
     }
