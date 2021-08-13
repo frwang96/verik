@@ -21,21 +21,25 @@ package io.verik.core
 /**
  * Annotates component instantiations.
  */
+@Target(AnnotationTarget.PROPERTY)
 annotation class Make
 
 /**
  * Annotates the top module of the hierarchy.
  */
+@Target(AnnotationTarget.CLASS)
 annotation class Top
 
 /**
  * Annotates input ports of a component.
  */
+@Target(AnnotationTarget.PROPERTY)
 annotation class In
 
 /**
  * Annotates output ports of a component.
  */
+@Target(AnnotationTarget.PROPERTY)
 annotation class Out
 
 /**
@@ -47,6 +51,7 @@ annotation class Out
  *          ...
  *      }
  */
+@Target(AnnotationTarget.FUNCTION)
 annotation class Com
 
 /**
@@ -61,6 +66,7 @@ annotation class Com
  *          }
  *      }
  */
+@Target(AnnotationTarget.FUNCTION)
 annotation class Seq
 
 /**
@@ -73,6 +79,7 @@ annotation class Seq
  *          ...
  *      }
  */
+@Target(AnnotationTarget.FUNCTION)
 annotation class Run
 
 /**
@@ -83,4 +90,11 @@ annotation class Run
  *          ...
  *      }
  */
+@Target(AnnotationTarget.FUNCTION)
 annotation class Task
+
+/**
+ * Relabels the name of a declaration.
+ */
+@Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY)
+annotation class Relabel(val name: String)

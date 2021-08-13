@@ -16,9 +16,15 @@
 
 package lock
 
+import io.verik.core.*
+
 enum class State {
+    @Relabel("STATE_OPENED")
     OPENED,
+    @Relabel("STATE_OPENING")
     OPENING,
+    @Relabel("STATE_CLOSED")
     CLOSED,
+    @Relabel("STATE_CLOSING")
     CLOSING
 }

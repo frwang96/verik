@@ -25,7 +25,8 @@ object Lock : Module() {
     var rst = false
     var state = State.OPENED
 
-    @Seq fun updateState() {
+    @Seq
+    fun updateState() {
         on (posedge(clk)) {
             state = if (rst) {
                 State.CLOSED

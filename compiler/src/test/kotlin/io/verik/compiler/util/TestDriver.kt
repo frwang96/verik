@@ -43,6 +43,7 @@ object TestDriver {
         """.trimIndent()
         val textFile = TextFile(Paths.get("/src/main/kotlin/verik/Test.kt"), contentWithPackageHeader)
         val config = Config(
+            "0.0.0",
             "",
             "verik",
             Paths.get("/"),

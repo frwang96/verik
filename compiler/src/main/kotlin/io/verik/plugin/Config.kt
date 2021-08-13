@@ -24,6 +24,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 data class Config(
+    val version: String,
     val timestamp: String,
     val projectName: String,
     val projectDir: Path,
@@ -41,16 +42,26 @@ data class Config(
 
     val inputSourceDir: Path = projectDir.resolve("src/main/kotlin")
     val outputSourceDir: Path = buildDir.resolve("src")
-    val version = "verik:1.0-SNAPSHOT"
     val timescale = "1ns / 1ns"
 
     companion object {
 
         operator fun invoke(project: Project, extension: VerikPluginExtension): Config {
+            val classpath = project.buildscript.configurations.getByName("classpath")
+            val moduleVersionIdentifiers = classpath
+                .resolvedConfiguration
+                .resolvedArtifacts
+                .map { it.moduleVersion.id }
+                .filter { it.name == "verik-compiler" }
+            if (moduleVersionIdentifiers.size != 1)
+                throw GradleException("Verik configuration failed: Could not determine version number")
+            val version = moduleVersionIdentifiers.first().version
+
             val top = extension.top
                 ?: throw GradleException("Verik configuration failed: Elaboration top not specified")
 
             return Config(
+                version,
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss")),
                 project.name,
                 project.projectDir.toPath(),

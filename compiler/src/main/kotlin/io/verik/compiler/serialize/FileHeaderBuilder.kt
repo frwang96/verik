@@ -28,7 +28,7 @@ object FileHeaderBuilder {
         lines.add("Input:   ${projectContext.config.projectDir.relativize(inputPath)}")
         lines.add("Output:  ${projectContext.config.projectDir.relativize(outputPath)}")
         lines.add("Date:    ${projectContext.config.timestamp}")
-        lines.add("Version: ${projectContext.config.version}")
+        lines.add("Version: verik:${projectContext.config.version}")
 
         val builder = StringBuilder()
         when (headerStyle) {
