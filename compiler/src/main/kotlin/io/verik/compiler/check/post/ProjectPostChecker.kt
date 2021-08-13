@@ -27,6 +27,10 @@ object ProjectPostChecker : ProjectPass {
         if (projectContext.project.files().isEmpty())
             m.fatal("Output empty: No project files found", null)
 
+        m.log("PostCheck: Check name redeclarations")
+        NameRedeclarationChecker.pass(projectContext)
+        m.flush()
+
         m.log("PostCheck: Check untransformed elements")
         UntransformedElementChecker.pass(projectContext)
         m.flush()

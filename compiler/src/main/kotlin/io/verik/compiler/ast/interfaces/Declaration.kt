@@ -30,6 +30,7 @@ interface Declaration {
     }
 }
 
+@Suppress("DuplicatedCode")
 inline fun <reified T : Declaration> Declaration.cast(element: KtElement): T? {
     return when (this) {
         is T -> this
@@ -42,6 +43,7 @@ inline fun <reified T : Declaration> Declaration.cast(element: KtElement): T? {
     }
 }
 
+@Suppress("DuplicatedCode")
 inline fun <reified T : Declaration> Declaration.cast(element: EElement): T? {
     return when (this) {
         is T -> this
