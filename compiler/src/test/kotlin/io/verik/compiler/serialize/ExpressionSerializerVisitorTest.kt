@@ -55,7 +55,6 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
         )
         val expected = """
             logic x = 1'b0;
-            
             logic y = !x;
         """.trimIndent()
         assertOutputTextEquals(
@@ -74,7 +73,6 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
         )
         val expected = """
             int x = 0;
-            
             int y = x + 1;
         """.trimIndent()
         assertOutputTextEquals(
@@ -93,7 +91,6 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
         )
         val expected = """
             int x = 0;
-            
             int y = x;
         """.trimIndent()
         assertOutputTextEquals(
@@ -273,7 +270,6 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
         )
         val expected = """
             logic x = 1'b0;
-            
             int y = x ? 0 : 1;
         """.trimIndent()
         assertOutputTextEquals(

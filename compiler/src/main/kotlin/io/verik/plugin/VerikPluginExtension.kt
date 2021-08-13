@@ -22,6 +22,7 @@ abstract class VerikPluginExtension {
     var verbose: Boolean = false
     var debug: Boolean = false
     var labelLines: Boolean = true
+    var alignLength: Int = 60
     var wrapLength: Int = 120
     var indentLength: Int = 4
 }

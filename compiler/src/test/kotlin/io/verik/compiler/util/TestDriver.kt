@@ -53,6 +53,7 @@ object TestDriver {
             debug = true,
             suppressCompileWarnings = true,
             labelLines = false,
+            alignLength = 0,
             120,
             4
         )

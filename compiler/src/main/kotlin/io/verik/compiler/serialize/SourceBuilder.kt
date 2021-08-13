@@ -46,6 +46,7 @@ class SourceBuilder(
         val sourceActionBuilder = SourceActionBuilder(
             sourceBuilder,
             projectContext.config.labelLines,
+            projectContext.config.alignLength,
             projectContext.config.indentLength,
             labelLength,
             projectContext.config.wrapLength
@@ -76,19 +77,24 @@ class SourceBuilder(
         sourceActions.add(SourceAction(SourceActionType.HARD_BREAK, "", null))
     }
 
+    fun align() {
+        sourceActions.add(SourceAction(SourceActionType.ALIGN, "", null))
+    }
+
     fun indent(block: () -> Unit) {
         sourceActions.add(SourceAction(SourceActionType.INDENT_IN, "", null))
         block()
         sourceActions.add(SourceAction(SourceActionType.INDENT_OUT, "", null))
     }
 
-    enum class SourceActionType { REGULAR, NEW_LINE, INDENT_IN, INDENT_OUT, SOFT_BREAK, HARD_BREAK }
+    enum class SourceActionType { REGULAR, NEW_LINE, INDENT_IN, INDENT_OUT, SOFT_BREAK, HARD_BREAK, ALIGN }
 
     data class SourceAction(val type: SourceActionType, val content: String, val location: SourceLocation?)
 
     class SourceActionBuilder(
         private val sourceBuilder: StringBuilder,
         private val labelLines: Boolean,
+        private val alignLength: Int,
         private val indentLength: Int,
         private val labelLength: Int,
         wrapLength: Int
@@ -125,6 +131,11 @@ class SourceBuilder(
                 SourceActionType.HARD_BREAK -> {
                     flushTokenToLine()
                     isHardBreak = true
+                }
+                SourceActionType.ALIGN -> {
+                    val length = labelIndentLength + lineBuilder.length + tokenBuilder.length
+                    if (length < alignLength)
+                        tokenBuilder.append(" ".repeat(alignLength - length))
                 }
             }
         }

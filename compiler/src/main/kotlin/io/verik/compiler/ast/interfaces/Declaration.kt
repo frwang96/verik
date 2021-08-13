@@ -18,6 +18,8 @@ package io.verik.compiler.ast.interfaces
 
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.property.Type
+import io.verik.compiler.common.location
+import io.verik.compiler.main.SourceLocation
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.psi.KtElement
 
@@ -30,27 +32,21 @@ interface Declaration {
     }
 }
 
-@Suppress("DuplicatedCode")
-inline fun <reified T : Declaration> Declaration.cast(element: KtElement): T? {
-    return when (this) {
-        is T -> this
-        else -> {
-            val expectedName = T::class.simpleName
-            val actualName = this::class.simpleName
-            m.error("Could not cast declaration: Expected $expectedName actual $actualName", element)
-            null
-        }
-    }
+inline fun <reified T> Declaration.cast(element: KtElement): T? {
+    return cast(element.location())
 }
 
-@Suppress("DuplicatedCode")
-inline fun <reified T : Declaration> Declaration.cast(element: EElement): T? {
+inline fun <reified T> Declaration.cast(element: EElement): T? {
+    return cast(element.location)
+}
+
+inline fun <reified T> Declaration.cast(location: SourceLocation): T? {
     return when (this) {
         is T -> this
         else -> {
             val expectedName = T::class.simpleName
             val actualName = this::class.simpleName
-            m.error("Could not cast declaration: Expected $expectedName actual $actualName", element)
+            m.error("Could not cast declaration: Expected $expectedName actual $actualName", location)
             null
         }
     }

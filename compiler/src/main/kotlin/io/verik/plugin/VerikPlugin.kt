@@ -54,6 +54,7 @@ class VerikPlugin : Plugin<Project> {
         task.inputs.property("verbose", { extension.verbose })
         task.inputs.property("debug", { extension.debug })
         task.inputs.property("labelLines", { extension.labelLines })
+        task.inputs.property("alignLength", { extension.alignLength })
         task.inputs.property("wrapLength", { extension.wrapLength })
         task.inputs.property("indentLength", { extension.indentLength })
         Config.getInputFiles(project).forEach { task.inputs.file(it) }

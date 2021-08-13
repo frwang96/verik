@@ -25,7 +25,7 @@ import io.verik.compiler.main.m
 
 class BaseSerializerVisitor(private val sourceBuilder: SourceBuilder) : Visitor() {
 
-    private var first = true
+    private var lastAppendLineType = AppendLineType.FIRST
     private val expressionSerializerVisitor = ExpressionSerializerVisitor(sourceBuilder)
 
     override fun visitElement(element: EElement) {
@@ -37,7 +37,7 @@ class BaseSerializerVisitor(private val sourceBuilder: SourceBuilder) : Visitor(
     }
 
     override fun visitSvBasicClass(basicClass: ESvBasicClass) {
-        appendLineIfNotFirst()
+        appendLine(AppendLineType.REGULAR)
         sourceBuilder.appendLine("class ${basicClass.name};", basicClass)
         sourceBuilder.indent {
             basicClass.members.forEach { it.accept(this) }
@@ -47,7 +47,7 @@ class BaseSerializerVisitor(private val sourceBuilder: SourceBuilder) : Visitor(
     }
 
     override fun visitModule(module: EModule) {
-        appendLineIfNotFirst()
+        appendLine(AppendLineType.REGULAR)
         sourceBuilder.appendLine("module ${module.name};", module)
         sourceBuilder.indent {
             module.members.forEach { it.accept(this) }
@@ -57,7 +57,7 @@ class BaseSerializerVisitor(private val sourceBuilder: SourceBuilder) : Visitor(
     }
 
     override fun visitEnum(enum: EEnum) {
-        appendLineIfNotFirst()
+        appendLine(AppendLineType.REGULAR)
         sourceBuilder.appendLine("typedef enum {", enum)
         sourceBuilder.indent {
             val entryReferences = enum.entryReferences.mapNotNull { it.cast<ESvEnumEntry>(enum) }
@@ -70,7 +70,7 @@ class BaseSerializerVisitor(private val sourceBuilder: SourceBuilder) : Visitor(
     }
 
     override fun visitSvFunction(function: ESvFunction) {
-        appendLineIfNotFirst()
+        appendLine(AppendLineType.REGULAR)
         val typeString = TypeSerializer.serialize(function.returnType, function)
         sourceBuilder.appendLine("function $typeString ${function.name}();", function)
         val body = function.body
@@ -83,12 +83,14 @@ class BaseSerializerVisitor(private val sourceBuilder: SourceBuilder) : Visitor(
     }
 
     override fun visitSvProperty(property: ESvProperty) {
-        appendLineIfNotFirst()
+        appendLine(AppendLineType.PROPERTY)
         val typeString = TypeSerializer.serialize(property.type, property)
         sourceBuilder.append("$typeString ${property.name}", property)
         val initializer = property.initializer
         if (initializer != null) {
-            sourceBuilder.append(" = ", property)
+            sourceBuilder.append(" ", property)
+            sourceBuilder.align()
+            sourceBuilder.append("= ", property)
             expressionSerializerVisitor.serializeAsExpression(initializer)
             sourceBuilder.appendLine(";", initializer)
         } else {
@@ -100,30 +102,36 @@ class BaseSerializerVisitor(private val sourceBuilder: SourceBuilder) : Visitor(
     override fun visitSvEnumEntry(enumEntry: ESvEnumEntry) {}
 
     override fun visitInitialBlock(initialBlock: EInitialBlock) {
-        appendLineIfNotFirst()
+        appendLine(AppendLineType.REGULAR)
         sourceBuilder.append("initial ", initialBlock)
         expressionSerializerVisitor.serializeAsStatement(initialBlock.body)
     }
 
     override fun visitAlwaysComBlock(alwaysComBlock: EAlwaysComBlock) {
-        appendLineIfNotFirst()
+        appendLine(AppendLineType.REGULAR)
         sourceBuilder.append("always_comb ", alwaysComBlock)
         expressionSerializerVisitor.serializeAsStatement(alwaysComBlock.body)
     }
 
     override fun visitAlwaysSeqBlock(alwaysSeqBlock: EAlwaysSeqBlock) {
-        appendLineIfNotFirst()
+        appendLine(AppendLineType.REGULAR)
         sourceBuilder.append("always_ff ", alwaysSeqBlock)
         expressionSerializerVisitor.serializeAsExpression(alwaysSeqBlock.eventControlExpression)
         sourceBuilder.append(" ", alwaysSeqBlock)
         expressionSerializerVisitor.serializeAsStatement(alwaysSeqBlock.body)
     }
 
-    private fun appendLineIfNotFirst() {
-        if (first) {
-            first = false
-        } else {
-            sourceBuilder.appendLine()
+    private fun appendLine(appendLineType: AppendLineType) {
+        when {
+            lastAppendLineType == AppendLineType.PROPERTY && appendLineType == AppendLineType.REGULAR ->
+                sourceBuilder.appendLine()
+            lastAppendLineType == AppendLineType.REGULAR && appendLineType == AppendLineType.PROPERTY ->
+                sourceBuilder.appendLine()
+            lastAppendLineType == AppendLineType.REGULAR && appendLineType == AppendLineType.REGULAR ->
+                sourceBuilder.appendLine()
         }
+        lastAppendLineType = appendLineType
     }
+
+    enum class AppendLineType { FIRST, PROPERTY, REGULAR }
 }

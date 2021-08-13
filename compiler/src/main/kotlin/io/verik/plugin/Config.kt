@@ -34,6 +34,7 @@ data class Config(
     val debug: Boolean,
     val suppressCompileWarnings: Boolean,
     val labelLines: Boolean,
+    val alignLength: Int,
     val wrapLength: Int,
     val indentLength: Int
 ) {
@@ -60,6 +61,7 @@ data class Config(
                 extension.debug,
                 suppressCompileWarnings = false,
                 extension.labelLines,
+                extension.alignLength,
                 extension.wrapLength,
                 extension.indentLength
             )
