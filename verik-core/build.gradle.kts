@@ -19,21 +19,17 @@ version = "1.0.0-SNAPSHOT"
 
 plugins {
     kotlin("jvm") version "1.4.20"
-    `java-gradle-plugin`
+    id("org.jetbrains.dokka") version "1.4.32"
     `maven-publish`
 }
 
 repositories {
     mavenCentral()
-    mavenLocal()
+    jcenter()
 }
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.20")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.2")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.2")
-    api(kotlin("compiler-embeddable:1.4.10"))
-    implementation("io.verik:verik-core:1.0-SNAPSHOT")
 }
 
 configure<JavaPluginConvention> {
@@ -49,25 +45,31 @@ tasks.compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
 
-tasks.test {
-    useJUnitPlatform()
-    systemProperties["junit.jupiter.execution.parallel.enabled"] = true
-    systemProperties["junit.jupiter.execution.parallel.mode.default"] = "concurrent"
-    testLogging {
-        events("PASSED", "SKIPPED", "FAILED")
-    }
+tasks.register<Jar>("sourceJar") {
+    archiveClassifier.set("sources")
+    from(sourceSets.main.get().allSource)
 }
 
-gradlePlugin {
-    plugins {
-        create("verik-plugin") {
-            id = "io.verik.verik-plugin"
-            implementationClass = "io.verik.plugin.VerikPlugin"
+tasks.register<Jar>("javadocJar") {
+    dependsOn.add(tasks.dokkaJavadoc)
+    archiveClassifier.set("javadoc")
+    from(tasks.dokkaJavadoc)
+}
+
+tasks.dokkaHtml {
+    dokkaSourceSets {
+        configureEach {
+            includes.from(files("core.md"))
         }
     }
 }
 
-tasks.register("install") {
-    group = "install"
-    dependsOn(tasks.publishToMavenLocal)
+publishing {
+    publications {
+        create<MavenPublication>("verik-core") {
+            from(components["java"])
+            artifact(tasks.getByName("sourceJar"))
+            artifact(tasks.getByName("javadocJar"))
+        }
+    }
 }

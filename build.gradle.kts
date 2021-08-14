@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
-rootProject.name = "verik-compiler"
+tasks.register("test") {
+    group = "verification"
+    dependsOn(gradle.includedBuild("verik-compiler").task(":test"))
+}

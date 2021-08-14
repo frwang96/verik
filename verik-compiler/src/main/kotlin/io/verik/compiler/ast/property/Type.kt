@@ -99,7 +99,7 @@ class Type(
     override fun toString(): String {
         val reference = reference
         val referenceName = if (reference is CoreCardinalDeclaration) reference.displayName()
-        else "${reference.name}"
+        else reference.name
         return if (arguments.isNotEmpty()) {
             "$referenceName<${arguments.joinToString()}>"
         } else referenceName

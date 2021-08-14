@@ -14,14 +14,8 @@
  * limitations under the License.
  */
 
-plugins {
-    kotlin("jvm") version "1.4.20" apply false
-    id("io.verik.verik-plugin") version "1.0.0-SNAPSHOT" apply false
-}
+rootProject.name = "verik"
 
-subprojects {
-    repositories {
-        mavenCentral()
-        mavenLocal()
-    }
-}
+includeBuild("verik-core")
+includeBuild("verik-compiler")
+includeBuild("verik-examples")

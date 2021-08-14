@@ -17,16 +17,6 @@ jobs:
           distribution: 'adopt'
       - uses: eskatos/gradle-command-action@v1
         with:
-          build-root-directory: core
-          wrapper-directory: core
-          arguments: install
-          wrapper-cache-enabled: true
-          dependencies-cache-enabled: true
-          configuration-cache-enabled: true
-      - uses: eskatos/gradle-command-action@v1
-        with:
-          build-root-directory: compiler
-          wrapper-directory: compiler
           arguments: test
           wrapper-cache-enabled: true
           dependencies-cache-enabled: true

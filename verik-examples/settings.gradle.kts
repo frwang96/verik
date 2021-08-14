@@ -14,12 +14,9 @@
  * limitations under the License.
  */
 
-rootProject.name = "examples"
-
 pluginManagement {
     repositories {
         gradlePluginPortal()
-        mavenLocal()
     }
 }
 
