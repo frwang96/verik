@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-rootProject.name = "verik-examples-count"
+rootProject.name = "examples"
 
 pluginManagement {
     repositories {
@@ -22,3 +22,7 @@ pluginManagement {
         mavenLocal()
     }
 }
+
+include("cache")
+include("count")
+include("lock")

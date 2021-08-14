@@ -47,16 +47,8 @@ data class Config(
     companion object {
 
         operator fun invoke(project: Project, extension: VerikPluginExtension): Config {
-            val classpath = project.buildscript.configurations.getByName("classpath")
-            val moduleVersionIdentifiers = classpath
-                .resolvedConfiguration
-                .resolvedArtifacts
-                .map { it.moduleVersion.id }
-                .filter { it.name == "verik-compiler" }
-            if (moduleVersionIdentifiers.size != 1)
-                throw GradleException("Verik configuration failed: Could not determine version number")
-            val version = moduleVersionIdentifiers.first().version
-
+            val version = getVersion(project)
+                ?: throw GradleException("Verik configuration failed: Could not determine version number")
             val top = extension.top
                 ?: throw GradleException("Verik configuration failed: Elaboration top not specified")
 
@@ -76,6 +68,15 @@ data class Config(
                 extension.wrapLength,
                 extension.indentLength
             )
+        }
+
+        private fun getVersion(project: Project): String? {
+            val configuration = project.configurations.getByName("compileClasspath")
+            configuration.allDependencies.forEach {
+                if (it.group == "io.verik" && it.name == "verik-core")
+                    return it.version.toString()
+            }
+            return null
         }
 
         fun getInputFiles(project: Project): List<Path> {

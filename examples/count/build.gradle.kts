@@ -15,13 +15,8 @@
  */
 
 plugins {
-    kotlin("jvm") version "1.4.20"
-    id("io.verik.verik-plugin") version "1.0.0-SNAPSHOT"
-}
-
-repositories {
-    mavenCentral()
-    mavenLocal()
+    kotlin("jvm")
+    id("io.verik.verik-plugin")
 }
 
 dependencies {

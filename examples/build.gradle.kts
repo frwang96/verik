@@ -14,11 +14,14 @@
  * limitations under the License.
  */
 
-rootProject.name = "verik-examples-lock"
+plugins {
+    kotlin("jvm") version "1.4.20" apply false
+    id("io.verik.verik-plugin") version "1.0.0-SNAPSHOT" apply false
+}
 
-pluginManagement {
+subprojects {
     repositories {
-        gradlePluginPortal()
+        mavenCentral()
         mavenLocal()
     }
 }
