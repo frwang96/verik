@@ -18,8 +18,8 @@ group = "io.verik"
 version = "1.0.0-SNAPSHOT"
 
 plugins {
-    kotlin("jvm") version "1.4.20"
-    id("org.jetbrains.dokka") version "1.4.32"
+    kotlin("jvm") version "1.4.32"
+    id("org.jetbrains.dokka") version "1.5.0"
     `maven-publish`
 }
 
@@ -29,7 +29,7 @@ repositories {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.20")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.32")
 }
 
 configure<JavaPluginConvention> {

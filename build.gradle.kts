@@ -18,3 +18,12 @@ tasks.register("test") {
     group = "verification"
     dependsOn(gradle.includedBuild("verik-compiler").task(":test"))
 }
+
+tasks.register("clean") {
+    group = "build"
+    dependsOn(gradle.includedBuild("verik-core").task(":clean"))
+    dependsOn(gradle.includedBuild("verik-compiler").task(":clean"))
+    dependsOn(gradle.includedBuild("verik-examples").task(":cache:clean"))
+    dependsOn(gradle.includedBuild("verik-examples").task(":count:clean"))
+    dependsOn(gradle.includedBuild("verik-examples").task(":lock:clean"))
+}

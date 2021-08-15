@@ -18,7 +18,7 @@ group = "io.verik"
 version = "1.0.0-SNAPSHOT"
 
 plugins {
-    kotlin("jvm") version "1.4.20"
+    kotlin("jvm") version "1.4.32"
     `java-gradle-plugin`
     `maven-publish`
 }
@@ -28,11 +28,12 @@ repositories {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.20")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.32")
+    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.10")
+    implementation("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.4.10")
+    implementation("io.verik:verik-core:1.0.0-SNAPSHOT")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.2")
-    api(kotlin("compiler-embeddable:1.4.10"))
-    implementation("io.verik:verik-core:1.0.0-SNAPSHOT")
 }
 
 configure<JavaPluginConvention> {

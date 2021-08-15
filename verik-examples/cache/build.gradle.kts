@@ -20,7 +20,7 @@ plugins {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.20")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.32")
     implementation("io.verik:verik-core:1.0.0-SNAPSHOT")
 }
 

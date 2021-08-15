@@ -15,8 +15,8 @@
  */
 
 plugins {
-    kotlin("jvm") version "1.4.20" apply false
-    id("io.verik.verik-plugin") version "1.0.0-SNAPSHOT" apply false
+    kotlin("jvm") version "1.4.32" apply false
+    id("io.verik.verik-plugin") apply false
 }
 
 subprojects {
