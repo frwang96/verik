@@ -13,7 +13,7 @@ For the setup guide, go to [setup](https://verik.io/setup/index.html). For a tem
 Core library for Verik projects.
 
 #### `verik-compiler/`
-Compiler to generate SystemVerilog source.
+Compiler for Verik projects.
 
 #### `verik-examples/`
 Example projects.

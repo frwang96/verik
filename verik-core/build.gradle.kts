@@ -20,6 +20,8 @@ plugins {
     kotlin("jvm") version "1.4.32"
     id("org.jetbrains.dokka") version "1.5.0"
     id("signing")
+    id("maven-publish")
+    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
 }
 
 repositories {
@@ -28,7 +30,7 @@ repositories {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.32")
+    api("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.32")
 }
 
 configure<JavaPluginConvention> {
@@ -62,11 +64,49 @@ tasks.dokkaHtml {
     }
 }
 
-artifacts {
-    archives(tasks.getByName("sourceJar"))
-    archives(tasks.getByName("javadocJar"))
+signing {
+    val publishing: PublishingExtension by project
+    sign(publishing.publications)
 }
 
-signing {
-    sign(configurations.archives.get())
+publishing {
+    publications {
+        create<MavenPublication>("verik-core") {
+            from(components["java"])
+            artifact(tasks.getByName("sourceJar"))
+            artifact(tasks.getByName("javadocJar"))
+
+            pom {
+                name.set("Verik Core")
+                description.set("Core library for Verik projects")
+                url.set("https://verik.io")
+                licenses {
+                    license {
+                        name.set("Apache License, Version 2.0")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0")
+                    }
+                }
+                developers {
+                    developer {
+                        name.set("Francis Wang")
+                        email.set("emailforfrancis@gmail.com")
+                    }
+                }
+                scm {
+                    connection.set("scm:git:git:https://github.com/frwang96/verik.git")
+                    developerConnection.set("scm:git:ssh:https://github.com/frwang96/verik.git")
+                    url.set("https://github.com/frwang96/verik/tree/master")
+                }
+            }
+        }
+    }
+}
+
+nexusPublishing {
+    repositories {
+        sonatype {
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+        }
+    }
 }
