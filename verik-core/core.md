@@ -1,7 +1,7 @@
 # Module verik-core
 
-Documentation for the Verik Hardware Description Language. For setup instructions, go to
-[setup](https://verik.io/setup/index.html).
+Documentation for the Verik Hardware Description Language. For the tutorial, go to
+[tutorial](https://verik.io/tutorial/index.html).
 
 # Package io.verik.core
 

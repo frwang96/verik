@@ -6,14 +6,5 @@ Verik is a Hardware Description Language embedded in Kotlin that compiles transp
 improve the syntax and environment support for SystemVerilog while maintaining its core semantics in order to bring
 modern software tools and methodologies to hardware design.
 
-For the setup guide, go to [setup](https://verik.io/setup/index.html). For a template project, go to
+For the tutorial, go to [tutorial](https://verik.io/tutorial/index.html). For a template project, go to
 [template](https://github.com/frwang96/verik-template).
-
-#### `verik-core/`
-Core library for Verik projects.
-
-#### `verik-compiler/`
-Compiler for Verik projects.
-
-#### `verik-examples/`
-Example projects.

@@ -1,7 +1,6 @@
 /.run/
 .gradle/
 out/
-__pycache__/
 build/
 
 *.swp
