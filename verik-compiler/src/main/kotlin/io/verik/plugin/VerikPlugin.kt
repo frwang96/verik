@@ -52,6 +52,7 @@ class VerikPlugin : Plugin<Project> {
         }
 
         task.group = "verik"
+        task.inputs.property("version", { Config.getVersion(project) })
         task.inputs.property("top", { extension.top })
         task.inputs.property("verbose", { extension.verbose })
         task.inputs.property("debug", { extension.debug })

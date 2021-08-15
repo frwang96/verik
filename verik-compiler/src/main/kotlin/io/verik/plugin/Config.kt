@@ -70,7 +70,7 @@ data class Config(
             )
         }
 
-        private fun getVersion(project: Project): String? {
+        fun getVersion(project: Project): String? {
             val configuration = project.configurations.getByName("compileClasspath")
             configuration.allDependencies.forEach {
                 if (it.group == "io.verik" && it.name == "verik-core")

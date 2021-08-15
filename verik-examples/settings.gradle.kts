@@ -14,12 +14,6 @@
  * limitations under the License.
  */
 
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-    }
-}
-
 include("cache")
 include("count")
 include("lock")

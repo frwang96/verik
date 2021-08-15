@@ -18,8 +18,10 @@ group = "io.verik"
 
 plugins {
     kotlin("jvm") version "1.4.32"
-    `java-gradle-plugin`
-    `maven-publish`
+    id("org.jetbrains.dokka") version "1.5.0"
+    id("java-gradle-plugin")
+    id("signing")
+    id("com.gradle.plugin-publish") version "0.15.0"
 }
 
 repositories {
@@ -30,7 +32,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.32")
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.10")
     implementation("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.4.10")
-    implementation("io.verik:verik-core")
+    implementation("io.verik:verik-core:$version")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.2")
 }
@@ -54,11 +56,38 @@ tasks.test {
     systemProperties["junit.jupiter.execution.parallel.mode.default"] = "concurrent"
 }
 
+tasks.register<Jar>("sourceJar") {
+    archiveClassifier.set("sources")
+    from(sourceSets.main.get().allSource)
+}
+
+tasks.register<Jar>("javadocJar") {
+    archiveClassifier.set("javadoc")
+    from(tasks.dokkaJavadoc)
+}
+
+artifacts {
+    archives(tasks.getByName("sourceJar"))
+    archives(tasks.getByName("javadocJar"))
+}
+
+signing {
+    sign(configurations.archives.get())
+}
+
 gradlePlugin {
     plugins {
         create("verik-plugin") {
             id = "io.verik.verik-plugin"
+            displayName = "Verik"
+            description = "Plugin for the Verik compiler"
             implementationClass = "io.verik.plugin.VerikPlugin"
         }
     }
+}
+
+pluginBundle {
+    website = "https://verik.io"
+    vcsUrl = "https://github.com/frwang96/verik.git"
+    tags = listOf("hardware")
 }

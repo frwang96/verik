@@ -22,7 +22,7 @@ subprojects {
     apply(plugin = "io.verik.verik-plugin")
     dependencies {
         val implementation by configurations
-        implementation("io.verik:verik-core")
+        implementation("io.verik:verik-core:$version")
     }
     repositories {
         mavenCentral()

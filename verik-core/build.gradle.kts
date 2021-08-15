@@ -19,7 +19,7 @@ group = "io.verik"
 plugins {
     kotlin("jvm") version "1.4.32"
     id("org.jetbrains.dokka") version "1.5.0"
-    `maven-publish`
+    id("signing")
 }
 
 repositories {
@@ -50,7 +50,6 @@ tasks.register<Jar>("sourceJar") {
 }
 
 tasks.register<Jar>("javadocJar") {
-    dependsOn.add(tasks.dokkaJavadoc)
     archiveClassifier.set("javadoc")
     from(tasks.dokkaJavadoc)
 }
@@ -63,12 +62,11 @@ tasks.dokkaHtml {
     }
 }
 
-publishing {
-    publications {
-        create<MavenPublication>("verik-core") {
-            from(components["java"])
-            artifact(tasks.getByName("sourceJar"))
-            artifact(tasks.getByName("javadocJar"))
-        }
-    }
+artifacts {
+    archives(tasks.getByName("sourceJar"))
+    archives(tasks.getByName("javadocJar"))
+}
+
+signing {
+    sign(configurations.archives.get())
 }
