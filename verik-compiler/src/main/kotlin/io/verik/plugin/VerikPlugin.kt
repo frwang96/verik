@@ -20,11 +20,13 @@ import io.verik.compiler.main.Main
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
 
 @Suppress("unused")
 class VerikPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
+        project.plugins.apply(KotlinPluginWrapper::class.java)
         val extension = project.extensions.create("verik", VerikPluginExtension::class.java)
         val task = project.tasks.create("verik") {
             it.doLast {

@@ -14,16 +14,6 @@
  * limitations under the License.
  */
 
-plugins {
-    kotlin("jvm")
-    id("io.verik.verik-plugin")
-}
-
-dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.32")
-    implementation("io.verik:verik-core:1.0.0-SNAPSHOT")
-}
-
 verik {
     top = "Count"
     debug = true

@@ -15,7 +15,6 @@
  */
 
 group = "io.verik"
-version = "1.0.0-SNAPSHOT"
 
 plugins {
     kotlin("jvm") version "1.4.32"
@@ -31,7 +30,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.32")
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.10")
     implementation("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.4.10")
-    implementation("io.verik:verik-core:1.0.0-SNAPSHOT")
+    implementation("io.verik:verik-core")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.2")
 }

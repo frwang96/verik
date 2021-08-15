@@ -15,11 +15,15 @@
  */
 
 plugins {
-    kotlin("jvm") version "1.4.32" apply false
     id("io.verik.verik-plugin") apply false
 }
 
 subprojects {
+    apply(plugin = "io.verik.verik-plugin")
+    dependencies {
+        val implementation by configurations
+        implementation("io.verik:verik-core")
+    }
     repositories {
         mavenCentral()
     }
