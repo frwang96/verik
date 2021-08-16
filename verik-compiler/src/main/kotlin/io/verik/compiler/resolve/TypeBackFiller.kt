@@ -37,7 +37,7 @@ object TypeBackFiller : ProjectPass {
             super.visitKtBinaryExpression(binaryExpression)
             if (binaryExpression.kind == KtBinaryOperatorKind.EQ) {
                 if (!binaryExpression.right.type.isResolved())
-                    binaryExpression.right.type = binaryExpression.left.type
+                    binaryExpression.right.type = binaryExpression.left.type.copy()
             }
         }
 
@@ -46,7 +46,7 @@ object TypeBackFiller : ProjectPass {
             super.visitKtCallExpression(callExpression)
             if (callExpression.reference == Core.Vk.Ubit.PLUS_UBIT) {
                 if (!callExpression.valueArguments[0].expression.type.isResolved())
-                    callExpression.valueArguments[0].expression.type = callExpression.receiver!!.type
+                    callExpression.valueArguments[0].expression.type = callExpression.receiver!!.type.copy()
             }
         }
     }

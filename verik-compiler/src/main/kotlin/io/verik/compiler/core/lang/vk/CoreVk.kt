@@ -28,7 +28,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
 
         override fun resolve(callExpression: EKtCallExpression) {
             if (callExpression.hasTypeArguments()) {
-                callExpression.type = Core.Vk.UBIT.toType(callExpression.typeArguments[0].type)
+                callExpression.type = Core.Vk.UBIT.toType(callExpression.typeArguments[0].type.copy())
             }
         }
     }

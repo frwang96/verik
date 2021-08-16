@@ -14,26 +14,20 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.check.pre
+package io.verik.compiler.check.normalize
 
-import io.verik.compiler.check.normalize.NormalizationChecker
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
 
-object ProjectPreChecker : ProjectPass {
+object NormalizationChecker : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        m.log("PreCheck: Check normalization")
-        NormalizationChecker.pass(projectContext)
-        m.flush()
-
-        m.log("PreCheck: Check file paths")
-        FileChecker.pass(projectContext)
-        m.flush()
-
-        m.log("PreCheck: Check keyword conflicts")
-        KeywordChecker.pass(projectContext)
-        m.flush()
+        if (projectContext.config.debug) {
+            DeclarationTypeChecker.pass(projectContext)
+            ElementParentChecker.pass(projectContext)
+            ElementAliasChecker.pass(projectContext)
+            TypeAliasChecker.pass(projectContext)
+            SourceLocationChecker.pass(projectContext)
+        }
     }
 }

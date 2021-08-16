@@ -34,7 +34,11 @@ object ParenthesisInsertionTransformer : ProjectPass {
     private fun parenthesize(expression: EExpression) {
         val parent = expression.parentNotNull()
         if (parent is ExpressionContainer) {
-            val parenthesizedExpression = EParenthesizedExpression(expression.location, expression.type, expression)
+            val parenthesizedExpression = EParenthesizedExpression(
+                expression.location,
+                expression.type.copy(),
+                expression
+            )
             parent.replaceChild(expression, parenthesizedExpression)
         } else {
             m.error("Could not parenthesize $expression in $parent", expression)

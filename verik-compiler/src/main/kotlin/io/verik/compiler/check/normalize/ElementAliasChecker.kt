@@ -14,33 +14,30 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.check.post
+package io.verik.compiler.check.normalize
 
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
-import java.nio.file.Path
 
-object SourceLocationChecker : ProjectPass {
+object ElementAliasChecker : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        projectContext.project.files().forEach {
-            val sourceLocationVisitor = SourceLocationVisitor(projectContext, it.inputPath)
-            it.accept(sourceLocationVisitor)
-        }
+        val elementAliasVisitor = ElementAliasVisitor()
+        projectContext.project.accept(elementAliasVisitor)
     }
 
-    class SourceLocationVisitor(val projectContext: ProjectContext, val path: Path) : TreeVisitor() {
+    class ElementAliasVisitor : TreeVisitor() {
+
+        private val elementSet = HashSet<EElement>()
 
         override fun visitElement(element: EElement) {
             super.visitElement(element)
-            if (element.location.path != path) {
-                val expectedPath = projectContext.config.projectDir.relativize(path)
-                val actualPath = projectContext.config.projectDir.relativize(element.location.path)
-                m.error("Mismatch in path for source location: Expected $expectedPath actual $actualPath", element)
-            }
+            if (element in elementSet)
+                m.error("Unexpected element aliasing: $element", element)
+            elementSet.add(element)
         }
     }
 }

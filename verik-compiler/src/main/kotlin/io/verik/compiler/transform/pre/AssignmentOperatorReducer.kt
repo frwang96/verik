@@ -48,7 +48,7 @@ object AssignmentOperatorReducer : ProjectPass {
                     binaryExpression.left,
                     EKtBinaryExpression(
                         binaryExpression.location,
-                        copyExpression.type,
+                        copyExpression.type.copy(),
                         copyExpression,
                         binaryExpression.right,
                         kind

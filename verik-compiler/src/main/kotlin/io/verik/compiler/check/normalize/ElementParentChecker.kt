@@ -14,26 +14,25 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.common
+package io.verik.compiler.check.normalize
 
-import io.verik.compiler.ast.element.common.EAbstractClass
 import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.EProject
-import io.verik.compiler.ast.interfaces.Declaration
+import io.verik.compiler.common.ProjectPass
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.backend.common.pop
 import org.jetbrains.kotlin.backend.common.push
 
-object ElementNormalizationChecker : ProjectPass {
+object ElementParentChecker : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        val elementNormalizationVisitor = ElementNormalizationVisitor()
-        projectContext.project.accept(elementNormalizationVisitor)
+        val elementParentVisitor = ElementParentVisitor()
+        projectContext.project.accept(elementParentVisitor)
     }
 
-    class ElementNormalizationVisitor : TreeVisitor() {
+    class ElementParentVisitor : TreeVisitor() {
 
         private val parentStack = ArrayDeque<EElement>()
 
@@ -54,22 +53,6 @@ object ElementNormalizationChecker : ProjectPass {
             parentStack.push(project)
             project.acceptChildren(this)
             parentStack.pop()
-        }
-
-        override fun visitFile(file: EFile) {
-            super.visitFile(file)
-            file.members.forEach {
-                if (it !is Declaration)
-                    m.fatal("Declaration expected but got: $it", it)
-            }
-        }
-
-        override fun visitAbstractClass(abstractClass: EAbstractClass) {
-            super.visitAbstractClass(abstractClass)
-            abstractClass.members.forEach {
-                if (it !is Declaration)
-                    m.fatal("Declaration expected but got: $it", it)
-            }
         }
     }
 }

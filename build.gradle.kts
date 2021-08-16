@@ -19,6 +19,13 @@ tasks.register("test") {
     dependsOn(gradle.includedBuild("verik-compiler").task(":test"))
 }
 
+tasks.register("sanity") {
+    group = "verification"
+    dependsOn("test")
+    dependsOn("verikCount")
+    dependsOn("verikLock")
+}
+
 val exampleNames = gradle
     .includedBuild("verik-examples")
     .projectDir

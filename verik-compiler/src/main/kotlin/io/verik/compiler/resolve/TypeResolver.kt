@@ -38,20 +38,20 @@ object TypeResolver : ProjectPass {
             super.visitKtProperty(property)
             val initializer = property.initializer
             if (initializer != null)
-                property.type = initializer.type
+                property.type = initializer.type.copy()
         }
 
         override fun visitKtBlockExpression(blockExpression: EKtBlockExpression) {
             super.visitKtBlockExpression(blockExpression)
             if (blockExpression.hasStatements())
-                blockExpression.type = blockExpression.statements.last().type
+                blockExpression.type = blockExpression.statements.last().type.copy()
         }
 
         override fun visitKtReferenceExpression(referenceExpression: EKtReferenceExpression) {
             super.visitKtReferenceExpression(referenceExpression)
             val reference = referenceExpression.reference
             if (reference is EExpression)
-                referenceExpression.type = reference.type
+                referenceExpression.type = reference.type.copy()
         }
 
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
