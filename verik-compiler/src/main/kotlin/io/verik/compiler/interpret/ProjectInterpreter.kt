@@ -16,6 +16,7 @@
 
 package io.verik.compiler.interpret
 
+import io.verik.compiler.check.normalize.NormalizationChecker
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
@@ -25,14 +26,17 @@ object ProjectInterpreter : ProjectPass {
     override fun pass(projectContext: ProjectContext) {
         m.log("Interpret: Interpret enums")
         EnumInterpreter.pass(projectContext)
+        NormalizationChecker.pass(projectContext)
         m.flush()
 
         m.log("Interpret: Interpret file and class members")
         MemberInterpreter.pass(projectContext)
+        NormalizationChecker.pass(projectContext)
         m.flush()
 
         m.log("Interpret: Split component and package files")
         FileSplitter.pass(projectContext)
+        NormalizationChecker.pass(projectContext)
         m.flush()
     }
 }

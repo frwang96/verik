@@ -16,7 +16,6 @@
 
 package io.verik.compiler.check.post
 
-import io.verik.compiler.check.normalize.NormalizationChecker
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
@@ -33,10 +32,6 @@ object ProjectPostChecker : ProjectPass {
 
         m.log("PostCheck: Check untransformed elements")
         UntransformedElementChecker.pass(projectContext)
-        m.flush()
-
-        m.log("PostCheck: Check normalization")
-        NormalizationChecker.pass(projectContext)
         m.flush()
     }
 }

@@ -136,9 +136,4 @@ class Type(
             }
         }
     }
-
-    companion object {
-
-        val NULL = NullDeclaration.toType()
-    }
 }

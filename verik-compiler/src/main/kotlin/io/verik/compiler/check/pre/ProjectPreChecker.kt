@@ -16,7 +16,6 @@
 
 package io.verik.compiler.check.pre
 
-import io.verik.compiler.check.normalize.NormalizationChecker
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
@@ -24,10 +23,6 @@ import io.verik.compiler.main.m
 object ProjectPreChecker : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        m.log("PreCheck: Check normalization")
-        NormalizationChecker.pass(projectContext)
-        m.flush()
-
         m.log("PreCheck: Check file paths")
         FileChecker.pass(projectContext)
         m.flush()

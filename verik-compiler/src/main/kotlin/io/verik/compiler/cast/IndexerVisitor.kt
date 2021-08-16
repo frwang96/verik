@@ -22,6 +22,7 @@ import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.property.Type
+import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.location
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.psi.*
@@ -41,7 +42,7 @@ class IndexerVisitor(private val castContext: CastContext) : KtTreeVisitorVoid()
         val location = classOrObject.location()
         val name = classOrObject.name!!
         checkDeclarationName(name, classOrObject)
-        val basicClass = EKtBasicClass(location, name, Type.NULL, arrayListOf(), arrayListOf(), false)
+        val basicClass = EKtBasicClass(location, name, NullDeclaration.toType(), arrayListOf(), arrayListOf(), false)
         castContext.addDeclaration(descriptor, basicClass)
     }
 
@@ -51,7 +52,7 @@ class IndexerVisitor(private val castContext: CastContext) : KtTreeVisitorVoid()
         val location = enumEntry.location()
         val name = enumEntry.name!!
         checkDeclarationName(name, enumEntry)
-        val ktEnumEntry = EKtEnumEntry(location, name, Type.NULL)
+        val ktEnumEntry = EKtEnumEntry(location, name, NullDeclaration.toType())
         castContext.addDeclaration(descriptor, ktEnumEntry)
     }
 
@@ -61,7 +62,7 @@ class IndexerVisitor(private val castContext: CastContext) : KtTreeVisitorVoid()
         val location = function.location()
         val name = function.name!!
         checkDeclarationName(name, function)
-        val ktFunction = EKtFunction(location, name, Type.NULL, null, null)
+        val ktFunction = EKtFunction(location, name, NullDeclaration.toType(), null, null)
         castContext.addDeclaration(descriptor, ktFunction)
     }
 
@@ -71,7 +72,7 @@ class IndexerVisitor(private val castContext: CastContext) : KtTreeVisitorVoid()
         val location = property.location()
         val name = property.name!!
         checkDeclarationName(name, property)
-        val ktProperty = EKtProperty(location, name, Type.NULL, null)
+        val ktProperty = EKtProperty(location, name, NullDeclaration.toType(), null)
         castContext.addDeclaration(descriptor, ktProperty)
     }
 
@@ -81,7 +82,7 @@ class IndexerVisitor(private val castContext: CastContext) : KtTreeVisitorVoid()
         val location = parameter.location()
         val name = parameter.name!!
         checkDeclarationName(name, parameter)
-        val typeParameter = ETypeParameter(location, name, Type.NULL)
+        val typeParameter = ETypeParameter(location, name, NullDeclaration.toType())
         castContext.addDeclaration(descriptor, typeParameter)
     }
 }

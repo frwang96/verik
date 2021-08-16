@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.common.EBasicPackage
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.ast.element.common.ERootPackage
+import io.verik.compiler.check.normalize.NormalizationChecker
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.SourceLocation
@@ -45,11 +46,9 @@ object ProjectCaster : ProjectPass {
 
         m.log("Cast: Cast syntax trees")
         castSyntaxTrees(projectContext, castContext)
+        NormalizationChecker.pass(projectContext)
+        ElementCounter.pass(projectContext)
         m.flush()
-
-        if (projectContext.config.debug) {
-            ElementCounter.pass(projectContext)
-        }
     }
 
     private fun castSyntaxTrees(projectContext: ProjectContext, castContext: CastContext) {

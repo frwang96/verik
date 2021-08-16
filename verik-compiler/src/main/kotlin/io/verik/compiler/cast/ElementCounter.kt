@@ -28,12 +28,14 @@ import io.verik.compiler.main.m
 object ElementCounter : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        val elementVisitor = ElementVisitor()
-        projectContext.project.accept(elementVisitor)
-        m.log("Count: Files: ${elementVisitor.fileCount}")
-        m.log("Count: Classes: ${elementVisitor.classCount}")
-        m.log("Count: Functions: ${elementVisitor.functionCount}")
-        m.log("Count: Properties: ${elementVisitor.propertyCount}")
+        if (projectContext.config.debug) {
+            val elementVisitor = ElementVisitor()
+            projectContext.project.accept(elementVisitor)
+            m.log("Count: Files: ${elementVisitor.fileCount}")
+            m.log("Count: Classes: ${elementVisitor.classCount}")
+            m.log("Count: Functions: ${elementVisitor.functionCount}")
+            m.log("Count: Properties: ${elementVisitor.propertyCount}")
+        }
     }
 
     class ElementVisitor : TreeVisitor() {

@@ -16,6 +16,7 @@
 
 package io.verik.compiler.transform.mid
 
+import io.verik.compiler.check.normalize.NormalizationChecker
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
@@ -25,18 +26,22 @@ object ProjectMidTransformer : ProjectPass {
     override fun pass(projectContext: ProjectContext) {
         m.log("MidTransform: Reduce injected expressions")
         InjectedExpressionReducer.pass(projectContext)
+        NormalizationChecker.pass(projectContext)
         m.flush()
 
         m.log("MidTransform: Reduce string template expressions")
         StringTemplateExpressionReducer.pass(projectContext)
+        NormalizationChecker.pass(projectContext)
         m.flush()
 
         m.log("MidTransform: Transform bit constants")
         BitConstantTransformer.pass(projectContext)
+        NormalizationChecker.pass(projectContext)
         m.flush()
 
         m.log("MidTransform: Transform assignments")
         AssignmentTransformer.pass(projectContext)
+        NormalizationChecker.pass(projectContext)
         m.flush()
     }
 }

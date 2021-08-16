@@ -16,6 +16,7 @@
 
 package io.verik.compiler.specialize
 
+import io.verik.compiler.check.normalize.NormalizationChecker
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
@@ -25,6 +26,7 @@ object ProjectSpecializer : ProjectPass {
     override fun pass(projectContext: ProjectContext) {
         m.log("Specialize: Specialize declarations")
         DeclarationSpecializer.pass(projectContext)
+        NormalizationChecker.pass(projectContext)
         m.flush()
 
         m.log("Specialize: Check types specialized")

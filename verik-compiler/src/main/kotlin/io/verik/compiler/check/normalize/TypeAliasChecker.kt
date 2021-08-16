@@ -35,7 +35,6 @@ object TypeAliasChecker : ProjectPass {
         private val typeMap = HashMap<Int, ArrayList<Type>>()
 
         private fun addTypeRecursive(type: Type, element: EElement) {
-            if (type == Type.NULL) return
             val hashCode = System.identityHashCode(type)
             val typeList = typeMap[hashCode]
             if (typeList != null) {

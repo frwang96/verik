@@ -17,7 +17,6 @@
 package io.verik.compiler.util
 
 import io.verik.compiler.cast.ProjectCaster
-import io.verik.compiler.check.normalize.NormalizationChecker
 import io.verik.compiler.check.post.ProjectPostChecker
 import io.verik.compiler.check.pre.ProjectPreChecker
 import io.verik.compiler.interpret.ProjectInterpreter
@@ -80,42 +79,36 @@ object TestDriver {
     fun preTransform(@Language("kotlin") content: String): ProjectContext {
         val projectContext = preCheck(content)
         ProjectPreTransformer.pass(projectContext)
-        NormalizationChecker.pass(projectContext)
         return projectContext
     }
 
     fun resolve(@Language("kotlin") content: String): ProjectContext {
         val projectContext = preTransform(content)
         ProjectResolver.pass(projectContext)
-        NormalizationChecker.pass(projectContext)
         return projectContext
     }
 
     fun specialize(@Language("kotlin") content: String): ProjectContext {
         val projectContext = resolve(content)
         ProjectSpecializer.pass(projectContext)
-        NormalizationChecker.pass(projectContext)
         return projectContext
     }
 
     fun interpret(@Language("kotlin") content: String): ProjectContext {
         val projectContext = specialize(content)
         ProjectInterpreter.pass(projectContext)
-        NormalizationChecker.pass(projectContext)
         return projectContext
     }
 
     fun midTransform(@Language("kotlin") content: String): ProjectContext {
         val projectContext = interpret(content)
         ProjectMidTransformer.pass(projectContext)
-        NormalizationChecker.pass(projectContext)
         return projectContext
     }
 
     fun postTransform(@Language("kotlin") content: String): ProjectContext {
         val projectContext = midTransform(content)
         ProjectPostTransformer.pass(projectContext)
-        NormalizationChecker.pass(projectContext)
         return projectContext
     }
 
