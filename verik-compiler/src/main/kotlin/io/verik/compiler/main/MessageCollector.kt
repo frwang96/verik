@@ -25,7 +25,7 @@ open class MessageCollector {
     var errorCount = 0
 
     open fun fatal(message: String, location: SourceLocation?): Nothing {
-        throw Exception(message)
+        throw MessageCollectorException()
     }
 
     open fun error(message: String, location: SourceLocation?) {

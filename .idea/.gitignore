@@ -7,6 +7,6 @@
 !copyright/profiles_settings.xml
 !copyright/apache.xml
 !inspectionProfiles/Project_Default.xml
-!scopes/compiler.xml
+!scopes/kotlin.xml
 !misc.xml
 !vcs.xml

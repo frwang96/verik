@@ -2,20 +2,20 @@
   <profile version="1.0">
     <option name="myName" value="Project Default" />
     <inspection_tool class="CanBeParameter" enabled="true" level="WARNING" enabled_by_default="false">
-      <scope name="compiler" level="WARNING" enabled="true" />
+      <scope name="kotlin" level="WARNING" enabled="true" />
     </inspection_tool>
     <inspection_tool class="LongLine" enabled="true" level="INFO" enabled_by_default="true" />
     <inspection_tool class="MayBeConstant" enabled="true" level="WEAK WARNING" enabled_by_default="false">
-      <scope name="compiler" level="WEAK WARNING" enabled="true" />
+      <scope name="kotlin" level="WEAK WARNING" enabled="true" />
     </inspection_tool>
     <inspection_tool class="MemberVisibilityCanBePrivate" enabled="true" level="INFO" enabled_by_default="false">
-      <scope name="compiler" level="INFO" enabled="true" />
+      <scope name="kotlin" level="INFO" enabled="true" />
     </inspection_tool>
     <inspection_tool class="PrivatePropertyName" enabled="true" level="WEAK WARNING" enabled_by_default="true">
       <option name="namePattern" value="[A-Za-z][A-Za-z_\d]*" />
     </inspection_tool>
     <inspection_tool class="RemoveExplicitTypeArguments" enabled="true" level="WEAK WARNING" enabled_by_default="false">
-      <scope name="compiler" level="WEAK WARNING" enabled="true" />
+      <scope name="kotlin" level="WEAK WARNING" enabled="true" />
     </inspection_tool>
   </profile>
 </component>

@@ -1,3 +1,0 @@
-<component name="DependencyValidationManager">
-  <scope name="compiler" pattern="src[verik-compiler*]:*..*||test[verik-compiler*]:*..*" />
-</component>

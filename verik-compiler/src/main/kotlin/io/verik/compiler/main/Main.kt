@@ -26,7 +26,6 @@ import io.verik.compiler.specialize.ProjectSpecializer
 import io.verik.compiler.transform.mid.ProjectMidTransformer
 import io.verik.compiler.transform.post.ProjectPostTransformer
 import io.verik.compiler.transform.pre.ProjectPreTransformer
-import io.verik.plugin.Config
 import java.nio.file.Files
 
 lateinit var m: MessageCollector

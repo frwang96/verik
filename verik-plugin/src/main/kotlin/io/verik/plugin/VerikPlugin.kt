@@ -17,6 +17,7 @@
 package io.verik.plugin
 
 import io.verik.compiler.main.Main
+import io.verik.compiler.main.MessageCollectorException
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -31,11 +32,9 @@ class VerikPlugin : Plugin<Project> {
         val task = project.tasks.create("verik") {
             it.doLast {
                 try {
-                    Main.run(Config(project, extension))
+                    Main.run(ConfigBuilder.getConfig(project, extension))
                 } catch (exception: Exception) {
-                    if (exception is GradleException) {
-                        throw exception
-                    } else {
+                    if (exception !is MessageCollectorException) {
                         print("e: Unhandled exception: ${exception::class.simpleName}")
                         if (exception.message != null) print(": ${exception.message}")
                         println()
@@ -45,14 +44,14 @@ class VerikPlugin : Plugin<Project> {
                                     println("at $stackTraceElement")
                             }
                         }
-                        throw GradleException("Verik compilation failed")
                     }
+                    throw GradleException("Verik compilation failed")
                 }
             }
         }
 
         task.group = "verik"
-        task.inputs.property("version", { Config.getVersion(project) })
+        task.inputs.property("version", { ConfigBuilder.getVersion(project) })
         task.inputs.property("top", { extension.top })
         task.inputs.property("verbose", { extension.verbose })
         task.inputs.property("debug", { extension.debug })
@@ -60,7 +59,7 @@ class VerikPlugin : Plugin<Project> {
         task.inputs.property("alignLength", { extension.alignLength })
         task.inputs.property("wrapLength", { extension.wrapLength })
         task.inputs.property("indentLength", { extension.indentLength })
-        Config.getInputFiles(project).forEach { task.inputs.file(it) }
-        task.outputs.dir(Config.getBuildDir(project))
+        ConfigBuilder.getInputFiles(project).forEach { task.inputs.file(it) }
+        task.outputs.dir(ConfigBuilder.getBuildDir(project))
     }
 }

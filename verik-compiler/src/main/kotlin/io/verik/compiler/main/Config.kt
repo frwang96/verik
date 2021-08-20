@@ -16,17 +16,26 @@
 
 package io.verik.compiler.main
 
-import io.verik.compiler.ast.element.common.EProject
-import org.jetbrains.kotlin.psi.KtFile
-import org.jetbrains.kotlin.resolve.BindingContext
+import java.nio.file.Path
 
-class ProjectContext(
-    val config: Config
+data class Config(
+    val version: String,
+    val timestamp: String,
+    val projectName: String,
+    val projectDir: Path,
+    val buildDir: Path,
+    val projectFiles: List<Path>,
+    val top: String,
+    val verbose: Boolean,
+    val debug: Boolean,
+    val suppressCompileWarnings: Boolean,
+    val labelLines: Boolean,
+    val alignLength: Int,
+    val wrapLength: Int,
+    val indentLength: Int
 ) {
 
-    lateinit var inputTextFiles: List<TextFile>
-    lateinit var ktFiles: List<KtFile>
-    lateinit var bindingContext: BindingContext
-    lateinit var project: EProject
-    lateinit var outputTextFiles: List<TextFile>
+    val inputSourceDir: Path = projectDir.resolve("src/main/kotlin")
+    val outputSourceDir: Path = buildDir.resolve("src")
+    val timescale = "1ns / 1ns"
 }

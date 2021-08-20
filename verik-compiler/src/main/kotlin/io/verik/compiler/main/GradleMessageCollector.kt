@@ -18,8 +18,6 @@ package io.verik.compiler.main
 
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.interfaces.Declaration
-import io.verik.plugin.Config
-import org.gradle.api.GradleException
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.psi.KtNamedDeclaration
 
@@ -33,7 +31,7 @@ class GradleMessageCollector(config: Config) : MessageCollector() {
 
     override fun fatal(message: String, location: SourceLocation?): Nothing {
         error(message, location)
-        throw GradleException("Verik compilation failed")
+        throw MessageCollectorException()
     }
 
     override fun error(message: String, location: SourceLocation?) {
@@ -41,7 +39,7 @@ class GradleMessageCollector(config: Config) : MessageCollector() {
         print("e: ")
         printMessage(message, location)
         if (debug) printStackTrace()
-        if (errorCount >= MAX_ERROR_COUNT) throw GradleException("Verik compilation failed")
+        if (errorCount >= MAX_ERROR_COUNT) throw MessageCollectorException()
     }
 
     override fun warning(message: String, location: SourceLocation?) {
@@ -67,7 +65,7 @@ class GradleMessageCollector(config: Config) : MessageCollector() {
     }
 
     override fun flush() {
-        if (errorCount != 0) throw GradleException("Verik compilation failed")
+        if (errorCount != 0) throw MessageCollectorException()
     }
 
     private fun printMessage(message: String, location: SourceLocation?) {

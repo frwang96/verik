@@ -38,6 +38,7 @@ tasks.register("clean") {
     group = "build"
     dependsOn(gradle.includedBuild("verik-core").task(":clean"))
     dependsOn(gradle.includedBuild("verik-compiler").task(":clean"))
+    dependsOn(gradle.includedBuild("verik-plugin").task(":clean"))
     exampleNames.forEach {
         dependsOn(gradle.includedBuild("verik-examples").task(":$it:clean"))
     }

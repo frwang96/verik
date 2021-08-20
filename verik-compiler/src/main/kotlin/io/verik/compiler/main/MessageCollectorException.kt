@@ -16,17 +16,4 @@
 
 package io.verik.compiler.main
 
-import io.verik.compiler.ast.element.common.EProject
-import org.jetbrains.kotlin.psi.KtFile
-import org.jetbrains.kotlin.resolve.BindingContext
-
-class ProjectContext(
-    val config: Config
-) {
-
-    lateinit var inputTextFiles: List<TextFile>
-    lateinit var ktFiles: List<KtFile>
-    lateinit var bindingContext: BindingContext
-    lateinit var project: EProject
-    lateinit var outputTextFiles: List<TextFile>
-}
+class MessageCollectorException : Exception()

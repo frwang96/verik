@@ -29,7 +29,7 @@ import io.verik.compiler.specialize.ProjectSpecializer
 import io.verik.compiler.transform.mid.ProjectMidTransformer
 import io.verik.compiler.transform.post.ProjectPostTransformer
 import io.verik.compiler.transform.pre.ProjectPreTransformer
-import io.verik.plugin.Config
+import io.verik.compiler.main.Config
 import org.intellij.lang.annotations.Language
 import java.nio.file.Paths
 
