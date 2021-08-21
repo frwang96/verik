@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.main
+package io.verik.compiler.message
 
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.interfaces.Declaration
+import io.verik.compiler.main.Config
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.psi.KtNamedDeclaration
 

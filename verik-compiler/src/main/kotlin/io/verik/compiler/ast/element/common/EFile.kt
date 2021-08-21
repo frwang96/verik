@@ -20,7 +20,7 @@ import io.verik.compiler.ast.interfaces.ResizableElementContainer
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.common.replaceIfContains
-import io.verik.compiler.main.SourceLocation
+import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.main.m
 import java.nio.file.Path
 

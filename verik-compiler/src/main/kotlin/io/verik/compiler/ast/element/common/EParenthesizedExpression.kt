@@ -19,7 +19,7 @@ package io.verik.compiler.ast.element.common
 import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.main.SourceLocation
+import io.verik.compiler.message.SourceLocation
 
 class EParenthesizedExpression(
     override val location: SourceLocation,

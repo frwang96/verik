@@ -18,7 +18,7 @@ package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.CorePackage
-import io.verik.compiler.main.SourceLocation
+import io.verik.compiler.message.SourceLocation
 
 class ERootPackage(
     override val location: SourceLocation,

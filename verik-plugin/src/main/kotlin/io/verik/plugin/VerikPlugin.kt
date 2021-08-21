@@ -17,7 +17,7 @@
 package io.verik.plugin
 
 import io.verik.compiler.main.Main
-import io.verik.compiler.main.MessageCollectorException
+import io.verik.compiler.message.MessageCollectorException
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project

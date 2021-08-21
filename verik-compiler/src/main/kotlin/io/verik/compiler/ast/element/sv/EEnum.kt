@@ -20,7 +20,7 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.main.SourceLocation
+import io.verik.compiler.message.SourceLocation
 
 class EEnum(
     override val location: SourceLocation,

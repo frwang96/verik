@@ -19,7 +19,7 @@ package io.verik.compiler.serialize
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.SourceLocation
+import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.main.TextFile
 import io.verik.compiler.main.m
 

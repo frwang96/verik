@@ -23,7 +23,7 @@ import io.verik.compiler.ast.element.common.ERootPackage
 import io.verik.compiler.check.normalize.NormalizationChecker
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.SourceLocation
+import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.main.m
 import java.nio.file.FileSystems
 

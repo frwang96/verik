@@ -19,7 +19,7 @@ package io.verik.compiler.ast.element.kt
 import io.verik.compiler.ast.element.common.EAbstractEnumEntry
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.main.SourceLocation
+import io.verik.compiler.message.SourceLocation
 
 class EKtEnumEntry(
     override val location: SourceLocation,

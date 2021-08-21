@@ -16,8 +16,8 @@
 
 package io.verik.compiler.util
 
-import io.verik.compiler.main.MessageCollector
-import io.verik.compiler.main.SourceLocation
+import io.verik.compiler.message.MessageCollector
+import io.verik.compiler.message.SourceLocation
 
 class TestMessageCollector : MessageCollector() {
 

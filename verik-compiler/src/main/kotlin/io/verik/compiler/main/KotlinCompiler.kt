@@ -17,6 +17,7 @@
 package io.verik.compiler.main
 
 import io.verik.compiler.common.ProjectPass
+import io.verik.compiler.message.SourceLocation
 import io.verik.core.*
 import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
 import org.jetbrains.kotlin.cli.common.environment.setIdeaIoUseFallback

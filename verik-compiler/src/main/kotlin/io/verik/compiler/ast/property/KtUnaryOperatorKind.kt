@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast.property
 
-import io.verik.compiler.main.SourceLocation
+import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.com.intellij.psi.tree.IElementType
 
