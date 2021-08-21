@@ -17,8 +17,8 @@
 package io.verik.compiler.transform.post
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertElementEquals
+import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
@@ -26,14 +26,15 @@ internal class BinaryExpressionTransformerTest : BaseTest() {
 
     @Test
     fun `transform plus`() {
-        val projectContext = TestDriver.postTransform(
+        val projectContext = driveTest(
+            BinaryExpressionTransformer::class,
             """
                 var x = 0
                 var y = x.plus(1)
             """.trimIndent()
         )
         assertElementEquals(
-            "SvBinaryExpression(Int, PLUS, SvReferenceExpression(*), ConstantExpression(*))",
+            "SvBinaryExpression(Int, PLUS, KtReferenceExpression(*), ConstantExpression(*))",
             projectContext.findExpression("y")
         )
     }

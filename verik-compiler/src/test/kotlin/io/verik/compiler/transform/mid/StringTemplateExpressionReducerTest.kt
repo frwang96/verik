@@ -17,8 +17,8 @@
 package io.verik.compiler.transform.mid
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertElementEquals
+import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
@@ -26,7 +26,8 @@ internal class StringTemplateExpressionReducerTest : BaseTest() {
 
     @Test
     fun `reduce literal entry`() {
-        val projectContext = TestDriver.midTransform(
+        val projectContext = driveTest(
+            StringTemplateExpressionReducer::class,
             """
                 var x = "abc"
             """.trimIndent()
@@ -39,7 +40,8 @@ internal class StringTemplateExpressionReducerTest : BaseTest() {
 
     @Test
     fun `reduce expression entry`() {
-        val projectContext = TestDriver.midTransform(
+        val projectContext = driveTest(
+            StringTemplateExpressionReducer::class,
             """
                 var x = 0
                 var y = "${"$"}x"
@@ -64,7 +66,8 @@ internal class StringTemplateExpressionReducerTest : BaseTest() {
 
     @Test
     fun `reduce expression entry escape percent`() {
-        val projectContext = TestDriver.midTransform(
+        val projectContext = driveTest(
+            StringTemplateExpressionReducer::class,
             """
                 var x = "${"$"}{0}%"
             """.trimIndent()
@@ -79,7 +82,8 @@ internal class StringTemplateExpressionReducerTest : BaseTest() {
 
     @Test
     fun `reduce expression entry no escape percent`() {
-        val projectContext = TestDriver.midTransform(
+        val projectContext = driveTest(
+            StringTemplateExpressionReducer::class,
             """
                 var x = "%"
             """.trimIndent()

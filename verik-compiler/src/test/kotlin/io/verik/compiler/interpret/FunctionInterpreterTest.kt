@@ -25,7 +25,8 @@ internal class FunctionInterpreterTest : BaseTest() {
 
     @Test
     fun `interpret function`() {
-        val projectContext = TestDriver.interpret(
+        val projectContext = driveTest(
+            MemberInterpreter::class,
             """
                 fun f() {}
             """.trimIndent()
@@ -38,7 +39,8 @@ internal class FunctionInterpreterTest : BaseTest() {
 
     @Test
     fun `interpret function in class`() {
-        val projectContext = TestDriver.interpret(
+        val projectContext = driveTest(
+            MemberInterpreter::class,
             """
                 class C {
                     fun f() {}
@@ -53,7 +55,8 @@ internal class FunctionInterpreterTest : BaseTest() {
 
     @Test
     fun `interpret initial block`() {
-        val projectContext = TestDriver.interpret(
+        val projectContext = driveTest(
+            MemberInterpreter::class,
             """
                 class M: Module() {
                     @Run
@@ -69,10 +72,11 @@ internal class FunctionInterpreterTest : BaseTest() {
 
     @Test
     fun `interpret always seq block`() {
-        val projectContext = TestDriver.interpret(
+        val projectContext = driveTest(
+            MemberInterpreter::class,
             """
                 class M: Module() {
-                    var x = false
+                    private var x = false
                     @Seq
                     fun f() {
                         on (posedge(x)) {}
@@ -89,7 +93,8 @@ internal class FunctionInterpreterTest : BaseTest() {
     @Test
     fun `interpret always seq block error`() {
         assertThrows<TestErrorException> {
-            TestDriver.interpret(
+            driveTest(
+                MemberInterpreter::class,
                 """
                 class M: Module() {
                     @Seq

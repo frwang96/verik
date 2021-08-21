@@ -26,7 +26,8 @@ internal class TypeCasterTest : BaseTest() {
 
     @Test
     fun `type class simple`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 var x = 0
             """.trimIndent()
@@ -41,7 +42,8 @@ internal class TypeCasterTest : BaseTest() {
     @Disabled
     // TODO resolve constructor
     fun `type class parameterized`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 class C<T>
                 var x = C<Int>()
@@ -57,7 +59,8 @@ internal class TypeCasterTest : BaseTest() {
     @Disabled
     // TODO resolve constructor
     fun `type type parameter`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 class C<T> {
                     val x = C<T>()
@@ -75,7 +78,8 @@ internal class TypeCasterTest : BaseTest() {
     // TODO add function parameters
     fun `type nullable`() {
         assertThrows<TestErrorException> {
-            TestDriver.cast(
+            driveTest(
+                ProjectCaster::class,
                 """
                     fun f(x: Int?) {}
                 """.trimIndent()
@@ -87,7 +91,8 @@ internal class TypeCasterTest : BaseTest() {
 
     @Test
     fun `type reference simple`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 var x: Int = 0
             """.trimIndent()
@@ -102,7 +107,8 @@ internal class TypeCasterTest : BaseTest() {
     @Disabled
     // TODO resolve constructor
     fun `type reference type parameter`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 class C<T> {
                     val x: C<T> = C()
@@ -117,7 +123,8 @@ internal class TypeCasterTest : BaseTest() {
 
     @Test
     fun `type reference cardinal simple`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 var x: Ubit<`8`> = u(0)
             """.trimIndent()
@@ -130,7 +137,8 @@ internal class TypeCasterTest : BaseTest() {
 
     @Test
     fun `type reference cardinal auto`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 var x: Ubit<`*`> = u(0)
             """.trimIndent()
@@ -143,7 +151,8 @@ internal class TypeCasterTest : BaseTest() {
 
     @Test
     fun `type reference cardinal cardinal`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 var x: Ubit<Cardinal> = u(0)
             """.trimIndent()
@@ -156,7 +165,8 @@ internal class TypeCasterTest : BaseTest() {
 
     @Test
     fun `type reference cardinal function`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 var x: Ubit<ADD<`8`, `16`>> = u(0)
             """.trimIndent()
@@ -170,7 +180,8 @@ internal class TypeCasterTest : BaseTest() {
     @Test
     fun `type reference cardinal function invalid`() {
         assertThrows<TestErrorException> {
-            TestDriver.cast(
+            driveTest(
+                ProjectCaster::class,
                 """
                     var x: Ubit<ADD<`8`, Int>> = u(0)
                 """.trimIndent()
@@ -182,7 +193,8 @@ internal class TypeCasterTest : BaseTest() {
 
     @Test
     fun `type reference cardinal type parameter`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 class C<N: Cardinal> {
                     var x: Ubit<N> = u(0)
@@ -198,7 +210,8 @@ internal class TypeCasterTest : BaseTest() {
     @Test
     fun `type reference cardinal type parameter invalid`() {
         assertThrows<TestErrorException> {
-            TestDriver.cast(
+            driveTest(
+                ProjectCaster::class,
                 """
                     class C<N> {
                         var x: Ubit<INC<N>> = u(0)

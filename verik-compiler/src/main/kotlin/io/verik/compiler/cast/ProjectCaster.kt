@@ -38,7 +38,7 @@ object ProjectCaster : CasterStage() {
             val location = file.location()
             val packageName = file.packageFqName.asString()
             val inputPath = Paths.get(file.virtualFilePath)
-            val members = file.declarations.map { it.accept(baseCasterVisitor, Unit) }
+            val members = file.declarations.mapNotNull { baseCasterVisitor.getElement(it) }
             if (packageName !in files)
                 files[packageName] = ArrayList()
             files[packageName]!!.add(EFile(location, inputPath, null, ArrayList(members)))

@@ -17,8 +17,8 @@
 package io.verik.compiler.check.pre
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.TestErrorException
+import io.verik.compiler.util.driveTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -28,7 +28,8 @@ internal class KeywordCheckerTest : BaseTest() {
     @Test
     fun `keyword property`() {
         assertThrows<TestErrorException> {
-            TestDriver.preCheck(
+            driveTest(
+                KeywordChecker::class,
                 """
                     const val alias = false
                 """.trimIndent()

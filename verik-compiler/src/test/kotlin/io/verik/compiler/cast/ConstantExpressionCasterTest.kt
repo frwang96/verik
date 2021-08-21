@@ -17,8 +17,8 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertElementEquals
+import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
@@ -26,7 +26,8 @@ internal class ConstantExpressionCasterTest : BaseTest() {
 
     @Test
     fun `boolean false`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 var x = false
             """.trimIndent()
@@ -39,7 +40,8 @@ internal class ConstantExpressionCasterTest : BaseTest() {
 
     @Test
     fun `integer decimal`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 var x = 1_2
             """.trimIndent()
@@ -52,7 +54,8 @@ internal class ConstantExpressionCasterTest : BaseTest() {
 
     @Test
     fun `integer hexadecimal`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 var x = 0xaA_bB
             """.trimIndent()
@@ -65,7 +68,8 @@ internal class ConstantExpressionCasterTest : BaseTest() {
 
     @Test
     fun `integer binary`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 var x = 0b0000_1111
             """.trimIndent()

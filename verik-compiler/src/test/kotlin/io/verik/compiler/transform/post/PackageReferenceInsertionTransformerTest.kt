@@ -17,8 +17,8 @@
 package io.verik.compiler.transform.post
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertElementEquals
+import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
@@ -26,7 +26,8 @@ internal class PackageReferenceInsertionTransformerTest : BaseTest() {
 
     @Test
     fun `insert package reference`() {
-        val projectContext = TestDriver.postTransform(
+        val projectContext = driveTest(
+            PackageReferenceInsertionTransformer::class,
             """
                 var x = false
                 class M : Module() {
@@ -38,11 +39,10 @@ internal class PackageReferenceInsertionTransformerTest : BaseTest() {
         )
         assertElementEquals(
             """
-                SvReferenceExpression(
+                KtReferenceExpression(
                     Boolean,
                     x,
-                    SvReferenceExpression(null, verik_pkg, null, false),
-                    true
+                    KtReferenceExpression(null, verik_pkg, null)
                 )
             """.trimIndent(),
             projectContext.findExpression("f")

@@ -17,8 +17,8 @@
 package io.verik.compiler.check.cast
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.TestErrorException
+import io.verik.compiler.util.driveTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -28,7 +28,8 @@ internal class ImportDirectiveCheckerTest : BaseTest() {
     @Test
     fun `import not found`() {
         assertThrows<TestErrorException> {
-            TestDriver.cast(
+            driveTest(
+                ImportDirectiveChecker::class,
                 """
                     import java.time.LocalDateTime
                 """.trimIndent()
@@ -41,7 +42,8 @@ internal class ImportDirectiveCheckerTest : BaseTest() {
     @Test
     fun `import not found all under`() {
         assertThrows<TestErrorException> {
-            TestDriver.cast(
+            driveTest(
+                ImportDirectiveChecker::class,
                 """
                     import java.time.*
                 """.trimIndent()

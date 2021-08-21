@@ -17,15 +17,15 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertElementEquals
+import io.verik.compiler.util.driveTest
 import org.junit.jupiter.api.Test
 
 internal class ProjectCasterTest : BaseTest() {
 
     @Test
     fun `project empty`() {
-        val projectContext = TestDriver.cast("")
+        val projectContext = driveTest(ProjectCaster::class, "")
         assertElementEquals(
             "Project([BasicPackage(verik, [File([])])], RootPackage(root, []))",
             projectContext.project
@@ -33,17 +33,9 @@ internal class ProjectCasterTest : BaseTest() {
     }
 
     @Test
-    fun `file empty`() {
-        val projectContext = TestDriver.cast("")
-        assertElementEquals(
-            "File([])",
-            projectContext.project.files().first()
-        )
-    }
-
-    @Test
     fun `file class`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 class C
             """.trimIndent()
@@ -56,7 +48,8 @@ internal class ProjectCasterTest : BaseTest() {
 
     @Test
     fun `file classes`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 class C
                 class D

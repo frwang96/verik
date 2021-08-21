@@ -33,7 +33,7 @@ object AssignmentTransformer : MidTransformerStage() {
 
     class AssignmentVisitor : TreeVisitor() {
 
-        var inAlwaysSeqBlock = false
+        private var inAlwaysSeqBlock = false
 
         override fun visitAlwaysSeqBlock(alwaysSeqBlock: EAlwaysSeqBlock) {
             inAlwaysSeqBlock = true

@@ -53,7 +53,14 @@ object ProjectIndexer : CasterStage() {
             val location = classOrObject.location()
             val name = classOrObject.name!!
             checkDeclarationName(name, classOrObject)
-            val basicClass = EKtBasicClass(location, name, NullDeclaration.toType(), arrayListOf(), arrayListOf(), false)
+            val basicClass = EKtBasicClass(
+                location,
+                name,
+                NullDeclaration.toType(),
+                arrayListOf(),
+                arrayListOf(),
+                false
+            )
             castContext.addDeclaration(descriptor, basicClass)
         }
 

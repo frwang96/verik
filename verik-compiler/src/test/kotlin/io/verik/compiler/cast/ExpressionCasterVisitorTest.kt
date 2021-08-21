@@ -24,7 +24,8 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
 
     @Test
     fun `block expression empty`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 fun f() {}
             """.trimIndent()
@@ -37,7 +38,8 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
 
     @Test
     fun `unary expression`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 var x = !false
             """.trimIndent()
@@ -50,7 +52,8 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
 
     @Test
     fun `binary expression`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 var x = 0 + 0
             """.trimIndent()
@@ -63,7 +66,8 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
 
     @Test
     fun `reference expression simple`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 var x = 0
                 var y = x
@@ -77,7 +81,8 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
 
     @Test
     fun `reference expression with package`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 var x = 0
                 var y = verik.x
@@ -91,7 +96,8 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
 
     @Test
     fun `reference expression with class`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 enum class E { A }
                 var x = E.A
@@ -105,7 +111,8 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
 
     @Test
     fun `call expression simple`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 fun f() {
                     println()
@@ -120,7 +127,8 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
 
     @Test
     fun `call expression with receiver`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 var x = 0
                 var y = x.plus(1)
@@ -134,7 +142,8 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
 
     @Test
     fun `call expression with package`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 var x = io.verik.core.random()
             """.trimIndent()
@@ -147,7 +156,8 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
 
     @Test
     fun `type argument`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 var x = u<`8`>(0)
             """.trimIndent()
@@ -160,7 +170,8 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
 
     @Test
     fun `value argument unnamed`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 fun f(x: Int) {}
                 var x = f(0)
@@ -176,7 +187,8 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
     @Disabled
     // TODO support named value arguments
     fun `value argument named`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 fun f(x: Int) {}
                 var x = f(x = 0)
@@ -190,7 +202,8 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
 
     @Test
     fun `constant expression integer`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 var x = 0
             """.trimIndent()
@@ -203,7 +216,8 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
 
     @Test
     fun `lambda expression`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 fun f() {
                     forever {}
@@ -226,7 +240,8 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
 
     @Test
     fun `string template expression literal entry`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 var x = "abc"
             """.trimIndent()
@@ -239,7 +254,8 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
 
     @Test
     fun `string template expression literal entry escaped`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 var x = "\$"
             """.trimIndent()
@@ -252,7 +268,8 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
 
     @Test
     fun `string template expression expression entry`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 var x = 0
                 var y = "${"$"}x"
@@ -266,7 +283,8 @@ internal class ExpressionCasterVisitorTest : BaseTest() {
 
     @Test
     fun `if expression`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 var x = false 
                 var y = if (x) 1 else 0

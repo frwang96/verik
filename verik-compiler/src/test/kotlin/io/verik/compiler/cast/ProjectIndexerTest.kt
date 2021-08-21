@@ -17,8 +17,8 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.TestErrorException
+import io.verik.compiler.util.driveTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -28,7 +28,8 @@ internal class ProjectIndexerTest : BaseTest() {
     @Test
     fun `error name unicode`() {
         assertThrows<TestErrorException> {
-            TestDriver.cast(
+            driveTest(
+                ProjectIndexer::class,
                 """
                     @Suppress("ObjectPropertyName")
                     val αβγ = 0

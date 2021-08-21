@@ -17,15 +17,16 @@
 package io.verik.compiler.serialize
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertOutputTextEquals
+import io.verik.compiler.util.driveTest
 import org.junit.jupiter.api.Test
 
 internal class SourceBuilderTest : BaseTest() {
 
     @Test
     fun `align properties`() {
-        val projectContext = TestDriver.serialize(
+        val projectContext = driveTest(
+            SourceSerializer::class,
             """
                 var x = false
                 var xx = false
@@ -45,7 +46,8 @@ internal class SourceBuilderTest : BaseTest() {
 
     @Test
     fun `wrap expression`() {
-        val projectContext = TestDriver.serialize(
+        val projectContext = driveTest(
+            SourceSerializer::class,
             """
                 var aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa = 0
                 var bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb = 0
@@ -71,7 +73,8 @@ internal class SourceBuilderTest : BaseTest() {
 
     @Test
     fun `wrap property`() {
-        val projectContext = TestDriver.serialize(
+        val projectContext = driveTest(
+            SourceSerializer::class,
             """
                 var aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa = 0
                 var b = aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa + 1

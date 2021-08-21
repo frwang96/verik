@@ -17,15 +17,16 @@
 package io.verik.compiler.serialize
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertOutputTextEquals
+import io.verik.compiler.util.driveTest
 import org.junit.jupiter.api.Test
 
 internal class BaseSerializerVisitorTest : BaseTest() {
 
     @Test
     fun `serialize module`() {
-        val projectContext = TestDriver.serialize(
+        val projectContext = driveTest(
+            SourceSerializer::class,
             """
                 class M: Module()
             """.trimIndent()
@@ -43,7 +44,8 @@ internal class BaseSerializerVisitorTest : BaseTest() {
 
     @Test
     fun `serialize class`() {
-        val projectContext = TestDriver.serialize(
+        val projectContext = driveTest(
+            SourceSerializer::class,
             """
                 class C
             """.trimIndent()
@@ -61,7 +63,8 @@ internal class BaseSerializerVisitorTest : BaseTest() {
 
     @Test
     fun `serialize enum`() {
-        val projectContext = TestDriver.serialize(
+        val projectContext = driveTest(
+            SourceSerializer::class,
             """
                 enum class E { A, B }
             """.trimIndent()
@@ -80,7 +83,8 @@ internal class BaseSerializerVisitorTest : BaseTest() {
 
     @Test
     fun `serialize function`() {
-        val projectContext = TestDriver.serialize(
+        val projectContext = driveTest(
+            SourceSerializer::class,
             """
                 fun f() {}
             """.trimIndent()
@@ -97,7 +101,8 @@ internal class BaseSerializerVisitorTest : BaseTest() {
 
     @Test
     fun `serialize property`() {
-        val projectContext = TestDriver.serialize(
+        val projectContext = driveTest(
+            SourceSerializer::class,
             """
                 var x = false
             """.trimIndent()
@@ -113,7 +118,8 @@ internal class BaseSerializerVisitorTest : BaseTest() {
 
     @Test
     fun `serialize initial block`() {
-        val projectContext = TestDriver.serialize(
+        val projectContext = driveTest(
+            SourceSerializer::class,
             """
                 class C {
                     @Run
@@ -137,7 +143,8 @@ internal class BaseSerializerVisitorTest : BaseTest() {
 
     @Test
     fun `serialize always com block`() {
-        val projectContext = TestDriver.serialize(
+        val projectContext = driveTest(
+            SourceSerializer::class,
             """
                 class C {
                     @Com
@@ -161,10 +168,11 @@ internal class BaseSerializerVisitorTest : BaseTest() {
 
     @Test
     fun `serialize always seq block`() {
-        val projectContext = TestDriver.serialize(
+        val projectContext = driveTest(
+            SourceSerializer::class,
             """
                 class C {
-                    var x = false
+                    private var x = false
                     @Seq
                     fun f() {
                         on (posedge(x)) {}

@@ -25,7 +25,8 @@ internal class BaseCasterVisitorTest : BaseTest() {
 
     @Test
     fun `class with class`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 class C {
                     class D
@@ -40,7 +41,8 @@ internal class BaseCasterVisitorTest : BaseTest() {
 
     @Test
     fun `class with function`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 class C {
                     fun f() {}
@@ -55,7 +57,8 @@ internal class BaseCasterVisitorTest : BaseTest() {
 
     @Test
     fun `class with property`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 class C {
                     val x = false
@@ -70,7 +73,8 @@ internal class BaseCasterVisitorTest : BaseTest() {
 
     @Test
     fun `class with companion object`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 class C { companion object }
             """.trimIndent()
@@ -83,7 +87,8 @@ internal class BaseCasterVisitorTest : BaseTest() {
 
     @Test
     fun `class with type parameter`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 class C<T>
             """.trimIndent()
@@ -96,7 +101,8 @@ internal class BaseCasterVisitorTest : BaseTest() {
 
     @Test
     fun `enum class`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 enum class E { A }
             """.trimIndent()
@@ -109,7 +115,8 @@ internal class BaseCasterVisitorTest : BaseTest() {
 
     @Test
     fun `function simple`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 fun f() {}
             """.trimIndent()
@@ -122,7 +129,8 @@ internal class BaseCasterVisitorTest : BaseTest() {
 
     @Test
     fun `function annotation`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 @Task
                 fun f() {}
@@ -137,7 +145,8 @@ internal class BaseCasterVisitorTest : BaseTest() {
     @Test
     fun `function annotations conflicting`() {
         assertThrows<TestErrorException> {
-            TestDriver.cast(
+            driveTest(
+                ProjectCaster::class,
                 """
                     @Com
                     @Seq
@@ -151,7 +160,8 @@ internal class BaseCasterVisitorTest : BaseTest() {
 
     @Test
     fun `property simple`() {
-        val projectContext = TestDriver.cast(
+        val projectContext = driveTest(
+            ProjectCaster::class,
             """
                 var x = false
             """.trimIndent()

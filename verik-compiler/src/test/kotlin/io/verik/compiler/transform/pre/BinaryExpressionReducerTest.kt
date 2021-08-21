@@ -17,8 +17,8 @@
 package io.verik.compiler.transform.pre
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertElementEquals
+import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
@@ -26,7 +26,8 @@ internal class BinaryExpressionReducerTest : BaseTest() {
 
     @Test
     fun `reduce plus`() {
-        val projectContext = TestDriver.preTransform(
+        val projectContext = driveTest(
+            BinaryExpressionReducer::class,
             """
                 var x = 0
                 var y = x + 0
@@ -40,7 +41,8 @@ internal class BinaryExpressionReducerTest : BaseTest() {
 
     @Test
     fun `reduce nested plus`() {
-        val projectContext = TestDriver.preTransform(
+        val projectContext = driveTest(
+            BinaryExpressionReducer::class,
             """
                 var x = 0
                 var y = 0

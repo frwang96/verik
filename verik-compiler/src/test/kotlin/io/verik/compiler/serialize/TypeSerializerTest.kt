@@ -17,15 +17,16 @@
 package io.verik.compiler.serialize
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertOutputTextEquals
+import io.verik.compiler.util.driveTest
 import org.junit.jupiter.api.Test
 
 internal class TypeSerializerTest : BaseTest() {
 
     @Test
     fun `type boolean`() {
-        val projectContext = TestDriver.serialize(
+        val projectContext = driveTest(
+            SourceSerializer::class,
             """
                 var x = false
             """.trimIndent()
@@ -41,7 +42,8 @@ internal class TypeSerializerTest : BaseTest() {
 
     @Test
     fun `type ubit`() {
-        val projectContext = TestDriver.serialize(
+        val projectContext = driveTest(
+            SourceSerializer::class,
             """
                 var x = u<`8`>(0)
             """.trimIndent()

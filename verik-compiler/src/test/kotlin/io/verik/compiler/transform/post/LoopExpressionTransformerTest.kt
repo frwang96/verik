@@ -17,8 +17,8 @@
 package io.verik.compiler.transform.post
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertElementEquals
+import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
@@ -26,7 +26,8 @@ internal class LoopExpressionTransformerTest : BaseTest() {
 
     @Test
     fun `transform forever`() {
-        val projectContext = TestDriver.postTransform(
+        val projectContext = driveTest(
+            LoopExpressionTransformer::class,
             """
                 fun f() {
                     forever {}
@@ -34,7 +35,7 @@ internal class LoopExpressionTransformerTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "ForeverStatement(Unit, SvBlockExpression(*))",
+            "ForeverStatement(Unit, KtBlockExpression(*))",
             projectContext.findExpression("f")
         )
     }

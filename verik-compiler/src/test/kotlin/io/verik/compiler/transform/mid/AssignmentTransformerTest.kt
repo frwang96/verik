@@ -17,8 +17,8 @@
 package io.verik.compiler.transform.mid
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertElementEquals
+import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
@@ -26,7 +26,8 @@ internal class AssignmentTransformerTest : BaseTest() {
 
     @Test
     fun `transform assignment blocking`() {
-        val projectContext = TestDriver.midTransform(
+        val projectContext = driveTest(
+            AssignmentTransformer::class,
             """
                 var x = 0
                 fun f() {

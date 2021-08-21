@@ -17,8 +17,8 @@
 package io.verik.compiler.transform.pre
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertElementEquals
+import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
@@ -26,7 +26,8 @@ internal class AssignmentOperatorReducerTest : BaseTest() {
 
     @Test
     fun `reduce plus eq`() {
-        val projectContext = TestDriver.preTransform(
+        val projectContext = driveTest(
+            AssignmentOperatorReducer::class,
             """
                 var x = 0
                 fun f() {
@@ -40,7 +41,7 @@ internal class AssignmentOperatorReducerTest : BaseTest() {
                     Unit,
                     EQ,
                     KtReferenceExpression(*),
-                    KtCallExpression(Int, plus, KtReferenceExpression(*), [], [ValueArgument(*)])
+                    KtBinaryExpression(Int, PLUS, KtReferenceExpression(*), ConstantExpression(*))
                 )
             """.trimIndent(),
             projectContext.findExpression("f")

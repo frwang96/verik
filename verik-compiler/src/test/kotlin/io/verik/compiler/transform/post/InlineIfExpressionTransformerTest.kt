@@ -17,8 +17,8 @@
 package io.verik.compiler.transform.post
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertElementEquals
+import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
@@ -26,28 +26,30 @@ internal class InlineIfExpressionTransformerTest : BaseTest() {
 
     @Test
     fun `transform inline if`() {
-        val projectContext = TestDriver.postTransform(
+        val projectContext = driveTest(
+            InlineIfExpressionTransformer::class,
             """
                 var x = true
                 var y = if (x) 1 else 0
             """.trimIndent()
         )
         assertElementEquals(
-            "InlineIfExpression(Int, SvReferenceExpression(*), ConstantExpression(*), ConstantExpression(*))",
+            "InlineIfExpression(Int, KtReferenceExpression(*), ConstantExpression(*), ConstantExpression(*))",
             projectContext.findExpression("y")
         )
     }
 
     @Test
     fun `transform inline if block expression`() {
-        val projectContext = TestDriver.postTransform(
+        val projectContext = driveTest(
+            InlineIfExpressionTransformer::class,
             """
                 var x = true
                 var y = if (x) { 1 } else { 0 }
             """.trimIndent()
         )
         assertElementEquals(
-            "InlineIfExpression(Int, SvReferenceExpression(*), ConstantExpression(*), ConstantExpression(*))",
+            "InlineIfExpression(Int, KtReferenceExpression(*), ConstantExpression(*), ConstantExpression(*))",
             projectContext.findExpression("y")
         )
     }

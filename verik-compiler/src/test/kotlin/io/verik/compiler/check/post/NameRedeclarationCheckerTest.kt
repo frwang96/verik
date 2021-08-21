@@ -17,8 +17,8 @@
 package io.verik.compiler.check.post
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.TestErrorException
+import io.verik.compiler.util.driveTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -28,7 +28,8 @@ internal class NameRedeclarationCheckerTest : BaseTest() {
     @Test
     fun `redeclaration in package`() {
         assertThrows<TestErrorException> {
-            TestDriver.postCheck(
+            driveTest(
+                NameRedeclarationChecker::class,
                 """
                     enum class E { A }
                     class A

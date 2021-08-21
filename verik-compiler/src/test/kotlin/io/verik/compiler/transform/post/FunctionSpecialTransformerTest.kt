@@ -17,8 +17,8 @@
 package io.verik.compiler.transform.post
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertElementEquals
+import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
@@ -26,7 +26,8 @@ internal class FunctionSpecialTransformerTest : BaseTest() {
 
     @Test
     fun `transform wait`() {
-        val projectContext = TestDriver.postTransform(
+        val projectContext = driveTest(
+            FunctionSpecialTransformer::class,
             """
                 var x = false
                 fun f() {
@@ -35,14 +36,15 @@ internal class FunctionSpecialTransformerTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "EventControlExpression(Unit, ParenthesizedExpression(Event, EdgeExpression(*)))",
+            "EventControlExpression(Unit, EdgeExpression(Event, *))",
             projectContext.findExpression("f")
         )
     }
 
     @Test
     fun `transform delay`() {
-        val projectContext = TestDriver.postTransform(
+        val projectContext = driveTest(
+            FunctionSpecialTransformer::class,
             """
                 var x = false
                 fun f() {

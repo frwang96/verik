@@ -17,8 +17,8 @@
 package io.verik.compiler.interpret
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertElementEquals
+import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findDeclaration
 import org.junit.jupiter.api.Test
 
@@ -26,7 +26,8 @@ internal class ClassInterpreterTest : BaseTest() {
 
     @Test
     fun `interpret module`() {
-        val projectContext = TestDriver.interpret(
+        val projectContext = driveTest(
+            MemberInterpreter::class,
             """
                 class M: Module()
             """.trimIndent()
@@ -39,7 +40,8 @@ internal class ClassInterpreterTest : BaseTest() {
 
     @Test
     fun `interpret class`() {
-        val projectContext = TestDriver.interpret(
+        val projectContext = driveTest(
+            MemberInterpreter::class,
             """
                 class C
             """.trimIndent()

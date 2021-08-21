@@ -17,8 +17,8 @@
 package io.verik.compiler.serialize
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertOutputTextEquals
+import io.verik.compiler.util.driveTest
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
@@ -28,7 +28,8 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
     @Disabled
     // TODO parenthesize order of operations
     fun `parenthesized expression`() {
-        val projectContext = TestDriver.serialize(
+        val projectContext = driveTest(
+            SourceSerializer::class,
             """
                 var x = 0
                 var y = (x + 1) * x
@@ -47,7 +48,8 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
 
     @Test
     fun `unary expression`() {
-        val projectContext = TestDriver.serialize(
+        val projectContext = driveTest(
+            SourceSerializer::class,
             """
                 var x = false
                 var y = !x
@@ -65,7 +67,8 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
 
     @Test
     fun `binary expression`() {
-        val projectContext = TestDriver.serialize(
+        val projectContext = driveTest(
+            SourceSerializer::class,
             """
                 var x = 0
                 var y = x + 1
@@ -83,7 +86,8 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
 
     @Test
     fun `reference expression`() {
-        val projectContext = TestDriver.serialize(
+        val projectContext = driveTest(
+            SourceSerializer::class,
             """
                 var x = 0
                 var y = x
@@ -101,7 +105,8 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
 
     @Test
     fun `call expression`() {
-        val projectContext = TestDriver.serialize(
+        val projectContext = driveTest(
+            SourceSerializer::class,
             """
                 var x = random()
             """.trimIndent()
@@ -117,7 +122,8 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
 
     @Test
     fun `constant expression`() {
-        val projectContext = TestDriver.serialize(
+        val projectContext = driveTest(
+            SourceSerializer::class,
             """
                 var x = 0
             """.trimIndent()
@@ -133,7 +139,8 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
 
     @Test
     fun `injected expression`() {
-        val projectContext = TestDriver.serialize(
+        val projectContext = driveTest(
+            SourceSerializer::class,
             """
                 var x = 0
                 fun f() {
@@ -156,7 +163,8 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
 
     @Test
     fun `string expression`() {
-        val projectContext = TestDriver.serialize(
+        val projectContext = driveTest(
+            SourceSerializer::class,
             """
                 var x = "abc"
             """.trimIndent()
@@ -172,7 +180,8 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
 
     @Test
     fun `if expression`() {
-        val projectContext = TestDriver.serialize(
+        val projectContext = driveTest(
+            SourceSerializer::class,
             """
                 var x = false
                 fun f() {
@@ -198,7 +207,8 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
 
     @Test
     fun `if expression no then`() {
-        val projectContext = TestDriver.serialize(
+        val projectContext = driveTest(
+            SourceSerializer::class,
             """
                 var x = false
                 fun f() {
@@ -222,7 +232,8 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
 
     @Test
     fun `if expression nested`() {
-        val projectContext = TestDriver.serialize(
+        val projectContext = driveTest(
+            SourceSerializer::class,
             """
                 var x = false
                 fun f() {
@@ -262,7 +273,8 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
 
     @Test
     fun `inline if expression`() {
-        val projectContext = TestDriver.serialize(
+        val projectContext = driveTest(
+            SourceSerializer::class,
             """
                 var x = false
                 var y = if (x) 0 else 1
@@ -280,7 +292,8 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
 
     @Test
     fun `forever expression`() {
-        val projectContext = TestDriver.serialize(
+        val projectContext = driveTest(
+            SourceSerializer::class,
             """
                 fun f() {
                     forever {}
@@ -301,7 +314,8 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
 
     @Test
     fun `event control expression`() {
-        val projectContext = TestDriver.serialize(
+        val projectContext = driveTest(
+            SourceSerializer::class,
             """
                 var x = false
                 fun f() {
@@ -324,7 +338,8 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
 
     @Test
     fun `delay expression`() {
-        val projectContext = TestDriver.serialize(
+        val projectContext = driveTest(
+            SourceSerializer::class,
             """
                 fun f() {
                     delay(1)

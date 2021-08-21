@@ -17,8 +17,8 @@
 package io.verik.compiler.transform.post
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertElementEquals
+import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
@@ -26,14 +26,15 @@ internal class UnaryExpressionTransformerTest : BaseTest() {
 
     @Test
     fun `transform not`() {
-        val projectContext = TestDriver.postTransform(
+        val projectContext = driveTest(
+            UnaryExpressionTransformer::class,
             """
                 var x = false
                 var y = x.not()
             """.trimIndent()
         )
         assertElementEquals(
-            "SvUnaryExpression(Boolean, EXCL, SvReferenceExpression(*))",
+            "SvUnaryExpression(Boolean, EXCL, KtReferenceExpression(*))",
             projectContext.findExpression("y")
         )
     }

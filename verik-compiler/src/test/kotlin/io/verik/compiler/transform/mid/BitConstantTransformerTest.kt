@@ -25,7 +25,8 @@ internal class BitConstantTransformerTest : BaseTest() {
 
     @Test
     fun `constant decimal`() {
-        val projectContext = TestDriver.midTransform(
+        val projectContext = driveTest(
+            BitConstantTransformer::class,
             """
                 var x = u<`8`>(80)
             """.trimIndent()
@@ -38,7 +39,8 @@ internal class BitConstantTransformerTest : BaseTest() {
 
     @Test
     fun `constant hexadecimal`() {
-        val projectContext = TestDriver.midTransform(
+        val projectContext = driveTest(
+            BitConstantTransformer::class,
             """
                 var x = u<`36`>(0xffff)
             """.trimIndent()
@@ -52,10 +54,11 @@ internal class BitConstantTransformerTest : BaseTest() {
     @Test
     fun `constant error zero width`() {
         assertThrows<TestErrorException> {
-            TestDriver.midTransform(
+            driveTest(
+                BitConstantTransformer::class,
                 """
-                var x = u<`0`>(0)
-            """.trimIndent()
+                    var x = u<`0`>(0)
+                """.trimIndent()
             )
         }.apply { assertEquals("Bit constant cannot have zero width", message) }
     }
@@ -63,10 +66,11 @@ internal class BitConstantTransformerTest : BaseTest() {
     @Test
     fun `constant warning truncation`() {
         assertThrows<TestWarningException> {
-            TestDriver.midTransform(
+            driveTest(
+                BitConstantTransformer::class,
                 """
-                var x = u<`2`>(4)
-            """.trimIndent()
+                    var x = u<`2`>(4)
+                """.trimIndent()
             )
         }.apply { assertEquals("Converting constant 4 to width 2 results in truncation", message) }
     }

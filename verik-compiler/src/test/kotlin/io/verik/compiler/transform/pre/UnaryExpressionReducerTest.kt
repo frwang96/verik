@@ -17,8 +17,8 @@
 package io.verik.compiler.transform.pre
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertElementEquals
+import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
@@ -26,7 +26,8 @@ internal class UnaryExpressionReducerTest : BaseTest() {
 
     @Test
     fun `reduce not`() {
-        val projectContext = TestDriver.preTransform(
+        val projectContext = driveTest(
+            UnaryExpressionReducer::class,
             """
                 var x = false
                 var y = !x
