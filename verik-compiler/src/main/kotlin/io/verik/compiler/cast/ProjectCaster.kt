@@ -47,7 +47,6 @@ object ProjectCaster : ProjectPass {
         m.log("Cast: Cast syntax trees")
         castSyntaxTrees(projectContext, castContext)
         NormalizationChecker.pass(projectContext)
-        ElementCounter.pass(projectContext)
         m.flush()
     }
 

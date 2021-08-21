@@ -34,8 +34,6 @@ open class MessageCollector {
 
     open fun warning(message: String, location: SourceLocation?) {}
 
-    open fun info(message: String) {}
-
     open fun log(message: String) {}
 
     open fun flush() {}

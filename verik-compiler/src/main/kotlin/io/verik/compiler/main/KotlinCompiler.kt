@@ -42,7 +42,7 @@ class KotlinCompiler : ProjectPass {
     private val MODULE_NAME = "verik"
 
     override fun pass(projectContext: ProjectContext) {
-        m.info("Compile: Parse input files")
+        m.log("Compile: Parse input files")
         val environment = createKotlinCoreEnvironment(projectContext)
         val psiFileFactory = KtPsiFactory(environment.project, false)
 
@@ -51,7 +51,7 @@ class KotlinCompiler : ProjectPass {
         }
         m.flush()
 
-        m.info("Compile: Analyze input files")
+        m.log("Compile: Analyze input files")
         val analyzer = AnalyzerWithCompilerReport(environment.configuration)
         analyzer.analyzeAndReport(ktFiles) {
             TopDownAnalyzerFacadeForJVM.analyzeFilesWithJavaIntegration(

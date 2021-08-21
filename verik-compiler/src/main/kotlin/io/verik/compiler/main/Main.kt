@@ -55,7 +55,7 @@ object Main {
 
     private fun readFiles(projectContext: ProjectContext) {
         projectContext.inputTextFiles = projectContext.config.projectFiles.map {
-            m.info("Read file: ${projectContext.config.projectDir.relativize(it)}")
+            m.log("Read file: ${projectContext.config.projectDir.relativize(it)}")
             TextFile(it, Files.readString(it))
         }
     }
@@ -69,7 +69,7 @@ object Main {
         }
         val outputTextFiles = projectContext.outputTextFiles.sortedBy { it.path }
         outputTextFiles.forEach {
-            m.info("Write file: ${projectContext.config.projectDir.relativize(it.path)}")
+            m.log("Write file: ${projectContext.config.projectDir.relativize(it.path)}")
             Files.createDirectories(it.path.parent)
             Files.writeString(it.path, it.content)
         }

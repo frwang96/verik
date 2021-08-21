@@ -16,13 +16,11 @@
 
 package io.verik.compiler.check.pre
 
-import io.verik.compiler.common.ProjectPass
-import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.common.ProjectStage
 
-object ProjectPreChecker : ProjectPass {
+abstract class PreCheckerStage : ProjectStage() {
 
-    override fun pass(projectContext: ProjectContext) {
-        FileChecker.accept(projectContext)
-        KeywordChecker.accept(projectContext)
-    }
+    override val stageGroup = "PreCheck"
+
+    override val checkNormalization = false
 }

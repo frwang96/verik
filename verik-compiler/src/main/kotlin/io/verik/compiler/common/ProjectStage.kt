@@ -14,15 +14,25 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.check.pre
+package io.verik.compiler.common
 
-import io.verik.compiler.common.ProjectPass
+import io.verik.compiler.check.normalize.NormalizationChecker
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.m
 
-object ProjectPreChecker : ProjectPass {
+abstract class ProjectStage {
 
-    override fun pass(projectContext: ProjectContext) {
-        FileChecker.accept(projectContext)
-        KeywordChecker.accept(projectContext)
+    protected abstract val stageGroup: String?
+
+    protected abstract val checkNormalization: Boolean
+
+    protected abstract fun process(projectContext: ProjectContext)
+
+    fun accept(projectContext: ProjectContext) {
+        if (stageGroup != null)
+            m.log("Stage: $stageGroup: ${this::class.simpleName}")
+        process(projectContext)
+        if (checkNormalization)
+            NormalizationChecker.pass(projectContext)
     }
 }

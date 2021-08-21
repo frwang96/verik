@@ -49,18 +49,11 @@ class GradleMessageCollector(config: Config) : MessageCollector() {
         if (debug) printStackTrace()
     }
 
-    override fun info(message: String) {
-        if (verbose) {
+    override fun log(message: String) {
+        if (verbose || debug) {
             print("i: ")
             if (debug)
                 print("${getElapsedString()}: ")
-            printMessage(message, null)
-        }
-    }
-
-    override fun log(message: String) {
-        if (debug) {
-            print("i: ${getElapsedString()}: ")
             printMessage(message, null)
         }
     }

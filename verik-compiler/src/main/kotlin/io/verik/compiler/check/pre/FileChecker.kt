@@ -16,14 +16,13 @@
 
 package io.verik.compiler.check.pre
 
-import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 import java.nio.file.Paths
 
-object FileChecker : ProjectPass {
+object FileChecker : PreCheckerStage() {
 
-    override fun pass(projectContext: ProjectContext) {
+    override fun process(projectContext: ProjectContext) {
         projectContext.project.basicPackages.forEach { basicPackage ->
             basicPackage.files.forEach {
                 if (it.inputPath.parent != basicPackage.inputPath)

@@ -40,7 +40,7 @@ object ConfigBuilder {
             getBuildDir(project),
             getInputFiles(project),
             top,
-            extension.verbose || extension.debug,
+            extension.verbose,
             extension.debug,
             suppressCompileWarnings = false,
             extension.labelLines,
