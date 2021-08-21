@@ -17,6 +17,8 @@
 package io.verik.compiler.main
 
 import io.verik.compiler.ast.element.common.EProject
+import io.verik.compiler.cast.CastContext
+import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.resolve.BindingContext
 
@@ -25,8 +27,10 @@ class ProjectContext(
 ) {
 
     lateinit var inputTextFiles: List<TextFile>
+    lateinit var kotlinCoreEnvironment: KotlinCoreEnvironment
     lateinit var ktFiles: List<KtFile>
     lateinit var bindingContext: BindingContext
+    lateinit var castContext: CastContext
     lateinit var project: EProject
-    lateinit var outputTextFiles: List<TextFile>
+    val outputTextFiles = ArrayList<TextFile>()
 }

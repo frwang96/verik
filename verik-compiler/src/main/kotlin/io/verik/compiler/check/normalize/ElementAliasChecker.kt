@@ -17,14 +17,13 @@
 package io.verik.compiler.check.normalize
 
 import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
-object ElementAliasChecker : ProjectPass {
+object ElementAliasChecker : NormalizationStage() {
 
-    override fun pass(projectContext: ProjectContext) {
+    override fun process(projectContext: ProjectContext) {
         val elementAliasVisitor = ElementAliasVisitor()
         projectContext.project.accept(elementAliasVisitor)
     }

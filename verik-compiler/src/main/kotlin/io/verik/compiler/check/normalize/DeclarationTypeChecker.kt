@@ -16,17 +16,19 @@
 
 package io.verik.compiler.check.normalize
 
-import io.verik.compiler.ast.element.common.*
+import io.verik.compiler.ast.element.common.EAbstractClass
+import io.verik.compiler.ast.element.common.EAbstractEnumEntry
+import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.interfaces.Declaration
-import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
-object DeclarationTypeChecker : ProjectPass {
+object DeclarationTypeChecker : NormalizationStage() {
 
-    override fun pass(projectContext: ProjectContext) {
+    override fun process(projectContext: ProjectContext) {
         val declarationTypeVisitor = DeclarationTypeVisitor()
         projectContext.project.accept(declarationTypeVisitor)
     }

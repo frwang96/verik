@@ -16,18 +16,17 @@
 
 package io.verik.compiler.check.normalize
 
-import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
 
-object NormalizationChecker : ProjectPass {
+object NormalizationChecker : NormalizationStage() {
 
-    override fun pass(projectContext: ProjectContext) {
+    override fun process(projectContext: ProjectContext) {
         if (projectContext.config.debug) {
-            DeclarationTypeChecker.pass(projectContext)
-            ElementParentChecker.pass(projectContext)
-            ElementAliasChecker.pass(projectContext)
-            TypeAliasChecker.pass(projectContext)
-            SourceLocationChecker.pass(projectContext)
+            DeclarationTypeChecker.accept(projectContext)
+            ElementParentChecker.accept(projectContext)
+            ElementAliasChecker.accept(projectContext)
+            TypeAliasChecker.accept(projectContext)
+            SourceLocationChecker.accept(projectContext)
         }
     }
 }

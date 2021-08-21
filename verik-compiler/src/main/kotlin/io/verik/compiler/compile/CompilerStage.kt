@@ -14,17 +14,13 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.serialize
+package io.verik.compiler.compile
 
-import io.verik.compiler.common.ProjectPass
-import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.common.ProjectStage
 
-object ProjectSerializer : ProjectPass {
+abstract class CompilerStage : ProjectStage() {
 
-    override fun pass(projectContext: ProjectContext) {
-        ConfigFileSerializer.accept(projectContext)
-        OrderFileSerializer.accept(projectContext)
-        PackageFileSerializer.accept(projectContext)
-        SourceSerializer.accept(projectContext)
-    }
+    override val stageGroup = "Compile"
+
+    override val checkNormalization = false
 }

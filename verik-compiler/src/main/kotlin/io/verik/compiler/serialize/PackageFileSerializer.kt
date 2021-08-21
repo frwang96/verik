@@ -21,9 +21,17 @@ import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 
-object PackageFileSerializer {
+object PackageFileSerializer : SerializerStage() {
 
-    fun serialize(projectContext: ProjectContext, basicPackage: EBasicPackage): TextFile? {
+    override fun process(projectContext: ProjectContext) {
+        projectContext.project.basicPackages.forEach {
+            val packageOutputFile = serialize(projectContext, it)
+            if (packageOutputFile != null)
+                projectContext.outputTextFiles.add(packageOutputFile)
+        }
+    }
+
+    private fun serialize(projectContext: ProjectContext, basicPackage: EBasicPackage): TextFile? {
         if (basicPackage.files.isEmpty())
             return null
 

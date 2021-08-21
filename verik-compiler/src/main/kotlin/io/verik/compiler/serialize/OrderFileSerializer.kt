@@ -20,9 +20,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 import java.nio.file.Path
 
-object OrderFileSerializer {
+object OrderFileSerializer : SerializerStage() {
 
-    fun serialize(projectContext: ProjectContext): TextFile {
+    override fun process(projectContext: ProjectContext) {
         val inputPath = projectContext.config.inputSourceDir
         val outputPath = projectContext.config.buildDir.resolve("order.yaml")
         val fileHeader = FileHeaderBuilder.build(
@@ -38,8 +38,7 @@ object OrderFileSerializer {
         paths.forEach {
             builder.appendLine(projectContext.config.buildDir.relativize(it))
         }
-
-        return TextFile(outputPath, builder.toString())
+        projectContext.outputTextFiles.add(TextFile(outputPath, builder.toString()))
     }
 
     private fun getPaths(projectContext: ProjectContext): List<Path> {

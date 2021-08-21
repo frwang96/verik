@@ -20,9 +20,17 @@ import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 
-object SourceSerializer {
+object SourceSerializer : SerializerStage() {
 
-    fun serialize(projectContext: ProjectContext, file: EFile): TextFile? {
+    override fun process(projectContext: ProjectContext) {
+        projectContext.project.files().forEach {
+            val sourceOutputFile = serialize(projectContext, it)
+            if (sourceOutputFile != null)
+                projectContext.outputTextFiles.add(sourceOutputFile)
+        }
+    }
+
+    private fun serialize(projectContext: ProjectContext, file: EFile): TextFile? {
         if (file.members.isEmpty())
             return null
         val sourceBuilder = SourceBuilder(projectContext, file)

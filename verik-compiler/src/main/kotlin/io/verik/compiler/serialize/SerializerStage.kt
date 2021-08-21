@@ -16,15 +16,11 @@
 
 package io.verik.compiler.serialize
 
-import io.verik.compiler.common.ProjectPass
-import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.common.ProjectStage
 
-object ProjectSerializer : ProjectPass {
+abstract class SerializerStage : ProjectStage() {
 
-    override fun pass(projectContext: ProjectContext) {
-        ConfigFileSerializer.accept(projectContext)
-        OrderFileSerializer.accept(projectContext)
-        PackageFileSerializer.accept(projectContext)
-        SourceSerializer.accept(projectContext)
-    }
+    override val stageGroup = "Serialize"
+
+    override val checkNormalization = false
 }

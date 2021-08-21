@@ -25,8 +25,8 @@ import io.verik.compiler.check.cast.UnsupportedElementChecker
 import io.verik.compiler.check.normalize.NormalizationChecker
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.main.m
+import io.verik.compiler.message.SourceLocation
 import java.nio.file.FileSystems
 
 object ProjectCaster : ProjectPass {
@@ -34,16 +34,11 @@ object ProjectCaster : ProjectPass {
     override fun pass(projectContext: ProjectContext) {
         UnsupportedElementChecker.accept(projectContext)
         ImportDirectiveChecker.accept(projectContext)
-
-        m.log("Cast: Index syntax trees")
-        val castContext = CastContext(projectContext.bindingContext)
-        val indexerVisitor = IndexerVisitor(castContext)
-        projectContext.ktFiles.forEach { it.accept(indexerVisitor) }
-        m.flush()
+        ProjectIndexer.accept(projectContext)
 
         m.log("Cast: Cast syntax trees")
-        castSyntaxTrees(projectContext, castContext)
-        NormalizationChecker.pass(projectContext)
+        castSyntaxTrees(projectContext, projectContext.castContext)
+        NormalizationChecker.accept(projectContext)
         m.flush()
     }
 

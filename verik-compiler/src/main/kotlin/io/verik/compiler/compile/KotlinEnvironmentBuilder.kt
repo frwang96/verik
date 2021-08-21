@@ -14,66 +14,32 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.main
+package io.verik.compiler.compile
 
-import io.verik.compiler.common.ProjectPass
+import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.m
 import io.verik.compiler.message.SourceLocation
 import io.verik.core.*
 import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
 import org.jetbrains.kotlin.cli.common.environment.setIdeaIoUseFallback
-import org.jetbrains.kotlin.cli.common.messages.AnalyzerWithCompilerReport
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSourceLocation
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.cli.jvm.compiler.EnvironmentConfigFiles
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
-import org.jetbrains.kotlin.cli.jvm.compiler.NoScopeRecordCliBindingTrace
-import org.jetbrains.kotlin.cli.jvm.compiler.TopDownAnalyzerFacadeForJVM
 import org.jetbrains.kotlin.cli.jvm.config.addJvmClasspathRoot
 import org.jetbrains.kotlin.com.intellij.openapi.util.Disposer
 import org.jetbrains.kotlin.config.*
-import org.jetbrains.kotlin.psi.KtPsiFactory
-import org.jetbrains.kotlin.resolve.lazy.declarations.FileBasedDeclarationProviderFactory
 import java.io.File
 import java.nio.file.Paths
 
-class KotlinCompiler : ProjectPass {
+object KotlinEnvironmentBuilder : CompilerStage() {
 
-    private val MODULE_NAME = "verik"
-
-    override fun pass(projectContext: ProjectContext) {
-        m.log("Compile: Parse input files")
-        val environment = createKotlinCoreEnvironment(projectContext)
-        val psiFileFactory = KtPsiFactory(environment.project, false)
-
-        val ktFiles = projectContext.inputTextFiles.map {
-            psiFileFactory.createPhysicalFile(it.path.toString(), it.content)
-        }
-        m.flush()
-
-        m.log("Compile: Analyze input files")
-        val analyzer = AnalyzerWithCompilerReport(environment.configuration)
-        analyzer.analyzeAndReport(ktFiles) {
-            TopDownAnalyzerFacadeForJVM.analyzeFilesWithJavaIntegration(
-                environment.project,
-                ktFiles,
-                NoScopeRecordCliBindingTrace(),
-                environment.configuration,
-                environment::createPackagePartProvider,
-                ::FileBasedDeclarationProviderFactory
-            )
-        }
-
-        projectContext.ktFiles = ktFiles
-        projectContext.bindingContext = analyzer.analysisResult.bindingContext
-        m.flush()
-    }
-
-    private fun createKotlinCoreEnvironment(projectContext: ProjectContext): KotlinCoreEnvironment {
+    override fun process(projectContext: ProjectContext) {
         setIdeaIoUseFallback()
         val configuration = createCompilerConfiguration(projectContext)
         val disposable = Disposer.newDisposable()
-        return KotlinCoreEnvironment.createForProduction(
+        projectContext.kotlinCoreEnvironment = KotlinCoreEnvironment.createForProduction(
             disposable,
             configuration,
             EnvironmentConfigFiles.JVM_CONFIG_FILES
@@ -87,7 +53,7 @@ class KotlinCompiler : ProjectPass {
             CommonConfigurationKeys.LANGUAGE_VERSION_SETTINGS,
             LanguageVersionSettingsImpl(LanguageVersion.KOTLIN_1_4, ApiVersion.KOTLIN_1_4)
         )
-        configuration.put(CommonConfigurationKeys.MODULE_NAME, MODULE_NAME)
+        configuration.put(CommonConfigurationKeys.MODULE_NAME, "verik")
         configuration.put(
             CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY,
             KotlinCompilerMessageCollector(projectContext.config.suppressCompileWarnings)

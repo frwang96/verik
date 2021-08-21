@@ -19,8 +19,8 @@ package io.verik.compiler.ast.interfaces
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.location
-import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.main.m
+import io.verik.compiler.message.SourceLocation
 import org.jetbrains.kotlin.psi.KtElement
 
 interface Declaration {

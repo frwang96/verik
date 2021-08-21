@@ -19,9 +19,10 @@ package io.verik.compiler.main
 import io.verik.compiler.cast.ProjectCaster
 import io.verik.compiler.check.post.ProjectPostChecker
 import io.verik.compiler.check.pre.ProjectPreChecker
+import io.verik.compiler.compile.KotlinCompiler
+import io.verik.compiler.interpret.ProjectInterpreter
 import io.verik.compiler.message.GradleMessageCollector
 import io.verik.compiler.message.MessageCollector
-import io.verik.compiler.interpret.ProjectInterpreter
 import io.verik.compiler.resolve.ProjectResolver
 import io.verik.compiler.serialize.ProjectSerializer
 import io.verik.compiler.specialize.ProjectSpecializer

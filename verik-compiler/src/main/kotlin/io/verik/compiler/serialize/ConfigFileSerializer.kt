@@ -19,9 +19,9 @@ package io.verik.compiler.serialize
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 
-object ConfigFileSerializer {
+object ConfigFileSerializer : SerializerStage() {
 
-    fun serialize(projectContext: ProjectContext): TextFile {
+    override fun process(projectContext: ProjectContext) {
         val inputPath = projectContext.config.inputSourceDir
         val outputPath = projectContext.config.buildDir.resolve("config.yaml")
         val fileHeader = FileHeaderBuilder.build(
@@ -35,6 +35,6 @@ object ConfigFileSerializer {
         builder.append(fileHeader)
         builder.appendLine("top: ${projectContext.config.top}")
         builder.appendLine("timescale: ${projectContext.config.timescale}")
-        return TextFile(outputPath, builder.toString())
+        projectContext.outputTextFiles.add(TextFile(outputPath, builder.toString()))
     }
 }

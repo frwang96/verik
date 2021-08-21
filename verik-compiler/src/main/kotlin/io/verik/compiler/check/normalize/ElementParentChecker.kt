@@ -18,16 +18,15 @@ package io.verik.compiler.check.normalize
 
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EProject
-import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.backend.common.pop
 import org.jetbrains.kotlin.backend.common.push
 
-object ElementParentChecker : ProjectPass {
+object ElementParentChecker : NormalizationStage() {
 
-    override fun pass(projectContext: ProjectContext) {
+    override fun process(projectContext: ProjectContext) {
         val elementParentVisitor = ElementParentVisitor()
         projectContext.project.accept(elementParentVisitor)
     }

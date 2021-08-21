@@ -19,8 +19,8 @@ package io.verik.compiler.ast.element.common
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.main.m
+import io.verik.compiler.message.SourceLocation
 
 class EExpressionStringTemplateEntry(
     override val location: SourceLocation,

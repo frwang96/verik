@@ -14,25 +14,16 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.common
+package io.verik.compiler.compile
 
-import io.verik.compiler.check.normalize.NormalizationChecker
+import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
 
-abstract class ProjectStage {
+class KotlinCompiler : ProjectPass {
 
-    protected abstract val stageGroup: String?
-
-    protected abstract val checkNormalization: Boolean
-
-    protected abstract fun process(projectContext: ProjectContext)
-
-    fun accept(projectContext: ProjectContext) {
-        if (stageGroup != null)
-            m.log("Stage: $stageGroup: ${this::class.simpleName}")
-        process(projectContext)
-        if (checkNormalization)
-            NormalizationChecker.accept(projectContext)
+    override fun pass(projectContext: ProjectContext) {
+        KotlinEnvironmentBuilder.accept(projectContext)
+        KotlinCompilerParser.accept(projectContext)
+        KotlinCompilerAnalyzer.accept(projectContext)
     }
 }

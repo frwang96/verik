@@ -17,7 +17,6 @@
 package io.verik.compiler.transform.post
 
 import io.verik.compiler.ast.element.common.EBasicPackage
-import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m

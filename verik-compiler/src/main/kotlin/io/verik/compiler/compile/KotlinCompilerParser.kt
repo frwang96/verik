@@ -14,25 +14,17 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.common
+package io.verik.compiler.compile
 
-import io.verik.compiler.check.normalize.NormalizationChecker
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
+import org.jetbrains.kotlin.psi.KtPsiFactory
 
-abstract class ProjectStage {
+object KotlinCompilerParser : CompilerStage() {
 
-    protected abstract val stageGroup: String?
-
-    protected abstract val checkNormalization: Boolean
-
-    protected abstract fun process(projectContext: ProjectContext)
-
-    fun accept(projectContext: ProjectContext) {
-        if (stageGroup != null)
-            m.log("Stage: $stageGroup: ${this::class.simpleName}")
-        process(projectContext)
-        if (checkNormalization)
-            NormalizationChecker.accept(projectContext)
+    override fun process(projectContext: ProjectContext) {
+        val psiFileFactory = KtPsiFactory(projectContext.kotlinCoreEnvironment.project, false)
+        projectContext.ktFiles = projectContext.inputTextFiles.map {
+            psiFileFactory.createPhysicalFile(it.path.toString(), it.content)
+        }
     }
 }

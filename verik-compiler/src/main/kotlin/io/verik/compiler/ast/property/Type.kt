@@ -21,7 +21,6 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.Reference
-import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.core.common.*
 import io.verik.compiler.main.m
 

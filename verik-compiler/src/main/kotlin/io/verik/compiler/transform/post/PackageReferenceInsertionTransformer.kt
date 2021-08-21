@@ -22,9 +22,7 @@ import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.interfaces.Declaration
-import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.NullDeclaration
-import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 

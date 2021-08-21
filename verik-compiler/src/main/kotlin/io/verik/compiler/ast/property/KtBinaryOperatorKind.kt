@@ -16,8 +16,8 @@
 
 package io.verik.compiler.ast.property
 
-import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.main.m
+import io.verik.compiler.message.SourceLocation
 import org.jetbrains.kotlin.com.intellij.psi.tree.IElementType
 
 enum class KtBinaryOperatorKind {
