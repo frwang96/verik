@@ -21,7 +21,9 @@ import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 import io.verik.compiler.main.m
-import io.verik.compiler.message.SourceLocation
+import org.jetbrains.kotlin.backend.common.peek
+import org.jetbrains.kotlin.backend.common.pop
+import org.jetbrains.kotlin.backend.common.push
 
 class SourceBuilder(
     private val projectContext: ProjectContext,
@@ -30,6 +32,7 @@ class SourceBuilder(
 
     private var sourceActionLine = SourceActionLine(0, ArrayList())
     private val sourceActionLines = ArrayList<SourceActionLine>()
+    private val labelLineStack = ArrayDeque<Int>()
     private var indent = 0
 
     fun toTextFile(): TextFile {
@@ -47,10 +50,8 @@ class SourceBuilder(
 
         val labelLength = sourceActionLines
             .flatMap { it.sourceActions }
-            .maxOfOrNull {
-                if (it.location != null) it.location.line.toString().length
-                else 0
-            } ?: 0
+            .maxOfOrNull { it.line.toString().length }
+            ?: 0
         val sourceActionBuilder = SourceActionBuilder(
             sourceBuilder,
             projectContext.config.labelLines,
@@ -62,30 +63,10 @@ class SourceBuilder(
         return TextFile(file.getOutputPathNotNull(), sourceBuilder.toString())
     }
 
-    fun appendLine(content: String, element: EElement) {
-        append(content, element)
-        appendLine()
-    }
-
-    fun appendLine() {
-        sourceActionLines.add(sourceActionLine)
-        sourceActionLine = SourceActionLine(indent, ArrayList())
-    }
-
-    fun append(content: String, element: EElement) {
-        sourceActionLine.sourceActions.add(SourceAction(SourceActionType.REGULAR, content, element.location))
-    }
-
-    fun softBreak() {
-        sourceActionLine.sourceActions.add(SourceAction(SourceActionType.SOFT_BREAK, "", null))
-    }
-
-    fun hardBreak() {
-        sourceActionLine.sourceActions.add(SourceAction(SourceActionType.HARD_BREAK, "", null))
-    }
-
-    fun align() {
-        sourceActionLine.sourceActions.add(SourceAction(SourceActionType.ALIGN, "", null))
+    fun label(element: EElement, block: () -> Unit) {
+        labelLineStack.push(element.location.line)
+        block()
+        labelLineStack.pop()
     }
 
     fun indent(block: () -> Unit) {
@@ -98,9 +79,35 @@ class SourceBuilder(
         sourceActionLine = SourceActionLine(--indent, ArrayList())
     }
 
+    fun appendLine(content: String) {
+        append(content)
+        appendLine()
+    }
+
+    fun appendLine() {
+        sourceActionLines.add(sourceActionLine)
+        sourceActionLine = SourceActionLine(indent, ArrayList())
+    }
+
+    fun append(content: String) {
+        sourceActionLine.sourceActions.add(SourceAction(SourceActionType.REGULAR, content, labelLineStack.peek()!!))
+    }
+
+    fun softBreak() {
+        sourceActionLine.sourceActions.add(SourceAction(SourceActionType.SOFT_BREAK, "", labelLineStack.peek()!!))
+    }
+
+    fun hardBreak() {
+        sourceActionLine.sourceActions.add(SourceAction(SourceActionType.HARD_BREAK, "", labelLineStack.peek()!!))
+    }
+
+    fun align() {
+        sourceActionLine.sourceActions.add(SourceAction(SourceActionType.ALIGN, "", labelLineStack.peek()!!))
+    }
+
     enum class SourceActionType { REGULAR, SOFT_BREAK, HARD_BREAK, ALIGN }
 
-    data class SourceAction(val type: SourceActionType, val content: String, val location: SourceLocation?)
+    data class SourceAction(val type: SourceActionType, val content: String, val line: Int)
 
     data class SourceActionLine(val indents: Int, val sourceActions: ArrayList<SourceAction>)
 
@@ -232,16 +239,7 @@ class SourceBuilder(
 
         private fun labelLine(sourceActions: ArrayList<SourceAction>, offset: Int): Int {
             return if (labelLines) {
-                var line: Int? = null
-                var index = offset
-                while (index < sourceActions.size) {
-                    val location = sourceActions[index].location
-                    if (location != null) {
-                        line = location.line
-                        break
-                    }
-                    index++
-                }
+                val line = sourceActions.getOrNull(offset)?.line
                 val label = if (line != null) "`_(${line.toString().padStart(labelLength, ' ')})"
                 else "`_(${" ".repeat(labelLength)})"
                 sourceBuilder.append(label.padEnd(labelIndentLength, ' '))

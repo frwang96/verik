@@ -26,37 +26,39 @@ import io.verik.compiler.main.m
 class ExpressionSerializerVisitor(private val sourceBuilder: SourceBuilder) : Visitor() {
 
     fun serializeAsExpression(expression: EExpression) {
-        expression.accept(this)
-        if (expression.serializationType != SvSerializationType.EXPRESSION)
-            m.error("SystemVerilog expression expected but got: $expression", expression)
+        sourceBuilder.label(expression) {
+            if (expression.serializationType != SvSerializationType.EXPRESSION)
+                m.error("SystemVerilog expression expected but got: $expression", expression)
+            expression.accept(this)
+        }
     }
 
     fun serializeAsStatement(expression: EExpression) {
-        expression.accept(this)
-        when (expression.serializationType) {
-            SvSerializationType.EXPRESSION -> sourceBuilder.appendLine(";", expression)
-            SvSerializationType.STATEMENT -> {}
-            SvSerializationType.OTHER ->
+        sourceBuilder.label(expression) {
+            if (expression.serializationType !in listOf(SvSerializationType.EXPRESSION, SvSerializationType.STATEMENT))
                 m.error("SystemVerilog expression or statement expected but got: $expression", expression)
+            expression.accept(this)
+            if (expression.serializationType == SvSerializationType.EXPRESSION)
+                sourceBuilder.appendLine(";")
         }
     }
 
     override fun visitElement(element: EElement) {
-        m.error("Unable to serialize element: $element", element)
+        m.error("Unable to serialize element as expression: $element", element)
     }
 
     override fun visitSvBlockExpression(blockExpression: ESvBlockExpression) {
         if (blockExpression.decorated) {
-            sourceBuilder.append("begin", blockExpression)
+            sourceBuilder.append("begin")
             if (blockExpression.name != null)
-                sourceBuilder.append(" : ${blockExpression.name}", blockExpression)
+                sourceBuilder.append(" : ${blockExpression.name}")
             sourceBuilder.appendLine()
             sourceBuilder.indent {
                 blockExpression.statements.forEach { serializeAsStatement(it) }
             }
-            sourceBuilder.append("end", blockExpression)
+            sourceBuilder.append("end")
             if (blockExpression.name != null)
-                sourceBuilder.append(" : ${blockExpression.name}", blockExpression)
+                sourceBuilder.append(" : ${blockExpression.name}")
             sourceBuilder.appendLine()
         } else {
             blockExpression.statements.forEach { serializeAsStatement(it) }
@@ -64,21 +66,21 @@ class ExpressionSerializerVisitor(private val sourceBuilder: SourceBuilder) : Vi
     }
 
     override fun visitParenthesizedExpression(parenthesizedExpression: EParenthesizedExpression) {
-        sourceBuilder.append("(", parenthesizedExpression)
+        sourceBuilder.append("(")
         serializeAsExpression(parenthesizedExpression.expression)
-        sourceBuilder.append(")", parenthesizedExpression)
+        sourceBuilder.append(")")
     }
 
     override fun visitSvUnaryExpression(unaryExpression: ESvUnaryExpression) {
-        sourceBuilder.append(unaryExpression.kind.serialize(), unaryExpression)
+        sourceBuilder.append(unaryExpression.kind.serialize())
         serializeAsExpression(unaryExpression.expression)
     }
 
     override fun visitSvBinaryExpression(binaryExpression: ESvBinaryExpression) {
         serializeAsExpression(binaryExpression.left)
         sourceBuilder.hardBreak()
-        sourceBuilder.append(binaryExpression.kind.serialize(), binaryExpression)
-        sourceBuilder.append(" ", binaryExpression)
+        sourceBuilder.append(binaryExpression.kind.serialize())
+        sourceBuilder.append(" ")
         serializeAsExpression(binaryExpression.right)
     }
 
@@ -86,46 +88,42 @@ class ExpressionSerializerVisitor(private val sourceBuilder: SourceBuilder) : Vi
         val receiver = referenceExpression.receiver
         if (receiver != null) {
             serializeAsExpression(receiver)
-            sourceBuilder.append(if (referenceExpression.isScopeResolution) "::" else ".", referenceExpression)
+            sourceBuilder.append(if (referenceExpression.isScopeResolution) "::" else ".")
         }
-        sourceBuilder.append(referenceExpression.reference.name, referenceExpression)
+        sourceBuilder.append(referenceExpression.reference.name)
     }
 
     override fun visitSvCallExpression(callExpression: ESvCallExpression) {
         val receiver = callExpression.receiver
         if (receiver != null) {
             serializeAsExpression(receiver)
-            sourceBuilder.append(if (callExpression.isScopeResolution) "::" else ".", callExpression)
+            sourceBuilder.append(if (callExpression.isScopeResolution) "::" else ".")
         }
-        sourceBuilder.append(callExpression.reference.name, callExpression)
+        sourceBuilder.append(callExpression.reference.name)
         if (callExpression.valueArguments.isEmpty()) {
-            sourceBuilder.append("()", callExpression)
+            sourceBuilder.append("()")
         } else {
-            sourceBuilder.append("(", callExpression)
+            sourceBuilder.append("(")
             sourceBuilder.softBreak()
-            visitValueArgument(callExpression.valueArguments[0])
+            serializeAsExpression(callExpression.valueArguments[0].expression)
             callExpression.valueArguments.drop(1).forEach {
-                sourceBuilder.append(",", callExpression)
+                sourceBuilder.append(",")
                 sourceBuilder.hardBreak()
-                visitValueArgument(it)
+                serializeAsExpression(it.expression)
             }
-            sourceBuilder.append(")", callExpression)
+            sourceBuilder.append(")")
         }
-    }
-
-    override fun visitValueArgument(valueArgument: EValueArgument) {
-        serializeAsExpression(valueArgument.expression)
     }
 
     override fun visitConstantExpression(constantExpression: EConstantExpression) {
-        sourceBuilder.append(constantExpression.value, constantExpression)
+        sourceBuilder.append(constantExpression.value)
     }
 
     override fun visitInjectedExpression(injectedExpression: EInjectedExpression) {
         injectedExpression.entries.forEach {
             when (it) {
                 is ELiteralStringTemplateEntry ->
-                    sourceBuilder.append(it.text, it)
+                    sourceBuilder.append(it.text)
                 is EExpressionStringTemplateEntry ->
                     serializeAsExpression(it.expression)
             }
@@ -133,17 +131,17 @@ class ExpressionSerializerVisitor(private val sourceBuilder: SourceBuilder) : Vi
     }
 
     override fun visitStringExpression(stringExpression: EStringExpression) {
-        sourceBuilder.append("\"${stringExpression.text}\"", stringExpression)
+        sourceBuilder.append("\"${stringExpression.text}\"")
     }
 
     override fun visitIfExpression(ifExpression: EIfExpression) {
-        sourceBuilder.append("if (", ifExpression)
+        sourceBuilder.append("if (")
         serializeAsExpression(ifExpression.condition)
-        sourceBuilder.append(")", ifExpression)
+        sourceBuilder.append(")")
         val thenExpression = ifExpression.thenExpression
         if (thenExpression != null) {
             if (thenExpression is ESvBlockExpression) {
-                sourceBuilder.append(" ", ifExpression)
+                sourceBuilder.append(" ")
                 serializeAsStatement(thenExpression)
             }
             else {
@@ -153,15 +151,15 @@ class ExpressionSerializerVisitor(private val sourceBuilder: SourceBuilder) : Vi
                 }
             }
         } else {
-            sourceBuilder.appendLine(";", ifExpression)
+            sourceBuilder.appendLine(";")
         }
         val elseExpression = ifExpression.elseExpression
         if (elseExpression != null) {
             if (elseExpression is ESvBlockExpression || elseExpression is EIfExpression) {
-                sourceBuilder.append("else ", ifExpression)
+                sourceBuilder.append("else ")
                 serializeAsStatement(elseExpression)
             } else {
-                sourceBuilder.appendLine("else", ifExpression)
+                sourceBuilder.appendLine("else")
                 sourceBuilder.indent {
                     serializeAsStatement(elseExpression)
                 }
@@ -172,34 +170,34 @@ class ExpressionSerializerVisitor(private val sourceBuilder: SourceBuilder) : Vi
     override fun visitInlineIfExpression(inlineIfExpression: EInlineIfExpression) {
         serializeAsExpression(inlineIfExpression.condition)
         sourceBuilder.hardBreak()
-        sourceBuilder.append("? ", inlineIfExpression)
+        sourceBuilder.append("? ")
         serializeAsExpression(inlineIfExpression.thenExpression)
         sourceBuilder.hardBreak()
-        sourceBuilder.append(": ", inlineIfExpression)
+        sourceBuilder.append(": ")
         serializeAsExpression(inlineIfExpression.elseExpression)
     }
 
     override fun visitForeverStatement(foreverStatement: EForeverStatement) {
-        sourceBuilder.append("forever ", foreverStatement)
+        sourceBuilder.append("forever ")
         serializeAsStatement(foreverStatement.body)
     }
 
     override fun visitEventExpression(eventExpression: EEventExpression) {
         when (eventExpression.edgeType) {
-            EdgeType.POSEDGE -> sourceBuilder.append("posedge ", eventExpression)
-            EdgeType.NEGEDGE -> sourceBuilder.append("negedge ", eventExpression)
-            EdgeType.EDGE -> sourceBuilder.append("edge ", eventExpression)
+            EdgeType.POSEDGE -> sourceBuilder.append("posedge ", )
+            EdgeType.NEGEDGE -> sourceBuilder.append("negedge ")
+            EdgeType.EDGE -> sourceBuilder.append("edge ")
         }
         serializeAsExpression(eventExpression.expression)
     }
 
     override fun visitEventControlExpression(eventControlExpression: EEventControlExpression) {
-        sourceBuilder.append("@", eventControlExpression)
+        sourceBuilder.append("@")
         serializeAsExpression(eventControlExpression.expression)
     }
 
     override fun visitDelayExpression(delayExpression: EDelayExpression) {
-        sourceBuilder.append("#", delayExpression)
+        sourceBuilder.append("#")
         serializeAsExpression(delayExpression.expression)
     }
 }

@@ -34,8 +34,10 @@ object SourceSerializer : SerializerStage() {
         if (file.members.isEmpty())
             return null
         val sourceBuilder = SourceBuilder(projectContext, file)
-        val baseSourceBuilder = BaseSerializerVisitor(sourceBuilder)
-        file.accept(baseSourceBuilder)
+        val declarationSerializationVisitor = DeclarationSerializerVisitor(sourceBuilder)
+        file.members.forEach {
+            declarationSerializationVisitor.serializeAsDeclaration(it)
+        }
         return sourceBuilder.toTextFile()
     }
 }

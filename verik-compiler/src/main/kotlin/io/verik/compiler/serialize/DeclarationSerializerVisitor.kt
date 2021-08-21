@@ -17,107 +17,113 @@
 package io.verik.compiler.serialize
 
 import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.sv.*
+import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.cast
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.m
 
-class BaseSerializerVisitor(private val sourceBuilder: SourceBuilder) : Visitor() {
+class DeclarationSerializerVisitor(private val sourceBuilder: SourceBuilder) : Visitor() {
 
     private var lastAppendLineType = AppendLineType.FIRST
     private val expressionSerializerVisitor = ExpressionSerializerVisitor(sourceBuilder)
 
-    override fun visitElement(element: EElement) {
-        m.error("Unable to serialize element: $element", element)
+    fun serializeAsDeclaration(element: EElement) {
+        sourceBuilder.label(element) {
+            if (element !is Declaration)
+                m.error("SystemVerilog declaration expected but got: $element", element)
+            element.accept(this)
+        }
     }
 
-    override fun visitFile(file: EFile) {
-        file.members.forEach { it.accept(this) }
+    override fun visitElement(element: EElement) {
+        m.error("Unable to serialize element as declaration: $element", element)
     }
 
     override fun visitSvBasicClass(basicClass: ESvBasicClass) {
         appendLine(AppendLineType.REGULAR)
-        sourceBuilder.appendLine("class ${basicClass.name};", basicClass)
+        sourceBuilder.appendLine("class ${basicClass.name};")
         sourceBuilder.indent {
-            basicClass.members.forEach { it.accept(this) }
+            basicClass.members.forEach { serializeAsDeclaration(it) }
             sourceBuilder.appendLine()
         }
-        sourceBuilder.appendLine("endclass : ${basicClass.name}", basicClass)
+        sourceBuilder.appendLine("endclass : ${basicClass.name}")
     }
 
     override fun visitModule(module: EModule) {
         appendLine(AppendLineType.REGULAR)
-        sourceBuilder.appendLine("module ${module.name};", module)
+        sourceBuilder.appendLine("module ${module.name};")
         sourceBuilder.indent {
-            module.members.forEach { it.accept(this) }
+            module.members.forEach { serializeAsDeclaration(it) }
             sourceBuilder.appendLine()
         }
-        sourceBuilder.appendLine("endmodule : ${module.name}", module)
+        sourceBuilder.appendLine("endmodule : ${module.name}")
     }
 
     override fun visitEnum(enum: EEnum) {
         appendLine(AppendLineType.REGULAR)
-        sourceBuilder.appendLine("typedef enum {", enum)
+        sourceBuilder.appendLine("typedef enum {")
         sourceBuilder.indent {
             val entryReferences = enum.entryReferences.mapNotNull { it.cast<ESvEnumEntry>(enum) }
-            entryReferences.dropLast(1).forEach {
-                sourceBuilder.appendLine("${it.name},", it)
+            sourceBuilder.label(entryReferences[0]) { sourceBuilder.append(entryReferences[0].name) }
+            entryReferences.drop(1).forEach {
+                sourceBuilder.appendLine(",")
+                sourceBuilder.label(it) { sourceBuilder.append(it.name) }
             }
-            sourceBuilder.appendLine(entryReferences.last().name, entryReferences.last())
+            sourceBuilder.appendLine()
         }
-        sourceBuilder.appendLine("} ${enum.name};", enum)
+        sourceBuilder.appendLine("} ${enum.name};")
     }
 
     override fun visitSvFunction(function: ESvFunction) {
         appendLine(AppendLineType.REGULAR)
         val typeString = TypeSerializer.serialize(function.returnType, function)
-        sourceBuilder.appendLine("function $typeString ${function.name}();", function)
+        sourceBuilder.appendLine("function $typeString ${function.name}();")
         val body = function.body
         if (body != null) {
             sourceBuilder.indent {
                 expressionSerializerVisitor.serializeAsStatement(body)
             }
         }
-        sourceBuilder.appendLine("endfunction : ${function.name}", function)
+        sourceBuilder.appendLine("endfunction : ${function.name}")
     }
 
     override fun visitSvProperty(property: ESvProperty) {
         appendLine(AppendLineType.PROPERTY)
         val typeString = TypeSerializer.serialize(property.type, property)
-        sourceBuilder.append("$typeString ${property.name}", property)
+        sourceBuilder.append("$typeString ${property.name}")
         val initializer = property.initializer
         if (initializer != null) {
-            sourceBuilder.append(" ", property)
+            sourceBuilder.append(" ")
             sourceBuilder.align()
-            sourceBuilder.append("= ", property)
+            sourceBuilder.append("= ")
             expressionSerializerVisitor.serializeAsExpression(initializer)
-            sourceBuilder.appendLine(";", initializer)
+            sourceBuilder.appendLine(";")
         } else {
-            sourceBuilder.appendLine(";", property)
+            sourceBuilder.appendLine(";")
         }
     }
 
-    // Enum entries are serialized through the parent enum
+    // Enum entries are serialized as part of the parent enum
     override fun visitSvEnumEntry(enumEntry: ESvEnumEntry) {}
 
     override fun visitInitialBlock(initialBlock: EInitialBlock) {
         appendLine(AppendLineType.REGULAR)
-        sourceBuilder.append("initial ", initialBlock)
+        sourceBuilder.append("initial ")
         expressionSerializerVisitor.serializeAsStatement(initialBlock.body)
     }
 
     override fun visitAlwaysComBlock(alwaysComBlock: EAlwaysComBlock) {
         appendLine(AppendLineType.REGULAR)
-        sourceBuilder.append("always_comb ", alwaysComBlock)
+        sourceBuilder.append("always_comb ")
         expressionSerializerVisitor.serializeAsStatement(alwaysComBlock.body)
     }
 
     override fun visitAlwaysSeqBlock(alwaysSeqBlock: EAlwaysSeqBlock) {
         appendLine(AppendLineType.REGULAR)
-        sourceBuilder.append("always_ff ", alwaysSeqBlock)
+        sourceBuilder.append("always_ff ")
         expressionSerializerVisitor.serializeAsExpression(alwaysSeqBlock.eventControlExpression)
-        sourceBuilder.append(" ", alwaysSeqBlock)
+        sourceBuilder.append(" ")
         expressionSerializerVisitor.serializeAsStatement(alwaysSeqBlock.body)
     }
 
