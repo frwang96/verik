@@ -22,7 +22,7 @@ import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 
-object AssignmentOperatorReducer : ProjectPass {
+object AssignmentOperatorReducer : PreTransformerStage() {
 
     private val assignmentOperatorMap = HashMap<KtBinaryOperatorKind, KtBinaryOperatorKind>()
 
@@ -31,7 +31,7 @@ object AssignmentOperatorReducer : ProjectPass {
         assignmentOperatorMap[KtBinaryOperatorKind.MINUS_EQ] = KtBinaryOperatorKind.MINUS
     }
 
-    override fun pass(projectContext: ProjectContext) {
+    override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(AssignmentOperatorVisitor)
     }
 

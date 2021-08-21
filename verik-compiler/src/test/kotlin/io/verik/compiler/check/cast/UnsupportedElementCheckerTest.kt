@@ -14,40 +14,27 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.cast
+package io.verik.compiler.check.cast
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.TestErrorException
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-internal class ImportDirectiveCheckerTest : BaseTest() {
+internal class UnsupportedElementCheckerTest : BaseTest() {
 
     @Test
-    fun `import not found`() {
+    fun `throw expression`() {
         assertThrows<TestErrorException> {
             TestDriver.cast(
                 """
-                    import java.time.LocalDateTime
+                    fun f() { throw IllegalArgumentException() }
                 """.trimIndent()
             )
         }.apply {
-            assertEquals("Import package not found: java.time", message)
-        }
-    }
-
-    @Test
-    fun `import not found all under`() {
-        assertThrows<TestErrorException> {
-            TestDriver.cast(
-                """
-                    import java.time.*
-                """.trimIndent()
-            )
-        }.apply {
-            assertEquals("Import package not found: java.time", message)
+            Assertions.assertEquals("Throw expression not supported", message)
         }
     }
 }

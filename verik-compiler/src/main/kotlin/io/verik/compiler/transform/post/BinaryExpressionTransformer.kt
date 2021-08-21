@@ -25,7 +25,7 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 
-object BinaryExpressionTransformer : ProjectPass {
+object BinaryExpressionTransformer : PostTransformerStage() {
 
     private val operatorKindMap = HashMap<CoreKtFunctionDeclaration, SvBinaryOperatorKind>()
 
@@ -36,7 +36,7 @@ object BinaryExpressionTransformer : ProjectPass {
         operatorKindMap[Core.Vk.Ubit.PLUS_UBIT] = SvBinaryOperatorKind.PLUS
     }
 
-    override fun pass(projectContext: ProjectContext) {
+    override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(BinaryExpressionVisitor)
     }
 

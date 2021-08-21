@@ -20,6 +20,8 @@ import io.verik.compiler.ast.element.common.EBasicPackage
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.ast.element.common.ERootPackage
+import io.verik.compiler.check.cast.ImportDirectiveChecker
+import io.verik.compiler.check.cast.UnsupportedElementChecker
 import io.verik.compiler.check.normalize.NormalizationChecker
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
@@ -30,13 +32,8 @@ import java.nio.file.FileSystems
 object ProjectCaster : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        m.log("Cast: Check unsupported elements")
-        UnsupportedElementChecker.pass(projectContext)
-        m.flush()
-
-        m.log("Cast: Check import directives")
-        ImportDirectiveChecker.pass(projectContext)
-        m.flush()
+        UnsupportedElementChecker.accept(projectContext)
+        ImportDirectiveChecker.accept(projectContext)
 
         m.log("Cast: Index syntax trees")
         val castContext = CastContext(projectContext.bindingContext)

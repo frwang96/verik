@@ -21,14 +21,15 @@ import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
-import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 
-object TypeResolver : ProjectPass {
+object TypeResolver : ResolverStage() {
 
-    override fun pass(projectContext: ProjectContext) {
+    override val checkNormalization = true
+
+    override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(TypeResolverVisitor)
     }
 

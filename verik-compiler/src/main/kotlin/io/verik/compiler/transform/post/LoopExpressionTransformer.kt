@@ -24,9 +24,9 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 
-object LoopExpressionTransformer : ProjectPass {
+object LoopExpressionTransformer : PostTransformerStage() {
 
-    override fun pass(projectContext: ProjectContext) {
+    override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(LoopExpressionVisitor)
     }
 

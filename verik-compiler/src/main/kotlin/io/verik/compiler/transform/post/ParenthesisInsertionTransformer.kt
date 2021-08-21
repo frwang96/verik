@@ -25,9 +25,9 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
-object ParenthesisInsertionTransformer : ProjectPass {
+object ParenthesisInsertionTransformer : PostTransformerStage() {
 
-    override fun pass(projectContext: ProjectContext) {
+    override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(ParenthesisInsertionVisitor)
     }
 

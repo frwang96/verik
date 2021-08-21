@@ -19,13 +19,14 @@ package io.verik.compiler.interpret
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.sv.*
-import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
-object FileSplitter : ProjectPass {
+object FileSplitter : InterpreterStage() {
 
-    override fun pass(projectContext: ProjectContext) {
+    override val checkNormalization = true
+
+    override fun process(projectContext: ProjectContext) {
         val componentFiles = ArrayList<EFile>()
         projectContext.project.basicPackages.forEach { basicPackage ->
             val packageFiles = ArrayList<EFile>()

@@ -19,14 +19,15 @@ package io.verik.compiler.resolve
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
-import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 
-object TypeBackFiller : ProjectPass {
+object TypeBackFiller : ResolverStage() {
 
-    override fun pass(projectContext: ProjectContext) {
+    override val checkNormalization = true
+
+    override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(TypeBackFillerVisitor)
     }
 

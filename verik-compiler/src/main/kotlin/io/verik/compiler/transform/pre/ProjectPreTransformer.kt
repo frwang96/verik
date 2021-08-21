@@ -16,27 +16,14 @@
 
 package io.verik.compiler.transform.pre
 
-import io.verik.compiler.check.normalize.NormalizationChecker
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
 
 object ProjectPreTransformer : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        m.log("PreTransform: Reduce assignment operators")
-        AssignmentOperatorReducer.pass(projectContext)
-        NormalizationChecker.pass(projectContext)
-        m.flush()
-
-        m.log("PreTransform: Reduce unary expressions")
-        UnaryExpressionReducer.pass(projectContext)
-        NormalizationChecker.pass(projectContext)
-        m.flush()
-
-        m.log("PreTransform: Reduce binary expressions")
-        BinaryExpressionReducer.pass(projectContext)
-        NormalizationChecker.pass(projectContext)
-        m.flush()
+        AssignmentOperatorReducer.accept(projectContext)
+        UnaryExpressionReducer.accept(projectContext)
+        BinaryExpressionReducer.accept(projectContext)
     }
 }

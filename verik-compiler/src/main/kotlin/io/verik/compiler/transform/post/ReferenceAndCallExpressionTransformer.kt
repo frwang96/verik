@@ -26,9 +26,9 @@ import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 
-object ReferenceAndCallExpressionTransformer : ProjectPass {
+object ReferenceAndCallExpressionTransformer : PostTransformerStage() {
 
-    override fun pass(projectContext: ProjectContext) {
+    override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(ReferenceAndCallExpressionVisitor)
     }
 

@@ -22,13 +22,14 @@ import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.common.MemberReplacer
-import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 
-object MemberInterpreter : ProjectPass {
+object MemberInterpreter : InterpreterStage() {
 
-    override fun pass(projectContext: ProjectContext) {
+    override val checkNormalization = true
+
+    override fun process(projectContext: ProjectContext) {
         val memberReplacer = MemberReplacer(projectContext)
         val memberVisitor = MemberVisitor(memberReplacer)
         projectContext.project.accept(memberVisitor)

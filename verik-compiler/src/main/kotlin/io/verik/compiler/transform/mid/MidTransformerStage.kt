@@ -16,15 +16,11 @@
 
 package io.verik.compiler.transform.mid
 
-import io.verik.compiler.common.ProjectPass
-import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.common.ProjectStage
 
-object ProjectMidTransformer : ProjectPass {
+abstract class MidTransformerStage : ProjectStage() {
 
-    override fun pass(projectContext: ProjectContext) {
-        InjectedExpressionReducer.accept(projectContext)
-        StringTemplateExpressionReducer.accept(projectContext)
-        BitConstantTransformer.accept(projectContext)
-        AssignmentTransformer.accept(projectContext)
-    }
+    override val stageGroup = "MidTransform"
+
+    override val checkNormalization = true
 }

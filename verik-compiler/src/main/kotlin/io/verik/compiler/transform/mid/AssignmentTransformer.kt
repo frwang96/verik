@@ -21,13 +21,12 @@ import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
-import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 
-object AssignmentTransformer : ProjectPass {
+object AssignmentTransformer : MidTransformerStage() {
 
-    override fun pass(projectContext: ProjectContext) {
+    override fun process(projectContext: ProjectContext) {
         val assignmentVisitor = AssignmentVisitor()
         projectContext.project.accept(assignmentVisitor)
     }

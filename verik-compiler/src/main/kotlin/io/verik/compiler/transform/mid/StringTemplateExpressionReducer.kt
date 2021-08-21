@@ -24,15 +24,14 @@ import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.common.NullDeclaration
-import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
-object StringTemplateExpressionReducer : ProjectPass {
+object StringTemplateExpressionReducer : MidTransformerStage() {
 
-    override fun pass(projectContext: ProjectContext) {
+    override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(StringTemplateExpressionVisitor)
     }
 

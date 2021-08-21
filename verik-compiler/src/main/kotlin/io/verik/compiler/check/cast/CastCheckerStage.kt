@@ -14,17 +14,13 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.mid
+package io.verik.compiler.check.cast
 
-import io.verik.compiler.common.ProjectPass
-import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.common.ProjectStage
 
-object ProjectMidTransformer : ProjectPass {
+abstract class CastCheckerStage : ProjectStage() {
 
-    override fun pass(projectContext: ProjectContext) {
-        InjectedExpressionReducer.accept(projectContext)
-        StringTemplateExpressionReducer.accept(projectContext)
-        BitConstantTransformer.accept(projectContext)
-        AssignmentTransformer.accept(projectContext)
-    }
+    override val stageGroup = "CastCheck"
+
+    override val checkNormalization = false
 }

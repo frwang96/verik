@@ -16,67 +16,22 @@
 
 package io.verik.compiler.transform.post
 
-import io.verik.compiler.check.normalize.NormalizationChecker
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
 
 object ProjectPostTransformer : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        m.log("PostTransform: Transform loop expressions")
-        LoopExpressionTransformer.pass(projectContext)
-        NormalizationChecker.pass(projectContext)
-        m.flush()
-
-        m.log("PostTransform: Transform inline if expressions")
-        InlineIfExpressionTransformer.pass(projectContext)
-        NormalizationChecker.pass(projectContext)
-        m.flush()
-
-        m.log("PostTransform: Transform function references")
-        FunctionReferenceTransformer.pass(projectContext)
-        NormalizationChecker.pass(projectContext)
-        m.flush()
-
-        m.log("PostTransform: Transform special functions")
-        FunctionSpecialTransformer.pass(projectContext)
-        NormalizationChecker.pass(projectContext)
-        m.flush()
-
-        m.log("PostTransform: Transform unary expressions")
-        UnaryExpressionTransformer.pass(projectContext)
-        NormalizationChecker.pass(projectContext)
-        m.flush()
-
-        m.log("PostTransform: Transform binary expressions")
-        BinaryExpressionTransformer.pass(projectContext)
-        NormalizationChecker.pass(projectContext)
-        m.flush()
-
-        m.log("PostTransform: Transform package names")
-        PackageNameTransformer.pass(projectContext)
-        NormalizationChecker.pass(projectContext)
-        m.flush()
-
-        m.log("PostTransform: Insert package references")
-        PackageReferenceInsertionTransformer.pass(projectContext)
-        NormalizationChecker.pass(projectContext)
-        m.flush()
-
-        m.log("PostTransform: Transform reference and call expressions")
-        ReferenceAndCallExpressionTransformer.pass(projectContext)
-        NormalizationChecker.pass(projectContext)
-        m.flush()
-
-        m.log("PostTransform: Transform block expressions")
-        BlockExpressionTransformer.pass(projectContext)
-        NormalizationChecker.pass(projectContext)
-        m.flush()
-
-        m.log("PostTransform: Insert parenthesis")
-        ParenthesisInsertionTransformer.pass(projectContext)
-        NormalizationChecker.pass(projectContext)
-        m.flush()
+        LoopExpressionTransformer.accept(projectContext)
+        InlineIfExpressionTransformer.accept(projectContext)
+        FunctionReferenceTransformer.accept(projectContext)
+        FunctionSpecialTransformer.accept(projectContext)
+        UnaryExpressionTransformer.accept(projectContext)
+        BinaryExpressionTransformer.accept(projectContext)
+        PackageNameTransformer.accept(projectContext)
+        PackageReferenceInsertionTransformer.accept(projectContext)
+        ReferenceAndCallExpressionTransformer.accept(projectContext)
+        BlockExpressionTransformer.accept(projectContext)
+        ParenthesisInsertionTransformer.accept(projectContext)
     }
 }

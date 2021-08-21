@@ -29,7 +29,7 @@ import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
-object BinaryExpressionReducer : ProjectPass {
+object BinaryExpressionReducer : PreTransformerStage() {
 
     private val referenceMap = HashMap<ReducerEntry, CoreKtFunctionDeclaration>()
 
@@ -40,7 +40,7 @@ object BinaryExpressionReducer : ProjectPass {
         referenceMap[ReducerEntry(Core.Vk.UBIT, Core.Vk.UBIT, KtBinaryOperatorKind.PLUS)] = Core.Vk.Ubit.PLUS_UBIT
     }
 
-    override fun pass(projectContext: ProjectContext) {
+    override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(BinaryExpressionVisitor)
     }
 

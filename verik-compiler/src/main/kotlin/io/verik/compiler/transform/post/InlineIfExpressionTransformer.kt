@@ -24,9 +24,9 @@ import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 
-object InlineIfExpressionTransformer : ProjectPass {
+object InlineIfExpressionTransformer : PostTransformerStage() {
 
-    override fun pass(projectContext: ProjectContext) {
+    override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(InlineIfExpressionVisitor)
     }
 

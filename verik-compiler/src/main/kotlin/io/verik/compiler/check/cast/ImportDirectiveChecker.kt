@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.cast
+package io.verik.compiler.check.cast
 
-import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.psi.KtImportDirective
 import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 
-object ImportDirectiveChecker : ProjectPass {
+object ImportDirectiveChecker : CastCheckerStage() {
 
-    override fun pass(projectContext: ProjectContext) {
+    override fun process(projectContext: ProjectContext) {
         val packageNames = HashSet<String>()
         packageNames.add(CorePackage.VK.name)
         projectContext.ktFiles.forEach {

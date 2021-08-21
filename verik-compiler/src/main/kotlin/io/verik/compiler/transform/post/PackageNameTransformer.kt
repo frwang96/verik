@@ -22,9 +22,9 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
-object PackageNameTransformer : ProjectPass {
+object PackageNameTransformer : PostTransformerStage() {
 
-    override fun pass(projectContext: ProjectContext) {
+    override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(PackageNameVisitor)
     }
 

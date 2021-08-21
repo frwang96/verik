@@ -23,14 +23,15 @@ import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.interfaces.ResizableElementContainer
 import io.verik.compiler.common.MemberReplacer
-import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
-object EnumInterpreter : ProjectPass {
+object EnumInterpreter : InterpreterStage() {
 
-    override fun pass(projectContext: ProjectContext) {
+    override val checkNormalization = true
+
+    override fun process(projectContext: ProjectContext) {
         val memberReplacer = MemberReplacer(projectContext)
         val enumVisitor = EnumVisitor(memberReplacer)
         projectContext.project.accept(enumVisitor)

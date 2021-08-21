@@ -16,26 +16,14 @@
 
 package io.verik.compiler.resolve
 
-import io.verik.compiler.check.normalize.NormalizationChecker
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
 
 object ProjectResolver : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        m.log("Resolve: Resolve types")
-        TypeResolver.pass(projectContext)
-        NormalizationChecker.pass(projectContext)
-        m.flush()
-
-        m.log("Resolve: Back fill types")
-        TypeBackFiller.pass(projectContext)
-        NormalizationChecker.pass(projectContext)
-        m.flush()
-
-        m.log("Resolve: Check types resolved")
-        TypeResolvedChecker.pass(projectContext)
-        m.flush()
+        TypeResolver.accept(projectContext)
+        TypeBackFiller.accept(projectContext)
+        TypeResolvedChecker.accept(projectContext)
     }
 }

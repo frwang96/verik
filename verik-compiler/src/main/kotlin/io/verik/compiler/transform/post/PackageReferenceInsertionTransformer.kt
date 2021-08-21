@@ -28,9 +28,9 @@ import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 
-object PackageReferenceInsertionTransformer : ProjectPass {
+object PackageReferenceInsertionTransformer : PostTransformerStage() {
 
-    override fun pass(projectContext: ProjectContext) {
+    override fun process(projectContext: ProjectContext) {
         val packageReferenceInsertionVisitor = PackageReferenceInsertionVisitor()
         projectContext.project.accept(packageReferenceInsertionVisitor)
     }

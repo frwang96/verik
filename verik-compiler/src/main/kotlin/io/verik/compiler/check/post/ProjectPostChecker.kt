@@ -18,20 +18,11 @@ package io.verik.compiler.check.post
 
 import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
 
 object ProjectPostChecker : ProjectPass {
 
     override fun pass(projectContext: ProjectContext) {
-        if (projectContext.project.files().isEmpty())
-            m.fatal("Output empty: No project files found", null)
-
-        m.log("PostCheck: Check name redeclarations")
-        NameRedeclarationChecker.pass(projectContext)
-        m.flush()
-
-        m.log("PostCheck: Check untransformed elements")
-        UntransformedElementChecker.pass(projectContext)
-        m.flush()
+        NameRedeclarationChecker.accept(projectContext)
+        UntransformedElementChecker.accept(projectContext)
     }
 }

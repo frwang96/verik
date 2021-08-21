@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.cast
+package io.verik.compiler.check.cast
 
-import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.psi.*
 
-object UnsupportedElementChecker : ProjectPass {
+object UnsupportedElementChecker : CastCheckerStage() {
 
-    override fun pass(projectContext: ProjectContext) {
+    override fun process(projectContext: ProjectContext) {
         projectContext.ktFiles.forEach { it.accept(UnsupportedElementVisitor) }
     }
 

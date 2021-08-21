@@ -14,23 +14,11 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.check.post
+package io.verik.compiler.resolve
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestDriver
-import io.verik.compiler.util.TestFatalException
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
+import io.verik.compiler.common.ProjectStage
 
-internal class ProjectPostCheckerTest : BaseTest() {
+abstract class ResolverStage : ProjectStage() {
 
-    @Test
-    fun `project empty`() {
-        assertThrows<TestFatalException> {
-            TestDriver.postCheck("")
-        }.apply {
-            assertEquals("Output empty: No project files found", message)
-        }
-    }
+    override val stageGroup = "Resolve"
 }

@@ -27,7 +27,7 @@ import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
-object UnaryExpressionReducer : ProjectPass {
+object UnaryExpressionReducer : PreTransformerStage() {
 
     private val referenceMap = HashMap<ReducerEntry, CoreKtFunctionDeclaration>()
 
@@ -35,7 +35,7 @@ object UnaryExpressionReducer : ProjectPass {
         referenceMap[ReducerEntry(Core.Kt.BOOLEAN, KtUnaryOperatorKind.EXCL)] = Core.Kt.Boolean.NOT
     }
 
-    override fun pass(projectContext: ProjectContext) {
+    override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(UnaryExpressionVisitor)
     }
 

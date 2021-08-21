@@ -16,10 +16,11 @@
 
 package io.verik.compiler.specialize
 
-import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.main.ProjectContext
 
-object DeclarationSpecializer : ProjectPass {
+object DeclarationSpecializer : SpecializerStage() {
 
-    override fun pass(projectContext: ProjectContext) {}
+    override val checkNormalization = true
+
+    override fun process(projectContext: ProjectContext) {}
 }

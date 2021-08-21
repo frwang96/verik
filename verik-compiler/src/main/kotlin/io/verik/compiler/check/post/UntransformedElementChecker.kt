@@ -19,15 +19,14 @@ package io.verik.compiler.check.post
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.kt.*
 import io.verik.compiler.ast.element.sv.ESvCallExpression
-import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
-object UntransformedElementChecker : ProjectPass {
+object UntransformedElementChecker : PostCheckerStage() {
 
-    override fun pass(projectContext: ProjectContext) {
+    override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(UntransformedElementVisitor)
     }
 

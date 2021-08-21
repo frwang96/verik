@@ -24,7 +24,7 @@ import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.core.common.CoreSvFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 
-object FunctionReferenceTransformer : ProjectPass {
+object FunctionReferenceTransformer : PostTransformerStage() {
 
     private val functionReferenceMap = HashMap<CoreKtFunctionDeclaration, CoreSvFunctionDeclaration>()
 
@@ -39,7 +39,7 @@ object FunctionReferenceTransformer : ProjectPass {
         functionReferenceMap[Core.Vk.FINISH] = Core.Sv.FINISH
     }
 
-    override fun pass(projectContext: ProjectContext) {
+    override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(FunctionReferenceVisitor)
     }
 

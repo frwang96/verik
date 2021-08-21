@@ -25,7 +25,7 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 
-object UnaryExpressionTransformer : ProjectPass {
+object UnaryExpressionTransformer : PostTransformerStage() {
 
     private val operatorKindMap = HashMap<CoreKtFunctionDeclaration, SvUnaryOperatorKind>()
 
@@ -33,7 +33,7 @@ object UnaryExpressionTransformer : ProjectPass {
         operatorKindMap[Core.Kt.Boolean.NOT] = SvUnaryOperatorKind.EXCL
     }
 
-    override fun pass(projectContext: ProjectContext) {
+    override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(UnaryExpressionVisitor)
     }
 

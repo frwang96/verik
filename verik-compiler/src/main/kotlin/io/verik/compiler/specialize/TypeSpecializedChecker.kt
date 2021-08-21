@@ -17,14 +17,15 @@
 package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.common.ProjectPass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
-object TypeSpecializedChecker : ProjectPass {
+object TypeSpecializedChecker : SpecializerStage() {
 
-    override fun pass(projectContext: ProjectContext) {
+    override val checkNormalization = false
+
+    override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(TypeCheckerVisitor)
     }
 
