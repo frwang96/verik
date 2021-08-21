@@ -26,6 +26,10 @@ object ProjectSerializer : ProjectPass {
     override fun pass(projectContext: ProjectContext) {
         val outputTextFiles = ArrayList<TextFile>()
 
+        m.info("Serialize: Serialize config file")
+        outputTextFiles.add(ConfigFileSerializer.serialize(projectContext))
+        m.flush()
+
         m.info("Serialize: Serialize order file")
         outputTextFiles.add(OrderFileSerializer.serialize(projectContext))
         m.flush()

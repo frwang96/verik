@@ -44,7 +44,7 @@ object FileHeaderBuilder {
                 builder.appendLine("`timescale ${projectContext.config.timescale}")
                 builder.appendLine("`endif")
             }
-            HeaderStyle.YAML -> {
+            HeaderStyle.TXT -> {
                 lines.forEach { builder.appendLine("# $it") }
             }
         }
@@ -52,5 +52,5 @@ object FileHeaderBuilder {
         return builder.toString()
     }
 
-    enum class HeaderStyle { SV, YAML }
+    enum class HeaderStyle { SV, TXT }
 }

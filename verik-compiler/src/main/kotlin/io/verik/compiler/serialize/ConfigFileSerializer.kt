@@ -18,40 +18,23 @@ package io.verik.compiler.serialize
 
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
-import java.nio.file.Path
 
-object OrderFileSerializer {
+object ConfigFileSerializer {
 
     fun serialize(projectContext: ProjectContext): TextFile {
         val inputPath = projectContext.config.inputSourceDir
-        val outputPath = projectContext.config.buildDir.resolve("order.yaml")
+        val outputPath = projectContext.config.buildDir.resolve("config.yaml")
         val fileHeader = FileHeaderBuilder.build(
             projectContext,
             inputPath,
             outputPath,
             FileHeaderBuilder.HeaderStyle.TXT
         )
-        val paths = getPaths(projectContext)
 
         val builder = StringBuilder()
         builder.append(fileHeader)
-        paths.forEach {
-            builder.appendLine(projectContext.config.buildDir.relativize(it))
-        }
-
+        builder.appendLine("top: ${projectContext.config.top}")
+        builder.appendLine("timescale: ${projectContext.config.timescale}")
         return TextFile(outputPath, builder.toString())
-    }
-
-    private fun getPaths(projectContext: ProjectContext): List<Path> {
-        val paths = ArrayList<Path>()
-        projectContext.project.basicPackages.forEach {
-            if (!it.isEmpty())
-                paths.add(it.outputPath.resolve("Pkg.sv"))
-        }
-        projectContext.project.rootPackage.files.forEach {
-            if (it.members.isNotEmpty())
-                paths.add(it.getOutputPathNotNull())
-        }
-        return paths
     }
 }
