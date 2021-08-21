@@ -20,36 +20,30 @@ import io.verik.compiler.ast.element.common.EBasicPackage
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.ast.element.common.ERootPackage
-import io.verik.compiler.check.cast.ImportDirectiveChecker
-import io.verik.compiler.check.cast.UnsupportedElementChecker
-import io.verik.compiler.check.normalize.NormalizationChecker
-import io.verik.compiler.common.ProjectPass
+import io.verik.compiler.common.location
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
 import io.verik.compiler.message.SourceLocation
 import java.nio.file.FileSystems
+import java.nio.file.Paths
 
-object ProjectCaster : ProjectPass {
+object ProjectCaster : CasterStage() {
 
-    override fun pass(projectContext: ProjectContext) {
-        UnsupportedElementChecker.accept(projectContext)
-        ImportDirectiveChecker.accept(projectContext)
-        ProjectIndexer.accept(projectContext)
+    override val checkNormalization = true
 
-        m.log("Cast: Cast syntax trees")
-        castSyntaxTrees(projectContext, projectContext.castContext)
-        NormalizationChecker.accept(projectContext)
-        m.flush()
-    }
-
-    private fun castSyntaxTrees(projectContext: ProjectContext, castContext: CastContext) {
+    override fun process(projectContext: ProjectContext) {
         val files = HashMap<String, ArrayList<EFile>>()
-        projectContext.ktFiles.forEach {
-            val fileCasterResult = FileCaster.cast(castContext, it)
-            if (fileCasterResult.packageName !in files)
-                files[fileCasterResult.packageName] = ArrayList()
-            files[fileCasterResult.packageName]!!.add(fileCasterResult.file)
+
+        val baseCasterVisitor = BaseCasterVisitor(projectContext.castContext)
+        projectContext.ktFiles.forEach { file ->
+            val location = file.location()
+            val packageName = file.packageFqName.asString()
+            val inputPath = Paths.get(file.virtualFilePath)
+            val members = file.declarations.map { it.accept(baseCasterVisitor, Unit) }
+            if (packageName !in files)
+                files[packageName] = ArrayList()
+            files[packageName]!!.add(EFile(location, inputPath, null, ArrayList(members)))
         }
+
         val basicPackages = ArrayList<EBasicPackage>()
         files.forEach { (packageName, files) ->
             val relativePath = packageName.replace(".", FileSystems.getDefault().separator)
@@ -59,6 +53,7 @@ object ProjectCaster : ProjectPass {
             val basicPackage = EBasicPackage(location, packageName, files, inputPath, outputPath)
             basicPackages.add(basicPackage)
         }
+
         val projectLocation = SourceLocation(0, 0, projectContext.config.inputSourceDir, null)
         val rootPackage = ERootPackage(projectLocation, ArrayList())
         val project = EProject(projectLocation, basicPackages, rootPackage)

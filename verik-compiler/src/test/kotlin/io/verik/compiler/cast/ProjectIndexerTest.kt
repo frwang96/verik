@@ -14,44 +14,28 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.main
+package io.verik.compiler.cast
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.TestErrorException
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-class KotlinCompilerTest : BaseTest() {
+internal class ProjectIndexerTest : BaseTest() {
 
     @Test
-    fun `compile simple`() {
-        TestDriver.compile(
-            """
-                class C {
-                    fun f() {
-                        println()
-                    }
-                }
-            """.trimIndent()
-        )
-    }
-
-    @Test
-    fun `compile error`() {
+    fun `error name unicode`() {
         assertThrows<TestErrorException> {
-            TestDriver.compile(
+            TestDriver.cast(
                 """
-                    class C {
-                        fun f() {
-                            g()
-                        }
-                    }
+                    @Suppress("ObjectPropertyName")
+                    val αβγ = 0
                 """.trimIndent()
             )
         }.apply {
-            assertEquals("Unresolved reference: g", message)
+            Assertions.assertEquals("Illegal name: αβγ", message)
         }
     }
 }

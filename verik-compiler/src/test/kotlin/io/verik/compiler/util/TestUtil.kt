@@ -19,10 +19,52 @@ package io.verik.compiler.util
 import io.verik.compiler.ast.element.common.*
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.common.ElementPrinter
+import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.main.Config
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.StageSequencer
 import io.verik.compiler.main.TextFile
+import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Assertions.assertEquals
+import java.nio.file.Paths
+import kotlin.reflect.KClass
+
+fun <T: ProjectStage> driveTest(stageClass: KClass<T>, @Language("kotlin") content: String): ProjectContext {
+    val contentWithPackageHeader = """
+            package verik
+            import io.verik.core.*
+            $content
+        """.trimIndent()
+    val textFile = TextFile(Paths.get("/src/main/kotlin/verik/Test.kt"), contentWithPackageHeader)
+    val config = Config(
+        "unspecified",
+        "",
+        "verik",
+        Paths.get("/"),
+        Paths.get("/build/verik"),
+        listOf(textFile.path),
+        "*",
+        verbose = false,
+        debug = true,
+        suppressCompileWarnings = true,
+        labelLines = false,
+        wrapLength = 80,
+        indentLength = 4
+    )
+    val projectContext = ProjectContext(config)
+    projectContext.inputTextFiles = listOf(textFile)
+
+    val stageSequence = StageSequencer.getStageSequence()
+    assert(stageSequence.contains(stageClass))
+    for (it in stageSequence.stages) {
+        it.accept(projectContext)
+        if (it::class == stageClass)
+            break
+    }
+
+    return projectContext
+}
 
 fun assertElementEquals(expected: String, actual: EElement) {
     val leftRoundBracketCount = expected.count { it == '(' }

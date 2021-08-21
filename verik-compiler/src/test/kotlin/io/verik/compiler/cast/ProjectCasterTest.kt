@@ -21,7 +21,7 @@ import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertElementEquals
 import org.junit.jupiter.api.Test
 
-internal class FileCasterTest : BaseTest() {
+internal class ProjectCasterTest : BaseTest() {
 
     @Test
     fun `project empty`() {

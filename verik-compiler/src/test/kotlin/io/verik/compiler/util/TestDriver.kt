@@ -16,7 +16,7 @@
 
 package io.verik.compiler.util
 
-import io.verik.compiler.cast.ProjectCaster
+import io.verik.compiler.cast.ProjectCasterWrap
 import io.verik.compiler.check.post.ProjectPostChecker
 import io.verik.compiler.check.pre.ProjectPreChecker
 import io.verik.compiler.compile.KotlinCompiler
@@ -65,7 +65,7 @@ object TestDriver {
 
     fun cast(@Language("kotlin") content: String): ProjectContext {
         val projectContext = compile(content)
-        ProjectCaster.pass(projectContext)
+        ProjectCasterWrap.pass(projectContext)
         return projectContext
     }
 

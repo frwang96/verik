@@ -16,19 +16,8 @@
 
 package io.verik.compiler.main
 
-import io.verik.compiler.cast.ProjectCaster
-import io.verik.compiler.check.post.ProjectPostChecker
-import io.verik.compiler.check.pre.ProjectPreChecker
-import io.verik.compiler.compile.KotlinCompiler
-import io.verik.compiler.interpret.ProjectInterpreter
 import io.verik.compiler.message.GradleMessageCollector
 import io.verik.compiler.message.MessageCollector
-import io.verik.compiler.resolve.ProjectResolver
-import io.verik.compiler.serialize.ProjectSerializer
-import io.verik.compiler.specialize.ProjectSpecializer
-import io.verik.compiler.transform.mid.ProjectMidTransformer
-import io.verik.compiler.transform.post.ProjectPostTransformer
-import io.verik.compiler.transform.pre.ProjectPreTransformer
 import java.nio.file.Files
 
 lateinit var m: MessageCollector
@@ -38,19 +27,10 @@ object Main {
     fun run(config: Config) {
         m = GradleMessageCollector(config)
         val projectContext = ProjectContext(config)
+        val stageSequence = StageSequencer.getStageSequence()
 
         readFiles(projectContext)
-        KotlinCompiler().pass(projectContext)
-        ProjectCaster.pass(projectContext)
-        ProjectPreChecker.pass(projectContext)
-        ProjectPreTransformer.pass(projectContext)
-        ProjectResolver.pass(projectContext)
-        ProjectSpecializer.pass(projectContext)
-        ProjectInterpreter.pass(projectContext)
-        ProjectMidTransformer.pass(projectContext)
-        ProjectPostTransformer.pass(projectContext)
-        ProjectPostChecker.pass(projectContext)
-        ProjectSerializer.pass(projectContext)
+        stageSequence.process(projectContext)
         writeFiles(projectContext)
     }
 
