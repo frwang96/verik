@@ -30,7 +30,6 @@ data class Config(
     val debug: Boolean,
     val suppressCompileWarnings: Boolean,
     val labelLines: Boolean,
-    val alignLength: Int,
     val wrapLength: Int,
     val indentLength: Int
 ) {

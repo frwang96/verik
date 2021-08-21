@@ -54,9 +54,8 @@ object TestDriver {
             debug = true,
             suppressCompileWarnings = true,
             labelLines = false,
-            alignLength = 0,
-            120,
-            4
+            wrapLength = 80,
+            indentLength = 4
         )
         val projectContext = ProjectContext(config)
         projectContext.inputTextFiles = listOf(textFile)

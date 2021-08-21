@@ -44,7 +44,6 @@ object ConfigBuilder {
             extension.debug,
             suppressCompileWarnings = false,
             extension.labelLines,
-            extension.alignLength,
             extension.wrapLength,
             extension.indentLength
         )
