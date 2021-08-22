@@ -17,11 +17,11 @@
 package io.verik.compiler.transform.mid
 
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.common.EExpressionStringTemplateEntry
-import io.verik.compiler.ast.element.common.ELiteralStringTemplateEntry
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.sv.EStringExpression
+import io.verik.compiler.ast.property.ExpressionStringEntry
+import io.verik.compiler.ast.property.LiteralStringEntry
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
@@ -49,12 +49,12 @@ object StringTemplateExpressionReducer : MidTransformerStage() {
 
         override fun visitStringTemplateExpression(stringTemplateExpression: EStringTemplateExpression) {
             super.visitStringTemplateExpression(stringTemplateExpression)
-            val isStringExpression = stringTemplateExpression.entries.all { it is ELiteralStringTemplateEntry }
+            val isStringExpression = stringTemplateExpression.entries.all { it is LiteralStringEntry }
             val builder = StringBuilder()
             val valueArguments = ArrayList<EExpression>()
             for (entry in stringTemplateExpression.entries) {
                 when (entry) {
-                    is ELiteralStringTemplateEntry -> {
+                    is LiteralStringEntry -> {
                         entry.text.toCharArray().forEach {
                             val text = when (it) {
                                 '\n' -> "\\n"
@@ -68,7 +68,7 @@ object StringTemplateExpressionReducer : MidTransformerStage() {
                             builder.append(text)
                         }
                     }
-                    is EExpressionStringTemplateEntry -> {
+                    is ExpressionStringEntry -> {
                         builder.append(getFormatSpecifier(entry.expression))
                         valueArguments.add(entry.expression)
                     }

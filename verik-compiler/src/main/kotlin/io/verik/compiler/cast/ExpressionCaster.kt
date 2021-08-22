@@ -16,7 +16,8 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.element.common.*
+import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.kt.*
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.KtUnaryOperatorKind
@@ -122,13 +123,6 @@ object ExpressionCaster {
         }
     }
 
-    fun castConstantExpression(expression: KtConstantExpression, castContext: CastContext): EConstantExpression {
-        val location = expression.location()
-        val type = castContext.castType(expression)
-        val value = ConstantExpressionCaster.cast(expression.text, type, location)
-        return EConstantExpression(location, type, value)
-    }
-
     fun castFunctionLiteralExpression(
         expression: KtLambdaExpression,
         castContext: CastContext
@@ -143,38 +137,6 @@ object ExpressionCaster {
             ArrayList(statements)
         )
         return EFunctionLiteralExpression(location, body)
-    }
-
-    fun castStringTemplateExpression(
-        expression: KtStringTemplateExpression,
-        castContext: CastContext
-    ): EStringTemplateExpression {
-        val location = expression.location()
-        val entries = expression.entries.mapNotNull {
-            castContext.casterVisitor.getElement<EStringTemplateEntry>(it)
-        }
-        return EStringTemplateExpression(location, entries)
-    }
-
-    fun castLiteralStringTemplateEntry(entry: KtLiteralStringTemplateEntry): ELiteralStringTemplateEntry {
-        val location = entry.location()
-        val text = entry.text
-        return ELiteralStringTemplateEntry(location, text)
-    }
-
-    fun castLiteralStringTemplateEntry(entry: KtEscapeStringTemplateEntry): ELiteralStringTemplateEntry {
-        val location = entry.location()
-        val text = entry.unescapedValue
-        return ELiteralStringTemplateEntry(location, text)
-    }
-
-    fun castExpressionStringTemplateEntry(
-        entry: KtStringTemplateEntryWithExpression,
-        castContext: CastContext
-    ): EExpressionStringTemplateEntry {
-        val location = entry.location()
-        val expression = castContext.casterVisitor.getExpression(entry.expression!!)
-        return EExpressionStringTemplateEntry(location, expression)
     }
 
     fun castIfExpression(expression: KtIfExpression, castContext: CastContext): EIfExpression {

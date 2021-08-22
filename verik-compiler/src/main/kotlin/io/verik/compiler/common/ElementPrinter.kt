@@ -19,6 +19,8 @@ package io.verik.compiler.common
 import io.verik.compiler.ast.element.common.*
 import io.verik.compiler.ast.element.kt.*
 import io.verik.compiler.ast.element.sv.*
+import io.verik.compiler.ast.property.ExpressionStringEntry
+import io.verik.compiler.ast.property.LiteralStringEntry
 
 class ElementPrinter : Visitor() {
 
@@ -288,18 +290,6 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitLiteralStringTemplateEntry(literalStringTemplateEntry: ELiteralStringTemplateEntry) {
-        build("LiteralStringTemplateEntry") {
-            build(literalStringTemplateEntry.text)
-        }
-    }
-
-    override fun visitExpressionStringTemplateEntry(expressionStringTemplateEntry: EExpressionStringTemplateEntry) {
-        build("ExpressionStringTemplateEntry") {
-            build(expressionStringTemplateEntry.expression)
-        }
-    }
-
     override fun visitStringExpression(stringExpression: EStringExpression) {
         build("StringExpression") {
             build(stringExpression.type.toString())
@@ -388,6 +378,8 @@ class ElementPrinter : Visitor() {
                 when (it) {
                     is EElement -> it.accept(this)
                     is String -> build(it)
+                    is LiteralStringEntry -> build(it.text)
+                    is ExpressionStringEntry -> it.expression.accept(this)
                 }
             }
             builder.append("]")

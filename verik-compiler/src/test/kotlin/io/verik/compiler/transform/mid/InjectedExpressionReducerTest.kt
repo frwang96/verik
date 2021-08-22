@@ -35,7 +35,7 @@ internal class InjectedExpressionReducerTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "InjectedExpression(Unit, [LiteralStringTemplateEntry(abc)])",
+            "InjectedExpression(Unit, [abc])",
             projectContext.findExpression("f")
         )
     }

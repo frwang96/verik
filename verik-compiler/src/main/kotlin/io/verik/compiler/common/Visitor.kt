@@ -232,24 +232,16 @@ abstract class Visitor {
         visitExpression(functionLiteralExpression)
     }
 
+    open fun visitAbstractStringEntryContainer(abstractStringEntryContainer: EAbstractStringEntryContainer) {
+        visitExpression(abstractStringEntryContainer)
+    }
+
     open fun visitStringTemplateExpression(stringTemplateExpression: EStringTemplateExpression) {
-        visitExpression(stringTemplateExpression)
+        visitAbstractStringEntryContainer(stringTemplateExpression)
     }
 
     open fun visitInjectedExpression(injectedExpression: EInjectedExpression) {
-        visitExpression(injectedExpression)
-    }
-
-    open fun visitStringTemplateEntry(stringTemplateEntry: EStringTemplateEntry) {
-        visitElement(stringTemplateEntry)
-    }
-
-    open fun visitLiteralStringTemplateEntry(literalStringTemplateEntry: ELiteralStringTemplateEntry) {
-        visitStringTemplateEntry(literalStringTemplateEntry)
-    }
-
-    open fun visitExpressionStringTemplateEntry(expressionStringTemplateEntry: EExpressionStringTemplateEntry) {
-        visitStringTemplateEntry(expressionStringTemplateEntry)
+        visitAbstractStringEntryContainer(injectedExpression)
     }
 
     open fun visitStringExpression(stringExpression: EStringExpression) {

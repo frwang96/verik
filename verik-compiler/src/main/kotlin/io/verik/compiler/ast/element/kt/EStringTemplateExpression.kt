@@ -16,33 +16,33 @@
 
 package io.verik.compiler.ast.element.kt
 
+import io.verik.compiler.ast.element.common.EAbstractStringEntryContainer
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.common.EStringTemplateEntry
+import io.verik.compiler.ast.property.ExpressionStringEntry
+import io.verik.compiler.ast.property.StringEntry
 import io.verik.compiler.ast.property.SvSerializationType
-import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
 
 class EStringTemplateExpression(
     override val location: SourceLocation,
-    val entries: List<EStringTemplateEntry>
-) : EExpression() {
+    override val entries: List<StringEntry>
+) : EAbstractStringEntryContainer() {
 
     override val serializationType = SvSerializationType.OTHER
 
     init {
-        entries.forEach { it.parent = this }
+        entries.forEach {
+            if (it is ExpressionStringEntry)
+                it.expression.parent = this
+        }
     }
 
     override var type = Core.Kt.STRING.toType()
 
     override fun accept(visitor: Visitor) {
         visitor.visitStringTemplateExpression(this)
-    }
-
-    override fun acceptChildren(visitor: TreeVisitor) {
-        entries.forEach { it.accept(visitor) }
     }
 
     override fun copy(): EExpression {

@@ -192,49 +192,6 @@ internal class ExpressionCasterTest : BaseTest() {
     }
 
     @Test
-    fun `string template expression literal entry`() {
-        val projectContext = driveTest(
-            ProjectCaster::class,
-            """
-                var x = "abc"
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "StringTemplateExpression(String, [LiteralStringTemplateEntry(abc)])",
-            projectContext.findExpression("x")
-        )
-    }
-
-    @Test
-    fun `string template expression literal entry escaped`() {
-        val projectContext = driveTest(
-            ProjectCaster::class,
-            """
-                var x = "\$"
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "StringTemplateExpression(String, [LiteralStringTemplateEntry($)])",
-            projectContext.findExpression("x")
-        )
-    }
-
-    @Test
-    fun `string template expression expression entry`() {
-        val projectContext = driveTest(
-            ProjectCaster::class,
-            """
-                var x = 0
-                var y = "${"$"}x"
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "StringTemplateExpression(String, [ExpressionStringTemplateEntry(KtReferenceExpression(*))])",
-            projectContext.findExpression("y")
-        )
-    }
-
-    @Test
     fun `if expression`() {
         val projectContext = driveTest(
             ProjectCaster::class,

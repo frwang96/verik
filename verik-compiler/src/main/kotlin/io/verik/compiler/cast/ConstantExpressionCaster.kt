@@ -16,14 +16,24 @@
 
 package io.verik.compiler.cast
 
+import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.property.Type
+import io.verik.compiler.common.location
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.m
 import io.verik.compiler.message.SourceLocation
+import org.jetbrains.kotlin.psi.KtConstantExpression
 
 object ConstantExpressionCaster {
 
-    fun cast(value: String, type: Type, location: SourceLocation): String {
+    fun castConstantExpression(expression: KtConstantExpression, castContext: CastContext): EConstantExpression {
+        val location = expression.location()
+        val type = castContext.castType(expression)
+        val value = castValue(expression.text, type, location)
+        return EConstantExpression(location, type, value)
+    }
+
+    private fun castValue(value: String, type: Type, location: SourceLocation): String {
         return when (type) {
             Core.Kt.BOOLEAN.toType() -> castBoolean(value)
             Core.Kt.INT.toType() -> castInteger(value)

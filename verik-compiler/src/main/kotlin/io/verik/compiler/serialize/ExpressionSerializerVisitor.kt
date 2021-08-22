@@ -19,6 +19,8 @@ package io.verik.compiler.serialize
 import io.verik.compiler.ast.element.common.*
 import io.verik.compiler.ast.element.sv.*
 import io.verik.compiler.ast.property.EdgeType
+import io.verik.compiler.ast.property.ExpressionStringEntry
+import io.verik.compiler.ast.property.LiteralStringEntry
 import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.m
@@ -122,9 +124,9 @@ class ExpressionSerializerVisitor(private val sourceBuilder: SourceBuilder) : Vi
     override fun visitInjectedExpression(injectedExpression: EInjectedExpression) {
         injectedExpression.entries.forEach {
             when (it) {
-                is ELiteralStringTemplateEntry ->
+                is LiteralStringEntry ->
                     sourceBuilder.append(it.text)
-                is EExpressionStringTemplateEntry ->
+                is ExpressionStringEntry ->
                     serializeAsExpression(it.expression)
             }
         }

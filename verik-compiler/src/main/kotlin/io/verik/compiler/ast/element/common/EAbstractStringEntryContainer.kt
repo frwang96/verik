@@ -17,38 +17,35 @@
 package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.ast.interfaces.ExpressionContainer
+import io.verik.compiler.ast.property.ExpressionStringEntry
+import io.verik.compiler.ast.property.StringEntry
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.m
-import io.verik.compiler.message.SourceLocation
 
-class EExpressionStringTemplateEntry(
-    override val location: SourceLocation,
-    var expression: EExpression
-) : EStringTemplateEntry(), ExpressionContainer {
+abstract class EAbstractStringEntryContainer : EExpression(), ExpressionContainer {
 
-    init {
-        expression.parent = this
-    }
+    abstract val entries: List<StringEntry>
 
     override fun accept(visitor: Visitor) {
-        visitor.visitExpressionStringTemplateEntry(this)
+        visitor.visitAbstractStringEntryContainer(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        expression.accept(visitor)
-    }
-
-    override fun copy(): EStringTemplateEntry {
-        val copyExpression = expression.copy()
-        return EExpressionStringTemplateEntry(location, copyExpression)
+        entries.forEach {
+            if (it is ExpressionStringEntry)
+                it.expression.accept(visitor)
+        }
     }
 
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
         newExpression.parent = this
-        if (expression == oldExpression)
-            expression = newExpression
-        else
-            m.error("Could not find $oldExpression in $this", this)
+        entries.forEach {
+            if (it is ExpressionStringEntry && it.expression == oldExpression) {
+                it.expression = newExpression
+                return
+            }
+        }
+        m.error("Could not find $oldExpression in $this", this)
     }
 }

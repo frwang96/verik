@@ -92,7 +92,7 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
     }
 
     override fun visitConstantExpression(expression: KtConstantExpression, data: Unit?): EConstantExpression {
-        return ExpressionCaster.castConstantExpression(expression, castContext)
+        return ConstantExpressionCaster.castConstantExpression(expression, castContext)
     }
 
     override fun visitLambdaExpression(expression: KtLambdaExpression, data: Unit?): EFunctionLiteralExpression {
@@ -103,28 +103,7 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
         expression: KtStringTemplateExpression,
         data: Unit?
     ): EStringTemplateExpression {
-        return ExpressionCaster.castStringTemplateExpression(expression, castContext)
-    }
-
-    override fun visitLiteralStringTemplateEntry(
-        entry: KtLiteralStringTemplateEntry,
-        data: Unit?
-    ): ELiteralStringTemplateEntry {
-        return ExpressionCaster.castLiteralStringTemplateEntry(entry)
-    }
-
-    override fun visitEscapeStringTemplateEntry(
-        entry: KtEscapeStringTemplateEntry,
-        data: Unit?
-    ): ELiteralStringTemplateEntry {
-        return ExpressionCaster.castLiteralStringTemplateEntry(entry)
-    }
-
-    override fun visitStringTemplateEntryWithExpression(
-        entry: KtStringTemplateEntryWithExpression,
-        data: Unit?
-    ): EExpressionStringTemplateEntry {
-        return ExpressionCaster.castExpressionStringTemplateEntry(entry, castContext)
+        return StringTemplateExpressionCaster.castStringTemplateExpression(expression, castContext)
     }
 
     override fun visitIfExpression(expression: KtIfExpression, data: Unit?): EIfExpression {

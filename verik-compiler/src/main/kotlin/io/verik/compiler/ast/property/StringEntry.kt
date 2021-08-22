@@ -14,24 +14,26 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.common
+package io.verik.compiler.ast.property
 
-import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.common.Visitor
-import io.verik.compiler.message.SourceLocation
+import io.verik.compiler.ast.element.common.EExpression
 
-class ELiteralStringTemplateEntry(
-    override val location: SourceLocation,
-    val text: String
-) : EStringTemplateEntry() {
+sealed class StringEntry {
 
-    override fun accept(visitor: Visitor) {
-        visitor.visitLiteralStringTemplateEntry(this)
+    abstract fun copy(): StringEntry
+}
+
+class LiteralStringEntry(val text: String) : StringEntry() {
+
+    override fun copy(): StringEntry {
+        return LiteralStringEntry(text)
     }
+}
 
-    override fun acceptChildren(visitor: TreeVisitor) {}
+class ExpressionStringEntry(var expression: EExpression) : StringEntry() {
 
-    override fun copy(): EStringTemplateEntry {
-        return ELiteralStringTemplateEntry(location, text)
+    override fun copy(): StringEntry {
+        val copyExpression = expression.copy()
+        return ExpressionStringEntry(copyExpression)
     }
 }
