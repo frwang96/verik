@@ -46,8 +46,8 @@ object TypeBackFiller : ResolverStage() {
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
             if (callExpression.reference == Core.Vk.Ubit.PLUS_UBIT) {
-                if (!callExpression.valueArguments[0].expression.type.isResolved())
-                    callExpression.valueArguments[0].expression.type = callExpression.receiver!!.type.copy()
+                if (!callExpression.valueArguments[0].type.isResolved())
+                    callExpression.valueArguments[0].type = callExpression.receiver!!.type.copy()
             }
         }
     }

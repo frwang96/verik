@@ -17,7 +17,6 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.util.*
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class ExpressionCasterTest : BaseTest() {
@@ -135,7 +134,7 @@ internal class ExpressionCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Int, plus, KtReferenceExpression(*), [], [ValueArgument(*)])",
+            "KtCallExpression(Int, plus, KtReferenceExpression(*), null, [ConstantExpression(*)])",
             projectContext.findExpression("y")
         )
     }
@@ -149,53 +148,7 @@ internal class ExpressionCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Int, random, null, [], [])",
-            projectContext.findExpression("x")
-        )
-    }
-
-    @Test
-    fun `type argument`() {
-        val projectContext = driveTest(
-            ProjectCaster::class,
-            """
-                var x = u<`8`>(0)
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtCallExpression(Ubit<`*`>, u, null, [TypeArgument(null, `8`)], *)",
-            projectContext.findExpression("x")
-        )
-    }
-
-    @Test
-    fun `value argument unnamed`() {
-        val projectContext = driveTest(
-            ProjectCaster::class,
-            """
-                fun f(x: Int) {}
-                var x = f(0)
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtCallExpression(Unit, f, null, [], [ValueArgument(null, *)])",
-            projectContext.findExpression("x")
-        )
-    }
-
-    @Test
-    @Disabled
-    // TODO support named value arguments
-    fun `value argument named`() {
-        val projectContext = driveTest(
-            ProjectCaster::class,
-            """
-                fun f(x: Int) {}
-                var x = f(x = 0)
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtCallExpression(Unit, f, null, [ValueArgument(x, *)])",
+            "KtCallExpression(Int, random, null, null, [])",
             projectContext.findExpression("x")
         )
     }
@@ -230,8 +183,8 @@ internal class ExpressionCasterTest : BaseTest() {
                     Unit,
                     forever,
                     null,
-                    [],
-                    [ValueArgument(null, FunctionLiteralExpression(Function, KtBlockExpression(*)))]
+                    null,
+                    [FunctionLiteralExpression(Function, KtBlockExpression(*))]
                 )
             """.trimIndent(),
             projectContext.findExpression("f")

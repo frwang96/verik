@@ -40,22 +40,22 @@ object FunctionSpecialTransformer : PostTransformerStage() {
                 Core.Vk.POSEDGE_BOOLEAN -> {
                     EEventExpression(
                         callExpression.location,
-                        callExpression.valueArguments[0].expression,
+                        callExpression.valueArguments[0],
                         EdgeType.POSEDGE
                     )
                 }
                 Core.Vk.NEGEDGE_BOOLEAN -> {
                     EEventExpression(
                         callExpression.location,
-                        callExpression.valueArguments[0].expression,
+                        callExpression.valueArguments[0],
                         EdgeType.NEGEDGE
                     )
                 }
                 Core.Vk.WAIT_EVENT -> {
-                    EEventControlExpression(callExpression.location, callExpression.valueArguments[0].expression)
+                    EEventControlExpression(callExpression.location, callExpression.valueArguments[0])
                 }
                 Core.Vk.DELAY_INT -> {
-                    EDelayExpression(callExpression.location, callExpression.valueArguments[0].expression)
+                    EDelayExpression(callExpression.location, callExpression.valueArguments[0])
                 }
                 Core.Vk.ON_EVENT_FUNCTION -> {
                     m.error("On expression used out of context", callExpression)

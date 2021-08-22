@@ -61,7 +61,7 @@ object BitConstantTransformer : MidTransformerStage() {
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
             if (callExpression.reference == Core.Vk.U_INT) {
-                val expression = callExpression.valueArguments[0].expression
+                val expression = callExpression.valueArguments[0]
                 if (expression is EConstantExpression) {
                     val width = callExpression.type.asBitWidth(callExpression)
                     val constantExpression = EConstantExpression(

@@ -33,7 +33,7 @@ object CoreVkUbit : CoreScope(Core.Vk.UBIT) {
         override fun resolve(callExpression: EKtCallExpression) {
             val leftWidth = callExpression.receiver!!.type.asBitWidthOrNull(callExpression)
                 ?: return
-            val rightWidth = callExpression.valueArguments[0].expression.type.asBitWidthOrNull(callExpression)
+            val rightWidth = callExpression.valueArguments[0].type.asBitWidthOrNull(callExpression)
                 ?: return
             val type = Core.Vk.UBIT.toType(CoreCardinalConstantDeclaration(max(leftWidth, rightWidth)).toType())
             callExpression.type = type

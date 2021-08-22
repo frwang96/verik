@@ -18,7 +18,6 @@ package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EAbstractCallExpression
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.common.EValueArgument
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.ast.property.Type
@@ -30,7 +29,7 @@ class ESvCallExpression(
     override var type: Type,
     override var reference: Declaration,
     override var receiver: EExpression?,
-    override val valueArguments: ArrayList<EValueArgument>,
+    override val valueArguments: ArrayList<EExpression>,
     val isScopeResolution: Boolean
 ) : EAbstractCallExpression() {
 

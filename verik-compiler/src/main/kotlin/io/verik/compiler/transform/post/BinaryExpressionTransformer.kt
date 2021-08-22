@@ -51,7 +51,7 @@ object BinaryExpressionTransformer : PostTransformerStage() {
                         callExpression.location,
                         callExpression.type,
                         callExpression.receiver!!,
-                        callExpression.valueArguments[0].expression,
+                        callExpression.valueArguments[0],
                         kind
                     )
                 )

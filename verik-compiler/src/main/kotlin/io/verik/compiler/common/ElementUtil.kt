@@ -17,11 +17,11 @@
 package io.verik.compiler.common
 
 import io.verik.compiler.message.SourceLocation
+import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.diagnostics.PsiDiagnosticUtils
-import org.jetbrains.kotlin.psi.KtElement
 import java.nio.file.Paths
 
-fun KtElement.location(): SourceLocation {
+fun PsiElement.location(): SourceLocation {
     val lineAndColumn = PsiDiagnosticUtils.offsetToLineAndColumn(
         containingFile.viewProvider.document,
         textRange.startOffset

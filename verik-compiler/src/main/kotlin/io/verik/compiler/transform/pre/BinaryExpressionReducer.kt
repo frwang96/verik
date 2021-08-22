@@ -16,11 +16,9 @@
 
 package io.verik.compiler.transform.pre
 
-import io.verik.compiler.ast.element.common.EValueArgument
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
-import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreClassDeclaration
@@ -65,14 +63,8 @@ object BinaryExpressionReducer : PreTransformerStage() {
                             binaryExpression.type,
                             reference,
                             binaryExpression.left,
-                            arrayListOf(
-                                EValueArgument(
-                                    binaryExpression.right.location,
-                                    NullDeclaration,
-                                    binaryExpression.right
-                                )
-                            ),
-                            arrayListOf()
+                            arrayListOf(binaryExpression.right),
+                            null
                         )
                     )
                     return

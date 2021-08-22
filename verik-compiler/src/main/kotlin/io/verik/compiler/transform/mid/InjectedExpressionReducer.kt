@@ -35,7 +35,7 @@ object InjectedExpressionReducer : MidTransformerStage() {
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
             if (callExpression.reference == Core.Vk.SV_STRING) {
-                val expression = callExpression.valueArguments[0].expression
+                val expression = callExpression.valueArguments[0]
                 if (expression is EStringTemplateExpression) {
                     val injectedExpression = EInjectedExpression(
                         callExpression.location,

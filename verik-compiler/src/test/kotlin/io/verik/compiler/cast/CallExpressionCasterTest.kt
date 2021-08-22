@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.post
+package io.verik.compiler.cast
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.assertElementEquals
@@ -22,18 +22,33 @@ import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
-internal class FunctionReferenceTransformerTest : BaseTest() {
+internal class CallExpressionCasterTest : BaseTest() {
 
     @Test
-    fun `transform random`() {
+    fun `type argument`() {
         val projectContext = driveTest(
-            FunctionReferenceTransformer::class,
+            ProjectCaster::class,
             """
-                val x = random()
+                var x = u<`8`>(0)
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Int, \$random, null, null, [])",
+            "KtCallExpression(Ubit<`*`>, u, null, [`8`], *)",
+            projectContext.findExpression("x")
+        )
+    }
+
+    @Test
+    fun `value argument unnamed`() {
+        val projectContext = driveTest(
+            ProjectCaster::class,
+            """
+                fun f(x: Int) {}
+                var x = f(0)
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtCallExpression(Unit, f, null, null, [ConstantExpression(*)])",
             projectContext.findExpression("x")
         )
     }

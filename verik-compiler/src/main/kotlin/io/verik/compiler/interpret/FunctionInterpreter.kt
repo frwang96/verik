@@ -82,9 +82,9 @@ object FunctionInterpreter {
             m.error("On expression expected", body)
             return null
         }
-        val eventExpression = onExpression.valueArguments[0].expression
+        val eventExpression = onExpression.valueArguments[0]
         val eventControlExpression = EEventControlExpression(eventExpression.location, eventExpression)
-        val alwaysSeqBody = onExpression.valueArguments[1].expression
+        val alwaysSeqBody = onExpression.valueArguments[1]
             .cast<EFunctionLiteralExpression>()?.body
             ?: return null
         return EAlwaysSeqBlock(

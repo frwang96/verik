@@ -19,12 +19,13 @@ package io.verik.compiler.ast.element.common
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.common.replaceIfContains
 import io.verik.compiler.main.m
 
 abstract class EAbstractCallExpression : EExpression(), Reference, ExpressionContainer {
 
     abstract var receiver: EExpression?
-    abstract val valueArguments: ArrayList<EValueArgument>
+    abstract val valueArguments: ArrayList<EExpression>
 
     override fun acceptChildren(visitor: TreeVisitor) {
         receiver?.accept(visitor)
@@ -35,7 +36,7 @@ abstract class EAbstractCallExpression : EExpression(), Reference, ExpressionCon
         newExpression.parent = this
         if (receiver == oldExpression)
             receiver = newExpression
-        else
+        else if (!valueArguments.replaceIfContains(oldExpression, newExpression))
             m.error("Could not find $oldExpression in $this", this)
     }
 }

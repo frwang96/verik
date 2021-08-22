@@ -224,14 +224,6 @@ abstract class Visitor {
         visitAbstractCallExpression(callExpression)
     }
 
-    open fun visitTypeArgument(typeArgument: ETypeArgument) {
-        visitElement(typeArgument)
-    }
-
-    open fun visitValueArgument(valueArgument: EValueArgument) {
-        visitElement(valueArgument)
-    }
-
     open fun visitConstantExpression(constantExpression: EConstantExpression) {
         visitExpression(constantExpression)
     }

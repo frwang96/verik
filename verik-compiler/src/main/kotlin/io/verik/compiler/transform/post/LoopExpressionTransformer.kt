@@ -36,7 +36,7 @@ object LoopExpressionTransformer : PostTransformerStage() {
             if (callExpression.reference == Core.Vk.FOREVER_FUNCTION) {
                 val functionLiteralExpression = callExpression
                     .valueArguments[0]
-                    .expression.cast<EFunctionLiteralExpression>()
+                    .cast<EFunctionLiteralExpression>()
                 if (functionLiteralExpression != null) {
                     val foreverStatement = EForeverStatement(
                         callExpression.location,

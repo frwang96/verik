@@ -17,6 +17,7 @@
 package io.verik.compiler.check.normalize
 
 import io.verik.compiler.ast.element.common.*
+import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -73,9 +74,11 @@ object TypeAliasChecker : NormalizationStage() {
             addTypeRecursive(typeParameter.typeConstraint, typeParameter)
         }
 
-        override fun visitTypeArgument(typeArgument: ETypeArgument) {
-            super.visitTypeArgument(typeArgument)
-            addTypeRecursive(typeArgument.type, typeArgument)
+        override fun visitKtCallExpression(callExpression: EKtCallExpression) {
+            super.visitKtCallExpression(callExpression)
+            callExpression.typeArguments?.forEach {
+                addTypeRecursive(it, callExpression)
+            }
         }
     }
 }

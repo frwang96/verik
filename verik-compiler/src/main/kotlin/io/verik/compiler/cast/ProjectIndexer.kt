@@ -50,7 +50,8 @@ object ProjectIndexer : CasterStage() {
         override fun visitClassOrObject(classOrObject: KtClassOrObject) {
             super.visitClassOrObject(classOrObject)
             val descriptor = castContext.sliceClass[classOrObject]!!
-            val location = classOrObject.location()
+            val location = classOrObject.nameIdentifier?.location()
+                ?: classOrObject.getDeclarationKeyword()!!.location()
             val name = classOrObject.name!!
             checkDeclarationName(name, classOrObject)
             val basicClass = EKtBasicClass(
@@ -67,7 +68,7 @@ object ProjectIndexer : CasterStage() {
         override fun visitEnumEntry(enumEntry: KtEnumEntry) {
             super.visitEnumEntry(enumEntry)
             val descriptor = castContext.sliceClass[enumEntry]!!
-            val location = enumEntry.location()
+            val location = enumEntry.nameIdentifier!!.location()
             val name = enumEntry.name!!
             checkDeclarationName(name, enumEntry)
             val ktEnumEntry = EKtEnumEntry(location, name, NullDeclaration.toType())
@@ -77,7 +78,7 @@ object ProjectIndexer : CasterStage() {
         override fun visitNamedFunction(function: KtNamedFunction) {
             super.visitNamedFunction(function)
             val descriptor = castContext.sliceFunction[function]!!
-            val location = function.location()
+            val location = function.nameIdentifier!!.location()
             val name = function.name!!
             checkDeclarationName(name, function)
             val ktFunction = EKtFunction(location, name, NullDeclaration.toType(), null, null)
@@ -87,7 +88,7 @@ object ProjectIndexer : CasterStage() {
         override fun visitProperty(property: KtProperty) {
             super.visitProperty(property)
             val descriptor = castContext.sliceVariable[property]!!
-            val location = property.location()
+            val location = property.nameIdentifier!!.location()
             val name = property.name!!
             checkDeclarationName(name, property)
             val ktProperty = EKtProperty(location, name, NullDeclaration.toType(), null)
@@ -97,7 +98,7 @@ object ProjectIndexer : CasterStage() {
         override fun visitTypeParameter(parameter: KtTypeParameter) {
             super.visitTypeParameter(parameter)
             val descriptor = castContext.sliceTypeParameter[parameter]!!
-            val location = parameter.location()
+            val location = parameter.nameIdentifier!!.location()
             val name = parameter.name!!
             checkDeclarationName(name, parameter)
             val typeParameter = ETypeParameter(location, name, NullDeclaration.toType())

@@ -18,12 +18,9 @@ package io.verik.compiler.ast.element.kt
 
 import io.verik.compiler.ast.element.common.EAbstractCallExpression
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.common.ETypeArgument
-import io.verik.compiler.ast.element.common.EValueArgument
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.ast.property.Type
-import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
@@ -32,43 +29,33 @@ class EKtCallExpression(
     override var type: Type,
     override var reference: Declaration,
     override var receiver: EExpression?,
-    override val valueArguments: ArrayList<EValueArgument>,
-    val typeArguments: ArrayList<ETypeArgument>
+    override val valueArguments: ArrayList<EExpression>,
+    val typeArguments: ArrayList<Type>?
 ) : EAbstractCallExpression() {
 
     override val serializationType = SvSerializationType.OTHER
 
     init {
         receiver?.parent = this
-        typeArguments.forEach { it.parent = this }
         valueArguments.forEach { it.parent = this }
-    }
-
-    fun hasTypeArguments(): Boolean {
-        return typeArguments.isNotEmpty()
     }
 
     override fun accept(visitor: Visitor) {
         visitor.visitKtCallExpression(this)
     }
 
-    override fun acceptChildren(visitor: TreeVisitor) {
-        super.acceptChildren(visitor)
-        typeArguments.forEach { it.accept(visitor) }
-    }
-
     override fun copy(): EExpression {
         val copyType = type.copy()
         val copyReceiver = receiver?.copy()
         val copyValueArguments = valueArguments.map { it.copy() }
-        val copyTypeArguments = typeArguments.map { it.copy() }
+        val copyTypeArguments = typeArguments?.map { it.copy() }
         return EKtCallExpression(
             location,
             copyType,
             reference,
             copyReceiver,
             ArrayList(copyValueArguments),
-            ArrayList(copyTypeArguments)
+            copyTypeArguments?.let { ArrayList(it) }
         )
     }
 }

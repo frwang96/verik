@@ -245,7 +245,7 @@ class ElementPrinter : Visitor() {
             build(callExpression.type.toString())
             build(callExpression.reference.name)
             build(callExpression.receiver)
-            build(callExpression.typeArguments)
+            build(callExpression.typeArguments?.map { it.toString() })
             build(callExpression.valueArguments)
         }
     }
@@ -257,20 +257,6 @@ class ElementPrinter : Visitor() {
             build(callExpression.receiver)
             build(callExpression.valueArguments)
             build(callExpression.isScopeResolution.toString())
-        }
-    }
-
-    override fun visitTypeArgument(typeArgument: ETypeArgument) {
-        build("TypeArgument") {
-            build(typeArgument.reference.name)
-            build(typeArgument.type.toString())
-        }
-    }
-
-    override fun visitValueArgument(valueArgument: EValueArgument) {
-        build("ValueArgument") {
-            build(valueArgument.reference.name)
-            build(valueArgument.expression)
         }
     }
 
@@ -393,17 +379,21 @@ class ElementPrinter : Visitor() {
         first = false
     }
 
-    private fun build(elements: List<Any>) {
+    private fun build(elements: List<Any>?) {
         if (!first) builder.append(", ")
-        builder.append("[")
-        first = true
-        elements.forEach {
-            when (it) {
-                is EElement -> it.accept(this)
-                is String -> build(it)
+        if (elements != null) {
+            builder.append("[")
+            first = true
+            elements.forEach {
+                when (it) {
+                    is EElement -> it.accept(this)
+                    is String -> build(it)
+                }
             }
+            builder.append("]")
+        } else {
+            builder.append("null")
         }
-        builder.append("]")
         first = false
     }
 

@@ -83,16 +83,8 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
         return ExpressionCaster.castKtReferenceExpression(expression, castContext)
     }
 
-    override fun visitCallExpression(expression: KtCallExpression, data: Unit?): EKtCallExpression? {
+    override fun visitCallExpression(expression: KtCallExpression, data: Unit?): EKtCallExpression {
         return ExpressionCaster.castKtCallExpression(expression, castContext)
-    }
-
-    override fun visitTypeProjection(typeProjection: KtTypeProjection, data: Unit?): ETypeArgument {
-        return ExpressionCaster.castTypeArgument(typeProjection, castContext)
-    }
-
-    override fun visitArgument(argument: KtValueArgument, data: Unit?): EValueArgument {
-        return ExpressionCaster.castValueArgument(argument, castContext)
     }
 
     override fun visitDotQualifiedExpression(expression: KtDotQualifiedExpression, data: Unit?): EExpression? {

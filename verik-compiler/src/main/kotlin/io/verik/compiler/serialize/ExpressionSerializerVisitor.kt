@@ -105,11 +105,11 @@ class ExpressionSerializerVisitor(private val sourceBuilder: SourceBuilder) : Vi
         } else {
             sourceBuilder.append("(")
             sourceBuilder.softBreak()
-            serializeAsExpression(callExpression.valueArguments[0].expression)
+            serializeAsExpression(callExpression.valueArguments[0])
             callExpression.valueArguments.drop(1).forEach {
                 sourceBuilder.append(",")
                 sourceBuilder.hardBreak()
-                serializeAsExpression(it.expression)
+                serializeAsExpression(it)
             }
             sourceBuilder.append(")")
         }
@@ -184,7 +184,7 @@ class ExpressionSerializerVisitor(private val sourceBuilder: SourceBuilder) : Vi
 
     override fun visitEventExpression(eventExpression: EEventExpression) {
         when (eventExpression.edgeType) {
-            EdgeType.POSEDGE -> sourceBuilder.append("posedge ", )
+            EdgeType.POSEDGE -> sourceBuilder.append("posedge ")
             EdgeType.NEGEDGE -> sourceBuilder.append("negedge ")
             EdgeType.EDGE -> sourceBuilder.append("edge ")
         }

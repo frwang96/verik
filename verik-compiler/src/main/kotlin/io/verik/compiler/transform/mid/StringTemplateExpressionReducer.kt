@@ -19,11 +19,9 @@ package io.verik.compiler.transform.mid
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EExpressionStringTemplateEntry
 import io.verik.compiler.ast.element.common.ELiteralStringTemplateEntry
-import io.verik.compiler.ast.element.common.EValueArgument
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.sv.EStringExpression
-import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
@@ -53,7 +51,7 @@ object StringTemplateExpressionReducer : MidTransformerStage() {
             super.visitStringTemplateExpression(stringTemplateExpression)
             val isStringExpression = stringTemplateExpression.entries.all { it is ELiteralStringTemplateEntry }
             val builder = StringBuilder()
-            val valueArguments = ArrayList<EValueArgument>()
+            val valueArguments = ArrayList<EExpression>()
             for (entry in stringTemplateExpression.entries) {
                 when (entry) {
                     is ELiteralStringTemplateEntry -> {
@@ -72,7 +70,7 @@ object StringTemplateExpressionReducer : MidTransformerStage() {
                     }
                     is EExpressionStringTemplateEntry -> {
                         builder.append(getFormatSpecifier(entry.expression))
-                        valueArguments.add(EValueArgument(entry.location, NullDeclaration, entry.expression))
+                        valueArguments.add(entry.expression)
                     }
                 }
             }
@@ -84,19 +82,14 @@ object StringTemplateExpressionReducer : MidTransformerStage() {
             if (isStringExpression) {
                 stringTemplateExpression.replace(stringExpression)
             } else {
-                val stringExpressionValueArgument = EValueArgument(
-                    stringTemplateExpression.location,
-                    NullDeclaration,
-                    stringExpression
-                )
-                valueArguments.add(0, stringExpressionValueArgument)
+                valueArguments.add(0, stringExpression)
                 val callExpression = EKtCallExpression(
                     stringTemplateExpression.location,
                     stringTemplateExpression.type,
                     Core.Sv.SFORMATF,
                     null,
                     valueArguments,
-                    arrayListOf()
+                    null
                 )
                 stringTemplateExpression.replace(callExpression)
             }
