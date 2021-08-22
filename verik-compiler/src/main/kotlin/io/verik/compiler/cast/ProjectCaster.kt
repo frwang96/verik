@@ -33,12 +33,13 @@ object ProjectCaster : CasterStage() {
     override fun process(projectContext: ProjectContext) {
         val files = HashMap<String, ArrayList<EFile>>()
 
-        val baseCasterVisitor = BaseCasterVisitor(projectContext.castContext)
         projectContext.ktFiles.forEach { file ->
             val location = file.location()
             val packageName = file.packageFqName.asString()
             val inputPath = Paths.get(file.virtualFilePath)
-            val members = file.declarations.mapNotNull { baseCasterVisitor.getElement(it) }
+            val members = file.declarations.mapNotNull {
+                projectContext.castContext.casterVisitor.getElement(it)
+            }
             if (packageName !in files)
                 files[packageName] = ArrayList()
             files[packageName]!!.add(EFile(location, inputPath, null, ArrayList(members)))

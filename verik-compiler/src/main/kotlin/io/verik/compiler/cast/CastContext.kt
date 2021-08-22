@@ -40,6 +40,8 @@ class CastContext(
     val sliceType = bindingContext.getSliceContents(BindingContext.TYPE)
     val sliceExpressionTypeInfo = bindingContext.getSliceContents(BindingContext.EXPRESSION_TYPE_INFO)
 
+    val casterVisitor = CasterVisitor(this)
+
     private val declarationMap = HashMap<DeclarationDescriptor, Declaration>()
 
     fun addDeclaration(declarationDescriptor: DeclarationDescriptor, declaration: Declaration) {

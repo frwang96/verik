@@ -20,7 +20,7 @@ import io.verik.compiler.util.*
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
-internal class ExpressionCasterVisitorTest : BaseTest() {
+internal class ExpressionCasterTest : BaseTest() {
 
     @Test
     fun `block expression empty`() {

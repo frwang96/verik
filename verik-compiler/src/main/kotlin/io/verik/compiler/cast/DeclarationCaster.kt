@@ -16,14 +16,13 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.element.common.*
+import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.interfaces.cast
 import io.verik.compiler.ast.property.FunctionAnnotationType
-import io.verik.compiler.common.location
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.m
 import org.jetbrains.kotlin.lexer.KtTokens
@@ -33,30 +32,21 @@ import org.jetbrains.kotlin.resolve.descriptorUtil.getSuperClassOrAny
 import org.jetbrains.kotlin.types.typeUtil.isNullableAny
 import org.jetbrains.kotlin.types.typeUtil.representativeUpperBound
 
-class BaseCasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, Unit>() {
+object DeclarationCaster {
 
-    private val expressionCasterVisitor = ExpressionCasterVisitor(castContext)
-
-    inline fun <reified T : EElement> getElement(element: KtElement): T? {
-        return element.accept(this, Unit).cast()
-    }
-
-    override fun visitKtElement(element: KtElement, data: Unit?): EElement {
-        m.error("Unrecognized element: $element", element)
-        val location = element.location()
-        return ENullElement(location)
-    }
-
-    override fun visitClassOrObject(classOrObject: KtClassOrObject, data: Unit?): EElement {
-        val location = classOrObject.location()
+    fun castKtBasicClass(classOrObject: KtClassOrObject, castContext: CastContext): EKtBasicClass? {
         val descriptor = castContext.sliceClass[classOrObject]!!
         val basicClass = castContext.getDeclaration(descriptor, classOrObject)
             .cast<EKtBasicClass>(classOrObject)
-            ?: return ENullExpression(location)
+            ?: return null
 
         val supertype = castContext.castType(descriptor.getSuperClassOrAny().defaultType, classOrObject)
-        val typeParameters = classOrObject.typeParameters.mapNotNull { getElement<ETypeParameter>(it) }
-        val members = classOrObject.declarations.mapNotNull { getElement(it) }
+        val typeParameters = classOrObject.typeParameters.mapNotNull {
+            castContext.casterVisitor.getElement<ETypeParameter>(it)
+        }
+        val members = classOrObject.declarations.mapNotNull {
+            castContext.casterVisitor.getElement(it)
+        }
         val isEnum = classOrObject.hasModifier(KtTokens.ENUM_KEYWORD)
 
         basicClass.supertype = supertype
@@ -68,24 +58,22 @@ class BaseCasterVisitor(private val castContext: CastContext) : KtVisitor<EEleme
         return basicClass
     }
 
-    override fun visitEnumEntry(enumEntry: KtEnumEntry, data: Unit?): EElement {
-        val location = enumEntry.location()
+    fun castKtEnumEntry(enumEntry: KtEnumEntry, castContext: CastContext): EKtEnumEntry? {
         val descriptor = castContext.sliceClass[enumEntry]!!
         val ktEnumEntry = castContext.getDeclaration(descriptor, enumEntry)
             .cast<EKtEnumEntry>(enumEntry)
-            ?: return ENullExpression(location)
+            ?: return null
 
         val type = castContext.castType(descriptor.classValueType!!, enumEntry)
         ktEnumEntry.type = type
         return ktEnumEntry
     }
 
-    override fun visitNamedFunction(function: KtNamedFunction, data: Unit?): EElement {
-        val location = function.location()
+    fun castKtFunction(function: KtNamedFunction, castContext: CastContext): EKtFunction? {
         val descriptor = castContext.sliceFunction[function]!!
         val ktFunction = castContext.getDeclaration(descriptor, function)
             .cast<EKtFunction>(function)
-            ?: return ENullExpression(location)
+            ?: return null
 
         val returnType = castContext.castType(descriptor.returnType!!, function)
         val annotationTypes = descriptor.annotations.mapNotNull {
@@ -101,29 +89,28 @@ class BaseCasterVisitor(private val castContext: CastContext) : KtVisitor<EEleme
             }
         }
         val body = function.bodyBlockExpression?.let {
-            expressionCasterVisitor.getElement<EExpression>(it)
+            castContext.casterVisitor.getExpression(it)
         }
-        body?.parent = ktFunction
 
         ktFunction.returnType = returnType
+        body?.parent = ktFunction
         ktFunction.body = body
         ktFunction.annotationType = annotationType
         return ktFunction
     }
 
-    override fun visitProperty(property: KtProperty, data: Unit?): EElement {
-        val location = property.location()
+    fun castKtProperty(property: KtProperty, castContext: CastContext): EKtProperty? {
         val descriptor = castContext.sliceVariable[property]!!
         val ktProperty = castContext.getDeclaration(descriptor, property)
             .cast<EKtProperty>(property)
-            ?: return ENullExpression(location)
+            ?: return null
 
         val typeReference = property.typeReference
         val type = if (typeReference != null) castContext.castType(typeReference)
         else castContext.castType(descriptor.type, property)
 
         val initializer = property.initializer?.let {
-            expressionCasterVisitor.getExpression(it)
+            castContext.casterVisitor.getExpression(it)
         }
         initializer?.parent = ktProperty
 
@@ -132,12 +119,11 @@ class BaseCasterVisitor(private val castContext: CastContext) : KtVisitor<EEleme
         return ktProperty
     }
 
-    override fun visitTypeParameter(parameter: KtTypeParameter, data: Unit?): EElement {
-        val location = parameter.location()
+    fun castTypeParameter(parameter: KtTypeParameter, castContext: CastContext): ETypeParameter? {
         val descriptor = castContext.sliceTypeParameter[parameter]!!
         val typeParameter = castContext.getDeclaration(descriptor, parameter)
             .cast<ETypeParameter>(parameter)
-            ?: return ENullExpression(location)
+            ?: return null
 
         val upperBound = descriptor.representativeUpperBound
         val typeConstraint = if (upperBound.isNullableAny()) Core.Kt.ANY.toType()

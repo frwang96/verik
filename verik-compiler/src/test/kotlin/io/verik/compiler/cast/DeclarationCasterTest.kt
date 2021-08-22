@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-internal class BaseCasterVisitorTest : BaseTest() {
+internal class DeclarationCasterTest : BaseTest() {
 
     @Test
     fun `class with class`() {
