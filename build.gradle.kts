@@ -16,6 +16,7 @@
 
 tasks.register("test") {
     group = "verification"
+    dependsOn(gradle.includedBuild("verik-kotlin").task(":build"))
     dependsOn(gradle.includedBuild("verik-compiler").task(":test"))
 }
 
@@ -36,6 +37,7 @@ val exampleNames = gradle
 
 tasks.register("clean") {
     group = "build"
+    dependsOn(gradle.includedBuild("verik-kotlin").task(":clean"))
     dependsOn(gradle.includedBuild("verik-core").task(":clean"))
     dependsOn(gradle.includedBuild("verik-compiler").task(":clean"))
     dependsOn(gradle.includedBuild("verik-plugin").task(":clean"))

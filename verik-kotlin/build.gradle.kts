@@ -14,10 +14,16 @@
  * limitations under the License.
  */
 
-rootProject.name = "verik"
+group = "io.verik"
 
-includeBuild("verik-kotlin")
-includeBuild("verik-core")
-includeBuild("verik-compiler")
-includeBuild("verik-plugin")
-includeBuild("verik-examples")
+plugins {
+    kotlin("jvm") version "1.4.32"
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    api("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.32")
+}

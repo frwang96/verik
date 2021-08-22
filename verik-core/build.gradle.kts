@@ -56,14 +56,6 @@ tasks.register<Jar>("javadocJar") {
     from(tasks.dokkaJavadoc)
 }
 
-tasks.dokkaHtml {
-    dokkaSourceSets {
-        configureEach {
-            includes.from(files("packages.md"))
-        }
-    }
-}
-
 signing {
     val publishing: PublishingExtension by project
     sign(publishing.publications)
