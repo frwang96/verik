@@ -59,7 +59,7 @@ tasks.register<Jar>("javadocJar") {
 tasks.dokkaHtml {
     dokkaSourceSets {
         configureEach {
-            includes.from(files("core.md"))
+            includes.from(files("packages.md"))
         }
     }
 }

@@ -1,4 +1,4 @@
-# Module verik-core
+# Module verik
 
 Documentation for the Verik Hardware Description Language. For the tutorial, go to
 [tutorial](https://verik.io/tutorial/index.html).

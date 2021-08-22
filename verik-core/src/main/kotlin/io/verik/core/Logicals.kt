@@ -45,11 +45,11 @@ typealias FALSE = `?`
 typealias NOT<X> = `?`
 
 /**
- * Takes the conjunction of the logical X and Y.
+ * Takes the conjunction of the logicals X and Y.
  */
 typealias AND<X, Y> = `?`
 
 /**
- * Takes the disjunction of the logical X and Y.
+ * Takes the disjunction of the logicals X and Y.
  */
 typealias OR<X, Y> = `?`

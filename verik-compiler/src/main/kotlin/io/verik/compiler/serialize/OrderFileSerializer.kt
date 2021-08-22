@@ -24,7 +24,7 @@ object OrderFileSerializer : SerializerStage() {
 
     override fun process(projectContext: ProjectContext) {
         val inputPath = projectContext.config.inputSourceDir
-        val outputPath = projectContext.config.buildDir.resolve("order.yaml")
+        val outputPath = projectContext.config.buildDir.resolve("order.txt")
         val fileHeader = FileHeaderBuilder.build(
             projectContext,
             inputPath,
