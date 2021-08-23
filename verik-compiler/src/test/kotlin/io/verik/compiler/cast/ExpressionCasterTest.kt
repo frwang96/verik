@@ -134,7 +134,7 @@ internal class ExpressionCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Int, plus, KtReferenceExpression(*), null, [ConstantExpression(*)])",
+            "KtCallExpression(Int, plus, KtReferenceExpression(*), [], [ConstantExpression(*)])",
             projectContext.findExpression("y")
         )
     }
@@ -148,7 +148,7 @@ internal class ExpressionCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Int, random, null, null, [])",
+            "KtCallExpression(Int, random, null, [], [])",
             projectContext.findExpression("x")
         )
     }
@@ -183,7 +183,7 @@ internal class ExpressionCasterTest : BaseTest() {
                     Unit,
                     forever,
                     null,
-                    null,
+                    [],
                     [FunctionLiteralExpression(Function, KtBlockExpression(*))]
                 )
             """.trimIndent(),

@@ -39,6 +39,8 @@ class CastContext(
     val sliceReferenceTarget = bindingContext.getSliceContents(BindingContext.REFERENCE_TARGET)
     val sliceType = bindingContext.getSliceContents(BindingContext.TYPE)
     val sliceExpressionTypeInfo = bindingContext.getSliceContents(BindingContext.EXPRESSION_TYPE_INFO)
+    val sliceCall = bindingContext.getSliceContents(BindingContext.CALL)
+    val sliceResolvedCall = bindingContext.getSliceContents(BindingContext.RESOLVED_CALL)
 
     val casterVisitor = CasterVisitor(this)
 

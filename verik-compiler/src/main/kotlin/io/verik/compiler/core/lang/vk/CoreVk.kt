@@ -27,10 +27,9 @@ object CoreVk : CoreScope(CorePackage.VK) {
     val U_INT = object : CoreKtFunctionDeclaration(parent, "u", Core.Kt.INT) {
 
         override fun resolve(callExpression: EKtCallExpression) {
-            val typeArguments = callExpression.typeArguments
-            if (typeArguments != null) {
-                callExpression.type = Core.Vk.UBIT.toType(typeArguments[0].copy())
-            }
+            // TODO remove after implicit type arguments are casted
+            if (callExpression.typeArguments.isNotEmpty())
+                callExpression.type = Core.Vk.UBIT.toType(callExpression.typeArguments[0].copy())
         }
     }
 

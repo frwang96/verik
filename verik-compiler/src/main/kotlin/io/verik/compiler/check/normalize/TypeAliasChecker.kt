@@ -76,7 +76,7 @@ object TypeAliasChecker : NormalizationStage() {
 
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
-            callExpression.typeArguments?.forEach {
+            callExpression.typeArguments.forEach {
                 addTypeRecursive(it, callExpression)
             }
         }

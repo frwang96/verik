@@ -89,7 +89,7 @@ object StringTemplateExpressionReducer : MidTransformerStage() {
                     Core.Sv.SFORMATF,
                     null,
                     valueArguments,
-                    null
+                    arrayListOf()
                 )
                 stringTemplateExpression.replace(callExpression)
             }

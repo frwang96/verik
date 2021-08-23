@@ -64,7 +64,7 @@ object BinaryExpressionReducer : PreTransformerStage() {
                             reference,
                             binaryExpression.left,
                             arrayListOf(binaryExpression.right),
-                            null
+                            arrayListOf()
                         )
                     )
                     return

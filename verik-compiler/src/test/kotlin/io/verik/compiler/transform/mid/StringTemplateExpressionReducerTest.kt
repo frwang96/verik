@@ -53,7 +53,7 @@ internal class StringTemplateExpressionReducerTest : BaseTest() {
                     String,
                     ${"$"}sformatf,
                     null,
-                    null,
+                    [],
                     [StringExpression(String, %d), KtReferenceExpression(Int, x, null)]
                 )
             """.trimIndent(),

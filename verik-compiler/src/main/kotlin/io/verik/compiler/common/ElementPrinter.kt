@@ -247,7 +247,7 @@ class ElementPrinter : Visitor() {
             build(callExpression.type.toString())
             build(callExpression.reference.name)
             build(callExpression.receiver)
-            build(callExpression.typeArguments?.map { it.toString() })
+            build(callExpression.typeArguments.map { it.toString() })
             build(callExpression.valueArguments)
         }
     }
@@ -369,23 +369,19 @@ class ElementPrinter : Visitor() {
         first = false
     }
 
-    private fun build(elements: List<Any>?) {
+    private fun build(elements: List<Any>) {
         if (!first) builder.append(", ")
-        if (elements != null) {
-            builder.append("[")
-            first = true
-            elements.forEach {
-                when (it) {
-                    is EElement -> it.accept(this)
-                    is String -> build(it)
-                    is LiteralStringEntry -> build(it.text)
-                    is ExpressionStringEntry -> it.expression.accept(this)
-                }
+        builder.append("[")
+        first = true
+        elements.forEach {
+            when (it) {
+                is EElement -> it.accept(this)
+                is String -> build(it)
+                is LiteralStringEntry -> build(it.text)
+                is ExpressionStringEntry -> it.expression.accept(this)
             }
-            builder.append("]")
-        } else {
-            builder.append("null")
         }
+        builder.append("]")
         first = false
     }
 

@@ -30,7 +30,7 @@ class EKtCallExpression(
     override var reference: Declaration,
     override var receiver: EExpression?,
     override val valueArguments: ArrayList<EExpression>,
-    val typeArguments: ArrayList<Type>?
+    val typeArguments: ArrayList<Type>
 ) : EAbstractCallExpression() {
 
     override val serializationType = SvSerializationType.OTHER
@@ -48,14 +48,14 @@ class EKtCallExpression(
         val copyType = type.copy()
         val copyReceiver = receiver?.copy()
         val copyValueArguments = valueArguments.map { it.copy() }
-        val copyTypeArguments = typeArguments?.map { it.copy() }
+        val copyTypeArguments = typeArguments.map { it.copy() }
         return EKtCallExpression(
             location,
             copyType,
             reference,
             copyReceiver,
             ArrayList(copyValueArguments),
-            copyTypeArguments?.let { ArrayList(it) }
+            ArrayList(copyTypeArguments)
         )
     }
 }

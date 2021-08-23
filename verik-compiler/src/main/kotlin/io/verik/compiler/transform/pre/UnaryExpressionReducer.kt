@@ -59,7 +59,7 @@ object UnaryExpressionReducer : PreTransformerStage() {
                             reference,
                             unaryExpression.expression,
                             arrayListOf(),
-                            null
+                            arrayListOf()
                         )
                     )
                     return

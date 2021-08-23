@@ -18,24 +18,32 @@ package io.verik.compiler.cast
 
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.property.Type
+import io.verik.compiler.main.m
 import org.jetbrains.kotlin.psi.KtCallExpression
 
 object CallExpressionCaster {
 
+    // TODO cast optional arguments
     fun castValueArguments(expression: KtCallExpression, castContext: CastContext): ArrayList<EExpression> {
-        val valueArguments = expression.valueArguments.map {
-            castContext.casterVisitor.getExpression(it.getArgumentExpression()!!)
+        val call = castContext.sliceCall[expression.calleeExpression]!!
+        val resolvedCall = castContext.sliceResolvedCall[call]!!
+        val resolvedValueArguments = resolvedCall.valueArgumentsByIndex!!
+        resolvedValueArguments.forEach {
+            if (it.arguments.size != 1)
+                m.error("Unable to cast resolved value argument", expression)
         }
+        val valueArguments = resolvedValueArguments
+            .map { it.arguments[0] }
+            .map { castContext.casterVisitor.getExpression(it.getArgumentExpression()!!) }
         return ArrayList(valueArguments)
     }
 
-    fun castTypeArguments(expression: KtCallExpression, castContext: CastContext): ArrayList<Type>? {
-        val typeArgumentList = expression.typeArgumentList
-        return if (typeArgumentList != null) {
-            val typeArguments = typeArgumentList.arguments.map {
-                castContext.castType(it.typeReference!!)
-            }
-            ArrayList(typeArguments)
-        } else null
+    // TODO cast implicit type arguments
+    fun castTypeArguments(expression: KtCallExpression, castContext: CastContext): ArrayList<Type> {
+        val call = castContext.sliceCall[expression.calleeExpression]!!
+        val typeArguments = call.typeArguments.map {
+            castContext.castType(it.typeReference!!)
+        }
+        return ArrayList(typeArguments)
     }
 }
