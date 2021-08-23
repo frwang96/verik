@@ -16,7 +16,12 @@
 
 package io.verik.compiler.transform.mid
 
-import io.verik.compiler.util.*
+import io.verik.compiler.util.BaseTest
+import io.verik.compiler.util.TestErrorException
+import io.verik.compiler.util.TestWarningException
+import io.verik.compiler.util.assertElementEquals
+import io.verik.compiler.util.driveTest
+import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows

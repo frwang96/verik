@@ -30,7 +30,7 @@ class StageSequence {
         stages.add(stage)
     }
 
-    fun <T: ProjectStage> contains(stageClass: KClass<T>): Boolean {
+    fun <T : ProjectStage> contains(stageClass: KClass<T>): Boolean {
         return stages.any { it::class == stageClass }
     }
 

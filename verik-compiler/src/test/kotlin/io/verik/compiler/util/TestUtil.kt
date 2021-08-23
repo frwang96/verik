@@ -16,7 +16,11 @@
 
 package io.verik.compiler.util
 
-import io.verik.compiler.ast.element.common.*
+import io.verik.compiler.ast.element.common.EAbstractBlockExpression
+import io.verik.compiler.ast.element.common.EAbstractFunction
+import io.verik.compiler.ast.element.common.EAbstractProperty
+import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.common.ElementPrinter
 import io.verik.compiler.common.ProjectStage
@@ -30,12 +34,12 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import java.nio.file.Paths
 import kotlin.reflect.KClass
 
-fun <T: ProjectStage> driveTest(stageClass: KClass<T>, @Language("kotlin") content: String): ProjectContext {
+fun <T : ProjectStage> driveTest(stageClass: KClass<T>, @Language("kotlin") content: String): ProjectContext {
     val contentWithPackageHeader = """
             package verik
             import io.verik.core.*
             $content
-        """.trimIndent()
+    """.trimIndent()
     val textFile = TextFile(Paths.get("/src/main/kotlin/verik/Test.kt"), contentWithPackageHeader)
     val config = Config(
         "unspecified",
@@ -122,7 +126,7 @@ fun assertElementEquals(expected: String, actual: EElement) {
     }
     if (actualIndex != actualString.length)
         match = false
-    assert (match) {
+    assert(match) {
         "expected: <$expectedString> but was: <$actualString>"
     }
 }

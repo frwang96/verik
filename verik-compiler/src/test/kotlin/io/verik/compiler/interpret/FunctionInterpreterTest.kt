@@ -16,7 +16,11 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.util.*
+import io.verik.compiler.util.BaseTest
+import io.verik.compiler.util.TestErrorException
+import io.verik.compiler.util.assertElementEquals
+import io.verik.compiler.util.driveTest
+import io.verik.compiler.util.findDeclaration
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -100,7 +104,7 @@ internal class FunctionInterpreterTest : BaseTest() {
                     @Seq
                     fun f() {}
                 }
-            """.trimIndent()
+                """.trimIndent()
             )
         }.apply { assertEquals("On expression expected", message) }
     }

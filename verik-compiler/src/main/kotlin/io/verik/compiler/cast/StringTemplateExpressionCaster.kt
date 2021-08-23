@@ -22,7 +22,11 @@ import io.verik.compiler.ast.property.LiteralStringEntry
 import io.verik.compiler.ast.property.StringEntry
 import io.verik.compiler.common.location
 import io.verik.compiler.main.m
-import org.jetbrains.kotlin.psi.*
+import org.jetbrains.kotlin.psi.KtEscapeStringTemplateEntry
+import org.jetbrains.kotlin.psi.KtLiteralStringTemplateEntry
+import org.jetbrains.kotlin.psi.KtStringTemplateEntry
+import org.jetbrains.kotlin.psi.KtStringTemplateEntryWithExpression
+import org.jetbrains.kotlin.psi.KtStringTemplateExpression
 
 object StringTemplateExpressionCaster {
 

@@ -21,7 +21,11 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.Reference
-import io.verik.compiler.core.common.*
+import io.verik.compiler.core.common.Core
+import io.verik.compiler.core.common.CoreCardinalBaseDeclaration
+import io.verik.compiler.core.common.CoreCardinalConstantDeclaration
+import io.verik.compiler.core.common.CoreCardinalDeclaration
+import io.verik.compiler.core.common.CoreClassDeclaration
 import io.verik.compiler.main.m
 
 class Type(

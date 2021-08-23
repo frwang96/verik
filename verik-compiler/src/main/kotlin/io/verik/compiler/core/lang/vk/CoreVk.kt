@@ -17,7 +17,11 @@
 package io.verik.compiler.core.lang.vk
 
 import io.verik.compiler.ast.element.kt.EKtCallExpression
-import io.verik.compiler.core.common.*
+import io.verik.compiler.core.common.Core
+import io.verik.compiler.core.common.CoreCardinalFunctionDeclaration
+import io.verik.compiler.core.common.CoreKtFunctionDeclaration
+import io.verik.compiler.core.common.CorePackage
+import io.verik.compiler.core.common.CoreScope
 
 object CoreVk : CoreScope(CorePackage.VK) {
 

@@ -40,7 +40,7 @@ object ReferenceAndCallExpressionTransformer : PostTransformerStage() {
         override fun visitKtReferenceExpression(referenceExpression: EKtReferenceExpression) {
             super.visitKtReferenceExpression(referenceExpression)
             referenceExpression.replace(
-                    ESvReferenceExpression(
+                ESvReferenceExpression(
                     referenceExpression.location,
                     referenceExpression.type,
                     referenceExpression.reference,

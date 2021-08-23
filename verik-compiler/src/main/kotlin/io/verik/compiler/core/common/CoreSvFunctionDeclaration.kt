@@ -16,7 +16,7 @@
 
 package io.verik.compiler.core.common
 
-class CoreSvFunctionDeclaration (
+class CoreSvFunctionDeclaration(
     parent: String,
     override var name: String
 ) : CoreAbstractFunctionDeclaration() {

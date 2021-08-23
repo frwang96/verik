@@ -51,7 +51,6 @@ class EInlineIfExpression(
         elseExpression.accept(visitor)
     }
 
-
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
         newExpression.parent = this
         when (oldExpression) {

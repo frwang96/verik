@@ -16,8 +16,23 @@
 
 package io.verik.compiler.serialize
 
-import io.verik.compiler.ast.element.common.*
-import io.verik.compiler.ast.element.sv.*
+import io.verik.compiler.ast.element.common.EConstantExpression
+import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EIfExpression
+import io.verik.compiler.ast.element.common.EParenthesizedExpression
+import io.verik.compiler.ast.element.sv.EDelayExpression
+import io.verik.compiler.ast.element.sv.EEventControlExpression
+import io.verik.compiler.ast.element.sv.EEventExpression
+import io.verik.compiler.ast.element.sv.EForeverStatement
+import io.verik.compiler.ast.element.sv.EInjectedExpression
+import io.verik.compiler.ast.element.sv.EInlineIfExpression
+import io.verik.compiler.ast.element.sv.EStringExpression
+import io.verik.compiler.ast.element.sv.ESvBinaryExpression
+import io.verik.compiler.ast.element.sv.ESvBlockExpression
+import io.verik.compiler.ast.element.sv.ESvCallExpression
+import io.verik.compiler.ast.element.sv.ESvReferenceExpression
+import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.property.EdgeType
 import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.LiteralStringEntry
@@ -145,8 +160,7 @@ class ExpressionSerializerVisitor(private val sourceBuilder: SourceBuilder) : Vi
             if (thenExpression is ESvBlockExpression) {
                 sourceBuilder.append(" ")
                 serializeAsStatement(thenExpression)
-            }
-            else {
+            } else {
                 sourceBuilder.appendLine()
                 sourceBuilder.indent {
                     serializeAsStatement(thenExpression)

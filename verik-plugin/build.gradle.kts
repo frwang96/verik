@@ -21,6 +21,7 @@ plugins {
     id("java-gradle-plugin")
     id("maven-publish")
     id("com.gradle.plugin-publish") version "0.15.0"
+    id("org.jlleitschuh.gradle.ktlint") version "10.1.0"
 }
 
 repositories {

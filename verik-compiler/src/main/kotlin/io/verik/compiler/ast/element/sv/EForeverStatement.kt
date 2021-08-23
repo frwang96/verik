@@ -38,6 +38,6 @@ class EForeverStatement(
 
     override fun copy(): EExpression {
         val copyBodyExpression = body.copy()
-        return  EForeverStatement(location, copyBodyExpression)
+        return EForeverStatement(location, copyBodyExpression)
     }
 }

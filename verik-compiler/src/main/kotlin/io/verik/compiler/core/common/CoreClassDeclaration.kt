@@ -16,7 +16,7 @@
 
 package io.verik.compiler.core.common
 
-class CoreClassDeclaration (
+class CoreClassDeclaration(
     parent: String,
     override var name: String,
     val superclass: CoreClassDeclaration?

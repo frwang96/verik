@@ -23,7 +23,11 @@ import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtFunction
-import io.verik.compiler.ast.element.sv.*
+import io.verik.compiler.ast.element.sv.EAlwaysComBlock
+import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
+import io.verik.compiler.ast.element.sv.EEventControlExpression
+import io.verik.compiler.ast.element.sv.EInitialBlock
+import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.property.FunctionAnnotationType
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.m
@@ -73,7 +77,7 @@ object FunctionInterpreter {
         val onExpression = if (body is EKtBlockExpression) {
             if (body.statements.size == 1) {
                 body.statements[0]
-            } else  {
+            } else {
                 m.error("On expression expected", body)
                 return null
             }

@@ -17,7 +17,15 @@
 package io.verik.compiler.serialize
 
 import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.ast.element.sv.*
+import io.verik.compiler.ast.element.sv.EAlwaysComBlock
+import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
+import io.verik.compiler.ast.element.sv.EEnum
+import io.verik.compiler.ast.element.sv.EInitialBlock
+import io.verik.compiler.ast.element.sv.EModule
+import io.verik.compiler.ast.element.sv.ESvBasicClass
+import io.verik.compiler.ast.element.sv.ESvEnumEntry
+import io.verik.compiler.ast.element.sv.ESvFunction
+import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.cast
 import io.verik.compiler.common.Visitor

@@ -16,7 +16,11 @@
 
 package io.verik.compiler.check.normalize
 
-import io.verik.compiler.ast.element.common.*
+import io.verik.compiler.ast.element.common.EAbstractClass
+import io.verik.compiler.ast.element.common.EAbstractFunction
+import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor

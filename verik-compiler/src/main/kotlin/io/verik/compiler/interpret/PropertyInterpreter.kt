@@ -23,7 +23,7 @@ import io.verik.compiler.ast.element.sv.ESvProperty
 object PropertyInterpreter {
 
     fun interpret(property: EKtProperty): EAbstractProperty {
-            return ESvProperty(
+        return ESvProperty(
             property.location,
             property.name,
             property.type,

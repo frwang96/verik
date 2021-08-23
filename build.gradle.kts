@@ -17,7 +17,8 @@
 tasks.register("test") {
     group = "verification"
     dependsOn(gradle.includedBuild("verik-kotlin").task(":build"))
-    dependsOn(gradle.includedBuild("verik-compiler").task(":test"))
+    dependsOn(gradle.includedBuild("verik-compiler").task(":check"))
+    dependsOn(gradle.includedBuild("verik-plugin").task(":check"))
 }
 
 tasks.register("sanity") {
@@ -25,6 +26,12 @@ tasks.register("sanity") {
     dependsOn("test")
     dependsOn("verikCount")
     dependsOn("verikLock")
+}
+
+tasks.register("format") {
+    group = "formatting"
+    dependsOn(gradle.includedBuild("verik-compiler").task(":ktlintFormat"))
+    dependsOn(gradle.includedBuild("verik-plugin").task(":ktlintFormat"))
 }
 
 val exampleNames = gradle

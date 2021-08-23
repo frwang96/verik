@@ -30,7 +30,7 @@ open class CoreKtFunctionDeclaration private constructor(
         parent: String,
         name: String,
         vararg parameterClassDeclarations: CoreClassDeclaration
-    ): this(
+    ) : this(
         name,
         "$parent.$name",
         parameterClassDeclarations.map { it.name }

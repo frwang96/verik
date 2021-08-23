@@ -16,7 +16,7 @@
 
 package io.verik.compiler.core.common
 
-open class CoreScope (coreDeclaration: CoreDeclaration) {
+open class CoreScope(coreDeclaration: CoreDeclaration) {
 
     val parent = coreDeclaration.qualifiedName
 }

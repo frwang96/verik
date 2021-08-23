@@ -217,7 +217,7 @@ class SourceBuilder(
                             sourceBuilder.appendLine()
                             lineLength = labelLine(sourceActionLine.sourceActions, index + 1)
                             sourceBuilder.append(" ".repeat((sourceActionLine.indents + 1) * indentLength))
-                            lineLength += (sourceActionLine.indents  + 1) * indentLength
+                            lineLength += (sourceActionLine.indents + 1) * indentLength
                         }
                     }
                     SourceActionType.HARD_BREAK -> {
@@ -225,7 +225,7 @@ class SourceBuilder(
                             sourceBuilder.appendLine()
                             lineLength = labelLine(sourceActionLine.sourceActions, index + 1)
                             sourceBuilder.append(" ".repeat((sourceActionLine.indents + 1) * indentLength))
-                            lineLength += (sourceActionLine.indents  + 1) * indentLength
+                            lineLength += (sourceActionLine.indents + 1) * indentLength
                         } else {
                             sourceBuilder.append(" ")
                         }

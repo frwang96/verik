@@ -16,7 +16,11 @@
 
 package lock
 
-import io.verik.core.*
+import io.verik.core.Module
+import io.verik.core.Seq
+import io.verik.core.Top
+import io.verik.core.on
+import io.verik.core.posedge
 
 @Top
 object Lock : Module() {

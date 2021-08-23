@@ -23,7 +23,7 @@ import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
-class EKtBlockExpression (
+class EKtBlockExpression(
     override val location: SourceLocation,
     override var type: Type,
     override val statements: ArrayList<EExpression>

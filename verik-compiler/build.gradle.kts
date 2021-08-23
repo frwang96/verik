@@ -22,6 +22,7 @@ plugins {
     id("signing")
     id("maven-publish")
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
+    id("org.jlleitschuh.gradle.ktlint") version "10.1.0"
 }
 
 repositories {
