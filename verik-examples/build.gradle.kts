@@ -22,6 +22,9 @@ plugins {
 subprojects {
     apply(plugin = "io.verik.verik-plugin")
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
+    configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
+        disabledRules.set(listOf("no-wildcard-imports"))
+    }
     dependencies {
         val implementation by configurations
         implementation("io.verik:verik-core:$version")

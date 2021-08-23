@@ -16,17 +16,7 @@
 
 package count
 
-import io.verik.core.`8`
-import io.verik.core.Module
-import io.verik.core.Run
-import io.verik.core.Seq
-import io.verik.core.Top
-import io.verik.core.delay
-import io.verik.core.finish
-import io.verik.core.forever
-import io.verik.core.on
-import io.verik.core.posedge
-import io.verik.core.u
+import io.verik.core.*
 
 @Top
 object Count : Module() {

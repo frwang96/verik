@@ -16,11 +16,7 @@
 
 package cache
 
-import io.verik.core.`3`
-import io.verik.core.`6`
-import io.verik.core.`8`
-import io.verik.core.Struct
-import io.verik.core.Ubit
+import io.verik.core.*
 
 typealias ADDR_WIDTH = `6`
 typealias DATA_WIDTh = `8`

@@ -16,12 +16,7 @@
 
 package cache
 
-import io.verik.core.Make
-import io.verik.core.Module
-import io.verik.core.Run
-import io.verik.core.Top
-import io.verik.core.delay
-import io.verik.core.forever
+import io.verik.core.*
 
 @Top
 object CacheTop : Module() {

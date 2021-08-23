@@ -16,12 +16,7 @@
 
 package cache
 
-import io.verik.core.In
-import io.verik.core.Interface
-import io.verik.core.Make
-import io.verik.core.Modport
-import io.verik.core.Out
-import io.verik.core.x
+import io.verik.core.*
 
 class TxnIf : Interface() {
 

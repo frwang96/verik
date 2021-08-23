@@ -19,7 +19,7 @@ package io.verik.compiler.compile
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 import io.verik.compiler.message.SourceLocation
-import io.verik.core.Module
+import io.verik.core.*
 import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
 import org.jetbrains.kotlin.cli.common.environment.setIdeaIoUseFallback
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity

@@ -67,6 +67,10 @@ tasks.register<Jar>("javadocJar") {
     from(tasks.dokkaJavadoc)
 }
 
+configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
+    disabledRules.set(listOf("no-wildcard-imports"))
+}
+
 signing {
     val publishing: PublishingExtension by project
     sign(publishing.publications)

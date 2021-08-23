@@ -16,22 +16,7 @@
 
 package cache
 
-import io.verik.core.ClockingBlock
-import io.verik.core.EXP
-import io.verik.core.Event
-import io.verik.core.In
-import io.verik.core.Make
-import io.verik.core.Module
-import io.verik.core.Out
-import io.verik.core.Run
-import io.verik.core.Task
-import io.verik.core.VArray
-import io.verik.core.finish
-import io.verik.core.posedge
-import io.verik.core.random
-import io.verik.core.range
-import io.verik.core.u
-import io.verik.core.wait
+import io.verik.core.*
 
 class CacheTb(
     @In var clk: Boolean,

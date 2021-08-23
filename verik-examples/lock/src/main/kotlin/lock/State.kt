@@ -16,7 +16,7 @@
 
 package lock
 
-import io.verik.core.Relabel
+import io.verik.core.*
 
 enum class State {
     @Relabel("STATE_OPENED")
