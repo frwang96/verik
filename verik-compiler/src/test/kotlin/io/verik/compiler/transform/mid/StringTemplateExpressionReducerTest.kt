@@ -71,7 +71,7 @@ internal class StringTemplateExpressionReducerTest : BaseTest() {
         )
         assertElementEquals(
             """
-                KtCallExpression(*, [StringExpression(String, %d%%), *])
+                KtCallExpression(String, *, null, [], [StringExpression(String, %d%%), ConstantExpression(*)])
             """.trimIndent(),
             projectContext.findExpression("x")
         )

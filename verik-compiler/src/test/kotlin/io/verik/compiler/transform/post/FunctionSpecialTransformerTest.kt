@@ -36,7 +36,7 @@ internal class FunctionSpecialTransformerTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "EventControlExpression(Unit, EdgeExpression(Event, *))",
+            "EventControlExpression(Unit, EdgeExpression(Event, *, *))",
             projectContext.findExpression("f")
         )
     }

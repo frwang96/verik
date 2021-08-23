@@ -35,7 +35,7 @@ internal class TypeResolverTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Ubit<`8`>, *)",
+            "KtCallExpression(Ubit<`8`>, u, null, *, *)",
             projectContext.findExpression("f")
         )
     }

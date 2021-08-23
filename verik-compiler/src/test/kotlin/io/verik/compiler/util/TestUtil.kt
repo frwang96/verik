@@ -77,7 +77,7 @@ fun assertElementEquals(expected: String, actual: EElement) {
     assert(leftSquareBracketCount >= rightSquareBracketCount) { "Missing left square bracket" }
 
     val expectedBuilder = StringBuilder()
-    expected.toCharArray().forEach {
+    expected.forEach {
         when (it) {
             in listOf(' ', '\n', '\t') -> {}
             ',' -> expectedBuilder.append(", ")
@@ -85,28 +85,44 @@ fun assertElementEquals(expected: String, actual: EElement) {
         }
     }
     val expectedString = expectedBuilder.toString()
-    val expectedStringArray = expectedString.toCharArray()
-
-    val regexBuilder = StringBuilder()
-
-    expectedStringArray.forEachIndexed { index, it ->
-        when (it) {
-            '*' -> {
-                val previousIsBackTick = (index > 0) && (expectedStringArray[index - 1] == '`')
-                val nextIsBackTick = (index < expectedStringArray.size - 1) && (expectedStringArray[index + 1] == '`')
-                if (previousIsBackTick && nextIsBackTick)
-                    regexBuilder.append("\\*")
-                else
-                    regexBuilder.append(".+")
-            }
-            in listOf('(', ')', '[', ']', '$', '?') -> regexBuilder.append("\\$it")
-            else -> regexBuilder.append(it)
-        }
-    }
-    val regexString = regexBuilder.toString()
-
     val actualString = ElementPrinter.dump(actual)
-    assert(actualString.matches(Regex(regexString))) {
+
+    var expectedIndex = 0
+    var actualIndex = 0
+    var match = true
+    while (expectedIndex < expectedString.length) {
+        val char = expectedString[expectedIndex]
+        val previousIsBackTick = expectedString.getOrNull(expectedIndex - 1) == '`'
+        val nextIsBackTick = expectedString.getOrNull(expectedIndex + 1) == '`'
+        val isWildcard = (char == '*') && !(previousIsBackTick && nextIsBackTick)
+        if (isWildcard) {
+            val previousIsBracket = expectedString.getOrNull(expectedIndex - 1) in listOf('(', '[')
+            val nextIsBracket = expectedString.getOrNull(expectedIndex + 1) in listOf(')', ']')
+            val isBracketedWildcard = previousIsBracket && nextIsBracket
+            var bracketDepth = 0
+            while (actualIndex < actualString.length) {
+                when (actualString[actualIndex]) {
+                    '(' -> bracketDepth++
+                    ')' -> if (--bracketDepth == -1) break
+                    '[' -> bracketDepth++
+                    ']' -> if (--bracketDepth == -1) break
+                    ',' -> if (bracketDepth == 0 && !isBracketedWildcard) break
+                }
+                actualIndex++
+            }
+        } else {
+            if (char != actualString[actualIndex]) {
+                match = false
+                break
+            } else {
+                actualIndex++
+            }
+        }
+        expectedIndex++
+    }
+    if (actualIndex != actualString.length)
+        match = false
+    assert (match) {
         "expected: <$expectedString> but was: <$actualString>"
     }
 }

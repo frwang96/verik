@@ -119,7 +119,7 @@ internal class ExpressionCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Unit, println, *)",
+            "KtCallExpression(Unit, println, null, [], [])",
             projectContext.findExpression("f")
         )
     }

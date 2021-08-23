@@ -36,7 +36,7 @@ internal class AssignmentTransformerTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SvBinaryExpression(Unit, ASSIGN, *)",
+            "SvBinaryExpression(Unit, ASSIGN, KtReferenceExpression(*), ConstantExpression(*))",
             projectContext.findExpression("f")
         )
     }
