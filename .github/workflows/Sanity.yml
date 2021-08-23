@@ -1,4 +1,4 @@
-name: Test
+name: Sanity
 
 on:
   push:
@@ -17,7 +17,7 @@ jobs:
           distribution: 'adopt'
       - uses: eskatos/gradle-command-action@v1.4.1
         with:
-          arguments: test
+          arguments: sanity
           distributions-cache-enabled: true
           dependencies-cache-enabled: true
           configuration-cache-enabled: true

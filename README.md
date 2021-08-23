@@ -1,5 +1,5 @@
 # Verik
-[![Test](https://github.com/frwang96/verik/actions/workflows/Test.yml/badge.svg)](https://github.com/frwang96/verik)
+[![Test](https://github.com/frwang96/verik/actions/workflows/Sanity.yml/badge.svg)](https://github.com/frwang96/verik)
 [![Maven](https://maven-badges.herokuapp.com/maven-central/io.verik/verik-core/badge.svg?style=flat)](
 https://search.maven.org/search?q=io.verik)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
