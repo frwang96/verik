@@ -40,7 +40,6 @@ internal class CallExpressionCasterTest : BaseTest() {
     }
 
     @Test
-    @Disabled
     fun `type argument implicit`() {
         val projectContext = driveTest(
             ProjectCaster::class,
@@ -49,7 +48,7 @@ internal class CallExpressionCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Ubit<`*`>, u, null, [`8`], *)",
+            "KtCallExpression(Ubit<`*`>, u, null, [`*`], *)",
             projectContext.findExpression("x")
         )
     }
@@ -95,6 +94,22 @@ internal class CallExpressionCasterTest : BaseTest() {
         )
         assertElementEquals(
             "KtCallExpression(Unit, f, null, [], [ConstantExpression(*), StringTemplateExpression(*)])",
+            projectContext.findExpression("x")
+        )
+    }
+
+    @Test
+    @Disabled
+    fun `value argument default`() {
+        val projectContext = driveTest(
+            ProjectCaster::class,
+            """
+                fun f(x: Int = 0) {}
+                var x = f()
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtCallExpression(Unit, f, null, [], [ConstantExpression(*)])",
             projectContext.findExpression("x")
         )
     }

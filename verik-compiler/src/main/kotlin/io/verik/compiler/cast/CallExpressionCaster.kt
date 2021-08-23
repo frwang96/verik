@@ -19,11 +19,12 @@ package io.verik.compiler.cast
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.main.m
+import org.jetbrains.kotlin.descriptors.SimpleFunctionDescriptor
 import org.jetbrains.kotlin.psi.KtCallExpression
 
 object CallExpressionCaster {
 
-    // TODO cast optional arguments
+    // TODO cast default arguments
     fun castValueArguments(expression: KtCallExpression, castContext: CastContext): ArrayList<EExpression> {
         val call = castContext.sliceCall[expression.calleeExpression]!!
         val resolvedCall = castContext.sliceResolvedCall[call]!!
@@ -38,12 +39,21 @@ object CallExpressionCaster {
         return ArrayList(valueArguments)
     }
 
-    // TODO cast implicit type arguments
     fun castTypeArguments(expression: KtCallExpression, castContext: CastContext): ArrayList<Type> {
         val call = castContext.sliceCall[expression.calleeExpression]!!
-        val typeArguments = call.typeArguments.map {
-            castContext.castType(it.typeReference!!)
+        return if (call.typeArgumentList != null) {
+            val typeArguments = call.typeArguments.map {
+                castContext.castType(it.typeReference!!)
+            }
+            ArrayList(typeArguments)
+        } else {
+            val resolvedCall = castContext.sliceResolvedCall[call]!!
+            val typeArgumentMap = resolvedCall.typeArguments
+            val descriptor = castContext.sliceReferenceTarget[expression.calleeExpression] as SimpleFunctionDescriptor
+            val typeArguments = descriptor.typeParameters.map {
+                castContext.castType(typeArgumentMap[it]!!, expression)
+            }
+            ArrayList(typeArguments)
         }
-        return ArrayList(typeArguments)
     }
 }
