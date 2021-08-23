@@ -16,7 +16,12 @@
 
 package cache
 
-import io.verik.core.*
+import io.verik.core.In
+import io.verik.core.Interface
+import io.verik.core.Make
+import io.verik.core.Modport
+import io.verik.core.Out
+import io.verik.core.x
 
 class TxnIf : Interface() {
 
@@ -52,15 +57,15 @@ class TxnIf : Interface() {
         @Out var reqOp: Op,
         @Out var reqAddr: UbitAddr,
         @Out var reqData: UbitData,
-        @In  var rspVld: Boolean,
-        @In  var rspData: UbitData
+        @In var rspVld: Boolean,
+        @In var rspData: UbitData
     ) : Modport()
 
     class TxnRx(
-        @In  var rst: Boolean,
-        @In  var reqOp: Op,
-        @In  var reqAddr: UbitAddr,
-        @In  var reqData: UbitData,
+        @In var rst: Boolean,
+        @In var reqOp: Op,
+        @In var reqAddr: UbitAddr,
+        @In var reqData: UbitData,
         @Out var rspVld: Boolean,
         @Out var rspData: UbitData
     ) : Modport()

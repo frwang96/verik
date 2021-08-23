@@ -31,7 +31,7 @@ object Lock : Module() {
 
     @Seq
     fun updateState() {
-        on (posedge(clk)) {
+        on(posedge(clk)) {
             state = if (rst) {
                 State.CLOSED
             } else {

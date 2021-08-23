@@ -14,26 +14,6 @@
  * limitations under the License.
  */
 
-tasks.register("test") {
-    group = "verification"
-    dependsOn(gradle.includedBuild("verik-kotlin").task(":build"))
-    dependsOn(gradle.includedBuild("verik-compiler").task(":check"))
-    dependsOn(gradle.includedBuild("verik-plugin").task(":check"))
-}
-
-tasks.register("sanity") {
-    group = "verification"
-    dependsOn("test")
-    dependsOn("verikCount")
-    dependsOn("verikLock")
-}
-
-tasks.register("format") {
-    group = "formatting"
-    dependsOn(gradle.includedBuild("verik-compiler").task(":ktlintFormat"))
-    dependsOn(gradle.includedBuild("verik-plugin").task(":ktlintFormat"))
-}
-
 val exampleNames = gradle
     .includedBuild("verik-examples")
     .projectDir
@@ -41,6 +21,45 @@ val exampleNames = gradle
     ?.filter { it.resolve("build.gradle.kts").exists() }
     ?.map { it.name }
     ?: listOf()
+
+val excludedExampleNames = listOf("cache")
+
+tasks.register("test") {
+    group = "verification"
+    dependsOn(gradle.includedBuild("verik-compiler").task(":test"))
+}
+
+tasks.register("check") {
+    group = "verification"
+    dependsOn(gradle.includedBuild("verik-kotlin").task(":check"))
+    dependsOn(gradle.includedBuild("verik-core").task(":check"))
+    dependsOn(gradle.includedBuild("verik-compiler").task(":check"))
+    dependsOn(gradle.includedBuild("verik-plugin").task(":check"))
+    exampleNames.forEach {
+        dependsOn(gradle.includedBuild("verik-examples").task(":$it:check"))
+    }
+}
+
+tasks.register("format") {
+    group = "formatting"
+    dependsOn(gradle.includedBuild("verik-kotlin").task(":ktlintFormat"))
+    dependsOn(gradle.includedBuild("verik-core").task(":ktlintFormat"))
+    dependsOn(gradle.includedBuild("verik-compiler").task(":ktlintFormat"))
+    dependsOn(gradle.includedBuild("verik-plugin").task(":ktlintFormat"))
+    exampleNames.forEach {
+        dependsOn(gradle.includedBuild("verik-examples").task(":$it:ktlintFormat"))
+    }
+}
+
+tasks.register("sanity") {
+    group = "verification"
+    dependsOn("test")
+    dependsOn("check")
+    exampleNames.forEach {
+        if (it !in excludedExampleNames)
+            dependsOn(gradle.includedBuild("verik-examples").task(":$it:verik"))
+    }
+}
 
 tasks.register("clean") {
     group = "build"

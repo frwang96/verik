@@ -16,7 +16,18 @@
 
 package cache
 
-import io.verik.core.*
+import io.verik.core.EXP
+import io.verik.core.In
+import io.verik.core.Module
+import io.verik.core.Seq
+import io.verik.core.VArray
+import io.verik.core.cat
+import io.verik.core.i
+import io.verik.core.on
+import io.verik.core.posedge
+import io.verik.core.range
+import io.verik.core.u
+import io.verik.core.x
 
 class Cache(
     @In var clk: Boolean,

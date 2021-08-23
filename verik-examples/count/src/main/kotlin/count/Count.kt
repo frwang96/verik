@@ -16,7 +16,17 @@
 
 package count
 
-import io.verik.core.*
+import io.verik.core.`8`
+import io.verik.core.Module
+import io.verik.core.Run
+import io.verik.core.Seq
+import io.verik.core.Top
+import io.verik.core.delay
+import io.verik.core.finish
+import io.verik.core.forever
+import io.verik.core.on
+import io.verik.core.posedge
+import io.verik.core.u
 
 @Top
 object Count : Module() {
@@ -27,7 +37,7 @@ object Count : Module() {
 
     @Seq
     fun update() {
-        on (posedge(clk)) {
+        on(posedge(clk)) {
             println("count=$count")
             if (rst) count = u(0)
             else count += u(1)

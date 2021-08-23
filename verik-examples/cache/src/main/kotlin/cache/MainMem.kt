@@ -16,7 +16,15 @@
 
 package cache
 
-import io.verik.core.*
+import io.verik.core.EXP
+import io.verik.core.In
+import io.verik.core.Module
+import io.verik.core.Seq
+import io.verik.core.VArray
+import io.verik.core.on
+import io.verik.core.posedge
+import io.verik.core.range
+import io.verik.core.u
 
 class MainMem(
     @In val clk: Boolean,
@@ -27,7 +35,7 @@ class MainMem(
 
     @Seq
     fun update() {
-        on (posedge(clk)) {
+        on(posedge(clk)) {
             rx.rspVld = false
             if (rx.rst) {
                 for (i in range(mem.size)) {

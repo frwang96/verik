@@ -16,10 +16,12 @@
 
 plugins {
     id("io.verik.verik-plugin") apply false
+    id("org.jlleitschuh.gradle.ktlint") version "10.1.0" apply false
 }
 
 subprojects {
     apply(plugin = "io.verik.verik-plugin")
+    apply(plugin = "org.jlleitschuh.gradle.ktlint")
     dependencies {
         val implementation by configurations
         implementation("io.verik:verik-core:$version")
