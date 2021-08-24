@@ -28,6 +28,7 @@ data class Config(
     val top: String,
     val debug: Boolean,
     val suppressCompileWarnings: Boolean,
+    val maxErrorCount: Int,
     val labelLines: Boolean,
     val wrapLength: Int,
     val indentLength: Int

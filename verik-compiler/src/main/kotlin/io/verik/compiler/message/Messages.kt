@@ -16,7 +16,17 @@
 
 package io.verik.compiler.message
 
+import kotlin.reflect.full.memberProperties
+
 object Messages {
 
     val KOTLIN_COMPILE_ERROR = ErrorMessageTemplate("$1")
+
+    init {
+        Messages::class.memberProperties.forEach {
+            val messageTemplate = it.get(Messages)
+            if (messageTemplate is MessageTemplate)
+                messageTemplate.name = it.name
+        }
+    }
 }

@@ -20,6 +20,7 @@ abstract class VerikPluginExtension {
 
     var top: String? = null
     var debug: Boolean = false
+    var maxErrorCount: Int = 20
     var labelLines: Boolean = false
     var wrapLength: Int = 120
     var indentLength: Int = 4

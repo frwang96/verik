@@ -17,6 +17,7 @@
 package io.verik.plugin
 
 import io.verik.compiler.main.Main
+import io.verik.compiler.message.GradleMessagePrinter
 import io.verik.compiler.message.MessageCollectorException
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
@@ -37,16 +38,12 @@ class VerikPlugin : Plugin<Project> {
                     if (exception !is MessageCollectorException) {
                         print("e: ")
                         if (extension.debug)
-                            print("[INTERNAL_ERROR] ")
+                            print("INTERNAL_ERROR: ")
                         print("Unhandled exception: ${exception::class.simpleName}")
                         if (exception.message != null) print(": ${exception.message}")
                         println()
-                        if (extension.debug) {
-                            exception.stackTrace.forEach { stackTraceElement ->
-                                if (stackTraceElement.className.startsWith("io.verik"))
-                                    println("    at $stackTraceElement")
-                            }
-                        }
+                        if (extension.debug)
+                            GradleMessagePrinter.printStackTrace(exception.stackTrace)
                     }
                     throw GradleException("Verik compilation failed")
                 }
@@ -57,6 +54,7 @@ class VerikPlugin : Plugin<Project> {
         task.inputs.property("version", { ConfigBuilder.getVersion(project) })
         task.inputs.property("top", { extension.top })
         task.inputs.property("debug", { extension.debug })
+        task.inputs.property("maxErrorCount", { extension.maxErrorCount })
         task.inputs.property("labelLines", { extension.labelLines })
         task.inputs.property("wrapLength", { extension.wrapLength })
         task.inputs.property("indentLength", { extension.indentLength })

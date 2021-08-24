@@ -22,31 +22,32 @@ class GradleMessagePrinter(private val debug: Boolean) : MessagePrinter() {
         print("w: ")
         printMessage(templateName, message, location)
         if (debug)
-            printStackTrace()
+            printStackTrace(Thread.currentThread().stackTrace)
     }
 
     override fun error(templateName: String, message: String, location: SourceLocation?) {
         print("e: ")
         printMessage(templateName, message, location)
         if (debug)
-            printStackTrace()
-        throw MessageCollectorException()
+            printStackTrace(Thread.currentThread().stackTrace)
     }
 
     private fun printMessage(templateName: String, message: String, location: SourceLocation?) {
         if (location != null)
             print("${location.path}: (${location.line}, ${location.column}): ")
         if (debug)
-            print("[$templateName] ")
+            print("$templateName: ")
         println(message)
     }
 
-    private fun printStackTrace() {
-        Thread.currentThread().stackTrace.forEach { stackTraceElement ->
-            if (stackTraceElement.className.startsWith("io.verik") &&
-                listOf("MessagePrinter", "MessageTemplate").none { stackTraceElement.className.contains(it) }
-            )
-                println("    at $stackTraceElement")
+    companion object {
+
+        fun printStackTrace(stackTrace: Array<StackTraceElement>) {
+            val firstIndex = stackTrace.indexOfFirst { it.className.contains("MessageTemplate") } + 1
+            val lastIndex = stackTrace.indexOfFirst { it.className == "io.verik.compiler.main.Main" } + 1
+            for (index in firstIndex until lastIndex) {
+                println("    at ${stackTrace[index]}")
+            }
         }
     }
 }

@@ -18,12 +18,14 @@ package io.verik.compiler.message
 
 abstract class MessageTemplate {
 
+    lateinit var name: String
+
     abstract val template: String
 }
 
 data class ErrorMessageTemplate(override val template: String) : MessageTemplate() {
 
     fun on(location: SourceLocation?, message: String) {
-        MessagePrinter.activeMessagePrinter.error("ERROR", message, location)
+        MessageCollector.messageCollector.error(name, message, location)
     }
 }

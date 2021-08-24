@@ -33,18 +33,19 @@ object ConfigBuilder {
             ?: throw GradleException("Verik configuration failed: Elaboration top not specified")
 
         return Config(
-            version,
-            LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss")),
-            project.name,
-            project.projectDir.toPath(),
-            getBuildDir(project),
-            getInputFiles(project),
-            top,
-            extension.debug,
+            version = version,
+            timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss")),
+            projectName = project.name,
+            projectDir = project.projectDir.toPath(),
+            buildDir = getBuildDir(project),
+            projectFiles = getInputFiles(project),
+            top = top,
+            debug = extension.debug,
             suppressCompileWarnings = false,
-            extension.labelLines,
-            extension.wrapLength,
-            extension.indentLength
+            maxErrorCount = extension.maxErrorCount,
+            labelLines = extension.labelLines,
+            wrapLength = extension.wrapLength,
+            indentLength = extension.indentLength
         )
     }
 

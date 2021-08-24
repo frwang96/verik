@@ -19,7 +19,7 @@ package io.verik.compiler.main
 import io.verik.compiler.message.DeprecatedMessageCollector
 import io.verik.compiler.message.GradleDeprecatedMessageCollector
 import io.verik.compiler.message.GradleMessagePrinter
-import io.verik.compiler.message.MessagePrinter
+import io.verik.compiler.message.MessageCollector
 import java.nio.file.Files
 
 lateinit var m: DeprecatedMessageCollector
@@ -28,7 +28,7 @@ object Main {
 
     fun run(config: Config) {
         m = GradleDeprecatedMessageCollector(config)
-        MessagePrinter.activeMessagePrinter = GradleMessagePrinter(config.debug)
+        MessageCollector.messageCollector = MessageCollector(config, GradleMessagePrinter(config.debug))
         val projectContext = ProjectContext(config)
         val stageSequence = StageSequencer.getStageSequence()
 
@@ -45,6 +45,7 @@ object Main {
 
     private fun writeFiles(projectContext: ProjectContext) {
         m.flush()
+        MessageCollector.messageCollector.flush()
         if (Files.exists(projectContext.config.buildDir)) {
             Files.walk(projectContext.config.buildDir)
                 .sorted(Comparator.reverseOrder())
