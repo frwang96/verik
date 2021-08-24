@@ -16,17 +16,12 @@
 
 package io.verik.compiler.message
 
-import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.main.Config
-import org.jetbrains.kotlin.com.intellij.psi.PsiElement
-import org.jetbrains.kotlin.psi.KtNamedDeclaration
 
 class GradleMessageCollector(config: Config) : MessageCollector() {
 
     private val verbose = config.verbose
     private val debug = config.debug
-    private val startTime = System.nanoTime()
 
     private val MAX_ERROR_COUNT = 20
 
@@ -50,10 +45,8 @@ class GradleMessageCollector(config: Config) : MessageCollector() {
     }
 
     override fun log(message: String) {
-        if (verbose || debug) {
+        if (verbose) {
             print("i: ")
-            if (debug)
-                print("${getElapsedString()}: ")
             printMessage(message, null)
         }
     }
@@ -65,9 +58,6 @@ class GradleMessageCollector(config: Config) : MessageCollector() {
     private fun printMessage(message: String, location: SourceLocation?) {
         if (location != null) {
             print("${location.path}: (${location.line}, ${location.column}): ")
-            val qualifiedName = getQualifiedName(location.parent)
-            if (qualifiedName != null)
-                print("$qualifiedName: ")
         }
         println(message)
     }
@@ -77,36 +67,5 @@ class GradleMessageCollector(config: Config) : MessageCollector() {
             if (it.className.startsWith("io.verik") && !it.className.contains("MessageCollector"))
                 println("at $it")
         }
-    }
-
-    private fun getElapsedString(): String {
-        val elapsed = (System.nanoTime() - startTime) / 1e9
-        return "%.3fs".format(elapsed)
-    }
-
-    private fun getQualifiedName(element: Any?): String? {
-        val names = ArrayList<String>()
-        when (element) {
-            is PsiElement -> {
-                var parent: PsiElement? = element
-                while (parent != null) {
-                    if (parent is KtNamedDeclaration)
-                        names.add(parent.name!!)
-                    parent = parent.parent
-                }
-            }
-            is EElement -> {
-                var parent: EElement? = element
-                while (parent != null) {
-                    if (parent is Declaration)
-                        names.add(parent.name)
-                    parent = parent.parent
-                }
-            }
-        }
-        val filteredNames = names.filter { it.matches(Regex("[a-zA-Z_]\\w*")) }
-        return if (filteredNames.isNotEmpty()) {
-            filteredNames.reversed().joinToString(separator = ".")
-        } else null
     }
 }

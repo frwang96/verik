@@ -88,7 +88,7 @@ object KotlinEnvironmentBuilder : CompilerStage() {
             message: String,
             location: CompilerMessageSourceLocation?
         ) {
-            val sourceLocation = location?.let { SourceLocation(it.column, it.line, Paths.get(it.path), null) }
+            val sourceLocation = location?.let { SourceLocation(it.column, it.line, Paths.get(it.path)) }
             when (severity) {
                 CompilerMessageSeverity.EXCEPTION, CompilerMessageSeverity.ERROR ->
                     m.error(message, sourceLocation)

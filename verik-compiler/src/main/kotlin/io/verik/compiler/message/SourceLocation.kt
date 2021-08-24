@@ -21,6 +21,5 @@ import java.nio.file.Path
 class SourceLocation(
     val column: Int,
     val line: Int,
-    val path: Path,
-    val parent: Any?
+    val path: Path
 )

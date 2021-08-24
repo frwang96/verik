@@ -18,7 +18,7 @@ group = "io.verik"
 
 plugins {
     kotlin("jvm") version "1.4.32"
-    id("org.jlleitschuh.gradle.ktlint") version "10.1.0"
+    id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
 }
 
 repositories {

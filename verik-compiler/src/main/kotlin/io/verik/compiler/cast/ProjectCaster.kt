@@ -50,12 +50,12 @@ object ProjectCaster : CasterStage() {
             val relativePath = packageName.replace(".", FileSystems.getDefault().separator)
             val inputPath = projectContext.config.inputSourceDir.resolve(relativePath)
             val outputPath = projectContext.config.outputSourceDir.resolve(relativePath)
-            val location = SourceLocation(0, 0, inputPath, null)
+            val location = SourceLocation(0, 0, inputPath)
             val basicPackage = EBasicPackage(location, packageName, files, inputPath, outputPath)
             basicPackages.add(basicPackage)
         }
 
-        val projectLocation = SourceLocation(0, 0, projectContext.config.inputSourceDir, null)
+        val projectLocation = SourceLocation(0, 0, projectContext.config.inputSourceDir)
         val rootPackage = ERootPackage(projectLocation, ArrayList())
         val project = EProject(projectLocation, basicPackages, rootPackage)
         projectContext.project = project

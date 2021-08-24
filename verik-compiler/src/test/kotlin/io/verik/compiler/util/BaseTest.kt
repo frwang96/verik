@@ -16,8 +16,10 @@
 
 package io.verik.compiler.util
 
+import io.verik.compiler.main.Config
 import io.verik.compiler.main.m
 import org.junit.jupiter.api.BeforeAll
+import java.nio.file.Paths
 
 abstract class BaseTest {
 
@@ -27,6 +29,24 @@ abstract class BaseTest {
         @JvmStatic
         fun setup() {
             m = TestMessageCollector()
+        }
+
+        fun getConfig(): Config {
+            return Config(
+                "unspecified",
+                "",
+                "verik",
+                Paths.get("/"),
+                Paths.get("/build/verik"),
+                listOf(Paths.get("/src/main/kotlin/verik/Test.kt")),
+                "*",
+                verbose = false,
+                debug = true,
+                suppressCompileWarnings = true,
+                labelLines = false,
+                wrapLength = 80,
+                indentLength = 4
+            )
         }
     }
 }
