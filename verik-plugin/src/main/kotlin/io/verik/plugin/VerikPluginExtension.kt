@@ -20,6 +20,8 @@ abstract class VerikPluginExtension {
 
     var top: String? = null
     var debug: Boolean = false
+    var suppressedWarnings: List<String> = listOf()
+    var promotedWarnings: List<String> = listOf()
     var maxErrorCount: Int = 20
     var labelLines: Boolean = false
     var wrapLength: Int = 120

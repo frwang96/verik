@@ -25,9 +25,21 @@ class MessageCollector(
 
     private var errorCount = 0
 
+    fun warning(templateName: String, message: String, location: SourceLocation?) {
+        if (templateName in config.promotedWarnings)
+            error(templateName, message, location)
+        else if (templateName !in config.suppressedWarnings)
+            messagePrinter.warning(templateName, message, location)
+    }
+
     fun error(templateName: String, message: String, location: SourceLocation?) {
         messagePrinter.error(templateName, message, location)
         incrementErrorCount()
+    }
+
+    fun fatal(templateName: String, message: String, location: SourceLocation?): Nothing {
+        messagePrinter.error(templateName, message, location)
+        throw MessageCollectorException()
     }
 
     fun flush() {

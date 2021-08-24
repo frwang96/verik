@@ -16,6 +16,8 @@
 
 package io.verik.compiler.message
 
+import io.verik.compiler.ast.element.common.EElement
+
 abstract class MessageTemplate {
 
     lateinit var name: String
@@ -23,9 +25,23 @@ abstract class MessageTemplate {
     abstract val template: String
 }
 
-data class ErrorMessageTemplate(override val template: String) : MessageTemplate() {
+class WarningMessageTemplate(override val template: String) : MessageTemplate() {
+
+    fun on(location: SourceLocation?, message: String) {
+        MessageCollector.messageCollector.warning(name, message, location)
+    }
+}
+
+class ErrorMessageTemplate(override val template: String) : MessageTemplate() {
 
     fun on(location: SourceLocation?, message: String) {
         MessageCollector.messageCollector.error(name, message, location)
+    }
+}
+
+class FatalMessageTemplate(override val template: String) : MessageTemplate() {
+
+    fun on(element: EElement, message: String): Nothing {
+        MessageCollector.messageCollector.fatal(name, message, element.location)
     }
 }

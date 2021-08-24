@@ -17,7 +17,6 @@
 package io.verik.compiler.compile
 
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
 import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 import io.verik.core.*
@@ -44,7 +43,7 @@ object KotlinEnvironmentBuilder : CompilerStage() {
 
     override fun process(projectContext: ProjectContext) {
         setIdeaIoUseFallback()
-        val configuration = createCompilerConfiguration(projectContext)
+        val configuration = createCompilerConfiguration()
         val disposable = Disposer.newDisposable()
         projectContext.kotlinCoreEnvironment = KotlinCoreEnvironment.createForProduction(
             disposable,
@@ -53,7 +52,7 @@ object KotlinEnvironmentBuilder : CompilerStage() {
         )
     }
 
-    private fun createCompilerConfiguration(projectContext: ProjectContext): CompilerConfiguration {
+    private fun createCompilerConfiguration(): CompilerConfiguration {
         val configuration = CompilerConfiguration()
         configuration.put(JVMConfigurationKeys.JVM_TARGET, JvmTarget.JVM_1_8)
         configuration.put(
@@ -63,7 +62,7 @@ object KotlinEnvironmentBuilder : CompilerStage() {
         configuration.put(CommonConfigurationKeys.MODULE_NAME, "verik")
         configuration.put(
             CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY,
-            KotlinCompilerMessageCollector(projectContext.config.suppressCompileWarnings)
+            KotlinCompilerMessageCollector()
         )
         getJvmClasspathRoots().forEach {
             configuration.addJvmClasspathRoot(it)
@@ -78,7 +77,7 @@ object KotlinEnvironmentBuilder : CompilerStage() {
         )
     }
 
-    private class KotlinCompilerMessageCollector(private val suppressCompileWarnings: Boolean) : MessageCollector {
+    private class KotlinCompilerMessageCollector : MessageCollector {
 
         override fun clear() {}
 
@@ -94,8 +93,7 @@ object KotlinEnvironmentBuilder : CompilerStage() {
                 CompilerMessageSeverity.EXCEPTION, CompilerMessageSeverity.ERROR ->
                     Messages.KOTLIN_COMPILE_ERROR.on(sourceLocation, message)
                 CompilerMessageSeverity.STRONG_WARNING, CompilerMessageSeverity.WARNING ->
-                    if (!suppressCompileWarnings)
-                        m.warning(message, sourceLocation)
+                    Messages.KOTLIN_COMPILE_WARNING.on(sourceLocation, message)
                 else -> {}
             }
         }

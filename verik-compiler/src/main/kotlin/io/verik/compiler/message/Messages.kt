@@ -20,7 +20,10 @@ import kotlin.reflect.full.memberProperties
 
 object Messages {
 
+    val KOTLIN_COMPILE_WARNING = WarningMessageTemplate("$1")
     val KOTLIN_COMPILE_ERROR = ErrorMessageTemplate("$1")
+
+    val INTERNAL_ERROR = FatalMessageTemplate("$1")
 
     init {
         Messages::class.memberProperties.forEach {

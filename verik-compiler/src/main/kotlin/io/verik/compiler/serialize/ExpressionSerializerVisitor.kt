@@ -39,6 +39,7 @@ import io.verik.compiler.ast.property.LiteralStringEntry
 import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 
 class ExpressionSerializerVisitor(private val sourceBuilder: SourceBuilder) : Visitor() {
 
@@ -61,7 +62,7 @@ class ExpressionSerializerVisitor(private val sourceBuilder: SourceBuilder) : Vi
     }
 
     override fun visitElement(element: EElement) {
-        m.error("Unable to serialize element as expression: $element", element)
+        Messages.INTERNAL_ERROR.on(element, "Unable to serialize element as expression: $element")
     }
 
     override fun visitSvBlockExpression(blockExpression: ESvBlockExpression) {

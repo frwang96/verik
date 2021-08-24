@@ -54,6 +54,8 @@ class VerikPlugin : Plugin<Project> {
         task.inputs.property("version", { ConfigBuilder.getVersion(project) })
         task.inputs.property("top", { extension.top })
         task.inputs.property("debug", { extension.debug })
+        task.inputs.property("suppressedWarnings", { extension.suppressedWarnings })
+        task.inputs.property("promotedWarnings", { extension.promotedWarnings })
         task.inputs.property("maxErrorCount", { extension.maxErrorCount })
         task.inputs.property("labelLines", { extension.labelLines })
         task.inputs.property("wrapLength", { extension.wrapLength })
