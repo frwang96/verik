@@ -18,6 +18,7 @@ package io.verik.compiler.compile
 
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 import io.verik.core.*
 import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
@@ -91,7 +92,7 @@ object KotlinEnvironmentBuilder : CompilerStage() {
             val sourceLocation = location?.let { SourceLocation(it.column, it.line, Paths.get(it.path)) }
             when (severity) {
                 CompilerMessageSeverity.EXCEPTION, CompilerMessageSeverity.ERROR ->
-                    m.error(message, sourceLocation)
+                    Messages.KOTLIN_COMPILE_ERROR.on(sourceLocation, message)
                 CompilerMessageSeverity.STRONG_WARNING, CompilerMessageSeverity.WARNING ->
                     if (!suppressCompileWarnings)
                         m.warning(message, sourceLocation)

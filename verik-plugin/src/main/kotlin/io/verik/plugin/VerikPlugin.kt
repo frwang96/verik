@@ -35,13 +35,16 @@ class VerikPlugin : Plugin<Project> {
                     Main.run(ConfigBuilder.getConfig(project, extension))
                 } catch (exception: Exception) {
                     if (exception !is MessageCollectorException) {
-                        print("e: Unhandled exception: ${exception::class.simpleName}")
+                        print("e: ")
+                        if (extension.debug)
+                            print("[INTERNAL_ERROR] ")
+                        print("Unhandled exception: ${exception::class.simpleName}")
                         if (exception.message != null) print(": ${exception.message}")
                         println()
                         if (extension.debug) {
                             exception.stackTrace.forEach { stackTraceElement ->
                                 if (stackTraceElement.className.startsWith("io.verik"))
-                                    println("at $stackTraceElement")
+                                    println("    at $stackTraceElement")
                             }
                         }
                     }
@@ -53,7 +56,6 @@ class VerikPlugin : Plugin<Project> {
         task.group = "verik"
         task.inputs.property("version", { ConfigBuilder.getVersion(project) })
         task.inputs.property("top", { extension.top })
-        task.inputs.property("verbose", { extension.verbose })
         task.inputs.property("debug", { extension.debug })
         task.inputs.property("labelLines", { extension.labelLines })
         task.inputs.property("wrapLength", { extension.wrapLength })

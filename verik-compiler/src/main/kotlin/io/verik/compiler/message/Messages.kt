@@ -14,13 +14,9 @@
  * limitations under the License.
  */
 
-package io.verik.plugin
+package io.verik.compiler.message
 
-abstract class VerikPluginExtension {
+object Messages {
 
-    var top: String? = null
-    var debug: Boolean = false
-    var labelLines: Boolean = false
-    var wrapLength: Int = 120
-    var indentLength: Int = 4
+    val KOTLIN_COMPILE_ERROR = ErrorMessageTemplate("$1")
 }

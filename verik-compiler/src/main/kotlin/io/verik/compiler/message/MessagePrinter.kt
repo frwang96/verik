@@ -14,22 +14,16 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.util
+package io.verik.compiler.message
 
-import io.verik.compiler.message.MessageCollector
-import io.verik.compiler.message.SourceLocation
+abstract class MessagePrinter {
 
-class TestMessageCollector : MessageCollector() {
+    abstract fun warning(templateName: String, message: String, location: SourceLocation?)
 
-    override fun fatal(message: String, location: SourceLocation?): Nothing {
-        throw TestFatalException(message)
-    }
+    abstract fun error(templateName: String, message: String, location: SourceLocation?)
 
-    override fun error(message: String, location: SourceLocation?) {
-        throw TestErrorException(message)
-    }
+    companion object {
 
-    override fun warning(message: String, location: SourceLocation?) {
-        throw TestWarningException(message)
+        lateinit var activeMessagePrinter: MessagePrinter
     }
 }

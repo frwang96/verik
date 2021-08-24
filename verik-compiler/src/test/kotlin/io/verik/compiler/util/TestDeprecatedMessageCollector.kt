@@ -14,13 +14,22 @@
  * limitations under the License.
  */
 
-package io.verik.plugin
+package io.verik.compiler.util
 
-abstract class VerikPluginExtension {
+import io.verik.compiler.message.DeprecatedMessageCollector
+import io.verik.compiler.message.SourceLocation
 
-    var top: String? = null
-    var debug: Boolean = false
-    var labelLines: Boolean = false
-    var wrapLength: Int = 120
-    var indentLength: Int = 4
+class TestDeprecatedMessageCollector : DeprecatedMessageCollector() {
+
+    override fun fatal(message: String, location: SourceLocation?): Nothing {
+        throw TestFatalException(message)
+    }
+
+    override fun error(message: String, location: SourceLocation?) {
+        throw TestErrorException(message)
+    }
+
+    override fun warning(message: String, location: SourceLocation?) {
+        throw TestWarningException(message)
+    }
 }

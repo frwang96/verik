@@ -18,6 +18,7 @@ package io.verik.compiler.util
 
 import io.verik.compiler.main.Config
 import io.verik.compiler.main.m
+import io.verik.compiler.message.MessagePrinter
 import org.junit.jupiter.api.BeforeAll
 import java.nio.file.Paths
 
@@ -28,7 +29,8 @@ abstract class BaseTest {
         @BeforeAll
         @JvmStatic
         fun setup() {
-            m = TestMessageCollector()
+            m = TestDeprecatedMessageCollector()
+            MessagePrinter.activeMessagePrinter = TestMessagePrinter()
         }
 
         fun getConfig(): Config {
@@ -40,7 +42,6 @@ abstract class BaseTest {
                 Paths.get("/build/verik"),
                 listOf(Paths.get("/src/main/kotlin/verik/Test.kt")),
                 "*",
-                verbose = false,
                 debug = true,
                 suppressCompileWarnings = true,
                 labelLines = false,

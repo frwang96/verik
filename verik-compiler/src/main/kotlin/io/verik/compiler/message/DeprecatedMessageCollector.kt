@@ -20,7 +20,7 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.common.location
 import org.jetbrains.kotlin.psi.KtElement
 
-open class MessageCollector {
+open class DeprecatedMessageCollector {
 
     var errorCount = 0
 
@@ -33,8 +33,6 @@ open class MessageCollector {
     }
 
     open fun warning(message: String, location: SourceLocation?) {}
-
-    open fun log(message: String) {}
 
     open fun flush() {}
 

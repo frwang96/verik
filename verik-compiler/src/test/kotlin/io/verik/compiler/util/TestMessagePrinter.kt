@@ -14,13 +14,18 @@
  * limitations under the License.
  */
 
-package io.verik.plugin
+package io.verik.compiler.util
 
-abstract class VerikPluginExtension {
+import io.verik.compiler.message.MessagePrinter
+import io.verik.compiler.message.SourceLocation
 
-    var top: String? = null
-    var debug: Boolean = false
-    var labelLines: Boolean = false
-    var wrapLength: Int = 120
-    var indentLength: Int = 4
+class TestMessagePrinter : MessagePrinter() {
+
+    override fun warning(templateName: String, message: String, location: SourceLocation?) {
+        throw TestWarningException(message)
+    }
+
+    override fun error(templateName: String, message: String, location: SourceLocation?) {
+        throw TestErrorException(message)
+    }
 }

@@ -16,16 +16,19 @@
 
 package io.verik.compiler.main
 
-import io.verik.compiler.message.GradleMessageCollector
-import io.verik.compiler.message.MessageCollector
+import io.verik.compiler.message.DeprecatedMessageCollector
+import io.verik.compiler.message.GradleDeprecatedMessageCollector
+import io.verik.compiler.message.GradleMessagePrinter
+import io.verik.compiler.message.MessagePrinter
 import java.nio.file.Files
 
-lateinit var m: MessageCollector
+lateinit var m: DeprecatedMessageCollector
 
 object Main {
 
     fun run(config: Config) {
-        m = GradleMessageCollector(config)
+        m = GradleDeprecatedMessageCollector(config)
+        MessagePrinter.activeMessagePrinter = GradleMessagePrinter(config.debug)
         val projectContext = ProjectContext(config)
         val stageSequence = StageSequencer.getStageSequence()
 
@@ -36,7 +39,6 @@ object Main {
 
     private fun readFiles(projectContext: ProjectContext) {
         projectContext.inputTextFiles = projectContext.config.projectFiles.map {
-            m.log("Read: ${projectContext.config.projectDir.relativize(it)}")
             TextFile(it, Files.readString(it))
         }
     }
@@ -50,7 +52,6 @@ object Main {
         }
         val outputTextFiles = projectContext.outputTextFiles.sortedBy { it.path }
         outputTextFiles.forEach {
-            m.log("Write: ${projectContext.config.projectDir.relativize(it.path)}")
             Files.createDirectories(it.path.parent)
             Files.writeString(it.path, it.content)
         }

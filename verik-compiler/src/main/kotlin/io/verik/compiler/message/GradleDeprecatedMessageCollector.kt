@@ -18,9 +18,8 @@ package io.verik.compiler.message
 
 import io.verik.compiler.main.Config
 
-class GradleMessageCollector(config: Config) : MessageCollector() {
+class GradleDeprecatedMessageCollector(config: Config) : DeprecatedMessageCollector() {
 
-    private val verbose = config.verbose
     private val debug = config.debug
 
     private val MAX_ERROR_COUNT = 20
@@ -42,13 +41,6 @@ class GradleMessageCollector(config: Config) : MessageCollector() {
         print("w: ")
         printMessage(message, location)
         if (debug) printStackTrace()
-    }
-
-    override fun log(message: String) {
-        if (verbose) {
-            print("i: ")
-            printMessage(message, null)
-        }
     }
 
     override fun flush() {

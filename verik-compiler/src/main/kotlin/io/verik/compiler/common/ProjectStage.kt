@@ -18,7 +18,6 @@ package io.verik.compiler.common
 
 import io.verik.compiler.check.normalize.NormalizationChecker
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
 
 abstract class ProjectStage {
 
@@ -29,8 +28,6 @@ abstract class ProjectStage {
     protected abstract fun process(projectContext: ProjectContext)
 
     fun accept(projectContext: ProjectContext) {
-        if (stageGroup != null)
-            m.log("Stage: $stageGroup: ${this::class.simpleName}")
         process(projectContext)
         if (checkNormalization)
             NormalizationChecker.accept(projectContext)
