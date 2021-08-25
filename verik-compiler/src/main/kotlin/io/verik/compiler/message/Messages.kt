@@ -26,6 +26,8 @@ object Messages {
         "$0"
     )
 
+//  CAST CHECK  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     val PACKAGE_NAME_ROOT = MessageTemplate0(
         Severity.ERROR,
         "Use of the root package is prohibited"
@@ -46,10 +48,7 @@ object Messages {
         "$0 not supported"
     )
 
-    val CARDINAL_TYPE_EXPECTED = MessageTemplate0(
-        Severity.ERROR,
-        "Cardinal type expected"
-    )
+//  COMPILE  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val KOTLIN_COMPILE_WARNING = MessageTemplate1<String>(
         Severity.WARNING,
@@ -61,9 +60,16 @@ object Messages {
         "$0"
     )
 
+//  CAST  //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     val NAME_ILLEGAL = MessageTemplate1<String>(
         Severity.ERROR,
         "Illegal name: $0"
+    )
+
+    val CARDINAL_TYPE_EXPECTED = MessageTemplate0(
+        Severity.ERROR,
+        "Cardinal type expected"
     )
 
     val KEYWORD_CONFLICT_SYSTEM_VERILOG = MessageTemplate1<String>(
@@ -80,6 +86,8 @@ object Messages {
         Severity.ERROR,
         "Conflicting annotations: $0"
     )
+
+//  MID TRANSFORM  /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val BIT_ZERO_WIDTH = MessageTemplate0(
         Severity.ERROR,

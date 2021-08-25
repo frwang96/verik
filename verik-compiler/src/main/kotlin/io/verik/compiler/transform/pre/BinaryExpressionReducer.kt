@@ -24,7 +24,7 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreClassDeclaration
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 
 object BinaryExpressionReducer : PreTransformerStage() {
 
@@ -71,7 +71,7 @@ object BinaryExpressionReducer : PreTransformerStage() {
                 }
             }
             if (kind != KtBinaryOperatorKind.EQ)
-                m.error("Binary expression could not be reduced", binaryExpression)
+                Messages.INTERNAL_ERROR.on(binaryExpression, "Binary expression could not be reduced")
         }
     }
 }

@@ -27,6 +27,7 @@ import io.verik.compiler.core.common.CoreCardinalConstantDeclaration
 import io.verik.compiler.core.common.CoreCardinalDeclaration
 import io.verik.compiler.core.common.CoreClassDeclaration
 import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 
 class Type(
     override var reference: Declaration,
@@ -134,7 +135,7 @@ class Type(
             is CoreClassDeclaration -> reference.superclass?.toType()
             is CoreCardinalBaseDeclaration -> null
             else -> {
-                m.error("Unexpected type reference: $reference", null)
+                Messages.INTERNAL_ERROR.on(null, "Unexpected type reference: $reference")
                 return null
             }
         }

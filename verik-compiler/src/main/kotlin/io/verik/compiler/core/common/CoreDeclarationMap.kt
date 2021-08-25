@@ -131,9 +131,10 @@ object CoreDeclarationMap {
                     CoreCardinalBaseDeclaration
                 } else {
                     val cardinal = name.toIntOrNull()
-                    if (cardinal != null) {
+                    if (cardinal != null)
                         CoreCardinalConstantDeclaration(cardinal)
-                    } else null
+                    else
+                        null
                 }
             }
             else -> null

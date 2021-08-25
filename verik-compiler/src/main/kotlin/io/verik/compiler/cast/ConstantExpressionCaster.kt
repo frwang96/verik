@@ -20,25 +20,25 @@ import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.location
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.main.m
-import io.verik.compiler.message.SourceLocation
+import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.psi.KtConstantExpression
+import org.jetbrains.kotlin.psi.KtElement
 
 object ConstantExpressionCaster {
 
     fun castConstantExpression(expression: KtConstantExpression, castContext: CastContext): EConstantExpression {
         val location = expression.location()
         val type = castContext.castType(expression)
-        val value = castValue(expression.text, type, location)
+        val value = castValue(expression.text, type, expression)
         return EConstantExpression(location, type, value)
     }
 
-    private fun castValue(value: String, type: Type, location: SourceLocation): String {
+    private fun castValue(value: String, type: Type, element: KtElement): String {
         return when (type) {
             Core.Kt.BOOLEAN.toType() -> castBoolean(value)
             Core.Kt.INT.toType() -> castInteger(value)
             else -> {
-                m.error("Constant expression type not supported: $type", location)
+                Messages.INTERNAL_ERROR.on(element, "Constant expression type not recognized: $type")
                 ""
             }
         }

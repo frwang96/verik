@@ -22,7 +22,7 @@ import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 
 object ParenthesisInsertionTransformer : PostTransformerStage() {
 
@@ -40,7 +40,7 @@ object ParenthesisInsertionTransformer : PostTransformerStage() {
             )
             parent.replaceChild(expression, parenthesizedExpression)
         } else {
-            m.error("Could not parenthesize $expression in $parent", expression)
+            Messages.INTERNAL_ERROR.on(expression, "Could not parenthesize $expression in $parent")
         }
     }
 

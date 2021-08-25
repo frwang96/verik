@@ -17,7 +17,6 @@
 package io.verik.compiler.transform.mid
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.TestWarningException
 import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
@@ -54,18 +53,6 @@ internal class BitConstantTransformerTest : BaseTest() {
             "ConstantExpression(Ubit<`36`>, 36'h0_0000_ffff)",
             projectContext.findExpression("x")
         )
-    }
-
-    @Test
-    fun `constant error zero width`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                BitConstantTransformer::class,
-                """
-                    var x = u<`0`>(0)
-                """.trimIndent()
-            )
-        }.apply { assertEquals("Bit type cannot have zero width", message) }
     }
 
     @Test

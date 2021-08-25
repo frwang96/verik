@@ -16,16 +16,9 @@
 
 package io.verik.compiler.core.common
 
-import io.verik.compiler.main.m
-
 class CoreCardinalConstantDeclaration(
     val value: Int
 ) : CoreCardinalDeclaration() {
-
-    init {
-        if (value < 0)
-            m.error("Cardinal must be a natural number: $value", null)
-    }
 
     override var name = "Cardinal"
 

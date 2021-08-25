@@ -24,7 +24,7 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreClassDeclaration
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 
 object UnaryExpressionReducer : PreTransformerStage() {
 
@@ -65,7 +65,7 @@ object UnaryExpressionReducer : PreTransformerStage() {
                     return
                 }
             }
-            m.error("Unary expression could not be reduced", unaryExpression)
+            Messages.INTERNAL_ERROR.on(unaryExpression, "Unary expression could not be reduced")
         }
     }
 }
