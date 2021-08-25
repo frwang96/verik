@@ -17,7 +17,7 @@
 package io.verik.compiler.common
 
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 import kotlin.reflect.KClass
 
 class StageSequence {
@@ -26,7 +26,10 @@ class StageSequence {
 
     fun add(stage: ProjectStage) {
         if (contains(stage::class))
-            m.fatal("Stage has already been added to stage sequence: ${stage::class.simpleName}", null)
+            Messages.INTERNAL_ERROR.on(
+                null,
+                "Stage has already been added to the stage sequence: ${stage::class.simpleName}"
+            )
         stages.add(stage)
     }
 

@@ -20,9 +20,10 @@ import io.verik.compiler.ast.interfaces.ResizableElementContainer
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.common.replaceIfContains
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 import java.nio.file.Path
+import java.nio.file.Paths
 
 class EFile(
     override val location: SourceLocation,
@@ -46,7 +47,7 @@ class EFile(
     override fun replaceChild(oldElement: EElement, newElement: EElement) {
         newElement.parent = this
         if (!members.replaceIfContains(oldElement, newElement))
-            m.error("Could not find $oldElement in $this", this)
+            Messages.INTERNAL_ERROR.on(this, "Could not find $oldElement in $this")
     }
 
     override fun insertChild(element: EElement) {
@@ -55,7 +56,11 @@ class EFile(
     }
 
     fun getOutputPathNotNull(): Path {
-        return outputPath
-            ?: m.fatal("File output path not specified", location)
+        return if (outputPath != null) {
+            outputPath
+        } else {
+            Messages.INTERNAL_ERROR.on(location, "File output path not specified")
+            Paths.get("")
+        }
     }
 }

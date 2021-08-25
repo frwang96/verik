@@ -22,7 +22,7 @@ import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 
 class EInlineIfExpression(
@@ -57,7 +57,7 @@ class EInlineIfExpression(
             condition -> condition = newExpression
             thenExpression -> thenExpression = newExpression
             elseExpression -> elseExpression = newExpression
-            else -> m.error("Could not find $oldExpression in $this", this)
+            else -> Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
         }
     }
 

@@ -19,7 +19,7 @@ package io.verik.compiler.ast.element.common
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 
 abstract class EAbstractReferenceExpression : EExpression(), Reference, ExpressionContainer {
 
@@ -34,6 +34,6 @@ abstract class EAbstractReferenceExpression : EExpression(), Reference, Expressi
         if (receiver == oldExpression)
             receiver = newExpression
         else
-            m.error("Could not find $oldExpression in $this", this)
+            Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
     }
 }

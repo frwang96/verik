@@ -22,7 +22,7 @@ import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 
 class EFunctionLiteralExpression(
@@ -52,7 +52,7 @@ class EFunctionLiteralExpression(
             body = newExpression.cast()
                 ?: return
         else
-            m.error("Could not find $oldExpression in $this", this)
+            Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
     }
 
     override fun copy(): EExpression {

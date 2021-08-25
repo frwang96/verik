@@ -21,7 +21,7 @@ import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.StringEntry
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 
 abstract class EAbstractStringEntryContainer : EExpression(), ExpressionContainer {
 
@@ -46,6 +46,6 @@ abstract class EAbstractStringEntryContainer : EExpression(), ExpressionContaine
                 return
             }
         }
-        m.error("Could not find $oldExpression in $this", this)
+        Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
     }
 }

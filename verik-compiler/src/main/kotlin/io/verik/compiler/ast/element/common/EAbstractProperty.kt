@@ -19,7 +19,7 @@ package io.verik.compiler.ast.element.common
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 
 abstract class EAbstractProperty : EExpression(), Declaration, ExpressionContainer {
 
@@ -34,11 +34,11 @@ abstract class EAbstractProperty : EExpression(), Declaration, ExpressionContain
         if (initializer == oldExpression)
             initializer = newExpression
         else
-            m.error("Could not find $oldExpression in $this", this)
+            Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
     }
 
     override fun copy(): EExpression {
-        m.error("Unable to copy $this", this)
+        Messages.INTERNAL_ERROR.on(this, "Unable to copy $this")
         return ENullExpression(location)
     }
 }

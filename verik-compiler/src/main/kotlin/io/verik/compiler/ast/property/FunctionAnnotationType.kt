@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast.property
 
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtElement
 
@@ -36,7 +36,7 @@ enum class FunctionAnnotationType {
                     "io.verik.core.Run" -> RUN
                     "io.verik.core.Task" -> TASK
                     else -> {
-                        m.error("Annotation not recognized: ${fqName.shortName()}", element)
+                        Messages.ANNOTATION_NOT_RECOGNIZED.on(element, fqName)
                         null
                     }
                 }

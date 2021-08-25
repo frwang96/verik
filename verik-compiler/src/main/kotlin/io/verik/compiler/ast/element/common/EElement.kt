@@ -18,7 +18,7 @@ package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 
 abstract class EElement {
@@ -31,7 +31,7 @@ abstract class EElement {
         val parent = parent
         return if (parent != null) parent
         else {
-            m.error("Parent element of $this should not be null", this)
+            Messages.INTERNAL_ERROR.on(this, "Parent element of $this should not be null")
             ENullElement(location)
         }
     }
@@ -40,7 +40,7 @@ abstract class EElement {
         return when (this) {
             is E -> this
             else -> {
-                m.error("Could not cast element: Expected ${E::class.simpleName} actual $this", location)
+                Messages.INTERNAL_ERROR.on(this, "Could not cast element: Expected ${E::class.simpleName} actual $this")
                 null
             }
         }

@@ -20,7 +20,7 @@ import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.replaceIfContains
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 
 abstract class EAbstractCallExpression : EExpression(), Reference, ExpressionContainer {
 
@@ -37,6 +37,6 @@ abstract class EAbstractCallExpression : EExpression(), Reference, ExpressionCon
         if (receiver == oldExpression)
             receiver = newExpression
         else if (!valueArguments.replaceIfContains(oldExpression, newExpression))
-            m.error("Could not find $oldExpression in $this", this)
+            Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
     }
 }

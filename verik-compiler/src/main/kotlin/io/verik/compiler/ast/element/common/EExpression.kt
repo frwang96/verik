@@ -19,7 +19,7 @@ package io.verik.compiler.ast.element.common
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.ast.property.Type
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 
 abstract class EExpression : EElement() {
 
@@ -34,6 +34,6 @@ abstract class EExpression : EElement() {
         if (parent is ExpressionContainer)
             parent.replaceChild(this, expression)
         else
-            m.error("Could not replace $this in $parent", this)
+            Messages.INTERNAL_ERROR.on(this, "Could not replace $this in $parent")
     }
 }

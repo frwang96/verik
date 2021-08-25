@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast.property
 
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 import org.jetbrains.kotlin.com.intellij.psi.tree.IElementType
 
@@ -29,7 +29,7 @@ enum class KtUnaryOperatorKind {
             return when (token.toString()) {
                 "EXCL" -> EXCL
                 else -> {
-                    m.error("Unrecognised unary operator kind: $token", location)
+                    Messages.INTERNAL_ERROR.on(location, "Unrecognised unary operator kind: $token")
                     null
                 }
             }

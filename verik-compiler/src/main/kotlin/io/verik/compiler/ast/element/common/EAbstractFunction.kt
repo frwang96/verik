@@ -20,7 +20,7 @@ import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 
 abstract class EAbstractFunction : EElement(), Declaration, ExpressionContainer {
 
@@ -37,6 +37,6 @@ abstract class EAbstractFunction : EElement(), Declaration, ExpressionContainer 
         if (body == oldExpression)
             body = newExpression.cast()
         else
-            m.error("Could not find $oldExpression in $this", this)
+            Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
     }
 }

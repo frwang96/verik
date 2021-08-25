@@ -16,6 +16,7 @@
 
 package io.verik.compiler.message
 
+import org.jetbrains.kotlin.name.FqName
 import kotlin.reflect.full.memberProperties
 
 object Messages {
@@ -33,6 +34,11 @@ object Messages {
     val KOTLIN_COMPILE_ERROR = MessageTemplate1<String>(
         Severity.ERROR,
         "$0"
+    )
+
+    val ANNOTATION_NOT_RECOGNIZED = MessageTemplate1<FqName>(
+        Severity.WARNING,
+        "Annotation not recognized: $0"
     )
 
     val KEYWORD_CONFLICT_SYSTEM_VERILOG = MessageTemplate1<String>(

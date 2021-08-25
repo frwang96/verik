@@ -21,7 +21,7 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 
 abstract class EProceduralBlock : EElement(), Declaration, ExpressionContainer {
 
@@ -37,6 +37,6 @@ abstract class EProceduralBlock : EElement(), Declaration, ExpressionContainer {
             body = newExpression.cast()
                 ?: return
         else
-            m.error("Could not find $oldExpression in $this", this)
+            Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
     }
 }

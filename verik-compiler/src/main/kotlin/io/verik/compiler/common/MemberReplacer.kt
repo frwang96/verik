@@ -23,7 +23,7 @@ import io.verik.compiler.ast.interfaces.ElementContainer
 import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 
 class MemberReplacer(val projectContext: ProjectContext) {
 
@@ -34,12 +34,14 @@ class MemberReplacer(val projectContext: ProjectContext) {
         if (parent is ElementContainer)
             parent.replaceChild(oldElement, newElement)
         else
-            m.error("Could not replace $oldElement in $parent", oldElement)
+            Messages.INTERNAL_ERROR.on(oldElement, "Could not replace $oldElement in $parent")
+
         if (oldElement !is Declaration)
-            m.fatal("Declaration expected but got: $oldElement", oldElement)
-        if (newElement !is Declaration)
-            m.fatal("Declaration expected but got: $newElement", newElement)
-        replacementMap[oldElement] = newElement
+            Messages.INTERNAL_ERROR.on(oldElement, "Declaration expected but got: $oldElement")
+        else if (newElement !is Declaration)
+            Messages.INTERNAL_ERROR.on(newElement, "Declaration expected but got: $newElement")
+        else
+            replacementMap[oldElement] = newElement
     }
 
     fun updateReferences() {

@@ -17,6 +17,8 @@
 package io.verik.compiler.message
 
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.common.location
+import org.jetbrains.kotlin.psi.KtElement
 
 class MessageTemplate0(
     override val severity: Severity,
@@ -35,6 +37,10 @@ class MessageTemplate1<A>(
 
     fun on(location: SourceLocation?, a: A) {
         MessageCollector.messageCollector.message(name, format(a), location, severity)
+    }
+
+    fun on(element: KtElement, a: A) {
+        MessageCollector.messageCollector.message(name, format(a), element.location(), severity)
     }
 
     fun on(element: EElement, a: A) {

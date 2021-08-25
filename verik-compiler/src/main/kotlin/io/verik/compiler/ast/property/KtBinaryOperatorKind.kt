@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast.property
 
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 import org.jetbrains.kotlin.com.intellij.psi.tree.IElementType
 
@@ -39,7 +39,7 @@ enum class KtBinaryOperatorKind {
                 "PLUSEQ" -> PLUS_EQ
                 "MINUSEQ" -> MINUS_EQ
                 else -> {
-                    m.error("Unrecognised binary operator kind: $token", location)
+                    Messages.INTERNAL_ERROR.on(location, "Unrecognised binary operator kind: $token")
                     null
                 }
             }

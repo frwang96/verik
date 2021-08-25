@@ -19,7 +19,7 @@ package io.verik.compiler.ast.interfaces
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.location
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 import org.jetbrains.kotlin.psi.KtElement
 
@@ -46,7 +46,10 @@ inline fun <reified T> Declaration.cast(location: SourceLocation): T? {
         else -> {
             val expectedName = T::class.simpleName
             val actualName = this::class.simpleName
-            m.error("Could not cast declaration: Expected $expectedName actual $actualName", location)
+            Messages.INTERNAL_ERROR.on(
+                location,
+                "Could not cast declaration: Expected $expectedName actual $actualName"
+            )
             null
         }
     }
