@@ -40,6 +40,16 @@ tasks.register("check") {
     }
 }
 
+tasks.register("sanity") {
+    group = "verification"
+    dependsOn("test")
+    dependsOn("check")
+    exampleNames.forEach {
+        if (it !in excludedExampleNames)
+            dependsOn(gradle.includedBuild("verik-examples").task(":$it:verik"))
+    }
+}
+
 tasks.register("format") {
     group = "formatting"
     dependsOn(gradle.includedBuild("verik-kotlin").task(":ktlintFormat"))
@@ -51,14 +61,11 @@ tasks.register("format") {
     }
 }
 
-tasks.register("sanity") {
-    group = "verification"
-    dependsOn("test")
-    dependsOn("check")
-    exampleNames.forEach {
-        if (it !in excludedExampleNames)
-            dependsOn(gradle.includedBuild("verik-examples").task(":$it:verik"))
-    }
+tasks.register("formatSanity") {
+    group = "formatting"
+    dependsOn("format")
+    dependsOn("sanity")
+    tasks.getByName("sanity").mustRunAfter("format")
 }
 
 tasks.register("clean") {

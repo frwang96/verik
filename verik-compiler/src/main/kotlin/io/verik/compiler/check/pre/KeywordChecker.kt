@@ -20,7 +20,7 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 
 object KeywordChecker : PreCheckerStage() {
 
@@ -33,20 +33,13 @@ object KeywordChecker : PreCheckerStage() {
         override fun visitElement(element: EElement) {
             super.visitElement(element)
             if (element is Declaration) {
-                if (element.name in vkKeywords)
-                    m.error("Conflict with Verik reserved keyword: ${element.name}", element)
-                if (element.name in svKeywords)
-                    m.error("Conflict with SystemVerilog reserved keyword: ${element.name}", element)
+                if (element.name in keywords)
+                    Messages.KEYWORD_CONFLICT_SYSTEM_VERILOG.on(element, element.name)
             }
         }
     }
 
-    private val vkKeywords = setOf(
-        "vinit",
-        "vnew"
-    )
-
-    private val svKeywords = setOf(
+    private val keywords = setOf(
         "alias",
         "always",
         "always_comb",

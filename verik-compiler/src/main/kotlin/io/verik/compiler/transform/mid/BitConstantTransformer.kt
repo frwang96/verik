@@ -22,7 +22,7 @@ import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 
 object BitConstantTransformer : MidTransformerStage() {
 
@@ -34,11 +34,11 @@ object BitConstantTransformer : MidTransformerStage() {
         val valueInt = value.toInt()
         val valueWidth = 32 - valueInt.countLeadingZeroBits()
         if (width == 0) {
-            m.error("Bit constant cannot have zero width", element)
+            Messages.BIT_ZERO_WIDTH.on(element)
             return "1'h0"
         }
         if (width < valueWidth) {
-            m.warning("Converting constant $value to width $width results in truncation", element)
+            Messages.BIT_CONSTANT_TRUNCATION.on(element, valueInt, width)
             return "1'h0"
         }
         val valueString = valueInt.toString(16)

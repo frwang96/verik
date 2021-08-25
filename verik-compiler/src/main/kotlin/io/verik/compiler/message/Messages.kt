@@ -20,15 +20,40 @@ import kotlin.reflect.full.memberProperties
 
 object Messages {
 
-    val KOTLIN_COMPILE_WARNING = WarningMessageTemplate("$1")
-    val KOTLIN_COMPILE_ERROR = ErrorMessageTemplate("$1")
+    val INTERNAL_ERROR = MessageTemplate1<String>(
+        Severity.ERROR,
+        "$0"
+    )
 
-    val INTERNAL_ERROR = FatalMessageTemplate("$1")
+    val KOTLIN_COMPILE_WARNING = MessageTemplate1<String>(
+        Severity.WARNING,
+        "$0"
+    )
+
+    val KOTLIN_COMPILE_ERROR = MessageTemplate1<String>(
+        Severity.ERROR,
+        "$0"
+    )
+
+    val KEYWORD_CONFLICT_SYSTEM_VERILOG = MessageTemplate1<String>(
+        Severity.ERROR,
+        "Conflict with SystemVerilog reserved keyword: $0"
+    )
+
+    val BIT_ZERO_WIDTH = MessageTemplate0(
+        Severity.ERROR,
+        "Bit type cannot have zero width"
+    )
+
+    val BIT_CONSTANT_TRUNCATION = MessageTemplate2<Int, Int>(
+        Severity.WARNING,
+        "Converting constant $0 to width $1 results in truncation"
+    )
 
     init {
         Messages::class.memberProperties.forEach {
             val messageTemplate = it.get(Messages)
-            if (messageTemplate is MessageTemplate)
+            if (messageTemplate is AbstractMessageTemplate)
                 messageTemplate.name = it.name
         }
     }

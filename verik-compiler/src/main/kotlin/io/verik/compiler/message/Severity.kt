@@ -16,9 +16,7 @@
 
 package io.verik.compiler.message
 
-abstract class MessagePrinter {
-
-    abstract fun warning(templateName: String, message: String, location: SourceLocation?)
-
-    abstract fun error(templateName: String, message: String, location: SourceLocation?)
+enum class Severity {
+    WARNING,
+    ERROR
 }

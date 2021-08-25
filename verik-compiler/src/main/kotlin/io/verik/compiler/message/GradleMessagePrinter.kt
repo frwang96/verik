@@ -43,7 +43,7 @@ class GradleMessagePrinter(private val debug: Boolean) : MessagePrinter() {
     companion object {
 
         fun printStackTrace(stackTrace: Array<StackTraceElement>) {
-            val firstIndex = stackTrace.indexOfFirst { it.className.contains("MessageTemplate") } + 1
+            val firstIndex = stackTrace.indexOfLast { it.className.contains("MessageTemplate") } + 1
             val lastIndex = stackTrace.indexOfFirst { it.className == "io.verik.compiler.main.Main" } + 1
             for (index in firstIndex until lastIndex) {
                 println("    at ${stackTrace[index]}")

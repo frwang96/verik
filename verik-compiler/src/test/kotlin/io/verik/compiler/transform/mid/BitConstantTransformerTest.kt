@@ -65,7 +65,7 @@ internal class BitConstantTransformerTest : BaseTest() {
                     var x = u<`0`>(0)
                 """.trimIndent()
             )
-        }.apply { assertEquals("Bit constant cannot have zero width", message) }
+        }.apply { assertEquals("Bit type cannot have zero width", message) }
     }
 
     @Test
