@@ -37,12 +37,6 @@ class GradleDeprecatedMessageCollector(config: Config) : DeprecatedMessageCollec
         if (errorCount >= MAX_ERROR_COUNT) throw MessageCollectorException()
     }
 
-    override fun warning(message: String, location: SourceLocation?) {
-        print("w: ")
-        printMessage(message, location)
-        if (debug) printStackTrace()
-    }
-
     override fun flush() {
         if (errorCount != 0) throw MessageCollectorException()
     }

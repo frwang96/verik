@@ -17,7 +17,7 @@
 package io.verik.compiler.check.cast
 
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.psi.KtClassLiteralExpression
 import org.jetbrains.kotlin.psi.KtDestructuringDeclaration
 import org.jetbrains.kotlin.psi.KtDoubleColonExpression
@@ -38,39 +38,39 @@ object UnsupportedElementChecker : CastCheckerStage() {
     object UnsupportedElementVisitor : KtTreeVisitorVoid() {
 
         override fun visitDestructuringDeclaration(destructuringDeclaration: KtDestructuringDeclaration) {
-            m.error("Destructuring declaration not supported", destructuringDeclaration)
+            Messages.ELEMENT_NOT_SUPPORTED.on(destructuringDeclaration, "Destructuring declaration")
         }
 
         override fun visitImportAlias(importAlias: KtImportAlias) {
-            m.error("Import alias not supported", importAlias)
+            Messages.ELEMENT_NOT_SUPPORTED.on(importAlias, "Import alias")
         }
 
         override fun visitPropertyDelegate(delegate: KtPropertyDelegate) {
-            m.error("Property delegate not supported", delegate)
+            Messages.ELEMENT_NOT_SUPPORTED.on(delegate, "Property delegate")
         }
 
         override fun visitThrowExpression(expression: KtThrowExpression) {
-            m.error("Throw expression not supported", expression)
+            Messages.ELEMENT_NOT_SUPPORTED.on(expression, "Throw expression")
         }
 
         override fun visitTryExpression(expression: KtTryExpression) {
-            m.error("Try expression not supported", expression)
+            Messages.ELEMENT_NOT_SUPPORTED.on(expression, "Try expression")
         }
 
         override fun visitDoubleColonExpression(expression: KtDoubleColonExpression) {
-            m.error("Double colon expression not supported", expression)
+            Messages.ELEMENT_NOT_SUPPORTED.on(expression, "Double colon expression")
         }
 
         override fun visitClassLiteralExpression(expression: KtClassLiteralExpression) {
-            m.error("Class literal expression not supported", expression)
+            Messages.ELEMENT_NOT_SUPPORTED.on(expression, "Class literal expression")
         }
 
         override fun visitSafeQualifiedExpression(expression: KtSafeQualifiedExpression) {
-            m.error("Safe qualified expression not supported", expression)
+            Messages.ELEMENT_NOT_SUPPORTED.on(expression, "Safe qualified expression")
         }
 
         override fun visitObjectLiteralExpression(expression: KtObjectLiteralExpression) {
-            m.error("Object literal expression not supported", expression)
+            Messages.ELEMENT_NOT_SUPPORTED.on(expression, "Object literal expression")
         }
     }
 }

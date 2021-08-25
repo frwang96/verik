@@ -24,7 +24,7 @@ import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 
 object DeclarationTypeChecker : NormalizationStage() {
 
@@ -39,7 +39,7 @@ object DeclarationTypeChecker : NormalizationStage() {
             super.visitFile(file)
             file.members.forEach {
                 if (it !is Declaration)
-                    m.fatal("Declaration expected but got: $it", it)
+                    Messages.INTERNAL_ERROR.on(it, "Declaration expected but got: $it")
             }
         }
 
@@ -47,7 +47,7 @@ object DeclarationTypeChecker : NormalizationStage() {
             super.visitAbstractClass(abstractClass)
             abstractClass.members.forEach {
                 if (it !is Declaration)
-                    m.fatal("Declaration expected but got: $it", it)
+                    Messages.INTERNAL_ERROR.on(it, "Declaration expected but got: $it")
             }
         }
 
@@ -55,7 +55,7 @@ object DeclarationTypeChecker : NormalizationStage() {
             super.visitEnum(enum)
             enum.entryReferences.forEach {
                 if (it !is EAbstractEnumEntry)
-                    m.fatal("Enum entry expected but got: $it", if (it is EElement) it else enum)
+                    Messages.INTERNAL_ERROR.on(if (it is EElement) it else enum, "Enum entry expected but got: $it")
             }
         }
     }

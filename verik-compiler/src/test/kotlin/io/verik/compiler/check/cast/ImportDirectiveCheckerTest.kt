@@ -35,7 +35,7 @@ internal class ImportDirectiveCheckerTest : BaseTest() {
                 """.trimIndent()
             )
         }.apply {
-            assertEquals("Import package not found: java.time", message)
+            assertEquals("Package not found: java.time", message)
         }
     }
 
@@ -49,7 +49,7 @@ internal class ImportDirectiveCheckerTest : BaseTest() {
                 """.trimIndent()
             )
         }.apply {
-            assertEquals("Import package not found: java.time", message)
+            assertEquals("Package not found: java.time", message)
         }
     }
 }

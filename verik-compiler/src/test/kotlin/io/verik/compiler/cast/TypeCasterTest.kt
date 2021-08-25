@@ -223,7 +223,7 @@ internal class TypeCasterTest : BaseTest() {
                 """.trimIndent()
             )
         }.apply {
-            assertEquals("Cardinal type parameter expected", message)
+            assertEquals("Cardinal type expected", message)
         }
     }
 }

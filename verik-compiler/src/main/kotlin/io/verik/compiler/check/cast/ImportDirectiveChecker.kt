@@ -18,7 +18,7 @@ package io.verik.compiler.check.cast
 
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.psi.KtImportDirective
 import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 
@@ -30,9 +30,9 @@ object ImportDirectiveChecker : CastCheckerStage() {
         projectContext.ktFiles.forEach {
             val packageName = it.packageFqName.asString()
             if (packageName == "")
-                m.fatal("Use of the root package is prohibited", it)
+                Messages.PACKAGE_NAME_ROOT.on(it)
             if (packageName in listOf(CorePackage.VK.name, CorePackage.SV.name, CorePackage.ROOT.name))
-                m.fatal("Package name is reserved: $packageName", it)
+                Messages.PACKAGE_NAME_RESERVED.on(it, packageName)
             packageNames.add(it.packageFqName.toString())
         }
 
@@ -50,7 +50,7 @@ object ImportDirectiveChecker : CastCheckerStage() {
                 importDirective.importedFqName!!.parent().toString()
             }
             if (packageName !in packageNames)
-                m.error("Import package not found: $packageName", importDirective)
+                Messages.PACkAGE_NOT_FOUND.on(importDirective, packageName)
         }
     }
 }

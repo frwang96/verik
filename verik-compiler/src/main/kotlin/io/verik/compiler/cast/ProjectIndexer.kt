@@ -24,7 +24,7 @@ import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.location
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtElement
 import org.jetbrains.kotlin.psi.KtEnumEntry
@@ -50,7 +50,7 @@ object ProjectIndexer : CasterStage() {
 
         private fun checkDeclarationName(name: String, element: KtElement) {
             if (!name.matches(nameRegex))
-                m.error("Illegal name: $name", element)
+                Messages.NAME_ILLEGAL.on(element, name)
         }
 
         override fun visitClassOrObject(classOrObject: KtClassOrObject) {

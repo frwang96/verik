@@ -17,8 +17,6 @@
 package io.verik.compiler.message
 
 import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.common.location
-import org.jetbrains.kotlin.psi.KtElement
 
 open class DeprecatedMessageCollector {
 
@@ -32,27 +30,9 @@ open class DeprecatedMessageCollector {
         errorCount++
     }
 
-    open fun warning(message: String, location: SourceLocation?) {}
-
     open fun flush() {}
-
-    fun fatal(message: String, element: EElement): Nothing {
-        fatal(message, element.location)
-    }
-
-    fun fatal(message: String, element: KtElement): Nothing {
-        fatal(message, element.location())
-    }
 
     fun error(message: String, element: EElement) {
         error(message, element.location)
-    }
-
-    fun error(message: String, element: KtElement) {
-        error(message, element.location())
-    }
-
-    fun warning(message: String, element: EElement) {
-        warning(message, element.location)
     }
 }

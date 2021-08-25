@@ -24,7 +24,7 @@ import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.interfaces.cast
 import io.verik.compiler.ast.property.FunctionAnnotationType
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtEnumEntry
@@ -87,8 +87,7 @@ object DeclarationCaster {
             0 -> null
             1 -> annotationTypes.first()
             else -> {
-                val annotationTypesString = annotationTypes.joinToString { it.toString() }
-                m.error("Conflicting annotations: $annotationTypesString", function)
+                Messages.ANNOTATION_CONFLICT.on(function, annotationTypes.joinToString { it.toString() })
                 null
             }
         }

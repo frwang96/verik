@@ -21,7 +21,7 @@ import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.LiteralStringEntry
 import io.verik.compiler.ast.property.StringEntry
 import io.verik.compiler.common.location
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.psi.KtEscapeStringTemplateEntry
 import org.jetbrains.kotlin.psi.KtLiteralStringTemplateEntry
 import org.jetbrains.kotlin.psi.KtStringTemplateEntry
@@ -50,7 +50,7 @@ object StringTemplateExpressionCaster {
                 ExpressionStringEntry(expression)
             }
             else -> {
-                m.error("Unrecognized string template entry: ${entry::class.simpleName}", entry)
+                Messages.INTERNAL_ERROR.on(entry, "Unrecognized string template entry: ${entry::class.simpleName}")
                 LiteralStringEntry("")
             }
         }

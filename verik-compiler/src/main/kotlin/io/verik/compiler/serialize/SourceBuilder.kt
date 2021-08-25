@@ -20,7 +20,7 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.backend.common.peek
 import org.jetbrains.kotlin.backend.common.pop
 import org.jetbrains.kotlin.backend.common.push
@@ -37,7 +37,7 @@ class SourceBuilder(
 
     fun toTextFile(): TextFile {
         if (sourceActionLine.sourceActions.isNotEmpty())
-            m.fatal("Serialized source must end with a new line", file)
+            Messages.INTERNAL_ERROR.on(file, "Serialized source must end with a new line")
 
         val sourceBuilder = StringBuilder()
         val fileHeader = FileHeaderBuilder.build(
@@ -71,11 +71,11 @@ class SourceBuilder(
 
     fun indent(block: () -> Unit) {
         if (sourceActionLine.sourceActions.isNotEmpty())
-            m.fatal("Indent in must start at a new line", file)
+            Messages.INTERNAL_ERROR.on(file, "Indent in must start at a new line")
         sourceActionLine = SourceActionLine(++indent, ArrayList())
         block()
         if (sourceActionLine.sourceActions.isNotEmpty())
-            m.fatal("Indent out must start at a new line", file)
+            Messages.INTERNAL_ERROR.on(file, "Indent out must start at a new line")
         sourceActionLine = SourceActionLine(--indent, ArrayList())
     }
 

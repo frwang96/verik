@@ -25,6 +25,10 @@ class MessageTemplate0(
     override val template: String
 ) : AbstractMessageTemplate() {
 
+    fun on(element: KtElement) {
+        MessageCollector.messageCollector.message(name, format(), element.location(), severity)
+    }
+
     fun on(element: EElement) {
         MessageCollector.messageCollector.message(name, format(), element.location, severity)
     }

@@ -31,7 +31,7 @@ import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 
 object UntransformedElementChecker : PostCheckerStage() {
 
@@ -45,63 +45,63 @@ object UntransformedElementChecker : PostCheckerStage() {
 
         override fun visitNullElement(nullElement: EElement) {
             super.visitNullElement(nullElement)
-            m.error("Unexpected null element", nullElement)
+            Messages.INTERNAL_ERROR.on(nullElement, "Unexpected null element")
         }
 
         override fun visitKtBasicClass(basicClass: EKtBasicClass) {
             super.visitKtBasicClass(basicClass)
-            m.error("Class ${basicClass.name} $message", basicClass)
+            Messages.INTERNAL_ERROR.on(basicClass, "Class ${basicClass.name} $message")
         }
 
         override fun visitKtFunction(function: EKtFunction) {
             super.visitKtFunction(function)
-            m.error("Function ${function.name} $message", function)
+            Messages.INTERNAL_ERROR.on(function, "Function ${function.name} $message")
         }
 
         override fun visitKtProperty(property: EKtProperty) {
             super.visitKtProperty(property)
-            m.error("Property ${property.name} $message", property)
+            Messages.INTERNAL_ERROR.on(property, "Property ${property.name} $message")
         }
 
         override fun visitKtEnumEntry(enumEntry: EKtEnumEntry) {
             super.visitKtEnumEntry(enumEntry)
-            m.error("Enum entry ${enumEntry.name} $message", enumEntry)
+            Messages.INTERNAL_ERROR.on(enumEntry, "Enum entry ${enumEntry.name} $message")
         }
 
         override fun visitKtBlockExpression(blockExpression: EKtBlockExpression) {
             super.visitKtBlockExpression(blockExpression)
-            m.error("Block expression $message", blockExpression)
+            Messages.INTERNAL_ERROR.on(blockExpression, "Block expression $message")
         }
 
         override fun visitKtUnaryExpression(unaryExpression: EKtUnaryExpression) {
             super.visitKtUnaryExpression(unaryExpression)
-            m.error("Unary expression $message", unaryExpression)
+            Messages.INTERNAL_ERROR.on(unaryExpression, "Unary expression $message")
         }
 
         override fun visitKtBinaryExpression(binaryExpression: EKtBinaryExpression) {
             super.visitKtBinaryExpression(binaryExpression)
-            m.error("Binary expression $message", binaryExpression)
+            Messages.INTERNAL_ERROR.on(binaryExpression, "Binary expression $message")
         }
 
         override fun visitKtReferenceExpression(referenceExpression: EKtReferenceExpression) {
             super.visitKtReferenceExpression(referenceExpression)
-            m.error("Reference expression $message", referenceExpression)
+            Messages.INTERNAL_ERROR.on(referenceExpression, "Reference expression $message")
         }
 
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
-            m.error("Call expression $message", callExpression)
+            Messages.INTERNAL_ERROR.on(callExpression, "Call expression $message")
         }
 
         override fun visitSvCallExpression(callExpression: ESvCallExpression) {
             super.visitSvCallExpression(callExpression)
             if (callExpression.reference is CoreKtFunctionDeclaration)
-                m.error("Call expression $message: ${callExpression.reference.name}", callExpression)
+                Messages.INTERNAL_ERROR.on(callExpression, "Call expression reference $message")
         }
 
         override fun visitStringTemplateExpression(stringTemplateExpression: EStringTemplateExpression) {
             super.visitStringTemplateExpression(stringTemplateExpression)
-            m.error("String template expression $message", stringTemplateExpression)
+            Messages.INTERNAL_ERROR.on(stringTemplateExpression, "String template expression $message")
         }
     }
 }

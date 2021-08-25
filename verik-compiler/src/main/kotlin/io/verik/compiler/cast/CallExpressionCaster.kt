@@ -18,7 +18,7 @@ package io.verik.compiler.cast
 
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.property.Type
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.descriptors.SimpleFunctionDescriptor
 import org.jetbrains.kotlin.psi.KtCallExpression
 
@@ -31,7 +31,7 @@ object CallExpressionCaster {
         val resolvedValueArguments = resolvedCall.valueArgumentsByIndex!!
         resolvedValueArguments.forEach {
             if (it.arguments.size != 1)
-                m.error("Unable to cast resolved value argument", expression)
+                Messages.INTERNAL_ERROR.on(expression, "Unable to cast resolved value argument")
         }
         val valueArguments = resolvedValueArguments
             .map { it.arguments[0] }

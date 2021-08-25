@@ -20,7 +20,7 @@ import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.core.common.CoreDeclarationMap
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
 import org.jetbrains.kotlin.psi.KtElement
 import org.jetbrains.kotlin.psi.KtExpression
@@ -54,7 +54,7 @@ class CastContext(
         val declaration = declarationMap[declarationDescriptor]
             ?: CoreDeclarationMap[this, declarationDescriptor, element]
         return if (declaration == null) {
-            m.error("Could not identify declaration: ${declarationDescriptor.name}", element)
+            Messages.INTERNAL_ERROR.on(element, "Could not identify declaration: ${declarationDescriptor.name}")
             NullDeclaration
         } else declaration
     }

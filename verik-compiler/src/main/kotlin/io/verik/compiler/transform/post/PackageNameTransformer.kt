@@ -19,7 +19,7 @@ package io.verik.compiler.transform.post
 import io.verik.compiler.ast.element.common.EBasicPackage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 
 object PackageNameTransformer : PostTransformerStage() {
 
@@ -31,7 +31,8 @@ object PackageNameTransformer : PostTransformerStage() {
 
         override fun visitBasicPackage(basicPackage: EBasicPackage) {
             val name = if (basicPackage.name == "") {
-                m.fatal("Package name cannot be empty", basicPackage)
+                Messages.INTERNAL_ERROR.on(basicPackage, "Package name cannot be empty")
+                "pkg"
             } else {
                 val names = basicPackage.name.split(".")
                 names.joinToString(separator = "_", postfix = "_pkg")

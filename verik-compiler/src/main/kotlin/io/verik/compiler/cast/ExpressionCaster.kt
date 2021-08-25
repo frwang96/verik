@@ -28,7 +28,7 @@ import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.KtUnaryOperatorKind
 import io.verik.compiler.common.location
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.descriptors.PackageViewDescriptor
 import org.jetbrains.kotlin.psi.KtBinaryExpression
 import org.jetbrains.kotlin.psi.KtBlockExpression
@@ -129,7 +129,7 @@ object ExpressionCaster {
                 )
             }
             else -> {
-                m.error("Simple name expression or call expression expected", expression)
+                Messages.INTERNAL_ERROR.on(expression, "Simple name expression or call expression expected")
                 null
             }
         }

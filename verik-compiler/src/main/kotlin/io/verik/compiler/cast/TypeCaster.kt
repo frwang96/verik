@@ -18,9 +18,8 @@ package io.verik.compiler.cast
 
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.builtins.isFunctionType
-import org.jetbrains.kotlin.descriptors.impl.AbstractTypeParameterDescriptor
 import org.jetbrains.kotlin.psi.KtElement
 import org.jetbrains.kotlin.psi.KtExpression
 import org.jetbrains.kotlin.psi.KtTypeReference
@@ -48,9 +47,9 @@ object TypeCaster {
     fun cast(castContext: CastContext, typeReference: KtTypeReference): Type {
         val kotlinType: KotlinType = castContext.sliceType[typeReference]!!
         if (kotlinType.isMarkedNullable)
-            m.error("Nullable type not supported: $kotlinType", typeReference)
+            Messages.ELEMENT_NOT_SUPPORTED.on(typeReference, "Nullable type")
         if (kotlinType.isFunctionType)
-            m.error("Function type not supported: $kotlinType", typeReference)
+            Messages.ELEMENT_NOT_SUPPORTED.on(typeReference, "Function type")
         val declarationDescriptor = kotlinType.constructor.declarationDescriptor!!
         val declaration = castContext.getDeclaration(declarationDescriptor, typeReference)
         val userType = typeReference.typeElement as KtUserType
@@ -70,10 +69,7 @@ object TypeCaster {
         val arguments = userType.typeArgumentsAsTypes.map { castCardinalType(castContext, it) }
         val type = Type(declaration, ArrayList(arguments))
         if (!type.isCardinalType()) {
-            if (referenceTarget is AbstractTypeParameterDescriptor)
-                m.error("Cardinal type parameter expected", typeReference)
-            else
-                m.error("Cardinal type expected", typeReference)
+            Messages.CARDINAL_TYPE_EXPECTED.on(typeReference)
         }
         return type
     }
