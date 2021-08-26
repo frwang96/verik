@@ -42,11 +42,20 @@ class GradleMessagePrinter(private val debug: Boolean) : MessagePrinter() {
 
     companion object {
 
+        private const val STACK_TRACE_SIZE_MAX = 16
+        private const val STACK_TRACE_SIZE_TRUNCATED = 12
+
         fun printStackTrace(stackTrace: Array<StackTraceElement>) {
             val firstIndex = stackTrace.indexOfLast { it.className.contains("MessageTemplate") } + 1
             val lastIndex = stackTrace.indexOfFirst { it.className == "io.verik.compiler.main.Main" } + 1
-            for (index in firstIndex until lastIndex) {
-                println("    at ${stackTrace[index]}")
+            val truncatedList = stackTrace.toList().subList(firstIndex, lastIndex)
+            if (truncatedList.size < STACK_TRACE_SIZE_MAX) {
+                truncatedList.forEach { println("    at $it") }
+            } else {
+                truncatedList
+                    .take(STACK_TRACE_SIZE_TRUNCATED)
+                    .forEach { println("    at $it") }
+                println("    ... ${truncatedList.size - STACK_TRACE_SIZE_TRUNCATED} more ...")
             }
         }
     }
