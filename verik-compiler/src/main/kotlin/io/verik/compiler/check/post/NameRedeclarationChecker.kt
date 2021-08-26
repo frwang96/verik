@@ -21,7 +21,7 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 
 object NameRedeclarationChecker : PostCheckerStage() {
 
@@ -48,7 +48,7 @@ object NameRedeclarationChecker : PostCheckerStage() {
         fun checkDuplicates() {
             members.forEach {
                 if (it is Declaration && it.name in duplicateNames) {
-                    m.error("Name has already been declared: ${it.name}", it)
+                    Messages.NAME_REDECLARATION.on(it, it.name)
                 }
             }
         }

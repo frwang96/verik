@@ -17,6 +17,7 @@
 package io.verik.compiler.message
 
 import org.jetbrains.kotlin.name.FqName
+import java.nio.file.Path
 import kotlin.reflect.full.memberProperties
 
 object Messages {
@@ -26,7 +27,17 @@ object Messages {
         "$0"
     )
 
-//  CAST CHECK  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  PRE CHECK  /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    val FILE_NAME_RESERVED = MessageTemplate1<Path>(
+        Severity.ERROR,
+        "File name is reserved: $0"
+    )
+
+    val FILE_LOCATION_MISMATCH = MessageTemplate0(
+        Severity.ERROR,
+        "Package directive does not match file location"
+    )
 
     val PACKAGE_NAME_ROOT = MessageTemplate0(
         Severity.ERROR,
@@ -97,6 +108,13 @@ object Messages {
     val BIT_CONSTANT_TRUNCATION = MessageTemplate2<Int, Int>(
         Severity.WARNING,
         "Converting constant $0 to width $1 results in truncation"
+    )
+
+//  POST CHECK  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    val NAME_REDECLARATION = MessageTemplate1<String>(
+        Severity.ERROR,
+        "Name has already been declared: $0"
     )
 
     init {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.check.pre
+package io.verik.compiler.check.post
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestErrorException

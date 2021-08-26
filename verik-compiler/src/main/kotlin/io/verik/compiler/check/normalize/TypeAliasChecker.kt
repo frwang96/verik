@@ -25,7 +25,7 @@ import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 
 object TypeAliasChecker : NormalizationStage() {
 
@@ -45,7 +45,7 @@ object TypeAliasChecker : NormalizationStage() {
                 var alias = false
                 for (typeListType in typeList) {
                     if (type === typeListType) {
-                        m.error("Unexpected type aliasing: $type in $element", element)
+                        Messages.INTERNAL_ERROR.on(element, "Unexpected type aliasing: $type in $element")
                         alias = true
                         break
                     }

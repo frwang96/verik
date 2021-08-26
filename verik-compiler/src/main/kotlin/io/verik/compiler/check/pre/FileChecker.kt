@@ -17,19 +17,23 @@
 package io.verik.compiler.check.pre
 
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
+import java.nio.file.FileSystems
 import java.nio.file.Paths
 
 object FileChecker : PreCheckerStage() {
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.project.basicPackages.forEach { basicPackage ->
-            basicPackage.files.forEach {
-                if (it.inputPath.parent != basicPackage.inputPath)
-                    m.error("Package directive does not match file location", it)
-                if (it.inputPath.fileName == Paths.get("Pkg.kt"))
-                    m.error("File name is reserved: ${it.inputPath.fileName}", it)
-            }
+        projectContext.ktFiles.forEach {
+            val path = Paths.get(it.virtualFilePath)
+            if (path.fileName == Paths.get("Pkg.kt"))
+                Messages.FILE_NAME_RESERVED.on(it, path.fileName)
+
+            val packageName = it.packageFqName.asString()
+            val relativePath = packageName.replace(".", FileSystems.getDefault().separator)
+            val packagePath = projectContext.config.inputSourceDir.resolve(relativePath)
+            if (path.parent != packagePath)
+                Messages.FILE_LOCATION_MISMATCH.on(it)
         }
     }
 }

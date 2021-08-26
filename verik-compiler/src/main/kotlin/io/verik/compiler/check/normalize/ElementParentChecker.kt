@@ -20,7 +20,7 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.backend.common.pop
 import org.jetbrains.kotlin.backend.common.push
 
@@ -39,7 +39,10 @@ object ElementParentChecker : NormalizationStage() {
             val parent = element.parentNotNull()
             val expectedParent = parentStack.last()
             if (parent != expectedParent) {
-                m.error("Mismatch in parent element of $element: Expected $expectedParent but was $parent", element)
+                Messages.INTERNAL_ERROR.on(
+                    element,
+                    "Mismatch in parent element of $element: Expected $expectedParent but was $parent"
+                )
             }
             parentStack.push(element)
             super.visitElement(element)
@@ -48,7 +51,7 @@ object ElementParentChecker : NormalizationStage() {
 
         override fun visitProject(project: EProject) {
             if (project.parent != null)
-                m.error("Parent element should be null", project)
+                Messages.INTERNAL_ERROR.on(project, "Parent element should be null")
             parentStack.push(project)
             project.acceptChildren(this)
             parentStack.pop()

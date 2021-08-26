@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.check.pre
+package io.verik.compiler.check.post
 
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.interfaces.Declaration
@@ -22,7 +22,7 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 
-object KeywordChecker : PreCheckerStage() {
+object KeywordChecker : PostCheckerStage() {
 
     override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(KeywordVisitor)

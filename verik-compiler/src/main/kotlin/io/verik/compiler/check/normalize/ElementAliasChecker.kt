@@ -19,7 +19,7 @@ package io.verik.compiler.check.normalize
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 
 object ElementAliasChecker : NormalizationStage() {
 
@@ -35,7 +35,7 @@ object ElementAliasChecker : NormalizationStage() {
         override fun visitElement(element: EElement) {
             super.visitElement(element)
             if (element in elementSet)
-                m.error("Unexpected element aliasing: $element", element)
+                Messages.INTERNAL_ERROR.on(element, "Unexpected element aliasing: $element")
             elementSet.add(element)
         }
     }

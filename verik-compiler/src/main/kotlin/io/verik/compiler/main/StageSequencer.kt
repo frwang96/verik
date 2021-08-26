@@ -18,12 +18,12 @@ package io.verik.compiler.main
 
 import io.verik.compiler.cast.ProjectCaster
 import io.verik.compiler.cast.ProjectIndexer
-import io.verik.compiler.check.cast.ImportDirectiveChecker
-import io.verik.compiler.check.cast.UnsupportedElementChecker
+import io.verik.compiler.check.post.KeywordChecker
 import io.verik.compiler.check.post.NameRedeclarationChecker
 import io.verik.compiler.check.post.UntransformedElementChecker
 import io.verik.compiler.check.pre.FileChecker
-import io.verik.compiler.check.pre.KeywordChecker
+import io.verik.compiler.check.pre.ImportDirectiveChecker
+import io.verik.compiler.check.pre.UnsupportedElementChecker
 import io.verik.compiler.common.StageSequence
 import io.verik.compiler.compile.KotlinCompilerAnalyzer
 import io.verik.compiler.compile.KotlinCompilerParser
@@ -69,17 +69,14 @@ object StageSequencer {
         stageSequence.add(KotlinCompilerParser)
         stageSequence.add(KotlinCompilerAnalyzer)
 
-        // CastCheck
+        // PreCheck
         stageSequence.add(UnsupportedElementChecker)
+        stageSequence.add(FileChecker)
         stageSequence.add(ImportDirectiveChecker)
 
         // Cast
         stageSequence.add(ProjectIndexer)
         stageSequence.add(ProjectCaster)
-
-        // PreCheck
-        stageSequence.add(FileChecker)
-        stageSequence.add(KeywordChecker)
 
         // PreTransform
         stageSequence.add(AssignmentOperatorReducer)
@@ -120,6 +117,7 @@ object StageSequencer {
         stageSequence.add(ParenthesisInsertionTransformer)
 
         // PostCheck
+        stageSequence.add(KeywordChecker)
         stageSequence.add(NameRedeclarationChecker)
         stageSequence.add(UntransformedElementChecker)
 

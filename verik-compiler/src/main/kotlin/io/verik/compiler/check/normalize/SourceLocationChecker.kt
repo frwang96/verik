@@ -19,7 +19,7 @@ package io.verik.compiler.check.normalize
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 import java.nio.file.Path
 
 object SourceLocationChecker : NormalizationStage() {
@@ -38,7 +38,10 @@ object SourceLocationChecker : NormalizationStage() {
             if (element.location.path != path) {
                 val expectedPath = projectContext.config.projectDir.relativize(path)
                 val actualPath = projectContext.config.projectDir.relativize(element.location.path)
-                m.error("Mismatch in path for source location: Expected $expectedPath actual $actualPath", element)
+                Messages.INTERNAL_ERROR.on(
+                    element,
+                    "Mismatch in path for source location: Expected $expectedPath actual $actualPath"
+                )
             }
         }
     }

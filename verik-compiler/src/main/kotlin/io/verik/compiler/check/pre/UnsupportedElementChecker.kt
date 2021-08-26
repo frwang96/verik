@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.check.cast
+package io.verik.compiler.check.pre
 
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
@@ -29,7 +29,7 @@ import org.jetbrains.kotlin.psi.KtThrowExpression
 import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 import org.jetbrains.kotlin.psi.KtTryExpression
 
-object UnsupportedElementChecker : CastCheckerStage() {
+object UnsupportedElementChecker : PreCheckerStage() {
 
     override fun process(projectContext: ProjectContext) {
         projectContext.ktFiles.forEach { it.accept(UnsupportedElementVisitor) }

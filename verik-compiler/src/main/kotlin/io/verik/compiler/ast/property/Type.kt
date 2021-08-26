@@ -26,7 +26,6 @@ import io.verik.compiler.core.common.CoreCardinalBaseDeclaration
 import io.verik.compiler.core.common.CoreCardinalConstantDeclaration
 import io.verik.compiler.core.common.CoreCardinalDeclaration
 import io.verik.compiler.core.common.CoreClassDeclaration
-import io.verik.compiler.main.m
 import io.verik.compiler.message.Messages
 
 class Type(
@@ -75,7 +74,7 @@ class Type(
         return if (value != null) {
             value
         } else {
-            m.error("Could not get value as cardinal: $this", element)
+            Messages.INTERNAL_ERROR.on(element, "Could not get value as cardinal: $this")
             1
         }
     }
@@ -85,7 +84,7 @@ class Type(
         return if (reference in listOf(Core.Vk.UBIT, Core.Vk.SBIT)) {
             arguments[0].asCardinalValueOrNull()
         } else {
-            m.error("Bit type expected: $this", element)
+            Messages.INTERNAL_ERROR.on(element, "Bit type expected: $this")
             1
         }
     }
@@ -95,7 +94,7 @@ class Type(
         return if (reference in listOf(Core.Vk.UBIT, Core.Vk.SBIT)) {
             arguments[0].asCardinalValue(element)
         } else {
-            m.error("Bit type expected: $this", element)
+            Messages.INTERNAL_ERROR.on(element, "Bit type expected: $this")
             1
         }
     }
