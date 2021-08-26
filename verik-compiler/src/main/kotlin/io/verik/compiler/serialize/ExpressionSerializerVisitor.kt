@@ -38,7 +38,6 @@ import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.LiteralStringEntry
 import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.main.m
 import io.verik.compiler.message.Messages
 
 class ExpressionSerializerVisitor(private val sourceBuilder: SourceBuilder) : Visitor() {
@@ -46,7 +45,7 @@ class ExpressionSerializerVisitor(private val sourceBuilder: SourceBuilder) : Vi
     fun serializeAsExpression(expression: EExpression) {
         sourceBuilder.label(expression) {
             if (expression.serializationType != SvSerializationType.EXPRESSION)
-                m.error("SystemVerilog expression expected but got: $expression", expression)
+                Messages.INTERNAL_ERROR.on(expression, "SystemVerilog expression expected but got: $expression")
             expression.accept(this)
         }
     }
@@ -54,7 +53,10 @@ class ExpressionSerializerVisitor(private val sourceBuilder: SourceBuilder) : Vi
     fun serializeAsStatement(expression: EExpression) {
         sourceBuilder.label(expression) {
             if (expression.serializationType !in listOf(SvSerializationType.EXPRESSION, SvSerializationType.STATEMENT))
-                m.error("SystemVerilog expression or statement expected but got: $expression", expression)
+                Messages.INTERNAL_ERROR.on(
+                    expression,
+                    "SystemVerilog expression or statement expected but got: $expression"
+                )
             expression.accept(this)
             if (expression.serializationType == SvSerializationType.EXPRESSION)
                 sourceBuilder.appendLine(";")

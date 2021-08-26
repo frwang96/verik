@@ -34,6 +34,6 @@ internal class TypeResolvedCheckerTest : BaseTest() {
                     val x = u<`*`>(0)
                 """.trimIndent()
             )
-        }.apply { assertEquals("Type of EKtCallExpression could not be resolved: Ubit<`*`>", message) }
+        }.apply { assertEquals("Type could not be resolved: Ubit<`*`>", message) }
     }
 }

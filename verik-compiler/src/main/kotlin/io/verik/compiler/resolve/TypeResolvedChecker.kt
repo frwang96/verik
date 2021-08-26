@@ -20,7 +20,7 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 
 object TypeResolvedChecker : ProjectStage() {
 
@@ -35,7 +35,7 @@ object TypeResolvedChecker : ProjectStage() {
         override fun visitExpression(expression: EExpression) {
             super.visitExpression(expression)
             if (!expression.type.isResolved())
-                m.error("Type of $expression could not be resolved: ${expression.type}", expression)
+                Messages.TYPE_UNRESOLVED.on(expression, expression.type)
         }
     }
 }

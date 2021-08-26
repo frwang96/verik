@@ -26,7 +26,7 @@ import io.verik.compiler.common.MemberReplacer
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 
 object EnumInterpreter : ProjectStage() {
 
@@ -40,7 +40,7 @@ object EnumInterpreter : ProjectStage() {
             if (it.parent is ResizableElementContainer)
                 it.parent.insertChild(it.enumEntry)
             else
-                m.error("Count not insert ${it.enumEntry} into ${it.parent}", it.enumEntry)
+                Messages.INTERNAL_ERROR.on(it.enumEntry, "Count not insert ${it.enumEntry} into ${it.parent}")
         }
         memberReplacer.updateReferences()
     }

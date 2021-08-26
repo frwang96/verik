@@ -37,13 +37,14 @@ class VerikPlugin : Plugin<Project> {
                 } catch (exception: Exception) {
                     if (exception !is MessageCollectorException) {
                         print("e: ")
-                        if (extension.debug)
-                            print("INTERNAL_ERROR: ")
-                        print("Unhandled exception: ${exception::class.simpleName}")
-                        if (exception.message != null) print(": ${exception.message}")
-                        println()
-                        if (extension.debug)
+                        if (extension.debug) {
+                            print("INTERNAL_ERROR: Unhandled exception: ${exception::class.simpleName}")
+                            if (exception.message != null) print(": ${exception.message}")
+                            println()
                             GradleMessagePrinter.printStackTrace(exception.stackTrace)
+                        } else {
+                            println("Internal error: Set debug mode for more details")
+                        }
                     }
                     throw GradleException("Verik compilation failed")
                 }

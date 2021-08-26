@@ -25,7 +25,7 @@ import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 
 object FunctionSpecialTransformer : ProjectStage() {
 
@@ -61,7 +61,7 @@ object FunctionSpecialTransformer : ProjectStage() {
                     EDelayExpression(callExpression.location, callExpression.valueArguments[0])
                 }
                 Core.Vk.ON_EVENT_FUNCTION -> {
-                    m.error("On expression used out of context", callExpression)
+                    Messages.ON_EXPRESSION_ILLEGAL.on(callExpression)
                     return
                 }
                 else -> null

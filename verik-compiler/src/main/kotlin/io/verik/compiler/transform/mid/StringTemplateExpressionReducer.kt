@@ -26,7 +26,7 @@ import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 
 object StringTemplateExpressionReducer : ProjectStage() {
 
@@ -42,7 +42,7 @@ object StringTemplateExpressionReducer : ProjectStage() {
             Core.Kt.INT -> "%d"
             Core.Vk.UBIT -> "%h"
             else -> {
-                m.error("Unable to get format specifier of type: ${expression.type}", expression)
+                Messages.INTERNAL_ERROR.on(expression, "Unable to get format specifier of type: ${expression.type}")
                 ""
             }
         }

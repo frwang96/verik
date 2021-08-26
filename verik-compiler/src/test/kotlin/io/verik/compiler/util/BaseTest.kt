@@ -17,7 +17,6 @@
 package io.verik.compiler.util
 
 import io.verik.compiler.main.Config
-import io.verik.compiler.main.m
 import io.verik.compiler.message.MessageCollector
 import org.junit.jupiter.api.BeforeAll
 import java.nio.file.Paths
@@ -29,7 +28,6 @@ abstract class BaseTest {
         @BeforeAll
         @JvmStatic
         fun setup() {
-            m = TestDeprecatedMessageCollector()
             MessageCollector.messageCollector = MessageCollector(getConfig(), TestMessagePrinter())
         }
 

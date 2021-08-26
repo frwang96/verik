@@ -23,7 +23,7 @@ import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 
 object InjectedExpressionReducer : ProjectStage() {
 
@@ -47,8 +47,7 @@ object InjectedExpressionReducer : ProjectStage() {
                     )
                     callExpression.replace(injectedExpression)
                 } else {
-                    val expectedName = EStringTemplateExpression::class.simpleName
-                    m.error("Expected $expectedName for injected expression but found $expression", expression)
+                    Messages.INJECTED_EXPRESSION_NOT_LITERAL.on(expression)
                 }
             }
         }

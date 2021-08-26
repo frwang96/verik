@@ -20,7 +20,7 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 
 object TypeSpecializedChecker : ProjectStage() {
 
@@ -35,7 +35,10 @@ object TypeSpecializedChecker : ProjectStage() {
         override fun visitExpression(expression: EExpression) {
             super.visitExpression(expression)
             if (!expression.type.isSpecialized())
-                m.error("Type of $expression could not be specialized: ${expression.type}", expression)
+                Messages.INTERNAL_ERROR.on(
+                    expression,
+                    "Type of $expression has not been specialized: ${expression.type}"
+                )
         }
     }
 }

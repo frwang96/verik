@@ -16,6 +16,7 @@
 
 package io.verik.compiler.message
 
+import io.verik.compiler.ast.property.Type
 import org.jetbrains.kotlin.name.FqName
 import java.nio.file.Path
 import kotlin.reflect.full.memberProperties
@@ -98,7 +99,31 @@ object Messages {
         "Conflicting annotations: $0"
     )
 
+//  RESOLVE  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    val TYPE_UNRESOLVED = MessageTemplate1<Type>(
+        Severity.ERROR,
+        "Type could not be resolved: $0"
+    )
+
+//  INTERPRET  /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    val FUNCTION_MISSING_BODY = MessageTemplate1<String>(
+        Severity.ERROR,
+        "Function missing body: $0"
+    )
+
+    val ON_EXPRESSION_EXPECTED = MessageTemplate0(
+        Severity.ERROR,
+        "On expression expected"
+    )
+
 //  MID TRANSFORM  /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    val INJECTED_EXPRESSION_NOT_LITERAL = MessageTemplate0(
+        Severity.ERROR,
+        "String literal expected for injected expression"
+    )
 
     val BIT_ZERO_WIDTH = MessageTemplate0(
         Severity.ERROR,
@@ -108,6 +133,13 @@ object Messages {
     val BIT_CONSTANT_TRUNCATION = MessageTemplate2<Int, Int>(
         Severity.WARNING,
         "Converting constant $0 to width $1 results in truncation"
+    )
+
+//  POST TRANSFORM  ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    val ON_EXPRESSION_ILLEGAL = MessageTemplate0(
+        Severity.ERROR,
+        "Illegal use of on expression"
     )
 
 //  POST CHECK  ////////////////////////////////////////////////////////////////////////////////////////////////////////

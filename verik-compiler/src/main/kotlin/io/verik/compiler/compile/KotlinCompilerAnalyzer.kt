@@ -18,7 +18,6 @@ package io.verik.compiler.compile
 
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
 import io.verik.compiler.message.MessageCollector
 import org.jetbrains.kotlin.cli.common.messages.AnalyzerWithCompilerReport
 import org.jetbrains.kotlin.cli.jvm.compiler.NoScopeRecordCliBindingTrace
@@ -43,7 +42,6 @@ object KotlinCompilerAnalyzer : ProjectStage() {
             )
         }
         projectContext.bindingContext = analyzer.analysisResult.bindingContext
-        m.flush()
         MessageCollector.messageCollector.flush()
     }
 }

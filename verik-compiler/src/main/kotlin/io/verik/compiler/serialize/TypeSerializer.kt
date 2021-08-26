@@ -22,7 +22,7 @@ import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.utils.addToStdlib.cast
 
 object TypeSerializer {
@@ -41,7 +41,7 @@ object TypeSerializer {
             Core.Kt.STRING -> "string"
             Core.Vk.UBIT -> "logic [${type.asBitWidth(element) - 1}:0]"
             else -> {
-                m.error("Unable to serialize type: $type", element)
+                Messages.INTERNAL_ERROR.on(element, "Unable to serialize type: $type")
                 "void"
             }
         }

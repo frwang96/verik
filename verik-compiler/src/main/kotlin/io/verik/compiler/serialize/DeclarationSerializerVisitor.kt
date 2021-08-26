@@ -29,7 +29,7 @@ import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.cast
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 
 class DeclarationSerializerVisitor(private val sourceBuilder: SourceBuilder) : Visitor() {
 
@@ -39,13 +39,13 @@ class DeclarationSerializerVisitor(private val sourceBuilder: SourceBuilder) : V
     fun serializeAsDeclaration(element: EElement) {
         sourceBuilder.label(element) {
             if (element !is Declaration)
-                m.error("SystemVerilog declaration expected but got: $element", element)
+                Messages.INTERNAL_ERROR.on(element, "Declaration expected but got: $element")
             element.accept(this)
         }
     }
 
     override fun visitElement(element: EElement) {
-        m.error("Unable to serialize element as declaration: $element", element)
+        Messages.INTERNAL_ERROR.on(element, "Unable to serialize element as declaration: $element")
     }
 
     override fun visitSvBasicClass(basicClass: ESvBasicClass) {

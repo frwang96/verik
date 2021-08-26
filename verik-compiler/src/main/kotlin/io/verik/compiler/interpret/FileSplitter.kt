@@ -26,7 +26,7 @@ import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 
 object FileSplitter : ProjectStage() {
 
@@ -80,7 +80,7 @@ object FileSplitter : ProjectStage() {
                 is ESvFunction -> packageMembers.add(it)
                 is ESvProperty -> packageMembers.add(it)
                 is ESvEnumEntry -> packageMembers.add(it)
-                else -> m.error("Unable to identify as component or package member: $it", it)
+                else -> Messages.INTERNAL_ERROR.on(it, "Unable to identify as component or package member: $it")
             }
         }
         return SplitMembersResult(componentMembers, packageMembers)

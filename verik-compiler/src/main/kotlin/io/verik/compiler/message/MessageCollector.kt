@@ -45,8 +45,13 @@ class MessageCollector(
     }
 
     private fun error(templateName: String, message: String, location: SourceLocation?) {
-        messagePrinter.error(templateName, message, location)
-        incrementErrorCount()
+        if (!config.debug && templateName == Messages.INTERNAL_ERROR.name) {
+            messagePrinter.error(templateName, "Internal error: Set debug mode for more details", location)
+            throw MessageCollectorException()
+        } else {
+            messagePrinter.error(templateName, message, location)
+            incrementErrorCount()
+        }
     }
 
     private fun incrementErrorCount() {

@@ -30,7 +30,7 @@ import io.verik.compiler.ast.element.sv.EInitialBlock
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.property.FunctionAnnotationType
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.main.m
+import io.verik.compiler.message.Messages
 
 object FunctionInterpreter {
 
@@ -41,7 +41,7 @@ object FunctionInterpreter {
                 if (body != null) {
                     EInitialBlock(function.location, function.name, body)
                 } else {
-                    m.error("Run block missing body: ${function.name}", function)
+                    Messages.FUNCTION_MISSING_BODY.on(function, function.name)
                     ENullElement(function.location)
                 }
             }
@@ -49,7 +49,7 @@ object FunctionInterpreter {
                 if (body != null) {
                     EAlwaysComBlock(function.location, function.name, body)
                 } else {
-                    m.error("Com block missing body: ${function.name}", function)
+                    Messages.FUNCTION_MISSING_BODY.on(function, function.name)
                     ENullElement(function.location)
                 }
             }
@@ -58,7 +58,7 @@ object FunctionInterpreter {
                     getAlwaysSeqBlock(function, body)
                         ?: ENullElement(function.location)
                 } else {
-                    m.error("Seq block missing body: ${function.name}", function)
+                    Messages.FUNCTION_MISSING_BODY.on(function, function.name)
                     ENullElement(function.location)
                 }
             }
@@ -78,12 +78,12 @@ object FunctionInterpreter {
             if (body.statements.size == 1) {
                 body.statements[0]
             } else {
-                m.error("On expression expected", body)
+                Messages.ON_EXPRESSION_EXPECTED.on(body)
                 return null
             }
         } else body
         if (onExpression !is EKtCallExpression || onExpression.reference != Core.Vk.ON_EVENT_FUNCTION) {
-            m.error("On expression expected", body)
+            Messages.ON_EXPRESSION_EXPECTED.on(body)
             return null
         }
         val eventExpression = onExpression.valueArguments[0]
