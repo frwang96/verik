@@ -17,11 +17,12 @@
 package io.verik.compiler.resolve
 
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
-object TypeResolvedChecker : ResolverStage() {
+object TypeResolvedChecker : ProjectStage() {
 
     override val checkNormalization = false
 

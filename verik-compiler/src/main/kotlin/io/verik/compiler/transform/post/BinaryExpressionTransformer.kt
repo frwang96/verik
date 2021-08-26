@@ -19,12 +19,15 @@ package io.verik.compiler.transform.post
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
+import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 
-object BinaryExpressionTransformer : PostTransformerStage() {
+object BinaryExpressionTransformer : ProjectStage() {
+
+    override val checkNormalization = true
 
     private val operatorKindMap = HashMap<CoreKtFunctionDeclaration, SvBinaryOperatorKind>()
 

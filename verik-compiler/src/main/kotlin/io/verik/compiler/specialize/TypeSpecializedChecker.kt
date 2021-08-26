@@ -17,11 +17,12 @@
 package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
-object TypeSpecializedChecker : SpecializerStage() {
+object TypeSpecializedChecker : ProjectStage() {
 
     override val checkNormalization = false
 

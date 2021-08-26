@@ -21,8 +21,6 @@ import io.verik.compiler.main.ProjectContext
 
 abstract class ProjectStage {
 
-    protected abstract val stageGroup: String?
-
     protected abstract val checkNormalization: Boolean
 
     protected abstract fun process(projectContext: ProjectContext)

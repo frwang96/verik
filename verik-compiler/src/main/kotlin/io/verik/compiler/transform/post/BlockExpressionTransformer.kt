@@ -20,10 +20,13 @@ import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.sv.EProceduralBlock
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
 import io.verik.compiler.ast.element.sv.ESvFunction
+import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 
-object BlockExpressionTransformer : PostTransformerStage() {
+object BlockExpressionTransformer : ProjectStage() {
+
+    override val checkNormalization = true
 
     override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(BlockExpressionVisitor)

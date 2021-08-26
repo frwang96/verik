@@ -16,13 +16,16 @@
 
 package io.verik.compiler.check.pre
 
+import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.psi.KtImportDirective
 import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 
-object ImportDirectiveChecker : PreCheckerStage() {
+object ImportDirectiveChecker : ProjectStage() {
+
+    override val checkNormalization = false
 
     override fun process(projectContext: ProjectContext) {
         val packageNames = HashSet<String>()

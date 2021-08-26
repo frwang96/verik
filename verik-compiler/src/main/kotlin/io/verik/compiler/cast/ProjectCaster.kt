@@ -20,13 +20,14 @@ import io.verik.compiler.ast.element.common.EBasicPackage
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.ast.element.common.ERootPackage
+import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.location
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.SourceLocation
 import java.nio.file.FileSystems
 import java.nio.file.Paths
 
-object ProjectCaster : CasterStage() {
+object ProjectCaster : ProjectStage() {
 
     override val checkNormalization = true
 

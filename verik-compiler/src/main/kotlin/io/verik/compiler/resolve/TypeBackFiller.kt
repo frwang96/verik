@@ -19,11 +19,12 @@ package io.verik.compiler.resolve
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
+import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 
-object TypeBackFiller : ResolverStage() {
+object TypeBackFiller : ProjectStage() {
 
     override val checkNormalization = true
 

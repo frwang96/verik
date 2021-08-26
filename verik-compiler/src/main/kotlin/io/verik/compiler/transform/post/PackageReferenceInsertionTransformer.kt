@@ -23,10 +23,13 @@ import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.common.NullDeclaration
+import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 
-object PackageReferenceInsertionTransformer : PostTransformerStage() {
+object PackageReferenceInsertionTransformer : ProjectStage() {
+
+    override val checkNormalization = true
 
     override fun process(projectContext: ProjectContext) {
         val packageReferenceInsertionVisitor = PackageReferenceInsertionVisitor()

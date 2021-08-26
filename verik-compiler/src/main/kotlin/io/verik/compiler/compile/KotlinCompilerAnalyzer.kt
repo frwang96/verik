@@ -16,6 +16,7 @@
 
 package io.verik.compiler.compile
 
+import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 import io.verik.compiler.message.MessageCollector
@@ -24,7 +25,9 @@ import org.jetbrains.kotlin.cli.jvm.compiler.NoScopeRecordCliBindingTrace
 import org.jetbrains.kotlin.cli.jvm.compiler.TopDownAnalyzerFacadeForJVM
 import org.jetbrains.kotlin.resolve.lazy.declarations.FileBasedDeclarationProviderFactory
 
-object KotlinCompilerAnalyzer : CompilerStage() {
+object KotlinCompilerAnalyzer : ProjectStage() {
+
+    override val checkNormalization = false
 
     override fun process(projectContext: ProjectContext) {
         val environment = projectContext.kotlinCoreEnvironment

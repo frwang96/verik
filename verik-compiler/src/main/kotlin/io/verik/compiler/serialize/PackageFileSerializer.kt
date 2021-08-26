@@ -18,10 +18,13 @@ package io.verik.compiler.serialize
 
 import io.verik.compiler.ast.element.common.EBasicPackage
 import io.verik.compiler.ast.element.sv.ESvBasicClass
+import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 
-object PackageFileSerializer : SerializerStage() {
+object PackageFileSerializer : ProjectStage() {
+
+    override val checkNormalization = false
 
     override fun process(projectContext: ProjectContext) {
         projectContext.project.basicPackages.forEach {

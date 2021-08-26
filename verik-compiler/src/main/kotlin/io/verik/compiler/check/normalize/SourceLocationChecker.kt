@@ -17,12 +17,15 @@
 package io.verik.compiler.check.normalize
 
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 import java.nio.file.Path
 
-object SourceLocationChecker : NormalizationStage() {
+object SourceLocationChecker : ProjectStage() {
+
+    override val checkNormalization = false
 
     override fun process(projectContext: ProjectContext) {
         projectContext.project.files().forEach {

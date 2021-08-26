@@ -16,11 +16,14 @@
 
 package io.verik.compiler.serialize
 
+import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 import java.nio.file.Path
 
-object OrderFileSerializer : SerializerStage() {
+object OrderFileSerializer : ProjectStage() {
+
+    override val checkNormalization = false
 
     override fun process(projectContext: ProjectContext) {
         val inputPath = projectContext.config.inputSourceDir

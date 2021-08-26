@@ -20,11 +20,14 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.interfaces.ExpressionContainer
+import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 
-object ParenthesisInsertionTransformer : PostTransformerStage() {
+object ParenthesisInsertionTransformer : ProjectStage() {
+
+    override val checkNormalization = true
 
     override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(ParenthesisInsertionVisitor)

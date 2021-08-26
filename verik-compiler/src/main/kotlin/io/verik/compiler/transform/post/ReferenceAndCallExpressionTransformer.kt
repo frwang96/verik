@@ -22,10 +22,13 @@ import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.ast.element.sv.ESvReferenceExpression
+import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 
-object ReferenceAndCallExpressionTransformer : PostTransformerStage() {
+object ReferenceAndCallExpressionTransformer : ProjectStage() {
+
+    override val checkNormalization = true
 
     override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(ReferenceAndCallExpressionVisitor)

@@ -16,9 +16,10 @@
 
 package io.verik.compiler.specialize
 
+import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.main.ProjectContext
 
-object DeclarationSpecializer : SpecializerStage() {
+object DeclarationSpecializer : ProjectStage() {
 
     override val checkNormalization = true
 

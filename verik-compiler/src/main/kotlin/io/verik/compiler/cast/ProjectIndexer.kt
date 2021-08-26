@@ -22,6 +22,7 @@ import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.common.NullDeclaration
+import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.location
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
@@ -33,7 +34,7 @@ import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 import org.jetbrains.kotlin.psi.KtTypeParameter
 
-object ProjectIndexer : CasterStage() {
+object ProjectIndexer : ProjectStage() {
 
     override val checkNormalization = false
 

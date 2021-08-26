@@ -22,11 +22,14 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.interfaces.Declaration
+import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 
-object DeclarationTypeChecker : NormalizationStage() {
+object DeclarationTypeChecker : ProjectStage() {
+
+    override val checkNormalization = false
 
     override fun process(projectContext: ProjectContext) {
         val declarationTypeVisitor = DeclarationTypeVisitor()

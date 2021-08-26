@@ -16,10 +16,13 @@
 
 package io.verik.compiler.compile
 
+import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.main.ProjectContext
 import org.jetbrains.kotlin.psi.KtPsiFactory
 
-object KotlinCompilerParser : CompilerStage() {
+object KotlinCompilerParser : ProjectStage() {
+
+    override val checkNormalization = false
 
     override fun process(projectContext: ProjectContext) {
         val psiFileFactory = KtPsiFactory(projectContext.kotlinCoreEnvironment.project, false)

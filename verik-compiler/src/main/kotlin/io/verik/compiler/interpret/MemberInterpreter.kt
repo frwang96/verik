@@ -22,10 +22,11 @@ import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.common.MemberReplacer
+import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 
-object MemberInterpreter : InterpreterStage() {
+object MemberInterpreter : ProjectStage() {
 
     override val checkNormalization = true
 

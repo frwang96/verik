@@ -16,9 +16,12 @@
 
 package io.verik.compiler.check.normalize
 
+import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.main.ProjectContext
 
-object NormalizationChecker : NormalizationStage() {
+object NormalizationChecker : ProjectStage() {
+
+    override val checkNormalization = false
 
     override fun process(projectContext: ProjectContext) {
         if (projectContext.config.debug) {

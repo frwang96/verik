@@ -16,6 +16,7 @@
 
 package io.verik.compiler.compile
 
+import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
@@ -39,7 +40,9 @@ import org.jetbrains.kotlin.config.LanguageVersionSettingsImpl
 import java.io.File
 import java.nio.file.Paths
 
-object KotlinEnvironmentBuilder : CompilerStage() {
+object KotlinEnvironmentBuilder : ProjectStage() {
+
+    override val checkNormalization = false
 
     override fun process(projectContext: ProjectContext) {
         setIdeaIoUseFallback()

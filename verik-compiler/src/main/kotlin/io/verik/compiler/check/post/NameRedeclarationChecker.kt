@@ -19,11 +19,14 @@ package io.verik.compiler.check.post
 import io.verik.compiler.ast.element.common.EAbstractPackage
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.interfaces.Declaration
+import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 
-object NameRedeclarationChecker : PostCheckerStage() {
+object NameRedeclarationChecker : ProjectStage() {
+
+    override val checkNormalization = false
 
     override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(NameRedeclarationVisitor)

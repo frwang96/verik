@@ -21,12 +21,15 @@ import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EEventExpression
 import io.verik.compiler.ast.property.EdgeType
+import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
-object FunctionSpecialTransformer : PostTransformerStage() {
+object FunctionSpecialTransformer : ProjectStage() {
+
+    override val checkNormalization = true
 
     override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(FunctionReferenceVisitor)

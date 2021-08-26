@@ -16,6 +16,7 @@
 
 package io.verik.compiler.check.pre
 
+import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.psi.KtClassLiteralExpression
@@ -29,7 +30,9 @@ import org.jetbrains.kotlin.psi.KtThrowExpression
 import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 import org.jetbrains.kotlin.psi.KtTryExpression
 
-object UnsupportedElementChecker : PreCheckerStage() {
+object UnsupportedElementChecker : ProjectStage() {
+
+    override val checkNormalization = false
 
     override fun process(projectContext: ProjectContext) {
         projectContext.ktFiles.forEach { it.accept(UnsupportedElementVisitor) }

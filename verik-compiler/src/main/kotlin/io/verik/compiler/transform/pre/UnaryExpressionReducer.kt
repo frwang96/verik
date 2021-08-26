@@ -19,6 +19,7 @@ package io.verik.compiler.transform.pre
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.property.KtUnaryOperatorKind
+import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreClassDeclaration
@@ -26,7 +27,9 @@ import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 
-object UnaryExpressionReducer : PreTransformerStage() {
+object UnaryExpressionReducer : ProjectStage() {
+
+    override val checkNormalization = true
 
     private val referenceMap = HashMap<ReducerEntry, CoreKtFunctionDeclaration>()
 

@@ -17,11 +17,14 @@
 package io.verik.compiler.transform.post
 
 import io.verik.compiler.ast.element.common.EBasicPackage
+import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 
-object PackageNameTransformer : PostTransformerStage() {
+object PackageNameTransformer : ProjectStage() {
+
+    override val checkNormalization = true
 
     override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(PackageNameVisitor)

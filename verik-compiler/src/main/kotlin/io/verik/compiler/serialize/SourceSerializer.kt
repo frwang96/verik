@@ -17,10 +17,13 @@
 package io.verik.compiler.serialize
 
 import io.verik.compiler.ast.element.common.EFile
+import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 
-object SourceSerializer : SerializerStage() {
+object SourceSerializer : ProjectStage() {
+
+    override val checkNormalization = false
 
     override fun process(projectContext: ProjectContext) {
         projectContext.project.files().forEach {

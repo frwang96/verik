@@ -16,12 +16,15 @@
 
 package io.verik.compiler.check.pre
 
+import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 import java.nio.file.FileSystems
 import java.nio.file.Paths
 
-object FileChecker : PreCheckerStage() {
+object FileChecker : ProjectStage() {
+
+    override val checkNormalization = false
 
     override fun process(projectContext: ProjectContext) {
         projectContext.ktFiles.forEach {
