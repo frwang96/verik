@@ -16,14 +16,10 @@
 
 package io.verik.compiler.specialize
 
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
-import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 
 object TypeResolver : ProjectStage() {
@@ -36,31 +32,19 @@ object TypeResolver : ProjectStage() {
 
     object TypeResolverVisitor : TreeVisitor() {
 
+        override fun visitKtFunction(function: EKtFunction) {
+            super.visitKtFunction(function)
+            val body = function.body
+            if (body != null) {
+                val typeConstraints = TypeConstraintCollector.collect(body)
+                TypeConstraintResolver.resolve(typeConstraints)
+            }
+        }
+
         override fun visitKtProperty(property: EKtProperty) {
             super.visitKtProperty(property)
-            val initializer = property.initializer
-            if (initializer != null)
-                property.type = initializer.type.copy()
-        }
-
-        override fun visitKtBlockExpression(blockExpression: EKtBlockExpression) {
-            super.visitKtBlockExpression(blockExpression)
-            if (blockExpression.hasStatements())
-                blockExpression.type = blockExpression.statements.last().type.copy()
-        }
-
-        override fun visitKtReferenceExpression(referenceExpression: EKtReferenceExpression) {
-            super.visitKtReferenceExpression(referenceExpression)
-            val reference = referenceExpression.reference
-            if (reference is EExpression)
-                referenceExpression.type = reference.type.copy()
-        }
-
-        override fun visitKtCallExpression(callExpression: EKtCallExpression) {
-            super.visitKtCallExpression(callExpression)
-            val reference = callExpression.reference
-            if (reference is CoreKtFunctionDeclaration)
-                reference.resolve(callExpression)
+            val typeConstraints = TypeConstraintCollector.collect(property)
+            TypeConstraintResolver.resolve(typeConstraints)
         }
     }
 }

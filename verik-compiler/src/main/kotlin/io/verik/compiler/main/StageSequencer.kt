@@ -37,7 +37,6 @@ import io.verik.compiler.serialize.OrderFileSerializer
 import io.verik.compiler.serialize.PackageFileSerializer
 import io.verik.compiler.serialize.SourceSerializer
 import io.verik.compiler.specialize.DeclarationSpecializer
-import io.verik.compiler.specialize.TypeBackFiller
 import io.verik.compiler.specialize.TypeResolvedChecker
 import io.verik.compiler.specialize.TypeResolver
 import io.verik.compiler.specialize.TypeSpecializedChecker
@@ -87,7 +86,6 @@ object StageSequencer {
 
         // Specialize
         stageSequence.add(TypeResolver)
-        stageSequence.add(TypeBackFiller)
         stageSequence.add(TypeResolvedChecker)
         stageSequence.add(DeclarationSpecializer)
         stageSequence.add(TypeSpecializedChecker)

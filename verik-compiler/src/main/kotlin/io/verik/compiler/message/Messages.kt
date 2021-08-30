@@ -16,7 +16,6 @@
 
 package io.verik.compiler.message
 
-import io.verik.compiler.ast.property.Type
 import org.jetbrains.kotlin.lexer.KtToken
 import java.nio.file.Path
 import kotlin.reflect.full.memberProperties
@@ -96,9 +95,9 @@ object Messages {
 
 //  SPECIALIZE  ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val TYPE_UNRESOLVED = MessageTemplate1<Type>(
+    val EXPRESSION_UNRESOLVED = MessageTemplate0(
         Severity.ERROR,
-        "Type could not be resolved: $0"
+        "Type of expression could not be resolved"
     )
 
 //  INTERPRET  /////////////////////////////////////////////////////////////////////////////////////////////////////////

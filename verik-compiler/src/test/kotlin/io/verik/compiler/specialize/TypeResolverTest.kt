@@ -19,10 +19,42 @@ package io.verik.compiler.specialize
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
+import io.verik.compiler.util.findDeclaration
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
 internal class TypeResolverTest : BaseTest() {
+
+    @Test
+    fun `resolve property`() {
+        val projectContext = driveTest(
+            TypeResolver::class,
+            """
+                val x = u<`8`>(0)
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtProperty(x, Ubit<`8`>, *)",
+            projectContext.findDeclaration("x")
+        )
+    }
+
+    @Test
+    fun `resolve reference expression`() {
+        val projectContext = driveTest(
+            TypeResolver::class,
+            """
+                var x = u<`8`>(0)
+                fun f() {
+                    x
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtReferenceExpression(Ubit<`8`>, x, null)",
+            projectContext.findExpression("f")
+        )
+    }
 
     @Test
     fun `resolve call expression`() {

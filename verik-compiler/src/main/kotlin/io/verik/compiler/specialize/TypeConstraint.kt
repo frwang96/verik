@@ -17,25 +17,16 @@
 package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.common.ProjectStage
-import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.message.Messages
+import io.verik.compiler.ast.element.kt.EKtCallExpression
 
-object TypeResolvedChecker : ProjectStage() {
+sealed class TypeConstraint
 
-    override val checkNormalization = false
+// TODO set location of type parameter
+class TypeParameterTypeConstraint(
+    val callExpression: EKtCallExpression
+) : TypeConstraint()
 
-    override fun process(projectContext: ProjectContext) {
-        projectContext.project.accept(TypeCheckerVisitor)
-    }
-
-    object TypeCheckerVisitor : TreeVisitor() {
-
-        override fun visitExpression(expression: EExpression) {
-            super.visitExpression(expression)
-            if (!expression.type.isResolved())
-                Messages.EXPRESSION_UNRESOLVED.on(expression)
-        }
-    }
-}
+class ExpressionEqualsTypeConstraint(
+    val inner: EExpression,
+    val outer: EExpression
+) : TypeConstraint()
