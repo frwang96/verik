@@ -19,18 +19,44 @@
 package io.verik.core
 
 /**
- * Returns a value with all bits set to X.
- * @param T the type of the value
+ * Constructs a [Ubit].
+ * @param N the width in bits
+ * @param value the value
  */
-fun <T> x(): T {
+fun <N : `*`> u(value: Int): Ubit<N> {
     throw VerikException()
 }
 
 /**
- * Returns a value with all bits set to Z.
+ * Constructs a [Ubit].
+ * @param value the value
+ */
+fun u(value: Sbit<`*`>): Ubit<`*`> {
+    throw VerikException()
+}
+
+/**
+ * Constructs a [Sbit].
+ * @param N the width in bits
+ * @param value the value
+ */
+fun <N : `*`> s(value: Int): Sbit<N> {
+    throw VerikException()
+}
+
+/**
+ * Constructs a [Sbit].
+ * @param value the value
+ */
+fun s(value: Ubit<`*`>): Sbit<`*`> {
+    throw VerikException()
+}
+
+/**
+ * Returns a value with all bits set to X.
  * @param T the type of the value
  */
-fun <T> z(): T {
+fun <T> x(): T {
     throw VerikException()
 }
 

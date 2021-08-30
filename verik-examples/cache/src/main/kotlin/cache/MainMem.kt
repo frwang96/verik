@@ -23,14 +23,14 @@ class MainMem(
     val rx: TxnIf.TxnRx
 ) : Module() {
 
-    var mem = VArray<EXP<ADDR_WIDTH>, UbitData>()
+    var mem = Unpacked<EXP<ADDR_WIDTH>, UbitData>()
 
     @Seq
     fun update() {
         on(posedge(clk)) {
             rx.rspVld = false
             if (rx.rst) {
-                for (i in range(mem.size)) {
+                for (i in 0 until mem.size) {
                     mem[i] = u(0)
                 }
             } else {

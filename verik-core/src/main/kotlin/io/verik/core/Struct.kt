@@ -24,9 +24,9 @@ package io.verik.core
 abstract class Struct {
 
     /**
-     * Pack the struct as a [Ubit].
+     * Convert the struct to a [Ubit].
      */
-    fun pack(): Ubit<`*`> {
+    fun toUbit(): Ubit<`*`> {
         throw VerikException()
     }
 

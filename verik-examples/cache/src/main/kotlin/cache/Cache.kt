@@ -24,7 +24,7 @@ class Cache(
     var tx: TxnIf.TxnTx
 ) : Module() {
 
-    val lines = VArray<EXP<INDEX_WIDTH>, Line>()
+    val lines = Unpacked<EXP<INDEX_WIDTH>, Line>()
     var state: State = x()
     var curOp: Op = x()
     var curAddr: UbitAddr = x()
@@ -39,7 +39,7 @@ class Cache(
             if (rx.rst) {
                 tx.rst = true
                 state = State.READY
-                for (i in range(lines.size)) {
+                for (i in 0 until lines.size) {
                     lines[i] = Line(Status.INVALID, u(0), u(0))
                 }
             } else {

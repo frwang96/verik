@@ -14,49 +14,53 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused", "UNUSED_PARAMETER")
+@file:Suppress("UNUSED_PARAMETER", "unused")
 
 package io.verik.core
 
 /**
- * A map from keys to values.
- * @param K the type of the key
- * @param V the type of the value
+ * A packed array.
+ * @param N the size of the array
+ * @param E the type of the elements of the array
  */
-class VMap<K, V> {
+class Packed<N : `*`, E> : Iterable<E> {
 
-    /**
-     * Checks if the map contains the specified [key].
-     */
-    operator fun contains(key: K): Boolean {
+    override fun iterator(): Iterator<E> {
         throw VerikException()
     }
 
     /**
-     * Returns the value corresponding to the specified [key].
+     * The size of the array.
      */
-    operator fun get(key: K): V {
+    val size: Int by lazy<Int> {
         throw VerikException()
     }
 
     /**
-     * Sets the [value] corresponding to the specified [key].
+     * Returns the array element at the specified [index].
      */
-    operator fun set(key: K, value: V) {
+    operator fun get(index: Int): E {
         throw VerikException()
     }
 
     /**
-     * Removes the value with the specified [key].
+     * Returns the array element at the specified [index].
      */
-    fun remove(key: K) {
+    operator fun get(index: Ubit<`*`>): E {
         throw VerikException()
     }
 
     /**
-     * Clear the contents of the map.
+     * Sets the array element at the specified [index] to the specified [element].
      */
-    fun clear() {
+    operator fun set(index: Int, element: E) {
+        throw VerikException()
+    }
+
+    /**
+     * Sets the array element at the specified [index] to the specified [element].
+     */
+    operator fun set(index: Ubit<`*`>, element: E) {
         throw VerikException()
     }
 }

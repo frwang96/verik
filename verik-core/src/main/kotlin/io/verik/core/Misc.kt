@@ -19,13 +19,6 @@
 package io.verik.core
 
 /**
- * Returns an list of [Int] from 0 to [n].
- */
-fun range(n: Int): VList<Int> {
-    throw VerikException()
-}
-
-/**
  * Returns the concatenation of the arguments.
  */
 fun cat(vararg x: Any): Ubit<`*`> {

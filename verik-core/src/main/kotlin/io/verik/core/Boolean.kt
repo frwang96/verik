@@ -19,9 +19,9 @@
 package io.verik.core
 
 /**
- * Pack the boolean as a [Ubit].
+ * Convert the boolean to a [Ubit].
  */
-fun Boolean.pack(): Ubit<`*`> {
+fun Boolean.toUbit(): Ubit<`*`> {
     throw VerikException()
 }
 

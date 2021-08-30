@@ -25,9 +25,9 @@ package io.verik.core
 class Sbit<N : `*`> private constructor() {
 
     /**
-     * Pack the [Sbit] as a [Ubit].
+     * Convert the [Sbit] to a [Ubit].
      */
-    fun pack(): Ubit<`*`> {
+    fun toUbit(): Ubit<`*`> {
         throw VerikException()
     }
 
@@ -308,21 +308,4 @@ class Sbit<N : `*`> private constructor() {
     fun <M : `*`> tru(): Sbit<M> {
         throw VerikException()
     }
-}
-
-/**
- * Constructs a [Sbit].
- * @param N the width in bits
- * @param value the value
- */
-fun <N : `*`> s(value: Int): Sbit<N> {
-    throw VerikException()
-}
-
-/**
- * Constructs a [Sbit].
- * @param value the value
- */
-fun s(value: Ubit<`*`>): Sbit<`*`> {
-    throw VerikException()
 }

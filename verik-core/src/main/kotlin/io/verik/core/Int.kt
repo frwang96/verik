@@ -19,8 +19,8 @@
 package io.verik.core
 
 /**
- * Pack the int as a [Ubit].
+ * Convert the int to a [Ubit].
  */
-fun Int.pack(): Ubit<`*`> {
+fun Int.toUbit(): Ubit<`*`> {
     throw VerikException()
 }

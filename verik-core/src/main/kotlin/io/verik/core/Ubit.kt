@@ -44,10 +44,9 @@ class Ubit<N : `*`> private constructor() {
     }
 
     /**
-     * Unpack the [Ubit] to a particular type.
-     * @param T the type to unpack to
+     * Convert the [Ubit] to type [T].
      */
-    fun <T> unpack(): T {
+    fun <T> fromUbit(): T {
         throw VerikException()
     }
 
@@ -309,21 +308,4 @@ class Ubit<N : `*`> private constructor() {
     fun <M : `*`> tru(): Ubit<M> {
         throw VerikException()
     }
-}
-
-/**
- * Constructs a [Ubit].
- * @param N the width in bits
- * @param value the value
- */
-fun <N : `*`> u(value: Int): Ubit<N> {
-    throw VerikException()
-}
-
-/**
- * Constructs a [Ubit].
- * @param value the value
- */
-fun u(value: Sbit<`*`>): Ubit<`*`> {
-    throw VerikException()
 }

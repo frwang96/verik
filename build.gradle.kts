@@ -47,6 +47,8 @@ tasks.register("sanity") {
     exampleNames.forEach {
         if (it !in excludedExampleNames)
             dependsOn(gradle.includedBuild("verik-examples").task(":$it:verik"))
+        else
+            dependsOn(gradle.includedBuild("verik-examples").task(":$it:build"))
     }
 }
 
@@ -59,13 +61,6 @@ tasks.register("format") {
     exampleNames.forEach {
         dependsOn(gradle.includedBuild("verik-examples").task(":$it:ktlintFormat"))
     }
-}
-
-tasks.register("formatSanity") {
-    group = "formatting"
-    dependsOn("format")
-    dependsOn("sanity")
-    tasks.getByName("sanity").mustRunAfter("format")
 }
 
 tasks.register("clean") {

@@ -19,11 +19,22 @@
 package io.verik.core
 
 /**
- * An array of statically determined size.
+ * An unpacked array.
  * @param N the size of the array
  * @param E the type of the elements of the array
  */
-class VArray<N : `*`, E> : VCollection<E>() {
+class Unpacked<N : `*`, E> : Iterable<E> {
+
+    override fun iterator(): Iterator<E> {
+        throw VerikException()
+    }
+
+    /**
+     * The size of the array.
+     */
+    val size: Int by lazy<Int> {
+        throw VerikException()
+    }
 
     /**
      * Returns the array element at the specified [index].

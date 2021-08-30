@@ -19,9 +19,9 @@
 package io.verik.core
 
 /**
- * Pack the enum as a [Ubit].
+ * Convert the enum to a [Ubit].
  */
-fun <E : Enum<E>> Enum<E>.pack(): Ubit<`*`> {
+fun <E : Enum<E>> Enum<E>.toUbit(): Ubit<`*`> {
     throw VerikException()
 }
 
