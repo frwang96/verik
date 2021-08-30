@@ -88,7 +88,7 @@ object ProjectIndexer : ProjectStage() {
             val location = function.nameIdentifier!!.location()
             val name = function.name!!
             checkDeclarationName(name, function)
-            val ktFunction = EKtFunction(location, name, NullDeclaration.toType(), null, null)
+            val ktFunction = EKtFunction(location, name, NullDeclaration.toType(), null, listOf())
             castContext.addDeclaration(descriptor, ktFunction)
         }
 

@@ -18,7 +18,6 @@ package io.verik.compiler.message
 
 import io.verik.compiler.ast.property.Type
 import org.jetbrains.kotlin.lexer.KtToken
-import org.jetbrains.kotlin.name.FqName
 import java.nio.file.Path
 import kotlin.reflect.full.memberProperties
 
@@ -95,16 +94,6 @@ object Messages {
         "Conflict with SystemVerilog reserved keyword: $0"
     )
 
-    val ANNOTATION_NOT_RECOGNIZED = MessageTemplate1<FqName>(
-        Severity.WARNING,
-        "Annotation not recognized: $0"
-    )
-
-    val ANNOTATION_CONFLICT = MessageTemplate1<String>(
-        Severity.ERROR,
-        "Conflicting annotations: $0"
-    )
-
 //  RESOLVE  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val TYPE_UNRESOLVED = MessageTemplate1<Type>(
@@ -113,6 +102,11 @@ object Messages {
     )
 
 //  INTERPRET  /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    val ANNOTATION_CONFLICT = MessageTemplate1<String>(
+        Severity.ERROR,
+        "Conflicting annotations: $0"
+    )
 
     val FUNCTION_MISSING_BODY = MessageTemplate1<String>(
         Severity.ERROR,

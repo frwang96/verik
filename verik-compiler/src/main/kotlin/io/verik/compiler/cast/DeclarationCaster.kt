@@ -22,9 +22,8 @@ import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.interfaces.cast
-import io.verik.compiler.ast.property.FunctionAnnotationType
+import io.verik.compiler.ast.property.Annotation
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtEnumEntry
@@ -80,16 +79,8 @@ object DeclarationCaster {
             ?: return null
 
         val returnType = castContext.castType(descriptor.returnType!!, function)
-        val annotationTypes = descriptor.annotations.mapNotNull {
-            FunctionAnnotationType(it.fqName, function)
-        }
-        val annotationType = when (annotationTypes.size) {
-            0 -> null
-            1 -> annotationTypes.first()
-            else -> {
-                Messages.ANNOTATION_CONFLICT.on(function, annotationTypes.joinToString { it.toString() })
-                null
-            }
+        val annotations = descriptor.annotations.mapNotNull {
+            Annotation(it.fqName!!.shortName().asString(), it.fqName!!.asString())
         }
         val body = function.bodyBlockExpression?.let {
             castContext.casterVisitor.getExpression(it)
@@ -98,7 +89,7 @@ object DeclarationCaster {
         ktFunction.returnType = returnType
         body?.parent = ktFunction
         ktFunction.body = body
-        ktFunction.annotationType = annotationType
+        ktFunction.annotations = annotations
         return ktFunction
     }
 

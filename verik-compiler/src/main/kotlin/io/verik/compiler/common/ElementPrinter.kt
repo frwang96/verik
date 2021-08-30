@@ -136,7 +136,7 @@ class ElementPrinter : Visitor() {
             build(function.name)
             build(function.returnType.toString())
             build(function.body)
-            build(function.annotationType.toString())
+            build(function.annotations.map { it.toString() })
         }
     }
 

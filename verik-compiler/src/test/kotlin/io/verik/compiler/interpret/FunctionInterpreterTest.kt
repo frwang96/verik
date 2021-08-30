@@ -28,6 +28,22 @@ import org.junit.jupiter.api.assertThrows
 internal class FunctionInterpreterTest : BaseTest() {
 
     @Test
+    fun `annotations conflicting`() {
+        assertThrows<TestErrorException> {
+            driveTest(
+                MemberInterpreter::class,
+                """
+                    @Com
+                    @Seq
+                    fun f() {}
+                """.trimIndent()
+            )
+        }.apply {
+            assertEquals("Conflicting annotations: Com, Seq", message)
+        }
+    }
+
+    @Test
     fun `interpret function`() {
         val projectContext = driveTest(
             MemberInterpreter::class,

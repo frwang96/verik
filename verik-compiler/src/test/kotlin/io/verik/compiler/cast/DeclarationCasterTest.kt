@@ -17,13 +17,10 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findDeclaration
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class DeclarationCasterTest : BaseTest() {
 
@@ -54,7 +51,7 @@ internal class DeclarationCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtBasicClass(C, false, [], [KtFunction(f, Unit, *, null)])",
+            "KtBasicClass(C, false, [], [KtFunction(f, Unit, *, [])])",
             projectContext.findDeclaration("C")
         )
     }
@@ -126,7 +123,7 @@ internal class DeclarationCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtFunction(f, Unit, *, null)",
+            "KtFunction(f, Unit, *, [])",
             projectContext.findDeclaration("f")
         )
     }
@@ -141,25 +138,9 @@ internal class DeclarationCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtFunction(f, Unit, *, TASK)",
+            "KtFunction(f, Unit, *, [Task])",
             projectContext.findDeclaration("f")
         )
-    }
-
-    @Test
-    fun `function annotations conflicting`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                ProjectCaster::class,
-                """
-                    @Com
-                    @Seq
-                    fun f() {}
-                """.trimIndent()
-            )
-        }.apply {
-            assertEquals("Conflicting annotations: COM, SEQ", message)
-        }
     }
 
     @Test
