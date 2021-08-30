@@ -31,7 +31,7 @@ internal class TypeResolvedCheckerTest : BaseTest() {
             driveTest(
                 TypeResolvedChecker::class,
                 """
-                    val x = u<`*`>(0)
+                    val x = u(0).ext<`*`>()
                 """.trimIndent()
             )
         }.apply { assertEquals("Type of expression could not be resolved", message) }

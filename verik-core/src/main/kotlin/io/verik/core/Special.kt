@@ -19,36 +19,16 @@
 package io.verik.core
 
 /**
- * Constructs a [Ubit].
- * @param N the width in bits
- * @param value the value
+ * Constructs a [Ubit] out of the constant [value].
  */
-fun <N : `*`> u(value: Int): Ubit<N> {
+fun u(value: Int): Ubit<Cardinal> {
     throw VerikException()
 }
 
 /**
- * Constructs a [Ubit].
- * @param value the value
+ * Constructs a [Sbit] out of the constant [value].
  */
-fun u(value: Sbit<`*`>): Ubit<`*`> {
-    throw VerikException()
-}
-
-/**
- * Constructs a [Sbit].
- * @param N the width in bits
- * @param value the value
- */
-fun <N : `*`> s(value: Int): Sbit<N> {
-    throw VerikException()
-}
-
-/**
- * Constructs a [Sbit].
- * @param value the value
- */
-fun s(value: Ubit<`*`>): Sbit<`*`> {
+fun s(value: Int): Sbit<Cardinal> {
     throw VerikException()
 }
 

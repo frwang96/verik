@@ -124,16 +124,6 @@ object Messages {
         "String literal expected for injected expression"
     )
 
-    val BIT_ZERO_WIDTH = MessageTemplate0(
-        Severity.ERROR,
-        "Bit type cannot have zero width"
-    )
-
-    val BIT_CONSTANT_TRUNCATION = MessageTemplate2<Int, Int>(
-        Severity.WARNING,
-        "Converting constant $0 to width $1 results in truncation"
-    )
-
 //  POST TRANSFORM  ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val ON_EXPRESSION_ILLEGAL = MessageTemplate0(

@@ -37,11 +37,11 @@ object BitConstantTransformer : ProjectStage() {
         val valueInt = value.toInt()
         val valueWidth = 32 - valueInt.countLeadingZeroBits()
         if (width == 0) {
-            Messages.BIT_ZERO_WIDTH.on(element)
+            Messages.INTERNAL_ERROR.on(element, "Bit type cannot have zero width")
             return "1'h0"
         }
         if (width < valueWidth) {
-            Messages.BIT_CONSTANT_TRUNCATION.on(element, valueInt, width)
+            Messages.INTERNAL_ERROR.on(element, "Converting constant $value to width $width results in truncation")
             return "1'h0"
         }
         val valueString = valueInt.toString(16)

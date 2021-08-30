@@ -90,6 +90,7 @@ object Core {
 
             val INV = CoreVkUbit.INV
             val PLUS_UBIT = CoreVkUbit.PLUS_UBIT
+            val EXT = CoreVkUbit.EXT
         }
     }
 

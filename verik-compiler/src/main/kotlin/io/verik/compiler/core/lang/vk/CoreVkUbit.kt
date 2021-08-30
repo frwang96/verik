@@ -39,4 +39,6 @@ object CoreVkUbit : CoreScope(Core.Vk.UBIT) {
             callExpression.type = type
         }
     }
+
+    val EXT = CoreKtFunctionDeclaration(parent, "ext")
 }

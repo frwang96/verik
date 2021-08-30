@@ -17,22 +17,22 @@
 package io.verik.compiler.transform.mid
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestWarningException
 import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class BitConstantTransformerTest : BaseTest() {
 
     @Test
+    @Disabled
+    // TODO resolve bit constant
     fun `constant decimal`() {
         val projectContext = driveTest(
             BitConstantTransformer::class,
             """
-                var x = u<`8`>(80)
+                var x = u(80)
             """.trimIndent()
         )
         assertElementEquals(
@@ -42,28 +42,18 @@ internal class BitConstantTransformerTest : BaseTest() {
     }
 
     @Test
+    @Disabled
+    // TODO resolve bit constant
     fun `constant hexadecimal`() {
         val projectContext = driveTest(
             BitConstantTransformer::class,
             """
-                var x = u<`36`>(0xffff)
+                var x = u(0xffff)
             """.trimIndent()
         )
         assertElementEquals(
             "ConstantExpression(Ubit<`36`>, 36'h0_0000_ffff)",
             projectContext.findExpression("x")
         )
-    }
-
-    @Test
-    fun `constant warning truncation`() {
-        assertThrows<TestWarningException> {
-            driveTest(
-                BitConstantTransformer::class,
-                """
-                    var x = u<`2`>(4)
-                """.trimIndent()
-            )
-        }.apply { assertEquals("Converting constant 4 to width 2 results in truncation", message) }
     }
 }

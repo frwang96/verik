@@ -60,7 +60,7 @@ object TypeConstraintCollector {
         // TODO general handling of call expressions
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
-            if (callExpression.reference == Core.Vk.U_INT)
+            if (callExpression.reference == Core.Vk.Ubit.EXT)
                 typeConstraints.add(TypeParameterTypeConstraint(callExpression))
         }
     }

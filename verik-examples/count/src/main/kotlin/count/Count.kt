@@ -23,13 +23,13 @@ object Count : Module() {
 
     var clk = false
     var rst = true
-    var count = u<`8`>(0)
+    var count = u(0x00)
 
     @Seq
     fun update() {
         on(posedge(clk)) {
             println("count=$count")
-            if (rst) count = u(0)
+            if (rst) count = u(0x00)
             else count += u(1)
         }
     }
