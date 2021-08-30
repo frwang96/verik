@@ -20,6 +20,8 @@ plugins {
 }
 
 subprojects {
+    group = "io.verik"
+    version = "local"
     apply(plugin = "io.verik.verik-plugin")
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
     configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {

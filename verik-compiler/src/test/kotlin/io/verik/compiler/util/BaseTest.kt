@@ -33,7 +33,7 @@ abstract class BaseTest {
 
         fun getConfig(): Config {
             return Config(
-                version = "unspecified",
+                version = "local",
                 timestamp = "",
                 projectName = "verik",
                 projectDir = Paths.get("/"),

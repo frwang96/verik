@@ -63,6 +63,13 @@ tasks.register("format") {
     }
 }
 
+tasks.register("publishToMavenLocal") {
+    group = "publishing"
+    dependsOn(gradle.includedBuild("verik-core").task(":publishToMavenLocal"))
+    dependsOn(gradle.includedBuild("verik-compiler").task(":publishToMavenLocal"))
+    dependsOn(gradle.includedBuild("verik-plugin").task(":publishToMavenLocal"))
+}
+
 tasks.register("clean") {
     group = "build"
     dependsOn(gradle.includedBuild("verik-kotlin").task(":clean"))
