@@ -14,26 +14,29 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.resolve
+package io.verik.compiler.specialize
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
+import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
-import org.junit.jupiter.api.Assertions.assertEquals
+import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
-internal class TypeResolvedCheckerTest : BaseTest() {
+internal class TypeResolverTest : BaseTest() {
 
     @Test
-    fun `cardinal not resolved`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                TypeResolvedChecker::class,
-                """
-                    val x = u<`*`>(0)
-                """.trimIndent()
-            )
-        }.apply { assertEquals("Type could not be resolved: Ubit<`*`>", message) }
+    fun `resolve call expression`() {
+        val projectContext = driveTest(
+            TypeResolver::class,
+            """
+                fun f() {
+                    u<`8`>(0)
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtCallExpression(Ubit<`8`>, u, null, *, *)",
+            projectContext.findExpression("f")
+        )
     }
 }

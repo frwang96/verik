@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.resolve
+package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression

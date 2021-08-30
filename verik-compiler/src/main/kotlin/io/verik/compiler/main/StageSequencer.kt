@@ -32,14 +32,14 @@ import io.verik.compiler.compile.KotlinEnvironmentBuilder
 import io.verik.compiler.interpret.EnumInterpreter
 import io.verik.compiler.interpret.FileSplitter
 import io.verik.compiler.interpret.MemberInterpreter
-import io.verik.compiler.resolve.TypeBackFiller
-import io.verik.compiler.resolve.TypeResolvedChecker
-import io.verik.compiler.resolve.TypeResolver
 import io.verik.compiler.serialize.ConfigFileSerializer
 import io.verik.compiler.serialize.OrderFileSerializer
 import io.verik.compiler.serialize.PackageFileSerializer
 import io.verik.compiler.serialize.SourceSerializer
 import io.verik.compiler.specialize.DeclarationSpecializer
+import io.verik.compiler.specialize.TypeBackFiller
+import io.verik.compiler.specialize.TypeResolvedChecker
+import io.verik.compiler.specialize.TypeResolver
 import io.verik.compiler.specialize.TypeSpecializedChecker
 import io.verik.compiler.transform.mid.AssignmentTransformer
 import io.verik.compiler.transform.mid.BitConstantTransformer
@@ -85,12 +85,10 @@ object StageSequencer {
         stageSequence.add(UnaryExpressionReducer)
         stageSequence.add(BinaryExpressionReducer)
 
-        // Resolve
+        // Specialize
         stageSequence.add(TypeResolver)
         stageSequence.add(TypeBackFiller)
         stageSequence.add(TypeResolvedChecker)
-
-        // Specialize
         stageSequence.add(DeclarationSpecializer)
         stageSequence.add(TypeSpecializedChecker)
 
