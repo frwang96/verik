@@ -17,6 +17,7 @@
 package io.verik.compiler.message
 
 import io.verik.compiler.ast.property.Type
+import org.jetbrains.kotlin.lexer.KtToken
 import org.jetbrains.kotlin.name.FqName
 import java.nio.file.Path
 import kotlin.reflect.full.memberProperties
@@ -58,6 +59,11 @@ object Messages {
     val ELEMENT_NOT_SUPPORTED = MessageTemplate1<String>(
         Severity.ERROR,
         "$0 not supported"
+    )
+
+    val MODIFIER_NOT_SUPPORTED = MessageTemplate1<KtToken>(
+        Severity.ERROR,
+        "Modifier $0 not supported"
     )
 
 //  COMPILE  ///////////////////////////////////////////////////////////////////////////////////////////////////////////

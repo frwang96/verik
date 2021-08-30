@@ -24,6 +24,7 @@ import io.verik.compiler.check.post.UntransformedElementChecker
 import io.verik.compiler.check.pre.FileChecker
 import io.verik.compiler.check.pre.ImportDirectiveChecker
 import io.verik.compiler.check.pre.UnsupportedElementChecker
+import io.verik.compiler.check.pre.UnsupportedModifierChecker
 import io.verik.compiler.common.StageSequence
 import io.verik.compiler.compile.KotlinCompilerAnalyzer
 import io.verik.compiler.compile.KotlinCompilerParser
@@ -71,6 +72,7 @@ object StageSequencer {
 
         // PreCheck
         stageSequence.add(UnsupportedElementChecker)
+        stageSequence.add(UnsupportedModifierChecker)
         stageSequence.add(FileChecker)
         stageSequence.add(ImportDirectiveChecker)
 
