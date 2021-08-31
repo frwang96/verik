@@ -156,4 +156,18 @@ internal class DeclarationCasterTest : BaseTest() {
             projectContext.findDeclaration("x")
         )
     }
+
+    @Test
+    fun `type alias`() {
+        val projectContext = driveTest(
+            ProjectCaster::class,
+            """
+                typealias N = INC<`7`>
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "TypeAlias(N, INC<`7`>)",
+            projectContext.findDeclaration("N")
+        )
+    }
 }

@@ -49,6 +49,7 @@ import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
+import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.EDelayExpression
@@ -195,6 +196,12 @@ abstract class Visitor {
 
     open fun visitTypeParameter(typeParameter: ETypeParameter) {
         visitElement(typeParameter)
+    }
+
+//  TYPE ALIAS  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    open fun visitTypeAlias(typeAlias: ETypeAlias) {
+        visitElement(typeAlias)
     }
 
 //  EXPRESSION  ////////////////////////////////////////////////////////////////////////////////////////////////////////

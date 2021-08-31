@@ -21,6 +21,7 @@ import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
+import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.interfaces.cast
 import io.verik.compiler.ast.property.Annotation
 import io.verik.compiler.core.common.Core
@@ -29,6 +30,7 @@ import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtEnumEntry
 import org.jetbrains.kotlin.psi.KtNamedFunction
 import org.jetbrains.kotlin.psi.KtProperty
+import org.jetbrains.kotlin.psi.KtTypeAlias
 import org.jetbrains.kotlin.psi.KtTypeParameter
 import org.jetbrains.kotlin.resolve.descriptorUtil.classValueType
 import org.jetbrains.kotlin.resolve.descriptorUtil.getSuperClassOrAny
@@ -125,5 +127,17 @@ object DeclarationCaster {
 
         typeParameter.typeConstraint = typeConstraint
         return typeParameter
+    }
+
+    fun castTypeAlias(alias: KtTypeAlias, castContext: CastContext): ETypeAlias? {
+        val descriptor = castContext.sliceTypeAlias[alias]!!
+        val typeAlias = castContext.getDeclaration(descriptor, alias)
+            .cast<ETypeAlias>(alias)
+            ?: return null
+
+        val type = castContext.castType(alias.getTypeReference()!!)
+
+        typeAlias.type = type
+        return typeAlias
     }
 }

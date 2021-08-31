@@ -33,6 +33,7 @@ import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
+import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.common.location
 import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.psi.KtAnnotatedExpression
@@ -53,6 +54,7 @@ import org.jetbrains.kotlin.psi.KtPrefixExpression
 import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.psi.KtSimpleNameExpression
 import org.jetbrains.kotlin.psi.KtStringTemplateExpression
+import org.jetbrains.kotlin.psi.KtTypeAlias
 import org.jetbrains.kotlin.psi.KtTypeParameter
 import org.jetbrains.kotlin.psi.KtVisitor
 
@@ -91,6 +93,10 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
 
     override fun visitTypeParameter(parameter: KtTypeParameter, data: Unit?): ETypeParameter? {
         return DeclarationCaster.castTypeParameter(parameter, castContext)
+    }
+
+    override fun visitTypeAlias(typeAlias: KtTypeAlias, data: Unit?): ETypeAlias? {
+        return DeclarationCaster.castTypeAlias(typeAlias, castContext)
     }
 
     override fun visitAnnotatedExpression(expression: KtAnnotatedExpression, data: Unit?): EExpression {

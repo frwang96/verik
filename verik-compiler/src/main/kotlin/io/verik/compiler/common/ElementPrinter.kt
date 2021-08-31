@@ -37,6 +37,7 @@ import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
+import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.EDelayExpression
@@ -204,6 +205,13 @@ class ElementPrinter : Visitor() {
         build("TypeParameter") {
             build(typeParameter.name)
             build(typeParameter.typeConstraint.toString())
+        }
+    }
+
+    override fun visitTypeAlias(typeAlias: ETypeAlias) {
+        build("TypeAlias") {
+            build(typeAlias.name)
+            build(typeAlias.type.toString())
         }
     }
 

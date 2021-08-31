@@ -21,6 +21,7 @@ import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
+import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.location
@@ -32,6 +33,7 @@ import org.jetbrains.kotlin.psi.KtEnumEntry
 import org.jetbrains.kotlin.psi.KtNamedFunction
 import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
+import org.jetbrains.kotlin.psi.KtTypeAlias
 import org.jetbrains.kotlin.psi.KtTypeParameter
 
 object ProjectIndexer : ProjectStage() {
@@ -110,6 +112,16 @@ object ProjectIndexer : ProjectStage() {
             checkDeclarationName(name, parameter)
             val typeParameter = ETypeParameter(location, name, NullDeclaration.toType())
             castContext.addDeclaration(descriptor, typeParameter)
+        }
+
+        override fun visitTypeAlias(alias: KtTypeAlias) {
+            super.visitTypeAlias(alias)
+            val descriptor = castContext.sliceTypeAlias[alias]!!
+            val location = alias.nameIdentifier!!.location()
+            val name = alias.name!!
+            checkDeclarationName(name, alias)
+            val typeAlias = ETypeAlias(location, name, NullDeclaration.toType())
+            castContext.addDeclaration(descriptor, typeAlias)
         }
     }
 }
