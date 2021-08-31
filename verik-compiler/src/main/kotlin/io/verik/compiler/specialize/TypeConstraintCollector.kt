@@ -14,53 +14,54 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.resolve
+package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
+import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
-import io.verik.compiler.common.ProjectStage
+import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
-import io.verik.compiler.main.ProjectContext
 
-object TypeResolver : ProjectStage() {
+object TypeConstraintCollector {
 
-    override val checkNormalization = true
-
-    override fun process(projectContext: ProjectContext) {
-        projectContext.project.accept(TypeResolverVisitor)
+    fun collect(expression: EExpression): List<TypeConstraint> {
+        val typeConstraintCollectorVisitor = TypeConstraintCollectorVisitor()
+        expression.accept(typeConstraintCollectorVisitor)
+        return typeConstraintCollectorVisitor.typeConstraints
     }
 
-    object TypeResolverVisitor : TreeVisitor() {
+    class TypeConstraintCollectorVisitor : TreeVisitor() {
+
+        val typeConstraints = ArrayList<TypeConstraint>()
 
         override fun visitKtProperty(property: EKtProperty) {
             super.visitKtProperty(property)
             val initializer = property.initializer
             if (initializer != null)
-                property.type = initializer.type.copy()
+                typeConstraints.add(ExpressionEqualsTypeConstraint(initializer, property))
         }
 
-        override fun visitKtBlockExpression(blockExpression: EKtBlockExpression) {
-            super.visitKtBlockExpression(blockExpression)
-            if (blockExpression.hasStatements())
-                blockExpression.type = blockExpression.statements.last().type.copy()
+        override fun visitKtBinaryExpression(binaryExpression: EKtBinaryExpression) {
+            super.visitKtBinaryExpression(binaryExpression)
+            if (binaryExpression.kind == KtBinaryOperatorKind.EQ)
+                typeConstraints.add(ExpressionEqualsTypeConstraint(binaryExpression.right, binaryExpression.left))
         }
 
         override fun visitKtReferenceExpression(referenceExpression: EKtReferenceExpression) {
             super.visitKtReferenceExpression(referenceExpression)
             val reference = referenceExpression.reference
             if (reference is EExpression)
-                referenceExpression.type = reference.type.copy()
+                typeConstraints.add(ExpressionEqualsTypeConstraint(referenceExpression, reference))
         }
 
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
             val reference = callExpression.reference
             if (reference is CoreKtFunctionDeclaration)
-                reference.resolve(callExpression)
+                typeConstraints.addAll(reference.getTypeConstraints(callExpression))
         }
     }
 }

@@ -30,11 +30,11 @@ internal class CallExpressionCasterTest : BaseTest() {
         val projectContext = driveTest(
             ProjectCaster::class,
             """
-                var x = u<`8`>(0)
+                var x = u(0).ext<`8`>()
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Ubit<`*`>, u, null, [`8`], *)",
+            "KtCallExpression(Ubit<`*`>, ext, *, [`8`], *)",
             projectContext.findExpression("x")
         )
     }
@@ -44,11 +44,11 @@ internal class CallExpressionCasterTest : BaseTest() {
         val projectContext = driveTest(
             ProjectCaster::class,
             """
-                var x: Ubit<`8`> = u(0)
+                var x: Ubit<`8`> = u(0).ext()
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Ubit<`*`>, u, null, [`*`], *)",
+            "KtCallExpression(Ubit<`*`>, ext, *, [`*`], *)",
             projectContext.findExpression("x")
         )
     }

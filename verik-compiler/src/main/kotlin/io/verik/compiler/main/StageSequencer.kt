@@ -32,21 +32,21 @@ import io.verik.compiler.compile.KotlinEnvironmentBuilder
 import io.verik.compiler.interpret.EnumInterpreter
 import io.verik.compiler.interpret.FileSplitter
 import io.verik.compiler.interpret.MemberInterpreter
-import io.verik.compiler.resolve.TypeBackFiller
-import io.verik.compiler.resolve.TypeResolvedChecker
-import io.verik.compiler.resolve.TypeResolver
 import io.verik.compiler.serialize.ConfigFileSerializer
 import io.verik.compiler.serialize.OrderFileSerializer
 import io.verik.compiler.serialize.PackageFileSerializer
 import io.verik.compiler.serialize.SourceSerializer
 import io.verik.compiler.specialize.DeclarationSpecializer
+import io.verik.compiler.specialize.TypeChecker
+import io.verik.compiler.specialize.TypeResolvedChecker
+import io.verik.compiler.specialize.TypeResolver
 import io.verik.compiler.specialize.TypeSpecializedChecker
 import io.verik.compiler.transform.mid.AssignmentTransformer
-import io.verik.compiler.transform.mid.BitConstantTransformer
 import io.verik.compiler.transform.mid.InjectedExpressionReducer
 import io.verik.compiler.transform.mid.StringTemplateExpressionReducer
 import io.verik.compiler.transform.post.BinaryExpressionTransformer
 import io.verik.compiler.transform.post.BlockExpressionTransformer
+import io.verik.compiler.transform.post.ConstantExpressionTransformer
 import io.verik.compiler.transform.post.FunctionReferenceTransformer
 import io.verik.compiler.transform.post.FunctionSpecialTransformer
 import io.verik.compiler.transform.post.InlineIfExpressionTransformer
@@ -58,6 +58,7 @@ import io.verik.compiler.transform.post.ReferenceAndCallExpressionTransformer
 import io.verik.compiler.transform.post.UnaryExpressionTransformer
 import io.verik.compiler.transform.pre.AssignmentOperatorReducer
 import io.verik.compiler.transform.pre.BinaryExpressionReducer
+import io.verik.compiler.transform.pre.BitConstantTransformer
 import io.verik.compiler.transform.pre.UnaryExpressionReducer
 
 object StageSequencer {
@@ -84,15 +85,14 @@ object StageSequencer {
         stageSequence.add(AssignmentOperatorReducer)
         stageSequence.add(UnaryExpressionReducer)
         stageSequence.add(BinaryExpressionReducer)
-
-        // Resolve
-        stageSequence.add(TypeResolver)
-        stageSequence.add(TypeBackFiller)
-        stageSequence.add(TypeResolvedChecker)
+        stageSequence.add(BitConstantTransformer)
 
         // Specialize
+        stageSequence.add(TypeResolver)
+        stageSequence.add(TypeResolvedChecker)
         stageSequence.add(DeclarationSpecializer)
         stageSequence.add(TypeSpecializedChecker)
+        stageSequence.add(TypeChecker)
 
         // Interpret
         stageSequence.add(EnumInterpreter)
@@ -102,7 +102,6 @@ object StageSequencer {
         // MidTransform
         stageSequence.add(InjectedExpressionReducer)
         stageSequence.add(StringTemplateExpressionReducer)
-        stageSequence.add(BitConstantTransformer)
         stageSequence.add(AssignmentTransformer)
 
         // PostTransform
@@ -112,6 +111,7 @@ object StageSequencer {
         stageSequence.add(FunctionSpecialTransformer)
         stageSequence.add(UnaryExpressionTransformer)
         stageSequence.add(BinaryExpressionTransformer)
+        stageSequence.add(ConstantExpressionTransformer)
         stageSequence.add(PackageNameTransformer)
         stageSequence.add(PackageReferenceInsertionTransformer)
         stageSequence.add(ReferenceAndCallExpressionTransformer)

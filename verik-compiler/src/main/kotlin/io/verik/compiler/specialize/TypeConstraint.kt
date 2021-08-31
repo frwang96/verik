@@ -14,41 +14,25 @@
  * limitations under the License.
  */
 
-package count
+package io.verik.compiler.specialize
 
-import io.verik.core.*
+import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.kt.EKtCallExpression
 
-@Top
-object Count : Module() {
+sealed class TypeConstraint
 
-    var clk = false
-    var rst = true
-    var count = u(0x00)
+// TODO set location of type parameter
+class TypeParameterTypeConstraint(
+    val callExpression: EKtCallExpression
+) : TypeConstraint()
 
-    @Seq
-    fun update() {
-        on(posedge(clk)) {
-            println("count=$count")
-            if (rst) count = u(0x00)
-            else count += u(1)
-        }
-    }
+class ExpressionEqualsTypeConstraint(
+    val inner: EExpression,
+    val outer: EExpression
+) : TypeConstraint()
 
-    @Run
-    fun toggleClk() {
-        clk = false
-        forever {
-            delay(1)
-            clk = !clk
-        }
-    }
-
-    @Run
-    fun toggleRst() {
-        rst = true
-        delay(2)
-        rst = false
-        delay(16)
-        finish()
-    }
-}
+class MaxBitWidthTypeConstraint(
+    val left: EExpression,
+    val right: EExpression,
+    val outer: EExpression
+) : TypeConstraint()

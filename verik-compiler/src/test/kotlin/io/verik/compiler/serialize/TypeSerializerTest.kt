@@ -45,7 +45,7 @@ internal class TypeSerializerTest : BaseTest() {
         val projectContext = driveTest(
             SourceSerializer::class,
             """
-                var x = u<`8`>(0)
+                var x = u(0x00)
             """.trimIndent()
         )
         val expected = """

@@ -14,56 +14,69 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.mid
+package io.verik.compiler.transform.post
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestWarningException
 import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
-internal class BitConstantTransformerTest : BaseTest() {
+internal class ConstantExpressionTransformerTest : BaseTest() {
 
     @Test
-    fun `constant decimal`() {
+    fun `boolean false`() {
         val projectContext = driveTest(
-            BitConstantTransformer::class,
+            ConstantExpressionTransformer::class,
             """
-                var x = u<`8`>(80)
+                var x = false
             """.trimIndent()
         )
         assertElementEquals(
-            "ConstantExpression(Ubit<`8`>, 8'h50)",
+            "ConstantExpression(Boolean, 1'b0)",
             projectContext.findExpression("x")
         )
     }
 
     @Test
-    fun `constant hexadecimal`() {
+    fun `integer decimal`() {
         val projectContext = driveTest(
-            BitConstantTransformer::class,
+            ConstantExpressionTransformer::class,
             """
-                var x = u<`36`>(0xffff)
+                var x = 1_2
             """.trimIndent()
         )
         assertElementEquals(
-            "ConstantExpression(Ubit<`36`>, 36'h0_0000_ffff)",
+            "ConstantExpression(Int, 12)",
             projectContext.findExpression("x")
         )
     }
 
     @Test
-    fun `constant warning truncation`() {
-        assertThrows<TestWarningException> {
-            driveTest(
-                BitConstantTransformer::class,
-                """
-                    var x = u<`2`>(4)
-                """.trimIndent()
-            )
-        }.apply { assertEquals("Converting constant 4 to width 2 results in truncation", message) }
+    fun `integer hexadecimal`() {
+        val projectContext = driveTest(
+            ConstantExpressionTransformer::class,
+            """
+                var x = 0xaA_bB
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "ConstantExpression(Int, 43707)",
+            projectContext.findExpression("x")
+        )
+    }
+
+    @Test
+    fun `integer binary`() {
+        val projectContext = driveTest(
+            ConstantExpressionTransformer::class,
+            """
+                var x = 0b0000_1111
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "ConstantExpression(Int, 15)",
+            projectContext.findExpression("x")
+        )
     }
 }

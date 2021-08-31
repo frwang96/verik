@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.resolve
+package io.verik.compiler.specialize
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestErrorException
@@ -23,17 +23,20 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-internal class TypeResolvedCheckerTest : BaseTest() {
+internal class TypeCheckerTest : BaseTest() {
 
     @Test
-    fun `cardinal not resolved`() {
+    fun `expression equals violation`() {
         assertThrows<TestErrorException> {
             driveTest(
-                TypeResolvedChecker::class,
+                TypeChecker::class,
                 """
-                    val x = u<`*`>(0)
+                    var x = u(0x00)
+                    fun f() {
+                        x = u(0)
+                    }
                 """.trimIndent()
             )
-        }.apply { assertEquals("Type could not be resolved: Ubit<`*`>", message) }
+        }.apply { assertEquals("Type mismatch: Expected Ubit<`8`> actual Ubit<`1`>", message) }
     }
 }

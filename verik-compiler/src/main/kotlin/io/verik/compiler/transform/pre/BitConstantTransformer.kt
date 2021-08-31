@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.mid
+package io.verik.compiler.transform.pre
 
 import io.verik.compiler.ast.element.common.EConstantExpression
-import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.common.ConstantUtil
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
+import io.verik.compiler.core.common.CoreCardinalConstantDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 
@@ -33,46 +34,41 @@ object BitConstantTransformer : ProjectStage() {
         projectContext.project.accept(BitConstantVisitor)
     }
 
-    private fun toHexString(value: String, width: Int, element: EElement): String {
-        val valueInt = value.toInt()
-        val valueWidth = 32 - valueInt.countLeadingZeroBits()
-        if (width == 0) {
-            Messages.BIT_ZERO_WIDTH.on(element)
-            return "1'h0"
-        }
-        if (width < valueWidth) {
-            Messages.BIT_CONSTANT_TRUNCATION.on(element, valueInt, width)
-            return "1'h0"
-        }
-        val valueString = valueInt.toString(16)
-        val valueStringLength = (width + 3) / 4
-        val valueStringPadded = valueString.padStart(valueStringLength, '0')
-
-        val builder = StringBuilder()
-        builder.append("$width'h")
-        valueStringPadded.forEachIndexed { index, it ->
-            builder.append(it)
-            val countToEnd = valueStringLength - index - 1
-            if (countToEnd > 0 && countToEnd % 4 == 0)
-                builder.append("_")
-        }
-        return builder.toString()
-    }
-
     object BitConstantVisitor : TreeVisitor() {
+
+        private fun getBitConstantExpression(expression: EConstantExpression): EConstantExpression {
+            val value = ConstantUtil.getIntConstantValue(expression.value)
+            val width = ConstantUtil.getIntConstantWidth(expression.value)
+
+            val valueStringUndecorated = value.toString(16)
+            val valueStringLength = (width + 3) / 4
+            val valueStringPadded = valueStringUndecorated.padStart(valueStringLength, '0')
+
+            val builder = StringBuilder()
+            builder.append("$width'h")
+            valueStringPadded.forEachIndexed { index, it ->
+                builder.append(it)
+                val countToEnd = valueStringLength - index - 1
+                if (countToEnd > 0 && countToEnd % 4 == 0)
+                    builder.append("_")
+            }
+            val valueStringDecorated = builder.toString()
+
+            return EConstantExpression(
+                expression.location,
+                Core.Vk.UBIT.toType(CoreCardinalConstantDeclaration(width).toType()),
+                valueStringDecorated
+            )
+        }
 
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
             if (callExpression.reference == Core.Vk.U_INT) {
                 val expression = callExpression.valueArguments[0]
                 if (expression is EConstantExpression) {
-                    val width = callExpression.type.asBitWidth(callExpression)
-                    val constantExpression = EConstantExpression(
-                        callExpression.location,
-                        callExpression.type,
-                        toHexString(expression.value, width, callExpression)
-                    )
-                    callExpression.replace(constantExpression)
+                    callExpression.replace(getBitConstantExpression(expression))
+                } else {
+                    Messages.BIT_CONSTANT_NOT_CONSTANT.on(expression)
                 }
             }
         }

@@ -94,11 +94,23 @@ object Messages {
         "Conflict with SystemVerilog reserved keyword: $0"
     )
 
-//  RESOLVE  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  PRE TRANSFORM  /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val TYPE_UNRESOLVED = MessageTemplate1<Type>(
+    val BIT_CONSTANT_NOT_CONSTANT = MessageTemplate0(
         Severity.ERROR,
-        "Type could not be resolved: $0"
+        "Constant literal expected for bit constant"
+    )
+
+//  SPECIALIZE  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    val EXPRESSION_UNRESOLVED = MessageTemplate0(
+        Severity.ERROR,
+        "Type of expression could not be resolved"
+    )
+
+    val TYPE_MISMATCH = MessageTemplate2<Type, Type>(
+        Severity.ERROR,
+        "Type mismatch: Expected $0 actual $1"
     )
 
 //  INTERPRET  /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -123,16 +135,6 @@ object Messages {
     val INJECTED_EXPRESSION_NOT_LITERAL = MessageTemplate0(
         Severity.ERROR,
         "String literal expected for injected expression"
-    )
-
-    val BIT_ZERO_WIDTH = MessageTemplate0(
-        Severity.ERROR,
-        "Bit type cannot have zero width"
-    )
-
-    val BIT_CONSTANT_TRUNCATION = MessageTemplate2<Int, Int>(
-        Severity.WARNING,
-        "Converting constant $0 to width $1 results in truncation"
     )
 
 //  POST TRANSFORM  ////////////////////////////////////////////////////////////////////////////////////////////////////

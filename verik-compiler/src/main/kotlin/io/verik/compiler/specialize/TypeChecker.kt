@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.resolve
+package io.verik.compiler.specialize
 
-import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.kt.EKtFunction
+import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.message.Messages
 
-object TypeResolvedChecker : ProjectStage() {
+object TypeChecker : ProjectStage() {
 
     override val checkNormalization = false
 
@@ -32,10 +32,19 @@ object TypeResolvedChecker : ProjectStage() {
 
     object TypeCheckerVisitor : TreeVisitor() {
 
-        override fun visitExpression(expression: EExpression) {
-            super.visitExpression(expression)
-            if (!expression.type.isResolved())
-                Messages.TYPE_UNRESOLVED.on(expression, expression.type)
+        override fun visitKtFunction(function: EKtFunction) {
+            super.visitKtFunction(function)
+            val body = function.body
+            if (body != null) {
+                val typeConstraints = TypeConstraintCollector.collect(body)
+                TypeConstraintChecker.check(typeConstraints)
+            }
+        }
+
+        override fun visitKtProperty(property: EKtProperty) {
+            super.visitKtProperty(property)
+            val typeConstraints = TypeConstraintCollector.collect(property)
+            TypeConstraintChecker.check(typeConstraints)
         }
     }
 }

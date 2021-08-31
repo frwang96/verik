@@ -201,7 +201,7 @@ internal class TypeCasterTest : BaseTest() {
             ProjectCaster::class,
             """
                 class C<N: Cardinal> {
-                    var x: Ubit<N> = u(0)
+                    var x: Ubit<N> = u(0).ext()
                 }
             """.trimIndent()
         )
