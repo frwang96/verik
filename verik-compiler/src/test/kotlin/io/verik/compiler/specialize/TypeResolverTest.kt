@@ -55,4 +55,18 @@ internal class TypeResolverTest : BaseTest() {
             projectContext.findExpression("f")
         )
     }
+
+    @Test
+    fun `resolve call expression`() {
+        val projectContext = driveTest(
+            TypeResolver::class,
+            """
+                val x = u(0x00) + u(0x00)
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtCallExpression(Ubit<`8`>, plus, *, [], *)",
+            projectContext.findExpression("x")
+        )
+    }
 }

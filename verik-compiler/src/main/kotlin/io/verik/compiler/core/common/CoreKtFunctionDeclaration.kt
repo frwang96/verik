@@ -17,6 +17,7 @@
 package io.verik.compiler.core.common
 
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.specialize.TypeConstraint
 
 open class CoreKtFunctionDeclaration private constructor(
     override var name: String,
@@ -24,7 +25,9 @@ open class CoreKtFunctionDeclaration private constructor(
     val parameterClassNames: List<String>
 ) : CoreAbstractFunctionDeclaration() {
 
-    open fun resolve(callExpression: EKtCallExpression) {}
+    open fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        return listOf()
+    }
 
     constructor(
         parent: String,

@@ -23,7 +23,7 @@ import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.common.Core
+import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 
 object TypeConstraintCollector {
 
@@ -57,11 +57,11 @@ object TypeConstraintCollector {
                 typeConstraints.add(ExpressionEqualsTypeConstraint(referenceExpression, reference))
         }
 
-        // TODO general handling of call expressions
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
-            if (callExpression.reference == Core.Vk.Ubit.EXT)
-                typeConstraints.add(TypeParameterTypeConstraint(callExpression))
+            val reference = callExpression.reference
+            if (reference is CoreKtFunctionDeclaration)
+                typeConstraints.addAll(reference.getTypeConstraints(callExpression))
         }
     }
 }

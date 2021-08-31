@@ -30,3 +30,9 @@ class ExpressionEqualsTypeConstraint(
     val inner: EExpression,
     val outer: EExpression
 ) : TypeConstraint()
+
+class MaxBitWidthTypeConstraint(
+    val left: EExpression,
+    val right: EExpression,
+    val outer: EExpression
+) : TypeConstraint()

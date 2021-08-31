@@ -18,10 +18,11 @@ package io.verik.compiler.core.lang.vk
 
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.core.common.CoreCardinalConstantDeclaration
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.core.common.CoreScope
-import java.lang.Integer.max
+import io.verik.compiler.specialize.MaxBitWidthTypeConstraint
+import io.verik.compiler.specialize.TypeConstraint
+import io.verik.compiler.specialize.TypeParameterTypeConstraint
 
 object CoreVkUbit : CoreScope(Core.Vk.UBIT) {
 
@@ -29,16 +30,21 @@ object CoreVkUbit : CoreScope(Core.Vk.UBIT) {
 
     val PLUS_UBIT = object : CoreKtFunctionDeclaration(parent, "plus", Core.Vk.UBIT) {
 
-        // TODO generalize resolution
-        override fun resolve(callExpression: EKtCallExpression) {
-            val leftWidth = callExpression.receiver!!.type.asBitWidthOrNull(callExpression)
-                ?: return
-            val rightWidth = callExpression.valueArguments[0].type.asBitWidthOrNull(callExpression)
-                ?: return
-            val type = Core.Vk.UBIT.toType(CoreCardinalConstantDeclaration(max(leftWidth, rightWidth)).toType())
-            callExpression.type = type
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return listOf(
+                MaxBitWidthTypeConstraint(
+                    callExpression.receiver!!,
+                    callExpression.valueArguments[0],
+                    callExpression
+                )
+            )
         }
     }
 
-    val EXT = CoreKtFunctionDeclaration(parent, "ext")
+    val EXT = object : CoreKtFunctionDeclaration(parent, "ext") {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return listOf(TypeParameterTypeConstraint(callExpression))
+        }
+    }
 }

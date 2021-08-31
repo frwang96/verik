@@ -16,7 +16,6 @@
 
 package io.verik.compiler.core.lang.vk
 
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreCardinalFunctionDeclaration
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
@@ -28,12 +27,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
     val ADD = CoreCardinalFunctionDeclaration("ADD")
     val INC = CoreCardinalFunctionDeclaration("INC")
 
-    val U_INT = object : CoreKtFunctionDeclaration(parent, "u", Core.Kt.INT) {
-
-        override fun resolve(callExpression: EKtCallExpression) {
-            callExpression.type = Core.Vk.UBIT.toType(callExpression.typeArguments[0].copy())
-        }
-    }
+    val U_INT = CoreKtFunctionDeclaration(parent, "u", Core.Kt.INT)
 
     val RANDOM = CoreKtFunctionDeclaration(parent, "random")
     val RANDOM_INT = CoreKtFunctionDeclaration(parent, "random", Core.Kt.INT)

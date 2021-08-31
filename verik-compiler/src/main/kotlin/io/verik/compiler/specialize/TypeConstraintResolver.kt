@@ -16,6 +16,9 @@
 
 package io.verik.compiler.specialize
 
+import io.verik.compiler.core.common.CoreCardinalConstantDeclaration
+import java.lang.Integer.max
+
 object TypeConstraintResolver {
 
     fun resolve(typeConstraints: List<TypeConstraint>) {
@@ -36,6 +39,9 @@ object TypeConstraintResolver {
                         unresolvedTypeConstraints.add(it)
                 is ExpressionEqualsTypeConstraint ->
                     if (!resolveExpressionEqualsTypeConstraint(it))
+                        unresolvedTypeConstraints.add(it)
+                is MaxBitWidthTypeConstraint ->
+                    if (!resolveMaxBitWidthTypeConstraint(it))
                         unresolvedTypeConstraints.add(it)
             }
         }
@@ -75,6 +81,25 @@ object TypeConstraintResolver {
         } else {
             if (innerResolved) {
                 typeConstraint.outer.type = typeConstraint.inner.type.copy()
+                true
+            } else {
+                false
+            }
+        }
+    }
+
+    private fun resolveMaxBitWidthTypeConstraint(typeConstraint: MaxBitWidthTypeConstraint): Boolean {
+        val leftResolved = typeConstraint.left.type.arguments[0].isResolved()
+        val rightResolved = typeConstraint.right.type.arguments[0].isResolved()
+        val outerResolved = typeConstraint.outer.type.arguments[0].isResolved()
+        return if (outerResolved) {
+            true
+        } else {
+            if (leftResolved && rightResolved) {
+                val leftWidth = typeConstraint.left.type.asBitWidth(typeConstraint.left)
+                val rightWidth = typeConstraint.right.type.asBitWidth(typeConstraint.right)
+                typeConstraint.outer.type.arguments[0] =
+                    CoreCardinalConstantDeclaration(max(leftWidth, rightWidth)).toType()
                 true
             } else {
                 false
