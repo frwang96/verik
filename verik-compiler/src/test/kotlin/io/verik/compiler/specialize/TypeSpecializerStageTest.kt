@@ -14,29 +14,30 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.cast
+package io.verik.compiler.specialize
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
+import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
-import org.junit.jupiter.api.Assertions
+import io.verik.compiler.util.findDeclaration
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
-internal class ProjectIndexerTest : BaseTest() {
+internal class TypeSpecializerStageTest : BaseTest() {
 
     @Test
-    fun `error name unicode`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                IndexerStage::class,
-                """
-                    @Suppress("ObjectPropertyName")
-                    val αβγ = 0
-                """.trimIndent()
-            )
-        }.apply {
-            Assertions.assertEquals("Illegal name: αβγ", message)
-        }
+    @Disabled
+    fun `specialize property`() {
+        val projectContext = driveTest(
+            TypeSpecializerStage::class,
+            """
+                typealias N = `8`
+                var x: Ubit<N> = u(0x00)
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtProperty(x, Ubit<`8`>, *)",
+            projectContext.findDeclaration("x")
+        )
     }
 }

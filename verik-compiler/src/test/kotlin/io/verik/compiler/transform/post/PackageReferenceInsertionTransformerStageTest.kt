@@ -14,41 +14,38 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.interpret
+package io.verik.compiler.transform.post
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
-import io.verik.compiler.util.findDeclaration
+import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
-internal class ClassInterpreterTest : BaseTest() {
+internal class PackageReferenceInsertionTransformerStageTest : BaseTest() {
 
     @Test
-    fun `interpret module`() {
+    fun `insert package reference`() {
         val projectContext = driveTest(
-            MemberInterpreterStage::class,
+            PackageReferenceInsertionTransformerStage::class,
             """
-                class M: Module()
+                var x = false
+                class M : Module() {
+                    fun f() {
+                        x
+                    }
+                }
             """.trimIndent()
         )
         assertElementEquals(
-            "Module(M)",
-            projectContext.findDeclaration("M")
-        )
-    }
-
-    @Test
-    fun `interpret class`() {
-        val projectContext = driveTest(
-            MemberInterpreterStage::class,
             """
-                class C
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "SvBasicClass(C, [], [])",
-            projectContext.findDeclaration("C")
+                KtReferenceExpression(
+                    Boolean,
+                    x,
+                    KtReferenceExpression(null, verik_pkg, null)
+                )
+            """.trimIndent(),
+            projectContext.findExpression("f")
         )
     }
 }

@@ -29,7 +29,7 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
     // TODO parenthesize order of operations
     fun `parenthesized expression`() {
         val projectContext = driveTest(
-            SourceSerializer::class,
+            SourceSerializerStage::class,
             """
                 var x = 0
                 var y = (x + 1) * x
@@ -49,7 +49,7 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
     @Test
     fun `unary expression`() {
         val projectContext = driveTest(
-            SourceSerializer::class,
+            SourceSerializerStage::class,
             """
                 var x = false
                 var y = !x
@@ -68,7 +68,7 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
     @Test
     fun `binary expression`() {
         val projectContext = driveTest(
-            SourceSerializer::class,
+            SourceSerializerStage::class,
             """
                 var x = 0
                 var y = x + 1
@@ -87,7 +87,7 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
     @Test
     fun `reference expression`() {
         val projectContext = driveTest(
-            SourceSerializer::class,
+            SourceSerializerStage::class,
             """
                 var x = 0
                 var y = x
@@ -106,7 +106,7 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
     @Test
     fun `call expression`() {
         val projectContext = driveTest(
-            SourceSerializer::class,
+            SourceSerializerStage::class,
             """
                 var x = random()
             """.trimIndent()
@@ -123,7 +123,7 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
     @Test
     fun `constant expression`() {
         val projectContext = driveTest(
-            SourceSerializer::class,
+            SourceSerializerStage::class,
             """
                 var x = 0
             """.trimIndent()
@@ -140,7 +140,7 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
     @Test
     fun `injected expression`() {
         val projectContext = driveTest(
-            SourceSerializer::class,
+            SourceSerializerStage::class,
             """
                 var x = 0
                 fun f() {
@@ -164,7 +164,7 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
     @Test
     fun `string expression`() {
         val projectContext = driveTest(
-            SourceSerializer::class,
+            SourceSerializerStage::class,
             """
                 var x = "abc"
             """.trimIndent()
@@ -181,7 +181,7 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
     @Test
     fun `if expression`() {
         val projectContext = driveTest(
-            SourceSerializer::class,
+            SourceSerializerStage::class,
             """
                 var x = false
                 fun f() {
@@ -208,7 +208,7 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
     @Test
     fun `if expression no then`() {
         val projectContext = driveTest(
-            SourceSerializer::class,
+            SourceSerializerStage::class,
             """
                 var x = false
                 fun f() {
@@ -233,7 +233,7 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
     @Test
     fun `if expression nested`() {
         val projectContext = driveTest(
-            SourceSerializer::class,
+            SourceSerializerStage::class,
             """
                 var x = false
                 fun f() {
@@ -274,7 +274,7 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
     @Test
     fun `inline if expression`() {
         val projectContext = driveTest(
-            SourceSerializer::class,
+            SourceSerializerStage::class,
             """
                 var x = false
                 var y = if (x) 0 else 1
@@ -293,7 +293,7 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
     @Test
     fun `forever expression`() {
         val projectContext = driveTest(
-            SourceSerializer::class,
+            SourceSerializerStage::class,
             """
                 fun f() {
                     forever {}
@@ -315,7 +315,7 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
     @Test
     fun `event control expression`() {
         val projectContext = driveTest(
-            SourceSerializer::class,
+            SourceSerializerStage::class,
             """
                 var x = false
                 fun f() {
@@ -339,7 +339,7 @@ internal class ExpressionSerializerVisitorTest : BaseTest() {
     @Test
     fun `delay expression`() {
         val projectContext = driveTest(
-            SourceSerializer::class,
+            SourceSerializerStage::class,
             """
                 fun f() {
                     delay(1)

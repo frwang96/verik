@@ -19,51 +19,50 @@ package io.verik.compiler.cast
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
-import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
-internal class StringTemplateExpressionCasterTest : BaseTest() {
+internal class CasterStageTest : BaseTest() {
 
     @Test
-    fun `literal entry`() {
-        val projectContext = driveTest(
-            CasterStage::class,
-            """
-                var x = "abc"
-            """.trimIndent()
-        )
+    fun `project empty`() {
+        val projectContext = driveTest(CasterStage::class, "")
         assertElementEquals(
-            "StringTemplateExpression(String, [abc])",
-            projectContext.findExpression("x")
+            "Project([BasicPackage(verik, [File([])])], RootPackage(root, []))",
+            projectContext.project
         )
     }
 
     @Test
-    fun `literal entry escaped`() {
+    fun `file class`() {
         val projectContext = driveTest(
             CasterStage::class,
             """
-                var x = "\$"
+                class C
             """.trimIndent()
         )
         assertElementEquals(
-            "StringTemplateExpression(String, [$])",
-            projectContext.findExpression("x")
+            "File([KtBasicClass(C, false, [], [])])",
+            projectContext.project.files().first()
         )
     }
 
     @Test
-    fun `expression entry`() {
+    fun `file classes`() {
         val projectContext = driveTest(
             CasterStage::class,
             """
-                var x = 0
-                var y = "${"$"}x"
+                class C
+                class D
             """.trimIndent()
         )
         assertElementEquals(
-            "StringTemplateExpression(String, [KtReferenceExpression(*)])",
-            projectContext.findExpression("y")
+            """
+                File([
+                    KtBasicClass(C, false, [], []),
+                    KtBasicClass(D, false, [], [])
+                ])
+            """.trimIndent(),
+            projectContext.project.files().first()
         )
     }
 }

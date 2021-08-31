@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.cast
+package io.verik.compiler.transform.pre
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.assertElementEquals
@@ -22,48 +22,44 @@ import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
-internal class StringTemplateExpressionCasterTest : BaseTest() {
+internal class BinaryExpressionReducerStageTest : BaseTest() {
 
     @Test
-    fun `literal entry`() {
+    fun `reduce plus`() {
         val projectContext = driveTest(
-            CasterStage::class,
-            """
-                var x = "abc"
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "StringTemplateExpression(String, [abc])",
-            projectContext.findExpression("x")
-        )
-    }
-
-    @Test
-    fun `literal entry escaped`() {
-        val projectContext = driveTest(
-            CasterStage::class,
-            """
-                var x = "\$"
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "StringTemplateExpression(String, [$])",
-            projectContext.findExpression("x")
-        )
-    }
-
-    @Test
-    fun `expression entry`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+            BinaryExpressionReducerStage::class,
             """
                 var x = 0
-                var y = "${"$"}x"
+                var y = x + 0
             """.trimIndent()
         )
         assertElementEquals(
-            "StringTemplateExpression(String, [KtReferenceExpression(*)])",
+            "KtCallExpression(Int, plus, KtReferenceExpression(*), [], [ConstantExpression(*)])",
             projectContext.findExpression("y")
+        )
+    }
+
+    @Test
+    fun `reduce nested plus`() {
+        val projectContext = driveTest(
+            BinaryExpressionReducerStage::class,
+            """
+                var x = 0
+                var y = 0
+                var z = x + y + 0
+            """.trimIndent()
+        )
+        assertElementEquals(
+            """
+                KtCallExpression(
+                    Int,
+                    plus,
+                    KtCallExpression(Int, plus, KtReferenceExpression(*), [], [KtReferenceExpression(*)]),
+                    [],
+                    [ConstantExpression(*)]
+                )
+            """.trimIndent(),
+            projectContext.findExpression("z")
         )
     }
 }

@@ -28,7 +28,7 @@ internal class CallExpressionCasterTest : BaseTest() {
     @Test
     fun `type argument explicit`() {
         val projectContext = driveTest(
-            ProjectCaster::class,
+            CasterStage::class,
             """
                 var x = u(0).ext<`8`>()
             """.trimIndent()
@@ -42,7 +42,7 @@ internal class CallExpressionCasterTest : BaseTest() {
     @Test
     fun `type argument implicit`() {
         val projectContext = driveTest(
-            ProjectCaster::class,
+            CasterStage::class,
             """
                 var x: Ubit<`8`> = u(0).ext()
             """.trimIndent()
@@ -56,7 +56,7 @@ internal class CallExpressionCasterTest : BaseTest() {
     @Test
     fun `value argument unnamed`() {
         val projectContext = driveTest(
-            ProjectCaster::class,
+            CasterStage::class,
             """
                 fun f(x: Int) {}
                 var x = f(0)
@@ -71,7 +71,7 @@ internal class CallExpressionCasterTest : BaseTest() {
     @Test
     fun `value argument named`() {
         val projectContext = driveTest(
-            ProjectCaster::class,
+            CasterStage::class,
             """
                 fun f(x: Int) {}
                 var x = f(x = 0)
@@ -86,7 +86,7 @@ internal class CallExpressionCasterTest : BaseTest() {
     @Test
     fun `value argument named order reversed`() {
         val projectContext = driveTest(
-            ProjectCaster::class,
+            CasterStage::class,
             """
                 fun f(x: Int, y: String) {}
                 var x = f(y = "", x = 0)
@@ -102,7 +102,7 @@ internal class CallExpressionCasterTest : BaseTest() {
     @Disabled
     fun `value argument default`() {
         val projectContext = driveTest(
-            ProjectCaster::class,
+            CasterStage::class,
             """
                 fun f(x: Int = 0) {}
                 var x = f()

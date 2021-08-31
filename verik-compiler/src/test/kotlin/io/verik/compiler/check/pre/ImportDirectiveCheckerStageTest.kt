@@ -14,29 +14,42 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.cast
+package io.verik.compiler.check.pre
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.driveTest
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-internal class ProjectIndexerTest : BaseTest() {
+internal class ImportDirectiveCheckerStageTest : BaseTest() {
 
     @Test
-    fun `error name unicode`() {
+    fun `import not found`() {
         assertThrows<TestErrorException> {
             driveTest(
-                IndexerStage::class,
+                ImportDirectiveCheckerStage::class,
                 """
-                    @Suppress("ObjectPropertyName")
-                    val αβγ = 0
+                    import java.time.LocalDateTime
                 """.trimIndent()
             )
         }.apply {
-            Assertions.assertEquals("Illegal name: αβγ", message)
+            assertEquals("Package not found: java.time", message)
+        }
+    }
+
+    @Test
+    fun `import not found all under`() {
+        assertThrows<TestErrorException> {
+            driveTest(
+                ImportDirectiveCheckerStage::class,
+                """
+                    import java.time.*
+                """.trimIndent()
+            )
+        }.apply {
+            assertEquals("Package not found: java.time", message)
         }
     }
 }

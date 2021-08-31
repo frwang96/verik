@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.cast
+package io.verik.compiler.check.post
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestErrorException
@@ -23,20 +23,20 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-internal class ProjectIndexerTest : BaseTest() {
+internal class NameRedeclarationCheckerStageTest : BaseTest() {
 
     @Test
-    fun `error name unicode`() {
+    fun `redeclaration in package`() {
         assertThrows<TestErrorException> {
             driveTest(
-                IndexerStage::class,
+                NameRedeclarationCheckerStage::class,
                 """
-                    @Suppress("ObjectPropertyName")
-                    val αβγ = 0
+                    enum class E { A }
+                    class A
                 """.trimIndent()
             )
         }.apply {
-            Assertions.assertEquals("Illegal name: αβγ", message)
+            Assertions.assertEquals("Name has already been declared: A", message)
         }
     }
 }

@@ -31,7 +31,7 @@ internal class FunctionInterpreterTest : BaseTest() {
     fun `annotations conflicting`() {
         assertThrows<TestErrorException> {
             driveTest(
-                MemberInterpreter::class,
+                MemberInterpreterStage::class,
                 """
                     @Com
                     @Seq
@@ -46,7 +46,7 @@ internal class FunctionInterpreterTest : BaseTest() {
     @Test
     fun `interpret function`() {
         val projectContext = driveTest(
-            MemberInterpreter::class,
+            MemberInterpreterStage::class,
             """
                 fun f() {}
             """.trimIndent()
@@ -60,7 +60,7 @@ internal class FunctionInterpreterTest : BaseTest() {
     @Test
     fun `interpret function in class`() {
         val projectContext = driveTest(
-            MemberInterpreter::class,
+            MemberInterpreterStage::class,
             """
                 class C {
                     fun f() {}
@@ -76,7 +76,7 @@ internal class FunctionInterpreterTest : BaseTest() {
     @Test
     fun `interpret initial block`() {
         val projectContext = driveTest(
-            MemberInterpreter::class,
+            MemberInterpreterStage::class,
             """
                 class M: Module() {
                     @Run
@@ -93,7 +93,7 @@ internal class FunctionInterpreterTest : BaseTest() {
     @Test
     fun `interpret always seq block`() {
         val projectContext = driveTest(
-            MemberInterpreter::class,
+            MemberInterpreterStage::class,
             """
                 class M: Module() {
                     private var x = false
@@ -114,7 +114,7 @@ internal class FunctionInterpreterTest : BaseTest() {
     fun `interpret always seq block error`() {
         assertThrows<TestErrorException> {
             driveTest(
-                MemberInterpreter::class,
+                MemberInterpreterStage::class,
                 """
                 class M: Module() {
                     @Seq

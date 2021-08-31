@@ -14,56 +14,59 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.cast
+package io.verik.compiler.specialize
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
+import io.verik.compiler.util.findDeclaration
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
-internal class StringTemplateExpressionCasterTest : BaseTest() {
+internal class TypeResolverStageTest : BaseTest() {
 
     @Test
-    fun `literal entry`() {
+    fun `resolve property`() {
         val projectContext = driveTest(
-            CasterStage::class,
+            TypeResolverStage::class,
             """
-                var x = "abc"
+                var x = false
             """.trimIndent()
         )
         assertElementEquals(
-            "StringTemplateExpression(String, [abc])",
-            projectContext.findExpression("x")
+            "KtProperty(x, Boolean, *)",
+            projectContext.findDeclaration("x")
         )
     }
 
     @Test
-    fun `literal entry escaped`() {
+    fun `resolve reference expression`() {
         val projectContext = driveTest(
-            CasterStage::class,
+            TypeResolverStage::class,
             """
-                var x = "\$"
+                var x = false
+                fun f() {
+                    x
+                }
             """.trimIndent()
         )
         assertElementEquals(
-            "StringTemplateExpression(String, [$])",
-            projectContext.findExpression("x")
+            "KtReferenceExpression(Boolean, x, null)",
+            projectContext.findExpression("f")
         )
     }
 
     @Test
-    fun `expression entry`() {
+    fun `resolve call expression`() {
         val projectContext = driveTest(
-            CasterStage::class,
+            TypeResolverStage::class,
             """
-                var x = 0
-                var y = "${"$"}x"
+                val x = u(0x00) + u(0x0)
             """.trimIndent()
         )
         assertElementEquals(
-            "StringTemplateExpression(String, [KtReferenceExpression(*)])",
-            projectContext.findExpression("y")
+            "KtCallExpression(Ubit<MAX<`8`,`4`>>, plus, *, [], *)",
+            projectContext.findExpression("x")
         )
     }
 }

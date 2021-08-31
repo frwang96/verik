@@ -14,29 +14,29 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.cast
+package io.verik.compiler.transform.post
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
+import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
-import org.junit.jupiter.api.Assertions
+import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
-internal class ProjectIndexerTest : BaseTest() {
+internal class LoopExpressionTransformerStageTest : BaseTest() {
 
     @Test
-    fun `error name unicode`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                IndexerStage::class,
-                """
-                    @Suppress("ObjectPropertyName")
-                    val αβγ = 0
-                """.trimIndent()
-            )
-        }.apply {
-            Assertions.assertEquals("Illegal name: αβγ", message)
-        }
+    fun `transform forever`() {
+        val projectContext = driveTest(
+            LoopExpressionTransformerStage::class,
+            """
+                fun f() {
+                    forever {}
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "ForeverStatement(Unit, KtBlockExpression(*))",
+            projectContext.findExpression("f")
+        )
     }
 }

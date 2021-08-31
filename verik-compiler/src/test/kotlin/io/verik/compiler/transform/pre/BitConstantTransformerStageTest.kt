@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.cast
+package io.verik.compiler.transform.pre
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.assertElementEquals
@@ -22,48 +22,33 @@ import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
-internal class StringTemplateExpressionCasterTest : BaseTest() {
+internal class BitConstantTransformerStageTest : BaseTest() {
 
     @Test
-    fun `literal entry`() {
+    fun `constant decimal`() {
         val projectContext = driveTest(
-            CasterStage::class,
+            BitConstantTransformerStage::class,
             """
-                var x = "abc"
+                var x = u(255)
             """.trimIndent()
         )
         assertElementEquals(
-            "StringTemplateExpression(String, [abc])",
+            "ConstantExpression(Ubit<`8`>, 8'hff)",
             projectContext.findExpression("x")
         )
     }
 
     @Test
-    fun `literal entry escaped`() {
+    fun `constant hexadecimal`() {
         val projectContext = driveTest(
-            CasterStage::class,
+            BitConstantTransformerStage::class,
             """
-                var x = "\$"
+                var x = u(0x00_0000_00ff)
             """.trimIndent()
         )
         assertElementEquals(
-            "StringTemplateExpression(String, [$])",
+            "ConstantExpression(Ubit<`40`>, 40'h00_0000_00ff)",
             projectContext.findExpression("x")
-        )
-    }
-
-    @Test
-    fun `expression entry`() {
-        val projectContext = driveTest(
-            CasterStage::class,
-            """
-                var x = 0
-                var y = "${"$"}x"
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "StringTemplateExpression(String, [KtReferenceExpression(*)])",
-            projectContext.findExpression("y")
         )
     }
 }

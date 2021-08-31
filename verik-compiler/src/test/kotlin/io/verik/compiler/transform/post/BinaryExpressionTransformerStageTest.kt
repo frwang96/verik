@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.cast
+package io.verik.compiler.transform.post
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.assertElementEquals
@@ -22,47 +22,19 @@ import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
-internal class StringTemplateExpressionCasterTest : BaseTest() {
+internal class BinaryExpressionTransformerStageTest : BaseTest() {
 
     @Test
-    fun `literal entry`() {
+    fun `transform plus`() {
         val projectContext = driveTest(
-            CasterStage::class,
-            """
-                var x = "abc"
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "StringTemplateExpression(String, [abc])",
-            projectContext.findExpression("x")
-        )
-    }
-
-    @Test
-    fun `literal entry escaped`() {
-        val projectContext = driveTest(
-            CasterStage::class,
-            """
-                var x = "\$"
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "StringTemplateExpression(String, [$])",
-            projectContext.findExpression("x")
-        )
-    }
-
-    @Test
-    fun `expression entry`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+            BinaryExpressionTransformerStage::class,
             """
                 var x = 0
-                var y = "${"$"}x"
+                var y = x.plus(1)
             """.trimIndent()
         )
         assertElementEquals(
-            "StringTemplateExpression(String, [KtReferenceExpression(*)])",
+            "SvBinaryExpression(Int, PLUS, KtReferenceExpression(*), ConstantExpression(*))",
             projectContext.findExpression("y")
         )
     }

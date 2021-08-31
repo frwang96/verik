@@ -14,29 +14,26 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.cast
+package io.verik.compiler.specialize
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.driveTest
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-internal class ProjectIndexerTest : BaseTest() {
+internal class TypeResolvedCheckerStageTest : BaseTest() {
 
     @Test
-    fun `error name unicode`() {
+    fun `cardinal not resolved`() {
         assertThrows<TestErrorException> {
             driveTest(
-                IndexerStage::class,
+                TypeResolvedCheckerStage::class,
                 """
-                    @Suppress("ObjectPropertyName")
-                    val αβγ = 0
+                    val x = u(0).ext<`*`>()
                 """.trimIndent()
             )
-        }.apply {
-            Assertions.assertEquals("Illegal name: αβγ", message)
-        }
+        }.apply { assertEquals("Type of expression could not be resolved", message) }
     }
 }

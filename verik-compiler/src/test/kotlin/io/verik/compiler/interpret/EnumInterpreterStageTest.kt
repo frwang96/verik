@@ -14,29 +14,26 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.cast
+package io.verik.compiler.interpret
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
+import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
-internal class ProjectIndexerTest : BaseTest() {
+internal class EnumInterpreterStageTest : BaseTest() {
 
     @Test
-    fun `error name unicode`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                IndexerStage::class,
-                """
-                    @Suppress("ObjectPropertyName")
-                    val αβγ = 0
-                """.trimIndent()
-            )
-        }.apply {
-            Assertions.assertEquals("Illegal name: αβγ", message)
-        }
+    fun `interpret enum`() {
+        val projectContext = driveTest(
+            MemberInterpreterStage::class,
+            """
+                enum class E { A }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "File([Enum(E, [A]), SvEnumEntry(A, E)])",
+            projectContext.project.files().first()
+        )
     }
 }

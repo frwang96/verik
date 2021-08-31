@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.cast
+package io.verik.compiler.transform.post
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.assertElementEquals
@@ -22,47 +22,34 @@ import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
-internal class StringTemplateExpressionCasterTest : BaseTest() {
+internal class InlineIfExpressionTransformerStageTest : BaseTest() {
 
     @Test
-    fun `literal entry`() {
+    fun `transform inline if`() {
         val projectContext = driveTest(
-            CasterStage::class,
+            InlineIfExpressionTransformerStage::class,
             """
-                var x = "abc"
+                var x = true
+                var y = if (x) 1 else 0
             """.trimIndent()
         )
         assertElementEquals(
-            "StringTemplateExpression(String, [abc])",
-            projectContext.findExpression("x")
+            "InlineIfExpression(Int, KtReferenceExpression(*), ConstantExpression(*), ConstantExpression(*))",
+            projectContext.findExpression("y")
         )
     }
 
     @Test
-    fun `literal entry escaped`() {
+    fun `transform inline if block expression`() {
         val projectContext = driveTest(
-            CasterStage::class,
+            InlineIfExpressionTransformerStage::class,
             """
-                var x = "\$"
+                var x = true
+                var y = if (x) { 1 } else { 0 }
             """.trimIndent()
         )
         assertElementEquals(
-            "StringTemplateExpression(String, [$])",
-            projectContext.findExpression("x")
-        )
-    }
-
-    @Test
-    fun `expression entry`() {
-        val projectContext = driveTest(
-            CasterStage::class,
-            """
-                var x = 0
-                var y = "${"$"}x"
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "StringTemplateExpression(String, [KtReferenceExpression(*)])",
+            "InlineIfExpression(Int, KtReferenceExpression(*), ConstantExpression(*), ConstantExpression(*))",
             projectContext.findExpression("y")
         )
     }

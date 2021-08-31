@@ -16,50 +16,50 @@
 
 package io.verik.compiler.main
 
-import io.verik.compiler.cast.ProjectCaster
-import io.verik.compiler.cast.ProjectIndexer
-import io.verik.compiler.check.post.KeywordChecker
-import io.verik.compiler.check.post.NameRedeclarationChecker
-import io.verik.compiler.check.post.UntransformedElementChecker
-import io.verik.compiler.check.pre.FileChecker
-import io.verik.compiler.check.pre.ImportDirectiveChecker
-import io.verik.compiler.check.pre.UnsupportedElementChecker
-import io.verik.compiler.check.pre.UnsupportedModifierChecker
+import io.verik.compiler.cast.CasterStage
+import io.verik.compiler.cast.IndexerStage
+import io.verik.compiler.check.post.KeywordCheckerStage
+import io.verik.compiler.check.post.NameRedeclarationCheckerStage
+import io.verik.compiler.check.post.UntransformedElementCheckerStage
+import io.verik.compiler.check.pre.FileCheckerStage
+import io.verik.compiler.check.pre.ImportDirectiveCheckerStage
+import io.verik.compiler.check.pre.UnsupportedElementCheckerStage
+import io.verik.compiler.check.pre.UnsupportedModifierCheckerStage
 import io.verik.compiler.common.StageSequence
-import io.verik.compiler.compile.KotlinCompilerAnalyzer
-import io.verik.compiler.compile.KotlinCompilerParser
-import io.verik.compiler.compile.KotlinEnvironmentBuilder
-import io.verik.compiler.interpret.EnumInterpreter
-import io.verik.compiler.interpret.FileSplitter
-import io.verik.compiler.interpret.MemberInterpreter
-import io.verik.compiler.serialize.ConfigFileSerializer
-import io.verik.compiler.serialize.OrderFileSerializer
-import io.verik.compiler.serialize.PackageFileSerializer
-import io.verik.compiler.serialize.SourceSerializer
-import io.verik.compiler.specialize.DeclarationSpecializer
-import io.verik.compiler.specialize.TypeChecker
-import io.verik.compiler.specialize.TypeResolvedChecker
-import io.verik.compiler.specialize.TypeResolver
-import io.verik.compiler.specialize.TypeSpecializedChecker
-import io.verik.compiler.transform.mid.AssignmentTransformer
-import io.verik.compiler.transform.mid.InjectedExpressionReducer
-import io.verik.compiler.transform.mid.StringTemplateExpressionReducer
-import io.verik.compiler.transform.post.BinaryExpressionTransformer
-import io.verik.compiler.transform.post.BlockExpressionTransformer
-import io.verik.compiler.transform.post.ConstantExpressionTransformer
-import io.verik.compiler.transform.post.FunctionReferenceTransformer
-import io.verik.compiler.transform.post.FunctionSpecialTransformer
-import io.verik.compiler.transform.post.InlineIfExpressionTransformer
-import io.verik.compiler.transform.post.LoopExpressionTransformer
-import io.verik.compiler.transform.post.PackageNameTransformer
-import io.verik.compiler.transform.post.PackageReferenceInsertionTransformer
-import io.verik.compiler.transform.post.ParenthesisInsertionTransformer
-import io.verik.compiler.transform.post.ReferenceAndCallExpressionTransformer
-import io.verik.compiler.transform.post.UnaryExpressionTransformer
-import io.verik.compiler.transform.pre.AssignmentOperatorReducer
-import io.verik.compiler.transform.pre.BinaryExpressionReducer
-import io.verik.compiler.transform.pre.BitConstantTransformer
-import io.verik.compiler.transform.pre.UnaryExpressionReducer
+import io.verik.compiler.compile.KotlinCompilerAnalyzerStage
+import io.verik.compiler.compile.KotlinCompilerParserStage
+import io.verik.compiler.compile.KotlinEnvironmentBuilderStage
+import io.verik.compiler.interpret.EnumInterpreterStage
+import io.verik.compiler.interpret.FileSplitterStage
+import io.verik.compiler.interpret.MemberInterpreterStage
+import io.verik.compiler.serialize.ConfigFileSerializerStage
+import io.verik.compiler.serialize.OrderFileSerializerStage
+import io.verik.compiler.serialize.PackageFileSerializerStage
+import io.verik.compiler.serialize.SourceSerializerStage
+import io.verik.compiler.specialize.DeclarationSpecializerStage
+import io.verik.compiler.specialize.TypeCheckerStage
+import io.verik.compiler.specialize.TypeResolvedCheckerStage
+import io.verik.compiler.specialize.TypeResolverStage
+import io.verik.compiler.specialize.TypeSpecializerStage
+import io.verik.compiler.transform.mid.AssignmentTransformerStage
+import io.verik.compiler.transform.mid.InjectedExpressionReducerStage
+import io.verik.compiler.transform.mid.StringTemplateExpressionReducerStage
+import io.verik.compiler.transform.post.BinaryExpressionTransformerStage
+import io.verik.compiler.transform.post.BlockExpressionTransformerStage
+import io.verik.compiler.transform.post.ConstantExpressionTransformerStage
+import io.verik.compiler.transform.post.FunctionReferenceTransformerStage
+import io.verik.compiler.transform.post.FunctionSpecialTransformerStage
+import io.verik.compiler.transform.post.InlineIfExpressionTransformerStage
+import io.verik.compiler.transform.post.LoopExpressionTransformerStage
+import io.verik.compiler.transform.post.PackageNameTransformerStage
+import io.verik.compiler.transform.post.PackageReferenceInsertionTransformerStage
+import io.verik.compiler.transform.post.ParenthesisInsertionTransformerStage
+import io.verik.compiler.transform.post.ReferenceAndCallExpressionTransformerStage
+import io.verik.compiler.transform.post.UnaryExpressionTransformerStage
+import io.verik.compiler.transform.pre.AssignmentOperatorReducerStage
+import io.verik.compiler.transform.pre.BinaryExpressionReducerStage
+import io.verik.compiler.transform.pre.BitConstantTransformerStage
+import io.verik.compiler.transform.pre.UnaryExpressionReducerStage
 
 object StageSequencer {
 
@@ -67,67 +67,67 @@ object StageSequencer {
         val stageSequence = StageSequence()
 
         // Compile
-        stageSequence.add(KotlinEnvironmentBuilder)
-        stageSequence.add(KotlinCompilerParser)
-        stageSequence.add(KotlinCompilerAnalyzer)
+        stageSequence.add(KotlinEnvironmentBuilderStage)
+        stageSequence.add(KotlinCompilerParserStage)
+        stageSequence.add(KotlinCompilerAnalyzerStage)
 
         // PreCheck
-        stageSequence.add(UnsupportedElementChecker)
-        stageSequence.add(UnsupportedModifierChecker)
-        stageSequence.add(FileChecker)
-        stageSequence.add(ImportDirectiveChecker)
+        stageSequence.add(UnsupportedElementCheckerStage)
+        stageSequence.add(UnsupportedModifierCheckerStage)
+        stageSequence.add(FileCheckerStage)
+        stageSequence.add(ImportDirectiveCheckerStage)
 
         // Cast
-        stageSequence.add(ProjectIndexer)
-        stageSequence.add(ProjectCaster)
+        stageSequence.add(IndexerStage)
+        stageSequence.add(CasterStage)
 
         // PreTransform
-        stageSequence.add(AssignmentOperatorReducer)
-        stageSequence.add(UnaryExpressionReducer)
-        stageSequence.add(BinaryExpressionReducer)
-        stageSequence.add(BitConstantTransformer)
+        stageSequence.add(AssignmentOperatorReducerStage)
+        stageSequence.add(UnaryExpressionReducerStage)
+        stageSequence.add(BinaryExpressionReducerStage)
+        stageSequence.add(BitConstantTransformerStage)
 
         // Specialize
-        stageSequence.add(TypeResolver)
-        stageSequence.add(TypeResolvedChecker)
-        stageSequence.add(DeclarationSpecializer)
-        stageSequence.add(TypeSpecializedChecker)
-        stageSequence.add(TypeChecker)
+        stageSequence.add(TypeResolverStage)
+        stageSequence.add(TypeResolvedCheckerStage)
+        stageSequence.add(DeclarationSpecializerStage)
+        stageSequence.add(TypeSpecializerStage)
+        stageSequence.add(TypeCheckerStage)
 
         // Interpret
-        stageSequence.add(EnumInterpreter)
-        stageSequence.add(MemberInterpreter)
-        stageSequence.add(FileSplitter)
+        stageSequence.add(EnumInterpreterStage)
+        stageSequence.add(MemberInterpreterStage)
+        stageSequence.add(FileSplitterStage)
 
         // MidTransform
-        stageSequence.add(InjectedExpressionReducer)
-        stageSequence.add(StringTemplateExpressionReducer)
-        stageSequence.add(AssignmentTransformer)
+        stageSequence.add(InjectedExpressionReducerStage)
+        stageSequence.add(StringTemplateExpressionReducerStage)
+        stageSequence.add(AssignmentTransformerStage)
 
         // PostTransform
-        stageSequence.add(LoopExpressionTransformer)
-        stageSequence.add(InlineIfExpressionTransformer)
-        stageSequence.add(FunctionReferenceTransformer)
-        stageSequence.add(FunctionSpecialTransformer)
-        stageSequence.add(UnaryExpressionTransformer)
-        stageSequence.add(BinaryExpressionTransformer)
-        stageSequence.add(ConstantExpressionTransformer)
-        stageSequence.add(PackageNameTransformer)
-        stageSequence.add(PackageReferenceInsertionTransformer)
-        stageSequence.add(ReferenceAndCallExpressionTransformer)
-        stageSequence.add(BlockExpressionTransformer)
-        stageSequence.add(ParenthesisInsertionTransformer)
+        stageSequence.add(LoopExpressionTransformerStage)
+        stageSequence.add(InlineIfExpressionTransformerStage)
+        stageSequence.add(FunctionReferenceTransformerStage)
+        stageSequence.add(FunctionSpecialTransformerStage)
+        stageSequence.add(UnaryExpressionTransformerStage)
+        stageSequence.add(BinaryExpressionTransformerStage)
+        stageSequence.add(ConstantExpressionTransformerStage)
+        stageSequence.add(PackageNameTransformerStage)
+        stageSequence.add(PackageReferenceInsertionTransformerStage)
+        stageSequence.add(ReferenceAndCallExpressionTransformerStage)
+        stageSequence.add(BlockExpressionTransformerStage)
+        stageSequence.add(ParenthesisInsertionTransformerStage)
 
         // PostCheck
-        stageSequence.add(KeywordChecker)
-        stageSequence.add(NameRedeclarationChecker)
-        stageSequence.add(UntransformedElementChecker)
+        stageSequence.add(KeywordCheckerStage)
+        stageSequence.add(NameRedeclarationCheckerStage)
+        stageSequence.add(UntransformedElementCheckerStage)
 
         // Serialize
-        stageSequence.add(ConfigFileSerializer)
-        stageSequence.add(OrderFileSerializer)
-        stageSequence.add(PackageFileSerializer)
-        stageSequence.add(SourceSerializer)
+        stageSequence.add(ConfigFileSerializerStage)
+        stageSequence.add(OrderFileSerializerStage)
+        stageSequence.add(PackageFileSerializerStage)
+        stageSequence.add(SourceSerializerStage)
 
         return stageSequence
     }

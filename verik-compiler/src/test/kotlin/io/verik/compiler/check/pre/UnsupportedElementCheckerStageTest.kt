@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.cast
+package io.verik.compiler.check.pre
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestErrorException
@@ -23,20 +23,19 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-internal class ProjectIndexerTest : BaseTest() {
+internal class UnsupportedElementCheckerStageTest : BaseTest() {
 
     @Test
-    fun `error name unicode`() {
+    fun `throw expression`() {
         assertThrows<TestErrorException> {
             driveTest(
-                IndexerStage::class,
+                UnsupportedElementCheckerStage::class,
                 """
-                    @Suppress("ObjectPropertyName")
-                    val αβγ = 0
+                    fun f() { throw IllegalArgumentException() }
                 """.trimIndent()
             )
         }.apply {
-            Assertions.assertEquals("Illegal name: αβγ", message)
+            Assertions.assertEquals("Throw expression not supported", message)
         }
     }
 }

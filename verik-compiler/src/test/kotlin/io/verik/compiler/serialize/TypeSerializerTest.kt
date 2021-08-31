@@ -26,7 +26,7 @@ internal class TypeSerializerTest : BaseTest() {
     @Test
     fun `type boolean`() {
         val projectContext = driveTest(
-            SourceSerializer::class,
+            SourceSerializerStage::class,
             """
                 var x = false
             """.trimIndent()
@@ -43,7 +43,7 @@ internal class TypeSerializerTest : BaseTest() {
     @Test
     fun `type ubit`() {
         val projectContext = driveTest(
-            SourceSerializer::class,
+            SourceSerializerStage::class,
             """
                 var x = u(0x00)
             """.trimIndent()

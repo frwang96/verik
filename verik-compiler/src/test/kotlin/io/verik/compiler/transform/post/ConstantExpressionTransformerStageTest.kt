@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.cast
+package io.verik.compiler.transform.post
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.assertElementEquals
@@ -22,48 +22,61 @@ import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
-internal class StringTemplateExpressionCasterTest : BaseTest() {
+internal class ConstantExpressionTransformerStageTest : BaseTest() {
 
     @Test
-    fun `literal entry`() {
+    fun `boolean false`() {
         val projectContext = driveTest(
-            CasterStage::class,
+            ConstantExpressionTransformerStage::class,
             """
-                var x = "abc"
+                var x = false
             """.trimIndent()
         )
         assertElementEquals(
-            "StringTemplateExpression(String, [abc])",
+            "ConstantExpression(Boolean, 1'b0)",
             projectContext.findExpression("x")
         )
     }
 
     @Test
-    fun `literal entry escaped`() {
+    fun `integer decimal`() {
         val projectContext = driveTest(
-            CasterStage::class,
+            ConstantExpressionTransformerStage::class,
             """
-                var x = "\$"
+                var x = 1_2
             """.trimIndent()
         )
         assertElementEquals(
-            "StringTemplateExpression(String, [$])",
+            "ConstantExpression(Int, 12)",
             projectContext.findExpression("x")
         )
     }
 
     @Test
-    fun `expression entry`() {
+    fun `integer hexadecimal`() {
         val projectContext = driveTest(
-            CasterStage::class,
+            ConstantExpressionTransformerStage::class,
             """
-                var x = 0
-                var y = "${"$"}x"
+                var x = 0xaA_bB
             """.trimIndent()
         )
         assertElementEquals(
-            "StringTemplateExpression(String, [KtReferenceExpression(*)])",
-            projectContext.findExpression("y")
+            "ConstantExpression(Int, 43707)",
+            projectContext.findExpression("x")
+        )
+    }
+
+    @Test
+    fun `integer binary`() {
+        val projectContext = driveTest(
+            ConstantExpressionTransformerStage::class,
+            """
+                var x = 0b0000_1111
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "ConstantExpression(Int, 15)",
+            projectContext.findExpression("x")
         )
     }
 }

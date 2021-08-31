@@ -14,29 +14,29 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.cast
+package io.verik.compiler.specialize
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.driveTest
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-internal class ProjectIndexerTest : BaseTest() {
+internal class TypeCheckerStageTest : BaseTest() {
 
     @Test
-    fun `error name unicode`() {
+    fun `expression equals violation`() {
         assertThrows<TestErrorException> {
             driveTest(
-                IndexerStage::class,
+                TypeCheckerStage::class,
                 """
-                    @Suppress("ObjectPropertyName")
-                    val αβγ = 0
+                    var x = u(0x00)
+                    fun f() {
+                        x = u(0)
+                    }
                 """.trimIndent()
             )
-        }.apply {
-            Assertions.assertEquals("Illegal name: αβγ", message)
-        }
+        }.apply { assertEquals("Type mismatch: Expected Ubit<`8`> actual Ubit<`1`>", message) }
     }
 }

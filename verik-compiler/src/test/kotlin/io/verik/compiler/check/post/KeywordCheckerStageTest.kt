@@ -14,29 +14,28 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.cast
+package io.verik.compiler.check.post
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.driveTest
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-internal class ProjectIndexerTest : BaseTest() {
+internal class KeywordCheckerStageTest : BaseTest() {
 
     @Test
-    fun `error name unicode`() {
+    fun `keyword property`() {
         assertThrows<TestErrorException> {
             driveTest(
-                IndexerStage::class,
+                KeywordCheckerStage::class,
                 """
-                    @Suppress("ObjectPropertyName")
-                    val αβγ = 0
+                    const val alias = false
                 """.trimIndent()
             )
         }.apply {
-            Assertions.assertEquals("Illegal name: αβγ", message)
+            assertEquals("Conflict with SystemVerilog reserved keyword: alias", message)
         }
     }
 }

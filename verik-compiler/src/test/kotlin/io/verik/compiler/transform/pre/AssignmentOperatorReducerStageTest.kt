@@ -14,41 +14,37 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.interpret
+package io.verik.compiler.transform.pre
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
-import io.verik.compiler.util.findDeclaration
+import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
-internal class ClassInterpreterTest : BaseTest() {
+internal class AssignmentOperatorReducerStageTest : BaseTest() {
 
     @Test
-    fun `interpret module`() {
+    fun `reduce plus eq`() {
         val projectContext = driveTest(
-            MemberInterpreterStage::class,
+            AssignmentOperatorReducerStage::class,
             """
-                class M: Module()
+                var x = 0
+                fun f() {
+                    x += 1
+                }
             """.trimIndent()
         )
         assertElementEquals(
-            "Module(M)",
-            projectContext.findDeclaration("M")
-        )
-    }
-
-    @Test
-    fun `interpret class`() {
-        val projectContext = driveTest(
-            MemberInterpreterStage::class,
             """
-                class C
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "SvBasicClass(C, [], [])",
-            projectContext.findDeclaration("C")
+                KtBinaryExpression(
+                    Unit,
+                    EQ,
+                    KtReferenceExpression(*),
+                    KtBinaryExpression(Int, PLUS, KtReferenceExpression(*), ConstantExpression(*))
+                )
+            """.trimIndent(),
+            projectContext.findExpression("f")
         )
     }
 }
