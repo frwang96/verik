@@ -14,45 +14,40 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.mid
+package io.verik.compiler.transform.pre
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class BitConstantTransformerTest : BaseTest() {
 
     @Test
-    @Disabled
-    // TODO resolve bit constant
     fun `constant decimal`() {
         val projectContext = driveTest(
             BitConstantTransformer::class,
             """
-                var x = u(80)
+                var x = u(255)
             """.trimIndent()
         )
         assertElementEquals(
-            "ConstantExpression(Ubit<`8`>, 8'h50)",
+            "ConstantExpression(Ubit<`8`>, 8'hff)",
             projectContext.findExpression("x")
         )
     }
 
     @Test
-    @Disabled
-    // TODO resolve bit constant
     fun `constant hexadecimal`() {
         val projectContext = driveTest(
             BitConstantTransformer::class,
             """
-                var x = u(0xffff)
+                var x = u(0x00_0000_00ff)
             """.trimIndent()
         )
         assertElementEquals(
-            "ConstantExpression(Ubit<`36`>, 36'h0_0000_ffff)",
+            "ConstantExpression(Ubit<`40`>, 40'h00_0000_00ff)",
             projectContext.findExpression("x")
         )
     }

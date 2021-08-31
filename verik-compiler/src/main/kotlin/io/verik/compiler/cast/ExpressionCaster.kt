@@ -16,6 +16,7 @@
 
 package io.verik.compiler.cast
 
+import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
@@ -33,6 +34,7 @@ import org.jetbrains.kotlin.descriptors.PackageViewDescriptor
 import org.jetbrains.kotlin.psi.KtBinaryExpression
 import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtCallExpression
+import org.jetbrains.kotlin.psi.KtConstantExpression
 import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
 import org.jetbrains.kotlin.psi.KtIfExpression
 import org.jetbrains.kotlin.psi.KtLambdaExpression
@@ -133,6 +135,13 @@ object ExpressionCaster {
                 null
             }
         }
+    }
+
+    fun castConstantExpression(expression: KtConstantExpression, castContext: CastContext): EConstantExpression {
+        val location = expression.location()
+        val type = castContext.castType(expression)
+        val value = expression.text
+        return EConstantExpression(location, type, value)
     }
 
     fun castFunctionLiteralExpression(

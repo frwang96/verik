@@ -25,7 +25,7 @@ import io.verik.compiler.message.SourceLocation
 class EConstantExpression(
     override val location: SourceLocation,
     override var type: Type,
-    val value: String
+    var value: String
 ) : EExpression() {
 
     override val serializationType = SvSerializationType.EXPRESSION

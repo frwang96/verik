@@ -21,7 +21,6 @@ import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findDeclaration
 import io.verik.compiler.util.findExpression
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class TypeResolverTest : BaseTest() {
@@ -53,24 +52,6 @@ internal class TypeResolverTest : BaseTest() {
         )
         assertElementEquals(
             "KtReferenceExpression(Boolean, x, null)",
-            projectContext.findExpression("f")
-        )
-    }
-
-    @Test
-    @Disabled
-    // TODO resolve bit constant
-    fun `resolve call expression`() {
-        val projectContext = driveTest(
-            TypeResolver::class,
-            """
-                fun f() {
-                    u(0x00)
-                }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtCallExpression(Ubit<`8`>, u, null, *, *)",
             projectContext.findExpression("f")
         )
     }

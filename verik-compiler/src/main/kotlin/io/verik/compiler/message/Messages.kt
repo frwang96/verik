@@ -93,6 +93,13 @@ object Messages {
         "Conflict with SystemVerilog reserved keyword: $0"
     )
 
+//  PRE TRANSFORM  /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    val BIT_CONSTANT_NOT_CONSTANT = MessageTemplate0(
+        Severity.ERROR,
+        "Constant literal expected for bit constant"
+    )
+
 //  SPECIALIZE  ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val EXPRESSION_UNRESOLVED = MessageTemplate0(

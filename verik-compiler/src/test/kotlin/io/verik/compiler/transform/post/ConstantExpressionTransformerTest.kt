@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.cast
+package io.verik.compiler.transform.post
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.assertElementEquals
@@ -22,12 +22,12 @@ import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
-internal class ConstantExpressionCasterTest : BaseTest() {
+internal class ConstantExpressionTransformerTest : BaseTest() {
 
     @Test
     fun `boolean false`() {
         val projectContext = driveTest(
-            ProjectCaster::class,
+            ConstantExpressionTransformer::class,
             """
                 var x = false
             """.trimIndent()
@@ -41,7 +41,7 @@ internal class ConstantExpressionCasterTest : BaseTest() {
     @Test
     fun `integer decimal`() {
         val projectContext = driveTest(
-            ProjectCaster::class,
+            ConstantExpressionTransformer::class,
             """
                 var x = 1_2
             """.trimIndent()
@@ -55,7 +55,7 @@ internal class ConstantExpressionCasterTest : BaseTest() {
     @Test
     fun `integer hexadecimal`() {
         val projectContext = driveTest(
-            ProjectCaster::class,
+            ConstantExpressionTransformer::class,
             """
                 var x = 0xaA_bB
             """.trimIndent()
@@ -69,7 +69,7 @@ internal class ConstantExpressionCasterTest : BaseTest() {
     @Test
     fun `integer binary`() {
         val projectContext = driveTest(
-            ProjectCaster::class,
+            ConstantExpressionTransformer::class,
             """
                 var x = 0b0000_1111
             """.trimIndent()
