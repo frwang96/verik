@@ -18,6 +18,7 @@ package io.verik.compiler.interpret
 
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
+import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.ESvBasicClass
@@ -80,6 +81,7 @@ object FileSplitter : ProjectStage() {
                 is ESvFunction -> packageMembers.add(it)
                 is ESvProperty -> packageMembers.add(it)
                 is ESvEnumEntry -> packageMembers.add(it)
+                is ETypeAlias -> {}
                 else -> Messages.INTERNAL_ERROR.on(it, "Unable to identify as component or package member: $it")
             }
         }

@@ -63,6 +63,10 @@ object Core {
 
     object Vk : CoreScope(CorePackage.VK) {
 
+        fun cardinalOf(value: Int): CoreCardinalConstantDeclaration {
+            return CoreCardinalConstantDeclaration(value)
+        }
+
         val UBIT = CoreVkClass.UBIT
         val SBIT = CoreVkClass.SBIT
         val CLASS = CoreVkClass.CLASS
@@ -73,6 +77,7 @@ object Core {
         val CARDINAL = CoreCardinalBaseDeclaration
         val ADD = CoreVk.ADD
         val INC = CoreVk.INC
+        val MAX = CoreVk.MAX
 
         val U_INT = CoreVk.U_INT
         val RANDOM = CoreVk.RANDOM

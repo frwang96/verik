@@ -18,12 +18,14 @@ package count
 
 import io.verik.core.*
 
+typealias WIDTH = `8`
+
 @Top
 object Count : Module() {
 
     var clk = false
     var rst = true
-    var count = u(0x00)
+    var count: Ubit<WIDTH> = u(0x00)
 
     @Seq
     fun update() {

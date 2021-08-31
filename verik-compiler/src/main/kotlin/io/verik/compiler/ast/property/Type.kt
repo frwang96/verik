@@ -19,6 +19,7 @@ package io.verik.compiler.ast.property
 import io.verik.compiler.ast.element.common.EAbstractClass
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypeParameter
+import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.core.common.Core
@@ -45,6 +46,7 @@ class Type(
     fun isCardinalType(): Boolean {
         return when (val reference = reference) {
             is ETypeParameter -> reference.typeConstraint.isCardinalType()
+            is ETypeAlias -> reference.type.isCardinalType()
             is CoreCardinalDeclaration -> true
             else -> false
         }

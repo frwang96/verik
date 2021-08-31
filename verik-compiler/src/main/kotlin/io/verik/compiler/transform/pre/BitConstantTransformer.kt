@@ -22,7 +22,6 @@ import io.verik.compiler.common.ConstantUtil
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.core.common.CoreCardinalConstantDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 
@@ -56,7 +55,7 @@ object BitConstantTransformer : ProjectStage() {
 
             return EConstantExpression(
                 expression.location,
-                Core.Vk.UBIT.toType(CoreCardinalConstantDeclaration(width).toType()),
+                Core.Vk.UBIT.toType(Core.Vk.cardinalOf(width).toType()),
                 valueStringDecorated
             )
         }

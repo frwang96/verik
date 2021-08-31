@@ -26,6 +26,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
 
     val ADD = CoreCardinalFunctionDeclaration("ADD")
     val INC = CoreCardinalFunctionDeclaration("INC")
+    val MAX = CoreCardinalFunctionDeclaration("MAX")
 
     val U_INT = CoreKtFunctionDeclaration(parent, "u", Core.Kt.INT)
 

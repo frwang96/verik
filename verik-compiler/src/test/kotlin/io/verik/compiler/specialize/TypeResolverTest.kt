@@ -61,11 +61,11 @@ internal class TypeResolverTest : BaseTest() {
         val projectContext = driveTest(
             TypeResolver::class,
             """
-                val x = u(0x00) + u(0x00)
+                val x = u(0x00) + u(0x0)
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Ubit<`8`>, plus, *, [], *)",
+            "KtCallExpression(Ubit<MAX<`8`,`4`>>, plus, *, [], *)",
             projectContext.findExpression("x")
         )
     }
