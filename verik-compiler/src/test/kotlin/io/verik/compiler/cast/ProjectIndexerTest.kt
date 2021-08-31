@@ -29,7 +29,7 @@ internal class ProjectIndexerTest : BaseTest() {
     fun `error name unicode`() {
         assertThrows<TestErrorException> {
             driveTest(
-                ProjectIndexer::class,
+                IndexerStage::class,
                 """
                     @Suppress("ObjectPropertyName")
                     val αβγ = 0

@@ -26,7 +26,7 @@ internal class DeclarationSerializerVisitorTest : BaseTest() {
     @Test
     fun `serialize module`() {
         val projectContext = driveTest(
-            SourceSerializer::class,
+            SourceSerializerStage::class,
             """
                 class M: Module()
             """.trimIndent()
@@ -45,7 +45,7 @@ internal class DeclarationSerializerVisitorTest : BaseTest() {
     @Test
     fun `serialize class`() {
         val projectContext = driveTest(
-            SourceSerializer::class,
+            SourceSerializerStage::class,
             """
                 class C
             """.trimIndent()
@@ -64,7 +64,7 @@ internal class DeclarationSerializerVisitorTest : BaseTest() {
     @Test
     fun `serialize enum`() {
         val projectContext = driveTest(
-            SourceSerializer::class,
+            SourceSerializerStage::class,
             """
                 enum class E { A, B }
             """.trimIndent()
@@ -84,7 +84,7 @@ internal class DeclarationSerializerVisitorTest : BaseTest() {
     @Test
     fun `serialize function`() {
         val projectContext = driveTest(
-            SourceSerializer::class,
+            SourceSerializerStage::class,
             """
                 fun f() {}
             """.trimIndent()
@@ -102,7 +102,7 @@ internal class DeclarationSerializerVisitorTest : BaseTest() {
     @Test
     fun `serialize property`() {
         val projectContext = driveTest(
-            SourceSerializer::class,
+            SourceSerializerStage::class,
             """
                 var x = false
             """.trimIndent()
@@ -119,7 +119,7 @@ internal class DeclarationSerializerVisitorTest : BaseTest() {
     @Test
     fun `serialize initial block`() {
         val projectContext = driveTest(
-            SourceSerializer::class,
+            SourceSerializerStage::class,
             """
                 class C {
                     @Run
@@ -144,7 +144,7 @@ internal class DeclarationSerializerVisitorTest : BaseTest() {
     @Test
     fun `serialize always com block`() {
         val projectContext = driveTest(
-            SourceSerializer::class,
+            SourceSerializerStage::class,
             """
                 class C {
                     @Com
@@ -169,7 +169,7 @@ internal class DeclarationSerializerVisitorTest : BaseTest() {
     @Test
     fun `serialize always seq block`() {
         val projectContext = driveTest(
-            SourceSerializer::class,
+            SourceSerializerStage::class,
             """
                 class C {
                     private var x = false

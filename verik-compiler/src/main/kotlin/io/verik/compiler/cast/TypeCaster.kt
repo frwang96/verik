@@ -45,7 +45,8 @@ object TypeCaster {
     }
 
     fun cast(castContext: CastContext, typeReference: KtTypeReference): Type {
-        val kotlinType: KotlinType = castContext.sliceType[typeReference]!!
+        val kotlinType: KotlinType = castContext.sliceType[typeReference]
+            ?: castContext.sliceAbbreviatedType[typeReference]!!
         if (kotlinType.isMarkedNullable)
             Messages.ELEMENT_NOT_SUPPORTED.on(typeReference, "Nullable type")
         if (kotlinType.isFunctionType)

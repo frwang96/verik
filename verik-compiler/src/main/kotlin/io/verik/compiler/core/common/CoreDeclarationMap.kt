@@ -132,7 +132,7 @@ object CoreDeclarationMap {
                 } else {
                     val cardinal = name.toIntOrNull()
                     if (cardinal != null)
-                        CoreCardinalConstantDeclaration(cardinal)
+                        Core.Vk.cardinalOf(cardinal)
                     else
                         null
                 }

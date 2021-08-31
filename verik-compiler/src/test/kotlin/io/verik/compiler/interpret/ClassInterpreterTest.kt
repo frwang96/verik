@@ -27,7 +27,7 @@ internal class ClassInterpreterTest : BaseTest() {
     @Test
     fun `interpret module`() {
         val projectContext = driveTest(
-            MemberInterpreter::class,
+            MemberInterpreterStage::class,
             """
                 class M: Module()
             """.trimIndent()
@@ -41,7 +41,7 @@ internal class ClassInterpreterTest : BaseTest() {
     @Test
     fun `interpret class`() {
         val projectContext = driveTest(
-            MemberInterpreter::class,
+            MemberInterpreterStage::class,
             """
                 class C
             """.trimIndent()

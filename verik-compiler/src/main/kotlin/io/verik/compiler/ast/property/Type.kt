@@ -19,6 +19,7 @@ package io.verik.compiler.ast.property
 import io.verik.compiler.ast.element.common.EAbstractClass
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypeParameter
+import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.core.common.Core
@@ -30,7 +31,7 @@ import io.verik.compiler.message.Messages
 
 class Type(
     override var reference: Declaration,
-    val arguments: ArrayList<Type>
+    var arguments: ArrayList<Type>
 ) : Reference {
 
     fun isSubtype(type: Type): Boolean {
@@ -45,6 +46,7 @@ class Type(
     fun isCardinalType(): Boolean {
         return when (val reference = reference) {
             is ETypeParameter -> reference.typeConstraint.isCardinalType()
+            is ETypeAlias -> reference.type.isCardinalType()
             is CoreCardinalDeclaration -> true
             else -> false
         }
@@ -62,29 +64,12 @@ class Type(
         return arguments.all { it.isSpecialized() }
     }
 
-    private fun asCardinalValueOrNull(): Int? {
+    fun asCardinalValue(element: EElement): Int {
         val reference = reference
         return if (reference is CoreCardinalConstantDeclaration) {
             reference.value
-        } else null
-    }
-
-    private fun asCardinalValue(element: EElement): Int {
-        val value = asCardinalValueOrNull()
-        return if (value != null) {
-            value
         } else {
             Messages.INTERNAL_ERROR.on(element, "Could not get value as cardinal: $this")
-            1
-        }
-    }
-
-    fun asBitWidthOrNull(element: EElement): Int? {
-        val reference = reference
-        return if (reference in listOf(Core.Vk.UBIT, Core.Vk.SBIT)) {
-            arguments[0].asCardinalValueOrNull()
-        } else {
-            Messages.INTERNAL_ERROR.on(element, "Bit type expected: $this")
             1
         }
     }

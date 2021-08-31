@@ -27,7 +27,7 @@ internal class StringTemplateExpressionCasterTest : BaseTest() {
     @Test
     fun `literal entry`() {
         val projectContext = driveTest(
-            ProjectCaster::class,
+            CasterStage::class,
             """
                 var x = "abc"
             """.trimIndent()
@@ -41,7 +41,7 @@ internal class StringTemplateExpressionCasterTest : BaseTest() {
     @Test
     fun `literal entry escaped`() {
         val projectContext = driveTest(
-            ProjectCaster::class,
+            CasterStage::class,
             """
                 var x = "\$"
             """.trimIndent()
@@ -55,7 +55,7 @@ internal class StringTemplateExpressionCasterTest : BaseTest() {
     @Test
     fun `expression entry`() {
         val projectContext = driveTest(
-            ProjectCaster::class,
+            CasterStage::class,
             """
                 var x = 0
                 var y = "${"$"}x"

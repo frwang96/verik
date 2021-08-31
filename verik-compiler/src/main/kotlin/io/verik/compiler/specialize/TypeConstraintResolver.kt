@@ -16,8 +16,7 @@
 
 package io.verik.compiler.specialize
 
-import io.verik.compiler.core.common.CoreCardinalConstantDeclaration
-import java.lang.Integer.max
+import io.verik.compiler.core.common.Core
 
 object TypeConstraintResolver {
 
@@ -96,10 +95,9 @@ object TypeConstraintResolver {
             true
         } else {
             if (leftResolved && rightResolved) {
-                val leftWidth = typeConstraint.left.type.asBitWidth(typeConstraint.left)
-                val rightWidth = typeConstraint.right.type.asBitWidth(typeConstraint.right)
-                typeConstraint.outer.type.arguments[0] =
-                    CoreCardinalConstantDeclaration(max(leftWidth, rightWidth)).toType()
+                val leftType = typeConstraint.left.type.arguments[0].copy()
+                val rightType = typeConstraint.right.type.arguments[0].copy()
+                typeConstraint.outer.type.arguments[0] = Core.Vk.MAX.toType(leftType, rightType)
                 true
             } else {
                 false

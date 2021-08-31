@@ -28,7 +28,7 @@ internal class ExpressionCasterTest : BaseTest() {
     @Test
     fun `block expression empty`() {
         val projectContext = driveTest(
-            ProjectCaster::class,
+            CasterStage::class,
             """
                 fun f() {}
             """.trimIndent()
@@ -42,7 +42,7 @@ internal class ExpressionCasterTest : BaseTest() {
     @Test
     fun `unary expression`() {
         val projectContext = driveTest(
-            ProjectCaster::class,
+            CasterStage::class,
             """
                 var x = !false
             """.trimIndent()
@@ -56,7 +56,7 @@ internal class ExpressionCasterTest : BaseTest() {
     @Test
     fun `binary expression`() {
         val projectContext = driveTest(
-            ProjectCaster::class,
+            CasterStage::class,
             """
                 var x = 0 + 0
             """.trimIndent()
@@ -70,7 +70,7 @@ internal class ExpressionCasterTest : BaseTest() {
     @Test
     fun `reference expression simple`() {
         val projectContext = driveTest(
-            ProjectCaster::class,
+            CasterStage::class,
             """
                 var x = 0
                 var y = x
@@ -85,7 +85,7 @@ internal class ExpressionCasterTest : BaseTest() {
     @Test
     fun `reference expression with package`() {
         val projectContext = driveTest(
-            ProjectCaster::class,
+            CasterStage::class,
             """
                 var x = 0
                 var y = verik.x
@@ -100,7 +100,7 @@ internal class ExpressionCasterTest : BaseTest() {
     @Test
     fun `reference expression with class`() {
         val projectContext = driveTest(
-            ProjectCaster::class,
+            CasterStage::class,
             """
                 enum class E { A }
                 var x = E.A
@@ -115,7 +115,7 @@ internal class ExpressionCasterTest : BaseTest() {
     @Test
     fun `call expression simple`() {
         val projectContext = driveTest(
-            ProjectCaster::class,
+            CasterStage::class,
             """
                 fun f() {
                     println()
@@ -131,7 +131,7 @@ internal class ExpressionCasterTest : BaseTest() {
     @Test
     fun `call expression with receiver`() {
         val projectContext = driveTest(
-            ProjectCaster::class,
+            CasterStage::class,
             """
                 var x = 0
                 var y = x.plus(1)
@@ -146,7 +146,7 @@ internal class ExpressionCasterTest : BaseTest() {
     @Test
     fun `call expression with package`() {
         val projectContext = driveTest(
-            ProjectCaster::class,
+            CasterStage::class,
             """
                 var x = io.verik.core.random()
             """.trimIndent()
@@ -160,7 +160,7 @@ internal class ExpressionCasterTest : BaseTest() {
     @Test
     fun `constant expression integer`() {
         val projectContext = driveTest(
-            ProjectCaster::class,
+            CasterStage::class,
             """
                 var x = 0
             """.trimIndent()
@@ -174,7 +174,7 @@ internal class ExpressionCasterTest : BaseTest() {
     @Test
     fun `lambda expression`() {
         val projectContext = driveTest(
-            ProjectCaster::class,
+            CasterStage::class,
             """
                 fun f() {
                     forever {}
@@ -198,7 +198,7 @@ internal class ExpressionCasterTest : BaseTest() {
     @Test
     fun `if expression`() {
         val projectContext = driveTest(
-            ProjectCaster::class,
+            CasterStage::class,
             """
                 var x = false 
                 var y = if (x) 1 else 0

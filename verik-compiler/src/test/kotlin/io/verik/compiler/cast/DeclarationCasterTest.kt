@@ -27,7 +27,7 @@ internal class DeclarationCasterTest : BaseTest() {
     @Test
     fun `class with class`() {
         val projectContext = driveTest(
-            ProjectCaster::class,
+            CasterStage::class,
             """
                 class C {
                     class D
@@ -43,7 +43,7 @@ internal class DeclarationCasterTest : BaseTest() {
     @Test
     fun `class with function`() {
         val projectContext = driveTest(
-            ProjectCaster::class,
+            CasterStage::class,
             """
                 class C {
                     fun f() {}
@@ -59,7 +59,7 @@ internal class DeclarationCasterTest : BaseTest() {
     @Test
     fun `class with property`() {
         val projectContext = driveTest(
-            ProjectCaster::class,
+            CasterStage::class,
             """
                 class C {
                     val x = false
@@ -75,7 +75,7 @@ internal class DeclarationCasterTest : BaseTest() {
     @Test
     fun `class with companion object`() {
         val projectContext = driveTest(
-            ProjectCaster::class,
+            CasterStage::class,
             """
                 class C { companion object }
             """.trimIndent()
@@ -89,7 +89,7 @@ internal class DeclarationCasterTest : BaseTest() {
     @Test
     fun `class with type parameter`() {
         val projectContext = driveTest(
-            ProjectCaster::class,
+            CasterStage::class,
             """
                 class C<T>
             """.trimIndent()
@@ -103,7 +103,7 @@ internal class DeclarationCasterTest : BaseTest() {
     @Test
     fun `enum class`() {
         val projectContext = driveTest(
-            ProjectCaster::class,
+            CasterStage::class,
             """
                 enum class E { A }
             """.trimIndent()
@@ -117,7 +117,7 @@ internal class DeclarationCasterTest : BaseTest() {
     @Test
     fun `function simple`() {
         val projectContext = driveTest(
-            ProjectCaster::class,
+            CasterStage::class,
             """
                 fun f() {}
             """.trimIndent()
@@ -131,7 +131,7 @@ internal class DeclarationCasterTest : BaseTest() {
     @Test
     fun `function annotation`() {
         val projectContext = driveTest(
-            ProjectCaster::class,
+            CasterStage::class,
             """
                 @Task
                 fun f() {}
@@ -146,7 +146,7 @@ internal class DeclarationCasterTest : BaseTest() {
     @Test
     fun `property simple`() {
         val projectContext = driveTest(
-            ProjectCaster::class,
+            CasterStage::class,
             """
                 var x = false
             """.trimIndent()
@@ -154,6 +154,20 @@ internal class DeclarationCasterTest : BaseTest() {
         assertElementEquals(
             "KtProperty(x, Boolean, *)",
             projectContext.findDeclaration("x")
+        )
+    }
+
+    @Test
+    fun `type alias`() {
+        val projectContext = driveTest(
+            CasterStage::class,
+            """
+                typealias N = INC<`7`>
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "TypeAlias(N, INC<`7`>)",
+            projectContext.findDeclaration("N")
         )
     }
 }
