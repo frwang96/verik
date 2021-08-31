@@ -31,7 +31,7 @@ import io.verik.compiler.message.Messages
 
 class Type(
     override var reference: Declaration,
-    val arguments: ArrayList<Type>
+    var arguments: ArrayList<Type>
 ) : Reference {
 
     fun isSubtype(type: Type): Boolean {
@@ -64,29 +64,12 @@ class Type(
         return arguments.all { it.isSpecialized() }
     }
 
-    private fun asCardinalValueOrNull(): Int? {
+    fun asCardinalValue(element: EElement): Int {
         val reference = reference
         return if (reference is CoreCardinalConstantDeclaration) {
             reference.value
-        } else null
-    }
-
-    private fun asCardinalValue(element: EElement): Int {
-        val value = asCardinalValueOrNull()
-        return if (value != null) {
-            value
         } else {
             Messages.INTERNAL_ERROR.on(element, "Could not get value as cardinal: $this")
-            1
-        }
-    }
-
-    fun asBitWidthOrNull(element: EElement): Int? {
-        val reference = reference
-        return if (reference in listOf(Core.Vk.UBIT, Core.Vk.SBIT)) {
-            arguments[0].asCardinalValueOrNull()
-        } else {
-            Messages.INTERNAL_ERROR.on(element, "Bit type expected: $this")
             1
         }
     }

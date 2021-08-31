@@ -20,13 +20,11 @@ import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findDeclaration
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class TypeSpecializerStageTest : BaseTest() {
 
     @Test
-    @Disabled
     fun `specialize property`() {
         val projectContext = driveTest(
             TypeSpecializerStage::class,

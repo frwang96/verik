@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.post
+package io.verik.compiler.transform.mid
 
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.EDelayExpression
@@ -27,7 +27,7 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 
-object FunctionSpecialTransformerStage : ProjectStage() {
+object SpecialFunctionTransformerStage : ProjectStage() {
 
     override val checkNormalization = true
 
@@ -63,6 +63,10 @@ object FunctionSpecialTransformerStage : ProjectStage() {
                 Core.Vk.ON_EVENT_FUNCTION -> {
                     Messages.ON_EXPRESSION_ILLEGAL.on(callExpression)
                     return
+                }
+                Core.Vk.Ubit.EXT -> {
+                    // TODO appropriately cast receiver
+                    callExpression.receiver!!
                 }
                 else -> null
             }

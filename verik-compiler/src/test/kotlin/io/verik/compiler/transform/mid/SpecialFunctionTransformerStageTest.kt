@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.post
+package io.verik.compiler.transform.mid
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.assertElementEquals
@@ -22,12 +22,12 @@ import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
-internal class FunctionSpecialTransformerStageTest : BaseTest() {
+internal class SpecialFunctionTransformerStageTest : BaseTest() {
 
     @Test
     fun `transform wait`() {
         val projectContext = driveTest(
-            FunctionSpecialTransformerStage::class,
+            SpecialFunctionTransformerStage::class,
             """
                 var x = false
                 fun f() {
@@ -44,7 +44,7 @@ internal class FunctionSpecialTransformerStageTest : BaseTest() {
     @Test
     fun `transform delay`() {
         val projectContext = driveTest(
-            FunctionSpecialTransformerStage::class,
+            SpecialFunctionTransformerStage::class,
             """
                 var x = false
                 fun f() {

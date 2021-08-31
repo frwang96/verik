@@ -16,11 +16,18 @@
 
 package io.verik.compiler.specialize
 
+import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.kt.ETypeAlias
+import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.core.common.Core
+import io.verik.compiler.core.common.CoreCardinalFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
+import java.lang.Integer.max
 
 object TypeSpecializerStage : ProjectStage() {
 
@@ -32,13 +39,47 @@ object TypeSpecializerStage : ProjectStage() {
 
     object TypeCheckerVisitor : TreeVisitor() {
 
+        private fun specialize(type: Type, element: EElement) {
+            type.arguments.forEach { specialize(it, element) }
+            if (type.isCardinalType()) {
+                when (val reference = type.reference) {
+                    // TODO handle type alias with type parameters
+                    is ETypeAlias ->
+                        type.reference = reference.type.reference
+                    is CoreCardinalFunctionDeclaration ->
+                        specializeCardinalFunction(type, reference, element)
+                }
+            }
+        }
+
+        private fun specializeCardinalFunction(
+            type: Type,
+            reference: CoreCardinalFunctionDeclaration,
+            element: EElement
+        ) {
+            val arguments = type.arguments.map { it.asCardinalValue(element) }
+            val value = when (reference) {
+                Core.Vk.ADD ->
+                    arguments[0] + arguments[1]
+                Core.Vk.INC ->
+                    arguments[0] + 1
+                Core.Vk.MAX ->
+                    max(arguments[0], arguments[1])
+                else -> {
+                    Messages.INTERNAL_ERROR.on(element, "Unrecognized cardinal function: $reference")
+                    1
+                }
+            }
+            type.reference = Core.Vk.cardinalOf(value)
+            type.arguments = arrayListOf()
+        }
+
         override fun visitExpression(expression: EExpression) {
             super.visitExpression(expression)
             if (!expression.type.isSpecialized())
-                Messages.INTERNAL_ERROR.on(
-                    expression,
-                    "Type of $expression has not been specialized: ${expression.type}"
-                )
+                specialize(expression.type, expression)
+            if (expression is EKtCallExpression)
+                expression.typeArguments.forEach { specialize(it, expression) }
         }
     }
 }
