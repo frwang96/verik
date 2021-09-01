@@ -16,12 +16,10 @@
 
 package io.verik.compiler.core.common
 
-import io.verik.compiler.ast.property.Annotation
-
 object Annotations {
 
-    val COM = Annotation("Com", "io.verik.core.Com")
-    val SEQ = Annotation("Seq", "io.verik.core.Seq")
-    val RUN = Annotation("Run", "io.verik.core.Run")
-    val TASK = Annotation("Task", "io.verik.core.Task")
+    const val COM = "io.verik.core.Com"
+    const val SEQ = "io.verik.core.Seq"
+    const val RUN = "io.verik.core.Run"
+    const val TASK = "io.verik.core.Task"
 }

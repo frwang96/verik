@@ -28,24 +28,16 @@ import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EInitialBlock
 import io.verik.compiler.ast.element.sv.ESvFunction
-import io.verik.compiler.ast.property.Annotation
 import io.verik.compiler.core.common.Annotations
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.Messages
 
 object FunctionInterpreter {
 
-    private val functionAnnotations = listOf(
-        Annotations.COM,
-        Annotations.SEQ,
-        Annotations.RUN,
-        Annotations.TASK
-    )
-
     fun interpret(function: EKtFunction): EElement {
         val body = function.body
-        return when (getAnnotation(function)) {
-            Annotations.COM -> {
+        return when {
+            hasAnnotation(function, Annotations.COM) -> {
                 if (body != null) {
                     EAlwaysComBlock(function.location, function.name, body)
                 } else {
@@ -53,7 +45,7 @@ object FunctionInterpreter {
                     ENullElement(function.location)
                 }
             }
-            Annotations.SEQ -> {
+            hasAnnotation(function, Annotations.SEQ) -> {
                 if (body != null) {
                     getAlwaysSeqBlock(function, body)
                         ?: ENullElement(function.location)
@@ -62,7 +54,7 @@ object FunctionInterpreter {
                     ENullElement(function.location)
                 }
             }
-            Annotations.RUN -> {
+            hasAnnotation(function, Annotations.RUN) -> {
                 if (body != null) {
                     EInitialBlock(function.location, function.name, body)
                 } else {
@@ -81,20 +73,9 @@ object FunctionInterpreter {
         }
     }
 
-    private fun getAnnotation(function: EKtFunction): Annotation? {
-        val annotations = ArrayList<Annotation>()
-        functionAnnotations.forEach {
-            if (it in function.annotations)
-                annotations.add(it)
-        }
-        return when (annotations.size) {
-            0 -> null
-            1 -> annotations.first()
-            else -> {
-                Messages.ANNOTATION_CONFLICT.on(function, annotations.joinToString { it.toString() })
-                null
-            }
-        }
+    // TODO add function to annotated interface
+    private fun hasAnnotation(function: EKtFunction, qualifiedName: String): Boolean {
+        return function.annotations.any { it.qualifiedName == qualifiedName }
     }
 
     private fun getAlwaysSeqBlock(function: EKtFunction, body: EExpression): EAlwaysSeqBlock? {

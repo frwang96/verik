@@ -34,6 +34,7 @@ object UnsupportedModifierCheckerStage : ProjectStage() {
     object UnsupportedModifierCheckerVisitor : KtTreeVisitorVoid() {
 
         private val unsupportedModifiers = listOf(
+            KtTokens.ANNOTATION_KEYWORD,
             KtTokens.CROSSINLINE_KEYWORD,
             KtTokens.OPERATOR_KEYWORD,
             KtTokens.REIFIED_KEYWORD,

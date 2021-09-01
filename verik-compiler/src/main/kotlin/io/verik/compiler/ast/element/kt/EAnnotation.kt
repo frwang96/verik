@@ -14,19 +14,23 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.property
+package io.verik.compiler.ast.element.kt
 
-class Annotation(val name: String, val qualifiedName: String) {
+import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.common.Visitor
+import io.verik.compiler.message.SourceLocation
 
-    override fun equals(other: Any?): Boolean {
-        return (other is Annotation) && (other.qualifiedName == qualifiedName)
+class EAnnotation(
+    override val location: SourceLocation,
+    val name: String,
+    val qualifiedName: String,
+    val arguments: List<String>
+) : EElement() {
+
+    override fun accept(visitor: Visitor) {
+        visitor.visitAnnotation(this)
     }
 
-    override fun hashCode(): Int {
-        return qualifiedName.hashCode()
-    }
-
-    override fun toString(): String {
-        return name
-    }
+    override fun acceptChildren(visitor: TreeVisitor) {}
 }

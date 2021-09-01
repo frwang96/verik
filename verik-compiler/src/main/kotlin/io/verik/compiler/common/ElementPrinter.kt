@@ -26,6 +26,7 @@ import io.verik.compiler.ast.element.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.ast.element.common.ERootPackage
 import io.verik.compiler.ast.element.common.ETypeParameter
+import io.verik.compiler.ast.element.kt.EAnnotation
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
@@ -137,7 +138,7 @@ class ElementPrinter : Visitor() {
             build(function.name)
             build(function.returnType.toString())
             build(function.body)
-            build(function.annotations.map { it.toString() })
+            build(function.annotations)
         }
     }
 
@@ -212,6 +213,13 @@ class ElementPrinter : Visitor() {
         build("TypeAlias") {
             build(typeAlias.name)
             build(typeAlias.type.toString())
+        }
+    }
+
+    override fun visitAnnotation(annotation: EAnnotation) {
+        build("Annotation") {
+            build(annotation.name)
+            build(annotation.arguments)
         }
     }
 

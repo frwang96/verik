@@ -129,21 +129,6 @@ internal class DeclarationCasterTest : BaseTest() {
     }
 
     @Test
-    fun `function annotation`() {
-        val projectContext = driveTest(
-            CasterStage::class,
-            """
-                @Task
-                fun f() {}
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtFunction(f, Unit, *, [Task])",
-            projectContext.findDeclaration("f")
-        )
-    }
-
-    @Test
     fun `property simple`() {
         val projectContext = driveTest(
             CasterStage::class,
