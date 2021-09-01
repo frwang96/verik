@@ -89,9 +89,9 @@ object Messages {
         "Cardinal type expected"
     )
 
-    val KEYWORD_CONFLICT_SYSTEM_VERILOG = MessageTemplate1<String>(
+    val ANNOTATION_ARGUMENT_NOT_LITERAL = MessageTemplate0(
         Severity.ERROR,
-        "Conflict with SystemVerilog reserved keyword: $0"
+        "String literal expected for annotation argument"
     )
 
 //  PRE TRANSFORM  /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -140,6 +140,11 @@ object Messages {
     )
 
 //  POST CHECK  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    val KEYWORD_CONFLICT_SYSTEM_VERILOG = MessageTemplate1<String>(
+        Severity.ERROR,
+        "Conflict with SystemVerilog reserved keyword: $0"
+    )
 
     val NAME_REDECLARATION = MessageTemplate1<String>(
         Severity.ERROR,

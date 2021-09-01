@@ -37,7 +37,7 @@ object FunctionInterpreter {
     fun interpret(function: EKtFunction): EElement {
         val body = function.body
         return when {
-            hasAnnotation(function, Annotations.COM) -> {
+            function.hasAnnotation(Annotations.COM) -> {
                 if (body != null) {
                     EAlwaysComBlock(function.location, function.name, body)
                 } else {
@@ -45,7 +45,7 @@ object FunctionInterpreter {
                     ENullElement(function.location)
                 }
             }
-            hasAnnotation(function, Annotations.SEQ) -> {
+            function.hasAnnotation(Annotations.SEQ) -> {
                 if (body != null) {
                     getAlwaysSeqBlock(function, body)
                         ?: ENullElement(function.location)
@@ -54,7 +54,7 @@ object FunctionInterpreter {
                     ENullElement(function.location)
                 }
             }
-            hasAnnotation(function, Annotations.RUN) -> {
+            function.hasAnnotation(Annotations.RUN) -> {
                 if (body != null) {
                     EInitialBlock(function.location, function.name, body)
                 } else {
@@ -71,11 +71,6 @@ object FunctionInterpreter {
                 )
             }
         }
-    }
-
-    // TODO add function to annotated interface
-    private fun hasAnnotation(function: EKtFunction, qualifiedName: String): Boolean {
-        return function.annotations.any { it.qualifiedName == qualifiedName }
     }
 
     private fun getAlwaysSeqBlock(function: EKtFunction, body: EExpression): EAlwaysSeqBlock? {

@@ -22,7 +22,6 @@ import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findDeclaration
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
@@ -44,7 +43,6 @@ internal class AnnotationCasterTest : BaseTest() {
     }
 
     @Test
-    @Disabled
     fun `annotation with argument`() {
         val projectContext = driveTest(
             CasterStage::class,
@@ -60,7 +58,6 @@ internal class AnnotationCasterTest : BaseTest() {
     }
 
     @Test
-    @Disabled
     fun `annotation with argument illegal`() {
         assertThrows<TestErrorException> {
             driveTest(
@@ -70,6 +67,6 @@ internal class AnnotationCasterTest : BaseTest() {
                 fun f() {}
                 """.trimIndent()
             )
-        }.apply { assertEquals("Expected string literal for annotation argument", message) }
+        }.apply { assertEquals("String literal expected for annotation argument", message) }
     }
 }
