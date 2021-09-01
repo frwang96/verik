@@ -23,13 +23,6 @@ sealed class Logical
 typealias `?` = Logical
 
 /**
- * Returns the value of the logical [X] as a boolean.
- */
-fun <X : `?`> b(): Boolean {
-    throw VerikException()
-}
-
-/**
  * Logical true value.
  */
 typealias TRUE = `?`

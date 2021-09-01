@@ -23,13 +23,6 @@ sealed class Cardinal
 typealias `*` = Cardinal
 
 /**
- * Returns the value of cardinal [N] as an integer.
- */
-fun <N : `*`> i(): Int {
-    throw VerikException()
-}
-
-/**
  * Adds the cardinals N and M.
  */
 typealias ADD<N, M> = `*`

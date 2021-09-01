@@ -19,14 +19,14 @@
 package io.verik.core
 
 /**
- * A cluster of components [C] of size [N].
+ * An optional component [C] that is instantiated based on the logical [X].
  */
-class Cluster<N : `*`, C : Component>(instantiator: (Int) -> C) : Component() {
+class Option<X : `?`, C : Component>(instantiator: () -> C) : Component() {
 
     /**
-     * Returns the component at the specified [index].
+     * The instantiated component.
      */
-    operator fun get(index: Int): C {
+    val option: C by lazy<C> {
         throw VerikException()
     }
 }
