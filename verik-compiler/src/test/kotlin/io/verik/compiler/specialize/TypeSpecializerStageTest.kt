@@ -34,7 +34,7 @@ internal class TypeSpecializerStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtProperty(x, Ubit<`8`>, *)",
+            "KtProperty(x, Ubit<`8`>, *, [])",
             projectContext.findDeclaration("x")
         )
     }

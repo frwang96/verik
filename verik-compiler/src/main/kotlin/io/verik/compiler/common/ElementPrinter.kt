@@ -109,6 +109,7 @@ class ElementPrinter : Visitor() {
             build(basicClass.isEnum.toString())
             build(basicClass.typeParameters)
             build(basicClass.members)
+            build(basicClass.annotations)
         }
     }
 
@@ -177,6 +178,7 @@ class ElementPrinter : Visitor() {
             build(property.name)
             build(property.type.toString())
             build(property.initializer)
+            build(property.annotations)
         }
     }
 

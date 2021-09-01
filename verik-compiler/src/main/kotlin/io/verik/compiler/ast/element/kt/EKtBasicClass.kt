@@ -19,7 +19,9 @@ package io.verik.compiler.ast.element.kt
 import io.verik.compiler.ast.element.common.EAbstractClass
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypeParameter
+import io.verik.compiler.ast.interfaces.Annotated
 import io.verik.compiler.ast.property.Type
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
@@ -29,8 +31,9 @@ class EKtBasicClass(
     override var supertype: Type,
     override var typeParameters: ArrayList<ETypeParameter>,
     override var members: ArrayList<EElement>,
+    override var annotations: List<EAnnotation>,
     var isEnum: Boolean
-) : EAbstractClass() {
+) : EAbstractClass(), Annotated {
 
     init {
         members.forEach { it.parent = this }
@@ -38,5 +41,10 @@ class EKtBasicClass(
 
     override fun accept(visitor: Visitor) {
         return visitor.visitKtBasicClass(this)
+    }
+
+    override fun acceptChildren(visitor: TreeVisitor) {
+        super.acceptChildren(visitor)
+        annotations.forEach { it.accept(visitor) }
     }
 }

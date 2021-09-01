@@ -51,6 +51,9 @@ object DeclarationCaster {
         val members = classOrObject.declarations.mapNotNull {
             castContext.casterVisitor.getElement(it)
         }
+        val annotations = classOrObject.annotationEntries.mapNotNull {
+            AnnotationCaster.castAnnotationEntry(it, castContext)
+        }
         val isEnum = classOrObject.hasModifier(KtTokens.ENUM_KEYWORD)
 
         basicClass.supertype = supertype
@@ -58,6 +61,8 @@ object DeclarationCaster {
         basicClass.typeParameters = ArrayList(typeParameters)
         members.forEach { it.parent = basicClass }
         basicClass.members = ArrayList(members)
+        annotations.forEach { it.parent = basicClass }
+        basicClass.annotations = annotations
         basicClass.isEnum = isEnum
         return basicClass
     }
@@ -114,10 +119,15 @@ object DeclarationCaster {
         val initializer = property.initializer?.let {
             castContext.casterVisitor.getExpression(it)
         }
-        initializer?.parent = ktProperty
+        val annotations = property.annotationEntries.mapNotNull {
+            AnnotationCaster.castAnnotationEntry(it, castContext)
+        }
 
         ktProperty.type = type
+        initializer?.parent = ktProperty
         ktProperty.initializer = initializer
+        annotations.forEach { it.parent = ktProperty }
+        ktProperty.annotations = annotations
         return ktProperty
     }
 

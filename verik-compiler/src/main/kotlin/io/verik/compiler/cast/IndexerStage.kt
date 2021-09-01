@@ -69,6 +69,7 @@ object IndexerStage : ProjectStage() {
                 NullDeclaration.toType(),
                 arrayListOf(),
                 arrayListOf(),
+                listOf(),
                 false
             )
             castContext.addDeclaration(descriptor, basicClass)
@@ -100,7 +101,7 @@ object IndexerStage : ProjectStage() {
             val location = property.nameIdentifier!!.location()
             val name = property.name!!
             checkDeclarationName(name, property)
-            val ktProperty = EKtProperty(location, name, NullDeclaration.toType(), null)
+            val ktProperty = EKtProperty(location, name, NullDeclaration.toType(), null, listOf())
             castContext.addDeclaration(descriptor, ktProperty)
         }
 

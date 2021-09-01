@@ -18,8 +18,10 @@ package io.verik.compiler.ast.element.kt
 
 import io.verik.compiler.ast.element.common.EAbstractProperty
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.interfaces.Annotated
 import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.ast.property.Type
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
@@ -27,8 +29,9 @@ class EKtProperty(
     override val location: SourceLocation,
     override var name: String,
     override var type: Type,
-    override var initializer: EExpression?
-) : EAbstractProperty() {
+    override var initializer: EExpression?,
+    override var annotations: List<EAnnotation>
+) : EAbstractProperty(), Annotated {
 
     override val serializationType = SvSerializationType.OTHER
 
@@ -38,5 +41,10 @@ class EKtProperty(
 
     override fun accept(visitor: Visitor) {
         return visitor.visitKtProperty(this)
+    }
+
+    override fun acceptChildren(visitor: TreeVisitor) {
+        super.acceptChildren(visitor)
+        annotations.forEach { it.accept(visitor) }
     }
 }

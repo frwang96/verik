@@ -34,7 +34,7 @@ internal class TypeResolverStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtProperty(x, Boolean, *)",
+            "KtProperty(x, Boolean, *, [])",
             projectContext.findDeclaration("x")
         )
     }
