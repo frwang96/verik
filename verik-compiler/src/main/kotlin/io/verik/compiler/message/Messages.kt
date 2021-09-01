@@ -115,6 +115,11 @@ object Messages {
 
 //  INTERPRET  /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    val CONFLICTING_ANNOTATION = MessageTemplate1<String>(
+        Severity.ERROR,
+        "Conflicts with annotation: $0"
+    )
+
     val FUNCTION_MISSING_BODY = MessageTemplate1<String>(
         Severity.ERROR,
         "Function missing body: $0"
