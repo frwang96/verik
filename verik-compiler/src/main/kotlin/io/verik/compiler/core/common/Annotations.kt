@@ -22,4 +22,5 @@ object Annotations {
     const val SEQ = "io.verik.core.Seq"
     const val RUN = "io.verik.core.Run"
     const val TASK = "io.verik.core.Task"
+    const val RELABEL = "io.verik.core.Relabel"
 }

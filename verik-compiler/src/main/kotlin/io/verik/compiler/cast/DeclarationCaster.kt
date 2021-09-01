@@ -69,7 +69,13 @@ object DeclarationCaster {
             ?: return null
 
         val type = castContext.castType(descriptor.classValueType!!, enumEntry)
+        val annotations = enumEntry.annotationEntries.mapNotNull {
+            AnnotationCaster.castAnnotationEntry(it, castContext)
+        }
+
         ktEnumEntry.type = type
+        annotations.forEach { it.parent = ktEnumEntry }
+        ktEnumEntry.annotations = annotations
         return ktEnumEntry
     }
 

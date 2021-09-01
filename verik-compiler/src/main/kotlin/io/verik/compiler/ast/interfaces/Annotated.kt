@@ -20,9 +20,17 @@ import io.verik.compiler.ast.element.kt.EAnnotation
 
 interface Annotated {
 
-    val annotations: List<EAnnotation>
+    var annotations: List<EAnnotation>
 
     fun hasAnnotation(qualifiedName: String): Boolean {
         return annotations.any { it.qualifiedName == qualifiedName }
+    }
+
+    fun getAnnotation(qualifiedName: String): EAnnotation? {
+        annotations.forEach {
+            if (it.qualifiedName == qualifiedName)
+                return it
+        }
+        return null
     }
 }

@@ -80,7 +80,7 @@ object IndexerStage : ProjectStage() {
             val location = enumEntry.nameIdentifier!!.location()
             val name = enumEntry.name!!
             checkDeclarationName(name, enumEntry)
-            val ktEnumEntry = EKtEnumEntry(location, name, NullDeclaration.toType())
+            val ktEnumEntry = EKtEnumEntry(location, name, NullDeclaration.toType(), listOf())
             castContext.addDeclaration(descriptor, ktEnumEntry)
         }
 

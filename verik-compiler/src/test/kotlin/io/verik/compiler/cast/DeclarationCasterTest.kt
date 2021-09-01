@@ -109,7 +109,7 @@ internal class DeclarationCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtBasicClass(E, true, [], [KtEnumEntry(A, E)])",
+            "KtBasicClass(E, true, [], [KtEnumEntry(A, E, [])])",
             projectContext.findDeclaration("E")
         )
     }

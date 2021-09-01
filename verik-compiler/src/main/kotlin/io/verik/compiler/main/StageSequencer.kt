@@ -60,6 +60,7 @@ import io.verik.compiler.transform.post.UnaryExpressionTransformerStage
 import io.verik.compiler.transform.pre.AssignmentOperatorReducerStage
 import io.verik.compiler.transform.pre.BinaryExpressionReducerStage
 import io.verik.compiler.transform.pre.BitConstantTransformerStage
+import io.verik.compiler.transform.pre.NameRelabelerStage
 import io.verik.compiler.transform.pre.UnaryExpressionReducerStage
 
 object StageSequencer {
@@ -83,6 +84,7 @@ object StageSequencer {
         stageSequence.add(CasterStage)
 
         // PreTransform
+        stageSequence.add(NameRelabelerStage)
         stageSequence.add(AssignmentOperatorReducerStage)
         stageSequence.add(UnaryExpressionReducerStage)
         stageSequence.add(BinaryExpressionReducerStage)

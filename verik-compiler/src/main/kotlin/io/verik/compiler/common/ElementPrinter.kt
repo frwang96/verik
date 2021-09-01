@@ -192,6 +192,7 @@ class ElementPrinter : Visitor() {
         build("KtEnumEntry") {
             build(enumEntry.name)
             build(enumEntry.type.toString())
+            build(enumEntry.annotations)
         }
     }
 
