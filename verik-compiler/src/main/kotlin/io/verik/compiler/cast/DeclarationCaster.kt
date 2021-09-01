@@ -23,7 +23,6 @@ import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.interfaces.cast
-import io.verik.compiler.ast.property.Annotation
 import io.verik.compiler.core.common.Core
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.KtClassOrObject
@@ -52,6 +51,9 @@ object DeclarationCaster {
         val members = classOrObject.declarations.mapNotNull {
             castContext.casterVisitor.getElement(it)
         }
+        val annotations = classOrObject.annotationEntries.mapNotNull {
+            AnnotationCaster.castAnnotationEntry(it, castContext)
+        }
         val isEnum = classOrObject.hasModifier(KtTokens.ENUM_KEYWORD)
 
         basicClass.supertype = supertype
@@ -59,6 +61,8 @@ object DeclarationCaster {
         basicClass.typeParameters = ArrayList(typeParameters)
         members.forEach { it.parent = basicClass }
         basicClass.members = ArrayList(members)
+        annotations.forEach { it.parent = basicClass }
+        basicClass.annotations = annotations
         basicClass.isEnum = isEnum
         return basicClass
     }
@@ -70,7 +74,13 @@ object DeclarationCaster {
             ?: return null
 
         val type = castContext.castType(descriptor.classValueType!!, enumEntry)
+        val annotations = enumEntry.annotationEntries.mapNotNull {
+            AnnotationCaster.castAnnotationEntry(it, castContext)
+        }
+
         ktEnumEntry.type = type
+        annotations.forEach { it.parent = ktEnumEntry }
+        ktEnumEntry.annotations = annotations
         return ktEnumEntry
     }
 
@@ -81,8 +91,8 @@ object DeclarationCaster {
             ?: return null
 
         val returnType = castContext.castType(descriptor.returnType!!, function)
-        val annotations = descriptor.annotations.mapNotNull {
-            Annotation(it.fqName!!.shortName().asString(), it.fqName!!.asString())
+        val annotations = function.annotationEntries.mapNotNull {
+            AnnotationCaster.castAnnotationEntry(it, castContext)
         }
         val body = function.bodyBlockExpression?.let {
             castContext.casterVisitor.getExpression(it)
@@ -91,6 +101,7 @@ object DeclarationCaster {
         ktFunction.returnType = returnType
         body?.parent = ktFunction
         ktFunction.body = body
+        annotations.forEach { it.parent = ktFunction }
         ktFunction.annotations = annotations
         return ktFunction
     }
@@ -108,10 +119,15 @@ object DeclarationCaster {
         val initializer = property.initializer?.let {
             castContext.casterVisitor.getExpression(it)
         }
-        initializer?.parent = ktProperty
+        val annotations = property.annotationEntries.mapNotNull {
+            AnnotationCaster.castAnnotationEntry(it, castContext)
+        }
 
         ktProperty.type = type
+        initializer?.parent = ktProperty
         ktProperty.initializer = initializer
+        annotations.forEach { it.parent = ktProperty }
+        ktProperty.annotations = annotations
         return ktProperty
     }
 

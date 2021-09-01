@@ -19,6 +19,20 @@
 package io.verik.core
 
 /**
+ * Returns the value of the logical [X] as a boolean.
+ */
+fun <X : `?`> b(): Boolean {
+    throw VerikException()
+}
+
+/**
+ * Returns the value of cardinal [N] as an integer.
+ */
+fun <N : `*`> i(): Int {
+    throw VerikException()
+}
+
+/**
  * Constructs a [Ubit] out of the constant [value].
  */
 fun u(value: Int): Ubit<Cardinal> {

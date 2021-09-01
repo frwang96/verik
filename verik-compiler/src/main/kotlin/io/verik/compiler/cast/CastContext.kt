@@ -37,6 +37,7 @@ class CastContext(
     val sliceVariable = bindingContext.getSliceContents(BindingContext.VARIABLE)
     val sliceTypeParameter = bindingContext.getSliceContents(BindingContext.TYPE_PARAMETER)
     val sliceTypeAlias = bindingContext.getSliceContents(BindingContext.TYPE_ALIAS)
+    val sliceAnnotation = bindingContext.getSliceContents(BindingContext.ANNOTATION)
     val sliceReferenceTarget = bindingContext.getSliceContents(BindingContext.REFERENCE_TARGET)
     val sliceType = bindingContext.getSliceContents(BindingContext.TYPE)
     val sliceAbbreviatedType = bindingContext.getSliceContents(BindingContext.ABBREVIATED_TYPE)

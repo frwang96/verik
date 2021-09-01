@@ -19,9 +19,7 @@
 package io.verik.core
 
 /**
- * A cluster of components.
- * @param N the size of the cluster
- * @param C the type of the components of the cluster
+ * A cluster of components [C] of size [N].
  */
 class Cluster<N : `*`, C : Component>(instantiator: (Int) -> C) : Component() {
 

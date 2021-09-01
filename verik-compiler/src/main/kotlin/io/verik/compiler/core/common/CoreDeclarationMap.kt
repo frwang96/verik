@@ -62,12 +62,6 @@ object CoreDeclarationMap {
                         throw IllegalArgumentException("Qualified name does not match scope parent: $expectedString")
                     }
                     when (property) {
-                        is CoreCardinalDeclaration -> {
-                            declarationMap[property.qualifiedName] = property
-                        }
-                        is CoreClassDeclaration -> {
-                            declarationMap[property.qualifiedName] = property
-                        }
                         is CoreAbstractFunctionDeclaration -> {
                             if (property is CoreKtFunctionDeclaration) {
                                 if (property.qualifiedName !in functionMap)
@@ -75,7 +69,8 @@ object CoreDeclarationMap {
                                 functionMap[property.qualifiedName]!!.add(property)
                             }
                         }
-                        else -> throw IllegalArgumentException("Unexpected declaration: $property")
+                        else ->
+                            declarationMap[property.qualifiedName] = property
                     }
                 }
             }

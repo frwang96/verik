@@ -14,55 +14,45 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.cast
+package io.verik.compiler.transform.pre
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
+import io.verik.compiler.util.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class CasterStageTest : BaseTest() {
+internal class NameRelabelerStageTest : BaseTest() {
 
     @Test
-    fun `project empty`() {
-        val projectContext = driveTest(CasterStage::class, "")
+    fun `relabel function`() {
+        val projectContext = driveTest(
+            NameRelabelerStage::class,
+            """
+                @Relabel("g")
+                fun f() {}
+            """.trimIndent()
+        )
         assertElementEquals(
-            "Project([BasicPackage(verik, [File([])])], RootPackage(root, []))",
-            projectContext.project
+            "KtFunction(g, Unit, *, *)",
+            projectContext.findDeclaration("g")
         )
     }
 
     @Test
-    fun `file class`() {
+    fun `relabel enum entry`() {
         val projectContext = driveTest(
-            CasterStage::class,
+            NameRelabelerStage::class,
             """
-                class C
+                enum class E {
+                    @Relabel("B")
+                    A
+                }
             """.trimIndent()
         )
         assertElementEquals(
-            "File([KtBasicClass(C, false, [], [], [])])",
-            projectContext.project.files().first()
-        )
-    }
-
-    @Test
-    fun `file classes`() {
-        val projectContext = driveTest(
-            CasterStage::class,
-            """
-                class C
-                class D
-            """.trimIndent()
-        )
-        assertElementEquals(
-            """
-                File([
-                    KtBasicClass(C, false, [], [], []),
-                    KtBasicClass(D, false, [], [], [])
-                ])
-            """.trimIndent(),
-            projectContext.project.files().first()
+            "KtEnumEntry(B, E, *)",
+            projectContext.findDeclaration("B")
         )
     }
 }

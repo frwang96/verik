@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.property
+@file:Suppress("unused", "UNUSED_PARAMETER")
 
-class Annotation(val name: String, val qualifiedName: String) {
+package io.verik.core
 
-    override fun equals(other: Any?): Boolean {
-        return (other is Annotation) && (other.qualifiedName == qualifiedName)
-    }
+/**
+ * An optional component [C] that is instantiated based on the logical [X].
+ */
+class Option<X : `?`, C : Component>(instantiator: () -> C) : Component() {
 
-    override fun hashCode(): Int {
-        return qualifiedName.hashCode()
-    }
-
-    override fun toString(): String {
-        return name
+    /**
+     * The instantiated component.
+     */
+    val option: C by lazy<C> {
+        throw VerikException()
     }
 }

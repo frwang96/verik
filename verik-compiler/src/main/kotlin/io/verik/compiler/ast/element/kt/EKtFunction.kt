@@ -18,8 +18,9 @@ package io.verik.compiler.ast.element.kt
 
 import io.verik.compiler.ast.element.common.EAbstractFunction
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.property.Annotation
+import io.verik.compiler.ast.interfaces.Annotated
 import io.verik.compiler.ast.property.Type
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
@@ -28,8 +29,8 @@ class EKtFunction(
     override var name: String,
     override var returnType: Type,
     override var body: EExpression?,
-    var annotations: List<Annotation>
-) : EAbstractFunction() {
+    override var annotations: List<EAnnotation>
+) : EAbstractFunction(), Annotated {
 
     init {
         body?.parent = this
@@ -37,5 +38,10 @@ class EKtFunction(
 
     override fun accept(visitor: Visitor) {
         return visitor.visitKtFunction(this)
+    }
+
+    override fun acceptChildren(visitor: TreeVisitor) {
+        super.acceptChildren(visitor)
+        annotations.forEach { it.accept(visitor) }
     }
 }

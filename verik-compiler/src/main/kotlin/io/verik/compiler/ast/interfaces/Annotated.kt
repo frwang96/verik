@@ -14,13 +14,23 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.common
+package io.verik.compiler.ast.interfaces
 
-object Annotations {
+import io.verik.compiler.ast.element.kt.EAnnotation
 
-    const val COM = "io.verik.core.Com"
-    const val SEQ = "io.verik.core.Seq"
-    const val RUN = "io.verik.core.Run"
-    const val TASK = "io.verik.core.Task"
-    const val RELABEL = "io.verik.core.Relabel"
+interface Annotated {
+
+    var annotations: List<EAnnotation>
+
+    fun hasAnnotation(qualifiedName: String): Boolean {
+        return annotations.any { it.qualifiedName == qualifiedName }
+    }
+
+    fun getAnnotation(qualifiedName: String): EAnnotation? {
+        annotations.forEach {
+            if (it.qualifiedName == qualifiedName)
+                return it
+        }
+        return null
+    }
 }

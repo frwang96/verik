@@ -29,6 +29,7 @@ import io.verik.compiler.common.StageSequence
 import io.verik.compiler.compile.KotlinCompilerAnalyzerStage
 import io.verik.compiler.compile.KotlinCompilerParserStage
 import io.verik.compiler.compile.KotlinEnvironmentBuilderStage
+import io.verik.compiler.interpret.AnnotationConflictCheckerStage
 import io.verik.compiler.interpret.EnumInterpreterStage
 import io.verik.compiler.interpret.FileSplitterStage
 import io.verik.compiler.interpret.MemberInterpreterStage
@@ -59,6 +60,7 @@ import io.verik.compiler.transform.post.UnaryExpressionTransformerStage
 import io.verik.compiler.transform.pre.AssignmentOperatorReducerStage
 import io.verik.compiler.transform.pre.BinaryExpressionReducerStage
 import io.verik.compiler.transform.pre.BitConstantTransformerStage
+import io.verik.compiler.transform.pre.NameRelabelerStage
 import io.verik.compiler.transform.pre.UnaryExpressionReducerStage
 
 object StageSequencer {
@@ -82,6 +84,7 @@ object StageSequencer {
         stageSequence.add(CasterStage)
 
         // PreTransform
+        stageSequence.add(NameRelabelerStage)
         stageSequence.add(AssignmentOperatorReducerStage)
         stageSequence.add(UnaryExpressionReducerStage)
         stageSequence.add(BinaryExpressionReducerStage)
@@ -95,6 +98,7 @@ object StageSequencer {
         stageSequence.add(TypeCheckerStage)
 
         // Interpret
+        stageSequence.add(AnnotationConflictCheckerStage)
         stageSequence.add(EnumInterpreterStage)
         stageSequence.add(MemberInterpreterStage)
         stageSequence.add(FileSplitterStage)

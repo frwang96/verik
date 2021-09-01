@@ -17,52 +17,56 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.util.BaseTest
+import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
+import io.verik.compiler.util.findDeclaration
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
-internal class CasterStageTest : BaseTest() {
+internal class AnnotationCasterTest : BaseTest() {
 
     @Test
-    fun `project empty`() {
-        val projectContext = driveTest(CasterStage::class, "")
+    fun `annotation simple`() {
+        val projectContext = driveTest(
+            CasterStage::class,
+            """
+                @Task
+                fun f() {}
+            """.trimIndent()
+        )
         assertElementEquals(
-            "Project([BasicPackage(verik, [File([])])], RootPackage(root, []))",
-            projectContext.project
+            "KtFunction(f, Unit, *, [Annotation(Task, [])])",
+            projectContext.findDeclaration("f")
         )
     }
 
     @Test
-    fun `file class`() {
+    fun `annotation with argument`() {
         val projectContext = driveTest(
             CasterStage::class,
             """
-                class C
+                @Relabel("g")
+                fun f() {}
             """.trimIndent()
         )
         assertElementEquals(
-            "File([KtBasicClass(C, false, [], [], [])])",
-            projectContext.project.files().first()
+            "KtFunction(f, Unit, *, [Annotation(Relabel, [g])])",
+            projectContext.findDeclaration("f")
         )
     }
 
     @Test
-    fun `file classes`() {
-        val projectContext = driveTest(
-            CasterStage::class,
-            """
-                class C
-                class D
-            """.trimIndent()
-        )
-        assertElementEquals(
-            """
-                File([
-                    KtBasicClass(C, false, [], [], []),
-                    KtBasicClass(D, false, [], [], [])
-                ])
-            """.trimIndent(),
-            projectContext.project.files().first()
-        )
+    fun `annotation with argument illegal`() {
+        assertThrows<TestErrorException> {
+            driveTest(
+                CasterStage::class,
+                """
+                @Relabel("g" + "h")
+                fun f() {}
+                """.trimIndent()
+            )
+        }.apply { assertEquals("String literal expected for annotation argument", message) }
     }
 }

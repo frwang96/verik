@@ -14,28 +14,30 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.specialize
+package io.verik.compiler.interpret
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.assertElementEquals
+import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.driveTest
-import io.verik.compiler.util.findDeclaration
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
-internal class TypeSpecializerStageTest : BaseTest() {
+internal class AnnotationConflictCheckerStageTest : BaseTest() {
 
     @Test
-    fun `specialize property`() {
-        val projectContext = driveTest(
-            TypeSpecializerStage::class,
-            """
-                typealias N = `8`
-                var x: Ubit<N> = u(0x00)
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtProperty(x, Ubit<`8`>, *, [])",
-            projectContext.findDeclaration("x")
-        )
+    fun `annotations conflicting`() {
+        assertThrows<TestErrorException> {
+            driveTest(
+                AnnotationConflictCheckerStage::class,
+                """
+                    @Com
+                    @Seq
+                    fun f() {}
+                """.trimIndent()
+            )
+        }.apply {
+            Assertions.assertEquals("Conflicts with annotation: Com", message)
+        }
     }
 }
