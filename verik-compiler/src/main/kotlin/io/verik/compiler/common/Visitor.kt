@@ -38,6 +38,7 @@ import io.verik.compiler.ast.element.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.ast.element.common.ERootPackage
 import io.verik.compiler.ast.element.common.ETypeParameter
+import io.verik.compiler.ast.element.common.EValueParameter
 import io.verik.compiler.ast.element.kt.EAnnotation
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtBasicClass
@@ -193,16 +194,22 @@ abstract class Visitor {
         visitAbstractEnumEntry(enumEntry)
     }
 
+//  TYPE ALIAS  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    open fun visitTypeAlias(typeAlias: ETypeAlias) {
+        visitElement(typeAlias)
+    }
+
 //  TYPE PARAMETER  ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     open fun visitTypeParameter(typeParameter: ETypeParameter) {
         visitElement(typeParameter)
     }
 
-//  TYPE ALIAS  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  VALUE PARAMETER  ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-    open fun visitTypeAlias(typeAlias: ETypeAlias) {
-        visitElement(typeAlias)
+    open fun visitValueParameter(valueParameter: EValueParameter) {
+        visitElement(valueParameter)
     }
 
 //  ANNOTATION  ////////////////////////////////////////////////////////////////////////////////////////////////////////

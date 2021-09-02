@@ -14,36 +14,23 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.kt
+package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.element.common.EAbstractFunction
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.common.EValueParameter
-import io.verik.compiler.ast.interfaces.Annotated
+import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
-class EKtFunction(
+class EValueParameter(
     override val location: SourceLocation,
     override var name: String,
-    override var valueParameters: ArrayList<EValueParameter>,
-    override var returnType: Type,
-    override var body: EExpression?,
-    override var annotations: List<EAnnotation>
-) : EAbstractFunction(), Annotated {
-
-    init {
-        body?.parent = this
-    }
+    var type: Type
+) : EElement(), Declaration {
 
     override fun accept(visitor: Visitor) {
-        return visitor.visitKtFunction(this)
+        visitor.visitValueParameter(this)
     }
 
-    override fun acceptChildren(visitor: TreeVisitor) {
-        super.acceptChildren(visitor)
-        annotations.forEach { it.accept(visitor) }
-    }
+    override fun acceptChildren(visitor: TreeVisitor) {}
 }

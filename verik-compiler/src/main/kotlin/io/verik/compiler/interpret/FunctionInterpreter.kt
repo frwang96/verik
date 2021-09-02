@@ -66,6 +66,7 @@ object FunctionInterpreter {
                 ESvFunction(
                     function.location,
                     function.name,
+                    function.valueParameters,
                     function.returnType,
                     function.body
                 )

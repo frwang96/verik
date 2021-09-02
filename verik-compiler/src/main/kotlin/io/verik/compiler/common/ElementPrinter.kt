@@ -26,6 +26,7 @@ import io.verik.compiler.ast.element.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.ast.element.common.ERootPackage
 import io.verik.compiler.ast.element.common.ETypeParameter
+import io.verik.compiler.ast.element.common.EValueParameter
 import io.verik.compiler.ast.element.kt.EAnnotation
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtBasicClass
@@ -137,6 +138,7 @@ class ElementPrinter : Visitor() {
     override fun visitKtFunction(function: EKtFunction) {
         build("KtFunction") {
             build(function.name)
+            build(function.valueParameters)
             build(function.returnType.toString())
             build(function.body)
             build(function.annotations)
@@ -146,6 +148,7 @@ class ElementPrinter : Visitor() {
     override fun visitSvFunction(function: ESvFunction) {
         build("SvFunction") {
             build(function.name)
+            build(function.valueParameters)
             build(function.returnType.toString())
             build(function.body)
         }
@@ -205,6 +208,13 @@ class ElementPrinter : Visitor() {
         }
     }
 
+    override fun visitTypeAlias(typeAlias: ETypeAlias) {
+        build("TypeAlias") {
+            build(typeAlias.name)
+            build(typeAlias.type.toString())
+        }
+    }
+
     override fun visitTypeParameter(typeParameter: ETypeParameter) {
         build("TypeParameter") {
             build(typeParameter.name)
@@ -212,10 +222,10 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitTypeAlias(typeAlias: ETypeAlias) {
-        build("TypeAlias") {
-            build(typeAlias.name)
-            build(typeAlias.type.toString())
+    override fun visitValueParameter(valueParameter: EValueParameter) {
+        build("ValueParameter") {
+            build(valueParameter.name)
+            build(valueParameter.type.toString())
         }
     }
 

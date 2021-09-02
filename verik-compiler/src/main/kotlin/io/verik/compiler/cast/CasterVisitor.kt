@@ -22,6 +22,7 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.ENullExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
+import io.verik.compiler.ast.element.common.EValueParameter
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
@@ -49,6 +50,7 @@ import org.jetbrains.kotlin.psi.KtExpression
 import org.jetbrains.kotlin.psi.KtIfExpression
 import org.jetbrains.kotlin.psi.KtLambdaExpression
 import org.jetbrains.kotlin.psi.KtNamedFunction
+import org.jetbrains.kotlin.psi.KtParameter
 import org.jetbrains.kotlin.psi.KtParenthesizedExpression
 import org.jetbrains.kotlin.psi.KtPrefixExpression
 import org.jetbrains.kotlin.psi.KtProperty
@@ -91,12 +93,16 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
         return DeclarationCaster.castKtProperty(property, castContext)
     }
 
+    override fun visitTypeAlias(typeAlias: KtTypeAlias, data: Unit?): ETypeAlias? {
+        return DeclarationCaster.castTypeAlias(typeAlias, castContext)
+    }
+
     override fun visitTypeParameter(parameter: KtTypeParameter, data: Unit?): ETypeParameter? {
         return DeclarationCaster.castTypeParameter(parameter, castContext)
     }
 
-    override fun visitTypeAlias(typeAlias: KtTypeAlias, data: Unit?): ETypeAlias? {
-        return DeclarationCaster.castTypeAlias(typeAlias, castContext)
+    override fun visitParameter(parameter: KtParameter, data: Unit?): EValueParameter? {
+        return DeclarationCaster.castValueParameter(parameter, castContext)
     }
 
     override fun visitAnnotatedExpression(expression: KtAnnotatedExpression, data: Unit?): EExpression {
