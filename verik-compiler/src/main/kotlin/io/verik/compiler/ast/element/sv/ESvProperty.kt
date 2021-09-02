@@ -30,7 +30,7 @@ class ESvProperty(
     override var initializer: EExpression?
 ) : EAbstractProperty() {
 
-    override val serializationType = SvSerializationType.OTHER
+    override val serializationType = SvSerializationType.STATEMENT
 
     init {
         initializer?.parent = this

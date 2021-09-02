@@ -195,4 +195,22 @@ internal class DeclarationSerializerVisitorTest : BaseTest() {
             projectContext.outputTextFiles.last()
         )
     }
+
+    @Test
+    fun `serialize value parameter`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                fun f(x: Int) {}
+            """.trimIndent()
+        )
+        val expected = """
+            function void f(int x);
+            endfunction : f
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
 }

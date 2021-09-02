@@ -26,6 +26,7 @@ class Fizzbuzz : Module() {
         f(0)
     }
 
-    @Suppress("UNUSED_PARAMETER")
-    fun f(x: Int) {}
+    fun f(x: Int) {
+        println(x)
+    }
 }

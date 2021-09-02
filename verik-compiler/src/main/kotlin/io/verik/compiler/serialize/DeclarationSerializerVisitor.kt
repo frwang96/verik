@@ -17,6 +17,7 @@
 package io.verik.compiler.serialize
 
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EValueParameter
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.EEnum
@@ -86,7 +87,15 @@ class DeclarationSerializerVisitor(private val sourceBuilder: SourceBuilder) : V
     override fun visitSvFunction(function: ESvFunction) {
         appendLine(AppendLineType.REGULAR)
         val typeString = TypeSerializer.serialize(function.returnType, function)
-        sourceBuilder.appendLine("function $typeString ${function.name}();")
+        sourceBuilder.append("function $typeString ${function.name}(")
+        if (function.valueParameters.isNotEmpty()) {
+            serializeAsDeclaration(function.valueParameters[0])
+            function.valueParameters.drop(1).forEach {
+                sourceBuilder.append(", ")
+                serializeAsDeclaration(it)
+            }
+        }
+        sourceBuilder.appendLine(");")
         val body = function.body
         if (body != null) {
             sourceBuilder.indent {
@@ -133,6 +142,11 @@ class DeclarationSerializerVisitor(private val sourceBuilder: SourceBuilder) : V
         expressionSerializerVisitor.serializeAsExpression(alwaysSeqBlock.eventControlExpression)
         sourceBuilder.append(" ")
         expressionSerializerVisitor.serializeAsStatement(alwaysSeqBlock.body)
+    }
+
+    override fun visitValueParameter(valueParameter: EValueParameter) {
+        val typeString = TypeSerializer.serialize(valueParameter.type, valueParameter)
+        sourceBuilder.append("$typeString ${valueParameter.name}")
     }
 
     private fun appendLine(appendLineType: AppendLineType) {
