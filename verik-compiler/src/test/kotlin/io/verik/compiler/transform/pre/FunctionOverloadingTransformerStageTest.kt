@@ -22,37 +22,24 @@ import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class NameRelabelerStageTest : BaseTest() {
+internal class FunctionOverloadingTransformerStageTest : BaseTest() {
 
     @Test
-    fun `relabel function`() {
+    fun `overloaded function`() {
         val projectContext = driveTest(
             NameRelabelerStage::class,
             """
-                @Relabel("g")
                 fun f() {}
+                fun f(x: Int) {}
             """.trimIndent()
         )
         assertElementEquals(
-            "KtFunction(g, [], Unit, *, *)",
-            projectContext.findDeclaration("g")
-        )
-    }
-
-    @Test
-    fun `relabel enum entry`() {
-        val projectContext = driveTest(
-            NameRelabelerStage::class,
-            """
-                enum class E {
-                    @Relabel("B")
-                    A
-                }
-            """.trimIndent()
+            "KtFunction(f, *, *, *, *)",
+            projectContext.findDeclaration("f")
         )
         assertElementEquals(
-            "KtEnumEntry(B, E, *)",
-            projectContext.findDeclaration("B")
+            "KtFunction(f_Int, *, *, *, *)",
+            projectContext.findDeclaration("f_Int")
         )
     }
 }

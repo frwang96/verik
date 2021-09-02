@@ -21,7 +21,7 @@ import io.verik.compiler.util.assertOutputTextEquals
 import io.verik.compiler.util.driveTest
 import org.junit.jupiter.api.Test
 
-internal class DeclarationSerializerVisitorTest : BaseTest() {
+internal class DeclarationSerializerTest : BaseTest() {
 
     @Test
     fun `serialize module`() {
@@ -189,6 +189,24 @@ internal class DeclarationSerializerVisitorTest : BaseTest() {
                 end : f
             
             endclass : C
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
+    fun `serialize value parameter`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                fun f(x: Int) {}
+            """.trimIndent()
+        )
+        val expected = """
+            function void f(int x);
+            endfunction : f
         """.trimIndent()
         assertOutputTextEquals(
             expected,

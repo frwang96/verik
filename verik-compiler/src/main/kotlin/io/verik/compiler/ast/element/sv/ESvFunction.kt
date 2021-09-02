@@ -18,6 +18,7 @@ package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EAbstractFunction
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EValueParameter
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
@@ -25,6 +26,7 @@ import io.verik.compiler.message.SourceLocation
 class ESvFunction(
     override val location: SourceLocation,
     override var name: String,
+    override var valueParameters: ArrayList<EValueParameter>,
     override var returnType: Type,
     override var body: EExpression?,
 ) : EAbstractFunction() {

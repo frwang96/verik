@@ -36,11 +36,10 @@ object SourceSerializerStage : ProjectStage() {
     private fun serialize(projectContext: ProjectContext, file: EFile): TextFile? {
         if (file.members.isEmpty())
             return null
-        val sourceBuilder = SourceBuilder(projectContext, file)
-        val declarationSerializationVisitor = DeclarationSerializerVisitor(sourceBuilder)
+        val sourceSerializerContext = SourceSerializerContext(projectContext, file)
         file.members.forEach {
-            declarationSerializationVisitor.serializeAsDeclaration(it)
+            sourceSerializerContext.serializeAsDeclaration(it)
         }
-        return sourceBuilder.toTextFile()
+        return sourceSerializerContext.toTextFile()
     }
 }

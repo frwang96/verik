@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-include("cache")
-include("count")
-include("fizzbuzz")
-include("lock")
+verik {
+    top = "Fizzbuzz"
+    debug = true
+}

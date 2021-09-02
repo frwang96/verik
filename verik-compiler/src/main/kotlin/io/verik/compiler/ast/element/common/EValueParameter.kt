@@ -14,29 +14,23 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.sv
+package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.element.common.EAbstractProperty
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.property.SvSerializationType
+import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.Type
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
-class ESvProperty(
+class EValueParameter(
     override val location: SourceLocation,
     override var name: String,
-    override var type: Type,
-    override var initializer: EExpression?
-) : EAbstractProperty() {
-
-    override val serializationType = SvSerializationType.STATEMENT
-
-    init {
-        initializer?.parent = this
-    }
+    var type: Type
+) : EElement(), Declaration {
 
     override fun accept(visitor: Visitor) {
-        return visitor.visitSvProperty(this)
+        visitor.visitValueParameter(this)
     }
+
+    override fun acceptChildren(visitor: TreeVisitor) {}
 }

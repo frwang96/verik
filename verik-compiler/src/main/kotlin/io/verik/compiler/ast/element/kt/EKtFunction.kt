@@ -18,6 +18,7 @@ package io.verik.compiler.ast.element.kt
 
 import io.verik.compiler.ast.element.common.EAbstractFunction
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EValueParameter
 import io.verik.compiler.ast.interfaces.Annotated
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
@@ -27,6 +28,7 @@ import io.verik.compiler.message.SourceLocation
 class EKtFunction(
     override val location: SourceLocation,
     override var name: String,
+    override var valueParameters: ArrayList<EValueParameter>,
     override var returnType: Type,
     override var body: EExpression?,
     override var annotations: List<EAnnotation>

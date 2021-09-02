@@ -51,7 +51,7 @@ internal class DeclarationCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtBasicClass(C, false, [], [KtFunction(f, Unit, *, [])], [])",
+            "KtBasicClass(C, false, [], [KtFunction(f, [], Unit, *, [])], [])",
             projectContext.findDeclaration("C")
         )
     }
@@ -123,7 +123,21 @@ internal class DeclarationCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtFunction(f, Unit, *, [])",
+            "KtFunction(f, [], Unit, *, [])",
+            projectContext.findDeclaration("f")
+        )
+    }
+
+    @Test
+    fun `function with value parameter`() {
+        val projectContext = driveTest(
+            CasterStage::class,
+            """
+                fun f(x: Int) {}
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtFunction(f, [ValueParameter(x, Int)], Unit, *, [])",
             projectContext.findDeclaration("f")
         )
     }

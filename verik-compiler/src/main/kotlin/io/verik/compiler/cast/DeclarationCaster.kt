@@ -17,6 +17,7 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.ast.element.common.ETypeParameter
+import io.verik.compiler.ast.element.common.EValueParameter
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
@@ -28,6 +29,7 @@ import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtEnumEntry
 import org.jetbrains.kotlin.psi.KtNamedFunction
+import org.jetbrains.kotlin.psi.KtParameter
 import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.psi.KtTypeAlias
 import org.jetbrains.kotlin.psi.KtTypeParameter
@@ -91,14 +93,19 @@ object DeclarationCaster {
             ?: return null
 
         val returnType = castContext.castType(descriptor.returnType!!, function)
-        val annotations = function.annotationEntries.mapNotNull {
-            AnnotationCaster.castAnnotationEntry(it, castContext)
+        val valueParameters = function.valueParameters.mapNotNull {
+            castContext.casterVisitor.getElement<EValueParameter>(it)
         }
         val body = function.bodyBlockExpression?.let {
             castContext.casterVisitor.getExpression(it)
         }
+        val annotations = function.annotationEntries.mapNotNull {
+            AnnotationCaster.castAnnotationEntry(it, castContext)
+        }
 
         ktFunction.returnType = returnType
+        valueParameters.forEach { it.parent = ktFunction }
+        ktFunction.valueParameters = ArrayList(valueParameters)
         body?.parent = ktFunction
         ktFunction.body = body
         annotations.forEach { it.parent = ktFunction }
@@ -131,20 +138,6 @@ object DeclarationCaster {
         return ktProperty
     }
 
-    fun castTypeParameter(parameter: KtTypeParameter, castContext: CastContext): ETypeParameter? {
-        val descriptor = castContext.sliceTypeParameter[parameter]!!
-        val typeParameter = castContext.getDeclaration(descriptor, parameter)
-            .cast<ETypeParameter>(parameter)
-            ?: return null
-
-        val upperBound = descriptor.representativeUpperBound
-        val typeConstraint = if (upperBound.isNullableAny()) Core.Kt.ANY.toType()
-        else castContext.castType(descriptor.representativeUpperBound, parameter)
-
-        typeParameter.typeConstraint = typeConstraint
-        return typeParameter
-    }
-
     fun castTypeAlias(alias: KtTypeAlias, castContext: CastContext): ETypeAlias? {
         val descriptor = castContext.sliceTypeAlias[alias]!!
         val typeAlias = castContext.getDeclaration(descriptor, alias)
@@ -155,5 +148,30 @@ object DeclarationCaster {
 
         typeAlias.type = type
         return typeAlias
+    }
+
+    fun castTypeParameter(parameter: KtTypeParameter, castContext: CastContext): ETypeParameter? {
+        val descriptor = castContext.sliceTypeParameter[parameter]!!
+        val typeParameter = castContext.getDeclaration(descriptor, parameter)
+            .cast<ETypeParameter>(parameter)
+            ?: return null
+
+        val upperBound = if (descriptor.representativeUpperBound.isNullableAny()) Core.Kt.ANY.toType()
+        else castContext.castType(descriptor.representativeUpperBound, parameter)
+
+        typeParameter.upperBound = upperBound
+        return typeParameter
+    }
+
+    fun castValueParameter(parameter: KtParameter, castContext: CastContext): EValueParameter? {
+        val descriptor = castContext.sliceValueParameter[parameter]!!
+        val valueParameter = castContext.getDeclaration(descriptor, parameter)
+            .cast<EValueParameter>(parameter)
+            ?: return null
+
+        val type = castContext.castType(parameter.typeReference!!)
+
+        valueParameter.type = type
+        return valueParameter
     }
 }

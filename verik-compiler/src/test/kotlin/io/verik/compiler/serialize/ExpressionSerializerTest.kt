@@ -22,7 +22,7 @@ import io.verik.compiler.util.driveTest
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
-internal class ExpressionSerializerVisitorTest : BaseTest() {
+internal class ExpressionSerializerTest : BaseTest() {
 
     @Test
     @Disabled
