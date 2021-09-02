@@ -208,7 +208,7 @@ class ElementPrinter : Visitor() {
     override fun visitTypeParameter(typeParameter: ETypeParameter) {
         build("TypeParameter") {
             build(typeParameter.name)
-            build(typeParameter.typeConstraint.toString())
+            build(typeParameter.upperBound.toString())
         }
     }
 

@@ -137,11 +137,10 @@ object DeclarationCaster {
             .cast<ETypeParameter>(parameter)
             ?: return null
 
-        val upperBound = descriptor.representativeUpperBound
-        val typeConstraint = if (upperBound.isNullableAny()) Core.Kt.ANY.toType()
+        val upperBound = if (descriptor.representativeUpperBound.isNullableAny()) Core.Kt.ANY.toType()
         else castContext.castType(descriptor.representativeUpperBound, parameter)
 
-        typeParameter.typeConstraint = typeConstraint
+        typeParameter.upperBound = upperBound
         return typeParameter
     }
 

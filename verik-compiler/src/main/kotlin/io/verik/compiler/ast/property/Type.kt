@@ -45,7 +45,7 @@ class Type(
 
     fun isCardinalType(): Boolean {
         return when (val reference = reference) {
-            is ETypeParameter -> reference.typeConstraint.isCardinalType()
+            is ETypeParameter -> reference.upperBound.isCardinalType()
             is ETypeAlias -> reference.type.isCardinalType()
             is CoreCardinalDeclaration -> true
             else -> false

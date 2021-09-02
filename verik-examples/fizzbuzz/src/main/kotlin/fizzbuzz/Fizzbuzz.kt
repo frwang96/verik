@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,18 @@
  * limitations under the License.
  */
 
-include("cache")
-include("count")
-include("fizzbuzz")
-include("lock")
+package fizzbuzz
+
+import io.verik.core.*
+
+@Top
+class Fizzbuzz : Module() {
+
+    @Run
+    fun main() {
+        f(0)
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    fun f(x: Int) {}
+}

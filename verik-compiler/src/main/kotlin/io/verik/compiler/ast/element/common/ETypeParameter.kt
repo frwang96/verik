@@ -25,7 +25,7 @@ import io.verik.compiler.message.SourceLocation
 class ETypeParameter(
     override val location: SourceLocation,
     override var name: String,
-    var typeConstraint: Type
+    var upperBound: Type
 ) : EElement(), Declaration {
 
     override fun accept(visitor: Visitor) {

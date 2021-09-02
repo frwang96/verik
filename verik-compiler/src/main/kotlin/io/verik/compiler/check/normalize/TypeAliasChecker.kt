@@ -78,7 +78,7 @@ object TypeAliasChecker : ProjectStage() {
 
         override fun visitTypeParameter(typeParameter: ETypeParameter) {
             super.visitTypeParameter(typeParameter)
-            addTypeRecursive(typeParameter.typeConstraint, typeParameter)
+            addTypeRecursive(typeParameter.upperBound, typeParameter)
         }
 
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
