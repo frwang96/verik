@@ -182,8 +182,10 @@ abstract class Visitor {
         visitAbstractProperty(property)
     }
 
+//  ENUM ENTRY  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     open fun visitAbstractEnumEntry(abstractEnumEntry: EAbstractEnumEntry) {
-        visitAbstractProperty(abstractEnumEntry)
+        visitElement(abstractEnumEntry)
     }
 
     open fun visitKtEnumEntry(enumEntry: EKtEnumEntry) {

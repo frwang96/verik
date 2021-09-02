@@ -35,7 +35,6 @@ class EKtEnumEntry(
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        super.acceptChildren(visitor)
         annotations.forEach { it.accept(visitor) }
     }
 }
