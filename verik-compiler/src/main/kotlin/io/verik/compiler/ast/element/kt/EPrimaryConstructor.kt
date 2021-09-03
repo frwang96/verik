@@ -16,40 +16,26 @@
 
 package io.verik.compiler.ast.element.kt
 
-import io.verik.compiler.ast.element.common.EAbstractClass
 import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.ast.element.common.ETypeParameter
-import io.verik.compiler.ast.interfaces.Annotated
-import io.verik.compiler.ast.property.Type
+import io.verik.compiler.ast.element.common.EValueParameter
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
-class EKtBasicClass(
+class EPrimaryConstructor(
     override val location: SourceLocation,
-    override var name: String,
-    override var supertype: Type,
-    override var typeParameters: ArrayList<ETypeParameter>,
-    override var members: ArrayList<EElement>,
-    override var annotations: List<EAnnotation>,
-    var isEnum: Boolean,
-    var primaryConstructor: EPrimaryConstructor?
-) : EAbstractClass(), Annotated {
+    var valueParameters: ArrayList<EValueParameter>
+) : EElement() {
 
     init {
-        typeParameters.forEach { it.parent = this }
-        members.forEach { it.parent = this }
-        annotations.forEach { it.parent = this }
-        primaryConstructor?.let { it.parent = this }
+        valueParameters.forEach { it.parent = this }
     }
 
     override fun accept(visitor: Visitor) {
-        return visitor.visitKtBasicClass(this)
+        visitor.visitPrimaryConstructor(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        super.acceptChildren(visitor)
-        annotations.forEach { it.accept(visitor) }
-        primaryConstructor?.accept(visitor)
+        valueParameters.forEach { it.accept(visitor) }
     }
 }

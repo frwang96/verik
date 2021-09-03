@@ -73,7 +73,7 @@ object IndexerStage : ProjectStage() {
                 arrayListOf(),
                 listOf(),
                 false,
-                arrayListOf()
+                null
             )
             castContext.addDeclaration(descriptor, basicClass)
         }
@@ -130,7 +130,8 @@ object IndexerStage : ProjectStage() {
 
         override fun visitParameter(parameter: KtParameter) {
             super.visitParameter(parameter)
-            val descriptor = castContext.sliceValueParameter[parameter]!!
+            val descriptor = castContext.slicePrimaryConstructorParameter[parameter]
+                ?: castContext.sliceValueParameter[parameter]!!
             val location = parameter.nameIdentifier!!.location()
             val name = parameter.name!!
             checkDeclarationName(name, parameter)

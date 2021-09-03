@@ -19,11 +19,11 @@ package lock
 import io.verik.core.*
 
 @Top
-object Lock : Module() {
-
-    var clk = false
-    var rst = false
-    var state = State.OPENED
+class Lock(
+    @In var clk: Boolean,
+    @In var rst: Boolean,
+    @Out var state: State
+) : Module() {
 
     @Seq
     fun updateState() {

@@ -50,6 +50,7 @@ import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
+import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
@@ -200,6 +201,12 @@ abstract class Visitor {
 
     open fun visitTypeAlias(typeAlias: ETypeAlias) {
         visitElement(typeAlias)
+    }
+
+//  PRIMARY CONSTRUCTOR  ///////////////////////////////////////////////////////////////////////////////////////////////
+
+    open fun visitPrimaryConstructor(primaryConstructor: EPrimaryConstructor) {
+        visitElement(primaryConstructor)
     }
 
 //  TYPE PARAMETER  ////////////////////////////////////////////////////////////////////////////////////////////////////

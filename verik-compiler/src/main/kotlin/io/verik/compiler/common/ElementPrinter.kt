@@ -38,6 +38,7 @@ import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
+import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
@@ -111,7 +112,7 @@ class ElementPrinter : Visitor() {
             build(basicClass.members)
             build(basicClass.annotations)
             build(basicClass.isEnum.toString())
-            build(basicClass.valueParameters)
+            build(basicClass.primaryConstructor)
         }
     }
 
@@ -213,6 +214,12 @@ class ElementPrinter : Visitor() {
         build("TypeAlias") {
             build(typeAlias.name)
             build(typeAlias.type.toString())
+        }
+    }
+
+    override fun visitPrimaryConstructor(primaryConstructor: EPrimaryConstructor) {
+        build("PrimaryConstructor") {
+            build(primaryConstructor.valueParameters)
         }
     }
 
