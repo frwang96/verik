@@ -22,7 +22,6 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.ENullExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
-import io.verik.compiler.ast.element.common.EValueParameter
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
@@ -33,6 +32,7 @@ import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
+import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.kt.ETypeAlias
@@ -107,7 +107,7 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
         return DeclarationCaster.castTypeParameter(parameter, castContext)
     }
 
-    override fun visitParameter(parameter: KtParameter, data: Unit?): EValueParameter? {
+    override fun visitParameter(parameter: KtParameter, data: Unit?): EKtValueParameter? {
         return DeclarationCaster.castValueParameter(parameter, castContext)
     }
 

@@ -27,6 +27,7 @@ import io.verik.compiler.ast.element.common.EAbstractPackage
 import io.verik.compiler.ast.element.common.EAbstractProperty
 import io.verik.compiler.ast.element.common.EAbstractReferenceExpression
 import io.verik.compiler.ast.element.common.EAbstractStringEntryContainer
+import io.verik.compiler.ast.element.common.EAbstractValueParameter
 import io.verik.compiler.ast.element.common.EBasicPackage
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EElement
@@ -38,7 +39,6 @@ import io.verik.compiler.ast.element.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.ast.element.common.ERootPackage
 import io.verik.compiler.ast.element.common.ETypeParameter
-import io.verik.compiler.ast.element.common.EValueParameter
 import io.verik.compiler.ast.element.kt.EAnnotation
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtBasicClass
@@ -50,6 +50,7 @@ import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
+import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.kt.ETypeAlias
@@ -76,6 +77,7 @@ import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
+import io.verik.compiler.ast.element.sv.ESvValueParameter
 
 abstract class Visitor {
 
@@ -217,8 +219,16 @@ abstract class Visitor {
 
 //  VALUE PARAMETER  ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-    open fun visitValueParameter(valueParameter: EValueParameter) {
-        visitElement(valueParameter)
+    open fun visitAbstractValueParameter(abstractValueParameter: EAbstractValueParameter) {
+        visitElement(abstractValueParameter)
+    }
+
+    open fun visitKtValueParameter(valueParameter: EKtValueParameter) {
+        visitAbstractValueParameter(valueParameter)
+    }
+
+    open fun visitSvValueParameter(valueParameter: ESvValueParameter) {
+        visitAbstractValueParameter(valueParameter)
     }
 
 //  ANNOTATION  ////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -16,7 +16,6 @@
 
 package io.verik.compiler.serialize
 
-import io.verik.compiler.ast.element.common.EValueParameter
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.EEnum
@@ -26,6 +25,7 @@ import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvProperty
+import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.interfaces.cast
 
 object DeclarationSerializer {
@@ -114,7 +114,7 @@ object DeclarationSerializer {
         sourceSerializerContext.serializeAsStatement(alwaysSeqBlock.body)
     }
 
-    fun serializeValueParameter(valueParameter: EValueParameter, sourceSerializerContext: SourceSerializerContext) {
+    fun serializeValueParameter(valueParameter: ESvValueParameter, sourceSerializerContext: SourceSerializerContext) {
         val typeString = TypeSerializer.serialize(valueParameter.type, valueParameter)
         sourceSerializerContext.append("$typeString ${valueParameter.name}")
     }

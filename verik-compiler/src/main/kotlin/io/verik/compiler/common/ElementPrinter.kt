@@ -26,7 +26,6 @@ import io.verik.compiler.ast.element.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.ast.element.common.ERootPackage
 import io.verik.compiler.ast.element.common.ETypeParameter
-import io.verik.compiler.ast.element.common.EValueParameter
 import io.verik.compiler.ast.element.kt.EAnnotation
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtBasicClass
@@ -38,6 +37,7 @@ import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
+import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.kt.ETypeAlias
@@ -62,6 +62,7 @@ import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
+import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.LiteralStringEntry
 
@@ -140,19 +141,19 @@ class ElementPrinter : Visitor() {
     override fun visitKtFunction(function: EKtFunction) {
         build("KtFunction") {
             build(function.name)
-            build(function.valueParameters)
             build(function.returnType.toString())
             build(function.body)
             build(function.annotations)
+            build(function.valueParameters)
         }
     }
 
     override fun visitSvFunction(function: ESvFunction) {
         build("SvFunction") {
             build(function.name)
-            build(function.valueParameters)
             build(function.returnType.toString())
             build(function.body)
+            build(function.valueParameters)
         }
     }
 
@@ -230,10 +231,17 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitValueParameter(valueParameter: EValueParameter) {
-        build("ValueParameter") {
+    override fun visitKtValueParameter(valueParameter: EKtValueParameter) {
+        build("KtValueParameter") {
             build(valueParameter.name)
+            build(valueParameter.type.toString())
             build(valueParameter.annotations)
+        }
+    }
+
+    override fun visitSvValueParameter(valueParameter: ESvValueParameter) {
+        build("SvValueParameter") {
+            build(valueParameter.name)
             build(valueParameter.type.toString())
         }
     }

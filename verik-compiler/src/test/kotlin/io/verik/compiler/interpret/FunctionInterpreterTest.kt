@@ -36,7 +36,7 @@ internal class FunctionInterpreterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SvFunction(f, [], Unit, *)",
+            "SvFunction(f, Unit, *, [])",
             projectContext.findDeclaration("f")
         )
     }
@@ -52,7 +52,7 @@ internal class FunctionInterpreterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SvFunction(f, [], Unit, *)",
+            "SvFunction(f, Unit, *, [])",
             projectContext.findDeclaration("f")
         )
     }

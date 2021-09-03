@@ -17,25 +17,9 @@
 package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.ast.interfaces.Declaration
-import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.Type
-import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.message.Messages
 
-abstract class EAbstractFunction : EElement(), Declaration, ExpressionContainer {
+abstract class EAbstractValueParameter : EElement(), Declaration {
 
-    abstract var returnType: Type
-    abstract var body: EExpression?
-
-    override fun acceptChildren(visitor: TreeVisitor) {
-        body?.accept(visitor)
-    }
-
-    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
-        newExpression.parent = this
-        if (body == oldExpression)
-            body = newExpression.cast()
-        else
-            Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
-    }
+    abstract var type: Type
 }

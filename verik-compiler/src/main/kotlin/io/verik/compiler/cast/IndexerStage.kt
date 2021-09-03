@@ -17,11 +17,11 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.ast.element.common.ETypeParameter
-import io.verik.compiler.ast.element.common.EValueParameter
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
+import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.ProjectStage
@@ -94,7 +94,7 @@ object IndexerStage : ProjectStage() {
             val location = function.nameIdentifier!!.location()
             val name = function.name!!
             checkDeclarationName(name, function)
-            val ktFunction = EKtFunction(location, name, arrayListOf(), NullDeclaration.toType(), null, listOf())
+            val ktFunction = EKtFunction(location, name, NullDeclaration.toType(), null, listOf(), arrayListOf())
             castContext.addDeclaration(descriptor, ktFunction)
         }
 
@@ -135,7 +135,7 @@ object IndexerStage : ProjectStage() {
             val location = parameter.nameIdentifier!!.location()
             val name = parameter.name!!
             checkDeclarationName(name, parameter)
-            val valueParameter = EValueParameter(location, name, listOf(), NullDeclaration.toType())
+            val valueParameter = EKtValueParameter(location, name, NullDeclaration.toType(), listOf())
             castContext.addDeclaration(descriptor, valueParameter)
         }
     }

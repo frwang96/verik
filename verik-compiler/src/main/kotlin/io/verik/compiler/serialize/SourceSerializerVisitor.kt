@@ -21,7 +21,6 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EParenthesizedExpression
-import io.verik.compiler.ast.element.common.EValueParameter
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.EDelayExpression
@@ -43,6 +42,7 @@ import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
+import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.common.Visitor
@@ -126,7 +126,7 @@ class SourceSerializerVisitor(private val sourceSerializerContext: SourceSeriali
         DeclarationSerializer.serializeAlwaysSeqBlock(alwaysSeqBlock, sourceSerializerContext)
     }
 
-    override fun visitValueParameter(valueParameter: EValueParameter) {
+    override fun visitSvValueParameter(valueParameter: ESvValueParameter) {
         DeclarationSerializer.serializeValueParameter(valueParameter, sourceSerializerContext)
     }
 

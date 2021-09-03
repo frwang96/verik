@@ -17,14 +17,13 @@
 package io.verik.compiler.ast.element.kt
 
 import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.ast.element.common.EValueParameter
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
 class EPrimaryConstructor(
     override val location: SourceLocation,
-    var valueParameters: ArrayList<EValueParameter>
+    var valueParameters: ArrayList<EKtValueParameter>
 ) : EElement() {
 
     init {

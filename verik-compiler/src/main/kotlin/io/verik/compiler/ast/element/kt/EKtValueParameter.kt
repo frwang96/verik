@@ -14,34 +14,31 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.sv
+package io.verik.compiler.ast.element.kt
 
-import io.verik.compiler.ast.element.common.EAbstractFunction
-import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EAbstractValueParameter
+import io.verik.compiler.ast.interfaces.Annotated
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
-class ESvFunction(
+class EKtValueParameter(
     override val location: SourceLocation,
     override var name: String,
-    override var returnType: Type,
-    override var body: EExpression?,
-    var valueParameters: ArrayList<ESvValueParameter>
-) : EAbstractFunction() {
+    override var type: Type,
+    override var annotations: List<EAnnotation>
+) : EAbstractValueParameter(), Annotated {
 
     init {
-        body?.parent = this
-        valueParameters.forEach { it.parent = this }
+        annotations.forEach { it.parent = this }
     }
 
     override fun accept(visitor: Visitor) {
-        return visitor.visitSvFunction(this)
+        visitor.visitKtValueParameter(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        super.acceptChildren(visitor)
-        valueParameters.forEach { it.accept(visitor) }
+        annotations.forEach { it.accept(visitor) }
     }
 }
