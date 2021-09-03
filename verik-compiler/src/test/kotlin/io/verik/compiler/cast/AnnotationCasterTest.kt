@@ -69,4 +69,18 @@ internal class AnnotationCasterTest : BaseTest() {
             )
         }.apply { assertEquals("String literal expected for annotation argument", message) }
     }
+
+    @Test
+    fun `annotation on value parameter`() {
+        val projectContext = driveTest(
+            CasterStage::class,
+            """
+                class M(@In val x: Boolean) : Module()
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "ValueParameter(x, [Annotation(In, [])], Boolean)",
+            projectContext.findDeclaration("x")
+        )
+    }
 }

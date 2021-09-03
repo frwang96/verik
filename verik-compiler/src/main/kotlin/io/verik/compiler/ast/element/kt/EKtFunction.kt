@@ -35,7 +35,9 @@ class EKtFunction(
 ) : EAbstractFunction(), Annotated {
 
     init {
+        valueParameters.forEach { it.parent = this }
         body?.parent = this
+        annotations.forEach { it.parent = this }
     }
 
     override fun accept(visitor: Visitor) {

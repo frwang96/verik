@@ -30,6 +30,10 @@ class EKtEnumEntry(
     override var annotations: List<EAnnotation>
 ) : EAbstractEnumEntry(), Annotated {
 
+    init {
+        annotations.forEach { it.parent = this }
+    }
+
     override fun accept(visitor: Visitor) {
         visitor.visitKtEnumEntry(this)
     }

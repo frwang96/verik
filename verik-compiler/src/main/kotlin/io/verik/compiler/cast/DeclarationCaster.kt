@@ -33,6 +33,7 @@ import org.jetbrains.kotlin.psi.KtParameter
 import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.psi.KtTypeAlias
 import org.jetbrains.kotlin.psi.KtTypeParameter
+import org.jetbrains.kotlin.psi.psiUtil.getValueParameters
 import org.jetbrains.kotlin.resolve.descriptorUtil.classValueType
 import org.jetbrains.kotlin.resolve.descriptorUtil.getSuperClassOrAny
 import org.jetbrains.kotlin.types.typeUtil.isNullableAny
@@ -57,6 +58,9 @@ object DeclarationCaster {
             AnnotationCaster.castAnnotationEntry(it, castContext)
         }
         val isEnum = classOrObject.hasModifier(KtTokens.ENUM_KEYWORD)
+        val valueParameters = classOrObject.getValueParameters().mapNotNull {
+            castContext.casterVisitor.getElement<EValueParameter>(it)
+        }
 
         basicClass.supertype = supertype
         typeParameters.forEach { it.parent = basicClass }
@@ -66,6 +70,8 @@ object DeclarationCaster {
         annotations.forEach { it.parent = basicClass }
         basicClass.annotations = annotations
         basicClass.isEnum = isEnum
+        valueParameters.forEach { it.parent = basicClass }
+        basicClass.valueParameters = ArrayList(valueParameters)
         return basicClass
     }
 
@@ -169,8 +175,13 @@ object DeclarationCaster {
             .cast<EValueParameter>(parameter)
             ?: return null
 
+        val annotations = parameter.annotationEntries.mapNotNull {
+            AnnotationCaster.castAnnotationEntry(it, castContext)
+        }
         val type = castContext.castType(parameter.typeReference!!)
 
+        annotations.forEach { it.parent = valueParameter }
+        valueParameter.annotations = annotations
         valueParameter.type = type
         return valueParameter
     }

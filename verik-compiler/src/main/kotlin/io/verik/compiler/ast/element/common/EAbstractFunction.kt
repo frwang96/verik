@@ -29,6 +29,7 @@ abstract class EAbstractFunction : EElement(), Declaration, ExpressionContainer 
     abstract var body: EExpression?
 
     override fun acceptChildren(visitor: TreeVisitor) {
+        valueParameters.forEach { it.accept(visitor) }
         body?.accept(visitor)
     }
 

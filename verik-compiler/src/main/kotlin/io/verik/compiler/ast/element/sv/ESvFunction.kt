@@ -32,6 +32,7 @@ class ESvFunction(
 ) : EAbstractFunction() {
 
     init {
+        valueParameters.forEach { it.parent = this }
         body?.parent = this
     }
 

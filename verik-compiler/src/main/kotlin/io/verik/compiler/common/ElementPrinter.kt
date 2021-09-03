@@ -107,10 +107,11 @@ class ElementPrinter : Visitor() {
     override fun visitKtBasicClass(basicClass: EKtBasicClass) {
         build("KtBasicClass") {
             build(basicClass.name)
-            build(basicClass.isEnum.toString())
             build(basicClass.typeParameters)
             build(basicClass.members)
             build(basicClass.annotations)
+            build(basicClass.isEnum.toString())
+            build(basicClass.valueParameters)
         }
     }
 
@@ -225,6 +226,7 @@ class ElementPrinter : Visitor() {
     override fun visitValueParameter(valueParameter: EValueParameter) {
         build("ValueParameter") {
             build(valueParameter.name)
+            build(valueParameter.annotations)
             build(valueParameter.type.toString())
         }
     }

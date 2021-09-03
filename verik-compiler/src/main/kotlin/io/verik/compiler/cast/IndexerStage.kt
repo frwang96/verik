@@ -72,7 +72,8 @@ object IndexerStage : ProjectStage() {
                 arrayListOf(),
                 arrayListOf(),
                 listOf(),
-                false
+                false,
+                arrayListOf()
             )
             castContext.addDeclaration(descriptor, basicClass)
         }
@@ -133,7 +134,7 @@ object IndexerStage : ProjectStage() {
             val location = parameter.nameIdentifier!!.location()
             val name = parameter.name!!
             checkDeclarationName(name, parameter)
-            val valueParameter = EValueParameter(location, name, NullDeclaration.toType())
+            val valueParameter = EValueParameter(location, name, listOf(), NullDeclaration.toType())
             castContext.addDeclaration(descriptor, valueParameter)
         }
     }
