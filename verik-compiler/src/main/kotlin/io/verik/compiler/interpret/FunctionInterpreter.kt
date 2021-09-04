@@ -28,6 +28,7 @@ import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EInitialBlock
 import io.verik.compiler.ast.element.sv.ESvFunction
+import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.core.common.Annotations
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.Messages
@@ -63,12 +64,15 @@ object FunctionInterpreter {
                 }
             }
             else -> {
+                val valueParameters = function.valueParameters.map {
+                    ESvValueParameter(it.location, it.name, it.type)
+                }
                 ESvFunction(
                     function.location,
                     function.name,
-                    function.valueParameters,
                     function.returnType,
-                    function.body
+                    function.body,
+                    ArrayList(valueParameters)
                 )
             }
         }

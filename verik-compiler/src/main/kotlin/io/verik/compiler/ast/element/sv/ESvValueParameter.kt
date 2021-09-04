@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.common
+package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.interfaces.Declaration
+import io.verik.compiler.ast.element.common.EAbstractValueParameter
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
-class EValueParameter(
+class ESvValueParameter(
     override val location: SourceLocation,
     override var name: String,
-    var type: Type
-) : EElement(), Declaration {
+    override var type: Type
+) : EAbstractValueParameter() {
 
     override fun accept(visitor: Visitor) {
-        visitor.visitValueParameter(this)
+        visitor.visitSvValueParameter(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {}

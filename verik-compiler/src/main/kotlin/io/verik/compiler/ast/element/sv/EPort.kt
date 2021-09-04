@@ -14,31 +14,25 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.kt
+package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.element.common.EAbstractEnumEntry
-import io.verik.compiler.ast.interfaces.Annotated
+import io.verik.compiler.ast.element.common.EAbstractValueParameter
+import io.verik.compiler.ast.property.PortType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
-class EKtEnumEntry(
+class EPort(
     override val location: SourceLocation,
     override var name: String,
     override var type: Type,
-    override var annotations: List<EAnnotation>
-) : EAbstractEnumEntry(), Annotated {
-
-    init {
-        annotations.forEach { it.parent = this }
-    }
+    val portType: PortType
+) : EAbstractValueParameter() {
 
     override fun accept(visitor: Visitor) {
-        visitor.visitKtEnumEntry(this)
+        visitor.visitPort(this)
     }
 
-    override fun acceptChildren(visitor: TreeVisitor) {
-        annotations.forEach { it.accept(visitor) }
-    }
+    override fun acceptChildren(visitor: TreeVisitor) {}
 }

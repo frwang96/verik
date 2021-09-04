@@ -16,11 +16,10 @@
 
 package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.property.SvSerializationType
+import io.verik.compiler.ast.interfaces.Declaration
+import io.verik.compiler.ast.property.Type
 
-abstract class EAbstractEnumEntry : EAbstractProperty() {
+abstract class EAbstractEnumEntry : EElement(), Declaration {
 
-    override var initializer: EExpression? = null
-
-    override val serializationType = SvSerializationType.OTHER
+    abstract val type: Type
 }

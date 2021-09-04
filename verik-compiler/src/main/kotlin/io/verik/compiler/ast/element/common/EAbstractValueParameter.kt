@@ -14,16 +14,12 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.common
+package io.verik.compiler.ast.element.common
 
-object Annotations {
+import io.verik.compiler.ast.interfaces.Declaration
+import io.verik.compiler.ast.property.Type
 
-    const val IN = "io.verik.core.In"
-    const val OUT = "io.verik.core.Out"
+abstract class EAbstractValueParameter : EElement(), Declaration {
 
-    const val COM = "io.verik.core.Com"
-    const val SEQ = "io.verik.core.Seq"
-    const val RUN = "io.verik.core.Run"
-    const val TASK = "io.verik.core.Task"
-    const val RELABEL = "io.verik.core.Relabel"
+    abstract var type: Type
 }

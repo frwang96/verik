@@ -24,7 +24,6 @@ import io.verik.compiler.message.Messages
 
 abstract class EAbstractFunction : EElement(), Declaration, ExpressionContainer {
 
-    abstract var valueParameters: ArrayList<EValueParameter>
     abstract var returnType: Type
     abstract var body: EExpression?
 

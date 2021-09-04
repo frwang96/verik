@@ -26,6 +26,7 @@ import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
+import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.common.ProjectStage
@@ -69,6 +70,11 @@ object UntransformedElementCheckerStage : ProjectStage() {
         override fun visitKtEnumEntry(enumEntry: EKtEnumEntry) {
             super.visitKtEnumEntry(enumEntry)
             Messages.INTERNAL_ERROR.on(enumEntry, "Enum entry ${enumEntry.name} $message")
+        }
+
+        override fun visitKtValueParameter(valueParameter: EKtValueParameter) {
+            super.visitKtValueParameter(valueParameter)
+            Messages.INTERNAL_ERROR.on(valueParameter, "Value parameter ${valueParameter.name} $message")
         }
 
         override fun visitKtBlockExpression(blockExpression: EKtBlockExpression) {

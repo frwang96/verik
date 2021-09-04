@@ -18,6 +18,7 @@ package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EAbstractEnumEntry
 import io.verik.compiler.ast.property.Type
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
@@ -30,4 +31,6 @@ class ESvEnumEntry(
     override fun accept(visitor: Visitor) {
         visitor.visitSvEnumEntry(this)
     }
+
+    override fun acceptChildren(visitor: TreeVisitor) {}
 }

@@ -17,19 +17,22 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.ast.element.common.ETypeParameter
-import io.verik.compiler.ast.element.common.EValueParameter
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
+import io.verik.compiler.ast.element.kt.EKtValueParameter
+import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.interfaces.cast
+import io.verik.compiler.common.location
 import io.verik.compiler.core.common.Core
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtEnumEntry
 import org.jetbrains.kotlin.psi.KtNamedFunction
 import org.jetbrains.kotlin.psi.KtParameter
+import org.jetbrains.kotlin.psi.KtPrimaryConstructor
 import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.psi.KtTypeAlias
 import org.jetbrains.kotlin.psi.KtTypeParameter
@@ -57,6 +60,9 @@ object DeclarationCaster {
             AnnotationCaster.castAnnotationEntry(it, castContext)
         }
         val isEnum = classOrObject.hasModifier(KtTokens.ENUM_KEYWORD)
+        val primaryConstructor = classOrObject.primaryConstructor?.let {
+            castContext.casterVisitor.getElement<EPrimaryConstructor>(it)
+        }
 
         basicClass.supertype = supertype
         typeParameters.forEach { it.parent = basicClass }
@@ -66,6 +72,8 @@ object DeclarationCaster {
         annotations.forEach { it.parent = basicClass }
         basicClass.annotations = annotations
         basicClass.isEnum = isEnum
+        primaryConstructor?.let { it.parent = basicClass }
+        basicClass.primaryConstructor = primaryConstructor
         return basicClass
     }
 
@@ -93,23 +101,23 @@ object DeclarationCaster {
             ?: return null
 
         val returnType = castContext.castType(descriptor.returnType!!, function)
-        val valueParameters = function.valueParameters.mapNotNull {
-            castContext.casterVisitor.getElement<EValueParameter>(it)
-        }
         val body = function.bodyBlockExpression?.let {
             castContext.casterVisitor.getExpression(it)
         }
         val annotations = function.annotationEntries.mapNotNull {
             AnnotationCaster.castAnnotationEntry(it, castContext)
         }
+        val valueParameters = function.valueParameters.mapNotNull {
+            castContext.casterVisitor.getElement<EKtValueParameter>(it)
+        }
 
         ktFunction.returnType = returnType
-        valueParameters.forEach { it.parent = ktFunction }
-        ktFunction.valueParameters = ArrayList(valueParameters)
         body?.parent = ktFunction
         ktFunction.body = body
         annotations.forEach { it.parent = ktFunction }
         ktFunction.annotations = annotations
+        valueParameters.forEach { it.parent = ktFunction }
+        ktFunction.valueParameters = ArrayList(valueParameters)
         return ktFunction
     }
 
@@ -150,6 +158,18 @@ object DeclarationCaster {
         return typeAlias
     }
 
+    // TODO primary constructor as declaration
+    fun castPrimaryConstructor(
+        primaryConstructor: KtPrimaryConstructor,
+        castContext: CastContext
+    ): EPrimaryConstructor {
+        val location = primaryConstructor.location()
+        val valueParameters = primaryConstructor.valueParameters.mapNotNull {
+            castContext.casterVisitor.getElement<EKtValueParameter>(it)
+        }
+        return EPrimaryConstructor(location, ArrayList(valueParameters))
+    }
+
     fun castTypeParameter(parameter: KtTypeParameter, castContext: CastContext): ETypeParameter? {
         val descriptor = castContext.sliceTypeParameter[parameter]!!
         val typeParameter = castContext.getDeclaration(descriptor, parameter)
@@ -163,14 +183,20 @@ object DeclarationCaster {
         return typeParameter
     }
 
-    fun castValueParameter(parameter: KtParameter, castContext: CastContext): EValueParameter? {
-        val descriptor = castContext.sliceValueParameter[parameter]!!
+    fun castValueParameter(parameter: KtParameter, castContext: CastContext): EKtValueParameter? {
+        val descriptor = castContext.slicePrimaryConstructorParameter[parameter]
+            ?: castContext.sliceValueParameter[parameter]!!
         val valueParameter = castContext.getDeclaration(descriptor, parameter)
-            .cast<EValueParameter>(parameter)
+            .cast<EKtValueParameter>(parameter)
             ?: return null
 
+        val annotations = parameter.annotationEntries.mapNotNull {
+            AnnotationCaster.castAnnotationEntry(it, castContext)
+        }
         val type = castContext.castType(parameter.typeReference!!)
 
+        annotations.forEach { it.parent = valueParameter }
+        valueParameter.annotations = annotations
         valueParameter.type = type
         return valueParameter
     }

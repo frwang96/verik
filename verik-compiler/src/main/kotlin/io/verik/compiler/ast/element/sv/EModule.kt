@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.common.EAbstractClass
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.property.Type
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
@@ -28,14 +29,21 @@ class EModule(
     override var name: String,
     override var supertype: Type,
     override var typeParameters: ArrayList<ETypeParameter>,
-    override var members: ArrayList<EElement>
+    override var members: ArrayList<EElement>,
+    val ports: List<EPort>
 ) : EAbstractClass() {
 
     init {
         members.forEach { it.parent = this }
+        ports.forEach { it.parent = this }
     }
 
     override fun accept(visitor: Visitor) {
         return visitor.visitModule(this)
+    }
+
+    override fun acceptChildren(visitor: TreeVisitor) {
+        super.acceptChildren(visitor)
+        ports.forEach { it.accept(visitor) }
     }
 }

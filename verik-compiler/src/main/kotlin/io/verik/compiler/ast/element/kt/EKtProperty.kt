@@ -37,6 +37,7 @@ class EKtProperty(
 
     init {
         initializer?.parent = this
+        annotations.forEach { it.parent = this }
     }
 
     override fun accept(visitor: Visitor) {

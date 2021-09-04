@@ -37,7 +37,7 @@ internal class AnnotationCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtFunction(f, [], Unit, *, [Annotation(Task, [])])",
+            "KtFunction(f, Unit, *, [Annotation(Task, [])], [])",
             projectContext.findDeclaration("f")
         )
     }
@@ -52,7 +52,7 @@ internal class AnnotationCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtFunction(f, [], Unit, *, [Annotation(Relabel, [g])])",
+            "KtFunction(f, Unit, *, [Annotation(Relabel, [g])], [])",
             projectContext.findDeclaration("f")
         )
     }
@@ -68,5 +68,19 @@ internal class AnnotationCasterTest : BaseTest() {
                 """.trimIndent()
             )
         }.apply { assertEquals("String literal expected for annotation argument", message) }
+    }
+
+    @Test
+    fun `annotation on value parameter`() {
+        val projectContext = driveTest(
+            CasterStage::class,
+            """
+                class M(@In val x: Boolean) : Module()
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtValueParameter(x, Boolean, [Annotation(In, [])])",
+            projectContext.findDeclaration("x")
+        )
     }
 }

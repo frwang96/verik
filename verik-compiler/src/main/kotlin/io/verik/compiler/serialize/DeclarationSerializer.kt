@@ -16,17 +16,19 @@
 
 package io.verik.compiler.serialize
 
-import io.verik.compiler.ast.element.common.EValueParameter
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EInitialBlock
 import io.verik.compiler.ast.element.sv.EModule
+import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvProperty
+import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.interfaces.cast
+import io.verik.compiler.ast.property.PortType
 
 object DeclarationSerializer {
 
@@ -40,7 +42,18 @@ object DeclarationSerializer {
     }
 
     fun serializeModule(module: EModule, sourceSerializerContext: SourceSerializerContext) {
-        sourceSerializerContext.appendLine("module ${module.name};")
+        sourceSerializerContext.append("module ${module.name}")
+        if (module.ports.isNotEmpty()) {
+            sourceSerializerContext.appendLine("(")
+            sourceSerializerContext.indent {
+                sourceSerializerContext.joinLine(module.ports) {
+                    sourceSerializerContext.serialize(it)
+                }
+            }
+            sourceSerializerContext.appendLine(");")
+        } else {
+            sourceSerializerContext.appendLine(";")
+        }
         sourceSerializerContext.indent {
             module.members.forEach { sourceSerializerContext.serializeAsDeclaration(it) }
             sourceSerializerContext.appendLine()
@@ -114,8 +127,19 @@ object DeclarationSerializer {
         sourceSerializerContext.serializeAsStatement(alwaysSeqBlock.body)
     }
 
-    fun serializeValueParameter(valueParameter: EValueParameter, sourceSerializerContext: SourceSerializerContext) {
+    fun serializeValueParameter(valueParameter: ESvValueParameter, sourceSerializerContext: SourceSerializerContext) {
         val typeString = TypeSerializer.serialize(valueParameter.type, valueParameter)
         sourceSerializerContext.append("$typeString ${valueParameter.name}")
+    }
+
+    fun serializePort(port: EPort, sourceSerializerContext: SourceSerializerContext) {
+        when (port.portType) {
+            PortType.INPUT -> sourceSerializerContext.append("input ")
+            PortType.OUTPUT -> sourceSerializerContext.append("output ")
+        }
+        val typeString = TypeSerializer.serialize(port.type, port)
+        sourceSerializerContext.append("$typeString ")
+        sourceSerializerContext.align()
+        sourceSerializerContext.append(port.name)
     }
 }
