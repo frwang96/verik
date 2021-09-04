@@ -130,6 +130,11 @@ object Messages {
         "On expression expected"
     )
 
+    val PORT_NO_DIRECTIONALITY = MessageTemplate1<String>(
+        Severity.ERROR,
+        "Could not determine directionality of port: $0"
+    )
+
 //  MID TRANSFORM  /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val INJECTED_EXPRESSION_NOT_LITERAL = MessageTemplate0(

@@ -16,6 +16,7 @@
 
 package io.verik.compiler.common
 
+import io.verik.compiler.ast.element.common.EAbstractValueParameter
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.Declaration
@@ -57,6 +58,11 @@ class MemberReplacer(val projectContext: ProjectContext) {
             if (reference != null)
                 type.reference = reference
             type.arguments.forEach { updateTypeReferences(it) }
+        }
+
+        override fun visitAbstractValueParameter(abstractValueParameter: EAbstractValueParameter) {
+            super.visitAbstractValueParameter(abstractValueParameter)
+            updateTypeReferences(abstractValueParameter.type)
         }
 
         override fun visitExpression(expression: EExpression) {

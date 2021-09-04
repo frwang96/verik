@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test
 internal class DeclarationSerializerTest : BaseTest() {
 
     @Test
-    fun `serialize module`() {
+    fun `serialize module simple`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
             """
@@ -33,6 +33,27 @@ internal class DeclarationSerializerTest : BaseTest() {
         )
         val expected = """
             module M;
+            
+            endmodule : M
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
+    fun `serialize module with port`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                class M(@In var x: Boolean): Module()
+            """.trimIndent()
+        )
+        val expected = """
+            module M(
+                input logic x
+            );
             
             endmodule : M
         """.trimIndent()

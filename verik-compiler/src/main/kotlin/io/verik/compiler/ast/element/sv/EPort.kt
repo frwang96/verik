@@ -16,34 +16,23 @@
 
 package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.element.common.EAbstractClass
-import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.ast.element.common.ETypeParameter
+import io.verik.compiler.ast.element.common.EAbstractValueParameter
+import io.verik.compiler.ast.property.PortType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
-class EModule(
+class EPort(
     override val location: SourceLocation,
     override var name: String,
-    override var supertype: Type,
-    override var typeParameters: ArrayList<ETypeParameter>,
-    override var members: ArrayList<EElement>,
-    val ports: List<EPort>
-) : EAbstractClass() {
-
-    init {
-        members.forEach { it.parent = this }
-        ports.forEach { it.parent = this }
-    }
+    override var type: Type,
+    val portType: PortType
+) : EAbstractValueParameter() {
 
     override fun accept(visitor: Visitor) {
-        return visitor.visitModule(this)
+        visitor.visitPort(this)
     }
 
-    override fun acceptChildren(visitor: TreeVisitor) {
-        super.acceptChildren(visitor)
-        ports.forEach { it.accept(visitor) }
-    }
+    override fun acceptChildren(visitor: TreeVisitor) {}
 }

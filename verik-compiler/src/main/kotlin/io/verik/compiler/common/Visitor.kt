@@ -66,6 +66,7 @@ import io.verik.compiler.ast.element.sv.EInjectedExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.ELoopStatement
 import io.verik.compiler.ast.element.sv.EModule
+import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.EProceduralBlock
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.ESvBasicClass
@@ -229,6 +230,10 @@ abstract class Visitor {
 
     open fun visitSvValueParameter(valueParameter: ESvValueParameter) {
         visitAbstractValueParameter(valueParameter)
+    }
+
+    open fun visitPort(port: EPort) {
+        visitAbstractValueParameter(port)
     }
 
 //  ANNOTATION  ////////////////////////////////////////////////////////////////////////////////////////////////////////

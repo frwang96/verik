@@ -32,6 +32,7 @@ import io.verik.compiler.ast.element.sv.EInitialBlock
 import io.verik.compiler.ast.element.sv.EInjectedExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.EModule
+import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
@@ -128,6 +129,10 @@ class SourceSerializerVisitor(private val sourceSerializerContext: SourceSeriali
 
     override fun visitSvValueParameter(valueParameter: ESvValueParameter) {
         DeclarationSerializer.serializeValueParameter(valueParameter, sourceSerializerContext)
+    }
+
+    override fun visitPort(port: EPort) {
+        DeclarationSerializer.serializePort(port, sourceSerializerContext)
     }
 
     override fun visitSvBlockExpression(blockExpression: ESvBlockExpression) {

@@ -17,15 +17,18 @@
 package io.verik.compiler.interpret
 
 import io.verik.compiler.util.BaseTest
+import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findDeclaration
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 internal class ClassInterpreterTest : BaseTest() {
 
     @Test
-    fun `interpret module`() {
+    fun `interpret module simple`() {
         val projectContext = driveTest(
             MemberInterpreterStage::class,
             """
@@ -33,9 +36,35 @@ internal class ClassInterpreterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "Module(M)",
+            "Module(M, [], [], [])",
             projectContext.findDeclaration("M")
         )
+    }
+
+    @Test
+    fun `interpret module with port`() {
+        val projectContext = driveTest(
+            MemberInterpreterStage::class,
+            """
+                class M(@In var x: Boolean): Module()
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "Module(M, [], [], [Port(x, Boolean, INPUT)])",
+            projectContext.findDeclaration("M")
+        )
+    }
+
+    @Test
+    fun `interpret module with port illegal`() {
+        assertThrows<TestErrorException> {
+            driveTest(
+                MemberInterpreterStage::class,
+                """
+                    class M(var x: Boolean): Module()
+                """.trimIndent()
+            )
+        }.apply { assertEquals("Could not determine directionality of port: x", message) }
     }
 
     @Test
