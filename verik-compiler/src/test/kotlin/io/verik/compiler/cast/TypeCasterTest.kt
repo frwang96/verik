@@ -22,7 +22,6 @@ import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findDeclaration
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
@@ -43,8 +42,6 @@ internal class TypeCasterTest : BaseTest() {
     }
 
     @Test
-    @Disabled
-    // TODO resolve constructor
     fun `type class parameterized`() {
         val projectContext = driveTest(
             CasterStage::class,
@@ -54,14 +51,12 @@ internal class TypeCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtProperty(x, C<Int>, [])",
+            "KtProperty(x, C<Int>, *, [])",
             projectContext.findDeclaration("x")
         )
     }
 
     @Test
-    @Disabled
-    // TODO resolve constructor
     fun `type type parameter`() {
         val projectContext = driveTest(
             CasterStage::class,
@@ -72,14 +67,12 @@ internal class TypeCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtProperty(x, C<T>, [])",
+            "KtProperty(x, C<T>, *, [])",
             projectContext.findDeclaration("x")
         )
     }
 
     @Test
-    @Disabled
-    // TODO add function parameters
     fun `type nullable`() {
         assertThrows<TestErrorException> {
             driveTest(
@@ -89,7 +82,7 @@ internal class TypeCasterTest : BaseTest() {
                 """.trimIndent()
             )
         }.apply {
-            assertEquals("Nullable type not supported: Int?", message)
+            assertEquals("Nullable type not supported", message)
         }
     }
 
@@ -108,8 +101,6 @@ internal class TypeCasterTest : BaseTest() {
     }
 
     @Test
-    @Disabled
-    // TODO resolve constructor
     fun `type reference type parameter`() {
         val projectContext = driveTest(
             CasterStage::class,
@@ -120,7 +111,7 @@ internal class TypeCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtProperty(x, C<T>)",
+            "KtProperty(x, C<T>, *, [])",
             projectContext.findDeclaration("x")
         )
     }

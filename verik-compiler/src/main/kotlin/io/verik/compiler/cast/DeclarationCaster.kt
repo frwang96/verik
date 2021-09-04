@@ -25,7 +25,6 @@ import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.interfaces.cast
-import io.verik.compiler.common.location
 import io.verik.compiler.core.common.Core
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.KtClassOrObject
@@ -158,16 +157,19 @@ object DeclarationCaster {
         return typeAlias
     }
 
-    // TODO primary constructor as declaration
-    fun castPrimaryConstructor(
-        primaryConstructor: KtPrimaryConstructor,
-        castContext: CastContext
-    ): EPrimaryConstructor {
-        val location = primaryConstructor.location()
-        val valueParameters = primaryConstructor.valueParameters.mapNotNull {
+    fun castPrimaryConstructor(constructor: KtPrimaryConstructor, castContext: CastContext): EPrimaryConstructor? {
+        val descriptor = castContext.sliceConstructor[constructor]!!
+        val primaryConstructor = castContext.getDeclaration(descriptor, constructor)
+            .cast<EPrimaryConstructor>(constructor)
+            ?: return null
+
+        val valueParameters = constructor.valueParameters.mapNotNull {
             castContext.casterVisitor.getElement<EKtValueParameter>(it)
         }
-        return EPrimaryConstructor(location, ArrayList(valueParameters))
+
+        valueParameters.forEach { it.parent = primaryConstructor }
+        primaryConstructor.valueParameters = ArrayList(valueParameters)
+        return primaryConstructor
     }
 
     fun castTypeParameter(parameter: KtTypeParameter, castContext: CastContext): ETypeParameter? {

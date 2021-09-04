@@ -17,6 +17,7 @@
 package io.verik.compiler.ast.element.kt
 
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
@@ -24,7 +25,9 @@ import io.verik.compiler.message.SourceLocation
 class EPrimaryConstructor(
     override val location: SourceLocation,
     var valueParameters: ArrayList<EKtValueParameter>
-) : EElement() {
+) : EElement(), Declaration {
+
+    override var name = "<init>"
 
     init {
         valueParameters.forEach { it.parent = this }

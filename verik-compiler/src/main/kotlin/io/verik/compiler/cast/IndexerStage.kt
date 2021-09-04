@@ -22,6 +22,7 @@ import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtValueParameter
+import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.ProjectStage
@@ -33,6 +34,7 @@ import org.jetbrains.kotlin.psi.KtElement
 import org.jetbrains.kotlin.psi.KtEnumEntry
 import org.jetbrains.kotlin.psi.KtNamedFunction
 import org.jetbrains.kotlin.psi.KtParameter
+import org.jetbrains.kotlin.psi.KtPrimaryConstructor
 import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 import org.jetbrains.kotlin.psi.KtTypeAlias
@@ -65,6 +67,12 @@ object IndexerStage : ProjectStage() {
                 ?: classOrObject.getDeclarationKeyword()!!.location()
             val name = classOrObject.name!!
             checkDeclarationName(name, classOrObject)
+
+            if (classOrObject.hasPrimaryConstructor() && !classOrObject.hasExplicitPrimaryConstructor()) {
+                val primaryConstructor = EPrimaryConstructor(location, arrayListOf())
+                castContext.addDeclaration(descriptor.unsubstitutedPrimaryConstructor!!, primaryConstructor)
+            }
+
             val basicClass = EKtBasicClass(
                 location,
                 name,
@@ -116,6 +124,14 @@ object IndexerStage : ProjectStage() {
             checkDeclarationName(name, alias)
             val typeAlias = ETypeAlias(location, name, NullDeclaration.toType())
             castContext.addDeclaration(descriptor, typeAlias)
+        }
+
+        override fun visitPrimaryConstructor(constructor: KtPrimaryConstructor) {
+            super.visitPrimaryConstructor(constructor)
+            val descriptor = castContext.sliceConstructor[constructor]!!
+            val location = constructor.location()
+            val primaryConstructor = EPrimaryConstructor(location, arrayListOf())
+            castContext.addDeclaration(descriptor, primaryConstructor)
         }
 
         override fun visitTypeParameter(parameter: KtTypeParameter) {

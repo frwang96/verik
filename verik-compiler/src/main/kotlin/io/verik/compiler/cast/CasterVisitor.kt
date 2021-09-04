@@ -99,7 +99,7 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
         return DeclarationCaster.castTypeAlias(typeAlias, castContext)
     }
 
-    override fun visitPrimaryConstructor(constructor: KtPrimaryConstructor, data: Unit?): EPrimaryConstructor {
+    override fun visitPrimaryConstructor(constructor: KtPrimaryConstructor, data: Unit?): EPrimaryConstructor? {
         return DeclarationCaster.castPrimaryConstructor(constructor, castContext)
     }
 

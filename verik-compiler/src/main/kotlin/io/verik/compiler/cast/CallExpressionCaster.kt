@@ -19,7 +19,7 @@ package io.verik.compiler.cast
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.message.Messages
-import org.jetbrains.kotlin.descriptors.SimpleFunctionDescriptor
+import org.jetbrains.kotlin.descriptors.CallableDescriptor
 import org.jetbrains.kotlin.psi.KtCallExpression
 
 object CallExpressionCaster {
@@ -49,7 +49,7 @@ object CallExpressionCaster {
         } else {
             val resolvedCall = castContext.sliceResolvedCall[call]!!
             val typeArgumentMap = resolvedCall.typeArguments
-            val descriptor = castContext.sliceReferenceTarget[expression.calleeExpression] as SimpleFunctionDescriptor
+            val descriptor = castContext.sliceReferenceTarget[expression.calleeExpression] as CallableDescriptor
             val typeArguments = descriptor.typeParameters.map {
                 castContext.castType(typeArgumentMap[it]!!, expression)
             }
