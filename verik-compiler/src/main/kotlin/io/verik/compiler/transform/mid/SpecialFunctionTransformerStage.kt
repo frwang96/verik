@@ -39,7 +39,15 @@ object SpecialFunctionTransformerStage : ProjectStage() {
 
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
-            val newExpression = when (callExpression.reference) {
+            val newExpression = when (val reference = callExpression.reference) {
+                Core.Vk.NC -> {
+                    Messages.EXPRESSION_OUT_OF_CONTEXT.on(callExpression, reference.name)
+                    return
+                }
+                Core.Vk.ON_EVENT_FUNCTION -> {
+                    Messages.EXPRESSION_OUT_OF_CONTEXT.on(callExpression, reference.name)
+                    return
+                }
                 Core.Vk.POSEDGE_BOOLEAN -> {
                     EEventExpression(
                         callExpression.location,
@@ -59,10 +67,6 @@ object SpecialFunctionTransformerStage : ProjectStage() {
                 }
                 Core.Vk.DELAY_INT -> {
                     EDelayExpression(callExpression.location, callExpression.valueArguments[0])
-                }
-                Core.Vk.ON_EVENT_FUNCTION -> {
-                    Messages.ON_EXPRESSION_ILLEGAL.on(callExpression)
-                    return
                 }
                 Core.Vk.Ubit.EXT -> {
                     // TODO appropriately cast receiver

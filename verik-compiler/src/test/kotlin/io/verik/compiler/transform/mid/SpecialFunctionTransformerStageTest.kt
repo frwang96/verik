@@ -17,12 +17,30 @@
 package io.verik.compiler.transform.mid
 
 import io.verik.compiler.util.BaseTest
+import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 internal class SpecialFunctionTransformerStageTest : BaseTest() {
+
+    @Test
+    fun `transform nc illegal`() {
+        assertThrows<TestErrorException> {
+            driveTest(
+                SpecialFunctionTransformerStage::class,
+                """
+                    var x = false
+                    fun f() {
+                        x = nc()
+                    }
+                """.trimIndent()
+            )
+        }.apply { assertEquals("Expression used out of context: nc", message) }
+    }
 
     @Test
     fun `transform wait`() {

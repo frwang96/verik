@@ -79,6 +79,7 @@ object Core {
         val INC = CoreVk.INC
         val MAX = CoreVk.MAX
 
+        val NC = CoreVk.NC
         val U_INT = CoreVk.U_INT
         val RANDOM = CoreVk.RANDOM
         val RANDOM_INT = CoreVk.RANDOM_INT

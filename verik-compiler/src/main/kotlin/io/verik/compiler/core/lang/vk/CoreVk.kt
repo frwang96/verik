@@ -28,6 +28,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
     val INC = CoreCardinalFunctionDeclaration("INC")
     val MAX = CoreCardinalFunctionDeclaration("MAX")
 
+    val NC = CoreKtFunctionDeclaration(parent, "nc")
     val U_INT = CoreKtFunctionDeclaration(parent, "u", Core.Kt.INT)
 
     val RANDOM = CoreKtFunctionDeclaration(parent, "random")

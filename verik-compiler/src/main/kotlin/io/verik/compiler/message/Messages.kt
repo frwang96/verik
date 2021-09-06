@@ -144,9 +144,9 @@ object Messages {
 
 //  POST TRANSFORM  ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val ON_EXPRESSION_ILLEGAL = MessageTemplate0(
+    val EXPRESSION_OUT_OF_CONTEXT = MessageTemplate1<String>(
         Severity.ERROR,
-        "Illegal use of on expression"
+        "Expression used out of context: $0"
     )
 
 //  POST CHECK  ////////////////////////////////////////////////////////////////////////////////////////////////////////
