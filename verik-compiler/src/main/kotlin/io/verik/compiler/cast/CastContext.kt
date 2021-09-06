@@ -34,6 +34,7 @@ class CastContext(
 
     val sliceClass = bindingContext.getSliceContents(BindingContext.CLASS)
     val sliceFunction = bindingContext.getSliceContents(BindingContext.FUNCTION)
+    val sliceConstructor = bindingContext.getSliceContents(BindingContext.CONSTRUCTOR)
     val sliceVariable = bindingContext.getSliceContents(BindingContext.VARIABLE)
     val sliceTypeAlias = bindingContext.getSliceContents(BindingContext.TYPE_ALIAS)
     val sliceTypeParameter = bindingContext.getSliceContents(BindingContext.TYPE_PARAMETER)

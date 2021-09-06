@@ -17,67 +17,60 @@
 package io.verik.compiler.interpret
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findDeclaration
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
-internal class ClassInterpreterTest : BaseTest() {
+internal class PropertyInterpreterTest : BaseTest() {
 
     @Test
-    fun `interpret module simple`() {
+    fun `interpret module instantiation`() {
         val projectContext = driveTest(
             MemberInterpreterStage::class,
             """
-                class M: Module()
+                class M(@In var x: Boolean) : Module()
+                class Top : Module() {
+                    @Make
+                    val m = M(false)
+                }
             """.trimIndent()
         )
         assertElementEquals(
-            "Module(M, [], [], [])",
-            projectContext.findDeclaration("M")
+            "ModuleInstantiation(m, M, [PortInstantiation(x, *)])",
+            projectContext.findDeclaration("m")
         )
     }
 
     @Test
-    fun `interpret module with port`() {
+    fun `interpret module instantiation not connected`() {
         val projectContext = driveTest(
             MemberInterpreterStage::class,
             """
-                class M(@In var x: Boolean): Module()
+                class M(@Out var x: Boolean) : Module()
+                class Top : Module() {
+                    @Make
+                    val m = M(nc())
+                }
             """.trimIndent()
         )
         assertElementEquals(
-            "Module(M, [], [], [Port(x, Boolean, INPUT)])",
-            projectContext.findDeclaration("M")
+            "ModuleInstantiation(m, M, [PortInstantiation(x, null)])",
+            projectContext.findDeclaration("m")
         )
     }
 
     @Test
-    fun `interpret module with port illegal`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                MemberInterpreterStage::class,
-                """
-                    class M(var x: Boolean): Module()
-                """.trimIndent()
-            )
-        }.apply { assertEquals("Could not determine directionality of port: x", message) }
-    }
-
-    @Test
-    fun `interpret basic class`() {
+    fun `interpret property`() {
         val projectContext = driveTest(
             MemberInterpreterStage::class,
             """
-                class C
+                var x = false
             """.trimIndent()
         )
         assertElementEquals(
-            "SvBasicClass(C, [], [])",
-            projectContext.findDeclaration("C")
+            "SvProperty(x, Boolean, *)",
+            projectContext.findDeclaration("x")
         )
     }
 }

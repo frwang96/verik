@@ -21,7 +21,7 @@ import io.verik.compiler.ast.element.kt.EKtCallExpression
 
 sealed class TypeConstraint
 
-// TODO set location of type parameter
+// TODO set index of type parameter
 class TypeParameterTypeConstraint(
     val callExpression: EKtCallExpression
 ) : TypeConstraint()

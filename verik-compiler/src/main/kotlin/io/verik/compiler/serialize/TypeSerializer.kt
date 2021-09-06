@@ -19,6 +19,7 @@ package io.verik.compiler.serialize
 import io.verik.compiler.ast.element.common.EBasicPackage
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
+import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.core.common.Core
@@ -34,6 +35,10 @@ object TypeSerializer {
                 val file = reference.parent.cast<EFile>()
                 val basicPackage = file.parent.cast<EBasicPackage>()
                 "${basicPackage.name}::${reference.name}"
+            }
+            is EKtBasicClass -> {
+                // TODO change to EModule after sorting out reference replacement strategy
+                reference.name
             }
             Core.Kt.UNIT -> "void"
             Core.Kt.INT -> "int"

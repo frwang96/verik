@@ -21,7 +21,9 @@ import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EInitialBlock
 import io.verik.compiler.ast.element.sv.EModule
+import io.verik.compiler.ast.element.sv.EModuleInstantiation
 import io.verik.compiler.ast.element.sv.EPort
+import io.verik.compiler.ast.element.sv.EPortInstantiation
 import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvFunction
@@ -91,6 +93,23 @@ object DeclarationSerializer {
         sourceSerializerContext.appendLine("endfunction : ${function.name}")
     }
 
+    fun serializeInitialBlock(initialBlock: EInitialBlock, sourceSerializerContext: SourceSerializerContext) {
+        sourceSerializerContext.append("initial ")
+        sourceSerializerContext.serializeAsStatement(initialBlock.body)
+    }
+
+    fun serializeAlwaysComBlock(alwaysComBlock: EAlwaysComBlock, sourceSerializerContext: SourceSerializerContext) {
+        sourceSerializerContext.append("always_comb ")
+        sourceSerializerContext.serializeAsStatement(alwaysComBlock.body)
+    }
+
+    fun serializeAlwaysSeqBlock(alwaysSeqBlock: EAlwaysSeqBlock, sourceSerializerContext: SourceSerializerContext) {
+        sourceSerializerContext.append("always_ff ")
+        sourceSerializerContext.serializeAsExpression(alwaysSeqBlock.eventControlExpression)
+        sourceSerializerContext.append(" ")
+        sourceSerializerContext.serializeAsStatement(alwaysSeqBlock.body)
+    }
+
     fun serializeSvProperty(property: ESvProperty, sourceSerializerContext: SourceSerializerContext) {
         val typeString = TypeSerializer.serialize(property.type, property)
         sourceSerializerContext.append("$typeString ${property.name}")
@@ -110,21 +129,21 @@ object DeclarationSerializer {
         sourceSerializerContext.append(enumEntry.name)
     }
 
-    fun serializeInitialBlock(initialBlock: EInitialBlock, sourceSerializerContext: SourceSerializerContext) {
-        sourceSerializerContext.append("initial ")
-        sourceSerializerContext.serializeAsStatement(initialBlock.body)
-    }
-
-    fun serializeAlwaysComBlock(alwaysComBlock: EAlwaysComBlock, sourceSerializerContext: SourceSerializerContext) {
-        sourceSerializerContext.append("always_comb ")
-        sourceSerializerContext.serializeAsStatement(alwaysComBlock.body)
-    }
-
-    fun serializeAlwaysSeqBlock(alwaysSeqBlock: EAlwaysSeqBlock, sourceSerializerContext: SourceSerializerContext) {
-        sourceSerializerContext.append("always_ff ")
-        sourceSerializerContext.serializeAsExpression(alwaysSeqBlock.eventControlExpression)
-        sourceSerializerContext.append(" ")
-        sourceSerializerContext.serializeAsStatement(alwaysSeqBlock.body)
+    fun serializeModuleInstantiation(
+        moduleInstantiation: EModuleInstantiation,
+        sourceSerializerContext: SourceSerializerContext
+    ) {
+        val typeString = TypeSerializer.serialize(moduleInstantiation.type, moduleInstantiation)
+        sourceSerializerContext.append("$typeString ${moduleInstantiation.name} (")
+        if (moduleInstantiation.portInstantiations.isNotEmpty()) {
+            sourceSerializerContext.appendLine()
+            sourceSerializerContext.indent {
+                sourceSerializerContext.joinLine(moduleInstantiation.portInstantiations) {
+                    sourceSerializerContext.serialize(it)
+                }
+            }
+        }
+        sourceSerializerContext.appendLine(");")
     }
 
     fun serializeValueParameter(valueParameter: ESvValueParameter, sourceSerializerContext: SourceSerializerContext) {
@@ -141,5 +160,21 @@ object DeclarationSerializer {
         sourceSerializerContext.append("$typeString ")
         sourceSerializerContext.align()
         sourceSerializerContext.append(port.name)
+    }
+
+    fun serializePortInstantiation(
+        portInstantiation: EPortInstantiation,
+        sourceSerializerContext: SourceSerializerContext
+    ) {
+        sourceSerializerContext.append(".${portInstantiation.reference.name} ")
+        sourceSerializerContext.align()
+        sourceSerializerContext.append("( ")
+        val expression = portInstantiation.expression
+        if (expression != null) {
+            sourceSerializerContext.serializeAsExpression(expression)
+            sourceSerializerContext.append(" )")
+        } else {
+            sourceSerializerContext.append(")")
+        }
     }
 }

@@ -15,6 +15,6 @@
  */
 
 verik {
-    top = "Lock"
+    top = "LockTop"
     debug = true
 }

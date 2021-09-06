@@ -52,7 +52,9 @@ import io.verik.compiler.ast.element.sv.EInitialBlock
 import io.verik.compiler.ast.element.sv.EInjectedExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.EModule
+import io.verik.compiler.ast.element.sv.EModuleInstantiation
 import io.verik.compiler.ast.element.sv.EPort
+import io.verik.compiler.ast.element.sv.EPortInstantiation
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
@@ -215,6 +217,14 @@ class ElementPrinter : Visitor() {
         }
     }
 
+    override fun visitModuleInstantiation(moduleInstantiation: EModuleInstantiation) {
+        build("ModuleInstantiation") {
+            build(moduleInstantiation.name)
+            build(moduleInstantiation.type.toString())
+            build(moduleInstantiation.portInstantiations)
+        }
+    }
+
     override fun visitTypeAlias(typeAlias: ETypeAlias) {
         build("TypeAlias") {
             build(typeAlias.name)
@@ -224,6 +234,7 @@ class ElementPrinter : Visitor() {
 
     override fun visitPrimaryConstructor(primaryConstructor: EPrimaryConstructor) {
         build("PrimaryConstructor") {
+            build(primaryConstructor.type.toString())
             build(primaryConstructor.valueParameters)
         }
     }
@@ -262,6 +273,13 @@ class ElementPrinter : Visitor() {
         build("Annotation") {
             build(annotation.name)
             build(annotation.arguments)
+        }
+    }
+
+    override fun visitPortInstantiation(portInstantiation: EPortInstantiation) {
+        build("PortInstantiation") {
+            build(portInstantiation.reference.name)
+            build(portInstantiation.expression)
         }
     }
 

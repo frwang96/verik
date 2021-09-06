@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.kt
+package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.interfaces.Declaration
@@ -23,23 +23,22 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
-class EPrimaryConstructor(
+class EModuleInstantiation(
     override val location: SourceLocation,
+    override var name: String,
     var type: Type,
-    var valueParameters: ArrayList<EKtValueParameter>
+    val portInstantiations: List<EPortInstantiation>
 ) : EElement(), Declaration {
 
-    override var name = "<init>"
-
     init {
-        valueParameters.forEach { it.parent = this }
+        portInstantiations.forEach { it.parent = this }
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitPrimaryConstructor(this)
+        visitor.visitModuleInstantiation(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        valueParameters.forEach { it.accept(visitor) }
+        portInstantiations.forEach { it.accept(visitor) }
     }
 }

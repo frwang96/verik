@@ -47,10 +47,16 @@ fun s(value: Int): Sbit<Cardinal> {
 }
 
 /**
- * Returns a value with all bits set to X.
- * @param T the type of the value
+ * Returns a value of type [T] with all bits set to X.
  */
 fun <T> x(): T {
+    throw VerikException()
+}
+
+/**
+ * Output component port that is not connected.
+ */
+fun <T> nc(): T {
     throw VerikException()
 }
 

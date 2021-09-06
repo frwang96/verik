@@ -16,18 +16,63 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.common.EAbstractProperty
+import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtProperty
+import io.verik.compiler.ast.element.kt.EKtValueParameter
+import io.verik.compiler.ast.element.kt.EPrimaryConstructor
+import io.verik.compiler.ast.element.sv.EModuleInstantiation
+import io.verik.compiler.ast.element.sv.EPortInstantiation
 import io.verik.compiler.ast.element.sv.ESvProperty
+import io.verik.compiler.core.common.Core
+import io.verik.compiler.message.Messages
 
 object PropertyInterpreter {
 
-    fun interpret(property: EKtProperty): EAbstractProperty {
-        return ESvProperty(
+    fun interpret(property: EKtProperty): EElement {
+        return interpretModuleInstantiation(property)
+            ?: ESvProperty(
+                property.location,
+                property.name,
+                property.type,
+                property.initializer
+            )
+    }
+
+    private fun interpretModuleInstantiation(property: EKtProperty): EModuleInstantiation? {
+        val callExpression = property.initializer
+        if (callExpression !is EKtCallExpression)
+            return null
+
+        val primaryConstructor = callExpression.reference
+        if (primaryConstructor !is EPrimaryConstructor || !primaryConstructor.type.isSubtype(Core.Vk.MODULE.toType()))
+            return null
+
+        if (primaryConstructor.valueParameters.size != callExpression.valueArguments.size) {
+            Messages.INTERNAL_ERROR.on(callExpression, "Incorrect number of value arguments")
+            return null
+        }
+
+        val portInstantiations = primaryConstructor.valueParameters
+            .zip(callExpression.valueArguments)
+            .map { interpretPortInstantiation(it.first, it.second) }
+        return EModuleInstantiation(
             property.location,
             property.name,
             property.type,
-            property.initializer
+            portInstantiations
         )
+    }
+
+    private fun interpretPortInstantiation(
+        valueParameter: EKtValueParameter,
+        expression: EExpression
+    ): EPortInstantiation {
+        return if (expression is EKtCallExpression && expression.reference == Core.Vk.NC) {
+            EPortInstantiation(expression.location, valueParameter, null)
+        } else {
+            EPortInstantiation(expression.location, valueParameter, expression)
+        }
     }
 }
