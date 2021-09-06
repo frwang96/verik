@@ -32,7 +32,9 @@ import io.verik.compiler.ast.element.sv.EInitialBlock
 import io.verik.compiler.ast.element.sv.EInjectedExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.EModule
+import io.verik.compiler.ast.element.sv.EModuleInstantiation
 import io.verik.compiler.ast.element.sv.EPort
+import io.verik.compiler.ast.element.sv.EPortInstantiation
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
@@ -107,14 +109,6 @@ class SourceSerializerVisitor(private val sourceSerializerContext: SourceSeriali
         DeclarationSerializer.serializeSvFunction(function, sourceSerializerContext)
     }
 
-    override fun visitSvProperty(property: ESvProperty) {
-        DeclarationSerializer.serializeSvProperty(property, sourceSerializerContext)
-    }
-
-    override fun visitSvEnumEntry(enumEntry: ESvEnumEntry) {
-        DeclarationSerializer.serializeSvEnumEntry(enumEntry, sourceSerializerContext)
-    }
-
     override fun visitInitialBlock(initialBlock: EInitialBlock) {
         DeclarationSerializer.serializeInitialBlock(initialBlock, sourceSerializerContext)
     }
@@ -127,12 +121,28 @@ class SourceSerializerVisitor(private val sourceSerializerContext: SourceSeriali
         DeclarationSerializer.serializeAlwaysSeqBlock(alwaysSeqBlock, sourceSerializerContext)
     }
 
+    override fun visitSvProperty(property: ESvProperty) {
+        DeclarationSerializer.serializeSvProperty(property, sourceSerializerContext)
+    }
+
+    override fun visitSvEnumEntry(enumEntry: ESvEnumEntry) {
+        DeclarationSerializer.serializeSvEnumEntry(enumEntry, sourceSerializerContext)
+    }
+
+    override fun visitModuleInstantiation(moduleInstantiation: EModuleInstantiation) {
+        DeclarationSerializer.serializeModuleInstantiation(moduleInstantiation, sourceSerializerContext)
+    }
+
     override fun visitSvValueParameter(valueParameter: ESvValueParameter) {
         DeclarationSerializer.serializeValueParameter(valueParameter, sourceSerializerContext)
     }
 
     override fun visitPort(port: EPort) {
         DeclarationSerializer.serializePort(port, sourceSerializerContext)
+    }
+
+    override fun visitPortInstantiation(portInstantiation: EPortInstantiation) {
+        DeclarationSerializer.serializePortInstantiation(portInstantiation, sourceSerializerContext)
     }
 
     override fun visitSvBlockExpression(blockExpression: ESvBlockExpression) {

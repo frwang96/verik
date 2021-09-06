@@ -218,6 +218,39 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `serialize module instantiation`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                class M(@In var x: Boolean): Module()
+                class Top : Module() {
+                    @Make
+                    val m = M(false)
+                }
+            """.trimIndent()
+        )
+        val expected = """
+            module M(
+                input logic x
+            );
+            
+            endmodule : M
+            
+            module Top;
+            
+                M m (
+                    .x ( 1'b0 )
+                );
+            
+            endmodule : Top
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
     fun `serialize value parameter`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,

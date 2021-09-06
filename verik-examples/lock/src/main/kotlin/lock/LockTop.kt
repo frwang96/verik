@@ -18,20 +18,13 @@ package lock
 
 import io.verik.core.*
 
-class Lock(
-    @In var clk: Boolean,
-    @In var rst: Boolean,
-    @Out var state: State
-) : Module() {
+@Top
+object LockTop : Module() {
 
-    @Seq
-    fun updateState() {
-        on(posedge(clk)) {
-            state = if (rst) {
-                State.CLOSED
-            } else {
-                State.OPENED
-            }
-        }
-    }
+    @Make
+    val lock = Lock(
+        clk = false,
+        rst = false,
+        state = nc()
+    )
 }
