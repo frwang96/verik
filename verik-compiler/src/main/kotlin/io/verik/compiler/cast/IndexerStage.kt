@@ -69,7 +69,7 @@ object IndexerStage : ProjectStage() {
             checkDeclarationName(name, classOrObject)
 
             if (classOrObject.hasPrimaryConstructor() && !classOrObject.hasExplicitPrimaryConstructor()) {
-                val primaryConstructor = EPrimaryConstructor(location, arrayListOf())
+                val primaryConstructor = EPrimaryConstructor(location, NullDeclaration.toType(), arrayListOf())
                 castContext.addDeclaration(descriptor.unsubstitutedPrimaryConstructor!!, primaryConstructor)
             }
 
@@ -130,7 +130,7 @@ object IndexerStage : ProjectStage() {
             super.visitPrimaryConstructor(constructor)
             val descriptor = castContext.sliceConstructor[constructor]!!
             val location = constructor.location()
-            val primaryConstructor = EPrimaryConstructor(location, arrayListOf())
+            val primaryConstructor = EPrimaryConstructor(location, NullDeclaration.toType(), arrayListOf())
             castContext.addDeclaration(descriptor, primaryConstructor)
         }
 

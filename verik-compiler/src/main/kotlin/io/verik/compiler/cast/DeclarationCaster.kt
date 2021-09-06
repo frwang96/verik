@@ -163,10 +163,12 @@ object DeclarationCaster {
             .cast<EPrimaryConstructor>(constructor)
             ?: return null
 
+        val type = castContext.castType(descriptor.returnType, constructor)
         val valueParameters = constructor.valueParameters.mapNotNull {
             castContext.casterVisitor.getElement<EKtValueParameter>(it)
         }
 
+        primaryConstructor.type = type
         valueParameters.forEach { it.parent = primaryConstructor }
         primaryConstructor.valueParameters = ArrayList(valueParameters)
         return primaryConstructor

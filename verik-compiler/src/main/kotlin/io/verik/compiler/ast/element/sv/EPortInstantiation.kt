@@ -14,32 +14,41 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.kt
+package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.Declaration
-import io.verik.compiler.ast.property.Type
+import io.verik.compiler.ast.interfaces.ExpressionContainer
+import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
+import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 
-class EPrimaryConstructor(
+class EPortInstantiation(
     override val location: SourceLocation,
-    var type: Type,
-    var valueParameters: ArrayList<EKtValueParameter>
-) : EElement(), Declaration {
-
-    override var name = "<init>"
+    override var reference: Declaration,
+    var expression: EExpression?
+) : EElement(), Reference, ExpressionContainer {
 
     init {
-        valueParameters.forEach { it.parent = this }
+        expression?.parent = this
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitPrimaryConstructor(this)
+        visitor.visitPortInstantiation(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        valueParameters.forEach { it.accept(visitor) }
+        expression?.accept(visitor)
+    }
+
+    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
+        newExpression.parent = this
+        if (expression == oldExpression)
+            expression = newExpression
+        else
+            Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
     }
 }
