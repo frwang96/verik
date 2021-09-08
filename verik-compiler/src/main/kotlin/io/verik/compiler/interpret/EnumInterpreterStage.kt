@@ -22,7 +22,6 @@ import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.interfaces.ResizableElementContainer
-import io.verik.compiler.common.MemberReplacer
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext

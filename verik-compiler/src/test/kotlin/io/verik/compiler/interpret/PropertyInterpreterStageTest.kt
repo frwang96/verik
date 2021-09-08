@@ -22,12 +22,12 @@ import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class PropertyInterpreterTest : BaseTest() {
+internal class PropertyInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret module instantiation`() {
         val projectContext = driveTest(
-            MemberInterpreterStage::class,
+            PropertyInterpreterStage::class,
             """
                 class M(@In var x: Boolean) : Module()
                 class Top : Module() {
@@ -45,7 +45,7 @@ internal class PropertyInterpreterTest : BaseTest() {
     @Test
     fun `interpret module instantiation not connected`() {
         val projectContext = driveTest(
-            MemberInterpreterStage::class,
+            PropertyInterpreterStage::class,
             """
                 class M(@Out var x: Boolean) : Module()
                 class Top : Module() {
@@ -63,7 +63,7 @@ internal class PropertyInterpreterTest : BaseTest() {
     @Test
     fun `interpret property`() {
         val projectContext = driveTest(
-            MemberInterpreterStage::class,
+            PropertyInterpreterStage::class,
             """
                 var x = false
             """.trimIndent()

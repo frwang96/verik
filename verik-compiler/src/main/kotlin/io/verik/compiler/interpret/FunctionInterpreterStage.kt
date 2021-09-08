@@ -29,13 +29,33 @@ import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EInitialBlock
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvValueParameter
+import io.verik.compiler.common.ProjectStage
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Annotations
 import io.verik.compiler.core.common.Core
+import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 
-object FunctionInterpreter {
+object FunctionInterpreterStage : ProjectStage() {
 
-    fun interpret(function: EKtFunction): EElement {
+    override val checkNormalization = true
+
+    override fun process(projectContext: ProjectContext) {
+        val memberReplacer = MemberReplacer(projectContext)
+        val functionInterpreterVisitor = FunctionInterpreterVisitor(memberReplacer)
+        projectContext.project.accept(functionInterpreterVisitor)
+        memberReplacer.updateReferences()
+    }
+
+    class FunctionInterpreterVisitor(private val memberReplacer: MemberReplacer) : TreeVisitor() {
+
+        override fun visitKtFunction(function: EKtFunction) {
+            super.visitKtFunction(function)
+            memberReplacer.replace(function, interpret(function))
+        }
+    }
+
+    private fun interpret(function: EKtFunction): EElement {
         val body = function.body
         return when {
             function.hasAnnotation(Annotations.COM) -> {

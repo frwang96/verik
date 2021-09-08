@@ -36,4 +36,7 @@ package io.verik.core
  *          val cb = CB(posedge(clk), x)
  *      }
  */
-abstract class ClockingBlock(event: Event) : Component()
+abstract class ClockingBlock : Component() {
+
+    abstract val event: Event
+}

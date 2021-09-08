@@ -23,13 +23,33 @@ import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.property.PortType
+import io.verik.compiler.common.ProjectStage
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Annotations
 import io.verik.compiler.core.common.Core
+import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 
-object ClassInterpreter {
+object ClassInterpreterStage : ProjectStage() {
 
-    fun interpret(basicClass: EKtBasicClass): EAbstractClass {
+    override val checkNormalization = true
+
+    override fun process(projectContext: ProjectContext) {
+        val memberReplacer = MemberReplacer(projectContext)
+        val classInterpreterVisitor = ClassInterpreterVisitor(memberReplacer)
+        projectContext.project.accept(classInterpreterVisitor)
+        memberReplacer.updateReferences()
+    }
+
+    class ClassInterpreterVisitor(private val memberReplacer: MemberReplacer) : TreeVisitor() {
+
+        override fun visitKtBasicClass(basicClass: EKtBasicClass) {
+            super.visitKtBasicClass(basicClass)
+            memberReplacer.replace(basicClass, interpret(basicClass))
+        }
+    }
+
+    private fun interpret(basicClass: EKtBasicClass): EAbstractClass {
         return if (basicClass.toType().isSubtype(Core.Vk.MODULE.toType())) {
             val ports = basicClass.primaryConstructor
                 ?.valueParameters

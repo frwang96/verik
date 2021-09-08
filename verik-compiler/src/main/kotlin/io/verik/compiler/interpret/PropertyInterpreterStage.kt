@@ -25,12 +25,32 @@ import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.sv.EModuleInstantiation
 import io.verik.compiler.ast.element.sv.EPortInstantiation
 import io.verik.compiler.ast.element.sv.ESvProperty
+import io.verik.compiler.common.ProjectStage
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
+import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 
-object PropertyInterpreter {
+object PropertyInterpreterStage : ProjectStage() {
 
-    fun interpret(property: EKtProperty): EElement {
+    override val checkNormalization = true
+
+    override fun process(projectContext: ProjectContext) {
+        val memberReplacer = MemberReplacer(projectContext)
+        val propertyInterpreterVisitor = PropertyInterpreterVisitor(memberReplacer)
+        projectContext.project.accept(propertyInterpreterVisitor)
+        memberReplacer.updateReferences()
+    }
+
+    class PropertyInterpreterVisitor(private val memberReplacer: MemberReplacer) : TreeVisitor() {
+
+        override fun visitKtProperty(property: EKtProperty) {
+            super.visitKtProperty(property)
+            memberReplacer.replace(property, interpret(property))
+        }
+    }
+
+    private fun interpret(property: EKtProperty): EElement {
         return interpretModuleInstantiation(property)
             ?: ESvProperty(
                 property.location,

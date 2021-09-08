@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.common
+package io.verik.compiler.interpret
 
 import io.verik.compiler.ast.element.common.EAbstractValueParameter
 import io.verik.compiler.ast.element.common.EElement
@@ -23,6 +23,7 @@ import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.ElementContainer
 import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.ast.property.Type
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 

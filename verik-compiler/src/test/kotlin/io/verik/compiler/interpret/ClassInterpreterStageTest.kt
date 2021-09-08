@@ -25,12 +25,12 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-internal class ClassInterpreterTest : BaseTest() {
+internal class ClassInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret module simple`() {
         val projectContext = driveTest(
-            MemberInterpreterStage::class,
+            ClassInterpreterStage::class,
             """
                 class M: Module()
             """.trimIndent()
@@ -44,7 +44,7 @@ internal class ClassInterpreterTest : BaseTest() {
     @Test
     fun `interpret module with port`() {
         val projectContext = driveTest(
-            MemberInterpreterStage::class,
+            ClassInterpreterStage::class,
             """
                 class M(@In var x: Boolean): Module()
             """.trimIndent()
@@ -59,7 +59,7 @@ internal class ClassInterpreterTest : BaseTest() {
     fun `interpret module with port illegal`() {
         assertThrows<TestErrorException> {
             driveTest(
-                MemberInterpreterStage::class,
+                ClassInterpreterStage::class,
                 """
                     class M(var x: Boolean): Module()
                 """.trimIndent()
@@ -70,7 +70,7 @@ internal class ClassInterpreterTest : BaseTest() {
     @Test
     fun `interpret basic class`() {
         val projectContext = driveTest(
-            MemberInterpreterStage::class,
+            ClassInterpreterStage::class,
             """
                 class C
             """.trimIndent()

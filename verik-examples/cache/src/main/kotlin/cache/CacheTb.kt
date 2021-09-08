@@ -94,12 +94,12 @@ class CacheTb(
     }
 
     class CacheTbClockingBlock(
-        event: Event,
+        override val event: Event,
         @Out var rst: Boolean,
         @Out var reqOp: Op,
         @Out var reqAddr: UbitAddr,
         @Out var reqData: UbitData,
         @In var rspVld: Boolean,
         @In var rspData: UbitData
-    ) : ClockingBlock(event)
+    ) : ClockingBlock()
 }
