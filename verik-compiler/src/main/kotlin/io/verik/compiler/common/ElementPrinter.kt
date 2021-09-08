@@ -44,6 +44,7 @@ import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
+import io.verik.compiler.ast.element.sv.ECaseStatement
 import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EEventControlExpression
@@ -431,10 +432,24 @@ class ElementPrinter : Visitor() {
     override fun visitWhenExpression(whenExpression: EWhenExpression) {
         build("WhenExpression") {
             build(whenExpression.type.toString())
+            build(whenExpression.subject)
             build(whenExpression.entries) {
                 build("WhenEntry") {
                     build(it.conditions)
-                    build(it.expression)
+                    build(it.body)
+                }
+            }
+        }
+    }
+
+    override fun visitCaseStatement(caseStatement: ECaseStatement) {
+        build("CaseStatement") {
+            build(caseStatement.type.toString())
+            build(caseStatement.subject)
+            build(caseStatement.entries) {
+                build("CaseEntry") {
+                    build(it.conditions)
+                    build(it.body)
                 }
             }
         }

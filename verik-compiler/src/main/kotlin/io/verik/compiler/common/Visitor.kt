@@ -57,6 +57,7 @@ import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
+import io.verik.compiler.ast.element.sv.ECaseStatement
 import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EEventControlExpression
@@ -350,6 +351,10 @@ abstract class Visitor {
 
     open fun visitWhenExpression(whenExpression: EWhenExpression) {
         visitExpression(whenExpression)
+    }
+
+    open fun visitCaseStatement(caseStatement: ECaseStatement) {
+        visitExpression(caseStatement)
     }
 
     open fun visitLoopStatement(loopStatement: ELoopStatement) {

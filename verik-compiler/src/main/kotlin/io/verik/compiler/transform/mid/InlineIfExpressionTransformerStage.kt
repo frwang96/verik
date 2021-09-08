@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.post
+package io.verik.compiler.transform.mid
 
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression

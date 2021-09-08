@@ -14,27 +14,27 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.kt
+package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.ExpressionContainer
+import io.verik.compiler.ast.property.CaseEntry
 import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.ast.property.Type
-import io.verik.compiler.ast.property.WhenEntry
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.common.replaceIfContains
 import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 
-class EWhenExpression(
+class ECaseStatement(
     override val location: SourceLocation,
     override var type: Type,
     var subject: EExpression,
-    val entries: List<WhenEntry>
+    val entries: List<CaseEntry>
 ) : EExpression(), ExpressionContainer {
 
-    override val serializationType = SvSerializationType.OTHER
+    override val serializationType = SvSerializationType.STATEMENT
 
     init {
         subject.parent = this
@@ -45,7 +45,7 @@ class EWhenExpression(
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitWhenExpression(this)
+        visitor.visitCaseStatement(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
@@ -56,11 +56,11 @@ class EWhenExpression(
         }
     }
 
-    override fun copy(): EWhenExpression {
+    override fun copy(): EExpression {
         val typeCopy = type.copy()
         val subjectCopy = subject.copy()
         val entriesCopy = entries.map { it.copy() }
-        return EWhenExpression(location, typeCopy, subjectCopy, entriesCopy)
+        return ECaseStatement(location, typeCopy, subjectCopy, entriesCopy)
     }
 
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
@@ -69,11 +69,11 @@ class EWhenExpression(
             subject = newExpression
             return
         }
-        entries.forEach { entry ->
-            if (entry.conditions.replaceIfContains(oldExpression, newExpression))
+        entries.forEach {
+            if (it.conditions.replaceIfContains(oldExpression, newExpression))
                 return
-            if (entry.body == oldExpression) {
-                entry.body = newExpression
+            if (it.body == oldExpression) {
+                it.body = newExpression
                 return
             }
         }

@@ -18,14 +18,14 @@ package io.verik.compiler.ast.property
 
 import io.verik.compiler.ast.element.common.EExpression
 
-class WhenEntry(
+class CaseEntry(
     var conditions: ArrayList<EExpression>,
     var body: EExpression
 ) {
 
-    fun copy(): WhenEntry {
+    fun copy(): CaseEntry {
         val conditionsCopy = conditions.map { it.copy() }
         val bodyCopy = body.copy()
-        return WhenEntry(ArrayList(conditionsCopy), bodyCopy)
+        return CaseEntry(ArrayList(conditionsCopy), bodyCopy)
     }
 }

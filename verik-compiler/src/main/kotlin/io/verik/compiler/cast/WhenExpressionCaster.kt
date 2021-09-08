@@ -31,14 +31,15 @@ object WhenExpressionCaster {
     fun castWhenExpression(expression: KtWhenExpression, castContext: CastContext): EWhenExpression {
         val location = expression.location()
         val type = castContext.castType(expression)
+        val subject = castContext.casterVisitor.getExpression(expression.subjectExpression!!)
         val entries = expression.entries.map { castWhenEntry(it, castContext) }
-        return EWhenExpression(location, type, entries)
+        return EWhenExpression(location, type, subject, entries)
     }
 
     private fun castWhenEntry(whenEntry: KtWhenEntry, castContext: CastContext): WhenEntry {
         val conditions = whenEntry.conditions.mapNotNull { castWhenCondition(it, castContext) }
-        val expression = castContext.casterVisitor.getExpression(whenEntry.expression!!)
-        return WhenEntry(ArrayList(conditions), expression)
+        val body = castContext.casterVisitor.getExpression(whenEntry.expression!!)
+        return WhenEntry(ArrayList(conditions), body)
     }
 
     private fun castWhenCondition(whenCondition: KtWhenCondition, castContext: CastContext): EExpression? {

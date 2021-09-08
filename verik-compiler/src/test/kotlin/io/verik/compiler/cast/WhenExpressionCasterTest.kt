@@ -39,7 +39,13 @@ internal class WhenExpressionCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "WhenExpression(Unit, [WhenEntry([ConstantExpression(Int, 0)], *), WhenEntry([], *)])",
+            """
+                WhenExpression(
+                    Unit,
+                    KtReferenceExpression(*),
+                    [WhenEntry([ConstantExpression(Int, 0)], *), WhenEntry([], *)]
+                )
+            """.trimIndent(),
             projectContext.findExpression("f")
         )
     }

@@ -28,6 +28,7 @@ import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
+import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
@@ -111,6 +112,11 @@ object UntransformedElementCheckerStage : ProjectStage() {
         override fun visitStringTemplateExpression(stringTemplateExpression: EStringTemplateExpression) {
             super.visitStringTemplateExpression(stringTemplateExpression)
             Messages.INTERNAL_ERROR.on(stringTemplateExpression, "String template expression $message")
+        }
+
+        override fun visitWhenExpression(whenExpression: EWhenExpression) {
+            super.visitWhenExpression(whenExpression)
+            Messages.INTERNAL_ERROR.on(whenExpression, "When expression $message")
         }
     }
 }
