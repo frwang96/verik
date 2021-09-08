@@ -30,9 +30,11 @@ import io.verik.compiler.compile.KotlinCompilerAnalyzerStage
 import io.verik.compiler.compile.KotlinCompilerParserStage
 import io.verik.compiler.compile.KotlinEnvironmentBuilderStage
 import io.verik.compiler.interpret.AnnotationConflictCheckerStage
+import io.verik.compiler.interpret.ClassInterpreterStage
 import io.verik.compiler.interpret.EnumInterpreterStage
 import io.verik.compiler.interpret.FileSplitterStage
-import io.verik.compiler.interpret.MemberInterpreterStage
+import io.verik.compiler.interpret.FunctionInterpreterStage
+import io.verik.compiler.interpret.PropertyInterpreterStage
 import io.verik.compiler.serialize.ConfigFileSerializerStage
 import io.verik.compiler.serialize.OrderFileSerializerStage
 import io.verik.compiler.serialize.PackageFileSerializerStage
@@ -102,7 +104,9 @@ object StageSequencer {
         // Interpret
         stageSequence.add(AnnotationConflictCheckerStage)
         stageSequence.add(EnumInterpreterStage)
-        stageSequence.add(MemberInterpreterStage)
+        stageSequence.add(ClassInterpreterStage)
+        stageSequence.add(FunctionInterpreterStage)
+        stageSequence.add(PropertyInterpreterStage)
         stageSequence.add(FileSplitterStage)
 
         // MidTransform

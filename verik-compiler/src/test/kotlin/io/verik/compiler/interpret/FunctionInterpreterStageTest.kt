@@ -25,12 +25,12 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-internal class FunctionInterpreterTest : BaseTest() {
+internal class FunctionInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret function`() {
         val projectContext = driveTest(
-            MemberInterpreterStage::class,
+            FunctionInterpreterStage::class,
             """
                 fun f() {}
             """.trimIndent()
@@ -44,7 +44,7 @@ internal class FunctionInterpreterTest : BaseTest() {
     @Test
     fun `interpret function in class`() {
         val projectContext = driveTest(
-            MemberInterpreterStage::class,
+            FunctionInterpreterStage::class,
             """
                 class C {
                     fun f() {}
@@ -60,7 +60,7 @@ internal class FunctionInterpreterTest : BaseTest() {
     @Test
     fun `interpret initial block`() {
         val projectContext = driveTest(
-            MemberInterpreterStage::class,
+            FunctionInterpreterStage::class,
             """
                 class M: Module() {
                     @Run
@@ -77,7 +77,7 @@ internal class FunctionInterpreterTest : BaseTest() {
     @Test
     fun `interpret always seq block`() {
         val projectContext = driveTest(
-            MemberInterpreterStage::class,
+            FunctionInterpreterStage::class,
             """
                 class M: Module() {
                     private var x = false
@@ -98,7 +98,7 @@ internal class FunctionInterpreterTest : BaseTest() {
     fun `interpret always seq block error`() {
         assertThrows<TestErrorException> {
             driveTest(
-                MemberInterpreterStage::class,
+                FunctionInterpreterStage::class,
                 """
                 class M: Module() {
                     @Seq
