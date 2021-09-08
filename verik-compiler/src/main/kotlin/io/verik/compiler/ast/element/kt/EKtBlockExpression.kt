@@ -35,10 +35,6 @@ class EKtBlockExpression(
         statements.forEach { it.parent = this }
     }
 
-    fun hasStatements(): Boolean {
-        return statements.isNotEmpty()
-    }
-
     override fun accept(visitor: Visitor) {
         visitor.visitKtBlockExpression(this)
     }

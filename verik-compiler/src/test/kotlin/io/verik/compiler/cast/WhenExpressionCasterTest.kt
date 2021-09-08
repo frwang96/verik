@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.post
+package io.verik.compiler.cast
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.assertElementEquals
@@ -22,35 +22,31 @@ import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
-internal class InlineIfExpressionTransformerStageTest : BaseTest() {
+internal class WhenExpressionCasterTest : BaseTest() {
 
     @Test
-    fun `transform inline if`() {
+    fun `when expression`() {
         val projectContext = driveTest(
-            InlineIfExpressionTransformerStage::class,
+            CasterStage::class,
             """
-                var x = true
-                var y = if (x) 1 else 0
+                var x = 0
+                fun f() {
+                    when (x) {
+                        0 -> {}
+                        else -> {}
+                    }
+                }
             """.trimIndent()
         )
         assertElementEquals(
-            "InlineIfExpression(Int, KtReferenceExpression(*), ConstantExpression(*), ConstantExpression(*))",
-            projectContext.findExpression("y")
-        )
-    }
-
-    @Test
-    fun `transform inline if block expression`() {
-        val projectContext = driveTest(
-            InlineIfExpressionTransformerStage::class,
             """
-                var x = true
-                var y = if (x) { 1 } else { 0 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "InlineIfExpression(Int, KtReferenceExpression(*), ConstantExpression(*), ConstantExpression(*))",
-            projectContext.findExpression("y")
+                WhenExpression(
+                    Unit,
+                    KtReferenceExpression(*),
+                    [WhenEntry([ConstantExpression(Int, 0)], *), WhenEntry([], *)]
+                )
+            """.trimIndent(),
+            projectContext.findExpression("f")
         )
     }
 }

@@ -19,6 +19,7 @@ package io.verik.compiler.serialize
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EParenthesizedExpression
+import io.verik.compiler.ast.element.sv.ECaseStatement
 import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EEventExpression
@@ -186,6 +187,29 @@ object ExpressionSerializer {
         sourceSerializerContext.hardBreak()
         sourceSerializerContext.append(": ")
         sourceSerializerContext.serializeAsExpression(inlineIfExpression.elseExpression)
+    }
+
+    fun serializeCaseStatement(
+        caseStatement: ECaseStatement,
+        sourceSerializerContext: SourceSerializerContext
+    ) {
+        sourceSerializerContext.append("case (")
+        sourceSerializerContext.serializeAsExpression(caseStatement.subject)
+        sourceSerializerContext.appendLine(")")
+        sourceSerializerContext.indent {
+            caseStatement.entries.forEach { entry ->
+                if (entry.conditions.isNotEmpty()) {
+                    sourceSerializerContext.join(entry.conditions) {
+                        sourceSerializerContext.serializeAsExpression(it)
+                    }
+                } else {
+                    sourceSerializerContext.append("default")
+                }
+                sourceSerializerContext.append(" : ")
+                sourceSerializerContext.serializeAsStatement(entry.body)
+            }
+        }
+        sourceSerializerContext.appendLine("endcase")
     }
 
     fun serializeForeverStatement(

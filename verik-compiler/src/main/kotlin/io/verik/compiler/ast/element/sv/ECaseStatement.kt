@@ -16,41 +16,64 @@
 
 package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.ExpressionContainer
-import io.verik.compiler.ast.property.PortInstantiation
+import io.verik.compiler.ast.property.CaseEntry
+import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
+import io.verik.compiler.common.replaceIfContains
 import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 
-class EModuleInstantiation(
+class ECaseStatement(
     override val location: SourceLocation,
-    override var name: String,
-    var type: Type,
-    val portInstantiations: List<PortInstantiation>
-) : EElement(), Declaration, ExpressionContainer {
+    override var type: Type,
+    var subject: EExpression,
+    val entries: List<CaseEntry>
+) : EExpression(), ExpressionContainer {
+
+    override val serializationType = SvSerializationType.STATEMENT
 
     init {
-        portInstantiations.forEach { it.expression?.parent = this }
+        subject.parent = this
+        entries.forEach { entry ->
+            entry.conditions.forEach { it.parent = this }
+            entry.body.parent = this
+        }
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitModuleInstantiation(this)
+        visitor.visitCaseStatement(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        portInstantiations.forEach { it.expression?.accept(visitor) }
+        subject.accept(visitor)
+        entries.forEach { entry ->
+            entry.conditions.forEach { it.accept(visitor) }
+            entry.body.accept(visitor)
+        }
+    }
+
+    override fun copy(): EExpression {
+        val typeCopy = type.copy()
+        val subjectCopy = subject.copy()
+        val entriesCopy = entries.map { it.copy() }
+        return ECaseStatement(location, typeCopy, subjectCopy, entriesCopy)
     }
 
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
         newExpression.parent = this
-        portInstantiations.forEach {
-            if (it.expression == oldExpression) {
-                it.expression = newExpression
+        if (subject == oldExpression) {
+            subject = newExpression
+            return
+        }
+        entries.forEach {
+            if (it.conditions.replaceIfContains(oldExpression, newExpression))
+                return
+            if (it.body == oldExpression) {
+                it.body = newExpression
                 return
             }
         }

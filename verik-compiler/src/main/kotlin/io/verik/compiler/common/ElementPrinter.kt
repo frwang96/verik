@@ -41,8 +41,10 @@ import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.kt.ETypeAlias
+import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
+import io.verik.compiler.ast.element.sv.ECaseStatement
 import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EEventControlExpression
@@ -54,7 +56,6 @@ import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EModuleInstantiation
 import io.verik.compiler.ast.element.sv.EPort
-import io.verik.compiler.ast.element.sv.EPortInstantiation
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
@@ -221,7 +222,12 @@ class ElementPrinter : Visitor() {
         build("ModuleInstantiation") {
             build(moduleInstantiation.name)
             build(moduleInstantiation.type.toString())
-            build(moduleInstantiation.portInstantiations)
+            build(moduleInstantiation.portInstantiations) {
+                build("PortInstantiation") {
+                    build(it.reference.name)
+                    build(it.expression)
+                }
+            }
         }
     }
 
@@ -273,13 +279,6 @@ class ElementPrinter : Visitor() {
         build("Annotation") {
             build(annotation.name)
             build(annotation.arguments)
-        }
-    }
-
-    override fun visitPortInstantiation(portInstantiation: EPortInstantiation) {
-        build("PortInstantiation") {
-            build(portInstantiation.reference.name)
-            build(portInstantiation.expression)
         }
     }
 
@@ -430,6 +429,32 @@ class ElementPrinter : Visitor() {
         }
     }
 
+    override fun visitWhenExpression(whenExpression: EWhenExpression) {
+        build("WhenExpression") {
+            build(whenExpression.type.toString())
+            build(whenExpression.subject)
+            build(whenExpression.entries) {
+                build("WhenEntry") {
+                    build(it.conditions)
+                    build(it.body)
+                }
+            }
+        }
+    }
+
+    override fun visitCaseStatement(caseStatement: ECaseStatement) {
+        build("CaseStatement") {
+            build(caseStatement.type.toString())
+            build(caseStatement.subject)
+            build(caseStatement.entries) {
+                build("CaseEntry") {
+                    build(it.conditions)
+                    build(it.body)
+                }
+            }
+        }
+    }
+
     override fun visitForeverStatement(foreverStatement: EForeverStatement) {
         build("ForeverStatement") {
             build(foreverStatement.type.toString())
@@ -494,8 +519,18 @@ class ElementPrinter : Visitor() {
                 is String -> build(it)
                 is LiteralStringEntry -> build(it.text)
                 is ExpressionStringEntry -> it.expression.accept(this)
+                else -> throw IllegalArgumentException("Unrecognized type: ${it::class.simpleName}")
             }
         }
+        builder.append("]")
+        first = false
+    }
+
+    private fun <E> build(elements: List<E>, block: (E) -> Unit) {
+        if (!first) builder.append(", ")
+        builder.append("[")
+        first = true
+        elements.forEach { block(it) }
         builder.append("]")
         first = false
     }

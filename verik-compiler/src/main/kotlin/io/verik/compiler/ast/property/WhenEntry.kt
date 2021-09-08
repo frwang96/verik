@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package lock
+package io.verik.compiler.ast.property
 
-import io.verik.core.*
+import io.verik.compiler.ast.element.common.EExpression
 
-@Top
-object LockTop : Module() {
+class WhenEntry(
+    var conditions: ArrayList<EExpression>,
+    var body: EExpression
+) {
 
-    @Make
-    val lock = Lock(
-        clk = false,
-        rst = false,
-        open = false,
-        close = false,
-        state = nc()
-    )
+    fun copy(): WhenEntry {
+        val conditionsCopy = conditions.map { it.copy() }
+        val bodyCopy = body.copy()
+        return WhenEntry(ArrayList(conditionsCopy), bodyCopy)
+    }
 }

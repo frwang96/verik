@@ -23,7 +23,6 @@ import io.verik.compiler.ast.element.sv.EInitialBlock
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EModuleInstantiation
 import io.verik.compiler.ast.element.sv.EPort
-import io.verik.compiler.ast.element.sv.EPortInstantiation
 import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvFunction
@@ -139,7 +138,16 @@ object DeclarationSerializer {
             sourceSerializerContext.appendLine()
             sourceSerializerContext.indent {
                 sourceSerializerContext.joinLine(moduleInstantiation.portInstantiations) {
-                    sourceSerializerContext.serialize(it)
+                    sourceSerializerContext.append(".${it.reference.name} ")
+                    sourceSerializerContext.align()
+                    sourceSerializerContext.append("( ")
+                    val expression = it.expression
+                    if (expression != null) {
+                        sourceSerializerContext.serializeAsExpression(expression)
+                        sourceSerializerContext.append(" )")
+                    } else {
+                        sourceSerializerContext.append(")")
+                    }
                 }
             }
         }
@@ -160,21 +168,5 @@ object DeclarationSerializer {
         sourceSerializerContext.append("$typeString ")
         sourceSerializerContext.align()
         sourceSerializerContext.append(port.name)
-    }
-
-    fun serializePortInstantiation(
-        portInstantiation: EPortInstantiation,
-        sourceSerializerContext: SourceSerializerContext
-    ) {
-        sourceSerializerContext.append(".${portInstantiation.reference.name} ")
-        sourceSerializerContext.align()
-        sourceSerializerContext.append("( ")
-        val expression = portInstantiation.expression
-        if (expression != null) {
-            sourceSerializerContext.serializeAsExpression(expression)
-            sourceSerializerContext.append(" )")
-        } else {
-            sourceSerializerContext.append(")")
-        }
     }
 }

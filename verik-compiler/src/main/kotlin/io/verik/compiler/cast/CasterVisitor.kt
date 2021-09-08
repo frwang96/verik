@@ -61,6 +61,7 @@ import org.jetbrains.kotlin.psi.KtStringTemplateExpression
 import org.jetbrains.kotlin.psi.KtTypeAlias
 import org.jetbrains.kotlin.psi.KtTypeParameter
 import org.jetbrains.kotlin.psi.KtVisitor
+import org.jetbrains.kotlin.psi.KtWhenExpression
 
 class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, Unit>() {
 
@@ -160,5 +161,9 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
 
     override fun visitIfExpression(expression: KtIfExpression, data: Unit?): EIfExpression {
         return ExpressionCaster.castIfExpression(expression, castContext)
+    }
+
+    override fun visitWhenExpression(expression: KtWhenExpression, data: Unit?): EElement {
+        return WhenExpressionCaster.castWhenExpression(expression, castContext)
     }
 }

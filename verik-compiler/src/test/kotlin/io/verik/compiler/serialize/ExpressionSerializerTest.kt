@@ -19,14 +19,11 @@ package io.verik.compiler.serialize
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.assertOutputTextEquals
 import io.verik.compiler.util.driveTest
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class ExpressionSerializerTest : BaseTest() {
 
     @Test
-    @Disabled
-    // TODO parenthesize order of operations
     fun `parenthesized expression`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
@@ -37,7 +34,6 @@ internal class ExpressionSerializerTest : BaseTest() {
         )
         val expected = """
             int x = 0;
-            
             int y = (x + 1) * x;
         """.trimIndent()
         assertOutputTextEquals(
@@ -283,6 +279,38 @@ internal class ExpressionSerializerTest : BaseTest() {
         val expected = """
             logic x = 1'b0;
             int y   = x ? 0 : 1;
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
+    fun `case statement`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                var x = 0
+                fun f() {
+                    when (x) {
+                        0 -> {}
+                        else -> {}
+                    }
+                }
+            """.trimIndent()
+        )
+        val expected = """
+            int x = 0;
+            
+            function void f();
+                case (x)
+                    0 : begin
+                    end
+                    default : begin
+                    end
+                endcase
+            endfunction : f
         """.trimIndent()
         assertOutputTextEquals(
             expected,
