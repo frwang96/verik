@@ -41,6 +41,7 @@ import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.kt.ETypeAlias
+import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.EDelayExpression
@@ -424,6 +425,18 @@ class ElementPrinter : Visitor() {
             build(inlineIfExpression.condition)
             build(inlineIfExpression.thenExpression)
             build(inlineIfExpression.elseExpression)
+        }
+    }
+
+    override fun visitWhenExpression(whenExpression: EWhenExpression) {
+        build("WhenExpression") {
+            build(whenExpression.type.toString())
+            build(whenExpression.entries) {
+                build("WhenEntry") {
+                    build(it.conditions)
+                    build(it.expression)
+                }
+            }
         }
     }
 

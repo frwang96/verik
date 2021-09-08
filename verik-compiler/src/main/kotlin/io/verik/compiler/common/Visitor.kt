@@ -54,6 +54,7 @@ import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.kt.ETypeAlias
+import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.EDelayExpression
@@ -345,6 +346,10 @@ abstract class Visitor {
 
     open fun visitInlineIfExpression(inlineIfExpression: EInlineIfExpression) {
         visitExpression(inlineIfExpression)
+    }
+
+    open fun visitWhenExpression(whenExpression: EWhenExpression) {
+        visitExpression(whenExpression)
     }
 
     open fun visitLoopStatement(loopStatement: ELoopStatement) {
