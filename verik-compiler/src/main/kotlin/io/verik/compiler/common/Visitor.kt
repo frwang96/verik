@@ -68,7 +68,6 @@ import io.verik.compiler.ast.element.sv.ELoopStatement
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EModuleInstantiation
 import io.verik.compiler.ast.element.sv.EPort
-import io.verik.compiler.ast.element.sv.EPortInstantiation
 import io.verik.compiler.ast.element.sv.EProceduralBlock
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.ESvBasicClass
@@ -248,12 +247,6 @@ abstract class Visitor {
 
     open fun visitAnnotation(annotation: EAnnotation) {
         visitElement(annotation)
-    }
-
-//  PORT INSTANTIATION  ////////////////////////////////////////////////////////////////////////////////////////////////
-
-    open fun visitPortInstantiation(portInstantiation: EPortInstantiation) {
-        visitElement(portInstantiation)
     }
 
 //  EXPRESSION  ////////////////////////////////////////////////////////////////////////////////////////////////////////

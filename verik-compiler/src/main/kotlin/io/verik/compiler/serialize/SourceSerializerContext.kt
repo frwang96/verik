@@ -79,7 +79,7 @@ class SourceSerializerContext(projectContext: ProjectContext, file: EFile) {
         sourceBuilder.align()
     }
 
-    fun <E : EElement> join(elements: List<E>, block: (E) -> Unit) {
+    fun <E> join(elements: List<E>, block: (E) -> Unit) {
         if (elements.isNotEmpty()) {
             block(elements[0])
             elements.drop(1).forEach {
@@ -90,7 +90,7 @@ class SourceSerializerContext(projectContext: ProjectContext, file: EFile) {
         }
     }
 
-    fun <E : EElement> joinLine(elements: List<E>, block: (E) -> Unit) {
+    fun <E> joinLine(elements: List<E>, block: (E) -> Unit) {
         if (elements.isNotEmpty()) {
             block(elements[0])
             elements.drop(1).forEach {

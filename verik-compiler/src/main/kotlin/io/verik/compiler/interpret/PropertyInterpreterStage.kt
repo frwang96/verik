@@ -23,8 +23,8 @@ import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EModuleInstantiation
 import io.verik.compiler.ast.element.sv.EPort
-import io.verik.compiler.ast.element.sv.EPortInstantiation
 import io.verik.compiler.ast.element.sv.ESvProperty
+import io.verik.compiler.ast.property.PortInstantiation
 import io.verik.compiler.ast.property.PortType
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
@@ -88,13 +88,13 @@ object PropertyInterpreterStage : ProjectStage() {
     private fun interpretPortInstantiation(
         port: EPort,
         expression: EExpression
-    ): EPortInstantiation {
+    ): PortInstantiation {
         return if (expression is EKtCallExpression && expression.reference == Core.Vk.NC) {
             if (port.portType == PortType.INPUT)
                 Messages.INPUT_PORT_NOT_CONNECTED.on(expression, port.name)
-            EPortInstantiation(expression.location, port, null)
+            PortInstantiation(port, null)
         } else {
-            EPortInstantiation(expression.location, port, expression)
+            PortInstantiation(port, expression)
         }
     }
 }

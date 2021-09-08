@@ -17,21 +17,25 @@
 package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.Declaration
+import io.verik.compiler.ast.interfaces.ExpressionContainer
+import io.verik.compiler.ast.property.PortInstantiation
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
+import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 
 class EModuleInstantiation(
     override val location: SourceLocation,
     override var name: String,
     var type: Type,
-    val portInstantiations: List<EPortInstantiation>
-) : EElement(), Declaration {
+    val portInstantiations: List<PortInstantiation>
+) : EElement(), Declaration, ExpressionContainer {
 
     init {
-        portInstantiations.forEach { it.parent = this }
+        portInstantiations.forEach { it.expression?.parent = this }
     }
 
     override fun accept(visitor: Visitor) {
@@ -39,6 +43,17 @@ class EModuleInstantiation(
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        portInstantiations.forEach { it.accept(visitor) }
+        portInstantiations.forEach { it.expression?.accept(visitor) }
+    }
+
+    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
+        newExpression.parent = this
+        portInstantiations.forEach {
+            if (it.expression == oldExpression) {
+                it.expression = newExpression
+                return
+            }
+        }
+        Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
     }
 }

@@ -54,7 +54,6 @@ import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EModuleInstantiation
 import io.verik.compiler.ast.element.sv.EPort
-import io.verik.compiler.ast.element.sv.EPortInstantiation
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
@@ -221,7 +220,12 @@ class ElementPrinter : Visitor() {
         build("ModuleInstantiation") {
             build(moduleInstantiation.name)
             build(moduleInstantiation.type.toString())
-            build(moduleInstantiation.portInstantiations)
+            build(moduleInstantiation.portInstantiations) {
+                build("PortInstantiation") {
+                    build(it.reference.name)
+                    build(it.expression)
+                }
+            }
         }
     }
 
@@ -273,13 +277,6 @@ class ElementPrinter : Visitor() {
         build("Annotation") {
             build(annotation.name)
             build(annotation.arguments)
-        }
-    }
-
-    override fun visitPortInstantiation(portInstantiation: EPortInstantiation) {
-        build("PortInstantiation") {
-            build(portInstantiation.reference.name)
-            build(portInstantiation.expression)
         }
     }
 
@@ -494,8 +491,18 @@ class ElementPrinter : Visitor() {
                 is String -> build(it)
                 is LiteralStringEntry -> build(it.text)
                 is ExpressionStringEntry -> it.expression.accept(this)
+                else -> throw IllegalArgumentException("Unrecognized type: ${it::class.simpleName}")
             }
         }
+        builder.append("]")
+        first = false
+    }
+
+    private fun <E> build(elements: List<E>, block: (E) -> Unit) {
+        if (!first) builder.append(", ")
+        builder.append("[")
+        first = true
+        elements.forEach { block(it) }
         builder.append("]")
         first = false
     }
