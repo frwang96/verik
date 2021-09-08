@@ -19,7 +19,10 @@ package io.verik.compiler.transform.post
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.sv.EEventControlExpression
+import io.verik.compiler.ast.element.sv.EEventExpression
+import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.interfaces.ExpressionContainer
+import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -49,9 +52,37 @@ object ParenthesisInsertionTransformerStage : ProjectStage() {
 
     object ParenthesisInsertionTransformerVisitor : TreeVisitor() {
 
+        private fun getPriority(expression: EExpression): Int {
+            // higher priority expressions are prioritized for parenthesis insertion
+            return when (expression) {
+                is ESvBinaryExpression -> getBinaryOperatorPriority(expression.kind)
+                is EEventExpression -> 1
+                else -> 0
+            }
+        }
+
+        private fun getBinaryOperatorPriority(kind: SvBinaryOperatorKind): Int {
+            return when (kind) {
+                SvBinaryOperatorKind.MUL -> 2
+                SvBinaryOperatorKind.PLUS -> 3
+                SvBinaryOperatorKind.MINUS -> 3
+                else -> 0
+            }
+        }
+
+        override fun visitSvBinaryExpression(binaryExpression: ESvBinaryExpression) {
+            super.visitSvBinaryExpression(binaryExpression)
+            val priority = getPriority(binaryExpression)
+            if (priority < getPriority(binaryExpression.left))
+                parenthesize(binaryExpression.left)
+            if (priority <= getPriority(binaryExpression.right))
+                parenthesize(binaryExpression.right)
+        }
+
         override fun visitEventControlExpression(eventControlExpression: EEventControlExpression) {
             super.visitEventControlExpression(eventControlExpression)
-            if (eventControlExpression.expression !is EParenthesizedExpression)
+            val priority = getPriority(eventControlExpression)
+            if (priority < getPriority(eventControlExpression.expression))
                 parenthesize(eventControlExpression.expression)
         }
     }
