@@ -25,6 +25,8 @@ object LockTop : Module() {
     val lock = Lock(
         clk = false,
         rst = false,
+        open = false,
+        close = false,
         state = nc()
     )
 }

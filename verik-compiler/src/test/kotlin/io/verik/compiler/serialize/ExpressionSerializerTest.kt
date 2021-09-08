@@ -287,6 +287,38 @@ internal class ExpressionSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `case statement`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                var x = 0
+                fun f() {
+                    when (x) {
+                        0 -> {}
+                        else -> {}
+                    }
+                }
+            """.trimIndent()
+        )
+        val expected = """
+            int x = 0;
+            
+            function void f();
+                case (x)
+                    0 : begin
+                    end
+                    default : begin
+                    end
+                endcase
+            endfunction : f
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
     fun `forever expression`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,

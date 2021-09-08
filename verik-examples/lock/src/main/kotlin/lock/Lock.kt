@@ -21,16 +21,23 @@ import io.verik.core.*
 class Lock(
     @In var clk: Boolean,
     @In var rst: Boolean,
+    @In var open: Boolean,
+    @In var close: Boolean,
     @Out var state: State
 ) : Module() {
 
     @Seq
     fun updateState() {
         on(posedge(clk)) {
-            state = if (rst) {
-                State.CLOSED
+            if (rst) {
+                state = State.CLOSED
             } else {
-                State.OPENED
+                when (state) {
+                    State.OPENED -> if (close) state = State.CLOSING
+                    State.OPENING -> state = State.OPENED
+                    State.CLOSED -> if (open) state = State.OPENING
+                    State.CLOSING -> state = State.CLOSED
+                }
             }
         }
     }

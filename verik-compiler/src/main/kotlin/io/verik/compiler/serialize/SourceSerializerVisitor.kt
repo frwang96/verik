@@ -23,6 +23,7 @@ import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
+import io.verik.compiler.ast.element.sv.ECaseStatement
 import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EEventControlExpression
@@ -182,6 +183,10 @@ class SourceSerializerVisitor(private val sourceSerializerContext: SourceSeriali
 
     override fun visitInlineIfExpression(inlineIfExpression: EInlineIfExpression) {
         ExpressionSerializer.serializeInlineIfExpression(inlineIfExpression, sourceSerializerContext)
+    }
+
+    override fun visitCaseStatement(caseStatement: ECaseStatement) {
+        ExpressionSerializer.serializeCaseStatement(caseStatement, sourceSerializerContext)
     }
 
     override fun visitForeverStatement(foreverStatement: EForeverStatement) {
