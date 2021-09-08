@@ -16,7 +16,6 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.common.EAbstractClass
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.sv.EModule
@@ -35,43 +34,40 @@ object ClassInterpreterStage : ProjectStage() {
     override val checkNormalization = true
 
     override fun process(projectContext: ProjectContext) {
-        val memberReplacer = MemberReplacer(projectContext)
-        val classInterpreterVisitor = ClassInterpreterVisitor(memberReplacer)
+        val referenceUpdater = ReferenceUpdater(projectContext)
+        val classInterpreterVisitor = ClassInterpreterVisitor(referenceUpdater)
         projectContext.project.accept(classInterpreterVisitor)
-        memberReplacer.updateReferences()
+        referenceUpdater.flush()
     }
 
-    class ClassInterpreterVisitor(private val memberReplacer: MemberReplacer) : TreeVisitor() {
+    class ClassInterpreterVisitor(private val referenceUpdater: ReferenceUpdater) : TreeVisitor() {
 
         override fun visitKtBasicClass(basicClass: EKtBasicClass) {
             super.visitKtBasicClass(basicClass)
-            memberReplacer.replace(basicClass, interpret(basicClass))
+            if (interpretModule(basicClass, referenceUpdater))
+                return
+            interpretBasicClass(basicClass, referenceUpdater)
         }
     }
 
-    private fun interpret(basicClass: EKtBasicClass): EAbstractClass {
-        return if (basicClass.toType().isSubtype(Core.Vk.MODULE.toType())) {
-            val ports = basicClass.primaryConstructor
-                ?.valueParameters
-                ?.mapNotNull { interpretPort(it) }
-                ?: listOf()
-            EModule(
-                basicClass.location,
-                basicClass.name,
-                basicClass.supertype,
-                basicClass.typeParameters,
-                basicClass.members,
-                ports
-            )
-        } else {
-            ESvBasicClass(
-                basicClass.location,
-                basicClass.name,
-                basicClass.supertype,
-                basicClass.typeParameters,
-                basicClass.members
-            )
-        }
+    private fun interpretModule(basicClass: EKtBasicClass, referenceUpdater: ReferenceUpdater): Boolean {
+        if (!basicClass.toType().isSubtype(Core.Vk.MODULE.toType()))
+            return false
+        val ports = basicClass.primaryConstructor
+            ?.valueParameters
+            ?.mapNotNull { interpretPort(it) }
+            ?: listOf()
+        val module = EModule(
+            basicClass.location,
+            basicClass.name,
+            basicClass.supertype,
+            basicClass.typeParameters,
+            basicClass.members,
+            ports
+        )
+        referenceUpdater.replace(basicClass, module)
+        basicClass.primaryConstructor?.let { referenceUpdater.update(it, module) }
+        return true
     }
 
     private fun interpretPort(valueParameter: EKtValueParameter): EPort? {
@@ -85,5 +81,18 @@ object ClassInterpreterStage : ProjectStage() {
                 null
             }
         }
+    }
+
+    private fun interpretBasicClass(basicClass: EKtBasicClass, referenceUpdater: ReferenceUpdater) {
+        referenceUpdater.replace(
+            basicClass,
+            ESvBasicClass(
+                basicClass.location,
+                basicClass.name,
+                basicClass.supertype,
+                basicClass.typeParameters,
+                basicClass.members
+            )
+        )
     }
 }

@@ -32,8 +32,8 @@ object EnumInterpreterStage : ProjectStage() {
     override val checkNormalization = true
 
     override fun process(projectContext: ProjectContext) {
-        val memberReplacer = MemberReplacer(projectContext)
-        val enumInterpreterVisitor = EnumInterpreterVisitor(memberReplacer)
+        val referenceUpdater = ReferenceUpdater(projectContext)
+        val enumInterpreterVisitor = EnumInterpreterVisitor(referenceUpdater)
         projectContext.project.accept(enumInterpreterVisitor)
         enumInterpreterVisitor.insertionEntries.forEach {
             if (it.parent is ResizableElementContainer)
@@ -41,7 +41,7 @@ object EnumInterpreterStage : ProjectStage() {
             else
                 Messages.INTERNAL_ERROR.on(it.enumEntry, "Count not insert ${it.enumEntry} into ${it.parent}")
         }
-        memberReplacer.updateReferences()
+        referenceUpdater.flush()
     }
 
     data class InsertionEntry(
@@ -49,7 +49,7 @@ object EnumInterpreterStage : ProjectStage() {
         val parent: EElement
     )
 
-    class EnumInterpreterVisitor(private val memberReplacer: MemberReplacer) : TreeVisitor() {
+    class EnumInterpreterVisitor(private val referenceUpdater: ReferenceUpdater) : TreeVisitor() {
 
         val insertionEntries = ArrayList<InsertionEntry>()
 
@@ -65,13 +65,13 @@ object EnumInterpreterStage : ProjectStage() {
                     basicClass.name,
                     entryReferences
                 )
-                memberReplacer.replace(basicClass, enum)
+                referenceUpdater.replace(basicClass, enum)
             }
         }
 
         override fun visitKtEnumEntry(enumEntry: EKtEnumEntry) {
             super.visitKtEnumEntry(enumEntry)
-            memberReplacer.replace(
+            referenceUpdater.replace(
                 enumEntry,
                 ESvEnumEntry(enumEntry.location, enumEntry.name, enumEntry.type)
             )

@@ -19,6 +19,7 @@ package io.verik.compiler.interpret
 import io.verik.compiler.ast.element.common.EAbstractValueParameter
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.ElementContainer
 import io.verik.compiler.ast.interfaces.Reference
@@ -27,9 +28,9 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 
-class MemberReplacer(val projectContext: ProjectContext) {
+class ReferenceUpdater(val projectContext: ProjectContext) {
 
-    private val replacementMap = HashMap<Declaration, Declaration>()
+    private val referenceMap = HashMap<Declaration, Declaration>()
 
     fun replace(oldElement: EElement, newElement: EElement) {
         val parent = oldElement.parentNotNull()
@@ -43,22 +44,31 @@ class MemberReplacer(val projectContext: ProjectContext) {
         else if (newElement !is Declaration)
             Messages.INTERNAL_ERROR.on(newElement, "Declaration expected but got: $newElement")
         else
-            replacementMap[oldElement] = newElement
+            referenceMap[oldElement] = newElement
     }
 
-    fun updateReferences() {
-        val referenceUpdateVisitor = ReferenceUpdateVisitor(replacementMap)
-        projectContext.project.accept(referenceUpdateVisitor)
-        replacementMap.clear()
+    fun update(oldDeclaration: Declaration, newDeclaration: Declaration) {
+        referenceMap[oldDeclaration] = newDeclaration
     }
 
-    class ReferenceUpdateVisitor(private val replacementMap: Map<Declaration, Declaration>) : TreeVisitor() {
+    fun flush() {
+        val referenceUpdaterVisitor = ReferenceUpdaterVisitor(referenceMap)
+        projectContext.project.accept(referenceUpdaterVisitor)
+        referenceMap.clear()
+    }
+
+    class ReferenceUpdaterVisitor(private val referenceMap: Map<Declaration, Declaration>) : TreeVisitor() {
 
         private fun updateTypeReferences(type: Type) {
-            val reference = replacementMap[type.reference]
+            val reference = referenceMap[type.reference]
             if (reference != null)
                 type.reference = reference
             type.arguments.forEach { updateTypeReferences(it) }
+        }
+
+        override fun visitPrimaryConstructor(primaryConstructor: EPrimaryConstructor) {
+            super.visitPrimaryConstructor(primaryConstructor)
+            updateTypeReferences(primaryConstructor.type)
         }
 
         override fun visitAbstractValueParameter(abstractValueParameter: EAbstractValueParameter) {
@@ -70,7 +80,7 @@ class MemberReplacer(val projectContext: ProjectContext) {
             super.visitExpression(expression)
             updateTypeReferences(expression.type)
             if (expression is Reference) {
-                val reference = replacementMap[expression.reference]
+                val reference = referenceMap[expression.reference]
                 if (reference != null)
                     expression.reference = reference
             }

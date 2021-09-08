@@ -135,6 +135,11 @@ object Messages {
         "Could not determine directionality of port: $0"
     )
 
+    val INPUT_PORT_NOT_CONNECTED = MessageTemplate1<String>(
+        Severity.ERROR,
+        "Input port not connected: $0"
+    )
+
 //  MID TRANSFORM  /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val INJECTED_EXPRESSION_NOT_LITERAL = MessageTemplate0(

@@ -41,17 +41,17 @@ object FunctionInterpreterStage : ProjectStage() {
     override val checkNormalization = true
 
     override fun process(projectContext: ProjectContext) {
-        val memberReplacer = MemberReplacer(projectContext)
-        val functionInterpreterVisitor = FunctionInterpreterVisitor(memberReplacer)
+        val referenceUpdater = ReferenceUpdater(projectContext)
+        val functionInterpreterVisitor = FunctionInterpreterVisitor(referenceUpdater)
         projectContext.project.accept(functionInterpreterVisitor)
-        memberReplacer.updateReferences()
+        referenceUpdater.flush()
     }
 
-    class FunctionInterpreterVisitor(private val memberReplacer: MemberReplacer) : TreeVisitor() {
+    class FunctionInterpreterVisitor(private val referenceUpdater: ReferenceUpdater) : TreeVisitor() {
 
         override fun visitKtFunction(function: EKtFunction) {
             super.visitKtFunction(function)
-            memberReplacer.replace(function, interpret(function))
+            referenceUpdater.replace(function, interpret(function))
         }
     }
 
