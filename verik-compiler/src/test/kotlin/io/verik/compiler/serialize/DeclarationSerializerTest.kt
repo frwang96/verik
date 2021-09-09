@@ -103,6 +103,25 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `serialize struct`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                class S(val x: Boolean) : Struct()
+            """.trimIndent()
+        )
+        val expected = """
+            typedef struct packed {
+                logic x;
+            } S;
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
     fun `serialize function`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,

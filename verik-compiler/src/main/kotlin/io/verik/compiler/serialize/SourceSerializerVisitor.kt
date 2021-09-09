@@ -36,6 +36,7 @@ import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EModuleInstantiation
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.EStringExpression
+import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
@@ -103,6 +104,10 @@ class SourceSerializerVisitor(private val sourceSerializerContext: SourceSeriali
 
     override fun visitEnum(enum: EEnum) {
         DeclarationSerializer.serializeEnum(enum, sourceSerializerContext)
+    }
+
+    override fun visitStruct(struct: EStruct) {
+        DeclarationSerializer.serializeStruct(struct, sourceSerializerContext)
     }
 
     override fun visitSvFunction(function: ESvFunction) {

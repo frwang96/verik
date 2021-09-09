@@ -21,6 +21,7 @@ import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EModule
+import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvFunction
@@ -78,6 +79,7 @@ object FileSplitterStage : ProjectStage() {
                 is EModule -> componentMembers.add(it)
                 is ESvBasicClass -> packageMembers.add(it)
                 is EEnum -> packageMembers.add(it)
+                is EStruct -> packageMembers.add(it)
                 is ESvFunction -> packageMembers.add(it)
                 is ESvProperty -> packageMembers.add(it)
                 is ESvEnumEntry -> packageMembers.add(it)

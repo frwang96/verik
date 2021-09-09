@@ -23,6 +23,7 @@ import io.verik.compiler.ast.element.sv.EInitialBlock
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EModuleInstantiation
 import io.verik.compiler.ast.element.sv.EPort
+import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvFunction
@@ -71,6 +72,16 @@ object DeclarationSerializer {
             }
         }
         sourceSerializerContext.appendLine("} ${enum.name};")
+    }
+
+    fun serializeStruct(struct: EStruct, sourceSerializerContext: SourceSerializerContext) {
+        sourceSerializerContext.appendLine("typedef struct packed {")
+        sourceSerializerContext.indent {
+            struct.properties.forEach {
+                sourceSerializerContext.serializeAsStatement(it)
+            }
+        }
+        sourceSerializerContext.appendLine("} ${struct.name};")
     }
 
     fun serializeSvFunction(function: ESvFunction, sourceSerializerContext: SourceSerializerContext) {
