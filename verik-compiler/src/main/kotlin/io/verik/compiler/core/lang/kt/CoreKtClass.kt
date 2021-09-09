@@ -22,12 +22,12 @@ import io.verik.compiler.core.common.CoreScope
 
 object CoreKtClass : CoreScope(CorePackage.KT) {
 
-    val ANY = CoreClassDeclaration(parent, "Any", null)
-    val NOTHING = CoreClassDeclaration(parent, "Nothing", null)
-    val FUNCTION = CoreClassDeclaration(parent, "Function", null)
-    val UNIT = CoreClassDeclaration(parent, "Unit", ANY)
-    val INT = CoreClassDeclaration(parent, "Int", ANY)
-    val BOOLEAN = CoreClassDeclaration(parent, "Boolean", ANY)
-    val STRING = CoreClassDeclaration(parent, "String", ANY)
-    val ENUM = CoreClassDeclaration(parent, "Enum", ANY)
+    val C_ANY = CoreClassDeclaration(parent, "Any", null)
+    val C_NOTHING = CoreClassDeclaration(parent, "Nothing", null)
+    val C_FUNCTION = CoreClassDeclaration(parent, "Function", null)
+    val C_UNIT = CoreClassDeclaration(parent, "Unit", C_ANY)
+    val C_INT = CoreClassDeclaration(parent, "Int", C_ANY)
+    val C_BOOLEAN = CoreClassDeclaration(parent, "Boolean", C_ANY)
+    val C_STRING = CoreClassDeclaration(parent, "String", C_ANY)
+    val C_ENUM = CoreClassDeclaration(parent, "Enum", C_ANY)
 }

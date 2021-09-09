@@ -51,7 +51,7 @@ object ClassInterpreterStage : ProjectStage() {
     }
 
     private fun interpretModule(basicClass: EKtBasicClass, referenceUpdater: ReferenceUpdater): Boolean {
-        if (!basicClass.toType().isSubtype(Core.Vk.MODULE.toType()))
+        if (!basicClass.toType().isSubtype(Core.Vk.C_MODULE.toType()))
             return false
         val ports = basicClass.primaryConstructor
             ?.valueParameters

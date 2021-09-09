@@ -20,9 +20,9 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.core.common.CoreScope
 
-object CoreKtInt : CoreScope(Core.Kt.INT) {
+object CoreKtInt : CoreScope(Core.Kt.C_INT) {
 
-    val TIMES_INT = CoreKtFunctionDeclaration(parent, "times", Core.Kt.INT)
-    val PLUS_INT = CoreKtFunctionDeclaration(parent, "plus", Core.Kt.INT)
-    val MINUS_INT = CoreKtFunctionDeclaration(parent, "minus", Core.Kt.INT)
+    val F_TIMES_INT = CoreKtFunctionDeclaration(parent, "times", Core.Kt.C_INT)
+    val F_PLUS_INT = CoreKtFunctionDeclaration(parent, "plus", Core.Kt.C_INT)
+    val F_MINUS_INT = CoreKtFunctionDeclaration(parent, "minus", Core.Kt.C_INT)
 }

@@ -30,7 +30,7 @@ class EEventExpression(
     var edgeType: EdgeType
 ) : EAbstractExpressionContainer() {
 
-    override var type = Core.Vk.EVENT.toType()
+    override var type = Core.Vk.C_EVENT.toType()
 
     override val serializationType = SvSerializationType.EXPRESSION
 

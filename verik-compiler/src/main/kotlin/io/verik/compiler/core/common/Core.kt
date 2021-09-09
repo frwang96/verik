@@ -29,35 +29,35 @@ object Core {
 
     object Kt : CoreScope(CorePackage.KT) {
 
-        val ANY = CoreKtClass.ANY
-        val NOTHING = CoreKtClass.NOTHING
-        val FUNCTION = CoreKtClass.FUNCTION
-        val UNIT = CoreKtClass.UNIT
-        val INT = CoreKtClass.INT
-        val BOOLEAN = CoreKtClass.BOOLEAN
-        val STRING = CoreKtClass.STRING
-        val ENUM = CoreKtClass.ENUM
+        val C_ANY = CoreKtClass.C_ANY
+        val C_NOTHING = CoreKtClass.C_NOTHING
+        val C_FUNCTION = CoreKtClass.C_FUNCTION
+        val C_UNIT = CoreKtClass.C_UNIT
+        val C_INT = CoreKtClass.C_INT
+        val C_BOOLEAN = CoreKtClass.C_BOOLEAN
+        val C_STRING = CoreKtClass.C_STRING
+        val C_ENUM = CoreKtClass.C_ENUM
 
-        object Int : CoreScope(INT) {
+        object Int : CoreScope(C_INT) {
 
-            val TIMES_INT = CoreKtInt.TIMES_INT
-            val PLUS_INT = CoreKtInt.PLUS_INT
-            val MINUS_INT = CoreKtInt.MINUS_INT
+            val F_TIMES_INT = CoreKtInt.F_TIMES_INT
+            val F_PLUS_INT = CoreKtInt.F_PLUS_INT
+            val F_MINUS_INT = CoreKtInt.F_MINUS_INT
         }
 
-        object Boolean : CoreScope(BOOLEAN) {
+        object Boolean : CoreScope(C_BOOLEAN) {
 
-            val NOT = CoreKtBoolean.NOT
+            val F_NOT = CoreKtBoolean.F_NOT
         }
 
         object Io : CoreScope(CorePackage.KT_IO) {
 
-            val PRINT = CoreKtIo.PRINT
-            val PRINT_ANY = CoreKtIo.PRINT_ANY
-            val PRINT_INT = CoreKtIo.PRINT_INT
-            val PRINTLN = CoreKtIo.PRINTLN
-            val PRINTLN_ANY = CoreKtIo.PRINTLN_ANY
-            val PRINTLN_INT = CoreKtIo.PRINTLN_INT
+            val F_PRINT = CoreKtIo.F_PRINT
+            val F_PRINT_ANY = CoreKtIo.F_PRINT_ANY
+            val F_PRINT_INT = CoreKtIo.F_PRINT_INT
+            val F_PRINTLN = CoreKtIo.F_PRINTLN
+            val F_PRINTLN_ANY = CoreKtIo.F_PRINTLN_ANY
+            val F_PRINTLN_INT = CoreKtIo.F_PRINTLN_INT
         }
     }
 
@@ -67,46 +67,48 @@ object Core {
             return CoreCardinalConstantDeclaration(value)
         }
 
-        val UBIT = CoreVkClass.UBIT
-        val SBIT = CoreVkClass.SBIT
-        val STRUCT = CoreVkClass.STRUCT
-        val CLASS = CoreVkClass.CLASS
-        val EVENT = CoreVkClass.EVENT
-        val COMPONENT = CoreVkClass.COMPONENT
-        val MODULE = CoreVkClass.MODULE
+        val C_UBIT = CoreVkClass.C_UBIT
+        val C_SBIT = CoreVkClass.C_SBIT
+        val C_STRUCT = CoreVkClass.C_STRUCT
+        val C_COMPONENT = CoreVkClass.C_COMPONENT
+        val C_MODULE = CoreVkClass.C_MODULE
+        val C_TIME = CoreVkClass.C_TIME
+        val C_EVENT = CoreVkClass.C_EVENT
 
-        val CARDINAL = CoreCardinalBaseDeclaration
-        val ADD = CoreVk.ADD
-        val INC = CoreVk.INC
-        val MAX = CoreVk.MAX
+        val N_CARDINAL = CoreCardinalBaseDeclaration
+        val N_ADD = CoreVk.N_ADD
+        val N_INC = CoreVk.N_INC
+        val N_MAX = CoreVk.N_MAX
 
-        val NC = CoreVk.NC
-        val U_INT = CoreVk.U_INT
-        val RANDOM = CoreVk.RANDOM
-        val RANDOM_INT = CoreVk.RANDOM_INT
-        val FOREVER_FUNCTION = CoreVk.FOREVER_FUNCTION
-        val ON_EVENT_FUNCTION = CoreVk.ON_EVENT_FUNCTION
-        val POSEDGE_BOOLEAN = CoreVk.POSEDGE_BOOLEAN
-        val NEGEDGE_BOOLEAN = CoreVk.NEGEDGE_BOOLEAN
-        val WAIT_EVENT = CoreVk.WAIT_EVENT
-        val DELAY_INT = CoreVk.DELAY_INT
-        val FINISH = CoreVk.FINISH
-        val SV_STRING = CoreVk.SV_STRING
+        val F_NC = CoreVk.F_NC
+        val F_U_INT = CoreVk.F_U_INT
+        val F_RANDOM = CoreVk.F_RANDOM
+        val F_RANDOM_INT = CoreVk.F_RANDOM_INT
+        val F_FOREVER_FUNCTION = CoreVk.F_FOREVER_FUNCTION
+        val F_ON_EVENT_FUNCTION = CoreVk.F_ON_EVENT_FUNCTION
+        val F_POSEDGE_BOOLEAN = CoreVk.F_POSEDGE_BOOLEAN
+        val F_NEGEDGE_BOOLEAN = CoreVk.F_NEGEDGE_BOOLEAN
+        val F_WAIT_EVENT = CoreVk.F_WAIT_EVENT
+        val F_DELAY_INT = CoreVk.F_DELAY_INT
+        val F_TIME = CoreVk.F_TIME
+        val F_FINISH = CoreVk.F_FINISH
+        val F_SV_STRING = CoreVk.F_SV_STRING
 
-        object Ubit : CoreScope(UBIT) {
+        object Ubit : CoreScope(C_UBIT) {
 
-            val INV = CoreVkUbit.INV
-            val PLUS_UBIT = CoreVkUbit.PLUS_UBIT
-            val EXT = CoreVkUbit.EXT
+            val F_INV = CoreVkUbit.F_INV
+            val F_PLUS_UBIT = CoreVkUbit.F_PLUS_UBIT
+            val F_EXT = CoreVkUbit.F_EXT
         }
     }
 
     object Sv : CoreScope(CorePackage.SV) {
 
-        val DISPLAY = CoreSv.DISPLAY
-        val WRITE = CoreSv.WRITE
-        val SFORMATF = CoreSv.SFORMATF
-        val RANDOM = CoreSv.RANDOM
-        val FINISH = CoreSv.FINISH
+        val F_DISPLAY = CoreSv.F_DISPLAY
+        val F_WRITE = CoreSv.F_WRITE
+        val F_SFORMATF = CoreSv.F_SFORMATF
+        val F_RANDOM = CoreSv.F_RANDOM
+        val F_TIME = CoreSv.F_TIME
+        val F_FINISH = CoreSv.F_FINISH
     }
 }

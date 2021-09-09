@@ -26,7 +26,7 @@ class ENullExpression(
     override val location: SourceLocation
 ) : EExpression() {
 
-    override var type = Core.Kt.UNIT.toType()
+    override var type = Core.Kt.C_UNIT.toType()
 
     override val serializationType = SvSerializationType.OTHER
 

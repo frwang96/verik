@@ -55,14 +55,14 @@ object BitConstantTransformerStage : ProjectStage() {
 
             return EConstantExpression(
                 expression.location,
-                Core.Vk.UBIT.toType(Core.Vk.cardinalOf(width).toType()),
+                Core.Vk.C_UBIT.toType(Core.Vk.cardinalOf(width).toType()),
                 valueStringDecorated
             )
         }
 
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
-            if (callExpression.reference == Core.Vk.U_INT) {
+            if (callExpression.reference == Core.Vk.F_U_INT) {
                 val expression = callExpression.valueArguments[0]
                 if (expression is EConstantExpression) {
                     callExpression.replace(getBitConstantExpression(expression))

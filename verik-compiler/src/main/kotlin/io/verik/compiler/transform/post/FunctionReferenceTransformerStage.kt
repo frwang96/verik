@@ -31,14 +31,15 @@ object FunctionReferenceTransformerStage : ProjectStage() {
     private val functionReferenceMap = HashMap<CoreKtFunctionDeclaration, CoreSvFunctionDeclaration>()
 
     init {
-        functionReferenceMap[Core.Kt.Io.PRINT] = Core.Sv.WRITE
-        functionReferenceMap[Core.Kt.Io.PRINT_ANY] = Core.Sv.WRITE
-        functionReferenceMap[Core.Kt.Io.PRINT_INT] = Core.Sv.WRITE
-        functionReferenceMap[Core.Kt.Io.PRINTLN] = Core.Sv.DISPLAY
-        functionReferenceMap[Core.Kt.Io.PRINTLN_ANY] = Core.Sv.DISPLAY
-        functionReferenceMap[Core.Kt.Io.PRINTLN_INT] = Core.Sv.DISPLAY
-        functionReferenceMap[Core.Vk.RANDOM] = Core.Sv.RANDOM
-        functionReferenceMap[Core.Vk.FINISH] = Core.Sv.FINISH
+        functionReferenceMap[Core.Kt.Io.F_PRINT] = Core.Sv.F_WRITE
+        functionReferenceMap[Core.Kt.Io.F_PRINT_ANY] = Core.Sv.F_WRITE
+        functionReferenceMap[Core.Kt.Io.F_PRINT_INT] = Core.Sv.F_WRITE
+        functionReferenceMap[Core.Kt.Io.F_PRINTLN] = Core.Sv.F_DISPLAY
+        functionReferenceMap[Core.Kt.Io.F_PRINTLN_ANY] = Core.Sv.F_DISPLAY
+        functionReferenceMap[Core.Kt.Io.F_PRINTLN_INT] = Core.Sv.F_DISPLAY
+        functionReferenceMap[Core.Vk.F_RANDOM] = Core.Sv.F_RANDOM
+        functionReferenceMap[Core.Vk.F_TIME] = Core.Sv.F_TIME
+        functionReferenceMap[Core.Vk.F_FINISH] = Core.Sv.F_FINISH
     }
 
     override fun process(projectContext: ProjectContext) {

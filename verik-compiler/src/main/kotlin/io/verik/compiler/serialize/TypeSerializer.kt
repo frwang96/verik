@@ -37,11 +37,11 @@ object TypeSerializer {
                 "${basicPackage.name}::${reference.name}"
             }
             is EModule -> reference.name
-            Core.Kt.UNIT -> "void"
-            Core.Kt.INT -> "int"
-            Core.Kt.BOOLEAN -> "logic"
-            Core.Kt.STRING -> "string"
-            Core.Vk.UBIT -> "logic [${type.asBitWidth(element) - 1}:0]"
+            Core.Kt.C_UNIT -> "void"
+            Core.Kt.C_INT -> "int"
+            Core.Kt.C_BOOLEAN -> "logic"
+            Core.Kt.C_STRING -> "string"
+            Core.Vk.C_UBIT -> "logic [${type.asBitWidth(element) - 1}:0]"
             else -> {
                 Messages.INTERNAL_ERROR.on(element, "Unable to serialize type: $type")
                 "void"

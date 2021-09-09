@@ -24,11 +24,11 @@ import io.verik.compiler.specialize.MaxBitWidthTypeConstraint
 import io.verik.compiler.specialize.TypeConstraint
 import io.verik.compiler.specialize.TypeParameterTypeConstraint
 
-object CoreVkUbit : CoreScope(Core.Vk.UBIT) {
+object CoreVkUbit : CoreScope(Core.Vk.C_UBIT) {
 
-    val INV = CoreKtFunctionDeclaration(parent, "inv")
+    val F_INV = CoreKtFunctionDeclaration(parent, "inv")
 
-    val PLUS_UBIT = object : CoreKtFunctionDeclaration(parent, "plus", Core.Vk.UBIT) {
+    val F_PLUS_UBIT = object : CoreKtFunctionDeclaration(parent, "plus", Core.Vk.C_UBIT) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -41,7 +41,7 @@ object CoreVkUbit : CoreScope(Core.Vk.UBIT) {
         }
     }
 
-    val EXT = object : CoreKtFunctionDeclaration(parent, "ext") {
+    val F_EXT = object : CoreKtFunctionDeclaration(parent, "ext") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(TypeParameterTypeConstraint(callExpression))

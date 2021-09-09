@@ -36,7 +36,7 @@ class EFunctionLiteralExpression(
         body.parent = this
     }
 
-    override var type = Core.Kt.FUNCTION.toType()
+    override var type = Core.Kt.C_FUNCTION.toType()
 
     override fun accept(visitor: Visitor) {
         visitor.visitFunctionLiteralExpression(this)

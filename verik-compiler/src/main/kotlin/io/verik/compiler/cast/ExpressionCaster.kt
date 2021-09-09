@@ -154,7 +154,7 @@ object ExpressionCaster {
         }
         val body = EKtBlockExpression(
             location,
-            Core.Kt.FUNCTION.toType(),
+            Core.Kt.C_FUNCTION.toType(),
             ArrayList(statements)
         )
         return EFunctionLiteralExpression(location, body)

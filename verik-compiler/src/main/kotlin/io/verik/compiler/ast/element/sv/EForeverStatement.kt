@@ -26,7 +26,7 @@ class EForeverStatement(
     override var body: EExpression
 ) : ELoopStatement() {
 
-    override var type = Core.Kt.UNIT.toType()
+    override var type = Core.Kt.C_UNIT.toType()
 
     init {
         body.parent = this

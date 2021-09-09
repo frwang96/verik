@@ -32,7 +32,7 @@ object UnaryExpressionTransformerStage : ProjectStage() {
     private val operatorKindMap = HashMap<CoreKtFunctionDeclaration, SvUnaryOperatorKind>()
 
     init {
-        operatorKindMap[Core.Kt.Boolean.NOT] = SvUnaryOperatorKind.EXCL
+        operatorKindMap[Core.Kt.Boolean.F_NOT] = SvUnaryOperatorKind.EXCL
     }
 
     override fun process(projectContext: ProjectContext) {
