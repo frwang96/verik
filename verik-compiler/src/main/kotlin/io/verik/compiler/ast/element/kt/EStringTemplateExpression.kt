@@ -39,7 +39,7 @@ class EStringTemplateExpression(
         }
     }
 
-    override var type = Core.Kt.STRING.toType()
+    override var type = Core.Kt.C_STRING.toType()
 
     override fun accept(visitor: Visitor) {
         visitor.visitStringTemplateExpression(this)

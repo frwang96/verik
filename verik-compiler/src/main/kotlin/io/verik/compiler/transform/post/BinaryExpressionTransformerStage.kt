@@ -32,10 +32,10 @@ object BinaryExpressionTransformerStage : ProjectStage() {
     private val operatorKindMap = HashMap<CoreKtFunctionDeclaration, SvBinaryOperatorKind>()
 
     init {
-        operatorKindMap[Core.Kt.Int.PLUS_INT] = SvBinaryOperatorKind.PLUS
-        operatorKindMap[Core.Kt.Int.MINUS_INT] = SvBinaryOperatorKind.MINUS
-        operatorKindMap[Core.Kt.Int.TIMES_INT] = SvBinaryOperatorKind.MUL
-        operatorKindMap[Core.Vk.Ubit.PLUS_UBIT] = SvBinaryOperatorKind.PLUS
+        operatorKindMap[Core.Kt.Int.F_PLUS_INT] = SvBinaryOperatorKind.PLUS
+        operatorKindMap[Core.Kt.Int.F_MINUS_INT] = SvBinaryOperatorKind.MINUS
+        operatorKindMap[Core.Kt.Int.F_TIMES_INT] = SvBinaryOperatorKind.MUL
+        operatorKindMap[Core.Vk.Ubit.F_PLUS_UBIT] = SvBinaryOperatorKind.PLUS
     }
 
     override fun process(projectContext: ProjectContext) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2020 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.lang.kt
-
-import io.verik.compiler.core.common.Core
-import io.verik.compiler.core.common.CoreKtFunctionDeclaration
-import io.verik.compiler.core.common.CoreScope
-
-object CoreKtInt : CoreScope(Core.Kt.C_INT) {
-
-    val F_TIMES_INT = CoreKtFunctionDeclaration(parent, "times", Core.Kt.C_INT)
-    val F_PLUS_INT = CoreKtFunctionDeclaration(parent, "plus", Core.Kt.C_INT)
-    val F_MINUS_INT = CoreKtFunctionDeclaration(parent, "minus", Core.Kt.C_INT)
+verik {
+    top = "MultiplierTb"
+    debug = true
 }

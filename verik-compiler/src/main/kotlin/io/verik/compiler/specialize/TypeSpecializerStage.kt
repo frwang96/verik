@@ -59,11 +59,11 @@ object TypeSpecializerStage : ProjectStage() {
         ) {
             val arguments = type.arguments.map { it.asCardinalValue(element) }
             val value = when (reference) {
-                Core.Vk.ADD ->
+                Core.Vk.N_ADD ->
                     arguments[0] + arguments[1]
-                Core.Vk.INC ->
+                Core.Vk.N_INC ->
                     arguments[0] + 1
-                Core.Vk.MAX ->
+                Core.Vk.N_MAX ->
                     max(arguments[0], arguments[1])
                 else -> {
                     Messages.INTERNAL_ERROR.on(element, "Unrecognized cardinal function: $reference")

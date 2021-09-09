@@ -16,28 +16,27 @@
 
 package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.interfaces.Declaration
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
 
-class EForeverStatement(
+class EStruct(
     override val location: SourceLocation,
-    override var body: EExpression
-) : ELoopStatement() {
-
-    override var type = Core.Kt.C_UNIT.toType()
+    override var name: String,
+    val properties: List<ESvProperty>
+) : EElement(), Declaration {
 
     init {
-        body.parent = this
+        properties.forEach { it.parent = this }
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitForeverStatement(this)
+        visitor.visitStruct(this)
     }
 
-    override fun copy(): EExpression {
-        val copyBodyExpression = body.copy()
-        return EForeverStatement(location, copyBodyExpression)
+    override fun acceptChildren(visitor: TreeVisitor) {
+        properties.forEach { it.accept(visitor) }
     }
 }

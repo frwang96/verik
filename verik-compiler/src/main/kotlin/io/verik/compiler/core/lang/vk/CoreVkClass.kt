@@ -23,10 +23,11 @@ import io.verik.compiler.core.common.CoreScope
 
 object CoreVkClass : CoreScope(CorePackage.VK) {
 
-    val UBIT = CoreClassDeclaration(parent, "Ubit", Core.Kt.ANY)
-    val SBIT = CoreClassDeclaration(parent, "Sbit", Core.Kt.ANY)
-    val CLASS = CoreClassDeclaration(parent, "Class", Core.Kt.ANY)
-    val EVENT = CoreClassDeclaration(parent, "Event", Core.Kt.ANY)
-    val COMPONENT = CoreClassDeclaration(parent, "Component", Core.Kt.ANY)
-    val MODULE = CoreClassDeclaration(parent, "Module", COMPONENT)
+    val C_UBIT = CoreClassDeclaration(parent, "Ubit", Core.Kt.C_ANY)
+    val C_SBIT = CoreClassDeclaration(parent, "Sbit", Core.Kt.C_ANY)
+    val C_STRUCT = CoreClassDeclaration(parent, "Struct", Core.Kt.C_ANY)
+    val C_COMPONENT = CoreClassDeclaration(parent, "Component", Core.Kt.C_ANY)
+    val C_MODULE = CoreClassDeclaration(parent, "Module", C_COMPONENT)
+    val C_TIME = CoreClassDeclaration(parent, "Time", Core.Kt.C_ANY)
+    val C_EVENT = CoreClassDeclaration(parent, "Event", Core.Kt.C_ANY)
 }

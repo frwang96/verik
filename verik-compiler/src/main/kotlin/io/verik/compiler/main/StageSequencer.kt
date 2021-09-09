@@ -35,10 +35,10 @@ import io.verik.compiler.interpret.EnumInterpreterStage
 import io.verik.compiler.interpret.FileSplitterStage
 import io.verik.compiler.interpret.FunctionInterpreterStage
 import io.verik.compiler.interpret.PropertyInterpreterStage
-import io.verik.compiler.serialize.ConfigFileSerializerStage
-import io.verik.compiler.serialize.OrderFileSerializerStage
-import io.verik.compiler.serialize.PackageFileSerializerStage
-import io.verik.compiler.serialize.SourceSerializerStage
+import io.verik.compiler.serialize.general.ConfigFileSerializerStage
+import io.verik.compiler.serialize.general.OrderFileSerializerStage
+import io.verik.compiler.serialize.general.PackageFileSerializerStage
+import io.verik.compiler.serialize.source.SourceSerializerStage
 import io.verik.compiler.specialize.DeclarationSpecializerStage
 import io.verik.compiler.specialize.TypeCheckerStage
 import io.verik.compiler.specialize.TypeResolvedCheckerStage

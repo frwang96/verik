@@ -38,9 +38,10 @@ object StringTemplateExpressionReducerStage : ProjectStage() {
 
     private fun getFormatSpecifier(expression: EExpression): String {
         return when (expression.type.reference) {
-            Core.Kt.BOOLEAN -> "%b"
-            Core.Kt.INT -> "%d"
-            Core.Vk.UBIT -> "%h"
+            Core.Kt.C_BOOLEAN -> "%b"
+            Core.Kt.C_INT -> "%d"
+            Core.Vk.C_UBIT -> "%h"
+            Core.Vk.C_TIME -> "%0t"
             else -> {
                 Messages.INTERNAL_ERROR.on(expression, "Unable to get format specifier of type: ${expression.type}")
                 ""
@@ -89,7 +90,7 @@ object StringTemplateExpressionReducerStage : ProjectStage() {
                 val callExpression = EKtCallExpression(
                     stringTemplateExpression.location,
                     stringTemplateExpression.type,
-                    Core.Sv.SFORMATF,
+                    Core.Sv.F_SFORMATF,
                     null,
                     valueArguments,
                     arrayListOf()

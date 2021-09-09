@@ -97,7 +97,7 @@ object TypeConstraintResolver {
             if (leftResolved && rightResolved) {
                 val leftType = typeConstraint.left.type.arguments[0].copy()
                 val rightType = typeConstraint.right.type.arguments[0].copy()
-                typeConstraint.outer.type.arguments[0] = Core.Vk.MAX.toType(leftType, rightType)
+                typeConstraint.outer.type.arguments[0] = Core.Vk.N_MAX.toType(leftType, rightType)
                 true
             } else {
                 false

@@ -20,7 +20,7 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.core.common.CoreScope
 
-object CoreKtBoolean : CoreScope(Core.Kt.BOOLEAN) {
+object CoreKtBoolean : CoreScope(Core.Kt.C_BOOLEAN) {
 
-    val NOT = CoreKtFunctionDeclaration(parent, "not")
+    val F_NOT = CoreKtFunctionDeclaration(parent, "not")
 }

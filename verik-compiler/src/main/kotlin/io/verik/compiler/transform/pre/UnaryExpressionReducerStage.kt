@@ -34,7 +34,7 @@ object UnaryExpressionReducerStage : ProjectStage() {
     private val referenceMap = HashMap<ReducerEntry, CoreKtFunctionDeclaration>()
 
     init {
-        referenceMap[ReducerEntry(Core.Kt.BOOLEAN, KtUnaryOperatorKind.EXCL)] = Core.Kt.Boolean.NOT
+        referenceMap[ReducerEntry(Core.Kt.C_BOOLEAN, KtUnaryOperatorKind.EXCL)] = Core.Kt.Boolean.F_NOT
     }
 
     override fun process(projectContext: ProjectContext) {

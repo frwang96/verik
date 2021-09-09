@@ -24,23 +24,24 @@ import io.verik.compiler.core.common.CoreScope
 
 object CoreVk : CoreScope(CorePackage.VK) {
 
-    val ADD = CoreCardinalFunctionDeclaration("ADD")
-    val INC = CoreCardinalFunctionDeclaration("INC")
-    val MAX = CoreCardinalFunctionDeclaration("MAX")
+    val N_ADD = CoreCardinalFunctionDeclaration("ADD")
+    val N_INC = CoreCardinalFunctionDeclaration("INC")
+    val N_MAX = CoreCardinalFunctionDeclaration("MAX")
 
-    val NC = CoreKtFunctionDeclaration(parent, "nc")
-    val U_INT = CoreKtFunctionDeclaration(parent, "u", Core.Kt.INT)
+    val F_NC = CoreKtFunctionDeclaration(parent, "nc")
+    val F_U_INT = CoreKtFunctionDeclaration(parent, "u", Core.Kt.C_INT)
 
-    val RANDOM = CoreKtFunctionDeclaration(parent, "random")
-    val RANDOM_INT = CoreKtFunctionDeclaration(parent, "random", Core.Kt.INT)
-    val FOREVER_FUNCTION = CoreKtFunctionDeclaration(parent, "forever", Core.Kt.FUNCTION)
-    val ON_EVENT_FUNCTION = CoreKtFunctionDeclaration(parent, "on", Core.Vk.EVENT, Core.Kt.FUNCTION)
+    val F_RANDOM = CoreKtFunctionDeclaration(parent, "random")
+    val F_RANDOM_INT = CoreKtFunctionDeclaration(parent, "random", Core.Kt.C_INT)
+    val F_FOREVER_FUNCTION = CoreKtFunctionDeclaration(parent, "forever", Core.Kt.C_FUNCTION)
+    val F_ON_EVENT_FUNCTION = CoreKtFunctionDeclaration(parent, "on", Core.Vk.C_EVENT, Core.Kt.C_FUNCTION)
 
-    val POSEDGE_BOOLEAN = CoreKtFunctionDeclaration(parent, "posedge", Core.Kt.BOOLEAN)
-    val NEGEDGE_BOOLEAN = CoreKtFunctionDeclaration(parent, "negedge", Core.Kt.BOOLEAN)
-    val WAIT_EVENT = CoreKtFunctionDeclaration(parent, "wait", Core.Vk.EVENT)
-    val DELAY_INT = CoreKtFunctionDeclaration(parent, "delay", Core.Kt.INT)
-    val FINISH = CoreKtFunctionDeclaration(parent, "finish")
+    val F_POSEDGE_BOOLEAN = CoreKtFunctionDeclaration(parent, "posedge", Core.Kt.C_BOOLEAN)
+    val F_NEGEDGE_BOOLEAN = CoreKtFunctionDeclaration(parent, "negedge", Core.Kt.C_BOOLEAN)
+    val F_WAIT_EVENT = CoreKtFunctionDeclaration(parent, "wait", Core.Vk.C_EVENT)
+    val F_DELAY_INT = CoreKtFunctionDeclaration(parent, "delay", Core.Kt.C_INT)
+    val F_TIME = CoreKtFunctionDeclaration(parent, "time")
+    val F_FINISH = CoreKtFunctionDeclaration(parent, "finish")
 
-    val SV_STRING = CoreKtFunctionDeclaration(parent, "sv", Core.Kt.STRING)
+    val F_SV_STRING = CoreKtFunctionDeclaration(parent, "sv", Core.Kt.C_STRING)
 }

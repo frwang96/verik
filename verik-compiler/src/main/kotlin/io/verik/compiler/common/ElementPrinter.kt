@@ -57,6 +57,7 @@ import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EModuleInstantiation
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.EStringExpression
+import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
@@ -142,6 +143,13 @@ class ElementPrinter : Visitor() {
         build("Enum") {
             build(enum.name)
             build(enum.entryReferences.map { it.name })
+        }
+    }
+
+    override fun visitStruct(struct: EStruct) {
+        build("Struct") {
+            build(struct.name)
+            build(struct.properties)
         }
     }
 

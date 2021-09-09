@@ -30,7 +30,7 @@ object Count : Module() {
     @Seq
     fun update() {
         on(posedge(clk)) {
-            println("count=$count")
+            println("@${time()} count=$count")
             if (rst) count = u(0).ext()
             else count += u(1)
         }

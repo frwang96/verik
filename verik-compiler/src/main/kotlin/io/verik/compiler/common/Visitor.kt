@@ -72,6 +72,7 @@ import io.verik.compiler.ast.element.sv.EModuleInstantiation
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.EProceduralBlock
 import io.verik.compiler.ast.element.sv.EStringExpression
+import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
@@ -141,6 +142,12 @@ abstract class Visitor {
 
     open fun visitEnum(enum: EEnum) {
         visitElement(enum)
+    }
+
+//  STRUCT  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    open fun visitStruct(struct: EStruct) {
+        visitElement(struct)
     }
 
 //  FUNCTION  //////////////////////////////////////////////////////////////////////////////////////////////////////////

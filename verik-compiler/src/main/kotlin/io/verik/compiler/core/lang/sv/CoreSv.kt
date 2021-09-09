@@ -22,9 +22,10 @@ import io.verik.compiler.core.common.CoreSvFunctionDeclaration
 
 object CoreSv : CoreScope(CorePackage.SV) {
 
-    val DISPLAY = CoreSvFunctionDeclaration(parent, "\$display")
-    val WRITE = CoreSvFunctionDeclaration(parent, "\$write")
-    val SFORMATF = CoreSvFunctionDeclaration(parent, "\$sformatf")
-    val RANDOM = CoreSvFunctionDeclaration(parent, "\$random")
-    val FINISH = CoreSvFunctionDeclaration(parent, "\$finish")
+    val F_DISPLAY = CoreSvFunctionDeclaration(parent, "\$display")
+    val F_WRITE = CoreSvFunctionDeclaration(parent, "\$write")
+    val F_SFORMATF = CoreSvFunctionDeclaration(parent, "\$sformatf")
+    val F_RANDOM = CoreSvFunctionDeclaration(parent, "\$random")
+    val F_TIME = CoreSvFunctionDeclaration(parent, "\$time")
+    val F_FINISH = CoreSvFunctionDeclaration(parent, "\$finish")
 }

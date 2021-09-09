@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.serialize
+package io.verik.compiler.serialize.source
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.assertOutputTextEquals
@@ -95,6 +95,25 @@ internal class DeclarationSerializerTest : BaseTest() {
                 A,
                 B
             } E;
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
+    fun `serialize struct`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                class S(val x: Boolean) : Struct()
+            """.trimIndent()
+        )
+        val expected = """
+            typedef struct packed {
+                logic x;
+            } S;
         """.trimIndent()
         assertOutputTextEquals(
             expected,

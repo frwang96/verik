@@ -68,6 +68,20 @@ internal class ClassInterpreterStageTest : BaseTest() {
     }
 
     @Test
+    fun `interpret struct`() {
+        val projectContext = driveTest(
+            ClassInterpreterStage::class,
+            """
+                class S(var x: Boolean): Struct()
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "Struct(S, [SvProperty(x, Boolean, null)])",
+            projectContext.findDeclaration("S")
+        )
+    }
+
+    @Test
     fun `interpret basic class`() {
         val projectContext = driveTest(
             ClassInterpreterStage::class,

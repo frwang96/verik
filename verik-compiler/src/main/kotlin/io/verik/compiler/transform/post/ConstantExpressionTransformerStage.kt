@@ -55,12 +55,12 @@ object ConstantExpressionTransformerStage : ProjectStage() {
         override fun visitConstantExpression(constantExpression: EConstantExpression) {
             super.visitConstantExpression(constantExpression)
             when (constantExpression.type.reference) {
-                Core.Kt.BOOLEAN ->
+                Core.Kt.C_BOOLEAN ->
                     constantExpression.value = transformBoolean(constantExpression)
-                Core.Kt.INT ->
+                Core.Kt.C_INT ->
                     constantExpression.value = transformInt(constantExpression)
-                Core.Vk.UBIT -> {}
-                Core.Vk.SBIT -> {}
+                Core.Vk.C_UBIT -> {}
+                Core.Vk.C_SBIT -> {}
                 else ->
                     Messages.INTERNAL_ERROR.on(
                         constantExpression,
