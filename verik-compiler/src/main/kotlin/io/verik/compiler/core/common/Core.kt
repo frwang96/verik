@@ -69,6 +69,7 @@ object Core {
 
         val UBIT = CoreVkClass.UBIT
         val SBIT = CoreVkClass.SBIT
+        val STRUCT = CoreVkClass.STRUCT
         val CLASS = CoreVkClass.CLASS
         val EVENT = CoreVkClass.EVENT
         val COMPONENT = CoreVkClass.COMPONENT

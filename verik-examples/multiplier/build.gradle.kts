@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-include("cache")
-include("count")
-include("fizzbuzz")
-include("lock")
-include("multiplier")
+verik {
+    top = "MultiplierTb"
+    debug = true
+}

@@ -25,6 +25,7 @@ object CoreVkClass : CoreScope(CorePackage.VK) {
 
     val UBIT = CoreClassDeclaration(parent, "Ubit", Core.Kt.ANY)
     val SBIT = CoreClassDeclaration(parent, "Sbit", Core.Kt.ANY)
+    val STRUCT = CoreClassDeclaration(parent, "Struct", Core.Kt.ANY)
     val CLASS = CoreClassDeclaration(parent, "Class", Core.Kt.ANY)
     val EVENT = CoreClassDeclaration(parent, "Event", Core.Kt.ANY)
     val COMPONENT = CoreClassDeclaration(parent, "Component", Core.Kt.ANY)
