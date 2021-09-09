@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.serialize
+package io.verik.compiler.serialize.source
 
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
@@ -22,7 +22,7 @@ import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 
-class SourceSerializerContext(projectContext: ProjectContext, file: EFile) {
+class SerializerContext(projectContext: ProjectContext, file: EFile) {
 
     private val sourceSerializerVisitor = SourceSerializerVisitor(this)
     private val sourceBuilder = SourceBuilder(projectContext, file)

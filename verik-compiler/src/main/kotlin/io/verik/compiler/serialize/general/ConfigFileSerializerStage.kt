@@ -14,32 +14,30 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.serialize
+package io.verik.compiler.serialize.general
 
-import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 
-object SourceSerializerStage : ProjectStage() {
+object ConfigFileSerializerStage : ProjectStage() {
 
     override val checkNormalization = false
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.project.files().forEach {
-            val sourceOutputFile = serialize(projectContext, it)
-            if (sourceOutputFile != null)
-                projectContext.outputTextFiles.add(sourceOutputFile)
-        }
-    }
+        val inputPath = projectContext.config.inputSourceDir
+        val outputPath = projectContext.config.buildDir.resolve("config.yaml")
+        val fileHeader = FileHeaderBuilder.build(
+            projectContext,
+            inputPath,
+            outputPath,
+            FileHeaderBuilder.HeaderStyle.TXT
+        )
 
-    private fun serialize(projectContext: ProjectContext, file: EFile): TextFile? {
-        if (file.members.isEmpty())
-            return null
-        val sourceSerializerContext = SourceSerializerContext(projectContext, file)
-        file.members.forEach {
-            sourceSerializerContext.serializeAsDeclaration(it)
-        }
-        return sourceSerializerContext.toTextFile()
+        val builder = StringBuilder()
+        builder.append(fileHeader)
+        builder.appendLine("top: ${projectContext.config.top}")
+        builder.appendLine("timescale: ${projectContext.config.timescale}")
+        projectContext.outputTextFiles.add(TextFile(outputPath, builder.toString()))
     }
 }

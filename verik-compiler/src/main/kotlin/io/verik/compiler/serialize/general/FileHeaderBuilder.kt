@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.serialize
+package io.verik.compiler.serialize.general
 
 import io.verik.compiler.main.ProjectContext
 import java.nio.file.Path

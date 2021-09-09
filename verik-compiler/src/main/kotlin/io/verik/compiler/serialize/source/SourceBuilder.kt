@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.serialize
+package io.verik.compiler.serialize.source
 
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 import io.verik.compiler.message.Messages
+import io.verik.compiler.serialize.general.FileHeaderBuilder
 import org.jetbrains.kotlin.backend.common.peek
 import org.jetbrains.kotlin.backend.common.pop
 import org.jetbrains.kotlin.backend.common.push

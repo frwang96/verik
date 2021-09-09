@@ -14,46 +14,32 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.serialize
+package io.verik.compiler.serialize.general
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.assertOutputTextEquals
 import io.verik.compiler.util.driveTest
 import org.junit.jupiter.api.Test
 
-internal class TypeSerializerTest : BaseTest() {
+internal class PackageFileSerializerStageTest : BaseTest() {
 
     @Test
-    fun `type boolean`() {
+    fun `package file`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
+            PackageFileSerializerStage::class,
             """
-                var x = false
+                class C
             """.trimIndent()
         )
         val expected = """
-            logic x = 1'b0;
+            package verik_pkg;
+            
+                typedef class C;
+            
+            `include "Test.svh"
+            
+            endpackage : verik_pkg
         """.trimIndent()
-        assertOutputTextEquals(
-            expected,
-            projectContext.outputTextFiles.last()
-        )
-    }
-
-    @Test
-    fun `type ubit`() {
-        val projectContext = driveTest(
-            SourceSerializerStage::class,
-            """
-                var x = u(0x00)
-            """.trimIndent()
-        )
-        val expected = """
-            logic [7:0] x = 8'h00;
-        """.trimIndent()
-        assertOutputTextEquals(
-            expected,
-            projectContext.outputTextFiles.last()
-        )
+        assertOutputTextEquals(expected, projectContext.outputTextFiles.find { it.path.endsWith("Pkg.sv") }!!)
     }
 }

@@ -14,123 +14,141 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.serialize
+package io.verik.compiler.serialize.source
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.assertOutputTextEquals
 import io.verik.compiler.util.driveTest
 import org.junit.jupiter.api.Test
 
-internal class DeclarationSerializerTest : BaseTest() {
+internal class ExpressionSerializerTest : BaseTest() {
 
     @Test
-    fun `serialize module simple`() {
+    fun `parenthesized expression`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
             """
-                class M: Module()
+                var x = 0
+                var y = (x + 1) * x
             """.trimIndent()
         )
         val expected = """
-            module M;
+            int x = 0;
+            int y = (x + 1) * x;
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
+    fun `unary expression`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                var x = false
+                var y = !x
+            """.trimIndent()
+        )
+        val expected = """
+            logic x = 1'b0;
+            logic y = !x;
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
+    fun `binary expression`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                var x = 0
+                var y = x + 1
+            """.trimIndent()
+        )
+        val expected = """
+            int x = 0;
+            int y = x + 1;
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
+    fun `reference expression`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                var x = 0
+                var y = x
+            """.trimIndent()
+        )
+        val expected = """
+            int x = 0;
+            int y = x;
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
+    fun `call expression`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                var x = random()
+            """.trimIndent()
+        )
+        val expected = """
+            int x = ${"$"}random();
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
+    fun `constant expression`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                var x = 0
+            """.trimIndent()
+        )
+        val expected = """
+            int x = 0;
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
+    fun `injected expression`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                var x = 0
+                fun f() {
+                    sv("${"$"}x <= #1 !${"$"}x")
+                }
+            """.trimIndent()
+        )
+        val expected = """
+            int x = 0;
             
-            endmodule : M
-        """.trimIndent()
-        assertOutputTextEquals(
-            expected,
-            projectContext.outputTextFiles.last()
-        )
-    }
-
-    @Test
-    fun `serialize module with port`() {
-        val projectContext = driveTest(
-            SourceSerializerStage::class,
-            """
-                class M(@In var x: Boolean): Module()
-            """.trimIndent()
-        )
-        val expected = """
-            module M(
-                input logic x
-            );
-            
-            endmodule : M
-        """.trimIndent()
-        assertOutputTextEquals(
-            expected,
-            projectContext.outputTextFiles.last()
-        )
-    }
-
-    @Test
-    fun `serialize class`() {
-        val projectContext = driveTest(
-            SourceSerializerStage::class,
-            """
-                class C
-            """.trimIndent()
-        )
-        val expected = """
-            class C;
-            
-            endclass : C
-        """.trimIndent()
-        assertOutputTextEquals(
-            expected,
-            projectContext.outputTextFiles.last()
-        )
-    }
-
-    @Test
-    fun `serialize enum`() {
-        val projectContext = driveTest(
-            SourceSerializerStage::class,
-            """
-                enum class E { A, B }
-            """.trimIndent()
-        )
-        val expected = """
-            typedef enum {
-                A,
-                B
-            } E;
-        """.trimIndent()
-        assertOutputTextEquals(
-            expected,
-            projectContext.outputTextFiles.last()
-        )
-    }
-
-    @Test
-    fun `serialize struct`() {
-        val projectContext = driveTest(
-            SourceSerializerStage::class,
-            """
-                class S(val x: Boolean) : Struct()
-            """.trimIndent()
-        )
-        val expected = """
-            typedef struct packed {
-                logic x;
-            } S;
-        """.trimIndent()
-        assertOutputTextEquals(
-            expected,
-            projectContext.outputTextFiles.last()
-        )
-    }
-
-    @Test
-    fun `serialize function`() {
-        val projectContext = driveTest(
-            SourceSerializerStage::class,
-            """
-                fun f() {}
-            """.trimIndent()
-        )
-        val expected = """
             function void f();
+                x <= #1 !x;
             endfunction : f
         """.trimIndent()
         assertOutputTextEquals(
@@ -140,15 +158,42 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize property`() {
+    fun `string expression`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                var x = "abc"
+            """.trimIndent()
+        )
+        val expected = """
+            string x = "abc";
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
+    fun `if expression`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
             """
                 var x = false
+                fun f() {
+                    if (x) 1 else 0
+                }
             """.trimIndent()
         )
         val expected = """
             logic x = 1'b0;
+            
+            function void f();
+                if (x)
+                    1;
+                else
+                    0;
+            endfunction : f
         """.trimIndent()
         assertOutputTextEquals(
             expected,
@@ -157,23 +202,23 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize initial block`() {
+    fun `if expression no then`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
             """
-                class C {
-                    @Run
-                    fun f() {}
+                var x = false
+                fun f() {
+                    @Suppress("ControlFlowWithEmptyBody")
+                    if (x);
                 }
             """.trimIndent()
         )
         val expected = """
-            class C;
+            logic x = 1'b0;
             
-                initial begin : f
-                end : f
-            
-            endclass : C
+            function void f();
+                if (x);
+            endfunction : f
         """.trimIndent()
         assertOutputTextEquals(
             expected,
@@ -182,53 +227,39 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize always com block`() {
+    fun `if expression nested`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
             """
-                class C {
-                    @Com
-                    fun f() {}
-                }
-            """.trimIndent()
-        )
-        val expected = """
-            class C;
-            
-                always_comb begin : f
-                end : f
-            
-            endclass : C
-        """.trimIndent()
-        assertOutputTextEquals(
-            expected,
-            projectContext.outputTextFiles.last()
-        )
-    }
-
-    @Test
-    fun `serialize always seq block`() {
-        val projectContext = driveTest(
-            SourceSerializerStage::class,
-            """
-                class C {
-                    private var x = false
-                    @Seq
-                    fun f() {
-                        on (posedge(x)) {}
+                var x = false
+                fun f() {
+                    @Suppress("CascadeIf")
+                    if (x) {
+                        1
+                    } else if (x) {
+                        2
+                    } else {
+                        3
+                        4
                     }
                 }
             """.trimIndent()
         )
         val expected = """
-            class C;
+            logic x = 1'b0;
             
-                logic x = 1'b0;
-            
-                always_ff @(posedge x) begin : f
-                end : f
-            
-            endclass : C
+            function void f();
+                if (x) begin
+                    1;
+                end
+                else if (x) begin
+                    2;
+                end
+                else begin
+                    3;
+                    4;
+                end
+            endfunction : f
         """.trimIndent()
         assertOutputTextEquals(
             expected,
@@ -237,31 +268,49 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize module instantiation`() {
+    fun `inline if expression`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
             """
-                class M(@In var x: Boolean): Module()
-                class Top : Module() {
-                    @Make
-                    val m = M(false)
+                var x = false
+                var y = if (x) 0 else 1
+            """.trimIndent()
+        )
+        val expected = """
+            logic x = 1'b0;
+            int y   = x ? 0 : 1;
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
+    fun `case statement`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                var x = 0
+                fun f() {
+                    when (x) {
+                        0 -> {}
+                        else -> {}
+                    }
                 }
             """.trimIndent()
         )
         val expected = """
-            module M(
-                input logic x
-            );
+            int x = 0;
             
-            endmodule : M
-            
-            module Top;
-            
-                M m (
-                    .x ( 1'b0 )
-                );
-            
-            endmodule : Top
+            function void f();
+                case (x)
+                    0 : begin
+                    end
+                    default : begin
+                    end
+                endcase
+            endfunction : f
         """.trimIndent()
         assertOutputTextEquals(
             expected,
@@ -270,15 +319,64 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize value parameter`() {
+    fun `forever expression`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
             """
-                fun f(x: Int) {}
+                fun f() {
+                    forever {}
+                }
             """.trimIndent()
         )
         val expected = """
-            function void f(int x);
+            function void f();
+                forever begin
+                end
+            endfunction : f
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
+    fun `event control expression`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                var x = false
+                fun f() {
+                    wait(posedge(x))
+                }
+            """.trimIndent()
+        )
+        val expected = """
+            logic x = 1'b0;
+            
+            function void f();
+                @(posedge x);
+            endfunction : f
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
+    fun `delay expression`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                fun f() {
+                    delay(1)
+                }
+            """.trimIndent()
+        )
+        val expected = """
+            function void f();
+                #1;
             endfunction : f
         """.trimIndent()
         assertOutputTextEquals(
