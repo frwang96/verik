@@ -14,24 +14,23 @@
  * limitations under the License.
  */
 
-package fizzbuzz
+package io.verik.compiler.interpret
 
-import io.verik.core.*
+import io.verik.compiler.ast.element.kt.EKtBasicClass
+import io.verik.compiler.ast.element.sv.ESvBasicClass
 
-@Top
-class Fizzbuzz : Module() {
+object BasicClassInterpreter {
 
-    @Suppress("unused")
-    val c = C()
-
-    @Run
-    fun main() {
-        f(0)
-    }
-
-    fun f(x: Int) {
-        println(x)
+    fun interpretBasicClass(basicClass: EKtBasicClass, referenceUpdater: ReferenceUpdater) {
+        referenceUpdater.replace(
+            basicClass,
+            ESvBasicClass(
+                basicClass.location,
+                basicClass.name,
+                basicClass.supertype,
+                basicClass.typeParameters,
+                basicClass.members
+            )
+        )
     }
 }
-
-class C
