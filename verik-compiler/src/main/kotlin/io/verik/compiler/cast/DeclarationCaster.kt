@@ -59,8 +59,12 @@ object DeclarationCaster {
             AnnotationCaster.castAnnotationEntry(it, castContext)
         }
         val isEnum = classOrObject.hasModifier(KtTokens.ENUM_KEYWORD)
-        val primaryConstructor = classOrObject.primaryConstructor?.let {
-            castContext.casterVisitor.getElement<EPrimaryConstructor>(it)
+        val primaryConstructor = when {
+            classOrObject.hasExplicitPrimaryConstructor() ->
+                castContext.casterVisitor.getElement(classOrObject.primaryConstructor!!)
+            classOrObject.hasPrimaryConstructor() ->
+                castImplicitPrimaryConstructor(classOrObject, castContext)
+            else -> null
         }
 
         basicClass.supertype = supertype
@@ -171,6 +175,22 @@ object DeclarationCaster {
         primaryConstructor.type = type
         valueParameters.forEach { it.parent = primaryConstructor }
         primaryConstructor.valueParameters = ArrayList(valueParameters)
+        return primaryConstructor
+    }
+
+    private fun castImplicitPrimaryConstructor(
+        classOrObject: KtClassOrObject,
+        castContext: CastContext
+    ): EPrimaryConstructor? {
+        val descriptor = castContext.sliceClass[classOrObject]!!
+        val primaryConstructorDescriptor = descriptor.unsubstitutedPrimaryConstructor!!
+        val primaryConstructor = castContext
+            .getDeclaration(primaryConstructorDescriptor, classOrObject)
+            .cast<EPrimaryConstructor>(classOrObject)
+            ?: return null
+
+        val type = castContext.castType(primaryConstructorDescriptor.returnType, classOrObject)
+        primaryConstructor.type = type
         return primaryConstructor
     }
 

@@ -111,5 +111,6 @@ object Core {
         val F_RANDOM = CoreSv.F_RANDOM
         val F_TIME = CoreSv.F_TIME
         val F_FINISH = CoreSv.F_FINISH
+        val F_NEW = CoreSv.F_NEW
     }
 }

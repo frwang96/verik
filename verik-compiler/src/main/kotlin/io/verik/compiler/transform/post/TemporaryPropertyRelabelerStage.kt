@@ -42,7 +42,7 @@ object TemporaryPropertyRelabelerStage : ProjectStage() {
 
         override fun visitSvProperty(property: ESvProperty) {
             if (property.name == "<tmp>") {
-                property.name = "_${index}_"
+                property.name = "_$$index"
                 index++
             }
         }

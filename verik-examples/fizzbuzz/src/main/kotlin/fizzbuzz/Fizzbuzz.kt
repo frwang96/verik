@@ -21,6 +21,9 @@ import io.verik.core.*
 @Top
 class Fizzbuzz : Module() {
 
+    @Suppress("unused")
+    val c = C()
+
     @Run
     fun main() {
         f(0)
@@ -36,5 +39,4 @@ class Fizzbuzz : Module() {
     }
 }
 
-@Suppress("unused")
 class C

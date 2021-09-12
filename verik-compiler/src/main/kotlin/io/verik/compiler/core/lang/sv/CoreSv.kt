@@ -28,4 +28,5 @@ object CoreSv : CoreScope(CorePackage.SV) {
     val F_RANDOM = CoreSvFunctionDeclaration(parent, "\$random")
     val F_TIME = CoreSvFunctionDeclaration(parent, "\$time")
     val F_FINISH = CoreSvFunctionDeclaration(parent, "\$finish")
+    val F_NEW = CoreSvFunctionDeclaration(parent, "new")
 }

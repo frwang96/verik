@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.common.EAbstractValueParameter
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
+import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.ElementContainer
 import io.verik.compiler.ast.interfaces.Reference
@@ -69,6 +70,11 @@ class ReferenceUpdater(val projectContext: ProjectContext) {
         override fun visitPrimaryConstructor(primaryConstructor: EPrimaryConstructor) {
             super.visitPrimaryConstructor(primaryConstructor)
             updateTypeReferences(primaryConstructor.type)
+        }
+
+        override fun visitSvFunction(function: ESvFunction) {
+            super.visitSvFunction(function)
+            updateTypeReferences(function.returnType)
         }
 
         override fun visitAbstractValueParameter(abstractValueParameter: EAbstractValueParameter) {
