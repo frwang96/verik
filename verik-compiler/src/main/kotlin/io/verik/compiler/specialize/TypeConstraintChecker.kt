@@ -25,8 +25,8 @@ object TypeConstraintChecker {
     fun check(typeConstraints: List<TypeConstraint>) {
         typeConstraints.forEach {
             when (it) {
-                is TypeParameterTypeConstraint ->
-                    checkTypeParameterTypeConstraint(it)
+                is TypeArgumentTypeConstraint ->
+                    checkTypeArgumentTypeConstraint(it)
                 is ExpressionEqualsTypeConstraint ->
                     checkExpressionEqualsTypeConstraint(it)
                 is MaxBitWidthTypeConstraint ->
@@ -35,11 +35,11 @@ object TypeConstraintChecker {
         }
     }
 
-    private fun checkTypeParameterTypeConstraint(typeConstraint: TypeParameterTypeConstraint) {
-        if (typeConstraint.callExpression.type.arguments[0] != typeConstraint.callExpression.typeArguments[0])
+    private fun checkTypeArgumentTypeConstraint(typeConstraint: TypeArgumentTypeConstraint) {
+        if (typeConstraint.getTypeArgument() != typeConstraint.callExpression.typeArguments[0])
             Messages.TYPE_MISMATCH.on(
                 typeConstraint.callExpression,
-                typeConstraint.callExpression.type.arguments[0],
+                typeConstraint.getTypeArgument(),
                 typeConstraint.callExpression.typeArguments[0]
             )
     }

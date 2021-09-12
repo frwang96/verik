@@ -23,9 +23,9 @@ package io.verik.core
  * [modules][Module] and [interfaces][Interface]. They correspond to SystemVerilog clocking blocks.
  *
  *      class CB(
- *          event: Event,
+ *          override val event: Event,
  *          @In var x: Boolean
- *      ) : ClockingBlock(event)
+ *      ) : ClockingBlock()
  *
  *      class M : Module() {
  *

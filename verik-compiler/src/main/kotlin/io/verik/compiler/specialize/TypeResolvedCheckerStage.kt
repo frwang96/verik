@@ -17,6 +17,7 @@
 package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -36,6 +37,14 @@ object TypeResolvedCheckerStage : ProjectStage() {
             super.visitExpression(expression)
             if (!expression.type.isResolved())
                 Messages.EXPRESSION_UNRESOLVED.on(expression)
+        }
+
+        override fun visitKtCallExpression(callExpression: EKtCallExpression) {
+            super.visitKtCallExpression(callExpression)
+            callExpression.typeArguments.forEach {
+                if (!it.isResolved())
+                    Messages.TYPE_ARGUMENT_UNRESOLVED.on(callExpression)
+            }
         }
     }
 }

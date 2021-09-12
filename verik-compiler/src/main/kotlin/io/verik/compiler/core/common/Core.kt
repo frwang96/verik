@@ -82,6 +82,7 @@ object Core {
 
         val F_NC = CoreVk.F_NC
         val F_U_INT = CoreVk.F_U_INT
+        val F_ZEROES = CoreVk.F_ZEROES
         val F_RANDOM = CoreVk.F_RANDOM
         val F_RANDOM_INT = CoreVk.F_RANDOM_INT
         val F_FOREVER_FUNCTION = CoreVk.F_FOREVER_FUNCTION

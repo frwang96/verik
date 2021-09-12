@@ -108,6 +108,11 @@ object Messages {
         "Type of expression could not be resolved"
     )
 
+    val TYPE_ARGUMENT_UNRESOLVED = MessageTemplate0(
+        Severity.ERROR,
+        "Type of type argument could not be resolved"
+    )
+
     val TYPE_MISMATCH = MessageTemplate2<Type, Type>(
         Severity.ERROR,
         "Type mismatch: Expected $0 actual $1"

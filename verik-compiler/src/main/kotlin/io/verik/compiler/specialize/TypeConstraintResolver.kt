@@ -33,8 +33,8 @@ object TypeConstraintResolver {
         val unresolvedTypeConstraints = ArrayList<TypeConstraint>()
         typeConstraints.forEach {
             when (it) {
-                is TypeParameterTypeConstraint ->
-                    if (!resolveTypeParameterTypeConstraint(it))
+                is TypeArgumentTypeConstraint ->
+                    if (!resolveTypeArgumentTypeConstraint(it))
                         unresolvedTypeConstraints.add(it)
                 is ExpressionEqualsTypeConstraint ->
                     if (!resolveExpressionEqualsTypeConstraint(it))
@@ -47,19 +47,19 @@ object TypeConstraintResolver {
         return unresolvedTypeConstraints
     }
 
-    private fun resolveTypeParameterTypeConstraint(typeConstraint: TypeParameterTypeConstraint): Boolean {
+    private fun resolveTypeArgumentTypeConstraint(typeConstraint: TypeArgumentTypeConstraint): Boolean {
         val expressionResolved = typeConstraint.callExpression.type.isResolved()
-        val typeParameterResolved = typeConstraint.callExpression.typeArguments[0].isResolved()
+        val typeArgumentResolved = typeConstraint.callExpression.typeArguments[0].isResolved()
         return if (expressionResolved) {
-            if (typeParameterResolved) {
+            if (typeArgumentResolved) {
                 true
             } else {
-                typeConstraint.callExpression.typeArguments[0] = typeConstraint.callExpression.type.arguments[0].copy()
+                typeConstraint.callExpression.typeArguments[0] = typeConstraint.getTypeArgument().copy()
                 true
             }
         } else {
-            if (typeParameterResolved) {
-                typeConstraint.callExpression.type.arguments[0] = typeConstraint.callExpression.typeArguments[0].copy()
+            if (typeArgumentResolved) {
+                typeConstraint.setTypeArgument(typeConstraint.callExpression.typeArguments[0].copy())
                 true
             } else {
                 false

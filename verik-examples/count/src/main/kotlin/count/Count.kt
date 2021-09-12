@@ -25,13 +25,13 @@ object Count : Module() {
 
     var clk = false
     var rst = true
-    var count: Ubit<WIDTH> = u(0).ext()
+    var count: Ubit<WIDTH> = zeroes()
 
     @Seq
     fun update() {
         on(posedge(clk)) {
             println("@${time()} count=$count")
-            if (rst) count = u(0).ext()
+            if (rst) count = zeroes()
             else count += u(1)
         }
     }
