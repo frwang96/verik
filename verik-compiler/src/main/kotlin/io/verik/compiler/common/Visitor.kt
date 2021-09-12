@@ -37,6 +37,7 @@ import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.ENullExpression
 import io.verik.compiler.ast.element.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.common.EProject
+import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ERootPackage
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.EAnnotation
@@ -326,6 +327,10 @@ abstract class Visitor {
 
     open fun visitConstantExpression(constantExpression: EConstantExpression) {
         visitExpression(constantExpression)
+    }
+
+    open fun visitReturnStatement(returnStatement: EReturnStatement) {
+        visitExpression(returnStatement)
     }
 
     open fun visitFunctionLiteralExpression(functionLiteralExpression: EFunctionLiteralExpression) {

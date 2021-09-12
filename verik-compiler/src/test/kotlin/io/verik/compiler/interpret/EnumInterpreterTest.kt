@@ -21,12 +21,12 @@ import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
 import org.junit.jupiter.api.Test
 
-internal class EnumInterpreterStageTest : BaseTest() {
+internal class EnumInterpreterTest : BaseTest() {
 
     @Test
     fun `interpret enum`() {
         val projectContext = driveTest(
-            EnumInterpreterStage::class,
+            ClassInterpreterStage::class,
             """
                 enum class E { A }
             """.trimIndent()

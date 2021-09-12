@@ -134,6 +134,27 @@ internal class ExpressionSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `return statement`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                fun f() {
+                    return
+                }
+            """.trimIndent()
+        )
+        val expected = """
+            function void f();
+                return;
+            endfunction : f
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
     fun `injected expression`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,

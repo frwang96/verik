@@ -24,6 +24,7 @@ import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.ENullExpression
 import io.verik.compiler.ast.element.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.common.EProject
+import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ERootPackage
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.EAnnotation
@@ -388,6 +389,13 @@ class ElementPrinter : Visitor() {
         build("ConstantExpression") {
             build(constantExpression.type.toString())
             build(constantExpression.value)
+        }
+    }
+
+    override fun visitReturnStatement(returnStatement: EReturnStatement) {
+        build("ReturnStatement") {
+            build(returnStatement.type.toString())
+            build(returnStatement.expression)
         }
     }
 

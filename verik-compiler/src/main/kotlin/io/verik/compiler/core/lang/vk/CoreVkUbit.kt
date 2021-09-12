@@ -21,8 +21,8 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.specialize.MaxBitWidthTypeConstraint
+import io.verik.compiler.specialize.TypeArgumentTypeConstraint
 import io.verik.compiler.specialize.TypeConstraint
-import io.verik.compiler.specialize.TypeParameterTypeConstraint
 
 object CoreVkUbit : CoreScope(Core.Vk.C_UBIT) {
 
@@ -44,7 +44,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_UBIT) {
     val F_EXT = object : CoreKtFunctionDeclaration(parent, "ext") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
-            return listOf(TypeParameterTypeConstraint(callExpression))
+            return listOf(TypeArgumentTypeConstraint(callExpression, listOf(0)))
         }
     }
 }

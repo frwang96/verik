@@ -45,11 +45,31 @@ fun u(value: Int): Ubit<Cardinal> {
 fun s(value: Int): Sbit<Cardinal> {
     throw VerikException()
 }
+/**
+ * Returns a value of type [T] with all bits set to zero.
+ */
+fun <T> zeroes(): T {
+    throw VerikException()
+}
+
+/**
+ * Returns a value of type [T] with all bits set to one.
+ */
+fun <T> ones(): T {
+    throw VerikException()
+}
 
 /**
  * Returns a value of type [T] with all bits set to X.
  */
 fun <T> x(): T {
+    throw VerikException()
+}
+
+/**
+ * Returns a value of type [T] with all bits set to Z.
+ */
+fun <T> z(): T {
     throw VerikException()
 }
 

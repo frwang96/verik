@@ -16,6 +16,7 @@
 
 package io.verik.compiler.transform.mid
 
+import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEventControlExpression
@@ -43,6 +44,10 @@ object SpecialFunctionTransformerStage : ProjectStage() {
                 Core.Vk.F_NC -> {
                     Messages.EXPRESSION_OUT_OF_CONTEXT.on(callExpression, reference.name)
                     return
+                }
+                Core.Vk.F_ZEROES -> {
+                    // TODO set constant with exact bit width
+                    EConstantExpression(callExpression.location, callExpression.type, "'0")
                 }
                 Core.Vk.F_ON_EVENT_FUNCTION -> {
                     Messages.EXPRESSION_OUT_OF_CONTEXT.on(callExpression, reference.name)

@@ -17,17 +17,12 @@
 package io.verik.compiler.interpret
 
 import io.verik.compiler.ast.element.kt.EKtBasicClass
-import io.verik.compiler.ast.element.kt.EKtValueParameter
-import io.verik.compiler.ast.element.sv.EModule
-import io.verik.compiler.ast.element.sv.EPort
-import io.verik.compiler.ast.element.sv.EStruct
-import io.verik.compiler.ast.element.sv.ESvBasicClass
-import io.verik.compiler.ast.element.sv.ESvProperty
-import io.verik.compiler.ast.property.PortType
+import io.verik.compiler.ast.element.sv.EEnum
+import io.verik.compiler.ast.element.sv.ESvEnumEntry
+import io.verik.compiler.ast.interfaces.ResizableElementContainer
+import io.verik.compiler.ast.interfaces.cast
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.common.Annotations
-import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 
@@ -39,6 +34,15 @@ object ClassInterpreterStage : ProjectStage() {
         val referenceUpdater = ReferenceUpdater(projectContext)
         val classInterpreterVisitor = ClassInterpreterVisitor(referenceUpdater)
         projectContext.project.accept(classInterpreterVisitor)
+        val enumEntryCollectorVisitor = EnumEntryCollectorVisitor()
+        projectContext.project.accept(enumEntryCollectorVisitor)
+        enumEntryCollectorVisitor.enumEntries.forEach {
+            val parent = it.parent
+            if (parent is ResizableElementContainer)
+                parent.insertChild(it)
+            else
+                Messages.INTERNAL_ERROR.on(it, "Count not insert $it into $parent")
+        }
         referenceUpdater.flush()
     }
 
@@ -46,82 +50,27 @@ object ClassInterpreterStage : ProjectStage() {
 
         override fun visitKtBasicClass(basicClass: EKtBasicClass) {
             super.visitKtBasicClass(basicClass)
-            if (interpretModule(basicClass, referenceUpdater))
+            if (ModuleInterpreter.interpretModule(basicClass, referenceUpdater))
                 return
-            if (interpretStruct(basicClass, referenceUpdater))
+            if (EnumInterpreter.interpretEnum(basicClass, referenceUpdater))
                 return
-            interpretBasicClass(basicClass, referenceUpdater)
+            if (StructInterpreter.interpretStruct(basicClass, referenceUpdater))
+                return
+            BasicClassInterpreter.interpretBasicClass(basicClass, referenceUpdater)
         }
     }
 
-    private fun interpretModule(basicClass: EKtBasicClass, referenceUpdater: ReferenceUpdater): Boolean {
-        if (!basicClass.toType().isSubtype(Core.Vk.C_MODULE.toType()))
-            return false
-        val ports = basicClass.primaryConstructor
-            ?.valueParameters
-            ?.mapNotNull { interpretPort(it) }
-            ?: listOf()
-        val module = EModule(
-            basicClass.location,
-            basicClass.name,
-            basicClass.supertype,
-            basicClass.typeParameters,
-            basicClass.members,
-            ports
-        )
-        referenceUpdater.replace(basicClass, module)
-        basicClass.primaryConstructor?.let { referenceUpdater.update(it, module) }
-        return true
-    }
+    class EnumEntryCollectorVisitor : TreeVisitor() {
 
-    private fun interpretPort(valueParameter: EKtValueParameter): EPort? {
-        return when {
-            valueParameter.hasAnnotation(Annotations.IN) ->
-                EPort(valueParameter.location, valueParameter.name, valueParameter.type, PortType.INPUT)
-            valueParameter.hasAnnotation(Annotations.OUT) ->
-                EPort(valueParameter.location, valueParameter.name, valueParameter.type, PortType.OUTPUT)
-            else -> {
-                Messages.PORT_NO_DIRECTIONALITY.on(valueParameter, valueParameter.name)
-                null
-            }
+        val enumEntries = ArrayList<ESvEnumEntry>()
+
+        override fun visitEnum(enum: EEnum) {
+            enum.entryReferences
+                .mapNotNull { it.cast<ESvEnumEntry>(enum) }
+                .forEach {
+                    it.parent = enum.parent
+                    enumEntries.add(it)
+                }
         }
-    }
-
-    private fun interpretStruct(basicClass: EKtBasicClass, referenceUpdater: ReferenceUpdater): Boolean {
-        if (!basicClass.toType().isSubtype(Core.Vk.C_STRUCT.toType()))
-            return false
-        val properties = basicClass.primaryConstructor!!
-            .valueParameters
-            .map { interpretStructProperty(it, referenceUpdater) }
-        val struct = EStruct(basicClass.location, basicClass.name, properties)
-        referenceUpdater.replace(basicClass, struct)
-        return true
-    }
-
-    private fun interpretStructProperty(
-        valueParameter: EKtValueParameter,
-        referenceUpdater: ReferenceUpdater
-    ): ESvProperty {
-        val property = ESvProperty(
-            valueParameter.location,
-            valueParameter.name,
-            valueParameter.type,
-            null
-        )
-        referenceUpdater.update(valueParameter, property)
-        return property
-    }
-
-    private fun interpretBasicClass(basicClass: EKtBasicClass, referenceUpdater: ReferenceUpdater) {
-        referenceUpdater.replace(
-            basicClass,
-            ESvBasicClass(
-                basicClass.location,
-                basicClass.name,
-                basicClass.supertype,
-                basicClass.typeParameters,
-                basicClass.members
-            )
-        )
     }
 }

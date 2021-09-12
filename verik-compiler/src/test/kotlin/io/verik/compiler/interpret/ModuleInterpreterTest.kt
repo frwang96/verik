@@ -21,11 +21,11 @@ import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findDeclaration
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-internal class ClassInterpreterStageTest : BaseTest() {
+internal class ModuleInterpreterTest : BaseTest() {
 
     @Test
     fun `interpret module simple`() {
@@ -64,34 +64,6 @@ internal class ClassInterpreterStageTest : BaseTest() {
                     class M(var x: Boolean): Module()
                 """.trimIndent()
             )
-        }.apply { assertEquals("Could not determine directionality of port: x", message) }
-    }
-
-    @Test
-    fun `interpret struct`() {
-        val projectContext = driveTest(
-            ClassInterpreterStage::class,
-            """
-                class S(var x: Boolean): Struct()
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "Struct(S, [SvProperty(x, Boolean, null)])",
-            projectContext.findDeclaration("S")
-        )
-    }
-
-    @Test
-    fun `interpret basic class`() {
-        val projectContext = driveTest(
-            ClassInterpreterStage::class,
-            """
-                class C
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "SvBasicClass(C, [], [])",
-            projectContext.findDeclaration("C")
-        )
+        }.apply { Assertions.assertEquals("Could not determine directionality of port: x", message) }
     }
 }

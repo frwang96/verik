@@ -21,6 +21,7 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.ENullExpression
+import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtBasicClass
@@ -56,6 +57,7 @@ import org.jetbrains.kotlin.psi.KtParenthesizedExpression
 import org.jetbrains.kotlin.psi.KtPrefixExpression
 import org.jetbrains.kotlin.psi.KtPrimaryConstructor
 import org.jetbrains.kotlin.psi.KtProperty
+import org.jetbrains.kotlin.psi.KtReturnExpression
 import org.jetbrains.kotlin.psi.KtSimpleNameExpression
 import org.jetbrains.kotlin.psi.KtStringTemplateExpression
 import org.jetbrains.kotlin.psi.KtTypeAlias
@@ -146,6 +148,10 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
 
     override fun visitConstantExpression(expression: KtConstantExpression, data: Unit?): EConstantExpression {
         return ExpressionCaster.castConstantExpression(expression, castContext)
+    }
+
+    override fun visitReturnExpression(expression: KtReturnExpression, data: Unit?): EReturnStatement {
+        return ExpressionCaster.castReturnStatement(expression, castContext)
     }
 
     override fun visitLambdaExpression(expression: KtLambdaExpression, data: Unit?): EFunctionLiteralExpression {

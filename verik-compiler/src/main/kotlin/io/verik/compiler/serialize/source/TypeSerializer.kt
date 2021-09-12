@@ -21,6 +21,7 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EModule
+import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.Messages
@@ -30,8 +31,13 @@ object TypeSerializer {
 
     fun serialize(type: Type, element: EElement): String {
         return when (val reference = type.reference) {
+            // TODO more general handling of scope resolution
+            is ESvBasicClass -> {
+                val file = reference.parent.cast<EFile>()
+                val basicPackage = file.parent.cast<EBasicPackage>()
+                "${basicPackage.name}::${reference.name}"
+            }
             is EEnum -> {
-                // TODO more general handling of scope resolution
                 val file = reference.parent.cast<EFile>()
                 val basicPackage = file.parent.cast<EBasicPackage>()
                 "${basicPackage.name}::${reference.name}"

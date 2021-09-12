@@ -31,7 +31,6 @@ import io.verik.compiler.compile.KotlinCompilerParserStage
 import io.verik.compiler.compile.KotlinEnvironmentBuilderStage
 import io.verik.compiler.interpret.AnnotationConflictCheckerStage
 import io.verik.compiler.interpret.ClassInterpreterStage
-import io.verik.compiler.interpret.EnumInterpreterStage
 import io.verik.compiler.interpret.FileSplitterStage
 import io.verik.compiler.interpret.FunctionInterpreterStage
 import io.verik.compiler.interpret.PropertyInterpreterStage
@@ -104,7 +103,6 @@ object StageSequencer {
 
         // Interpret
         stageSequence.add(AnnotationConflictCheckerStage)
-        stageSequence.add(EnumInterpreterStage)
         stageSequence.add(ClassInterpreterStage)
         stageSequence.add(FunctionInterpreterStage)
         stageSequence.add(PropertyInterpreterStage)

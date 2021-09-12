@@ -43,6 +43,20 @@ internal class SpecialFunctionTransformerStageTest : BaseTest() {
     }
 
     @Test
+    fun `transform zeroes`() {
+        val projectContext = driveTest(
+            SpecialFunctionTransformerStage::class,
+            """
+                var x: Ubit<`8`> = zeroes()
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "ConstantExpression(Ubit<`8`>, '0)",
+            projectContext.findExpression("x")
+        )
+    }
+
+    @Test
     fun `transform wait`() {
         val projectContext = driveTest(
             SpecialFunctionTransformerStage::class,

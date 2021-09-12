@@ -16,11 +16,14 @@
 
 package io.verik.compiler.core.lang.vk
 
+import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreCardinalFunctionDeclaration
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
+import io.verik.compiler.specialize.TypeArgumentTypeConstraint
+import io.verik.compiler.specialize.TypeConstraint
 
 object CoreVk : CoreScope(CorePackage.VK) {
 
@@ -30,6 +33,13 @@ object CoreVk : CoreScope(CorePackage.VK) {
 
     val F_NC = CoreKtFunctionDeclaration(parent, "nc")
     val F_U_INT = CoreKtFunctionDeclaration(parent, "u", Core.Kt.C_INT)
+
+    val F_ZEROES = object : CoreKtFunctionDeclaration(parent, "zeroes") {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return listOf(TypeArgumentTypeConstraint(callExpression, listOf()))
+        }
+    }
 
     val F_RANDOM = CoreKtFunctionDeclaration(parent, "random")
     val F_RANDOM_INT = CoreKtFunctionDeclaration(parent, "random", Core.Kt.C_INT)
