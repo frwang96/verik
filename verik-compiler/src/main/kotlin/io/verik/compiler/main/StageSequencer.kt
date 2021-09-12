@@ -58,6 +58,7 @@ import io.verik.compiler.transform.post.PackageNameTransformerStage
 import io.verik.compiler.transform.post.PackageReferenceInsertionTransformerStage
 import io.verik.compiler.transform.post.ParenthesisInsertionTransformerStage
 import io.verik.compiler.transform.post.ReferenceAndCallExpressionTransformerStage
+import io.verik.compiler.transform.post.TemporaryPropertyRelabelerStage
 import io.verik.compiler.transform.post.UnaryExpressionTransformerStage
 import io.verik.compiler.transform.pre.AssignmentOperatorReducerStage
 import io.verik.compiler.transform.pre.BinaryExpressionReducerStage
@@ -127,6 +128,7 @@ object StageSequencer {
         stageSequence.add(ReferenceAndCallExpressionTransformerStage)
         stageSequence.add(BlockExpressionTransformerStage)
         stageSequence.add(ParenthesisInsertionTransformerStage)
+        stageSequence.add(TemporaryPropertyRelabelerStage)
 
         // PostCheck
         stageSequence.add(KeywordCheckerStage)

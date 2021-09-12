@@ -35,3 +35,6 @@ class Fizzbuzz : Module() {
         return x + 1
     }
 }
+
+@Suppress("unused")
+class C

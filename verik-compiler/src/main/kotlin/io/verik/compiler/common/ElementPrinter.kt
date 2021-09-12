@@ -169,6 +169,7 @@ class ElementPrinter : Visitor() {
             build(function.name)
             build(function.returnType.toString())
             build(function.body)
+            build(function.isStatic)
             build(function.valueParameters)
         }
     }
@@ -498,6 +499,12 @@ class ElementPrinter : Visitor() {
             build(delayExpression.type.toString())
             build(delayExpression.expression)
         }
+    }
+
+    private fun build(content: Boolean) {
+        if (!first) builder.append(", ")
+        builder.append(content)
+        first = false
     }
 
     private fun build(content: String) {

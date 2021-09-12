@@ -86,6 +86,8 @@ object DeclarationSerializer {
 
     fun serializeSvFunction(function: ESvFunction, serializerContext: SerializerContext) {
         val typeString = TypeSerializer.serialize(function.returnType, function)
+        if (function.isStatic)
+            serializerContext.append("static ")
         serializerContext.append("function $typeString ${function.name}(")
         if (function.valueParameters.isNotEmpty()) {
             serializerContext.softBreak()

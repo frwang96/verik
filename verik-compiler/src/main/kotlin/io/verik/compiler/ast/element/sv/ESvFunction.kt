@@ -28,6 +28,7 @@ class ESvFunction(
     override var name: String,
     override var returnType: Type,
     override var body: EExpression?,
+    val isStatic: Boolean,
     var valueParameters: ArrayList<ESvValueParameter>
 ) : EAbstractFunction() {
 
