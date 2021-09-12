@@ -21,17 +21,17 @@ import io.verik.core.*
 @Top
 class Fizzbuzz : Module() {
 
-    @Suppress("unused")
-    val c = C()
-
     @Run
     fun main() {
         f(0)
+        println(g(0))
     }
 
     fun f(x: Int) {
         println(x)
     }
-}
 
-class C
+    fun g(x: Int): Int {
+        return x + 1
+    }
+}

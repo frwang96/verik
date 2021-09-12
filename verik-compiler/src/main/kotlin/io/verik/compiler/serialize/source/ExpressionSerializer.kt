@@ -19,6 +19,7 @@ package io.verik.compiler.serialize.source
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EParenthesizedExpression
+import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.sv.ECaseStatement
 import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEventControlExpression
@@ -109,6 +110,17 @@ object ExpressionSerializer {
 
     fun serializeConstantExpression(constantExpression: EConstantExpression, serializerContext: SerializerContext) {
         serializerContext.append(constantExpression.value)
+    }
+
+    fun serializeReturnStatement(returnStatement: EReturnStatement, serializerContext: SerializerContext) {
+        val expression = returnStatement.expression
+        if (expression == null) {
+            serializerContext.appendLine("return;")
+        } else {
+            serializerContext.append("return ")
+            serializerContext.serializeAsExpression(expression)
+            serializerContext.appendLine(";")
+        }
     }
 
     fun serializeInjectedExpression(injectedExpression: EInjectedExpression, serializerContext: SerializerContext) {
