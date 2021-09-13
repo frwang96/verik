@@ -18,7 +18,7 @@ package io.verik.compiler.ast.property
 
 import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
-import org.jetbrains.kotlin.com.intellij.psi.tree.IElementType
+import org.jetbrains.kotlin.lexer.KtSingleValueToken
 
 enum class KtBinaryOperatorKind {
     EQ,
@@ -30,7 +30,7 @@ enum class KtBinaryOperatorKind {
 
     companion object {
 
-        operator fun invoke(token: IElementType, location: SourceLocation): KtBinaryOperatorKind? {
+        operator fun invoke(token: KtSingleValueToken, location: SourceLocation): KtBinaryOperatorKind? {
             return when (token.toString()) {
                 "EQ" -> EQ
                 "MUL" -> MUL

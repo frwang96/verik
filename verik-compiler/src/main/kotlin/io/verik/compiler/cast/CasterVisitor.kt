@@ -25,7 +25,6 @@ import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtBasicClass
-import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
@@ -130,8 +129,8 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
         return ExpressionCaster.castKtUnaryExpression(expression, castContext)
     }
 
-    override fun visitBinaryExpression(expression: KtBinaryExpression, data: Unit?): EKtBinaryExpression? {
-        return ExpressionCaster.castKtBinaryExpression(expression, castContext)
+    override fun visitBinaryExpression(expression: KtBinaryExpression, data: Unit?): EExpression? {
+        return ExpressionCaster.castKtBinaryExpressionOrKtCallExpression(expression, castContext)
     }
 
     override fun visitSimpleNameExpression(expression: KtSimpleNameExpression, data: Unit?): EKtReferenceExpression {
