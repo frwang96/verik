@@ -75,6 +75,7 @@ import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.EProceduralBlock
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.EStruct
+import io.verik.compiler.ast.element.sv.EStructLiteralExpression
 import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
@@ -330,6 +331,10 @@ abstract class Visitor {
 
     open fun visitConstantExpression(constantExpression: EConstantExpression) {
         visitExpression(constantExpression)
+    }
+
+    open fun visitStructLiteralExpression(structLiteralExpression: EStructLiteralExpression) {
+        visitExpression(structLiteralExpression)
     }
 
     open fun visitReturnStatement(returnStatement: EReturnStatement) {

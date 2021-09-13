@@ -28,6 +28,7 @@ import io.verik.compiler.ast.element.sv.EForeverStatement
 import io.verik.compiler.ast.element.sv.EInjectedExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.EStringExpression
+import io.verik.compiler.ast.element.sv.EStructLiteralExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
 import io.verik.compiler.ast.element.sv.ESvCallExpression
@@ -110,6 +111,18 @@ object ExpressionSerializer {
 
     fun serializeConstantExpression(constantExpression: EConstantExpression, serializerContext: SerializerContext) {
         serializerContext.append(constantExpression.value)
+    }
+
+    fun serializeStructLiteralExpression(
+        structLiteralExpression: EStructLiteralExpression,
+        serializerContext: SerializerContext
+    ) {
+        serializerContext.append("'{")
+        serializerContext.join(structLiteralExpression.entries) {
+            serializerContext.append("${it.reference.name}:")
+            serializerContext.serializeAsExpression(it.expression)
+        }
+        serializerContext.append("}")
     }
 
     fun serializeReturnStatement(returnStatement: EReturnStatement, serializerContext: SerializerContext) {

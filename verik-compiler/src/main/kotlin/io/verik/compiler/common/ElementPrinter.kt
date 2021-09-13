@@ -59,6 +59,7 @@ import io.verik.compiler.ast.element.sv.EModuleInstantiation
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.EStruct
+import io.verik.compiler.ast.element.sv.EStructLiteralExpression
 import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
@@ -390,6 +391,18 @@ class ElementPrinter : Visitor() {
         build("ConstantExpression") {
             build(constantExpression.type.toString())
             build(constantExpression.value)
+        }
+    }
+
+    override fun visitStructLiteralExpression(structLiteralExpression: EStructLiteralExpression) {
+        build("StructLiteralExpression") {
+            build(structLiteralExpression.type.toString())
+            build(structLiteralExpression.entries) {
+                build("StructLiteralEntry") {
+                    build(it.reference.name)
+                    build(it.expression)
+                }
+            }
         }
     }
 
