@@ -92,6 +92,7 @@ object FunctionInterpreterStage : ProjectStage() {
                     function.name,
                     function.returnType,
                     function.body,
+                    false,
                     ArrayList(valueParameters)
                 )
             }

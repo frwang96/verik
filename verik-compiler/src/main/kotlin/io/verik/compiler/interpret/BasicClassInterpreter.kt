@@ -16,12 +16,27 @@
 
 package io.verik.compiler.interpret
 
+import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.kt.EKtBasicClass
+import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.sv.ESvBasicClass
+import io.verik.compiler.ast.element.sv.ESvBlockExpression
+import io.verik.compiler.ast.element.sv.ESvCallExpression
+import io.verik.compiler.ast.element.sv.ESvFunction
+import io.verik.compiler.ast.element.sv.ESvProperty
+import io.verik.compiler.ast.element.sv.ESvReferenceExpression
+import io.verik.compiler.core.common.Core
 
 object BasicClassInterpreter {
 
     fun interpretBasicClass(basicClass: EKtBasicClass, referenceUpdater: ReferenceUpdater) {
+        val primaryConstructor = basicClass.primaryConstructor
+        val members = if (primaryConstructor != null) {
+            val function = interpretConstructor(primaryConstructor, referenceUpdater)
+            listOf(function) + basicClass.members
+        } else {
+            basicClass.members
+        }
         referenceUpdater.replace(
             basicClass,
             ESvBasicClass(
@@ -29,8 +44,40 @@ object BasicClassInterpreter {
                 basicClass.name,
                 basicClass.supertype,
                 basicClass.typeParameters,
-                basicClass.members
+                ArrayList(members)
             )
         )
+    }
+
+    private fun interpretConstructor(
+        primaryConstructor: EPrimaryConstructor,
+        referenceUpdater: ReferenceUpdater
+    ): ESvFunction {
+        val location = primaryConstructor.location
+        val type = primaryConstructor.type
+        val property = ESvProperty(
+            location,
+            "<tmp>",
+            type.copy(),
+            ESvCallExpression(location, type.copy(), Core.Sv.F_NEW, null, arrayListOf(), false)
+        )
+        val statements = listOf(
+            property,
+            EReturnStatement(
+                location,
+                Core.Kt.C_NOTHING.toType(),
+                ESvReferenceExpression(location, type.copy(), property, null, false)
+            )
+        )
+        val function = ESvFunction(
+            location,
+            "vknew",
+            type.copy(),
+            ESvBlockExpression(location, ArrayList(statements), false, null),
+            true,
+            arrayListOf()
+        )
+        referenceUpdater.update(primaryConstructor, function)
+        return function
     }
 }

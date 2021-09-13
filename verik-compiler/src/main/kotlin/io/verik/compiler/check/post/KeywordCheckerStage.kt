@@ -33,11 +33,15 @@ object KeywordCheckerStage : ProjectStage() {
 
     object KeywordCheckerVisitor : TreeVisitor() {
 
+        private val nameRegex = Regex("[_a-zA-Z][_a-zA-Z0-9$]*")
+
         override fun visitElement(element: EElement) {
             super.visitElement(element)
             if (element is Declaration) {
                 if (element.name in keywords)
                     Messages.KEYWORD_CONFLICT_SYSTEM_VERILOG.on(element, element.name)
+                if (!element.name.matches(nameRegex))
+                    Messages.NAME_ILLEGAL.on(element, element.name)
             }
         }
     }
