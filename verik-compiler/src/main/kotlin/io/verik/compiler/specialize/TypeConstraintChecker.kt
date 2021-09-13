@@ -27,6 +27,8 @@ object TypeConstraintChecker {
             when (it) {
                 is TypeArgumentTypeConstraint ->
                     checkTypeArgumentTypeConstraint(it)
+                is ValueArgumentTypeConstraint ->
+                    checkValueArgumentTypeConstraint(it)
                 is ExpressionEqualsTypeConstraint ->
                     checkExpressionEqualsTypeConstraint(it)
                 is MaxBitWidthTypeConstraint ->
@@ -41,6 +43,15 @@ object TypeConstraintChecker {
                 typeConstraint.callExpression,
                 typeConstraint.getTypeArgument(),
                 typeConstraint.callExpression.typeArguments[0]
+            )
+    }
+
+    private fun checkValueArgumentTypeConstraint(typeConstraint: ValueArgumentTypeConstraint) {
+        if (typeConstraint.valueArgument.type != typeConstraint.valueParameter.type)
+            Messages.TYPE_MISMATCH.on(
+                typeConstraint.valueArgument,
+                typeConstraint.valueParameter.type,
+                typeConstraint.valueArgument.type
             )
     }
 

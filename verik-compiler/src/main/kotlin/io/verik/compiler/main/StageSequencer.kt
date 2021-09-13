@@ -19,6 +19,7 @@ package io.verik.compiler.main
 import io.verik.compiler.cast.CasterStage
 import io.verik.compiler.cast.IndexerStage
 import io.verik.compiler.check.post.KeywordCheckerStage
+import io.verik.compiler.check.post.NameCheckerStage
 import io.verik.compiler.check.post.NameRedeclarationCheckerStage
 import io.verik.compiler.check.post.UntransformedElementCheckerStage
 import io.verik.compiler.check.pre.FileCheckerStage
@@ -49,6 +50,7 @@ import io.verik.compiler.transform.mid.InjectedExpressionReducerStage
 import io.verik.compiler.transform.mid.InlineIfExpressionTransformerStage
 import io.verik.compiler.transform.mid.SpecialFunctionTransformerStage
 import io.verik.compiler.transform.mid.StringTemplateExpressionReducerStage
+import io.verik.compiler.transform.mid.StructLiteralTransformerStage
 import io.verik.compiler.transform.post.BinaryExpressionTransformerStage
 import io.verik.compiler.transform.post.BlockExpressionTransformerStage
 import io.verik.compiler.transform.post.ConstantExpressionTransformerStage
@@ -116,6 +118,7 @@ object StageSequencer {
         stageSequence.add(SpecialFunctionTransformerStage)
         stageSequence.add(InlineIfExpressionTransformerStage)
         stageSequence.add(CaseStatementTransformerStage)
+        stageSequence.add(StructLiteralTransformerStage)
 
         // PostTransform
         stageSequence.add(LoopExpressionTransformerStage)
@@ -131,6 +134,7 @@ object StageSequencer {
         stageSequence.add(TemporaryPropertyRelabelerStage)
 
         // PostCheck
+        stageSequence.add(NameCheckerStage)
         stageSequence.add(KeywordCheckerStage)
         stageSequence.add(NameRedeclarationCheckerStage)
         stageSequence.add(UntransformedElementCheckerStage)

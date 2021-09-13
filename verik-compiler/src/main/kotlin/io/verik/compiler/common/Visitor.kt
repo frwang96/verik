@@ -42,6 +42,7 @@ import io.verik.compiler.ast.element.common.ERootPackage
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.EAnnotation
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
+import io.verik.compiler.ast.element.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
@@ -74,6 +75,7 @@ import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.EProceduralBlock
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.EStruct
+import io.verik.compiler.ast.element.sv.EStructLiteralExpression
 import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
@@ -157,8 +159,16 @@ abstract class Visitor {
         visitElement(abstractFunction)
     }
 
+    open fun visitKtAbstractFunction(abstractFunction: EKtAbstractFunction) {
+        visitAbstractFunction(abstractFunction)
+    }
+
     open fun visitKtFunction(function: EKtFunction) {
-        visitAbstractFunction(function)
+        visitKtAbstractFunction(function)
+    }
+
+    open fun visitPrimaryConstructor(primaryConstructor: EPrimaryConstructor) {
+        visitKtAbstractFunction(primaryConstructor)
     }
 
     open fun visitSvFunction(function: ESvFunction) {
@@ -221,12 +231,6 @@ abstract class Visitor {
 
     open fun visitTypeAlias(typeAlias: ETypeAlias) {
         visitElement(typeAlias)
-    }
-
-//  PRIMARY CONSTRUCTOR  ///////////////////////////////////////////////////////////////////////////////////////////////
-
-    open fun visitPrimaryConstructor(primaryConstructor: EPrimaryConstructor) {
-        visitElement(primaryConstructor)
     }
 
 //  TYPE PARAMETER  ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -327,6 +331,10 @@ abstract class Visitor {
 
     open fun visitConstantExpression(constantExpression: EConstantExpression) {
         visitExpression(constantExpression)
+    }
+
+    open fun visitStructLiteralExpression(structLiteralExpression: EStructLiteralExpression) {
+        visitExpression(structLiteralExpression)
     }
 
     open fun visitReturnStatement(returnStatement: EReturnStatement) {

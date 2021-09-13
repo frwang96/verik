@@ -16,20 +16,19 @@
 
 package io.verik.compiler.ast.element.kt
 
-import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.ast.interfaces.Declaration
+import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.property.Type
-import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
 class EPrimaryConstructor(
     override val location: SourceLocation,
-    var type: Type,
-    var valueParameters: ArrayList<EKtValueParameter>
-) : EElement(), Declaration {
+    override var returnType: Type,
+    override var valueParameters: ArrayList<EKtValueParameter>
+) : EKtAbstractFunction() {
 
     override var name = "<init>"
+    override var body: EExpression? = null
 
     init {
         valueParameters.forEach { it.parent = this }
@@ -37,9 +36,5 @@ class EPrimaryConstructor(
 
     override fun accept(visitor: Visitor) {
         visitor.visitPrimaryConstructor(this)
-    }
-
-    override fun acceptChildren(visitor: TreeVisitor) {
-        valueParameters.forEach { it.accept(visitor) }
     }
 }

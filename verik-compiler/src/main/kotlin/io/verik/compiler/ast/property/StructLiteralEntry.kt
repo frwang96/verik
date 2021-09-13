@@ -14,13 +14,19 @@
  * limitations under the License.
  */
 
-package multiplier
+package io.verik.compiler.ast.property
 
-import io.verik.core.*
+import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.interfaces.Declaration
+import io.verik.compiler.ast.interfaces.Reference
 
-@Top
-class MultiplierTb : Module() {
+class StructLiteralEntry(
+    override var reference: Declaration,
+    var expression: EExpression
+) : Reference {
 
-    @Suppress("unused")
-    val req = MultiplierReq(zeroes(), zeroes(), false)
+    fun copy(): StructLiteralEntry {
+        val copyExpression = expression.copy()
+        return StructLiteralEntry(reference, copyExpression)
+    }
 }

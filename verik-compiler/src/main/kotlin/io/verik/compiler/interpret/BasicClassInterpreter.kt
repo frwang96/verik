@@ -54,25 +54,25 @@ object BasicClassInterpreter {
         referenceUpdater: ReferenceUpdater
     ): ESvFunction {
         val location = primaryConstructor.location
-        val type = primaryConstructor.type
+        val returnType = primaryConstructor.returnType
         val property = ESvProperty(
             location,
             "<tmp>",
-            type.copy(),
-            ESvCallExpression(location, type.copy(), Core.Sv.F_NEW, null, arrayListOf(), false)
+            returnType.copy(),
+            ESvCallExpression(location, returnType.copy(), Core.Sv.F_NEW, null, arrayListOf(), false)
         )
         val statements = listOf(
             property,
             EReturnStatement(
                 location,
                 Core.Kt.C_NOTHING.toType(),
-                ESvReferenceExpression(location, type.copy(), property, null, false)
+                ESvReferenceExpression(location, returnType.copy(), property, null, false)
             )
         )
         val function = ESvFunction(
             location,
             "vknew",
-            type.copy(),
+            returnType.copy(),
             ESvBlockExpression(location, ArrayList(statements), false, null),
             true,
             arrayListOf()

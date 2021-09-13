@@ -32,6 +32,7 @@ object StructInterpreter {
             .map { interpretProperty(it, referenceUpdater) }
         val struct = EStruct(basicClass.location, basicClass.name, properties)
         referenceUpdater.replace(basicClass, struct)
+        referenceUpdater.update(basicClass.primaryConstructor!!, struct)
         return true
     }
 

@@ -36,6 +36,9 @@ object TypeConstraintResolver {
                 is TypeArgumentTypeConstraint ->
                     if (!resolveTypeArgumentTypeConstraint(it))
                         unresolvedTypeConstraints.add(it)
+                is ValueArgumentTypeConstraint ->
+                    if (!resolveValueArgumentTypeConstraint(it))
+                        unresolvedTypeConstraints.add(it)
                 is ExpressionEqualsTypeConstraint ->
                     if (!resolveExpressionEqualsTypeConstraint(it))
                         unresolvedTypeConstraints.add(it)
@@ -65,6 +68,12 @@ object TypeConstraintResolver {
                 false
             }
         }
+    }
+
+    private fun resolveValueArgumentTypeConstraint(typeConstraint: ValueArgumentTypeConstraint): Boolean {
+        if (!typeConstraint.valueArgument.type.isResolved())
+            typeConstraint.valueArgument.type = typeConstraint.valueParameter.type.copy()
+        return true
     }
 
     private fun resolveExpressionEqualsTypeConstraint(typeConstraint: ExpressionEqualsTypeConstraint): Boolean {

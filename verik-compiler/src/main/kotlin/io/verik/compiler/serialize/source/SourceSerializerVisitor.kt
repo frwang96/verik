@@ -38,6 +38,7 @@ import io.verik.compiler.ast.element.sv.EModuleInstantiation
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.EStruct
+import io.verik.compiler.ast.element.sv.EStructLiteralExpression
 import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
@@ -173,6 +174,10 @@ class SourceSerializerVisitor(private val serializerContext: SerializerContext) 
 
     override fun visitConstantExpression(constantExpression: EConstantExpression) {
         ExpressionSerializer.serializeConstantExpression(constantExpression, serializerContext)
+    }
+
+    override fun visitStructLiteralExpression(structLiteralExpression: EStructLiteralExpression) {
+        ExpressionSerializer.serializeStructLiteralExpression(structLiteralExpression, serializerContext)
     }
 
     override fun visitReturnStatement(returnStatement: EReturnStatement) {

@@ -102,8 +102,16 @@ object IndexerStage : ProjectStage() {
             val location = function.nameIdentifier!!.location()
             val name = function.name!!
             checkDeclarationName(name, function)
-            val ktFunction = EKtFunction(location, name, NullDeclaration.toType(), null, listOf(), arrayListOf())
+            val ktFunction = EKtFunction(location, name, NullDeclaration.toType(), null, arrayListOf(), listOf())
             castContext.addDeclaration(descriptor, ktFunction)
+        }
+
+        override fun visitPrimaryConstructor(constructor: KtPrimaryConstructor) {
+            super.visitPrimaryConstructor(constructor)
+            val descriptor = castContext.sliceConstructor[constructor]!!
+            val location = constructor.location()
+            val primaryConstructor = EPrimaryConstructor(location, NullDeclaration.toType(), arrayListOf())
+            castContext.addDeclaration(descriptor, primaryConstructor)
         }
 
         override fun visitProperty(property: KtProperty) {
@@ -124,14 +132,6 @@ object IndexerStage : ProjectStage() {
             checkDeclarationName(name, alias)
             val typeAlias = ETypeAlias(location, name, NullDeclaration.toType())
             castContext.addDeclaration(descriptor, typeAlias)
-        }
-
-        override fun visitPrimaryConstructor(constructor: KtPrimaryConstructor) {
-            super.visitPrimaryConstructor(constructor)
-            val descriptor = castContext.sliceConstructor[constructor]!!
-            val location = constructor.location()
-            val primaryConstructor = EPrimaryConstructor(location, NullDeclaration.toType(), arrayListOf())
-            castContext.addDeclaration(descriptor, primaryConstructor)
         }
 
         override fun visitTypeParameter(parameter: KtTypeParameter) {

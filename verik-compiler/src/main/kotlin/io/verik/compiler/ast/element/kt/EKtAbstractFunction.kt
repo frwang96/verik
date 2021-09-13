@@ -14,13 +14,17 @@
  * limitations under the License.
  */
 
-package multiplier
+package io.verik.compiler.ast.element.kt
 
-import io.verik.core.*
+import io.verik.compiler.ast.element.common.EAbstractFunction
+import io.verik.compiler.common.TreeVisitor
 
-@Top
-class MultiplierTb : Module() {
+abstract class EKtAbstractFunction : EAbstractFunction() {
 
-    @Suppress("unused")
-    val req = MultiplierReq(zeroes(), zeroes(), false)
+    abstract var valueParameters: ArrayList<EKtValueParameter>
+
+    override fun acceptChildren(visitor: TreeVisitor) {
+        super.acceptChildren(visitor)
+        valueParameters.forEach { it.accept(visitor) }
+    }
 }

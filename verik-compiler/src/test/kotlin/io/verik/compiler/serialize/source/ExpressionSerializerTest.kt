@@ -134,6 +134,28 @@ internal class ExpressionSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `struct literal expression`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                class S(val x: Boolean) : Struct()
+                var s = S(false)
+            """.trimIndent()
+        )
+        val expected = """
+            typedef struct packed {
+                logic x;
+            } S;
+            
+            verik_pkg::S s = '{x:1'b0};
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
     fun `return statement`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,

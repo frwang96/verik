@@ -17,6 +17,7 @@
 package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtProperty
@@ -59,9 +60,17 @@ object TypeConstraintCollector {
 
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
-            val reference = callExpression.reference
-            if (reference is CoreKtFunctionDeclaration)
-                typeConstraints.addAll(reference.getTypeConstraints(callExpression))
+            when (val reference = callExpression.reference) {
+                is CoreKtFunctionDeclaration ->
+                    typeConstraints.addAll(reference.getTypeConstraints(callExpression))
+                is EKtAbstractFunction -> {
+                    callExpression.valueArguments
+                        .zip(reference.valueParameters)
+                        .forEach { (valueArgument, valueParameter) ->
+                            typeConstraints.add(ValueArgumentTypeConstraint(valueArgument, valueParameter))
+                        }
+                }
+            }
         }
     }
 }
