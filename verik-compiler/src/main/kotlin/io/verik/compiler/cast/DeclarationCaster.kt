@@ -124,6 +124,39 @@ object DeclarationCaster {
         return ktFunction
     }
 
+    fun castPrimaryConstructor(constructor: KtPrimaryConstructor, castContext: CastContext): EPrimaryConstructor? {
+        val descriptor = castContext.sliceConstructor[constructor]!!
+        val primaryConstructor = castContext.getDeclaration(descriptor, constructor)
+            .cast<EPrimaryConstructor>(constructor)
+            ?: return null
+
+        val returnType = castContext.castType(descriptor.returnType, constructor)
+        val valueParameters = constructor.valueParameters.mapNotNull {
+            castContext.casterVisitor.getElement<EKtValueParameter>(it)
+        }
+
+        primaryConstructor.returnType = returnType
+        valueParameters.forEach { it.parent = primaryConstructor }
+        primaryConstructor.valueParameters = ArrayList(valueParameters)
+        return primaryConstructor
+    }
+
+    private fun castImplicitPrimaryConstructor(
+        classOrObject: KtClassOrObject,
+        castContext: CastContext
+    ): EPrimaryConstructor? {
+        val descriptor = castContext.sliceClass[classOrObject]!!
+        val primaryConstructorDescriptor = descriptor.unsubstitutedPrimaryConstructor!!
+        val primaryConstructor = castContext
+            .getDeclaration(primaryConstructorDescriptor, classOrObject)
+            .cast<EPrimaryConstructor>(classOrObject)
+            ?: return null
+
+        val returnType = castContext.castType(primaryConstructorDescriptor.returnType, classOrObject)
+        primaryConstructor.returnType = returnType
+        return primaryConstructor
+    }
+
     fun castKtProperty(property: KtProperty, castContext: CastContext): EKtProperty? {
         val descriptor = castContext.sliceVariable[property]!!
         val ktProperty = castContext.getDeclaration(descriptor, property)
@@ -159,39 +192,6 @@ object DeclarationCaster {
 
         typeAlias.type = type
         return typeAlias
-    }
-
-    fun castPrimaryConstructor(constructor: KtPrimaryConstructor, castContext: CastContext): EPrimaryConstructor? {
-        val descriptor = castContext.sliceConstructor[constructor]!!
-        val primaryConstructor = castContext.getDeclaration(descriptor, constructor)
-            .cast<EPrimaryConstructor>(constructor)
-            ?: return null
-
-        val type = castContext.castType(descriptor.returnType, constructor)
-        val valueParameters = constructor.valueParameters.mapNotNull {
-            castContext.casterVisitor.getElement<EKtValueParameter>(it)
-        }
-
-        primaryConstructor.type = type
-        valueParameters.forEach { it.parent = primaryConstructor }
-        primaryConstructor.valueParameters = ArrayList(valueParameters)
-        return primaryConstructor
-    }
-
-    private fun castImplicitPrimaryConstructor(
-        classOrObject: KtClassOrObject,
-        castContext: CastContext
-    ): EPrimaryConstructor? {
-        val descriptor = castContext.sliceClass[classOrObject]!!
-        val primaryConstructorDescriptor = descriptor.unsubstitutedPrimaryConstructor!!
-        val primaryConstructor = castContext
-            .getDeclaration(primaryConstructorDescriptor, classOrObject)
-            .cast<EPrimaryConstructor>(classOrObject)
-            ?: return null
-
-        val type = castContext.castType(primaryConstructorDescriptor.returnType, classOrObject)
-        primaryConstructor.type = type
-        return primaryConstructor
     }
 
     fun castTypeParameter(parameter: KtTypeParameter, castContext: CastContext): ETypeParameter? {

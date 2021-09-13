@@ -174,6 +174,13 @@ class ElementPrinter : Visitor() {
         }
     }
 
+    override fun visitPrimaryConstructor(primaryConstructor: EPrimaryConstructor) {
+        build("PrimaryConstructor") {
+            build(primaryConstructor.returnType.toString())
+            build(primaryConstructor.valueParameters)
+        }
+    }
+
     override fun visitInitialBlock(initialBlock: EInitialBlock) {
         build("InitialBlock") {
             build(initialBlock.name)
@@ -245,13 +252,6 @@ class ElementPrinter : Visitor() {
         build("TypeAlias") {
             build(typeAlias.name)
             build(typeAlias.type.toString())
-        }
-    }
-
-    override fun visitPrimaryConstructor(primaryConstructor: EPrimaryConstructor) {
-        build("PrimaryConstructor") {
-            build(primaryConstructor.type.toString())
-            build(primaryConstructor.valueParameters)
         }
     }
 

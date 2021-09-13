@@ -42,6 +42,7 @@ import io.verik.compiler.ast.element.common.ERootPackage
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.EAnnotation
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
+import io.verik.compiler.ast.element.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
@@ -157,8 +158,16 @@ abstract class Visitor {
         visitElement(abstractFunction)
     }
 
+    open fun visitKtAbstractFunction(abstractFunction: EKtAbstractFunction) {
+        visitAbstractFunction(abstractFunction)
+    }
+
     open fun visitKtFunction(function: EKtFunction) {
-        visitAbstractFunction(function)
+        visitKtAbstractFunction(function)
+    }
+
+    open fun visitPrimaryConstructor(primaryConstructor: EPrimaryConstructor) {
+        visitKtAbstractFunction(primaryConstructor)
     }
 
     open fun visitSvFunction(function: ESvFunction) {
@@ -221,12 +230,6 @@ abstract class Visitor {
 
     open fun visitTypeAlias(typeAlias: ETypeAlias) {
         visitElement(typeAlias)
-    }
-
-//  PRIMARY CONSTRUCTOR  ///////////////////////////////////////////////////////////////////////////////////////////////
-
-    open fun visitPrimaryConstructor(primaryConstructor: EPrimaryConstructor) {
-        visitElement(primaryConstructor)
     }
 
 //  TYPE PARAMETER  ////////////////////////////////////////////////////////////////////////////////////////////////////

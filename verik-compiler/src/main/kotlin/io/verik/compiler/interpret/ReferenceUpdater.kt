@@ -69,7 +69,7 @@ class ReferenceUpdater(val projectContext: ProjectContext) {
 
         override fun visitPrimaryConstructor(primaryConstructor: EPrimaryConstructor) {
             super.visitPrimaryConstructor(primaryConstructor)
-            updateTypeReferences(primaryConstructor.type)
+            updateTypeReferences(primaryConstructor.returnType)
         }
 
         override fun visitSvFunction(function: ESvFunction) {

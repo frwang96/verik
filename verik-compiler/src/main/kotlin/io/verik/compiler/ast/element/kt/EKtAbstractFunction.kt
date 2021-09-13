@@ -16,25 +16,15 @@
 
 package io.verik.compiler.ast.element.kt
 
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.property.Type
-import io.verik.compiler.common.Visitor
-import io.verik.compiler.message.SourceLocation
+import io.verik.compiler.ast.element.common.EAbstractFunction
+import io.verik.compiler.common.TreeVisitor
 
-class EPrimaryConstructor(
-    override val location: SourceLocation,
-    override var returnType: Type,
-    override var valueParameters: ArrayList<EKtValueParameter>
-) : EKtAbstractFunction() {
+abstract class EKtAbstractFunction : EAbstractFunction() {
 
-    override var name = "<init>"
-    override var body: EExpression? = null
+    abstract var valueParameters: ArrayList<EKtValueParameter>
 
-    init {
-        valueParameters.forEach { it.parent = this }
-    }
-
-    override fun accept(visitor: Visitor) {
-        visitor.visitPrimaryConstructor(this)
+    override fun acceptChildren(visitor: TreeVisitor) {
+        super.acceptChildren(visitor)
+        valueParameters.forEach { it.accept(visitor) }
     }
 }

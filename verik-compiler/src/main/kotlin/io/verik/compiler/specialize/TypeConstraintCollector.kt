@@ -17,12 +17,11 @@
 package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
-import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
-import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
@@ -64,15 +63,7 @@ object TypeConstraintCollector {
             when (val reference = callExpression.reference) {
                 is CoreKtFunctionDeclaration ->
                     typeConstraints.addAll(reference.getTypeConstraints(callExpression))
-                is EKtFunction -> {
-                    callExpression.valueArguments
-                        .zip(reference.valueParameters)
-                        .forEach { (valueArgument, valueParameter) ->
-                            typeConstraints.add(ValueArgumentTypeConstraint(valueArgument, valueParameter))
-                        }
-                }
-                // TODO common EKtAbstractFunction class
-                is EPrimaryConstructor -> {
+                is EKtAbstractFunction -> {
                     callExpression.valueArguments
                         .zip(reference.valueParameters)
                         .forEach { (valueArgument, valueParameter) ->
