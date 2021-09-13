@@ -18,6 +18,7 @@ package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.property.Type
 
 sealed class TypeConstraint
@@ -46,6 +47,11 @@ class TypeArgumentTypeConstraint(
         }
     }
 }
+
+class ValueArgumentTypeConstraint(
+    val valueArgument: EExpression,
+    val valueParameter: EKtValueParameter
+) : TypeConstraint()
 
 class ExpressionEqualsTypeConstraint(
     val inner: EExpression,

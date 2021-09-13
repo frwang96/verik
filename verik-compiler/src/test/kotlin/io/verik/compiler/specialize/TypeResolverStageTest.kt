@@ -57,7 +57,7 @@ internal class TypeResolverStageTest : BaseTest() {
     }
 
     @Test
-    fun `resolve call expression`() {
+    fun `resolve call expression core function`() {
         val projectContext = driveTest(
             TypeResolverStage::class,
             """
@@ -66,6 +66,21 @@ internal class TypeResolverStageTest : BaseTest() {
         )
         assertElementEquals(
             "KtCallExpression(Ubit<MAX<`8`,`4`>>, plus, *, [], *)",
+            projectContext.findExpression("x")
+        )
+    }
+
+    @Test
+    fun `resolve call expression function`() {
+        val projectContext = driveTest(
+            TypeResolverStage::class,
+            """
+                fun f(x: Ubit<`8`>) {}
+                val x = f(zeroes())
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtCallExpression(Unit, f, null, [], [KtCallExpression(Ubit<`8`>, zeroes, null, [Ubit<`8`>], [])])",
             projectContext.findExpression("x")
         )
     }

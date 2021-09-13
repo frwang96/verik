@@ -19,4 +19,8 @@ package multiplier
 import io.verik.core.*
 
 @Top
-class MultiplierTb : Module()
+class MultiplierTb : Module() {
+
+    @Suppress("unused")
+    val req = MultiplierReq(zeroes(), zeroes(), false)
+}
