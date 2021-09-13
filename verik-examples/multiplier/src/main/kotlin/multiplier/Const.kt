@@ -18,8 +18,5 @@ package multiplier
 
 import io.verik.core.*
 
-class MultiplierReq(
-    val a: Ubit<REQ_WIDTH>,
-    val b: Ubit<REQ_WIDTH>,
-    val vld: Boolean
-) : Struct()
+typealias REQ_WIDTH = `8`
+typealias RSP_WIDTH = `16`

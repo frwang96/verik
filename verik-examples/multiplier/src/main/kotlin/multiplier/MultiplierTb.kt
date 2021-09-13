@@ -21,6 +21,34 @@ import io.verik.core.*
 @Top
 class MultiplierTb : Module() {
 
-    @Suppress("unused")
+    var clk = false
+    var rst = false
     val req = MultiplierReq(zeroes(), zeroes(), false)
+    val rsp = MultiplierRsp(zeroes(), false)
+
+    @Make
+    val multiplier = Multiplier(
+        clk = clk,
+        rst = rst,
+        req = req,
+        rsp = rsp
+    )
+
+    @Run
+    fun toggleClk() {
+        clk = false
+        forever {
+            delay(10)
+            clk = !clk
+        }
+    }
+
+    @Run
+    fun toggleRst() {
+        rst = true
+        wait(negedge(clk))
+        rst = false
+        delay(1000)
+        finish()
+    }
 }
