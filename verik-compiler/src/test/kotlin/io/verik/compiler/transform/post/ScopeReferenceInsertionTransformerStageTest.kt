@@ -22,12 +22,12 @@ import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
-internal class PackageReferenceInsertionTransformerStageTest : BaseTest() {
+internal class ScopeReferenceInsertionTransformerStageTest : BaseTest() {
 
     @Test
     fun `insert package reference`() {
         val projectContext = driveTest(
-            PackageReferenceInsertionTransformerStage::class,
+            ScopeReferenceInsertionTransformerStage::class,
             """
                 var x = false
                 class M : Module() {

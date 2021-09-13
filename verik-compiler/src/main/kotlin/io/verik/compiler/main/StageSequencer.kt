@@ -55,9 +55,9 @@ import io.verik.compiler.transform.post.ConstantExpressionTransformerStage
 import io.verik.compiler.transform.post.FunctionReferenceTransformerStage
 import io.verik.compiler.transform.post.LoopExpressionTransformerStage
 import io.verik.compiler.transform.post.PackageNameTransformerStage
-import io.verik.compiler.transform.post.PackageReferenceInsertionTransformerStage
 import io.verik.compiler.transform.post.ParenthesisInsertionTransformerStage
 import io.verik.compiler.transform.post.ReferenceAndCallExpressionTransformerStage
+import io.verik.compiler.transform.post.ScopeReferenceInsertionTransformerStage
 import io.verik.compiler.transform.post.TemporaryPropertyRelabelerStage
 import io.verik.compiler.transform.post.UnaryExpressionTransformerStage
 import io.verik.compiler.transform.pre.AssignmentOperatorReducerStage
@@ -124,7 +124,7 @@ object StageSequencer {
         stageSequence.add(BinaryExpressionTransformerStage)
         stageSequence.add(ConstantExpressionTransformerStage)
         stageSequence.add(PackageNameTransformerStage)
-        stageSequence.add(PackageReferenceInsertionTransformerStage)
+        stageSequence.add(ScopeReferenceInsertionTransformerStage)
         stageSequence.add(ReferenceAndCallExpressionTransformerStage)
         stageSequence.add(BlockExpressionTransformerStage)
         stageSequence.add(ParenthesisInsertionTransformerStage)

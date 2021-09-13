@@ -21,32 +21,44 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
+import io.verik.compiler.ast.element.sv.ESvBasicClass
+import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 
-object PackageReferenceInsertionTransformerStage : ProjectStage() {
+object ScopeReferenceInsertionTransformerStage : ProjectStage() {
 
     override val checkNormalization = true
 
     override fun process(projectContext: ProjectContext) {
-        val packageReferenceInsertionTransformerVisitor = PackageReferenceInsertionTransformerVisitor()
-        projectContext.project.accept(packageReferenceInsertionTransformerVisitor)
+        val scopeReferenceInsertionTransformerVisitor = ScopeReferenceInsertionTransformerVisitor()
+        projectContext.project.accept(scopeReferenceInsertionTransformerVisitor)
     }
 
-    class PackageReferenceInsertionTransformerVisitor : TreeVisitor() {
+    class ScopeReferenceInsertionTransformerVisitor : TreeVisitor() {
 
         private var parentBasicPackage: EBasicPackage? = null
 
-        private fun getPackageReferenceExpression(reference: Declaration, element: EElement): EKtReferenceExpression? {
+        private fun getScopeReferenceExpression(reference: Declaration, element: EElement): EKtReferenceExpression? {
             if (reference is EElement) {
-                val file = reference.parent
-                if (file is EFile) {
-                    val basicPackage = file.parent
-                    if (basicPackage is EBasicPackage && basicPackage != parentBasicPackage) {
-                        return EKtReferenceExpression(element.location, NullDeclaration.toType(), basicPackage, null)
+                when (val parent = reference.parent) {
+                    is ESvBasicClass -> {
+                        if (reference is ESvFunction && reference.isStatic) {
+                            return EKtReferenceExpression(
+                                element.location,
+                                NullDeclaration.toType(),
+                                parent,
+                                getScopeReferenceExpression(parent, element)
+                            )
+                        }
+                    }
+                    is EFile -> {
+                        val basicPackage = parent.parent
+                        if (basicPackage is EBasicPackage && basicPackage != parentBasicPackage)
+                            return EKtReferenceExpression(element.location, NullDeclaration.toType(), basicPackage, null)
                     }
                 }
             }
@@ -62,13 +74,13 @@ object PackageReferenceInsertionTransformerStage : ProjectStage() {
         override fun visitKtReferenceExpression(referenceExpression: EKtReferenceExpression) {
             super.visitKtReferenceExpression(referenceExpression)
             if (referenceExpression.receiver == null) {
-                val packageReferenceExpression = getPackageReferenceExpression(
+                val scopeReferenceExpression = getScopeReferenceExpression(
                     referenceExpression.reference,
                     referenceExpression
                 )
-                if (packageReferenceExpression != null) {
-                    packageReferenceExpression.parent = referenceExpression
-                    referenceExpression.receiver = packageReferenceExpression
+                if (scopeReferenceExpression != null) {
+                    scopeReferenceExpression.parent = referenceExpression
+                    referenceExpression.receiver = scopeReferenceExpression
                 }
             }
         }
@@ -76,13 +88,13 @@ object PackageReferenceInsertionTransformerStage : ProjectStage() {
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
             if (callExpression.receiver == null) {
-                val packageReferenceExpression = getPackageReferenceExpression(
+                val scopeReferenceExpression = getScopeReferenceExpression(
                     callExpression.reference,
                     callExpression
                 )
-                if (packageReferenceExpression != null) {
-                    packageReferenceExpression.parent = callExpression
-                    callExpression.receiver = packageReferenceExpression
+                if (scopeReferenceExpression != null) {
+                    scopeReferenceExpression.parent = callExpression
+                    callExpression.receiver = scopeReferenceExpression
                 }
             }
         }
