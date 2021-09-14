@@ -17,30 +17,10 @@
 package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.ast.interfaces.Declaration
-import io.verik.compiler.ast.interfaces.ResizableElementContainer
 import io.verik.compiler.ast.property.Type
-import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.common.replaceIfContains
-import io.verik.compiler.message.Messages
 
-abstract class EAbstractClass : EElement(), Declaration, ResizableElementContainer {
+abstract class EAbstractClass : EElement(), Declaration {
 
     abstract var supertype: Type
     abstract var typeParameters: ArrayList<ETypeParameter>
-    abstract var members: ArrayList<EElement>
-
-    override fun acceptChildren(visitor: TreeVisitor) {
-        members.forEach { it.accept(visitor) }
-    }
-
-    override fun replaceChild(oldElement: EElement, newElement: EElement) {
-        newElement.parent = this
-        if (!members.replaceIfContains(oldElement, newElement))
-            Messages.INTERNAL_ERROR.on(this, "Could not find $oldElement in $this")
-    }
-
-    override fun insertChild(element: EElement) {
-        element.parent = this
-        members.add(element)
-    }
 }

@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.element.common.EAbstractClass
+import io.verik.compiler.ast.element.common.EAbstractContainerClass
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.property.Type
@@ -31,7 +31,7 @@ class EModule(
     override var typeParameters: ArrayList<ETypeParameter>,
     override var members: ArrayList<EElement>,
     val ports: List<EPort>
-) : EAbstractClass() {
+) : EAbstractContainerClass() {
 
     init {
         members.forEach { it.parent = this }

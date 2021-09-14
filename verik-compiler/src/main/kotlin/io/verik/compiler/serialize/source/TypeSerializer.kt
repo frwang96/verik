@@ -16,13 +16,11 @@
 
 package io.verik.compiler.serialize.source
 
+import io.verik.compiler.ast.element.common.EAbstractClass
 import io.verik.compiler.ast.element.common.EBasicPackage
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
-import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EModule
-import io.verik.compiler.ast.element.sv.EStruct
-import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.core.common.Core
@@ -33,10 +31,8 @@ object TypeSerializer {
 
     fun serialize(type: Type, element: EElement): String {
         return when (val reference = type.reference) {
-            is ESvBasicClass -> serializePackageDeclaration(reference)
-            is EEnum -> serializePackageDeclaration(reference)
-            is EStruct -> serializePackageDeclaration(reference)
             is EModule -> reference.name
+            is EAbstractClass -> serializePackageDeclaration(reference)
             Core.Kt.C_UNIT -> "void"
             Core.Kt.C_INT -> "int"
             Core.Kt.C_BOOLEAN -> "logic"

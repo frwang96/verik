@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.common.EAbstractBinaryExpression
 import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.EAbstractCallExpression
 import io.verik.compiler.ast.element.common.EAbstractClass
+import io.verik.compiler.ast.element.common.EAbstractContainerClass
 import io.verik.compiler.ast.element.common.EAbstractEnumEntry
 import io.verik.compiler.ast.element.common.EAbstractExpressionContainer
 import io.verik.compiler.ast.element.common.EAbstractFunction
@@ -129,28 +130,28 @@ abstract class Visitor {
         visitElement(abstractClass)
     }
 
+    open fun visitAbstractContainerClass(abstractContainerClass: EAbstractContainerClass) {
+        visitAbstractClass(abstractContainerClass)
+    }
+
     open fun visitKtBasicClass(basicClass: EKtBasicClass) {
-        visitAbstractClass(basicClass)
+        visitAbstractContainerClass(basicClass)
     }
 
     open fun visitSvBasicClass(basicClass: ESvBasicClass) {
-        visitAbstractClass(basicClass)
+        visitAbstractContainerClass(basicClass)
     }
 
     open fun visitModule(module: EModule) {
-        visitAbstractClass(module)
+        visitAbstractContainerClass(module)
     }
-
-//  ENUM  //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     open fun visitEnum(enum: EEnum) {
-        visitElement(enum)
+        visitAbstractClass(enum)
     }
 
-//  STRUCT  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     open fun visitStruct(struct: EStruct) {
-        visitElement(struct)
+        visitAbstractClass(struct)
     }
 
 //  FUNCTION  //////////////////////////////////////////////////////////////////////////////////////////////////////////
