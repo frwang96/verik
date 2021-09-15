@@ -32,6 +32,7 @@ import io.verik.compiler.ast.element.sv.EStructLiteralExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
 import io.verik.compiler.ast.element.sv.ESvCallExpression
+import io.verik.compiler.ast.element.sv.ESvPropertyStatement
 import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.property.EdgeType
@@ -56,6 +57,10 @@ object ExpressionSerializer {
         } else {
             blockExpression.statements.forEach { serializerContext.serializeAsStatement(it) }
         }
+    }
+
+    fun serializeSvPropertyStatement(propertyStatement: ESvPropertyStatement, serializerContext: SerializerContext) {
+        serializerContext.serializeAsStatement(propertyStatement.property)
     }
 
     fun serializeParenthesizedExpression(

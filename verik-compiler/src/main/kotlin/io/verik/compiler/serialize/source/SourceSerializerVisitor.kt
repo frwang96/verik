@@ -46,6 +46,7 @@ import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvProperty
+import io.verik.compiler.ast.element.sv.ESvPropertyStatement
 import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.sv.ESvValueParameter
@@ -150,6 +151,10 @@ class SourceSerializerVisitor(private val serializerContext: SerializerContext) 
 
     override fun visitSvBlockExpression(blockExpression: ESvBlockExpression) {
         ExpressionSerializer.serializeSvBlockExpression(blockExpression, serializerContext)
+    }
+
+    override fun visitSvPropertyStatement(propertyStatement: ESvPropertyStatement) {
+        ExpressionSerializer.serializeSvPropertyStatement(propertyStatement, serializerContext)
     }
 
     override fun visitParenthesizedExpression(parenthesizedExpression: EParenthesizedExpression) {

@@ -73,7 +73,27 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
 
     fun getExpression(expression: KtExpression): EExpression {
         val location = expression.location()
-        return getElement(expression) ?: ENullExpression(location)
+        @Suppress("RedundantNullableReturnType")
+        val element : EElement? = expression.accept(this, Unit)
+        return when (element) {
+            is EKtBasicClass -> {
+                Messages.ILLEGAL_LOCAL_DECLARATION.on(element, element.name)
+                ENullExpression(location)
+            }
+            is EKtFunction -> {
+                Messages.ILLEGAL_LOCAL_DECLARATION.on(element, element.name)
+                ENullExpression(location)
+            }
+            is EExpression -> element
+            null -> {
+                Messages.INTERNAL_ERROR.on(location, "Expression expected but got: null")
+                ENullExpression(location)
+            }
+            else -> {
+                Messages.INTERNAL_ERROR.on(location, "Expression expected but got: ${element::class.simpleName}")
+                ENullExpression(location)
+            }
+        }
     }
 
     override fun visitKtElement(element: KtElement, data: Unit?): EElement? {

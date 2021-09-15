@@ -51,6 +51,7 @@ import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
+import io.verik.compiler.ast.element.kt.EKtPropertyStatement
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.kt.EKtValueParameter
@@ -84,6 +85,7 @@ import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvProperty
+import io.verik.compiler.ast.element.sv.ESvPropertyStatement
 import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.sv.ESvValueParameter
@@ -278,6 +280,14 @@ abstract class Visitor {
 
     open fun visitAbstractExpressionContainer(abstractExpressionContainer: EAbstractExpressionContainer) {
         visitExpression(abstractExpressionContainer)
+    }
+
+    open fun visitKtPropertyStatement(propertyStatement: EKtPropertyStatement) {
+        visitExpression(propertyStatement)
+    }
+
+    open fun visitSvPropertyStatement(propertyStatement: ESvPropertyStatement) {
+        visitExpression(propertyStatement)
     }
 
     open fun visitParenthesizedExpression(parenthesizedExpression: EParenthesizedExpression) {

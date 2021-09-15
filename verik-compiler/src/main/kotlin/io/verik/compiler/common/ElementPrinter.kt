@@ -36,6 +36,7 @@ import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
+import io.verik.compiler.ast.element.kt.EKtPropertyStatement
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.kt.EKtValueParameter
@@ -67,6 +68,7 @@ import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvProperty
+import io.verik.compiler.ast.element.sv.ESvPropertyStatement
 import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.sv.ESvValueParameter
@@ -306,6 +308,20 @@ class ElementPrinter : Visitor() {
             build(blockExpression.decorated.toString())
             build(blockExpression.name.toString())
             build(blockExpression.statements)
+        }
+    }
+
+    override fun visitKtPropertyStatement(propertyStatement: EKtPropertyStatement) {
+        build("KtPropertyStatement") {
+            build(propertyStatement.type.toString())
+            build(propertyStatement.property)
+        }
+    }
+
+    override fun visitSvPropertyStatement(propertyStatement: ESvPropertyStatement) {
+        build("SvPropertyStatement") {
+            build(propertyStatement.type.toString())
+            build(propertyStatement.property)
         }
     }
 
