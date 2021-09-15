@@ -58,6 +58,7 @@ import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.element.kt.EWhenExpression
+import io.verik.compiler.ast.element.sv.EAbstractProceduralBlock
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.ECaseStatement
@@ -73,7 +74,6 @@ import io.verik.compiler.ast.element.sv.ELoopStatement
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EModuleInstantiation
 import io.verik.compiler.ast.element.sv.EPort
-import io.verik.compiler.ast.element.sv.EProceduralBlock
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.EStructLiteralExpression
@@ -176,22 +176,20 @@ abstract class Visitor {
         visitAbstractFunction(function)
     }
 
-//  PROCEDURAL BLOCK  //////////////////////////////////////////////////////////////////////////////////////////////////
-
-    open fun visitProceduralBlock(proceduralBlock: EProceduralBlock) {
-        visitElement(proceduralBlock)
+    open fun visitAbstractProceduralBlock(abstractProceduralBlock: EAbstractProceduralBlock) {
+        visitAbstractFunction(abstractProceduralBlock)
     }
 
     open fun visitInitialBlock(initialBlock: EInitialBlock) {
-        visitProceduralBlock(initialBlock)
+        visitAbstractProceduralBlock(initialBlock)
     }
 
     open fun visitAlwaysComBlock(alwaysComBlock: EAlwaysComBlock) {
-        visitProceduralBlock(alwaysComBlock)
+        visitAbstractProceduralBlock(alwaysComBlock)
     }
 
     open fun visitAlwaysSeqBlock(alwaysSeqBlock: EAlwaysSeqBlock) {
-        visitProceduralBlock(alwaysSeqBlock)
+        visitAbstractProceduralBlock(alwaysSeqBlock)
     }
 
 //  PROPERTY  //////////////////////////////////////////////////////////////////////////////////////////////////////////

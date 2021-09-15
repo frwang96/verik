@@ -23,11 +23,11 @@ import io.verik.compiler.message.SourceLocation
 class EInitialBlock(
     override val location: SourceLocation,
     override var name: String,
-    override var body: EExpression
-) : EProceduralBlock() {
+    override var body: EExpression?
+) : EAbstractProceduralBlock() {
 
     init {
-        body.parent = this
+        body?.parent = this
     }
 
     override fun accept(visitor: Visitor) {

@@ -16,21 +16,10 @@
 
 package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.common.Visitor
-import io.verik.compiler.message.SourceLocation
+import io.verik.compiler.ast.element.common.EAbstractFunction
+import io.verik.compiler.core.common.Core
 
-class EAlwaysComBlock(
-    override val location: SourceLocation,
-    override var name: String,
-    override var body: EExpression?
-) : EAbstractProceduralBlock() {
+abstract class EAbstractProceduralBlock : EAbstractFunction() {
 
-    init {
-        body?.parent = this
-    }
-
-    override fun accept(visitor: Visitor) {
-        visitor.visitAlwaysComBlock(this)
-    }
+    override var returnType = Core.Kt.C_UNIT.toType()
 }

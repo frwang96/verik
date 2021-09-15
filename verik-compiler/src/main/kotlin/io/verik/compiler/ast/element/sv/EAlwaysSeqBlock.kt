@@ -24,12 +24,12 @@ import io.verik.compiler.message.SourceLocation
 class EAlwaysSeqBlock(
     override val location: SourceLocation,
     override var name: String,
-    override var body: EExpression,
+    override var body: EExpression?,
     var eventControlExpression: EEventControlExpression
-) : EProceduralBlock() {
+) : EAbstractProceduralBlock() {
 
     init {
-        body.parent = this
+        body?.parent = this
         eventControlExpression.parent = this
     }
 
