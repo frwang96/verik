@@ -31,7 +31,7 @@ class EKtUnaryExpression(
     val kind: KtUnaryOperatorKind
 ) : EAbstractExpressionContainer() {
 
-    override val serializationType = SvSerializationType.OTHER
+    override val serializationType = SvSerializationType.INTERNAL
 
     init {
         expression.parent = this

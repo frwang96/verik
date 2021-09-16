@@ -29,7 +29,7 @@ class EKtBlockExpression(
     override val statements: ArrayList<EExpression>
 ) : EAbstractBlockExpression() {
 
-    override val serializationType = SvSerializationType.OTHER
+    override val serializationType = SvSerializationType.INTERNAL
 
     init {
         statements.forEach { it.parent = this }

@@ -24,6 +24,7 @@ import io.verik.compiler.ast.element.common.EAbstractContainerClass
 import io.verik.compiler.ast.element.common.EAbstractEnumEntry
 import io.verik.compiler.ast.element.common.EAbstractExpressionContainer
 import io.verik.compiler.ast.element.common.EAbstractFunction
+import io.verik.compiler.ast.element.common.EAbstractInitializedProperty
 import io.verik.compiler.ast.element.common.EAbstractPackage
 import io.verik.compiler.ast.element.common.EAbstractProperty
 import io.verik.compiler.ast.element.common.EAbstractReferenceExpression
@@ -200,12 +201,16 @@ abstract class Visitor {
         visitElement(abstractProperty)
     }
 
+    open fun visitAbstractInitializedProperty(abstractInitializedProperty: EAbstractInitializedProperty) {
+        visitAbstractProperty(abstractInitializedProperty)
+    }
+
     open fun visitKtProperty(property: EKtProperty) {
-        visitAbstractProperty(property)
+        visitAbstractInitializedProperty(property)
     }
 
     open fun visitSvProperty(property: ESvProperty) {
-        visitAbstractProperty(property)
+        visitAbstractInitializedProperty(property)
     }
 
 //  ENUM ENTRY  ////////////////////////////////////////////////////////////////////////////////////////////////////////

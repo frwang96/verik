@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast.element.kt
 
-import io.verik.compiler.ast.element.common.EAbstractProperty
+import io.verik.compiler.ast.element.common.EAbstractInitializedProperty
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.Annotated
 import io.verik.compiler.ast.property.Type
@@ -30,7 +30,7 @@ class EKtProperty(
     override var type: Type,
     override var initializer: EExpression?,
     override var annotations: List<EAnnotation>
-) : EAbstractProperty(), Annotated {
+) : EAbstractInitializedProperty(), Annotated {
 
     init {
         initializer?.parent = this

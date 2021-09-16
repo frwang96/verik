@@ -32,7 +32,7 @@ class EKtBinaryExpression(
     var kind: KtBinaryOperatorKind
 ) : EAbstractBinaryExpression() {
 
-    override val serializationType = SvSerializationType.OTHER
+    override val serializationType = SvSerializationType.INTERNAL
 
     init {
         left.parent = this

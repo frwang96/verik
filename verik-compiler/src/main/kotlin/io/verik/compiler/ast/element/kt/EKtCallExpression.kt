@@ -33,7 +33,7 @@ class EKtCallExpression(
     val typeArguments: ArrayList<Type>
 ) : EAbstractCallExpression() {
 
-    override val serializationType = SvSerializationType.OTHER
+    override val serializationType = SvSerializationType.INTERNAL
 
     init {
         receiver?.parent = this

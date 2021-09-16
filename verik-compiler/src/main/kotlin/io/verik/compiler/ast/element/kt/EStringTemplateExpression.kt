@@ -30,7 +30,7 @@ class EStringTemplateExpression(
     override val entries: List<StringEntry>
 ) : EAbstractStringEntryContainer() {
 
-    override val serializationType = SvSerializationType.OTHER
+    override val serializationType = SvSerializationType.INTERNAL
 
     init {
         entries.forEach {

@@ -18,7 +18,7 @@ package io.verik.compiler.util
 
 import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.EAbstractFunction
-import io.verik.compiler.ast.element.common.EAbstractProperty
+import io.verik.compiler.ast.element.common.EAbstractInitializedProperty
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.Declaration
@@ -161,10 +161,10 @@ fun ProjectContext.findExpression(name: String): EExpression {
                 }
             }
         }
-        override fun visitAbstractProperty(abstractProperty: EAbstractProperty) {
-            super.visitAbstractProperty(abstractProperty)
-            if (abstractProperty.name == name) {
-                abstractProperty.initializer?.let { expressions.add(it) }
+        override fun visitAbstractInitializedProperty(abstractInitializedProperty: EAbstractInitializedProperty) {
+            super.visitAbstractInitializedProperty(abstractInitializedProperty)
+            if (abstractInitializedProperty.name == name) {
+                abstractInitializedProperty.initializer?.let { expressions.add(it) }
             }
         }
     }

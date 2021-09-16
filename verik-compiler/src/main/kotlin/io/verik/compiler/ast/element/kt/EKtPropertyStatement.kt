@@ -36,7 +36,7 @@ class EKtPropertyStatement(
 
     override var type = Core.Kt.C_UNIT.toType()
 
-    override val serializationType = SvSerializationType.OTHER
+    override val serializationType = SvSerializationType.INTERNAL
 
     override fun accept(visitor: Visitor) {
         visitor.visitKtPropertyStatement(this)

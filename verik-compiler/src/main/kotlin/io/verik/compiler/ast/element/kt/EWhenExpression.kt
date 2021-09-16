@@ -34,7 +34,7 @@ class EWhenExpression(
     val entries: List<WhenEntry>
 ) : EExpression(), ExpressionContainer {
 
-    override val serializationType = SvSerializationType.OTHER
+    override val serializationType = SvSerializationType.INTERNAL
 
     init {
         subject.parent = this

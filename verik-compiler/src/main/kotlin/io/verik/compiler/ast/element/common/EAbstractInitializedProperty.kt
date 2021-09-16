@@ -16,27 +16,23 @@
 
 package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.property.SvSerializationType
+import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.common.Visitor
-import io.verik.compiler.core.common.Core
-import io.verik.compiler.message.SourceLocation
+import io.verik.compiler.message.Messages
 
-class ENullExpression(
-    override val location: SourceLocation
-) : EExpression() {
+abstract class EAbstractInitializedProperty : EAbstractProperty(), ExpressionContainer {
 
-    override var type = Core.Kt.C_UNIT.toType()
+    abstract var initializer: EExpression?
 
-    override val serializationType = SvSerializationType.INTERNAL
-
-    override fun accept(visitor: Visitor) {
-        visitor.visitNullExpression(this)
+    override fun acceptChildren(visitor: TreeVisitor) {
+        initializer?.accept(visitor)
     }
 
-    override fun acceptChildren(visitor: TreeVisitor) {}
-
-    override fun copy(): EExpression {
-        return ENullExpression(location)
+    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
+        newExpression.parent = this
+        if (initializer == oldExpression)
+            initializer = newExpression
+        else
+            Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
     }
 }
