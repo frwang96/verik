@@ -23,7 +23,7 @@ import io.verik.compiler.message.SourceLocation
 
 class EPrimaryConstructor(
     override val location: SourceLocation,
-    override var returnType: Type,
+    override var type: Type,
     override var valueParameters: ArrayList<EKtValueParameter>
 ) : EKtAbstractFunction() {
 

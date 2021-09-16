@@ -181,7 +181,7 @@ class ElementPrinter : Visitor() {
     override fun visitKtFunction(function: EKtFunction) {
         build("KtFunction") {
             build(function.name)
-            build(function.returnType.toString())
+            build(function.type.toString())
             build(function.body)
             build(function.annotations)
             build(function.valueParameters)
@@ -191,7 +191,7 @@ class ElementPrinter : Visitor() {
     override fun visitSvFunction(function: ESvFunction) {
         build("SvFunction") {
             build(function.name)
-            build(function.returnType.toString())
+            build(function.type.toString())
             build(function.body)
             build(function.isStatic)
             build(function.valueParameters)
@@ -200,7 +200,7 @@ class ElementPrinter : Visitor() {
 
     override fun visitPrimaryConstructor(primaryConstructor: EPrimaryConstructor) {
         build("PrimaryConstructor") {
-            build(primaryConstructor.returnType.toString())
+            build(primaryConstructor.type.toString())
             build(primaryConstructor.valueParameters)
         }
     }

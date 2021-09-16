@@ -90,7 +90,7 @@ object FunctionInterpreterStage : ProjectStage() {
                 ESvFunction(
                     function.location,
                     function.name,
-                    function.returnType,
+                    function.type,
                     function.body,
                     false,
                     ArrayList(valueParameters)

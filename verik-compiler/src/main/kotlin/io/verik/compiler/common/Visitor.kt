@@ -43,6 +43,7 @@ import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ERootPackage
 import io.verik.compiler.ast.element.common.ETypeParameter
+import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.kt.EAnnotation
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtAbstractFunction
@@ -100,8 +101,12 @@ abstract class Visitor {
         visitElement(nullElement)
     }
 
+    open fun visitTypedElement(typedElement: ETypedElement) {
+        visitElement(typedElement)
+    }
+
     open fun visitExpression(expression: EExpression) {
-        visitElement(expression)
+        visitTypedElement(expression)
     }
 
     open fun visitNullExpression(nullExpression: ENullExpression) {
@@ -133,7 +138,7 @@ abstract class Visitor {
     }
 
     open fun visitClassifier(classifier: EClassifier) {
-        visitElement(classifier)
+        visitTypedElement(classifier)
     }
 
     open fun visitTypeAlias(typeAlias: ETypeAlias) {
@@ -147,7 +152,7 @@ abstract class Visitor {
 //  CLASS  /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     open fun visitAbstractClass(abstractClass: EAbstractClass) {
-        visitElement(abstractClass)
+        visitClassifier(abstractClass)
     }
 
     open fun visitAbstractContainerClass(abstractContainerClass: EAbstractContainerClass) {
@@ -177,7 +182,7 @@ abstract class Visitor {
 //  FUNCTION  //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     open fun visitAbstractFunction(abstractFunction: EAbstractFunction) {
-        visitElement(abstractFunction)
+        visitTypedElement(abstractFunction)
     }
 
     open fun visitKtAbstractFunction(abstractFunction: EKtAbstractFunction) {
@@ -215,7 +220,7 @@ abstract class Visitor {
 //  PROPERTY  //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     open fun visitAbstractProperty(abstractProperty: EAbstractProperty) {
-        visitElement(abstractProperty)
+        visitTypedElement(abstractProperty)
     }
 
     open fun visitAbstractInitializedProperty(abstractInitializedProperty: EAbstractInitializedProperty) {

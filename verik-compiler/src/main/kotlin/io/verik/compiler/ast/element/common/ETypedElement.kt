@@ -16,6 +16,9 @@
 
 package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.interfaces.Declaration
+import io.verik.compiler.ast.property.Type
 
-abstract class EClassifier : ETypedElement(), Declaration
+abstract class ETypedElement : EElement() {
+
+    abstract var type: Type
+}

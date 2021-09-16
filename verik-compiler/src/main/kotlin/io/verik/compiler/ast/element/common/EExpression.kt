@@ -18,12 +18,9 @@ package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.SvSerializationType
-import io.verik.compiler.ast.property.Type
 import io.verik.compiler.message.Messages
 
-abstract class EExpression : EElement() {
-
-    abstract var type: Type
+abstract class EExpression : ETypedElement() {
 
     abstract val serializationType: SvSerializationType
 

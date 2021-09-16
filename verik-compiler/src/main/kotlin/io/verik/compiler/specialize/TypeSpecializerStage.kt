@@ -86,8 +86,8 @@ object TypeSpecializerStage : ProjectStage() {
 
         override fun visitKtAbstractFunction(abstractFunction: EKtAbstractFunction) {
             super.visitKtAbstractFunction(abstractFunction)
-            if (!abstractFunction.returnType.isSpecialized())
-                specialize(abstractFunction.returnType, abstractFunction)
+            if (!abstractFunction.type.isSpecialized())
+                specialize(abstractFunction.type, abstractFunction)
             abstractFunction.valueParameters.forEach {
                 if (!it.type.isSpecialized())
                     specialize(it.type, it)

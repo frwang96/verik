@@ -26,7 +26,7 @@ import io.verik.compiler.message.SourceLocation
 class EKtFunction(
     override val location: SourceLocation,
     override var name: String,
-    override var returnType: Type,
+    override var type: Type,
     override var body: EExpression?,
     override var valueParameters: ArrayList<EKtValueParameter>,
     override var annotations: List<EAnnotation>

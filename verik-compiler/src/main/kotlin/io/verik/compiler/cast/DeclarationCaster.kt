@@ -111,7 +111,7 @@ object DeclarationCaster {
             .cast<EKtFunction>(function)
             ?: return null
 
-        val returnType = castContext.castType(descriptor.returnType!!, function)
+        val type = castContext.castType(descriptor.returnType!!, function)
         val body = function.bodyBlockExpression?.let {
             castContext.casterVisitor.getExpression(it)
         }
@@ -122,7 +122,7 @@ object DeclarationCaster {
             castContext.casterVisitor.getElement<EKtValueParameter>(it)
         }
 
-        ktFunction.returnType = returnType
+        ktFunction.type = type
         body?.parent = ktFunction
         ktFunction.body = body
         annotations.forEach { it.parent = ktFunction }
@@ -138,12 +138,12 @@ object DeclarationCaster {
             .cast<EPrimaryConstructor>(constructor)
             ?: return null
 
-        val returnType = castContext.castType(descriptor.returnType, constructor)
+        val type = castContext.castType(descriptor.returnType, constructor)
         val valueParameters = constructor.valueParameters.mapNotNull {
             castContext.casterVisitor.getElement<EKtValueParameter>(it)
         }
 
-        primaryConstructor.returnType = returnType
+        primaryConstructor.type = type
         valueParameters.forEach { it.parent = primaryConstructor }
         primaryConstructor.valueParameters = ArrayList(valueParameters)
         return primaryConstructor
@@ -160,8 +160,8 @@ object DeclarationCaster {
             .cast<EPrimaryConstructor>(classOrObject)
             ?: return null
 
-        val returnType = castContext.castType(primaryConstructorDescriptor.returnType, classOrObject)
-        primaryConstructor.returnType = returnType
+        val type = castContext.castType(primaryConstructorDescriptor.returnType, classOrObject)
+        primaryConstructor.type = type
         return primaryConstructor
     }
 
