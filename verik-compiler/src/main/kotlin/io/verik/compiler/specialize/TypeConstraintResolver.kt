@@ -39,11 +39,8 @@ object TypeConstraintResolver {
                 is ValueArgumentTypeConstraint ->
                     if (!resolveValueArgumentTypeConstraint(it))
                         unresolvedTypeConstraints.add(it)
-                is PropertyInitializerTypeConstraint ->
-                    if (!resolvePropertyInitializerTypeConstraint(it))
-                        unresolvedTypeConstraints.add(it)
-                is ExpressionEqualsTypeConstraint ->
-                    if (!resolveExpressionEqualsTypeConstraint(it))
+                is TypeEqualsTypeConstraint ->
+                    if (!resolveTypeEqualsTypeConstraint(it))
                         unresolvedTypeConstraints.add(it)
                 is MaxBitWidthTypeConstraint ->
                     if (!resolveMaxBitWidthTypeConstraint(it))
@@ -79,25 +76,7 @@ object TypeConstraintResolver {
         return true
     }
 
-    @Suppress("DuplicatedCode")
-    // TODO fix after introducing ETypedElement
-    private fun resolvePropertyInitializerTypeConstraint(typeConstraint: PropertyInitializerTypeConstraint): Boolean {
-        val expressionResolved = typeConstraint.expression.type.isResolved()
-        val propertyResolved = typeConstraint.property.type.isResolved()
-        return if (propertyResolved) {
-            if (!expressionResolved)
-                typeConstraint.expression.type = typeConstraint.property.type.copy()
-            true
-        } else {
-            if (expressionResolved) {
-                typeConstraint.property.type = typeConstraint.expression.type.copy()
-                true
-            } else false
-        }
-    }
-
-    @Suppress("DuplicatedCode")
-    private fun resolveExpressionEqualsTypeConstraint(typeConstraint: ExpressionEqualsTypeConstraint): Boolean {
+    private fun resolveTypeEqualsTypeConstraint(typeConstraint: TypeEqualsTypeConstraint): Boolean {
         val innerResolved = typeConstraint.inner.type.isResolved()
         val outerResolved = typeConstraint.outer.type.isResolved()
         return if (outerResolved) {

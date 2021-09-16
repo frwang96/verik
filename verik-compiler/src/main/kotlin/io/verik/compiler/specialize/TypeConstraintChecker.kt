@@ -27,12 +27,10 @@ object TypeConstraintChecker {
             when (it) {
                 is TypeArgumentTypeConstraint ->
                     checkTypeArgumentTypeConstraint(it)
-                is PropertyInitializerTypeConstraint ->
-                    checkPropertyInitializerTypeConstraint(it)
                 is ValueArgumentTypeConstraint ->
                     checkValueArgumentTypeConstraint(it)
-                is ExpressionEqualsTypeConstraint ->
-                    checkExpressionEqualsTypeConstraint(it)
+                is TypeEqualsTypeConstraint ->
+                    checkTypeEqualsTypeConstraint(it)
                 is MaxBitWidthTypeConstraint ->
                     checkMaxBitWidthTypeConstraint(it)
             }
@@ -57,16 +55,7 @@ object TypeConstraintChecker {
             )
     }
 
-    private fun checkPropertyInitializerTypeConstraint(typeConstraint: PropertyInitializerTypeConstraint) {
-        if (typeConstraint.property.type != typeConstraint.expression.type)
-            Messages.TYPE_MISMATCH.on(
-                typeConstraint.expression,
-                typeConstraint.property.type,
-                typeConstraint.expression.type
-            )
-    }
-
-    private fun checkExpressionEqualsTypeConstraint(typeConstraint: ExpressionEqualsTypeConstraint) {
+    private fun checkTypeEqualsTypeConstraint(typeConstraint: TypeEqualsTypeConstraint) {
         if (typeConstraint.outer.type != typeConstraint.inner.type)
             Messages.TYPE_MISMATCH.on(typeConstraint.inner, typeConstraint.outer.type, typeConstraint.inner.type)
     }

@@ -20,10 +20,10 @@ import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.core.common.CoreScope
-import io.verik.compiler.specialize.ExpressionEqualsTypeConstraint
 import io.verik.compiler.specialize.MaxBitWidthTypeConstraint
 import io.verik.compiler.specialize.TypeArgumentTypeConstraint
 import io.verik.compiler.specialize.TypeConstraint
+import io.verik.compiler.specialize.TypeEqualsTypeConstraint
 
 object CoreVkUbit : CoreScope(Core.Vk.C_UBIT) {
 
@@ -45,14 +45,14 @@ object CoreVkUbit : CoreScope(Core.Vk.C_UBIT) {
     val F_SHL_INT = object : CoreKtFunctionDeclaration(parent, "shl", Core.Kt.C_INT) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
-            return listOf(ExpressionEqualsTypeConstraint(callExpression.receiver!!, callExpression))
+            return listOf(TypeEqualsTypeConstraint(callExpression.receiver!!, callExpression))
         }
     }
 
     val F_SHR_INT = object : CoreKtFunctionDeclaration(parent, "shr", Core.Kt.C_INT) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
-            return listOf(ExpressionEqualsTypeConstraint(callExpression.receiver!!, callExpression))
+            return listOf(TypeEqualsTypeConstraint(callExpression.receiver!!, callExpression))
         }
     }
 
