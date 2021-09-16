@@ -251,20 +251,6 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitTypeAlias(typeAlias: ETypeAlias) {
-        build("TypeAlias") {
-            build(typeAlias.name)
-            build(typeAlias.type.toString())
-        }
-    }
-
-    override fun visitTypeParameter(typeParameter: ETypeParameter) {
-        build("TypeParameter") {
-            build(typeParameter.name)
-            build(typeParameter.upperBound.toString())
-        }
-    }
-
     override fun visitKtValueParameter(valueParameter: EKtValueParameter) {
         build("KtValueParameter") {
             build(valueParameter.name)
@@ -285,6 +271,20 @@ class ElementPrinter : Visitor() {
             build(port.name)
             build(port.type.toString())
             build(port.portType.toString())
+        }
+    }
+
+    override fun visitTypeAlias(typeAlias: ETypeAlias) {
+        build("TypeAlias") {
+            build(typeAlias.name)
+            build(typeAlias.type.toString())
+        }
+    }
+
+    override fun visitTypeParameter(typeParameter: ETypeParameter) {
+        build("TypeParameter") {
+            build(typeParameter.name)
+            build(typeParameter.upperBound.toString())
         }
     }
 

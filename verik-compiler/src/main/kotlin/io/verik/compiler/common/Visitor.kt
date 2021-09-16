@@ -213,10 +213,8 @@ abstract class Visitor {
         visitAbstractInitializedProperty(property)
     }
 
-//  ENUM ENTRY  ////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     open fun visitAbstractEnumEntry(abstractEnumEntry: EAbstractEnumEntry) {
-        visitElement(abstractEnumEntry)
+        visitAbstractProperty(abstractEnumEntry)
     }
 
     open fun visitKtEnumEntry(enumEntry: EKtEnumEntry) {
@@ -227,28 +225,12 @@ abstract class Visitor {
         visitAbstractEnumEntry(enumEntry)
     }
 
-//  MODULE INSTANTIATION  //////////////////////////////////////////////////////////////////////////////////////////////
-
     open fun visitModuleInstantiation(moduleInstantiation: EModuleInstantiation) {
-        visitElement(moduleInstantiation)
+        visitAbstractProperty(moduleInstantiation)
     }
-
-//  TYPE ALIAS  ////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    open fun visitTypeAlias(typeAlias: ETypeAlias) {
-        visitElement(typeAlias)
-    }
-
-//  TYPE PARAMETER  ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    open fun visitTypeParameter(typeParameter: ETypeParameter) {
-        visitElement(typeParameter)
-    }
-
-//  VALUE PARAMETER  ///////////////////////////////////////////////////////////////////////////////////////////////////
 
     open fun visitAbstractValueParameter(abstractValueParameter: EAbstractValueParameter) {
-        visitElement(abstractValueParameter)
+        visitAbstractProperty(abstractValueParameter)
     }
 
     open fun visitKtValueParameter(valueParameter: EKtValueParameter) {
@@ -261,6 +243,18 @@ abstract class Visitor {
 
     open fun visitPort(port: EPort) {
         visitAbstractValueParameter(port)
+    }
+
+//  TYPE ALIAS  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    open fun visitTypeAlias(typeAlias: ETypeAlias) {
+        visitElement(typeAlias)
+    }
+
+//  TYPE PARAMETER  ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    open fun visitTypeParameter(typeParameter: ETypeParameter) {
+        visitElement(typeParameter)
     }
 
 //  ANNOTATION  ////////////////////////////////////////////////////////////////////////////////////////////////////////
