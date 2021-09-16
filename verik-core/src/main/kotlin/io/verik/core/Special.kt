@@ -74,7 +74,7 @@ fun <T> z(): T {
 }
 
 /**
- * Output component port that is not connected.
+ * Represents a value that is not connected in output port connections or property declarations.
  */
 fun <T> nc(): T {
     throw VerikException()
