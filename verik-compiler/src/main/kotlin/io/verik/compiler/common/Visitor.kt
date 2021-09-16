@@ -20,9 +20,11 @@ import io.verik.compiler.ast.element.common.EAbstractBinaryExpression
 import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.EAbstractCallExpression
 import io.verik.compiler.ast.element.common.EAbstractClass
+import io.verik.compiler.ast.element.common.EAbstractContainerClass
 import io.verik.compiler.ast.element.common.EAbstractEnumEntry
 import io.verik.compiler.ast.element.common.EAbstractExpressionContainer
 import io.verik.compiler.ast.element.common.EAbstractFunction
+import io.verik.compiler.ast.element.common.EAbstractInitializedProperty
 import io.verik.compiler.ast.element.common.EAbstractPackage
 import io.verik.compiler.ast.element.common.EAbstractProperty
 import io.verik.compiler.ast.element.common.EAbstractReferenceExpression
@@ -50,6 +52,7 @@ import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
+import io.verik.compiler.ast.element.kt.EKtPropertyStatement
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.kt.EKtValueParameter
@@ -57,6 +60,7 @@ import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.element.kt.EWhenExpression
+import io.verik.compiler.ast.element.sv.EAbstractProceduralBlock
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.ECaseStatement
@@ -72,7 +76,6 @@ import io.verik.compiler.ast.element.sv.ELoopStatement
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EModuleInstantiation
 import io.verik.compiler.ast.element.sv.EPort
-import io.verik.compiler.ast.element.sv.EProceduralBlock
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.EStructLiteralExpression
@@ -83,6 +86,7 @@ import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvProperty
+import io.verik.compiler.ast.element.sv.ESvPropertyStatement
 import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.sv.ESvValueParameter
@@ -129,28 +133,28 @@ abstract class Visitor {
         visitElement(abstractClass)
     }
 
+    open fun visitAbstractContainerClass(abstractContainerClass: EAbstractContainerClass) {
+        visitAbstractClass(abstractContainerClass)
+    }
+
     open fun visitKtBasicClass(basicClass: EKtBasicClass) {
-        visitAbstractClass(basicClass)
+        visitAbstractContainerClass(basicClass)
     }
 
     open fun visitSvBasicClass(basicClass: ESvBasicClass) {
-        visitAbstractClass(basicClass)
+        visitAbstractContainerClass(basicClass)
     }
 
     open fun visitModule(module: EModule) {
-        visitAbstractClass(module)
+        visitAbstractContainerClass(module)
     }
-
-//  ENUM  //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     open fun visitEnum(enum: EEnum) {
-        visitElement(enum)
+        visitAbstractClass(enum)
     }
 
-//  STRUCT  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     open fun visitStruct(struct: EStruct) {
-        visitElement(struct)
+        visitAbstractClass(struct)
     }
 
 //  FUNCTION  //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -175,42 +179,42 @@ abstract class Visitor {
         visitAbstractFunction(function)
     }
 
-//  PROCEDURAL BLOCK  //////////////////////////////////////////////////////////////////////////////////////////////////
-
-    open fun visitProceduralBlock(proceduralBlock: EProceduralBlock) {
-        visitElement(proceduralBlock)
+    open fun visitAbstractProceduralBlock(abstractProceduralBlock: EAbstractProceduralBlock) {
+        visitAbstractFunction(abstractProceduralBlock)
     }
 
     open fun visitInitialBlock(initialBlock: EInitialBlock) {
-        visitProceduralBlock(initialBlock)
+        visitAbstractProceduralBlock(initialBlock)
     }
 
     open fun visitAlwaysComBlock(alwaysComBlock: EAlwaysComBlock) {
-        visitProceduralBlock(alwaysComBlock)
+        visitAbstractProceduralBlock(alwaysComBlock)
     }
 
     open fun visitAlwaysSeqBlock(alwaysSeqBlock: EAlwaysSeqBlock) {
-        visitProceduralBlock(alwaysSeqBlock)
+        visitAbstractProceduralBlock(alwaysSeqBlock)
     }
 
 //  PROPERTY  //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     open fun visitAbstractProperty(abstractProperty: EAbstractProperty) {
-        visitExpression(abstractProperty)
+        visitElement(abstractProperty)
+    }
+
+    open fun visitAbstractInitializedProperty(abstractInitializedProperty: EAbstractInitializedProperty) {
+        visitAbstractProperty(abstractInitializedProperty)
     }
 
     open fun visitKtProperty(property: EKtProperty) {
-        visitAbstractProperty(property)
+        visitAbstractInitializedProperty(property)
     }
 
     open fun visitSvProperty(property: ESvProperty) {
-        visitAbstractProperty(property)
+        visitAbstractInitializedProperty(property)
     }
 
-//  ENUM ENTRY  ////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     open fun visitAbstractEnumEntry(abstractEnumEntry: EAbstractEnumEntry) {
-        visitElement(abstractEnumEntry)
+        visitAbstractProperty(abstractEnumEntry)
     }
 
     open fun visitKtEnumEntry(enumEntry: EKtEnumEntry) {
@@ -221,28 +225,12 @@ abstract class Visitor {
         visitAbstractEnumEntry(enumEntry)
     }
 
-//  MODULE INSTANTIATION  //////////////////////////////////////////////////////////////////////////////////////////////
-
     open fun visitModuleInstantiation(moduleInstantiation: EModuleInstantiation) {
-        visitElement(moduleInstantiation)
+        visitAbstractProperty(moduleInstantiation)
     }
-
-//  TYPE ALIAS  ////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    open fun visitTypeAlias(typeAlias: ETypeAlias) {
-        visitElement(typeAlias)
-    }
-
-//  TYPE PARAMETER  ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    open fun visitTypeParameter(typeParameter: ETypeParameter) {
-        visitElement(typeParameter)
-    }
-
-//  VALUE PARAMETER  ///////////////////////////////////////////////////////////////////////////////////////////////////
 
     open fun visitAbstractValueParameter(abstractValueParameter: EAbstractValueParameter) {
-        visitElement(abstractValueParameter)
+        visitAbstractProperty(abstractValueParameter)
     }
 
     open fun visitKtValueParameter(valueParameter: EKtValueParameter) {
@@ -255,6 +243,18 @@ abstract class Visitor {
 
     open fun visitPort(port: EPort) {
         visitAbstractValueParameter(port)
+    }
+
+//  TYPE ALIAS  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    open fun visitTypeAlias(typeAlias: ETypeAlias) {
+        visitElement(typeAlias)
+    }
+
+//  TYPE PARAMETER  ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    open fun visitTypeParameter(typeParameter: ETypeParameter) {
+        visitElement(typeParameter)
     }
 
 //  ANNOTATION  ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -279,6 +279,14 @@ abstract class Visitor {
 
     open fun visitAbstractExpressionContainer(abstractExpressionContainer: EAbstractExpressionContainer) {
         visitExpression(abstractExpressionContainer)
+    }
+
+    open fun visitKtPropertyStatement(propertyStatement: EKtPropertyStatement) {
+        visitExpression(propertyStatement)
+    }
+
+    open fun visitSvPropertyStatement(propertyStatement: ESvPropertyStatement) {
+        visitExpression(propertyStatement)
     }
 
     open fun visitParenthesizedExpression(parenthesizedExpression: EParenthesizedExpression) {

@@ -27,6 +27,8 @@ object TypeConstraintChecker {
             when (it) {
                 is TypeArgumentTypeConstraint ->
                     checkTypeArgumentTypeConstraint(it)
+                is PropertyInitializerTypeConstraint ->
+                    checkPropertyInitializerTypeConstraint(it)
                 is ValueArgumentTypeConstraint ->
                     checkValueArgumentTypeConstraint(it)
                 is ExpressionEqualsTypeConstraint ->
@@ -52,6 +54,15 @@ object TypeConstraintChecker {
                 typeConstraint.valueArgument,
                 typeConstraint.valueParameter.type,
                 typeConstraint.valueArgument.type
+            )
+    }
+
+    private fun checkPropertyInitializerTypeConstraint(typeConstraint: PropertyInitializerTypeConstraint) {
+        if (typeConstraint.property.type != typeConstraint.expression.type)
+            Messages.TYPE_MISMATCH.on(
+                typeConstraint.expression,
+                typeConstraint.property.type,
+                typeConstraint.expression.type
             )
     }
 

@@ -16,9 +16,8 @@
 
 package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EAbstractProperty
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.PortInstantiation
 import io.verik.compiler.ast.property.Type
@@ -30,9 +29,9 @@ import io.verik.compiler.message.SourceLocation
 class EModuleInstantiation(
     override val location: SourceLocation,
     override var name: String,
-    var type: Type,
+    override var type: Type,
     val portInstantiations: List<PortInstantiation>
-) : EElement(), Declaration, ExpressionContainer {
+) : EAbstractProperty(), ExpressionContainer {
 
     init {
         portInstantiations.forEach { it.expression?.parent = this }

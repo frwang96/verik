@@ -16,10 +16,4 @@
 
 package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.interfaces.Declaration
-import io.verik.compiler.ast.property.Type
-
-abstract class EAbstractValueParameter : EElement(), Declaration {
-
-    abstract var type: Type
-}
+abstract class EAbstractValueParameter : EAbstractProperty()

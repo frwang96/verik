@@ -94,6 +94,11 @@ object Messages {
         "String literal expected for annotation argument"
     )
 
+    val ILLEGAL_LOCAL_DECLARATION = MessageTemplate1<String>(
+        Severity.ERROR,
+        "Illegal local declaration: $0"
+    )
+
 //  PRE TRANSFORM  /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val BIT_CONSTANT_NOT_CONSTANT = MessageTemplate0(

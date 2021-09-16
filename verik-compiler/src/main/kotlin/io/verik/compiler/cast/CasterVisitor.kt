@@ -25,12 +25,12 @@ import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtBasicClass
-import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
+import io.verik.compiler.ast.element.kt.EKtPropertyStatement
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.kt.EKtValueParameter
@@ -74,7 +74,30 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
 
     fun getExpression(expression: KtExpression): EExpression {
         val location = expression.location()
-        return getElement(expression) ?: ENullExpression(location)
+        @Suppress("RedundantNullableReturnType")
+        val element: EElement? = expression.accept(this, Unit)
+        return when (element) {
+            is EKtBasicClass -> {
+                Messages.ILLEGAL_LOCAL_DECLARATION.on(element, element.name)
+                ENullExpression(location)
+            }
+            is EKtFunction -> {
+                Messages.ILLEGAL_LOCAL_DECLARATION.on(element, element.name)
+                ENullExpression(location)
+            }
+            is EKtProperty -> {
+                EKtPropertyStatement(location, element)
+            }
+            is EExpression -> element
+            null -> {
+                Messages.INTERNAL_ERROR.on(location, "Expression expected but got: null")
+                ENullExpression(location)
+            }
+            else -> {
+                Messages.INTERNAL_ERROR.on(location, "Expression expected but got: ${element::class.simpleName}")
+                ENullExpression(location)
+            }
+        }
     }
 
     override fun visitKtElement(element: KtElement, data: Unit?): EElement? {
@@ -130,8 +153,8 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
         return ExpressionCaster.castKtUnaryExpression(expression, castContext)
     }
 
-    override fun visitBinaryExpression(expression: KtBinaryExpression, data: Unit?): EKtBinaryExpression? {
-        return ExpressionCaster.castKtBinaryExpression(expression, castContext)
+    override fun visitBinaryExpression(expression: KtBinaryExpression, data: Unit?): EExpression? {
+        return ExpressionCaster.castKtBinaryExpressionOrKtCallExpression(expression, castContext)
     }
 
     override fun visitSimpleNameExpression(expression: KtSimpleNameExpression, data: Unit?): EKtReferenceExpression {

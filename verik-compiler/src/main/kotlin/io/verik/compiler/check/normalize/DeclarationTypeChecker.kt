@@ -16,7 +16,7 @@
 
 package io.verik.compiler.check.normalize
 
-import io.verik.compiler.ast.element.common.EAbstractClass
+import io.verik.compiler.ast.element.common.EAbstractContainerClass
 import io.verik.compiler.ast.element.common.EAbstractEnumEntry
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
@@ -46,9 +46,9 @@ object DeclarationTypeChecker : ProjectStage() {
             }
         }
 
-        override fun visitAbstractClass(abstractClass: EAbstractClass) {
-            super.visitAbstractClass(abstractClass)
-            abstractClass.members.forEach {
+        override fun visitAbstractContainerClass(abstractContainerClass: EAbstractContainerClass) {
+            super.visitAbstractContainerClass(abstractContainerClass)
+            abstractContainerClass.members.forEach {
                 if (it !is Declaration)
                     Messages.INTERNAL_ERROR.on(it, "Declaration expected but got: $it")
             }

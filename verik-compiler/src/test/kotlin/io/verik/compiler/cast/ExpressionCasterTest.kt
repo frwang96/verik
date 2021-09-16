@@ -68,6 +68,20 @@ internal class ExpressionCasterTest : BaseTest() {
     }
 
     @Test
+    fun `binary expression identifier`() {
+        val projectContext = driveTest(
+            CasterStage::class,
+            """
+                var x = u(1) shl 1
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtCallExpression(Ubit<`*`>, shl, KtCallExpression(*), [], [ConstantExpression(*)])",
+            projectContext.findExpression("x")
+        )
+    }
+
+    @Test
     fun `reference expression simple`() {
         val projectContext = driveTest(
             CasterStage::class,

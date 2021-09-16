@@ -62,14 +62,24 @@ object ExpressionCaster {
         return EKtUnaryExpression(location, type, childExpression, kind)
     }
 
-    fun castKtBinaryExpression(expression: KtBinaryExpression, castContext: CastContext): EKtBinaryExpression? {
+    fun castKtBinaryExpressionOrKtCallExpression(
+        expression: KtBinaryExpression,
+        castContext: CastContext
+    ): EExpression? {
         val location = expression.location()
         val type = castContext.castType(expression)
-        val kind = KtBinaryOperatorKind(expression.operationToken, location)
-            ?: return null
         val left = castContext.casterVisitor.getExpression(expression.left!!)
         val right = castContext.casterVisitor.getExpression(expression.right!!)
-        return EKtBinaryExpression(location, type, left, right, kind)
+        val token = expression.operationReference.operationSignTokenType
+        return if (token != null) {
+            val kind = KtBinaryOperatorKind(token, location)
+                ?: return null
+            EKtBinaryExpression(location, type, left, right, kind)
+        } else {
+            val descriptor = castContext.sliceReferenceTarget[expression.operationReference]!!
+            val declaration = castContext.getDeclaration(descriptor, expression)
+            EKtCallExpression(location, type, declaration, left, arrayListOf(right), arrayListOf())
+        }
     }
 
     fun castKtReferenceExpression(

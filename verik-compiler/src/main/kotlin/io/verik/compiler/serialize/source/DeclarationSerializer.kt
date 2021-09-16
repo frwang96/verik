@@ -78,7 +78,7 @@ object DeclarationSerializer {
         serializerContext.appendLine("typedef struct packed {")
         serializerContext.indent {
             struct.properties.forEach {
-                serializerContext.serializeAsStatement(it)
+                serializerContext.serialize(it)
             }
         }
         serializerContext.appendLine("} ${struct.name};")
@@ -107,19 +107,19 @@ object DeclarationSerializer {
 
     fun serializeInitialBlock(initialBlock: EInitialBlock, serializerContext: SerializerContext) {
         serializerContext.append("initial ")
-        serializerContext.serializeAsStatement(initialBlock.body)
+        serializerContext.serializeAsStatement(initialBlock.getBodyNotNull())
     }
 
     fun serializeAlwaysComBlock(alwaysComBlock: EAlwaysComBlock, serializerContext: SerializerContext) {
         serializerContext.append("always_comb ")
-        serializerContext.serializeAsStatement(alwaysComBlock.body)
+        serializerContext.serializeAsStatement(alwaysComBlock.getBodyNotNull())
     }
 
     fun serializeAlwaysSeqBlock(alwaysSeqBlock: EAlwaysSeqBlock, serializerContext: SerializerContext) {
         serializerContext.append("always_ff ")
         serializerContext.serializeAsExpression(alwaysSeqBlock.eventControlExpression)
         serializerContext.append(" ")
-        serializerContext.serializeAsStatement(alwaysSeqBlock.body)
+        serializerContext.serializeAsStatement(alwaysSeqBlock.getBodyNotNull())
     }
 
     fun serializeSvProperty(property: ESvProperty, serializerContext: SerializerContext) {

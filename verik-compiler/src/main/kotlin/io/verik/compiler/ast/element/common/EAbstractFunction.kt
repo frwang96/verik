@@ -38,4 +38,14 @@ abstract class EAbstractFunction : EElement(), Declaration, ExpressionContainer 
         else
             Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
     }
+
+    fun getBodyNotNull(): EExpression {
+        val body = body
+        return if (body != null) {
+            body
+        } else {
+            Messages.INTERNAL_ERROR.on(this, "Function body expected")
+            ENullExpression(location)
+        }
+    }
 }

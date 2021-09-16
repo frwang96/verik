@@ -30,7 +30,7 @@ class EFunctionLiteralExpression(
     var body: EExpression
 ) : EExpression(), ExpressionContainer {
 
-    override val serializationType = SvSerializationType.OTHER
+    override val serializationType = SvSerializationType.INTERNAL
 
     init {
         body.parent = this

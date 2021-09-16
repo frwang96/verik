@@ -31,7 +31,7 @@ class EKtReferenceExpression(
     override var receiver: EExpression?
 ) : EAbstractReferenceExpression() {
 
-    override val serializationType = SvSerializationType.OTHER
+    override val serializationType = SvSerializationType.INTERNAL
 
     init {
         receiver?.parent = this

@@ -33,7 +33,6 @@ object TypeResolverStage : ProjectStage() {
     object TypeResolverVisitor : TreeVisitor() {
 
         override fun visitKtFunction(function: EKtFunction) {
-            super.visitKtFunction(function)
             val body = function.body
             if (body != null) {
                 val typeConstraints = TypeConstraintCollector.collect(body)
@@ -42,7 +41,6 @@ object TypeResolverStage : ProjectStage() {
         }
 
         override fun visitKtProperty(property: EKtProperty) {
-            super.visitKtProperty(property)
             val typeConstraints = TypeConstraintCollector.collect(property)
             TypeConstraintResolver.resolve(typeConstraints)
         }

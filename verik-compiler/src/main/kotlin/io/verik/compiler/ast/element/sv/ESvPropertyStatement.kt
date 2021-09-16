@@ -14,39 +14,40 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.kt
+package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.element.common.EAbstractStringEntryContainer
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.property.ExpressionStringEntry
-import io.verik.compiler.ast.property.StringEntry
+import io.verik.compiler.ast.element.common.ENullExpression
 import io.verik.compiler.ast.property.SvSerializationType
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
+import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 
-class EStringTemplateExpression(
+class ESvPropertyStatement(
     override val location: SourceLocation,
-    override val entries: List<StringEntry>
-) : EAbstractStringEntryContainer() {
-
-    override val serializationType = SvSerializationType.INTERNAL
+    val property: ESvProperty
+) : EExpression() {
 
     init {
-        entries.forEach {
-            if (it is ExpressionStringEntry)
-                it.expression.parent = this
-        }
+        property.parent = this
     }
 
-    override var type = Core.Kt.C_STRING.toType()
+    override var type = Core.Kt.C_UNIT.toType()
+
+    override val serializationType = SvSerializationType.STATEMENT
 
     override fun accept(visitor: Visitor) {
-        visitor.visitStringTemplateExpression(this)
+        visitor.visitSvPropertyStatement(this)
+    }
+
+    override fun acceptChildren(visitor: TreeVisitor) {
+        property.accept(visitor)
     }
 
     override fun copy(): EExpression {
-        val copyEntries = entries.map { it.copy() }
-        return EStringTemplateExpression(location, copyEntries)
+        Messages.INTERNAL_ERROR.on(this, "Unable to copy $this")
+        return ENullExpression(location)
     }
 }

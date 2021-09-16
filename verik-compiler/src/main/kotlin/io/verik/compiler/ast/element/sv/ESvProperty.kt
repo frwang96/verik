@@ -16,9 +16,8 @@
 
 package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.element.common.EAbstractProperty
+import io.verik.compiler.ast.element.common.EAbstractInitializedProperty
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
@@ -28,9 +27,7 @@ class ESvProperty(
     override var name: String,
     override var type: Type,
     override var initializer: EExpression?
-) : EAbstractProperty() {
-
-    override val serializationType = SvSerializationType.STATEMENT
+) : EAbstractInitializedProperty() {
 
     init {
         initializer?.parent = this

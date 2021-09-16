@@ -14,28 +14,24 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.sv
+package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.message.Messages
 
-abstract class EProceduralBlock : EElement(), Declaration, ExpressionContainer {
+abstract class EAbstractInitializedProperty : EAbstractProperty(), ExpressionContainer {
 
-    abstract var body: EExpression
+    abstract var initializer: EExpression?
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        body.accept(visitor)
+        initializer?.accept(visitor)
     }
 
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
         newExpression.parent = this
-        if (body == oldExpression)
-            body = newExpression.cast()
-                ?: return
+        if (initializer == oldExpression)
+            initializer = newExpression
         else
             Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
     }

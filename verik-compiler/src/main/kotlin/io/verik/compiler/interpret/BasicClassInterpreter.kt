@@ -24,6 +24,7 @@ import io.verik.compiler.ast.element.sv.ESvBlockExpression
 import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvProperty
+import io.verik.compiler.ast.element.sv.ESvPropertyStatement
 import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.core.common.Core
 
@@ -62,7 +63,7 @@ object BasicClassInterpreter {
             ESvCallExpression(location, returnType.copy(), Core.Sv.F_NEW, null, arrayListOf(), false)
         )
         val statements = listOf(
-            property,
+            ESvPropertyStatement(location, property),
             EReturnStatement(
                 location,
                 Core.Kt.C_NOTHING.toType(),

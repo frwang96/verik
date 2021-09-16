@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.common
+package multiplier
 
-import io.verik.compiler.ast.interfaces.Declaration
-import io.verik.compiler.ast.property.Type
+import io.verik.core.*
 
-abstract class EAbstractClass : EElement(), Declaration {
-
-    abstract var supertype: Type
-    abstract var typeParameters: ArrayList<ETypeParameter>
-}
+class MultiplierRsp(
+    val result: Ubit<RSP_WIDTH>,
+    val vld: Boolean
+) : Struct()

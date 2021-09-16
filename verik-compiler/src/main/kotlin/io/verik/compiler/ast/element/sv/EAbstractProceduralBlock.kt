@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.common
+package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.interfaces.Declaration
-import io.verik.compiler.ast.property.Type
+import io.verik.compiler.ast.element.common.EAbstractFunction
+import io.verik.compiler.core.common.Core
 
-abstract class EAbstractClass : EElement(), Declaration {
+abstract class EAbstractProceduralBlock : EAbstractFunction() {
 
-    abstract var supertype: Type
-    abstract var typeParameters: ArrayList<ETypeParameter>
+    override var returnType = Core.Kt.C_UNIT.toType()
 }

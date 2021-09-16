@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast.element.kt
 
-import io.verik.compiler.ast.element.common.EAbstractClass
+import io.verik.compiler.ast.element.common.EAbstractContainerClass
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.interfaces.Annotated
@@ -34,7 +34,7 @@ class EKtBasicClass(
     override var annotations: List<EAnnotation>,
     var isEnum: Boolean,
     var primaryConstructor: EPrimaryConstructor?
-) : EAbstractClass(), Annotated {
+) : EAbstractContainerClass(), Annotated {
 
     init {
         typeParameters.forEach { it.parent = this }

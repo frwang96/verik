@@ -14,13 +14,9 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.common
+package multiplier
 
-import io.verik.compiler.ast.interfaces.Declaration
-import io.verik.compiler.ast.property.Type
+import io.verik.core.*
 
-abstract class EAbstractClass : EElement(), Declaration {
-
-    abstract var supertype: Type
-    abstract var typeParameters: ArrayList<ETypeParameter>
-}
+typealias REQ_WIDTH = `8`
+typealias RSP_WIDTH = `16`
