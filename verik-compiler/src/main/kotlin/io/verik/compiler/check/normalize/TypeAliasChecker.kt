@@ -66,6 +66,11 @@ object TypeAliasChecker : ProjectStage() {
             addTypeRecursive(expression.type, expression)
         }
 
+        override fun visitTypeParameter(typeParameter: ETypeParameter) {
+            super.visitTypeParameter(typeParameter)
+            addTypeRecursive(typeParameter.type, typeParameter)
+        }
+
         override fun visitAbstractClass(abstractClass: EAbstractClass) {
             super.visitAbstractClass(abstractClass)
             addTypeRecursive(abstractClass.supertype, abstractClass)
@@ -73,12 +78,7 @@ object TypeAliasChecker : ProjectStage() {
 
         override fun visitAbstractFunction(abstractFunction: EAbstractFunction) {
             super.visitAbstractFunction(abstractFunction)
-            addTypeRecursive(abstractFunction.returnType, abstractFunction)
-        }
-
-        override fun visitTypeParameter(typeParameter: ETypeParameter) {
-            super.visitTypeParameter(typeParameter)
-            addTypeRecursive(typeParameter.upperBound, typeParameter)
+            addTypeRecursive(abstractFunction.type, abstractFunction)
         }
 
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {

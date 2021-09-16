@@ -16,11 +16,14 @@
 
 package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.Type
+import io.verik.compiler.core.common.Core
 
-abstract class EAbstractClass : EElement(), Declaration {
+abstract class EAbstractClass : EClassifier() {
 
     abstract var supertype: Type
     abstract var typeParameters: ArrayList<ETypeParameter>
+
+    // TODO set type of class
+    override var type = Core.Kt.C_UNIT.toType()
 }

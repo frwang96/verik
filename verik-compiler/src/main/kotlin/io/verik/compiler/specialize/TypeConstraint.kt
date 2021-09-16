@@ -17,8 +17,8 @@
 package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.kt.EKtCallExpression
-import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.property.Type
 
@@ -54,14 +54,9 @@ class ValueArgumentTypeConstraint(
     val valueParameter: EKtValueParameter
 ) : TypeConstraint()
 
-class PropertyInitializerTypeConstraint(
-    val expression: EExpression,
-    val property: EKtProperty
-) : TypeConstraint()
-
-class ExpressionEqualsTypeConstraint(
-    val inner: EExpression,
-    val outer: EExpression
+class TypeEqualsTypeConstraint(
+    val inner: ETypedElement,
+    val outer: ETypedElement
 ) : TypeConstraint()
 
 class MaxBitWidthTypeConstraint(

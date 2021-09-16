@@ -69,7 +69,7 @@ class ReferenceUpdater(val projectContext: ProjectContext) {
 
         override fun visitAbstractFunction(abstractFunction: EAbstractFunction) {
             super.visitAbstractFunction(abstractFunction)
-            updateTypeReferences(abstractFunction.returnType)
+            updateTypeReferences(abstractFunction.type)
         }
 
         override fun visitAbstractProperty(abstractProperty: EAbstractProperty) {

@@ -14,27 +14,11 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.kt
+package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.property.Type
-import io.verik.compiler.common.Visitor
-import io.verik.compiler.message.SourceLocation
 
-class EPrimaryConstructor(
-    override val location: SourceLocation,
-    override var type: Type,
-    override var valueParameters: ArrayList<EKtValueParameter>
-) : EKtAbstractFunction() {
+abstract class ETypedElement : EElement() {
 
-    override var name = "<init>"
-    override var body: EExpression? = null
-
-    init {
-        valueParameters.forEach { it.parent = this }
-    }
-
-    override fun accept(visitor: Visitor) {
-        visitor.visitPrimaryConstructor(this)
-    }
+    abstract var type: Type
 }

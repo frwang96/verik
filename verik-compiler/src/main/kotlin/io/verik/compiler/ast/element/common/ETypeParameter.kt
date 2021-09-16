@@ -16,7 +16,6 @@
 
 package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
@@ -25,8 +24,8 @@ import io.verik.compiler.message.SourceLocation
 class ETypeParameter(
     override val location: SourceLocation,
     override var name: String,
-    var upperBound: Type
-) : EElement(), Declaration {
+    override var type: Type
+) : EClassifier() {
 
     override fun accept(visitor: Visitor) {
         return visitor.visitTypeParameter(this)

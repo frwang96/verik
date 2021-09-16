@@ -42,6 +42,31 @@ import org.jetbrains.kotlin.types.typeUtil.representativeUpperBound
 
 object DeclarationCaster {
 
+    fun castTypeAlias(alias: KtTypeAlias, castContext: CastContext): ETypeAlias? {
+        val descriptor = castContext.sliceTypeAlias[alias]!!
+        val typeAlias = castContext.getDeclaration(descriptor, alias)
+            .cast<ETypeAlias>(alias)
+            ?: return null
+
+        val type = castContext.castType(alias.getTypeReference()!!)
+
+        typeAlias.type = type
+        return typeAlias
+    }
+
+    fun castTypeParameter(parameter: KtTypeParameter, castContext: CastContext): ETypeParameter? {
+        val descriptor = castContext.sliceTypeParameter[parameter]!!
+        val typeParameter = castContext.getDeclaration(descriptor, parameter)
+            .cast<ETypeParameter>(parameter)
+            ?: return null
+
+        val type = if (descriptor.representativeUpperBound.isNullableAny()) Core.Kt.C_ANY.toType()
+        else castContext.castType(descriptor.representativeUpperBound, parameter)
+
+        typeParameter.type = type
+        return typeParameter
+    }
+
     fun castKtBasicClass(classOrObject: KtClassOrObject, castContext: CastContext): EKtBasicClass? {
         val descriptor = castContext.sliceClass[classOrObject]!!
         val basicClass = castContext.getDeclaration(descriptor, classOrObject)
@@ -80,30 +105,13 @@ object DeclarationCaster {
         return basicClass
     }
 
-    fun castKtEnumEntry(enumEntry: KtEnumEntry, castContext: CastContext): EKtEnumEntry? {
-        val descriptor = castContext.sliceClass[enumEntry]!!
-        val ktEnumEntry = castContext.getDeclaration(descriptor, enumEntry)
-            .cast<EKtEnumEntry>(enumEntry)
-            ?: return null
-
-        val type = castContext.castType(descriptor.classValueType!!, enumEntry)
-        val annotations = enumEntry.annotationEntries.mapNotNull {
-            AnnotationCaster.castAnnotationEntry(it, castContext)
-        }
-
-        ktEnumEntry.type = type
-        annotations.forEach { it.parent = ktEnumEntry }
-        ktEnumEntry.annotations = annotations
-        return ktEnumEntry
-    }
-
     fun castKtFunction(function: KtNamedFunction, castContext: CastContext): EKtFunction? {
         val descriptor = castContext.sliceFunction[function]!!
         val ktFunction = castContext.getDeclaration(descriptor, function)
             .cast<EKtFunction>(function)
             ?: return null
 
-        val returnType = castContext.castType(descriptor.returnType!!, function)
+        val type = castContext.castType(descriptor.returnType!!, function)
         val body = function.bodyBlockExpression?.let {
             castContext.casterVisitor.getExpression(it)
         }
@@ -114,7 +122,7 @@ object DeclarationCaster {
             castContext.casterVisitor.getElement<EKtValueParameter>(it)
         }
 
-        ktFunction.returnType = returnType
+        ktFunction.type = type
         body?.parent = ktFunction
         ktFunction.body = body
         annotations.forEach { it.parent = ktFunction }
@@ -130,12 +138,12 @@ object DeclarationCaster {
             .cast<EPrimaryConstructor>(constructor)
             ?: return null
 
-        val returnType = castContext.castType(descriptor.returnType, constructor)
+        val type = castContext.castType(descriptor.returnType, constructor)
         val valueParameters = constructor.valueParameters.mapNotNull {
             castContext.casterVisitor.getElement<EKtValueParameter>(it)
         }
 
-        primaryConstructor.returnType = returnType
+        primaryConstructor.type = type
         valueParameters.forEach { it.parent = primaryConstructor }
         primaryConstructor.valueParameters = ArrayList(valueParameters)
         return primaryConstructor
@@ -152,8 +160,8 @@ object DeclarationCaster {
             .cast<EPrimaryConstructor>(classOrObject)
             ?: return null
 
-        val returnType = castContext.castType(primaryConstructorDescriptor.returnType, classOrObject)
-        primaryConstructor.returnType = returnType
+        val type = castContext.castType(primaryConstructorDescriptor.returnType, classOrObject)
+        primaryConstructor.type = type
         return primaryConstructor
     }
 
@@ -182,29 +190,21 @@ object DeclarationCaster {
         return ktProperty
     }
 
-    fun castTypeAlias(alias: KtTypeAlias, castContext: CastContext): ETypeAlias? {
-        val descriptor = castContext.sliceTypeAlias[alias]!!
-        val typeAlias = castContext.getDeclaration(descriptor, alias)
-            .cast<ETypeAlias>(alias)
+    fun castKtEnumEntry(enumEntry: KtEnumEntry, castContext: CastContext): EKtEnumEntry? {
+        val descriptor = castContext.sliceClass[enumEntry]!!
+        val ktEnumEntry = castContext.getDeclaration(descriptor, enumEntry)
+            .cast<EKtEnumEntry>(enumEntry)
             ?: return null
 
-        val type = castContext.castType(alias.getTypeReference()!!)
+        val type = castContext.castType(descriptor.classValueType!!, enumEntry)
+        val annotations = enumEntry.annotationEntries.mapNotNull {
+            AnnotationCaster.castAnnotationEntry(it, castContext)
+        }
 
-        typeAlias.type = type
-        return typeAlias
-    }
-
-    fun castTypeParameter(parameter: KtTypeParameter, castContext: CastContext): ETypeParameter? {
-        val descriptor = castContext.sliceTypeParameter[parameter]!!
-        val typeParameter = castContext.getDeclaration(descriptor, parameter)
-            .cast<ETypeParameter>(parameter)
-            ?: return null
-
-        val upperBound = if (descriptor.representativeUpperBound.isNullableAny()) Core.Kt.C_ANY.toType()
-        else castContext.castType(descriptor.representativeUpperBound, parameter)
-
-        typeParameter.upperBound = upperBound
-        return typeParameter
+        ktEnumEntry.type = type
+        annotations.forEach { it.parent = ktEnumEntry }
+        ktEnumEntry.annotations = annotations
+        return ktEnumEntry
     }
 
     fun castValueParameter(parameter: KtParameter, castContext: CastContext): EKtValueParameter? {

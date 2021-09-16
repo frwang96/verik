@@ -60,6 +60,26 @@ object IndexerStage : ProjectStage() {
                 Messages.NAME_ILLEGAL.on(element, name)
         }
 
+        override fun visitTypeAlias(alias: KtTypeAlias) {
+            super.visitTypeAlias(alias)
+            val descriptor = castContext.sliceTypeAlias[alias]!!
+            val location = alias.nameIdentifier!!.location()
+            val name = alias.name!!
+            checkDeclarationName(name, alias)
+            val typeAlias = ETypeAlias(location, name, NullDeclaration.toType())
+            castContext.addDeclaration(descriptor, typeAlias)
+        }
+
+        override fun visitTypeParameter(parameter: KtTypeParameter) {
+            super.visitTypeParameter(parameter)
+            val descriptor = castContext.sliceTypeParameter[parameter]!!
+            val location = parameter.nameIdentifier!!.location()
+            val name = parameter.name!!
+            checkDeclarationName(name, parameter)
+            val typeParameter = ETypeParameter(location, name, NullDeclaration.toType())
+            castContext.addDeclaration(descriptor, typeParameter)
+        }
+
         override fun visitClassOrObject(classOrObject: KtClassOrObject) {
             super.visitClassOrObject(classOrObject)
             val descriptor = castContext.sliceClass[classOrObject]!!
@@ -122,26 +142,6 @@ object IndexerStage : ProjectStage() {
             checkDeclarationName(name, property)
             val ktProperty = EKtProperty(location, name, NullDeclaration.toType(), null, listOf())
             castContext.addDeclaration(descriptor, ktProperty)
-        }
-
-        override fun visitTypeAlias(alias: KtTypeAlias) {
-            super.visitTypeAlias(alias)
-            val descriptor = castContext.sliceTypeAlias[alias]!!
-            val location = alias.nameIdentifier!!.location()
-            val name = alias.name!!
-            checkDeclarationName(name, alias)
-            val typeAlias = ETypeAlias(location, name, NullDeclaration.toType())
-            castContext.addDeclaration(descriptor, typeAlias)
-        }
-
-        override fun visitTypeParameter(parameter: KtTypeParameter) {
-            super.visitTypeParameter(parameter)
-            val descriptor = castContext.sliceTypeParameter[parameter]!!
-            val location = parameter.nameIdentifier!!.location()
-            val name = parameter.name!!
-            checkDeclarationName(name, parameter)
-            val typeParameter = ETypeParameter(location, name, NullDeclaration.toType())
-            castContext.addDeclaration(descriptor, typeParameter)
         }
 
         override fun visitParameter(parameter: KtParameter) {

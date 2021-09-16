@@ -18,13 +18,11 @@ package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.ExpressionContainer
-import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.message.Messages
 
-abstract class EAbstractFunction : EElement(), Declaration, ExpressionContainer {
+abstract class EAbstractFunction : ETypedElement(), Declaration, ExpressionContainer {
 
-    abstract var returnType: Type
     abstract var body: EExpression?
 
     override fun acceptChildren(visitor: TreeVisitor) {

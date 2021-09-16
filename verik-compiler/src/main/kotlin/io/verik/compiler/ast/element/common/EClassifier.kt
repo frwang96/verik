@@ -14,12 +14,8 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.sv
+package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.element.common.EAbstractFunction
-import io.verik.compiler.core.common.Core
+import io.verik.compiler.ast.interfaces.Declaration
 
-abstract class EAbstractProceduralBlock : EAbstractFunction() {
-
-    override var type = Core.Kt.C_UNIT.toType()
-}
+abstract class EClassifier : ETypedElement(), Declaration

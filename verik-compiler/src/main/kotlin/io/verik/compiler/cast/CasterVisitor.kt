@@ -105,12 +105,20 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
         return null
     }
 
+    override fun visitTypeAlias(typeAlias: KtTypeAlias, data: Unit?): ETypeAlias? {
+        return DeclarationCaster.castTypeAlias(typeAlias, castContext)
+    }
+
+    override fun visitTypeParameter(parameter: KtTypeParameter, data: Unit?): ETypeParameter? {
+        return DeclarationCaster.castTypeParameter(parameter, castContext)
+    }
+
     override fun visitClassOrObject(classOrObject: KtClassOrObject, data: Unit?): EKtBasicClass? {
         return DeclarationCaster.castKtBasicClass(classOrObject, castContext)
     }
 
-    override fun visitEnumEntry(enumEntry: KtEnumEntry, data: Unit?): EKtEnumEntry? {
-        return DeclarationCaster.castKtEnumEntry(enumEntry, castContext)
+    override fun visitPrimaryConstructor(constructor: KtPrimaryConstructor, data: Unit?): EPrimaryConstructor? {
+        return DeclarationCaster.castPrimaryConstructor(constructor, castContext)
     }
 
     override fun visitNamedFunction(function: KtNamedFunction, data: Unit?): EKtFunction? {
@@ -121,16 +129,8 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
         return DeclarationCaster.castKtProperty(property, castContext)
     }
 
-    override fun visitTypeAlias(typeAlias: KtTypeAlias, data: Unit?): ETypeAlias? {
-        return DeclarationCaster.castTypeAlias(typeAlias, castContext)
-    }
-
-    override fun visitPrimaryConstructor(constructor: KtPrimaryConstructor, data: Unit?): EPrimaryConstructor? {
-        return DeclarationCaster.castPrimaryConstructor(constructor, castContext)
-    }
-
-    override fun visitTypeParameter(parameter: KtTypeParameter, data: Unit?): ETypeParameter? {
-        return DeclarationCaster.castTypeParameter(parameter, castContext)
+    override fun visitEnumEntry(enumEntry: KtEnumEntry, data: Unit?): EKtEnumEntry? {
+        return DeclarationCaster.castKtEnumEntry(enumEntry, castContext)
     }
 
     override fun visitParameter(parameter: KtParameter, data: Unit?): EKtValueParameter? {

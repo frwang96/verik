@@ -26,7 +26,7 @@ import io.verik.compiler.message.SourceLocation
 class ESvFunction(
     override val location: SourceLocation,
     override var name: String,
-    override var returnType: Type,
+    override var type: Type,
     override var body: EExpression?,
     val isStatic: Boolean,
     var valueParameters: ArrayList<ESvValueParameter>

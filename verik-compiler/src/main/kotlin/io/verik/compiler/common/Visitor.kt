@@ -31,6 +31,7 @@ import io.verik.compiler.ast.element.common.EAbstractReferenceExpression
 import io.verik.compiler.ast.element.common.EAbstractStringEntryContainer
 import io.verik.compiler.ast.element.common.EAbstractValueParameter
 import io.verik.compiler.ast.element.common.EBasicPackage
+import io.verik.compiler.ast.element.common.EClassifier
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
@@ -42,6 +43,7 @@ import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ERootPackage
 import io.verik.compiler.ast.element.common.ETypeParameter
+import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.kt.EAnnotation
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtAbstractFunction
@@ -99,12 +101,20 @@ abstract class Visitor {
         visitElement(nullElement)
     }
 
+    open fun visitTypedElement(typedElement: ETypedElement) {
+        visitElement(typedElement)
+    }
+
     open fun visitExpression(expression: EExpression) {
-        visitElement(expression)
+        visitTypedElement(expression)
     }
 
     open fun visitNullExpression(nullExpression: ENullExpression) {
         visitExpression(nullExpression)
+    }
+
+    open fun visitAnnotation(annotation: EAnnotation) {
+        visitElement(annotation)
     }
 
     open fun visitProject(project: EProject) {
@@ -127,10 +137,22 @@ abstract class Visitor {
         visitElement(file)
     }
 
+    open fun visitClassifier(classifier: EClassifier) {
+        visitTypedElement(classifier)
+    }
+
+    open fun visitTypeAlias(typeAlias: ETypeAlias) {
+        visitClassifier(typeAlias)
+    }
+
+    open fun visitTypeParameter(typeParameter: ETypeParameter) {
+        visitClassifier(typeParameter)
+    }
+
 //  CLASS  /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     open fun visitAbstractClass(abstractClass: EAbstractClass) {
-        visitElement(abstractClass)
+        visitClassifier(abstractClass)
     }
 
     open fun visitAbstractContainerClass(abstractContainerClass: EAbstractContainerClass) {
@@ -160,7 +182,7 @@ abstract class Visitor {
 //  FUNCTION  //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     open fun visitAbstractFunction(abstractFunction: EAbstractFunction) {
-        visitElement(abstractFunction)
+        visitTypedElement(abstractFunction)
     }
 
     open fun visitKtAbstractFunction(abstractFunction: EKtAbstractFunction) {
@@ -198,7 +220,7 @@ abstract class Visitor {
 //  PROPERTY  //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     open fun visitAbstractProperty(abstractProperty: EAbstractProperty) {
-        visitElement(abstractProperty)
+        visitTypedElement(abstractProperty)
     }
 
     open fun visitAbstractInitializedProperty(abstractInitializedProperty: EAbstractInitializedProperty) {
@@ -243,24 +265,6 @@ abstract class Visitor {
 
     open fun visitPort(port: EPort) {
         visitAbstractValueParameter(port)
-    }
-
-//  TYPE ALIAS  ////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    open fun visitTypeAlias(typeAlias: ETypeAlias) {
-        visitElement(typeAlias)
-    }
-
-//  TYPE PARAMETER  ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    open fun visitTypeParameter(typeParameter: ETypeParameter) {
-        visitElement(typeParameter)
-    }
-
-//  ANNOTATION  ////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    open fun visitAnnotation(annotation: EAnnotation) {
-        visitElement(annotation)
     }
 
 //  EXPRESSION  ////////////////////////////////////////////////////////////////////////////////////////////////////////
