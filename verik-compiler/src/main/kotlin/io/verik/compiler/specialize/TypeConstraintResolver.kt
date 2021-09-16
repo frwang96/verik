@@ -39,6 +39,9 @@ object TypeConstraintResolver {
                 is ValueArgumentTypeConstraint ->
                     if (!resolveValueArgumentTypeConstraint(it))
                         unresolvedTypeConstraints.add(it)
+                is PropertyInitializerTypeConstraint ->
+                    if (!resolvePropertyInitializerTypeConstraint(it))
+                        unresolvedTypeConstraints.add(it)
                 is ExpressionEqualsTypeConstraint ->
                     if (!resolveExpressionEqualsTypeConstraint(it))
                         unresolvedTypeConstraints.add(it)
@@ -76,23 +79,36 @@ object TypeConstraintResolver {
         return true
     }
 
+    @Suppress("DuplicatedCode")
+    // TODO fix after introducing ETypedElement
+    private fun resolvePropertyInitializerTypeConstraint(typeConstraint: PropertyInitializerTypeConstraint): Boolean {
+        val expressionResolved = typeConstraint.expression.type.isResolved()
+        val propertyResolved = typeConstraint.property.type.isResolved()
+        return if (propertyResolved) {
+            if (!expressionResolved)
+                typeConstraint.expression.type = typeConstraint.property.type.copy()
+            true
+        } else {
+            if (expressionResolved) {
+                typeConstraint.property.type = typeConstraint.expression.type.copy()
+                true
+            } else false
+        }
+    }
+
+    @Suppress("DuplicatedCode")
     private fun resolveExpressionEqualsTypeConstraint(typeConstraint: ExpressionEqualsTypeConstraint): Boolean {
-        val outerResolved = typeConstraint.outer.type.isResolved()
         val innerResolved = typeConstraint.inner.type.isResolved()
+        val outerResolved = typeConstraint.outer.type.isResolved()
         return if (outerResolved) {
-            if (innerResolved) {
-                true
-            } else {
+            if (!innerResolved)
                 typeConstraint.inner.type = typeConstraint.outer.type.copy()
-                true
-            }
+            true
         } else {
             if (innerResolved) {
                 typeConstraint.outer.type = typeConstraint.inner.type.copy()
                 true
-            } else {
-                false
-            }
+            } else false
         }
     }
 

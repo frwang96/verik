@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.ProjectStage
@@ -91,6 +92,11 @@ object TypeSpecializerStage : ProjectStage() {
                 if (!it.type.isSpecialized())
                     specialize(it.type, it)
             }
+        }
+
+        override fun visitKtProperty(property: EKtProperty) {
+            super.visitKtProperty(property)
+            specialize(property.type, property)
         }
     }
 }

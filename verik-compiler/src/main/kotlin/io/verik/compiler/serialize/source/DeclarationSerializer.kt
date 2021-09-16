@@ -78,7 +78,7 @@ object DeclarationSerializer {
         serializerContext.appendLine("typedef struct packed {")
         serializerContext.indent {
             struct.properties.forEach {
-                serializerContext.serializeAsStatement(it)
+                serializerContext.serialize(it)
             }
         }
         serializerContext.appendLine("} ${struct.name};")

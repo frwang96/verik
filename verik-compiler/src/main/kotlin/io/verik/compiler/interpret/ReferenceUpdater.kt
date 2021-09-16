@@ -16,11 +16,11 @@
 
 package io.verik.compiler.interpret
 
+import io.verik.compiler.ast.element.common.EAbstractFunction
+import io.verik.compiler.ast.element.common.EAbstractProperty
 import io.verik.compiler.ast.element.common.EAbstractValueParameter
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.kt.EPrimaryConstructor
-import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.ElementContainer
 import io.verik.compiler.ast.interfaces.Reference
@@ -67,14 +67,14 @@ class ReferenceUpdater(val projectContext: ProjectContext) {
             type.arguments.forEach { updateTypeReferences(it) }
         }
 
-        override fun visitPrimaryConstructor(primaryConstructor: EPrimaryConstructor) {
-            super.visitPrimaryConstructor(primaryConstructor)
-            updateTypeReferences(primaryConstructor.returnType)
+        override fun visitAbstractFunction(abstractFunction: EAbstractFunction) {
+            super.visitAbstractFunction(abstractFunction)
+            updateTypeReferences(abstractFunction.returnType)
         }
 
-        override fun visitSvFunction(function: ESvFunction) {
-            super.visitSvFunction(function)
-            updateTypeReferences(function.returnType)
+        override fun visitAbstractProperty(abstractProperty: EAbstractProperty) {
+            super.visitAbstractProperty(abstractProperty)
+            updateTypeReferences(abstractProperty.type)
         }
 
         override fun visitAbstractValueParameter(abstractValueParameter: EAbstractValueParameter) {

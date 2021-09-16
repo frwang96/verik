@@ -197,7 +197,7 @@ abstract class Visitor {
 //  PROPERTY  //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     open fun visitAbstractProperty(abstractProperty: EAbstractProperty) {
-        visitExpression(abstractProperty)
+        visitElement(abstractProperty)
     }
 
     open fun visitKtProperty(property: EKtProperty) {

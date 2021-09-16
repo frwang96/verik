@@ -60,7 +60,7 @@ object ExpressionSerializer {
     }
 
     fun serializeSvPropertyStatement(propertyStatement: ESvPropertyStatement, serializerContext: SerializerContext) {
-        serializerContext.serializeAsStatement(propertyStatement.property)
+        serializerContext.serialize(propertyStatement.property)
     }
 
     fun serializeParenthesizedExpression(

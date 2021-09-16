@@ -21,6 +21,7 @@ import io.verik.compiler.ast.element.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtProperty
+import io.verik.compiler.ast.element.kt.EKtPropertyStatement
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.common.TreeVisitor
@@ -34,6 +35,12 @@ object TypeConstraintCollector {
         return typeConstraintCollectorVisitor.typeConstraints
     }
 
+    fun collect(property: EKtProperty): List<TypeConstraint> {
+        val typeConstraintCollectorVisitor = TypeConstraintCollectorVisitor()
+        property.accept(typeConstraintCollectorVisitor)
+        return typeConstraintCollectorVisitor.typeConstraints
+    }
+
     class TypeConstraintCollectorVisitor : TreeVisitor() {
 
         val typeConstraints = ArrayList<TypeConstraint>()
@@ -42,7 +49,14 @@ object TypeConstraintCollector {
             super.visitKtProperty(property)
             val initializer = property.initializer
             if (initializer != null)
-                typeConstraints.add(ExpressionEqualsTypeConstraint(initializer, property))
+                typeConstraints.add(PropertyInitializerTypeConstraint(initializer, property))
+        }
+
+        override fun visitKtPropertyStatement(propertyStatement: EKtPropertyStatement) {
+            super.visitKtPropertyStatement(propertyStatement)
+            val initializer = propertyStatement.property.initializer
+            if (initializer != null)
+                typeConstraints.add(ExpressionEqualsTypeConstraint(initializer, propertyStatement))
         }
 
         override fun visitKtBinaryExpression(binaryExpression: EKtBinaryExpression) {
@@ -53,9 +67,12 @@ object TypeConstraintCollector {
 
         override fun visitKtReferenceExpression(referenceExpression: EKtReferenceExpression) {
             super.visitKtReferenceExpression(referenceExpression)
-            val reference = referenceExpression.reference
-            if (reference is EExpression)
-                typeConstraints.add(ExpressionEqualsTypeConstraint(referenceExpression, reference))
+            when (val reference = referenceExpression.reference) {
+                is EExpression ->
+                    typeConstraints.add(ExpressionEqualsTypeConstraint(referenceExpression, reference))
+                is EKtProperty ->
+                    typeConstraints.add(PropertyInitializerTypeConstraint(referenceExpression, reference))
+            }
         }
 
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
