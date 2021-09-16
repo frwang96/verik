@@ -88,6 +88,13 @@ class ElementPrinter : Visitor() {
         build("NullExpression") {}
     }
 
+    override fun visitAnnotation(annotation: EAnnotation) {
+        build("Annotation") {
+            build(annotation.name)
+            build(annotation.arguments)
+        }
+    }
+
     override fun visitProject(project: EProject) {
         build("Project") {
             build(project.basicPackages)
@@ -112,6 +119,20 @@ class ElementPrinter : Visitor() {
     override fun visitFile(file: EFile) {
         build("File") {
             build(file.members)
+        }
+    }
+
+    override fun visitTypeAlias(typeAlias: ETypeAlias) {
+        build("TypeAlias") {
+            build(typeAlias.name)
+            build(typeAlias.type.toString())
+        }
+    }
+
+    override fun visitTypeParameter(typeParameter: ETypeParameter) {
+        build("TypeParameter") {
+            build(typeParameter.name)
+            build(typeParameter.type.toString())
         }
     }
 
@@ -271,27 +292,6 @@ class ElementPrinter : Visitor() {
             build(port.name)
             build(port.type.toString())
             build(port.portType.toString())
-        }
-    }
-
-    override fun visitTypeAlias(typeAlias: ETypeAlias) {
-        build("TypeAlias") {
-            build(typeAlias.name)
-            build(typeAlias.type.toString())
-        }
-    }
-
-    override fun visitTypeParameter(typeParameter: ETypeParameter) {
-        build("TypeParameter") {
-            build(typeParameter.name)
-            build(typeParameter.upperBound.toString())
-        }
-    }
-
-    override fun visitAnnotation(annotation: EAnnotation) {
-        build("Annotation") {
-            build(annotation.name)
-            build(annotation.arguments)
         }
     }
 

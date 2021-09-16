@@ -31,6 +31,7 @@ import io.verik.compiler.ast.element.common.EAbstractReferenceExpression
 import io.verik.compiler.ast.element.common.EAbstractStringEntryContainer
 import io.verik.compiler.ast.element.common.EAbstractValueParameter
 import io.verik.compiler.ast.element.common.EBasicPackage
+import io.verik.compiler.ast.element.common.EClassifier
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
@@ -107,6 +108,10 @@ abstract class Visitor {
         visitExpression(nullExpression)
     }
 
+    open fun visitAnnotation(annotation: EAnnotation) {
+        visitElement(annotation)
+    }
+
     open fun visitProject(project: EProject) {
         visitElement(project)
     }
@@ -125,6 +130,18 @@ abstract class Visitor {
 
     open fun visitFile(file: EFile) {
         visitElement(file)
+    }
+
+    open fun visitClassifier(classifier: EClassifier) {
+        visitElement(classifier)
+    }
+
+    open fun visitTypeAlias(typeAlias: ETypeAlias) {
+        visitClassifier(typeAlias)
+    }
+
+    open fun visitTypeParameter(typeParameter: ETypeParameter) {
+        visitClassifier(typeParameter)
     }
 
 //  CLASS  /////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -243,24 +260,6 @@ abstract class Visitor {
 
     open fun visitPort(port: EPort) {
         visitAbstractValueParameter(port)
-    }
-
-//  TYPE ALIAS  ////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    open fun visitTypeAlias(typeAlias: ETypeAlias) {
-        visitElement(typeAlias)
-    }
-
-//  TYPE PARAMETER  ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    open fun visitTypeParameter(typeParameter: ETypeParameter) {
-        visitElement(typeParameter)
-    }
-
-//  ANNOTATION  ////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    open fun visitAnnotation(annotation: EAnnotation) {
-        visitElement(annotation)
     }
 
 //  EXPRESSION  ////////////////////////////////////////////////////////////////////////////////////////////////////////

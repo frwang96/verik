@@ -16,20 +16,10 @@
 
 package io.verik.compiler.ast.element.common
 
+import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.Type
-import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.common.Visitor
-import io.verik.compiler.message.SourceLocation
 
-class ETypeParameter(
-    override val location: SourceLocation,
-    override var name: String,
-    override var type: Type
-) : EClassifier() {
+abstract class EClassifier : EElement(), Declaration {
 
-    override fun accept(visitor: Visitor) {
-        return visitor.visitTypeParameter(this)
-    }
-
-    override fun acceptChildren(visitor: TreeVisitor) {}
+    abstract var type: Type
 }

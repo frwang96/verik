@@ -42,6 +42,31 @@ import org.jetbrains.kotlin.types.typeUtil.representativeUpperBound
 
 object DeclarationCaster {
 
+    fun castTypeAlias(alias: KtTypeAlias, castContext: CastContext): ETypeAlias? {
+        val descriptor = castContext.sliceTypeAlias[alias]!!
+        val typeAlias = castContext.getDeclaration(descriptor, alias)
+            .cast<ETypeAlias>(alias)
+            ?: return null
+
+        val type = castContext.castType(alias.getTypeReference()!!)
+
+        typeAlias.type = type
+        return typeAlias
+    }
+
+    fun castTypeParameter(parameter: KtTypeParameter, castContext: CastContext): ETypeParameter? {
+        val descriptor = castContext.sliceTypeParameter[parameter]!!
+        val typeParameter = castContext.getDeclaration(descriptor, parameter)
+            .cast<ETypeParameter>(parameter)
+            ?: return null
+
+        val type = if (descriptor.representativeUpperBound.isNullableAny()) Core.Kt.C_ANY.toType()
+        else castContext.castType(descriptor.representativeUpperBound, parameter)
+
+        typeParameter.type = type
+        return typeParameter
+    }
+
     fun castKtBasicClass(classOrObject: KtClassOrObject, castContext: CastContext): EKtBasicClass? {
         val descriptor = castContext.sliceClass[classOrObject]!!
         val basicClass = castContext.getDeclaration(descriptor, classOrObject)
@@ -78,23 +103,6 @@ object DeclarationCaster {
         primaryConstructor?.let { it.parent = basicClass }
         basicClass.primaryConstructor = primaryConstructor
         return basicClass
-    }
-
-    fun castKtEnumEntry(enumEntry: KtEnumEntry, castContext: CastContext): EKtEnumEntry? {
-        val descriptor = castContext.sliceClass[enumEntry]!!
-        val ktEnumEntry = castContext.getDeclaration(descriptor, enumEntry)
-            .cast<EKtEnumEntry>(enumEntry)
-            ?: return null
-
-        val type = castContext.castType(descriptor.classValueType!!, enumEntry)
-        val annotations = enumEntry.annotationEntries.mapNotNull {
-            AnnotationCaster.castAnnotationEntry(it, castContext)
-        }
-
-        ktEnumEntry.type = type
-        annotations.forEach { it.parent = ktEnumEntry }
-        ktEnumEntry.annotations = annotations
-        return ktEnumEntry
     }
 
     fun castKtFunction(function: KtNamedFunction, castContext: CastContext): EKtFunction? {
@@ -182,29 +190,21 @@ object DeclarationCaster {
         return ktProperty
     }
 
-    fun castTypeAlias(alias: KtTypeAlias, castContext: CastContext): ETypeAlias? {
-        val descriptor = castContext.sliceTypeAlias[alias]!!
-        val typeAlias = castContext.getDeclaration(descriptor, alias)
-            .cast<ETypeAlias>(alias)
+    fun castKtEnumEntry(enumEntry: KtEnumEntry, castContext: CastContext): EKtEnumEntry? {
+        val descriptor = castContext.sliceClass[enumEntry]!!
+        val ktEnumEntry = castContext.getDeclaration(descriptor, enumEntry)
+            .cast<EKtEnumEntry>(enumEntry)
             ?: return null
 
-        val type = castContext.castType(alias.getTypeReference()!!)
+        val type = castContext.castType(descriptor.classValueType!!, enumEntry)
+        val annotations = enumEntry.annotationEntries.mapNotNull {
+            AnnotationCaster.castAnnotationEntry(it, castContext)
+        }
 
-        typeAlias.type = type
-        return typeAlias
-    }
-
-    fun castTypeParameter(parameter: KtTypeParameter, castContext: CastContext): ETypeParameter? {
-        val descriptor = castContext.sliceTypeParameter[parameter]!!
-        val typeParameter = castContext.getDeclaration(descriptor, parameter)
-            .cast<ETypeParameter>(parameter)
-            ?: return null
-
-        val upperBound = if (descriptor.representativeUpperBound.isNullableAny()) Core.Kt.C_ANY.toType()
-        else castContext.castType(descriptor.representativeUpperBound, parameter)
-
-        typeParameter.upperBound = upperBound
-        return typeParameter
+        ktEnumEntry.type = type
+        annotations.forEach { it.parent = ktEnumEntry }
+        ktEnumEntry.annotations = annotations
+        return ktEnumEntry
     }
 
     fun castValueParameter(parameter: KtParameter, castContext: CastContext): EKtValueParameter? {
