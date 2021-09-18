@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test
 internal class TypeSpecializerStageTest : BaseTest() {
 
     @Test
-    fun `specialize property`() {
+    fun `specialize property typealias`() {
         val projectContext = driveTest(
             TypeSpecializerStage::class,
             """
@@ -35,6 +35,38 @@ internal class TypeSpecializerStageTest : BaseTest() {
         )
         assertElementEquals(
             "KtProperty(x, Ubit<`8`>, *, [])",
+            projectContext.findDeclaration("x")
+        )
+    }
+
+    @Test
+    fun `specialize property typealias nested`() {
+        val projectContext = driveTest(
+            TypeSpecializerStage::class,
+            """
+                typealias N = `8`
+                typealias M = N
+                var x: Ubit<M> = u(0x00)
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtProperty(x, Ubit<`8`>, *, [])",
+            projectContext.findDeclaration("x")
+        )
+    }
+
+    @Test
+    fun `specialize property typealias function nested`() {
+        val projectContext = driveTest(
+            TypeSpecializerStage::class,
+            """
+                typealias N = `8`
+                typealias M = ADD<N, N>
+                var x: Ubit<M> = u(0x00)
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtProperty(x, Ubit<`16`>, *, [])",
             projectContext.findDeclaration("x")
         )
     }

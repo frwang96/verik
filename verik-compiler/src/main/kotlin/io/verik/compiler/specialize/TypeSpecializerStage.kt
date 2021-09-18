@@ -43,13 +43,20 @@ object TypeSpecializerStage : ProjectStage() {
 
         private fun specialize(type: Type, element: EElement) {
             type.arguments.forEach { specialize(it, element) }
+            // TODO handle type alias with type parameters
             if (type.isCardinalType()) {
-                when (val reference = type.reference) {
-                    // TODO handle type alias with type parameters
-                    is ETypeAlias ->
-                        type.reference = reference.type.reference
-                    is CoreCardinalFunctionDeclaration ->
-                        specializeCardinalFunction(type, reference, element)
+                var reference = type.reference
+                while (reference is ETypeAlias || reference is CoreCardinalFunctionDeclaration) {
+                    when (reference) {
+                        is ETypeAlias -> {
+                            type.reference = reference.type.reference
+                            type.arguments = ArrayList(reference.type.arguments.map { it.copy() })
+                            type.arguments.forEach { specialize(it, element) }
+                        }
+                        is CoreCardinalFunctionDeclaration ->
+                            specializeCardinalFunction(type, reference, element)
+                    }
+                    reference = type.reference
                 }
             }
         }
