@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.lang.vk
+package io.verik.compiler.core.vk
 
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
@@ -90,7 +90,11 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_RANDOM = CoreKtFunctionDeclaration(parent, "random")
+    val F_RANDOM = object : CoreKtFunctionDeclaration(parent, "random") {
+
+        override val transformedDeclaration = Core.Sv.F_RANDOM
+    }
+
     val F_RANDOM_INT = CoreKtFunctionDeclaration(parent, "random", Core.Kt.C_INT)
     val F_FOREVER_FUNCTION = CoreKtFunctionDeclaration(parent, "forever", Core.Kt.C_FUNCTION)
 
@@ -138,8 +142,15 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_TIME = CoreKtFunctionDeclaration(parent, "time")
-    val F_FINISH = CoreKtFunctionDeclaration(parent, "finish")
+    val F_TIME = object : CoreKtFunctionDeclaration(parent, "time") {
+
+        override val transformedDeclaration = Core.Sv.F_TIME
+    }
+
+    val F_FINISH = object : CoreKtFunctionDeclaration(parent, "finish") {
+
+        override val transformedDeclaration = Core.Sv.F_FINISH
+    }
 
     val F_SV_STRING = CoreKtFunctionDeclaration(parent, "sv", Core.Kt.C_STRING)
 }

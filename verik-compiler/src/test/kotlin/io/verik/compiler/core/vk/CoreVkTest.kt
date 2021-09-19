@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.lang.vk
+package io.verik.compiler.core.vk
 
 import io.verik.compiler.transform.mid.FunctionTransformerStage
 import io.verik.compiler.util.BaseTest
@@ -67,6 +67,20 @@ class CoreVkTest : BaseTest() {
         )
         assertElementEquals(
             "ConstantExpression(Ubit<`8`>, 8'h00)",
+            projectContext.findExpression("x")
+        )
+    }
+
+    @Test
+    fun `transform random`() {
+        val projectContext = driveTest(
+            FunctionTransformerStage::class,
+            """
+                val x = random()
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtCallExpression(Int, \$random, null, [], [])",
             projectContext.findExpression("x")
         )
     }

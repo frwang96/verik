@@ -16,14 +16,14 @@
 
 package io.verik.compiler.core.common
 
-import io.verik.compiler.core.lang.kt.CoreKtBoolean
-import io.verik.compiler.core.lang.kt.CoreKtClass
-import io.verik.compiler.core.lang.kt.CoreKtInt
-import io.verik.compiler.core.lang.kt.CoreKtIo
-import io.verik.compiler.core.lang.sv.CoreSv
-import io.verik.compiler.core.lang.vk.CoreVk
-import io.verik.compiler.core.lang.vk.CoreVkClass
-import io.verik.compiler.core.lang.vk.CoreVkUbit
+import io.verik.compiler.core.kt.CoreKtBoolean
+import io.verik.compiler.core.kt.CoreKtClass
+import io.verik.compiler.core.kt.CoreKtInt
+import io.verik.compiler.core.kt.CoreKtIo
+import io.verik.compiler.core.sv.CoreSv
+import io.verik.compiler.core.vk.CoreVk
+import io.verik.compiler.core.vk.CoreVkClass
+import io.verik.compiler.core.vk.CoreVkUbit
 
 object Core {
 
