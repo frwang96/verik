@@ -16,12 +16,20 @@
 
 package io.verik.compiler.core.lang.vk
 
+import io.verik.compiler.ast.element.common.EConstantExpression
+import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.sv.EDelayExpression
+import io.verik.compiler.ast.element.sv.EEventControlExpression
+import io.verik.compiler.ast.element.sv.EEventExpression
+import io.verik.compiler.ast.property.EdgeType
+import io.verik.compiler.common.BitConstantUtil
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreCardinalFunctionDeclaration
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
+import io.verik.compiler.message.Messages
 import io.verik.compiler.specialize.CardinalBitConstantTypeConstraint
 import io.verik.compiler.specialize.TypeArgumentTypeConstraint
 import io.verik.compiler.specialize.TypeConstraint
@@ -44,12 +52,27 @@ object CoreVk : CoreScope(CorePackage.VK) {
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(TypeArgumentTypeConstraint(callExpression, listOf()))
         }
+
+        override fun transform(callExpression: EKtCallExpression): EExpression? {
+            Messages.EXPRESSION_OUT_OF_CONTEXT.on(callExpression, name)
+            return null
+        }
     }
 
     val F_U = object : CoreKtFunctionDeclaration(parent, "u") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(CardinalBitConstantTypeConstraint(callExpression))
+        }
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
+            val width = callExpression.type.asBitWidth(callExpression)
+            return EConstantExpression(
+                callExpression.location,
+                callExpression.type,
+                BitConstantUtil.format(value, width)
+            )
         }
     }
 
@@ -60,17 +83,61 @@ object CoreVk : CoreScope(CorePackage.VK) {
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(TypeArgumentTypeConstraint(callExpression, listOf()))
         }
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            val width = callExpression.type.asBitWidth(callExpression)
+            return EConstantExpression(callExpression.location, callExpression.type, BitConstantUtil.format(0, width))
+        }
     }
 
     val F_RANDOM = CoreKtFunctionDeclaration(parent, "random")
     val F_RANDOM_INT = CoreKtFunctionDeclaration(parent, "random", Core.Kt.C_INT)
     val F_FOREVER_FUNCTION = CoreKtFunctionDeclaration(parent, "forever", Core.Kt.C_FUNCTION)
-    val F_ON_EVENT_FUNCTION = CoreKtFunctionDeclaration(parent, "on", Core.Vk.C_EVENT, Core.Kt.C_FUNCTION)
 
-    val F_POSEDGE_BOOLEAN = CoreKtFunctionDeclaration(parent, "posedge", Core.Kt.C_BOOLEAN)
-    val F_NEGEDGE_BOOLEAN = CoreKtFunctionDeclaration(parent, "negedge", Core.Kt.C_BOOLEAN)
-    val F_WAIT_EVENT = CoreKtFunctionDeclaration(parent, "wait", Core.Vk.C_EVENT)
-    val F_DELAY_INT = CoreKtFunctionDeclaration(parent, "delay", Core.Kt.C_INT)
+    val F_ON_EVENT_FUNCTION = object : CoreKtFunctionDeclaration(parent, "on", Core.Vk.C_EVENT, Core.Kt.C_FUNCTION) {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression? {
+            Messages.EXPRESSION_OUT_OF_CONTEXT.on(callExpression, name)
+            return null
+        }
+    }
+
+    val F_POSEDGE_BOOLEAN = object : CoreKtFunctionDeclaration(parent, "posedge", Core.Kt.C_BOOLEAN) {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            return EEventExpression(
+                callExpression.location,
+                callExpression.valueArguments[0],
+                EdgeType.POSEDGE
+            )
+        }
+    }
+
+    val F_NEGEDGE_BOOLEAN = object : CoreKtFunctionDeclaration(parent, "negedge", Core.Kt.C_BOOLEAN) {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            return EEventExpression(
+                callExpression.location,
+                callExpression.valueArguments[0],
+                EdgeType.NEGEDGE
+            )
+        }
+    }
+
+    val F_WAIT_EVENT = object : CoreKtFunctionDeclaration(parent, "wait", Core.Vk.C_EVENT) {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            return EEventControlExpression(callExpression.location, callExpression.valueArguments[0])
+        }
+    }
+
+    val F_DELAY_INT = object : CoreKtFunctionDeclaration(parent, "delay", Core.Kt.C_INT) {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            return EDelayExpression(callExpression.location, callExpression.valueArguments[0])
+        }
+    }
+
     val F_TIME = CoreKtFunctionDeclaration(parent, "time")
     val F_FINISH = CoreKtFunctionDeclaration(parent, "finish")
 

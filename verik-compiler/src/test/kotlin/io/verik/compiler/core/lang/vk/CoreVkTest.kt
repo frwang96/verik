@@ -14,24 +14,25 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.mid
+package io.verik.compiler.core.lang.vk
 
+import io.verik.compiler.transform.mid.FunctionTransformerStage
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-internal class SpecialFunctionTransformerStageTest : BaseTest() {
+class CoreVkTest : BaseTest() {
 
     @Test
     fun `transform nc illegal`() {
         assertThrows<TestErrorException> {
             driveTest(
-                SpecialFunctionTransformerStage::class,
+                FunctionTransformerStage::class,
                 """
                     var x = false
                     fun f() {
@@ -39,13 +40,13 @@ internal class SpecialFunctionTransformerStageTest : BaseTest() {
                     }
                 """.trimIndent()
             )
-        }.apply { assertEquals("Expression used out of context: nc", message) }
+        }.apply { Assertions.assertEquals("Expression used out of context: nc", message) }
     }
 
     @Test
     fun `transform u`() {
         val projectContext = driveTest(
-            SpecialFunctionTransformerStage::class,
+            FunctionTransformerStage::class,
             """
                 var x = u<`8`>()
             """.trimIndent()
@@ -59,7 +60,7 @@ internal class SpecialFunctionTransformerStageTest : BaseTest() {
     @Test
     fun `transform zeroes`() {
         val projectContext = driveTest(
-            SpecialFunctionTransformerStage::class,
+            FunctionTransformerStage::class,
             """
                 var x: Ubit<`8`> = zeroes()
             """.trimIndent()
@@ -73,7 +74,7 @@ internal class SpecialFunctionTransformerStageTest : BaseTest() {
     @Test
     fun `transform wait`() {
         val projectContext = driveTest(
-            SpecialFunctionTransformerStage::class,
+            FunctionTransformerStage::class,
             """
                 var x = false
                 fun f() {
@@ -90,7 +91,7 @@ internal class SpecialFunctionTransformerStageTest : BaseTest() {
     @Test
     fun `transform delay`() {
         val projectContext = driveTest(
-            SpecialFunctionTransformerStage::class,
+            FunctionTransformerStage::class,
             """
                 var x = false
                 fun f() {

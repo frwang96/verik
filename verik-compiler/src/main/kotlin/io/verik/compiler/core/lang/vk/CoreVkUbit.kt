@@ -16,6 +16,7 @@
 
 package io.verik.compiler.core.lang.vk
 
+import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
@@ -60,6 +61,10 @@ object CoreVkUbit : CoreScope(Core.Vk.C_UBIT) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(TypeArgumentTypeConstraint(callExpression, listOf(0)))
+        }
+
+        override fun transform(callExpression: EKtCallExpression): EExpression? {
+            return callExpression.receiver!!
         }
     }
 }
