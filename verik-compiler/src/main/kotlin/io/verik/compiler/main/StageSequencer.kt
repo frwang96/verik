@@ -18,6 +18,7 @@ package io.verik.compiler.main
 
 import io.verik.compiler.cast.CasterStage
 import io.verik.compiler.cast.IndexerStage
+import io.verik.compiler.check.post.CardinalPositiveCheckerStage
 import io.verik.compiler.check.post.KeywordCheckerStage
 import io.verik.compiler.check.post.NameCheckerStage
 import io.verik.compiler.check.post.NameRedeclarationCheckerStage
@@ -136,6 +137,7 @@ object StageSequencer {
         stageSequence.add(TemporaryPropertyRelabelerStage)
 
         // PostCheck
+        stageSequence.add(CardinalPositiveCheckerStage)
         stageSequence.add(NameCheckerStage)
         stageSequence.add(KeywordCheckerStage)
         stageSequence.add(NameRedeclarationCheckerStage)

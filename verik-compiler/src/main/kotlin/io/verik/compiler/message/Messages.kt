@@ -171,6 +171,11 @@ object Messages {
 
 //  POST CHECK  ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    val CARDINAL_NOT_POSITIVE = MessageTemplate1<Type>(
+        Severity.ERROR,
+        "Cardinal type not positive: $0"
+    )
+
     val KEYWORD_CONFLICT_SYSTEM_VERILOG = MessageTemplate1<String>(
         Severity.ERROR,
         "Conflict with SystemVerilog reserved keyword: $0"
