@@ -22,6 +22,7 @@ import io.verik.compiler.core.common.CoreCardinalFunctionDeclaration
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
+import io.verik.compiler.specialize.CardinalBitConstantTypeConstraint
 import io.verik.compiler.specialize.TypeArgumentTypeConstraint
 import io.verik.compiler.specialize.TypeConstraint
 
@@ -42,6 +43,13 @@ object CoreVk : CoreScope(CorePackage.VK) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(TypeArgumentTypeConstraint(callExpression, listOf()))
+        }
+    }
+
+    val F_U = object : CoreKtFunctionDeclaration(parent, "u") {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return listOf(CardinalBitConstantTypeConstraint(callExpression))
         }
     }
 

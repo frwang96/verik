@@ -64,3 +64,7 @@ class MaxBitWidthTypeConstraint(
     val right: EExpression,
     val outer: EExpression
 ) : TypeConstraint()
+
+class CardinalBitConstantTypeConstraint(
+    val callExpression: EKtCallExpression
+) : TypeConstraint()

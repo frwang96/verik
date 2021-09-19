@@ -45,6 +45,9 @@ object TypeConstraintResolver {
                 is MaxBitWidthTypeConstraint ->
                     if (!resolveMaxBitWidthTypeConstraint(it))
                         unresolvedTypeConstraints.add(it)
+                is CardinalBitConstantTypeConstraint ->
+                    if (!resolveCardinalBitConstantTypeConstraint(it))
+                        unresolvedTypeConstraints.add(it)
             }
         }
         return unresolvedTypeConstraints
@@ -106,6 +109,20 @@ object TypeConstraintResolver {
             } else {
                 false
             }
+        }
+    }
+
+    private fun resolveCardinalBitConstantTypeConstraint(typeConstraint: CardinalBitConstantTypeConstraint): Boolean {
+        val expressionResolved = typeConstraint.callExpression.type.isResolved()
+        val typeArgumentResolved = typeConstraint.callExpression.typeArguments[0].isResolved()
+        return if (expressionResolved) {
+            true
+        } else {
+            if (typeArgumentResolved) {
+                val type = typeConstraint.callExpression.typeArguments[0].copy()
+                typeConstraint.callExpression.type.arguments[0] = Core.Vk.N_INCLOG.toType(type)
+                true
+            } else false
         }
     }
 }
