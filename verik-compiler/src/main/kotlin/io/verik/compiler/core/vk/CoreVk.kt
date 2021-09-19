@@ -25,27 +25,16 @@ import io.verik.compiler.ast.element.sv.EEventExpression
 import io.verik.compiler.ast.property.EdgeType
 import io.verik.compiler.common.BitConstantUtil
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.core.common.CoreCardinalFunctionDeclaration
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
+import io.verik.compiler.core.common.CoreSvFunctionDeclaration
 import io.verik.compiler.message.Messages
 import io.verik.compiler.specialize.CardinalBitConstantTypeConstraint
 import io.verik.compiler.specialize.TypeArgumentTypeConstraint
 import io.verik.compiler.specialize.TypeConstraint
 
 object CoreVk : CoreScope(CorePackage.VK) {
-
-    val N_ADD = CoreCardinalFunctionDeclaration("ADD")
-    val N_SUB = CoreCardinalFunctionDeclaration("SUB")
-    val N_MUL = CoreCardinalFunctionDeclaration("MUL")
-    val N_MAX = CoreCardinalFunctionDeclaration("MAX")
-    val N_MIN = CoreCardinalFunctionDeclaration("MIN")
-    val N_INC = CoreCardinalFunctionDeclaration("INC")
-    val N_DEC = CoreCardinalFunctionDeclaration("DEC")
-    val N_LOG = CoreCardinalFunctionDeclaration("LOG")
-    val N_INCLOG = CoreCardinalFunctionDeclaration("INCLOG")
-    val N_EXP = CoreCardinalFunctionDeclaration("EXP")
 
     val F_NC = object : CoreKtFunctionDeclaration(parent, "nc") {
 
@@ -92,7 +81,9 @@ object CoreVk : CoreScope(CorePackage.VK) {
 
     val F_RANDOM = object : CoreKtFunctionDeclaration(parent, "random") {
 
-        override val transformedDeclaration = Core.Sv.F_RANDOM
+        override fun transformReference(): CoreSvFunctionDeclaration {
+            return Core.Sv.F_RANDOM
+        }
     }
 
     val F_RANDOM_INT = CoreKtFunctionDeclaration(parent, "random", Core.Kt.C_INT)
@@ -144,12 +135,16 @@ object CoreVk : CoreScope(CorePackage.VK) {
 
     val F_TIME = object : CoreKtFunctionDeclaration(parent, "time") {
 
-        override val transformedDeclaration = Core.Sv.F_TIME
+        override fun transformReference(): CoreSvFunctionDeclaration {
+            return Core.Sv.F_TIME
+        }
     }
 
     val F_FINISH = object : CoreKtFunctionDeclaration(parent, "finish") {
 
-        override val transformedDeclaration = Core.Sv.F_FINISH
+        override fun transformReference(): CoreSvFunctionDeclaration {
+            return Core.Sv.F_FINISH
+        }
     }
 
     val F_SV_STRING = CoreKtFunctionDeclaration(parent, "sv", Core.Kt.C_STRING)

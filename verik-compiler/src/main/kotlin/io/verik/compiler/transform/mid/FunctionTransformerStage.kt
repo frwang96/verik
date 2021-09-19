@@ -36,7 +36,7 @@ object FunctionTransformerStage : ProjectStage() {
             super.visitKtCallExpression(callExpression)
             val reference = callExpression.reference
             if (reference is CoreKtFunctionDeclaration) {
-                val newReference = reference.transformedDeclaration
+                val newReference = reference.transformReference()
                 if (newReference != null) {
                     callExpression.reference = newReference
                     return

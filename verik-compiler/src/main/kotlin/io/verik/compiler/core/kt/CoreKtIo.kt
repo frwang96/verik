@@ -20,36 +20,49 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
+import io.verik.compiler.core.common.CoreSvFunctionDeclaration
 
 object CoreKtIo : CoreScope(CorePackage.KT_IO) {
 
     val F_PRINT = object : CoreKtFunctionDeclaration(parent, "print") {
 
-        override val transformedDeclaration = Core.Sv.F_WRITE
+        override fun transformReference(): CoreSvFunctionDeclaration {
+            return Core.Sv.F_WRITE
+        }
     }
 
     val F_PRINT_ANY = object : CoreKtFunctionDeclaration(parent, "print", Core.Kt.C_ANY) {
 
-        override val transformedDeclaration = Core.Sv.F_WRITE
+        override fun transformReference(): CoreSvFunctionDeclaration {
+            return Core.Sv.F_WRITE
+        }
     }
 
     val F_PRINT_INT = object : CoreKtFunctionDeclaration(parent, "print", Core.Kt.C_INT) {
 
-        override val transformedDeclaration = Core.Sv.F_WRITE
+        override fun transformReference(): CoreSvFunctionDeclaration {
+            return Core.Sv.F_WRITE
+        }
     }
 
     val F_PRINTLN = object : CoreKtFunctionDeclaration(parent, "println") {
 
-        override val transformedDeclaration = Core.Sv.F_DISPLAY
+        override fun transformReference(): CoreSvFunctionDeclaration {
+            return Core.Sv.F_DISPLAY
+        }
     }
 
     val F_PRINTLN_ANY = object : CoreKtFunctionDeclaration(parent, "println", Core.Kt.C_ANY) {
 
-        override val transformedDeclaration = Core.Sv.F_DISPLAY
+        override fun transformReference(): CoreSvFunctionDeclaration {
+            return Core.Sv.F_DISPLAY
+        }
     }
 
     val F_PRINTLN_INT = object : CoreKtFunctionDeclaration(parent, "println", Core.Kt.C_INT) {
 
-        override val transformedDeclaration = Core.Sv.F_DISPLAY
+        override fun transformReference(): CoreSvFunctionDeclaration {
+            return Core.Sv.F_DISPLAY
+        }
     }
 }

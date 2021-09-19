@@ -26,13 +26,15 @@ open class CoreKtFunctionDeclaration private constructor(
     val parameterClassNames: List<String>
 ) : CoreAbstractFunctionDeclaration() {
 
-    open val transformedDeclaration: CoreSvFunctionDeclaration? = null
-
     open fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
         return listOf()
     }
 
     open fun transform(callExpression: EKtCallExpression): EExpression? {
+        return null
+    }
+
+    open fun transformReference(): CoreSvFunctionDeclaration? {
         return null
     }
 
