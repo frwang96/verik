@@ -25,6 +25,7 @@ enum class KtBinaryOperatorKind {
     MUL,
     PLUS,
     MINUS,
+    EQEQ,
     PLUS_EQ,
     MINUS_EQ;
 
@@ -36,6 +37,7 @@ enum class KtBinaryOperatorKind {
                 "MUL" -> MUL
                 "PLUS" -> PLUS
                 "MINUS" -> MINUS
+                "EQEQ" -> EQEQ
                 "PLUSEQ" -> PLUS_EQ
                 "MINUSEQ" -> MINUS_EQ
                 else -> {

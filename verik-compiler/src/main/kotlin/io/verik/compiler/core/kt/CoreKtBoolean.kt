@@ -14,20 +14,13 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.lang.vk
+package io.verik.compiler.core.kt
 
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.core.common.CoreClassDeclaration
-import io.verik.compiler.core.common.CorePackage
+import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.core.common.CoreScope
 
-object CoreVkClass : CoreScope(CorePackage.VK) {
+object CoreKtBoolean : CoreScope(Core.Kt.C_BOOLEAN) {
 
-    val C_UBIT = CoreClassDeclaration(parent, "Ubit", Core.Kt.C_ANY)
-    val C_SBIT = CoreClassDeclaration(parent, "Sbit", Core.Kt.C_ANY)
-    val C_STRUCT = CoreClassDeclaration(parent, "Struct", Core.Kt.C_ANY)
-    val C_COMPONENT = CoreClassDeclaration(parent, "Component", Core.Kt.C_ANY)
-    val C_MODULE = CoreClassDeclaration(parent, "Module", C_COMPONENT)
-    val C_TIME = CoreClassDeclaration(parent, "Time", Core.Kt.C_ANY)
-    val C_EVENT = CoreClassDeclaration(parent, "Event", Core.Kt.C_ANY)
+    val F_NOT = CoreKtFunctionDeclaration(parent, "not")
 }

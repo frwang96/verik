@@ -16,7 +16,7 @@
 
 package io.verik.compiler.core.common
 
-object CoreCardinalBaseDeclaration : CoreCardinalDeclaration() {
+object CoreCardinalUnresolvedDeclaration : CoreCardinalDeclaration() {
 
     override var name = "Cardinal"
 

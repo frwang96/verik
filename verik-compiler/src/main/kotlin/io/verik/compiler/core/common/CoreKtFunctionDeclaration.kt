@@ -16,6 +16,7 @@
 
 package io.verik.compiler.core.common
 
+import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.specialize.TypeConstraint
 
@@ -27,6 +28,14 @@ open class CoreKtFunctionDeclaration private constructor(
 
     open fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
         return listOf()
+    }
+
+    open fun transform(callExpression: EKtCallExpression): EExpression? {
+        return null
+    }
+
+    open fun transformReference(): CoreSvFunctionDeclaration? {
+        return null
     }
 
     constructor(

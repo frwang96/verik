@@ -16,14 +16,15 @@
 
 package io.verik.compiler.core.common
 
-import io.verik.compiler.core.lang.kt.CoreKtBoolean
-import io.verik.compiler.core.lang.kt.CoreKtClass
-import io.verik.compiler.core.lang.kt.CoreKtInt
-import io.verik.compiler.core.lang.kt.CoreKtIo
-import io.verik.compiler.core.lang.sv.CoreSv
-import io.verik.compiler.core.lang.vk.CoreVk
-import io.verik.compiler.core.lang.vk.CoreVkClass
-import io.verik.compiler.core.lang.vk.CoreVkUbit
+import io.verik.compiler.core.kt.CoreKtBoolean
+import io.verik.compiler.core.kt.CoreKtClass
+import io.verik.compiler.core.kt.CoreKtInt
+import io.verik.compiler.core.kt.CoreKtIo
+import io.verik.compiler.core.sv.CoreSv
+import io.verik.compiler.core.vk.CoreVk
+import io.verik.compiler.core.vk.CoreVkCardinal
+import io.verik.compiler.core.vk.CoreVkClass
+import io.verik.compiler.core.vk.CoreVkUbit
 
 object Core {
 
@@ -75,19 +76,20 @@ object Core {
         val C_TIME = CoreVkClass.C_TIME
         val C_EVENT = CoreVkClass.C_EVENT
 
-        val N_CARDINAL = CoreCardinalBaseDeclaration
-        val N_ADD = CoreVk.N_ADD
-        val N_SUB = CoreVk.N_SUB
-        val N_MUL = CoreVk.N_MUL
-        val N_MAX = CoreVk.N_MAX
-        val N_MIN = CoreVk.N_MIN
-        val N_INC = CoreVk.N_INC
-        val N_DEC = CoreVk.N_DEC
-        val N_LOG = CoreVk.N_LOG
-        val N_INCLOG = CoreVk.N_INCLOG
-        val N_EXP = CoreVk.N_EXP
+        val N_CARDINAL = CoreCardinalUnresolvedDeclaration
+        val N_ADD = CoreVkCardinal.N_ADD
+        val N_SUB = CoreVkCardinal.N_SUB
+        val N_MUL = CoreVkCardinal.N_MUL
+        val N_MAX = CoreVkCardinal.N_MAX
+        val N_MIN = CoreVkCardinal.N_MIN
+        val N_INC = CoreVkCardinal.N_INC
+        val N_DEC = CoreVkCardinal.N_DEC
+        val N_LOG = CoreVkCardinal.N_LOG
+        val N_INCLOG = CoreVkCardinal.N_INCLOG
+        val N_EXP = CoreVkCardinal.N_EXP
 
         val F_NC = CoreVk.F_NC
+        val F_U = CoreVk.F_U
         val F_U_INT = CoreVk.F_U_INT
         val F_ZEROES = CoreVk.F_ZEROES
         val F_RANDOM = CoreVk.F_RANDOM

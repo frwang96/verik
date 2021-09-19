@@ -123,7 +123,7 @@ object CoreDeclarationMap {
             descriptor is AbstractTypeAliasDescriptor -> {
                 val name = descriptor.name.asString()
                 if (name == "*") {
-                    CoreCardinalBaseDeclaration
+                    CoreCardinalUnresolvedDeclaration
                 } else {
                     val cardinal = name.toIntOrNull()
                     if (cardinal != null)

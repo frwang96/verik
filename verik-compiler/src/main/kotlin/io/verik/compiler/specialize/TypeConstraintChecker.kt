@@ -16,7 +16,7 @@
 
 package io.verik.compiler.specialize
 
-import io.verik.compiler.core.common.CoreCardinalConstantDeclaration
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.Messages
 import java.lang.Integer.max
 
@@ -33,6 +33,8 @@ object TypeConstraintChecker {
                     checkTypeEqualsTypeConstraint(it)
                 is MaxBitWidthTypeConstraint ->
                     checkMaxBitWidthTypeConstraint(it)
+                is CardinalBitConstantTypeConstraint ->
+                    checkCardinalBitConstantTypeConstraint(it)
             }
         }
     }
@@ -66,8 +68,22 @@ object TypeConstraintChecker {
         val outerWidth = typeConstraint.outer.type.asBitWidth(typeConstraint.outer)
         if (outerWidth != max(leftWidth, rightWidth)) {
             val expectedType = typeConstraint.outer.type.copy()
-            expectedType.arguments[0] = CoreCardinalConstantDeclaration(max(leftWidth, rightWidth)).toType()
+            expectedType.arguments[0] = Core.Vk.cardinalOf(max(leftWidth, rightWidth)).toType()
             Messages.TYPE_MISMATCH.on(typeConstraint.outer, expectedType, typeConstraint.outer.type)
+        }
+    }
+
+    private fun checkCardinalBitConstantTypeConstraint(typeConstraint: CardinalBitConstantTypeConstraint) {
+        val expressionWidth = typeConstraint.callExpression.type.asBitWidth(typeConstraint.callExpression)
+        val typeArgumentValue = typeConstraint
+            .callExpression
+            .typeArguments[0]
+            .asCardinalValue(typeConstraint.callExpression)
+        val typeArgumentValueWidth = 32 - typeArgumentValue.countLeadingZeroBits()
+        if (typeArgumentValueWidth != expressionWidth) {
+            val expectedType = typeConstraint.callExpression.type.copy()
+            expectedType.arguments[0] = Core.Vk.cardinalOf(typeArgumentValueWidth).toType()
+            Messages.TYPE_MISMATCH.on(typeConstraint.callExpression, expectedType, typeConstraint.callExpression.type)
         }
     }
 }

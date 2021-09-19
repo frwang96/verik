@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.lang.kt
+package io.verik.compiler.core.kt
 
 import io.verik.compiler.core.common.CoreClassDeclaration
 import io.verik.compiler.core.common.CorePackage

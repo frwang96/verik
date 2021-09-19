@@ -40,6 +40,13 @@ fun u(value: Int): Ubit<Cardinal> {
 }
 
 /**
+ * Constructs a [Ubit] out of the cardinal [N].
+ */
+fun <N : `*`> u(): Ubit<Cardinal> {
+    throw VerikException()
+}
+
+/**
  * Constructs a [Sbit] out of the constant [value].
  */
 fun s(value: Int): Sbit<Cardinal> {

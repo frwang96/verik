@@ -23,9 +23,9 @@ import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.core.common.CoreCardinalBaseDeclaration
 import io.verik.compiler.core.common.CoreCardinalConstantDeclaration
 import io.verik.compiler.core.common.CoreCardinalDeclaration
+import io.verik.compiler.core.common.CoreCardinalUnresolvedDeclaration
 import io.verik.compiler.core.common.CoreClassDeclaration
 import io.verik.compiler.message.Messages
 
@@ -53,7 +53,7 @@ class Type(
     }
 
     fun isResolved(): Boolean {
-        if (isCardinalType() && reference is CoreCardinalBaseDeclaration)
+        if (isCardinalType() && reference is CoreCardinalUnresolvedDeclaration)
             return false
         return arguments.all { it.isResolved() }
     }
@@ -117,7 +117,7 @@ class Type(
         return when (val reference = reference) {
             is EAbstractClass -> reference.supertype
             is CoreClassDeclaration -> reference.superclass?.toType()
-            is CoreCardinalBaseDeclaration -> null
+            is CoreCardinalDeclaration -> null
             else -> {
                 Messages.INTERNAL_ERROR.on(null, "Unexpected type reference: $reference")
                 return null

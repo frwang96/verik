@@ -14,27 +14,30 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.post
+package io.verik.compiler.core.kt
 
+import io.verik.compiler.transform.mid.FunctionTransformerStage
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
-internal class FunctionReferenceTransformerStageTest : BaseTest() {
+internal class CoreKtIoTest : BaseTest() {
 
     @Test
-    fun `transform random`() {
+    fun `transform println`() {
         val projectContext = driveTest(
-            FunctionReferenceTransformerStage::class,
+            FunctionTransformerStage::class,
             """
-                val x = random()
+                fun f() {
+                    println()
+                }
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Int, \$random, null, [], [])",
-            projectContext.findExpression("x")
+            "KtCallExpression(Unit, \$display, null, [], [])",
+            projectContext.findExpression("f")
         )
     }
 }

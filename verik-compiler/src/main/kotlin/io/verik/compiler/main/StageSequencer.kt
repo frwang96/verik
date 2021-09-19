@@ -47,16 +47,15 @@ import io.verik.compiler.specialize.TypeResolverStage
 import io.verik.compiler.specialize.TypeSpecializerStage
 import io.verik.compiler.transform.mid.AssignmentTransformerStage
 import io.verik.compiler.transform.mid.CaseStatementTransformerStage
+import io.verik.compiler.transform.mid.FunctionTransformerStage
 import io.verik.compiler.transform.mid.InjectedExpressionReducerStage
 import io.verik.compiler.transform.mid.InlineIfExpressionTransformerStage
-import io.verik.compiler.transform.mid.SpecialFunctionTransformerStage
 import io.verik.compiler.transform.mid.StringTemplateExpressionReducerStage
 import io.verik.compiler.transform.mid.StructLiteralTransformerStage
 import io.verik.compiler.transform.mid.UninitializedPropertyTransformerStage
 import io.verik.compiler.transform.post.BinaryExpressionTransformerStage
 import io.verik.compiler.transform.post.BlockExpressionTransformerStage
 import io.verik.compiler.transform.post.ConstantExpressionTransformerStage
-import io.verik.compiler.transform.post.FunctionReferenceTransformerStage
 import io.verik.compiler.transform.post.LoopExpressionTransformerStage
 import io.verik.compiler.transform.post.PackageNameTransformerStage
 import io.verik.compiler.transform.post.ParenthesisInsertionTransformerStage
@@ -118,14 +117,13 @@ object StageSequencer {
         stageSequence.add(StringTemplateExpressionReducerStage)
         stageSequence.add(UninitializedPropertyTransformerStage)
         stageSequence.add(AssignmentTransformerStage)
-        stageSequence.add(SpecialFunctionTransformerStage)
+        stageSequence.add(FunctionTransformerStage)
         stageSequence.add(InlineIfExpressionTransformerStage)
         stageSequence.add(CaseStatementTransformerStage)
         stageSequence.add(StructLiteralTransformerStage)
 
         // PostTransform
         stageSequence.add(LoopExpressionTransformerStage)
-        stageSequence.add(FunctionReferenceTransformerStage)
         stageSequence.add(UnaryExpressionTransformerStage)
         stageSequence.add(BinaryExpressionTransformerStage)
         stageSequence.add(ConstantExpressionTransformerStage)

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.lang.sv
+package io.verik.compiler.core.sv
 
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
