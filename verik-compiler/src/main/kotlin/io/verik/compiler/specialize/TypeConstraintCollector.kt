@@ -16,15 +16,18 @@
 
 package io.verik.compiler.specialize
 
+import io.verik.compiler.ast.element.common.EAbstractProperty
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
+import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtPropertyStatement
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 
 object TypeConstraintCollector {
@@ -52,6 +55,16 @@ object TypeConstraintCollector {
                 typeConstraints.add(TypeEqualsTypeConstraint(initializer, property))
         }
 
+        override fun visitKtBlockExpression(blockExpression: EKtBlockExpression) {
+            super.visitKtBlockExpression(blockExpression)
+            if (blockExpression.type !in listOf(Core.Kt.C_UNIT.toType(), Core.Kt.C_FUNCTION.toType())) {
+                if (blockExpression.statements.isNotEmpty()) {
+                    val statement = blockExpression.statements.last()
+                    typeConstraints.add(TypeEqualsTypeConstraint(statement, blockExpression))
+                }
+            }
+        }
+
         override fun visitKtPropertyStatement(propertyStatement: EKtPropertyStatement) {
             super.visitKtPropertyStatement(propertyStatement)
             val initializer = propertyStatement.property.initializer
@@ -70,7 +83,7 @@ object TypeConstraintCollector {
             when (val reference = referenceExpression.reference) {
                 is EExpression ->
                     typeConstraints.add(TypeEqualsTypeConstraint(referenceExpression, reference))
-                is EKtProperty ->
+                is EAbstractProperty ->
                     typeConstraints.add(TypeEqualsTypeConstraint(referenceExpression, reference))
             }
         }

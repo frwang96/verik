@@ -57,6 +57,24 @@ internal class TypeResolverStageTest : BaseTest() {
     }
 
     @Test
+    fun `resolve reference expression with receiver`() {
+        val projectContext = driveTest(
+            TypeResolverStage::class,
+            """
+                class S(val x: Ubit<`8`>) : Struct()
+                val s = S(zeroes())
+                fun f() {
+                    s.x
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtReferenceExpression(Ubit<`8`>, x, *)",
+            projectContext.findExpression("f")
+        )
+    }
+
+    @Test
     fun `resolve call expression core function`() {
         val projectContext = driveTest(
             TypeResolverStage::class,

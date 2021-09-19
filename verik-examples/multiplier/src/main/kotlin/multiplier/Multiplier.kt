@@ -30,4 +30,9 @@ class Multiplier(
     var prod: Ubit<REQ_WIDTH> = nc()
     var tp: Ubit<REQ_WIDTH> = nc()
     var i: Ubit<INCLOG<REQ_WIDTH>> = nc()
+
+    @Com
+    fun setReq() {
+        req.a
+    }
 }
