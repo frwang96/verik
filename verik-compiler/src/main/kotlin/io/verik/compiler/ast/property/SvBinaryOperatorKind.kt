@@ -22,6 +22,10 @@ enum class SvBinaryOperatorKind {
     MUL,
     PLUS,
     MINUS,
+    LT,
+    LTEQ,
+    GT,
+    GTEQ,
     EQEQ;
 
     fun serialize(): String {
@@ -31,6 +35,10 @@ enum class SvBinaryOperatorKind {
             MUL -> "*"
             PLUS -> "+"
             MINUS -> "-"
+            LT -> "<"
+            LTEQ -> "<="
+            GT -> ">"
+            GTEQ -> ">="
             EQEQ -> "=="
         }
     }

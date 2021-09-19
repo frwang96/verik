@@ -47,6 +47,7 @@ import io.verik.compiler.specialize.TypeResolverStage
 import io.verik.compiler.specialize.TypeSpecializerStage
 import io.verik.compiler.transform.mid.AssignmentTransformerStage
 import io.verik.compiler.transform.mid.CaseStatementTransformerStage
+import io.verik.compiler.transform.mid.ComparisonTransformerStage
 import io.verik.compiler.transform.mid.FunctionTransformerStage
 import io.verik.compiler.transform.mid.InjectedExpressionReducerStage
 import io.verik.compiler.transform.mid.InlineIfExpressionTransformerStage
@@ -117,6 +118,7 @@ object StageSequencer {
         stageSequence.add(StringTemplateExpressionReducerStage)
         stageSequence.add(UninitializedPropertyTransformerStage)
         stageSequence.add(AssignmentTransformerStage)
+        stageSequence.add(ComparisonTransformerStage)
         stageSequence.add(FunctionTransformerStage)
         stageSequence.add(InlineIfExpressionTransformerStage)
         stageSequence.add(CaseStatementTransformerStage)

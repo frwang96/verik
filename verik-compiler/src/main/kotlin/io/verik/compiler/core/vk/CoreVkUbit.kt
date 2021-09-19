@@ -30,8 +30,6 @@ object CoreVkUbit : CoreScope(Core.Vk.C_UBIT) {
 
     val F_INV = CoreKtFunctionDeclaration(parent, "inv")
 
-    val F_EQUALS_ANY = CoreKtFunctionDeclaration(parent, "equals", Core.Kt.C_ANY)
-
     val F_PLUS_UBIT = object : CoreKtFunctionDeclaration(parent, "plus", Core.Vk.C_UBIT) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {

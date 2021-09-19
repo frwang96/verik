@@ -31,6 +31,29 @@ class Multiplier(
     var tp: Ubit<REQ_WIDTH> = nc()
     var i: Ubit<INCLOG<REQ_WIDTH>> = nc()
 
+    @Seq
+    fun step() {
+        on(posedge(clk)) {
+            if (rst) {
+                a = zeroes()
+                b = zeroes()
+                prod = zeroes()
+                tp = zeroes()
+                i = u<REQ_WIDTH>()
+            } else {
+                if (req.vld) {
+                    a = req.a
+                    b = req.b
+                    prod = zeroes()
+                    tp = zeroes()
+                    i = zeroes()
+                } else if (i <= u<REQ_WIDTH>()) {
+                    println()
+                }
+            }
+        }
+    }
+
     @Com
     fun setReq() {
         rsp.vld = (i == u<REQ_WIDTH>())
