@@ -22,6 +22,7 @@ import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
 import org.jetbrains.kotlin.descriptors.SimpleFunctionDescriptor
 import org.jetbrains.kotlin.descriptors.impl.AbstractTypeAliasDescriptor
 import org.jetbrains.kotlin.psi.KtElement
+import org.jetbrains.kotlin.resolve.calls.components.isVararg
 import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameOrNull
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
@@ -105,7 +106,11 @@ object CoreDeclarationMap {
         if (valueParameters.size != parameterClassNames.size)
             return false
         valueParameters.zip(parameterClassNames).forEach { (valueParameter, parameterClassName) ->
-            val type = castContext.castType(valueParameter.type, element)
+            val type = if (valueParameter.isVararg) {
+                castContext.castType(valueParameter.varargElementType!!, element)
+            } else {
+                castContext.castType(valueParameter.type, element)
+            }
             if (type.reference !is CoreClassDeclaration)
                 return false
             if (type.reference.name != parameterClassName)

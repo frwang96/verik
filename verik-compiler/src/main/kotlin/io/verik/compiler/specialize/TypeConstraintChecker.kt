@@ -35,6 +35,8 @@ object TypeConstraintChecker {
                     checkMaxBitWidthTypeConstraint(it)
                 is CardinalBitConstantTypeConstraint ->
                     checkCardinalBitConstantTypeConstraint(it)
+                is ConcatenationTypeConstraint ->
+                    checkConcatenationTypeConstraint(it)
             }
         }
     }
@@ -83,6 +85,27 @@ object TypeConstraintChecker {
         if (typeArgumentValueWidth != expressionWidth) {
             val expectedType = typeConstraint.callExpression.type.copy()
             expectedType.arguments[0] = Core.Vk.cardinalOf(typeArgumentValueWidth).toType()
+            Messages.TYPE_MISMATCH.on(typeConstraint.callExpression, expectedType, typeConstraint.callExpression.type)
+        }
+    }
+
+    private fun checkConcatenationTypeConstraint(typeConstraint: ConcatenationTypeConstraint) {
+        val expressionWidth = typeConstraint.callExpression.type.asBitWidth(typeConstraint.callExpression)
+        val valueArgumentWidths = typeConstraint
+            .callExpression
+            .valueArguments
+            .map {
+                when (it.type.reference) {
+                    Core.Kt.C_BOOLEAN -> 1
+                    Core.Vk.C_UBIT -> it.type.asBitWidth(it)
+                    Core.Vk.C_SBIT -> it.type.asBitWidth(it)
+                    else -> 0
+                }
+            }
+        val sumWidth = valueArgumentWidths.sum()
+        if (sumWidth != expressionWidth) {
+            val expectedType = typeConstraint.callExpression.type.copy()
+            expectedType.arguments[0] = Core.Vk.cardinalOf(sumWidth).toType()
             Messages.TYPE_MISMATCH.on(typeConstraint.callExpression, expectedType, typeConstraint.callExpression.type)
         }
     }

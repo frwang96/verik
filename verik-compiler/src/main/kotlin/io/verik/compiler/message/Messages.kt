@@ -108,6 +108,11 @@ object Messages {
 
 //  SPECIALIZE  ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    val TYPE_NO_WIDTH = MessageTemplate1<Type>(
+        Severity.ERROR,
+        "Could not get width of type: $0"
+    )
+
     val EXPRESSION_UNRESOLVED = MessageTemplate0(
         Severity.ERROR,
         "Type of expression could not be resolved"
@@ -160,6 +165,11 @@ object Messages {
     val INJECTED_EXPRESSION_NOT_LITERAL = MessageTemplate0(
         Severity.ERROR,
         "String literal expected for injected expression"
+    )
+
+    val CAT_INSUFFICIENT_ARGUMENTS = MessageTemplate0(
+        Severity.ERROR,
+        "Concatenation expects at least two arguments"
     )
 
 //  POST TRANSFORM  ////////////////////////////////////////////////////////////////////////////////////////////////////

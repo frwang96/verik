@@ -92,6 +92,7 @@ object Core {
         val F_U = CoreVk.F_U
         val F_U_INT = CoreVk.F_U_INT
         val F_ZEROES = CoreVk.F_ZEROES
+        val F_CAT = CoreVk.F_CAT
         val F_RANDOM = CoreVk.F_RANDOM
         val F_RANDOM_INT = CoreVk.F_RANDOM_INT
         val F_FOREVER_FUNCTION = CoreVk.F_FOREVER_FUNCTION
@@ -107,6 +108,7 @@ object Core {
         object Ubit : CoreScope(C_UBIT) {
 
             val F_INV = CoreVkUbit.F_INV
+            val F_EQUALS_ANY = CoreVkUbit.F_EQUALS_ANY
             val F_PLUS_UBIT = CoreVkUbit.F_PLUS_UBIT
             val F_SHL_INT = CoreVkUbit.F_SHL_INT
             val F_SHR_INT = CoreVkUbit.F_SHR_INT

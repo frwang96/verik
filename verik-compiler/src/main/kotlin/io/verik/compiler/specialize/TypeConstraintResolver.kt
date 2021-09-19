@@ -17,6 +17,7 @@
 package io.verik.compiler.specialize
 
 import io.verik.compiler.core.common.Core
+import io.verik.compiler.message.Messages
 
 object TypeConstraintResolver {
 
@@ -47,6 +48,9 @@ object TypeConstraintResolver {
                         unresolvedTypeConstraints.add(it)
                 is CardinalBitConstantTypeConstraint ->
                     if (!resolveCardinalBitConstantTypeConstraint(it))
+                        unresolvedTypeConstraints.add(it)
+                is ConcatenationTypeConstraint ->
+                    if (!resolveConcatenationTypeConstraint(it))
                         unresolvedTypeConstraints.add(it)
             }
         }
@@ -121,6 +125,37 @@ object TypeConstraintResolver {
             if (typeArgumentResolved) {
                 val type = typeConstraint.callExpression.typeArguments[0].copy()
                 typeConstraint.callExpression.type.arguments[0] = Core.Vk.N_INCLOG.toType(type)
+                true
+            } else false
+        }
+    }
+
+    private fun resolveConcatenationTypeConstraint(typeConstraint: ConcatenationTypeConstraint): Boolean {
+        val expressionResolved = typeConstraint.callExpression.type.isResolved()
+        val valueArgumentsResolved = typeConstraint.callExpression.valueArguments.all { it.type.isResolved() }
+        return if (expressionResolved) {
+            true
+        } else {
+            if (valueArgumentsResolved) {
+                val cardinalTypes = typeConstraint.callExpression.valueArguments.map {
+                    when (it.type.reference) {
+                        Core.Kt.C_BOOLEAN -> Core.Vk.cardinalOf(1).toType()
+                        Core.Vk.C_UBIT -> it.type.arguments[0].copy()
+                        Core.Vk.C_SBIT -> it.type.arguments[0].copy()
+                        else -> {
+                            Messages.TYPE_NO_WIDTH.on(it, it.type)
+                            Core.Vk.cardinalOf(0).toType()
+                        }
+                    }
+                }
+                val type = when (cardinalTypes.size) {
+                    0 -> Core.Vk.cardinalOf(0).toType()
+                    1 -> cardinalTypes[0]
+                    else -> cardinalTypes.reduce { sum, type ->
+                        Core.Vk.N_ADD.toType(sum, type)
+                    }
+                }
+                typeConstraint.callExpression.type.arguments[0] = type
                 true
             } else false
         }

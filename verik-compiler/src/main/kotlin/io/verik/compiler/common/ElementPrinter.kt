@@ -47,6 +47,7 @@ import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.ECaseStatement
+import io.verik.compiler.ast.element.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EEventControlExpression
@@ -454,6 +455,13 @@ class ElementPrinter : Visitor() {
         build("StringExpression") {
             build(stringExpression.type.toString())
             build(stringExpression.text)
+        }
+    }
+
+    override fun visitConcatenationExpression(concatenationExpression: EConcatenationExpression) {
+        build("ConcatenationExpression") {
+            build(concatenationExpression.type.toString())
+            build(concatenationExpression.expressions)
         }
     }
 

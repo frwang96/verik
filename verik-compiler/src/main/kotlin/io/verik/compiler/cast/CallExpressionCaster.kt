@@ -18,7 +18,6 @@ package io.verik.compiler.cast
 
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.property.Type
-import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.descriptors.CallableDescriptor
 import org.jetbrains.kotlin.psi.KtCallExpression
 
@@ -29,12 +28,8 @@ object CallExpressionCaster {
         val call = castContext.sliceCall[expression.calleeExpression]!!
         val resolvedCall = castContext.sliceResolvedCall[call]!!
         val resolvedValueArguments = resolvedCall.valueArgumentsByIndex!!
-        resolvedValueArguments.forEach {
-            if (it.arguments.size != 1)
-                Messages.INTERNAL_ERROR.on(expression, "Unable to cast resolved value argument")
-        }
         val valueArguments = resolvedValueArguments
-            .map { it.arguments[0] }
+            .flatMap { it.arguments }
             .map { castContext.casterVisitor.getExpression(it.getArgumentExpression()!!) }
         return ArrayList(valueArguments)
     }

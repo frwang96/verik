@@ -17,11 +17,14 @@
 package io.verik.compiler.specialize
 
 import io.verik.compiler.util.BaseTest
+import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findDeclaration
 import io.verik.compiler.util.findExpression
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 internal class TypeResolverStageTest : BaseTest() {
 
@@ -100,6 +103,32 @@ internal class TypeResolverStageTest : BaseTest() {
             "KtCallExpression(Ubit<INCLOG<`8`>>, u, null, [`8`], [])",
             projectContext.findExpression("x")
         )
+    }
+
+    @Test
+    fun `resolve call expression cat`() {
+        val projectContext = driveTest(
+            TypeResolverStage::class,
+            """
+                val x = cat(u(0), false)
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtCallExpression(Ubit<ADD<`1`, `1`>>, cat, null, [], *)",
+            projectContext.findExpression("x")
+        )
+    }
+
+    @Test
+    fun `resolve call expression cat illegal`() {
+        assertThrows<TestErrorException> {
+            driveTest(
+                TypeResolverStage::class,
+                """
+                    val x = cat(posedge(false))
+                """.trimIndent()
+            )
+        }.apply { assertEquals("Could not get width of type: Event", message) }
     }
 
     @Test

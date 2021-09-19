@@ -19,6 +19,7 @@ package io.verik.compiler.core.vk
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EEventExpression
@@ -31,6 +32,7 @@ import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.core.common.CoreSvFunctionDeclaration
 import io.verik.compiler.message.Messages
 import io.verik.compiler.specialize.CardinalBitConstantTypeConstraint
+import io.verik.compiler.specialize.ConcatenationTypeConstraint
 import io.verik.compiler.specialize.TypeArgumentTypeConstraint
 import io.verik.compiler.specialize.TypeConstraint
 
@@ -76,6 +78,19 @@ object CoreVk : CoreScope(CorePackage.VK) {
         override fun transform(callExpression: EKtCallExpression): EExpression {
             val width = callExpression.type.asBitWidth(callExpression)
             return EConstantExpression(callExpression.location, callExpression.type, BitConstantUtil.format(0, width))
+        }
+    }
+
+    val F_CAT = object : CoreKtFunctionDeclaration(parent, "cat", Core.Kt.C_ANY) {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return listOf(ConcatenationTypeConstraint(callExpression))
+        }
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            if (callExpression.valueArguments.size < 2)
+                Messages.CAT_INSUFFICIENT_ARGUMENTS.on(callExpression)
+            return EConcatenationExpression(callExpression.location, callExpression.type, callExpression.valueArguments)
         }
     }
 
