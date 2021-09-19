@@ -34,10 +34,16 @@ object BinaryExpressionReducerStage : ProjectStage() {
     private val referenceMap = HashMap<ReducerEntry, CoreKtFunctionDeclaration>()
 
     init {
-        referenceMap[ReducerEntry(Core.Kt.C_INT, Core.Kt.C_INT, KtBinaryOperatorKind.MUL)] = Core.Kt.Int.F_TIMES_INT
-        referenceMap[ReducerEntry(Core.Kt.C_INT, Core.Kt.C_INT, KtBinaryOperatorKind.PLUS)] = Core.Kt.Int.F_PLUS_INT
-        referenceMap[ReducerEntry(Core.Kt.C_INT, Core.Kt.C_INT, KtBinaryOperatorKind.MINUS)] = Core.Kt.Int.F_MINUS_INT
-        referenceMap[ReducerEntry(Core.Vk.C_UBIT, Core.Vk.C_UBIT, KtBinaryOperatorKind.PLUS)] = Core.Vk.Ubit.F_PLUS_UBIT
+        referenceMap[ReducerEntry(Core.Kt.C_INT, Core.Kt.C_INT, KtBinaryOperatorKind.MUL)] =
+            Core.Kt.Int.F_TIMES_INT
+        referenceMap[ReducerEntry(Core.Kt.C_INT, Core.Kt.C_INT, KtBinaryOperatorKind.PLUS)] =
+            Core.Kt.Int.F_PLUS_INT
+        referenceMap[ReducerEntry(Core.Kt.C_INT, Core.Kt.C_INT, KtBinaryOperatorKind.MINUS)] =
+            Core.Kt.Int.F_MINUS_INT
+        referenceMap[ReducerEntry(Core.Vk.C_UBIT, Core.Vk.C_UBIT, KtBinaryOperatorKind.EQEQ)] =
+            Core.Vk.Ubit.F_EQUALS_ANY
+        referenceMap[ReducerEntry(Core.Vk.C_UBIT, Core.Vk.C_UBIT, KtBinaryOperatorKind.PLUS)] =
+            Core.Vk.Ubit.F_PLUS_UBIT
     }
 
     override fun process(projectContext: ProjectContext) {

@@ -21,7 +21,8 @@ enum class SvBinaryOperatorKind {
     ARROW_ASSIGN,
     MUL,
     PLUS,
-    MINUS;
+    MINUS,
+    EQEQ;
 
     fun serialize(): String {
         return when (this) {
@@ -30,6 +31,7 @@ enum class SvBinaryOperatorKind {
             MUL -> "*"
             PLUS -> "+"
             MINUS -> "-"
+            EQEQ -> "=="
         }
     }
 }

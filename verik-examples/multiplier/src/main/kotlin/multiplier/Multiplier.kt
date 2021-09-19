@@ -33,6 +33,6 @@ class Multiplier(
 
     @Com
     fun setReq() {
-        i = u<REQ_WIDTH>()
+        rsp.vld = (i == u<REQ_WIDTH>())
     }
 }

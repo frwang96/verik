@@ -19,6 +19,6 @@ package multiplier
 import io.verik.core.*
 
 class MultiplierRsp(
-    val result: Ubit<RSP_WIDTH>,
-    val vld: Boolean
+    var result: Ubit<RSP_WIDTH>,
+    var vld: Boolean
 ) : Struct()
