@@ -28,8 +28,14 @@ import io.verik.compiler.specialize.TypeConstraint
 object CoreVk : CoreScope(CorePackage.VK) {
 
     val N_ADD = CoreCardinalFunctionDeclaration("ADD")
-    val N_INC = CoreCardinalFunctionDeclaration("INC")
+    val N_SUB = CoreCardinalFunctionDeclaration("SUB")
+    val N_MUL = CoreCardinalFunctionDeclaration("MUL")
     val N_MAX = CoreCardinalFunctionDeclaration("MAX")
+    val N_MIN = CoreCardinalFunctionDeclaration("MIN")
+    val N_INC = CoreCardinalFunctionDeclaration("INC")
+    val N_DEC = CoreCardinalFunctionDeclaration("DEC")
+    val N_LOG = CoreCardinalFunctionDeclaration("LOG")
+    val N_EXP = CoreCardinalFunctionDeclaration("EXP")
 
     val F_NC = CoreKtFunctionDeclaration(parent, "nc")
     val F_U_INT = CoreKtFunctionDeclaration(parent, "u", Core.Kt.C_INT)

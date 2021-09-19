@@ -77,8 +77,14 @@ object Core {
 
         val N_CARDINAL = CoreCardinalBaseDeclaration
         val N_ADD = CoreVk.N_ADD
-        val N_INC = CoreVk.N_INC
+        val N_SUB = CoreVk.N_SUB
+        val N_MUL = CoreVk.N_MUL
         val N_MAX = CoreVk.N_MAX
+        val N_MIN = CoreVk.N_MIN
+        val N_INC = CoreVk.N_INC
+        val N_DEC = CoreVk.N_DEC
+        val N_LOG = CoreVk.N_LOG
+        val N_EXP = CoreVk.N_EXP
 
         val F_NC = CoreVk.F_NC
         val F_U_INT = CoreVk.F_U_INT
