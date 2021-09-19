@@ -14,32 +14,28 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.serialize.general
+package io.verik.compiler.check.post
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.assertOutputTextEquals
+import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.driveTest
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
-internal class PackageFileSerializerStageTest : BaseTest() {
+internal class CardinalPositiveCheckerStageTest : BaseTest() {
 
     @Test
-    fun `package file`() {
-        val projectContext = driveTest(
-            PackageFileSerializerStage::class,
-            """
-                class C
-            """.trimIndent()
-        )
-        val expected = """
-            package verik_pkg;
-            
-                typedef class C;
-            
-            `include "src/verik/Test.svh"
-            
-            endpackage : verik_pkg
-        """.trimIndent()
-        assertOutputTextEquals(expected, projectContext.outputTextFiles.find { it.path.endsWith("Pkg.sv") }!!)
+    fun `cardinal not positive`() {
+        assertThrows<TestErrorException> {
+            driveTest(
+                CardinalPositiveCheckerStage::class,
+                """
+                    var x: Ubit<`0`> = zeroes()
+                """.trimIndent()
+            )
+        }.apply {
+            Assertions.assertEquals("Cardinal type not positive: Ubit<`0`>", message)
+        }
     }
 }

@@ -14,32 +14,27 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.serialize.general
+package io.verik.compiler.transform.mid
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.assertOutputTextEquals
+import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
+import io.verik.compiler.util.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class PackageFileSerializerStageTest : BaseTest() {
+internal class UninitializedPropertyTransformerStageTest : BaseTest() {
 
     @Test
-    fun `package file`() {
+    fun `uninitialized property`() {
         val projectContext = driveTest(
-            PackageFileSerializerStage::class,
+            UninitializedPropertyTransformerStage::class,
             """
-                class C
+                val x: Boolean = nc()
             """.trimIndent()
         )
-        val expected = """
-            package verik_pkg;
-            
-                typedef class C;
-            
-            `include "src/verik/Test.svh"
-            
-            endpackage : verik_pkg
-        """.trimIndent()
-        assertOutputTextEquals(expected, projectContext.outputTextFiles.find { it.path.endsWith("Pkg.sv") }!!)
+        assertElementEquals(
+            "SvProperty(x, Boolean, null)",
+            projectContext.findDeclaration("x")
+        )
     }
 }

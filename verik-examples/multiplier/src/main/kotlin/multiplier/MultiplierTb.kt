@@ -21,10 +21,10 @@ import io.verik.core.*
 @Top
 class MultiplierTb : Module() {
 
-    var clk = false
-    var rst = false
-    val req = MultiplierReq(zeroes(), zeroes(), false)
-    val rsp = MultiplierRsp(zeroes(), false)
+    var clk: Boolean = nc()
+    var rst: Boolean = nc()
+    val req: MultiplierReq = nc()
+    val rsp: MultiplierRsp = nc()
 
     @Make
     val multiplier = Multiplier(

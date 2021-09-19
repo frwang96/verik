@@ -118,6 +118,11 @@ object Messages {
         "Type of type argument could not be resolved"
     )
 
+    val CARDINAL_OUT_OF_RANGE = MessageTemplate1<Type>(
+        Severity.ERROR,
+        "Cardinal type out of range: $0"
+    )
+
     val TYPE_MISMATCH = MessageTemplate2<Type, Type>(
         Severity.ERROR,
         "Type mismatch: Expected $0 actual $1"
@@ -165,6 +170,11 @@ object Messages {
     )
 
 //  POST CHECK  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    val CARDINAL_NOT_POSITIVE = MessageTemplate1<Type>(
+        Severity.ERROR,
+        "Cardinal type not positive: $0"
+    )
 
     val KEYWORD_CONFLICT_SYSTEM_VERILOG = MessageTemplate1<String>(
         Severity.ERROR,

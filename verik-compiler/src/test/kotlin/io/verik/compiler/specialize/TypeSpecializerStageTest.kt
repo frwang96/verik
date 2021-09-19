@@ -17,15 +17,18 @@
 package io.verik.compiler.specialize
 
 import io.verik.compiler.util.BaseTest
+import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findDeclaration
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 internal class TypeSpecializerStageTest : BaseTest() {
 
     @Test
-    fun `specialize property`() {
+    fun `property typealias`() {
         val projectContext = driveTest(
             TypeSpecializerStage::class,
             """
@@ -37,5 +40,49 @@ internal class TypeSpecializerStageTest : BaseTest() {
             "KtProperty(x, Ubit<`8`>, *, [])",
             projectContext.findDeclaration("x")
         )
+    }
+
+    @Test
+    fun `property typealias nested`() {
+        val projectContext = driveTest(
+            TypeSpecializerStage::class,
+            """
+                typealias N = `8`
+                typealias M = N
+                var x: Ubit<M> = u(0x00)
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtProperty(x, Ubit<`8`>, *, [])",
+            projectContext.findDeclaration("x")
+        )
+    }
+
+    @Test
+    fun `property typealias function nested`() {
+        val projectContext = driveTest(
+            TypeSpecializerStage::class,
+            """
+                typealias N = `8`
+                typealias M = ADD<N, N>
+                var x: Ubit<M> = u(0x00)
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtProperty(x, Ubit<`16`>, *, [])",
+            projectContext.findDeclaration("x")
+        )
+    }
+
+    @Test
+    fun `property cardinal out of range`() {
+        assertThrows<TestErrorException> {
+            driveTest(
+                TypeSpecializerStage::class,
+                """
+                    var x: Ubit<EXP<`32`>> = zeroes()
+                """.trimIndent()
+            )
+        }.apply { assertEquals("Cardinal type out of range: EXP<`32`>", message) }
     }
 }

@@ -19,4 +19,4 @@ package multiplier
 import io.verik.core.*
 
 typealias REQ_WIDTH = `8`
-typealias RSP_WIDTH = `16`
+typealias RSP_WIDTH = MUL<REQ_WIDTH, `2`>

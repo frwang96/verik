@@ -63,7 +63,7 @@ object PackageFileSerializerStage : ProjectStage() {
         }
         basicPackage.files.forEach {
             builder.appendLine()
-            builder.appendLine("`include \"${it.getOutputPathNotNull().fileName}\"")
+            builder.appendLine("`include \"${projectContext.config.buildDir.relativize(it.getOutputPathNotNull())}\"")
         }
         builder.appendLine()
         builder.appendLine("endpackage : $packageName")

@@ -17,10 +17,8 @@
 package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.kt.EKtAbstractFunction
+import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.kt.EKtCallExpression
-import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.ProjectStage
@@ -30,6 +28,7 @@ import io.verik.compiler.core.common.CoreCardinalFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 import java.lang.Integer.max
+import java.lang.Integer.min
 
 object TypeSpecializerStage : ProjectStage() {
 
@@ -43,13 +42,20 @@ object TypeSpecializerStage : ProjectStage() {
 
         private fun specialize(type: Type, element: EElement) {
             type.arguments.forEach { specialize(it, element) }
+            // TODO handle type alias with type parameters
             if (type.isCardinalType()) {
-                when (val reference = type.reference) {
-                    // TODO handle type alias with type parameters
-                    is ETypeAlias ->
-                        type.reference = reference.type.reference
-                    is CoreCardinalFunctionDeclaration ->
-                        specializeCardinalFunction(type, reference, element)
+                var reference = type.reference
+                while (reference is ETypeAlias || reference is CoreCardinalFunctionDeclaration) {
+                    when (reference) {
+                        is ETypeAlias -> {
+                            type.reference = reference.type.reference
+                            type.arguments = ArrayList(reference.type.arguments.map { it.copy() })
+                            type.arguments.forEach { specialize(it, element) }
+                        }
+                        is CoreCardinalFunctionDeclaration ->
+                            specializeCardinalFunction(type, reference, element)
+                    }
+                    reference = type.reference
                 }
             }
         }
@@ -63,10 +69,27 @@ object TypeSpecializerStage : ProjectStage() {
             val value = when (reference) {
                 Core.Vk.N_ADD ->
                     arguments[0] + arguments[1]
-                Core.Vk.N_INC ->
-                    arguments[0] + 1
+                Core.Vk.N_SUB ->
+                    arguments[0] - arguments[1]
+                Core.Vk.N_MUL ->
+                    arguments[0] * arguments[1]
                 Core.Vk.N_MAX ->
                     max(arguments[0], arguments[1])
+                Core.Vk.N_MIN ->
+                    min(arguments[0], arguments[1])
+                Core.Vk.N_INC ->
+                    arguments[0] + 1
+                Core.Vk.N_DEC ->
+                    arguments[0] - 1
+                Core.Vk.N_LOG ->
+                    if (arguments[0] <= 0) 0 else (32 - (arguments[0] - 1).countLeadingZeroBits())
+                Core.Vk.N_INCLOG ->
+                    if (arguments[0] < 0) 0 else (32 - arguments[0].countLeadingZeroBits())
+                Core.Vk.N_EXP -> {
+                    if (arguments[0] >= 31)
+                        Messages.CARDINAL_OUT_OF_RANGE.on(element, type)
+                    1 shl arguments[0]
+                }
                 else -> {
                     Messages.INTERNAL_ERROR.on(element, "Unrecognized cardinal function: $reference")
                     1
@@ -76,27 +99,12 @@ object TypeSpecializerStage : ProjectStage() {
             type.arguments = arrayListOf()
         }
 
-        override fun visitExpression(expression: EExpression) {
-            super.visitExpression(expression)
-            if (!expression.type.isSpecialized())
-                specialize(expression.type, expression)
-            if (expression is EKtCallExpression)
-                expression.typeArguments.forEach { specialize(it, expression) }
-        }
-
-        override fun visitKtAbstractFunction(abstractFunction: EKtAbstractFunction) {
-            super.visitKtAbstractFunction(abstractFunction)
-            if (!abstractFunction.type.isSpecialized())
-                specialize(abstractFunction.type, abstractFunction)
-            abstractFunction.valueParameters.forEach {
-                if (!it.type.isSpecialized())
-                    specialize(it.type, it)
-            }
-        }
-
-        override fun visitKtProperty(property: EKtProperty) {
-            super.visitKtProperty(property)
-            specialize(property.type, property)
+        override fun visitTypedElement(typedElement: ETypedElement) {
+            super.visitTypedElement(typedElement)
+            if (!typedElement.type.isSpecialized())
+                specialize(typedElement.type, typedElement)
+            if (typedElement is EKtCallExpression)
+                typedElement.typeArguments.forEach { specialize(it, typedElement) }
         }
     }
 }
