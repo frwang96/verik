@@ -68,3 +68,7 @@ class MaxBitWidthTypeConstraint(
 class CardinalBitConstantTypeConstraint(
     val callExpression: EKtCallExpression
 ) : TypeConstraint()
+
+class ConcatenationTypeConstraint(
+    val callExpression: EKtCallExpression
+) : TypeConstraint()

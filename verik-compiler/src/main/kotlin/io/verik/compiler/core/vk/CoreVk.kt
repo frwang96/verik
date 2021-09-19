@@ -32,6 +32,7 @@ import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.core.common.CoreSvFunctionDeclaration
 import io.verik.compiler.message.Messages
 import io.verik.compiler.specialize.CardinalBitConstantTypeConstraint
+import io.verik.compiler.specialize.ConcatenationTypeConstraint
 import io.verik.compiler.specialize.TypeArgumentTypeConstraint
 import io.verik.compiler.specialize.TypeConstraint
 
@@ -81,6 +82,10 @@ object CoreVk : CoreScope(CorePackage.VK) {
     }
 
     val F_CAT = object : CoreKtFunctionDeclaration(parent, "cat", Core.Kt.C_ANY) {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return listOf(ConcatenationTypeConstraint(callExpression))
+        }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             if (callExpression.valueArguments.size < 2)

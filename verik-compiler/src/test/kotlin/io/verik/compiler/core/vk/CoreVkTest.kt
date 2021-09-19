@@ -72,12 +72,11 @@ class CoreVkTest : BaseTest() {
     }
 
     @Test
-    // TODO width inference for cat
     fun `transform cat`() {
         val projectContext = driveTest(
             FunctionTransformerStage::class,
             """
-                val x: Ubit<`2`> = cat(u(0), u(0))
+                val x = cat(u(0), u(0))
             """.trimIndent()
         )
         assertElementEquals(
@@ -87,13 +86,12 @@ class CoreVkTest : BaseTest() {
     }
 
     @Test
-    // TODO width inference for cat
     fun `transform cat illegal`() {
         assertThrows<TestErrorException> {
             driveTest(
                 FunctionTransformerStage::class,
                 """
-                val x: Ubit<`1`> = cat(u(0))
+                val x = cat(u(0))
                 """.trimIndent()
             )
         }.apply { assertEquals("Concatenation expects at least two arguments", message) }

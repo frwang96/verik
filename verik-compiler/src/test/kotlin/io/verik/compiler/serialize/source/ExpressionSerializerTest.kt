@@ -218,12 +218,11 @@ internal class ExpressionSerializerTest : BaseTest() {
     }
 
     @Test
-    // TODO width inference for cat
     fun `concatenation expression`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
             """
-                var x: Ubit<`2`> = cat(u(0), u(0))
+                var x = cat(u(0), u(0))
             """.trimIndent()
         )
         val expected = """

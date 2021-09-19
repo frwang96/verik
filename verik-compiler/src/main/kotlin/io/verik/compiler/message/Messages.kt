@@ -108,6 +108,11 @@ object Messages {
 
 //  SPECIALIZE  ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    val TYPE_NO_WIDTH = MessageTemplate1<Type>(
+        Severity.ERROR,
+        "Could not get width of type: $0"
+    )
+
     val EXPRESSION_UNRESOLVED = MessageTemplate0(
         Severity.ERROR,
         "Type of expression could not be resolved"

@@ -39,4 +39,16 @@ internal class TypeCheckerStageTest : BaseTest() {
             )
         }.apply { assertEquals("Type mismatch: Expected Ubit<`8`> actual Ubit<`1`>", message) }
     }
+
+    @Test
+    fun `concatenation violation`() {
+        assertThrows<TestErrorException> {
+            driveTest(
+                TypeCheckerStage::class,
+                """
+                    var x: Ubit<`1`> = cat(false, false)
+                """.trimIndent()
+            )
+        }.apply { assertEquals("Type mismatch: Expected Ubit<`1`> actual Ubit<`2`>", message) }
+    }
 }
