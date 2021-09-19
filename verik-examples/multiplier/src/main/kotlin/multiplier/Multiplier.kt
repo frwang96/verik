@@ -33,6 +33,6 @@ class Multiplier(
 
     @Com
     fun setReq() {
-        req.a
+        i = u<REQ_WIDTH>()
     }
 }

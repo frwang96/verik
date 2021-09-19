@@ -22,6 +22,7 @@ import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EEventExpression
 import io.verik.compiler.ast.property.EdgeType
+import io.verik.compiler.common.BitConstantUtil
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
@@ -45,9 +46,18 @@ object SpecialFunctionTransformerStage : ProjectStage() {
                     Messages.EXPRESSION_OUT_OF_CONTEXT.on(callExpression, reference.name)
                     return
                 }
+                Core.Vk.F_U -> {
+                    val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
+                    val width = callExpression.type.asBitWidth(callExpression)
+                    EConstantExpression(
+                        callExpression.location,
+                        callExpression.type,
+                        BitConstantUtil.format(value, width)
+                    )
+                }
                 Core.Vk.F_ZEROES -> {
-                    // TODO set constant with exact bit width
-                    EConstantExpression(callExpression.location, callExpression.type, "'0")
+                    val width = callExpression.type.asBitWidth(callExpression)
+                    EConstantExpression(callExpression.location, callExpression.type, BitConstantUtil.format(0, width))
                 }
                 Core.Vk.F_ON_EVENT_FUNCTION -> {
                     Messages.EXPRESSION_OUT_OF_CONTEXT.on(callExpression, reference.name)

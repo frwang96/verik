@@ -18,6 +18,7 @@ package io.verik.compiler.transform.pre
 
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.common.BitConstantUtil
 import io.verik.compiler.common.ConstantUtil
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
@@ -38,25 +39,10 @@ object BitConstantTransformerStage : ProjectStage() {
         private fun getBitConstantExpression(expression: EConstantExpression): EConstantExpression {
             val value = ConstantUtil.getIntConstantValue(expression.value)
             val width = ConstantUtil.getIntConstantWidth(expression.value)
-
-            val valueStringUndecorated = value.toString(16)
-            val valueStringLength = (width + 3) / 4
-            val valueStringPadded = valueStringUndecorated.padStart(valueStringLength, '0')
-
-            val builder = StringBuilder()
-            builder.append("$width'h")
-            valueStringPadded.forEachIndexed { index, it ->
-                builder.append(it)
-                val countToEnd = valueStringLength - index - 1
-                if (countToEnd > 0 && countToEnd % 4 == 0)
-                    builder.append("_")
-            }
-            val valueStringDecorated = builder.toString()
-
             return EConstantExpression(
                 expression.location,
                 Core.Vk.C_UBIT.toType(Core.Vk.cardinalOf(width).toType()),
-                valueStringDecorated
+                BitConstantUtil.format(value, width)
             )
         }
 
