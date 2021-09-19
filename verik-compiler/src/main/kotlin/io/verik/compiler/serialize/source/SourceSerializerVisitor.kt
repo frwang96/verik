@@ -25,6 +25,7 @@ import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.ECaseStatement
+import io.verik.compiler.ast.element.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EEventControlExpression
@@ -195,6 +196,10 @@ class SourceSerializerVisitor(private val serializerContext: SerializerContext) 
 
     override fun visitStringExpression(stringExpression: EStringExpression) {
         ExpressionSerializer.serializeStringExpression(stringExpression, serializerContext)
+    }
+
+    override fun visitConcatenationExpression(concatenationExpression: EConcatenationExpression) {
+        ExpressionSerializer.serializeConcatenationExpression(concatenationExpression, serializerContext)
     }
 
     override fun visitIfExpression(ifExpression: EIfExpression) {

@@ -21,6 +21,7 @@ import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.sv.ECaseStatement
+import io.verik.compiler.ast.element.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EEventExpression
@@ -154,6 +155,17 @@ object ExpressionSerializer {
 
     fun serializeStringExpression(stringExpression: EStringExpression, serializerContext: SerializerContext) {
         serializerContext.append("\"${stringExpression.text}\"")
+    }
+
+    fun serializeConcatenationExpression(
+        concatenationExpression: EConcatenationExpression,
+        serializerContext: SerializerContext
+    ) {
+        serializerContext.append("{ ")
+        serializerContext.join(concatenationExpression.expressions) {
+            serializerContext.serializeAsExpression(it)
+        }
+        serializerContext.append(" }")
     }
 
     fun serializeIfExpression(ifExpression: EIfExpression, serializerContext: SerializerContext) {

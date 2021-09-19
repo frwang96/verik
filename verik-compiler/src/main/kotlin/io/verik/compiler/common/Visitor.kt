@@ -66,6 +66,7 @@ import io.verik.compiler.ast.element.sv.EAbstractProceduralBlock
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.ECaseStatement
+import io.verik.compiler.ast.element.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EEventControlExpression
@@ -371,6 +372,10 @@ abstract class Visitor {
 
     open fun visitStringExpression(stringExpression: EStringExpression) {
         visitExpression(stringExpression)
+    }
+
+    open fun visitConcatenationExpression(concatenationExpression: EConcatenationExpression) {
+        visitExpression(concatenationExpression)
     }
 
     open fun visitIfExpression(ifExpression: EIfExpression) {

@@ -22,7 +22,7 @@ import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
@@ -40,7 +40,7 @@ class CoreVkTest : BaseTest() {
                     }
                 """.trimIndent()
             )
-        }.apply { Assertions.assertEquals("Expression used out of context: nc", message) }
+        }.apply { assertEquals("Expression used out of context: nc", message) }
     }
 
     @Test
@@ -69,6 +69,34 @@ class CoreVkTest : BaseTest() {
             "ConstantExpression(Ubit<`8`>, 8'h00)",
             projectContext.findExpression("x")
         )
+    }
+
+    @Test
+    // TODO width inference for cat
+    fun `transform cat`() {
+        val projectContext = driveTest(
+            FunctionTransformerStage::class,
+            """
+                val x: Ubit<`2`> = cat(u(0), u(0))
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "ConcatenationExpression(Ubit<`2`>, [*, *])",
+            projectContext.findExpression("x")
+        )
+    }
+
+    @Test
+    // TODO width inference for cat
+    fun `transform cat illegal`() {
+        assertThrows<TestErrorException> {
+            driveTest(
+                FunctionTransformerStage::class,
+                """
+                val x: Ubit<`1`> = cat(u(0))
+                """.trimIndent()
+            )
+        }.apply { assertEquals("Concatenation expects at least two arguments", message) }
     }
 
     @Test

@@ -162,6 +162,11 @@ object Messages {
         "String literal expected for injected expression"
     )
 
+    val CAT_INSUFFICIENT_ARGUMENTS = MessageTemplate0(
+        Severity.ERROR,
+        "Concatenation expects at least two arguments"
+    )
+
 //  POST TRANSFORM  ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val EXPRESSION_OUT_OF_CONTEXT = MessageTemplate1<String>(

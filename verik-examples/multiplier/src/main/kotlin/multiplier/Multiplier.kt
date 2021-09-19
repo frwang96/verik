@@ -34,5 +34,6 @@ class Multiplier(
     @Com
     fun setReq() {
         rsp.vld = (i == u<REQ_WIDTH>())
+        rsp.result = cat(tp, prod)
     }
 }

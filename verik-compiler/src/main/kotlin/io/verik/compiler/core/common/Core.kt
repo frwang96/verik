@@ -92,6 +92,7 @@ object Core {
         val F_U = CoreVk.F_U
         val F_U_INT = CoreVk.F_U_INT
         val F_ZEROES = CoreVk.F_ZEROES
+        val F_CAT = CoreVk.F_CAT
         val F_RANDOM = CoreVk.F_RANDOM
         val F_RANDOM_INT = CoreVk.F_RANDOM_INT
         val F_FOREVER_FUNCTION = CoreVk.F_FOREVER_FUNCTION
