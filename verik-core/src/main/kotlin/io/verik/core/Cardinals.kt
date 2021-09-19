@@ -63,6 +63,11 @@ typealias DEC<N> = `*`
 typealias LOG<N> = `*`
 
 /**
+ * Takes the ceiling logarithm base two of the cardinal INC<N>.
+ */
+typealias INCLOG<N> = `*`
+
+/**
  * Takes the exponential base two of the cardinal N.
  */
 typealias EXP<N> = `*`

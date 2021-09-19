@@ -23,4 +23,11 @@ class Multiplier(
     @In var rst: Boolean,
     @In var req: MultiplierReq,
     @Out var rsp: MultiplierRsp
-) : Module()
+) : Module() {
+
+    var a: Ubit<`8`> = nc()
+    var b: Ubit<REQ_WIDTH> = nc()
+    var prod: Ubit<REQ_WIDTH> = nc()
+    var tp: Ubit<REQ_WIDTH> = nc()
+    var i: Ubit<INCLOG<REQ_WIDTH>> = nc()
+}

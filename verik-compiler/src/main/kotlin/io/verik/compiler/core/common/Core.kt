@@ -84,6 +84,7 @@ object Core {
         val N_INC = CoreVk.N_INC
         val N_DEC = CoreVk.N_DEC
         val N_LOG = CoreVk.N_LOG
+        val N_INCLOG = CoreVk.N_INCLOG
         val N_EXP = CoreVk.N_EXP
 
         val F_NC = CoreVk.F_NC

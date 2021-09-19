@@ -35,9 +35,16 @@ object CoreVk : CoreScope(CorePackage.VK) {
     val N_INC = CoreCardinalFunctionDeclaration("INC")
     val N_DEC = CoreCardinalFunctionDeclaration("DEC")
     val N_LOG = CoreCardinalFunctionDeclaration("LOG")
+    val N_INCLOG = CoreCardinalFunctionDeclaration("INCLOG")
     val N_EXP = CoreCardinalFunctionDeclaration("EXP")
 
-    val F_NC = CoreKtFunctionDeclaration(parent, "nc")
+    val F_NC = object : CoreKtFunctionDeclaration(parent, "nc") {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return listOf(TypeArgumentTypeConstraint(callExpression, listOf()))
+        }
+    }
+
     val F_U_INT = CoreKtFunctionDeclaration(parent, "u", Core.Kt.C_INT)
 
     val F_ZEROES = object : CoreKtFunctionDeclaration(parent, "zeroes") {
