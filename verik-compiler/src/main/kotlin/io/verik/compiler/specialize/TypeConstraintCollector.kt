@@ -23,7 +23,6 @@ import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtProperty
-import io.verik.compiler.ast.element.kt.EKtPropertyStatement
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.common.TreeVisitor
@@ -63,13 +62,6 @@ object TypeConstraintCollector {
                     typeConstraints.add(TypeEqualsTypeConstraint(statement, blockExpression))
                 }
             }
-        }
-
-        override fun visitKtPropertyStatement(propertyStatement: EKtPropertyStatement) {
-            super.visitKtPropertyStatement(propertyStatement)
-            val initializer = propertyStatement.property.initializer
-            if (initializer != null)
-                typeConstraints.add(TypeEqualsTypeConstraint(initializer, propertyStatement))
         }
 
         override fun visitKtBinaryExpression(binaryExpression: EKtBinaryExpression) {

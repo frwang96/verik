@@ -20,10 +20,12 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtProperty
+import io.verik.compiler.ast.element.kt.EKtPropertyStatement
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EModuleInstantiation
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.ESvProperty
+import io.verik.compiler.ast.element.sv.ESvPropertyStatement
 import io.verik.compiler.ast.property.PortInstantiation
 import io.verik.compiler.ast.property.PortType
 import io.verik.compiler.common.ProjectStage
@@ -45,56 +47,69 @@ object PropertyInterpreterStage : ProjectStage() {
 
     class PropertyInterpreterVisitor(private val referenceUpdater: ReferenceUpdater) : TreeVisitor() {
 
+        private fun interpret(property: EKtProperty): EElement {
+            return interpretModuleInstantiation(property)
+                ?: ESvProperty(
+                    property.location,
+                    property.name,
+                    property.type,
+                    property.initializer
+                )
+        }
+
+        private fun interpretModuleInstantiation(property: EKtProperty): EModuleInstantiation? {
+            val callExpression = property.initializer
+            if (callExpression !is EKtCallExpression)
+                return null
+            val module = callExpression.reference
+            if (module !is EModule)
+                return null
+
+            if (module.ports.size != callExpression.valueArguments.size) {
+                Messages.INTERNAL_ERROR.on(callExpression, "Incorrect number of value arguments")
+                return null
+            }
+
+            val portInstantiations = module.ports
+                .zip(callExpression.valueArguments)
+                .map { interpretPortInstantiation(it.first, it.second) }
+            return EModuleInstantiation(
+                property.location,
+                property.name,
+                property.type,
+                portInstantiations
+            )
+        }
+
+        private fun interpretPortInstantiation(
+            port: EPort,
+            expression: EExpression
+        ): PortInstantiation {
+            return if (expression is EKtCallExpression && expression.reference == Core.Vk.F_NC) {
+                if (port.portType == PortType.INPUT)
+                    Messages.INPUT_PORT_NOT_CONNECTED.on(expression, port.name)
+                PortInstantiation(port, null)
+            } else {
+                PortInstantiation(port, expression)
+            }
+        }
+
         override fun visitKtProperty(property: EKtProperty) {
             super.visitKtProperty(property)
             referenceUpdater.replace(property, interpret(property))
         }
-    }
 
-    private fun interpret(property: EKtProperty): EElement {
-        return interpretModuleInstantiation(property)
-            ?: ESvProperty(
-                property.location,
-                property.name,
-                property.type,
-                property.initializer
+        override fun visitKtPropertyStatement(propertyStatement: EKtPropertyStatement) {
+            super.visitKtProperty(propertyStatement.property)
+            val oldProperty = propertyStatement.property
+            val newProperty = ESvProperty(
+                oldProperty.location,
+                oldProperty.name,
+                oldProperty.type,
+                oldProperty.initializer,
             )
-    }
-
-    private fun interpretModuleInstantiation(property: EKtProperty): EModuleInstantiation? {
-        val callExpression = property.initializer
-        if (callExpression !is EKtCallExpression)
-            return null
-        val module = callExpression.reference
-        if (module !is EModule)
-            return null
-
-        if (module.ports.size != callExpression.valueArguments.size) {
-            Messages.INTERNAL_ERROR.on(callExpression, "Incorrect number of value arguments")
-            return null
-        }
-
-        val portInstantiations = module.ports
-            .zip(callExpression.valueArguments)
-            .map { interpretPortInstantiation(it.first, it.second) }
-        return EModuleInstantiation(
-            property.location,
-            property.name,
-            property.type,
-            portInstantiations
-        )
-    }
-
-    private fun interpretPortInstantiation(
-        port: EPort,
-        expression: EExpression
-    ): PortInstantiation {
-        return if (expression is EKtCallExpression && expression.reference == Core.Vk.F_NC) {
-            if (port.portType == PortType.INPUT)
-                Messages.INPUT_PORT_NOT_CONNECTED.on(expression, port.name)
-            PortInstantiation(port, null)
-        } else {
-            PortInstantiation(port, expression)
+            propertyStatement.replace(ESvPropertyStatement(propertyStatement.location, newProperty))
+            referenceUpdater.update(oldProperty, newProperty)
         }
     }
 }
