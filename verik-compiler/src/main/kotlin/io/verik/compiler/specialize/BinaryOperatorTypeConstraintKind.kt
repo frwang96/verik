@@ -17,5 +17,6 @@
 package io.verik.compiler.specialize
 
 enum class BinaryOperatorTypeConstraintKind {
-    MAX
+    MAX,
+    MAX_INC
 }

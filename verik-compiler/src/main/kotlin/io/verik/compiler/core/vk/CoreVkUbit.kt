@@ -45,6 +45,20 @@ object CoreVkUbit : CoreScope(Core.Vk.C_UBIT) {
         }
     }
 
+    val F_ADD_UBIT = object : CoreKtFunctionDeclaration(parent, "add", Core.Vk.C_UBIT) {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return listOf(
+                BinaryOperatorTypeConstraint(
+                    callExpression.receiver!!,
+                    callExpression.valueArguments[0],
+                    callExpression,
+                    BinaryOperatorTypeConstraintKind.MAX_INC
+                )
+            )
+        }
+    }
+
     val F_SHL_INT = object : CoreKtFunctionDeclaration(parent, "shl", Core.Kt.C_INT) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {

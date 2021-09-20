@@ -109,7 +109,10 @@ object TypeConstraintResolver {
                 val leftType = typeConstraint.left.type.arguments[0].copy()
                 val rightType = typeConstraint.right.type.arguments[0].copy()
                 val type = when (typeConstraint.kind) {
-                    BinaryOperatorTypeConstraintKind.MAX -> Core.Vk.N_MAX.toType(leftType, rightType)
+                    BinaryOperatorTypeConstraintKind.MAX ->
+                        Core.Vk.N_MAX.toType(leftType, rightType)
+                    BinaryOperatorTypeConstraintKind.MAX_INC ->
+                        Core.Vk.N_INC.toType(Core.Vk.N_MAX.toType(leftType, rightType))
                 }
                 typeConstraint.outer.type.arguments[0] = type
                 true

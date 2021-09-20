@@ -48,6 +48,7 @@ class Multiplier(
                     tp = zeroes()
                     i = zeroes()
                 } else if (i <= u<REQ_WIDTH>()) {
+                    prod add a
                     println()
                 }
             }

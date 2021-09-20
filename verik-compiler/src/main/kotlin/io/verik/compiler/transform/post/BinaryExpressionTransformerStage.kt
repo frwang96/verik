@@ -36,6 +36,7 @@ object BinaryExpressionTransformerStage : ProjectStage() {
         operatorKindMap[Core.Kt.Int.F_MINUS_INT] = SvBinaryOperatorKind.MINUS
         operatorKindMap[Core.Kt.Int.F_TIMES_INT] = SvBinaryOperatorKind.MUL
         operatorKindMap[Core.Vk.Ubit.F_PLUS_UBIT] = SvBinaryOperatorKind.PLUS
+        operatorKindMap[Core.Vk.Ubit.F_ADD_UBIT] = SvBinaryOperatorKind.PLUS
     }
 
     override fun process(projectContext: ProjectContext) {
