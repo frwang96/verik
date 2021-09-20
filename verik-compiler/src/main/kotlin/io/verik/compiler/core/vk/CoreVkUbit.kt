@@ -21,7 +21,8 @@ import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.core.common.CoreScope
-import io.verik.compiler.specialize.MaxBitWidthTypeConstraint
+import io.verik.compiler.specialize.BinaryOperatorTypeConstraint
+import io.verik.compiler.specialize.BinaryOperatorTypeConstraintKind
 import io.verik.compiler.specialize.TypeArgumentTypeConstraint
 import io.verik.compiler.specialize.TypeConstraint
 import io.verik.compiler.specialize.TypeEqualsTypeConstraint
@@ -34,10 +35,11 @@ object CoreVkUbit : CoreScope(Core.Vk.C_UBIT) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
-                MaxBitWidthTypeConstraint(
+                BinaryOperatorTypeConstraint(
                     callExpression.receiver!!,
                     callExpression.valueArguments[0],
-                    callExpression
+                    callExpression,
+                    BinaryOperatorTypeConstraintKind.MAX
                 )
             )
         }

@@ -59,10 +59,11 @@ class TypeEqualsTypeConstraint(
     val outer: ETypedElement
 ) : TypeConstraint()
 
-class MaxBitWidthTypeConstraint(
+class BinaryOperatorTypeConstraint(
     val left: EExpression,
     val right: EExpression,
-    val outer: EExpression
+    val outer: EExpression,
+    val kind: BinaryOperatorTypeConstraintKind
 ) : TypeConstraint()
 
 class CardinalBitConstantTypeConstraint(

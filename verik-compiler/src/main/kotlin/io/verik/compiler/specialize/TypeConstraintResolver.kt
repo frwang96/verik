@@ -43,8 +43,8 @@ object TypeConstraintResolver {
                 is TypeEqualsTypeConstraint ->
                     if (!resolveTypeEqualsTypeConstraint(it))
                         unresolvedTypeConstraints.add(it)
-                is MaxBitWidthTypeConstraint ->
-                    if (!resolveMaxBitWidthTypeConstraint(it))
+                is BinaryOperatorTypeConstraint ->
+                    if (!resolveBinaryOperatorTypeConstraint(it))
                         unresolvedTypeConstraints.add(it)
                 is CardinalBitConstantTypeConstraint ->
                     if (!resolveCardinalBitConstantTypeConstraint(it))
@@ -98,7 +98,7 @@ object TypeConstraintResolver {
         }
     }
 
-    private fun resolveMaxBitWidthTypeConstraint(typeConstraint: MaxBitWidthTypeConstraint): Boolean {
+    private fun resolveBinaryOperatorTypeConstraint(typeConstraint: BinaryOperatorTypeConstraint): Boolean {
         val leftResolved = typeConstraint.left.type.arguments[0].isResolved()
         val rightResolved = typeConstraint.right.type.arguments[0].isResolved()
         val outerResolved = typeConstraint.outer.type.arguments[0].isResolved()
@@ -108,7 +108,10 @@ object TypeConstraintResolver {
             if (leftResolved && rightResolved) {
                 val leftType = typeConstraint.left.type.arguments[0].copy()
                 val rightType = typeConstraint.right.type.arguments[0].copy()
-                typeConstraint.outer.type.arguments[0] = Core.Vk.N_MAX.toType(leftType, rightType)
+                val type = when (typeConstraint.kind) {
+                    BinaryOperatorTypeConstraintKind.MAX -> Core.Vk.N_MAX.toType(leftType, rightType)
+                }
+                typeConstraint.outer.type.arguments[0] = type
                 true
             } else {
                 false
