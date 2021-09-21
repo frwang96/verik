@@ -84,6 +84,7 @@ import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.EStructLiteralExpression
+import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
@@ -381,6 +382,10 @@ abstract class Visitor {
     }
 
     open fun visitKtArrayAccessExpression(arrayAccessExpression: EKtArrayAccessExpression) {
+        visitAbstractArrayAccessExpression(arrayAccessExpression)
+    }
+
+    open fun visitSvArrayAccessExpression(arrayAccessExpression: ESvArrayAccessExpression) {
         visitAbstractArrayAccessExpression(arrayAccessExpression)
     }
 

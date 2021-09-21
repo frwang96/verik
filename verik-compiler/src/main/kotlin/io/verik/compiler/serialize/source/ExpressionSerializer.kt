@@ -30,6 +30,7 @@ import io.verik.compiler.ast.element.sv.EInjectedExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.EStructLiteralExpression
+import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
 import io.verik.compiler.ast.element.sv.ESvCallExpression
@@ -155,6 +156,16 @@ object ExpressionSerializer {
 
     fun serializeStringExpression(stringExpression: EStringExpression, serializerContext: SerializerContext) {
         serializerContext.append("\"${stringExpression.text}\"")
+    }
+
+    fun serializeSvArrayAccessExpression(
+        arrayAccessExpression: ESvArrayAccessExpression,
+        serializerContext: SerializerContext
+    ) {
+        serializerContext.serializeAsExpression(arrayAccessExpression.array)
+        serializerContext.append("[")
+        serializerContext.serializeAsExpression(arrayAccessExpression.index)
+        serializerContext.append("]")
     }
 
     fun serializeConcatenationExpression(

@@ -17,7 +17,10 @@
 package io.verik.compiler.core.vk
 
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
+import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.core.common.CoreScope
@@ -31,8 +34,36 @@ object CoreVkUbit : CoreScope(Core.Vk.C_UBIT) {
 
     val F_INV = CoreKtFunctionDeclaration(parent, "inv")
 
-    val F_GET_INT = CoreKtFunctionDeclaration(parent, "get", Core.Kt.C_INT)
-    val F_SET_INT_BOOLEAN = CoreKtFunctionDeclaration(parent, "set", Core.Kt.C_INT, Core.Kt.C_BOOLEAN)
+    val F_GET_INT = object : CoreKtFunctionDeclaration(parent, "get", Core.Kt.C_INT) {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            return ESvArrayAccessExpression(
+                callExpression.location,
+                callExpression.type,
+                callExpression.receiver!!,
+                callExpression.valueArguments[0]
+            )
+        }
+    }
+
+    val F_SET_INT_BOOLEAN = object : CoreKtFunctionDeclaration(parent, "set", Core.Kt.C_INT, Core.Kt.C_BOOLEAN) {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            val receiver = ESvArrayAccessExpression(
+                callExpression.location,
+                callExpression.valueArguments[1].type.copy(),
+                callExpression.receiver!!,
+                callExpression.valueArguments[0]
+            )
+            return EKtBinaryExpression(
+                callExpression.location,
+                callExpression.type,
+                receiver,
+                callExpression.valueArguments[1],
+                KtBinaryOperatorKind.EQ
+            )
+        }
+    }
 
     val F_PLUS_UBIT = object : CoreKtFunctionDeclaration(parent, "plus", Core.Vk.C_UBIT) {
 

@@ -63,6 +63,7 @@ import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.EStructLiteralExpression
+import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
@@ -464,6 +465,14 @@ class ElementPrinter : Visitor() {
             build(arrayAccessExpression.type.toString())
             build(arrayAccessExpression.array)
             build(arrayAccessExpression.indices)
+        }
+    }
+
+    override fun visitSvArrayAccessExpression(arrayAccessExpression: ESvArrayAccessExpression) {
+        build("SvArrayAccessExpression") {
+            build(arrayAccessExpression.type.toString())
+            build(arrayAccessExpression.array)
+            build(arrayAccessExpression.index)
         }
     }
 

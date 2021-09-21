@@ -218,6 +218,25 @@ internal class ExpressionSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `array access expression`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                var x = u(0x00)
+                var y = x[0]
+            """.trimIndent()
+        )
+        val expected = """
+            logic [7:0] x = 8'h00;
+            logic y       = x[0];
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
     fun `concatenation expression`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
