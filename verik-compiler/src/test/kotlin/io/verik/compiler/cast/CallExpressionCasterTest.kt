@@ -34,7 +34,7 @@ internal class CallExpressionCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Ubit<`*`>, ext, *, [`8`], *)",
+            "KtCallExpression(Ubit<`*`>, ext, *, *, [`8`])",
             projectContext.findExpression("x")
         )
     }
@@ -48,7 +48,7 @@ internal class CallExpressionCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Ubit<`*`>, ext, *, [`*`], *)",
+            "KtCallExpression(Ubit<`*`>, ext, *, *, [`*`])",
             projectContext.findExpression("x")
         )
     }
@@ -63,7 +63,7 @@ internal class CallExpressionCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Unit, f, null, [], [ConstantExpression(*)])",
+            "KtCallExpression(Unit, f, null, [ConstantExpression(*)], [])",
             projectContext.findExpression("x")
         )
     }
@@ -78,7 +78,7 @@ internal class CallExpressionCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Unit, f, null, [], [ConstantExpression(*)])",
+            "KtCallExpression(Unit, f, null, [ConstantExpression(*)], [])",
             projectContext.findExpression("x")
         )
     }
@@ -93,7 +93,7 @@ internal class CallExpressionCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Unit, f, null, [], [ConstantExpression(*), StringTemplateExpression(*)])",
+            "KtCallExpression(Unit, f, null, [ConstantExpression(*), StringTemplateExpression(*)], [])",
             projectContext.findExpression("x")
         )
     }

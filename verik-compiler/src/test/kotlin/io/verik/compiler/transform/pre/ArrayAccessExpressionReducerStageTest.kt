@@ -22,44 +22,37 @@ import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
-internal class BinaryExpressionReducerStageTest : BaseTest() {
+internal class ArrayAccessExpressionReducerStageTest : BaseTest() {
 
     @Test
-    fun `reduce plus`() {
+    fun `reduce get`() {
         val projectContext = driveTest(
-            BinaryExpressionReducerStage::class,
+            ArrayAccessExpressionReducerStage::class,
             """
-                var x = 0
-                var y = x + 0
+                var x = u(0)
+                var y = x[0]
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Int, plus, KtReferenceExpression(*), [ConstantExpression(*)], [])",
+            "KtCallExpression(Boolean, get, *, [*], [])",
             projectContext.findExpression("y")
         )
     }
 
     @Test
-    fun `reduce nested plus`() {
+    fun `reduce set`() {
         val projectContext = driveTest(
-            BinaryExpressionReducerStage::class,
+            ArrayAccessExpressionReducerStage::class,
             """
-                var x = 0
-                var y = 0
-                var z = x + y + 0
+                var x = u(0)
+                fun f() {
+                    x[0] = true
+                }
             """.trimIndent()
         )
         assertElementEquals(
-            """
-                KtCallExpression(
-                    Int,
-                    plus,
-                    KtCallExpression(Int, plus, KtReferenceExpression(*), [KtReferenceExpression(*)], []),
-                    [ConstantExpression(*)],
-                    []
-                )
-            """.trimIndent(),
-            projectContext.findExpression("z")
+            "KtCallExpression(Unit, set, *, [*, *], [])",
+            projectContext.findExpression("f")
         )
     }
 }

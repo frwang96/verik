@@ -390,8 +390,8 @@ class ElementPrinter : Visitor() {
             build(callExpression.type.toString())
             build(callExpression.reference.name)
             build(callExpression.receiver)
-            build(callExpression.typeArguments.map { it.toString() })
             build(callExpression.valueArguments)
+            build(callExpression.typeArguments.map { it.toString() })
         }
     }
 

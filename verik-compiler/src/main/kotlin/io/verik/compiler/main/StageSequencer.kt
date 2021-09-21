@@ -64,6 +64,7 @@ import io.verik.compiler.transform.post.ReferenceAndCallExpressionTransformerSta
 import io.verik.compiler.transform.post.ScopeReferenceInsertionTransformerStage
 import io.verik.compiler.transform.post.TemporaryPropertyRelabelerStage
 import io.verik.compiler.transform.post.UnaryExpressionTransformerStage
+import io.verik.compiler.transform.pre.ArrayAccessExpressionReducerStage
 import io.verik.compiler.transform.pre.AssignmentOperatorReducerStage
 import io.verik.compiler.transform.pre.BinaryExpressionReducerStage
 import io.verik.compiler.transform.pre.BitConstantTransformerStage
@@ -97,6 +98,7 @@ object StageSequencer {
         stageSequence.add(AssignmentOperatorReducerStage)
         stageSequence.add(UnaryExpressionReducerStage)
         stageSequence.add(BinaryExpressionReducerStage)
+        stageSequence.add(ArrayAccessExpressionReducerStage)
         stageSequence.add(BitConstantTransformerStage)
 
         // Specialize

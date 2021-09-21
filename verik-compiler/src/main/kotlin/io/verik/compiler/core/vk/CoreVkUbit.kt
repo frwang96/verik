@@ -31,6 +31,9 @@ object CoreVkUbit : CoreScope(Core.Vk.C_UBIT) {
 
     val F_INV = CoreKtFunctionDeclaration(parent, "inv")
 
+    val F_GET_INT = CoreKtFunctionDeclaration(parent, "get", Core.Kt.C_INT)
+    val F_SET_INT_BOOLEAN = CoreKtFunctionDeclaration(parent, "set", Core.Kt.C_INT, Core.Kt.C_BOOLEAN)
+
     val F_PLUS_UBIT = object : CoreKtFunctionDeclaration(parent, "plus", Core.Vk.C_UBIT) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {

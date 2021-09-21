@@ -186,7 +186,14 @@ object ExpressionCaster {
         castContext: CastContext
     ): EKtArrayAccessExpression {
         val location = expression.location()
-        val type = castContext.castType(expression)
+        val parent = expression.parent
+        val type = if (parent is KtBinaryExpression &&
+            parent.operationReference.operationSignTokenType.toString() == "EQ"
+        ) {
+            castContext.castType(parent.right!!)
+        } else {
+            castContext.castType(expression)
+        }
         val array = castContext.casterVisitor.getExpression(expression.arrayExpression!!)
         val indices = expression.indexExpressions.map { castContext.casterVisitor.getExpression(it) }
         return EKtArrayAccessExpression(location, type, array, ArrayList(indices))
