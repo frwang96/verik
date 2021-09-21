@@ -18,6 +18,7 @@ package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EAbstractProperty
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
@@ -92,6 +93,16 @@ object TypeConstraintCollector {
                             typeConstraints.add(ValueArgumentTypeConstraint(valueArgument, valueParameter))
                         }
                 }
+            }
+        }
+
+        override fun visitIfExpression(ifExpression: EIfExpression) {
+            super.visitIfExpression(ifExpression)
+            val thenExpression = ifExpression.thenExpression
+            val elseExpression = ifExpression.elseExpression
+            if (thenExpression != null && elseExpression != null) {
+                typeConstraints.add(TypeEqualsTypeConstraint(ifExpression, thenExpression))
+                typeConstraints.add(TypeEqualsTypeConstraint(ifExpression, elseExpression))
             }
         }
     }

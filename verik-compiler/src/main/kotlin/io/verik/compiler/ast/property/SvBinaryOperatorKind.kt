@@ -26,7 +26,9 @@ enum class SvBinaryOperatorKind {
     LTEQ,
     GT,
     GTEQ,
-    EQEQ;
+    EQEQ,
+    LTLT,
+    GTGT;
 
     fun serialize(): String {
         return when (this) {
@@ -40,6 +42,8 @@ enum class SvBinaryOperatorKind {
             GT -> ">"
             GTEQ -> ">="
             EQEQ -> "=="
+            LTLT -> "<<"
+            GTGT -> ">>"
         }
     }
 }

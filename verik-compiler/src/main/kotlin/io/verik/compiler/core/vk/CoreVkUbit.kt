@@ -20,7 +20,9 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
+import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
+import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.core.common.CoreScope
@@ -98,12 +100,32 @@ object CoreVkUbit : CoreScope(Core.Vk.C_UBIT) {
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(TypeEqualsTypeConstraint(callExpression.receiver!!, callExpression))
         }
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            return ESvBinaryExpression(
+                callExpression.location,
+                callExpression.type,
+                callExpression.receiver!!,
+                callExpression.valueArguments[0],
+                SvBinaryOperatorKind.LTLT
+            )
+        }
     }
 
     val F_SHR_INT = object : CoreKtFunctionDeclaration(parent, "shr", Core.Kt.C_INT) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(TypeEqualsTypeConstraint(callExpression.receiver!!, callExpression))
+        }
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            return ESvBinaryExpression(
+                callExpression.location,
+                callExpression.type,
+                callExpression.receiver!!,
+                callExpression.valueArguments[0],
+                SvBinaryOperatorKind.GTGT
+            )
         }
     }
 

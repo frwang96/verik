@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("unused")
+
 package io.verik.compiler.core.common
 
 import io.verik.compiler.core.kt.CoreKtBoolean

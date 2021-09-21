@@ -66,13 +66,15 @@ object ParenthesisInsertionTransformerStage : ProjectStage() {
                 SvBinaryOperatorKind.MUL -> 2
                 SvBinaryOperatorKind.PLUS -> 3
                 SvBinaryOperatorKind.MINUS -> 3
-                SvBinaryOperatorKind.LT -> 4
-                SvBinaryOperatorKind.LTEQ -> 4
-                SvBinaryOperatorKind.GT -> 4
-                SvBinaryOperatorKind.GTEQ -> 4
-                SvBinaryOperatorKind.EQEQ -> 5
-                SvBinaryOperatorKind.ASSIGN -> 6
-                SvBinaryOperatorKind.ARROW_ASSIGN -> 6
+                SvBinaryOperatorKind.LTLT -> 4
+                SvBinaryOperatorKind.GTGT -> 4
+                SvBinaryOperatorKind.LT -> 5
+                SvBinaryOperatorKind.LTEQ -> 5
+                SvBinaryOperatorKind.GT -> 5
+                SvBinaryOperatorKind.GTEQ -> 5
+                SvBinaryOperatorKind.EQEQ -> 6
+                SvBinaryOperatorKind.ASSIGN -> 7
+                SvBinaryOperatorKind.ARROW_ASSIGN -> 7
             }
         }
 

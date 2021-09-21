@@ -48,8 +48,14 @@ class Multiplier(
                     tp = zeroes()
                     i = zeroes()
                 } else if (i <= u<REQ_WIDTH>()) {
-                    prod add a
-                    println()
+                    @Suppress("UNUSED_VARIABLE")
+                    val sum = if (b[0]) {
+                        prod add a
+                    } else {
+                        tp.ext()
+                    }
+                    b = b shr 1
+                    i += u(1)
                 }
             }
         }
