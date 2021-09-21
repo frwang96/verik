@@ -16,6 +16,7 @@
 
 package io.verik.compiler.common
 
+import io.verik.compiler.ast.element.common.EAbstractArrayAccessExpression
 import io.verik.compiler.ast.element.common.EAbstractBinaryExpression
 import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.EAbstractCallExpression
@@ -47,6 +48,7 @@ import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.kt.EAnnotation
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtAbstractFunction
+import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
@@ -372,6 +374,14 @@ abstract class Visitor {
 
     open fun visitStringExpression(stringExpression: EStringExpression) {
         visitExpression(stringExpression)
+    }
+
+    open fun visitAbstractArrayAccessExpression(abstractArrayAccessExpression: EAbstractArrayAccessExpression) {
+        visitExpression(abstractArrayAccessExpression)
+    }
+
+    open fun visitKtArrayAccessExpression(arrayAccessExpression: EKtArrayAccessExpression) {
+        visitAbstractArrayAccessExpression(arrayAccessExpression)
     }
 
     open fun visitConcatenationExpression(concatenationExpression: EConcatenationExpression) {

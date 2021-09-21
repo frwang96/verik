@@ -226,6 +226,21 @@ internal class ExpressionCasterTest : BaseTest() {
     }
 
     @Test
+    fun `array access expression`() {
+        val projectContext = driveTest(
+            CasterStage::class,
+            """
+                var x = u(0)
+                var y = x[0]
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtArrayAccessExpression(Boolean, *, [*])",
+            projectContext.findExpression("y")
+        )
+    }
+
+    @Test
     fun `if expression`() {
         val projectContext = driveTest(
             CasterStage::class,

@@ -21,6 +21,7 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
+import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
@@ -32,6 +33,7 @@ import io.verik.compiler.common.location
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.descriptors.PackageViewDescriptor
+import org.jetbrains.kotlin.psi.KtArrayAccessExpression
 import org.jetbrains.kotlin.psi.KtBinaryExpression
 import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtCallExpression
@@ -177,6 +179,17 @@ object ExpressionCaster {
             ArrayList(statements)
         )
         return EFunctionLiteralExpression(location, body)
+    }
+
+    fun castKtArrayAccessExpression(
+        expression: KtArrayAccessExpression,
+        castContext: CastContext
+    ): EKtArrayAccessExpression {
+        val location = expression.location()
+        val type = castContext.castType(expression)
+        val array = castContext.casterVisitor.getExpression(expression.arrayExpression!!)
+        val indices = expression.indexExpressions.map { castContext.casterVisitor.getExpression(it) }
+        return EKtArrayAccessExpression(location, type, array, ArrayList(indices))
     }
 
     fun castIfExpression(expression: KtIfExpression, castContext: CastContext): EIfExpression {

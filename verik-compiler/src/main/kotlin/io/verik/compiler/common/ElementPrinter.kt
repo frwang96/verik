@@ -29,6 +29,7 @@ import io.verik.compiler.ast.element.common.ERootPackage
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.EAnnotation
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
+import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
@@ -455,6 +456,14 @@ class ElementPrinter : Visitor() {
         build("StringExpression") {
             build(stringExpression.type.toString())
             build(stringExpression.text)
+        }
+    }
+
+    override fun visitKtArrayAccessExpression(arrayAccessExpression: EKtArrayAccessExpression) {
+        build("KtArrayAccessExpression") {
+            build(arrayAccessExpression.type.toString())
+            build(arrayAccessExpression.array)
+            build(arrayAccessExpression.indices)
         }
     }
 
