@@ -25,9 +25,17 @@ enum class KtBinaryOperatorKind {
     MUL,
     PLUS,
     MINUS,
+    LT,
+    LTEQ,
+    GT,
+    GTEQ,
     EQEQ,
     PLUS_EQ,
     MINUS_EQ;
+
+    fun isReducible(): Boolean {
+        return this !in listOf(EQ, LT, LTEQ, GT, GTEQ, EQEQ)
+    }
 
     companion object {
 
@@ -37,6 +45,10 @@ enum class KtBinaryOperatorKind {
                 "MUL" -> MUL
                 "PLUS" -> PLUS
                 "MINUS" -> MINUS
+                "LT" -> LT
+                "LTEQ" -> LTEQ
+                "GT" -> GT
+                "GTEQ" -> GTEQ
                 "EQEQ" -> EQEQ
                 "PLUSEQ" -> PLUS_EQ
                 "MINUSEQ" -> MINUS_EQ

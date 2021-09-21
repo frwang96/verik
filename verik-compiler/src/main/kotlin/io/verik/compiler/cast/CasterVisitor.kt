@@ -40,6 +40,7 @@ import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.common.location
 import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.psi.KtAnnotatedExpression
+import org.jetbrains.kotlin.psi.KtArrayAccessExpression
 import org.jetbrains.kotlin.psi.KtBinaryExpression
 import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtCallExpression
@@ -186,6 +187,10 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
         data: Unit?
     ): EStringTemplateExpression {
         return StringTemplateExpressionCaster.castStringTemplateExpression(expression, castContext)
+    }
+
+    override fun visitArrayAccessExpression(expression: KtArrayAccessExpression, data: Unit?): EElement {
+        return ExpressionCaster.castKtArrayAccessExpression(expression, castContext)
     }
 
     override fun visitIfExpression(expression: KtIfExpression, data: Unit?): EIfExpression {

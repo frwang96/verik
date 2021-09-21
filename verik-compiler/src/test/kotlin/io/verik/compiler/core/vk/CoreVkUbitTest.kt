@@ -14,52 +14,53 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.pre
+package io.verik.compiler.core.vk
 
+import io.verik.compiler.transform.mid.FunctionTransformerStage
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
-internal class BinaryExpressionReducerStageTest : BaseTest() {
+class CoreVkUbitTest : BaseTest() {
 
     @Test
-    fun `reduce plus`() {
+    fun `transform get`() {
         val projectContext = driveTest(
-            BinaryExpressionReducerStage::class,
+            FunctionTransformerStage::class,
             """
-                var x = 0
-                var y = x + 0
+                var x = u(0)
+                var y = x[0]
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Int, plus, KtReferenceExpression(*), [ConstantExpression(*)], [])",
+            "SvArrayAccessExpression(Boolean, KtReferenceExpression(*), ConstantExpression(*))",
             projectContext.findExpression("y")
         )
     }
 
     @Test
-    fun `reduce nested plus`() {
+    fun `transform set`() {
         val projectContext = driveTest(
-            BinaryExpressionReducerStage::class,
+            FunctionTransformerStage::class,
             """
-                var x = 0
-                var y = 0
-                var z = x + y + 0
+                var x = u(0)
+                fun f() {
+                    x[0] = true
+                }
             """.trimIndent()
         )
         assertElementEquals(
             """
-                KtCallExpression(
-                    Int,
-                    plus,
-                    KtCallExpression(Int, plus, KtReferenceExpression(*), [KtReferenceExpression(*)], []),
-                    [ConstantExpression(*)],
-                    []
+                KtBinaryExpression(
+                    Unit,
+                    EQ,
+                    SvArrayAccessExpression(Boolean, KtReferenceExpression(*), ConstantExpression(*)),
+                    ConstantExpression(*)
                 )
             """.trimIndent(),
-            projectContext.findExpression("z")
+            projectContext.findExpression("f")
         )
     }
 }

@@ -108,8 +108,10 @@ object Core {
         object Ubit : CoreScope(C_UBIT) {
 
             val F_INV = CoreVkUbit.F_INV
-            val F_EQUALS_ANY = CoreVkUbit.F_EQUALS_ANY
+            val F_GET_INT = CoreVkUbit.F_GET_INT
+            val F_SET_INT_BOOLEAN = CoreVkUbit.F_SET_INT_BOOLEAN
             val F_PLUS_UBIT = CoreVkUbit.F_PLUS_UBIT
+            val F_ADD_UBIT = CoreVkUbit.F_ADD_UBIT
             val F_SHL_INT = CoreVkUbit.F_SHL_INT
             val F_SHR_INT = CoreVkUbit.F_SHR_INT
             val F_EXT = CoreVkUbit.F_EXT

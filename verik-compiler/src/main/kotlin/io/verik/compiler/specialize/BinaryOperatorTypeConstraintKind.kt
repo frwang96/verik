@@ -14,32 +14,9 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.property
+package io.verik.compiler.specialize
 
-enum class SvBinaryOperatorKind {
-    ASSIGN,
-    ARROW_ASSIGN,
-    MUL,
-    PLUS,
-    MINUS,
-    LT,
-    LTEQ,
-    GT,
-    GTEQ,
-    EQEQ;
-
-    fun serialize(): String {
-        return when (this) {
-            ASSIGN -> "="
-            ARROW_ASSIGN -> "<="
-            MUL -> "*"
-            PLUS -> "+"
-            MINUS -> "-"
-            LT -> "<"
-            LTEQ -> "<="
-            GT -> ">"
-            GTEQ -> ">="
-            EQEQ -> "=="
-        }
-    }
+enum class BinaryOperatorTypeConstraintKind {
+    MAX,
+    MAX_INC
 }

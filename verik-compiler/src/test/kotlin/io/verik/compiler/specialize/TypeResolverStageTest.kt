@@ -86,7 +86,7 @@ internal class TypeResolverStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Ubit<MAX<`8`,`4`>>, plus, *, [], *)",
+            "KtCallExpression(Ubit<MAX<`8`,`4`>>, plus, *, *, [])",
             projectContext.findExpression("x")
         )
     }
@@ -100,7 +100,7 @@ internal class TypeResolverStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Ubit<INCLOG<`8`>>, u, null, [`8`], [])",
+            "KtCallExpression(Ubit<INCLOG<`8`>>, u, null, [], [`8`])",
             projectContext.findExpression("x")
         )
     }
@@ -114,7 +114,7 @@ internal class TypeResolverStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Ubit<ADD<`1`, `1`>>, cat, null, [], *)",
+            "KtCallExpression(Ubit<ADD<`1`, `1`>>, cat, null, *, [])",
             projectContext.findExpression("x")
         )
     }
@@ -141,7 +141,7 @@ internal class TypeResolverStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Unit, f, null, [], [KtCallExpression(Ubit<`8`>, zeroes, null, [Ubit<`8`>], [])])",
+            "KtCallExpression(Unit, f, null, [KtCallExpression(Ubit<`8`>, zeroes, null, [], [Ubit<`8`>])], [])",
             projectContext.findExpression("x")
         )
     }

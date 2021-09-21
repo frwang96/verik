@@ -76,7 +76,7 @@ internal class ExpressionCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Ubit<`*`>, shl, KtCallExpression(*), [], [ConstantExpression(*)])",
+            "KtCallExpression(Ubit<`*`>, shl, KtCallExpression(*), [ConstantExpression(*)], [])",
             projectContext.findExpression("x")
         )
     }
@@ -152,7 +152,7 @@ internal class ExpressionCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Int, plus, KtReferenceExpression(*), [], [ConstantExpression(*)])",
+            "KtCallExpression(Int, plus, KtReferenceExpression(*), [ConstantExpression(*)], [])",
             projectContext.findExpression("y")
         )
     }
@@ -217,11 +217,26 @@ internal class ExpressionCasterTest : BaseTest() {
                     Unit,
                     forever,
                     null,
-                    [],
-                    [FunctionLiteralExpression(Function, KtBlockExpression(*))]
+                    [FunctionLiteralExpression(Function, KtBlockExpression(*))],
+                    []
                 )
             """.trimIndent(),
             projectContext.findExpression("f")
+        )
+    }
+
+    @Test
+    fun `array access expression`() {
+        val projectContext = driveTest(
+            CasterStage::class,
+            """
+                var x = u(0)
+                var y = x[0]
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtArrayAccessExpression(Boolean, *, [*])",
+            projectContext.findExpression("y")
         )
     }
 

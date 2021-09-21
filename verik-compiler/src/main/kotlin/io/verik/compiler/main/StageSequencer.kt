@@ -47,6 +47,7 @@ import io.verik.compiler.specialize.TypeResolverStage
 import io.verik.compiler.specialize.TypeSpecializerStage
 import io.verik.compiler.transform.mid.AssignmentTransformerStage
 import io.verik.compiler.transform.mid.CaseStatementTransformerStage
+import io.verik.compiler.transform.mid.ComparisonTransformerStage
 import io.verik.compiler.transform.mid.FunctionTransformerStage
 import io.verik.compiler.transform.mid.InjectedExpressionReducerStage
 import io.verik.compiler.transform.mid.InlineIfExpressionTransformerStage
@@ -63,6 +64,7 @@ import io.verik.compiler.transform.post.ReferenceAndCallExpressionTransformerSta
 import io.verik.compiler.transform.post.ScopeReferenceInsertionTransformerStage
 import io.verik.compiler.transform.post.TemporaryPropertyRelabelerStage
 import io.verik.compiler.transform.post.UnaryExpressionTransformerStage
+import io.verik.compiler.transform.pre.ArrayAccessExpressionReducerStage
 import io.verik.compiler.transform.pre.AssignmentOperatorReducerStage
 import io.verik.compiler.transform.pre.BinaryExpressionReducerStage
 import io.verik.compiler.transform.pre.BitConstantTransformerStage
@@ -96,6 +98,7 @@ object StageSequencer {
         stageSequence.add(AssignmentOperatorReducerStage)
         stageSequence.add(UnaryExpressionReducerStage)
         stageSequence.add(BinaryExpressionReducerStage)
+        stageSequence.add(ArrayAccessExpressionReducerStage)
         stageSequence.add(BitConstantTransformerStage)
 
         // Specialize
@@ -116,8 +119,9 @@ object StageSequencer {
         stageSequence.add(InjectedExpressionReducerStage)
         stageSequence.add(StringTemplateExpressionReducerStage)
         stageSequence.add(UninitializedPropertyTransformerStage)
-        stageSequence.add(AssignmentTransformerStage)
         stageSequence.add(FunctionTransformerStage)
+        stageSequence.add(AssignmentTransformerStage)
+        stageSequence.add(ComparisonTransformerStage)
         stageSequence.add(InlineIfExpressionTransformerStage)
         stageSequence.add(CaseStatementTransformerStage)
         stageSequence.add(StructLiteralTransformerStage)

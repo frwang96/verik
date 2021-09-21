@@ -53,8 +53,8 @@ internal class StringTemplateExpressionReducerStageTest : BaseTest() {
                     String,
                     ${"$"}sformatf,
                     null,
-                    [],
-                    [StringExpression(String, %d), KtReferenceExpression(Int, x, null)]
+                    [StringExpression(String, %d), KtReferenceExpression(Int, x, null)],
+                    []
                 )
             """.trimIndent(),
             projectContext.findExpression("y")
@@ -71,7 +71,7 @@ internal class StringTemplateExpressionReducerStageTest : BaseTest() {
         )
         assertElementEquals(
             """
-                KtCallExpression(String, *, null, [], [StringExpression(String, %d%%), ConstantExpression(*)])
+                KtCallExpression(String, *, null, [StringExpression(String, %d%%), ConstantExpression(*)], [])
             """.trimIndent(),
             projectContext.findExpression("x")
         )

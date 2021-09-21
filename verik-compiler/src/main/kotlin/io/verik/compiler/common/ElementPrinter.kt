@@ -29,6 +29,7 @@ import io.verik.compiler.ast.element.common.ERootPackage
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.EAnnotation
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
+import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
@@ -62,6 +63,7 @@ import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.EStructLiteralExpression
+import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
@@ -389,8 +391,8 @@ class ElementPrinter : Visitor() {
             build(callExpression.type.toString())
             build(callExpression.reference.name)
             build(callExpression.receiver)
-            build(callExpression.typeArguments.map { it.toString() })
             build(callExpression.valueArguments)
+            build(callExpression.typeArguments.map { it.toString() })
         }
     }
 
@@ -455,6 +457,22 @@ class ElementPrinter : Visitor() {
         build("StringExpression") {
             build(stringExpression.type.toString())
             build(stringExpression.text)
+        }
+    }
+
+    override fun visitKtArrayAccessExpression(arrayAccessExpression: EKtArrayAccessExpression) {
+        build("KtArrayAccessExpression") {
+            build(arrayAccessExpression.type.toString())
+            build(arrayAccessExpression.array)
+            build(arrayAccessExpression.indices)
+        }
+    }
+
+    override fun visitSvArrayAccessExpression(arrayAccessExpression: ESvArrayAccessExpression) {
+        build("SvArrayAccessExpression") {
+            build(arrayAccessExpression.type.toString())
+            build(arrayAccessExpression.array)
+            build(arrayAccessExpression.index)
         }
     }
 

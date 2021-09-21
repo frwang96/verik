@@ -31,8 +31,8 @@ object TypeConstraintChecker {
                     checkValueArgumentTypeConstraint(it)
                 is TypeEqualsTypeConstraint ->
                     checkTypeEqualsTypeConstraint(it)
-                is MaxBitWidthTypeConstraint ->
-                    checkMaxBitWidthTypeConstraint(it)
+                is BinaryOperatorTypeConstraint ->
+                    checkBinaryOperatorTypeConstraint(it)
                 is CardinalBitConstantTypeConstraint ->
                     checkCardinalBitConstantTypeConstraint(it)
                 is ConcatenationTypeConstraint ->
@@ -64,14 +64,18 @@ object TypeConstraintChecker {
             Messages.TYPE_MISMATCH.on(typeConstraint.inner, typeConstraint.outer.type, typeConstraint.inner.type)
     }
 
-    private fun checkMaxBitWidthTypeConstraint(typeConstraint: MaxBitWidthTypeConstraint) {
+    private fun checkBinaryOperatorTypeConstraint(typeConstraint: BinaryOperatorTypeConstraint) {
         val leftWidth = typeConstraint.left.type.asBitWidth(typeConstraint.left)
         val rightWidth = typeConstraint.right.type.asBitWidth(typeConstraint.right)
+        val innerWidth = when (typeConstraint.kind) {
+            BinaryOperatorTypeConstraintKind.MAX -> max(leftWidth, rightWidth)
+            BinaryOperatorTypeConstraintKind.MAX_INC -> max(leftWidth, rightWidth) + 1
+        }
         val outerWidth = typeConstraint.outer.type.asBitWidth(typeConstraint.outer)
-        if (outerWidth != max(leftWidth, rightWidth)) {
-            val expectedType = typeConstraint.outer.type.copy()
-            expectedType.arguments[0] = Core.Vk.cardinalOf(max(leftWidth, rightWidth)).toType()
-            Messages.TYPE_MISMATCH.on(typeConstraint.outer, expectedType, typeConstraint.outer.type)
+        if (outerWidth != innerWidth) {
+            val actualType = typeConstraint.outer.type.copy()
+            actualType.arguments[0] = Core.Vk.cardinalOf(innerWidth).toType()
+            Messages.TYPE_MISMATCH.on(typeConstraint.outer, typeConstraint.outer.type, actualType)
         }
     }
 
@@ -83,9 +87,9 @@ object TypeConstraintChecker {
             .asCardinalValue(typeConstraint.callExpression)
         val typeArgumentValueWidth = 32 - typeArgumentValue.countLeadingZeroBits()
         if (typeArgumentValueWidth != expressionWidth) {
-            val expectedType = typeConstraint.callExpression.type.copy()
-            expectedType.arguments[0] = Core.Vk.cardinalOf(typeArgumentValueWidth).toType()
-            Messages.TYPE_MISMATCH.on(typeConstraint.callExpression, expectedType, typeConstraint.callExpression.type)
+            val actualType = typeConstraint.callExpression.type.copy()
+            actualType.arguments[0] = Core.Vk.cardinalOf(typeArgumentValueWidth).toType()
+            Messages.TYPE_MISMATCH.on(typeConstraint.callExpression, typeConstraint.callExpression.type, actualType)
         }
     }
 
@@ -104,9 +108,9 @@ object TypeConstraintChecker {
             }
         val sumWidth = valueArgumentWidths.sum()
         if (sumWidth != expressionWidth) {
-            val expectedType = typeConstraint.callExpression.type.copy()
-            expectedType.arguments[0] = Core.Vk.cardinalOf(sumWidth).toType()
-            Messages.TYPE_MISMATCH.on(typeConstraint.callExpression, expectedType, typeConstraint.callExpression.type)
+            val actualType = typeConstraint.callExpression.type.copy()
+            actualType.arguments[0] = Core.Vk.cardinalOf(sumWidth).toType()
+            Messages.TYPE_MISMATCH.on(typeConstraint.callExpression, typeConstraint.callExpression.type, actualType)
         }
     }
 }

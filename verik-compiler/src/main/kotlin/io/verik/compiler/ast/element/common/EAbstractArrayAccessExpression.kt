@@ -14,32 +14,16 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.property
+package io.verik.compiler.ast.element.common
 
-enum class SvBinaryOperatorKind {
-    ASSIGN,
-    ARROW_ASSIGN,
-    MUL,
-    PLUS,
-    MINUS,
-    LT,
-    LTEQ,
-    GT,
-    GTEQ,
-    EQEQ;
+import io.verik.compiler.ast.interfaces.ExpressionContainer
+import io.verik.compiler.common.TreeVisitor
 
-    fun serialize(): String {
-        return when (this) {
-            ASSIGN -> "="
-            ARROW_ASSIGN -> "<="
-            MUL -> "*"
-            PLUS -> "+"
-            MINUS -> "-"
-            LT -> "<"
-            LTEQ -> "<="
-            GT -> ">"
-            GTEQ -> ">="
-            EQEQ -> "=="
-        }
+abstract class EAbstractArrayAccessExpression : EExpression(), ExpressionContainer {
+
+    abstract var array: EExpression
+
+    override fun acceptChildren(visitor: TreeVisitor) {
+        array.accept(visitor)
     }
 }

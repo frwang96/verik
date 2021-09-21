@@ -17,6 +17,7 @@
 package io.verik.compiler.check.post
 
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
@@ -118,6 +119,11 @@ object UntransformedElementCheckerStage : ProjectStage() {
         override fun visitStringTemplateExpression(stringTemplateExpression: EStringTemplateExpression) {
             super.visitStringTemplateExpression(stringTemplateExpression)
             Messages.INTERNAL_ERROR.on(stringTemplateExpression, "String template expression $message")
+        }
+
+        override fun visitKtArrayAccessExpression(arrayAccessExpression: EKtArrayAccessExpression) {
+            super.visitKtArrayAccessExpression(arrayAccessExpression)
+            Messages.INTERNAL_ERROR.on(arrayAccessExpression, "Array access expression $message")
         }
 
         override fun visitWhenExpression(whenExpression: EWhenExpression) {
