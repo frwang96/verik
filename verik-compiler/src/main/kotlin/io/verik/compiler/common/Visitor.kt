@@ -69,6 +69,7 @@ import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.ECaseStatement
 import io.verik.compiler.ast.element.sv.EConcatenationExpression
+import io.verik.compiler.ast.element.sv.EConstantPartSelectExpression
 import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EEventControlExpression
@@ -387,6 +388,10 @@ abstract class Visitor {
 
     open fun visitSvArrayAccessExpression(arrayAccessExpression: ESvArrayAccessExpression) {
         visitAbstractArrayAccessExpression(arrayAccessExpression)
+    }
+
+    open fun visitConstantPartSelectExpression(constantPartSelectExpression: EConstantPartSelectExpression) {
+        visitAbstractArrayAccessExpression(constantPartSelectExpression)
     }
 
     open fun visitConcatenationExpression(concatenationExpression: EConcatenationExpression) {

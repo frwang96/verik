@@ -63,4 +63,56 @@ class CoreVkUbitTest : BaseTest() {
             projectContext.findExpression("f")
         )
     }
+
+    @Test
+    fun `transform shl`() {
+        val projectContext = driveTest(
+            FunctionTransformerStage::class,
+            """
+                var x = u(0x00)
+                var y = x shl 1
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "SvBinaryExpression(Ubit<`8`>, LTLT, *, *)",
+            projectContext.findExpression("y")
+        )
+    }
+
+    @Test
+    fun `transform shr`() {
+        val projectContext = driveTest(
+            FunctionTransformerStage::class,
+            """
+                var x = u(0x00)
+                var y = x shr 1
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "SvBinaryExpression(Ubit<`8`>, GTGT, *, *)",
+            projectContext.findExpression("y")
+        )
+    }
+
+    @Test
+    fun `transform slice`() {
+        val projectContext = driveTest(
+            FunctionTransformerStage::class,
+            """
+                var x = u(0x00)
+                var y = x.slice<`4`>(0)
+            """.trimIndent()
+        )
+        assertElementEquals(
+            """
+                ConstantPartSelectExpression(
+                    Ubit<`4`>,
+                    KtReferenceExpression(*),
+                    KtCallExpression(Int, plus, ConstantExpression(*), [ConstantExpression(Int, 4)], []),
+                    ConstantExpression(*)
+                )
+            """.trimIndent(),
+            projectContext.findExpression("y")
+        )
+    }
 }

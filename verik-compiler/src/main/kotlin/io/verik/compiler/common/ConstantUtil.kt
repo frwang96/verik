@@ -16,9 +16,13 @@
 
 package io.verik.compiler.common
 
+import io.verik.compiler.ast.element.common.EConstantExpression
+import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.core.common.Core
+
 object ConstantUtil {
 
-    fun getIntConstantValue(value: String): Int {
+    fun normalizeGetIntValue(value: String): Int {
         val trimmedValue = value.replace("_", "")
         return when {
             value.startsWith("0x") || value.startsWith("0X") ->
@@ -29,7 +33,7 @@ object ConstantUtil {
         }
     }
 
-    fun getIntConstantWidth(value: String): Int {
+    fun normalizeGetIntWidth(value: String): Int {
         val trimmedValue = value.replace("_", "")
         return when {
             value.startsWith("0x") || value.startsWith("0X") ->
@@ -42,5 +46,11 @@ object ConstantUtil {
                 else 32 - valueInt.countLeadingZeroBits()
             }
         }
+    }
+
+    fun getInt(expression: EExpression): Int? {
+        return if (expression is EConstantExpression && expression.type.reference == Core.Kt.C_INT) {
+            expression.value.toInt()
+        } else null
     }
 }

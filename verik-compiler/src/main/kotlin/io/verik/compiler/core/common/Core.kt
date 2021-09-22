@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("unused")
+
 package io.verik.compiler.core.common
 
 import io.verik.compiler.core.kt.CoreKtBoolean
@@ -115,6 +117,7 @@ object Core {
             val F_SHL_INT = CoreVkUbit.F_SHL_INT
             val F_SHR_INT = CoreVkUbit.F_SHR_INT
             val F_EXT = CoreVkUbit.F_EXT
+            val F_SLICE_INT = CoreVkUbit.F_SLICE_INT
         }
     }
 

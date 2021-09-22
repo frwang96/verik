@@ -33,7 +33,7 @@ import kotlin.reflect.full.memberProperties
 object CoreDeclarationMap {
 
     private val declarationMap = HashMap<String, CoreDeclaration>()
-    private val functionMap = HashMap<String, ArrayList<CoreKtFunctionDeclaration>>()
+    private val functionMap = HashMap<String, ArrayList<CoreKtAbstractFunctionDeclaration>>()
 
     init {
         addCoreDeclarations(Core::class)
@@ -64,7 +64,7 @@ object CoreDeclarationMap {
                     }
                     when (property) {
                         is CoreAbstractFunctionDeclaration -> {
-                            if (property is CoreKtFunctionDeclaration) {
+                            if (property is CoreKtAbstractFunctionDeclaration) {
                                 if (property.qualifiedName !in functionMap)
                                     functionMap[property.qualifiedName] = ArrayList()
                                 functionMap[property.qualifiedName]!!.add(property)
@@ -99,7 +99,7 @@ object CoreDeclarationMap {
         castContext: CastContext,
         descriptor: SimpleFunctionDescriptor,
         element: KtElement,
-        function: CoreKtFunctionDeclaration
+        function: CoreKtAbstractFunctionDeclaration
     ): Boolean {
         val valueParameters = descriptor.valueParameters
         val parameterClassNames = function.parameterClassNames

@@ -18,22 +18,14 @@ package io.verik.compiler.transform.post
 
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
-import io.verik.compiler.ast.property.SvUnaryOperatorKind
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.common.Core
-import io.verik.compiler.core.common.CoreKtFunctionDeclaration
+import io.verik.compiler.core.common.CoreKtUnaryFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 
 object UnaryExpressionTransformerStage : ProjectStage() {
 
     override val checkNormalization = true
-
-    private val operatorKindMap = HashMap<CoreKtFunctionDeclaration, SvUnaryOperatorKind>()
-
-    init {
-        operatorKindMap[Core.Kt.Boolean.F_NOT] = SvUnaryOperatorKind.EXCL
-    }
 
     override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(UnaryExpressionTransformerVisitor)
@@ -44,8 +36,8 @@ object UnaryExpressionTransformerStage : ProjectStage() {
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
             val reference = callExpression.reference
-            val kind = operatorKindMap[reference]
-            if (kind != null) {
+            if (reference is CoreKtUnaryFunctionDeclaration) {
+                val kind = reference.getOperatorKind()
                 callExpression.replace(
                     ESvUnaryExpression(
                         callExpression.location,

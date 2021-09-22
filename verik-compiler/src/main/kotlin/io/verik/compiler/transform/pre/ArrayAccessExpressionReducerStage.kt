@@ -23,7 +23,7 @@ import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.core.common.CoreKtFunctionDeclaration
+import io.verik.compiler.core.common.CoreKtAbstractFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 
@@ -31,8 +31,8 @@ object ArrayAccessExpressionReducerStage : ProjectStage() {
 
     override val checkNormalization = true
 
-    private val getReferenceMap = HashMap<ReducerEntry, CoreKtFunctionDeclaration>()
-    private val setReferenceMap = HashMap<Declaration, CoreKtFunctionDeclaration>()
+    private val getReferenceMap = HashMap<ReducerEntry, CoreKtAbstractFunctionDeclaration>()
+    private val setReferenceMap = HashMap<Declaration, CoreKtAbstractFunctionDeclaration>()
 
     init {
         getReferenceMap[ReducerEntry(Core.Vk.C_UBIT, listOf(Core.Kt.C_INT))] = Core.Vk.Ubit.F_GET_INT

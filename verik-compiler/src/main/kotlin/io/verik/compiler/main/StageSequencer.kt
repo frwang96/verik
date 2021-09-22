@@ -48,6 +48,7 @@ import io.verik.compiler.specialize.TypeSpecializerStage
 import io.verik.compiler.transform.mid.AssignmentTransformerStage
 import io.verik.compiler.transform.mid.CaseStatementTransformerStage
 import io.verik.compiler.transform.mid.ComparisonTransformerStage
+import io.verik.compiler.transform.mid.ConstantExpressionEvaluatorStage
 import io.verik.compiler.transform.mid.FunctionTransformerStage
 import io.verik.compiler.transform.mid.InjectedExpressionReducerStage
 import io.verik.compiler.transform.mid.InlineIfExpressionTransformerStage
@@ -56,7 +57,6 @@ import io.verik.compiler.transform.mid.StructLiteralTransformerStage
 import io.verik.compiler.transform.mid.UninitializedPropertyTransformerStage
 import io.verik.compiler.transform.post.BinaryExpressionTransformerStage
 import io.verik.compiler.transform.post.BlockExpressionTransformerStage
-import io.verik.compiler.transform.post.ConstantExpressionTransformerStage
 import io.verik.compiler.transform.post.LoopExpressionTransformerStage
 import io.verik.compiler.transform.post.PackageNameTransformerStage
 import io.verik.compiler.transform.post.ParenthesisInsertionTransformerStage
@@ -68,6 +68,7 @@ import io.verik.compiler.transform.pre.ArrayAccessExpressionReducerStage
 import io.verik.compiler.transform.pre.AssignmentOperatorReducerStage
 import io.verik.compiler.transform.pre.BinaryExpressionReducerStage
 import io.verik.compiler.transform.pre.BitConstantTransformerStage
+import io.verik.compiler.transform.pre.ConstantExpressionTransformerStage
 import io.verik.compiler.transform.pre.FunctionOverloadingTransformerStage
 import io.verik.compiler.transform.pre.NameRelabelerStage
 import io.verik.compiler.transform.pre.UnaryExpressionReducerStage
@@ -100,6 +101,7 @@ object StageSequencer {
         stageSequence.add(BinaryExpressionReducerStage)
         stageSequence.add(ArrayAccessExpressionReducerStage)
         stageSequence.add(BitConstantTransformerStage)
+        stageSequence.add(ConstantExpressionTransformerStage)
 
         // Specialize
         stageSequence.add(TypeResolverStage)
@@ -125,12 +127,12 @@ object StageSequencer {
         stageSequence.add(InlineIfExpressionTransformerStage)
         stageSequence.add(CaseStatementTransformerStage)
         stageSequence.add(StructLiteralTransformerStage)
+        stageSequence.add(ConstantExpressionEvaluatorStage)
 
         // PostTransform
         stageSequence.add(LoopExpressionTransformerStage)
         stageSequence.add(UnaryExpressionTransformerStage)
         stageSequence.add(BinaryExpressionTransformerStage)
-        stageSequence.add(ConstantExpressionTransformerStage)
         stageSequence.add(PackageNameTransformerStage)
         stageSequence.add(ScopeReferenceInsertionTransformerStage)
         stageSequence.add(ReferenceAndCallExpressionTransformerStage)

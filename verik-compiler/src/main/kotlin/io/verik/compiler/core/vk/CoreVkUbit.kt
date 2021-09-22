@@ -16,13 +16,19 @@
 
 package io.verik.compiler.core.vk
 
+import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.sv.EConstantPartSelectExpression
 import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
+import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
+import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.core.common.CoreKtFunctionDeclaration
+import io.verik.compiler.core.common.CoreKtBasicFunctionDeclaration
+import io.verik.compiler.core.common.CoreKtBinaryFunctionDeclaration
+import io.verik.compiler.core.common.CoreKtTransformableFunctionDeclaration
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.specialize.BinaryOperatorTypeConstraint
 import io.verik.compiler.specialize.BinaryOperatorTypeConstraintKind
@@ -32,9 +38,9 @@ import io.verik.compiler.specialize.TypeEqualsTypeConstraint
 
 object CoreVkUbit : CoreScope(Core.Vk.C_UBIT) {
 
-    val F_INV = CoreKtFunctionDeclaration(parent, "inv")
+    val F_INV = CoreKtBasicFunctionDeclaration(parent, "inv")
 
-    val F_GET_INT = object : CoreKtFunctionDeclaration(parent, "get", Core.Kt.C_INT) {
+    val F_GET_INT = object : CoreKtTransformableFunctionDeclaration(parent, "get", Core.Kt.C_INT) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             return ESvArrayAccessExpression(
@@ -46,7 +52,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_UBIT) {
         }
     }
 
-    val F_SET_INT_BOOLEAN = object : CoreKtFunctionDeclaration(parent, "set", Core.Kt.C_INT, Core.Kt.C_BOOLEAN) {
+    val F_SET_INT_BOOLEAN = object : CoreKtTransformableFunctionDeclaration(parent, "set", Core.Kt.C_INT, Core.Kt.C_BOOLEAN) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             val receiver = ESvArrayAccessExpression(
@@ -65,7 +71,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_UBIT) {
         }
     }
 
-    val F_PLUS_UBIT = object : CoreKtFunctionDeclaration(parent, "plus", Core.Vk.C_UBIT) {
+    val F_PLUS_UBIT = object : CoreKtBinaryFunctionDeclaration(parent, "plus", Core.Vk.C_UBIT) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -77,9 +83,13 @@ object CoreVkUbit : CoreScope(Core.Vk.C_UBIT) {
                 )
             )
         }
+
+        override fun getOperatorKind(): SvBinaryOperatorKind {
+            return SvBinaryOperatorKind.PLUS
+        }
     }
 
-    val F_ADD_UBIT = object : CoreKtFunctionDeclaration(parent, "add", Core.Vk.C_UBIT) {
+    val F_ADD_UBIT = object : CoreKtBinaryFunctionDeclaration(parent, "add", Core.Vk.C_UBIT) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -91,30 +101,80 @@ object CoreVkUbit : CoreScope(Core.Vk.C_UBIT) {
                 )
             )
         }
+
+        override fun getOperatorKind(): SvBinaryOperatorKind {
+            return SvBinaryOperatorKind.PLUS
+        }
     }
 
-    val F_SHL_INT = object : CoreKtFunctionDeclaration(parent, "shl", Core.Kt.C_INT) {
+    val F_SHL_INT = object : CoreKtTransformableFunctionDeclaration(parent, "shl", Core.Kt.C_INT) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(TypeEqualsTypeConstraint(callExpression.receiver!!, callExpression))
         }
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            return ESvBinaryExpression(
+                callExpression.location,
+                callExpression.type,
+                callExpression.receiver!!,
+                callExpression.valueArguments[0],
+                SvBinaryOperatorKind.LTLT
+            )
+        }
     }
 
-    val F_SHR_INT = object : CoreKtFunctionDeclaration(parent, "shr", Core.Kt.C_INT) {
+    val F_SHR_INT = object : CoreKtTransformableFunctionDeclaration(parent, "shr", Core.Kt.C_INT) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(TypeEqualsTypeConstraint(callExpression.receiver!!, callExpression))
         }
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            return ESvBinaryExpression(
+                callExpression.location,
+                callExpression.type,
+                callExpression.receiver!!,
+                callExpression.valueArguments[0],
+                SvBinaryOperatorKind.GTGT
+            )
+        }
     }
 
-    val F_EXT = object : CoreKtFunctionDeclaration(parent, "ext") {
+    val F_EXT = object : CoreKtTransformableFunctionDeclaration(parent, "ext") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(TypeArgumentTypeConstraint(callExpression, listOf(0)))
         }
 
-        override fun transform(callExpression: EKtCallExpression): EExpression? {
+        override fun transform(callExpression: EKtCallExpression): EExpression {
             return callExpression.receiver!!
+        }
+    }
+
+    val F_SLICE_INT = object : CoreKtTransformableFunctionDeclaration(parent, "slice", Core.Kt.C_INT) {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return listOf(TypeArgumentTypeConstraint(callExpression, listOf(0)))
+        }
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
+            val msbIndex = EKtCallExpression(
+                callExpression.location,
+                Core.Kt.C_INT.toType(),
+                Core.Kt.Int.F_PLUS_INT,
+                callExpression.valueArguments[0].copy(),
+                arrayListOf(EConstantExpression(callExpression.location, Core.Kt.C_INT.toType(), "$value")),
+                arrayListOf()
+            )
+            return EConstantPartSelectExpression(
+                callExpression.location,
+                callExpression.type,
+                callExpression.receiver!!,
+                msbIndex,
+                callExpression.valueArguments[0]
+            )
         }
     }
 }

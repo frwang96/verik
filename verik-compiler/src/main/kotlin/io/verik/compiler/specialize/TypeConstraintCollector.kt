@@ -18,6 +18,7 @@ package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EAbstractProperty
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
@@ -27,7 +28,7 @@ import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.core.common.CoreKtFunctionDeclaration
+import io.verik.compiler.core.common.CoreKtAbstractFunctionDeclaration
 
 object TypeConstraintCollector {
 
@@ -83,7 +84,7 @@ object TypeConstraintCollector {
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
             when (val reference = callExpression.reference) {
-                is CoreKtFunctionDeclaration ->
+                is CoreKtAbstractFunctionDeclaration ->
                     typeConstraints.addAll(reference.getTypeConstraints(callExpression))
                 is EKtAbstractFunction -> {
                     callExpression.valueArguments
@@ -92,6 +93,16 @@ object TypeConstraintCollector {
                             typeConstraints.add(ValueArgumentTypeConstraint(valueArgument, valueParameter))
                         }
                 }
+            }
+        }
+
+        override fun visitIfExpression(ifExpression: EIfExpression) {
+            super.visitIfExpression(ifExpression)
+            val thenExpression = ifExpression.thenExpression
+            val elseExpression = ifExpression.elseExpression
+            if (thenExpression != null && elseExpression != null) {
+                typeConstraints.add(TypeEqualsTypeConstraint(ifExpression, thenExpression))
+                typeConstraints.add(TypeEqualsTypeConstraint(ifExpression, elseExpression))
             }
         }
     }
