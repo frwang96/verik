@@ -37,8 +37,8 @@ object BitConstantTransformerStage : ProjectStage() {
     object BitConstantTransformerVisitor : TreeVisitor() {
 
         private fun getBitConstantExpression(expression: EConstantExpression): EConstantExpression {
-            val value = ConstantUtil.getIntConstantValue(expression.value)
-            val width = ConstantUtil.getIntConstantWidth(expression.value)
+            val value = ConstantUtil.normalizeGetIntValue(expression.value)
+            val width = ConstantUtil.normalizeGetIntWidth(expression.value)
             return EConstantExpression(
                 expression.location,
                 Core.Vk.C_UBIT.toType(Core.Vk.cardinalOf(width).toType()),

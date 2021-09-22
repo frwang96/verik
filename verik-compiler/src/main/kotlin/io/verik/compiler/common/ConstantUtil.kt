@@ -18,7 +18,7 @@ package io.verik.compiler.common
 
 object ConstantUtil {
 
-    fun getIntConstantValue(value: String): Int {
+    fun normalizeGetIntValue(value: String): Int {
         val trimmedValue = value.replace("_", "")
         return when {
             value.startsWith("0x") || value.startsWith("0X") ->
@@ -29,7 +29,7 @@ object ConstantUtil {
         }
     }
 
-    fun getIntConstantWidth(value: String): Int {
+    fun normalizeGetIntWidth(value: String): Int {
         val trimmedValue = value.replace("_", "")
         return when {
             value.startsWith("0x") || value.startsWith("0X") ->

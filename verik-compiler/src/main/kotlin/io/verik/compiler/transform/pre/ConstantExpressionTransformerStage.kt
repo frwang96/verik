@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.post
+package io.verik.compiler.transform.pre
 
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.common.ConstantUtil
@@ -49,7 +49,7 @@ object ConstantExpressionTransformerStage : ProjectStage() {
         }
 
         private fun transformInt(constantExpression: EConstantExpression): String {
-            return ConstantUtil.getIntConstantValue(constantExpression.value).toString()
+            return ConstantUtil.normalizeGetIntValue(constantExpression.value).toString()
         }
 
         override fun visitConstantExpression(constantExpression: EConstantExpression) {
