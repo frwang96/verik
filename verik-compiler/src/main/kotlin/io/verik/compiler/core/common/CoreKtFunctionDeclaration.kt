@@ -73,5 +73,9 @@ abstract class CoreKtBinaryFunctionDeclaration(
     vararg parameterClassDeclarations: CoreClassDeclaration
 ) : CoreKtAbstractFunctionDeclaration(parent, name, *parameterClassDeclarations) {
 
+    open fun evaluate(callExpression: EKtCallExpression): String? {
+        return null
+    }
+
     abstract fun getOperatorKind(): SvBinaryOperatorKind
 }

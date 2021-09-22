@@ -16,7 +16,9 @@
 
 package io.verik.compiler.core.kt
 
+import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
+import io.verik.compiler.common.ConstantUtil
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreKtBinaryFunctionDeclaration
 import io.verik.compiler.core.common.CoreScope
@@ -25,6 +27,14 @@ object CoreKtInt : CoreScope(Core.Kt.C_INT) {
 
     val F_TIMES_INT = object : CoreKtBinaryFunctionDeclaration(parent, "times", Core.Kt.C_INT) {
 
+        override fun evaluate(callExpression: EKtCallExpression): String? {
+            val left = ConstantUtil.getInt(callExpression.receiver!!)
+            val right = ConstantUtil.getInt(callExpression.valueArguments[0])
+            return if (left != null && right != null)
+                (left * right).toString()
+            else null
+        }
+
         override fun getOperatorKind(): SvBinaryOperatorKind {
             return SvBinaryOperatorKind.MUL
         }
@@ -32,12 +42,28 @@ object CoreKtInt : CoreScope(Core.Kt.C_INT) {
 
     val F_PLUS_INT = object : CoreKtBinaryFunctionDeclaration(parent, "plus", Core.Kt.C_INT) {
 
+        override fun evaluate(callExpression: EKtCallExpression): String? {
+            val left = ConstantUtil.getInt(callExpression.receiver!!)
+            val right = ConstantUtil.getInt(callExpression.valueArguments[0])
+            return if (left != null && right != null)
+                (left + right).toString()
+            else null
+        }
+
         override fun getOperatorKind(): SvBinaryOperatorKind {
             return SvBinaryOperatorKind.PLUS
         }
     }
 
     val F_MINUS_INT = object : CoreKtBinaryFunctionDeclaration(parent, "minus", Core.Kt.C_INT) {
+
+        override fun evaluate(callExpression: EKtCallExpression): String? {
+            val left = ConstantUtil.getInt(callExpression.receiver!!)
+            val right = ConstantUtil.getInt(callExpression.valueArguments[0])
+            return if (left != null && right != null)
+                (left - right).toString()
+            else null
+        }
 
         override fun getOperatorKind(): SvBinaryOperatorKind {
             return SvBinaryOperatorKind.MINUS

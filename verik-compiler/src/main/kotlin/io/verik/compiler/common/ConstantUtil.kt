@@ -16,6 +16,10 @@
 
 package io.verik.compiler.common
 
+import io.verik.compiler.ast.element.common.EConstantExpression
+import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.core.common.Core
+
 object ConstantUtil {
 
     fun normalizeGetIntValue(value: String): Int {
@@ -42,5 +46,11 @@ object ConstantUtil {
                 else 32 - valueInt.countLeadingZeroBits()
             }
         }
+    }
+
+    fun getInt(expression: EExpression): Int? {
+        return if (expression is EConstantExpression && expression.type.reference == Core.Kt.C_INT) {
+            expression.value.toInt()
+        } else null
     }
 }
