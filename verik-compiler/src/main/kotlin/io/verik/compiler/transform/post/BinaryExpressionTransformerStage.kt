@@ -38,17 +38,15 @@ object BinaryExpressionTransformerStage : ProjectStage() {
             val reference = callExpression.reference
             if (reference is CoreKtBinaryFunctionDeclaration) {
                 val kind = reference.getOperatorKind()
-                if (kind != null) {
-                    callExpression.replace(
-                        ESvBinaryExpression(
-                            callExpression.location,
-                            callExpression.type,
-                            callExpression.receiver!!,
-                            callExpression.valueArguments[0],
-                            kind
-                        )
+                callExpression.replace(
+                    ESvBinaryExpression(
+                        callExpression.location,
+                        callExpression.type,
+                        callExpression.receiver!!,
+                        callExpression.valueArguments[0],
+                        kind
                     )
-                }
+                )
             }
         }
     }

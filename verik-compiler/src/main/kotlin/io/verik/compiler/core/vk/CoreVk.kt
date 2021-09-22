@@ -26,10 +26,10 @@ import io.verik.compiler.ast.element.sv.EEventExpression
 import io.verik.compiler.ast.property.EdgeType
 import io.verik.compiler.common.BitConstantUtil
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.core.common.CoreKtFunctionDeclaration
+import io.verik.compiler.core.common.CoreKtBasicFunctionDeclaration
+import io.verik.compiler.core.common.CoreKtTransformableFunctionDeclaration
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
-import io.verik.compiler.core.common.CoreSvFunctionDeclaration
 import io.verik.compiler.message.Messages
 import io.verik.compiler.specialize.CardinalBitConstantTypeConstraint
 import io.verik.compiler.specialize.ConcatenationTypeConstraint
@@ -38,19 +38,19 @@ import io.verik.compiler.specialize.TypeConstraint
 
 object CoreVk : CoreScope(CorePackage.VK) {
 
-    val F_NC = object : CoreKtFunctionDeclaration(parent, "nc") {
+    val F_NC = object : CoreKtTransformableFunctionDeclaration(parent, "nc") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(TypeArgumentTypeConstraint(callExpression, listOf()))
         }
 
-        override fun transform(callExpression: EKtCallExpression): EExpression? {
+        override fun transform(callExpression: EKtCallExpression): EExpression {
             Messages.EXPRESSION_OUT_OF_CONTEXT.on(callExpression, name)
-            return null
+            return callExpression
         }
     }
 
-    val F_U = object : CoreKtFunctionDeclaration(parent, "u") {
+    val F_U = object : CoreKtTransformableFunctionDeclaration(parent, "u") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(CardinalBitConstantTypeConstraint(callExpression))
@@ -67,9 +67,9 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_U_INT = CoreKtFunctionDeclaration(parent, "u", Core.Kt.C_INT)
+    val F_U_INT = CoreKtBasicFunctionDeclaration(parent, "u", Core.Kt.C_INT)
 
-    val F_ZEROES = object : CoreKtFunctionDeclaration(parent, "zeroes") {
+    val F_ZEROES = object : CoreKtTransformableFunctionDeclaration(parent, "zeroes") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(TypeArgumentTypeConstraint(callExpression, listOf()))
@@ -81,7 +81,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_CAT = object : CoreKtFunctionDeclaration(parent, "cat", Core.Kt.C_ANY) {
+    val F_CAT = object : CoreKtTransformableFunctionDeclaration(parent, "cat", Core.Kt.C_ANY) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(ConcatenationTypeConstraint(callExpression))
@@ -94,25 +94,32 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_RANDOM = object : CoreKtFunctionDeclaration(parent, "random") {
+    val F_RANDOM = object : CoreKtTransformableFunctionDeclaration(parent, "random") {
 
-        override fun transformReference(): CoreSvFunctionDeclaration {
-            return Core.Sv.F_RANDOM
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            callExpression.reference = Core.Sv.F_RANDOM
+            return callExpression
         }
     }
 
-    val F_RANDOM_INT = CoreKtFunctionDeclaration(parent, "random", Core.Kt.C_INT)
-    val F_FOREVER_FUNCTION = CoreKtFunctionDeclaration(parent, "forever", Core.Kt.C_FUNCTION)
+    val F_RANDOM_INT = CoreKtBasicFunctionDeclaration(parent, "random", Core.Kt.C_INT)
 
-    val F_ON_EVENT_FUNCTION = object : CoreKtFunctionDeclaration(parent, "on", Core.Vk.C_EVENT, Core.Kt.C_FUNCTION) {
+    val F_FOREVER_FUNCTION = CoreKtBasicFunctionDeclaration(parent, "forever", Core.Kt.C_FUNCTION)
 
-        override fun transform(callExpression: EKtCallExpression): EExpression? {
+    val F_ON_EVENT_FUNCTION = object : CoreKtTransformableFunctionDeclaration(
+        parent,
+        "on",
+        Core.Vk.C_EVENT,
+        Core.Kt.C_FUNCTION
+    ) {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
             Messages.EXPRESSION_OUT_OF_CONTEXT.on(callExpression, name)
-            return null
+            return callExpression
         }
     }
 
-    val F_POSEDGE_BOOLEAN = object : CoreKtFunctionDeclaration(parent, "posedge", Core.Kt.C_BOOLEAN) {
+    val F_POSEDGE_BOOLEAN = object : CoreKtTransformableFunctionDeclaration(parent, "posedge", Core.Kt.C_BOOLEAN) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             return EEventExpression(
@@ -123,7 +130,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_NEGEDGE_BOOLEAN = object : CoreKtFunctionDeclaration(parent, "negedge", Core.Kt.C_BOOLEAN) {
+    val F_NEGEDGE_BOOLEAN = object : CoreKtTransformableFunctionDeclaration(parent, "negedge", Core.Kt.C_BOOLEAN) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             return EEventExpression(
@@ -134,33 +141,35 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_WAIT_EVENT = object : CoreKtFunctionDeclaration(parent, "wait", Core.Vk.C_EVENT) {
+    val F_WAIT_EVENT = object : CoreKtTransformableFunctionDeclaration(parent, "wait", Core.Vk.C_EVENT) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             return EEventControlExpression(callExpression.location, callExpression.valueArguments[0])
         }
     }
 
-    val F_DELAY_INT = object : CoreKtFunctionDeclaration(parent, "delay", Core.Kt.C_INT) {
+    val F_DELAY_INT = object : CoreKtTransformableFunctionDeclaration(parent, "delay", Core.Kt.C_INT) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             return EDelayExpression(callExpression.location, callExpression.valueArguments[0])
         }
     }
 
-    val F_TIME = object : CoreKtFunctionDeclaration(parent, "time") {
+    val F_TIME = object : CoreKtTransformableFunctionDeclaration(parent, "time") {
 
-        override fun transformReference(): CoreSvFunctionDeclaration {
-            return Core.Sv.F_TIME
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            callExpression.reference = Core.Sv.F_TIME
+            return callExpression
         }
     }
 
-    val F_FINISH = object : CoreKtFunctionDeclaration(parent, "finish") {
+    val F_FINISH = object : CoreKtTransformableFunctionDeclaration(parent, "finish") {
 
-        override fun transformReference(): CoreSvFunctionDeclaration {
-            return Core.Sv.F_FINISH
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            callExpression.reference = Core.Sv.F_FINISH
+            return callExpression
         }
     }
 
-    val F_SV_STRING = CoreKtFunctionDeclaration(parent, "sv", Core.Kt.C_STRING)
+    val F_SV_STRING = CoreKtBasicFunctionDeclaration(parent, "sv", Core.Kt.C_STRING)
 }

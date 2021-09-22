@@ -23,7 +23,7 @@ import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreClassDeclaration
-import io.verik.compiler.core.common.CoreKtFunctionDeclaration
+import io.verik.compiler.core.common.CoreKtUnaryFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 
@@ -31,7 +31,7 @@ object UnaryExpressionReducerStage : ProjectStage() {
 
     override val checkNormalization = true
 
-    private val referenceMap = HashMap<ReducerEntry, CoreKtFunctionDeclaration>()
+    private val referenceMap = HashMap<ReducerEntry, CoreKtUnaryFunctionDeclaration>()
 
     init {
         referenceMap[ReducerEntry(Core.Kt.C_BOOLEAN, KtUnaryOperatorKind.EXCL)] = Core.Kt.Boolean.F_NOT

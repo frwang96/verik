@@ -16,53 +16,60 @@
 
 package io.verik.compiler.core.kt
 
+import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.core.common.CoreKtFunctionDeclaration
+import io.verik.compiler.core.common.CoreKtTransformableFunctionDeclaration
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
-import io.verik.compiler.core.common.CoreSvFunctionDeclaration
 
 object CoreKtIo : CoreScope(CorePackage.KT_IO) {
 
-    val F_PRINT = object : CoreKtFunctionDeclaration(parent, "print") {
+    val F_PRINT = object : CoreKtTransformableFunctionDeclaration(parent, "print") {
 
-        override fun transformReference(): CoreSvFunctionDeclaration {
-            return Core.Sv.F_WRITE
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            callExpression.reference = Core.Sv.F_WRITE
+            return callExpression
         }
     }
 
-    val F_PRINT_ANY = object : CoreKtFunctionDeclaration(parent, "print", Core.Kt.C_ANY) {
+    val F_PRINT_ANY = object : CoreKtTransformableFunctionDeclaration(parent, "print", Core.Kt.C_ANY) {
 
-        override fun transformReference(): CoreSvFunctionDeclaration {
-            return Core.Sv.F_WRITE
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            callExpression.reference = Core.Sv.F_WRITE
+            return callExpression
         }
     }
 
-    val F_PRINT_INT = object : CoreKtFunctionDeclaration(parent, "print", Core.Kt.C_INT) {
+    val F_PRINT_INT = object : CoreKtTransformableFunctionDeclaration(parent, "print", Core.Kt.C_INT) {
 
-        override fun transformReference(): CoreSvFunctionDeclaration {
-            return Core.Sv.F_WRITE
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            callExpression.reference = Core.Sv.F_WRITE
+            return callExpression
         }
     }
 
-    val F_PRINTLN = object : CoreKtFunctionDeclaration(parent, "println") {
+    val F_PRINTLN = object : CoreKtTransformableFunctionDeclaration(parent, "println") {
 
-        override fun transformReference(): CoreSvFunctionDeclaration {
-            return Core.Sv.F_DISPLAY
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            callExpression.reference = Core.Sv.F_DISPLAY
+            return callExpression
         }
     }
 
-    val F_PRINTLN_ANY = object : CoreKtFunctionDeclaration(parent, "println", Core.Kt.C_ANY) {
+    val F_PRINTLN_ANY = object : CoreKtTransformableFunctionDeclaration(parent, "println", Core.Kt.C_ANY) {
 
-        override fun transformReference(): CoreSvFunctionDeclaration {
-            return Core.Sv.F_DISPLAY
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            callExpression.reference = Core.Sv.F_DISPLAY
+            return callExpression
         }
     }
 
-    val F_PRINTLN_INT = object : CoreKtFunctionDeclaration(parent, "println", Core.Kt.C_INT) {
+    val F_PRINTLN_INT = object : CoreKtTransformableFunctionDeclaration(parent, "println", Core.Kt.C_INT) {
 
-        override fun transformReference(): CoreSvFunctionDeclaration {
-            return Core.Sv.F_DISPLAY
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            callExpression.reference = Core.Sv.F_DISPLAY
+            return callExpression
         }
     }
 }

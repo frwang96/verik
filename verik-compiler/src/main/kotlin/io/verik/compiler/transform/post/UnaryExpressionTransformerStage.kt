@@ -38,16 +38,14 @@ object UnaryExpressionTransformerStage : ProjectStage() {
             val reference = callExpression.reference
             if (reference is CoreKtUnaryFunctionDeclaration) {
                 val kind = reference.getOperatorKind()
-                if (kind != null) {
-                    callExpression.replace(
-                        ESvUnaryExpression(
-                            callExpression.location,
-                            callExpression.type,
-                            callExpression.receiver!!,
-                            kind
-                        )
+                callExpression.replace(
+                    ESvUnaryExpression(
+                        callExpression.location,
+                        callExpression.type,
+                        callExpression.receiver!!,
+                        kind
                     )
-                }
+                )
             }
         }
     }
