@@ -26,6 +26,7 @@ import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.core.common.Core
+import io.verik.compiler.core.common.CoreKtBinaryFunctionDeclaration
 import io.verik.compiler.core.common.CoreKtFunctionDeclaration
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.specialize.BinaryOperatorTypeConstraint
@@ -69,7 +70,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_UBIT) {
         }
     }
 
-    val F_PLUS_UBIT = object : CoreKtFunctionDeclaration(parent, "plus", Core.Vk.C_UBIT) {
+    val F_PLUS_UBIT = object : CoreKtBinaryFunctionDeclaration(parent, "plus", Core.Vk.C_UBIT) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -81,9 +82,13 @@ object CoreVkUbit : CoreScope(Core.Vk.C_UBIT) {
                 )
             )
         }
+
+        override fun getOperatorKind(): SvBinaryOperatorKind {
+            return SvBinaryOperatorKind.PLUS
+        }
     }
 
-    val F_ADD_UBIT = object : CoreKtFunctionDeclaration(parent, "add", Core.Vk.C_UBIT) {
+    val F_ADD_UBIT = object : CoreKtBinaryFunctionDeclaration(parent, "add", Core.Vk.C_UBIT) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -94,6 +99,10 @@ object CoreVkUbit : CoreScope(Core.Vk.C_UBIT) {
                     BinaryOperatorTypeConstraintKind.MAX_INC
                 )
             )
+        }
+
+        override fun getOperatorKind(): SvBinaryOperatorKind {
+            return SvBinaryOperatorKind.PLUS
         }
     }
 

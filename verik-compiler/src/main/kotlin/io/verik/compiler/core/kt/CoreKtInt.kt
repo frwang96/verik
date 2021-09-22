@@ -16,13 +16,31 @@
 
 package io.verik.compiler.core.kt
 
+import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.core.common.CoreKtFunctionDeclaration
+import io.verik.compiler.core.common.CoreKtBinaryFunctionDeclaration
 import io.verik.compiler.core.common.CoreScope
 
 object CoreKtInt : CoreScope(Core.Kt.C_INT) {
 
-    val F_TIMES_INT = CoreKtFunctionDeclaration(parent, "times", Core.Kt.C_INT)
-    val F_PLUS_INT = CoreKtFunctionDeclaration(parent, "plus", Core.Kt.C_INT)
-    val F_MINUS_INT = CoreKtFunctionDeclaration(parent, "minus", Core.Kt.C_INT)
+    val F_TIMES_INT = object : CoreKtBinaryFunctionDeclaration(parent, "times", Core.Kt.C_INT) {
+
+        override fun getOperatorKind(): SvBinaryOperatorKind {
+            return SvBinaryOperatorKind.MUL
+        }
+    }
+
+    val F_PLUS_INT = object : CoreKtBinaryFunctionDeclaration(parent, "plus", Core.Kt.C_INT) {
+
+        override fun getOperatorKind(): SvBinaryOperatorKind {
+            return SvBinaryOperatorKind.PLUS
+        }
+    }
+
+    val F_MINUS_INT = object : CoreKtBinaryFunctionDeclaration(parent, "minus", Core.Kt.C_INT) {
+
+        override fun getOperatorKind(): SvBinaryOperatorKind {
+            return SvBinaryOperatorKind.MINUS
+        }
+    }
 }

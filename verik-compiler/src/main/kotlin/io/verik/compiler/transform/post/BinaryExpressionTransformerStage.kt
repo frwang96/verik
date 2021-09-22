@@ -18,26 +18,14 @@ package io.verik.compiler.transform.post
 
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
-import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.common.Core
-import io.verik.compiler.core.common.CoreKtFunctionDeclaration
+import io.verik.compiler.core.common.CoreKtBinaryFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 
 object BinaryExpressionTransformerStage : ProjectStage() {
 
     override val checkNormalization = true
-
-    private val operatorKindMap = HashMap<CoreKtFunctionDeclaration, SvBinaryOperatorKind>()
-
-    init {
-        operatorKindMap[Core.Kt.Int.F_PLUS_INT] = SvBinaryOperatorKind.PLUS
-        operatorKindMap[Core.Kt.Int.F_MINUS_INT] = SvBinaryOperatorKind.MINUS
-        operatorKindMap[Core.Kt.Int.F_TIMES_INT] = SvBinaryOperatorKind.MUL
-        operatorKindMap[Core.Vk.Ubit.F_PLUS_UBIT] = SvBinaryOperatorKind.PLUS
-        operatorKindMap[Core.Vk.Ubit.F_ADD_UBIT] = SvBinaryOperatorKind.PLUS
-    }
 
     override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(BinaryExpressionTransformerVisitor)
@@ -48,17 +36,19 @@ object BinaryExpressionTransformerStage : ProjectStage() {
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
             val reference = callExpression.reference
-            val kind = operatorKindMap[reference]
-            if (kind != null) {
-                callExpression.replace(
-                    ESvBinaryExpression(
-                        callExpression.location,
-                        callExpression.type,
-                        callExpression.receiver!!,
-                        callExpression.valueArguments[0],
-                        kind
+            if (reference is CoreKtBinaryFunctionDeclaration) {
+                val kind = reference.getOperatorKind()
+                if (kind != null) {
+                    callExpression.replace(
+                        ESvBinaryExpression(
+                            callExpression.location,
+                            callExpression.type,
+                            callExpression.receiver!!,
+                            callExpression.valueArguments[0],
+                            kind
+                        )
                     )
-                )
+                }
             }
         }
     }

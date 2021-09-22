@@ -14,19 +14,17 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.kt
+package io.verik.compiler.core.common
 
 import io.verik.compiler.ast.property.SvUnaryOperatorKind
-import io.verik.compiler.core.common.Core
-import io.verik.compiler.core.common.CoreKtUnaryFunctionDeclaration
-import io.verik.compiler.core.common.CoreScope
 
-object CoreKtBoolean : CoreScope(Core.Kt.C_BOOLEAN) {
+open class CoreKtUnaryFunctionDeclaration(
+    parent: String,
+    name: String,
+    vararg parameterClassDeclarations: CoreClassDeclaration
+) : CoreKtFunctionDeclaration(parent, name, *parameterClassDeclarations) {
 
-    val F_NOT = object : CoreKtUnaryFunctionDeclaration(parent, "not") {
-
-        override fun getOperatorKind(): SvUnaryOperatorKind {
-            return SvUnaryOperatorKind.EXCL
-        }
+    open fun getOperatorKind(): SvUnaryOperatorKind? {
+        return null
     }
 }
