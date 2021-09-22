@@ -22,6 +22,7 @@ import io.verik.compiler.ast.element.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.sv.ECaseStatement
 import io.verik.compiler.ast.element.sv.EConcatenationExpression
+import io.verik.compiler.ast.element.sv.EConstantPartSelectExpression
 import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EEventExpression
@@ -165,6 +166,18 @@ object ExpressionSerializer {
         serializerContext.serializeAsExpression(arrayAccessExpression.array)
         serializerContext.append("[")
         serializerContext.serializeAsExpression(arrayAccessExpression.index)
+        serializerContext.append("]")
+    }
+
+    fun serializeConstantPartSelectExpression(
+        constantPartSelectExpression: EConstantPartSelectExpression,
+        serializerContext: SerializerContext
+    ) {
+        serializerContext.serializeAsExpression(constantPartSelectExpression.array)
+        serializerContext.append("[")
+        serializerContext.serializeAsExpression(constantPartSelectExpression.msbIndex)
+        serializerContext.append(":")
+        serializerContext.serializeAsExpression(constantPartSelectExpression.lsbIndex)
         serializerContext.append("]")
     }
 

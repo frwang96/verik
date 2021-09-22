@@ -93,4 +93,26 @@ class CoreVkUbitTest : BaseTest() {
             projectContext.findExpression("y")
         )
     }
+
+    @Test
+    fun `transform slice`() {
+        val projectContext = driveTest(
+            FunctionTransformerStage::class,
+            """
+                var x = u(0x00)
+                var y = x.slice<`4`>(0)
+            """.trimIndent()
+        )
+        assertElementEquals(
+            """
+                ConstantPartSelectExpression(
+                    Ubit<`4`>,
+                    KtReferenceExpression(*),
+                    KtCallExpression(Int, plus, ConstantExpression(*), [ConstantExpression(Int, 4)], []),
+                    ConstantExpression(*)
+                )
+            """.trimIndent(),
+            projectContext.findExpression("y")
+        )
+    }
 }

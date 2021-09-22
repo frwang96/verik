@@ -26,6 +26,7 @@ import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.ECaseStatement
 import io.verik.compiler.ast.element.sv.EConcatenationExpression
+import io.verik.compiler.ast.element.sv.EConstantPartSelectExpression
 import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EEventControlExpression
@@ -201,6 +202,10 @@ class SourceSerializerVisitor(private val serializerContext: SerializerContext) 
 
     override fun visitSvArrayAccessExpression(arrayAccessExpression: ESvArrayAccessExpression) {
         ExpressionSerializer.serializeSvArrayAccessExpression(arrayAccessExpression, serializerContext)
+    }
+
+    override fun visitConstantPartSelectExpression(constantPartSelectExpression: EConstantPartSelectExpression) {
+        ExpressionSerializer.serializeConstantPartSelectExpression(constantPartSelectExpression, serializerContext)
     }
 
     override fun visitConcatenationExpression(concatenationExpression: EConcatenationExpression) {

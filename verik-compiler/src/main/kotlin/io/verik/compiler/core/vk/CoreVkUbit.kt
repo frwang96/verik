@@ -16,9 +16,11 @@
 
 package io.verik.compiler.core.vk
 
+import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.sv.EConstantPartSelectExpression
 import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
@@ -137,6 +139,32 @@ object CoreVkUbit : CoreScope(Core.Vk.C_UBIT) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression? {
             return callExpression.receiver!!
+        }
+    }
+
+    val F_SLICE_INT = object : CoreKtFunctionDeclaration(parent, "slice", Core.Kt.C_INT) {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return listOf(TypeArgumentTypeConstraint(callExpression, listOf(0)))
+        }
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
+            val msbIndex = EKtCallExpression(
+                callExpression.location,
+                Core.Kt.C_INT.toType(),
+                Core.Kt.Int.F_PLUS_INT,
+                callExpression.valueArguments[0].copy(),
+                arrayListOf(EConstantExpression(callExpression.location, Core.Kt.C_INT.toType(), "$value")),
+                arrayListOf()
+            )
+            return EConstantPartSelectExpression(
+                callExpression.location,
+                callExpression.type,
+                callExpression.receiver!!,
+                msbIndex,
+                callExpression.valueArguments[0]
+            )
         }
     }
 }

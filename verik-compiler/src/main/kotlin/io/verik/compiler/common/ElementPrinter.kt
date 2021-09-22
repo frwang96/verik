@@ -49,6 +49,7 @@ import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.ECaseStatement
 import io.verik.compiler.ast.element.sv.EConcatenationExpression
+import io.verik.compiler.ast.element.sv.EConstantPartSelectExpression
 import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EEventControlExpression
@@ -473,6 +474,15 @@ class ElementPrinter : Visitor() {
             build(arrayAccessExpression.type.toString())
             build(arrayAccessExpression.array)
             build(arrayAccessExpression.index)
+        }
+    }
+
+    override fun visitConstantPartSelectExpression(constantPartSelectExpression: EConstantPartSelectExpression) {
+        build("ConstantPartSelectExpression") {
+            build(constantPartSelectExpression.type.toString())
+            build(constantPartSelectExpression.array)
+            build(constantPartSelectExpression.msbIndex)
+            build(constantPartSelectExpression.lsbIndex)
         }
     }
 

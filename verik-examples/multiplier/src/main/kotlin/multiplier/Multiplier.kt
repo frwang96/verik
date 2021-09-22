@@ -54,6 +54,7 @@ class Multiplier(
                     } else {
                         tp.ext()
                     }
+                    b.slice<`4`>(0)
                     b = b shr 1
                     i += u(1)
                 }

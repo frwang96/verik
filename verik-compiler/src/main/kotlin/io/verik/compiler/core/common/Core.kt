@@ -117,6 +117,7 @@ object Core {
             val F_SHL_INT = CoreVkUbit.F_SHL_INT
             val F_SHR_INT = CoreVkUbit.F_SHR_INT
             val F_EXT = CoreVkUbit.F_EXT
+            val F_SLICE_INT = CoreVkUbit.F_SLICE_INT
         }
     }
 
