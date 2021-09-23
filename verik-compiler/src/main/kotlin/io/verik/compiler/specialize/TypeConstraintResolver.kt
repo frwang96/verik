@@ -34,12 +34,6 @@ object TypeConstraintResolver {
         val unresolvedTypeConstraints = ArrayList<TypeConstraint>()
         typeConstraints.forEach {
             when (it) {
-                is TypeArgumentTypeConstraint ->
-                    if (!resolveTypeArgumentTypeConstraint(it))
-                        unresolvedTypeConstraints.add(it)
-                is ValueArgumentTypeConstraint ->
-                    if (!resolveValueArgumentTypeConstraint(it))
-                        unresolvedTypeConstraints.add(it)
                 is TypeEqualsTypeConstraint ->
                     if (!resolveTypeEqualsTypeConstraint(it))
                         unresolvedTypeConstraints.add(it)
@@ -57,42 +51,18 @@ object TypeConstraintResolver {
         return unresolvedTypeConstraints
     }
 
-    private fun resolveTypeArgumentTypeConstraint(typeConstraint: TypeArgumentTypeConstraint): Boolean {
-        val expressionResolved = typeConstraint.callExpression.type.isResolved()
-        val typeArgumentResolved = typeConstraint.callExpression.typeArguments[0].isResolved()
-        return if (expressionResolved) {
-            if (typeArgumentResolved) {
-                true
-            } else {
-                typeConstraint.callExpression.typeArguments[0] = typeConstraint.getTypeArgument().copy()
-                true
-            }
-        } else {
-            if (typeArgumentResolved) {
-                typeConstraint.setTypeArgument(typeConstraint.callExpression.typeArguments[0].copy())
-                true
-            } else {
-                false
-            }
-        }
-    }
-
-    private fun resolveValueArgumentTypeConstraint(typeConstraint: ValueArgumentTypeConstraint): Boolean {
-        if (!typeConstraint.valueArgument.type.isResolved())
-            typeConstraint.valueArgument.type = typeConstraint.valueParameter.type.copy()
-        return true
-    }
-
     private fun resolveTypeEqualsTypeConstraint(typeConstraint: TypeEqualsTypeConstraint): Boolean {
-        val innerResolved = typeConstraint.inner.type.isResolved()
-        val outerResolved = typeConstraint.outer.type.isResolved()
+        val innerType = typeConstraint.inner.getType()
+        val outerType = typeConstraint.outer.getType()
+        val innerResolved = innerType.isResolved()
+        val outerResolved = outerType.isResolved()
         return if (outerResolved) {
             if (!innerResolved)
-                typeConstraint.inner.type = typeConstraint.outer.type.copy()
+                typeConstraint.inner.setType(outerType.copy())
             true
         } else {
             if (innerResolved) {
-                typeConstraint.outer.type = typeConstraint.inner.type.copy()
+                typeConstraint.outer.setType(innerType.copy())
                 true
             } else false
         }

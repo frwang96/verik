@@ -90,7 +90,7 @@ object TypeConstraintCollector {
                     callExpression.valueArguments
                         .zip(reference.valueParameters)
                         .forEach { (valueArgument, valueParameter) ->
-                            typeConstraints.add(ValueArgumentTypeConstraint(valueArgument, valueParameter))
+                            typeConstraints.add(TypeEqualsTypeConstraint(valueArgument, valueParameter))
                         }
                 }
             }

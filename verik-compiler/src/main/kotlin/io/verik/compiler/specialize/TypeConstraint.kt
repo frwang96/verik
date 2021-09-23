@@ -19,45 +19,24 @@ package io.verik.compiler.specialize
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.kt.EKtCallExpression
-import io.verik.compiler.ast.element.kt.EKtValueParameter
-import io.verik.compiler.ast.property.Type
 
 sealed class TypeConstraint
 
-// TODO general way of setting indices of type arguments
-class TypeArgumentTypeConstraint(
-    val callExpression: EKtCallExpression,
-    private val returnTypeArgumentIndices: List<Int>
+class TypeEqualsTypeConstraint(
+    val inner: TypeAdapter,
+    val outer: TypeAdapter
 ) : TypeConstraint() {
 
-    fun getTypeArgument(): Type {
-        var type = callExpression.type
-        returnTypeArgumentIndices.forEach { type = type.arguments[it] }
-        return type
-    }
+    constructor(inner: ETypedElement, outer: ETypedElement) : this(
+        TypedElementTypeAdapter(inner),
+        TypedElementTypeAdapter(outer)
+    )
 
-    fun setTypeArgument(type: Type) {
-        if (returnTypeArgumentIndices.isEmpty()) {
-            callExpression.type = type
-        } else {
-            var currentType = callExpression.type
-            returnTypeArgumentIndices.dropLast(1).forEach {
-                currentType = currentType.arguments[it]
-            }
-            currentType.arguments[returnTypeArgumentIndices.last()] = type
-        }
-    }
+    constructor(inner: TypeAdapter, outer: ETypedElement) : this(
+        inner,
+        TypedElementTypeAdapter(outer)
+    )
 }
-
-class ValueArgumentTypeConstraint(
-    val valueArgument: EExpression,
-    val valueParameter: EKtValueParameter
-) : TypeConstraint()
-
-class TypeEqualsTypeConstraint(
-    val inner: ETypedElement,
-    val outer: ETypedElement
-) : TypeConstraint()
 
 class BinaryOperatorTypeConstraint(
     val left: EExpression,
