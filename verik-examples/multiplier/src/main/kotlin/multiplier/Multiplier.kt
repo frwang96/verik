@@ -49,7 +49,7 @@ class Multiplier(
                     i = zeroes()
                 } else if (i <= u<REQ_WIDTH>()) {
                     val sum = if (b[0]) {
-                        prod add a
+                        tp add a
                     } else {
                         tp.ext()
                     }

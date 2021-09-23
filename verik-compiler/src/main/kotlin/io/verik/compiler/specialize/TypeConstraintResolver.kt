@@ -113,6 +113,8 @@ object TypeConstraintResolver {
                         Core.Vk.N_MAX.toType(leftType, rightType)
                     BinaryOperatorTypeConstraintKind.MAX_INC ->
                         Core.Vk.N_INC.toType(Core.Vk.N_MAX.toType(leftType, rightType))
+                    BinaryOperatorTypeConstraintKind.ADD ->
+                        Core.Vk.N_ADD.toType(leftType, rightType)
                 }
                 typeConstraint.outer.type.arguments[0] = type
                 true

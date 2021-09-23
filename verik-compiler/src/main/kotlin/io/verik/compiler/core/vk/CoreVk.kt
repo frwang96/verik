@@ -104,6 +104,18 @@ object CoreVk : CoreScope(CorePackage.VK) {
 
     val F_RANDOM_INT = CoreKtBasicFunctionDeclaration(parent, "random", Core.Kt.C_INT)
 
+    val F_RANDOM_UBIT = object : CoreKtTransformableFunctionDeclaration(parent, "randomUbit") {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return listOf(TypeArgumentTypeConstraint(callExpression, listOf(0)))
+        }
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            callExpression.reference = Core.Sv.F_URANDOM
+            return callExpression
+        }
+    }
+
     val F_FOREVER_FUNCTION = CoreKtBasicFunctionDeclaration(parent, "forever", Core.Kt.C_FUNCTION)
 
     val F_ON_EVENT_FUNCTION = object : CoreKtTransformableFunctionDeclaration(
