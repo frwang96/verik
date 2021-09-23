@@ -53,7 +53,8 @@ object PropertyInterpreterStage : ProjectStage() {
                     property.location,
                     property.name,
                     property.type,
-                    property.initializer
+                    property.initializer,
+                    null
                 )
         }
 
@@ -107,6 +108,7 @@ object PropertyInterpreterStage : ProjectStage() {
                 oldProperty.name,
                 oldProperty.type,
                 oldProperty.initializer,
+                false
             )
             propertyStatement.replace(ESvPropertyStatement(propertyStatement.location, newProperty))
             referenceUpdater.update(oldProperty, newProperty)

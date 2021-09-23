@@ -33,7 +33,7 @@ internal class StructInterpreterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "Struct(S, [SvProperty(x, Boolean, null)])",
+            "Struct(S, [SvProperty(x, Boolean, null, null)])",
             projectContext.findDeclaration("S")
         )
     }

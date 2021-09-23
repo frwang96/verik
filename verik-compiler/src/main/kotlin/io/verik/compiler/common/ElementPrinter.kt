@@ -245,6 +245,7 @@ class ElementPrinter : Visitor() {
             build(property.name)
             build(property.type.toString())
             build(property.initializer)
+            build(property.isStatic)
         }
     }
 
@@ -566,7 +567,7 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    private fun build(content: Boolean) {
+    private fun build(content: Boolean?) {
         if (!first) builder.append(", ")
         builder.append(content)
         first = false

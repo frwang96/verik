@@ -41,6 +41,7 @@ object StructInterpreter {
             valueParameter.location,
             valueParameter.name,
             valueParameter.type,
+            null,
             null
         )
         referenceUpdater.update(valueParameter, property)

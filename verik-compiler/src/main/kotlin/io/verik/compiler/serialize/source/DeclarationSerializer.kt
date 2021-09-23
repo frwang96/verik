@@ -85,11 +85,11 @@ object DeclarationSerializer {
     }
 
     fun serializeSvFunction(function: ESvFunction, serializerContext: SerializerContext) {
-        val typeString = TypeSerializer.serialize(function.type, function)
         if (function.isStatic)
             serializerContext.append("static ")
         else
             serializerContext.append("automatic ")
+        val typeString = TypeSerializer.serialize(function.type, function)
         serializerContext.append("function $typeString ${function.name}(")
         if (function.valueParameters.isNotEmpty()) {
             serializerContext.softBreak()
@@ -125,6 +125,10 @@ object DeclarationSerializer {
     }
 
     fun serializeSvProperty(property: ESvProperty, serializerContext: SerializerContext) {
+        when (property.isStatic) {
+            true -> serializerContext.append("static ")
+            false -> serializerContext.append("automatic ")
+        }
         val typeString = TypeSerializer.serialize(property.type, property)
         serializerContext.append("$typeString ${property.name}")
         val initializer = property.initializer
