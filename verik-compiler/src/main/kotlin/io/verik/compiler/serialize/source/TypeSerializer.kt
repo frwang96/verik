@@ -29,18 +29,32 @@ import org.jetbrains.kotlin.utils.addToStdlib.cast
 
 object TypeSerializer {
 
-    fun serialize(type: Type, element: EElement): String {
+    fun serialize(type: Type, element: EElement): SerializedType {
         return when (val reference = type.reference) {
-            is EModule -> reference.name
-            is EAbstractClass -> serializePackageDeclaration(reference)
-            Core.Kt.C_UNIT -> "void"
-            Core.Kt.C_INT -> "int"
-            Core.Kt.C_BOOLEAN -> "logic"
-            Core.Kt.C_STRING -> "string"
-            Core.Vk.C_UBIT -> "logic [${type.asBitWidth(element) - 1}:0]"
+            is EModule -> SerializedType(reference.name)
+            is EAbstractClass -> SerializedType(serializePackageDeclaration(reference))
+            Core.Kt.C_UNIT -> SerializedType("void")
+            Core.Kt.C_INT -> SerializedType("int")
+            Core.Kt.C_BOOLEAN -> SerializedType("logic")
+            Core.Kt.C_STRING -> SerializedType("string")
+            Core.Vk.C_UBIT -> SerializedType("logic", "[${type.asBitWidth(element) - 1}:0]", null)
+            Core.Vk.C_PACKED -> {
+                val serializedType = serialize(type.arguments[1], element)
+                var packedDimension = "[${type.arguments[0].asCardinalValue(element) - 1}:0]"
+                if (serializedType.packedDimension != null)
+                    packedDimension += serializedType.packedDimension
+                SerializedType(serializedType.base, packedDimension, serializedType.unpackedDimension)
+            }
+            Core.Vk.C_UNPACKED -> {
+                val serializedType = serialize(type.arguments[1], element)
+                var unpackedDimension = "[${type.arguments[0].asCardinalValue(element) - 1}:0]"
+                if (serializedType.unpackedDimension != null)
+                    unpackedDimension += serializedType.unpackedDimension
+                SerializedType(serializedType.base, serializedType.packedDimension, unpackedDimension)
+            }
             else -> {
                 Messages.INTERNAL_ERROR.on(element, "Unable to serialize type: $type")
-                "void"
+                SerializedType("void")
             }
         }
     }

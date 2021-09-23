@@ -228,7 +228,7 @@ internal class ExpressionSerializerTest : BaseTest() {
         )
         val expected = """
             logic [7:0] x = 8'h00;
-            logic y       = x[0];
+            logic       y = x[0];
         """.trimIndent()
         assertOutputTextEquals(
             expected,
@@ -357,7 +357,7 @@ internal class ExpressionSerializerTest : BaseTest() {
         )
         val expected = """
             logic x = 1'b0;
-            int y   = x ? 0 : 1;
+            int   y = x ? 0 : 1;
         """.trimIndent()
         assertOutputTextEquals(
             expected,

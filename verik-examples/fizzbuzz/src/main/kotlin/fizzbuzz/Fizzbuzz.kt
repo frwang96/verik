@@ -22,6 +22,9 @@ import io.verik.core.*
 class Fizzbuzz : Module() {
 
     @Suppress("unused")
+    val x: Unpacked<`8`, Unpacked<`16`, Boolean>> = nc()
+
+    @Suppress("unused")
     val c = C()
 
     @Run

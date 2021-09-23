@@ -73,6 +73,8 @@ object Core {
         val C_UBIT = CoreVkClass.C_UBIT
         val C_SBIT = CoreVkClass.C_SBIT
         val C_STRUCT = CoreVkClass.C_STRUCT
+        val C_PACKED = CoreVkClass.C_PACKED
+        val C_UNPACKED = CoreVkClass.C_UNPACKED
         val C_COMPONENT = CoreVkClass.C_COMPONENT
         val C_MODULE = CoreVkClass.C_MODULE
         val C_TIME = CoreVkClass.C_TIME

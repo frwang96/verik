@@ -89,8 +89,9 @@ object DeclarationSerializer {
             serializerContext.append("static ")
         else
             serializerContext.append("automatic ")
-        val typeString = TypeSerializer.serialize(function.type, function)
-        serializerContext.append("function $typeString ${function.name}(")
+        val serializedType = TypeSerializer.serialize(function.type, function)
+        serializedType.checkNoUnpackedDimension(function)
+        serializerContext.append("function ${serializedType.getBaseAndPackedDimension()} ${function.name}(")
         if (function.valueParameters.isNotEmpty()) {
             serializerContext.softBreak()
             serializerContext.join(function.valueParameters) {
@@ -129,13 +130,15 @@ object DeclarationSerializer {
             true -> serializerContext.append("static ")
             false -> serializerContext.append("automatic ")
         }
-        val typeString = TypeSerializer.serialize(property.type, property)
-        serializerContext.append("$typeString ${property.name}")
+        val serializedType = TypeSerializer.serialize(property.type, property)
+        serializerContext.append(serializedType.getBaseAndPackedDimension() + " ")
+        serializerContext.align()
+        serializerContext.append(property.name)
+        if (serializedType.unpackedDimension != null)
+            serializerContext.append(" ${serializedType.unpackedDimension}")
         val initializer = property.initializer
         if (initializer != null) {
-            serializerContext.append(" ")
-            serializerContext.align()
-            serializerContext.append("= ")
+            serializerContext.append(" = ")
             serializerContext.serializeAsExpression(initializer)
             serializerContext.appendLine(";")
         } else {
@@ -151,8 +154,10 @@ object DeclarationSerializer {
         moduleInstantiation: EModuleInstantiation,
         serializerContext: SerializerContext
     ) {
-        val typeString = TypeSerializer.serialize(moduleInstantiation.type, moduleInstantiation)
-        serializerContext.append("$typeString ${moduleInstantiation.name} (")
+        val serializedType = TypeSerializer.serialize(moduleInstantiation.type, moduleInstantiation)
+        serializedType.checkNoPackedDimension(moduleInstantiation)
+        serializedType.checkNoUnpackedDimension(moduleInstantiation)
+        serializerContext.append("${serializedType.base} ${moduleInstantiation.name} (")
         if (moduleInstantiation.portInstantiations.isNotEmpty()) {
             serializerContext.appendLine()
             serializerContext.indent {
@@ -174,8 +179,10 @@ object DeclarationSerializer {
     }
 
     fun serializeValueParameter(valueParameter: ESvValueParameter, serializerContext: SerializerContext) {
-        val typeString = TypeSerializer.serialize(valueParameter.type, valueParameter)
-        serializerContext.append("$typeString ${valueParameter.name}")
+        val serializedType = TypeSerializer.serialize(valueParameter.type, valueParameter)
+        serializerContext.append("${serializedType.getBaseAndPackedDimension()} ${valueParameter.name}")
+        if (serializedType.unpackedDimension != null)
+            serializerContext.append(" ${serializedType.unpackedDimension}")
     }
 
     fun serializePort(port: EPort, serializerContext: SerializerContext) {
@@ -183,9 +190,11 @@ object DeclarationSerializer {
             PortType.INPUT -> serializerContext.append("input ")
             PortType.OUTPUT -> serializerContext.append("output ")
         }
-        val typeString = TypeSerializer.serialize(port.type, port)
-        serializerContext.append("$typeString ")
+        val serializedType = TypeSerializer.serialize(port.type, port)
+        serializerContext.append("${serializedType.getBaseAndPackedDimension()} ")
         serializerContext.align()
         serializerContext.append(port.name)
+        if (serializedType.unpackedDimension != null)
+            serializerContext.append(" ${serializedType.unpackedDimension}")
     }
 }
