@@ -27,6 +27,7 @@ import io.verik.compiler.core.vk.CoreVk
 import io.verik.compiler.core.vk.CoreVkCardinal
 import io.verik.compiler.core.vk.CoreVkClass
 import io.verik.compiler.core.vk.CoreVkUbit
+import io.verik.compiler.core.vk.CoreVkUnpacked
 
 object Core {
 
@@ -122,6 +123,12 @@ object Core {
             val F_SHR_INT = CoreVkUbit.F_SHR_INT
             val F_EXT = CoreVkUbit.F_EXT
             val F_SLICE_INT = CoreVkUbit.F_SLICE_INT
+        }
+
+        object Unpacked : CoreScope(C_UNPACKED) {
+
+            val F_GET_INT = CoreVkUnpacked.F_GET_INT
+            val F_SET_INT_ANY = CoreVkUnpacked.F_SET_INT_ANY
         }
     }
 
