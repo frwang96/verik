@@ -173,20 +173,6 @@ internal class TypeCasterTest : BaseTest() {
     }
 
     @Test
-    fun `type reference cardinal function invalid`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                CasterStage::class,
-                """
-                    var x: Ubit<ADD<`8`, Int>> = u(0)
-                """.trimIndent()
-            )
-        }.apply {
-            assertEquals("Cardinal type expected", message)
-        }
-    }
-
-    @Test
     fun `type reference cardinal type parameter`() {
         val projectContext = driveTest(
             CasterStage::class,
@@ -200,21 +186,5 @@ internal class TypeCasterTest : BaseTest() {
             "KtProperty(x, Ubit<N>, *, [])",
             projectContext.findDeclaration("x")
         )
-    }
-
-    @Test
-    fun `type reference cardinal type parameter invalid`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                CasterStage::class,
-                """
-                    class C<N> {
-                        var x: Ubit<INC<N>> = u(0)
-                    }
-                """.trimIndent()
-            )
-        }.apply {
-            assertEquals("Cardinal type expected", message)
-        }
     }
 }
