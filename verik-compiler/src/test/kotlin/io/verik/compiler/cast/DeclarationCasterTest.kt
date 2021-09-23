@@ -25,6 +25,20 @@ import org.junit.jupiter.api.Test
 internal class DeclarationCasterTest : BaseTest() {
 
     @Test
+    fun `type alias`() {
+        val projectContext = driveTest(
+            CasterStage::class,
+            """
+                typealias N = INC<`7`>
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "TypeAlias(N, INC<`7`>)",
+            projectContext.findDeclaration("N")
+        )
+    }
+
+    @Test
     fun `class simple`() {
         val projectContext = driveTest(
             CasterStage::class,
@@ -199,20 +213,6 @@ internal class DeclarationCasterTest : BaseTest() {
         assertElementEquals(
             "KtProperty(x, Boolean, *, [])",
             projectContext.findDeclaration("x")
-        )
-    }
-
-    @Test
-    fun `type alias`() {
-        val projectContext = driveTest(
-            CasterStage::class,
-            """
-                typealias N = INC<`7`>
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "TypeAlias(N, INC<`7`>)",
-            projectContext.findDeclaration("N")
         )
     }
 }

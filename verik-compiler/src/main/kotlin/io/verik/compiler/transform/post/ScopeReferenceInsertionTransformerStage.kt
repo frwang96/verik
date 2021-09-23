@@ -46,7 +46,7 @@ object ScopeReferenceInsertionTransformerStage : ProjectStage() {
             if (reference is EElement) {
                 when (val parent = reference.parent) {
                     is ESvBasicClass -> {
-                        if (reference is ESvFunction && reference.isStatic) {
+                        if (reference is ESvFunction && reference.isScopeStatic) {
                             return EKtReferenceExpression(
                                 element.location,
                                 NullDeclaration.toType(),

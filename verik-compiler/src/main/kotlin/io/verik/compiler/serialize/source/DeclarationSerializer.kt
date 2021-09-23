@@ -85,10 +85,8 @@ object DeclarationSerializer {
     }
 
     fun serializeSvFunction(function: ESvFunction, serializerContext: SerializerContext) {
-        if (function.isStatic)
+        if (function.isScopeStatic)
             serializerContext.append("static ")
-        else
-            serializerContext.append("automatic ")
         val serializedType = TypeSerializer.serialize(function.type, function)
         serializedType.checkNoUnpackedDimension(function)
         serializerContext.append("function ${serializedType.getBaseAndPackedDimension()} ${function.name}(")
@@ -126,7 +124,7 @@ object DeclarationSerializer {
     }
 
     fun serializeSvProperty(property: ESvProperty, serializerContext: SerializerContext) {
-        when (property.isStatic) {
+        when (property.isLifetimeStatic) {
             true -> serializerContext.append("static ")
             false -> serializerContext.append("automatic ")
         }

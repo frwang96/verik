@@ -60,7 +60,7 @@ internal class SourceBuilderTest : BaseTest() {
             int aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa = 0;
             int bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb = 0;
             
-            automatic function void f();
+            function void f();
                 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                     + bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb;
             endfunction : f

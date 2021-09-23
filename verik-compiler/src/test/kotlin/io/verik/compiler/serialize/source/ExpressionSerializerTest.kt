@@ -166,7 +166,7 @@ internal class ExpressionSerializerTest : BaseTest() {
             """.trimIndent()
         )
         val expected = """
-            automatic function void f();
+            function void f();
                 return;
             endfunction : f
         """.trimIndent()
@@ -190,7 +190,7 @@ internal class ExpressionSerializerTest : BaseTest() {
         val expected = """
             int x = 0;
             
-            automatic function void f();
+            function void f();
                 x <= #1 !x;
             endfunction : f
         """.trimIndent()
@@ -267,7 +267,7 @@ internal class ExpressionSerializerTest : BaseTest() {
         val expected = """
             logic x = 1'b0;
             
-            automatic function void f();
+            function void f();
                 if (x)
                     1;
                 else
@@ -295,7 +295,7 @@ internal class ExpressionSerializerTest : BaseTest() {
         val expected = """
             logic x = 1'b0;
             
-            automatic function void f();
+            function void f();
                 if (x);
             endfunction : f
         """.trimIndent()
@@ -327,7 +327,7 @@ internal class ExpressionSerializerTest : BaseTest() {
         val expected = """
             logic x = 1'b0;
             
-            automatic function void f();
+            function void f();
                 if (x) begin
                     1;
                 end
@@ -382,7 +382,7 @@ internal class ExpressionSerializerTest : BaseTest() {
         val expected = """
             int x = 0;
             
-            automatic function void f();
+            function void f();
                 case (x)
                     0 : begin
                     end
@@ -408,7 +408,7 @@ internal class ExpressionSerializerTest : BaseTest() {
             """.trimIndent()
         )
         val expected = """
-            automatic function void f();
+            function void f();
                 forever begin
                 end
             endfunction : f
@@ -433,7 +433,7 @@ internal class ExpressionSerializerTest : BaseTest() {
         val expected = """
             logic x = 1'b0;
             
-            automatic function void f();
+            function void f();
                 @(posedge x);
             endfunction : f
         """.trimIndent()
@@ -454,7 +454,7 @@ internal class ExpressionSerializerTest : BaseTest() {
             """.trimIndent()
         )
         val expected = """
-            automatic function void f();
+            function void f();
                 #1;
             endfunction : f
         """.trimIndent()
