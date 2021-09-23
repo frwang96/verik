@@ -108,7 +108,7 @@ class CoreVkUbitTest : BaseTest() {
                 ConstantPartSelectExpression(
                     Ubit<`4`>,
                     KtReferenceExpression(*),
-                    KtCallExpression(Int, plus, ConstantExpression(*), [ConstantExpression(Int, 4)], []),
+                    KtCallExpression(Int, plus, ConstantExpression(*), [ConstantExpression(Int, 3)], []),
                     ConstantExpression(*)
                 )
             """.trimIndent(),

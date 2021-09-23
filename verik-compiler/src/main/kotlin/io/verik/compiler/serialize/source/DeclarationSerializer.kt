@@ -88,6 +88,8 @@ object DeclarationSerializer {
         val typeString = TypeSerializer.serialize(function.type, function)
         if (function.isStatic)
             serializerContext.append("static ")
+        else
+            serializerContext.append("automatic ")
         serializerContext.append("function $typeString ${function.name}(")
         if (function.valueParameters.isNotEmpty()) {
             serializerContext.softBreak()

@@ -165,7 +165,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_UBIT) {
                 Core.Kt.C_INT.toType(),
                 Core.Kt.Int.F_PLUS_INT,
                 callExpression.valueArguments[0].copy(),
-                arrayListOf(EConstantExpression(callExpression.location, Core.Kt.C_INT.toType(), "$value")),
+                arrayListOf(EConstantExpression(callExpression.location, Core.Kt.C_INT.toType(), "${value - 1}")),
                 arrayListOf()
             )
             return EConstantPartSelectExpression(
