@@ -18,8 +18,13 @@ package fizzbuzz
 
 import io.verik.core.*
 
+class S(var value: Int) : Struct()
+
 @Top
 class Fizzbuzz : Module() {
+
+    val x: Unpacked<`8`, Ubit<`8`>> = nc()
+    val y: Unpacked<`8`, S> = nc()
 
     @Suppress("unused")
     val c = C()
@@ -28,6 +33,8 @@ class Fizzbuzz : Module() {
     fun main() {
         f(0)
         println(g(0))
+        x[0] = zeroes()
+        y[0].value = 0
     }
 
     fun f(x: Int) {

@@ -28,11 +28,11 @@ internal class TypeSerializerTest : BaseTest() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
             """
-                var x = false
+                var x: Boolean = nc()
             """.trimIndent()
         )
         val expected = """
-            logic x = 1'b0;
+            logic x;
         """.trimIndent()
         assertOutputTextEquals(
             expected,
@@ -45,11 +45,45 @@ internal class TypeSerializerTest : BaseTest() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
             """
-                var x = u(0x00)
+                var x: Ubit<`8`> = nc()
             """.trimIndent()
         )
         val expected = """
-            logic [7:0] x = 8'h00;
+            logic [7:0] x;
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
+    fun `type packed boolean`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                var x: Packed<`8`, Boolean> = nc()
+            """.trimIndent()
+        )
+        val expected = """
+            logic [7:0] x;
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
+    fun `type unpacked boolean`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                var x: Unpacked<`8`, Boolean> = nc()
+            """.trimIndent()
+        )
+        val expected = """
+            logic x [7:0];
         """.trimIndent()
         assertOutputTextEquals(
             expected,

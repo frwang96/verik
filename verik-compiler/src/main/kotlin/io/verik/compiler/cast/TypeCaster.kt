@@ -68,10 +68,6 @@ object TypeCaster {
         val referenceTarget = castContext.sliceReferenceTarget[referenceExpression]!!
         val declaration = castContext.getDeclaration(referenceTarget, typeReference)
         val arguments = userType.typeArgumentsAsTypes.map { castCardinalType(castContext, it) }
-        val type = Type(declaration, ArrayList(arguments))
-        if (!type.isCardinalType()) {
-            Messages.CARDINAL_TYPE_EXPECTED.on(typeReference)
-        }
-        return type
+        return Type(declaration, ArrayList(arguments))
     }
 }

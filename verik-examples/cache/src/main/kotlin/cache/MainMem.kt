@@ -23,7 +23,7 @@ class MainMem(
     val rx: TxnIf.TxnRx
 ) : Module() {
 
-    var mem = Unpacked<EXP<ADDR_WIDTH>, UbitData>()
+    var mem: Unpacked<EXP<ADDR_WIDTH>, UbitData> = nc()
 
     @Seq
     fun update() {
@@ -31,7 +31,7 @@ class MainMem(
             rx.rspVld = false
             if (rx.rst) {
                 for (i in 0 until mem.size) {
-                    mem[i] = u(0)
+                    mem[i] = zeroes()
                 }
             } else {
                 if (rx.reqOp != Op.NOP) {

@@ -28,15 +28,15 @@ internal class SourceBuilderTest : BaseTest() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
             """
-                var x = false
-                var xx = false
-                var xxx = false
+                var x: Boolean = nc()
+                var y: Int = nc()
+                var z: Ubit<`8`> = nc()
             """.trimIndent()
         )
         val expected = """
-            logic x   = 1'b0;
-            logic xx  = 1'b0;
-            logic xxx = 1'b0;
+            logic       x;
+            int         y;
+            logic [7:0] z;
         """.trimIndent()
         assertOutputTextEquals(
             expected,
@@ -60,7 +60,7 @@ internal class SourceBuilderTest : BaseTest() {
             int aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa = 0;
             int bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb = 0;
             
-            automatic function void f();
+            function void f();
                 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                     + bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb;
             endfunction : f
@@ -76,13 +76,13 @@ internal class SourceBuilderTest : BaseTest() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
             """
-                var aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa = 0
-                var b = aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa + 1
+                var aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa = 0
+                var b = aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa + aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa + 1
             """.trimIndent()
         )
         val expected = """
-            int aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa = 0;
-            int b                                        = aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+            int aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa = 0;
+            int b = aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa + aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                 + 1;
         """.trimIndent()
         assertOutputTextEquals(

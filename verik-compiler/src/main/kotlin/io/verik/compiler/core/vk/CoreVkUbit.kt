@@ -32,9 +32,10 @@ import io.verik.compiler.core.common.CoreKtTransformableFunctionDeclaration
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.specialize.BinaryOperatorTypeConstraint
 import io.verik.compiler.specialize.BinaryOperatorTypeConstraintKind
-import io.verik.compiler.specialize.TypeArgumentTypeConstraint
+import io.verik.compiler.specialize.CallExpressionTypeArgumentTypeAdapter
 import io.verik.compiler.specialize.TypeConstraint
 import io.verik.compiler.specialize.TypeEqualsTypeConstraint
+import io.verik.compiler.specialize.TypedElementTypeArgumentTypeAdapter
 
 object CoreVkUbit : CoreScope(Core.Vk.C_UBIT) {
 
@@ -162,7 +163,12 @@ object CoreVkUbit : CoreScope(Core.Vk.C_UBIT) {
     val F_EXT = object : CoreKtTransformableFunctionDeclaration(parent, "ext") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
-            return listOf(TypeArgumentTypeConstraint(callExpression, listOf(0)))
+            return listOf(
+                TypeEqualsTypeConstraint(
+                    CallExpressionTypeArgumentTypeAdapter(callExpression, 0),
+                    TypedElementTypeArgumentTypeAdapter(callExpression, listOf(0))
+                )
+            )
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
@@ -173,7 +179,12 @@ object CoreVkUbit : CoreScope(Core.Vk.C_UBIT) {
     val F_SLICE_INT = object : CoreKtTransformableFunctionDeclaration(parent, "slice", Core.Kt.C_INT) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
-            return listOf(TypeArgumentTypeConstraint(callExpression, listOf(0)))
+            return listOf(
+                TypeEqualsTypeConstraint(
+                    CallExpressionTypeArgumentTypeAdapter(callExpression, 0),
+                    TypedElementTypeArgumentTypeAdapter(callExpression, listOf(0))
+                )
+            )
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {

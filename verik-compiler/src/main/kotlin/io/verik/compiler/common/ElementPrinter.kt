@@ -197,7 +197,7 @@ class ElementPrinter : Visitor() {
             build(function.name)
             build(function.type.toString())
             build(function.body)
-            build(function.isStatic)
+            build(function.isScopeStatic)
             build(function.valueParameters)
         }
     }
@@ -245,7 +245,7 @@ class ElementPrinter : Visitor() {
             build(property.name)
             build(property.type.toString())
             build(property.initializer)
-            build(property.isStatic)
+            build(property.isLifetimeStatic)
         }
     }
 

@@ -26,6 +26,8 @@ object CoreVkClass : CoreScope(CorePackage.VK) {
     val C_UBIT = CoreClassDeclaration(parent, "Ubit", Core.Kt.C_ANY)
     val C_SBIT = CoreClassDeclaration(parent, "Sbit", Core.Kt.C_ANY)
     val C_STRUCT = CoreClassDeclaration(parent, "Struct", Core.Kt.C_ANY)
+    val C_PACKED = CoreClassDeclaration(parent, "Packed", Core.Kt.C_ANY)
+    val C_UNPACKED = CoreClassDeclaration(parent, "Unpacked", Core.Kt.C_ANY)
     val C_COMPONENT = CoreClassDeclaration(parent, "Component", Core.Kt.C_ANY)
     val C_MODULE = CoreClassDeclaration(parent, "Module", C_COMPONENT)
     val C_TIME = CoreClassDeclaration(parent, "Time", Core.Kt.C_ANY)

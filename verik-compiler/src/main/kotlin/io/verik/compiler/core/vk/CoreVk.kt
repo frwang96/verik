@@ -31,17 +31,24 @@ import io.verik.compiler.core.common.CoreKtTransformableFunctionDeclaration
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.message.Messages
+import io.verik.compiler.specialize.CallExpressionTypeArgumentTypeAdapter
 import io.verik.compiler.specialize.CardinalBitConstantTypeConstraint
 import io.verik.compiler.specialize.ConcatenationTypeConstraint
-import io.verik.compiler.specialize.TypeArgumentTypeConstraint
 import io.verik.compiler.specialize.TypeConstraint
+import io.verik.compiler.specialize.TypeEqualsTypeConstraint
+import io.verik.compiler.specialize.TypedElementTypeArgumentTypeAdapter
 
 object CoreVk : CoreScope(CorePackage.VK) {
 
     val F_NC = object : CoreKtTransformableFunctionDeclaration(parent, "nc") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
-            return listOf(TypeArgumentTypeConstraint(callExpression, listOf()))
+            return listOf(
+                TypeEqualsTypeConstraint(
+                    CallExpressionTypeArgumentTypeAdapter(callExpression, 0),
+                    callExpression
+                )
+            )
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
@@ -72,7 +79,12 @@ object CoreVk : CoreScope(CorePackage.VK) {
     val F_ZEROES = object : CoreKtTransformableFunctionDeclaration(parent, "zeroes") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
-            return listOf(TypeArgumentTypeConstraint(callExpression, listOf()))
+            return listOf(
+                TypeEqualsTypeConstraint(
+                    CallExpressionTypeArgumentTypeAdapter(callExpression, 0),
+                    callExpression
+                )
+            )
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
@@ -107,7 +119,12 @@ object CoreVk : CoreScope(CorePackage.VK) {
     val F_RANDOM_UBIT = object : CoreKtTransformableFunctionDeclaration(parent, "randomUbit") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
-            return listOf(TypeArgumentTypeConstraint(callExpression, listOf(0)))
+            return listOf(
+                TypeEqualsTypeConstraint(
+                    CallExpressionTypeArgumentTypeAdapter(callExpression, 0),
+                    TypedElementTypeArgumentTypeAdapter(callExpression, listOf(0))
+                )
+            )
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {

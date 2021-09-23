@@ -23,7 +23,7 @@ package io.verik.core
  * @param N the size of the array
  * @param E the type of the elements of the array
  */
-class Packed<N : `*`, E> : Iterable<E> {
+class Packed<N : `*`, E> private constructor() : Iterable<E> {
 
     override fun iterator(): Iterator<E> {
         throw VerikException()

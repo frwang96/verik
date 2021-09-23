@@ -24,11 +24,11 @@ class Cache(
     var tx: TxnIf.TxnTx
 ) : Module() {
 
-    val lines = Unpacked<EXP<INDEX_WIDTH>, Line>()
-    var state: State = x()
-    var curOp: Op = x()
-    var curAddr: UbitAddr = x()
-    var curData: UbitData = x()
+    val lines: Unpacked<EXP<INDEX_WIDTH>, Line> = nc()
+    var state: State = nc()
+    var curOp: Op = nc()
+    var curAddr: UbitAddr = nc()
+    var curData: UbitData = nc()
 
     @Seq
     fun update() {
@@ -40,7 +40,7 @@ class Cache(
                 tx.rst = true
                 state = State.READY
                 for (i in 0 until lines.size) {
-                    lines[i] = Line(Status.INVALID, u(0), u(0))
+                    lines[i] = Line(Status.INVALID, zeroes(), zeroes())
                 }
             } else {
                 when (state) {

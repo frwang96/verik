@@ -23,7 +23,7 @@ class CacheTb(
     val tx: TxnIf.TxnTx
 ) : Module() {
 
-    val mem = Unpacked<EXP<ADDR_WIDTH>, UbitData>()
+    val mem: Unpacked<EXP<ADDR_WIDTH>, UbitData> = nc()
 
     @Make val cb = CacheTbClockingBlock(
         event = posedge(clk),
@@ -45,7 +45,7 @@ class CacheTb(
     @Task
     fun reset() {
         for (i in 0 until mem.size) {
-            mem[i] = u(0)
+            mem[i] = zeroes()
         }
         wait(cb)
         cb.rst = true

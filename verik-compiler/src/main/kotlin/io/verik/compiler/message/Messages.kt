@@ -84,9 +84,9 @@ object Messages {
         "Illegal name: $0"
     )
 
-    val CARDINAL_TYPE_EXPECTED = MessageTemplate0(
+    val CARDINAL_TYPE_EXPECTED = MessageTemplate1<Type>(
         Severity.ERROR,
-        "Cardinal type expected"
+        "Cardinal type expected but found: $0"
     )
 
     val ANNOTATION_ARGUMENT_NOT_LITERAL = MessageTemplate0(

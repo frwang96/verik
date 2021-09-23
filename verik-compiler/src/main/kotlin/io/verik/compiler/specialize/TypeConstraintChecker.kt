@@ -25,10 +25,6 @@ object TypeConstraintChecker {
     fun check(typeConstraints: List<TypeConstraint>) {
         typeConstraints.forEach {
             when (it) {
-                is TypeArgumentTypeConstraint ->
-                    checkTypeArgumentTypeConstraint(it)
-                is ValueArgumentTypeConstraint ->
-                    checkValueArgumentTypeConstraint(it)
                 is TypeEqualsTypeConstraint ->
                     checkTypeEqualsTypeConstraint(it)
                 is BinaryOperatorTypeConstraint ->
@@ -41,27 +37,11 @@ object TypeConstraintChecker {
         }
     }
 
-    private fun checkTypeArgumentTypeConstraint(typeConstraint: TypeArgumentTypeConstraint) {
-        if (typeConstraint.getTypeArgument() != typeConstraint.callExpression.typeArguments[0])
-            Messages.TYPE_MISMATCH.on(
-                typeConstraint.callExpression,
-                typeConstraint.getTypeArgument(),
-                typeConstraint.callExpression.typeArguments[0]
-            )
-    }
-
-    private fun checkValueArgumentTypeConstraint(typeConstraint: ValueArgumentTypeConstraint) {
-        if (typeConstraint.valueArgument.type != typeConstraint.valueParameter.type)
-            Messages.TYPE_MISMATCH.on(
-                typeConstraint.valueArgument,
-                typeConstraint.valueParameter.type,
-                typeConstraint.valueArgument.type
-            )
-    }
-
     private fun checkTypeEqualsTypeConstraint(typeConstraint: TypeEqualsTypeConstraint) {
-        if (typeConstraint.outer.type != typeConstraint.inner.type)
-            Messages.TYPE_MISMATCH.on(typeConstraint.inner, typeConstraint.outer.type, typeConstraint.inner.type)
+        val innerType = typeConstraint.inner.getType()
+        val outerType = typeConstraint.outer.getType()
+        if (outerType != innerType)
+            Messages.TYPE_MISMATCH.on(typeConstraint.inner.getLocation(), outerType, innerType)
     }
 
     private fun checkBinaryOperatorTypeConstraint(typeConstraint: BinaryOperatorTypeConstraint) {

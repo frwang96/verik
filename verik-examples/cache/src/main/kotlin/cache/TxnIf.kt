@@ -20,12 +20,12 @@ import io.verik.core.*
 
 class TxnIf : Interface() {
 
-    var rst: Boolean = x()
-    var reqOp: Op = x()
-    var reqAddr: UbitAddr = x()
-    var reqData: UbitData = x()
-    var rspVld: Boolean = x()
-    var rspData: UbitData = x()
+    var rst: Boolean = nc()
+    var reqOp: Op = nc()
+    var reqAddr: UbitAddr = nc()
+    var reqData: UbitData = nc()
+    var rspVld: Boolean = nc()
+    var rspData: UbitData = nc()
 
     @Make
     val tx = TxnTx(
