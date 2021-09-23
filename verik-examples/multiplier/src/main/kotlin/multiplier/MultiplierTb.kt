@@ -23,8 +23,8 @@ class MultiplierTb : Module() {
 
     var clk: Boolean = nc()
     var rst: Boolean = nc()
-    val req: MultiplierReq = nc()
-    val rsp: MultiplierRsp = nc()
+    var req: MultiplierReq = nc()
+    var rsp: MultiplierRsp = nc()
 
     @Make
     val multiplier = Multiplier(
@@ -50,5 +50,28 @@ class MultiplierTb : Module() {
         rst = false
         delay(1000)
         finish()
+    }
+
+    @Run
+    fun test() {
+        var a: Ubit<REQ_WIDTH> = zeroes()
+        var b: Ubit<REQ_WIDTH> = zeroes()
+        req = MultiplierReq(a, b, false)
+        delay(20)
+        forever {
+            wait(negedge(clk))
+            if (rsp.vld) {
+                if (rsp.result == a mul b) {
+                    println("PASSED $a * $b test function gave ${rsp.result}")
+                } else {
+                    println("FAILED $a * $b test function gave ${rsp.result} instead of ${a mul b}")
+                }
+                a = randomUbit()
+                b = randomUbit()
+                req = MultiplierReq(a, b, true)
+            } else {
+                req = MultiplierReq(zeroes(), zeroes(), false)
+            }
+        }
     }
 }

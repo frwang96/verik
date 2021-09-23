@@ -46,3 +46,10 @@ fun random(min: Int, max: Int): Int {
 fun <T : Enum<T>> randomEnum(): T {
     throw VerikException()
 }
+
+/**
+ * Returns a random [Ubit] of width [N].
+ */
+fun <N : `*`> randomUbit(): Ubit<N> {
+    throw VerikException()
+}

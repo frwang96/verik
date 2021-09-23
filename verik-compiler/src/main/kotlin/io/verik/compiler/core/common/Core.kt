@@ -97,6 +97,7 @@ object Core {
         val F_CAT = CoreVk.F_CAT
         val F_RANDOM = CoreVk.F_RANDOM
         val F_RANDOM_INT = CoreVk.F_RANDOM_INT
+        val F_RANDOM_UBIT = CoreVk.F_RANDOM_UBIT
         val F_FOREVER_FUNCTION = CoreVk.F_FOREVER_FUNCTION
         val F_ON_EVENT_FUNCTION = CoreVk.F_ON_EVENT_FUNCTION
         val F_POSEDGE_BOOLEAN = CoreVk.F_POSEDGE_BOOLEAN
@@ -114,6 +115,7 @@ object Core {
             val F_SET_INT_BOOLEAN = CoreVkUbit.F_SET_INT_BOOLEAN
             val F_PLUS_UBIT = CoreVkUbit.F_PLUS_UBIT
             val F_ADD_UBIT = CoreVkUbit.F_ADD_UBIT
+            val F_MUL_UBIT = CoreVkUbit.F_MUL_UBIT
             val F_SHL_INT = CoreVkUbit.F_SHL_INT
             val F_SHR_INT = CoreVkUbit.F_SHR_INT
             val F_EXT = CoreVkUbit.F_EXT
@@ -127,6 +129,7 @@ object Core {
         val F_WRITE = CoreSv.F_WRITE
         val F_SFORMATF = CoreSv.F_SFORMATF
         val F_RANDOM = CoreSv.F_RANDOM
+        val F_URANDOM = CoreSv.F_URANDOM
         val F_TIME = CoreSv.F_TIME
         val F_FINISH = CoreSv.F_FINISH
         val F_NEW = CoreSv.F_NEW

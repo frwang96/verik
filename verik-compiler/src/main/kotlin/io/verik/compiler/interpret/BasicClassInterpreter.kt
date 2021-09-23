@@ -60,7 +60,8 @@ object BasicClassInterpreter {
             location,
             "<tmp>",
             type.copy(),
-            ESvCallExpression(location, type.copy(), Core.Sv.F_NEW, null, arrayListOf(), false)
+            ESvCallExpression(location, type.copy(), Core.Sv.F_NEW, null, arrayListOf(), false),
+            false
         )
         val statements = listOf(
             ESvPropertyStatement(location, property),

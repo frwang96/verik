@@ -26,7 +26,8 @@ class ESvProperty(
     override val location: SourceLocation,
     override var name: String,
     override var type: Type,
-    override var initializer: EExpression?
+    override var initializer: EExpression?,
+    val isStatic: Boolean?
 ) : EAbstractInitializedProperty() {
 
     init {

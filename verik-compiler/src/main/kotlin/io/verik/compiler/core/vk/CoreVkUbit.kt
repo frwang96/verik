@@ -107,6 +107,24 @@ object CoreVkUbit : CoreScope(Core.Vk.C_UBIT) {
         }
     }
 
+    val F_MUL_UBIT = object : CoreKtBinaryFunctionDeclaration(parent, "mul", Core.Vk.C_UBIT) {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return listOf(
+                BinaryOperatorTypeConstraint(
+                    callExpression.receiver!!,
+                    callExpression.valueArguments[0],
+                    callExpression,
+                    BinaryOperatorTypeConstraintKind.ADD
+                )
+            )
+        }
+
+        override fun getOperatorKind(): SvBinaryOperatorKind {
+            return SvBinaryOperatorKind.MUL
+        }
+    }
+
     val F_SHL_INT = object : CoreKtTransformableFunctionDeclaration(parent, "shl", Core.Kt.C_INT) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
@@ -165,7 +183,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_UBIT) {
                 Core.Kt.C_INT.toType(),
                 Core.Kt.Int.F_PLUS_INT,
                 callExpression.valueArguments[0].copy(),
-                arrayListOf(EConstantExpression(callExpression.location, Core.Kt.C_INT.toType(), "$value")),
+                arrayListOf(EConstantExpression(callExpression.location, Core.Kt.C_INT.toType(), "${value - 1}")),
                 arrayListOf()
             )
             return EConstantPartSelectExpression(

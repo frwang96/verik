@@ -70,6 +70,7 @@ object TypeConstraintChecker {
         val innerWidth = when (typeConstraint.kind) {
             BinaryOperatorTypeConstraintKind.MAX -> max(leftWidth, rightWidth)
             BinaryOperatorTypeConstraintKind.MAX_INC -> max(leftWidth, rightWidth) + 1
+            BinaryOperatorTypeConstraintKind.ADD -> leftWidth + rightWidth
         }
         val outerWidth = typeConstraint.outer.type.asBitWidth(typeConstraint.outer)
         if (outerWidth != innerWidth) {
