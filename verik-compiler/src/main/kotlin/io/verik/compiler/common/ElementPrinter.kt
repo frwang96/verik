@@ -28,6 +28,7 @@ import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ERootPackage
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.EAnnotation
+import io.verik.compiler.ast.element.kt.EForExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBasicClass
@@ -535,6 +536,15 @@ class ElementPrinter : Visitor() {
                     build(it.body)
                 }
             }
+        }
+    }
+
+    override fun visitForExpression(forExpression: EForExpression) {
+        build("ForExpression") {
+            build(forExpression.type.toString())
+            build(forExpression.parameter)
+            build(forExpression.range)
+            build(forExpression.body)
         }
     }
 

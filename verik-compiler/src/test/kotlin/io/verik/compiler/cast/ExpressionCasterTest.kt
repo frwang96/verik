@@ -254,4 +254,29 @@ internal class ExpressionCasterTest : BaseTest() {
             projectContext.findExpression("y")
         )
     }
+
+    @Test
+    fun `for expression`() {
+        val projectContext = driveTest(
+            CasterStage::class,
+            """
+                var x: Packed<`8`, Boolean> = nc()
+                fun f() {
+                    @Suppress("ControlFlowWithEmptyBody")
+                    for (y in x) {}
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            """
+                ForExpression(
+                    Unit,
+                    KtValueParameter(y, Boolean, []),
+                    KtReferenceExpression(*),
+                    KtBlockExpression(Unit, [])
+                )
+            """.trimIndent(),
+            projectContext.findExpression("f")
+        )
+    }
 }

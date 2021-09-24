@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
+import io.verik.compiler.ast.element.kt.EForExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
@@ -27,6 +28,7 @@ import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
+import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.KtUnaryOperatorKind
 import io.verik.compiler.common.location
@@ -39,6 +41,7 @@ import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtConstantExpression
 import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
+import org.jetbrains.kotlin.psi.KtForExpression
 import org.jetbrains.kotlin.psi.KtIfExpression
 import org.jetbrains.kotlin.psi.KtLambdaExpression
 import org.jetbrains.kotlin.psi.KtPrefixExpression
@@ -210,5 +213,15 @@ object ExpressionCaster {
             castContext.casterVisitor.getExpression(it)
         }
         return EIfExpression(location, type, condition, thenExpression, elseExpression)
+    }
+
+    fun castForExpression(expression: KtForExpression, castContext: CastContext): EForExpression? {
+        val location = expression.location()
+        val parameter = castContext.casterVisitor
+            .getElement<EKtValueParameter>(expression.loopParameter!!)
+            ?: return null
+        val range = castContext.casterVisitor.getExpression(expression.loopRange!!)
+        val body = castContext.casterVisitor.getExpression(expression.body!!)
+        return EForExpression(location, parameter, range, body)
     }
 }

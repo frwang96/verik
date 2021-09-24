@@ -217,7 +217,13 @@ object DeclarationCaster {
         val annotations = parameter.annotationEntries.mapNotNull {
             AnnotationCaster.castAnnotationEntry(it, castContext)
         }
-        val type = castContext.castType(parameter.typeReference!!)
+
+        val typeReference = parameter.typeReference
+        val type = if (typeReference != null) {
+            castContext.castType(typeReference)
+        } else {
+            castContext.castType(descriptor.type, parameter)
+        }
 
         annotations.forEach { it.parent = valueParameter }
         valueParameter.annotations = annotations

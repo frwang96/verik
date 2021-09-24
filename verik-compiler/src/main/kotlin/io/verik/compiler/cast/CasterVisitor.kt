@@ -23,7 +23,9 @@ import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.ENullExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ETypeParameter
+import io.verik.compiler.ast.element.kt.EForExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
+import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
@@ -37,6 +39,7 @@ import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.kt.ETypeAlias
+import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.common.location
 import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.psi.KtAnnotatedExpression
@@ -50,6 +53,7 @@ import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
 import org.jetbrains.kotlin.psi.KtElement
 import org.jetbrains.kotlin.psi.KtEnumEntry
 import org.jetbrains.kotlin.psi.KtExpression
+import org.jetbrains.kotlin.psi.KtForExpression
 import org.jetbrains.kotlin.psi.KtIfExpression
 import org.jetbrains.kotlin.psi.KtLambdaExpression
 import org.jetbrains.kotlin.psi.KtNamedFunction
@@ -189,7 +193,10 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
         return StringTemplateExpressionCaster.castStringTemplateExpression(expression, castContext)
     }
 
-    override fun visitArrayAccessExpression(expression: KtArrayAccessExpression, data: Unit?): EElement {
+    override fun visitArrayAccessExpression(
+        expression: KtArrayAccessExpression,
+        data: Unit?
+    ): EKtArrayAccessExpression {
         return ExpressionCaster.castKtArrayAccessExpression(expression, castContext)
     }
 
@@ -197,7 +204,11 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
         return ExpressionCaster.castIfExpression(expression, castContext)
     }
 
-    override fun visitWhenExpression(expression: KtWhenExpression, data: Unit?): EElement {
+    override fun visitWhenExpression(expression: KtWhenExpression, data: Unit?): EWhenExpression {
         return WhenExpressionCaster.castWhenExpression(expression, castContext)
+    }
+
+    override fun visitForExpression(expression: KtForExpression, data: Unit?): EForExpression? {
+        return ExpressionCaster.castForExpression(expression, castContext)
     }
 }
