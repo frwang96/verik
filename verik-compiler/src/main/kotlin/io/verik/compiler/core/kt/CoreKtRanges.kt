@@ -14,22 +14,14 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.common
+package io.verik.compiler.core.kt
 
-class CorePackage(
-    override var name: String
-) : CoreDeclaration {
+import io.verik.compiler.core.common.Core
+import io.verik.compiler.core.common.CoreKtBasicFunctionDeclaration
+import io.verik.compiler.core.common.CorePackage
+import io.verik.compiler.core.common.CoreScope
 
-    override val qualifiedName = name
+object CoreKtRanges : CoreScope(CorePackage.Kt_RANGES) {
 
-    companion object {
-
-        val ROOT = CorePackage("root")
-        val KT = CorePackage("kotlin")
-        val KT_IO = CorePackage("kotlin.io")
-        val KT_COLLECTIONS = CorePackage("kotlin.collections")
-        val Kt_RANGES = CorePackage("kotlin.ranges")
-        val VK = CorePackage("io.verik.core")
-        val SV = CorePackage("systemverilog")
-    }
+    val F_UNTIL_INT = CoreKtBasicFunctionDeclaration(parent, "until", Core.Kt.C_INT)
 }

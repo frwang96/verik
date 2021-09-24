@@ -79,7 +79,6 @@ import io.verik.compiler.ast.element.sv.EForeverStatement
 import io.verik.compiler.ast.element.sv.EInitialBlock
 import io.verik.compiler.ast.element.sv.EInjectedExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
-import io.verik.compiler.ast.element.sv.ELoopStatement
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EModuleInstantiation
 import io.verik.compiler.ast.element.sv.EPort
@@ -419,12 +418,8 @@ abstract class Visitor {
         visitExpression(forExpression)
     }
 
-    open fun visitLoopStatement(loopStatement: ELoopStatement) {
-        visitExpression(loopStatement)
-    }
-
     open fun visitForeverStatement(foreverStatement: EForeverStatement) {
-        visitLoopStatement(foreverStatement)
+        visitExpression(foreverStatement)
     }
 
     open fun visitEventExpression(eventExpression: EEventExpression) {

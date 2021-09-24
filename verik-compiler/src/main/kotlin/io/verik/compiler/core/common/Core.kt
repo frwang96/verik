@@ -22,6 +22,7 @@ import io.verik.compiler.core.kt.CoreKtBoolean
 import io.verik.compiler.core.kt.CoreKtCollections
 import io.verik.compiler.core.kt.CoreKtInt
 import io.verik.compiler.core.kt.CoreKtIo
+import io.verik.compiler.core.kt.CoreKtRanges
 import io.verik.compiler.core.sv.CoreSv
 import io.verik.compiler.core.vk.CoreVk
 import io.verik.compiler.core.vk.CoreVkCardinal
@@ -66,6 +67,13 @@ object Core {
         object Collections : CoreScope(CorePackage.KT_COLLECTIONS) {
 
             val F_FOR_EACH_FUNCTION = CoreKtCollections.F_FOR_EACH_FUNCTION
+        }
+
+        object Ranges : CoreScope(CorePackage.Kt_RANGES) {
+
+            val C_INT_RANGE = CoreClass.Kt.Ranges.C_INT_RANGE
+
+            val F_UNTIL_INT = CoreKtRanges.F_UNTIL_INT
         }
     }
 

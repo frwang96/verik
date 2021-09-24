@@ -17,16 +17,22 @@
 package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.interfaces.ExpressionContainer
+import io.verik.compiler.ast.property.SvSerializationType
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
+import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 
 class EForeverStatement(
     override val location: SourceLocation,
-    override var body: EExpression
-) : ELoopStatement() {
+    var body: EExpression
+) : EExpression(), ExpressionContainer {
 
     override var type = Core.Kt.C_UNIT.toType()
+
+    override val serializationType = SvSerializationType.STATEMENT
 
     init {
         body.parent = this
@@ -36,8 +42,21 @@ class EForeverStatement(
         visitor.visitForeverStatement(this)
     }
 
+    override fun acceptChildren(visitor: TreeVisitor) {
+        body.accept(visitor)
+    }
+
     override fun copy(): EExpression {
         val copyBodyExpression = body.copy()
         return EForeverStatement(location, copyBodyExpression)
+    }
+
+    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
+        newExpression.parent = this
+        if (body == oldExpression)
+            body = newExpression.cast()
+                ?: return
+        else
+            Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
     }
 }

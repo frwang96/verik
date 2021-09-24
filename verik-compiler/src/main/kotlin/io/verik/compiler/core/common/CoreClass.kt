@@ -28,6 +28,11 @@ object CoreClass {
         val C_BOOLEAN = CoreClassDeclaration(parent, "Boolean", C_ANY)
         val C_STRING = CoreClassDeclaration(parent, "String", C_ANY)
         val C_ENUM = CoreClassDeclaration(parent, "Enum", C_ANY)
+
+        object Ranges : CoreScope(CorePackage.Kt_RANGES) {
+
+            val C_INT_RANGE = CoreClassDeclaration(parent, "IntRange", C_ANY)
+        }
     }
 
     object Vk : CoreScope(CorePackage.VK) {
