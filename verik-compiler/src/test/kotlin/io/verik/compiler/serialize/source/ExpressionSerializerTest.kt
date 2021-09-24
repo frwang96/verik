@@ -43,7 +43,7 @@ internal class ExpressionSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `unary expression`() {
+    fun `unary expression prefix`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
             """
@@ -54,6 +54,25 @@ internal class ExpressionSerializerTest : BaseTest() {
         val expected = """
             logic x = 1'b0;
             logic y = !x;
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
+    fun `unary expression postfix`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                var x = 0
+                var y = x++
+            """.trimIndent()
+        )
+        val expected = """
+            int x = 0;
+            int y = x++;
         """.trimIndent()
         assertOutputTextEquals(
             expected,

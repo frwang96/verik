@@ -40,7 +40,7 @@ internal class ExpressionCasterTest : BaseTest() {
     }
 
     @Test
-    fun `unary expression`() {
+    fun `unary expression prefix`() {
         val projectContext = driveTest(
             CasterStage::class,
             """
@@ -48,8 +48,25 @@ internal class ExpressionCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtUnaryExpression(Boolean, EXCL, ConstantExpression(*))",
+            "KtUnaryExpression(Boolean, ConstantExpression(*), EXCL)",
             projectContext.findExpression("x")
+        )
+    }
+
+    @Test
+    fun `unary expression postfix`() {
+        val projectContext = driveTest(
+            CasterStage::class,
+            """
+                var x = 0
+                fun f() {
+                    x++
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtUnaryExpression(Int, KtReferenceExpression(*), POST_INC)",
+            projectContext.findExpression("f")
         )
     }
 
@@ -62,7 +79,7 @@ internal class ExpressionCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtBinaryExpression(Int, PLUS, ConstantExpression(*), ConstantExpression(*))",
+            "KtBinaryExpression(Int, ConstantExpression(*), ConstantExpression(*), PLUS)",
             projectContext.findExpression("x")
         )
     }

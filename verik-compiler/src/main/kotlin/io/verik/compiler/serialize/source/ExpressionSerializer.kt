@@ -76,8 +76,13 @@ object ExpressionSerializer {
     }
 
     fun serializeSvUnaryExpression(unaryExpression: ESvUnaryExpression, serializerContext: SerializerContext) {
-        serializerContext.append(unaryExpression.kind.serialize())
+        val prefix = unaryExpression.kind.serializePrefix()
+        if (prefix != null)
+            serializerContext.append(prefix)
         serializerContext.serializeAsExpression(unaryExpression.expression)
+        val postfix = unaryExpression.kind.serializePostfix()
+        if (postfix != null)
+            serializerContext.append(postfix)
     }
 
     fun serializeSvBinaryExpression(binaryExpression: ESvBinaryExpression, serializerContext: SerializerContext) {

@@ -55,9 +55,9 @@ class CoreVkUbitTest : BaseTest() {
             """
                 KtBinaryExpression(
                     Unit,
-                    EQ,
                     SvArrayAccessExpression(Boolean, KtReferenceExpression(*), ConstantExpression(*)),
-                    ConstantExpression(*)
+                    ConstantExpression(*),
+                    EQ
                 )
             """.trimIndent(),
             projectContext.findExpression("f")
@@ -74,7 +74,7 @@ class CoreVkUbitTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SvBinaryExpression(Ubit<`8`>, LTLT, *, *)",
+            "SvBinaryExpression(Ubit<`8`>, *, *, LTLT)",
             projectContext.findExpression("y")
         )
     }
@@ -89,7 +89,7 @@ class CoreVkUbitTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SvBinaryExpression(Ubit<`8`>, GTGT, *, *)",
+            "SvBinaryExpression(Ubit<`8`>, *, *, GTGT)",
             projectContext.findExpression("y")
         )
     }

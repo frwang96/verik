@@ -341,34 +341,34 @@ class ElementPrinter : Visitor() {
     override fun visitKtUnaryExpression(unaryExpression: EKtUnaryExpression) {
         build("KtUnaryExpression") {
             build(unaryExpression.type.toString())
-            build(unaryExpression.kind.toString())
             build(unaryExpression.expression)
+            build(unaryExpression.kind.toString())
         }
     }
 
     override fun visitSvUnaryExpression(unaryExpression: ESvUnaryExpression) {
         build("SvUnaryExpression") {
             build(unaryExpression.type.toString())
-            build(unaryExpression.kind.toString())
             build(unaryExpression.expression)
+            build(unaryExpression.kind.toString())
         }
     }
 
     override fun visitKtBinaryExpression(binaryExpression: EKtBinaryExpression) {
         build("KtBinaryExpression") {
             build(binaryExpression.type.toString())
-            build(binaryExpression.kind.toString())
             build(binaryExpression.left)
             build(binaryExpression.right)
+            build(binaryExpression.kind.toString())
         }
     }
 
     override fun visitSvBinaryExpression(binaryExpression: ESvBinaryExpression) {
         build("SvBinaryExpression") {
             build(binaryExpression.type.toString())
-            build(binaryExpression.kind.toString())
             build(binaryExpression.left)
             build(binaryExpression.right)
+            build(binaryExpression.kind.toString())
         }
     }
 

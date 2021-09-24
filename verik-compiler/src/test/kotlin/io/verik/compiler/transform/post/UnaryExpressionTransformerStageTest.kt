@@ -34,7 +34,22 @@ internal class UnaryExpressionTransformerStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SvUnaryExpression(Boolean, EXCL, KtReferenceExpression(*))",
+            "SvUnaryExpression(Boolean, KtReferenceExpression(*), EXCL)",
+            projectContext.findExpression("y")
+        )
+    }
+
+    @Test
+    fun `transform postincrement`() {
+        val projectContext = driveTest(
+            BinaryExpressionTransformerStage::class,
+            """
+                var x = 0
+                var y = x++
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "SvUnaryExpression(Int, KtReferenceExpression(*), POST_INC)",
             projectContext.findExpression("y")
         )
     }

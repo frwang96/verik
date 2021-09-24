@@ -68,7 +68,8 @@ object UnaryExpressionReducerStage : ProjectStage() {
                     return
                 }
             }
-            Messages.INTERNAL_ERROR.on(unaryExpression, "Unary expression could not be reduced")
+            if (kind.isReducible())
+                Messages.INTERNAL_ERROR.on(unaryExpression, "Unary expression could not be reduced")
         }
     }
 }

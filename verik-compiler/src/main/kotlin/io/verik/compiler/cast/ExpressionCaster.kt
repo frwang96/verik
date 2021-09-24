@@ -45,6 +45,7 @@ import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
 import org.jetbrains.kotlin.psi.KtForExpression
 import org.jetbrains.kotlin.psi.KtIfExpression
 import org.jetbrains.kotlin.psi.KtLambdaExpression
+import org.jetbrains.kotlin.psi.KtPostfixExpression
 import org.jetbrains.kotlin.psi.KtPrefixExpression
 import org.jetbrains.kotlin.psi.KtReturnExpression
 import org.jetbrains.kotlin.psi.KtSimpleNameExpression
@@ -59,10 +60,19 @@ object ExpressionCaster {
         return EKtBlockExpression(location, type, ArrayList(statements))
     }
 
-    fun castKtUnaryExpression(expression: KtPrefixExpression, castContext: CastContext): EKtUnaryExpression? {
+    fun castKtUnaryExpressionPrefix(expression: KtPrefixExpression, castContext: CastContext): EKtUnaryExpression? {
         val location = expression.location()
         val type = castContext.castType(expression)
-        val kind = KtUnaryOperatorKind(expression.operationToken, location)
+        val kind = KtUnaryOperatorKind.getKindPrefix(expression.operationToken, location)
+            ?: return null
+        val childExpression = castContext.casterVisitor.getExpression(expression.baseExpression!!)
+        return EKtUnaryExpression(location, type, childExpression, kind)
+    }
+
+    fun castKtUnaryExpressionPostfix(expression: KtPostfixExpression, castContext: CastContext): EKtUnaryExpression? {
+        val location = expression.location()
+        val type = castContext.castType(expression)
+        val kind = KtUnaryOperatorKind.getKindPostfix(expression.operationToken, location)
             ?: return null
         val childExpression = castContext.casterVisitor.getExpression(expression.baseExpression!!)
         return EKtUnaryExpression(location, type, childExpression, kind)

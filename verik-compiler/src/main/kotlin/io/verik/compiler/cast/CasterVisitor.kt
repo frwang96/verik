@@ -59,6 +59,7 @@ import org.jetbrains.kotlin.psi.KtLambdaExpression
 import org.jetbrains.kotlin.psi.KtNamedFunction
 import org.jetbrains.kotlin.psi.KtParameter
 import org.jetbrains.kotlin.psi.KtParenthesizedExpression
+import org.jetbrains.kotlin.psi.KtPostfixExpression
 import org.jetbrains.kotlin.psi.KtPrefixExpression
 import org.jetbrains.kotlin.psi.KtPrimaryConstructor
 import org.jetbrains.kotlin.psi.KtProperty
@@ -155,7 +156,11 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
     }
 
     override fun visitPrefixExpression(expression: KtPrefixExpression, data: Unit?): EKtUnaryExpression? {
-        return ExpressionCaster.castKtUnaryExpression(expression, castContext)
+        return ExpressionCaster.castKtUnaryExpressionPrefix(expression, castContext)
+    }
+
+    override fun visitPostfixExpression(expression: KtPostfixExpression, data: Unit?): EKtUnaryExpression? {
+        return ExpressionCaster.castKtUnaryExpressionPostfix(expression, castContext)
     }
 
     override fun visitBinaryExpression(expression: KtBinaryExpression, data: Unit?): EExpression? {
