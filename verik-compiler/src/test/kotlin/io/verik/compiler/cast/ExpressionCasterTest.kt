@@ -202,12 +202,13 @@ internal class ExpressionCasterTest : BaseTest() {
     }
 
     @Test
-    fun `lambda expression`() {
+    fun `function literal expression property explicit`() {
         val projectContext = driveTest(
             CasterStage::class,
             """
+                val x: Packed<`8`, Boolean> = nc()
                 fun f() {
-                    forever {}
+                    x.forEach { y -> }
                 }
             """.trimIndent()
         )
@@ -215,10 +216,35 @@ internal class ExpressionCasterTest : BaseTest() {
             """
                 KtCallExpression(
                     Unit,
-                    forever,
-                    null,
-                    [FunctionLiteralExpression(Function, KtBlockExpression(*))],
-                    []
+                    forEach,
+                    KtReferenceExpression(*),
+                    [FunctionLiteralExpression(Function, [KtValueParameter(y, Boolean, [])], KtBlockExpression(*))],
+                    [Boolean]
+                )
+            """.trimIndent(),
+            projectContext.findExpression("f")
+        )
+    }
+
+    @Test
+    fun `function literal expression property implicit`() {
+        val projectContext = driveTest(
+            CasterStage::class,
+            """
+                val x: Packed<`8`, Boolean> = nc()
+                fun f() {
+                    x.forEach { }
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            """
+                KtCallExpression(
+                    Unit,
+                    forEach,
+                    KtReferenceExpression(*),
+                    [FunctionLiteralExpression(Function, [KtValueParameter(it, Boolean, [])], KtBlockExpression(*))],
+                    [Boolean]
                 )
             """.trimIndent(),
             projectContext.findExpression("f")

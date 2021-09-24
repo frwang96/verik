@@ -17,6 +17,7 @@
 package io.verik.compiler.ast.element.kt
 
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.ENullExpression
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.common.TreeVisitor
@@ -27,36 +28,38 @@ import io.verik.compiler.message.SourceLocation
 
 class EFunctionLiteralExpression(
     override val location: SourceLocation,
+    val valueParameters: List<EKtValueParameter>,
     var body: EExpression
 ) : EExpression(), ExpressionContainer {
+
+    override var type = Core.Kt.C_FUNCTION.toType()
 
     override val serializationType = SvSerializationType.INTERNAL
 
     init {
+        valueParameters.forEach { it.parent = this }
         body.parent = this
     }
-
-    override var type = Core.Kt.C_FUNCTION.toType()
 
     override fun accept(visitor: Visitor) {
         visitor.visitFunctionLiteralExpression(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
+        valueParameters.forEach { it.parent = this }
         body.accept(visitor)
     }
 
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
         newExpression.parent = this
         if (body == oldExpression)
-            body = newExpression.cast()
-                ?: return
+            body = newExpression
         else
             Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
     }
 
     override fun copy(): EExpression {
-        val copyBody = body.copy()
-        return EFunctionLiteralExpression(location, copyBody)
+        Messages.INTERNAL_ERROR.on(this, "Unable to copy $this")
+        return ENullExpression(location)
     }
 }

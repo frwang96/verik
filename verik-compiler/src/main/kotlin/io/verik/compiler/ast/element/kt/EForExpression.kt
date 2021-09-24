@@ -28,7 +28,7 @@ import io.verik.compiler.message.SourceLocation
 
 class EForExpression(
     override val location: SourceLocation,
-    val parameter: EKtValueParameter,
+    val valueParameter: EKtValueParameter,
     var range: EExpression,
     var body: EExpression
 ) : EExpression(), ExpressionContainer {
@@ -38,7 +38,7 @@ class EForExpression(
     override val serializationType = SvSerializationType.INTERNAL
 
     init {
-        parameter.parent = this
+        valueParameter.parent = this
         range.parent = this
         body.parent = this
     }
@@ -48,7 +48,7 @@ class EForExpression(
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        parameter.accept(visitor)
+        valueParameter.accept(visitor)
         range.accept(visitor)
         body.accept(visitor)
     }

@@ -32,6 +32,7 @@ import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtElement
 import org.jetbrains.kotlin.psi.KtEnumEntry
+import org.jetbrains.kotlin.psi.KtLambdaExpression
 import org.jetbrains.kotlin.psi.KtNamedFunction
 import org.jetbrains.kotlin.psi.KtParameter
 import org.jetbrains.kotlin.psi.KtPrimaryConstructor
@@ -153,6 +154,19 @@ object IndexerStage : ProjectStage() {
             checkDeclarationName(name, parameter)
             val valueParameter = EKtValueParameter(location, name, NullDeclaration.toType(), listOf())
             castContext.addDeclaration(descriptor, valueParameter)
+        }
+
+        override fun visitLambdaExpression(lambdaExpression: KtLambdaExpression) {
+            super.visitLambdaExpression(lambdaExpression)
+            val functionLiteral = lambdaExpression.functionLiteral
+            val functionDescriptor = castContext.sliceFunction[functionLiteral]!!
+            if (!functionLiteral.hasParameterSpecification() && functionDescriptor.valueParameters.isNotEmpty()) {
+                val parameterDescriptor = functionDescriptor.valueParameters[0]
+                val location = functionLiteral.location()
+                val name = parameterDescriptor.name.toString()
+                val valueParameter = EKtValueParameter(location, name, NullDeclaration.toType(), listOf())
+                castContext.addDeclaration(parameterDescriptor, valueParameter)
+            }
         }
     }
 }

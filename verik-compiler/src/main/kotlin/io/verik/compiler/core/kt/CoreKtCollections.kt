@@ -16,18 +16,19 @@
 
 package io.verik.compiler.core.kt
 
-import io.verik.compiler.core.common.CoreClassDeclaration
+import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.core.common.Core
+import io.verik.compiler.core.common.CoreKtTransformableFunctionDeclaration
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
 
-object CoreKtClass : CoreScope(CorePackage.KT) {
+object CoreKtCollections : CoreScope(CorePackage.KT_COLLECTIONS) {
 
-    val C_ANY = CoreClassDeclaration(parent, "Any", null)
-    val C_NOTHING = CoreClassDeclaration(parent, "Nothing", null)
-    val C_FUNCTION = CoreClassDeclaration(parent, "Function", null)
-    val C_UNIT = CoreClassDeclaration(parent, "Unit", C_ANY)
-    val C_INT = CoreClassDeclaration(parent, "Int", C_ANY)
-    val C_BOOLEAN = CoreClassDeclaration(parent, "Boolean", C_ANY)
-    val C_STRING = CoreClassDeclaration(parent, "String", C_ANY)
-    val C_ENUM = CoreClassDeclaration(parent, "Enum", C_ANY)
+    val F_FOR_EACH_FUNCTION = object : CoreKtTransformableFunctionDeclaration(parent, "forEach", Core.Kt.C_FUNCTION) {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            return callExpression
+        }
+    }
 }

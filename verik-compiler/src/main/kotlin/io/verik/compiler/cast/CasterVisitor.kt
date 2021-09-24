@@ -182,7 +182,7 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
         return ExpressionCaster.castReturnStatement(expression, castContext)
     }
 
-    override fun visitLambdaExpression(expression: KtLambdaExpression, data: Unit?): EFunctionLiteralExpression {
+    override fun visitLambdaExpression(expression: KtLambdaExpression, data: Unit?): EFunctionLiteralExpression? {
         return ExpressionCaster.castFunctionLiteralExpression(expression, castContext)
     }
 

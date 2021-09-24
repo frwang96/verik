@@ -438,6 +438,7 @@ class ElementPrinter : Visitor() {
     override fun visitFunctionLiteralExpression(functionLiteralExpression: EFunctionLiteralExpression) {
         build("FunctionLiteralExpression") {
             build(functionLiteralExpression.type.toString())
+            build(functionLiteralExpression.valueParameters)
             build(functionLiteralExpression.body)
         }
     }
@@ -542,7 +543,7 @@ class ElementPrinter : Visitor() {
     override fun visitForExpression(forExpression: EForExpression) {
         build("ForExpression") {
             build(forExpression.type.toString())
-            build(forExpression.parameter)
+            build(forExpression.valueParameter)
             build(forExpression.range)
             build(forExpression.body)
         }

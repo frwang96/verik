@@ -19,13 +19,12 @@
 package io.verik.compiler.core.common
 
 import io.verik.compiler.core.kt.CoreKtBoolean
-import io.verik.compiler.core.kt.CoreKtClass
+import io.verik.compiler.core.kt.CoreKtCollections
 import io.verik.compiler.core.kt.CoreKtInt
 import io.verik.compiler.core.kt.CoreKtIo
 import io.verik.compiler.core.sv.CoreSv
 import io.verik.compiler.core.vk.CoreVk
 import io.verik.compiler.core.vk.CoreVkCardinal
-import io.verik.compiler.core.vk.CoreVkClass
 import io.verik.compiler.core.vk.CoreVkUbit
 import io.verik.compiler.core.vk.CoreVkUnpacked
 
@@ -33,14 +32,14 @@ object Core {
 
     object Kt : CoreScope(CorePackage.KT) {
 
-        val C_ANY = CoreKtClass.C_ANY
-        val C_NOTHING = CoreKtClass.C_NOTHING
-        val C_FUNCTION = CoreKtClass.C_FUNCTION
-        val C_UNIT = CoreKtClass.C_UNIT
-        val C_INT = CoreKtClass.C_INT
-        val C_BOOLEAN = CoreKtClass.C_BOOLEAN
-        val C_STRING = CoreKtClass.C_STRING
-        val C_ENUM = CoreKtClass.C_ENUM
+        val C_ANY = CoreClass.Kt.C_ANY
+        val C_NOTHING = CoreClass.Kt.C_NOTHING
+        val C_FUNCTION = CoreClass.Kt.C_FUNCTION
+        val C_UNIT = CoreClass.Kt.C_UNIT
+        val C_INT = CoreClass.Kt.C_INT
+        val C_BOOLEAN = CoreClass.Kt.C_BOOLEAN
+        val C_STRING = CoreClass.Kt.C_STRING
+        val C_ENUM = CoreClass.Kt.C_ENUM
 
         object Int : CoreScope(C_INT) {
 
@@ -63,6 +62,11 @@ object Core {
             val F_PRINTLN_ANY = CoreKtIo.F_PRINTLN_ANY
             val F_PRINTLN_INT = CoreKtIo.F_PRINTLN_INT
         }
+
+        object Collections : CoreScope(CorePackage.KT_COLLECTIONS) {
+
+            val F_FOR_EACH_FUNCTION = CoreKtCollections.F_FOR_EACH_FUNCTION
+        }
     }
 
     object Vk : CoreScope(CorePackage.VK) {
@@ -71,15 +75,15 @@ object Core {
             return CoreCardinalConstantDeclaration(value)
         }
 
-        val C_UBIT = CoreVkClass.C_UBIT
-        val C_SBIT = CoreVkClass.C_SBIT
-        val C_STRUCT = CoreVkClass.C_STRUCT
-        val C_PACKED = CoreVkClass.C_PACKED
-        val C_UNPACKED = CoreVkClass.C_UNPACKED
-        val C_COMPONENT = CoreVkClass.C_COMPONENT
-        val C_MODULE = CoreVkClass.C_MODULE
-        val C_TIME = CoreVkClass.C_TIME
-        val C_EVENT = CoreVkClass.C_EVENT
+        val C_UBIT = CoreClass.Vk.C_UBIT
+        val C_SBIT = CoreClass.Vk.C_SBIT
+        val C_STRUCT = CoreClass.Vk.C_STRUCT
+        val C_PACKED = CoreClass.Vk.C_PACKED
+        val C_UNPACKED = CoreClass.Vk.C_UNPACKED
+        val C_COMPONENT = CoreClass.Vk.C_COMPONENT
+        val C_MODULE = CoreClass.Vk.C_MODULE
+        val C_TIME = CoreClass.Vk.C_TIME
+        val C_EVENT = CoreClass.Vk.C_EVENT
 
         val N_CARDINAL = CoreCardinalUnresolvedDeclaration
         val N_ADD = CoreVkCardinal.N_ADD
