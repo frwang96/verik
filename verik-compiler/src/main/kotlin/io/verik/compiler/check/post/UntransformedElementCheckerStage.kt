@@ -17,6 +17,7 @@
 package io.verik.compiler.check.post
 
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.kt.EForExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
@@ -129,6 +130,11 @@ object UntransformedElementCheckerStage : ProjectStage() {
         override fun visitWhenExpression(whenExpression: EWhenExpression) {
             super.visitWhenExpression(whenExpression)
             Messages.INTERNAL_ERROR.on(whenExpression, "When expression $message")
+        }
+
+        override fun visitForExpression(forExpression: EForExpression) {
+            super.visitForExpression(forExpression)
+            Messages.INTERNAL_ERROR.on(forExpression, "For expression $message")
         }
     }
 }

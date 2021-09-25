@@ -81,9 +81,9 @@ object TypeConstraintChecker {
             .valueArguments
             .map {
                 when (it.type.reference) {
-                    Core.Kt.C_BOOLEAN -> 1
-                    Core.Vk.C_UBIT -> it.type.asBitWidth(it)
-                    Core.Vk.C_SBIT -> it.type.asBitWidth(it)
+                    Core.Kt.C_Boolean -> 1
+                    Core.Vk.C_Ubit -> it.type.asBitWidth(it)
+                    Core.Vk.C_Sbit -> it.type.asBitWidth(it)
                     else -> 0
                 }
             }

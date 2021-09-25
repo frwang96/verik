@@ -28,6 +28,7 @@ import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ERootPackage
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.EAnnotation
+import io.verik.compiler.ast.element.kt.EForExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBasicClass
@@ -54,6 +55,7 @@ import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EEventExpression
+import io.verik.compiler.ast.element.sv.EForStatement
 import io.verik.compiler.ast.element.sv.EForeverStatement
 import io.verik.compiler.ast.element.sv.EInitialBlock
 import io.verik.compiler.ast.element.sv.EInjectedExpression
@@ -340,34 +342,34 @@ class ElementPrinter : Visitor() {
     override fun visitKtUnaryExpression(unaryExpression: EKtUnaryExpression) {
         build("KtUnaryExpression") {
             build(unaryExpression.type.toString())
-            build(unaryExpression.kind.toString())
             build(unaryExpression.expression)
+            build(unaryExpression.kind.toString())
         }
     }
 
     override fun visitSvUnaryExpression(unaryExpression: ESvUnaryExpression) {
         build("SvUnaryExpression") {
             build(unaryExpression.type.toString())
-            build(unaryExpression.kind.toString())
             build(unaryExpression.expression)
+            build(unaryExpression.kind.toString())
         }
     }
 
     override fun visitKtBinaryExpression(binaryExpression: EKtBinaryExpression) {
         build("KtBinaryExpression") {
             build(binaryExpression.type.toString())
-            build(binaryExpression.kind.toString())
             build(binaryExpression.left)
             build(binaryExpression.right)
+            build(binaryExpression.kind.toString())
         }
     }
 
     override fun visitSvBinaryExpression(binaryExpression: ESvBinaryExpression) {
         build("SvBinaryExpression") {
             build(binaryExpression.type.toString())
-            build(binaryExpression.kind.toString())
             build(binaryExpression.left)
             build(binaryExpression.right)
+            build(binaryExpression.kind.toString())
         }
     }
 
@@ -437,6 +439,7 @@ class ElementPrinter : Visitor() {
     override fun visitFunctionLiteralExpression(functionLiteralExpression: EFunctionLiteralExpression) {
         build("FunctionLiteralExpression") {
             build(functionLiteralExpression.type.toString())
+            build(functionLiteralExpression.valueParameters)
             build(functionLiteralExpression.body)
         }
     }
@@ -535,6 +538,26 @@ class ElementPrinter : Visitor() {
                     build(it.body)
                 }
             }
+        }
+    }
+
+    override fun visitForExpression(forExpression: EForExpression) {
+        build("ForExpression") {
+            build(forExpression.type.toString())
+            build(forExpression.valueParameter)
+            build(forExpression.range)
+            build(forExpression.body)
+        }
+    }
+
+    override fun visitForStatement(forStatement: EForStatement) {
+        build("ForStatement") {
+            build(forStatement.type.toString())
+            build(forStatement.valueParameter)
+            build(forStatement.initializer)
+            build(forStatement.condition)
+            build(forStatement.iteration)
+            build(forStatement.body)
         }
     }
 

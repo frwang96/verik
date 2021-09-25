@@ -36,7 +36,7 @@ object UninitializedPropertyTransformerStage : ProjectStage() {
         override fun visitAbstractInitializedProperty(abstractInitializedProperty: EAbstractInitializedProperty) {
             super.visitAbstractInitializedProperty(abstractInitializedProperty)
             val initializer = abstractInitializedProperty.initializer
-            if (initializer is EKtCallExpression && initializer.reference == Core.Vk.F_NC) {
+            if (initializer is EKtCallExpression && initializer.reference == Core.Vk.F_nc) {
                 abstractInitializedProperty.initializer = null
             }
         }

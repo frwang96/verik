@@ -14,28 +14,40 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.mid
+package io.verik.compiler.core.kt
 
+import io.verik.compiler.transform.mid.FunctionTransformerStage
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
-internal class ComparisonTransformerStageTest : BaseTest() {
+internal class CoreKtCollectionsTest : BaseTest() {
 
     @Test
-    fun `transform comparison`() {
+    fun `transform forEach simple`() {
         val projectContext = driveTest(
-            ComparisonTransformerStage::class,
+            FunctionTransformerStage::class,
             """
-                @Suppress("SimplifyBooleanWithConstants")
-                var x = 0 < 1
+                fun f() {
+                    @Suppress("ForEachParameterNotUsed")
+                    (0 until 8).forEach { }
+                }
             """.trimIndent()
         )
         assertElementEquals(
-            "SvBinaryExpression(Boolean, LT, *, *)",
-            projectContext.findExpression("x")
+            """
+                ForStatement(
+                    Unit,
+                    SvValueParameter(it, Int),
+                    ConstantExpression(Int, 0),
+                    KtBinaryExpression(Boolean, KtReferenceExpression(*), ConstantExpression(*), LT),
+                    KtUnaryExpression(Int, KtReferenceExpression(*), POST_INC),
+                    KtBlockExpression(Function, [])
+                )
+            """.trimIndent(),
+            projectContext.findExpression("f")
         )
     }
 }

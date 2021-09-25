@@ -28,9 +28,9 @@ import io.verik.compiler.specialize.TypeConstraint
 import io.verik.compiler.specialize.TypeEqualsTypeConstraint
 import io.verik.compiler.specialize.TypedElementTypeArgumentTypeAdapter
 
-object CoreVkUnpacked : CoreScope(Core.Vk.C_UNPACKED) {
+object CoreVkUnpacked : CoreScope(Core.Vk.C_Unpacked) {
 
-    val F_GET_INT = object : CoreKtTransformableFunctionDeclaration(parent, "get", Core.Kt.C_INT) {
+    val F_get_Int = object : CoreKtTransformableFunctionDeclaration(parent, "get", Core.Kt.C_Int) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -51,7 +51,7 @@ object CoreVkUnpacked : CoreScope(Core.Vk.C_UNPACKED) {
         }
     }
 
-    val F_SET_INT_ANY = object : CoreKtTransformableFunctionDeclaration(parent, "set", Core.Kt.C_INT, Core.Kt.C_ANY) {
+    val F_set_Int_Any = object : CoreKtTransformableFunctionDeclaration(parent, "set", Core.Kt.C_Int, Core.Kt.C_Any) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(

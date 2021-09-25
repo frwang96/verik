@@ -16,18 +16,12 @@
 
 package io.verik.compiler.core.kt
 
-import io.verik.compiler.core.common.CoreClassDeclaration
+import io.verik.compiler.core.common.Core
+import io.verik.compiler.core.common.CoreKtBasicFunctionDeclaration
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
 
-object CoreKtClass : CoreScope(CorePackage.KT) {
+object CoreKtRanges : CoreScope(CorePackage.Kt_RANGES) {
 
-    val C_ANY = CoreClassDeclaration(parent, "Any", null)
-    val C_NOTHING = CoreClassDeclaration(parent, "Nothing", null)
-    val C_FUNCTION = CoreClassDeclaration(parent, "Function", null)
-    val C_UNIT = CoreClassDeclaration(parent, "Unit", C_ANY)
-    val C_INT = CoreClassDeclaration(parent, "Int", C_ANY)
-    val C_BOOLEAN = CoreClassDeclaration(parent, "Boolean", C_ANY)
-    val C_STRING = CoreClassDeclaration(parent, "String", C_ANY)
-    val C_ENUM = CoreClassDeclaration(parent, "Enum", C_ANY)
+    val F_until_Int = CoreKtBasicFunctionDeclaration(parent, "until", Core.Kt.C_Int)
 }

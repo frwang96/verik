@@ -25,5 +25,5 @@ abstract class EAbstractClass : EClassifier() {
     abstract var typeParameters: ArrayList<ETypeParameter>
 
     // TODO set type of class
-    override var type = Core.Kt.C_UNIT.toType()
+    override var type = Core.Kt.C_Unit.toType()
 }

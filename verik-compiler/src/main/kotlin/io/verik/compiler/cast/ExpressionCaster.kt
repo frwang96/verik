@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
+import io.verik.compiler.ast.element.kt.EForExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
@@ -27,6 +28,8 @@ import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
+import io.verik.compiler.ast.element.kt.EKtValueParameter
+import io.verik.compiler.ast.interfaces.cast
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.KtUnaryOperatorKind
 import io.verik.compiler.common.location
@@ -39,8 +42,10 @@ import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtConstantExpression
 import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
+import org.jetbrains.kotlin.psi.KtForExpression
 import org.jetbrains.kotlin.psi.KtIfExpression
 import org.jetbrains.kotlin.psi.KtLambdaExpression
+import org.jetbrains.kotlin.psi.KtPostfixExpression
 import org.jetbrains.kotlin.psi.KtPrefixExpression
 import org.jetbrains.kotlin.psi.KtReturnExpression
 import org.jetbrains.kotlin.psi.KtSimpleNameExpression
@@ -55,10 +60,19 @@ object ExpressionCaster {
         return EKtBlockExpression(location, type, ArrayList(statements))
     }
 
-    fun castKtUnaryExpression(expression: KtPrefixExpression, castContext: CastContext): EKtUnaryExpression? {
+    fun castKtUnaryExpressionPrefix(expression: KtPrefixExpression, castContext: CastContext): EKtUnaryExpression? {
         val location = expression.location()
         val type = castContext.castType(expression)
-        val kind = KtUnaryOperatorKind(expression.operationToken, location)
+        val kind = KtUnaryOperatorKind.getKindPrefix(expression.operationToken, location)
+            ?: return null
+        val childExpression = castContext.casterVisitor.getExpression(expression.baseExpression!!)
+        return EKtUnaryExpression(location, type, childExpression, kind)
+    }
+
+    fun castKtUnaryExpressionPostfix(expression: KtPostfixExpression, castContext: CastContext): EKtUnaryExpression? {
+        val location = expression.location()
+        val type = castContext.castType(expression)
+        val kind = KtUnaryOperatorKind.getKindPostfix(expression.operationToken, location)
             ?: return null
         val childExpression = castContext.casterVisitor.getExpression(expression.baseExpression!!)
         return EKtUnaryExpression(location, type, childExpression, kind)
@@ -168,17 +182,33 @@ object ExpressionCaster {
     fun castFunctionLiteralExpression(
         expression: KtLambdaExpression,
         castContext: CastContext
-    ): EFunctionLiteralExpression {
+    ): EFunctionLiteralExpression? {
         val location = expression.location()
+        val valueParameters = if (expression.functionLiteral.hasParameterSpecification()) {
+            expression.valueParameters.mapNotNull {
+                castContext.casterVisitor.getElement<EKtValueParameter>(it)
+            }
+        } else {
+            val functionDescriptor = castContext.sliceFunction[expression.functionLiteral]!!
+            if (functionDescriptor.valueParameters.isNotEmpty()) {
+                val parameterDescriptor = functionDescriptor.valueParameters[0]
+                val valueParameter = castContext.getDeclaration(parameterDescriptor, expression)
+                    .cast<EKtValueParameter>(expression)
+                    ?: return null
+                valueParameter.type = castContext.castType(parameterDescriptor.type, expression)
+                listOf(valueParameter)
+            } else listOf()
+        }
+
         val statements = expression.bodyExpression!!.statements.map {
             castContext.casterVisitor.getExpression(it)
         }
         val body = EKtBlockExpression(
             location,
-            Core.Kt.C_FUNCTION.toType(),
+            Core.Kt.C_Function.toType(),
             ArrayList(statements)
         )
-        return EFunctionLiteralExpression(location, body)
+        return EFunctionLiteralExpression(location, valueParameters, body)
     }
 
     fun castKtArrayAccessExpression(
@@ -210,5 +240,15 @@ object ExpressionCaster {
             castContext.casterVisitor.getExpression(it)
         }
         return EIfExpression(location, type, condition, thenExpression, elseExpression)
+    }
+
+    fun castForExpression(expression: KtForExpression, castContext: CastContext): EForExpression? {
+        val location = expression.location()
+        val valueParameter = castContext.casterVisitor
+            .getElement<EKtValueParameter>(expression.loopParameter!!)
+            ?: return null
+        val range = castContext.casterVisitor.getExpression(expression.loopRange!!)
+        val body = castContext.casterVisitor.getExpression(expression.body!!)
+        return EForExpression(location, valueParameter, range, body)
     }
 }

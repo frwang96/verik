@@ -17,11 +17,26 @@
 package io.verik.compiler.ast.property
 
 enum class SvUnaryOperatorKind {
-    EXCL;
+    EXCL,
+    PRE_INC,
+    PRE_DEC,
+    POST_INC,
+    POST_DEC;
 
-    fun serialize(): String {
+    fun serializePrefix(): String? {
         return when (this) {
             EXCL -> "!"
+            PRE_INC -> "++"
+            PRE_DEC -> "--"
+            else -> null
+        }
+    }
+
+    fun serializePostfix(): String? {
+        return when (this) {
+            POST_INC -> "++"
+            POST_DEC -> "--"
+            else -> null
         }
     }
 }

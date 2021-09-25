@@ -31,6 +31,7 @@ import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EEventExpression
+import io.verik.compiler.ast.element.sv.EForStatement
 import io.verik.compiler.ast.element.sv.EForeverStatement
 import io.verik.compiler.ast.element.sv.EInitialBlock
 import io.verik.compiler.ast.element.sv.EInjectedExpression
@@ -222,6 +223,10 @@ class SourceSerializerVisitor(private val serializerContext: SerializerContext) 
 
     override fun visitCaseStatement(caseStatement: ECaseStatement) {
         ExpressionSerializer.serializeCaseStatement(caseStatement, serializerContext)
+    }
+
+    override fun visitForStatement(forStatement: EForStatement) {
+        ExpressionSerializer.serializeForStatement(forStatement, serializerContext)
     }
 
     override fun visitForeverStatement(foreverStatement: EForeverStatement) {

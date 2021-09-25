@@ -34,7 +34,7 @@ class EKtPropertyStatement(
         property.parent = this
     }
 
-    override var type = Core.Kt.C_UNIT.toType()
+    override var type = Core.Kt.C_Unit.toType()
 
     override val serializationType = SvSerializationType.INTERNAL
 

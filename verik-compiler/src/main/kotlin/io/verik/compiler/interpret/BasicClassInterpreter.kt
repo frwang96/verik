@@ -60,14 +60,14 @@ object BasicClassInterpreter {
             location,
             "<tmp>",
             type.copy(),
-            ESvCallExpression(location, type.copy(), Core.Sv.F_NEW, null, arrayListOf(), false),
+            ESvCallExpression(location, type.copy(), Core.Sv.F_new, null, arrayListOf(), false),
             false
         )
         val statements = listOf(
             ESvPropertyStatement(location, property),
             EReturnStatement(
                 location,
-                Core.Kt.C_NOTHING.toType(),
+                Core.Kt.C_Nothing.toType(),
                 ESvReferenceExpression(location, type.copy(), property, null, false)
             )
         )

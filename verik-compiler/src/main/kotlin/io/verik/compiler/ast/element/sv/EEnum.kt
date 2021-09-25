@@ -30,7 +30,7 @@ class EEnum(
     val entryReferences: List<Declaration>
 ) : EAbstractClass() {
 
-    override var supertype = Core.Kt.C_ANY.toType()
+    override var supertype = Core.Kt.C_Any.toType()
 
     override var typeParameters = arrayListOf<ETypeParameter>()
 

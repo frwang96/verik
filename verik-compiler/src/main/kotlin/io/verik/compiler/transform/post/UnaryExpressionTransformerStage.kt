@@ -17,7 +17,10 @@
 package io.verik.compiler.transform.post
 
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
+import io.verik.compiler.ast.property.KtUnaryOperatorKind
+import io.verik.compiler.ast.property.SvUnaryOperatorKind
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.CoreKtUnaryFunctionDeclaration
@@ -43,6 +46,27 @@ object UnaryExpressionTransformerStage : ProjectStage() {
                         callExpression.location,
                         callExpression.type,
                         callExpression.receiver!!,
+                        kind
+                    )
+                )
+            }
+        }
+
+        override fun visitKtUnaryExpression(unaryExpression: EKtUnaryExpression) {
+            super.visitKtUnaryExpression(unaryExpression)
+            val kind = when (unaryExpression.kind) {
+                KtUnaryOperatorKind.PRE_INC -> SvUnaryOperatorKind.PRE_INC
+                KtUnaryOperatorKind.PRE_DEC -> SvUnaryOperatorKind.PRE_DEC
+                KtUnaryOperatorKind.POST_INC -> SvUnaryOperatorKind.POST_INC
+                KtUnaryOperatorKind.POST_DEC -> SvUnaryOperatorKind.POST_DEC
+                else -> null
+            }
+            if (kind != null) {
+                unaryExpression.replace(
+                    ESvUnaryExpression(
+                        unaryExpression.location,
+                        unaryExpression.type,
+                        unaryExpression.expression,
                         kind
                     )
                 )

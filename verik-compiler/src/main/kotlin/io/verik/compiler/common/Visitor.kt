@@ -46,6 +46,7 @@ import io.verik.compiler.ast.element.common.ERootPackage
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.kt.EAnnotation
+import io.verik.compiler.ast.element.kt.EForExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
@@ -74,11 +75,11 @@ import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EEventExpression
+import io.verik.compiler.ast.element.sv.EForStatement
 import io.verik.compiler.ast.element.sv.EForeverStatement
 import io.verik.compiler.ast.element.sv.EInitialBlock
 import io.verik.compiler.ast.element.sv.EInjectedExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
-import io.verik.compiler.ast.element.sv.ELoopStatement
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EModuleInstantiation
 import io.verik.compiler.ast.element.sv.EPort
@@ -414,12 +415,16 @@ abstract class Visitor {
         visitExpression(caseStatement)
     }
 
-    open fun visitLoopStatement(loopStatement: ELoopStatement) {
-        visitExpression(loopStatement)
+    open fun visitForExpression(forExpression: EForExpression) {
+        visitExpression(forExpression)
+    }
+
+    open fun visitForStatement(forStatement: EForStatement) {
+        visitExpression(forStatement)
     }
 
     open fun visitForeverStatement(foreverStatement: EForeverStatement) {
-        visitLoopStatement(foreverStatement)
+        visitExpression(foreverStatement)
     }
 
     open fun visitEventExpression(eventExpression: EEventExpression) {

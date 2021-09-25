@@ -34,8 +34,23 @@ internal class BinaryExpressionTransformerStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SvBinaryExpression(Int, PLUS, KtReferenceExpression(*), ConstantExpression(*))",
+            "SvBinaryExpression(Int, KtReferenceExpression(*), ConstantExpression(*), PLUS)",
             projectContext.findExpression("y")
+        )
+    }
+
+    @Test
+    fun `transform comparison`() {
+        val projectContext = driveTest(
+            BinaryExpressionTransformerStage::class,
+            """
+                @Suppress("SimplifyBooleanWithConstants")
+                var x = 0 < 1
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "SvBinaryExpression(Boolean, *, *, LT)",
+            projectContext.findExpression("x")
         )
     }
 }

@@ -26,6 +26,7 @@ import io.verik.compiler.ast.element.sv.EConstantPartSelectExpression
 import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EEventExpression
+import io.verik.compiler.ast.element.sv.EForStatement
 import io.verik.compiler.ast.element.sv.EForeverStatement
 import io.verik.compiler.ast.element.sv.EInjectedExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
@@ -76,8 +77,13 @@ object ExpressionSerializer {
     }
 
     fun serializeSvUnaryExpression(unaryExpression: ESvUnaryExpression, serializerContext: SerializerContext) {
-        serializerContext.append(unaryExpression.kind.serialize())
+        val prefix = unaryExpression.kind.serializePrefix()
+        if (prefix != null)
+            serializerContext.append(prefix)
         serializerContext.serializeAsExpression(unaryExpression.expression)
+        val postfix = unaryExpression.kind.serializePostfix()
+        if (postfix != null)
+            serializerContext.append(postfix)
     }
 
     fun serializeSvBinaryExpression(binaryExpression: ESvBinaryExpression, serializerContext: SerializerContext) {
@@ -252,6 +258,19 @@ object ExpressionSerializer {
             }
         }
         serializerContext.appendLine("endcase")
+    }
+
+    fun serializeForStatement(forStatement: EForStatement, serializerContext: SerializerContext) {
+        serializerContext.append("for (")
+        serializerContext.serialize(forStatement.valueParameter)
+        serializerContext.append(" = ")
+        serializerContext.serializeAsExpression(forStatement.initializer)
+        serializerContext.append("; ")
+        serializerContext.serializeAsExpression(forStatement.condition)
+        serializerContext.append("; ")
+        serializerContext.serializeAsExpression(forStatement.iteration)
+        serializerContext.append(") ")
+        serializerContext.serializeAsStatement(forStatement.body)
     }
 
     fun serializeForeverStatement(foreverStatement: EForeverStatement, serializerContext: SerializerContext) {

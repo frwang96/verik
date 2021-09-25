@@ -117,9 +117,9 @@ object TypeConstraintResolver {
             if (valueArgumentsResolved) {
                 val cardinalTypes = typeConstraint.callExpression.valueArguments.map {
                     when (it.type.reference) {
-                        Core.Kt.C_BOOLEAN -> Core.Vk.cardinalOf(1).toType()
-                        Core.Vk.C_UBIT -> it.type.arguments[0].copy()
-                        Core.Vk.C_SBIT -> it.type.arguments[0].copy()
+                        Core.Kt.C_Boolean -> Core.Vk.cardinalOf(1).toType()
+                        Core.Vk.C_Ubit -> it.type.arguments[0].copy()
+                        Core.Vk.C_Sbit -> it.type.arguments[0].copy()
                         else -> {
                             Messages.TYPE_NO_WIDTH.on(it, it.type)
                             Core.Vk.cardinalOf(0).toType()

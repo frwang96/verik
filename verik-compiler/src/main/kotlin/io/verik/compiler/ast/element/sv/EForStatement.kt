@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.kt
+package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.ENullExpression
@@ -26,40 +26,52 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 
-class EFunctionLiteralExpression(
+class EForStatement(
     override val location: SourceLocation,
-    val valueParameters: List<EKtValueParameter>,
+    val valueParameter: ESvValueParameter,
+    var initializer: EExpression,
+    var condition: EExpression,
+    var iteration: EExpression,
     var body: EExpression
 ) : EExpression(), ExpressionContainer {
 
-    override var type = Core.Kt.C_Function.toType()
+    override var type = Core.Kt.C_Unit.toType()
 
-    override val serializationType = SvSerializationType.INTERNAL
+    override val serializationType = SvSerializationType.STATEMENT
 
     init {
-        valueParameters.forEach { it.parent = this }
+        valueParameter.parent = this
+        initializer.parent = this
+        condition.parent = this
+        iteration.parent = this
         body.parent = this
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitFunctionLiteralExpression(this)
+        visitor.visitForStatement(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        valueParameters.forEach { it.parent = this }
+        valueParameter.accept(visitor)
+        initializer.accept(visitor)
+        condition.accept(visitor)
+        iteration.accept(visitor)
         body.accept(visitor)
-    }
-
-    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
-        newExpression.parent = this
-        if (body == oldExpression)
-            body = newExpression
-        else
-            Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
     }
 
     override fun copy(): EExpression {
         Messages.INTERNAL_ERROR.on(this, "Unable to copy $this")
         return ENullExpression(location)
+    }
+
+    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
+        newExpression.parent = this
+        when (oldExpression) {
+            initializer -> initializer = newExpression
+            condition -> condition = newExpression
+            iteration -> iteration = newExpression
+            body -> body = newExpression
+            else -> Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
+        }
     }
 }

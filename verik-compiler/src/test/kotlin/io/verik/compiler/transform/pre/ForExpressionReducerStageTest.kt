@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.mid
+package io.verik.compiler.transform.pre
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.assertElementEquals
@@ -22,21 +22,29 @@ import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
-internal class AssignmentTransformerStageTest : BaseTest() {
+internal class ForExpressionReducerStageTest : BaseTest() {
 
     @Test
-    fun `transform assignment blocking`() {
+    fun `reduce for expression`() {
         val projectContext = driveTest(
-            AssignmentTransformerStage::class,
+            ForExpressionReducerStage::class,
             """
-                var x = 0
                 fun f() {
-                    x = 1
+                    @Suppress("ControlFlowWithEmptyBody")
+                    for (i in 0 until 8) {}
                 }
             """.trimIndent()
         )
         assertElementEquals(
-            "SvBinaryExpression(Unit, KtReferenceExpression(*), ConstantExpression(*), ASSIGN)",
+            """
+                KtCallExpression(
+                    Unit,
+                    forEach,
+                    KtCallExpression(IntRange, until, *, [*], []),
+                    [FunctionLiteralExpression(Function, [KtValueParameter(*)], KtBlockExpression(*))],
+                    [Int]
+                )
+            """.trimIndent(),
             projectContext.findExpression("f")
         )
     }

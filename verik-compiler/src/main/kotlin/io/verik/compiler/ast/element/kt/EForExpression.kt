@@ -26,40 +26,44 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 
-class EFunctionLiteralExpression(
+class EForExpression(
     override val location: SourceLocation,
-    val valueParameters: List<EKtValueParameter>,
+    val valueParameter: EKtValueParameter,
+    var range: EExpression,
     var body: EExpression
 ) : EExpression(), ExpressionContainer {
 
-    override var type = Core.Kt.C_Function.toType()
+    override var type = Core.Kt.C_Unit.toType()
 
     override val serializationType = SvSerializationType.INTERNAL
 
     init {
-        valueParameters.forEach { it.parent = this }
+        valueParameter.parent = this
+        range.parent = this
         body.parent = this
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitFunctionLiteralExpression(this)
+        visitor.visitForExpression(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        valueParameters.forEach { it.parent = this }
+        valueParameter.accept(visitor)
+        range.accept(visitor)
         body.accept(visitor)
-    }
-
-    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
-        newExpression.parent = this
-        if (body == oldExpression)
-            body = newExpression
-        else
-            Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
     }
 
     override fun copy(): EExpression {
         Messages.INTERNAL_ERROR.on(this, "Unable to copy $this")
         return ENullExpression(location)
+    }
+
+    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
+        newExpression.parent = this
+        when (oldExpression) {
+            range -> range = newExpression
+            body -> body = newExpression
+            else -> Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
+        }
     }
 }

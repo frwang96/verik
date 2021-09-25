@@ -35,10 +35,10 @@ object TypeCaster {
 
     fun cast(castContext: CastContext, type: KotlinType, element: KtElement): Type {
         if (type.isFunctionType)
-            return Type(Core.Kt.C_FUNCTION, ArrayList())
+            return Type(Core.Kt.C_Function, ArrayList())
         val declarationDescriptor = type.constructor.declarationDescriptor!!
         val declaration = castContext.getDeclaration(declarationDescriptor, element)
-        val arguments = if (declaration != Core.Kt.C_ENUM) {
+        val arguments = if (declaration != Core.Kt.C_Enum) {
             type.arguments.map { cast(castContext, it.type, element) }
         } else listOf()
         return Type(declaration, ArrayList(arguments))

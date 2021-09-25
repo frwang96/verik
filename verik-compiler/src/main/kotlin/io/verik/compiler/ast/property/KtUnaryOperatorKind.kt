@@ -21,13 +21,34 @@ import io.verik.compiler.message.SourceLocation
 import org.jetbrains.kotlin.com.intellij.psi.tree.IElementType
 
 enum class KtUnaryOperatorKind {
-    EXCL;
+    EXCL,
+    PRE_INC,
+    PRE_DEC,
+    POST_INC,
+    POST_DEC;
+
+    fun isReducible(): Boolean {
+        return this == EXCL
+    }
 
     companion object {
 
-        operator fun invoke(token: IElementType, location: SourceLocation): KtUnaryOperatorKind? {
+        fun getKindPrefix(token: IElementType, location: SourceLocation): KtUnaryOperatorKind? {
             return when (token.toString()) {
                 "EXCL" -> EXCL
+                "PLUSPLUS" -> PRE_INC
+                "MINUSMINUS" -> PRE_DEC
+                else -> {
+                    Messages.INTERNAL_ERROR.on(location, "Unrecognised unary operator kind: $token")
+                    null
+                }
+            }
+        }
+
+        fun getKindPostfix(token: IElementType, location: SourceLocation): KtUnaryOperatorKind? {
+            return when (token.toString()) {
+                "PLUSPLUS" -> POST_INC
+                "MINUSMINUS" -> POST_DEC
                 else -> {
                     Messages.INTERNAL_ERROR.on(location, "Unrecognised unary operator kind: $token")
                     null

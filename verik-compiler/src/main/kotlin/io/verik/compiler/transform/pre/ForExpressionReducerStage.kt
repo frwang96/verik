@@ -14,40 +14,42 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.post
+package io.verik.compiler.transform.pre
 
+import io.verik.compiler.ast.element.kt.EForExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
-import io.verik.compiler.ast.element.sv.EForeverStatement
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 
-object LoopExpressionTransformerStage : ProjectStage() {
+object ForExpressionReducerStage : ProjectStage() {
 
     override val checkNormalization = true
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.project.accept(LoopExpressionTransformerVisitor)
+        projectContext.project.accept(ForExpressionReducerVisitor)
     }
 
-    object LoopExpressionTransformerVisitor : TreeVisitor() {
+    object ForExpressionReducerVisitor : TreeVisitor() {
 
-        override fun visitKtCallExpression(callExpression: EKtCallExpression) {
-            super.visitKtCallExpression(callExpression)
-            if (callExpression.reference == Core.Vk.F_forever_Function) {
-                val functionLiteralExpression = callExpression
-                    .valueArguments[0]
-                    .cast<EFunctionLiteralExpression>()
-                if (functionLiteralExpression != null) {
-                    val foreverStatement = EForeverStatement(
-                        callExpression.location,
-                        functionLiteralExpression.body
-                    )
-                    callExpression.replace(foreverStatement)
-                }
-            }
+        override fun visitForExpression(forExpression: EForExpression) {
+            super.visitForExpression(forExpression)
+            val functionLiteralExpression = EFunctionLiteralExpression(
+                forExpression.body.location,
+                listOf(forExpression.valueParameter),
+                forExpression.body
+            )
+            val callExpression = EKtCallExpression(
+                forExpression.location,
+                forExpression.type,
+                Core.Kt.Collections.F_forEach_Function,
+                forExpression.range,
+                arrayListOf(functionLiteralExpression),
+                arrayListOf(forExpression.valueParameter.type.copy())
+            )
+            forExpression.replace(callExpression)
         }
     }
 }

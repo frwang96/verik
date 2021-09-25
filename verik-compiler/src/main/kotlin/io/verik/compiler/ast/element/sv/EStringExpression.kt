@@ -28,7 +28,7 @@ class EStringExpression(
     val text: String
 ) : EExpression() {
 
-    override var type = Core.Kt.C_STRING.toType()
+    override var type = Core.Kt.C_String.toType()
 
     override val serializationType = SvSerializationType.EXPRESSION
 

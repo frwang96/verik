@@ -23,7 +23,9 @@ import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.ENullExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ETypeParameter
+import io.verik.compiler.ast.element.kt.EForExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
+import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
@@ -37,6 +39,7 @@ import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.kt.ETypeAlias
+import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.common.location
 import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.psi.KtAnnotatedExpression
@@ -50,11 +53,13 @@ import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
 import org.jetbrains.kotlin.psi.KtElement
 import org.jetbrains.kotlin.psi.KtEnumEntry
 import org.jetbrains.kotlin.psi.KtExpression
+import org.jetbrains.kotlin.psi.KtForExpression
 import org.jetbrains.kotlin.psi.KtIfExpression
 import org.jetbrains.kotlin.psi.KtLambdaExpression
 import org.jetbrains.kotlin.psi.KtNamedFunction
 import org.jetbrains.kotlin.psi.KtParameter
 import org.jetbrains.kotlin.psi.KtParenthesizedExpression
+import org.jetbrains.kotlin.psi.KtPostfixExpression
 import org.jetbrains.kotlin.psi.KtPrefixExpression
 import org.jetbrains.kotlin.psi.KtPrimaryConstructor
 import org.jetbrains.kotlin.psi.KtProperty
@@ -151,7 +156,11 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
     }
 
     override fun visitPrefixExpression(expression: KtPrefixExpression, data: Unit?): EKtUnaryExpression? {
-        return ExpressionCaster.castKtUnaryExpression(expression, castContext)
+        return ExpressionCaster.castKtUnaryExpressionPrefix(expression, castContext)
+    }
+
+    override fun visitPostfixExpression(expression: KtPostfixExpression, data: Unit?): EKtUnaryExpression? {
+        return ExpressionCaster.castKtUnaryExpressionPostfix(expression, castContext)
     }
 
     override fun visitBinaryExpression(expression: KtBinaryExpression, data: Unit?): EExpression? {
@@ -178,7 +187,7 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
         return ExpressionCaster.castReturnStatement(expression, castContext)
     }
 
-    override fun visitLambdaExpression(expression: KtLambdaExpression, data: Unit?): EFunctionLiteralExpression {
+    override fun visitLambdaExpression(expression: KtLambdaExpression, data: Unit?): EFunctionLiteralExpression? {
         return ExpressionCaster.castFunctionLiteralExpression(expression, castContext)
     }
 
@@ -189,7 +198,10 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
         return StringTemplateExpressionCaster.castStringTemplateExpression(expression, castContext)
     }
 
-    override fun visitArrayAccessExpression(expression: KtArrayAccessExpression, data: Unit?): EElement {
+    override fun visitArrayAccessExpression(
+        expression: KtArrayAccessExpression,
+        data: Unit?
+    ): EKtArrayAccessExpression {
         return ExpressionCaster.castKtArrayAccessExpression(expression, castContext)
     }
 
@@ -197,7 +209,11 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
         return ExpressionCaster.castIfExpression(expression, castContext)
     }
 
-    override fun visitWhenExpression(expression: KtWhenExpression, data: Unit?): EElement {
+    override fun visitWhenExpression(expression: KtWhenExpression, data: Unit?): EWhenExpression {
         return WhenExpressionCaster.castWhenExpression(expression, castContext)
+    }
+
+    override fun visitForExpression(expression: KtForExpression, data: Unit?): EForExpression? {
+        return ExpressionCaster.castForExpression(expression, castContext)
     }
 }
