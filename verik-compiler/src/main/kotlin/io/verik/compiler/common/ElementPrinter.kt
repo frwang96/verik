@@ -55,6 +55,7 @@ import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EEventExpression
+import io.verik.compiler.ast.element.sv.EForStatement
 import io.verik.compiler.ast.element.sv.EForeverStatement
 import io.verik.compiler.ast.element.sv.EInitialBlock
 import io.verik.compiler.ast.element.sv.EInjectedExpression
@@ -546,6 +547,17 @@ class ElementPrinter : Visitor() {
             build(forExpression.valueParameter)
             build(forExpression.range)
             build(forExpression.body)
+        }
+    }
+
+    override fun visitForStatement(forStatement: EForStatement) {
+        build("ForStatement") {
+            build(forStatement.type.toString())
+            build(forStatement.valueParameter)
+            build(forStatement.initializer)
+            build(forStatement.condition)
+            build(forStatement.iteration)
+            build(forStatement.body)
         }
     }
 

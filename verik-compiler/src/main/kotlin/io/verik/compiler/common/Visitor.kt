@@ -75,6 +75,7 @@ import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EEventExpression
+import io.verik.compiler.ast.element.sv.EForStatement
 import io.verik.compiler.ast.element.sv.EForeverStatement
 import io.verik.compiler.ast.element.sv.EInitialBlock
 import io.verik.compiler.ast.element.sv.EInjectedExpression
@@ -416,6 +417,10 @@ abstract class Visitor {
 
     open fun visitForExpression(forExpression: EForExpression) {
         visitExpression(forExpression)
+    }
+
+    open fun visitForStatement(forStatement: EForStatement) {
+        visitExpression(forStatement)
     }
 
     open fun visitForeverStatement(foreverStatement: EForeverStatement) {
