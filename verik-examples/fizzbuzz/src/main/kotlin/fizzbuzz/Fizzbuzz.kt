@@ -42,7 +42,9 @@ class Fizzbuzz : Module() {
     }
 
     fun g(x: Int): Int {
-        (0 until 10).forEach { println(it) }
+        for (it in 0 until 8) {
+            println(it)
+        }
         return x + 1
     }
 }
