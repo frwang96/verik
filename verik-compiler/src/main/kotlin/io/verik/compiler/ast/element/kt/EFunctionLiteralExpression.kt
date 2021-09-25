@@ -32,7 +32,7 @@ class EFunctionLiteralExpression(
     var body: EExpression
 ) : EExpression(), ExpressionContainer {
 
-    override var type = Core.Kt.C_FUNCTION.toType()
+    override var type = Core.Kt.C_Function.toType()
 
     override val serializationType = SvSerializationType.INTERNAL
 

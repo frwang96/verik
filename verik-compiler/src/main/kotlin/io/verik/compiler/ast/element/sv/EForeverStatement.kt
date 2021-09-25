@@ -30,7 +30,7 @@ class EForeverStatement(
     var body: EExpression
 ) : EExpression(), ExpressionContainer {
 
-    override var type = Core.Kt.C_UNIT.toType()
+    override var type = Core.Kt.C_Unit.toType()
 
     override val serializationType = SvSerializationType.STATEMENT
 

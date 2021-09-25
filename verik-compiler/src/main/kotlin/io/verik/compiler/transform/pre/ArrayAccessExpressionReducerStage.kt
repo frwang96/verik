@@ -35,10 +35,10 @@ object ArrayAccessExpressionReducerStage : ProjectStage() {
     private val setReferenceMap = HashMap<Declaration, CoreKtAbstractFunctionDeclaration>()
 
     init {
-        getReferenceMap[ReducerEntry(Core.Vk.C_UBIT, listOf(Core.Kt.C_INT))] = Core.Vk.Ubit.F_GET_INT
-        getReferenceMap[ReducerEntry(Core.Vk.C_UNPACKED, listOf(Core.Kt.C_INT))] = Core.Vk.Unpacked.F_GET_INT
-        setReferenceMap[Core.Vk.Ubit.F_GET_INT] = Core.Vk.Ubit.F_SET_INT_BOOLEAN
-        setReferenceMap[Core.Vk.Unpacked.F_GET_INT] = Core.Vk.Unpacked.F_SET_INT_ANY
+        getReferenceMap[ReducerEntry(Core.Vk.C_Ubit, listOf(Core.Kt.C_Int))] = Core.Vk.Ubit.F_get_Int
+        getReferenceMap[ReducerEntry(Core.Vk.C_Unpacked, listOf(Core.Kt.C_Int))] = Core.Vk.Unpacked.F_get_Int
+        setReferenceMap[Core.Vk.Ubit.F_get_Int] = Core.Vk.Ubit.F_set_Int_Boolean
+        setReferenceMap[Core.Vk.Unpacked.F_get_Int] = Core.Vk.Unpacked.F_set_Int_Any
     }
 
     override fun process(projectContext: ProjectContext) {

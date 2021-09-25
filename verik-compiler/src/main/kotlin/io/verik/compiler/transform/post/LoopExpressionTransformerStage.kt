@@ -36,7 +36,7 @@ object LoopExpressionTransformerStage : ProjectStage() {
 
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
-            if (callExpression.reference == Core.Vk.F_FOREVER_FUNCTION) {
+            if (callExpression.reference == Core.Vk.F_forever_Function) {
                 val functionLiteralExpression = callExpression
                     .valueArguments[0]
                     .cast<EFunctionLiteralExpression>()

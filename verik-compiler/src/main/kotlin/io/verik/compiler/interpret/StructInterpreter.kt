@@ -25,7 +25,7 @@ import io.verik.compiler.core.common.Core
 object StructInterpreter {
 
     fun interpretStruct(basicClass: EKtBasicClass, referenceUpdater: ReferenceUpdater): Boolean {
-        if (!basicClass.toType().isSubtype(Core.Vk.C_STRUCT.toType()))
+        if (!basicClass.toType().isSubtype(Core.Vk.C_Struct.toType()))
             return false
         val properties = basicClass.primaryConstructor!!
             .valueParameters

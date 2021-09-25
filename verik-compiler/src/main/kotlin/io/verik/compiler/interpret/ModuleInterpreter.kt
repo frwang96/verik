@@ -28,7 +28,7 @@ import io.verik.compiler.message.Messages
 object ModuleInterpreter {
 
     fun interpretModule(basicClass: EKtBasicClass, referenceUpdater: ReferenceUpdater): Boolean {
-        if (!basicClass.toType().isSubtype(Core.Vk.C_MODULE.toType()))
+        if (!basicClass.toType().isSubtype(Core.Vk.C_Module.toType()))
             return false
         val ports = basicClass.primaryConstructor
             ?.valueParameters

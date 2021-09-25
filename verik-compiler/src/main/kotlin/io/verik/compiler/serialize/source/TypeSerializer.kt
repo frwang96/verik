@@ -33,19 +33,19 @@ object TypeSerializer {
         return when (val reference = type.reference) {
             is EModule -> SerializedType(reference.name)
             is EAbstractClass -> SerializedType(serializePackageDeclaration(reference))
-            Core.Kt.C_UNIT -> SerializedType("void")
-            Core.Kt.C_INT -> SerializedType("int")
-            Core.Kt.C_BOOLEAN -> SerializedType("logic")
-            Core.Kt.C_STRING -> SerializedType("string")
-            Core.Vk.C_UBIT -> SerializedType("logic", "[${type.asBitWidth(element) - 1}:0]", null)
-            Core.Vk.C_PACKED -> {
+            Core.Kt.C_Unit -> SerializedType("void")
+            Core.Kt.C_Int -> SerializedType("int")
+            Core.Kt.C_Boolean -> SerializedType("logic")
+            Core.Kt.C_String -> SerializedType("string")
+            Core.Vk.C_Ubit -> SerializedType("logic", "[${type.asBitWidth(element) - 1}:0]", null)
+            Core.Vk.C_Packed -> {
                 val serializedType = serialize(type.arguments[1], element)
                 var packedDimension = "[${type.arguments[0].asCardinalValue(element) - 1}:0]"
                 if (serializedType.packedDimension != null)
                     packedDimension += serializedType.packedDimension
                 SerializedType(serializedType.base, packedDimension, serializedType.unpackedDimension)
             }
-            Core.Vk.C_UNPACKED -> {
+            Core.Vk.C_Unpacked -> {
                 val serializedType = serialize(type.arguments[1], element)
                 var unpackedDimension = "[${type.arguments[0].asCardinalValue(element) - 1}:0]"
                 if (serializedType.unpackedDimension != null)

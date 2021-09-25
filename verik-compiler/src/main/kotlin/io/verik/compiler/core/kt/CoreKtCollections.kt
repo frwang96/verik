@@ -34,7 +34,7 @@ import io.verik.compiler.message.Messages
 
 object CoreKtCollections : CoreScope(CorePackage.KT_COLLECTIONS) {
 
-    val F_FOR_EACH_FUNCTION = object : CoreKtTransformableFunctionDeclaration(parent, "forEach", Core.Kt.C_FUNCTION) {
+    val F_forEach_Function = object : CoreKtTransformableFunctionDeclaration(parent, "forEach", Core.Kt.C_Function) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             val functionLiteral = callExpression.valueArguments[0]
@@ -51,18 +51,18 @@ object CoreKtCollections : CoreScope(CorePackage.KT_COLLECTIONS) {
             )
 
             val receiver = callExpression.receiver!!
-            if (receiver is EKtCallExpression && receiver.reference == Core.Kt.Ranges.F_UNTIL_INT) {
+            if (receiver is EKtCallExpression && receiver.reference == Core.Kt.Ranges.F_until_Int) {
                 val initializer = receiver.receiver!!
                 val condition = EKtBinaryExpression(
                     receiver.location,
-                    Core.Kt.C_BOOLEAN.toType(),
+                    Core.Kt.C_Boolean.toType(),
                     functionLiteralValueParameterReferenceExpression,
                     receiver.valueArguments[0],
                     KtBinaryOperatorKind.LT
                 )
                 val iteration = EKtUnaryExpression(
                     receiver.location,
-                    Core.Kt.C_INT.toType(),
+                    Core.Kt.C_Int.toType(),
                     functionLiteralValueParameterReferenceExpression.copy(),
                     KtUnaryOperatorKind.POST_INC
                 )

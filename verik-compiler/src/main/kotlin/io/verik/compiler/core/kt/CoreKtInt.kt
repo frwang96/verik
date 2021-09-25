@@ -23,9 +23,9 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreKtBinaryFunctionDeclaration
 import io.verik.compiler.core.common.CoreScope
 
-object CoreKtInt : CoreScope(Core.Kt.C_INT) {
+object CoreKtInt : CoreScope(Core.Kt.C_Int) {
 
-    val F_TIMES_INT = object : CoreKtBinaryFunctionDeclaration(parent, "times", Core.Kt.C_INT) {
+    val F_times_Int = object : CoreKtBinaryFunctionDeclaration(parent, "times", Core.Kt.C_Int) {
 
         override fun evaluate(callExpression: EKtCallExpression): String? {
             val left = ConstantUtil.getInt(callExpression.receiver!!)
@@ -40,7 +40,7 @@ object CoreKtInt : CoreScope(Core.Kt.C_INT) {
         }
     }
 
-    val F_PLUS_INT = object : CoreKtBinaryFunctionDeclaration(parent, "plus", Core.Kt.C_INT) {
+    val F_plus_Int = object : CoreKtBinaryFunctionDeclaration(parent, "plus", Core.Kt.C_Int) {
 
         override fun evaluate(callExpression: EKtCallExpression): String? {
             val left = ConstantUtil.getInt(callExpression.receiver!!)
@@ -55,7 +55,7 @@ object CoreKtInt : CoreScope(Core.Kt.C_INT) {
         }
     }
 
-    val F_MINUS_INT = object : CoreKtBinaryFunctionDeclaration(parent, "minus", Core.Kt.C_INT) {
+    val F_minus_Int = object : CoreKtBinaryFunctionDeclaration(parent, "minus", Core.Kt.C_Int) {
 
         override fun evaluate(callExpression: EKtCallExpression): String? {
             val left = ConstantUtil.getInt(callExpression.receiver!!)

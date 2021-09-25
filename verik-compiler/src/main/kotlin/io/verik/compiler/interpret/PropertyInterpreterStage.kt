@@ -86,7 +86,7 @@ object PropertyInterpreterStage : ProjectStage() {
             port: EPort,
             expression: EExpression
         ): PortInstantiation {
-            return if (expression is EKtCallExpression && expression.reference == Core.Vk.F_NC) {
+            return if (expression is EKtCallExpression && expression.reference == Core.Vk.F_nc) {
                 if (port.portType == PortType.INPUT)
                     Messages.INPUT_PORT_NOT_CONNECTED.on(expression, port.name)
                 PortInstantiation(port, null)

@@ -44,7 +44,7 @@ object ForExpressionReducerStage : ProjectStage() {
             val callExpression = EKtCallExpression(
                 forExpression.location,
                 forExpression.type,
-                Core.Kt.Collections.F_FOR_EACH_FUNCTION,
+                Core.Kt.Collections.F_forEach_Function,
                 forExpression.range,
                 arrayListOf(functionLiteralExpression),
                 arrayListOf(forExpression.valueParameter.type.copy())

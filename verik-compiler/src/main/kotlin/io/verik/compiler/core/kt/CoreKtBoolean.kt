@@ -21,9 +21,9 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreKtUnaryFunctionDeclaration
 import io.verik.compiler.core.common.CoreScope
 
-object CoreKtBoolean : CoreScope(Core.Kt.C_BOOLEAN) {
+object CoreKtBoolean : CoreScope(Core.Kt.C_Boolean) {
 
-    val F_NOT = object : CoreKtUnaryFunctionDeclaration(parent, "not") {
+    val F_not = object : CoreKtUnaryFunctionDeclaration(parent, "not") {
 
         override fun getOperatorKind(): SvUnaryOperatorKind {
             return SvUnaryOperatorKind.EXCL

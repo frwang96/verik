@@ -108,7 +108,7 @@ object FunctionInterpreterStage : ProjectStage() {
                 return null
             }
         } else body
-        if (onExpression !is EKtCallExpression || onExpression.reference != Core.Vk.F_ON_EVENT_FUNCTION) {
+        if (onExpression !is EKtCallExpression || onExpression.reference != Core.Vk.F_on_Event_Function) {
             Messages.ON_EXPRESSION_EXPECTED.on(body)
             return null
         }

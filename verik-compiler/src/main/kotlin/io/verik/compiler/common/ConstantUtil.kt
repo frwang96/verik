@@ -49,7 +49,7 @@ object ConstantUtil {
     }
 
     fun getInt(expression: EExpression): Int? {
-        return if (expression is EConstantExpression && expression.type.reference == Core.Kt.C_INT) {
+        return if (expression is EConstantExpression && expression.type.reference == Core.Kt.C_Int) {
             expression.value.toInt()
         } else null
     }

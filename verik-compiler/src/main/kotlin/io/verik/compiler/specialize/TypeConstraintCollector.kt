@@ -57,7 +57,7 @@ object TypeConstraintCollector {
 
         override fun visitKtBlockExpression(blockExpression: EKtBlockExpression) {
             super.visitKtBlockExpression(blockExpression)
-            if (blockExpression.type !in listOf(Core.Kt.C_UNIT.toType(), Core.Kt.C_FUNCTION.toType())) {
+            if (blockExpression.type !in listOf(Core.Kt.C_Unit.toType(), Core.Kt.C_Function.toType())) {
                 if (blockExpression.statements.isNotEmpty()) {
                     val statement = blockExpression.statements.last()
                     typeConstraints.add(TypeEqualsTypeConstraint(statement, blockExpression))

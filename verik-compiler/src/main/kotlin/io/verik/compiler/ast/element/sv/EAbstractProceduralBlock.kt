@@ -21,5 +21,5 @@ import io.verik.compiler.core.common.Core
 
 abstract class EAbstractProceduralBlock : EAbstractFunction() {
 
-    override var type = Core.Kt.C_UNIT.toType()
+    override var type = Core.Kt.C_Unit.toType()
 }

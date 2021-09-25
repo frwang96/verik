@@ -33,7 +33,7 @@ class EStruct(
         properties.forEach { it.parent = this }
     }
 
-    override var supertype = Core.Kt.C_ANY.toType()
+    override var supertype = Core.Kt.C_Any.toType()
 
     override var typeParameters = arrayListOf<ETypeParameter>()
 
