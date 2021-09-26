@@ -417,6 +417,76 @@ internal class ExpressionSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `while expression`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                fun f() {
+                    @Suppress("ControlFlowWithEmptyBody")
+                    while (true) {}
+                }
+            """.trimIndent()
+        )
+        val expected = """
+            function void f();
+                while (1'b1) begin
+                end
+            endfunction : f
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
+    fun `do while expression`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                fun f() {
+                    @Suppress("ControlFlowWithEmptyBody")
+                    do {} while (true)
+                }
+            """.trimIndent()
+        )
+        val expected = """
+            function void f();
+                do begin
+                end
+                while (1'b1);
+            endfunction : f
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
+    fun `for statement`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                fun f() {
+                    @Suppress("ControlFlowWithEmptyBody")
+                    for (i in 0 until 8) {}
+                }
+            """.trimIndent()
+        )
+        val expected = """
+            function void f();
+                for (int i = 0; i < 8; i++) begin
+                end
+            endfunction : f
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
     fun `forever expression`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,

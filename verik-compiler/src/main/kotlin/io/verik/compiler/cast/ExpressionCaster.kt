@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
+import io.verik.compiler.ast.element.common.EWhileExpression
 import io.verik.compiler.ast.element.kt.EForExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
@@ -41,6 +42,8 @@ import org.jetbrains.kotlin.psi.KtBinaryExpression
 import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtConstantExpression
+import org.jetbrains.kotlin.psi.KtContainerNodeForControlStructureBody
+import org.jetbrains.kotlin.psi.KtDoWhileExpression
 import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
 import org.jetbrains.kotlin.psi.KtForExpression
 import org.jetbrains.kotlin.psi.KtIfExpression
@@ -49,13 +52,20 @@ import org.jetbrains.kotlin.psi.KtPostfixExpression
 import org.jetbrains.kotlin.psi.KtPrefixExpression
 import org.jetbrains.kotlin.psi.KtReturnExpression
 import org.jetbrains.kotlin.psi.KtSimpleNameExpression
+import org.jetbrains.kotlin.psi.KtWhileExpression
 import org.jetbrains.kotlin.resolve.lazy.descriptors.LazyClassDescriptor
 
 object ExpressionCaster {
 
     fun castKtBlockExpression(expression: KtBlockExpression, castContext: CastContext): EKtBlockExpression {
         val location = expression.location()
-        val type = castContext.castType(expression)
+        val type = if (expression.parent is KtContainerNodeForControlStructureBody &&
+            expression.parent.parent is KtDoWhileExpression
+        ) {
+            Core.Kt.C_Unit.toType()
+        } else {
+            castContext.castType(expression)
+        }
         val statements = expression.statements.mapNotNull { castContext.casterVisitor.getExpression(it) }
         return EKtBlockExpression(location, type, ArrayList(statements))
     }
@@ -240,6 +250,20 @@ object ExpressionCaster {
             castContext.casterVisitor.getExpression(it)
         }
         return EIfExpression(location, type, condition, thenExpression, elseExpression)
+    }
+
+    fun castWhileExpression(expression: KtWhileExpression, castContext: CastContext): EWhileExpression {
+        val location = expression.location()
+        val condition = castContext.casterVisitor.getExpression(expression.condition!!)
+        val body = castContext.casterVisitor.getExpression(expression.body!!)
+        return EWhileExpression(location, condition, body, false)
+    }
+
+    fun castDoWhileExpression(expression: KtDoWhileExpression, castContext: CastContext): EWhileExpression {
+        val location = expression.location()
+        val condition = castContext.casterVisitor.getExpression(expression.condition!!)
+        val body = castContext.casterVisitor.getExpression(expression.body!!)
+        return EWhileExpression(location, condition, body, true)
     }
 
     fun castForExpression(expression: KtForExpression, castContext: CastContext): EForExpression? {

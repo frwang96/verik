@@ -22,6 +22,7 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
+import io.verik.compiler.ast.element.common.EWhileExpression
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.ECaseStatement
@@ -223,6 +224,10 @@ class SourceSerializerVisitor(private val serializerContext: SerializerContext) 
 
     override fun visitCaseStatement(caseStatement: ECaseStatement) {
         ExpressionSerializer.serializeCaseStatement(caseStatement, serializerContext)
+    }
+
+    override fun visitWhileExpression(whileExpression: EWhileExpression) {
+        ExpressionSerializer.serializeWhileExpression(whileExpression, serializerContext)
     }
 
     override fun visitForStatement(forStatement: EForStatement) {

@@ -299,6 +299,40 @@ internal class ExpressionCasterTest : BaseTest() {
     }
 
     @Test
+    fun `while expression`() {
+        val projectContext = driveTest(
+            CasterStage::class,
+            """
+                fun f() {
+                    @Suppress("ControlFlowWithEmptyBody")
+                    while (true) {}
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "WhileExpression(Unit, ConstantExpression(*), KtBlockExpression(*), false)",
+            projectContext.findExpression("f")
+        )
+    }
+
+    @Test
+    fun `do while expression`() {
+        val projectContext = driveTest(
+            CasterStage::class,
+            """
+                fun f() {
+                    @Suppress("ControlFlowWithEmptyBody")
+                    do { true } while (true)
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "WhileExpression(Unit, ConstantExpression(*), KtBlockExpression(*), true)",
+            projectContext.findExpression("f")
+        )
+    }
+
+    @Test
     fun `for expression`() {
         val projectContext = driveTest(
             CasterStage::class,
