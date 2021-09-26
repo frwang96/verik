@@ -18,11 +18,13 @@ package io.verik.compiler.core.vk
 
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EEventExpression
+import io.verik.compiler.ast.element.sv.EForeverStatement
 import io.verik.compiler.ast.property.EdgeType
 import io.verik.compiler.common.BitConstantUtil
 import io.verik.compiler.core.common.Core
@@ -145,7 +147,20 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_forever_Function = CoreKtBasicFunctionDeclaration(parent, "forever", Core.Kt.C_Function)
+    val F_forever_Function = object : CoreKtTransformableFunctionDeclaration(parent, "forever", Core.Kt.C_Function) {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            val functionLiteralExpression = callExpression
+                .valueArguments[0]
+                .cast<EFunctionLiteralExpression>()
+            return if (functionLiteralExpression != null) {
+                EForeverStatement(
+                    callExpression.location,
+                    functionLiteralExpression.body
+                )
+            } else callExpression
+        }
+    }
 
     val F_on_Event_Function = object : CoreKtTransformableFunctionDeclaration(
         parent,

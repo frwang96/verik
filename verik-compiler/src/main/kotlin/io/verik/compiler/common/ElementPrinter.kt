@@ -64,6 +64,7 @@ import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EModuleInstantiation
 import io.verik.compiler.ast.element.sv.EPort
+import io.verik.compiler.ast.element.sv.ERepeatStatement
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.EStructLiteralExpression
@@ -575,6 +576,14 @@ class ElementPrinter : Visitor() {
         build("ForeverStatement") {
             build(foreverStatement.type.toString())
             build(foreverStatement.body)
+        }
+    }
+
+    override fun visitRepeatStatement(repeatStatement: ERepeatStatement) {
+        build("RepeatStatement") {
+            build(repeatStatement.type.toString())
+            build(repeatStatement.condition)
+            build(repeatStatement.body)
         }
     }
 

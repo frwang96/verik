@@ -112,6 +112,22 @@ internal class CoreVkTest : BaseTest() {
     }
 
     @Test
+    fun `transform forever`() {
+        val projectContext = driveTest(
+            FunctionTransformerStage::class,
+            """
+                fun f() {
+                    forever {}
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "ForeverStatement(Unit, KtBlockExpression(*))",
+            projectContext.findExpression("f")
+        )
+    }
+
+    @Test
     fun `transform wait`() {
         val projectContext = driveTest(
             FunctionTransformerStage::class,

@@ -14,28 +14,29 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.post
+package io.verik.compiler.core.kt
 
+import io.verik.compiler.transform.mid.FunctionTransformerStage
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
-internal class LoopExpressionTransformerStageTest : BaseTest() {
+internal class CoreKtTest : BaseTest() {
 
     @Test
-    fun `transform forever`() {
+    fun `transform repeat`() {
         val projectContext = driveTest(
-            LoopExpressionTransformerStage::class,
+            FunctionTransformerStage::class,
             """
                 fun f() {
-                    forever {}
+                    repeat(1) {}
                 }
             """.trimIndent()
         )
         assertElementEquals(
-            "ForeverStatement(Unit, KtBlockExpression(*))",
+            "RepeatStatement(Unit, ConstantExpression(*), KtBlockExpression(*))",
             projectContext.findExpression("f")
         )
     }

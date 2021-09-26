@@ -31,6 +31,7 @@ import io.verik.compiler.ast.element.sv.EForStatement
 import io.verik.compiler.ast.element.sv.EForeverStatement
 import io.verik.compiler.ast.element.sv.EInjectedExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
+import io.verik.compiler.ast.element.sv.ERepeatStatement
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.EStructLiteralExpression
 import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
@@ -292,6 +293,13 @@ object ExpressionSerializer {
     fun serializeForeverStatement(foreverStatement: EForeverStatement, serializerContext: SerializerContext) {
         serializerContext.append("forever ")
         serializerContext.serializeAsStatement(foreverStatement.body)
+    }
+
+    fun serializeRepeatStatement(repeatStatement: ERepeatStatement, serializerContext: SerializerContext) {
+        serializerContext.append("repeat (")
+        serializerContext.serializeAsExpression(repeatStatement.condition)
+        serializerContext.append(") ")
+        serializerContext.serializeAsStatement(repeatStatement.body)
     }
 
     fun serializeEventExpression(eventExpression: EEventExpression, serializerContext: SerializerContext) {

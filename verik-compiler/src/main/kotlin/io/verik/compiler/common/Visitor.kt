@@ -84,6 +84,7 @@ import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EModuleInstantiation
 import io.verik.compiler.ast.element.sv.EPort
+import io.verik.compiler.ast.element.sv.ERepeatStatement
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.EStructLiteralExpression
@@ -430,6 +431,10 @@ abstract class Visitor {
 
     open fun visitForeverStatement(foreverStatement: EForeverStatement) {
         visitExpression(foreverStatement)
+    }
+
+    open fun visitRepeatStatement(repeatStatement: ERepeatStatement) {
+        visitExpression(repeatStatement)
     }
 
     open fun visitEventExpression(eventExpression: EEventExpression) {

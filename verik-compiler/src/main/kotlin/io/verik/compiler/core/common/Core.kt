@@ -18,6 +18,7 @@
 
 package io.verik.compiler.core.common
 
+import io.verik.compiler.core.kt.CoreKt
 import io.verik.compiler.core.kt.CoreKtBoolean
 import io.verik.compiler.core.kt.CoreKtCollections
 import io.verik.compiler.core.kt.CoreKtInt
@@ -41,6 +42,8 @@ object Core {
         val C_Boolean = CoreClass.Kt.C_Boolean
         val C_String = CoreClass.Kt.C_String
         val C_Enum = CoreClass.Kt.C_Enum
+
+        val F_repeat_Int_Function = CoreKt.F_repeat_Int_Function
 
         object Int : CoreScope(C_Int) {
 

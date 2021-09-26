@@ -32,7 +32,9 @@ class Fizzbuzz : Module() {
     @Run
     fun main() {
         f(0)
-        println(g(0))
+        repeat(3) {
+            println(g(0))
+        }
         x[0] = zeroes()
         y[0].value = 0
     }

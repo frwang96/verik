@@ -487,7 +487,7 @@ internal class ExpressionSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `forever expression`() {
+    fun `forever statement`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
             """
@@ -499,6 +499,28 @@ internal class ExpressionSerializerTest : BaseTest() {
         val expected = """
             function void f();
                 forever begin
+                end
+            endfunction : f
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
+    fun `repeat statement`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                fun f() {
+                    repeat(3) {}
+                }
+            """.trimIndent()
+        )
+        val expected = """
+            function void f();
+                repeat (3) begin
                 end
             endfunction : f
         """.trimIndent()
