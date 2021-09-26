@@ -22,7 +22,7 @@ import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.ast.property.SvUnaryOperatorKind
 import io.verik.compiler.specialize.TypeConstraint
 
-sealed class CoreKtAbstractFunctionDeclaration private constructor(
+sealed class CoreKtAbstractFunctionDeclaration constructor(
     override var name: String,
     override val qualifiedName: String,
     val parameterClassNames: List<String>

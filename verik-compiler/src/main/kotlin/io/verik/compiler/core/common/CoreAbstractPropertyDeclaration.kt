@@ -14,40 +14,6 @@
  * limitations under the License.
  */
 
-package fizzbuzz
+package io.verik.compiler.core.common
 
-import io.verik.core.*
-
-class S(var value: Int) : Struct()
-
-@Top
-class Fizzbuzz : Module() {
-
-    val x: Unpacked<`8`, Ubit<`8`>> = nc()
-    val y: Unpacked<`8`, S> = nc()
-
-    @Suppress("unused")
-    val c = C()
-
-    @Run
-    fun main() {
-        f(0)
-        println(g(0))
-        x[0] = zeroes()
-        y[0].value = 0
-    }
-
-    fun f(x: Int) {
-        println(x)
-    }
-
-    fun g(x: Int): Int {
-        println(y.size)
-        for (it in 0 until 8) {
-            println(it)
-        }
-        return x + 1
-    }
-}
-
-class C
+abstract class CoreAbstractPropertyDeclaration : CoreDeclaration

@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-class CoreVkTest : BaseTest() {
+internal class CoreVkTest : BaseTest() {
 
     @Test
     fun `transform nc illegal`() {

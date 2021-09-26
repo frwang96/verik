@@ -16,12 +16,15 @@
 
 package io.verik.compiler.core.vk
 
+import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.core.common.Core
+import io.verik.compiler.core.common.CoreKtPropertyDeclaration
 import io.verik.compiler.core.common.CoreKtTransformableFunctionDeclaration
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.specialize.TypeConstraint
@@ -75,6 +78,18 @@ object CoreVkUnpacked : CoreScope(Core.Vk.C_Unpacked) {
                 receiver,
                 callExpression.valueArguments[1],
                 KtBinaryOperatorKind.EQ
+            )
+        }
+    }
+
+    val P_size = object : CoreKtPropertyDeclaration(parent, "size") {
+
+        override fun transform(referenceExpression: EKtReferenceExpression): EExpression {
+            val value = referenceExpression.receiver!!.type.arguments[0].asCardinalValue(referenceExpression)
+            return EConstantExpression(
+                referenceExpression.location,
+                referenceExpression.type,
+                value.toString()
             )
         }
     }

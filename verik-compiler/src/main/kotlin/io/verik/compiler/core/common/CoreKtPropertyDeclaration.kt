@@ -14,40 +14,17 @@
  * limitations under the License.
  */
 
-package fizzbuzz
+package io.verik.compiler.core.common
 
-import io.verik.core.*
+import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 
-class S(var value: Int) : Struct()
+abstract class CoreKtPropertyDeclaration(
+    parent: String,
+    final override var name: String
+) : CoreAbstractPropertyDeclaration() {
 
-@Top
-class Fizzbuzz : Module() {
+    override val qualifiedName = "$parent.$name"
 
-    val x: Unpacked<`8`, Ubit<`8`>> = nc()
-    val y: Unpacked<`8`, S> = nc()
-
-    @Suppress("unused")
-    val c = C()
-
-    @Run
-    fun main() {
-        f(0)
-        println(g(0))
-        x[0] = zeroes()
-        y[0].value = 0
-    }
-
-    fun f(x: Int) {
-        println(x)
-    }
-
-    fun g(x: Int): Int {
-        println(y.size)
-        for (it in 0 until 8) {
-            println(it)
-        }
-        return x + 1
-    }
+    abstract fun transform(referenceExpression: EKtReferenceExpression): EExpression
 }
-
-class C
