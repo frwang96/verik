@@ -30,11 +30,14 @@ enum class KtBinaryOperatorKind {
     GT,
     GTEQ,
     EQEQ,
+    EXCL_EQ,
     PLUS_EQ,
-    MINUS_EQ;
+    MINUS_EQ,
+    ANDAND,
+    OROR;
 
     fun isReducible(): Boolean {
-        return this !in listOf(EQ, LT, LTEQ, GT, GTEQ, EQEQ)
+        return this !in listOf(EQ, LT, LTEQ, GT, GTEQ, EQEQ, EXCL_EQ)
     }
 
     companion object {
@@ -50,8 +53,11 @@ enum class KtBinaryOperatorKind {
                 "GT" -> GT
                 "GTEQ" -> GTEQ
                 "EQEQ" -> EQEQ
+                "EXCLEQ" -> EXCL_EQ
                 "PLUSEQ" -> PLUS_EQ
                 "MINUSEQ" -> MINUS_EQ
+                "ANDAND" -> ANDAND
+                "OROR" -> OROR
                 else -> {
                     Messages.INTERNAL_ERROR.on(location, "Unrecognised binary operator kind: $token")
                     null

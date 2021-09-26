@@ -57,6 +57,18 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
+    val F_i = object : CoreKtTransformableFunctionDeclaration(parent, "i") {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
+            return EConstantExpression(
+                callExpression.location,
+                callExpression.type,
+                value.toString()
+            )
+        }
+    }
+
     val F_u = object : CoreKtTransformableFunctionDeclaration(parent, "u") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {

@@ -67,7 +67,12 @@ object TypeConstraintCollector {
 
         override fun visitKtBinaryExpression(binaryExpression: EKtBinaryExpression) {
             super.visitKtBinaryExpression(binaryExpression)
-            if (binaryExpression.kind in listOf(KtBinaryOperatorKind.EQ, KtBinaryOperatorKind.EQEQ))
+            val kinds = listOf(
+                KtBinaryOperatorKind.EQ,
+                KtBinaryOperatorKind.EQEQ,
+                KtBinaryOperatorKind.EXCL_EQ
+            )
+            if (binaryExpression.kind in kinds)
                 typeConstraints.add(TypeEqualsTypeConstraint(binaryExpression.right, binaryExpression.left))
         }
 

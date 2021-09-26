@@ -52,6 +52,8 @@ object Core {
         object Boolean : CoreScope(C_Boolean) {
 
             val F_not = CoreKtBoolean.F_not
+            val F_and_Boolean = CoreKtBoolean.F_and_Boolean
+            val F_or_Boolean = CoreKtBoolean.F_or_Boolean
         }
 
         object Io : CoreScope(CorePackage.KT_IO) {
@@ -106,6 +108,7 @@ object Core {
         val N_EXP = CoreVkCardinal.N_EXP
 
         val F_nc = CoreVk.F_nc
+        val F_i = CoreVk.F_i
         val F_u = CoreVk.F_u
         val F_u_Int = CoreVk.F_u_Int
         val F_zeroes = CoreVk.F_zeroes

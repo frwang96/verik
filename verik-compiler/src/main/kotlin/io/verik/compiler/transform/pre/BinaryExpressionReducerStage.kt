@@ -34,6 +34,10 @@ object BinaryExpressionReducerStage : ProjectStage() {
     private val referenceMap = HashMap<ReducerEntry, CoreKtBinaryFunctionDeclaration>()
 
     init {
+        referenceMap[ReducerEntry(Core.Kt.C_Boolean, Core.Kt.C_Boolean, KtBinaryOperatorKind.ANDAND)] =
+            Core.Kt.Boolean.F_and_Boolean
+        referenceMap[ReducerEntry(Core.Kt.C_Boolean, Core.Kt.C_Boolean, KtBinaryOperatorKind.OROR)] =
+            Core.Kt.Boolean.F_or_Boolean
         referenceMap[ReducerEntry(Core.Kt.C_Int, Core.Kt.C_Int, KtBinaryOperatorKind.MUL)] =
             Core.Kt.Int.F_times_Int
         referenceMap[ReducerEntry(Core.Kt.C_Int, Core.Kt.C_Int, KtBinaryOperatorKind.PLUS)] =

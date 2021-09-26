@@ -16,8 +16,10 @@
 
 package io.verik.compiler.core.kt
 
+import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.ast.property.SvUnaryOperatorKind
 import io.verik.compiler.core.common.Core
+import io.verik.compiler.core.common.CoreKtBinaryFunctionDeclaration
 import io.verik.compiler.core.common.CoreKtUnaryFunctionDeclaration
 import io.verik.compiler.core.common.CoreScope
 
@@ -27,6 +29,20 @@ object CoreKtBoolean : CoreScope(Core.Kt.C_Boolean) {
 
         override fun getOperatorKind(): SvUnaryOperatorKind {
             return SvUnaryOperatorKind.EXCL
+        }
+    }
+
+    val F_and_Boolean = object : CoreKtBinaryFunctionDeclaration(parent, "and", Core.Kt.C_Boolean) {
+
+        override fun getOperatorKind(): SvBinaryOperatorKind {
+            return SvBinaryOperatorKind.ANDAND
+        }
+    }
+
+    val F_or_Boolean = object : CoreKtBinaryFunctionDeclaration(parent, "or", Core.Kt.C_Boolean) {
+
+        override fun getOperatorKind(): SvBinaryOperatorKind {
+            return SvBinaryOperatorKind.OROR
         }
     }
 }

@@ -27,6 +27,9 @@ enum class SvBinaryOperatorKind {
     GT,
     GTEQ,
     EQEQ,
+    EXCL_EQ,
+    ANDAND,
+    OROR,
     LTLT,
     GTGT;
 
@@ -42,6 +45,9 @@ enum class SvBinaryOperatorKind {
             GT -> ">"
             GTEQ -> ">="
             EQEQ -> "=="
+            EXCL_EQ -> "!="
+            ANDAND -> "&&"
+            OROR -> "||"
             LTLT -> "<<"
             GTGT -> ">>"
         }
