@@ -59,8 +59,8 @@ class CacheTb(
         repeat(3) { wait(cb) }
         if (random(2) == 0) {
             // write mem
-            val addr: UbitAddr = u(random())
-            val data: UbitData = u(random())
+            val addr: UbitAddr = randomUbit()
+            val data: UbitData = randomUbit()
             mem[addr] = data
             println("tb write addr=0x$addr data=0x$data")
 
@@ -72,7 +72,7 @@ class CacheTb(
             cb.reqOp = Op.NOP
         } else {
             // read mem
-            val addr: UbitAddr = u(random())
+            val addr: UbitAddr = randomUbit()
             println("tb read addr=0x$addr")
 
             wait(cb)

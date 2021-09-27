@@ -33,11 +33,12 @@ import io.verik.compiler.core.common.CoreKtTransformableFunctionDeclaration
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.message.Messages
-import io.verik.compiler.specialize.CardinalBitConstantTypeConstraint
 import io.verik.compiler.specialize.ConcatenationTypeConstraint
 import io.verik.compiler.specialize.TypeAdapter
 import io.verik.compiler.specialize.TypeConstraint
 import io.verik.compiler.specialize.TypeEqualsTypeConstraint
+import io.verik.compiler.specialize.UnaryOperatorTypeConstraint
+import io.verik.compiler.specialize.UnaryOperatorTypeConstraintKind
 
 object CoreVk : CoreScope(CorePackage.VK) {
 
@@ -73,7 +74,14 @@ object CoreVk : CoreScope(CorePackage.VK) {
     val F_u = object : CoreKtTransformableFunctionDeclaration(parent, "u") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
-            return listOf(CardinalBitConstantTypeConstraint(callExpression))
+            return listOf(
+                UnaryOperatorTypeConstraint(
+                    TypeAdapter.ofTypeArgument(callExpression, 0),
+                    TypeAdapter.ofElement(callExpression, 0),
+                    true,
+                    UnaryOperatorTypeConstraintKind.WIDTH
+                )
+            )
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {

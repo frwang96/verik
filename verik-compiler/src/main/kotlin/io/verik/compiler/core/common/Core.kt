@@ -151,6 +151,8 @@ object Core {
 
             val F_get_Int = CoreVkUnpacked.F_get_Int
             val F_set_Int_Any = CoreVkUnpacked.F_set_Int_Any
+            val F_get_Ubit = CoreVkUnpacked.F_get_Ubit
+            val F_set_Ubit_Any = CoreVkUnpacked.F_set_Ubit_Any
 
             val P_size = CoreVkUnpacked.P_size
         }

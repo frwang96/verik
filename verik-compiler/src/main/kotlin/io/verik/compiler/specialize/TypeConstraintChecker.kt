@@ -18,7 +18,6 @@ package io.verik.compiler.specialize
 
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.Messages
-import java.lang.Integer.max
 
 object TypeConstraintChecker {
 
@@ -27,10 +26,10 @@ object TypeConstraintChecker {
             when (it) {
                 is TypeEqualsTypeConstraint ->
                     checkTypeEqualsTypeConstraint(it)
+                is UnaryOperatorTypeConstraint ->
+                    checkUnaryOperatorTypeConstraint(it)
                 is BinaryOperatorTypeConstraint ->
                     checkBinaryOperatorTypeConstraint(it)
-                is CardinalBitConstantTypeConstraint ->
-                    checkCardinalBitConstantTypeConstraint(it)
                 is ConcatenationTypeConstraint ->
                     checkConcatenationTypeConstraint(it)
             }
@@ -50,37 +49,44 @@ object TypeConstraintChecker {
         }
     }
 
-    private fun checkBinaryOperatorTypeConstraint(typeConstraint: BinaryOperatorTypeConstraint) {
-        val leftWidth = typeConstraint.left.getType().asCardinalValue(typeConstraint.left.getElement())
-        val rightWidth = typeConstraint.right.getType().asCardinalValue(typeConstraint.right.getElement())
-        val innerWidth = when (typeConstraint.kind) {
-            BinaryOperatorTypeConstraintKind.MAX -> max(leftWidth, rightWidth)
-            BinaryOperatorTypeConstraintKind.MAX_INC -> max(leftWidth, rightWidth) + 1
-            BinaryOperatorTypeConstraintKind.ADD -> leftWidth + rightWidth
+    private fun checkUnaryOperatorTypeConstraint(typeConstraint: UnaryOperatorTypeConstraint) {
+        val innerValue = typeConstraint.inner.getType().asCardinalValue(typeConstraint.inner.getElement())
+        val outerValue = typeConstraint.outer.getType().asCardinalValue(typeConstraint.outer.getElement())
+        if (typeConstraint.isInnerToOuter) {
+            val expectedValue = typeConstraint.kind.evaluate(innerValue)
+            if (expectedValue != outerValue) {
+                val substitutionResult = typeConstraint.outer.substitute(Core.Vk.cardinalOf(expectedValue).toType())
+                Messages.TYPE_MISMATCH.on(
+                    typeConstraint.outer.getElement(),
+                    substitutionResult.original,
+                    substitutionResult.substituted
+                )
+            }
+        } else {
+            val expectedValue = typeConstraint.kind.evaluate(outerValue)
+            if (expectedValue != innerValue) {
+                val substitutionResult = typeConstraint.inner.substitute(Core.Vk.cardinalOf(expectedValue).toType())
+                Messages.TYPE_MISMATCH.on(
+                    typeConstraint.inner.getElement(),
+                    substitutionResult.substituted,
+                    substitutionResult.original
+                )
+            }
         }
-        val outerWidth = typeConstraint.outer.getType().asCardinalValue(typeConstraint.outer.getElement())
-        if (outerWidth != innerWidth) {
-            val substitutionResult = typeConstraint.outer.substitute(Core.Vk.cardinalOf(innerWidth).toType())
+    }
+
+    private fun checkBinaryOperatorTypeConstraint(typeConstraint: BinaryOperatorTypeConstraint) {
+        val leftValue = typeConstraint.left.getType().asCardinalValue(typeConstraint.left.getElement())
+        val rightValue = typeConstraint.right.getType().asCardinalValue(typeConstraint.right.getElement())
+        val innerValue = typeConstraint.kind.evaluate(leftValue, rightValue)
+        val outerValue = typeConstraint.outer.getType().asCardinalValue(typeConstraint.outer.getElement())
+        if (outerValue != innerValue) {
+            val substitutionResult = typeConstraint.outer.substitute(Core.Vk.cardinalOf(innerValue).toType())
             Messages.TYPE_MISMATCH.on(
                 typeConstraint.outer.getElement(),
                 substitutionResult.original,
                 substitutionResult.substituted
             )
-        }
-    }
-
-    private fun checkCardinalBitConstantTypeConstraint(typeConstraint: CardinalBitConstantTypeConstraint) {
-        val expressionWidth = typeConstraint.callExpression.type
-            .arguments[0].asCardinalValue(typeConstraint.callExpression)
-        val typeArgumentValue = typeConstraint
-            .callExpression
-            .typeArguments[0]
-            .asCardinalValue(typeConstraint.callExpression)
-        val typeArgumentValueWidth = 32 - typeArgumentValue.countLeadingZeroBits()
-        if (typeArgumentValueWidth != expressionWidth) {
-            val actualType = typeConstraint.callExpression.type.copy()
-            actualType.arguments[0] = Core.Vk.cardinalOf(typeArgumentValueWidth).toType()
-            Messages.TYPE_MISMATCH.on(typeConstraint.callExpression, typeConstraint.callExpression.type, actualType)
         }
     }
 

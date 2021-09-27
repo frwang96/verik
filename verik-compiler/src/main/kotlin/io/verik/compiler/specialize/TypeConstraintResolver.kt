@@ -37,11 +37,11 @@ object TypeConstraintResolver {
                 is TypeEqualsTypeConstraint ->
                     if (!resolveTypeEqualsTypeConstraint(it))
                         unresolvedTypeConstraints.add(it)
+                is UnaryOperatorTypeConstraint ->
+                    if (!resolveUnaryOperatorTypeConstraint(it))
+                        unresolvedTypeConstraints.add(it)
                 is BinaryOperatorTypeConstraint ->
                     if (!resolveBinaryOperatorTypeConstraint(it))
-                        unresolvedTypeConstraints.add(it)
-                is CardinalBitConstantTypeConstraint ->
-                    if (!resolveCardinalBitConstantTypeConstraint(it))
                         unresolvedTypeConstraints.add(it)
                 is ConcatenationTypeConstraint ->
                     if (!resolveConcatenationTypeConstraint(it))
@@ -52,60 +52,64 @@ object TypeConstraintResolver {
     }
 
     private fun resolveTypeEqualsTypeConstraint(typeConstraint: TypeEqualsTypeConstraint): Boolean {
-        val innerType = typeConstraint.inner.getType()
-        val outerType = typeConstraint.outer.getType()
-        val innerResolved = innerType.isResolved()
-        val outerResolved = outerType.isResolved()
+        val inner = typeConstraint.inner.getType()
+        val outer = typeConstraint.outer.getType()
+        val innerResolved = inner.isResolved()
+        val outerResolved = outer.isResolved()
         return if (outerResolved) {
             if (!innerResolved)
-                typeConstraint.inner.setType(outerType.copy())
+                typeConstraint.inner.setType(outer.copy())
             true
         } else {
             if (innerResolved) {
-                typeConstraint.outer.setType(innerType.copy())
+                typeConstraint.outer.setType(inner.copy())
                 true
             } else false
         }
     }
 
-    private fun resolveBinaryOperatorTypeConstraint(typeConstraint: BinaryOperatorTypeConstraint): Boolean {
-        val leftType = typeConstraint.left.getType()
-        val rightType = typeConstraint.right.getType()
-        val outerType = typeConstraint.outer.getType()
-        val leftResolved = leftType.isResolved()
-        val rightResolved = rightType.isResolved()
-        val outerResolved = outerType.isResolved()
-        return if (outerResolved) {
-            true
-        } else {
-            if (leftResolved && rightResolved) {
-                val type = when (typeConstraint.kind) {
-                    BinaryOperatorTypeConstraintKind.MAX ->
-                        Core.Vk.N_MAX.toType(leftType.copy(), rightType.copy())
-                    BinaryOperatorTypeConstraintKind.MAX_INC ->
-                        Core.Vk.N_INC.toType(Core.Vk.N_MAX.toType(leftType.copy(), rightType.copy()))
-                    BinaryOperatorTypeConstraintKind.ADD ->
-                        Core.Vk.N_ADD.toType(leftType.copy(), rightType.copy())
-                }
-                typeConstraint.outer.setType(type)
+    private fun resolveUnaryOperatorTypeConstraint(typeConstraint: UnaryOperatorTypeConstraint): Boolean {
+        val inner = typeConstraint.inner.getType()
+        val outer = typeConstraint.outer.getType()
+        val innerResolved = inner.isResolved()
+        val outerResolved = outer.isResolved()
+        return if (typeConstraint.isInnerToOuter) {
+            if (outerResolved) {
                 true
             } else {
-                false
+                if (innerResolved) {
+                    typeConstraint.outer.setType(typeConstraint.kind.resolve(inner))
+                    true
+                } else false
+            }
+        } else {
+            if (innerResolved) {
+                true
+            } else {
+                if (outerResolved) {
+                    typeConstraint.inner.setType(typeConstraint.kind.resolve(outer))
+                    true
+                } else false
             }
         }
     }
 
-    private fun resolveCardinalBitConstantTypeConstraint(typeConstraint: CardinalBitConstantTypeConstraint): Boolean {
-        val expressionResolved = typeConstraint.callExpression.type.isResolved()
-        val typeArgumentResolved = typeConstraint.callExpression.typeArguments[0].isResolved()
-        return if (expressionResolved) {
+    private fun resolveBinaryOperatorTypeConstraint(typeConstraint: BinaryOperatorTypeConstraint): Boolean {
+        val left = typeConstraint.left.getType()
+        val right = typeConstraint.right.getType()
+        val outer = typeConstraint.outer.getType()
+        val leftResolved = left.isResolved()
+        val rightResolved = right.isResolved()
+        val outerResolved = outer.isResolved()
+        return if (outerResolved) {
             true
         } else {
-            if (typeArgumentResolved) {
-                val type = typeConstraint.callExpression.typeArguments[0].copy()
-                typeConstraint.callExpression.type.arguments[0] = Core.Vk.N_WIDTH.toType(type)
+            if (leftResolved && rightResolved) {
+                typeConstraint.outer.setType(typeConstraint.kind.resolve(left, right))
                 true
-            } else false
+            } else {
+                false
+            }
         }
     }
 

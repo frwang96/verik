@@ -25,15 +25,18 @@ class TypeEqualsTypeConstraint(
     val outer: TypeAdapter
 ) : TypeConstraint()
 
+class UnaryOperatorTypeConstraint(
+    val inner: TypeAdapter,
+    val outer: TypeAdapter,
+    val isInnerToOuter: Boolean,
+    val kind: UnaryOperatorTypeConstraintKind
+) : TypeConstraint()
+
 class BinaryOperatorTypeConstraint(
     val left: TypeAdapter,
     val right: TypeAdapter,
     val outer: TypeAdapter,
     val kind: BinaryOperatorTypeConstraintKind
-) : TypeConstraint()
-
-class CardinalBitConstantTypeConstraint(
-    val callExpression: EKtCallExpression
 ) : TypeConstraint()
 
 class ConcatenationTypeConstraint(

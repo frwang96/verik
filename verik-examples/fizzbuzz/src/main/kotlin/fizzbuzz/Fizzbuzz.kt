@@ -25,6 +25,7 @@ class Fizzbuzz : Module() {
 
     val x: Unpacked<`8`, Ubit<`8`>> = nc()
     val y: Unpacked<`8`, S> = nc()
+    val z: Ubit<`3`> = nc()
 
     @Suppress("unused")
     val c = C()
@@ -36,6 +37,7 @@ class Fizzbuzz : Module() {
             println(g(0))
         }
         x[0] = zeroes()
+        x[z] = zeroes()
         y[0].value = 0
     }
 
