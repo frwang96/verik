@@ -18,11 +18,13 @@ package io.verik.compiler.core.vk
 
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EEventExpression
+import io.verik.compiler.ast.element.sv.EForeverStatement
 import io.verik.compiler.ast.property.EdgeType
 import io.verik.compiler.common.BitConstantUtil
 import io.verik.compiler.core.common.Core
@@ -31,12 +33,12 @@ import io.verik.compiler.core.common.CoreKtTransformableFunctionDeclaration
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.message.Messages
-import io.verik.compiler.specialize.CallExpressionTypeArgumentTypeAdapter
-import io.verik.compiler.specialize.CardinalBitConstantTypeConstraint
 import io.verik.compiler.specialize.ConcatenationTypeConstraint
+import io.verik.compiler.specialize.TypeAdapter
 import io.verik.compiler.specialize.TypeConstraint
 import io.verik.compiler.specialize.TypeEqualsTypeConstraint
-import io.verik.compiler.specialize.TypedElementTypeArgumentTypeAdapter
+import io.verik.compiler.specialize.UnaryOperatorTypeConstraint
+import io.verik.compiler.specialize.UnaryOperatorTypeConstraintKind
 
 object CoreVk : CoreScope(CorePackage.VK) {
 
@@ -45,8 +47,8 @@ object CoreVk : CoreScope(CorePackage.VK) {
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
                 TypeEqualsTypeConstraint(
-                    CallExpressionTypeArgumentTypeAdapter(callExpression, 0),
-                    callExpression
+                    TypeAdapter.ofTypeArgument(callExpression, 0),
+                    TypeAdapter.ofElement(callExpression)
                 )
             )
         }
@@ -57,15 +59,34 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
+    val F_i = object : CoreKtTransformableFunctionDeclaration(parent, "i") {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
+            return EConstantExpression(
+                callExpression.location,
+                callExpression.type,
+                value.toString()
+            )
+        }
+    }
+
     val F_u = object : CoreKtTransformableFunctionDeclaration(parent, "u") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
-            return listOf(CardinalBitConstantTypeConstraint(callExpression))
+            return listOf(
+                UnaryOperatorTypeConstraint(
+                    TypeAdapter.ofTypeArgument(callExpression, 0),
+                    TypeAdapter.ofElement(callExpression, 0),
+                    true,
+                    UnaryOperatorTypeConstraintKind.WIDTH
+                )
+            )
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
-            val width = callExpression.type.asBitWidth(callExpression)
+            val width = callExpression.type.arguments[0].asCardinalValue(callExpression)
             return EConstantExpression(
                 callExpression.location,
                 callExpression.type,
@@ -81,14 +102,14 @@ object CoreVk : CoreScope(CorePackage.VK) {
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
                 TypeEqualsTypeConstraint(
-                    CallExpressionTypeArgumentTypeAdapter(callExpression, 0),
-                    callExpression
+                    TypeAdapter.ofTypeArgument(callExpression, 0),
+                    TypeAdapter.ofElement(callExpression)
                 )
             )
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            val width = callExpression.type.asBitWidth(callExpression)
+            val width = callExpression.type.arguments[0].asCardinalValue(callExpression)
             return EConstantExpression(callExpression.location, callExpression.type, BitConstantUtil.format(0, width))
         }
     }
@@ -121,8 +142,8 @@ object CoreVk : CoreScope(CorePackage.VK) {
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
                 TypeEqualsTypeConstraint(
-                    CallExpressionTypeArgumentTypeAdapter(callExpression, 0),
-                    TypedElementTypeArgumentTypeAdapter(callExpression, listOf(0))
+                    TypeAdapter.ofTypeArgument(callExpression, 0),
+                    TypeAdapter.ofElement(callExpression, 0)
                 )
             )
         }
@@ -133,7 +154,20 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_forever_Function = CoreKtBasicFunctionDeclaration(parent, "forever", Core.Kt.C_Function)
+    val F_forever_Function = object : CoreKtTransformableFunctionDeclaration(parent, "forever", Core.Kt.C_Function) {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            val functionLiteralExpression = callExpression
+                .valueArguments[0]
+                .cast<EFunctionLiteralExpression>()
+            return if (functionLiteralExpression != null) {
+                EForeverStatement(
+                    callExpression.location,
+                    functionLiteralExpression.body
+                )
+            } else callExpression
+        }
+    }
 
     val F_on_Event_Function = object : CoreKtTransformableFunctionDeclaration(
         parent,
@@ -171,6 +205,17 @@ object CoreVk : CoreScope(CorePackage.VK) {
     }
 
     val F_wait_Event = object : CoreKtTransformableFunctionDeclaration(parent, "wait", Core.Vk.C_Event) {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            return EEventControlExpression(callExpression.location, callExpression.valueArguments[0])
+        }
+    }
+
+    val F_wait_ClockingBlock = object : CoreKtTransformableFunctionDeclaration(
+        parent,
+        "wait",
+        Core.Vk.C_ClockingBlock
+    ) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             return EEventControlExpression(callExpression.location, callExpression.valueArguments[0])

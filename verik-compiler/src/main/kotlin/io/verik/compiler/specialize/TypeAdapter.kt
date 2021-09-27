@@ -16,44 +16,42 @@
 
 package io.verik.compiler.specialize
 
+import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.property.Type
-import io.verik.compiler.message.SourceLocation
 
 sealed class TypeAdapter {
 
-    abstract fun getLocation(): SourceLocation
+    abstract fun getElement(): EElement
 
     abstract fun getType(): Type
 
     abstract fun setType(type: Type)
-}
 
-class TypedElementTypeAdapter(
-    private val typedElement: ETypedElement
-) : TypeAdapter() {
+    abstract fun substitute(type: Type): SubstitutionResult
 
-    override fun getLocation(): SourceLocation {
-        return typedElement.location
-    }
+    class SubstitutionResult(val original: Type, val substituted: Type)
 
-    override fun getType(): Type {
-        return typedElement.type
-    }
+    companion object {
 
-    override fun setType(type: Type) {
-        typedElement.type = type
+        fun ofElement(element: ETypedElement, vararg indices: Int): TypeAdapter {
+            return ElementTypeAdapter(element, indices.toList())
+        }
+
+        fun ofTypeArgument(callExpression: EKtCallExpression, index: Int): TypeAdapter {
+            return TypeArgumentTypeAdapter(callExpression, index)
+        }
     }
 }
 
-class TypedElementTypeArgumentTypeAdapter(
+class ElementTypeAdapter(
     private val typedElement: ETypedElement,
     private val indices: List<Int>
 ) : TypeAdapter() {
 
-    override fun getLocation(): SourceLocation {
-        return typedElement.location
+    override fun getElement(): EElement {
+        return typedElement
     }
 
     override fun getType(): Type {
@@ -71,15 +69,27 @@ class TypedElementTypeArgumentTypeAdapter(
             currentType.arguments[indices.last()] = type
         }
     }
+
+    override fun substitute(type: Type): SubstitutionResult {
+        return if (indices.isEmpty()) {
+            SubstitutionResult(typedElement.type, type)
+        } else {
+            val substituted = typedElement.type.copy()
+            var substitutedArgument = substituted
+            indices.dropLast(1).forEach { substitutedArgument = substitutedArgument.arguments[it] }
+            substitutedArgument.arguments[indices.last()] = type
+            SubstitutionResult(typedElement.type, substituted)
+        }
+    }
 }
 
-class CallExpressionTypeArgumentTypeAdapter(
+class TypeArgumentTypeAdapter(
     private val callExpression: EKtCallExpression,
     private val index: Int
 ) : TypeAdapter() {
 
-    override fun getLocation(): SourceLocation {
-        return callExpression.location
+    override fun getElement(): EElement {
+        return callExpression
     }
 
     override fun getType(): Type {
@@ -88,5 +98,9 @@ class CallExpressionTypeArgumentTypeAdapter(
 
     override fun setType(type: Type) {
         callExpression.typeArguments[index] = type
+    }
+
+    override fun substitute(type: Type): SubstitutionResult {
+        return SubstitutionResult(callExpression.typeArguments[index], type)
     }
 }

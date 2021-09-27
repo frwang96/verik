@@ -52,7 +52,9 @@ object TypeConstraintCollector {
             super.visitKtProperty(property)
             val initializer = property.initializer
             if (initializer != null)
-                typeConstraints.add(TypeEqualsTypeConstraint(initializer, property))
+                typeConstraints.add(
+                    TypeEqualsTypeConstraint(TypeAdapter.ofElement(initializer), TypeAdapter.ofElement(property))
+                )
         }
 
         override fun visitKtBlockExpression(blockExpression: EKtBlockExpression) {
@@ -60,24 +62,50 @@ object TypeConstraintCollector {
             if (blockExpression.type !in listOf(Core.Kt.C_Unit.toType(), Core.Kt.C_Function.toType())) {
                 if (blockExpression.statements.isNotEmpty()) {
                     val statement = blockExpression.statements.last()
-                    typeConstraints.add(TypeEqualsTypeConstraint(statement, blockExpression))
+                    typeConstraints.add(
+                        TypeEqualsTypeConstraint(
+                            TypeAdapter.ofElement(statement),
+                            TypeAdapter.ofElement(blockExpression)
+                        )
+                    )
                 }
             }
         }
 
         override fun visitKtBinaryExpression(binaryExpression: EKtBinaryExpression) {
             super.visitKtBinaryExpression(binaryExpression)
-            if (binaryExpression.kind in listOf(KtBinaryOperatorKind.EQ, KtBinaryOperatorKind.EQEQ))
-                typeConstraints.add(TypeEqualsTypeConstraint(binaryExpression.right, binaryExpression.left))
+            val kinds = listOf(
+                KtBinaryOperatorKind.EQ,
+                KtBinaryOperatorKind.EQEQ,
+                KtBinaryOperatorKind.EXCL_EQ
+            )
+            if (binaryExpression.kind in kinds) {
+                typeConstraints.add(
+                    TypeEqualsTypeConstraint(
+                        TypeAdapter.ofElement(binaryExpression.right),
+                        TypeAdapter.ofElement(binaryExpression.left)
+                    )
+                )
+            }
         }
 
         override fun visitKtReferenceExpression(referenceExpression: EKtReferenceExpression) {
             super.visitKtReferenceExpression(referenceExpression)
             when (val reference = referenceExpression.reference) {
                 is EExpression ->
-                    typeConstraints.add(TypeEqualsTypeConstraint(referenceExpression, reference))
+                    typeConstraints.add(
+                        TypeEqualsTypeConstraint(
+                            TypeAdapter.ofElement(referenceExpression),
+                            TypeAdapter.ofElement(reference)
+                        )
+                    )
                 is EAbstractProperty ->
-                    typeConstraints.add(TypeEqualsTypeConstraint(referenceExpression, reference))
+                    typeConstraints.add(
+                        TypeEqualsTypeConstraint(
+                            TypeAdapter.ofElement(referenceExpression),
+                            TypeAdapter.ofElement(reference)
+                        )
+                    )
             }
         }
 
@@ -90,7 +118,12 @@ object TypeConstraintCollector {
                     callExpression.valueArguments
                         .zip(reference.valueParameters)
                         .forEach { (valueArgument, valueParameter) ->
-                            typeConstraints.add(TypeEqualsTypeConstraint(valueArgument, valueParameter))
+                            typeConstraints.add(
+                                TypeEqualsTypeConstraint(
+                                    TypeAdapter.ofElement(valueArgument),
+                                    TypeAdapter.ofElement(valueParameter)
+                                )
+                            )
                         }
                 }
             }
@@ -101,8 +134,18 @@ object TypeConstraintCollector {
             val thenExpression = ifExpression.thenExpression
             val elseExpression = ifExpression.elseExpression
             if (thenExpression != null && elseExpression != null) {
-                typeConstraints.add(TypeEqualsTypeConstraint(ifExpression, thenExpression))
-                typeConstraints.add(TypeEqualsTypeConstraint(ifExpression, elseExpression))
+                typeConstraints.add(
+                    TypeEqualsTypeConstraint(
+                        TypeAdapter.ofElement(ifExpression),
+                        TypeAdapter.ofElement(thenExpression)
+                    )
+                )
+                typeConstraints.add(
+                    TypeEqualsTypeConstraint(
+                        TypeAdapter.ofElement(ifExpression),
+                        TypeAdapter.ofElement(elseExpression)
+                    )
+                )
             }
         }
     }

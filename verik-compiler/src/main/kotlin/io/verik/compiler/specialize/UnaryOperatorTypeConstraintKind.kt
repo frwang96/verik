@@ -14,42 +14,26 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.property
+package io.verik.compiler.specialize
 
-enum class SvBinaryOperatorKind {
-    ASSIGN,
-    ARROW_ASSIGN,
-    MUL,
-    PLUS,
-    MINUS,
-    LT,
-    LTEQ,
-    GT,
-    GTEQ,
-    EQEQ,
-    EXCL_EQ,
-    ANDAND,
-    OROR,
-    LTLT,
-    GTGT;
+import io.verik.compiler.ast.property.Type
+import io.verik.compiler.core.common.Core
 
-    fun serialize(): String {
+enum class UnaryOperatorTypeConstraintKind {
+    LOG,
+    WIDTH;
+
+    fun resolve(type: Type): Type {
         return when (this) {
-            ASSIGN -> "="
-            ARROW_ASSIGN -> "<="
-            MUL -> "*"
-            PLUS -> "+"
-            MINUS -> "-"
-            LT -> "<"
-            LTEQ -> "<="
-            GT -> ">"
-            GTEQ -> ">="
-            EQEQ -> "=="
-            EXCL_EQ -> "!="
-            ANDAND -> "&&"
-            OROR -> "||"
-            LTLT -> "<<"
-            GTGT -> ">>"
+            LOG -> Core.Vk.N_LOG.toType(type.copy())
+            WIDTH -> Core.Vk.N_WIDTH.toType(type.copy())
+        }
+    }
+
+    fun evaluate(typeValue: Int): Int {
+        return when (this) {
+            LOG -> if (typeValue <= 0) 0 else (32 - (typeValue - 1).countLeadingZeroBits())
+            WIDTH -> if (typeValue < 0) 0 else (32 - typeValue.countLeadingZeroBits())
         }
     }
 }

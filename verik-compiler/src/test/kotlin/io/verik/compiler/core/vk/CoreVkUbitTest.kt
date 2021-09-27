@@ -23,7 +23,7 @@ import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
-class CoreVkUbitTest : BaseTest() {
+internal class CoreVkUbitTest : BaseTest() {
 
     @Test
     fun `transform get`() {

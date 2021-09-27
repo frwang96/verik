@@ -25,8 +25,9 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 
-class EForeverStatement(
+class ERepeatStatement(
     override val location: SourceLocation,
+    var condition: EExpression,
     var body: EExpression
 ) : EExpression(), ExpressionContainer {
 
@@ -35,27 +36,31 @@ class EForeverStatement(
     override val serializationType = SvSerializationType.STATEMENT
 
     init {
+        condition.parent = this
         body.parent = this
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitForeverStatement(this)
+        visitor.visitRepeatStatement(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
+        condition.accept(visitor)
         body.accept(visitor)
     }
 
-    override fun copy(): EExpression {
+    override fun copy(): ERepeatStatement {
+        val copyCondition = condition.copy()
         val copyBody = body.copy()
-        return EForeverStatement(location, copyBody)
+        return ERepeatStatement(location, copyCondition, copyBody)
     }
 
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
         newExpression.parent = this
-        if (body == oldExpression)
-            body = newExpression
-        else
-            Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
+        when (oldExpression) {
+            condition -> condition = newExpression
+            body -> body = newExpression
+            else -> Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
+        }
     }
 }

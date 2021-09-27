@@ -18,6 +18,7 @@
 
 package io.verik.compiler.core.common
 
+import io.verik.compiler.core.kt.CoreKt
 import io.verik.compiler.core.kt.CoreKtBoolean
 import io.verik.compiler.core.kt.CoreKtCollections
 import io.verik.compiler.core.kt.CoreKtInt
@@ -42,6 +43,8 @@ object Core {
         val C_String = CoreClass.Kt.C_String
         val C_Enum = CoreClass.Kt.C_Enum
 
+        val F_repeat_Int_Function = CoreKt.F_repeat_Int_Function
+
         object Int : CoreScope(C_Int) {
 
             val F_times_Int = CoreKtInt.F_times_Int
@@ -52,6 +55,8 @@ object Core {
         object Boolean : CoreScope(C_Boolean) {
 
             val F_not = CoreKtBoolean.F_not
+            val F_and_Boolean = CoreKtBoolean.F_and_Boolean
+            val F_or_Boolean = CoreKtBoolean.F_or_Boolean
         }
 
         object Io : CoreScope(CorePackage.KT_IO) {
@@ -90,6 +95,9 @@ object Core {
         val C_Unpacked = CoreClass.Vk.C_Unpacked
         val C_Component = CoreClass.Vk.C_Component
         val C_Module = CoreClass.Vk.C_Module
+        val C_Interface = CoreClass.Vk.C_Interface
+        val C_Modport = CoreClass.Vk.C_Modport
+        val C_ClockingBlock = CoreClass.Vk.C_ClockingBlock
         val C_Time = CoreClass.Vk.C_Time
         val C_Event = CoreClass.Vk.C_Event
 
@@ -102,10 +110,11 @@ object Core {
         val N_INC = CoreVkCardinal.N_INC
         val N_DEC = CoreVkCardinal.N_DEC
         val N_LOG = CoreVkCardinal.N_LOG
-        val N_INCLOG = CoreVkCardinal.N_INCLOG
+        val N_WIDTH = CoreVkCardinal.N_WIDTH
         val N_EXP = CoreVkCardinal.N_EXP
 
         val F_nc = CoreVk.F_nc
+        val F_i = CoreVk.F_i
         val F_u = CoreVk.F_u
         val F_u_Int = CoreVk.F_u_Int
         val F_zeroes = CoreVk.F_zeroes
@@ -118,6 +127,7 @@ object Core {
         val F_posedge_Boolean = CoreVk.F_posedge_Boolean
         val F_negedge_Boolean = CoreVk.F_negedge_Boolean
         val F_wait_Event = CoreVk.F_wait_Event
+        val F_wait_ClockingBlock = CoreVk.F_wait_ClockingBlock
         val F_delay_Int = CoreVk.F_delay_Int
         val F_time = CoreVk.F_time
         val F_finish = CoreVk.F_finish
@@ -141,6 +151,10 @@ object Core {
 
             val F_get_Int = CoreVkUnpacked.F_get_Int
             val F_set_Int_Any = CoreVkUnpacked.F_set_Int_Any
+            val F_get_Ubit = CoreVkUnpacked.F_get_Ubit
+            val F_set_Ubit_Any = CoreVkUnpacked.F_set_Ubit_Any
+
+            val P_size = CoreVkUnpacked.P_size
         }
     }
 

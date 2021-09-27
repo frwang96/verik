@@ -49,6 +49,7 @@ import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtConstantExpression
+import org.jetbrains.kotlin.psi.KtDoWhileExpression
 import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
 import org.jetbrains.kotlin.psi.KtElement
 import org.jetbrains.kotlin.psi.KtEnumEntry
@@ -70,6 +71,7 @@ import org.jetbrains.kotlin.psi.KtTypeAlias
 import org.jetbrains.kotlin.psi.KtTypeParameter
 import org.jetbrains.kotlin.psi.KtVisitor
 import org.jetbrains.kotlin.psi.KtWhenExpression
+import org.jetbrains.kotlin.psi.KtWhileExpression
 
 class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, Unit>() {
 
@@ -211,6 +213,14 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
 
     override fun visitWhenExpression(expression: KtWhenExpression, data: Unit?): EWhenExpression {
         return WhenExpressionCaster.castWhenExpression(expression, castContext)
+    }
+
+    override fun visitWhileExpression(expression: KtWhileExpression, data: Unit?): EElement {
+        return ExpressionCaster.castWhileExpression(expression, castContext)
+    }
+
+    override fun visitDoWhileExpression(expression: KtDoWhileExpression, data: Unit?): EElement {
+        return ExpressionCaster.castDoWhileExpression(expression, castContext)
     }
 
     override fun visitForExpression(expression: KtForExpression, data: Unit?): EForExpression? {

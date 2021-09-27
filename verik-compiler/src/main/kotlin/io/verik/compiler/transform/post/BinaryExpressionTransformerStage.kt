@@ -61,6 +61,8 @@ object BinaryExpressionTransformerStage : ProjectStage() {
                 KtBinaryOperatorKind.GT -> SvBinaryOperatorKind.GT
                 KtBinaryOperatorKind.GTEQ -> SvBinaryOperatorKind.GTEQ
                 KtBinaryOperatorKind.EQEQ -> SvBinaryOperatorKind.EQEQ
+                KtBinaryOperatorKind.EXCL_EQ -> SvBinaryOperatorKind.EXCL_EQ
+
                 else -> null
             }
             if (kind != null) {

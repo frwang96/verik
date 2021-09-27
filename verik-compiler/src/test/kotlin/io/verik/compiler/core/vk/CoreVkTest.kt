@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-class CoreVkTest : BaseTest() {
+internal class CoreVkTest : BaseTest() {
 
     @Test
     fun `transform nc illegal`() {
@@ -108,6 +108,22 @@ class CoreVkTest : BaseTest() {
         assertElementEquals(
             "KtCallExpression(Int, \$random, null, [], [])",
             projectContext.findExpression("x")
+        )
+    }
+
+    @Test
+    fun `transform forever`() {
+        val projectContext = driveTest(
+            FunctionTransformerStage::class,
+            """
+                fun f() {
+                    forever {}
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "ForeverStatement(Unit, KtBlockExpression(*))",
+            projectContext.findExpression("f")
         )
     }
 

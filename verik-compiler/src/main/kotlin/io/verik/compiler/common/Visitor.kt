@@ -45,6 +45,7 @@ import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ERootPackage
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.common.ETypedElement
+import io.verik.compiler.ast.element.common.EWhileExpression
 import io.verik.compiler.ast.element.kt.EAnnotation
 import io.verik.compiler.ast.element.kt.EForExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
@@ -83,6 +84,7 @@ import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EModuleInstantiation
 import io.verik.compiler.ast.element.sv.EPort
+import io.verik.compiler.ast.element.sv.ERepeatStatement
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.EStructLiteralExpression
@@ -415,6 +417,10 @@ abstract class Visitor {
         visitExpression(caseStatement)
     }
 
+    open fun visitWhileExpression(whileExpression: EWhileExpression) {
+        visitExpression(whileExpression)
+    }
+
     open fun visitForExpression(forExpression: EForExpression) {
         visitExpression(forExpression)
     }
@@ -425,6 +431,10 @@ abstract class Visitor {
 
     open fun visitForeverStatement(foreverStatement: EForeverStatement) {
         visitExpression(foreverStatement)
+    }
+
+    open fun visitRepeatStatement(repeatStatement: ERepeatStatement) {
+        visitExpression(repeatStatement)
     }
 
     open fun visitEventExpression(eventExpression: EEventExpression) {

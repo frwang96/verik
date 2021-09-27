@@ -27,6 +27,7 @@ import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ERootPackage
 import io.verik.compiler.ast.element.common.ETypeParameter
+import io.verik.compiler.ast.element.common.EWhileExpression
 import io.verik.compiler.ast.element.kt.EAnnotation
 import io.verik.compiler.ast.element.kt.EForExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
@@ -63,6 +64,7 @@ import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EModuleInstantiation
 import io.verik.compiler.ast.element.sv.EPort
+import io.verik.compiler.ast.element.sv.ERepeatStatement
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.EStructLiteralExpression
@@ -541,6 +543,15 @@ class ElementPrinter : Visitor() {
         }
     }
 
+    override fun visitWhileExpression(whileExpression: EWhileExpression) {
+        build("WhileExpression") {
+            build(whileExpression.type.toString())
+            build(whileExpression.condition)
+            build(whileExpression.body)
+            build(whileExpression.isDoWhile)
+        }
+    }
+
     override fun visitForExpression(forExpression: EForExpression) {
         build("ForExpression") {
             build(forExpression.type.toString())
@@ -565,6 +576,14 @@ class ElementPrinter : Visitor() {
         build("ForeverStatement") {
             build(foreverStatement.type.toString())
             build(foreverStatement.body)
+        }
+    }
+
+    override fun visitRepeatStatement(repeatStatement: ERepeatStatement) {
+        build("RepeatStatement") {
+            build(repeatStatement.type.toString())
+            build(repeatStatement.condition)
+            build(repeatStatement.body)
         }
     }
 

@@ -58,16 +58,16 @@ typealias INC<N> = `*`
 typealias DEC<N> = `*`
 
 /**
- * Takes the ceiling logarithm base two of the cardinal N.
+ * Ceiling logarithm base two of the cardinal N.
  */
 typealias LOG<N> = `*`
 
 /**
- * Takes the ceiling logarithm base two of the cardinal INC<N>.
+ * Width of the binary representation of the cardinal N. Equivalent to LOG<INC<N>>.
  */
-typealias INCLOG<N> = `*`
+typealias WIDTH<N> = `*`
 
 /**
- * Takes the exponential base two of the cardinal N.
+ * Exponential base two of the cardinal N.
  */
 typealias EXP<N> = `*`

@@ -28,6 +28,6 @@ object CoreVkCardinal {
     val N_INC = CoreCardinalFunctionDeclaration("INC")
     val N_DEC = CoreCardinalFunctionDeclaration("DEC")
     val N_LOG = CoreCardinalFunctionDeclaration("LOG")
-    val N_INCLOG = CoreCardinalFunctionDeclaration("INCLOG")
+    val N_WIDTH = CoreCardinalFunctionDeclaration("WIDTH")
     val N_EXP = CoreCardinalFunctionDeclaration("EXP")
 }

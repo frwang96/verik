@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.sv
+package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.common.TreeVisitor
@@ -25,9 +24,11 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 
-class EForeverStatement(
+class EWhileExpression(
     override val location: SourceLocation,
-    var body: EExpression
+    var condition: EExpression,
+    var body: EExpression,
+    val isDoWhile: Boolean
 ) : EExpression(), ExpressionContainer {
 
     override var type = Core.Kt.C_Unit.toType()
@@ -35,27 +36,31 @@ class EForeverStatement(
     override val serializationType = SvSerializationType.STATEMENT
 
     init {
+        condition.parent = this
         body.parent = this
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitForeverStatement(this)
+        visitor.visitWhileExpression(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
+        condition.accept(visitor)
         body.accept(visitor)
     }
 
-    override fun copy(): EExpression {
-        val copyBody = body.copy()
-        return EForeverStatement(location, copyBody)
+    override fun copy(): EWhileExpression {
+        val conditionCopy = condition.copy()
+        val bodyCopy = body.copy()
+        return EWhileExpression(location, conditionCopy, bodyCopy, isDoWhile)
     }
 
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
         newExpression.parent = this
-        if (body == oldExpression)
-            body = newExpression
-        else
-            Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
+        when (oldExpression) {
+            condition -> condition = newExpression
+            body -> body = newExpression
+            else -> Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
+        }
     }
 }

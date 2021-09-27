@@ -41,6 +41,36 @@ internal class TypeCheckerStageTest : BaseTest() {
     }
 
     @Test
+    fun `unary operator violation`() {
+        assertThrows<TestErrorException> {
+            driveTest(
+                TypeCheckerStage::class,
+                """
+                    var x: Ubit<`4`> = nc()
+                    fun f() {
+                        x = u<`1`>()
+                    }
+                """.trimIndent()
+            )
+        }.apply { assertEquals("Type mismatch: Expected Ubit<`4`> actual Ubit<`1`>", message) }
+    }
+
+    @Test
+    fun `binary operator violation`() {
+        assertThrows<TestErrorException> {
+            driveTest(
+                TypeCheckerStage::class,
+                """
+                    var x: Ubit<`4`> = nc()
+                    fun f() {
+                        x = u(0) + u(0)
+                    }
+                """.trimIndent()
+            )
+        }.apply { assertEquals("Type mismatch: Expected Ubit<`4`> actual Ubit<`1`>", message) }
+    }
+
+    @Test
     fun `concatenation violation`() {
         assertThrows<TestErrorException> {
             driveTest(

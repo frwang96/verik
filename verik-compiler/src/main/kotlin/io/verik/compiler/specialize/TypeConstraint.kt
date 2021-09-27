@@ -16,8 +16,6 @@
 
 package io.verik.compiler.specialize
 
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 
 sealed class TypeConstraint
@@ -25,28 +23,20 @@ sealed class TypeConstraint
 class TypeEqualsTypeConstraint(
     val inner: TypeAdapter,
     val outer: TypeAdapter
-) : TypeConstraint() {
-
-    constructor(inner: ETypedElement, outer: ETypedElement) : this(
-        TypedElementTypeAdapter(inner),
-        TypedElementTypeAdapter(outer)
-    )
-
-    constructor(inner: TypeAdapter, outer: ETypedElement) : this(
-        inner,
-        TypedElementTypeAdapter(outer)
-    )
-}
-
-class BinaryOperatorTypeConstraint(
-    val left: EExpression,
-    val right: EExpression,
-    val outer: EExpression,
-    val kind: BinaryOperatorTypeConstraintKind
 ) : TypeConstraint()
 
-class CardinalBitConstantTypeConstraint(
-    val callExpression: EKtCallExpression
+class UnaryOperatorTypeConstraint(
+    val inner: TypeAdapter,
+    val outer: TypeAdapter,
+    val isInnerToOuter: Boolean,
+    val kind: UnaryOperatorTypeConstraintKind
+) : TypeConstraint()
+
+class BinaryOperatorTypeConstraint(
+    val left: TypeAdapter,
+    val right: TypeAdapter,
+    val outer: TypeAdapter,
+    val kind: BinaryOperatorTypeConstraintKind
 ) : TypeConstraint()
 
 class ConcatenationTypeConstraint(

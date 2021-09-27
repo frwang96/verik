@@ -37,8 +37,10 @@ object ArrayAccessExpressionReducerStage : ProjectStage() {
     init {
         getReferenceMap[ReducerEntry(Core.Vk.C_Ubit, listOf(Core.Kt.C_Int))] = Core.Vk.Ubit.F_get_Int
         getReferenceMap[ReducerEntry(Core.Vk.C_Unpacked, listOf(Core.Kt.C_Int))] = Core.Vk.Unpacked.F_get_Int
+        getReferenceMap[ReducerEntry(Core.Vk.C_Unpacked, listOf(Core.Vk.C_Ubit))] = Core.Vk.Unpacked.F_get_Ubit
         setReferenceMap[Core.Vk.Ubit.F_get_Int] = Core.Vk.Ubit.F_set_Int_Boolean
         setReferenceMap[Core.Vk.Unpacked.F_get_Int] = Core.Vk.Unpacked.F_set_Int_Any
+        setReferenceMap[Core.Vk.Unpacked.F_get_Ubit] = Core.Vk.Unpacked.F_set_Ubit_Any
     }
 
     override fun process(projectContext: ProjectContext) {
