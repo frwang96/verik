@@ -83,7 +83,7 @@ object TypeSpecializerStage : ProjectStage() {
                     arguments[0] - 1
                 Core.Vk.N_LOG ->
                     if (arguments[0] <= 0) 0 else (32 - (arguments[0] - 1).countLeadingZeroBits())
-                Core.Vk.N_INCLOG ->
+                Core.Vk.N_WIDTH ->
                     if (arguments[0] < 0) 0 else (32 - arguments[0].countLeadingZeroBits())
                 Core.Vk.N_EXP -> {
                     if (arguments[0] >= 31)

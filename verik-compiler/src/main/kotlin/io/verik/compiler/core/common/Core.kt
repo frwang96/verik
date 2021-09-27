@@ -95,6 +95,9 @@ object Core {
         val C_Unpacked = CoreClass.Vk.C_Unpacked
         val C_Component = CoreClass.Vk.C_Component
         val C_Module = CoreClass.Vk.C_Module
+        val C_Interface = CoreClass.Vk.C_Interface
+        val C_Modport = CoreClass.Vk.C_Modport
+        val C_ClockingBlock = CoreClass.Vk.C_ClockingBlock
         val C_Time = CoreClass.Vk.C_Time
         val C_Event = CoreClass.Vk.C_Event
 
@@ -107,7 +110,7 @@ object Core {
         val N_INC = CoreVkCardinal.N_INC
         val N_DEC = CoreVkCardinal.N_DEC
         val N_LOG = CoreVkCardinal.N_LOG
-        val N_INCLOG = CoreVkCardinal.N_INCLOG
+        val N_WIDTH = CoreVkCardinal.N_WIDTH
         val N_EXP = CoreVkCardinal.N_EXP
 
         val F_nc = CoreVk.F_nc
@@ -124,6 +127,7 @@ object Core {
         val F_posedge_Boolean = CoreVk.F_posedge_Boolean
         val F_negedge_Boolean = CoreVk.F_negedge_Boolean
         val F_wait_Event = CoreVk.F_wait_Event
+        val F_wait_ClockingBlock = CoreVk.F_wait_ClockingBlock
         val F_delay_Int = CoreVk.F_delay_Int
         val F_time = CoreVk.F_time
         val F_finish = CoreVk.F_finish

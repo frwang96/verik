@@ -204,6 +204,17 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
+    val F_wait_ClockingBlock = object : CoreKtTransformableFunctionDeclaration(
+        parent,
+        "wait",
+        Core.Vk.C_ClockingBlock
+    ) {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            return EEventControlExpression(callExpression.location, callExpression.valueArguments[0])
+        }
+    }
+
     val F_delay_Int = object : CoreKtTransformableFunctionDeclaration(parent, "delay", Core.Kt.C_Int) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {

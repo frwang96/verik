@@ -29,7 +29,7 @@ class Multiplier(
     var b: Ubit<REQ_WIDTH> = nc()
     var prod: Ubit<REQ_WIDTH> = nc()
     var tp: Ubit<REQ_WIDTH> = nc()
-    var i: Ubit<INCLOG<REQ_WIDTH>> = nc()
+    var i: Ubit<WIDTH<REQ_WIDTH>> = nc()
 
     @Seq
     fun step() {

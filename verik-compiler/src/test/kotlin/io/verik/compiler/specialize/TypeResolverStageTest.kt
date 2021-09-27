@@ -100,7 +100,7 @@ internal class TypeResolverStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Ubit<INCLOG<`8`>>, u, null, [], [`8`])",
+            "KtCallExpression(Ubit<WIDTH<`8`>>, u, null, [], [`8`])",
             projectContext.findExpression("x")
         )
     }

@@ -102,7 +102,7 @@ object TypeConstraintResolver {
         } else {
             if (typeArgumentResolved) {
                 val type = typeConstraint.callExpression.typeArguments[0].copy()
-                typeConstraint.callExpression.type.arguments[0] = Core.Vk.N_INCLOG.toType(type)
+                typeConstraint.callExpression.type.arguments[0] = Core.Vk.N_WIDTH.toType(type)
                 true
             } else false
         }

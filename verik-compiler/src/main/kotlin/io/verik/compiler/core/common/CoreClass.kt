@@ -44,6 +44,9 @@ object CoreClass {
         val C_Unpacked = CoreClassDeclaration(parent, "Unpacked", Kt.C_Any)
         val C_Component = CoreClassDeclaration(parent, "Component", Kt.C_Any)
         val C_Module = CoreClassDeclaration(parent, "Module", C_Component)
+        val C_Interface = CoreClassDeclaration(parent, "Interface", C_Component)
+        val C_Modport = CoreClassDeclaration(parent, "Modport", C_Component)
+        val C_ClockingBlock = CoreClassDeclaration(parent, "ClockingBlock", C_Component)
         val C_Time = CoreClassDeclaration(parent, "Time", Kt.C_Any)
         val C_Event = CoreClassDeclaration(parent, "Event", Kt.C_Any)
     }
