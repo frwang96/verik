@@ -40,19 +40,21 @@ object TypeConstraintChecker {
     private fun checkTypeEqualsTypeConstraint(typeConstraint: TypeEqualsTypeConstraint) {
         val innerType = typeConstraint.inner.getType()
         val outerType = typeConstraint.outer.getType()
-        if (outerType != innerType)
-            Messages.TYPE_MISMATCH.on(typeConstraint.inner.getLocation(), outerType, innerType)
+        if (outerType != innerType) {
+            val checkerResult = typeConstraint.inner.getCheckerResult(outerType)
+            Messages.TYPE_MISMATCH.on(typeConstraint.inner.getLocation(), checkerResult.expected, checkerResult.actual)
+        }
     }
 
     private fun checkBinaryOperatorTypeConstraint(typeConstraint: BinaryOperatorTypeConstraint) {
-        val leftWidth = typeConstraint.left.type.asBitWidth(typeConstraint.left)
-        val rightWidth = typeConstraint.right.type.asBitWidth(typeConstraint.right)
+        val leftWidth = typeConstraint.left.type.arguments[0].asCardinalValue(typeConstraint.left)
+        val rightWidth = typeConstraint.right.type.arguments[0].asCardinalValue(typeConstraint.right)
         val innerWidth = when (typeConstraint.kind) {
             BinaryOperatorTypeConstraintKind.MAX -> max(leftWidth, rightWidth)
             BinaryOperatorTypeConstraintKind.MAX_INC -> max(leftWidth, rightWidth) + 1
             BinaryOperatorTypeConstraintKind.ADD -> leftWidth + rightWidth
         }
-        val outerWidth = typeConstraint.outer.type.asBitWidth(typeConstraint.outer)
+        val outerWidth = typeConstraint.outer.type.arguments[0].asCardinalValue(typeConstraint.outer)
         if (outerWidth != innerWidth) {
             val actualType = typeConstraint.outer.type.copy()
             actualType.arguments[0] = Core.Vk.cardinalOf(innerWidth).toType()
@@ -61,7 +63,8 @@ object TypeConstraintChecker {
     }
 
     private fun checkCardinalBitConstantTypeConstraint(typeConstraint: CardinalBitConstantTypeConstraint) {
-        val expressionWidth = typeConstraint.callExpression.type.asBitWidth(typeConstraint.callExpression)
+        val expressionWidth = typeConstraint.callExpression.type
+            .arguments[0].asCardinalValue(typeConstraint.callExpression)
         val typeArgumentValue = typeConstraint
             .callExpression
             .typeArguments[0]
@@ -75,15 +78,16 @@ object TypeConstraintChecker {
     }
 
     private fun checkConcatenationTypeConstraint(typeConstraint: ConcatenationTypeConstraint) {
-        val expressionWidth = typeConstraint.callExpression.type.asBitWidth(typeConstraint.callExpression)
+        val expressionWidth = typeConstraint.callExpression.type
+            .arguments[0].asCardinalValue(typeConstraint.callExpression)
         val valueArgumentWidths = typeConstraint
             .callExpression
             .valueArguments
             .map {
                 when (it.type.reference) {
                     Core.Kt.C_Boolean -> 1
-                    Core.Vk.C_Ubit -> it.type.asBitWidth(it)
-                    Core.Vk.C_Sbit -> it.type.asBitWidth(it)
+                    Core.Vk.C_Ubit -> it.type.arguments[0].asCardinalValue(it)
+                    Core.Vk.C_Sbit -> it.type.arguments[0].asCardinalValue(it)
                     else -> 0
                 }
             }

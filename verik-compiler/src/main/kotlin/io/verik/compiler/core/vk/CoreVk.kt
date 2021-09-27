@@ -33,12 +33,11 @@ import io.verik.compiler.core.common.CoreKtTransformableFunctionDeclaration
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.message.Messages
-import io.verik.compiler.specialize.CallExpressionTypeArgumentTypeAdapter
 import io.verik.compiler.specialize.CardinalBitConstantTypeConstraint
 import io.verik.compiler.specialize.ConcatenationTypeConstraint
+import io.verik.compiler.specialize.TypeAdapter
 import io.verik.compiler.specialize.TypeConstraint
 import io.verik.compiler.specialize.TypeEqualsTypeConstraint
-import io.verik.compiler.specialize.TypedElementTypeArgumentTypeAdapter
 
 object CoreVk : CoreScope(CorePackage.VK) {
 
@@ -47,8 +46,8 @@ object CoreVk : CoreScope(CorePackage.VK) {
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
                 TypeEqualsTypeConstraint(
-                    CallExpressionTypeArgumentTypeAdapter(callExpression, 0),
-                    callExpression
+                    TypeAdapter.ofTypeArgument(callExpression, 0),
+                    TypeAdapter.ofElement(callExpression)
                 )
             )
         }
@@ -79,7 +78,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
-            val width = callExpression.type.asBitWidth(callExpression)
+            val width = callExpression.type.arguments[0].asCardinalValue(callExpression)
             return EConstantExpression(
                 callExpression.location,
                 callExpression.type,
@@ -95,14 +94,14 @@ object CoreVk : CoreScope(CorePackage.VK) {
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
                 TypeEqualsTypeConstraint(
-                    CallExpressionTypeArgumentTypeAdapter(callExpression, 0),
-                    callExpression
+                    TypeAdapter.ofTypeArgument(callExpression, 0),
+                    TypeAdapter.ofElement(callExpression)
                 )
             )
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            val width = callExpression.type.asBitWidth(callExpression)
+            val width = callExpression.type.arguments[0].asCardinalValue(callExpression)
             return EConstantExpression(callExpression.location, callExpression.type, BitConstantUtil.format(0, width))
         }
     }
@@ -135,8 +134,8 @@ object CoreVk : CoreScope(CorePackage.VK) {
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
                 TypeEqualsTypeConstraint(
-                    CallExpressionTypeArgumentTypeAdapter(callExpression, 0),
-                    TypedElementTypeArgumentTypeAdapter(callExpression, listOf(0))
+                    TypeAdapter.ofTypeArgument(callExpression, 0),
+                    TypeAdapter.ofElement(callExpression, 0)
                 )
             )
         }

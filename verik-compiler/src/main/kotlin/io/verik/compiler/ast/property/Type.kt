@@ -22,7 +22,6 @@ import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.Reference
-import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreCardinalConstantDeclaration
 import io.verik.compiler.core.common.CoreCardinalDeclaration
 import io.verik.compiler.core.common.CoreCardinalUnresolvedDeclaration
@@ -70,16 +69,6 @@ class Type(
             reference.value
         } else {
             Messages.INTERNAL_ERROR.on(element, "Could not get value as cardinal: $this")
-            1
-        }
-    }
-
-    fun asBitWidth(element: EElement): Int {
-        val reference = reference
-        return if (reference in listOf(Core.Vk.C_Ubit, Core.Vk.C_Sbit)) {
-            arguments[0].asCardinalValue(element)
-        } else {
-            Messages.INTERNAL_ERROR.on(element, "Bit type expected: $this")
             1
         }
     }

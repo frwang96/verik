@@ -28,26 +28,24 @@ sealed class TypeAdapter {
     abstract fun getType(): Type
 
     abstract fun setType(type: Type)
-}
 
-class TypedElementTypeAdapter(
-    private val typedElement: ETypedElement
-) : TypeAdapter() {
+    abstract fun getCheckerResult(type: Type): CheckerResult
 
-    override fun getLocation(): SourceLocation {
-        return typedElement.location
-    }
+    class CheckerResult(val actual: Type, val expected: Type)
 
-    override fun getType(): Type {
-        return typedElement.type
-    }
+    companion object {
 
-    override fun setType(type: Type) {
-        typedElement.type = type
+        fun ofElement(element: ETypedElement, vararg indices: Int): TypeAdapter {
+            return ElementTypeAdapter(element, indices.toList())
+        }
+
+        fun ofTypeArgument(callExpression: EKtCallExpression, index: Int): TypeAdapter {
+            return TypeArgumentTypeAdapter(callExpression, index)
+        }
     }
 }
 
-class TypedElementTypeArgumentTypeAdapter(
+class ElementTypeAdapter(
     private val typedElement: ETypedElement,
     private val indices: List<Int>
 ) : TypeAdapter() {
@@ -71,9 +69,21 @@ class TypedElementTypeArgumentTypeAdapter(
             currentType.arguments[indices.last()] = type
         }
     }
+
+    override fun getCheckerResult(type: Type): CheckerResult {
+        return if (indices.isEmpty()) {
+            CheckerResult(typedElement.type, type)
+        } else {
+            val expectedType = typedElement.type.copy()
+            var expectedTypeArgument = expectedType
+            indices.dropLast(1).forEach { expectedTypeArgument = expectedTypeArgument.arguments[it] }
+            expectedTypeArgument.arguments[indices.last()] = type
+            CheckerResult(typedElement.type, expectedType)
+        }
+    }
 }
 
-class CallExpressionTypeArgumentTypeAdapter(
+class TypeArgumentTypeAdapter(
     private val callExpression: EKtCallExpression,
     private val index: Int
 ) : TypeAdapter() {
@@ -88,5 +98,9 @@ class CallExpressionTypeArgumentTypeAdapter(
 
     override fun setType(type: Type) {
         callExpression.typeArguments[index] = type
+    }
+
+    override fun getCheckerResult(type: Type): CheckerResult {
+        return CheckerResult(callExpression.typeArguments[index], type)
     }
 }

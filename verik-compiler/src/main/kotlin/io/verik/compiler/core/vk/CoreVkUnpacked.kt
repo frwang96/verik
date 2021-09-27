@@ -27,9 +27,9 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreKtPropertyDeclaration
 import io.verik.compiler.core.common.CoreKtTransformableFunctionDeclaration
 import io.verik.compiler.core.common.CoreScope
+import io.verik.compiler.specialize.TypeAdapter
 import io.verik.compiler.specialize.TypeConstraint
 import io.verik.compiler.specialize.TypeEqualsTypeConstraint
-import io.verik.compiler.specialize.TypedElementTypeArgumentTypeAdapter
 
 object CoreVkUnpacked : CoreScope(Core.Vk.C_Unpacked) {
 
@@ -38,8 +38,8 @@ object CoreVkUnpacked : CoreScope(Core.Vk.C_Unpacked) {
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
                 TypeEqualsTypeConstraint(
-                    TypedElementTypeArgumentTypeAdapter(callExpression.receiver!!, listOf(1)),
-                    callExpression
+                    TypeAdapter.ofElement(callExpression.receiver!!, 1),
+                    TypeAdapter.ofElement(callExpression)
                 )
             )
         }
@@ -59,8 +59,8 @@ object CoreVkUnpacked : CoreScope(Core.Vk.C_Unpacked) {
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
                 TypeEqualsTypeConstraint(
-                    TypedElementTypeArgumentTypeAdapter(callExpression.receiver!!, listOf(1)),
-                    callExpression.valueArguments[1]
+                    TypeAdapter.ofElement(callExpression.receiver!!, 1),
+                    TypeAdapter.ofElement(callExpression.valueArguments[1])
                 )
             )
         }

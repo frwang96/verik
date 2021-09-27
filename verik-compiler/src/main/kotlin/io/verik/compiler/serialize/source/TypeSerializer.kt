@@ -37,7 +37,10 @@ object TypeSerializer {
             Core.Kt.C_Int -> SerializedType("int")
             Core.Kt.C_Boolean -> SerializedType("logic")
             Core.Kt.C_String -> SerializedType("string")
-            Core.Vk.C_Ubit -> SerializedType("logic", "[${type.asBitWidth(element) - 1}:0]", null)
+            Core.Vk.C_Ubit -> {
+                val value = type.arguments[0].asCardinalValue(element)
+                SerializedType("logic", "[${value - 1}:0]", null)
+            }
             Core.Vk.C_Packed -> {
                 val serializedType = serialize(type.arguments[1], element)
                 var packedDimension = "[${type.arguments[0].asCardinalValue(element) - 1}:0]"
