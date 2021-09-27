@@ -76,9 +76,9 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
                 BinaryOperatorTypeConstraint(
-                    callExpression.receiver!!,
-                    callExpression.valueArguments[0],
-                    callExpression,
+                    TypeAdapter.ofElement(callExpression.receiver!!, 0),
+                    TypeAdapter.ofElement(callExpression.valueArguments[0], 0),
+                    TypeAdapter.ofElement(callExpression, 0),
                     BinaryOperatorTypeConstraintKind.MAX
                 )
             )
@@ -94,9 +94,9 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
                 BinaryOperatorTypeConstraint(
-                    callExpression.receiver!!,
-                    callExpression.valueArguments[0],
-                    callExpression,
+                    TypeAdapter.ofElement(callExpression.receiver!!, 0),
+                    TypeAdapter.ofElement(callExpression.valueArguments[0], 0),
+                    TypeAdapter.ofElement(callExpression, 0),
                     BinaryOperatorTypeConstraintKind.MAX_INC
                 )
             )
@@ -112,9 +112,9 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
                 BinaryOperatorTypeConstraint(
-                    callExpression.receiver!!,
-                    callExpression.valueArguments[0],
-                    callExpression,
+                    TypeAdapter.ofElement(callExpression.receiver!!, 0),
+                    TypeAdapter.ofElement(callExpression.valueArguments[0], 0),
+                    TypeAdapter.ofElement(callExpression, 0),
                     BinaryOperatorTypeConstraintKind.ADD
                 )
             )

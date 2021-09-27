@@ -69,24 +69,25 @@ object TypeConstraintResolver {
     }
 
     private fun resolveBinaryOperatorTypeConstraint(typeConstraint: BinaryOperatorTypeConstraint): Boolean {
-        val leftResolved = typeConstraint.left.type.arguments[0].isResolved()
-        val rightResolved = typeConstraint.right.type.arguments[0].isResolved()
-        val outerResolved = typeConstraint.outer.type.arguments[0].isResolved()
+        val leftType = typeConstraint.left.getType()
+        val rightType = typeConstraint.right.getType()
+        val outerType = typeConstraint.outer.getType()
+        val leftResolved = leftType.isResolved()
+        val rightResolved = rightType.isResolved()
+        val outerResolved = outerType.isResolved()
         return if (outerResolved) {
             true
         } else {
             if (leftResolved && rightResolved) {
-                val leftType = typeConstraint.left.type.arguments[0].copy()
-                val rightType = typeConstraint.right.type.arguments[0].copy()
                 val type = when (typeConstraint.kind) {
                     BinaryOperatorTypeConstraintKind.MAX ->
-                        Core.Vk.N_MAX.toType(leftType, rightType)
+                        Core.Vk.N_MAX.toType(leftType.copy(), rightType.copy())
                     BinaryOperatorTypeConstraintKind.MAX_INC ->
-                        Core.Vk.N_INC.toType(Core.Vk.N_MAX.toType(leftType, rightType))
+                        Core.Vk.N_INC.toType(Core.Vk.N_MAX.toType(leftType.copy(), rightType.copy()))
                     BinaryOperatorTypeConstraintKind.ADD ->
-                        Core.Vk.N_ADD.toType(leftType, rightType)
+                        Core.Vk.N_ADD.toType(leftType.copy(), rightType.copy())
                 }
-                typeConstraint.outer.type.arguments[0] = type
+                typeConstraint.outer.setType(type)
                 true
             } else {
                 false

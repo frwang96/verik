@@ -57,10 +57,6 @@ class MessageTemplate2<A, B>(
     override val template: String
 ) : AbstractMessageTemplate() {
 
-    fun on(location: SourceLocation, a: A, b: B) {
-        MessageCollector.messageCollector.message(name, format(a, b), location, severity)
-    }
-
     fun on(element: EElement, a: A, b: B) {
         MessageCollector.messageCollector.message(name, format(a, b), element.location, severity)
     }
