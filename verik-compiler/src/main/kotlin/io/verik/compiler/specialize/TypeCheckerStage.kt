@@ -32,13 +32,9 @@ object TypeCheckerStage : ProjectStage() {
 
     object TypeCheckerVisitor : TreeVisitor() {
 
-        // TODO check return type
         override fun visitKtFunction(function: EKtFunction) {
-            val body = function.body
-            if (body != null) {
-                val typeConstraints = TypeConstraintCollector.collect(body)
-                TypeConstraintChecker.check(typeConstraints)
-            }
+            val typeConstraints = TypeConstraintCollector.collect(function)
+            TypeConstraintChecker.check(typeConstraints)
         }
 
         override fun visitKtProperty(property: EKtProperty) {

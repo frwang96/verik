@@ -26,14 +26,14 @@ fun random(): Int {
 }
 
 /**
- * Returns a random integer from 0 to [max] exclusive.
+ * Returns a random integer from 0 to [max] inclusive.
  */
 fun random(max: Int): Int {
     throw VerikException()
 }
 
 /**
- * Returns a random integer from [min] to [max] exclusive.
+ * Returns a random integer from [min] to [max] inclusive.
  */
 fun random(min: Int, max: Int): Int {
     throw VerikException()

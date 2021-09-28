@@ -57,7 +57,7 @@ class CacheTb(
     @Task
     fun transact() {
         repeat(3) { wait(cb) }
-        if (random(2) == 0) {
+        if (random(1) == 0) {
             // write mem
             val addr: UbitAddr = randomUbit()
             val data: UbitData = randomUbit()

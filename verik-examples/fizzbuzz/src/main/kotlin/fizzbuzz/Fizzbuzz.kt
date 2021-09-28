@@ -44,6 +44,8 @@ class Fizzbuzz : Module() {
         y[0].value = 0
         println(E.A)
         println("$e ${E.B}")
+        random(1)
+        random(1, 2)
     }
 
     fun f(x: Int) {

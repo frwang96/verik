@@ -145,4 +145,20 @@ internal class TypeResolverStageTest : BaseTest() {
             projectContext.findExpression("x")
         )
     }
+
+    @Test
+    fun `resolve return statement`() {
+        val projectContext = driveTest(
+            TypeResolverStage::class,
+            """
+                fun f(): Ubit<`8`> {
+                    return zeroes()
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "ReturnStatement(Nothing, KtCallExpression(Ubit<`8`>, zeroes, null, [], [Ubit<`8`>]))",
+            projectContext.findExpression("f")
+        )
+    }
 }

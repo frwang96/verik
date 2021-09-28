@@ -32,6 +32,7 @@ import io.verik.compiler.core.common.CoreKtBasicFunctionDeclaration
 import io.verik.compiler.core.common.CoreKtTransformableFunctionDeclaration
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
+import io.verik.compiler.core.sv.CoreSv
 import io.verik.compiler.message.Messages
 import io.verik.compiler.specialize.ConcatenationTypeConstraint
 import io.verik.compiler.specialize.TypeAdapter
@@ -135,7 +136,26 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_random_Int = CoreKtBasicFunctionDeclaration(parent, "random", Core.Kt.C_Int)
+    val F_random_Int = object : CoreKtTransformableFunctionDeclaration(parent, "random", Core.Kt.C_Int) {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            callExpression.reference = CoreSv.F_urandom_range
+            return callExpression
+        }
+    }
+
+    val F_random_Int_Int = object : CoreKtTransformableFunctionDeclaration(
+        parent,
+        "random",
+        Core.Kt.C_Int,
+        Core.Kt.C_Int
+    ) {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            callExpression.reference = CoreSv.F_urandom_range
+            return callExpression
+        }
+    }
 
     val F_random_Ubit = object : CoreKtTransformableFunctionDeclaration(parent, "randomUbit") {
 
