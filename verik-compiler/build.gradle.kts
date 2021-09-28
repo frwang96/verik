@@ -34,8 +34,8 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.32")
     implementation("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.4.10")
     implementation("io.verik:verik-core:$version")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.2")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.0")
 }
 
 configure<JavaPluginConvention> {
