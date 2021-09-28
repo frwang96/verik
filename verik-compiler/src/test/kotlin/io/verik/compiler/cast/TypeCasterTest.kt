@@ -131,7 +131,7 @@ internal class TypeCasterTest : BaseTest() {
     }
 
     @Test
-    fun `type reference cardinal auto`() {
+    fun `type reference cardinal inferred`() {
         val projectContext = driveTest(
             CasterStage::class,
             """
@@ -184,6 +184,21 @@ internal class TypeCasterTest : BaseTest() {
         )
         assertElementEquals(
             "KtProperty(x, Ubit<N>, *, [])",
+            projectContext.findDeclaration("x")
+        )
+    }
+
+    @Test
+    fun `type reference cardinal type alias`() {
+        val projectContext = driveTest(
+            CasterStage::class,
+            """
+                typealias U = Ubit<`8`>
+                var x: U = nc()
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtProperty(x, U, *, [])",
             projectContext.findDeclaration("x")
         )
     }

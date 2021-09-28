@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.cast
+package io.verik.compiler.specialize
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestErrorException
@@ -23,13 +23,13 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-internal class CasterTypeCheckerStageTest : BaseTest() {
+internal class TypeParameterTypeCheckerStageTest : BaseTest() {
 
     @Test
     fun `cardinal type expected`() {
         assertThrows<TestErrorException> {
             driveTest(
-                CasterTypeCheckerStage::class,
+                TypeParameterTypeCheckerStage::class,
                 """
                     var x: Ubit<ADD<`8`, Int>> = u(0)
                 """.trimIndent()
@@ -43,7 +43,7 @@ internal class CasterTypeCheckerStageTest : BaseTest() {
     fun `cardinal type expected type parameter`() {
         assertThrows<TestErrorException> {
             driveTest(
-                CasterTypeCheckerStage::class,
+                TypeParameterTypeCheckerStage::class,
                 """
                     class C<N> {
                         var x: Ubit<INC<N>> = u(0)

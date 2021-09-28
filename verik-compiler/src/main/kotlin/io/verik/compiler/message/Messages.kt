@@ -123,9 +123,9 @@ object Messages {
         "Type of type argument could not be resolved"
     )
 
-    val CARDINAL_OUT_OF_RANGE = MessageTemplate1<Type>(
+    val CARDINAL_OUT_OF_RANGE = MessageTemplate0(
         Severity.ERROR,
-        "Cardinal type out of range: $0"
+        "Cardinal type out of range"
     )
 
     val TYPE_MISMATCH = MessageTemplate2<Type, Type>(

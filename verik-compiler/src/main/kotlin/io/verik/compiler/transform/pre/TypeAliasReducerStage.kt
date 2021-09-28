@@ -14,45 +14,46 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.cast
+package io.verik.compiler.transform.pre
 
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.message.Messages
 
-object CasterTypeCheckerStage : ProjectStage() {
+object TypeAliasReducerStage : ProjectStage() {
 
-    override val checkNormalization = false
+    override val checkNormalization = true
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.project.accept(CasterTypeCheckerVisitor)
+        projectContext.project.accept(TypeAliasReducerVisitor)
     }
 
-    object CasterTypeCheckerVisitor : TreeVisitor() {
+    object TypeAliasReducerVisitor : TreeVisitor() {
 
-        private fun checkType(type: Type, element: EElement) {
-            if (type.isCardinalType()) {
-                type.arguments.forEach {
-                    if (!it.isCardinalType())
-                        Messages.CARDINAL_TYPE_EXPECTED.on(element, it)
-                }
+        // TODO handle type alias with type parameters
+        private fun reduce(type: Type, element: EElement) {
+            var reference = type.reference
+            while (reference is ETypeAlias) {
+                type.reference = reference.type.reference
+                type.arguments = ArrayList(reference.type.arguments.map { it.copy() })
+                reference = type.reference
             }
-            type.arguments.forEach { checkType(it, element) }
+            type.arguments.forEach { reduce(it, element) }
         }
 
         override fun visitTypedElement(typedElement: ETypedElement) {
             super.visitTypedElement(typedElement)
-            checkType(typedElement.type, typedElement)
+            reduce(typedElement.type, typedElement)
         }
 
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
-            callExpression.typeArguments.forEach { checkType(it, callExpression) }
+            callExpression.typeArguments.forEach { reduce(it, callExpression) }
         }
     }
 }

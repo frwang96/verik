@@ -83,6 +83,6 @@ internal class TypeSpecializerStageTest : BaseTest() {
                     var x: Ubit<EXP<`32`>> = zeroes()
                 """.trimIndent()
             )
-        }.apply { assertEquals("Cardinal type out of range: EXP<`32`>", message) }
+        }.apply { assertEquals("Cardinal type out of range", message) }
     }
 }

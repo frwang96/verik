@@ -17,7 +17,6 @@
 package io.verik.compiler.main
 
 import io.verik.compiler.cast.CasterStage
-import io.verik.compiler.cast.CasterTypeCheckerStage
 import io.verik.compiler.cast.IndexerStage
 import io.verik.compiler.check.post.CardinalPositiveCheckerStage
 import io.verik.compiler.check.post.KeywordCheckerStage
@@ -43,6 +42,7 @@ import io.verik.compiler.serialize.general.PackageFileSerializerStage
 import io.verik.compiler.serialize.source.SourceSerializerStage
 import io.verik.compiler.specialize.DeclarationSpecializerStage
 import io.verik.compiler.specialize.TypeCheckerStage
+import io.verik.compiler.specialize.TypeParameterTypeCheckerStage
 import io.verik.compiler.specialize.TypeResolvedCheckerStage
 import io.verik.compiler.specialize.TypeResolverStage
 import io.verik.compiler.specialize.TypeSpecializerStage
@@ -72,6 +72,7 @@ import io.verik.compiler.transform.pre.ConstantExpressionTransformerStage
 import io.verik.compiler.transform.pre.ForExpressionReducerStage
 import io.verik.compiler.transform.pre.FunctionOverloadingTransformerStage
 import io.verik.compiler.transform.pre.NameRelabelerStage
+import io.verik.compiler.transform.pre.TypeAliasReducerStage
 import io.verik.compiler.transform.pre.UnaryExpressionReducerStage
 
 object StageSequencer {
@@ -93,11 +94,11 @@ object StageSequencer {
         // Cast
         stageSequence.add(IndexerStage)
         stageSequence.add(CasterStage)
-        stageSequence.add(CasterTypeCheckerStage)
 
         // PreTransform
         stageSequence.add(FunctionOverloadingTransformerStage)
         stageSequence.add(NameRelabelerStage)
+        stageSequence.add(TypeAliasReducerStage)
         stageSequence.add(AssignmentOperatorReducerStage)
         stageSequence.add(UnaryExpressionReducerStage)
         stageSequence.add(BinaryExpressionReducerStage)
@@ -107,6 +108,7 @@ object StageSequencer {
         stageSequence.add(ConstantExpressionTransformerStage)
 
         // Specialize
+        stageSequence.add(TypeParameterTypeCheckerStage)
         stageSequence.add(TypeResolverStage)
         stageSequence.add(TypeResolvedCheckerStage)
         stageSequence.add(DeclarationSpecializerStage)

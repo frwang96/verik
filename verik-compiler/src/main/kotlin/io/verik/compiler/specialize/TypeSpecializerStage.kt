@@ -19,7 +19,6 @@ package io.verik.compiler.specialize
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.kt.EKtCallExpression
-import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
@@ -42,31 +41,21 @@ object TypeSpecializerStage : ProjectStage() {
 
         private fun specialize(type: Type, element: EElement) {
             type.arguments.forEach { specialize(it, element) }
-            // TODO handle type alias with type parameters
-            if (type.isCardinalType()) {
-                var reference = type.reference
-                while (reference is ETypeAlias || reference is CoreCardinalFunctionDeclaration) {
-                    when (reference) {
-                        is ETypeAlias -> {
-                            type.reference = reference.type.reference
-                            type.arguments = ArrayList(reference.type.arguments.map { it.copy() })
-                            type.arguments.forEach { specialize(it, element) }
-                        }
-                        is CoreCardinalFunctionDeclaration ->
-                            specializeCardinalFunction(type, reference, element)
-                    }
-                    reference = type.reference
-                }
+            val reference = type.reference
+            if (reference is CoreCardinalFunctionDeclaration) {
+                val arguments = type.arguments.map { it.asCardinalValue(element) }
+                val value = specializeCardinalFunction(reference, arguments, element)
+                type.reference = Core.Vk.cardinalOf(value)
+                type.arguments = arrayListOf()
             }
         }
 
         private fun specializeCardinalFunction(
-            type: Type,
             reference: CoreCardinalFunctionDeclaration,
+            arguments: List<Int>,
             element: EElement
-        ) {
-            val arguments = type.arguments.map { it.asCardinalValue(element) }
-            val value = when (reference) {
+        ): Int {
+            return when (reference) {
                 Core.Vk.N_ADD ->
                     arguments[0] + arguments[1]
                 Core.Vk.N_SUB ->
@@ -87,7 +76,7 @@ object TypeSpecializerStage : ProjectStage() {
                     if (arguments[0] < 0) 0 else (32 - arguments[0].countLeadingZeroBits())
                 Core.Vk.N_EXP -> {
                     if (arguments[0] >= 31)
-                        Messages.CARDINAL_OUT_OF_RANGE.on(element, type)
+                        Messages.CARDINAL_OUT_OF_RANGE.on(element)
                     1 shl arguments[0]
                 }
                 else -> {
@@ -95,8 +84,6 @@ object TypeSpecializerStage : ProjectStage() {
                     1
                 }
             }
-            type.reference = Core.Vk.cardinalOf(value)
-            type.arguments = arrayListOf()
         }
 
         override fun visitTypedElement(typedElement: ETypedElement) {
