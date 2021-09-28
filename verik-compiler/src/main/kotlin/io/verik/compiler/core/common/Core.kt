@@ -168,5 +168,6 @@ object Core {
         val F_time = CoreSv.F_time
         val F_finish = CoreSv.F_finish
         val F_new = CoreSv.F_new
+        val F_name = CoreSv.F_name
     }
 }

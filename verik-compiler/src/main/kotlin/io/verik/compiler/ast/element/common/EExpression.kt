@@ -16,9 +16,7 @@
 
 package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.SvSerializationType
-import io.verik.compiler.message.Messages
 
 abstract class EExpression : ETypedElement() {
 
@@ -27,10 +25,6 @@ abstract class EExpression : ETypedElement() {
     abstract fun copy(): EExpression
 
     fun replace(expression: EExpression) {
-        val parent = parentNotNull()
-        if (parent is ExpressionContainer)
-            parent.replaceChild(this, expression)
-        else
-            Messages.INTERNAL_ERROR.on(this, "Could not replace $this in $parent")
+        parentNotNull().replaceChildAsExpressionContainer(this, expression)
     }
 }

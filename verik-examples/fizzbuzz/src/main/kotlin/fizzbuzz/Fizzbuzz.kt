@@ -20,6 +20,8 @@ import io.verik.core.*
 
 class S(var value: Int) : Struct()
 
+enum class E { A, B }
+
 @Top
 class Fizzbuzz : Module() {
 
@@ -32,6 +34,7 @@ class Fizzbuzz : Module() {
 
     @Run
     fun main() {
+        val e = E.A
         f(0)
         repeat(3) {
             println(g(0))
@@ -39,6 +42,8 @@ class Fizzbuzz : Module() {
         x[0] = zeroes()
         x[z] = zeroes()
         y[0].value = 0
+        println(E.A)
+        println("$e ${E.B}")
     }
 
     fun f(x: Int) {

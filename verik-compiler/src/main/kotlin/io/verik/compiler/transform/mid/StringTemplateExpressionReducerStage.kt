@@ -41,6 +41,7 @@ object StringTemplateExpressionReducerStage : ProjectStage() {
         return when (type.reference) {
             Core.Kt.C_Boolean -> "%b"
             Core.Kt.C_Int -> "%d"
+            Core.Kt.C_String -> "%s"
             Core.Vk.C_Ubit -> {
                 val width = type.arguments[0].asCardinalValue(expression)
                 "%0${(width + 3) / 4}h"
