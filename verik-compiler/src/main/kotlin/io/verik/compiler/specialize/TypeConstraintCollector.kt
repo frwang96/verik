@@ -27,7 +27,9 @@ import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
+import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
+import io.verik.compiler.ast.property.KtUnaryOperatorKind
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreKtAbstractFunctionDeclaration
@@ -83,6 +85,24 @@ object TypeConstraintCollector {
             }
         }
 
+        override fun visitKtUnaryExpression(unaryExpression: EKtUnaryExpression) {
+            super.visitKtUnaryExpression(unaryExpression)
+            val kinds = listOf(
+                KtUnaryOperatorKind.PRE_INC,
+                KtUnaryOperatorKind.PRE_DEC,
+                KtUnaryOperatorKind.POST_INC,
+                KtUnaryOperatorKind.POST_DEC
+            )
+            if (unaryExpression.kind in kinds) {
+                typeConstraints.add(
+                    TypeEqualsTypeConstraint(
+                        TypeAdapter.ofElement(unaryExpression.expression),
+                        TypeAdapter.ofElement(unaryExpression)
+                    )
+                )
+            }
+        }
+
         override fun visitKtBinaryExpression(binaryExpression: EKtBinaryExpression) {
             super.visitKtBinaryExpression(binaryExpression)
             val kinds = listOf(
@@ -126,6 +146,12 @@ object TypeConstraintCollector {
                 is CoreKtAbstractFunctionDeclaration ->
                     typeConstraints.addAll(reference.getTypeConstraints(callExpression))
                 is EKtAbstractFunction -> {
+                    typeConstraints.add(
+                        TypeEqualsTypeConstraint(
+                            TypeAdapter.ofElement(callExpression),
+                            TypeAdapter.ofElement(reference)
+                        )
+                    )
                     callExpression.valueArguments
                         .zip(reference.valueParameters)
                         .forEach { (valueArgument, valueParameter) ->

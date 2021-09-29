@@ -27,7 +27,7 @@ class Fizzbuzz : Module() {
 
     val x: Unpacked<`8`, Ubit<`8`>> = nc()
     val y: Unpacked<`8`, S> = nc()
-    val z: Ubit<`3`> = nc()
+    var z: Ubit<`3`> = nc()
 
     @Suppress("unused")
     val c = C()
@@ -35,6 +35,8 @@ class Fizzbuzz : Module() {
     @Run
     fun main() {
         val e = E.A
+        val h = h(z)
+        println(h)
         f(0)
         repeat(3) {
             println(g(0))
@@ -42,6 +44,7 @@ class Fizzbuzz : Module() {
         x[0] = zeroes()
         x[z] = zeroes()
         y[0].value = 0
+        z++
         println(E.A)
         println("$e ${E.B}")
         random(1)
@@ -59,6 +62,10 @@ class Fizzbuzz : Module() {
         }
         return x + 1
     }
+}
+
+fun h(x: Ubit<`3`>): Ubit<`3`> {
+    return x
 }
 
 class C
