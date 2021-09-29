@@ -21,7 +21,7 @@ plugins {
 
 subprojects {
     group = "io.verik"
-    version = "local"
+    version = "local-SNAPSHOT"
     apply(plugin = "io.verik.verik-plugin")
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
     configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {

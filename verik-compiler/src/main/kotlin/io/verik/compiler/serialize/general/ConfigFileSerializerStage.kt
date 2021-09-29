@@ -25,11 +25,10 @@ object ConfigFileSerializerStage : ProjectStage() {
     override val checkNormalization = false
 
     override fun process(projectContext: ProjectContext) {
-        val inputPath = projectContext.config.inputSourceDir
         val outputPath = projectContext.config.buildDir.resolve("config.yaml")
         val fileHeader = FileHeaderBuilder.build(
             projectContext,
-            inputPath,
+            null,
             outputPath,
             FileHeaderBuilder.HeaderStyle.TXT
         )

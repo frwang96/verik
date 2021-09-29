@@ -19,11 +19,11 @@ package io.verik.compiler.main
 import io.verik.compiler.cast.CasterStage
 import io.verik.compiler.cast.IndexerStage
 import io.verik.compiler.check.post.CardinalPositiveCheckerStage
+import io.verik.compiler.check.post.FileCheckerStage
 import io.verik.compiler.check.post.KeywordCheckerStage
 import io.verik.compiler.check.post.NameCheckerStage
 import io.verik.compiler.check.post.NameRedeclarationCheckerStage
 import io.verik.compiler.check.post.UntransformedElementCheckerStage
-import io.verik.compiler.check.pre.FileCheckerStage
 import io.verik.compiler.check.pre.ImportDirectiveCheckerStage
 import io.verik.compiler.check.pre.UnsupportedElementCheckerStage
 import io.verik.compiler.check.pre.UnsupportedModifierCheckerStage
@@ -89,7 +89,6 @@ object StageSequencer {
         // PreCheck
         stageSequence.add(UnsupportedElementCheckerStage)
         stageSequence.add(UnsupportedModifierCheckerStage)
-        stageSequence.add(FileCheckerStage)
         stageSequence.add(ImportDirectiveCheckerStage)
 
         // Cast
@@ -147,6 +146,7 @@ object StageSequencer {
         stageSequence.add(TemporaryPropertyRelabelerStage)
 
         // PostCheck
+        stageSequence.add(FileCheckerStage)
         stageSequence.add(CardinalPositiveCheckerStage)
         stageSequence.add(NameCheckerStage)
         stageSequence.add(KeywordCheckerStage)

@@ -35,7 +35,6 @@ data class Config(
     val indentLength: Int
 ) {
 
-    val inputSourceDir: Path = projectDir.resolve("src/main/kotlin")
     val outputSourceDir: Path = buildDir.resolve("src")
     val timescale = "1ns / 1ns"
 }

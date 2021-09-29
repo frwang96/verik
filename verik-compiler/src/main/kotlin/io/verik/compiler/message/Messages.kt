@@ -30,16 +30,6 @@ object Messages {
 
 //  PRE CHECK  /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val FILE_NAME_RESERVED = MessageTemplate1<Path>(
-        Severity.ERROR,
-        "File name is reserved: $0"
-    )
-
-    val FILE_LOCATION_MISMATCH = MessageTemplate0(
-        Severity.ERROR,
-        "Package directive does not match file location"
-    )
-
     val PACKAGE_NAME_ROOT = MessageTemplate0(
         Severity.ERROR,
         "Use of the root package is prohibited"
@@ -180,6 +170,16 @@ object Messages {
     )
 
 //  POST CHECK  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    val FILE_NAME_RESERVED = MessageTemplate1<Path>(
+        Severity.ERROR,
+        "File name is reserved: $0"
+    )
+
+    val FILE_NAME_DUPLICATED = MessageTemplate1<Path>(
+        Severity.ERROR,
+        "File name is duplicated: $0"
+    )
 
     val CARDINAL_NOT_POSITIVE = MessageTemplate1<Type>(
         Severity.ERROR,

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.check.pre
+package io.verik.compiler.check.post
 
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
-import java.nio.file.FileSystems
+import java.nio.file.Path
 import java.nio.file.Paths
 
 object FileCheckerStage : ProjectStage() {
@@ -27,16 +27,26 @@ object FileCheckerStage : ProjectStage() {
     override val checkNormalization = false
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.ktFiles.forEach {
-            val path = Paths.get(it.virtualFilePath)
-            if (path.fileName == Paths.get("Pkg.kt"))
-                Messages.FILE_NAME_RESERVED.on(it, path.fileName)
+        val pathSet = HashSet<Path>()
+        val duplicatedPathSet = HashSet<Path>()
+        projectContext.project.files().forEach {
+            val inputPath = it.inputPath
+            if (inputPath.fileName == Paths.get("Pkg.kt"))
+                Messages.FILE_NAME_RESERVED.on(it, inputPath.fileName)
 
-            val packageName = it.packageFqName.asString()
-            val relativePath = packageName.replace(".", FileSystems.getDefault().separator)
-            val packagePath = projectContext.config.inputSourceDir.resolve(relativePath)
-            if (path.parent != packagePath)
-                Messages.FILE_LOCATION_MISMATCH.on(it)
+            val outputPath = it.getOutputPathNotNull()
+            if (outputPath in pathSet)
+                duplicatedPathSet.add(outputPath)
+            else
+                pathSet.add(outputPath)
+        }
+
+        if (duplicatedPathSet.isNotEmpty()) {
+            projectContext.project.files().forEach {
+                val outputPath = it.getOutputPathNotNull()
+                if (outputPath in duplicatedPathSet)
+                    Messages.FILE_NAME_DUPLICATED.on(it, it.inputPath.fileName)
+            }
         }
     }
 }

@@ -119,7 +119,10 @@ fun assertOutputTextEquals(expected: String, actual: TextFile) {
     val expectedLines = expected.lines()
         .dropLastWhile { it.isEmpty() }
     val actualLines = actual.content.lines()
-        .let { it.subList(13, it.size) }
+        .let { lines ->
+            val index = lines.indexOfFirst { it == "`endif" } + 2
+            lines.subList(index, lines.size)
+        }
         .dropLastWhile { it.isEmpty() }
 
     assertEquals(expectedLines, actualLines)
