@@ -51,4 +51,18 @@ internal class BitConstantTransformerStageTest : BaseTest() {
             projectContext.findExpression("x")
         )
     }
+
+    @Test
+    fun `constant string binary`() {
+        val projectContext = driveTest(
+            BitConstantTransformerStage::class,
+            """
+                var x = u("0b0011")
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "ConstantExpression(Ubit<`4`>, 4'h3)",
+            projectContext.findExpression("x")
+        )
+    }
 }

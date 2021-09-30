@@ -17,7 +17,10 @@
 package io.verik.compiler.transform.pre
 
 import io.verik.compiler.ast.element.common.EConstantExpression
+import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.kt.EStringTemplateExpression
+import io.verik.compiler.ast.property.LiteralStringEntry
 import io.verik.compiler.common.BitConstantUtil
 import io.verik.compiler.common.ConstantUtil
 import io.verik.compiler.common.ProjectStage
@@ -36,23 +39,36 @@ object BitConstantTransformerStage : ProjectStage() {
 
     object BitConstantTransformerVisitor : TreeVisitor() {
 
-        private fun getBitConstantExpression(expression: EConstantExpression): EConstantExpression {
-            val value = ConstantUtil.normalizeGetIntValue(expression.value)
-            val width = ConstantUtil.normalizeGetIntWidth(expression.value)
+        private fun getBitConstantExpression(value: String, element: EElement): EConstantExpression {
+            val intValue = ConstantUtil.normalizeGetIntValue(value)
+            val intWidth = ConstantUtil.normalizeGetIntWidth(value)
             return EConstantExpression(
-                expression.location,
-                Core.Vk.C_Ubit.toType(Core.Vk.cardinalOf(width).toType()),
-                BitConstantUtil.format(value, width)
+                element.location,
+                Core.Vk.C_Ubit.toType(Core.Vk.cardinalOf(intWidth).toType()),
+                BitConstantUtil.format(intValue, intWidth)
             )
         }
 
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
-            if (callExpression.reference == Core.Vk.F_u_Int) {
-                val expression = callExpression.valueArguments[0]
-                if (expression is EConstantExpression) {
-                    callExpression.replace(getBitConstantExpression(expression))
-                } else {
+            when (callExpression.reference) {
+                Core.Vk.F_u_Int -> {
+                    val expression = callExpression.valueArguments[0]
+                    if (expression is EConstantExpression) {
+                        callExpression.replace(getBitConstantExpression(expression.value, expression))
+                        return
+                    }
+                    Messages.BIT_CONSTANT_NOT_CONSTANT.on(expression)
+                }
+                Core.Vk.F_u_String -> {
+                    val expression = callExpression.valueArguments[0]
+                    if (expression is EStringTemplateExpression && expression.entries.size == 1) {
+                        val stringEntry = expression.entries[0]
+                        if (stringEntry is LiteralStringEntry) {
+                            callExpression.replace(getBitConstantExpression(stringEntry.text, expression))
+                            return
+                        }
+                    }
                     Messages.BIT_CONSTANT_NOT_CONSTANT.on(expression)
                 }
             }

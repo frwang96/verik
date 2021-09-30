@@ -120,6 +120,7 @@ object Core {
         val F_i = CoreVk.F_i
         val F_u = CoreVk.F_u
         val F_u_Int = CoreVk.F_u_Int
+        val F_u_String = CoreVk.F_u_String
         val F_u0 = CoreVk.F_u0
         val F_cat = CoreVk.F_cat
         val F_random = CoreVk.F_random

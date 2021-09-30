@@ -98,6 +98,8 @@ object CoreVk : CoreScope(CorePackage.VK) {
 
     val F_u_Int = CoreKtBasicFunctionDeclaration(parent, "u", Core.Kt.C_Int)
 
+    val F_u_String = CoreKtBasicFunctionDeclaration(parent, "u", Core.Kt.C_String)
+
     val F_u0 = object : CoreKtTransformableFunctionDeclaration(parent, "u0") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
