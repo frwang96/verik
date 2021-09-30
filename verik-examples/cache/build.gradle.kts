@@ -15,6 +15,5 @@
  */
 
 verik {
-    top = "CacheTop"
     debug = true
 }

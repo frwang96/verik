@@ -25,7 +25,6 @@ data class Config(
     val projectDir: Path,
     val buildDir: Path,
     val projectFiles: List<Path>,
-    val top: String,
     val debug: Boolean,
     val suppressedWarnings: List<String>,
     val promotedWarnings: List<String>,

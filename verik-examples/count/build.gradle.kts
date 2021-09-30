@@ -15,6 +15,5 @@
  */
 
 verik {
-    top = "Count"
     debug = true
 }

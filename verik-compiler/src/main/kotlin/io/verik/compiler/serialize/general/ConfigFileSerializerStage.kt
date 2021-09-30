@@ -16,7 +16,9 @@
 
 package io.verik.compiler.serialize.general
 
+import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.common.ProjectStage
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 
@@ -33,10 +35,25 @@ object ConfigFileSerializerStage : ProjectStage() {
             FileHeaderBuilder.HeaderStyle.TXT
         )
 
+        val topLevelModules = ArrayList<String>()
+        val topLevelModulesVisitor = object : TreeVisitor() {
+            override fun visitModule(module: EModule) {
+                super.visitModule(module)
+                if (module.isTop)
+                    topLevelModules.add(module.name)
+            }
+        }
+        projectContext.project.accept(topLevelModulesVisitor)
+
         val builder = StringBuilder()
         builder.append(fileHeader)
-        builder.appendLine("top: ${projectContext.config.top}")
         builder.appendLine("timescale: ${projectContext.config.timescale}")
+        if (topLevelModules.isNotEmpty()) {
+            builder.appendLine("top:")
+            topLevelModules.forEach {
+                builder.appendLine("  - $it")
+            }
+        }
         projectContext.outputTextFiles.add(TextFile(outputPath, builder.toString()))
     }
 }

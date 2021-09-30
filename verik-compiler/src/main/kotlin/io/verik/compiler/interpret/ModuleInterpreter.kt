@@ -30,6 +30,7 @@ object ModuleInterpreter {
     fun interpretModule(basicClass: EKtBasicClass, referenceUpdater: ReferenceUpdater): Boolean {
         if (!basicClass.toType().isSubtype(Core.Vk.C_Module.toType()))
             return false
+        val isTop = basicClass.hasAnnotation(Annotations.TOP)
         val ports = basicClass.primaryConstructor
             ?.valueParameters
             ?.mapNotNull { interpretPort(it) }
@@ -40,6 +41,7 @@ object ModuleInterpreter {
             basicClass.supertype,
             basicClass.typeParameters,
             basicClass.members,
+            isTop,
             ports
         )
         referenceUpdater.replace(basicClass, module)

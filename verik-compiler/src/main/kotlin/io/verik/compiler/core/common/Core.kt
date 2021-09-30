@@ -44,7 +44,6 @@ object Core {
         val C_Enum = CoreClass.Kt.C_Enum
 
         val F_repeat_Int_Function = CoreKt.F_repeat_Int_Function
-        val F_TODO = CoreKt.F_TODO
 
         object Int : CoreScope(C_Int) {
 
@@ -136,6 +135,7 @@ object Core {
         val F_delay_Int = CoreVk.F_delay_Int
         val F_time = CoreVk.F_time
         val F_finish = CoreVk.F_finish
+        val F_fatal = CoreVk.F_fatal
         val F_sv_String = CoreVk.F_sv_String
 
         object Ubit : CoreScope(C_Ubit) {

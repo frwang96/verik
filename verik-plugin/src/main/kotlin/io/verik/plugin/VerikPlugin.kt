@@ -53,7 +53,6 @@ class VerikPlugin : Plugin<Project> {
 
         task.group = "verik"
         task.inputs.property("version", { ConfigBuilder.getVersion(project) })
-        task.inputs.property("top", { extension.top })
         task.inputs.property("debug", { extension.debug })
         task.inputs.property("suppressedWarnings", { extension.suppressedWarnings })
         task.inputs.property("promotedWarnings", { extension.promotedWarnings })

@@ -47,12 +47,4 @@ object CoreKt : CoreScope(CorePackage.KT) {
             } else callExpression
         }
     }
-
-    val F_TODO = object : CoreKtTransformableFunctionDeclaration(parent, "TODO") {
-
-        override fun transform(callExpression: EKtCallExpression): EExpression {
-            callExpression.reference = Core.Sv.F_fatal
-            return callExpression
-        }
-    }
 }

@@ -265,5 +265,13 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
+    val F_fatal = object : CoreKtTransformableFunctionDeclaration(parent, "fatal") {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            callExpression.reference = Core.Sv.F_fatal
+            return callExpression
+        }
+    }
+
     val F_sv_String = CoreKtBasicFunctionDeclaration(parent, "sv", Core.Kt.C_String)
 }

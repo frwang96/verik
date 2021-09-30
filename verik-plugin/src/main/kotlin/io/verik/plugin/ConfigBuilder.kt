@@ -29,8 +29,6 @@ object ConfigBuilder {
     fun getConfig(project: Project, extension: VerikPluginExtension): Config {
         val version = getVersion(project)
             ?: throw GradleException("Verik configuration failed: Could not determine version number")
-        val top = extension.top
-            ?: throw GradleException("Verik configuration failed: Elaboration top not specified")
 
         return Config(
             version = version,
@@ -39,7 +37,6 @@ object ConfigBuilder {
             projectDir = project.projectDir.toPath(),
             buildDir = getBuildDir(project),
             projectFiles = getInputFiles(project),
-            top = top,
             debug = extension.debug,
             suppressedWarnings = extension.suppressedWarnings,
             promotedWarnings = extension.promotedWarnings,

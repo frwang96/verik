@@ -39,7 +39,6 @@ abstract class BaseTest {
                 projectDir = Paths.get("/"),
                 buildDir = Paths.get("/build/verik"),
                 projectFiles = listOf(Paths.get("/src/main/kotlin/verik/Test.kt")),
-                top = "*",
                 debug = true,
                 suppressedWarnings = listOf("KOTLIN_COMPILE_WARNING"),
                 promotedWarnings = listOf(),
