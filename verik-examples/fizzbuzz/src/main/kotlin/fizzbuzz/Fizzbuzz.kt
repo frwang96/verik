@@ -41,14 +41,15 @@ class Fizzbuzz : Module() {
         repeat(3) {
             println(g(0))
         }
-        x[0] = zeroes()
-        x[z] = zeroes()
+        x[0] = u0()
+        x[z] = u0()
         y[0].value = 0
         z++
         println(E.A)
         println("$e ${E.B}")
         random(1)
         random(1, 2)
+        z[0] = u(0b000)
     }
 
     fun f(x: Int) {

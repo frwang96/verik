@@ -80,7 +80,7 @@ internal class TypeSpecializerStageTest : BaseTest() {
             driveTest(
                 TypeSpecializerStage::class,
                 """
-                    var x: Ubit<EXP<`32`>> = zeroes()
+                    var x: Ubit<EXP<`32`>> = u0()
                 """.trimIndent()
             )
         }.apply { assertEquals("Cardinal type out of range", message) }

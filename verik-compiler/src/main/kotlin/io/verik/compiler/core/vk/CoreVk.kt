@@ -98,13 +98,13 @@ object CoreVk : CoreScope(CorePackage.VK) {
 
     val F_u_Int = CoreKtBasicFunctionDeclaration(parent, "u", Core.Kt.C_Int)
 
-    val F_zeroes = object : CoreKtTransformableFunctionDeclaration(parent, "zeroes") {
+    val F_u0 = object : CoreKtTransformableFunctionDeclaration(parent, "u0") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
                 TypeEqualsTypeConstraint(
                     TypeAdapter.ofTypeArgument(callExpression, 0),
-                    TypeAdapter.ofElement(callExpression)
+                    TypeAdapter.ofElement(callExpression, 0)
                 )
             )
         }

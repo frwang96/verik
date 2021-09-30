@@ -120,7 +120,7 @@ object Core {
         val F_i = CoreVk.F_i
         val F_u = CoreVk.F_u
         val F_u_Int = CoreVk.F_u_Int
-        val F_zeroes = CoreVk.F_zeroes
+        val F_u0 = CoreVk.F_u0
         val F_cat = CoreVk.F_cat
         val F_random = CoreVk.F_random
         val F_random_Int = CoreVk.F_random_Int
@@ -143,6 +143,7 @@ object Core {
             val F_inv = CoreVkUbit.F_inv
             val F_get_Int = CoreVkUbit.F_get_Int
             val F_set_Int_Boolean = CoreVkUbit.F_set_Int_Boolean
+            val F_set_Int_Ubit = CoreVkUbit.F_set_Int_Ubit
             val F_plus_Ubit = CoreVkUbit.F_plus_Ubit
             val F_add_Ubit = CoreVkUbit.F_add_Ubit
             val F_mul_Ubit = CoreVkUbit.F_mul_Ubit

@@ -52,13 +52,47 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_set_Int_Boolean = object : CoreKtTransformableFunctionDeclaration(parent, "set", Core.Kt.C_Int, Core.Kt.C_Boolean) {
+    val F_set_Int_Boolean = object : CoreKtTransformableFunctionDeclaration(
+        parent,
+        "set",
+        Core.Kt.C_Int,
+        Core.Kt.C_Boolean
+    ) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             val receiver = ESvArrayAccessExpression(
                 callExpression.location,
                 callExpression.valueArguments[1].type.copy(),
                 callExpression.receiver!!,
+                callExpression.valueArguments[0]
+            )
+            return EKtBinaryExpression(
+                callExpression.location,
+                callExpression.type,
+                receiver,
+                callExpression.valueArguments[1],
+                KtBinaryOperatorKind.EQ
+            )
+        }
+    }
+
+    val F_set_Int_Ubit = object : CoreKtTransformableFunctionDeclaration(parent, "set", Core.Kt.C_Int, Core.Vk.C_Ubit) {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            val value = callExpression.valueArguments[1].type.arguments[0].asCardinalValue(callExpression)
+            val msbIndex = EKtCallExpression(
+                callExpression.location,
+                Core.Kt.C_Int.toType(),
+                Core.Kt.Int.F_plus_Int,
+                callExpression.valueArguments[0].copy(),
+                arrayListOf(EConstantExpression(callExpression.location, Core.Kt.C_Int.toType(), "${value - 1}")),
+                arrayListOf()
+            )
+            val receiver = EConstantPartSelectExpression(
+                callExpression.location,
+                callExpression.valueArguments[1].type.copy(),
+                callExpression.receiver!!,
+                msbIndex,
                 callExpression.valueArguments[0]
             )
             return EKtBinaryExpression(

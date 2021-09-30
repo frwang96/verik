@@ -79,6 +79,13 @@ class Ubit<N : `*`> private constructor() {
     }
 
     /**
+     * Set [value] at offset [n].
+     */
+    operator fun set(n: Int, value: Ubit<`*`>) {
+        throw VerikException()
+    }
+
+    /**
      * Increment by one.
      */
     operator fun inc(): Ubit<N> {

@@ -45,7 +45,7 @@ class CacheTb(
     @Task
     fun reset() {
         for (i in 0 until mem.size) {
-            mem[i] = zeroes()
+            mem[i] = u0()
         }
         wait(cb)
         cb.rst = true

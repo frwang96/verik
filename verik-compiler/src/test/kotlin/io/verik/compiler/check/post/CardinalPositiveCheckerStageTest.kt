@@ -31,7 +31,7 @@ internal class CardinalPositiveCheckerStageTest : BaseTest() {
             driveTest(
                 CardinalPositiveCheckerStage::class,
                 """
-                    var x: Ubit<`0`> = zeroes()
+                    var x: Ubit<`0`> = u0()
                 """.trimIndent()
             )
         }.apply {
