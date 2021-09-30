@@ -45,4 +45,11 @@ object CoreKtBoolean : CoreScope(Core.Kt.C_Boolean) {
             return SvBinaryOperatorKind.OROR
         }
     }
+
+    val F_xor_Boolean = object : CoreKtBinaryFunctionDeclaration(parent, "xor", Core.Kt.C_Boolean) {
+
+        override fun getOperatorKind(): SvBinaryOperatorKind {
+            return SvBinaryOperatorKind.XOR
+        }
+    }
 }

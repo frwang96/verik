@@ -89,7 +89,7 @@ object DeclarationSerializer {
             serializerContext.append("static ")
         val serializedType = TypeSerializer.serialize(function.type, function)
         serializedType.checkNoUnpackedDimension(function)
-        serializerContext.append("function ${serializedType.getBaseAndPackedDimension()} ${function.name}(")
+        serializerContext.append("function automatic ${serializedType.getBaseAndPackedDimension()} ${function.name}(")
         if (function.valueParameters.isNotEmpty()) {
             serializerContext.softBreak()
             serializerContext.join(function.valueParameters) {

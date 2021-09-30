@@ -22,6 +22,7 @@ enum class SvBinaryOperatorKind {
     MUL,
     PLUS,
     MINUS,
+    XOR,
     LT,
     LTEQ,
     GT,
@@ -40,6 +41,7 @@ enum class SvBinaryOperatorKind {
             MUL -> "*"
             PLUS -> "+"
             MINUS -> "-"
+            XOR -> "^"
             LT -> "<"
             LTEQ -> "<="
             GT -> ">"

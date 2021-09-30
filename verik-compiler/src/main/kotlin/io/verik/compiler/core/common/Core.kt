@@ -44,6 +44,7 @@ object Core {
         val C_Enum = CoreClass.Kt.C_Enum
 
         val F_repeat_Int_Function = CoreKt.F_repeat_Int_Function
+        val F_TODO = CoreKt.F_TODO
 
         object Int : CoreScope(C_Int) {
 
@@ -57,15 +58,18 @@ object Core {
             val F_not = CoreKtBoolean.F_not
             val F_and_Boolean = CoreKtBoolean.F_and_Boolean
             val F_or_Boolean = CoreKtBoolean.F_or_Boolean
+            val F_xor_Boolean = CoreKtBoolean.F_xor_Boolean
         }
 
         object Io : CoreScope(CorePackage.KT_IO) {
 
             val F_print = CoreKtIo.F_print
             val F_print_Any = CoreKtIo.F_print_Any
+            val F_print_Boolean = CoreKtIo.F_print_Boolean
             val F_print_Int = CoreKtIo.F_print_Int
             val F_println = CoreKtIo.F_println
             val F_println_Any = CoreKtIo.F_println_Any
+            val F_println_Boolean = CoreKtIo.F_println_Boolean
             val F_println_Int = CoreKtIo.F_println_Int
         }
 
@@ -168,6 +172,7 @@ object Core {
         val F_urandom = CoreSv.F_urandom
         val F_urandom_range = CoreSv.F_urandom_range
         val F_time = CoreSv.F_time
+        val F_fatal = CoreSv.F_fatal
         val F_finish = CoreSv.F_finish
         val F_new = CoreSv.F_new
         val F_name = CoreSv.F_name
