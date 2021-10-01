@@ -34,31 +34,17 @@ object ConstantExpressionTransformerStage : ProjectStage() {
 
     object ConstantExpressionTransformerVisitor : TreeVisitor() {
 
-        private fun transformBoolean(constantExpression: EConstantExpression): String {
-            return when (constantExpression.value) {
-                "true" -> "1'b1"
-                "false" -> "1'b0"
-                else -> {
-                    Messages.INTERNAL_ERROR.on(
-                        constantExpression,
-                        "Unrecognized boolean value: ${constantExpression.value}"
-                    )
-                    ""
-                }
-            }
-        }
-
-        private fun transformInt(constantExpression: EConstantExpression): String {
-            return ConstantUtil.normalizeGetIntValue(constantExpression.value).toString()
-        }
-
         override fun visitConstantExpression(constantExpression: EConstantExpression) {
             super.visitConstantExpression(constantExpression)
             when (constantExpression.type.reference) {
-                Core.Kt.C_Boolean ->
-                    constantExpression.value = transformBoolean(constantExpression)
-                Core.Kt.C_Int ->
-                    constantExpression.value = transformInt(constantExpression)
+                Core.Kt.C_Boolean -> {
+                    val value = ConstantUtil.getBoolean(constantExpression)!!
+                    constantExpression.value = ConstantUtil.formatBoolean(value)
+                }
+                Core.Kt.C_Int -> {
+                    val value = ConstantUtil.getInt(constantExpression)!!
+                    constantExpression.value = ConstantUtil.formatInt(value)
+                }
                 Core.Vk.C_Ubit -> {}
                 Core.Vk.C_Sbit -> {}
                 else ->

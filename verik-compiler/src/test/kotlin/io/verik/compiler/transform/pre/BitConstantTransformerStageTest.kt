@@ -57,11 +57,25 @@ internal class BitConstantTransformerStageTest : BaseTest() {
         val projectContext = driveTest(
             BitConstantTransformerStage::class,
             """
-                var x = u("0b0011")
+                var x = u("4'b0011")
             """.trimIndent()
         )
         assertElementEquals(
             "ConstantExpression(Ubit<`4`>, 4'h3)",
+            projectContext.findExpression("x")
+        )
+    }
+
+    @Test
+    fun `constant string hexadecimal`() {
+        val projectContext = driveTest(
+            BitConstantTransformerStage::class,
+            """
+                var x = u("10'h3ff")
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "ConstantExpression(Ubit<`10`>, 10'h3ff)",
             projectContext.findExpression("x")
         )
     }

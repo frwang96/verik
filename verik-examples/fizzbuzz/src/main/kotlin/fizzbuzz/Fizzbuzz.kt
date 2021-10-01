@@ -49,7 +49,7 @@ class Fizzbuzz : Module() {
         println("$e ${E.B}")
         random(1)
         random(1, 2)
-        z[0] = u("0b000")
+        z[0] = u("3'b000")
     }
 
     fun f(x: Int) {

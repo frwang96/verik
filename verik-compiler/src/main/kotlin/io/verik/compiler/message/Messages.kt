@@ -96,6 +96,11 @@ object Messages {
         "Constant literal expected for bit constant"
     )
 
+    val BIT_CONSTANT_ERROR = MessageTemplate1<String>(
+        Severity.ERROR,
+        "Error parsing bit constant: $0"
+    )
+
 //  SPECIALIZE  ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val TYPE_NO_WIDTH = MessageTemplate1<Type>(

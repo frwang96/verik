@@ -16,21 +16,9 @@
 
 package io.verik.compiler.common
 
-object BitConstantUtil {
+import java.math.BigInteger
 
-    fun format(value: Int, width: Int): String {
-        val valueString = value.toString(16)
-        val valueStringLength = (width + 3) / 4
-        val valueStringPadded = valueString.padStart(valueStringLength, '0')
+class BitConstant(val value: BigInteger, val width: Int) {
 
-        val builder = StringBuilder()
-        builder.append("$width'h")
-        valueStringPadded.forEachIndexed { index, it ->
-            builder.append(it)
-            val countToEnd = valueStringLength - index - 1
-            if (countToEnd > 0 && countToEnd % 4 == 0)
-                builder.append("_")
-        }
-        return builder.toString()
-    }
+    constructor(value: Int, width: Int) : this(BigInteger.valueOf(value.toLong()), width)
 }

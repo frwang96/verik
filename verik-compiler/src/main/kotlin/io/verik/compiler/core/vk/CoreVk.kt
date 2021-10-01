@@ -26,7 +26,8 @@ import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EEventExpression
 import io.verik.compiler.ast.element.sv.EForeverStatement
 import io.verik.compiler.ast.property.EdgeType
-import io.verik.compiler.common.BitConstantUtil
+import io.verik.compiler.common.BitConstant
+import io.verik.compiler.common.ConstantUtil
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreKtBasicFunctionDeclaration
 import io.verik.compiler.core.common.CoreKtTransformableFunctionDeclaration
@@ -88,10 +89,11 @@ object CoreVk : CoreScope(CorePackage.VK) {
         override fun transform(callExpression: EKtCallExpression): EExpression {
             val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
             val width = callExpression.type.arguments[0].asCardinalValue(callExpression)
+            val bitConstant = BitConstant(value, width)
             return EConstantExpression(
                 callExpression.location,
                 callExpression.type,
-                BitConstantUtil.format(value, width)
+                ConstantUtil.formatBitConstant(bitConstant)
             )
         }
     }
@@ -113,7 +115,12 @@ object CoreVk : CoreScope(CorePackage.VK) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             val width = callExpression.type.arguments[0].asCardinalValue(callExpression)
-            return EConstantExpression(callExpression.location, callExpression.type, BitConstantUtil.format(0, width))
+            val bitConstant = BitConstant(0, width)
+            return EConstantExpression(
+                callExpression.location,
+                callExpression.type,
+                ConstantUtil.formatBitConstant(bitConstant)
+            )
         }
     }
 
