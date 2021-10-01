@@ -111,7 +111,12 @@ object DeclarationCaster {
             .cast<EKtFunction>(function)
             ?: return null
 
-        val type = castContext.castType(descriptor.returnType!!, function)
+        val typeReference = function.typeReference
+        val type = if (typeReference != null) {
+            castContext.castType(typeReference)
+        } else {
+            Core.Kt.C_Unit.toType()
+        }
         val body = function.bodyBlockExpression?.let {
             castContext.casterVisitor.getExpression(it)
         }

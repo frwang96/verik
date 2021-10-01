@@ -58,11 +58,11 @@ internal class CoreVkTest : BaseTest() {
     }
 
     @Test
-    fun `transform zeroes`() {
+    fun `transform u0`() {
         val projectContext = driveTest(
             FunctionTransformerStage::class,
             """
-                var x: Ubit<`8`> = zeroes()
+                var x: Ubit<`8`> = u0()
             """.trimIndent()
         )
         assertElementEquals(

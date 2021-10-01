@@ -16,6 +16,7 @@
 
 package io.verik.compiler.ast.element.common
 
+import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.Messages
@@ -44,6 +45,13 @@ abstract class EElement {
                 null
             }
         }
+    }
+
+    fun replaceChildAsExpressionContainer(oldExpression: EExpression, newExpression: EExpression) {
+        if (this is ExpressionContainer)
+            this.replaceChild(oldExpression, newExpression)
+        else
+            Messages.INTERNAL_ERROR.on(oldExpression, "Could not replace $oldExpression in $this")
     }
 
     abstract fun accept(visitor: Visitor)

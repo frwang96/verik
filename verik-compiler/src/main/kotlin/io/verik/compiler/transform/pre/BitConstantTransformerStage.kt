@@ -18,7 +18,6 @@ package io.verik.compiler.transform.pre
 
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
-import io.verik.compiler.common.BitConstantUtil
 import io.verik.compiler.common.ConstantUtil
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
@@ -36,22 +35,18 @@ object BitConstantTransformerStage : ProjectStage() {
 
     object BitConstantTransformerVisitor : TreeVisitor() {
 
-        private fun getBitConstantExpression(expression: EConstantExpression): EConstantExpression {
-            val value = ConstantUtil.normalizeGetIntValue(expression.value)
-            val width = ConstantUtil.normalizeGetIntWidth(expression.value)
-            return EConstantExpression(
-                expression.location,
-                Core.Vk.C_Ubit.toType(Core.Vk.cardinalOf(width).toType()),
-                BitConstantUtil.format(value, width)
-            )
-        }
-
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
-            if (callExpression.reference == Core.Vk.F_u_Int) {
+            if (callExpression.reference in listOf(Core.Vk.F_u_Int, Core.Vk.F_u_String)) {
                 val expression = callExpression.valueArguments[0]
-                if (expression is EConstantExpression) {
-                    callExpression.replace(getBitConstantExpression(expression))
+                val value = ConstantUtil.getBitConstant(expression)
+                if (value != null) {
+                    val constantExpression = EConstantExpression(
+                        expression.location,
+                        Core.Vk.C_Ubit.toType(Core.Vk.cardinalOf(value.width).toType()),
+                        ConstantUtil.formatBitConstant(value)
+                    )
+                    callExpression.replace(constantExpression)
                 } else {
                     Messages.BIT_CONSTANT_NOT_CONSTANT.on(expression)
                 }

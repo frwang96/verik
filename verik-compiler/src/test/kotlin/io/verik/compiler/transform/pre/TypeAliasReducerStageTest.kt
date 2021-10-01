@@ -14,29 +14,28 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.mid
+package io.verik.compiler.transform.pre
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
-import io.verik.compiler.util.findExpression
+import io.verik.compiler.util.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class InjectedExpressionReducerStageTest : BaseTest() {
+internal class TypeAliasReducerStageTest : BaseTest() {
 
     @Test
-    fun `inject literal`() {
+    fun `reduce type alias`() {
         val projectContext = driveTest(
-            InjectedExpressionReducerStage::class,
+            TypeAliasReducerStage::class,
             """
-                fun f() {
-                    sv("abc")
-                }
+                typealias U = Ubit<`8`>
+                var x: U = nc()
             """.trimIndent()
         )
         assertElementEquals(
-            "InjectedExpression(Unit, [abc])",
-            projectContext.findExpression("f")
+            "KtProperty(x, Ubit<`8`>, *, [])",
+            projectContext.findDeclaration("x")
         )
     }
 }

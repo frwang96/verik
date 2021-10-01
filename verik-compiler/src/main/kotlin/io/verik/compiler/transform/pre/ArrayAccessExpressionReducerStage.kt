@@ -20,6 +20,8 @@ import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.interfaces.Declaration
+import io.verik.compiler.ast.property.KtBinaryOperatorKind
+import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
@@ -31,46 +33,136 @@ object ArrayAccessExpressionReducerStage : ProjectStage() {
 
     override val checkNormalization = true
 
-    private val getReferenceMap = HashMap<ReducerEntry, CoreKtAbstractFunctionDeclaration>()
-    private val setReferenceMap = HashMap<Declaration, CoreKtAbstractFunctionDeclaration>()
+    private val getReducerEntries = ArrayList<GetReducerEntry>()
+    private val setReducerEntries = ArrayList<SetReducerEntry>()
 
     init {
-        getReferenceMap[ReducerEntry(Core.Vk.C_Ubit, listOf(Core.Kt.C_Int))] = Core.Vk.Ubit.F_get_Int
-        getReferenceMap[ReducerEntry(Core.Vk.C_Unpacked, listOf(Core.Kt.C_Int))] = Core.Vk.Unpacked.F_get_Int
-        getReferenceMap[ReducerEntry(Core.Vk.C_Unpacked, listOf(Core.Vk.C_Ubit))] = Core.Vk.Unpacked.F_get_Ubit
-        setReferenceMap[Core.Vk.Ubit.F_get_Int] = Core.Vk.Ubit.F_set_Int_Boolean
-        setReferenceMap[Core.Vk.Unpacked.F_get_Int] = Core.Vk.Unpacked.F_set_Int_Any
-        setReferenceMap[Core.Vk.Unpacked.F_get_Ubit] = Core.Vk.Unpacked.F_set_Ubit_Any
+        getReducerEntries.add(GetReducerEntry(Core.Vk.C_Ubit, listOf(Core.Kt.C_Int), Core.Vk.Ubit.F_get_Int))
+        getReducerEntries.add(GetReducerEntry(Core.Vk.C_Unpacked, listOf(Core.Kt.C_Int), Core.Vk.Unpacked.F_get_Int))
+        getReducerEntries.add(GetReducerEntry(Core.Vk.C_Unpacked, listOf(Core.Vk.C_Ubit), Core.Vk.Unpacked.F_get_Ubit))
+
+        setReducerEntries.add(
+            SetReducerEntry(
+                Core.Vk.C_Ubit,
+                listOf(Core.Kt.C_Int),
+                Core.Kt.C_Boolean.toType(),
+                Core.Vk.Ubit.F_set_Int_Boolean
+            )
+        )
+        setReducerEntries.add(
+            SetReducerEntry(
+                Core.Vk.C_Ubit,
+                listOf(Core.Kt.C_Int),
+                Core.Vk.C_Ubit.toType(Core.Vk.N_Cardinal.toType()),
+                Core.Vk.Ubit.F_set_Int_Ubit
+            )
+        )
+        setReducerEntries.add(
+            SetReducerEntry(
+                Core.Vk.C_Unpacked,
+                listOf(Core.Kt.C_Int),
+                Core.Kt.C_Any.toType(),
+                Core.Vk.Unpacked.F_set_Int_Any
+            )
+        )
+        setReducerEntries.add(
+            SetReducerEntry(
+                Core.Vk.C_Unpacked,
+                listOf(Core.Vk.C_Ubit),
+                Core.Kt.C_Any.toType(),
+                Core.Vk.Unpacked.F_set_Ubit_Any
+            )
+        )
     }
 
     override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(ArrayAccessExpressionReducerVisitor)
     }
 
-    data class ReducerEntry(
+    data class GetReducerEntry(
         val arrayDeclaration: Declaration,
-        val indexDeclarations: List<Declaration>
-    )
+        val indexDeclarations: List<Declaration>,
+        val reference: CoreKtAbstractFunctionDeclaration
+    ) {
+
+        fun match(
+            arrayDeclaration: Declaration,
+            indexDeclarations: List<Declaration>
+        ): Boolean {
+            return this.arrayDeclaration == arrayDeclaration &&
+                this.indexDeclarations == indexDeclarations
+        }
+    }
+
+    data class SetReducerEntry(
+        val arrayDeclaration: Declaration,
+        val indexDeclarations: List<Declaration>,
+        val expressionType: Type,
+        val reference: CoreKtAbstractFunctionDeclaration
+    ) {
+
+        fun match(
+            arrayDeclaration: Declaration,
+            indexDeclarations: List<Declaration>,
+            expressionType: Type
+        ): Boolean {
+            return this.arrayDeclaration == arrayDeclaration &&
+                this.indexDeclarations == indexDeclarations &&
+                expressionType.isSubtype(this.expressionType)
+        }
+    }
 
     object ArrayAccessExpressionReducerVisitor : TreeVisitor() {
 
+        private fun getGetReference(
+            arrayDeclaration: Declaration,
+            indexDeclarations: List<Declaration>
+        ): CoreKtAbstractFunctionDeclaration? {
+            getReducerEntries.forEach {
+                if (it.match(arrayDeclaration, indexDeclarations))
+                    return it.reference
+            }
+            return null
+        }
+
+        private fun getSetReference(
+            arrayDeclaration: Declaration,
+            indexDeclarations: List<Declaration>,
+            expressionType: Type
+        ): CoreKtAbstractFunctionDeclaration? {
+            setReducerEntries.forEach {
+                if (it.match(arrayDeclaration, indexDeclarations, expressionType))
+                    return it.reference
+            }
+            return null
+        }
+
         override fun visitKtBinaryExpression(binaryExpression: EKtBinaryExpression) {
-            super.visitKtBinaryExpression(binaryExpression)
             val left = binaryExpression.left
-            if (left is EKtCallExpression) {
-                val reference = setReferenceMap[left.reference]
+            val right = binaryExpression.right
+            if (left is EKtArrayAccessExpression && binaryExpression.kind == KtBinaryOperatorKind.EQ) {
+                left.acceptChildren(this)
+                right.accept(this)
+                val arrayDeclaration = left.array.type.reference
+                val indexDeclarations = left.indices.map { it.type.reference }
+                val expressionType = right.type
+                val reference = getSetReference(arrayDeclaration, indexDeclarations, expressionType)
                 if (reference != null) {
                     binaryExpression.replace(
                         EKtCallExpression(
                             binaryExpression.location,
                             binaryExpression.type,
                             reference,
-                            left.receiver,
-                            ArrayList(left.valueArguments + binaryExpression.right),
+                            left.array,
+                            ArrayList(left.indices + right),
                             arrayListOf()
                         )
                     )
+                } else {
+                    Messages.INTERNAL_ERROR.on(left, "Array access expression could not be reduced")
                 }
+            } else {
+                super.visitKtBinaryExpression(binaryExpression)
             }
         }
 
@@ -78,7 +170,7 @@ object ArrayAccessExpressionReducerStage : ProjectStage() {
             super.visitKtArrayAccessExpression(arrayAccessExpression)
             val arrayDeclaration = arrayAccessExpression.array.type.reference
             val indexDeclarations = arrayAccessExpression.indices.map { it.type.reference }
-            val reference = getReferenceMap[ReducerEntry(arrayDeclaration, indexDeclarations)]
+            val reference = getGetReference(arrayDeclaration, indexDeclarations)
             if (reference != null) {
                 arrayAccessExpression.replace(
                     EKtCallExpression(

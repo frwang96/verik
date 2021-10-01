@@ -35,18 +35,18 @@ class Multiplier(
     fun step() {
         on(posedge(clk)) {
             if (rst) {
-                a = zeroes()
-                b = zeroes()
-                prod = zeroes()
-                tp = zeroes()
+                a = u0()
+                b = u0()
+                prod = u0()
+                tp = u0()
                 i = u<REQ_WIDTH>()
             } else {
                 if (req.vld) {
                     a = req.a
                     b = req.b
-                    prod = zeroes()
-                    tp = zeroes()
-                    i = zeroes()
+                    prod = u0()
+                    tp = u0()
+                    i = u0()
                 } else if (i <= u<REQ_WIDTH>()) {
                     val sum = if (b[0]) {
                         tp add a

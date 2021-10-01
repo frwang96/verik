@@ -30,6 +30,7 @@ class EModule(
     override var supertype: Type,
     override var typeParameters: ArrayList<ETypeParameter>,
     override var members: ArrayList<EElement>,
+    val isTop: Boolean,
     val ports: List<EPort>
 ) : EAbstractContainerClass() {
 

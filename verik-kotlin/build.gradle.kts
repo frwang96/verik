@@ -15,7 +15,7 @@
  */
 
 group = "io.verik"
-version = "local"
+version = "local-SNAPSHOT"
 
 plugins {
     kotlin("jvm") version "1.4.32"

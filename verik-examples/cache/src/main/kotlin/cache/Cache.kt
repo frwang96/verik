@@ -40,7 +40,7 @@ class Cache(
                 tx.rst = true
                 state = State.READY
                 for (i in 0 until lines.size) {
-                    lines[i] = Line(Status.INVALID, zeroes(), zeroes())
+                    lines[i] = Line(Status.INVALID, u0(), u0())
                 }
             } else {
                 when (state) {

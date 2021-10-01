@@ -133,7 +133,7 @@ internal class DeclarationSerializerTest : BaseTest() {
             """.trimIndent()
         )
         val expected = """
-            function void f();
+            function automatic void f();
             endfunction : f
         """.trimIndent()
         assertOutputTextEquals(
@@ -281,7 +281,7 @@ internal class DeclarationSerializerTest : BaseTest() {
             """.trimIndent()
         )
         val expected = """
-            function void f(int x);
+            function automatic void f(int x);
             endfunction : f
         """.trimIndent()
         assertOutputTextEquals(

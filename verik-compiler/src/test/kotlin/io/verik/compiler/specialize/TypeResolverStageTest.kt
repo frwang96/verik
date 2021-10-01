@@ -65,7 +65,7 @@ internal class TypeResolverStageTest : BaseTest() {
             TypeResolverStage::class,
             """
                 class S(val x: Ubit<`8`>) : Struct()
-                val s = S(zeroes())
+                val s = S(u0())
                 fun f() {
                     s.x
                 }
@@ -137,12 +137,28 @@ internal class TypeResolverStageTest : BaseTest() {
             TypeResolverStage::class,
             """
                 fun f(x: Ubit<`8`>) {}
-                val x = f(zeroes())
+                val x = f(u0())
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Unit, f, null, [KtCallExpression(Ubit<`8`>, zeroes, null, [], [Ubit<`8`>])], [])",
+            "KtCallExpression(Unit, f, null, [KtCallExpression(Ubit<`8`>, u0, null, [], [`8`])], [])",
             projectContext.findExpression("x")
+        )
+    }
+
+    @Test
+    fun `resolve return statement`() {
+        val projectContext = driveTest(
+            TypeResolverStage::class,
+            """
+                fun f(): Ubit<`8`> {
+                    return u0()
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "ReturnStatement(Nothing, KtCallExpression(Ubit<`8`>, u0, null, [], [`8`]))",
+            projectContext.findExpression("f")
         )
     }
 }

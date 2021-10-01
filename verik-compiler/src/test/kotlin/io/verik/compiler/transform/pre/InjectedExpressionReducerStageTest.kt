@@ -14,28 +14,29 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.check.post
+package io.verik.compiler.transform.pre
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
+import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
-import org.junit.jupiter.api.Assertions
+import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
-internal class CardinalPositiveCheckerStageTest : BaseTest() {
+internal class InjectedExpressionReducerStageTest : BaseTest() {
 
     @Test
-    fun `cardinal not positive`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                CardinalPositiveCheckerStage::class,
-                """
-                    var x: Ubit<`0`> = u0()
-                """.trimIndent()
-            )
-        }.apply {
-            Assertions.assertEquals("Cardinal type not positive: Ubit<`0`>", message)
-        }
+    fun `inject literal`() {
+        val projectContext = driveTest(
+            InjectedExpressionReducerStage::class,
+            """
+                fun f() {
+                    sv("abc")
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "InjectedExpression(Unit, [abc])",
+            projectContext.findExpression("f")
+        )
     }
 }

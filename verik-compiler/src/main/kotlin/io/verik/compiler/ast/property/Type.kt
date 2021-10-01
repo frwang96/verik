@@ -34,7 +34,7 @@ class Type(
 ) : Reference {
 
     fun isSubtype(type: Type): Boolean {
-        return getSupertypes().any { it == type }
+        return getSupertypes().any { it.reference == type.reference }
     }
 
     fun copy(): Type {

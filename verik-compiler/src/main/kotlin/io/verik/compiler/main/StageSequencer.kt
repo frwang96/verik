@@ -17,14 +17,13 @@
 package io.verik.compiler.main
 
 import io.verik.compiler.cast.CasterStage
-import io.verik.compiler.cast.CasterTypeCheckerStage
 import io.verik.compiler.cast.IndexerStage
 import io.verik.compiler.check.post.CardinalPositiveCheckerStage
+import io.verik.compiler.check.post.FileCheckerStage
 import io.verik.compiler.check.post.KeywordCheckerStage
 import io.verik.compiler.check.post.NameCheckerStage
 import io.verik.compiler.check.post.NameRedeclarationCheckerStage
 import io.verik.compiler.check.post.UntransformedElementCheckerStage
-import io.verik.compiler.check.pre.FileCheckerStage
 import io.verik.compiler.check.pre.ImportDirectiveCheckerStage
 import io.verik.compiler.check.pre.UnsupportedElementCheckerStage
 import io.verik.compiler.check.pre.UnsupportedModifierCheckerStage
@@ -43,14 +42,15 @@ import io.verik.compiler.serialize.general.PackageFileSerializerStage
 import io.verik.compiler.serialize.source.SourceSerializerStage
 import io.verik.compiler.specialize.DeclarationSpecializerStage
 import io.verik.compiler.specialize.TypeCheckerStage
+import io.verik.compiler.specialize.TypeParameterTypeCheckerStage
 import io.verik.compiler.specialize.TypeResolvedCheckerStage
 import io.verik.compiler.specialize.TypeResolverStage
 import io.verik.compiler.specialize.TypeSpecializerStage
 import io.verik.compiler.transform.mid.AssignmentTransformerStage
 import io.verik.compiler.transform.mid.CaseStatementTransformerStage
 import io.verik.compiler.transform.mid.ConstantExpressionEvaluatorStage
+import io.verik.compiler.transform.mid.EnumNameTransformerStage
 import io.verik.compiler.transform.mid.FunctionTransformerStage
-import io.verik.compiler.transform.mid.InjectedExpressionReducerStage
 import io.verik.compiler.transform.mid.InlineIfExpressionTransformerStage
 import io.verik.compiler.transform.mid.PropertyTransformerStage
 import io.verik.compiler.transform.mid.StringTemplateExpressionReducerStage
@@ -71,7 +71,9 @@ import io.verik.compiler.transform.pre.BitConstantTransformerStage
 import io.verik.compiler.transform.pre.ConstantExpressionTransformerStage
 import io.verik.compiler.transform.pre.ForExpressionReducerStage
 import io.verik.compiler.transform.pre.FunctionOverloadingTransformerStage
+import io.verik.compiler.transform.pre.InjectedExpressionReducerStage
 import io.verik.compiler.transform.pre.NameRelabelerStage
+import io.verik.compiler.transform.pre.TypeAliasReducerStage
 import io.verik.compiler.transform.pre.UnaryExpressionReducerStage
 
 object StageSequencer {
@@ -87,17 +89,17 @@ object StageSequencer {
         // PreCheck
         stageSequence.add(UnsupportedElementCheckerStage)
         stageSequence.add(UnsupportedModifierCheckerStage)
-        stageSequence.add(FileCheckerStage)
         stageSequence.add(ImportDirectiveCheckerStage)
 
         // Cast
         stageSequence.add(IndexerStage)
         stageSequence.add(CasterStage)
-        stageSequence.add(CasterTypeCheckerStage)
 
         // PreTransform
         stageSequence.add(FunctionOverloadingTransformerStage)
         stageSequence.add(NameRelabelerStage)
+        stageSequence.add(TypeAliasReducerStage)
+        stageSequence.add(InjectedExpressionReducerStage)
         stageSequence.add(AssignmentOperatorReducerStage)
         stageSequence.add(UnaryExpressionReducerStage)
         stageSequence.add(BinaryExpressionReducerStage)
@@ -107,6 +109,7 @@ object StageSequencer {
         stageSequence.add(ConstantExpressionTransformerStage)
 
         // Specialize
+        stageSequence.add(TypeParameterTypeCheckerStage)
         stageSequence.add(TypeResolverStage)
         stageSequence.add(TypeResolvedCheckerStage)
         stageSequence.add(DeclarationSpecializerStage)
@@ -121,7 +124,7 @@ object StageSequencer {
         stageSequence.add(FileSplitterStage)
 
         // MidTransform
-        stageSequence.add(InjectedExpressionReducerStage)
+        stageSequence.add(EnumNameTransformerStage)
         stageSequence.add(StringTemplateExpressionReducerStage)
         stageSequence.add(UninitializedPropertyTransformerStage)
         stageSequence.add(FunctionTransformerStage)
@@ -143,6 +146,7 @@ object StageSequencer {
         stageSequence.add(TemporaryPropertyRelabelerStage)
 
         // PostCheck
+        stageSequence.add(FileCheckerStage)
         stageSequence.add(CardinalPositiveCheckerStage)
         stageSequence.add(NameCheckerStage)
         stageSequence.add(KeywordCheckerStage)

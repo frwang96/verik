@@ -19,13 +19,6 @@
 package io.verik.core
 
 /**
- * Logs [message] with severity fatal and exits the simulation with an error status.
- */
-fun fatal(message: Any): Nothing {
-    throw VerikException()
-}
-
-/**
  * Logs [message] with severity error.
  */
 fun error(message: Any) {

@@ -27,7 +27,10 @@ object CoreSv : CoreScope(CorePackage.SV) {
     val F_sformatf = CoreSvFunctionDeclaration(parent, "\$sformatf")
     val F_random = CoreSvFunctionDeclaration(parent, "\$random")
     val F_urandom = CoreSvFunctionDeclaration(parent, "\$urandom")
+    val F_urandom_range = CoreSvFunctionDeclaration(parent, "\$urandom_range")
     val F_time = CoreSvFunctionDeclaration(parent, "\$time")
+    val F_fatal = CoreSvFunctionDeclaration(parent, "\$fatal")
     val F_finish = CoreSvFunctionDeclaration(parent, "\$finish")
     val F_new = CoreSvFunctionDeclaration(parent, "new")
+    val F_name = CoreSvFunctionDeclaration(parent, "name")
 }

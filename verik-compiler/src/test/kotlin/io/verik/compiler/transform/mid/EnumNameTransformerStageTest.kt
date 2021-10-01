@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.pre
+package io.verik.compiler.transform.mid
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.assertElementEquals
@@ -22,61 +22,57 @@ import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
-internal class BitConstantTransformerStageTest : BaseTest() {
+internal class EnumNameTransformerStageTest : BaseTest() {
 
     @Test
-    fun `constant decimal`() {
+    fun `string template expression property`() {
         val projectContext = driveTest(
-            BitConstantTransformerStage::class,
+            EnumNameTransformerStage::class,
             """
-                var x = u(255)
+                enum class E { A }
+                val e = E.A
+                fun f() {
+                    "${"$"}e"
+                }
             """.trimIndent()
         )
         assertElementEquals(
-            "ConstantExpression(Ubit<`8`>, 8'hff)",
-            projectContext.findExpression("x")
+            "StringTemplateExpression(String, [KtCallExpression(String, name, KtReferenceExpression(*), [], [])])",
+            projectContext.findExpression("f")
         )
     }
 
     @Test
-    fun `constant hexadecimal`() {
+    fun `string template expression enum entry`() {
         val projectContext = driveTest(
-            BitConstantTransformerStage::class,
+            EnumNameTransformerStage::class,
             """
-                var x = u(0x00_0000_00ff)
+                enum class E { A }
+                fun f() {
+                    "${"$"}{E.A}"
+                }
             """.trimIndent()
         )
         assertElementEquals(
-            "ConstantExpression(Ubit<`40`>, 40'h00_0000_00ff)",
-            projectContext.findExpression("x")
+            "StringTemplateExpression(String, [StringExpression(String, A)])",
+            projectContext.findExpression("f")
         )
     }
 
     @Test
-    fun `constant string binary`() {
+    fun `call expression println enum entry`() {
         val projectContext = driveTest(
-            BitConstantTransformerStage::class,
+            EnumNameTransformerStage::class,
             """
-                var x = u("4'b0011")
+                enum class E { A }
+                fun f() {
+                    println(E.A)
+                }
             """.trimIndent()
         )
         assertElementEquals(
-            "ConstantExpression(Ubit<`4`>, 4'h3)",
-            projectContext.findExpression("x")
-        )
-    }
-
-    @Test
-    fun `constant string hexadecimal`() {
-        val projectContext = driveTest(
-            BitConstantTransformerStage::class,
-            """
-                var x = u("10'h3ff")
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "ConstantExpression(Ubit<`10`>, 10'h3ff)",
-            projectContext.findExpression("x")
+            "KtCallExpression(Unit, println, null, [StringExpression(String, A)], [])",
+            projectContext.findExpression("f")
         )
     }
 }

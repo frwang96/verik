@@ -57,15 +57,18 @@ object Core {
             val F_not = CoreKtBoolean.F_not
             val F_and_Boolean = CoreKtBoolean.F_and_Boolean
             val F_or_Boolean = CoreKtBoolean.F_or_Boolean
+            val F_xor_Boolean = CoreKtBoolean.F_xor_Boolean
         }
 
         object Io : CoreScope(CorePackage.KT_IO) {
 
             val F_print = CoreKtIo.F_print
             val F_print_Any = CoreKtIo.F_print_Any
+            val F_print_Boolean = CoreKtIo.F_print_Boolean
             val F_print_Int = CoreKtIo.F_print_Int
             val F_println = CoreKtIo.F_println
             val F_println_Any = CoreKtIo.F_println_Any
+            val F_println_Boolean = CoreKtIo.F_println_Boolean
             val F_println_Int = CoreKtIo.F_println_Int
         }
 
@@ -117,10 +120,12 @@ object Core {
         val F_i = CoreVk.F_i
         val F_u = CoreVk.F_u
         val F_u_Int = CoreVk.F_u_Int
-        val F_zeroes = CoreVk.F_zeroes
+        val F_u_String = CoreVk.F_u_String
+        val F_u0 = CoreVk.F_u0
         val F_cat = CoreVk.F_cat
         val F_random = CoreVk.F_random
         val F_random_Int = CoreVk.F_random_Int
+        val F_random_Int_Int = CoreVk.F_random_Int_Int
         val F_random_Ubit = CoreVk.F_random_Ubit
         val F_forever_Function = CoreVk.F_forever_Function
         val F_on_Event_Function = CoreVk.F_on_Event_Function
@@ -131,6 +136,7 @@ object Core {
         val F_delay_Int = CoreVk.F_delay_Int
         val F_time = CoreVk.F_time
         val F_finish = CoreVk.F_finish
+        val F_fatal = CoreVk.F_fatal
         val F_sv_String = CoreVk.F_sv_String
 
         object Ubit : CoreScope(C_Ubit) {
@@ -138,6 +144,7 @@ object Core {
             val F_inv = CoreVkUbit.F_inv
             val F_get_Int = CoreVkUbit.F_get_Int
             val F_set_Int_Boolean = CoreVkUbit.F_set_Int_Boolean
+            val F_set_Int_Ubit = CoreVkUbit.F_set_Int_Ubit
             val F_plus_Ubit = CoreVkUbit.F_plus_Ubit
             val F_add_Ubit = CoreVkUbit.F_add_Ubit
             val F_mul_Ubit = CoreVkUbit.F_mul_Ubit
@@ -165,8 +172,11 @@ object Core {
         val F_sformatf = CoreSv.F_sformatf
         val F_random = CoreSv.F_random
         val F_urandom = CoreSv.F_urandom
+        val F_urandom_range = CoreSv.F_urandom_range
         val F_time = CoreSv.F_time
+        val F_fatal = CoreSv.F_fatal
         val F_finish = CoreSv.F_finish
         val F_new = CoreSv.F_new
+        val F_name = CoreSv.F_name
     }
 }

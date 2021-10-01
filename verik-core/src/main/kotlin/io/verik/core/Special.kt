@@ -40,9 +40,30 @@ fun u(value: Int): Ubit<Cardinal> {
 }
 
 /**
+ * Constructs a [Ubit] out of the constant [value].
+ */
+fun u(value: String): Ubit<Cardinal> {
+    throw VerikException()
+}
+
+/**
  * Constructs a [Ubit] out of the cardinal [N].
  */
 fun <N : `*`> u(): Ubit<Cardinal> {
+    throw VerikException()
+}
+
+/**
+ * Returns a [Ubit] with all bits set to zero.
+ */
+fun <N : `*`> u0(): Ubit<N> {
+    throw VerikException()
+}
+
+/**
+ * Returns a [Ubit] with all bits set to one.
+ */
+fun <N : `*`> u1(): Ubit<N> {
     throw VerikException()
 }
 
@@ -52,17 +73,18 @@ fun <N : `*`> u(): Ubit<Cardinal> {
 fun s(value: Int): Sbit<Cardinal> {
     throw VerikException()
 }
+
 /**
- * Returns a value of type [T] with all bits set to zero.
+ * Returns a [Sbit] with all bits set to zero.
  */
-fun <T> zeroes(): T {
+fun <N : `*`> s0(): Sbit<N> {
     throw VerikException()
 }
 
 /**
- * Returns a value of type [T] with all bits set to one.
+ * Returns a [Sbit] with all bits set to one.
  */
-fun <T> ones(): T {
+fun <N : `*`> s1(): Sbit<N> {
     throw VerikException()
 }
 

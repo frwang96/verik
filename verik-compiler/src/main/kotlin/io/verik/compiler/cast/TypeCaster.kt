@@ -51,23 +51,11 @@ object TypeCaster {
             Messages.ELEMENT_NOT_SUPPORTED.on(typeReference, "Nullable type")
         if (kotlinType.isFunctionType)
             Messages.ELEMENT_NOT_SUPPORTED.on(typeReference, "Function type")
-        val declarationDescriptor = kotlinType.constructor.declarationDescriptor!!
-        val declaration = castContext.getDeclaration(declarationDescriptor, typeReference)
-        val userType = typeReference.typeElement as KtUserType
-        val arguments = userType.typeArgumentsAsTypes.map { cast(castContext, it) }
 
-        val type = Type(declaration, ArrayList(arguments))
-        return if (type.isCardinalType()) {
-            castCardinalType(castContext, typeReference)
-        } else type
-    }
-
-    private fun castCardinalType(castContext: CastContext, typeReference: KtTypeReference): Type {
         val userType = typeReference.typeElement as KtUserType
-        val referenceExpression = userType.referenceExpression!!
-        val referenceTarget = castContext.sliceReferenceTarget[referenceExpression]!!
+        val referenceTarget = castContext.sliceReferenceTarget[userType.referenceExpression!!]!!
         val declaration = castContext.getDeclaration(referenceTarget, typeReference)
-        val arguments = userType.typeArgumentsAsTypes.map { castCardinalType(castContext, it) }
+        val arguments = userType.typeArgumentsAsTypes.map { cast(castContext, it) }
         return Type(declaration, ArrayList(arguments))
     }
 }

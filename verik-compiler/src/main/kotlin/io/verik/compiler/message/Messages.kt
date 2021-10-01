@@ -30,16 +30,6 @@ object Messages {
 
 //  PRE CHECK  /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val FILE_NAME_RESERVED = MessageTemplate1<Path>(
-        Severity.ERROR,
-        "File name is reserved: $0"
-    )
-
-    val FILE_LOCATION_MISMATCH = MessageTemplate0(
-        Severity.ERROR,
-        "Package directive does not match file location"
-    )
-
     val PACKAGE_NAME_ROOT = MessageTemplate0(
         Severity.ERROR,
         "Use of the root package is prohibited"
@@ -106,6 +96,11 @@ object Messages {
         "Constant literal expected for bit constant"
     )
 
+    val BIT_CONSTANT_ERROR = MessageTemplate1<String>(
+        Severity.ERROR,
+        "Error parsing bit constant: $0"
+    )
+
 //  SPECIALIZE  ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val TYPE_NO_WIDTH = MessageTemplate1<Type>(
@@ -123,9 +118,9 @@ object Messages {
         "Type of type argument could not be resolved"
     )
 
-    val CARDINAL_OUT_OF_RANGE = MessageTemplate1<Type>(
+    val CARDINAL_OUT_OF_RANGE = MessageTemplate0(
         Severity.ERROR,
-        "Cardinal type out of range: $0"
+        "Cardinal type out of range"
     )
 
     val TYPE_MISMATCH = MessageTemplate2<Type, Type>(
@@ -180,6 +175,16 @@ object Messages {
     )
 
 //  POST CHECK  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    val FILE_NAME_RESERVED = MessageTemplate1<Path>(
+        Severity.ERROR,
+        "File name is reserved: $0"
+    )
+
+    val FILE_NAME_DUPLICATED = MessageTemplate1<Path>(
+        Severity.ERROR,
+        "File name is duplicated: $0"
+    )
 
     val CARDINAL_NOT_POSITIVE = MessageTemplate1<Type>(
         Severity.ERROR,

@@ -24,7 +24,6 @@ class EBasicPackage(
     override val location: SourceLocation,
     override var name: String,
     override var files: ArrayList<EFile>,
-    val inputPath: Path,
     val outputPath: Path
 ) : EAbstractPackage() {
 

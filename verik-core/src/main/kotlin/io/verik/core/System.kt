@@ -24,3 +24,10 @@ package io.verik.core
 fun finish(): Nothing {
     throw VerikException()
 }
+
+/**
+ Exits the simulation with an error status.
+ */
+fun fatal(): Nothing {
+    throw VerikException()
+}

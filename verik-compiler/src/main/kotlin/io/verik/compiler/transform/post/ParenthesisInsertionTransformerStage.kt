@@ -21,12 +21,10 @@ import io.verik.compiler.ast.element.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EEventExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
-import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.message.Messages
 
 object ParenthesisInsertionTransformerStage : ProjectStage() {
 
@@ -38,16 +36,12 @@ object ParenthesisInsertionTransformerStage : ProjectStage() {
 
     private fun parenthesize(expression: EExpression) {
         val parent = expression.parentNotNull()
-        if (parent is ExpressionContainer) {
-            val parenthesizedExpression = EParenthesizedExpression(
-                expression.location,
-                expression.type.copy(),
-                expression
-            )
-            parent.replaceChild(expression, parenthesizedExpression)
-        } else {
-            Messages.INTERNAL_ERROR.on(expression, "Could not parenthesize $expression in $parent")
-        }
+        val parenthesizedExpression = EParenthesizedExpression(
+            expression.location,
+            expression.type.copy(),
+            expression
+        )
+        parent.replaceChildAsExpressionContainer(expression, parenthesizedExpression)
     }
 
     object ParenthesisInsertionTransformerVisitor : TreeVisitor() {
@@ -74,10 +68,11 @@ object ParenthesisInsertionTransformerStage : ProjectStage() {
                 SvBinaryOperatorKind.GTEQ -> 5
                 SvBinaryOperatorKind.EQEQ -> 6
                 SvBinaryOperatorKind.EXCL_EQ -> 6
-                SvBinaryOperatorKind.ANDAND -> 7
-                SvBinaryOperatorKind.OROR -> 8
-                SvBinaryOperatorKind.ASSIGN -> 9
-                SvBinaryOperatorKind.ARROW_ASSIGN -> 9
+                SvBinaryOperatorKind.XOR -> 7
+                SvBinaryOperatorKind.ANDAND -> 8
+                SvBinaryOperatorKind.OROR -> 9
+                SvBinaryOperatorKind.ASSIGN -> 10
+                SvBinaryOperatorKind.ARROW_ASSIGN -> 10
             }
         }
 

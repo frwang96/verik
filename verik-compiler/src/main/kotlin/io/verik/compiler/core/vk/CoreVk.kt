@@ -26,12 +26,14 @@ import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EEventExpression
 import io.verik.compiler.ast.element.sv.EForeverStatement
 import io.verik.compiler.ast.property.EdgeType
-import io.verik.compiler.common.BitConstantUtil
+import io.verik.compiler.common.BitConstant
+import io.verik.compiler.common.ConstantUtil
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreKtBasicFunctionDeclaration
 import io.verik.compiler.core.common.CoreKtTransformableFunctionDeclaration
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
+import io.verik.compiler.core.sv.CoreSv
 import io.verik.compiler.message.Messages
 import io.verik.compiler.specialize.ConcatenationTypeConstraint
 import io.verik.compiler.specialize.TypeAdapter
@@ -87,30 +89,38 @@ object CoreVk : CoreScope(CorePackage.VK) {
         override fun transform(callExpression: EKtCallExpression): EExpression {
             val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
             val width = callExpression.type.arguments[0].asCardinalValue(callExpression)
+            val bitConstant = BitConstant(value, width)
             return EConstantExpression(
                 callExpression.location,
                 callExpression.type,
-                BitConstantUtil.format(value, width)
+                ConstantUtil.formatBitConstant(bitConstant)
             )
         }
     }
 
     val F_u_Int = CoreKtBasicFunctionDeclaration(parent, "u", Core.Kt.C_Int)
 
-    val F_zeroes = object : CoreKtTransformableFunctionDeclaration(parent, "zeroes") {
+    val F_u_String = CoreKtBasicFunctionDeclaration(parent, "u", Core.Kt.C_String)
+
+    val F_u0 = object : CoreKtTransformableFunctionDeclaration(parent, "u0") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
                 TypeEqualsTypeConstraint(
                     TypeAdapter.ofTypeArgument(callExpression, 0),
-                    TypeAdapter.ofElement(callExpression)
+                    TypeAdapter.ofElement(callExpression, 0)
                 )
             )
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             val width = callExpression.type.arguments[0].asCardinalValue(callExpression)
-            return EConstantExpression(callExpression.location, callExpression.type, BitConstantUtil.format(0, width))
+            val bitConstant = BitConstant(0, width)
+            return EConstantExpression(
+                callExpression.location,
+                callExpression.type,
+                ConstantUtil.formatBitConstant(bitConstant)
+            )
         }
     }
 
@@ -135,7 +145,26 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_random_Int = CoreKtBasicFunctionDeclaration(parent, "random", Core.Kt.C_Int)
+    val F_random_Int = object : CoreKtTransformableFunctionDeclaration(parent, "random", Core.Kt.C_Int) {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            callExpression.reference = CoreSv.F_urandom_range
+            return callExpression
+        }
+    }
+
+    val F_random_Int_Int = object : CoreKtTransformableFunctionDeclaration(
+        parent,
+        "random",
+        Core.Kt.C_Int,
+        Core.Kt.C_Int
+    ) {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            callExpression.reference = CoreSv.F_urandom_range
+            return callExpression
+        }
+    }
 
     val F_random_Ubit = object : CoreKtTransformableFunctionDeclaration(parent, "randomUbit") {
 
@@ -241,6 +270,14 @@ object CoreVk : CoreScope(CorePackage.VK) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             callExpression.reference = Core.Sv.F_finish
+            return callExpression
+        }
+    }
+
+    val F_fatal = object : CoreKtTransformableFunctionDeclaration(parent, "fatal") {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            callExpression.reference = Core.Sv.F_fatal
             return callExpression
         }
     }

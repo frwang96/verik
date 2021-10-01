@@ -19,22 +19,27 @@ package io.verik.compiler.specialize
 import io.verik.compiler.ast.element.common.EAbstractProperty
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
+import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
+import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
+import io.verik.compiler.ast.property.KtUnaryOperatorKind
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreKtAbstractFunctionDeclaration
+import io.verik.compiler.message.Messages
 
 object TypeConstraintCollector {
 
-    fun collect(expression: EExpression): List<TypeConstraint> {
+    fun collect(function: EKtFunction): List<TypeConstraint> {
         val typeConstraintCollectorVisitor = TypeConstraintCollectorVisitor()
-        expression.accept(typeConstraintCollectorVisitor)
+        function.accept(typeConstraintCollectorVisitor)
         return typeConstraintCollectorVisitor.typeConstraints
     }
 
@@ -47,6 +52,14 @@ object TypeConstraintCollector {
     class TypeConstraintCollectorVisitor : TreeVisitor() {
 
         val typeConstraints = ArrayList<TypeConstraint>()
+
+        private var function: EKtFunction? = null
+
+        override fun visitKtFunction(function: EKtFunction) {
+            this.function = function
+            super.visitKtFunction(function)
+            this.function = null
+        }
 
         override fun visitKtProperty(property: EKtProperty) {
             super.visitKtProperty(property)
@@ -69,6 +82,24 @@ object TypeConstraintCollector {
                         )
                     )
                 }
+            }
+        }
+
+        override fun visitKtUnaryExpression(unaryExpression: EKtUnaryExpression) {
+            super.visitKtUnaryExpression(unaryExpression)
+            val kinds = listOf(
+                KtUnaryOperatorKind.PRE_INC,
+                KtUnaryOperatorKind.PRE_DEC,
+                KtUnaryOperatorKind.POST_INC,
+                KtUnaryOperatorKind.POST_DEC
+            )
+            if (unaryExpression.kind in kinds) {
+                typeConstraints.add(
+                    TypeEqualsTypeConstraint(
+                        TypeAdapter.ofElement(unaryExpression.expression),
+                        TypeAdapter.ofElement(unaryExpression)
+                    )
+                )
             }
         }
 
@@ -115,6 +146,12 @@ object TypeConstraintCollector {
                 is CoreKtAbstractFunctionDeclaration ->
                     typeConstraints.addAll(reference.getTypeConstraints(callExpression))
                 is EKtAbstractFunction -> {
+                    typeConstraints.add(
+                        TypeEqualsTypeConstraint(
+                            TypeAdapter.ofElement(callExpression),
+                            TypeAdapter.ofElement(reference)
+                        )
+                    )
                     callExpression.valueArguments
                         .zip(reference.valueParameters)
                         .forEach { (valueArgument, valueParameter) ->
@@ -125,6 +162,24 @@ object TypeConstraintCollector {
                                 )
                             )
                         }
+                }
+            }
+        }
+
+        override fun visitReturnStatement(returnStatement: EReturnStatement) {
+            super.visitReturnStatement(returnStatement)
+            val expression = returnStatement.expression
+            if (expression != null) {
+                val function = this.function
+                if (function != null) {
+                    typeConstraints.add(
+                        TypeEqualsTypeConstraint(
+                            TypeAdapter.ofElement(expression),
+                            TypeAdapter.ofElement(function)
+                        )
+                    )
+                } else {
+                    Messages.INTERNAL_ERROR.on(returnStatement, "Could not identify return type")
                 }
             }
         }

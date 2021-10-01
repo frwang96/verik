@@ -15,6 +15,5 @@
  */
 
 verik {
-    top = "Fizzbuzz"
     debug = true
 }

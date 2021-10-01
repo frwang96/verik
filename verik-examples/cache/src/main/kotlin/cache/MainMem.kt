@@ -31,7 +31,7 @@ class MainMem(
             rx.rspVld = false
             if (rx.rst) {
                 for (i in 0 until mem.size) {
-                    mem[i] = zeroes()
+                    mem[i] = u0()
                 }
             } else {
                 if (rx.reqOp != Op.NOP) {

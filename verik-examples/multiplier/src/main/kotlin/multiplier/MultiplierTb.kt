@@ -54,8 +54,8 @@ class MultiplierTb : Module() {
 
     @Run
     fun test() {
-        var a: Ubit<REQ_WIDTH> = zeroes()
-        var b: Ubit<REQ_WIDTH> = zeroes()
+        var a: Ubit<REQ_WIDTH> = u0()
+        var b: Ubit<REQ_WIDTH> = u0()
         req = MultiplierReq(a, b, false)
         delay(20)
         forever {
@@ -70,7 +70,7 @@ class MultiplierTb : Module() {
                 b = randomUbit()
                 req = MultiplierReq(a, b, true)
             } else {
-                req = MultiplierReq(zeroes(), zeroes(), false)
+                req = MultiplierReq(u0(), u0(), false)
             }
         }
     }
