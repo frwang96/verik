@@ -148,6 +148,9 @@ object Core {
             val F_plus_Ubit = CoreVkUbit.F_plus_Ubit
             val F_add_Ubit = CoreVkUbit.F_add_Ubit
             val F_mul_Ubit = CoreVkUbit.F_mul_Ubit
+            val F_and_Ubit = CoreVkUbit.F_and_Ubit
+            val F_or_Ubit = CoreVkUbit.F_or_Ubit
+            val F_xor_Ubit = CoreVkUbit.F_xor_Ubit
             val F_shl_Int = CoreVkUbit.F_shl_Int
             val F_shr_Int = CoreVkUbit.F_shr_Int
             val F_ext = CoreVkUbit.F_ext
