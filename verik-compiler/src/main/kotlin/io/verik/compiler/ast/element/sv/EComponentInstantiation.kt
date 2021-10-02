@@ -26,7 +26,7 @@ import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 
-class EModuleInstantiation(
+class EComponentInstantiation(
     override val location: SourceLocation,
     override var name: String,
     override var type: Type,
@@ -38,7 +38,7 @@ class EModuleInstantiation(
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitModuleInstantiation(this)
+        visitor.visitComponentInstantiation(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {

@@ -50,6 +50,7 @@ import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.ECaseStatement
+import io.verik.compiler.ast.element.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.sv.EConstantPartSelectExpression
 import io.verik.compiler.ast.element.sv.EDelayExpression
@@ -62,7 +63,6 @@ import io.verik.compiler.ast.element.sv.EInitialBlock
 import io.verik.compiler.ast.element.sv.EInjectedExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.EModule
-import io.verik.compiler.ast.element.sv.EModuleInstantiation
 import io.verik.compiler.ast.element.sv.EModuleInterface
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.ERepeatStatement
@@ -278,11 +278,11 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitModuleInstantiation(moduleInstantiation: EModuleInstantiation) {
-        build("ModuleInstantiation") {
-            build(moduleInstantiation.name)
-            build(moduleInstantiation.type.toString())
-            build(moduleInstantiation.portInstantiations) {
+    override fun visitComponentInstantiation(componentInstantiation: EComponentInstantiation) {
+        build("ComponentInstantiation") {
+            build(componentInstantiation.name)
+            build(componentInstantiation.type.toString())
+            build(componentInstantiation.portInstantiations) {
                 build("PortInstantiation") {
                     build(it.reference.name)
                     build(it.expression)

@@ -73,15 +73,20 @@ object ComponentInterpreter {
     }
 
     private fun interpretPort(valueParameter: EKtValueParameter): EPort? {
-        return when {
-            valueParameter.hasAnnotation(Annotations.IN) ->
-                EPort(valueParameter.location, valueParameter.name, valueParameter.type, PortType.INPUT)
-            valueParameter.hasAnnotation(Annotations.OUT) ->
-                EPort(valueParameter.location, valueParameter.name, valueParameter.type, PortType.OUTPUT)
+        val portType = when {
+            valueParameter.hasAnnotation(Annotations.IN) -> PortType.INPUT
+            valueParameter.hasAnnotation(Annotations.OUT) -> PortType.OUTPUT
             else -> {
-                Messages.PORT_NO_DIRECTIONALITY.on(valueParameter, valueParameter.name)
-                null
+                if (valueParameter.type.isSubtype(Core.Vk.C_Interface.toType())) {
+                    PortType.MODULE_INTERFACE
+                } else null
             }
+        }
+        return if (portType != null) {
+            EPort(valueParameter.location, valueParameter.name, valueParameter.type, portType)
+        } else {
+            Messages.PORT_NO_DIRECTIONALITY.on(valueParameter, valueParameter.name)
+            null
         }
     }
 }

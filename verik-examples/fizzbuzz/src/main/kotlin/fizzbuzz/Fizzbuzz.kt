@@ -35,6 +35,9 @@ class Fizzbuzz : Module() {
     @Make
     val i = I()
 
+    @Make
+    val ci = CI(i)
+
     @Run
     fun main() {
         val e = E.A
@@ -69,6 +72,8 @@ class Fizzbuzz : Module() {
 }
 
 class I : Interface()
+
+class CI(val i: I) : Module()
 
 fun h(x: Ubit<`3`>): Ubit<`3`> {
     return x

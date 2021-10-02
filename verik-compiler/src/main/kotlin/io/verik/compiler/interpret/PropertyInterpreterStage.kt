@@ -21,8 +21,8 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtPropertyStatement
-import io.verik.compiler.ast.element.sv.EModule
-import io.verik.compiler.ast.element.sv.EModuleInstantiation
+import io.verik.compiler.ast.element.sv.EAbstractComponent
+import io.verik.compiler.ast.element.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvPropertyStatement
@@ -48,7 +48,7 @@ object PropertyInterpreterStage : ProjectStage() {
     class PropertyInterpreterVisitor(private val referenceUpdater: ReferenceUpdater) : TreeVisitor() {
 
         private fun interpret(property: EKtProperty): EElement {
-            return interpretModuleInstantiation(property)
+            return interpretComponentInstantiation(property)
                 ?: ESvProperty(
                     property.location,
                     property.name,
@@ -58,23 +58,23 @@ object PropertyInterpreterStage : ProjectStage() {
                 )
         }
 
-        private fun interpretModuleInstantiation(property: EKtProperty): EModuleInstantiation? {
+        private fun interpretComponentInstantiation(property: EKtProperty): EComponentInstantiation? {
             val callExpression = property.initializer
             if (callExpression !is EKtCallExpression)
                 return null
-            val module = callExpression.reference
-            if (module !is EModule)
+            val component = callExpression.reference
+            if (component !is EAbstractComponent)
                 return null
 
-            if (module.ports.size != callExpression.valueArguments.size) {
+            if (component.ports.size != callExpression.valueArguments.size) {
                 Messages.INTERNAL_ERROR.on(callExpression, "Incorrect number of value arguments")
                 return null
             }
 
-            val portInstantiations = module.ports
+            val portInstantiations = component.ports
                 .zip(callExpression.valueArguments)
                 .map { interpretPortInstantiation(it.first, it.second) }
-            return EModuleInstantiation(
+            return EComponentInstantiation(
                 property.location,
                 property.name,
                 property.type,

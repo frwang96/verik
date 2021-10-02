@@ -22,7 +22,6 @@ import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findDeclaration
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
@@ -41,7 +40,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "ModuleInstantiation(m, M, [PortInstantiation(x, *)])",
+            "ComponentInstantiation(m, M, [PortInstantiation(x, *)])",
             projectContext.findDeclaration("m")
         )
     }
@@ -59,7 +58,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "ModuleInstantiation(m, M, [PortInstantiation(x, null)])",
+            "ComponentInstantiation(m, M, [PortInstantiation(x, null)])",
             projectContext.findDeclaration("m")
         )
     }
@@ -81,7 +80,6 @@ internal class PropertyInterpreterStageTest : BaseTest() {
     }
 
     @Test
-    @Disabled
     fun `interpret component instantiation interface`() {
         val projectContext = driveTest(
             PropertyInterpreterStage::class,
@@ -94,7 +92,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "ModuleInstantiation(m, M, [PortInstantiation(x, *)])",
+            "ComponentInstantiation(i, I, [])",
             projectContext.findDeclaration("i")
         )
     }

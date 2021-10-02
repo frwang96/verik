@@ -18,10 +18,10 @@ package io.verik.compiler.serialize.source
 
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
+import io.verik.compiler.ast.element.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EInitialBlock
 import io.verik.compiler.ast.element.sv.EModule
-import io.verik.compiler.ast.element.sv.EModuleInstantiation
 import io.verik.compiler.ast.element.sv.EModuleInterface
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.EStruct
@@ -149,18 +149,18 @@ object DeclarationSerializer {
         serializerContext.append(enumEntry.name)
     }
 
-    fun serializeModuleInstantiation(
-        moduleInstantiation: EModuleInstantiation,
+    fun serializeComponentInstantiation(
+        componentInstantiation: EComponentInstantiation,
         serializerContext: SerializerContext
     ) {
-        val serializedType = TypeSerializer.serialize(moduleInstantiation.type, moduleInstantiation)
-        serializedType.checkNoPackedDimension(moduleInstantiation)
-        serializedType.checkNoUnpackedDimension(moduleInstantiation)
-        serializerContext.append("${serializedType.base} ${moduleInstantiation.name} (")
-        if (moduleInstantiation.portInstantiations.isNotEmpty()) {
+        val serializedType = TypeSerializer.serialize(componentInstantiation.type, componentInstantiation)
+        serializedType.checkNoPackedDimension(componentInstantiation)
+        serializedType.checkNoUnpackedDimension(componentInstantiation)
+        serializerContext.append("${serializedType.base} ${componentInstantiation.name} (")
+        if (componentInstantiation.portInstantiations.isNotEmpty()) {
             serializerContext.appendLine()
             serializerContext.indent {
-                serializerContext.joinLine(moduleInstantiation.portInstantiations) {
+                serializerContext.joinLine(componentInstantiation.portInstantiations) {
                     serializerContext.append(".${it.reference.name} ")
                     serializerContext.align()
                     serializerContext.append("( ")
@@ -188,6 +188,7 @@ object DeclarationSerializer {
         when (port.portType) {
             PortType.INPUT -> serializerContext.append("input ")
             PortType.OUTPUT -> serializerContext.append("output ")
+            PortType.MODULE_INTERFACE -> {}
         }
         val serializedType = TypeSerializer.serialize(port.type, port)
         serializerContext.append("${serializedType.getBaseAndPackedDimension()} ")

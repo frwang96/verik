@@ -18,5 +18,6 @@ package io.verik.compiler.ast.property
 
 enum class PortType {
     INPUT,
-    OUTPUT
+    OUTPUT,
+    MODULE_INTERFACE
 }
