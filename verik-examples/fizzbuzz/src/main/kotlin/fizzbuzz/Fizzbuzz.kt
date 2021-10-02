@@ -65,6 +65,9 @@ class Fizzbuzz : Module() {
     }
 }
 
+@Suppress("unused")
+class I : Interface()
+
 fun h(x: Ubit<`3`>): Ubit<`3`> {
     return x
 }

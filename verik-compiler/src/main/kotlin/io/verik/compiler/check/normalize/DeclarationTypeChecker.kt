@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.common.EAbstractContainerClass
 import io.verik.compiler.ast.element.common.EAbstractEnumEntry
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
+import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.common.ProjectStage
@@ -49,6 +50,14 @@ object DeclarationTypeChecker : ProjectStage() {
         override fun visitAbstractContainerClass(abstractContainerClass: EAbstractContainerClass) {
             super.visitAbstractContainerClass(abstractContainerClass)
             abstractContainerClass.members.forEach {
+                if (it !is Declaration)
+                    Messages.INTERNAL_ERROR.on(it, "Declaration expected but got: $it")
+            }
+        }
+
+        override fun visitAbstractContainerComponent(abstractContainerComponent: EAbstractContainerComponent) {
+            super.visitAbstractContainerComponent(abstractContainerComponent)
+            abstractContainerComponent.members.forEach {
                 if (it !is Declaration)
                     Messages.INTERNAL_ERROR.on(it, "Declaration expected but got: $it")
             }

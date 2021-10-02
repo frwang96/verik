@@ -63,6 +63,7 @@ import io.verik.compiler.ast.element.sv.EInjectedExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EModuleInstantiation
+import io.verik.compiler.ast.element.sv.EModuleInterface
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.ERepeatStatement
 import io.verik.compiler.ast.element.sv.EStringExpression
@@ -169,6 +170,15 @@ class ElementPrinter : Visitor() {
             build(module.typeParameters)
             build(module.members)
             build(module.ports)
+        }
+    }
+
+    override fun visitModuleInterface(moduleInterface: EModuleInterface) {
+        build("ModuleInterface") {
+            build(moduleInterface.name)
+            build(moduleInterface.typeParameters)
+            build(moduleInterface.members)
+            build(moduleInterface.ports)
         }
     }
 

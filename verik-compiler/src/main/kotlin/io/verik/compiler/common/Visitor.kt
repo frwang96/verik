@@ -66,6 +66,8 @@ import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.element.kt.EWhenExpression
+import io.verik.compiler.ast.element.sv.EAbstractComponent
+import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
 import io.verik.compiler.ast.element.sv.EAbstractProceduralBlock
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
@@ -83,6 +85,7 @@ import io.verik.compiler.ast.element.sv.EInjectedExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EModuleInstantiation
+import io.verik.compiler.ast.element.sv.EModuleInterface
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.ERepeatStatement
 import io.verik.compiler.ast.element.sv.EStringExpression
@@ -175,8 +178,20 @@ abstract class Visitor {
         visitAbstractContainerClass(basicClass)
     }
 
+    open fun visitAbstractComponent(abstractComponent: EAbstractComponent) {
+        visitAbstractClass(abstractComponent)
+    }
+
+    open fun visitAbstractContainerComponent(abstractContainerComponent: EAbstractContainerComponent) {
+        visitAbstractComponent(abstractContainerComponent)
+    }
+
     open fun visitModule(module: EModule) {
-        visitAbstractContainerClass(module)
+        visitAbstractContainerComponent(module)
+    }
+
+    open fun visitModuleInterface(moduleInterface: EModuleInterface) {
+        visitAbstractContainerComponent(moduleInterface)
     }
 
     open fun visitEnum(enum: EEnum) {

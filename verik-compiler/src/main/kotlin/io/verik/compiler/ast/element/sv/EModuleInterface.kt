@@ -22,14 +22,13 @@ import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
-class EModule(
+class EModuleInterface(
     override val location: SourceLocation,
     override var name: String,
     override var supertype: Type,
     override var typeParameters: ArrayList<ETypeParameter>,
     override val ports: List<EPort>,
-    override var members: ArrayList<EElement>,
-    val isTop: Boolean
+    override var members: ArrayList<EElement>
 ) : EAbstractContainerComponent() {
 
     init {
@@ -38,6 +37,6 @@ class EModule(
     }
 
     override fun accept(visitor: Visitor) {
-        return visitor.visitModule(this)
+        return visitor.visitModuleInterface(this)
     }
 }
