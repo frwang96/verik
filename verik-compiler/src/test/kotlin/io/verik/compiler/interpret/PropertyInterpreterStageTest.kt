@@ -22,13 +22,14 @@ import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findDeclaration
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
 internal class PropertyInterpreterStageTest : BaseTest() {
 
     @Test
-    fun `interpret module instantiation`() {
+    fun `interpret component instantiation module`() {
         val projectContext = driveTest(
             PropertyInterpreterStage::class,
             """
@@ -46,7 +47,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
     }
 
     @Test
-    fun `interpret module instantiation not connected`() {
+    fun `interpret component instantiation module not connected`() {
         val projectContext = driveTest(
             PropertyInterpreterStage::class,
             """
@@ -64,7 +65,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
     }
 
     @Test
-    fun `interpret module instantiation not connected illegal`() {
+    fun `interpret component instantiation module not connected illegal`() {
         assertThrows<TestErrorException> {
             driveTest(
                 PropertyInterpreterStage::class,
@@ -77,6 +78,25 @@ internal class PropertyInterpreterStageTest : BaseTest() {
                 """.trimIndent()
             )
         }.apply { assertEquals("Input port not connected: x", message) }
+    }
+
+    @Test
+    @Disabled
+    fun `interpret component instantiation interface`() {
+        val projectContext = driveTest(
+            PropertyInterpreterStage::class,
+            """
+                class I : Interface()
+                class Top : Module() {
+                    @Make
+                    val i = I()
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "ModuleInstantiation(m, M, [PortInstantiation(x, *)])",
+            projectContext.findDeclaration("i")
+        )
     }
 
     @Test

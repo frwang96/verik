@@ -22,6 +22,7 @@ import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EInitialBlock
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EModuleInstantiation
+import io.verik.compiler.ast.element.sv.EModuleInterface
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.ESvBasicClass
@@ -45,22 +46,22 @@ object DeclarationSerializer {
 
     fun serializeModule(module: EModule, serializerContext: SerializerContext) {
         serializerContext.append("module ${module.name}")
-        if (module.ports.isNotEmpty()) {
-            serializerContext.appendLine("(")
-            serializerContext.indent {
-                serializerContext.joinLine(module.ports) {
-                    serializerContext.serialize(it)
-                }
-            }
-            serializerContext.appendLine(");")
-        } else {
-            serializerContext.appendLine(";")
-        }
+        serializePortList(module.ports, serializerContext)
         serializerContext.indent {
             module.members.forEach { serializerContext.serializeAsDeclaration(it) }
             serializerContext.appendLine()
         }
         serializerContext.appendLine("endmodule : ${module.name}")
+    }
+
+    fun serializeModuleInterface(moduleInterface: EModuleInterface, serializerContext: SerializerContext) {
+        serializerContext.append("interface ${moduleInterface.name}")
+        serializePortList(moduleInterface.ports, serializerContext)
+        serializerContext.indent {
+            moduleInterface.members.forEach { serializerContext.serializeAsDeclaration(it) }
+            serializerContext.appendLine()
+        }
+        serializerContext.appendLine("endinterface : ${moduleInterface.name}")
     }
 
     fun serializeEnum(enum: EEnum, serializerContext: SerializerContext) {
@@ -194,5 +195,19 @@ object DeclarationSerializer {
         serializerContext.append(port.name)
         if (serializedType.unpackedDimension != null)
             serializerContext.append(" ${serializedType.unpackedDimension}")
+    }
+
+    private fun serializePortList(ports: List<EPort>, serializerContext: SerializerContext) {
+        if (ports.isNotEmpty()) {
+            serializerContext.appendLine("(")
+            serializerContext.indent {
+                serializerContext.joinLine(ports) {
+                    serializerContext.serialize(it)
+                }
+            }
+            serializerContext.appendLine(");")
+        } else {
+            serializerContext.appendLine(";")
+        }
     }
 }

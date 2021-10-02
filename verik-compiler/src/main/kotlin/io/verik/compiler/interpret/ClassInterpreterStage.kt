@@ -50,7 +50,7 @@ object ClassInterpreterStage : ProjectStage() {
 
         override fun visitKtBasicClass(basicClass: EKtBasicClass) {
             super.visitKtBasicClass(basicClass)
-            if (ModuleInterpreter.interpretModule(basicClass, referenceUpdater))
+            if (ComponentInterpreter.interpretComponent(basicClass, referenceUpdater))
                 return
             if (EnumInterpreter.interpretEnum(basicClass, referenceUpdater))
                 return

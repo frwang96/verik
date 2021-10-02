@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-internal class ModuleInterpreterTest : BaseTest() {
+internal class ComponentInterpreterTest : BaseTest() {
 
     @Test
     fun `interpret module simple`() {
@@ -65,5 +65,19 @@ internal class ModuleInterpreterTest : BaseTest() {
                 """.trimIndent()
             )
         }.apply { Assertions.assertEquals("Could not determine directionality of port: x", message) }
+    }
+
+    @Test
+    fun `interpret module interface`() {
+        val projectContext = driveTest(
+            ClassInterpreterStage::class,
+            """
+                class I: Interface()
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "ModuleInterface(I, [], [], [])",
+            projectContext.findDeclaration("I")
+        )
     }
 }

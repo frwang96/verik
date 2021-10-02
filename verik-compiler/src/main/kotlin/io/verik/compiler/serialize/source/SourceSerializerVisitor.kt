@@ -39,6 +39,7 @@ import io.verik.compiler.ast.element.sv.EInjectedExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EModuleInstantiation
+import io.verik.compiler.ast.element.sv.EModuleInterface
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.ERepeatStatement
 import io.verik.compiler.ast.element.sv.EStringExpression
@@ -109,6 +110,10 @@ class SourceSerializerVisitor(private val serializerContext: SerializerContext) 
 
     override fun visitModule(module: EModule) {
         DeclarationSerializer.serializeModule(module, serializerContext)
+    }
+
+    override fun visitModuleInterface(moduleInterface: EModuleInterface) {
+        DeclarationSerializer.serializeModuleInterface(moduleInterface, serializerContext)
     }
 
     override fun visitEnum(enum: EEnum) {

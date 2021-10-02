@@ -65,6 +65,25 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `serialize interface simple`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                class I: Interface()
+            """.trimIndent()
+        )
+        val expected = """
+            interface I;
+            
+            endinterface : I
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
     @Disabled
     // TODO enable after fixing constructor
     fun `serialize class`() {

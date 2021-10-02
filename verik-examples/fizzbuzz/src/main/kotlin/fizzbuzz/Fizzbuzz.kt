@@ -32,6 +32,9 @@ class Fizzbuzz : Module() {
     @Suppress("unused")
     val c = C()
 
+    @Make
+    val i = I()
+
     @Run
     fun main() {
         val e = E.A
@@ -65,7 +68,6 @@ class Fizzbuzz : Module() {
     }
 }
 
-@Suppress("unused")
 class I : Interface()
 
 fun h(x: Ubit<`3`>): Ubit<`3`> {
