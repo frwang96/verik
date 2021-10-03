@@ -104,7 +104,7 @@ internal class ComponentInterpreterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "ClockingBlock(CB, [], [])",
+            "ClockingBlock(CB, [], [], 0)",
             projectContext.findDeclaration("CB")
         )
     }

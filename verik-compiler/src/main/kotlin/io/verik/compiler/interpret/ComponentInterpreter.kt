@@ -34,7 +34,7 @@ object ComponentInterpreter {
         val basicClassType = basicClass.toType()
         return when {
             basicClassType.isSubtype(Core.Vk.C_Module.toType()) -> {
-                val ports = interpretPorts(basicClass)
+                val ports = interpretPorts(basicClass.primaryConstructor?.valueParameters)
                 val isTop = basicClass.hasAnnotation(Annotations.TOP)
                 val module = EModule(
                     basicClass.location,
@@ -50,7 +50,7 @@ object ComponentInterpreter {
                 true
             }
             basicClassType.isSubtype(Core.Vk.C_Interface.toType()) -> {
-                val ports = interpretPorts(basicClass)
+                val ports = interpretPorts(basicClass.primaryConstructor?.valueParameters)
                 val moduleInterface = EModuleInterface(
                     basicClass.location,
                     basicClass.name,
@@ -64,7 +64,7 @@ object ComponentInterpreter {
                 true
             }
             basicClassType.isSubtype(Core.Vk.C_Modport.toType()) -> {
-                val ports = interpretPorts(basicClass)
+                val ports = interpretPorts(basicClass.primaryConstructor?.valueParameters)
                 val modulePort = EModulePort(
                     basicClass.location,
                     basicClass.name,
@@ -77,28 +77,32 @@ object ComponentInterpreter {
                 true
             }
             basicClassType.isSubtype(Core.Vk.C_ClockingBlock.toType()) -> {
-                val ports = interpretPorts(basicClass)
-                val clockingBlock = EClockingBlock(
-                    basicClass.location,
-                    basicClass.name,
-                    basicClass.supertype,
-                    basicClass.typeParameters,
-                    ports
-                )
-                referenceUpdater.replace(basicClass, clockingBlock)
-                basicClass.primaryConstructor?.let { referenceUpdater.update(it, clockingBlock) }
+                val valueParameters = basicClass.primaryConstructor?.valueParameters
+                val eventValueParameter = valueParameters?.find { it.name == "event" }
+                if (eventValueParameter != null) {
+                    val eventValueParameterIndex = valueParameters.indexOf(eventValueParameter)
+                    valueParameters.remove(eventValueParameter)
+                    val ports = interpretPorts(valueParameters)
+                    val clockingBlock = EClockingBlock(
+                        basicClass.location,
+                        basicClass.name,
+                        basicClass.supertype,
+                        basicClass.typeParameters,
+                        ports,
+                        eventValueParameterIndex
+                    )
+                    referenceUpdater.replace(basicClass, clockingBlock)
+                    basicClass.primaryConstructor?.let { referenceUpdater.update(it, clockingBlock) }
+                } else {
+                    Messages.INTERNAL_ERROR.on(basicClass, "Could not identify clocking block event value parameter")
+                }
                 true
             }
             else -> false
         }
     }
 
-    private fun interpretPorts(basicClass: EKtBasicClass): List<EPort> {
-        val valueParameters = if (basicClass.toType().isSubtype(Core.Vk.C_ClockingBlock.toType())) {
-            basicClass.primaryConstructor?.valueParameters?.filter { it.name != "event" }
-        } else {
-            basicClass.primaryConstructor?.valueParameters
-        }
+    private fun interpretPorts(valueParameters: List<EKtValueParameter>?): List<EPort> {
         return valueParameters
             ?.mapNotNull { interpretPort(it) }
             ?: listOf()

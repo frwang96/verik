@@ -34,7 +34,7 @@ object SourceSerializerStage : ProjectStage() {
     }
 
     private fun serialize(projectContext: ProjectContext, file: EFile): TextFile? {
-        if (file.members.isEmpty())
+        if (file.members.all { SourceSerializerVisitor.declarationIsHidden(it) })
             return null
         val serializerContext = SerializerContext(projectContext, file)
         file.members.forEach {

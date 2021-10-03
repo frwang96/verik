@@ -98,6 +98,24 @@ internal class PropertyInterpreterStageTest : BaseTest() {
     }
 
     @Test
+    fun `interpret component instantiation clocking block`() {
+        val projectContext = driveTest(
+            PropertyInterpreterStage::class,
+            """
+                class CB(override val event: Event) : ClockingBlock()
+                class Top : Module() {
+                    @Make
+                    val cb = CB(posedge(false))
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "ComponentInstantiation(cb, CB, [])",
+            projectContext.findDeclaration("cb")
+        )
+    }
+
+    @Test
     fun `interpret property`() {
         val projectContext = driveTest(
             PropertyInterpreterStage::class,

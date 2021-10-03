@@ -22,6 +22,7 @@ import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtPropertyStatement
 import io.verik.compiler.ast.element.sv.EAbstractComponent
+import io.verik.compiler.ast.element.sv.EClockingBlock
 import io.verik.compiler.ast.element.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.ESvProperty
@@ -66,13 +67,21 @@ object PropertyInterpreterStage : ProjectStage() {
             if (component !is EAbstractComponent)
                 return null
 
-            if (component.ports.size != callExpression.valueArguments.size) {
+            val valueArguments = if (component is EClockingBlock) {
+                callExpression
+                    .valueArguments
+                    .filterIndexed { index, _ -> index != component.eventValueParameterIndex }
+            } else {
+                callExpression.valueArguments
+            }
+
+            if (component.ports.size != valueArguments.size) {
                 Messages.INTERNAL_ERROR.on(callExpression, "Incorrect number of value arguments")
                 return null
             }
 
             val portInstantiations = component.ports
-                .zip(callExpression.valueArguments)
+                .zip(valueArguments)
                 .map { interpretPortInstantiation(it.first, it.second) }
             return EComponentInstantiation(
                 property.location,

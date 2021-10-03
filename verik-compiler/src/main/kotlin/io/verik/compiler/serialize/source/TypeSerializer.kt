@@ -20,8 +20,7 @@ import io.verik.compiler.ast.element.common.EAbstractClass
 import io.verik.compiler.ast.element.common.EBasicPackage
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
-import io.verik.compiler.ast.element.sv.EModule
-import io.verik.compiler.ast.element.sv.EModuleInterface
+import io.verik.compiler.ast.element.sv.EAbstractComponent
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.core.common.Core
@@ -32,8 +31,7 @@ object TypeSerializer {
 
     fun serialize(type: Type, element: EElement): SerializedType {
         return when (val reference = type.reference) {
-            is EModule -> SerializedType(reference.name)
-            is EModuleInterface -> SerializedType(reference.name)
+            is EAbstractComponent -> SerializedType(reference.name)
             is EAbstractClass -> SerializedType(serializePackageDeclaration(reference))
             Core.Kt.C_Unit -> SerializedType("void")
             Core.Kt.C_Int -> SerializedType("int")

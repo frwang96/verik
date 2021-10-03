@@ -197,6 +197,7 @@ class ElementPrinter : Visitor() {
             build(clockingBlock.name)
             build(clockingBlock.typeParameters)
             build(clockingBlock.ports)
+            build(clockingBlock.eventValueParameterIndex)
         }
     }
 
@@ -638,6 +639,12 @@ class ElementPrinter : Visitor() {
     }
 
     private fun build(content: Boolean?) {
+        if (!first) builder.append(", ")
+        builder.append(content)
+        first = false
+    }
+
+    private fun build(content: Int?) {
         if (!first) builder.append(", ")
         builder.append(content)
         first = false
