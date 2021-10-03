@@ -113,9 +113,12 @@ object ComponentInterpreter {
             valueParameter.hasAnnotation(Annotations.IN) -> PortType.INPUT
             valueParameter.hasAnnotation(Annotations.OUT) -> PortType.OUTPUT
             else -> {
-                if (valueParameter.type.isSubtype(Core.Vk.C_Interface.toType())) {
-                    PortType.MODULE_INTERFACE
-                } else null
+                when {
+                    valueParameter.type.isSubtype(Core.Vk.C_Interface.toType()) -> PortType.MODULE_INTERFACE
+                    valueParameter.type.isSubtype(Core.Vk.C_Modport.toType()) -> PortType.MODULE_PORT
+                    valueParameter.type.isSubtype(Core.Vk.C_ClockingBlock.toType()) -> PortType.CLOCKING_BLOCK
+                    else -> null
+                }
             }
         }
         return if (portType != null) {

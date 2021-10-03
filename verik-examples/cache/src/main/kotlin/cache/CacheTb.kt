@@ -19,21 +19,10 @@ package cache
 import io.verik.core.*
 
 class CacheTb(
-    @In var clk: Boolean,
-    val tx: TxnIf.TxnTx
+    val ifTb: TxnIf.TxnTb
 ) : Module() {
 
     val mem: Unpacked<EXP<ADDR_WIDTH>, UbitData> = nc()
-
-    @Make val cb = CacheTbClockingBlock(
-        event = posedge(clk),
-        rst = tx.rst,
-        reqOp = tx.reqOp,
-        reqAddr = tx.reqAddr,
-        reqData = tx.reqData,
-        rspVld = tx.rspVld,
-        rspData = tx.rspData
-    )
 
     @Run
     fun runTest() {
@@ -47,16 +36,16 @@ class CacheTb(
         for (i in 0 until mem.size) {
             mem[i] = u0()
         }
-        wait(cb)
-        cb.rst = true
-        cb.reqOp = Op.NOP
-        wait(cb)
-        cb.rst = false
+        wait(ifTb.cb)
+        ifTb.cb.rst = true
+        ifTb.cb.reqOp = Op.NOP
+        wait(ifTb.cb)
+        ifTb.cb.rst = false
     }
 
     @Task
     fun transact() {
-        repeat(3) { wait(cb) }
+        repeat(3) { wait(ifTb.cb) }
         if (random(1) == 0) {
             // write mem
             val addr: UbitAddr = randomUbit()
@@ -64,25 +53,25 @@ class CacheTb(
             mem[addr] = data
             println("tb write addr=0x$addr data=0x$data")
 
-            wait(cb)
-            cb.reqOp = Op.WRITE
-            cb.reqAddr = addr
-            cb.reqData = data
-            wait(cb)
-            cb.reqOp = Op.NOP
+            wait(ifTb.cb)
+            ifTb.cb.reqOp = Op.WRITE
+            ifTb.cb.reqAddr = addr
+            ifTb.cb.reqData = data
+            wait(ifTb.cb)
+            ifTb.cb.reqOp = Op.NOP
         } else {
             // read mem
             val addr: UbitAddr = randomUbit()
             println("tb read addr=0x$addr")
 
-            wait(cb)
-            cb.reqOp = Op.READ
-            cb.reqAddr = addr
-            wait(cb)
-            cb.reqOp = Op.NOP
+            wait(ifTb.cb)
+            ifTb.cb.reqOp = Op.READ
+            ifTb.cb.reqAddr = addr
+            wait(ifTb.cb)
+            ifTb.cb.reqOp = Op.NOP
 
-            while (!cb.rspVld) wait(cb)
-            val data = cb.rspData
+            while (!ifTb.cb.rspVld) wait(ifTb.cb)
+            val data = ifTb.cb.rspData
             val expected = mem[addr]
 
             if (data == expected) {
@@ -92,14 +81,4 @@ class CacheTb(
             }
         }
     }
-
-    class CacheTbClockingBlock(
-        override val event: Event,
-        @Out var rst: Boolean,
-        @Out var reqOp: Op,
-        @Out var reqAddr: UbitAddr,
-        @Out var reqData: UbitData,
-        @In var rspVld: Boolean,
-        @In var rspData: UbitData
-    ) : ClockingBlock()
 }

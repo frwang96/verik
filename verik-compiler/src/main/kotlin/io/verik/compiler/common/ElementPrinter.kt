@@ -67,6 +67,7 @@ import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EModuleInterface
 import io.verik.compiler.ast.element.sv.EModulePort
+import io.verik.compiler.ast.element.sv.EModulePortInstantiation
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.ERepeatStatement
 import io.verik.compiler.ast.element.sv.EStringExpression
@@ -304,6 +305,14 @@ class ElementPrinter : Visitor() {
             build(basicComponentInstantiation.name)
             build(basicComponentInstantiation.type.toString())
             buildPortInstantiations(basicComponentInstantiation.portInstantiations)
+        }
+    }
+
+    override fun visitModulePortInstantiation(modulePortInstantiation: EModulePortInstantiation) {
+        build("ModulePortInstantiation") {
+            build(modulePortInstantiation.name)
+            build(modulePortInstantiation.type.toString())
+            buildPortInstantiations(modulePortInstantiation.portInstantiations)
         }
     }
 

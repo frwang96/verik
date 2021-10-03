@@ -65,7 +65,7 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize interface simple`() {
+    fun `serialize module interface simple`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
             """
@@ -281,6 +281,36 @@ internal class DeclarationSerializerTest : BaseTest() {
             
                 M m (
                     .x ( 1'b0 )
+                );
+            
+            endmodule : Top
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
+    fun `serialize module port instantiation`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                class MP(@In val x: Boolean) : Modport()
+                class Top : Module() {
+                    private var x = false
+                    @Make
+                    val mp = MP(x)
+                }
+            """.trimIndent()
+        )
+        val expected = """
+            module Top;
+            
+                logic x = 1'b0;
+            
+                modport mp (
+                    input x;
                 );
             
             endmodule : Top

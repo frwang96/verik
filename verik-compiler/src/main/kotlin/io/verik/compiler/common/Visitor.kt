@@ -90,6 +90,7 @@ import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EModuleInterface
 import io.verik.compiler.ast.element.sv.EModulePort
+import io.verik.compiler.ast.element.sv.EModulePortInstantiation
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.ERepeatStatement
 import io.verik.compiler.ast.element.sv.EStringExpression
@@ -288,6 +289,10 @@ abstract class Visitor {
 
     open fun visitBasicComponentInstantiation(basicComponentInstantiation: EBasicComponentInstantiation) {
         visitAbstractComponentInstantiation(basicComponentInstantiation)
+    }
+
+    open fun visitModulePortInstantiation(modulePortInstantiation: EModulePortInstantiation) {
+        visitAbstractComponentInstantiation(modulePortInstantiation)
     }
 
     open fun visitClockingBlockInstantiation(clockingBlockInstantiation: EClockingBlockInstantiation) {

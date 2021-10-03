@@ -28,6 +28,8 @@ import io.verik.compiler.ast.element.sv.EBasicComponentInstantiation
 import io.verik.compiler.ast.element.sv.EClockingBlock
 import io.verik.compiler.ast.element.sv.EClockingBlockInstantiation
 import io.verik.compiler.ast.element.sv.EEventControlExpression
+import io.verik.compiler.ast.element.sv.EModulePort
+import io.verik.compiler.ast.element.sv.EModulePortInstantiation
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvPropertyStatement
@@ -70,6 +72,8 @@ object PropertyInterpreterStage : ProjectStage() {
             return when (val component = callExpression.reference) {
                 is EAbstractContainerComponent ->
                     interpretBasicComponentInstantiation(property, callExpression, component)
+                is EModulePort ->
+                    interpretModulePortInstantiation(property, callExpression, component)
                 is EClockingBlock ->
                     interpretClockingBlockInstantiation(property, callExpression, component)
                 else -> null
@@ -90,6 +94,27 @@ object PropertyInterpreterStage : ProjectStage() {
                 .zip(callExpression.valueArguments)
                 .map { interpretPortInstantiation(it.first, it.second, false) }
             return EBasicComponentInstantiation(
+                property.location,
+                property.name,
+                property.type,
+                portInstantiations
+            )
+        }
+
+        private fun interpretModulePortInstantiation(
+            property: EKtProperty,
+            callExpression: EKtCallExpression,
+            modulePort: EModulePort
+        ): EModulePortInstantiation? {
+            if (modulePort.ports.size != callExpression.valueArguments.size) {
+                Messages.INTERNAL_ERROR.on(callExpression, "Incorrect number of value arguments")
+                return null
+            }
+
+            val portInstantiations = modulePort.ports
+                .zip(callExpression.valueArguments)
+                .map { interpretPortInstantiation(it.first, it.second, true) }
+            return EModulePortInstantiation(
                 property.location,
                 property.name,
                 property.type,

@@ -24,6 +24,7 @@ import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EInitialBlock
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EModuleInterface
+import io.verik.compiler.ast.element.sv.EModulePortInstantiation
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.ESvBasicClass
@@ -176,6 +177,25 @@ object DeclarationSerializer {
         serializerContext.appendLine(");")
     }
 
+    fun serializeModulePortInstantiation(
+        modulePortInstantiation: EModulePortInstantiation,
+        serializerContext: SerializerContext
+    ) {
+        serializerContext.append("modport ${modulePortInstantiation.name}")
+        if (modulePortInstantiation.portInstantiations.isEmpty()) {
+            serializerContext.appendLine(";")
+        } else {
+            serializerContext.appendLine(" (")
+            serializerContext.indent {
+                modulePortInstantiation.portInstantiations.forEach {
+                    serializePortType(it.portType, serializerContext)
+                    serializerContext.appendLine("${it.reference.name};")
+                }
+            }
+            serializerContext.appendLine(");")
+        }
+    }
+
     fun serializeClockingBlockInstantiation(
         clockingBlockInstantiation: EClockingBlockInstantiation,
         serializerContext: SerializerContext
@@ -227,7 +247,8 @@ object DeclarationSerializer {
         when (portType) {
             PortType.INPUT -> serializerContext.append("input ")
             PortType.OUTPUT -> serializerContext.append("output ")
-            PortType.MODULE_INTERFACE -> {}
+            PortType.MODULE_INTERFACE, PortType.MODULE_PORT -> {}
+            PortType.CLOCKING_BLOCK -> serializerContext.append("clocking ")
         }
     }
 }
