@@ -33,10 +33,10 @@ class Fizzbuzz : Module() {
     val c = C()
 
     @Make
-    val i = I()
+    val mi = MI()
 
     @Make
-    val ci = CI(i)
+    val ci = CI(mi)
 
     @Make
     val cb = CB(posedge(false), z)
@@ -78,9 +78,9 @@ class Fizzbuzz : Module() {
     }
 }
 
-class I : Interface()
+class MI : ModuleInterface()
 
-class CI(val i: I) : Module()
+class CI(val mi: MI) : Module()
 
 class CB(
     override val event: Event,
@@ -89,7 +89,7 @@ class CB(
 
 class MP(
     @In val z: Ubit<`3`>
-) : Modport()
+) : ModulePort()
 
 fun h(x: Ubit<`3`>): Ubit<`3`> {
     return x

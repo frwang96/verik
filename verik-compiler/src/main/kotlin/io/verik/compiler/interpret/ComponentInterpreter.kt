@@ -49,7 +49,7 @@ object ComponentInterpreter {
                 basicClass.primaryConstructor?.let { referenceUpdater.update(it, module) }
                 true
             }
-            basicClassType.isSubtype(Core.Vk.C_Interface.toType()) -> {
+            basicClassType.isSubtype(Core.Vk.C_ModuleInterface.toType()) -> {
                 val ports = interpretPorts(basicClass.primaryConstructor?.valueParameters)
                 val moduleInterface = EModuleInterface(
                     basicClass.location,
@@ -63,7 +63,7 @@ object ComponentInterpreter {
                 basicClass.primaryConstructor?.let { referenceUpdater.update(it, moduleInterface) }
                 true
             }
-            basicClassType.isSubtype(Core.Vk.C_Modport.toType()) -> {
+            basicClassType.isSubtype(Core.Vk.C_ModulePort.toType()) -> {
                 val ports = interpretPorts(basicClass.primaryConstructor?.valueParameters)
                 val modulePort = EModulePort(
                     basicClass.location,
@@ -114,8 +114,8 @@ object ComponentInterpreter {
             valueParameter.hasAnnotation(Annotations.OUT) -> PortType.OUTPUT
             else -> {
                 when {
-                    valueParameter.type.isSubtype(Core.Vk.C_Interface.toType()) -> PortType.MODULE_INTERFACE
-                    valueParameter.type.isSubtype(Core.Vk.C_Modport.toType()) -> PortType.MODULE_PORT
+                    valueParameter.type.isSubtype(Core.Vk.C_ModuleInterface.toType()) -> PortType.MODULE_INTERFACE
+                    valueParameter.type.isSubtype(Core.Vk.C_ModulePort.toType()) -> PortType.MODULE_PORT
                     valueParameter.type.isSubtype(Core.Vk.C_ClockingBlock.toType()) -> PortType.CLOCKING_BLOCK
                     else -> null
                 }

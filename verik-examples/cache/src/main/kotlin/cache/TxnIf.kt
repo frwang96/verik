@@ -20,7 +20,7 @@ import io.verik.core.*
 
 class TxnIf(
     @In var clk: Boolean
-) : Interface() {
+) : ModuleInterface() {
 
     var rst: Boolean = nc()
     var reqOp: Op = nc()
@@ -70,7 +70,7 @@ class TxnIf(
         @Out var reqData: UbitData,
         @In var rspVld: Boolean,
         @In var rspData: UbitData
-    ) : Modport()
+    ) : ModulePort()
 
     class TxnRx(
         @In var rst: Boolean,
@@ -79,7 +79,7 @@ class TxnIf(
         @In var reqData: UbitData,
         @Out var rspVld: Boolean,
         @Out var rspData: UbitData
-    ) : Modport()
+    ) : ModulePort()
 
     class TxnCb(
         override val event: Event,
@@ -93,5 +93,5 @@ class TxnIf(
 
     class TxnTb(
         val cb: TxnCb
-    ) : Modport()
+    ) : ModulePort()
 }

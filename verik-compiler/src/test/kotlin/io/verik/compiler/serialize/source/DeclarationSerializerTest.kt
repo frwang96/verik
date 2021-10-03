@@ -69,13 +69,13 @@ internal class DeclarationSerializerTest : BaseTest() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
             """
-                class I: Interface()
+                class MI: ModuleInterface()
             """.trimIndent()
         )
         val expected = """
-            interface I;
+            interface MI;
             
-            endinterface : I
+            endinterface : MI
         """.trimIndent()
         assertOutputTextEquals(
             expected,
@@ -296,7 +296,7 @@ internal class DeclarationSerializerTest : BaseTest() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
             """
-                class MP(@In val x: Boolean) : Modport()
+                class MP(@In val x: Boolean) : ModulePort()
                 class Top : Module() {
                     private var x = false
                     @Make

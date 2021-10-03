@@ -98,8 +98,8 @@ object Core {
         val C_Unpacked = CoreClass.Vk.C_Unpacked
         val C_Component = CoreClass.Vk.C_Component
         val C_Module = CoreClass.Vk.C_Module
-        val C_Interface = CoreClass.Vk.C_Interface
-        val C_Modport = CoreClass.Vk.C_Modport
+        val C_ModuleInterface = CoreClass.Vk.C_ModuleInterface
+        val C_ModulePort = CoreClass.Vk.C_ModulePort
         val C_ClockingBlock = CoreClass.Vk.C_ClockingBlock
         val C_Time = CoreClass.Vk.C_Time
         val C_Event = CoreClass.Vk.C_Event

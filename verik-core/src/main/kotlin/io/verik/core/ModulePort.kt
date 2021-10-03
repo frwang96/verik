@@ -17,14 +17,14 @@
 package io.verik.core
 
 /**
- * A modport to bundle signals in [interfaces][Interface] and assign directionality. They correspond to SystemVerilog
- * modports.
+ * A module port to bundle signals in [module interfaces][ModuleInterface] and assign directionality. They correspond to
+ * SystemVerilog modports.
  *
  *      class MP(
  *          @In var x: Boolean
- *      ) : Modport()
+ *      ) : ModulePort()
  *
- *      class I : Interface() {
+ *      class MI : ModuleInterface() {
  *
  *          var x: Boolean = x()
  *
@@ -32,4 +32,4 @@ package io.verik.core
  *          val mp = MP(x)
  *      }
  */
-abstract class Modport : Component()
+abstract class ModulePort : Component()

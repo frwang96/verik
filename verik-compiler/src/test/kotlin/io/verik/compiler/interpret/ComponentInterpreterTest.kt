@@ -72,12 +72,12 @@ internal class ComponentInterpreterTest : BaseTest() {
         val projectContext = driveTest(
             ClassInterpreterStage::class,
             """
-                class I: Interface()
+                class MI: ModuleInterface()
             """.trimIndent()
         )
         assertElementEquals(
-            "ModuleInterface(I, [], [], [])",
-            projectContext.findDeclaration("I")
+            "ModuleInterface(MI, [], [], [])",
+            projectContext.findDeclaration("MI")
         )
     }
 
@@ -86,7 +86,7 @@ internal class ComponentInterpreterTest : BaseTest() {
         val projectContext = driveTest(
             ClassInterpreterStage::class,
             """
-                class MP: Modport()
+                class MP: ModulePort()
             """.trimIndent()
         )
         assertElementEquals(
