@@ -46,7 +46,6 @@ class Fizzbuzz : Module() {
 
     @Run
     fun main() {
-        val e = E.A
         val h = h(z)
         println(h)
         f(0)
@@ -58,6 +57,7 @@ class Fizzbuzz : Module() {
         y[0].value = 0
         z++
         println(E.A)
+        val e = E.A
         println("$e ${E.B}")
         random(1)
         random(1, 2)

@@ -187,9 +187,9 @@ object DeclarationSerializer {
         } else {
             serializerContext.appendLine(" (")
             serializerContext.indent {
-                modulePortInstantiation.portInstantiations.forEach {
+                serializerContext.joinLine(modulePortInstantiation.portInstantiations) {
                     serializePortType(it.portType, serializerContext)
-                    serializerContext.appendLine("${it.reference.name};")
+                    serializerContext.append(it.reference.name)
                 }
             }
             serializerContext.appendLine(");")

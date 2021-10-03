@@ -310,7 +310,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 logic x = 1'b0;
             
                 modport mp (
-                    input x;
+                    input x
                 );
             
             endmodule : Top
