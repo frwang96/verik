@@ -48,10 +48,12 @@ abstract class EElement {
     }
 
     fun replaceChildAsExpressionContainer(oldExpression: EExpression, newExpression: EExpression) {
-        if (this is ExpressionContainer)
-            this.replaceChild(oldExpression, newExpression)
-        else
+        if (this is ExpressionContainer) {
+            if (!this.replaceChild(oldExpression, newExpression))
+                Messages.INTERNAL_ERROR.on(oldExpression, "Could not find $oldExpression in $this")
+        } else {
             Messages.INTERNAL_ERROR.on(oldExpression, "Could not replace $oldExpression in $this")
+        }
     }
 
     abstract fun accept(visitor: Visitor)

@@ -18,7 +18,6 @@ package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.message.Messages
 
 abstract class EAbstractBinaryExpression : EExpression(), ExpressionContainer {
 
@@ -30,12 +29,18 @@ abstract class EAbstractBinaryExpression : EExpression(), ExpressionContainer {
         right.accept(visitor)
     }
 
-    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
+    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
         newExpression.parent = this
-        when (oldExpression) {
-            left -> left = newExpression
-            right -> right = newExpression
-            else -> Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
+        return when (oldExpression) {
+            left -> {
+                left = newExpression
+                true
+            }
+            right -> {
+                right = newExpression
+                true
+            }
+            else -> false
         }
     }
 }

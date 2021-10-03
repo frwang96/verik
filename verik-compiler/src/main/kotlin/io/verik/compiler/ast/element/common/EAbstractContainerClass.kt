@@ -19,7 +19,6 @@ package io.verik.compiler.ast.element.common
 import io.verik.compiler.ast.interfaces.ResizableElementContainer
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.replaceIfContains
-import io.verik.compiler.message.Messages
 
 abstract class EAbstractContainerClass : EAbstractClass(), ResizableElementContainer {
 
@@ -29,10 +28,9 @@ abstract class EAbstractContainerClass : EAbstractClass(), ResizableElementConta
         members.forEach { it.accept(visitor) }
     }
 
-    override fun replaceChild(oldElement: EElement, newElement: EElement) {
+    override fun replaceChild(oldElement: EElement, newElement: EElement): Boolean {
         newElement.parent = this
-        if (!members.replaceIfContains(oldElement, newElement))
-            Messages.INTERNAL_ERROR.on(this, "Could not find $oldElement in $this")
+        return members.replaceIfContains(oldElement, newElement)
     }
 
     override fun insertChild(element: EElement) {

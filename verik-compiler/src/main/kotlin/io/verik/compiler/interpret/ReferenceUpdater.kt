@@ -35,10 +35,12 @@ class ReferenceUpdater(val projectContext: ProjectContext) {
 
     fun replace(oldElement: EElement, newElement: EElement) {
         val parent = oldElement.parentNotNull()
-        if (parent is ElementContainer)
-            parent.replaceChild(oldElement, newElement)
-        else
+        if (parent is ElementContainer) {
+            if (!parent.replaceChild(oldElement, newElement))
+                Messages.INTERNAL_ERROR.on(oldElement, "Could not find $oldElement in $parent")
+        } else {
             Messages.INTERNAL_ERROR.on(oldElement, "Could not replace $oldElement in $parent")
+        }
 
         if (oldElement !is Declaration)
             Messages.INTERNAL_ERROR.on(oldElement, "Declaration expected but got: $oldElement")

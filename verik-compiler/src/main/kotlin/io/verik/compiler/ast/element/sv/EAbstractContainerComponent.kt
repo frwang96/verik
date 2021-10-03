@@ -20,7 +20,6 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.interfaces.ResizableElementContainer
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.replaceIfContains
-import io.verik.compiler.message.Messages
 
 abstract class EAbstractContainerComponent : EAbstractComponent(), ResizableElementContainer {
 
@@ -31,10 +30,9 @@ abstract class EAbstractContainerComponent : EAbstractComponent(), ResizableElem
         members.forEach { it.accept(visitor) }
     }
 
-    override fun replaceChild(oldElement: EElement, newElement: EElement) {
+    override fun replaceChild(oldElement: EElement, newElement: EElement): Boolean {
         newElement.parent = this
-        if (!members.replaceIfContains(oldElement, newElement))
-            Messages.INTERNAL_ERROR.on(this, "Could not find $oldElement in $this")
+        return members.replaceIfContains(oldElement, newElement)
     }
 
     override fun insertChild(element: EElement) {

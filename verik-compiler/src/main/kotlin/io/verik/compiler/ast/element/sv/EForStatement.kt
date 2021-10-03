@@ -64,14 +64,26 @@ class EForStatement(
         return ENullExpression(location)
     }
 
-    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
+    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
         newExpression.parent = this
-        when (oldExpression) {
-            initializer -> initializer = newExpression
-            condition -> condition = newExpression
-            iteration -> iteration = newExpression
-            body -> body = newExpression
-            else -> Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
+        return when (oldExpression) {
+            initializer -> {
+                initializer = newExpression
+                true
+            }
+            condition -> {
+                condition = newExpression
+                true
+            }
+            iteration -> {
+                iteration = newExpression
+                true
+            }
+            body -> {
+                body = newExpression
+                true
+            }
+            else -> false
         }
     }
 }

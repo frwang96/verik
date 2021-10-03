@@ -21,7 +21,6 @@ import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 
 class EIfExpression(
@@ -50,13 +49,23 @@ class EIfExpression(
         elseExpression?.accept(visitor)
     }
 
-    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
+    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
+        @Suppress("DuplicatedCode")
         newExpression.parent = this
-        when (oldExpression) {
-            condition -> condition = newExpression
-            thenExpression -> thenExpression = newExpression
-            elseExpression -> elseExpression = newExpression
-            else -> Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
+        return when (oldExpression) {
+            condition -> {
+                condition = newExpression
+                true
+            }
+            thenExpression -> {
+                thenExpression = newExpression
+                true
+            }
+            elseExpression -> {
+                elseExpression = newExpression
+                true
+            }
+            else -> false
         }
     }
 

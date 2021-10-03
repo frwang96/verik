@@ -20,5 +20,5 @@ import io.verik.compiler.ast.element.common.EElement
 
 interface ElementContainer {
 
-    fun replaceChild(oldElement: EElement, newElement: EElement)
+    fun replaceChild(oldElement: EElement, newElement: EElement): Boolean
 }

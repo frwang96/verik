@@ -22,7 +22,6 @@ import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 
 class ERepeatStatement(
@@ -55,12 +54,18 @@ class ERepeatStatement(
         return ERepeatStatement(location, copyCondition, copyBody)
     }
 
-    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
+    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
         newExpression.parent = this
-        when (oldExpression) {
-            condition -> condition = newExpression
-            body -> body = newExpression
-            else -> Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
+        return when (oldExpression) {
+            condition -> {
+                condition = newExpression
+                true
+            }
+            body -> {
+                body = newExpression
+                true
+            }
+            else -> false
         }
     }
 }

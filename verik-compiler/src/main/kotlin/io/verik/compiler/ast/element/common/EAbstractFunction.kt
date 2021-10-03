@@ -29,12 +29,12 @@ abstract class EAbstractFunction : ETypedElement(), Declaration, ExpressionConta
         body?.accept(visitor)
     }
 
-    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
+    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
         newExpression.parent = this
-        if (body == oldExpression)
-            body = newExpression.cast()
-        else
-            Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
+        return if (body == oldExpression) {
+            body = newExpression
+            true
+        } else false
     }
 
     fun getBodyNotNull(): EExpression {

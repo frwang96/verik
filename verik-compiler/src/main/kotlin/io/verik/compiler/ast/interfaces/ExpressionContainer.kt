@@ -20,5 +20,5 @@ import io.verik.compiler.ast.element.common.EExpression
 
 interface ExpressionContainer {
 
-    fun replaceChild(oldExpression: EExpression, newExpression: EExpression)
+    fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean
 }

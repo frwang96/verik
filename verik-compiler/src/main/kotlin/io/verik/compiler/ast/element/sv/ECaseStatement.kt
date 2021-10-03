@@ -24,7 +24,6 @@ import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.common.replaceIfContains
-import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 
 class ECaseStatement(
@@ -63,20 +62,20 @@ class ECaseStatement(
         return ECaseStatement(location, typeCopy, subjectCopy, entriesCopy)
     }
 
-    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
+    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
         newExpression.parent = this
         if (subject == oldExpression) {
             subject = newExpression
-            return
+            return true
         }
         entries.forEach {
             if (it.conditions.replaceIfContains(oldExpression, newExpression))
-                return
+                return true
             if (it.body == oldExpression) {
                 it.body = newExpression
-                return
+                return true
             }
         }
-        Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
+        return false
     }
 }

@@ -20,7 +20,6 @@ import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.replaceIfContains
-import io.verik.compiler.message.Messages
 
 abstract class EAbstractCallExpression : EExpression(), Reference, ExpressionContainer {
 
@@ -32,11 +31,13 @@ abstract class EAbstractCallExpression : EExpression(), Reference, ExpressionCon
         valueArguments.forEach { it.accept(visitor) }
     }
 
-    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
+    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
         newExpression.parent = this
-        if (receiver == oldExpression)
+        return if (receiver == oldExpression) {
             receiver = newExpression
-        else if (!valueArguments.replaceIfContains(oldExpression, newExpression))
-            Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
+            true
+        } else {
+            valueArguments.replaceIfContains(oldExpression, newExpression)
+        }
     }
 }

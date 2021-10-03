@@ -50,12 +50,12 @@ class EFunctionLiteralExpression(
         body.accept(visitor)
     }
 
-    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
+    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
         newExpression.parent = this
-        if (body == oldExpression)
+        return if (body == oldExpression) {
             body = newExpression
-        else
-            Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
+            true
+        } else false
     }
 
     override fun copy(): EExpression {

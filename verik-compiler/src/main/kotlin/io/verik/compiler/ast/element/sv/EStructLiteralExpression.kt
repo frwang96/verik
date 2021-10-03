@@ -23,7 +23,6 @@ import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 
 class EStructLiteralExpression(
@@ -52,14 +51,14 @@ class EStructLiteralExpression(
         return EStructLiteralExpression(location, copyType, copyEntries)
     }
 
-    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
+    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
         newExpression.parent = this
         entries.forEach {
             if (it.expression == oldExpression) {
                 it.expression = newExpression
-                return
+                return true
             }
         }
-        Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
+        return false
     }
 }

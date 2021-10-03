@@ -19,7 +19,6 @@ package io.verik.compiler.ast.element.common
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.replaceIfContains
-import io.verik.compiler.message.Messages
 
 abstract class EAbstractBlockExpression : EExpression(), ExpressionContainer {
 
@@ -29,9 +28,8 @@ abstract class EAbstractBlockExpression : EExpression(), ExpressionContainer {
         statements.forEach { it.accept(visitor) }
     }
 
-    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
+    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
         newExpression.parent = this
-        if (!statements.replaceIfContains(oldExpression, newExpression))
-            Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
+        return statements.replaceIfContains(oldExpression, newExpression)
     }
 }

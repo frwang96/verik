@@ -44,10 +44,9 @@ class EFile(
         members.forEach { it.accept(visitor) }
     }
 
-    override fun replaceChild(oldElement: EElement, newElement: EElement) {
+    override fun replaceChild(oldElement: EElement, newElement: EElement): Boolean {
         newElement.parent = this
-        if (!members.replaceIfContains(oldElement, newElement))
-            Messages.INTERNAL_ERROR.on(this, "Could not find $oldElement in $this")
+        return members.replaceIfContains(oldElement, newElement)
     }
 
     override fun insertChild(element: EElement) {

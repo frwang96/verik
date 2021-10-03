@@ -18,7 +18,6 @@ package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.message.Messages
 
 abstract class EAbstractExpressionContainer : EExpression(), ExpressionContainer {
 
@@ -28,11 +27,11 @@ abstract class EAbstractExpressionContainer : EExpression(), ExpressionContainer
         expression.accept(visitor)
     }
 
-    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
+    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
         newExpression.parent = this
-        if (expression == oldExpression)
+        return if (expression == oldExpression) {
             expression = newExpression
-        else
-            Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
+            true
+        } else false
     }
 }

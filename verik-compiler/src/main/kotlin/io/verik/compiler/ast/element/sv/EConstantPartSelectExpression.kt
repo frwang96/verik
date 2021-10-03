@@ -22,7 +22,6 @@ import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 
 class EConstantPartSelectExpression(
@@ -59,13 +58,23 @@ class EConstantPartSelectExpression(
         return EConstantPartSelectExpression(location, typeCopy, arrayCopy, msbIndexCopy, lsbIndexCopy)
     }
 
-    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
+    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
+        @Suppress("DuplicatedCode")
         newExpression.parent = this
-        when (oldExpression) {
-            array -> array = newExpression
-            msbIndex -> msbIndex = newExpression
-            lsbIndex -> lsbIndex = newExpression
-            else -> Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
+        return when (oldExpression) {
+            array -> {
+                array = newExpression
+                true
+            }
+            msbIndex -> {
+                msbIndex = newExpression
+                true
+            }
+            lsbIndex -> {
+                lsbIndex = newExpression
+                true
+            }
+            else -> false
         }
     }
 }

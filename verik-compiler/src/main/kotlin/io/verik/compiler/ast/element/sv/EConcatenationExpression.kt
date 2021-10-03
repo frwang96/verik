@@ -23,7 +23,6 @@ import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.common.replaceIfContains
-import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 
 class EConcatenationExpression(
@@ -52,9 +51,8 @@ class EConcatenationExpression(
         return EConcatenationExpression(location, typeCopy, ArrayList(expressionsCopy))
     }
 
-    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
+    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
         newExpression.parent = this
-        if (!expressions.replaceIfContains(oldExpression, newExpression))
-            Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
+        return expressions.replaceIfContains(oldExpression, newExpression)
     }
 }

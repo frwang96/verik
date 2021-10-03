@@ -21,7 +21,6 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.PortInstantiation
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.message.Messages
 
 abstract class EAbstractComponentInstantiation : EAbstractProperty(), ExpressionContainer {
 
@@ -31,14 +30,14 @@ abstract class EAbstractComponentInstantiation : EAbstractProperty(), Expression
         portInstantiations.forEach { it.expression?.accept(visitor) }
     }
 
-    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
+    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
         newExpression.parent = this
         portInstantiations.forEach {
             if (it.expression == oldExpression) {
                 it.expression = newExpression
-                return
+                return true
             }
         }
-        Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
+        return false
     }
 }

@@ -21,7 +21,6 @@ import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.StringEntry
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.message.Messages
 
 abstract class EAbstractStringEntryContainer : EExpression(), ExpressionContainer {
 
@@ -38,14 +37,14 @@ abstract class EAbstractStringEntryContainer : EExpression(), ExpressionContaine
         }
     }
 
-    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
+    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
         newExpression.parent = this
         entries.forEach {
             if (it is ExpressionStringEntry && it.expression == oldExpression) {
                 it.expression = newExpression
-                return
+                return true
             }
         }
-        Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
+        return false
     }
 }
