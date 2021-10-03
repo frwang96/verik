@@ -20,7 +20,6 @@ import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.interfaces.ResizableElementContainer
-import io.verik.compiler.ast.interfaces.cast
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -65,12 +64,10 @@ object ClassInterpreterStage : ProjectStage() {
         val enumEntries = ArrayList<ESvEnumEntry>()
 
         override fun visitEnum(enum: EEnum) {
-            enum.entryReferences
-                .mapNotNull { it.cast<ESvEnumEntry>(enum) }
-                .forEach {
-                    it.parent = enum.parent
-                    enumEntries.add(it)
-                }
+            enum.enumEntries.forEach {
+                it.parent = enum.parent
+                enumEntries.add(it)
+            }
         }
     }
 }

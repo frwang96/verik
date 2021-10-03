@@ -30,7 +30,6 @@ import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvValueParameter
-import io.verik.compiler.ast.interfaces.cast
 import io.verik.compiler.ast.property.PortType
 
 object DeclarationSerializer {
@@ -67,8 +66,7 @@ object DeclarationSerializer {
     fun serializeEnum(enum: EEnum, serializerContext: SerializerContext) {
         serializerContext.appendLine("typedef enum {")
         serializerContext.indent {
-            val entryReferences = enum.entryReferences.mapNotNull { it.cast<ESvEnumEntry>(enum) }
-            serializerContext.joinLine(entryReferences) {
+            serializerContext.joinLine(enum.enumEntries) {
                 serializerContext.serialize(it)
             }
         }

@@ -16,26 +16,24 @@
 
 package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.element.common.EAbstractClass
 import io.verik.compiler.ast.element.common.ETypeParameter
-import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
 
-class EEnum(
+class EClockingBlock(
     override val location: SourceLocation,
     override var name: String,
-    val enumEntries: List<ESvEnumEntry>
-) : EAbstractClass() {
+    override var supertype: Type,
+    override var typeParameters: ArrayList<ETypeParameter>,
+    override val ports: List<EPort>
+) : EAbstractComponent() {
 
-    override var supertype = Core.Kt.C_Any.toType()
-
-    override var typeParameters = arrayListOf<ETypeParameter>()
-
-    override fun accept(visitor: Visitor) {
-        visitor.visitEnum(this)
+    init {
+        ports.forEach { it.parent = this }
     }
 
-    override fun acceptChildren(visitor: TreeVisitor) {}
+    override fun accept(visitor: Visitor) {
+        return visitor.visitClockingBlock(this)
+    }
 }

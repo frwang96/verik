@@ -17,11 +17,8 @@
 package io.verik.compiler.check.normalize
 
 import io.verik.compiler.ast.element.common.EAbstractContainerClass
-import io.verik.compiler.ast.element.common.EAbstractEnumEntry
-import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
-import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
@@ -60,14 +57,6 @@ object DeclarationTypeChecker : ProjectStage() {
             abstractContainerComponent.members.forEach {
                 if (it !is Declaration)
                     Messages.INTERNAL_ERROR.on(it, "Declaration expected but got: $it")
-            }
-        }
-
-        override fun visitEnum(enum: EEnum) {
-            super.visitEnum(enum)
-            enum.entryReferences.forEach {
-                if (it !is EAbstractEnumEntry)
-                    Messages.INTERNAL_ERROR.on(if (it is EElement) it else enum, "Enum entry expected but got: $it")
             }
         }
     }

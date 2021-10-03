@@ -50,6 +50,7 @@ import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.ECaseStatement
+import io.verik.compiler.ast.element.sv.EClockingBlock
 import io.verik.compiler.ast.element.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.sv.EConstantPartSelectExpression
@@ -64,6 +65,7 @@ import io.verik.compiler.ast.element.sv.EInjectedExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EModuleInterface
+import io.verik.compiler.ast.element.sv.EModulePort
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.ERepeatStatement
 import io.verik.compiler.ast.element.sv.EStringExpression
@@ -182,10 +184,26 @@ class ElementPrinter : Visitor() {
         }
     }
 
+    override fun visitModulePort(modulePort: EModulePort) {
+        build("ModulePort") {
+            build(modulePort.name)
+            build(modulePort.typeParameters)
+            build(modulePort.ports)
+        }
+    }
+
+    override fun visitClockingBlock(clockingBlock: EClockingBlock) {
+        build("ClockingBlock") {
+            build(clockingBlock.name)
+            build(clockingBlock.typeParameters)
+            build(clockingBlock.ports)
+        }
+    }
+
     override fun visitEnum(enum: EEnum) {
         build("Enum") {
             build(enum.name)
-            build(enum.entryReferences.map { it.name })
+            build(enum.enumEntries.map { it.name })
         }
     }
 

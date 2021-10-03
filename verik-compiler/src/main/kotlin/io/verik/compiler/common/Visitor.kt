@@ -72,6 +72,7 @@ import io.verik.compiler.ast.element.sv.EAbstractProceduralBlock
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.ECaseStatement
+import io.verik.compiler.ast.element.sv.EClockingBlock
 import io.verik.compiler.ast.element.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.sv.EConstantPartSelectExpression
@@ -86,6 +87,7 @@ import io.verik.compiler.ast.element.sv.EInjectedExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EModuleInterface
+import io.verik.compiler.ast.element.sv.EModulePort
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.ERepeatStatement
 import io.verik.compiler.ast.element.sv.EStringExpression
@@ -192,6 +194,14 @@ abstract class Visitor {
 
     open fun visitModuleInterface(moduleInterface: EModuleInterface) {
         visitAbstractContainerComponent(moduleInterface)
+    }
+
+    open fun visitModulePort(modulePort: EModulePort) {
+        visitAbstractComponent(modulePort)
+    }
+
+    open fun visitClockingBlock(clockingBlock: EClockingBlock) {
+        visitAbstractComponent(clockingBlock)
     }
 
     open fun visitEnum(enum: EEnum) {

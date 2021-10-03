@@ -80,4 +80,32 @@ internal class ComponentInterpreterTest : BaseTest() {
             projectContext.findDeclaration("I")
         )
     }
+
+    @Test
+    fun `interpret module port`() {
+        val projectContext = driveTest(
+            ClassInterpreterStage::class,
+            """
+                class MP: Modport()
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "ModulePort(MP, [], [])",
+            projectContext.findDeclaration("MP")
+        )
+    }
+
+    @Test
+    fun `interpret clocking block`() {
+        val projectContext = driveTest(
+            ClassInterpreterStage::class,
+            """
+                class CB(override val event: Event): ClockingBlock()
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "ClockingBlock(CB, [], [])",
+            projectContext.findDeclaration("CB")
+        )
+    }
 }

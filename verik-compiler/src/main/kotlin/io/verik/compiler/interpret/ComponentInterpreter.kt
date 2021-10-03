@@ -18,8 +18,10 @@ package io.verik.compiler.interpret
 
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtValueParameter
+import io.verik.compiler.ast.element.sv.EClockingBlock
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EModuleInterface
+import io.verik.compiler.ast.element.sv.EModulePort
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.property.PortType
 import io.verik.compiler.core.common.Annotations
@@ -61,13 +63,43 @@ object ComponentInterpreter {
                 basicClass.primaryConstructor?.let { referenceUpdater.update(it, moduleInterface) }
                 true
             }
+            basicClassType.isSubtype(Core.Vk.C_Modport.toType()) -> {
+                val ports = interpretPorts(basicClass)
+                val modulePort = EModulePort(
+                    basicClass.location,
+                    basicClass.name,
+                    basicClass.supertype,
+                    basicClass.typeParameters,
+                    ports
+                )
+                referenceUpdater.replace(basicClass, modulePort)
+                basicClass.primaryConstructor?.let { referenceUpdater.update(it, modulePort) }
+                true
+            }
+            basicClassType.isSubtype(Core.Vk.C_ClockingBlock.toType()) -> {
+                val ports = interpretPorts(basicClass)
+                val clockingBlock = EClockingBlock(
+                    basicClass.location,
+                    basicClass.name,
+                    basicClass.supertype,
+                    basicClass.typeParameters,
+                    ports
+                )
+                referenceUpdater.replace(basicClass, clockingBlock)
+                basicClass.primaryConstructor?.let { referenceUpdater.update(it, clockingBlock) }
+                true
+            }
             else -> false
         }
     }
 
     private fun interpretPorts(basicClass: EKtBasicClass): List<EPort> {
-        return basicClass.primaryConstructor
-            ?.valueParameters
+        val valueParameters = if (basicClass.toType().isSubtype(Core.Vk.C_ClockingBlock.toType())) {
+            basicClass.primaryConstructor?.valueParameters?.filter { it.name != "event" }
+        } else {
+            basicClass.primaryConstructor?.valueParameters
+        }
+        return valueParameters
             ?.mapNotNull { interpretPort(it) }
             ?: listOf()
     }
