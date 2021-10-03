@@ -28,7 +28,7 @@ import org.junit.jupiter.api.assertThrows
 internal class PropertyInterpreterStageTest : BaseTest() {
 
     @Test
-    fun `interpret component instantiation module`() {
+    fun `interpret module instantiation`() {
         val projectContext = driveTest(
             PropertyInterpreterStage::class,
             """
@@ -46,7 +46,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
     }
 
     @Test
-    fun `interpret component instantiation module not connected`() {
+    fun `interpret module instantiation not connected`() {
         val projectContext = driveTest(
             PropertyInterpreterStage::class,
             """
@@ -64,7 +64,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
     }
 
     @Test
-    fun `interpret component instantiation module not connected illegal`() {
+    fun `interpret module instantiation not connected illegal`() {
         assertThrows<TestErrorException> {
             driveTest(
                 PropertyInterpreterStage::class,
@@ -80,7 +80,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
     }
 
     @Test
-    fun `interpret component instantiation interface`() {
+    fun `interpret interface instantiation`() {
         val projectContext = driveTest(
             PropertyInterpreterStage::class,
             """
@@ -98,7 +98,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
     }
 
     @Test
-    fun `interpret component instantiation clocking block`() {
+    fun `interpret clocking block instantiation`() {
         val projectContext = driveTest(
             PropertyInterpreterStage::class,
             """
@@ -110,9 +110,25 @@ internal class PropertyInterpreterStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "BasicComponentInstantiation(cb, CB, [])",
+            "ClockingBlockInstantiation(cb, CB, [], EventControlExpression(*))",
             projectContext.findDeclaration("cb")
         )
+    }
+
+    @Test
+    fun `interpret clocking block instantiation illegal`() {
+        assertThrows<TestErrorException> {
+            driveTest(
+                PropertyInterpreterStage::class,
+                """
+                    class CB(override val event: Event, @In var x: Boolean) : ClockingBlock()
+                    class Top : Module() {
+                        @Make
+                        val cb = CB(posedge(false), false)
+                    }
+                """.trimIndent()
+            )
+        }.apply { assertEquals("Port instantiation must match port name: x", message) }
     }
 
     @Test

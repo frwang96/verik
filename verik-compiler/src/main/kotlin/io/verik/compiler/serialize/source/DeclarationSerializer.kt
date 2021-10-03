@@ -19,6 +19,7 @@ package io.verik.compiler.serialize.source
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.EBasicComponentInstantiation
+import io.verik.compiler.ast.element.sv.EClockingBlockInstantiation
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EInitialBlock
 import io.verik.compiler.ast.element.sv.EModule
@@ -175,6 +176,22 @@ object DeclarationSerializer {
         serializerContext.appendLine(");")
     }
 
+    fun serializeClockingBlockInstantiation(
+        clockingBlockInstantiation: EClockingBlockInstantiation,
+        serializerContext: SerializerContext
+    ) {
+        serializerContext.append("clocking ${clockingBlockInstantiation.name} ")
+        serializerContext.serializeAsExpression(clockingBlockInstantiation.eventControlExpression)
+        serializerContext.appendLine(";")
+        serializerContext.indent {
+            clockingBlockInstantiation.portInstantiations.forEach {
+                serializePortType(it.portType, serializerContext)
+                serializerContext.appendLine("${it.reference.name};")
+            }
+        }
+        serializerContext.appendLine("endclocking")
+    }
+
     fun serializeValueParameter(valueParameter: ESvValueParameter, serializerContext: SerializerContext) {
         val serializedType = TypeSerializer.serialize(valueParameter.type, valueParameter)
         serializerContext.append("${serializedType.getBaseAndPackedDimension()} ${valueParameter.name}")
@@ -183,11 +200,7 @@ object DeclarationSerializer {
     }
 
     fun serializePort(port: EPort, serializerContext: SerializerContext) {
-        when (port.portType) {
-            PortType.INPUT -> serializerContext.append("input ")
-            PortType.OUTPUT -> serializerContext.append("output ")
-            PortType.MODULE_INTERFACE -> {}
-        }
+        serializePortType(port.portType, serializerContext)
         val serializedType = TypeSerializer.serialize(port.type, port)
         serializerContext.append("${serializedType.getBaseAndPackedDimension()} ")
         serializerContext.align()
@@ -207,6 +220,14 @@ object DeclarationSerializer {
             serializerContext.appendLine(");")
         } else {
             serializerContext.appendLine(";")
+        }
+    }
+
+    private fun serializePortType(portType: PortType, serializerContext: SerializerContext) {
+        when (portType) {
+            PortType.INPUT -> serializerContext.append("input ")
+            PortType.OUTPUT -> serializerContext.append("output ")
+            PortType.MODULE_INTERFACE -> {}
         }
     }
 }

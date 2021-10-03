@@ -21,9 +21,13 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtPropertyStatement
-import io.verik.compiler.ast.element.sv.EAbstractComponent
+import io.verik.compiler.ast.element.kt.EKtReferenceExpression
+import io.verik.compiler.ast.element.sv.EAbstractComponentInstantiation
+import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
 import io.verik.compiler.ast.element.sv.EBasicComponentInstantiation
 import io.verik.compiler.ast.element.sv.EClockingBlock
+import io.verik.compiler.ast.element.sv.EClockingBlockInstantiation
+import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvPropertyStatement
@@ -49,7 +53,7 @@ object PropertyInterpreterStage : ProjectStage() {
     class PropertyInterpreterVisitor(private val referenceUpdater: ReferenceUpdater) : TreeVisitor() {
 
         private fun interpret(property: EKtProperty): EElement {
-            return interpretComponentInstantiation(property)
+            return interpretAbstractComponentInstantiation(property)
                 ?: ESvProperty(
                     property.location,
                     property.name,
@@ -59,30 +63,32 @@ object PropertyInterpreterStage : ProjectStage() {
                 )
         }
 
-        private fun interpretComponentInstantiation(property: EKtProperty): EBasicComponentInstantiation? {
+        private fun interpretAbstractComponentInstantiation(property: EKtProperty): EAbstractComponentInstantiation? {
             val callExpression = property.initializer
             if (callExpression !is EKtCallExpression)
                 return null
-            val component = callExpression.reference
-            if (component !is EAbstractComponent)
-                return null
-
-            val valueArguments = if (component is EClockingBlock) {
-                callExpression
-                    .valueArguments
-                    .filterIndexed { index, _ -> index != component.eventValueParameterIndex }
-            } else {
-                callExpression.valueArguments
+            return when (val component = callExpression.reference) {
+                is EAbstractContainerComponent ->
+                    interpretBasicComponentInstantiation(property, callExpression, component)
+                is EClockingBlock ->
+                    interpretClockingBlockInstantiation(property, callExpression, component)
+                else -> null
             }
+        }
 
-            if (component.ports.size != valueArguments.size) {
+        private fun interpretBasicComponentInstantiation(
+            property: EKtProperty,
+            callExpression: EKtCallExpression,
+            component: EAbstractContainerComponent
+        ): EBasicComponentInstantiation? {
+            if (component.ports.size != callExpression.valueArguments.size) {
                 Messages.INTERNAL_ERROR.on(callExpression, "Incorrect number of value arguments")
                 return null
             }
 
             val portInstantiations = component.ports
-                .zip(valueArguments)
-                .map { interpretPortInstantiation(it.first, it.second) }
+                .zip(callExpression.valueArguments)
+                .map { interpretPortInstantiation(it.first, it.second, false) }
             return EBasicComponentInstantiation(
                 property.location,
                 property.name,
@@ -91,10 +97,47 @@ object PropertyInterpreterStage : ProjectStage() {
             )
         }
 
+        private fun interpretClockingBlockInstantiation(
+            property: EKtProperty,
+            callExpression: EKtCallExpression,
+            clockingBlock: EClockingBlock
+        ): EClockingBlockInstantiation? {
+            val valueArguments = callExpression
+                .valueArguments
+                .filterIndexed { index, _ -> index != clockingBlock.eventValueParameterIndex }
+            if (clockingBlock.ports.size != valueArguments.size) {
+                Messages.INTERNAL_ERROR.on(callExpression, "Incorrect number of value arguments")
+                return null
+            }
+
+            val eventExpression = callExpression.valueArguments[clockingBlock.eventValueParameterIndex]
+            val eventControlExpression = EEventControlExpression(eventExpression.location, eventExpression)
+
+            val portInstantiations = clockingBlock.ports
+                .zip(valueArguments)
+                .map { interpretPortInstantiation(it.first, it.second, true) }
+            return EClockingBlockInstantiation(
+                property.location,
+                property.name,
+                property.type,
+                portInstantiations,
+                eventControlExpression
+            )
+        }
+
         private fun interpretPortInstantiation(
             port: EPort,
-            expression: EExpression
+            expression: EExpression,
+            matchPortName: Boolean
         ): PortInstantiation {
+            if (matchPortName) {
+                if (expression !is EKtReferenceExpression ||
+                    expression.receiver != null ||
+                    expression.reference.name != port.name
+                ) {
+                    Messages.PORT_INSTANTIATION_NAME_MISMATCH.on(expression, port.name)
+                }
+            }
             return if (expression is EKtCallExpression && expression.reference == Core.Vk.F_nc) {
                 if (port.portType == PortType.INPUT)
                     Messages.INPUT_PORT_NOT_CONNECTED.on(expression, port.name)

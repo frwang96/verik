@@ -39,7 +39,7 @@ class Fizzbuzz : Module() {
     val ci = CI(i)
 
     @Make
-    val cb = CB(posedge(false), false)
+    val cb = CB(posedge(false), z)
 
     @Run
     fun main() {
@@ -59,6 +59,7 @@ class Fizzbuzz : Module() {
         random(1)
         random(1, 2)
         z[0] = u("3'b000")
+        println(cb.z)
     }
 
     fun f(x: Int) {
@@ -80,7 +81,7 @@ class CI(val i: I) : Module()
 
 class CB(
     override val event: Event,
-    @Out val x: Boolean
+    @In val z: Ubit<`3`>
 ) : ClockingBlock()
 
 fun h(x: Ubit<`3`>): Ubit<`3`> {

@@ -150,6 +150,11 @@ object Messages {
         "Could not determine directionality of port: $0"
     )
 
+    val PORT_INSTANTIATION_NAME_MISMATCH = MessageTemplate1<String>(
+        Severity.ERROR,
+        "Port instantiation must match port name: $0"
+    )
+
     val INPUT_PORT_NOT_CONNECTED = MessageTemplate1<String>(
         Severity.ERROR,
         "Input port not connected: $0"

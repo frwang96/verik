@@ -75,6 +75,7 @@ import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.EBasicComponentInstantiation
 import io.verik.compiler.ast.element.sv.ECaseStatement
 import io.verik.compiler.ast.element.sv.EClockingBlock
+import io.verik.compiler.ast.element.sv.EClockingBlockInstantiation
 import io.verik.compiler.ast.element.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.sv.EConstantPartSelectExpression
 import io.verik.compiler.ast.element.sv.EDelayExpression
@@ -287,6 +288,10 @@ abstract class Visitor {
 
     open fun visitBasicComponentInstantiation(basicComponentInstantiation: EBasicComponentInstantiation) {
         visitAbstractComponentInstantiation(basicComponentInstantiation)
+    }
+
+    open fun visitClockingBlockInstantiation(clockingBlockInstantiation: EClockingBlockInstantiation) {
+        visitAbstractComponentInstantiation(clockingBlockInstantiation)
     }
 
     open fun visitAbstractValueParameter(abstractValueParameter: EAbstractValueParameter) {

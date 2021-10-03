@@ -52,6 +52,7 @@ import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.EBasicComponentInstantiation
 import io.verik.compiler.ast.element.sv.ECaseStatement
 import io.verik.compiler.ast.element.sv.EClockingBlock
+import io.verik.compiler.ast.element.sv.EClockingBlockInstantiation
 import io.verik.compiler.ast.element.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.sv.EConstantPartSelectExpression
 import io.verik.compiler.ast.element.sv.EDelayExpression
@@ -85,6 +86,7 @@ import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.LiteralStringEntry
+import io.verik.compiler.ast.property.PortInstantiation
 
 class ElementPrinter : Visitor() {
 
@@ -301,13 +303,16 @@ class ElementPrinter : Visitor() {
         build("BasicComponentInstantiation") {
             build(basicComponentInstantiation.name)
             build(basicComponentInstantiation.type.toString())
-            build(basicComponentInstantiation.portInstantiations) {
-                build("PortInstantiation") {
-                    build(it.reference.name)
-                    build(it.expression)
-                    build(it.portType.toString())
-                }
-            }
+            buildPortInstantiations(basicComponentInstantiation.portInstantiations)
+        }
+    }
+
+    override fun visitClockingBlockInstantiation(clockingBlockInstantiation: EClockingBlockInstantiation) {
+        build("ClockingBlockInstantiation") {
+            build(clockingBlockInstantiation.name)
+            build(clockingBlockInstantiation.type.toString())
+            buildPortInstantiations(clockingBlockInstantiation.portInstantiations)
+            build(clockingBlockInstantiation.eventControlExpression)
         }
     }
 
@@ -700,6 +705,16 @@ class ElementPrinter : Visitor() {
         elements.forEach { block(it) }
         builder.append("]")
         first = false
+    }
+
+    private fun buildPortInstantiations(portInstantiations: List<PortInstantiation>) {
+        build(portInstantiations) {
+            build("PortInstantiation") {
+                build(it.reference.name)
+                build(it.expression)
+                build(it.portType.toString())
+            }
+        }
     }
 
     companion object {

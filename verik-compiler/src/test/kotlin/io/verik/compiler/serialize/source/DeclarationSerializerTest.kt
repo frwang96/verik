@@ -292,6 +292,36 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `serialize clocking block instantiation`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                class CB(override val event: Event, @In val x: Boolean) : ClockingBlock()
+                class Top : Module() {
+                    private var x = false
+                    @Make
+                    val cb = CB(posedge(x), x)
+                }
+            """.trimIndent()
+        )
+        val expected = """
+            module Top;
+            
+                logic x = 1'b0;
+            
+                clocking cb @(posedge x);
+                    input x;
+                endclocking
+            
+            endmodule : Top
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
     fun `serialize value parameter`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
