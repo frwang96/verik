@@ -67,13 +67,14 @@ import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.element.sv.EAbstractComponent
+import io.verik.compiler.ast.element.sv.EAbstractComponentInstantiation
 import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
 import io.verik.compiler.ast.element.sv.EAbstractProceduralBlock
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
+import io.verik.compiler.ast.element.sv.EBasicComponentInstantiation
 import io.verik.compiler.ast.element.sv.ECaseStatement
 import io.verik.compiler.ast.element.sv.EClockingBlock
-import io.verik.compiler.ast.element.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.sv.EConstantPartSelectExpression
 import io.verik.compiler.ast.element.sv.EDelayExpression
@@ -280,8 +281,12 @@ abstract class Visitor {
         visitAbstractEnumEntry(enumEntry)
     }
 
-    open fun visitComponentInstantiation(componentInstantiation: EComponentInstantiation) {
-        visitAbstractProperty(componentInstantiation)
+    open fun visitAbstractComponentInstantiation(abstractComponentInstantiation: EAbstractComponentInstantiation) {
+        visitAbstractProperty(abstractComponentInstantiation)
+    }
+
+    open fun visitBasicComponentInstantiation(basicComponentInstantiation: EBasicComponentInstantiation) {
+        visitAbstractComponentInstantiation(basicComponentInstantiation)
     }
 
     open fun visitAbstractValueParameter(abstractValueParameter: EAbstractValueParameter) {

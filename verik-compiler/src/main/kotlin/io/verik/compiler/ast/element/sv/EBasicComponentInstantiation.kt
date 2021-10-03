@@ -16,43 +16,23 @@
 
 package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.element.common.EAbstractProperty
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.PortInstantiation
 import io.verik.compiler.ast.property.Type
-import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 
-class EComponentInstantiation(
+class EBasicComponentInstantiation(
     override val location: SourceLocation,
     override var name: String,
     override var type: Type,
-    val portInstantiations: List<PortInstantiation>
-) : EAbstractProperty(), ExpressionContainer {
+    override val portInstantiations: List<PortInstantiation>
+) : EAbstractComponentInstantiation() {
 
     init {
         portInstantiations.forEach { it.expression?.parent = this }
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitComponentInstantiation(this)
-    }
-
-    override fun acceptChildren(visitor: TreeVisitor) {
-        portInstantiations.forEach { it.expression?.accept(visitor) }
-    }
-
-    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression) {
-        newExpression.parent = this
-        portInstantiations.forEach {
-            if (it.expression == oldExpression) {
-                it.expression = newExpression
-                return
-            }
-        }
-        Messages.INTERNAL_ERROR.on(this, "Could not find $oldExpression in $this")
+        visitor.visitBasicComponentInstantiation(this)
     }
 }

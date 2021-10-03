@@ -25,9 +25,9 @@ import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.EWhileExpression
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
+import io.verik.compiler.ast.element.sv.EBasicComponentInstantiation
 import io.verik.compiler.ast.element.sv.ECaseStatement
 import io.verik.compiler.ast.element.sv.EClockingBlock
-import io.verik.compiler.ast.element.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.sv.EConstantPartSelectExpression
 import io.verik.compiler.ast.element.sv.EDelayExpression
@@ -150,8 +150,8 @@ class SourceSerializerVisitor(private val serializerContext: SerializerContext) 
         DeclarationSerializer.serializeSvEnumEntry(enumEntry, serializerContext)
     }
 
-    override fun visitComponentInstantiation(componentInstantiation: EComponentInstantiation) {
-        DeclarationSerializer.serializeComponentInstantiation(componentInstantiation, serializerContext)
+    override fun visitBasicComponentInstantiation(basicComponentInstantiation: EBasicComponentInstantiation) {
+        DeclarationSerializer.serializeBasicComponentInstantiation(basicComponentInstantiation, serializerContext)
     }
 
     override fun visitSvValueParameter(valueParameter: ESvValueParameter) {

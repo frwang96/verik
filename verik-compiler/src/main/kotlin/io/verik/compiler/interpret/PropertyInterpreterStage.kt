@@ -22,8 +22,8 @@ import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtPropertyStatement
 import io.verik.compiler.ast.element.sv.EAbstractComponent
+import io.verik.compiler.ast.element.sv.EBasicComponentInstantiation
 import io.verik.compiler.ast.element.sv.EClockingBlock
-import io.verik.compiler.ast.element.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvPropertyStatement
@@ -59,7 +59,7 @@ object PropertyInterpreterStage : ProjectStage() {
                 )
         }
 
-        private fun interpretComponentInstantiation(property: EKtProperty): EComponentInstantiation? {
+        private fun interpretComponentInstantiation(property: EKtProperty): EBasicComponentInstantiation? {
             val callExpression = property.initializer
             if (callExpression !is EKtCallExpression)
                 return null
@@ -83,7 +83,7 @@ object PropertyInterpreterStage : ProjectStage() {
             val portInstantiations = component.ports
                 .zip(valueArguments)
                 .map { interpretPortInstantiation(it.first, it.second) }
-            return EComponentInstantiation(
+            return EBasicComponentInstantiation(
                 property.location,
                 property.name,
                 property.type,
@@ -98,9 +98,9 @@ object PropertyInterpreterStage : ProjectStage() {
             return if (expression is EKtCallExpression && expression.reference == Core.Vk.F_nc) {
                 if (port.portType == PortType.INPUT)
                     Messages.INPUT_PORT_NOT_CONNECTED.on(expression, port.name)
-                PortInstantiation(port, null)
+                PortInstantiation(port, null, port.portType)
             } else {
-                PortInstantiation(port, expression)
+                PortInstantiation(port, expression, port.portType)
             }
         }
 

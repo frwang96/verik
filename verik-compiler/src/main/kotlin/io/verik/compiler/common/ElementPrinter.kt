@@ -49,9 +49,9 @@ import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
+import io.verik.compiler.ast.element.sv.EBasicComponentInstantiation
 import io.verik.compiler.ast.element.sv.ECaseStatement
 import io.verik.compiler.ast.element.sv.EClockingBlock
-import io.verik.compiler.ast.element.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.sv.EConstantPartSelectExpression
 import io.verik.compiler.ast.element.sv.EDelayExpression
@@ -297,14 +297,15 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitComponentInstantiation(componentInstantiation: EComponentInstantiation) {
-        build("ComponentInstantiation") {
-            build(componentInstantiation.name)
-            build(componentInstantiation.type.toString())
-            build(componentInstantiation.portInstantiations) {
+    override fun visitBasicComponentInstantiation(basicComponentInstantiation: EBasicComponentInstantiation) {
+        build("BasicComponentInstantiation") {
+            build(basicComponentInstantiation.name)
+            build(basicComponentInstantiation.type.toString())
+            build(basicComponentInstantiation.portInstantiations) {
                 build("PortInstantiation") {
                     build(it.reference.name)
                     build(it.expression)
+                    build(it.portType.toString())
                 }
             }
         }

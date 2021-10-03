@@ -18,7 +18,7 @@ package io.verik.compiler.serialize.source
 
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
-import io.verik.compiler.ast.element.sv.EComponentInstantiation
+import io.verik.compiler.ast.element.sv.EBasicComponentInstantiation
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EInitialBlock
 import io.verik.compiler.ast.element.sv.EModule
@@ -147,18 +147,18 @@ object DeclarationSerializer {
         serializerContext.append(enumEntry.name)
     }
 
-    fun serializeComponentInstantiation(
-        componentInstantiation: EComponentInstantiation,
+    fun serializeBasicComponentInstantiation(
+        basicComponentInstantiation: EBasicComponentInstantiation,
         serializerContext: SerializerContext
     ) {
-        val serializedType = TypeSerializer.serialize(componentInstantiation.type, componentInstantiation)
-        serializedType.checkNoPackedDimension(componentInstantiation)
-        serializedType.checkNoUnpackedDimension(componentInstantiation)
-        serializerContext.append("${serializedType.base} ${componentInstantiation.name} (")
-        if (componentInstantiation.portInstantiations.isNotEmpty()) {
+        val serializedType = TypeSerializer.serialize(basicComponentInstantiation.type, basicComponentInstantiation)
+        serializedType.checkNoPackedDimension(basicComponentInstantiation)
+        serializedType.checkNoUnpackedDimension(basicComponentInstantiation)
+        serializerContext.append("${serializedType.base} ${basicComponentInstantiation.name} (")
+        if (basicComponentInstantiation.portInstantiations.isNotEmpty()) {
             serializerContext.appendLine()
             serializerContext.indent {
-                serializerContext.joinLine(componentInstantiation.portInstantiations) {
+                serializerContext.joinLine(basicComponentInstantiation.portInstantiations) {
                     serializerContext.append(".${it.reference.name} ")
                     serializerContext.align()
                     serializerContext.append("( ")

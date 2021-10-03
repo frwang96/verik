@@ -40,7 +40,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "ComponentInstantiation(m, M, [PortInstantiation(x, *)])",
+            "BasicComponentInstantiation(m, M, [PortInstantiation(x, *, INPUT)])",
             projectContext.findDeclaration("m")
         )
     }
@@ -58,7 +58,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "ComponentInstantiation(m, M, [PortInstantiation(x, null)])",
+            "BasicComponentInstantiation(m, M, [PortInstantiation(x, null, OUTPUT)])",
             projectContext.findDeclaration("m")
         )
     }
@@ -92,7 +92,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "ComponentInstantiation(i, I, [])",
+            "BasicComponentInstantiation(i, I, [])",
             projectContext.findDeclaration("i")
         )
     }
@@ -110,7 +110,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "ComponentInstantiation(cb, CB, [])",
+            "BasicComponentInstantiation(cb, CB, [])",
             projectContext.findDeclaration("cb")
         )
     }

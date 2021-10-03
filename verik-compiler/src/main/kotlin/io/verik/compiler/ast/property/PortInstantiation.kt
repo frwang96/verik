@@ -22,5 +22,6 @@ import io.verik.compiler.ast.interfaces.Reference
 
 class PortInstantiation(
     override var reference: Declaration,
-    var expression: EExpression?
+    var expression: EExpression?,
+    val portType: PortType
 ) : Reference
