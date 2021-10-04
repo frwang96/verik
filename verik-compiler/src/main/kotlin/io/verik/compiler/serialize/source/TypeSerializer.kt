@@ -20,7 +20,8 @@ import io.verik.compiler.ast.element.common.EAbstractClass
 import io.verik.compiler.ast.element.common.EBasicPackage
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
-import io.verik.compiler.ast.element.sv.EAbstractComponent
+import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
+import io.verik.compiler.ast.element.sv.EModulePort
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.core.common.Core
@@ -31,7 +32,16 @@ object TypeSerializer {
 
     fun serialize(type: Type, element: EElement): SerializedType {
         return when (val reference = type.reference) {
-            is EAbstractComponent -> SerializedType(reference.name)
+            is EAbstractContainerComponent -> SerializedType(reference.name)
+            is EModulePort -> {
+                val parentModuleInterface = reference.parentModuleInterface
+                if (parentModuleInterface != null) {
+                    SerializedType(parentModuleInterface.name)
+                } else {
+                    Messages.INTERNAL_ERROR.on(element, "Module port has no parent module interface")
+                    SerializedType("void")
+                }
+            }
             is EAbstractClass -> SerializedType(serializePackageDeclaration(reference))
             Core.Kt.C_Unit -> SerializedType("void")
             Core.Kt.C_Int -> SerializedType("int")

@@ -35,6 +35,7 @@ import io.verik.compiler.interpret.AnnotationConflictCheckerStage
 import io.verik.compiler.interpret.ClassInterpreterStage
 import io.verik.compiler.interpret.FileSplitterStage
 import io.verik.compiler.interpret.FunctionInterpreterStage
+import io.verik.compiler.interpret.ModulePortParentResolverStage
 import io.verik.compiler.interpret.PropertyInterpreterStage
 import io.verik.compiler.serialize.general.ConfigFileSerializerStage
 import io.verik.compiler.serialize.general.OrderFileSerializerStage
@@ -60,6 +61,7 @@ import io.verik.compiler.transform.post.BinaryExpressionTransformerStage
 import io.verik.compiler.transform.post.BlockExpressionTransformerStage
 import io.verik.compiler.transform.post.PackageNameTransformerStage
 import io.verik.compiler.transform.post.ParenthesisInsertionTransformerStage
+import io.verik.compiler.transform.post.PropertyStatementReorderStage
 import io.verik.compiler.transform.post.ReferenceAndCallExpressionTransformerStage
 import io.verik.compiler.transform.post.ScopeReferenceInsertionTransformerStage
 import io.verik.compiler.transform.post.TemporaryPropertyRelabelerStage
@@ -121,6 +123,7 @@ object StageSequencer {
         stageSequence.add(ClassInterpreterStage)
         stageSequence.add(FunctionInterpreterStage)
         stageSequence.add(PropertyInterpreterStage)
+        stageSequence.add(ModulePortParentResolverStage)
         stageSequence.add(FileSplitterStage)
 
         // MidTransform
@@ -136,6 +139,7 @@ object StageSequencer {
         stageSequence.add(ConstantExpressionEvaluatorStage)
 
         // PostTransform
+        stageSequence.add(PropertyStatementReorderStage)
         stageSequence.add(UnaryExpressionTransformerStage)
         stageSequence.add(BinaryExpressionTransformerStage)
         stageSequence.add(PackageNameTransformerStage)

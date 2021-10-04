@@ -22,7 +22,7 @@ val exampleNames = gradle
     ?.map { it.name }
     ?: listOf()
 
-val excludedExampleNames = listOf("cache")
+val excludedExampleNames = listOf<String>()
 
 tasks.register("test") {
     group = "verification"

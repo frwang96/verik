@@ -16,8 +16,12 @@
 
 package io.verik.compiler.transform.mid
 
+import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
+import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
+import io.verik.compiler.ast.element.sv.EClockingBlock
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
@@ -38,6 +42,21 @@ object AssignmentTransformerStage : ProjectStage() {
 
         private var inAlwaysSeqBlock = false
 
+        private fun getKind(binaryExpression: EKtBinaryExpression): SvBinaryOperatorKind {
+            return if (inAlwaysSeqBlock) {
+                SvBinaryOperatorKind.ARROW_ASSIGN
+            } else {
+                var referenceExpression: EExpression? = binaryExpression.left
+                while (referenceExpression is EKtReferenceExpression) {
+                    val reference = referenceExpression.reference
+                    if (reference is ETypedElement && reference.type.reference is EClockingBlock)
+                        return SvBinaryOperatorKind.ARROW_ASSIGN
+                    referenceExpression = referenceExpression.receiver
+                }
+                SvBinaryOperatorKind.ASSIGN
+            }
+        }
+
         override fun visitAlwaysSeqBlock(alwaysSeqBlock: EAlwaysSeqBlock) {
             inAlwaysSeqBlock = true
             super.visitAlwaysSeqBlock(alwaysSeqBlock)
@@ -47,8 +66,7 @@ object AssignmentTransformerStage : ProjectStage() {
         override fun visitKtBinaryExpression(binaryExpression: EKtBinaryExpression) {
             super.visitKtBinaryExpression(binaryExpression)
             if (binaryExpression.kind == KtBinaryOperatorKind.EQ) {
-                val kind = if (inAlwaysSeqBlock) SvBinaryOperatorKind.ARROW_ASSIGN
-                else SvBinaryOperatorKind.ASSIGN
+                val kind = getKind(binaryExpression)
                 binaryExpression.replace(
                     ESvBinaryExpression(
                         binaryExpression.location,

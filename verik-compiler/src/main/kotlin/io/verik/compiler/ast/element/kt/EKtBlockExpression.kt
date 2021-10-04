@@ -26,7 +26,7 @@ import io.verik.compiler.message.SourceLocation
 class EKtBlockExpression(
     override val location: SourceLocation,
     override var type: Type,
-    override val statements: ArrayList<EExpression>
+    override var statements: ArrayList<EExpression>
 ) : EAbstractBlockExpression() {
 
     override val serializationType = SvSerializationType.INTERNAL

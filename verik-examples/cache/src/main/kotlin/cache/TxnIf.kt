@@ -18,7 +18,9 @@ package cache
 
 import io.verik.core.*
 
-class TxnIf : Interface() {
+class TxnIf(
+    @In var clk: Boolean
+) : ModuleInterface() {
 
     var rst: Boolean = nc()
     var reqOp: Op = nc()
@@ -47,6 +49,20 @@ class TxnIf : Interface() {
         rspData = rspData
     )
 
+    @Make
+    val cb = TxnCb(
+        event = posedge(clk),
+        rst = rst,
+        reqOp = reqOp,
+        reqAddr = reqAddr,
+        reqData = reqData,
+        rspVld = rspVld,
+        rspData = rspData
+    )
+
+    @Make
+    val tb = TxnTb(cb)
+
     class TxnTx(
         @Out var rst: Boolean,
         @Out var reqOp: Op,
@@ -54,7 +70,7 @@ class TxnIf : Interface() {
         @Out var reqData: UbitData,
         @In var rspVld: Boolean,
         @In var rspData: UbitData
-    ) : Modport()
+    ) : ModulePort()
 
     class TxnRx(
         @In var rst: Boolean,
@@ -63,5 +79,19 @@ class TxnIf : Interface() {
         @In var reqData: UbitData,
         @Out var rspVld: Boolean,
         @Out var rspData: UbitData
-    ) : Modport()
+    ) : ModulePort()
+
+    class TxnCb(
+        override val event: Event,
+        @Out var rst: Boolean,
+        @Out var reqOp: Op,
+        @Out var reqAddr: UbitAddr,
+        @Out var reqData: UbitData,
+        @In var rspVld: Boolean,
+        @In var rspData: UbitData
+    ) : ClockingBlock()
+
+    class TxnTb(
+        val cb: TxnCb
+    ) : ModulePort()
 }

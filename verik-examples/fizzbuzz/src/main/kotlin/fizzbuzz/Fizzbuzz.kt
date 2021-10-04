@@ -33,17 +33,16 @@ class Fizzbuzz : Module() {
     val c = C()
 
     @Make
-    val i = I()
+    val mi = MI()
 
     @Make
-    val ci = CI(i)
+    val ci = CI(mi)
 
     @Make
     val cb = CB(posedge(false), z)
 
     @Run
     fun main() {
-        val e = E.A
         val h = h(z)
         println(h)
         f(0)
@@ -55,6 +54,7 @@ class Fizzbuzz : Module() {
         y[0].value = 0
         z++
         println(E.A)
+        val e = E.A
         println("$e ${E.B}")
         random(1)
         random(1, 2)
@@ -62,6 +62,7 @@ class Fizzbuzz : Module() {
         println(cb.z)
     }
 
+    @Task
     fun f(x: Int) {
         println(x)
     }
@@ -75,9 +76,9 @@ class Fizzbuzz : Module() {
     }
 }
 
-class I : Interface()
+class MI : ModuleInterface()
 
-class CI(val i: I) : Module()
+class CI(val mi: MI) : Module()
 
 class CB(
     override val event: Event,

@@ -65,17 +65,17 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize interface simple`() {
+    fun `serialize module interface simple`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
             """
-                class I: Interface()
+                class MI: ModuleInterface()
             """.trimIndent()
         )
         val expected = """
-            interface I;
+            interface MI;
             
-            endinterface : I
+            endinterface : MI
         """.trimIndent()
         assertOutputTextEquals(
             expected,
@@ -154,6 +154,25 @@ internal class DeclarationSerializerTest : BaseTest() {
         val expected = """
             function automatic void f();
             endfunction : f
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
+    fun `serialize task`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                @Task
+                fun t(x: Int) {}
+            """.trimIndent()
+        )
+        val expected = """
+            task automatic t(int x);
+            endtask : t
         """.trimIndent()
         assertOutputTextEquals(
             expected,
@@ -284,6 +303,36 @@ internal class DeclarationSerializerTest : BaseTest() {
                 );
             
             endmodule : Top
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
+    fun `serialize module port instantiation`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                class MP(@In val x: Boolean) : ModulePort()
+                class Top : ModuleInterface() {
+                    private var x = false
+                    @Make
+                    val mp = MP(x)
+                }
+            """.trimIndent()
+        )
+        val expected = """
+            interface Top;
+            
+                logic x = 1'b0;
+            
+                modport mp (
+                    input x
+                );
+            
+            endinterface : Top
         """.trimIndent()
         assertOutputTextEquals(
             expected,

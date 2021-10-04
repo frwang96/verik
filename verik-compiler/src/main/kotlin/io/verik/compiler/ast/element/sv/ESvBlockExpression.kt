@@ -25,7 +25,7 @@ import io.verik.compiler.message.SourceLocation
 
 class ESvBlockExpression(
     override val location: SourceLocation,
-    override val statements: ArrayList<EExpression>,
+    override var statements: ArrayList<EExpression>,
     val decorated: Boolean,
     val name: String?
 ) : EAbstractBlockExpression() {

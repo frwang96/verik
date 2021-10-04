@@ -19,14 +19,14 @@
 package io.verik.core
 
 /**
- * An interface that carries signals between [modules][Module]. Interfaces can contain [modports][Modport] to control
- * signal direction. They correspond to SystemVerilog interfaces.
+ * A module interface that carries signals between [modules][Module]. Module interfaces can contain
+ * [module ports][ModulePort] to control signal direction. They correspond to SystemVerilog interfaces.
  *
- *      class I(
+ *      class MI(
  *          @In var clk: Boolean
- *      ) : Interface() {
+ *      ) : ModuleInterface() {
  *
  *          var x: Boolean = x()
  *      }
  */
-abstract class Interface : Component()
+abstract class ModuleInterface : Component()

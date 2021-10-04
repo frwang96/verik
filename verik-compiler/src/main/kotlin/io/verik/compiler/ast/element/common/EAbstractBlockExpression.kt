@@ -22,7 +22,7 @@ import io.verik.compiler.common.replaceIfContains
 
 abstract class EAbstractBlockExpression : EExpression(), ExpressionContainer {
 
-    abstract val statements: ArrayList<EExpression>
+    abstract var statements: ArrayList<EExpression>
 
     override fun acceptChildren(visitor: TreeVisitor) {
         statements.forEach { it.accept(visitor) }

@@ -16,25 +16,33 @@
 
 package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.element.common.ETypeParameter
-import io.verik.compiler.ast.property.Type
+import io.verik.compiler.ast.element.common.EAbstractFunction
+import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
 
-class EModulePort(
+class ETask(
     override val location: SourceLocation,
     override var name: String,
-    override var supertype: Type,
-    override var typeParameters: ArrayList<ETypeParameter>,
-    override val ports: List<EPort>,
-    var parentModuleInterface: EModuleInterface?
-) : EAbstractComponent() {
+    override var body: EExpression?,
+    var valueParameters: ArrayList<ESvValueParameter>
+) : EAbstractFunction() {
 
     init {
-        ports.forEach { it.parent = this }
+        body?.parent = this
+        valueParameters.forEach { it.parent = this }
     }
 
+    override var type = Core.Kt.C_Unit.toType()
+
     override fun accept(visitor: Visitor) {
-        return visitor.visitModulePort(this)
+        return visitor.visitTask(this)
+    }
+
+    override fun acceptChildren(visitor: TreeVisitor) {
+        super.acceptChildren(visitor)
+        valueParameters.forEach { it.accept(visitor) }
     }
 }

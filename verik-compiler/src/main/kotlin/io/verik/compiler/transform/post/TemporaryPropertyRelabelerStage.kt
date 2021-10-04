@@ -16,7 +16,7 @@
 
 package io.verik.compiler.transform.post
 
-import io.verik.compiler.ast.element.sv.ESvFunction
+import io.verik.compiler.ast.element.common.EAbstractFunction
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
@@ -35,9 +35,9 @@ object TemporaryPropertyRelabelerStage : ProjectStage() {
 
         var index = 0
 
-        override fun visitSvFunction(function: ESvFunction) {
+        override fun visitAbstractFunction(abstractFunction: EAbstractFunction) {
             index = 0
-            super.visitSvFunction(function)
+            super.visitAbstractFunction(abstractFunction)
         }
 
         override fun visitSvProperty(property: ESvProperty) {

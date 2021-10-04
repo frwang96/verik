@@ -28,53 +28,6 @@ import org.junit.jupiter.api.assertThrows
 internal class FunctionInterpreterStageTest : BaseTest() {
 
     @Test
-    fun `interpret function`() {
-        val projectContext = driveTest(
-            FunctionInterpreterStage::class,
-            """
-                fun f() {}
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "SvFunction(f, Unit, *, false,[])",
-            projectContext.findDeclaration("f")
-        )
-    }
-
-    @Test
-    fun `interpret function in class`() {
-        val projectContext = driveTest(
-            FunctionInterpreterStage::class,
-            """
-                class C {
-                    fun f() {}
-                }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "SvFunction(f, Unit, *, false, [])",
-            projectContext.findDeclaration("f")
-        )
-    }
-
-    @Test
-    fun `interpret initial block`() {
-        val projectContext = driveTest(
-            FunctionInterpreterStage::class,
-            """
-                class M: Module() {
-                    @Run
-                    fun f() {}
-                }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "InitialBlock(f, KtBlockExpression(*))",
-            projectContext.findDeclaration("f")
-        )
-    }
-
-    @Test
     fun `interpret always seq block`() {
         val projectContext = driveTest(
             FunctionInterpreterStage::class,
@@ -107,5 +60,67 @@ internal class FunctionInterpreterStageTest : BaseTest() {
                 """.trimIndent()
             )
         }.apply { assertEquals("On expression expected", message) }
+    }
+
+    @Test
+    fun `interpret initial block`() {
+        val projectContext = driveTest(
+            FunctionInterpreterStage::class,
+            """
+                class M: Module() {
+                    @Run
+                    fun f() {}
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "InitialBlock(f, KtBlockExpression(*))",
+            projectContext.findDeclaration("f")
+        )
+    }
+
+    @Test
+    fun `interpret task`() {
+        val projectContext = driveTest(
+            FunctionInterpreterStage::class,
+            """
+                @Task
+                fun t() {}
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "Task(t, *, [])",
+            projectContext.findDeclaration("t")
+        )
+    }
+
+    @Test
+    fun `interpret function`() {
+        val projectContext = driveTest(
+            FunctionInterpreterStage::class,
+            """
+                fun f() {}
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "SvFunction(f, Unit, *, false, [])",
+            projectContext.findDeclaration("f")
+        )
+    }
+
+    @Test
+    fun `interpret function in class`() {
+        val projectContext = driveTest(
+            FunctionInterpreterStage::class,
+            """
+                class C {
+                    fun f() {}
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "SvFunction(f, Unit, *, false, [])",
+            projectContext.findDeclaration("f")
+        )
     }
 }

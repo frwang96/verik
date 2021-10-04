@@ -80,20 +80,38 @@ internal class PropertyInterpreterStageTest : BaseTest() {
     }
 
     @Test
-    fun `interpret interface instantiation`() {
+    fun `interpret module interface instantiation`() {
         val projectContext = driveTest(
             PropertyInterpreterStage::class,
             """
-                class I : Interface()
+                class MI : ModuleInterface()
                 class Top : Module() {
                     @Make
-                    val i = I()
+                    val mi = MI()
                 }
             """.trimIndent()
         )
         assertElementEquals(
-            "BasicComponentInstantiation(i, I, [])",
-            projectContext.findDeclaration("i")
+            "BasicComponentInstantiation(mi, MI, [])",
+            projectContext.findDeclaration("mi")
+        )
+    }
+
+    @Test
+    fun `interpret module port instantiation`() {
+        val projectContext = driveTest(
+            PropertyInterpreterStage::class,
+            """
+                class MP : ModulePort()
+                class Top : Module() {
+                    @Make
+                    val mp = MP()
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "ModulePortInstantiation(mp, MP, [])",
+            projectContext.findDeclaration("mp")
         )
     }
 

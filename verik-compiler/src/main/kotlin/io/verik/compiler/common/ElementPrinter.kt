@@ -67,6 +67,7 @@ import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EModuleInterface
 import io.verik.compiler.ast.element.sv.EModulePort
+import io.verik.compiler.ast.element.sv.EModulePortInstantiation
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.ERepeatStatement
 import io.verik.compiler.ast.element.sv.EStringExpression
@@ -84,6 +85,7 @@ import io.verik.compiler.ast.element.sv.ESvPropertyStatement
 import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.sv.ESvValueParameter
+import io.verik.compiler.ast.element.sv.ETask
 import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.LiteralStringEntry
 import io.verik.compiler.ast.property.PortInstantiation
@@ -191,6 +193,7 @@ class ElementPrinter : Visitor() {
             build(modulePort.name)
             build(modulePort.typeParameters)
             build(modulePort.ports)
+            build(modulePort.parentModuleInterface?.name)
         }
     }
 
@@ -234,6 +237,14 @@ class ElementPrinter : Visitor() {
             build(function.body)
             build(function.isScopeStatic)
             build(function.valueParameters)
+        }
+    }
+
+    override fun visitTask(task: ETask) {
+        build("Task") {
+            build(task.name)
+            build(task.body)
+            build(task.valueParameters)
         }
     }
 
@@ -304,6 +315,14 @@ class ElementPrinter : Visitor() {
             build(basicComponentInstantiation.name)
             build(basicComponentInstantiation.type.toString())
             buildPortInstantiations(basicComponentInstantiation.portInstantiations)
+        }
+    }
+
+    override fun visitModulePortInstantiation(modulePortInstantiation: EModulePortInstantiation) {
+        build("ModulePortInstantiation") {
+            build(modulePortInstantiation.name)
+            build(modulePortInstantiation.type.toString())
+            buildPortInstantiations(modulePortInstantiation.portInstantiations)
         }
     }
 
@@ -656,7 +675,7 @@ class ElementPrinter : Visitor() {
         first = false
     }
 
-    private fun build(content: String) {
+    private fun build(content: String?) {
         if (!first) builder.append(", ")
         builder.append(content)
         first = false

@@ -20,8 +20,8 @@ import io.verik.core.*
 
 class Cache(
     @In var clk: Boolean,
-    var rx: TxnIf.TxnRx,
-    var tx: TxnIf.TxnTx
+    var ifRx: TxnIf.TxnRx,
+    var ifTx: TxnIf.TxnTx
 ) : Module() {
 
     val lines: Unpacked<EXP<INDEX_WIDTH>, Line> = nc()
@@ -33,11 +33,11 @@ class Cache(
     @Seq
     fun update() {
         on(posedge(clk)) {
-            rx.rspVld = false
-            tx.rst = false
-            tx.reqOp = Op.NOP
-            if (rx.rst) {
-                tx.rst = true
+            ifRx.rspVld = false
+            ifTx.rst = false
+            ifTx.reqOp = Op.NOP
+            if (ifRx.rst) {
+                ifTx.rst = true
                 state = State.READY
                 for (i in 0 until lines.size) {
                     lines[i] = Line(Status.INVALID, u0(), u0())
@@ -45,58 +45,58 @@ class Cache(
             } else {
                 when (state) {
                     State.READY -> {
-                        if (rx.reqOp != Op.NOP) {
-                            println("cache received op=${rx.reqOp} addr=0x${rx.reqAddr} data=0x${rx.reqData}")
-                            curOp = rx.reqOp
-                            curAddr = rx.reqAddr
-                            curData = rx.reqData
+                        if (ifRx.reqOp != Op.NOP) {
+                            println("cache received op=${ifRx.reqOp} addr=0x${ifRx.reqAddr} data=0x${ifRx.reqData}")
+                            curOp = ifRx.reqOp
+                            curAddr = ifRx.reqAddr
+                            curData = ifRx.reqData
 
-                            val tag = getTag(rx.reqAddr)
-                            val index = getIndex(rx.reqAddr)
+                            val tag = getTag(ifRx.reqAddr)
+                            val index = getIndex(ifRx.reqAddr)
                             val line = lines[index]
                             if (line.status != Status.INVALID && line.tag == tag) {
                                 print("cache hit index=0x$index tag=0x$tag")
                                 println(" line.tag=0x${line.tag} line.status=${line.status}")
-                                if (rx.reqOp == Op.WRITE) {
-                                    lines[index].data = rx.reqData
+                                if (ifRx.reqOp == Op.WRITE) {
+                                    lines[index].data = ifRx.reqData
                                     lines[index].status = Status.DIRTY
                                 } else {
-                                    rx.rspVld = true
-                                    rx.rspData = line.data
+                                    ifRx.rspVld = true
+                                    ifRx.rspData = line.data
                                 }
                             } else {
                                 print("cache miss index=0x$index tag=0x$tag")
                                 println(" line.tag=0x${line.tag} line.status=${line.status}")
                                 if (line.status == Status.DIRTY) {
-                                    tx.reqOp = Op.WRITE
-                                    tx.reqAddr = cat(line.tag, index)
-                                    tx.reqData = line.data
+                                    ifTx.reqOp = Op.WRITE
+                                    ifTx.reqAddr = cat(line.tag, index)
+                                    ifTx.reqData = line.data
                                     state = State.WRITEBACK
                                 } else {
-                                    tx.reqOp = Op.READ
-                                    tx.reqAddr = rx.reqAddr
+                                    ifTx.reqOp = Op.READ
+                                    ifTx.reqAddr = ifRx.reqAddr
                                     state = State.FILL
                                 }
                             }
                         }
                     }
                     State.WRITEBACK -> {
-                        tx.reqOp = Op.READ
-                        tx.reqAddr = curAddr
+                        ifTx.reqOp = Op.READ
+                        ifTx.reqAddr = curAddr
                         state = State.FILL
                     }
                     State.FILL -> {
-                        if (tx.rspVld) {
+                        if (ifTx.rspVld) {
                             val tag = getTag(curAddr)
                             val index = getIndex(curAddr)
-                            println("cache fill index=0x$index tag=0x$tag data=0x${tx.rspData}")
-                            lines[index] = Line(Status.CLEAN, tag, tx.rspData)
+                            println("cache fill index=0x$index tag=0x$tag data=0x${ifTx.rspData}")
+                            lines[index] = Line(Status.CLEAN, tag, ifTx.rspData)
                             if (curOp == Op.WRITE) {
                                 lines[index].data = curData
                                 lines[index].status = Status.DIRTY
                             } else {
-                                rx.rspVld = true
-                                rx.rspData = tx.rspData
+                                ifRx.rspVld = true
+                                ifRx.rspData = ifTx.rspData
                             }
                             state = State.READY
                         }

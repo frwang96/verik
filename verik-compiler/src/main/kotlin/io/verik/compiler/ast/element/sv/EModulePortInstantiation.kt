@@ -16,25 +16,23 @@
 
 package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.element.common.ETypeParameter
+import io.verik.compiler.ast.property.PortInstantiation
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
-class EModulePort(
+class EModulePortInstantiation(
     override val location: SourceLocation,
     override var name: String,
-    override var supertype: Type,
-    override var typeParameters: ArrayList<ETypeParameter>,
-    override val ports: List<EPort>,
-    var parentModuleInterface: EModuleInterface?
-) : EAbstractComponent() {
+    override var type: Type,
+    override val portInstantiations: List<PortInstantiation>
+) : EAbstractComponentInstantiation() {
 
     init {
-        ports.forEach { it.parent = this }
+        portInstantiations.forEach { it.expression?.parent = this }
     }
 
     override fun accept(visitor: Visitor) {
-        return visitor.visitModulePort(this)
+        visitor.visitModulePortInstantiation(this)
     }
 }

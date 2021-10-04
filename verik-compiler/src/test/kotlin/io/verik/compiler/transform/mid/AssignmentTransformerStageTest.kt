@@ -25,18 +25,63 @@ import org.junit.jupiter.api.Test
 internal class AssignmentTransformerStageTest : BaseTest() {
 
     @Test
-    fun `transform assignment blocking`() {
+    fun `transform assign`() {
         val projectContext = driveTest(
             AssignmentTransformerStage::class,
             """
-                var x = 0
+                var x = false
                 fun f() {
-                    x = 1
+                    x = true
                 }
             """.trimIndent()
         )
         assertElementEquals(
             "SvBinaryExpression(Unit, KtReferenceExpression(*), ConstantExpression(*), ASSIGN)",
+            projectContext.findExpression("f")
+        )
+    }
+
+    @Test
+    fun `transform arrow assign seq block`() {
+        val projectContext = driveTest(
+            AssignmentTransformerStage::class,
+            """
+                class M : Module() {
+                    private var x = false
+                    @Seq
+                    fun f() {
+                        on(posedge(false)) {
+                            x = true
+                        }
+                    }
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "SvBinaryExpression(Unit, KtReferenceExpression(*), ConstantExpression(*), ARROW_ASSIGN)",
+            projectContext.findExpression("f")
+        )
+    }
+
+    @Test
+    fun `transform arrow assign clocking block`() {
+        val projectContext = driveTest(
+            AssignmentTransformerStage::class,
+            """
+                class CB(override val event: Event, @In var x: Boolean) : ClockingBlock()
+                class M : Module() {
+                    private var x = false
+                    @Make
+                    private var cb = CB(posedge(false), x)
+                    @Run
+                    fun f() {
+                        cb.x = true
+                    }
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "SvBinaryExpression(Unit, KtReferenceExpression(*), ConstantExpression(*), ARROW_ASSIGN)",
             projectContext.findExpression("f")
         )
     }

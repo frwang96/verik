@@ -90,6 +90,7 @@ import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EModuleInterface
 import io.verik.compiler.ast.element.sv.EModulePort
+import io.verik.compiler.ast.element.sv.EModulePortInstantiation
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.ERepeatStatement
 import io.verik.compiler.ast.element.sv.EStringExpression
@@ -107,6 +108,7 @@ import io.verik.compiler.ast.element.sv.ESvPropertyStatement
 import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.sv.ESvValueParameter
+import io.verik.compiler.ast.element.sv.ETask
 
 abstract class Visitor {
 
@@ -236,6 +238,10 @@ abstract class Visitor {
         visitAbstractFunction(function)
     }
 
+    open fun visitTask(task: ETask) {
+        visitAbstractFunction(task)
+    }
+
     open fun visitAbstractProceduralBlock(abstractProceduralBlock: EAbstractProceduralBlock) {
         visitAbstractFunction(abstractProceduralBlock)
     }
@@ -288,6 +294,10 @@ abstract class Visitor {
 
     open fun visitBasicComponentInstantiation(basicComponentInstantiation: EBasicComponentInstantiation) {
         visitAbstractComponentInstantiation(basicComponentInstantiation)
+    }
+
+    open fun visitModulePortInstantiation(modulePortInstantiation: EModulePortInstantiation) {
+        visitAbstractComponentInstantiation(modulePortInstantiation)
     }
 
     open fun visitClockingBlockInstantiation(clockingBlockInstantiation: EClockingBlockInstantiation) {
