@@ -23,12 +23,16 @@ class CacheTb(
 ) : Module() {
 
     val mem: Unpacked<EXP<ADDR_WIDTH>, UbitData> = nc()
+    var pass = true
 
     @Run
     fun runTest() {
         reset()
-        repeat(1000) { transact() }
-        finish()
+        repeat(200) { transact() }
+        if (pass)
+            finish()
+        else
+            fatal()
     }
 
     @Task
@@ -78,6 +82,7 @@ class CacheTb(
                 println("tb PASS data=0x$data expected=0x$expected")
             } else {
                 println("tb FAIL data=0x$data expected=0x$expected")
+                pass = false
             }
         }
     }
