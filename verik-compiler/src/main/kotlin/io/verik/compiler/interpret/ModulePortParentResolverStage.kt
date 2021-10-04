@@ -30,10 +30,28 @@ object ModulePortParentResolverStage : ProjectStage() {
     override val checkNormalization = true
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.project.accept(ModulePortParentResolverVisitor)
+        val modulePortParentResolverVisitor = ModulePortParentResolverVisitor()
+        projectContext.project.accept(modulePortParentResolverVisitor)
+        val multipleParentModulePorts = modulePortParentResolverVisitor.multipleParentModulePorts
+        if (multipleParentModulePorts.isNotEmpty()) {
+            val multipleParentVisitor = object : TreeVisitor() {
+                override fun visitModulePortInstantiation(modulePortInstantiation: EModulePortInstantiation) {
+                    super.visitModulePortInstantiation(modulePortInstantiation)
+                    val parent = modulePortInstantiation.parent
+                    if (parent !is EModuleInterface)
+                        return
+                    if (modulePortInstantiation.type.reference in multipleParentModulePorts) {
+                        Messages.MODULE_PORT_MULTIPLE_PARENTS.on(modulePortInstantiation, parent.name)
+                    }
+                }
+            }
+            projectContext.project.accept(multipleParentVisitor)
+        }
     }
 
-    object ModulePortParentResolverVisitor : TreeVisitor() {
+    class ModulePortParentResolverVisitor : TreeVisitor() {
+
+        val multipleParentModulePorts = HashSet<EModulePort>()
 
         override fun visitModulePortInstantiation(modulePortInstantiation: EModulePortInstantiation) {
             super.visitModulePortInstantiation(modulePortInstantiation)
@@ -41,6 +59,8 @@ object ModulePortParentResolverStage : ProjectStage() {
             if (parent is EModuleInterface) {
                 val modulePort = modulePortInstantiation.type.reference.cast<EModulePort>(modulePortInstantiation)
                 if (modulePort != null) {
+                    if (modulePort.parentModuleInterface != null && modulePort.parentModuleInterface != parent)
+                        multipleParentModulePorts.add(modulePort)
                     modulePort.parentModuleInterface = parent
                 }
             } else {

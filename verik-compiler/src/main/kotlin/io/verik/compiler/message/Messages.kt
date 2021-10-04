@@ -165,6 +165,11 @@ object Messages {
         "Module port instantiation used out of context"
     )
 
+    val MODULE_PORT_MULTIPLE_PARENTS = MessageTemplate1<String>(
+        Severity.ERROR,
+        "Module port has multiple parent module interfaces: $0"
+    )
+
 //  MID TRANSFORM  /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val INJECTED_EXPRESSION_NOT_LITERAL = MessageTemplate0(

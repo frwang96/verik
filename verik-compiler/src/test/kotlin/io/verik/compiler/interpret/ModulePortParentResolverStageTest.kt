@@ -46,7 +46,7 @@ internal class ModulePortParentResolverStageTest : BaseTest() {
     }
 
     @Test
-    fun `module port resolve parent illegal`() {
+    fun `module port resolve parent illegal out of context`() {
         assertThrows<TestErrorException> {
             driveTest(
                 ModulePortParentResolverStage::class,
@@ -59,5 +59,25 @@ internal class ModulePortParentResolverStageTest : BaseTest() {
                 """.trimIndent()
             )
         }.apply { assertEquals("Module port instantiation used out of context", message) }
+    }
+
+    @Test
+    fun `module port resolve parent illegal multiple parents`() {
+        assertThrows<TestErrorException> {
+            driveTest(
+                ModulePortParentResolverStage::class,
+                """
+                    class MP : ModulePort()
+                    class MI0 : ModuleInterface() {
+                        @Make
+                        val mp = MP()
+                    }
+                    class MI1 : ModuleInterface() {
+                        @Make
+                        val mp = MP()
+                    }
+                """.trimIndent()
+            )
+        }.apply { assertEquals("Module port has multiple parent module interfaces: MI0", message) }
     }
 }
