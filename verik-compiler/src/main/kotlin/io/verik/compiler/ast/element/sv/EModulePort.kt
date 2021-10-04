@@ -26,7 +26,8 @@ class EModulePort(
     override var name: String,
     override var supertype: Type,
     override var typeParameters: ArrayList<ETypeParameter>,
-    override val ports: List<EPort>
+    override val ports: List<EPort>,
+    var parentModuleInterface: EModuleInterface?
 ) : EAbstractComponent() {
 
     init {

@@ -192,6 +192,7 @@ class ElementPrinter : Visitor() {
             build(modulePort.name)
             build(modulePort.typeParameters)
             build(modulePort.ports)
+            build(modulePort.parentModuleInterface?.name)
         }
     }
 
@@ -665,7 +666,7 @@ class ElementPrinter : Visitor() {
         first = false
     }
 
-    private fun build(content: String) {
+    private fun build(content: String?) {
         if (!first) builder.append(", ")
         builder.append(content)
         first = false

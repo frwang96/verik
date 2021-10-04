@@ -90,7 +90,7 @@ internal class ComponentInterpreterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "ModulePort(MP, [], [])",
+            "ModulePort(MP, [], [], null)",
             projectContext.findDeclaration("MP")
         )
     }

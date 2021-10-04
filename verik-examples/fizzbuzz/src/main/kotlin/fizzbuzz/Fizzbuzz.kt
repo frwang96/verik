@@ -41,9 +41,6 @@ class Fizzbuzz : Module() {
     @Make
     val cb = CB(posedge(false), z)
 
-    @Make
-    val mp = MP(z)
-
     @Run
     fun main() {
         val h = h(z)
@@ -86,10 +83,6 @@ class CB(
     override val event: Event,
     @In val z: Ubit<`3`>
 ) : ClockingBlock()
-
-class MP(
-    @In val z: Ubit<`3`>
-) : ModulePort()
 
 fun h(x: Ubit<`3`>): Ubit<`3`> {
     return x

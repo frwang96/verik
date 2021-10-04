@@ -297,7 +297,7 @@ internal class DeclarationSerializerTest : BaseTest() {
             SourceSerializerStage::class,
             """
                 class MP(@In val x: Boolean) : ModulePort()
-                class Top : Module() {
+                class Top : ModuleInterface() {
                     private var x = false
                     @Make
                     val mp = MP(x)
@@ -305,7 +305,7 @@ internal class DeclarationSerializerTest : BaseTest() {
             """.trimIndent()
         )
         val expected = """
-            module Top;
+            interface Top;
             
                 logic x = 1'b0;
             
@@ -313,7 +313,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                     input x
                 );
             
-            endmodule : Top
+            endinterface : Top
         """.trimIndent()
         assertOutputTextEquals(
             expected,

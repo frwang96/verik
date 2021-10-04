@@ -35,6 +35,7 @@ import io.verik.compiler.interpret.AnnotationConflictCheckerStage
 import io.verik.compiler.interpret.ClassInterpreterStage
 import io.verik.compiler.interpret.FileSplitterStage
 import io.verik.compiler.interpret.FunctionInterpreterStage
+import io.verik.compiler.interpret.ModulePortParentResolverStage
 import io.verik.compiler.interpret.PropertyInterpreterStage
 import io.verik.compiler.serialize.general.ConfigFileSerializerStage
 import io.verik.compiler.serialize.general.OrderFileSerializerStage
@@ -122,6 +123,7 @@ object StageSequencer {
         stageSequence.add(ClassInterpreterStage)
         stageSequence.add(FunctionInterpreterStage)
         stageSequence.add(PropertyInterpreterStage)
+        stageSequence.add(ModulePortParentResolverStage)
         stageSequence.add(FileSplitterStage)
 
         // MidTransform

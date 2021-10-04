@@ -70,7 +70,8 @@ object ComponentInterpreter {
                     basicClass.name,
                     basicClass.supertype,
                     basicClass.typeParameters,
-                    ports
+                    ports,
+                    null
                 )
                 referenceUpdater.replace(basicClass, modulePort)
                 basicClass.primaryConstructor?.let { referenceUpdater.update(it, modulePort) }
