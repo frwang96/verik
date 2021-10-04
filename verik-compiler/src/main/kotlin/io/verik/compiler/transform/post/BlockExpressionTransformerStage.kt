@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.sv.EAbstractProceduralBlock
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
 import io.verik.compiler.ast.element.sv.ESvFunction
+import io.verik.compiler.ast.element.sv.ETask
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -40,6 +41,7 @@ object BlockExpressionTransformerStage : ProjectStage() {
             var name: String? = null
             when (val parent = blockExpression.parent) {
                 is ESvFunction -> decorated = false
+                is ETask -> decorated = false
                 is EAbstractProceduralBlock -> name = parent.name
             }
             blockExpression.replace(

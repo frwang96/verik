@@ -85,6 +85,7 @@ import io.verik.compiler.ast.element.sv.ESvPropertyStatement
 import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.sv.ESvValueParameter
+import io.verik.compiler.ast.element.sv.ETask
 import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.LiteralStringEntry
 import io.verik.compiler.ast.property.PortInstantiation
@@ -236,6 +237,14 @@ class ElementPrinter : Visitor() {
             build(function.body)
             build(function.isScopeStatic)
             build(function.valueParameters)
+        }
+    }
+
+    override fun visitTask(task: ETask) {
+        build("Task") {
+            build(task.name)
+            build(task.body)
+            build(task.valueParameters)
         }
     }
 

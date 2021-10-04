@@ -61,6 +61,7 @@ import io.verik.compiler.ast.element.sv.ESvPropertyStatement
 import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.sv.ESvValueParameter
+import io.verik.compiler.ast.element.sv.ETask
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.common.Visitor
@@ -130,6 +131,10 @@ class SourceSerializerVisitor(private val serializerContext: SerializerContext) 
 
     override fun visitSvFunction(function: ESvFunction) {
         DeclarationSerializer.serializeSvFunction(function, serializerContext)
+    }
+
+    override fun visitTask(task: ETask) {
+        DeclarationSerializer.serializeTask(task, serializerContext)
     }
 
     override fun visitInitialBlock(initialBlock: EInitialBlock) {

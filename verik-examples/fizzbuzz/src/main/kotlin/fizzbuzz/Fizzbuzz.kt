@@ -62,6 +62,7 @@ class Fizzbuzz : Module() {
         println(cb.z)
     }
 
+    @Task
     fun f(x: Int) {
         println(x)
     }

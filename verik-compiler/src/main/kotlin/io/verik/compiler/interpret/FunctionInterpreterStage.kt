@@ -29,6 +29,7 @@ import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EInitialBlock
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvValueParameter
+import io.verik.compiler.ast.element.sv.ETask
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Annotations
@@ -82,6 +83,12 @@ object FunctionInterpreterStage : ProjectStage() {
                     Messages.FUNCTION_MISSING_BODY.on(function, function.name)
                     ENullElement(function.location)
                 }
+            }
+            function.hasAnnotation(Annotations.TASK) -> {
+                val valueParameters = function.valueParameters.map {
+                    ESvValueParameter(it.location, it.name, it.type)
+                }
+                ETask(function.location, function.name, function.body, ArrayList(valueParameters))
             }
             else -> {
                 val valueParameters = function.valueParameters.map {

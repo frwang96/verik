@@ -26,6 +26,7 @@ import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvProperty
+import io.verik.compiler.ast.element.sv.ETask
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
@@ -81,6 +82,7 @@ object FileSplitterStage : ProjectStage() {
                 is EEnum -> packageMembers.add(it)
                 is EStruct -> packageMembers.add(it)
                 is ESvFunction -> packageMembers.add(it)
+                is ETask -> packageMembers.add(it)
                 is ESvProperty -> packageMembers.add(it)
                 is ESvEnumEntry -> packageMembers.add(it)
                 is ETypeAlias -> {}

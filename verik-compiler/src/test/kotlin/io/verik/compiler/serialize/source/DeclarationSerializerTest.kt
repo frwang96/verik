@@ -162,6 +162,25 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `serialize task`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                @Task
+                fun t(x: Int) {}
+            """.trimIndent()
+        )
+        val expected = """
+            task automatic t(int x);
+            endtask : t
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
     fun `serialize property`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,

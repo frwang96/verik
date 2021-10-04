@@ -32,6 +32,7 @@ import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvValueParameter
+import io.verik.compiler.ast.element.sv.ETask
 import io.verik.compiler.ast.property.PortType
 
 object DeclarationSerializer {
@@ -90,14 +91,8 @@ object DeclarationSerializer {
             serializerContext.append("static ")
         val serializedType = TypeSerializer.serialize(function.type, function)
         serializedType.checkNoUnpackedDimension(function)
-        serializerContext.append("function automatic ${serializedType.getBaseAndPackedDimension()} ${function.name}(")
-        if (function.valueParameters.isNotEmpty()) {
-            serializerContext.softBreak()
-            serializerContext.join(function.valueParameters) {
-                serializerContext.serialize(it)
-            }
-        }
-        serializerContext.appendLine(");")
+        serializerContext.append("function automatic ${serializedType.getBaseAndPackedDimension()} ${function.name}")
+        serializeValueParameterList(function.valueParameters, serializerContext)
         val body = function.body
         if (body != null) {
             serializerContext.indent {
@@ -105,6 +100,18 @@ object DeclarationSerializer {
             }
         }
         serializerContext.appendLine("endfunction : ${function.name}")
+    }
+
+    fun serializeTask(task: ETask, serializerContext: SerializerContext) {
+        serializerContext.append("task automatic ${task.name}")
+        serializeValueParameterList(task.valueParameters, serializerContext)
+        val body = task.body
+        if (body != null) {
+            serializerContext.indent {
+                serializerContext.serializeAsStatement(body)
+            }
+        }
+        serializerContext.appendLine("endtask : ${task.name}")
     }
 
     fun serializeInitialBlock(initialBlock: EInitialBlock, serializerContext: SerializerContext) {
@@ -250,5 +257,19 @@ object DeclarationSerializer {
             PortType.MODULE_INTERFACE, PortType.MODULE_PORT -> {}
             PortType.CLOCKING_BLOCK -> serializerContext.append("clocking ")
         }
+    }
+
+    private fun serializeValueParameterList(
+        valueParameters: List<ESvValueParameter>,
+        serializerContext: SerializerContext
+    ) {
+        serializerContext.append("(")
+        if (valueParameters.isNotEmpty()) {
+            serializerContext.softBreak()
+            serializerContext.join(valueParameters) {
+                serializerContext.serialize(it)
+            }
+        }
+        serializerContext.appendLine(");")
     }
 }

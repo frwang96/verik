@@ -108,6 +108,7 @@ import io.verik.compiler.ast.element.sv.ESvPropertyStatement
 import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.sv.ESvValueParameter
+import io.verik.compiler.ast.element.sv.ETask
 
 abstract class Visitor {
 
@@ -235,6 +236,10 @@ abstract class Visitor {
 
     open fun visitSvFunction(function: ESvFunction) {
         visitAbstractFunction(function)
+    }
+
+    open fun visitTask(task: ETask) {
+        visitAbstractFunction(task)
     }
 
     open fun visitAbstractProceduralBlock(abstractProceduralBlock: EAbstractProceduralBlock) {
