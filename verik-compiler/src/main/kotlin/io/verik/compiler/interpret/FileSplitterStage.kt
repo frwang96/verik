@@ -16,6 +16,7 @@
 
 package io.verik.compiler.interpret
 
+import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.kt.ETypeAlias
@@ -41,26 +42,26 @@ object FileSplitterStage : ProjectStage() {
             val packageFiles = ArrayList<EFile>()
             basicPackage.files.forEach {
                 val baseFileName = it.inputPath.fileName.toString().removeSuffix(".kt")
-                val splitMemberResult = splitMembers(it.members)
+                val splitDeclarationsResult = splitDeclarations(it.declarations)
 
-                if (splitMemberResult.componentMembers.isNotEmpty()) {
+                if (splitDeclarationsResult.componentDeclarations.isNotEmpty()) {
                     val componentFilePath = basicPackage.outputPath.resolve("$baseFileName.sv")
                     val componentFile = EFile(
                         it.location,
                         it.inputPath,
                         componentFilePath,
-                        splitMemberResult.componentMembers
+                        splitDeclarationsResult.componentDeclarations
                     )
                     componentFiles.add(componentFile)
                 }
 
-                if (splitMemberResult.packageMembers.isNotEmpty()) {
+                if (splitDeclarationsResult.packageDeclarations.isNotEmpty()) {
                     val packageFilePath = basicPackage.outputPath.resolve("$baseFileName.svh")
                     val packageFile = EFile(
                         it.location,
                         it.inputPath,
                         packageFilePath,
-                        splitMemberResult.packageMembers
+                        splitDeclarationsResult.packageDeclarations
                     )
                     packageFiles.add(packageFile)
                 }
@@ -72,28 +73,28 @@ object FileSplitterStage : ProjectStage() {
         projectContext.project.rootPackage.files = componentFiles
     }
 
-    private fun splitMembers(members: List<EElement>): SplitMembersResult {
-        val componentMembers = ArrayList<EElement>()
-        val packageMembers = ArrayList<EElement>()
-        members.forEach {
+    private fun splitDeclarations(declarations: List<EElement>): SplitDeclarationsResult {
+        val componentDeclarations = ArrayList<EDeclaration>()
+        val packageDeclarations = ArrayList<EDeclaration>()
+        declarations.forEach {
             when (it) {
-                is EAbstractComponent -> componentMembers.add(it)
-                is ESvBasicClass -> packageMembers.add(it)
-                is EEnum -> packageMembers.add(it)
-                is EStruct -> packageMembers.add(it)
-                is ESvFunction -> packageMembers.add(it)
-                is ETask -> packageMembers.add(it)
-                is ESvProperty -> packageMembers.add(it)
-                is ESvEnumEntry -> packageMembers.add(it)
+                is EAbstractComponent -> componentDeclarations.add(it)
+                is ESvBasicClass -> packageDeclarations.add(it)
+                is EEnum -> packageDeclarations.add(it)
+                is EStruct -> packageDeclarations.add(it)
+                is ESvFunction -> packageDeclarations.add(it)
+                is ETask -> packageDeclarations.add(it)
+                is ESvProperty -> packageDeclarations.add(it)
+                is ESvEnumEntry -> packageDeclarations.add(it)
                 is ETypeAlias -> {}
-                else -> Messages.INTERNAL_ERROR.on(it, "Unable to identify as component or package member: $it")
+                else -> Messages.INTERNAL_ERROR.on(it, "Unable to identify as component or package declaration: $it")
             }
         }
-        return SplitMembersResult(componentMembers, packageMembers)
+        return SplitDeclarationsResult(componentDeclarations, packageDeclarations)
     }
 
-    data class SplitMembersResult(
-        val componentMembers: ArrayList<EElement>,
-        val packageMembers: ArrayList<EElement>
+    data class SplitDeclarationsResult(
+        val componentDeclarations: ArrayList<EDeclaration>,
+        val packageDeclarations: ArrayList<EDeclaration>
     )
 }

@@ -17,7 +17,7 @@
 package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EAbstractContainerClass
-import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
@@ -28,11 +28,11 @@ class ESvBasicClass(
     override var name: String,
     override var supertype: Type,
     override var typeParameters: ArrayList<ETypeParameter>,
-    override var members: ArrayList<EElement>
+    override var declarations: ArrayList<EDeclaration>
 ) : EAbstractContainerClass() {
 
     init {
-        members.forEach { it.parent = this }
+        declarations.forEach { it.parent = this }
     }
 
     override fun accept(visitor: Visitor) {

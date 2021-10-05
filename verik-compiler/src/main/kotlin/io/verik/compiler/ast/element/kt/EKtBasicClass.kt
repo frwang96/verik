@@ -17,7 +17,7 @@
 package io.verik.compiler.ast.element.kt
 
 import io.verik.compiler.ast.element.common.EAbstractContainerClass
-import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.interfaces.Annotated
 import io.verik.compiler.ast.property.Type
@@ -30,7 +30,7 @@ class EKtBasicClass(
     override var name: String,
     override var supertype: Type,
     override var typeParameters: ArrayList<ETypeParameter>,
-    override var members: ArrayList<EElement>,
+    override var declarations: ArrayList<EDeclaration>,
     override var annotations: List<EAnnotation>,
     var isEnum: Boolean,
     var primaryConstructor: EPrimaryConstructor?
@@ -38,7 +38,7 @@ class EKtBasicClass(
 
     init {
         typeParameters.forEach { it.parent = this }
-        members.forEach { it.parent = this }
+        declarations.forEach { it.parent = this }
         annotations.forEach { it.parent = this }
         primaryConstructor?.let { it.parent = this }
     }

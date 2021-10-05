@@ -14,21 +14,11 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.check.normalize
+package io.verik.compiler.ast.interfaces
 
-import io.verik.compiler.common.ProjectStage
-import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.ast.element.common.EDeclaration
 
-object NormalizationChecker : ProjectStage() {
+interface DeclarationContainer {
 
-    override val checkNormalization = false
-
-    override fun process(projectContext: ProjectContext) {
-        if (projectContext.config.debug) {
-            ElementParentChecker.accept(projectContext)
-            ElementAliasChecker.accept(projectContext)
-            TypeAliasChecker.accept(projectContext)
-            SourceLocationChecker.accept(projectContext)
-        }
-    }
+    fun replaceChild(oldDeclaration: EDeclaration, newDeclaration: EDeclaration): Boolean
 }

@@ -16,7 +16,7 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtProperty
@@ -54,7 +54,7 @@ object PropertyInterpreterStage : ProjectStage() {
 
     class PropertyInterpreterVisitor(private val referenceUpdater: ReferenceUpdater) : TreeVisitor() {
 
-        private fun interpret(property: EKtProperty): EElement {
+        private fun interpret(property: EKtProperty): EDeclaration {
             return interpretAbstractComponentInstantiation(property)
                 ?: ESvProperty(
                     property.location,

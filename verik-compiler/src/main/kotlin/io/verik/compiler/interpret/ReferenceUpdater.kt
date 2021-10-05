@@ -19,10 +19,9 @@ package io.verik.compiler.interpret
 import io.verik.compiler.ast.element.common.EAbstractFunction
 import io.verik.compiler.ast.element.common.EAbstractProperty
 import io.verik.compiler.ast.element.common.EAbstractValueParameter
-import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.interfaces.Declaration
-import io.verik.compiler.ast.interfaces.ElementContainer
+import io.verik.compiler.ast.interfaces.DeclarationContainer
 import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
@@ -31,26 +30,20 @@ import io.verik.compiler.message.Messages
 
 class ReferenceUpdater(val projectContext: ProjectContext) {
 
-    private val referenceMap = HashMap<Declaration, Declaration>()
+    private val referenceMap = HashMap<EDeclaration, EDeclaration>()
 
-    fun replace(oldElement: EElement, newElement: EElement) {
-        val parent = oldElement.parentNotNull()
-        if (parent is ElementContainer) {
-            if (!parent.replaceChild(oldElement, newElement))
-                Messages.INTERNAL_ERROR.on(oldElement, "Could not find $oldElement in $parent")
+    fun replace(oldDeclaration: EDeclaration, newDeclaration: EDeclaration) {
+        val parent = oldDeclaration.parentNotNull()
+        if (parent is DeclarationContainer) {
+            if (!parent.replaceChild(oldDeclaration, newDeclaration))
+                Messages.INTERNAL_ERROR.on(oldDeclaration, "Could not find $oldDeclaration in $parent")
         } else {
-            Messages.INTERNAL_ERROR.on(oldElement, "Could not replace $oldElement in $parent")
+            Messages.INTERNAL_ERROR.on(oldDeclaration, "Could not replace $oldDeclaration in $parent")
         }
-
-        if (oldElement !is Declaration)
-            Messages.INTERNAL_ERROR.on(oldElement, "Declaration expected but got: $oldElement")
-        else if (newElement !is Declaration)
-            Messages.INTERNAL_ERROR.on(newElement, "Declaration expected but got: $newElement")
-        else
-            referenceMap[oldElement] = newElement
+        referenceMap[oldDeclaration] = newDeclaration
     }
 
-    fun update(oldDeclaration: Declaration, newDeclaration: Declaration) {
+    fun update(oldDeclaration: EDeclaration, newDeclaration: EDeclaration) {
         referenceMap[oldDeclaration] = newDeclaration
     }
 
@@ -60,7 +53,7 @@ class ReferenceUpdater(val projectContext: ProjectContext) {
         referenceMap.clear()
     }
 
-    class ReferenceUpdaterVisitor(private val referenceMap: Map<Declaration, Declaration>) : TreeVisitor() {
+    class ReferenceUpdaterVisitor(private val referenceMap: Map<EDeclaration, EDeclaration>) : TreeVisitor() {
 
         private fun updateTypeReferences(type: Type) {
             val reference = referenceMap[type.reference]

@@ -133,7 +133,7 @@ class ElementPrinter : Visitor() {
 
     override fun visitFile(file: EFile) {
         build("File") {
-            build(file.members)
+            build(file.declarations)
         }
     }
 
@@ -155,7 +155,7 @@ class ElementPrinter : Visitor() {
         build("KtBasicClass") {
             build(basicClass.name)
             build(basicClass.typeParameters)
-            build(basicClass.members)
+            build(basicClass.declarations)
             build(basicClass.annotations)
             build(basicClass.isEnum.toString())
             build(basicClass.primaryConstructor)
@@ -166,7 +166,7 @@ class ElementPrinter : Visitor() {
         build("SvBasicClass") {
             build(basicClass.name)
             build(basicClass.typeParameters)
-            build(basicClass.members)
+            build(basicClass.declarations)
         }
     }
 
@@ -174,7 +174,7 @@ class ElementPrinter : Visitor() {
         build("Module") {
             build(module.name)
             build(module.typeParameters)
-            build(module.members)
+            build(module.declarations)
             build(module.ports)
         }
     }
@@ -183,7 +183,7 @@ class ElementPrinter : Visitor() {
         build("ModuleInterface") {
             build(moduleInterface.name)
             build(moduleInterface.typeParameters)
-            build(moduleInterface.members)
+            build(moduleInterface.declarations)
             build(moduleInterface.ports)
         }
     }

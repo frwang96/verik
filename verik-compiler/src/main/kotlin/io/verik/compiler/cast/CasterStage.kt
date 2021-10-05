@@ -38,12 +38,12 @@ object CasterStage : ProjectStage() {
             val location = file.location()
             val packageName = file.packageFqName.asString()
             val inputPath = Paths.get(file.virtualFilePath)
-            val members = file.declarations.mapNotNull {
-                projectContext.castContext.casterVisitor.getElement(it)
+            val declarations = file.declarations.mapNotNull {
+                projectContext.castContext.casterVisitor.getDeclaration(it)
             }
             if (packageName !in files)
                 files[packageName] = ArrayList()
-            files[packageName]!!.add(EFile(location, inputPath, null, ArrayList(members)))
+            files[packageName]!!.add(EFile(location, inputPath, null, ArrayList(declarations)))
         }
 
         val basicPackages = ArrayList<EBasicPackage>()

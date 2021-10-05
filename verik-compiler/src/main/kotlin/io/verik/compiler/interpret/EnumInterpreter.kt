@@ -26,7 +26,7 @@ object EnumInterpreter {
     fun interpretEnum(basicClass: EKtBasicClass, referenceUpdater: ReferenceUpdater): Boolean {
         if (!basicClass.isEnum)
             return false
-        val entryReferences = basicClass.members
+        val entryReferences = basicClass.declarations
             .mapNotNull { it.cast<EKtEnumEntry>() }
             .map { interpretEnumEntry(it, referenceUpdater) }
         val enum = EEnum(

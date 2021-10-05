@@ -17,8 +17,7 @@
 package io.verik.compiler.check.post
 
 import io.verik.compiler.ast.element.common.EAbstractPackage
-import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.ast.interfaces.Declaration
+import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -32,25 +31,23 @@ object NameRedeclarationCheckerStage : ProjectStage() {
         projectContext.project.accept(NameRedeclarationCheckerVisitor)
     }
 
-    class MemberSet {
+    class DeclarationSet {
 
-        private val members = ArrayList<EElement>()
+        private val declarations = ArrayList<EDeclaration>()
         private val names = HashSet<String>()
         private val duplicateNames = HashSet<String>()
 
-        fun add(member: EElement) {
-            if (member is Declaration) {
-                members.add(member)
-                if (member.name in names)
-                    duplicateNames.add(member.name)
-                else
-                    names.add(member.name)
-            }
+        fun add(declaration: EDeclaration) {
+            declarations.add(declaration)
+            if (declaration.name in names)
+                duplicateNames.add(declaration.name)
+            else
+                names.add(declaration.name)
         }
 
         fun checkDuplicates() {
-            members.forEach {
-                if (it is Declaration && it.name in duplicateNames) {
+            declarations.forEach {
+                if (it.name in duplicateNames) {
                     Messages.NAME_REDECLARATION.on(it, it.name)
                 }
             }
@@ -61,11 +58,11 @@ object NameRedeclarationCheckerStage : ProjectStage() {
 
         override fun visitAbstractPackage(abstractPackage: EAbstractPackage) {
             super.visitAbstractPackage(abstractPackage)
-            val memberSet = MemberSet()
+            val declarationSet = DeclarationSet()
             abstractPackage.files.forEach { file ->
-                file.members.forEach { memberSet.add(it) }
+                file.declarations.forEach { declarationSet.add(it) }
             }
-            memberSet.checkDuplicates()
+            declarationSet.checkDuplicates()
         }
     }
 }

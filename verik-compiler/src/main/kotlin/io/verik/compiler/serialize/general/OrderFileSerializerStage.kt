@@ -50,7 +50,7 @@ object OrderFileSerializerStage : ProjectStage() {
                 paths.add(it.outputPath.resolve("Pkg.sv"))
         }
         projectContext.project.rootPackage.files.forEach {
-            if (it.members.isNotEmpty())
+            if (it.declarations.isNotEmpty())
                 paths.add(it.getOutputPathNotNull())
         }
         return paths

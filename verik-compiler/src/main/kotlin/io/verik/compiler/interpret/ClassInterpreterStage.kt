@@ -19,7 +19,7 @@ package io.verik.compiler.interpret
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
-import io.verik.compiler.ast.interfaces.ResizableElementContainer
+import io.verik.compiler.ast.interfaces.ResizableDeclarationContainer
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -37,7 +37,7 @@ object ClassInterpreterStage : ProjectStage() {
         projectContext.project.accept(enumEntryCollectorVisitor)
         enumEntryCollectorVisitor.enumEntries.forEach {
             val parent = it.parent
-            if (parent is ResizableElementContainer)
+            if (parent is ResizableDeclarationContainer)
                 parent.insertChild(it)
             else
                 Messages.INTERNAL_ERROR.on(it, "Count not insert $it into $parent")

@@ -16,9 +16,9 @@
 
 package io.verik.compiler.ast.interfaces
 
-import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EDeclaration
 
-interface ElementContainer {
+interface ResizableDeclarationContainer : DeclarationContainer {
 
-    fun replaceChild(oldElement: EElement, newElement: EElement): Boolean
+    fun insertChild(declaration: EDeclaration)
 }

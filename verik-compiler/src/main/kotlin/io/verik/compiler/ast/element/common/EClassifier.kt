@@ -16,6 +16,4 @@
 
 package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.interfaces.Declaration
-
-abstract class EClassifier : ETypedElement(), Declaration
+abstract class EClassifier : EDeclaration()

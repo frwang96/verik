@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
@@ -28,13 +28,13 @@ class EModule(
     override var supertype: Type,
     override var typeParameters: ArrayList<ETypeParameter>,
     override val ports: List<EPort>,
-    override var members: ArrayList<EElement>,
+    override var declarations: ArrayList<EDeclaration>,
     val isTop: Boolean
 ) : EAbstractContainerComponent() {
 
     init {
         ports.forEach { it.parent = this }
-        members.forEach { it.parent = this }
+        declarations.forEach { it.parent = this }
     }
 
     override fun accept(visitor: Visitor) {

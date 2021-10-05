@@ -52,7 +52,7 @@ object PackageFileSerializerStage : ProjectStage() {
         builder.append(fileHeader)
         builder.appendLine("package $packageName;")
         basicPackage.files.forEach { file ->
-            file.members.forEach {
+            file.declarations.forEach {
                 if (it is ESvBasicClass) {
                     builder.appendLine()
                     builder.append(indent)
