@@ -21,6 +21,7 @@ import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.EIfExpression
+import io.verik.compiler.ast.element.common.ENullElement
 import io.verik.compiler.ast.element.common.ENullExpression
 import io.verik.compiler.ast.element.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.common.EProject
@@ -95,7 +96,7 @@ class ElementPrinter : Visitor() {
     private val builder = StringBuilder()
     private var first = true
 
-    override fun visitNullElement(nullElement: EElement) {
+    override fun visitNullElement(nullElement: ENullElement) {
         build("NullElement") {}
     }
 
