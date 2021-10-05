@@ -42,11 +42,4 @@ class EKtBinaryExpression(
     override fun accept(visitor: Visitor) {
         visitor.visitKtBinaryExpression(this)
     }
-
-    override fun copy(): EExpression {
-        val copyType = type.copy()
-        val copyLeft = left.copy()
-        val copyRight = right.copy()
-        return EKtBinaryExpression(location, copyType, copyLeft, copyRight, kind)
-    }
 }

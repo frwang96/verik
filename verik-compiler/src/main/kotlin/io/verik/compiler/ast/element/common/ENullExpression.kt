@@ -35,8 +35,4 @@ class ENullExpression(
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {}
-
-    override fun copy(): EExpression {
-        return ENullExpression(location)
-    }
 }

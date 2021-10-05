@@ -48,12 +48,6 @@ class ERepeatStatement(
         body.accept(visitor)
     }
 
-    override fun copy(): ERepeatStatement {
-        val copyCondition = condition.copy()
-        val copyBody = body.copy()
-        return ERepeatStatement(location, copyCondition, copyBody)
-    }
-
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
         newExpression.parent = this
         return when (oldExpression) {

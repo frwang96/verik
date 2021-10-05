@@ -41,9 +41,4 @@ class ESvBlockExpression(
     override fun accept(visitor: Visitor) {
         visitor.visitSvBlockExpression(this)
     }
-
-    override fun copy(): EExpression {
-        val copyStatements = statements.map { it.copy() }
-        return ESvBlockExpression(location, ArrayList(copyStatements), decorated, name)
-    }
 }

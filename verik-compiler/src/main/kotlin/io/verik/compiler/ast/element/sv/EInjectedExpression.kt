@@ -17,7 +17,6 @@
 package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EAbstractStringEntryContainer
-import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.StringEntry
 import io.verik.compiler.ast.property.SvSerializationType
@@ -42,11 +41,5 @@ class EInjectedExpression(
 
     override fun accept(visitor: Visitor) {
         visitor.visitInjectedExpression(this)
-    }
-
-    override fun copy(): EExpression {
-        val typeCopy = type.copy()
-        val copyEntries = entries.map { it.copy() }
-        return EInjectedExpression(location, typeCopy, copyEntries)
     }
 }

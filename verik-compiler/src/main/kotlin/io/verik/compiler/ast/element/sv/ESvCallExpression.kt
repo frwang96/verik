@@ -43,18 +43,4 @@ class ESvCallExpression(
     override fun accept(visitor: Visitor) {
         visitor.visitSvCallExpression(this)
     }
-
-    override fun copy(): EExpression {
-        val copyType = type.copy()
-        val copyReceiver = receiver?.copy()
-        val copyValueArguments = valueArguments.map { it.copy() }
-        return ESvCallExpression(
-            location,
-            copyType,
-            reference,
-            copyReceiver,
-            ArrayList(copyValueArguments),
-            isScopeResolution
-        )
-    }
 }

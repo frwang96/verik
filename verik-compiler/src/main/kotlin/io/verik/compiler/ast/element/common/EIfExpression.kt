@@ -68,12 +68,4 @@ class EIfExpression(
             else -> false
         }
     }
-
-    override fun copy(): EExpression {
-        val copyType = type.copy()
-        val copyCondition = condition.copy()
-        val copyThenExpression = thenExpression?.copy()
-        val copyElseExpression = elseExpression?.copy()
-        return EIfExpression(location, copyType, copyCondition, copyThenExpression, copyElseExpression)
-    }
 }

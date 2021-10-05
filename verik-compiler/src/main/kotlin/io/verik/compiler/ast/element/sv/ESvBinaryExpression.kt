@@ -42,11 +42,4 @@ class ESvBinaryExpression(
     override fun accept(visitor: Visitor) {
         visitor.visitSvBinaryExpression(this)
     }
-
-    override fun copy(): ESvBinaryExpression {
-        val copyType = type.copy()
-        val copyLeft = left.copy()
-        val copyRight = right.copy()
-        return ESvBinaryExpression(location, copyType, copyLeft, copyRight, kind)
-    }
 }

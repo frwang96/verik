@@ -45,12 +45,6 @@ class EConcatenationExpression(
         expressions.forEach { it.accept(visitor) }
     }
 
-    override fun copy(): EExpression {
-        val typeCopy = type.copy()
-        val expressionsCopy = expressions.map { it.copy() }
-        return EConcatenationExpression(location, typeCopy, ArrayList(expressionsCopy))
-    }
-
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
         newExpression.parent = this
         return expressions.replaceIfContains(oldExpression, newExpression)

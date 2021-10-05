@@ -18,22 +18,8 @@ package io.verik.compiler.ast.property
 
 import io.verik.compiler.ast.element.common.EExpression
 
-sealed class StringEntry {
+sealed class StringEntry
 
-    abstract fun copy(): StringEntry
-}
+class LiteralStringEntry(val text: String) : StringEntry()
 
-class LiteralStringEntry(val text: String) : StringEntry() {
-
-    override fun copy(): StringEntry {
-        return LiteralStringEntry(text)
-    }
-}
-
-class ExpressionStringEntry(var expression: EExpression) : StringEntry() {
-
-    override fun copy(): StringEntry {
-        val copyExpression = expression.copy()
-        return ExpressionStringEntry(copyExpression)
-    }
-}
+class ExpressionStringEntry(var expression: EExpression) : StringEntry()

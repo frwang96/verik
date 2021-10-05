@@ -17,12 +17,10 @@
 package io.verik.compiler.ast.element.kt
 
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.common.ENullExpression
 import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 
 class EKtPropertyStatement(
@@ -44,10 +42,5 @@ class EKtPropertyStatement(
 
     override fun acceptChildren(visitor: TreeVisitor) {
         property.accept(visitor)
-    }
-
-    override fun copy(): EExpression {
-        Messages.INTERNAL_ERROR.on(this, "Unable to copy $this")
-        return ENullExpression(location)
     }
 }

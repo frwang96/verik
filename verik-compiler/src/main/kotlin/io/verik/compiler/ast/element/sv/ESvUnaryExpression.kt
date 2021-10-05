@@ -40,10 +40,4 @@ class ESvUnaryExpression(
     override fun accept(visitor: Visitor) {
         visitor.visitSvUnaryExpression(this)
     }
-
-    override fun copy(): EExpression {
-        val copyType = type.copy()
-        val copyExpression = expression.copy()
-        return ESvUnaryExpression(location, copyType, copyExpression, kind)
-    }
 }

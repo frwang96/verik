@@ -45,11 +45,6 @@ class EForeverStatement(
         body.accept(visitor)
     }
 
-    override fun copy(): EExpression {
-        val copyBody = body.copy()
-        return EForeverStatement(location, copyBody)
-    }
-
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
         newExpression.parent = this
         return if (body == oldExpression) {

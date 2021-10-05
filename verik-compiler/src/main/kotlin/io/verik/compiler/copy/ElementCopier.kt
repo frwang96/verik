@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.common
+package io.verik.compiler.copy
 
+import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
+import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.message.Messages
 
@@ -27,6 +29,8 @@ object ElementCopier {
         val copyElement = when (element) {
             is EKtBlockExpression -> copyKtBlockExpression(element)
             is EKtReferenceExpression -> copyKtReferenceExpression(element)
+            is EKtCallExpression -> copyKtCallExpression(element)
+            is EConstantExpression -> copyConstantExpression(element)
             else -> {
                 Messages.INTERNAL_ERROR.on(element, "Unable to copy element: $element")
                 element
@@ -46,5 +50,25 @@ object ElementCopier {
         val type = referenceExpression.type.copy()
         val receiver = referenceExpression.receiver?.let { copy(it) }
         return EKtReferenceExpression(referenceExpression.location, type, referenceExpression.reference, receiver)
+    }
+
+    private fun copyKtCallExpression(callExpression: EKtCallExpression): EKtCallExpression {
+        val type = callExpression.type.copy()
+        val receiver = callExpression.receiver?.let { copy(it) }
+        val valueArguments = callExpression.valueArguments.map { copy(it) }
+        val typeArguments = callExpression.typeArguments.map { it.copy() }
+        return EKtCallExpression(
+            callExpression.location,
+            type,
+            callExpression.reference,
+            receiver,
+            ArrayList(valueArguments),
+            ArrayList(typeArguments)
+        )
+    }
+
+    private fun copyConstantExpression(constantExpression: EConstantExpression): EConstantExpression {
+        val type = constantExpression.type.copy()
+        return EConstantExpression(constantExpression.location, type, constantExpression.value)
     }
 }

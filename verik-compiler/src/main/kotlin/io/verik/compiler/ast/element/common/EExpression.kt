@@ -22,8 +22,6 @@ abstract class EExpression : ETypedElement() {
 
     abstract val serializationType: SvSerializationType
 
-    abstract fun copy(): EExpression
-
     fun replace(expression: EExpression) {
         parentNotNull().replaceChildAsExpressionContainer(this, expression)
     }

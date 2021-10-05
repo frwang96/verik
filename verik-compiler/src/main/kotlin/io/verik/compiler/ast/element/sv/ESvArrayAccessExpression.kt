@@ -47,13 +47,6 @@ class ESvArrayAccessExpression(
         index.accept(visitor)
     }
 
-    override fun copy(): ESvArrayAccessExpression {
-        val typeCopy = type.copy()
-        val arrayCopy = array.copy()
-        val indexCopy = index.copy()
-        return ESvArrayAccessExpression(location, typeCopy, arrayCopy, indexCopy)
-    }
-
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
         newExpression.parent = this
         return when (oldExpression) {

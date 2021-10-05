@@ -43,19 +43,4 @@ class EKtCallExpression(
     override fun accept(visitor: Visitor) {
         visitor.visitKtCallExpression(this)
     }
-
-    override fun copy(): EExpression {
-        val copyType = type.copy()
-        val copyReceiver = receiver?.copy()
-        val copyValueArguments = valueArguments.map { it.copy() }
-        val copyTypeArguments = typeArguments.map { it.copy() }
-        return EKtCallExpression(
-            location,
-            copyType,
-            reference,
-            copyReceiver,
-            ArrayList(copyValueArguments),
-            ArrayList(copyTypeArguments)
-        )
-    }
 }

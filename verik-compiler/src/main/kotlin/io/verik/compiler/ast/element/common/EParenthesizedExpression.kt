@@ -36,10 +36,4 @@ class EParenthesizedExpression(
     override fun accept(visitor: Visitor) {
         visitor.visitParenthesizedExpression(this)
     }
-
-    override fun copy(): EExpression {
-        val copyType = type.copy()
-        val copyExpression = expression.copy()
-        return EParenthesizedExpression(location, copyType, copyExpression)
-    }
 }
