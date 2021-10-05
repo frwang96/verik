@@ -73,14 +73,14 @@ object FunctionOverloadingTransformerStage : ProjectStage() {
         override fun visitBasicPackage(basicPackage: EBasicPackage) {
             super.visitBasicPackage(basicPackage)
             val functions = basicPackage.files
-                .flatMap { it.members }
+                .flatMap { it.declarations }
                 .filterIsInstance<EKtFunction>()
             transformFunctions(functions)
         }
 
         override fun visitKtBasicClass(basicClass: EKtBasicClass) {
             super.visitKtBasicClass(basicClass)
-            val functions = basicClass.members.filterIsInstance<EKtFunction>()
+            val functions = basicClass.declarations.filterIsInstance<EKtFunction>()
             transformFunctions(functions)
         }
     }

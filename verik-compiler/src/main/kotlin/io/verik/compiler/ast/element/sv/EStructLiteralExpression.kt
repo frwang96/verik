@@ -45,12 +45,6 @@ class EStructLiteralExpression(
         entries.forEach { it.expression.accept(visitor) }
     }
 
-    override fun copy(): EExpression {
-        val copyType = type.copy()
-        val copyEntries = entries.map { it.copy() }
-        return EStructLiteralExpression(location, copyType, copyEntries)
-    }
-
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
         newExpression.parent = this
         entries.forEach {

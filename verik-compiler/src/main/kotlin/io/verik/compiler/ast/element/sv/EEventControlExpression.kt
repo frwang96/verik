@@ -39,9 +39,4 @@ class EEventControlExpression(
     override fun accept(visitor: Visitor) {
         visitor.visitEventControlExpression(this)
     }
-
-    override fun copy(): EExpression {
-        val copyExpression = expression.copy()
-        return EEventControlExpression(location, copyExpression)
-    }
 }

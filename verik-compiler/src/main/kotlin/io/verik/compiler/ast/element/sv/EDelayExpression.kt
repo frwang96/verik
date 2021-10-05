@@ -39,9 +39,4 @@ class EDelayExpression(
     override fun accept(visitor: Visitor) {
         visitor.visitDelayExpression(this)
     }
-
-    override fun copy(): EExpression {
-        val copyExpression = expression.copy()
-        return EDelayExpression(location, copyExpression)
-    }
 }

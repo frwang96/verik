@@ -50,14 +50,6 @@ class EConstantPartSelectExpression(
         lsbIndex.accept(visitor)
     }
 
-    override fun copy(): EConstantPartSelectExpression {
-        val typeCopy = type.copy()
-        val arrayCopy = array.copy()
-        val msbIndexCopy = msbIndex.copy()
-        val lsbIndexCopy = lsbIndex.copy()
-        return EConstantPartSelectExpression(location, typeCopy, arrayCopy, msbIndexCopy, lsbIndexCopy)
-    }
-
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
         @Suppress("DuplicatedCode")
         newExpression.parent = this

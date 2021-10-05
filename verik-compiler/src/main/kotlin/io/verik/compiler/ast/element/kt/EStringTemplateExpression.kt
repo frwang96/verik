@@ -17,7 +17,6 @@
 package io.verik.compiler.ast.element.kt
 
 import io.verik.compiler.ast.element.common.EAbstractStringEntryContainer
-import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.StringEntry
 import io.verik.compiler.ast.property.SvSerializationType
@@ -43,10 +42,5 @@ class EStringTemplateExpression(
 
     override fun accept(visitor: Visitor) {
         visitor.visitStringTemplateExpression(this)
-    }
-
-    override fun copy(): EExpression {
-        val copyEntries = entries.map { it.copy() }
-        return EStringTemplateExpression(location, copyEntries)
     }
 }

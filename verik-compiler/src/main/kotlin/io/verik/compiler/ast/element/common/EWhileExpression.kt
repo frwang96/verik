@@ -48,12 +48,6 @@ class EWhileExpression(
         body.accept(visitor)
     }
 
-    override fun copy(): EWhileExpression {
-        val conditionCopy = condition.copy()
-        val bodyCopy = body.copy()
-        return EWhileExpression(location, conditionCopy, bodyCopy, isDoWhile)
-    }
-
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
         newExpression.parent = this
         return when (oldExpression) {

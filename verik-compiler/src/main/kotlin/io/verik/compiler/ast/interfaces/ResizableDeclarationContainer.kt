@@ -14,14 +14,11 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.specialize
+package io.verik.compiler.ast.interfaces
 
-import io.verik.compiler.common.ProjectStage
-import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.ast.element.common.EDeclaration
 
-object DeclarationSpecializerStage : ProjectStage() {
+interface ResizableDeclarationContainer : DeclarationContainer {
 
-    override val checkNormalization = true
-
-    override fun process(projectContext: ProjectContext) {}
+    fun insertChild(declaration: EDeclaration)
 }

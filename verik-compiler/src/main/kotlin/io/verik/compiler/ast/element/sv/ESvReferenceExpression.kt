@@ -41,10 +41,4 @@ class ESvReferenceExpression(
     override fun accept(visitor: Visitor) {
         visitor.visitSvReferenceExpression(this)
     }
-
-    override fun copy(): EExpression {
-        val copyType = type.copy()
-        val copyReceiver = receiver?.copy()
-        return ESvReferenceExpression(location, copyType, reference, copyReceiver, isScopeResolution)
-    }
 }

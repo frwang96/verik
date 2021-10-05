@@ -21,11 +21,4 @@ import io.verik.compiler.ast.element.common.EExpression
 class WhenEntry(
     var conditions: ArrayList<EExpression>,
     var body: EExpression
-) {
-
-    fun copy(): WhenEntry {
-        val conditionsCopy = conditions.map { it.copy() }
-        val bodyCopy = body.copy()
-        return WhenEntry(ArrayList(conditionsCopy), bodyCopy)
-    }
-}
+)

@@ -32,11 +32,11 @@ object BasicClassInterpreter {
 
     fun interpretBasicClass(basicClass: EKtBasicClass, referenceUpdater: ReferenceUpdater) {
         val primaryConstructor = basicClass.primaryConstructor
-        val members = if (primaryConstructor != null) {
+        val declarations = if (primaryConstructor != null) {
             val function = interpretConstructor(primaryConstructor, referenceUpdater)
-            listOf(function) + basicClass.members
+            listOf(function) + basicClass.declarations
         } else {
-            basicClass.members
+            basicClass.declarations
         }
         referenceUpdater.replace(
             basicClass,
@@ -45,7 +45,7 @@ object BasicClassInterpreter {
                 basicClass.name,
                 basicClass.supertype,
                 basicClass.typeParameters,
-                ArrayList(members)
+                ArrayList(declarations)
             )
         )
     }

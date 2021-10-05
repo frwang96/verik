@@ -23,10 +23,4 @@ import io.verik.compiler.ast.interfaces.Reference
 class StructLiteralEntry(
     override var reference: Declaration,
     var expression: EExpression
-) : Reference {
-
-    fun copy(): StructLiteralEntry {
-        val copyExpression = expression.copy()
-        return StructLiteralEntry(reference, copyExpression)
-    }
-}
+) : Reference

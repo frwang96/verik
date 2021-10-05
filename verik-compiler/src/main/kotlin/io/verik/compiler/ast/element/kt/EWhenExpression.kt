@@ -55,13 +55,6 @@ class EWhenExpression(
         }
     }
 
-    override fun copy(): EWhenExpression {
-        val typeCopy = type.copy()
-        val subjectCopy = subject.copy()
-        val entriesCopy = entries.map { it.copy() }
-        return EWhenExpression(location, typeCopy, subjectCopy, entriesCopy)
-    }
-
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
         newExpression.parent = this
         if (subject == oldExpression) {

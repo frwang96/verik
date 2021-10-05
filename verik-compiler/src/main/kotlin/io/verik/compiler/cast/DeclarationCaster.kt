@@ -77,8 +77,8 @@ object DeclarationCaster {
         val typeParameters = classOrObject.typeParameters.mapNotNull {
             castContext.casterVisitor.getElement<ETypeParameter>(it)
         }
-        val members = classOrObject.declarations.mapNotNull {
-            castContext.casterVisitor.getElement(it)
+        val declarations = classOrObject.declarations.mapNotNull {
+            castContext.casterVisitor.getDeclaration(it)
         }
         val annotations = classOrObject.annotationEntries.mapNotNull {
             AnnotationCaster.castAnnotationEntry(it, castContext)
@@ -95,8 +95,8 @@ object DeclarationCaster {
         basicClass.supertype = supertype
         typeParameters.forEach { it.parent = basicClass }
         basicClass.typeParameters = ArrayList(typeParameters)
-        members.forEach { it.parent = basicClass }
-        basicClass.members = ArrayList(members)
+        declarations.forEach { it.parent = basicClass }
+        basicClass.declarations = ArrayList(declarations)
         annotations.forEach { it.parent = basicClass }
         basicClass.annotations = annotations
         basicClass.isEnum = isEnum

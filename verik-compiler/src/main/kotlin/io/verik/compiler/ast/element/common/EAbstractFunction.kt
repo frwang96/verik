@@ -16,12 +16,11 @@
 
 package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.message.Messages
 
-abstract class EAbstractFunction : ETypedElement(), Declaration, ExpressionContainer {
+abstract class EAbstractFunction : EDeclaration(), ExpressionContainer {
 
     abstract var body: EExpression?
 

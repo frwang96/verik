@@ -37,8 +37,4 @@ class EStringExpression(
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {}
-
-    override fun copy(): EExpression {
-        return EStringExpression(location, text)
-    }
 }

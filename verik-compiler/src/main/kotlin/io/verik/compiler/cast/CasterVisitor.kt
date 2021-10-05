@@ -17,6 +17,7 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.ast.element.common.EConstantExpression
+import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
@@ -49,6 +50,7 @@ import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtConstantExpression
+import org.jetbrains.kotlin.psi.KtDeclaration
 import org.jetbrains.kotlin.psi.KtDoWhileExpression
 import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
 import org.jetbrains.kotlin.psi.KtElement
@@ -78,6 +80,23 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
     inline fun <reified T : EElement> getElement(element: KtElement): T? {
         @Suppress("UNNECESSARY_SAFE_CALL")
         return element.accept(this, Unit)?.cast()
+    }
+
+    fun getDeclaration(declaration: KtDeclaration): EDeclaration? {
+        val location = declaration.location()
+        @Suppress("RedundantNullableReturnType")
+        val element: EElement? = declaration.accept(this, Unit)
+        return when (element) {
+            is EDeclaration -> element
+            null -> {
+                Messages.INTERNAL_ERROR.on(location, "Declaration expected but got: null")
+                null
+            }
+            else -> {
+                Messages.INTERNAL_ERROR.on(location, "Declaration expected but got: ${element::class.simpleName}")
+                null
+            }
+        }
     }
 
     fun getExpression(expression: KtExpression): EExpression {

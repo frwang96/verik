@@ -40,10 +40,4 @@ class EKtReferenceExpression(
     override fun accept(visitor: Visitor) {
         visitor.visitKtReferenceExpression(this)
     }
-
-    override fun copy(): EExpression {
-        val copyType = type.copy()
-        val copyReceiver = receiver?.copy()
-        return EKtReferenceExpression(location, copyType, reference, copyReceiver)
-    }
 }

@@ -16,18 +16,20 @@
 
 package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.core.common.Core
 
-abstract class EAbstractPackage : EElement(), Declaration {
+abstract class EAbstractPackage : EDeclaration() {
 
     abstract var files: ArrayList<EFile>
+
+    override var type = Core.Kt.C_Unit.toType()
 
     override fun acceptChildren(visitor: TreeVisitor) {
         files.forEach { it.accept(visitor) }
     }
 
     fun isEmpty(): Boolean {
-        return files.all { it.members.isEmpty() }
+        return files.all { it.declarations.isEmpty() }
     }
 }

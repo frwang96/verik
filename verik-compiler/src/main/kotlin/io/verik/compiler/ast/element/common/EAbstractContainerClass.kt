@@ -16,25 +16,25 @@
 
 package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.interfaces.ResizableElementContainer
+import io.verik.compiler.ast.interfaces.ResizableDeclarationContainer
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.replaceIfContains
 
-abstract class EAbstractContainerClass : EAbstractClass(), ResizableElementContainer {
+abstract class EAbstractContainerClass : EAbstractClass(), ResizableDeclarationContainer {
 
-    abstract var members: ArrayList<EElement>
+    abstract var declarations: ArrayList<EDeclaration>
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        members.forEach { it.accept(visitor) }
+        declarations.forEach { it.accept(visitor) }
     }
 
-    override fun replaceChild(oldElement: EElement, newElement: EElement): Boolean {
-        newElement.parent = this
-        return members.replaceIfContains(oldElement, newElement)
+    override fun replaceChild(oldDeclaration: EDeclaration, newDeclaration: EDeclaration): Boolean {
+        newDeclaration.parent = this
+        return declarations.replaceIfContains(oldDeclaration, newDeclaration)
     }
 
-    override fun insertChild(element: EElement) {
-        element.parent = this
-        members.add(element)
+    override fun insertChild(declaration: EDeclaration) {
+        declaration.parent = this
+        declarations.add(declaration)
     }
 }

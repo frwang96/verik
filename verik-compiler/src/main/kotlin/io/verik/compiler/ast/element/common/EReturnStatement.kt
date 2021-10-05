@@ -43,12 +43,6 @@ class EReturnStatement(
         expression?.accept(visitor)
     }
 
-    override fun copy(): EReturnStatement {
-        val copyType = type.copy()
-        val copyExpression = expression?.copy()
-        return EReturnStatement(location, copyType, copyExpression)
-    }
-
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
         newExpression.parent = this
         return if (expression == oldExpression) {

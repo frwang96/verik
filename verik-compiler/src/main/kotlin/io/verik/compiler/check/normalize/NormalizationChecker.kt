@@ -25,7 +25,6 @@ object NormalizationChecker : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
         if (projectContext.config.debug) {
-            DeclarationTypeChecker.accept(projectContext)
             ElementParentChecker.accept(projectContext)
             ElementAliasChecker.accept(projectContext)
             TypeAliasChecker.accept(projectContext)

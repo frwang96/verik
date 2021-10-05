@@ -26,6 +26,7 @@ import io.verik.compiler.ast.element.sv.EForStatement
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.KtUnaryOperatorKind
+import io.verik.compiler.copy.ElementCopier
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreKtTransformableFunctionDeclaration
 import io.verik.compiler.core.common.CorePackage
@@ -63,7 +64,7 @@ object CoreKtCollections : CoreScope(CorePackage.KT_COLLECTIONS) {
                 val iteration = EKtUnaryExpression(
                     receiver.location,
                     Core.Kt.C_Int.toType(),
-                    functionLiteralValueParameterReferenceExpression.copy(),
+                    ElementCopier.copy(functionLiteralValueParameterReferenceExpression),
                     KtUnaryOperatorKind.POST_INC
                 )
                 return EForStatement(

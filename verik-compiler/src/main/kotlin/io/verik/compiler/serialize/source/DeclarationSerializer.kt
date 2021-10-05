@@ -40,7 +40,7 @@ object DeclarationSerializer {
     fun serializeSvBasicClass(basicClass: ESvBasicClass, serializerContext: SerializerContext) {
         serializerContext.appendLine("class ${basicClass.name};")
         serializerContext.indent {
-            basicClass.members.forEach { serializerContext.serializeAsDeclaration(it) }
+            basicClass.declarations.forEach { serializerContext.serializeAsDeclaration(it) }
             serializerContext.appendLine()
         }
         serializerContext.appendLine("endclass : ${basicClass.name}")
@@ -50,7 +50,7 @@ object DeclarationSerializer {
         serializerContext.append("module ${module.name}")
         serializePortList(module.ports, serializerContext)
         serializerContext.indent {
-            module.members.forEach { serializerContext.serializeAsDeclaration(it) }
+            module.declarations.forEach { serializerContext.serializeAsDeclaration(it) }
             serializerContext.appendLine()
         }
         serializerContext.appendLine("endmodule : ${module.name}")
@@ -60,7 +60,7 @@ object DeclarationSerializer {
         serializerContext.append("interface ${moduleInterface.name}")
         serializePortList(moduleInterface.ports, serializerContext)
         serializerContext.indent {
-            moduleInterface.members.forEach { serializerContext.serializeAsDeclaration(it) }
+            moduleInterface.declarations.forEach { serializerContext.serializeAsDeclaration(it) }
             serializerContext.appendLine()
         }
         serializerContext.appendLine("endinterface : ${moduleInterface.name}")

@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.interfaces.ResizableElementContainer
+import io.verik.compiler.ast.interfaces.ResizableDeclarationContainer
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.common.replaceIfContains
@@ -29,11 +29,11 @@ class EFile(
     override val location: SourceLocation,
     val inputPath: Path,
     private val outputPath: Path?,
-    var members: ArrayList<EElement>
-) : EElement(), ResizableElementContainer {
+    var declarations: ArrayList<EDeclaration>
+) : EElement(), ResizableDeclarationContainer {
 
     init {
-        members.forEach { it.parent = this }
+        declarations.forEach { it.parent = this }
     }
 
     override fun accept(visitor: Visitor) {
@@ -41,17 +41,17 @@ class EFile(
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        members.forEach { it.accept(visitor) }
+        declarations.forEach { it.accept(visitor) }
     }
 
-    override fun replaceChild(oldElement: EElement, newElement: EElement): Boolean {
-        newElement.parent = this
-        return members.replaceIfContains(oldElement, newElement)
+    override fun replaceChild(oldDeclaration: EDeclaration, newDeclaration: EDeclaration): Boolean {
+        newDeclaration.parent = this
+        return declarations.replaceIfContains(oldDeclaration, newDeclaration)
     }
 
-    override fun insertChild(element: EElement) {
-        element.parent = this
-        members.add(element)
+    override fun insertChild(declaration: EDeclaration) {
+        declaration.parent = this
+        declarations.add(declaration)
     }
 
     fun getOutputPathNotNull(): Path {

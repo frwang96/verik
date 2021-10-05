@@ -16,9 +16,8 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.common.ENullElement
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
@@ -52,11 +51,13 @@ object FunctionInterpreterStage : ProjectStage() {
 
         override fun visitKtFunction(function: EKtFunction) {
             super.visitKtFunction(function)
-            referenceUpdater.replace(function, interpret(function))
+            val interpretedFunction = interpret(function)
+            if (interpretedFunction != null)
+                referenceUpdater.replace(function, interpretedFunction)
         }
     }
 
-    private fun interpret(function: EKtFunction): EElement {
+    private fun interpret(function: EKtFunction): EDeclaration? {
         val body = function.body
         return when {
             function.hasAnnotation(Annotations.COM) -> {
@@ -64,16 +65,15 @@ object FunctionInterpreterStage : ProjectStage() {
                     EAlwaysComBlock(function.location, function.name, body)
                 } else {
                     Messages.FUNCTION_MISSING_BODY.on(function, function.name)
-                    ENullElement(function.location)
+                    null
                 }
             }
             function.hasAnnotation(Annotations.SEQ) -> {
                 if (body != null) {
                     getAlwaysSeqBlock(function, body)
-                        ?: ENullElement(function.location)
                 } else {
                     Messages.FUNCTION_MISSING_BODY.on(function, function.name)
-                    ENullElement(function.location)
+                    null
                 }
             }
             function.hasAnnotation(Annotations.RUN) -> {
@@ -81,7 +81,7 @@ object FunctionInterpreterStage : ProjectStage() {
                     EInitialBlock(function.location, function.name, body)
                 } else {
                     Messages.FUNCTION_MISSING_BODY.on(function, function.name)
-                    ENullElement(function.location)
+                    null
                 }
             }
             function.hasAnnotation(Annotations.TASK) -> {

@@ -48,13 +48,6 @@ class EKtArrayAccessExpression(
         indices.forEach { it.accept(visitor) }
     }
 
-    override fun copy(): EKtArrayAccessExpression {
-        val typeCopy = type.copy()
-        val arrayCopy = array.copy()
-        val indicesCopy = indices.map { it.copy() }
-        return EKtArrayAccessExpression(location, typeCopy, arrayCopy, ArrayList(indicesCopy))
-    }
-
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
         newExpression.parent = this
         return if (array == oldExpression) {

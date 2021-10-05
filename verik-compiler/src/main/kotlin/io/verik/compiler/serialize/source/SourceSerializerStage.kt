@@ -34,10 +34,10 @@ object SourceSerializerStage : ProjectStage() {
     }
 
     private fun serialize(projectContext: ProjectContext, file: EFile): TextFile? {
-        if (file.members.all { SourceSerializerVisitor.declarationIsHidden(it) })
+        if (file.declarations.all { SourceSerializerVisitor.declarationIsHidden(it) })
             return null
         val serializerContext = SerializerContext(projectContext, file)
-        file.members.forEach {
+        file.declarations.forEach {
             serializerContext.serializeAsDeclaration(it)
         }
         return serializerContext.toTextFile()

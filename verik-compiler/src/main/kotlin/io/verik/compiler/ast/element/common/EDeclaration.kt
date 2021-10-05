@@ -14,11 +14,8 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.interfaces
+package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.interfaces.Declaration
 
-interface ElementContainer {
-
-    fun replaceChild(oldElement: EElement, newElement: EElement): Boolean
-}
+abstract class EDeclaration : ETypedElement(), Declaration

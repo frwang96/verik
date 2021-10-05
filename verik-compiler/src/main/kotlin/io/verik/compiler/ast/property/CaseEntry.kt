@@ -21,11 +21,4 @@ import io.verik.compiler.ast.element.common.EExpression
 class CaseEntry(
     var conditions: ArrayList<EExpression>,
     var body: EExpression
-) {
-
-    fun copy(): CaseEntry {
-        val conditionsCopy = conditions.map { it.copy() }
-        val bodyCopy = body.copy()
-        return CaseEntry(ArrayList(conditionsCopy), bodyCopy)
-    }
-}
+)

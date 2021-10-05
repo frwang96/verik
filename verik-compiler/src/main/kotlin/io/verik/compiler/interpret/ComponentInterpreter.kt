@@ -42,7 +42,7 @@ object ComponentInterpreter {
                     basicClass.supertype,
                     basicClass.typeParameters,
                     ports,
-                    basicClass.members,
+                    basicClass.declarations,
                     isTop
                 )
                 referenceUpdater.replace(basicClass, module)
@@ -57,7 +57,7 @@ object ComponentInterpreter {
                     basicClass.supertype,
                     basicClass.typeParameters,
                     ports,
-                    basicClass.members
+                    basicClass.declarations
                 )
                 referenceUpdater.replace(basicClass, moduleInterface)
                 basicClass.primaryConstructor?.let { referenceUpdater.update(it, moduleInterface) }
