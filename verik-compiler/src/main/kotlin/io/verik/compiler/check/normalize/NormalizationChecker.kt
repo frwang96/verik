@@ -28,6 +28,7 @@ object NormalizationChecker : ProjectStage() {
             ElementParentChecker.accept(projectContext)
             ElementAliasChecker.accept(projectContext)
             TypeAliasChecker.accept(projectContext)
+            DanglingReferenceChecker.accept(projectContext)
             SourceLocationChecker.accept(projectContext)
         }
     }

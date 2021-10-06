@@ -23,13 +23,13 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-internal class ProjectIndexerTest : BaseTest() {
+internal class DeclarationIndexerStageTest : BaseTest() {
 
     @Test
     fun `error name unicode`() {
         assertThrows<TestErrorException> {
             driveTest(
-                IndexerStage::class,
+                DeclarationIndexerStage::class,
                 """
                     @Suppress("ObjectPropertyName")
                     val αβγ = 0

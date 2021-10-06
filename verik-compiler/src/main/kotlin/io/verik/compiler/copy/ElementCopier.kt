@@ -21,18 +21,26 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
-import io.verik.compiler.message.Messages
 
 object ElementCopier {
 
     fun <E : EElement> copy(element: E): E {
+        val referenceForwardingMap = ReferenceForwardingMap()
+        val declarationCopierVisitor = DeclarationCopierVisitor(referenceForwardingMap)
+        element.accept(declarationCopierVisitor)
+        val copyContext = CopyContext(referenceForwardingMap)
+        return copy(element, copyContext)
+    }
+
+    fun <E : EElement> copy(element: E, copyContext: CopyContext): E {
         val copyElement = when (element) {
-            is EKtBlockExpression -> copyKtBlockExpression(element)
-            is EKtReferenceExpression -> copyKtReferenceExpression(element)
-            is EKtCallExpression -> copyKtCallExpression(element)
+            is EKtBlockExpression -> copyKtBlockExpression(element, copyContext)
+            is EKtReferenceExpression -> copyKtReferenceExpression(element, copyContext)
+            is EKtCallExpression -> copyKtCallExpression(element, copyContext)
             is EConstantExpression -> copyConstantExpression(element)
             else -> {
-                Messages.INTERNAL_ERROR.on(element, "Unable to copy element: $element")
+                // TODO throw error if unable to copy
+                // Messages.INTERNAL_ERROR.on(element, "Unable to copy element: $element")
                 element
             }
         }
@@ -40,22 +48,28 @@ object ElementCopier {
         return copyElement as E
     }
 
-    private fun copyKtBlockExpression(blockExpression: EKtBlockExpression): EKtBlockExpression {
+    private fun copyKtBlockExpression(
+        blockExpression: EKtBlockExpression,
+        copyContext: CopyContext
+    ): EKtBlockExpression {
         val type = blockExpression.type.copy()
-        val statements = blockExpression.statements.map { copy(it) }
+        val statements = blockExpression.statements.map { copy(it, copyContext) }
         return EKtBlockExpression(blockExpression.location, type, ArrayList(statements))
     }
 
-    private fun copyKtReferenceExpression(referenceExpression: EKtReferenceExpression): EKtReferenceExpression {
+    private fun copyKtReferenceExpression(
+        referenceExpression: EKtReferenceExpression,
+        copyContext: CopyContext
+    ): EKtReferenceExpression {
         val type = referenceExpression.type.copy()
-        val receiver = referenceExpression.receiver?.let { copy(it) }
+        val receiver = referenceExpression.receiver?.let { copy(it, copyContext) }
         return EKtReferenceExpression(referenceExpression.location, type, referenceExpression.reference, receiver)
     }
 
-    private fun copyKtCallExpression(callExpression: EKtCallExpression): EKtCallExpression {
+    private fun copyKtCallExpression(callExpression: EKtCallExpression, copyContext: CopyContext): EKtCallExpression {
         val type = callExpression.type.copy()
-        val receiver = callExpression.receiver?.let { copy(it) }
-        val valueArguments = callExpression.valueArguments.map { copy(it) }
+        val receiver = callExpression.receiver?.let { copy(it, copyContext) }
+        val valueArguments = callExpression.valueArguments.map { copy(it, copyContext) }
         val typeArguments = callExpression.typeArguments.map { it.copy() }
         return EKtCallExpression(
             callExpression.location,

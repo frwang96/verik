@@ -41,18 +41,18 @@ import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 import org.jetbrains.kotlin.psi.KtTypeAlias
 import org.jetbrains.kotlin.psi.KtTypeParameter
 
-object IndexerStage : ProjectStage() {
+object DeclarationIndexerStage : ProjectStage() {
 
     override val checkNormalization = false
 
     override fun process(projectContext: ProjectContext) {
         val castContext = CastContext(projectContext.bindingContext)
-        val indexerVisitor = IndexerVisitor(castContext)
-        projectContext.ktFiles.forEach { it.accept(indexerVisitor) }
+        val declarationIndexerVisitor = DeclarationIndexerVisitor(castContext)
+        projectContext.ktFiles.forEach { it.accept(declarationIndexerVisitor) }
         projectContext.castContext = castContext
     }
 
-    class IndexerVisitor(private val castContext: CastContext) : KtTreeVisitorVoid() {
+    class DeclarationIndexerVisitor(private val castContext: CastContext) : KtTreeVisitorVoid() {
 
         private val nameRegex = Regex("[_a-zA-Z][_a-zA-Z0-9]*")
 

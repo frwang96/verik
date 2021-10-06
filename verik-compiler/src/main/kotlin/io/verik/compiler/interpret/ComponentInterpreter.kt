@@ -34,7 +34,7 @@ object ComponentInterpreter {
         val basicClassType = basicClass.toType()
         return when {
             basicClassType.isSubtype(Core.Vk.C_Module.toType()) -> {
-                val ports = interpretPorts(basicClass.primaryConstructor?.valueParameters)
+                val ports = interpretPorts(basicClass.primaryConstructor?.valueParameters, referenceUpdater)
                 val isTop = basicClass.hasAnnotation(Annotations.TOP)
                 val module = EModule(
                     basicClass.location,
@@ -50,7 +50,7 @@ object ComponentInterpreter {
                 true
             }
             basicClassType.isSubtype(Core.Vk.C_ModuleInterface.toType()) -> {
-                val ports = interpretPorts(basicClass.primaryConstructor?.valueParameters)
+                val ports = interpretPorts(basicClass.primaryConstructor?.valueParameters, referenceUpdater)
                 val moduleInterface = EModuleInterface(
                     basicClass.location,
                     basicClass.name,
@@ -64,7 +64,7 @@ object ComponentInterpreter {
                 true
             }
             basicClassType.isSubtype(Core.Vk.C_ModulePort.toType()) -> {
-                val ports = interpretPorts(basicClass.primaryConstructor?.valueParameters)
+                val ports = interpretPorts(basicClass.primaryConstructor?.valueParameters, referenceUpdater)
                 val modulePort = EModulePort(
                     basicClass.location,
                     basicClass.name,
@@ -83,7 +83,7 @@ object ComponentInterpreter {
                 if (eventValueParameter != null) {
                     val eventValueParameterIndex = valueParameters.indexOf(eventValueParameter)
                     valueParameters.remove(eventValueParameter)
-                    val ports = interpretPorts(valueParameters)
+                    val ports = interpretPorts(valueParameters, referenceUpdater)
                     val clockingBlock = EClockingBlock(
                         basicClass.location,
                         basicClass.name,
@@ -103,13 +103,16 @@ object ComponentInterpreter {
         }
     }
 
-    private fun interpretPorts(valueParameters: List<EKtValueParameter>?): List<EPort> {
+    private fun interpretPorts(
+        valueParameters: List<EKtValueParameter>?,
+        referenceUpdater: ReferenceUpdater
+    ): List<EPort> {
         return valueParameters
-            ?.mapNotNull { interpretPort(it) }
+            ?.mapNotNull { interpretPort(it, referenceUpdater) }
             ?: listOf()
     }
 
-    private fun interpretPort(valueParameter: EKtValueParameter): EPort? {
+    private fun interpretPort(valueParameter: EKtValueParameter, referenceUpdater: ReferenceUpdater): EPort? {
         val portType = when {
             valueParameter.hasAnnotation(Annotations.IN) -> PortType.INPUT
             valueParameter.hasAnnotation(Annotations.OUT) -> PortType.OUTPUT
@@ -123,7 +126,9 @@ object ComponentInterpreter {
             }
         }
         return if (portType != null) {
-            EPort(valueParameter.location, valueParameter.name, valueParameter.type, portType)
+            val port = EPort(valueParameter.location, valueParameter.name, valueParameter.type, portType)
+            referenceUpdater.update(valueParameter, port)
+            port
         } else {
             Messages.PORT_NO_DIRECTIONALITY.on(valueParameter, valueParameter.name)
             null
