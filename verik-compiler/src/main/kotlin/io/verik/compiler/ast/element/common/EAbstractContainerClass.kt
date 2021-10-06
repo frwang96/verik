@@ -25,6 +25,7 @@ abstract class EAbstractContainerClass : EAbstractClass(), ResizableDeclarationC
     abstract var declarations: ArrayList<EDeclaration>
 
     override fun acceptChildren(visitor: TreeVisitor) {
+        super.acceptChildren(visitor)
         declarations.forEach { it.accept(visitor) }
     }
 

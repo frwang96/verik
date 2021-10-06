@@ -18,7 +18,6 @@ package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EAbstractClass
 import io.verik.compiler.ast.element.common.ETypeParameter
-import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
@@ -36,6 +35,4 @@ class EEnum(
     override fun accept(visitor: Visitor) {
         visitor.visitEnum(this)
     }
-
-    override fun acceptChildren(visitor: TreeVisitor) {}
 }

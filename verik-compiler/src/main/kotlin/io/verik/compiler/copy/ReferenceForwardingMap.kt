@@ -34,10 +34,11 @@ package io.verik.compiler.copy
 
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.interfaces.Declaration
+import io.verik.compiler.message.Messages
 
 class ReferenceForwardingMap {
 
-    private val referenceForwardingMap = HashMap<EDeclaration, EDeclaration>()
+    val referenceForwardingMap = HashMap<EDeclaration, EDeclaration>()
 
     operator fun set(oldDeclaration: EDeclaration, newDeclaration: EDeclaration) {
         referenceForwardingMap[oldDeclaration] = newDeclaration
@@ -45,5 +46,22 @@ class ReferenceForwardingMap {
 
     operator fun get(declaration: Declaration): Declaration? {
         return referenceForwardingMap[declaration]
+    }
+
+    inline fun <reified D: EDeclaration> getAsDeclaration(declaration: D): D? {
+        return when (val forwardedDeclaration = referenceForwardingMap[declaration]) {
+            is D -> forwardedDeclaration
+            null -> {
+                Messages.INTERNAL_ERROR.on(declaration, "Forwarded declaration not found: ${declaration.name}")
+                null
+            }
+            else -> {
+                Messages.INTERNAL_ERROR.on(
+                    declaration,
+                    "Unexpected forwarded declaration: Expected ${D::class.simpleName} actual $forwardedDeclaration"
+                )
+                null
+            }
+        }
     }
 }

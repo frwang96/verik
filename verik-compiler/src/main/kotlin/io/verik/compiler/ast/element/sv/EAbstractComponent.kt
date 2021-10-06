@@ -24,6 +24,7 @@ abstract class EAbstractComponent : EAbstractClass() {
     abstract val ports: List<EPort>
 
     override fun acceptChildren(visitor: TreeVisitor) {
+        super.acceptChildren(visitor)
         ports.forEach { it.accept(visitor) }
     }
 }

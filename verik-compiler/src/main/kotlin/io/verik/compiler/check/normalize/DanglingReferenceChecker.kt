@@ -20,9 +20,12 @@ import io.verik.compiler.ast.element.common.EAbstractCallExpression
 import io.verik.compiler.ast.element.common.EAbstractReferenceExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.ETypedElement
+import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.EAbstractComponentInstantiation
 import io.verik.compiler.ast.element.sv.EStructLiteralExpression
 import io.verik.compiler.ast.interfaces.Declaration
+import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -52,9 +55,24 @@ object DanglingReferenceChecker : ProjectStage() {
 
     class DanglingReferenceCheckerVisitor(private val declarations: HashSet<EDeclaration>) : TreeVisitor() {
 
+        private fun checkReference(type: Type, element: EElement) {
+            type.arguments.forEach { checkReference(it, element) }
+            checkReference(type.reference, element)
+        }
+
         private fun checkReference(reference: Declaration, element: EElement) {
             if (reference is EDeclaration && reference !in declarations)
                 Messages.INTERNAL_ERROR.on(element, "Dangling reference to ${reference.name} in $element")
+        }
+
+        override fun visitTypedElement(typedElement: ETypedElement) {
+            super.visitTypedElement(typedElement)
+            checkReference(typedElement.type, typedElement)
+            if (typedElement is EKtCallExpression) {
+                typedElement.typeArguments.forEach {
+                    checkReference(it, typedElement)
+                }
+            }
         }
 
         override fun visitAbstractComponentInstantiation(

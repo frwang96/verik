@@ -18,6 +18,7 @@ package io.verik.compiler.interpret
 
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.ETypedElement
+import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.interfaces.DeclarationContainer
 import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.ast.property.Type
@@ -62,6 +63,11 @@ class ReferenceUpdater(val projectContext: ProjectContext) {
         override fun visitTypedElement(typedElement: ETypedElement) {
             super.visitTypedElement(typedElement)
             updateTypeReferences(typedElement.type)
+            if (typedElement is EKtCallExpression) {
+                typedElement.typeArguments.forEach {
+                    updateTypeReferences(it)
+                }
+            }
             if (typedElement is Reference) {
                 val reference = referenceMap[typedElement.reference]
                 if (reference != null)

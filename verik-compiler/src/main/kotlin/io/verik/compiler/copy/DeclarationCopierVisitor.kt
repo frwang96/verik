@@ -32,12 +32,29 @@
 
 package io.verik.compiler.copy
 
+import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtProperty
+import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.TreeVisitor
 
 class DeclarationCopierVisitor(
     private val referenceForwardingMap: ReferenceForwardingMap
 ) : TreeVisitor() {
+
+    override fun visitKtBasicClass(basicClass: EKtBasicClass) {
+        super.visitKtBasicClass(basicClass)
+        val newBasicClass = EKtBasicClass(
+            basicClass.location,
+            basicClass.name,
+            NullDeclaration.toType(),
+            arrayListOf(),
+            arrayListOf(),
+            listOf(),
+            basicClass.isEnum,
+            null
+        )
+        referenceForwardingMap[basicClass] = newBasicClass
+    }
 
     override fun visitKtProperty(property: EKtProperty) {
         super.visitKtProperty(property)

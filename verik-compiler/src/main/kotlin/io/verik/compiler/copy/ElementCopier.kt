@@ -18,6 +18,7 @@ package io.verik.compiler.copy
 
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
@@ -46,6 +47,12 @@ object ElementCopier {
         }
         @Suppress("UNCHECKED_CAST")
         return copyElement as E
+    }
+
+    @Suppress("unused")
+    private fun copyKtBasicClass(basicClass: EKtBasicClass, copyContext: CopyContext): EKtBasicClass {
+        return copyContext.referenceForwardingMap.getAsDeclaration(basicClass)
+            ?: return basicClass
     }
 
     private fun copyKtBlockExpression(
