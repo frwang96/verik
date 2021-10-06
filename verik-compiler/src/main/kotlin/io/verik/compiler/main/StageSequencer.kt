@@ -37,6 +37,7 @@ import io.verik.compiler.interpret.FileSplitterStage
 import io.verik.compiler.interpret.FunctionInterpreterStage
 import io.verik.compiler.interpret.ModulePortParentResolverStage
 import io.verik.compiler.interpret.PropertyInterpreterStage
+import io.verik.compiler.interpret.ValueParameterInterpreterStage
 import io.verik.compiler.serialize.general.ConfigFileSerializerStage
 import io.verik.compiler.serialize.general.OrderFileSerializerStage
 import io.verik.compiler.serialize.general.PackageFileSerializerStage
@@ -123,6 +124,7 @@ object StageSequencer {
         stageSequence.add(ClassInterpreterStage)
         stageSequence.add(FunctionInterpreterStage)
         stageSequence.add(PropertyInterpreterStage)
+        stageSequence.add(ValueParameterInterpreterStage)
         stageSequence.add(ModulePortParentResolverStage)
         stageSequence.add(FileSplitterStage)
 

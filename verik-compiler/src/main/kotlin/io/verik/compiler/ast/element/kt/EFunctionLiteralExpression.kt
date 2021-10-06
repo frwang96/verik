@@ -16,19 +16,23 @@
 
 package io.verik.compiler.ast.element.kt
 
+import io.verik.compiler.ast.element.common.EAbstractValueParameter
+import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.interfaces.DeclarationContainer
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
+import io.verik.compiler.common.replaceIfContains
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
 
 class EFunctionLiteralExpression(
     override val location: SourceLocation,
-    val valueParameters: List<EKtValueParameter>,
+    val valueParameters: ArrayList<EAbstractValueParameter>,
     var body: EExpression
-) : EExpression(), ExpressionContainer {
+) : EExpression(), ExpressionContainer, DeclarationContainer {
 
     override var type = Core.Kt.C_Function.toType()
 
@@ -44,7 +48,7 @@ class EFunctionLiteralExpression(
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        valueParameters.forEach { it.parent = this }
+        valueParameters.forEach { it.accept(visitor) }
         body.accept(visitor)
     }
 
@@ -53,6 +57,13 @@ class EFunctionLiteralExpression(
         return if (body == oldExpression) {
             body = newExpression
             true
+        } else false
+    }
+
+    override fun replaceChild(oldDeclaration: EDeclaration, newDeclaration: EDeclaration): Boolean {
+        newDeclaration.parent = this
+        return if (oldDeclaration is EAbstractValueParameter && newDeclaration is EAbstractValueParameter) {
+            valueParameters.replaceIfContains(oldDeclaration, newDeclaration)
         } else false
     }
 }

@@ -22,6 +22,7 @@ import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtFunction
+import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.EEventControlExpression
@@ -55,80 +56,87 @@ object FunctionInterpreterStage : ProjectStage() {
             if (interpretedFunction != null)
                 referenceUpdater.replace(function, interpretedFunction)
         }
-    }
 
-    private fun interpret(function: EKtFunction): EDeclaration? {
-        val body = function.body
-        return when {
-            function.hasAnnotation(Annotations.COM) -> {
-                if (body != null) {
-                    EAlwaysComBlock(function.location, function.name, body)
-                } else {
-                    Messages.FUNCTION_MISSING_BODY.on(function, function.name)
-                    null
+        private fun interpret(function: EKtFunction): EDeclaration? {
+            val body = function.body
+            return when {
+                function.hasAnnotation(Annotations.COM) -> {
+                    if (body != null) {
+                        EAlwaysComBlock(function.location, function.name, body)
+                    } else {
+                        Messages.FUNCTION_MISSING_BODY.on(function, function.name)
+                        null
+                    }
                 }
-            }
-            function.hasAnnotation(Annotations.SEQ) -> {
-                if (body != null) {
-                    getAlwaysSeqBlock(function, body)
-                } else {
-                    Messages.FUNCTION_MISSING_BODY.on(function, function.name)
-                    null
+                function.hasAnnotation(Annotations.SEQ) -> {
+                    if (body != null) {
+                        getAlwaysSeqBlock(function, body)
+                    } else {
+                        Messages.FUNCTION_MISSING_BODY.on(function, function.name)
+                        null
+                    }
                 }
-            }
-            function.hasAnnotation(Annotations.RUN) -> {
-                if (body != null) {
-                    EInitialBlock(function.location, function.name, body)
-                } else {
-                    Messages.FUNCTION_MISSING_BODY.on(function, function.name)
-                    null
+                function.hasAnnotation(Annotations.RUN) -> {
+                    if (body != null) {
+                        EInitialBlock(function.location, function.name, body)
+                    } else {
+                        Messages.FUNCTION_MISSING_BODY.on(function, function.name)
+                        null
+                    }
                 }
-            }
-            function.hasAnnotation(Annotations.TASK) -> {
-                val valueParameters = function.valueParameters.map {
-                    ESvValueParameter(it.location, it.name, it.type)
+                function.hasAnnotation(Annotations.TASK) -> {
+                    val valueParameters = getValueParameters(function.valueParameters, referenceUpdater)
+                    ETask(function.location, function.name, function.body, ArrayList(valueParameters))
                 }
-                ETask(function.location, function.name, function.body, ArrayList(valueParameters))
-            }
-            else -> {
-                val valueParameters = function.valueParameters.map {
-                    ESvValueParameter(it.location, it.name, it.type)
+                else -> {
+                    val valueParameters = getValueParameters(function.valueParameters, referenceUpdater)
+                    ESvFunction(
+                        function.location,
+                        function.name,
+                        function.type,
+                        function.body,
+                        false,
+                        ArrayList(valueParameters)
+                    )
                 }
-                ESvFunction(
-                    function.location,
-                    function.name,
-                    function.type,
-                    function.body,
-                    false,
-                    ArrayList(valueParameters)
-                )
             }
         }
-    }
 
-    private fun getAlwaysSeqBlock(function: EKtFunction, body: EExpression): EAlwaysSeqBlock? {
-        val onExpression = if (body is EKtBlockExpression) {
-            if (body.statements.size == 1) {
-                body.statements[0]
-            } else {
+        private fun getAlwaysSeqBlock(function: EKtFunction, body: EExpression): EAlwaysSeqBlock? {
+            val onExpression = if (body is EKtBlockExpression) {
+                if (body.statements.size == 1) {
+                    body.statements[0]
+                } else {
+                    Messages.ON_EXPRESSION_EXPECTED.on(body)
+                    return null
+                }
+            } else body
+            if (onExpression !is EKtCallExpression || onExpression.reference != Core.Vk.F_on_Event_Function) {
                 Messages.ON_EXPRESSION_EXPECTED.on(body)
                 return null
             }
-        } else body
-        if (onExpression !is EKtCallExpression || onExpression.reference != Core.Vk.F_on_Event_Function) {
-            Messages.ON_EXPRESSION_EXPECTED.on(body)
-            return null
+            val eventExpression = onExpression.valueArguments[0]
+            val eventControlExpression = EEventControlExpression(eventExpression.location, eventExpression)
+            val alwaysSeqBody = onExpression.valueArguments[1]
+                .cast<EFunctionLiteralExpression>()?.body
+                ?: return null
+            return EAlwaysSeqBlock(
+                function.location,
+                function.name,
+                alwaysSeqBody,
+                eventControlExpression
+            )
         }
-        val eventExpression = onExpression.valueArguments[0]
-        val eventControlExpression = EEventControlExpression(eventExpression.location, eventExpression)
-        val alwaysSeqBody = onExpression.valueArguments[1]
-            .cast<EFunctionLiteralExpression>()?.body
-            ?: return null
-        return EAlwaysSeqBlock(
-            function.location,
-            function.name,
-            alwaysSeqBody,
-            eventControlExpression
-        )
+
+        private fun getValueParameters(
+            valueParameters: List<EKtValueParameter>,
+            referenceUpdater: ReferenceUpdater
+        ): List<ESvValueParameter> {
+            return valueParameters.map {
+                val valueParameter = ESvValueParameter(it.location, it.name, it.type)
+                referenceUpdater.update(it, valueParameter)
+                valueParameter
+            }
+        }
     }
 }
