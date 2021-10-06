@@ -41,7 +41,7 @@ internal class PropertyStatementReorderStageTest : BaseTest() {
                 KtBlockExpression(
                     Unit,
                     [
-                        SvPropertyStatement(Unit, SvProperty(x, Boolean, null, false)),
+                        PropertyStatement(Unit, SvProperty(x, Boolean, null, false)),
                         KtCallExpression(*),
                         SvBinaryExpression(Unit, KtReferenceExpression(Boolean, x, null), ConstantExpression(*), ASSIGN)
                     ]
@@ -66,7 +66,7 @@ internal class PropertyStatementReorderStageTest : BaseTest() {
             """
                 KtBlockExpression(
                     Unit,
-                    [SvPropertyStatement(Unit, SvProperty(x, Boolean, null, false)), KtCallExpression(*)]
+                    [PropertyStatement(Unit, SvProperty(x, Boolean, null, false)), KtCallExpression(*)]
                 )
             """.trimIndent(),
             (projectContext.findDeclaration("f") as ESvFunction).body!!

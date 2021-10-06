@@ -25,6 +25,7 @@ import io.verik.compiler.ast.element.common.ENullElement
 import io.verik.compiler.ast.element.common.ENullExpression
 import io.verik.compiler.ast.element.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.common.EProject
+import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ERootPackage
 import io.verik.compiler.ast.element.common.ETypeParameter
@@ -40,7 +41,6 @@ import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
-import io.verik.compiler.ast.element.kt.EKtPropertyStatement
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.kt.EKtValueParameter
@@ -82,7 +82,6 @@ import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvProperty
-import io.verik.compiler.ast.element.sv.ESvPropertyStatement
 import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.sv.ESvValueParameter
@@ -375,15 +374,8 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitKtPropertyStatement(propertyStatement: EKtPropertyStatement) {
-        build("KtPropertyStatement") {
-            build(propertyStatement.type.toString())
-            build(propertyStatement.property)
-        }
-    }
-
-    override fun visitSvPropertyStatement(propertyStatement: ESvPropertyStatement) {
-        build("SvPropertyStatement") {
+    override fun visitPropertyStatement(propertyStatement: EPropertyStatement) {
+        build("PropertyStatement") {
             build(propertyStatement.type.toString())
             build(propertyStatement.property)
         }

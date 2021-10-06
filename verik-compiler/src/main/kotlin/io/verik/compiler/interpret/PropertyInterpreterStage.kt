@@ -18,9 +18,9 @@ package io.verik.compiler.interpret
 
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtProperty
-import io.verik.compiler.ast.element.kt.EKtPropertyStatement
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.sv.EAbstractComponentInstantiation
 import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
@@ -32,7 +32,6 @@ import io.verik.compiler.ast.element.sv.EModulePort
 import io.verik.compiler.ast.element.sv.EModulePortInstantiation
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.ESvProperty
-import io.verik.compiler.ast.element.sv.ESvPropertyStatement
 import io.verik.compiler.ast.property.PortInstantiation
 import io.verik.compiler.ast.property.PortType
 import io.verik.compiler.common.ProjectStage
@@ -55,14 +54,15 @@ object PropertyInterpreterStage : ProjectStage() {
     class PropertyInterpreterVisitor(private val referenceUpdater: ReferenceUpdater) : TreeVisitor() {
 
         private fun interpret(property: EKtProperty): EDeclaration {
-            return interpretAbstractComponentInstantiation(property)
-                ?: ESvProperty(
-                    property.location,
-                    property.name,
-                    property.type,
-                    property.initializer,
-                    null
-                )
+            interpretAbstractComponentInstantiation(property)?.let { return it }
+            val isLifetimeStatic = if (property.parent is EPropertyStatement) false else null
+            return ESvProperty(
+                property.location,
+                property.name,
+                property.type,
+                property.initializer,
+                isLifetimeStatic
+            )
         }
 
         private fun interpretAbstractComponentInstantiation(property: EKtProperty): EAbstractComponentInstantiation? {
@@ -175,20 +175,6 @@ object PropertyInterpreterStage : ProjectStage() {
         override fun visitKtProperty(property: EKtProperty) {
             super.visitKtProperty(property)
             referenceUpdater.replace(property, interpret(property))
-        }
-
-        override fun visitKtPropertyStatement(propertyStatement: EKtPropertyStatement) {
-            super.visitKtProperty(propertyStatement.property)
-            val oldProperty = propertyStatement.property
-            val newProperty = ESvProperty(
-                oldProperty.location,
-                oldProperty.name,
-                oldProperty.type,
-                oldProperty.initializer,
-                false
-            )
-            propertyStatement.replace(ESvPropertyStatement(propertyStatement.location, newProperty))
-            referenceUpdater.update(oldProperty, newProperty)
         }
     }
 }

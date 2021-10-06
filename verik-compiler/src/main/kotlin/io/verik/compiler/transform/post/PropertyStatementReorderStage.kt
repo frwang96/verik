@@ -17,10 +17,10 @@
 package io.verik.compiler.transform.post
 
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
-import io.verik.compiler.ast.element.sv.ESvPropertyStatement
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
@@ -39,19 +39,19 @@ object PropertyStatementReorderStage : ProjectStage() {
 
         override fun visitKtBlockExpression(blockExpression: EKtBlockExpression) {
             super.visitKtBlockExpression(blockExpression)
-            val propertyStatements = ArrayList<ESvPropertyStatement>()
+            val propertyStatements = ArrayList<EPropertyStatement>()
             val statements = ArrayList<EExpression>()
             var reorder = false
             blockExpression.statements.forEach {
                 if (!reorder) {
-                    if (it is ESvPropertyStatement) {
+                    if (it is EPropertyStatement) {
                         propertyStatements.add(it)
                     } else {
                         statements.add(it)
                         reorder = true
                     }
                 } else {
-                    if (it is ESvPropertyStatement) {
+                    if (it is EPropertyStatement) {
                         val initializer = it.property.initializer
                         if (initializer != null) {
                             val statement = ESvBinaryExpression(
