@@ -19,23 +19,34 @@ package io.verik.compiler.ast.element.kt
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.Annotated
 import io.verik.compiler.ast.property.Type
+import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
 class EKtFunction(
     override val location: SourceLocation,
-    override var name: String,
-    override var type: Type,
-    override var body: EExpression?,
-    override var valueParameters: ArrayList<EKtValueParameter>,
-    override var annotations: List<EAnnotation>
+    override var name: String
 ) : EKtAbstractFunction(), Annotated {
 
-    init {
+    override var type = NullDeclaration.toType()
+    override var body: EExpression? = null
+    override var valueParameters: ArrayList<EKtValueParameter> = arrayListOf()
+    override var annotations: List<EAnnotation> = listOf()
+
+    fun init(
+        type: Type,
+        body: EExpression?,
+        valueParameters: List<EKtValueParameter>,
+        annotations: List<EAnnotation>
+    ) {
+        this.type = type
         body?.parent = this
+        this.body = body
         valueParameters.forEach { it.parent = this }
+        this.valueParameters = ArrayList(valueParameters)
         annotations.forEach { it.parent = this }
+        this.annotations = annotations
     }
 
     override fun accept(visitor: Visitor) {

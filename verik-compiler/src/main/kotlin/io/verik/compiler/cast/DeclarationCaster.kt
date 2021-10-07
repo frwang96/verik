@@ -44,32 +44,32 @@ object DeclarationCaster {
 
     fun castTypeAlias(alias: KtTypeAlias, castContext: CastContext): ETypeAlias? {
         val descriptor = castContext.sliceTypeAlias[alias]!!
-        val typeAlias = castContext.getDeclaration(descriptor, alias)
+        val castedTypeAlias = castContext.getDeclaration(descriptor, alias)
             .cast<ETypeAlias>(alias)
             ?: return null
 
         val type = castContext.castType(alias.getTypeReference()!!)
 
-        typeAlias.type = type
-        return typeAlias
+        castedTypeAlias.init(type)
+        return castedTypeAlias
     }
 
     fun castTypeParameter(parameter: KtTypeParameter, castContext: CastContext): ETypeParameter? {
         val descriptor = castContext.sliceTypeParameter[parameter]!!
-        val typeParameter = castContext.getDeclaration(descriptor, parameter)
+        val castedTypeParameter = castContext.getDeclaration(descriptor, parameter)
             .cast<ETypeParameter>(parameter)
             ?: return null
 
         val type = if (descriptor.representativeUpperBound.isNullableAny()) Core.Kt.C_Any.toType()
         else castContext.castType(descriptor.representativeUpperBound, parameter)
 
-        typeParameter.type = type
-        return typeParameter
+        castedTypeParameter.init(type)
+        return castedTypeParameter
     }
 
     fun castKtBasicClass(classOrObject: KtClassOrObject, castContext: CastContext): EKtBasicClass? {
         val descriptor = castContext.sliceClass[classOrObject]!!
-        val basicClass = castContext.getDeclaration(descriptor, classOrObject)
+        val castedBasicClass = castContext.getDeclaration(descriptor, classOrObject)
             .cast<EKtBasicClass>(classOrObject)
             ?: return null
 
@@ -91,23 +91,13 @@ object DeclarationCaster {
                 castImplicitPrimaryConstructor(classOrObject, castContext)
             else -> null
         }
-
-        basicClass.supertype = supertype
-        typeParameters.forEach { it.parent = basicClass }
-        basicClass.typeParameters = ArrayList(typeParameters)
-        declarations.forEach { it.parent = basicClass }
-        basicClass.declarations = ArrayList(declarations)
-        annotations.forEach { it.parent = basicClass }
-        basicClass.annotations = annotations
-        basicClass.isEnum = isEnum
-        primaryConstructor?.let { it.parent = basicClass }
-        basicClass.primaryConstructor = primaryConstructor
-        return basicClass
+        castedBasicClass.init(supertype, typeParameters, declarations, annotations, isEnum, primaryConstructor)
+        return castedBasicClass
     }
 
     fun castKtFunction(function: KtNamedFunction, castContext: CastContext): EKtFunction? {
         val descriptor = castContext.sliceFunction[function]!!
-        val ktFunction = castContext.getDeclaration(descriptor, function)
+        val castedFunction = castContext.getDeclaration(descriptor, function)
             .cast<EKtFunction>(function)
             ?: return null
 
@@ -120,26 +110,20 @@ object DeclarationCaster {
         val body = function.bodyBlockExpression?.let {
             castContext.casterVisitor.getExpression(it)
         }
-        val annotations = function.annotationEntries.mapNotNull {
-            AnnotationCaster.castAnnotationEntry(it, castContext)
-        }
         val valueParameters = function.valueParameters.mapNotNull {
             castContext.casterVisitor.getElement<EKtValueParameter>(it)
         }
+        val annotations = function.annotationEntries.mapNotNull {
+            AnnotationCaster.castAnnotationEntry(it, castContext)
+        }
 
-        ktFunction.type = type
-        body?.parent = ktFunction
-        ktFunction.body = body
-        annotations.forEach { it.parent = ktFunction }
-        ktFunction.annotations = annotations
-        valueParameters.forEach { it.parent = ktFunction }
-        ktFunction.valueParameters = ArrayList(valueParameters)
-        return ktFunction
+        castedFunction.init(type, body, valueParameters, annotations)
+        return castedFunction
     }
 
     fun castPrimaryConstructor(constructor: KtPrimaryConstructor, castContext: CastContext): EPrimaryConstructor? {
         val descriptor = castContext.sliceConstructor[constructor]!!
-        val primaryConstructor = castContext.getDeclaration(descriptor, constructor)
+        val castedPrimaryConstructor = castContext.getDeclaration(descriptor, constructor)
             .cast<EPrimaryConstructor>(constructor)
             ?: return null
 
@@ -148,10 +132,8 @@ object DeclarationCaster {
             castContext.casterVisitor.getElement<EKtValueParameter>(it)
         }
 
-        primaryConstructor.type = type
-        valueParameters.forEach { it.parent = primaryConstructor }
-        primaryConstructor.valueParameters = ArrayList(valueParameters)
-        return primaryConstructor
+        castedPrimaryConstructor.init(type, valueParameters)
+        return castedPrimaryConstructor
     }
 
     private fun castImplicitPrimaryConstructor(
@@ -160,19 +142,19 @@ object DeclarationCaster {
     ): EPrimaryConstructor? {
         val descriptor = castContext.sliceClass[classOrObject]!!
         val primaryConstructorDescriptor = descriptor.unsubstitutedPrimaryConstructor!!
-        val primaryConstructor = castContext
+        val castedPrimaryConstructor = castContext
             .getDeclaration(primaryConstructorDescriptor, classOrObject)
             .cast<EPrimaryConstructor>(classOrObject)
             ?: return null
 
         val type = castContext.castType(primaryConstructorDescriptor.returnType, classOrObject)
-        primaryConstructor.type = type
-        return primaryConstructor
+        castedPrimaryConstructor.init(type, listOf())
+        return castedPrimaryConstructor
     }
 
     fun castKtProperty(property: KtProperty, castContext: CastContext): EKtProperty? {
         val descriptor = castContext.sliceVariable[property]!!
-        val ktProperty = castContext.getDeclaration(descriptor, property)
+        val castedProperty = castContext.getDeclaration(descriptor, property)
             .cast<EKtProperty>(property)
             ?: return null
 
@@ -187,17 +169,13 @@ object DeclarationCaster {
             AnnotationCaster.castAnnotationEntry(it, castContext)
         }
 
-        ktProperty.type = type
-        initializer?.parent = ktProperty
-        ktProperty.initializer = initializer
-        annotations.forEach { it.parent = ktProperty }
-        ktProperty.annotations = annotations
-        return ktProperty
+        castedProperty.init(type, initializer, annotations)
+        return castedProperty
     }
 
     fun castKtEnumEntry(enumEntry: KtEnumEntry, castContext: CastContext): EKtEnumEntry? {
         val descriptor = castContext.sliceClass[enumEntry]!!
-        val ktEnumEntry = castContext.getDeclaration(descriptor, enumEntry)
+        val castedEnumEntry = castContext.getDeclaration(descriptor, enumEntry)
             .cast<EKtEnumEntry>(enumEntry)
             ?: return null
 
@@ -206,22 +184,16 @@ object DeclarationCaster {
             AnnotationCaster.castAnnotationEntry(it, castContext)
         }
 
-        ktEnumEntry.type = type
-        annotations.forEach { it.parent = ktEnumEntry }
-        ktEnumEntry.annotations = annotations
-        return ktEnumEntry
+        castedEnumEntry.init(type, annotations)
+        return castedEnumEntry
     }
 
     fun castValueParameter(parameter: KtParameter, castContext: CastContext): EKtValueParameter? {
         val descriptor = castContext.slicePrimaryConstructorParameter[parameter]
             ?: castContext.sliceValueParameter[parameter]!!
-        val valueParameter = castContext.getDeclaration(descriptor, parameter)
+        val castedValueParameter = castContext.getDeclaration(descriptor, parameter)
             .cast<EKtValueParameter>(parameter)
             ?: return null
-
-        val annotations = parameter.annotationEntries.mapNotNull {
-            AnnotationCaster.castAnnotationEntry(it, castContext)
-        }
 
         val typeReference = parameter.typeReference
         val type = if (typeReference != null) {
@@ -229,10 +201,11 @@ object DeclarationCaster {
         } else {
             castContext.castType(descriptor.type, parameter)
         }
+        val annotations = parameter.annotationEntries.mapNotNull {
+            AnnotationCaster.castAnnotationEntry(it, castContext)
+        }
 
-        annotations.forEach { it.parent = valueParameter }
-        valueParameter.annotations = annotations
-        valueParameter.type = type
-        return valueParameter
+        castedValueParameter.init(type, annotations)
+        return castedValueParameter
     }
 }

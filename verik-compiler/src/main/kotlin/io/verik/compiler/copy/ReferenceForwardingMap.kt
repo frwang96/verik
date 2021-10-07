@@ -48,7 +48,7 @@ class ReferenceForwardingMap {
         return referenceForwardingMap[declaration]
     }
 
-    inline fun <reified D: EDeclaration> getAsDeclaration(declaration: D): D? {
+    inline fun <reified D : EDeclaration> getAsDeclaration(declaration: D): D? {
         return when (val forwardedDeclaration = referenceForwardingMap[declaration]) {
             is D -> forwardedDeclaration
             null -> {

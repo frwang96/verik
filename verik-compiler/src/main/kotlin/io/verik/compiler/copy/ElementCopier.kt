@@ -22,6 +22,7 @@ import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
+import io.verik.compiler.ast.property.Type
 
 object ElementCopier {
 
@@ -34,7 +35,7 @@ object ElementCopier {
     }
 
     fun <E : EElement> copy(element: E, copyContext: CopyContext): E {
-        val copyElement = when (element) {
+        val copiedElement = when (element) {
             is EKtBlockExpression -> copyKtBlockExpression(element, copyContext)
             is EKtReferenceExpression -> copyKtReferenceExpression(element, copyContext)
             is EKtCallExpression -> copyKtCallExpression(element, copyContext)
@@ -46,13 +47,35 @@ object ElementCopier {
             }
         }
         @Suppress("UNCHECKED_CAST")
-        return copyElement as E
+        return copiedElement as E
+    }
+
+    fun copy(type: Type, copyContext: CopyContext): Type {
+        val arguments = type.arguments.map { copy(it, copyContext) }
+        val reference = copyContext.referenceForwardingMap[type.reference] ?: type.reference
+        return Type(reference, ArrayList(arguments))
     }
 
     @Suppress("unused")
     private fun copyKtBasicClass(basicClass: EKtBasicClass, copyContext: CopyContext): EKtBasicClass {
-        return copyContext.referenceForwardingMap.getAsDeclaration(basicClass)
+        val copiedBasicClass = copyContext.referenceForwardingMap.getAsDeclaration(basicClass)
             ?: return basicClass
+
+        val superType = copy(basicClass.supertype, copyContext)
+        val typeParameters = basicClass.typeParameters.map { copy(it, copyContext) }
+        val declarations = basicClass.declarations.map { copy(it, copyContext) }
+        val annotations = basicClass.annotations.map { copy(it, copyContext) }
+        val primaryConstructor = basicClass.primaryConstructor?.let { copy(it, copyContext) }
+
+        copiedBasicClass.init(
+            superType,
+            typeParameters,
+            declarations,
+            annotations,
+            basicClass.isEnum,
+            primaryConstructor
+        )
+        return copiedBasicClass
     }
 
     private fun copyKtBlockExpression(

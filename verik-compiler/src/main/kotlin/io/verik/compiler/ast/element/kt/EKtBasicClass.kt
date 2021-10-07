@@ -21,26 +21,41 @@ import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.interfaces.Annotated
 import io.verik.compiler.ast.property.Type
+import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
 class EKtBasicClass(
     override val location: SourceLocation,
-    override var name: String,
-    override var supertype: Type,
-    override var typeParameters: ArrayList<ETypeParameter>,
-    override var declarations: ArrayList<EDeclaration>,
-    override var annotations: List<EAnnotation>,
-    var isEnum: Boolean,
-    var primaryConstructor: EPrimaryConstructor?
+    override var name: String
 ) : EAbstractContainerClass(), Annotated {
 
-    init {
+    override var supertype = NullDeclaration.toType()
+    override var typeParameters: ArrayList<ETypeParameter> = arrayListOf()
+    override var declarations: ArrayList<EDeclaration> = arrayListOf()
+    override var annotations: List<EAnnotation> = listOf()
+    var isEnum: Boolean = false
+    var primaryConstructor: EPrimaryConstructor? = null
+
+    fun init(
+        supertype: Type,
+        typeParameters: List<ETypeParameter>,
+        declarations: List<EDeclaration>,
+        annotations: List<EAnnotation>,
+        isEnum: Boolean,
+        primaryConstructor: EPrimaryConstructor?
+    ) {
+        this.supertype = supertype
         typeParameters.forEach { it.parent = this }
+        this.typeParameters = ArrayList(typeParameters)
         declarations.forEach { it.parent = this }
+        this.declarations = ArrayList(declarations)
         annotations.forEach { it.parent = this }
-        primaryConstructor?.let { it.parent = this }
+        this.annotations = annotations
+        this.isEnum = isEnum
+        primaryConstructor?.parent = this
+        this.primaryConstructor = primaryConstructor
     }
 
     override fun accept(visitor: Visitor) {
