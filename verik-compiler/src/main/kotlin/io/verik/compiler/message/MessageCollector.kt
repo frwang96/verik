@@ -25,7 +25,7 @@ class MessageCollector(
 
     private var errorCount = 0
 
-    fun message(templateName: String, message: String, location: SourceLocation?, severity: Severity) {
+    fun message(templateName: String, message: String, location: SourceLocation, severity: Severity) {
         when (severity) {
             Severity.WARNING -> warning(templateName, message, location)
             Severity.ERROR -> error(templateName, message, location)
@@ -37,14 +37,14 @@ class MessageCollector(
             throw MessageCollectorException()
     }
 
-    private fun warning(templateName: String, message: String, location: SourceLocation?) {
+    private fun warning(templateName: String, message: String, location: SourceLocation) {
         if (templateName in config.promotedWarnings)
             error(templateName, message, location)
         else if (templateName !in config.suppressedWarnings)
             messagePrinter.warning(templateName, message, location)
     }
 
-    private fun error(templateName: String, message: String, location: SourceLocation?) {
+    private fun error(templateName: String, message: String, location: SourceLocation) {
         if (!config.debug && templateName == Messages.INTERNAL_ERROR.name) {
             messagePrinter.error(templateName, "Internal error: Set debug mode for more details", location)
             throw MessageCollectorException()
