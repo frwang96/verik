@@ -43,7 +43,8 @@ object ConfigBuilder {
             maxErrorCount = extension.maxErrorCount,
             labelLines = extension.labelLines,
             wrapLength = extension.wrapLength,
-            indentLength = extension.indentLength
+            indentLength = extension.indentLength,
+            enableDeadCodeElimination = extension.enableDeadCodeElimination
         )
     }
 

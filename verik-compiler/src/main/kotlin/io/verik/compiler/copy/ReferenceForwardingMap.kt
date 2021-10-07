@@ -48,6 +48,10 @@ class ReferenceForwardingMap {
         return referenceForwardingMap[declaration] ?: declaration
     }
 
+    operator fun contains(declaration: EDeclaration): Boolean {
+        return declaration in referenceForwardingMap
+    }
+
     inline fun <reified D : EDeclaration> find(declaration: D): D? {
         return when (val forwardedDeclaration = referenceForwardingMap[declaration]) {
             is D -> forwardedDeclaration
