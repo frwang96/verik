@@ -16,8 +16,8 @@
 
 package io.verik.compiler.main
 
+import io.verik.compiler.cast.CasterDeclarationIndexerStage
 import io.verik.compiler.cast.CasterStage
-import io.verik.compiler.cast.DeclarationIndexerStage
 import io.verik.compiler.check.post.CardinalPositiveCheckerStage
 import io.verik.compiler.check.post.FileCheckerStage
 import io.verik.compiler.check.post.KeywordCheckerStage
@@ -53,6 +53,7 @@ import io.verik.compiler.transform.mid.CaseStatementTransformerStage
 import io.verik.compiler.transform.mid.ConstantExpressionEvaluatorStage
 import io.verik.compiler.transform.mid.EnumNameTransformerStage
 import io.verik.compiler.transform.mid.FunctionTransformerStage
+import io.verik.compiler.transform.mid.InjectedExpressionReducerStage
 import io.verik.compiler.transform.mid.InlineIfExpressionTransformerStage
 import io.verik.compiler.transform.mid.PropertyTransformerStage
 import io.verik.compiler.transform.mid.StringTemplateExpressionReducerStage
@@ -74,7 +75,6 @@ import io.verik.compiler.transform.pre.BitConstantTransformerStage
 import io.verik.compiler.transform.pre.ConstantExpressionTransformerStage
 import io.verik.compiler.transform.pre.ForExpressionReducerStage
 import io.verik.compiler.transform.pre.FunctionOverloadingTransformerStage
-import io.verik.compiler.transform.pre.InjectedExpressionReducerStage
 import io.verik.compiler.transform.pre.NameRelabelerStage
 import io.verik.compiler.transform.pre.TypeAliasReducerStage
 import io.verik.compiler.transform.pre.UnaryExpressionReducerStage
@@ -95,14 +95,13 @@ object StageSequencer {
         stageSequence.add(ImportDirectiveCheckerStage)
 
         // Cast
-        stageSequence.add(DeclarationIndexerStage)
+        stageSequence.add(CasterDeclarationIndexerStage)
         stageSequence.add(CasterStage)
 
         // PreTransform
         stageSequence.add(FunctionOverloadingTransformerStage)
         stageSequence.add(NameRelabelerStage)
         stageSequence.add(TypeAliasReducerStage)
-        stageSequence.add(InjectedExpressionReducerStage)
         stageSequence.add(AssignmentOperatorReducerStage)
         stageSequence.add(UnaryExpressionReducerStage)
         stageSequence.add(BinaryExpressionReducerStage)
@@ -130,6 +129,7 @@ object StageSequencer {
 
         // MidTransform
         stageSequence.add(EnumNameTransformerStage)
+        stageSequence.add(InjectedExpressionReducerStage)
         stageSequence.add(StringTemplateExpressionReducerStage)
         stageSequence.add(UninitializedPropertyTransformerStage)
         stageSequence.add(FunctionTransformerStage)

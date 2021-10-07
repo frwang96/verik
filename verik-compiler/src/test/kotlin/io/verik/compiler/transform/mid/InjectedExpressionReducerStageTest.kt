@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.pre
+package io.verik.compiler.transform.mid
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.assertElementEquals

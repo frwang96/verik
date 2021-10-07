@@ -27,7 +27,7 @@ class CopyContext(val referenceForwardingMap: ReferenceForwardingMap) {
 
     fun copy(type: Type): Type {
         val arguments = type.arguments.map { copy(it) }
-        val reference = referenceForwardingMap[type.reference] ?: type.reference
+        val reference = referenceForwardingMap[type.reference]
         return Type(reference, ArrayList(arguments))
     }
 }

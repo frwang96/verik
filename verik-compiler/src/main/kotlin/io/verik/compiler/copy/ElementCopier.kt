@@ -19,26 +19,39 @@ package io.verik.compiler.copy
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.kt.EAnnotation
 import io.verik.compiler.message.Messages
 
 object ElementCopier {
 
     fun <E : EElement> copy(element: E): E {
         val referenceForwardingMap = ReferenceForwardingMap()
-        val declarationCopierVisitor = DeclarationCopierVisitor(referenceForwardingMap)
-        element.accept(declarationCopierVisitor)
+        val copierDeclarationIndexerVisitor = CopierDeclarationIndexerVisitor(referenceForwardingMap)
+        element.accept(copierDeclarationIndexerVisitor)
         val copyContext = CopyContext(referenceForwardingMap)
         return copy(element, copyContext)
     }
 
     fun <E : EElement> copy(element: E, copyContext: CopyContext): E {
-        return when (element) {
+        val copiedElement = when (element) {
             is EDeclaration -> DeclarationCopier.copyDeclaration(element, copyContext)
             is EExpression -> ExpressionCopier.copyExpression(element, copyContext)
+            is EAnnotation -> copyAnnotation(element)
             else -> {
                 Messages.INTERNAL_ERROR.on(element, "Unable to copy element: $element")
                 element
             }
         }
+        @Suppress("UNCHECKED_CAST")
+        return copiedElement as E
+    }
+
+    private fun copyAnnotation(annotation: EAnnotation): EAnnotation {
+        return EAnnotation(
+            annotation.location,
+            annotation.name,
+            annotation.qualifiedName,
+            annotation.arguments
+        )
     }
 }

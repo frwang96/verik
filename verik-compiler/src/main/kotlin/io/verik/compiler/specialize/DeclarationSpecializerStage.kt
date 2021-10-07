@@ -17,8 +17,8 @@
 package io.verik.compiler.specialize
 
 import io.verik.compiler.common.ProjectStage
+import io.verik.compiler.copy.CopierDeclarationIndexerVisitor
 import io.verik.compiler.copy.CopyContext
-import io.verik.compiler.copy.DeclarationCopierVisitor
 import io.verik.compiler.copy.ElementCopier
 import io.verik.compiler.copy.ReferenceForwardingMap
 import io.verik.compiler.main.ProjectContext
@@ -29,15 +29,16 @@ object DeclarationSpecializerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
         val referenceForwardingMap = ReferenceForwardingMap()
-        val declarationCopierVisitor = DeclarationCopierVisitor(referenceForwardingMap)
+        val copierDeclarationIndexerVisitor = CopierDeclarationIndexerVisitor(referenceForwardingMap)
         projectContext.project.files().forEach { file ->
             file.declarations.forEach {
-                it.accept(declarationCopierVisitor)
+                it.accept(copierDeclarationIndexerVisitor)
             }
         }
         val copyContext = CopyContext(referenceForwardingMap)
         projectContext.project.files().forEach { file ->
             val declarations = file.declarations.map { ElementCopier.copy(it, copyContext) }
+            declarations.forEach { it.parent = file }
             file.declarations = ArrayList(declarations)
         }
     }
