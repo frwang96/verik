@@ -107,10 +107,7 @@ class Type(
             is EAbstractClass -> reference.supertype
             is CoreClassDeclaration -> reference.superclass?.toType()
             is CoreCardinalDeclaration -> null
-            else -> {
-                Messages.INTERNAL_ERROR.on(null, "Unexpected type reference: $reference")
-                return null
-            }
+            else -> throw IllegalArgumentException("Unexpected type reference: $reference")
         }
     }
 }

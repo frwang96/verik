@@ -44,15 +44,15 @@ object AssignmentOperatorReducerStage : ProjectStage() {
             super.visitKtBinaryExpression(binaryExpression)
             val kind = assignmentOperatorMap[binaryExpression.kind]
             if (kind != null) {
-                val copyExpression = ElementCopier.copy(binaryExpression.left)
+                val copiedLeft = ElementCopier.copy(binaryExpression.left)
                 val assignmentExpression = EKtBinaryExpression(
                     binaryExpression.location,
                     binaryExpression.type,
                     binaryExpression.left,
                     EKtBinaryExpression(
                         binaryExpression.location,
-                        copyExpression.type.copy(),
-                        copyExpression,
+                        copiedLeft.type.copy(),
+                        copiedLeft,
                         binaryExpression.right,
                         kind
                     ),

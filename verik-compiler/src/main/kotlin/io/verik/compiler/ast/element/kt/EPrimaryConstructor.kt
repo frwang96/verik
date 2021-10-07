@@ -18,20 +18,24 @@ package io.verik.compiler.ast.element.kt
 
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.property.Type
+import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
 class EPrimaryConstructor(
-    override val location: SourceLocation,
-    override var type: Type,
-    override var valueParameters: ArrayList<EKtValueParameter>
+    override val location: SourceLocation
 ) : EKtAbstractFunction() {
 
     override var name = "<init>"
     override var body: EExpression? = null
 
-    init {
+    override var type: Type = NullDeclaration.toType()
+    override var valueParameters: ArrayList<EKtValueParameter> = arrayListOf()
+
+    fun init(type: Type, valueParameters: List<EKtValueParameter>) {
+        this.type = type
         valueParameters.forEach { it.parent = this }
+        this.valueParameters = ArrayList(valueParameters)
     }
 
     override fun accept(visitor: Visitor) {

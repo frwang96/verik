@@ -14,11 +14,20 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.message
+package io.verik.compiler.copy
 
-abstract class MessagePrinter {
+import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.property.Type
 
-    abstract fun warning(templateName: String, message: String, location: SourceLocation)
+class CopyContext(val referenceForwardingMap: ReferenceForwardingMap) {
 
-    abstract fun error(templateName: String, message: String, location: SourceLocation)
+    fun <E : EElement> copy(element: E): E {
+        return ElementCopier.copy(element, this)
+    }
+
+    fun copy(type: Type): Type {
+        val arguments = type.arguments.map { copy(it) }
+        val reference = referenceForwardingMap[type.reference]
+        return Type(reference, ArrayList(arguments))
+    }
 }

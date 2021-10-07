@@ -218,7 +218,7 @@ object ExpressionCaster {
             Core.Kt.C_Function.toType(),
             ArrayList(statements)
         )
-        return EFunctionLiteralExpression(location, valueParameters, body)
+        return EFunctionLiteralExpression(location, ArrayList(valueParameters), body)
     }
 
     fun castKtArrayAccessExpression(

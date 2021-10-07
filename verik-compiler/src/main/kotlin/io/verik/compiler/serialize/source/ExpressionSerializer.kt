@@ -19,6 +19,7 @@ package io.verik.compiler.serialize.source
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EParenthesizedExpression
+import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.EWhileExpression
 import io.verik.compiler.ast.element.sv.ECaseStatement
@@ -38,7 +39,6 @@ import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
 import io.verik.compiler.ast.element.sv.ESvCallExpression
-import io.verik.compiler.ast.element.sv.ESvPropertyStatement
 import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.property.EdgeType
@@ -65,7 +65,7 @@ object ExpressionSerializer {
         }
     }
 
-    fun serializeSvPropertyStatement(propertyStatement: ESvPropertyStatement, serializerContext: SerializerContext) {
+    fun serializePropertyStatement(propertyStatement: EPropertyStatement, serializerContext: SerializerContext) {
         serializerContext.serialize(propertyStatement.property)
     }
 

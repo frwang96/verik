@@ -18,15 +18,21 @@ package io.verik.compiler.ast.element.kt
 
 import io.verik.compiler.ast.element.common.EClassifier
 import io.verik.compiler.ast.property.Type
+import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
 class ETypeAlias(
     override val location: SourceLocation,
-    override var name: String,
-    override var type: Type
+    override var name: String
 ) : EClassifier() {
+
+    override var type = NullDeclaration.toType()
+
+    fun init(type: Type) {
+        this.type = type
+    }
 
     override fun accept(visitor: Visitor) {
         return visitor.visitTypeAlias(this)

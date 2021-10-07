@@ -31,7 +31,8 @@ data class Config(
     val maxErrorCount: Int,
     val labelLines: Boolean,
     val wrapLength: Int,
-    val indentLength: Int
+    val indentLength: Int,
+    val enableDeadCodeElimination: Boolean
 ) {
 
     val outputSourceDir: Path = buildDir.resolve("src")

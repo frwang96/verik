@@ -60,6 +60,7 @@ class VerikPlugin : Plugin<Project> {
         task.inputs.property("labelLines", { extension.labelLines })
         task.inputs.property("wrapLength", { extension.wrapLength })
         task.inputs.property("indentLength", { extension.indentLength })
+        task.inputs.property("enableDeadCodeElimination", { extension.enableDeadCodeElimination })
         ConfigBuilder.getInputFiles(project).forEach { task.inputs.file(it) }
         task.outputs.dir(ConfigBuilder.getBuildDir(project))
     }

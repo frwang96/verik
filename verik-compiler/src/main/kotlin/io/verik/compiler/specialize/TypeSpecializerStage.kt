@@ -31,7 +31,7 @@ import java.lang.Integer.min
 
 object TypeSpecializerStage : ProjectStage() {
 
-    override val checkNormalization = false
+    override val checkNormalization = true
 
     override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(TypeCheckerVisitor)

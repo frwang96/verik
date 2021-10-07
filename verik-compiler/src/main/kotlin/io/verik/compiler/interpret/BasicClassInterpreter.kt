@@ -16,6 +16,7 @@
 
 package io.verik.compiler.interpret
 
+import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
@@ -24,7 +25,6 @@ import io.verik.compiler.ast.element.sv.ESvBlockExpression
 import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvProperty
-import io.verik.compiler.ast.element.sv.ESvPropertyStatement
 import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.core.common.Core
 
@@ -64,7 +64,7 @@ object BasicClassInterpreter {
             false
         )
         val statements = listOf(
-            ESvPropertyStatement(location, property),
+            EPropertyStatement(location, property),
             EReturnStatement(
                 location,
                 Core.Kt.C_Nothing.toType(),

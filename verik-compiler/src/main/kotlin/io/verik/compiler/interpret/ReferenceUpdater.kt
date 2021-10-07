@@ -16,11 +16,9 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.common.EAbstractFunction
-import io.verik.compiler.ast.element.common.EAbstractProperty
-import io.verik.compiler.ast.element.common.EAbstractValueParameter
 import io.verik.compiler.ast.element.common.EDeclaration
-import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.ETypedElement
+import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.interfaces.DeclarationContainer
 import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.ast.property.Type
@@ -62,28 +60,18 @@ class ReferenceUpdater(val projectContext: ProjectContext) {
             type.arguments.forEach { updateTypeReferences(it) }
         }
 
-        override fun visitAbstractFunction(abstractFunction: EAbstractFunction) {
-            super.visitAbstractFunction(abstractFunction)
-            updateTypeReferences(abstractFunction.type)
-        }
-
-        override fun visitAbstractProperty(abstractProperty: EAbstractProperty) {
-            super.visitAbstractProperty(abstractProperty)
-            updateTypeReferences(abstractProperty.type)
-        }
-
-        override fun visitAbstractValueParameter(abstractValueParameter: EAbstractValueParameter) {
-            super.visitAbstractValueParameter(abstractValueParameter)
-            updateTypeReferences(abstractValueParameter.type)
-        }
-
-        override fun visitExpression(expression: EExpression) {
-            super.visitExpression(expression)
-            updateTypeReferences(expression.type)
-            if (expression is Reference) {
-                val reference = referenceMap[expression.reference]
+        override fun visitTypedElement(typedElement: ETypedElement) {
+            super.visitTypedElement(typedElement)
+            updateTypeReferences(typedElement.type)
+            if (typedElement is EKtCallExpression) {
+                typedElement.typeArguments.forEach {
+                    updateTypeReferences(it)
+                }
+            }
+            if (typedElement is Reference) {
+                val reference = referenceMap[typedElement.reference]
                 if (reference != null)
-                    expression.reference = reference
+                    typedElement.reference = reference
             }
         }
     }

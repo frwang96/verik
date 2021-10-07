@@ -25,4 +25,5 @@ abstract class VerikPluginExtension {
     var labelLines: Boolean = false
     var wrapLength: Int = 120
     var indentLength: Int = 4
+    var enableDeadCodeElimination: Boolean = true
 }

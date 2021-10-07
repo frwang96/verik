@@ -42,6 +42,7 @@ class EStruct(
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
+        super.acceptChildren(visitor)
         properties.forEach { it.accept(visitor) }
     }
 }

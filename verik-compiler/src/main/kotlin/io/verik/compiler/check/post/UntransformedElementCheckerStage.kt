@@ -17,6 +17,7 @@
 package io.verik.compiler.check.post
 
 import io.verik.compiler.ast.element.common.ENullElement
+import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.kt.EForExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBasicClass
@@ -26,13 +27,13 @@ import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
-import io.verik.compiler.ast.element.kt.EKtPropertyStatement
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.element.sv.ESvCallExpression
+import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
@@ -88,9 +89,10 @@ object UntransformedElementCheckerStage : ProjectStage() {
             Messages.INTERNAL_ERROR.on(blockExpression, "Block expression $message")
         }
 
-        override fun visitKtPropertyStatement(propertyStatement: EKtPropertyStatement) {
-            super.visitKtPropertyStatement(propertyStatement)
-            Messages.INTERNAL_ERROR.on(propertyStatement, "Property statement $message")
+        override fun visitPropertyStatement(propertyStatement: EPropertyStatement) {
+            super.visitPropertyStatement(propertyStatement)
+            if (propertyStatement.property !is ESvProperty)
+                Messages.INTERNAL_ERROR.on(propertyStatement, "Property statement $message")
         }
 
         override fun visitKtUnaryExpression(unaryExpression: EKtUnaryExpression) {

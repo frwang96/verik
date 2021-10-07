@@ -118,6 +118,11 @@ object Messages {
         "Type of type argument could not be resolved"
     )
 
+    val NO_TOP_DECLARATIONS = MessageTemplate0(
+        Severity.ERROR,
+        "No top level declarations found"
+    )
+
     val CARDINAL_OUT_OF_RANGE = MessageTemplate0(
         Severity.ERROR,
         "Cardinal type out of range"

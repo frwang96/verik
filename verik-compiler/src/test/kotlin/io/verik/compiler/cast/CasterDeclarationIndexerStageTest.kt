@@ -14,29 +14,29 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.pre
+package io.verik.compiler.cast
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.assertElementEquals
+import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.driveTest
-import io.verik.compiler.util.findExpression
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
-internal class InjectedExpressionReducerStageTest : BaseTest() {
+internal class CasterDeclarationIndexerStageTest : BaseTest() {
 
     @Test
-    fun `inject literal`() {
-        val projectContext = driveTest(
-            InjectedExpressionReducerStage::class,
-            """
-                fun f() {
-                    sv("abc")
-                }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "InjectedExpression(Unit, [abc])",
-            projectContext.findExpression("f")
-        )
+    fun `error name unicode`() {
+        assertThrows<TestErrorException> {
+            driveTest(
+                CasterDeclarationIndexerStage::class,
+                """
+                    @Suppress("ObjectPropertyName")
+                    val αβγ = 0
+                """.trimIndent()
+            )
+        }.apply {
+            Assertions.assertEquals("Illegal name: αβγ", message)
+        }
     }
 }

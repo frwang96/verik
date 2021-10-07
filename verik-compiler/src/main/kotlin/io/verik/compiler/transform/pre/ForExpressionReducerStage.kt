@@ -38,7 +38,7 @@ object ForExpressionReducerStage : ProjectStage() {
             super.visitForExpression(forExpression)
             val functionLiteralExpression = EFunctionLiteralExpression(
                 forExpression.body.location,
-                listOf(forExpression.valueParameter),
+                arrayListOf(forExpression.valueParameter),
                 forExpression.body
             )
             val callExpression = EKtCallExpression(

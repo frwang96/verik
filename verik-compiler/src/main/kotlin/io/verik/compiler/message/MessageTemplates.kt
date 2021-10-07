@@ -39,7 +39,7 @@ class MessageTemplate1<A>(
     override val template: String
 ) : AbstractMessageTemplate() {
 
-    fun on(location: SourceLocation?, a: A) {
+    fun on(location: SourceLocation, a: A) {
         MessageCollector.messageCollector.message(name, format(a), location, severity)
     }
 

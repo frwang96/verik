@@ -46,7 +46,7 @@ object KotlinEnvironmentBuilderStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
         setIdeaIoUseFallback()
-        val configuration = createCompilerConfiguration()
+        val configuration = createCompilerConfiguration(projectContext)
         val disposable = Disposer.newDisposable()
         projectContext.kotlinCoreEnvironment = KotlinCoreEnvironment.createForProduction(
             disposable,
@@ -55,7 +55,7 @@ object KotlinEnvironmentBuilderStage : ProjectStage() {
         )
     }
 
-    private fun createCompilerConfiguration(): CompilerConfiguration {
+    private fun createCompilerConfiguration(projectContext: ProjectContext): CompilerConfiguration {
         val configuration = CompilerConfiguration()
         configuration.put(JVMConfigurationKeys.JVM_TARGET, JvmTarget.JVM_1_8)
         configuration.put(
@@ -65,7 +65,7 @@ object KotlinEnvironmentBuilderStage : ProjectStage() {
         configuration.put(CommonConfigurationKeys.MODULE_NAME, "verik")
         configuration.put(
             CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY,
-            KotlinCompilerMessageCollector()
+            KotlinCompilerMessageCollector(projectContext)
         )
         getJvmClasspathRoots().forEach {
             configuration.addJvmClasspathRoot(it)
@@ -80,7 +80,9 @@ object KotlinEnvironmentBuilderStage : ProjectStage() {
         )
     }
 
-    private class KotlinCompilerMessageCollector : MessageCollector {
+    private class KotlinCompilerMessageCollector(projectContext: ProjectContext) : MessageCollector {
+
+        private val projectDir = projectContext.config.projectDir
 
         override fun clear() {}
 
@@ -91,7 +93,10 @@ object KotlinEnvironmentBuilderStage : ProjectStage() {
             message: String,
             location: CompilerMessageSourceLocation?
         ) {
-            val sourceLocation = location?.let { SourceLocation(it.column, it.line, Paths.get(it.path)) }
+            val sourceLocation = location
+                ?.let { SourceLocation(it.column, it.line, Paths.get(it.path)) }
+                ?: SourceLocation(0, 0, projectDir)
+
             when (severity) {
                 CompilerMessageSeverity.EXCEPTION, CompilerMessageSeverity.ERROR ->
                     Messages.KOTLIN_COMPILE_ERROR.on(sourceLocation, message)

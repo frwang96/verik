@@ -17,7 +17,6 @@
 package io.verik.compiler.common
 
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.message.Messages
 import kotlin.reflect.KClass
 
 class StageSequence {
@@ -25,11 +24,10 @@ class StageSequence {
     val stages = ArrayList<ProjectStage>()
 
     fun add(stage: ProjectStage) {
-        if (contains(stage::class))
-            Messages.INTERNAL_ERROR.on(
-                null,
-                "Stage has already been added to the stage sequence: ${stage::class.simpleName}"
-            )
+        if (contains(stage::class)) {
+            val stageName = stage::class.simpleName
+            throw IllegalArgumentException("Stage has already been added to the stage sequence: $stageName")
+        }
         stages.add(stage)
     }
 

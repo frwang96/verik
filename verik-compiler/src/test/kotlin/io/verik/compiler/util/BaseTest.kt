@@ -45,7 +45,8 @@ abstract class BaseTest {
                 maxErrorCount = 0,
                 labelLines = false,
                 wrapLength = 80,
-                indentLength = 4
+                indentLength = 4,
+                enableDeadCodeElimination = false
             )
         }
     }

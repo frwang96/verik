@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.sv
+package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.interfaces.DeclarationContainer
 import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
 
-class ESvPropertyStatement(
+class EPropertyStatement(
     override val location: SourceLocation,
-    val property: ESvProperty
-) : EExpression() {
+    var property: EAbstractInitializedProperty
+) : EExpression(), DeclarationContainer {
 
     init {
         property.parent = this
@@ -37,10 +37,18 @@ class ESvPropertyStatement(
     override val serializationType = SvSerializationType.STATEMENT
 
     override fun accept(visitor: Visitor) {
-        visitor.visitSvPropertyStatement(this)
+        visitor.visitPropertyStatement(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
         property.accept(visitor)
+    }
+
+    override fun replaceChild(oldDeclaration: EDeclaration, newDeclaration: EDeclaration): Boolean {
+        newDeclaration.parent = this
+        return if (property == oldDeclaration && newDeclaration is EAbstractInitializedProperty) {
+            property = newDeclaration
+            true
+        } else false
     }
 }

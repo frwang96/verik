@@ -24,7 +24,6 @@ import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.kt.ETypeAlias
-import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.location
 import io.verik.compiler.main.ProjectContext
@@ -41,18 +40,18 @@ import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 import org.jetbrains.kotlin.psi.KtTypeAlias
 import org.jetbrains.kotlin.psi.KtTypeParameter
 
-object IndexerStage : ProjectStage() {
+object CasterDeclarationIndexerStage : ProjectStage() {
 
     override val checkNormalization = false
 
     override fun process(projectContext: ProjectContext) {
         val castContext = CastContext(projectContext.bindingContext)
-        val indexerVisitor = IndexerVisitor(castContext)
-        projectContext.ktFiles.forEach { it.accept(indexerVisitor) }
+        val casterDeclarationIndexerVisitor = CasterDeclarationIndexerVisitor(castContext)
+        projectContext.ktFiles.forEach { it.accept(casterDeclarationIndexerVisitor) }
         projectContext.castContext = castContext
     }
 
-    class IndexerVisitor(private val castContext: CastContext) : KtTreeVisitorVoid() {
+    class CasterDeclarationIndexerVisitor(private val castContext: CastContext) : KtTreeVisitorVoid() {
 
         private val nameRegex = Regex("[_a-zA-Z][_a-zA-Z0-9]*")
 
@@ -67,8 +66,8 @@ object IndexerStage : ProjectStage() {
             val location = alias.nameIdentifier!!.location()
             val name = alias.name!!
             checkDeclarationName(name, alias)
-            val typeAlias = ETypeAlias(location, name, NullDeclaration.toType())
-            castContext.addDeclaration(descriptor, typeAlias)
+            val indexedTypeAlias = ETypeAlias(location, name)
+            castContext.addDeclaration(descriptor, indexedTypeAlias)
         }
 
         override fun visitTypeParameter(parameter: KtTypeParameter) {
@@ -77,8 +76,8 @@ object IndexerStage : ProjectStage() {
             val location = parameter.nameIdentifier!!.location()
             val name = parameter.name!!
             checkDeclarationName(name, parameter)
-            val typeParameter = ETypeParameter(location, name, NullDeclaration.toType())
-            castContext.addDeclaration(descriptor, typeParameter)
+            val indexedTypeParameter = ETypeParameter(location, name)
+            castContext.addDeclaration(descriptor, indexedTypeParameter)
         }
 
         override fun visitClassOrObject(classOrObject: KtClassOrObject) {
@@ -90,31 +89,12 @@ object IndexerStage : ProjectStage() {
             checkDeclarationName(name, classOrObject)
 
             if (classOrObject.hasPrimaryConstructor() && !classOrObject.hasExplicitPrimaryConstructor()) {
-                val primaryConstructor = EPrimaryConstructor(location, NullDeclaration.toType(), arrayListOf())
-                castContext.addDeclaration(descriptor.unsubstitutedPrimaryConstructor!!, primaryConstructor)
+                val indexedPrimaryConstructor = EPrimaryConstructor(location)
+                castContext.addDeclaration(descriptor.unsubstitutedPrimaryConstructor!!, indexedPrimaryConstructor)
             }
 
-            val basicClass = EKtBasicClass(
-                location,
-                name,
-                NullDeclaration.toType(),
-                arrayListOf(),
-                arrayListOf(),
-                listOf(),
-                false,
-                null
-            )
-            castContext.addDeclaration(descriptor, basicClass)
-        }
-
-        override fun visitEnumEntry(enumEntry: KtEnumEntry) {
-            super.visitEnumEntry(enumEntry)
-            val descriptor = castContext.sliceClass[enumEntry]!!
-            val location = enumEntry.nameIdentifier!!.location()
-            val name = enumEntry.name!!
-            checkDeclarationName(name, enumEntry)
-            val ktEnumEntry = EKtEnumEntry(location, name, NullDeclaration.toType(), listOf())
-            castContext.addDeclaration(descriptor, ktEnumEntry)
+            val indexedBasicClass = EKtBasicClass(location, name)
+            castContext.addDeclaration(descriptor, indexedBasicClass)
         }
 
         override fun visitNamedFunction(function: KtNamedFunction) {
@@ -123,16 +103,16 @@ object IndexerStage : ProjectStage() {
             val location = function.nameIdentifier!!.location()
             val name = function.name!!
             checkDeclarationName(name, function)
-            val ktFunction = EKtFunction(location, name, NullDeclaration.toType(), null, arrayListOf(), listOf())
-            castContext.addDeclaration(descriptor, ktFunction)
+            val indexedFunction = EKtFunction(location, name)
+            castContext.addDeclaration(descriptor, indexedFunction)
         }
 
         override fun visitPrimaryConstructor(constructor: KtPrimaryConstructor) {
             super.visitPrimaryConstructor(constructor)
             val descriptor = castContext.sliceConstructor[constructor]!!
             val location = constructor.location()
-            val primaryConstructor = EPrimaryConstructor(location, NullDeclaration.toType(), arrayListOf())
-            castContext.addDeclaration(descriptor, primaryConstructor)
+            val indexedPrimaryConstructor = EPrimaryConstructor(location)
+            castContext.addDeclaration(descriptor, indexedPrimaryConstructor)
         }
 
         override fun visitProperty(property: KtProperty) {
@@ -141,8 +121,18 @@ object IndexerStage : ProjectStage() {
             val location = property.nameIdentifier!!.location()
             val name = property.name!!
             checkDeclarationName(name, property)
-            val ktProperty = EKtProperty(location, name, NullDeclaration.toType(), null, listOf())
-            castContext.addDeclaration(descriptor, ktProperty)
+            val indexedProperty = EKtProperty(location, name)
+            castContext.addDeclaration(descriptor, indexedProperty)
+        }
+
+        override fun visitEnumEntry(enumEntry: KtEnumEntry) {
+            super.visitEnumEntry(enumEntry)
+            val descriptor = castContext.sliceClass[enumEntry]!!
+            val location = enumEntry.nameIdentifier!!.location()
+            val name = enumEntry.name!!
+            checkDeclarationName(name, enumEntry)
+            val indexedEnumEntry = EKtEnumEntry(location, name)
+            castContext.addDeclaration(descriptor, indexedEnumEntry)
         }
 
         override fun visitParameter(parameter: KtParameter) {
@@ -152,8 +142,8 @@ object IndexerStage : ProjectStage() {
             val location = parameter.nameIdentifier!!.location()
             val name = parameter.name!!
             checkDeclarationName(name, parameter)
-            val valueParameter = EKtValueParameter(location, name, NullDeclaration.toType(), listOf())
-            castContext.addDeclaration(descriptor, valueParameter)
+            val indexedValueParameter = EKtValueParameter(location, name)
+            castContext.addDeclaration(descriptor, indexedValueParameter)
         }
 
         override fun visitLambdaExpression(lambdaExpression: KtLambdaExpression) {
@@ -164,8 +154,8 @@ object IndexerStage : ProjectStage() {
                 val parameterDescriptor = functionDescriptor.valueParameters[0]
                 val location = functionLiteral.location()
                 val name = parameterDescriptor.name.toString()
-                val valueParameter = EKtValueParameter(location, name, NullDeclaration.toType(), listOf())
-                castContext.addDeclaration(parameterDescriptor, valueParameter)
+                val indexedValueParameter = EKtValueParameter(location, name)
+                castContext.addDeclaration(parameterDescriptor, indexedValueParameter)
             }
         }
     }

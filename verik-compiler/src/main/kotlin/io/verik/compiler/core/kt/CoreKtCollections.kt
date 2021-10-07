@@ -41,9 +41,9 @@ object CoreKtCollections : CoreScope(CorePackage.KT_COLLECTIONS) {
             val functionLiteral = callExpression.valueArguments[0]
                 .cast<EFunctionLiteralExpression>()
                 ?: return callExpression
-            val functionLiteralValueParameter = functionLiteral.valueParameters[0].let {
-                ESvValueParameter(it.location, it.name, it.type)
-            }
+            val functionLiteralValueParameter = functionLiteral.valueParameters[0]
+                .cast<ESvValueParameter>()
+                ?: return callExpression
             val functionLiteralValueParameterReferenceExpression = EKtReferenceExpression(
                 functionLiteralValueParameter.location,
                 functionLiteralValueParameter.type.copy(),

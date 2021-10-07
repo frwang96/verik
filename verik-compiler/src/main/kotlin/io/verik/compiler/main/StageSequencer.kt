@@ -16,8 +16,8 @@
 
 package io.verik.compiler.main
 
+import io.verik.compiler.cast.CasterDeclarationIndexerStage
 import io.verik.compiler.cast.CasterStage
-import io.verik.compiler.cast.IndexerStage
 import io.verik.compiler.check.post.CardinalPositiveCheckerStage
 import io.verik.compiler.check.post.FileCheckerStage
 import io.verik.compiler.check.post.KeywordCheckerStage
@@ -37,10 +37,12 @@ import io.verik.compiler.interpret.FileSplitterStage
 import io.verik.compiler.interpret.FunctionInterpreterStage
 import io.verik.compiler.interpret.ModulePortParentResolverStage
 import io.verik.compiler.interpret.PropertyInterpreterStage
+import io.verik.compiler.interpret.ValueParameterInterpreterStage
 import io.verik.compiler.serialize.general.ConfigFileSerializerStage
 import io.verik.compiler.serialize.general.OrderFileSerializerStage
 import io.verik.compiler.serialize.general.PackageFileSerializerStage
 import io.verik.compiler.serialize.source.SourceSerializerStage
+import io.verik.compiler.specialize.DeclarationSpecializerStage
 import io.verik.compiler.specialize.TypeCheckerStage
 import io.verik.compiler.specialize.TypeParameterTypeCheckerStage
 import io.verik.compiler.specialize.TypeResolvedCheckerStage
@@ -51,6 +53,7 @@ import io.verik.compiler.transform.mid.CaseStatementTransformerStage
 import io.verik.compiler.transform.mid.ConstantExpressionEvaluatorStage
 import io.verik.compiler.transform.mid.EnumNameTransformerStage
 import io.verik.compiler.transform.mid.FunctionTransformerStage
+import io.verik.compiler.transform.mid.InjectedExpressionReducerStage
 import io.verik.compiler.transform.mid.InlineIfExpressionTransformerStage
 import io.verik.compiler.transform.mid.PropertyTransformerStage
 import io.verik.compiler.transform.mid.StringTemplateExpressionReducerStage
@@ -72,7 +75,6 @@ import io.verik.compiler.transform.pre.BitConstantTransformerStage
 import io.verik.compiler.transform.pre.ConstantExpressionTransformerStage
 import io.verik.compiler.transform.pre.ForExpressionReducerStage
 import io.verik.compiler.transform.pre.FunctionOverloadingTransformerStage
-import io.verik.compiler.transform.pre.InjectedExpressionReducerStage
 import io.verik.compiler.transform.pre.NameRelabelerStage
 import io.verik.compiler.transform.pre.TypeAliasReducerStage
 import io.verik.compiler.transform.pre.UnaryExpressionReducerStage
@@ -93,14 +95,13 @@ object StageSequencer {
         stageSequence.add(ImportDirectiveCheckerStage)
 
         // Cast
-        stageSequence.add(IndexerStage)
+        stageSequence.add(CasterDeclarationIndexerStage)
         stageSequence.add(CasterStage)
 
         // PreTransform
         stageSequence.add(FunctionOverloadingTransformerStage)
         stageSequence.add(NameRelabelerStage)
         stageSequence.add(TypeAliasReducerStage)
-        stageSequence.add(InjectedExpressionReducerStage)
         stageSequence.add(AssignmentOperatorReducerStage)
         stageSequence.add(UnaryExpressionReducerStage)
         stageSequence.add(BinaryExpressionReducerStage)
@@ -113,6 +114,7 @@ object StageSequencer {
         stageSequence.add(TypeParameterTypeCheckerStage)
         stageSequence.add(TypeResolverStage)
         stageSequence.add(TypeResolvedCheckerStage)
+        stageSequence.add(DeclarationSpecializerStage)
         stageSequence.add(TypeSpecializerStage)
         stageSequence.add(TypeCheckerStage)
 
@@ -121,11 +123,13 @@ object StageSequencer {
         stageSequence.add(ClassInterpreterStage)
         stageSequence.add(FunctionInterpreterStage)
         stageSequence.add(PropertyInterpreterStage)
+        stageSequence.add(ValueParameterInterpreterStage)
         stageSequence.add(ModulePortParentResolverStage)
         stageSequence.add(FileSplitterStage)
 
         // MidTransform
         stageSequence.add(EnumNameTransformerStage)
+        stageSequence.add(InjectedExpressionReducerStage)
         stageSequence.add(StringTemplateExpressionReducerStage)
         stageSequence.add(UninitializedPropertyTransformerStage)
         stageSequence.add(FunctionTransformerStage)
