@@ -18,7 +18,6 @@ package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EAbstractContainerClass
 import io.verik.compiler.ast.element.common.EDeclaration
-import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
@@ -27,7 +26,6 @@ class ESvBasicClass(
     override val location: SourceLocation,
     override var name: String,
     override var supertype: Type,
-    override var typeParameters: ArrayList<ETypeParameter>,
     override var declarations: ArrayList<EDeclaration>
 ) : EAbstractContainerClass() {
 

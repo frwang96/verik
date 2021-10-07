@@ -16,7 +16,6 @@
 
 package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
@@ -25,7 +24,6 @@ class EModulePort(
     override val location: SourceLocation,
     override var name: String,
     override var supertype: Type,
-    override var typeParameters: ArrayList<ETypeParameter>,
     override val ports: List<EPort>,
     var parentModuleInterface: EModuleInterface?
 ) : EAbstractComponent() {

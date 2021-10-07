@@ -33,7 +33,7 @@ internal class BasicClassInterpreterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SvBasicClass(C, [], [SvFunction(vknew, *, *, true, [])])",
+            "SvBasicClass(C, [SvFunction(vknew, *, *, true, [])])",
             projectContext.findDeclaration("C")
         )
     }
