@@ -14,17 +14,13 @@
  * limitations under the License.
  */
 
-package lock
+package adder
 
 import io.verik.core.*
 
-enum class State {
-    @Relabel("STATE_OPENED")
-    OPENED,
-    @Relabel("STATE_OPENING")
-    OPENING,
-    @Relabel("STATE_CLOSED")
-    CLOSED,
-    @Relabel("STATE_CLOSING")
-    CLOSING
+@Top
+class AdderTop : Module() {
+
+    @Make
+    val adder = Adder<`8`>()
 }

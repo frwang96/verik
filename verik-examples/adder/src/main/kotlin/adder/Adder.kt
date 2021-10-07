@@ -14,19 +14,16 @@
  * limitations under the License.
  */
 
-package lock
+package adder
 
 import io.verik.core.*
 
-@Top
-object LockTop : Module() {
+class Adder<N : `*`> : Module() {
 
-    @Make
-    val lock = Lock(
-        clk = false,
-        rst = false,
-        open = false,
-        close = false,
-        state = nc()
-    )
+    var x: Ubit<ID<N>> = nc()
+
+    @Com
+    fun f() {
+        x = u0()
+    }
 }
