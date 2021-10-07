@@ -16,4 +16,18 @@
 
 package io.verik.compiler.copy
 
-class CopyContext(val referenceForwardingMap: ReferenceForwardingMap)
+import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.property.Type
+
+class CopyContext(val referenceForwardingMap: ReferenceForwardingMap) {
+
+    fun <E : EElement> copy(element: E): E {
+        return ElementCopier.copy(element, this)
+    }
+
+    fun copy(type: Type): Type {
+        val arguments = type.arguments.map { copy(it) }
+        val reference = referenceForwardingMap[type.reference] ?: type.reference
+        return Type(reference, ArrayList(arguments))
+    }
+}
