@@ -43,54 +43,54 @@ import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.common.TreeVisitor
 
 class CopierDeclarationIndexerVisitor(
-    private val referenceForwardingMap: ReferenceForwardingMap
+    private val copyContext: CopyContext
 ) : TreeVisitor() {
 
     override fun visitTypeAlias(typeAlias: ETypeAlias) {
         super.visitTypeAlias(typeAlias)
         val copiedTypeAlias = ETypeAlias(typeAlias.location, typeAlias.name)
-        referenceForwardingMap[typeAlias] = copiedTypeAlias
+        copyContext.set(typeAlias, copiedTypeAlias)
     }
 
     override fun visitTypeParameter(typeParameter: ETypeParameter) {
         super.visitTypeParameter(typeParameter)
         val copiedTypeParameter = ETypeParameter(typeParameter.location, typeParameter.name)
-        referenceForwardingMap[typeParameter] = copiedTypeParameter
+        copyContext.set(typeParameter, copiedTypeParameter)
     }
 
     override fun visitKtBasicClass(basicClass: EKtBasicClass) {
         super.visitKtBasicClass(basicClass)
         val copiedBasicClass = EKtBasicClass(basicClass.location, basicClass.name)
-        referenceForwardingMap[basicClass] = copiedBasicClass
+        copyContext.set(basicClass, copiedBasicClass)
     }
 
     override fun visitKtFunction(function: EKtFunction) {
         super.visitKtFunction(function)
         val copiedFunction = EKtFunction(function.location, function.name)
-        referenceForwardingMap[function] = copiedFunction
+        copyContext.set(function, copiedFunction)
     }
 
     override fun visitPrimaryConstructor(primaryConstructor: EPrimaryConstructor) {
         super.visitPrimaryConstructor(primaryConstructor)
         val copiedPrimaryConstructor = EPrimaryConstructor(primaryConstructor.location)
-        referenceForwardingMap[primaryConstructor] = copiedPrimaryConstructor
+        copyContext.set(primaryConstructor, copiedPrimaryConstructor)
     }
 
     override fun visitKtProperty(property: EKtProperty) {
         super.visitKtProperty(property)
         val copiedProperty = EKtProperty(property.location, property.name)
-        referenceForwardingMap[property] = copiedProperty
+        copyContext.set(property, copiedProperty)
     }
 
     override fun visitKtEnumEntry(enumEntry: EKtEnumEntry) {
         super.visitKtEnumEntry(enumEntry)
         val copiedEnumEntry = EKtEnumEntry(enumEntry.location, enumEntry.name)
-        referenceForwardingMap[enumEntry] = copiedEnumEntry
+        copyContext.set(enumEntry, copiedEnumEntry)
     }
 
     override fun visitKtValueParameter(valueParameter: EKtValueParameter) {
         super.visitKtValueParameter(valueParameter)
         val copiedValueParameter = EKtValueParameter(valueParameter.location, valueParameter.name)
-        referenceForwardingMap[valueParameter] = copiedValueParameter
+        copyContext.set(valueParameter, copiedValueParameter)
     }
 }

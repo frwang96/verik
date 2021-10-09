@@ -118,6 +118,11 @@ object Messages {
         "Type of type argument could not be resolved"
     )
 
+    val TYPE_PARAMETERS_ON_TOP = MessageTemplate0(
+        Severity.ERROR,
+        "Type parameters not permitted on top level declaration"
+    )
+
     val NO_TOP_DECLARATIONS = MessageTemplate0(
         Severity.ERROR,
         "No top level declarations found"

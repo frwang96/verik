@@ -38,34 +38,31 @@ import io.verik.compiler.message.Messages
 
 class ReferenceForwardingMap {
 
-    val referenceForwardingMap = HashMap<EDeclaration, EDeclaration>()
+    private val referenceForwardingMap = HashMap<ReferenceForwardingEntry, EDeclaration>()
 
-    operator fun set(oldDeclaration: EDeclaration, newDeclaration: EDeclaration) {
-        referenceForwardingMap[oldDeclaration] = newDeclaration
+    fun set(oldDeclaration: EDeclaration, typeParameterContext: TypeParameterContext, newDeclaration: EDeclaration) {
+        referenceForwardingMap[ReferenceForwardingEntry(oldDeclaration, typeParameterContext)] = newDeclaration
     }
 
-    operator fun get(declaration: Declaration): Declaration {
-        return referenceForwardingMap[declaration] ?: declaration
+    fun get(declaration: Declaration, typeParameterContext: TypeParameterContext): Declaration? {
+        return if (declaration is EDeclaration) {
+            referenceForwardingMap[ReferenceForwardingEntry(declaration, typeParameterContext)]
+        } else null
     }
 
-    operator fun contains(declaration: EDeclaration): Boolean {
-        return declaration in referenceForwardingMap
-    }
-
-    inline fun <reified D : EDeclaration> find(declaration: D): D? {
-        return when (val forwardedDeclaration = referenceForwardingMap[declaration]) {
-            is D -> forwardedDeclaration
-            null -> {
-                Messages.INTERNAL_ERROR.on(declaration, "Forwarded declaration not found: ${declaration.name}")
-                null
-            }
-            else -> {
-                Messages.INTERNAL_ERROR.on(
-                    declaration,
-                    "Unexpected forwarded declaration: Expected ${D::class.simpleName} actual $forwardedDeclaration"
-                )
-                null
-            }
+    fun getNotNull(declaration: EDeclaration, typeParameterContext: TypeParameterContext): Declaration {
+        val forwardedDeclaration = referenceForwardingMap[ReferenceForwardingEntry(declaration, typeParameterContext)]
+        return if (forwardedDeclaration != null) {
+            forwardedDeclaration
+        } else {
+            Messages.INTERNAL_ERROR.on(declaration, "Forwarded declaration not found: ${declaration.name}")
+            declaration
         }
     }
+
+    fun contains(declaration: EDeclaration, typeParameterContext: TypeParameterContext): Boolean {
+        return ReferenceForwardingEntry(declaration, typeParameterContext) in referenceForwardingMap
+    }
+
+    data class ReferenceForwardingEntry(val declaration: EDeclaration, val typeParameterContext: TypeParameterContext)
 }

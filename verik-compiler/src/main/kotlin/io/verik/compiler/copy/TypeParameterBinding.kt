@@ -14,16 +14,9 @@
  * limitations under the License.
  */
 
-package adder
+package io.verik.compiler.copy
 
-import io.verik.core.*
+import io.verik.compiler.ast.element.common.ETypeParameter
+import io.verik.compiler.ast.property.Type
 
-class Adder<N : `*`> : Module() {
-
-    var x: Ubit<N> = nc()
-
-    @Com
-    fun f() {
-        x = u0()
-    }
-}
+data class TypeParameterBinding(val typeParameter: ETypeParameter, val type: Type)

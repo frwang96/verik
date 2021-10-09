@@ -14,16 +14,12 @@
  * limitations under the License.
  */
 
-package adder
+package io.verik.compiler.copy
 
-import io.verik.core.*
+data class TypeParameterContext(val typeParameterBindings: List<TypeParameterBinding>) {
 
-class Adder<N : `*`> : Module() {
+    companion object {
 
-    var x: Ubit<N> = nc()
-
-    @Com
-    fun f() {
-        x = u0()
+        val EMPTY = TypeParameterContext(listOf())
     }
 }

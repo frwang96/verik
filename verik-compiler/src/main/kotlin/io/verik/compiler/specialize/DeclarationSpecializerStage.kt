@@ -19,6 +19,7 @@ package io.verik.compiler.specialize
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.ETypedElement
+import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.interfaces.Annotated
 import io.verik.compiler.ast.interfaces.Declaration
@@ -29,7 +30,6 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.copy.CopierDeclarationIndexerVisitor
 import io.verik.compiler.copy.CopyContext
 import io.verik.compiler.copy.ElementCopier
-import io.verik.compiler.copy.ReferenceForwardingMap
 import io.verik.compiler.core.common.Annotations
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
@@ -45,8 +45,13 @@ object DeclarationSpecializerStage : ProjectStage() {
         if (projectContext.config.enableDeadCodeElimination) {
             projectContext.project.files().forEach { file ->
                 file.declarations.forEach {
-                    if (it is Annotated && it.hasAnnotation(Annotations.TOP))
-                        declarationQueue.push(it)
+                    if (it is Annotated && it.hasAnnotation(Annotations.TOP)) {
+                        if (it is EKtBasicClass && it.typeParameters.isNotEmpty()) {
+                            Messages.TYPE_PARAMETERS_ON_TOP.on(it)
+                        } else {
+                            declarationQueue.push(it)
+                        }
+                    }
                 }
             }
             if (declarationQueue.isEmpty())
@@ -54,26 +59,26 @@ object DeclarationSpecializerStage : ProjectStage() {
         } else {
             projectContext.project.files().forEach { file ->
                 file.declarations.forEach {
-                    declarationQueue.push(it)
+                    if (it !is EKtBasicClass || it.typeParameters.isEmpty())
+                        declarationQueue.push(it)
                 }
             }
         }
 
         val declarationSpecializerVisitor = DeclarationSpecializerVisitor(declarationQueue)
-        val referenceForwardingMap = ReferenceForwardingMap()
-        val copierDeclarationIndexerVisitor = CopierDeclarationIndexerVisitor(referenceForwardingMap)
+        val copyContext = CopyContext()
+        val copierDeclarationIndexerVisitor = CopierDeclarationIndexerVisitor(copyContext)
         while (declarationQueue.isNotEmpty()) {
             val declaration = declarationQueue.pop()
-            if (declaration !in referenceForwardingMap) {
+            if (!copyContext.contains(declaration)) {
                 declaration.accept(declarationSpecializerVisitor)
                 declaration.accept(copierDeclarationIndexerVisitor)
             }
         }
 
-        val copyContext = CopyContext(referenceForwardingMap)
         projectContext.project.files().forEach { file ->
             val declarations = file.declarations.mapNotNull {
-                if (it in referenceForwardingMap) {
+                if (copyContext.contains(it)) {
                     ElementCopier.copy(it, copyContext)
                 } else null
             }

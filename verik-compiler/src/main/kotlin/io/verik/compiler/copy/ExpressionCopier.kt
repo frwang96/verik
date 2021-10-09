@@ -102,14 +102,14 @@ object ExpressionCopier {
         copyContext: CopyContext
     ): EKtReferenceExpression {
         val type = copyContext.copy(referenceExpression.type)
-        val reference = copyContext.referenceForwardingMap[referenceExpression.reference]
+        val reference = copyContext.get(referenceExpression.reference) ?: referenceExpression.reference
         val receiver = referenceExpression.receiver?.let { copyContext.copy(it) }
         return EKtReferenceExpression(referenceExpression.location, type, reference, receiver)
     }
 
     private fun copyKtCallExpression(callExpression: EKtCallExpression, copyContext: CopyContext): EKtCallExpression {
         val type = copyContext.copy(callExpression.type)
-        val reference = copyContext.referenceForwardingMap[callExpression.reference]
+        val reference = copyContext.get(callExpression.reference) ?: callExpression.reference
         val receiver = callExpression.receiver?.let { copyContext.copy(it) }
         val valueArguments = callExpression.valueArguments.map { copyContext.copy(it) }
         val typeArguments = callExpression.typeArguments.map { copyContext.copy(it) }

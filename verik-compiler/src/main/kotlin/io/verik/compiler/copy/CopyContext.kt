@@ -16,10 +16,32 @@
 
 package io.verik.compiler.copy
 
+import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.Type
 
-class CopyContext(val referenceForwardingMap: ReferenceForwardingMap) {
+class CopyContext {
+
+    var typeParameterContext = TypeParameterContext.EMPTY
+
+    private val referenceForwardingMap = ReferenceForwardingMap()
+
+    fun set(oldDeclaration: EDeclaration, newDeclaration: EDeclaration) {
+        referenceForwardingMap.set(oldDeclaration, typeParameterContext, newDeclaration)
+    }
+
+    fun get(declaration: Declaration): Declaration? {
+        return referenceForwardingMap.get(declaration, typeParameterContext)
+    }
+
+    fun getNotNull(declaration: EDeclaration): Declaration {
+        return referenceForwardingMap.getNotNull(declaration, typeParameterContext)
+    }
+
+    fun contains(declaration: EDeclaration): Boolean {
+        return referenceForwardingMap.contains(declaration, typeParameterContext)
+    }
 
     fun <E : EElement> copy(element: E): E {
         return ElementCopier.copy(element, this)
@@ -27,7 +49,7 @@ class CopyContext(val referenceForwardingMap: ReferenceForwardingMap) {
 
     fun copy(type: Type): Type {
         val arguments = type.arguments.map { copy(it) }
-        val reference = referenceForwardingMap[type.reference]
+        val reference = referenceForwardingMap.get(type.reference, typeParameterContext) ?: type.reference
         return Type(reference, ArrayList(arguments))
     }
 }
