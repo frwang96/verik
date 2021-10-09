@@ -155,9 +155,9 @@ class ElementPrinter : Visitor() {
         build("KtBasicClass") {
             build(basicClass.name)
             build(basicClass.declarations)
+            build(basicClass.typeParameters)
             build(basicClass.annotations)
             build(basicClass.isEnum.toString())
-            build(basicClass.typeParameters)
             build(basicClass.primaryConstructor)
         }
     }

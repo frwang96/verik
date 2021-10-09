@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.common.EAbstractContainerClass
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.interfaces.Annotated
+import io.verik.compiler.ast.interfaces.TypeParameterized
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.TreeVisitor
@@ -29,31 +30,31 @@ import io.verik.compiler.message.SourceLocation
 class EKtBasicClass(
     override val location: SourceLocation,
     override var name: String
-) : EAbstractContainerClass(), Annotated {
+) : EAbstractContainerClass(), TypeParameterized, Annotated {
 
     override var supertype = NullDeclaration.toType()
     override var declarations: ArrayList<EDeclaration> = arrayListOf()
+    override var typeParameters: ArrayList<ETypeParameter> = arrayListOf()
     override var annotations: List<EAnnotation> = listOf()
     var isEnum: Boolean = false
-    var typeParameters: ArrayList<ETypeParameter> = arrayListOf()
     var primaryConstructor: EPrimaryConstructor? = null
 
     fun init(
         supertype: Type,
         declarations: List<EDeclaration>,
+        typeParameters: List<ETypeParameter>,
         annotations: List<EAnnotation>,
         isEnum: Boolean,
-        typeParameters: List<ETypeParameter>,
         primaryConstructor: EPrimaryConstructor?
     ) {
         this.supertype = supertype
         declarations.forEach { it.parent = this }
         this.declarations = ArrayList(declarations)
+        typeParameters.forEach { it.parent = this }
+        this.typeParameters = ArrayList(typeParameters)
         annotations.forEach { it.parent = this }
         this.annotations = annotations
         this.isEnum = isEnum
-        typeParameters.forEach { it.parent = this }
-        this.typeParameters = ArrayList(typeParameters)
         primaryConstructor?.parent = this
         this.primaryConstructor = primaryConstructor
     }
@@ -64,8 +65,8 @@ class EKtBasicClass(
 
     override fun acceptChildren(visitor: TreeVisitor) {
         super.acceptChildren(visitor)
-        annotations.forEach { it.accept(visitor) }
         typeParameters.forEach { it.accept(visitor) }
+        annotations.forEach { it.accept(visitor) }
         primaryConstructor?.accept(visitor)
     }
 }

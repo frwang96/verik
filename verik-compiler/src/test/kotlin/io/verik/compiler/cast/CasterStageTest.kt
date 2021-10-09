@@ -41,7 +41,7 @@ internal class CasterStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "File([KtBasicClass(C, [], [], false, [], PrimaryConstructor(C, []))])",
+            "File([KtBasicClass(C, [], [], [], false, PrimaryConstructor(C, []))])",
             projectContext.project.files().first()
         )
     }
@@ -58,8 +58,8 @@ internal class CasterStageTest : BaseTest() {
         assertElementEquals(
             """
                 File([
-                    KtBasicClass(C, [], [], false, [], PrimaryConstructor(C, [])),
-                    KtBasicClass(D, [], [], false, [], PrimaryConstructor(D, []))
+                    KtBasicClass(C, [], [], [], false, PrimaryConstructor(C, [])),
+                    KtBasicClass(D, [], [], [], false, PrimaryConstructor(D, []))
                 ])
             """.trimIndent(),
             projectContext.project.files().first()

@@ -78,16 +78,16 @@ object DeclarationCopier {
 
         val superType = copyContext.copy(basicClass.supertype)
         val declarations = basicClass.declarations.map { copyContext.copy(it) }
-        val annotations = basicClass.annotations.map { copyContext.copy(it) }
         val typeParameters = basicClass.typeParameters.map { copyContext.copy(it) }
+        val annotations = basicClass.annotations.map { copyContext.copy(it) }
         val primaryConstructor = basicClass.primaryConstructor?.let { copyContext.copy(it) }
 
         copiedBasicClass.init(
             superType,
             declarations,
+            typeParameters,
             annotations,
             basicClass.isEnum,
-            typeParameters,
             primaryConstructor
         )
         return copiedBasicClass

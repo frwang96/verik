@@ -77,13 +77,13 @@ object DeclarationCaster {
         val declarations = classOrObject.declarations.mapNotNull {
             castContext.casterVisitor.getDeclaration(it)
         }
+        val typeParameters = classOrObject.typeParameters.mapNotNull {
+            castContext.casterVisitor.getElement<ETypeParameter>(it)
+        }
         val annotations = classOrObject.annotationEntries.mapNotNull {
             AnnotationCaster.castAnnotationEntry(it, castContext)
         }
         val isEnum = classOrObject.hasModifier(KtTokens.ENUM_KEYWORD)
-        val typeParameters = classOrObject.typeParameters.mapNotNull {
-            castContext.casterVisitor.getElement<ETypeParameter>(it)
-        }
         val primaryConstructor = when {
             classOrObject.hasExplicitPrimaryConstructor() ->
                 castContext.casterVisitor.getElement(classOrObject.primaryConstructor!!)
@@ -95,9 +95,9 @@ object DeclarationCaster {
         castedBasicClass.init(
             supertype,
             declarations,
+            typeParameters,
             annotations,
             isEnum,
-            typeParameters,
             primaryConstructor
         )
         return castedBasicClass

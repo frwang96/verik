@@ -19,11 +19,11 @@ package io.verik.compiler.specialize
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.ETypedElement
-import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.interfaces.Annotated
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.Reference
+import io.verik.compiler.ast.interfaces.TypeParameterized
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
@@ -46,7 +46,7 @@ object DeclarationSpecializerStage : ProjectStage() {
             projectContext.project.files().forEach { file ->
                 file.declarations.forEach {
                     if (it is Annotated && it.hasAnnotation(Annotations.TOP)) {
-                        if (it is EKtBasicClass && it.typeParameters.isNotEmpty()) {
+                        if (it is TypeParameterized && it.typeParameters.isNotEmpty()) {
                             Messages.TYPE_PARAMETERS_ON_TOP.on(it)
                         } else {
                             declarationQueue.push(it)
@@ -59,7 +59,7 @@ object DeclarationSpecializerStage : ProjectStage() {
         } else {
             projectContext.project.files().forEach { file ->
                 file.declarations.forEach {
-                    if (it !is EKtBasicClass || it.typeParameters.isEmpty())
+                    if (it !is TypeParameterized || it.typeParameters.isEmpty())
                         declarationQueue.push(it)
                 }
             }
