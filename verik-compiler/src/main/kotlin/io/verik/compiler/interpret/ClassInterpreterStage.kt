@@ -45,7 +45,7 @@ object ClassInterpreterStage : ProjectStage() {
         referenceUpdater.flush()
     }
 
-    class ClassInterpreterVisitor(private val referenceUpdater: ReferenceUpdater) : TreeVisitor() {
+    private class ClassInterpreterVisitor(private val referenceUpdater: ReferenceUpdater) : TreeVisitor() {
 
         override fun visitKtBasicClass(basicClass: EKtBasicClass) {
             super.visitKtBasicClass(basicClass)
@@ -59,7 +59,7 @@ object ClassInterpreterStage : ProjectStage() {
         }
     }
 
-    class EnumEntryCollectorVisitor : TreeVisitor() {
+    private class EnumEntryCollectorVisitor : TreeVisitor() {
 
         val enumEntries = ArrayList<ESvEnumEntry>()
 

@@ -51,7 +51,7 @@ class ReferenceUpdater(val projectContext: ProjectContext) {
         referenceMap.clear()
     }
 
-    class ReferenceUpdaterVisitor(private val referenceMap: Map<EDeclaration, EDeclaration>) : TreeVisitor() {
+    private class ReferenceUpdaterVisitor(private val referenceMap: Map<EDeclaration, EDeclaration>) : TreeVisitor() {
 
         private fun updateTypeReferences(type: Type) {
             val reference = referenceMap[type.reference]

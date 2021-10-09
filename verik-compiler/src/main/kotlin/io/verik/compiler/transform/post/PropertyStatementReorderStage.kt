@@ -35,7 +35,7 @@ object PropertyStatementReorderStage : ProjectStage() {
         projectContext.project.accept(PropertyStatementReorderVisitor)
     }
 
-    object PropertyStatementReorderVisitor : TreeVisitor() {
+    private object PropertyStatementReorderVisitor : TreeVisitor() {
 
         override fun visitKtBlockExpression(blockExpression: EKtBlockExpression) {
             super.visitKtBlockExpression(blockExpression)

@@ -34,7 +34,7 @@ object ElementParentChecker : ProjectStage() {
         projectContext.project.accept(elementParentVisitor)
     }
 
-    class ElementParentVisitor : TreeVisitor() {
+    private class ElementParentVisitor : TreeVisitor() {
 
         private val parentStack = ArrayDeque<EElement>()
 

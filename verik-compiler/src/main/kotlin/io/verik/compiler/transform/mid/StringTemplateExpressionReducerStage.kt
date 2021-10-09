@@ -54,7 +54,7 @@ object StringTemplateExpressionReducerStage : ProjectStage() {
         }
     }
 
-    object StringTemplateExpressionReducerVisitor : TreeVisitor() {
+    private object StringTemplateExpressionReducerVisitor : TreeVisitor() {
 
         override fun visitStringTemplateExpression(stringTemplateExpression: EStringTemplateExpression) {
             super.visitStringTemplateExpression(stringTemplateExpression)

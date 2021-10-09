@@ -33,7 +33,7 @@ object BlockExpressionTransformerStage : ProjectStage() {
         projectContext.project.accept(BlockExpressionTransformerVisitor)
     }
 
-    object BlockExpressionTransformerVisitor : TreeVisitor() {
+    private object BlockExpressionTransformerVisitor : TreeVisitor() {
 
         override fun visitKtBlockExpression(blockExpression: EKtBlockExpression) {
             super.visitKtBlockExpression(blockExpression)

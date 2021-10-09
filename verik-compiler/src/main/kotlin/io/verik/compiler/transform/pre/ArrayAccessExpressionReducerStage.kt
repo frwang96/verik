@@ -112,7 +112,7 @@ object ArrayAccessExpressionReducerStage : ProjectStage() {
         }
     }
 
-    object ArrayAccessExpressionReducerVisitor : TreeVisitor() {
+    private object ArrayAccessExpressionReducerVisitor : TreeVisitor() {
 
         private fun getGetReference(
             arrayDeclaration: Declaration,

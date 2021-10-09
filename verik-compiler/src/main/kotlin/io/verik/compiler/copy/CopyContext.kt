@@ -39,8 +39,8 @@ class CopyContext {
         return referenceForwardingMap.getNotNull(declaration, typeParameterContext)
     }
 
-    fun contains(declaration: EDeclaration): Boolean {
-        return referenceForwardingMap.contains(declaration, typeParameterContext)
+    fun contains(declarationBinding: DeclarationBinding): Boolean {
+        return referenceForwardingMap.contains(declarationBinding)
     }
 
     fun <E : EElement> copy(element: E): E {

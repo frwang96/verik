@@ -31,7 +31,7 @@ object UninitializedPropertyTransformerStage : ProjectStage() {
         projectContext.project.accept(UninitializedPropertyTransformerVisitor)
     }
 
-    object UninitializedPropertyTransformerVisitor : TreeVisitor() {
+    private object UninitializedPropertyTransformerVisitor : TreeVisitor() {
 
         override fun visitAbstractInitializedProperty(abstractInitializedProperty: EAbstractInitializedProperty) {
             super.visitAbstractInitializedProperty(abstractInitializedProperty)

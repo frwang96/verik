@@ -32,7 +32,7 @@ object StructLiteralTransformerStage : ProjectStage() {
         projectContext.project.accept(StructLiteralTransformerVisitor)
     }
 
-    object StructLiteralTransformerVisitor : TreeVisitor() {
+    private object StructLiteralTransformerVisitor : TreeVisitor() {
 
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)

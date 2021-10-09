@@ -49,7 +49,7 @@ object TypeConstraintCollector {
         return typeConstraintCollectorVisitor.typeConstraints
     }
 
-    class TypeConstraintCollectorVisitor : TreeVisitor() {
+    private class TypeConstraintCollectorVisitor : TreeVisitor() {
 
         val typeConstraints = ArrayList<TypeConstraint>()
 

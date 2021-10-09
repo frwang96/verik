@@ -51,7 +51,7 @@ object PropertyInterpreterStage : ProjectStage() {
         referenceUpdater.flush()
     }
 
-    class PropertyInterpreterVisitor(private val referenceUpdater: ReferenceUpdater) : TreeVisitor() {
+    private class PropertyInterpreterVisitor(private val referenceUpdater: ReferenceUpdater) : TreeVisitor() {
 
         private fun interpret(property: EKtProperty): EDeclaration {
             interpretAbstractComponentInstantiation(property)?.let { return it }

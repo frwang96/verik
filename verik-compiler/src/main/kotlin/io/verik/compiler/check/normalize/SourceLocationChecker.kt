@@ -34,7 +34,7 @@ object SourceLocationChecker : ProjectStage() {
         }
     }
 
-    class SourceLocationVisitor(val projectContext: ProjectContext, val path: Path) : TreeVisitor() {
+    private class SourceLocationVisitor(val projectContext: ProjectContext, val path: Path) : TreeVisitor() {
 
         override fun visitElement(element: EElement) {
             super.visitElement(element)

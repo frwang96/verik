@@ -30,7 +30,7 @@ object PackageNameTransformerStage : ProjectStage() {
         projectContext.project.accept(PackageNameTransformerVisitor)
     }
 
-    object PackageNameTransformerVisitor : TreeVisitor() {
+    private object PackageNameTransformerVisitor : TreeVisitor() {
 
         override fun visitBasicPackage(basicPackage: EBasicPackage) {
             val name = if (basicPackage.name == "") {

@@ -33,7 +33,7 @@ object BitConstantTransformerStage : ProjectStage() {
         projectContext.project.accept(BitConstantTransformerVisitor)
     }
 
-    object BitConstantTransformerVisitor : TreeVisitor() {
+    private object BitConstantTransformerVisitor : TreeVisitor() {
 
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)

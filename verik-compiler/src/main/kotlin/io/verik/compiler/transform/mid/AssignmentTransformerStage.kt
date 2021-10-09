@@ -38,7 +38,7 @@ object AssignmentTransformerStage : ProjectStage() {
         projectContext.project.accept(assignmentTransformerVisitor)
     }
 
-    class AssignmentTransformerVisitor : TreeVisitor() {
+    private class AssignmentTransformerVisitor : TreeVisitor() {
 
         private var inAlwaysSeqBlock = false
 

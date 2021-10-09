@@ -43,7 +43,7 @@ object DanglingReferenceChecker : ProjectStage() {
         projectContext.project.accept(danglingReferenceCheckerVisitor)
     }
 
-    class DanglingReferenceIndexerVisitor : TreeVisitor() {
+    private class DanglingReferenceIndexerVisitor : TreeVisitor() {
 
         val declarations = HashSet<EDeclaration>()
 
@@ -53,7 +53,7 @@ object DanglingReferenceChecker : ProjectStage() {
         }
     }
 
-    class DanglingReferenceCheckerVisitor(private val declarations: HashSet<EDeclaration>) : TreeVisitor() {
+    private class DanglingReferenceCheckerVisitor(private val declarations: HashSet<EDeclaration>) : TreeVisitor() {
 
         private fun checkReference(type: Type, element: EElement) {
             type.arguments.forEach { checkReference(it, element) }

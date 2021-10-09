@@ -33,7 +33,7 @@ object TypeParameterTypeCheckerStage : ProjectStage() {
         projectContext.project.accept(TypeParameterTypeCheckerVisitor)
     }
 
-    object TypeParameterTypeCheckerVisitor : TreeVisitor() {
+    private object TypeParameterTypeCheckerVisitor : TreeVisitor() {
 
         private fun checkType(type: Type, element: EElement) {
             if (type.isCardinalType()) {

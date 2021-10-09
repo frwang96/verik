@@ -49,7 +49,7 @@ object ModulePortParentResolverStage : ProjectStage() {
         }
     }
 
-    class ModulePortParentResolverVisitor : TreeVisitor() {
+    private class ModulePortParentResolverVisitor : TreeVisitor() {
 
         val multipleParentModulePorts = HashSet<EModulePort>()
 

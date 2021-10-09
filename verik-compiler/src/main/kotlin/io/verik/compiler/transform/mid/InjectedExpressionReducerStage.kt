@@ -33,7 +33,7 @@ object InjectedExpressionReducerStage : ProjectStage() {
         projectContext.project.accept(InjectedExpressionReducerVisitor)
     }
 
-    object InjectedExpressionReducerVisitor : TreeVisitor() {
+    private object InjectedExpressionReducerVisitor : TreeVisitor() {
 
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)

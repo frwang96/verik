@@ -46,7 +46,7 @@ object UnaryExpressionReducerStage : ProjectStage() {
         val kind: KtUnaryOperatorKind
     )
 
-    object UnaryExpressionReducerVisitor : TreeVisitor() {
+    private object UnaryExpressionReducerVisitor : TreeVisitor() {
 
         override fun visitKtUnaryExpression(unaryExpression: EKtUnaryExpression) {
             super.visitKtUnaryExpression(unaryExpression)

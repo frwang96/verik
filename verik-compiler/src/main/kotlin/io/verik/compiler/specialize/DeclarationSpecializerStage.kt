@@ -29,7 +29,9 @@ import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.copy.CopierDeclarationIndexerVisitor
 import io.verik.compiler.copy.CopyContext
+import io.verik.compiler.copy.DeclarationBinding
 import io.verik.compiler.copy.ElementCopier
+import io.verik.compiler.copy.TypeParameterContext
 import io.verik.compiler.core.common.Annotations
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
@@ -41,44 +43,22 @@ object DeclarationSpecializerStage : ProjectStage() {
     override val checkNormalization = true
 
     override fun process(projectContext: ProjectContext) {
-        val declarationQueue = ArrayDeque<EDeclaration>()
-        if (projectContext.config.enableDeadCodeElimination) {
-            projectContext.project.files().forEach { file ->
-                file.declarations.forEach {
-                    if (it is Annotated && it.hasAnnotation(Annotations.TOP)) {
-                        if (it is TypeParameterized && it.typeParameters.isNotEmpty()) {
-                            Messages.TYPE_PARAMETERS_ON_TOP.on(it)
-                        } else {
-                            declarationQueue.push(it)
-                        }
-                    }
-                }
-            }
-            if (declarationQueue.isEmpty())
-                Messages.NO_TOP_DECLARATIONS.on(projectContext.project)
-        } else {
-            projectContext.project.files().forEach { file ->
-                file.declarations.forEach {
-                    if (it !is TypeParameterized || it.typeParameters.isEmpty())
-                        declarationQueue.push(it)
-                }
-            }
-        }
-
+        val entryPoints = getEntryPoints(projectContext)
+        val declarationQueue = ArrayDeque(entryPoints.map { DeclarationBinding(it, TypeParameterContext.EMPTY) })
         val declarationSpecializerVisitor = DeclarationSpecializerVisitor(declarationQueue)
         val copyContext = CopyContext()
         val copierDeclarationIndexerVisitor = CopierDeclarationIndexerVisitor(copyContext)
         while (declarationQueue.isNotEmpty()) {
-            val declaration = declarationQueue.pop()
-            if (!copyContext.contains(declaration)) {
-                declaration.accept(declarationSpecializerVisitor)
-                declaration.accept(copierDeclarationIndexerVisitor)
+            val declarationBinding = declarationQueue.pop()
+            if (!copyContext.contains(declarationBinding)) {
+                declarationBinding.declaration.accept(declarationSpecializerVisitor)
+                declarationBinding.declaration.accept(copierDeclarationIndexerVisitor)
             }
         }
 
         projectContext.project.files().forEach { file ->
             val declarations = file.declarations.mapNotNull {
-                if (copyContext.contains(it)) {
+                if (copyContext.contains(DeclarationBinding(it, TypeParameterContext.EMPTY))) {
                     ElementCopier.copy(it, copyContext)
                 } else null
             }
@@ -87,11 +67,40 @@ object DeclarationSpecializerStage : ProjectStage() {
         }
     }
 
-    class DeclarationSpecializerVisitor(private val declarationQueue: ArrayDeque<EDeclaration>) : TreeVisitor() {
+    private fun getEntryPoints(projectContext: ProjectContext): ArrayList<EDeclaration> {
+        val entryPoints = ArrayList<EDeclaration>()
+        if (projectContext.config.enableDeadCodeElimination) {
+            projectContext.project.files().forEach { file ->
+                file.declarations.forEach {
+                    if (it is Annotated && it.hasAnnotation(Annotations.TOP)) {
+                        if (it is TypeParameterized && it.typeParameters.isNotEmpty()) {
+                            Messages.TYPE_PARAMETERS_ON_TOP.on(it)
+                        } else {
+                            entryPoints.push(it)
+                        }
+                    }
+                }
+            }
+            if (entryPoints.isEmpty())
+                Messages.NO_TOP_DECLARATIONS.on(projectContext.project)
+        } else {
+            projectContext.project.files().forEach { file ->
+                file.declarations.forEach {
+                    if (it !is TypeParameterized || it.typeParameters.isEmpty())
+                        entryPoints.push(it)
+                }
+            }
+        }
+        return entryPoints
+    }
+
+    private class DeclarationSpecializerVisitor(
+        private val declarationQueue: ArrayDeque<DeclarationBinding>
+    ) : TreeVisitor() {
 
         private fun addReference(reference: Declaration) {
             if (reference is EDeclaration && reference.parent is EFile)
-                declarationQueue.push(reference)
+                declarationQueue.push(DeclarationBinding(reference, TypeParameterContext.EMPTY))
         }
 
         private fun addReference(type: Type) {

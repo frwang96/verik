@@ -31,7 +31,7 @@ object ElementAliasChecker : ProjectStage() {
         projectContext.project.accept(elementAliasVisitor)
     }
 
-    class ElementAliasVisitor : TreeVisitor() {
+    private class ElementAliasVisitor : TreeVisitor() {
 
         private val elementSet = HashSet<EElement>()
 

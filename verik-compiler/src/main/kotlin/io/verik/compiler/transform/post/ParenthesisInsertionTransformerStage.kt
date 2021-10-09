@@ -44,7 +44,7 @@ object ParenthesisInsertionTransformerStage : ProjectStage() {
         parent.replaceChildAsExpressionContainer(expression, parenthesizedExpression)
     }
 
-    object ParenthesisInsertionTransformerVisitor : TreeVisitor() {
+    private object ParenthesisInsertionTransformerVisitor : TreeVisitor() {
 
         private fun getPriority(expression: EExpression): Int {
             // higher priority expressions are prioritized for parenthesis insertion

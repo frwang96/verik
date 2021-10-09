@@ -31,7 +31,7 @@ object TemporaryPropertyRelabelerStage : ProjectStage() {
         projectContext.project.accept(temporaryPropertyRelabelerVisitor)
     }
 
-    class TemporaryPropertyRelabelerVisitor : TreeVisitor() {
+    private class TemporaryPropertyRelabelerVisitor : TreeVisitor() {
 
         var index = 0
 

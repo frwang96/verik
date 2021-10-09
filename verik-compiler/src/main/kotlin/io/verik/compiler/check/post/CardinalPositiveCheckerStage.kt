@@ -32,7 +32,7 @@ object CardinalPositiveCheckerStage : ProjectStage() {
         projectContext.project.accept(CardinalPositiveCheckerVisitor)
     }
 
-    object CardinalPositiveCheckerVisitor : TreeVisitor() {
+    private object CardinalPositiveCheckerVisitor : TreeVisitor() {
 
         private fun checkType(type: Type, element: EElement): Boolean {
             if (type.arguments.any { !checkType(it, element) })

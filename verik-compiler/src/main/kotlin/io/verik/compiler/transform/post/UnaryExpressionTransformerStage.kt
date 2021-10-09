@@ -34,7 +34,7 @@ object UnaryExpressionTransformerStage : ProjectStage() {
         projectContext.project.accept(UnaryExpressionTransformerVisitor)
     }
 
-    object UnaryExpressionTransformerVisitor : TreeVisitor() {
+    private object UnaryExpressionTransformerVisitor : TreeVisitor() {
 
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)

@@ -38,20 +38,20 @@ import io.verik.compiler.message.Messages
 
 class ReferenceForwardingMap {
 
-    private val referenceForwardingMap = HashMap<ReferenceForwardingEntry, EDeclaration>()
+    private val referenceForwardingMap = HashMap<DeclarationBinding, EDeclaration>()
 
     fun set(oldDeclaration: EDeclaration, typeParameterContext: TypeParameterContext, newDeclaration: EDeclaration) {
-        referenceForwardingMap[ReferenceForwardingEntry(oldDeclaration, typeParameterContext)] = newDeclaration
+        referenceForwardingMap[DeclarationBinding(oldDeclaration, typeParameterContext)] = newDeclaration
     }
 
     fun get(declaration: Declaration, typeParameterContext: TypeParameterContext): Declaration? {
         return if (declaration is EDeclaration) {
-            referenceForwardingMap[ReferenceForwardingEntry(declaration, typeParameterContext)]
+            referenceForwardingMap[DeclarationBinding(declaration, typeParameterContext)]
         } else null
     }
 
     fun getNotNull(declaration: EDeclaration, typeParameterContext: TypeParameterContext): Declaration {
-        val forwardedDeclaration = referenceForwardingMap[ReferenceForwardingEntry(declaration, typeParameterContext)]
+        val forwardedDeclaration = referenceForwardingMap[DeclarationBinding(declaration, typeParameterContext)]
         return if (forwardedDeclaration != null) {
             forwardedDeclaration
         } else {
@@ -60,9 +60,7 @@ class ReferenceForwardingMap {
         }
     }
 
-    fun contains(declaration: EDeclaration, typeParameterContext: TypeParameterContext): Boolean {
-        return ReferenceForwardingEntry(declaration, typeParameterContext) in referenceForwardingMap
+    fun contains(declarationBinding: DeclarationBinding): Boolean {
+        return declarationBinding in referenceForwardingMap
     }
-
-    data class ReferenceForwardingEntry(val declaration: EDeclaration, val typeParameterContext: TypeParameterContext)
 }

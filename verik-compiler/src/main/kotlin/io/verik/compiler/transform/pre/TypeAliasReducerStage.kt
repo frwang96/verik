@@ -33,7 +33,7 @@ object TypeAliasReducerStage : ProjectStage() {
         projectContext.project.accept(TypeAliasReducerVisitor)
     }
 
-    object TypeAliasReducerVisitor : TreeVisitor() {
+    private object TypeAliasReducerVisitor : TreeVisitor() {
 
         // TODO handle type alias with type parameters
         private fun reduce(type: Type, element: EElement) {

@@ -35,7 +35,7 @@ object ReferenceAndCallExpressionTransformerStage : ProjectStage() {
         projectContext.project.accept(ReferenceAndCallExpressionTransformerVisitor)
     }
 
-    object ReferenceAndCallExpressionTransformerVisitor : TreeVisitor() {
+    private object ReferenceAndCallExpressionTransformerVisitor : TreeVisitor() {
 
         private fun getIsScopeResolution(receiver: EExpression?): Boolean {
             return receiver is ESvReferenceExpression &&

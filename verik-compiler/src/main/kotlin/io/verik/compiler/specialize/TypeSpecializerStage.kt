@@ -37,7 +37,7 @@ object TypeSpecializerStage : ProjectStage() {
         projectContext.project.accept(TypeCheckerVisitor)
     }
 
-    object TypeCheckerVisitor : TreeVisitor() {
+    private object TypeCheckerVisitor : TreeVisitor() {
 
         private fun specialize(type: Type, element: EElement) {
             type.arguments.forEach { specialize(it, element) }

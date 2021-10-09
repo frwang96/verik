@@ -48,7 +48,7 @@ object FunctionInterpreterStage : ProjectStage() {
         referenceUpdater.flush()
     }
 
-    class FunctionInterpreterVisitor(private val referenceUpdater: ReferenceUpdater) : TreeVisitor() {
+    private class FunctionInterpreterVisitor(private val referenceUpdater: ReferenceUpdater) : TreeVisitor() {
 
         override fun visitKtFunction(function: EKtFunction) {
             super.visitKtFunction(function)

@@ -58,7 +58,7 @@ object BinaryExpressionReducerStage : ProjectStage() {
         val kind: KtBinaryOperatorKind
     )
 
-    object BinaryExpressionReducerVisitor : TreeVisitor() {
+    private object BinaryExpressionReducerVisitor : TreeVisitor() {
 
         override fun visitKtBinaryExpression(binaryExpression: EKtBinaryExpression) {
             super.visitKtBinaryExpression(binaryExpression)
