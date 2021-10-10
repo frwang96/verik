@@ -220,8 +220,9 @@ class ElementPrinter : Visitor() {
             build(function.name)
             build(function.type.toString())
             build(function.body)
-            build(function.annotations)
             build(function.valueParameters)
+            build(function.typeParameters)
+            build(function.annotations)
         }
     }
 
@@ -247,6 +248,7 @@ class ElementPrinter : Visitor() {
         build("PrimaryConstructor") {
             build(primaryConstructor.type.toString())
             build(primaryConstructor.valueParameters)
+            build(primaryConstructor.typeParameters.map { it.name })
         }
     }
 

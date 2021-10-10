@@ -139,8 +139,11 @@ object DeclarationCaster {
         val valueParameters = constructor.valueParameters.mapNotNull {
             castContext.casterVisitor.getElement<EKtValueParameter>(it)
         }
+        val typeParameters = descriptor.typeParameters.mapNotNull {
+            castContext.getDeclaration(it, constructor).cast<ETypeParameter>(constructor)
+        }
 
-        castedPrimaryConstructor.init(type, valueParameters)
+        castedPrimaryConstructor.init(type, valueParameters, typeParameters)
         return castedPrimaryConstructor
     }
 
@@ -156,7 +159,11 @@ object DeclarationCaster {
             ?: return null
 
         val type = castContext.castType(primaryConstructorDescriptor.returnType, classOrObject)
-        castedPrimaryConstructor.init(type, listOf())
+        val typeParameters = primaryConstructorDescriptor.typeParameters.mapNotNull {
+            castContext.getDeclaration(it, classOrObject).cast<ETypeParameter>(classOrObject)
+        }
+
+        castedPrimaryConstructor.init(type, listOf(), typeParameters)
         return castedPrimaryConstructor
     }
 

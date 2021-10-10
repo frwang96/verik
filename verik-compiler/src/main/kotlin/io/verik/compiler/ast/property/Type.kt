@@ -33,13 +33,21 @@ class Type(
     var arguments: ArrayList<Type>
 ) : Reference {
 
-    fun isSubtype(type: Type): Boolean {
-        return getSupertypes().any { it.reference == type.reference }
-    }
-
     fun copy(): Type {
         val copyArguments = arguments.map { it.copy() }
         return Type(reference, ArrayList(copyArguments))
+    }
+
+    fun getArgument(indices: List<Int>): Type {
+        return if (indices.isEmpty()) {
+            this
+        } else {
+            arguments[indices[0]].getArgument(indices.drop(1))
+        }
+    }
+
+    fun isSubtype(type: Type): Boolean {
+        return getSupertypes().any { it.reference == type.reference }
     }
 
     fun isCardinalType(): Boolean {

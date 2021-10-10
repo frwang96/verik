@@ -39,6 +39,10 @@ class CopyContext {
         return referenceForwardingMap.getNotNull(declaration, typeParameterContext)
     }
 
+    fun getTypeParameterContexts(declaration: EDeclaration): List<TypeParameterContext> {
+        return referenceForwardingMap.getTypeParameterContexts(declaration)
+    }
+
     fun contains(declarationBinding: DeclarationBinding): Boolean {
         return referenceForwardingMap.contains(declarationBinding)
     }

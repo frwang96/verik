@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.common.EAbstractProperty
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
+import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
@@ -32,6 +33,7 @@ import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.KtUnaryOperatorKind
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
+import io.verik.compiler.core.common.CoreCardinalDeclaration
 import io.verik.compiler.core.common.CoreKtAbstractFunctionDeclaration
 import io.verik.compiler.message.Messages
 
@@ -146,12 +148,7 @@ object TypeConstraintCollector {
                 is CoreKtAbstractFunctionDeclaration ->
                     typeConstraints.addAll(reference.getTypeConstraints(callExpression))
                 is EKtAbstractFunction -> {
-                    typeConstraints.add(
-                        TypeEqualsTypeConstraint(
-                            TypeAdapter.ofElement(callExpression),
-                            TypeAdapter.ofElement(reference)
-                        )
-                    )
+                    collectCallExpressionReturn(callExpression, reference, listOf())
                     callExpression.valueArguments
                         .zip(reference.valueParameters)
                         .forEach { (valueArgument, valueParameter) ->
@@ -201,6 +198,32 @@ object TypeConstraintCollector {
                         TypeAdapter.ofElement(elseExpression)
                     )
                 )
+            }
+        }
+
+        private fun collectCallExpressionReturn(
+            callExpression: EKtCallExpression,
+            function: EKtAbstractFunction,
+            indices: List<Int>
+        ) {
+            val type = function.type.getArgument(indices)
+            when (type.reference) {
+                is CoreCardinalDeclaration -> {
+                    typeConstraints.add(
+                        TypeEqualsTypeConstraint(
+                            TypeAdapter.ofElement(callExpression, indices),
+                            TypeAdapter.ofElement(function, indices)
+                        )
+                    )
+                }
+                is ETypeParameter -> {
+                    TODO()
+                }
+                else -> {
+                    type.arguments.indices.forEach {
+                        collectCallExpressionReturn(callExpression, function, indices + it)
+                    }
+                }
             }
         }
     }

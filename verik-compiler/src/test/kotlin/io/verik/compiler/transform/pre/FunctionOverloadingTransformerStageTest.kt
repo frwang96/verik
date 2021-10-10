@@ -34,11 +34,11 @@ internal class FunctionOverloadingTransformerStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtFunction(f, *, *, *, *)",
+            "KtFunction(f, *, *, *, *, *)",
             projectContext.findDeclaration("f")
         )
         assertElementEquals(
-            "KtFunction(f_Int, *, *, *, *)",
+            "KtFunction(f_Int, *, *, *, *, *)",
             projectContext.findDeclaration("f_Int")
         )
     }

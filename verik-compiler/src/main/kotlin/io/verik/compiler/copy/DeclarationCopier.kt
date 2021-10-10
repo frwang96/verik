@@ -117,8 +117,11 @@ object DeclarationCopier {
 
         val type = copyContext.copy(primaryConstructor.type)
         val valueParameters = primaryConstructor.valueParameters.map { copyContext.copy(it) }
+        val typeParameters = primaryConstructor.typeParameters.mapNotNull {
+            copyContext.getNotNull(it).cast<ETypeParameter>(primaryConstructor)
+        }
 
-        copiedPrimaryConstructor.init(type, valueParameters)
+        copiedPrimaryConstructor.init(type, valueParameters, typeParameters)
         return copiedPrimaryConstructor
     }
 

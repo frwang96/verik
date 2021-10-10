@@ -17,6 +17,7 @@
 package io.verik.compiler.ast.element.kt
 
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.Visitor
@@ -30,12 +31,14 @@ class EPrimaryConstructor(
     override var body: EExpression? = null
 
     override var type: Type = NullDeclaration.toType()
-    override var valueParameters: ArrayList<EKtValueParameter> = arrayListOf()
+    override var valueParameters: ArrayList<EKtValueParameter> = ArrayList()
+    override var typeParameters: ArrayList<ETypeParameter> = ArrayList()
 
-    fun init(type: Type, valueParameters: List<EKtValueParameter>) {
+    fun init(type: Type, valueParameters: List<EKtValueParameter>, typeParameters: List<ETypeParameter>) {
         this.type = type
         valueParameters.forEach { it.parent = this }
         this.valueParameters = ArrayList(valueParameters)
+        this.typeParameters = ArrayList(typeParameters)
     }
 
     override fun accept(visitor: Visitor) {

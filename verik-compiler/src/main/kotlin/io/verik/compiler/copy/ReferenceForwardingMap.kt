@@ -60,6 +60,15 @@ class ReferenceForwardingMap {
         }
     }
 
+    fun getTypeParameterContexts(declaration: EDeclaration): List<TypeParameterContext> {
+        val typeParameterContexts = ArrayList<TypeParameterContext>()
+        referenceForwardingMap.keys.forEach {
+            if (it.declaration == declaration)
+                typeParameterContexts.add(it.typeParameterContext)
+        }
+        return typeParameterContexts
+    }
+
     fun contains(declarationBinding: DeclarationBinding): Boolean {
         return declarationBinding in referenceForwardingMap
     }

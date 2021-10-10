@@ -23,6 +23,7 @@ import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findDeclaration
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
@@ -39,6 +40,22 @@ internal class TypeResolverStageTest : BaseTest() {
         assertElementEquals(
             "KtProperty(x, Boolean, *, [])",
             projectContext.findDeclaration("x")
+        )
+    }
+
+    @Test
+    @Disabled
+    fun `resolve property type parameterized`() {
+        val projectContext = driveTest(
+            TypeResolverStage::class,
+            """
+                class C<N : `*`>
+                var c = C<`8`>()
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtProperty(c, C<`8`>, KtCallExpression(C<`8`>, <init>, null, [], [`8`]), [])",
+            projectContext.findDeclaration("c")
         )
     }
 

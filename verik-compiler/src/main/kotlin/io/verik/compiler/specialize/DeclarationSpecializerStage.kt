@@ -17,8 +17,10 @@
 package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EDeclaration
+import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.ETypedElement
+import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.interfaces.Annotated
 import io.verik.compiler.ast.interfaces.Declaration
@@ -31,6 +33,7 @@ import io.verik.compiler.copy.CopierDeclarationIndexerVisitor
 import io.verik.compiler.copy.CopyContext
 import io.verik.compiler.copy.DeclarationBinding
 import io.verik.compiler.copy.ElementCopier
+import io.verik.compiler.copy.TypeParameterBinding
 import io.verik.compiler.copy.TypeParameterContext
 import io.verik.compiler.core.common.Annotations
 import io.verik.compiler.main.ProjectContext
@@ -44,23 +47,29 @@ object DeclarationSpecializerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
         val entryPoints = getEntryPoints(projectContext)
-        val declarationQueue = ArrayDeque(entryPoints.map { DeclarationBinding(it, TypeParameterContext.EMPTY) })
-        val declarationSpecializerVisitor = DeclarationSpecializerVisitor(declarationQueue)
+        val declarationBindingQueue = ArrayDeque(
+            entryPoints.map { DeclarationBinding(it, TypeParameterContext.EMPTY) }
+        )
+
+        val declarationSpecializerVisitor = DeclarationSpecializerVisitor(declarationBindingQueue)
         val copyContext = CopyContext()
         val copierDeclarationIndexerVisitor = CopierDeclarationIndexerVisitor(copyContext)
-        while (declarationQueue.isNotEmpty()) {
-            val declarationBinding = declarationQueue.pop()
+        while (declarationBindingQueue.isNotEmpty()) {
+            val declarationBinding = declarationBindingQueue.pop()
             if (!copyContext.contains(declarationBinding)) {
+                copyContext.typeParameterContext = declarationBinding.typeParameterContext
                 declarationBinding.declaration.accept(declarationSpecializerVisitor)
                 declarationBinding.declaration.accept(copierDeclarationIndexerVisitor)
             }
         }
 
         projectContext.project.files().forEach { file ->
-            val declarations = file.declarations.mapNotNull {
-                if (copyContext.contains(DeclarationBinding(it, TypeParameterContext.EMPTY))) {
-                    ElementCopier.copy(it, copyContext)
-                } else null
+            val declarations = file.declarations.flatMap { declaration ->
+                val typeParameterContexts = copyContext.getTypeParameterContexts(declaration)
+                typeParameterContexts.map {
+                    copyContext.typeParameterContext = it
+                    ElementCopier.copy(declaration, copyContext)
+                }
             }
             declarations.forEach { it.parent = file }
             file.declarations = ArrayList(declarations)
@@ -95,25 +104,41 @@ object DeclarationSpecializerStage : ProjectStage() {
     }
 
     private class DeclarationSpecializerVisitor(
-        private val declarationQueue: ArrayDeque<DeclarationBinding>
+        private val declarationBindingQueue: ArrayDeque<DeclarationBinding>
     ) : TreeVisitor() {
 
         private fun addReference(reference: Declaration) {
             if (reference is EDeclaration && reference.parent is EFile)
-                declarationQueue.push(DeclarationBinding(reference, TypeParameterContext.EMPTY))
+                declarationBindingQueue.push(DeclarationBinding(reference, TypeParameterContext.EMPTY))
         }
 
-        private fun addReference(type: Type) {
-            type.arguments.forEach { addReference(it) }
-            addReference(type.reference)
+        private fun addType(type: Type, element: EElement) {
+            type.arguments.forEach { addType(it, element) }
+            val reference = type.reference
+            if (reference is EKtBasicClass && reference.parent is EFile) {
+                val expectedSize = reference.typeParameters.size
+                val actualSize = type.arguments.size
+                if (expectedSize == actualSize) {
+                    val typeParameterBindings = reference.typeParameters
+                        .zip(type.arguments)
+                        .map { (typeParameter, type) -> TypeParameterBinding(typeParameter, type) }
+                    val typeParameterContext = TypeParameterContext(typeParameterBindings)
+                    declarationBindingQueue.push(DeclarationBinding(reference, typeParameterContext))
+                } else {
+                    Messages.INTERNAL_ERROR.on(
+                        element,
+                        "Mismatch in type parameters: Expected $expectedSize actual $actualSize"
+                    )
+                }
+            }
         }
 
         override fun visitTypedElement(typedElement: ETypedElement) {
             super.visitTypedElement(typedElement)
-            addReference(typedElement.type)
+            addType(typedElement.type, typedElement)
             if (typedElement is EKtCallExpression) {
                 typedElement.typeArguments.forEach {
-                    addReference(it)
+                    addType(it, typedElement)
                 }
             }
             if (typedElement is Reference) {
