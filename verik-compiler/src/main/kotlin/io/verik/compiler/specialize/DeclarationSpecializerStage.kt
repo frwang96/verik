@@ -119,6 +119,8 @@ object DeclarationSpecializerStage : ProjectStage() {
                 val expectedSize = reference.typeParameters.size
                 val actualSize = type.arguments.size
                 if (expectedSize == actualSize) {
+                    if (!type.isSpecialized())
+                        return
                     val typeParameterBindings = reference.typeParameters
                         .zip(type.arguments)
                         .map { (typeParameter, type) -> TypeParameterBinding(typeParameter, type) }

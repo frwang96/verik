@@ -20,7 +20,7 @@ import io.verik.core.*
 
 class Adder<N : `*`> : Module() {
 
-    var x: Ubit<N> = nc()
+    var x: Ubit<ID<N>> = nc()
 
     @Com
     fun f() {

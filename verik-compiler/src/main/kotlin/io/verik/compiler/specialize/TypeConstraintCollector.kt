@@ -149,16 +149,9 @@ object TypeConstraintCollector {
                     typeConstraints.addAll(reference.getTypeConstraints(callExpression))
                 is EKtAbstractFunction -> {
                     collectCallExpressionReturn(callExpression, reference, listOf())
-                    callExpression.valueArguments
-                        .zip(reference.valueParameters)
-                        .forEach { (valueArgument, valueParameter) ->
-                            typeConstraints.add(
-                                TypeEqualsTypeConstraint(
-                                    TypeAdapter.ofElement(valueArgument),
-                                    TypeAdapter.ofElement(valueParameter)
-                                )
-                            )
-                        }
+                    callExpression.valueArguments.indices.forEach {
+                        collectCallExpressionValueArgument(callExpression, reference, it, listOf())
+                    }
                 }
             }
         }
@@ -204,24 +197,74 @@ object TypeConstraintCollector {
         private fun collectCallExpressionReturn(
             callExpression: EKtCallExpression,
             function: EKtAbstractFunction,
-            indices: List<Int>
+            typeArgumentIndices: List<Int>
         ) {
-            val type = function.type.getArgument(indices)
-            when (type.reference) {
+            val type = function.type.getArgument(typeArgumentIndices)
+            when (val reference = type.reference) {
                 is CoreCardinalDeclaration -> {
                     typeConstraints.add(
                         TypeEqualsTypeConstraint(
-                            TypeAdapter.ofElement(callExpression, indices),
-                            TypeAdapter.ofElement(function, indices)
+                            TypeAdapter.ofElement(callExpression, typeArgumentIndices),
+                            TypeAdapter.ofElement(function, typeArgumentIndices)
                         )
                     )
                 }
                 is ETypeParameter -> {
-                    TODO()
+                    val typeParameterIndex = function.typeParameters.indexOf(reference)
+                    if (typeParameterIndex != -1) {
+                        typeConstraints.add(
+                            TypeEqualsTypeConstraint(
+                                TypeAdapter.ofElement(callExpression, typeArgumentIndices),
+                                TypeAdapter.ofTypeArgument(callExpression, typeParameterIndex)
+                            )
+                        )
+                    }
                 }
                 else -> {
                     type.arguments.indices.forEach {
-                        collectCallExpressionReturn(callExpression, function, indices + it)
+                        collectCallExpressionReturn(callExpression, function, typeArgumentIndices + it)
+                    }
+                }
+            }
+        }
+
+        private fun collectCallExpressionValueArgument(
+            callExpression: EKtCallExpression,
+            function: EKtAbstractFunction,
+            valueArgumentIndex: Int,
+            typeArgumentIndices: List<Int>
+        ) {
+            val valueArgument = callExpression.valueArguments[valueArgumentIndex]
+            val valueParameter = function.valueParameters[valueArgumentIndex]
+            val type = valueParameter.type.getArgument(typeArgumentIndices)
+            when (val reference = type.reference) {
+                is CoreCardinalDeclaration -> {
+                    typeConstraints.add(
+                        TypeEqualsTypeConstraint(
+                            TypeAdapter.ofElement(valueArgument, typeArgumentIndices),
+                            TypeAdapter.ofElement(valueParameter, typeArgumentIndices)
+                        )
+                    )
+                }
+                is ETypeParameter -> {
+                    val typeParameterIndex = function.typeParameters.indexOf(reference)
+                    if (typeParameterIndex != -1) {
+                        typeConstraints.add(
+                            TypeEqualsTypeConstraint(
+                                TypeAdapter.ofElement(valueArgument, typeArgumentIndices),
+                                TypeAdapter.ofTypeArgument(callExpression, typeParameterIndex)
+                            )
+                        )
+                    }
+                }
+                else -> {
+                    type.arguments.indices.forEach {
+                        collectCallExpressionValueArgument(
+                            callExpression,
+                            function,
+                            valueArgumentIndex,
+                            typeArgumentIndices + it
+                        )
                     }
                 }
             }

@@ -16,7 +16,28 @@
 
 package io.verik.compiler.copy
 
+import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.ETypeParameter
+import io.verik.compiler.ast.property.Type
+import io.verik.compiler.message.Messages
+
 data class TypeParameterContext(val typeParameterBindings: List<TypeParameterBinding>) {
+
+    fun bind(type: Type, element: EElement) {
+        val reference = type.reference
+        if (reference is ETypeParameter) {
+            typeParameterBindings.forEach { typeParameterBinding ->
+                if (typeParameterBinding.typeParameter == reference) {
+                    type.reference = typeParameterBinding.type.reference
+                    type.arguments = ArrayList(typeParameterBinding.type.arguments.map { it.copy() })
+                    return
+                }
+            }
+            Messages.INTERNAL_ERROR.on(element, "Unable to bind type parameter ${reference.name}")
+        } else {
+            type.arguments.forEach { bind(it, element) }
+        }
+    }
 
     companion object {
 

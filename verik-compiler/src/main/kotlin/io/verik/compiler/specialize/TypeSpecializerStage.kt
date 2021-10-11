@@ -66,6 +66,8 @@ object TypeSpecializerStage : ProjectStage() {
                     max(arguments[0], arguments[1])
                 Core.Vk.N_MIN ->
                     min(arguments[0], arguments[1])
+                Core.Vk.N_ID ->
+                    arguments[0]
                 Core.Vk.N_INC ->
                     arguments[0] + 1
                 Core.Vk.N_DEC ->

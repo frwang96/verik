@@ -110,6 +110,7 @@ object Core {
         val N_MUL = CoreVkCardinal.N_MUL
         val N_MAX = CoreVkCardinal.N_MAX
         val N_MIN = CoreVkCardinal.N_MIN
+        val N_ID = CoreVkCardinal.N_ID
         val N_INC = CoreVkCardinal.N_INC
         val N_DEC = CoreVkCardinal.N_DEC
         val N_LOG = CoreVkCardinal.N_LOG

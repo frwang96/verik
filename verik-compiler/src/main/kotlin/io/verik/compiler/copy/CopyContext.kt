@@ -27,6 +27,10 @@ class CopyContext {
 
     private val referenceForwardingMap = ReferenceForwardingMap()
 
+    fun bind(type: Type, element: EElement) {
+        typeParameterContext.bind(type, element)
+    }
+
     fun set(oldDeclaration: EDeclaration, newDeclaration: EDeclaration) {
         referenceForwardingMap.set(oldDeclaration, typeParameterContext, newDeclaration)
     }

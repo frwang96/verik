@@ -26,6 +26,7 @@ import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.interfaces.cast
+import io.verik.compiler.core.common.CoreCardinalConstantDeclaration
 import io.verik.compiler.message.Messages
 
 object DeclarationCopier {
@@ -76,16 +77,31 @@ object DeclarationCopier {
             .cast<EKtBasicClass>(basicClass)
             ?: return basicClass
 
+        val typeParameters = basicClass.typeParameters.map {
+            val typeParameter = it.toType()
+            copyContext.bind(typeParameter, it)
+            typeParameter
+        }
+        if (typeParameters.isNotEmpty()) {
+            val typeParameterString = typeParameters.joinToString(separator = "_") {
+                val reference = it.reference
+                if (reference is CoreCardinalConstantDeclaration)
+                    reference.value.toString()
+                else
+                    reference.name
+            }
+            copiedBasicClass.name = "${copiedBasicClass.name}_$typeParameterString"
+        }
+
         val superType = copyContext.copy(basicClass.supertype)
         val declarations = basicClass.declarations.map { copyContext.copy(it) }
-        val typeParameters = basicClass.typeParameters.map { copyContext.copy(it) }
         val annotations = basicClass.annotations.map { copyContext.copy(it) }
         val primaryConstructor = basicClass.primaryConstructor?.let { copyContext.copy(it) }
 
         copiedBasicClass.init(
             superType,
             declarations,
-            typeParameters,
+            listOf(),
             annotations,
             basicClass.isEnum,
             primaryConstructor
@@ -117,16 +133,12 @@ object DeclarationCopier {
 
         val type = copyContext.copy(primaryConstructor.type)
         val valueParameters = primaryConstructor.valueParameters.map { copyContext.copy(it) }
-        val typeParameters = primaryConstructor.typeParameters.mapNotNull {
-            copyContext.getNotNull(it).cast<ETypeParameter>(primaryConstructor)
-        }
 
-        copiedPrimaryConstructor.init(type, valueParameters, typeParameters)
+        copiedPrimaryConstructor.init(type, valueParameters, arrayListOf())
         return copiedPrimaryConstructor
     }
 
     private fun copyKtProperty(property: EKtProperty, copyContext: CopyContext): EKtProperty {
-        @Suppress("DuplicatedCode")
         val copiedProperty = copyContext.getNotNull(property)
             .cast<EKtProperty>(property)
             ?: return property
@@ -140,7 +152,6 @@ object DeclarationCopier {
     }
 
     private fun copyKtEnumEntry(enumEntry: EKtEnumEntry, copyContext: CopyContext): EKtEnumEntry {
-        @Suppress("DuplicatedCode")
         val copiedEnumEntry = copyContext.getNotNull(enumEntry)
             .cast<EKtEnumEntry>(enumEntry)
             ?: return enumEntry
@@ -153,7 +164,6 @@ object DeclarationCopier {
     }
 
     private fun copyKtValueParameter(valueParameter: EKtValueParameter, copyContext: CopyContext): EKtValueParameter {
-        @Suppress("DuplicatedCode")
         val copiedValueParameter = copyContext.getNotNull(valueParameter)
             .cast<EKtValueParameter>(valueParameter)
             ?: return valueParameter

@@ -23,7 +23,6 @@ import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findDeclaration
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
@@ -44,7 +43,6 @@ internal class TypeResolverStageTest : BaseTest() {
     }
 
     @Test
-    @Disabled
     fun `resolve property type parameterized`() {
         val projectContext = driveTest(
             TypeResolverStage::class,
