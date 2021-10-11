@@ -18,15 +18,17 @@ package adder
 
 import io.verik.core.*
 
+typealias WIDTH = `8`
+
 @Top
 class AdderTop : Module() {
 
-    var a: Ubit<`8`> = nc()
-    var b: Ubit<`8`> = nc()
-    var x: Ubit<`8`> = nc()
+    var a: Ubit<WIDTH> = nc()
+    var b: Ubit<WIDTH> = nc()
+    var x: Ubit<WIDTH> = nc()
 
     @Make
-    val adder = Adder<`8`>(a, b, x)
+    val adder = Adder<WIDTH>(a, b, x)
 
     @Run
     fun test() {

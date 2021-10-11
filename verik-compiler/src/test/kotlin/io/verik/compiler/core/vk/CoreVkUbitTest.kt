@@ -95,6 +95,21 @@ internal class CoreVkUbitTest : BaseTest() {
     }
 
     @Test
+    fun `transform reverse`() {
+        val projectContext = driveTest(
+            FunctionTransformerStage::class,
+            """
+                var x = u(0x00)
+                var y = x.reverse()
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "StreamingExpression(Ubit<`8`>, KtReferenceExpression(*))",
+            projectContext.findExpression("y")
+        )
+    }
+
+    @Test
     fun `transform slice`() {
         val projectContext = driveTest(
             FunctionTransformerStage::class,

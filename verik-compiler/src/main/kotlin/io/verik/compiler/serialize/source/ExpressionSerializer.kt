@@ -34,6 +34,7 @@ import io.verik.compiler.ast.element.sv.EInjectedExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.ERepeatStatement
 import io.verik.compiler.ast.element.sv.EReplicationExpression
+import io.verik.compiler.ast.element.sv.EStreamingExpression
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.EStructLiteralExpression
 import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
@@ -205,11 +206,20 @@ object ExpressionSerializer {
         replicationExpression: EReplicationExpression,
         serializerContext: SerializerContext
     ) {
-        serializerContext.append("{ ")
+        serializerContext.append("{")
         serializerContext.append(replicationExpression.value.toString())
         serializerContext.append("{ ")
         serializerContext.serializeAsExpression(replicationExpression.expression)
-        serializerContext.append(" } }")
+        serializerContext.append(" }}")
+    }
+
+    fun serializeStreamingExpression(
+        streamingExpression: EStreamingExpression,
+        serializerContext: SerializerContext
+    ) {
+        serializerContext.append("{<<{ ")
+        serializerContext.serializeAsExpression(streamingExpression.expression)
+        serializerContext.append(" }}")
     }
 
     fun serializeIfExpression(ifExpression: EIfExpression, serializerContext: SerializerContext) {

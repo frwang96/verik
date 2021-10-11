@@ -28,7 +28,7 @@ object CoreKtBoolean : CoreScope(Core.Kt.C_Boolean) {
     val F_not = object : CoreKtUnaryFunctionDeclaration(parent, "not") {
 
         override fun getOperatorKind(): SvUnaryOperatorKind {
-            return SvUnaryOperatorKind.EXCL
+            return SvUnaryOperatorKind.LOGICAL_NEG
         }
     }
 

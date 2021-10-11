@@ -277,7 +277,14 @@ class Ubit<N : `*`> private constructor() {
     /**
      * Inverts the bits.
      */
-    fun inv(): Ubit<`*`> {
+    fun invert(): Ubit<`*`> {
+        throw VerikException()
+    }
+
+    /**
+     * Reverses the bits.
+     */
+    fun reverse(): Ubit<`*`> {
         throw VerikException()
     }
 

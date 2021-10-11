@@ -281,7 +281,24 @@ internal class ExpressionSerializerTest : BaseTest() {
             """.trimIndent()
         )
         val expected = """
-            logic [2:0] x = { 3{ 1'b0 } };
+            logic [2:0] x = {3{ 1'b0 }};
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
+    fun `streaming expression`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                var x = u(0x00).reverse()
+            """.trimIndent()
+        )
+        val expected = """
+            logic [7:0] x = {<<{ 8'h00 }};
         """.trimIndent()
         assertOutputTextEquals(
             expected,

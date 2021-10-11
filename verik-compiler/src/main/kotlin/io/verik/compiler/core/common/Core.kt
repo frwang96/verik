@@ -144,7 +144,6 @@ object Core {
 
         object Ubit : CoreScope(C_Ubit) {
 
-            val F_inv = CoreVkUbit.F_inv
             val F_get_Int = CoreVkUbit.F_get_Int
             val F_set_Int_Boolean = CoreVkUbit.F_set_Int_Boolean
             val F_set_Int_Ubit = CoreVkUbit.F_set_Int_Ubit
@@ -160,6 +159,8 @@ object Core {
             val F_srl_Ubit = CoreVkUbit.F_srl_Ubit
             val F_sra_Int = CoreVkUbit.F_sra_Int
             val F_sra_Ubit = CoreVkUbit.F_sra_Ubit
+            val F_invert = CoreVkUbit.F_invert
+            val F_reverse = CoreVkUbit.F_reverse
             val F_ext = CoreVkUbit.F_ext
             val F_slice_Int = CoreVkUbit.F_slice_Int
         }

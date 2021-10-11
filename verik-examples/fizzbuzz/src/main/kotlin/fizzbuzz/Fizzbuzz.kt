@@ -62,6 +62,8 @@ class Fizzbuzz : Module() {
         z = rep<`3`>(true)
         z = z srl 1
         z = z sra 1
+        z = z.invert()
+        z = z.reverse()
         println(cb.z)
     }
 
