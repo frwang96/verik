@@ -110,27 +110,36 @@ object ExpressionCopier {
 
     private fun copyKtCallExpression(callExpression: EKtCallExpression, copyContext: CopyContext): EKtCallExpression {
         val type = copyContext.copyType(callExpression)
+        val receiver = callExpression.receiver?.let { copyContext.copy(it) }
+        val valueArguments = callExpression.valueArguments.map { copyContext.copy(it) }
+
         val reference = callExpression.reference
-        val forwardedReference = if (callExpression.typeArguments.isEmpty() || reference !is EKtAbstractFunction) {
-            copyContext.get(reference) ?: reference
+        return if (callExpression.typeArguments.isEmpty() || reference !is EKtAbstractFunction) {
+            val forwardedReference = copyContext.get(reference) ?: reference
+            val typeArguments = callExpression.typeArguments.map { copyContext.copyType(it, callExpression) }
+            EKtCallExpression(
+                callExpression.location,
+                type,
+                forwardedReference,
+                receiver,
+                ArrayList(valueArguments),
+                ArrayList(typeArguments)
+            )
         } else {
             val typeParameterContext = TypeParameterContext
                 .get(callExpression.typeArguments, reference, callExpression)
                 ?: return callExpression
-            copyContext.get(reference, typeParameterContext)
+            val forwardedReference = copyContext.get(reference, typeParameterContext)
                 ?: return callExpression
+            EKtCallExpression(
+                callExpression.location,
+                type,
+                forwardedReference,
+                receiver,
+                ArrayList(valueArguments),
+                arrayListOf()
+            )
         }
-
-        val receiver = callExpression.receiver?.let { copyContext.copy(it) }
-        val valueArguments = callExpression.valueArguments.map { copyContext.copy(it) }
-        return EKtCallExpression(
-            callExpression.location,
-            type,
-            forwardedReference,
-            receiver,
-            ArrayList(valueArguments),
-            ArrayList()
-        )
     }
 
     private fun copyConstantExpression(
