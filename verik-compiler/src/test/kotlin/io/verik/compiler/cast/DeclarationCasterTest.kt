@@ -203,6 +203,20 @@ internal class DeclarationCasterTest : BaseTest() {
     }
 
     @Test
+    fun `function with type parameter`() {
+        val projectContext = driveTest(
+            CasterStage::class,
+            """
+                fun <N : `*`> f() {}
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtFunction(f, Unit, *, [], [TypeParameter(N, `*`)], [])",
+            projectContext.findDeclaration("f")
+        )
+    }
+
+    @Test
     fun `property simple`() {
         val projectContext = driveTest(
             CasterStage::class,

@@ -38,4 +38,19 @@ internal class DeclarationSpecializerStageTest : BaseTest() {
             projectContext.findDeclaration("C_8")
         )
     }
+
+    @Test
+    fun `specialize function type parameter`() {
+        val projectContext = driveTest(
+            DeclarationSpecializerStage::class,
+            """
+                fun <N : `*`> f() {}
+                val x = f<`8`>()
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtFunction(f_8, Unit, KtBlockExpression(*), [], [], [])",
+            projectContext.findDeclaration("f_8")
+        )
+    }
 }
