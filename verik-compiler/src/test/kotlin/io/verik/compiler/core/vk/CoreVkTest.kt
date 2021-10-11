@@ -98,6 +98,20 @@ internal class CoreVkTest : BaseTest() {
     }
 
     @Test
+    fun `transform rep`() {
+        val projectContext = driveTest(
+            FunctionTransformerStage::class,
+            """
+                val x = rep<`3`>(false)
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "ReplicationExpression(Ubit<`3`>, *, 3)",
+            projectContext.findExpression("x")
+        )
+    }
+
+    @Test
     fun `transform random`() {
         val projectContext = driveTest(
             FunctionTransformerStage::class,

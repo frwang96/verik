@@ -147,6 +147,20 @@ internal class TypeResolverStageTest : BaseTest() {
     }
 
     @Test
+    fun `resolve call expression rep`() {
+        val projectContext = driveTest(
+            TypeResolverStage::class,
+            """
+                val x = rep<`3`>(false)
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtCallExpression(Ubit<MUL<`1`, `3`>>, rep, null, *, [`3`])",
+            projectContext.findExpression("x")
+        )
+    }
+
+    @Test
     fun `resolve call expression function`() {
         val projectContext = driveTest(
             TypeResolverStage::class,

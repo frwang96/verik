@@ -42,3 +42,7 @@ class BinaryOperatorTypeConstraint(
 class ConcatenationTypeConstraint(
     val callExpression: EKtCallExpression
 ) : TypeConstraint()
+
+class ReplicationTypeConstraint(
+    val callExpression: EKtCallExpression
+) : TypeConstraint()

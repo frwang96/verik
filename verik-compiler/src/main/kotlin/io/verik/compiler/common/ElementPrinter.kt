@@ -71,6 +71,7 @@ import io.verik.compiler.ast.element.sv.EModulePort
 import io.verik.compiler.ast.element.sv.EModulePortInstantiation
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.ERepeatStatement
+import io.verik.compiler.ast.element.sv.EReplicationExpression
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.EStructLiteralExpression
@@ -540,6 +541,14 @@ class ElementPrinter : Visitor() {
         build("ConcatenationExpression") {
             build(concatenationExpression.type.toString())
             build(concatenationExpression.expressions)
+        }
+    }
+
+    override fun visitReplicationExpression(replicationExpression: EReplicationExpression) {
+        build("ReplicationExpression") {
+            build(replicationExpression.type.toString())
+            build(replicationExpression.expression)
+            build(replicationExpression.value)
         }
     }
 

@@ -16,6 +16,8 @@
 
 package io.verik.compiler.specialize
 
+import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.property.Type
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.Messages
 
@@ -45,6 +47,9 @@ object TypeConstraintResolver {
                         unresolvedTypeConstraints.add(it)
                 is ConcatenationTypeConstraint ->
                     if (!resolveConcatenationTypeConstraint(it))
+                        unresolvedTypeConstraints.add(it)
+                is ReplicationTypeConstraint ->
+                    if (!resolveReplicationTypeConstraint(it))
                         unresolvedTypeConstraints.add(it)
             }
         }
@@ -120,27 +125,48 @@ object TypeConstraintResolver {
             true
         } else {
             if (valueArgumentsResolved) {
-                val cardinalTypes = typeConstraint.callExpression.valueArguments.map {
-                    when (it.type.reference) {
-                        Core.Kt.C_Boolean -> Core.Vk.cardinalOf(1).toType()
-                        Core.Vk.C_Ubit -> it.type.arguments[0].copy()
-                        Core.Vk.C_Sbit -> it.type.arguments[0].copy()
-                        else -> {
-                            Messages.TYPE_NO_WIDTH.on(it, it.type)
-                            Core.Vk.cardinalOf(0).toType()
-                        }
-                    }
-                }
-                val type = when (cardinalTypes.size) {
+                val typeWidths = typeConstraint.callExpression.valueArguments
+                    .map { getTypeWidth(it.type, it) }
+                val type = when (typeWidths.size) {
                     0 -> Core.Vk.cardinalOf(0).toType()
-                    1 -> cardinalTypes[0]
-                    else -> cardinalTypes.reduce { sum, type ->
+                    1 -> typeWidths[0]
+                    else -> typeWidths.reduce { sum, type ->
                         Core.Vk.N_ADD.toType(sum, type)
                     }
                 }
                 typeConstraint.callExpression.type.arguments[0] = type
                 true
             } else false
+        }
+    }
+
+    private fun resolveReplicationTypeConstraint(typeConstraint: ReplicationTypeConstraint): Boolean {
+        val expressionType = typeConstraint.callExpression.type
+        val valueArgumentType = typeConstraint.callExpression.valueArguments[0].type
+        val expressionResolved = expressionType.isResolved()
+        val valueArgumentResolved = valueArgumentType.isResolved()
+        return if (expressionResolved) {
+            true
+        } else {
+            if (valueArgumentResolved) {
+                val typeWidth = getTypeWidth(valueArgumentType, typeConstraint.callExpression.valueArguments[0])
+                val typeArgument = typeConstraint.callExpression.typeArguments[0]
+                val type = Core.Vk.N_MUL.toType(typeWidth, typeArgument.copy())
+                typeConstraint.callExpression.type.arguments[0] = type
+                true
+            } else false
+        }
+    }
+
+    private fun getTypeWidth(type: Type, element: EElement): Type {
+        return when (type.reference) {
+            Core.Kt.C_Boolean -> Core.Vk.cardinalOf(1).toType()
+            Core.Vk.C_Ubit -> type.arguments[0].copy()
+            Core.Vk.C_Sbit -> type.arguments[0].copy()
+            else -> {
+                Messages.TYPE_NO_WIDTH.on(element, type)
+                Core.Vk.cardinalOf(0).toType()
+            }
         }
     }
 }

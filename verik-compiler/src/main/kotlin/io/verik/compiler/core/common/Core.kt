@@ -124,6 +124,7 @@ object Core {
         val F_u_String = CoreVk.F_u_String
         val F_u0 = CoreVk.F_u0
         val F_cat = CoreVk.F_cat
+        val F_rep = CoreVk.F_rep
         val F_random = CoreVk.F_random
         val F_random_Int = CoreVk.F_random_Int
         val F_random_Int_Int = CoreVk.F_random_Int_Int

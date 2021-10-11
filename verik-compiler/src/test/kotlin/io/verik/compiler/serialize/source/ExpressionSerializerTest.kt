@@ -273,6 +273,23 @@ internal class ExpressionSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `replication expression`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                var x = rep<`3`>(false)
+            """.trimIndent()
+        )
+        val expected = """
+            logic [2:0] x = { 3{ 1'b0 } };
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
     fun `if expression`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
