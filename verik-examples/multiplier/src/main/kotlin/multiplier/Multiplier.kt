@@ -53,7 +53,7 @@ class Multiplier(
                     } else {
                         tp.ext()
                     }
-                    b = b shr 1
+                    b = b srl 1
                     prod = cat(sum[0], prod.slice<DEC<REQ_WIDTH>>(1))
                     tp = sum.slice(1)
                     i += u(1)

@@ -23,7 +23,7 @@ import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreClassDeclaration
-import io.verik.compiler.core.common.CoreKtBinaryFunctionDeclaration
+import io.verik.compiler.core.common.CoreKtAbstractFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 
@@ -31,7 +31,7 @@ object BinaryExpressionReducerStage : ProjectStage() {
 
     override val checkNormalization = true
 
-    private val referenceMap = HashMap<ReducerEntry, CoreKtBinaryFunctionDeclaration>()
+    private val referenceMap = HashMap<ReducerEntry, CoreKtAbstractFunctionDeclaration>()
 
     init {
         referenceMap[ReducerEntry(Core.Kt.C_Boolean, Core.Kt.C_Boolean, KtBinaryOperatorKind.ANDAND)] =
@@ -44,8 +44,26 @@ object BinaryExpressionReducerStage : ProjectStage() {
             Core.Kt.Int.F_plus_Int
         referenceMap[ReducerEntry(Core.Kt.C_Int, Core.Kt.C_Int, KtBinaryOperatorKind.MINUS)] =
             Core.Kt.Int.F_minus_Int
+        referenceMap[ReducerEntry(Core.Kt.C_Int, Core.Kt.C_Int, KtBinaryOperatorKind.LT)] =
+            Core.Kt.Int.F_lt_Int
+        referenceMap[ReducerEntry(Core.Kt.C_Int, Core.Kt.C_Int, KtBinaryOperatorKind.LTEQ)] =
+            Core.Kt.Int.F_lteq_Int
+        referenceMap[ReducerEntry(Core.Kt.C_Int, Core.Kt.C_Int, KtBinaryOperatorKind.GT)] =
+            Core.Kt.Int.F_gt_Int
+        referenceMap[ReducerEntry(Core.Kt.C_Int, Core.Kt.C_Int, KtBinaryOperatorKind.GTEQ)] =
+            Core.Kt.Int.F_gteq_Int
         referenceMap[ReducerEntry(Core.Vk.C_Ubit, Core.Vk.C_Ubit, KtBinaryOperatorKind.PLUS)] =
             Core.Vk.Ubit.F_plus_Ubit
+        referenceMap[ReducerEntry(Core.Vk.C_Ubit, Core.Vk.C_Ubit, KtBinaryOperatorKind.LT)] =
+            Core.Vk.Ubit.F_lt_Ubit
+        referenceMap[ReducerEntry(Core.Vk.C_Ubit, Core.Vk.C_Ubit, KtBinaryOperatorKind.LTEQ)] =
+            Core.Vk.Ubit.F_lteq_Ubit
+        referenceMap[ReducerEntry(Core.Vk.C_Ubit, Core.Vk.C_Ubit, KtBinaryOperatorKind.GT)] =
+            Core.Vk.Ubit.F_gt_Ubit
+        referenceMap[ReducerEntry(Core.Vk.C_Ubit, Core.Vk.C_Ubit, KtBinaryOperatorKind.GTEQ)] =
+            Core.Vk.Ubit.F_gteq_Ubit
+        referenceMap[ReducerEntry(Core.Vk.C_Sbit, Core.Vk.C_Sbit, KtBinaryOperatorKind.LT)] =
+            Core.Vk.Sbit.F_lt_Sbit
     }
 
     override fun process(projectContext: ProjectContext) {

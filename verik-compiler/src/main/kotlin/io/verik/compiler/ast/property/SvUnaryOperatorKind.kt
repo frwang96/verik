@@ -17,7 +17,8 @@
 package io.verik.compiler.ast.property
 
 enum class SvUnaryOperatorKind {
-    EXCL,
+    LOGICAL_NEG,
+    BITWISE_NEG,
     PRE_INC,
     PRE_DEC,
     POST_INC,
@@ -25,7 +26,8 @@ enum class SvUnaryOperatorKind {
 
     fun serializePrefix(): String? {
         return when (this) {
-            EXCL -> "!"
+            LOGICAL_NEG -> "!"
+            BITWISE_NEG -> "~"
             PRE_INC -> "++"
             PRE_DEC -> "--"
             else -> null

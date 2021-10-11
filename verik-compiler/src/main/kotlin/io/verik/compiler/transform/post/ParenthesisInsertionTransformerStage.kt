@@ -62,6 +62,7 @@ object ParenthesisInsertionTransformerStage : ProjectStage() {
                 SvBinaryOperatorKind.MINUS -> 3
                 SvBinaryOperatorKind.LTLT -> 4
                 SvBinaryOperatorKind.GTGT -> 4
+                SvBinaryOperatorKind.GTGTGT -> 4
                 SvBinaryOperatorKind.LT -> 5
                 SvBinaryOperatorKind.LTEQ -> 5
                 SvBinaryOperatorKind.GT -> 5

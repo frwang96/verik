@@ -25,6 +25,7 @@ import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EEventExpression
 import io.verik.compiler.ast.element.sv.EForeverStatement
+import io.verik.compiler.ast.element.sv.EReplicationExpression
 import io.verik.compiler.ast.property.EdgeType
 import io.verik.compiler.common.BitConstant
 import io.verik.compiler.common.ConstantUtil
@@ -36,6 +37,7 @@ import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.core.sv.CoreSv
 import io.verik.compiler.message.Messages
 import io.verik.compiler.specialize.ConcatenationTypeConstraint
+import io.verik.compiler.specialize.ReplicationTypeConstraint
 import io.verik.compiler.specialize.TypeAdapter
 import io.verik.compiler.specialize.TypeConstraint
 import io.verik.compiler.specialize.TypeEqualsTypeConstraint
@@ -124,6 +126,22 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
+    val F_s_Ubit = object : CoreKtTransformableFunctionDeclaration(parent, "s", Core.Vk.C_Ubit) {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return listOf(
+                TypeEqualsTypeConstraint(
+                    TypeAdapter.ofElement(callExpression.valueArguments[0], 0),
+                    TypeAdapter.ofElement(callExpression, 0)
+                )
+            )
+        }
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            return callExpression.valueArguments[0]
+        }
+    }
+
     val F_cat = object : CoreKtTransformableFunctionDeclaration(parent, "cat", Core.Kt.C_Any) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
@@ -134,6 +152,22 @@ object CoreVk : CoreScope(CorePackage.VK) {
             if (callExpression.valueArguments.size < 2)
                 Messages.CAT_INSUFFICIENT_ARGUMENTS.on(callExpression)
             return EConcatenationExpression(callExpression.location, callExpression.type, callExpression.valueArguments)
+        }
+    }
+
+    val F_rep = object : CoreKtTransformableFunctionDeclaration(parent, "rep", Core.Kt.C_Any) {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return listOf(ReplicationTypeConstraint(callExpression))
+        }
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            return EReplicationExpression(
+                callExpression.location,
+                callExpression.type,
+                callExpression.valueArguments[0],
+                callExpression.typeArguments[0].asCardinalValue(callExpression)
+            )
         }
     }
 
@@ -166,7 +200,15 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_random_Ubit = object : CoreKtTransformableFunctionDeclaration(parent, "randomUbit") {
+    val F_randomBoolean = object : CoreKtTransformableFunctionDeclaration(parent, "randomBoolean") {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            callExpression.reference = Core.Sv.F_urandom
+            return callExpression
+        }
+    }
+
+    val F_randomUbit = object : CoreKtTransformableFunctionDeclaration(parent, "randomUbit") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(

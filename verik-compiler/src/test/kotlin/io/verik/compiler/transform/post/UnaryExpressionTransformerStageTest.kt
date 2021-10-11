@@ -34,7 +34,7 @@ internal class UnaryExpressionTransformerStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SvUnaryExpression(Boolean, KtReferenceExpression(*), EXCL)",
+            "SvUnaryExpression(Boolean, KtReferenceExpression(*), LOGICAL_NEG)",
             projectContext.findExpression("y")
         )
     }

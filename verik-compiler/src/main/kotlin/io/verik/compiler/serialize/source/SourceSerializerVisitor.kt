@@ -47,6 +47,8 @@ import io.verik.compiler.ast.element.sv.EModulePort
 import io.verik.compiler.ast.element.sv.EModulePortInstantiation
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.ERepeatStatement
+import io.verik.compiler.ast.element.sv.EReplicationExpression
+import io.verik.compiler.ast.element.sv.EStreamingExpression
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.EStructLiteralExpression
@@ -235,6 +237,14 @@ class SourceSerializerVisitor(private val serializerContext: SerializerContext) 
 
     override fun visitConcatenationExpression(concatenationExpression: EConcatenationExpression) {
         ExpressionSerializer.serializeConcatenationExpression(concatenationExpression, serializerContext)
+    }
+
+    override fun visitReplicationExpression(replicationExpression: EReplicationExpression) {
+        ExpressionSerializer.serializeReplicationExpression(replicationExpression, serializerContext)
+    }
+
+    override fun visitStreamingExpression(streamingExpression: EStreamingExpression) {
+        ExpressionSerializer.serializeStreamingExpression(streamingExpression, serializerContext)
     }
 
     override fun visitIfExpression(ifExpression: EIfExpression) {

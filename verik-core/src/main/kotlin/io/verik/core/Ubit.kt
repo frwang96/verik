@@ -193,28 +193,42 @@ class Ubit<N : `*`> private constructor() {
     /**
      * Logical left shift by [x] bits.
      */
-    infix fun shl(x: Int): Ubit<`*`> {
+    infix fun sll(x: Int): Ubit<`*`> {
         throw VerikException()
     }
 
     /**
      * Logical left shift by [x] bits.
      */
-    infix fun shl(x: Ubit<`*`>): Ubit<`*`> {
+    infix fun sll(x: Ubit<`*`>): Ubit<`*`> {
         throw VerikException()
     }
 
     /**
-     * Logical right shift by [x] bits.
+     * Logical right shift by [x] bits with zero extension.
      */
-    infix fun shr(x: Int): Ubit<`*`> {
+    infix fun srl(x: Int): Ubit<`*`> {
         throw VerikException()
     }
 
     /**
-     * Logical right shift by [x] bits.
+     * Logical right shift by [x] bits with zero extension.
      */
-    infix fun shr(x: Ubit<`*`>): Ubit<`*`> {
+    infix fun srl(x: Ubit<`*`>): Ubit<`*`> {
+        throw VerikException()
+    }
+
+    /**
+     * Arithmetic right shift by [x] bits with sign extension.
+     */
+    infix fun sra(x: Int): Ubit<`*`> {
+        throw VerikException()
+    }
+
+    /**
+     * Arithmetic right shift by [x] bits with sign extension.
+     */
+    infix fun sra(x: Ubit<`*`>): Ubit<`*`> {
         throw VerikException()
     }
 
@@ -263,7 +277,14 @@ class Ubit<N : `*`> private constructor() {
     /**
      * Inverts the bits.
      */
-    fun inv(): Ubit<`*`> {
+    fun invert(): Ubit<`*`> {
+        throw VerikException()
+    }
+
+    /**
+     * Reverses the bits.
+     */
+    fun reverse(): Ubit<`*`> {
         throw VerikException()
     }
 

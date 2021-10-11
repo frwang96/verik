@@ -18,12 +18,28 @@ package adder
 
 import io.verik.core.*
 
+typealias WIDTH = `8`
+
 @Top
 class AdderTop : Module() {
 
-    @Make
-    val adder8 = Adder<`8`>()
+    var a: Ubit<WIDTH> = nc()
+    var b: Ubit<WIDTH> = nc()
+    var x: Ubit<WIDTH> = nc()
 
     @Make
-    val adder16 = Adder<`16`>()
+    val adder = Adder<WIDTH>(a, b, x)
+
+    @Run
+    fun test() {
+        repeat(64) {
+            a = randomUbit()
+            b = randomUbit()
+            delay(1)
+            val expected = a + b
+            if (x == expected) print("PASS ")
+            else print("FAIL ")
+            println("$a + $b = $x")
+        }
+    }
 }

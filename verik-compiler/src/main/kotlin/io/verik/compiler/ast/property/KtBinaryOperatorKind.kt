@@ -37,7 +37,7 @@ enum class KtBinaryOperatorKind {
     OROR;
 
     fun isReducible(): Boolean {
-        return this !in listOf(EQ, LT, LTEQ, GT, GTEQ, EQEQ, EXCL_EQ)
+        return this !in listOf(EQ, EQEQ, EXCL_EQ)
     }
 
     companion object {

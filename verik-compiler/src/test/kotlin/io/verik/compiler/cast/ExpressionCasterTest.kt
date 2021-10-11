@@ -89,11 +89,11 @@ internal class ExpressionCasterTest : BaseTest() {
         val projectContext = driveTest(
             CasterStage::class,
             """
-                var x = u(1) shl 1
+                var x = u(1) sll 1
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Ubit<`*`>, shl, KtCallExpression(*), [ConstantExpression(*)], [])",
+            "KtCallExpression(Ubit<`*`>, sll, KtCallExpression(*), [ConstantExpression(*)], [])",
             projectContext.findExpression("x")
         )
     }

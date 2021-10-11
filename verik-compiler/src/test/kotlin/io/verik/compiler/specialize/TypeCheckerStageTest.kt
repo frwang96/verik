@@ -81,4 +81,16 @@ internal class TypeCheckerStageTest : BaseTest() {
             )
         }.apply { assertEquals("Type mismatch: Expected Ubit<`1`> actual Ubit<`2`>", message) }
     }
+
+    @Test
+    fun `replication violation`() {
+        assertThrows<TestErrorException> {
+            driveTest(
+                TypeCheckerStage::class,
+                """
+                    var x: Ubit<`1`> = rep<`3`>(false)
+                """.trimIndent()
+            )
+        }.apply { assertEquals("Type mismatch: Expected Ubit<`1`> actual Ubit<`3`>", message) }
+    }
 }

@@ -139,10 +139,10 @@ object ArrayAccessExpressionReducerStage : ProjectStage() {
 
         override fun visitKtBinaryExpression(binaryExpression: EKtBinaryExpression) {
             val left = binaryExpression.left
-            val right = binaryExpression.right
             if (left is EKtArrayAccessExpression && binaryExpression.kind == KtBinaryOperatorKind.EQ) {
                 left.acceptChildren(this)
-                right.accept(this)
+                binaryExpression.right.accept(this)
+                val right = binaryExpression.right
                 val arrayDeclaration = left.array.type.reference
                 val indexDeclarations = left.indices.map { it.type.reference }
                 val expressionType = right.type

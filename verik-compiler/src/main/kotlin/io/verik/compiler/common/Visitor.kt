@@ -95,6 +95,8 @@ import io.verik.compiler.ast.element.sv.EModulePort
 import io.verik.compiler.ast.element.sv.EModulePortInstantiation
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.ERepeatStatement
+import io.verik.compiler.ast.element.sv.EReplicationExpression
+import io.verik.compiler.ast.element.sv.EStreamingExpression
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.EStructLiteralExpression
@@ -445,6 +447,14 @@ abstract class Visitor {
 
     open fun visitConcatenationExpression(concatenationExpression: EConcatenationExpression) {
         visitExpression(concatenationExpression)
+    }
+
+    open fun visitReplicationExpression(replicationExpression: EReplicationExpression) {
+        visitAbstractExpressionContainer(replicationExpression)
+    }
+
+    open fun visitStreamingExpression(streamingExpression: EStreamingExpression) {
+        visitAbstractExpressionContainer(streamingExpression)
     }
 
     open fun visitIfExpression(ifExpression: EIfExpression) {

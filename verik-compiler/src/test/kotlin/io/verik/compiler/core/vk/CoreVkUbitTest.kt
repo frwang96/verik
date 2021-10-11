@@ -65,12 +65,12 @@ internal class CoreVkUbitTest : BaseTest() {
     }
 
     @Test
-    fun `transform shl`() {
+    fun `transform sll`() {
         val projectContext = driveTest(
             FunctionTransformerStage::class,
             """
                 var x = u(0x00)
-                var y = x shl 1
+                var y = x sll 1
             """.trimIndent()
         )
         assertElementEquals(
@@ -80,16 +80,31 @@ internal class CoreVkUbitTest : BaseTest() {
     }
 
     @Test
-    fun `transform shr`() {
+    fun `transform srl`() {
         val projectContext = driveTest(
             FunctionTransformerStage::class,
             """
                 var x = u(0x00)
-                var y = x shr 1
+                var y = x srl 1
             """.trimIndent()
         )
         assertElementEquals(
             "SvBinaryExpression(Ubit<`8`>, *, *, GTGT)",
+            projectContext.findExpression("y")
+        )
+    }
+
+    @Test
+    fun `transform reverse`() {
+        val projectContext = driveTest(
+            FunctionTransformerStage::class,
+            """
+                var x = u(0x00)
+                var y = x.reverse()
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "StreamingExpression(Ubit<`8`>, KtReferenceExpression(*))",
             projectContext.findExpression("y")
         )
     }

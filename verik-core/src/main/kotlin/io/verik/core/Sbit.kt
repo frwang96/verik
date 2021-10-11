@@ -184,30 +184,44 @@ class Sbit<N : `*`> private constructor() {
     }
 
     /**
-     * Arithmetic left shift by [x] bits.
+     * Logical left shift by [x] bits.
      */
-    infix fun shl(x: Int): Sbit<`*`> {
+    infix fun sll(x: Int): Sbit<`*`> {
         throw VerikException()
     }
 
     /**
-     * Arithmetic left shift by [x] bits.
+     * Logical left shift by [x] bits.
      */
-    infix fun shl(x: Ubit<`*`>): Sbit<`*`> {
+    infix fun sll(x: Ubit<`*`>): Sbit<`*`> {
+        throw VerikException()
+    }
+
+    /**
+     * Logical right shift by [x] bits with zero extension.
+     */
+    infix fun srl(x: Int): Sbit<`*`> {
+        throw VerikException()
+    }
+
+    /**
+     * Logical right shift by [x] bits with zero extension.
+     */
+    infix fun srl(x: Ubit<`*`>): Sbit<`*`> {
         throw VerikException()
     }
 
     /**
      * Arithmetic right shift by [x] bits with sign extension.
      */
-    infix fun shr(x: Int): Sbit<`*`> {
+    infix fun sra(x: Int): Sbit<`*`> {
         throw VerikException()
     }
 
     /**
      * Arithmetic right shift by [x] bits with sign extension.
      */
-    infix fun shr(x: Ubit<`*`>): Sbit<`*`> {
+    infix fun sra(x: Ubit<`*`>): Sbit<`*`> {
         throw VerikException()
     }
 

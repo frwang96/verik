@@ -34,7 +34,8 @@ enum class SvBinaryOperatorKind {
     ANDAND,
     OROR,
     LTLT,
-    GTGT;
+    GTGT,
+    GTGTGT;
 
     fun serialize(): String {
         return when (this) {
@@ -56,6 +57,7 @@ enum class SvBinaryOperatorKind {
             OROR -> "||"
             LTLT -> "<<"
             GTGT -> ">>"
+            GTGTGT -> ">>>"
         }
     }
 }
