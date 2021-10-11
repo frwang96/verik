@@ -32,31 +32,17 @@
 
 package io.verik.compiler.copy
 
-import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
-import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.common.TreeVisitor
 
 class CopierDeclarationIndexerVisitor(
     private val copyContext: CopyContext
 ) : TreeVisitor() {
-
-    override fun visitTypeAlias(typeAlias: ETypeAlias) {
-        super.visitTypeAlias(typeAlias)
-        val copiedTypeAlias = ETypeAlias(typeAlias.location, typeAlias.name)
-        copyContext.set(typeAlias, copiedTypeAlias)
-    }
-
-    override fun visitTypeParameter(typeParameter: ETypeParameter) {
-        super.visitTypeParameter(typeParameter)
-        val copiedTypeParameter = ETypeParameter(typeParameter.location, typeParameter.name)
-        copyContext.set(typeParameter, copiedTypeParameter)
-    }
 
     override fun visitKtBasicClass(basicClass: EKtBasicClass) {
         super.visitKtBasicClass(basicClass)

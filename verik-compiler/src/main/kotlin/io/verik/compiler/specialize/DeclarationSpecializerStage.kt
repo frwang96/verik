@@ -33,7 +33,6 @@ import io.verik.compiler.copy.CopierDeclarationIndexerVisitor
 import io.verik.compiler.copy.CopyContext
 import io.verik.compiler.copy.DeclarationBinding
 import io.verik.compiler.copy.ElementCopier
-import io.verik.compiler.copy.TypeParameterBinding
 import io.verik.compiler.copy.TypeParameterContext
 import io.verik.compiler.core.common.Annotations
 import io.verik.compiler.main.ProjectContext
@@ -116,22 +115,12 @@ object DeclarationSpecializerStage : ProjectStage() {
             type.arguments.forEach { addType(it, element) }
             val reference = type.reference
             if (reference is EKtBasicClass && reference.parent is EFile) {
-                val expectedSize = reference.typeParameters.size
-                val actualSize = type.arguments.size
-                if (expectedSize == actualSize) {
-                    if (!type.isSpecialized())
-                        return
-                    val typeParameterBindings = reference.typeParameters
-                        .zip(type.arguments)
-                        .map { (typeParameter, type) -> TypeParameterBinding(typeParameter, type) }
-                    val typeParameterContext = TypeParameterContext(typeParameterBindings)
-                    declarationBindingQueue.push(DeclarationBinding(reference, typeParameterContext))
-                } else {
-                    Messages.INTERNAL_ERROR.on(
-                        element,
-                        "Mismatch in type parameters: Expected $expectedSize actual $actualSize"
-                    )
-                }
+                if (!type.isSpecialized())
+                    return
+                val typeParameterContext = TypeParameterContext
+                    .get(type.arguments, reference, element)
+                    ?: return
+                declarationBindingQueue.push(DeclarationBinding(reference, typeParameterContext))
             }
         }
 

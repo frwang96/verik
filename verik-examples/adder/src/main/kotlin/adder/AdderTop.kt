@@ -22,5 +22,8 @@ import io.verik.core.*
 class AdderTop : Module() {
 
     @Make
-    val adder = Adder<`8`>()
+    val adder8 = Adder<`8`>()
+
+    @Make
+    val adder16 = Adder<`16`>()
 }

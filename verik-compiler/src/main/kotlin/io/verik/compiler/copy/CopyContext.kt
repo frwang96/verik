@@ -18,8 +18,12 @@ package io.verik.compiler.copy
 
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.ETypeParameter
+import io.verik.compiler.ast.element.common.ETypedElement
+import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.Type
+import io.verik.compiler.message.Messages
 
 class CopyContext {
 
@@ -39,6 +43,10 @@ class CopyContext {
         return referenceForwardingMap.get(declaration, typeParameterContext)
     }
 
+    fun get(declaration: EDeclaration, typeParameterContext: TypeParameterContext): Declaration? {
+        return referenceForwardingMap.get(declaration, typeParameterContext)
+    }
+
     fun getNotNull(declaration: EDeclaration): Declaration {
         return referenceForwardingMap.getNotNull(declaration, typeParameterContext)
     }
@@ -55,9 +63,36 @@ class CopyContext {
         return ElementCopier.copy(element, this)
     }
 
-    fun copy(type: Type): Type {
-        val arguments = type.arguments.map { copy(it) }
-        val reference = referenceForwardingMap.get(type.reference, typeParameterContext) ?: type.reference
-        return Type(reference, ArrayList(arguments))
+    fun copyType(typedElement: ETypedElement): Type {
+        return copyType(typedElement.type, typedElement)
+    }
+
+    fun copyType(type: Type, element: EElement): Type {
+        return when (val reference = type.reference) {
+            is EKtBasicClass -> {
+                val boundType = type.copy()
+                bind(boundType, element)
+                val typeParameterContext = TypeParameterContext
+                    .get(boundType.arguments, reference, element)
+                    ?: return type
+                val forwardedReference = referenceForwardingMap.get(reference, typeParameterContext)
+                if (forwardedReference != null) {
+                    forwardedReference.toType()
+                } else {
+                    if (type.arguments.isNotEmpty())
+                        Messages.INTERNAL_ERROR.on(element, "Forwarded reference not found: ${reference.name}")
+                    reference.toType()
+                }
+            }
+            is ETypeParameter -> {
+                val copyType = reference.toType()
+                bind(copyType, element)
+                copyType
+            }
+            else -> {
+                val arguments = type.arguments.map { copyType(it, element) }
+                Type(reference, ArrayList(arguments))
+            }
+        }
     }
 }

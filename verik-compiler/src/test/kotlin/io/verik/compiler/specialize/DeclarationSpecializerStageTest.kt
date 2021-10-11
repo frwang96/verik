@@ -20,14 +20,12 @@ import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findDeclaration
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class DeclarationSpecializerStageTest : BaseTest() {
 
     @Test
-    @Disabled
-    fun `specialize type parameter cardinal`() {
+    fun `specialize class type parameter`() {
         val projectContext = driveTest(
             DeclarationSpecializerStage::class,
             """
