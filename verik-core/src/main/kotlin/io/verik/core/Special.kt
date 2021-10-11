@@ -35,21 +35,28 @@ fun <N : `*`> i(): Int {
 /**
  * Constructs a [Ubit] out of the constant [value].
  */
-fun u(value: Int): Ubit<Cardinal> {
+fun u(value: Int): Ubit<`*`> {
     throw VerikException()
 }
 
 /**
  * Constructs a [Ubit] out of the constant [value].
  */
-fun u(value: String): Ubit<Cardinal> {
+fun u(value: String): Ubit<`*`> {
+    throw VerikException()
+}
+
+/**
+ * Converts [value] to [Ubit].
+ */
+fun u(value: Sbit<`*`>): Ubit<`*`> {
     throw VerikException()
 }
 
 /**
  * Constructs a [Ubit] out of the cardinal [N].
  */
-fun <N : `*`> u(): Ubit<Cardinal> {
+fun <N : `*`> u(): Ubit<`*`> {
     throw VerikException()
 }
 
@@ -70,7 +77,14 @@ fun <N : `*`> u1(): Ubit<N> {
 /**
  * Constructs a [Sbit] out of the constant [value].
  */
-fun s(value: Int): Sbit<Cardinal> {
+fun s(value: Int): Sbit<`*`> {
+    throw VerikException()
+}
+
+/**
+ * Converts [value] to [Sbit].
+ */
+fun s(value: Ubit<`*`>): Sbit<`*`> {
     throw VerikException()
 }
 

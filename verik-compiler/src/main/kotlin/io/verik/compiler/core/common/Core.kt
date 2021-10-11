@@ -27,6 +27,7 @@ import io.verik.compiler.core.kt.CoreKtRanges
 import io.verik.compiler.core.sv.CoreSv
 import io.verik.compiler.core.vk.CoreVk
 import io.verik.compiler.core.vk.CoreVkCardinal
+import io.verik.compiler.core.vk.CoreVkSbit
 import io.verik.compiler.core.vk.CoreVkUbit
 import io.verik.compiler.core.vk.CoreVkUnpacked
 
@@ -50,6 +51,10 @@ object Core {
             val F_times_Int = CoreKtInt.F_times_Int
             val F_plus_Int = CoreKtInt.F_plus_Int
             val F_minus_Int = CoreKtInt.F_minus_Int
+            val F_lt_Int = CoreKtInt.F_lt_Int
+            val F_lteq_Int = CoreKtInt.F_lteq_Int
+            val F_gt_Int = CoreKtInt.F_gt_Int
+            val F_gteq_Int = CoreKtInt.F_gteq_Int
         }
 
         object Boolean : CoreScope(C_Boolean) {
@@ -123,6 +128,7 @@ object Core {
         val F_u_Int = CoreVk.F_u_Int
         val F_u_String = CoreVk.F_u_String
         val F_u0 = CoreVk.F_u0
+        val F_s_Ubit = CoreVk.F_s_Ubit
         val F_cat = CoreVk.F_cat
         val F_rep = CoreVk.F_rep
         val F_random = CoreVk.F_random
@@ -159,10 +165,19 @@ object Core {
             val F_srl_Ubit = CoreVkUbit.F_srl_Ubit
             val F_sra_Int = CoreVkUbit.F_sra_Int
             val F_sra_Ubit = CoreVkUbit.F_sra_Ubit
+            val F_lt_Ubit = CoreVkUbit.F_lt_Ubit
+            val F_lteq_Ubit = CoreVkUbit.F_lteq_Ubit
+            val F_gt_Ubit = CoreVkUbit.F_gt_Ubit
+            val F_gteq_Ubit = CoreVkUbit.F_gteq_Ubit
             val F_invert = CoreVkUbit.F_invert
             val F_reverse = CoreVkUbit.F_reverse
             val F_ext = CoreVkUbit.F_ext
             val F_slice_Int = CoreVkUbit.F_slice_Int
+        }
+
+        object Sbit : CoreScope(C_Sbit) {
+
+            val F_lt_Sbit = CoreVkSbit.F_lt_Sbit
         }
 
         object Unpacked : CoreScope(C_Unpacked) {

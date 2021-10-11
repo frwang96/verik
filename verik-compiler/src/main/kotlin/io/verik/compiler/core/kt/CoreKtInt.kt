@@ -69,4 +69,32 @@ object CoreKtInt : CoreScope(Core.Kt.C_Int) {
             return SvBinaryOperatorKind.MINUS
         }
     }
+
+    val F_lt_Int = object : CoreKtBinaryFunctionDeclaration(parent, "lt", Core.Kt.C_Int) {
+
+        override fun getOperatorKind(): SvBinaryOperatorKind {
+            return SvBinaryOperatorKind.LT
+        }
+    }
+
+    val F_lteq_Int = object : CoreKtBinaryFunctionDeclaration(parent, "lteq", Core.Kt.C_Int) {
+
+        override fun getOperatorKind(): SvBinaryOperatorKind {
+            return SvBinaryOperatorKind.LTEQ
+        }
+    }
+
+    val F_gt_Int = object : CoreKtBinaryFunctionDeclaration(parent, "gt", Core.Kt.C_Int) {
+
+        override fun getOperatorKind(): SvBinaryOperatorKind {
+            return SvBinaryOperatorKind.GT
+        }
+    }
+
+    val F_gteq_Int = object : CoreKtBinaryFunctionDeclaration(parent, "gteq", Core.Kt.C_Int) {
+
+        override fun getOperatorKind(): SvBinaryOperatorKind {
+            return SvBinaryOperatorKind.GTEQ
+        }
+    }
 }

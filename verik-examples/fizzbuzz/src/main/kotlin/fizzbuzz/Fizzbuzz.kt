@@ -25,6 +25,7 @@ enum class E { A, B }
 @Top
 class Fizzbuzz : Module() {
 
+    var w: Boolean = nc()
     val x: Unpacked<`8`, Ubit<`8`>> = nc()
     val y: Unpacked<`8`, S> = nc()
     var z: Ubit<`3`> = nc()
@@ -64,6 +65,7 @@ class Fizzbuzz : Module() {
         z = z sra 1
         z = z.invert()
         z = z.reverse()
+        w = s(z) < s(z)
         println(cb.z)
     }
 

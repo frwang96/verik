@@ -335,6 +335,34 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
+    val F_lt_Ubit = object : CoreKtBinaryFunctionDeclaration(parent, "lt", Core.Vk.C_Ubit) {
+
+        override fun getOperatorKind(): SvBinaryOperatorKind {
+            return SvBinaryOperatorKind.LT
+        }
+    }
+
+    val F_lteq_Ubit = object : CoreKtBinaryFunctionDeclaration(parent, "lteq", Core.Vk.C_Ubit) {
+
+        override fun getOperatorKind(): SvBinaryOperatorKind {
+            return SvBinaryOperatorKind.LTEQ
+        }
+    }
+
+    val F_gt_Ubit = object : CoreKtBinaryFunctionDeclaration(parent, "gt", Core.Vk.C_Ubit) {
+
+        override fun getOperatorKind(): SvBinaryOperatorKind {
+            return SvBinaryOperatorKind.GT
+        }
+    }
+
+    val F_gteq_Ubit = object : CoreKtBinaryFunctionDeclaration(parent, "gteq", Core.Vk.C_Ubit) {
+
+        override fun getOperatorKind(): SvBinaryOperatorKind {
+            return SvBinaryOperatorKind.GTEQ
+        }
+    }
+
     val F_invert = object : CoreKtUnaryFunctionDeclaration(parent, "invert") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {

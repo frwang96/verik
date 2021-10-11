@@ -126,6 +126,22 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
+    val F_s_Ubit = object : CoreKtTransformableFunctionDeclaration(parent, "s", Core.Vk.C_Ubit) {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return listOf(
+                TypeEqualsTypeConstraint(
+                    TypeAdapter.ofElement(callExpression.valueArguments[0], 0),
+                    TypeAdapter.ofElement(callExpression, 0)
+                )
+            )
+        }
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            return callExpression.valueArguments[0]
+        }
+    }
+
     val F_cat = object : CoreKtTransformableFunctionDeclaration(parent, "cat", Core.Kt.C_Any) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
