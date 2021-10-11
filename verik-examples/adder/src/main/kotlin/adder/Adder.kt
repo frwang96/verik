@@ -18,12 +18,26 @@ package adder
 
 import io.verik.core.*
 
-class Adder<N : `*`> : Module() {
+class Adder<N : `*`>(
+    @In var a: Ubit<N>,
+    @In var b: Ubit<N>,
+    @Out var x: Ubit<N>
+) : Module() {
 
-    var x: Ubit<ID<N>> = nc()
+    fun fullAdder(a: Boolean, b: Boolean, c: Boolean): Ubit<`2`> {
+        val x: Ubit<`2`> = u0()
+        x[0] = a xor b xor c
+        x[1] = (a && b) || (a && c) || (b && c)
+        return x
+    }
 
     @Com
     fun f() {
-        x = u0()
+        var c = false
+        for (i in 0 until i<N>()) {
+            val fa = fullAdder(a[i], b[i], c)
+            x[i] = fa[0]
+            c = fa[1]
+        }
     }
 }

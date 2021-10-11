@@ -21,9 +21,23 @@ import io.verik.core.*
 @Top
 class AdderTop : Module() {
 
-    @Make
-    val adder8 = Adder<`8`>()
+    var a: Ubit<`8`> = nc()
+    var b: Ubit<`8`> = nc()
+    var x: Ubit<`8`> = nc()
 
     @Make
-    val adder16 = Adder<`16`>()
+    val adder = Adder<`8`>(a, b, x)
+
+    @Run
+    fun test() {
+        repeat(64) {
+            a = randomUbit()
+            b = randomUbit()
+            delay(1)
+            val expected = a + b
+            if (x == expected) print("PASS ")
+            else print("FAIL ")
+            println("$a + $b = $x")
+        }
+    }
 }
