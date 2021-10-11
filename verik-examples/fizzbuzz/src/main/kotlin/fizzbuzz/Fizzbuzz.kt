@@ -60,6 +60,8 @@ class Fizzbuzz : Module() {
         random(1, 2)
         z[0] = u("3'b000")
         z = rep<`3`>(true)
+        z = z srl 1
+        z = z sra 1
         println(cb.z)
     }
 

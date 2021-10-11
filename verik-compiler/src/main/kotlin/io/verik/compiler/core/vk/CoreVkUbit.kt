@@ -298,12 +298,28 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            return ESvBinaryExpression(
+            val callExpressionSigned = EKtCallExpression(
+                callExpression.location,
+                Core.Vk.C_Sbit.toType(callExpression.type.arguments[0].copy()),
+                Core.Sv.F_signed,
+                null,
+                arrayListOf(callExpression.receiver!!),
+                ArrayList()
+            )
+            val binaryExpression = ESvBinaryExpression(
                 callExpression.location,
                 callExpression.type,
-                callExpression.receiver!!,
+                callExpressionSigned,
                 callExpression.valueArguments[0],
                 SvBinaryOperatorKind.GTGTGT
+            )
+            return EKtCallExpression(
+                callExpression.location,
+                callExpression.type.copy(),
+                Core.Sv.F_unsigned,
+                null,
+                arrayListOf(binaryExpression),
+                ArrayList()
             )
         }
     }

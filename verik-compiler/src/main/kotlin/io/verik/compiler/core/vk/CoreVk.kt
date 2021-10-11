@@ -184,7 +184,15 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_random_Ubit = object : CoreKtTransformableFunctionDeclaration(parent, "randomUbit") {
+    val F_randomBoolean = object : CoreKtTransformableFunctionDeclaration(parent, "randomBoolean") {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            callExpression.reference = Core.Sv.F_urandom
+            return callExpression
+        }
+    }
+
+    val F_randomUbit = object : CoreKtTransformableFunctionDeclaration(parent, "randomUbit") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(

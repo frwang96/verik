@@ -48,6 +48,13 @@ fun <T : Enum<T>> randomEnum(): T {
 }
 
 /**
+ * Returns a random [Boolean].
+ */
+fun randomBoolean(): Boolean {
+    throw VerikException()
+}
+
+/**
  * Returns a random [Ubit] of width [N].
  */
 fun <N : `*`> randomUbit(): Ubit<N> {

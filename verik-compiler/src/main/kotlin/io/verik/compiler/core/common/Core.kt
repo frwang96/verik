@@ -128,7 +128,8 @@ object Core {
         val F_random = CoreVk.F_random
         val F_random_Int = CoreVk.F_random_Int
         val F_random_Int_Int = CoreVk.F_random_Int_Int
-        val F_random_Ubit = CoreVk.F_random_Ubit
+        val F_randomBoolean = CoreVk.F_randomBoolean
+        val F_randomUbit = CoreVk.F_randomUbit
         val F_forever_Function = CoreVk.F_forever_Function
         val F_on_Event_Function = CoreVk.F_on_Event_Function
         val F_posedge_Boolean = CoreVk.F_posedge_Boolean
@@ -182,6 +183,8 @@ object Core {
         val F_random = CoreSv.F_random
         val F_urandom = CoreSv.F_urandom
         val F_urandom_range = CoreSv.F_urandom_range
+        val F_unsigned = CoreSv.F_unsigned
+        val F_signed = CoreSv.F_signed
         val F_time = CoreSv.F_time
         val F_fatal = CoreSv.F_fatal
         val F_finish = CoreSv.F_finish
