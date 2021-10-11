@@ -25,10 +25,9 @@ import io.verik.compiler.message.Messages
 object ElementCopier {
 
     fun <E : EElement> copy(element: E): E {
-        val referenceForwardingMap = ReferenceForwardingMap()
-        val copierDeclarationIndexerVisitor = CopierDeclarationIndexerVisitor(referenceForwardingMap)
+        val copyContext = CopyContext()
+        val copierDeclarationIndexerVisitor = CopierDeclarationIndexerVisitor(copyContext)
         element.accept(copierDeclarationIndexerVisitor)
-        val copyContext = CopyContext(referenceForwardingMap)
         return copy(element, copyContext)
     }
 

@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.common.EAbstractContainerClass
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.interfaces.Annotated
+import io.verik.compiler.ast.interfaces.TypeParameterized
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.TreeVisitor
@@ -29,28 +30,28 @@ import io.verik.compiler.message.SourceLocation
 class EKtBasicClass(
     override val location: SourceLocation,
     override var name: String
-) : EAbstractContainerClass(), Annotated {
+) : EAbstractContainerClass(), TypeParameterized, Annotated {
 
     override var supertype = NullDeclaration.toType()
-    override var typeParameters: ArrayList<ETypeParameter> = arrayListOf()
     override var declarations: ArrayList<EDeclaration> = arrayListOf()
+    override var typeParameters: ArrayList<ETypeParameter> = arrayListOf()
     override var annotations: List<EAnnotation> = listOf()
     var isEnum: Boolean = false
     var primaryConstructor: EPrimaryConstructor? = null
 
     fun init(
         supertype: Type,
-        typeParameters: List<ETypeParameter>,
         declarations: List<EDeclaration>,
+        typeParameters: List<ETypeParameter>,
         annotations: List<EAnnotation>,
         isEnum: Boolean,
         primaryConstructor: EPrimaryConstructor?
     ) {
         this.supertype = supertype
-        typeParameters.forEach { it.parent = this }
-        this.typeParameters = ArrayList(typeParameters)
         declarations.forEach { it.parent = this }
         this.declarations = ArrayList(declarations)
+        typeParameters.forEach { it.parent = this }
+        this.typeParameters = ArrayList(typeParameters)
         annotations.forEach { it.parent = this }
         this.annotations = annotations
         this.isEnum = isEnum
@@ -64,6 +65,7 @@ class EKtBasicClass(
 
     override fun acceptChildren(visitor: TreeVisitor) {
         super.acceptChildren(visitor)
+        typeParameters.forEach { it.accept(visitor) }
         annotations.forEach { it.accept(visitor) }
         primaryConstructor?.accept(visitor)
     }

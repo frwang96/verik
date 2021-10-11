@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.common.EAbstractProperty
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
+import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
@@ -32,6 +33,7 @@ import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.KtUnaryOperatorKind
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
+import io.verik.compiler.core.common.CoreCardinalDeclaration
 import io.verik.compiler.core.common.CoreKtAbstractFunctionDeclaration
 import io.verik.compiler.message.Messages
 
@@ -49,7 +51,7 @@ object TypeConstraintCollector {
         return typeConstraintCollectorVisitor.typeConstraints
     }
 
-    class TypeConstraintCollectorVisitor : TreeVisitor() {
+    private class TypeConstraintCollectorVisitor : TreeVisitor() {
 
         val typeConstraints = ArrayList<TypeConstraint>()
 
@@ -146,22 +148,10 @@ object TypeConstraintCollector {
                 is CoreKtAbstractFunctionDeclaration ->
                     typeConstraints.addAll(reference.getTypeConstraints(callExpression))
                 is EKtAbstractFunction -> {
-                    typeConstraints.add(
-                        TypeEqualsTypeConstraint(
-                            TypeAdapter.ofElement(callExpression),
-                            TypeAdapter.ofElement(reference)
-                        )
-                    )
-                    callExpression.valueArguments
-                        .zip(reference.valueParameters)
-                        .forEach { (valueArgument, valueParameter) ->
-                            typeConstraints.add(
-                                TypeEqualsTypeConstraint(
-                                    TypeAdapter.ofElement(valueArgument),
-                                    TypeAdapter.ofElement(valueParameter)
-                                )
-                            )
-                        }
+                    collectCallExpressionReturn(callExpression, reference, listOf())
+                    callExpression.valueArguments.indices.forEach {
+                        collectCallExpressionValueArgument(callExpression, reference, it, listOf())
+                    }
                 }
             }
         }
@@ -201,6 +191,82 @@ object TypeConstraintCollector {
                         TypeAdapter.ofElement(elseExpression)
                     )
                 )
+            }
+        }
+
+        private fun collectCallExpressionReturn(
+            callExpression: EKtCallExpression,
+            function: EKtAbstractFunction,
+            typeArgumentIndices: List<Int>
+        ) {
+            val type = function.type.getArgument(typeArgumentIndices)
+            when (val reference = type.reference) {
+                is CoreCardinalDeclaration -> {
+                    typeConstraints.add(
+                        TypeEqualsTypeConstraint(
+                            TypeAdapter.ofElement(callExpression, typeArgumentIndices),
+                            TypeAdapter.ofElement(function, typeArgumentIndices)
+                        )
+                    )
+                }
+                is ETypeParameter -> {
+                    val typeParameterIndex = function.typeParameters.indexOf(reference)
+                    if (typeParameterIndex != -1) {
+                        typeConstraints.add(
+                            TypeEqualsTypeConstraint(
+                                TypeAdapter.ofElement(callExpression, typeArgumentIndices),
+                                TypeAdapter.ofTypeArgument(callExpression, typeParameterIndex)
+                            )
+                        )
+                    }
+                }
+                else -> {
+                    type.arguments.indices.forEach {
+                        collectCallExpressionReturn(callExpression, function, typeArgumentIndices + it)
+                    }
+                }
+            }
+        }
+
+        private fun collectCallExpressionValueArgument(
+            callExpression: EKtCallExpression,
+            function: EKtAbstractFunction,
+            valueArgumentIndex: Int,
+            typeArgumentIndices: List<Int>
+        ) {
+            val valueArgument = callExpression.valueArguments[valueArgumentIndex]
+            val valueParameter = function.valueParameters[valueArgumentIndex]
+            val type = valueParameter.type.getArgument(typeArgumentIndices)
+            when (val reference = type.reference) {
+                is CoreCardinalDeclaration -> {
+                    typeConstraints.add(
+                        TypeEqualsTypeConstraint(
+                            TypeAdapter.ofElement(valueArgument, typeArgumentIndices),
+                            TypeAdapter.ofElement(valueParameter, typeArgumentIndices)
+                        )
+                    )
+                }
+                is ETypeParameter -> {
+                    val typeParameterIndex = function.typeParameters.indexOf(reference)
+                    if (typeParameterIndex != -1) {
+                        typeConstraints.add(
+                            TypeEqualsTypeConstraint(
+                                TypeAdapter.ofElement(valueArgument, typeArgumentIndices),
+                                TypeAdapter.ofTypeArgument(callExpression, typeParameterIndex)
+                            )
+                        )
+                    }
+                }
+                else -> {
+                    type.arguments.indices.forEach {
+                        collectCallExpressionValueArgument(
+                            callExpression,
+                            function,
+                            valueArgumentIndex,
+                            typeArgumentIndices + it
+                        )
+                    }
+                }
             }
         }
     }

@@ -39,6 +39,10 @@ sealed class TypeAdapter {
             return ElementTypeAdapter(element, indices.toList())
         }
 
+        fun ofElement(element: ETypedElement, indices: List<Int>): TypeAdapter {
+            return ElementTypeAdapter(element, indices)
+        }
+
         fun ofTypeArgument(callExpression: EKtCallExpression, index: Int): TypeAdapter {
             return TypeArgumentTypeAdapter(callExpression, index)
         }
@@ -55,18 +59,15 @@ class ElementTypeAdapter(
     }
 
     override fun getType(): Type {
-        var type = typedElement.type
-        indices.forEach { type = type.arguments[it] }
-        return type
+        return typedElement.type.getArgument(indices)
     }
 
     override fun setType(type: Type) {
         if (indices.isEmpty()) {
             typedElement.type = type
         } else {
-            var currentType = typedElement.type
-            indices.dropLast(1).forEach { currentType = currentType.arguments[it] }
-            currentType.arguments[indices.last()] = type
+            val parentType = typedElement.type.getArgument(indices.dropLast(1))
+            parentType.arguments[indices.last()] = type
         }
     }
 
@@ -75,9 +76,8 @@ class ElementTypeAdapter(
             SubstitutionResult(typedElement.type, type)
         } else {
             val substituted = typedElement.type.copy()
-            var substitutedArgument = substituted
-            indices.dropLast(1).forEach { substitutedArgument = substitutedArgument.arguments[it] }
-            substitutedArgument.arguments[indices.last()] = type
+            val parentType = substituted.getArgument(indices.dropLast(1))
+            parentType.arguments[indices.last()] = type
             SubstitutionResult(typedElement.type, substituted)
         }
     }

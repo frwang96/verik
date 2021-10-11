@@ -23,6 +23,7 @@ import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.EWhileExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
+import io.verik.compiler.ast.element.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
@@ -65,7 +66,7 @@ object ExpressionCopier {
         blockExpression: EKtBlockExpression,
         copyContext: CopyContext
     ): EKtBlockExpression {
-        val type = copyContext.copy(blockExpression.type)
+        val type = copyContext.copyType(blockExpression)
         val statements = blockExpression.statements.map { copyContext.copy(it) }
         return EKtBlockExpression(blockExpression.location, type, ArrayList(statements))
     }
@@ -82,7 +83,7 @@ object ExpressionCopier {
         unaryExpression: EKtUnaryExpression,
         copyContext: CopyContext
     ): EKtUnaryExpression {
-        val type = copyContext.copy(unaryExpression.type)
+        val type = copyContext.copyType(unaryExpression)
         val expression = copyContext.copy(unaryExpression.expression)
         return EKtUnaryExpression(unaryExpression.location, type, expression, unaryExpression.kind)
     }
@@ -91,7 +92,7 @@ object ExpressionCopier {
         binaryExpression: EKtBinaryExpression,
         copyContext: CopyContext
     ): EKtBinaryExpression {
-        val type = copyContext.copy(binaryExpression.type)
+        val type = copyContext.copyType(binaryExpression)
         val left = copyContext.copy(binaryExpression.left)
         val right = copyContext.copy(binaryExpression.right)
         return EKtBinaryExpression(binaryExpression.location, type, left, right, binaryExpression.kind)
@@ -101,38 +102,56 @@ object ExpressionCopier {
         referenceExpression: EKtReferenceExpression,
         copyContext: CopyContext
     ): EKtReferenceExpression {
-        val type = copyContext.copy(referenceExpression.type)
-        val reference = copyContext.referenceForwardingMap[referenceExpression.reference]
+        val type = copyContext.copyType(referenceExpression)
+        val forwardedReference = copyContext.get(referenceExpression.reference) ?: referenceExpression.reference
         val receiver = referenceExpression.receiver?.let { copyContext.copy(it) }
-        return EKtReferenceExpression(referenceExpression.location, type, reference, receiver)
+        return EKtReferenceExpression(referenceExpression.location, type, forwardedReference, receiver)
     }
 
     private fun copyKtCallExpression(callExpression: EKtCallExpression, copyContext: CopyContext): EKtCallExpression {
-        val type = copyContext.copy(callExpression.type)
-        val reference = copyContext.referenceForwardingMap[callExpression.reference]
+        val type = copyContext.copyType(callExpression)
         val receiver = callExpression.receiver?.let { copyContext.copy(it) }
         val valueArguments = callExpression.valueArguments.map { copyContext.copy(it) }
-        val typeArguments = callExpression.typeArguments.map { copyContext.copy(it) }
-        return EKtCallExpression(
-            callExpression.location,
-            type,
-            reference,
-            receiver,
-            ArrayList(valueArguments),
-            ArrayList(typeArguments)
-        )
+
+        val reference = callExpression.reference
+        return if (callExpression.typeArguments.isEmpty() || reference !is EKtAbstractFunction) {
+            val forwardedReference = copyContext.get(reference) ?: reference
+            val typeArguments = callExpression.typeArguments.map { copyContext.copyType(it, callExpression) }
+            EKtCallExpression(
+                callExpression.location,
+                type,
+                forwardedReference,
+                receiver,
+                ArrayList(valueArguments),
+                ArrayList(typeArguments)
+            )
+        } else {
+            val typeParameterContext = TypeParameterContext
+                .get(callExpression.typeArguments, reference, callExpression)
+                ?: return callExpression
+            val forwardedReference = copyContext.get(reference, typeParameterContext)
+                ?: return callExpression
+            EKtCallExpression(
+                callExpression.location,
+                type,
+                forwardedReference,
+                receiver,
+                ArrayList(valueArguments),
+                arrayListOf()
+            )
+        }
     }
 
     private fun copyConstantExpression(
         constantExpression: EConstantExpression,
         copyContext: CopyContext
     ): EConstantExpression {
-        val type = copyContext.copy(constantExpression.type)
+        val type = copyContext.copyType(constantExpression)
         return EConstantExpression(constantExpression.location, type, constantExpression.value)
     }
 
     private fun copyReturnStatement(returnStatement: EReturnStatement, copyContext: CopyContext): EReturnStatement {
-        val type = copyContext.copy(returnStatement.type)
+        val type = copyContext.copyType(returnStatement)
         val expression = returnStatement.expression?.let { copyContext.copy(it) }
         return EReturnStatement(returnStatement.location, type, expression)
     }
@@ -160,7 +179,7 @@ object ExpressionCopier {
     }
 
     private fun copyIfExpression(ifExpression: EIfExpression, copyContext: CopyContext): EIfExpression {
-        val type = copyContext.copy(ifExpression.type)
+        val type = copyContext.copyType(ifExpression)
         val condition = copyContext.copy(ifExpression.condition)
         val thenExpression = ifExpression.thenExpression?.let { copyContext.copy(it) }
         val elseExpression = ifExpression.elseExpression?.let { copyContext.copy(it) }
@@ -168,7 +187,7 @@ object ExpressionCopier {
     }
 
     private fun copyWhenExpression(whenExpression: EWhenExpression, copyContext: CopyContext): EWhenExpression {
-        val type = copyContext.copy(whenExpression.type)
+        val type = copyContext.copyType(whenExpression)
         val subject = copyContext.copy(whenExpression.subject)
         val entries = whenExpression.entries.map { entry ->
             val conditions = entry.conditions.map { copyContext.copy(it) }

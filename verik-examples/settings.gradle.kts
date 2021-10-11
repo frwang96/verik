@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
+include("adder")
 include("cache")
 include("count")
 include("fizzbuzz")
-include("lock")
 include("multiplier")

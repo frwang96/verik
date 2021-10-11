@@ -31,7 +31,7 @@ object CaseStatementTransformerStage : ProjectStage() {
         projectContext.project.accept(CaseStatementTransformerVisitor)
     }
 
-    object CaseStatementTransformerVisitor : TreeVisitor() {
+    private object CaseStatementTransformerVisitor : TreeVisitor() {
 
         override fun visitWhenExpression(whenExpression: EWhenExpression) {
             super.visitWhenExpression(whenExpression)

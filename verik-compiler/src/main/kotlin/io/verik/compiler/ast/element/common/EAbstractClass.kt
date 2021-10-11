@@ -17,18 +17,12 @@
 package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.ast.property.Type
-import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 
 abstract class EAbstractClass : EClassifier() {
 
     abstract var supertype: Type
-    abstract var typeParameters: ArrayList<ETypeParameter>
 
     // TODO set type of class
     override var type = Core.Kt.C_Unit.toType()
-
-    override fun acceptChildren(visitor: TreeVisitor) {
-        typeParameters.forEach { it.accept(visitor) }
-    }
 }

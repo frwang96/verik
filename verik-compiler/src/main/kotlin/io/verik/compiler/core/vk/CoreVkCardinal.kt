@@ -25,6 +25,7 @@ object CoreVkCardinal {
     val N_MUL = CoreCardinalFunctionDeclaration("MUL")
     val N_MAX = CoreCardinalFunctionDeclaration("MAX")
     val N_MIN = CoreCardinalFunctionDeclaration("MIN")
+    val N_ID = CoreCardinalFunctionDeclaration("ID")
     val N_INC = CoreCardinalFunctionDeclaration("INC")
     val N_DEC = CoreCardinalFunctionDeclaration("DEC")
     val N_LOG = CoreCardinalFunctionDeclaration("LOG")

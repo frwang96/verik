@@ -30,7 +30,7 @@ object TypeResolverStage : ProjectStage() {
         projectContext.project.accept(TypeResolverVisitor)
     }
 
-    object TypeResolverVisitor : TreeVisitor() {
+    private object TypeResolverVisitor : TreeVisitor() {
 
         override fun visitKtFunction(function: EKtFunction) {
             val typeConstraints = TypeConstraintCollector.collect(function)

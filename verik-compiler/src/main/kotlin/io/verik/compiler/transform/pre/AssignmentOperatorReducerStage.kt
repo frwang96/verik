@@ -38,7 +38,7 @@ object AssignmentOperatorReducerStage : ProjectStage() {
         projectContext.project.accept(AssignmentOperatorReducerVisitor)
     }
 
-    object AssignmentOperatorReducerVisitor : TreeVisitor() {
+    private object AssignmentOperatorReducerVisitor : TreeVisitor() {
 
         override fun visitKtBinaryExpression(binaryExpression: EKtBinaryExpression) {
             super.visitKtBinaryExpression(binaryExpression)

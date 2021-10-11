@@ -154,8 +154,8 @@ class ElementPrinter : Visitor() {
     override fun visitKtBasicClass(basicClass: EKtBasicClass) {
         build("KtBasicClass") {
             build(basicClass.name)
-            build(basicClass.typeParameters)
             build(basicClass.declarations)
+            build(basicClass.typeParameters)
             build(basicClass.annotations)
             build(basicClass.isEnum.toString())
             build(basicClass.primaryConstructor)
@@ -165,7 +165,6 @@ class ElementPrinter : Visitor() {
     override fun visitSvBasicClass(basicClass: ESvBasicClass) {
         build("SvBasicClass") {
             build(basicClass.name)
-            build(basicClass.typeParameters)
             build(basicClass.declarations)
         }
     }
@@ -173,7 +172,6 @@ class ElementPrinter : Visitor() {
     override fun visitModule(module: EModule) {
         build("Module") {
             build(module.name)
-            build(module.typeParameters)
             build(module.declarations)
             build(module.ports)
         }
@@ -182,7 +180,6 @@ class ElementPrinter : Visitor() {
     override fun visitModuleInterface(moduleInterface: EModuleInterface) {
         build("ModuleInterface") {
             build(moduleInterface.name)
-            build(moduleInterface.typeParameters)
             build(moduleInterface.declarations)
             build(moduleInterface.ports)
         }
@@ -191,7 +188,6 @@ class ElementPrinter : Visitor() {
     override fun visitModulePort(modulePort: EModulePort) {
         build("ModulePort") {
             build(modulePort.name)
-            build(modulePort.typeParameters)
             build(modulePort.ports)
             build(modulePort.parentModuleInterface?.name)
         }
@@ -200,7 +196,6 @@ class ElementPrinter : Visitor() {
     override fun visitClockingBlock(clockingBlock: EClockingBlock) {
         build("ClockingBlock") {
             build(clockingBlock.name)
-            build(clockingBlock.typeParameters)
             build(clockingBlock.ports)
             build(clockingBlock.eventValueParameterIndex)
         }
@@ -225,8 +220,9 @@ class ElementPrinter : Visitor() {
             build(function.name)
             build(function.type.toString())
             build(function.body)
-            build(function.annotations)
             build(function.valueParameters)
+            build(function.typeParameters)
+            build(function.annotations)
         }
     }
 
@@ -252,6 +248,7 @@ class ElementPrinter : Visitor() {
         build("PrimaryConstructor") {
             build(primaryConstructor.type.toString())
             build(primaryConstructor.valueParameters)
+            build(primaryConstructor.typeParameters.map { it.name })
         }
     }
 

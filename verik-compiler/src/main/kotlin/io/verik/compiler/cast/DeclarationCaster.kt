@@ -74,11 +74,11 @@ object DeclarationCaster {
             ?: return null
 
         val supertype = castContext.castType(descriptor.getSuperClassOrAny().defaultType, classOrObject)
-        val typeParameters = classOrObject.typeParameters.mapNotNull {
-            castContext.casterVisitor.getElement<ETypeParameter>(it)
-        }
         val declarations = classOrObject.declarations.mapNotNull {
             castContext.casterVisitor.getDeclaration(it)
+        }
+        val typeParameters = classOrObject.typeParameters.mapNotNull {
+            castContext.casterVisitor.getElement<ETypeParameter>(it)
         }
         val annotations = classOrObject.annotationEntries.mapNotNull {
             AnnotationCaster.castAnnotationEntry(it, castContext)
@@ -91,7 +91,15 @@ object DeclarationCaster {
                 castImplicitPrimaryConstructor(classOrObject, castContext)
             else -> null
         }
-        castedBasicClass.init(supertype, typeParameters, declarations, annotations, isEnum, primaryConstructor)
+
+        castedBasicClass.init(
+            supertype,
+            declarations,
+            typeParameters,
+            annotations,
+            isEnum,
+            primaryConstructor
+        )
         return castedBasicClass
     }
 
@@ -131,8 +139,11 @@ object DeclarationCaster {
         val valueParameters = constructor.valueParameters.mapNotNull {
             castContext.casterVisitor.getElement<EKtValueParameter>(it)
         }
+        val typeParameters = descriptor.typeParameters.mapNotNull {
+            castContext.getDeclaration(it, constructor).cast<ETypeParameter>(constructor)
+        }
 
-        castedPrimaryConstructor.init(type, valueParameters)
+        castedPrimaryConstructor.init(type, valueParameters, typeParameters)
         return castedPrimaryConstructor
     }
 
@@ -148,7 +159,11 @@ object DeclarationCaster {
             ?: return null
 
         val type = castContext.castType(primaryConstructorDescriptor.returnType, classOrObject)
-        castedPrimaryConstructor.init(type, listOf())
+        val typeParameters = primaryConstructorDescriptor.typeParameters.mapNotNull {
+            castContext.getDeclaration(it, classOrObject).cast<ETypeParameter>(classOrObject)
+        }
+
+        castedPrimaryConstructor.init(type, listOf(), typeParameters)
         return castedPrimaryConstructor
     }
 

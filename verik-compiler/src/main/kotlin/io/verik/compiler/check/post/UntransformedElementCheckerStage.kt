@@ -50,7 +50,7 @@ object UntransformedElementCheckerStage : ProjectStage() {
         projectContext.project.accept(UntransformedElementVisitor)
     }
 
-    object UntransformedElementVisitor : TreeVisitor() {
+    private object UntransformedElementVisitor : TreeVisitor() {
 
         private const val message = "has not been transformed to SystemVerilog"
 

@@ -40,7 +40,6 @@ object ComponentInterpreter {
                     basicClass.location,
                     basicClass.name,
                     basicClass.supertype,
-                    basicClass.typeParameters,
                     ports,
                     basicClass.declarations,
                     isTop
@@ -55,7 +54,6 @@ object ComponentInterpreter {
                     basicClass.location,
                     basicClass.name,
                     basicClass.supertype,
-                    basicClass.typeParameters,
                     ports,
                     basicClass.declarations
                 )
@@ -69,7 +67,6 @@ object ComponentInterpreter {
                     basicClass.location,
                     basicClass.name,
                     basicClass.supertype,
-                    basicClass.typeParameters,
                     ports,
                     null
                 )
@@ -88,7 +85,6 @@ object ComponentInterpreter {
                         basicClass.location,
                         basicClass.name,
                         basicClass.supertype,
-                        basicClass.typeParameters,
                         ports,
                         eventValueParameterIndex
                     )

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.pre
+package io.verik.compiler.specialize
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.assertElementEquals
@@ -22,24 +22,20 @@ import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class FunctionOverloadingTransformerStageTest : BaseTest() {
+internal class DeclarationSpecializerStageTest : BaseTest() {
 
     @Test
-    fun `overloaded function`() {
+    fun `specialize class type parameter`() {
         val projectContext = driveTest(
-            NameRelabelerStage::class,
+            DeclarationSpecializerStage::class,
             """
-                fun f() {}
-                fun f(x: Int) {}
+                class C<N : `*`>
+                val c = C<`8`>()
             """.trimIndent()
         )
         assertElementEquals(
-            "KtFunction(f, *, *, *, *, *)",
-            projectContext.findDeclaration("f")
-        )
-        assertElementEquals(
-            "KtFunction(f_Int, *, *, *, *, *)",
-            projectContext.findDeclaration("f_Int")
+            "KtBasicClass(C_8, [], [], [], false, PrimaryConstructor(C_8, [], []))",
+            projectContext.findDeclaration("C_8")
         )
     }
 }

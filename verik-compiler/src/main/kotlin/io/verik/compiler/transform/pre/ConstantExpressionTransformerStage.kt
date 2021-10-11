@@ -32,7 +32,7 @@ object ConstantExpressionTransformerStage : ProjectStage() {
         projectContext.project.accept(ConstantExpressionTransformerVisitor)
     }
 
-    object ConstantExpressionTransformerVisitor : TreeVisitor() {
+    private object ConstantExpressionTransformerVisitor : TreeVisitor() {
 
         override fun visitConstantExpression(constantExpression: EConstantExpression) {
             super.visitConstantExpression(constantExpression)

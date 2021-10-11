@@ -31,7 +31,7 @@ object TypeResolvedCheckerStage : ProjectStage() {
         projectContext.project.accept(TypeResolvedCheckerVisitor)
     }
 
-    object TypeResolvedCheckerVisitor : TreeVisitor() {
+    private object TypeResolvedCheckerVisitor : TreeVisitor() {
 
         override fun visitExpression(expression: EExpression) {
             super.visitExpression(expression)

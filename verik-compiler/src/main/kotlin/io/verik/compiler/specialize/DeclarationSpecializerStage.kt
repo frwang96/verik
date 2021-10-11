@@ -17,19 +17,23 @@
 package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EDeclaration
+import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.ETypedElement
+import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.interfaces.Annotated
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.Reference
+import io.verik.compiler.ast.interfaces.TypeParameterized
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.copy.CopierDeclarationIndexerVisitor
 import io.verik.compiler.copy.CopyContext
+import io.verik.compiler.copy.DeclarationBinding
 import io.verik.compiler.copy.ElementCopier
-import io.verik.compiler.copy.ReferenceForwardingMap
+import io.verik.compiler.copy.TypeParameterContext
 import io.verik.compiler.core.common.Annotations
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
@@ -41,65 +45,91 @@ object DeclarationSpecializerStage : ProjectStage() {
     override val checkNormalization = true
 
     override fun process(projectContext: ProjectContext) {
-        val declarationQueue = ArrayDeque<EDeclaration>()
-        if (projectContext.config.enableDeadCodeElimination) {
-            projectContext.project.files().forEach { file ->
-                file.declarations.forEach {
-                    if (it is Annotated && it.hasAnnotation(Annotations.TOP))
-                        declarationQueue.push(it)
-                }
-            }
-            if (declarationQueue.isEmpty())
-                Messages.NO_TOP_DECLARATIONS.on(projectContext.project)
-        } else {
-            projectContext.project.files().forEach { file ->
-                file.declarations.forEach {
-                    declarationQueue.push(it)
-                }
+        val entryPoints = getEntryPoints(projectContext)
+        val declarationBindingQueue = ArrayDeque(
+            entryPoints.map { DeclarationBinding(it, TypeParameterContext.EMPTY) }
+        )
+
+        val declarationSpecializerVisitor = DeclarationSpecializerVisitor(declarationBindingQueue)
+        val copyContext = CopyContext()
+        val copierDeclarationIndexerVisitor = CopierDeclarationIndexerVisitor(copyContext)
+        while (declarationBindingQueue.isNotEmpty()) {
+            val declarationBinding = declarationBindingQueue.pop()
+            if (!copyContext.contains(declarationBinding)) {
+                copyContext.typeParameterContext = declarationBinding.typeParameterContext
+                declarationBinding.declaration.accept(declarationSpecializerVisitor)
+                declarationBinding.declaration.accept(copierDeclarationIndexerVisitor)
             }
         }
 
-        val declarationSpecializerVisitor = DeclarationSpecializerVisitor(declarationQueue)
-        val referenceForwardingMap = ReferenceForwardingMap()
-        val copierDeclarationIndexerVisitor = CopierDeclarationIndexerVisitor(referenceForwardingMap)
-        while (declarationQueue.isNotEmpty()) {
-            val declaration = declarationQueue.pop()
-            if (declaration !in referenceForwardingMap) {
-                declaration.accept(declarationSpecializerVisitor)
-                declaration.accept(copierDeclarationIndexerVisitor)
-            }
-        }
-
-        val copyContext = CopyContext(referenceForwardingMap)
         projectContext.project.files().forEach { file ->
-            val declarations = file.declarations.mapNotNull {
-                if (it in referenceForwardingMap) {
-                    ElementCopier.copy(it, copyContext)
-                } else null
+            val declarations = file.declarations.flatMap { declaration ->
+                val typeParameterContexts = copyContext.getTypeParameterContexts(declaration)
+                typeParameterContexts.map {
+                    copyContext.typeParameterContext = it
+                    ElementCopier.copy(declaration, copyContext)
+                }
             }
             declarations.forEach { it.parent = file }
             file.declarations = ArrayList(declarations)
         }
     }
 
-    class DeclarationSpecializerVisitor(private val declarationQueue: ArrayDeque<EDeclaration>) : TreeVisitor() {
+    private fun getEntryPoints(projectContext: ProjectContext): ArrayList<EDeclaration> {
+        val entryPoints = ArrayList<EDeclaration>()
+        if (projectContext.config.enableDeadCodeElimination) {
+            projectContext.project.files().forEach { file ->
+                file.declarations.forEach {
+                    if (it is Annotated && it.hasAnnotation(Annotations.TOP)) {
+                        if (it is TypeParameterized && it.typeParameters.isNotEmpty()) {
+                            Messages.TYPE_PARAMETERS_ON_TOP.on(it)
+                        } else {
+                            entryPoints.push(it)
+                        }
+                    }
+                }
+            }
+            if (entryPoints.isEmpty())
+                Messages.NO_TOP_DECLARATIONS.on(projectContext.project)
+        } else {
+            projectContext.project.files().forEach { file ->
+                file.declarations.forEach {
+                    if (it !is TypeParameterized || it.typeParameters.isEmpty())
+                        entryPoints.push(it)
+                }
+            }
+        }
+        return entryPoints
+    }
+
+    private class DeclarationSpecializerVisitor(
+        private val declarationBindingQueue: ArrayDeque<DeclarationBinding>
+    ) : TreeVisitor() {
 
         private fun addReference(reference: Declaration) {
             if (reference is EDeclaration && reference.parent is EFile)
-                declarationQueue.push(reference)
+                declarationBindingQueue.push(DeclarationBinding(reference, TypeParameterContext.EMPTY))
         }
 
-        private fun addReference(type: Type) {
-            type.arguments.forEach { addReference(it) }
-            addReference(type.reference)
+        private fun addType(type: Type, element: EElement) {
+            type.arguments.forEach { addType(it, element) }
+            val reference = type.reference
+            if (reference is EKtBasicClass && reference.parent is EFile) {
+                if (!type.isSpecialized())
+                    return
+                val typeParameterContext = TypeParameterContext
+                    .get(type.arguments, reference, element)
+                    ?: return
+                declarationBindingQueue.push(DeclarationBinding(reference, typeParameterContext))
+            }
         }
 
         override fun visitTypedElement(typedElement: ETypedElement) {
             super.visitTypedElement(typedElement)
-            addReference(typedElement.type)
+            addType(typedElement.type, typedElement)
             if (typedElement is EKtCallExpression) {
                 typedElement.typeArguments.forEach {
-                    addReference(it)
+                    addType(it, typedElement)
                 }
             }
             if (typedElement is Reference) {

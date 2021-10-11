@@ -32,7 +32,7 @@ object NameRelabelerStage : ProjectStage() {
         projectContext.project.accept(NameRelabelerVisitor)
     }
 
-    object NameRelabelerVisitor : TreeVisitor() {
+    private object NameRelabelerVisitor : TreeVisitor() {
 
         override fun visitElement(element: EElement) {
             super.visitElement(element)

@@ -14,25 +14,16 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.sv
+package adder
 
-import io.verik.compiler.ast.property.Type
-import io.verik.compiler.common.Visitor
-import io.verik.compiler.message.SourceLocation
+import io.verik.core.*
 
-class EModulePort(
-    override val location: SourceLocation,
-    override var name: String,
-    override var supertype: Type,
-    override val ports: List<EPort>,
-    var parentModuleInterface: EModuleInterface?
-) : EAbstractComponent() {
+@Top
+class AdderTop : Module() {
 
-    init {
-        ports.forEach { it.parent = this }
-    }
+    @Make
+    val adder8 = Adder<`8`>()
 
-    override fun accept(visitor: Visitor) {
-        return visitor.visitModulePort(this)
-    }
+    @Make
+    val adder16 = Adder<`16`>()
 }

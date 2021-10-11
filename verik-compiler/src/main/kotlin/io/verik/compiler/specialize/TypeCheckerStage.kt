@@ -30,7 +30,7 @@ object TypeCheckerStage : ProjectStage() {
         projectContext.project.accept(TypeCheckerVisitor)
     }
 
-    object TypeCheckerVisitor : TreeVisitor() {
+    private object TypeCheckerVisitor : TreeVisitor() {
 
         override fun visitKtFunction(function: EKtFunction) {
             val typeConstraints = TypeConstraintCollector.collect(function)

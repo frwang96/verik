@@ -37,7 +37,7 @@ object EnumNameTransformerStage : ProjectStage() {
         projectContext.project.accept(EnumNameTransformerVisitor)
     }
 
-    object EnumNameTransformerVisitor : TreeVisitor() {
+    private object EnumNameTransformerVisitor : TreeVisitor() {
 
         private fun transform(expression: EExpression) {
             if (expression.type.reference is EEnum) {

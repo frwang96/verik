@@ -30,7 +30,7 @@ object PropertyTransformerStage : ProjectStage() {
         projectContext.project.accept(PropertyTransformerVisitor)
     }
 
-    object PropertyTransformerVisitor : TreeVisitor() {
+    private object PropertyTransformerVisitor : TreeVisitor() {
 
         override fun visitKtReferenceExpression(referenceExpression: EKtReferenceExpression) {
             super.visitKtReferenceExpression(referenceExpression)

@@ -32,7 +32,7 @@ object ForExpressionReducerStage : ProjectStage() {
         projectContext.project.accept(ForExpressionReducerVisitor)
     }
 
-    object ForExpressionReducerVisitor : TreeVisitor() {
+    private object ForExpressionReducerVisitor : TreeVisitor() {
 
         override fun visitForExpression(forExpression: EForExpression) {
             super.visitForExpression(forExpression)

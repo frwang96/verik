@@ -43,6 +43,21 @@ internal class TypeResolverStageTest : BaseTest() {
     }
 
     @Test
+    fun `resolve property type parameterized`() {
+        val projectContext = driveTest(
+            TypeResolverStage::class,
+            """
+                class C<N : `*`>
+                var c = C<`8`>()
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtProperty(c, C<`8`>, KtCallExpression(C<`8`>, <init>, null, [], [`8`]), [])",
+            projectContext.findDeclaration("c")
+        )
+    }
+
+    @Test
     fun `resolve reference expression`() {
         val projectContext = driveTest(
             TypeResolverStage::class,

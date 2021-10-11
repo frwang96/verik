@@ -14,19 +14,9 @@
  * limitations under the License.
  */
 
-package lock
+package io.verik.compiler.copy
 
-import io.verik.core.*
+import io.verik.compiler.ast.element.common.ETypeParameter
+import io.verik.compiler.ast.property.Type
 
-@Top
-object LockTop : Module() {
-
-    @Make
-    val lock = Lock(
-        clk = false,
-        rst = false,
-        open = false,
-        close = false,
-        state = nc()
-    )
-}
+data class TypeParameterBinding(val typeParameter: ETypeParameter, val type: Type)

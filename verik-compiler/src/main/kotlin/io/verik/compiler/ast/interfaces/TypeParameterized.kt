@@ -14,17 +14,11 @@
  * limitations under the License.
  */
 
-package lock
+package io.verik.compiler.ast.interfaces
 
-import io.verik.core.*
+import io.verik.compiler.ast.element.common.ETypeParameter
 
-enum class State {
-    @Relabel("STATE_OPENED")
-    OPENED,
-    @Relabel("STATE_OPENING")
-    OPENING,
-    @Relabel("STATE_CLOSED")
-    CLOSED,
-    @Relabel("STATE_CLOSING")
-    CLOSING
+interface TypeParameterized {
+
+    var typeParameters: ArrayList<ETypeParameter>
 }

@@ -34,7 +34,7 @@ object NameCheckerStage : ProjectStage() {
         projectContext.project.accept(NameCheckerVisitor)
     }
 
-    object NameCheckerVisitor : TreeVisitor() {
+    private object NameCheckerVisitor : TreeVisitor() {
 
         private val nameRegex = Regex("[_a-zA-Z][_a-zA-Z0-9$]*")
 

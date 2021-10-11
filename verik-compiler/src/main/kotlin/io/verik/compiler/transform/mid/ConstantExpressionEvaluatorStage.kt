@@ -63,7 +63,7 @@ object ConstantExpressionEvaluatorStage : ProjectStage() {
         projectContext.project.accept(ConstantExpressionEvaluatorVisitor)
     }
 
-    object ConstantExpressionEvaluatorVisitor : TreeVisitor() {
+    private object ConstantExpressionEvaluatorVisitor : TreeVisitor() {
 
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)

@@ -47,7 +47,7 @@ object FunctionOverloadingTransformerStage : ProjectStage() {
         projectContext.project.accept(FunctionOverloadingTransformerVisitor)
     }
 
-    object FunctionOverloadingTransformerVisitor : TreeVisitor() {
+    private object FunctionOverloadingTransformerVisitor : TreeVisitor() {
 
         private fun transformFunctions(functions: List<EKtFunction>) {
             val nameSet = HashSet<String>()

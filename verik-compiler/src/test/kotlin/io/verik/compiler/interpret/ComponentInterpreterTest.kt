@@ -36,7 +36,7 @@ internal class ComponentInterpreterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "Module(M, [], [], [])",
+            "Module(M, [], [])",
             projectContext.findDeclaration("M")
         )
     }
@@ -50,7 +50,7 @@ internal class ComponentInterpreterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "Module(M, [], [], [Port(x, Boolean, INPUT)])",
+            "Module(M, [], [Port(x, Boolean, INPUT)])",
             projectContext.findDeclaration("M")
         )
     }
@@ -76,7 +76,7 @@ internal class ComponentInterpreterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "ModuleInterface(MI, [], [], [])",
+            "ModuleInterface(MI, [], [])",
             projectContext.findDeclaration("MI")
         )
     }
@@ -90,7 +90,7 @@ internal class ComponentInterpreterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "ModulePort(MP, [], [], null)",
+            "ModulePort(MP, [], null)",
             projectContext.findDeclaration("MP")
         )
     }
@@ -104,7 +104,7 @@ internal class ComponentInterpreterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "ClockingBlock(CB, [], [], 0)",
+            "ClockingBlock(CB, [], 0)",
             projectContext.findDeclaration("CB")
         )
     }

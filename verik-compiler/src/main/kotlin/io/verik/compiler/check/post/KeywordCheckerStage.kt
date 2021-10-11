@@ -31,7 +31,7 @@ object KeywordCheckerStage : ProjectStage() {
         projectContext.project.accept(KeywordCheckerVisitor)
     }
 
-    object KeywordCheckerVisitor : TreeVisitor() {
+    private object KeywordCheckerVisitor : TreeVisitor() {
 
         override fun visitElement(element: EElement) {
             super.visitElement(element)

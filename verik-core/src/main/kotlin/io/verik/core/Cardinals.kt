@@ -48,6 +48,11 @@ typealias MAX<N, M> = `*`
 typealias MIN<N, M> = `*`
 
 /**
+ * Identity of the cardinal N
+ */
+typealias ID<N> = `*`
+
+/**
  * Increments the cardinal N.
  */
 typealias INC<N> = `*`

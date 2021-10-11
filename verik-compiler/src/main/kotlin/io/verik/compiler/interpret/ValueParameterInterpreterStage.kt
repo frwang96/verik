@@ -34,7 +34,7 @@ object ValueParameterInterpreterStage : ProjectStage() {
         referenceUpdater.flush()
     }
 
-    class ValueParameterInterpreterVisitor(private val referenceUpdater: ReferenceUpdater) : TreeVisitor() {
+    private class ValueParameterInterpreterVisitor(private val referenceUpdater: ReferenceUpdater) : TreeVisitor() {
 
         override fun visitFunctionLiteralExpression(functionLiteralExpression: EFunctionLiteralExpression) {
             super.visitFunctionLiteralExpression(functionLiteralExpression)

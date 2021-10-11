@@ -30,7 +30,7 @@ object FunctionTransformerStage : ProjectStage() {
         projectContext.project.accept(FunctionTransformerVisitor)
     }
 
-    object FunctionTransformerVisitor : TreeVisitor() {
+    private object FunctionTransformerVisitor : TreeVisitor() {
 
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)

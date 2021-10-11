@@ -54,7 +54,7 @@ object NameRedeclarationCheckerStage : ProjectStage() {
         }
     }
 
-    object NameRedeclarationCheckerVisitor : TreeVisitor() {
+    private object NameRedeclarationCheckerVisitor : TreeVisitor() {
 
         override fun visitAbstractPackage(abstractPackage: EAbstractPackage) {
             super.visitAbstractPackage(abstractPackage)

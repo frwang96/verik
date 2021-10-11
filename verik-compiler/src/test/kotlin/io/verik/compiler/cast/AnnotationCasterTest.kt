@@ -37,7 +37,7 @@ internal class AnnotationCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtFunction(f, Unit, *, [Annotation(Task, [])], [])",
+            "KtFunction(f, Unit, *, [], [], [Annotation(Task, [])])",
             projectContext.findDeclaration("f")
         )
     }
@@ -52,7 +52,7 @@ internal class AnnotationCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtFunction(f, Unit, *, [Annotation(Relabel, [g])], [])",
+            "KtFunction(f, Unit, *, [], [], [Annotation(Relabel, [g])])",
             projectContext.findDeclaration("f")
         )
     }

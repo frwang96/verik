@@ -32,7 +32,7 @@ object InlineIfExpressionTransformerStage : ProjectStage() {
         projectContext.project.accept(InlineIfExpressionTransformerVisitor)
     }
 
-    object InlineIfExpressionTransformerVisitor : TreeVisitor() {
+    private object InlineIfExpressionTransformerVisitor : TreeVisitor() {
 
         private fun reduceExpression(expression: EExpression?): EExpression? {
             return when (expression) {

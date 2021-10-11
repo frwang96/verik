@@ -32,7 +32,7 @@ object AnnotationConflictCheckerStage : ProjectStage() {
         projectContext.project.accept(AnnotationConflictCheckerVisitor)
     }
 
-    object AnnotationConflictCheckerVisitor : TreeVisitor() {
+    private object AnnotationConflictCheckerVisitor : TreeVisitor() {
 
         private val conflictingAnnotations = listOf(
             Annotations.COM,

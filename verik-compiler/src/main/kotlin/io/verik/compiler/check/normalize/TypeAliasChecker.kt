@@ -37,7 +37,7 @@ object TypeAliasChecker : ProjectStage() {
         projectContext.project.accept(typeAliasVisitor)
     }
 
-    class TypeAliasVisitor : TreeVisitor() {
+    private class TypeAliasVisitor : TreeVisitor() {
 
         private val typeMap = HashMap<Int, ArrayList<Type>>()
 

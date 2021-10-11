@@ -38,7 +38,7 @@ object ScopeReferenceInsertionTransformerStage : ProjectStage() {
         projectContext.project.accept(scopeReferenceInsertionTransformerVisitor)
     }
 
-    class ScopeReferenceInsertionTransformerVisitor : TreeVisitor() {
+    private class ScopeReferenceInsertionTransformerVisitor : TreeVisitor() {
 
         private var parentBasicPackage: EBasicPackage? = null
 

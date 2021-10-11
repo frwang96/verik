@@ -44,7 +44,6 @@ object BasicClassInterpreter {
                 basicClass.location,
                 basicClass.name,
                 basicClass.supertype,
-                basicClass.typeParameters,
                 ArrayList(declarations)
             )
         )

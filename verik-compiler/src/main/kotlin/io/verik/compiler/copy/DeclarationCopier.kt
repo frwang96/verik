@@ -17,22 +17,20 @@
 package io.verik.compiler.copy
 
 import io.verik.compiler.ast.element.common.EDeclaration
-import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
-import io.verik.compiler.ast.element.kt.ETypeAlias
+import io.verik.compiler.ast.interfaces.cast
+import io.verik.compiler.core.common.CoreCardinalConstantDeclaration
 import io.verik.compiler.message.Messages
 
 object DeclarationCopier {
 
     fun <D : EDeclaration> copyDeclaration(declaration: D, copyContext: CopyContext): D {
         val copiedDeclaration = when (declaration) {
-            is ETypeAlias -> copyTypeAlias(declaration, copyContext)
-            is ETypeParameter -> copyTypeParameter(declaration, copyContext)
             is EKtBasicClass -> copyKtBasicClass(declaration, copyContext)
             is EKtFunction -> copyKtFunction(declaration, copyContext)
             is EPrimaryConstructor -> copyPrimaryConstructor(declaration, copyContext)
@@ -48,40 +46,36 @@ object DeclarationCopier {
         return copiedDeclaration as D
     }
 
-    private fun copyTypeAlias(typeAlias: ETypeAlias, copyContext: CopyContext): ETypeAlias {
-        val copiedTypeAlias = copyContext.referenceForwardingMap.find(typeAlias)
-            ?: return typeAlias
-
-        val type = copyContext.copy(typeAlias.type)
-
-        copiedTypeAlias.init(type)
-        return copiedTypeAlias
-    }
-
-    private fun copyTypeParameter(typeParameter: ETypeParameter, copyContext: CopyContext): ETypeParameter {
-        val copiedTypeParameter = copyContext.referenceForwardingMap.find(typeParameter)
-            ?: return typeParameter
-
-        val type = copyContext.copy(typeParameter.type)
-
-        copiedTypeParameter.init(type)
-        return copiedTypeParameter
-    }
-
     private fun copyKtBasicClass(basicClass: EKtBasicClass, copyContext: CopyContext): EKtBasicClass {
-        val copiedBasicClass = copyContext.referenceForwardingMap.find(basicClass)
+        val copiedBasicClass = copyContext.getNotNull(basicClass)
+            .cast<EKtBasicClass>(basicClass)
             ?: return basicClass
 
-        val superType = copyContext.copy(basicClass.supertype)
-        val typeParameters = basicClass.typeParameters.map { copyContext.copy(it) }
+        val typeParameters = basicClass.typeParameters.map {
+            val typeParameter = it.toType()
+            copyContext.bind(typeParameter, it)
+            typeParameter
+        }
+        if (typeParameters.isNotEmpty()) {
+            val typeParameterString = typeParameters.joinToString(separator = "_") {
+                val reference = it.reference
+                if (reference is CoreCardinalConstantDeclaration)
+                    reference.value.toString()
+                else
+                    reference.name
+            }
+            copiedBasicClass.name = "${copiedBasicClass.name}_$typeParameterString"
+        }
+
+        val superType = copyContext.copyType(basicClass.supertype, basicClass)
         val declarations = basicClass.declarations.map { copyContext.copy(it) }
         val annotations = basicClass.annotations.map { copyContext.copy(it) }
         val primaryConstructor = basicClass.primaryConstructor?.let { copyContext.copy(it) }
 
         copiedBasicClass.init(
             superType,
-            typeParameters,
             declarations,
+            listOf(),
             annotations,
             basicClass.isEnum,
             primaryConstructor
@@ -90,10 +84,11 @@ object DeclarationCopier {
     }
 
     private fun copyKtFunction(function: EKtFunction, copyContext: CopyContext): EKtFunction {
-        val copiedFunction = copyContext.referenceForwardingMap.find(function)
+        val copiedFunction = copyContext.getNotNull(function)
+            .cast<EKtFunction>(function)
             ?: return function
 
-        val type = copyContext.copy(function.type)
+        val type = copyContext.copyType(function)
         val body = function.body?.let { copyContext.copy(it) }
         val valueParameters = function.valueParameters.map { copyContext.copy(it) }
         val annotations = function.annotations.map { copyContext.copy(it) }
@@ -106,22 +101,23 @@ object DeclarationCopier {
         primaryConstructor: EPrimaryConstructor,
         copyContext: CopyContext
     ): EPrimaryConstructor {
-        val copiedPrimaryConstructor = copyContext.referenceForwardingMap.find(primaryConstructor)
+        val copiedPrimaryConstructor = copyContext.getNotNull(primaryConstructor)
+            .cast<EPrimaryConstructor>(primaryConstructor)
             ?: return primaryConstructor
 
-        val type = copyContext.copy(primaryConstructor.type)
+        val type = copyContext.copyType(primaryConstructor)
         val valueParameters = primaryConstructor.valueParameters.map { copyContext.copy(it) }
 
-        copiedPrimaryConstructor.init(type, valueParameters)
+        copiedPrimaryConstructor.init(type, valueParameters, arrayListOf())
         return copiedPrimaryConstructor
     }
 
     private fun copyKtProperty(property: EKtProperty, copyContext: CopyContext): EKtProperty {
-        @Suppress("DuplicatedCode")
-        val copiedProperty = copyContext.referenceForwardingMap.find(property)
+        val copiedProperty = copyContext.getNotNull(property)
+            .cast<EKtProperty>(property)
             ?: return property
 
-        val type = copyContext.copy(property.type)
+        val type = copyContext.copyType(property)
         val initializer = property.initializer?.let { copyContext.copy(it) }
         val annotations = property.annotations.map { copyContext.copy(it) }
 
@@ -130,11 +126,11 @@ object DeclarationCopier {
     }
 
     private fun copyKtEnumEntry(enumEntry: EKtEnumEntry, copyContext: CopyContext): EKtEnumEntry {
-        @Suppress("DuplicatedCode")
-        val copiedEnumEntry = copyContext.referenceForwardingMap.find(enumEntry)
+        val copiedEnumEntry = copyContext.getNotNull(enumEntry)
+            .cast<EKtEnumEntry>(enumEntry)
             ?: return enumEntry
 
-        val type = copyContext.copy(enumEntry.type)
+        val type = copyContext.copyType(enumEntry)
         val annotations = enumEntry.annotations.map { copyContext.copy(it) }
 
         copiedEnumEntry.init(type, annotations)
@@ -142,11 +138,11 @@ object DeclarationCopier {
     }
 
     private fun copyKtValueParameter(valueParameter: EKtValueParameter, copyContext: CopyContext): EKtValueParameter {
-        @Suppress("DuplicatedCode")
-        val copiedValueParameter = copyContext.referenceForwardingMap.find(valueParameter)
+        val copiedValueParameter = copyContext.getNotNull(valueParameter)
+            .cast<EKtValueParameter>(valueParameter)
             ?: return valueParameter
 
-        val type = copyContext.copy(valueParameter.type)
+        val type = copyContext.copyType(valueParameter)
         val annotations = valueParameter.annotations.map { copyContext.copy(it) }
 
         copiedValueParameter.init(type, annotations)
