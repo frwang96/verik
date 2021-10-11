@@ -220,7 +220,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_shl_Int = object : CoreKtTransformableFunctionDeclaration(parent, "shl", Core.Kt.C_Int) {
+    val F_sll_Int = object : CoreKtTransformableFunctionDeclaration(parent, "sll", Core.Kt.C_Int) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -242,7 +242,18 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_shr_Int = object : CoreKtTransformableFunctionDeclaration(parent, "shr", Core.Kt.C_Int) {
+    val F_sll_Ubit = object : CoreKtTransformableFunctionDeclaration(parent, "sll", Core.Vk.C_Ubit) {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return F_sll_Int.getTypeConstraints(callExpression)
+        }
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            return F_sll_Int.transform(callExpression)
+        }
+    }
+
+    val F_srl_Int = object : CoreKtTransformableFunctionDeclaration(parent, "srl", Core.Kt.C_Int) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -261,6 +272,50 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
                 callExpression.valueArguments[0],
                 SvBinaryOperatorKind.GTGT
             )
+        }
+    }
+
+    val F_srl_Ubit = object : CoreKtTransformableFunctionDeclaration(parent, "srl", Core.Vk.C_Ubit) {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return F_srl_Int.getTypeConstraints(callExpression)
+        }
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            return F_srl_Int.transform(callExpression)
+        }
+    }
+
+    val F_sra_Int = object : CoreKtTransformableFunctionDeclaration(parent, "sra", Core.Kt.C_Int) {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return listOf(
+                TypeEqualsTypeConstraint(
+                    TypeAdapter.ofElement(callExpression.receiver!!),
+                    TypeAdapter.ofElement(callExpression)
+                )
+            )
+        }
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            return ESvBinaryExpression(
+                callExpression.location,
+                callExpression.type,
+                callExpression.receiver!!,
+                callExpression.valueArguments[0],
+                SvBinaryOperatorKind.GTGTGT
+            )
+        }
+    }
+
+    val F_sra_Ubit = object : CoreKtTransformableFunctionDeclaration(parent, "sra", Core.Vk.C_Ubit) {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return F_sra_Int.getTypeConstraints(callExpression)
+        }
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            return F_sra_Int.transform(callExpression)
         }
     }
 
