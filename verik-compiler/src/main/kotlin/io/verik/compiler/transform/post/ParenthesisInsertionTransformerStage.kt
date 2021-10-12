@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EEventExpression
+import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.common.ProjectStage
@@ -50,6 +51,7 @@ object ParenthesisInsertionTransformerStage : ProjectStage() {
             // higher priority expressions are prioritized for parenthesis insertion
             return when (expression) {
                 is ESvBinaryExpression -> getBinaryOperatorPriority(expression.kind)
+                is EInlineIfExpression -> 12
                 is EEventExpression -> 1
                 else -> 0
             }
@@ -74,8 +76,8 @@ object ParenthesisInsertionTransformerStage : ProjectStage() {
                 SvBinaryOperatorKind.OR -> 9
                 SvBinaryOperatorKind.ANDAND -> 10
                 SvBinaryOperatorKind.OROR -> 11
-                SvBinaryOperatorKind.ASSIGN -> 12
-                SvBinaryOperatorKind.ARROW_ASSIGN -> 12
+                SvBinaryOperatorKind.ASSIGN -> 13
+                SvBinaryOperatorKind.ARROW_ASSIGN -> 13
             }
         }
 

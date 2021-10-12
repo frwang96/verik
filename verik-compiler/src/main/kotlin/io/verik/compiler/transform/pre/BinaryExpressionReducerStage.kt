@@ -54,6 +54,8 @@ object BinaryExpressionReducerStage : ProjectStage() {
             Core.Kt.Int.F_gteq_Int
         referenceMap[ReducerEntry(Core.Vk.C_Ubit, Core.Vk.C_Ubit, KtBinaryOperatorKind.PLUS)] =
             Core.Vk.Ubit.F_plus_Ubit
+        referenceMap[ReducerEntry(Core.Vk.C_Ubit, Core.Vk.C_Ubit, KtBinaryOperatorKind.MINUS)] =
+            Core.Vk.Ubit.F_minus_Ubit
         referenceMap[ReducerEntry(Core.Vk.C_Ubit, Core.Vk.C_Ubit, KtBinaryOperatorKind.LT)] =
             Core.Vk.Ubit.F_lt_Ubit
         referenceMap[ReducerEntry(Core.Vk.C_Ubit, Core.Vk.C_Ubit, KtBinaryOperatorKind.LTEQ)] =
