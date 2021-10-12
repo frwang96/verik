@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
+import io.verik.compiler.common.ReferenceUpdater
 
 object EnumInterpreter {
 

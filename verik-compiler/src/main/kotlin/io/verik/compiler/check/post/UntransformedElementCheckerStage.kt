@@ -18,6 +18,7 @@ package io.verik.compiler.check.post
 
 import io.verik.compiler.ast.element.common.ENullElement
 import io.verik.compiler.ast.element.common.EPropertyStatement
+import io.verik.compiler.ast.element.common.ETemporaryProperty
 import io.verik.compiler.ast.element.kt.EForExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBasicClass
@@ -72,6 +73,11 @@ object UntransformedElementCheckerStage : ProjectStage() {
         override fun visitKtProperty(property: EKtProperty) {
             super.visitKtProperty(property)
             Messages.INTERNAL_ERROR.on(property, "Property ${property.name} $message")
+        }
+
+        override fun visitTemporaryProperty(temporaryProperty: ETemporaryProperty) {
+            super.visitTemporaryProperty(temporaryProperty)
+            Messages.INTERNAL_ERROR.on(temporaryProperty, "Temporary property ${temporaryProperty.name} $message")
         }
 
         override fun visitKtEnumEntry(enumEntry: EKtEnumEntry) {

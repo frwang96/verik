@@ -66,7 +66,7 @@ import io.verik.compiler.transform.post.ParenthesisInsertionTransformerStage
 import io.verik.compiler.transform.post.PropertyStatementReorderStage
 import io.verik.compiler.transform.post.ReferenceAndCallExpressionTransformerStage
 import io.verik.compiler.transform.post.ScopeReferenceInsertionTransformerStage
-import io.verik.compiler.transform.post.TemporaryPropertyRelabelerStage
+import io.verik.compiler.transform.post.TemporaryPropertyTransformerStage
 import io.verik.compiler.transform.post.UnaryExpressionTransformerStage
 import io.verik.compiler.transform.pre.ArrayAccessExpressionReducerStage
 import io.verik.compiler.transform.pre.AssignmentOperatorReducerStage
@@ -142,6 +142,7 @@ object StageSequencer {
 
         // PostTransform
         stageSequence.add(PropertyStatementReorderStage)
+        stageSequence.add(TemporaryPropertyTransformerStage)
         stageSequence.add(UnaryExpressionTransformerStage)
         stageSequence.add(BinaryExpressionTransformerStage)
         stageSequence.add(PackageNameTransformerStage)
@@ -149,7 +150,6 @@ object StageSequencer {
         stageSequence.add(ReferenceAndCallExpressionTransformerStage)
         stageSequence.add(BlockExpressionTransformerStage)
         stageSequence.add(ParenthesisInsertionTransformerStage)
-        stageSequence.add(TemporaryPropertyRelabelerStage)
 
         // PostCheck
         stageSequence.add(FileCheckerStage)

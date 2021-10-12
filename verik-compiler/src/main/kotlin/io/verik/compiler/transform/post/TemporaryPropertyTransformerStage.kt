@@ -17,21 +17,25 @@
 package io.verik.compiler.transform.post
 
 import io.verik.compiler.ast.element.common.EAbstractFunction
+import io.verik.compiler.ast.element.common.ETemporaryProperty
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.common.ProjectStage
+import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 
-object TemporaryPropertyRelabelerStage : ProjectStage() {
+object TemporaryPropertyTransformerStage : ProjectStage() {
 
     override val checkNormalization = true
 
     override fun process(projectContext: ProjectContext) {
-        val temporaryPropertyRelabelerVisitor = TemporaryPropertyRelabelerVisitor()
+        val referenceUpdater = ReferenceUpdater(projectContext)
+        val temporaryPropertyRelabelerVisitor = TemporaryPropertyRelabelerVisitor(referenceUpdater)
         projectContext.project.accept(temporaryPropertyRelabelerVisitor)
+        referenceUpdater.flush()
     }
 
-    private class TemporaryPropertyRelabelerVisitor : TreeVisitor() {
+    private class TemporaryPropertyRelabelerVisitor(private val referenceUpdater: ReferenceUpdater) : TreeVisitor() {
 
         var index = 0
 
@@ -40,11 +44,18 @@ object TemporaryPropertyRelabelerStage : ProjectStage() {
             super.visitAbstractFunction(abstractFunction)
         }
 
-        override fun visitSvProperty(property: ESvProperty) {
-            if (property.name == "<tmp>") {
-                property.name = "_$$index"
-                index++
-            }
+        override fun visitTemporaryProperty(temporaryProperty: ETemporaryProperty) {
+            super.visitTemporaryProperty(temporaryProperty)
+            val name = "_$$index"
+            index++
+            val property = ESvProperty(
+                temporaryProperty.location,
+                name,
+                temporaryProperty.type,
+                temporaryProperty.initializer,
+                false
+            )
+            referenceUpdater.replace(temporaryProperty, property)
         }
     }
 }

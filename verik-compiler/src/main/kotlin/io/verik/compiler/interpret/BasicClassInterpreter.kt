@@ -18,14 +18,15 @@ package io.verik.compiler.interpret
 
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReturnStatement
+import io.verik.compiler.ast.element.common.ETemporaryProperty
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
 import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.ast.element.sv.ESvFunction
-import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvReferenceExpression
+import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.core.common.Core
 
 object BasicClassInterpreter {
@@ -55,12 +56,10 @@ object BasicClassInterpreter {
     ): ESvFunction {
         val location = primaryConstructor.location
         val type = primaryConstructor.type
-        val property = ESvProperty(
+        val property = ETemporaryProperty(
             location,
-            "<tmp>",
             type.copy(),
-            ESvCallExpression(location, type.copy(), Core.Sv.F_new, null, arrayListOf(), false),
-            false
+            ESvCallExpression(location, type.copy(), Core.Sv.F_new, null, arrayListOf(), false)
         )
         val statements = listOf(
             EPropertyStatement(location, property),
