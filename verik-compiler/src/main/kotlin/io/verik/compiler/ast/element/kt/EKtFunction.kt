@@ -40,6 +40,7 @@ class EKtFunction(
         type: Type,
         body: EExpression?,
         valueParameters: List<EKtValueParameter>,
+        typeParameters: List<ETypeParameter>,
         annotations: List<EAnnotation>
     ) {
         this.type = type
@@ -47,6 +48,8 @@ class EKtFunction(
         this.body = body
         valueParameters.forEach { it.parent = this }
         this.valueParameters = ArrayList(valueParameters)
+        typeParameters.forEach { it.parent = this }
+        this.typeParameters = ArrayList(typeParameters)
         annotations.forEach { it.parent = this }
         this.annotations = annotations
     }

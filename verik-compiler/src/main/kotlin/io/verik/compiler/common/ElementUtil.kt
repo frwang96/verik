@@ -16,17 +16,17 @@
 
 package io.verik.compiler.common
 
+import io.verik.compiler.main.Platform
 import io.verik.compiler.message.SourceLocation
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.diagnostics.PsiDiagnosticUtils
-import java.nio.file.Paths
 
 fun PsiElement.location(): SourceLocation {
     val lineAndColumn = PsiDiagnosticUtils.offsetToLineAndColumn(
         containingFile.viewProvider.document,
         textRange.startOffset
     )
-    val path = Paths.get(containingFile.virtualFile.path)
+    val path = Platform.getPath(containingFile.virtualFile.path)
     return SourceLocation(lineAndColumn.column, lineAndColumn.line, path)
 }
 

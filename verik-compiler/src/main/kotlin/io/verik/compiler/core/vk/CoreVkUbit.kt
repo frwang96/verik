@@ -142,6 +142,17 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
+    val F_minus_Ubit = object : CoreKtBinaryFunctionDeclaration(parent, "minus", Core.Vk.C_Ubit) {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return F_plus_Ubit.getTypeConstraints(callExpression)
+        }
+
+        override fun getOperatorKind(): SvBinaryOperatorKind {
+            return SvBinaryOperatorKind.MINUS
+        }
+    }
+
     val F_mul_Ubit = object : CoreKtBinaryFunctionDeclaration(parent, "mul", Core.Vk.C_Ubit) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
@@ -408,6 +419,26 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             return callExpression.receiver!!
+        }
+    }
+
+    val F_tru = object : CoreKtTransformableFunctionDeclaration(parent, "tru") {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return F_ext.getTypeConstraints(callExpression)
+        }
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
+            val msbIndex = EConstantExpression(callExpression.location, Core.Kt.C_Int.toType(), "${value - 1}")
+            val lsbIndex = EConstantExpression(callExpression.location, Core.Kt.C_Int.toType(), "0")
+            return EConstantPartSelectExpression(
+                callExpression.location,
+                callExpression.type,
+                callExpression.receiver!!,
+                msbIndex,
+                lsbIndex
+            )
         }
     }
 

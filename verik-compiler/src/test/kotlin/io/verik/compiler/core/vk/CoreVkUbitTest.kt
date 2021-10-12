@@ -110,6 +110,27 @@ internal class CoreVkUbitTest : BaseTest() {
     }
 
     @Test
+    fun `transform tru`() {
+        val projectContext = driveTest(
+            FunctionTransformerStage::class,
+            """
+                var x = u(0x00).tru<`4`>()
+            """.trimIndent()
+        )
+        assertElementEquals(
+            """
+                ConstantPartSelectExpression(
+                    Ubit<`4`>,
+                    ConstantExpression(*),
+                    ConstantExpression(Int, 3),
+                    ConstantExpression(Int, 0)
+                )
+            """.trimIndent(),
+            projectContext.findExpression("x")
+        )
+    }
+
+    @Test
     fun `transform slice`() {
         val projectContext = driveTest(
             FunctionTransformerStage::class,

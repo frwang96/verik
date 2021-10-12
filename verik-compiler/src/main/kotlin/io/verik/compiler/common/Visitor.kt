@@ -46,6 +46,7 @@ import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ERootPackage
+import io.verik.compiler.ast.element.common.ETemporaryProperty
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.common.EWhileExpression
@@ -281,6 +282,10 @@ abstract class Visitor {
 
     open fun visitSvProperty(property: ESvProperty) {
         visitAbstractInitializedProperty(property)
+    }
+
+    open fun visitTemporaryProperty(temporaryProperty: ETemporaryProperty) {
+        visitAbstractInitializedProperty(temporaryProperty)
     }
 
     open fun visitAbstractEnumEntry(abstractEnumEntry: EAbstractEnumEntry) {

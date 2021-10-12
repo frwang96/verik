@@ -53,6 +53,7 @@ import io.verik.compiler.transform.mid.CaseStatementTransformerStage
 import io.verik.compiler.transform.mid.ConstantExpressionEvaluatorStage
 import io.verik.compiler.transform.mid.EnumNameTransformerStage
 import io.verik.compiler.transform.mid.FunctionTransformerStage
+import io.verik.compiler.transform.mid.IfAndWhenExpressionUnlifterStage
 import io.verik.compiler.transform.mid.InjectedExpressionReducerStage
 import io.verik.compiler.transform.mid.InlineIfExpressionTransformerStage
 import io.verik.compiler.transform.mid.PropertyTransformerStage
@@ -66,7 +67,7 @@ import io.verik.compiler.transform.post.ParenthesisInsertionTransformerStage
 import io.verik.compiler.transform.post.PropertyStatementReorderStage
 import io.verik.compiler.transform.post.ReferenceAndCallExpressionTransformerStage
 import io.verik.compiler.transform.post.ScopeReferenceInsertionTransformerStage
-import io.verik.compiler.transform.post.TemporaryPropertyRelabelerStage
+import io.verik.compiler.transform.post.TemporaryPropertyTransformerStage
 import io.verik.compiler.transform.post.UnaryExpressionTransformerStage
 import io.verik.compiler.transform.pre.ArrayAccessExpressionReducerStage
 import io.verik.compiler.transform.pre.AssignmentOperatorReducerStage
@@ -134,14 +135,16 @@ object StageSequencer {
         stageSequence.add(UninitializedPropertyTransformerStage)
         stageSequence.add(FunctionTransformerStage)
         stageSequence.add(PropertyTransformerStage)
-        stageSequence.add(AssignmentTransformerStage)
         stageSequence.add(InlineIfExpressionTransformerStage)
+        stageSequence.add(IfAndWhenExpressionUnlifterStage)
         stageSequence.add(CaseStatementTransformerStage)
         stageSequence.add(StructLiteralTransformerStage)
         stageSequence.add(ConstantExpressionEvaluatorStage)
+        stageSequence.add(AssignmentTransformerStage)
 
         // PostTransform
         stageSequence.add(PropertyStatementReorderStage)
+        stageSequence.add(TemporaryPropertyTransformerStage)
         stageSequence.add(UnaryExpressionTransformerStage)
         stageSequence.add(BinaryExpressionTransformerStage)
         stageSequence.add(PackageNameTransformerStage)
@@ -149,7 +152,6 @@ object StageSequencer {
         stageSequence.add(ReferenceAndCallExpressionTransformerStage)
         stageSequence.add(BlockExpressionTransformerStage)
         stageSequence.add(ParenthesisInsertionTransformerStage)
-        stageSequence.add(TemporaryPropertyRelabelerStage)
 
         // PostCheck
         stageSequence.add(FileCheckerStage)

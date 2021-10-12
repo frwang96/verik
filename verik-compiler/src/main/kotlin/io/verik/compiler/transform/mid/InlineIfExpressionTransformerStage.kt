@@ -45,7 +45,7 @@ object InlineIfExpressionTransformerStage : ProjectStage() {
 
         override fun visitIfExpression(ifExpression: EIfExpression) {
             super.visitIfExpression(ifExpression)
-            if (ifExpression.parent !is EKtBlockExpression) {
+            if (ifExpression.isSubexpression()) {
                 val reducedThenExpression = reduceExpression(ifExpression.thenExpression)
                 val reducedElseExpression = reduceExpression(ifExpression.elseExpression)
                 if (reducedThenExpression != null && reducedElseExpression != null) {

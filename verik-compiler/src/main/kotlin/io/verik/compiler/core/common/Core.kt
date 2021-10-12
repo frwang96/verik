@@ -155,6 +155,7 @@ object Core {
             val F_set_Int_Ubit = CoreVkUbit.F_set_Int_Ubit
             val F_plus_Ubit = CoreVkUbit.F_plus_Ubit
             val F_add_Ubit = CoreVkUbit.F_add_Ubit
+            val F_minus_Ubit = CoreVkUbit.F_minus_Ubit
             val F_mul_Ubit = CoreVkUbit.F_mul_Ubit
             val F_and_Ubit = CoreVkUbit.F_and_Ubit
             val F_or_Ubit = CoreVkUbit.F_or_Ubit
@@ -172,6 +173,7 @@ object Core {
             val F_invert = CoreVkUbit.F_invert
             val F_reverse = CoreVkUbit.F_reverse
             val F_ext = CoreVkUbit.F_ext
+            val F_tru = CoreVkUbit.F_tru
             val F_slice_Int = CoreVkUbit.F_slice_Int
         }
 

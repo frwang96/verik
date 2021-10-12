@@ -23,6 +23,7 @@ import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
+import io.verik.compiler.ast.interfaces.TypeParameterized
 import io.verik.compiler.ast.interfaces.cast
 import io.verik.compiler.core.common.CoreCardinalConstantDeclaration
 import io.verik.compiler.message.Messages
@@ -51,21 +52,9 @@ object DeclarationCopier {
             .cast<EKtBasicClass>(basicClass)
             ?: return basicClass
 
-        val typeParameters = basicClass.typeParameters.map {
-            val typeParameter = it.toType()
-            copyContext.bind(typeParameter, it)
-            typeParameter
-        }
-        if (typeParameters.isNotEmpty()) {
-            val typeParameterString = typeParameters.joinToString(separator = "_") {
-                val reference = it.reference
-                if (reference is CoreCardinalConstantDeclaration)
-                    reference.value.toString()
-                else
-                    reference.name
-            }
+        val typeParameterString = getTypeParameterString(basicClass, copyContext)
+        if (typeParameterString != null)
             copiedBasicClass.name = "${copiedBasicClass.name}_$typeParameterString"
-        }
 
         val superType = copyContext.copyType(basicClass.supertype, basicClass)
         val declarations = basicClass.declarations.map { copyContext.copy(it) }
@@ -88,12 +77,16 @@ object DeclarationCopier {
             .cast<EKtFunction>(function)
             ?: return function
 
+        val typeParameterString = getTypeParameterString(function, copyContext)
+        if (typeParameterString != null)
+            copiedFunction.name = "${copiedFunction.name}_$typeParameterString"
+
         val type = copyContext.copyType(function)
         val body = function.body?.let { copyContext.copy(it) }
         val valueParameters = function.valueParameters.map { copyContext.copy(it) }
         val annotations = function.annotations.map { copyContext.copy(it) }
 
-        copiedFunction.init(type, body, valueParameters, annotations)
+        copiedFunction.init(type, body, valueParameters, listOf(), annotations)
         return copiedFunction
     }
 
@@ -147,5 +140,22 @@ object DeclarationCopier {
 
         copiedValueParameter.init(type, annotations)
         return copiedValueParameter
+    }
+
+    private fun getTypeParameterString(typeParameterized: TypeParameterized, copyContext: CopyContext): String? {
+        val typeParameters = typeParameterized.typeParameters.map {
+            val typeParameter = it.toType()
+            copyContext.bind(typeParameter, it)
+            typeParameter
+        }
+        return if (typeParameters.isNotEmpty()) {
+            typeParameters.joinToString(separator = "_") {
+                val reference = it.reference
+                if (reference is CoreCardinalConstantDeclaration)
+                    reference.value.toString()
+                else
+                    reference.name
+            }
+        } else null
     }
 }

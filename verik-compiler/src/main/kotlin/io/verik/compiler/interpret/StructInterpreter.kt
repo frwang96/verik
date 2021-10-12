@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.ESvProperty
+import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.core.common.Core
 
 object StructInterpreter {

@@ -42,7 +42,7 @@ internal class CoreKtCollectionsTest : BaseTest() {
                     Unit,
                     SvValueParameter(it, Int),
                     ConstantExpression(Int, 0),
-                    KtBinaryExpression(Boolean, KtReferenceExpression(*), ConstantExpression(*), LT),
+                    KtCallExpression(Boolean, lt, KtReferenceExpression(Int, it, null), [ConstantExpression(*)], []),
                     KtUnaryExpression(Int, KtReferenceExpression(*), POST_INC),
                     KtBlockExpression(Function, [])
                 )

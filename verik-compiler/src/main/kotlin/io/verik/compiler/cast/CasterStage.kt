@@ -22,10 +22,10 @@ import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.ast.element.common.ERootPackage
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.location
+import io.verik.compiler.main.Platform
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.SourceLocation
 import java.nio.file.FileSystems
-import java.nio.file.Paths
 
 object CasterStage : ProjectStage() {
 
@@ -37,7 +37,7 @@ object CasterStage : ProjectStage() {
         projectContext.ktFiles.forEach { file ->
             val location = file.location()
             val packageName = file.packageFqName.asString()
-            val inputPath = Paths.get(file.virtualFilePath)
+            val inputPath = Platform.getPath(file.virtualFilePath)
             val declarations = file.declarations.mapNotNull {
                 projectContext.castContext.casterVisitor.getDeclaration(it)
             }

@@ -17,6 +17,7 @@
 package io.verik.compiler.compile
 
 import io.verik.compiler.common.ProjectStage
+import io.verik.compiler.main.Platform
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
@@ -38,7 +39,6 @@ import org.jetbrains.kotlin.config.JvmTarget
 import org.jetbrains.kotlin.config.LanguageVersion
 import org.jetbrains.kotlin.config.LanguageVersionSettingsImpl
 import java.io.File
-import java.nio.file.Paths
 
 object KotlinEnvironmentBuilderStage : ProjectStage() {
 
@@ -94,7 +94,7 @@ object KotlinEnvironmentBuilderStage : ProjectStage() {
             location: CompilerMessageSourceLocation?
         ) {
             val sourceLocation = location
-                ?.let { SourceLocation(it.column, it.line, Paths.get(it.path)) }
+                ?.let { SourceLocation(it.column, it.line, Platform.getPath(it.path)) }
                 ?: SourceLocation(0, 0, projectDir)
 
             when (severity) {

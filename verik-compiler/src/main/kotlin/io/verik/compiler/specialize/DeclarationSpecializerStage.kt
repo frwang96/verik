@@ -20,11 +20,11 @@ import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.ETypedElement
+import io.verik.compiler.ast.element.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.interfaces.Annotated
-import io.verik.compiler.ast.interfaces.Declaration
-import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.ast.interfaces.TypeParameterized
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.ProjectStage
@@ -106,11 +106,6 @@ object DeclarationSpecializerStage : ProjectStage() {
         private val declarationBindingQueue: ArrayDeque<DeclarationBinding>
     ) : TreeVisitor() {
 
-        private fun addReference(reference: Declaration) {
-            if (reference is EDeclaration && reference.parent is EFile)
-                declarationBindingQueue.push(DeclarationBinding(reference, TypeParameterContext.EMPTY))
-        }
-
         private fun addType(type: Type, element: EElement) {
             type.arguments.forEach { addType(it, element) }
             val reference = type.reference
@@ -127,13 +122,21 @@ object DeclarationSpecializerStage : ProjectStage() {
         override fun visitTypedElement(typedElement: ETypedElement) {
             super.visitTypedElement(typedElement)
             addType(typedElement.type, typedElement)
-            if (typedElement is EKtCallExpression) {
-                typedElement.typeArguments.forEach {
-                    addType(it, typedElement)
-                }
+            if (typedElement is EKtReferenceExpression) {
+                val reference = typedElement.reference
+                if (reference is EDeclaration && reference.parent is EFile)
+                    declarationBindingQueue.push(DeclarationBinding(reference, TypeParameterContext.EMPTY))
             }
-            if (typedElement is Reference) {
-                addReference(typedElement.reference)
+            if (typedElement is EKtCallExpression) {
+                val reference = typedElement.reference
+                if (reference is EKtAbstractFunction && reference.parent is EFile) {
+                    val typeParameterContext = TypeParameterContext.get(
+                        typedElement.typeArguments,
+                        reference,
+                        typedElement
+                    ) ?: return
+                    declarationBindingQueue.push(DeclarationBinding(reference, typeParameterContext))
+                }
             }
         }
     }

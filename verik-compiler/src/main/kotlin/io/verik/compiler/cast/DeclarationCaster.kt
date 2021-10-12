@@ -121,11 +121,14 @@ object DeclarationCaster {
         val valueParameters = function.valueParameters.mapNotNull {
             castContext.casterVisitor.getElement<EKtValueParameter>(it)
         }
+        val typeParameters = function.typeParameters.mapNotNull {
+            castContext.casterVisitor.getElement<ETypeParameter>(it)
+        }
         val annotations = function.annotationEntries.mapNotNull {
             AnnotationCaster.castAnnotationEntry(it, castContext)
         }
 
-        castedFunction.init(type, body, valueParameters, annotations)
+        castedFunction.init(type, body, valueParameters, typeParameters, annotations)
         return castedFunction
     }
 

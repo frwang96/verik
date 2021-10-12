@@ -28,6 +28,7 @@ import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ERootPackage
+import io.verik.compiler.ast.element.common.ETemporaryProperty
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.common.EWhileExpression
 import io.verik.compiler.ast.element.kt.EAnnotation
@@ -291,6 +292,13 @@ class ElementPrinter : Visitor() {
             build(property.type.toString())
             build(property.initializer)
             build(property.isLifetimeStatic)
+        }
+    }
+
+    override fun visitTemporaryProperty(temporaryProperty: ETemporaryProperty) {
+        build("TemporaryProperty") {
+            build(temporaryProperty.type.toString())
+            build(temporaryProperty.initializer)
         }
     }
 

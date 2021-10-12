@@ -63,6 +63,7 @@ class Fizzbuzz : Module() {
         z = rep<`3`>(true)
         z = z srl 1
         z = z sra 1
+        z = x[0].tru()
         z = z.invert()
         z = z.reverse()
         w = s(z) < s(z)
@@ -72,6 +73,15 @@ class Fizzbuzz : Module() {
     @Task
     fun f(x: Int) {
         println(x)
+        var a = when (w) {
+            true -> 0
+            false -> 1
+        }
+        a = if (a == 0) {
+            println()
+            1
+        } else 2
+        println(a)
     }
 
     fun g(x: Int): Int {

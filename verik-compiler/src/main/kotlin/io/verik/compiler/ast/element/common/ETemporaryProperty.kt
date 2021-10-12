@@ -16,23 +16,23 @@
 
 package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.element.kt.EWhenExpression
-import io.verik.compiler.ast.property.SvSerializationType
+import io.verik.compiler.ast.property.Type
+import io.verik.compiler.common.Visitor
+import io.verik.compiler.message.SourceLocation
 
-abstract class EExpression : ETypedElement() {
+class ETemporaryProperty(
+    override val location: SourceLocation,
+    override var type: Type,
+    override var initializer: EExpression?
+) : EAbstractInitializedProperty() {
 
-    abstract val serializationType: SvSerializationType
+    override var name = "<tmp>"
 
-    fun replace(expression: EExpression) {
-        parentNotNull().replaceChildAsExpressionContainer(this, expression)
+    init {
+        initializer?.parent = this
     }
 
-    fun isSubexpression(): Boolean {
-        if ((this is EIfExpression || this is EWhenExpression) &&
-            (this.parent is EIfExpression || this.parent is EWhenExpression)
-        ) {
-            return (this.parent as EExpression).isSubexpression()
-        }
-        return this.parent !is EAbstractBlockExpression
+    override fun accept(visitor: Visitor) {
+        visitor.visitTemporaryProperty(this)
     }
 }

@@ -21,6 +21,7 @@ import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.interfaces.ResizableDeclarationContainer
 import io.verik.compiler.common.ProjectStage
+import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
