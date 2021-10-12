@@ -17,6 +17,7 @@
 package io.verik.compiler.util
 
 import io.verik.compiler.main.Config
+import io.verik.compiler.main.Platform
 import io.verik.compiler.message.MessageCollector
 import org.junit.jupiter.api.BeforeAll
 import java.nio.file.Paths
@@ -32,13 +33,20 @@ abstract class BaseTest {
         }
 
         fun getConfig(): Config {
+            val projectDir = if (Platform.isWindows) "C:\\" else "/"
+            val buildDir = if (Platform.isWindows) "C:\\build\\verik" else "/build/verik"
+            val projectFile = if (Platform.isWindows) {
+                "C:\\src\\main\\kotlin\\verik\\Test.kt"
+            } else {
+                "/src/main/kotlin/verik/Test.kt"
+            }
             return Config(
                 version = "local-SNAPSHOT",
                 timestamp = "",
                 projectName = "verik",
-                projectDir = Paths.get("/"),
-                buildDir = Paths.get("/build/verik"),
-                projectFiles = listOf(Paths.get("/src/main/kotlin/verik/Test.kt")),
+                projectDir = Paths.get(projectDir),
+                buildDir = Paths.get(buildDir),
+                projectFiles = listOf(Paths.get(projectFile)),
                 debug = true,
                 suppressedWarnings = listOf("KOTLIN_COMPILE_WARNING"),
                 promotedWarnings = listOf(),
