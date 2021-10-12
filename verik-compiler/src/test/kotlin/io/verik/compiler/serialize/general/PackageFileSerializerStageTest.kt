@@ -16,6 +16,7 @@
 
 package io.verik.compiler.serialize.general
 
+import io.verik.compiler.main.Platform
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.assertOutputTextEquals
 import io.verik.compiler.util.driveTest
@@ -36,7 +37,7 @@ internal class PackageFileSerializerStageTest : BaseTest() {
             
                 typedef class C;
             
-            `include "src/verik/Test.svh"
+            `include "${if (Platform.isWindows) "src\\verik\\Test.svh" else "src/verik/Test.svh"}"
             
             endpackage : verik_pkg
         """.trimIndent()
