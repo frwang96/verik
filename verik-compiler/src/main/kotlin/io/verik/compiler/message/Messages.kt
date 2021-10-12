@@ -192,6 +192,11 @@ object Messages {
         "Concatenation expects at least two arguments"
     )
 
+    val SUBEXPRESSION_UNABLE_TO_EXTRACT = MessageTemplate0(
+        Severity.ERROR,
+        "Unable to extract subexpression"
+    )
+
 //  POST TRANSFORM  ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val EXPRESSION_OUT_OF_CONTEXT = MessageTemplate1<String>(

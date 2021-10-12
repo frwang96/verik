@@ -56,10 +56,6 @@ object BinaryExpressionTransformerStage : ProjectStage() {
         override fun visitKtBinaryExpression(binaryExpression: EKtBinaryExpression) {
             super.visitKtBinaryExpression(binaryExpression)
             val kind = when (binaryExpression.kind) {
-                KtBinaryOperatorKind.LT -> SvBinaryOperatorKind.LT
-                KtBinaryOperatorKind.LTEQ -> SvBinaryOperatorKind.LTEQ
-                KtBinaryOperatorKind.GT -> SvBinaryOperatorKind.GT
-                KtBinaryOperatorKind.GTEQ -> SvBinaryOperatorKind.GTEQ
                 KtBinaryOperatorKind.EQEQ -> SvBinaryOperatorKind.EQEQ
                 KtBinaryOperatorKind.EXCL_EQ -> SvBinaryOperatorKind.EXCL_EQ
 

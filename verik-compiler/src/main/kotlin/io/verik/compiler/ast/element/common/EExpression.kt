@@ -25,4 +25,8 @@ abstract class EExpression : ETypedElement() {
     fun replace(expression: EExpression) {
         parentNotNull().replaceChildAsExpressionContainer(this, expression)
     }
+
+    fun isSubexpression(): Boolean {
+        return this.parent !is EAbstractBlockExpression
+    }
 }

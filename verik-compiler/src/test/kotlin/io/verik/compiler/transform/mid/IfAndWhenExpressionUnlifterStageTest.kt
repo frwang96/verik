@@ -14,40 +14,43 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.kt
+package io.verik.compiler.transform.mid
 
-import io.verik.compiler.transform.mid.FunctionTransformerStage
+import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.assertElementEquals
 import io.verik.compiler.util.driveTest
-import io.verik.compiler.util.findExpression
+import io.verik.compiler.util.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class CoreKtCollectionsTest : BaseTest() {
+internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
 
     @Test
-    fun `transform forEach simple`() {
+    fun `unlift when expression`() {
         val projectContext = driveTest(
-            FunctionTransformerStage::class,
+            IfAndWhenExpressionUnlifterStage::class,
             """
+                var x = true
                 fun f() {
-                    @Suppress("ForEachParameterNotUsed")
-                    (0 until 8).forEach { }
+                    val y = when (x) {
+                        else -> 0
+                    }
                 }
             """.trimIndent()
         )
         assertElementEquals(
             """
-                ForStatement(
-                    Unit,
-                    SvValueParameter(it, Int),
-                    ConstantExpression(Int, 0),
-                    KtCallExpression(Boolean, lt, KtReferenceExpression(Int, it, null), [ConstantExpression(*)], []),
-                    KtUnaryExpression(Int, KtReferenceExpression(*), POST_INC),
-                    KtBlockExpression(Function, [])
-                )
+                KtBlockExpression(Unit, [
+                    PropertyStatement(Unit, TemporaryProperty(Int, null)),
+                    WhenExpression(
+                        Unit,
+                        KtReferenceExpression(*),
+                        [WhenEntry([], KtBinaryExpression(Unit, KtReferenceExpression(Int, <tmp>, null), *, EQ))]
+                    ),
+                    PropertyStatement(Unit, SvProperty(y, Int, KtReferenceExpression(Int, <tmp>, null), false))
+                ])
             """.trimIndent(),
-            projectContext.findExpression("f")
+            (projectContext.findDeclaration("f") as ESvFunction).body!!
         )
     }
 }

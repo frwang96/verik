@@ -18,13 +18,11 @@ package io.verik.compiler.core.kt
 
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
-import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.sv.EForStatement
 import io.verik.compiler.ast.element.sv.ESvValueParameter
-import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.KtUnaryOperatorKind
 import io.verik.compiler.copy.ElementCopier
 import io.verik.compiler.core.common.Core
@@ -54,12 +52,13 @@ object CoreKtCollections : CoreScope(CorePackage.KT_COLLECTIONS) {
             val receiver = callExpression.receiver!!
             if (receiver is EKtCallExpression && receiver.reference == Core.Kt.Ranges.F_until_Int) {
                 val initializer = receiver.receiver!!
-                val condition = EKtBinaryExpression(
+                val condition = EKtCallExpression(
                     receiver.location,
                     Core.Kt.C_Boolean.toType(),
+                    Core.Kt.Int.F_lt_Int,
                     functionLiteralValueParameterReferenceExpression,
-                    receiver.valueArguments[0],
-                    KtBinaryOperatorKind.LT
+                    arrayListOf(receiver.valueArguments[0]),
+                    ArrayList()
                 )
                 val iteration = EKtUnaryExpression(
                     receiver.location,
