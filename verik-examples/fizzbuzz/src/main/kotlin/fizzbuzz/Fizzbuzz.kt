@@ -73,10 +73,14 @@ class Fizzbuzz : Module() {
     @Task
     fun f(x: Int) {
         println(x)
-        val a = when (w) {
+        var a = when (w) {
             true -> 0
             false -> 1
         }
+        a = if (a == 0) {
+            println()
+            1
+        } else 2
         println(a)
     }
 

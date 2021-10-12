@@ -16,6 +16,7 @@
 
 package io.verik.compiler.ast.element.common
 
+import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.property.SvSerializationType
 
 abstract class EExpression : ETypedElement() {
@@ -27,6 +28,11 @@ abstract class EExpression : ETypedElement() {
     }
 
     fun isSubexpression(): Boolean {
+        if ((this is EIfExpression || this is EWhenExpression) &&
+            (this.parent is EIfExpression || this.parent is EWhenExpression)
+        ) {
+            return (this.parent as EExpression).isSubexpression()
+        }
         return this.parent !is EAbstractBlockExpression
     }
 }

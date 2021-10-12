@@ -26,6 +26,40 @@ import org.junit.jupiter.api.Test
 internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
 
     @Test
+    fun `unlift if expression`() {
+        val projectContext = driveTest(
+            IfAndWhenExpressionUnlifterStage::class,
+            """
+                var x = true
+                fun f() {
+                    val y = if (x) {
+                        println()
+                        0
+                    } else 1
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            """
+                KtBlockExpression(Unit, [
+                    PropertyStatement(Unit, TemporaryProperty(Int, null)),
+                    IfExpression(
+                        Unit,
+                        KtReferenceExpression(*),
+                        KtBlockExpression(Int, [
+                            KtCallExpression(*),
+                            KtBinaryExpression(Unit, KtReferenceExpression(Int, <tmp>, null), ConstantExpression(*), EQ)
+                        ]),
+                        KtBinaryExpression(Unit, KtReferenceExpression(Int, <tmp>, null), ConstantExpression(*), EQ)
+                    ),
+                    PropertyStatement(Unit, SvProperty(y, Int, KtReferenceExpression(Int, <tmp>, null), false))
+                ])
+            """.trimIndent(),
+            (projectContext.findDeclaration("f") as ESvFunction).body!!
+        )
+    }
+
+    @Test
     fun `unlift when expression`() {
         val projectContext = driveTest(
             IfAndWhenExpressionUnlifterStage::class,

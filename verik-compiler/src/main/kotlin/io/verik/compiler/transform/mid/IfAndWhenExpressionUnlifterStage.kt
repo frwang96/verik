@@ -17,6 +17,7 @@
 package io.verik.compiler.transform.mid
 
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.ETemporaryProperty
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
@@ -43,6 +44,27 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
     private class IfAndWhenExpressionUnlifterVisitor(
         private val subexpressionExtractor: SubexpressionExtractor
     ) : TreeVisitor() {
+
+        override fun visitIfExpression(ifExpression: EIfExpression) {
+            super.visitIfExpression(ifExpression)
+            if (ifExpression.isSubexpression()) {
+                val temporaryProperty = ETemporaryProperty(
+                    ifExpression.location,
+                    ifExpression.type.copy(),
+                    null
+                )
+                val propertyStatement = EPropertyStatement(
+                    ifExpression.location,
+                    temporaryProperty
+                )
+                val ifExpressionReplacement = getIfExpressionReplacement(ifExpression, temporaryProperty)
+                subexpressionExtractor.extract(
+                    ifExpression,
+                    temporaryProperty,
+                    listOf(propertyStatement, ifExpressionReplacement)
+                )
+            }
+        }
 
         override fun visitWhenExpression(whenExpression: EWhenExpression) {
             super.visitWhenExpression(whenExpression)
@@ -78,6 +100,21 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
                 Core.Kt.C_Unit.toType(),
                 whenExpression.subject,
                 whenExpression.entries
+            )
+        }
+
+        private fun getIfExpressionReplacement(
+            ifExpression: EIfExpression,
+            temporaryProperty: ETemporaryProperty
+        ): EIfExpression {
+            val thenExpression = wrapAssignment(ifExpression.thenExpression!!, temporaryProperty)
+            val elseExpression = wrapAssignment(ifExpression.elseExpression!!, temporaryProperty)
+            return EIfExpression(
+                ifExpression.location,
+                Core.Kt.C_Unit.toType(),
+                ifExpression.condition,
+                thenExpression,
+                elseExpression
             )
         }
 
