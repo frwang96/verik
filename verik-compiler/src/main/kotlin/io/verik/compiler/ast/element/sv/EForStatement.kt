@@ -18,7 +18,7 @@ package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.ExpressionContainer
-import io.verik.compiler.ast.property.SvSerializationType
+import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
@@ -35,7 +35,7 @@ class EForStatement(
 
     override var type = Core.Kt.C_Unit.toType()
 
-    override val serializationType = SvSerializationType.STATEMENT
+    override val serializationType = SerializationType.STATEMENT
 
     init {
         valueParameter.parent = this

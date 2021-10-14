@@ -16,23 +16,41 @@
 
 package io.verik.compiler.ast.element.common
 
+import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EWhenExpression
-import io.verik.compiler.ast.property.SvSerializationType
+import io.verik.compiler.ast.property.ExpressionType
+import io.verik.compiler.ast.property.KtBinaryOperatorKind
+import io.verik.compiler.ast.property.SerializationType
 
 abstract class EExpression : ETypedElement() {
 
-    abstract val serializationType: SvSerializationType
+    abstract val serializationType: SerializationType
 
     fun replace(expression: EExpression) {
         parentNotNull().replaceChildAsExpressionContainer(this, expression)
     }
 
-    fun isSubexpression(): Boolean {
-        if ((this is EIfExpression || this is EWhenExpression) &&
-            (this.parent is EIfExpression || this.parent is EWhenExpression)
-        ) {
-            return (this.parent as EExpression).isSubexpression()
+    fun getExpressionType(): ExpressionType {
+        return when (val parent = this.parent) {
+            is EAbstractInitializedProperty -> ExpressionType.DIRECT_TYPED_SUBEXPRESSION
+            is EAbstractBlockExpression -> ExpressionType.STATEMENT
+            is EKtBinaryExpression -> {
+                if (parent.kind == KtBinaryOperatorKind.EQ) ExpressionType.DIRECT_TYPED_SUBEXPRESSION
+                else ExpressionType.INDIRECT_TYPED_SUBEXPRESSION
+            }
+            is EAbstractCallExpression -> {
+                if (this in parent.valueArguments) ExpressionType.DIRECT_TYPED_SUBEXPRESSION
+                else ExpressionType.INDIRECT_TYPED_SUBEXPRESSION
+            }
+            is EIfExpression -> {
+                if (parent.getExpressionType().isSubexpression()) ExpressionType.INDIRECT_TYPED_SUBEXPRESSION
+                else ExpressionType.STATEMENT
+            }
+            is EWhenExpression -> {
+                if (parent.getExpressionType().isSubexpression()) ExpressionType.INDIRECT_TYPED_SUBEXPRESSION
+                else ExpressionType.STATEMENT
+            }
+            else -> ExpressionType.INDIRECT_TYPED_SUBEXPRESSION
         }
-        return this.parent !is EAbstractBlockExpression
     }
 }

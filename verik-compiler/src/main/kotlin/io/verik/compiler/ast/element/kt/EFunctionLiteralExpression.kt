@@ -21,7 +21,7 @@ import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.DeclarationContainer
 import io.verik.compiler.ast.interfaces.ExpressionContainer
-import io.verik.compiler.ast.property.SvSerializationType
+import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.common.replaceIfContains
@@ -36,7 +36,7 @@ class EFunctionLiteralExpression(
 
     override var type = Core.Kt.C_Function.toType()
 
-    override val serializationType = SvSerializationType.INTERNAL
+    override val serializationType = SerializationType.INTERNAL
 
     init {
         valueParameters.forEach { it.parent = this }

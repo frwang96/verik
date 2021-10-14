@@ -18,7 +18,7 @@ package io.verik.compiler.ast.element.kt
 
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.ExpressionContainer
-import io.verik.compiler.ast.property.SvSerializationType
+import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
@@ -33,7 +33,7 @@ class EForExpression(
 
     override var type = Core.Kt.C_Unit.toType()
 
-    override val serializationType = SvSerializationType.INTERNAL
+    override val serializationType = SerializationType.INTERNAL
 
     init {
         valueParameter.parent = this

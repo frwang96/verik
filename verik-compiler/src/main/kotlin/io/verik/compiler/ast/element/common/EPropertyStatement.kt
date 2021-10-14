@@ -17,7 +17,7 @@
 package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.ast.interfaces.DeclarationContainer
-import io.verik.compiler.ast.property.SvSerializationType
+import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
@@ -34,7 +34,7 @@ class EPropertyStatement(
 
     override var type = Core.Kt.C_Unit.toType()
 
-    override val serializationType = SvSerializationType.STATEMENT
+    override val serializationType = SerializationType.STATEMENT
 
     override fun accept(visitor: Visitor) {
         visitor.visitPropertyStatement(this)

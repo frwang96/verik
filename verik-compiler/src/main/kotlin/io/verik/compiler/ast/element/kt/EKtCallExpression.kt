@@ -19,7 +19,7 @@ package io.verik.compiler.ast.element.kt
 import io.verik.compiler.ast.element.common.EAbstractCallExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.Declaration
-import io.verik.compiler.ast.property.SvSerializationType
+import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
@@ -33,7 +33,7 @@ class EKtCallExpression(
     val typeArguments: ArrayList<Type>
 ) : EAbstractCallExpression() {
 
-    override val serializationType = SvSerializationType.INTERNAL
+    override val serializationType = SerializationType.INTERNAL
 
     init {
         receiver?.parent = this

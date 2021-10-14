@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.property.SvSerializationType
+import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
@@ -27,7 +27,7 @@ class EParenthesizedExpression(
     override var expression: EExpression
 ) : EAbstractExpressionContainer() {
 
-    override val serializationType = SvSerializationType.EXPRESSION
+    override val serializationType = SerializationType.EXPRESSION
 
     init {
         expression.parent = this

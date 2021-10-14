@@ -65,7 +65,7 @@ import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.element.sv.ETask
 import io.verik.compiler.ast.interfaces.Declaration
-import io.verik.compiler.ast.property.SvSerializationType
+import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.Messages
 
@@ -94,16 +94,16 @@ class SourceSerializerVisitor(private val serializerContext: SerializerContext) 
     }
 
     fun serializeAsExpression(expression: EExpression) {
-        if (expression.serializationType != SvSerializationType.EXPRESSION)
+        if (expression.serializationType != SerializationType.EXPRESSION)
             Messages.INTERNAL_ERROR.on(expression, "Expression expected but got: $expression")
         serialize(expression)
     }
 
     fun serializeAsStatement(expression: EExpression) {
-        if (expression.serializationType !in listOf(SvSerializationType.EXPRESSION, SvSerializationType.STATEMENT))
+        if (expression.serializationType == SerializationType.INTERNAL)
             Messages.INTERNAL_ERROR.on(expression, "Expression or statement expected but got: $expression")
         serialize(expression)
-        if (expression.serializationType == SvSerializationType.EXPRESSION)
+        if (expression.serializationType == SerializationType.EXPRESSION)
             serializerContext.appendLine(";")
     }
 
