@@ -70,6 +70,36 @@ internal class TypeCheckerStageTest : BaseTest() {
     }
 
     @Test
+    fun `extension violation`() {
+        assertThrows<TestErrorException> {
+            driveTest(
+                TypeCheckerStage::class,
+                """
+                    var x: Ubit<`8`> = nc()
+                    fun f() {
+                        println(x.ext<`4`>())
+                    }
+                """.trimIndent()
+            )
+        }.apply { assertEquals("Unable to extend from Ubit<`8`> to Ubit<`4`>", message) }
+    }
+
+    @Test
+    fun `truncation violation`() {
+        assertThrows<TestErrorException> {
+            driveTest(
+                TypeCheckerStage::class,
+                """
+                    var x: Ubit<`4`> = nc()
+                    fun f() {
+                        println(x.tru<`8`>())
+                    }
+                """.trimIndent()
+            )
+        }.apply { assertEquals("Unable to truncate from Ubit<`4`> to Ubit<`8`>", message) }
+    }
+
+    @Test
     fun `concatenation violation`() {
         assertThrows<TestErrorException> {
             driveTest(

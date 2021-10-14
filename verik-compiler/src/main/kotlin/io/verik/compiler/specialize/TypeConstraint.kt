@@ -39,6 +39,12 @@ class BinaryOperatorTypeConstraint(
     val kind: BinaryOperatorTypeConstraintKind
 ) : TypeConstraint()
 
+class ComparisonTypeConstraint(
+    val inner: TypeAdapter,
+    val outer: TypeAdapter,
+    val kind: ComparisonTypeConstraintKind
+) : TypeConstraint()
+
 class ConcatenationTypeConstraint(
     val callExpression: EKtCallExpression
 ) : TypeConstraint()

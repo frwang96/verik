@@ -36,6 +36,8 @@ import io.verik.compiler.core.common.CoreKtUnaryFunctionDeclaration
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.specialize.BinaryOperatorTypeConstraint
 import io.verik.compiler.specialize.BinaryOperatorTypeConstraintKind
+import io.verik.compiler.specialize.ComparisonTypeConstraint
+import io.verik.compiler.specialize.ComparisonTypeConstraintKind
 import io.verik.compiler.specialize.TypeAdapter
 import io.verik.compiler.specialize.TypeConstraint
 import io.verik.compiler.specialize.TypeEqualsTypeConstraint
@@ -414,6 +416,11 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
                 TypeEqualsTypeConstraint(
                     TypeAdapter.ofTypeArgument(callExpression, 0),
                     TypeAdapter.ofElement(callExpression, 0)
+                ),
+                ComparisonTypeConstraint(
+                    TypeAdapter.ofElement(callExpression.receiver!!, 0),
+                    TypeAdapter.ofElement(callExpression, 0),
+                    ComparisonTypeConstraintKind.EXT
                 )
             )
         }
@@ -432,7 +439,17 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
     val F_tru = object : CoreKtTransformableFunctionDeclaration(parent, "tru") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
-            return F_ext.getTypeConstraints(callExpression)
+            return listOf(
+                TypeEqualsTypeConstraint(
+                    TypeAdapter.ofTypeArgument(callExpression, 0),
+                    TypeAdapter.ofElement(callExpression, 0)
+                ),
+                ComparisonTypeConstraint(
+                    TypeAdapter.ofElement(callExpression.receiver!!, 0),
+                    TypeAdapter.ofElement(callExpression, 0),
+                    ComparisonTypeConstraintKind.TRU
+                )
+            )
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
