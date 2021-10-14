@@ -17,24 +17,35 @@
 package io.verik.compiler.transform.mid
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findExpression
+import io.verik.compiler.util.findStatements
 import org.junit.jupiter.api.Test
 
-internal class InjectedExpressionReducerStageTest : BaseTest() {
+internal class SubexpressionExtractorStageTest : BaseTest() {
 
     @Test
-    fun `inject literal`() {
+    fun `struct literal`() {
         val projectContext = driveTest(
-            InjectedExpressionReducerStage::class,
+            SubexpressionExtractorStage::class,
             """
+                var x = u(0)
                 fun f() {
-                    sv("abc")
+                    x = x.reverse() + u(0)
                 }
             """.trimIndent()
         )
         assertElementEquals(
-            "InjectedExpression(Unit, [abc])",
-            projectContext.findExpression("f")
+            """
+                [
+                    PropertyStatement(Unit, TemporaryProperty(Ubit<`1`>, StreamingExpression(*))),
+                    KtBinaryExpression(
+                        Unit,
+                        KtReferenceExpression(Ubit<`1`>, x, null),
+                        KtCallExpression(Ubit<`1`>, plus, KtReferenceExpression(Ubit<`1`>, <tmp>, null), [*], []),
+                        EQ
+                    )
+                ]
+            """.trimIndent(),
+            projectContext.findStatements("f")
         )
     }
 }

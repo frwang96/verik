@@ -59,6 +59,7 @@ import io.verik.compiler.transform.mid.InlineIfExpressionTransformerStage
 import io.verik.compiler.transform.mid.PropertyTransformerStage
 import io.verik.compiler.transform.mid.StringTemplateExpressionReducerStage
 import io.verik.compiler.transform.mid.StructLiteralTransformerStage
+import io.verik.compiler.transform.mid.SubexpressionExtractorStage
 import io.verik.compiler.transform.mid.UninitializedPropertyTransformerStage
 import io.verik.compiler.transform.post.BinaryExpressionTransformerStage
 import io.verik.compiler.transform.post.BlockExpressionTransformerStage
@@ -140,6 +141,7 @@ object StageSequencer {
         stageSequence.add(CaseStatementTransformerStage)
         stageSequence.add(StructLiteralTransformerStage)
         stageSequence.add(ConstantExpressionEvaluatorStage)
+        stageSequence.add(SubexpressionExtractorStage)
         stageSequence.add(AssignmentTransformerStage)
 
         // PostTransform

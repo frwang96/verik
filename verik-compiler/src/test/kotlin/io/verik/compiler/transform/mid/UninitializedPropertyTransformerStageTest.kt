@@ -17,8 +17,6 @@
 package io.verik.compiler.transform.mid
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.assertElementEquals
-import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findDeclaration
 import org.junit.jupiter.api.Test
 

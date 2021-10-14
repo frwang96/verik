@@ -16,11 +16,8 @@
 
 package io.verik.compiler.transform.mid
 
-import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.assertElementEquals
-import io.verik.compiler.util.driveTest
-import io.verik.compiler.util.findDeclaration
+import io.verik.compiler.util.findStatements
 import org.junit.jupiter.api.Test
 
 internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
@@ -41,7 +38,7 @@ internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
         )
         assertElementEquals(
             """
-                KtBlockExpression(Unit, [
+                [
                     PropertyStatement(Unit, TemporaryProperty(Int, null)),
                     IfExpression(
                         Unit,
@@ -53,9 +50,9 @@ internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
                         KtBinaryExpression(Unit, KtReferenceExpression(Int, <tmp>, null), ConstantExpression(*), EQ)
                     ),
                     PropertyStatement(Unit, SvProperty(y, Int, KtReferenceExpression(Int, <tmp>, null), false))
-                ])
+                ]
             """.trimIndent(),
-            (projectContext.findDeclaration("f") as ESvFunction).body!!
+            projectContext.findStatements("f")
         )
     }
 
@@ -74,7 +71,7 @@ internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
         )
         assertElementEquals(
             """
-                KtBlockExpression(Unit, [
+                [
                     PropertyStatement(Unit, TemporaryProperty(Int, null)),
                     WhenExpression(
                         Unit,
@@ -82,9 +79,9 @@ internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
                         [WhenEntry([], KtBinaryExpression(Unit, KtReferenceExpression(Int, <tmp>, null), *, EQ))]
                     ),
                     PropertyStatement(Unit, SvProperty(y, Int, KtReferenceExpression(Int, <tmp>, null), false))
-                ])
+                ]
             """.trimIndent(),
-            (projectContext.findDeclaration("f") as ESvFunction).body!!
+            projectContext.findStatements("f")
         )
     }
 }
