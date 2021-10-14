@@ -43,6 +43,7 @@ import io.verik.compiler.ast.element.sv.ESvBlockExpression
 import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
+import io.verik.compiler.ast.element.sv.EWidthCastExpression
 import io.verik.compiler.ast.property.EdgeType
 import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.LiteralStringEntry
@@ -220,6 +221,15 @@ object ExpressionSerializer {
         serializerContext.append("{<<{ ")
         serializerContext.serializeAsExpression(streamingExpression.expression)
         serializerContext.append(" }}")
+    }
+
+    fun serializeWidthCastExpression(
+        widthCastExpression: EWidthCastExpression,
+        serializerContext: SerializerContext
+    ) {
+        serializerContext.append("${widthCastExpression.value}'(")
+        serializerContext.serializeAsExpression(widthCastExpression.expression)
+        serializerContext.append(")")
     }
 
     fun serializeIfExpression(ifExpression: EIfExpression, serializerContext: SerializerContext) {

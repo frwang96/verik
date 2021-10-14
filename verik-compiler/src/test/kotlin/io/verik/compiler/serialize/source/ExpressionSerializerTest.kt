@@ -305,6 +305,23 @@ internal class ExpressionSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `width cast expression`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                var x = u(0x0).ext<`8`>()
+            """.trimIndent()
+        )
+        val expected = """
+            logic [7:0] x = 8'(4'h0);
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
     fun `if expression`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,

@@ -113,6 +113,7 @@ import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.element.sv.ETask
+import io.verik.compiler.ast.element.sv.EWidthCastExpression
 
 abstract class Visitor {
 
@@ -460,6 +461,10 @@ abstract class Visitor {
 
     open fun visitStreamingExpression(streamingExpression: EStreamingExpression) {
         visitAbstractExpressionContainer(streamingExpression)
+    }
+
+    open fun visitWidthCastExpression(widthCastExpression: EWidthCastExpression) {
+        visitAbstractExpressionContainer(widthCastExpression)
     }
 
     open fun visitIfExpression(ifExpression: EIfExpression) {
