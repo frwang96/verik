@@ -66,6 +66,7 @@ class Fizzbuzz : Module() {
         z = z.invert()
         z = z.reverse()
         w = s(z) < s(z)
+        z = w.uext()
         println(cb.z)
     }
 

@@ -445,7 +445,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         override fun transform(callExpression: EKtCallExpression): EExpression {
             val callExpressionSigned = EKtCallExpression(
                 callExpression.location,
-                Core.Vk.C_Sbit.toType(callExpression.type.arguments[0].copy()),
+                Core.Vk.C_Sbit.toType(callExpression.receiver!!.type.arguments[0].copy()),
                 Core.Sv.F_signed,
                 null,
                 arrayListOf(callExpression.receiver!!),

@@ -26,6 +26,7 @@ import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EEventExpression
 import io.verik.compiler.ast.element.sv.EForeverStatement
 import io.verik.compiler.ast.element.sv.EReplicationExpression
+import io.verik.compiler.ast.element.sv.EWidthCastExpression
 import io.verik.compiler.ast.property.EdgeType
 import io.verik.compiler.common.BitConstant
 import io.verik.compiler.common.ConstantUtil
@@ -341,4 +342,59 @@ object CoreVk : CoreScope(CorePackage.VK) {
     }
 
     val F_sv_String = CoreKtBasicFunctionDeclaration(parent, "sv", Core.Kt.C_String)
+
+    val F_Boolean_uext = object : CoreKtTransformableFunctionDeclaration(parent, "uext") {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return listOf(
+                TypeEqualsTypeConstraint(
+                    TypeAdapter.ofTypeArgument(callExpression, 0),
+                    TypeAdapter.ofElement(callExpression, 0)
+                )
+            )
+        }
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
+            return EWidthCastExpression(
+                callExpression.location,
+                callExpression.type,
+                callExpression.receiver!!,
+                value
+            )
+        }
+    }
+
+    val F_Boolean_sext = object : CoreKtTransformableFunctionDeclaration(parent, "sext") {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return F_Boolean_uext.getTypeConstraints(callExpression)
+        }
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            val callExpressionSigned = EKtCallExpression(
+                callExpression.location,
+                Core.Vk.C_Sbit.toType(Core.Vk.cardinalOf(1).toType()),
+                Core.Sv.F_signed,
+                null,
+                arrayListOf(callExpression.receiver!!),
+                ArrayList()
+            )
+            val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
+            val widthCastExpression = EWidthCastExpression(
+                callExpression.location,
+                callExpression.type,
+                callExpressionSigned,
+                value
+            )
+            return EKtCallExpression(
+                callExpression.location,
+                callExpression.type.copy(),
+                Core.Sv.F_unsigned,
+                null,
+                arrayListOf(widthCastExpression),
+                ArrayList()
+            )
+        }
+    }
 }

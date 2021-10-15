@@ -149,6 +149,9 @@ object Core {
         val F_fatal = CoreVk.F_fatal
         val F_sv_String = CoreVk.F_sv_String
 
+        val F_Boolean_uext = CoreVk.F_Boolean_uext
+        val F_Boolean_sext = CoreVk.F_Boolean_sext
+
         object Ubit : CoreScope(C_Ubit) {
 
             val F_get_Int = CoreVkUbit.F_get_Int

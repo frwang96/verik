@@ -137,7 +137,7 @@ internal class CoreVkUbitTest : BaseTest() {
                     null,
                     [WidthCastExpression(
                         Sbit<`8`>,
-                        KtCallExpression(Sbit<`8`>, ${'$'}signed, null, [ConstantExpression(*)], []),
+                        KtCallExpression(Sbit<`4`>, ${'$'}signed, null, [ConstantExpression(*)], []),
                         8
                     )],
                     []
