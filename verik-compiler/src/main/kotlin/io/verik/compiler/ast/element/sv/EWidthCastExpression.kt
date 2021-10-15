@@ -16,31 +16,40 @@
 
 package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.element.common.EAbstractCallExpression
+import io.verik.compiler.ast.element.common.EAbstractExpressionContainer
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.ast.property.Type
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
-class ESvCallExpression(
+class EWidthCastExpression(
     override val location: SourceLocation,
     override var type: Type,
-    override var reference: Declaration,
-    override var receiver: EExpression?,
-    override val valueArguments: ArrayList<EExpression>,
-    val isScopeResolution: Boolean
-) : EAbstractCallExpression() {
+    override var expression: EExpression,
+    var value: Int
+) : EAbstractExpressionContainer() {
+
+    init {
+        expression.parent = this
+    }
 
     override val serializationType = SerializationType.EXPRESSION
 
-    init {
-        receiver?.parent = this
-        valueArguments.forEach { it.parent = this }
+    override fun accept(visitor: Visitor) {
+        visitor.visitWidthCastExpression(this)
     }
 
-    override fun accept(visitor: Visitor) {
-        visitor.visitSvCallExpression(this)
+    override fun acceptChildren(visitor: TreeVisitor) {
+        expression.accept(visitor)
+    }
+
+    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
+        newExpression.parent = this
+        return if (expression == oldExpression) {
+            expression = newExpression
+            true
+        } else false
     }
 }

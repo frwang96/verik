@@ -18,8 +18,8 @@ package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EAbstractStringEntryContainer
 import io.verik.compiler.ast.property.ExpressionStringEntry
+import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.ast.property.StringEntry
-import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
@@ -30,7 +30,7 @@ class EInjectedExpression(
     override val entries: List<StringEntry>
 ) : EAbstractStringEntryContainer() {
 
-    override val serializationType = SvSerializationType.EXPRESSION
+    override val serializationType = SerializationType.EXPRESSION
 
     init {
         entries.forEach {

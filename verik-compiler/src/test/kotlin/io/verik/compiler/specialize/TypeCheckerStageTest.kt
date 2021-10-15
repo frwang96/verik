@@ -18,7 +18,6 @@ package io.verik.compiler.specialize
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestErrorException
-import io.verik.compiler.util.driveTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -68,6 +67,36 @@ internal class TypeCheckerStageTest : BaseTest() {
                 """.trimIndent()
             )
         }.apply { assertEquals("Type mismatch: Expected Ubit<`4`> actual Ubit<`1`>", message) }
+    }
+
+    @Test
+    fun `extension violation`() {
+        assertThrows<TestErrorException> {
+            driveTest(
+                TypeCheckerStage::class,
+                """
+                    var x: Ubit<`8`> = nc()
+                    fun f() {
+                        println(x.uext<`4`>())
+                    }
+                """.trimIndent()
+            )
+        }.apply { assertEquals("Unable to extend from Ubit<`8`> to Ubit<`4`>", message) }
+    }
+
+    @Test
+    fun `truncation violation`() {
+        assertThrows<TestErrorException> {
+            driveTest(
+                TypeCheckerStage::class,
+                """
+                    var x: Ubit<`4`> = nc()
+                    fun f() {
+                        println(x.tru<`8`>())
+                    }
+                """.trimIndent()
+            )
+        }.apply { assertEquals("Unable to truncate from Ubit<`4`> to Ubit<`8`>", message) }
     }
 
     @Test

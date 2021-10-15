@@ -14,25 +14,9 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.interpret
+package io.verik.compiler.specialize
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findDeclaration
-import org.junit.jupiter.api.Test
-
-internal class StructInterpreterTest : BaseTest() {
-
-    @Test
-    fun `interpret struct`() {
-        val projectContext = driveTest(
-            ClassInterpreterStage::class,
-            """
-                class S(var x: Boolean): Struct()
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "Struct(S, [SvProperty(x, Boolean, null, null)])",
-            projectContext.findDeclaration("S")
-        )
-    }
+enum class ComparisonTypeConstraintKind {
+    EXT,
+    TRU
 }

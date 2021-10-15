@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast.property
 
-enum class SvSerializationType {
+enum class SerializationType {
     EXPRESSION,
     STATEMENT,
     INTERNAL

@@ -51,6 +51,7 @@ object TypeConstraintResolver {
                 is ReplicationTypeConstraint ->
                     if (!resolveReplicationTypeConstraint(it))
                         unresolvedTypeConstraints.add(it)
+                else -> {}
             }
         }
         return unresolvedTypeConstraints

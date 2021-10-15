@@ -14,26 +14,14 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.pre
+package io.verik.compiler.ast.property
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findDeclaration
-import org.junit.jupiter.api.Test
+enum class ExpressionType {
+    STATEMENT,
+    DIRECT_TYPED_SUBEXPRESSION,
+    INDIRECT_TYPED_SUBEXPRESSION;
 
-internal class TypeAliasReducerStageTest : BaseTest() {
-
-    @Test
-    fun `reduce type alias`() {
-        val projectContext = driveTest(
-            TypeAliasReducerStage::class,
-            """
-                typealias U = Ubit<`8`>
-                var x: U = nc()
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtProperty(x, Ubit<`8`>, *, [])",
-            projectContext.findDeclaration("x")
-        )
+    fun isSubexpression(): Boolean {
+        return this != STATEMENT
     }
 }

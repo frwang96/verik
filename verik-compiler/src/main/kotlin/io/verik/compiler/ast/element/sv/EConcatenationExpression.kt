@@ -18,7 +18,7 @@ package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.ExpressionContainer
-import io.verik.compiler.ast.property.SvSerializationType
+import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
@@ -35,7 +35,7 @@ class EConcatenationExpression(
         expressions.forEach { it.parent = this }
     }
 
-    override val serializationType = SvSerializationType.EXPRESSION
+    override val serializationType = SerializationType.EXPRESSION
 
     override fun accept(visitor: Visitor) {
         visitor.visitConcatenationExpression(this)

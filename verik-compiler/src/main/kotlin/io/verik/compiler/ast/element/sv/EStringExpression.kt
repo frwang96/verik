@@ -17,7 +17,7 @@
 package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.property.SvSerializationType
+import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
@@ -30,7 +30,7 @@ class EStringExpression(
 
     override var type = Core.Kt.C_String.toType()
 
-    override val serializationType = SvSerializationType.EXPRESSION
+    override val serializationType = SerializationType.EXPRESSION
 
     override fun accept(visitor: Visitor) {
         visitor.visitStringExpression(this)

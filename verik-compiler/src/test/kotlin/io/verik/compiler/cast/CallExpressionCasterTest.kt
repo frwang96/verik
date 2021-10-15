@@ -17,8 +17,6 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.assertElementEquals
-import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -30,11 +28,11 @@ internal class CallExpressionCasterTest : BaseTest() {
         val projectContext = driveTest(
             CasterStage::class,
             """
-                var x = u(0).ext<`8`>()
+                var x = u(0).uext<`8`>()
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Ubit<`*`>, ext, *, *, [`8`])",
+            "KtCallExpression(Ubit<`*`>, uext, *, *, [`8`])",
             projectContext.findExpression("x")
         )
     }
@@ -44,11 +42,11 @@ internal class CallExpressionCasterTest : BaseTest() {
         val projectContext = driveTest(
             CasterStage::class,
             """
-                var x: Ubit<`8`> = u(0).ext()
+                var x: Ubit<`8`> = u(0).uext()
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Ubit<`*`>, ext, *, *, [`*`])",
+            "KtCallExpression(Ubit<`*`>, uext, *, *, [`*`])",
             projectContext.findExpression("x")
         )
     }

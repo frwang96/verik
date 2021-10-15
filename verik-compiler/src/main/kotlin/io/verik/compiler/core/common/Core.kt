@@ -127,6 +127,7 @@ object Core {
         val F_u = CoreVk.F_u
         val F_u_Int = CoreVk.F_u_Int
         val F_u_String = CoreVk.F_u_String
+        val F_u_Sbit = CoreVk.F_u_Sbit
         val F_u0 = CoreVk.F_u0
         val F_s_Ubit = CoreVk.F_s_Ubit
         val F_cat = CoreVk.F_cat
@@ -147,6 +148,9 @@ object Core {
         val F_finish = CoreVk.F_finish
         val F_fatal = CoreVk.F_fatal
         val F_sv_String = CoreVk.F_sv_String
+
+        val F_Boolean_uext = CoreVk.F_Boolean_uext
+        val F_Boolean_sext = CoreVk.F_Boolean_sext
 
         object Ubit : CoreScope(C_Ubit) {
 
@@ -172,7 +176,8 @@ object Core {
             val F_gteq_Ubit = CoreVkUbit.F_gteq_Ubit
             val F_invert = CoreVkUbit.F_invert
             val F_reverse = CoreVkUbit.F_reverse
-            val F_ext = CoreVkUbit.F_ext
+            val F_uext = CoreVkUbit.F_uext
+            val F_sext = CoreVkUbit.F_sext
             val F_tru = CoreVkUbit.F_tru
             val F_slice_Int = CoreVkUbit.F_slice_Int
         }

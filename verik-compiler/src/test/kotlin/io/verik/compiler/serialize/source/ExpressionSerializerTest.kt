@@ -17,8 +17,6 @@
 package io.verik.compiler.serialize.source
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.assertOutputTextEquals
-import io.verik.compiler.util.driveTest
 import org.junit.jupiter.api.Test
 
 internal class ExpressionSerializerTest : BaseTest() {
@@ -299,6 +297,23 @@ internal class ExpressionSerializerTest : BaseTest() {
         )
         val expected = """
             logic [7:0] x = {<<{ 8'h00 }};
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
+    fun `width cast expression`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                var x = u(0x0).uext<`8`>()
+            """.trimIndent()
+        )
+        val expected = """
+            logic [7:0] x = 8'(4'h0);
         """.trimIndent()
         assertOutputTextEquals(
             expected,

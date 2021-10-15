@@ -26,16 +26,12 @@ object TypeConstraintChecker {
     fun check(typeConstraints: List<TypeConstraint>) {
         typeConstraints.forEach {
             when (it) {
-                is TypeEqualsTypeConstraint ->
-                    checkTypeEqualsTypeConstraint(it)
-                is UnaryOperatorTypeConstraint ->
-                    checkUnaryOperatorTypeConstraint(it)
-                is BinaryOperatorTypeConstraint ->
-                    checkBinaryOperatorTypeConstraint(it)
-                is ConcatenationTypeConstraint ->
-                    checkConcatenationTypeConstraint(it)
-                is ReplicationTypeConstraint ->
-                    checkReplicationTypeConstraint(it)
+                is TypeEqualsTypeConstraint -> checkTypeEqualsTypeConstraint(it)
+                is UnaryOperatorTypeConstraint -> checkUnaryOperatorTypeConstraint(it)
+                is BinaryOperatorTypeConstraint -> checkBinaryOperatorTypeConstraint(it)
+                is ComparisonTypeConstraint -> checkComparisonTypeConstraint(it)
+                is ConcatenationTypeConstraint -> checkConcatenationTypeConstraint(it)
+                is ReplicationTypeConstraint -> checkReplicationTypeConstraint(it)
             }
         }
     }
@@ -91,6 +87,33 @@ object TypeConstraintChecker {
                 substitutionResult.original,
                 substitutionResult.substituted
             )
+        }
+    }
+
+    private fun checkComparisonTypeConstraint(typeConstraint: ComparisonTypeConstraint) {
+        val innerValue = typeConstraint.inner.getType().asCardinalValue(typeConstraint.inner.getElement())
+        val outerValue = typeConstraint.outer.getType().asCardinalValue(typeConstraint.outer.getElement())
+        when (typeConstraint.kind) {
+            ComparisonTypeConstraintKind.EXT -> {
+                if (innerValue > outerValue) {
+                    val substitutionResult = typeConstraint.inner.substitute(Core.Vk.cardinalOf(outerValue).toType())
+                    Messages.EXTENSION_ERROR.on(
+                        typeConstraint.inner.getElement(),
+                        substitutionResult.original,
+                        substitutionResult.substituted
+                    )
+                }
+            }
+            ComparisonTypeConstraintKind.TRU -> {
+                if (innerValue < outerValue) {
+                    val substitutionResult = typeConstraint.inner.substitute(Core.Vk.cardinalOf(outerValue).toType())
+                    Messages.TRUNCATION_ERROR.on(
+                        typeConstraint.inner.getElement(),
+                        substitutionResult.original,
+                        substitutionResult.substituted
+                    )
+                }
+            }
         }
     }
 

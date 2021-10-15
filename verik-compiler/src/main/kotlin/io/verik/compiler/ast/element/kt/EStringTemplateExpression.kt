@@ -18,8 +18,8 @@ package io.verik.compiler.ast.element.kt
 
 import io.verik.compiler.ast.element.common.EAbstractStringEntryContainer
 import io.verik.compiler.ast.property.ExpressionStringEntry
+import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.ast.property.StringEntry
-import io.verik.compiler.ast.property.SvSerializationType
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
@@ -29,7 +29,7 @@ class EStringTemplateExpression(
     override val entries: List<StringEntry>
 ) : EAbstractStringEntryContainer() {
 
-    override val serializationType = SvSerializationType.INTERNAL
+    override val serializationType = SerializationType.INTERNAL
 
     init {
         entries.forEach {

@@ -89,6 +89,7 @@ import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.element.sv.ETask
+import io.verik.compiler.ast.element.sv.EWidthCastExpression
 import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.LiteralStringEntry
 import io.verik.compiler.ast.property.PortInstantiation
@@ -565,6 +566,14 @@ class ElementPrinter : Visitor() {
         build("StreamingExpression") {
             build(streamingExpression.type.toString())
             build(streamingExpression.expression)
+        }
+    }
+
+    override fun visitWidthCastExpression(widthCastExpression: EWidthCastExpression) {
+        build("WidthCastExpression") {
+            build(widthCastExpression.type.toString())
+            build(widthCastExpression.expression)
+            build(widthCastExpression.value)
         }
     }
 

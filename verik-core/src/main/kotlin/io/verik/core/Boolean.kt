@@ -31,3 +31,17 @@ fun Boolean.toUbit(): Ubit<`*`> {
 fun Boolean.isUnknown(): Boolean {
     throw VerikException()
 }
+
+/**
+ * Extend to [N] bits with zero extension.
+ */
+fun <N : `*`> Boolean.uext(): Ubit<N> {
+    throw VerikException()
+}
+
+/**
+ * Extend to [N] bits with sign extension.
+ */
+fun <N : `*`> Boolean.sext(): Sbit<N> {
+    throw VerikException()
+}

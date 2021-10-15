@@ -18,8 +18,6 @@ package io.verik.compiler.serialize.general
 
 import io.verik.compiler.main.Platform
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.assertOutputTextEquals
-import io.verik.compiler.util.driveTest
 import org.junit.jupiter.api.Test
 
 internal class PackageFileSerializerStageTest : BaseTest() {

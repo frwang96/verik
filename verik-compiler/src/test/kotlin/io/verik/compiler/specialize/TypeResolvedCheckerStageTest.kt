@@ -18,7 +18,6 @@ package io.verik.compiler.specialize
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestErrorException
-import io.verik.compiler.util.driveTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -31,7 +30,7 @@ internal class TypeResolvedCheckerStageTest : BaseTest() {
             driveTest(
                 TypeResolvedCheckerStage::class,
                 """
-                    val x = u(0).ext<`*`>()
+                    val x = u(0).uext<`*`>()
                 """.trimIndent()
             )
         }.apply { assertEquals("Type of expression could not be resolved", message) }

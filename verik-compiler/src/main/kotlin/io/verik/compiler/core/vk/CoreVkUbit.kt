@@ -24,6 +24,7 @@ import io.verik.compiler.ast.element.sv.EConstantPartSelectExpression
 import io.verik.compiler.ast.element.sv.EStreamingExpression
 import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
+import io.verik.compiler.ast.element.sv.EWidthCastExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.ast.property.SvUnaryOperatorKind
@@ -35,6 +36,8 @@ import io.verik.compiler.core.common.CoreKtUnaryFunctionDeclaration
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.specialize.BinaryOperatorTypeConstraint
 import io.verik.compiler.specialize.BinaryOperatorTypeConstraintKind
+import io.verik.compiler.specialize.ComparisonTypeConstraint
+import io.verik.compiler.specialize.ComparisonTypeConstraintKind
 import io.verik.compiler.specialize.TypeAdapter
 import io.verik.compiler.specialize.TypeConstraint
 import io.verik.compiler.specialize.TypeEqualsTypeConstraint
@@ -406,26 +409,80 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_ext = object : CoreKtTransformableFunctionDeclaration(parent, "ext") {
+    val F_uext = object : CoreKtTransformableFunctionDeclaration(parent, "uext") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
                 TypeEqualsTypeConstraint(
                     TypeAdapter.ofTypeArgument(callExpression, 0),
                     TypeAdapter.ofElement(callExpression, 0)
+                ),
+                ComparisonTypeConstraint(
+                    TypeAdapter.ofElement(callExpression.receiver!!, 0),
+                    TypeAdapter.ofElement(callExpression, 0),
+                    ComparisonTypeConstraintKind.EXT
                 )
             )
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            return callExpression.receiver!!
+            val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
+            return EWidthCastExpression(
+                callExpression.location,
+                callExpression.type,
+                callExpression.receiver!!,
+                value
+            )
+        }
+    }
+
+    val F_sext = object : CoreKtTransformableFunctionDeclaration(parent, "sext") {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return F_uext.getTypeConstraints(callExpression)
+        }
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            val callExpressionSigned = EKtCallExpression(
+                callExpression.location,
+                Core.Vk.C_Sbit.toType(callExpression.receiver!!.type.arguments[0].copy()),
+                Core.Sv.F_signed,
+                null,
+                arrayListOf(callExpression.receiver!!),
+                ArrayList()
+            )
+            val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
+            val widthCastExpression = EWidthCastExpression(
+                callExpression.location,
+                callExpression.type,
+                callExpressionSigned,
+                value
+            )
+            return EKtCallExpression(
+                callExpression.location,
+                callExpression.type.copy(),
+                Core.Sv.F_unsigned,
+                null,
+                arrayListOf(widthCastExpression),
+                ArrayList()
+            )
         }
     }
 
     val F_tru = object : CoreKtTransformableFunctionDeclaration(parent, "tru") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
-            return F_ext.getTypeConstraints(callExpression)
+            return listOf(
+                TypeEqualsTypeConstraint(
+                    TypeAdapter.ofTypeArgument(callExpression, 0),
+                    TypeAdapter.ofElement(callExpression, 0)
+                ),
+                ComparisonTypeConstraint(
+                    TypeAdapter.ofElement(callExpression.receiver!!, 0),
+                    TypeAdapter.ofElement(callExpression, 0),
+                    ComparisonTypeConstraintKind.TRU
+                )
+            )
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {

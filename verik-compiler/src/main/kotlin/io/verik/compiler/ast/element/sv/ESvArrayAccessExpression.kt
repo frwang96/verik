@@ -18,7 +18,7 @@ package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EAbstractArrayAccessExpression
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.property.SvSerializationType
+import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
@@ -31,7 +31,7 @@ class ESvArrayAccessExpression(
     var index: EExpression
 ) : EAbstractArrayAccessExpression() {
 
-    override val serializationType = SvSerializationType.EXPRESSION
+    override val serializationType = SerializationType.EXPRESSION
 
     init {
         array.parent = this

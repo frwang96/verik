@@ -18,8 +18,6 @@ package io.verik.compiler.cast
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestErrorException
-import io.verik.compiler.util.assertElementEquals
-import io.verik.compiler.util.driveTest
 import io.verik.compiler.util.findDeclaration
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -178,7 +176,7 @@ internal class TypeCasterTest : BaseTest() {
             CasterStage::class,
             """
                 class C<N: Cardinal> {
-                    var x: Ubit<N> = u(0).ext()
+                    var x: Ubit<N> = u(0).uext()
                 }
             """.trimIndent()
         )

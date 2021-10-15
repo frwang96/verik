@@ -138,6 +138,16 @@ object Messages {
         "Type mismatch: Expected $0 actual $1"
     )
 
+    val EXTENSION_ERROR = MessageTemplate2<Type, Type>(
+        Severity.ERROR,
+        "Unable to extend from $0 to $1"
+    )
+
+    val TRUNCATION_ERROR = MessageTemplate2<Type, Type>(
+        Severity.ERROR,
+        "Unable to truncate from $0 to $1"
+    )
+
 //  INTERPRET  /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val CONFLICTING_ANNOTATION = MessageTemplate1<String>(
