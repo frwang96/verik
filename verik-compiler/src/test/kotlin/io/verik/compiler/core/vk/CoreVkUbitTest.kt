@@ -108,15 +108,41 @@ internal class CoreVkUbitTest : BaseTest() {
     }
 
     @Test
-    fun `transform ext`() {
+    fun `transform uext`() {
         val projectContext = driveTest(
             FunctionTransformerStage::class,
             """
-                var x = u(0x0).ext<`8`>()
+                var x = u(0x0).uext<`8`>()
             """.trimIndent()
         )
         assertElementEquals(
             "WidthCastExpression(Ubit<`8`>, ConstantExpression(Ubit<`4`>, 4'h0), 8)",
+            projectContext.findExpression("x")
+        )
+    }
+
+    @Test
+    fun `transform sext`() {
+        val projectContext = driveTest(
+            FunctionTransformerStage::class,
+            """
+                var x = u(0x0).sext<`8`>()
+            """.trimIndent()
+        )
+        assertElementEquals(
+            """
+                KtCallExpression(
+                    Sbit<`8`>,
+                    ${'$'}unsigned,
+                    null,
+                    [WidthCastExpression(
+                        Sbit<`8`>,
+                        KtCallExpression(Sbit<`8`>, ${'$'}signed, null, [ConstantExpression(*)], []),
+                        8
+                    )],
+                    []
+                )
+            """.trimIndent(),
             projectContext.findExpression("x")
         )
     }

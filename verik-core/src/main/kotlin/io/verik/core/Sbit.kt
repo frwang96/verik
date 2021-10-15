@@ -310,9 +310,16 @@ class Sbit<N : `*`> private constructor() {
     }
 
     /**
+     * Extend to [M] bits with zero extension.
+     */
+    fun <M : `*`> uext(): Ubit<M> {
+        throw VerikException()
+    }
+
+    /**
      * Extend to [M] bits with sign extension.
      */
-    fun <M : `*`> ext(): Sbit<M> {
+    fun <M : `*`> sext(): Sbit<M> {
         throw VerikException()
     }
 

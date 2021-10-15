@@ -104,6 +104,22 @@ object CoreVk : CoreScope(CorePackage.VK) {
 
     val F_u_String = CoreKtBasicFunctionDeclaration(parent, "u", Core.Kt.C_String)
 
+    val F_u_Sbit = object : CoreKtTransformableFunctionDeclaration(parent, "u", Core.Vk.C_Sbit) {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return listOf(
+                TypeEqualsTypeConstraint(
+                    TypeAdapter.ofElement(callExpression.valueArguments[0], 0),
+                    TypeAdapter.ofElement(callExpression, 0)
+                )
+            )
+        }
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            return callExpression.valueArguments[0]
+        }
+    }
+
     val F_u0 = object : CoreKtTransformableFunctionDeclaration(parent, "u0") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {

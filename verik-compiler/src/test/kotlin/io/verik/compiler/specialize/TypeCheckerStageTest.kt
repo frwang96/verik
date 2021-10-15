@@ -77,7 +77,7 @@ internal class TypeCheckerStageTest : BaseTest() {
                 """
                     var x: Ubit<`8`> = nc()
                     fun f() {
-                        println(x.ext<`4`>())
+                        println(x.uext<`4`>())
                     }
                 """.trimIndent()
             )

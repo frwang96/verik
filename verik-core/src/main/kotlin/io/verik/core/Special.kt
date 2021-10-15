@@ -33,6 +33,13 @@ fun <N : `*`> i(): Int {
 }
 
 /**
+ * Converts [value] to [Ubit].
+ */
+fun u(value: Boolean): Ubit<`*`> {
+    throw VerikException()
+}
+
+/**
  * Constructs a [Ubit] out of the constant [value].
  */
 fun u(value: Int): Ubit<`*`> {
@@ -71,6 +78,13 @@ fun <N : `*`> u0(): Ubit<N> {
  * Returns a [Ubit] with all bits set to one.
  */
 fun <N : `*`> u1(): Ubit<N> {
+    throw VerikException()
+}
+
+/**
+ * Converts [value] to [Sbit].
+ */
+fun s(value: Boolean): Sbit<`*`> {
     throw VerikException()
 }
 

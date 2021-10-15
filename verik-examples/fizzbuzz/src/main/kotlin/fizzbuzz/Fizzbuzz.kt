@@ -37,9 +37,6 @@ class Fizzbuzz : Module() {
     val mi = MI()
 
     @Make
-    val ci = CI(mi)
-
-    @Make
     val cb = CB(posedge(false), z)
 
     @Run
@@ -52,6 +49,8 @@ class Fizzbuzz : Module() {
         }
         x[0] = u0()
         x[z] = u0()
+        x[0] = z.uext()
+        x[0] = u(z.sext())
         y[0].value = 0
         z++
         println(E.A)
@@ -94,8 +93,6 @@ class Fizzbuzz : Module() {
 }
 
 class MI : ModuleInterface()
-
-class CI(val mi: MI) : Module()
 
 class CB(
     override val event: Event,

@@ -409,7 +409,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_ext = object : CoreKtTransformableFunctionDeclaration(parent, "ext") {
+    val F_uext = object : CoreKtTransformableFunctionDeclaration(parent, "uext") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -432,6 +432,39 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
                 callExpression.type,
                 callExpression.receiver!!,
                 value
+            )
+        }
+    }
+
+    val F_sext = object : CoreKtTransformableFunctionDeclaration(parent, "sext") {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return F_uext.getTypeConstraints(callExpression)
+        }
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            val callExpressionSigned = EKtCallExpression(
+                callExpression.location,
+                Core.Vk.C_Sbit.toType(callExpression.type.arguments[0].copy()),
+                Core.Sv.F_signed,
+                null,
+                arrayListOf(callExpression.receiver!!),
+                ArrayList()
+            )
+            val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
+            val widthCastExpression = EWidthCastExpression(
+                callExpression.location,
+                callExpression.type,
+                callExpressionSigned,
+                value
+            )
+            return EKtCallExpression(
+                callExpression.location,
+                callExpression.type.copy(),
+                Core.Sv.F_unsigned,
+                null,
+                arrayListOf(widthCastExpression),
+                ArrayList()
             )
         }
     }
