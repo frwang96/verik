@@ -18,7 +18,6 @@ package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.kt.EKtBasicClass
@@ -109,9 +108,7 @@ object DeclarationSpecializerStage : ProjectStage() {
         private fun addType(type: Type, element: EElement) {
             type.arguments.forEach { addType(it, element) }
             val reference = type.reference
-            if (reference is EKtBasicClass && reference.parent is EFile) {
-                if (!type.isSpecialized())
-                    return
+            if (reference is EKtBasicClass && reference.isSpecializable()) {
                 val typeParameterContext = TypeParameterContext
                     .get(type.arguments, reference, element)
                     ?: return
@@ -121,15 +118,22 @@ object DeclarationSpecializerStage : ProjectStage() {
 
         override fun visitTypedElement(typedElement: ETypedElement) {
             super.visitTypedElement(typedElement)
+            if (!typedElement.type.isSpecialized())
+                TypeSpecializer.specialize(typedElement.type, typedElement)
             addType(typedElement.type, typedElement)
             if (typedElement is EKtReferenceExpression) {
                 val reference = typedElement.reference
-                if (reference is EDeclaration && reference.parent is EFile)
+                if (reference is EDeclaration && reference.isSpecializable())
                     declarationBindingQueue.push(DeclarationBinding(reference, TypeParameterContext.EMPTY))
             }
             if (typedElement is EKtCallExpression) {
+                typedElement.typeArguments.forEach {
+                    if (!it.isSpecialized())
+                        TypeSpecializer.specialize(it, typedElement)
+                    addType(it, typedElement)
+                }
                 val reference = typedElement.reference
-                if (reference is EKtAbstractFunction && reference.parent is EFile) {
+                if (reference is EKtAbstractFunction && reference.isSpecializable()) {
                     val typeParameterContext = TypeParameterContext.get(
                         typedElement.typeArguments,
                         reference,

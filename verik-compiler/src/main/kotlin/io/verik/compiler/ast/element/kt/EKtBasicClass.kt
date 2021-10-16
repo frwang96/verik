@@ -47,15 +47,15 @@ class EKtBasicClass(
         isEnum: Boolean,
         primaryConstructor: EPrimaryConstructor?
     ) {
-        this.supertype = supertype
         declarations.forEach { it.parent = this }
-        this.declarations = ArrayList(declarations)
         typeParameters.forEach { it.parent = this }
-        this.typeParameters = ArrayList(typeParameters)
         annotations.forEach { it.parent = this }
+        primaryConstructor?.parent = this
+        this.supertype = supertype
+        this.declarations = ArrayList(declarations)
+        this.typeParameters = ArrayList(typeParameters)
         this.annotations = annotations
         this.isEnum = isEnum
-        primaryConstructor?.parent = this
         this.primaryConstructor = primaryConstructor
     }
 

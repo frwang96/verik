@@ -18,11 +18,13 @@ package io.verik.compiler.specialize
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.findDeclaration
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class DeclarationSpecializerStageTest : BaseTest() {
 
     @Test
+    @Disabled
     fun `specialize class type parameter`() {
         val projectContext = driveTest(
             DeclarationSpecializerStage::class,

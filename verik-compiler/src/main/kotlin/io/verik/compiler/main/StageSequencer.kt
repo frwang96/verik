@@ -47,7 +47,6 @@ import io.verik.compiler.specialize.TypeCheckerStage
 import io.verik.compiler.specialize.TypeParameterTypeCheckerStage
 import io.verik.compiler.specialize.TypeResolvedCheckerStage
 import io.verik.compiler.specialize.TypeResolverStage
-import io.verik.compiler.specialize.TypeSpecializerStage
 import io.verik.compiler.transform.mid.AssignmentTransformerStage
 import io.verik.compiler.transform.mid.CaseStatementTransformerStage
 import io.verik.compiler.transform.mid.ConstantExpressionEvaluatorStage
@@ -117,7 +116,6 @@ object StageSequencer {
         stageSequence.add(TypeResolverStage)
         stageSequence.add(TypeResolvedCheckerStage)
         stageSequence.add(DeclarationSpecializerStage)
-        stageSequence.add(TypeSpecializerStage)
         stageSequence.add(TypeCheckerStage)
 
         // Interpret

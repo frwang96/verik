@@ -35,10 +35,10 @@ class EKtProperty(
     override var annotations: List<EAnnotation> = listOf()
 
     fun init(type: Type, initializer: EExpression?, annotations: List<EAnnotation>) {
-        this.type = type
         initializer?.parent = this
-        this.initializer = initializer
         annotations.forEach { it.parent = this }
+        this.type = type
+        this.initializer = initializer
         this.annotations = annotations
     }
 
