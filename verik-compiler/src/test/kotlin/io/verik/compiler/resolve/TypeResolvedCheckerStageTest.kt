@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.specialize
+package io.verik.compiler.resolve
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestErrorException

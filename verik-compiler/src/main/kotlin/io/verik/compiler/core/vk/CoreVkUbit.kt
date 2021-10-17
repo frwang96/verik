@@ -34,13 +34,13 @@ import io.verik.compiler.core.common.CoreKtBinaryFunctionDeclaration
 import io.verik.compiler.core.common.CoreKtTransformableFunctionDeclaration
 import io.verik.compiler.core.common.CoreKtUnaryFunctionDeclaration
 import io.verik.compiler.core.common.CoreScope
-import io.verik.compiler.specialize.BinaryOperatorTypeConstraint
-import io.verik.compiler.specialize.BinaryOperatorTypeConstraintKind
-import io.verik.compiler.specialize.ComparisonTypeConstraint
-import io.verik.compiler.specialize.ComparisonTypeConstraintKind
-import io.verik.compiler.specialize.TypeAdapter
-import io.verik.compiler.specialize.TypeConstraint
-import io.verik.compiler.specialize.TypeEqualsTypeConstraint
+import io.verik.compiler.resolve.BinaryOperatorTypeConstraint
+import io.verik.compiler.resolve.BinaryOperatorTypeConstraintKind
+import io.verik.compiler.resolve.ComparisonTypeConstraint
+import io.verik.compiler.resolve.ComparisonTypeConstraintKind
+import io.verik.compiler.resolve.TypeAdapter
+import io.verik.compiler.resolve.TypeConstraint
+import io.verik.compiler.resolve.TypeEqualsTypeConstraint
 
 object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 

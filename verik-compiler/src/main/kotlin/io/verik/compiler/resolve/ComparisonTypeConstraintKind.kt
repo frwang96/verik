@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.specialize
+package io.verik.compiler.resolve
 
 enum class ComparisonTypeConstraintKind {
     EXT,
