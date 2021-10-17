@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.copy
+package io.verik.compiler.resolve
 
-import io.verik.compiler.ast.element.common.EDeclaration
-
-data class DeclarationBinding(val declaration: EDeclaration, val typeParameterContext: TypeParameterContext)
+enum class ComparisonTypeConstraintKind {
+    EXT,
+    TRU
+}

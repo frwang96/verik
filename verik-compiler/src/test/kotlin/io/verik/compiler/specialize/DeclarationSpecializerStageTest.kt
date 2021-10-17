@@ -38,6 +38,23 @@ internal class DeclarationSpecializerStageTest : BaseTest() {
     }
 
     @Test
+    fun `specialize class with property`() {
+        val projectContext = driveTest(
+            DeclarationSpecializerStage::class,
+            """
+                class C<N : `*`> {
+                    val x: Ubit<N> = nc()
+                }
+                val c = C<`8`>()
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtBasicClass(C_8, [KtProperty(x, Ubit<`8`>, KtCallExpression(*), [])], [], [], false, *)",
+            projectContext.findDeclaration("C_8")
+        )
+    }
+
+    @Test
     fun `specialize function type parameter`() {
         val projectContext = driveTest(
             DeclarationSpecializerStage::class,

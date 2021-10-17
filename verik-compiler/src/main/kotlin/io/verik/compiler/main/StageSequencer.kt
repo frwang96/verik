@@ -16,8 +16,8 @@
 
 package io.verik.compiler.main
 
-import io.verik.compiler.cast.CasterDeclarationIndexerStage
 import io.verik.compiler.cast.CasterStage
+import io.verik.compiler.cast.DeclarationCastIndexerStage
 import io.verik.compiler.check.post.CardinalPositiveCheckerStage
 import io.verik.compiler.check.post.FileCheckerStage
 import io.verik.compiler.check.post.KeywordCheckerStage
@@ -38,16 +38,15 @@ import io.verik.compiler.interpret.FunctionInterpreterStage
 import io.verik.compiler.interpret.ModulePortParentResolverStage
 import io.verik.compiler.interpret.PropertyInterpreterStage
 import io.verik.compiler.interpret.ValueParameterInterpreterStage
+import io.verik.compiler.resolve.TypeCheckerStage
+import io.verik.compiler.resolve.TypeParameterTypeCheckerStage
+import io.verik.compiler.resolve.TypeResolvedCheckerStage
+import io.verik.compiler.resolve.TypeResolverStage
 import io.verik.compiler.serialize.general.ConfigFileSerializerStage
 import io.verik.compiler.serialize.general.OrderFileSerializerStage
 import io.verik.compiler.serialize.general.PackageFileSerializerStage
 import io.verik.compiler.serialize.source.SourceSerializerStage
 import io.verik.compiler.specialize.DeclarationSpecializerStage
-import io.verik.compiler.specialize.TypeCheckerStage
-import io.verik.compiler.specialize.TypeParameterTypeCheckerStage
-import io.verik.compiler.specialize.TypeResolvedCheckerStage
-import io.verik.compiler.specialize.TypeResolverStage
-import io.verik.compiler.specialize.TypeSpecializerStage
 import io.verik.compiler.transform.mid.AssignmentTransformerStage
 import io.verik.compiler.transform.mid.CaseStatementTransformerStage
 import io.verik.compiler.transform.mid.ConstantExpressionEvaluatorStage
@@ -97,7 +96,7 @@ object StageSequencer {
         stageSequence.add(ImportDirectiveCheckerStage)
 
         // Cast
-        stageSequence.add(CasterDeclarationIndexerStage)
+        stageSequence.add(DeclarationCastIndexerStage)
         stageSequence.add(CasterStage)
 
         // PreTransform
@@ -112,12 +111,11 @@ object StageSequencer {
         stageSequence.add(BitConstantTransformerStage)
         stageSequence.add(ConstantExpressionTransformerStage)
 
-        // Specialize
+        // Resolve
         stageSequence.add(TypeParameterTypeCheckerStage)
         stageSequence.add(TypeResolverStage)
         stageSequence.add(TypeResolvedCheckerStage)
         stageSequence.add(DeclarationSpecializerStage)
-        stageSequence.add(TypeSpecializerStage)
         stageSequence.add(TypeCheckerStage)
 
         // Interpret

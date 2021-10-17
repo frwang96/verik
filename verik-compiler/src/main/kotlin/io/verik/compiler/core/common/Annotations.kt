@@ -18,14 +18,16 @@ package io.verik.compiler.core.common
 
 object Annotations {
 
-    const val IN = "io.verik.core.In"
-    const val OUT = "io.verik.core.Out"
+    const val TOP = "io.verik.core.Top"
+    const val RELABEL = "io.verik.core.Relabel"
 
     const val COM = "io.verik.core.Com"
     const val SEQ = "io.verik.core.Seq"
     const val RUN = "io.verik.core.Run"
     const val TASK = "io.verik.core.Task"
 
-    const val TOP = "io.verik.core.Top"
-    const val RELABEL = "io.verik.core.Relabel"
+    const val MAKE = "io.verik.core.Make"
+
+    const val IN = "io.verik.core.In"
+    const val OUT = "io.verik.core.Out"
 }

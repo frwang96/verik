@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.specialize
+package io.verik.compiler.resolve
 
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
@@ -22,24 +22,24 @@ import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 
-object TypeResolverStage : ProjectStage() {
+object TypeCheckerStage : ProjectStage() {
 
-    override val checkNormalization = true
+    override val checkNormalization = false
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.project.accept(TypeResolverVisitor)
+        projectContext.project.accept(TypeCheckerVisitor)
     }
 
-    private object TypeResolverVisitor : TreeVisitor() {
+    private object TypeCheckerVisitor : TreeVisitor() {
 
         override fun visitKtFunction(function: EKtFunction) {
             val typeConstraints = TypeConstraintCollector.collect(function)
-            TypeConstraintResolver.resolve(typeConstraints)
+            TypeConstraintChecker.check(typeConstraints)
         }
 
         override fun visitKtProperty(property: EKtProperty) {
             val typeConstraints = TypeConstraintCollector.collect(property)
-            TypeConstraintResolver.resolve(typeConstraints)
+            TypeConstraintChecker.check(typeConstraints)
         }
     }
 }

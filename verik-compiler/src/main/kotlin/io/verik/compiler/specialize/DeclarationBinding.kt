@@ -16,7 +16,6 @@
 
 package io.verik.compiler.specialize
 
-enum class ComparisonTypeConstraintKind {
-    EXT,
-    TRU
-}
+import io.verik.compiler.ast.element.common.EDeclaration
+
+data class DeclarationBinding(val declaration: EDeclaration, val typeParameterContext: TypeParameterContext)

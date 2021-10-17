@@ -35,8 +35,8 @@ class EPrimaryConstructor(
     override var typeParameters: ArrayList<ETypeParameter> = ArrayList()
 
     fun init(type: Type, valueParameters: List<EKtValueParameter>, typeParameters: List<ETypeParameter>) {
-        this.type = type
         valueParameters.forEach { it.parent = this }
+        this.type = type
         this.valueParameters = ArrayList(valueParameters)
         this.typeParameters = ArrayList(typeParameters)
     }

@@ -33,8 +33,8 @@ class EKtValueParameter(
     override var annotations: List<EAnnotation> = listOf()
 
     fun init(type: Type, annotations: List<EAnnotation>) {
-        this.type = type
         annotations.forEach { it.parent = this }
+        this.type = type
         this.annotations = annotations
     }
 

@@ -16,6 +16,16 @@
 
 package io.verik.compiler.ast.element.common
 
+import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.interfaces.Declaration
 
-abstract class EDeclaration : ETypedElement(), Declaration
+abstract class EDeclaration : ETypedElement(), Declaration {
+
+    fun isSpecializable(): Boolean {
+        return when (val parent = this.parent) {
+            is EFile -> true
+            is EKtBasicClass -> this in parent.declarations
+            else -> false
+        }
+    }
+}

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.copy
+package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.property.Type

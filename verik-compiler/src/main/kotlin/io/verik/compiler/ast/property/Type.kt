@@ -68,6 +68,8 @@ class Type(
     fun isSpecialized(): Boolean {
         if (isCardinalType() && reference !is CoreCardinalConstantDeclaration)
             return false
+        if (reference is ETypeParameter)
+            return false
         return arguments.all { it.isSpecialized() }
     }
 

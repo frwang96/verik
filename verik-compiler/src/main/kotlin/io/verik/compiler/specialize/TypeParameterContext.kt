@@ -14,45 +14,53 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.copy
+package io.verik.compiler.specialize
 
+import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.ETypeParameter
+import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.interfaces.TypeParameterized
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.message.Messages
 
 data class TypeParameterContext(val typeParameterBindings: List<TypeParameterBinding>) {
 
-    fun bind(type: Type, element: EElement) {
-        val reference = type.reference
-        if (reference is ETypeParameter) {
-            typeParameterBindings.forEach { typeParameterBinding ->
-                if (typeParameterBinding.typeParameter == reference) {
-                    type.reference = typeParameterBinding.type.reference
-                    type.arguments = ArrayList(typeParameterBinding.type.arguments.map { it.copy() })
-                    return
-                }
-            }
-            Messages.INTERNAL_ERROR.on(element, "Unable to bind type parameter ${reference.name}")
-        } else {
-            type.arguments.forEach { bind(it, element) }
+    fun specialize(typeParameter: ETypeParameter, element: EElement): Type {
+        typeParameterBindings.forEach {
+            if (it.typeParameter == typeParameter)
+                return it.type.copy()
         }
+        Messages.INTERNAL_ERROR.on(element, "Unable to specialize type parameter ${typeParameter.name}")
+        return typeParameter.toType()
+    }
+
+    fun matches(typeParameterContext: TypeParameterContext): Boolean {
+        typeParameterContext.typeParameterBindings.forEach { typeParameterBinding ->
+            val matchedTypeParameterBinding = typeParameterBindings.find {
+                it.typeParameter == typeParameterBinding.typeParameter
+            } ?: return false
+            if (matchedTypeParameterBinding.type != typeParameterBinding.type)
+                return false
+        }
+        return true
     }
 
     companion object {
 
         val EMPTY = TypeParameterContext(listOf())
 
-        fun get(
+        fun getFromTypeArguments(
             typeArguments: List<Type>,
             typeParameterized: TypeParameterized,
             element: EElement
-        ): TypeParameterContext? {
+        ): TypeParameterContext {
             typeArguments.forEach {
                 if (!it.isSpecialized()) {
                     Messages.INTERNAL_ERROR.on(element, "Type argument not specialized: $it")
-                    return null
+                    return EMPTY
                 }
             }
             val expectedSize = typeParameterized.typeParameters.size
@@ -67,7 +75,25 @@ data class TypeParameterContext(val typeParameterBindings: List<TypeParameterBin
                     element,
                     "Mismatch in type parameters: Expected $expectedSize actual $actualSize"
                 )
-                null
+                EMPTY
+            }
+        }
+
+        fun getFromReceiver(
+            reference: EDeclaration,
+            receiver: EExpression?,
+            element: EElement,
+            specializerContext: SpecializerContext
+        ): TypeParameterContext {
+            return if (receiver != null) {
+                val specializedType = TypeSpecializer.specialize(receiver.type, specializerContext, element, false)
+                val specializedTypeReference = specializedType.reference
+                if (specializedTypeReference is EKtBasicClass) {
+                    getFromTypeArguments(specializedType.arguments, specializedTypeReference, element)
+                } else EMPTY
+            } else {
+                if (reference.parent !is EFile) specializerContext.typeParameterContext
+                else EMPTY
             }
         }
     }

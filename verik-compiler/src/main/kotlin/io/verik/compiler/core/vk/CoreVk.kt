@@ -37,13 +37,13 @@ import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.core.sv.CoreSv
 import io.verik.compiler.message.Messages
-import io.verik.compiler.specialize.ConcatenationTypeConstraint
-import io.verik.compiler.specialize.ReplicationTypeConstraint
-import io.verik.compiler.specialize.TypeAdapter
-import io.verik.compiler.specialize.TypeConstraint
-import io.verik.compiler.specialize.TypeEqualsTypeConstraint
-import io.verik.compiler.specialize.UnaryOperatorTypeConstraint
-import io.verik.compiler.specialize.UnaryOperatorTypeConstraintKind
+import io.verik.compiler.resolve.ConcatenationTypeConstraint
+import io.verik.compiler.resolve.ReplicationTypeConstraint
+import io.verik.compiler.resolve.TypeAdapter
+import io.verik.compiler.resolve.TypeConstraint
+import io.verik.compiler.resolve.TypeEqualsTypeConstraint
+import io.verik.compiler.resolve.UnaryOperatorTypeConstraint
+import io.verik.compiler.resolve.UnaryOperatorTypeConstraintKind
 
 object CoreVk : CoreScope(CorePackage.VK) {
 

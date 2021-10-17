@@ -20,7 +20,7 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.ast.property.SvUnaryOperatorKind
-import io.verik.compiler.specialize.TypeConstraint
+import io.verik.compiler.resolve.TypeConstraint
 
 sealed class CoreKtAbstractFunctionDeclaration constructor(
     override var name: String,

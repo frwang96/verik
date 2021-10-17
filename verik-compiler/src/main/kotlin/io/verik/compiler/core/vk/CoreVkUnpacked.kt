@@ -27,11 +27,11 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreKtPropertyDeclaration
 import io.verik.compiler.core.common.CoreKtTransformableFunctionDeclaration
 import io.verik.compiler.core.common.CoreScope
-import io.verik.compiler.specialize.TypeAdapter
-import io.verik.compiler.specialize.TypeConstraint
-import io.verik.compiler.specialize.TypeEqualsTypeConstraint
-import io.verik.compiler.specialize.UnaryOperatorTypeConstraint
-import io.verik.compiler.specialize.UnaryOperatorTypeConstraintKind
+import io.verik.compiler.resolve.TypeAdapter
+import io.verik.compiler.resolve.TypeConstraint
+import io.verik.compiler.resolve.TypeEqualsTypeConstraint
+import io.verik.compiler.resolve.UnaryOperatorTypeConstraint
+import io.verik.compiler.resolve.UnaryOperatorTypeConstraintKind
 
 object CoreVkUnpacked : CoreScope(Core.Vk.C_Unpacked) {
 

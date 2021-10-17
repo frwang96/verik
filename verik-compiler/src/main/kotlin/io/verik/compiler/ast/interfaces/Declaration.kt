@@ -30,6 +30,10 @@ interface Declaration {
     fun toType(vararg arguments: Type): Type {
         return Type(this, arrayListOf(*arguments))
     }
+
+    fun toType(arguments: List<Type>): Type {
+        return Type(this, ArrayList(arguments))
+    }
 }
 
 inline fun <reified T> Declaration.cast(element: KtElement): T? {

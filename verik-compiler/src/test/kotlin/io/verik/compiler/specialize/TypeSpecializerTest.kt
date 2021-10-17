@@ -23,12 +23,12 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-internal class TypeSpecializerStageTest : BaseTest() {
+internal class TypeSpecializerTest : BaseTest() {
 
     @Test
     fun `property typealias`() {
         val projectContext = driveTest(
-            TypeSpecializerStage::class,
+            DeclarationSpecializerStage::class,
             """
                 typealias N = `8`
                 var x: Ubit<N> = u(0x00)
@@ -43,7 +43,7 @@ internal class TypeSpecializerStageTest : BaseTest() {
     @Test
     fun `property typealias nested`() {
         val projectContext = driveTest(
-            TypeSpecializerStage::class,
+            DeclarationSpecializerStage::class,
             """
                 typealias N = `8`
                 typealias M = N
@@ -59,7 +59,7 @@ internal class TypeSpecializerStageTest : BaseTest() {
     @Test
     fun `property typealias function nested`() {
         val projectContext = driveTest(
-            TypeSpecializerStage::class,
+            DeclarationSpecializerStage::class,
             """
                 typealias N = `8`
                 typealias M = ADD<N, N>
@@ -76,7 +76,7 @@ internal class TypeSpecializerStageTest : BaseTest() {
     fun `property cardinal out of range`() {
         assertThrows<TestErrorException> {
             driveTest(
-                TypeSpecializerStage::class,
+                DeclarationSpecializerStage::class,
                 """
                     var x: Ubit<EXP<`32`>> = u0()
                 """.trimIndent()
