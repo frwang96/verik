@@ -28,7 +28,7 @@ import io.verik.compiler.ast.element.sv.EWidthCastExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.ast.property.SvUnaryOperatorKind
-import io.verik.compiler.copy.ElementCopier
+import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreKtBinaryFunctionDeclaration
 import io.verik.compiler.core.common.CoreKtTransformableFunctionDeclaration
@@ -88,7 +88,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
                 callExpression.location,
                 Core.Kt.C_Int.toType(),
                 Core.Kt.Int.F_plus_Int,
-                ElementCopier.copy(callExpression.valueArguments[0]),
+                ExpressionCopier.copy(callExpression.valueArguments[0]),
                 arrayListOf(EConstantExpression(callExpression.location, Core.Kt.C_Int.toType(), "${value - 1}")),
                 arrayListOf()
             )
@@ -516,7 +516,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
                 callExpression.location,
                 Core.Kt.C_Int.toType(),
                 Core.Kt.Int.F_plus_Int,
-                ElementCopier.copy(callExpression.valueArguments[0]),
+                ExpressionCopier.copy(callExpression.valueArguments[0]),
                 arrayListOf(EConstantExpression(callExpression.location, Core.Kt.C_Int.toType(), "${value - 1}")),
                 arrayListOf()
             )

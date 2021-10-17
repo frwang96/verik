@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.copy
+package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
@@ -22,22 +22,15 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EAnnotation
 import io.verik.compiler.message.Messages
 
-object ElementCopier {
+object ElementSpecializer {
 
-    fun <E : EElement> copy(element: E): E {
-        val copyContext = CopyContext()
-        val copierDeclarationIndexerVisitor = CopierDeclarationIndexerVisitor(copyContext)
-        element.accept(copierDeclarationIndexerVisitor)
-        return copy(element, copyContext)
-    }
-
-    fun <E : EElement> copy(element: E, copyContext: CopyContext): E {
+    fun <E : EElement> specialize(element: E, specializerContext: SpecializerContext): E {
         val copiedElement = when (element) {
-            is EDeclaration -> DeclarationCopier.copyDeclaration(element, copyContext)
-            is EExpression -> ExpressionCopier.copyExpression(element, copyContext)
-            is EAnnotation -> copyAnnotation(element)
+            is EDeclaration -> DeclarationSpecializer.specializeDeclaration(element, specializerContext)
+            is EExpression -> ExpressionSpecializer.specializeExpression(element, specializerContext)
+            is EAnnotation -> specializeAnnotation(element)
             else -> {
-                Messages.INTERNAL_ERROR.on(element, "Unable to copy element: $element")
+                Messages.INTERNAL_ERROR.on(element, "Unable to specialize element: $element")
                 element
             }
         }
@@ -45,7 +38,7 @@ object ElementCopier {
         return copiedElement as E
     }
 
-    private fun copyAnnotation(annotation: EAnnotation): EAnnotation {
+    private fun specializeAnnotation(annotation: EAnnotation): EAnnotation {
         return EAnnotation(
             annotation.location,
             annotation.name,

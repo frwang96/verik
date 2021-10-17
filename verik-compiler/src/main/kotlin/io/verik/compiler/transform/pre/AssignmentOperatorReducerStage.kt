@@ -18,9 +18,9 @@ package io.verik.compiler.transform.pre
 
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
+import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.copy.ElementCopier
 import io.verik.compiler.main.ProjectContext
 
 object AssignmentOperatorReducerStage : ProjectStage() {
@@ -44,7 +44,7 @@ object AssignmentOperatorReducerStage : ProjectStage() {
             super.visitKtBinaryExpression(binaryExpression)
             val kind = assignmentOperatorMap[binaryExpression.kind]
             if (kind != null) {
-                val copiedLeft = ElementCopier.copy(binaryExpression.left)
+                val copiedLeft = ExpressionCopier.copy(binaryExpression.left)
                 val assignmentExpression = EKtBinaryExpression(
                     binaryExpression.location,
                     binaryExpression.type,

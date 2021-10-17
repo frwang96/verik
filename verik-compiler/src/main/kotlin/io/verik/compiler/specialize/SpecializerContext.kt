@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.copy
+package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
@@ -25,7 +25,7 @@ import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.message.Messages
 
-class CopyContext {
+class SpecializerContext {
 
     var typeParameterContext = TypeParameterContext.EMPTY
 
@@ -59,21 +59,20 @@ class CopyContext {
         return referenceForwardingMap.contains(declarationBinding)
     }
 
-    fun <E : EElement> copy(element: E): E {
-        return ElementCopier.copy(element, this)
+    fun <E : EElement> specialize(element: E): E {
+        return ElementSpecializer.specialize(element, this)
     }
 
-    fun copyType(typedElement: ETypedElement): Type {
-        return copyType(typedElement.type, typedElement)
+    fun specializeType(typedElement: ETypedElement): Type {
+        return specializeType(typedElement.type, typedElement)
     }
 
-    fun copyType(type: Type, element: EElement): Type {
+    fun specializeType(type: Type, element: EElement): Type {
         return when (val reference = type.reference) {
             is EKtBasicClass -> {
                 val boundType = type.copy()
                 bind(boundType, element)
-                val typeParameterContext = TypeParameterContext
-                    .get(boundType.arguments, reference, element)
+                val typeParameterContext = TypeParameterContext.get(boundType.arguments, reference, element)
                     ?: return type
                 val forwardedReference = referenceForwardingMap.get(reference, typeParameterContext)
                 if (forwardedReference != null) {
@@ -85,12 +84,12 @@ class CopyContext {
                 }
             }
             is ETypeParameter -> {
-                val copyType = reference.toType()
-                bind(copyType, element)
-                copyType
+                val specializedType = reference.toType()
+                bind(specializedType, element)
+                specializedType
             }
             else -> {
-                val arguments = type.arguments.map { copyType(it, element) }
+                val arguments = type.arguments.map { specializeType(it, element) }
                 Type(reference, ArrayList(arguments))
             }
         }

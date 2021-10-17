@@ -28,11 +28,6 @@ import io.verik.compiler.ast.interfaces.TypeParameterized
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.copy.CopierDeclarationIndexerVisitor
-import io.verik.compiler.copy.CopyContext
-import io.verik.compiler.copy.DeclarationBinding
-import io.verik.compiler.copy.ElementCopier
-import io.verik.compiler.copy.TypeParameterContext
 import io.verik.compiler.core.common.Annotations
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
@@ -50,23 +45,23 @@ object DeclarationSpecializerStage : ProjectStage() {
         )
 
         val declarationSpecializerVisitor = DeclarationSpecializerVisitor(declarationBindingQueue)
-        val copyContext = CopyContext()
-        val copierDeclarationIndexerVisitor = CopierDeclarationIndexerVisitor(copyContext)
+        val specializerContext = SpecializerContext()
+        val specializerDeclarationIndexerVisitor = SpecializerDeclarationIndexerVisitor(specializerContext)
         while (declarationBindingQueue.isNotEmpty()) {
             val declarationBinding = declarationBindingQueue.pop()
-            if (!copyContext.contains(declarationBinding)) {
-                copyContext.typeParameterContext = declarationBinding.typeParameterContext
+            if (!specializerContext.contains(declarationBinding)) {
+                specializerContext.typeParameterContext = declarationBinding.typeParameterContext
                 declarationBinding.declaration.accept(declarationSpecializerVisitor)
-                declarationBinding.declaration.accept(copierDeclarationIndexerVisitor)
+                declarationBinding.declaration.accept(specializerDeclarationIndexerVisitor)
             }
         }
 
         projectContext.project.files().forEach { file ->
             val declarations = file.declarations.flatMap { declaration ->
-                val typeParameterContexts = copyContext.getTypeParameterContexts(declaration)
+                val typeParameterContexts = specializerContext.getTypeParameterContexts(declaration)
                 typeParameterContexts.map {
-                    copyContext.typeParameterContext = it
-                    ElementCopier.copy(declaration, copyContext)
+                    specializerContext.typeParameterContext = it
+                    ElementSpecializer.specialize(declaration, specializerContext)
                 }
             }
             declarations.forEach { it.parent = file }
