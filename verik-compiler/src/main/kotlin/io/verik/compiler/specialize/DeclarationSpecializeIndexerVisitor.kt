@@ -18,6 +18,8 @@ package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.kt.EKtBasicClass
@@ -53,13 +55,37 @@ class DeclarationSpecializeIndexerVisitor(
         }
     }
 
+    private fun getReceiverTypeParameterContext(
+        reference: EDeclaration,
+        receiver: EExpression?,
+        element: EElement
+    ): TypeParameterContext {
+        return if (receiver != null) {
+            val specializedType = TypeSpecializer.specialize(receiver.type, specializerContext, element, false)
+            val specializedTypeReference = specializedType.reference
+            if (specializedTypeReference is EKtBasicClass) {
+                TypeParameterContext.get(specializedType.arguments, specializedTypeReference, element)
+                    ?: TypeParameterContext.EMPTY
+            } else TypeParameterContext.EMPTY
+        } else {
+            if (reference.parent !is EFile) specializerContext.typeParameterContext
+            else TypeParameterContext.EMPTY
+        }
+    }
+
     override fun visitTypedElement(typedElement: ETypedElement) {
         super.visitTypedElement(typedElement)
         addType(typedElement.type, typedElement)
         if (typedElement is EKtReferenceExpression) {
             val reference = typedElement.reference
-            if (reference is EDeclaration && reference.isSpecializable())
-                declarationBindingQueue.push(DeclarationBinding(reference, TypeParameterContext.EMPTY))
+            if (reference is EDeclaration && reference.isSpecializable()) {
+                val typeParameterContext = getReceiverTypeParameterContext(
+                    reference,
+                    typedElement.receiver,
+                    typedElement
+                )
+                declarationBindingQueue.push(DeclarationBinding(reference, typeParameterContext))
+            }
         }
         if (typedElement is EKtCallExpression) {
             typedElement.typeArguments.forEach {
@@ -67,18 +93,37 @@ class DeclarationSpecializeIndexerVisitor(
             }
             val reference = typedElement.reference
             if (reference is EKtAbstractFunction && reference.isSpecializable()) {
-                val typeParameterContext = TypeParameterContext.get(
+                val receiverTypeParameterContext = getReceiverTypeParameterContext(
+                    reference,
+                    typedElement.receiver,
+                    typedElement
+                )
+                val callExpressionTypeParameterContext = TypeParameterContext.get(
                     typedElement.typeArguments,
                     reference,
                     typedElement
                 ) ?: return
+                val typeParameterContext = TypeParameterContext(
+                    receiverTypeParameterContext.typeParameterBindings +
+                        callExpressionTypeParameterContext.typeParameterBindings
+                )
                 declarationBindingQueue.push(DeclarationBinding(reference, typeParameterContext))
             }
         }
     }
 
     override fun visitKtBasicClass(basicClass: EKtBasicClass) {
-        super.visitKtBasicClass(basicClass)
+        val entryPoints = EntryPointUtil.getKtBasicClassEntryPoints(
+            basicClass,
+            specializerContext.enableDeadCodeElimination
+        )
+        entryPoints.forEach {
+            declarationBindingQueue.push(DeclarationBinding(it, specializerContext.typeParameterContext))
+        }
+
+        basicClass.typeParameters.forEach { it.accept(this) }
+        basicClass.annotations.forEach { it.accept(this) }
+        basicClass.primaryConstructor?.accept(this)
         val specializedBasicClass = EKtBasicClass(basicClass.location, basicClass.name)
         specializerContext[basicClass] = specializedBasicClass
     }

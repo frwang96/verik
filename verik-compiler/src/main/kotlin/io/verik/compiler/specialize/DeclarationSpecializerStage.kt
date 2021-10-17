@@ -16,27 +16,21 @@
 
 package io.verik.compiler.specialize
 
-import io.verik.compiler.ast.element.common.EDeclaration
-import io.verik.compiler.ast.interfaces.Annotated
-import io.verik.compiler.ast.interfaces.TypeParameterized
 import io.verik.compiler.common.ProjectStage
-import io.verik.compiler.core.common.Annotations
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.backend.common.pop
-import org.jetbrains.kotlin.backend.common.push
 
 object DeclarationSpecializerStage : ProjectStage() {
 
     override val checkNormalization = true
 
     override fun process(projectContext: ProjectContext) {
-        val entryPoints = getEntryPoints(projectContext)
+        val entryPoints = EntryPointUtil.getEntryPoints(projectContext)
         val declarationBindingQueue = ArrayDeque(
             entryPoints.map { DeclarationBinding(it, TypeParameterContext.EMPTY) }
         )
 
-        val specializerContext = SpecializerContext()
+        val specializerContext = SpecializerContext(projectContext.config.enableDeadCodeElimination)
         val declarationSpecializeIndexerVisitor = DeclarationSpecializeIndexerVisitor(
             declarationBindingQueue,
             specializerContext
@@ -60,32 +54,5 @@ object DeclarationSpecializerStage : ProjectStage() {
             declarations.forEach { it.parent = file }
             file.declarations = ArrayList(declarations)
         }
-    }
-
-    private fun getEntryPoints(projectContext: ProjectContext): ArrayList<EDeclaration> {
-        val entryPoints = ArrayList<EDeclaration>()
-        if (projectContext.config.enableDeadCodeElimination) {
-            projectContext.project.files().forEach { file ->
-                file.declarations.forEach {
-                    if (it is Annotated && it.hasAnnotation(Annotations.TOP)) {
-                        if (it is TypeParameterized && it.typeParameters.isNotEmpty()) {
-                            Messages.TYPE_PARAMETERS_ON_TOP.on(it)
-                        } else {
-                            entryPoints.push(it)
-                        }
-                    }
-                }
-            }
-            if (entryPoints.isEmpty())
-                Messages.NO_TOP_DECLARATIONS.on(projectContext.project)
-        } else {
-            projectContext.project.files().forEach { file ->
-                file.declarations.forEach {
-                    if (it !is TypeParameterized || it.typeParameters.isEmpty())
-                        entryPoints.push(it)
-                }
-            }
-        }
-        return entryPoints
     }
 }

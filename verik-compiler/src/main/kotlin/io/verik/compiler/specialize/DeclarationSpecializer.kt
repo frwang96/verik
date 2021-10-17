@@ -59,8 +59,17 @@ object DeclarationSpecializer {
         if (typeParameterString != null)
             specializedBasicClass.name = "${specializedBasicClass.name}_$typeParameterString"
 
+        val typeParameterContext = specializerContext.typeParameterContext
+        val declarations = basicClass.declarations.flatMap { declaration ->
+            val typeParameterContexts = specializerContext.getTypeParameterContexts(declaration)
+            typeParameterContexts.map {
+                specializerContext.typeParameterContext = it
+                specializerContext.specialize(declaration)
+            }
+        }
+        specializerContext.typeParameterContext = typeParameterContext
+
         val superType = specializerContext.specializeType(basicClass.supertype, basicClass)
-        val declarations = basicClass.declarations.map { specializerContext.specialize(it) }
         val annotations = basicClass.annotations.map { specializerContext.specialize(it) }
         val primaryConstructor = basicClass.primaryConstructor?.let { specializerContext.specialize(it) }
 
