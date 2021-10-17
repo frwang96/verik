@@ -17,6 +17,7 @@
 package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EDeclaration
+import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.message.Messages
 
@@ -32,22 +33,27 @@ class ReferenceForwardingMap {
         referenceForwardingMap[DeclarationBinding(oldDeclaration, typeParameterContext)] = newDeclaration
     }
 
-    operator fun get(declaration: Declaration, typeParameterContext: TypeParameterContext): Declaration {
-        return if (declaration is EDeclaration) {
-            val forwardedDeclaration = referenceForwardingMap[DeclarationBinding(declaration, typeParameterContext)]
-            if (forwardedDeclaration != null) {
-                forwardedDeclaration
-            } else {
-                Messages.INTERNAL_ERROR.on(declaration, "Forwarded declaration not found: ${declaration.name}")
-                declaration
-            }
-        } else declaration
+    operator fun get(
+        declaration: EDeclaration,
+        typeParameterContext: TypeParameterContext,
+        element: EElement
+    ): Declaration {
+        val forwardedDeclaration = referenceForwardingMap[DeclarationBinding(declaration, typeParameterContext)]
+        return if (forwardedDeclaration != null) {
+            forwardedDeclaration
+        } else {
+            Messages.INTERNAL_ERROR.on(element, "Forwarded declaration not found: ${declaration.name}")
+            declaration
+        }
     }
 
-    fun getTypeParameterContexts(declaration: EDeclaration): List<TypeParameterContext> {
+    fun matchTypeParameterContexts(
+        declaration: EDeclaration,
+        typeParameterContext: TypeParameterContext
+    ): List<TypeParameterContext> {
         val typeParameterContexts = ArrayList<TypeParameterContext>()
         referenceForwardingMap.keys.forEach {
-            if (it.declaration == declaration)
+            if (it.declaration == declaration && it.typeParameterContext.matches(typeParameterContext))
                 typeParameterContexts.add(it.typeParameterContext)
         }
         return typeParameterContexts

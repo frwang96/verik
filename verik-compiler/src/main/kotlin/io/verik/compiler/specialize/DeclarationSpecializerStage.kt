@@ -45,7 +45,10 @@ object DeclarationSpecializerStage : ProjectStage() {
 
         projectContext.project.files().forEach { file ->
             val declarations = file.declarations.flatMap { declaration ->
-                val typeParameterContexts = specializerContext.getTypeParameterContexts(declaration)
+                val typeParameterContexts = specializerContext.matchTypeParameterContexts(
+                    declaration,
+                    TypeParameterContext.EMPTY
+                )
                 typeParameterContexts.map {
                     specializerContext.typeParameterContext = it
                     specializerContext.specialize(declaration)

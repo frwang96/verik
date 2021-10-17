@@ -17,6 +17,7 @@
 package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EConstantExpression
+import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EPropertyStatement
@@ -103,9 +104,21 @@ object ExpressionSpecializer {
         specializerContext: SpecializerContext
     ): EKtReferenceExpression {
         val type = specializerContext.specializeType(referenceExpression)
-        val forwardedReference = specializerContext[referenceExpression.reference]
         val receiver = referenceExpression.receiver?.let { specializerContext.specialize(it) }
-        return EKtReferenceExpression(referenceExpression.location, type, forwardedReference, receiver)
+
+        val reference = referenceExpression.reference
+        return if (reference is EDeclaration) {
+            val typeParameterContext = TypeParameterContext.getFromReceiver(
+                reference,
+                referenceExpression.receiver,
+                referenceExpression,
+                specializerContext
+            )
+            val forwardedReference = specializerContext[reference, typeParameterContext, referenceExpression]
+            EKtReferenceExpression(referenceExpression.location, type, forwardedReference, receiver)
+        } else {
+            EKtReferenceExpression(referenceExpression.location, type, reference, receiver)
+        }
     }
 
     private fun specializeKtCallExpression(
@@ -117,23 +130,23 @@ object ExpressionSpecializer {
         val valueArguments = callExpression.valueArguments.map { specializerContext.specialize(it) }
 
         val reference = callExpression.reference
-        return if (callExpression.typeArguments.isEmpty() || reference !is EKtAbstractFunction) {
-            val forwardedReference = specializerContext[reference]
-            val typeArguments = callExpression.typeArguments.map {
-                specializerContext.specializeType(it, callExpression)
-            }
-            EKtCallExpression(
-                callExpression.location,
-                type,
-                forwardedReference,
-                receiver,
-                ArrayList(valueArguments),
-                ArrayList(typeArguments)
+        return if (reference is EKtAbstractFunction) {
+            val receiverTypeParameterContext = TypeParameterContext.getFromReceiver(
+                reference,
+                callExpression.receiver,
+                callExpression,
+                specializerContext
             )
-        } else {
-            val typeParameterContext = TypeParameterContext.get(callExpression.typeArguments, reference, callExpression)
-                ?: return callExpression
-            val forwardedReference = specializerContext[reference, typeParameterContext]
+            val callExpressionTypeParameterContext = TypeParameterContext.getFromTypeArguments(
+                callExpression.typeArguments,
+                reference,
+                callExpression
+            )
+            val typeParameterContext = TypeParameterContext(
+                receiverTypeParameterContext.typeParameterBindings +
+                    callExpressionTypeParameterContext.typeParameterBindings
+            )
+            val forwardedReference = specializerContext[reference, typeParameterContext, callExpression]
             EKtCallExpression(
                 callExpression.location,
                 type,
@@ -141,6 +154,18 @@ object ExpressionSpecializer {
                 receiver,
                 ArrayList(valueArguments),
                 arrayListOf()
+            )
+        } else {
+            val typeArguments = callExpression.typeArguments.map {
+                specializerContext.specializeType(it, callExpression)
+            }
+            EKtCallExpression(
+                callExpression.location,
+                type,
+                reference,
+                receiver,
+                ArrayList(valueArguments),
+                ArrayList(typeArguments)
             )
         }
     }

@@ -34,16 +34,23 @@ class SpecializerContext(
         referenceForwardingMap[oldDeclaration, typeParameterContext] = newDeclaration
     }
 
-    operator fun get(declaration: Declaration): Declaration {
-        return referenceForwardingMap[declaration, typeParameterContext]
+    operator fun get(declaration: EDeclaration, element: EElement): Declaration {
+        return referenceForwardingMap[declaration, typeParameterContext, element]
     }
 
-    operator fun get(declaration: EDeclaration, typeParameterContext: TypeParameterContext): Declaration {
-        return referenceForwardingMap[declaration, typeParameterContext]
+    operator fun get(
+        declaration: EDeclaration,
+        typeParameterContext: TypeParameterContext,
+        element: EElement
+    ): Declaration {
+        return referenceForwardingMap[declaration, typeParameterContext, element]
     }
 
-    fun getTypeParameterContexts(declaration: EDeclaration): List<TypeParameterContext> {
-        return referenceForwardingMap.getTypeParameterContexts(declaration)
+    fun matchTypeParameterContexts(
+        declaration: EDeclaration,
+        typeParameterContext: TypeParameterContext
+    ): List<TypeParameterContext> {
+        return referenceForwardingMap.matchTypeParameterContexts(declaration, typeParameterContext)
     }
 
     fun contains(declarationBinding: DeclarationBinding): Boolean {

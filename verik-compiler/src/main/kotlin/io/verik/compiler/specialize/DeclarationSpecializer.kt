@@ -51,7 +51,7 @@ object DeclarationSpecializer {
         basicClass: EKtBasicClass,
         specializerContext: SpecializerContext
     ): EKtBasicClass {
-        val specializedBasicClass = specializerContext[basicClass]
+        val specializedBasicClass = specializerContext[basicClass, basicClass]
             .cast<EKtBasicClass>(basicClass)
             ?: return basicClass
 
@@ -61,7 +61,7 @@ object DeclarationSpecializer {
 
         val typeParameterContext = specializerContext.typeParameterContext
         val declarations = basicClass.declarations.flatMap { declaration ->
-            val typeParameterContexts = specializerContext.getTypeParameterContexts(declaration)
+            val typeParameterContexts = specializerContext.matchTypeParameterContexts(declaration, typeParameterContext)
             typeParameterContexts.map {
                 specializerContext.typeParameterContext = it
                 specializerContext.specialize(declaration)
@@ -85,7 +85,7 @@ object DeclarationSpecializer {
     }
 
     private fun specializeKtFunction(function: EKtFunction, specializerContext: SpecializerContext): EKtFunction {
-        val specializedFunction = specializerContext[function]
+        val specializedFunction = specializerContext[function, function]
             .cast<EKtFunction>(function)
             ?: return function
 
@@ -106,7 +106,7 @@ object DeclarationSpecializer {
         primaryConstructor: EPrimaryConstructor,
         specializerContext: SpecializerContext
     ): EPrimaryConstructor {
-        val specializedPrimaryConstructor = specializerContext[primaryConstructor]
+        val specializedPrimaryConstructor = specializerContext[primaryConstructor, primaryConstructor]
             .cast<EPrimaryConstructor>(primaryConstructor)
             ?: return primaryConstructor
 
@@ -118,7 +118,7 @@ object DeclarationSpecializer {
     }
 
     private fun specializeKtProperty(property: EKtProperty, specializerContext: SpecializerContext): EKtProperty {
-        val specializedProperty = specializerContext[property]
+        val specializedProperty = specializerContext[property, property]
             .cast<EKtProperty>(property)
             ?: return property
 
@@ -131,7 +131,7 @@ object DeclarationSpecializer {
     }
 
     private fun specializeKtEnumEntry(enumEntry: EKtEnumEntry, specializerContext: SpecializerContext): EKtEnumEntry {
-        val specializedEnumEntry = specializerContext[enumEntry]
+        val specializedEnumEntry = specializerContext[enumEntry, enumEntry]
             .cast<EKtEnumEntry>(enumEntry)
             ?: return enumEntry
 
@@ -146,7 +146,7 @@ object DeclarationSpecializer {
         valueParameter: EKtValueParameter,
         specializerContext: SpecializerContext
     ): EKtValueParameter {
-        val specializedValueParameter = specializerContext[valueParameter]
+        val specializedValueParameter = specializerContext[valueParameter, valueParameter]
             .cast<EKtValueParameter>(valueParameter)
             ?: return valueParameter
 

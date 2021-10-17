@@ -18,8 +18,6 @@ package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.kt.EKtBasicClass
@@ -48,28 +46,8 @@ class DeclarationSpecializeIndexerVisitor(
         type.arguments.forEach { addSpecializedType(it, element) }
         val reference = type.reference
         if (reference is EKtBasicClass && reference.isSpecializable()) {
-            val typeParameterContext = TypeParameterContext
-                .get(type.arguments, reference, element)
-                ?: return
+            val typeParameterContext = TypeParameterContext.getFromTypeArguments(type.arguments, reference, element)
             declarationBindingQueue.push(DeclarationBinding(reference, typeParameterContext))
-        }
-    }
-
-    private fun getReceiverTypeParameterContext(
-        reference: EDeclaration,
-        receiver: EExpression?,
-        element: EElement
-    ): TypeParameterContext {
-        return if (receiver != null) {
-            val specializedType = TypeSpecializer.specialize(receiver.type, specializerContext, element, false)
-            val specializedTypeReference = specializedType.reference
-            if (specializedTypeReference is EKtBasicClass) {
-                TypeParameterContext.get(specializedType.arguments, specializedTypeReference, element)
-                    ?: TypeParameterContext.EMPTY
-            } else TypeParameterContext.EMPTY
-        } else {
-            if (reference.parent !is EFile) specializerContext.typeParameterContext
-            else TypeParameterContext.EMPTY
         }
     }
 
@@ -79,10 +57,11 @@ class DeclarationSpecializeIndexerVisitor(
         if (typedElement is EKtReferenceExpression) {
             val reference = typedElement.reference
             if (reference is EDeclaration && reference.isSpecializable()) {
-                val typeParameterContext = getReceiverTypeParameterContext(
+                val typeParameterContext = TypeParameterContext.getFromReceiver(
                     reference,
                     typedElement.receiver,
-                    typedElement
+                    typedElement,
+                    specializerContext
                 )
                 declarationBindingQueue.push(DeclarationBinding(reference, typeParameterContext))
             }
@@ -93,16 +72,17 @@ class DeclarationSpecializeIndexerVisitor(
             }
             val reference = typedElement.reference
             if (reference is EKtAbstractFunction && reference.isSpecializable()) {
-                val receiverTypeParameterContext = getReceiverTypeParameterContext(
+                val receiverTypeParameterContext = TypeParameterContext.getFromReceiver(
                     reference,
                     typedElement.receiver,
-                    typedElement
+                    typedElement,
+                    specializerContext
                 )
-                val callExpressionTypeParameterContext = TypeParameterContext.get(
+                val callExpressionTypeParameterContext = TypeParameterContext.getFromTypeArguments(
                     typedElement.typeArguments,
                     reference,
                     typedElement
-                ) ?: return
+                )
                 val typeParameterContext = TypeParameterContext(
                     receiverTypeParameterContext.typeParameterBindings +
                         callExpressionTypeParameterContext.typeParameterBindings
