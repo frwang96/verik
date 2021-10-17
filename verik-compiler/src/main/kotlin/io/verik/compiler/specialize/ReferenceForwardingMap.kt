@@ -24,24 +24,24 @@ class ReferenceForwardingMap {
 
     private val referenceForwardingMap = HashMap<DeclarationBinding, EDeclaration>()
 
-    fun set(oldDeclaration: EDeclaration, typeParameterContext: TypeParameterContext, newDeclaration: EDeclaration) {
+    operator fun set(
+        oldDeclaration: EDeclaration,
+        typeParameterContext: TypeParameterContext,
+        newDeclaration: EDeclaration
+    ) {
         referenceForwardingMap[DeclarationBinding(oldDeclaration, typeParameterContext)] = newDeclaration
     }
 
-    fun get(declaration: Declaration, typeParameterContext: TypeParameterContext): Declaration? {
+    operator fun get(declaration: Declaration, typeParameterContext: TypeParameterContext): Declaration {
         return if (declaration is EDeclaration) {
-            referenceForwardingMap[DeclarationBinding(declaration, typeParameterContext)]
-        } else null
-    }
-
-    fun getNotNull(declaration: EDeclaration, typeParameterContext: TypeParameterContext): Declaration {
-        val forwardedDeclaration = referenceForwardingMap[DeclarationBinding(declaration, typeParameterContext)]
-        return if (forwardedDeclaration != null) {
-            forwardedDeclaration
-        } else {
-            Messages.INTERNAL_ERROR.on(declaration, "Forwarded declaration not found: ${declaration.name}")
-            declaration
-        }
+            val forwardedDeclaration = referenceForwardingMap[DeclarationBinding(declaration, typeParameterContext)]
+            if (forwardedDeclaration != null) {
+                forwardedDeclaration
+            } else {
+                Messages.INTERNAL_ERROR.on(declaration, "Forwarded declaration not found: ${declaration.name}")
+                declaration
+            }
+        } else declaration
     }
 
     fun getTypeParameterContexts(declaration: EDeclaration): List<TypeParameterContext> {

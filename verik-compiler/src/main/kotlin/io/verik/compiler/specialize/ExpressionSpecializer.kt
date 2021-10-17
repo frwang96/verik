@@ -103,7 +103,7 @@ object ExpressionSpecializer {
         specializerContext: SpecializerContext
     ): EKtReferenceExpression {
         val type = specializerContext.specializeType(referenceExpression)
-        val forwardedReference = specializerContext.get(referenceExpression.reference) ?: referenceExpression.reference
+        val forwardedReference = specializerContext[referenceExpression.reference]
         val receiver = referenceExpression.receiver?.let { specializerContext.specialize(it) }
         return EKtReferenceExpression(referenceExpression.location, type, forwardedReference, receiver)
     }
@@ -118,7 +118,7 @@ object ExpressionSpecializer {
 
         val reference = callExpression.reference
         return if (callExpression.typeArguments.isEmpty() || reference !is EKtAbstractFunction) {
-            val forwardedReference = specializerContext.get(reference) ?: reference
+            val forwardedReference = specializerContext[reference]
             val typeArguments = callExpression.typeArguments.map {
                 specializerContext.specializeType(it, callExpression)
             }
@@ -133,8 +133,7 @@ object ExpressionSpecializer {
         } else {
             val typeParameterContext = TypeParameterContext.get(callExpression.typeArguments, reference, callExpression)
                 ?: return callExpression
-            val forwardedReference = specializerContext.get(reference, typeParameterContext)
-                ?: return callExpression
+            val forwardedReference = specializerContext[reference, typeParameterContext]
             EKtCallExpression(
                 callExpression.location,
                 type,

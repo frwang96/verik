@@ -23,7 +23,6 @@ import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.Type
-import io.verik.compiler.message.Messages
 
 class SpecializerContext {
 
@@ -35,20 +34,16 @@ class SpecializerContext {
         typeParameterContext.bind(type, element)
     }
 
-    fun set(oldDeclaration: EDeclaration, newDeclaration: EDeclaration) {
-        referenceForwardingMap.set(oldDeclaration, typeParameterContext, newDeclaration)
+    operator fun set(oldDeclaration: EDeclaration, newDeclaration: EDeclaration) {
+        referenceForwardingMap[oldDeclaration, typeParameterContext] = newDeclaration
     }
 
-    fun get(declaration: Declaration): Declaration? {
-        return referenceForwardingMap.get(declaration, typeParameterContext)
+    operator fun get(declaration: Declaration): Declaration {
+        return referenceForwardingMap[declaration, typeParameterContext]
     }
 
-    fun get(declaration: EDeclaration, typeParameterContext: TypeParameterContext): Declaration? {
-        return referenceForwardingMap.get(declaration, typeParameterContext)
-    }
-
-    fun getNotNull(declaration: EDeclaration): Declaration {
-        return referenceForwardingMap.getNotNull(declaration, typeParameterContext)
+    operator fun get(declaration: EDeclaration, typeParameterContext: TypeParameterContext): Declaration {
+        return referenceForwardingMap[declaration, typeParameterContext]
     }
 
     fun getTypeParameterContexts(declaration: EDeclaration): List<TypeParameterContext> {
@@ -74,14 +69,8 @@ class SpecializerContext {
                 bind(boundType, element)
                 val typeParameterContext = TypeParameterContext.get(boundType.arguments, reference, element)
                     ?: return type
-                val forwardedReference = referenceForwardingMap.get(reference, typeParameterContext)
-                if (forwardedReference != null) {
-                    forwardedReference.toType()
-                } else {
-                    if (type.arguments.isNotEmpty())
-                        Messages.INTERNAL_ERROR.on(element, "Forwarded reference not found: ${reference.name}")
-                    reference.toType()
-                }
+                val forwardedReference = referenceForwardingMap[reference, typeParameterContext]
+                forwardedReference.toType()
             }
             is ETypeParameter -> {
                 val specializedType = reference.toType()
