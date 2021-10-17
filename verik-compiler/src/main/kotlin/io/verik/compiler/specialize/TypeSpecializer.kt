@@ -17,6 +17,8 @@
 package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.ETypeParameter
+import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreCardinalFunctionDeclaration
@@ -24,48 +26,68 @@ import io.verik.compiler.message.Messages
 
 object TypeSpecializer {
 
-    // TODO specialize with type parameter context
-    fun specialize(type: Type, element: EElement) {
-        type.arguments.forEach { specialize(it, element) }
-        val reference = type.reference
-        if (reference is CoreCardinalFunctionDeclaration) {
-            val arguments = type.arguments.map { it.asCardinalValue(element) }
-            val value = specializeCardinalFunction(reference, arguments, element)
-            type.reference = Core.Vk.cardinalOf(value)
-            type.arguments = arrayListOf()
+    fun specialize(
+        type: Type,
+        specializerContext: SpecializerContext,
+        element: EElement,
+        forwardReferences: Boolean
+    ): Type {
+        val arguments = type.arguments.map { specialize(it, specializerContext, element, forwardReferences) }
+        return when (val reference = type.reference) {
+            is CoreCardinalFunctionDeclaration -> {
+                val argumentValues = arguments.map { it.asCardinalValue(element) }
+                val value = specializeCardinalFunction(reference, argumentValues, element)
+                Core.Vk.cardinalOf(value).toType()
+            }
+            is EKtBasicClass -> {
+                if (forwardReferences) {
+                    val typeParameterContext = TypeParameterContext.get(arguments, reference, element)
+                        ?: return reference.toType(arguments)
+                    val forwardedReference = specializerContext[reference, typeParameterContext]
+                    forwardedReference.toType()
+                } else {
+                    reference.toType(arguments)
+                }
+            }
+            is ETypeParameter -> {
+                specializerContext.typeParameterContext.specialize(reference, element)
+            }
+            else -> {
+                type.reference.toType(arguments)
+            }
         }
     }
 
     private fun specializeCardinalFunction(
         reference: CoreCardinalFunctionDeclaration,
-        arguments: List<Int>,
+        argumentValues: List<Int>,
         element: EElement
     ): Int {
         return when (reference) {
             Core.Vk.N_ADD ->
-                arguments[0] + arguments[1]
+                argumentValues[0] + argumentValues[1]
             Core.Vk.N_SUB ->
-                arguments[0] - arguments[1]
+                argumentValues[0] - argumentValues[1]
             Core.Vk.N_MUL ->
-                arguments[0] * arguments[1]
+                argumentValues[0] * argumentValues[1]
             Core.Vk.N_MAX ->
-                Integer.max(arguments[0], arguments[1])
+                Integer.max(argumentValues[0], argumentValues[1])
             Core.Vk.N_MIN ->
-                Integer.min(arguments[0], arguments[1])
+                Integer.min(argumentValues[0], argumentValues[1])
             Core.Vk.N_ID ->
-                arguments[0]
+                argumentValues[0]
             Core.Vk.N_INC ->
-                arguments[0] + 1
+                argumentValues[0] + 1
             Core.Vk.N_DEC ->
-                arguments[0] - 1
+                argumentValues[0] - 1
             Core.Vk.N_LOG ->
-                if (arguments[0] <= 0) 0 else (32 - (arguments[0] - 1).countLeadingZeroBits())
+                if (argumentValues[0] <= 0) 0 else (32 - (argumentValues[0] - 1).countLeadingZeroBits())
             Core.Vk.N_WIDTH ->
-                if (arguments[0] < 0) 0 else (32 - arguments[0].countLeadingZeroBits())
+                if (argumentValues[0] < 0) 0 else (32 - argumentValues[0].countLeadingZeroBits())
             Core.Vk.N_EXP -> {
-                if (arguments[0] >= 31)
+                if (argumentValues[0] >= 31)
                     Messages.CARDINAL_OUT_OF_RANGE.on(element)
-                1 shl arguments[0]
+                1 shl argumentValues[0]
             }
             else -> {
                 Messages.INTERNAL_ERROR.on(element, "Unrecognized cardinal function: $reference")

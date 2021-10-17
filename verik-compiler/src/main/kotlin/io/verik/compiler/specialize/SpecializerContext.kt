@@ -18,9 +18,7 @@ package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.common.ETypedElement
-import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.Type
 
@@ -29,10 +27,6 @@ class SpecializerContext {
     var typeParameterContext = TypeParameterContext.EMPTY
 
     private val referenceForwardingMap = ReferenceForwardingMap()
-
-    fun bind(type: Type, element: EElement) {
-        typeParameterContext.bind(type, element)
-    }
 
     operator fun set(oldDeclaration: EDeclaration, newDeclaration: EDeclaration) {
         referenceForwardingMap[oldDeclaration, typeParameterContext] = newDeclaration
@@ -59,28 +53,10 @@ class SpecializerContext {
     }
 
     fun specializeType(typedElement: ETypedElement): Type {
-        return specializeType(typedElement.type, typedElement)
+        return TypeSpecializer.specialize(typedElement.type, this, typedElement, true)
     }
 
     fun specializeType(type: Type, element: EElement): Type {
-        return when (val reference = type.reference) {
-            is EKtBasicClass -> {
-                val boundType = type.copy()
-                bind(boundType, element)
-                val typeParameterContext = TypeParameterContext.get(boundType.arguments, reference, element)
-                    ?: return type
-                val forwardedReference = referenceForwardingMap[reference, typeParameterContext]
-                forwardedReference.toType()
-            }
-            is ETypeParameter -> {
-                val specializedType = reference.toType()
-                bind(specializedType, element)
-                specializedType
-            }
-            else -> {
-                val arguments = type.arguments.map { specializeType(it, element) }
-                Type(reference, ArrayList(arguments))
-            }
-        }
+        return TypeSpecializer.specialize(type, this, element, true)
     }
 }

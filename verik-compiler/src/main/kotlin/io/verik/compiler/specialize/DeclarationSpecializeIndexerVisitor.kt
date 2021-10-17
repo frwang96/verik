@@ -38,7 +38,12 @@ class DeclarationSpecializeIndexerVisitor(
 ) : TreeVisitor() {
 
     private fun addType(type: Type, element: EElement) {
-        type.arguments.forEach { addType(it, element) }
+        val specializedType = TypeSpecializer.specialize(type, specializerContext, element, false)
+        addSpecializedType(specializedType, element)
+    }
+
+    private fun addSpecializedType(type: Type, element: EElement) {
+        type.arguments.forEach { addSpecializedType(it, element) }
         val reference = type.reference
         if (reference is EKtBasicClass && reference.isSpecializable()) {
             val typeParameterContext = TypeParameterContext
@@ -50,8 +55,6 @@ class DeclarationSpecializeIndexerVisitor(
 
     override fun visitTypedElement(typedElement: ETypedElement) {
         super.visitTypedElement(typedElement)
-        if (!typedElement.type.isSpecialized())
-            TypeSpecializer.specialize(typedElement.type, typedElement)
         addType(typedElement.type, typedElement)
         if (typedElement is EKtReferenceExpression) {
             val reference = typedElement.reference
@@ -60,8 +63,6 @@ class DeclarationSpecializeIndexerVisitor(
         }
         if (typedElement is EKtCallExpression) {
             typedElement.typeArguments.forEach {
-                if (!it.isSpecialized())
-                    TypeSpecializer.specialize(it, typedElement)
                 addType(it, typedElement)
             }
             val reference = typedElement.reference

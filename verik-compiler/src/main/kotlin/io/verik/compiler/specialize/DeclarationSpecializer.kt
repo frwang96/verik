@@ -152,13 +152,11 @@ object DeclarationSpecializer {
         typeParameterized: TypeParameterized,
         specializerContext: SpecializerContext
     ): String? {
-        val typeParameters = typeParameterized.typeParameters.map {
-            val typeParameter = it.toType()
-            specializerContext.bind(typeParameter, it)
-            typeParameter
+        val typeParameterTypes = typeParameterized.typeParameters.map {
+            specializerContext.typeParameterContext.specialize(it, it)
         }
-        return if (typeParameters.isNotEmpty()) {
-            typeParameters.joinToString(separator = "_") {
+        return if (typeParameterTypes.isNotEmpty()) {
+            typeParameterTypes.joinToString(separator = "_") {
                 val reference = it.reference
                 if (reference is CoreCardinalConstantDeclaration)
                     reference.value.toString()
