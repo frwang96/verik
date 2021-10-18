@@ -60,6 +60,7 @@ object ParenthesisInsertionTransformerStage : ProjectStage() {
         private fun getBinaryOperatorPriority(kind: SvBinaryOperatorKind): Int {
             return when (kind) {
                 SvBinaryOperatorKind.MUL -> 2
+                SvBinaryOperatorKind.DIV -> 2
                 SvBinaryOperatorKind.PLUS -> 3
                 SvBinaryOperatorKind.MINUS -> 3
                 SvBinaryOperatorKind.LTLT -> 4

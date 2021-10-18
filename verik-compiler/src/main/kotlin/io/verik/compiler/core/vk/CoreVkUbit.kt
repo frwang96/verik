@@ -109,6 +109,22 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
+    val F_unaryMinus = object : CoreKtUnaryFunctionDeclaration(parent, "unaryMinus") {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return listOf(
+                TypeEqualsTypeConstraint(
+                    TypeAdapter.ofElement(callExpression.receiver!!, 0),
+                    TypeAdapter.ofElement(callExpression, 0)
+                )
+            )
+        }
+
+        override fun getOperatorKind(): SvUnaryOperatorKind {
+            return SvUnaryOperatorKind.MINUS
+        }
+    }
+
     val F_plus_Ubit = object : CoreKtBinaryFunctionDeclaration(parent, "plus", Core.Vk.C_Ubit) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
@@ -156,6 +172,17 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
+    val F_times_Ubit = object : CoreKtBinaryFunctionDeclaration(parent, "times", Core.Vk.C_Ubit) {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return F_plus_Ubit.getTypeConstraints(callExpression)
+        }
+
+        override fun getOperatorKind(): SvBinaryOperatorKind {
+            return SvBinaryOperatorKind.MUL
+        }
+    }
+
     val F_mul_Ubit = object : CoreKtBinaryFunctionDeclaration(parent, "mul", Core.Vk.C_Ubit) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
@@ -171,6 +198,22 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
         override fun getOperatorKind(): SvBinaryOperatorKind {
             return SvBinaryOperatorKind.MUL
+        }
+    }
+
+    val F_div_Ubit = object : CoreKtBinaryFunctionDeclaration(parent, "div", Core.Vk.C_Ubit) {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return listOf(
+                TypeEqualsTypeConstraint(
+                    TypeAdapter.ofElement(callExpression.receiver!!, 0),
+                    TypeAdapter.ofElement(callExpression, 0)
+                )
+            )
+        }
+
+        override fun getOperatorKind(): SvBinaryOperatorKind {
+            return SvBinaryOperatorKind.DIV
         }
     }
 

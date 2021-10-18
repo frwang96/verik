@@ -35,6 +35,7 @@ object UnaryExpressionReducerStage : ProjectStage() {
 
     init {
         referenceMap[ReducerEntry(Core.Kt.C_Boolean, KtUnaryOperatorKind.EXCL)] = Core.Kt.Boolean.F_not
+        referenceMap[ReducerEntry(Core.Vk.C_Ubit, KtUnaryOperatorKind.MINUS)] = Core.Vk.Ubit.F_unaryMinus
     }
 
     override fun process(projectContext: ProjectContext) {
