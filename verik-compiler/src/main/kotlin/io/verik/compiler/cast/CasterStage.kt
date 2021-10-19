@@ -37,7 +37,7 @@ object CasterStage : ProjectStage() {
         projectContext.ktFiles.forEach { file ->
             val location = file.location()
             val packageName = file.packageFqName.asString()
-            val inputPath = Platform.getPath(file.virtualFilePath)
+            val inputPath = Platform.getPathFromString(file.virtualFilePath)
             val declarations = file.declarations.mapNotNull {
                 projectContext.castContext.casterVisitor.getDeclaration(it)
             }

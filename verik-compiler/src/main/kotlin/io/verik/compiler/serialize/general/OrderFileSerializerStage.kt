@@ -17,6 +17,7 @@
 package io.verik.compiler.serialize.general
 
 import io.verik.compiler.common.ProjectStage
+import io.verik.compiler.main.Platform
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 import java.nio.file.Path
@@ -38,7 +39,8 @@ object OrderFileSerializerStage : ProjectStage() {
         val builder = StringBuilder()
         builder.append(fileHeader)
         paths.forEach {
-            builder.appendLine(projectContext.config.buildDir.relativize(it))
+            val pathString = Platform.getStringFromPath(projectContext.config.buildDir.relativize(it))
+            builder.appendLine(pathString)
         }
         projectContext.outputTextFiles.add(TextFile(outputPath, builder.toString()))
     }
