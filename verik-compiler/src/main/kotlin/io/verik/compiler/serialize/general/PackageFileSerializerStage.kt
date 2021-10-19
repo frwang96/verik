@@ -19,6 +19,7 @@ package io.verik.compiler.serialize.general
 import io.verik.compiler.ast.element.common.EBasicPackage
 import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.common.ProjectStage
+import io.verik.compiler.main.Platform
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 
@@ -61,8 +62,11 @@ object PackageFileSerializerStage : ProjectStage() {
             }
         }
         basicPackage.files.forEach {
+            val pathString = Platform.getStringFromPath(
+                projectContext.config.buildDir.relativize(it.getOutputPathNotNull())
+            )
             builder.appendLine()
-            builder.appendLine("`include \"${projectContext.config.buildDir.relativize(it.getOutputPathNotNull())}\"")
+            builder.appendLine("`include \"$pathString\"")
         }
         builder.appendLine()
         builder.appendLine("endpackage : $packageName")

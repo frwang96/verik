@@ -157,10 +157,13 @@ object Core {
             val F_get_Int = CoreVkUbit.F_get_Int
             val F_set_Int_Boolean = CoreVkUbit.F_set_Int_Boolean
             val F_set_Int_Ubit = CoreVkUbit.F_set_Int_Ubit
+            val F_unaryMinus = CoreVkUbit.F_unaryMinus
             val F_plus_Ubit = CoreVkUbit.F_plus_Ubit
             val F_add_Ubit = CoreVkUbit.F_add_Ubit
             val F_minus_Ubit = CoreVkUbit.F_minus_Ubit
+            val F_times_Ubit = CoreVkUbit.F_times_Ubit
             val F_mul_Ubit = CoreVkUbit.F_mul_Ubit
+            val F_div_Ubit = CoreVkUbit.F_div_Ubit
             val F_and_Ubit = CoreVkUbit.F_and_Ubit
             val F_or_Ubit = CoreVkUbit.F_or_Ubit
             val F_xor_Ubit = CoreVkUbit.F_xor_Ubit

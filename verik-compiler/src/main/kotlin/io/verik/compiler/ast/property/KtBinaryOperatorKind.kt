@@ -23,6 +23,7 @@ import org.jetbrains.kotlin.lexer.KtSingleValueToken
 enum class KtBinaryOperatorKind {
     EQ,
     MUL,
+    DIV,
     PLUS,
     MINUS,
     LT,
@@ -46,6 +47,7 @@ enum class KtBinaryOperatorKind {
             return when (token.toString()) {
                 "EQ" -> EQ
                 "MUL" -> MUL
+                "DIV" -> DIV
                 "PLUS" -> PLUS
                 "MINUS" -> MINUS
                 "LT" -> LT

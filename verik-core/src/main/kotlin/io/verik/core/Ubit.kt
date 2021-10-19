@@ -107,70 +107,77 @@ class Ubit<N : `*`> private constructor() {
     }
 
     /**
-     * Add [x] to this value with truncated width `Ubit<N> + Ubit<M> = Ubit<MAX<n, m>>`.
+     * Add [x] to this value with truncated width `Ubit<N> + Ubit<M> = Ubit<MAX<N, M>>`.
      */
     operator fun plus(x: Ubit<`*`>): Ubit<`*`> {
         throw VerikException()
     }
 
     /**
-     * Add [x] to this value with truncated width `Ubit<N> + Sbit<M> = Ubit<MAX<n, m>>`.
+     * Add [x] to this value with truncated width `Ubit<N> + Sbit<M> = Ubit<MAX<N, M>>`.
      */
     operator fun plus(x: Sbit<`*`>): Ubit<`*`> {
         throw VerikException()
     }
 
     /**
-     * Subtract [x] from this value with truncated width `Ubit<N> - Ubit<M> = Ubit<MAX<n, m>>`.
+     * Subtract [x] from this value with truncated width `Ubit<N> - Ubit<M> = Ubit<MAX<N, M>>`.
      */
     operator fun minus(x: Ubit<`*`>): Ubit<`*`> {
         throw VerikException()
     }
 
     /**
-     * Subtract [x] from this value with truncated width `Ubit<N> - Sbit<M> = Ubit<MAX<n, m>>`.
+     * Subtract [x] from this value with truncated width `Ubit<N> - Sbit<M> = Ubit<MAX<N, M>>`.
      */
     operator fun minus(x: Sbit<`*`>): Ubit<`*`> {
         throw VerikException()
     }
 
     /**
-     * Multiply [x] to this value with truncated width `Ubit<N> * Ubit<M> = Ubit<MAX<n, m>>`.
+     * Multiply [x] to this value with truncated width `Ubit<N> * Ubit<M> = Ubit<MAX<N, M>>`.
      */
     operator fun times(x: Ubit<`*`>): Ubit<`*`> {
         throw VerikException()
     }
 
     /**
-     * Multiply [x] to this value with truncated width `Ubit<N> * SBit<M> = Ubit<MAX<n, m>>`.
+     * Multiply [x] to this value with truncated width `Ubit<N> * SBit<M> = Ubit<MAX<N, M>>`.
      */
     operator fun times(x: Sbit<`*`>): Ubit<`*`> {
         throw VerikException()
     }
 
     /**
-     * Add [x] to this value with full width `Ubit<N> + Ubit<M> = Ubit<MAX<n, m> + 1>`.
+     * Divide [x] from this value with width `Ubit<N> / Ubit<M> = Ubit<N>`.
+     */
+    operator fun div(x: Ubit<`*`>): Ubit<`*`> {
+        throw VerikException()
+    }
+
+    /**
+     * Add [x] to this value with full width `Ubit<N> + Ubit<M> = Ubit<MAX<N, M> + 1>`.
      */
     infix fun add(x: Ubit<`*`>): Ubit<`*`> {
         throw VerikException()
     }
 
     /**
-     * Add [x] to this value with full width `Ubit<N> + Sbit<M> = Ubit<MAX<n, m> + 1>`.
+     * Add [x] to this value with full width `Ubit<N> + Sbit<M> = Ubit<MAX<N, M> + 1>`.
      */
     infix fun add(x: Sbit<`*`>): Ubit<`*`> {
         throw VerikException()
     }
 
     /**
-     * Subtract [x] from this value with full width `Ubit<N> - Ubit<M> = Ubit<MAX<n, m> + 1>`.
+     * Subtract [x] from this value with full width `Ubit<N> - Ubit<M> = Ubit<MAX<N, M> + 1>`.
      */
     infix fun sub(x: Ubit<`*`>): Ubit<`*`> {
         throw VerikException()
     }
 
     /**
-     * Subtract [x] from this value with full width `Ubit<N> - Sbit<M> = Ubit<MAX<n, m> + 1>`.
+     * Subtract [x] from this value with full width `Ubit<N> - Sbit<M> = Ubit<MAX<N, M> + 1>`.
      */
     infix fun sub(x: Sbit<`*`>): Ubit<`*`> {
         throw VerikException()

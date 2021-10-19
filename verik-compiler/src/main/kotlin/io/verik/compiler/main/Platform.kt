@@ -23,11 +23,18 @@ object Platform {
 
     val isWindows = System.getProperty("os.name").toLowerCase().contains("win")
 
-    fun getPath(path: String): Path {
+    fun getPathFromString(path: String): Path {
         return if (path.matches(Regex("/\\w+:.*"))) {
             Paths.get(path.substring(1))
         } else {
             Paths.get(path)
         }
+    }
+
+    fun getStringFromPath(path: Path): String {
+        if (path.isAbsolute)
+            throw IllegalArgumentException("Unexpected absolute path: $path")
+        val names = (0 until path.nameCount).map { path.getName(it).toString() }
+        return names.joinToString(separator = "/")
     }
 }

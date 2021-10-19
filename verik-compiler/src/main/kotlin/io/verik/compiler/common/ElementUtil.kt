@@ -26,7 +26,7 @@ fun PsiElement.location(): SourceLocation {
         containingFile.viewProvider.document,
         textRange.startOffset
     )
-    val path = Platform.getPath(containingFile.virtualFile.path)
+    val path = Platform.getPathFromString(containingFile.virtualFile.path)
     return SourceLocation(lineAndColumn.column, lineAndColumn.line, path)
 }
 

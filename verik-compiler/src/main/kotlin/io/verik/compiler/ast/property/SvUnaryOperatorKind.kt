@@ -19,6 +19,7 @@ package io.verik.compiler.ast.property
 enum class SvUnaryOperatorKind {
     LOGICAL_NEG,
     BITWISE_NEG,
+    MINUS,
     PRE_INC,
     PRE_DEC,
     POST_INC,
@@ -28,6 +29,7 @@ enum class SvUnaryOperatorKind {
         return when (this) {
             LOGICAL_NEG -> "!"
             BITWISE_NEG -> "~"
+            MINUS -> "-"
             PRE_INC -> "++"
             PRE_DEC -> "--"
             else -> null

@@ -20,6 +20,7 @@ enum class SvBinaryOperatorKind {
     ASSIGN,
     ARROW_ASSIGN,
     MUL,
+    DIV,
     PLUS,
     MINUS,
     AND,
@@ -42,6 +43,7 @@ enum class SvBinaryOperatorKind {
             ASSIGN -> "="
             ARROW_ASSIGN -> "<="
             MUL -> "*"
+            DIV -> "/"
             PLUS -> "+"
             MINUS -> "-"
             AND -> "&"

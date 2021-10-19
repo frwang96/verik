@@ -16,6 +16,7 @@
 
 package io.verik.compiler.serialize.general
 
+import io.verik.compiler.main.Platform
 import io.verik.compiler.main.ProjectContext
 import java.nio.file.Path
 
@@ -24,10 +25,14 @@ object FileHeaderBuilder {
     fun build(projectContext: ProjectContext, inputPath: Path?, outputPath: Path, headerStyle: HeaderStyle): String {
         val lines = ArrayList<String>()
 
+        val inputPathString = inputPath
+            ?.let { Platform.getStringFromPath(projectContext.config.projectDir.relativize(it)) }
+        val outputPathString = Platform.getStringFromPath(projectContext.config.projectDir.relativize(outputPath))
+
         lines.add("Project: ${projectContext.config.projectName}")
-        if (inputPath != null)
-            lines.add("Input:   ${projectContext.config.projectDir.relativize(inputPath)}")
-        lines.add("Output:  ${projectContext.config.projectDir.relativize(outputPath)}")
+        if (inputPathString != null)
+            lines.add("Input:   $inputPathString")
+        lines.add("Output:  $outputPathString")
         lines.add("Date:    ${projectContext.config.timestamp}")
         lines.add("Version: verik:${projectContext.config.version}")
 

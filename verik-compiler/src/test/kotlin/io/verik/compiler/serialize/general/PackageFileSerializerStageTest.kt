@@ -16,7 +16,6 @@
 
 package io.verik.compiler.serialize.general
 
-import io.verik.compiler.main.Platform
 import io.verik.compiler.util.BaseTest
 import org.junit.jupiter.api.Test
 
@@ -35,7 +34,7 @@ internal class PackageFileSerializerStageTest : BaseTest() {
             
                 typedef class C;
             
-            `include "${if (Platform.isWindows) "src\\verik\\Test.svh" else "src/verik/Test.svh"}"
+            `include "src/verik/Test.svh"
             
             endpackage : verik_pkg
         """.trimIndent()
