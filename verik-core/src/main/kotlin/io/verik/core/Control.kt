@@ -19,41 +19,42 @@
 package io.verik.core
 
 /**
- * Specify the sensitivity list of a [sequential][Seq] action block.
- * @param x the event to trigger the sequential action block
- * @param block the block to execute when triggered
+ * Trigger a [sequential][Seq] action block on event [event].
  */
-fun on(x: Event, block: () -> Unit) {
+fun on(event: Event, block: () -> Unit) {
     throw Exception()
 }
 
 /**
- * Loop a block forever.
- * @param block the block to loop
+ * Loop [block] forever.
  */
 fun forever(block: () -> Unit) {
     throw VerikException()
 }
 
 /**
- * Delay for some time steps.
- * @param n the number of time steps to delay
+ * Delay for [n] time steps.
  */
 fun delay(n: Int) {
     throw VerikException()
 }
 
 /**
- * Wait until an event occurs.
- * @param event the event to wait for
+ * Wait until [x] is true.
+ */
+fun wait(x: Boolean) {
+    throw VerikException()
+}
+
+/**
+ * Wait until event [event] occurs.
  */
 fun wait(event: Event) {
     throw VerikException()
 }
 
 /**
- * Wait until a clocking block event occurs.
- * @param cb the clocking block to wait for
+ * Wait until clocking block event occurs.
  */
 fun wait(cb: ClockingBlock) {
     throw VerikException()

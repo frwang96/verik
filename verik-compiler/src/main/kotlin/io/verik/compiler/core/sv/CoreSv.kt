@@ -34,5 +34,7 @@ object CoreSv : CoreScope(CorePackage.SV) {
     val F_fatal = CoreSvFunctionDeclaration(parent, "\$fatal")
     val F_finish = CoreSvFunctionDeclaration(parent, "\$finish")
     val F_new = CoreSvFunctionDeclaration(parent, "new")
+    val F_wait = CoreSvFunctionDeclaration(parent, "wait")
     val F_name = CoreSvFunctionDeclaration(parent, "name")
+    val F_rsort = CoreSvFunctionDeclaration(parent, "rsort")
 }

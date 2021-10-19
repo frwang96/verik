@@ -145,6 +145,14 @@ object CoreVkUnpacked : CoreScope(Core.Vk.C_Unpacked) {
         }
     }
 
+    val F_sort = object : CoreKtTransformableFunctionDeclaration(parent, "sort") {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            callExpression.reference = Core.Sv.F_rsort
+            return callExpression
+        }
+    }
+
     val P_size = object : CoreKtPropertyDeclaration(parent, "size") {
 
         override fun transform(referenceExpression: EKtReferenceExpression): EExpression {

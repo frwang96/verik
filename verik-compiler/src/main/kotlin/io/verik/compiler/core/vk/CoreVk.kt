@@ -292,6 +292,14 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
+    val F_wait_Boolean = object :CoreKtTransformableFunctionDeclaration(parent, "wait", Core.Kt.C_Boolean) {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            callExpression.reference = Core.Sv.F_wait
+            return callExpression
+        }
+    }
+
     val F_wait_Event = object : CoreKtTransformableFunctionDeclaration(parent, "wait", Core.Vk.C_Event) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
