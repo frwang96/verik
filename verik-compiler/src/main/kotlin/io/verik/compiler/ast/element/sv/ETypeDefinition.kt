@@ -14,13 +14,23 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.interfaces
+package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.element.common.EDeclaration
+import io.verik.compiler.ast.element.common.EClassifier
+import io.verik.compiler.ast.property.Type
+import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.common.Visitor
+import io.verik.compiler.message.SourceLocation
 
-interface ResizableDeclarationContainer : DeclarationContainer {
+class ETypeDefinition(
+    override val location: SourceLocation,
+    override var name: String,
+    override var type: Type
+) : EClassifier() {
 
-    fun insertChild(declaration: EDeclaration)
+    override fun accept(visitor: Visitor) {
+        visitor.visitTypeDefinition(this)
+    }
 
-    fun insertChildBefore(oldDeclaration: EDeclaration, newDeclaration: EDeclaration)
+    override fun acceptChildren(visitor: TreeVisitor) {}
 }

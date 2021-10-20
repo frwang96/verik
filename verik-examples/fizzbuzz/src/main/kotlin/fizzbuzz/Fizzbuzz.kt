@@ -26,7 +26,7 @@ enum class E { A, B }
 class Fizzbuzz : Module() {
 
     var w: Boolean = nc()
-    val x: Unpacked<`8`, Ubit<`8`>> = nc()
+    var x: Unpacked<`8`, Ubit<`8`>> = nc()
     val y: Unpacked<`8`, S> = nc()
     var z: Ubit<`3`> = nc()
 
@@ -41,8 +41,6 @@ class Fizzbuzz : Module() {
 
     @Run
     fun main() {
-        val h = h(z)
-        println(h)
         f(0)
         repeat(3) {
             println(g(0))
@@ -51,6 +49,7 @@ class Fizzbuzz : Module() {
         x[z] = u0()
         x[0] = z.uext()
         x[0] = u(z.sext())
+        x = h(x)
         y[0].value = 0
         z++
         println(E.A)
@@ -91,6 +90,10 @@ class Fizzbuzz : Module() {
         }
         return x + 1
     }
+
+    fun h(x: Unpacked<`8`, Ubit<`8`>>): Unpacked<`8`, Ubit<`8`>> {
+        return x
+    }
 }
 
 class MI : ModuleInterface()
@@ -99,9 +102,5 @@ class CB(
     override val event: Event,
     @In val z: Ubit<`3`>
 ) : ClockingBlock()
-
-fun h(x: Ubit<`3`>): Ubit<`3`> {
-    return x
-}
 
 class C

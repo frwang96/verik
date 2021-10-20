@@ -22,6 +22,7 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
 import io.verik.compiler.ast.element.sv.EModulePort
+import io.verik.compiler.ast.element.sv.ETypeDefinition
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.core.common.Core
@@ -32,6 +33,7 @@ object TypeSerializer {
 
     fun serialize(type: Type, element: EElement): SerializedType {
         return when (val reference = type.reference) {
+            is ETypeDefinition -> SerializedType(reference.name)
             is EAbstractContainerComponent -> SerializedType(reference.name)
             is EModulePort -> {
                 val parentModuleInterface = reference.parentModuleInterface

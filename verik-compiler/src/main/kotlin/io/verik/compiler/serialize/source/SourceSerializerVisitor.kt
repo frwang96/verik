@@ -64,6 +64,7 @@ import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.element.sv.ETask
+import io.verik.compiler.ast.element.sv.ETypeDefinition
 import io.verik.compiler.ast.element.sv.EWidthCastExpression
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.SerializationType
@@ -110,6 +111,10 @@ class SourceSerializerVisitor(private val serializerContext: SerializerContext) 
 
     override fun visitElement(element: EElement) {
         Messages.INTERNAL_ERROR.on(element, "Unable to serialize element: $element")
+    }
+
+    override fun visitTypeDefinition(typeDefinition: ETypeDefinition) {
+        DeclarationSerializer.serializeTypeDefinition(typeDefinition, serializerContext)
     }
 
     override fun visitSvBasicClass(basicClass: ESvBasicClass) {

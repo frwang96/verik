@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.interfaces.ResizableDeclarationContainer
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.replaceIfContains
+import io.verik.compiler.message.Messages
 
 abstract class EAbstractContainerComponent : EAbstractComponent(), ResizableDeclarationContainer {
 
@@ -38,5 +39,15 @@ abstract class EAbstractContainerComponent : EAbstractComponent(), ResizableDecl
     override fun insertChild(declaration: EDeclaration) {
         declaration.parent = this
         declarations.add(declaration)
+    }
+
+    override fun insertChildBefore(oldDeclaration: EDeclaration, newDeclaration: EDeclaration) {
+        newDeclaration.parent = this
+        val index = declarations.indexOf(oldDeclaration)
+        if (index != -1) {
+            declarations.add(index, newDeclaration)
+        } else {
+            Messages.INTERNAL_ERROR.on(oldDeclaration, "Could not find declaration: ${oldDeclaration.name}")
+        }
     }
 }

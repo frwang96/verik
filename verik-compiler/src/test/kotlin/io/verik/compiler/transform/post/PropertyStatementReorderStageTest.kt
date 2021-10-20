@@ -16,9 +16,8 @@
 
 package io.verik.compiler.transform.post
 
-import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findDeclaration
+import io.verik.compiler.util.findStatements
 import org.junit.jupiter.api.Test
 
 internal class PropertyStatementReorderStageTest : BaseTest() {
@@ -36,16 +35,13 @@ internal class PropertyStatementReorderStageTest : BaseTest() {
         )
         assertElementEquals(
             """
-                KtBlockExpression(
-                    Unit,
-                    [
-                        PropertyStatement(Unit, SvProperty(x, Boolean, null, false)),
-                        KtCallExpression(*),
-                        SvBinaryExpression(Unit, KtReferenceExpression(Boolean, x, null), ConstantExpression(*), ASSIGN)
-                    ]
-                )
+                [
+                    PropertyStatement(Unit, SvProperty(x, Boolean, null, false)),
+                    KtCallExpression(*),
+                    SvBinaryExpression(Unit, KtReferenceExpression(Boolean, x, null), ConstantExpression(*), ASSIGN)
+                ]
             """.trimIndent(),
-            (projectContext.findDeclaration("f") as ESvFunction).body!!
+            projectContext.findStatements("f")
         )
     }
 
@@ -61,13 +57,8 @@ internal class PropertyStatementReorderStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            """
-                KtBlockExpression(
-                    Unit,
-                    [PropertyStatement(Unit, SvProperty(x, Boolean, null, false)), KtCallExpression(*)]
-                )
-            """.trimIndent(),
-            (projectContext.findDeclaration("f") as ESvFunction).body!!
+            "[PropertyStatement(Unit, SvProperty(x, Boolean, null, false)), KtCallExpression(*)]",
+            projectContext.findStatements("f")
         )
     }
 }

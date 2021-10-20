@@ -33,9 +33,16 @@ import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.element.sv.ETask
+import io.verik.compiler.ast.element.sv.ETypeDefinition
 import io.verik.compiler.ast.property.PortType
 
 object DeclarationSerializer {
+
+    fun serializeTypeDefinition(typeDefinition: ETypeDefinition, serializerContext: SerializerContext) {
+        val serializedType = TypeSerializer.serialize(typeDefinition.type, typeDefinition)
+        serializerContext.append("typedef ${serializedType.getBaseAndPackedDimension()} ")
+        serializerContext.appendLine("${typeDefinition.name} ${serializedType.unpackedDimension};")
+    }
 
     fun serializeSvBasicClass(basicClass: ESvBasicClass, serializerContext: SerializerContext) {
         serializerContext.appendLine("class ${basicClass.name};")

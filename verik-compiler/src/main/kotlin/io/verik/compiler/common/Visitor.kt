@@ -113,6 +113,7 @@ import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.element.sv.ETask
+import io.verik.compiler.ast.element.sv.ETypeDefinition
 import io.verik.compiler.ast.element.sv.EWidthCastExpression
 
 abstract class Visitor {
@@ -169,6 +170,10 @@ abstract class Visitor {
 
     open fun visitTypeAlias(typeAlias: ETypeAlias) {
         visitClassifier(typeAlias)
+    }
+
+    open fun visitTypeDefinition(typeDefinition: ETypeDefinition) {
+        visitClassifier(typeDefinition)
     }
 
     open fun visitTypeParameter(typeParameter: ETypeParameter) {

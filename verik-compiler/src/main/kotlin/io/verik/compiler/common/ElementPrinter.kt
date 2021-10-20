@@ -89,6 +89,7 @@ import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.element.sv.ETask
+import io.verik.compiler.ast.element.sv.ETypeDefinition
 import io.verik.compiler.ast.element.sv.EWidthCastExpression
 import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.LiteralStringEntry
@@ -145,6 +146,13 @@ class ElementPrinter : Visitor() {
         build("TypeAlias") {
             build(typeAlias.name)
             build(typeAlias.type.toString())
+        }
+    }
+
+    override fun visitTypeDefinition(typeDefinition: ETypeDefinition) {
+        build("TypeDefinition") {
+            build(typeDefinition.name)
+            build(typeDefinition.type.toString())
         }
     }
 
