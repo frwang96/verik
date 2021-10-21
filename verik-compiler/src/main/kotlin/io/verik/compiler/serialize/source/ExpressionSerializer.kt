@@ -144,6 +144,10 @@ object ExpressionSerializer {
         serializerContext.append("}")
     }
 
+    fun serializeThisExpression(serializerContext: SerializerContext) {
+        serializerContext.append("this")
+    }
+
     fun serializeReturnStatement(returnStatement: EReturnStatement, serializerContext: SerializerContext) {
         val expression = returnStatement.expression
         if (expression == null) {

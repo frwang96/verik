@@ -201,6 +201,24 @@ internal class ExpressionCasterTest : BaseTest() {
     }
 
     @Test
+    fun `this expression`() {
+        val projectContext = driveTest(
+            CasterStage::class,
+            """
+                class C {
+                    fun f() {
+                        this
+                    }
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "ThisExpression(C)",
+            projectContext.findExpression("f")
+        )
+    }
+
+    @Test
     fun `return statement`() {
         val projectContext = driveTest(
             CasterStage::class,

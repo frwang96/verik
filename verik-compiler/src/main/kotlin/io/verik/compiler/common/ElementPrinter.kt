@@ -29,6 +29,7 @@ import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ERootPackage
 import io.verik.compiler.ast.element.common.ETemporaryProperty
+import io.verik.compiler.ast.element.common.EThisExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.common.EWhileExpression
 import io.verik.compiler.ast.element.kt.EAnnotation
@@ -491,6 +492,12 @@ class ElementPrinter : Visitor() {
                     build(it.expression)
                 }
             }
+        }
+    }
+
+    override fun visitThisExpression(thisExpression: EThisExpression) {
+        build("ThisExpression") {
+            build(thisExpression.type.toString())
         }
     }
 
