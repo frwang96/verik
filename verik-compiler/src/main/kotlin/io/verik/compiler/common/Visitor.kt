@@ -60,6 +60,7 @@ import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.kt.EKtConstructor
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
@@ -247,6 +248,10 @@ abstract class Visitor {
 
     open fun visitPrimaryConstructor(primaryConstructor: EPrimaryConstructor) {
         visitKtAbstractFunction(primaryConstructor)
+    }
+
+    open fun visitKtConstructor(constructor: EKtConstructor) {
+        visitKtAbstractFunction(constructor)
     }
 
     open fun visitSvFunction(function: ESvFunction) {
