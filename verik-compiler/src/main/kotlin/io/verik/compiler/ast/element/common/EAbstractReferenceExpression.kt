@@ -16,23 +16,4 @@
 
 package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.interfaces.ExpressionContainer
-import io.verik.compiler.ast.interfaces.Reference
-import io.verik.compiler.common.TreeVisitor
-
-abstract class EAbstractReferenceExpression : EExpression(), Reference, ExpressionContainer {
-
-    abstract var receiver: EExpression?
-
-    override fun acceptChildren(visitor: TreeVisitor) {
-        receiver?.accept(visitor)
-    }
-
-    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
-        newExpression.parent = this
-        return if (receiver == oldExpression) {
-            receiver = newExpression
-            true
-        } else false
-    }
-}
+abstract class EAbstractReferenceExpression : EAbstractReceiverExpression()

@@ -16,20 +16,23 @@
 
 package io.verik.compiler.ast.element.common
 
+import io.verik.compiler.ast.interfaces.ExpressionContainer
+import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.common.replaceIfContains
 
-abstract class EAbstractCallExpression : EAbstractReceiverExpression() {
+abstract class EAbstractReceiverExpression : EExpression(), Reference, ExpressionContainer {
 
-    abstract val valueArguments: ArrayList<EExpression>
+    abstract var receiver: EExpression?
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        super.acceptChildren(visitor)
-        valueArguments.forEach { it.accept(visitor) }
+        receiver?.accept(visitor)
     }
 
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
-        return if (super.replaceChild(oldExpression, newExpression)) true
-        else valueArguments.replaceIfContains(oldExpression, newExpression)
+        newExpression.parent = this
+        return if (receiver == oldExpression) {
+            receiver = newExpression
+            true
+        } else false
     }
 }

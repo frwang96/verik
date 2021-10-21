@@ -110,12 +110,7 @@ object ExpressionSpecializer {
 
         val reference = referenceExpression.reference
         return if (reference is EDeclaration) {
-            val typeParameterContext = TypeParameterContext.getFromReceiver(
-                reference,
-                referenceExpression.receiver,
-                referenceExpression,
-                specializerContext
-            )
+            val typeParameterContext = TypeParameterContext.getFromReceiver(referenceExpression, specializerContext)
             val forwardedReference = specializerContext[reference, typeParameterContext, referenceExpression]
             EKtReferenceExpression(referenceExpression.location, type, forwardedReference, receiver)
         } else {
@@ -134,8 +129,6 @@ object ExpressionSpecializer {
         val reference = callExpression.reference
         return if (reference is EKtAbstractFunction) {
             val receiverTypeParameterContext = TypeParameterContext.getFromReceiver(
-                reference,
-                callExpression.receiver,
                 callExpression,
                 specializerContext
             )

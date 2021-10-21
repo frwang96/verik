@@ -28,6 +28,7 @@ import io.verik.compiler.ast.element.common.EAbstractFunction
 import io.verik.compiler.ast.element.common.EAbstractInitializedProperty
 import io.verik.compiler.ast.element.common.EAbstractPackage
 import io.verik.compiler.ast.element.common.EAbstractProperty
+import io.verik.compiler.ast.element.common.EAbstractReceiverExpression
 import io.verik.compiler.ast.element.common.EAbstractReferenceExpression
 import io.verik.compiler.ast.element.common.EAbstractStringEntryContainer
 import io.verik.compiler.ast.element.common.EAbstractValueParameter
@@ -390,8 +391,12 @@ abstract class Visitor {
         visitAbstractBinaryExpression(binaryExpression)
     }
 
+    open fun visitAbstractReceiverExpression(abstractReceiverExpression: EAbstractReceiverExpression) {
+        visitExpression(abstractReceiverExpression)
+    }
+
     open fun visitAbstractReferenceExpression(abstractReferenceExpression: EAbstractReferenceExpression) {
-        visitExpression(abstractReferenceExpression)
+        visitAbstractReceiverExpression(abstractReferenceExpression)
     }
 
     open fun visitKtReferenceExpression(referenceExpression: EKtReferenceExpression) {
@@ -403,7 +408,7 @@ abstract class Visitor {
     }
 
     open fun visitAbstractCallExpression(abstractCallExpression: EAbstractCallExpression) {
-        visitExpression(abstractCallExpression)
+        visitAbstractReceiverExpression(abstractCallExpression)
     }
 
     open fun visitKtCallExpression(callExpression: EKtCallExpression) {

@@ -57,12 +57,7 @@ class DeclarationSpecializeIndexerVisitor(
         if (typedElement is EKtReferenceExpression) {
             val reference = typedElement.reference
             if (reference is EDeclaration && reference.isSpecializable()) {
-                val typeParameterContext = TypeParameterContext.getFromReceiver(
-                    reference,
-                    typedElement.receiver,
-                    typedElement,
-                    specializerContext
-                )
+                val typeParameterContext = TypeParameterContext.getFromReceiver(typedElement, specializerContext)
                 declarationBindingQueue.push(DeclarationBinding(reference, typeParameterContext))
             }
         }
@@ -73,8 +68,6 @@ class DeclarationSpecializeIndexerVisitor(
             val reference = typedElement.reference
             if (reference is EKtAbstractFunction && reference.isSpecializable()) {
                 val receiverTypeParameterContext = TypeParameterContext.getFromReceiver(
-                    reference,
-                    typedElement.receiver,
                     typedElement,
                     specializerContext
                 )
