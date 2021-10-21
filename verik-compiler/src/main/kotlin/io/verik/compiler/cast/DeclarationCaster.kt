@@ -207,8 +207,8 @@ object DeclarationCaster {
     }
 
     fun castValueParameter(parameter: KtParameter, castContext: CastContext): EKtValueParameter? {
-        val descriptor = castContext.slicePrimaryConstructorParameter[parameter]
-            ?: castContext.sliceValueParameter[parameter]!!
+        val propertyDescriptor = castContext.slicePrimaryConstructorParameter[parameter]
+        val descriptor = propertyDescriptor ?: castContext.sliceValueParameter[parameter]!!
         val castedValueParameter = castContext.getDeclaration(descriptor, parameter)
             .cast<EKtValueParameter>(parameter)
             ?: return null
@@ -222,8 +222,9 @@ object DeclarationCaster {
         val annotations = parameter.annotationEntries.mapNotNull {
             AnnotationCaster.castAnnotationEntry(it, castContext)
         }
+        val isPrimaryConstructorProperty = (propertyDescriptor != null)
 
-        castedValueParameter.init(type, annotations)
+        castedValueParameter.init(type, annotations, isPrimaryConstructorProperty)
         return castedValueParameter
     }
 }

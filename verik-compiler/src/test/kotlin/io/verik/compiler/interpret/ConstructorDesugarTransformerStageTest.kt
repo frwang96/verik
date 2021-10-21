@@ -35,4 +35,18 @@ internal class ConstructorDesugarTransformerStageTest : BaseTest() {
             projectContext.findDeclaration("C")
         )
     }
+
+    @Test
+    fun `desugar primary constructor with property`() {
+        val projectContext = driveTest(
+            ConstructorDesugarTransformerStage::class,
+            """
+                class C(val x: Int)
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtBasicClass(C, [KtProperty(x, Int, null, []), KtConstructor(C, [], [], null)], [], [], false, null)",
+            projectContext.findDeclaration("C")
+        )
+    }
 }

@@ -16,8 +16,11 @@
 
 package io.verik.compiler.interpret
 
+import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtConstructor
+import io.verik.compiler.ast.element.kt.EKtProperty
+import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
@@ -42,18 +45,37 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
             super.visitKtBasicClass(basicClass)
             val primaryConstructor = basicClass.primaryConstructor
             if (primaryConstructor != null) {
+                val declarations = ArrayList<EDeclaration>()
+                val properties = desugarValueParameterProperties(primaryConstructor.valueParameters)
+                declarations.addAll(properties)
+
                 val constructor = EKtConstructor(primaryConstructor.location)
                 constructor.init(
                     primaryConstructor.type,
-                    primaryConstructor.valueParameters,
+                    listOf(),
                     primaryConstructor.typeParameters,
                     null
                 )
-                constructor.parent = basicClass
-                basicClass.declarations.add(0, constructor)
+                declarations.add(constructor)
                 basicClass.primaryConstructor = null
                 referenceUpdater.update(primaryConstructor, constructor)
+
+                declarations.forEach { it.parent = basicClass }
+                basicClass.declarations.addAll(0, declarations)
             }
+        }
+
+        private fun desugarValueParameterProperties(valueParameters: List<EKtValueParameter>): List<EKtProperty> {
+            val properties = ArrayList<EKtProperty>()
+            valueParameters.forEach {
+                if (it.isPrimaryConstructorProperty) {
+                    val property = EKtProperty(it.location, it.name)
+                    property.init(it.type.copy(), null, listOf())
+                    properties.add(property)
+                    referenceUpdater.update(it, property)
+                }
+            }
+            return properties
         }
     }
 }
