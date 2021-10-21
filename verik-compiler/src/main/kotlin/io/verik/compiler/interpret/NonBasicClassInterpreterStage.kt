@@ -26,14 +26,14 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 
-object ClassInterpreterStage : ProjectStage() {
+object NonBasicClassInterpreterStage : ProjectStage() {
 
     override val checkNormalization = true
 
     override fun process(projectContext: ProjectContext) {
         val referenceUpdater = ReferenceUpdater(projectContext)
-        val classInterpreterVisitor = ClassInterpreterVisitor(referenceUpdater)
-        projectContext.project.accept(classInterpreterVisitor)
+        val nonBasicClassInterpreterVisitor = NonBasicClassInterpreterVisitor(referenceUpdater)
+        projectContext.project.accept(nonBasicClassInterpreterVisitor)
         val enumEntryCollectorVisitor = EnumEntryCollectorVisitor()
         projectContext.project.accept(enumEntryCollectorVisitor)
         enumEntryCollectorVisitor.enumEntries.forEach {
@@ -46,17 +46,15 @@ object ClassInterpreterStage : ProjectStage() {
         referenceUpdater.flush()
     }
 
-    private class ClassInterpreterVisitor(private val referenceUpdater: ReferenceUpdater) : TreeVisitor() {
+    private class NonBasicClassInterpreterVisitor(private val referenceUpdater: ReferenceUpdater) : TreeVisitor() {
 
         override fun visitKtBasicClass(basicClass: EKtBasicClass) {
             super.visitKtBasicClass(basicClass)
-            if (ComponentInterpreter.interpretComponent(basicClass, referenceUpdater))
-                return
             if (EnumInterpreter.interpretEnum(basicClass, referenceUpdater))
                 return
             if (StructInterpreter.interpretStruct(basicClass, referenceUpdater))
                 return
-            BasicClassInterpreter.interpretBasicClass(basicClass, referenceUpdater)
+            ComponentInterpreter.interpretComponent(basicClass, referenceUpdater)
         }
     }
 

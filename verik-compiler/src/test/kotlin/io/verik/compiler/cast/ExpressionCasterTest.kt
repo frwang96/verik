@@ -201,6 +201,24 @@ internal class ExpressionCasterTest : BaseTest() {
     }
 
     @Test
+    fun `this expression`() {
+        val projectContext = driveTest(
+            CasterStage::class,
+            """
+                class C {
+                    fun f() {
+                        this
+                    }
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "ThisExpression(C)",
+            projectContext.findExpression("f")
+        )
+    }
+
+    @Test
     fun `return statement`() {
         val projectContext = driveTest(
             CasterStage::class,
@@ -233,7 +251,7 @@ internal class ExpressionCasterTest : BaseTest() {
                     Unit,
                     forEach,
                     KtReferenceExpression(*),
-                    [FunctionLiteralExpression(Function, [KtValueParameter(y, Boolean, [])], KtBlockExpression(*))],
+                    [FunctionLiteralExpression(Function, [KtValueParameter(y, Boolean, [], false)], *)],
                     [Boolean]
                 )
             """.trimIndent(),
@@ -258,7 +276,7 @@ internal class ExpressionCasterTest : BaseTest() {
                     Unit,
                     forEach,
                     KtReferenceExpression(*),
-                    [FunctionLiteralExpression(Function, [KtValueParameter(it, Boolean, [])], KtBlockExpression(*))],
+                    [FunctionLiteralExpression(Function, [KtValueParameter(it, Boolean, [], false)], *)],
                     [Boolean]
                 )
             """.trimIndent(),
@@ -346,7 +364,7 @@ internal class ExpressionCasterTest : BaseTest() {
             """
                 ForExpression(
                     Unit,
-                    KtValueParameter(y, Boolean, []),
+                    KtValueParameter(y, Boolean, [], false),
                     KtReferenceExpression(*),
                     KtBlockExpression(Unit, [])
                 )

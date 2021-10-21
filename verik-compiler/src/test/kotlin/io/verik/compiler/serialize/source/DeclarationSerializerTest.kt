@@ -23,6 +23,29 @@ import org.junit.jupiter.api.Test
 internal class DeclarationSerializerTest : BaseTest() {
 
     @Test
+    fun `serialize type definition`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                fun f(x: Unpacked<`8`, Boolean>): Unpacked<`8`, Boolean> {
+                    return x
+                }
+            """.trimIndent()
+        )
+        val expected = """
+            typedef logic _${'$'}f [7:0];
+            
+            function automatic _${'$'}f f(logic x [7:0]);
+                return x;
+            endfunction : f
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
     fun `serialize module simple`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,

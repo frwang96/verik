@@ -31,11 +31,13 @@ class EKtValueParameter(
 
     override var type: Type = NullDeclaration.toType()
     override var annotations: List<EAnnotation> = listOf()
+    var isPrimaryConstructorProperty = false
 
-    fun init(type: Type, annotations: List<EAnnotation>) {
+    fun init(type: Type, annotations: List<EAnnotation>, isPrimaryConstructorProperty: Boolean) {
         annotations.forEach { it.parent = this }
         this.type = type
         this.annotations = annotations
+        this.isPrimaryConstructorProperty = isPrimaryConstructorProperty
     }
 
     override fun accept(visitor: Visitor) {

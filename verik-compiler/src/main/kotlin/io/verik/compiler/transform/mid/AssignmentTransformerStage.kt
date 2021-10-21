@@ -16,10 +16,12 @@
 
 package io.verik.compiler.transform.mid
 
+import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
+import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.EClockingBlock
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
@@ -43,8 +45,14 @@ object AssignmentTransformerStage : ProjectStage() {
         private var inAlwaysSeqBlock = false
 
         private fun getKind(binaryExpression: EKtBinaryExpression): SvBinaryOperatorKind {
-            return if (inAlwaysSeqBlock) {
-                SvBinaryOperatorKind.ARROW_ASSIGN
+            if (inAlwaysSeqBlock) {
+                var referenceExpression: EExpression? = binaryExpression.left
+                while (referenceExpression is EKtReferenceExpression) {
+                    val reference = referenceExpression.reference
+                    if (reference is EDeclaration && reference.parent is EAbstractContainerComponent)
+                        return SvBinaryOperatorKind.ARROW_ASSIGN
+                    referenceExpression = referenceExpression.receiver
+                }
             } else {
                 var referenceExpression: EExpression? = binaryExpression.left
                 while (referenceExpression is EKtReferenceExpression) {
@@ -53,8 +61,8 @@ object AssignmentTransformerStage : ProjectStage() {
                         return SvBinaryOperatorKind.ARROW_ASSIGN
                     referenceExpression = referenceExpression.receiver
                 }
-                SvBinaryOperatorKind.ASSIGN
             }
+            return SvBinaryOperatorKind.ASSIGN
         }
 
         override fun visitAlwaysSeqBlock(alwaysSeqBlock: EAlwaysSeqBlock) {

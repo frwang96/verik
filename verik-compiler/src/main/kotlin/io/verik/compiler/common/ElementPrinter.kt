@@ -29,6 +29,7 @@ import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ERootPackage
 import io.verik.compiler.ast.element.common.ETemporaryProperty
+import io.verik.compiler.ast.element.common.EThisExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.common.EWhileExpression
 import io.verik.compiler.ast.element.kt.EAnnotation
@@ -39,6 +40,7 @@ import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.kt.EKtConstructor
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
@@ -89,6 +91,7 @@ import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.element.sv.ETask
+import io.verik.compiler.ast.element.sv.ETypeDefinition
 import io.verik.compiler.ast.element.sv.EWidthCastExpression
 import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.LiteralStringEntry
@@ -145,6 +148,13 @@ class ElementPrinter : Visitor() {
         build("TypeAlias") {
             build(typeAlias.name)
             build(typeAlias.type.toString())
+        }
+    }
+
+    override fun visitTypeDefinition(typeDefinition: ETypeDefinition) {
+        build("TypeDefinition") {
+            build(typeDefinition.name)
+            build(typeDefinition.type.toString())
         }
     }
 
@@ -256,6 +266,16 @@ class ElementPrinter : Visitor() {
         }
     }
 
+    override fun visitKtConstructor(constructor: EKtConstructor) {
+        build("KtConstructor") {
+            build(constructor.type.toString())
+            build(constructor.body)
+            build(constructor.valueParameters)
+            build(constructor.typeParameters.map { it.name })
+            build(constructor.delegatedConstructor?.name)
+        }
+    }
+
     override fun visitInitialBlock(initialBlock: EInitialBlock) {
         build("InitialBlock") {
             build(initialBlock.name)
@@ -348,6 +368,7 @@ class ElementPrinter : Visitor() {
             build(valueParameter.name)
             build(valueParameter.type.toString())
             build(valueParameter.annotations)
+            build(valueParameter.isPrimaryConstructorProperty)
         }
     }
 
@@ -483,6 +504,12 @@ class ElementPrinter : Visitor() {
                     build(it.expression)
                 }
             }
+        }
+    }
+
+    override fun visitThisExpression(thisExpression: EThisExpression) {
+        build("ThisExpression") {
+            build(thisExpression.type.toString())
         }
     }
 

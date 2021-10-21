@@ -22,6 +22,7 @@ import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.Reference
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreCardinalConstantDeclaration
 import io.verik.compiler.core.common.CoreCardinalDeclaration
 import io.verik.compiler.core.common.CoreCardinalUnresolvedDeclaration
@@ -71,6 +72,10 @@ class Type(
         if (reference is ETypeParameter)
             return false
         return arguments.all { it.isSpecialized() }
+    }
+
+    fun hasUnpackedDimension(): Boolean {
+        return reference == Core.Vk.C_Unpacked
     }
 
     fun asCardinalValue(element: EElement): Int {

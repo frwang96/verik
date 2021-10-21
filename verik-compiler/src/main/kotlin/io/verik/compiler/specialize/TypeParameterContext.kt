@@ -16,9 +16,9 @@
 
 package io.verik.compiler.specialize
 
+import io.verik.compiler.ast.element.common.EAbstractReceiverExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.EKtBasicClass
@@ -80,19 +80,29 @@ data class TypeParameterContext(val typeParameterBindings: List<TypeParameterBin
         }
 
         fun getFromReceiver(
-            reference: EDeclaration,
-            receiver: EExpression?,
-            element: EElement,
+            abstractReceiverExpression: EAbstractReceiverExpression,
             specializerContext: SpecializerContext
         ): TypeParameterContext {
+            val receiver = abstractReceiverExpression.receiver
             return if (receiver != null) {
-                val specializedType = TypeSpecializer.specialize(receiver.type, specializerContext, element, false)
+                val specializedType = TypeSpecializer.specialize(
+                    receiver.type,
+                    specializerContext,
+                    abstractReceiverExpression,
+                    false
+                )
                 val specializedTypeReference = specializedType.reference
                 if (specializedTypeReference is EKtBasicClass) {
-                    getFromTypeArguments(specializedType.arguments, specializedTypeReference, element)
+                    getFromTypeArguments(
+                        specializedType.arguments,
+                        specializedTypeReference,
+                        abstractReceiverExpression
+                    )
                 } else EMPTY
             } else {
-                if (reference.parent !is EFile) specializerContext.typeParameterContext
+                val reference = abstractReceiverExpression.reference
+                if (reference is EDeclaration && reference.parent !is EFile)
+                    specializerContext.typeParameterContext
                 else EMPTY
             }
         }

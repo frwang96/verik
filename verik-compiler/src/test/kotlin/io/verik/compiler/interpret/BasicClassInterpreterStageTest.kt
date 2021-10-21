@@ -17,21 +17,36 @@
 package io.verik.compiler.interpret
 
 import io.verik.compiler.util.BaseTest
+import io.verik.compiler.util.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class EnumInterpreterTest : BaseTest() {
+internal class BasicClassInterpreterStageTest : BaseTest() {
 
     @Test
-    fun `interpret enum`() {
+    fun `basic class simple`() {
         val projectContext = driveTest(
-            NonBasicClassInterpreterStage::class,
+            BasicClassInterpreterStage::class,
             """
-                enum class E { A }
+                class C
             """.trimIndent()
         )
         assertElementEquals(
-            "File([Enum(E, [A]), SvEnumEntry(A, E)])",
-            projectContext.project.files().first()
+            "SvBasicClass(C, [SvFunction(vknew, *, *, true, [])])",
+            projectContext.findDeclaration("C")
+        )
+    }
+
+    @Test
+    fun `basic class with primary constructor parameter`() {
+        val projectContext = driveTest(
+            BasicClassInterpreterStage::class,
+            """
+                class C(x: Int)
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "SvBasicClass(C, [SvFunction(vknew, *, *, true, [SvValueParameter(x, Int)])])",
+            projectContext.findDeclaration("C")
         )
     }
 }

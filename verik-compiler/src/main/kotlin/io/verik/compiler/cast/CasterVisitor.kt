@@ -69,6 +69,7 @@ import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.psi.KtReturnExpression
 import org.jetbrains.kotlin.psi.KtSimpleNameExpression
 import org.jetbrains.kotlin.psi.KtStringTemplateExpression
+import org.jetbrains.kotlin.psi.KtThisExpression
 import org.jetbrains.kotlin.psi.KtTypeAlias
 import org.jetbrains.kotlin.psi.KtTypeParameter
 import org.jetbrains.kotlin.psi.KtVisitor
@@ -202,6 +203,10 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
 
     override fun visitConstantExpression(expression: KtConstantExpression, data: Unit?): EConstantExpression {
         return ExpressionCaster.castConstantExpression(expression, castContext)
+    }
+
+    override fun visitThisExpression(expression: KtThisExpression, data: Unit?): EElement {
+        return ExpressionCaster.castThisExpression(expression, castContext)
     }
 
     override fun visitReturnExpression(expression: KtReturnExpression, data: Unit?): EReturnStatement {

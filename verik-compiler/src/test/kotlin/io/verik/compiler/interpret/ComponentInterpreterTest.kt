@@ -28,7 +28,7 @@ internal class ComponentInterpreterTest : BaseTest() {
     @Test
     fun `interpret module simple`() {
         val projectContext = driveTest(
-            ClassInterpreterStage::class,
+            NonBasicClassInterpreterStage::class,
             """
                 class M: Module()
             """.trimIndent()
@@ -42,7 +42,7 @@ internal class ComponentInterpreterTest : BaseTest() {
     @Test
     fun `interpret module with port`() {
         val projectContext = driveTest(
-            ClassInterpreterStage::class,
+            NonBasicClassInterpreterStage::class,
             """
                 class M(@In var x: Boolean): Module()
             """.trimIndent()
@@ -57,7 +57,7 @@ internal class ComponentInterpreterTest : BaseTest() {
     fun `interpret module with port illegal`() {
         assertThrows<TestErrorException> {
             driveTest(
-                ClassInterpreterStage::class,
+                NonBasicClassInterpreterStage::class,
                 """
                     class M(var x: Boolean): Module()
                 """.trimIndent()
@@ -68,7 +68,7 @@ internal class ComponentInterpreterTest : BaseTest() {
     @Test
     fun `interpret module interface`() {
         val projectContext = driveTest(
-            ClassInterpreterStage::class,
+            NonBasicClassInterpreterStage::class,
             """
                 class MI: ModuleInterface()
             """.trimIndent()
@@ -82,7 +82,7 @@ internal class ComponentInterpreterTest : BaseTest() {
     @Test
     fun `interpret module port`() {
         val projectContext = driveTest(
-            ClassInterpreterStage::class,
+            NonBasicClassInterpreterStage::class,
             """
                 class MP: ModulePort()
             """.trimIndent()
@@ -96,7 +96,7 @@ internal class ComponentInterpreterTest : BaseTest() {
     @Test
     fun `interpret clocking block`() {
         val projectContext = driveTest(
-            ClassInterpreterStage::class,
+            NonBasicClassInterpreterStage::class,
             """
                 class CB(override val event: Event): ClockingBlock()
             """.trimIndent()

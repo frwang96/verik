@@ -23,6 +23,7 @@ import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReturnStatement
+import io.verik.compiler.ast.element.common.EThisExpression
 import io.verik.compiler.ast.element.common.EWhileExpression
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
@@ -64,6 +65,7 @@ import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.element.sv.ETask
+import io.verik.compiler.ast.element.sv.ETypeDefinition
 import io.verik.compiler.ast.element.sv.EWidthCastExpression
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.SerializationType
@@ -110,6 +112,10 @@ class SourceSerializerVisitor(private val serializerContext: SerializerContext) 
 
     override fun visitElement(element: EElement) {
         Messages.INTERNAL_ERROR.on(element, "Unable to serialize element: $element")
+    }
+
+    override fun visitTypeDefinition(typeDefinition: ETypeDefinition) {
+        DeclarationSerializer.serializeTypeDefinition(typeDefinition, serializerContext)
     }
 
     override fun visitSvBasicClass(basicClass: ESvBasicClass) {
@@ -214,6 +220,10 @@ class SourceSerializerVisitor(private val serializerContext: SerializerContext) 
 
     override fun visitStructLiteralExpression(structLiteralExpression: EStructLiteralExpression) {
         ExpressionSerializer.serializeStructLiteralExpression(structLiteralExpression, serializerContext)
+    }
+
+    override fun visitThisExpression(thisExpression: EThisExpression) {
+        ExpressionSerializer.serializeThisExpression(serializerContext)
     }
 
     override fun visitReturnStatement(returnStatement: EReturnStatement) {

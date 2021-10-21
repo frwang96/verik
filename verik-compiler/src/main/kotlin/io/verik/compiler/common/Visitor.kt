@@ -28,6 +28,7 @@ import io.verik.compiler.ast.element.common.EAbstractFunction
 import io.verik.compiler.ast.element.common.EAbstractInitializedProperty
 import io.verik.compiler.ast.element.common.EAbstractPackage
 import io.verik.compiler.ast.element.common.EAbstractProperty
+import io.verik.compiler.ast.element.common.EAbstractReceiverExpression
 import io.verik.compiler.ast.element.common.EAbstractReferenceExpression
 import io.verik.compiler.ast.element.common.EAbstractStringEntryContainer
 import io.verik.compiler.ast.element.common.EAbstractValueParameter
@@ -47,6 +48,7 @@ import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ERootPackage
 import io.verik.compiler.ast.element.common.ETemporaryProperty
+import io.verik.compiler.ast.element.common.EThisExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.common.EWhileExpression
@@ -59,6 +61,7 @@ import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.kt.EKtConstructor
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
@@ -113,6 +116,7 @@ import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.element.sv.ETask
+import io.verik.compiler.ast.element.sv.ETypeDefinition
 import io.verik.compiler.ast.element.sv.EWidthCastExpression
 
 abstract class Visitor {
@@ -169,6 +173,10 @@ abstract class Visitor {
 
     open fun visitTypeAlias(typeAlias: ETypeAlias) {
         visitClassifier(typeAlias)
+    }
+
+    open fun visitTypeDefinition(typeDefinition: ETypeDefinition) {
+        visitClassifier(typeDefinition)
     }
 
     open fun visitTypeParameter(typeParameter: ETypeParameter) {
@@ -241,6 +249,10 @@ abstract class Visitor {
 
     open fun visitPrimaryConstructor(primaryConstructor: EPrimaryConstructor) {
         visitKtAbstractFunction(primaryConstructor)
+    }
+
+    open fun visitKtConstructor(constructor: EKtConstructor) {
+        visitKtAbstractFunction(constructor)
     }
 
     open fun visitSvFunction(function: ESvFunction) {
@@ -379,8 +391,12 @@ abstract class Visitor {
         visitAbstractBinaryExpression(binaryExpression)
     }
 
+    open fun visitAbstractReceiverExpression(abstractReceiverExpression: EAbstractReceiverExpression) {
+        visitExpression(abstractReceiverExpression)
+    }
+
     open fun visitAbstractReferenceExpression(abstractReferenceExpression: EAbstractReferenceExpression) {
-        visitExpression(abstractReferenceExpression)
+        visitAbstractReceiverExpression(abstractReferenceExpression)
     }
 
     open fun visitKtReferenceExpression(referenceExpression: EKtReferenceExpression) {
@@ -392,7 +408,7 @@ abstract class Visitor {
     }
 
     open fun visitAbstractCallExpression(abstractCallExpression: EAbstractCallExpression) {
-        visitExpression(abstractCallExpression)
+        visitAbstractReceiverExpression(abstractCallExpression)
     }
 
     open fun visitKtCallExpression(callExpression: EKtCallExpression) {
@@ -409,6 +425,10 @@ abstract class Visitor {
 
     open fun visitStructLiteralExpression(structLiteralExpression: EStructLiteralExpression) {
         visitExpression(structLiteralExpression)
+    }
+
+    open fun visitThisExpression(thisExpression: EThisExpression) {
+        visitExpression(thisExpression)
     }
 
     open fun visitReturnStatement(returnStatement: EReturnStatement) {

@@ -14,25 +14,23 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.interpret
+package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findDeclaration
-import org.junit.jupiter.api.Test
+import io.verik.compiler.ast.element.common.EClassifier
+import io.verik.compiler.ast.property.Type
+import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.common.Visitor
+import io.verik.compiler.message.SourceLocation
 
-internal class BasicClassInterpreterTest : BaseTest() {
+class ETypeDefinition(
+    override val location: SourceLocation,
+    override var name: String,
+    override var type: Type
+) : EClassifier() {
 
-    @Test
-    fun `interpret basic class`() {
-        val projectContext = driveTest(
-            ClassInterpreterStage::class,
-            """
-                class C
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "SvBasicClass(C, [SvFunction(vknew, *, *, true, [])])",
-            projectContext.findDeclaration("C")
-        )
+    override fun accept(visitor: Visitor) {
+        visitor.visitTypeDefinition(this)
     }
+
+    override fun acceptChildren(visitor: TreeVisitor) {}
 }

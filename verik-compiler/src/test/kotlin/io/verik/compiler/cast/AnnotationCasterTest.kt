@@ -77,7 +77,7 @@ internal class AnnotationCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtValueParameter(x, Boolean, [Annotation(In, [])])",
+            "KtValueParameter(x, Boolean, [Annotation(In, [])], true)",
             projectContext.findDeclaration("x")
         )
     }

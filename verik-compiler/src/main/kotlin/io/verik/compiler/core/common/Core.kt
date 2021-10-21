@@ -141,6 +141,7 @@ object Core {
         val F_on_Event_Function = CoreVk.F_on_Event_Function
         val F_posedge_Boolean = CoreVk.F_posedge_Boolean
         val F_negedge_Boolean = CoreVk.F_negedge_Boolean
+        val F_wait_Boolean = CoreVk.F_wait_Boolean
         val F_wait_Event = CoreVk.F_wait_Event
         val F_wait_ClockingBlock = CoreVk.F_wait_ClockingBlock
         val F_delay_Int = CoreVk.F_delay_Int
@@ -196,6 +197,7 @@ object Core {
             val F_set_Int_Any = CoreVkUnpacked.F_set_Int_Any
             val F_get_Ubit = CoreVkUnpacked.F_get_Ubit
             val F_set_Ubit_Any = CoreVkUnpacked.F_set_Ubit_Any
+            val F_sort = CoreVkUnpacked.F_sort
 
             val P_size = CoreVkUnpacked.P_size
         }
@@ -215,6 +217,8 @@ object Core {
         val F_fatal = CoreSv.F_fatal
         val F_finish = CoreSv.F_finish
         val F_new = CoreSv.F_new
+        val F_wait = CoreSv.F_wait
         val F_name = CoreSv.F_name
+        val F_rsort = CoreSv.F_rsort
     }
 }

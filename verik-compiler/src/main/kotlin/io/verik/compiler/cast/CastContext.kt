@@ -22,6 +22,7 @@ import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.core.common.CoreDeclarationMap
 import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
+import org.jetbrains.kotlin.descriptors.impl.SimpleFunctionDescriptorImpl
 import org.jetbrains.kotlin.psi.KtElement
 import org.jetbrains.kotlin.psi.KtExpression
 import org.jetbrains.kotlin.psi.KtTypeReference
@@ -58,11 +59,22 @@ class CastContext(
 
     fun getDeclaration(declarationDescriptor: DeclarationDescriptor, element: KtElement): Declaration {
         val declaration = declarationMap[declarationDescriptor]
-            ?: CoreDeclarationMap[this, declarationDescriptor, element]
-        return if (declaration == null) {
+        if (declaration != null)
+            return declaration
+        if (declarationDescriptor is SimpleFunctionDescriptorImpl) {
+            declarationDescriptor.overriddenDescriptors.forEach {
+                val overriddenDeclaration = declarationMap[it]
+                if (overriddenDeclaration != null)
+                    return overriddenDeclaration
+            }
+        }
+        val coreDeclaration = CoreDeclarationMap[this, declarationDescriptor, element]
+        return if (coreDeclaration != null) {
+            coreDeclaration
+        } else {
             Messages.INTERNAL_ERROR.on(element, "Could not identify declaration: ${declarationDescriptor.name}")
             NullDeclaration
-        } else declaration
+        }
     }
 
     fun castType(expression: KtExpression): Type {

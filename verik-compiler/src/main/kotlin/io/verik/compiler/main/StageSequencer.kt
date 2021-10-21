@@ -32,10 +32,12 @@ import io.verik.compiler.compile.KotlinCompilerAnalyzerStage
 import io.verik.compiler.compile.KotlinCompilerParserStage
 import io.verik.compiler.compile.KotlinEnvironmentBuilderStage
 import io.verik.compiler.interpret.AnnotationConflictCheckerStage
-import io.verik.compiler.interpret.ClassInterpreterStage
+import io.verik.compiler.interpret.BasicClassInterpreterStage
+import io.verik.compiler.interpret.ConstructorDesugarTransformerStage
 import io.verik.compiler.interpret.FileSplitterStage
 import io.verik.compiler.interpret.FunctionInterpreterStage
 import io.verik.compiler.interpret.ModulePortParentResolverStage
+import io.verik.compiler.interpret.NonBasicClassInterpreterStage
 import io.verik.compiler.interpret.PropertyInterpreterStage
 import io.verik.compiler.interpret.ValueParameterInterpreterStage
 import io.verik.compiler.resolve.TypeCheckerStage
@@ -69,6 +71,7 @@ import io.verik.compiler.transform.post.ReferenceAndCallExpressionTransformerSta
 import io.verik.compiler.transform.post.ScopeReferenceInsertionTransformerStage
 import io.verik.compiler.transform.post.TemporaryPropertyTransformerStage
 import io.verik.compiler.transform.post.UnaryExpressionTransformerStage
+import io.verik.compiler.transform.post.UnpackedTypeDefinitionTransformerStage
 import io.verik.compiler.transform.pre.ArrayAccessExpressionReducerStage
 import io.verik.compiler.transform.pre.AssignmentOperatorReducerStage
 import io.verik.compiler.transform.pre.BinaryExpressionReducerStage
@@ -120,7 +123,9 @@ object StageSequencer {
 
         // Interpret
         stageSequence.add(AnnotationConflictCheckerStage)
-        stageSequence.add(ClassInterpreterStage)
+        stageSequence.add(NonBasicClassInterpreterStage)
+        stageSequence.add(ConstructorDesugarTransformerStage)
+        stageSequence.add(BasicClassInterpreterStage)
         stageSequence.add(FunctionInterpreterStage)
         stageSequence.add(PropertyInterpreterStage)
         stageSequence.add(ValueParameterInterpreterStage)
@@ -143,6 +148,7 @@ object StageSequencer {
         stageSequence.add(AssignmentTransformerStage)
 
         // PostTransform
+        stageSequence.add(UnpackedTypeDefinitionTransformerStage)
         stageSequence.add(PropertyStatementReorderStage)
         stageSequence.add(TemporaryPropertyTransformerStage)
         stageSequence.add(UnaryExpressionTransformerStage)

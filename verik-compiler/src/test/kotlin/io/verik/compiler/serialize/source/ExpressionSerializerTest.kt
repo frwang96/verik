@@ -173,6 +173,38 @@ internal class ExpressionSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `this expression`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                class C {
+                    fun f() {
+                        this
+                    }
+                }
+            """.trimIndent()
+        )
+        val expected = """
+            class C;
+            
+                static function automatic verik_pkg::C vknew();
+                    automatic verik_pkg::C _${'$'}0 = new();
+                    return _${'$'}0;
+                endfunction : vknew
+            
+                function automatic void f();
+                    this;
+                endfunction : f
+            
+            endclass : C
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
     fun `return statement`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,

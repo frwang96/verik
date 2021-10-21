@@ -18,90 +18,21 @@ package fizzbuzz
 
 import io.verik.core.*
 
-class S(var value: Int) : Struct()
-
-enum class E { A, B }
-
 @Top
 class Fizzbuzz : Module() {
 
-    var w: Boolean = nc()
-    val x: Unpacked<`8`, Ubit<`8`>> = nc()
-    val y: Unpacked<`8`, S> = nc()
-    var z: Ubit<`3`> = nc()
-
-    @Suppress("unused")
-    val c = C()
-
-    @Make
-    val mi = MI()
-
-    @Make
-    val cb = CB(posedge(false), z)
+    var x: Unpacked<`8`, Ubit<`8`>> = nc()
 
     @Run
     fun main() {
-        val h = h(z)
-        println(h)
-        f(0)
-        repeat(3) {
-            println(g(0))
-        }
-        x[0] = u0()
-        x[z] = u0()
-        x[0] = z.uext()
-        x[0] = u(z.sext())
-        y[0].value = 0
-        z++
-        println(E.A)
-        val e = E.A
-        println("$e ${E.B}")
-        random(1)
-        random(1, 2)
-        z[0] = u("3'b000")
-        z = rep<`3`>(true)
-        z = z srl 1
-        z = z sra 1
-        z = x[0].tru()
-        z = z.invert()
-        z = z.reverse()
-        w = s(z) < s(z)
-        z = w.uext()
-        println(cb.z)
+        x = g(x)
+        @Suppress("UNUSED_VARIABLE")
+        val c = C(0)
     }
 
-    @Task
-    fun f(x: Int) {
-        println(x)
-        var a = when (w) {
-            true -> 0
-            false -> 1
-        }
-        a = if (a == 0) {
-            println()
-            1
-        } else 2
-        println(a)
-    }
-
-    fun g(x: Int): Int {
-        println(y.size)
-        for (it in 0 until 8) {
-            println(it)
-        }
-        return x + 1
+    fun g(x: Unpacked<`8`, Ubit<`8`>>): Unpacked<`8`, Ubit<`8`>> {
+        return x
     }
 }
 
-class MI : ModuleInterface()
-
-class CB(
-    override val event: Event,
-    @In val z: Ubit<`3`>
-) : ClockingBlock()
-
-fun h(x: Ubit<`3`>): Ubit<`3`> {
-    return x
-}
-
-class C
+class C(val a: Int)

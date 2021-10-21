@@ -54,6 +54,16 @@ class EFile(
         declarations.add(declaration)
     }
 
+    override fun insertChildBefore(oldDeclaration: EDeclaration, newDeclaration: EDeclaration) {
+        newDeclaration.parent = this
+        val index = declarations.indexOf(oldDeclaration)
+        if (index != -1) {
+            declarations.add(index, newDeclaration)
+        } else {
+            Messages.INTERNAL_ERROR.on(oldDeclaration, "Could not find declaration: ${oldDeclaration.name}")
+        }
+    }
+
     fun getOutputPathNotNull(): Path {
         return if (outputPath != null) {
             outputPath

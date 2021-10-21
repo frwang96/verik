@@ -153,7 +153,7 @@ object DeclarationSpecializer {
         val type = specializerContext.specializeType(valueParameter)
         val annotations = valueParameter.annotations.map { specializerContext.specialize(it) }
 
-        specializedValueParameter.init(type, annotations)
+        specializedValueParameter.init(type, annotations, valueParameter.isPrimaryConstructorProperty)
         return specializedValueParameter
     }
 

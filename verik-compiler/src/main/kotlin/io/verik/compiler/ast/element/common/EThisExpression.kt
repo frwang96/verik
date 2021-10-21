@@ -14,13 +14,24 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.interfaces
+package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.element.common.EDeclaration
+import io.verik.compiler.ast.property.SerializationType
+import io.verik.compiler.ast.property.Type
+import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.common.Visitor
+import io.verik.compiler.message.SourceLocation
 
-interface ResizableDeclarationContainer : DeclarationContainer {
+class EThisExpression(
+    override val location: SourceLocation,
+    override var type: Type
+) : EExpression() {
 
-    fun insertChild(declaration: EDeclaration)
+    override val serializationType = SerializationType.EXPRESSION
 
-    fun insertChildBefore(oldDeclaration: EDeclaration, newDeclaration: EDeclaration)
+    override fun accept(visitor: Visitor) {
+        visitor.visitThisExpression(this)
+    }
+
+    override fun acceptChildren(visitor: TreeVisitor) {}
 }

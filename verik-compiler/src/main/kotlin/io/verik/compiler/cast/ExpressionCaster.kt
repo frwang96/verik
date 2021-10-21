@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
+import io.verik.compiler.ast.element.common.EThisExpression
 import io.verik.compiler.ast.element.common.EWhileExpression
 import io.verik.compiler.ast.element.kt.EForExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
@@ -52,6 +53,7 @@ import org.jetbrains.kotlin.psi.KtPostfixExpression
 import org.jetbrains.kotlin.psi.KtPrefixExpression
 import org.jetbrains.kotlin.psi.KtReturnExpression
 import org.jetbrains.kotlin.psi.KtSimpleNameExpression
+import org.jetbrains.kotlin.psi.KtThisExpression
 import org.jetbrains.kotlin.psi.KtWhileExpression
 import org.jetbrains.kotlin.resolve.lazy.descriptors.LazyClassDescriptor
 
@@ -180,6 +182,12 @@ object ExpressionCaster {
         val type = castContext.castType(expression)
         val value = expression.text
         return EConstantExpression(location, type, value)
+    }
+
+    fun castThisExpression(expression: KtThisExpression, castContext: CastContext): EThisExpression {
+        val location = expression.location()
+        val type = castContext.castType(expression)
+        return EThisExpression(location, type)
     }
 
     fun castReturnStatement(expression: KtReturnExpression, castContext: CastContext): EReturnStatement {

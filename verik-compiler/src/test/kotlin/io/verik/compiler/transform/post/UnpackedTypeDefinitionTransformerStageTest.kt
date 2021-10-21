@@ -14,24 +14,27 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.interpret
+package io.verik.compiler.transform.post
 
 import io.verik.compiler.util.BaseTest
+import io.verik.compiler.util.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class EnumInterpreterTest : BaseTest() {
+internal class UnpackedTypeDefinitionTransformerStageTest : BaseTest() {
 
     @Test
-    fun `interpret enum`() {
+    fun `unpacked type definition`() {
         val projectContext = driveTest(
-            NonBasicClassInterpreterStage::class,
+            UnpackedTypeDefinitionTransformerStage::class,
             """
-                enum class E { A }
+                fun f(x: Unpacked<`8`, Boolean>): Unpacked<`8`, Boolean> {
+                    return x
+                }
             """.trimIndent()
         )
         assertElementEquals(
-            "File([Enum(E, [A]), SvEnumEntry(A, E)])",
-            projectContext.project.files().first()
+            "TypeDefinition(_${'$'}f, Unpacked<`8`, Boolean>)",
+            projectContext.findDeclaration("_${'$'}f")
         )
     }
 }

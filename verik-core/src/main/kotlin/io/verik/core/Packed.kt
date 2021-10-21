@@ -63,4 +63,11 @@ class Packed<N : `*`, E> private constructor() : Iterable<E> {
     operator fun set(index: Ubit<`*`>, element: E) {
         throw VerikException()
     }
+
+    /**
+     * Sorts the array in ascending order.
+     */
+    fun sort() {
+        throw VerikException()
+    }
 }
