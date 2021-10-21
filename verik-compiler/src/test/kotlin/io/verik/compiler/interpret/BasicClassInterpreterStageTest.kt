@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test
 internal class BasicClassInterpreterStageTest : BaseTest() {
 
     @Test
-    fun `interpret basic class`() {
+    fun `basic class simple`() {
         val projectContext = driveTest(
             BasicClassInterpreterStage::class,
             """
@@ -32,6 +32,20 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
         )
         assertElementEquals(
             "SvBasicClass(C, [SvFunction(vknew, *, *, true, [])])",
+            projectContext.findDeclaration("C")
+        )
+    }
+
+    @Test
+    fun `basic class with primary constructor parameter`() {
+        val projectContext = driveTest(
+            BasicClassInterpreterStage::class,
+            """
+                class C(x: Int)
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "SvBasicClass(C, [SvFunction(vknew, *, *, true, [SvValueParameter(x, Int)])])",
             projectContext.findDeclaration("C")
         )
     }

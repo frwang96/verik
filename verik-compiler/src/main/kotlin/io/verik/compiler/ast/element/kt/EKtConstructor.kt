@@ -28,21 +28,24 @@ class EKtConstructor(
 ) : EKtAbstractFunction() {
 
     override var name = "<init>"
-    override var body: EExpression? = null
 
     override var type: Type = NullDeclaration.toType()
+    override var body: EExpression? = null
     override var valueParameters: ArrayList<EKtValueParameter> = ArrayList()
     override var typeParameters: ArrayList<ETypeParameter> = ArrayList()
     var delegatedConstructor: EKtConstructor? = null
 
     fun init(
         type: Type,
+        body: EExpression?,
         valueParameters: List<EKtValueParameter>,
         typeParameters: List<ETypeParameter>,
         delegatedConstructor: EKtConstructor?
     ) {
+        body?.parent = this
         valueParameters.forEach { it.parent = this }
         this.type = type
+        this.body = body
         this.valueParameters = ArrayList(valueParameters)
         this.typeParameters = ArrayList(typeParameters)
         this.delegatedConstructor = delegatedConstructor

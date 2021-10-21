@@ -16,6 +16,9 @@
 
 package io.verik.compiler.interpret
 
+import io.verik.compiler.ast.element.kt.EKtBasicClass
+import io.verik.compiler.ast.element.kt.EKtBlockExpression
+import io.verik.compiler.ast.element.kt.EKtConstructor
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.findDeclaration
 import org.junit.jupiter.api.Test
@@ -31,7 +34,7 @@ internal class ConstructorDesugarTransformerStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtBasicClass(C, [KtConstructor(C, [], [], null)], [], [], false, null)",
+            "KtBasicClass(C, [KtConstructor(C, KtBlockExpression(Unit, []), [], [], null)], [], [], false, null)",
             projectContext.findDeclaration("C")
         )
     }
@@ -45,8 +48,39 @@ internal class ConstructorDesugarTransformerStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtBasicClass(C, [KtProperty(x, Int, null, []), KtConstructor(C, [], [], null)], [], [], false, null)",
+            """
+                KtBasicClass(
+                    C,
+                    [
+                        KtProperty(x, Int, null, []),
+                        KtConstructor(
+                            C,
+                            KtBlockExpression(*),
+                            [KtValueParameter(x, Int, [], false)],
+                            [],
+                            null
+                        )
+                    ],
+                    [],
+                    [],
+                    false,
+                    null
+                )
+            """.trimIndent(),
             projectContext.findDeclaration("C")
+        )
+        val constructor = (projectContext.findDeclaration("C") as EKtBasicClass).declarations[1]
+        val statements = ((constructor as EKtConstructor).body!! as EKtBlockExpression).statements
+        assertElementEquals(
+            """
+                [KtBinaryExpression(
+                    Unit,
+                    KtReferenceExpression(Int, x, ThisExpression(C)),
+                    KtReferenceExpression(Int, x, null),
+                    EQ
+                )]
+            """.trimIndent(),
+            statements
         )
     }
 }

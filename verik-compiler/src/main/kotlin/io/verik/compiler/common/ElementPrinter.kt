@@ -269,6 +269,7 @@ class ElementPrinter : Visitor() {
     override fun visitKtConstructor(constructor: EKtConstructor) {
         build("KtConstructor") {
             build(constructor.type.toString())
+            build(constructor.body)
             build(constructor.valueParameters)
             build(constructor.typeParameters.map { it.name })
             build(constructor.delegatedConstructor?.name)

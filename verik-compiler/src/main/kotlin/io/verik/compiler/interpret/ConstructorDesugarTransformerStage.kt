@@ -17,13 +17,21 @@
 package io.verik.compiler.interpret
 
 import io.verik.compiler.ast.element.common.EDeclaration
+import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EThisExpression
 import io.verik.compiler.ast.element.kt.EKtBasicClass
+import io.verik.compiler.ast.element.kt.EKtBinaryExpression
+import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtConstructor
 import io.verik.compiler.ast.element.kt.EKtProperty
+import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtValueParameter
+import io.verik.compiler.ast.element.kt.EPrimaryConstructor
+import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 
 object ConstructorDesugarTransformerStage : ProjectStage() {
@@ -47,12 +55,14 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
             if (primaryConstructor != null) {
                 val declarations = ArrayList<EDeclaration>()
                 val properties = desugarValueParameterProperties(primaryConstructor.valueParameters)
-                declarations.addAll(properties)
+                declarations.addAll(properties.filterNotNull())
 
+                val body = getPrimaryConstructorBody(primaryConstructor, properties)
                 val constructor = EKtConstructor(primaryConstructor.location)
                 constructor.init(
                     primaryConstructor.type,
-                    listOf(),
+                    body,
+                    primaryConstructor.valueParameters,
                     primaryConstructor.typeParameters,
                     null
                 )
@@ -65,17 +75,52 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
             }
         }
 
-        private fun desugarValueParameterProperties(valueParameters: List<EKtValueParameter>): List<EKtProperty> {
-            val properties = ArrayList<EKtProperty>()
-            valueParameters.forEach {
+        private fun desugarValueParameterProperties(valueParameters: List<EKtValueParameter>): List<EKtProperty?> {
+            return valueParameters.map {
                 if (it.isPrimaryConstructorProperty) {
+                    it.isPrimaryConstructorProperty = false
                     val property = EKtProperty(it.location, it.name)
                     property.init(it.type.copy(), null, listOf())
-                    properties.add(property)
                     referenceUpdater.update(it, property)
+                    property
+                } else {
+                    null
                 }
             }
-            return properties
+        }
+
+        private fun getPrimaryConstructorBody(
+            primaryConstructor: EPrimaryConstructor,
+            properties: List<EKtProperty?>
+        ): EExpression {
+            val statements = ArrayList<EExpression>()
+            primaryConstructor.valueParameters.zip(properties).forEach { (valueParameter, property) ->
+                if (property != null) {
+                    val thisExpression = EThisExpression(valueParameter.location, primaryConstructor.type.copy())
+                    val propertyReferenceExpression = EKtReferenceExpression(
+                        valueParameter.location,
+                        valueParameter.type.copy(),
+                        property,
+                        thisExpression
+                    )
+                    val valueParameterReferenceExpression = EKtReferenceExpression(
+                        valueParameter.location,
+                        valueParameter.type.copy(),
+                        valueParameter,
+                        null
+                    )
+                    statements.add(
+                        EKtBinaryExpression(
+                            valueParameter.location,
+                            Core.Kt.C_Unit.toType(),
+                            propertyReferenceExpression,
+                            valueParameterReferenceExpression,
+                            KtBinaryOperatorKind.EQ
+                        )
+                    )
+                }
+            }
+            return EKtBlockExpression(primaryConstructor.location, Core.Kt.C_Unit.toType(), statements)
         }
     }
 }

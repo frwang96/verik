@@ -26,7 +26,8 @@ class Fizzbuzz : Module() {
     @Run
     fun main() {
         x = g(x)
-        C(0)
+        @Suppress("UNUSED_VARIABLE")
+        val c = C(0)
     }
 
     fun g(x: Unpacked<`8`, Ubit<`8`>>): Unpacked<`8`, Ubit<`8`>> {
