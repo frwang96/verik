@@ -25,7 +25,7 @@ internal class StructInterpreterTest : BaseTest() {
     @Test
     fun `interpret struct`() {
         val projectContext = driveTest(
-            ClassInterpreterStage::class,
+            NonBasicClassInterpreterStage::class,
             """
                 class S(var x: Boolean): Struct()
             """.trimIndent()

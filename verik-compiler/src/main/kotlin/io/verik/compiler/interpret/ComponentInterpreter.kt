@@ -31,9 +31,9 @@ import io.verik.compiler.message.Messages
 
 object ComponentInterpreter {
 
-    fun interpretComponent(basicClass: EKtBasicClass, referenceUpdater: ReferenceUpdater): Boolean {
+    fun interpretComponent(basicClass: EKtBasicClass, referenceUpdater: ReferenceUpdater) {
         val basicClassType = basicClass.toType()
-        return when {
+        when {
             basicClassType.isSubtype(Core.Vk.C_Module.toType()) -> {
                 val ports = interpretPorts(basicClass.primaryConstructor?.valueParameters, referenceUpdater)
                 val isTop = basicClass.hasAnnotation(Annotations.TOP)
@@ -47,7 +47,6 @@ object ComponentInterpreter {
                 )
                 referenceUpdater.replace(basicClass, module)
                 basicClass.primaryConstructor?.let { referenceUpdater.update(it, module) }
-                true
             }
             basicClassType.isSubtype(Core.Vk.C_ModuleInterface.toType()) -> {
                 val ports = interpretPorts(basicClass.primaryConstructor?.valueParameters, referenceUpdater)
@@ -60,7 +59,6 @@ object ComponentInterpreter {
                 )
                 referenceUpdater.replace(basicClass, moduleInterface)
                 basicClass.primaryConstructor?.let { referenceUpdater.update(it, moduleInterface) }
-                true
             }
             basicClassType.isSubtype(Core.Vk.C_ModulePort.toType()) -> {
                 val ports = interpretPorts(basicClass.primaryConstructor?.valueParameters, referenceUpdater)
@@ -73,7 +71,6 @@ object ComponentInterpreter {
                 )
                 referenceUpdater.replace(basicClass, modulePort)
                 basicClass.primaryConstructor?.let { referenceUpdater.update(it, modulePort) }
-                true
             }
             basicClassType.isSubtype(Core.Vk.C_ClockingBlock.toType()) -> {
                 val valueParameters = basicClass.primaryConstructor?.valueParameters
@@ -94,9 +91,7 @@ object ComponentInterpreter {
                 } else {
                     Messages.INTERNAL_ERROR.on(basicClass, "Could not identify clocking block event value parameter")
                 }
-                true
             }
-            else -> false
         }
     }
 

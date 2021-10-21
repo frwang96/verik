@@ -24,7 +24,7 @@ internal class EnumInterpreterTest : BaseTest() {
     @Test
     fun `interpret enum`() {
         val projectContext = driveTest(
-            ClassInterpreterStage::class,
+            NonBasicClassInterpreterStage::class,
             """
                 enum class E { A }
             """.trimIndent()

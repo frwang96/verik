@@ -20,12 +20,12 @@ import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class BasicClassInterpreterTest : BaseTest() {
+internal class BasicClassInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret basic class`() {
         val projectContext = driveTest(
-            ClassInterpreterStage::class,
+            BasicClassInterpreterStage::class,
             """
                 class C
             """.trimIndent()
