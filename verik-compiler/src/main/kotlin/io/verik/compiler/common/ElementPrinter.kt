@@ -173,6 +173,12 @@ class ElementPrinter : Visitor() {
             build(basicClass.annotations)
             build(basicClass.isEnum.toString())
             build(basicClass.primaryConstructor)
+            buildNullable(basicClass.superTypeCallEntry) {
+                build("SuperTypeCallEntry") {
+                    build(it.reference.name)
+                    build(it.valueArguments)
+                }
+            }
         }
     }
 
@@ -498,7 +504,7 @@ class ElementPrinter : Visitor() {
     override fun visitStructLiteralExpression(structLiteralExpression: EStructLiteralExpression) {
         build("StructLiteralExpression") {
             build(structLiteralExpression.type.toString())
-            build(structLiteralExpression.entries) {
+            buildList(structLiteralExpression.entries) {
                 build("StructLiteralEntry") {
                     build(it.reference.name)
                     build(it.expression)
@@ -626,7 +632,7 @@ class ElementPrinter : Visitor() {
         build("WhenExpression") {
             build(whenExpression.type.toString())
             build(whenExpression.subject)
-            build(whenExpression.entries) {
+            buildList(whenExpression.entries) {
                 build("WhenEntry") {
                     build(it.conditions)
                     build(it.body)
@@ -639,7 +645,7 @@ class ElementPrinter : Visitor() {
         build("CaseStatement") {
             build(caseStatement.type.toString())
             build(caseStatement.subject)
-            build(caseStatement.entries) {
+            buildList(caseStatement.entries) {
                 build("CaseEntry") {
                     build(it.conditions)
                     build(it.body)
@@ -768,7 +774,7 @@ class ElementPrinter : Visitor() {
         first = false
     }
 
-    private fun <E> build(elements: List<E>, block: (E) -> Unit) {
+    private fun <E> buildList(elements: List<E>, block: (E) -> Unit) {
         if (!first) builder.append(", ")
         builder.append("[")
         first = true
@@ -777,8 +783,16 @@ class ElementPrinter : Visitor() {
         first = false
     }
 
+    private fun <E> buildNullable(element: E?, block: (E) -> Unit) {
+        if (!first) builder.append(", ")
+        first = true
+        if (element != null) block(element)
+        else builder.append("null")
+        first = false
+    }
+
     private fun buildPortInstantiations(portInstantiations: List<PortInstantiation>) {
-        build(portInstantiations) {
+        buildList(portInstantiations) {
             build("PortInstantiation") {
                 build(it.reference.name)
                 build(it.expression)

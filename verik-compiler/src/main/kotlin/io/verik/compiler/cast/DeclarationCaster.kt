@@ -25,7 +25,9 @@ import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.interfaces.cast
+import io.verik.compiler.ast.property.SuperTypeCallEntry
 import io.verik.compiler.core.common.Core
+import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtEnumEntry
@@ -33,6 +35,7 @@ import org.jetbrains.kotlin.psi.KtNamedFunction
 import org.jetbrains.kotlin.psi.KtParameter
 import org.jetbrains.kotlin.psi.KtPrimaryConstructor
 import org.jetbrains.kotlin.psi.KtProperty
+import org.jetbrains.kotlin.psi.KtSuperTypeCallEntry
 import org.jetbrains.kotlin.psi.KtTypeAlias
 import org.jetbrains.kotlin.psi.KtTypeParameter
 import org.jetbrains.kotlin.resolve.descriptorUtil.classValueType
@@ -91,6 +94,22 @@ object DeclarationCaster {
                 castImplicitPrimaryConstructor(classOrObject, castContext)
             else -> null
         }
+        val superTypeCallEntry = when (classOrObject.superTypeListEntries.size) {
+            0 -> null
+            1 -> {
+                val superTypeListEntry = classOrObject.superTypeListEntries[0]
+                if (superTypeListEntry is KtSuperTypeCallEntry) {
+                    castSuperTypeCallEntry(superTypeListEntry, castContext)
+                } else {
+                    Messages.INTERNAL_ERROR.on(classOrObject, "Super type call entry expected")
+                    null
+                }
+            }
+            else -> {
+                Messages.INTERNAL_ERROR.on(classOrObject, "Multiple inheritance not supported")
+                null
+            }
+        }
 
         castedBasicClass.init(
             supertype,
@@ -98,7 +117,8 @@ object DeclarationCaster {
             typeParameters,
             annotations,
             isEnum,
-            primaryConstructor
+            primaryConstructor,
+            superTypeCallEntry
         )
         return castedBasicClass
     }
@@ -226,5 +246,17 @@ object DeclarationCaster {
 
         castedValueParameter.init(type, annotations, isPrimaryConstructorProperty)
         return castedValueParameter
+    }
+
+    private fun castSuperTypeCallEntry(
+        superTypeCallEntry: KtSuperTypeCallEntry,
+        castContext: CastContext
+    ): SuperTypeCallEntry {
+        val descriptor = castContext.sliceReferenceTarget[
+            superTypeCallEntry.calleeExpression.constructorReferenceExpression
+        ]!!
+        val declaration = castContext.getDeclaration(descriptor, superTypeCallEntry)
+        val valueArguments = CallExpressionCaster.castValueArguments(superTypeCallEntry.calleeExpression, castContext)
+        return SuperTypeCallEntry(declaration, valueArguments)
     }
 }

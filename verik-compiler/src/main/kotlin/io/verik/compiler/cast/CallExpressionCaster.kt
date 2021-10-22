@@ -20,12 +20,13 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.property.Type
 import org.jetbrains.kotlin.descriptors.CallableDescriptor
 import org.jetbrains.kotlin.psi.KtCallExpression
+import org.jetbrains.kotlin.psi.KtExpression
 
 object CallExpressionCaster {
 
     // TODO cast default arguments
-    fun castValueArguments(expression: KtCallExpression, castContext: CastContext): ArrayList<EExpression> {
-        val call = castContext.sliceCall[expression.calleeExpression]!!
+    fun castValueArguments(calleeExpression: KtExpression, castContext: CastContext): ArrayList<EExpression> {
+        val call = castContext.sliceCall[calleeExpression]!!
         val resolvedCall = castContext.sliceResolvedCall[call]!!
         val resolvedValueArguments = resolvedCall.valueArgumentsByIndex!!
         val valueArguments = resolvedValueArguments
