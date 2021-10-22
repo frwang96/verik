@@ -40,7 +40,7 @@ object ComponentInterpreter {
                 val module = EModule(
                     basicClass.location,
                     basicClass.name,
-                    basicClass.supertype,
+                    basicClass.superType,
                     ports,
                     basicClass.declarations,
                     isTop
@@ -53,7 +53,7 @@ object ComponentInterpreter {
                 val moduleInterface = EModuleInterface(
                     basicClass.location,
                     basicClass.name,
-                    basicClass.supertype,
+                    basicClass.superType,
                     ports,
                     basicClass.declarations
                 )
@@ -65,7 +65,7 @@ object ComponentInterpreter {
                 val modulePort = EModulePort(
                     basicClass.location,
                     basicClass.name,
-                    basicClass.supertype,
+                    basicClass.superType,
                     ports,
                     null
                 )
@@ -82,7 +82,7 @@ object ComponentInterpreter {
                     val clockingBlock = EClockingBlock(
                         basicClass.location,
                         basicClass.name,
-                        basicClass.supertype,
+                        basicClass.superType,
                         ports,
                         eventValueParameterIndex
                     )

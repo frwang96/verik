@@ -57,7 +57,7 @@ object BasicClassInterpreterStage : ProjectStage() {
                 ESvBasicClass(
                     basicClass.location,
                     basicClass.name,
-                    basicClass.supertype,
+                    basicClass.superType,
                     basicClass.declarations
                 )
             )

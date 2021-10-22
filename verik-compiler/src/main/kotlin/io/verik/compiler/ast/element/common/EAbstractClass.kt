@@ -21,7 +21,7 @@ import io.verik.compiler.core.common.Core
 
 abstract class EAbstractClass : EClassifier() {
 
-    abstract var supertype: Type
+    abstract var superType: Type
 
     // TODO set type of class
     override var type = Core.Kt.C_Unit.toType()

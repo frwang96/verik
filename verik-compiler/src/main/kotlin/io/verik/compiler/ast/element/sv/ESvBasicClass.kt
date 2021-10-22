@@ -25,7 +25,7 @@ import io.verik.compiler.message.SourceLocation
 class ESvBasicClass(
     override val location: SourceLocation,
     override var name: String,
-    override var supertype: Type,
+    override var superType: Type,
     override var declarations: ArrayList<EDeclaration>
 ) : EAbstractContainerClass() {
 

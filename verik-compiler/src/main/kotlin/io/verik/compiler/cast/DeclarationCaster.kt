@@ -76,7 +76,7 @@ object DeclarationCaster {
             .cast<EKtBasicClass>(classOrObject)
             ?: return null
 
-        val supertype = castContext.castType(descriptor.getSuperClassOrAny().defaultType, classOrObject)
+        val superType = castContext.castType(descriptor.getSuperClassOrAny().defaultType, classOrObject)
         val declarations = classOrObject.declarations.mapNotNull {
             castContext.casterVisitor.getDeclaration(it)
         }
@@ -112,7 +112,7 @@ object DeclarationCaster {
         }
 
         castedBasicClass.init(
-            supertype,
+            superType,
             declarations,
             typeParameters,
             annotations,

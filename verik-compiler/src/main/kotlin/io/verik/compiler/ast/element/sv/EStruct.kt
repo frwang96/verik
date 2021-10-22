@@ -32,7 +32,7 @@ class EStruct(
         properties.forEach { it.parent = this }
     }
 
-    override var supertype = Core.Kt.C_Any.toType()
+    override var superType = Core.Kt.C_Any.toType()
 
     override fun accept(visitor: Visitor) {
         visitor.visitStruct(this)

@@ -19,7 +19,7 @@ package io.verik.compiler.core.common
 class CoreClassDeclaration(
     parent: String,
     override var name: String,
-    val superclass: CoreClassDeclaration?
+    val superClass: CoreClassDeclaration?
 ) : CoreDeclaration {
 
     override val qualifiedName = "$parent.$name"

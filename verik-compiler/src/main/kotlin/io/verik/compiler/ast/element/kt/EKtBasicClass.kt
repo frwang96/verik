@@ -33,7 +33,7 @@ class EKtBasicClass(
     override var name: String
 ) : EAbstractContainerClass(), TypeParameterized, Annotated {
 
-    override var supertype = NullDeclaration.toType()
+    override var superType = NullDeclaration.toType()
     override var declarations: ArrayList<EDeclaration> = arrayListOf()
     override var typeParameters: ArrayList<ETypeParameter> = arrayListOf()
     override var annotations: List<EAnnotation> = listOf()
@@ -42,7 +42,7 @@ class EKtBasicClass(
     var superTypeCallEntry: SuperTypeCallEntry? = null
 
     fun init(
-        supertype: Type,
+        superType: Type,
         declarations: List<EDeclaration>,
         typeParameters: List<ETypeParameter>,
         annotations: List<EAnnotation>,
@@ -55,7 +55,7 @@ class EKtBasicClass(
         annotations.forEach { it.parent = this }
         primaryConstructor?.parent = this
         superTypeCallEntry?.valueArguments?.forEach { it.parent = this }
-        this.supertype = supertype
+        this.superType = superType
         this.declarations = ArrayList(declarations)
         this.typeParameters = ArrayList(typeParameters)
         this.annotations = annotations

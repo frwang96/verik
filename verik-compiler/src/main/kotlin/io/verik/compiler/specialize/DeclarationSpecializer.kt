@@ -70,7 +70,7 @@ object DeclarationSpecializer {
         }
         specializerContext.typeParameterContext = typeParameterContext
 
-        val superType = specializerContext.specializeType(basicClass.supertype, basicClass)
+        val superType = specializerContext.specializeType(basicClass.superType, basicClass)
         val annotations = basicClass.annotations.map { specializerContext.specialize(it) }
         val primaryConstructor = basicClass.primaryConstructor?.let { specializerContext.specialize(it) }
         val superTypeCallEntry = basicClass.superTypeCallEntry?.let { superTypeCallEntry ->
