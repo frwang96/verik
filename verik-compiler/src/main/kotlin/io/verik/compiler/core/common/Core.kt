@@ -109,6 +109,11 @@ object Core {
         val C_Time = CoreClass.Vk.C_Time
         val C_Event = CoreClass.Vk.C_Event
 
+        val F_Module = CoreConstructorDeclaration(C_Module)
+        val F_ModuleInterface = CoreConstructorDeclaration(C_ModuleInterface)
+        val F_ModulePort = CoreConstructorDeclaration(C_ModulePort)
+        val F_ClockingBlock = CoreConstructorDeclaration(C_ClockingBlock)
+
         val N_Cardinal = CoreCardinalUnresolvedDeclaration
         val N_ADD = CoreVkCardinal.N_ADD
         val N_SUB = CoreVkCardinal.N_SUB

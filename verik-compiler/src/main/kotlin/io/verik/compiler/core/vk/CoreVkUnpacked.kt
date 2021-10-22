@@ -24,8 +24,8 @@ import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.core.common.CoreKtPropertyDeclaration
 import io.verik.compiler.core.common.CoreKtTransformableFunctionDeclaration
+import io.verik.compiler.core.common.CorePropertyDeclaration
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.resolve.TypeAdapter
 import io.verik.compiler.resolve.TypeConstraint
@@ -153,7 +153,7 @@ object CoreVkUnpacked : CoreScope(Core.Vk.C_Unpacked) {
         }
     }
 
-    val P_size = object : CoreKtPropertyDeclaration(parent, "size") {
+    val P_size = object : CorePropertyDeclaration(parent, "size") {
 
         override fun transform(referenceExpression: EKtReferenceExpression): EExpression {
             val value = referenceExpression.receiver!!.type.arguments[0].asCardinalValue(referenceExpression)

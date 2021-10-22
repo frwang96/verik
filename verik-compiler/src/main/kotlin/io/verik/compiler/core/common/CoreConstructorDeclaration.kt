@@ -16,15 +16,8 @@
 
 package io.verik.compiler.core.common
 
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.kt.EKtReferenceExpression
+class CoreConstructorDeclaration(val classDeclaration: CoreClassDeclaration) : CoreAbstractFunctionDeclaration() {
 
-abstract class CoreKtPropertyDeclaration(
-    parent: String,
-    final override var name: String
-) : CoreAbstractPropertyDeclaration() {
-
-    override val qualifiedName = "$parent.$name"
-
-    abstract fun transform(referenceExpression: EKtReferenceExpression): EExpression
+    override var name = "<init>"
+    override val qualifiedName = name
 }

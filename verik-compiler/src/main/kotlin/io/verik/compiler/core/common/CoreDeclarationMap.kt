@@ -18,6 +18,7 @@ package io.verik.compiler.core.common
 
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.cast.CastContext
+import org.jetbrains.kotlin.descriptors.ClassConstructorDescriptor
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
 import org.jetbrains.kotlin.descriptors.SimpleFunctionDescriptor
 import org.jetbrains.kotlin.descriptors.impl.AbstractTypeAliasDescriptor
@@ -32,8 +33,9 @@ import kotlin.reflect.full.memberProperties
 
 object CoreDeclarationMap {
 
-    private val declarationMap = HashMap<String, CoreDeclaration>()
+    private val constructorMap = HashMap<CoreClassDeclaration, CoreConstructorDeclaration>()
     private val functionMap = HashMap<String, ArrayList<CoreKtAbstractFunctionDeclaration>>()
+    private val declarationMap = HashMap<String, CoreDeclaration>()
 
     init {
         addCoreDeclarations(Core::class)
@@ -45,6 +47,7 @@ object CoreDeclarationMap {
         element: KtElement
     ): Declaration? {
         return when (declarationDescriptor) {
+            is ClassConstructorDescriptor -> getConstructor(castContext, declarationDescriptor, element)
             is SimpleFunctionDescriptor -> getFunction(castContext, declarationDescriptor, element)
             else -> getDeclaration(declarationDescriptor)
         }
@@ -57,19 +60,20 @@ object CoreDeclarationMap {
                 if (it.returnType.isSubtypeOf(CoreDeclaration::class.createType())) {
                     @Suppress("UNCHECKED_CAST")
                     val property = (it as KProperty1<Any, *>).get(kClassInstance) as CoreDeclaration
-                    if (property.qualifiedName != "${kClassInstance.parent}.${property.name}") {
-                        val expectedString =
-                            "Expected ${kClassInstance.parent}.${property.name} actual ${property.qualifiedName}"
+                    val expectedQualifiedName = "${kClassInstance.parent}.${property.name}"
+                    if (property.qualifiedName != expectedQualifiedName && property.qualifiedName != "<init>") {
+                        val expectedString = "Expected $expectedQualifiedName actual ${property.qualifiedName}"
                         throw IllegalArgumentException("Qualified name does not match scope parent: $expectedString")
                     }
                     when (property) {
-                        is CoreAbstractFunctionDeclaration -> {
-                            if (property is CoreKtAbstractFunctionDeclaration) {
-                                if (property.qualifiedName !in functionMap)
-                                    functionMap[property.qualifiedName] = ArrayList()
-                                functionMap[property.qualifiedName]!!.add(property)
-                            }
+                        is CoreConstructorDeclaration ->
+                            constructorMap[property.classDeclaration] = property
+                        is CoreKtAbstractFunctionDeclaration -> {
+                            if (property.qualifiedName !in functionMap)
+                                functionMap[property.qualifiedName] = ArrayList()
+                            functionMap[property.qualifiedName]!!.add(property)
                         }
+                        is CoreAbstractFunctionDeclaration -> {}
                         else ->
                             declarationMap[property.qualifiedName] = property
                     }
@@ -79,11 +83,20 @@ object CoreDeclarationMap {
         kClass.nestedClasses.forEach { addCoreDeclarations(it) }
     }
 
+    private fun getConstructor(
+        castContext: CastContext,
+        descriptor: ClassConstructorDescriptor,
+        element: KtElement
+    ): CoreConstructorDeclaration? {
+        val type = castContext.castType(descriptor.returnType, element)
+        return constructorMap[type.reference]
+    }
+
     private fun getFunction(
         castContext: CastContext,
         descriptor: SimpleFunctionDescriptor,
         element: KtElement
-    ): CoreDeclaration? {
+    ): CoreKtAbstractFunctionDeclaration? {
         val qualifiedName = descriptor.fqNameOrNull()?.asString()
             ?: return null
         val functions = functionMap[qualifiedName]
