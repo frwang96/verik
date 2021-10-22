@@ -16,13 +16,14 @@
 
 package io.verik.compiler.interpret
 
+import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ETemporaryProperty
-import io.verik.compiler.ast.element.common.EThisExpression
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
+import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtConstructor
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvBasicClass
@@ -52,69 +53,121 @@ object BasicClassInterpreterStage : ProjectStage() {
 
         override fun visitKtBasicClass(basicClass: EKtBasicClass) {
             super.visitKtBasicClass(basicClass)
+            val declarations = ArrayList<EDeclaration>()
+            basicClass.declarations.forEach {
+                if (it is EKtConstructor) {
+                    val interpretedConstructor = interpretConstructor(it)
+                    interpretedConstructor.instantiator.parent = basicClass
+                    declarations.add(interpretedConstructor.instantiator)
+                    if (interpretedConstructor.initializer != null) {
+                        interpretedConstructor.initializer.parent = basicClass
+                        declarations.add(interpretedConstructor.initializer)
+                    }
+                } else {
+                    declarations.add(it)
+                }
+            }
             referenceUpdater.replace(
                 basicClass,
                 ESvBasicClass(
                     basicClass.location,
                     basicClass.name,
                     basicClass.superType,
-                    basicClass.declarations
+                    declarations
                 )
             )
         }
 
-        override fun visitKtConstructor(constructor: EKtConstructor) {
-            super.visitKtConstructor(constructor)
-            val location = constructor.location
-            val type = constructor.type
-            val temporaryProperty = ETemporaryProperty(
-                location,
-                type.copy(),
-                ESvCallExpression(location, type.copy(), Core.Sv.F_new, null, arrayListOf(), false)
-            )
+        private fun interpretConstructor(constructor: EKtConstructor): InterpretedConstructor {
+            val initializer = interpretInitializer(constructor)
+            val instantiator = interpretInstantiator(constructor, initializer)
+            return InterpretedConstructor(instantiator, initializer)
+        }
 
-            val statements = ArrayList<EExpression>()
-            statements.add(EPropertyStatement(location, temporaryProperty))
-
-            val receiverReplacerVisitor = ReceiverReplacerVisitor(temporaryProperty)
+        private fun interpretInitializer(constructor: EKtConstructor): ESvFunction? {
             val body = constructor.getBodyNotNull()
-            body.accept(receiverReplacerVisitor)
-            if (body is EKtBlockExpression) statements.addAll(body.statements)
-            else statements.add(body)
+            if (body is EKtBlockExpression && body.statements.size == 0)
+                return null
 
-            statements.add(
-                EReturnStatement(
-                    location,
-                    Core.Kt.C_Nothing.toType(),
-                    ESvReferenceExpression(location, type.copy(), temporaryProperty, null, false)
+            val valueParameters = ArrayList<ESvValueParameter>()
+            constructor.valueParameters.forEach {
+                val valueParameter = ESvValueParameter(it.location, it.name, it.type)
+                valueParameters.add(valueParameter)
+                referenceUpdater.update(it, valueParameter)
+            }
+            return ESvFunction(
+                constructor.location,
+                "vkinit",
+                Core.Kt.C_Unit.toType(),
+                body,
+                false,
+                ArrayList(valueParameters)
+            )
+        }
+
+        private fun interpretInstantiator(constructor: EKtConstructor, initializer: ESvFunction?): ESvFunction {
+            val temporaryProperty = ETemporaryProperty(
+                constructor.location,
+                constructor.type.copy(),
+                ESvCallExpression(
+                    constructor.location,
+                    constructor.type.copy(),
+                    Core.Sv.F_new,
+                    null,
+                    arrayListOf(),
+                    false
                 )
             )
             val valueParameters = constructor.valueParameters.map {
-                ESvValueParameter(it.location, it.name, it.type)
+                ESvValueParameter(it.location, it.name, it.type.copy())
             }
-            val function = ESvFunction(
-                location,
+
+            val statements = ArrayList<EExpression>()
+            statements.add(EPropertyStatement(constructor.location, temporaryProperty))
+            if (initializer != null) {
+                val valueArguments = valueParameters.map {
+                    EKtReferenceExpression(it.location, it.type.copy(), it, null)
+                }
+                statements.add(
+                    EKtCallExpression(
+                        constructor.location,
+                        Core.Kt.C_Unit.toType(),
+                        initializer,
+                        EKtReferenceExpression(constructor.location, constructor.type.copy(), temporaryProperty, null),
+                        ArrayList(valueArguments),
+                        arrayListOf()
+                    )
+                )
+            }
+            statements.add(
+                EReturnStatement(
+                    constructor.location,
+                    Core.Kt.C_Nothing.toType(),
+                    ESvReferenceExpression(
+                        constructor.location,
+                        constructor.type.copy(),
+                        temporaryProperty,
+                        null,
+                        false
+                    )
+                )
+            )
+
+            val instantiator = ESvFunction(
+                constructor.location,
                 "vknew",
-                type,
-                ESvBlockExpression(location, ArrayList(statements), false, null),
+                constructor.type,
+                ESvBlockExpression(constructor.location, statements, false, null),
                 true,
                 ArrayList(valueParameters)
             )
-            referenceUpdater.replace(constructor, function)
+            referenceUpdater.replace(constructor, instantiator)
+            return instantiator
         }
     }
 
-    private class ReceiverReplacerVisitor(private val temporaryProperty: ETemporaryProperty) : TreeVisitor() {
-
-        override fun visitThisExpression(thisExpression: EThisExpression) {
-            super.visitThisExpression(thisExpression)
-            val referenceExpression = EKtReferenceExpression(
-                thisExpression.location,
-                thisExpression.type,
-                temporaryProperty,
-                null
-            )
-            thisExpression.replace(referenceExpression)
-        }
-    }
+    data class InterpretedConstructor(
+        val instantiator: ESvFunction,
+        val initializer: ESvFunction?
+    )
 }

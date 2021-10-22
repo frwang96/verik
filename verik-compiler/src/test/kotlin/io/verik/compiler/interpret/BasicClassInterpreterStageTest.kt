@@ -49,4 +49,27 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
             projectContext.findDeclaration("C")
         )
     }
+
+    @Test
+    fun `basic class with primary constructor property`() {
+        val projectContext = driveTest(
+            BasicClassInterpreterStage::class,
+            """
+                class C(val x: Int)
+            """.trimIndent()
+        )
+        assertElementEquals(
+            """
+                SvBasicClass(
+                    C,
+                    [
+                        KtProperty(x, Int, null, []),
+                        SvFunction(vknew, *, *, true, [SvValueParameter(x, Int)]),
+                        SvFunction(vkinit, *, *, false, [SvValueParameter(x, Int)])
+                    ]
+                )
+            """.trimIndent(),
+            projectContext.findDeclaration("C")
+        )
+    }
 }
