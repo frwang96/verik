@@ -96,6 +96,8 @@ object DeclarationSerializer {
     fun serializeSvFunction(function: ESvFunction, serializerContext: SerializerContext) {
         if (function.isScopeStatic)
             serializerContext.append("static ")
+        if (function.isVirtual)
+            serializerContext.append("virtual ")
         val serializedType = TypeSerializer.serialize(function.type, function)
         serializedType.checkNoUnpackedDimension(function)
         serializerContext.append("function automatic ${serializedType.getBaseAndPackedDimension()} ${function.name}")

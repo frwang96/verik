@@ -100,7 +100,8 @@ object BasicClassInterpreterStage : ProjectStage() {
                 "vkinit",
                 Core.Kt.C_Unit.toType(),
                 body,
-                false,
+                isScopeStatic = false,
+                isVirtual = false,
                 ArrayList(valueParameters)
             )
         }
@@ -158,7 +159,8 @@ object BasicClassInterpreterStage : ProjectStage() {
                 "vknew",
                 constructor.type,
                 ESvBlockExpression(constructor.location, statements, false, null),
-                true,
+                isScopeStatic = true,
+                isVirtual = false,
                 ArrayList(valueParameters)
             )
             referenceUpdater.replace(constructor, instantiator)

@@ -192,7 +192,7 @@ internal class ExpressionSerializerTest : BaseTest() {
                     return _${'$'}0;
                 endfunction : vknew
             
-                function automatic void f();
+                virtual function automatic void f();
                     this;
                 endfunction : f
             

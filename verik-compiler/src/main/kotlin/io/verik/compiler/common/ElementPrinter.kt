@@ -252,6 +252,7 @@ class ElementPrinter : Visitor() {
             build(function.type.toString())
             build(function.body)
             build(function.isScopeStatic)
+            build(function.isVirtual)
             build(function.valueParameters)
         }
     }

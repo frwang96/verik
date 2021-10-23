@@ -31,7 +31,7 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SvBasicClass(C, [SvFunction(vknew, *, *, true, [])])",
+            "SvBasicClass(C, [SvFunction(vknew, *, *, true, false, [])])",
             projectContext.findDeclaration("C")
         )
     }
@@ -45,7 +45,7 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SvBasicClass(C, [SvFunction(vknew, *, *, true, [SvValueParameter(x, Int)])])",
+            "SvBasicClass(C, [SvFunction(vknew, *, *, true, false, [SvValueParameter(x, Int)])])",
             projectContext.findDeclaration("C")
         )
     }
@@ -64,8 +64,8 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
                     C,
                     [
                         KtProperty(x, Int, null, []),
-                        SvFunction(vknew, *, *, true, [SvValueParameter(x, Int)]),
-                        SvFunction(vkinit, *, *, false, [SvValueParameter(x, Int)])
+                        SvFunction(vknew, *, *, true, false, [SvValueParameter(x, Int)]),
+                        SvFunction(vkinit, *, *, false, false, [SvValueParameter(x, Int)])
                     ]
                 )
             """.trimIndent(),

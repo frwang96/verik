@@ -101,7 +101,7 @@ internal class FunctionInterpreterStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SvFunction(f, Unit, *, false, [])",
+            "SvFunction(f, Unit, *, false, false, [])",
             projectContext.findDeclaration("f")
         )
     }
@@ -117,7 +117,7 @@ internal class FunctionInterpreterStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SvFunction(f, Unit, *, false, [])",
+            "SvFunction(f, Unit, *, false, true, [])",
             projectContext.findDeclaration("f")
         )
     }
