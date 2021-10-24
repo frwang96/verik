@@ -28,6 +28,9 @@ class Fizzbuzz : Module() {
         x = g(x)
         @Suppress("UNUSED_VARIABLE")
         val c = C(0)
+        c.f()
+        val d = D()
+        d.f()
     }
 
     fun g(x: Unpacked<`8`, Ubit<`8`>>): Unpacked<`8`, Ubit<`8`>> {
@@ -35,4 +38,9 @@ class Fizzbuzz : Module() {
     }
 }
 
-class C(val a: Int)
+open class C(val a: Int) {
+
+    fun f() {}
+}
+
+class D : C(0)

@@ -19,7 +19,7 @@ package io.verik.compiler.transform.mid
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.common.CoreKtPropertyDeclaration
+import io.verik.compiler.core.common.CorePropertyDeclaration
 import io.verik.compiler.main.ProjectContext
 
 object PropertyTransformerStage : ProjectStage() {
@@ -35,7 +35,7 @@ object PropertyTransformerStage : ProjectStage() {
         override fun visitKtReferenceExpression(referenceExpression: EKtReferenceExpression) {
             super.visitKtReferenceExpression(referenceExpression)
             val reference = referenceExpression.reference
-            if (reference is CoreKtPropertyDeclaration)
+            if (reference is CorePropertyDeclaration)
                 referenceExpression.replace(reference.transform(referenceExpression))
         }
     }

@@ -23,6 +23,7 @@ import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReturnStatement
+import io.verik.compiler.ast.element.common.ESuperExpression
 import io.verik.compiler.ast.element.common.EThisExpression
 import io.verik.compiler.ast.element.common.EWhileExpression
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
@@ -224,6 +225,10 @@ class SourceSerializerVisitor(private val serializerContext: SerializerContext) 
 
     override fun visitThisExpression(thisExpression: EThisExpression) {
         ExpressionSerializer.serializeThisExpression(serializerContext)
+    }
+
+    override fun visitSuperExpression(superExpression: ESuperExpression) {
+        ExpressionSerializer.serializeSuperExpression(serializerContext)
     }
 
     override fun visitReturnStatement(returnStatement: EReturnStatement) {

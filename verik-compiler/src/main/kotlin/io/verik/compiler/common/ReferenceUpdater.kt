@@ -18,7 +18,9 @@ package io.verik.compiler.common
 
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.ETypedElement
+import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.kt.EKtConstructor
 import io.verik.compiler.ast.interfaces.DeclarationContainer
 import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.ast.property.Type
@@ -52,6 +54,12 @@ class ReferenceUpdater(val projectContext: ProjectContext) {
 
     private class ReferenceUpdaterVisitor(private val referenceMap: Map<EDeclaration, EDeclaration>) : TreeVisitor() {
 
+        private fun updateReference(reference: Reference) {
+            val updatedReference = referenceMap[reference.reference]
+            if (updatedReference != null)
+                reference.reference = updatedReference
+        }
+
         private fun updateTypeReferences(type: Type) {
             val reference = referenceMap[type.reference]
             if (reference != null)
@@ -62,15 +70,19 @@ class ReferenceUpdater(val projectContext: ProjectContext) {
         override fun visitTypedElement(typedElement: ETypedElement) {
             super.visitTypedElement(typedElement)
             updateTypeReferences(typedElement.type)
-            if (typedElement is EKtCallExpression) {
-                typedElement.typeArguments.forEach {
-                    updateTypeReferences(it)
-                }
-            }
             if (typedElement is Reference) {
-                val reference = referenceMap[typedElement.reference]
-                if (reference != null)
-                    typedElement.reference = reference
+                updateReference(typedElement)
+            }
+            when (typedElement) {
+                is EKtBasicClass -> {
+                    typedElement.superTypeCallEntry?.let { updateReference(it) }
+                }
+                is EKtConstructor -> {
+                    typedElement.superTypeCallEntry?.let { updateReference(it) }
+                }
+                is EKtCallExpression -> {
+                    typedElement.typeArguments.forEach { updateTypeReferences(it) }
+                }
             }
         }
     }

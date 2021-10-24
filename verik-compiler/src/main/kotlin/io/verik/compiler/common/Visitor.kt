@@ -47,6 +47,7 @@ import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ERootPackage
+import io.verik.compiler.ast.element.common.ESuperExpression
 import io.verik.compiler.ast.element.common.ETemporaryProperty
 import io.verik.compiler.ast.element.common.EThisExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
@@ -429,6 +430,10 @@ abstract class Visitor {
 
     open fun visitThisExpression(thisExpression: EThisExpression) {
         visitExpression(thisExpression)
+    }
+
+    open fun visitSuperExpression(superExpression: ESuperExpression) {
+        visitExpression(superExpression)
     }
 
     open fun visitReturnStatement(returnStatement: EReturnStatement) {

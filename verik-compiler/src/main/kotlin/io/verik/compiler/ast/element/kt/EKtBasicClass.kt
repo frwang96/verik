@@ -21,6 +21,7 @@ import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.interfaces.Annotated
 import io.verik.compiler.ast.interfaces.TypeParameterized
+import io.verik.compiler.ast.property.SuperTypeCallEntry
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.TreeVisitor
@@ -32,31 +33,35 @@ class EKtBasicClass(
     override var name: String
 ) : EAbstractContainerClass(), TypeParameterized, Annotated {
 
-    override var supertype = NullDeclaration.toType()
+    override var superType = NullDeclaration.toType()
     override var declarations: ArrayList<EDeclaration> = arrayListOf()
     override var typeParameters: ArrayList<ETypeParameter> = arrayListOf()
     override var annotations: List<EAnnotation> = listOf()
     var isEnum: Boolean = false
     var primaryConstructor: EPrimaryConstructor? = null
+    var superTypeCallEntry: SuperTypeCallEntry? = null
 
     fun init(
-        supertype: Type,
+        superType: Type,
         declarations: List<EDeclaration>,
         typeParameters: List<ETypeParameter>,
         annotations: List<EAnnotation>,
         isEnum: Boolean,
-        primaryConstructor: EPrimaryConstructor?
+        primaryConstructor: EPrimaryConstructor?,
+        superTypeCallEntry: SuperTypeCallEntry?
     ) {
         declarations.forEach { it.parent = this }
         typeParameters.forEach { it.parent = this }
         annotations.forEach { it.parent = this }
         primaryConstructor?.parent = this
-        this.supertype = supertype
+        superTypeCallEntry?.valueArguments?.forEach { it.parent = this }
+        this.superType = superType
         this.declarations = ArrayList(declarations)
         this.typeParameters = ArrayList(typeParameters)
         this.annotations = annotations
         this.isEnum = isEnum
         this.primaryConstructor = primaryConstructor
+        this.superTypeCallEntry = superTypeCallEntry
     }
 
     override fun accept(visitor: Visitor) {
@@ -68,5 +73,6 @@ class EKtBasicClass(
         typeParameters.forEach { it.accept(visitor) }
         annotations.forEach { it.accept(visitor) }
         primaryConstructor?.accept(visitor)
+        superTypeCallEntry?.valueArguments?.forEach { it.accept(visitor) }
     }
 }

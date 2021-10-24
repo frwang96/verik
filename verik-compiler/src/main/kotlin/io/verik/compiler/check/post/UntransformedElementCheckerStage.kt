@@ -39,7 +39,7 @@ import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.CoreKtAbstractFunctionDeclaration
-import io.verik.compiler.core.common.CoreKtPropertyDeclaration
+import io.verik.compiler.core.common.CorePropertyDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 
@@ -118,7 +118,7 @@ object UntransformedElementCheckerStage : ProjectStage() {
 
         override fun visitSvReferenceExpression(referenceExpression: ESvReferenceExpression) {
             super.visitSvReferenceExpression(referenceExpression)
-            if (referenceExpression.reference is CoreKtPropertyDeclaration)
+            if (referenceExpression.reference is CorePropertyDeclaration)
                 Messages.INTERNAL_ERROR.on(referenceExpression, "Reference expression reference $message")
         }
 

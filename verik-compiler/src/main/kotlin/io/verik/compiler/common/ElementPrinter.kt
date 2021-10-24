@@ -28,6 +28,7 @@ import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ERootPackage
+import io.verik.compiler.ast.element.common.ESuperExpression
 import io.verik.compiler.ast.element.common.ETemporaryProperty
 import io.verik.compiler.ast.element.common.EThisExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
@@ -96,6 +97,7 @@ import io.verik.compiler.ast.element.sv.EWidthCastExpression
 import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.LiteralStringEntry
 import io.verik.compiler.ast.property.PortInstantiation
+import io.verik.compiler.ast.property.SuperTypeCallEntry
 
 class ElementPrinter : Visitor() {
 
@@ -173,6 +175,7 @@ class ElementPrinter : Visitor() {
             build(basicClass.annotations)
             build(basicClass.isEnum.toString())
             build(basicClass.primaryConstructor)
+            buildSuperTypeCallEntry(basicClass.superTypeCallEntry)
         }
     }
 
@@ -246,6 +249,7 @@ class ElementPrinter : Visitor() {
             build(function.type.toString())
             build(function.body)
             build(function.isScopeStatic)
+            build(function.isVirtual)
             build(function.valueParameters)
         }
     }
@@ -272,7 +276,7 @@ class ElementPrinter : Visitor() {
             build(constructor.body)
             build(constructor.valueParameters)
             build(constructor.typeParameters.map { it.name })
-            build(constructor.delegatedConstructor?.name)
+            buildSuperTypeCallEntry(constructor.superTypeCallEntry)
         }
     }
 
@@ -498,7 +502,7 @@ class ElementPrinter : Visitor() {
     override fun visitStructLiteralExpression(structLiteralExpression: EStructLiteralExpression) {
         build("StructLiteralExpression") {
             build(structLiteralExpression.type.toString())
-            build(structLiteralExpression.entries) {
+            buildList(structLiteralExpression.entries) {
                 build("StructLiteralEntry") {
                     build(it.reference.name)
                     build(it.expression)
@@ -510,6 +514,12 @@ class ElementPrinter : Visitor() {
     override fun visitThisExpression(thisExpression: EThisExpression) {
         build("ThisExpression") {
             build(thisExpression.type.toString())
+        }
+    }
+
+    override fun visitSuperExpression(superExpression: ESuperExpression) {
+        build("SuperExpression") {
+            build(superExpression.type.toString())
         }
     }
 
@@ -626,7 +636,7 @@ class ElementPrinter : Visitor() {
         build("WhenExpression") {
             build(whenExpression.type.toString())
             build(whenExpression.subject)
-            build(whenExpression.entries) {
+            buildList(whenExpression.entries) {
                 build("WhenEntry") {
                     build(it.conditions)
                     build(it.body)
@@ -639,7 +649,7 @@ class ElementPrinter : Visitor() {
         build("CaseStatement") {
             build(caseStatement.type.toString())
             build(caseStatement.subject)
-            build(caseStatement.entries) {
+            buildList(caseStatement.entries) {
                 build("CaseEntry") {
                     build(it.conditions)
                     build(it.body)
@@ -768,7 +778,7 @@ class ElementPrinter : Visitor() {
         first = false
     }
 
-    private fun <E> build(elements: List<E>, block: (E) -> Unit) {
+    private fun <E> buildList(elements: List<E>, block: (E) -> Unit) {
         if (!first) builder.append(", ")
         builder.append("[")
         first = true
@@ -777,8 +787,25 @@ class ElementPrinter : Visitor() {
         first = false
     }
 
+    private fun <E> buildNullable(element: E?, block: (E) -> Unit) {
+        if (!first) builder.append(", ")
+        first = true
+        if (element != null) block(element)
+        else builder.append("null")
+        first = false
+    }
+
+    private fun buildSuperTypeCallEntry(superTypeCallEntry: SuperTypeCallEntry?) {
+        buildNullable(superTypeCallEntry) {
+            build("SuperTypeCallEntry") {
+                build(it.reference.name)
+                build(it.valueArguments)
+            }
+        }
+    }
+
     private fun buildPortInstantiations(portInstantiations: List<PortInstantiation>) {
-        build(portInstantiations) {
+        buildList(portInstantiations) {
             build("PortInstantiation") {
                 build(it.reference.name)
                 build(it.expression)

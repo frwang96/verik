@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
+import io.verik.compiler.ast.element.common.ESuperExpression
 import io.verik.compiler.ast.element.common.EThisExpression
 import io.verik.compiler.ast.element.common.EWhileExpression
 import io.verik.compiler.ast.element.kt.EForExpression
@@ -53,6 +54,7 @@ import org.jetbrains.kotlin.psi.KtPostfixExpression
 import org.jetbrains.kotlin.psi.KtPrefixExpression
 import org.jetbrains.kotlin.psi.KtReturnExpression
 import org.jetbrains.kotlin.psi.KtSimpleNameExpression
+import org.jetbrains.kotlin.psi.KtSuperExpression
 import org.jetbrains.kotlin.psi.KtThisExpression
 import org.jetbrains.kotlin.psi.KtWhileExpression
 import org.jetbrains.kotlin.resolve.lazy.descriptors.LazyClassDescriptor
@@ -126,7 +128,7 @@ object ExpressionCaster {
         val descriptor = castContext.sliceReferenceTarget[expression.calleeExpression]!!
         val type = castContext.castType(expression)
         val declaration = castContext.getDeclaration(descriptor, expression)
-        val valueArguments = CallExpressionCaster.castValueArguments(expression, castContext)
+        val valueArguments = CallExpressionCaster.castValueArguments(expression.calleeExpression!!, castContext)
         val typeArguments = CallExpressionCaster.castTypeArguments(expression, castContext)
         return EKtCallExpression(location, type, declaration, null, valueArguments, typeArguments)
     }
@@ -159,7 +161,7 @@ object ExpressionCaster {
             is KtCallExpression -> {
                 val descriptor = castContext.sliceReferenceTarget[selector.calleeExpression]!!
                 val declaration = castContext.getDeclaration(descriptor, expression)
-                val valueArguments = CallExpressionCaster.castValueArguments(selector, castContext)
+                val valueArguments = CallExpressionCaster.castValueArguments(selector.calleeExpression!!, castContext)
                 val typeArguments = CallExpressionCaster.castTypeArguments(selector, castContext)
                 return EKtCallExpression(
                     location,
@@ -188,6 +190,12 @@ object ExpressionCaster {
         val location = expression.location()
         val type = castContext.castType(expression)
         return EThisExpression(location, type)
+    }
+
+    fun castSuperExpression(expression: KtSuperExpression, castContext: CastContext): ESuperExpression {
+        val location = expression.location()
+        val type = castContext.castType(expression)
+        return ESuperExpression(location, type)
     }
 
     fun castReturnStatement(expression: KtReturnExpression, castContext: CastContext): EReturnStatement {

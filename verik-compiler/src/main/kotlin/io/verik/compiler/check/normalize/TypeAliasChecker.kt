@@ -73,7 +73,7 @@ object TypeAliasChecker : ProjectStage() {
 
         override fun visitAbstractClass(abstractClass: EAbstractClass) {
             super.visitAbstractClass(abstractClass)
-            addTypeRecursive(abstractClass.supertype, abstractClass)
+            addTypeRecursive(abstractClass.superType, abstractClass)
         }
 
         override fun visitAbstractFunction(abstractFunction: EAbstractFunction) {

@@ -14,27 +14,24 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.sv
+package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.element.common.EDeclaration
+import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.ast.property.Type
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
-class EModuleInterface(
+class ESuperExpression(
     override val location: SourceLocation,
-    override var name: String,
-    override var superType: Type,
-    override val ports: List<EPort>,
-    override var declarations: ArrayList<EDeclaration>
-) : EAbstractContainerComponent() {
+    override var type: Type
+) : EExpression() {
 
-    init {
-        ports.forEach { it.parent = this }
-        declarations.forEach { it.parent = this }
-    }
+    override val serializationType = SerializationType.EXPRESSION
 
     override fun accept(visitor: Visitor) {
-        return visitor.visitModuleInterface(this)
+        visitor.visitSuperExpression(this)
     }
+
+    override fun acceptChildren(visitor: TreeVisitor) {}
 }

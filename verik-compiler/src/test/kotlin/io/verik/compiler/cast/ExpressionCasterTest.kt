@@ -219,6 +219,27 @@ internal class ExpressionCasterTest : BaseTest() {
     }
 
     @Test
+    fun `super expression`() {
+        val projectContext = driveTest(
+            CasterStage::class,
+            """
+                open class C {
+                    fun f() {}
+                }
+                class D : C() {
+                    fun g() {
+                        super.f()
+                    }
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtCallExpression(Unit, f, SuperExpression(C), [], [])",
+            projectContext.findExpression("g")
+        )
+    }
+
+    @Test
     fun `return statement`() {
         val projectContext = driveTest(
             CasterStage::class,

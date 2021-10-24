@@ -25,6 +25,7 @@ import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.interfaces.TypeParameterized
 import io.verik.compiler.ast.interfaces.cast
+import io.verik.compiler.ast.property.SuperTypeCallEntry
 import io.verik.compiler.core.common.CoreCardinalConstantDeclaration
 import io.verik.compiler.message.Messages
 
@@ -69,9 +70,19 @@ object DeclarationSpecializer {
         }
         specializerContext.typeParameterContext = typeParameterContext
 
-        val superType = specializerContext.specializeType(basicClass.supertype, basicClass)
+        val superType = specializerContext.specializeType(basicClass.superType, basicClass)
         val annotations = basicClass.annotations.map { specializerContext.specialize(it) }
         val primaryConstructor = basicClass.primaryConstructor?.let { specializerContext.specialize(it) }
+        val superTypeCallEntry = basicClass.superTypeCallEntry?.let { superTypeCallEntry ->
+            val reference = superTypeCallEntry.reference
+            val forwardedReference = if (reference is EDeclaration) {
+                specializerContext[reference, basicClass]
+            } else reference
+            SuperTypeCallEntry(
+                forwardedReference,
+                ArrayList(superTypeCallEntry.valueArguments.map { specializerContext.specialize(it) })
+            )
+        }
 
         specializedBasicClass.init(
             superType,
@@ -79,7 +90,8 @@ object DeclarationSpecializer {
             listOf(),
             annotations,
             basicClass.isEnum,
-            primaryConstructor
+            primaryConstructor,
+            superTypeCallEntry
         )
         return specializedBasicClass
     }

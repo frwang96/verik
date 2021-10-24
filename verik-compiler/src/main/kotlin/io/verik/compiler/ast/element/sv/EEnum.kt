@@ -28,7 +28,7 @@ class EEnum(
     val enumEntries: List<ESvEnumEntry>
 ) : EAbstractClass() {
 
-    override var supertype = Core.Kt.C_Any.toType()
+    override var superType = Core.Kt.C_Any.toType()
 
     override fun accept(visitor: Visitor) {
         visitor.visitEnum(this)

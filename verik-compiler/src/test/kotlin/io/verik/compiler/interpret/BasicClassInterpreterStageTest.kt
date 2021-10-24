@@ -31,7 +31,15 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SvBasicClass(C, [SvFunction(vknew, *, *, true, [])])",
+            """
+                SvBasicClass(
+                    C,
+                    [
+                        SvFunction(_${'$'}new, *, *, true, false, []),
+                        SvFunction(_${'$'}init, *, *, false, false, [])
+                    ]
+                )
+            """.trimIndent(),
             projectContext.findDeclaration("C")
         )
     }
@@ -45,8 +53,69 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SvBasicClass(C, [SvFunction(vknew, *, *, true, [SvValueParameter(x, Int)])])",
+            """
+                SvBasicClass(
+                    C,
+                    [
+                        SvFunction(_${'$'}new, C, *, true, false, [SvValueParameter(x, Int)]),
+                        SvFunction(_${'$'}init, Unit, *, false, false, [SvValueParameter(x, Int)])
+                    ]
+                )
+            """.trimIndent(),
             projectContext.findDeclaration("C")
+        )
+    }
+
+    @Test
+    fun `basic class with primary constructor property`() {
+        val projectContext = driveTest(
+            BasicClassInterpreterStage::class,
+            """
+                class C(val x: Int)
+            """.trimIndent()
+        )
+        assertElementEquals(
+            """
+                SvBasicClass(
+                    C,
+                    [
+                        KtProperty(x, Int, null, []),
+                        SvFunction(_${'$'}new, C, *, true, false, [SvValueParameter(x, Int)]),
+                        SvFunction(_${'$'}init, Unit, *, false, false, [SvValueParameter(x, Int)])
+                    ]
+                )
+            """.trimIndent(),
+            projectContext.findDeclaration("C")
+        )
+    }
+
+    @Test
+    fun `basic class with primary constructor chained`() {
+        val projectContext = driveTest(
+            BasicClassInterpreterStage::class,
+            """
+                open class C
+                class D : C()
+            """.trimIndent()
+        )
+        assertElementEquals(
+            """
+                SvBasicClass(
+                    D,
+                    [
+                        SvFunction(_${'$'}new, D, *, true, false, []),
+                        SvFunction(
+                            _${'$'}init,
+                            Unit,
+                            KtBlockExpression(Unit, [KtCallExpression(Unit, _${'$'}init, SuperExpression(C), [], [])]),
+                            false,
+                            false,
+                            []
+                        )
+                    ]
+                )
+            """.trimIndent(),
+            projectContext.findDeclaration("D")
         )
     }
 }

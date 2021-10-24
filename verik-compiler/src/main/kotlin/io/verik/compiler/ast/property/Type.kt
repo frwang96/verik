@@ -48,7 +48,7 @@ class Type(
     }
 
     fun isSubtype(type: Type): Boolean {
-        return getSupertypes().any { it.reference == type.reference }
+        return getSuperTypes().any { it.reference == type.reference }
     }
 
     fun isCardinalType(): Boolean {
@@ -107,20 +107,20 @@ class Type(
         return result
     }
 
-    private fun getSupertypes(): List<Type> {
-        val supertypes = ArrayList<Type>()
-        var supertype: Type? = this
-        while (supertype != null) {
-            supertypes.add(supertype)
-            supertype = supertype.getSupertype()
+    private fun getSuperTypes(): List<Type> {
+        val superTypes = ArrayList<Type>()
+        var superType: Type? = this
+        while (superType != null) {
+            superTypes.add(superType)
+            superType = superType.getSuperType()
         }
-        return supertypes.reversed()
+        return superTypes.reversed()
     }
 
-    private fun getSupertype(): Type? {
+    private fun getSuperType(): Type? {
         return when (val reference = reference) {
-            is EAbstractClass -> reference.supertype
-            is CoreClassDeclaration -> reference.superclass?.toType()
+            is EAbstractClass -> reference.superType
+            is CoreClassDeclaration -> reference.superClass?.toType()
             is CoreCardinalDeclaration -> null
             else -> throw IllegalArgumentException("Unexpected type reference: $reference")
         }

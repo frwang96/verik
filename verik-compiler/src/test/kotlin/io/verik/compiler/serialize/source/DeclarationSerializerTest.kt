@@ -17,7 +17,6 @@
 package io.verik.compiler.serialize.source
 
 import io.verik.compiler.util.BaseTest
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class DeclarationSerializerTest : BaseTest() {
@@ -105,8 +104,6 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    @Disabled
-    // TODO enable after fixing constructor
     fun `serialize class`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
@@ -116,6 +113,15 @@ internal class DeclarationSerializerTest : BaseTest() {
         )
         val expected = """
             class C;
+            
+                static function automatic verik_pkg::C _${'$'}new();
+                    automatic verik_pkg::C _${'$'}0 = new();
+                    _${'$'}0._${'$'}init();
+                    return _${'$'}0;
+                endfunction : _${'$'}new
+            
+                function automatic void _${'$'}init();
+                endfunction : _${'$'}init
             
             endclass : C
         """.trimIndent()

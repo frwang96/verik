@@ -22,6 +22,7 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReturnStatement
+import io.verik.compiler.ast.element.common.ESuperExpression
 import io.verik.compiler.ast.element.common.EThisExpression
 import io.verik.compiler.ast.element.common.EWhileExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
@@ -50,6 +51,7 @@ object ExpressionSpecializer {
             is EKtCallExpression -> specializeKtCallExpression(expression, specializerContext)
             is EConstantExpression -> specializeConstantExpression(expression, specializerContext)
             is EThisExpression -> specializeThisExpression(expression, specializerContext)
+            is ESuperExpression -> specializeSuperExpression(expression, specializerContext)
             is EReturnStatement -> specializeReturnStatement(expression, specializerContext)
             is EFunctionLiteralExpression -> specializeFunctionLiteralExpression(expression, specializerContext)
             is EStringTemplateExpression -> specializeStringTemplateExpression(expression, specializerContext)
@@ -179,6 +181,14 @@ object ExpressionSpecializer {
     ): EThisExpression {
         val type = specializerContext.specializeType(thisExpression)
         return EThisExpression(thisExpression.location, type)
+    }
+
+    private fun specializeSuperExpression(
+        superExpression: ESuperExpression,
+        specializerContext: SpecializerContext
+    ): ESuperExpression {
+        val type = specializerContext.specializeType(superExpression)
+        return ESuperExpression(superExpression.location, type)
     }
 
     private fun specializeReturnStatement(
