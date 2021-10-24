@@ -16,15 +16,16 @@
 
 package io.verik.compiler.check.normalize
 
-import io.verik.compiler.ast.element.common.EAbstractCallExpression
-import io.verik.compiler.ast.element.common.EAbstractReferenceExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypedElement
+import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.kt.EKtConstructor
 import io.verik.compiler.ast.element.sv.EAbstractComponentInstantiation
 import io.verik.compiler.ast.element.sv.EStructLiteralExpression
 import io.verik.compiler.ast.interfaces.Declaration
+import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
@@ -68,36 +69,25 @@ object DanglingReferenceChecker : ProjectStage() {
         override fun visitTypedElement(typedElement: ETypedElement) {
             super.visitTypedElement(typedElement)
             checkReference(typedElement.type, typedElement)
-            if (typedElement is EKtCallExpression) {
-                typedElement.typeArguments.forEach {
-                    checkReference(it, typedElement)
+            if (typedElement is Reference) {
+                checkReference(typedElement.reference, typedElement)
+            }
+            when (typedElement) {
+                is EKtBasicClass -> {
+                    typedElement.superTypeCallEntry?.let { checkReference(it.reference, typedElement) }
                 }
-            }
-        }
-
-        override fun visitAbstractComponentInstantiation(
-            abstractComponentInstantiation: EAbstractComponentInstantiation
-        ) {
-            super.visitAbstractComponentInstantiation(abstractComponentInstantiation)
-            abstractComponentInstantiation.portInstantiations.forEach {
-                checkReference(it.reference, abstractComponentInstantiation)
-            }
-        }
-
-        override fun visitAbstractReferenceExpression(abstractReferenceExpression: EAbstractReferenceExpression) {
-            super.visitAbstractReferenceExpression(abstractReferenceExpression)
-            checkReference(abstractReferenceExpression.reference, abstractReferenceExpression)
-        }
-
-        override fun visitAbstractCallExpression(abstractCallExpression: EAbstractCallExpression) {
-            super.visitAbstractCallExpression(abstractCallExpression)
-            checkReference(abstractCallExpression.reference, abstractCallExpression)
-        }
-
-        override fun visitStructLiteralExpression(structLiteralExpression: EStructLiteralExpression) {
-            super.visitStructLiteralExpression(structLiteralExpression)
-            structLiteralExpression.entries.forEach {
-                checkReference(it.reference, structLiteralExpression)
+                is EKtConstructor -> {
+                    typedElement.superTypeCallEntry?.let { checkReference(it.reference, typedElement) }
+                }
+                is EAbstractComponentInstantiation -> {
+                    typedElement.portInstantiations.forEach { checkReference(it.reference, typedElement) }
+                }
+                is EKtCallExpression -> {
+                    typedElement.typeArguments.forEach { checkReference(it, typedElement) }
+                }
+                is EStructLiteralExpression -> {
+                    typedElement.entries.forEach { checkReference(it.reference, typedElement) }
+                }
             }
         }
     }

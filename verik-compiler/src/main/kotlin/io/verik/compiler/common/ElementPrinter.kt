@@ -97,6 +97,7 @@ import io.verik.compiler.ast.element.sv.EWidthCastExpression
 import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.LiteralStringEntry
 import io.verik.compiler.ast.property.PortInstantiation
+import io.verik.compiler.ast.property.SuperTypeCallEntry
 
 class ElementPrinter : Visitor() {
 
@@ -174,12 +175,7 @@ class ElementPrinter : Visitor() {
             build(basicClass.annotations)
             build(basicClass.isEnum.toString())
             build(basicClass.primaryConstructor)
-            buildNullable(basicClass.superTypeCallEntry) {
-                build("SuperTypeCallEntry") {
-                    build(it.reference.name)
-                    build(it.valueArguments)
-                }
-            }
+            buildSuperTypeCallEntry(basicClass.superTypeCallEntry)
         }
     }
 
@@ -280,7 +276,7 @@ class ElementPrinter : Visitor() {
             build(constructor.body)
             build(constructor.valueParameters)
             build(constructor.typeParameters.map { it.name })
-            build(constructor.delegatedConstructor?.name)
+            buildSuperTypeCallEntry(constructor.superTypeCallEntry)
         }
     }
 
@@ -797,6 +793,15 @@ class ElementPrinter : Visitor() {
         if (element != null) block(element)
         else builder.append("null")
         first = false
+    }
+
+    private fun buildSuperTypeCallEntry(superTypeCallEntry: SuperTypeCallEntry?) {
+        buildNullable(superTypeCallEntry) {
+            build("SuperTypeCallEntry") {
+                build(it.reference.name)
+                build(it.valueArguments)
+            }
+        }
     }
 
     private fun buildPortInstantiations(portInstantiations: List<PortInstantiation>) {

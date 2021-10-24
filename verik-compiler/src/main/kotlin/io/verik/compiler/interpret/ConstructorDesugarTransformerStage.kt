@@ -28,6 +28,8 @@ import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
+import io.verik.compiler.ast.property.SuperTypeCallEntry
+import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
@@ -58,13 +60,14 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
                 declarations.addAll(properties.filterNotNull())
 
                 val body = getPrimaryConstructorBody(primaryConstructor, properties)
+                val superTypeCallEntry = getSuperTypeCallEntry(basicClass.superTypeCallEntry)
                 val constructor = EKtConstructor(primaryConstructor.location)
                 constructor.init(
                     primaryConstructor.type,
                     body,
                     primaryConstructor.valueParameters,
                     primaryConstructor.typeParameters,
-                    null
+                    superTypeCallEntry
                 )
                 declarations.add(constructor)
                 basicClass.primaryConstructor = null
@@ -122,5 +125,14 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
             }
             return EKtBlockExpression(primaryConstructor.location, Core.Kt.C_Unit.toType(), statements)
         }
+    }
+
+    private fun getSuperTypeCallEntry(superTypeCallEntry: SuperTypeCallEntry?): SuperTypeCallEntry? {
+        return if (superTypeCallEntry != null) {
+            val valueArguments = superTypeCallEntry.valueArguments.map {
+                ExpressionCopier.copy(it)
+            }
+            SuperTypeCallEntry(superTypeCallEntry.reference, ArrayList(valueArguments))
+        } else null
     }
 }

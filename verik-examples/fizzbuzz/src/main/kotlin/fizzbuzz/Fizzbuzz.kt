@@ -30,7 +30,7 @@ class Fizzbuzz : Module() {
         val c = C(0)
         c.f()
         val d = D()
-        d.g()
+        d.f()
     }
 
     fun g(x: Unpacked<`8`, Ubit<`8`>>): Unpacked<`8`, Ubit<`8`>> {
@@ -43,9 +43,4 @@ open class C(val a: Int) {
     fun f() {}
 }
 
-class D : C(0) {
-
-    fun g() {
-        super.f()
-    }
-}
+class D : C(0)

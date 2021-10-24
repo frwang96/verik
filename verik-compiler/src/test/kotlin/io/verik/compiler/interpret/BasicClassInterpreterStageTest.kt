@@ -57,8 +57,8 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
                 SvBasicClass(
                     C,
                     [
-                        SvFunction(_${'$'}new, *, *, true, false, [SvValueParameter(x, Int)]),
-                        SvFunction(_${'$'}init, *, *, false, false, [SvValueParameter(x, Int)])
+                        SvFunction(_${'$'}new, C, *, true, false, [SvValueParameter(x, Int)]),
+                        SvFunction(_${'$'}init, Unit, *, false, false, [SvValueParameter(x, Int)])
                     ]
                 )
             """.trimIndent(),
@@ -80,12 +80,42 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
                     C,
                     [
                         KtProperty(x, Int, null, []),
-                        SvFunction(_${'$'}new, *, *, true, false, [SvValueParameter(x, Int)]),
-                        SvFunction(_${'$'}init, *, *, false, false, [SvValueParameter(x, Int)])
+                        SvFunction(_${'$'}new, C, *, true, false, [SvValueParameter(x, Int)]),
+                        SvFunction(_${'$'}init, Unit, *, false, false, [SvValueParameter(x, Int)])
                     ]
                 )
             """.trimIndent(),
             projectContext.findDeclaration("C")
+        )
+    }
+
+    @Test
+    fun `basic class with primary constructor chained`() {
+        val projectContext = driveTest(
+            BasicClassInterpreterStage::class,
+            """
+                open class C
+                class D : C()
+            """.trimIndent()
+        )
+        assertElementEquals(
+            """
+                SvBasicClass(
+                    D,
+                    [
+                        SvFunction(_${'$'}new, D, *, true, false, []),
+                        SvFunction(
+                            _${'$'}init,
+                            Unit,
+                            KtBlockExpression(Unit, [KtCallExpression(Unit, _${'$'}init, SuperExpression(C), [], [])]),
+                            false,
+                            false,
+                            []
+                        )
+                    ]
+                )
+            """.trimIndent(),
+            projectContext.findDeclaration("D")
         )
     }
 }

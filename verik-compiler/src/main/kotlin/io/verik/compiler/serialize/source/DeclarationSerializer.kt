@@ -35,6 +35,7 @@ import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.element.sv.ETask
 import io.verik.compiler.ast.element.sv.ETypeDefinition
 import io.verik.compiler.ast.property.PortType
+import io.verik.compiler.core.common.Core
 
 object DeclarationSerializer {
 
@@ -45,7 +46,12 @@ object DeclarationSerializer {
     }
 
     fun serializeSvBasicClass(basicClass: ESvBasicClass, serializerContext: SerializerContext) {
-        serializerContext.appendLine("class ${basicClass.name};")
+        serializerContext.append("class ${basicClass.name}")
+        val superType = basicClass.superType
+        if (superType.reference != Core.Kt.C_Any) {
+            serializerContext.append(" extends ${superType.reference.name}")
+        }
+        serializerContext.appendLine(";")
         serializerContext.indent {
             basicClass.declarations.forEach { serializerContext.serializeAsDeclaration(it) }
             serializerContext.appendLine()

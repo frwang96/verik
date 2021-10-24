@@ -74,8 +74,12 @@ object DeclarationSpecializer {
         val annotations = basicClass.annotations.map { specializerContext.specialize(it) }
         val primaryConstructor = basicClass.primaryConstructor?.let { specializerContext.specialize(it) }
         val superTypeCallEntry = basicClass.superTypeCallEntry?.let { superTypeCallEntry ->
+            val reference = superTypeCallEntry.reference
+            val forwardedReference = if (reference is EDeclaration) {
+                specializerContext[reference, basicClass]
+            } else reference
             SuperTypeCallEntry(
-                superTypeCallEntry.reference,
+                forwardedReference,
                 ArrayList(superTypeCallEntry.valueArguments.map { specializerContext.specialize(it) })
             )
         }
