@@ -14,38 +14,24 @@
  * limitations under the License.
  */
 
-package fizzbuzz
+package io.verik.compiler.ast.element.common
 
-import io.verik.core.*
+import io.verik.compiler.ast.property.SerializationType
+import io.verik.compiler.ast.property.Type
+import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.common.Visitor
+import io.verik.compiler.message.SourceLocation
 
-@Top
-class Fizzbuzz : Module() {
+class ESuperExpression(
+    override val location: SourceLocation,
+    override var type: Type
+) : EExpression() {
 
-    var x: Unpacked<`8`, Ubit<`8`>> = nc()
+    override val serializationType = SerializationType.EXPRESSION
 
-    @Run
-    fun main() {
-        x = g(x)
-        @Suppress("UNUSED_VARIABLE")
-        val c = C(0)
-        c.f()
-        val d = D()
-        d.g()
+    override fun accept(visitor: Visitor) {
+        visitor.visitSuperExpression(this)
     }
 
-    fun g(x: Unpacked<`8`, Ubit<`8`>>): Unpacked<`8`, Ubit<`8`>> {
-        return x
-    }
-}
-
-open class C(val a: Int) {
-
-    fun f() {}
-}
-
-class D : C(0) {
-
-    fun g() {
-        super.f()
-    }
+    override fun acceptChildren(visitor: TreeVisitor) {}
 }

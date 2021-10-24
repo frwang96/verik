@@ -148,6 +148,10 @@ object ExpressionSerializer {
         serializerContext.append("this")
     }
 
+    fun serializeSuperExpression(serializerContext: SerializerContext) {
+        serializerContext.append("super")
+    }
+
     fun serializeReturnStatement(returnStatement: EReturnStatement, serializerContext: SerializerContext) {
         val expression = returnStatement.expression
         if (expression == null) {
