@@ -187,10 +187,14 @@ internal class ExpressionSerializerTest : BaseTest() {
         val expected = """
             class C;
             
-                static function automatic verik_pkg::C vknew();
+                static function automatic verik_pkg::C _${'$'}new();
                     automatic verik_pkg::C _${'$'}0 = new();
+                    _${'$'}0._${'$'}init();
                     return _${'$'}0;
-                endfunction : vknew
+                endfunction : _${'$'}new
+            
+                function automatic void _${'$'}init();
+                endfunction : _${'$'}init
             
                 virtual function automatic void f();
                     this;

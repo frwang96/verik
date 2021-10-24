@@ -22,7 +22,6 @@ import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ETemporaryProperty
 import io.verik.compiler.ast.element.kt.EKtBasicClass
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtConstructor
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
@@ -58,11 +57,9 @@ object BasicClassInterpreterStage : ProjectStage() {
                 if (it is EKtConstructor) {
                     val interpretedConstructor = interpretConstructor(it)
                     interpretedConstructor.instantiator.parent = basicClass
+                    interpretedConstructor.initializer.parent = basicClass
                     declarations.add(interpretedConstructor.instantiator)
-                    if (interpretedConstructor.initializer != null) {
-                        interpretedConstructor.initializer.parent = basicClass
-                        declarations.add(interpretedConstructor.initializer)
-                    }
+                    declarations.add(interpretedConstructor.initializer)
                 } else {
                     declarations.add(it)
                 }
@@ -84,10 +81,8 @@ object BasicClassInterpreterStage : ProjectStage() {
             return InterpretedConstructor(instantiator, initializer)
         }
 
-        private fun interpretInitializer(constructor: EKtConstructor): ESvFunction? {
+        private fun interpretInitializer(constructor: EKtConstructor): ESvFunction {
             val body = constructor.getBodyNotNull()
-            if (body is EKtBlockExpression && body.statements.size == 0)
-                return null
 
             val valueParameters = ArrayList<ESvValueParameter>()
             constructor.valueParameters.forEach {
@@ -97,7 +92,7 @@ object BasicClassInterpreterStage : ProjectStage() {
             }
             return ESvFunction(
                 constructor.location,
-                "vkinit",
+                "_${'$'}init",
                 Core.Kt.C_Unit.toType(),
                 body,
                 isScopeStatic = false,
@@ -156,7 +151,7 @@ object BasicClassInterpreterStage : ProjectStage() {
 
             val instantiator = ESvFunction(
                 constructor.location,
-                "vknew",
+                "_${'$'}new",
                 constructor.type,
                 ESvBlockExpression(constructor.location, statements, false, null),
                 isScopeStatic = true,
@@ -170,6 +165,6 @@ object BasicClassInterpreterStage : ProjectStage() {
 
     data class InterpretedConstructor(
         val instantiator: ESvFunction,
-        val initializer: ESvFunction?
+        val initializer: ESvFunction
     )
 }
