@@ -32,7 +32,7 @@ internal class NameRelabelerStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtFunction(g, Unit, *, [], [], *)",
+            "KtFunction(g, Unit, *, [], [], *, false)",
             projectContext.findDeclaration("g")
         )
     }

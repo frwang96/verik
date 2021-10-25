@@ -32,6 +32,7 @@ import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvValueParameter
+import io.verik.compiler.ast.property.FunctionQualifierType
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
@@ -74,8 +75,8 @@ object BasicClassInterpreterStage : ProjectStage() {
                 "_${'$'}init",
                 Core.Kt.C_Unit.toType(),
                 constructor.body,
-                isScopeStatic = false,
-                isVirtual = false,
+                false,
+                FunctionQualifierType.REGULAR,
                 ArrayList(valueParameters)
             )
             initializerMap[constructor] = initializer
@@ -199,8 +200,8 @@ object BasicClassInterpreterStage : ProjectStage() {
                 "_${'$'}new",
                 constructor.type,
                 ESvBlockExpression(constructor.location, statements, false, null),
-                isScopeStatic = true,
-                isVirtual = false,
+                true,
+                FunctionQualifierType.REGULAR,
                 ArrayList(valueParameters)
             )
             referenceUpdater.replace(constructor, instantiator)

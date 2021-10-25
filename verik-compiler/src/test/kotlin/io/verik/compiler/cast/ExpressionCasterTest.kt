@@ -32,7 +32,7 @@ internal class ExpressionCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtFunction(f, Unit, KtBlockExpression(Unit, []), [], [], [])",
+            "KtFunction(f, Unit, KtBlockExpression(Unit, []), [], [], [], false)",
             projectContext.findDeclaration("f")
         )
     }

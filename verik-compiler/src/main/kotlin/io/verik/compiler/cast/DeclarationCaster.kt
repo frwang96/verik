@@ -147,8 +147,9 @@ object DeclarationCaster {
         val annotations = function.annotationEntries.mapNotNull {
             AnnotationCaster.castAnnotationEntry(it, castContext)
         }
+        val isAbstract = function.hasModifier(KtTokens.ABSTRACT_KEYWORD)
 
-        castedFunction.init(type, body, valueParameters, typeParameters, annotations)
+        castedFunction.init(type, body, valueParameters, typeParameters, annotations, isAbstract)
         return castedFunction
     }
 

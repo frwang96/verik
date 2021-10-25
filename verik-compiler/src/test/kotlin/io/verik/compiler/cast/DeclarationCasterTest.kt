@@ -87,7 +87,17 @@ internal class DeclarationCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtBasicClass(C, [KtFunction(f, Unit, *, [], [], [])], [], [], false, PrimaryConstructor(C, [], []), null)",
+            """
+                KtBasicClass(
+                    C,
+                    [KtFunction(f, Unit, *, [], [], [], false)],
+                    [],
+                    [],
+                    false,
+                    PrimaryConstructor(C, [], []),
+                    null
+                )
+            """.trimIndent(),
             projectContext.findDeclaration("C")
         )
     }
@@ -208,7 +218,7 @@ internal class DeclarationCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtFunction(f, Unit, *, [], [], [])",
+            "KtFunction(f, Unit, *, [], [], [], false)",
             projectContext.findDeclaration("f")
         )
     }
@@ -222,7 +232,7 @@ internal class DeclarationCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtFunction(f, Unit, *, [KtValueParameter(x, Int, [], false)], [], [])",
+            "KtFunction(f, Unit, *, [KtValueParameter(x, Int, [], false)], [], [], false)",
             projectContext.findDeclaration("f")
         )
     }
@@ -236,7 +246,7 @@ internal class DeclarationCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtFunction(f, Unit, *, [], [TypeParameter(N, `*`)], [])",
+            "KtFunction(f, Unit, *, [], [TypeParameter(N, `*`)], [], false)",
             projectContext.findDeclaration("f")
         )
     }

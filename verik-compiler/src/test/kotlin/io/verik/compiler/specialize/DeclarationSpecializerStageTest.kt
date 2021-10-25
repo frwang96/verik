@@ -64,7 +64,7 @@ internal class DeclarationSpecializerStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtFunction(f_8, Unit, KtBlockExpression(*), [], [], [])",
+            "KtFunction(f_8, Unit, KtBlockExpression(*), [], [], [], false)",
             projectContext.findDeclaration("f_8")
         )
     }

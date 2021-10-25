@@ -240,6 +240,7 @@ class ElementPrinter : Visitor() {
             build(function.valueParameters)
             build(function.typeParameters)
             build(function.annotations)
+            build(function.isAbstract)
         }
     }
 
@@ -249,7 +250,7 @@ class ElementPrinter : Visitor() {
             build(function.type.toString())
             build(function.body)
             build(function.isScopeStatic)
-            build(function.isVirtual)
+            build(function.qualifierType.toString())
             build(function.valueParameters)
         }
     }

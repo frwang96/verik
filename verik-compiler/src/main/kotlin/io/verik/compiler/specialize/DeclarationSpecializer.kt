@@ -110,7 +110,7 @@ object DeclarationSpecializer {
         val valueParameters = function.valueParameters.map { specializerContext.specialize(it) }
         val annotations = function.annotations.map { specializerContext.specialize(it) }
 
-        specializedFunction.init(type, body, valueParameters, listOf(), annotations)
+        specializedFunction.init(type, body, valueParameters, listOf(), annotations, function.isAbstract)
         return specializedFunction
     }
 
