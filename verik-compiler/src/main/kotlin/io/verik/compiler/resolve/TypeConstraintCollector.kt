@@ -21,6 +21,7 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ETypeParameter
+import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
@@ -32,7 +33,6 @@ import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.KtUnaryOperatorKind
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreCardinalDeclaration
 import io.verik.compiler.core.common.CoreKtAbstractFunctionDeclaration
 import io.verik.compiler.message.Messages
@@ -67,23 +67,14 @@ object TypeConstraintCollector {
             super.visitKtProperty(property)
             val initializer = property.initializer
             if (initializer != null)
-                typeConstraints.add(
-                    TypeEqualsTypeConstraint(TypeAdapter.ofElement(initializer), TypeAdapter.ofElement(property))
-                )
+                collectTypeEquals(initializer, property)
         }
 
         override fun visitKtBlockExpression(blockExpression: EKtBlockExpression) {
             super.visitKtBlockExpression(blockExpression)
-            if (blockExpression.type !in listOf(Core.Kt.C_Unit.toType(), Core.Kt.C_Function.toType())) {
-                if (blockExpression.statements.isNotEmpty()) {
-                    val statement = blockExpression.statements.last()
-                    typeConstraints.add(
-                        TypeEqualsTypeConstraint(
-                            TypeAdapter.ofElement(statement),
-                            TypeAdapter.ofElement(blockExpression)
-                        )
-                    )
-                }
+            if (blockExpression.statements.isNotEmpty()) {
+                val statement = blockExpression.statements.last()
+                collectTypeEquals(statement, blockExpression)
             }
         }
 
@@ -95,14 +86,8 @@ object TypeConstraintCollector {
                 KtUnaryOperatorKind.POST_INC,
                 KtUnaryOperatorKind.POST_DEC
             )
-            if (unaryExpression.kind in kinds) {
-                typeConstraints.add(
-                    TypeEqualsTypeConstraint(
-                        TypeAdapter.ofElement(unaryExpression.expression),
-                        TypeAdapter.ofElement(unaryExpression)
-                    )
-                )
-            }
+            if (unaryExpression.kind in kinds)
+                collectTypeEquals(unaryExpression.expression, unaryExpression)
         }
 
         override fun visitKtBinaryExpression(binaryExpression: EKtBinaryExpression) {
@@ -112,33 +97,15 @@ object TypeConstraintCollector {
                 KtBinaryOperatorKind.EQEQ,
                 KtBinaryOperatorKind.EXCL_EQ
             )
-            if (binaryExpression.kind in kinds) {
-                typeConstraints.add(
-                    TypeEqualsTypeConstraint(
-                        TypeAdapter.ofElement(binaryExpression.right),
-                        TypeAdapter.ofElement(binaryExpression.left)
-                    )
-                )
-            }
+            if (binaryExpression.kind in kinds)
+                collectTypeEquals(binaryExpression.right, binaryExpression.left)
         }
 
         override fun visitKtReferenceExpression(referenceExpression: EKtReferenceExpression) {
             super.visitKtReferenceExpression(referenceExpression)
             when (val reference = referenceExpression.reference) {
-                is EExpression ->
-                    typeConstraints.add(
-                        TypeEqualsTypeConstraint(
-                            TypeAdapter.ofElement(referenceExpression),
-                            TypeAdapter.ofElement(reference)
-                        )
-                    )
-                is EAbstractProperty ->
-                    typeConstraints.add(
-                        TypeEqualsTypeConstraint(
-                            TypeAdapter.ofElement(referenceExpression),
-                            TypeAdapter.ofElement(reference)
-                        )
-                    )
+                is EExpression -> collectTypeEquals(referenceExpression, reference)
+                is EAbstractProperty -> collectTypeEquals(referenceExpression, reference)
             }
         }
 
@@ -162,12 +129,7 @@ object TypeConstraintCollector {
             if (expression != null) {
                 val function = this.function
                 if (function != null) {
-                    typeConstraints.add(
-                        TypeEqualsTypeConstraint(
-                            TypeAdapter.ofElement(expression),
-                            TypeAdapter.ofElement(function)
-                        )
-                    )
+                    collectTypeEquals(expression, function)
                 } else {
                     Messages.INTERNAL_ERROR.on(returnStatement, "Could not identify return type")
                 }
@@ -179,18 +141,8 @@ object TypeConstraintCollector {
             val thenExpression = ifExpression.thenExpression
             val elseExpression = ifExpression.elseExpression
             if (thenExpression != null && elseExpression != null) {
-                typeConstraints.add(
-                    TypeEqualsTypeConstraint(
-                        TypeAdapter.ofElement(ifExpression),
-                        TypeAdapter.ofElement(thenExpression)
-                    )
-                )
-                typeConstraints.add(
-                    TypeEqualsTypeConstraint(
-                        TypeAdapter.ofElement(ifExpression),
-                        TypeAdapter.ofElement(elseExpression)
-                    )
-                )
+                collectTypeEquals(ifExpression, thenExpression)
+                collectTypeEquals(ifExpression, elseExpression)
             }
         }
 
@@ -266,6 +218,31 @@ object TypeConstraintCollector {
                             typeArgumentIndices + it
                         )
                     }
+                }
+            }
+        }
+
+        private fun collectTypeEquals(
+            inner: ETypedElement,
+            outer: ETypedElement,
+            indices: List<Int> = listOf()
+        ) {
+            val innerType = inner.type.getArgument(indices)
+            val outerType = outer.type.getArgument(indices)
+            if (innerType.isCardinalType() && outerType.isCardinalType()) {
+                typeConstraints.add(
+                    TypeEqualsTypeConstraint(
+                        TypeAdapter.ofElement(inner, indices),
+                        TypeAdapter.ofElement(outer, indices)
+                    )
+                )
+                return
+            }
+            val innerTypeReference = innerType.reference
+            val outerTypeReference = outerType.reference
+            if (innerTypeReference == outerTypeReference) {
+                innerType.arguments.indices.forEach {
+                    collectTypeEquals(inner, outer, indices + it)
                 }
             }
         }
