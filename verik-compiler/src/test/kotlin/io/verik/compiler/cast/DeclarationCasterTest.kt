@@ -45,7 +45,7 @@ internal class DeclarationCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtBasicClass(C, [], [], [], false, PrimaryConstructor(C, [], []), null)",
+            "KtBasicClass(C, [], [], [], false, false, PrimaryConstructor(C, [], []), null)",
             projectContext.findDeclaration("C")
         )
     }
@@ -64,9 +64,10 @@ internal class DeclarationCasterTest : BaseTest() {
             """
                 KtBasicClass(
                     C,
-                    [KtBasicClass(D, [], [], [], false, PrimaryConstructor(D, [], []), null)],
+                    [KtBasicClass(D, [], [], [], false, false, PrimaryConstructor(D, [], []), null)],
                     [],
                     [],
+                    false,
                     false,
                     PrimaryConstructor(C, [], []),
                     null
@@ -94,6 +95,7 @@ internal class DeclarationCasterTest : BaseTest() {
                     [],
                     [],
                     false,
+                    false,
                     PrimaryConstructor(C, [], []),
                     null
                 )
@@ -113,7 +115,18 @@ internal class DeclarationCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtBasicClass(C, [KtProperty(x, Boolean, *, [])], [], [], false, PrimaryConstructor(C, [], []), null)",
+            """
+                KtBasicClass(
+                    C,
+                    [KtProperty(x, Boolean, *, [])],
+                    [],
+                    [],
+                    false,
+                    false,
+                    PrimaryConstructor(C, [], []),
+                    null
+                )
+            """.trimIndent(),
             projectContext.findDeclaration("C")
         )
     }
@@ -130,9 +143,10 @@ internal class DeclarationCasterTest : BaseTest() {
             """
                 KtBasicClass(
                     C,
-                    [KtBasicClass(Companion, [], [], [], false, PrimaryConstructor(Companion, [], []), null)],
+                    [KtBasicClass(Companion, [], [], [], false, false, PrimaryConstructor(Companion, [], []), null)],
                     [],
                     [],
+                    false,
                     false,
                     PrimaryConstructor(C, [], []),
                     null
@@ -151,7 +165,7 @@ internal class DeclarationCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtBasicClass(C, [], [TypeParameter(T, Any)], [], false, PrimaryConstructor(C<T>, [], [T]), null)",
+            "KtBasicClass(C, [], [TypeParameter(T, Any)], [], false, false, PrimaryConstructor(C<T>, [], [T]), null)",
             projectContext.findDeclaration("C")
         )
     }
@@ -165,7 +179,18 @@ internal class DeclarationCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtBasicClass(C, [], [], [], false, PrimaryConstructor(C, [KtValueParameter(x, Int, [], true)], []), null)",
+            """
+                KtBasicClass(
+                    C,
+                    [],
+                    [],
+                    [],
+                    false,
+                    false,
+                    PrimaryConstructor(C, [KtValueParameter(x, Int, [], true)], []),
+                    null
+                )
+            """.trimIndent(),
             projectContext.findDeclaration("C")
         )
     }
@@ -187,6 +212,7 @@ internal class DeclarationCasterTest : BaseTest() {
                     [],
                     [],
                     false,
+                    false,
                     PrimaryConstructor(D, [], []),
                     SuperTypeCallEntry(<init>, [ConstantExpression(*)])
                 )
@@ -204,7 +230,7 @@ internal class DeclarationCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtBasicClass(E, [KtEnumEntry(A, E, [])], [], [], true, PrimaryConstructor(E, [], []), null)",
+            "KtBasicClass(E, [KtEnumEntry(A, E, [])], [], [], true, false, PrimaryConstructor(E, [], []), null)",
             projectContext.findDeclaration("E")
         )
     }

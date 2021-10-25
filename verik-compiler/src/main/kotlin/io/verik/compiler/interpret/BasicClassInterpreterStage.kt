@@ -93,11 +93,14 @@ object BasicClassInterpreterStage : ProjectStage() {
             val declarations = ArrayList<EDeclaration>()
             basicClass.declarations.forEach {
                 if (it is EKtConstructor) {
-                    val interpretedConstructor = interpretConstructor(it)
+                    val interpretedConstructor = interpretConstructor(basicClass, it)
                     if (interpretedConstructor != null) {
-                        interpretedConstructor.instantiator.parent = basicClass
+                        val instantiator = interpretedConstructor.instantiator
+                        if (instantiator != null) {
+                            instantiator.parent = basicClass
+                            declarations.add(instantiator)
+                        }
                         interpretedConstructor.initializer.parent = basicClass
-                        declarations.add(interpretedConstructor.instantiator)
                         declarations.add(interpretedConstructor.initializer)
                     }
                 } else {
@@ -110,12 +113,16 @@ object BasicClassInterpreterStage : ProjectStage() {
                     basicClass.location,
                     basicClass.name,
                     basicClass.superType,
-                    declarations
+                    declarations,
+                    basicClass.isAbstract
                 )
             )
         }
 
-        private fun interpretConstructor(constructor: EKtConstructor): InterpretedConstructor? {
+        private fun interpretConstructor(
+            basicClass: EKtBasicClass,
+            constructor: EKtConstructor
+        ): InterpretedConstructor? {
             val initializer = initializerMap[constructor]
             if (initializer == null) {
                 Messages.INTERNAL_ERROR.on(constructor, "Initializer not found")
@@ -149,11 +156,17 @@ object BasicClassInterpreterStage : ProjectStage() {
                     }
                 }
             }
-            val instantiator = interpretInstantiator(constructor, initializer)
+            val instantiator = interpretInstantiator(basicClass, constructor, initializer)
             return InterpretedConstructor(instantiator, initializer)
         }
 
-        private fun interpretInstantiator(constructor: EKtConstructor, initializer: ESvFunction): ESvFunction {
+        private fun interpretInstantiator(
+            basicClass: EKtBasicClass,
+            constructor: EKtConstructor,
+            initializer: ESvFunction
+        ): ESvFunction? {
+            if (basicClass.isAbstract)
+                return null
             val temporaryProperty = ETemporaryProperty(
                 constructor.location,
                 constructor.type.copy(),
@@ -210,7 +223,7 @@ object BasicClassInterpreterStage : ProjectStage() {
     }
 
     data class InterpretedConstructor(
-        val instantiator: ESvFunction,
+        val instantiator: ESvFunction?,
         val initializer: ESvFunction
     )
 }

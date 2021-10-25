@@ -34,7 +34,18 @@ internal class ConstructorDesugarTransformerStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtBasicClass(C, [KtConstructor(C, KtBlockExpression(Unit, []), [], [], null)], [], [], false, null, null)",
+            """
+                KtBasicClass(
+                    C,
+                    [KtConstructor(C, KtBlockExpression(Unit, []), [], [], null)],
+                    [],
+                    [],
+                    false,
+                    false,
+                    null,
+                    null
+                )
+            """.trimIndent(),
             projectContext.findDeclaration("C")
         )
     }
@@ -63,6 +74,7 @@ internal class ConstructorDesugarTransformerStageTest : BaseTest() {
                     ],
                     [],
                     [],
+                    false,
                     false,
                     null,
                     null

@@ -47,6 +47,8 @@ object DeclarationSerializer {
     }
 
     fun serializeSvBasicClass(basicClass: ESvBasicClass, serializerContext: SerializerContext) {
+        if (basicClass.isVirtual)
+            serializerContext.append("virtual ")
         serializerContext.append("class ${basicClass.name}")
         val superType = basicClass.superType
         if (superType.reference != Core.Kt.C_Any) {

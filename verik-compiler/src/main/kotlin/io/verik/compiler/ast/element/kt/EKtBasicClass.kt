@@ -38,6 +38,7 @@ class EKtBasicClass(
     override var typeParameters: ArrayList<ETypeParameter> = arrayListOf()
     override var annotations: List<EAnnotation> = listOf()
     var isEnum: Boolean = false
+    var isAbstract: Boolean = false
     var primaryConstructor: EPrimaryConstructor? = null
     var superTypeCallEntry: SuperTypeCallEntry? = null
 
@@ -47,6 +48,7 @@ class EKtBasicClass(
         typeParameters: List<ETypeParameter>,
         annotations: List<EAnnotation>,
         isEnum: Boolean,
+        isAbstract: Boolean,
         primaryConstructor: EPrimaryConstructor?,
         superTypeCallEntry: SuperTypeCallEntry?
     ) {
@@ -60,6 +62,7 @@ class EKtBasicClass(
         this.typeParameters = ArrayList(typeParameters)
         this.annotations = annotations
         this.isEnum = isEnum
+        this.isAbstract = isAbstract
         this.primaryConstructor = primaryConstructor
         this.superTypeCallEntry = superTypeCallEntry
     }

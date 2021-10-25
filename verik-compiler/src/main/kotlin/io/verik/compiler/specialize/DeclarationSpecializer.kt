@@ -90,6 +90,7 @@ object DeclarationSpecializer {
             listOf(),
             annotations,
             basicClass.isEnum,
+            basicClass.isAbstract,
             primaryConstructor,
             superTypeCallEntry
         )
