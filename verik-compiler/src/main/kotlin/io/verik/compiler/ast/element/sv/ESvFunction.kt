@@ -18,6 +18,7 @@ package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EAbstractFunction
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.property.FunctionQualifierType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
@@ -29,7 +30,7 @@ class ESvFunction(
     override var type: Type,
     override var body: EExpression?,
     val isScopeStatic: Boolean,
-    val isVirtual: Boolean,
+    val qualifierType: FunctionQualifierType,
     var valueParameters: ArrayList<ESvValueParameter>
 ) : EAbstractFunction() {
 

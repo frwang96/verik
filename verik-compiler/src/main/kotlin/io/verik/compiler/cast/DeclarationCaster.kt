@@ -87,6 +87,7 @@ object DeclarationCaster {
             AnnotationCaster.castAnnotationEntry(it, castContext)
         }
         val isEnum = classOrObject.hasModifier(KtTokens.ENUM_KEYWORD)
+        val isAbstract = classOrObject.hasModifier(KtTokens.ABSTRACT_KEYWORD)
         val primaryConstructor = when {
             classOrObject.hasExplicitPrimaryConstructor() ->
                 castContext.casterVisitor.getElement(classOrObject.primaryConstructor!!)
@@ -117,6 +118,7 @@ object DeclarationCaster {
             typeParameters,
             annotations,
             isEnum,
+            isAbstract,
             primaryConstructor,
             superTypeCallEntry
         )
@@ -147,8 +149,9 @@ object DeclarationCaster {
         val annotations = function.annotationEntries.mapNotNull {
             AnnotationCaster.castAnnotationEntry(it, castContext)
         }
+        val isAbstract = function.hasModifier(KtTokens.ABSTRACT_KEYWORD)
 
-        castedFunction.init(type, body, valueParameters, typeParameters, annotations)
+        castedFunction.init(type, body, valueParameters, typeParameters, annotations, isAbstract)
         return castedFunction
     }
 

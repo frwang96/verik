@@ -35,9 +35,10 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
                 SvBasicClass(
                     C,
                     [
-                        SvFunction(_${'$'}new, *, *, true, false, []),
-                        SvFunction(_${'$'}init, *, *, false, false, [])
-                    ]
+                        SvFunction(_${'$'}new, *, *, true, REGULAR, []),
+                        SvFunction(_${'$'}init, *, *, false, REGULAR, [])
+                    ],
+                    false
                 )
             """.trimIndent(),
             projectContext.findDeclaration("C")
@@ -57,9 +58,10 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
                 SvBasicClass(
                     C,
                     [
-                        SvFunction(_${'$'}new, C, *, true, false, [SvValueParameter(x, Int)]),
-                        SvFunction(_${'$'}init, Unit, *, false, false, [SvValueParameter(x, Int)])
-                    ]
+                        SvFunction(_${'$'}new, C, *, true, REGULAR, [SvValueParameter(x, Int)]),
+                        SvFunction(_${'$'}init, Unit, *, false, REGULAR, [SvValueParameter(x, Int)])
+                    ],
+                    false
                 )
             """.trimIndent(),
             projectContext.findDeclaration("C")
@@ -80,9 +82,10 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
                     C,
                     [
                         KtProperty(x, Int, null, []),
-                        SvFunction(_${'$'}new, C, *, true, false, [SvValueParameter(x, Int)]),
-                        SvFunction(_${'$'}init, Unit, *, false, false, [SvValueParameter(x, Int)])
-                    ]
+                        SvFunction(_${'$'}new, C, *, true, REGULAR, [SvValueParameter(x, Int)]),
+                        SvFunction(_${'$'}init, Unit, *, false, REGULAR, [SvValueParameter(x, Int)])
+                    ],
+                    false
                 )
             """.trimIndent(),
             projectContext.findDeclaration("C")
@@ -103,19 +106,34 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
                 SvBasicClass(
                     D,
                     [
-                        SvFunction(_${'$'}new, D, *, true, false, []),
+                        SvFunction(_${'$'}new, D, *, true, REGULAR, []),
                         SvFunction(
                             _${'$'}init,
                             Unit,
                             KtBlockExpression(Unit, [KtCallExpression(Unit, _${'$'}init, SuperExpression(C), [], [])]),
                             false,
-                            false,
+                            REGULAR,
                             []
                         )
-                    ]
+                    ],
+                    false
                 )
             """.trimIndent(),
             projectContext.findDeclaration("D")
+        )
+    }
+
+    @Test
+    fun `basic class abstract`() {
+        val projectContext = driveTest(
+            BasicClassInterpreterStage::class,
+            """
+                abstract class C
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "SvBasicClass(C, [SvFunction(_${'$'}init, Unit, *, false, REGULAR, [])], true)",
+            projectContext.findDeclaration("C")
         )
     }
 }

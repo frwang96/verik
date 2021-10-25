@@ -34,6 +34,7 @@ import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.element.sv.ETask
 import io.verik.compiler.ast.element.sv.ETypeDefinition
+import io.verik.compiler.ast.property.FunctionQualifierType
 import io.verik.compiler.ast.property.PortType
 import io.verik.compiler.core.common.Core
 
@@ -46,6 +47,8 @@ object DeclarationSerializer {
     }
 
     fun serializeSvBasicClass(basicClass: ESvBasicClass, serializerContext: SerializerContext) {
+        if (basicClass.isVirtual)
+            serializerContext.append("virtual ")
         serializerContext.append("class ${basicClass.name}")
         val superType = basicClass.superType
         if (superType.reference != Core.Kt.C_Any) {
@@ -100,21 +103,24 @@ object DeclarationSerializer {
     }
 
     fun serializeSvFunction(function: ESvFunction, serializerContext: SerializerContext) {
-        if (function.isScopeStatic)
-            serializerContext.append("static ")
-        if (function.isVirtual)
-            serializerContext.append("virtual ")
+        when (function.qualifierType) {
+            FunctionQualifierType.VIRTUAL -> serializerContext.append("virtual ")
+            FunctionQualifierType.PURE_VIRTUAL -> serializerContext.append("pure virtual ")
+            else -> if (function.isScopeStatic) serializerContext.append("static ")
+        }
         val serializedType = TypeSerializer.serialize(function.type, function)
         serializedType.checkNoUnpackedDimension(function)
         serializerContext.append("function automatic ${serializedType.getBaseAndPackedDimension()} ${function.name}")
         serializeValueParameterList(function.valueParameters, serializerContext)
-        val body = function.body
-        if (body != null) {
-            serializerContext.indent {
-                serializerContext.serializeAsStatement(body)
+        if (function.qualifierType != FunctionQualifierType.PURE_VIRTUAL) {
+            val body = function.body
+            if (body != null) {
+                serializerContext.indent {
+                    serializerContext.serializeAsStatement(body)
+                }
             }
+            serializerContext.appendLine("endfunction : ${function.name}")
         }
-        serializerContext.appendLine("endfunction : ${function.name}")
     }
 
     fun serializeTask(task: ETask, serializerContext: SerializerContext) {

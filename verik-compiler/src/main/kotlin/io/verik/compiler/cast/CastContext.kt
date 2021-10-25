@@ -22,11 +22,13 @@ import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.core.common.CoreDeclarationMap
 import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
+import org.jetbrains.kotlin.descriptors.impl.PropertyDescriptorImpl
 import org.jetbrains.kotlin.descriptors.impl.SimpleFunctionDescriptorImpl
 import org.jetbrains.kotlin.psi.KtElement
 import org.jetbrains.kotlin.psi.KtExpression
 import org.jetbrains.kotlin.psi.KtTypeReference
 import org.jetbrains.kotlin.resolve.BindingContext
+import org.jetbrains.kotlin.resolve.descriptorUtil.overriddenTreeAsSequence
 import org.jetbrains.kotlin.types.KotlinType
 
 class CastContext(
@@ -61,11 +63,20 @@ class CastContext(
         val declaration = declarationMap[declarationDescriptor]
         if (declaration != null)
             return declaration
-        if (declarationDescriptor is SimpleFunctionDescriptorImpl) {
-            declarationDescriptor.overriddenDescriptors.forEach {
-                val overriddenDeclaration = declarationMap[it]
-                if (overriddenDeclaration != null)
-                    return overriddenDeclaration
+        when (declarationDescriptor) {
+            is SimpleFunctionDescriptorImpl -> {
+                declarationDescriptor.overriddenTreeAsSequence(true).forEach {
+                    val overriddenDeclaration = declarationMap[it]
+                    if (overriddenDeclaration != null)
+                        return overriddenDeclaration
+                }
+            }
+            is PropertyDescriptorImpl -> {
+                declarationDescriptor.overriddenTreeAsSequence(true).forEach {
+                    val overriddenDeclaration = declarationMap[it]
+                    if (overriddenDeclaration != null)
+                        return overriddenDeclaration
+                }
             }
         }
         val coreDeclaration = CoreDeclarationMap[this, declarationDescriptor, element]
