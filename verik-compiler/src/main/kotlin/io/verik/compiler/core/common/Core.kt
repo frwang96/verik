@@ -90,6 +90,16 @@ object Core {
         }
     }
 
+    object Jv : CoreScope(CorePackage.JV) {
+
+        object Util : CoreScope(CorePackage.JV_UTIL) {
+
+            val C_ArrayList = CoreClass.Jv.Util.C_ArrayList
+
+            val F_ArrayList = CoreConstructorDeclaration(C_ArrayList)
+        }
+    }
+
     object Vk : CoreScope(CorePackage.VK) {
 
         fun cardinalOf(value: Int): CoreCardinalConstantDeclaration {

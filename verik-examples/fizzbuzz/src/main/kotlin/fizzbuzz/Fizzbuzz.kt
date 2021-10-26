@@ -22,6 +22,8 @@ import io.verik.core.*
 class Fizzbuzz : Module() {
 
     var x: Unpacked<`8`, Ubit<`8`>> = nc()
+    @Suppress("unused")
+    val a: ArrayList<C> = nc()
 
     @Run
     fun main() {

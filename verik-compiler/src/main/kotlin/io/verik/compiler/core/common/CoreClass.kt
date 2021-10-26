@@ -35,6 +35,14 @@ object CoreClass {
         }
     }
 
+    object Jv : CoreScope(CorePackage.JV) {
+
+        object Util : CoreScope(CorePackage.JV_UTIL) {
+
+            val C_ArrayList = CoreClassDeclaration(parent, "ArrayList", Kt.C_Any)
+        }
+    }
+
     object Vk : CoreScope(CorePackage.VK) {
 
         val C_Ubit = CoreClassDeclaration(parent, "Ubit", Kt.C_Any)

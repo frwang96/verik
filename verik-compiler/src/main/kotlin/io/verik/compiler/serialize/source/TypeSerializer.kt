@@ -49,6 +49,13 @@ object TypeSerializer {
             Core.Kt.C_Int -> SerializedType("int")
             Core.Kt.C_Boolean -> SerializedType("logic")
             Core.Kt.C_String -> SerializedType("string")
+            Core.Jv.Util.C_ArrayList -> {
+                val serializedType = serialize(type.arguments[0], element)
+                var unpackedDimension = "[$]"
+                if (serializedType.unpackedDimension != null)
+                    unpackedDimension += serializedType.unpackedDimension
+                SerializedType(serializedType.base, serializedType.packedDimension, unpackedDimension)
+            }
             Core.Vk.C_Ubit -> {
                 val value = type.arguments[0].asCardinalValue(element)
                 SerializedType("logic", "[${value - 1}:0]", null)

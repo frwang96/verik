@@ -88,8 +88,11 @@ object CoreDeclarationMap {
         descriptor: ClassConstructorDescriptor,
         element: KtElement
     ): CoreConstructorDeclaration? {
-        val type = castContext.castType(descriptor.returnType, element)
-        return constructorMap[type.reference]
+        val reference = castContext.getDeclaration(
+            descriptor.returnType.constructor.declarationDescriptor!!,
+            element
+        )
+        return constructorMap[reference]
     }
 
     private fun getFunction(
