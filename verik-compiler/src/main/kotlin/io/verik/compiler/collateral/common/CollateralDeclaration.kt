@@ -14,12 +14,8 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.common
+package io.verik.compiler.collateral.common
 
-class CoreSvFunctionDeclaration(
-    parent: String,
-    override var name: String
-) : CoreAbstractFunctionDeclaration() {
+import io.verik.compiler.ast.interfaces.Declaration
 
-    override val qualifiedName = "$parent.$name"
-}
+interface CollateralDeclaration : Declaration

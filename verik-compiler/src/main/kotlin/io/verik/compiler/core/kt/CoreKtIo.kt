@@ -18,6 +18,7 @@ package io.verik.compiler.core.kt
 
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.collateral.common.Collateral
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreKtTransformableFunctionDeclaration
 import io.verik.compiler.core.common.CorePackage
@@ -28,7 +29,7 @@ object CoreKtIo : CoreScope(CorePackage.KT_IO) {
     val F_print = object : CoreKtTransformableFunctionDeclaration(parent, "print") {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            callExpression.reference = Core.Sv.F_write
+            callExpression.reference = Collateral.System.F_write
             return callExpression
         }
     }
@@ -36,7 +37,7 @@ object CoreKtIo : CoreScope(CorePackage.KT_IO) {
     val F_print_Any = object : CoreKtTransformableFunctionDeclaration(parent, "print", Core.Kt.C_Any) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            callExpression.reference = Core.Sv.F_write
+            callExpression.reference = Collateral.System.F_write
             return callExpression
         }
     }
@@ -44,7 +45,7 @@ object CoreKtIo : CoreScope(CorePackage.KT_IO) {
     val F_print_Boolean = object : CoreKtTransformableFunctionDeclaration(parent, "print", Core.Kt.C_Boolean) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            callExpression.reference = Core.Sv.F_write
+            callExpression.reference = Collateral.System.F_write
             return callExpression
         }
     }
@@ -52,7 +53,7 @@ object CoreKtIo : CoreScope(CorePackage.KT_IO) {
     val F_print_Int = object : CoreKtTransformableFunctionDeclaration(parent, "print", Core.Kt.C_Int) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            callExpression.reference = Core.Sv.F_write
+            callExpression.reference = Collateral.System.F_write
             return callExpression
         }
     }
@@ -60,7 +61,7 @@ object CoreKtIo : CoreScope(CorePackage.KT_IO) {
     val F_println = object : CoreKtTransformableFunctionDeclaration(parent, "println") {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            callExpression.reference = Core.Sv.F_display
+            callExpression.reference = Collateral.System.F_display
             return callExpression
         }
     }
@@ -68,7 +69,7 @@ object CoreKtIo : CoreScope(CorePackage.KT_IO) {
     val F_println_Any = object : CoreKtTransformableFunctionDeclaration(parent, "println", Core.Kt.C_Any) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            callExpression.reference = Core.Sv.F_display
+            callExpression.reference = Collateral.System.F_display
             return callExpression
         }
     }
@@ -76,7 +77,7 @@ object CoreKtIo : CoreScope(CorePackage.KT_IO) {
     val F_println_Boolean = object : CoreKtTransformableFunctionDeclaration(parent, "println", Core.Kt.C_Boolean) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            callExpression.reference = Core.Sv.F_display
+            callExpression.reference = Collateral.System.F_display
             return callExpression
         }
     }
@@ -84,7 +85,7 @@ object CoreKtIo : CoreScope(CorePackage.KT_IO) {
     val F_println_Int = object : CoreKtTransformableFunctionDeclaration(parent, "println", Core.Kt.C_Int) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            callExpression.reference = Core.Sv.F_display
+            callExpression.reference = Collateral.System.F_display
             return callExpression
         }
     }

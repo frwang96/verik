@@ -24,7 +24,6 @@ import io.verik.compiler.core.kt.CoreKtCollections
 import io.verik.compiler.core.kt.CoreKtInt
 import io.verik.compiler.core.kt.CoreKtIo
 import io.verik.compiler.core.kt.CoreKtRanges
-import io.verik.compiler.core.sv.CoreSv
 import io.verik.compiler.core.vk.CoreVk
 import io.verik.compiler.core.vk.CoreVkCardinal
 import io.verik.compiler.core.vk.CoreVkSbit
@@ -217,24 +216,5 @@ object Core {
 
             val P_size = CoreVkUnpacked.P_size
         }
-    }
-
-    object Sv : CoreScope(CorePackage.SV) {
-
-        val F_display = CoreSv.F_display
-        val F_write = CoreSv.F_write
-        val F_sformatf = CoreSv.F_sformatf
-        val F_random = CoreSv.F_random
-        val F_urandom = CoreSv.F_urandom
-        val F_urandom_range = CoreSv.F_urandom_range
-        val F_unsigned = CoreSv.F_unsigned
-        val F_signed = CoreSv.F_signed
-        val F_time = CoreSv.F_time
-        val F_fatal = CoreSv.F_fatal
-        val F_finish = CoreSv.F_finish
-        val F_new = CoreSv.F_new
-        val F_wait = CoreSv.F_wait
-        val F_name = CoreSv.F_name
-        val F_rsort = CoreSv.F_rsort
     }
 }
