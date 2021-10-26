@@ -34,7 +34,7 @@ import kotlin.reflect.full.memberProperties
 object CoreDeclarationMap {
 
     private val constructorMap = HashMap<CoreClassDeclaration, CoreConstructorDeclaration>()
-    private val functionMap = HashMap<String, ArrayList<CoreKtAbstractFunctionDeclaration>>()
+    private val functionMap = HashMap<String, ArrayList<CoreAbstractFunctionDeclaration>>()
     private val declarationMap = HashMap<String, CoreDeclaration>()
 
     init {
@@ -68,12 +68,11 @@ object CoreDeclarationMap {
                     when (property) {
                         is CoreConstructorDeclaration ->
                             constructorMap[property.classDeclaration] = property
-                        is CoreKtAbstractFunctionDeclaration -> {
+                        is CoreAbstractFunctionDeclaration -> {
                             if (property.qualifiedName !in functionMap)
                                 functionMap[property.qualifiedName] = ArrayList()
                             functionMap[property.qualifiedName]!!.add(property)
                         }
-                        is CoreAbstractFunctionDeclaration -> {}
                         else ->
                             declarationMap[property.qualifiedName] = property
                     }
@@ -99,7 +98,7 @@ object CoreDeclarationMap {
         castContext: CastContext,
         descriptor: SimpleFunctionDescriptor,
         element: KtElement
-    ): CoreKtAbstractFunctionDeclaration? {
+    ): CoreAbstractFunctionDeclaration? {
         val qualifiedName = descriptor.fqNameOrNull()?.asString()
             ?: return null
         val functions = functionMap[qualifiedName]
@@ -115,7 +114,7 @@ object CoreDeclarationMap {
         castContext: CastContext,
         descriptor: SimpleFunctionDescriptor,
         element: KtElement,
-        function: CoreKtAbstractFunctionDeclaration
+        function: CoreAbstractFunctionDeclaration
     ): Boolean {
         val valueParameters = descriptor.valueParameters
         val parameterClassNames = function.parameterClassNames

@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.kt
+package io.verik.compiler.core.declaration.kt
 
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.collateral.common.Collateral
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.core.common.CoreKtTransformableFunctionDeclaration
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
+import io.verik.compiler.core.common.CoreTransformableFunctionDeclaration
 
 object CoreKtIo : CoreScope(CorePackage.KT_IO) {
 
-    val F_print = object : CoreKtTransformableFunctionDeclaration(parent, "print") {
+    val F_print = object : CoreTransformableFunctionDeclaration(parent, "print") {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             callExpression.reference = Collateral.System.F_write
@@ -34,7 +34,7 @@ object CoreKtIo : CoreScope(CorePackage.KT_IO) {
         }
     }
 
-    val F_print_Any = object : CoreKtTransformableFunctionDeclaration(parent, "print", Core.Kt.C_Any) {
+    val F_print_Any = object : CoreTransformableFunctionDeclaration(parent, "print", Core.Kt.C_Any) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             callExpression.reference = Collateral.System.F_write
@@ -42,7 +42,7 @@ object CoreKtIo : CoreScope(CorePackage.KT_IO) {
         }
     }
 
-    val F_print_Boolean = object : CoreKtTransformableFunctionDeclaration(parent, "print", Core.Kt.C_Boolean) {
+    val F_print_Boolean = object : CoreTransformableFunctionDeclaration(parent, "print", Core.Kt.C_Boolean) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             callExpression.reference = Collateral.System.F_write
@@ -50,7 +50,7 @@ object CoreKtIo : CoreScope(CorePackage.KT_IO) {
         }
     }
 
-    val F_print_Int = object : CoreKtTransformableFunctionDeclaration(parent, "print", Core.Kt.C_Int) {
+    val F_print_Int = object : CoreTransformableFunctionDeclaration(parent, "print", Core.Kt.C_Int) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             callExpression.reference = Collateral.System.F_write
@@ -58,7 +58,7 @@ object CoreKtIo : CoreScope(CorePackage.KT_IO) {
         }
     }
 
-    val F_println = object : CoreKtTransformableFunctionDeclaration(parent, "println") {
+    val F_println = object : CoreTransformableFunctionDeclaration(parent, "println") {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             callExpression.reference = Collateral.System.F_display
@@ -66,7 +66,7 @@ object CoreKtIo : CoreScope(CorePackage.KT_IO) {
         }
     }
 
-    val F_println_Any = object : CoreKtTransformableFunctionDeclaration(parent, "println", Core.Kt.C_Any) {
+    val F_println_Any = object : CoreTransformableFunctionDeclaration(parent, "println", Core.Kt.C_Any) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             callExpression.reference = Collateral.System.F_display
@@ -74,7 +74,7 @@ object CoreKtIo : CoreScope(CorePackage.KT_IO) {
         }
     }
 
-    val F_println_Boolean = object : CoreKtTransformableFunctionDeclaration(parent, "println", Core.Kt.C_Boolean) {
+    val F_println_Boolean = object : CoreTransformableFunctionDeclaration(parent, "println", Core.Kt.C_Boolean) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             callExpression.reference = Collateral.System.F_display
@@ -82,7 +82,7 @@ object CoreKtIo : CoreScope(CorePackage.KT_IO) {
         }
     }
 
-    val F_println_Int = object : CoreKtTransformableFunctionDeclaration(parent, "println", Core.Kt.C_Int) {
+    val F_println_Int = object : CoreTransformableFunctionDeclaration(parent, "println", Core.Kt.C_Int) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             callExpression.reference = Collateral.System.F_display

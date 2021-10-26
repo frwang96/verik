@@ -25,7 +25,7 @@ import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.core.common.CoreKtAbstractFunctionDeclaration
+import io.verik.compiler.core.common.CoreAbstractFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 
@@ -82,7 +82,7 @@ object ArrayAccessExpressionReducerStage : ProjectStage() {
     data class GetReducerEntry(
         val arrayDeclaration: Declaration,
         val indexDeclarations: List<Declaration>,
-        val reference: CoreKtAbstractFunctionDeclaration
+        val reference: CoreAbstractFunctionDeclaration
     ) {
 
         fun match(
@@ -98,7 +98,7 @@ object ArrayAccessExpressionReducerStage : ProjectStage() {
         val arrayDeclaration: Declaration,
         val indexDeclarations: List<Declaration>,
         val expressionType: Type,
-        val reference: CoreKtAbstractFunctionDeclaration
+        val reference: CoreAbstractFunctionDeclaration
     ) {
 
         fun match(
@@ -117,7 +117,7 @@ object ArrayAccessExpressionReducerStage : ProjectStage() {
         private fun getGetReference(
             arrayDeclaration: Declaration,
             indexDeclarations: List<Declaration>
-        ): CoreKtAbstractFunctionDeclaration? {
+        ): CoreAbstractFunctionDeclaration? {
             getReducerEntries.forEach {
                 if (it.match(arrayDeclaration, indexDeclarations))
                     return it.reference
@@ -129,7 +129,7 @@ object ArrayAccessExpressionReducerStage : ProjectStage() {
             arrayDeclaration: Declaration,
             indexDeclarations: List<Declaration>,
             expressionType: Type
-        ): CoreKtAbstractFunctionDeclaration? {
+        ): CoreAbstractFunctionDeclaration? {
             setReducerEntries.forEach {
                 if (it.match(arrayDeclaration, indexDeclarations, expressionType))
                     return it.reference

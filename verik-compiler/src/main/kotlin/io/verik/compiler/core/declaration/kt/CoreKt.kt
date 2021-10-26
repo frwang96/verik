@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.kt
+package io.verik.compiler.core.declaration.kt
 
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.ERepeatStatement
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.core.common.CoreKtTransformableFunctionDeclaration
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
+import io.verik.compiler.core.common.CoreTransformableFunctionDeclaration
 
 object CoreKt : CoreScope(CorePackage.KT) {
 
-    val F_repeat_Int_Function = object : CoreKtTransformableFunctionDeclaration(
+    val F_repeat_Int_Function = object : CoreTransformableFunctionDeclaration(
         parent,
         "repeat",
         Core.Kt.C_Int,

@@ -52,7 +52,7 @@ import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.common.CoreKtBinaryFunctionDeclaration
+import io.verik.compiler.core.common.CoreBinaryFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 
 object ConstantExpressionEvaluatorStage : ProjectStage() {
@@ -68,7 +68,7 @@ object ConstantExpressionEvaluatorStage : ProjectStage() {
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
             val reference = callExpression.reference
-            if (reference is CoreKtBinaryFunctionDeclaration) {
+            if (reference is CoreBinaryFunctionDeclaration) {
                 val value = reference.evaluate(callExpression)
                 if (value != null) {
                     callExpression.replace(

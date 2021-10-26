@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.vk
+package io.verik.compiler.core.declaration.vk
 
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
@@ -25,9 +25,9 @@ import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.collateral.common.Collateral
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.core.common.CoreKtTransformableFunctionDeclaration
 import io.verik.compiler.core.common.CorePropertyDeclaration
 import io.verik.compiler.core.common.CoreScope
+import io.verik.compiler.core.common.CoreTransformableFunctionDeclaration
 import io.verik.compiler.resolve.TypeAdapter
 import io.verik.compiler.resolve.TypeConstraint
 import io.verik.compiler.resolve.TypeEqualsTypeConstraint
@@ -36,7 +36,7 @@ import io.verik.compiler.resolve.UnaryOperatorTypeConstraintKind
 
 object CoreVkUnpacked : CoreScope(Core.Vk.C_Unpacked) {
 
-    val F_get_Int = object : CoreKtTransformableFunctionDeclaration(parent, "get", Core.Kt.C_Int) {
+    val F_get_Int = object : CoreTransformableFunctionDeclaration(parent, "get", Core.Kt.C_Int) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -57,7 +57,7 @@ object CoreVkUnpacked : CoreScope(Core.Vk.C_Unpacked) {
         }
     }
 
-    val F_set_Int_Any = object : CoreKtTransformableFunctionDeclaration(parent, "set", Core.Kt.C_Int, Core.Kt.C_Any) {
+    val F_set_Int_Any = object : CoreTransformableFunctionDeclaration(parent, "set", Core.Kt.C_Int, Core.Kt.C_Any) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -85,7 +85,7 @@ object CoreVkUnpacked : CoreScope(Core.Vk.C_Unpacked) {
         }
     }
 
-    val F_get_Ubit = object : CoreKtTransformableFunctionDeclaration(parent, "get", Core.Vk.C_Ubit) {
+    val F_get_Ubit = object : CoreTransformableFunctionDeclaration(parent, "get", Core.Vk.C_Ubit) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -112,7 +112,7 @@ object CoreVkUnpacked : CoreScope(Core.Vk.C_Unpacked) {
         }
     }
 
-    val F_set_Ubit_Any = object : CoreKtTransformableFunctionDeclaration(parent, "set", Core.Vk.C_Ubit, Core.Kt.C_Any) {
+    val F_set_Ubit_Any = object : CoreTransformableFunctionDeclaration(parent, "set", Core.Vk.C_Ubit, Core.Kt.C_Any) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -146,7 +146,7 @@ object CoreVkUnpacked : CoreScope(Core.Vk.C_Unpacked) {
         }
     }
 
-    val F_sort = object : CoreKtTransformableFunctionDeclaration(parent, "sort") {
+    val F_sort = object : CoreTransformableFunctionDeclaration(parent, "sort") {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             callExpression.reference = Collateral.System.F_rsort

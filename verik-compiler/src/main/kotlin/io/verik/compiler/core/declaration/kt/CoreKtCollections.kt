@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.kt
+package io.verik.compiler.core.declaration.kt
 
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
@@ -26,14 +26,14 @@ import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.property.KtUnaryOperatorKind
 import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.core.common.CoreKtTransformableFunctionDeclaration
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
+import io.verik.compiler.core.common.CoreTransformableFunctionDeclaration
 import io.verik.compiler.message.Messages
 
 object CoreKtCollections : CoreScope(CorePackage.KT_COLLECTIONS) {
 
-    val F_forEach_Function = object : CoreKtTransformableFunctionDeclaration(parent, "forEach", Core.Kt.C_Function) {
+    val F_forEach_Function = object : CoreTransformableFunctionDeclaration(parent, "forEach", Core.Kt.C_Function) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             val functionLiteral = callExpression.valueArguments[0]

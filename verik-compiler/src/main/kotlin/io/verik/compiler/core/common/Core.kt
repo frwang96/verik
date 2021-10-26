@@ -18,17 +18,17 @@
 
 package io.verik.compiler.core.common
 
-import io.verik.compiler.core.kt.CoreKt
-import io.verik.compiler.core.kt.CoreKtBoolean
-import io.verik.compiler.core.kt.CoreKtCollections
-import io.verik.compiler.core.kt.CoreKtInt
-import io.verik.compiler.core.kt.CoreKtIo
-import io.verik.compiler.core.kt.CoreKtRanges
-import io.verik.compiler.core.vk.CoreVk
-import io.verik.compiler.core.vk.CoreVkCardinal
-import io.verik.compiler.core.vk.CoreVkSbit
-import io.verik.compiler.core.vk.CoreVkUbit
-import io.verik.compiler.core.vk.CoreVkUnpacked
+import io.verik.compiler.core.declaration.kt.CoreKt
+import io.verik.compiler.core.declaration.kt.CoreKtBoolean
+import io.verik.compiler.core.declaration.kt.CoreKtCollections
+import io.verik.compiler.core.declaration.kt.CoreKtInt
+import io.verik.compiler.core.declaration.kt.CoreKtIo
+import io.verik.compiler.core.declaration.kt.CoreKtRanges
+import io.verik.compiler.core.declaration.vk.CoreVk
+import io.verik.compiler.core.declaration.vk.CoreVkCardinal
+import io.verik.compiler.core.declaration.vk.CoreVkSbit
+import io.verik.compiler.core.declaration.vk.CoreVkUbit
+import io.verik.compiler.core.declaration.vk.CoreVkUnpacked
 
 object Core {
 

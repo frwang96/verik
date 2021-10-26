@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.vk
+package io.verik.compiler.core.declaration.vk
 
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
@@ -22,12 +22,12 @@ import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.collateral.common.Collateral
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.core.common.CoreKtTransformableFunctionDeclaration
 import io.verik.compiler.core.common.CoreScope
+import io.verik.compiler.core.common.CoreTransformableFunctionDeclaration
 
 object CoreVkSbit : CoreScope(Core.Vk.C_Sbit) {
 
-    val F_lt_Sbit = object : CoreKtTransformableFunctionDeclaration(parent, "lt", Core.Vk.C_Sbit) {
+    val F_lt_Sbit = object : CoreTransformableFunctionDeclaration(parent, "lt", Core.Vk.C_Sbit) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             val left = callExpression.receiver!!

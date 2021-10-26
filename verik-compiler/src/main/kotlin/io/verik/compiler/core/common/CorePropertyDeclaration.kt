@@ -22,7 +22,7 @@ import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 abstract class CorePropertyDeclaration(
     parent: String,
     final override var name: String
-) : CoreAbstractPropertyDeclaration() {
+) : CoreDeclaration {
 
     override val qualifiedName = "$parent.$name"
 

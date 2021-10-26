@@ -33,8 +33,8 @@ import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.KtUnaryOperatorKind
 import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.core.common.CoreAbstractFunctionDeclaration
 import io.verik.compiler.core.common.CoreCardinalDeclaration
-import io.verik.compiler.core.common.CoreKtAbstractFunctionDeclaration
 import io.verik.compiler.message.Messages
 
 object TypeConstraintCollector {
@@ -112,7 +112,7 @@ object TypeConstraintCollector {
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
             when (val reference = callExpression.reference) {
-                is CoreKtAbstractFunctionDeclaration ->
+                is CoreAbstractFunctionDeclaration ->
                     typeConstraints.addAll(reference.getTypeConstraints(callExpression))
                 is EKtAbstractFunction -> {
                     collectCallExpressionReturn(callExpression, reference, listOf())

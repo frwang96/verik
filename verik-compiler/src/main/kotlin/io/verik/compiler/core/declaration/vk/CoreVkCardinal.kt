@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.vk
+package io.verik.compiler.core.declaration.vk
 
 import io.verik.compiler.core.common.CoreCardinalFunctionDeclaration
 

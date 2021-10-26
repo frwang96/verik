@@ -22,11 +22,11 @@ import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.ast.property.SvUnaryOperatorKind
 import io.verik.compiler.resolve.TypeConstraint
 
-sealed class CoreKtAbstractFunctionDeclaration constructor(
+sealed class CoreAbstractFunctionDeclaration constructor(
     override var name: String,
     override val qualifiedName: String,
     val parameterClassNames: List<String>
-) : CoreAbstractFunctionDeclaration() {
+) : CoreDeclaration {
 
     open fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
         return listOf()
@@ -43,35 +43,35 @@ sealed class CoreKtAbstractFunctionDeclaration constructor(
     )
 }
 
-class CoreKtBasicFunctionDeclaration(
+class CoreBasicFunctionDeclaration(
     parent: String,
     name: String,
     vararg parameterClassDeclarations: CoreClassDeclaration
-) : CoreKtAbstractFunctionDeclaration(parent, name, *parameterClassDeclarations)
+) : CoreAbstractFunctionDeclaration(parent, name, *parameterClassDeclarations)
 
-abstract class CoreKtTransformableFunctionDeclaration(
+abstract class CoreTransformableFunctionDeclaration(
     parent: String,
     name: String,
     vararg parameterClassDeclarations: CoreClassDeclaration
-) : CoreKtAbstractFunctionDeclaration(parent, name, *parameterClassDeclarations) {
+) : CoreAbstractFunctionDeclaration(parent, name, *parameterClassDeclarations) {
 
     abstract fun transform(callExpression: EKtCallExpression): EExpression
 }
 
-abstract class CoreKtUnaryFunctionDeclaration(
+abstract class CoreUnaryFunctionDeclaration(
     parent: String,
     name: String,
     vararg parameterClassDeclarations: CoreClassDeclaration
-) : CoreKtAbstractFunctionDeclaration(parent, name, *parameterClassDeclarations) {
+) : CoreAbstractFunctionDeclaration(parent, name, *parameterClassDeclarations) {
 
     abstract fun getOperatorKind(): SvUnaryOperatorKind
 }
 
-abstract class CoreKtBinaryFunctionDeclaration(
+abstract class CoreBinaryFunctionDeclaration(
     parent: String,
     name: String,
     vararg parameterClassDeclarations: CoreClassDeclaration
-) : CoreKtAbstractFunctionDeclaration(parent, name, *parameterClassDeclarations) {
+) : CoreAbstractFunctionDeclaration(parent, name, *parameterClassDeclarations) {
 
     open fun evaluate(callExpression: EKtCallExpression): String? {
         return null

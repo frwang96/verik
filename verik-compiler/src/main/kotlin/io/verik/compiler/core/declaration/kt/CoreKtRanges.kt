@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.common
+package io.verik.compiler.core.declaration.kt
 
-abstract class CoreAbstractFunctionDeclaration : CoreDeclaration
+import io.verik.compiler.core.common.Core
+import io.verik.compiler.core.common.CoreBasicFunctionDeclaration
+import io.verik.compiler.core.common.CorePackage
+import io.verik.compiler.core.common.CoreScope
+
+object CoreKtRanges : CoreScope(CorePackage.Kt_RANGES) {
+
+    val F_until_Int = CoreBasicFunctionDeclaration(parent, "until", Core.Kt.C_Int)
+}

@@ -23,7 +23,7 @@ import io.verik.compiler.ast.property.KtUnaryOperatorKind
 import io.verik.compiler.ast.property.SvUnaryOperatorKind
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.common.CoreKtUnaryFunctionDeclaration
+import io.verik.compiler.core.common.CoreUnaryFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 
 object UnaryExpressionTransformerStage : ProjectStage() {
@@ -39,7 +39,7 @@ object UnaryExpressionTransformerStage : ProjectStage() {
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
             val reference = callExpression.reference
-            if (reference is CoreKtUnaryFunctionDeclaration) {
+            if (reference is CoreUnaryFunctionDeclaration) {
                 val kind = reference.getOperatorKind()
                 callExpression.replace(
                     ESvUnaryExpression(

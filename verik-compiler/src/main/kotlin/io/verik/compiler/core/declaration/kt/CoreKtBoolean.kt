@@ -14,39 +14,39 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.kt
+package io.verik.compiler.core.declaration.kt
 
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.ast.property.SvUnaryOperatorKind
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.core.common.CoreKtBinaryFunctionDeclaration
-import io.verik.compiler.core.common.CoreKtUnaryFunctionDeclaration
+import io.verik.compiler.core.common.CoreBinaryFunctionDeclaration
 import io.verik.compiler.core.common.CoreScope
+import io.verik.compiler.core.common.CoreUnaryFunctionDeclaration
 
 object CoreKtBoolean : CoreScope(Core.Kt.C_Boolean) {
 
-    val F_not = object : CoreKtUnaryFunctionDeclaration(parent, "not") {
+    val F_not = object : CoreUnaryFunctionDeclaration(parent, "not") {
 
         override fun getOperatorKind(): SvUnaryOperatorKind {
             return SvUnaryOperatorKind.LOGICAL_NEG
         }
     }
 
-    val F_and_Boolean = object : CoreKtBinaryFunctionDeclaration(parent, "and", Core.Kt.C_Boolean) {
+    val F_and_Boolean = object : CoreBinaryFunctionDeclaration(parent, "and", Core.Kt.C_Boolean) {
 
         override fun getOperatorKind(): SvBinaryOperatorKind {
             return SvBinaryOperatorKind.ANDAND
         }
     }
 
-    val F_or_Boolean = object : CoreKtBinaryFunctionDeclaration(parent, "or", Core.Kt.C_Boolean) {
+    val F_or_Boolean = object : CoreBinaryFunctionDeclaration(parent, "or", Core.Kt.C_Boolean) {
 
         override fun getOperatorKind(): SvBinaryOperatorKind {
             return SvBinaryOperatorKind.OROR
         }
     }
 
-    val F_xor_Boolean = object : CoreKtBinaryFunctionDeclaration(parent, "xor", Core.Kt.C_Boolean) {
+    val F_xor_Boolean = object : CoreBinaryFunctionDeclaration(parent, "xor", Core.Kt.C_Boolean) {
 
         override fun getOperatorKind(): SvBinaryOperatorKind {
             return SvBinaryOperatorKind.XOR
