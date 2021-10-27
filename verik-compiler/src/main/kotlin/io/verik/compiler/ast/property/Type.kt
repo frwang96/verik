@@ -22,9 +22,9 @@ import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.Reference
-import io.verik.compiler.core.common.CoreCardinalConstantDeclaration
-import io.verik.compiler.core.common.CoreCardinalDeclaration
-import io.verik.compiler.core.common.CoreCardinalUnresolvedDeclaration
+import io.verik.compiler.common.CardinalConstantDeclaration
+import io.verik.compiler.common.CardinalDeclaration
+import io.verik.compiler.common.CardinalUnresolvedDeclaration
 import io.verik.compiler.core.common.CoreClassDeclaration
 import io.verik.compiler.message.Messages
 import io.verik.compiler.target.common.TargetClassDeclaration
@@ -55,28 +55,26 @@ class Type(
         return when (val reference = reference) {
             is ETypeParameter -> reference.type.isCardinalType()
             is ETypeAlias -> reference.type.isCardinalType()
-            is CoreCardinalDeclaration -> true
+            is CardinalDeclaration -> true
             else -> false
         }
     }
 
     fun isResolved(): Boolean {
-        if (isCardinalType() && reference is CoreCardinalUnresolvedDeclaration)
+        if (reference is CardinalUnresolvedDeclaration)
             return false
         return arguments.all { it.isResolved() }
     }
 
     fun isSpecialized(): Boolean {
-        if (isCardinalType() && reference !is CoreCardinalConstantDeclaration)
-            return false
-        if (reference is ETypeParameter)
+        if (isCardinalType() && reference !is CardinalConstantDeclaration)
             return false
         return arguments.all { it.isSpecialized() }
     }
 
     fun asCardinalValue(element: EElement): Int {
         val reference = reference
-        return if (reference is CoreCardinalConstantDeclaration) {
+        return if (reference is CardinalConstantDeclaration) {
             reference.value
         } else {
             Messages.INTERNAL_ERROR.on(element, "Could not get value as cardinal: $this")
@@ -92,9 +90,7 @@ class Type(
     }
 
     override fun toString(): String {
-        val reference = reference
-        val referenceName = if (reference is CoreCardinalDeclaration) reference.displayName()
-        else reference.name
+        val referenceName = reference.name
         return if (arguments.isNotEmpty()) {
             "$referenceName<${arguments.joinToString()}>"
         } else referenceName
@@ -124,7 +120,7 @@ class Type(
         return when (val reference = reference) {
             is EAbstractClass -> reference.superType
             is CoreClassDeclaration -> reference.superClass?.toType()
-            is CoreCardinalDeclaration -> null
+            is CardinalDeclaration -> null
             else -> throw IllegalArgumentException("Unexpected type reference: $reference")
         }
     }

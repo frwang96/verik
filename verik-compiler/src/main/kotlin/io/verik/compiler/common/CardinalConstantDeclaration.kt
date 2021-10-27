@@ -14,11 +14,19 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.common
+package io.verik.compiler.common
 
-abstract class CoreCardinalDeclaration : CoreDeclaration {
+class CardinalConstantDeclaration(
+    val value: Int
+) : CardinalDeclaration {
 
-    open fun displayName(): String {
-        return name
+    override var name = "`$value`"
+
+    override fun equals(other: Any?): Boolean {
+        return (other is CardinalConstantDeclaration) && (other.value == value)
+    }
+
+    override fun hashCode(): Int {
+        return value
     }
 }

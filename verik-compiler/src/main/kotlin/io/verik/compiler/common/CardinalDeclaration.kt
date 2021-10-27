@@ -14,25 +14,8 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.common
+package io.verik.compiler.common
 
-class CoreCardinalConstantDeclaration(
-    val value: Int
-) : CoreCardinalDeclaration() {
+import io.verik.compiler.ast.interfaces.Declaration
 
-    override var name = "Cardinal"
-
-    override val qualifiedName = "${CorePackage.VK.name}.$name"
-
-    override fun displayName(): String {
-        return "`$value`"
-    }
-
-    override fun equals(other: Any?): Boolean {
-        return (other is CoreCardinalConstantDeclaration) && (other.value == value)
-    }
-
-    override fun hashCode(): Int {
-        return value
-    }
-}
+interface CardinalDeclaration : Declaration

@@ -18,6 +18,7 @@ package io.verik.compiler.resolve
 
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.property.Type
+import io.verik.compiler.common.Cardinal
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.Messages
 
@@ -129,7 +130,7 @@ object TypeConstraintResolver {
                 val typeWidths = typeConstraint.callExpression.valueArguments
                     .map { getTypeWidth(it.type, it) }
                 val type = when (typeWidths.size) {
-                    0 -> Core.Vk.cardinalOf(0).toType()
+                    0 -> Cardinal.of(0).toType()
                     1 -> typeWidths[0]
                     else -> typeWidths.reduce { sum, type ->
                         Core.Vk.N_ADD.toType(sum, type)
@@ -161,12 +162,12 @@ object TypeConstraintResolver {
 
     private fun getTypeWidth(type: Type, element: EElement): Type {
         return when (type.reference) {
-            Core.Kt.C_Boolean -> Core.Vk.cardinalOf(1).toType()
+            Core.Kt.C_Boolean -> Cardinal.of(1).toType()
             Core.Vk.C_Ubit -> type.arguments[0].copy()
             Core.Vk.C_Sbit -> type.arguments[0].copy()
             else -> {
                 Messages.TYPE_NO_WIDTH.on(element, type)
-                Core.Vk.cardinalOf(0).toType()
+                Cardinal.of(0).toType()
             }
         }
     }

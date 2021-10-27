@@ -101,10 +101,6 @@ object Core {
 
     object Vk : CoreScope(CorePackage.VK) {
 
-        fun cardinalOf(value: Int): CoreCardinalConstantDeclaration {
-            return CoreCardinalConstantDeclaration(value)
-        }
-
         val C_Ubit = CoreClass.Vk.C_Ubit
         val C_Sbit = CoreClass.Vk.C_Sbit
         val C_Struct = CoreClass.Vk.C_Struct
@@ -124,7 +120,6 @@ object Core {
         val F_ModulePort = CoreConstructorDeclaration(C_ModulePort)
         val F_ClockingBlock = CoreConstructorDeclaration(C_ClockingBlock)
 
-        val N_Cardinal = CoreCardinalUnresolvedDeclaration
         val N_ADD = CoreVkCardinal.N_ADD
         val N_SUB = CoreVkCardinal.N_SUB
         val N_MUL = CoreVkCardinal.N_MUL

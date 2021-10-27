@@ -18,6 +18,7 @@ package io.verik.compiler.core.common
 
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.cast.CastContext
+import io.verik.compiler.common.Cardinal
 import org.jetbrains.kotlin.descriptors.ClassConstructorDescriptor
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
 import org.jetbrains.kotlin.descriptors.SimpleFunctionDescriptor
@@ -134,7 +135,7 @@ object CoreDeclarationMap {
         return true
     }
 
-    private fun getDeclaration(descriptor: DeclarationDescriptor): CoreDeclaration? {
+    private fun getDeclaration(descriptor: DeclarationDescriptor): Declaration? {
         val qualifiedName = descriptor.fqNameOrNull()?.asString()
             ?: return null
         val declaration = declarationMap[qualifiedName]
@@ -143,15 +144,16 @@ object CoreDeclarationMap {
             descriptor is AbstractTypeAliasDescriptor -> {
                 val name = descriptor.name.asString()
                 if (name == "*") {
-                    CoreCardinalUnresolvedDeclaration
+                    Cardinal.UNRESOLVED
                 } else {
                     val cardinal = name.toIntOrNull()
                     if (cardinal != null)
-                        Core.Vk.cardinalOf(cardinal)
+                        Cardinal.of(cardinal)
                     else
                         null
                 }
             }
+            qualifiedName == "${CorePackage.VK.qualifiedName}.Cardinal" -> Cardinal.UNRESOLVED
             else -> null
         }
     }

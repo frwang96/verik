@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.common
+package io.verik.compiler.common
 
-import io.verik.compiler.common.CardinalDeclaration
+object Cardinal {
 
-class CoreCardinalFunctionDeclaration(
-    override var name: String
-) : CoreDeclaration, CardinalDeclaration {
+    val UNRESOLVED = CardinalUnresolvedDeclaration
 
-    override val qualifiedName = "${CorePackage.VK.name}.$name"
+    fun of(value: Int): CardinalConstantDeclaration {
+        return CardinalConstantDeclaration((value))
+    }
 }

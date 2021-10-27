@@ -14,15 +14,9 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.common
+package io.verik.compiler.common
 
-object CoreCardinalUnresolvedDeclaration : CoreCardinalDeclaration() {
+object CardinalUnresolvedDeclaration : CardinalDeclaration {
 
-    override var name = "Cardinal"
-
-    override val qualifiedName = "${CorePackage.VK.name}.$name"
-
-    override fun displayName(): String {
-        return "`*`"
-    }
+    override var name = "`*`"
 }

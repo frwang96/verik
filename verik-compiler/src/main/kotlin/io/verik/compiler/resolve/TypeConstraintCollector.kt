@@ -32,9 +32,9 @@ import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.KtUnaryOperatorKind
+import io.verik.compiler.common.CardinalDeclaration
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.CoreAbstractFunctionDeclaration
-import io.verik.compiler.core.common.CoreCardinalDeclaration
 import io.verik.compiler.message.Messages
 
 object TypeConstraintCollector {
@@ -153,7 +153,7 @@ object TypeConstraintCollector {
         ) {
             val type = function.type.getArgument(typeArgumentIndices)
             when (val reference = type.reference) {
-                is CoreCardinalDeclaration -> {
+                is CardinalDeclaration -> {
                     typeConstraints.add(
                         TypeEqualsTypeConstraint(
                             TypeAdapter.ofElement(callExpression, typeArgumentIndices),
@@ -190,7 +190,7 @@ object TypeConstraintCollector {
             val valueParameter = function.valueParameters[valueArgumentIndex]
             val type = valueParameter.type.getArgument(typeArgumentIndices)
             when (val reference = type.reference) {
-                is CoreCardinalDeclaration -> {
+                is CardinalDeclaration -> {
                     typeConstraints.add(
                         TypeEqualsTypeConstraint(
                             TypeAdapter.ofElement(valueArgument, typeArgumentIndices),

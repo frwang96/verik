@@ -29,6 +29,7 @@ import io.verik.compiler.ast.element.sv.EReplicationExpression
 import io.verik.compiler.ast.element.sv.EWidthCastExpression
 import io.verik.compiler.ast.property.EdgeType
 import io.verik.compiler.common.BitConstant
+import io.verik.compiler.common.Cardinal
 import io.verik.compiler.common.ConstantUtil
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreBasicFunctionDeclaration
@@ -382,7 +383,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
         override fun transform(callExpression: EKtCallExpression): EExpression {
             val callExpressionSigned = EKtCallExpression(
                 callExpression.location,
-                Core.Vk.C_Sbit.toType(Core.Vk.cardinalOf(1).toType()),
+                Core.Vk.C_Sbit.toType(Cardinal.of(1).toType()),
                 Target.F_signed,
                 null,
                 arrayListOf(callExpression.receiver!!),
