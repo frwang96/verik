@@ -20,12 +20,12 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.ast.interfaces.Declaration
-import io.verik.compiler.collateral.common.CollateralDeclaration
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.CoreDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
+import io.verik.compiler.target.common.TargetDeclaration
 
 object NameCheckerStage : ProjectStage() {
 
@@ -57,7 +57,7 @@ object NameCheckerStage : ProjectStage() {
         override fun visitSvCallExpression(callExpression: ESvCallExpression) {
             super.visitSvCallExpression(callExpression)
             val reference = callExpression.reference
-            if (reference !is CoreDeclaration && reference !is CollateralDeclaration) {
+            if (reference !is CoreDeclaration && reference !is TargetDeclaration) {
                 if (!reference.name.matches(nameRegex))
                     Messages.NAME_ILLEGAL.on(callExpression, reference.name)
             }

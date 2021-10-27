@@ -33,13 +33,13 @@ import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.property.FunctionQualifierType
-import io.verik.compiler.collateral.common.Collateral
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
+import io.verik.compiler.target.common.Target
 
 object BasicClassInterpreterStage : ProjectStage() {
 
@@ -174,7 +174,7 @@ object BasicClassInterpreterStage : ProjectStage() {
                 ESvCallExpression(
                     constructor.location,
                     constructor.type.copy(),
-                    Collateral.System.F_new,
+                    Target.F_new,
                     null,
                     arrayListOf(),
                     false

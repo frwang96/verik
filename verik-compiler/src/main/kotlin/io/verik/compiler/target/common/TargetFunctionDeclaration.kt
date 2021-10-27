@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.collateral.common
+package io.verik.compiler.target.common
 
-import io.verik.compiler.ast.interfaces.Declaration
-
-interface CollateralDeclaration : Declaration
+class TargetFunctionDeclaration(override var name: String) : TargetDeclaration

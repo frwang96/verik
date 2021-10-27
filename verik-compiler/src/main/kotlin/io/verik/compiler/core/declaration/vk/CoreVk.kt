@@ -28,7 +28,6 @@ import io.verik.compiler.ast.element.sv.EForeverStatement
 import io.verik.compiler.ast.element.sv.EReplicationExpression
 import io.verik.compiler.ast.element.sv.EWidthCastExpression
 import io.verik.compiler.ast.property.EdgeType
-import io.verik.compiler.collateral.common.Collateral
 import io.verik.compiler.common.BitConstant
 import io.verik.compiler.common.ConstantUtil
 import io.verik.compiler.core.common.Core
@@ -44,6 +43,7 @@ import io.verik.compiler.resolve.TypeConstraint
 import io.verik.compiler.resolve.TypeEqualsTypeConstraint
 import io.verik.compiler.resolve.UnaryOperatorTypeConstraint
 import io.verik.compiler.resolve.UnaryOperatorTypeConstraintKind
+import io.verik.compiler.target.common.Target
 
 object CoreVk : CoreScope(CorePackage.VK) {
 
@@ -191,7 +191,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
     val F_random = object : CoreTransformableFunctionDeclaration(parent, "random") {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            callExpression.reference = Collateral.System.F_random
+            callExpression.reference = Target.F_random
             return callExpression
         }
     }
@@ -199,7 +199,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
     val F_random_Int = object : CoreTransformableFunctionDeclaration(parent, "random", Core.Kt.C_Int) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            callExpression.reference = Collateral.System.F_urandom_range
+            callExpression.reference = Target.F_urandom_range
             return callExpression
         }
     }
@@ -212,7 +212,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
     ) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            callExpression.reference = Collateral.System.F_urandom_range
+            callExpression.reference = Target.F_urandom_range
             return callExpression
         }
     }
@@ -220,7 +220,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
     val F_randomBoolean = object : CoreTransformableFunctionDeclaration(parent, "randomBoolean") {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            callExpression.reference = Collateral.System.F_urandom
+            callExpression.reference = Target.F_urandom
             return callExpression
         }
     }
@@ -237,7 +237,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            callExpression.reference = Collateral.System.F_urandom
+            callExpression.reference = Target.F_urandom
             return callExpression
         }
     }
@@ -295,7 +295,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
     val F_wait_Boolean = object : CoreTransformableFunctionDeclaration(parent, "wait", Core.Kt.C_Boolean) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            callExpression.reference = Collateral.System.F_wait
+            callExpression.reference = Target.F_wait
             return callExpression
         }
     }
@@ -328,7 +328,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
     val F_time = object : CoreTransformableFunctionDeclaration(parent, "time") {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            callExpression.reference = Collateral.System.F_time
+            callExpression.reference = Target.F_time
             return callExpression
         }
     }
@@ -336,7 +336,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
     val F_finish = object : CoreTransformableFunctionDeclaration(parent, "finish") {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            callExpression.reference = Collateral.System.F_finish
+            callExpression.reference = Target.F_finish
             return callExpression
         }
     }
@@ -344,7 +344,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
     val F_fatal = object : CoreTransformableFunctionDeclaration(parent, "fatal") {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            callExpression.reference = Collateral.System.F_fatal
+            callExpression.reference = Target.F_fatal
             return callExpression
         }
     }
@@ -383,7 +383,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
             val callExpressionSigned = EKtCallExpression(
                 callExpression.location,
                 Core.Vk.C_Sbit.toType(Core.Vk.cardinalOf(1).toType()),
-                Collateral.System.F_signed,
+                Target.F_signed,
                 null,
                 arrayListOf(callExpression.receiver!!),
                 ArrayList()
@@ -398,7 +398,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
             return EKtCallExpression(
                 callExpression.location,
                 callExpression.type.copy(),
-                Collateral.System.F_unsigned,
+                Target.F_unsigned,
                 null,
                 arrayListOf(widthCastExpression),
                 ArrayList()

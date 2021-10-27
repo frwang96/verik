@@ -28,7 +28,6 @@ import io.verik.compiler.ast.element.sv.EWidthCastExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.ast.property.SvUnaryOperatorKind
-import io.verik.compiler.collateral.common.Collateral
 import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreBinaryFunctionDeclaration
@@ -42,6 +41,7 @@ import io.verik.compiler.resolve.ComparisonTypeConstraintKind
 import io.verik.compiler.resolve.TypeAdapter
 import io.verik.compiler.resolve.TypeConstraint
 import io.verik.compiler.resolve.TypeEqualsTypeConstraint
+import io.verik.compiler.target.common.Target
 
 object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
@@ -359,7 +359,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
             val callExpressionSigned = EKtCallExpression(
                 callExpression.location,
                 Core.Vk.C_Sbit.toType(callExpression.type.arguments[0].copy()),
-                Collateral.System.F_signed,
+                Target.F_signed,
                 null,
                 arrayListOf(callExpression.receiver!!),
                 ArrayList()
@@ -374,7 +374,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
             return EKtCallExpression(
                 callExpression.location,
                 callExpression.type.copy(),
-                Collateral.System.F_unsigned,
+                Target.F_unsigned,
                 null,
                 arrayListOf(binaryExpression),
                 ArrayList()
@@ -490,7 +490,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
             val callExpressionSigned = EKtCallExpression(
                 callExpression.location,
                 Core.Vk.C_Sbit.toType(callExpression.receiver!!.type.arguments[0].copy()),
-                Collateral.System.F_signed,
+                Target.F_signed,
                 null,
                 arrayListOf(callExpression.receiver!!),
                 ArrayList()
@@ -505,7 +505,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
             return EKtCallExpression(
                 callExpression.location,
                 callExpression.type.copy(),
-                Collateral.System.F_unsigned,
+                Target.F_unsigned,
                 null,
                 arrayListOf(widthCastExpression),
                 ArrayList()
