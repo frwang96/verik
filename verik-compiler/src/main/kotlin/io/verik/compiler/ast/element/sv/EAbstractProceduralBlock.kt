@@ -17,9 +17,9 @@
 package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EAbstractFunction
-import io.verik.compiler.core.common.Core
+import io.verik.compiler.target.common.Target
 
 abstract class EAbstractProceduralBlock : EAbstractFunction() {
 
-    override var type = Core.Kt.C_Unit.toType()
+    override var type = Target.C_Void.toType()
 }

@@ -80,7 +80,7 @@ internal class ParenthesisInsertionTransformerStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "AlwaysSeqBlock(f, EventControlExpression(Unit, ParenthesizedExpression(*)), *)",
+            "AlwaysSeqBlock(f, EventControlExpression(Void, ParenthesizedExpression(*)), *)",
             projectContext.findDeclaration("f")
         )
     }

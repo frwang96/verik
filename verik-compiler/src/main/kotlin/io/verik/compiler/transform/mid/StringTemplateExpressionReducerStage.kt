@@ -27,6 +27,7 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
+import io.verik.compiler.target.common.Target
 
 object StringTemplateExpressionReducerStage : ProjectStage() {
 
@@ -95,7 +96,7 @@ object StringTemplateExpressionReducerStage : ProjectStage() {
                 val callExpression = EKtCallExpression(
                     stringTemplateExpression.location,
                     stringTemplateExpression.type,
-                    Core.Sv.F_sformatf,
+                    Target.F_sformatf,
                     null,
                     valueArguments,
                     arrayListOf()

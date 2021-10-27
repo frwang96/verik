@@ -21,15 +21,15 @@ import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
+import io.verik.compiler.target.common.Target
 
 class EForeverStatement(
     override val location: SourceLocation,
     var body: EExpression
 ) : EExpression(), ExpressionContainer {
 
-    override var type = Core.Kt.C_Unit.toType()
+    override var type = Target.C_Void.toType()
 
     override val serializationType = SerializationType.STATEMENT
 

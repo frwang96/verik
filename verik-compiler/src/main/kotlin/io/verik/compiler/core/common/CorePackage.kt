@@ -29,6 +29,8 @@ class CorePackage(
         val KT_IO = CorePackage("kotlin.io")
         val KT_COLLECTIONS = CorePackage("kotlin.collections")
         val Kt_RANGES = CorePackage("kotlin.ranges")
+        val JV = CorePackage("java")
+        val JV_UTIL = CorePackage("java.util")
         val VK = CorePackage("io.verik.core")
         val SV = CorePackage("systemverilog")
     }

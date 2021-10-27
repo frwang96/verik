@@ -16,10 +16,13 @@
 
 package io.verik.compiler.core.common
 
+import io.verik.compiler.target.common.TargetClassDeclaration
+
 class CoreClassDeclaration(
     parent: String,
     override var name: String,
-    val superClass: CoreClassDeclaration?
+    val superClass: CoreClassDeclaration?,
+    val targetClassDeclaration: TargetClassDeclaration?
 ) : CoreDeclaration {
 
     override val qualifiedName = "$parent.$name"

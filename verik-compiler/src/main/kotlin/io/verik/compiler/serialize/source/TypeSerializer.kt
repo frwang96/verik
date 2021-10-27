@@ -25,8 +25,8 @@ import io.verik.compiler.ast.element.sv.EModulePort
 import io.verik.compiler.ast.element.sv.ETypeDefinition
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.Type
-import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.Messages
+import io.verik.compiler.target.common.TargetClassDeclaration
 import org.jetbrains.kotlin.utils.addToStdlib.cast
 
 object TypeSerializer {
@@ -45,28 +45,7 @@ object TypeSerializer {
                 }
             }
             is EAbstractClass -> SerializedType(serializePackageDeclaration(reference))
-            Core.Kt.C_Unit -> SerializedType("void")
-            Core.Kt.C_Int -> SerializedType("int")
-            Core.Kt.C_Boolean -> SerializedType("logic")
-            Core.Kt.C_String -> SerializedType("string")
-            Core.Vk.C_Ubit -> {
-                val value = type.arguments[0].asCardinalValue(element)
-                SerializedType("logic", "[${value - 1}:0]", null)
-            }
-            Core.Vk.C_Packed -> {
-                val serializedType = serialize(type.arguments[1], element)
-                var packedDimension = "[${type.arguments[0].asCardinalValue(element) - 1}:0]"
-                if (serializedType.packedDimension != null)
-                    packedDimension += serializedType.packedDimension
-                SerializedType(serializedType.base, packedDimension, serializedType.unpackedDimension)
-            }
-            Core.Vk.C_Unpacked -> {
-                val serializedType = serialize(type.arguments[1], element)
-                var unpackedDimension = "[${type.arguments[0].asCardinalValue(element) - 1}:0]"
-                if (serializedType.unpackedDimension != null)
-                    unpackedDimension += serializedType.unpackedDimension
-                SerializedType(serializedType.base, serializedType.packedDimension, unpackedDimension)
-            }
+            is TargetClassDeclaration -> reference.serializeType(type.arguments, element)
             else -> {
                 Messages.INTERNAL_ERROR.on(element, "Unable to serialize type: $type")
                 SerializedType("void")

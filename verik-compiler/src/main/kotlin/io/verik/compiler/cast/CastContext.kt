@@ -20,15 +20,19 @@ import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.core.common.CoreDeclarationMap
+import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.message.Messages
+import org.jetbrains.kotlin.backend.common.serialization.findPackage
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
 import org.jetbrains.kotlin.descriptors.impl.PropertyDescriptorImpl
 import org.jetbrains.kotlin.descriptors.impl.SimpleFunctionDescriptorImpl
+import org.jetbrains.kotlin.descriptors.impl.TypeAliasConstructorDescriptorImpl
 import org.jetbrains.kotlin.psi.KtElement
 import org.jetbrains.kotlin.psi.KtExpression
 import org.jetbrains.kotlin.psi.KtTypeReference
 import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.descriptorUtil.overriddenTreeAsSequence
+import org.jetbrains.kotlin.serialization.deserialization.descriptors.DeserializedTypeAliasDescriptor
 import org.jetbrains.kotlin.types.KotlinType
 
 class CastContext(
@@ -60,30 +64,34 @@ class CastContext(
     }
 
     fun getDeclaration(declarationDescriptor: DeclarationDescriptor, element: KtElement): Declaration {
-        val declaration = declarationMap[declarationDescriptor]
+        val unwrappedDeclarationDescriptor = unwrapDeclarationDescriptor(declarationDescriptor)
+        val declaration = declarationMap[unwrappedDeclarationDescriptor]
         if (declaration != null)
             return declaration
-        when (declarationDescriptor) {
+        when (unwrappedDeclarationDescriptor) {
             is SimpleFunctionDescriptorImpl -> {
-                declarationDescriptor.overriddenTreeAsSequence(true).forEach {
+                unwrappedDeclarationDescriptor.overriddenTreeAsSequence(true).forEach {
                     val overriddenDeclaration = declarationMap[it]
                     if (overriddenDeclaration != null)
                         return overriddenDeclaration
                 }
             }
             is PropertyDescriptorImpl -> {
-                declarationDescriptor.overriddenTreeAsSequence(true).forEach {
+                unwrappedDeclarationDescriptor.overriddenTreeAsSequence(true).forEach {
                     val overriddenDeclaration = declarationMap[it]
                     if (overriddenDeclaration != null)
                         return overriddenDeclaration
                 }
             }
         }
-        val coreDeclaration = CoreDeclarationMap[this, declarationDescriptor, element]
+        val coreDeclaration = CoreDeclarationMap[this, unwrappedDeclarationDescriptor, element]
         return if (coreDeclaration != null) {
             coreDeclaration
         } else {
-            Messages.INTERNAL_ERROR.on(element, "Could not identify declaration: ${declarationDescriptor.name}")
+            Messages.INTERNAL_ERROR.on(
+                element,
+                "Could not identify declaration: ${unwrappedDeclarationDescriptor.name}"
+            )
             NullDeclaration
         }
     }
@@ -98,5 +106,16 @@ class CastContext(
 
     fun castType(typeReference: KtTypeReference): Type {
         return TypeCaster.cast(this, typeReference)
+    }
+
+    private fun unwrapDeclarationDescriptor(declarationDescriptor: DeclarationDescriptor): DeclarationDescriptor {
+        val packageQualifiedName = declarationDescriptor.findPackage().fqName.asString()
+        return if (packageQualifiedName == CorePackage.KT_COLLECTIONS.qualifiedName) {
+            when (declarationDescriptor) {
+                is TypeAliasConstructorDescriptorImpl -> declarationDescriptor.underlyingConstructorDescriptor
+                is DeserializedTypeAliasDescriptor -> declarationDescriptor.classDescriptor!!
+                else -> declarationDescriptor
+            }
+        } else declarationDescriptor
     }
 }

@@ -94,6 +94,12 @@ annotation class Run
 annotation class Task
 
 /**
+ * Annotates declarations with external implementations.
+ */
+@Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY)
+annotation class Extern
+
+/**
  * Relabels the name of a declaration.
  */
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY)

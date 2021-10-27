@@ -18,18 +18,17 @@
 
 package io.verik.compiler.core.common
 
-import io.verik.compiler.core.kt.CoreKt
-import io.verik.compiler.core.kt.CoreKtBoolean
-import io.verik.compiler.core.kt.CoreKtCollections
-import io.verik.compiler.core.kt.CoreKtInt
-import io.verik.compiler.core.kt.CoreKtIo
-import io.verik.compiler.core.kt.CoreKtRanges
-import io.verik.compiler.core.sv.CoreSv
-import io.verik.compiler.core.vk.CoreVk
-import io.verik.compiler.core.vk.CoreVkCardinal
-import io.verik.compiler.core.vk.CoreVkSbit
-import io.verik.compiler.core.vk.CoreVkUbit
-import io.verik.compiler.core.vk.CoreVkUnpacked
+import io.verik.compiler.core.declaration.kt.CoreKt
+import io.verik.compiler.core.declaration.kt.CoreKtBoolean
+import io.verik.compiler.core.declaration.kt.CoreKtCollections
+import io.verik.compiler.core.declaration.kt.CoreKtInt
+import io.verik.compiler.core.declaration.kt.CoreKtIo
+import io.verik.compiler.core.declaration.kt.CoreKtRanges
+import io.verik.compiler.core.declaration.vk.CoreVk
+import io.verik.compiler.core.declaration.vk.CoreVkCardinal
+import io.verik.compiler.core.declaration.vk.CoreVkSbit
+import io.verik.compiler.core.declaration.vk.CoreVkUbit
+import io.verik.compiler.core.declaration.vk.CoreVkUnpacked
 
 object Core {
 
@@ -90,11 +89,17 @@ object Core {
         }
     }
 
-    object Vk : CoreScope(CorePackage.VK) {
+    object Jv : CoreScope(CorePackage.JV) {
 
-        fun cardinalOf(value: Int): CoreCardinalConstantDeclaration {
-            return CoreCardinalConstantDeclaration(value)
+        object Util : CoreScope(CorePackage.JV_UTIL) {
+
+            val C_ArrayList = CoreClass.Jv.Util.C_ArrayList
+
+            val F_ArrayList = CoreConstructorDeclaration(C_ArrayList)
         }
+    }
+
+    object Vk : CoreScope(CorePackage.VK) {
 
         val C_Ubit = CoreClass.Vk.C_Ubit
         val C_Sbit = CoreClass.Vk.C_Sbit
@@ -115,7 +120,6 @@ object Core {
         val F_ModulePort = CoreConstructorDeclaration(C_ModulePort)
         val F_ClockingBlock = CoreConstructorDeclaration(C_ClockingBlock)
 
-        val N_Cardinal = CoreCardinalUnresolvedDeclaration
         val N_ADD = CoreVkCardinal.N_ADD
         val N_SUB = CoreVkCardinal.N_SUB
         val N_MUL = CoreVkCardinal.N_MUL
@@ -207,24 +211,5 @@ object Core {
 
             val P_size = CoreVkUnpacked.P_size
         }
-    }
-
-    object Sv : CoreScope(CorePackage.SV) {
-
-        val F_display = CoreSv.F_display
-        val F_write = CoreSv.F_write
-        val F_sformatf = CoreSv.F_sformatf
-        val F_random = CoreSv.F_random
-        val F_urandom = CoreSv.F_urandom
-        val F_urandom_range = CoreSv.F_urandom_range
-        val F_unsigned = CoreSv.F_unsigned
-        val F_signed = CoreSv.F_signed
-        val F_time = CoreSv.F_time
-        val F_fatal = CoreSv.F_fatal
-        val F_finish = CoreSv.F_finish
-        val F_new = CoreSv.F_new
-        val F_wait = CoreSv.F_wait
-        val F_name = CoreSv.F_name
-        val F_rsort = CoreSv.F_rsort
     }
 }

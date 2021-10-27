@@ -18,6 +18,7 @@ package io.verik.compiler.resolve
 
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.property.Type
+import io.verik.compiler.common.Cardinal
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.Messages
 
@@ -55,7 +56,7 @@ object TypeConstraintChecker {
         if (typeConstraint.isInnerToOuter) {
             val expectedValue = typeConstraint.kind.evaluate(innerValue)
             if (expectedValue != outerValue) {
-                val substitutionResult = typeConstraint.outer.substitute(Core.Vk.cardinalOf(expectedValue).toType())
+                val substitutionResult = typeConstraint.outer.substitute(Cardinal.of(expectedValue).toType())
                 Messages.TYPE_MISMATCH.on(
                     typeConstraint.outer.getElement(),
                     substitutionResult.original,
@@ -65,7 +66,7 @@ object TypeConstraintChecker {
         } else {
             val expectedValue = typeConstraint.kind.evaluate(outerValue)
             if (expectedValue != innerValue) {
-                val substitutionResult = typeConstraint.inner.substitute(Core.Vk.cardinalOf(expectedValue).toType())
+                val substitutionResult = typeConstraint.inner.substitute(Cardinal.of(expectedValue).toType())
                 Messages.TYPE_MISMATCH.on(
                     typeConstraint.inner.getElement(),
                     substitutionResult.substituted,
@@ -81,7 +82,7 @@ object TypeConstraintChecker {
         val innerValue = typeConstraint.kind.evaluate(leftValue, rightValue)
         val outerValue = typeConstraint.outer.getType().asCardinalValue(typeConstraint.outer.getElement())
         if (outerValue != innerValue) {
-            val substitutionResult = typeConstraint.outer.substitute(Core.Vk.cardinalOf(innerValue).toType())
+            val substitutionResult = typeConstraint.outer.substitute(Cardinal.of(innerValue).toType())
             Messages.TYPE_MISMATCH.on(
                 typeConstraint.outer.getElement(),
                 substitutionResult.original,
@@ -96,7 +97,7 @@ object TypeConstraintChecker {
         when (typeConstraint.kind) {
             ComparisonTypeConstraintKind.EXT -> {
                 if (innerValue > outerValue) {
-                    val substitutionResult = typeConstraint.inner.substitute(Core.Vk.cardinalOf(outerValue).toType())
+                    val substitutionResult = typeConstraint.inner.substitute(Cardinal.of(outerValue).toType())
                     Messages.EXTENSION_ERROR.on(
                         typeConstraint.inner.getElement(),
                         substitutionResult.original,
@@ -106,7 +107,7 @@ object TypeConstraintChecker {
             }
             ComparisonTypeConstraintKind.TRU -> {
                 if (innerValue < outerValue) {
-                    val substitutionResult = typeConstraint.inner.substitute(Core.Vk.cardinalOf(outerValue).toType())
+                    val substitutionResult = typeConstraint.inner.substitute(Cardinal.of(outerValue).toType())
                     Messages.TRUNCATION_ERROR.on(
                         typeConstraint.inner.getElement(),
                         substitutionResult.original,
@@ -126,7 +127,7 @@ object TypeConstraintChecker {
             .map { getTypeWidth(it.type, it) }
         val sumWidth = valueArgumentWidths.sum()
         if (sumWidth != expressionWidth) {
-            val actualType = Core.Vk.C_Ubit.toType(Core.Vk.cardinalOf(sumWidth).toType())
+            val actualType = Core.Vk.C_Ubit.toType(Cardinal.of(sumWidth).toType())
             Messages.TYPE_MISMATCH.on(typeConstraint.callExpression, typeConstraint.callExpression.type, actualType)
         }
     }
@@ -140,7 +141,7 @@ object TypeConstraintChecker {
             .typeArguments[0].asCardinalValue(typeConstraint.callExpression)
         if (expressionWidth != valueArgumentWidth * typeArgumentWidth) {
             val actualType = Core.Vk.C_Ubit.toType(
-                Core.Vk.cardinalOf(valueArgumentWidth * typeArgumentWidth).toType()
+                Cardinal.of(valueArgumentWidth * typeArgumentWidth).toType()
             )
             Messages.TYPE_MISMATCH.on(typeConstraint.callExpression, typeConstraint.callExpression.type, actualType)
         }

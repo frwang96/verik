@@ -46,7 +46,7 @@ object UnpackedTypeDefinitionTransformerStage : ProjectStage() {
 
         override fun visitSvFunction(function: ESvFunction) {
             super.visitSvFunction(function)
-            if (function.type.hasUnpackedDimension()) {
+            if (function.type.hasUnpackedDimension(function)) {
                 val typeDefinition = ETypeDefinition(
                     function.location,
                     "_${'$'}${function.name}",

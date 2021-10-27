@@ -18,6 +18,7 @@ package io.verik.compiler.transform.pre
 
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.common.Cardinal
 import io.verik.compiler.common.ConstantUtil
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
@@ -43,7 +44,7 @@ object BitConstantTransformerStage : ProjectStage() {
                 if (value != null) {
                     val constantExpression = EConstantExpression(
                         expression.location,
-                        Core.Vk.C_Ubit.toType(Core.Vk.cardinalOf(value.width).toType()),
+                        Core.Vk.C_Ubit.toType(Cardinal.of(value.width).toType()),
                         ConstantUtil.formatBitConstant(value)
                     )
                     callExpression.replace(constantExpression)

@@ -18,6 +18,7 @@ package io.verik.compiler.core.common
 
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.cast.CastContext
+import io.verik.compiler.common.Cardinal
 import org.jetbrains.kotlin.descriptors.ClassConstructorDescriptor
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
 import org.jetbrains.kotlin.descriptors.SimpleFunctionDescriptor
@@ -34,7 +35,7 @@ import kotlin.reflect.full.memberProperties
 object CoreDeclarationMap {
 
     private val constructorMap = HashMap<CoreClassDeclaration, CoreConstructorDeclaration>()
-    private val functionMap = HashMap<String, ArrayList<CoreKtAbstractFunctionDeclaration>>()
+    private val functionMap = HashMap<String, ArrayList<CoreAbstractFunctionDeclaration>>()
     private val declarationMap = HashMap<String, CoreDeclaration>()
 
     init {
@@ -68,12 +69,11 @@ object CoreDeclarationMap {
                     when (property) {
                         is CoreConstructorDeclaration ->
                             constructorMap[property.classDeclaration] = property
-                        is CoreKtAbstractFunctionDeclaration -> {
+                        is CoreAbstractFunctionDeclaration -> {
                             if (property.qualifiedName !in functionMap)
                                 functionMap[property.qualifiedName] = ArrayList()
                             functionMap[property.qualifiedName]!!.add(property)
                         }
-                        is CoreAbstractFunctionDeclaration -> {}
                         else ->
                             declarationMap[property.qualifiedName] = property
                     }
@@ -88,15 +88,18 @@ object CoreDeclarationMap {
         descriptor: ClassConstructorDescriptor,
         element: KtElement
     ): CoreConstructorDeclaration? {
-        val type = castContext.castType(descriptor.returnType, element)
-        return constructorMap[type.reference]
+        val reference = castContext.getDeclaration(
+            descriptor.returnType.constructor.declarationDescriptor!!,
+            element
+        )
+        return constructorMap[reference]
     }
 
     private fun getFunction(
         castContext: CastContext,
         descriptor: SimpleFunctionDescriptor,
         element: KtElement
-    ): CoreKtAbstractFunctionDeclaration? {
+    ): CoreAbstractFunctionDeclaration? {
         val qualifiedName = descriptor.fqNameOrNull()?.asString()
             ?: return null
         val functions = functionMap[qualifiedName]
@@ -112,7 +115,7 @@ object CoreDeclarationMap {
         castContext: CastContext,
         descriptor: SimpleFunctionDescriptor,
         element: KtElement,
-        function: CoreKtAbstractFunctionDeclaration
+        function: CoreAbstractFunctionDeclaration
     ): Boolean {
         val valueParameters = descriptor.valueParameters
         val parameterClassNames = function.parameterClassNames
@@ -132,7 +135,7 @@ object CoreDeclarationMap {
         return true
     }
 
-    private fun getDeclaration(descriptor: DeclarationDescriptor): CoreDeclaration? {
+    private fun getDeclaration(descriptor: DeclarationDescriptor): Declaration? {
         val qualifiedName = descriptor.fqNameOrNull()?.asString()
             ?: return null
         val declaration = declarationMap[qualifiedName]
@@ -141,15 +144,16 @@ object CoreDeclarationMap {
             descriptor is AbstractTypeAliasDescriptor -> {
                 val name = descriptor.name.asString()
                 if (name == "*") {
-                    CoreCardinalUnresolvedDeclaration
+                    Cardinal.UNRESOLVED
                 } else {
                     val cardinal = name.toIntOrNull()
                     if (cardinal != null)
-                        Core.Vk.cardinalOf(cardinal)
+                        Cardinal.of(cardinal)
                     else
                         null
                 }
             }
+            qualifiedName == "${CorePackage.VK.qualifiedName}.Cardinal" -> Cardinal.UNRESOLVED
             else -> null
         }
     }

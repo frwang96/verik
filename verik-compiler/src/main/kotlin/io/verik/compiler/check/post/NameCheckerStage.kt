@@ -25,6 +25,7 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.CoreDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
+import io.verik.compiler.target.common.TargetDeclaration
 
 object NameCheckerStage : ProjectStage() {
 
@@ -56,8 +57,10 @@ object NameCheckerStage : ProjectStage() {
         override fun visitSvCallExpression(callExpression: ESvCallExpression) {
             super.visitSvCallExpression(callExpression)
             val reference = callExpression.reference
-            if (reference !is CoreDeclaration && !reference.name.matches(nameRegex))
-                Messages.NAME_ILLEGAL.on(callExpression, reference.name)
+            if (reference !is CoreDeclaration && reference !is TargetDeclaration) {
+                if (!reference.name.matches(nameRegex))
+                    Messages.NAME_ILLEGAL.on(callExpression, reference.name)
+            }
         }
     }
 }

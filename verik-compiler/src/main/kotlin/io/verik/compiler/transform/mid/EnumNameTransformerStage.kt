@@ -28,6 +28,7 @@ import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.target.common.Target
 
 object EnumNameTransformerStage : ProjectStage() {
 
@@ -52,7 +53,7 @@ object EnumNameTransformerStage : ProjectStage() {
                     val callExpression = EKtCallExpression(
                         expression.location,
                         Core.Kt.C_String.toType(),
-                        Core.Sv.F_name,
+                        Target.F_name,
                         expression,
                         arrayListOf(),
                         arrayListOf()

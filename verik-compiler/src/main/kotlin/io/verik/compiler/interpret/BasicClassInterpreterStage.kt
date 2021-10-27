@@ -39,6 +39,7 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
+import io.verik.compiler.target.common.Target
 
 object BasicClassInterpreterStage : ProjectStage() {
 
@@ -173,7 +174,7 @@ object BasicClassInterpreterStage : ProjectStage() {
                 ESvCallExpression(
                     constructor.location,
                     constructor.type.copy(),
-                    Core.Sv.F_new,
+                    Target.F_new,
                     null,
                     arrayListOf(),
                     false
