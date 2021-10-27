@@ -134,7 +134,7 @@ internal class CoreVkTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "ForeverStatement(Unit, KtBlockExpression(*))",
+            "ForeverStatement(Void, KtBlockExpression(*))",
             projectContext.findExpression("f")
         )
     }
@@ -151,7 +151,7 @@ internal class CoreVkTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "EventControlExpression(Unit, EdgeExpression(Event, *, *))",
+            "EventControlExpression(Void, EdgeExpression(Event, *, *))",
             projectContext.findExpression("f")
         )
     }
@@ -168,7 +168,7 @@ internal class CoreVkTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "DelayExpression(Unit, ConstantExpression(*))",
+            "DelayExpression(Void, ConstantExpression(*))",
             projectContext.findExpression("f")
         )
     }

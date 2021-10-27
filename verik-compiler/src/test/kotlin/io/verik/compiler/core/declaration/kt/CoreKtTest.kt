@@ -34,7 +34,7 @@ internal class CoreKtTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "RepeatStatement(Unit, ConstantExpression(*), KtBlockExpression(*))",
+            "RepeatStatement(Void, ConstantExpression(*), KtBlockExpression(*))",
             projectContext.findExpression("f")
         )
     }

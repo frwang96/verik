@@ -28,6 +28,8 @@ object Target {
     val C_Sbit = TargetClass.C_Sbit
     val C_Packed = TargetClass.C_Packed
     val C_Unpacked = TargetClass.C_Unpacked
+    val C_Time = TargetClass.C_Time
+    val C_Event = TargetClass.C_Event
     val C_ArrayList = TargetClass.C_ArrayList
 
     val F_display = TargetSystem.F_display

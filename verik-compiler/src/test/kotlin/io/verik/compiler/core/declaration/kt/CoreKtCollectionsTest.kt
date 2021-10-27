@@ -37,7 +37,7 @@ internal class CoreKtCollectionsTest : BaseTest() {
         assertElementEquals(
             """
                 ForStatement(
-                    Unit,
+                    Void,
                     SvValueParameter(it, Int),
                     ConstantExpression(Int, 0),
                     KtCallExpression(Boolean, lt, KtReferenceExpression(Int, it, null), [ConstantExpression(*)], []),

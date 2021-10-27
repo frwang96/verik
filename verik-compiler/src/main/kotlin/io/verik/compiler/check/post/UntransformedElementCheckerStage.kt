@@ -17,7 +17,6 @@
 package io.verik.compiler.check.post
 
 import io.verik.compiler.ast.element.common.ENullElement
-import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.ETemporaryProperty
 import io.verik.compiler.ast.element.kt.EForExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
@@ -33,13 +32,8 @@ import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.kt.EWhenExpression
-import io.verik.compiler.ast.element.sv.ESvCallExpression
-import io.verik.compiler.ast.element.sv.ESvProperty
-import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.common.CoreAbstractFunctionDeclaration
-import io.verik.compiler.core.common.CorePropertyDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 
@@ -95,12 +89,6 @@ object UntransformedElementCheckerStage : ProjectStage() {
             Messages.INTERNAL_ERROR.on(blockExpression, "Block expression $message")
         }
 
-        override fun visitPropertyStatement(propertyStatement: EPropertyStatement) {
-            super.visitPropertyStatement(propertyStatement)
-            if (propertyStatement.property !is ESvProperty)
-                Messages.INTERNAL_ERROR.on(propertyStatement, "Property statement $message")
-        }
-
         override fun visitKtUnaryExpression(unaryExpression: EKtUnaryExpression) {
             super.visitKtUnaryExpression(unaryExpression)
             Messages.INTERNAL_ERROR.on(unaryExpression, "Unary expression $message")
@@ -116,21 +104,9 @@ object UntransformedElementCheckerStage : ProjectStage() {
             Messages.INTERNAL_ERROR.on(referenceExpression, "Reference expression $message")
         }
 
-        override fun visitSvReferenceExpression(referenceExpression: ESvReferenceExpression) {
-            super.visitSvReferenceExpression(referenceExpression)
-            if (referenceExpression.reference is CorePropertyDeclaration)
-                Messages.INTERNAL_ERROR.on(referenceExpression, "Reference expression reference $message")
-        }
-
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
             Messages.INTERNAL_ERROR.on(callExpression, "Call expression $message")
-        }
-
-        override fun visitSvCallExpression(callExpression: ESvCallExpression) {
-            super.visitSvCallExpression(callExpression)
-            if (callExpression.reference is CoreAbstractFunctionDeclaration)
-                Messages.INTERNAL_ERROR.on(callExpression, "Call expression reference $message")
         }
 
         override fun visitStringTemplateExpression(stringTemplateExpression: EStringTemplateExpression) {

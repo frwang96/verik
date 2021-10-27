@@ -89,6 +89,20 @@ object TargetClass {
         }
     }
 
+    val C_Time = object : TargetClassDeclaration("Time") {
+
+        override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
+            return SerializedType("time")
+        }
+    }
+
+    val C_Event = object : TargetClassDeclaration("Event") {
+
+        override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
+            return SerializedType("event")
+        }
+    }
+
     val C_ArrayList = object : TargetClassDeclaration("ArrayList") {
 
         override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {

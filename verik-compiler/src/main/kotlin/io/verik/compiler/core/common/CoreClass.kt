@@ -57,7 +57,7 @@ object CoreClass {
         val C_ModuleInterface = CoreClassDeclaration(parent, "ModuleInterface", C_Component, null)
         val C_ModulePort = CoreClassDeclaration(parent, "ModulePort", C_Component, null)
         val C_ClockingBlock = CoreClassDeclaration(parent, "ClockingBlock", C_Component, null)
-        val C_Time = CoreClassDeclaration(parent, "Time", Kt.C_Any, null)
-        val C_Event = CoreClassDeclaration(parent, "Event", Kt.C_Any, null)
+        val C_Time = CoreClassDeclaration(parent, "Time", Kt.C_Any, Target.C_Time)
+        val C_Event = CoreClassDeclaration(parent, "Event", Kt.C_Any, Target.C_Event)
     }
 }

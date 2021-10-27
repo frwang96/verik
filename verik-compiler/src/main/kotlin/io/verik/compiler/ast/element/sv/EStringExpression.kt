@@ -20,15 +20,15 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
+import io.verik.compiler.target.common.Target
 
 class EStringExpression(
     override val location: SourceLocation,
     val text: String
 ) : EExpression() {
 
-    override var type = Core.Kt.C_String.toType()
+    override var type = Target.C_String.toType()
 
     override val serializationType = SerializationType.EXPRESSION
 

@@ -16,6 +16,7 @@
 
 package io.verik.compiler.transform.post
 
+import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.property.Type
@@ -23,6 +24,7 @@ import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.CoreClassDeclaration
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.message.Messages
 
 object TypeReferenceTransformerStage : ProjectStage() {
 
@@ -36,19 +38,24 @@ object TypeReferenceTransformerStage : ProjectStage() {
 
         override fun visitTypedElement(typedElement: ETypedElement) {
             super.visitTypedElement(typedElement)
-            transform(typedElement.type)
+            transform(typedElement.type, typedElement)
         }
 
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
-            callExpression.typeArguments.forEach { transform(it) }
+            callExpression.typeArguments.forEach { transform(it, callExpression) }
         }
 
-        private fun transform(type: Type) {
-            type.arguments.forEach { transform(it) }
+        private fun transform(type: Type, element: EElement) {
+            type.arguments.forEach { transform(it, element) }
             val reference = type.reference
-            if (reference is CoreClassDeclaration && reference.targetClassDeclaration != null) {
-                type.reference = reference.targetClassDeclaration
+            if (reference is CoreClassDeclaration) {
+                val targetClassDeclaration = reference.targetClassDeclaration
+                if (targetClassDeclaration != null) {
+                    type.reference = targetClassDeclaration
+                } else {
+                    Messages.INTERNAL_ERROR.on(element, "Unable to transform type reference : ${reference.name}")
+                }
             }
         }
     }

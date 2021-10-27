@@ -24,6 +24,7 @@ import io.verik.compiler.check.post.KeywordCheckerStage
 import io.verik.compiler.check.post.NameCheckerStage
 import io.verik.compiler.check.post.NameRedeclarationCheckerStage
 import io.verik.compiler.check.post.UntransformedElementCheckerStage
+import io.verik.compiler.check.post.UntransformedReferenceCheckerStage
 import io.verik.compiler.check.pre.ImportDirectiveCheckerStage
 import io.verik.compiler.check.pre.UnsupportedElementCheckerStage
 import io.verik.compiler.check.pre.UnsupportedModifierCheckerStage
@@ -168,6 +169,7 @@ object StageSequencer {
         stageSequence.add(KeywordCheckerStage)
         stageSequence.add(NameRedeclarationCheckerStage)
         stageSequence.add(UntransformedElementCheckerStage)
+        stageSequence.add(UntransformedReferenceCheckerStage)
 
         // Serialize
         stageSequence.add(ConfigFileSerializerStage)
