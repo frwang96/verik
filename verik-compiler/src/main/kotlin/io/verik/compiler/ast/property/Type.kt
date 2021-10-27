@@ -22,12 +22,12 @@ import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.Reference
-import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreCardinalConstantDeclaration
 import io.verik.compiler.core.common.CoreCardinalDeclaration
 import io.verik.compiler.core.common.CoreCardinalUnresolvedDeclaration
 import io.verik.compiler.core.common.CoreClassDeclaration
 import io.verik.compiler.message.Messages
+import io.verik.compiler.target.common.TargetClassDeclaration
 
 class Type(
     override var reference: Declaration,
@@ -74,10 +74,6 @@ class Type(
         return arguments.all { it.isSpecialized() }
     }
 
-    fun hasUnpackedDimension(): Boolean {
-        return reference == Core.Vk.C_Unpacked
-    }
-
     fun asCardinalValue(element: EElement): Int {
         val reference = reference
         return if (reference is CoreCardinalConstantDeclaration) {
@@ -86,6 +82,13 @@ class Type(
             Messages.INTERNAL_ERROR.on(element, "Could not get value as cardinal: $this")
             1
         }
+    }
+
+    fun hasUnpackedDimension(element: EElement): Boolean {
+        val reference = reference
+        return if (reference is TargetClassDeclaration) {
+            reference.serializeType(arguments, element).unpackedDimension != null
+        } else false
     }
 
     override fun toString(): String {

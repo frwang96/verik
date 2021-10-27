@@ -57,6 +57,7 @@ import io.verik.compiler.transform.mid.FunctionTransformerStage
 import io.verik.compiler.transform.mid.IfAndWhenExpressionUnlifterStage
 import io.verik.compiler.transform.mid.InjectedExpressionReducerStage
 import io.verik.compiler.transform.mid.InlineIfExpressionTransformerStage
+import io.verik.compiler.transform.mid.PropertyStatementReorderStage
 import io.verik.compiler.transform.mid.PropertyTransformerStage
 import io.verik.compiler.transform.mid.StringTemplateExpressionReducerStage
 import io.verik.compiler.transform.mid.StructLiteralTransformerStage
@@ -66,10 +67,10 @@ import io.verik.compiler.transform.post.BinaryExpressionTransformerStage
 import io.verik.compiler.transform.post.BlockExpressionTransformerStage
 import io.verik.compiler.transform.post.PackageNameTransformerStage
 import io.verik.compiler.transform.post.ParenthesisInsertionTransformerStage
-import io.verik.compiler.transform.post.PropertyStatementReorderStage
 import io.verik.compiler.transform.post.ReferenceAndCallExpressionTransformerStage
 import io.verik.compiler.transform.post.ScopeReferenceInsertionTransformerStage
 import io.verik.compiler.transform.post.TemporaryPropertyTransformerStage
+import io.verik.compiler.transform.post.TypeReferenceTransformerStage
 import io.verik.compiler.transform.post.UnaryExpressionTransformerStage
 import io.verik.compiler.transform.post.UnpackedTypeDefinitionTransformerStage
 import io.verik.compiler.transform.pre.ArrayAccessExpressionReducerStage
@@ -146,10 +147,11 @@ object StageSequencer {
         stageSequence.add(ConstantExpressionEvaluatorStage)
         stageSequence.add(SubexpressionExtractorStage)
         stageSequence.add(AssignmentTransformerStage)
+        stageSequence.add(PropertyStatementReorderStage)
 
         // PostTransform
+        stageSequence.add(TypeReferenceTransformerStage)
         stageSequence.add(UnpackedTypeDefinitionTransformerStage)
-        stageSequence.add(PropertyStatementReorderStage)
         stageSequence.add(TemporaryPropertyTransformerStage)
         stageSequence.add(UnaryExpressionTransformerStage)
         stageSequence.add(BinaryExpressionTransformerStage)

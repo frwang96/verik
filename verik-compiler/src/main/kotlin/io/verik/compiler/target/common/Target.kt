@@ -24,6 +24,11 @@ object Target {
     val C_Int = TargetClass.C_Int
     val C_Boolean = TargetClass.C_Boolean
     val C_String = TargetClass.C_String
+    val C_Ubit = TargetClass.C_Ubit
+    val C_Sbit = TargetClass.C_Sbit
+    val C_Packed = TargetClass.C_Packed
+    val C_Unpacked = TargetClass.C_Unpacked
+    val C_ArrayList = TargetClass.C_ArrayList
 
     val F_display = TargetSystem.F_display
     val F_write = TargetSystem.F_write
