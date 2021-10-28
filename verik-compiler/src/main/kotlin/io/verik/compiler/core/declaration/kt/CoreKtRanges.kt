@@ -23,5 +23,5 @@ import io.verik.compiler.core.common.CoreScope
 
 object CoreKtRanges : CoreScope(CorePackage.Kt_RANGES) {
 
-    val F_until_Int = BasicCoreFunctionDeclaration(parent, "until", Core.Kt.C_Int)
+    val F_until_Int = BasicCoreFunctionDeclaration(parent, "until", null, Core.Kt.C_Int)
 }

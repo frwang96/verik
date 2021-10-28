@@ -149,7 +149,7 @@ object CoreVkUnpacked : CoreScope(Core.Vk.C_Unpacked) {
     val F_sort = object : TransformableCoreFunctionDeclaration(parent, "sort") {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            callExpression.reference = Target.F_rsort
+            callExpression.reference = Target.Unpacked.F_rsort
             return callExpression
         }
     }

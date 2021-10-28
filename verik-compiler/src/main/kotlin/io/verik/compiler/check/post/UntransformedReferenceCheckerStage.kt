@@ -16,8 +16,8 @@
 
 package io.verik.compiler.check.post
 
-import io.verik.compiler.ast.element.common.EAbstractReceiverExpression
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EReceiverExpression
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.ProjectStage
@@ -43,12 +43,12 @@ object UntransformedReferenceCheckerStage : ProjectStage() {
             checkType(typedElement.type, typedElement)
         }
 
-        override fun visitAbstractReceiverExpression(abstractReceiverExpression: EAbstractReceiverExpression) {
-            super.visitAbstractReceiverExpression(abstractReceiverExpression)
-            if (abstractReceiverExpression.reference is CoreDeclaration)
+        override fun visitReceiverExpression(receiverExpression: EReceiverExpression) {
+            super.visitReceiverExpression(receiverExpression)
+            if (receiverExpression.reference is CoreDeclaration)
                 Messages.INTERNAL_ERROR.on(
-                    abstractReceiverExpression,
-                    "$message : ${abstractReceiverExpression.reference.name}"
+                    receiverExpression,
+                    "$message : ${receiverExpression.reference.name}"
                 )
         }
 

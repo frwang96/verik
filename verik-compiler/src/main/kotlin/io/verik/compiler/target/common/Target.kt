@@ -47,5 +47,9 @@ object Target {
     val F_new = TargetSystem.F_new
     val F_wait = TargetSystem.F_wait
     val F_name = TargetSystem.F_name
-    val F_rsort = TargetSystem.F_rsort
+
+    object Unpacked : TargetScope(C_Unpacked) {
+
+        val F_rsort = TargetSystem.F_rsort
+    }
 }

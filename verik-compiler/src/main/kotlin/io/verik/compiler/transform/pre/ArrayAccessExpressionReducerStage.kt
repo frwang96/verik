@@ -25,8 +25,8 @@ import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Cardinal
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.common.AbstractCoreFunctionDeclaration
 import io.verik.compiler.core.common.Core
+import io.verik.compiler.core.common.CoreFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 
@@ -83,7 +83,7 @@ object ArrayAccessExpressionReducerStage : ProjectStage() {
     data class GetReducerEntry(
         val arrayDeclaration: Declaration,
         val indexDeclarations: List<Declaration>,
-        val reference: AbstractCoreFunctionDeclaration
+        val reference: CoreFunctionDeclaration
     ) {
 
         fun match(
@@ -99,7 +99,7 @@ object ArrayAccessExpressionReducerStage : ProjectStage() {
         val arrayDeclaration: Declaration,
         val indexDeclarations: List<Declaration>,
         val expressionType: Type,
-        val reference: AbstractCoreFunctionDeclaration
+        val reference: CoreFunctionDeclaration
     ) {
 
         fun match(
@@ -118,7 +118,7 @@ object ArrayAccessExpressionReducerStage : ProjectStage() {
         private fun getGetReference(
             arrayDeclaration: Declaration,
             indexDeclarations: List<Declaration>
-        ): AbstractCoreFunctionDeclaration? {
+        ): CoreFunctionDeclaration? {
             getReducerEntries.forEach {
                 if (it.match(arrayDeclaration, indexDeclarations))
                     return it.reference
@@ -130,7 +130,7 @@ object ArrayAccessExpressionReducerStage : ProjectStage() {
             arrayDeclaration: Declaration,
             indexDeclarations: List<Declaration>,
             expressionType: Type
-        ): AbstractCoreFunctionDeclaration? {
+        ): CoreFunctionDeclaration? {
             setReducerEntries.forEach {
                 if (it.match(arrayDeclaration, indexDeclarations, expressionType))
                     return it.reference

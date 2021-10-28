@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.common
+package io.verik.compiler.target.common
 
-abstract class EAbstractReferenceExpression : EReceiverExpression()
+open class TargetScope(val declaration: TargetClassDeclaration)

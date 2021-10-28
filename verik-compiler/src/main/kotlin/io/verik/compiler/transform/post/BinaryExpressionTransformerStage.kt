@@ -40,7 +40,7 @@ object BinaryExpressionTransformerStage : ProjectStage() {
             super.visitKtCallExpression(callExpression)
             val reference = callExpression.reference
             if (reference is BinaryCoreFunctionDeclaration) {
-                val kind = reference.getOperatorKind()
+                val kind = reference.kind
                 callExpression.replace(
                     ESvBinaryExpression(
                         callExpression.location,

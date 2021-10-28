@@ -19,7 +19,7 @@ package io.verik.compiler.ast.element.common
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.replaceIfContains
 
-abstract class EAbstractCallExpression : EAbstractReceiverExpression() {
+abstract class EAbstractCallExpression : EReceiverExpression() {
 
     abstract val valueArguments: ArrayList<EExpression>
 

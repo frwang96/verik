@@ -21,9 +21,9 @@ import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.common.AbstractCoreFunctionDeclaration
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreClassDeclaration
+import io.verik.compiler.core.common.CoreFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 
@@ -31,7 +31,7 @@ object BinaryExpressionReducerStage : ProjectStage() {
 
     override val checkNormalization = true
 
-    private val referenceMap = HashMap<ReducerEntry, AbstractCoreFunctionDeclaration>()
+    private val referenceMap = HashMap<ReducerEntry, CoreFunctionDeclaration>()
 
     init {
         referenceMap[ReducerEntry(Core.Kt.C_Boolean, Core.Kt.C_Boolean, KtBinaryOperatorKind.ANDAND)] =

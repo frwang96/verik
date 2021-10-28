@@ -102,9 +102,9 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_u_Int = BasicCoreFunctionDeclaration(parent, "u", Core.Kt.C_Int)
+    val F_u_Int = BasicCoreFunctionDeclaration(parent, "u", null, Core.Kt.C_Int)
 
-    val F_u_String = BasicCoreFunctionDeclaration(parent, "u", Core.Kt.C_String)
+    val F_u_String = BasicCoreFunctionDeclaration(parent, "u", null, Core.Kt.C_String)
 
     val F_u_Sbit = object : TransformableCoreFunctionDeclaration(parent, "u", Core.Vk.C_Sbit) {
 
@@ -350,7 +350,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_sv_String = BasicCoreFunctionDeclaration(parent, "sv", Core.Kt.C_String)
+    val F_sv_String = BasicCoreFunctionDeclaration(parent, "sv", null, Core.Kt.C_String)
 
     val F_Boolean_uext = object : TransformableCoreFunctionDeclaration(parent, "uext") {
 

@@ -110,7 +110,7 @@ object TargetClass {
         override val content = """
             class ArrayList #(type T = int);
                 T arr [${'$'}];
-            endclass
+            endclass : ArrayList
         """.trimIndent()
     }
 }
