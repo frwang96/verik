@@ -34,7 +34,7 @@ object ImportDirectiveCheckerStage : ProjectStage() {
             val packageName = it.packageFqName.asString()
             if (packageName == "")
                 Messages.PACKAGE_NAME_ROOT.on(it)
-            if (packageName in listOf(CorePackage.VK.name, CorePackage.SV.name, CorePackage.ROOT.name))
+            if (CorePackage.isReserved(packageName))
                 Messages.PACKAGE_NAME_RESERVED.on(it, packageName)
             packageNames.add(it.packageFqName.toString())
         }

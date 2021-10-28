@@ -34,7 +34,7 @@ internal class TypeSerializerTest : BaseTest() {
         """.trimIndent()
         assertOutputTextEquals(
             expected,
-            projectContext.outputTextFiles.last()
+            projectContext.outputContext.basicPackageSourceTextFiles[0]
         )
     }
 
@@ -51,7 +51,7 @@ internal class TypeSerializerTest : BaseTest() {
         """.trimIndent()
         assertOutputTextEquals(
             expected,
-            projectContext.outputTextFiles.last()
+            projectContext.outputContext.basicPackageSourceTextFiles[0]
         )
     }
 
@@ -68,7 +68,7 @@ internal class TypeSerializerTest : BaseTest() {
         """.trimIndent()
         assertOutputTextEquals(
             expected,
-            projectContext.outputTextFiles.last()
+            projectContext.outputContext.basicPackageSourceTextFiles[0]
         )
     }
 
@@ -85,7 +85,7 @@ internal class TypeSerializerTest : BaseTest() {
         """.trimIndent()
         assertOutputTextEquals(
             expected,
-            projectContext.outputTextFiles.last()
+            projectContext.outputContext.basicPackageSourceTextFiles[0]
         )
     }
 }

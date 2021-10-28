@@ -46,8 +46,8 @@ object Main {
                 .sorted(Comparator.reverseOrder())
                 .forEach { Files.delete(it) }
         }
-        val outputTextFiles = projectContext.outputTextFiles.sortedBy { it.path }
-        outputTextFiles.forEach {
+        val textFiles = projectContext.outputContext.getTextFiles()
+        textFiles.forEach {
             Files.createDirectories(it.path.parent)
             Files.writeString(it.path, it.content)
         }

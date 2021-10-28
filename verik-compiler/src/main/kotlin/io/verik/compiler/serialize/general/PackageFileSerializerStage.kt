@@ -28,11 +28,13 @@ object PackageFileSerializerStage : ProjectStage() {
     override val checkNormalization = false
 
     override fun process(projectContext: ProjectContext) {
+        val packageTextFiles = ArrayList<TextFile>()
         projectContext.project.basicPackages.forEach {
             val packageOutputFile = serialize(projectContext, it)
             if (packageOutputFile != null)
-                projectContext.outputTextFiles.add(packageOutputFile)
+                packageTextFiles.add(packageOutputFile)
         }
+        projectContext.outputContext.packageTextFiles = packageTextFiles
     }
 
     private fun serialize(projectContext: ProjectContext, basicPackage: EBasicPackage): TextFile? {

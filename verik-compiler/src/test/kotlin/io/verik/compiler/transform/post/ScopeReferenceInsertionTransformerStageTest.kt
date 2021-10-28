@@ -40,7 +40,7 @@ internal class ScopeReferenceInsertionTransformerStageTest : BaseTest() {
                 KtReferenceExpression(
                     Boolean,
                     x,
-                    KtReferenceExpression(null, verik_pkg, null)
+                    KtReferenceExpression(null, test_pkg, null)
                 )
             """.trimIndent(),
             projectContext.findExpression("f")

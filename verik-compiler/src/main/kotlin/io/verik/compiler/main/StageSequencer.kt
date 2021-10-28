@@ -173,9 +173,9 @@ object StageSequencer {
 
         // Serialize
         stageSequence.add(ConfigFileSerializerStage)
-        stageSequence.add(OrderFileSerializerStage)
-        stageSequence.add(PackageFileSerializerStage)
         stageSequence.add(SourceSerializerStage)
+        stageSequence.add(PackageFileSerializerStage)
+        stageSequence.add(OrderFileSerializerStage)
 
         return stageSequence
     }

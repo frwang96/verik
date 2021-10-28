@@ -17,7 +17,6 @@
 package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.message.SourceLocation
 
 class ERootPackage(
@@ -25,7 +24,7 @@ class ERootPackage(
     override var files: ArrayList<EFile>
 ) : EAbstractPackage() {
 
-    override var name = CorePackage.ROOT.name
+    override var name = "<root>"
 
     init {
         files.forEach { it.parent = this }

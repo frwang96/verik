@@ -38,7 +38,7 @@ internal class SourceBuilderTest : BaseTest() {
         """.trimIndent()
         assertOutputTextEquals(
             expected,
-            projectContext.outputTextFiles.last()
+            projectContext.outputContext.basicPackageSourceTextFiles[0]
         )
     }
 
@@ -65,7 +65,7 @@ internal class SourceBuilderTest : BaseTest() {
         """.trimIndent()
         assertOutputTextEquals(
             expected,
-            projectContext.outputTextFiles.last()
+            projectContext.outputContext.basicPackageSourceTextFiles[0]
         )
     }
 
@@ -85,7 +85,7 @@ internal class SourceBuilderTest : BaseTest() {
         """.trimIndent()
         assertOutputTextEquals(
             expected,
-            projectContext.outputTextFiles.last()
+            projectContext.outputContext.basicPackageSourceTextFiles[0]
         )
     }
 }

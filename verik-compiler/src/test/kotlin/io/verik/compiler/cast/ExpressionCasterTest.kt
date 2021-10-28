@@ -117,7 +117,7 @@ internal class ExpressionCasterTest : BaseTest() {
             CasterStage::class,
             """
                 var x = 0
-                var y = verik.x
+                var y = test.x
             """.trimIndent()
         )
         assertElementEquals(

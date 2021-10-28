@@ -30,14 +30,14 @@ internal class PackageFileSerializerStageTest : BaseTest() {
             """.trimIndent()
         )
         val expected = """
-            package verik_pkg;
+            package test_pkg;
             
                 typedef class C;
             
-            `include "src/verik/Test.svh"
+            `include "src/test/Test.svh"
             
-            endpackage : verik_pkg
+            endpackage : test_pkg
         """.trimIndent()
-        assertOutputTextEquals(expected, projectContext.outputTextFiles.find { it.path.endsWith("Pkg.sv") }!!)
+        assertOutputTextEquals(expected, projectContext.outputContext.packageTextFiles[0])
     }
 }

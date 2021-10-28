@@ -54,6 +54,6 @@ object ConfigFileSerializerStage : ProjectStage() {
                 builder.appendLine("  - $it")
             }
         }
-        projectContext.outputTextFiles.add(TextFile(outputPath, builder.toString()))
+        projectContext.outputContext.configTextFile = TextFile(outputPath, builder.toString())
     }
 }

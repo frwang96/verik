@@ -34,7 +34,10 @@ object OrderFileSerializerStage : ProjectStage() {
             outputPath,
             FileHeaderBuilder.HeaderStyle.TXT
         )
-        val paths = getPaths(projectContext)
+
+        val paths = ArrayList<Path>()
+        projectContext.outputContext.packageTextFiles.forEach { paths.add(it.path) }
+        projectContext.outputContext.rootPackageSourceTextFiles.forEach { paths.add(it.path) }
 
         val builder = StringBuilder()
         builder.append(fileHeader)
@@ -42,19 +45,6 @@ object OrderFileSerializerStage : ProjectStage() {
             val pathString = Platform.getStringFromPath(projectContext.config.buildDir.relativize(it))
             builder.appendLine(pathString)
         }
-        projectContext.outputTextFiles.add(TextFile(outputPath, builder.toString()))
-    }
-
-    private fun getPaths(projectContext: ProjectContext): List<Path> {
-        val paths = ArrayList<Path>()
-        projectContext.project.basicPackages.forEach {
-            if (!it.isEmpty())
-                paths.add(it.outputPath.resolve("Pkg.sv"))
-        }
-        projectContext.project.rootPackage.files.forEach {
-            if (it.declarations.isNotEmpty())
-                paths.add(it.getOutputPathNotNull())
-        }
-        return paths
+        projectContext.outputContext.orderTextFile = TextFile(outputPath, builder.toString())
     }
 }
