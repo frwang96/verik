@@ -105,12 +105,14 @@ object TargetClass {
         }
     }
 
-    val C_ArrayList = object : CompositeTargetClassDeclaration("ArrayList") {
-
-        override val content = """
-            class ArrayList #(type T = int);
-                T arr [${'$'}];
+    val C_ArrayList = CompositeTargetClassDeclaration(
+        "ArrayList",
+        """
+            class ArrayList #(type E = int);
+            
+                E queue [${'$'}];
+                
             endclass : ArrayList
         """.trimIndent()
-    }
+    )
 }

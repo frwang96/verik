@@ -16,22 +16,22 @@
 
 package io.verik.compiler.target.declaration
 
-import io.verik.compiler.target.common.TargetFunctionDeclaration
+import io.verik.compiler.target.common.PrimitiveTargetFunctionDeclaration
 
 object TargetSystem {
 
-    val F_display = TargetFunctionDeclaration("\$display")
-    val F_write = TargetFunctionDeclaration("\$write")
-    val F_sformatf = TargetFunctionDeclaration("\$sformatf")
-    val F_random = TargetFunctionDeclaration("\$random")
-    val F_urandom = TargetFunctionDeclaration("\$urandom")
-    val F_urandom_range = TargetFunctionDeclaration("\$urandom_range")
-    val F_unsigned = TargetFunctionDeclaration("\$unsigned")
-    val F_signed = TargetFunctionDeclaration("\$signed")
-    val F_time = TargetFunctionDeclaration("\$time")
-    val F_fatal = TargetFunctionDeclaration("\$fatal")
-    val F_finish = TargetFunctionDeclaration("\$finish")
-    val F_new = TargetFunctionDeclaration("new")
-    val F_wait = TargetFunctionDeclaration("wait")
-    val F_name = TargetFunctionDeclaration("name")
+    val F_display = PrimitiveTargetFunctionDeclaration("\$display")
+    val F_write = PrimitiveTargetFunctionDeclaration("\$write")
+    val F_sformatf = PrimitiveTargetFunctionDeclaration("\$sformatf")
+    val F_random = PrimitiveTargetFunctionDeclaration("\$random")
+    val F_urandom = PrimitiveTargetFunctionDeclaration("\$urandom")
+    val F_urandom_range = PrimitiveTargetFunctionDeclaration("\$urandom_range")
+    val F_unsigned = PrimitiveTargetFunctionDeclaration("\$unsigned")
+    val F_signed = PrimitiveTargetFunctionDeclaration("\$signed")
+    val F_time = PrimitiveTargetFunctionDeclaration("\$time")
+    val F_fatal = PrimitiveTargetFunctionDeclaration("\$fatal")
+    val F_finish = PrimitiveTargetFunctionDeclaration("\$finish")
+    val F_new = PrimitiveTargetFunctionDeclaration("new")
+    val F_wait = PrimitiveTargetFunctionDeclaration("wait")
+    val F_name = PrimitiveTargetFunctionDeclaration("name")
 }

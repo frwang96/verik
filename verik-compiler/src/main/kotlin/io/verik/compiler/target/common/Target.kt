@@ -57,6 +57,7 @@ object Target {
 
     object ArrayList : TargetScope(C_ArrayList) {
 
+        val F_new = TargetArrayList.F_new
         val F_add = TargetArrayList.F_add
     }
 }

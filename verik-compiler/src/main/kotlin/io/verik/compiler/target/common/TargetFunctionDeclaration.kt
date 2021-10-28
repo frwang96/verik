@@ -16,4 +16,8 @@
 
 package io.verik.compiler.target.common
 
-class TargetFunctionDeclaration(override var name: String) : TargetDeclaration
+sealed class TargetFunctionDeclaration : TargetDeclaration
+
+class PrimitiveTargetFunctionDeclaration(override var name: String) : TargetFunctionDeclaration()
+
+class CompositeTargetFunctionDeclaration(override var name: String, val content: String) : TargetFunctionDeclaration()

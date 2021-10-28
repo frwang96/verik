@@ -95,7 +95,7 @@ object Core {
 
             val C_ArrayList = CoreClass.Jv.Util.C_ArrayList
 
-            val F_ArrayList = CoreConstructorDeclaration(C_ArrayList)
+            val F_ArrayList = CoreClass.Jv.Util.F_ArrayList
 
             object ArrayList : CoreScope(C_ArrayList) {
 
@@ -119,11 +119,11 @@ object Core {
         val C_Time = CoreClass.Vk.C_Time
         val C_Event = CoreClass.Vk.C_Event
 
-        val F_Struct = CoreConstructorDeclaration(C_Struct)
-        val F_Module = CoreConstructorDeclaration(C_Module)
-        val F_ModuleInterface = CoreConstructorDeclaration(C_ModuleInterface)
-        val F_ModulePort = CoreConstructorDeclaration(C_ModulePort)
-        val F_ClockingBlock = CoreConstructorDeclaration(C_ClockingBlock)
+        val F_Struct = CoreClass.Vk.F_Struct
+        val F_Module = CoreClass.Vk.F_Module
+        val F_ModuleInterface = CoreClass.Vk.F_ModuleInterface
+        val F_ModulePort = CoreClass.Vk.F_ModulePort
+        val F_ClockingBlock = CoreClass.Vk.F_ClockingBlock
 
         val N_ADD = CoreVkCardinal.N_ADD
         val N_SUB = CoreVkCardinal.N_SUB

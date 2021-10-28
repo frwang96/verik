@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
+import io.verik.compiler.core.common.CoreConstructorDeclaration
 import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 
@@ -43,6 +44,11 @@ object FunctionTransformerStage : ProjectStage() {
                 }
                 is TransformableCoreFunctionDeclaration -> {
                     callExpression.replace(reference.transform(callExpression))
+                }
+                is CoreConstructorDeclaration -> {
+                    val targetFunctionDeclaration = reference.targetFunctionDeclaration
+                    if (targetFunctionDeclaration != null)
+                        callExpression.reference = targetFunctionDeclaration
                 }
             }
         }

@@ -28,7 +28,7 @@ sealed class TargetClassDeclaration : TargetDeclaration {
 
 abstract class PrimitiveTargetClassDeclaration(override var name: String) : TargetClassDeclaration()
 
-abstract class CompositeTargetClassDeclaration(override var name: String) : TargetClassDeclaration() {
+class CompositeTargetClassDeclaration(override var name: String, val content: String) : TargetClassDeclaration() {
 
     override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
         val base = "${TargetPackage.name}::$name"
@@ -39,6 +39,4 @@ abstract class CompositeTargetClassDeclaration(override var name: String) : Targ
             SerializedType("$base#($serializedTypeArgumentString)")
         } else SerializedType(base)
     }
-
-    abstract val content: String
 }

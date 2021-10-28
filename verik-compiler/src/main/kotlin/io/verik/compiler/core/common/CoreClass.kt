@@ -42,6 +42,8 @@ object CoreClass {
         object Util : CoreScope(CorePackage.JV_UTIL) {
 
             val C_ArrayList = CoreClassDeclaration(parent, "ArrayList", Kt.C_Any, Target.C_ArrayList)
+
+            val F_ArrayList = CoreConstructorDeclaration(C_ArrayList, Target.ArrayList.F_new)
         }
     }
 
@@ -59,5 +61,11 @@ object CoreClass {
         val C_ClockingBlock = CoreClassDeclaration(parent, "ClockingBlock", C_Component, null)
         val C_Time = CoreClassDeclaration(parent, "Time", Kt.C_Any, Target.C_Time)
         val C_Event = CoreClassDeclaration(parent, "Event", Kt.C_Any, Target.C_Event)
+
+        val F_Struct = CoreConstructorDeclaration(C_Struct, null)
+        val F_Module = CoreConstructorDeclaration(C_Module, null)
+        val F_ModuleInterface = CoreConstructorDeclaration(C_ModuleInterface, null)
+        val F_ModulePort = CoreConstructorDeclaration(C_ModulePort, null)
+        val F_ClockingBlock = CoreConstructorDeclaration(C_ClockingBlock, null)
     }
 }

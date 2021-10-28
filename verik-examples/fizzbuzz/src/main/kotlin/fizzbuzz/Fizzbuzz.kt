@@ -23,7 +23,7 @@ class Fizzbuzz : Module() {
 
     var x: Unpacked<`8`, Ubit<`8`>> = nc()
     @Suppress("unused")
-    val a: ArrayList<C> = nc()
+    var a: ArrayList<C> = nc()
 
     @Run
     fun main() {
@@ -33,6 +33,7 @@ class Fizzbuzz : Module() {
         c.f()
         val d = D()
         d.f()
+        a = ArrayList()
         a.add(c)
     }
 
