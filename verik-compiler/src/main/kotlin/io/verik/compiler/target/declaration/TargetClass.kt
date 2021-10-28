@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.serialize.source.SerializedType
 import io.verik.compiler.serialize.source.TypeSerializer
+import io.verik.compiler.target.common.CompositeTargetClassDeclaration
 import io.verik.compiler.target.common.PrimitiveTargetClassDeclaration
 
 object TargetClass {
@@ -104,14 +105,12 @@ object TargetClass {
         }
     }
 
-    val C_ArrayList = object : PrimitiveTargetClassDeclaration("ArrayList") {
+    val C_ArrayList = object : CompositeTargetClassDeclaration("ArrayList") {
 
-        override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
-            val serializedType = TypeSerializer.serialize(typeArguments[0], element)
-            var unpackedDimension = "[$]"
-            if (serializedType.unpackedDimension != null)
-                unpackedDimension += serializedType.unpackedDimension
-            return SerializedType(serializedType.base, serializedType.packedDimension, unpackedDimension)
-        }
+        override val content = """
+            class ArrayList #(type T = int);
+                T arr [${'$'}];
+            endclass
+        """.trimIndent()
     }
 }

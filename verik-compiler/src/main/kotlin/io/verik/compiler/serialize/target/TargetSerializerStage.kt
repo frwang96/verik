@@ -18,7 +18,11 @@ package io.verik.compiler.serialize.target
 
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.target.common.CompositeTargetClassDeclaration
+import io.verik.compiler.target.common.Target
 import io.verik.compiler.target.common.TargetPackage
+import kotlin.reflect.KProperty1
+import kotlin.reflect.full.memberProperties
 
 object TargetSerializerStage : ProjectStage() {
 
@@ -27,8 +31,26 @@ object TargetSerializerStage : ProjectStage() {
     override fun process(projectContext: ProjectContext) {
         val targetPackageFilePath = projectContext.config.outputSourceDir.resolve(TargetPackage.path)
         val targetSourceBuilder = TargetSourceBuilder(projectContext, targetPackageFilePath)
-        targetSourceBuilder.appendLine(TargetPackage.name)
+        targetSourceBuilder.appendLine("package ${TargetPackage.name};")
+        targetSourceBuilder.indent {
+            Target::class.memberProperties.forEach {
+                @Suppress("UNCHECKED_CAST")
+                val property = (it as KProperty1<Any, *>).get(Target)
+                if (property is CompositeTargetClassDeclaration) {
+                    serializeDeclaration(targetSourceBuilder, property)
+                }
+            }
+        }
+        targetSourceBuilder.appendLine()
         targetSourceBuilder.appendLine("endpackage : ${TargetPackage.name}")
         projectContext.outputContext.targetPackageTextFile = targetSourceBuilder.toTextFile()
+    }
+
+    private fun serializeDeclaration(
+        targetSourceBuilder: TargetSourceBuilder,
+        declaration: CompositeTargetClassDeclaration
+    ) {
+        targetSourceBuilder.appendLine()
+        targetSourceBuilder.appendLine(declaration.content)
     }
 }

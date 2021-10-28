@@ -27,6 +27,8 @@ class TargetSourceBuilder(
 ) {
 
     private val sourceBuilder = StringBuilder()
+    private val indentLength = projectContext.config.indentLength
+    private var indent = 0
 
     init {
         val fileHeader = FileHeaderBuilder.build(
@@ -38,8 +40,28 @@ class TargetSourceBuilder(
         sourceBuilder.append(fileHeader)
     }
 
+    fun appendLine() {
+        sourceBuilder.appendLine()
+    }
+
     fun appendLine(content: String) {
-        sourceBuilder.appendLine(content)
+        content.lines().forEach {
+            val line = it.trimEnd()
+            if (line != "") {
+                val trimmedLine = line.trimStart()
+                val totalIndent = indent + (line.length - trimmedLine.length) / 4
+                sourceBuilder.append(" ".repeat(totalIndent * indentLength))
+                sourceBuilder.appendLine(trimmedLine)
+            } else {
+                sourceBuilder.appendLine()
+            }
+        }
+    }
+
+    fun indent(block: () -> Unit) {
+        indent++
+        block()
+        indent--
     }
 
     fun toTextFile(): TextFile {

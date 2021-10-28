@@ -89,4 +89,21 @@ internal class TargetClassTest : BaseTest() {
             projectContext.outputContext.basicPackageSourceTextFiles[0]
         )
     }
+
+    @Test
+    fun `serialize type array list`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                var x: ArrayList<Boolean> = nc()
+            """.trimIndent()
+        )
+        val expected = """
+            verik_pkg::ArrayList#(logic) x;
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputContext.basicPackageSourceTextFiles[0]
+        )
+    }
 }
