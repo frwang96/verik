@@ -107,12 +107,8 @@ object TargetClass {
 
     val C_ArrayList = CompositeTargetClassDeclaration(
         "ArrayList",
-        """
-            class ArrayList #(type E = int);
-            
-                E queue [${'$'}];
-                
-            endclass : ArrayList
-        """.trimIndent()
+        "class ArrayList #(type E = int);",
+        "E queue [${'$'}];",
+        "endclass : ArrayList"
     )
 }
