@@ -16,6 +16,7 @@
 
 package io.verik.compiler.target.common
 
+import io.verik.compiler.target.declaration.TargetClass
 import io.verik.compiler.target.declaration.TargetSystem
 
 object Target {

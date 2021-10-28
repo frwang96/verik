@@ -22,7 +22,7 @@ import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.ast.property.SvUnaryOperatorKind
 import io.verik.compiler.resolve.TypeConstraint
 
-sealed class CoreAbstractFunctionDeclaration constructor(
+sealed class AbstractCoreFunctionDeclaration constructor(
     override var name: String,
     override val qualifiedName: String,
     val parameterClassNames: List<String>
@@ -43,35 +43,35 @@ sealed class CoreAbstractFunctionDeclaration constructor(
     )
 }
 
-class CoreBasicFunctionDeclaration(
+class BasicCoreFunctionDeclaration(
     parent: String,
     name: String,
     vararg parameterClassDeclarations: CoreClassDeclaration
-) : CoreAbstractFunctionDeclaration(parent, name, *parameterClassDeclarations)
+) : AbstractCoreFunctionDeclaration(parent, name, *parameterClassDeclarations)
 
-abstract class CoreTransformableFunctionDeclaration(
+abstract class TransformableCoreFunctionDeclaration(
     parent: String,
     name: String,
     vararg parameterClassDeclarations: CoreClassDeclaration
-) : CoreAbstractFunctionDeclaration(parent, name, *parameterClassDeclarations) {
+) : AbstractCoreFunctionDeclaration(parent, name, *parameterClassDeclarations) {
 
     abstract fun transform(callExpression: EKtCallExpression): EExpression
 }
 
-abstract class CoreUnaryFunctionDeclaration(
+abstract class UnaryCoreFunctionDeclaration(
     parent: String,
     name: String,
     vararg parameterClassDeclarations: CoreClassDeclaration
-) : CoreAbstractFunctionDeclaration(parent, name, *parameterClassDeclarations) {
+) : AbstractCoreFunctionDeclaration(parent, name, *parameterClassDeclarations) {
 
     abstract fun getOperatorKind(): SvUnaryOperatorKind
 }
 
-abstract class CoreBinaryFunctionDeclaration(
+abstract class BinaryCoreFunctionDeclaration(
     parent: String,
     name: String,
     vararg parameterClassDeclarations: CoreClassDeclaration
-) : CoreAbstractFunctionDeclaration(parent, name, *parameterClassDeclarations) {
+) : AbstractCoreFunctionDeclaration(parent, name, *parameterClassDeclarations) {
 
     open fun evaluate(callExpression: EKtCallExpression): String? {
         return null

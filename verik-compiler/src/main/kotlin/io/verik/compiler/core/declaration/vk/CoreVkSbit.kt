@@ -22,12 +22,12 @@ import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreScope
-import io.verik.compiler.core.common.CoreTransformableFunctionDeclaration
+import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
 import io.verik.compiler.target.common.Target
 
 object CoreVkSbit : CoreScope(Core.Vk.C_Sbit) {
 
-    val F_lt_Sbit = object : CoreTransformableFunctionDeclaration(parent, "lt", Core.Vk.C_Sbit) {
+    val F_lt_Sbit = object : TransformableCoreFunctionDeclaration(parent, "lt", Core.Vk.C_Sbit) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             val left = callExpression.receiver!!

@@ -20,7 +20,9 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.serialize.source.SerializedType
 
-abstract class TargetClassDeclaration(override var name: String) : TargetDeclaration {
+sealed class TargetClassDeclaration() : TargetDeclaration {
 
     abstract fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType
 }
+
+abstract class PrimitiveTargetClassDeclaration(override var name: String) : TargetClassDeclaration()
