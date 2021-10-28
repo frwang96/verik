@@ -66,7 +66,6 @@ object Core {
 
         object Io : CoreScope(CorePackage.KT_IO) {
 
-            val F_print = CoreKtIo.F_print
             val F_print_Any = CoreKtIo.F_print_Any
             val F_print_Boolean = CoreKtIo.F_print_Boolean
             val F_print_Int = CoreKtIo.F_print_Int

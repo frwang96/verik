@@ -23,6 +23,7 @@ import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
+import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CorePropertyDeclaration
 import io.verik.compiler.core.common.CoreScope
@@ -146,13 +147,7 @@ object CoreVkUnpacked : CoreScope(Core.Vk.C_Unpacked) {
         }
     }
 
-    val F_sort = object : TransformableCoreFunctionDeclaration(parent, "sort") {
-
-        override fun transform(callExpression: EKtCallExpression): EExpression {
-            callExpression.reference = Target.Unpacked.F_rsort
-            return callExpression
-        }
-    }
+    val F_sort = BasicCoreFunctionDeclaration(parent, "sort", Target.Unpacked.F_rsort)
 
     val P_size = object : CorePropertyDeclaration(parent, "size") {
 

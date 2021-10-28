@@ -44,10 +44,10 @@ sealed class CoreFunctionDeclaration constructor(
     )
 }
 
-class BasicCoreFunctionDeclaration(
+open class BasicCoreFunctionDeclaration(
     parent: String,
     name: String,
-    @Suppress("unused") val targetFunctionDeclaration: TargetFunctionDeclaration?,
+    val targetFunctionDeclaration: TargetFunctionDeclaration?,
     vararg parameterClassDeclarations: CoreClassDeclaration
 ) : CoreFunctionDeclaration(parent, name, *parameterClassDeclarations)
 

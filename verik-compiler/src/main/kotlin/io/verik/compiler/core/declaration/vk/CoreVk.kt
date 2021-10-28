@@ -189,44 +189,21 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_random = object : TransformableCoreFunctionDeclaration(parent, "random") {
+    val F_random = BasicCoreFunctionDeclaration(parent, "random", Target.F_random)
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
-            callExpression.reference = Target.F_random
-            return callExpression
-        }
-    }
+    val F_random_Int = BasicCoreFunctionDeclaration(parent, "random", Target.F_urandom_range, Core.Kt.C_Int)
 
-    val F_random_Int = object : TransformableCoreFunctionDeclaration(parent, "random", Core.Kt.C_Int) {
-
-        override fun transform(callExpression: EKtCallExpression): EExpression {
-            callExpression.reference = Target.F_urandom_range
-            return callExpression
-        }
-    }
-
-    val F_random_Int_Int = object : TransformableCoreFunctionDeclaration(
+    val F_random_Int_Int = BasicCoreFunctionDeclaration(
         parent,
         "random",
+        Target.F_urandom_range,
         Core.Kt.C_Int,
         Core.Kt.C_Int
-    ) {
+    )
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
-            callExpression.reference = Target.F_urandom_range
-            return callExpression
-        }
-    }
+    val F_randomBoolean = BasicCoreFunctionDeclaration(parent, "randomBoolean", Target.F_urandom)
 
-    val F_randomBoolean = object : TransformableCoreFunctionDeclaration(parent, "randomBoolean") {
-
-        override fun transform(callExpression: EKtCallExpression): EExpression {
-            callExpression.reference = Target.F_urandom
-            return callExpression
-        }
-    }
-
-    val F_randomUbit = object : TransformableCoreFunctionDeclaration(parent, "randomUbit") {
+    val F_randomUbit = object : BasicCoreFunctionDeclaration(parent, "randomUbit", Target.F_urandom) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -235,11 +212,6 @@ object CoreVk : CoreScope(CorePackage.VK) {
                     TypeAdapter.ofElement(callExpression, 0)
                 )
             )
-        }
-
-        override fun transform(callExpression: EKtCallExpression): EExpression {
-            callExpression.reference = Target.F_urandom
-            return callExpression
         }
     }
 
@@ -293,13 +265,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_wait_Boolean = object : TransformableCoreFunctionDeclaration(parent, "wait", Core.Kt.C_Boolean) {
-
-        override fun transform(callExpression: EKtCallExpression): EExpression {
-            callExpression.reference = Target.F_wait
-            return callExpression
-        }
-    }
+    val F_wait_Boolean = BasicCoreFunctionDeclaration(parent, "wait", Target.F_wait, Core.Kt.C_Boolean)
 
     val F_wait_Event = object : TransformableCoreFunctionDeclaration(parent, "wait", Core.Vk.C_Event) {
 
@@ -326,29 +292,11 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_time = object : TransformableCoreFunctionDeclaration(parent, "time") {
+    val F_time = BasicCoreFunctionDeclaration(parent, "time", Target.F_time)
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
-            callExpression.reference = Target.F_time
-            return callExpression
-        }
-    }
+    val F_finish = BasicCoreFunctionDeclaration(parent, "finish", Target.F_finish)
 
-    val F_finish = object : TransformableCoreFunctionDeclaration(parent, "finish") {
-
-        override fun transform(callExpression: EKtCallExpression): EExpression {
-            callExpression.reference = Target.F_finish
-            return callExpression
-        }
-    }
-
-    val F_fatal = object : TransformableCoreFunctionDeclaration(parent, "fatal") {
-
-        override fun transform(callExpression: EKtCallExpression): EExpression {
-            callExpression.reference = Target.F_fatal
-            return callExpression
-        }
-    }
+    val F_fatal = BasicCoreFunctionDeclaration(parent, "fatal", Target.F_fatal)
 
     val F_sv_String = BasicCoreFunctionDeclaration(parent, "sv", null, Core.Kt.C_String)
 

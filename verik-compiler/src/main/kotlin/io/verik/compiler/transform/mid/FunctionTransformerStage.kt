@@ -19,6 +19,7 @@ package io.verik.compiler.transform.mid
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
 import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 
@@ -34,9 +35,16 @@ object FunctionTransformerStage : ProjectStage() {
 
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
-            val reference = callExpression.reference
-            if (reference is TransformableCoreFunctionDeclaration)
-                callExpression.replace(reference.transform(callExpression))
+            when (val reference = callExpression.reference) {
+                is BasicCoreFunctionDeclaration -> {
+                    val targetFunctionDeclaration = reference.targetFunctionDeclaration
+                    if (targetFunctionDeclaration != null)
+                        callExpression.reference = targetFunctionDeclaration
+                }
+                is TransformableCoreFunctionDeclaration -> {
+                    callExpression.replace(reference.transform(callExpression))
+                }
+            }
         }
     }
 }
