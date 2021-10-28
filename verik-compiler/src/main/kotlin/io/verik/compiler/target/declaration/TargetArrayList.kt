@@ -14,36 +14,11 @@
  * limitations under the License.
  */
 
-package fizzbuzz
+package io.verik.compiler.target.declaration
 
-import io.verik.core.*
+import io.verik.compiler.target.common.TargetFunctionDeclaration
 
-@Top
-class Fizzbuzz : Module() {
+object TargetArrayList {
 
-    var x: Unpacked<`8`, Ubit<`8`>> = nc()
-    @Suppress("unused")
-    val a: ArrayList<C> = nc()
-
-    @Run
-    fun main() {
-        x = g(x)
-        @Suppress("UNUSED_VARIABLE")
-        val c = C(0)
-        c.f()
-        val d = D()
-        d.f()
-        a.add(c)
-    }
-
-    fun g(x: Unpacked<`8`, Ubit<`8`>>): Unpacked<`8`, Ubit<`8`>> {
-        return x
-    }
+    val F_add = TargetFunctionDeclaration("add")
 }
-
-open class C(val a: Int) {
-
-    fun f() {}
-}
-
-class D : C(0)

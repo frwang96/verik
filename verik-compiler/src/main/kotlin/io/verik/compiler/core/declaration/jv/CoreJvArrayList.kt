@@ -14,36 +14,14 @@
  * limitations under the License.
  */
 
-package fizzbuzz
+package io.verik.compiler.core.declaration.jv
 
-import io.verik.core.*
+import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
+import io.verik.compiler.core.common.Core
+import io.verik.compiler.core.common.CoreScope
+import io.verik.compiler.target.common.Target
 
-@Top
-class Fizzbuzz : Module() {
+object CoreJvArrayList : CoreScope(Core.Jv.Util.C_ArrayList) {
 
-    var x: Unpacked<`8`, Ubit<`8`>> = nc()
-    @Suppress("unused")
-    val a: ArrayList<C> = nc()
-
-    @Run
-    fun main() {
-        x = g(x)
-        @Suppress("UNUSED_VARIABLE")
-        val c = C(0)
-        c.f()
-        val d = D()
-        d.f()
-        a.add(c)
-    }
-
-    fun g(x: Unpacked<`8`, Ubit<`8`>>): Unpacked<`8`, Ubit<`8`>> {
-        return x
-    }
+    val F_add_Any = BasicCoreFunctionDeclaration(parent, "add", Target.ArrayList.F_add, Core.Kt.C_Any)
 }
-
-open class C(val a: Int) {
-
-    fun f() {}
-}
-
-class D : C(0)

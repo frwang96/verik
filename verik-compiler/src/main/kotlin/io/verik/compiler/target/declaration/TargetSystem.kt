@@ -34,5 +34,4 @@ object TargetSystem {
     val F_new = TargetFunctionDeclaration("new")
     val F_wait = TargetFunctionDeclaration("wait")
     val F_name = TargetFunctionDeclaration("name")
-    val F_rsort = TargetFunctionDeclaration("rsort")
 }

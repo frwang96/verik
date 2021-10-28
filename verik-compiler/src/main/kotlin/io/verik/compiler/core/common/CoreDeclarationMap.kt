@@ -111,6 +111,7 @@ object CoreDeclarationMap {
         return null
     }
 
+    // TODO general matching for type parameterized functions
     private fun matchFunction(
         castContext: CastContext,
         descriptor: SimpleFunctionDescriptor,
@@ -122,15 +123,17 @@ object CoreDeclarationMap {
         if (valueParameters.size != parameterClassNames.size)
             return false
         valueParameters.zip(parameterClassNames).forEach { (valueParameter, parameterClassName) ->
-            val type = if (valueParameter.isVararg) {
-                castContext.castType(valueParameter.varargElementType!!, element)
-            } else {
-                castContext.castType(valueParameter.type, element)
+            if (parameterClassName != Core.Kt.C_Any.name) {
+                val type = if (valueParameter.isVararg) {
+                    castContext.castType(valueParameter.varargElementType!!, element)
+                } else {
+                    castContext.castType(valueParameter.type, element)
+                }
+                if (type.reference !is CoreClassDeclaration)
+                    return false
+                if (type.reference.name != parameterClassName)
+                    return false
             }
-            if (type.reference !is CoreClassDeclaration)
-                return false
-            if (type.reference.name != parameterClassName)
-                return false
         }
         return true
     }

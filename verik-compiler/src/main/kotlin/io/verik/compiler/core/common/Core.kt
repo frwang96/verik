@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
+@file:Suppress("unused", "MemberVisibilityCanBePrivate")
 
 package io.verik.compiler.core.common
 
+import io.verik.compiler.core.declaration.jv.CoreJvArrayList
 import io.verik.compiler.core.declaration.kt.CoreKt
 import io.verik.compiler.core.declaration.kt.CoreKtBoolean
 import io.verik.compiler.core.declaration.kt.CoreKtCollections
@@ -95,6 +96,11 @@ object Core {
             val C_ArrayList = CoreClass.Jv.Util.C_ArrayList
 
             val F_ArrayList = CoreConstructorDeclaration(C_ArrayList)
+
+            object ArrayList : CoreScope(C_ArrayList) {
+
+                val F_add_Any = CoreJvArrayList.F_add_Any
+            }
         }
     }
 
