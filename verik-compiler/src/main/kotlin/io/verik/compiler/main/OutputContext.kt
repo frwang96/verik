@@ -19,6 +19,7 @@ package io.verik.compiler.main
 class OutputContext {
 
     lateinit var configTextFile: TextFile
+    var targetPackageTextFile: TextFile? = null
     lateinit var basicPackageSourceTextFiles: List<TextFile>
     lateinit var rootPackageSourceTextFiles: List<TextFile>
     lateinit var packageTextFiles: List<TextFile>
@@ -27,6 +28,7 @@ class OutputContext {
     fun getTextFiles(): List<TextFile> {
         val textFiles = ArrayList<TextFile>()
         textFiles.add(configTextFile)
+        targetPackageTextFile?.let { textFiles.add(it) }
         textFiles.addAll(basicPackageSourceTextFiles)
         textFiles.addAll(rootPackageSourceTextFiles)
         textFiles.addAll(packageTextFiles)

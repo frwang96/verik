@@ -49,6 +49,7 @@ import io.verik.compiler.serialize.general.ConfigFileSerializerStage
 import io.verik.compiler.serialize.general.OrderFileSerializerStage
 import io.verik.compiler.serialize.general.PackageFileSerializerStage
 import io.verik.compiler.serialize.source.SourceSerializerStage
+import io.verik.compiler.serialize.target.TargetSerializerStage
 import io.verik.compiler.specialize.DeclarationSpecializerStage
 import io.verik.compiler.transform.mid.AssignmentTransformerStage
 import io.verik.compiler.transform.mid.CaseStatementTransformerStage
@@ -173,6 +174,7 @@ object StageSequencer {
 
         // Serialize
         stageSequence.add(ConfigFileSerializerStage)
+        stageSequence.add(TargetSerializerStage)
         stageSequence.add(SourceSerializerStage)
         stageSequence.add(PackageFileSerializerStage)
         stageSequence.add(OrderFileSerializerStage)

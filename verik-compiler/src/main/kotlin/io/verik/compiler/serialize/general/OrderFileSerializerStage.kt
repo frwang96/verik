@@ -36,6 +36,7 @@ object OrderFileSerializerStage : ProjectStage() {
         )
 
         val paths = ArrayList<Path>()
+        projectContext.outputContext.targetPackageTextFile?.let { paths.add(it.path) }
         projectContext.outputContext.packageTextFiles.forEach { paths.add(it.path) }
         projectContext.outputContext.rootPackageSourceTextFiles.forEach { paths.add(it.path) }
 
