@@ -17,20 +17,24 @@
 package io.verik.compiler.target.declaration
 
 import io.verik.compiler.target.common.CompositeTargetFunctionDeclaration
+import io.verik.compiler.target.common.Target
+import io.verik.compiler.target.common.TargetScope
 
-object TargetArrayList {
+object TargetArrayList : TargetScope(Target.C_ArrayList) {
 
     val F_new = CompositeTargetFunctionDeclaration(
+        parent,
         "_${'$'}new",
         """
-            static function automatic ArrayList _${'$'}new();
-                automatic ArrayList arrayList = new();
+            static function automatic ArrayList#(E) _${'$'}new();
+                automatic ArrayList#(E) arrayList = new();
                 return arrayList;
             endfunction : _${'$'}new
         """.trimIndent()
     )
 
     val F_add = CompositeTargetFunctionDeclaration(
+        parent,
         "add",
         """
             function automatic add(E e);

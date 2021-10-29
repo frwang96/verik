@@ -23,7 +23,31 @@ import org.junit.jupiter.api.Test
 internal class ScopeReferenceInsertionTransformerStageTest : BaseTest() {
 
     @Test
-    fun `insert package reference`() {
+    fun `package reference target declaration`() {
+        val projectContext = driveTest(
+            ScopeReferenceInsertionTransformerStage::class,
+            """
+                fun f() {
+                    ArrayList<Boolean>()
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            """
+                KtCallExpression(
+                    ArrayList<Boolean>,
+                    _${'$'}new,
+                    KtReferenceExpression(null, ArrayList, KtReferenceExpression(null, verik_pkg, null)),
+                    [],
+                    [Boolean]
+                )
+            """.trimIndent(),
+            projectContext.findExpression("f")
+        )
+    }
+
+    @Test
+    fun `package reference element`() {
         val projectContext = driveTest(
             ScopeReferenceInsertionTransformerStage::class,
             """

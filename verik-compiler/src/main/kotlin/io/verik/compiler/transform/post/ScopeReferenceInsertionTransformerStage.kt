@@ -28,6 +28,7 @@ import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.target.common.TargetDeclaration
 
 object ScopeReferenceInsertionTransformerStage : ProjectStage() {
 
@@ -43,22 +44,43 @@ object ScopeReferenceInsertionTransformerStage : ProjectStage() {
         private var parentBasicPackage: EBasicPackage? = null
 
         private fun getScopeReferenceExpression(reference: Declaration, element: EElement): EKtReferenceExpression? {
-            if (reference is EElement) {
-                when (val parent = reference.parent) {
-                    is ESvBasicClass -> {
-                        if (reference is ESvFunction && reference.isScopeStatic) {
+            when (reference) {
+                is TargetDeclaration -> {
+                    if (!reference.isPrimitive) {
+                        val parent = reference.parent
+                        if (parent != null) {
+                            val receiver = getScopeReferenceExpression(parent, element)
                             return EKtReferenceExpression(
                                 element.location,
                                 NullDeclaration.toType(),
                                 parent,
-                                getScopeReferenceExpression(parent, element)
+                                receiver
                             )
                         }
                     }
-                    is EFile -> {
-                        val basicPackage = parent.parent
-                        if (basicPackage is EBasicPackage && basicPackage != parentBasicPackage)
-                            return EKtReferenceExpression(element.location, NullDeclaration.toType(), basicPackage, null)
+                }
+                is EElement -> {
+                    when (val parent = reference.parent) {
+                        is EFile -> {
+                            val basicPackage = parent.parent
+                            if (basicPackage is EBasicPackage && basicPackage != parentBasicPackage)
+                                return EKtReferenceExpression(
+                                    element.location,
+                                    NullDeclaration.toType(),
+                                    basicPackage,
+                                    null
+                                )
+                        }
+                        is ESvBasicClass -> {
+                            if (reference is ESvFunction && reference.isScopeStatic) {
+                                return EKtReferenceExpression(
+                                    element.location,
+                                    NullDeclaration.toType(),
+                                    parent,
+                                    getScopeReferenceExpression(parent, element)
+                                )
+                            }
+                        }
                     }
                 }
             }

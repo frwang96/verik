@@ -21,7 +21,11 @@ import java.nio.file.Paths
 
 object TargetPackage : TargetDeclaration {
 
+    override val parent: TargetDeclaration? = null
+
     override var name = "verik_pkg"
+
+    override val isPrimitive = false
 
     val path: Path = Paths.get("verik", "Pkg.sv")
 }

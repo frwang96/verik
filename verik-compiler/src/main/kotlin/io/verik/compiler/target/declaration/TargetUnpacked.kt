@@ -17,8 +17,10 @@
 package io.verik.compiler.target.declaration
 
 import io.verik.compiler.target.common.PrimitiveTargetFunctionDeclaration
+import io.verik.compiler.target.common.Target
+import io.verik.compiler.target.common.TargetScope
 
-object TargetUnpacked {
+object TargetUnpacked : TargetScope(Target.C_Unpacked) {
 
-    val F_rsort = PrimitiveTargetFunctionDeclaration("rsort")
+    val F_rsort = PrimitiveTargetFunctionDeclaration(parent, "rsort")
 }

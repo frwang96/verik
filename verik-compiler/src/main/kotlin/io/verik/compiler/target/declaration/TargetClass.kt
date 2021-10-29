@@ -22,38 +22,40 @@ import io.verik.compiler.serialize.source.SerializedType
 import io.verik.compiler.serialize.source.TypeSerializer
 import io.verik.compiler.target.common.CompositeTargetClassDeclaration
 import io.verik.compiler.target.common.PrimitiveTargetClassDeclaration
+import io.verik.compiler.target.common.TargetPackage
+import io.verik.compiler.target.common.TargetScope
 
-object TargetClass {
+object TargetClass : TargetScope(TargetPackage) {
 
-    val C_Void = object : PrimitiveTargetClassDeclaration("Void") {
+    val C_Void = object : PrimitiveTargetClassDeclaration(parent, "Void") {
 
         override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
             return SerializedType("void")
         }
     }
 
-    val C_Int = object : PrimitiveTargetClassDeclaration("Int") {
+    val C_Int = object : PrimitiveTargetClassDeclaration(parent, "Int") {
 
         override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
             return SerializedType("int")
         }
     }
 
-    val C_Boolean = object : PrimitiveTargetClassDeclaration("Boolean") {
+    val C_Boolean = object : PrimitiveTargetClassDeclaration(parent, "Boolean") {
 
         override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
             return SerializedType("logic")
         }
     }
 
-    val C_String = object : PrimitiveTargetClassDeclaration("String") {
+    val C_String = object : PrimitiveTargetClassDeclaration(parent, "String") {
 
         override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
             return SerializedType("string")
         }
     }
 
-    val C_Ubit = object : PrimitiveTargetClassDeclaration("Ubit") {
+    val C_Ubit = object : PrimitiveTargetClassDeclaration(parent, "Ubit") {
 
         override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
             val value = typeArguments[0].asCardinalValue(element)
@@ -61,7 +63,7 @@ object TargetClass {
         }
     }
 
-    val C_Sbit = object : PrimitiveTargetClassDeclaration("Sbit") {
+    val C_Sbit = object : PrimitiveTargetClassDeclaration(parent, "Sbit") {
 
         override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
             val value = typeArguments[0].asCardinalValue(element)
@@ -69,7 +71,7 @@ object TargetClass {
         }
     }
 
-    val C_Packed = object : PrimitiveTargetClassDeclaration("Packed") {
+    val C_Packed = object : PrimitiveTargetClassDeclaration(parent, "Packed") {
 
         override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
             val serializedType = TypeSerializer.serialize(typeArguments[1], element)
@@ -80,7 +82,7 @@ object TargetClass {
         }
     }
 
-    val C_Unpacked = object : PrimitiveTargetClassDeclaration("Unpacked") {
+    val C_Unpacked = object : PrimitiveTargetClassDeclaration(parent, "Unpacked") {
 
         override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
             val serializedType = TypeSerializer.serialize(typeArguments[1], element)
@@ -91,14 +93,14 @@ object TargetClass {
         }
     }
 
-    val C_Time = object : PrimitiveTargetClassDeclaration("Time") {
+    val C_Time = object : PrimitiveTargetClassDeclaration(parent, "Time") {
 
         override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
             return SerializedType("time")
         }
     }
 
-    val C_Event = object : PrimitiveTargetClassDeclaration("Event") {
+    val C_Event = object : PrimitiveTargetClassDeclaration(parent, "Event") {
 
         override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
             return SerializedType("event")
@@ -106,6 +108,7 @@ object TargetClass {
     }
 
     val C_ArrayList = CompositeTargetClassDeclaration(
+        parent,
         "ArrayList",
         "class ArrayList #(type E = int);",
         "E queue [${'$'}];",

@@ -18,6 +18,19 @@ package io.verik.compiler.target.common
 
 sealed class TargetFunctionDeclaration : TargetDeclaration
 
-class PrimitiveTargetFunctionDeclaration(override var name: String) : TargetFunctionDeclaration()
+class PrimitiveTargetFunctionDeclaration(
+    override val parent: TargetDeclaration?,
+    override var name: String
+) : TargetFunctionDeclaration() {
 
-class CompositeTargetFunctionDeclaration(override var name: String, val content: String) : TargetFunctionDeclaration()
+    override val isPrimitive = true
+}
+
+class CompositeTargetFunctionDeclaration(
+    override val parent: TargetDeclaration?,
+    override var name: String,
+    val content: String
+) : TargetFunctionDeclaration() {
+
+    override val isPrimitive = false
+}

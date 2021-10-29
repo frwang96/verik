@@ -16,4 +16,4 @@
 
 package io.verik.compiler.target.common
 
-open class TargetScope(val declaration: TargetClassDeclaration)
+open class TargetScope(val parent: TargetDeclaration)

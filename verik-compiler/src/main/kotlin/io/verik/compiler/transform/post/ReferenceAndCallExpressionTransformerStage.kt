@@ -26,6 +26,8 @@ import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.target.common.TargetClassDeclaration
+import io.verik.compiler.target.common.TargetPackage
 
 object ReferenceAndCallExpressionTransformerStage : ProjectStage() {
 
@@ -38,8 +40,13 @@ object ReferenceAndCallExpressionTransformerStage : ProjectStage() {
     private object ReferenceAndCallExpressionTransformerVisitor : TreeVisitor() {
 
         private fun getIsScopeResolution(receiver: EExpression?): Boolean {
-            return receiver is ESvReferenceExpression &&
-                (receiver.reference is EBasicPackage || receiver.reference is ESvBasicClass)
+            return if (receiver is ESvReferenceExpression) {
+                val reference = receiver.reference
+                reference is TargetPackage ||
+                    reference is TargetClassDeclaration ||
+                    reference is EBasicPackage ||
+                    reference is ESvBasicClass
+            } else false
         }
 
         override fun visitKtReferenceExpression(referenceExpression: EKtReferenceExpression) {
