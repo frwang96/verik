@@ -29,6 +29,6 @@ object CoreJvClass : CoreScope(CorePackage.JV) {
 
         val C_ArrayList = CoreClassDeclaration(parent, "ArrayList", Core.Kt.C_Any, Target.C_ArrayList)
 
-        val F_ArrayList = CoreConstructorDeclaration(parent, C_ArrayList, Target.ArrayList.F_new)
+        val F_ArrayList = CoreConstructorDeclaration(C_ArrayList, Target.ArrayList.F_new)
     }
 }

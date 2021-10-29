@@ -84,7 +84,7 @@ class CastContext(
                 }
             }
         }
-        val coreDeclaration = CoreDeclarationMap[this, unwrappedDeclarationDescriptor, element]
+        val coreDeclaration = CoreDeclarationMap[unwrappedDeclarationDescriptor]
         return if (coreDeclaration != null) {
             coreDeclaration
         } else {

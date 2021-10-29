@@ -25,5 +25,5 @@ class CoreClassDeclaration(
     val targetClassDeclaration: TargetClassDeclaration?
 ) : CoreDeclaration {
 
-    override val signature: String? = null
+    override val signature: String = "class $name"
 }

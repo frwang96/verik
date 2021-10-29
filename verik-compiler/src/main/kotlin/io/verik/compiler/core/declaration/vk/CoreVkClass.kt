@@ -38,9 +38,9 @@ object CoreVkClass : CoreScope(CorePackage.VK) {
     val C_Time = CoreClassDeclaration(parent, "Time", Core.Kt.C_Any, Target.C_Time)
     val C_Event = CoreClassDeclaration(parent, "Event", Core.Kt.C_Any, Target.C_Event)
 
-    val F_Struct = CoreConstructorDeclaration(parent, C_Struct, null)
-    val F_Module = CoreConstructorDeclaration(parent, C_Module, null)
-    val F_ModuleInterface = CoreConstructorDeclaration(parent, C_ModuleInterface, null)
-    val F_ModulePort = CoreConstructorDeclaration(parent, C_ModulePort, null)
-    val F_ClockingBlock = CoreConstructorDeclaration(parent, C_ClockingBlock, null)
+    val F_Struct = CoreConstructorDeclaration(C_Struct, null)
+    val F_Module = CoreConstructorDeclaration(C_Module, null)
+    val F_ModuleInterface = CoreConstructorDeclaration(C_ModuleInterface, null)
+    val F_ModulePort = CoreConstructorDeclaration(C_ModulePort, null)
+    val F_ClockingBlock = CoreConstructorDeclaration(C_ClockingBlock, null)
 }
