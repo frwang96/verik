@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.element.common.EAbstractExpressionContainer
+import io.verik.compiler.ast.element.common.EAbstractContainerExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.ast.property.SvUnaryOperatorKind
@@ -29,7 +29,7 @@ class ESvUnaryExpression(
     override var type: Type,
     override var expression: EExpression,
     val kind: SvUnaryOperatorKind
-) : EAbstractExpressionContainer() {
+) : EAbstractContainerExpression() {
 
     override val serializationType = SerializationType.EXPRESSION
 

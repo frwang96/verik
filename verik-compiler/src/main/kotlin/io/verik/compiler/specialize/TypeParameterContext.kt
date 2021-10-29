@@ -16,10 +16,10 @@
 
 package io.verik.compiler.specialize
 
-import io.verik.compiler.ast.element.common.EAbstractReceiverExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
+import io.verik.compiler.ast.element.common.EReceiverExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.interfaces.TypeParameterized
@@ -80,15 +80,15 @@ data class TypeParameterContext(val typeParameterBindings: List<TypeParameterBin
         }
 
         fun getFromReceiver(
-            abstractReceiverExpression: EAbstractReceiverExpression,
+            receiverExpression: EReceiverExpression,
             specializerContext: SpecializerContext
         ): TypeParameterContext {
-            val receiver = abstractReceiverExpression.receiver
+            val receiver = receiverExpression.receiver
             return if (receiver != null) {
                 val specializedType = TypeSpecializer.specialize(
                     receiver.type,
                     specializerContext,
-                    abstractReceiverExpression,
+                    receiverExpression,
                     false
                 )
                 val specializedTypeReference = specializedType.reference
@@ -96,11 +96,11 @@ data class TypeParameterContext(val typeParameterBindings: List<TypeParameterBin
                     getFromTypeArguments(
                         specializedType.arguments,
                         specializedTypeReference,
-                        abstractReceiverExpression
+                        receiverExpression
                     )
                 } else EMPTY
             } else {
-                val reference = abstractReceiverExpression.reference
+                val reference = receiverExpression.reference
                 if (reference is EDeclaration && reference.parent !is EFile)
                     specializerContext.typeParameterContext
                 else EMPTY

@@ -35,7 +35,7 @@ import kotlin.reflect.full.memberProperties
 object CoreDeclarationMap {
 
     private val constructorMap = HashMap<CoreClassDeclaration, CoreConstructorDeclaration>()
-    private val functionMap = HashMap<String, ArrayList<CoreAbstractFunctionDeclaration>>()
+    private val functionMap = HashMap<String, ArrayList<CoreFunctionDeclaration>>()
     private val declarationMap = HashMap<String, CoreDeclaration>()
 
     init {
@@ -69,7 +69,7 @@ object CoreDeclarationMap {
                     when (property) {
                         is CoreConstructorDeclaration ->
                             constructorMap[property.classDeclaration] = property
-                        is CoreAbstractFunctionDeclaration -> {
+                        is CoreFunctionDeclaration -> {
                             if (property.qualifiedName !in functionMap)
                                 functionMap[property.qualifiedName] = ArrayList()
                             functionMap[property.qualifiedName]!!.add(property)
@@ -99,7 +99,7 @@ object CoreDeclarationMap {
         castContext: CastContext,
         descriptor: SimpleFunctionDescriptor,
         element: KtElement
-    ): CoreAbstractFunctionDeclaration? {
+    ): CoreFunctionDeclaration? {
         val qualifiedName = descriptor.fqNameOrNull()?.asString()
             ?: return null
         val functions = functionMap[qualifiedName]
@@ -111,26 +111,29 @@ object CoreDeclarationMap {
         return null
     }
 
+    // TODO general matching for type parameterized functions
     private fun matchFunction(
         castContext: CastContext,
         descriptor: SimpleFunctionDescriptor,
         element: KtElement,
-        function: CoreAbstractFunctionDeclaration
+        function: CoreFunctionDeclaration
     ): Boolean {
         val valueParameters = descriptor.valueParameters
         val parameterClassNames = function.parameterClassNames
         if (valueParameters.size != parameterClassNames.size)
             return false
         valueParameters.zip(parameterClassNames).forEach { (valueParameter, parameterClassName) ->
-            val type = if (valueParameter.isVararg) {
-                castContext.castType(valueParameter.varargElementType!!, element)
-            } else {
-                castContext.castType(valueParameter.type, element)
+            if (parameterClassName != Core.Kt.C_Any.name) {
+                val type = if (valueParameter.isVararg) {
+                    castContext.castType(valueParameter.varargElementType!!, element)
+                } else {
+                    castContext.castType(valueParameter.type, element)
+                }
+                if (type.reference !is CoreClassDeclaration)
+                    return false
+                if (type.reference.name != parameterClassName)
+                    return false
             }
-            if (type.reference !is CoreClassDeclaration)
-                return false
-            if (type.reference.name != parameterClassName)
-                return false
         }
         return true
     }

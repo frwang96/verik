@@ -24,7 +24,6 @@ class CorePackage(
 
     companion object {
 
-        val ROOT = CorePackage("root")
         val KT = CorePackage("kotlin")
         val KT_IO = CorePackage("kotlin.io")
         val KT_COLLECTIONS = CorePackage("kotlin.collections")
@@ -32,6 +31,9 @@ class CorePackage(
         val JV = CorePackage("java")
         val JV_UTIL = CorePackage("java.util")
         val VK = CorePackage("io.verik.core")
-        val SV = CorePackage("systemverilog")
+
+        fun isReserved(name: String): Boolean {
+            return name in listOf("verik", "io.verik.core")
+        }
     }
 }

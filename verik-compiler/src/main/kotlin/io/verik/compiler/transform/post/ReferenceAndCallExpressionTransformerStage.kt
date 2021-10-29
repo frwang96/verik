@@ -16,11 +16,9 @@
 
 package io.verik.compiler.transform.post
 
-import io.verik.compiler.ast.element.common.EBasicPackage
-import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
-import io.verik.compiler.ast.element.sv.ESvBasicClass
+import io.verik.compiler.ast.element.sv.EScopeExpression
 import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.common.ProjectStage
@@ -37,11 +35,6 @@ object ReferenceAndCallExpressionTransformerStage : ProjectStage() {
 
     private object ReferenceAndCallExpressionTransformerVisitor : TreeVisitor() {
 
-        private fun getIsScopeResolution(receiver: EExpression?): Boolean {
-            return receiver is ESvReferenceExpression &&
-                (receiver.reference is EBasicPackage || receiver.reference is ESvBasicClass)
-        }
-
         override fun visitKtReferenceExpression(referenceExpression: EKtReferenceExpression) {
             super.visitKtReferenceExpression(referenceExpression)
             referenceExpression.replace(
@@ -50,7 +43,7 @@ object ReferenceAndCallExpressionTransformerStage : ProjectStage() {
                     referenceExpression.type,
                     referenceExpression.reference,
                     referenceExpression.receiver,
-                    getIsScopeResolution(referenceExpression.receiver)
+                    referenceExpression.receiver is EScopeExpression
                 )
             )
         }
@@ -64,7 +57,7 @@ object ReferenceAndCallExpressionTransformerStage : ProjectStage() {
                     callExpression.reference,
                     callExpression.receiver,
                     callExpression.valueArguments,
-                    getIsScopeResolution(callExpression.receiver)
+                    callExpression.receiver is EScopeExpression
                 )
             )
         }

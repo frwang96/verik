@@ -16,4 +16,23 @@
 
 package io.verik.compiler.target.common
 
-class TargetFunctionDeclaration(override var name: String) : TargetDeclaration
+sealed class TargetFunctionDeclaration : TargetDeclaration
+
+class PrimitiveTargetFunctionDeclaration(
+    override val parent: TargetDeclaration?,
+    override var name: String
+) : TargetFunctionDeclaration()
+
+class CompositeTargetFunctionDeclaration(
+    override val parent: TargetDeclaration?,
+    override var name: String,
+    override val content: String
+) : TargetFunctionDeclaration(), CompositeTarget
+
+class ConstructorTargetFunctionDeclaration(
+    override val parent: TargetDeclaration?,
+    override val content: String
+) : TargetFunctionDeclaration(), CompositeTarget {
+
+    override var name = "_${'$'}new"
+}

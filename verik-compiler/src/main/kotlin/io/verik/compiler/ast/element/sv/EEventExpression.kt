@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.element.common.EAbstractExpressionContainer
+import io.verik.compiler.ast.element.common.EAbstractContainerExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.property.EdgeType
 import io.verik.compiler.ast.property.SerializationType
@@ -28,7 +28,7 @@ class EEventExpression(
     override val location: SourceLocation,
     override var expression: EExpression,
     var edgeType: EdgeType
-) : EAbstractExpressionContainer() {
+) : EAbstractContainerExpression() {
 
     override var type = Target.C_Event.toType()
 

@@ -22,15 +22,13 @@ import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.EAbstractCallExpression
 import io.verik.compiler.ast.element.common.EAbstractClass
 import io.verik.compiler.ast.element.common.EAbstractContainerClass
+import io.verik.compiler.ast.element.common.EAbstractContainerExpression
 import io.verik.compiler.ast.element.common.EAbstractEnumEntry
-import io.verik.compiler.ast.element.common.EAbstractExpressionContainer
 import io.verik.compiler.ast.element.common.EAbstractFunction
 import io.verik.compiler.ast.element.common.EAbstractInitializedProperty
 import io.verik.compiler.ast.element.common.EAbstractPackage
 import io.verik.compiler.ast.element.common.EAbstractProperty
-import io.verik.compiler.ast.element.common.EAbstractReceiverExpression
 import io.verik.compiler.ast.element.common.EAbstractReferenceExpression
-import io.verik.compiler.ast.element.common.EAbstractStringEntryContainer
 import io.verik.compiler.ast.element.common.EAbstractValueParameter
 import io.verik.compiler.ast.element.common.EBasicPackage
 import io.verik.compiler.ast.element.common.EClassifier
@@ -45,8 +43,10 @@ import io.verik.compiler.ast.element.common.ENullExpression
 import io.verik.compiler.ast.element.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.ast.element.common.EPropertyStatement
+import io.verik.compiler.ast.element.common.EReceiverExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ERootPackage
+import io.verik.compiler.ast.element.common.EStringEntryExpression
 import io.verik.compiler.ast.element.common.ESuperExpression
 import io.verik.compiler.ast.element.common.ETemporaryProperty
 import io.verik.compiler.ast.element.common.EThisExpression
@@ -101,6 +101,7 @@ import io.verik.compiler.ast.element.sv.EModulePortInstantiation
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.ERepeatStatement
 import io.verik.compiler.ast.element.sv.EReplicationExpression
+import io.verik.compiler.ast.element.sv.EScopeExpression
 import io.verik.compiler.ast.element.sv.EStreamingExpression
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.EStruct
@@ -360,8 +361,8 @@ abstract class Visitor {
         visitAbstractBlockExpression(blockExpression)
     }
 
-    open fun visitAbstractExpressionContainer(abstractExpressionContainer: EAbstractExpressionContainer) {
-        visitExpression(abstractExpressionContainer)
+    open fun visitAbstractContainerExpression(containerExpression: EAbstractContainerExpression) {
+        visitExpression(containerExpression)
     }
 
     open fun visitPropertyStatement(propertyStatement: EPropertyStatement) {
@@ -369,15 +370,15 @@ abstract class Visitor {
     }
 
     open fun visitParenthesizedExpression(parenthesizedExpression: EParenthesizedExpression) {
-        visitAbstractExpressionContainer(parenthesizedExpression)
+        visitAbstractContainerExpression(parenthesizedExpression)
     }
 
     open fun visitKtUnaryExpression(unaryExpression: EKtUnaryExpression) {
-        visitAbstractExpressionContainer(unaryExpression)
+        visitAbstractContainerExpression(unaryExpression)
     }
 
     open fun visitSvUnaryExpression(unaryExpression: ESvUnaryExpression) {
-        visitAbstractExpressionContainer(unaryExpression)
+        visitAbstractContainerExpression(unaryExpression)
     }
 
     open fun visitAbstractBinaryExpression(binaryExpression: EAbstractBinaryExpression) {
@@ -392,12 +393,12 @@ abstract class Visitor {
         visitAbstractBinaryExpression(binaryExpression)
     }
 
-    open fun visitAbstractReceiverExpression(abstractReceiverExpression: EAbstractReceiverExpression) {
-        visitExpression(abstractReceiverExpression)
+    open fun visitReceiverExpression(receiverExpression: EReceiverExpression) {
+        visitExpression(receiverExpression)
     }
 
     open fun visitAbstractReferenceExpression(abstractReferenceExpression: EAbstractReferenceExpression) {
-        visitAbstractReceiverExpression(abstractReferenceExpression)
+        visitReceiverExpression(abstractReferenceExpression)
     }
 
     open fun visitKtReferenceExpression(referenceExpression: EKtReferenceExpression) {
@@ -409,7 +410,7 @@ abstract class Visitor {
     }
 
     open fun visitAbstractCallExpression(abstractCallExpression: EAbstractCallExpression) {
-        visitAbstractReceiverExpression(abstractCallExpression)
+        visitReceiverExpression(abstractCallExpression)
     }
 
     open fun visitKtCallExpression(callExpression: EKtCallExpression) {
@@ -418,6 +419,10 @@ abstract class Visitor {
 
     open fun visitSvCallExpression(callExpression: ESvCallExpression) {
         visitAbstractCallExpression(callExpression)
+    }
+
+    open fun visitScopeExpression(scopeExpression: EScopeExpression) {
+        visitExpression(scopeExpression)
     }
 
     open fun visitConstantExpression(constantExpression: EConstantExpression) {
@@ -444,16 +449,16 @@ abstract class Visitor {
         visitExpression(functionLiteralExpression)
     }
 
-    open fun visitAbstractStringEntryContainer(abstractStringEntryContainer: EAbstractStringEntryContainer) {
-        visitExpression(abstractStringEntryContainer)
+    open fun visitStringEntryExpression(stringEntryExpression: EStringEntryExpression) {
+        visitExpression(stringEntryExpression)
     }
 
     open fun visitStringTemplateExpression(stringTemplateExpression: EStringTemplateExpression) {
-        visitAbstractStringEntryContainer(stringTemplateExpression)
+        visitStringEntryExpression(stringTemplateExpression)
     }
 
     open fun visitInjectedExpression(injectedExpression: EInjectedExpression) {
-        visitAbstractStringEntryContainer(injectedExpression)
+        visitStringEntryExpression(injectedExpression)
     }
 
     open fun visitStringExpression(stringExpression: EStringExpression) {
@@ -481,15 +486,15 @@ abstract class Visitor {
     }
 
     open fun visitReplicationExpression(replicationExpression: EReplicationExpression) {
-        visitAbstractExpressionContainer(replicationExpression)
+        visitAbstractContainerExpression(replicationExpression)
     }
 
     open fun visitStreamingExpression(streamingExpression: EStreamingExpression) {
-        visitAbstractExpressionContainer(streamingExpression)
+        visitAbstractContainerExpression(streamingExpression)
     }
 
     open fun visitWidthCastExpression(widthCastExpression: EWidthCastExpression) {
-        visitAbstractExpressionContainer(widthCastExpression)
+        visitAbstractContainerExpression(widthCastExpression)
     }
 
     open fun visitIfExpression(ifExpression: EIfExpression) {
@@ -529,14 +534,14 @@ abstract class Visitor {
     }
 
     open fun visitEventExpression(eventExpression: EEventExpression) {
-        visitAbstractExpressionContainer(eventExpression)
+        visitAbstractContainerExpression(eventExpression)
     }
 
     open fun visitEventControlExpression(eventControlExpression: EEventControlExpression) {
-        visitAbstractExpressionContainer(eventControlExpression)
+        visitAbstractContainerExpression(eventControlExpression)
     }
 
     open fun visitDelayExpression(delayExpression: EDelayExpression) {
-        visitAbstractExpressionContainer(delayExpression)
+        visitAbstractContainerExpression(delayExpression)
     }
 }

@@ -33,6 +33,8 @@ object TypeSerializer {
 
     fun serialize(type: Type, element: EElement): SerializedType {
         return when (val reference = type.reference) {
+            is TargetClassDeclaration -> reference.serializeType(type.arguments, element)
+            is EBasicPackage -> SerializedType(reference.name)
             is ETypeDefinition -> SerializedType(reference.name)
             is EAbstractContainerComponent -> SerializedType(reference.name)
             is EModulePort -> {
@@ -45,7 +47,6 @@ object TypeSerializer {
                 }
             }
             is EAbstractClass -> SerializedType(serializePackageDeclaration(reference))
-            is TargetClassDeclaration -> reference.serializeType(type.arguments, element)
             else -> {
                 Messages.INTERNAL_ERROR.on(element, "Unable to serialize type: $type")
                 SerializedType("void")

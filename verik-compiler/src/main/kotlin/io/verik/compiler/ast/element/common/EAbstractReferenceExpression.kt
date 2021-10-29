@@ -16,4 +16,4 @@
 
 package io.verik.compiler.ast.element.common
 
-abstract class EAbstractReferenceExpression : EAbstractReceiverExpression()
+abstract class EAbstractReferenceExpression : EReceiverExpression()

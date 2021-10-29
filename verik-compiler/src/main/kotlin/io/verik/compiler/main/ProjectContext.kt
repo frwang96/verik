@@ -32,5 +32,5 @@ class ProjectContext(
     lateinit var bindingContext: BindingContext
     lateinit var castContext: CastContext
     lateinit var project: EProject
-    val outputTextFiles = ArrayList<TextFile>()
+    val outputContext = OutputContext()
 }

@@ -36,7 +36,7 @@ abstract class BaseTest {
     fun <T : ProjectStage> driveTest(stageClass: KClass<T>, @Language("kotlin") content: String): ProjectContext {
         val config = getConfig()
         val contentWithPackageHeader = """
-            package verik
+            package test
             import io.verik.core.*
             $content
         """.trimIndent()
@@ -147,16 +147,16 @@ abstract class BaseTest {
 
         fun getConfig(): Config {
             val projectDir = if (Platform.isWindows) "C:\\" else "/"
-            val buildDir = if (Platform.isWindows) "C:\\build\\verik" else "/build/verik"
+            val buildDir = if (Platform.isWindows) "C:\\build\\test" else "/build/test"
             val projectFile = if (Platform.isWindows) {
-                "C:\\src\\main\\kotlin\\verik\\Test.kt"
+                "C:\\src\\main\\kotlin\\test\\Test.kt"
             } else {
-                "/src/main/kotlin/verik/Test.kt"
+                "/src/main/kotlin/test/Test.kt"
             }
             return Config(
                 version = "local-SNAPSHOT",
                 timestamp = "",
-                projectName = "verik",
+                projectName = "test",
                 projectDir = Paths.get(projectDir),
                 buildDir = Paths.get(buildDir),
                 projectFiles = listOf(Paths.get(projectFile)),

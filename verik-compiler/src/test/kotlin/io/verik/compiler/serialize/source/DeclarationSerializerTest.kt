@@ -40,7 +40,7 @@ internal class DeclarationSerializerTest : BaseTest() {
         """.trimIndent()
         assertOutputTextEquals(
             expected,
-            projectContext.outputTextFiles.last()
+            projectContext.outputContext.basicPackageSourceTextFiles[0]
         )
     }
 
@@ -59,7 +59,7 @@ internal class DeclarationSerializerTest : BaseTest() {
         """.trimIndent()
         assertOutputTextEquals(
             expected,
-            projectContext.outputTextFiles.last()
+            projectContext.outputContext.rootPackageSourceTextFiles[0]
         )
     }
 
@@ -80,7 +80,7 @@ internal class DeclarationSerializerTest : BaseTest() {
         """.trimIndent()
         assertOutputTextEquals(
             expected,
-            projectContext.outputTextFiles.last()
+            projectContext.outputContext.rootPackageSourceTextFiles[0]
         )
     }
 
@@ -99,7 +99,7 @@ internal class DeclarationSerializerTest : BaseTest() {
         """.trimIndent()
         assertOutputTextEquals(
             expected,
-            projectContext.outputTextFiles.last()
+            projectContext.outputContext.rootPackageSourceTextFiles[0]
         )
     }
 
@@ -114,8 +114,8 @@ internal class DeclarationSerializerTest : BaseTest() {
         val expected = """
             class C;
             
-                static function automatic verik_pkg::C _${'$'}new();
-                    automatic verik_pkg::C _${'$'}0 = new();
+                static function automatic test_pkg::C _${'$'}new();
+                    automatic test_pkg::C _${'$'}0 = new();
                     _${'$'}0._${'$'}init();
                     return _${'$'}0;
                 endfunction : _${'$'}new
@@ -127,7 +127,7 @@ internal class DeclarationSerializerTest : BaseTest() {
         """.trimIndent()
         assertOutputTextEquals(
             expected,
-            projectContext.outputTextFiles.last()
+            projectContext.outputContext.basicPackageSourceTextFiles[0]
         )
     }
 
@@ -147,7 +147,7 @@ internal class DeclarationSerializerTest : BaseTest() {
         """.trimIndent()
         assertOutputTextEquals(
             expected,
-            projectContext.outputTextFiles.last()
+            projectContext.outputContext.basicPackageSourceTextFiles[0]
         )
     }
 
@@ -166,7 +166,7 @@ internal class DeclarationSerializerTest : BaseTest() {
         """.trimIndent()
         assertOutputTextEquals(
             expected,
-            projectContext.outputTextFiles.last()
+            projectContext.outputContext.basicPackageSourceTextFiles[0]
         )
     }
 
@@ -184,7 +184,7 @@ internal class DeclarationSerializerTest : BaseTest() {
         """.trimIndent()
         assertOutputTextEquals(
             expected,
-            projectContext.outputTextFiles.last()
+            projectContext.outputContext.basicPackageSourceTextFiles[0]
         )
     }
 
@@ -203,7 +203,7 @@ internal class DeclarationSerializerTest : BaseTest() {
         """.trimIndent()
         assertOutputTextEquals(
             expected,
-            projectContext.outputTextFiles.last()
+            projectContext.outputContext.basicPackageSourceTextFiles[0]
         )
     }
 
@@ -220,7 +220,7 @@ internal class DeclarationSerializerTest : BaseTest() {
         """.trimIndent()
         assertOutputTextEquals(
             expected,
-            projectContext.outputTextFiles.last()
+            projectContext.outputContext.basicPackageSourceTextFiles[0]
         )
     }
 
@@ -245,7 +245,7 @@ internal class DeclarationSerializerTest : BaseTest() {
         """.trimIndent()
         assertOutputTextEquals(
             expected,
-            projectContext.outputTextFiles.last()
+            projectContext.outputContext.rootPackageSourceTextFiles[0]
         )
     }
 
@@ -270,7 +270,7 @@ internal class DeclarationSerializerTest : BaseTest() {
         """.trimIndent()
         assertOutputTextEquals(
             expected,
-            projectContext.outputTextFiles.last()
+            projectContext.outputContext.rootPackageSourceTextFiles[0]
         )
     }
 
@@ -300,7 +300,7 @@ internal class DeclarationSerializerTest : BaseTest() {
         """.trimIndent()
         assertOutputTextEquals(
             expected,
-            projectContext.outputTextFiles.last()
+            projectContext.outputContext.rootPackageSourceTextFiles[0]
         )
     }
 
@@ -333,7 +333,7 @@ internal class DeclarationSerializerTest : BaseTest() {
         """.trimIndent()
         assertOutputTextEquals(
             expected,
-            projectContext.outputTextFiles.last()
+            projectContext.outputContext.rootPackageSourceTextFiles[0]
         )
     }
 
@@ -363,7 +363,7 @@ internal class DeclarationSerializerTest : BaseTest() {
         """.trimIndent()
         assertOutputTextEquals(
             expected,
-            projectContext.outputTextFiles.last()
+            projectContext.outputContext.rootPackageSourceTextFiles[0]
         )
     }
 
@@ -393,7 +393,7 @@ internal class DeclarationSerializerTest : BaseTest() {
         """.trimIndent()
         assertOutputTextEquals(
             expected,
-            projectContext.outputTextFiles.last()
+            projectContext.outputContext.rootPackageSourceTextFiles[0]
         )
     }
 
@@ -411,7 +411,7 @@ internal class DeclarationSerializerTest : BaseTest() {
         """.trimIndent()
         assertOutputTextEquals(
             expected,
-            projectContext.outputTextFiles.last()
+            projectContext.outputContext.basicPackageSourceTextFiles[0]
         )
     }
 }

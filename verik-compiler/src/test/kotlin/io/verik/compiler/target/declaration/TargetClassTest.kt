@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.serialize.source
+package io.verik.compiler.target.declaration
 
+import io.verik.compiler.serialize.source.SourceSerializerStage
 import io.verik.compiler.util.BaseTest
 import org.junit.jupiter.api.Test
 
-internal class TypeSerializerTest : BaseTest() {
+internal class TargetClassTest : BaseTest() {
 
     @Test
-    fun `type boolean`() {
+    fun `serialize type boolean`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
             """
@@ -34,12 +35,12 @@ internal class TypeSerializerTest : BaseTest() {
         """.trimIndent()
         assertOutputTextEquals(
             expected,
-            projectContext.outputTextFiles.last()
+            projectContext.outputContext.basicPackageSourceTextFiles[0]
         )
     }
 
     @Test
-    fun `type ubit`() {
+    fun `serialize type ubit`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
             """
@@ -51,12 +52,12 @@ internal class TypeSerializerTest : BaseTest() {
         """.trimIndent()
         assertOutputTextEquals(
             expected,
-            projectContext.outputTextFiles.last()
+            projectContext.outputContext.basicPackageSourceTextFiles[0]
         )
     }
 
     @Test
-    fun `type packed boolean`() {
+    fun `serialize type packed boolean`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
             """
@@ -68,12 +69,12 @@ internal class TypeSerializerTest : BaseTest() {
         """.trimIndent()
         assertOutputTextEquals(
             expected,
-            projectContext.outputTextFiles.last()
+            projectContext.outputContext.basicPackageSourceTextFiles[0]
         )
     }
 
     @Test
-    fun `type unpacked boolean`() {
+    fun `serialize type unpacked boolean`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
             """
@@ -85,7 +86,24 @@ internal class TypeSerializerTest : BaseTest() {
         """.trimIndent()
         assertOutputTextEquals(
             expected,
-            projectContext.outputTextFiles.last()
+            projectContext.outputContext.basicPackageSourceTextFiles[0]
+        )
+    }
+
+    @Test
+    fun `serialize type array list`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                var x: ArrayList<Boolean> = nc()
+            """.trimIndent()
+        )
+        val expected = """
+            verik_pkg::ArrayList#(logic) x;
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputContext.basicPackageSourceTextFiles[0]
         )
     }
 }

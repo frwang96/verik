@@ -19,13 +19,18 @@ package io.verik.compiler.core.declaration.kt
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.common.ConstantUtil
+import io.verik.compiler.core.common.BinaryCoreFunctionDeclaration
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.core.common.CoreBinaryFunctionDeclaration
 import io.verik.compiler.core.common.CoreScope
 
 object CoreKtInt : CoreScope(Core.Kt.C_Int) {
 
-    val F_times_Int = object : CoreBinaryFunctionDeclaration(parent, "times", Core.Kt.C_Int) {
+    val F_times_Int = object : BinaryCoreFunctionDeclaration(
+        parent,
+        "times",
+        SvBinaryOperatorKind.MUL,
+        Core.Kt.C_Int
+    ) {
 
         override fun evaluate(callExpression: EKtCallExpression): String? {
             val left = ConstantUtil.getInt(callExpression.receiver!!)
@@ -34,13 +39,14 @@ object CoreKtInt : CoreScope(Core.Kt.C_Int) {
                 (left * right).toString()
             else null
         }
-
-        override fun getOperatorKind(): SvBinaryOperatorKind {
-            return SvBinaryOperatorKind.MUL
-        }
     }
 
-    val F_plus_Int = object : CoreBinaryFunctionDeclaration(parent, "plus", Core.Kt.C_Int) {
+    val F_plus_Int = object : BinaryCoreFunctionDeclaration(
+        parent,
+        "plus",
+        SvBinaryOperatorKind.PLUS,
+        Core.Kt.C_Int
+    ) {
 
         override fun evaluate(callExpression: EKtCallExpression): String? {
             val left = ConstantUtil.getInt(callExpression.receiver!!)
@@ -49,13 +55,14 @@ object CoreKtInt : CoreScope(Core.Kt.C_Int) {
                 (left + right).toString()
             else null
         }
-
-        override fun getOperatorKind(): SvBinaryOperatorKind {
-            return SvBinaryOperatorKind.PLUS
-        }
     }
 
-    val F_minus_Int = object : CoreBinaryFunctionDeclaration(parent, "minus", Core.Kt.C_Int) {
+    val F_minus_Int = object : BinaryCoreFunctionDeclaration(
+        parent,
+        "minus",
+        SvBinaryOperatorKind.MINUS,
+        Core.Kt.C_Int
+    ) {
 
         override fun evaluate(callExpression: EKtCallExpression): String? {
             val left = ConstantUtil.getInt(callExpression.receiver!!)
@@ -64,37 +71,13 @@ object CoreKtInt : CoreScope(Core.Kt.C_Int) {
                 (left - right).toString()
             else null
         }
-
-        override fun getOperatorKind(): SvBinaryOperatorKind {
-            return SvBinaryOperatorKind.MINUS
-        }
     }
 
-    val F_lt_Int = object : CoreBinaryFunctionDeclaration(parent, "lt", Core.Kt.C_Int) {
+    val F_lt_Int = BinaryCoreFunctionDeclaration(parent, "lt", SvBinaryOperatorKind.LT, Core.Kt.C_Int)
 
-        override fun getOperatorKind(): SvBinaryOperatorKind {
-            return SvBinaryOperatorKind.LT
-        }
-    }
+    val F_lteq_Int = BinaryCoreFunctionDeclaration(parent, "lteq", SvBinaryOperatorKind.LTEQ, Core.Kt.C_Int)
 
-    val F_lteq_Int = object : CoreBinaryFunctionDeclaration(parent, "lteq", Core.Kt.C_Int) {
+    val F_gt_Int = BinaryCoreFunctionDeclaration(parent, "gt", SvBinaryOperatorKind.GT, Core.Kt.C_Int)
 
-        override fun getOperatorKind(): SvBinaryOperatorKind {
-            return SvBinaryOperatorKind.LTEQ
-        }
-    }
-
-    val F_gt_Int = object : CoreBinaryFunctionDeclaration(parent, "gt", Core.Kt.C_Int) {
-
-        override fun getOperatorKind(): SvBinaryOperatorKind {
-            return SvBinaryOperatorKind.GT
-        }
-    }
-
-    val F_gteq_Int = object : CoreBinaryFunctionDeclaration(parent, "gteq", Core.Kt.C_Int) {
-
-        override fun getOperatorKind(): SvBinaryOperatorKind {
-            return SvBinaryOperatorKind.GTEQ
-        }
-    }
+    val F_gteq_Int = BinaryCoreFunctionDeclaration(parent, "gteq", SvBinaryOperatorKind.GTEQ, Core.Kt.C_Int)
 }

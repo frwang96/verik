@@ -16,7 +16,10 @@
 
 package io.verik.compiler.target.common
 
+import io.verik.compiler.target.declaration.TargetArrayList
+import io.verik.compiler.target.declaration.TargetClass
 import io.verik.compiler.target.declaration.TargetSystem
+import io.verik.compiler.target.declaration.TargetUnpacked
 
 object Target {
 
@@ -46,5 +49,15 @@ object Target {
     val F_new = TargetSystem.F_new
     val F_wait = TargetSystem.F_wait
     val F_name = TargetSystem.F_name
-    val F_rsort = TargetSystem.F_rsort
+
+    object Unpacked : TargetScope(C_Unpacked) {
+
+        val F_rsort = TargetUnpacked.F_rsort
+    }
+
+    object ArrayList : TargetScope(C_ArrayList) {
+
+        val F_new = TargetArrayList.F_new
+        val F_add = TargetArrayList.F_add
+    }
 }

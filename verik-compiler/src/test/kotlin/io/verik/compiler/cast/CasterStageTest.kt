@@ -25,7 +25,7 @@ internal class CasterStageTest : BaseTest() {
     fun `project empty`() {
         val projectContext = driveTest(CasterStage::class, "")
         assertElementEquals(
-            "Project([BasicPackage(verik, [File([])])], RootPackage(root, []))",
+            "Project([BasicPackage(test, [File([])])], RootPackage(<root>, []))",
             projectContext.project
         )
     }

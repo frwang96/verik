@@ -21,8 +21,9 @@ import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.ast.property.SvUnaryOperatorKind
 import io.verik.compiler.resolve.TypeConstraint
+import io.verik.compiler.target.common.TargetFunctionDeclaration
 
-sealed class CoreAbstractFunctionDeclaration constructor(
+sealed class CoreFunctionDeclaration constructor(
     override var name: String,
     override val qualifiedName: String,
     val parameterClassNames: List<String>
@@ -43,39 +44,36 @@ sealed class CoreAbstractFunctionDeclaration constructor(
     )
 }
 
-class CoreBasicFunctionDeclaration(
+open class BasicCoreFunctionDeclaration(
     parent: String,
     name: String,
+    val targetFunctionDeclaration: TargetFunctionDeclaration?,
     vararg parameterClassDeclarations: CoreClassDeclaration
-) : CoreAbstractFunctionDeclaration(parent, name, *parameterClassDeclarations)
+) : CoreFunctionDeclaration(parent, name, *parameterClassDeclarations)
 
-abstract class CoreTransformableFunctionDeclaration(
+abstract class TransformableCoreFunctionDeclaration(
     parent: String,
     name: String,
     vararg parameterClassDeclarations: CoreClassDeclaration
-) : CoreAbstractFunctionDeclaration(parent, name, *parameterClassDeclarations) {
+) : CoreFunctionDeclaration(parent, name, *parameterClassDeclarations) {
 
     abstract fun transform(callExpression: EKtCallExpression): EExpression
 }
 
-abstract class CoreUnaryFunctionDeclaration(
+open class UnaryCoreFunctionDeclaration(
     parent: String,
     name: String,
-    vararg parameterClassDeclarations: CoreClassDeclaration
-) : CoreAbstractFunctionDeclaration(parent, name, *parameterClassDeclarations) {
+    val kind: SvUnaryOperatorKind
+) : CoreFunctionDeclaration(parent, name)
 
-    abstract fun getOperatorKind(): SvUnaryOperatorKind
-}
-
-abstract class CoreBinaryFunctionDeclaration(
+open class BinaryCoreFunctionDeclaration(
     parent: String,
     name: String,
+    val kind: SvBinaryOperatorKind,
     vararg parameterClassDeclarations: CoreClassDeclaration
-) : CoreAbstractFunctionDeclaration(parent, name, *parameterClassDeclarations) {
+) : CoreFunctionDeclaration(parent, name, *parameterClassDeclarations) {
 
     open fun evaluate(callExpression: EKtCallExpression): String? {
         return null
     }
-
-    abstract fun getOperatorKind(): SvBinaryOperatorKind
 }

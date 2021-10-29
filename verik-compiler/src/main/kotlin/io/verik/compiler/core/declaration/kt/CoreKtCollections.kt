@@ -28,12 +28,12 @@ import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
-import io.verik.compiler.core.common.CoreTransformableFunctionDeclaration
+import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
 import io.verik.compiler.message.Messages
 
 object CoreKtCollections : CoreScope(CorePackage.KT_COLLECTIONS) {
 
-    val F_forEach_Function = object : CoreTransformableFunctionDeclaration(parent, "forEach", Core.Kt.C_Function) {
+    val F_forEach_Function = object : TransformableCoreFunctionDeclaration(parent, "forEach", Core.Kt.C_Function) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             val functionLiteral = callExpression.valueArguments[0]

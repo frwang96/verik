@@ -17,34 +17,22 @@
 package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.ast.interfaces.ExpressionContainer
-import io.verik.compiler.ast.property.ExpressionStringEntry
-import io.verik.compiler.ast.property.StringEntry
+import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.common.Visitor
 
-abstract class EAbstractStringEntryContainer : EExpression(), ExpressionContainer {
+abstract class EReceiverExpression : EExpression(), Reference, ExpressionContainer {
 
-    abstract val entries: List<StringEntry>
-
-    override fun accept(visitor: Visitor) {
-        visitor.visitAbstractStringEntryContainer(this)
-    }
+    abstract var receiver: EExpression?
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        entries.forEach {
-            if (it is ExpressionStringEntry)
-                it.expression.accept(visitor)
-        }
+        receiver?.accept(visitor)
     }
 
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
         newExpression.parent = this
-        entries.forEach {
-            if (it is ExpressionStringEntry && it.expression == oldExpression) {
-                it.expression = newExpression
-                return true
-            }
-        }
-        return false
+        return if (receiver == oldExpression) {
+            receiver = newExpression
+            true
+        } else false
     }
 }

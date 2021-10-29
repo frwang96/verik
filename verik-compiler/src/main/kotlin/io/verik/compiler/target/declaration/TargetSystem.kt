@@ -16,23 +16,24 @@
 
 package io.verik.compiler.target.declaration
 
-import io.verik.compiler.target.common.TargetFunctionDeclaration
+import io.verik.compiler.target.common.PrimitiveTargetFunctionDeclaration
+import io.verik.compiler.target.common.TargetPackage
+import io.verik.compiler.target.common.TargetScope
 
-object TargetSystem {
+object TargetSystem : TargetScope(TargetPackage) {
 
-    val F_display = TargetFunctionDeclaration("\$display")
-    val F_write = TargetFunctionDeclaration("\$write")
-    val F_sformatf = TargetFunctionDeclaration("\$sformatf")
-    val F_random = TargetFunctionDeclaration("\$random")
-    val F_urandom = TargetFunctionDeclaration("\$urandom")
-    val F_urandom_range = TargetFunctionDeclaration("\$urandom_range")
-    val F_unsigned = TargetFunctionDeclaration("\$unsigned")
-    val F_signed = TargetFunctionDeclaration("\$signed")
-    val F_time = TargetFunctionDeclaration("\$time")
-    val F_fatal = TargetFunctionDeclaration("\$fatal")
-    val F_finish = TargetFunctionDeclaration("\$finish")
-    val F_new = TargetFunctionDeclaration("new")
-    val F_wait = TargetFunctionDeclaration("wait")
-    val F_name = TargetFunctionDeclaration("name")
-    val F_rsort = TargetFunctionDeclaration("rsort")
+    val F_display = PrimitiveTargetFunctionDeclaration(parent, "\$display")
+    val F_write = PrimitiveTargetFunctionDeclaration(parent, "\$write")
+    val F_sformatf = PrimitiveTargetFunctionDeclaration(parent, "\$sformatf")
+    val F_random = PrimitiveTargetFunctionDeclaration(parent, "\$random")
+    val F_urandom = PrimitiveTargetFunctionDeclaration(parent, "\$urandom")
+    val F_urandom_range = PrimitiveTargetFunctionDeclaration(parent, "\$urandom_range")
+    val F_unsigned = PrimitiveTargetFunctionDeclaration(parent, "\$unsigned")
+    val F_signed = PrimitiveTargetFunctionDeclaration(parent, "\$signed")
+    val F_time = PrimitiveTargetFunctionDeclaration(parent, "\$time")
+    val F_fatal = PrimitiveTargetFunctionDeclaration(parent, "\$fatal")
+    val F_finish = PrimitiveTargetFunctionDeclaration(parent, "\$finish")
+    val F_new = PrimitiveTargetFunctionDeclaration(parent, "new")
+    val F_wait = PrimitiveTargetFunctionDeclaration(parent, "wait")
+    val F_name = PrimitiveTargetFunctionDeclaration(parent, "name")
 }

@@ -19,7 +19,7 @@ package io.verik.compiler.ast.element.common
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.common.TreeVisitor
 
-abstract class EAbstractExpressionContainer : EExpression(), ExpressionContainer {
+abstract class EAbstractContainerExpression : EExpression(), ExpressionContainer {
 
     abstract var expression: EExpression
 

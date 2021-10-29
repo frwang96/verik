@@ -25,7 +25,7 @@ class EParenthesizedExpression(
     override val location: SourceLocation,
     override var type: Type,
     override var expression: EExpression
-) : EAbstractExpressionContainer() {
+) : EAbstractContainerExpression() {
 
     override val serializationType = SerializationType.EXPRESSION
 

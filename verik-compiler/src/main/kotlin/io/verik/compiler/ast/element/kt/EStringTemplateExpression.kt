@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast.element.kt
 
-import io.verik.compiler.ast.element.common.EAbstractStringEntryContainer
+import io.verik.compiler.ast.element.common.EStringEntryExpression
 import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.ast.property.StringEntry
@@ -27,7 +27,7 @@ import io.verik.compiler.message.SourceLocation
 class EStringTemplateExpression(
     override val location: SourceLocation,
     override val entries: List<StringEntry>
-) : EAbstractStringEntryContainer() {
+) : EStringEntryExpression() {
 
     override val serializationType = SerializationType.INTERNAL
 

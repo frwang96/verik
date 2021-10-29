@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
+@file:Suppress("unused", "MemberVisibilityCanBePrivate")
 
 package io.verik.compiler.core.common
 
+import io.verik.compiler.core.declaration.jv.CoreJvArrayList
 import io.verik.compiler.core.declaration.kt.CoreKt
 import io.verik.compiler.core.declaration.kt.CoreKtBoolean
 import io.verik.compiler.core.declaration.kt.CoreKtCollections
@@ -66,7 +67,6 @@ object Core {
 
         object Io : CoreScope(CorePackage.KT_IO) {
 
-            val F_print = CoreKtIo.F_print
             val F_print_Any = CoreKtIo.F_print_Any
             val F_print_Boolean = CoreKtIo.F_print_Boolean
             val F_print_Int = CoreKtIo.F_print_Int
@@ -95,7 +95,12 @@ object Core {
 
             val C_ArrayList = CoreClass.Jv.Util.C_ArrayList
 
-            val F_ArrayList = CoreConstructorDeclaration(C_ArrayList)
+            val F_ArrayList = CoreClass.Jv.Util.F_ArrayList
+
+            object ArrayList : CoreScope(C_ArrayList) {
+
+                val F_add_Any = CoreJvArrayList.F_add_Any
+            }
         }
     }
 
@@ -114,11 +119,11 @@ object Core {
         val C_Time = CoreClass.Vk.C_Time
         val C_Event = CoreClass.Vk.C_Event
 
-        val F_Struct = CoreConstructorDeclaration(C_Struct)
-        val F_Module = CoreConstructorDeclaration(C_Module)
-        val F_ModuleInterface = CoreConstructorDeclaration(C_ModuleInterface)
-        val F_ModulePort = CoreConstructorDeclaration(C_ModulePort)
-        val F_ClockingBlock = CoreConstructorDeclaration(C_ClockingBlock)
+        val F_Struct = CoreClass.Vk.F_Struct
+        val F_Module = CoreClass.Vk.F_Module
+        val F_ModuleInterface = CoreClass.Vk.F_ModuleInterface
+        val F_ModulePort = CoreClass.Vk.F_ModulePort
+        val F_ClockingBlock = CoreClass.Vk.F_ClockingBlock
 
         val N_ADD = CoreVkCardinal.N_ADD
         val N_SUB = CoreVkCardinal.N_SUB

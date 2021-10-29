@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.element.common.EAbstractExpressionContainer
+import io.verik.compiler.ast.element.common.EAbstractContainerExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.ast.property.Type
@@ -29,7 +29,7 @@ class EReplicationExpression(
     override var type: Type,
     override var expression: EExpression,
     var value: Int
-) : EAbstractExpressionContainer() {
+) : EAbstractContainerExpression() {
 
     init {
         expression.parent = this

@@ -19,8 +19,33 @@ package io.verik.compiler.target.common
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.serialize.source.SerializedType
+import io.verik.compiler.serialize.source.TypeSerializer
 
-abstract class TargetClassDeclaration(override var name: String) : TargetDeclaration {
+sealed class TargetClassDeclaration : TargetDeclaration {
 
     abstract fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType
+}
+
+abstract class PrimitiveTargetClassDeclaration(
+    override val parent: TargetDeclaration?,
+    override var name: String
+) : TargetClassDeclaration()
+
+class CompositeTargetClassDeclaration(
+    override val parent: TargetDeclaration?,
+    override var name: String,
+    val prolog: String,
+    override val content: String,
+    val epilog: String
+) : TargetClassDeclaration(), CompositeTarget {
+
+    override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
+        val base = "${TargetPackage.name}::$name"
+        return if (typeArguments.isNotEmpty()) {
+            val serializedTypeArguments = typeArguments.map { TypeSerializer.serialize(it, element) }
+            serializedTypeArguments.forEach { it.checkNoUnpackedDimension(element) }
+            val serializedTypeArgumentString = serializedTypeArguments.joinToString { it.getBaseAndPackedDimension() }
+            SerializedType("$base#($serializedTypeArgumentString)")
+        } else SerializedType(base)
+    }
 }

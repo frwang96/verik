@@ -18,4 +18,7 @@ package io.verik.compiler.target.common
 
 import io.verik.compiler.ast.interfaces.Declaration
 
-interface TargetDeclaration : Declaration
+interface TargetDeclaration : Declaration {
+
+    val parent: TargetDeclaration?
+}

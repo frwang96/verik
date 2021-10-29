@@ -23,7 +23,7 @@ import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.common.CoreBinaryFunctionDeclaration
+import io.verik.compiler.core.common.BinaryCoreFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 
 object BinaryExpressionTransformerStage : ProjectStage() {
@@ -39,8 +39,8 @@ object BinaryExpressionTransformerStage : ProjectStage() {
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
             val reference = callExpression.reference
-            if (reference is CoreBinaryFunctionDeclaration) {
-                val kind = reference.getOperatorKind()
+            if (reference is BinaryCoreFunctionDeclaration) {
+                val kind = reference.kind
                 callExpression.replace(
                     ESvBinaryExpression(
                         callExpression.location,

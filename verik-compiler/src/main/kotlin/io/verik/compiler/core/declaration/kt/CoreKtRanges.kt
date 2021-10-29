@@ -16,12 +16,12 @@
 
 package io.verik.compiler.core.declaration.kt
 
+import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.core.common.CoreBasicFunctionDeclaration
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
 
 object CoreKtRanges : CoreScope(CorePackage.Kt_RANGES) {
 
-    val F_until_Int = CoreBasicFunctionDeclaration(parent, "until", Core.Kt.C_Int)
+    val F_until_Int = BasicCoreFunctionDeclaration(parent, "until", null, Core.Kt.C_Int)
 }

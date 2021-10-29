@@ -14,44 +14,48 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.target.common
+package io.verik.compiler.target.declaration
 
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.serialize.source.SerializedType
 import io.verik.compiler.serialize.source.TypeSerializer
+import io.verik.compiler.target.common.CompositeTargetClassDeclaration
+import io.verik.compiler.target.common.PrimitiveTargetClassDeclaration
+import io.verik.compiler.target.common.TargetPackage
+import io.verik.compiler.target.common.TargetScope
 
-object TargetClass {
+object TargetClass : TargetScope(TargetPackage) {
 
-    val C_Void = object : TargetClassDeclaration("Void") {
+    val C_Void = object : PrimitiveTargetClassDeclaration(parent, "Void") {
 
         override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
             return SerializedType("void")
         }
     }
 
-    val C_Int = object : TargetClassDeclaration("Int") {
+    val C_Int = object : PrimitiveTargetClassDeclaration(parent, "Int") {
 
         override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
             return SerializedType("int")
         }
     }
 
-    val C_Boolean = object : TargetClassDeclaration("Boolean") {
+    val C_Boolean = object : PrimitiveTargetClassDeclaration(parent, "Boolean") {
 
         override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
             return SerializedType("logic")
         }
     }
 
-    val C_String = object : TargetClassDeclaration("String") {
+    val C_String = object : PrimitiveTargetClassDeclaration(parent, "String") {
 
         override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
             return SerializedType("string")
         }
     }
 
-    val C_Ubit = object : TargetClassDeclaration("Ubit") {
+    val C_Ubit = object : PrimitiveTargetClassDeclaration(parent, "Ubit") {
 
         override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
             val value = typeArguments[0].asCardinalValue(element)
@@ -59,7 +63,7 @@ object TargetClass {
         }
     }
 
-    val C_Sbit = object : TargetClassDeclaration("Sbit") {
+    val C_Sbit = object : PrimitiveTargetClassDeclaration(parent, "Sbit") {
 
         override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
             val value = typeArguments[0].asCardinalValue(element)
@@ -67,7 +71,7 @@ object TargetClass {
         }
     }
 
-    val C_Packed = object : TargetClassDeclaration("Packed") {
+    val C_Packed = object : PrimitiveTargetClassDeclaration(parent, "Packed") {
 
         override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
             val serializedType = TypeSerializer.serialize(typeArguments[1], element)
@@ -78,7 +82,7 @@ object TargetClass {
         }
     }
 
-    val C_Unpacked = object : TargetClassDeclaration("Unpacked") {
+    val C_Unpacked = object : PrimitiveTargetClassDeclaration(parent, "Unpacked") {
 
         override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
             val serializedType = TypeSerializer.serialize(typeArguments[1], element)
@@ -89,28 +93,25 @@ object TargetClass {
         }
     }
 
-    val C_Time = object : TargetClassDeclaration("Time") {
+    val C_Time = object : PrimitiveTargetClassDeclaration(parent, "Time") {
 
         override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
             return SerializedType("time")
         }
     }
 
-    val C_Event = object : TargetClassDeclaration("Event") {
+    val C_Event = object : PrimitiveTargetClassDeclaration(parent, "Event") {
 
         override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
             return SerializedType("event")
         }
     }
 
-    val C_ArrayList = object : TargetClassDeclaration("ArrayList") {
-
-        override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
-            val serializedType = TypeSerializer.serialize(typeArguments[0], element)
-            var unpackedDimension = "[$]"
-            if (serializedType.unpackedDimension != null)
-                unpackedDimension += serializedType.unpackedDimension
-            return SerializedType(serializedType.base, serializedType.packedDimension, unpackedDimension)
-        }
-    }
+    val C_ArrayList = CompositeTargetClassDeclaration(
+        parent,
+        "ArrayList",
+        "class ArrayList #(type E = int);",
+        "E queue [${'$'}];",
+        "endclass : ArrayList"
+    )
 }
