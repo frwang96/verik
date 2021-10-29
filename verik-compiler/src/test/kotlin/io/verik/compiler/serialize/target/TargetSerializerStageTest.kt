@@ -46,4 +46,36 @@ internal class TargetSerializerStageTest : BaseTest() {
             projectContext.outputContext.targetPackageTextFile!!
         )
     }
+
+    @Test
+    fun `target function`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                val a: ArrayList<Boolean> = nc()
+                fun f() {
+                    a.add(false)
+                }
+            """.trimIndent()
+        )
+        val expected = """
+            package verik_pkg;
+            
+                class ArrayList #(type E = int);
+            
+                    E queue [${'$'}];
+            
+                    function automatic add(E e);
+                        queue.push_back(e);
+                    endfunction : add
+            
+                endclass : ArrayList
+            
+            endpackage : verik_pkg
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputContext.targetPackageTextFile!!
+        )
+    }
 }

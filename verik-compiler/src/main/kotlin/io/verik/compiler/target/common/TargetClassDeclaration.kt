@@ -31,7 +31,7 @@ abstract class PrimitiveTargetClassDeclaration(override var name: String) : Targ
 class CompositeTargetClassDeclaration(
     override var name: String,
     val prolog: String,
-    val body: String?,
+    val body: String,
     val epilog: String
 ) : TargetClassDeclaration() {
 

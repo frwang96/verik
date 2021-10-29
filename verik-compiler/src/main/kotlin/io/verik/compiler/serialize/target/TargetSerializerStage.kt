@@ -16,18 +16,16 @@
 
 package io.verik.compiler.serialize.target
 
+import io.verik.compiler.ast.element.common.ETypedElement
+import io.verik.compiler.ast.interfaces.Reference
+import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.ProjectStage
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.target.common.CompositeTargetClassDeclaration
 import io.verik.compiler.target.common.CompositeTargetFunctionDeclaration
-import io.verik.compiler.target.common.Target
-import io.verik.compiler.target.common.TargetClassDeclaration
 import io.verik.compiler.target.common.TargetDeclaration
-import io.verik.compiler.target.common.TargetFunctionDeclaration
 import io.verik.compiler.target.common.TargetPackage
-import io.verik.compiler.target.common.TargetScope
-import kotlin.reflect.KProperty1
-import kotlin.reflect.full.declaredMemberProperties
 
 object TargetSerializerStage : ProjectStage() {
 
@@ -41,54 +39,36 @@ object TargetSerializerStage : ProjectStage() {
         val targetPackageFilePath = projectContext.config.outputSourceDir.resolve(TargetPackage.path)
         val targetSourceBuilder = TargetSourceBuilder(projectContext, targetPackageFilePath)
         targetSourceBuilder.appendLine("package ${TargetPackage.name};")
-        targetSourceBuilder.indent { serializeDeclarations(targetDeclarationSet, targetSourceBuilder) }
+        targetSourceBuilder.indent {
+            val entries = TargetSerializationSequencer.getEntries()
+            entries.forEach {
+                serializeClassDeclaration(
+                    targetSourceBuilder,
+                    targetDeclarationSet,
+                    it.targetClassDeclaration,
+                    it.targetFunctionDeclarations
+                )
+            }
+        }
         targetSourceBuilder.appendLine()
         targetSourceBuilder.appendLine("endpackage : ${TargetPackage.name}")
         projectContext.outputContext.targetPackageTextFile = targetSourceBuilder.toTextFile()
     }
 
-    private fun serializeDeclarations(
-        targetDeclarationSet: Set<TargetDeclaration>,
-        targetSourceBuilder: TargetSourceBuilder
-    ) {
-        Target::class.nestedClasses.forEach { nestedClass ->
-            val targetScope = nestedClass.objectInstance
-            if (targetScope is TargetScope) {
-                val targetFunctionDeclarations = ArrayList<TargetFunctionDeclaration>()
-                targetScope::class.declaredMemberProperties.forEach {
-                    @Suppress("UNCHECKED_CAST")
-                    val targetFunctionDeclaration = (it as KProperty1<Any, *>).get(targetScope)
-                    if (targetFunctionDeclaration is TargetFunctionDeclaration)
-                        targetFunctionDeclarations.add(targetFunctionDeclaration)
-                }
-                serializeClassDeclaration(
-                    targetSourceBuilder,
-                    targetDeclarationSet,
-                    targetScope.declaration,
-                    targetFunctionDeclarations
-                )
-            }
-        }
-    }
-
     private fun serializeClassDeclaration(
         targetSourceBuilder: TargetSourceBuilder,
         targetDeclarationSet: Set<TargetDeclaration>,
-        targetClassDeclaration: TargetClassDeclaration,
-        targetFunctionDeclarations: List<TargetFunctionDeclaration>
+        targetClassDeclaration: CompositeTargetClassDeclaration,
+        targetFunctionDeclarations: List<CompositeTargetFunctionDeclaration>
     ) {
-        if (targetClassDeclaration is CompositeTargetClassDeclaration &&
-            targetClassDeclaration in targetDeclarationSet
-        ) {
+        if (targetClassDeclaration in targetDeclarationSet) {
             targetSourceBuilder.appendLine()
             targetSourceBuilder.appendLine(targetClassDeclaration.prolog)
             targetSourceBuilder.indent {
-                if (targetClassDeclaration.body != null) {
-                    targetSourceBuilder.appendLine()
-                    targetSourceBuilder.appendLine(targetClassDeclaration.body)
-                }
+                targetSourceBuilder.appendLine()
+                targetSourceBuilder.appendLine(targetClassDeclaration.body)
                 targetFunctionDeclarations.forEach {
-                    if (it is CompositeTargetFunctionDeclaration && it in targetDeclarationSet) {
+                    if (it in targetDeclarationSet) {
                         targetSourceBuilder.appendLine()
                         targetSourceBuilder.appendLine(it.content)
                     }
@@ -96,6 +76,28 @@ object TargetSerializerStage : ProjectStage() {
                 targetSourceBuilder.appendLine()
             }
             targetSourceBuilder.appendLine(targetClassDeclaration.epilog)
+        }
+    }
+
+    private class TargetIndexerVisitor : TreeVisitor() {
+
+        val targetDeclarationSet = HashSet<TargetDeclaration>()
+
+        override fun visitTypedElement(typedElement: ETypedElement) {
+            super.visitTypedElement(typedElement)
+            addTargets(typedElement.type)
+            if (typedElement is Reference) {
+                val reference = typedElement.reference
+                if (reference is TargetDeclaration)
+                    targetDeclarationSet.add(reference)
+            }
+        }
+
+        private fun addTargets(type: Type) {
+            type.arguments.forEach { addTargets(it) }
+            val reference = type.reference
+            if (reference is TargetDeclaration)
+                targetDeclarationSet.add(reference)
         }
     }
 }
