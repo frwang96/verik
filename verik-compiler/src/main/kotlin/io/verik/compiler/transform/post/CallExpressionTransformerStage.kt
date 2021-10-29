@@ -17,36 +17,20 @@
 package io.verik.compiler.transform.post
 
 import io.verik.compiler.ast.element.kt.EKtCallExpression
-import io.verik.compiler.ast.element.kt.EKtReferenceExpression
-import io.verik.compiler.ast.element.sv.EScopeExpression
 import io.verik.compiler.ast.element.sv.ESvCallExpression
-import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 
-object ReferenceAndCallExpressionTransformerStage : ProjectStage() {
+object CallExpressionTransformerStage : ProjectStage() {
 
     override val checkNormalization = true
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.project.accept(ReferenceAndCallExpressionTransformerVisitor)
+        projectContext.project.accept(CallExpressionTransformerVisitor)
     }
 
-    private object ReferenceAndCallExpressionTransformerVisitor : TreeVisitor() {
-
-        override fun visitKtReferenceExpression(referenceExpression: EKtReferenceExpression) {
-            super.visitKtReferenceExpression(referenceExpression)
-            referenceExpression.replace(
-                ESvReferenceExpression(
-                    referenceExpression.location,
-                    referenceExpression.type,
-                    referenceExpression.reference,
-                    referenceExpression.receiver,
-                    referenceExpression.receiver is EScopeExpression
-                )
-            )
-        }
+    private object CallExpressionTransformerVisitor : TreeVisitor() {
 
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
@@ -56,8 +40,7 @@ object ReferenceAndCallExpressionTransformerStage : ProjectStage() {
                     callExpression.type,
                     callExpression.reference,
                     callExpression.receiver,
-                    callExpression.valueArguments,
-                    callExpression.receiver is EScopeExpression
+                    callExpression.valueArguments
                 )
             )
         }

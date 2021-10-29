@@ -40,7 +40,7 @@ internal class WhenExpressionCasterTest : BaseTest() {
             """
                 WhenExpression(
                     Unit,
-                    KtReferenceExpression(*),
+                    ReferenceExpression(*),
                     [WhenEntry([ConstantExpression(Int, 0)], *), WhenEntry([], *)]
                 )
             """.trimIndent(),

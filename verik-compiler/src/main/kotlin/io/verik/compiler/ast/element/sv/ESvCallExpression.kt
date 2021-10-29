@@ -29,8 +29,7 @@ class ESvCallExpression(
     override var type: Type,
     override var reference: Declaration,
     override var receiver: EExpression?,
-    override val valueArguments: ArrayList<EExpression>,
-    val isScopeResolution: Boolean
+    override val valueArguments: ArrayList<EExpression>
 ) : EAbstractCallExpression() {
 
     override val serializationType = SerializationType.EXPRESSION

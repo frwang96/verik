@@ -14,30 +14,28 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.kt
+package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.element.common.EAbstractReferenceExpression
-import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
-class EKtReferenceExpression(
+class EReferenceExpression(
     override val location: SourceLocation,
     override var type: Type,
     override var reference: Declaration,
     override var receiver: EExpression?
-) : EAbstractReferenceExpression() {
+) : EReceiverExpression() {
 
-    override val serializationType = SerializationType.INTERNAL
+    override val serializationType = SerializationType.EXPRESSION
 
     init {
         receiver?.parent = this
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitKtReferenceExpression(this)
+        visitor.visitReferenceExpression(this)
     }
 }

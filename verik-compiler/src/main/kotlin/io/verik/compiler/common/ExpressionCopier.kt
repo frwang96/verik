@@ -18,15 +18,15 @@ package io.verik.compiler.common
 
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
-import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.message.Messages
 
 object ExpressionCopier {
 
     fun <E : EExpression> copy(expression: E): E {
         val copiedExpression = when (expression) {
-            is EKtReferenceExpression -> copyKtReferenceExpression(expression)
+            is EReferenceExpression -> copyReferenceExpression(expression)
             is EKtCallExpression -> copyKtCallExpression(expression)
             is EConstantExpression -> copyConstantExpression(expression)
             else -> {
@@ -38,10 +38,10 @@ object ExpressionCopier {
         return copiedExpression as E
     }
 
-    private fun copyKtReferenceExpression(referenceExpression: EKtReferenceExpression): EKtReferenceExpression {
+    private fun copyReferenceExpression(referenceExpression: EReferenceExpression): EReferenceExpression {
         val type = referenceExpression.type.copy()
         val receiver = referenceExpression.receiver?.let { copy(it) }
-        return EKtReferenceExpression(referenceExpression.location, type, referenceExpression.reference, receiver)
+        return EReferenceExpression(referenceExpression.location, type, referenceExpression.reference, receiver)
     }
 
     private fun copyKtCallExpression(callExpression: EKtCallExpression): EKtCallExpression {

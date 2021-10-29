@@ -18,6 +18,7 @@ package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.kt.EKtBasicClass
@@ -25,7 +26,6 @@ import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
-import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.property.Type
@@ -54,7 +54,7 @@ class DeclarationSpecializeIndexerVisitor(
     override fun visitTypedElement(typedElement: ETypedElement) {
         super.visitTypedElement(typedElement)
         addType(typedElement.type, typedElement)
-        if (typedElement is EKtReferenceExpression) {
+        if (typedElement is EReferenceExpression) {
             val reference = typedElement.reference
             if (reference is EDeclaration && reference.isSpecializable()) {
                 val typeParameterContext = TypeParameterContext.getFromReceiver(typedElement, specializerContext)

@@ -37,8 +37,8 @@ internal class AssignmentOperatorReducerStageTest : BaseTest() {
             """
                 KtBinaryExpression(
                     Unit,
-                    KtReferenceExpression(*),
-                    KtBinaryExpression(Int, KtReferenceExpression(*), ConstantExpression(*), PLUS),
+                    ReferenceExpression(*),
+                    KtBinaryExpression(Int, ReferenceExpression(*), ConstantExpression(*), PLUS),
                     EQ
                 )
             """.trimIndent(),

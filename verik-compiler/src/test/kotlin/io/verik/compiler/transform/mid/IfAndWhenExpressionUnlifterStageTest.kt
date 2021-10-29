@@ -42,14 +42,14 @@ internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
                     PropertyStatement(Unit, TemporaryProperty(Int, null)),
                     IfExpression(
                         Unit,
-                        KtReferenceExpression(*),
+                        ReferenceExpression(*),
                         KtBlockExpression(Int, [
                             KtCallExpression(*),
-                            KtBinaryExpression(Unit, KtReferenceExpression(Int, <tmp>, null), ConstantExpression(*), EQ)
+                            KtBinaryExpression(Unit, ReferenceExpression(Int, <tmp>, null), ConstantExpression(*), EQ)
                         ]),
-                        KtBinaryExpression(Unit, KtReferenceExpression(Int, <tmp>, null), ConstantExpression(*), EQ)
+                        KtBinaryExpression(Unit, ReferenceExpression(Int, <tmp>, null), ConstantExpression(*), EQ)
                     ),
-                    PropertyStatement(Unit, SvProperty(y, Int, KtReferenceExpression(Int, <tmp>, null), false))
+                    PropertyStatement(Unit, SvProperty(y, Int, ReferenceExpression(Int, <tmp>, null), false))
                 ]
             """.trimIndent(),
             projectContext.findStatements("f")
@@ -75,10 +75,10 @@ internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
                     PropertyStatement(Unit, TemporaryProperty(Int, null)),
                     WhenExpression(
                         Unit,
-                        KtReferenceExpression(*),
-                        [WhenEntry([], KtBinaryExpression(Unit, KtReferenceExpression(Int, <tmp>, null), *, EQ))]
+                        ReferenceExpression(*),
+                        [WhenEntry([], KtBinaryExpression(Unit, ReferenceExpression(Int, <tmp>, null), *, EQ))]
                     ),
-                    PropertyStatement(Unit, SvProperty(y, Int, KtReferenceExpression(Int, <tmp>, null), false))
+                    PropertyStatement(Unit, SvProperty(y, Int, ReferenceExpression(Int, <tmp>, null), false))
                 ]
             """.trimIndent(),
             projectContext.findStatements("f")

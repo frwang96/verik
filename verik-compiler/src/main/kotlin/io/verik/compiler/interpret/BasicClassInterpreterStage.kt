@@ -18,6 +18,7 @@ package io.verik.compiler.interpret
 
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EPropertyStatement
+import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ESuperExpression
 import io.verik.compiler.ast.element.common.ETemporaryProperty
@@ -25,12 +26,10 @@ import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtConstructor
-import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
 import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.ast.element.sv.ESvFunction
-import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.property.FunctionQualifierType
 import io.verik.compiler.common.ProjectStage
@@ -176,8 +175,7 @@ object BasicClassInterpreterStage : ProjectStage() {
                     constructor.type.copy(),
                     Target.F_new,
                     null,
-                    arrayListOf(),
-                    false
+                    arrayListOf()
                 )
             )
             val valueParameters = constructor.valueParameters.map {
@@ -186,25 +184,24 @@ object BasicClassInterpreterStage : ProjectStage() {
 
             val propertyStatement = EPropertyStatement(constructor.location, temporaryProperty)
             val valueArguments = valueParameters.map {
-                EKtReferenceExpression(it.location, it.type.copy(), it, null)
+                EReferenceExpression(it.location, it.type.copy(), it, null)
             }
             val callExpression = EKtCallExpression(
                 constructor.location,
                 Core.Kt.C_Unit.toType(),
                 initializer,
-                EKtReferenceExpression(constructor.location, constructor.type.copy(), temporaryProperty, null),
+                EReferenceExpression(constructor.location, constructor.type.copy(), temporaryProperty, null),
                 ArrayList(valueArguments),
                 arrayListOf()
             )
             val returnStatement = EReturnStatement(
                 constructor.location,
                 Core.Kt.C_Nothing.toType(),
-                ESvReferenceExpression(
+                EReferenceExpression(
                     constructor.location,
                     constructor.type.copy(),
                     temporaryProperty,
-                    null,
-                    false
+                    null
                 )
             )
             val statements = arrayListOf(propertyStatement, callExpression, returnStatement)

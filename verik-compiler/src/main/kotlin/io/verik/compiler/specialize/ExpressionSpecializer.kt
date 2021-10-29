@@ -21,6 +21,7 @@ import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EPropertyStatement
+import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ESuperExpression
 import io.verik.compiler.ast.element.common.EThisExpression
@@ -30,7 +31,6 @@ import io.verik.compiler.ast.element.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
-import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.kt.EWhenExpression
@@ -47,7 +47,7 @@ object ExpressionSpecializer {
             is EPropertyStatement -> specializePropertyStatement(expression, specializerContext)
             is EKtUnaryExpression -> specializeKtUnaryExpression(expression, specializerContext)
             is EKtBinaryExpression -> specializeKtBinaryExpression(expression, specializerContext)
-            is EKtReferenceExpression -> specializeKtReferenceExpression(expression, specializerContext)
+            is EReferenceExpression -> specializeReferenceExpression(expression, specializerContext)
             is EKtCallExpression -> specializeKtCallExpression(expression, specializerContext)
             is EConstantExpression -> specializeConstantExpression(expression, specializerContext)
             is EThisExpression -> specializeThisExpression(expression, specializerContext)
@@ -103,10 +103,10 @@ object ExpressionSpecializer {
         return EKtBinaryExpression(binaryExpression.location, type, left, right, binaryExpression.kind)
     }
 
-    private fun specializeKtReferenceExpression(
-        referenceExpression: EKtReferenceExpression,
+    private fun specializeReferenceExpression(
+        referenceExpression: EReferenceExpression,
         specializerContext: SpecializerContext
-    ): EKtReferenceExpression {
+    ): EReferenceExpression {
         val type = specializerContext.specializeType(referenceExpression)
         val receiver = referenceExpression.receiver?.let { specializerContext.specialize(it) }
 
@@ -114,9 +114,9 @@ object ExpressionSpecializer {
         return if (reference is EDeclaration) {
             val typeParameterContext = TypeParameterContext.getFromReceiver(referenceExpression, specializerContext)
             val forwardedReference = specializerContext[reference, typeParameterContext, referenceExpression]
-            EKtReferenceExpression(referenceExpression.location, type, forwardedReference, receiver)
+            EReferenceExpression(referenceExpression.location, type, forwardedReference, receiver)
         } else {
-            EKtReferenceExpression(referenceExpression.location, type, reference, receiver)
+            EReferenceExpression(referenceExpression.location, type, reference, receiver)
         }
     }
 

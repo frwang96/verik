@@ -17,8 +17,8 @@
 package io.verik.compiler.transform.mid
 
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
-import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EStringExpression
@@ -42,7 +42,7 @@ object EnumNameTransformerStage : ProjectStage() {
 
         private fun transform(expression: EExpression) {
             if (expression.type.reference is EEnum) {
-                if (expression is EKtReferenceExpression && expression.reference is ESvEnumEntry) {
+                if (expression is EReferenceExpression && expression.reference is ESvEnumEntry) {
                     val stringExpression = EStringExpression(
                         expression.location,
                         expression.reference.name

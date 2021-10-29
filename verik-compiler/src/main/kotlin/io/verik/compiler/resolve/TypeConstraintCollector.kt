@@ -19,6 +19,7 @@ package io.verik.compiler.resolve
 import io.verik.compiler.ast.element.common.EAbstractProperty
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
+import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.common.ETypedElement
@@ -28,7 +29,6 @@ import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
-import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.KtUnaryOperatorKind
@@ -101,8 +101,8 @@ object TypeConstraintCollector {
                 collectTypeEquals(binaryExpression.right, binaryExpression.left)
         }
 
-        override fun visitKtReferenceExpression(referenceExpression: EKtReferenceExpression) {
-            super.visitKtReferenceExpression(referenceExpression)
+        override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
+            super.visitReferenceExpression(referenceExpression)
             when (val reference = referenceExpression.reference) {
                 is EExpression -> collectTypeEquals(referenceExpression, reference)
                 is EAbstractProperty -> collectTypeEquals(referenceExpression, reference)

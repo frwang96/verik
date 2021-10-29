@@ -34,7 +34,7 @@ internal class AssignmentTransformerStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SvBinaryExpression(Unit, KtReferenceExpression(*), ConstantExpression(*), ASSIGN)",
+            "SvBinaryExpression(Unit, ReferenceExpression(*), ConstantExpression(*), ASSIGN)",
             projectContext.findExpression("f")
         )
     }
@@ -56,7 +56,7 @@ internal class AssignmentTransformerStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SvBinaryExpression(Unit, KtReferenceExpression(*), ConstantExpression(*), ARROW_ASSIGN)",
+            "SvBinaryExpression(Unit, ReferenceExpression(*), ConstantExpression(*), ARROW_ASSIGN)",
             projectContext.findExpression("f")
         )
     }
@@ -79,7 +79,7 @@ internal class AssignmentTransformerStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SvBinaryExpression(Unit, KtReferenceExpression(*), ConstantExpression(*), ARROW_ASSIGN)",
+            "SvBinaryExpression(Unit, ReferenceExpression(*), ConstantExpression(*), ARROW_ASSIGN)",
             projectContext.findExpression("f")
         )
     }

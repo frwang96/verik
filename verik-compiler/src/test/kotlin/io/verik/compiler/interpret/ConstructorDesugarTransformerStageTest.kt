@@ -88,8 +88,8 @@ internal class ConstructorDesugarTransformerStageTest : BaseTest() {
             """
                 [KtBinaryExpression(
                     Unit,
-                    KtReferenceExpression(Int, x, ThisExpression(C)),
-                    KtReferenceExpression(Int, x, null),
+                    ReferenceExpression(Int, x, ThisExpression(C)),
+                    ReferenceExpression(Int, x, null),
                     EQ
                 )]
             """.trimIndent(),

@@ -32,7 +32,7 @@ internal class InlineIfExpressionTransformerStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "InlineIfExpression(Int, KtReferenceExpression(*), ConstantExpression(*), ConstantExpression(*))",
+            "InlineIfExpression(Int, ReferenceExpression(*), ConstantExpression(*), ConstantExpression(*))",
             projectContext.findExpression("y")
         )
     }
@@ -47,7 +47,7 @@ internal class InlineIfExpressionTransformerStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "InlineIfExpression(Int, KtReferenceExpression(*), ConstantExpression(*), ConstantExpression(*))",
+            "InlineIfExpression(Int, ReferenceExpression(*), ConstantExpression(*), ConstantExpression(*))",
             projectContext.findExpression("y")
         )
     }

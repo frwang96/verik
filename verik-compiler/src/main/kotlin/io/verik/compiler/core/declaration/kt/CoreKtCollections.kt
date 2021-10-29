@@ -17,9 +17,9 @@
 package io.verik.compiler.core.declaration.kt
 
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
-import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.sv.EForStatement
 import io.verik.compiler.ast.element.sv.ESvValueParameter
@@ -42,7 +42,7 @@ object CoreKtCollections : CoreScope(CorePackage.KT_COLLECTIONS) {
             val functionLiteralValueParameter = functionLiteral.valueParameters[0]
                 .cast<ESvValueParameter>()
                 ?: return callExpression
-            val functionLiteralValueParameterReferenceExpression = EKtReferenceExpression(
+            val functionLiteralValueParameterReferenceExpression = EReferenceExpression(
                 functionLiteralValueParameter.location,
                 functionLiteralValueParameter.type.copy(),
                 functionLiteralValueParameter,

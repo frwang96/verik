@@ -51,7 +51,7 @@ internal class StringTemplateExpressionReducerStageTest : BaseTest() {
                     String,
                     ${"$"}sformatf,
                     null,
-                    [StringExpression(String, %0d), KtReferenceExpression(Int, x, null)],
+                    [StringExpression(String, %0d), ReferenceExpression(Int, x, null)],
                     []
                 )
             """.trimIndent(),

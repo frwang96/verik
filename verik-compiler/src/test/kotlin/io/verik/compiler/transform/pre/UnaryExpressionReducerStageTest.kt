@@ -32,7 +32,7 @@ internal class UnaryExpressionReducerStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Boolean, not, KtReferenceExpression(*), [], [])",
+            "KtCallExpression(Boolean, not, ReferenceExpression(*), [], [])",
             projectContext.findExpression("y")
         )
     }

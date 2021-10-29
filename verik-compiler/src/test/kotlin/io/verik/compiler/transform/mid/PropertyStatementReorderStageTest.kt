@@ -38,7 +38,7 @@ internal class PropertyStatementReorderStageTest : BaseTest() {
                 [
                     PropertyStatement(Unit, SvProperty(x, Boolean, null, false)),
                     KtCallExpression(*),
-                    SvBinaryExpression(Unit, KtReferenceExpression(Boolean, x, null), ConstantExpression(*), ASSIGN)
+                    SvBinaryExpression(Unit, ReferenceExpression(Boolean, x, null), ConstantExpression(*), ASSIGN)
                 ]
             """.trimIndent(),
             projectContext.findStatements("f")
