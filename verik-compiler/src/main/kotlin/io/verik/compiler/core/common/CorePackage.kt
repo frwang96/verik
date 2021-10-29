@@ -20,6 +20,10 @@ class CorePackage(
     override var name: String
 ) : CoreDeclaration {
 
+    override val parent: CoreDeclaration? = null
+
+    override val signature: String? = null
+
     override val qualifiedName = name
 
     companion object {

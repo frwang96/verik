@@ -27,12 +27,12 @@ sealed class TargetClassDeclaration : TargetDeclaration {
 }
 
 abstract class PrimitiveTargetClassDeclaration(
-    override val parent: TargetDeclaration?,
+    override val parent: TargetDeclaration,
     override var name: String
 ) : TargetClassDeclaration()
 
 class CompositeTargetClassDeclaration(
-    override val parent: TargetDeclaration?,
+    override val parent: TargetDeclaration,
     override var name: String,
     val prolog: String,
     override val content: String,

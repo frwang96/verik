@@ -24,35 +24,39 @@ import io.verik.compiler.resolve.TypeConstraint
 import io.verik.compiler.target.common.TargetFunctionDeclaration
 
 sealed class CoreFunctionDeclaration constructor(
+    override val parent: CoreDeclaration,
     override var name: String,
     override val qualifiedName: String,
     val parameterClassNames: List<String>
 ) : CoreDeclaration {
+
+    override val signature: String? = null
 
     open fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
         return listOf()
     }
 
     constructor(
-        parent: String,
+        parent: CoreDeclaration,
         name: String,
         vararg parameterClassDeclarations: CoreClassDeclaration
     ) : this(
+        parent,
         name,
-        "$parent.$name",
+        "${parent.qualifiedName}.$name",
         parameterClassDeclarations.map { it.name }
     )
 }
 
 open class BasicCoreFunctionDeclaration(
-    parent: String,
+    parent: CoreDeclaration,
     name: String,
     val targetFunctionDeclaration: TargetFunctionDeclaration?,
     vararg parameterClassDeclarations: CoreClassDeclaration
 ) : CoreFunctionDeclaration(parent, name, *parameterClassDeclarations)
 
 abstract class TransformableCoreFunctionDeclaration(
-    parent: String,
+    parent: CoreDeclaration,
     name: String,
     vararg parameterClassDeclarations: CoreClassDeclaration
 ) : CoreFunctionDeclaration(parent, name, *parameterClassDeclarations) {
@@ -61,13 +65,13 @@ abstract class TransformableCoreFunctionDeclaration(
 }
 
 open class UnaryCoreFunctionDeclaration(
-    parent: String,
+    parent: CoreDeclaration,
     name: String,
     val kind: SvUnaryOperatorKind
 ) : CoreFunctionDeclaration(parent, name)
 
 open class BinaryCoreFunctionDeclaration(
-    parent: String,
+    parent: CoreDeclaration,
     name: String,
     val kind: SvBinaryOperatorKind,
     vararg parameterClassDeclarations: CoreClassDeclaration

@@ -29,8 +29,8 @@ import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameOrNull
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.createType
+import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.isSubtypeOf
-import kotlin.reflect.full.memberProperties
 
 object CoreDeclarationMap {
 
@@ -57,11 +57,11 @@ object CoreDeclarationMap {
     private fun addCoreDeclarations(kClass: KClass<*>) {
         val kClassInstance = kClass.objectInstance
         if (kClassInstance is CoreScope) {
-            kClass.memberProperties.forEach {
+            kClass.declaredMemberProperties.forEach {
                 if (it.returnType.isSubtypeOf(CoreDeclaration::class.createType())) {
                     @Suppress("UNCHECKED_CAST")
                     val property = (it as KProperty1<Any, *>).get(kClassInstance) as CoreDeclaration
-                    val expectedQualifiedName = "${kClassInstance.parent}.${property.name}"
+                    val expectedQualifiedName = "${kClassInstance.parent.qualifiedName}.${property.name}"
                     if (property.qualifiedName != expectedQualifiedName && property.qualifiedName != "<init>") {
                         val expectedString = "Expected $expectedQualifiedName actual ${property.qualifiedName}"
                         throw IllegalArgumentException("Qualified name does not match scope parent: $expectedString")

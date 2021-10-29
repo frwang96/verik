@@ -19,10 +19,14 @@ package io.verik.compiler.core.common
 import io.verik.compiler.target.common.TargetFunctionDeclaration
 
 class CoreConstructorDeclaration(
+    override val parent: CoreDeclaration,
     val classDeclaration: CoreClassDeclaration,
     val targetFunctionDeclaration: TargetFunctionDeclaration?
 ) : CoreDeclaration {
 
     override var name = "<init>"
+
+    override val signature: String? = null
+
     override val qualifiedName = name
 }

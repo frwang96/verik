@@ -20,5 +20,9 @@ import io.verik.compiler.ast.interfaces.Declaration
 
 interface CoreDeclaration : Declaration {
 
+    val parent: CoreDeclaration?
+
+    val signature: String?
+
     val qualifiedName: String
 }
