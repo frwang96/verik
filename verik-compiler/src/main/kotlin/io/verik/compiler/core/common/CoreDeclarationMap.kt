@@ -30,12 +30,8 @@ object CoreDeclarationMap {
 
     init {
         addCoreDeclarations(Core::class)
-        qualifiedSignatureMap[
-            QualifiedSignature("${CorePackage.VK.name}.Cardinal", "class Cardinal")
-        ] = Cardinal.UNRESOLVED
-        qualifiedSignatureMap[
-            QualifiedSignature("${CorePackage.VK.name}.*", "typealias *")
-        ] = Cardinal.UNRESOLVED
+        add(QualifiedSignature("${CorePackage.VK.name}.Cardinal", "class Cardinal"), Cardinal.UNRESOLVED)
+        add(QualifiedSignature("${CorePackage.VK.name}.*", "typealias *"), Cardinal.UNRESOLVED)
     }
 
     private fun addCoreDeclarations(kClass: KClass<*>) {
@@ -44,11 +40,16 @@ object CoreDeclarationMap {
             @Suppress("UNCHECKED_CAST")
             val coreDeclaration = (it as KProperty1<Any, *>).get(kClassInstance) as CoreDeclaration
             val qualifiedSignature = coreDeclaration.getQualifiedSignature()
-            if (qualifiedSignature != null) {
-                qualifiedSignatureMap[qualifiedSignature] = coreDeclaration
-            }
+            if (qualifiedSignature != null)
+                add(qualifiedSignature, coreDeclaration)
         }
         kClass.nestedClasses.forEach { addCoreDeclarations(it) }
+    }
+
+    private fun add(qualifiedSignature: QualifiedSignature, declaration: Declaration) {
+        if (qualifiedSignature in qualifiedSignatureMap)
+            throw IllegalArgumentException("Repeated declaration signature: ${qualifiedSignature.signature}")
+        qualifiedSignatureMap[qualifiedSignature] = declaration
     }
 
     operator fun get(declarationDescriptor: DeclarationDescriptor): Declaration? {

@@ -63,7 +63,7 @@ object ArrayAccessExpressionReducerStage : ProjectStage() {
                 Core.Vk.C_Unpacked,
                 listOf(Core.Kt.C_Int),
                 Core.Kt.C_Any.toType(),
-                Core.Vk.Unpacked.F_set_Int_Any
+                Core.Vk.Unpacked.F_set_Int_E
             )
         )
         setReducerEntries.add(
@@ -71,7 +71,7 @@ object ArrayAccessExpressionReducerStage : ProjectStage() {
                 Core.Vk.C_Unpacked,
                 listOf(Core.Vk.C_Ubit),
                 Core.Kt.C_Any.toType(),
-                Core.Vk.Unpacked.F_set_Ubit_Any
+                Core.Vk.Unpacked.F_set_Ubit_E
             )
         )
     }

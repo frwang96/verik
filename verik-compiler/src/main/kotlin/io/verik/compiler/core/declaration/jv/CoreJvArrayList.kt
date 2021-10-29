@@ -23,5 +23,5 @@ import io.verik.compiler.target.common.Target
 
 object CoreJvArrayList : CoreScope(Core.Jv.Util.C_ArrayList) {
 
-    val F_add_Any = BasicCoreFunctionDeclaration(parent, "add", Target.ArrayList.F_add, Core.Kt.C_Any)
+    val F_add_E = BasicCoreFunctionDeclaration(parent, "add", "fun add(E)", Target.ArrayList.F_add)
 }

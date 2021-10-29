@@ -48,7 +48,7 @@ import io.verik.compiler.target.common.Target
 
 object CoreVk : CoreScope(CorePackage.VK) {
 
-    val F_nc = object : TransformableCoreFunctionDeclaration(parent, "nc") {
+    val F_nc = object : TransformableCoreFunctionDeclaration(parent, "nc", "fun nc()") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -65,7 +65,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_i = object : TransformableCoreFunctionDeclaration(parent, "i") {
+    val F_i = object : TransformableCoreFunctionDeclaration(parent, "i", "fun i()") {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
@@ -77,7 +77,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_u = object : TransformableCoreFunctionDeclaration(parent, "u") {
+    val F_u = object : TransformableCoreFunctionDeclaration(parent, "u", "fun u()") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -102,11 +102,11 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_u_Int = BasicCoreFunctionDeclaration(parent, "u", null, Core.Kt.C_Int)
+    val F_u_Int = BasicCoreFunctionDeclaration(parent, "u", "fun u(Int)", null)
 
-    val F_u_String = BasicCoreFunctionDeclaration(parent, "u", null, Core.Kt.C_String)
+    val F_u_String = BasicCoreFunctionDeclaration(parent, "u", "fun u(String)", null)
 
-    val F_u_Sbit = object : TransformableCoreFunctionDeclaration(parent, "u", Core.Vk.C_Sbit) {
+    val F_u_Sbit = object : TransformableCoreFunctionDeclaration(parent, "u", "fun u(Sbit)") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -122,7 +122,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_u0 = object : TransformableCoreFunctionDeclaration(parent, "u0") {
+    val F_u0 = object : TransformableCoreFunctionDeclaration(parent, "u0", "fun u0()") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -144,7 +144,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_s_Ubit = object : TransformableCoreFunctionDeclaration(parent, "s", Core.Vk.C_Ubit) {
+    val F_s_Ubit = object : TransformableCoreFunctionDeclaration(parent, "s", "fun s(Ubit)") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -160,7 +160,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_cat = object : TransformableCoreFunctionDeclaration(parent, "cat", Core.Kt.C_Any) {
+    val F_cat_Any = object : TransformableCoreFunctionDeclaration(parent, "cat", "fun cat(vararg Any)") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(ConcatenationTypeConstraint(callExpression))
@@ -173,7 +173,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_rep = object : TransformableCoreFunctionDeclaration(parent, "rep", Core.Kt.C_Any) {
+    val F_rep_Any = object : TransformableCoreFunctionDeclaration(parent, "rep", "fun rep(Any)") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(ReplicationTypeConstraint(callExpression))
@@ -189,21 +189,30 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_random = BasicCoreFunctionDeclaration(parent, "random", Target.F_random)
+    val F_random = BasicCoreFunctionDeclaration(parent, "random", "fun random()", Target.F_random)
 
-    val F_random_Int = BasicCoreFunctionDeclaration(parent, "random", Target.F_urandom_range, Core.Kt.C_Int)
+    val F_random_Int = BasicCoreFunctionDeclaration(parent, "random", "fun random(Int)", Target.F_urandom_range)
 
     val F_random_Int_Int = BasicCoreFunctionDeclaration(
         parent,
         "random",
-        Target.F_urandom_range,
-        Core.Kt.C_Int,
-        Core.Kt.C_Int
+        null,
+        Target.F_urandom_range
     )
 
-    val F_randomBoolean = BasicCoreFunctionDeclaration(parent, "randomBoolean", Target.F_urandom)
+    val F_randomBoolean = BasicCoreFunctionDeclaration(
+        parent,
+        "randomBoolean",
+        "fun randomBoolean()",
+        Target.F_urandom
+    )
 
-    val F_randomUbit = object : BasicCoreFunctionDeclaration(parent, "randomUbit", Target.F_urandom) {
+    val F_randomUbit = object : BasicCoreFunctionDeclaration(
+        parent,
+        "randomUbit",
+        "fun randomUbit()",
+        Target.F_urandom
+    ) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -215,7 +224,11 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_forever_Function = object : TransformableCoreFunctionDeclaration(parent, "forever", Core.Kt.C_Function) {
+    val F_forever_Function = object : TransformableCoreFunctionDeclaration(
+        parent,
+        "forever",
+        "fun forever(Function)"
+    ) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             val functionLiteralExpression = callExpression
@@ -233,8 +246,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
     val F_on_Event_Function = object : TransformableCoreFunctionDeclaration(
         parent,
         "on",
-        Core.Vk.C_Event,
-        Core.Kt.C_Function
+        "fun on(Event, Function)"
     ) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
@@ -243,7 +255,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_posedge_Boolean = object : TransformableCoreFunctionDeclaration(parent, "posedge", Core.Kt.C_Boolean) {
+    val F_posedge_Boolean = object : TransformableCoreFunctionDeclaration(parent, "posedge", "fun posedge(Boolean)") {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             return EEventExpression(
@@ -254,7 +266,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_negedge_Boolean = object : TransformableCoreFunctionDeclaration(parent, "negedge", Core.Kt.C_Boolean) {
+    val F_negedge_Boolean = object : TransformableCoreFunctionDeclaration(parent, "negedge", "fun negedge(Boolean)") {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             return EEventExpression(
@@ -265,9 +277,9 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_wait_Boolean = BasicCoreFunctionDeclaration(parent, "wait", Target.F_wait, Core.Kt.C_Boolean)
+    val F_wait_Boolean = BasicCoreFunctionDeclaration(parent, "wait", "fun wait(Boolean)", Target.F_wait)
 
-    val F_wait_Event = object : TransformableCoreFunctionDeclaration(parent, "wait", Core.Vk.C_Event) {
+    val F_wait_Event = object : TransformableCoreFunctionDeclaration(parent, "wait", "fun wait(Event)") {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             return EEventControlExpression(callExpression.location, callExpression.valueArguments[0])
@@ -277,7 +289,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
     val F_wait_ClockingBlock = object : TransformableCoreFunctionDeclaration(
         parent,
         "wait",
-        Core.Vk.C_ClockingBlock
+        "fun wait(ClockingBlock)"
     ) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
@@ -285,22 +297,22 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_delay_Int = object : TransformableCoreFunctionDeclaration(parent, "delay", Core.Kt.C_Int) {
+    val F_delay_Int = object : TransformableCoreFunctionDeclaration(parent, "delay", "fun delay(Int)") {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             return EDelayExpression(callExpression.location, callExpression.valueArguments[0])
         }
     }
 
-    val F_time = BasicCoreFunctionDeclaration(parent, "time", Target.F_time)
+    val F_time = BasicCoreFunctionDeclaration(parent, "time", "fun time()", Target.F_time)
 
-    val F_finish = BasicCoreFunctionDeclaration(parent, "finish", Target.F_finish)
+    val F_finish = BasicCoreFunctionDeclaration(parent, "finish", "fun finish()", Target.F_finish)
 
-    val F_fatal = BasicCoreFunctionDeclaration(parent, "fatal", Target.F_fatal)
+    val F_fatal = BasicCoreFunctionDeclaration(parent, "fatal", "fun fatal()", Target.F_fatal)
 
-    val F_sv_String = BasicCoreFunctionDeclaration(parent, "sv", null, Core.Kt.C_String)
+    val F_sv_String = BasicCoreFunctionDeclaration(parent, "sv", "fun sv(String)", null)
 
-    val F_Boolean_uext = object : TransformableCoreFunctionDeclaration(parent, "uext") {
+    val F_Boolean_uext = object : TransformableCoreFunctionDeclaration(parent, "uext", "fun uext()") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -322,7 +334,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_Boolean_sext = object : TransformableCoreFunctionDeclaration(parent, "sext") {
+    val F_Boolean_sext = object : TransformableCoreFunctionDeclaration(parent, "sext", "fun sext()") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return F_Boolean_uext.getTypeConstraints(callExpression)

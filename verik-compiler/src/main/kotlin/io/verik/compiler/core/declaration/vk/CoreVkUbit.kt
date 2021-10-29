@@ -45,7 +45,7 @@ import io.verik.compiler.target.common.Target
 
 object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
-    val F_get_Int = object : TransformableCoreFunctionDeclaration(parent, "get", Core.Kt.C_Int) {
+    val F_get_Int = object : TransformableCoreFunctionDeclaration(parent, "get", "fun get(Int)") {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             return ESvArrayAccessExpression(
@@ -60,8 +60,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
     val F_set_Int_Boolean = object : TransformableCoreFunctionDeclaration(
         parent,
         "set",
-        Core.Kt.C_Int,
-        Core.Kt.C_Boolean
+        "fun set(Int, Boolean)"
     ) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
@@ -81,7 +80,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_set_Int_Ubit = object : TransformableCoreFunctionDeclaration(parent, "set", Core.Kt.C_Int, Core.Vk.C_Ubit) {
+    val F_set_Int_Ubit = object : TransformableCoreFunctionDeclaration(parent, "set", "fun set(Int, Ubit)") {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             val value = callExpression.valueArguments[1].type.arguments[0].asCardinalValue(callExpression)
@@ -110,7 +109,12 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_unaryMinus = object : UnaryCoreFunctionDeclaration(parent, "unaryMinus", SvUnaryOperatorKind.MINUS) {
+    val F_unaryMinus = object : UnaryCoreFunctionDeclaration(
+        parent,
+        "unaryMinus",
+        "fun unaryMinus()",
+        SvUnaryOperatorKind.MINUS
+    ) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -125,8 +129,8 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
     val F_plus_Ubit = object : BinaryCoreFunctionDeclaration(
         parent,
         "plus",
-        SvBinaryOperatorKind.PLUS,
-        Core.Vk.C_Ubit
+        "fun plus(Ubit)",
+        SvBinaryOperatorKind.PLUS
     ) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
@@ -144,8 +148,8 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
     val F_add_Ubit = object : BinaryCoreFunctionDeclaration(
         parent,
         "add",
-        SvBinaryOperatorKind.PLUS,
-        Core.Vk.C_Ubit
+        "fun add(Ubit)",
+        SvBinaryOperatorKind.PLUS
     ) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
@@ -163,8 +167,8 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
     val F_minus_Ubit = object : BinaryCoreFunctionDeclaration(
         parent,
         "minus",
-        SvBinaryOperatorKind.MINUS,
-        Core.Vk.C_Ubit
+        "fun minus(Ubit)",
+        SvBinaryOperatorKind.MINUS
     ) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
@@ -175,8 +179,8 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
     val F_times_Ubit = object : BinaryCoreFunctionDeclaration(
         parent,
         "times",
-        SvBinaryOperatorKind.MUL,
-        Core.Vk.C_Ubit
+        "fun times(Ubit)",
+        SvBinaryOperatorKind.MUL
     ) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
@@ -187,8 +191,8 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
     val F_mul_Ubit = object : BinaryCoreFunctionDeclaration(
         parent,
         "mul",
-        SvBinaryOperatorKind.MUL,
-        Core.Vk.C_Ubit
+        "fun mul(Ubit)",
+        SvBinaryOperatorKind.MUL
     ) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
@@ -206,8 +210,8 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
     val F_div_Ubit = object : BinaryCoreFunctionDeclaration(
         parent,
         "div",
-        SvBinaryOperatorKind.DIV,
-        Core.Vk.C_Ubit
+        "fun div(Ubit)",
+        SvBinaryOperatorKind.DIV
     ) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
@@ -220,7 +224,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_and_Ubit = object : BinaryCoreFunctionDeclaration(parent, "and", SvBinaryOperatorKind.AND, Core.Vk.C_Ubit) {
+    val F_and_Ubit = object : BinaryCoreFunctionDeclaration(parent, "and", "fun and(Ubit)", SvBinaryOperatorKind.AND) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -236,7 +240,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_or_Ubit = object : BinaryCoreFunctionDeclaration(parent, "or", SvBinaryOperatorKind.OR, Core.Vk.C_Ubit) {
+    val F_or_Ubit = object : BinaryCoreFunctionDeclaration(parent, "or", "fun or(Ubit)", SvBinaryOperatorKind.OR) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -252,7 +256,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_xor_Ubit = object : BinaryCoreFunctionDeclaration(parent, "xor", SvBinaryOperatorKind.XOR, Core.Vk.C_Ubit) {
+    val F_xor_Ubit = object : BinaryCoreFunctionDeclaration(parent, "xor", "fun xor(Ubit)", SvBinaryOperatorKind.XOR) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -268,7 +272,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_sll_Int = object : TransformableCoreFunctionDeclaration(parent, "sll", Core.Kt.C_Int) {
+    val F_sll_Int = object : TransformableCoreFunctionDeclaration(parent, "sll", "fun sll(Int)") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -290,7 +294,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_sll_Ubit = object : TransformableCoreFunctionDeclaration(parent, "sll", Core.Vk.C_Ubit) {
+    val F_sll_Ubit = object : TransformableCoreFunctionDeclaration(parent, "sll", "fun sll(Ubit)") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return F_sll_Int.getTypeConstraints(callExpression)
@@ -301,7 +305,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_srl_Int = object : TransformableCoreFunctionDeclaration(parent, "srl", Core.Kt.C_Int) {
+    val F_srl_Int = object : TransformableCoreFunctionDeclaration(parent, "srl", "fun srl(Int)") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -323,7 +327,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_srl_Ubit = object : TransformableCoreFunctionDeclaration(parent, "srl", Core.Vk.C_Ubit) {
+    val F_srl_Ubit = object : TransformableCoreFunctionDeclaration(parent, "srl", "fun srl(Ubit)") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return F_srl_Int.getTypeConstraints(callExpression)
@@ -334,7 +338,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_sra_Int = object : TransformableCoreFunctionDeclaration(parent, "sra", Core.Kt.C_Int) {
+    val F_sra_Int = object : TransformableCoreFunctionDeclaration(parent, "sra", "fun sra(Int)") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -372,7 +376,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_sra_Ubit = object : TransformableCoreFunctionDeclaration(parent, "sra", Core.Vk.C_Ubit) {
+    val F_sra_Ubit = object : TransformableCoreFunctionDeclaration(parent, "sra", "fun sra(Ubit)") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return F_sra_Int.getTypeConstraints(callExpression)
@@ -383,15 +387,20 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_lt_Ubit = BinaryCoreFunctionDeclaration(parent, "lt", SvBinaryOperatorKind.LT, Core.Vk.C_Ubit)
+    val F_lt_Ubit = BinaryCoreFunctionDeclaration(parent, "lt", null, SvBinaryOperatorKind.LT)
 
-    val F_lteq_Ubit = BinaryCoreFunctionDeclaration(parent, "lteq", SvBinaryOperatorKind.LTEQ, Core.Vk.C_Ubit)
+    val F_lteq_Ubit = BinaryCoreFunctionDeclaration(parent, "lteq", null, SvBinaryOperatorKind.LTEQ)
 
-    val F_gt_Ubit = BinaryCoreFunctionDeclaration(parent, "gt", SvBinaryOperatorKind.GT, Core.Vk.C_Ubit)
+    val F_gt_Ubit = BinaryCoreFunctionDeclaration(parent, "gt", null, SvBinaryOperatorKind.GT)
 
-    val F_gteq_Ubit = BinaryCoreFunctionDeclaration(parent, "gteq", SvBinaryOperatorKind.GTEQ, Core.Vk.C_Ubit)
+    val F_gteq_Ubit = BinaryCoreFunctionDeclaration(parent, "gteq", null, SvBinaryOperatorKind.GTEQ)
 
-    val F_invert = object : UnaryCoreFunctionDeclaration(parent, "invert", SvUnaryOperatorKind.BITWISE_NEG) {
+    val F_invert = object : UnaryCoreFunctionDeclaration(
+        parent,
+        "invert",
+        "fun invert()",
+        SvUnaryOperatorKind.BITWISE_NEG
+    ) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -403,7 +412,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_reverse = object : TransformableCoreFunctionDeclaration(parent, "reverse") {
+    val F_reverse = object : TransformableCoreFunctionDeclaration(parent, "reverse", "fun reverse()") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -419,7 +428,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_uext = object : TransformableCoreFunctionDeclaration(parent, "uext") {
+    val F_uext = object : TransformableCoreFunctionDeclaration(parent, "uext", "fun uext()") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -446,7 +455,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_sext = object : TransformableCoreFunctionDeclaration(parent, "sext") {
+    val F_sext = object : TransformableCoreFunctionDeclaration(parent, "sext", "fun sext()") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return F_uext.getTypeConstraints(callExpression)
@@ -479,7 +488,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_tru = object : TransformableCoreFunctionDeclaration(parent, "tru") {
+    val F_tru = object : TransformableCoreFunctionDeclaration(parent, "tru", "fun tru()") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -509,7 +518,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_slice_Int = object : TransformableCoreFunctionDeclaration(parent, "slice", Core.Kt.C_Int) {
+    val F_slice_Int = object : TransformableCoreFunctionDeclaration(parent, "slice", "fun slice(Int)") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(

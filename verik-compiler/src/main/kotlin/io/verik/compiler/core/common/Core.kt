@@ -102,7 +102,7 @@ object Core {
 
             object ArrayList {
 
-                val F_add_Any = CoreJvArrayList.F_add_Any
+                val F_add_E = CoreJvArrayList.F_add_E
             }
         }
     }
@@ -148,8 +148,8 @@ object Core {
         val F_u_Sbit = CoreVk.F_u_Sbit
         val F_u0 = CoreVk.F_u0
         val F_s_Ubit = CoreVk.F_s_Ubit
-        val F_cat = CoreVk.F_cat
-        val F_rep = CoreVk.F_rep
+        val F_cat_Any = CoreVk.F_cat_Any
+        val F_rep_Any = CoreVk.F_rep_Any
         val F_random = CoreVk.F_random
         val F_random_Int = CoreVk.F_random_Int
         val F_random_Int_Int = CoreVk.F_random_Int_Int
@@ -212,9 +212,9 @@ object Core {
         object Unpacked {
 
             val F_get_Int = CoreVkUnpacked.F_get_Int
-            val F_set_Int_Any = CoreVkUnpacked.F_set_Int_Any
+            val F_set_Int_E = CoreVkUnpacked.F_set_Int_E
             val F_get_Ubit = CoreVkUnpacked.F_get_Ubit
-            val F_set_Ubit_Any = CoreVkUnpacked.F_set_Ubit_Any
+            val F_set_Ubit_E = CoreVkUnpacked.F_set_Ubit_E
             val F_sort = CoreVkUnpacked.F_sort
 
             val P_size = CoreVkUnpacked.P_size

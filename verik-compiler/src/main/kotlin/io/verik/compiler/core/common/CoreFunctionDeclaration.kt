@@ -23,11 +23,7 @@ import io.verik.compiler.ast.property.SvUnaryOperatorKind
 import io.verik.compiler.resolve.TypeConstraint
 import io.verik.compiler.target.common.TargetFunctionDeclaration
 
-sealed class CoreFunctionDeclaration(
-    val parameterClassDeclarations: List<CoreClassDeclaration>
-) : CoreDeclaration {
-
-    override val signature: String? = null
+sealed class CoreFunctionDeclaration : CoreDeclaration {
 
     open fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
         return listOf()
@@ -37,15 +33,15 @@ sealed class CoreFunctionDeclaration(
 open class BasicCoreFunctionDeclaration(
     override val parent: CoreDeclaration,
     override var name: String,
-    val targetFunctionDeclaration: TargetFunctionDeclaration?,
-    vararg parameterClassDeclarations: CoreClassDeclaration
-) : CoreFunctionDeclaration(parameterClassDeclarations.toList())
+    override val signature: String?,
+    val targetFunctionDeclaration: TargetFunctionDeclaration?
+) : CoreFunctionDeclaration()
 
 abstract class TransformableCoreFunctionDeclaration(
     override val parent: CoreDeclaration,
     override var name: String,
-    vararg parameterClassDeclarations: CoreClassDeclaration
-) : CoreFunctionDeclaration(parameterClassDeclarations.toList()) {
+    override val signature: String?
+) : CoreFunctionDeclaration() {
 
     abstract fun transform(callExpression: EKtCallExpression): EExpression
 }
@@ -53,15 +49,16 @@ abstract class TransformableCoreFunctionDeclaration(
 open class UnaryCoreFunctionDeclaration(
     override val parent: CoreDeclaration,
     override var name: String,
+    override val signature: String?,
     val kind: SvUnaryOperatorKind
-) : CoreFunctionDeclaration(listOf())
+) : CoreFunctionDeclaration()
 
 open class BinaryCoreFunctionDeclaration(
     override val parent: CoreDeclaration,
     override var name: String,
-    val kind: SvBinaryOperatorKind,
-    parameterClassDeclaration: CoreClassDeclaration
-) : CoreFunctionDeclaration(listOf(parameterClassDeclaration)) {
+    override val signature: String?,
+    val kind: SvBinaryOperatorKind
+) : CoreFunctionDeclaration() {
 
     open fun evaluate(callExpression: EKtCallExpression): String? {
         return null

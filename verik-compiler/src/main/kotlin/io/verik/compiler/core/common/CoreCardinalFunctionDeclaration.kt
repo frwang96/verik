@@ -23,5 +23,5 @@ class CoreCardinalFunctionDeclaration(
     override var name: String
 ) : CoreDeclaration, CardinalDeclaration {
 
-    override val signature: String? = null
+    override val signature: String = "typealias $name"
 }

@@ -24,7 +24,7 @@ abstract class CorePropertyDeclaration(
     final override var name: String
 ) : CoreDeclaration {
 
-    override val signature: String? = null
+    override val signature: String? = "val $name"
 
     abstract fun transform(referenceExpression: EReferenceExpression): EExpression
 }

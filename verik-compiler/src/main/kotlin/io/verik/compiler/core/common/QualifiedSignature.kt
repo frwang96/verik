@@ -16,12 +16,15 @@
 
 package io.verik.compiler.core.common
 
+import org.jetbrains.kotlin.builtins.isFunctionType
+import org.jetbrains.kotlin.descriptors.ClassConstructorDescriptor
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
+import org.jetbrains.kotlin.descriptors.PropertyDescriptor
+import org.jetbrains.kotlin.descriptors.SimpleFunctionDescriptor
+import org.jetbrains.kotlin.descriptors.impl.AbstractClassDescriptor
+import org.jetbrains.kotlin.descriptors.impl.AbstractTypeAliasDescriptor
+import org.jetbrains.kotlin.resolve.calls.components.isVararg
 import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameSafe
-import org.jetbrains.kotlin.serialization.deserialization.descriptors.DeserializedClassConstructorDescriptor
-import org.jetbrains.kotlin.serialization.deserialization.descriptors.DeserializedClassDescriptor
-import org.jetbrains.kotlin.serialization.deserialization.descriptors.DeserializedSimpleFunctionDescriptor
-import org.jetbrains.kotlin.serialization.deserialization.descriptors.DeserializedTypeAliasDescriptor
 
 data class QualifiedSignature(val qualifiedName: String, val signature: String) {
 
@@ -34,19 +37,29 @@ data class QualifiedSignature(val qualifiedName: String, val signature: String) 
 
         private fun getSignature(declarationDescriptor: DeclarationDescriptor): String {
             return when (declarationDescriptor) {
-                is DeserializedTypeAliasDescriptor -> {
+                is AbstractTypeAliasDescriptor -> {
                     "typealias ${declarationDescriptor.name}"
                 }
-                is DeserializedClassDescriptor -> {
+                is AbstractClassDescriptor -> {
                     "class ${declarationDescriptor.name}"
                 }
-                is DeserializedClassConstructorDescriptor -> {
+                is ClassConstructorDescriptor -> {
                     val name = declarationDescriptor.containingDeclaration.name
                     "fun $name(): $name"
                 }
-                is DeserializedSimpleFunctionDescriptor -> {
+                is SimpleFunctionDescriptor -> {
                     val name = declarationDescriptor.name
-                    "fun $name()"
+                    val valueParameters = declarationDescriptor.valueParameters.map {
+                        when {
+                            it.type.isFunctionType -> "Function"
+                            it.isVararg -> "vararg " + it.varargElementType!!.constructor.declarationDescriptor!!.name
+                            else -> it.type.constructor.declarationDescriptor!!.name
+                        }
+                    }
+                    "fun $name(${valueParameters.joinToString()})"
+                }
+                is PropertyDescriptor -> {
+                    "val ${declarationDescriptor.name}"
                 }
                 else -> {
                     val className = declarationDescriptor::class.simpleName

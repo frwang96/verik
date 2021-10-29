@@ -17,24 +17,23 @@
 package io.verik.compiler.core.declaration.kt
 
 import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
-import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.target.common.Target
 
 object CoreKtIo : CoreScope(CorePackage.KT_IO) {
 
-    val F_print_Any = BasicCoreFunctionDeclaration(parent, "print", Target.F_write, Core.Kt.C_Any)
+    val F_print_Any = BasicCoreFunctionDeclaration(parent, "print", "fun print(Any)", Target.F_write)
 
-    val F_print_Boolean = BasicCoreFunctionDeclaration(parent, "print", Target.F_write, Core.Kt.C_Boolean)
+    val F_print_Boolean = BasicCoreFunctionDeclaration(parent, "print", "fun print(Boolean)", Target.F_write)
 
-    val F_print_Int = BasicCoreFunctionDeclaration(parent, "print", Target.F_write, Core.Kt.C_Int)
+    val F_print_Int = BasicCoreFunctionDeclaration(parent, "print", "fun print(Int)", Target.F_write)
 
-    val F_println = BasicCoreFunctionDeclaration(parent, "println", Target.F_display)
+    val F_println = BasicCoreFunctionDeclaration(parent, "println", "fun println()", Target.F_display)
 
-    val F_println_Any = BasicCoreFunctionDeclaration(parent, "println", Target.F_display, Core.Kt.C_Any)
+    val F_println_Any = BasicCoreFunctionDeclaration(parent, "println", "fun println(Any)", Target.F_display)
 
-    val F_println_Boolean = BasicCoreFunctionDeclaration(parent, "println", Target.F_display, Core.Kt.C_Boolean)
+    val F_println_Boolean = BasicCoreFunctionDeclaration(parent, "println", "fun println(Boolean)", Target.F_display)
 
-    val F_println_Int = BasicCoreFunctionDeclaration(parent, "println", Target.F_display, Core.Kt.C_Int)
+    val F_println_Int = BasicCoreFunctionDeclaration(parent, "println", "fun println(Int)", Target.F_display)
 }

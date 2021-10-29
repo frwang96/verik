@@ -25,11 +25,11 @@ import io.verik.compiler.core.common.UnaryCoreFunctionDeclaration
 
 object CoreKtBoolean : CoreScope(Core.Kt.C_Boolean) {
 
-    val F_not = UnaryCoreFunctionDeclaration(parent, "not", SvUnaryOperatorKind.LOGICAL_NEG)
+    val F_not = UnaryCoreFunctionDeclaration(parent, "not", "fun not()", SvUnaryOperatorKind.LOGICAL_NEG)
 
-    val F_and_Boolean = BinaryCoreFunctionDeclaration(parent, "and", SvBinaryOperatorKind.ANDAND, Core.Kt.C_Boolean)
+    val F_and_Boolean = BinaryCoreFunctionDeclaration(parent, "and", "fun and(Boolean)", SvBinaryOperatorKind.ANDAND)
 
-    val F_or_Boolean = BinaryCoreFunctionDeclaration(parent, "or", SvBinaryOperatorKind.OROR, Core.Kt.C_Boolean)
+    val F_or_Boolean = BinaryCoreFunctionDeclaration(parent, "or", "fun or(Boolean)", SvBinaryOperatorKind.OROR)
 
-    val F_xor_Boolean = BinaryCoreFunctionDeclaration(parent, "xor", SvBinaryOperatorKind.XOR, Core.Kt.C_Boolean)
+    val F_xor_Boolean = BinaryCoreFunctionDeclaration(parent, "xor", "fun xor(Boolean)", SvBinaryOperatorKind.XOR)
 }

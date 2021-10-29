@@ -27,7 +27,7 @@ import io.verik.compiler.target.common.Target
 
 object CoreVkSbit : CoreScope(Core.Vk.C_Sbit) {
 
-    val F_lt_Sbit = object : TransformableCoreFunctionDeclaration(parent, "lt", Core.Vk.C_Sbit) {
+    val F_lt_Sbit = object : TransformableCoreFunctionDeclaration(parent, "lt", null) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             val left = callExpression.receiver!!
