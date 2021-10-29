@@ -16,8 +16,8 @@
 
 package io.verik.compiler.serialize.target
 
+import io.verik.compiler.target.common.CompositeTarget
 import io.verik.compiler.target.common.CompositeTargetClassDeclaration
-import io.verik.compiler.target.common.CompositeTargetFunctionDeclaration
 import io.verik.compiler.target.common.Target
 
 object TargetSerializationSequencer {
@@ -38,9 +38,9 @@ object TargetSerializationSequencer {
 
         fun add(
             targetClassDeclaration: CompositeTargetClassDeclaration,
-            vararg targetFunctionDeclarations: CompositeTargetFunctionDeclaration
+            vararg compositeTargets: CompositeTarget
         ) {
-            entries.add(TargetSerializationEntry(targetClassDeclaration, targetFunctionDeclarations.asList()))
+            entries.add(TargetSerializationEntry(targetClassDeclaration, compositeTargets.asList()))
         }
     }
 }

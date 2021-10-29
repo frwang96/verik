@@ -142,7 +142,7 @@ internal class ExpressionSerializerTest : BaseTest() {
             """.trimIndent()
         )
         val expected = """
-            verik_pkg::ArrayList#(logic) a = verik_pkg::ArrayList::_${'$'}new();
+            verik_pkg::ArrayList#(logic) a = verik_pkg::ArrayList#(logic)::_${'$'}new();
         """.trimIndent()
         assertOutputTextEquals(
             expected,

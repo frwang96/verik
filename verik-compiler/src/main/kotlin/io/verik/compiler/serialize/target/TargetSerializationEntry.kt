@@ -16,10 +16,10 @@
 
 package io.verik.compiler.serialize.target
 
+import io.verik.compiler.target.common.CompositeTarget
 import io.verik.compiler.target.common.CompositeTargetClassDeclaration
-import io.verik.compiler.target.common.CompositeTargetFunctionDeclaration
 
 data class TargetSerializationEntry(
     val targetClassDeclaration: CompositeTargetClassDeclaration,
-    val targetFunctionDeclarations: List<CompositeTargetFunctionDeclaration>
+    val compositeTargets: List<CompositeTarget>
 )

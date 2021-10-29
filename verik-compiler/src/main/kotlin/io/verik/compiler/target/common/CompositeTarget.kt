@@ -16,14 +16,7 @@
 
 package io.verik.compiler.target.common
 
-import java.nio.file.Path
-import java.nio.file.Paths
+interface CompositeTarget {
 
-object TargetPackage : TargetDeclaration {
-
-    override val parent: TargetDeclaration? = null
-
-    override var name = "verik_pkg"
-
-    val path: Path = Paths.get("verik", "Pkg.sv")
+    val content: String
 }

@@ -17,14 +17,14 @@
 package io.verik.compiler.target.declaration
 
 import io.verik.compiler.target.common.CompositeTargetFunctionDeclaration
+import io.verik.compiler.target.common.ConstructorTargetFunctionDeclaration
 import io.verik.compiler.target.common.Target
 import io.verik.compiler.target.common.TargetScope
 
 object TargetArrayList : TargetScope(Target.C_ArrayList) {
 
-    val F_new = CompositeTargetFunctionDeclaration(
+    val F_new = ConstructorTargetFunctionDeclaration(
         parent,
-        "_${'$'}new",
         """
             static function automatic ArrayList#(E) _${'$'}new();
                 automatic ArrayList#(E) arrayList = new();

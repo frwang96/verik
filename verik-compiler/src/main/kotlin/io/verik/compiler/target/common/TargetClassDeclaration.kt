@@ -29,20 +29,15 @@ sealed class TargetClassDeclaration : TargetDeclaration {
 abstract class PrimitiveTargetClassDeclaration(
     override val parent: TargetDeclaration?,
     override var name: String
-) : TargetClassDeclaration() {
-
-    override val isPrimitive = true
-}
+) : TargetClassDeclaration()
 
 class CompositeTargetClassDeclaration(
     override val parent: TargetDeclaration?,
     override var name: String,
     val prolog: String,
-    val body: String,
+    override val content: String,
     val epilog: String
-) : TargetClassDeclaration() {
-
-    override val isPrimitive = false
+) : TargetClassDeclaration(), CompositeTarget {
 
     override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
         val base = "${TargetPackage.name}::$name"

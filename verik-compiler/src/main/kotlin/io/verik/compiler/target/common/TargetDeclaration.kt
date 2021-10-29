@@ -21,6 +21,4 @@ import io.verik.compiler.ast.interfaces.Declaration
 interface TargetDeclaration : Declaration {
 
     val parent: TargetDeclaration?
-
-    val isPrimitive: Boolean
 }

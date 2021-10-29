@@ -20,12 +20,12 @@ import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
-internal class ScopeReferenceInsertionTransformerStageTest : BaseTest() {
+internal class ScopeExpressionInsertionTransformerStageTest : BaseTest() {
 
     @Test
     fun `package reference target declaration`() {
         val projectContext = driveTest(
-            ScopeReferenceInsertionTransformerStage::class,
+            ScopeExpressionInsertionTransformerStage::class,
             """
                 fun f() {
                     ArrayList<Boolean>()
@@ -37,7 +37,7 @@ internal class ScopeReferenceInsertionTransformerStageTest : BaseTest() {
                 KtCallExpression(
                     ArrayList<Boolean>,
                     _${'$'}new,
-                    ScopeExpression(Void, ArrayList),
+                    ScopeExpression(Void, ArrayList<Boolean>),
                     [],
                     [Boolean]
                 )
@@ -49,7 +49,7 @@ internal class ScopeReferenceInsertionTransformerStageTest : BaseTest() {
     @Test
     fun `package reference element`() {
         val projectContext = driveTest(
-            ScopeReferenceInsertionTransformerStage::class,
+            ScopeExpressionInsertionTransformerStage::class,
             """
                 var x = false
                 class M : Module() {

@@ -19,36 +19,41 @@ package io.verik.compiler.transform.post
 import io.verik.compiler.ast.element.common.EBasicPackage
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
-import io.verik.compiler.ast.element.kt.EKtCallExpression
-import io.verik.compiler.ast.element.kt.EKtReferenceExpression
+import io.verik.compiler.ast.element.common.EReceiverExpression
 import io.verik.compiler.ast.element.sv.EScopeExpression
 import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvFunction
-import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.target.common.CompositeTarget
+import io.verik.compiler.target.common.ConstructorTargetFunctionDeclaration
 import io.verik.compiler.target.common.TargetDeclaration
 
-object ScopeReferenceInsertionTransformerStage : ProjectStage() {
+object ScopeExpressionInsertionTransformerStage : ProjectStage() {
 
     override val checkNormalization = true
 
     override fun process(projectContext: ProjectContext) {
-        val scopeReferenceInsertionTransformerVisitor = ScopeReferenceInsertionTransformerVisitor()
-        projectContext.project.accept(scopeReferenceInsertionTransformerVisitor)
+        val scopeExpressionInsertionTransformerVisitor = ScopeExpressionInsertionTransformerVisitor()
+        projectContext.project.accept(scopeExpressionInsertionTransformerVisitor)
     }
 
-    private class ScopeReferenceInsertionTransformerVisitor : TreeVisitor() {
+    private class ScopeExpressionInsertionTransformerVisitor : TreeVisitor() {
 
         private var parentBasicPackage: EBasicPackage? = null
 
-        private fun getScopeExpression(reference: Declaration, element: EElement): EScopeExpression? {
-            when (reference) {
+        private fun getScopeExpression(receiverExpression: EReceiverExpression): EScopeExpression? {
+            when (val reference = receiverExpression.reference) {
                 is TargetDeclaration -> {
-                    if (!reference.isPrimitive) {
-                        val parent = reference.parent!!
-                        return EScopeExpression(element.location, parent.toType())
+                    when (reference) {
+                        is ConstructorTargetFunctionDeclaration -> {
+                            return EScopeExpression(receiverExpression.location, receiverExpression.type.copy())
+                        }
+                        is CompositeTarget -> {
+                            val parent = reference.parent!!
+                            return EScopeExpression(receiverExpression.location, parent.toType())
+                        }
                     }
                 }
                 is EElement -> {
@@ -56,11 +61,11 @@ object ScopeReferenceInsertionTransformerStage : ProjectStage() {
                         is EFile -> {
                             val basicPackage = parent.parent
                             if (basicPackage is EBasicPackage && basicPackage != parentBasicPackage)
-                                return EScopeExpression(element.location, basicPackage.toType())
+                                return EScopeExpression(receiverExpression.location, basicPackage.toType())
                         }
                         is ESvBasicClass -> {
                             if (reference is ESvFunction && reference.isScopeStatic)
-                                return EScopeExpression(element.location, parent.toType())
+                                return EScopeExpression(receiverExpression.location, parent.toType())
                         }
                     }
                 }
@@ -74,30 +79,13 @@ object ScopeReferenceInsertionTransformerStage : ProjectStage() {
             parentBasicPackage = null
         }
 
-        override fun visitKtReferenceExpression(referenceExpression: EKtReferenceExpression) {
-            super.visitKtReferenceExpression(referenceExpression)
-            if (referenceExpression.receiver == null) {
-                val scopeExpression = getScopeExpression(
-                    referenceExpression.reference,
-                    referenceExpression
-                )
+        override fun visitReceiverExpression(receiverExpression: EReceiverExpression) {
+            super.visitReceiverExpression(receiverExpression)
+            if (receiverExpression.receiver == null) {
+                val scopeExpression = getScopeExpression(receiverExpression)
                 if (scopeExpression != null) {
-                    scopeExpression.parent = referenceExpression
-                    referenceExpression.receiver = scopeExpression
-                }
-            }
-        }
-
-        override fun visitKtCallExpression(callExpression: EKtCallExpression) {
-            super.visitKtCallExpression(callExpression)
-            if (callExpression.receiver == null) {
-                val scopeExpression = getScopeExpression(
-                    callExpression.reference,
-                    callExpression
-                )
-                if (scopeExpression != null) {
-                    scopeExpression.parent = callExpression
-                    callExpression.receiver = scopeExpression
+                    scopeExpression.parent = receiverExpression
+                    receiverExpression.receiver = scopeExpression
                 }
             }
         }

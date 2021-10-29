@@ -21,16 +21,18 @@ sealed class TargetFunctionDeclaration : TargetDeclaration
 class PrimitiveTargetFunctionDeclaration(
     override val parent: TargetDeclaration?,
     override var name: String
-) : TargetFunctionDeclaration() {
-
-    override val isPrimitive = true
-}
+) : TargetFunctionDeclaration()
 
 class CompositeTargetFunctionDeclaration(
     override val parent: TargetDeclaration?,
     override var name: String,
-    val content: String
-) : TargetFunctionDeclaration() {
+    override val content: String
+) : TargetFunctionDeclaration(), CompositeTarget
 
-    override val isPrimitive = false
+class ConstructorTargetFunctionDeclaration(
+    override val parent: TargetDeclaration?,
+    override val content: String
+) : TargetFunctionDeclaration(), CompositeTarget {
+
+    override var name = "_${'$'}new"
 }

@@ -22,9 +22,7 @@ import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.target.common.CompositeTargetClassDeclaration
-import io.verik.compiler.target.common.CompositeTargetFunctionDeclaration
-import io.verik.compiler.target.common.TargetDeclaration
+import io.verik.compiler.target.common.CompositeTarget
 import io.verik.compiler.target.common.TargetPackage
 
 object TargetSerializerStage : ProjectStage() {
@@ -32,10 +30,10 @@ object TargetSerializerStage : ProjectStage() {
     override val checkNormalization = false
 
     override fun process(projectContext: ProjectContext) {
-        val targetIndexerVisitor = TargetIndexerVisitor()
-        projectContext.project.accept(targetIndexerVisitor)
-        val compositeTargetDeclarationSet = targetIndexerVisitor.compositeTargetDeclarationSet
-        if (compositeTargetDeclarationSet.isEmpty())
+        val compositeTargetIndexerVisitor = CompositeTargetIndexerVisitor()
+        projectContext.project.accept(compositeTargetIndexerVisitor)
+        val compositeTargetSet = compositeTargetIndexerVisitor.compositeTargetSet
+        if (compositeTargetSet.isEmpty())
             return
 
         val targetPackageFilePath = projectContext.config.outputSourceDir.resolve(TargetPackage.path)
@@ -43,14 +41,7 @@ object TargetSerializerStage : ProjectStage() {
         targetSourceBuilder.appendLine("package ${TargetPackage.name};")
         targetSourceBuilder.indent {
             val entries = TargetSerializationSequencer.getEntries()
-            entries.forEach {
-                serializeClassDeclaration(
-                    targetSourceBuilder,
-                    compositeTargetDeclarationSet,
-                    it.targetClassDeclaration,
-                    it.targetFunctionDeclarations
-                )
-            }
+            entries.forEach { serializeClassDeclaration(targetSourceBuilder, compositeTargetSet, it) }
         }
         targetSourceBuilder.appendLine()
         targetSourceBuilder.appendLine("endpackage : ${TargetPackage.name}")
@@ -59,18 +50,19 @@ object TargetSerializerStage : ProjectStage() {
 
     private fun serializeClassDeclaration(
         targetSourceBuilder: TargetSourceBuilder,
-        compositeTargetDeclarationSet: Set<TargetDeclaration>,
-        targetClassDeclaration: CompositeTargetClassDeclaration,
-        targetFunctionDeclarations: List<CompositeTargetFunctionDeclaration>
+        compositeTargetSet: Set<CompositeTarget>,
+        targetSerializationEntry: TargetSerializationEntry
     ) {
-        if (targetClassDeclaration in compositeTargetDeclarationSet) {
+        val targetClassDeclaration = targetSerializationEntry.targetClassDeclaration
+        val compositeTargets = targetSerializationEntry.compositeTargets
+        if (targetClassDeclaration in compositeTargetSet) {
             targetSourceBuilder.appendLine()
             targetSourceBuilder.appendLine(targetClassDeclaration.prolog)
             targetSourceBuilder.indent {
                 targetSourceBuilder.appendLine()
-                targetSourceBuilder.appendLine(targetClassDeclaration.body)
-                targetFunctionDeclarations.forEach {
-                    if (it in compositeTargetDeclarationSet) {
+                targetSourceBuilder.appendLine(targetClassDeclaration.content)
+                compositeTargets.forEach {
+                    if (it in compositeTargetSet) {
                         targetSourceBuilder.appendLine()
                         targetSourceBuilder.appendLine(it.content)
                     }
@@ -81,25 +73,25 @@ object TargetSerializerStage : ProjectStage() {
         }
     }
 
-    private class TargetIndexerVisitor : TreeVisitor() {
+    private class CompositeTargetIndexerVisitor : TreeVisitor() {
 
-        val compositeTargetDeclarationSet = HashSet<TargetDeclaration>()
+        val compositeTargetSet = HashSet<CompositeTarget>()
 
         override fun visitTypedElement(typedElement: ETypedElement) {
             super.visitTypedElement(typedElement)
             addTargets(typedElement.type)
             if (typedElement is Reference) {
                 val reference = typedElement.reference
-                if (reference is TargetDeclaration && !reference.isPrimitive)
-                    compositeTargetDeclarationSet.add(reference)
+                if (reference is CompositeTarget)
+                    compositeTargetSet.add(reference)
             }
         }
 
         private fun addTargets(type: Type) {
             type.arguments.forEach { addTargets(it) }
             val reference = type.reference
-            if (reference is TargetDeclaration && !reference.isPrimitive)
-                compositeTargetDeclarationSet.add(reference)
+            if (reference is CompositeTarget)
+                compositeTargetSet.add(reference)
         }
     }
 }
