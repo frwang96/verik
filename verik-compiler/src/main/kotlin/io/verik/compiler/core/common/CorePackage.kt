@@ -24,8 +24,6 @@ class CorePackage(
 
     override val signature: String? = null
 
-    override val qualifiedName = name
-
     companion object {
 
         val KT = CorePackage("kotlin")

@@ -24,6 +24,4 @@ class CoreCardinalFunctionDeclaration(
 ) : CoreDeclaration, CardinalDeclaration {
 
     override val signature: String? = null
-
-    override val qualifiedName = "${CorePackage.VK.name}.$name"
 }

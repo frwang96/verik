@@ -24,5 +24,10 @@ interface CoreDeclaration : Declaration {
 
     val signature: String?
 
-    val qualifiedName: String
+    fun getQualifiedName(): String {
+        val parent = parent
+        return if (parent != null) {
+            "${parent.getQualifiedName()}.$name"
+        } else name
+    }
 }

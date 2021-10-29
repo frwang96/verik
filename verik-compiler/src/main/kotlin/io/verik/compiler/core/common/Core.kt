@@ -19,34 +19,37 @@
 package io.verik.compiler.core.common
 
 import io.verik.compiler.core.declaration.jv.CoreJvArrayList
+import io.verik.compiler.core.declaration.jv.CoreJvClass
 import io.verik.compiler.core.declaration.kt.CoreKt
 import io.verik.compiler.core.declaration.kt.CoreKtBoolean
+import io.verik.compiler.core.declaration.kt.CoreKtClass
 import io.verik.compiler.core.declaration.kt.CoreKtCollections
 import io.verik.compiler.core.declaration.kt.CoreKtInt
 import io.verik.compiler.core.declaration.kt.CoreKtIo
 import io.verik.compiler.core.declaration.kt.CoreKtRanges
 import io.verik.compiler.core.declaration.vk.CoreVk
 import io.verik.compiler.core.declaration.vk.CoreVkCardinal
+import io.verik.compiler.core.declaration.vk.CoreVkClass
 import io.verik.compiler.core.declaration.vk.CoreVkSbit
 import io.verik.compiler.core.declaration.vk.CoreVkUbit
 import io.verik.compiler.core.declaration.vk.CoreVkUnpacked
 
 object Core {
 
-    object Kt : CoreScope(CorePackage.KT) {
+    object Kt {
 
-        val C_Any = CoreClass.Kt.C_Any
-        val C_Nothing = CoreClass.Kt.C_Nothing
-        val C_Function = CoreClass.Kt.C_Function
-        val C_Unit = CoreClass.Kt.C_Unit
-        val C_Int = CoreClass.Kt.C_Int
-        val C_Boolean = CoreClass.Kt.C_Boolean
-        val C_String = CoreClass.Kt.C_String
-        val C_Enum = CoreClass.Kt.C_Enum
+        val C_Any = CoreKtClass.C_Any
+        val C_Nothing = CoreKtClass.C_Nothing
+        val C_Function = CoreKtClass.C_Function
+        val C_Unit = CoreKtClass.C_Unit
+        val C_Int = CoreKtClass.C_Int
+        val C_Boolean = CoreKtClass.C_Boolean
+        val C_String = CoreKtClass.C_String
+        val C_Enum = CoreKtClass.C_Enum
 
         val F_repeat_Int_Function = CoreKt.F_repeat_Int_Function
 
-        object Int : CoreScope(C_Int) {
+        object Int {
 
             val F_times_Int = CoreKtInt.F_times_Int
             val F_plus_Int = CoreKtInt.F_plus_Int
@@ -57,7 +60,7 @@ object Core {
             val F_gteq_Int = CoreKtInt.F_gteq_Int
         }
 
-        object Boolean : CoreScope(C_Boolean) {
+        object Boolean {
 
             val F_not = CoreKtBoolean.F_not
             val F_and_Boolean = CoreKtBoolean.F_and_Boolean
@@ -65,7 +68,7 @@ object Core {
             val F_xor_Boolean = CoreKtBoolean.F_xor_Boolean
         }
 
-        object Io : CoreScope(CorePackage.KT_IO) {
+        object Io {
 
             val F_print_Any = CoreKtIo.F_print_Any
             val F_print_Boolean = CoreKtIo.F_print_Boolean
@@ -76,54 +79,54 @@ object Core {
             val F_println_Int = CoreKtIo.F_println_Int
         }
 
-        object Collections : CoreScope(CorePackage.KT_COLLECTIONS) {
+        object Collections {
 
             val F_forEach_Function = CoreKtCollections.F_forEach_Function
         }
 
-        object Ranges : CoreScope(CorePackage.Kt_RANGES) {
+        object Ranges {
 
-            val C_IntRange = CoreClass.Kt.Ranges.C_IntRange
+            val C_IntRange = CoreKtClass.Ranges.C_IntRange
 
             val F_until_Int = CoreKtRanges.F_until_Int
         }
     }
 
-    object Jv : CoreScope(CorePackage.JV) {
+    object Jv {
 
-        object Util : CoreScope(CorePackage.JV_UTIL) {
+        object Util {
 
-            val C_ArrayList = CoreClass.Jv.Util.C_ArrayList
+            val C_ArrayList = CoreJvClass.Util.C_ArrayList
 
-            val F_ArrayList = CoreClass.Jv.Util.F_ArrayList
+            val F_ArrayList = CoreJvClass.Util.F_ArrayList
 
-            object ArrayList : CoreScope(C_ArrayList) {
+            object ArrayList {
 
                 val F_add_Any = CoreJvArrayList.F_add_Any
             }
         }
     }
 
-    object Vk : CoreScope(CorePackage.VK) {
+    object Vk {
 
-        val C_Ubit = CoreClass.Vk.C_Ubit
-        val C_Sbit = CoreClass.Vk.C_Sbit
-        val C_Struct = CoreClass.Vk.C_Struct
-        val C_Packed = CoreClass.Vk.C_Packed
-        val C_Unpacked = CoreClass.Vk.C_Unpacked
-        val C_Component = CoreClass.Vk.C_Component
-        val C_Module = CoreClass.Vk.C_Module
-        val C_ModuleInterface = CoreClass.Vk.C_ModuleInterface
-        val C_ModulePort = CoreClass.Vk.C_ModulePort
-        val C_ClockingBlock = CoreClass.Vk.C_ClockingBlock
-        val C_Time = CoreClass.Vk.C_Time
-        val C_Event = CoreClass.Vk.C_Event
+        val C_Ubit = CoreVkClass.C_Ubit
+        val C_Sbit = CoreVkClass.C_Sbit
+        val C_Struct = CoreVkClass.C_Struct
+        val C_Packed = CoreVkClass.C_Packed
+        val C_Unpacked = CoreVkClass.C_Unpacked
+        val C_Component = CoreVkClass.C_Component
+        val C_Module = CoreVkClass.C_Module
+        val C_ModuleInterface = CoreVkClass.C_ModuleInterface
+        val C_ModulePort = CoreVkClass.C_ModulePort
+        val C_ClockingBlock = CoreVkClass.C_ClockingBlock
+        val C_Time = CoreVkClass.C_Time
+        val C_Event = CoreVkClass.C_Event
 
-        val F_Struct = CoreClass.Vk.F_Struct
-        val F_Module = CoreClass.Vk.F_Module
-        val F_ModuleInterface = CoreClass.Vk.F_ModuleInterface
-        val F_ModulePort = CoreClass.Vk.F_ModulePort
-        val F_ClockingBlock = CoreClass.Vk.F_ClockingBlock
+        val F_Struct = CoreVkClass.F_Struct
+        val F_Module = CoreVkClass.F_Module
+        val F_ModuleInterface = CoreVkClass.F_ModuleInterface
+        val F_ModulePort = CoreVkClass.F_ModulePort
+        val F_ClockingBlock = CoreVkClass.F_ClockingBlock
 
         val N_ADD = CoreVkCardinal.N_ADD
         val N_SUB = CoreVkCardinal.N_SUB
@@ -168,7 +171,7 @@ object Core {
         val F_Boolean_uext = CoreVk.F_Boolean_uext
         val F_Boolean_sext = CoreVk.F_Boolean_sext
 
-        object Ubit : CoreScope(C_Ubit) {
+        object Ubit {
 
             val F_get_Int = CoreVkUbit.F_get_Int
             val F_set_Int_Boolean = CoreVkUbit.F_set_Int_Boolean
@@ -201,12 +204,12 @@ object Core {
             val F_slice_Int = CoreVkUbit.F_slice_Int
         }
 
-        object Sbit : CoreScope(C_Sbit) {
+        object Sbit {
 
             val F_lt_Sbit = CoreVkSbit.F_lt_Sbit
         }
 
-        object Unpacked : CoreScope(C_Unpacked) {
+        object Unpacked {
 
             val F_get_Int = CoreVkUnpacked.F_get_Int
             val F_set_Int_Any = CoreVkUnpacked.F_set_Int_Any

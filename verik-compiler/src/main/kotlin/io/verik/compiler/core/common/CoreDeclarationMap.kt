@@ -28,9 +28,7 @@ import org.jetbrains.kotlin.resolve.calls.components.isVararg
 import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameOrNull
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
-import kotlin.reflect.full.createType
 import kotlin.reflect.full.declaredMemberProperties
-import kotlin.reflect.full.isSubtypeOf
 
 object CoreDeclarationMap {
 
@@ -55,29 +53,21 @@ object CoreDeclarationMap {
     }
 
     private fun addCoreDeclarations(kClass: KClass<*>) {
-        val kClassInstance = kClass.objectInstance
-        if (kClassInstance is CoreScope) {
-            kClass.declaredMemberProperties.forEach {
-                if (it.returnType.isSubtypeOf(CoreDeclaration::class.createType())) {
-                    @Suppress("UNCHECKED_CAST")
-                    val property = (it as KProperty1<Any, *>).get(kClassInstance) as CoreDeclaration
-                    val expectedQualifiedName = "${kClassInstance.parent.qualifiedName}.${property.name}"
-                    if (property.qualifiedName != expectedQualifiedName && property.qualifiedName != "<init>") {
-                        val expectedString = "Expected $expectedQualifiedName actual ${property.qualifiedName}"
-                        throw IllegalArgumentException("Qualified name does not match scope parent: $expectedString")
-                    }
-                    when (property) {
-                        is CoreConstructorDeclaration ->
-                            constructorMap[property.classDeclaration] = property
-                        is CoreFunctionDeclaration -> {
-                            if (property.qualifiedName !in functionMap)
-                                functionMap[property.qualifiedName] = ArrayList()
-                            functionMap[property.qualifiedName]!!.add(property)
-                        }
-                        else ->
-                            declarationMap[property.qualifiedName] = property
-                    }
+        val kClassInstance = kClass.objectInstance!!
+        kClass.declaredMemberProperties.forEach {
+            @Suppress("UNCHECKED_CAST")
+            val property = (it as KProperty1<Any, *>).get(kClassInstance) as CoreDeclaration
+            when (property) {
+                is CoreConstructorDeclaration ->
+                    constructorMap[property.classDeclaration] = property
+                is CoreFunctionDeclaration -> {
+                    val qualifiedName = property.getQualifiedName()
+                    if (qualifiedName !in functionMap)
+                        functionMap[qualifiedName] = ArrayList()
+                    functionMap[qualifiedName]!!.add(property)
                 }
+                else ->
+                    declarationMap[property.getQualifiedName()] = property
             }
         }
         kClass.nestedClasses.forEach { addCoreDeclarations(it) }
@@ -119,7 +109,7 @@ object CoreDeclarationMap {
         function: CoreFunctionDeclaration
     ): Boolean {
         val valueParameters = descriptor.valueParameters
-        val parameterClassNames = function.parameterClassNames
+        val parameterClassNames = function.parameterClassDeclarations.map { it.name }
         if (valueParameters.size != parameterClassNames.size)
             return false
         valueParameters.zip(parameterClassNames).forEach { (valueParameter, parameterClassName) ->
@@ -156,7 +146,7 @@ object CoreDeclarationMap {
                         null
                 }
             }
-            qualifiedName == "${CorePackage.VK.qualifiedName}.Cardinal" -> Cardinal.UNRESOLVED
+            qualifiedName == "${CorePackage.VK.name}.Cardinal" -> Cardinal.UNRESOLVED
             else -> null
         }
     }

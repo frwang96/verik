@@ -23,11 +23,8 @@ import io.verik.compiler.ast.property.SvUnaryOperatorKind
 import io.verik.compiler.resolve.TypeConstraint
 import io.verik.compiler.target.common.TargetFunctionDeclaration
 
-sealed class CoreFunctionDeclaration constructor(
-    override val parent: CoreDeclaration,
-    override var name: String,
-    override val qualifiedName: String,
-    val parameterClassNames: List<String>
+sealed class CoreFunctionDeclaration(
+    val parameterClassDeclarations: List<CoreClassDeclaration>
 ) : CoreDeclaration {
 
     override val signature: String? = null
@@ -35,47 +32,36 @@ sealed class CoreFunctionDeclaration constructor(
     open fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
         return listOf()
     }
-
-    constructor(
-        parent: CoreDeclaration,
-        name: String,
-        vararg parameterClassDeclarations: CoreClassDeclaration
-    ) : this(
-        parent,
-        name,
-        "${parent.qualifiedName}.$name",
-        parameterClassDeclarations.map { it.name }
-    )
 }
 
 open class BasicCoreFunctionDeclaration(
-    parent: CoreDeclaration,
-    name: String,
+    override val parent: CoreDeclaration,
+    override var name: String,
     val targetFunctionDeclaration: TargetFunctionDeclaration?,
     vararg parameterClassDeclarations: CoreClassDeclaration
-) : CoreFunctionDeclaration(parent, name, *parameterClassDeclarations)
+) : CoreFunctionDeclaration(parameterClassDeclarations.toList())
 
 abstract class TransformableCoreFunctionDeclaration(
-    parent: CoreDeclaration,
-    name: String,
+    override val parent: CoreDeclaration,
+    override var name: String,
     vararg parameterClassDeclarations: CoreClassDeclaration
-) : CoreFunctionDeclaration(parent, name, *parameterClassDeclarations) {
+) : CoreFunctionDeclaration(parameterClassDeclarations.toList()) {
 
     abstract fun transform(callExpression: EKtCallExpression): EExpression
 }
 
 open class UnaryCoreFunctionDeclaration(
-    parent: CoreDeclaration,
-    name: String,
+    override val parent: CoreDeclaration,
+    override var name: String,
     val kind: SvUnaryOperatorKind
-) : CoreFunctionDeclaration(parent, name)
+) : CoreFunctionDeclaration(listOf())
 
 open class BinaryCoreFunctionDeclaration(
-    parent: CoreDeclaration,
-    name: String,
+    override val parent: CoreDeclaration,
+    override var name: String,
     val kind: SvBinaryOperatorKind,
-    vararg parameterClassDeclarations: CoreClassDeclaration
-) : CoreFunctionDeclaration(parent, name, *parameterClassDeclarations) {
+    parameterClassDeclaration: CoreClassDeclaration
+) : CoreFunctionDeclaration(listOf(parameterClassDeclaration)) {
 
     open fun evaluate(callExpression: EKtCallExpression): String? {
         return null

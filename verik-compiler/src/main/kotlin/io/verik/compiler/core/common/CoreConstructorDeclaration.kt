@@ -27,6 +27,4 @@ class CoreConstructorDeclaration(
     override var name = "<init>"
 
     override val signature: String? = null
-
-    override val qualifiedName = name
 }

@@ -26,7 +26,5 @@ abstract class CorePropertyDeclaration(
 
     override val signature: String? = null
 
-    override val qualifiedName = "${parent.qualifiedName}.$name"
-
     abstract fun transform(referenceExpression: EKtReferenceExpression): EExpression
 }

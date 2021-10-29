@@ -26,6 +26,4 @@ class CoreClassDeclaration(
 ) : CoreDeclaration {
 
     override val signature: String? = null
-
-    override val qualifiedName = "${parent.qualifiedName}.$name"
 }
