@@ -37,7 +37,7 @@ internal class ScopeReferenceInsertionTransformerStageTest : BaseTest() {
                 KtCallExpression(
                     ArrayList<Boolean>,
                     _${'$'}new,
-                    KtReferenceExpression(null, ArrayList, KtReferenceExpression(null, verik_pkg, null)),
+                    ScopeExpression(Void, ArrayList),
                     [],
                     [Boolean]
                 )
@@ -60,13 +60,7 @@ internal class ScopeReferenceInsertionTransformerStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            """
-                KtReferenceExpression(
-                    Boolean,
-                    x,
-                    KtReferenceExpression(null, test_pkg, null)
-                )
-            """.trimIndent(),
+            "KtReferenceExpression(Boolean, x, ScopeExpression(Void, test_pkg))",
             projectContext.findExpression("f")
         )
     }

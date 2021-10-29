@@ -34,7 +34,9 @@ object TargetSerializerStage : ProjectStage() {
     override fun process(projectContext: ProjectContext) {
         val targetIndexerVisitor = TargetIndexerVisitor()
         projectContext.project.accept(targetIndexerVisitor)
-        val targetDeclarationSet = targetIndexerVisitor.targetDeclarationSet
+        val compositeTargetDeclarationSet = targetIndexerVisitor.compositeTargetDeclarationSet
+        if (compositeTargetDeclarationSet.isEmpty())
+            return
 
         val targetPackageFilePath = projectContext.config.outputSourceDir.resolve(TargetPackage.path)
         val targetSourceBuilder = TargetSourceBuilder(projectContext, targetPackageFilePath)
@@ -44,7 +46,7 @@ object TargetSerializerStage : ProjectStage() {
             entries.forEach {
                 serializeClassDeclaration(
                     targetSourceBuilder,
-                    targetDeclarationSet,
+                    compositeTargetDeclarationSet,
                     it.targetClassDeclaration,
                     it.targetFunctionDeclarations
                 )
@@ -57,18 +59,18 @@ object TargetSerializerStage : ProjectStage() {
 
     private fun serializeClassDeclaration(
         targetSourceBuilder: TargetSourceBuilder,
-        targetDeclarationSet: Set<TargetDeclaration>,
+        compositeTargetDeclarationSet: Set<TargetDeclaration>,
         targetClassDeclaration: CompositeTargetClassDeclaration,
         targetFunctionDeclarations: List<CompositeTargetFunctionDeclaration>
     ) {
-        if (targetClassDeclaration in targetDeclarationSet) {
+        if (targetClassDeclaration in compositeTargetDeclarationSet) {
             targetSourceBuilder.appendLine()
             targetSourceBuilder.appendLine(targetClassDeclaration.prolog)
             targetSourceBuilder.indent {
                 targetSourceBuilder.appendLine()
                 targetSourceBuilder.appendLine(targetClassDeclaration.body)
                 targetFunctionDeclarations.forEach {
-                    if (it in targetDeclarationSet) {
+                    if (it in compositeTargetDeclarationSet) {
                         targetSourceBuilder.appendLine()
                         targetSourceBuilder.appendLine(it.content)
                     }
@@ -81,23 +83,23 @@ object TargetSerializerStage : ProjectStage() {
 
     private class TargetIndexerVisitor : TreeVisitor() {
 
-        val targetDeclarationSet = HashSet<TargetDeclaration>()
+        val compositeTargetDeclarationSet = HashSet<TargetDeclaration>()
 
         override fun visitTypedElement(typedElement: ETypedElement) {
             super.visitTypedElement(typedElement)
             addTargets(typedElement.type)
             if (typedElement is Reference) {
                 val reference = typedElement.reference
-                if (reference is TargetDeclaration)
-                    targetDeclarationSet.add(reference)
+                if (reference is TargetDeclaration && !reference.isPrimitive)
+                    compositeTargetDeclarationSet.add(reference)
             }
         }
 
         private fun addTargets(type: Type) {
             type.arguments.forEach { addTargets(it) }
             val reference = type.reference
-            if (reference is TargetDeclaration)
-                targetDeclarationSet.add(reference)
+            if (reference is TargetDeclaration && !reference.isPrimitive)
+                compositeTargetDeclarationSet.add(reference)
         }
     }
 }

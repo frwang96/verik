@@ -50,6 +50,7 @@ import io.verik.compiler.ast.element.sv.EModulePortInstantiation
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.ERepeatStatement
 import io.verik.compiler.ast.element.sv.EReplicationExpression
+import io.verik.compiler.ast.element.sv.EScopeExpression
 import io.verik.compiler.ast.element.sv.EStreamingExpression
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.EStruct
@@ -213,6 +214,10 @@ class SourceSerializerVisitor(private val serializerContext: SerializerContext) 
 
     override fun visitSvCallExpression(callExpression: ESvCallExpression) {
         ExpressionSerializer.serializeSvCallExpression(callExpression, serializerContext)
+    }
+
+    override fun visitScopeExpression(scopeExpression: EScopeExpression) {
+        ExpressionSerializer.serializeScopeExpression(scopeExpression, serializerContext)
     }
 
     override fun visitConstantExpression(constantExpression: EConstantExpression) {

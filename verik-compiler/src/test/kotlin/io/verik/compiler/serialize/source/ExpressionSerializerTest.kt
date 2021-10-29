@@ -134,6 +134,23 @@ internal class ExpressionSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `scope expression`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                var a = ArrayList<Boolean>()
+            """.trimIndent()
+        )
+        val expected = """
+            verik_pkg::ArrayList#(logic) a = verik_pkg::ArrayList::_${'$'}new();
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputContext.basicPackageSourceTextFiles[0]
+        )
+    }
+
+    @Test
     fun `constant expression`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,

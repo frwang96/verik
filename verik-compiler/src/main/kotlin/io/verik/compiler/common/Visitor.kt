@@ -101,6 +101,7 @@ import io.verik.compiler.ast.element.sv.EModulePortInstantiation
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.ERepeatStatement
 import io.verik.compiler.ast.element.sv.EReplicationExpression
+import io.verik.compiler.ast.element.sv.EScopeExpression
 import io.verik.compiler.ast.element.sv.EStreamingExpression
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.EStruct
@@ -418,6 +419,10 @@ abstract class Visitor {
 
     open fun visitSvCallExpression(callExpression: ESvCallExpression) {
         visitAbstractCallExpression(callExpression)
+    }
+
+    open fun visitScopeExpression(scopeExpression: EScopeExpression) {
+        visitExpression(scopeExpression)
     }
 
     open fun visitConstantExpression(constantExpression: EConstantExpression) {

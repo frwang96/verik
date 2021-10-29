@@ -76,6 +76,7 @@ import io.verik.compiler.ast.element.sv.EModulePortInstantiation
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.ERepeatStatement
 import io.verik.compiler.ast.element.sv.EReplicationExpression
+import io.verik.compiler.ast.element.sv.EScopeExpression
 import io.verik.compiler.ast.element.sv.EStreamingExpression
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.EStruct
@@ -492,6 +493,13 @@ class ElementPrinter : Visitor() {
             build(callExpression.receiver)
             build(callExpression.valueArguments)
             build(callExpression.isScopeResolution.toString())
+        }
+    }
+
+    override fun visitScopeExpression(scopeExpression: EScopeExpression) {
+        build("ScopeExpression") {
+            build(scopeExpression.type.toString())
+            build(scopeExpression.scope.toString())
         }
     }
 

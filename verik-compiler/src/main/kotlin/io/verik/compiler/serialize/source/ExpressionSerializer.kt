@@ -34,6 +34,7 @@ import io.verik.compiler.ast.element.sv.EInjectedExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.ERepeatStatement
 import io.verik.compiler.ast.element.sv.EReplicationExpression
+import io.verik.compiler.ast.element.sv.EScopeExpression
 import io.verik.compiler.ast.element.sv.EStreamingExpression
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.EStructLiteralExpression
@@ -126,6 +127,13 @@ object ExpressionSerializer {
             }
         }
         serializerContext.append(")")
+    }
+
+    fun serializeScopeExpression(scopeExpression: EScopeExpression, serializerContext: SerializerContext) {
+        val serializedType = TypeSerializer.serialize(scopeExpression.scope, scopeExpression)
+        serializedType.checkNoPackedDimension(scopeExpression)
+        serializedType.checkNoUnpackedDimension(scopeExpression)
+        serializerContext.append(serializedType.base)
     }
 
     fun serializeConstantExpression(constantExpression: EConstantExpression, serializerContext: SerializerContext) {

@@ -21,10 +21,10 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtReferenceExpression
+import io.verik.compiler.ast.element.sv.EScopeExpression
 import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.interfaces.Declaration
-import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -43,20 +43,12 @@ object ScopeReferenceInsertionTransformerStage : ProjectStage() {
 
         private var parentBasicPackage: EBasicPackage? = null
 
-        private fun getScopeReferenceExpression(reference: Declaration, element: EElement): EKtReferenceExpression? {
+        private fun getScopeExpression(reference: Declaration, element: EElement): EScopeExpression? {
             when (reference) {
                 is TargetDeclaration -> {
                     if (!reference.isPrimitive) {
-                        val parent = reference.parent
-                        if (parent != null) {
-                            val receiver = getScopeReferenceExpression(parent, element)
-                            return EKtReferenceExpression(
-                                element.location,
-                                NullDeclaration.toType(),
-                                parent,
-                                receiver
-                            )
-                        }
+                        val parent = reference.parent!!
+                        return EScopeExpression(element.location, parent.toType())
                     }
                 }
                 is EElement -> {
@@ -64,22 +56,11 @@ object ScopeReferenceInsertionTransformerStage : ProjectStage() {
                         is EFile -> {
                             val basicPackage = parent.parent
                             if (basicPackage is EBasicPackage && basicPackage != parentBasicPackage)
-                                return EKtReferenceExpression(
-                                    element.location,
-                                    NullDeclaration.toType(),
-                                    basicPackage,
-                                    null
-                                )
+                                return EScopeExpression(element.location, basicPackage.toType())
                         }
                         is ESvBasicClass -> {
-                            if (reference is ESvFunction && reference.isScopeStatic) {
-                                return EKtReferenceExpression(
-                                    element.location,
-                                    NullDeclaration.toType(),
-                                    parent,
-                                    getScopeReferenceExpression(parent, element)
-                                )
-                            }
+                            if (reference is ESvFunction && reference.isScopeStatic)
+                                return EScopeExpression(element.location, parent.toType())
                         }
                     }
                 }
@@ -96,13 +77,13 @@ object ScopeReferenceInsertionTransformerStage : ProjectStage() {
         override fun visitKtReferenceExpression(referenceExpression: EKtReferenceExpression) {
             super.visitKtReferenceExpression(referenceExpression)
             if (referenceExpression.receiver == null) {
-                val scopeReferenceExpression = getScopeReferenceExpression(
+                val scopeExpression = getScopeExpression(
                     referenceExpression.reference,
                     referenceExpression
                 )
-                if (scopeReferenceExpression != null) {
-                    scopeReferenceExpression.parent = referenceExpression
-                    referenceExpression.receiver = scopeReferenceExpression
+                if (scopeExpression != null) {
+                    scopeExpression.parent = referenceExpression
+                    referenceExpression.receiver = scopeExpression
                 }
             }
         }
@@ -110,13 +91,13 @@ object ScopeReferenceInsertionTransformerStage : ProjectStage() {
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
             if (callExpression.receiver == null) {
-                val scopeReferenceExpression = getScopeReferenceExpression(
+                val scopeExpression = getScopeExpression(
                     callExpression.reference,
                     callExpression
                 )
-                if (scopeReferenceExpression != null) {
-                    scopeReferenceExpression.parent = callExpression
-                    callExpression.receiver = scopeReferenceExpression
+                if (scopeExpression != null) {
+                    scopeExpression.parent = callExpression
+                    callExpression.receiver = scopeExpression
                 }
             }
         }
