@@ -28,8 +28,8 @@ object CoreKtInt : CoreScope(Core.Kt.C_Int) {
     val F_times_Int = object : BinaryCoreFunctionDeclaration(
         parent,
         "times",
-        SvBinaryOperatorKind.MUL,
-        Core.Kt.C_Int
+        "fun times(Int)",
+        SvBinaryOperatorKind.MUL
     ) {
 
         override fun evaluate(callExpression: EKtCallExpression): String? {
@@ -44,8 +44,8 @@ object CoreKtInt : CoreScope(Core.Kt.C_Int) {
     val F_plus_Int = object : BinaryCoreFunctionDeclaration(
         parent,
         "plus",
-        SvBinaryOperatorKind.PLUS,
-        Core.Kt.C_Int
+        "fun plus(Int)",
+        SvBinaryOperatorKind.PLUS
     ) {
 
         override fun evaluate(callExpression: EKtCallExpression): String? {
@@ -60,8 +60,8 @@ object CoreKtInt : CoreScope(Core.Kt.C_Int) {
     val F_minus_Int = object : BinaryCoreFunctionDeclaration(
         parent,
         "minus",
-        SvBinaryOperatorKind.MINUS,
-        Core.Kt.C_Int
+        "fun minus(Int)",
+        SvBinaryOperatorKind.MINUS
     ) {
 
         override fun evaluate(callExpression: EKtCallExpression): String? {
@@ -73,11 +73,11 @@ object CoreKtInt : CoreScope(Core.Kt.C_Int) {
         }
     }
 
-    val F_lt_Int = BinaryCoreFunctionDeclaration(parent, "lt", SvBinaryOperatorKind.LT, Core.Kt.C_Int)
+    val F_lt_Int = BinaryCoreFunctionDeclaration(parent, "lt", null, SvBinaryOperatorKind.LT)
 
-    val F_lteq_Int = BinaryCoreFunctionDeclaration(parent, "lteq", SvBinaryOperatorKind.LTEQ, Core.Kt.C_Int)
+    val F_lteq_Int = BinaryCoreFunctionDeclaration(parent, "lteq", null, SvBinaryOperatorKind.LTEQ)
 
-    val F_gt_Int = BinaryCoreFunctionDeclaration(parent, "gt", SvBinaryOperatorKind.GT, Core.Kt.C_Int)
+    val F_gt_Int = BinaryCoreFunctionDeclaration(parent, "gt", null, SvBinaryOperatorKind.GT)
 
-    val F_gteq_Int = BinaryCoreFunctionDeclaration(parent, "gteq", SvBinaryOperatorKind.GTEQ, Core.Kt.C_Int)
+    val F_gteq_Int = BinaryCoreFunctionDeclaration(parent, "gteq", null, SvBinaryOperatorKind.GTEQ)
 }

@@ -32,7 +32,7 @@ internal class UnaryExpressionTransformerStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SvUnaryExpression(Boolean, KtReferenceExpression(*), LOGICAL_NEG)",
+            "SvUnaryExpression(Boolean, ReferenceExpression(*), LOGICAL_NEG)",
             projectContext.findExpression("y")
         )
     }
@@ -47,7 +47,7 @@ internal class UnaryExpressionTransformerStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SvUnaryExpression(Int, KtReferenceExpression(*), POST_INC)",
+            "SvUnaryExpression(Int, ReferenceExpression(*), POST_INC)",
             projectContext.findExpression("y")
         )
     }

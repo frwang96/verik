@@ -19,10 +19,10 @@ package io.verik.compiler.transform.mid
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EPropertyStatement
+import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.ETemporaryProperty
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
-import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.common.ProjectStage
@@ -128,7 +128,7 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
                 EKtBinaryExpression(
                     expression.location,
                     Core.Kt.C_Unit.toType(),
-                    EKtReferenceExpression(expression.location, temporaryProperty.type.copy(), temporaryProperty, null),
+                    EReferenceExpression(expression.location, temporaryProperty.type.copy(), temporaryProperty, null),
                     expression,
                     KtBinaryOperatorKind.EQ
                 )

@@ -56,7 +56,7 @@ internal class CaseStatementTransformerStageTest : BaseTest() {
             """
                 CaseStatement(
                     Unit,
-                    KtReferenceExpression(*),
+                    ReferenceExpression(*),
                     [CaseEntry([ConstantExpression(Int, 0)], *), CaseEntry([], *)]
                 )
             """.trimIndent(),

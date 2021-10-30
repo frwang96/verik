@@ -27,7 +27,6 @@ import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
-import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
@@ -97,11 +96,6 @@ object UntransformedElementCheckerStage : ProjectStage() {
         override fun visitKtBinaryExpression(binaryExpression: EKtBinaryExpression) {
             super.visitKtBinaryExpression(binaryExpression)
             Messages.INTERNAL_ERROR.on(binaryExpression, "Binary expression $message")
-        }
-
-        override fun visitKtReferenceExpression(referenceExpression: EKtReferenceExpression) {
-            super.visitKtReferenceExpression(referenceExpression)
-            Messages.INTERNAL_ERROR.on(referenceExpression, "Reference expression $message")
         }
 
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {

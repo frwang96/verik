@@ -19,9 +19,9 @@ package io.verik.compiler.interpret
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EPropertyStatement
+import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtProperty
-import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.sv.EAbstractComponentInstantiation
 import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
 import io.verik.compiler.ast.element.sv.EBasicComponentInstantiation
@@ -157,7 +157,7 @@ object PropertyInterpreterStage : ProjectStage() {
             matchPortName: Boolean
         ): PortInstantiation {
             if (matchPortName) {
-                if (expression !is EKtReferenceExpression ||
+                if (expression !is EReferenceExpression ||
                     expression.receiver != null ||
                     expression.reference.name != port.name
                 ) {

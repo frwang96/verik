@@ -63,7 +63,7 @@ internal class ExpressionCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtUnaryExpression(Int, KtReferenceExpression(*), POST_INC)",
+            "KtUnaryExpression(Int, ReferenceExpression(*), POST_INC)",
             projectContext.findExpression("f")
         )
     }
@@ -106,7 +106,7 @@ internal class ExpressionCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtReferenceExpression(Int, x, null)",
+            "ReferenceExpression(Int, x, null)",
             projectContext.findExpression("y")
         )
     }
@@ -121,7 +121,7 @@ internal class ExpressionCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtReferenceExpression(Int, x, null)",
+            "ReferenceExpression(Int, x, null)",
             projectContext.findExpression("y")
         )
     }
@@ -136,7 +136,7 @@ internal class ExpressionCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtReferenceExpression(E, A, null)",
+            "ReferenceExpression(E, A, null)",
             projectContext.findExpression("x")
         )
     }
@@ -167,7 +167,7 @@ internal class ExpressionCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Int, plus, KtReferenceExpression(*), [ConstantExpression(*)], [])",
+            "KtCallExpression(Int, plus, ReferenceExpression(*), [ConstantExpression(*)], [])",
             projectContext.findExpression("y")
         )
     }
@@ -271,7 +271,7 @@ internal class ExpressionCasterTest : BaseTest() {
                 KtCallExpression(
                     Unit,
                     forEach,
-                    KtReferenceExpression(*),
+                    ReferenceExpression(*),
                     [FunctionLiteralExpression(Function, [KtValueParameter(y, Boolean, [], false)], *)],
                     [Boolean]
                 )
@@ -296,7 +296,7 @@ internal class ExpressionCasterTest : BaseTest() {
                 KtCallExpression(
                     Unit,
                     forEach,
-                    KtReferenceExpression(*),
+                    ReferenceExpression(*),
                     [FunctionLiteralExpression(Function, [KtValueParameter(it, Boolean, [], false)], *)],
                     [Boolean]
                 )
@@ -330,7 +330,7 @@ internal class ExpressionCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "IfExpression(Int, KtReferenceExpression(*), ConstantExpression(*), ConstantExpression(*))",
+            "IfExpression(Int, ReferenceExpression(*), ConstantExpression(*), ConstantExpression(*))",
             projectContext.findExpression("y")
         )
     }
@@ -386,7 +386,7 @@ internal class ExpressionCasterTest : BaseTest() {
                 ForExpression(
                     Unit,
                     KtValueParameter(y, Boolean, [], false),
-                    KtReferenceExpression(*),
+                    ReferenceExpression(*),
                     KtBlockExpression(Unit, [])
                 )
             """.trimIndent(),

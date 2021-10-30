@@ -17,18 +17,20 @@
 package io.verik.compiler.core.declaration.vk
 
 import io.verik.compiler.core.common.CoreCardinalFunctionDeclaration
+import io.verik.compiler.core.common.CorePackage
+import io.verik.compiler.core.common.CoreScope
 
-object CoreVkCardinal {
+object CoreVkCardinal : CoreScope(CorePackage.VK) {
 
-    val N_ADD = CoreCardinalFunctionDeclaration("ADD")
-    val N_SUB = CoreCardinalFunctionDeclaration("SUB")
-    val N_MUL = CoreCardinalFunctionDeclaration("MUL")
-    val N_MAX = CoreCardinalFunctionDeclaration("MAX")
-    val N_MIN = CoreCardinalFunctionDeclaration("MIN")
-    val N_ID = CoreCardinalFunctionDeclaration("ID")
-    val N_INC = CoreCardinalFunctionDeclaration("INC")
-    val N_DEC = CoreCardinalFunctionDeclaration("DEC")
-    val N_LOG = CoreCardinalFunctionDeclaration("LOG")
-    val N_WIDTH = CoreCardinalFunctionDeclaration("WIDTH")
-    val N_EXP = CoreCardinalFunctionDeclaration("EXP")
+    val N_ADD = CoreCardinalFunctionDeclaration(parent, "ADD")
+    val N_SUB = CoreCardinalFunctionDeclaration(parent, "SUB")
+    val N_MUL = CoreCardinalFunctionDeclaration(parent, "MUL")
+    val N_MAX = CoreCardinalFunctionDeclaration(parent, "MAX")
+    val N_MIN = CoreCardinalFunctionDeclaration(parent, "MIN")
+    val N_ID = CoreCardinalFunctionDeclaration(parent, "ID")
+    val N_INC = CoreCardinalFunctionDeclaration(parent, "INC")
+    val N_DEC = CoreCardinalFunctionDeclaration(parent, "DEC")
+    val N_LOG = CoreCardinalFunctionDeclaration(parent, "LOG")
+    val N_WIDTH = CoreCardinalFunctionDeclaration(parent, "WIDTH")
+    val N_EXP = CoreCardinalFunctionDeclaration(parent, "EXP")
 }

@@ -67,7 +67,7 @@ internal class TypeResolverStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtReferenceExpression(Boolean, x, null)",
+            "ReferenceExpression(Boolean, x, null)",
             projectContext.findExpression("f")
         )
     }
@@ -85,7 +85,7 @@ internal class TypeResolverStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtReferenceExpression(Ubit<`8`>, x, *)",
+            "ReferenceExpression(Ubit<`8`>, x, *)",
             projectContext.findExpression("f")
         )
     }

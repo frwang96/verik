@@ -60,7 +60,7 @@ internal class StringTemplateExpressionCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "StringTemplateExpression(String, [KtReferenceExpression(*)])",
+            "StringTemplateExpression(String, [ReferenceExpression(*)])",
             projectContext.findExpression("y")
         )
     }

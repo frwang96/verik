@@ -22,6 +22,7 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.common.EPropertyStatement
+import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ESuperExpression
 import io.verik.compiler.ast.element.common.EThisExpression
@@ -63,7 +64,6 @@ import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvProperty
-import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.element.sv.ETask
@@ -208,8 +208,8 @@ class SourceSerializerVisitor(private val serializerContext: SerializerContext) 
         ExpressionSerializer.serializeSvBinaryExpression(binaryExpression, serializerContext)
     }
 
-    override fun visitSvReferenceExpression(referenceExpression: ESvReferenceExpression) {
-        ExpressionSerializer.serializeSvReferenceExpression(referenceExpression, serializerContext)
+    override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
+        ExpressionSerializer.serializeReferenceExpression(referenceExpression, serializerContext)
     }
 
     override fun visitSvCallExpression(callExpression: ESvCallExpression) {

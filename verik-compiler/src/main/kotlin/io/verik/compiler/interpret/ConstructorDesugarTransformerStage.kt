@@ -18,13 +18,13 @@ package io.verik.compiler.interpret
 
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EThisExpression
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtConstructor
 import io.verik.compiler.ast.element.kt.EKtProperty
-import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
@@ -100,13 +100,13 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
             primaryConstructor.valueParameters.zip(properties).forEach { (valueParameter, property) ->
                 if (property != null) {
                     val thisExpression = EThisExpression(valueParameter.location, primaryConstructor.type.copy())
-                    val propertyReferenceExpression = EKtReferenceExpression(
+                    val propertyReferenceExpression = EReferenceExpression(
                         valueParameter.location,
                         valueParameter.type.copy(),
                         property,
                         thisExpression
                     )
-                    val valueParameterReferenceExpression = EKtReferenceExpression(
+                    val valueParameterReferenceExpression = EReferenceExpression(
                         valueParameter.location,
                         valueParameter.type.copy(),
                         valueParameter,

@@ -17,14 +17,14 @@
 package io.verik.compiler.core.common
 
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.kt.EKtReferenceExpression
+import io.verik.compiler.ast.element.common.EReferenceExpression
 
 abstract class CorePropertyDeclaration(
-    parent: String,
+    final override val parent: CoreDeclaration,
     final override var name: String
 ) : CoreDeclaration {
 
-    override val qualifiedName = "$parent.$name"
+    override val signature: String? = "val $name"
 
-    abstract fun transform(referenceExpression: EKtReferenceExpression): EExpression
+    abstract fun transform(referenceExpression: EReferenceExpression): EExpression
 }

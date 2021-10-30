@@ -60,7 +60,7 @@ internal class ScopeExpressionInsertionTransformerStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtReferenceExpression(Boolean, x, ScopeExpression(Void, test_pkg))",
+            "ReferenceExpression(Boolean, x, ScopeExpression(Void, test_pkg))",
             projectContext.findExpression("f")
         )
     }

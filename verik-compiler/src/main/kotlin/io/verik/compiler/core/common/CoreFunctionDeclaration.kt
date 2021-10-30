@@ -23,55 +23,42 @@ import io.verik.compiler.ast.property.SvUnaryOperatorKind
 import io.verik.compiler.resolve.TypeConstraint
 import io.verik.compiler.target.common.TargetFunctionDeclaration
 
-sealed class CoreFunctionDeclaration constructor(
-    override var name: String,
-    override val qualifiedName: String,
-    val parameterClassNames: List<String>
-) : CoreDeclaration {
+sealed class CoreFunctionDeclaration : CoreDeclaration {
 
     open fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
         return listOf()
     }
-
-    constructor(
-        parent: String,
-        name: String,
-        vararg parameterClassDeclarations: CoreClassDeclaration
-    ) : this(
-        name,
-        "$parent.$name",
-        parameterClassDeclarations.map { it.name }
-    )
 }
 
 open class BasicCoreFunctionDeclaration(
-    parent: String,
-    name: String,
-    val targetFunctionDeclaration: TargetFunctionDeclaration?,
-    vararg parameterClassDeclarations: CoreClassDeclaration
-) : CoreFunctionDeclaration(parent, name, *parameterClassDeclarations)
+    override val parent: CoreDeclaration,
+    override var name: String,
+    override val signature: String?,
+    val targetFunctionDeclaration: TargetFunctionDeclaration?
+) : CoreFunctionDeclaration()
 
 abstract class TransformableCoreFunctionDeclaration(
-    parent: String,
-    name: String,
-    vararg parameterClassDeclarations: CoreClassDeclaration
-) : CoreFunctionDeclaration(parent, name, *parameterClassDeclarations) {
+    override val parent: CoreDeclaration,
+    override var name: String,
+    override val signature: String?
+) : CoreFunctionDeclaration() {
 
     abstract fun transform(callExpression: EKtCallExpression): EExpression
 }
 
 open class UnaryCoreFunctionDeclaration(
-    parent: String,
-    name: String,
+    override val parent: CoreDeclaration,
+    override var name: String,
+    override val signature: String?,
     val kind: SvUnaryOperatorKind
-) : CoreFunctionDeclaration(parent, name)
+) : CoreFunctionDeclaration()
 
 open class BinaryCoreFunctionDeclaration(
-    parent: String,
-    name: String,
-    val kind: SvBinaryOperatorKind,
-    vararg parameterClassDeclarations: CoreClassDeclaration
-) : CoreFunctionDeclaration(parent, name, *parameterClassDeclarations) {
+    override val parent: CoreDeclaration,
+    override var name: String,
+    override val signature: String?,
+    val kind: SvBinaryOperatorKind
+) : CoreFunctionDeclaration() {
 
     open fun evaluate(callExpression: EKtCallExpression): String? {
         return null

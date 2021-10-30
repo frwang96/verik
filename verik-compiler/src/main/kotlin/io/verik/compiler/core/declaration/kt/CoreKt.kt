@@ -20,7 +20,6 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.ERepeatStatement
-import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
@@ -30,8 +29,7 @@ object CoreKt : CoreScope(CorePackage.KT) {
     val F_repeat_Int_Function = object : TransformableCoreFunctionDeclaration(
         parent,
         "repeat",
-        Core.Kt.C_Int,
-        Core.Kt.C_Function
+        "fun repeat(Int, Function)"
     ) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {

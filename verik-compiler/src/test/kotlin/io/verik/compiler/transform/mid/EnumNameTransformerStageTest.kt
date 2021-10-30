@@ -35,7 +35,7 @@ internal class EnumNameTransformerStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "StringTemplateExpression(String, [KtCallExpression(String, name, KtReferenceExpression(*), [], [])])",
+            "StringTemplateExpression(String, [KtCallExpression(String, name, ReferenceExpression(*), [], [])])",
             projectContext.findExpression("f")
         )
     }

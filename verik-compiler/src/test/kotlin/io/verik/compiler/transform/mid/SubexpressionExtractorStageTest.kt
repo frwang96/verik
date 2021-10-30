@@ -39,8 +39,8 @@ internal class SubexpressionExtractorStageTest : BaseTest() {
                     PropertyStatement(Unit, TemporaryProperty(Ubit<`1`>, StreamingExpression(*))),
                     KtBinaryExpression(
                         Unit,
-                        KtReferenceExpression(Ubit<`1`>, x, null),
-                        KtCallExpression(Ubit<`1`>, plus, KtReferenceExpression(Ubit<`1`>, <tmp>, null), [*], []),
+                        ReferenceExpression(Ubit<`1`>, x, null),
+                        KtCallExpression(Ubit<`1`>, plus, ReferenceExpression(Ubit<`1`>, <tmp>, null), [*], []),
                         EQ
                     )
                 ]

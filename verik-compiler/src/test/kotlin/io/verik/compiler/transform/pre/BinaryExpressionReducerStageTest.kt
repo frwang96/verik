@@ -32,7 +32,7 @@ internal class BinaryExpressionReducerStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Int, plus, KtReferenceExpression(*), [ConstantExpression(*)], [])",
+            "KtCallExpression(Int, plus, ReferenceExpression(*), [ConstantExpression(*)], [])",
             projectContext.findExpression("y")
         )
     }
@@ -52,7 +52,7 @@ internal class BinaryExpressionReducerStageTest : BaseTest() {
                 KtCallExpression(
                     Int,
                     plus,
-                    KtCallExpression(Int, plus, KtReferenceExpression(*), [KtReferenceExpression(*)], []),
+                    KtCallExpression(Int, plus, ReferenceExpression(*), [ReferenceExpression(*)], []),
                     [ConstantExpression(*)],
                     []
                 )

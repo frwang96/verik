@@ -18,8 +18,8 @@ package io.verik.compiler.transform.mid
 
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EPropertyStatement
+import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
-import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.common.ProjectStage
@@ -57,7 +57,7 @@ object PropertyStatementReorderStage : ProjectStage() {
                             val statement = ESvBinaryExpression(
                                 it.location,
                                 Core.Kt.C_Unit.toType(),
-                                EKtReferenceExpression(it.location, it.property.type.copy(), it.property, null),
+                                EReferenceExpression(it.location, it.property.type.copy(), it.property, null),
                                 initializer,
                                 SvBinaryOperatorKind.ASSIGN
                             )

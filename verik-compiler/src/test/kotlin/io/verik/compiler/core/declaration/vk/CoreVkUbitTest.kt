@@ -33,7 +33,7 @@ internal class CoreVkUbitTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SvArrayAccessExpression(Boolean, KtReferenceExpression(*), ConstantExpression(*))",
+            "SvArrayAccessExpression(Boolean, ReferenceExpression(*), ConstantExpression(*))",
             projectContext.findExpression("y")
         )
     }
@@ -53,7 +53,7 @@ internal class CoreVkUbitTest : BaseTest() {
             """
                 KtBinaryExpression(
                     Unit,
-                    SvArrayAccessExpression(Boolean, KtReferenceExpression(*), ConstantExpression(*)),
+                    SvArrayAccessExpression(Boolean, ReferenceExpression(*), ConstantExpression(*)),
                     ConstantExpression(*),
                     EQ
                 )
@@ -102,7 +102,7 @@ internal class CoreVkUbitTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "StreamingExpression(Ubit<`8`>, KtReferenceExpression(*))",
+            "StreamingExpression(Ubit<`8`>, ReferenceExpression(*))",
             projectContext.findExpression("y")
         )
     }
@@ -181,7 +181,7 @@ internal class CoreVkUbitTest : BaseTest() {
             """
                 ConstantPartSelectExpression(
                     Ubit<`4`>,
-                    KtReferenceExpression(*),
+                    ReferenceExpression(*),
                     KtCallExpression(Int, plus, ConstantExpression(*), [ConstantExpression(Int, 3)], []),
                     ConstantExpression(*)
                 )

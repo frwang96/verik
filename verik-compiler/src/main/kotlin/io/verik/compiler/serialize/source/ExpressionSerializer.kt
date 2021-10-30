@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.common.EPropertyStatement
+import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.EWhileExpression
 import io.verik.compiler.ast.element.sv.ECaseStatement
@@ -42,7 +43,6 @@ import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
 import io.verik.compiler.ast.element.sv.ESvCallExpression
-import io.verik.compiler.ast.element.sv.ESvReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.sv.EWidthCastExpression
 import io.verik.compiler.ast.property.EdgeType
@@ -100,14 +100,14 @@ object ExpressionSerializer {
         serializerContext.serializeAsExpression(binaryExpression.right)
     }
 
-    fun serializeSvReferenceExpression(
-        referenceExpression: ESvReferenceExpression,
+    fun serializeReferenceExpression(
+        referenceExpression: EReferenceExpression,
         serializerContext: SerializerContext
     ) {
         val receiver = referenceExpression.receiver
         if (receiver != null) {
             serializerContext.serializeAsExpression(receiver)
-            serializerContext.append(if (referenceExpression.isScopeResolution) "::" else ".")
+            serializerContext.append(if (receiver is EScopeExpression) "::" else ".")
         }
         serializerContext.append(referenceExpression.reference.name)
     }
@@ -116,7 +116,7 @@ object ExpressionSerializer {
         val receiver = callExpression.receiver
         if (receiver != null) {
             serializerContext.serializeAsExpression(receiver)
-            serializerContext.append(if (callExpression.isScopeResolution) "::" else ".")
+            serializerContext.append(if (receiver is EScopeExpression) "::" else ".")
         }
         serializerContext.append(callExpression.reference.name)
         serializerContext.append("(")

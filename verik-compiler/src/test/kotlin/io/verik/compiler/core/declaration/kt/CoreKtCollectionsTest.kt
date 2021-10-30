@@ -40,8 +40,8 @@ internal class CoreKtCollectionsTest : BaseTest() {
                     Void,
                     SvValueParameter(it, Int),
                     ConstantExpression(Int, 0),
-                    KtCallExpression(Boolean, lt, KtReferenceExpression(Int, it, null), [ConstantExpression(*)], []),
-                    KtUnaryExpression(Int, KtReferenceExpression(*), POST_INC),
+                    KtCallExpression(Boolean, lt, ReferenceExpression(Int, it, null), [ConstantExpression(*)], []),
+                    KtUnaryExpression(Int, ReferenceExpression(*), POST_INC),
                     KtBlockExpression(Function, [])
                 )
             """.trimIndent(),

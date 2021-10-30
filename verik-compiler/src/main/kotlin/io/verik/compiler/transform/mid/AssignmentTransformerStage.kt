@@ -18,9 +18,9 @@ package io.verik.compiler.transform.mid
 
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
-import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.EClockingBlock
@@ -47,7 +47,7 @@ object AssignmentTransformerStage : ProjectStage() {
         private fun getKind(binaryExpression: EKtBinaryExpression): SvBinaryOperatorKind {
             if (inAlwaysSeqBlock) {
                 var referenceExpression: EExpression? = binaryExpression.left
-                while (referenceExpression is EKtReferenceExpression) {
+                while (referenceExpression is EReferenceExpression) {
                     val reference = referenceExpression.reference
                     if (reference is EDeclaration && reference.parent is EAbstractContainerComponent)
                         return SvBinaryOperatorKind.ARROW_ASSIGN
@@ -55,7 +55,7 @@ object AssignmentTransformerStage : ProjectStage() {
                 }
             } else {
                 var referenceExpression: EExpression? = binaryExpression.left
-                while (referenceExpression is EKtReferenceExpression) {
+                while (referenceExpression is EReferenceExpression) {
                     val reference = referenceExpression.reference
                     if (reference is ETypedElement && reference.type.reference is EClockingBlock)
                         return SvBinaryOperatorKind.ARROW_ASSIGN

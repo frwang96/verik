@@ -19,8 +19,9 @@ package io.verik.compiler.core.common
 import io.verik.compiler.common.CardinalDeclaration
 
 class CoreCardinalFunctionDeclaration(
+    override val parent: CoreDeclaration,
     override var name: String
 ) : CoreDeclaration, CardinalDeclaration {
 
-    override val qualifiedName = "${CorePackage.VK.name}.$name"
+    override val signature: String = "typealias $name"
 }

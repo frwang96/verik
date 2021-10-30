@@ -20,5 +20,21 @@ import io.verik.compiler.ast.interfaces.Declaration
 
 interface CoreDeclaration : Declaration {
 
-    val qualifiedName: String
+    val parent: CoreDeclaration?
+
+    val signature: String?
+
+    fun getQualifiedSignature(): QualifiedSignature? {
+        val signature = signature
+        return if (signature != null) {
+            QualifiedSignature(getQualifiedName(), signature)
+        } else null
+    }
+
+    private fun getQualifiedName(): String {
+        val parent = parent
+        return if (parent != null) {
+            "${parent.getQualifiedName()}.$name"
+        } else name
+    }
 }

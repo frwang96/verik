@@ -21,9 +21,9 @@ import io.verik.compiler.ast.element.common.EAbstractFunction
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EFile
+import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.ETemporaryProperty
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
-import io.verik.compiler.ast.element.kt.EKtReferenceExpression
 import io.verik.compiler.message.Messages
 
 class SubexpressionExtractor {
@@ -75,7 +75,7 @@ class SubexpressionExtractor {
         subexpressionExtractorEntry.initializerExpressions.forEach { it.parent = blockExpression }
         blockExpression.statements.addAll(blockExpressionIndex, subexpressionExtractorEntry.initializerExpressions)
 
-        val referenceExpression = EKtReferenceExpression(
+        val referenceExpression = EReferenceExpression(
             subexpressionExtractorEntry.expression.location,
             subexpressionExtractorEntry.temporaryProperty.type.copy(),
             subexpressionExtractorEntry.temporaryProperty,
