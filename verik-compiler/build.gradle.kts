@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import org.jlleitschuh.gradle.ktlint.KtlintExtension
+
 group = "io.verik"
 
 plugins {
@@ -68,7 +70,7 @@ tasks.register<Jar>("javadocJar") {
     from(tasks.dokkaJavadoc)
 }
 
-configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
+configure<KtlintExtension> {
     disabledRules.set(listOf("no-wildcard-imports"))
 }
 
