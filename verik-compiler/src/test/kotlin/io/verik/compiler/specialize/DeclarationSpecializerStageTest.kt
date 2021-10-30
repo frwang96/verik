@@ -32,7 +32,7 @@ internal class DeclarationSpecializerStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtBasicClass(C_8, [], [], [], false, false, PrimaryConstructor(C_8, [], []), null)",
+            "KtBasicClass(C_8, [], [], [], false, false, false, PrimaryConstructor(C_8, [], []), null)",
             projectContext.findDeclaration("C_8")
         )
     }
@@ -49,7 +49,19 @@ internal class DeclarationSpecializerStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtBasicClass(C_8, [KtProperty(x, Ubit<`8`>, KtCallExpression(*), [])], [], [], false, false, *, null)",
+            """
+                KtBasicClass(
+                    C_8,
+                    [KtProperty(x, Ubit<`8`>, KtCallExpression(*), [])],
+                    [],
+                    [],
+                    false,
+                    false,
+                    false,
+                    *,
+                    null
+                )
+            """.trimIndent(),
             projectContext.findDeclaration("C_8")
         )
     }

@@ -56,13 +56,13 @@ object PropertyInterpreterStage : ProjectStage() {
 
         private fun interpret(property: EKtProperty): EDeclaration {
             interpretAbstractComponentInstantiation(property)?.let { return it }
-            val isLifetimeStatic = if (property.parent is EPropertyStatement) false else null
+            val isStatic = if (property.parent is EPropertyStatement) false else null
             return ESvProperty(
                 property.location,
                 property.name,
                 property.type,
                 property.initializer,
-                isLifetimeStatic
+                isStatic
             )
         }
 

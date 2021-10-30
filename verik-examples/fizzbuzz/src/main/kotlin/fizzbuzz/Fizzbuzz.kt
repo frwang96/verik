@@ -21,30 +21,13 @@ import io.verik.core.*
 @Top
 class Fizzbuzz : Module() {
 
-    var x: Unpacked<`8`, Ubit<`8`>> = nc()
-    @Suppress("unused")
-    var a: ArrayList<C> = nc()
-
     @Run
     fun main() {
-        x = g(x)
-        @Suppress("UNUSED_VARIABLE")
-        val c = C(0)
-        c.f()
-        val d = D()
-        d.f()
-        a = ArrayList()
-        a.add(c)
-    }
-
-    fun g(x: Unpacked<`8`, Ubit<`8`>>): Unpacked<`8`, Ubit<`8`>> {
-        return x
+        println(E.e)
     }
 }
 
-open class C(val a: Int) {
+object E {
 
-    fun f() {}
+    val e = 0
 }
-
-class D : C(0)

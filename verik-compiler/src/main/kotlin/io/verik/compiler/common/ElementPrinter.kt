@@ -175,6 +175,7 @@ class ElementPrinter : Visitor() {
             build(basicClass.annotations)
             build(basicClass.isEnum)
             build(basicClass.isAbstract)
+            build(basicClass.isObject)
             build(basicClass.primaryConstructor)
             buildSuperTypeCallEntry(basicClass.superTypeCallEntry)
         }
@@ -251,7 +252,7 @@ class ElementPrinter : Visitor() {
             build(function.name)
             build(function.type.toString())
             build(function.body)
-            build(function.isScopeStatic)
+            build(function.isStatic)
             build(function.qualifierType.toString())
             build(function.valueParameters)
         }
@@ -319,7 +320,7 @@ class ElementPrinter : Visitor() {
             build(property.name)
             build(property.type.toString())
             build(property.initializer)
-            build(property.isLifetimeStatic)
+            build(property.isStatic)
         }
     }
 

@@ -91,6 +91,7 @@ object DeclarationSpecializer {
             annotations,
             basicClass.isEnum,
             basicClass.isAbstract,
+            basicClass.isObject,
             primaryConstructor,
             superTypeCallEntry
         )

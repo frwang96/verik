@@ -39,6 +39,7 @@ class EKtBasicClass(
     override var annotations: List<EAnnotation> = listOf()
     var isEnum: Boolean = false
     var isAbstract: Boolean = false
+    var isObject: Boolean = false
     var primaryConstructor: EPrimaryConstructor? = null
     var superTypeCallEntry: SuperTypeCallEntry? = null
 
@@ -49,6 +50,7 @@ class EKtBasicClass(
         annotations: List<EAnnotation>,
         isEnum: Boolean,
         isAbstract: Boolean,
+        isObject: Boolean,
         primaryConstructor: EPrimaryConstructor?,
         superTypeCallEntry: SuperTypeCallEntry?
     ) {
@@ -63,6 +65,7 @@ class EKtBasicClass(
         this.annotations = annotations
         this.isEnum = isEnum
         this.isAbstract = isAbstract
+        this.isObject = isObject
         this.primaryConstructor = primaryConstructor
         this.superTypeCallEntry = superTypeCallEntry
     }

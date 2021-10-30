@@ -64,7 +64,7 @@ object ScopeExpressionInsertionTransformerStage : ProjectStage() {
                                 return EScopeExpression(receiverExpression.location, basicPackage.toType())
                         }
                         is ESvBasicClass -> {
-                            if (reference is ESvFunction && reference.isScopeStatic)
+                            if (reference is ESvFunction && reference.isStatic)
                                 return EScopeExpression(receiverExpression.location, parent.toType())
                         }
                     }

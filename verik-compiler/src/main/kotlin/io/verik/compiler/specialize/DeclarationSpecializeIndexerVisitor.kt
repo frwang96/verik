@@ -18,6 +18,7 @@ package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EReceiverExpression
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.kt.EKtAbstractFunction
@@ -53,6 +54,16 @@ class DeclarationSpecializeIndexerVisitor(
         }
     }
 
+    private fun addParentObject(receiverExpression: EReceiverExpression) {
+        val reference = receiverExpression.reference
+        if (reference is EDeclaration) {
+            val parent = reference.parent
+            if (parent is EKtBasicClass && parent.isObject) {
+                declarationBindingQueue.push(DeclarationBinding(parent, TypeParameterContext.EMPTY))
+            }
+        }
+    }
+
     override fun visitTypedElement(typedElement: ETypedElement) {
         super.visitTypedElement(typedElement)
         addType(typedElement.type, typedElement)
@@ -62,6 +73,7 @@ class DeclarationSpecializeIndexerVisitor(
                 val typeParameterContext = TypeParameterContext.getFromReceiver(typedElement, specializerContext)
                 declarationBindingQueue.push(DeclarationBinding(reference, typeParameterContext))
             }
+            addParentObject(typedElement)
         }
         if (typedElement is EKtCallExpression) {
             typedElement.typeArguments.forEach {
@@ -84,6 +96,7 @@ class DeclarationSpecializeIndexerVisitor(
                 )
                 declarationBindingQueue.push(DeclarationBinding(reference, typeParameterContext))
             }
+            addParentObject(typedElement)
         }
     }
 

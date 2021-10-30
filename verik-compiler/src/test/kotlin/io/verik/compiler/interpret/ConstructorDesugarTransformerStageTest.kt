@@ -42,6 +42,7 @@ internal class ConstructorDesugarTransformerStageTest : BaseTest() {
                     [],
                     false,
                     false,
+                    false,
                     null,
                     null
                 )
@@ -74,6 +75,7 @@ internal class ConstructorDesugarTransformerStageTest : BaseTest() {
                     ],
                     [],
                     [],
+                    false,
                     false,
                     false,
                     null,
