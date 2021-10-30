@@ -114,7 +114,8 @@ object BasicClassInterpreterStage : ProjectStage() {
                     basicClass.name,
                     basicClass.superType,
                     declarations,
-                    basicClass.isAbstract
+                    basicClass.isAbstract,
+                    basicClass.isObject
                 )
             )
         }

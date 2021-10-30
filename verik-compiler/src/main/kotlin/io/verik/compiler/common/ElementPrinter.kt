@@ -186,6 +186,7 @@ class ElementPrinter : Visitor() {
             build(basicClass.name)
             build(basicClass.declarations)
             build(basicClass.isVirtual)
+            build(basicClass.isDeclarationsStatic)
         }
     }
 

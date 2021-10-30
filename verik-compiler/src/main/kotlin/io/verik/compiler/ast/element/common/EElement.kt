@@ -56,6 +56,11 @@ abstract class EElement {
         }
     }
 
+    fun getParentBasicPackage(): EBasicPackage? {
+        return if (this is EBasicPackage) this
+        else parent?.getParentBasicPackage()
+    }
+
     abstract fun accept(visitor: Visitor)
 
     abstract fun acceptChildren(visitor: TreeVisitor)

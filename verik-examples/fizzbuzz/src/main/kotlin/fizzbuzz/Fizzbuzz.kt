@@ -24,10 +24,13 @@ class Fizzbuzz : Module() {
     @Run
     fun main() {
         println(E.e)
+        E.f()
     }
 }
 
 object E {
 
     val e = 0
+
+    fun f() {}
 }

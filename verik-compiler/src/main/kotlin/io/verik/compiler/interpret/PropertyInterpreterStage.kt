@@ -31,6 +31,7 @@ import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EModulePort
 import io.verik.compiler.ast.element.sv.EModulePortInstantiation
 import io.verik.compiler.ast.element.sv.EPort
+import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.property.PortInstantiation
 import io.verik.compiler.ast.property.PortType
@@ -56,7 +57,11 @@ object PropertyInterpreterStage : ProjectStage() {
 
         private fun interpret(property: EKtProperty): EDeclaration {
             interpretAbstractComponentInstantiation(property)?.let { return it }
-            val isStatic = if (property.parent is EPropertyStatement) false else null
+            val isStatic = when (val parent = property.parent) {
+                is ESvBasicClass -> parent.isDeclarationsStatic
+                is EPropertyStatement -> false
+                else -> null
+            }
             return ESvProperty(
                 property.location,
                 property.name,
