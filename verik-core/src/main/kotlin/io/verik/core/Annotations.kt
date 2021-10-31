@@ -25,10 +25,16 @@ package io.verik.core
 annotation class Make
 
 /**
- * Annotates the top module of the hierarchy.
+ * Annotates the top module of the hierarchy for synthesis.
  */
 @Target(AnnotationTarget.CLASS)
-annotation class Top
+annotation class SynthTop
+
+/**
+ * Annotates the top module of the hierarchy for simulation.
+ */
+@Target(AnnotationTarget.CLASS)
+annotation class SimTop
 
 /**
  * Annotates input ports of a component.

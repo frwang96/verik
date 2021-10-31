@@ -18,7 +18,7 @@ package cache
 
 import io.verik.core.*
 
-@Top
+@SimTop
 object CacheTop : Module() {
 
     var clk = false

@@ -18,6 +18,7 @@ package cache
 
 import io.verik.core.*
 
+@SynthTop
 class Cache(
     @In var clk: Boolean,
     var ifRx: TxnIf.TxnRx,

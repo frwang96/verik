@@ -27,7 +27,8 @@ class EModule(
     override var superType: Type,
     override val ports: List<EPort>,
     override var declarations: ArrayList<EDeclaration>,
-    val isTop: Boolean
+    val isSynthesisTop: Boolean,
+    val isSimulationTop: Boolean
 ) : EAbstractContainerComponent() {
 
     init {

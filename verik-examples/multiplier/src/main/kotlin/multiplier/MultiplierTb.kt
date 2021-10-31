@@ -18,7 +18,7 @@ package multiplier
 
 import io.verik.core.*
 
-@Top
+@SimTop
 class MultiplierTb : Module() {
 
     var clk: Boolean = nc()

@@ -20,7 +20,7 @@ import io.verik.core.*
 
 typealias WIDTH = `8`
 
-@Top
+@SimTop
 object Count : Module() {
 
     var clk = false

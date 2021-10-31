@@ -18,7 +18,7 @@ package fizzbuzz
 
 import io.verik.core.*
 
-@Top
+@SimTop
 class Fizzbuzz : Module() {
 
     @Run

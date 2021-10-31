@@ -35,22 +35,31 @@ object ConfigFileSerializerStage : ProjectStage() {
             FileHeaderBuilder.HeaderStyle.TXT
         )
 
-        val topLevelModules = ArrayList<String>()
-        val topLevelModulesVisitor = object : TreeVisitor() {
+        val synthesisTopNames = ArrayList<String>()
+        val simulationTopNames = ArrayList<String>()
+        val topVisitor = object : TreeVisitor() {
             override fun visitModule(module: EModule) {
                 super.visitModule(module)
-                if (module.isTop)
-                    topLevelModules.add(module.name)
+                if (module.isSynthesisTop)
+                    synthesisTopNames.add(module.name)
+                if (module.isSimulationTop)
+                    simulationTopNames.add(module.name)
             }
         }
-        projectContext.project.accept(topLevelModulesVisitor)
+        projectContext.project.accept(topVisitor)
 
         val builder = StringBuilder()
         builder.append(fileHeader)
         builder.appendLine("timescale: ${projectContext.config.timescale}")
-        if (topLevelModules.isNotEmpty()) {
-            builder.appendLine("top:")
-            topLevelModules.forEach {
+        if (synthesisTopNames.isNotEmpty()) {
+            builder.appendLine("synthesisTop:")
+            synthesisTopNames.forEach {
+                builder.appendLine("  - $it")
+            }
+        }
+        if (simulationTopNames.isNotEmpty()) {
+            builder.appendLine("simulationTop:")
+            simulationTopNames.forEach {
                 builder.appendLine("  - $it")
             }
         }

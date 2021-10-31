@@ -18,7 +18,8 @@ package io.verik.compiler.core.common
 
 object Annotations {
 
-    const val TOP = "io.verik.core.Top"
+    const val SYNTHESIS_TOP = "io.verik.core.SynthTop"
+    const val SIMULATION_TOP = "io.verik.core.SimTop"
     const val RELABEL = "io.verik.core.Relabel"
 
     const val COM = "io.verik.core.Com"

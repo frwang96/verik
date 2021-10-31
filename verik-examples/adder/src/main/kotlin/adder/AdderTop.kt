@@ -20,7 +20,7 @@ import io.verik.core.*
 
 typealias WIDTH = `8`
 
-@Top
+@SimTop
 class AdderTop : Module() {
 
     var a: Ubit<WIDTH> = nc()

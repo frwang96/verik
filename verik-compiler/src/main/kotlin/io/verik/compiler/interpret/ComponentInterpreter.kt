@@ -36,14 +36,16 @@ object ComponentInterpreter {
         when {
             basicClassType.isSubtype(Core.Vk.C_Module.toType()) -> {
                 val ports = interpretPorts(basicClass.primaryConstructor?.valueParameters, referenceUpdater)
-                val isTop = basicClass.hasAnnotation(Annotations.TOP)
+                val isSynthesisTop = basicClass.hasAnnotation(Annotations.SYNTHESIS_TOP)
+                val isSimulationTop = basicClass.hasAnnotation(Annotations.SIMULATION_TOP)
                 val module = EModule(
                     basicClass.location,
                     basicClass.name,
                     basicClass.superType,
                     ports,
                     basicClass.declarations,
-                    isTop
+                    isSynthesisTop,
+                    isSimulationTop
                 )
                 referenceUpdater.replace(basicClass, module)
                 basicClass.primaryConstructor?.let { referenceUpdater.update(it, module) }

@@ -69,11 +69,15 @@ object DeclarationSpecializerStage : ProjectStage() {
         if (projectContext.config.enableDeadCodeElimination) {
             projectContext.project.files().forEach { file ->
                 file.declarations.forEach {
-                    if (it is Annotated && it.hasAnnotation(Annotations.TOP)) {
-                        if (it is TypeParameterized && it.typeParameters.isNotEmpty()) {
-                            Messages.TYPE_PARAMETERS_ON_TOP.on(it)
-                        } else {
-                            entryPoints.add(it)
+                    if (it is Annotated) {
+                        val isSynthesisTop = it.hasAnnotation(Annotations.SYNTHESIS_TOP)
+                        val isSimulationTop = it.hasAnnotation(Annotations.SIMULATION_TOP)
+                        if (isSynthesisTop || isSimulationTop) {
+                            if (it is TypeParameterized && it.typeParameters.isNotEmpty()) {
+                                Messages.TYPE_PARAMETERS_ON_TOP.on(it)
+                            } else {
+                                entryPoints.add(it)
+                            }
                         }
                     }
                 }
