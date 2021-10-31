@@ -46,45 +46,52 @@ object CoreKtCollections : CoreScope(CorePackage.KT_COLLECTIONS) {
             val valueParameter = functionLiteral.valueParameters[0]
                 .cast<ESvValueParameter>()
                 ?: return callExpression
-            val valueParameterReferenceExpression = EReferenceExpression(
-                valueParameter.location,
-                valueParameter.type.copy(),
-                valueParameter,
-                null
-            )
 
             val receiver = callExpression.receiver!!
             return when {
-                receiver is EKtCallExpression && receiver.reference == Core.Kt.Ranges.F_until_Int -> {
-                    val initializer = receiver.receiver!!
-                    val condition = EKtCallExpression(
-                        receiver.location,
-                        Core.Kt.C_Boolean.toType(),
-                        Core.Kt.Int.F_lt_Int,
-                        valueParameterReferenceExpression,
-                        arrayListOf(receiver.valueArguments[0]),
-                        ArrayList()
-                    )
-                    val iteration = EKtUnaryExpression(
-                        receiver.location,
-                        Core.Kt.C_Int.toType(),
-                        ExpressionCopier.copy(valueParameterReferenceExpression),
-                        KtUnaryOperatorKind.POST_INC
-                    )
-                    EForStatement(
-                        receiver.location,
-                        valueParameter,
-                        initializer,
-                        condition,
-                        iteration,
-                        functionLiteral.body
-                    )
-                }
+                receiver is EKtCallExpression && receiver.reference == Core.Kt.Ranges.F_until_Int ->
+                    transformForStatementUntil(functionLiteral, valueParameter, receiver)
                 else -> {
                     Messages.INTERNAL_ERROR.on(callExpression, "Unable to transform call expression into for statement")
                     callExpression
                 }
             }
         }
+    }
+
+    private fun transformForStatementUntil(
+        functionLiteral: EFunctionLiteralExpression,
+        valueParameter: ESvValueParameter,
+        callExpression: EKtCallExpression
+    ): EForStatement {
+        val initializer = callExpression.receiver!!
+        val valueParameterReferenceExpression = EReferenceExpression(
+            valueParameter.location,
+            valueParameter.type.copy(),
+            valueParameter,
+            null
+        )
+        val condition = EKtCallExpression(
+            callExpression.location,
+            Core.Kt.C_Boolean.toType(),
+            Core.Kt.Int.F_lt_Int,
+            valueParameterReferenceExpression,
+            arrayListOf(callExpression.valueArguments[0]),
+            ArrayList()
+        )
+        val iteration = EKtUnaryExpression(
+            callExpression.location,
+            Core.Kt.C_Int.toType(),
+            ExpressionCopier.copy(valueParameterReferenceExpression),
+            KtUnaryOperatorKind.POST_INC
+        )
+        return EForStatement(
+            callExpression.location,
+            valueParameter,
+            initializer,
+            condition,
+            iteration,
+            functionLiteral.body
+        )
     }
 }

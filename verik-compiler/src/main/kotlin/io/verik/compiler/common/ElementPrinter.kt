@@ -31,6 +31,7 @@ import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ERootPackage
 import io.verik.compiler.ast.element.common.ESuperExpression
 import io.verik.compiler.ast.element.common.ETemporaryProperty
+import io.verik.compiler.ast.element.common.ETemporaryValueParameter
 import io.verik.compiler.ast.element.common.EThisExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.common.EWhileExpression
@@ -385,6 +386,12 @@ class ElementPrinter : Visitor() {
         build("SvValueParameter") {
             build(valueParameter.name)
             build(valueParameter.type.toString())
+        }
+    }
+
+    override fun visitTemporaryValueParameter(temporaryValueParameter: ETemporaryValueParameter) {
+        build("TemporaryValueParameter") {
+            build(temporaryValueParameter.type.toString())
         }
     }
 

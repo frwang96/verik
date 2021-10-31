@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test
 internal class CoreKtCollectionsTest : BaseTest() {
 
     @Test
-    fun `transform forEach simple`() {
+    fun `transform forEach until`() {
         val projectContext = driveTest(
             FunctionTransformerStage::class,
             """
