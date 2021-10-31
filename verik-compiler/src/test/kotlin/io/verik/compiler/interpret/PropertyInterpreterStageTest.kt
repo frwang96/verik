@@ -160,4 +160,20 @@ internal class PropertyInterpreterStageTest : BaseTest() {
             projectContext.findDeclaration("x")
         )
     }
+
+    @Test
+    fun `interpret property static`() {
+        val projectContext = driveTest(
+            PropertyInterpreterStage::class,
+            """
+                object O {
+                    var x = false
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "SvProperty(x, Boolean, *, true)",
+            projectContext.findDeclaration("x")
+        )
+    }
 }

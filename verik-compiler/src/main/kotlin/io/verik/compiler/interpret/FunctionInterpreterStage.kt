@@ -93,9 +93,16 @@ object FunctionInterpreterStage : ProjectStage() {
                 }
                 else -> {
                     val valueParameters = getValueParameters(function.valueParameters, referenceUpdater)
+                    val isStatic = when (val parent = function.parent) {
+                        is ESvBasicClass -> parent.isDeclarationsStatic
+                        else -> false
+                    }
                     val qualifierType = when {
                         function.isAbstract -> FunctionQualifierType.PURE_VIRTUAL
-                        function.parent is ESvBasicClass -> FunctionQualifierType.VIRTUAL
+                        function.parent is ESvBasicClass -> {
+                            if (isStatic) FunctionQualifierType.REGULAR
+                            else FunctionQualifierType.VIRTUAL
+                        }
                         else -> FunctionQualifierType.REGULAR
                     }
                     ESvFunction(
@@ -103,7 +110,7 @@ object FunctionInterpreterStage : ProjectStage() {
                         function.name,
                         function.type,
                         function.body,
-                        false,
+                        isStatic,
                         qualifierType,
                         ArrayList(valueParameters)
                     )

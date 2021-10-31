@@ -114,8 +114,8 @@ internal class DeclarationSerializerTest : BaseTest() {
         val expected = """
             class C;
             
-                static function automatic test_pkg::C _${'$'}new();
-                    automatic test_pkg::C _${'$'}0 = new();
+                static function automatic C _${'$'}new();
+                    automatic C _${'$'}0 = new();
                     _${'$'}0._${'$'}init();
                     return _${'$'}0;
                 endfunction : _${'$'}new

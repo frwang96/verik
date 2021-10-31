@@ -121,4 +121,20 @@ internal class FunctionInterpreterStageTest : BaseTest() {
             projectContext.findDeclaration("f")
         )
     }
+
+    @Test
+    fun `interpret function in object`() {
+        val projectContext = driveTest(
+            FunctionInterpreterStage::class,
+            """
+                object O {
+                    fun f() {}
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "SvFunction(f, Unit, *, true, REGULAR, [])",
+            projectContext.findDeclaration("f")
+        )
+    }
 }

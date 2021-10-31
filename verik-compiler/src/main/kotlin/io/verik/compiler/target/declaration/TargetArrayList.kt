@@ -37,9 +37,29 @@ object TargetArrayList : TargetScope(Target.C_ArrayList) {
         parent,
         "add",
         """
-            function automatic add(E e);
+            function automatic void add(E e);
                 queue.push_back(e);
             endfunction : add
+        """.trimIndent()
+    )
+
+    val F_get = CompositeTargetFunctionDeclaration(
+        parent,
+        "get",
+        """
+            function automatic E get(int index);
+                return queue[index];
+            endfunction : get
+        """.trimIndent()
+    )
+
+    val F_size = CompositeTargetFunctionDeclaration(
+        parent,
+        "size",
+        """
+            function automatic int size();
+                return queue.size();
+            endfunction : size
         """.trimIndent()
     )
 }

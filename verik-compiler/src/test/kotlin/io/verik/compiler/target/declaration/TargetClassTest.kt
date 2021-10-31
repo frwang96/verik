@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test
 internal class TargetClassTest : BaseTest() {
 
     @Test
-    fun `serialize type boolean`() {
+    fun `serialize type Boolean`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
             """
@@ -40,7 +40,7 @@ internal class TargetClassTest : BaseTest() {
     }
 
     @Test
-    fun `serialize type ubit`() {
+    fun `serialize type Ubit`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
             """
@@ -57,7 +57,7 @@ internal class TargetClassTest : BaseTest() {
     }
 
     @Test
-    fun `serialize type packed boolean`() {
+    fun `serialize type Packed`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
             """
@@ -74,7 +74,7 @@ internal class TargetClassTest : BaseTest() {
     }
 
     @Test
-    fun `serialize type unpacked boolean`() {
+    fun `serialize type Unpacked`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
             """
@@ -91,7 +91,7 @@ internal class TargetClassTest : BaseTest() {
     }
 
     @Test
-    fun `serialize type array list`() {
+    fun `serialize type ArrayList`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
             """

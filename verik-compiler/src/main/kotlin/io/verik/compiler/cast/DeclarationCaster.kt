@@ -32,6 +32,7 @@ import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtEnumEntry
 import org.jetbrains.kotlin.psi.KtNamedFunction
+import org.jetbrains.kotlin.psi.KtObjectDeclaration
 import org.jetbrains.kotlin.psi.KtParameter
 import org.jetbrains.kotlin.psi.KtPrimaryConstructor
 import org.jetbrains.kotlin.psi.KtProperty
@@ -88,10 +89,11 @@ object DeclarationCaster {
         }
         val isEnum = classOrObject.hasModifier(KtTokens.ENUM_KEYWORD)
         val isAbstract = classOrObject.hasModifier(KtTokens.ABSTRACT_KEYWORD)
+        val isObject = classOrObject is KtObjectDeclaration
         val primaryConstructor = when {
             classOrObject.hasExplicitPrimaryConstructor() ->
                 castContext.casterVisitor.getElement(classOrObject.primaryConstructor!!)
-            classOrObject.hasPrimaryConstructor() ->
+            classOrObject.hasPrimaryConstructor() && !isObject ->
                 castImplicitPrimaryConstructor(classOrObject, castContext)
             else -> null
         }
@@ -119,6 +121,7 @@ object DeclarationCaster {
             annotations,
             isEnum,
             isAbstract,
+            isObject,
             primaryConstructor,
             superTypeCallEntry
         )

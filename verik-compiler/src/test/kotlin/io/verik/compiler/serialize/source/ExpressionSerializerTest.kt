@@ -181,7 +181,7 @@ internal class ExpressionSerializerTest : BaseTest() {
                 logic x;
             } S;
             
-            test_pkg::S s = '{x:1'b0};
+            S s = '{x:1'b0};
         """.trimIndent()
         assertOutputTextEquals(
             expected,
@@ -204,8 +204,8 @@ internal class ExpressionSerializerTest : BaseTest() {
         val expected = """
             class C;
             
-                static function automatic test_pkg::C _${'$'}new();
-                    automatic test_pkg::C _${'$'}0 = new();
+                static function automatic C _${'$'}new();
+                    automatic C _${'$'}0 = new();
                     _${'$'}0._${'$'}init();
                     return _${'$'}0;
                 endfunction : _${'$'}new

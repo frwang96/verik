@@ -49,6 +49,7 @@ import io.verik.compiler.ast.element.common.ERootPackage
 import io.verik.compiler.ast.element.common.EStringEntryExpression
 import io.verik.compiler.ast.element.common.ESuperExpression
 import io.verik.compiler.ast.element.common.ETemporaryProperty
+import io.verik.compiler.ast.element.common.ETemporaryValueParameter
 import io.verik.compiler.ast.element.common.EThisExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.common.ETypedElement
@@ -339,6 +340,10 @@ abstract class Visitor {
 
     open fun visitSvValueParameter(valueParameter: ESvValueParameter) {
         visitAbstractValueParameter(valueParameter)
+    }
+
+    open fun visitTemporaryValueParameter(temporaryValueParameter: ETemporaryValueParameter) {
+        visitAbstractValueParameter(temporaryValueParameter)
     }
 
     open fun visitPort(port: EPort) {

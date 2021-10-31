@@ -45,7 +45,7 @@ internal class DeclarationCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtBasicClass(C, [], [], [], false, false, PrimaryConstructor(C, [], []), null)",
+            "KtBasicClass(C, [], [], [], false, false, false, PrimaryConstructor(C, [], []), null)",
             projectContext.findDeclaration("C")
         )
     }
@@ -64,9 +64,10 @@ internal class DeclarationCasterTest : BaseTest() {
             """
                 KtBasicClass(
                     C,
-                    [KtBasicClass(D, [], [], [], false, false, PrimaryConstructor(D, [], []), null)],
+                    [KtBasicClass(D, [], [], [], false, false, false, PrimaryConstructor(D, [], []), null)],
                     [],
                     [],
+                    false,
                     false,
                     false,
                     PrimaryConstructor(C, [], []),
@@ -96,6 +97,7 @@ internal class DeclarationCasterTest : BaseTest() {
                     [],
                     false,
                     false,
+                    false,
                     PrimaryConstructor(C, [], []),
                     null
                 )
@@ -123,6 +125,7 @@ internal class DeclarationCasterTest : BaseTest() {
                     [],
                     false,
                     false,
+                    false,
                     PrimaryConstructor(C, [], []),
                     null
                 )
@@ -143,9 +146,10 @@ internal class DeclarationCasterTest : BaseTest() {
             """
                 KtBasicClass(
                     C,
-                    [KtBasicClass(Companion, [], [], [], false, false, PrimaryConstructor(Companion, [], []), null)],
+                    [KtBasicClass(Companion, [], [], [], false, false, true, null, null)],
                     [],
                     [],
+                    false,
                     false,
                     false,
                     PrimaryConstructor(C, [], []),
@@ -165,7 +169,19 @@ internal class DeclarationCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtBasicClass(C, [], [TypeParameter(T, Any)], [], false, false, PrimaryConstructor(C<T>, [], [T]), null)",
+            """
+                KtBasicClass(
+                    C,
+                    [],
+                    [TypeParameter(T, Any)],
+                    [],
+                    false,
+                    false,
+                    false,
+                    PrimaryConstructor(C<T>, [], [T]),
+                    null
+                )
+            """.trimIndent(),
             projectContext.findDeclaration("C")
         )
     }
@@ -185,6 +201,7 @@ internal class DeclarationCasterTest : BaseTest() {
                     [],
                     [],
                     [],
+                    false,
                     false,
                     false,
                     PrimaryConstructor(C, [KtValueParameter(x, Int, [], true)], []),
@@ -213,6 +230,7 @@ internal class DeclarationCasterTest : BaseTest() {
                     [],
                     false,
                     false,
+                    false,
                     PrimaryConstructor(D, [], []),
                     SuperTypeCallEntry(<init>, [ConstantExpression(*)])
                 )
@@ -230,8 +248,22 @@ internal class DeclarationCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtBasicClass(E, [KtEnumEntry(A, E, [])], [], [], true, false, PrimaryConstructor(E, [], []), null)",
+            "KtBasicClass(E, [KtEnumEntry(A, E, [])], [], [], true, false, false, PrimaryConstructor(E, [], []), null)",
             projectContext.findDeclaration("E")
+        )
+    }
+
+    @Test
+    fun `object simple`() {
+        val projectContext = driveTest(
+            CasterStage::class,
+            """
+                object O
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtBasicClass(O, [], [], [], false, false, true, null, null)",
+            projectContext.findDeclaration("O")
         )
     }
 

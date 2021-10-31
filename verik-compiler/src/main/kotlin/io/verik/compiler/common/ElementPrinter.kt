@@ -31,6 +31,7 @@ import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ERootPackage
 import io.verik.compiler.ast.element.common.ESuperExpression
 import io.verik.compiler.ast.element.common.ETemporaryProperty
+import io.verik.compiler.ast.element.common.ETemporaryValueParameter
 import io.verik.compiler.ast.element.common.EThisExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.common.EWhileExpression
@@ -175,6 +176,7 @@ class ElementPrinter : Visitor() {
             build(basicClass.annotations)
             build(basicClass.isEnum)
             build(basicClass.isAbstract)
+            build(basicClass.isObject)
             build(basicClass.primaryConstructor)
             buildSuperTypeCallEntry(basicClass.superTypeCallEntry)
         }
@@ -185,6 +187,7 @@ class ElementPrinter : Visitor() {
             build(basicClass.name)
             build(basicClass.declarations)
             build(basicClass.isVirtual)
+            build(basicClass.isDeclarationsStatic)
         }
     }
 
@@ -251,7 +254,7 @@ class ElementPrinter : Visitor() {
             build(function.name)
             build(function.type.toString())
             build(function.body)
-            build(function.isScopeStatic)
+            build(function.isStatic)
             build(function.qualifierType.toString())
             build(function.valueParameters)
         }
@@ -319,7 +322,7 @@ class ElementPrinter : Visitor() {
             build(property.name)
             build(property.type.toString())
             build(property.initializer)
-            build(property.isLifetimeStatic)
+            build(property.isStatic)
         }
     }
 
@@ -383,6 +386,12 @@ class ElementPrinter : Visitor() {
         build("SvValueParameter") {
             build(valueParameter.name)
             build(valueParameter.type.toString())
+        }
+    }
+
+    override fun visitTemporaryValueParameter(temporaryValueParameter: ETemporaryValueParameter) {
+        build("TemporaryValueParameter") {
+            build(temporaryValueParameter.type.toString())
         }
     }
 

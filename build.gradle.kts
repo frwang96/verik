@@ -18,7 +18,7 @@ val exampleNames = gradle
     .includedBuild("verik-examples")
     .projectDir
     .listFiles()
-    ?.filter { it.resolve("build.gradle.kts").exists() }
+    ?.filter { it.resolve("src").exists() }
     ?.map { it.name }
     ?: listOf()
 

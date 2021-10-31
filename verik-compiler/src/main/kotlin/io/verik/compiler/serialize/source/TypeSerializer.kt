@@ -19,15 +19,12 @@ package io.verik.compiler.serialize.source
 import io.verik.compiler.ast.element.common.EAbstractClass
 import io.verik.compiler.ast.element.common.EBasicPackage
 import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
 import io.verik.compiler.ast.element.sv.EModulePort
 import io.verik.compiler.ast.element.sv.ETypeDefinition
-import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.message.Messages
 import io.verik.compiler.target.common.TargetClassDeclaration
-import org.jetbrains.kotlin.utils.addToStdlib.cast
 
 object TypeSerializer {
 
@@ -46,19 +43,17 @@ object TypeSerializer {
                     SerializedType("void")
                 }
             }
-            is EAbstractClass -> SerializedType(serializePackageDeclaration(reference))
+            is EAbstractClass -> {
+                val elementBasicPackage = element.getParentBasicPackage()
+                val referenceBasicPackage = reference.getParentBasicPackage()
+                if (referenceBasicPackage != null && referenceBasicPackage != elementBasicPackage) {
+                    SerializedType("${referenceBasicPackage.name}::${reference.name}")
+                } else SerializedType(reference.name)
+            }
             else -> {
                 Messages.INTERNAL_ERROR.on(element, "Unable to serialize type: $type")
                 SerializedType("void")
             }
         }
-    }
-
-    // TODO more general handling of scope resolution
-    private fun serializePackageDeclaration(declaration: Declaration): String {
-        val element = declaration as EElement
-        val file = element.parent.cast<EFile>()
-        val basicPackage = file.parent.cast<EBasicPackage>()
-        return "${basicPackage.name}::${declaration.name}"
     }
 }

@@ -106,7 +106,7 @@ object DeclarationSerializer {
         when (function.qualifierType) {
             FunctionQualifierType.VIRTUAL -> serializerContext.append("virtual ")
             FunctionQualifierType.PURE_VIRTUAL -> serializerContext.append("pure virtual ")
-            else -> if (function.isScopeStatic) serializerContext.append("static ")
+            else -> if (function.isStatic) serializerContext.append("static ")
         }
         val serializedType = TypeSerializer.serialize(function.type, function)
         serializedType.checkNoUnpackedDimension(function)
@@ -153,7 +153,7 @@ object DeclarationSerializer {
     }
 
     fun serializeSvProperty(property: ESvProperty, serializerContext: SerializerContext) {
-        when (property.isLifetimeStatic) {
+        when (property.isStatic) {
             true -> serializerContext.append("static ")
             false -> serializerContext.append("automatic ")
         }

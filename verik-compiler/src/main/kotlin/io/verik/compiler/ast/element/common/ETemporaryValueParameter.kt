@@ -14,18 +14,23 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.declaration.kt
+package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
-import io.verik.compiler.core.common.CorePackage
-import io.verik.compiler.core.common.CoreScope
+import io.verik.compiler.ast.property.Type
+import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.common.Visitor
+import io.verik.compiler.message.SourceLocation
 
-object CoreKtCollections : CoreScope(CorePackage.KT_COLLECTIONS) {
+class ETemporaryValueParameter(
+    override val location: SourceLocation,
+    override var type: Type
+) : EAbstractValueParameter() {
 
-    val F_forEach_Function = BasicCoreFunctionDeclaration(
-        parent,
-        "forEach",
-        "fun forEach(Function)",
-        null
-    )
+    override var name = "<tmp>"
+
+    override fun accept(visitor: Visitor) {
+        visitor.visitTemporaryValueParameter(this)
+    }
+
+    override fun acceptChildren(visitor: TreeVisitor) {}
 }

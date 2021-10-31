@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test
 internal class ScopeExpressionInsertionTransformerStageTest : BaseTest() {
 
     @Test
-    fun `package reference target declaration`() {
+    fun `reference target declaration`() {
         val projectContext = driveTest(
             ScopeExpressionInsertionTransformerStage::class,
             """
@@ -47,7 +47,7 @@ internal class ScopeExpressionInsertionTransformerStageTest : BaseTest() {
     }
 
     @Test
-    fun `package reference element`() {
+    fun `reference element parent file`() {
         val projectContext = driveTest(
             ScopeExpressionInsertionTransformerStage::class,
             """
@@ -61,6 +61,27 @@ internal class ScopeExpressionInsertionTransformerStageTest : BaseTest() {
         )
         assertElementEquals(
             "ReferenceExpression(Boolean, x, ScopeExpression(Void, test_pkg))",
+            projectContext.findExpression("f")
+        )
+    }
+
+    @Test
+    fun `reference property parent basic class`() {
+        val projectContext = driveTest(
+            ScopeExpressionInsertionTransformerStage::class,
+            """
+                object O {
+                    var x = false
+                }
+                class M : Module() {
+                    fun f() {
+                        O.x
+                    }
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "ReferenceExpression(Boolean, x, ScopeExpression(Void, O))",
             projectContext.findExpression("f")
         )
     }

@@ -103,6 +103,10 @@ object Core {
             object ArrayList {
 
                 val F_add_E = CoreJvArrayList.F_add_E
+
+                val F_get_Int = CoreJvArrayList.F_get_Int
+
+                val P_size = CoreJvArrayList.P_size
             }
         }
     }

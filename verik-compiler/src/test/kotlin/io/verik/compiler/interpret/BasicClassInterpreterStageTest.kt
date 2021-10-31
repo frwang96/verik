@@ -38,6 +38,7 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
                         SvFunction(_${'$'}new, *, *, true, REGULAR, []),
                         SvFunction(_${'$'}init, *, *, false, REGULAR, [])
                     ],
+                    false,
                     false
                 )
             """.trimIndent(),
@@ -61,6 +62,7 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
                         SvFunction(_${'$'}new, C, *, true, REGULAR, [SvValueParameter(x, Int)]),
                         SvFunction(_${'$'}init, Unit, *, false, REGULAR, [SvValueParameter(x, Int)])
                     ],
+                    false,
                     false
                 )
             """.trimIndent(),
@@ -85,6 +87,7 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
                         SvFunction(_${'$'}new, C, *, true, REGULAR, [SvValueParameter(x, Int)]),
                         SvFunction(_${'$'}init, Unit, *, false, REGULAR, [SvValueParameter(x, Int)])
                     ],
+                    false,
                     false
                 )
             """.trimIndent(),
@@ -116,6 +119,7 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
                             []
                         )
                     ],
+                    false,
                     false
                 )
             """.trimIndent(),
@@ -132,8 +136,22 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SvBasicClass(C, [SvFunction(_${'$'}init, Unit, *, false, REGULAR, [])], true)",
+            "SvBasicClass(C, [SvFunction(_${'$'}init, Unit, *, false, REGULAR, [])], true, false)",
             projectContext.findDeclaration("C")
+        )
+    }
+
+    @Test
+    fun `basic class declarations static`() {
+        val projectContext = driveTest(
+            BasicClassInterpreterStage::class,
+            """
+                object O
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "SvBasicClass(O, [], false, true)",
+            projectContext.findDeclaration("O")
         )
     }
 }

@@ -24,6 +24,8 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.target.common.CompositeTarget
 import io.verik.compiler.target.common.TargetPackage
+import io.verik.compiler.target.common.TargetSerializationEntry
+import io.verik.compiler.target.common.TargetSerializationSequencer
 
 object TargetSerializerStage : ProjectStage() {
 

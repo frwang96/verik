@@ -27,7 +27,8 @@ class ESvBasicClass(
     override var name: String,
     override var superType: Type,
     override var declarations: ArrayList<EDeclaration>,
-    val isVirtual: Boolean
+    val isVirtual: Boolean,
+    val isDeclarationsStatic: Boolean
 ) : EAbstractContainerClass() {
 
     init {

@@ -23,6 +23,7 @@ import io.verik.compiler.ast.element.common.EReceiverExpression
 import io.verik.compiler.ast.element.sv.EScopeExpression
 import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvFunction
+import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -64,7 +65,9 @@ object ScopeExpressionInsertionTransformerStage : ProjectStage() {
                                 return EScopeExpression(receiverExpression.location, basicPackage.toType())
                         }
                         is ESvBasicClass -> {
-                            if (reference is ESvFunction && reference.isScopeStatic)
+                            if (reference is ESvFunction && reference.isStatic)
+                                return EScopeExpression(receiverExpression.location, parent.toType())
+                            if (reference is ESvProperty && reference.isStatic == true)
                                 return EScopeExpression(receiverExpression.location, parent.toType())
                         }
                     }

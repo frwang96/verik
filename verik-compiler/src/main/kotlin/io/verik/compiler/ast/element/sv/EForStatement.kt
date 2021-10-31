@@ -16,7 +16,10 @@
 
 package io.verik.compiler.ast.element.sv
 
+import io.verik.compiler.ast.element.common.EAbstractValueParameter
+import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.interfaces.DeclarationContainer
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.common.TreeVisitor
@@ -26,12 +29,12 @@ import io.verik.compiler.target.common.Target
 
 class EForStatement(
     override val location: SourceLocation,
-    val valueParameter: ESvValueParameter,
+    var valueParameter: EAbstractValueParameter,
     var initializer: EExpression,
     var condition: EExpression,
     var iteration: EExpression,
     var body: EExpression
-) : EExpression(), ExpressionContainer {
+) : EExpression(), DeclarationContainer, ExpressionContainer {
 
     override var type = Target.C_Void.toType()
 
@@ -55,6 +58,14 @@ class EForStatement(
         condition.accept(visitor)
         iteration.accept(visitor)
         body.accept(visitor)
+    }
+
+    override fun replaceChild(oldDeclaration: EDeclaration, newDeclaration: EDeclaration): Boolean {
+        newDeclaration.parent = this
+        return if (valueParameter == oldDeclaration) {
+            newDeclaration.cast<EAbstractValueParameter>()?.let { valueParameter = it }
+            true
+        } else false
     }
 
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {

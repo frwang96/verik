@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+import io.verik.plugin.VerikPluginExtension
+import org.jlleitschuh.gradle.ktlint.KtlintExtension
+
 plugins {
     id("io.verik.verik-plugin") apply false
     id("org.jlleitschuh.gradle.ktlint") version "10.0.0" apply false
@@ -24,7 +27,7 @@ subprojects {
     version = "local-SNAPSHOT"
     apply(plugin = "io.verik.verik-plugin")
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
-    configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
+    configure<KtlintExtension> {
         disabledRules.set(listOf("no-wildcard-imports"))
     }
     dependencies {
@@ -33,5 +36,8 @@ subprojects {
     }
     repositories {
         mavenCentral()
+    }
+    configure<VerikPluginExtension> {
+        debug = true
     }
 }
