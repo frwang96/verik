@@ -43,44 +43,47 @@ object CoreKtCollections : CoreScope(CorePackage.KT_COLLECTIONS) {
             val functionLiteral = callExpression.valueArguments[0]
                 .cast<EFunctionLiteralExpression>()
                 ?: return callExpression
-            val functionLiteralValueParameter = functionLiteral.valueParameters[0]
+            val valueParameter = functionLiteral.valueParameters[0]
                 .cast<ESvValueParameter>()
                 ?: return callExpression
-            val functionLiteralValueParameterReferenceExpression = EReferenceExpression(
-                functionLiteralValueParameter.location,
-                functionLiteralValueParameter.type.copy(),
-                functionLiteralValueParameter,
+            val valueParameterReferenceExpression = EReferenceExpression(
+                valueParameter.location,
+                valueParameter.type.copy(),
+                valueParameter,
                 null
             )
 
             val receiver = callExpression.receiver!!
-            if (receiver is EKtCallExpression && receiver.reference == Core.Kt.Ranges.F_until_Int) {
-                val initializer = receiver.receiver!!
-                val condition = EKtCallExpression(
-                    receiver.location,
-                    Core.Kt.C_Boolean.toType(),
-                    Core.Kt.Int.F_lt_Int,
-                    functionLiteralValueParameterReferenceExpression,
-                    arrayListOf(receiver.valueArguments[0]),
-                    ArrayList()
-                )
-                val iteration = EKtUnaryExpression(
-                    receiver.location,
-                    Core.Kt.C_Int.toType(),
-                    ExpressionCopier.copy(functionLiteralValueParameterReferenceExpression),
-                    KtUnaryOperatorKind.POST_INC
-                )
-                return EForStatement(
-                    receiver.location,
-                    functionLiteralValueParameter,
-                    initializer,
-                    condition,
-                    iteration,
-                    functionLiteral.body
-                )
-            } else {
-                Messages.INTERNAL_ERROR.on(callExpression, "Unable to transform call expression into for statement")
-                return callExpression
+            return when {
+                receiver is EKtCallExpression && receiver.reference == Core.Kt.Ranges.F_until_Int -> {
+                    val initializer = receiver.receiver!!
+                    val condition = EKtCallExpression(
+                        receiver.location,
+                        Core.Kt.C_Boolean.toType(),
+                        Core.Kt.Int.F_lt_Int,
+                        valueParameterReferenceExpression,
+                        arrayListOf(receiver.valueArguments[0]),
+                        ArrayList()
+                    )
+                    val iteration = EKtUnaryExpression(
+                        receiver.location,
+                        Core.Kt.C_Int.toType(),
+                        ExpressionCopier.copy(valueParameterReferenceExpression),
+                        KtUnaryOperatorKind.POST_INC
+                    )
+                    EForStatement(
+                        receiver.location,
+                        valueParameter,
+                        initializer,
+                        condition,
+                        iteration,
+                        functionLiteral.body
+                    )
+                }
+                else -> {
+                    Messages.INTERNAL_ERROR.on(callExpression, "Unable to transform call expression into for statement")
+                    callExpression
+                }
             }
         }
     }

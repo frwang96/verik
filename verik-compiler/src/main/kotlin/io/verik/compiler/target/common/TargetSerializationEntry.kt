@@ -14,12 +14,16 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.serialize.target
-
-import io.verik.compiler.target.common.CompositeTarget
-import io.verik.compiler.target.common.CompositeTargetClassDeclaration
+package io.verik.compiler.target.common
 
 data class TargetSerializationEntry(
     val targetClassDeclaration: CompositeTargetClassDeclaration,
     val compositeTargets: List<CompositeTarget>
 )
+
+fun ArrayList<TargetSerializationEntry>.add(
+    targetClassDeclaration: CompositeTargetClassDeclaration,
+    vararg compositeTargets: CompositeTarget
+) {
+    add(TargetSerializationEntry(targetClassDeclaration, compositeTargets.toList()))
+}

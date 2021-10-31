@@ -58,7 +58,7 @@ object PropertyInterpreterStage : ProjectStage() {
         private fun interpret(property: EKtProperty): EDeclaration {
             interpretAbstractComponentInstantiation(property)?.let { return it }
             val isStatic = when (val parent = property.parent) {
-                is ESvBasicClass -> parent.isDeclarationsStatic
+                is ESvBasicClass -> if (parent.isDeclarationsStatic) true else null
                 is EPropertyStatement -> false
                 else -> null
             }

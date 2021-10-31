@@ -65,7 +65,7 @@ internal class TargetSerializerStageTest : BaseTest() {
             
                     E queue [${'$'}];
             
-                    function automatic add(E e);
+                    function automatic void add(E e);
                         queue.push_back(e);
                     endfunction : add
             

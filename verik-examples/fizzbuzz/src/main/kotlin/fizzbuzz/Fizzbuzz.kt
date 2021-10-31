@@ -25,8 +25,12 @@ class Fizzbuzz : Module() {
     fun main() {
         println(E.e)
         E.f()
+        val a = ArrayList<C>()
+        println(a.size)
     }
 }
+
+class C
 
 object E {
 

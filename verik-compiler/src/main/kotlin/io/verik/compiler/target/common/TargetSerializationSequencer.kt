@@ -14,33 +14,18 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.serialize.target
-
-import io.verik.compiler.target.common.CompositeTarget
-import io.verik.compiler.target.common.CompositeTargetClassDeclaration
-import io.verik.compiler.target.common.Target
+package io.verik.compiler.target.common
 
 object TargetSerializationSequencer {
 
     fun getEntries(): List<TargetSerializationEntry> {
-        val sequence = TargetSerializationSequence()
-        sequence.add(
+        val entries = ArrayList<TargetSerializationEntry>()
+        entries.add(
             Target.C_ArrayList,
             Target.ArrayList.F_new,
-            Target.ArrayList.F_add
+            Target.ArrayList.F_add,
+            Target.ArrayList.F_size
         )
-        return sequence.entries
-    }
-
-    private class TargetSerializationSequence {
-
-        val entries = ArrayList<TargetSerializationEntry>()
-
-        fun add(
-            targetClassDeclaration: CompositeTargetClassDeclaration,
-            vararg compositeTargets: CompositeTarget
-        ) {
-            entries.add(TargetSerializationEntry(targetClassDeclaration, compositeTargets.asList()))
-        }
+        return entries
     }
 }
