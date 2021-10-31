@@ -55,6 +55,7 @@ import io.verik.compiler.transform.mid.AssignmentTransformerStage
 import io.verik.compiler.transform.mid.CaseStatementTransformerStage
 import io.verik.compiler.transform.mid.ConstantExpressionEvaluatorStage
 import io.verik.compiler.transform.mid.EnumNameTransformerStage
+import io.verik.compiler.transform.mid.ForStatementTransformerStage
 import io.verik.compiler.transform.mid.FunctionTransformerStage
 import io.verik.compiler.transform.mid.IfAndWhenExpressionUnlifterStage
 import io.verik.compiler.transform.mid.InjectedExpressionReducerStage
@@ -140,6 +141,7 @@ object StageSequencer {
         stageSequence.add(InjectedExpressionReducerStage)
         stageSequence.add(StringTemplateExpressionReducerStage)
         stageSequence.add(UninitializedPropertyTransformerStage)
+        stageSequence.add(ForStatementTransformerStage)
         stageSequence.add(FunctionTransformerStage)
         stageSequence.add(PropertyTransformerStage)
         stageSequence.add(InlineIfExpressionTransformerStage)
@@ -164,13 +166,13 @@ object StageSequencer {
         stageSequence.add(ParenthesisInsertionTransformerStage)
 
         // PostCheck
+        stageSequence.add(UntransformedElementCheckerStage)
+        stageSequence.add(UntransformedReferenceCheckerStage)
         stageSequence.add(FileCheckerStage)
         stageSequence.add(CardinalPositiveCheckerStage)
         stageSequence.add(NameCheckerStage)
         stageSequence.add(KeywordCheckerStage)
         stageSequence.add(NameRedeclarationCheckerStage)
-        stageSequence.add(UntransformedElementCheckerStage)
-        stageSequence.add(UntransformedReferenceCheckerStage)
 
         // Serialize
         stageSequence.add(ConfigFileSerializerStage)

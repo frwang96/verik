@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.declaration.kt
+package io.verik.compiler.transform.mid
 
-import io.verik.compiler.transform.mid.FunctionTransformerStage
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
-internal class CoreKtCollectionsTest : BaseTest() {
+internal class ForStatementTransformerStageTest : BaseTest() {
 
     @Test
     fun `transform forEach until`() {
         val projectContext = driveTest(
-            FunctionTransformerStage::class,
+            ForStatementTransformerStage::class,
             """
                 fun f() {
                     @Suppress("ForEachParameterNotUsed")
@@ -43,6 +42,44 @@ internal class CoreKtCollectionsTest : BaseTest() {
                     KtCallExpression(Boolean, lt, ReferenceExpression(Int, it, null), [ConstantExpression(*)], []),
                     KtUnaryExpression(Int, ReferenceExpression(*), POST_INC),
                     KtBlockExpression(Function, [])
+                )
+            """.trimIndent(),
+            projectContext.findExpression("f")
+        )
+    }
+
+    @Test
+    fun `transform forEach ArrayList`() {
+        val projectContext = driveTest(
+            ForStatementTransformerStage::class,
+            """
+                val a = ArrayList<Boolean>()
+                fun f() {
+                    @Suppress("ForEachParameterNotUsed")
+                    a.forEach { }
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            """
+                ForStatement(
+                    Void,
+                    TemporaryValueParameter(Int),
+                    ConstantExpression(Int, 0),
+                    KtCallExpression(Boolean, lt, ReferenceExpression(Int, <tmp>, null), [ReferenceExpression(*)], []),
+                    KtUnaryExpression(Int, ReferenceExpression(Int, <tmp>, null), POST_INC),
+                    KtBlockExpression(
+                        Function,
+                        [PropertyStatement(
+                            Unit,
+                            SvProperty(
+                                it,
+                                Boolean,
+                                KtCallExpression(Boolean, get, ReferenceExpression(*), [ReferenceExpression(*)], []),
+                                false
+                            )
+                        )]
+                    )
                 )
             """.trimIndent(),
             projectContext.findExpression("f")

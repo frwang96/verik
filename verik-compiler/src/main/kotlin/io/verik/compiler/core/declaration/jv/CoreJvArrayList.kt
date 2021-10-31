@@ -29,6 +29,8 @@ object CoreJvArrayList : CoreScope(Core.Jv.Util.C_ArrayList) {
 
     val F_add_E = BasicCoreFunctionDeclaration(parent, "add", "fun add(E)", Target.ArrayList.F_add)
 
+    val F_get_Int = BasicCoreFunctionDeclaration(parent, "get", "fun get(Int)", Target.ArrayList.F_get)
+
     val P_size = object : CorePropertyDeclaration(parent, "size") {
 
         override fun transform(referenceExpression: EReferenceExpression): EExpression {

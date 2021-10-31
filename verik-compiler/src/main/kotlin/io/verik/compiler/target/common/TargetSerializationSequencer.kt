@@ -24,6 +24,7 @@ object TargetSerializationSequencer {
             Target.C_ArrayList,
             Target.ArrayList.F_new,
             Target.ArrayList.F_add,
+            Target.ArrayList.F_get,
             Target.ArrayList.F_size
         )
         return entries

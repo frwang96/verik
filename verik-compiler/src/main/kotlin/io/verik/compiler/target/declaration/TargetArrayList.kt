@@ -43,6 +43,16 @@ object TargetArrayList : TargetScope(Target.C_ArrayList) {
         """.trimIndent()
     )
 
+    val F_get = CompositeTargetFunctionDeclaration(
+        parent,
+        "get",
+        """
+            function automatic E get(int index);
+                return queue[index];
+            endfunction : get
+        """.trimIndent()
+    )
+
     val F_size = CompositeTargetFunctionDeclaration(
         parent,
         "size",

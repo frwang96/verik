@@ -18,7 +18,9 @@ package io.verik.compiler.transform.post
 
 import io.verik.compiler.ast.element.common.EAbstractFunction
 import io.verik.compiler.ast.element.common.ETemporaryProperty
+import io.verik.compiler.ast.element.common.ETemporaryValueParameter
 import io.verik.compiler.ast.element.sv.ESvProperty
+import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
@@ -56,6 +58,18 @@ object TemporaryPropertyTransformerStage : ProjectStage() {
                 false
             )
             referenceUpdater.replace(temporaryProperty, property)
+        }
+
+        override fun visitTemporaryValueParameter(temporaryValueParameter: ETemporaryValueParameter) {
+            super.visitTemporaryValueParameter(temporaryValueParameter)
+            val name = "_$$index"
+            index++
+            val valueParameter = ESvValueParameter(
+                temporaryValueParameter.location,
+                name,
+                temporaryValueParameter.type
+            )
+            referenceUpdater.replace(temporaryValueParameter, valueParameter)
         }
     }
 }

@@ -25,12 +25,13 @@ class Fizzbuzz : Module() {
     fun main() {
         println(E.e)
         E.f()
-        val a = ArrayList<C>()
+        val a = ArrayList<Boolean>()
         println(a.size)
+        a.add(false)
+        println(a[0])
+        a.forEach { println(it) }
     }
 }
-
-class C
 
 object E {
 

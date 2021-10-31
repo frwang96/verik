@@ -38,9 +38,18 @@ object ArrayAccessExpressionReducerStage : ProjectStage() {
     private val setReducerEntries = ArrayList<SetReducerEntry>()
 
     init {
-        getReducerEntries.add(GetReducerEntry(Core.Vk.C_Ubit, listOf(Core.Kt.C_Int), Core.Vk.Ubit.F_get_Int))
-        getReducerEntries.add(GetReducerEntry(Core.Vk.C_Unpacked, listOf(Core.Kt.C_Int), Core.Vk.Unpacked.F_get_Int))
-        getReducerEntries.add(GetReducerEntry(Core.Vk.C_Unpacked, listOf(Core.Vk.C_Ubit), Core.Vk.Unpacked.F_get_Ubit))
+        getReducerEntries.add(
+            GetReducerEntry(Core.Vk.C_Ubit, listOf(Core.Kt.C_Int), Core.Vk.Ubit.F_get_Int)
+        )
+        getReducerEntries.add(
+            GetReducerEntry(Core.Vk.C_Unpacked, listOf(Core.Kt.C_Int), Core.Vk.Unpacked.F_get_Int)
+        )
+        getReducerEntries.add(
+            GetReducerEntry(Core.Vk.C_Unpacked, listOf(Core.Vk.C_Ubit), Core.Vk.Unpacked.F_get_Ubit)
+        )
+        getReducerEntries.add(
+            GetReducerEntry(Core.Jv.Util.C_ArrayList, listOf(Core.Kt.C_Int), Core.Jv.Util.ArrayList.F_get_Int)
+        )
 
         setReducerEntries.add(
             SetReducerEntry(
