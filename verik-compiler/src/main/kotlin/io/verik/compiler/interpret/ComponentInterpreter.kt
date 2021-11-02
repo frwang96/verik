@@ -38,6 +38,7 @@ object ComponentInterpreter {
                 val ports = interpretPorts(basicClass.primaryConstructor?.valueParameters, referenceUpdater)
                 val isSynthesisTop = basicClass.hasAnnotation(Annotations.SYNTHESIS_TOP)
                 val isSimulationTop = basicClass.hasAnnotation(Annotations.SIMULATION_TOP)
+                val isExtern = basicClass.hasAnnotation(Annotations.EXTERN)
                 val module = EModule(
                     basicClass.location,
                     basicClass.name,
@@ -45,7 +46,8 @@ object ComponentInterpreter {
                     ports,
                     basicClass.declarations,
                     isSynthesisTop,
-                    isSimulationTop
+                    isSimulationTop,
+                    isExtern
                 )
                 referenceUpdater.replace(basicClass, module)
                 basicClass.primaryConstructor?.let { referenceUpdater.update(it, module) }

@@ -320,7 +320,10 @@ class SourceSerializerVisitor(private val serializerContext: SerializerContext) 
     companion object {
 
         fun declarationIsHidden(element: EElement): Boolean {
-            return element is EModulePort || element is EClockingBlock || element is ESvEnumEntry
+            return (element is EModule && element.isExtern) ||
+                element is EModulePort ||
+                element is EClockingBlock ||
+                element is ESvEnumEntry
         }
     }
 }
