@@ -91,6 +91,7 @@ import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EEventExpression
 import io.verik.compiler.ast.element.sv.EForStatement
 import io.verik.compiler.ast.element.sv.EForeverStatement
+import io.verik.compiler.ast.element.sv.EImmediateAssertStatement
 import io.verik.compiler.ast.element.sv.EInitialBlock
 import io.verik.compiler.ast.element.sv.EInjectedExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
@@ -498,6 +499,10 @@ abstract class Visitor {
 
     open fun visitInlineIfExpression(inlineIfExpression: EInlineIfExpression) {
         visitExpression(inlineIfExpression)
+    }
+
+    open fun visitImmediateAssertStatement(immediateAssertStatement: EImmediateAssertStatement) {
+        visitExpression(immediateAssertStatement)
     }
 
     open fun visitWhenExpression(whenExpression: EWhenExpression) {

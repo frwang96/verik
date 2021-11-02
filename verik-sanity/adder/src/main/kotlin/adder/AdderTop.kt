@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,32 @@
  * limitations under the License.
  */
 
-rootProject.name = "verik"
+package adder
 
-includeBuild("verik-kotlin")
-includeBuild("verik-core")
-includeBuild("verik-compiler")
-includeBuild("verik-plugin")
-includeBuild("verik-sanity")
+import io.verik.core.*
+
+typealias WIDTH = `8`
+
+@SimTop
+class AdderTop : Module() {
+
+    var a: Ubit<WIDTH> = nc()
+    var b: Ubit<WIDTH> = nc()
+    var x: Ubit<WIDTH> = nc()
+
+    @Make
+    val adder = Adder<WIDTH>(a, b, x)
+
+    @Run
+    fun test() {
+        repeat(64) {
+            a = randomUbit()
+            b = randomUbit()
+            delay(1)
+            val expected = a + b
+            if (x == expected) print("PASS ")
+            else print("FAIL ")
+            println("$a + $b = $x")
+        }
+    }
+}

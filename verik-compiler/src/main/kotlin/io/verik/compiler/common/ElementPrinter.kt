@@ -67,6 +67,7 @@ import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EEventExpression
 import io.verik.compiler.ast.element.sv.EForStatement
 import io.verik.compiler.ast.element.sv.EForeverStatement
+import io.verik.compiler.ast.element.sv.EImmediateAssertStatement
 import io.verik.compiler.ast.element.sv.EInitialBlock
 import io.verik.compiler.ast.element.sv.EInjectedExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
@@ -638,6 +639,14 @@ class ElementPrinter : Visitor() {
             build(inlineIfExpression.condition)
             build(inlineIfExpression.thenExpression)
             build(inlineIfExpression.elseExpression)
+        }
+    }
+
+    override fun visitImmediateAssertStatement(immediateAssertStatement: EImmediateAssertStatement) {
+        build("ImmediateAssertStatement") {
+            build(immediateAssertStatement.type.toString())
+            build(immediateAssertStatement.condition)
+            build(immediateAssertStatement.elseExpression)
         }
     }
 

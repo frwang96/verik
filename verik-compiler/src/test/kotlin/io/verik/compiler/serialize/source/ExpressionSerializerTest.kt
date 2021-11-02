@@ -487,6 +487,29 @@ internal class ExpressionSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `immediate assert statement`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                fun f() {
+                    assert(true) { 0 }
+                }
+            """.trimIndent()
+        )
+        val expected = """
+            function automatic void f();
+                assert (1'b1) else begin
+                    0;
+                end
+            endfunction : f
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputContext.basicPackageSourceTextFiles[0]
+        )
+    }
+
+    @Test
     fun `case statement`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,

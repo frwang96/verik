@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,35 @@
  * limitations under the License.
  */
 
-rootProject.name = "verik"
+package cache
 
-includeBuild("verik-kotlin")
-includeBuild("verik-core")
-includeBuild("verik-compiler")
-includeBuild("verik-plugin")
-includeBuild("verik-sanity")
+import io.verik.core.*
+
+@SimTop
+object CacheTop : Module() {
+
+    var clk = false
+
+    @Make
+    val txnIf_tb_cache = TxnIf(clk)
+
+    @Make
+    val txnIf_cache_mainMem = TxnIf(clk)
+
+    @Make
+    val cache = Cache(clk, txnIf_tb_cache.rx, txnIf_cache_mainMem.tx)
+
+    @Make
+    val mainMem = MainMem(clk, txnIf_cache_mainMem.rx)
+
+    @Make
+    val tb = CacheTb(txnIf_tb_cache.tb)
+
+    @Run
+    fun toggleClk() {
+        forever {
+            delay(1)
+            clk = !clk
+        }
+    }
+}

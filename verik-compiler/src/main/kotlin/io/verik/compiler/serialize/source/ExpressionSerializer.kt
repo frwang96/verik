@@ -31,6 +31,7 @@ import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EEventExpression
 import io.verik.compiler.ast.element.sv.EForStatement
 import io.verik.compiler.ast.element.sv.EForeverStatement
+import io.verik.compiler.ast.element.sv.EImmediateAssertStatement
 import io.verik.compiler.ast.element.sv.EInjectedExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.ERepeatStatement
@@ -288,6 +289,22 @@ object ExpressionSerializer {
         serializerContext.hardBreak()
         serializerContext.append(": ")
         serializerContext.serializeAsExpression(inlineIfExpression.elseExpression)
+    }
+
+    fun serializeImmediateAssertStatement(
+        immediateAssertStatement: EImmediateAssertStatement,
+        serializerContext: SerializerContext
+    ) {
+        serializerContext.append("assert (")
+        serializerContext.serializeAsExpression(immediateAssertStatement.condition)
+        serializerContext.append(")")
+        val elseExpression = immediateAssertStatement.elseExpression
+        if (elseExpression != null) {
+            serializerContext.append(" else ")
+            serializerContext.serializeAsStatement(elseExpression)
+        } else {
+            serializerContext.appendLine(";")
+        }
     }
 
     fun serializeCaseStatement(caseStatement: ECaseStatement, serializerContext: SerializerContext) {

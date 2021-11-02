@@ -38,4 +38,20 @@ internal class CoreKtTest : BaseTest() {
             projectContext.findExpression("f")
         )
     }
+
+    @Test
+    fun `transform assert`() {
+        val projectContext = driveTest(
+            FunctionTransformerStage::class,
+            """
+                fun f() {
+                    assert(true)
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "ImmediateAssertStatement(Unit, ConstantExpression(*), null)",
+            projectContext.findExpression("f")
+        )
+    }
 }

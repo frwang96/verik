@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,28 @@
  * limitations under the License.
  */
 
-rootProject.name = "verik"
+package fizzbuzz
 
-includeBuild("verik-kotlin")
-includeBuild("verik-core")
-includeBuild("verik-compiler")
-includeBuild("verik-plugin")
-includeBuild("verik-sanity")
+import io.verik.core.*
+
+@SimTop
+class Fizzbuzz : Module() {
+
+    @Run
+    fun main() {
+        println(E.e)
+        E.f()
+        val a = ArrayList<Boolean>()
+        println(a.size)
+        a.add(false)
+        println(a[0])
+        a.forEach { println(it) }
+    }
+}
+
+object E {
+
+    val e = 0
+
+    fun f() {}
+}

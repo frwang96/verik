@@ -6,8 +6,9 @@
       <item index="1" class="java.lang.String" itemvalue="io.verik.core.Make" />
       <item index="2" class="java.lang.String" itemvalue="io.verik.core.Run" />
       <item index="3" class="java.lang.String" itemvalue="io.verik.core.Seq" />
-      <item index="4" class="java.lang.String" itemvalue="io.verik.core.Top" />
-      <item index="5" class="java.lang.String" itemvalue="org.junit.jupiter.api.BeforeAll" />
+      <item index="4" class="java.lang.String" itemvalue="io.verik.core.SimTop" />
+      <item index="5" class="java.lang.String" itemvalue="io.verik.core.SynthTop" />
+      <item index="6" class="java.lang.String" itemvalue="org.junit.jupiter.api.BeforeAll" />
     </list>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />

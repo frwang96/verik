@@ -14,21 +14,43 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.common
+package count
 
-object Annotations {
+import io.verik.core.*
 
-    const val SYNTHESIS_TOP = "io.verik.core.SynthTop"
-    const val SIMULATION_TOP = "io.verik.core.SimTop"
-    const val RELABEL = "io.verik.core.Relabel"
+typealias WIDTH = `8`
 
-    const val COM = "io.verik.core.Com"
-    const val SEQ = "io.verik.core.Seq"
-    const val RUN = "io.verik.core.Run"
-    const val TASK = "io.verik.core.Task"
+@SimTop
+object Count : Module() {
 
-    const val MAKE = "io.verik.core.Make"
+    var clk = false
+    var rst = true
+    var count: Ubit<WIDTH> = u0()
 
-    const val IN = "io.verik.core.In"
-    const val OUT = "io.verik.core.Out"
+    @Seq
+    fun update() {
+        on(posedge(clk)) {
+            println("@${time()} count=$count")
+            if (rst) count = u0()
+            else count += u(1)
+        }
+    }
+
+    @Run
+    fun toggleClk() {
+        clk = false
+        forever {
+            delay(1)
+            clk = !clk
+        }
+    }
+
+    @Run
+    fun toggleRst() {
+        rst = true
+        delay(2)
+        rst = false
+        delay(16)
+        finish()
+    }
 }

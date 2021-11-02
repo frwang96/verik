@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-val exampleNames = gradle
-    .includedBuild("verik-examples")
+val sanityNames = gradle
+    .includedBuild("verik-sanity")
     .projectDir
     .listFiles()
     ?.filter { it.resolve("src").exists() }
     ?.map { it.name }
     ?: listOf()
 
-val excludedExampleNames = listOf<String>()
+val excludedSanityNames = listOf<String>()
 
 tasks.register("test") {
     group = "verification"
@@ -35,8 +35,8 @@ tasks.register("check") {
     dependsOn(gradle.includedBuild("verik-core").task(":check"))
     dependsOn(gradle.includedBuild("verik-compiler").task(":check"))
     dependsOn(gradle.includedBuild("verik-plugin").task(":check"))
-    exampleNames.forEach {
-        dependsOn(gradle.includedBuild("verik-examples").task(":$it:check"))
+    sanityNames.forEach {
+        dependsOn(gradle.includedBuild("verik-sanity").task(":$it:check"))
     }
 }
 
@@ -44,11 +44,11 @@ tasks.register("sanity") {
     group = "verification"
     dependsOn("test")
     dependsOn("check")
-    exampleNames.forEach {
-        if (it !in excludedExampleNames)
-            dependsOn(gradle.includedBuild("verik-examples").task(":$it:verik"))
+    sanityNames.forEach {
+        if (it !in excludedSanityNames)
+            dependsOn(gradle.includedBuild("verik-sanity").task(":$it:verik"))
         else
-            dependsOn(gradle.includedBuild("verik-examples").task(":$it:build"))
+            dependsOn(gradle.includedBuild("verik-sanity").task(":$it:build"))
     }
 }
 
@@ -58,8 +58,8 @@ tasks.register("format") {
     dependsOn(gradle.includedBuild("verik-core").task(":ktlintFormat"))
     dependsOn(gradle.includedBuild("verik-compiler").task(":ktlintFormat"))
     dependsOn(gradle.includedBuild("verik-plugin").task(":ktlintFormat"))
-    exampleNames.forEach {
-        dependsOn(gradle.includedBuild("verik-examples").task(":$it:ktlintFormat"))
+    sanityNames.forEach {
+        dependsOn(gradle.includedBuild("verik-sanity").task(":$it:ktlintFormat"))
     }
 }
 
@@ -76,15 +76,15 @@ tasks.register("clean") {
     dependsOn(gradle.includedBuild("verik-core").task(":clean"))
     dependsOn(gradle.includedBuild("verik-compiler").task(":clean"))
     dependsOn(gradle.includedBuild("verik-plugin").task(":clean"))
-    exampleNames.forEach {
-        dependsOn(gradle.includedBuild("verik-examples").task(":$it:clean"))
+    sanityNames.forEach {
+        dependsOn(gradle.includedBuild("verik-sanity").task(":$it:clean"))
     }
 }
 
-exampleNames.forEach {
+sanityNames.forEach {
     val upperName = it[0].toUpperCase() + it.substring(1)
     tasks.register("verik$upperName") {
         group = "verik"
-        dependsOn(gradle.includedBuild("verik-examples").task(":$it:verik"))
+        dependsOn(gradle.includedBuild("verik-sanity").task(":$it:verik"))
     }
 }
