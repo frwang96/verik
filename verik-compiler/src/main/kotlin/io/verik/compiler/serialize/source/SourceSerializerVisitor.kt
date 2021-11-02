@@ -41,6 +41,7 @@ import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EEventExpression
 import io.verik.compiler.ast.element.sv.EForStatement
 import io.verik.compiler.ast.element.sv.EForeverStatement
+import io.verik.compiler.ast.element.sv.EImmediateAssertStatement
 import io.verik.compiler.ast.element.sv.EInitialBlock
 import io.verik.compiler.ast.element.sv.EInjectedExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
@@ -278,6 +279,10 @@ class SourceSerializerVisitor(private val serializerContext: SerializerContext) 
 
     override fun visitInlineIfExpression(inlineIfExpression: EInlineIfExpression) {
         ExpressionSerializer.serializeInlineIfExpression(inlineIfExpression, serializerContext)
+    }
+
+    override fun visitImmediateAssertStatement(immediateAssertStatement: EImmediateAssertStatement) {
+        ExpressionSerializer.serializeImmediateAssertStatement(immediateAssertStatement, serializerContext)
     }
 
     override fun visitCaseStatement(caseStatement: ECaseStatement) {

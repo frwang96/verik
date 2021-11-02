@@ -310,6 +310,8 @@ object CoreVk : CoreScope(CorePackage.VK) {
 
     val F_fatal = BasicCoreFunctionDeclaration(parent, "fatal", "fun fatal()", Target.F_fatal)
 
+    val F_error_String = BasicCoreFunctionDeclaration(parent, "error", "fun error(String)", Target.F_error)
+
     val F_sv_String = BasicCoreFunctionDeclaration(parent, "sv", "fun sv(String)", null)
 
     val F_Boolean_uext = object : TransformableCoreFunctionDeclaration(parent, "uext", "fun uext()") {

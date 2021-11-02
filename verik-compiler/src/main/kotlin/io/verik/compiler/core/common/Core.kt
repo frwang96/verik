@@ -48,6 +48,8 @@ object Core {
         val C_Enum = CoreKtClass.C_Enum
 
         val F_repeat_Int_Function = CoreKt.F_repeat_Int_Function
+        val F_assert_Boolean = CoreKt.F_assert_Boolean
+        val F_assert_Boolean_Function = CoreKt.F_assert_Boolean_Function
 
         object Int {
 
@@ -170,6 +172,7 @@ object Core {
         val F_time = CoreVk.F_time
         val F_finish = CoreVk.F_finish
         val F_fatal = CoreVk.F_fatal
+        val F_error_String = CoreVk.F_error_String
         val F_sv_String = CoreVk.F_sv_String
 
         val F_Boolean_uext = CoreVk.F_Boolean_uext

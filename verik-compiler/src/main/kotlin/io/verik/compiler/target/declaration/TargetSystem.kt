@@ -32,6 +32,7 @@ object TargetSystem : TargetScope(TargetPackage) {
     val F_signed = PrimitiveTargetFunctionDeclaration(parent, "\$signed")
     val F_time = PrimitiveTargetFunctionDeclaration(parent, "\$time")
     val F_fatal = PrimitiveTargetFunctionDeclaration(parent, "\$fatal")
+    val F_error = PrimitiveTargetFunctionDeclaration(parent, "\$error")
     val F_finish = PrimitiveTargetFunctionDeclaration(parent, "\$finish")
     val F_new = PrimitiveTargetFunctionDeclaration(parent, "new")
     val F_wait = PrimitiveTargetFunctionDeclaration(parent, "wait")

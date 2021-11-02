@@ -21,20 +21,20 @@ package io.verik.core
 /**
  * Logs [message] with severity error.
  */
-fun error(message: Any) {
+fun error(message: String) {
     throw VerikException()
 }
 
 /**
  * Logs [message] with severity warning.
  */
-fun warning(message: Any) {
+fun warning(message: String) {
     throw VerikException()
 }
 
 /**
  * Logs [message] with severity info.
  */
-fun info(message: Any) {
+fun info(message: String) {
     throw VerikException()
 }

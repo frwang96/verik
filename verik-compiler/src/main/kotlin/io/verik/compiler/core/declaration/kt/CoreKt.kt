@@ -19,7 +19,9 @@ package io.verik.compiler.core.declaration.kt
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.sv.EImmediateAssertStatement
 import io.verik.compiler.ast.element.sv.ERepeatStatement
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
@@ -43,6 +45,36 @@ object CoreKt : CoreScope(CorePackage.KT) {
                     functionLiteralExpression.body
                 )
             } else callExpression
+        }
+    }
+
+    val F_assert_Boolean = object : TransformableCoreFunctionDeclaration(parent, "assert", "fun assert(Boolean)") {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            return EImmediateAssertStatement(
+                callExpression.location,
+                Core.Kt.C_Unit.toType(),
+                callExpression.valueArguments[0],
+                null
+            )
+        }
+    }
+
+    val F_assert_Boolean_Function = object : TransformableCoreFunctionDeclaration(
+        parent,
+        "assert",
+        "fun assert(Boolean, Function)"
+    ) {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            val functionLiteralExpression = callExpression.valueArguments[1].cast<EFunctionLiteralExpression>()
+                ?: return callExpression
+            return EImmediateAssertStatement(
+                callExpression.location,
+                Core.Kt.C_Unit.toType(),
+                callExpression.valueArguments[0],
+                functionLiteralExpression.body
+            )
         }
     }
 }
