@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test
 internal class DeclarationSpecializerStageTest : BaseTest() {
 
     @Test
-    fun `specialize class type parameter`() {
+    fun `specialize class type parameter cardinal`() {
         val projectContext = driveTest(
             DeclarationSpecializerStage::class,
             """
@@ -34,6 +34,22 @@ internal class DeclarationSpecializerStageTest : BaseTest() {
         assertElementEquals(
             "KtBasicClass(C_8, [], [], [], false, false, false, PrimaryConstructor(C_8, [], []), null)",
             projectContext.findDeclaration("C_8")
+        )
+    }
+
+    @Test
+    fun `specialize class type parameter class`() {
+        val projectContext = driveTest(
+            DeclarationSpecializerStage::class,
+            """
+                class C
+                class D<T>
+                val d = D<C>()
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtBasicClass(D_C, [], [], [], false, false, false, PrimaryConstructor(D_C, [], []), null)",
+            projectContext.findDeclaration("D_C")
         )
     }
 
@@ -78,6 +94,24 @@ internal class DeclarationSpecializerStageTest : BaseTest() {
         assertElementEquals(
             "KtFunction(f_8, Unit, KtBlockExpression(*), [], [], [], false)",
             projectContext.findDeclaration("f_8")
+        )
+    }
+
+    @Test
+    fun `specialize property type parameter`() {
+        val projectContext = driveTest(
+            DeclarationSpecializerStage::class,
+            """
+                class C
+                class D<E> {
+                    val e : E = nc()
+                }
+                val d = D<C>()
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "KtProperty(e, C, KtCallExpression(*), [])",
+            projectContext.findDeclaration("e")
         )
     }
 }

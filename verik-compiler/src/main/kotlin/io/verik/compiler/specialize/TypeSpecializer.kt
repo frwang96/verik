@@ -42,7 +42,10 @@ object TypeSpecializer {
             }
             is EKtBasicClass -> {
                 if (forwardReferences) {
-                    val typeParameterContext = TypeParameterContext.getFromTypeArguments(arguments, reference, element)
+                    val argumentsNotForwarded = type.arguments
+                        .map { specialize(it, specializerContext, element, false) }
+                    val typeParameterContext = TypeParameterContext
+                        .getFromTypeArguments(argumentsNotForwarded, reference, element)
                     val forwardedReference = specializerContext[reference, typeParameterContext, element]
                     forwardedReference.toType()
                 } else {
@@ -50,7 +53,8 @@ object TypeSpecializer {
                 }
             }
             is ETypeParameter -> {
-                specializerContext.typeParameterContext.specialize(reference, element)
+                val typeParameterType = specializerContext.typeParameterContext.specialize(reference, element)
+                specialize(typeParameterType, specializerContext, element, forwardReferences)
             }
             else -> {
                 type.reference.toType(arguments)

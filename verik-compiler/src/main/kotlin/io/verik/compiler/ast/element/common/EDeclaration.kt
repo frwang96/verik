@@ -24,7 +24,7 @@ abstract class EDeclaration : ETypedElement(), Declaration {
     fun isSpecializable(): Boolean {
         return when (val parent = this.parent) {
             is EFile -> true
-            is EKtBasicClass -> this in parent.declarations
+            is EKtBasicClass -> this in parent.declarations || this == parent.primaryConstructor
             else -> false
         }
     }
