@@ -28,7 +28,7 @@ object UnsupportedModifierCheckerStage : ProjectStage() {
     override val checkNormalization = false
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.ktFiles.forEach { it.accept(UnsupportedModifierCheckerVisitor) }
+        projectContext.getKtFiles().forEach { it.accept(UnsupportedModifierCheckerVisitor) }
     }
 
     object UnsupportedModifierCheckerVisitor : KtTreeVisitorVoid() {

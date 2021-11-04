@@ -16,24 +16,9 @@
 
 package io.verik.compiler.main
 
-import io.verik.compiler.ast.element.common.EProject
-import io.verik.compiler.cast.CastContext
-import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.psi.KtFile
-import org.jetbrains.kotlin.resolve.BindingContext
 
-class ProjectContext(
-    val config: Config
-) {
+class ModuleContext(val name: String, val textFiles: List<TextFile>) {
 
-    lateinit var moduleContexts: List<ModuleContext>
-    lateinit var kotlinCoreEnvironment: KotlinCoreEnvironment
-    lateinit var bindingContext: BindingContext
-    lateinit var castContext: CastContext
-    lateinit var project: EProject
-    val outputContext = OutputContext()
-
-    fun getKtFiles(): List<KtFile> {
-        return moduleContexts.flatMap { it.ktFiles }
-    }
+    lateinit var ktFiles: List<KtFile>
 }

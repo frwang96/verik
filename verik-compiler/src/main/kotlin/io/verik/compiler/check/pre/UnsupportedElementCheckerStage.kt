@@ -35,7 +35,7 @@ object UnsupportedElementCheckerStage : ProjectStage() {
     override val checkNormalization = false
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.ktFiles.forEach { it.accept(UnsupportedElementCheckerVisitor) }
+        projectContext.getKtFiles().forEach { it.accept(UnsupportedElementCheckerVisitor) }
     }
 
     object UnsupportedElementCheckerVisitor : KtTreeVisitorVoid() {

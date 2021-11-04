@@ -17,6 +17,7 @@
 package io.verik.plugin
 
 import io.verik.compiler.main.Config
+import io.verik.compiler.main.ModuleConfig
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPluginConvention
@@ -36,7 +37,7 @@ object ConfigBuilder {
             projectName = project.name,
             projectDir = project.projectDir.toPath(),
             buildDir = getBuildDir(project),
-            projectFiles = getInputFiles(project),
+            moduleConfigs = getModuleConfigs(project),
             debug = extension.debug,
             suppressedWarnings = extension.suppressedWarnings,
             promotedWarnings = extension.promotedWarnings,
@@ -57,16 +58,18 @@ object ConfigBuilder {
         return null
     }
 
-    fun getInputFiles(project: Project): List<Path> {
-        val inputFiles = ArrayList<Path>()
+    fun getModuleConfigs(project: Project): List<ModuleConfig> {
+        val files = ArrayList<Path>()
         project.convention.getPlugin(JavaPluginConvention::class.java).sourceSets.forEach { sourceSet ->
             sourceSet.allSource.forEach { file ->
-                inputFiles.add(file.toPath())
+                files.add(file.toPath())
             }
         }
-        return inputFiles
+        val filesSorted = files
             .filter { it.toString().endsWith(".kt") }
             .sorted()
+        val moduleConfig = ModuleConfig(project.name, filesSorted)
+        return listOf(moduleConfig)
     }
 
     fun getBuildDir(project: Project): Path {

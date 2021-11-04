@@ -34,7 +34,7 @@ object CasterStage : ProjectStage() {
     override fun process(projectContext: ProjectContext) {
         val files = HashMap<String, ArrayList<EFile>>()
 
-        projectContext.ktFiles.forEach { file ->
+        projectContext.getKtFiles().forEach { file ->
             val location = file.location()
             val packageName = file.packageFqName.asString()
             val inputPath = Platform.getPathFromString(file.virtualFilePath)

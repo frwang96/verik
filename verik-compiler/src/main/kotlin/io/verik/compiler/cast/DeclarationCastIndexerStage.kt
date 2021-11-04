@@ -47,7 +47,7 @@ object DeclarationCastIndexerStage : ProjectStage() {
     override fun process(projectContext: ProjectContext) {
         val castContext = CastContext(projectContext.bindingContext)
         val declarationCastIndexerVisitor = DeclarationCastIndexerVisitor(castContext)
-        projectContext.ktFiles.forEach { it.accept(declarationCastIndexerVisitor) }
+        projectContext.getKtFiles().forEach { it.accept(declarationCastIndexerVisitor) }
         projectContext.castContext = castContext
     }
 

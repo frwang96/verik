@@ -95,12 +95,10 @@ object StageSequencer {
         // Compile
         stageSequence.add(KotlinEnvironmentBuilderStage)
         stageSequence.add(KotlinCompilerParserStage)
-        stageSequence.add(KotlinCompilerAnalyzerStage)
-
-        // PreCheck
         stageSequence.add(UnsupportedElementCheckerStage)
         stageSequence.add(UnsupportedModifierCheckerStage)
         stageSequence.add(ImportDirectiveCheckerStage)
+        stageSequence.add(KotlinCompilerAnalyzerStage)
 
         // Cast
         stageSequence.add(DeclarationCastIndexerStage)

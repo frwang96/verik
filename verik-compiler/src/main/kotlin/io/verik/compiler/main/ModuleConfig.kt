@@ -18,23 +18,4 @@ package io.verik.compiler.main
 
 import java.nio.file.Path
 
-data class Config(
-    val version: String,
-    val timestamp: String,
-    val projectName: String,
-    val projectDir: Path,
-    val buildDir: Path,
-    val moduleConfigs: List<ModuleConfig>,
-    val debug: Boolean,
-    val suppressedWarnings: List<String>,
-    val promotedWarnings: List<String>,
-    val maxErrorCount: Int,
-    val labelLines: Boolean,
-    val wrapLength: Int,
-    val indentLength: Int,
-    val enableDeadCodeElimination: Boolean
-) {
-
-    val outputSourceDir: Path = buildDir.resolve("src")
-    val timescale = "1ns / 1ns"
-}
+data class ModuleConfig(val name: String, val files: List<Path>)

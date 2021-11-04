@@ -30,7 +30,7 @@ object ImportDirectiveCheckerStage : ProjectStage() {
     override fun process(projectContext: ProjectContext) {
         val packageNames = HashSet<String>()
         packageNames.add(CorePackage.VK.name)
-        projectContext.ktFiles.forEach {
+        projectContext.getKtFiles().forEach {
             val packageName = it.packageFqName.asString()
             if (packageName == "")
                 Messages.PACKAGE_NAME_ROOT.on(it)
@@ -40,7 +40,7 @@ object ImportDirectiveCheckerStage : ProjectStage() {
         }
 
         val importDirectiveCheckerVisitor = ImportDirectiveCheckerVisitor(packageNames)
-        projectContext.ktFiles.forEach { it.accept(importDirectiveCheckerVisitor) }
+        projectContext.getKtFiles().forEach { it.accept(importDirectiveCheckerVisitor) }
     }
 
     class ImportDirectiveCheckerVisitor(private val packageNames: Set<String>) : KtTreeVisitorVoid() {
