@@ -172,6 +172,7 @@ object Core {
         val F_time = CoreVk.F_time
         val F_finish = CoreVk.F_finish
         val F_fatal = CoreVk.F_fatal
+        val F_fatal_String = CoreVk.F_fatal_String
         val F_error_String = CoreVk.F_error_String
         val F_sv_String = CoreVk.F_sv_String
 
