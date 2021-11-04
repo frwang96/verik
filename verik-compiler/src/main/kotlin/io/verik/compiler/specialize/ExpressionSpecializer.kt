@@ -229,8 +229,15 @@ object ExpressionSpecializer {
         specializerContext: SpecializerContext
     ): EIsExpression {
         val expression = specializerContext.specialize(isExpression.expression)
+        val property = specializerContext.specialize(isExpression.property)
         val castType = specializerContext.specializeType(isExpression.castType, isExpression)
-        return EIsExpression(isExpression.location, expression, isExpression.isNegated, castType)
+        return EIsExpression(
+            isExpression.location,
+            expression,
+            property,
+            isExpression.isNegated,
+            castType
+        )
     }
 
     private fun specializeIfExpression(

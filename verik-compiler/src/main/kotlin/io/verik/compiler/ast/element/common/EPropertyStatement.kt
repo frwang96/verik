@@ -46,8 +46,8 @@ class EPropertyStatement(
 
     override fun replaceChild(oldDeclaration: EDeclaration, newDeclaration: EDeclaration): Boolean {
         newDeclaration.parent = this
-        return if (property == oldDeclaration && newDeclaration is EAbstractInitializedProperty) {
-            property = newDeclaration
+        return if (property == oldDeclaration) {
+            newDeclaration.cast<EAbstractInitializedProperty>()?.let { property = it }
             true
         } else false
     }

@@ -621,6 +621,7 @@ class ElementPrinter : Visitor() {
         build("IsExpression") {
             build(isExpression.type.toString())
             build(isExpression.expression)
+            build(isExpression.property)
             build(isExpression.isNegated)
             build(isExpression.castType.toString())
         }

@@ -124,7 +124,7 @@ object Messages {
     )
 
     val NO_TOP_DECLARATIONS = MessageTemplate0(
-        Severity.ERROR,
+        Severity.WARNING,
         "No top level declarations found"
     )
 

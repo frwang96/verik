@@ -22,6 +22,7 @@ import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ESuperExpression
+import io.verik.compiler.ast.element.common.ETemporaryProperty
 import io.verik.compiler.ast.element.common.EThisExpression
 import io.verik.compiler.ast.element.common.EWhileExpression
 import io.verik.compiler.ast.element.kt.EForExpression
@@ -261,7 +262,15 @@ object ExpressionCaster {
         val location = expression.location()
         val childExpression = castContext.casterVisitor.getExpression(expression.leftHandSide)
         val castType = castContext.castType(expression.typeReference!!)
-        return EIsExpression(location, childExpression, expression.isNegated, castType)
+        val temporaryProperty = ETemporaryProperty(location)
+        temporaryProperty.init(castType, null)
+        return EIsExpression(
+            location,
+            childExpression,
+            temporaryProperty,
+            expression.isNegated,
+            castType
+        )
     }
 
     fun castIfExpression(expression: KtIfExpression, castContext: CastContext): EIfExpression {

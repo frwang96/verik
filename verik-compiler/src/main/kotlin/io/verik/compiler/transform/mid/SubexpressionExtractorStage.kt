@@ -79,11 +79,8 @@ object SubexpressionExtractorStage : ProjectStage() {
                     streamingExpression.type.copy(),
                     streamingExpression.expression
                 )
-                val temporaryProperty = ETemporaryProperty(
-                    streamingExpression.location,
-                    streamingExpression.type.copy(),
-                    streamingExpressionReplacement
-                )
+                val temporaryProperty = ETemporaryProperty(streamingExpression.location)
+                temporaryProperty.init(streamingExpression.type.copy(), streamingExpressionReplacement)
                 val propertyStatement = EPropertyStatement(
                     streamingExpression.location,
                     temporaryProperty

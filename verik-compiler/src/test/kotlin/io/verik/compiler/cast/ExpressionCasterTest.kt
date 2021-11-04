@@ -329,7 +329,7 @@ internal class ExpressionCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "IsExpression(Boolean, ConstantExpression(*), false, Int)",
+            "IsExpression(Boolean, ConstantExpression(*), TemporaryProperty(Int, null), false, Int)",
             projectContext.findExpression("x")
         )
     }

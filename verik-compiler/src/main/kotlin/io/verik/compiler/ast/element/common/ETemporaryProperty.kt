@@ -17,19 +17,22 @@
 package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.ast.property.Type
+import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
 class ETemporaryProperty(
-    override val location: SourceLocation,
-    override var type: Type,
-    override var initializer: EExpression?
+    override val location: SourceLocation
 ) : EAbstractInitializedProperty() {
 
     override var name = "<tmp>"
+    override var type: Type = NullDeclaration.toType()
+    override var initializer: EExpression? = null
 
-    init {
+    fun init(type: Type, initializer: EExpression?) {
         initializer?.parent = this
+        this.type = type
+        this.initializer = initializer
     }
 
     override fun accept(visitor: Visitor) {

@@ -17,9 +17,13 @@
 package io.verik.compiler.ast.element.kt
 
 import io.verik.compiler.ast.element.common.EAbstractContainerExpression
+import io.verik.compiler.ast.element.common.EAbstractInitializedProperty
+import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.interfaces.DeclarationContainer
 import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.ast.property.Type
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
@@ -27,9 +31,10 @@ import io.verik.compiler.message.SourceLocation
 class EIsExpression(
     override val location: SourceLocation,
     override var expression: EExpression,
+    var property: EAbstractInitializedProperty,
     val isNegated: Boolean,
     var castType: Type
-) : EAbstractContainerExpression() {
+) : EAbstractContainerExpression(), DeclarationContainer {
 
     override var type = Core.Kt.C_Boolean.toType()
 
@@ -37,9 +42,23 @@ class EIsExpression(
 
     init {
         expression.parent = this
+        property.parent = this
     }
 
     override fun accept(visitor: Visitor) {
         visitor.visitIsExpression(this)
+    }
+
+    override fun acceptChildren(visitor: TreeVisitor) {
+        super.acceptChildren(visitor)
+        property.accept(visitor)
+    }
+
+    override fun replaceChild(oldDeclaration: EDeclaration, newDeclaration: EDeclaration): Boolean {
+        newDeclaration.parent = this
+        return if (property == oldDeclaration) {
+            newDeclaration.cast<EAbstractInitializedProperty>()?.let { property = it }
+            true
+        } else false
     }
 }

@@ -17,6 +17,7 @@
 package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EDeclaration
+import io.verik.compiler.ast.element.common.ETemporaryProperty
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
@@ -37,6 +38,7 @@ object DeclarationSpecializer {
             is EKtFunction -> specializeKtFunction(declaration, specializerContext)
             is EPrimaryConstructor -> specializePrimaryConstructor(declaration, specializerContext)
             is EKtProperty -> specializeKtProperty(declaration, specializerContext)
+            is ETemporaryProperty -> specializeTemporaryProperty(declaration, specializerContext)
             is EKtEnumEntry -> specializeKtEnumEntry(declaration, specializerContext)
             is EKtValueParameter -> specializeKtValueParameter(declaration, specializerContext)
             else -> {
@@ -142,6 +144,21 @@ object DeclarationSpecializer {
 
         specializedProperty.init(type, initializer, annotations)
         return specializedProperty
+    }
+
+    private fun specializeTemporaryProperty(
+        temporaryProperty: ETemporaryProperty,
+        specializerContext: SpecializerContext
+    ): ETemporaryProperty {
+        val specializedTemporaryProperty = specializerContext[temporaryProperty, temporaryProperty]
+            .cast<ETemporaryProperty>(temporaryProperty)
+            ?: return temporaryProperty
+
+        val type = specializerContext.specializeType(temporaryProperty)
+        val initializer = temporaryProperty.initializer?.let { specializerContext.specialize(it) }
+
+        specializedTemporaryProperty.init(type, initializer)
+        return specializedTemporaryProperty
     }
 
     private fun specializeKtEnumEntry(enumEntry: EKtEnumEntry, specializerContext: SpecializerContext): EKtEnumEntry {
