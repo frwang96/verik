@@ -50,6 +50,12 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
             if (ifExpression.getExpressionType().isSubexpression()) {
                 val temporaryProperty = ETemporaryProperty(ifExpression.location)
                 temporaryProperty.init(ifExpression.type.copy(), null)
+                val referenceExpression = EReferenceExpression(
+                    ifExpression.location,
+                    temporaryProperty.type.copy(),
+                    temporaryProperty,
+                    null
+                )
                 val propertyStatement = EPropertyStatement(
                     ifExpression.location,
                     temporaryProperty
@@ -57,7 +63,7 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
                 val ifExpressionReplacement = getIfExpressionReplacement(ifExpression, temporaryProperty)
                 subexpressionExtractor.extract(
                     ifExpression,
-                    temporaryProperty,
+                    referenceExpression,
                     listOf(propertyStatement, ifExpressionReplacement)
                 )
             }
@@ -68,6 +74,12 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
             if (whenExpression.getExpressionType().isSubexpression()) {
                 val temporaryProperty = ETemporaryProperty(whenExpression.location)
                 temporaryProperty.init(whenExpression.type.copy(), null)
+                val referenceExpression = EReferenceExpression(
+                    whenExpression.location,
+                    temporaryProperty.type.copy(),
+                    temporaryProperty,
+                    null
+                )
                 val propertyStatement = EPropertyStatement(
                     whenExpression.location,
                     temporaryProperty
@@ -75,7 +87,7 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
                 val whenExpressionReplacement = getWhenExpressionReplacement(whenExpression, temporaryProperty)
                 subexpressionExtractor.extract(
                     whenExpression,
-                    temporaryProperty,
+                    referenceExpression,
                     listOf(propertyStatement, whenExpressionReplacement)
                 )
             }

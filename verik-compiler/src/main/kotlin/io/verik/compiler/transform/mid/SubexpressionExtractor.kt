@@ -21,8 +21,6 @@ import io.verik.compiler.ast.element.common.EAbstractFunction
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EFile
-import io.verik.compiler.ast.element.common.EReferenceExpression
-import io.verik.compiler.ast.element.common.ETemporaryProperty
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.message.Messages
 
@@ -31,11 +29,11 @@ class SubexpressionExtractor {
     private val entries = ArrayList<SubexpressionExtractorEntry>()
 
     fun extract(
-        expression: EExpression,
-        temporaryProperty: ETemporaryProperty,
-        initializerExpressions: List<EExpression>
+        oldExpression: EExpression,
+        newExpression: EExpression,
+        extractedExpressions: List<EExpression>
     ) {
-        entries.add(SubexpressionExtractorEntry(expression, temporaryProperty, initializerExpressions))
+        entries.add(SubexpressionExtractorEntry(oldExpression, newExpression, extractedExpressions))
     }
 
     fun flush() {
@@ -43,8 +41,8 @@ class SubexpressionExtractor {
     }
 
     private fun flushEntry(entry: SubexpressionExtractorEntry) {
-        var blockExpression = entry.expression.parent
-        var blockExpressionChild: EElement = entry.expression
+        var blockExpression = entry.oldExpression.parent
+        var blockExpressionChild: EElement = entry.oldExpression
         while (true) {
             when (blockExpression) {
                 is EKtBlockExpression -> {
@@ -52,11 +50,11 @@ class SubexpressionExtractor {
                     if (blockExpressionIndex != -1)
                         flushEntry(blockExpression, blockExpressionIndex, entry)
                     else
-                        Messages.SUBEXPRESSION_UNABLE_TO_EXTRACT.on(entry.expression)
+                        Messages.SUBEXPRESSION_UNABLE_TO_EXTRACT.on(entry.oldExpression)
                     return
                 }
                 is EAbstractFunction, is EAbstractClass, is EFile, null -> {
-                    Messages.SUBEXPRESSION_UNABLE_TO_EXTRACT.on(entry.expression)
+                    Messages.SUBEXPRESSION_UNABLE_TO_EXTRACT.on(entry.oldExpression)
                     return
                 }
                 else -> {
@@ -72,21 +70,14 @@ class SubexpressionExtractor {
         blockExpressionIndex: Int,
         subexpressionExtractorEntry: SubexpressionExtractorEntry
     ) {
-        subexpressionExtractorEntry.initializerExpressions.forEach { it.parent = blockExpression }
-        blockExpression.statements.addAll(blockExpressionIndex, subexpressionExtractorEntry.initializerExpressions)
-
-        val referenceExpression = EReferenceExpression(
-            subexpressionExtractorEntry.expression.location,
-            subexpressionExtractorEntry.temporaryProperty.type.copy(),
-            subexpressionExtractorEntry.temporaryProperty,
-            null
-        )
-        subexpressionExtractorEntry.expression.replace(referenceExpression)
+        subexpressionExtractorEntry.extractedExpressions.forEach { it.parent = blockExpression }
+        blockExpression.statements.addAll(blockExpressionIndex, subexpressionExtractorEntry.extractedExpressions)
+        subexpressionExtractorEntry.oldExpression.replace(subexpressionExtractorEntry.newExpression)
     }
 
     private data class SubexpressionExtractorEntry(
-        val expression: EExpression,
-        val temporaryProperty: ETemporaryProperty,
-        val initializerExpressions: List<EExpression>
+        val oldExpression: EExpression,
+        val newExpression: EExpression,
+        val extractedExpressions: List<EExpression>
     )
 }

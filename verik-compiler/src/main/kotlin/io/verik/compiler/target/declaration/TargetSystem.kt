@@ -22,6 +22,7 @@ import io.verik.compiler.target.common.TargetScope
 
 object TargetSystem : TargetScope(TargetPackage) {
 
+    val F_cast = PrimitiveTargetFunctionDeclaration(parent, "\$cast")
     val F_display = PrimitiveTargetFunctionDeclaration(parent, "\$display")
     val F_write = PrimitiveTargetFunctionDeclaration(parent, "\$write")
     val F_sformatf = PrimitiveTargetFunctionDeclaration(parent, "\$sformatf")

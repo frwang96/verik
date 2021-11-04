@@ -49,6 +49,7 @@
 package io.verik.compiler.transform.mid
 
 import io.verik.compiler.ast.element.common.EPropertyStatement
+import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.ETemporaryProperty
 import io.verik.compiler.ast.element.sv.EStreamingExpression
 import io.verik.compiler.ast.property.ExpressionType
@@ -81,11 +82,17 @@ object SubexpressionExtractorStage : ProjectStage() {
                 )
                 val temporaryProperty = ETemporaryProperty(streamingExpression.location)
                 temporaryProperty.init(streamingExpression.type.copy(), streamingExpressionReplacement)
+                val referenceExpression = EReferenceExpression(
+                    streamingExpression.location,
+                    temporaryProperty.type.copy(),
+                    temporaryProperty,
+                    null
+                )
                 val propertyStatement = EPropertyStatement(
                     streamingExpression.location,
                     temporaryProperty
                 )
-                subexpressionExtractor.extract(streamingExpression, temporaryProperty, listOf(propertyStatement))
+                subexpressionExtractor.extract(streamingExpression, referenceExpression, listOf(propertyStatement))
             }
         }
     }
