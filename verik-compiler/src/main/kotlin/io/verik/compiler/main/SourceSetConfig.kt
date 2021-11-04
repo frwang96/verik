@@ -18,4 +18,4 @@ package io.verik.compiler.main
 
 import java.nio.file.Path
 
-data class ModuleConfig(val name: String, val files: List<Path>)
+data class SourceSetConfig(val name: String, val files: List<Path>)

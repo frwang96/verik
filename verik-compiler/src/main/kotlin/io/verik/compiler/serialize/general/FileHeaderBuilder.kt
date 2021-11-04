@@ -26,8 +26,8 @@ object FileHeaderBuilder {
         val lines = ArrayList<String>()
 
         val inputPathString = inputPath
-            ?.let { Platform.getStringFromPath(projectContext.config.projectDir.relativize(it)) }
-        val outputPathString = Platform.getStringFromPath(projectContext.config.projectDir.relativize(outputPath))
+            ?.let { Platform.getStringFromPath(it.toAbsolutePath()) }
+        val outputPathString = Platform.getStringFromPath(outputPath.toAbsolutePath())
 
         lines.add("Project: ${projectContext.config.projectName}")
         if (inputPathString != null)

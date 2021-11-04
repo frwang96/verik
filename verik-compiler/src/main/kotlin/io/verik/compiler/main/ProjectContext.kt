@@ -26,7 +26,7 @@ class ProjectContext(
     val config: Config
 ) {
 
-    lateinit var moduleContexts: List<ModuleContext>
+    lateinit var sourceSetContexts: List<SourceSetContext>
     lateinit var kotlinCoreEnvironment: KotlinCoreEnvironment
     lateinit var bindingContext: BindingContext
     lateinit var castContext: CastContext
@@ -34,6 +34,6 @@ class ProjectContext(
     val outputContext = OutputContext()
 
     fun getKtFiles(): List<KtFile> {
-        return moduleContexts.flatMap { it.ktFiles }
+        return sourceSetContexts.flatMap { it.ktFiles }
     }
 }

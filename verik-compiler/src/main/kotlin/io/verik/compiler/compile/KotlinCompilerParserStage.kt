@@ -26,8 +26,8 @@ object KotlinCompilerParserStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
         val psiFileFactory = KtPsiFactory(projectContext.kotlinCoreEnvironment.project, false)
-        projectContext.moduleContexts.forEach { moduleContext ->
-            moduleContext.ktFiles = moduleContext.textFiles.map {
+        projectContext.sourceSetContexts.forEach { sourceSetContext ->
+            sourceSetContext.ktFiles = sourceSetContext.textFiles.map {
                 psiFileFactory.createPhysicalFile(it.path.toString(), it.content)
             }
         }

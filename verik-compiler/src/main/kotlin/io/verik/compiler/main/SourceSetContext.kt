@@ -18,7 +18,7 @@ package io.verik.compiler.main
 
 import org.jetbrains.kotlin.psi.KtFile
 
-class ModuleContext(val name: String, val textFiles: List<TextFile>) {
+class SourceSetContext(val name: String, val textFiles: List<TextFile>) {
 
     lateinit var ktFiles: List<KtFile>
 }

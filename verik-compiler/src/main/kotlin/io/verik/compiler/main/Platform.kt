@@ -32,9 +32,9 @@ object Platform {
     }
 
     fun getStringFromPath(path: Path): String {
-        if (path.isAbsolute)
-            throw IllegalArgumentException("Unexpected absolute path: $path")
         val names = (0 until path.nameCount).map { path.getName(it).toString() }
-        return names.joinToString(separator = "/")
+        val namesString = names.joinToString(separator = "/")
+        return if (path.isAbsolute) "/$namesString"
+        else namesString
     }
 }
