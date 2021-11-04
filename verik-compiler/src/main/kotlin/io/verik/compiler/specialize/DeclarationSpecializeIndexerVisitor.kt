@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EReceiverExpression
 import io.verik.compiler.ast.element.common.EReferenceExpression
+import io.verik.compiler.ast.element.common.ETemporaryProperty
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.kt.EKtBasicClass
@@ -159,6 +160,12 @@ class DeclarationSpecializeIndexerVisitor(
         super.visitKtProperty(property)
         val specializedProperty = EKtProperty(property.location, property.name)
         specializerContext[property] = specializedProperty
+    }
+
+    override fun visitTemporaryProperty(temporaryProperty: ETemporaryProperty) {
+        super.visitTemporaryProperty(temporaryProperty)
+        val specializedTemporaryProperty = ETemporaryProperty(temporaryProperty.location)
+        specializerContext[temporaryProperty] = specializedTemporaryProperty
     }
 
     override fun visitKtEnumEntry(enumEntry: EKtEnumEntry) {

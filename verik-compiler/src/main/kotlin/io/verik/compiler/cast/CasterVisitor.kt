@@ -58,6 +58,7 @@ import org.jetbrains.kotlin.psi.KtEnumEntry
 import org.jetbrains.kotlin.psi.KtExpression
 import org.jetbrains.kotlin.psi.KtForExpression
 import org.jetbrains.kotlin.psi.KtIfExpression
+import org.jetbrains.kotlin.psi.KtIsExpression
 import org.jetbrains.kotlin.psi.KtLambdaExpression
 import org.jetbrains.kotlin.psi.KtNamedFunction
 import org.jetbrains.kotlin.psi.KtParameter
@@ -234,6 +235,10 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
         data: Unit?
     ): EKtArrayAccessExpression {
         return ExpressionCaster.castKtArrayAccessExpression(expression, castContext)
+    }
+
+    override fun visitIsExpression(expression: KtIsExpression, data: Unit?): EElement {
+        return ExpressionCaster.castIsExpression(expression, castContext)
     }
 
     override fun visitIfExpression(expression: KtIfExpression, data: Unit?): EIfExpression {

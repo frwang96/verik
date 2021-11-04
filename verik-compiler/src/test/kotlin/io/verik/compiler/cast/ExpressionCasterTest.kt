@@ -321,6 +321,20 @@ internal class ExpressionCasterTest : BaseTest() {
     }
 
     @Test
+    fun `is expression`() {
+        val projectContext = driveTest(
+            CasterStage::class,
+            """
+                var x = 0 is Int
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "IsExpression(Boolean, ConstantExpression(*), TemporaryProperty(Int, null), false, Int)",
+            projectContext.findExpression("x")
+        )
+    }
+
+    @Test
     fun `if expression`() {
         val projectContext = driveTest(
             CasterStage::class,

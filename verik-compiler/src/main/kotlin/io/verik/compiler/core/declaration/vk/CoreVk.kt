@@ -310,6 +310,23 @@ object CoreVk : CoreScope(CorePackage.VK) {
 
     val F_fatal = BasicCoreFunctionDeclaration(parent, "fatal", "fun fatal()", Target.F_fatal)
 
+    val F_fatal_String = object : TransformableCoreFunctionDeclaration(parent, "fatal", "fun fatal(String)") {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            return EKtCallExpression(
+                callExpression.location,
+                callExpression.type,
+                Target.F_fatal,
+                null,
+                arrayListOf(
+                    EConstantExpression(callExpression.location, Core.Kt.C_Int.toType(), "1"),
+                    callExpression.valueArguments[0]
+                ),
+                ArrayList()
+            )
+        }
+    }
+
     val F_error_String = BasicCoreFunctionDeclaration(parent, "error", "fun error(String)", Target.F_error)
 
     val F_sv_String = BasicCoreFunctionDeclaration(parent, "sv", "fun sv(String)", null)

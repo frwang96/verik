@@ -14,33 +14,43 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.common
+package io.verik.compiler.ast.element.kt
 
+import io.verik.compiler.ast.element.common.EAbstractContainerExpression
+import io.verik.compiler.ast.element.common.EAbstractInitializedProperty
+import io.verik.compiler.ast.element.common.EDeclaration
+import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.DeclarationContainer
 import io.verik.compiler.ast.property.SerializationType
+import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
 
-class EPropertyStatement(
+class EIsExpression(
     override val location: SourceLocation,
-    var property: EAbstractInitializedProperty
-) : EExpression(), DeclarationContainer {
+    override var expression: EExpression,
+    var property: EAbstractInitializedProperty,
+    val isNegated: Boolean,
+    var castType: Type
+) : EAbstractContainerExpression(), DeclarationContainer {
+
+    override var type = Core.Kt.C_Boolean.toType()
+
+    override val serializationType = SerializationType.INTERNAL
 
     init {
+        expression.parent = this
         property.parent = this
     }
 
-    override var type = Core.Kt.C_Unit.toType()
-
-    override val serializationType = SerializationType.STATEMENT
-
     override fun accept(visitor: Visitor) {
-        visitor.visitPropertyStatement(this)
+        visitor.visitIsExpression(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
+        super.acceptChildren(visitor)
         property.accept(visitor)
     }
 

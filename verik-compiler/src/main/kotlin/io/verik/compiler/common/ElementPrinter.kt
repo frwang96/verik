@@ -38,6 +38,7 @@ import io.verik.compiler.ast.element.common.EWhileExpression
 import io.verik.compiler.ast.element.kt.EAnnotation
 import io.verik.compiler.ast.element.kt.EForExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
+import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
@@ -613,6 +614,16 @@ class ElementPrinter : Visitor() {
         build("StreamingExpression") {
             build(streamingExpression.type.toString())
             build(streamingExpression.expression)
+        }
+    }
+
+    override fun visitIsExpression(isExpression: EIsExpression) {
+        build("IsExpression") {
+            build(isExpression.type.toString())
+            build(isExpression.expression)
+            build(isExpression.property)
+            build(isExpression.isNegated)
+            build(isExpression.castType.toString())
         }
     }
 

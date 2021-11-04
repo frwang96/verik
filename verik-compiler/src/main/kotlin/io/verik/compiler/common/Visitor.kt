@@ -57,6 +57,7 @@ import io.verik.compiler.ast.element.common.EWhileExpression
 import io.verik.compiler.ast.element.kt.EAnnotation
 import io.verik.compiler.ast.element.kt.EForExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
+import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBasicClass
@@ -487,6 +488,10 @@ abstract class Visitor {
 
     open fun visitStreamingExpression(streamingExpression: EStreamingExpression) {
         visitAbstractContainerExpression(streamingExpression)
+    }
+
+    open fun visitIsExpression(isExpression: EIsExpression) {
+        visitAbstractContainerExpression(isExpression)
     }
 
     open fun visitWidthCastExpression(widthCastExpression: EWidthCastExpression) {

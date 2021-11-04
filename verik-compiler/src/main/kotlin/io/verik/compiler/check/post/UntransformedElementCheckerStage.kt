@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.common.ENullElement
 import io.verik.compiler.ast.element.common.ETemporaryProperty
 import io.verik.compiler.ast.element.common.ETemporaryValueParameter
 import io.verik.compiler.ast.element.kt.EForExpression
+import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
@@ -120,6 +121,11 @@ object UntransformedElementCheckerStage : ProjectStage() {
         override fun visitKtArrayAccessExpression(arrayAccessExpression: EKtArrayAccessExpression) {
             super.visitKtArrayAccessExpression(arrayAccessExpression)
             Messages.INTERNAL_ERROR.on(arrayAccessExpression, "Array access expression $message")
+        }
+
+        override fun visitIsExpression(isExpression: EIsExpression) {
+            super.visitIsExpression(isExpression)
+            Messages.INTERNAL_ERROR.on(isExpression, "Is expression $message")
         }
 
         override fun visitWhenExpression(whenExpression: EWhenExpression) {

@@ -48,9 +48,12 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
         override fun visitIfExpression(ifExpression: EIfExpression) {
             super.visitIfExpression(ifExpression)
             if (ifExpression.getExpressionType().isSubexpression()) {
-                val temporaryProperty = ETemporaryProperty(
+                val temporaryProperty = ETemporaryProperty(ifExpression.location)
+                temporaryProperty.init(ifExpression.type.copy(), null)
+                val referenceExpression = EReferenceExpression(
                     ifExpression.location,
-                    ifExpression.type.copy(),
+                    temporaryProperty.type.copy(),
+                    temporaryProperty,
                     null
                 )
                 val propertyStatement = EPropertyStatement(
@@ -60,7 +63,7 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
                 val ifExpressionReplacement = getIfExpressionReplacement(ifExpression, temporaryProperty)
                 subexpressionExtractor.extract(
                     ifExpression,
-                    temporaryProperty,
+                    referenceExpression,
                     listOf(propertyStatement, ifExpressionReplacement)
                 )
             }
@@ -69,9 +72,12 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
         override fun visitWhenExpression(whenExpression: EWhenExpression) {
             super.visitWhenExpression(whenExpression)
             if (whenExpression.getExpressionType().isSubexpression()) {
-                val temporaryProperty = ETemporaryProperty(
+                val temporaryProperty = ETemporaryProperty(whenExpression.location)
+                temporaryProperty.init(whenExpression.type.copy(), null)
+                val referenceExpression = EReferenceExpression(
                     whenExpression.location,
-                    whenExpression.type.copy(),
+                    temporaryProperty.type.copy(),
+                    temporaryProperty,
                     null
                 )
                 val propertyStatement = EPropertyStatement(
@@ -81,7 +87,7 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
                 val whenExpressionReplacement = getWhenExpressionReplacement(whenExpression, temporaryProperty)
                 subexpressionExtractor.extract(
                     whenExpression,
-                    temporaryProperty,
+                    referenceExpression,
                     listOf(propertyStatement, whenExpressionReplacement)
                 )
             }

@@ -22,10 +22,12 @@ import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ESuperExpression
+import io.verik.compiler.ast.element.common.ETemporaryProperty
 import io.verik.compiler.ast.element.common.EThisExpression
 import io.verik.compiler.ast.element.common.EWhileExpression
 import io.verik.compiler.ast.element.kt.EForExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
+import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
@@ -49,6 +51,7 @@ import org.jetbrains.kotlin.psi.KtDoWhileExpression
 import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
 import org.jetbrains.kotlin.psi.KtForExpression
 import org.jetbrains.kotlin.psi.KtIfExpression
+import org.jetbrains.kotlin.psi.KtIsExpression
 import org.jetbrains.kotlin.psi.KtLambdaExpression
 import org.jetbrains.kotlin.psi.KtPostfixExpression
 import org.jetbrains.kotlin.psi.KtPrefixExpression
@@ -253,6 +256,21 @@ object ExpressionCaster {
         val array = castContext.casterVisitor.getExpression(expression.arrayExpression!!)
         val indices = expression.indexExpressions.map { castContext.casterVisitor.getExpression(it) }
         return EKtArrayAccessExpression(location, type, array, ArrayList(indices))
+    }
+
+    fun castIsExpression(expression: KtIsExpression, castContext: CastContext): EIsExpression {
+        val location = expression.location()
+        val childExpression = castContext.casterVisitor.getExpression(expression.leftHandSide)
+        val castType = castContext.castType(expression.typeReference!!)
+        val temporaryProperty = ETemporaryProperty(location)
+        temporaryProperty.init(castType, null)
+        return EIsExpression(
+            location,
+            childExpression,
+            temporaryProperty,
+            expression.isNegated,
+            castType
+        )
     }
 
     fun castIfExpression(expression: KtIfExpression, castContext: CastContext): EIfExpression {

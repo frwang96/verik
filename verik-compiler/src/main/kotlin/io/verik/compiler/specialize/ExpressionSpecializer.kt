@@ -27,6 +27,7 @@ import io.verik.compiler.ast.element.common.ESuperExpression
 import io.verik.compiler.ast.element.common.EThisExpression
 import io.verik.compiler.ast.element.common.EWhileExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
+import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
@@ -55,6 +56,7 @@ object ExpressionSpecializer {
             is EReturnStatement -> specializeReturnStatement(expression, specializerContext)
             is EFunctionLiteralExpression -> specializeFunctionLiteralExpression(expression, specializerContext)
             is EStringTemplateExpression -> specializeStringTemplateExpression(expression, specializerContext)
+            is EIsExpression -> specializeIsExpression(expression, specializerContext)
             is EIfExpression -> specializeIfExpression(expression, specializerContext)
             is EWhenExpression -> specializeWhenExpression(expression, specializerContext)
             is EWhileExpression -> specializeWhileExpression(expression, specializerContext)
@@ -220,6 +222,22 @@ object ExpressionSpecializer {
             }
         }
         return EStringTemplateExpression(stringTemplateExpression.location, entries)
+    }
+
+    private fun specializeIsExpression(
+        isExpression: EIsExpression,
+        specializerContext: SpecializerContext
+    ): EIsExpression {
+        val expression = specializerContext.specialize(isExpression.expression)
+        val property = specializerContext.specialize(isExpression.property)
+        val castType = specializerContext.specializeType(isExpression.castType, isExpression)
+        return EIsExpression(
+            isExpression.location,
+            expression,
+            property,
+            isExpression.isNegated,
+            castType
+        )
     }
 
     private fun specializeIfExpression(

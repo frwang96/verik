@@ -35,6 +35,7 @@ object Target {
     val C_Event = TargetClass.C_Event
     val C_ArrayList = TargetClass.C_ArrayList
 
+    val F_cast = TargetSystem.F_cast
     val F_display = TargetSystem.F_display
     val F_write = TargetSystem.F_write
     val F_sformatf = TargetSystem.F_sformatf

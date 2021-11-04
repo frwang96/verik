@@ -168,8 +168,8 @@ object BasicClassInterpreterStage : ProjectStage() {
         ): ESvFunction? {
             if (basicClass.isAbstract)
                 return null
-            val temporaryProperty = ETemporaryProperty(
-                constructor.location,
+            val temporaryProperty = ETemporaryProperty(constructor.location)
+            temporaryProperty.init(
                 constructor.type.copy(),
                 ESvCallExpression(
                     constructor.location,

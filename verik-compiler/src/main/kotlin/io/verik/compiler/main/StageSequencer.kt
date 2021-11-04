@@ -53,6 +53,7 @@ import io.verik.compiler.serialize.target.TargetSerializerStage
 import io.verik.compiler.specialize.DeclarationSpecializerStage
 import io.verik.compiler.transform.mid.AssignmentTransformerStage
 import io.verik.compiler.transform.mid.CaseStatementTransformerStage
+import io.verik.compiler.transform.mid.CastTransformerStage
 import io.verik.compiler.transform.mid.ConstantExpressionEvaluatorStage
 import io.verik.compiler.transform.mid.EnumNameTransformerStage
 import io.verik.compiler.transform.mid.ForStatementTransformerStage
@@ -138,6 +139,7 @@ object StageSequencer {
         stageSequence.add(EnumNameTransformerStage)
         stageSequence.add(InjectedExpressionReducerStage)
         stageSequence.add(StringTemplateExpressionReducerStage)
+        stageSequence.add(CastTransformerStage)
         stageSequence.add(UninitializedPropertyTransformerStage)
         stageSequence.add(ForStatementTransformerStage)
         stageSequence.add(FunctionTransformerStage)

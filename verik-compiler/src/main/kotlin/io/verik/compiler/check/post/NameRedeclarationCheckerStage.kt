@@ -16,6 +16,7 @@
 
 package io.verik.compiler.check.post
 
+import io.verik.compiler.ast.element.common.EAbstractContainerClass
 import io.verik.compiler.ast.element.common.EAbstractPackage
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.common.ProjectStage
@@ -62,6 +63,13 @@ object NameRedeclarationCheckerStage : ProjectStage() {
             abstractPackage.files.forEach { file ->
                 file.declarations.forEach { declarationSet.add(it) }
             }
+            declarationSet.checkDuplicates()
+        }
+
+        override fun visitAbstractContainerClass(abstractContainerClass: EAbstractContainerClass) {
+            super.visitAbstractContainerClass(abstractContainerClass)
+            val declarationSet = DeclarationSet()
+            abstractContainerClass.declarations.forEach { declarationSet.add(it) }
             declarationSet.checkDuplicates()
         }
     }
