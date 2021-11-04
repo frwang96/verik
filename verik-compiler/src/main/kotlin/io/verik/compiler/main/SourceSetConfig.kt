@@ -17,24 +17,5 @@
 package io.verik.compiler.main
 
 import java.nio.file.Path
-import java.nio.file.Paths
 
-object Platform {
-
-    val isWindows = System.getProperty("os.name").toLowerCase().contains("win")
-
-    fun getPathFromString(path: String): Path {
-        return if (path.matches(Regex("/\\w+:.*"))) {
-            Paths.get(path.substring(1))
-        } else {
-            Paths.get(path)
-        }
-    }
-
-    fun getStringFromPath(path: Path): String {
-        val names = (0 until path.nameCount).map { path.getName(it).toString() }
-        val namesString = names.joinToString(separator = "/")
-        return if (path.isAbsolute) "/$namesString"
-        else namesString
-    }
-}
+data class SourceSetConfig(val name: String, val files: List<Path>)

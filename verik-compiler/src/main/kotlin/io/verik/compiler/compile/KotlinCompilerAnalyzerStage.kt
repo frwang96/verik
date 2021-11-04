@@ -31,10 +31,11 @@ object KotlinCompilerAnalyzerStage : ProjectStage() {
     override fun process(projectContext: ProjectContext) {
         val environment = projectContext.kotlinCoreEnvironment
         val analyzer = AnalyzerWithCompilerReport(environment.configuration)
-        analyzer.analyzeAndReport(projectContext.ktFiles) {
+        val ktFiles = projectContext.getKtFiles()
+        analyzer.analyzeAndReport(ktFiles) {
             TopDownAnalyzerFacadeForJVM.analyzeFilesWithJavaIntegration(
                 environment.project,
-                projectContext.ktFiles,
+                ktFiles,
                 NoScopeRecordCliBindingTrace(),
                 environment.configuration,
                 environment::createPackagePartProvider,

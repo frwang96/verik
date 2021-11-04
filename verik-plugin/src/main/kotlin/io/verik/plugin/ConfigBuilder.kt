@@ -17,8 +17,10 @@
 package io.verik.plugin
 
 import io.verik.compiler.main.Config
+import io.verik.compiler.main.SourceSetConfig
 import org.gradle.api.GradleException
 import org.gradle.api.Project
+import org.gradle.api.internal.artifacts.dependencies.DefaultProjectDependency
 import org.gradle.api.plugins.JavaPluginConvention
 import java.nio.file.Path
 import java.time.LocalDateTime
@@ -36,7 +38,7 @@ object ConfigBuilder {
             projectName = project.name,
             projectDir = project.projectDir.toPath(),
             buildDir = getBuildDir(project),
-            projectFiles = getInputFiles(project),
+            sourceSetConfigs = getSourceSetConfigs(project),
             debug = extension.debug,
             suppressedWarnings = extension.suppressedWarnings,
             promotedWarnings = extension.promotedWarnings,
@@ -57,19 +59,34 @@ object ConfigBuilder {
         return null
     }
 
-    fun getInputFiles(project: Project): List<Path> {
-        val inputFiles = ArrayList<Path>()
-        project.convention.getPlugin(JavaPluginConvention::class.java).sourceSets.forEach { sourceSet ->
-            sourceSet.allSource.forEach { file ->
-                inputFiles.add(file.toPath())
+    fun getSourceSetConfigs(project: Project): List<SourceSetConfig> {
+        val sourceSetConfigs = ArrayList<SourceSetConfig>()
+        sourceSetConfigs.add(getSourceSetConfig(project))
+        project.configurations.all { configuration ->
+            configuration.dependencies.forEach {
+                if (it is DefaultProjectDependency) {
+                    sourceSetConfigs.add(getSourceSetConfig(it.dependencyProject))
+                }
             }
         }
-        return inputFiles
-            .filter { it.toString().endsWith(".kt") }
-            .sorted()
+        sourceSetConfigs.sortBy { it.name }
+        return sourceSetConfigs
     }
 
     fun getBuildDir(project: Project): Path {
         return project.buildDir.resolve("verik").toPath()
+    }
+
+    private fun getSourceSetConfig(project: Project): SourceSetConfig {
+        val files = ArrayList<Path>()
+        project.convention.getPlugin(JavaPluginConvention::class.java).sourceSets.forEach { sourceSet ->
+            sourceSet.allSource.forEach { file ->
+                files.add(file.toPath())
+            }
+        }
+        val filesSorted = files
+            .filter { it.toString().endsWith(".kt") }
+            .sorted()
+        return SourceSetConfig(project.name, filesSorted)
     }
 }

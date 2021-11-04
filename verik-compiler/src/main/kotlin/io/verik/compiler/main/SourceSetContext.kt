@@ -16,25 +16,9 @@
 
 package io.verik.compiler.main
 
-import java.nio.file.Path
-import java.nio.file.Paths
+import org.jetbrains.kotlin.psi.KtFile
 
-object Platform {
+class SourceSetContext(val name: String, val textFiles: List<TextFile>) {
 
-    val isWindows = System.getProperty("os.name").toLowerCase().contains("win")
-
-    fun getPathFromString(path: String): Path {
-        return if (path.matches(Regex("/\\w+:.*"))) {
-            Paths.get(path.substring(1))
-        } else {
-            Paths.get(path)
-        }
-    }
-
-    fun getStringFromPath(path: Path): String {
-        val names = (0 until path.nameCount).map { path.getName(it).toString() }
-        val namesString = names.joinToString(separator = "/")
-        return if (path.isAbsolute) "/$namesString"
-        else namesString
-    }
+    lateinit var ktFiles: List<KtFile>
 }

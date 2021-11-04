@@ -22,6 +22,8 @@ import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.main.Config
 import io.verik.compiler.main.Platform
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.SourceSetConfig
+import io.verik.compiler.main.SourceSetContext
 import io.verik.compiler.main.StageSequencer
 import io.verik.compiler.main.TextFile
 import io.verik.compiler.message.MessageCollector
@@ -40,9 +42,10 @@ abstract class BaseTest {
             import io.verik.core.*
             $content
         """.trimIndent()
-        val textFile = TextFile(config.projectFiles[0], contentWithPackageHeader)
+        val textFile = TextFile(config.sourceSetConfigs[0].files[0], contentWithPackageHeader)
         val projectContext = ProjectContext(config)
-        projectContext.inputTextFiles = listOf(textFile)
+        val sourceSetContext = SourceSetContext(config.sourceSetConfigs[0].name, listOf(textFile))
+        projectContext.sourceSetContexts = listOf(sourceSetContext)
 
         val stageSequence = StageSequencer.getStageSequence()
         assert(stageSequence.contains(stageClass))
@@ -153,13 +156,14 @@ abstract class BaseTest {
             } else {
                 "/src/main/kotlin/test/Test.kt"
             }
+            val sourceSetConfig = SourceSetConfig("test", listOf(Paths.get(projectFile)))
             return Config(
                 version = "local-SNAPSHOT",
                 timestamp = "",
                 projectName = "test",
                 projectDir = Paths.get(projectDir),
                 buildDir = Paths.get(buildDir),
-                projectFiles = listOf(Paths.get(projectFile)),
+                sourceSetConfigs = listOf(sourceSetConfig),
                 debug = true,
                 suppressedWarnings = listOf("KOTLIN_COMPILE_WARNING"),
                 promotedWarnings = listOf(),

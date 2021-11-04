@@ -33,9 +33,12 @@ object Main {
     }
 
     private fun readFiles(projectContext: ProjectContext) {
-        projectContext.inputTextFiles = projectContext.config.projectFiles.map {
-            val lines = Files.readAllLines(it)
-            TextFile(it, lines.joinToString(separator = "\n", postfix = "\n"))
+        projectContext.sourceSetContexts = projectContext.config.sourceSetConfigs.map { sourceSetConfig ->
+            val textFiles = sourceSetConfig.files.map {
+                val lines = Files.readAllLines(it)
+                TextFile(it, lines.joinToString(separator = "\n", postfix = "\n"))
+            }
+            SourceSetContext(sourceSetConfig.name, textFiles)
         }
     }
 
