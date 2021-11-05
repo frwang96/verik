@@ -17,34 +17,36 @@
 package io.verik.compiler.interpret
 
 import io.verik.compiler.ast.element.kt.EAnnotation
+import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Annotations
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 
-object AnnotationConflictCheckerStage : ProjectStage() {
+object AnnotationCheckerStage : ProjectStage() {
 
     override val checkNormalization = false
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.project.accept(AnnotationConflictCheckerVisitor)
+        projectContext.project.accept(AnnotationCheckerVisitor)
     }
 
-    private object AnnotationConflictCheckerVisitor : TreeVisitor() {
+    private object AnnotationCheckerVisitor : TreeVisitor() {
 
-        private val conflictingAnnotations = listOf(
+        private val conflictingFunctionAnnotations = listOf(
             Annotations.COM,
             Annotations.SEQ,
             Annotations.RUN,
             Annotations.TASK
         )
 
-        private fun checkAnnotations(annotations: List<EAnnotation>) {
+        private fun checkFunctionAnnotations(annotations: List<EAnnotation>) {
             var conflictingAnnotation: String? = null
             for (annotation in annotations) {
-                if (annotation.qualifiedName in conflictingAnnotations) {
+                if (annotation.qualifiedName in conflictingFunctionAnnotations) {
                     if (conflictingAnnotation == null) {
                         conflictingAnnotation = annotation.name
                     } else {
@@ -54,9 +56,20 @@ object AnnotationConflictCheckerStage : ProjectStage() {
             }
         }
 
+        override fun visitKtBasicClass(basicClass: EKtBasicClass) {
+            super.visitKtBasicClass(basicClass)
+            if (basicClass.hasAnnotation(Annotations.SYNTHESIS_TOP) ||
+                basicClass.hasAnnotation(Annotations.SIMULATION_TOP)
+            ) {
+                val basicClassType = basicClass.toType()
+                if (!basicClassType.isSubtype(Core.Vk.C_Module.toType()))
+                    Messages.TOP_NOT_MODULE.on(basicClass)
+            }
+        }
+
         override fun visitKtFunction(function: EKtFunction) {
             super.visitKtFunction(function)
-            checkAnnotations(function.annotations)
+            checkFunctionAnnotations(function.annotations)
         }
     }
 }

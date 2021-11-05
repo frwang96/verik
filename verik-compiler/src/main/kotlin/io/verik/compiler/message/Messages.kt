@@ -89,6 +89,11 @@ object Messages {
         "Illegal local declaration: $0"
     )
 
+    val UNIDENTIFIED_DECLARATION = MessageTemplate1<String>(
+        Severity.ERROR,
+        "Could not identify declaration: $0"
+    )
+
 //  PRE TRANSFORM  /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val BIT_CONSTANT_NOT_CONSTANT = MessageTemplate0(
@@ -123,9 +128,9 @@ object Messages {
         "Type parameters not permitted on top level declaration"
     )
 
-    val NO_TOP_DECLARATIONS = MessageTemplate0(
+    val NO_TOP_MODULES = MessageTemplate0(
         Severity.WARNING,
-        "No top level declarations found"
+        "No top level modules found"
     )
 
     val CARDINAL_OUT_OF_RANGE = MessageTemplate0(
@@ -150,9 +155,29 @@ object Messages {
 
 //  INTERPRET  /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    val TOP_NOT_MODULE = MessageTemplate0(
+        Severity.ERROR,
+        "Top level declaration must be a module"
+    )
+
     val CONFLICTING_ANNOTATION = MessageTemplate1<String>(
         Severity.ERROR,
         "Conflicts with annotation: $0"
+    )
+
+    val MAKE_ANNOTATION_REQUIRED = MessageTemplate0(
+        Severity.ERROR,
+        "Make annotation required"
+    )
+
+    val MAKE_ANNOTATION_ILLEGAL = MessageTemplate0(
+        Severity.ERROR,
+        "Make annotation only permitted on component instantiations"
+    )
+
+    val COMPONENT_INSTANTIATION_OUT_OF_CONTEXT = MessageTemplate0(
+        Severity.ERROR,
+        "Component instantiation out of context"
     )
 
     val FUNCTION_MISSING_BODY = MessageTemplate1<String>(
@@ -182,7 +207,7 @@ object Messages {
 
     val MODULE_PORT_INSTANTIATION_OUT_OF_CONTEXT = MessageTemplate0(
         Severity.ERROR,
-        "Module port instantiation used out of context"
+        "Module port instantiation out of context"
     )
 
     val MODULE_PORT_MULTIPLE_PARENTS = MessageTemplate1<String>(

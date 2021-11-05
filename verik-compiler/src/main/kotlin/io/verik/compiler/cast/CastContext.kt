@@ -88,10 +88,7 @@ class CastContext(
         return if (coreDeclaration != null) {
             coreDeclaration
         } else {
-            Messages.INTERNAL_ERROR.on(
-                element,
-                "Could not identify declaration: ${unwrappedDeclarationDescriptor.name}"
-            )
+            Messages.UNIDENTIFIED_DECLARATION.on(element, unwrappedDeclarationDescriptor.name.asString())
             NullDeclaration
         }
     }
