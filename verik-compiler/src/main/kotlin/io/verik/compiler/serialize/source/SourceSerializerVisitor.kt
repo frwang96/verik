@@ -43,7 +43,7 @@ import io.verik.compiler.ast.element.sv.EForStatement
 import io.verik.compiler.ast.element.sv.EForeverStatement
 import io.verik.compiler.ast.element.sv.EImmediateAssertStatement
 import io.verik.compiler.ast.element.sv.EInitialBlock
-import io.verik.compiler.ast.element.sv.EInjectedExpression
+import io.verik.compiler.ast.element.sv.EInjectedStatement
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EModuleInterface
@@ -241,8 +241,8 @@ class SourceSerializerVisitor(private val serializerContext: SerializerContext) 
         ExpressionSerializer.serializeReturnStatement(returnStatement, serializerContext)
     }
 
-    override fun visitInjectedExpression(injectedExpression: EInjectedExpression) {
-        ExpressionSerializer.serializeInjectedExpression(injectedExpression, serializerContext)
+    override fun visitInjectedStatement(injectedStatement: EInjectedStatement) {
+        ExpressionSerializer.serializeInjectedStatement(injectedStatement, serializerContext)
     }
 
     override fun visitStringExpression(stringExpression: EStringExpression) {

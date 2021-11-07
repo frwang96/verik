@@ -14,27 +14,29 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.mid
+package io.verik.compiler.check.post
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findExpression
+import io.verik.compiler.util.TestErrorException
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
-internal class InjectedExpressionReducerStageTest : BaseTest() {
+internal class StatementCheckerStageTest : BaseTest() {
 
     @Test
-    fun `inject literal`() {
-        val projectContext = driveTest(
-            InjectedExpressionReducerStage::class,
-            """
-                fun f() {
-                    sv("abc")
-                }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "InjectedExpression(Unit, [abc])",
-            projectContext.findExpression("f")
-        )
+    fun `invalid statement`() {
+        assertThrows<TestErrorException> {
+            driveTest(
+                StatementCheckerStage::class,
+                """
+                    fun f() {
+                        0
+                    }
+                """.trimIndent()
+            )
+        }.apply {
+            Assertions.assertEquals("Could not interpret expression as statement", message)
+        }
     }
 }

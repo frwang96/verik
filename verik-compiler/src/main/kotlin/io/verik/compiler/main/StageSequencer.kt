@@ -24,6 +24,7 @@ import io.verik.compiler.check.post.KeywordCheckerStage
 import io.verik.compiler.check.post.NameCheckerStage
 import io.verik.compiler.check.post.NameRedeclarationCheckerStage
 import io.verik.compiler.check.post.PortInstantiationCheckerStage
+import io.verik.compiler.check.post.StatementCheckerStage
 import io.verik.compiler.check.post.UntransformedElementCheckerStage
 import io.verik.compiler.check.post.UntransformedReferenceCheckerStage
 import io.verik.compiler.check.pre.ImportDirectiveCheckerStage
@@ -63,7 +64,7 @@ import io.verik.compiler.transform.mid.EnumNameTransformerStage
 import io.verik.compiler.transform.mid.ForStatementTransformerStage
 import io.verik.compiler.transform.mid.FunctionTransformerStage
 import io.verik.compiler.transform.mid.IfAndWhenExpressionUnlifterStage
-import io.verik.compiler.transform.mid.InjectedExpressionReducerStage
+import io.verik.compiler.transform.mid.InjectedStatementReducerStage
 import io.verik.compiler.transform.mid.InlineIfExpressionTransformerStage
 import io.verik.compiler.transform.mid.PropertyStatementReorderStage
 import io.verik.compiler.transform.mid.PropertyTransformerStage
@@ -143,7 +144,7 @@ object StageSequencer {
         // MidTransform
         stageSequence.add(EnumNameTransformerStage)
         stageSequence.add(ConstantPropagatorStage)
-        stageSequence.add(InjectedExpressionReducerStage)
+        stageSequence.add(InjectedStatementReducerStage)
         stageSequence.add(StringTemplateExpressionReducerStage)
         stageSequence.add(CastTransformerStage)
         stageSequence.add(UninitializedPropertyTransformerStage)
@@ -180,6 +181,7 @@ object StageSequencer {
         stageSequence.add(NameCheckerStage)
         stageSequence.add(KeywordCheckerStage)
         stageSequence.add(NameRedeclarationCheckerStage)
+        stageSequence.add(StatementCheckerStage)
         stageSequence.add(PortInstantiationCheckerStage)
 
         // Serialize

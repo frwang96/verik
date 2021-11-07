@@ -92,7 +92,7 @@ import io.verik.compiler.ast.element.sv.EForStatement
 import io.verik.compiler.ast.element.sv.EForeverStatement
 import io.verik.compiler.ast.element.sv.EImmediateAssertStatement
 import io.verik.compiler.ast.element.sv.EInitialBlock
-import io.verik.compiler.ast.element.sv.EInjectedExpression
+import io.verik.compiler.ast.element.sv.EInjectedStatement
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EModuleInterface
@@ -444,8 +444,8 @@ abstract class Visitor {
         visitStringEntryExpression(stringTemplateExpression)
     }
 
-    open fun visitInjectedExpression(injectedExpression: EInjectedExpression) {
-        visitStringEntryExpression(injectedExpression)
+    open fun visitInjectedStatement(injectedStatement: EInjectedStatement) {
+        visitStringEntryExpression(injectedStatement)
     }
 
     open fun visitStringExpression(stringExpression: EStringExpression) {

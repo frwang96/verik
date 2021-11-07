@@ -32,7 +32,7 @@ import io.verik.compiler.ast.element.sv.EEventExpression
 import io.verik.compiler.ast.element.sv.EForStatement
 import io.verik.compiler.ast.element.sv.EForeverStatement
 import io.verik.compiler.ast.element.sv.EImmediateAssertStatement
-import io.verik.compiler.ast.element.sv.EInjectedExpression
+import io.verik.compiler.ast.element.sv.EInjectedStatement
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.ERepeatStatement
 import io.verik.compiler.ast.element.sv.EReplicationExpression
@@ -172,8 +172,8 @@ object ExpressionSerializer {
         }
     }
 
-    fun serializeInjectedExpression(injectedExpression: EInjectedExpression, serializerContext: SerializerContext) {
-        injectedExpression.entries.forEach {
+    fun serializeInjectedStatement(injectedStatement: EInjectedStatement, serializerContext: SerializerContext) {
+        injectedStatement.entries.forEach {
             when (it) {
                 is LiteralStringEntry ->
                     serializerContext.append(it.text)
@@ -181,6 +181,7 @@ object ExpressionSerializer {
                     serializerContext.serializeAsExpression(it.expression)
             }
         }
+        serializerContext.appendLine(";")
     }
 
     fun serializeStringExpression(stringExpression: EStringExpression, serializerContext: SerializerContext) {

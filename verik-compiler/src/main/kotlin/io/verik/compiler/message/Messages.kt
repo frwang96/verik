@@ -222,9 +222,9 @@ object Messages {
 
 //  MID TRANSFORM  /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val INJECTED_EXPRESSION_NOT_LITERAL = MessageTemplate0(
+    val INJECTED_STATEMENT_NOT_LITERAL = MessageTemplate0(
         Severity.ERROR,
-        "String literal expected for injected expression"
+        "String literal expected for injected statement"
     )
 
     val CAT_INSUFFICIENT_ARGUMENTS = MessageTemplate0(
@@ -269,6 +269,11 @@ object Messages {
     val NAME_REDECLARATION = MessageTemplate1<String>(
         Severity.ERROR,
         "Name has already been declared: $0"
+    )
+
+    val INVALID_STATEMENT = MessageTemplate0(
+        Severity.ERROR,
+        "Could not interpret expression as statement"
     )
 
     val OUTPUT_PORT_ILLEGAL_EXPRESSION = MessageTemplate1<String>(

@@ -24,13 +24,13 @@ import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
-class EInjectedExpression(
+class EInjectedStatement(
     override val location: SourceLocation,
     override var type: Type,
     override val entries: List<StringEntry>
 ) : EStringEntryExpression() {
 
-    override val serializationType = SerializationType.EXPRESSION
+    override val serializationType = SerializationType.STATEMENT
 
     init {
         entries.forEach {
@@ -40,6 +40,6 @@ class EInjectedExpression(
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitInjectedExpression(this)
+        visitor.visitInjectedStatement(this)
     }
 }

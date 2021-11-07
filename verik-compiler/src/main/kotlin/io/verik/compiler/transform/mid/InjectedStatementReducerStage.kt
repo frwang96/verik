@@ -18,36 +18,36 @@ package io.verik.compiler.transform.mid
 
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
-import io.verik.compiler.ast.element.sv.EInjectedExpression
+import io.verik.compiler.ast.element.sv.EInjectedStatement
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 
-object InjectedExpressionReducerStage : ProjectStage() {
+object InjectedStatementReducerStage : ProjectStage() {
 
     override val checkNormalization = true
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.project.accept(InjectedExpressionReducerVisitor)
+        projectContext.project.accept(InjectedStatementReducerVisitor)
     }
 
-    private object InjectedExpressionReducerVisitor : TreeVisitor() {
+    private object InjectedStatementReducerVisitor : TreeVisitor() {
 
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
             if (callExpression.reference == Core.Vk.F_sv_String) {
                 val expression = callExpression.valueArguments[0]
                 if (expression is EStringTemplateExpression) {
-                    val injectedExpression = EInjectedExpression(
+                    val injectedStatement = EInjectedStatement(
                         callExpression.location,
                         callExpression.type,
                         expression.entries
                     )
-                    callExpression.replace(injectedExpression)
+                    callExpression.replace(injectedStatement)
                 } else {
-                    Messages.INJECTED_EXPRESSION_NOT_LITERAL.on(expression)
+                    Messages.INJECTED_STATEMENT_NOT_LITERAL.on(expression)
                 }
             }
         }
