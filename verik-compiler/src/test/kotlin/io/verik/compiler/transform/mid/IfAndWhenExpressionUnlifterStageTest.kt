@@ -39,7 +39,7 @@ internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
         assertElementEquals(
             """
                 [
-                    PropertyStatement(Unit, TemporaryProperty(Int, null)),
+                    PropertyStatement(Unit, SvProperty(<tmp>, Int, null, false)),
                     IfExpression(
                         Unit,
                         ReferenceExpression(*),
@@ -72,7 +72,7 @@ internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
         assertElementEquals(
             """
                 [
-                    PropertyStatement(Unit, TemporaryProperty(Int, null)),
+                    PropertyStatement(Unit, SvProperty(<tmp>, Int, null, false)),
                     WhenExpression(
                         Unit,
                         ReferenceExpression(*),

@@ -21,21 +21,13 @@ import io.verik.core.*
 @SimTop
 class Fizzbuzz : Module() {
 
+    var x: Boolean = nc()
+    var y = x
+    var z = x
+
     @Run
     fun main() {
-        println(E.e)
-        E.f()
-        val a = ArrayList<Boolean>()
-        println(a.size)
-        a.add(false)
-        println(a[0])
-        a.forEach { println(it) }
+        println(y)
+        println(z)
     }
-}
-
-object E {
-
-    val e = 0
-
-    fun f() {}
 }

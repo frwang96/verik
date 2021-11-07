@@ -36,7 +36,7 @@ internal class CastTransformerStageTest : BaseTest() {
         assertElementEquals(
             """
                 [
-                    PropertyStatement(Unit, TemporaryProperty(Int, null)),
+                    PropertyStatement(Unit, SvProperty(<tmp>, Int, null, false)),
                     KtBinaryExpression(
                         Unit,
                         ReferenceExpression(Boolean, x, null),

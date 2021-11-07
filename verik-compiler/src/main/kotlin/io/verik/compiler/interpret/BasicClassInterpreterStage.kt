@@ -21,7 +21,6 @@ import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ESuperExpression
-import io.verik.compiler.ast.element.common.ETemporaryProperty
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
@@ -30,6 +29,7 @@ import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
 import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.ast.element.sv.ESvFunction
+import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.property.FunctionQualifierType
 import io.verik.compiler.common.ProjectStage
@@ -168,8 +168,10 @@ object BasicClassInterpreterStage : ProjectStage() {
         ): ESvFunction? {
             if (basicClass.isAbstract)
                 return null
-            val temporaryProperty = ETemporaryProperty(constructor.location)
-            temporaryProperty.init(
+
+            val property = ESvProperty(
+                constructor.location,
+                "<tmp>",
                 constructor.type.copy(),
                 ESvCallExpression(
                     constructor.location,
@@ -177,13 +179,13 @@ object BasicClassInterpreterStage : ProjectStage() {
                     Target.F_new,
                     null,
                     arrayListOf()
-                )
+                ),
+                false
             )
             val valueParameters = constructor.valueParameters.map {
                 ESvValueParameter(it.location, it.name, it.type.copy())
             }
-
-            val propertyStatement = EPropertyStatement(constructor.location, temporaryProperty)
+            val propertyStatement = EPropertyStatement(constructor.location, property)
             val valueArguments = valueParameters.map {
                 EReferenceExpression(it.location, it.type.copy(), it, null)
             }
@@ -191,7 +193,7 @@ object BasicClassInterpreterStage : ProjectStage() {
                 constructor.location,
                 Core.Kt.C_Unit.toType(),
                 initializer,
-                EReferenceExpression(constructor.location, constructor.type.copy(), temporaryProperty, null),
+                EReferenceExpression(constructor.location, constructor.type.copy(), property, null),
                 ArrayList(valueArguments),
                 arrayListOf()
             )
@@ -201,7 +203,7 @@ object BasicClassInterpreterStage : ProjectStage() {
                 EReferenceExpression(
                     constructor.location,
                     constructor.type.copy(),
-                    temporaryProperty,
+                    property,
                     null
                 )
             )

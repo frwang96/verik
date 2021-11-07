@@ -20,10 +20,10 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
-import io.verik.compiler.ast.element.common.ETemporaryProperty
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EWhenExpression
+import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
@@ -48,19 +48,24 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
         override fun visitIfExpression(ifExpression: EIfExpression) {
             super.visitIfExpression(ifExpression)
             if (ifExpression.getExpressionType().isSubexpression()) {
-                val temporaryProperty = ETemporaryProperty(ifExpression.location)
-                temporaryProperty.init(ifExpression.type.copy(), null)
+                val property = ESvProperty(
+                    ifExpression.location,
+                    "<tmp>",
+                    ifExpression.type.copy(),
+                    null,
+                    false
+                )
                 val referenceExpression = EReferenceExpression(
                     ifExpression.location,
-                    temporaryProperty.type.copy(),
-                    temporaryProperty,
+                    property.type.copy(),
+                    property,
                     null
                 )
                 val propertyStatement = EPropertyStatement(
                     ifExpression.location,
-                    temporaryProperty
+                    property
                 )
-                val ifExpressionReplacement = getIfExpressionReplacement(ifExpression, temporaryProperty)
+                val ifExpressionReplacement = getIfExpressionReplacement(ifExpression, property)
                 subexpressionExtractor.extract(
                     ifExpression,
                     referenceExpression,
@@ -72,19 +77,24 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
         override fun visitWhenExpression(whenExpression: EWhenExpression) {
             super.visitWhenExpression(whenExpression)
             if (whenExpression.getExpressionType().isSubexpression()) {
-                val temporaryProperty = ETemporaryProperty(whenExpression.location)
-                temporaryProperty.init(whenExpression.type.copy(), null)
+                val property = ESvProperty(
+                    whenExpression.location,
+                    "<tmp>",
+                    whenExpression.type.copy(),
+                    null,
+                    false
+                )
                 val referenceExpression = EReferenceExpression(
                     whenExpression.location,
-                    temporaryProperty.type.copy(),
-                    temporaryProperty,
+                    property.type.copy(),
+                    property,
                     null
                 )
                 val propertyStatement = EPropertyStatement(
                     whenExpression.location,
-                    temporaryProperty
+                    property
                 )
-                val whenExpressionReplacement = getWhenExpressionReplacement(whenExpression, temporaryProperty)
+                val whenExpressionReplacement = getWhenExpressionReplacement(whenExpression, property)
                 subexpressionExtractor.extract(
                     whenExpression,
                     referenceExpression,
@@ -95,10 +105,10 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
 
         private fun getWhenExpressionReplacement(
             whenExpression: EWhenExpression,
-            temporaryProperty: ETemporaryProperty
+            property: ESvProperty
         ): EWhenExpression {
             whenExpression.entries.forEach {
-                it.body = wrapAssignment(it.body, temporaryProperty)
+                it.body = wrapAssignment(it.body, property)
                 it.body.parent = whenExpression
             }
             return EWhenExpression(
@@ -111,10 +121,10 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
 
         private fun getIfExpressionReplacement(
             ifExpression: EIfExpression,
-            temporaryProperty: ETemporaryProperty
+            property: ESvProperty
         ): EIfExpression {
-            val thenExpression = wrapAssignment(ifExpression.thenExpression!!, temporaryProperty)
-            val elseExpression = wrapAssignment(ifExpression.elseExpression!!, temporaryProperty)
+            val thenExpression = wrapAssignment(ifExpression.thenExpression!!, property)
+            val elseExpression = wrapAssignment(ifExpression.elseExpression!!, property)
             return EIfExpression(
                 ifExpression.location,
                 Core.Kt.C_Unit.toType(),
@@ -124,17 +134,17 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
             )
         }
 
-        private fun wrapAssignment(expression: EExpression, temporaryProperty: ETemporaryProperty): EExpression {
+        private fun wrapAssignment(expression: EExpression, property: ESvProperty): EExpression {
             return if (expression is EKtBlockExpression) {
                 val index = expression.statements.lastIndex
-                expression.statements[index] = wrapAssignment(expression.statements[index], temporaryProperty)
+                expression.statements[index] = wrapAssignment(expression.statements[index], property)
                 expression.statements[index].parent = expression
                 expression
             } else {
                 EKtBinaryExpression(
                     expression.location,
                     Core.Kt.C_Unit.toType(),
-                    EReferenceExpression(expression.location, temporaryProperty.type.copy(), temporaryProperty, null),
+                    EReferenceExpression(expression.location, property.type.copy(), property, null),
                     expression,
                     KtBinaryOperatorKind.EQ
                 )
