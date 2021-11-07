@@ -256,7 +256,7 @@ object ExpressionSpecializer {
         specializerContext: SpecializerContext
     ): EWhenExpression {
         val type = specializerContext.specializeType(whenExpression)
-        val subject = specializerContext.specialize(whenExpression.subject)
+        val subject = whenExpression.subject?.let { specializerContext.specialize(it) }
         val entries = whenExpression.entries.map { entry ->
             val conditions = entry.conditions.map { specializerContext.specialize(it) }
             val body = specializerContext.specialize(entry.body)

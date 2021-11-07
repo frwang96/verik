@@ -29,14 +29,14 @@ import io.verik.compiler.message.SourceLocation
 class EWhenExpression(
     override val location: SourceLocation,
     override var type: Type,
-    var subject: EExpression,
+    var subject: EExpression?,
     val entries: List<WhenEntry>
 ) : EExpression(), ExpressionContainer {
 
     override val serializationType = SerializationType.INTERNAL
 
     init {
-        subject.parent = this
+        subject?.parent = this
         entries.forEach { entry ->
             entry.conditions.forEach { it.parent = this }
             entry.body.parent = this
@@ -48,7 +48,7 @@ class EWhenExpression(
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        subject.accept(visitor)
+        subject?.accept(visitor)
         entries.forEach { entry ->
             entry.conditions.forEach { it.accept(visitor) }
             entry.body.accept(visitor)
