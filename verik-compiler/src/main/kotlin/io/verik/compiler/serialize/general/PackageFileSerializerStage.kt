@@ -38,7 +38,7 @@ object PackageFileSerializerStage : ProjectStage() {
     }
 
     private fun serialize(projectContext: ProjectContext, basicPackage: EBasicPackage): TextFile? {
-        if (basicPackage.files.isEmpty())
+        if (basicPackage.files.all { it.isEmptySerialization() })
             return null
 
         val outputPath = basicPackage.outputPath.resolve("Pkg.sv")
@@ -64,11 +64,13 @@ object PackageFileSerializerStage : ProjectStage() {
             }
         }
         basicPackage.files.forEach {
-            val pathString = Platform.getStringFromPath(
-                projectContext.config.buildDir.relativize(it.getOutputPathNotNull())
-            )
-            builder.appendLine()
-            builder.appendLine("`include \"$pathString\"")
+            if (!it.isEmptySerialization()) {
+                val pathString = Platform.getStringFromPath(
+                    projectContext.config.buildDir.relativize(it.getOutputPathNotNull())
+                )
+                builder.appendLine()
+                builder.appendLine("`include \"$pathString\"")
+            }
         }
         builder.appendLine()
         builder.appendLine("endpackage : $packageName")

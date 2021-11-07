@@ -23,6 +23,8 @@ import io.verik.compiler.check.post.FileCheckerStage
 import io.verik.compiler.check.post.KeywordCheckerStage
 import io.verik.compiler.check.post.NameCheckerStage
 import io.verik.compiler.check.post.NameRedeclarationCheckerStage
+import io.verik.compiler.check.post.PortInstantiationCheckerStage
+import io.verik.compiler.check.post.StatementCheckerStage
 import io.verik.compiler.check.post.UntransformedElementCheckerStage
 import io.verik.compiler.check.post.UntransformedReferenceCheckerStage
 import io.verik.compiler.check.pre.ImportDirectiveCheckerStage
@@ -57,11 +59,13 @@ import io.verik.compiler.transform.mid.CaseStatementTransformerStage
 import io.verik.compiler.transform.mid.CastTransformerStage
 import io.verik.compiler.transform.mid.CombinationalAssignmentTransformerStage
 import io.verik.compiler.transform.mid.ConstantExpressionEvaluatorStage
+import io.verik.compiler.transform.mid.ConstantPropagatorStage
+import io.verik.compiler.transform.mid.DeadDeclarationEliminatorStage
 import io.verik.compiler.transform.mid.EnumNameTransformerStage
 import io.verik.compiler.transform.mid.ForStatementTransformerStage
 import io.verik.compiler.transform.mid.FunctionTransformerStage
 import io.verik.compiler.transform.mid.IfAndWhenExpressionUnlifterStage
-import io.verik.compiler.transform.mid.InjectedExpressionReducerStage
+import io.verik.compiler.transform.mid.InjectedStatementReducerStage
 import io.verik.compiler.transform.mid.InlineIfExpressionTransformerStage
 import io.verik.compiler.transform.mid.PropertyStatementReorderStage
 import io.verik.compiler.transform.mid.PropertyTransformerStage
@@ -140,7 +144,8 @@ object StageSequencer {
 
         // MidTransform
         stageSequence.add(EnumNameTransformerStage)
-        stageSequence.add(InjectedExpressionReducerStage)
+        stageSequence.add(ConstantPropagatorStage)
+        stageSequence.add(InjectedStatementReducerStage)
         stageSequence.add(StringTemplateExpressionReducerStage)
         stageSequence.add(CastTransformerStage)
         stageSequence.add(UninitializedPropertyTransformerStage)
@@ -156,6 +161,7 @@ object StageSequencer {
         stageSequence.add(SubexpressionExtractorStage)
         stageSequence.add(AssignmentTransformerStage)
         stageSequence.add(PropertyStatementReorderStage)
+        stageSequence.add(DeadDeclarationEliminatorStage)
 
         // PostTransform
         stageSequence.add(TypeReferenceTransformerStage)
@@ -177,6 +183,8 @@ object StageSequencer {
         stageSequence.add(NameCheckerStage)
         stageSequence.add(KeywordCheckerStage)
         stageSequence.add(NameRedeclarationCheckerStage)
+        stageSequence.add(StatementCheckerStage)
+        stageSequence.add(PortInstantiationCheckerStage)
 
         // Serialize
         stageSequence.add(ConfigFileSerializerStage)

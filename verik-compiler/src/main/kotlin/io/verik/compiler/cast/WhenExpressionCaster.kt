@@ -31,7 +31,7 @@ object WhenExpressionCaster {
     fun castWhenExpression(expression: KtWhenExpression, castContext: CastContext): EWhenExpression {
         val location = expression.location()
         val type = castContext.castType(expression)
-        val subject = castContext.casterVisitor.getExpression(expression.subjectExpression!!)
+        val subject = expression.subjectExpression?.let { castContext.casterVisitor.getExpression(it) }
         val entries = expression.entries.map { castWhenEntry(it, castContext) }
         return EWhenExpression(location, type, subject, entries)
     }

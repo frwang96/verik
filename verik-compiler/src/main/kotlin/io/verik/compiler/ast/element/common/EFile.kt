@@ -22,6 +22,7 @@ import io.verik.compiler.common.Visitor
 import io.verik.compiler.common.replaceIfContains
 import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
+import io.verik.compiler.serialize.source.SerializerUtil
 import java.nio.file.Path
 import java.nio.file.Paths
 
@@ -71,5 +72,9 @@ class EFile(
             Messages.INTERNAL_ERROR.on(location, "File output path not specified")
             Paths.get("")
         }
+    }
+
+    fun isEmptySerialization(): Boolean {
+        return declarations.all { SerializerUtil.declarationIsHidden(it) }
     }
 }

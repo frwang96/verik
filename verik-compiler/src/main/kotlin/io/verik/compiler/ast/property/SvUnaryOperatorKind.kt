@@ -25,6 +25,10 @@ enum class SvUnaryOperatorKind {
     POST_INC,
     POST_DEC;
 
+    fun isIncrementOrDecrement(): Boolean {
+        return this in listOf(PRE_INC, PRE_DEC, POST_INC, POST_DEC)
+    }
+
     fun serializePrefix(): String? {
         return when (this) {
             LOGICAL_NEG -> "!"

@@ -63,4 +63,31 @@ internal class CaseStatementTransformerStageTest : BaseTest() {
             projectContext.findExpression("f")
         )
     }
+
+    @Test
+    fun `if expression`() {
+        val projectContext = driveTest(
+            CaseStatementTransformerStage::class,
+            """
+                var x = false
+                fun f() {
+                    when {
+                        x -> {}
+                        else -> {}
+                    }
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            """
+                IfExpression(
+                    Unit,
+                    ReferenceExpression(Boolean, x, null),
+                    KtBlockExpression(*),
+                    KtBlockExpression(*)
+                )
+            """.trimIndent(),
+            projectContext.findExpression("f")
+        )
+    }
 }

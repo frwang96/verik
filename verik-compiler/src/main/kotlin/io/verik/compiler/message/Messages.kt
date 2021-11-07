@@ -190,6 +190,11 @@ object Messages {
         "On expression expected"
     )
 
+    val PORT_NOT_MUTABLE = MessageTemplate1<String>(
+        Severity.ERROR,
+        "Port must be declared as var: $0"
+    )
+
     val PORT_NO_DIRECTIONALITY = MessageTemplate1<String>(
         Severity.ERROR,
         "Could not determine directionality of port: $0"
@@ -217,9 +222,9 @@ object Messages {
 
 //  MID TRANSFORM  /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val INJECTED_EXPRESSION_NOT_LITERAL = MessageTemplate0(
+    val INJECTED_STATEMENT_NOT_LITERAL = MessageTemplate0(
         Severity.ERROR,
-        "String literal expected for injected expression"
+        "String literal expected for injected statement"
     )
 
     val CAT_INSUFFICIENT_ARGUMENTS = MessageTemplate0(
@@ -264,6 +269,21 @@ object Messages {
     val NAME_REDECLARATION = MessageTemplate1<String>(
         Severity.ERROR,
         "Name has already been declared: $0"
+    )
+
+    val INVALID_STATEMENT = MessageTemplate0(
+        Severity.ERROR,
+        "Could not interpret expression as statement"
+    )
+
+    val OUTPUT_PORT_ILLEGAL_EXPRESSION = MessageTemplate1<String>(
+        Severity.ERROR,
+        "Illegal expression for output port: $0"
+    )
+
+    val OUTPUT_PORT_IMMUTABLE_PROPERTY = MessageTemplate1<String>(
+        Severity.ERROR,
+        "Property assigned by output port must be declared as var: $0"
     )
 
     init {

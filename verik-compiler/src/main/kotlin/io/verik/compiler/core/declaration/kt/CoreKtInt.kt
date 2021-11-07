@@ -35,9 +35,9 @@ object CoreKtInt : CoreScope(Core.Kt.C_Int) {
         override fun evaluate(callExpression: EKtCallExpression): String? {
             val left = ConstantUtil.getInt(callExpression.receiver!!)
             val right = ConstantUtil.getInt(callExpression.valueArguments[0])
-            return if (left != null && right != null)
+            return if (left != null && right != null) {
                 (left * right).toString()
-            else null
+            } else null
         }
     }
 
@@ -51,9 +51,9 @@ object CoreKtInt : CoreScope(Core.Kt.C_Int) {
         override fun evaluate(callExpression: EKtCallExpression): String? {
             val left = ConstantUtil.getInt(callExpression.receiver!!)
             val right = ConstantUtil.getInt(callExpression.valueArguments[0])
-            return if (left != null && right != null)
+            return if (left != null && right != null) {
                 (left + right).toString()
-            else null
+            } else null
         }
     }
 

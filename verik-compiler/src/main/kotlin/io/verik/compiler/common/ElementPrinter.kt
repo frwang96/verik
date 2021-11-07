@@ -68,7 +68,7 @@ import io.verik.compiler.ast.element.sv.EForStatement
 import io.verik.compiler.ast.element.sv.EForeverStatement
 import io.verik.compiler.ast.element.sv.EImmediateAssertStatement
 import io.verik.compiler.ast.element.sv.EInitialBlock
-import io.verik.compiler.ast.element.sv.EInjectedExpression
+import io.verik.compiler.ast.element.sv.EInjectedStatement
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EModuleInterface
@@ -544,10 +544,10 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitInjectedExpression(injectedExpression: EInjectedExpression) {
-        build("InjectedExpression") {
-            build(injectedExpression.type.toString())
-            build(injectedExpression.entries)
+    override fun visitInjectedStatement(injectedStatement: EInjectedStatement) {
+        build("InjectedStatement") {
+            build(injectedStatement.type.toString())
+            build(injectedStatement.entries)
         }
     }
 

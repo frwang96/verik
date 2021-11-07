@@ -31,7 +31,6 @@ import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.EBasicComponentInstantiation
 import io.verik.compiler.ast.element.sv.ECaseStatement
-import io.verik.compiler.ast.element.sv.EClockingBlock
 import io.verik.compiler.ast.element.sv.EClockingBlockInstantiation
 import io.verik.compiler.ast.element.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.sv.EConstantPartSelectExpression
@@ -43,11 +42,10 @@ import io.verik.compiler.ast.element.sv.EForStatement
 import io.verik.compiler.ast.element.sv.EForeverStatement
 import io.verik.compiler.ast.element.sv.EImmediateAssertStatement
 import io.verik.compiler.ast.element.sv.EInitialBlock
-import io.verik.compiler.ast.element.sv.EInjectedExpression
+import io.verik.compiler.ast.element.sv.EInjectedStatement
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EModuleInterface
-import io.verik.compiler.ast.element.sv.EModulePort
 import io.verik.compiler.ast.element.sv.EModulePortInstantiation
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.ERepeatStatement
@@ -89,7 +87,7 @@ class SourceSerializerVisitor(private val serializerContext: SerializerContext) 
     fun serializeAsDeclaration(element: EElement) {
         if (element !is Declaration)
             Messages.INTERNAL_ERROR.on(element, "Declaration expected but got: $element")
-        if (declarationIsHidden(element))
+        if (SerializerUtil.declarationIsHidden(element))
             return
         if (!firstDeclaration && !(lastDeclarationIsProperty && element is ESvProperty))
             serializerContext.appendLine()
@@ -241,8 +239,8 @@ class SourceSerializerVisitor(private val serializerContext: SerializerContext) 
         ExpressionSerializer.serializeReturnStatement(returnStatement, serializerContext)
     }
 
-    override fun visitInjectedExpression(injectedExpression: EInjectedExpression) {
-        ExpressionSerializer.serializeInjectedExpression(injectedExpression, serializerContext)
+    override fun visitInjectedStatement(injectedStatement: EInjectedStatement) {
+        ExpressionSerializer.serializeInjectedStatement(injectedStatement, serializerContext)
     }
 
     override fun visitStringExpression(stringExpression: EStringExpression) {
@@ -315,15 +313,5 @@ class SourceSerializerVisitor(private val serializerContext: SerializerContext) 
 
     override fun visitDelayExpression(delayExpression: EDelayExpression) {
         ExpressionSerializer.serializeDelayExpression(delayExpression, serializerContext)
-    }
-
-    companion object {
-
-        fun declarationIsHidden(element: EElement): Boolean {
-            return (element is EModule && element.isExtern) ||
-                element is EModulePort ||
-                element is EClockingBlock ||
-                element is ESvEnumEntry
-        }
     }
 }

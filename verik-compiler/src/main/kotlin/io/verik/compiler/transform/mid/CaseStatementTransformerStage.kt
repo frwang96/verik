@@ -16,9 +16,12 @@
 
 package io.verik.compiler.transform.mid
 
+import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.element.sv.ECaseStatement
 import io.verik.compiler.ast.property.CaseEntry
+import io.verik.compiler.ast.property.WhenEntry
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -35,16 +38,38 @@ object CaseStatementTransformerStage : ProjectStage() {
 
         override fun visitWhenExpression(whenExpression: EWhenExpression) {
             super.visitWhenExpression(whenExpression)
-            val entries = whenExpression.entries.map {
-                CaseEntry(it.conditions, it.body)
+            val subject = whenExpression.subject
+            if (subject != null) {
+                val entries = whenExpression.entries.map {
+                    CaseEntry(it.conditions, it.body)
+                }
+                val caseStatement = ECaseStatement(
+                    whenExpression.location,
+                    whenExpression.type,
+                    subject,
+                    entries
+                )
+                whenExpression.replace(caseStatement)
+            } else {
+                val ifExpression = getIfExpression(whenExpression.entries)
+                whenExpression.replace(ifExpression)
             }
-            val caseExpression = ECaseStatement(
-                whenExpression.location,
-                whenExpression.type,
-                whenExpression.subject,
-                entries
+        }
+
+        private fun getIfExpression(entries: List<WhenEntry>): EExpression {
+            val entry = entries[0]
+            if (entry.conditions.isEmpty())
+                return entry.body
+            val elseExpression = if (entries.size > 1) {
+                getIfExpression(entries.drop(1))
+            } else null
+            return EIfExpression(
+                entry.body.location,
+                entry.body.type.copy(),
+                entry.conditions[0],
+                entry.body,
+                elseExpression
             )
-            whenExpression.replace(caseExpression)
         }
     }
 }

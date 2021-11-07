@@ -342,7 +342,7 @@ internal class DeclarationSerializerTest : BaseTest() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
             """
-                class MP(@In val x: Boolean) : ModulePort()
+                class MP(@In var x: Boolean) : ModulePort()
                 class Top : ModuleInterface() {
                     private var x : Boolean = nc()
                     @Make
@@ -372,7 +372,7 @@ internal class DeclarationSerializerTest : BaseTest() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
             """
-                class CB(override val event: Event, @In val x: Boolean) : ClockingBlock()
+                class CB(override val event: Event, @In var x: Boolean) : ClockingBlock()
                 class Top : Module() {
                     private var x : Boolean = nc()
                     @Make

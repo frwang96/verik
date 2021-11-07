@@ -40,12 +40,12 @@ object BitConstantTransformerStage : ProjectStage() {
             super.visitKtCallExpression(callExpression)
             if (callExpression.reference in listOf(Core.Vk.F_u_Int, Core.Vk.F_u_String)) {
                 val expression = callExpression.valueArguments[0]
-                val value = ConstantUtil.getBitConstant(expression)
-                if (value != null) {
+                val bitConstant = ConstantUtil.getBitConstant(expression)
+                if (bitConstant != null) {
                     val constantExpression = EConstantExpression(
                         expression.location,
-                        Core.Vk.C_Ubit.toType(Cardinal.of(value.width).toType()),
-                        ConstantUtil.formatBitConstant(value)
+                        Core.Vk.C_Ubit.toType(Cardinal.of(bitConstant.width).toType()),
+                        bitConstant.toString()
                     )
                     callExpression.replace(constantExpression)
                 } else {

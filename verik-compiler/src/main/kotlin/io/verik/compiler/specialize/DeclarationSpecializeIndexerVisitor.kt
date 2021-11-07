@@ -107,6 +107,12 @@ class DeclarationSpecializeIndexerVisitor(
             if (reference is EDeclaration)
                 declarationBindingQueue.push(DeclarationBinding(reference, TypeParameterContext.EMPTY))
         }
+        if (basicClass.isEnum) {
+            val enumEntries = basicClass.declarations.filterIsInstance<EKtEnumEntry>()
+            enumEntries.forEach {
+                declarationBindingQueue.push(DeclarationBinding(it, TypeParameterContext.EMPTY))
+            }
+        }
 
         val typeParameterContext = specializerContext.typeParameterContext
         if (specializerContext.enableDeadCodeElimination) {

@@ -30,7 +30,6 @@ import io.verik.compiler.ast.element.sv.EWidthCastExpression
 import io.verik.compiler.ast.property.EdgeType
 import io.verik.compiler.common.BitConstant
 import io.verik.compiler.common.Cardinal
-import io.verik.compiler.common.ConstantUtil
 import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CorePackage
@@ -97,7 +96,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
             return EConstantExpression(
                 callExpression.location,
                 callExpression.type,
-                ConstantUtil.formatBitConstant(bitConstant)
+                bitConstant.toString()
             )
         }
     }
@@ -139,7 +138,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
             return EConstantExpression(
                 callExpression.location,
                 callExpression.type,
-                ConstantUtil.formatBitConstant(bitConstant)
+                bitConstant.toString()
             )
         }
     }

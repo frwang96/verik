@@ -44,11 +44,11 @@ object TemporaryDeclarationRelabelerStage : ProjectStage() {
         }
 
         override fun visitDeclaration(declaration: EDeclaration) {
-            super.visitDeclaration(declaration)
             if (declaration.name == "<tmp>") {
                 declaration.name = "_$$index"
                 index++
             }
+            super.visitDeclaration(declaration)
         }
     }
 }

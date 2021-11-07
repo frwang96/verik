@@ -17,35 +17,25 @@
 package io.verik.compiler.transform.mid
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findStatements
+import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
-internal class SubexpressionExtractorStageTest : BaseTest() {
+internal class ConstantPropagatorStageTest : BaseTest() {
 
     @Test
-    fun `streaming expression`() {
+    fun `constant propagation`() {
         val projectContext = driveTest(
-            SubexpressionExtractorStage::class,
+            ConstantPropagatorStage::class,
             """
-                var x = u(0)
+                const val x = 0
                 fun f() {
-                    x = x.reverse() + u(0)
+                    println(x)
                 }
             """.trimIndent()
         )
         assertElementEquals(
-            """
-                [
-                    PropertyStatement(Unit, SvProperty(<tmp>, Ubit<`1`>, StreamingExpression(*), 0, 0)),
-                    KtBinaryExpression(
-                        Unit,
-                        ReferenceExpression(Ubit<`1`>, x, null),
-                        KtCallExpression(Ubit<`1`>, plus, ReferenceExpression(Ubit<`1`>, <tmp>, null), [*], []),
-                        EQ
-                    )
-                ]
-            """.trimIndent(),
-            projectContext.findStatements("f")
+            "KtCallExpression(Unit, println, null, [ConstantExpression(Int, 0)], [])",
+            projectContext.findExpression("f")
         )
     }
 }

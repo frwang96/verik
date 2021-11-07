@@ -195,8 +195,9 @@ internal class ExpressionSerializerTest : BaseTest() {
             SourceSerializerStage::class,
             """
                 class C {
+                    private var x = 0
                     fun f() {
-                        this
+                        println(this.x)
                     }
                 }
             """.trimIndent()
@@ -213,8 +214,10 @@ internal class ExpressionSerializerTest : BaseTest() {
                 function automatic void _${'$'}init();
                 endfunction : _${'$'}init
             
+                int x = 0;
+            
                 virtual function automatic void f();
-                    this;
+                    ${'$'}display(this.x);
                 endfunction : f
             
             endclass : C
@@ -247,7 +250,7 @@ internal class ExpressionSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `injected expression`() {
+    fun `injected statement`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
             """
@@ -435,12 +438,11 @@ internal class ExpressionSerializerTest : BaseTest() {
                 fun f() {
                     @Suppress("CascadeIf")
                     if (x) {
-                        1
+                        println()
                     } else if (x) {
-                        2
+                        println()
                     } else {
-                        3
-                        4
+                        println()
                     }
                 }
             """.trimIndent()
@@ -450,14 +452,13 @@ internal class ExpressionSerializerTest : BaseTest() {
             
             function automatic void f();
                 if (x) begin
-                    1;
+                    ${'$'}display();
                 end
                 else if (x) begin
-                    2;
+                    ${'$'}display();
                 end
                 else begin
-                    3;
-                    4;
+                    ${'$'}display();
                 end
             endfunction : f
         """.trimIndent()
@@ -492,14 +493,14 @@ internal class ExpressionSerializerTest : BaseTest() {
             SourceSerializerStage::class,
             """
                 fun f() {
-                    assert(true) { 0 }
+                    assert(true) { println() }
                 }
             """.trimIndent()
         )
         val expected = """
             function automatic void f();
                 assert (1'b1) else begin
-                    0;
+                    ${'$'}display();
                 end
             endfunction : f
         """.trimIndent()

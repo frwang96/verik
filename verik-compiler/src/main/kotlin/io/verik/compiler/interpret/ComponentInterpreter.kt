@@ -110,8 +110,16 @@ object ComponentInterpreter {
 
     private fun interpretPort(valueParameter: EKtValueParameter, referenceUpdater: ReferenceUpdater): EPort? {
         val portType = when {
-            valueParameter.hasAnnotation(Annotations.IN) -> PortType.INPUT
-            valueParameter.hasAnnotation(Annotations.OUT) -> PortType.OUTPUT
+            valueParameter.hasAnnotation(Annotations.IN) -> {
+                if (!valueParameter.isMutable)
+                    Messages.PORT_NOT_MUTABLE.on(valueParameter, valueParameter.name)
+                PortType.INPUT
+            }
+            valueParameter.hasAnnotation(Annotations.OUT) -> {
+                if (!valueParameter.isMutable)
+                    Messages.PORT_NOT_MUTABLE.on(valueParameter, valueParameter.name)
+                PortType.OUTPUT
+            }
             else -> {
                 when {
                     valueParameter.type.isSubtype(Core.Vk.C_ModuleInterface.toType()) -> PortType.MODULE_INTERFACE

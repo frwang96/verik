@@ -76,7 +76,9 @@ configure<KtlintExtension> {
 
 signing {
     val publishing: PublishingExtension by project
-    sign(publishing.publications)
+    if (project.hasProperty("signing.keyId")) {
+        sign(publishing.publications)
+    }
 }
 
 publishing {

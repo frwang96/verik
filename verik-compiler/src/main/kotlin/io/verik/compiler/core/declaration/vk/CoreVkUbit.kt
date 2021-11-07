@@ -28,6 +28,7 @@ import io.verik.compiler.ast.element.sv.EWidthCastExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.ast.property.SvUnaryOperatorKind
+import io.verik.compiler.common.ConstantUtil
 import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.core.common.BinaryCoreFunctionDeclaration
 import io.verik.compiler.core.common.Core
@@ -143,6 +144,14 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
                 )
             )
         }
+
+        override fun evaluate(callExpression: EKtCallExpression): String? {
+            val left = ConstantUtil.getBitConstant(callExpression.receiver!!)
+            val right = ConstantUtil.getBitConstant(callExpression.valueArguments[0])
+            return if (left != null && right != null) {
+                left.add(right, callExpression).toString()
+            } else null
+        }
     }
 
     val F_add_Ubit = object : BinaryCoreFunctionDeclaration(
@@ -173,6 +182,14 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return F_plus_Ubit.getTypeConstraints(callExpression)
+        }
+
+        override fun evaluate(callExpression: EKtCallExpression): String? {
+            val left = ConstantUtil.getBitConstant(callExpression.receiver!!)
+            val right = ConstantUtil.getBitConstant(callExpression.valueArguments[0])
+            return if (left != null && right != null) {
+                left.sub(right, callExpression).toString()
+            } else null
         }
     }
 
@@ -506,14 +523,11 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
-            val msbIndex = EConstantExpression(callExpression.location, Core.Kt.C_Int.toType(), "${value - 1}")
-            val lsbIndex = EConstantExpression(callExpression.location, Core.Kt.C_Int.toType(), "0")
-            return EConstantPartSelectExpression(
+            return EWidthCastExpression(
                 callExpression.location,
                 callExpression.type,
                 callExpression.receiver!!,
-                msbIndex,
-                lsbIndex
+                value
             )
         }
     }

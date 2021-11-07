@@ -116,7 +116,7 @@ internal class CoreVkUbitTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "WidthCastExpression(Ubit<`8`>, ConstantExpression(Ubit<`4`>, 4'h0), 8)",
+            "WidthCastExpression(Ubit<`8`>, ConstantExpression(*), 8)",
             projectContext.findExpression("x")
         )
     }
@@ -156,14 +156,7 @@ internal class CoreVkUbitTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            """
-                ConstantPartSelectExpression(
-                    Ubit<`4`>,
-                    ConstantExpression(*),
-                    ConstantExpression(Int, 3),
-                    ConstantExpression(Int, 0)
-                )
-            """.trimIndent(),
+            "WidthCastExpression(Ubit<`4`>, ConstantExpression(*), 4)",
             projectContext.findExpression("x")
         )
     }

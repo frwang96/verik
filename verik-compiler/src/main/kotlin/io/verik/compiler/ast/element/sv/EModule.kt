@@ -37,6 +37,10 @@ class EModule(
         declarations.forEach { it.parent = this }
     }
 
+    fun isTop(): Boolean {
+        return isSynthesisTop || isSimulationTop
+    }
+
     override fun accept(visitor: Visitor) {
         return visitor.visitModule(this)
     }

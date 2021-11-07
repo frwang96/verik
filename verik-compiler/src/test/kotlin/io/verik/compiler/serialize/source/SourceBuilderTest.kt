@@ -50,7 +50,7 @@ internal class SourceBuilderTest : BaseTest() {
                 var aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa = 0
                 var bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb = 0
                 fun f() {
-                    aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa + bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+                    var x = aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa + bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
                 }
             """.trimIndent()
         )
@@ -59,7 +59,7 @@ internal class SourceBuilderTest : BaseTest() {
             int bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb = 0;
             
             function automatic void f();
-                aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                automatic int x = aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                     + bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb;
             endfunction : f
         """.trimIndent()
