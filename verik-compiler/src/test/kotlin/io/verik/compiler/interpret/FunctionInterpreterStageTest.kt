@@ -101,7 +101,7 @@ internal class FunctionInterpreterStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SvFunction(f, Unit, *, false, REGULAR, [])",
+            "SvFunction(f, Unit, *, 0, REGULAR, [])",
             projectContext.findDeclaration("f")
         )
     }
@@ -117,7 +117,7 @@ internal class FunctionInterpreterStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SvFunction(f, Unit, *, false, VIRTUAL, [])",
+            "SvFunction(f, Unit, *, 0, VIRTUAL, [])",
             projectContext.findDeclaration("f")
         )
     }
@@ -133,7 +133,7 @@ internal class FunctionInterpreterStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SvFunction(f, Unit, *, true, REGULAR, [])",
+            "SvFunction(f, Unit, *, 1, REGULAR, [])",
             projectContext.findDeclaration("f")
         )
     }

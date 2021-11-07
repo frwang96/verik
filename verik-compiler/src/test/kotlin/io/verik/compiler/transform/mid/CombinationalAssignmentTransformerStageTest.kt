@@ -37,7 +37,7 @@ internal class CombinationalAssignmentTransformerStageTest : BaseTest() {
                 Module(
                     M,
                     [
-                        SvProperty(x, Boolean, null, null),
+                        SvProperty(x, Boolean, null, 1, null),
                         AlwaysComBlock(
                             <tmp>,
                             KtBlockExpression(

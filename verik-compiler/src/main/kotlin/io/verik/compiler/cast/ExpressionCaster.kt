@@ -263,7 +263,7 @@ object ExpressionCaster {
         val childExpression = castContext.casterVisitor.getExpression(expression.leftHandSide)
         val castType = castContext.castType(expression.typeReference!!)
         val property = EKtProperty(location, "<tmp>")
-        property.init(castType, null, listOf())
+        property.init(castType, null, listOf(), false)
         return EIsExpression(
             location,
             childExpression,

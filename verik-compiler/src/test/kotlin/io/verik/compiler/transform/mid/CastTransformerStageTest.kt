@@ -36,14 +36,12 @@ internal class CastTransformerStageTest : BaseTest() {
         assertElementEquals(
             """
                 [
-                    PropertyStatement(Unit, SvProperty(<tmp>, Int, null, false)),
+                    PropertyStatement(Unit, SvProperty(<tmp>, Int, null, 0, 0)),
                     KtBinaryExpression(
                         Unit,
                         ReferenceExpression(Boolean, x, null),
                         KtCallExpression(
-                            Boolean,
-                            ${'$'}cast,
-                            null,
+                            Boolean, ${'$'}cast, null,
                             [ReferenceExpression(Int, <tmp>, null), ConstantExpression(*)],
                             []
                         ),

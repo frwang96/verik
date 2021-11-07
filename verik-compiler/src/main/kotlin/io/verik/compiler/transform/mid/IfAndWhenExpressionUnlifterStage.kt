@@ -53,7 +53,8 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
                     "<tmp>",
                     ifExpression.type.copy(),
                     null,
-                    false
+                    isMutable = false,
+                    isStatic = false
                 )
                 val referenceExpression = EReferenceExpression(
                     ifExpression.location,
@@ -82,7 +83,8 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
                     "<tmp>",
                     whenExpression.type.copy(),
                     null,
-                    false
+                    isMutable = false,
+                    isStatic = false
                 )
                 val referenceExpression = EReferenceExpression(
                     whenExpression.location,

@@ -157,7 +157,8 @@ object ForStatementTransformerStage : ProjectStage() {
                 valueParameter.name,
                 valueParameter.type,
                 propertyInitializer,
-                false
+                isMutable = false,
+                isStatic = false
             )
             referenceUpdater.update(valueParameter, property)
             val propertyStatement = EPropertyStatement(

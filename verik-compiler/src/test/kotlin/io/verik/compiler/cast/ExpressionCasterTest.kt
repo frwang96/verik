@@ -32,7 +32,7 @@ internal class ExpressionCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtFunction(f, Unit, KtBlockExpression(Unit, []), [], [], [], false)",
+            "KtFunction(f, Unit, KtBlockExpression(Unit, []), [], [], [], 0)",
             projectContext.findDeclaration("f")
         )
     }
@@ -272,7 +272,7 @@ internal class ExpressionCasterTest : BaseTest() {
                     Unit,
                     forEach,
                     ReferenceExpression(*),
-                    [FunctionLiteralExpression(Function, [KtValueParameter(y, Boolean, [], false)], *)],
+                    [FunctionLiteralExpression(Function, [KtValueParameter(y, Boolean, [], 0)], *)],
                     [Boolean]
                 )
             """.trimIndent(),
@@ -297,7 +297,7 @@ internal class ExpressionCasterTest : BaseTest() {
                     Unit,
                     forEach,
                     ReferenceExpression(*),
-                    [FunctionLiteralExpression(Function, [KtValueParameter(it, Boolean, [], false)], *)],
+                    [FunctionLiteralExpression(Function, [KtValueParameter(it, Boolean, [], 0)], *)],
                     [Boolean]
                 )
             """.trimIndent(),
@@ -329,7 +329,7 @@ internal class ExpressionCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "IsExpression(Boolean, ConstantExpression(*), KtProperty(<tmp>, Int, null, []), false, Int)",
+            "IsExpression(Boolean, ConstantExpression(*), KtProperty(<tmp>, Int, null, [], 0), 0, Int)",
             projectContext.findExpression("x")
         )
     }
@@ -361,7 +361,7 @@ internal class ExpressionCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "WhileExpression(Unit, ConstantExpression(*), KtBlockExpression(*), false)",
+            "WhileExpression(Unit, ConstantExpression(*), KtBlockExpression(*), 0)",
             projectContext.findExpression("f")
         )
     }
@@ -378,7 +378,7 @@ internal class ExpressionCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "WhileExpression(Unit, ConstantExpression(*), KtBlockExpression(*), true)",
+            "WhileExpression(Unit, ConstantExpression(*), KtBlockExpression(*), 1)",
             projectContext.findExpression("f")
         )
     }
@@ -399,7 +399,7 @@ internal class ExpressionCasterTest : BaseTest() {
             """
                 ForExpression(
                     Unit,
-                    KtValueParameter(y, Boolean, [], false),
+                    KtValueParameter(y, Boolean, [], 0),
                     ReferenceExpression(*),
                     KtBlockExpression(Unit, [])
                 )

@@ -69,6 +69,7 @@ object PropertyInterpreterStage : ProjectStage() {
                 property.name,
                 property.type,
                 property.initializer,
+                property.isMutable,
                 isStatic
             )
         }

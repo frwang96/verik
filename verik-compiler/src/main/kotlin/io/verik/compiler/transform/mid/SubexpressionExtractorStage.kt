@@ -85,7 +85,8 @@ object SubexpressionExtractorStage : ProjectStage() {
                     "<tmp>",
                     streamingExpression.type.copy(),
                     streamingExpressionReplacement,
-                    false
+                    isMutable = false,
+                    isStatic = false
                 )
                 val referenceExpression = EReferenceExpression(
                     streamingExpression.location,

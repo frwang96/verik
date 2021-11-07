@@ -73,10 +73,9 @@ internal class ForStatementTransformerStageTest : BaseTest() {
                         [PropertyStatement(
                             Unit,
                             SvProperty(
-                                it,
-                                Boolean,
+                                it, Boolean,
                                 KtCallExpression(Boolean, get, ReferenceExpression(*), [ReferenceExpression(*)], []),
-                                false
+                                0, 0
                             )
                         )]
                     )

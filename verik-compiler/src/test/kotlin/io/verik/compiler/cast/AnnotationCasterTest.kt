@@ -35,7 +35,7 @@ internal class AnnotationCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtFunction(f, Unit, *, [], [], [Annotation(Task, [])], false)",
+            "KtFunction(f, Unit, *, [], [], [Annotation(Task, [])], 0)",
             projectContext.findDeclaration("f")
         )
     }
@@ -50,7 +50,7 @@ internal class AnnotationCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtFunction(f, Unit, *, [], [], [Annotation(Relabel, [g])], false)",
+            "KtFunction(f, Unit, *, [], [], [Annotation(Relabel, [g])], 0)",
             projectContext.findDeclaration("f")
         )
     }
@@ -77,7 +77,7 @@ internal class AnnotationCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtValueParameter(x, Boolean, [Annotation(In, [])], true)",
+            "KtValueParameter(x, Boolean, [Annotation(In, [])], 1)",
             projectContext.findDeclaration("x")
         )
     }

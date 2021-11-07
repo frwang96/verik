@@ -34,10 +34,9 @@ internal class ParenthesisInsertionTransformerStageTest : BaseTest() {
         assertElementEquals(
             """
                 SvProperty(
-                    y,
-                    Int,
+                    y, Int,
                     SvBinaryExpression(Int, ParenthesizedExpression(*), ReferenceExpression(*), MUL),
-                    null
+                    1, null
                 )
             """.trimIndent(),
             projectContext.findDeclaration("y")
@@ -56,10 +55,9 @@ internal class ParenthesisInsertionTransformerStageTest : BaseTest() {
         assertElementEquals(
             """
                 SvProperty(
-                    y,
-                    Int,
+                    y, Int,
                     SvBinaryExpression(Int, ReferenceExpression(*), ParenthesizedExpression(*), PLUS),
-                    null
+                    1, null
                 )
             """.trimIndent(),
             projectContext.findDeclaration("y")

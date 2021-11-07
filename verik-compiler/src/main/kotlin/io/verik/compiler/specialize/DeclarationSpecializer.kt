@@ -140,7 +140,7 @@ object DeclarationSpecializer {
         val initializer = property.initializer?.let { specializerContext.specialize(it) }
         val annotations = property.annotations.map { specializerContext.specialize(it) }
 
-        specializedProperty.init(type, initializer, annotations)
+        specializedProperty.init(type, initializer, annotations, property.isMutable)
         return specializedProperty
     }
 

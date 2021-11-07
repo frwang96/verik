@@ -33,13 +33,15 @@ class EKtProperty(
     override var type = NullDeclaration.toType()
     override var initializer: EExpression? = null
     override var annotations: List<EAnnotation> = listOf()
+    var isMutable = false
 
-    fun init(type: Type, initializer: EExpression?, annotations: List<EAnnotation>) {
+    fun init(type: Type, initializer: EExpression?, annotations: List<EAnnotation>, isMutable: Boolean) {
         initializer?.parent = this
         annotations.forEach { it.parent = this }
         this.type = type
         this.initializer = initializer
         this.annotations = annotations
+        this.isMutable = isMutable
     }
 
     override fun accept(visitor: Visitor) {

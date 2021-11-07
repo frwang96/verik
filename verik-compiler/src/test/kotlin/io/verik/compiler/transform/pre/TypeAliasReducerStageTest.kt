@@ -32,7 +32,7 @@ internal class TypeAliasReducerStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtProperty(x, Ubit<`8`>, *, [])",
+            "KtProperty(x, Ubit<`8`>, *, [], 1)",
             projectContext.findDeclaration("x")
         )
     }

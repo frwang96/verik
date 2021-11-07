@@ -31,7 +31,7 @@ internal class UninitializedPropertyTransformerStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SvProperty(x, Boolean, null, null)",
+            "SvProperty(x, Boolean, null, 0, null)",
             projectContext.findDeclaration("x")
         )
     }

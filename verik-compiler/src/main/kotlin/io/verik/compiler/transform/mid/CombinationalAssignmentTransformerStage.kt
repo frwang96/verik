@@ -64,7 +64,7 @@ object CombinationalAssignmentTransformerStage : ProjectStage() {
         }
 
         private fun splitAssignmentStatement(declaration: EDeclaration): EExpression? {
-            if (declaration is ESvProperty) {
+            if (declaration is ESvProperty && declaration.isMutable) {
                 val initializer = declaration.initializer
                 if (initializer != null) {
                     declaration.initializer = null

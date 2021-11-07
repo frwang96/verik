@@ -36,7 +36,7 @@ internal class PropertyStatementReorderStageTest : BaseTest() {
         assertElementEquals(
             """
                 [
-                    PropertyStatement(Unit, SvProperty(x, Boolean, null, false)),
+                    PropertyStatement(Unit, SvProperty(x, Boolean, null, 0, 0)),
                     KtCallExpression(*),
                     SvBinaryExpression(Unit, ReferenceExpression(Boolean, x, null), ConstantExpression(*), ASSIGN)
                 ]
@@ -57,7 +57,7 @@ internal class PropertyStatementReorderStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "[PropertyStatement(Unit, SvProperty(x, Boolean, null, false)), KtCallExpression(*)]",
+            "[PropertyStatement(Unit, SvProperty(x, Boolean, null, 0, 0)), KtCallExpression(*)]",
             projectContext.findStatements("f")
         )
     }

@@ -35,7 +35,7 @@ internal class TypeSpecializerTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtProperty(x, Ubit<`8`>, *, [])",
+            "KtProperty(x, Ubit<`8`>, *, [], 1)",
             projectContext.findDeclaration("x")
         )
     }
@@ -51,7 +51,7 @@ internal class TypeSpecializerTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtProperty(x, Ubit<`8`>, *, [])",
+            "KtProperty(x, Ubit<`8`>, *, [], 1)",
             projectContext.findDeclaration("x")
         )
     }
@@ -67,7 +67,7 @@ internal class TypeSpecializerTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtProperty(x, Ubit<`16`>, *, [])",
+            "KtProperty(x, Ubit<`16`>, *, [], 1)",
             projectContext.findDeclaration("x")
         )
     }

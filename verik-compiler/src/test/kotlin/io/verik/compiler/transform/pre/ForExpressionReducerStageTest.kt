@@ -36,8 +36,7 @@ internal class ForExpressionReducerStageTest : BaseTest() {
         assertElementEquals(
             """
                 KtCallExpression(
-                    Unit,
-                    forEach,
+                    Unit, forEach,
                     KtCallExpression(IntRange, until, *, [*], []),
                     [FunctionLiteralExpression(Function, [KtValueParameter(*)], KtBlockExpression(*))],
                     [Int]

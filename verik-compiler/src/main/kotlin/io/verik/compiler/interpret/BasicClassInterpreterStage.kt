@@ -180,7 +180,8 @@ object BasicClassInterpreterStage : ProjectStage() {
                     null,
                     arrayListOf()
                 ),
-                false
+                isMutable = false,
+                isStatic = false
             )
             val valueParameters = constructor.valueParameters.map {
                 ESvValueParameter(it.location, it.name, it.type.copy())

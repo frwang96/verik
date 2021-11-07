@@ -38,13 +38,7 @@ internal class ConstructorDesugarTransformerStageTest : BaseTest() {
                 KtBasicClass(
                     C,
                     [KtConstructor(C, KtBlockExpression(Unit, []), [], [], null)],
-                    [],
-                    [],
-                    false,
-                    false,
-                    false,
-                    null,
-                    null
+                    [], [], 0, 0, 0, null, null
                 )
             """.trimIndent(),
             projectContext.findDeclaration("C")
@@ -64,22 +58,16 @@ internal class ConstructorDesugarTransformerStageTest : BaseTest() {
                 KtBasicClass(
                     C,
                     [
-                        KtProperty(x, Int, null, []),
+                        KtProperty(x, Int, null, [], 1),
                         KtConstructor(
                             C,
                             KtBlockExpression(*),
-                            [KtValueParameter(x, Int, [], false)],
+                            [KtValueParameter(x, Int, [], 0)],
                             [],
                             null
                         )
                     ],
-                    [],
-                    [],
-                    false,
-                    false,
-                    false,
-                    null,
-                    null
+                    [], [], 0, 0, 0, null, null
                 )
             """.trimIndent(),
             projectContext.findDeclaration("C")

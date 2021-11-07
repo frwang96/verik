@@ -32,7 +32,7 @@ internal class DeclarationSpecializerStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtBasicClass(C_8, [], [], [], false, false, false, PrimaryConstructor(C_8, [], []), null)",
+            "KtBasicClass(C_8, [], [], [], 0, 0, 0, PrimaryConstructor(C_8, [], []), null)",
             projectContext.findDeclaration("C_8")
         )
     }
@@ -48,7 +48,7 @@ internal class DeclarationSpecializerStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtBasicClass(D_C, [], [], [], false, false, false, PrimaryConstructor(D_C, [], []), null)",
+            "KtBasicClass(D_C, [], [], [], 0, 0, 0, PrimaryConstructor(D_C, [], []), null)",
             projectContext.findDeclaration("D_C")
         )
     }
@@ -68,14 +68,8 @@ internal class DeclarationSpecializerStageTest : BaseTest() {
             """
                 KtBasicClass(
                     C_8,
-                    [KtProperty(x, Ubit<`8`>, KtCallExpression(*), [])],
-                    [],
-                    [],
-                    false,
-                    false,
-                    false,
-                    *,
-                    null
+                    [KtProperty(x, Ubit<`8`>, KtCallExpression(*), [], 0)],
+                    [], [], 0, 0, 0, *, null
                 )
             """.trimIndent(),
             projectContext.findDeclaration("C_8")
@@ -92,7 +86,7 @@ internal class DeclarationSpecializerStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtFunction(f_8, Unit, KtBlockExpression(*), [], [], [], false)",
+            "KtFunction(f_8, Unit, KtBlockExpression(*), [], [], [], 0)",
             projectContext.findDeclaration("f_8")
         )
     }
@@ -110,7 +104,7 @@ internal class DeclarationSpecializerStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtProperty(e, C, KtCallExpression(*), [])",
+            "KtProperty(e, C, KtCallExpression(*), [], 0)",
             projectContext.findDeclaration("e")
         )
     }
