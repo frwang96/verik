@@ -58,6 +58,7 @@ import io.verik.compiler.transform.mid.CaseStatementTransformerStage
 import io.verik.compiler.transform.mid.CastTransformerStage
 import io.verik.compiler.transform.mid.CombinationalAssignmentTransformerStage
 import io.verik.compiler.transform.mid.ConstantExpressionEvaluatorStage
+import io.verik.compiler.transform.mid.ConstantPropagatorStage
 import io.verik.compiler.transform.mid.EnumNameTransformerStage
 import io.verik.compiler.transform.mid.ForStatementTransformerStage
 import io.verik.compiler.transform.mid.FunctionTransformerStage
@@ -141,6 +142,7 @@ object StageSequencer {
 
         // MidTransform
         stageSequence.add(EnumNameTransformerStage)
+        stageSequence.add(ConstantPropagatorStage)
         stageSequence.add(InjectedExpressionReducerStage)
         stageSequence.add(StringTemplateExpressionReducerStage)
         stageSequence.add(CastTransformerStage)

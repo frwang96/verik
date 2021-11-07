@@ -170,20 +170,6 @@ class Ubit<N : `*`> private constructor() {
     }
 
     /**
-     * Subtract [x] from this value with full width `Ubit<N> - Ubit<M> = Ubit<MAX<N, M> + 1>`.
-     */
-    infix fun sub(x: Ubit<`*`>): Ubit<`*`> {
-        throw VerikException()
-    }
-
-    /**
-     * Subtract [x] from this value with full width `Ubit<N> - Sbit<M> = Ubit<MAX<N, M> + 1>`.
-     */
-    infix fun sub(x: Sbit<`*`>): Ubit<`*`> {
-        throw VerikException()
-    }
-
-    /**
      * Multiply [x] to this value with full width `Ubit<N> * Ubit<M> = Ubit<N * M>`.
      */
     infix fun mul(x: Ubit<`*`>): Ubit<`*`> {

@@ -57,9 +57,12 @@ object ConstantUtil {
     fun getBitConstant(expression: EExpression): BitConstant? {
         return when (expression) {
             is EConstantExpression -> {
-                if (expression.type.reference == Core.Kt.C_Int) {
-                    getBitConstantInt(expression.value)
-                } else null
+                when (expression.type.reference) {
+                    Core.Kt.C_Int -> getBitConstantInt(expression.value)
+                    Core.Vk.C_Ubit -> getBitConstantString(expression.value, expression)
+                    Core.Vk.C_Sbit -> getBitConstantString(expression.value, expression)
+                    else -> null
+                }
             }
             is EStringTemplateExpression -> {
                 if (expression.entries.size != 1) {
@@ -138,21 +141,5 @@ object ConstantUtil {
 
     fun formatInt(int: Int): String {
         return int.toString()
-    }
-
-    fun formatBitConstant(bitConstant: BitConstant): String {
-        val valueString = bitConstant.value.toString(16)
-        val valueStringLength = (bitConstant.width + 3) / 4
-        val valueStringPadded = valueString.padStart(valueStringLength, '0')
-
-        val builder = StringBuilder()
-        builder.append("${bitConstant.width}'h")
-        valueStringPadded.forEachIndexed { index, it ->
-            builder.append(it)
-            val countToEnd = valueStringLength - index - 1
-            if (countToEnd > 0 && countToEnd % 4 == 0)
-                builder.append("_")
-        }
-        return builder.toString()
     }
 }

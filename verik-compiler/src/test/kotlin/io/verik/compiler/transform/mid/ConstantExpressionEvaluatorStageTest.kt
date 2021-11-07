@@ -55,7 +55,7 @@ import org.junit.jupiter.api.Test
 internal class ConstantExpressionEvaluatorStageTest : BaseTest() {
 
     @Test
-    fun `evaluate plus`() {
+    fun `evaluate Int plus`() {
         val projectContext = driveTest(
             ConstantExpressionEvaluatorStage::class,
             """
@@ -64,6 +64,20 @@ internal class ConstantExpressionEvaluatorStageTest : BaseTest() {
         )
         assertElementEquals(
             "ConstantExpression(Int, 2)",
+            projectContext.findExpression("x")
+        )
+    }
+
+    @Test
+    fun `evaluate Ubit plus`() {
+        val projectContext = driveTest(
+            ConstantExpressionEvaluatorStage::class,
+            """
+                var x = u(1) + u(1)
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "ConstantExpression(Ubit<`1`>, 1'h0)",
             projectContext.findExpression("x")
         )
     }
