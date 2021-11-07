@@ -19,7 +19,7 @@ package cache
 import io.verik.core.*
 
 class MainMem(
-    @In val clk: Boolean,
+    @In var clk: Boolean,
     val ifRx: TxnIf.TxnRx
 ) : Module() {
 

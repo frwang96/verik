@@ -23,6 +23,7 @@ import io.verik.compiler.check.post.FileCheckerStage
 import io.verik.compiler.check.post.KeywordCheckerStage
 import io.verik.compiler.check.post.NameCheckerStage
 import io.verik.compiler.check.post.NameRedeclarationCheckerStage
+import io.verik.compiler.check.post.PortInstantiationCheckerStage
 import io.verik.compiler.check.post.UntransformedElementCheckerStage
 import io.verik.compiler.check.post.UntransformedReferenceCheckerStage
 import io.verik.compiler.check.pre.ImportDirectiveCheckerStage
@@ -177,6 +178,7 @@ object StageSequencer {
         stageSequence.add(NameCheckerStage)
         stageSequence.add(KeywordCheckerStage)
         stageSequence.add(NameRedeclarationCheckerStage)
+        stageSequence.add(PortInstantiationCheckerStage)
 
         // Serialize
         stageSequence.add(ConfigFileSerializerStage)

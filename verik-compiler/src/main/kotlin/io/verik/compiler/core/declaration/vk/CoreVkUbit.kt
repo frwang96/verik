@@ -506,14 +506,11 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
-            val msbIndex = EConstantExpression(callExpression.location, Core.Kt.C_Int.toType(), "${value - 1}")
-            val lsbIndex = EConstantExpression(callExpression.location, Core.Kt.C_Int.toType(), "0")
-            return EConstantPartSelectExpression(
+            return EWidthCastExpression(
                 callExpression.location,
                 callExpression.type,
                 callExpression.receiver!!,
-                msbIndex,
-                lsbIndex
+                value
             )
         }
     }

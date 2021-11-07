@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test
 internal class SubexpressionExtractorStageTest : BaseTest() {
 
     @Test
-    fun `struct literal`() {
+    fun `streaming expression`() {
         val projectContext = driveTest(
             SubexpressionExtractorStage::class,
             """

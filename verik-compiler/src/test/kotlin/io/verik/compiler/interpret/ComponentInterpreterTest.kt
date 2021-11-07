@@ -54,7 +54,7 @@ internal class ComponentInterpreterTest : BaseTest() {
     }
 
     @Test
-    fun `interpret module with port illegal`() {
+    fun `interpret module with port no directionality`() {
         assertThrows<TestErrorException> {
             driveTest(
                 NonBasicClassInterpreterStage::class,
@@ -63,6 +63,18 @@ internal class ComponentInterpreterTest : BaseTest() {
                 """.trimIndent()
             )
         }.apply { Assertions.assertEquals("Could not determine directionality of port: x", message) }
+    }
+
+    @Test
+    fun `interpret module with port immutable`() {
+        assertThrows<TestErrorException> {
+            driveTest(
+                NonBasicClassInterpreterStage::class,
+                """
+                    class M(@In val x: Boolean): Module()
+                """.trimIndent()
+            )
+        }.apply { Assertions.assertEquals("Port must be declared as var: x", message) }
     }
 
     @Test
