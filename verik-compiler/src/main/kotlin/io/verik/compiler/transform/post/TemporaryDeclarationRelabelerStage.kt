@@ -16,9 +16,7 @@
 
 package io.verik.compiler.transform.post
 
-import io.verik.compiler.ast.element.common.EAbstractFunction
-import io.verik.compiler.ast.element.sv.ESvProperty
-import io.verik.compiler.ast.element.sv.ESvValueParameter
+import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -29,30 +27,26 @@ object TemporaryDeclarationRelabelerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
         val temporaryDeclarationRelabelerVisitor = TemporaryDeclarationRelabelerVisitor()
-        projectContext.project.accept(temporaryDeclarationRelabelerVisitor)
+        projectContext.project.files().forEach { file ->
+            file.declarations.forEach {
+                temporaryDeclarationRelabelerVisitor.resetIndex()
+                it.accept(temporaryDeclarationRelabelerVisitor)
+            }
+        }
     }
 
     private class TemporaryDeclarationRelabelerVisitor : TreeVisitor() {
 
-        var index = 0
+        private var index = 0
 
-        override fun visitAbstractFunction(abstractFunction: EAbstractFunction) {
+        fun resetIndex() {
             index = 0
-            super.visitAbstractFunction(abstractFunction)
         }
 
-        override fun visitSvProperty(property: ESvProperty) {
-            super.visitSvProperty(property)
-            if (property.name == "<tmp>") {
-                property.name = "_$$index"
-                index++
-            }
-        }
-
-        override fun visitSvValueParameter(valueParameter: ESvValueParameter) {
-            super.visitSvValueParameter(valueParameter)
-            if (valueParameter.name == "<tmp>") {
-                valueParameter.name = "_$$index"
+        override fun visitDeclaration(declaration: EDeclaration) {
+            super.visitDeclaration(declaration)
+            if (declaration.name == "<tmp>") {
+                declaration.name = "_$$index"
                 index++
             }
         }

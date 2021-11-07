@@ -280,7 +280,7 @@ internal class DeclarationSerializerTest : BaseTest() {
             SourceSerializerStage::class,
             """
                 class M : Module() {
-                    private var x = false
+                    private var x : Boolean = nc()
                     @Seq
                     fun f() {
                         on (posedge(x)) {}
@@ -291,7 +291,7 @@ internal class DeclarationSerializerTest : BaseTest() {
         val expected = """
             module M;
             
-                logic x = 1'b0;
+                logic x;
             
                 always_ff @(posedge x) begin : f
                 end : f
@@ -344,7 +344,7 @@ internal class DeclarationSerializerTest : BaseTest() {
             """
                 class MP(@In val x: Boolean) : ModulePort()
                 class Top : ModuleInterface() {
-                    private var x = false
+                    private var x : Boolean = nc()
                     @Make
                     val mp = MP(x)
                 }
@@ -353,7 +353,7 @@ internal class DeclarationSerializerTest : BaseTest() {
         val expected = """
             interface Top;
             
-                logic x = 1'b0;
+                logic x;
             
                 modport mp (
                     input x
@@ -374,7 +374,7 @@ internal class DeclarationSerializerTest : BaseTest() {
             """
                 class CB(override val event: Event, @In val x: Boolean) : ClockingBlock()
                 class Top : Module() {
-                    private var x = false
+                    private var x : Boolean = nc()
                     @Make
                     val cb = CB(posedge(x), x)
                 }
@@ -383,7 +383,7 @@ internal class DeclarationSerializerTest : BaseTest() {
         val expected = """
             module Top;
             
-                logic x = 1'b0;
+                logic x;
             
                 clocking cb @(posedge x);
                     input x;
