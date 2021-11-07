@@ -37,14 +37,13 @@ object StructInterpreter {
         return true
     }
 
-    // TODO track mutability of value parameter
     private fun interpretProperty(valueParameter: EKtValueParameter, referenceUpdater: ReferenceUpdater): ESvProperty {
         val property = ESvProperty(
             valueParameter.location,
             valueParameter.name,
             valueParameter.type,
             null,
-            true,
+            valueParameter.isMutable,
             null
         )
         referenceUpdater.update(valueParameter, property)

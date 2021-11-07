@@ -58,11 +58,11 @@ internal class ConstructorDesugarTransformerStageTest : BaseTest() {
                 KtBasicClass(
                     C,
                     [
-                        KtProperty(x, Int, null, [], 1),
+                        KtProperty(x, Int, null, [], 0),
                         KtConstructor(
                             C,
                             KtBlockExpression(*),
-                            [KtValueParameter(x, Int, [], 0)],
+                            [KtValueParameter(x, Int, [], 0, 0)],
                             [],
                             null
                         )

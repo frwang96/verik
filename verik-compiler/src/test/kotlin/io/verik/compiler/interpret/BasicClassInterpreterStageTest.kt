@@ -81,7 +81,7 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
                 SvBasicClass(
                     C,
                     [
-                        KtProperty(x, Int, null, [], 1),
+                        KtProperty(x, Int, null, [], 0),
                         SvFunction(_${'$'}new, C, *, 1, REGULAR, [SvValueParameter(x, Int)]),
                         SvFunction(_${'$'}init, Unit, *, 0, REGULAR, [SvValueParameter(x, Int)])
                     ],

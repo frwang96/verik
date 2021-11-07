@@ -250,8 +250,9 @@ object DeclarationCaster {
             AnnotationCaster.castAnnotationEntry(it, castContext)
         }
         val isPrimaryConstructorProperty = (propertyDescriptor != null)
+        val isMutable = descriptor.isVar
 
-        castedValueParameter.init(type, annotations, isPrimaryConstructorProperty)
+        castedValueParameter.init(type, annotations, isPrimaryConstructorProperty, isMutable)
         return castedValueParameter
     }
 

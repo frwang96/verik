@@ -32,12 +32,19 @@ class EKtValueParameter(
     override var type: Type = NullDeclaration.toType()
     override var annotations: List<EAnnotation> = listOf()
     var isPrimaryConstructorProperty = false
+    var isMutable: Boolean = false
 
-    fun init(type: Type, annotations: List<EAnnotation>, isPrimaryConstructorProperty: Boolean) {
+    fun init(
+        type: Type,
+        annotations: List<EAnnotation>,
+        isPrimaryConstructorProperty: Boolean,
+        isMutable: Boolean
+    ) {
         annotations.forEach { it.parent = this }
         this.type = type
         this.annotations = annotations
         this.isPrimaryConstructorProperty = isPrimaryConstructorProperty
+        this.isMutable = isMutable
     }
 
     override fun accept(visitor: Visitor) {

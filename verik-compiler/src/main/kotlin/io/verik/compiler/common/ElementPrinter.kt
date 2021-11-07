@@ -374,6 +374,7 @@ class ElementPrinter : Visitor() {
             build(valueParameter.type.toString())
             build(valueParameter.annotations)
             build(valueParameter.isPrimaryConstructorProperty)
+            build(valueParameter.isMutable)
         }
     }
 
