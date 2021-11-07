@@ -64,7 +64,7 @@ internal class ForStatementTransformerStageTest : BaseTest() {
             """
                 ForStatement(
                     Void,
-                    TemporaryValueParameter(Int),
+                    SvValueParameter(<tmp>, Int),
                     ConstantExpression(Int, 0),
                     KtCallExpression(Boolean, lt, ReferenceExpression(Int, <tmp>, null), [ReferenceExpression(*)], []),
                     KtUnaryExpression(Int, ReferenceExpression(Int, <tmp>, null), POST_INC),
@@ -73,10 +73,9 @@ internal class ForStatementTransformerStageTest : BaseTest() {
                         [PropertyStatement(
                             Unit,
                             SvProperty(
-                                it,
-                                Boolean,
+                                it, Boolean,
                                 KtCallExpression(Boolean, get, ReferenceExpression(*), [ReferenceExpression(*)], []),
-                                false
+                                0, 0
                             )
                         )]
                     )

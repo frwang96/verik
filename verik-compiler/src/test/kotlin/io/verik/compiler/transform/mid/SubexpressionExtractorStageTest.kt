@@ -36,7 +36,7 @@ internal class SubexpressionExtractorStageTest : BaseTest() {
         assertElementEquals(
             """
                 [
-                    PropertyStatement(Unit, TemporaryProperty(Ubit<`1`>, StreamingExpression(*))),
+                    PropertyStatement(Unit, SvProperty(<tmp>, Ubit<`1`>, StreamingExpression(*), 0, 0)),
                     KtBinaryExpression(
                         Unit,
                         ReferenceExpression(Ubit<`1`>, x, null),

@@ -35,7 +35,7 @@ internal class TypeResolverStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtProperty(x, Boolean, *, [])",
+            "KtProperty(x, Boolean, *, [], 1)",
             projectContext.findDeclaration("x")
         )
     }
@@ -50,7 +50,7 @@ internal class TypeResolverStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "KtProperty(c, C<`8`>, KtCallExpression(C<`8`>, <init>, null, [], [`8`]), [])",
+            "KtProperty(c, C<`8`>, KtCallExpression(C<`8`>, <init>, null, [], [`8`]), [], 1)",
             projectContext.findDeclaration("c")
         )
     }

@@ -156,7 +156,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SvProperty(x, Boolean, *, null)",
+            "SvProperty(x, Boolean, *, 1, null)",
             projectContext.findDeclaration("x")
         )
     }
@@ -172,7 +172,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SvProperty(x, Boolean, *, true)",
+            "SvProperty(x, Boolean, *, 1, 1)",
             projectContext.findDeclaration("x")
         )
     }

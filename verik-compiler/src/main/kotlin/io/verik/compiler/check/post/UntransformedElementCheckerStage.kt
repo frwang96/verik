@@ -17,8 +17,6 @@
 package io.verik.compiler.check.post
 
 import io.verik.compiler.ast.element.common.ENullElement
-import io.verik.compiler.ast.element.common.ETemporaryProperty
-import io.verik.compiler.ast.element.common.ETemporaryValueParameter
 import io.verik.compiler.ast.element.kt.EForExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
@@ -70,11 +68,6 @@ object UntransformedElementCheckerStage : ProjectStage() {
             Messages.INTERNAL_ERROR.on(property, "Property ${property.name} $message")
         }
 
-        override fun visitTemporaryProperty(temporaryProperty: ETemporaryProperty) {
-            super.visitTemporaryProperty(temporaryProperty)
-            Messages.INTERNAL_ERROR.on(temporaryProperty, "Temporary property ${temporaryProperty.name} $message")
-        }
-
         override fun visitKtEnumEntry(enumEntry: EKtEnumEntry) {
             super.visitKtEnumEntry(enumEntry)
             Messages.INTERNAL_ERROR.on(enumEntry, "Enum entry ${enumEntry.name} $message")
@@ -83,14 +76,6 @@ object UntransformedElementCheckerStage : ProjectStage() {
         override fun visitKtValueParameter(valueParameter: EKtValueParameter) {
             super.visitKtValueParameter(valueParameter)
             Messages.INTERNAL_ERROR.on(valueParameter, "Value parameter ${valueParameter.name} $message")
-        }
-
-        override fun visitTemporaryValueParameter(temporaryValueParameter: ETemporaryValueParameter) {
-            super.visitTemporaryValueParameter(temporaryValueParameter)
-            Messages.INTERNAL_ERROR.on(
-                temporaryValueParameter,
-                "Temporary value parameter ${temporaryValueParameter.name} $message"
-            )
         }
 
         override fun visitKtBlockExpression(blockExpression: EKtBlockExpression) {

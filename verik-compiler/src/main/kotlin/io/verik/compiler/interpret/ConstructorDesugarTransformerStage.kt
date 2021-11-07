@@ -81,9 +81,11 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
         private fun desugarValueParameterProperties(valueParameters: List<EKtValueParameter>): List<EKtProperty?> {
             return valueParameters.map {
                 if (it.isPrimaryConstructorProperty) {
+                    val isMutable = it.isMutable
                     it.isPrimaryConstructorProperty = false
+                    it.isMutable = false
                     val property = EKtProperty(it.location, it.name)
-                    property.init(it.type.copy(), null, listOf())
+                    property.init(it.type.copy(), null, listOf(), isMutable)
                     referenceUpdater.update(it, property)
                     property
                 } else {

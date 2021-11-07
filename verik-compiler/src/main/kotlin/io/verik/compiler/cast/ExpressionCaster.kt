@@ -22,7 +22,6 @@ import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ESuperExpression
-import io.verik.compiler.ast.element.common.ETemporaryProperty
 import io.verik.compiler.ast.element.common.EThisExpression
 import io.verik.compiler.ast.element.common.EWhileExpression
 import io.verik.compiler.ast.element.kt.EForExpression
@@ -32,6 +31,7 @@ import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.interfaces.cast
@@ -262,12 +262,12 @@ object ExpressionCaster {
         val location = expression.location()
         val childExpression = castContext.casterVisitor.getExpression(expression.leftHandSide)
         val castType = castContext.castType(expression.typeReference!!)
-        val temporaryProperty = ETemporaryProperty(location)
-        temporaryProperty.init(castType, null)
+        val property = EKtProperty(location, "<tmp>")
+        property.init(castType, null, listOf(), false)
         return EIsExpression(
             location,
             childExpression,
-            temporaryProperty,
+            property,
             expression.isNegated,
             castType
         )

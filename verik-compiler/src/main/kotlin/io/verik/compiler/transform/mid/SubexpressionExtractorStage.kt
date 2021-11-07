@@ -50,8 +50,8 @@ package io.verik.compiler.transform.mid
 
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
-import io.verik.compiler.ast.element.common.ETemporaryProperty
 import io.verik.compiler.ast.element.sv.EStreamingExpression
+import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.property.ExpressionType
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
@@ -80,17 +80,23 @@ object SubexpressionExtractorStage : ProjectStage() {
                     streamingExpression.type.copy(),
                     streamingExpression.expression
                 )
-                val temporaryProperty = ETemporaryProperty(streamingExpression.location)
-                temporaryProperty.init(streamingExpression.type.copy(), streamingExpressionReplacement)
+                val property = ESvProperty(
+                    streamingExpression.location,
+                    "<tmp>",
+                    streamingExpression.type.copy(),
+                    streamingExpressionReplacement,
+                    isMutable = false,
+                    isStatic = false
+                )
                 val referenceExpression = EReferenceExpression(
                     streamingExpression.location,
-                    temporaryProperty.type.copy(),
-                    temporaryProperty,
+                    property.type.copy(),
+                    property,
                     null
                 )
                 val propertyStatement = EPropertyStatement(
                     streamingExpression.location,
-                    temporaryProperty
+                    property
                 )
                 subexpressionExtractor.extract(streamingExpression, referenceExpression, listOf(propertyStatement))
             }

@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
+import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.sv.EAbstractComponentInstantiation
@@ -60,6 +61,7 @@ object PropertyInterpreterStage : ProjectStage() {
             val isStatic = when (val parent = property.parent) {
                 is ESvBasicClass -> if (parent.isDeclarationsStatic) true else null
                 is EPropertyStatement -> false
+                is EIsExpression -> false
                 else -> null
             }
             return ESvProperty(
@@ -67,6 +69,7 @@ object PropertyInterpreterStage : ProjectStage() {
                 property.name,
                 property.type,
                 property.initializer,
+                property.isMutable,
                 isStatic
             )
         }

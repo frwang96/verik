@@ -48,9 +48,7 @@ internal class StringTemplateExpressionReducerStageTest : BaseTest() {
         assertElementEquals(
             """
                 KtCallExpression(
-                    String,
-                    ${"$"}sformatf,
-                    null,
+                    String, ${"$"}sformatf, null,
                     [StringExpression(String, %0d), ReferenceExpression(Int, x, null)],
                     []
                 )

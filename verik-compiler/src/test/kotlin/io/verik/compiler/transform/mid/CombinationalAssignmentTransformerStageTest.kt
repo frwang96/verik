@@ -14,35 +14,42 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.pre
+package io.verik.compiler.transform.mid
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findExpression
+import io.verik.compiler.util.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class ForExpressionReducerStageTest : BaseTest() {
+internal class CombinationalAssignmentTransformerStageTest : BaseTest() {
 
     @Test
-    fun `reduce for expression`() {
+    fun `combinational assignment`() {
         val projectContext = driveTest(
-            ForExpressionReducerStage::class,
+            CombinationalAssignmentTransformerStage::class,
             """
-                fun f() {
-                    @Suppress("ControlFlowWithEmptyBody")
-                    for (i in 0 until 8) {}
+                class M : Module() {
+                    var x = false
                 }
             """.trimIndent()
         )
         assertElementEquals(
             """
-                KtCallExpression(
-                    Unit, forEach,
-                    KtCallExpression(IntRange, until, *, [*], []),
-                    [FunctionLiteralExpression(Function, [KtValueParameter(*)], KtBlockExpression(*))],
-                    [Int]
+                Module(
+                    M,
+                    [
+                        SvProperty(x, Boolean, null, 1, null),
+                        AlwaysComBlock(
+                            <tmp>,
+                            KtBlockExpression(
+                                Unit,
+                                [KtBinaryExpression(*, ReferenceExpression(*, x, null), ConstantExpression(*), EQ)]
+                            )
+                        )
+                    ],
+                    []
                 )
             """.trimIndent(),
-            projectContext.findExpression("f")
+            projectContext.findDeclaration("M")
         )
     }
 }

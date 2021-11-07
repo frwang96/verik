@@ -19,7 +19,6 @@ package io.verik.compiler.transform.mid
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
-import io.verik.compiler.ast.element.common.ETemporaryValueParameter
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
@@ -117,7 +116,7 @@ object ForStatementTransformerStage : ProjectStage() {
             valueParameter: ESvValueParameter,
             referenceExpression: EReferenceExpression
         ): EForStatement {
-            val forValueParameter = ETemporaryValueParameter(referenceExpression.location, Core.Kt.C_Int.toType())
+            val forValueParameter = ESvValueParameter(referenceExpression.location, "<tmp>", Core.Kt.C_Int.toType())
             val forValueParameterReferenceExpression = EReferenceExpression(
                 referenceExpression.location,
                 forValueParameter.type.copy(),
@@ -158,7 +157,8 @@ object ForStatementTransformerStage : ProjectStage() {
                 valueParameter.name,
                 valueParameter.type,
                 propertyInitializer,
-                false
+                isMutable = false,
+                isStatic = false
             )
             referenceUpdater.update(valueParameter, property)
             val propertyStatement = EPropertyStatement(

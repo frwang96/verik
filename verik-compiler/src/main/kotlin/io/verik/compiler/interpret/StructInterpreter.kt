@@ -43,6 +43,7 @@ object StructInterpreter {
             valueParameter.name,
             valueParameter.type,
             null,
+            valueParameter.isMutable,
             null
         )
         referenceUpdater.update(valueParameter, property)

@@ -83,7 +83,7 @@ object DeclarationSpecializerStage : ProjectStage() {
                 }
             }
             if (entryPoints.isEmpty())
-                Messages.NO_TOP_DECLARATIONS.on(projectContext.project)
+                Messages.NO_TOP_MODULES.on(projectContext.project)
         } else {
             projectContext.project.files().forEach { file ->
                 file.declarations.forEach {

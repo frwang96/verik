@@ -56,7 +56,7 @@ internal class ModulePortParentResolverStageTest : BaseTest() {
                     }
                 """.trimIndent()
             )
-        }.apply { assertEquals("Module port instantiation used out of context", message) }
+        }.apply { assertEquals("Module port instantiation out of context", message) }
     }
 
     @Test

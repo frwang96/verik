@@ -30,8 +30,6 @@ import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ERootPackage
 import io.verik.compiler.ast.element.common.ESuperExpression
-import io.verik.compiler.ast.element.common.ETemporaryProperty
-import io.verik.compiler.ast.element.common.ETemporaryValueParameter
 import io.verik.compiler.ast.element.common.EThisExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.common.EWhileExpression
@@ -316,6 +314,7 @@ class ElementPrinter : Visitor() {
             build(property.type.toString())
             build(property.initializer)
             build(property.annotations)
+            build(property.isMutable)
         }
     }
 
@@ -324,14 +323,8 @@ class ElementPrinter : Visitor() {
             build(property.name)
             build(property.type.toString())
             build(property.initializer)
+            build(property.isMutable)
             build(property.isStatic)
-        }
-    }
-
-    override fun visitTemporaryProperty(temporaryProperty: ETemporaryProperty) {
-        build("TemporaryProperty") {
-            build(temporaryProperty.type.toString())
-            build(temporaryProperty.initializer)
         }
     }
 
@@ -381,6 +374,7 @@ class ElementPrinter : Visitor() {
             build(valueParameter.type.toString())
             build(valueParameter.annotations)
             build(valueParameter.isPrimaryConstructorProperty)
+            build(valueParameter.isMutable)
         }
     }
 
@@ -388,12 +382,6 @@ class ElementPrinter : Visitor() {
         build("SvValueParameter") {
             build(valueParameter.name)
             build(valueParameter.type.toString())
-        }
-    }
-
-    override fun visitTemporaryValueParameter(temporaryValueParameter: ETemporaryValueParameter) {
-        build("TemporaryValueParameter") {
-            build(temporaryValueParameter.type.toString())
         }
     }
 
@@ -755,7 +743,11 @@ class ElementPrinter : Visitor() {
 
     private fun build(content: Boolean?) {
         if (!first) builder.append(", ")
-        builder.append(content)
+        when (content) {
+            true -> builder.append("1")
+            false -> builder.append("0")
+            else -> builder.append("null")
+        }
         first = false
     }
 

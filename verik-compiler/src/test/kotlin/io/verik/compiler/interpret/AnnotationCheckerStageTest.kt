@@ -22,13 +22,28 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-internal class AnnotationConflictCheckerStageTest : BaseTest() {
+internal class AnnotationCheckerStageTest : BaseTest() {
 
     @Test
-    fun `annotations conflicting`() {
+    fun `class top annotation illegal`() {
         assertThrows<TestErrorException> {
             driveTest(
-                AnnotationConflictCheckerStage::class,
+                AnnotationCheckerStage::class,
+                """
+                    @SimTop
+                    class C
+                """.trimIndent()
+            )
+        }.apply {
+            Assertions.assertEquals("Top level declaration must be a module", message)
+        }
+    }
+
+    @Test
+    fun `function annotations conflicting`() {
+        assertThrows<TestErrorException> {
+            driveTest(
+                AnnotationCheckerStage::class,
                 """
                     @Com
                     @Seq

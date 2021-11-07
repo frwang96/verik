@@ -32,8 +32,9 @@ import io.verik.compiler.common.StageSequence
 import io.verik.compiler.compile.KotlinCompilerAnalyzerStage
 import io.verik.compiler.compile.KotlinCompilerParserStage
 import io.verik.compiler.compile.KotlinEnvironmentBuilderStage
-import io.verik.compiler.interpret.AnnotationConflictCheckerStage
+import io.verik.compiler.interpret.AnnotationCheckerStage
 import io.verik.compiler.interpret.BasicClassInterpreterStage
+import io.verik.compiler.interpret.ComponentInstantiationCheckerStage
 import io.verik.compiler.interpret.ConstructorDesugarTransformerStage
 import io.verik.compiler.interpret.FileSplitterStage
 import io.verik.compiler.interpret.FunctionInterpreterStage
@@ -54,6 +55,7 @@ import io.verik.compiler.specialize.DeclarationSpecializerStage
 import io.verik.compiler.transform.mid.AssignmentTransformerStage
 import io.verik.compiler.transform.mid.CaseStatementTransformerStage
 import io.verik.compiler.transform.mid.CastTransformerStage
+import io.verik.compiler.transform.mid.CombinationalAssignmentTransformerStage
 import io.verik.compiler.transform.mid.ConstantExpressionEvaluatorStage
 import io.verik.compiler.transform.mid.EnumNameTransformerStage
 import io.verik.compiler.transform.mid.ForStatementTransformerStage
@@ -73,7 +75,7 @@ import io.verik.compiler.transform.post.CallExpressionTransformerStage
 import io.verik.compiler.transform.post.PackageNameTransformerStage
 import io.verik.compiler.transform.post.ParenthesisInsertionTransformerStage
 import io.verik.compiler.transform.post.ScopeExpressionInsertionTransformerStage
-import io.verik.compiler.transform.post.TemporaryPropertyTransformerStage
+import io.verik.compiler.transform.post.TemporaryDeclarationRelabelerStage
 import io.verik.compiler.transform.post.TypeReferenceTransformerStage
 import io.verik.compiler.transform.post.UnaryExpressionTransformerStage
 import io.verik.compiler.transform.post.UnpackedTypeDefinitionTransformerStage
@@ -125,7 +127,8 @@ object StageSequencer {
         stageSequence.add(TypeCheckerStage)
 
         // Interpret
-        stageSequence.add(AnnotationConflictCheckerStage)
+        stageSequence.add(AnnotationCheckerStage)
+        stageSequence.add(ComponentInstantiationCheckerStage)
         stageSequence.add(NonBasicClassInterpreterStage)
         stageSequence.add(ConstructorDesugarTransformerStage)
         stageSequence.add(BasicClassInterpreterStage)
@@ -141,6 +144,7 @@ object StageSequencer {
         stageSequence.add(StringTemplateExpressionReducerStage)
         stageSequence.add(CastTransformerStage)
         stageSequence.add(UninitializedPropertyTransformerStage)
+        stageSequence.add(CombinationalAssignmentTransformerStage)
         stageSequence.add(ForStatementTransformerStage)
         stageSequence.add(FunctionTransformerStage)
         stageSequence.add(PropertyTransformerStage)
@@ -156,7 +160,7 @@ object StageSequencer {
         // PostTransform
         stageSequence.add(TypeReferenceTransformerStage)
         stageSequence.add(UnpackedTypeDefinitionTransformerStage)
-        stageSequence.add(TemporaryPropertyTransformerStage)
+        stageSequence.add(TemporaryDeclarationRelabelerStage)
         stageSequence.add(UnaryExpressionTransformerStage)
         stageSequence.add(BinaryExpressionTransformerStage)
         stageSequence.add(PackageNameTransformerStage)

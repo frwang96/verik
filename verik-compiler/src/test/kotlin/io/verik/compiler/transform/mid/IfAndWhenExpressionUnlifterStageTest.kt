@@ -39,7 +39,7 @@ internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
         assertElementEquals(
             """
                 [
-                    PropertyStatement(Unit, TemporaryProperty(Int, null)),
+                    PropertyStatement(Unit, SvProperty(<tmp>, Int, null, 0, 0)),
                     IfExpression(
                         Unit,
                         ReferenceExpression(*),
@@ -49,7 +49,7 @@ internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
                         ]),
                         KtBinaryExpression(Unit, ReferenceExpression(Int, <tmp>, null), ConstantExpression(*), EQ)
                     ),
-                    PropertyStatement(Unit, SvProperty(y, Int, ReferenceExpression(Int, <tmp>, null), false))
+                    PropertyStatement(Unit, SvProperty(y, Int, ReferenceExpression(Int, <tmp>, null), 0, 0))
                 ]
             """.trimIndent(),
             projectContext.findStatements("f")
@@ -72,13 +72,13 @@ internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
         assertElementEquals(
             """
                 [
-                    PropertyStatement(Unit, TemporaryProperty(Int, null)),
+                    PropertyStatement(Unit, SvProperty(<tmp>, Int, null, 0, 0)),
                     WhenExpression(
                         Unit,
                         ReferenceExpression(*),
                         [WhenEntry([], KtBinaryExpression(Unit, ReferenceExpression(Int, <tmp>, null), *, EQ))]
                     ),
-                    PropertyStatement(Unit, SvProperty(y, Int, ReferenceExpression(Int, <tmp>, null), false))
+                    PropertyStatement(Unit, SvProperty(y, Int, ReferenceExpression(Int, <tmp>, null), 0, 0))
                 ]
             """.trimIndent(),
             projectContext.findStatements("f")
