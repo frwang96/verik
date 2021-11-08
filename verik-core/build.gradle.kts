@@ -18,7 +18,7 @@ group = "io.verik"
 
 plugins {
     kotlin("jvm") version "1.4.32"
-    id("org.jetbrains.dokka") version "1.5.0"
+    id("org.jetbrains.dokka") version "1.5.30"
     id("signing")
     id("maven-publish")
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
@@ -59,7 +59,7 @@ tasks.register<Jar>("javadocJar") {
 
 signing {
     val publishing: PublishingExtension by project
-    if (project.hasProperty("signing.keyId")) {
+    if (!version.toString().startsWith("local")) {
         sign(publishing.publications)
     }
 }
@@ -69,7 +69,9 @@ publishing {
         create<MavenPublication>("verik-core") {
             from(components["java"])
             artifact(tasks.getByName("sourceJar"))
-            artifact(tasks.getByName("javadocJar"))
+            if (!version.toString().startsWith("local")) {
+                artifact(tasks.getByName("javadocJar"))
+            }
 
             pom {
                 name.set("Verik Core")
