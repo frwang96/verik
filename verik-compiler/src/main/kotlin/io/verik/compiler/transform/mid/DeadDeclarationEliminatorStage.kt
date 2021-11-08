@@ -25,6 +25,7 @@ import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
 import io.verik.compiler.ast.element.sv.EAbstractProceduralBlock
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.ESvBasicClass
+import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.ProjectStage
@@ -95,7 +96,13 @@ object DeadDeclarationEliminatorStage : ProjectStage() {
             }
         }
 
-        override fun visitSvBasicClass(basicClass: ESvBasicClass) {}
+        override fun visitSvBasicClass(basicClass: ESvBasicClass) {
+            basicClass.declarations.forEach {
+                if (it is ESvFunction) {
+                    if (it.isOverride || it.isOverridable) declarationQueue.push(it)
+                }
+            }
+        }
 
         override fun visitAbstractContainerComponent(abstractContainerComponent: EAbstractContainerComponent) {
             abstractContainerComponent.declarations.forEach {

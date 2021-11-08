@@ -36,6 +36,8 @@ class EKtFunction(
     override var typeParameters: ArrayList<ETypeParameter> = ArrayList()
     override var annotations: List<EAnnotation> = listOf()
     var isAbstract: Boolean = false
+    var isOverridable: Boolean = false
+    var isOverride: Boolean = false
 
     fun init(
         type: Type,
@@ -43,7 +45,9 @@ class EKtFunction(
         valueParameters: List<EKtValueParameter>,
         typeParameters: List<ETypeParameter>,
         annotations: List<EAnnotation>,
-        isAbstract: Boolean
+        isAbstract: Boolean,
+        isOverridable: Boolean,
+        isOverride: Boolean
     ) {
         body?.parent = this
         valueParameters.forEach { it.parent = this }
@@ -55,6 +59,8 @@ class EKtFunction(
         this.typeParameters = ArrayList(typeParameters)
         this.annotations = annotations
         this.isAbstract = isAbstract
+        this.isOverridable = isOverridable
+        this.isOverride = isOverride
     }
 
     override fun accept(visitor: Visitor) {

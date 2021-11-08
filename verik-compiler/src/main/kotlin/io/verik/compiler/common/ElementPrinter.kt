@@ -254,9 +254,9 @@ class ElementPrinter : Visitor() {
             build(function.name)
             build(function.type.toString())
             build(function.body)
-            build(function.isStatic)
-            build(function.qualifierType.toString())
             build(function.valueParameters)
+            build(function.qualifierType.toString())
+            build(function.isStatic)
         }
     }
 

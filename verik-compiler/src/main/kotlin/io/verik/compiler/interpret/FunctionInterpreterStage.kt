@@ -100,8 +100,11 @@ object FunctionInterpreterStage : ProjectStage() {
                     val qualifierType = when {
                         function.isAbstract -> FunctionQualifierType.PURE_VIRTUAL
                         function.parent is ESvBasicClass -> {
-                            if (isStatic) FunctionQualifierType.REGULAR
-                            else FunctionQualifierType.VIRTUAL
+                            when {
+                                isStatic -> FunctionQualifierType.REGULAR
+                                function.isOverridable -> FunctionQualifierType.VIRTUAL
+                                else -> FunctionQualifierType.REGULAR
+                            }
                         }
                         else -> FunctionQualifierType.REGULAR
                     }
@@ -110,9 +113,11 @@ object FunctionInterpreterStage : ProjectStage() {
                         function.name,
                         function.type,
                         function.body,
-                        isStatic,
+                        ArrayList(valueParameters),
                         qualifierType,
-                        ArrayList(valueParameters)
+                        isStatic,
+                        function.isOverridable,
+                        function.isOverride
                     )
                 }
             }

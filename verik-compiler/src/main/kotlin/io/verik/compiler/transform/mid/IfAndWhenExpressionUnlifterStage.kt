@@ -143,13 +143,17 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
                 expression.statements[index].parent = expression
                 expression
             } else {
-                EKtBinaryExpression(
-                    expression.location,
-                    Core.Kt.C_Unit.toType(),
-                    EReferenceExpression(expression.location, property.type.copy(), property, null),
-                    expression,
-                    KtBinaryOperatorKind.EQ
-                )
+                if (expression.type.reference == Core.Kt.C_Nothing) {
+                    expression
+                } else {
+                    EKtBinaryExpression(
+                        expression.location,
+                        Core.Kt.C_Unit.toType(),
+                        EReferenceExpression(expression.location, property.type.copy(), property, null),
+                        expression,
+                        KtBinaryOperatorKind.EQ
+                    )
+                }
             }
         }
     }

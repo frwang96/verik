@@ -75,9 +75,11 @@ object BasicClassInterpreterStage : ProjectStage() {
                 "_${'$'}init",
                 Core.Kt.C_Unit.toType(),
                 constructor.body,
-                false,
+                ArrayList(valueParameters),
                 FunctionQualifierType.REGULAR,
-                ArrayList(valueParameters)
+                isStatic = false,
+                isOverridable = false,
+                isOverride = false
             )
             initializerMap[constructor] = initializer
         }
@@ -215,9 +217,11 @@ object BasicClassInterpreterStage : ProjectStage() {
                 "_${'$'}new",
                 constructor.type,
                 ESvBlockExpression(constructor.location, statements, false, null),
-                true,
+                ArrayList(valueParameters),
                 FunctionQualifierType.REGULAR,
-                ArrayList(valueParameters)
+                isStatic = true,
+                isOverridable = false,
+                isOverride = false
             )
             referenceUpdater.replace(constructor, instantiator)
             return instantiator
