@@ -117,7 +117,7 @@ internal class FunctionInterpreterStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SvFunction(f, Unit, *, [], REGULAR, 0)",
+            "SvFunction(f, Unit, *, [], VIRTUAL, 0)",
             projectContext.findDeclaration("f")
         )
     }

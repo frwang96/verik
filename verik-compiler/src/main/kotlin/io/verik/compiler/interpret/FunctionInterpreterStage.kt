@@ -102,8 +102,8 @@ object FunctionInterpreterStage : ProjectStage() {
                         function.parent is ESvBasicClass -> {
                             when {
                                 isStatic -> FunctionQualifierType.REGULAR
-                                function.isOverridable -> FunctionQualifierType.VIRTUAL
-                                else -> FunctionQualifierType.REGULAR
+                                function.isOverride -> FunctionQualifierType.REGULAR
+                                else -> FunctionQualifierType.VIRTUAL
                             }
                         }
                         else -> FunctionQualifierType.REGULAR

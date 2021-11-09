@@ -21,21 +21,21 @@ import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 
-object TemporaryDeclarationRelabelerStage : ProjectStage() {
+object TemporaryDeclarationRenameStage : ProjectStage() {
 
     override val checkNormalization = true
 
     override fun process(projectContext: ProjectContext) {
-        val temporaryDeclarationRelabelerVisitor = TemporaryDeclarationRelabelerVisitor()
+        val temporaryDeclarationRenameVisitor = TemporaryDeclarationRenameVisitor()
         projectContext.project.files().forEach { file ->
             file.declarations.forEach {
-                temporaryDeclarationRelabelerVisitor.resetIndex()
-                it.accept(temporaryDeclarationRelabelerVisitor)
+                temporaryDeclarationRenameVisitor.resetIndex()
+                it.accept(temporaryDeclarationRenameVisitor)
             }
         }
     }
 
-    private class TemporaryDeclarationRelabelerVisitor : TreeVisitor() {
+    private class TemporaryDeclarationRenameVisitor : TreeVisitor() {
 
         private var index = 0
 

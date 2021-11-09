@@ -45,12 +45,12 @@ internal class AnnotationCasterTest : BaseTest() {
         val projectContext = driveTest(
             CasterStage::class,
             """
-                @Relabel("g")
+                @Rename("g")
                 fun f() {}
             """.trimIndent()
         )
         assertElementEquals(
-            "KtFunction(f, Unit, *, [], [], [Annotation(Relabel, [g])], 0)",
+            "KtFunction(f, Unit, *, [], [], [Annotation(Rename, [g])], 0)",
             projectContext.findDeclaration("f")
         )
     }
@@ -61,7 +61,7 @@ internal class AnnotationCasterTest : BaseTest() {
             driveTest(
                 CasterStage::class,
                 """
-                @Relabel("g" + "h")
+                @Rename("g" + "h")
                 fun f() {}
                 """.trimIndent()
             )

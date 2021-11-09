@@ -24,20 +24,20 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Annotations
 import io.verik.compiler.main.ProjectContext
 
-object NameRelabelerStage : ProjectStage() {
+object DeclarationRenameStage : ProjectStage() {
 
     override val checkNormalization = true
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.project.accept(NameRelabelerVisitor)
+        projectContext.project.accept(DeclarationRenameVisitor)
     }
 
-    private object NameRelabelerVisitor : TreeVisitor() {
+    private object DeclarationRenameVisitor : TreeVisitor() {
 
         override fun visitElement(element: EElement) {
             super.visitElement(element)
             if (element is Declaration && element is Annotated) {
-                val annotation = element.getAnnotation(Annotations.RELABEL)
+                val annotation = element.getAnnotation(Annotations.RENAME)
                 if (annotation != null)
                     element.name = annotation.arguments[0]
             }

@@ -216,7 +216,7 @@ internal class ExpressionSerializerTest : BaseTest() {
             
                 int x = 0;
             
-                function automatic void f();
+                virtual function automatic void f();
                     ${'$'}display(this.x);
                 endfunction : f
             
