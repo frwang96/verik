@@ -20,14 +20,14 @@ import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class NameRelabelerStageTest : BaseTest() {
+internal class DeclarationRenameStageTest : BaseTest() {
 
     @Test
-    fun `relabel function`() {
+    fun `rename function`() {
         val projectContext = driveTest(
-            NameRelabelerStage::class,
+            DeclarationRenameStage::class,
             """
-                @Relabel("g")
+                @Rename("g")
                 fun f() {}
             """.trimIndent()
         )
@@ -38,12 +38,12 @@ internal class NameRelabelerStageTest : BaseTest() {
     }
 
     @Test
-    fun `relabel enum entry`() {
+    fun `rename enum entry`() {
         val projectContext = driveTest(
-            NameRelabelerStage::class,
+            DeclarationRenameStage::class,
             """
                 enum class E {
-                    @Relabel("B")
+                    @Rename("B")
                     A
                 }
             """.trimIndent()

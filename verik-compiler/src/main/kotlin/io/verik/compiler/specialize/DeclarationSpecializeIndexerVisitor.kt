@@ -122,7 +122,9 @@ class DeclarationSpecializeIndexerVisitor(
                         if (it.typeParameters.isEmpty()) {
                             if (it.hasAnnotation(Annotations.COM) ||
                                 it.hasAnnotation(Annotations.SEQ) ||
-                                it.hasAnnotation(Annotations.RUN)
+                                it.hasAnnotation(Annotations.RUN) ||
+                                it.isOverridable ||
+                                it.isOverride
                             ) {
                                 declarationBindingQueue.push(DeclarationBinding(it, typeParameterContext))
                             }

@@ -30,6 +30,7 @@ import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
+import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.KtUnaryOperatorKind
 import io.verik.compiler.common.CardinalDeclaration
@@ -141,8 +142,15 @@ object TypeConstraintCollector {
             val thenExpression = ifExpression.thenExpression
             val elseExpression = ifExpression.elseExpression
             if (thenExpression != null && elseExpression != null) {
-                collectTypeEquals(ifExpression, thenExpression)
-                collectTypeEquals(ifExpression, elseExpression)
+                collectTypeEquals(thenExpression, ifExpression)
+                collectTypeEquals(elseExpression, ifExpression)
+            }
+        }
+
+        override fun visitWhenExpression(whenExpression: EWhenExpression) {
+            super.visitWhenExpression(whenExpression)
+            whenExpression.entries.forEach {
+                collectTypeEquals(it.body, whenExpression)
             }
         }
 

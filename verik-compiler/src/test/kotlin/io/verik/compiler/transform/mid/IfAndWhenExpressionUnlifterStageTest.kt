@@ -61,9 +61,8 @@ internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
         val projectContext = driveTest(
             IfAndWhenExpressionUnlifterStage::class,
             """
-                var x = true
                 fun f() {
-                    val y = when (x) {
+                    val y = when {
                         else -> 0
                     }
                 }
@@ -74,9 +73,37 @@ internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
                 [
                     PropertyStatement(Unit, SvProperty(<tmp>, Int, null, 0, 0)),
                     WhenExpression(
-                        Unit,
-                        ReferenceExpression(*),
+                        Unit, null,
                         [WhenEntry([], KtBinaryExpression(Unit, ReferenceExpression(Int, <tmp>, null), *, EQ))]
+                    ),
+                    PropertyStatement(Unit, SvProperty(y, Int, ReferenceExpression(Int, <tmp>, null), 0, 0))
+                ]
+            """.trimIndent(),
+            projectContext.findStatements("f")
+        )
+    }
+
+    @Test
+    fun `unlift when expression Nothing type`() {
+        val projectContext = driveTest(
+            IfAndWhenExpressionUnlifterStage::class,
+            """
+                fun f() {
+                    @Suppress("SimplifyWhenWithBooleanConstantCondition")
+                    val y = when {
+                        true -> 0
+                        else -> fatal()
+                    }
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            """
+                [
+                    PropertyStatement(Unit, SvProperty(<tmp>, Int, null, 0, 0)),
+                    WhenExpression(
+                        Unit, null,
+                        [*, WhenEntry([], KtCallExpression(Nothing, ${'$'}fatal, null, [], []))]
                     ),
                     PropertyStatement(Unit, SvProperty(y, Int, ReferenceExpression(Int, <tmp>, null), 0, 0))
                 ]

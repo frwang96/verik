@@ -35,8 +35,8 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
                 SvBasicClass(
                     C,
                     [
-                        SvFunction(_${'$'}new, *, *, 1, REGULAR, []),
-                        SvFunction(_${'$'}init, *, *, 0, REGULAR, [])
+                        SvFunction(_${'$'}new, *, *, [], REGULAR, 1),
+                        SvFunction(_${'$'}init, *, *, [], REGULAR, 0)
                     ],
                     0, 0
                 )
@@ -58,8 +58,8 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
                 SvBasicClass(
                     C,
                     [
-                        SvFunction(_${'$'}new, C, *, 1, REGULAR, [SvValueParameter(x, Int)]),
-                        SvFunction(_${'$'}init, Unit, *, 0, REGULAR, [SvValueParameter(x, Int)])
+                        SvFunction(_${'$'}new, C, *, [SvValueParameter(x, Int)], REGULAR, 1),
+                        SvFunction(_${'$'}init, Unit, *, [SvValueParameter(x, Int)], REGULAR, 0)
                     ],
                     0, 0
                 )
@@ -82,8 +82,8 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
                     C,
                     [
                         KtProperty(x, Int, null, [], 0),
-                        SvFunction(_${'$'}new, C, *, 1, REGULAR, [SvValueParameter(x, Int)]),
-                        SvFunction(_${'$'}init, Unit, *, 0, REGULAR, [SvValueParameter(x, Int)])
+                        SvFunction(_${'$'}new, C, *, [SvValueParameter(x, Int)], REGULAR, 1),
+                        SvFunction(_${'$'}init, Unit, *, [SvValueParameter(x, Int)], REGULAR, 0)
                     ],
                     0, 0
                 )
@@ -106,11 +106,11 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
                 SvBasicClass(
                     D,
                     [
-                        SvFunction(_${'$'}new, D, *, 1, REGULAR, []),
+                        SvFunction(_${'$'}new, D, *, [], REGULAR, 1),
                         SvFunction(
                             _${'$'}init, Unit,
                             KtBlockExpression(Unit, [KtCallExpression(Unit, _${'$'}init, SuperExpression(C), [], [])]),
-                            0, REGULAR, []
+                            [], REGULAR, 0
                         )
                     ],
                     0, 0
@@ -129,7 +129,7 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "SvBasicClass(C, [SvFunction(_${'$'}init, Unit, *, 0, REGULAR, [])], 1, 0)",
+            "SvBasicClass(C, [SvFunction(_${'$'}init, Unit, *, [], REGULAR, 0)], 1, 0)",
             projectContext.findDeclaration("C")
         )
     }

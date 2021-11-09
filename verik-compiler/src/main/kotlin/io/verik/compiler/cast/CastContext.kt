@@ -16,6 +16,7 @@
 
 package io.verik.compiler.cast
 
+import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.NullDeclaration
@@ -54,8 +55,11 @@ class CastContext(
     val sliceExpressionTypeInfo = bindingContext.getSliceContents(BindingContext.EXPRESSION_TYPE_INFO)
     val sliceCall = bindingContext.getSliceContents(BindingContext.CALL)
     val sliceResolvedCall = bindingContext.getSliceContents(BindingContext.RESOLVED_CALL)
+    val sliceSmartCast = bindingContext.getSliceContents(BindingContext.SMARTCAST)
 
     val casterVisitor = CasterVisitor(this)
+
+    val smartCastExpressions = HashSet<EReferenceExpression>()
 
     private val declarationMap = HashMap<DeclarationDescriptor, Declaration>()
 

@@ -18,6 +18,7 @@ package io.verik.compiler.main
 
 import io.verik.compiler.cast.CasterStage
 import io.verik.compiler.cast.DeclarationCastIndexerStage
+import io.verik.compiler.cast.SmartCastReducerStage
 import io.verik.compiler.check.post.CardinalPositiveCheckerStage
 import io.verik.compiler.check.post.FileCheckerStage
 import io.verik.compiler.check.post.KeywordCheckerStage
@@ -79,7 +80,7 @@ import io.verik.compiler.transform.post.CallExpressionTransformerStage
 import io.verik.compiler.transform.post.PackageNameTransformerStage
 import io.verik.compiler.transform.post.ParenthesisInsertionTransformerStage
 import io.verik.compiler.transform.post.ScopeExpressionInsertionTransformerStage
-import io.verik.compiler.transform.post.TemporaryDeclarationRelabelerStage
+import io.verik.compiler.transform.post.TemporaryDeclarationRenameStage
 import io.verik.compiler.transform.post.TypeReferenceTransformerStage
 import io.verik.compiler.transform.post.UnaryExpressionTransformerStage
 import io.verik.compiler.transform.post.UnpackedTypeDefinitionTransformerStage
@@ -88,9 +89,9 @@ import io.verik.compiler.transform.pre.AssignmentOperatorReducerStage
 import io.verik.compiler.transform.pre.BinaryExpressionReducerStage
 import io.verik.compiler.transform.pre.BitConstantTransformerStage
 import io.verik.compiler.transform.pre.ConstantExpressionTransformerStage
+import io.verik.compiler.transform.pre.DeclarationRenameStage
 import io.verik.compiler.transform.pre.ForExpressionReducerStage
 import io.verik.compiler.transform.pre.FunctionOverloadingTransformerStage
-import io.verik.compiler.transform.pre.NameRelabelerStage
 import io.verik.compiler.transform.pre.TypeAliasReducerStage
 import io.verik.compiler.transform.pre.UnaryExpressionReducerStage
 
@@ -110,10 +111,11 @@ object StageSequencer {
         // Cast
         stageSequence.add(DeclarationCastIndexerStage)
         stageSequence.add(CasterStage)
+        stageSequence.add(SmartCastReducerStage)
 
         // PreTransform
         stageSequence.add(FunctionOverloadingTransformerStage)
-        stageSequence.add(NameRelabelerStage)
+        stageSequence.add(DeclarationRenameStage)
         stageSequence.add(TypeAliasReducerStage)
         stageSequence.add(AssignmentOperatorReducerStage)
         stageSequence.add(UnaryExpressionReducerStage)
@@ -166,7 +168,7 @@ object StageSequencer {
         // PostTransform
         stageSequence.add(TypeReferenceTransformerStage)
         stageSequence.add(UnpackedTypeDefinitionTransformerStage)
-        stageSequence.add(TemporaryDeclarationRelabelerStage)
+        stageSequence.add(TemporaryDeclarationRenameStage)
         stageSequence.add(UnaryExpressionTransformerStage)
         stageSequence.add(BinaryExpressionTransformerStage)
         stageSequence.add(PackageNameTransformerStage)

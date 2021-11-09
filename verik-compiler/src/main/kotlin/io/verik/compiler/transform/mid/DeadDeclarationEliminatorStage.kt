@@ -19,15 +19,13 @@ package io.verik.compiler.transform.mid
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.EProject
-import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.ETypedElement
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.sv.EAbstractComponentInstantiation
 import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
 import io.verik.compiler.ast.element.sv.EAbstractProceduralBlock
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.ESvBasicClass
-import io.verik.compiler.ast.interfaces.Declaration
+import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.ProjectStage
@@ -48,7 +46,7 @@ object DeadDeclarationEliminatorStage : ProjectStage() {
 
             while (declarationQueue.isNotEmpty()) {
                 val declaration = declarationQueue.pop()
-                if (declaration is EDeclaration && declaration !in declarationSet) {
+                if (declaration !in declarationSet) {
                     declarationSet.add(declaration)
                     declaration.accept(deadDeclarationIndexerVisitor)
                 }
@@ -59,8 +57,8 @@ object DeadDeclarationEliminatorStage : ProjectStage() {
         }
     }
 
-    private fun getEntryPoints(project: EProject): List<Declaration> {
-        val entryPoints = ArrayList<Declaration>()
+    private fun getEntryPoints(project: EProject): List<EDeclaration> {
+        val entryPoints = ArrayList<EDeclaration>()
         project.files().forEach { file ->
             file.declarations.forEach {
                 if (it is EModule && it.isTop())
@@ -71,23 +69,40 @@ object DeadDeclarationEliminatorStage : ProjectStage() {
     }
 
     private class DeadDeclarationIndexerVisitor(
-        private val declarationQueue: ArrayDeque<Declaration>
+        private val declarationQueue: ArrayDeque<EDeclaration>
     ) : TreeVisitor() {
 
         private fun addType(type: Type) {
             type.arguments.forEach { addType(it) }
-            declarationQueue.push(type.reference)
+            val reference = type.reference
+            if (reference is EDeclaration)
+                declarationQueue.push(reference)
+        }
+
+        private fun addDeclaration(declaration: EDeclaration) {
+            declarationQueue.push(declaration)
+            val parent = declaration.parent
+            if (parent is EDeclaration)
+                addDeclaration(parent)
         }
 
         override fun visitTypedElement(typedElement: ETypedElement) {
             super.visitTypedElement(typedElement)
             addType(typedElement.type)
             if (typedElement is Reference) {
-                declarationQueue.push(typedElement.reference)
+                val reference = typedElement.reference
+                if (reference is EDeclaration)
+                    addDeclaration(reference)
             }
         }
 
-        override fun visitSvBasicClass(basicClass: ESvBasicClass) {}
+        override fun visitSvBasicClass(basicClass: ESvBasicClass) {
+            basicClass.declarations.forEach {
+                if (it is ESvFunction) {
+                    if (it.isOverride || it.isOverridable) declarationQueue.push(it)
+                }
+            }
+        }
 
         override fun visitAbstractContainerComponent(abstractContainerComponent: EAbstractContainerComponent) {
             abstractContainerComponent.declarations.forEach {
@@ -116,15 +131,6 @@ object DeadDeclarationEliminatorStage : ProjectStage() {
         override fun visitAbstractContainerComponent(abstractContainerComponent: EAbstractContainerComponent) {
             super.visitAbstractContainerComponent(abstractContainerComponent)
             abstractContainerComponent.declarations = filter(abstractContainerComponent.declarations)
-        }
-
-        override fun visitKtBlockExpression(blockExpression: EKtBlockExpression) {
-            super.visitKtBlockExpression(blockExpression)
-            val filteredStatements = blockExpression.statements.filter {
-                if (it is EPropertyStatement) it.property in declarationSet
-                else true
-            }
-            blockExpression.statements = ArrayList(filteredStatements)
         }
 
         private fun filter(declarations: List<EDeclaration>): ArrayList<EDeclaration> {

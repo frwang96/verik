@@ -32,5 +32,5 @@ object Annotations {
     const val TASK = "io.verik.core.Task"
 
     const val EXTERN = "io.verik.core.Extern"
-    const val RELABEL = "io.verik.core.Relabel"
+    const val RENAME = "io.verik.core.Rename"
 }

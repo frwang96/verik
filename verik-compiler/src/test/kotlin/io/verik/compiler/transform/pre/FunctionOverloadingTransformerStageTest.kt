@@ -25,7 +25,7 @@ internal class FunctionOverloadingTransformerStageTest : BaseTest() {
     @Test
     fun `overloaded function`() {
         val projectContext = driveTest(
-            NameRelabelerStage::class,
+            FunctionOverloadingTransformerStage::class,
             """
                 fun f() {}
                 fun f(x: Int) {}

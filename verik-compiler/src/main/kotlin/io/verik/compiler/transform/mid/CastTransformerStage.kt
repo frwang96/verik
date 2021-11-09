@@ -58,7 +58,19 @@ object CastTransformerStage : ProjectStage() {
                 ArrayList()
             )
             val propertyStatement = EPropertyStatement(isExpression.location, isExpression.property)
-            subexpressionExtractor.extract(isExpression, callExpression, listOf(propertyStatement))
+            if (isExpression.isNegated) {
+                val negatedCallExpression = EKtCallExpression(
+                    isExpression.location,
+                    Core.Kt.C_Boolean.toType(),
+                    Core.Kt.Boolean.F_not,
+                    callExpression,
+                    ArrayList(),
+                    ArrayList()
+                )
+                subexpressionExtractor.extract(isExpression, negatedCallExpression, listOf(propertyStatement))
+            } else {
+                subexpressionExtractor.extract(isExpression, callExpression, listOf(propertyStatement))
+            }
         }
     }
 }
