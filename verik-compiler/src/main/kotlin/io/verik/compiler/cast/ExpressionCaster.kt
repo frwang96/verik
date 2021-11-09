@@ -123,7 +123,9 @@ object ExpressionCaster {
         val descriptor = castContext.sliceReferenceTarget[expression]!!
         val type = castContext.castType(expression)
         val declaration = castContext.getDeclaration(descriptor, expression)
-        return EReferenceExpression(location, type, declaration, null)
+        val referenceExpression = EReferenceExpression(location, type, declaration, null)
+        ReferenceExpressionCaster.checkSmartCast(expression, referenceExpression, castContext)
+        return referenceExpression
     }
 
     fun castKtCallExpression(expression: KtCallExpression, castContext: CastContext): EKtCallExpression {
@@ -159,7 +161,9 @@ object ExpressionCaster {
             is KtSimpleNameExpression -> {
                 val descriptor = castContext.sliceReferenceTarget[selector]!!
                 val declaration = castContext.getDeclaration(descriptor, expression)
-                EReferenceExpression(location, type, declaration, receiver)
+                val referenceExpression = EReferenceExpression(location, type, declaration, receiver)
+                ReferenceExpressionCaster.checkSmartCast(expression, referenceExpression, castContext)
+                referenceExpression
             }
             is KtCallExpression -> {
                 val descriptor = castContext.sliceReferenceTarget[selector.calleeExpression]!!

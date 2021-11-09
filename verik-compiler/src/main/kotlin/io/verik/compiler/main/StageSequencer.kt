@@ -18,6 +18,7 @@ package io.verik.compiler.main
 
 import io.verik.compiler.cast.CasterStage
 import io.verik.compiler.cast.DeclarationCastIndexerStage
+import io.verik.compiler.cast.SmartCastReducerStage
 import io.verik.compiler.check.post.CardinalPositiveCheckerStage
 import io.verik.compiler.check.post.FileCheckerStage
 import io.verik.compiler.check.post.KeywordCheckerStage
@@ -110,6 +111,7 @@ object StageSequencer {
         // Cast
         stageSequence.add(DeclarationCastIndexerStage)
         stageSequence.add(CasterStage)
+        stageSequence.add(SmartCastReducerStage)
 
         // PreTransform
         stageSequence.add(FunctionOverloadingTransformerStage)
