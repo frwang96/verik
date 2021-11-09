@@ -23,7 +23,7 @@ class OutputContext {
     lateinit var basicPackageSourceTextFiles: List<TextFile>
     lateinit var rootPackageSourceTextFiles: List<TextFile>
     lateinit var packageTextFiles: List<TextFile>
-    lateinit var orderTextFile: TextFile
+    lateinit var sourcesTextFile: TextFile
 
     fun getTextFiles(): List<TextFile> {
         val textFiles = ArrayList<TextFile>()
@@ -32,7 +32,7 @@ class OutputContext {
         textFiles.addAll(basicPackageSourceTextFiles)
         textFiles.addAll(rootPackageSourceTextFiles)
         textFiles.addAll(packageTextFiles)
-        textFiles.add(orderTextFile)
+        textFiles.add(sourcesTextFile)
         return textFiles.sortedBy { it.path }
     }
 }

@@ -22,12 +22,12 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 import java.nio.file.Path
 
-object OrderFileSerializerStage : ProjectStage() {
+object SourcesFileSerializerStage : ProjectStage() {
 
     override val checkNormalization = false
 
     override fun process(projectContext: ProjectContext) {
-        val outputPath = projectContext.config.buildDir.resolve("order.txt")
+        val outputPath = projectContext.config.buildDir.resolve("sources.yaml")
         val fileHeader = FileHeaderBuilder.build(
             projectContext,
             null,
@@ -42,10 +42,11 @@ object OrderFileSerializerStage : ProjectStage() {
 
         val builder = StringBuilder()
         builder.append(fileHeader)
+        builder.appendLine("sources:")
         paths.forEach {
             val pathString = Platform.getStringFromPath(projectContext.config.buildDir.relativize(it))
-            builder.appendLine(pathString)
+            builder.appendLine("  - $pathString")
         }
-        projectContext.outputContext.orderTextFile = TextFile(outputPath, builder.toString())
+        projectContext.outputContext.sourcesTextFile = TextFile(outputPath, builder.toString())
     }
 }

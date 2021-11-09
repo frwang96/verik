@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="EntryPointsManager">
-    <list size="6">
+    <list size="7">
       <item index="0" class="java.lang.String" itemvalue="io.verik.core.Com" />
       <item index="1" class="java.lang.String" itemvalue="io.verik.core.Make" />
       <item index="2" class="java.lang.String" itemvalue="io.verik.core.Run" />
