@@ -17,6 +17,7 @@
 package io.verik.compiler.check.post
 
 import io.verik.compiler.ast.element.common.ENullElement
+import io.verik.compiler.ast.element.kt.EAsExpression
 import io.verik.compiler.ast.element.kt.EForExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
@@ -111,6 +112,11 @@ object UntransformedElementCheckerStage : ProjectStage() {
         override fun visitIsExpression(isExpression: EIsExpression) {
             super.visitIsExpression(isExpression)
             Messages.INTERNAL_ERROR.on(isExpression, "Is expression $message")
+        }
+
+        override fun visitAsExpression(asExpression: EAsExpression) {
+            super.visitAsExpression(asExpression)
+            Messages.INTERNAL_ERROR.on(asExpression, "As expression $message")
         }
 
         override fun visitWhenExpression(whenExpression: EWhenExpression) {

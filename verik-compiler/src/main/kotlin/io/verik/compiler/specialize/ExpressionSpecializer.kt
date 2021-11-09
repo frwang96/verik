@@ -26,6 +26,7 @@ import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ESuperExpression
 import io.verik.compiler.ast.element.common.EThisExpression
 import io.verik.compiler.ast.element.common.EWhileExpression
+import io.verik.compiler.ast.element.kt.EAsExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtAbstractFunction
@@ -57,6 +58,7 @@ object ExpressionSpecializer {
             is EFunctionLiteralExpression -> specializeFunctionLiteralExpression(expression, specializerContext)
             is EStringTemplateExpression -> specializeStringTemplateExpression(expression, specializerContext)
             is EIsExpression -> specializeIsExpression(expression, specializerContext)
+            is EAsExpression -> specializeAsExpression(expression, specializerContext)
             is EIfExpression -> specializeIfExpression(expression, specializerContext)
             is EWhenExpression -> specializeWhenExpression(expression, specializerContext)
             is EWhileExpression -> specializeWhileExpression(expression, specializerContext)
@@ -238,6 +240,15 @@ object ExpressionSpecializer {
             isExpression.isNegated,
             castType
         )
+    }
+
+    private fun specializeAsExpression(
+        asExpression: EAsExpression,
+        specializerContext: SpecializerContext
+    ): EAsExpression {
+        val type = specializerContext.specializeType(asExpression)
+        val expression = specializerContext.specialize(asExpression.expression)
+        return EAsExpression(asExpression.location, type, expression)
     }
 
     private fun specializeIfExpression(

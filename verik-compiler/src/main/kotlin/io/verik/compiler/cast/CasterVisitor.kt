@@ -46,6 +46,7 @@ import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.psi.KtAnnotatedExpression
 import org.jetbrains.kotlin.psi.KtArrayAccessExpression
 import org.jetbrains.kotlin.psi.KtBinaryExpression
+import org.jetbrains.kotlin.psi.KtBinaryExpressionWithTypeRHS
 import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtClassOrObject
@@ -239,6 +240,10 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
 
     override fun visitIsExpression(expression: KtIsExpression, data: Unit?): EElement {
         return ExpressionCaster.castIsExpression(expression, castContext)
+    }
+
+    override fun visitBinaryWithTypeRHSExpression(expression: KtBinaryExpressionWithTypeRHS, data: Unit?): EElement {
+        return ExpressionCaster.castAsExpression(expression, castContext)
     }
 
     override fun visitIfExpression(expression: KtIfExpression, data: Unit?): EIfExpression {
