@@ -96,6 +96,13 @@ fun s(value: Int): Sbit<`*`> {
 }
 
 /**
+ * Constructs a [Sbit] out of the constant [value].
+ */
+fun s(value: String): Sbit<`*`> {
+    throw VerikException()
+}
+
+/**
  * Converts [value] to [Sbit].
  */
 fun s(value: Ubit<`*`>): Sbit<`*`> {

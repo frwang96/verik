@@ -24,7 +24,6 @@ import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.message.Messages
 
 object BitConstantTransformerStage : ProjectStage() {
 
@@ -38,18 +37,23 @@ object BitConstantTransformerStage : ProjectStage() {
 
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
-            if (callExpression.reference in listOf(Core.Vk.F_u_Int, Core.Vk.F_u_String)) {
+            val signed = when (callExpression.reference) {
+                Core.Vk.F_u_Int, Core.Vk.F_u_String -> false
+                Core.Vk.F_s_Int, Core.Vk.F_s_String -> true
+                else -> null
+            }
+            if (signed != null) {
                 val expression = callExpression.valueArguments[0]
-                val bitConstant = ConstantUtil.getBitConstant(expression)
+                val bitConstant = ConstantUtil.normalizeBitConstant(expression, signed)
                 if (bitConstant != null) {
+                    val type = if (signed) Core.Vk.C_Sbit.toType(Cardinal.of(bitConstant.width).toType())
+                    else Core.Vk.C_Ubit.toType(Cardinal.of(bitConstant.width).toType())
                     val constantExpression = EConstantExpression(
                         expression.location,
-                        Core.Vk.C_Ubit.toType(Cardinal.of(bitConstant.width).toType()),
-                        bitConstant.toString()
+                        type,
+                        ConstantUtil.formatBitConstant(bitConstant)
                     )
                     callExpression.replace(constantExpression)
-                } else {
-                    Messages.BIT_CONSTANT_NOT_CONSTANT.on(expression)
                 }
             }
         }

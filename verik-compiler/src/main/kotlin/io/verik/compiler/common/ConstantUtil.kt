@@ -27,109 +27,127 @@ import java.math.BigInteger
 
 object ConstantUtil {
 
-    fun getBoolean(expression: EExpression): Boolean? {
-        return if (expression is EConstantExpression && expression.type.reference == Core.Kt.C_Boolean) {
-            when (val value = expression.value) {
-                "false", "1'b0" -> false
-                "true", "1'b1" -> true
-                else -> {
-                    Messages.INTERNAL_ERROR.on(expression, "Unrecognized boolean value: $value")
-                    false
-                }
-            }
-        } else null
+    fun normalizeBoolean(value: String): Boolean {
+        return when (value) {
+            "false" -> false
+            "true" -> true
+            else -> throw IllegalArgumentException("Unrecognized boolean value: $value")
+        }
     }
 
-    fun getInt(expression: EExpression): Int? {
-        return if (expression is EConstantExpression && expression.type.reference == Core.Kt.C_Int) {
-            val compactedValue = expression.value.replace("_", "")
-            return when {
-                compactedValue.startsWith("0x") || compactedValue.startsWith("0X") ->
-                    compactedValue.substring(2).toInt(16)
-                compactedValue.startsWith("0b") || compactedValue.startsWith("0B") ->
-                    compactedValue.substring(2).toInt(2)
-                else ->
-                    compactedValue.toInt()
-            }
-        } else null
+    fun normalizeInt(value: String): Int {
+        val compactedValue = value.replace("_", "")
+        return when {
+            compactedValue.startsWith("0x") || compactedValue.startsWith("0X") ->
+                compactedValue.substring(2).toInt(16)
+            compactedValue.startsWith("0b") || compactedValue.startsWith("0B") ->
+                compactedValue.substring(2).toInt(2)
+            else -> compactedValue.toInt()
+        }
     }
 
-    fun getBitConstant(expression: EExpression): BitConstant? {
+    fun normalizeBitConstant(expression: EExpression, signed: Boolean): BitConstant? {
         return when (expression) {
             is EConstantExpression -> {
-                when (expression.type.reference) {
-                    Core.Kt.C_Int -> getBitConstantInt(expression.value)
-                    Core.Vk.C_Ubit -> getBitConstantString(expression.value, expression)
-                    Core.Vk.C_Sbit -> getBitConstantString(expression.value, expression)
-                    else -> null
+                if (expression.type.reference == Core.Kt.C_Int) {
+                    normalizeBitConstantInt(expression.value, signed)
+                } else {
+                    Messages.INTERNAL_ERROR.on(expression, "Unrecognized constant expression type: ${expression.type}")
+                    null
                 }
             }
             is EStringTemplateExpression -> {
                 if (expression.entries.size != 1) {
+                    Messages.BIT_CONSTANT_NOT_LITERAL.on(expression)
                     null
                 } else {
                     val stringEntry = expression.entries[0]
                     if (stringEntry is LiteralStringEntry) {
-                        getBitConstantString(stringEntry.text, expression)
-                    } else null
+                        normalizeBitConstantString(stringEntry.text, signed, expression)
+                    } else {
+                        Messages.BIT_CONSTANT_NOT_LITERAL.on(expression)
+                        null
+                    }
                 }
             }
-            else -> null
+            else -> {
+                Messages.BIT_CONSTANT_NOT_LITERAL.on(expression)
+                null
+            }
         }
     }
 
-    private fun getBitConstantInt(value: String): BitConstant {
+    private fun normalizeBitConstantInt(value: String, signed: Boolean): BitConstant {
         val compactedValue = value.replace("_", "")
         return when {
             compactedValue.startsWith("0x") || compactedValue.startsWith("0X") -> {
                 val trimmedValue = compactedValue.substring(2)
                 val valueInt = trimmedValue.toInt(16)
                 val width = trimmedValue.length * 4
-                BitConstant(valueInt, width)
+                BitConstant(valueInt, signed, width)
             }
             compactedValue.startsWith("0b") || compactedValue.startsWith("0B") -> {
                 val trimmedValue = compactedValue.substring(2)
                 val valueInt = trimmedValue.toInt(2)
                 val width = trimmedValue.length
-                BitConstant(valueInt, width)
+                BitConstant(valueInt, signed, width)
             }
             else -> {
                 val valueInt = compactedValue.toInt()
                 val width = if (valueInt == 0) 1
                 else 32 - valueInt.countLeadingZeroBits()
-                BitConstant(valueInt, width)
+                BitConstant(valueInt, signed, width)
             }
         }
     }
 
-    private fun getBitConstantString(value: String, element: EElement): BitConstant {
+    private fun normalizeBitConstantString(value: String, signed: Boolean, element: EElement): BitConstant? {
         val compactedValue = value.replace("_", "")
         val tickCount = compactedValue.count { it == '\'' }
         if (tickCount != 1) {
             Messages.BIT_CONSTANT_ERROR.on(element, value)
-            return BitConstant(0, 1)
+            return null
         }
         val tickIndex = compactedValue.indexOf('\'')
         val width = compactedValue.substring(0, tickIndex).toIntOrNull()
         if (width == null) {
             Messages.BIT_CONSTANT_ERROR.on(element, value)
-            return BitConstant(0, 1)
+            return null
         }
+
         val trimmedValue = compactedValue.substring(tickIndex + 2)
-        return when (compactedValue[tickIndex + 1]) {
-            'h', 'H' -> {
+        return when (compactedValue[tickIndex + 1].toLowerCase()) {
+            'h' -> {
                 val bigInteger = BigInteger(trimmedValue, 16)
-                BitConstant(bigInteger, width)
+                BitConstant(bigInteger, signed, width)
             }
-            'b', 'B' -> {
+            'b' -> {
                 val bigInteger = BigInteger(trimmedValue, 2)
-                BitConstant(bigInteger, width)
+                BitConstant(bigInteger, signed, width)
             }
             else -> {
                 Messages.BIT_CONSTANT_ERROR.on(element, value)
-                BitConstant(0, 1)
+                null
             }
         }
+    }
+
+    fun getInt(expression: EExpression): Int? {
+        return if (expression is EConstantExpression && expression.type.reference == Core.Kt.C_Int) {
+            expression.value.toInt()
+        } else null
+    }
+
+    fun getBitConstant(expression: EExpression): BitConstant? {
+        return if (expression is EConstantExpression &&
+            expression.type.reference in listOf(Core.Vk.C_Ubit, Core.Vk.C_Sbit)
+        ) {
+            val width = expression.type.asBitWidth(expression)
+            val signed = expression.type.asBitSigned(expression)
+            val compactedValue = expression.value.substringAfter("'").filter { it.isDigit() }
+            val bigInteger = BigInteger(compactedValue, 16)
+            BitConstant(bigInteger, signed, width)
+        } else null
     }
 
     fun formatBoolean(boolean: Boolean): String {
@@ -141,5 +159,23 @@ object ConstantUtil {
 
     fun formatInt(int: Int): String {
         return int.toString()
+    }
+
+    fun formatBitConstant(bitConstant: BitConstant): String {
+        val valueString = bitConstant.value.toString(16)
+        val valueStringLength = (bitConstant.width + 3) / 4
+        val valueStringPadded = valueString.padStart(valueStringLength, '0')
+
+        val builder = StringBuilder()
+        builder.append("${bitConstant.width}")
+        if (bitConstant.signed) builder.append("'sh")
+        else builder.append("'h")
+        valueStringPadded.forEachIndexed { index, it ->
+            builder.append(it)
+            val countToEnd = valueStringLength - index - 1
+            if (countToEnd > 0 && countToEnd % 4 == 0)
+                builder.append("_")
+        }
+        return builder.toString()
     }
 }

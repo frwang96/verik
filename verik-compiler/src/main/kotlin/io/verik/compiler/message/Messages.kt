@@ -96,7 +96,7 @@ object Messages {
 
 //  PRE TRANSFORM  /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val BIT_CONSTANT_NOT_CONSTANT = MessageTemplate0(
+    val BIT_CONSTANT_NOT_LITERAL = MessageTemplate0(
         Severity.ERROR,
         "Constant literal expected for bit constant"
     )

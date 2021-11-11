@@ -67,7 +67,7 @@ object TargetClass : TargetScope(TargetPackage) {
 
         override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
             val value = typeArguments[0].asCardinalValue(element)
-            return SerializedType("logic", "[${value - 1}:0]", null)
+            return SerializedType("logic signed", "[${value - 1}:0]", null)
         }
     }
 

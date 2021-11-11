@@ -154,6 +154,8 @@ object Core {
         val F_u_String = CoreVk.F_u_String
         val F_u_Sbit = CoreVk.F_u_Sbit
         val F_u0 = CoreVk.F_u0
+        val F_s_Int = CoreVk.F_s_Int
+        val F_s_String = CoreVk.F_s_String
         val F_s_Ubit = CoreVk.F_s_Ubit
         val F_cat_Any = CoreVk.F_cat_Any
         val F_rep_Any = CoreVk.F_rep_Any

@@ -57,6 +57,23 @@ internal class TargetClassTest : BaseTest() {
     }
 
     @Test
+    fun `serialize type Sbit`() {
+        val projectContext = driveTest(
+            SourceSerializerStage::class,
+            """
+                var x: Sbit<`8`> = nc()
+            """.trimIndent()
+        )
+        val expected = """
+            logic signed [7:0] x;
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputContext.basicPackageSourceTextFiles[0]
+        )
+    }
+
+    @Test
     fun `serialize type Packed`() {
         val projectContext = driveTest(
             SourceSerializerStage::class,

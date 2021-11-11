@@ -29,6 +29,7 @@ import io.verik.compiler.ast.element.sv.EReplicationExpression
 import io.verik.compiler.ast.element.sv.EWidthCastExpression
 import io.verik.compiler.ast.property.EdgeType
 import io.verik.compiler.common.BitConstant
+import io.verik.compiler.common.ConstantUtil
 import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CorePackage
@@ -91,12 +92,12 @@ object CoreVk : CoreScope(CorePackage.VK) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
-            val width = callExpression.type.arguments[0].asCardinalValue(callExpression)
-            val bitConstant = BitConstant(value, width)
+            val width = callExpression.type.asBitWidth(callExpression)
+            val bitConstant = BitConstant(value, false, width)
             return EConstantExpression(
                 callExpression.location,
                 callExpression.type,
-                bitConstant.toString()
+                ConstantUtil.formatBitConstant(bitConstant)
             )
         }
     }
@@ -133,15 +134,19 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            val width = callExpression.type.arguments[0].asCardinalValue(callExpression)
-            val bitConstant = BitConstant(0, width)
+            val width = callExpression.type.asBitWidth(callExpression)
+            val bitConstant = BitConstant(0, false, width)
             return EConstantExpression(
                 callExpression.location,
                 callExpression.type,
-                bitConstant.toString()
+                ConstantUtil.formatBitConstant(bitConstant)
             )
         }
     }
+
+    val F_s_Int = BasicCoreFunctionDeclaration(parent, "s", "fun s(Int)", null)
+
+    val F_s_String = BasicCoreFunctionDeclaration(parent, "s", "fun s(String)", null)
 
     val F_s_Ubit = object : TransformableCoreFunctionDeclaration(parent, "s", "fun s(Ubit)") {
 

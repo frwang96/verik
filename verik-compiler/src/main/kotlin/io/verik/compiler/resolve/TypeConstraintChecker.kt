@@ -119,8 +119,7 @@ object TypeConstraintChecker {
     }
 
     private fun checkConcatenationTypeConstraint(typeConstraint: ConcatenationTypeConstraint) {
-        val expressionWidth = typeConstraint.callExpression.type
-            .arguments[0].asCardinalValue(typeConstraint.callExpression)
+        val expressionWidth = typeConstraint.callExpression.type.asBitWidth(typeConstraint.callExpression)
         val valueArgumentWidths = typeConstraint
             .callExpression
             .valueArguments
@@ -133,8 +132,7 @@ object TypeConstraintChecker {
     }
 
     private fun checkReplicationTypeConstraint(typeConstraint: ReplicationTypeConstraint) {
-        val expressionWidth = typeConstraint.callExpression.type
-            .arguments[0].asCardinalValue(typeConstraint.callExpression)
+        val expressionWidth = typeConstraint.callExpression.type.asBitWidth(typeConstraint.callExpression)
         val valueArgumentWidth = typeConstraint.callExpression.valueArguments[0]
             .let { getTypeWidth(it.type, it) }
         val typeArgumentWidth = typeConstraint.callExpression
@@ -150,8 +148,8 @@ object TypeConstraintChecker {
     private fun getTypeWidth(type: Type, element: EElement): Int {
         return when (type.reference) {
             Core.Kt.C_Boolean -> 1
-            Core.Vk.C_Ubit -> type.arguments[0].asCardinalValue(element)
-            Core.Vk.C_Sbit -> type.arguments[0].asCardinalValue(element)
+            Core.Vk.C_Ubit -> type.asBitWidth(element)
+            Core.Vk.C_Sbit -> type.asBitWidth(element)
             else -> 0
         }
     }

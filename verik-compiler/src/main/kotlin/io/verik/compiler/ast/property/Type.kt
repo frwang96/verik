@@ -25,6 +25,7 @@ import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.common.CardinalConstantDeclaration
 import io.verik.compiler.common.CardinalDeclaration
 import io.verik.compiler.common.CardinalUnresolvedDeclaration
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreClassDeclaration
 import io.verik.compiler.message.Messages
 import io.verik.compiler.target.common.TargetClassDeclaration
@@ -79,6 +80,28 @@ class Type(
         } else {
             Messages.INTERNAL_ERROR.on(element, "Could not get value as cardinal: $this")
             1
+        }
+    }
+
+    fun asBitWidth(element: EElement): Int {
+        return when (reference) {
+            Core.Vk.C_Ubit -> arguments[0].asCardinalValue(element)
+            Core.Vk.C_Sbit -> arguments[0].asCardinalValue(element)
+            else -> {
+                Messages.INTERNAL_ERROR.on(element, "Bit type expected: $this")
+                1
+            }
+        }
+    }
+
+    fun asBitSigned(element: EElement): Boolean {
+        return when (reference) {
+            Core.Vk.C_Ubit -> false
+            Core.Vk.C_Sbit -> true
+            else -> {
+                Messages.INTERNAL_ERROR.on(element, "Bit type expected: $this")
+                false
+            }
         }
     }
 

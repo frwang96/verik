@@ -84,13 +84,13 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
     val F_set_Int_Ubit = object : TransformableCoreFunctionDeclaration(parent, "set", "fun set(Int, Ubit)") {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            val value = callExpression.valueArguments[1].type.arguments[0].asCardinalValue(callExpression)
+            val width = callExpression.valueArguments[1].type.asBitWidth(callExpression)
             val msbIndex = EKtCallExpression(
                 callExpression.location,
                 Core.Kt.C_Int.toType(),
                 Core.Kt.Int.F_plus_Int,
                 ExpressionCopier.copy(callExpression.valueArguments[0]),
-                arrayListOf(EConstantExpression(callExpression.location, Core.Kt.C_Int.toType(), "${value - 1}")),
+                arrayListOf(EConstantExpression(callExpression.location, Core.Kt.C_Int.toType(), "${width - 1}")),
                 arrayListOf()
             )
             val receiver = EConstantPartSelectExpression(
@@ -149,7 +149,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
             val left = ConstantUtil.getBitConstant(callExpression.receiver!!)
             val right = ConstantUtil.getBitConstant(callExpression.valueArguments[0])
             return if (left != null && right != null) {
-                left.add(right, callExpression).toString()
+                ConstantUtil.formatBitConstant(left.add(right, callExpression))
             } else null
         }
     }
@@ -188,7 +188,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
             val left = ConstantUtil.getBitConstant(callExpression.receiver!!)
             val right = ConstantUtil.getBitConstant(callExpression.valueArguments[0])
             return if (left != null && right != null) {
-                left.sub(right, callExpression).toString()
+                ConstantUtil.formatBitConstant(left.sub(right, callExpression))
             } else null
         }
     }
