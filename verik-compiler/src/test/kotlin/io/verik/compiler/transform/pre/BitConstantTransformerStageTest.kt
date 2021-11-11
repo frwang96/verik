@@ -17,8 +17,11 @@
 package io.verik.compiler.transform.pre
 
 import io.verik.compiler.util.BaseTest
+import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.findExpression
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 internal class BitConstantTransformerStageTest : BaseTest() {
 
@@ -51,7 +54,7 @@ internal class BitConstantTransformerStageTest : BaseTest() {
     }
 
     @Test
-    fun `constant string binary`() {
+    fun `constant string unsigned binary`() {
         val projectContext = driveTest(
             BitConstantTransformerStage::class,
             """
@@ -65,7 +68,7 @@ internal class BitConstantTransformerStageTest : BaseTest() {
     }
 
     @Test
-    fun `constant string hexadecimal`() {
+    fun `constant string unsigned hexadecimal`() {
         val projectContext = driveTest(
             BitConstantTransformerStage::class,
             """
@@ -76,5 +79,45 @@ internal class BitConstantTransformerStageTest : BaseTest() {
             "ConstantExpression(Ubit<`10`>, 10'h3ff)",
             projectContext.findExpression("x")
         )
+    }
+
+    @Test
+    fun `constant string signed binary`() {
+        val projectContext = driveTest(
+            BitConstantTransformerStage::class,
+            """
+                var x = s("4'b0011")
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "ConstantExpression(Sbit<`4`>, 4'sh3)",
+            projectContext.findExpression("x")
+        )
+    }
+
+    @Test
+    fun `constant string signed hexadecimal`() {
+        val projectContext = driveTest(
+            BitConstantTransformerStage::class,
+            """
+                var x = s("10'h3ff")
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "ConstantExpression(Sbit<`10`>, 10'sh3ff)",
+            projectContext.findExpression("x")
+        )
+    }
+
+    @Test
+    fun `constant string invalid`() {
+        assertThrows<TestErrorException> {
+            driveTest(
+                BitConstantTransformerStage::class,
+                """
+                    var x = u("12'hxyz")
+                """.trimIndent()
+            )
+        }.apply { assertEquals("Error parsing bit constant: 12'hxyz", message) }
     }
 }

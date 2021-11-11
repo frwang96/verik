@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="EntryPointsManager">
-    <list size="6">
+    <list size="7">
       <item index="0" class="java.lang.String" itemvalue="io.verik.core.Com" />
       <item index="1" class="java.lang.String" itemvalue="io.verik.core.Make" />
       <item index="2" class="java.lang.String" itemvalue="io.verik.core.Run" />
@@ -15,7 +15,7 @@
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_15" project-jdk-name="15" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" project-jdk-name="15" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build" />
   </component>
 </project>

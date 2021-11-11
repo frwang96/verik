@@ -34,6 +34,7 @@ import io.verik.compiler.ast.element.common.EThisExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.common.EWhileExpression
 import io.verik.compiler.ast.element.kt.EAnnotation
+import io.verik.compiler.ast.element.kt.EAsExpression
 import io.verik.compiler.ast.element.kt.EForExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
@@ -612,6 +613,13 @@ class ElementPrinter : Visitor() {
             build(isExpression.property)
             build(isExpression.isNegated)
             build(isExpression.castType.toString())
+        }
+    }
+
+    override fun visitAsExpression(asExpression: EAsExpression) {
+        build("AsExpression") {
+            build(asExpression.type.toString())
+            build(asExpression.expression)
         }
     }
 

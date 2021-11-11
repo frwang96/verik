@@ -17,6 +17,7 @@
 package io.verik.compiler.common
 
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.message.MessageCollector
 import kotlin.reflect.KClass
 
 class StageSequence {
@@ -31,6 +32,10 @@ class StageSequence {
         stages.add(stage)
     }
 
+    fun addFlush() {
+        stages.add(FlushStage)
+    }
+
     fun <T : ProjectStage> contains(stageClass: KClass<T>): Boolean {
         return stages.any { it::class == stageClass }
     }
@@ -38,6 +43,15 @@ class StageSequence {
     fun process(projectContext: ProjectContext) {
         stages.forEach {
             it.accept(projectContext)
+        }
+    }
+
+    private object FlushStage : ProjectStage() {
+
+        override val checkNormalization = false
+
+        override fun process(projectContext: ProjectContext) {
+            MessageCollector.messageCollector.flush()
         }
     }
 }

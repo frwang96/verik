@@ -335,6 +335,20 @@ internal class ExpressionCasterTest : BaseTest() {
     }
 
     @Test
+    fun `as expression`() {
+        val projectContext = driveTest(
+            CasterStage::class,
+            """
+                var x = 0 as Int
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "AsExpression(Int, ConstantExpression(*))",
+            projectContext.findExpression("x")
+        )
+    }
+
+    @Test
     fun `if expression`() {
         val projectContext = driveTest(
             CasterStage::class,

@@ -25,7 +25,7 @@ internal class CastTransformerStageTest : BaseTest() {
     @Test
     fun `is expression`() {
         val projectContext = driveTest(
-            SubexpressionExtractorStage::class,
+            CastTransformerStage::class,
             """
                 fun f() {
                     0 is Int
@@ -50,7 +50,7 @@ internal class CastTransformerStageTest : BaseTest() {
     @Test
     fun `is not expression`() {
         val projectContext = driveTest(
-            SubexpressionExtractorStage::class,
+            CastTransformerStage::class,
             """
                 fun f() {
                     0 !is Int
@@ -70,6 +70,33 @@ internal class CastTransformerStageTest : BaseTest() {
                         ),
                         [], []
                     )
+                ]
+            """.trimIndent(),
+            projectContext.findStatements("f")
+        )
+    }
+
+    @Test
+    fun `as expression`() {
+        val projectContext = driveTest(
+            CastTransformerStage::class,
+            """
+                fun f() {
+                    0 as Int
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            """
+                [
+                    PropertyStatement(Unit, SvProperty(<tmp>, Int, null, 0, 0)),
+                    IfExpression(
+                        Unit,
+                        KtCallExpression(Boolean, not, KtCallExpression(Boolean, ${'$'}cast, null, *, []), [], []),
+                        KtCallExpression(Nothing, fatal, null, [StringExpression(*)], []),
+                        null
+                    ),
+                    ReferenceExpression(Int, <tmp>, null)
                 ]
             """.trimIndent(),
             projectContext.findStatements("f")

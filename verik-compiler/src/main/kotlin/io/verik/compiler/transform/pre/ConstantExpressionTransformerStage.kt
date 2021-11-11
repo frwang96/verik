@@ -38,11 +38,11 @@ object ConstantExpressionTransformerStage : ProjectStage() {
             super.visitConstantExpression(constantExpression)
             when (constantExpression.type.reference) {
                 Core.Kt.C_Boolean -> {
-                    val value = ConstantUtil.getBoolean(constantExpression)!!
+                    val value = ConstantUtil.normalizeBoolean(constantExpression.value)
                     constantExpression.value = ConstantUtil.formatBoolean(value)
                 }
                 Core.Kt.C_Int -> {
-                    val value = ConstantUtil.getInt(constantExpression)!!
+                    val value = ConstantUtil.normalizeInt(constantExpression.value)
                     constantExpression.value = ConstantUtil.formatInt(value)
                 }
                 Core.Vk.C_Ubit -> {}

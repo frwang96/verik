@@ -53,6 +53,7 @@ import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.common.EWhileExpression
 import io.verik.compiler.ast.element.kt.EAnnotation
+import io.verik.compiler.ast.element.kt.EAsExpression
 import io.verik.compiler.ast.element.kt.EForExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
@@ -482,6 +483,10 @@ abstract class Visitor {
 
     open fun visitIsExpression(isExpression: EIsExpression) {
         visitAbstractContainerExpression(isExpression)
+    }
+
+    open fun visitAsExpression(asExpression: EAsExpression) {
+        visitAbstractContainerExpression(asExpression)
     }
 
     open fun visitWidthCastExpression(widthCastExpression: EWidthCastExpression) {

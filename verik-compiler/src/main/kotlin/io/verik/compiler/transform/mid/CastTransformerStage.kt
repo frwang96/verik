@@ -16,10 +16,15 @@
 
 package io.verik.compiler.transform.mid
 
+import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
+import io.verik.compiler.ast.element.kt.EAsExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.sv.EStringExpression
+import io.verik.compiler.ast.element.sv.ESvProperty
+import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
@@ -71,6 +76,65 @@ object CastTransformerStage : ProjectStage() {
             } else {
                 subexpressionExtractor.extract(isExpression, callExpression, listOf(propertyStatement))
             }
+        }
+
+        override fun visitAsExpression(asExpression: EAsExpression) {
+            super.visitAsExpression(asExpression)
+            val property = ESvProperty(
+                asExpression.location,
+                "<tmp>",
+                asExpression.type.copy(),
+                initializer = null,
+                isMutable = false,
+                isStatic = false
+            )
+            val referenceExpression = EReferenceExpression(
+                property.location,
+                property.type.copy(),
+                property,
+                null
+            )
+            val propertyStatement = EPropertyStatement(property.location, property)
+            val castCallExpression = EKtCallExpression(
+                asExpression.location,
+                Core.Kt.C_Boolean.toType(),
+                Target.F_cast,
+                null,
+                arrayListOf(referenceExpression, asExpression.expression),
+                ArrayList()
+            )
+            val negatedCallExpression = EKtCallExpression(
+                asExpression.location,
+                Core.Kt.C_Boolean.toType(),
+                Core.Kt.Boolean.F_not,
+                castCallExpression,
+                ArrayList(),
+                ArrayList()
+            )
+            val stringExpression = EStringExpression(
+                asExpression.location,
+                "Failed to cast from ${asExpression.expression.type} to ${asExpression.type}"
+            )
+            val fatalCallExpression = EKtCallExpression(
+                asExpression.location,
+                Core.Kt.C_Nothing.toType(),
+                Core.Vk.F_fatal_String,
+                null,
+                arrayListOf(stringExpression),
+                ArrayList()
+            )
+            val ifExpression = EIfExpression(
+                asExpression.location,
+                Core.Kt.C_Unit.toType(),
+                negatedCallExpression,
+                fatalCallExpression,
+                null
+            )
+            subexpressionExtractor.extract(
+                asExpression,
+                ExpressionCopier.copy(referenceExpression),
+                listOf(propertyStatement, ifExpression)
+            )
         }
     }
 }

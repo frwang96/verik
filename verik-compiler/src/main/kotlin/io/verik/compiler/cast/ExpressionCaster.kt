@@ -24,6 +24,7 @@ import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ESuperExpression
 import io.verik.compiler.ast.element.common.EThisExpression
 import io.verik.compiler.ast.element.common.EWhileExpression
+import io.verik.compiler.ast.element.kt.EAsExpression
 import io.verik.compiler.ast.element.kt.EForExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
@@ -43,6 +44,7 @@ import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.descriptors.PackageViewDescriptor
 import org.jetbrains.kotlin.psi.KtArrayAccessExpression
 import org.jetbrains.kotlin.psi.KtBinaryExpression
+import org.jetbrains.kotlin.psi.KtBinaryExpressionWithTypeRHS
 import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtConstantExpression
@@ -275,6 +277,13 @@ object ExpressionCaster {
             expression.isNegated,
             castType
         )
+    }
+
+    fun castAsExpression(expression: KtBinaryExpressionWithTypeRHS, castContext: CastContext): EAsExpression {
+        val location = expression.location()
+        val type = castContext.castType(expression.right!!)
+        val childExpression = castContext.casterVisitor.getExpression(expression.left)
+        return EAsExpression(location, type, childExpression)
     }
 
     fun castIfExpression(expression: KtIfExpression, castContext: CastContext): EIfExpression {
