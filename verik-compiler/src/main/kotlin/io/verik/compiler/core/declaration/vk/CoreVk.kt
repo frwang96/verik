@@ -29,11 +29,11 @@ import io.verik.compiler.ast.element.sv.EReplicationExpression
 import io.verik.compiler.ast.element.sv.EWidthCastExpression
 import io.verik.compiler.ast.property.EdgeType
 import io.verik.compiler.common.BitConstant
-import io.verik.compiler.common.Cardinal
 import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
+import io.verik.compiler.core.common.CoreTransformUtil
 import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
 import io.verik.compiler.message.Messages
 import io.verik.compiler.resolve.ConcatenationTypeConstraint
@@ -117,7 +117,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            return callExpression.valueArguments[0]
+            return CoreTransformUtil.callExpressionUnsigned(callExpression.valueArguments[0])
         }
     }
 
@@ -155,7 +155,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            return callExpression.valueArguments[0]
+            return CoreTransformUtil.callExpressionSigned(callExpression.valueArguments[0])
         }
     }
 
@@ -359,28 +359,13 @@ object CoreVk : CoreScope(CorePackage.VK) {
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            val callExpressionSigned = EKtCallExpression(
-                callExpression.location,
-                Core.Vk.C_Sbit.toType(Cardinal.of(1).toType()),
-                Target.F_signed,
-                null,
-                arrayListOf(callExpression.receiver!!),
-                ArrayList()
-            )
+            val callExpressionSigned = CoreTransformUtil.callExpressionSigned(callExpression.receiver!!)
             val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
-            val widthCastExpression = EWidthCastExpression(
+            return EWidthCastExpression(
                 callExpression.location,
                 callExpression.type,
                 callExpressionSigned,
                 value
-            )
-            return EKtCallExpression(
-                callExpression.location,
-                callExpression.type.copy(),
-                Target.F_unsigned,
-                null,
-                arrayListOf(widthCastExpression),
-                ArrayList()
             )
         }
     }

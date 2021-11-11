@@ -137,9 +137,10 @@ object Core {
         val N_ADD = CoreVkCardinal.N_ADD
         val N_SUB = CoreVkCardinal.N_SUB
         val N_MUL = CoreVkCardinal.N_MUL
+        val N_DIV = CoreVkCardinal.N_DIV
         val N_MAX = CoreVkCardinal.N_MAX
         val N_MIN = CoreVkCardinal.N_MIN
-        val N_ID = CoreVkCardinal.N_ID
+        val N_OF = CoreVkCardinal.N_OF
         val N_INC = CoreVkCardinal.N_INC
         val N_DEC = CoreVkCardinal.N_DEC
         val N_LOG = CoreVkCardinal.N_LOG
@@ -215,6 +216,8 @@ object Core {
         object Sbit {
 
             val F_lt_Sbit = CoreVkSbit.F_lt_Sbit
+            val F_mul_Sbit = CoreVkSbit.F_mul_Sbit
+            val F_plus_Sbit = CoreVkSbit.F_plus_Sbit
         }
 
         object Unpacked {

@@ -38,6 +38,11 @@ typealias SUB<N, M> = `*`
 typealias MUL<N, M> = `*`
 
 /**
+ * Divides the cardinals N and M
+ */
+typealias DIV<N, M> = `*`
+
+/**
  * Takes the maximum of the cardinals N and M.
  */
 typealias MAX<N, M> = `*`
@@ -48,9 +53,9 @@ typealias MAX<N, M> = `*`
 typealias MIN<N, M> = `*`
 
 /**
- * Identity of the cardinal N
+ * The cardinal N. Used for type parameter shielding.
  */
-typealias ID<N> = `*`
+typealias OF<N> = `*`
 
 /**
  * Increments the cardinal N.

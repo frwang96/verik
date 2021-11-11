@@ -131,16 +131,10 @@ internal class CoreVkUbitTest : BaseTest() {
         )
         assertElementEquals(
             """
-                KtCallExpression(
+                WidthCastExpression(
                     Sbit<`8`>,
-                    ${'$'}unsigned,
-                    null,
-                    [WidthCastExpression(
-                        Sbit<`8`>,
-                        KtCallExpression(Sbit<`4`>, ${'$'}signed, null, [ConstantExpression(*)], []),
-                        8
-                    )],
-                    []
+                    KtCallExpression(Sbit<`4`>, ${'$'}signed, null, [ConstantExpression(*)], []),
+                    8
                 )
             """.trimIndent(),
             projectContext.findExpression("x")

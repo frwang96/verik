@@ -74,11 +74,13 @@ object TypeSpecializer {
                 argumentValues[0] - argumentValues[1]
             Core.Vk.N_MUL ->
                 argumentValues[0] * argumentValues[1]
+            Core.Vk.N_DIV ->
+                argumentValues[0] / argumentValues[1]
             Core.Vk.N_MAX ->
                 Integer.max(argumentValues[0], argumentValues[1])
             Core.Vk.N_MIN ->
                 Integer.min(argumentValues[0], argumentValues[1])
-            Core.Vk.N_ID ->
+            Core.Vk.N_OF ->
                 argumentValues[0]
             Core.Vk.N_INC ->
                 argumentValues[0] + 1
