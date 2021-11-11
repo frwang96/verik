@@ -16,8 +16,6 @@
 
 package io.verik.compiler.resolve
 
-import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Cardinal
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.Messages
@@ -123,7 +121,7 @@ object TypeConstraintChecker {
         val valueArgumentWidths = typeConstraint
             .callExpression
             .valueArguments
-            .map { getTypeWidth(it.type, it) }
+            .map { it.type.getWidth(it) }
         val sumWidth = valueArgumentWidths.sum()
         if (sumWidth != expressionWidth) {
             val actualType = Core.Vk.C_Ubit.toType(Cardinal.of(sumWidth).toType())
@@ -134,7 +132,7 @@ object TypeConstraintChecker {
     private fun checkReplicationTypeConstraint(typeConstraint: ReplicationTypeConstraint) {
         val expressionWidth = typeConstraint.callExpression.type.asBitWidth(typeConstraint.callExpression)
         val valueArgumentWidth = typeConstraint.callExpression.valueArguments[0]
-            .let { getTypeWidth(it.type, it) }
+            .let { it.type.getWidth(it) }
         val typeArgumentWidth = typeConstraint.callExpression
             .typeArguments[0].asCardinalValue(typeConstraint.callExpression)
         if (expressionWidth != valueArgumentWidth * typeArgumentWidth) {
@@ -142,15 +140,6 @@ object TypeConstraintChecker {
                 Cardinal.of(valueArgumentWidth * typeArgumentWidth).toType()
             )
             Messages.TYPE_MISMATCH.on(typeConstraint.callExpression, typeConstraint.callExpression.type, actualType)
-        }
-    }
-
-    private fun getTypeWidth(type: Type, element: EElement): Int {
-        return when (type.reference) {
-            Core.Kt.C_Boolean -> 1
-            Core.Vk.C_Ubit -> type.asBitWidth(element)
-            Core.Vk.C_Sbit -> type.asBitWidth(element)
-            else -> 0
         }
     }
 }

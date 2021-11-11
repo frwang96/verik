@@ -115,9 +115,9 @@ internal class BitConstantTransformerStageTest : BaseTest() {
             driveTest(
                 BitConstantTransformerStage::class,
                 """
-                    var x = u("abc")
+                    var x = u("12'hxyz")
                 """.trimIndent()
             )
-        }.apply { assertEquals("Error parsing bit constant: abc", message) }
+        }.apply { assertEquals("Error parsing bit constant: 12'hxyz", message) }
     }
 }

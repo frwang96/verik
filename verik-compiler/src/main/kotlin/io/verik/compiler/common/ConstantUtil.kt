@@ -118,12 +118,22 @@ object ConstantUtil {
         val trimmedValue = compactedValue.substring(tickIndex + 2)
         return when (compactedValue[tickIndex + 1].toLowerCase()) {
             'h' -> {
-                val bigInteger = BigInteger(trimmedValue, 16)
-                BitConstant(bigInteger, signed, width)
+                try {
+                    val bigInteger = BigInteger(trimmedValue, 16)
+                    BitConstant(bigInteger, signed, width)
+                } catch (exception: NumberFormatException) {
+                    Messages.BIT_CONSTANT_ERROR.on(element, value)
+                    null
+                }
             }
             'b' -> {
-                val bigInteger = BigInteger(trimmedValue, 2)
-                BitConstant(bigInteger, signed, width)
+                try {
+                    val bigInteger = BigInteger(trimmedValue, 2)
+                    BitConstant(bigInteger, signed, width)
+                } catch (exception: java.lang.NumberFormatException) {
+                    Messages.BIT_CONSTANT_ERROR.on(element, value)
+                    null
+                }
             }
             else -> {
                 Messages.BIT_CONSTANT_ERROR.on(element, value)
@@ -144,7 +154,8 @@ object ConstantUtil {
         ) {
             val width = expression.type.asBitWidth(expression)
             val signed = expression.type.asBitSigned(expression)
-            val compactedValue = expression.value.substringAfter("'").filter { it.isDigit() }
+            val trimmedValue = expression.value.substringAfter("'").substring(if (signed) 2 else 1)
+            val compactedValue = trimmedValue.replace("_", "")
             val bigInteger = BigInteger(compactedValue, 16)
             BitConstant(bigInteger, signed, width)
         } else null

@@ -105,6 +105,17 @@ class Type(
         }
     }
 
+    fun getWidth(element: EElement): Int {
+        return when (reference) {
+            Core.Kt.C_Boolean -> 1
+            Core.Vk.C_Ubit, Core.Vk.C_Sbit -> asBitWidth(element)
+            else -> {
+                Messages.INTERNAL_ERROR.on(element, "Unable to get width of type: $this")
+                1
+            }
+        }
+    }
+
     fun hasUnpackedDimension(element: EElement): Boolean {
         val reference = reference
         return if (reference is TargetClassDeclaration) {

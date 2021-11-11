@@ -18,6 +18,7 @@ package io.verik.compiler.core.common
 
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.common.Cardinal
 import io.verik.compiler.target.common.Target
 
 object CoreTransformUtil {
@@ -25,7 +26,7 @@ object CoreTransformUtil {
     fun callExpressionSigned(expression: EExpression): EKtCallExpression {
         return EKtCallExpression(
             expression.location,
-            Core.Vk.C_Sbit.toType(expression.type.arguments[0].copy()),
+            Core.Vk.C_Sbit.toType(Cardinal.of(expression.type.getWidth(expression)).toType()),
             Target.F_signed,
             null,
             arrayListOf(expression),
@@ -36,7 +37,7 @@ object CoreTransformUtil {
     fun callExpressionUnsigned(expression: EExpression): EKtCallExpression {
         return EKtCallExpression(
             expression.location,
-            Core.Vk.C_Ubit.toType(expression.type.arguments[0].copy()),
+            Core.Vk.C_Ubit.toType(Cardinal.of(expression.type.getWidth(expression)).toType()),
             Target.F_unsigned,
             null,
             arrayListOf(expression),

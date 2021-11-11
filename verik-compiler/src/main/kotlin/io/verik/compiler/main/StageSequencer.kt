@@ -107,11 +107,13 @@ object StageSequencer {
         stageSequence.add(UnsupportedModifierCheckerStage)
         stageSequence.add(ImportDirectiveCheckerStage)
         stageSequence.add(KotlinCompilerAnalyzerStage)
+        stageSequence.addFlush()
 
         // Cast
         stageSequence.add(DeclarationCastIndexerStage)
         stageSequence.add(CasterStage)
         stageSequence.add(SmartCastReducerStage)
+        stageSequence.addFlush()
 
         // PreTransform
         stageSequence.add(FunctionOverloadingTransformerStage)
@@ -124,6 +126,7 @@ object StageSequencer {
         stageSequence.add(ForExpressionReducerStage)
         stageSequence.add(BitConstantTransformerStage)
         stageSequence.add(ConstantExpressionTransformerStage)
+        stageSequence.addFlush()
 
         // Resolve
         stageSequence.add(TypeParameterTypeCheckerStage)
@@ -131,6 +134,7 @@ object StageSequencer {
         stageSequence.add(TypeResolvedCheckerStage)
         stageSequence.add(DeclarationSpecializerStage)
         stageSequence.add(TypeCheckerStage)
+        stageSequence.addFlush()
 
         // Interpret
         stageSequence.add(AnnotationCheckerStage)
@@ -143,6 +147,7 @@ object StageSequencer {
         stageSequence.add(ValueParameterInterpreterStage)
         stageSequence.add(ModulePortParentResolverStage)
         stageSequence.add(FileSplitterStage)
+        stageSequence.addFlush()
 
         // MidTransform
         stageSequence.add(EnumNameTransformerStage)
@@ -164,6 +169,7 @@ object StageSequencer {
         stageSequence.add(AssignmentTransformerStage)
         stageSequence.add(PropertyStatementReorderStage)
         stageSequence.add(DeadDeclarationEliminatorStage)
+        stageSequence.addFlush()
 
         // PostTransform
         stageSequence.add(TypeReferenceTransformerStage)
@@ -176,6 +182,7 @@ object StageSequencer {
         stageSequence.add(CallExpressionTransformerStage)
         stageSequence.add(BlockExpressionTransformerStage)
         stageSequence.add(ParenthesisInsertionTransformerStage)
+        stageSequence.addFlush()
 
         // PostCheck
         stageSequence.add(UntransformedElementCheckerStage)
@@ -187,6 +194,7 @@ object StageSequencer {
         stageSequence.add(NameRedeclarationCheckerStage)
         stageSequence.add(StatementCheckerStage)
         stageSequence.add(PortInstantiationCheckerStage)
+        stageSequence.addFlush()
 
         // Serialize
         stageSequence.add(ConfigFileSerializerStage)
@@ -194,6 +202,7 @@ object StageSequencer {
         stageSequence.add(SourceSerializerStage)
         stageSequence.add(PackageFileSerializerStage)
         stageSequence.add(SourcesFileSerializerStage)
+        stageSequence.addFlush()
 
         return stageSequence
     }
