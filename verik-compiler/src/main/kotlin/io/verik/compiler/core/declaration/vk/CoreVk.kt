@@ -335,7 +335,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
 
     val F_sv_String = BasicCoreFunctionDeclaration(parent, "sv", "fun sv(String)", null)
 
-    val F_Boolean_uext = object : TransformableCoreFunctionDeclaration(parent, "uext", "fun uext()") {
+    val F_Boolean_ext = object : TransformableCoreFunctionDeclaration(parent, "ext", "fun ext()") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -360,7 +360,7 @@ object CoreVk : CoreScope(CorePackage.VK) {
     val F_Boolean_sext = object : TransformableCoreFunctionDeclaration(parent, "sext", "fun sext()") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
-            return F_Boolean_uext.getTypeConstraints(callExpression)
+            return F_Boolean_ext.getTypeConstraints(callExpression)
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {

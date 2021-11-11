@@ -35,7 +35,7 @@ fun Boolean.isUnknown(): Boolean {
 /**
  * Extend to [N] bits with zero extension.
  */
-fun <N : `*`> Boolean.uext(): Ubit<N> {
+fun <N : `*`> Boolean.ext(): Ubit<N> {
     throw VerikException()
 }
 

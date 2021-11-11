@@ -289,7 +289,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_sll_Int = object : TransformableCoreFunctionDeclaration(parent, "sll", "fun sll(Int)") {
+    val F_shl_Int = object : TransformableCoreFunctionDeclaration(parent, "shl", "fun shl(Int)") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -311,18 +311,18 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_sll_Ubit = object : TransformableCoreFunctionDeclaration(parent, "sll", "fun sll(Ubit)") {
+    val F_shl_Ubit = object : TransformableCoreFunctionDeclaration(parent, "shl", "fun shl(Ubit)") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
-            return F_sll_Int.getTypeConstraints(callExpression)
+            return F_shl_Int.getTypeConstraints(callExpression)
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            return F_sll_Int.transform(callExpression)
+            return F_shl_Int.transform(callExpression)
         }
     }
 
-    val F_srl_Int = object : TransformableCoreFunctionDeclaration(parent, "srl", "fun srl(Int)") {
+    val F_shr_Int = object : TransformableCoreFunctionDeclaration(parent, "shr", "fun shr(Int)") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -344,18 +344,18 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_srl_Ubit = object : TransformableCoreFunctionDeclaration(parent, "srl", "fun srl(Ubit)") {
+    val F_shr_Ubit = object : TransformableCoreFunctionDeclaration(parent, "shr", "fun shr(Ubit)") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
-            return F_srl_Int.getTypeConstraints(callExpression)
+            return F_shr_Int.getTypeConstraints(callExpression)
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            return F_srl_Int.transform(callExpression)
+            return F_shr_Int.transform(callExpression)
         }
     }
 
-    val F_sra_Int = object : TransformableCoreFunctionDeclaration(parent, "sra", "fun sra(Int)") {
+    val F_sshr_Int = object : TransformableCoreFunctionDeclaration(parent, "sshr", "fun sshr(Int)") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -379,14 +379,14 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_sra_Ubit = object : TransformableCoreFunctionDeclaration(parent, "sra", "fun sra(Ubit)") {
+    val F_sshr_Ubit = object : TransformableCoreFunctionDeclaration(parent, "sshr", "fun sshr(Ubit)") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
-            return F_sra_Int.getTypeConstraints(callExpression)
+            return F_sshr_Int.getTypeConstraints(callExpression)
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            return F_sra_Int.transform(callExpression)
+            return F_sshr_Int.transform(callExpression)
         }
     }
 
@@ -431,7 +431,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_uext = object : TransformableCoreFunctionDeclaration(parent, "uext", "fun uext()") {
+    val F_ext = object : TransformableCoreFunctionDeclaration(parent, "ext", "fun ext()") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -461,7 +461,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
     val F_sext = object : TransformableCoreFunctionDeclaration(parent, "sext", "fun sext()") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
-            return F_uext.getTypeConstraints(callExpression)
+            return F_ext.getTypeConstraints(callExpression)
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {

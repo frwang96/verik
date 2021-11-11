@@ -176,7 +176,7 @@ internal class TypeCasterTest : BaseTest() {
             CasterStage::class,
             """
                 class C<N: Cardinal> {
-                    var x: Ubit<N> = u(0).uext()
+                    var x: Ubit<N> = u(0).ext()
                 }
             """.trimIndent()
         )

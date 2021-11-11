@@ -51,9 +51,9 @@ class Multiplier(
                     val sum = if (b[0]) {
                         tp add a
                     } else {
-                        tp.uext()
+                        tp.ext()
                     }
-                    b = b srl 1
+                    b = b shr 1
                     prod = cat(sum[0], prod.slice<DEC<REQ_WIDTH>>(1))
                     tp = sum.slice(1)
                     i += u(1)

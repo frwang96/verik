@@ -63,12 +63,12 @@ internal class CoreVkUbitTest : BaseTest() {
     }
 
     @Test
-    fun `transform sll`() {
+    fun `transform shl`() {
         val projectContext = driveTest(
             FunctionTransformerStage::class,
             """
                 var x = u(0x00)
-                var y = x sll 1
+                var y = x shl 1
             """.trimIndent()
         )
         assertElementEquals(
@@ -78,12 +78,12 @@ internal class CoreVkUbitTest : BaseTest() {
     }
 
     @Test
-    fun `transform srl`() {
+    fun `transform shr`() {
         val projectContext = driveTest(
             FunctionTransformerStage::class,
             """
                 var x = u(0x00)
-                var y = x srl 1
+                var y = x shr 1
             """.trimIndent()
         )
         assertElementEquals(
@@ -108,11 +108,11 @@ internal class CoreVkUbitTest : BaseTest() {
     }
 
     @Test
-    fun `transform uext`() {
+    fun `transform ext`() {
         val projectContext = driveTest(
             FunctionTransformerStage::class,
             """
-                var x = u(0x0).uext<`8`>()
+                var x = u(0x0).ext<`8`>()
             """.trimIndent()
         )
         assertElementEquals(
