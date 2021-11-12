@@ -26,7 +26,7 @@ import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ESuperExpression
 import io.verik.compiler.ast.element.common.EThisExpression
-import io.verik.compiler.ast.element.common.EWhileExpression
+import io.verik.compiler.ast.element.common.EWhileStatement
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.EBasicComponentInstantiation
@@ -38,7 +38,6 @@ import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EEventExpression
-import io.verik.compiler.ast.element.sv.EForStatement
 import io.verik.compiler.ast.element.sv.EForeverStatement
 import io.verik.compiler.ast.element.sv.EImmediateAssertStatement
 import io.verik.compiler.ast.element.sv.EInitialBlock
@@ -61,6 +60,7 @@ import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
 import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
+import io.verik.compiler.ast.element.sv.ESvForStatement
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
@@ -287,11 +287,11 @@ class SourceSerializerVisitor(private val serializerContext: SerializerContext) 
         ExpressionSerializer.serializeCaseStatement(caseStatement, serializerContext)
     }
 
-    override fun visitWhileExpression(whileExpression: EWhileExpression) {
-        ExpressionSerializer.serializeWhileExpression(whileExpression, serializerContext)
+    override fun visitWhileStatement(whileStatement: EWhileStatement) {
+        ExpressionSerializer.serializeWhileStatement(whileStatement, serializerContext)
     }
 
-    override fun visitForStatement(forStatement: EForStatement) {
+    override fun visitSvForStatement(forStatement: ESvForStatement) {
         ExpressionSerializer.serializeForStatement(forStatement, serializerContext)
     }
 

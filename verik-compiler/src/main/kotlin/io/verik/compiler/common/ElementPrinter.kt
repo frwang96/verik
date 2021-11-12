@@ -32,10 +32,9 @@ import io.verik.compiler.ast.element.common.ERootPackage
 import io.verik.compiler.ast.element.common.ESuperExpression
 import io.verik.compiler.ast.element.common.EThisExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
-import io.verik.compiler.ast.element.common.EWhileExpression
+import io.verik.compiler.ast.element.common.EWhileStatement
 import io.verik.compiler.ast.element.kt.EAnnotation
 import io.verik.compiler.ast.element.kt.EAsExpression
-import io.verik.compiler.ast.element.kt.EForExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
@@ -45,6 +44,7 @@ import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtConstructor
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
+import io.verik.compiler.ast.element.kt.EKtForStatement
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
@@ -65,7 +65,6 @@ import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EEventExpression
-import io.verik.compiler.ast.element.sv.EForStatement
 import io.verik.compiler.ast.element.sv.EForeverStatement
 import io.verik.compiler.ast.element.sv.EImmediateAssertStatement
 import io.verik.compiler.ast.element.sv.EInitialBlock
@@ -89,6 +88,7 @@ import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
 import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
+import io.verik.compiler.ast.element.sv.ESvForStatement
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
@@ -684,26 +684,26 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitWhileExpression(whileExpression: EWhileExpression) {
-        build("WhileExpression") {
-            build(whileExpression.type.toString())
-            build(whileExpression.condition)
-            build(whileExpression.body)
-            build(whileExpression.isDoWhile)
+    override fun visitWhileStatement(whileStatement: EWhileStatement) {
+        build("WhileStatement") {
+            build(whileStatement.type.toString())
+            build(whileStatement.condition)
+            build(whileStatement.body)
+            build(whileStatement.isDoWhile)
         }
     }
 
-    override fun visitForExpression(forExpression: EForExpression) {
-        build("ForExpression") {
-            build(forExpression.type.toString())
-            build(forExpression.valueParameter)
-            build(forExpression.range)
-            build(forExpression.body)
+    override fun visitKtForStatement(forStatement: EKtForStatement) {
+        build("KtForStatement") {
+            build(forStatement.type.toString())
+            build(forStatement.valueParameter)
+            build(forStatement.range)
+            build(forStatement.body)
         }
     }
 
-    override fun visitForStatement(forStatement: EForStatement) {
-        build("ForStatement") {
+    override fun visitSvForStatement(forStatement: ESvForStatement) {
+        build("SvForStatement") {
             build(forStatement.type.toString())
             build(forStatement.property)
             build(forStatement.condition)

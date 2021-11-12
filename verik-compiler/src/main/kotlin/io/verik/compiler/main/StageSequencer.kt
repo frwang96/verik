@@ -90,7 +90,7 @@ import io.verik.compiler.transform.pre.BinaryExpressionReducerStage
 import io.verik.compiler.transform.pre.BitConstantTransformerStage
 import io.verik.compiler.transform.pre.ConstantExpressionTransformerStage
 import io.verik.compiler.transform.pre.DeclarationRenameStage
-import io.verik.compiler.transform.pre.ForExpressionReducerStage
+import io.verik.compiler.transform.pre.ForStatementReducerStage
 import io.verik.compiler.transform.pre.FunctionOverloadingTransformerStage
 import io.verik.compiler.transform.pre.TypeAliasReducerStage
 import io.verik.compiler.transform.pre.UnaryExpressionReducerStage
@@ -123,7 +123,7 @@ object StageSequencer {
         stageSequence.add(UnaryExpressionReducerStage)
         stageSequence.add(BinaryExpressionReducerStage)
         stageSequence.add(ArrayAccessExpressionReducerStage)
-        stageSequence.add(ForExpressionReducerStage)
+        stageSequence.add(ForStatementReducerStage)
         stageSequence.add(BitConstantTransformerStage)
         stageSequence.add(ConstantExpressionTransformerStage)
         stageSequence.addFlush()

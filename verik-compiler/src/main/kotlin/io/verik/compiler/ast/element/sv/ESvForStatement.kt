@@ -26,7 +26,7 @@ import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.target.common.Target
 
-class EForStatement(
+class ESvForStatement(
     override val location: SourceLocation,
     var property: ESvProperty,
     var condition: EExpression,
@@ -46,7 +46,7 @@ class EForStatement(
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitForStatement(this)
+        visitor.visitSvForStatement(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {

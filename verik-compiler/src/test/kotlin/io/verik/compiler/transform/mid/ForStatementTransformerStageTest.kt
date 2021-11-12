@@ -35,7 +35,7 @@ internal class ForStatementTransformerStageTest : BaseTest() {
         )
         assertElementEquals(
             """
-                ForStatement(
+                SvForStatement(
                     Void,
                     SvProperty(it, Int, ConstantExpression(Int, 0), 1, null),
                     KtCallExpression(Boolean, lt, ReferenceExpression(Int, it, null), [ConstantExpression(*)], []),
@@ -61,7 +61,7 @@ internal class ForStatementTransformerStageTest : BaseTest() {
         )
         assertElementEquals(
             """
-                ForStatement(
+                SvForStatement(
                     Void,
                     SvProperty(<tmp>, Int, ConstantExpression(Int, 0), 1, null),
                     KtCallExpression(Boolean, lt, ReferenceExpression(Int, <tmp>, null), [ReferenceExpression(*)], []),

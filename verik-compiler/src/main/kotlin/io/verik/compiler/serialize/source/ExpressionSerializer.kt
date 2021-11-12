@@ -22,14 +22,13 @@ import io.verik.compiler.ast.element.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
-import io.verik.compiler.ast.element.common.EWhileExpression
+import io.verik.compiler.ast.element.common.EWhileStatement
 import io.verik.compiler.ast.element.sv.ECaseStatement
 import io.verik.compiler.ast.element.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.sv.EConstantPartSelectExpression
 import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EEventExpression
-import io.verik.compiler.ast.element.sv.EForStatement
 import io.verik.compiler.ast.element.sv.EForeverStatement
 import io.verik.compiler.ast.element.sv.EImmediateAssertStatement
 import io.verik.compiler.ast.element.sv.EInjectedStatement
@@ -44,6 +43,7 @@ import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
 import io.verik.compiler.ast.element.sv.ESvCallExpression
+import io.verik.compiler.ast.element.sv.ESvForStatement
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.sv.EWidthCastExpression
@@ -329,22 +329,22 @@ object ExpressionSerializer {
         serializerContext.appendLine("endcase")
     }
 
-    fun serializeWhileExpression(whileExpression: EWhileExpression, serializerContext: SerializerContext) {
-        if (whileExpression.isDoWhile) {
+    fun serializeWhileStatement(whileStatement: EWhileStatement, serializerContext: SerializerContext) {
+        if (whileStatement.isDoWhile) {
             serializerContext.append("do ")
-            serializerContext.serializeAsStatement(whileExpression.body)
+            serializerContext.serializeAsStatement(whileStatement.body)
             serializerContext.append("while (")
-            serializerContext.serializeAsExpression(whileExpression.condition)
+            serializerContext.serializeAsExpression(whileStatement.condition)
             serializerContext.appendLine(");")
         } else {
             serializerContext.append("while (")
-            serializerContext.serializeAsExpression(whileExpression.condition)
+            serializerContext.serializeAsExpression(whileStatement.condition)
             serializerContext.append(") ")
-            serializerContext.serializeAsStatement(whileExpression.body)
+            serializerContext.serializeAsStatement(whileStatement.body)
         }
     }
 
-    fun serializeForStatement(forStatement: EForStatement, serializerContext: SerializerContext) {
+    fun serializeForStatement(forStatement: ESvForStatement, serializerContext: SerializerContext) {
         serializerContext.append("for (")
         serializePropertyInline(forStatement.property, serializerContext)
         serializerContext.append("; ")

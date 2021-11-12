@@ -23,7 +23,7 @@ import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
-import io.verik.compiler.ast.element.sv.EForStatement
+import io.verik.compiler.ast.element.sv.ESvForStatement
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.property.KtUnaryOperatorKind
@@ -79,7 +79,7 @@ object ForStatementTransformerStage : ProjectStage() {
             functionLiteral: EFunctionLiteralExpression,
             valueParameter: ESvValueParameter,
             callExpression: EKtCallExpression
-        ): EForStatement {
+        ): ESvForStatement {
             val property = ESvProperty(
                 valueParameter.location,
                 valueParameter.name,
@@ -109,7 +109,7 @@ object ForStatementTransformerStage : ProjectStage() {
                 ExpressionCopier.copy(propertyReferenceExpression),
                 KtUnaryOperatorKind.POST_INC
             )
-            return EForStatement(
+            return ESvForStatement(
                 callExpression.location,
                 property,
                 condition,
@@ -122,7 +122,7 @@ object ForStatementTransformerStage : ProjectStage() {
             functionLiteral: EFunctionLiteralExpression,
             valueParameter: ESvValueParameter,
             referenceExpression: EReferenceExpression
-        ): EForStatement {
+        ): ESvForStatement {
             val indexProperty = ESvProperty(
                 referenceExpression.location,
                 "<tmp>",
@@ -181,7 +181,7 @@ object ForStatementTransformerStage : ProjectStage() {
             val body = functionLiteral.body as EKtBlockExpression
             propertyStatement.parent = body
             body.statements.add(0, propertyStatement)
-            return EForStatement(
+            return ESvForStatement(
                 referenceExpression.location,
                 indexProperty,
                 condition,

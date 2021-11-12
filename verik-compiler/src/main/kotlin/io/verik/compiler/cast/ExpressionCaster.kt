@@ -23,15 +23,15 @@ import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ESuperExpression
 import io.verik.compiler.ast.element.common.EThisExpression
-import io.verik.compiler.ast.element.common.EWhileExpression
+import io.verik.compiler.ast.element.common.EWhileStatement
 import io.verik.compiler.ast.element.kt.EAsExpression
-import io.verik.compiler.ast.element.kt.EForExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.kt.EKtForStatement
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.kt.EKtValueParameter
@@ -299,27 +299,27 @@ object ExpressionCaster {
         return EIfExpression(location, type, condition, thenExpression, elseExpression)
     }
 
-    fun castWhileExpression(expression: KtWhileExpression, castContext: CastContext): EWhileExpression {
+    fun castWhileStatement(expression: KtWhileExpression, castContext: CastContext): EWhileStatement {
         val location = expression.location()
         val condition = castContext.casterVisitor.getExpression(expression.condition!!)
         val body = castContext.casterVisitor.getExpression(expression.body!!)
-        return EWhileExpression(location, condition, body, false)
+        return EWhileStatement(location, condition, body, false)
     }
 
-    fun castDoWhileExpression(expression: KtDoWhileExpression, castContext: CastContext): EWhileExpression {
+    fun castDoWhileStatement(expression: KtDoWhileExpression, castContext: CastContext): EWhileStatement {
         val location = expression.location()
         val condition = castContext.casterVisitor.getExpression(expression.condition!!)
         val body = castContext.casterVisitor.getExpression(expression.body!!)
-        return EWhileExpression(location, condition, body, true)
+        return EWhileStatement(location, condition, body, true)
     }
 
-    fun castForExpression(expression: KtForExpression, castContext: CastContext): EForExpression? {
+    fun castKtForStatement(expression: KtForExpression, castContext: CastContext): EKtForStatement? {
         val location = expression.location()
         val valueParameter = castContext.casterVisitor
             .getElement<EKtValueParameter>(expression.loopParameter!!)
             ?: return null
         val range = castContext.casterVisitor.getExpression(expression.loopRange!!)
         val body = castContext.casterVisitor.getExpression(expression.body!!)
-        return EForExpression(location, valueParameter, range, body)
+        return EKtForStatement(location, valueParameter, range, body)
     }
 }

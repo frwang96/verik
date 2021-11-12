@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.kt
+package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.common.TreeVisitor
@@ -24,38 +23,36 @@ import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
 
-class EForExpression(
+class EWhileStatement(
     override val location: SourceLocation,
-    val valueParameter: EKtValueParameter,
-    var range: EExpression,
-    var body: EExpression
+    var condition: EExpression,
+    var body: EExpression,
+    val isDoWhile: Boolean
 ) : EExpression(), ExpressionContainer {
 
     override var type = Core.Kt.C_Unit.toType()
 
-    override val serializationType = SerializationType.INTERNAL
+    override val serializationType = SerializationType.STATEMENT
 
     init {
-        valueParameter.parent = this
-        range.parent = this
+        condition.parent = this
         body.parent = this
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitForExpression(this)
+        visitor.visitWhileStatement(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        valueParameter.accept(visitor)
-        range.accept(visitor)
+        condition.accept(visitor)
         body.accept(visitor)
     }
 
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
         newExpression.parent = this
         return when (oldExpression) {
-            range -> {
-                range = newExpression
+            condition -> {
+                condition = newExpression
                 true
             }
             body -> {
