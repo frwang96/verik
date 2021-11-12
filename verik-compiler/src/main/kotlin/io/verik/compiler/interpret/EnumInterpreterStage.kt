@@ -17,6 +17,7 @@
 package io.verik.compiler.interpret
 
 import io.verik.compiler.ast.element.kt.EKtBasicClass
+import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.interfaces.ResizableDeclarationContainer
@@ -26,14 +27,14 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 
-object NonBasicClassInterpreterStage : ProjectStage() {
+object EnumInterpreterStage : ProjectStage() {
 
     override val checkNormalization = true
 
     override fun process(projectContext: ProjectContext) {
         val referenceUpdater = ReferenceUpdater(projectContext)
-        val nonBasicClassInterpreterVisitor = NonBasicClassInterpreterVisitor(referenceUpdater)
-        projectContext.project.accept(nonBasicClassInterpreterVisitor)
+        val enumInterpreterVisitor = EnumInterpreterVisitor(referenceUpdater)
+        projectContext.project.accept(enumInterpreterVisitor)
         val enumEntryCollectorVisitor = EnumEntryCollectorVisitor()
         projectContext.project.accept(enumEntryCollectorVisitor)
         enumEntryCollectorVisitor.enumEntries.forEach {
@@ -46,15 +47,31 @@ object NonBasicClassInterpreterStage : ProjectStage() {
         referenceUpdater.flush()
     }
 
-    private class NonBasicClassInterpreterVisitor(private val referenceUpdater: ReferenceUpdater) : TreeVisitor() {
+    private class EnumInterpreterVisitor(private val referenceUpdater: ReferenceUpdater) : TreeVisitor() {
 
         override fun visitKtBasicClass(basicClass: EKtBasicClass) {
             super.visitKtBasicClass(basicClass)
-            if (EnumInterpreter.interpretEnum(basicClass, referenceUpdater))
-                return
-            if (StructInterpreter.interpretStruct(basicClass, referenceUpdater))
-                return
-            ComponentInterpreter.interpretComponent(basicClass, referenceUpdater)
+            if (basicClass.isEnum) {
+                val enumEntries = basicClass.declarations
+                    .mapNotNull { it.cast<EKtEnumEntry>() }
+                    .map { interpretEnumEntry(it, referenceUpdater) }
+                val enum = EEnum(
+                    basicClass.location,
+                    basicClass.name,
+                    enumEntries
+                )
+                referenceUpdater.replace(basicClass, enum)
+            }
+        }
+
+        private fun interpretEnumEntry(enumEntry: EKtEnumEntry, referenceUpdater: ReferenceUpdater): ESvEnumEntry {
+            val newEnumEntry = ESvEnumEntry(
+                enumEntry.location,
+                enumEntry.name,
+                enumEntry.type
+            )
+            referenceUpdater.update(enumEntry, newEnumEntry)
+            return newEnumEntry
         }
     }
 

@@ -17,22 +17,21 @@
 package io.verik.compiler.interpret
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class StructInterpreterTest : BaseTest() {
+internal class EnumInterpreterStageTest : BaseTest() {
 
     @Test
-    fun `interpret struct`() {
+    fun `interpret enum`() {
         val projectContext = driveTest(
-            NonBasicClassInterpreterStage::class,
+            EnumInterpreterStage::class,
             """
-                class S(var x: Boolean): Struct()
+                enum class E { A }
             """.trimIndent()
         )
         assertElementEquals(
-            "Struct(S, [SvProperty(x, Boolean, null, 1, null)])",
-            projectContext.findDeclaration("S")
+            "File([Enum(E, [A]), SvEnumEntry(A, E)])",
+            projectContext.project.files().first()
         )
     }
 }

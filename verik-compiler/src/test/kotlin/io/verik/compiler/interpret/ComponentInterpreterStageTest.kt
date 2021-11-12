@@ -23,12 +23,12 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-internal class ComponentInterpreterTest : BaseTest() {
+internal class ComponentInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret module simple`() {
         val projectContext = driveTest(
-            NonBasicClassInterpreterStage::class,
+            ComponentInterpreterStage::class,
             """
                 class M: Module()
             """.trimIndent()
@@ -42,7 +42,7 @@ internal class ComponentInterpreterTest : BaseTest() {
     @Test
     fun `interpret module with port`() {
         val projectContext = driveTest(
-            NonBasicClassInterpreterStage::class,
+            ComponentInterpreterStage::class,
             """
                 class M(@In var x: Boolean): Module()
             """.trimIndent()
@@ -57,7 +57,7 @@ internal class ComponentInterpreterTest : BaseTest() {
     fun `interpret module with port no directionality`() {
         assertThrows<TestErrorException> {
             driveTest(
-                NonBasicClassInterpreterStage::class,
+                ComponentInterpreterStage::class,
                 """
                     class M(var x: Boolean): Module()
                 """.trimIndent()
@@ -69,7 +69,7 @@ internal class ComponentInterpreterTest : BaseTest() {
     fun `interpret module with port immutable`() {
         assertThrows<TestErrorException> {
             driveTest(
-                NonBasicClassInterpreterStage::class,
+                ComponentInterpreterStage::class,
                 """
                     class M(@In val x: Boolean): Module()
                 """.trimIndent()
@@ -80,7 +80,7 @@ internal class ComponentInterpreterTest : BaseTest() {
     @Test
     fun `interpret module interface`() {
         val projectContext = driveTest(
-            NonBasicClassInterpreterStage::class,
+            ComponentInterpreterStage::class,
             """
                 class MI: ModuleInterface()
             """.trimIndent()
@@ -94,7 +94,7 @@ internal class ComponentInterpreterTest : BaseTest() {
     @Test
     fun `interpret module port`() {
         val projectContext = driveTest(
-            NonBasicClassInterpreterStage::class,
+            ComponentInterpreterStage::class,
             """
                 class MP: ModulePort()
             """.trimIndent()
@@ -108,7 +108,7 @@ internal class ComponentInterpreterTest : BaseTest() {
     @Test
     fun `interpret clocking block`() {
         val projectContext = driveTest(
-            NonBasicClassInterpreterStage::class,
+            ComponentInterpreterStage::class,
             """
                 class CB(override val event: Event): ClockingBlock()
             """.trimIndent()
