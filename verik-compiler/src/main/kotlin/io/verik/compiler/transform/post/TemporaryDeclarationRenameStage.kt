@@ -27,21 +27,12 @@ object TemporaryDeclarationRenameStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
         val temporaryDeclarationRenameVisitor = TemporaryDeclarationRenameVisitor()
-        projectContext.project.files().forEach { file ->
-            file.declarations.forEach {
-                temporaryDeclarationRenameVisitor.resetIndex()
-                it.accept(temporaryDeclarationRenameVisitor)
-            }
-        }
+        projectContext.project.accept(temporaryDeclarationRenameVisitor)
     }
 
     private class TemporaryDeclarationRenameVisitor : TreeVisitor() {
 
         private var index = 0
-
-        fun resetIndex() {
-            index = 0
-        }
 
         override fun visitDeclaration(declaration: EDeclaration) {
             if (declaration.name == "<tmp>") {

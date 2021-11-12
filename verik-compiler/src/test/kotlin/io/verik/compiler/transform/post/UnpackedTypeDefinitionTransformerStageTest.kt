@@ -33,8 +33,8 @@ internal class UnpackedTypeDefinitionTransformerStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "TypeDefinition(_${'$'}f, Unpacked<`8`, Boolean>)",
-            projectContext.findDeclaration("_${'$'}f")
+            "TypeDefinition(<tmp>, Unpacked<`8`, Boolean>)",
+            projectContext.findDeclaration("<tmp>")
         )
     }
 }

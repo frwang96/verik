@@ -32,9 +32,9 @@ internal class DeclarationSerializerTest : BaseTest() {
             """.trimIndent()
         )
         val expected = """
-            typedef logic _${'$'}f [7:0];
+            typedef logic _${'$'}0 [7:0];
             
-            function automatic _${'$'}f f(logic x [7:0]);
+            function automatic _${'$'}0 f(logic x [7:0]);
                 return x;
             endfunction : f
         """.trimIndent()

@@ -157,6 +157,8 @@ object DeclarationSerializer {
             true -> serializerContext.append("static ")
             false -> serializerContext.append("automatic ")
         }
+        if (property.isVirtual())
+            serializerContext.append("virtual ")
         val serializedType = TypeSerializer.serialize(property.type, property)
         serializerContext.append(serializedType.getBaseAndPackedDimension() + " ")
         serializerContext.align()
@@ -241,6 +243,8 @@ object DeclarationSerializer {
     }
 
     fun serializeValueParameter(valueParameter: ESvValueParameter, serializerContext: SerializerContext) {
+        if (valueParameter.isVirtual())
+            serializerContext.append("virtual ")
         val serializedType = TypeSerializer.serialize(valueParameter.type, valueParameter)
         serializerContext.append("${serializedType.getBaseAndPackedDimension()} ${valueParameter.name}")
         if (serializedType.unpackedDimension != null)
