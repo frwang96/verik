@@ -16,7 +16,6 @@
 
 package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.element.common.EAbstractValueParameter
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.DeclarationContainer
@@ -29,8 +28,7 @@ import io.verik.compiler.target.common.Target
 
 class EForStatement(
     override val location: SourceLocation,
-    var valueParameter: EAbstractValueParameter,
-    var initializer: EExpression,
+    var property: ESvProperty,
     var condition: EExpression,
     var iteration: EExpression,
     var body: EExpression
@@ -41,8 +39,7 @@ class EForStatement(
     override val serializationType = SerializationType.STATEMENT
 
     init {
-        valueParameter.parent = this
-        initializer.parent = this
+        property.parent = this
         condition.parent = this
         iteration.parent = this
         body.parent = this
@@ -53,8 +50,7 @@ class EForStatement(
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        valueParameter.accept(visitor)
-        initializer.accept(visitor)
+        property.accept(visitor)
         condition.accept(visitor)
         iteration.accept(visitor)
         body.accept(visitor)
@@ -62,8 +58,8 @@ class EForStatement(
 
     override fun replaceChild(oldDeclaration: EDeclaration, newDeclaration: EDeclaration): Boolean {
         newDeclaration.parent = this
-        return if (valueParameter == oldDeclaration) {
-            newDeclaration.cast<EAbstractValueParameter>()?.let { valueParameter = it }
+        return if (property == oldDeclaration) {
+            newDeclaration.cast<ESvProperty>()?.let { property = it }
             true
         } else false
     }
@@ -71,10 +67,6 @@ class EForStatement(
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
         newExpression.parent = this
         return when (oldExpression) {
-            initializer -> {
-                initializer = newExpression
-                true
-            }
             condition -> {
                 condition = newExpression
                 true

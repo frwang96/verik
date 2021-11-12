@@ -111,7 +111,7 @@ object DeclarationSerializer {
         val serializedType = TypeSerializer.serialize(function.type, function)
         serializedType.checkNoUnpackedDimension(function)
         serializerContext.append("function automatic ${serializedType.getBaseAndPackedDimension()} ${function.name}")
-        serializeValueParameterList(function.valueParameters, serializerContext)
+        serializeSvValueParameterList(function.valueParameters, serializerContext)
         if (function.qualifierType != FunctionQualifierType.PURE_VIRTUAL) {
             val body = function.body
             if (body != null) {
@@ -125,7 +125,7 @@ object DeclarationSerializer {
 
     fun serializeTask(task: ETask, serializerContext: SerializerContext) {
         serializerContext.append("task automatic ${task.name}")
-        serializeValueParameterList(task.valueParameters, serializerContext)
+        serializeSvValueParameterList(task.valueParameters, serializerContext)
         val body = task.body
         if (body != null) {
             serializerContext.indent {
@@ -242,7 +242,11 @@ object DeclarationSerializer {
         serializerContext.appendLine("endclocking")
     }
 
-    fun serializeValueParameter(valueParameter: ESvValueParameter, serializerContext: SerializerContext) {
+    fun serializeSvValueParameter(valueParameter: ESvValueParameter, serializerContext: SerializerContext) {
+        when (valueParameter.isInput) {
+            true -> serializerContext.append("input ")
+            false -> serializerContext.append("output ")
+        }
         if (valueParameter.isVirtual())
             serializerContext.append("virtual ")
         val serializedType = TypeSerializer.serialize(valueParameter.type, valueParameter)
@@ -284,7 +288,7 @@ object DeclarationSerializer {
         }
     }
 
-    private fun serializeValueParameterList(
+    private fun serializeSvValueParameterList(
         valueParameters: List<ESvValueParameter>,
         serializerContext: SerializerContext
     ) {

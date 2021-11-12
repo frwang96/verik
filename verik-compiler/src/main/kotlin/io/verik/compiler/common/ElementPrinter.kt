@@ -383,6 +383,7 @@ class ElementPrinter : Visitor() {
         build("SvValueParameter") {
             build(valueParameter.name)
             build(valueParameter.type.toString())
+            build(valueParameter.isInput)
         }
     }
 
@@ -704,8 +705,7 @@ class ElementPrinter : Visitor() {
     override fun visitForStatement(forStatement: EForStatement) {
         build("ForStatement") {
             build(forStatement.type.toString())
-            build(forStatement.valueParameter)
-            build(forStatement.initializer)
+            build(forStatement.property)
             build(forStatement.condition)
             build(forStatement.iteration)
             build(forStatement.body)

@@ -180,7 +180,7 @@ class SourceSerializerVisitor(private val serializerContext: SerializerContext) 
     }
 
     override fun visitSvValueParameter(valueParameter: ESvValueParameter) {
-        DeclarationSerializer.serializeValueParameter(valueParameter, serializerContext)
+        DeclarationSerializer.serializeSvValueParameter(valueParameter, serializerContext)
     }
 
     override fun visitPort(port: EPort) {

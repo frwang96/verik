@@ -26,7 +26,8 @@ import io.verik.compiler.message.SourceLocation
 class ESvValueParameter(
     override val location: SourceLocation,
     override var name: String,
-    override var type: Type
+    override var type: Type,
+    val isInput: Boolean
 ) : EAbstractValueParameter() {
 
     fun isVirtual(): Boolean {
