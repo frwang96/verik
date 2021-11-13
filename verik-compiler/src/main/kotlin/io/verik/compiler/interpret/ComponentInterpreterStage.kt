@@ -47,7 +47,7 @@ object ComponentInterpreterStage : ProjectStage() {
 
         override fun visitKtBasicClass(basicClass: EKtBasicClass) {
             super.visitKtBasicClass(basicClass)
-            val basicClassType = basicClass.toType()
+            val basicClassType = basicClass.type
             when {
                 basicClassType.isSubtype(Core.Vk.C_Module.toType()) -> {
                     val ports = interpretPorts(basicClass.primaryConstructor?.valueParameters, referenceUpdater)
@@ -57,7 +57,7 @@ object ComponentInterpreterStage : ProjectStage() {
                     val module = EModule(
                         basicClass.location,
                         basicClass.name,
-                        basicClass.superType,
+                        basicClassType,
                         ports,
                         basicClass.declarations,
                         isSynthesisTop,
@@ -72,7 +72,7 @@ object ComponentInterpreterStage : ProjectStage() {
                     val moduleInterface = EModuleInterface(
                         basicClass.location,
                         basicClass.name,
-                        basicClass.superType,
+                        basicClassType,
                         ports,
                         basicClass.declarations
                     )
@@ -84,7 +84,7 @@ object ComponentInterpreterStage : ProjectStage() {
                     val modulePort = EModulePort(
                         basicClass.location,
                         basicClass.name,
-                        basicClass.superType,
+                        basicClassType,
                         ports,
                         null
                     )
@@ -101,7 +101,7 @@ object ComponentInterpreterStage : ProjectStage() {
                         val clockingBlock = EClockingBlock(
                             basicClass.location,
                             basicClass.name,
-                            basicClass.superType,
+                            basicClassType,
                             ports,
                             eventValueParameterIndex
                         )

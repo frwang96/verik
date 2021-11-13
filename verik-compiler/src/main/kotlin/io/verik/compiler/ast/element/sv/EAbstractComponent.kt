@@ -18,8 +18,11 @@ package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EAbstractClass
 import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.target.common.Target
 
 abstract class EAbstractComponent : EAbstractClass() {
+
+    override var superType = Target.C_Void.toType()
 
     abstract val ports: List<EPort>
 

@@ -24,7 +24,7 @@ import io.verik.compiler.message.SourceLocation
 class EModule(
     override val location: SourceLocation,
     override var name: String,
-    override var superType: Type,
+    override var type: Type,
     override val ports: List<EPort>,
     override var declarations: ArrayList<EDeclaration>,
     val isSynthesisTop: Boolean,

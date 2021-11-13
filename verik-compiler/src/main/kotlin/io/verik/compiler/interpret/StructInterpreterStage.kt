@@ -41,11 +41,16 @@ object StructInterpreterStage : ProjectStage() {
 
         override fun visitKtBasicClass(basicClass: EKtBasicClass) {
             super.visitKtBasicClass(basicClass)
-            if (basicClass.toType().isSubtype(Core.Vk.C_Struct.toType())) {
+            if (basicClass.type.isSubtype(Core.Vk.C_Struct.toType())) {
                 val properties = basicClass.primaryConstructor!!
                     .valueParameters
                     .map { interpretProperty(it, referenceUpdater) }
-                val struct = EStruct(basicClass.location, basicClass.name, properties)
+                val struct = EStruct(
+                    basicClass.location,
+                    basicClass.name,
+                    basicClass.type,
+                    properties
+                )
                 referenceUpdater.replace(basicClass, struct)
                 referenceUpdater.update(basicClass.primaryConstructor!!, struct)
             }

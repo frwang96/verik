@@ -23,7 +23,7 @@ import io.verik.compiler.message.SourceLocation
 class EModulePort(
     override val location: SourceLocation,
     override var name: String,
-    override var superType: Type,
+    override var type: Type,
     override val ports: List<EPort>,
     var parentModuleInterface: EModuleInterface?
 ) : EAbstractComponent() {

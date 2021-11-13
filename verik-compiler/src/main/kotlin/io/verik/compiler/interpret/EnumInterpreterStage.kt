@@ -58,6 +58,7 @@ object EnumInterpreterStage : ProjectStage() {
                 val enum = EEnum(
                     basicClass.location,
                     basicClass.name,
+                    basicClass.type,
                     enumEntries
                 )
                 referenceUpdater.replace(basicClass, enum)

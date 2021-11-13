@@ -114,6 +114,7 @@ object BasicClassInterpreterStage : ProjectStage() {
                 ESvBasicClass(
                     basicClass.location,
                     basicClass.name,
+                    basicClass.type,
                     basicClass.superType,
                     declarations,
                     basicClass.isAbstract,

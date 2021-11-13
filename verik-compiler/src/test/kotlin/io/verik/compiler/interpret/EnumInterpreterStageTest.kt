@@ -30,7 +30,7 @@ internal class EnumInterpreterStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "File([Enum(E, [A]), SvEnumEntry(A, E)])",
+            "File([Enum(E, E, [A]), SvEnumEntry(A, E)])",
             projectContext.project.files().first()
         )
     }

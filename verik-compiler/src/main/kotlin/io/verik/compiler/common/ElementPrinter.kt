@@ -172,6 +172,7 @@ class ElementPrinter : Visitor() {
     override fun visitKtBasicClass(basicClass: EKtBasicClass) {
         build("KtBasicClass") {
             build(basicClass.name)
+            build(basicClass.type.toString())
             build(basicClass.declarations)
             build(basicClass.typeParameters)
             build(basicClass.annotations)
@@ -186,6 +187,7 @@ class ElementPrinter : Visitor() {
     override fun visitSvBasicClass(basicClass: ESvBasicClass) {
         build("SvBasicClass") {
             build(basicClass.name)
+            build(basicClass.type.toString())
             build(basicClass.declarations)
             build(basicClass.isVirtual)
             build(basicClass.isDeclarationsStatic)
@@ -195,6 +197,7 @@ class ElementPrinter : Visitor() {
     override fun visitModule(module: EModule) {
         build("Module") {
             build(module.name)
+            build(module.type.toString())
             build(module.declarations)
             build(module.ports)
         }
@@ -203,6 +206,7 @@ class ElementPrinter : Visitor() {
     override fun visitModuleInterface(moduleInterface: EModuleInterface) {
         build("ModuleInterface") {
             build(moduleInterface.name)
+            build(moduleInterface.type.toString())
             build(moduleInterface.declarations)
             build(moduleInterface.ports)
         }
@@ -211,6 +215,7 @@ class ElementPrinter : Visitor() {
     override fun visitModulePort(modulePort: EModulePort) {
         build("ModulePort") {
             build(modulePort.name)
+            build(modulePort.type.toString())
             build(modulePort.ports)
             build(modulePort.parentModuleInterface?.name)
         }
@@ -219,6 +224,7 @@ class ElementPrinter : Visitor() {
     override fun visitClockingBlock(clockingBlock: EClockingBlock) {
         build("ClockingBlock") {
             build(clockingBlock.name)
+            build(clockingBlock.type.toString())
             build(clockingBlock.ports)
             build(clockingBlock.eventValueParameterIndex)
         }
@@ -227,6 +233,7 @@ class ElementPrinter : Visitor() {
     override fun visitEnum(enum: EEnum) {
         build("Enum") {
             build(enum.name)
+            build(enum.type.toString())
             build(enum.enumEntries.map { it.name })
         }
     }
@@ -234,6 +241,7 @@ class ElementPrinter : Visitor() {
     override fun visitStruct(struct: EStruct) {
         build("Struct") {
             build(struct.name)
+            build(struct.type.toString())
             build(struct.properties)
         }
     }
