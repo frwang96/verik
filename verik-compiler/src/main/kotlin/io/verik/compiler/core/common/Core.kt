@@ -179,7 +179,7 @@ object Core {
         val F_error_String = CoreVk.F_error_String
         val F_sv_String = CoreVk.F_sv_String
 
-        val F_Boolean_uext = CoreVk.F_Boolean_uext
+        val F_Boolean_ext = CoreVk.F_Boolean_ext
         val F_Boolean_sext = CoreVk.F_Boolean_sext
 
         object Ubit {
@@ -197,19 +197,19 @@ object Core {
             val F_and_Ubit = CoreVkUbit.F_and_Ubit
             val F_or_Ubit = CoreVkUbit.F_or_Ubit
             val F_xor_Ubit = CoreVkUbit.F_xor_Ubit
-            val F_sll_Int = CoreVkUbit.F_sll_Int
-            val F_sll_Ubit = CoreVkUbit.F_sll_Ubit
-            val F_srl_Int = CoreVkUbit.F_srl_Int
-            val F_srl_Ubit = CoreVkUbit.F_srl_Ubit
-            val F_sra_Int = CoreVkUbit.F_sra_Int
-            val F_sra_Ubit = CoreVkUbit.F_sra_Ubit
+            val F_shl_Int = CoreVkUbit.F_shl_Int
+            val F_shl_Ubit = CoreVkUbit.F_shl_Ubit
+            val F_shr_Int = CoreVkUbit.F_shr_Int
+            val F_shr_Ubit = CoreVkUbit.F_shr_Ubit
+            val F_sshr_Int = CoreVkUbit.F_sshr_Int
+            val F_sshr_Ubit = CoreVkUbit.F_sshr_Ubit
             val F_lt_Ubit = CoreVkUbit.F_lt_Ubit
             val F_lteq_Ubit = CoreVkUbit.F_lteq_Ubit
             val F_gt_Ubit = CoreVkUbit.F_gt_Ubit
             val F_gteq_Ubit = CoreVkUbit.F_gteq_Ubit
             val F_invert = CoreVkUbit.F_invert
             val F_reverse = CoreVkUbit.F_reverse
-            val F_uext = CoreVkUbit.F_uext
+            val F_ext = CoreVkUbit.F_ext
             val F_sext = CoreVkUbit.F_sext
             val F_tru = CoreVkUbit.F_tru
             val F_slice_Int = CoreVkUbit.F_slice_Int

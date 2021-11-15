@@ -170,44 +170,44 @@ class Sbit<N : `*`> private constructor() {
     }
 
     /**
-     * Logical left shift by [x] bits.
+     * Left shift by [x] bits.
      */
-    infix fun sll(x: Int): Sbit<`*`> {
+    infix fun shl(x: Int): Sbit<`*`> {
         throw VerikException()
     }
 
     /**
-     * Logical left shift by [x] bits.
+     * Left shift by [x] bits.
      */
-    infix fun sll(x: Ubit<`*`>): Sbit<`*`> {
+    infix fun shl(x: Ubit<`*`>): Sbit<`*`> {
         throw VerikException()
     }
 
     /**
-     * Logical right shift by [x] bits with zero extension.
+     * Signed right shift by [x] bits.
      */
-    infix fun srl(x: Int): Sbit<`*`> {
+    infix fun shr(x: Int): Sbit<`*`> {
         throw VerikException()
     }
 
     /**
-     * Logical right shift by [x] bits with zero extension.
+     * Signed right shift by [x] bits.
      */
-    infix fun srl(x: Ubit<`*`>): Sbit<`*`> {
+    infix fun shr(x: Ubit<`*`>): Sbit<`*`> {
         throw VerikException()
     }
 
     /**
-     * Arithmetic right shift by [x] bits with sign extension.
+     * Unsigned right shift by [x] bits.
      */
-    infix fun sra(x: Int): Sbit<`*`> {
+    infix fun ushr(x: Int): Sbit<`*`> {
         throw VerikException()
     }
 
     /**
-     * Arithmetic right shift by [x] bits with sign extension.
+     * Unsigned right shift by [x] bits.
      */
-    infix fun sra(x: Ubit<`*`>): Sbit<`*`> {
+    infix fun ushr(x: Ubit<`*`>): Sbit<`*`> {
         throw VerikException()
     }
 
@@ -296,16 +296,16 @@ class Sbit<N : `*`> private constructor() {
     }
 
     /**
-     * Extend to [M] bits with zero extension.
+     * Extend to [M] bits with sign extension.
      */
-    fun <M : `*`> uext(): Ubit<M> {
+    fun <M : `*`> ext(): Sbit<M> {
         throw VerikException()
     }
 
     /**
-     * Extend to [M] bits with sign extension.
+     * Extend to [M] bits with zero extension.
      */
-    fun <M : `*`> sext(): Sbit<M> {
+    fun <M : `*`> uext(): Ubit<M> {
         throw VerikException()
     }
 

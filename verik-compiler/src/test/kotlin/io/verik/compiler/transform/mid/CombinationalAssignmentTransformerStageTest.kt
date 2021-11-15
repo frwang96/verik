@@ -35,7 +35,7 @@ internal class CombinationalAssignmentTransformerStageTest : BaseTest() {
         assertElementEquals(
             """
                 Module(
-                    M,
+                    M, M,
                     [
                         SvProperty(x, Boolean, null, 1, null),
                         AlwaysComBlock(

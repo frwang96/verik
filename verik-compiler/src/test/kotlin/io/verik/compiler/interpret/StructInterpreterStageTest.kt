@@ -20,18 +20,18 @@ import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class StructInterpreterTest : BaseTest() {
+internal class StructInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret struct`() {
         val projectContext = driveTest(
-            NonBasicClassInterpreterStage::class,
+            StructInterpreterStage::class,
             """
                 class S(var x: Boolean): Struct()
             """.trimIndent()
         )
         assertElementEquals(
-            "Struct(S, [SvProperty(x, Boolean, null, 1, null)])",
+            "Struct(S, S, [SvProperty(x, Boolean, null, 1, null)])",
             projectContext.findDeclaration("S")
         )
     }

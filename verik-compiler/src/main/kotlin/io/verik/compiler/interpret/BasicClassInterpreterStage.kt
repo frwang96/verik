@@ -66,7 +66,7 @@ object BasicClassInterpreterStage : ProjectStage() {
             super.visitKtConstructor(constructor)
             val valueParameters = ArrayList<ESvValueParameter>()
             constructor.valueParameters.forEach {
-                val valueParameter = ESvValueParameter(it.location, it.name, it.type)
+                val valueParameter = ESvValueParameter(it.location, it.name, it.type, true)
                 valueParameters.add(valueParameter)
                 referenceUpdater.update(it, valueParameter)
             }
@@ -114,6 +114,7 @@ object BasicClassInterpreterStage : ProjectStage() {
                 ESvBasicClass(
                     basicClass.location,
                     basicClass.name,
+                    basicClass.type,
                     basicClass.superType,
                     declarations,
                     basicClass.isAbstract,
@@ -186,7 +187,7 @@ object BasicClassInterpreterStage : ProjectStage() {
                 isStatic = false
             )
             val valueParameters = constructor.valueParameters.map {
-                ESvValueParameter(it.location, it.name, it.type.copy())
+                ESvValueParameter(it.location, it.name, it.type.copy(), true)
             }
             val propertyStatement = EPropertyStatement(constructor.location, property)
             val valueArguments = valueParameters.map {

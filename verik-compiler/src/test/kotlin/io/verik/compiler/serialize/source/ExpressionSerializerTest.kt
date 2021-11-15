@@ -365,7 +365,7 @@ internal class ExpressionSerializerTest : BaseTest() {
         val projectContext = driveTest(
             SourceSerializerStage::class,
             """
-                var x = u(0x0).uext<`8`>()
+                var x = u(0x0).ext<`8`>()
             """.trimIndent()
         )
         val expected = """

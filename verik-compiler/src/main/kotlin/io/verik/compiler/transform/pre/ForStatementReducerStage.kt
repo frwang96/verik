@@ -16,40 +16,40 @@
 
 package io.verik.compiler.transform.pre
 
-import io.verik.compiler.ast.element.kt.EForExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.kt.EKtForStatement
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 
-object ForExpressionReducerStage : ProjectStage() {
+object ForStatementReducerStage : ProjectStage() {
 
     override val checkNormalization = true
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.project.accept(ForExpressionReducerVisitor)
+        projectContext.project.accept(ForStatementReducerVisitor)
     }
 
-    private object ForExpressionReducerVisitor : TreeVisitor() {
+    private object ForStatementReducerVisitor : TreeVisitor() {
 
-        override fun visitForExpression(forExpression: EForExpression) {
-            super.visitForExpression(forExpression)
+        override fun visitKtForStatement(forStatement: EKtForStatement) {
+            super.visitKtForStatement(forStatement)
             val functionLiteralExpression = EFunctionLiteralExpression(
-                forExpression.body.location,
-                arrayListOf(forExpression.valueParameter),
-                forExpression.body
+                forStatement.body.location,
+                arrayListOf(forStatement.valueParameter),
+                forStatement.body
             )
             val callExpression = EKtCallExpression(
-                forExpression.location,
-                forExpression.type,
+                forStatement.location,
+                forStatement.type,
                 Core.Kt.Collections.F_forEach_Function,
-                forExpression.range,
+                forStatement.range,
                 arrayListOf(functionLiteralExpression),
-                arrayListOf(forExpression.valueParameter.type.copy())
+                arrayListOf(forStatement.valueParameter.type.copy())
             )
-            forExpression.replace(callExpression)
+            forStatement.replace(callExpression)
         }
     }
 }

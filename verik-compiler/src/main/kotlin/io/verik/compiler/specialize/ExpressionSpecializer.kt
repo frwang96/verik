@@ -25,7 +25,7 @@ import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ESuperExpression
 import io.verik.compiler.ast.element.common.EThisExpression
-import io.verik.compiler.ast.element.common.EWhileExpression
+import io.verik.compiler.ast.element.common.EWhileStatement
 import io.verik.compiler.ast.element.kt.EAsExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
@@ -61,7 +61,7 @@ object ExpressionSpecializer {
             is EAsExpression -> specializeAsExpression(expression, specializerContext)
             is EIfExpression -> specializeIfExpression(expression, specializerContext)
             is EWhenExpression -> specializeWhenExpression(expression, specializerContext)
-            is EWhileExpression -> specializeWhileExpression(expression, specializerContext)
+            is EWhileStatement -> specializeWhileStatement(expression, specializerContext)
             else -> {
                 Messages.INTERNAL_ERROR.on(expression, "Unable to specialize expression: $expression")
                 expression
@@ -276,12 +276,12 @@ object ExpressionSpecializer {
         return EWhenExpression(whenExpression.location, type, subject, entries)
     }
 
-    private fun specializeWhileExpression(
-        whileExpression: EWhileExpression,
+    private fun specializeWhileStatement(
+        whileStatement: EWhileStatement,
         specializerContext: SpecializerContext
-    ): EWhileExpression {
-        val condition = specializerContext.specialize(whileExpression.condition)
-        val body = specializerContext.specialize(whileExpression.body)
-        return EWhileExpression(whileExpression.location, condition, body, whileExpression.isDoWhile)
+    ): EWhileStatement {
+        val condition = specializerContext.specialize(whileStatement.condition)
+        val body = specializerContext.specialize(whileStatement.body)
+        return EWhileStatement(whileStatement.location, condition, body, whileStatement.isDoWhile)
     }
 }

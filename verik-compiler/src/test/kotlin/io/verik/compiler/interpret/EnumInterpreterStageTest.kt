@@ -19,18 +19,18 @@ package io.verik.compiler.interpret
 import io.verik.compiler.util.BaseTest
 import org.junit.jupiter.api.Test
 
-internal class EnumInterpreterTest : BaseTest() {
+internal class EnumInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret enum`() {
         val projectContext = driveTest(
-            NonBasicClassInterpreterStage::class,
+            EnumInterpreterStage::class,
             """
                 enum class E { A }
             """.trimIndent()
         )
         assertElementEquals(
-            "File([Enum(E, [A]), SvEnumEntry(A, E)])",
+            "File([Enum(E, E, [A]), SvEnumEntry(A, E)])",
             projectContext.project.files().first()
         )
     }

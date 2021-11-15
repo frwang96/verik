@@ -17,18 +17,20 @@
 package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EAbstractClass
+import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
+import io.verik.compiler.target.common.Target
 
 class EEnum(
     override val location: SourceLocation,
     override var name: String,
+    override var type: Type,
     val enumEntries: List<ESvEnumEntry>
 ) : EAbstractClass() {
 
-    override var superType = Core.Kt.C_Any.toType()
+    override var superType = Target.C_Void.toType()
 
     override fun accept(visitor: Visitor) {
         visitor.visitEnum(this)

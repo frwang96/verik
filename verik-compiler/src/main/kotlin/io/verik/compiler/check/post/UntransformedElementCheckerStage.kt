@@ -18,7 +18,6 @@ package io.verik.compiler.check.post
 
 import io.verik.compiler.ast.element.common.ENullElement
 import io.verik.compiler.ast.element.kt.EAsExpression
-import io.verik.compiler.ast.element.kt.EForExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBasicClass
@@ -26,6 +25,7 @@ import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
+import io.verik.compiler.ast.element.kt.EKtForStatement
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
@@ -124,9 +124,9 @@ object UntransformedElementCheckerStage : ProjectStage() {
             Messages.INTERNAL_ERROR.on(whenExpression, "When expression $message")
         }
 
-        override fun visitForExpression(forExpression: EForExpression) {
-            super.visitForExpression(forExpression)
-            Messages.INTERNAL_ERROR.on(forExpression, "For expression $message")
+        override fun visitKtForStatement(forStatement: EKtForStatement) {
+            super.visitKtForStatement(forStatement)
+            Messages.INTERNAL_ERROR.on(forStatement, "For statement $message")
         }
     }
 }

@@ -87,11 +87,11 @@ internal class ExpressionCasterTest : BaseTest() {
         val projectContext = driveTest(
             CasterStage::class,
             """
-                var x = u(1) sll 1
+                var x = u(1) shl 1
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Ubit<`*`>, sll, KtCallExpression(*), [ConstantExpression(*)], [])",
+            "KtCallExpression(Ubit<`*`>, shl, KtCallExpression(*), [ConstantExpression(*)], [])",
             projectContext.findExpression("x")
         )
     }
@@ -364,7 +364,7 @@ internal class ExpressionCasterTest : BaseTest() {
     }
 
     @Test
-    fun `while expression`() {
+    fun `while statement`() {
         val projectContext = driveTest(
             CasterStage::class,
             """
@@ -375,13 +375,13 @@ internal class ExpressionCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "WhileExpression(Unit, ConstantExpression(*), KtBlockExpression(*), 0)",
+            "WhileStatement(Unit, ConstantExpression(*), KtBlockExpression(*), 0)",
             projectContext.findExpression("f")
         )
     }
 
     @Test
-    fun `do while expression`() {
+    fun `do while statement`() {
         val projectContext = driveTest(
             CasterStage::class,
             """
@@ -392,13 +392,13 @@ internal class ExpressionCasterTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "WhileExpression(Unit, ConstantExpression(*), KtBlockExpression(*), 1)",
+            "WhileStatement(Unit, ConstantExpression(*), KtBlockExpression(*), 1)",
             projectContext.findExpression("f")
         )
     }
 
     @Test
-    fun `for expression`() {
+    fun `for statement`() {
         val projectContext = driveTest(
             CasterStage::class,
             """
@@ -411,7 +411,7 @@ internal class ExpressionCasterTest : BaseTest() {
         )
         assertElementEquals(
             """
-                ForExpression(
+                KtForStatement(
                     Unit,
                     KtValueParameter(y, Boolean, [], 0, 0),
                     ReferenceExpression(*),

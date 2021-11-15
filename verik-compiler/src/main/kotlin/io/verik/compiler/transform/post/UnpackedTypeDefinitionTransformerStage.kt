@@ -49,7 +49,7 @@ object UnpackedTypeDefinitionTransformerStage : ProjectStage() {
             if (function.type.hasUnpackedDimension(function)) {
                 val typeDefinition = ETypeDefinition(
                     function.location,
-                    "_${'$'}${function.name}",
+                    "<tmp>",
                     function.type.copy()
                 )
                 function.type.reference = typeDefinition

@@ -154,8 +154,9 @@ class Type(
         return when (val reference = reference) {
             is EAbstractClass -> reference.superType
             is CoreClassDeclaration -> reference.superClass?.toType()
+            is TargetClassDeclaration -> null
             is CardinalDeclaration -> null
-            else -> throw IllegalArgumentException("Unexpected type reference: $reference")
+            else -> throw IllegalArgumentException("Unexpected type reference: ${reference.name}")
         }
     }
 }

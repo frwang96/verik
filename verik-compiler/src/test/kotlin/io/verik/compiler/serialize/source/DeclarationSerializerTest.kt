@@ -32,9 +32,9 @@ internal class DeclarationSerializerTest : BaseTest() {
             """.trimIndent()
         )
         val expected = """
-            typedef logic _${'$'}f [7:0];
+            typedef logic _${'$'}0 [7:0];
             
-            function automatic _${'$'}f f(logic x [7:0]);
+            function automatic _${'$'}0 f(input logic x [7:0]);
                 return x;
             endfunction : f
         """.trimIndent()
@@ -198,7 +198,7 @@ internal class DeclarationSerializerTest : BaseTest() {
             """.trimIndent()
         )
         val expected = """
-            task automatic t(int x);
+            task automatic t(input int x);
             endtask : t
         """.trimIndent()
         assertOutputTextEquals(
@@ -406,7 +406,7 @@ internal class DeclarationSerializerTest : BaseTest() {
             """.trimIndent()
         )
         val expected = """
-            function automatic void f(int x);
+            function automatic void f(input int x);
             endfunction : f
         """.trimIndent()
         assertOutputTextEquals(

@@ -14,38 +14,54 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.common
+package io.verik.compiler.ast.element.sv
 
+import io.verik.compiler.ast.element.common.EDeclaration
+import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.interfaces.DeclarationContainer
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
+import io.verik.compiler.target.common.Target
 
-class EWhileExpression(
+class ESvForStatement(
     override val location: SourceLocation,
+    var property: ESvProperty,
     var condition: EExpression,
-    var body: EExpression,
-    val isDoWhile: Boolean
-) : EExpression(), ExpressionContainer {
+    var iteration: EExpression,
+    var body: EExpression
+) : EExpression(), DeclarationContainer, ExpressionContainer {
 
-    override var type = Core.Kt.C_Unit.toType()
+    override var type = Target.C_Void.toType()
 
     override val serializationType = SerializationType.STATEMENT
 
     init {
+        property.parent = this
         condition.parent = this
+        iteration.parent = this
         body.parent = this
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitWhileExpression(this)
+        visitor.visitSvForStatement(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
+        property.accept(visitor)
         condition.accept(visitor)
+        iteration.accept(visitor)
         body.accept(visitor)
+    }
+
+    override fun replaceChild(oldDeclaration: EDeclaration, newDeclaration: EDeclaration): Boolean {
+        newDeclaration.parent = this
+        return if (property == oldDeclaration) {
+            newDeclaration.cast<ESvProperty>()?.let { property = it }
+            true
+        } else false
     }
 
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
@@ -53,6 +69,10 @@ class EWhileExpression(
         return when (oldExpression) {
             condition -> {
                 condition = newExpression
+                true
+            }
+            iteration -> {
+                iteration = newExpression
                 true
             }
             body -> {

@@ -61,8 +61,7 @@ object AnnotationCheckerStage : ProjectStage() {
             if (basicClass.hasAnnotation(Annotations.SYNTHESIS_TOP) ||
                 basicClass.hasAnnotation(Annotations.SIMULATION_TOP)
             ) {
-                val basicClassType = basicClass.toType()
-                if (!basicClassType.isSubtype(Core.Vk.C_Module.toType()))
+                if (!basicClass.type.isSubtype(Core.Vk.C_Module.toType()))
                     Messages.TOP_NOT_MODULE.on(basicClass)
             }
         }

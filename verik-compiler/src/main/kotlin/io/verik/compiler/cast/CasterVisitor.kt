@@ -26,13 +26,14 @@ import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ETypeParameter
-import io.verik.compiler.ast.element.kt.EForExpression
+import io.verik.compiler.ast.element.common.EWhileStatement
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
+import io.verik.compiler.ast.element.kt.EKtForStatement
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
@@ -254,15 +255,15 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
         return WhenExpressionCaster.castWhenExpression(expression, castContext)
     }
 
-    override fun visitWhileExpression(expression: KtWhileExpression, data: Unit?): EElement {
-        return ExpressionCaster.castWhileExpression(expression, castContext)
+    override fun visitWhileExpression(expression: KtWhileExpression, data: Unit?): EWhileStatement {
+        return ExpressionCaster.castWhileStatement(expression, castContext)
     }
 
-    override fun visitDoWhileExpression(expression: KtDoWhileExpression, data: Unit?): EElement {
-        return ExpressionCaster.castDoWhileExpression(expression, castContext)
+    override fun visitDoWhileExpression(expression: KtDoWhileExpression, data: Unit?): EWhileStatement {
+        return ExpressionCaster.castDoWhileStatement(expression, castContext)
     }
 
-    override fun visitForExpression(expression: KtForExpression, data: Unit?): EForExpression? {
-        return ExpressionCaster.castForExpression(expression, castContext)
+    override fun visitForExpression(expression: KtForExpression, data: Unit?): EKtForStatement? {
+        return ExpressionCaster.castKtForStatement(expression, castContext)
     }
 }

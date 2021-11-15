@@ -29,5 +29,12 @@ class Fizzbuzz : Module() {
     fun main() {
         println(y)
         println(z)
+        println(f())
+    }
+
+    @Task
+    fun f(): Int {
+        delay(10)
+        return 0
     }
 }

@@ -38,12 +38,14 @@ import io.verik.compiler.compile.KotlinEnvironmentBuilderStage
 import io.verik.compiler.interpret.AnnotationCheckerStage
 import io.verik.compiler.interpret.BasicClassInterpreterStage
 import io.verik.compiler.interpret.ComponentInstantiationCheckerStage
+import io.verik.compiler.interpret.ComponentInterpreterStage
 import io.verik.compiler.interpret.ConstructorDesugarTransformerStage
+import io.verik.compiler.interpret.EnumInterpreterStage
 import io.verik.compiler.interpret.FileSplitterStage
 import io.verik.compiler.interpret.FunctionInterpreterStage
 import io.verik.compiler.interpret.ModulePortParentResolverStage
-import io.verik.compiler.interpret.NonBasicClassInterpreterStage
 import io.verik.compiler.interpret.PropertyInterpreterStage
+import io.verik.compiler.interpret.StructInterpreterStage
 import io.verik.compiler.interpret.ValueParameterInterpreterStage
 import io.verik.compiler.resolve.TypeCheckerStage
 import io.verik.compiler.resolve.TypeParameterTypeCheckerStage
@@ -90,7 +92,7 @@ import io.verik.compiler.transform.pre.BinaryExpressionReducerStage
 import io.verik.compiler.transform.pre.BitConstantTransformerStage
 import io.verik.compiler.transform.pre.ConstantExpressionTransformerStage
 import io.verik.compiler.transform.pre.DeclarationRenameStage
-import io.verik.compiler.transform.pre.ForExpressionReducerStage
+import io.verik.compiler.transform.pre.ForStatementReducerStage
 import io.verik.compiler.transform.pre.FunctionOverloadingTransformerStage
 import io.verik.compiler.transform.pre.TypeAliasReducerStage
 import io.verik.compiler.transform.pre.UnaryExpressionReducerStage
@@ -123,7 +125,7 @@ object StageSequencer {
         stageSequence.add(UnaryExpressionReducerStage)
         stageSequence.add(BinaryExpressionReducerStage)
         stageSequence.add(ArrayAccessExpressionReducerStage)
-        stageSequence.add(ForExpressionReducerStage)
+        stageSequence.add(ForStatementReducerStage)
         stageSequence.add(BitConstantTransformerStage)
         stageSequence.add(ConstantExpressionTransformerStage)
         stageSequence.addFlush()
@@ -139,7 +141,9 @@ object StageSequencer {
         // Interpret
         stageSequence.add(AnnotationCheckerStage)
         stageSequence.add(ComponentInstantiationCheckerStage)
-        stageSequence.add(NonBasicClassInterpreterStage)
+        stageSequence.add(EnumInterpreterStage)
+        stageSequence.add(StructInterpreterStage)
+        stageSequence.add(ComponentInterpreterStage)
         stageSequence.add(ConstructorDesugarTransformerStage)
         stageSequence.add(BasicClassInterpreterStage)
         stageSequence.add(FunctionInterpreterStage)

@@ -38,7 +38,7 @@ internal class ModulePortParentResolverStageTest : BaseTest() {
             """.trimIndent()
         )
         assertElementEquals(
-            "ModulePort(MP, [], MI)",
+            "ModulePort(MP, MP, [], MI)",
             projectContext.findDeclaration("MP")
         )
     }

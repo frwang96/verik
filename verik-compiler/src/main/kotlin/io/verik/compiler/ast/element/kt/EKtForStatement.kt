@@ -14,73 +14,48 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.sv
+package io.verik.compiler.ast.element.kt
 
-import io.verik.compiler.ast.element.common.EAbstractValueParameter
-import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.interfaces.DeclarationContainer
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
-import io.verik.compiler.target.common.Target
 
-class EForStatement(
+class EKtForStatement(
     override val location: SourceLocation,
-    var valueParameter: EAbstractValueParameter,
-    var initializer: EExpression,
-    var condition: EExpression,
-    var iteration: EExpression,
+    val valueParameter: EKtValueParameter,
+    var range: EExpression,
     var body: EExpression
-) : EExpression(), DeclarationContainer, ExpressionContainer {
+) : EExpression(), ExpressionContainer {
 
-    override var type = Target.C_Void.toType()
+    override var type = Core.Kt.C_Unit.toType()
 
-    override val serializationType = SerializationType.STATEMENT
+    override val serializationType = SerializationType.INTERNAL
 
     init {
         valueParameter.parent = this
-        initializer.parent = this
-        condition.parent = this
-        iteration.parent = this
+        range.parent = this
         body.parent = this
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitForStatement(this)
+        visitor.visitKtForStatement(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
         valueParameter.accept(visitor)
-        initializer.accept(visitor)
-        condition.accept(visitor)
-        iteration.accept(visitor)
+        range.accept(visitor)
         body.accept(visitor)
-    }
-
-    override fun replaceChild(oldDeclaration: EDeclaration, newDeclaration: EDeclaration): Boolean {
-        newDeclaration.parent = this
-        return if (valueParameter == oldDeclaration) {
-            newDeclaration.cast<EAbstractValueParameter>()?.let { valueParameter = it }
-            true
-        } else false
     }
 
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
         newExpression.parent = this
         return when (oldExpression) {
-            initializer -> {
-                initializer = newExpression
-                true
-            }
-            condition -> {
-                condition = newExpression
-                true
-            }
-            iteration -> {
-                iteration = newExpression
+            range -> {
+                range = newExpression
                 true
             }
             body -> {

@@ -39,7 +39,7 @@ object ComponentInstantiationCheckerStage : ProjectStage() {
             super.visitKtProperty(property)
             if (property.type.isSubtype(Core.Vk.C_Component.toType())) {
                 val parent = property.parent
-                if (parent is EKtBasicClass && parent.toType().isSubtype(Core.Vk.C_Component.toType())) {
+                if (parent is EKtBasicClass && parent.type.isSubtype(Core.Vk.C_Component.toType())) {
                     if (!property.hasAnnotation(Annotations.MAKE))
                         Messages.MAKE_ANNOTATION_REQUIRED.on(property)
                 } else {

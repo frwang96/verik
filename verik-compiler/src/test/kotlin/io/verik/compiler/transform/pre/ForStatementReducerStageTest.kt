@@ -20,12 +20,12 @@ import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
-internal class ForExpressionReducerStageTest : BaseTest() {
+internal class ForStatementReducerStageTest : BaseTest() {
 
     @Test
     fun `reduce for expression`() {
         val projectContext = driveTest(
-            ForExpressionReducerStage::class,
+            ForStatementReducerStage::class,
             """
                 fun f() {
                     @Suppress("ControlFlowWithEmptyBody")

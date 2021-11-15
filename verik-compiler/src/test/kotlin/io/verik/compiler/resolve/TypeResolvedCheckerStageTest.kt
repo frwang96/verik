@@ -30,7 +30,7 @@ internal class TypeResolvedCheckerStageTest : BaseTest() {
             driveTest(
                 TypeResolvedCheckerStage::class,
                 """
-                    val x = u(0).uext<`*`>()
+                    val x = u(0).ext<`*`>()
                 """.trimIndent()
             )
         }.apply { assertEquals("Type of expression could not be resolved", message) }

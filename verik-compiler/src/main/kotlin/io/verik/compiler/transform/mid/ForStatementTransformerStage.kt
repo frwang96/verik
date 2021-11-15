@@ -23,7 +23,7 @@ import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
-import io.verik.compiler.ast.element.sv.EForStatement
+import io.verik.compiler.ast.element.sv.ESvForStatement
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.property.KtUnaryOperatorKind
@@ -79,32 +79,39 @@ object ForStatementTransformerStage : ProjectStage() {
             functionLiteral: EFunctionLiteralExpression,
             valueParameter: ESvValueParameter,
             callExpression: EKtCallExpression
-        ): EForStatement {
-            val initializer = callExpression.receiver!!
-            val valueParameterReferenceExpression = EReferenceExpression(
+        ): ESvForStatement {
+            val property = ESvProperty(
                 valueParameter.location,
-                valueParameter.type.copy(),
-                valueParameter,
+                valueParameter.name,
+                valueParameter.type,
+                callExpression.receiver!!,
+                isMutable = true,
+                isStatic = null
+            )
+            referenceUpdater.update(valueParameter, property)
+            val propertyReferenceExpression = EReferenceExpression(
+                property.location,
+                property.type.copy(),
+                property,
                 null
             )
             val condition = EKtCallExpression(
                 callExpression.location,
                 Core.Kt.C_Boolean.toType(),
                 Core.Kt.Int.F_lt_Int,
-                valueParameterReferenceExpression,
+                propertyReferenceExpression,
                 arrayListOf(callExpression.valueArguments[0]),
                 ArrayList()
             )
             val iteration = EKtUnaryExpression(
                 callExpression.location,
                 Core.Kt.C_Int.toType(),
-                ExpressionCopier.copy(valueParameterReferenceExpression),
+                ExpressionCopier.copy(propertyReferenceExpression),
                 KtUnaryOperatorKind.POST_INC
             )
-            return EForStatement(
+            return ESvForStatement(
                 callExpression.location,
-                valueParameter,
-                initializer,
+                property,
                 condition,
                 iteration,
                 functionLiteral.body
@@ -115,15 +122,21 @@ object ForStatementTransformerStage : ProjectStage() {
             functionLiteral: EFunctionLiteralExpression,
             valueParameter: ESvValueParameter,
             referenceExpression: EReferenceExpression
-        ): EForStatement {
-            val forValueParameter = ESvValueParameter(referenceExpression.location, "<tmp>", Core.Kt.C_Int.toType())
-            val forValueParameterReferenceExpression = EReferenceExpression(
+        ): ESvForStatement {
+            val indexProperty = ESvProperty(
                 referenceExpression.location,
-                forValueParameter.type.copy(),
-                forValueParameter,
+                "<tmp>",
+                Core.Kt.C_Int.toType(),
+                EConstantExpression(referenceExpression.location, Core.Kt.C_Int.toType(), "0"),
+                isMutable = true,
+                isStatic = null
+            )
+            val indexReferenceExpression = EReferenceExpression(
+                indexProperty.location,
+                indexProperty.type.copy(),
+                indexProperty,
                 null
             )
-            val initializer = EConstantExpression(referenceExpression.location, Core.Kt.C_Int.toType(), "0")
             val sizeReferenceExpression = EReferenceExpression(
                 referenceExpression.location,
                 Core.Kt.C_Int.toType(),
@@ -134,44 +147,43 @@ object ForStatementTransformerStage : ProjectStage() {
                 referenceExpression.location,
                 Core.Kt.C_Boolean.toType(),
                 Core.Kt.Int.F_lt_Int,
-                forValueParameterReferenceExpression,
+                indexReferenceExpression,
                 arrayListOf(sizeReferenceExpression),
                 ArrayList()
             )
             val iteration = EKtUnaryExpression(
                 referenceExpression.location,
                 Core.Kt.C_Int.toType(),
-                ExpressionCopier.copy(forValueParameterReferenceExpression),
+                ExpressionCopier.copy(indexReferenceExpression),
                 KtUnaryOperatorKind.POST_INC
             )
-            val propertyInitializer = EKtCallExpression(
+            val elementPropertyInitializer = EKtCallExpression(
                 valueParameter.location,
                 valueParameter.type.copy(),
                 Core.Jv.Util.ArrayList.F_get_Int,
                 ExpressionCopier.copy(referenceExpression),
-                arrayListOf(ExpressionCopier.copy(forValueParameterReferenceExpression)),
+                arrayListOf(ExpressionCopier.copy(indexReferenceExpression)),
                 ArrayList()
             )
-            val property = ESvProperty(
+            val elementProperty = ESvProperty(
                 valueParameter.location,
                 valueParameter.name,
                 valueParameter.type,
-                propertyInitializer,
+                elementPropertyInitializer,
                 isMutable = false,
                 isStatic = false
             )
-            referenceUpdater.update(valueParameter, property)
+            referenceUpdater.update(valueParameter, elementProperty)
             val propertyStatement = EPropertyStatement(
                 valueParameter.location,
-                property
+                elementProperty
             )
             val body = functionLiteral.body as EKtBlockExpression
             propertyStatement.parent = body
             body.statements.add(0, propertyStatement)
-            return EForStatement(
+            return ESvForStatement(
                 referenceExpression.location,
-                forValueParameter,
-                initializer,
+                indexProperty,
                 condition,
                 iteration,
                 body

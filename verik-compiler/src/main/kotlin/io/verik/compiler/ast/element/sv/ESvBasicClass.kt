@@ -25,6 +25,7 @@ import io.verik.compiler.message.SourceLocation
 class ESvBasicClass(
     override val location: SourceLocation,
     override var name: String,
+    override var type: Type,
     override var superType: Type,
     override var declarations: ArrayList<EDeclaration>,
     val isVirtual: Boolean,

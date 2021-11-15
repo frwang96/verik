@@ -45,7 +45,8 @@ object ValueParameterInterpreterStage : ProjectStage() {
                     val newValueParameter = ESvValueParameter(
                         oldValueParameter.location,
                         oldValueParameter.name,
-                        oldValueParameter.type
+                        oldValueParameter.type,
+                        true
                     )
                     referenceUpdater.replace(oldValueParameter, newValueParameter)
                 }

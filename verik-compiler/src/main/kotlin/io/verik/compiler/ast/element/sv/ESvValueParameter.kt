@@ -20,13 +20,19 @@ import io.verik.compiler.ast.element.common.EAbstractValueParameter
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
 
 class ESvValueParameter(
     override val location: SourceLocation,
     override var name: String,
-    override var type: Type
+    override var type: Type,
+    val isInput: Boolean
 ) : EAbstractValueParameter() {
+
+    fun isVirtual(): Boolean {
+        return type.isSubtype(Core.Vk.C_ModuleInterface.toType())
+    }
 
     override fun accept(visitor: Visitor) {
         visitor.visitSvValueParameter(this)

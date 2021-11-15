@@ -154,7 +154,7 @@ object FunctionInterpreterStage : ProjectStage() {
             referenceUpdater: ReferenceUpdater
         ): List<ESvValueParameter> {
             return valueParameters.map {
-                val valueParameter = ESvValueParameter(it.location, it.name, it.type)
+                val valueParameter = ESvValueParameter(it.location, it.name, it.type, true)
                 referenceUpdater.update(it, valueParameter)
                 valueParameter
             }
