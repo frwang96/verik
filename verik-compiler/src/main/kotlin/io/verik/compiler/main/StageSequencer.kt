@@ -65,7 +65,6 @@ import io.verik.compiler.transform.mid.ConstantExpressionEvaluatorStage
 import io.verik.compiler.transform.mid.ConstantPropagatorStage
 import io.verik.compiler.transform.mid.DeadDeclarationEliminatorStage
 import io.verik.compiler.transform.mid.EnumNameTransformerStage
-import io.verik.compiler.transform.mid.FillAssignmentTransformerStage
 import io.verik.compiler.transform.mid.ForStatementTransformerStage
 import io.verik.compiler.transform.mid.FunctionTransformerStage
 import io.verik.compiler.transform.mid.IfAndWhenExpressionUnlifterStage
@@ -162,7 +161,6 @@ object StageSequencer {
         stageSequence.add(CastTransformerStage)
         stageSequence.add(UninitializedPropertyTransformerStage)
         stageSequence.add(CombinationalAssignmentTransformerStage)
-        stageSequence.add(FillAssignmentTransformerStage)
         stageSequence.add(ForStatementTransformerStage)
         stageSequence.add(FunctionTransformerStage)
         stageSequence.add(PropertyTransformerStage)

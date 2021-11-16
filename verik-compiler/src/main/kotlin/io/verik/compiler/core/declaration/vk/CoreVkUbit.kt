@@ -18,17 +18,18 @@ package io.verik.compiler.core.declaration.vk
 
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.EConstantPartSelectExpression
 import io.verik.compiler.ast.element.sv.EStreamingExpression
 import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.EWidthCastExpression
+import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.ast.property.SvUnaryOperatorKind
 import io.verik.compiler.common.ConstantUtil
 import io.verik.compiler.common.ExpressionCopier
-import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
 import io.verik.compiler.core.common.BinaryCoreFunctionDeclaration
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreScope
@@ -57,9 +58,57 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_fill_Int_Boolean = BasicCoreFunctionDeclaration(parent, "fill", "fun fill(Int, Boolean)", null)
+    val F_set_Int_Boolean = object : TransformableCoreFunctionDeclaration(
+        parent,
+        "set",
+        "fun set(Int, Boolean)"
+    ) {
 
-    val F_fill_Int_Ubit = BasicCoreFunctionDeclaration(parent, "fill", "fun fill(Int, Ubit)", null)
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            val receiver = ESvArrayAccessExpression(
+                callExpression.location,
+                callExpression.valueArguments[1].type.copy(),
+                callExpression.receiver!!,
+                callExpression.valueArguments[0]
+            )
+            return EKtBinaryExpression(
+                callExpression.location,
+                callExpression.type,
+                receiver,
+                callExpression.valueArguments[1],
+                KtBinaryOperatorKind.EQ
+            )
+        }
+    }
+
+    val F_set_Int_Ubit = object : TransformableCoreFunctionDeclaration(parent, "set", "fun set(Int, Ubit)") {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            val width = callExpression.valueArguments[1].type.asBitWidth(callExpression)
+            val msbIndex = EKtCallExpression(
+                callExpression.location,
+                Core.Kt.C_Int.toType(),
+                Core.Kt.Int.F_plus_Int,
+                ExpressionCopier.copy(callExpression.valueArguments[0]),
+                arrayListOf(EConstantExpression(callExpression.location, Core.Kt.C_Int.toType(), "${width - 1}")),
+                arrayListOf()
+            )
+            val receiver = EConstantPartSelectExpression(
+                callExpression.location,
+                callExpression.valueArguments[1].type.copy(),
+                callExpression.receiver!!,
+                msbIndex,
+                callExpression.valueArguments[0]
+            )
+            return EKtBinaryExpression(
+                callExpression.location,
+                callExpression.type,
+                receiver,
+                callExpression.valueArguments[1],
+                KtBinaryOperatorKind.EQ
+            )
+        }
+    }
 
     val F_unaryMinus = object : UnaryCoreFunctionDeclaration(
         parent,

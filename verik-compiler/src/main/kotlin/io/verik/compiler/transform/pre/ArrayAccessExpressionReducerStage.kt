@@ -22,6 +22,7 @@ import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.Type
+import io.verik.compiler.common.Cardinal
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
@@ -50,6 +51,22 @@ object ArrayAccessExpressionReducerStage : ProjectStage() {
             GetReducerEntry(Core.Jv.Util.C_ArrayList, listOf(Core.Kt.C_Int), Core.Jv.Util.ArrayList.F_get_Int)
         )
 
+        setReducerEntries.add(
+            SetReducerEntry(
+                Core.Vk.C_Ubit,
+                listOf(Core.Kt.C_Int),
+                Core.Kt.C_Boolean.toType(),
+                Core.Vk.Ubit.F_set_Int_Boolean
+            )
+        )
+        setReducerEntries.add(
+            SetReducerEntry(
+                Core.Vk.C_Ubit,
+                listOf(Core.Kt.C_Int),
+                Core.Vk.C_Ubit.toType(Cardinal.UNRESOLVED.toType()),
+                Core.Vk.Ubit.F_set_Int_Ubit
+            )
+        )
         setReducerEntries.add(
             SetReducerEntry(
                 Core.Vk.C_Unpacked,

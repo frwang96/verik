@@ -25,10 +25,10 @@ class Adder<N : `*`>(
 ) : Module() {
 
     fun fullAdder(a: Boolean, b: Boolean, c: Boolean): Ubit<`2`> {
-        return cat(
-            a xor b xor c,
-            (a && b) || (a && c) || (b && c)
-        )
+        val x: Ubit<`2`> = u0()
+        x[0] = a xor b xor c
+        x[1] = (a && b) || (a && c) || (b && c)
+        return x
     }
 
     @Com
@@ -36,7 +36,7 @@ class Adder<N : `*`>(
         var c = false
         for (i in 0 until i<N>()) {
             val fa = fullAdder(a[i], b[i], c)
-            x = x.fill(i, fa[0])
+            x[i] = fa[0]
             c = fa[1]
         }
     }

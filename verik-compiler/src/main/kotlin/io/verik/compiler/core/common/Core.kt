@@ -186,8 +186,8 @@ object Core {
         object Ubit {
 
             val F_get_Int = CoreVkUbit.F_get_Int
-            val F_fill_Int_Boolean = CoreVkUbit.F_fill_Int_Boolean
-            val F_fill_Int_Ubit = CoreVkUbit.F_fill_Int_Ubit
+            val F_set_Int_Boolean = CoreVkUbit.F_set_Int_Boolean
+            val F_set_Int_Ubit = CoreVkUbit.F_set_Int_Ubit
             val F_unaryMinus = CoreVkUbit.F_unaryMinus
             val F_plus_Ubit = CoreVkUbit.F_plus_Ubit
             val F_add_Ubit = CoreVkUbit.F_add_Ubit
