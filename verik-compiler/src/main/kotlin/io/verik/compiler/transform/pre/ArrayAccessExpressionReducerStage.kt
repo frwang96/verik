@@ -66,6 +66,14 @@ object ArrayAccessExpressionReducerStage : ProjectStage() {
                 Core.Vk.Unpacked.F_set_Ubit_E
             )
         )
+        setReducerEntries.add(
+            SetReducerEntry(
+                Core.Jv.Util.C_ArrayList,
+                listOf(Core.Kt.C_Int),
+                Core.Kt.C_Any.toType(),
+                Core.Jv.Util.ArrayList.F_set_Int_E
+            )
+        )
     }
 
     override fun process(projectContext: ProjectContext) {

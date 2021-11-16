@@ -18,7 +18,6 @@ package io.verik.compiler.transform.pre
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.findExpression
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class ArrayAccessExpressionReducerStageTest : BaseTest() {
@@ -39,7 +38,6 @@ internal class ArrayAccessExpressionReducerStageTest : BaseTest() {
     }
 
     @Test
-    @Disabled
     fun `reduce set`() {
         val projectContext = driveTest(
             ArrayAccessExpressionReducerStage::class,

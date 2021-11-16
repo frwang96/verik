@@ -18,5 +18,6 @@ package io.verik.compiler.target.common
 
 interface CompositeTarget {
 
+    val name: String
     val content: String
 }

@@ -42,7 +42,7 @@ object TargetSerializerStage : ProjectStage() {
         val targetSourceBuilder = TargetSourceBuilder(projectContext, targetPackageFilePath)
         targetSourceBuilder.appendLine("package ${TargetPackage.name};")
         targetSourceBuilder.indent {
-            val entries = TargetSerializationSequencer.getEntries()
+            val entries = TargetSerializationSequencer.getEntries(projectContext)
             entries.forEach { serializeClassDeclaration(targetSourceBuilder, compositeTargetSet, it) }
         }
         targetSourceBuilder.appendLine()

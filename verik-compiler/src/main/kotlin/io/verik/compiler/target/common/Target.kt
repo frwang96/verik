@@ -62,6 +62,7 @@ object Target {
         val F_new = TargetArrayList.F_new
         val F_add = TargetArrayList.F_add
         val F_get = TargetArrayList.F_get
+        val F_set = TargetArrayList.F_set
         val F_size = TargetArrayList.F_size
     }
 }
