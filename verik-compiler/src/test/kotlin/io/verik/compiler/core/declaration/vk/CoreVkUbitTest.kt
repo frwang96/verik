@@ -39,30 +39,6 @@ internal class CoreVkUbitTest : BaseTest() {
     }
 
     @Test
-    fun `transform set`() {
-        val projectContext = driveTest(
-            FunctionTransformerStage::class,
-            """
-                var x = u(0)
-                fun f() {
-                    x[0] = true
-                }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            """
-                KtBinaryExpression(
-                    Unit,
-                    SvArrayAccessExpression(Boolean, ReferenceExpression(*), ConstantExpression(*)),
-                    ConstantExpression(*),
-                    EQ
-                )
-            """.trimIndent(),
-            projectContext.findExpression("f")
-        )
-    }
-
-    @Test
     fun `transform shl`() {
         val projectContext = driveTest(
             FunctionTransformerStage::class,

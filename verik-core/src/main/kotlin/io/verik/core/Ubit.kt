@@ -268,6 +268,20 @@ class Ubit<N : `*`> private constructor() {
     }
 
     /**
+     * Fills in [value] at bit [n].
+     */
+    fun fill(n: Int, value: Boolean): Ubit<N> {
+        throw VerikException()
+    }
+
+    /**
+     * Fills in [value] starting at bit [n].
+     */
+    fun fill(n: Int, value: Ubit<`*`>): Ubit<N> {
+        throw VerikException()
+    }
+
+    /**
      * Inverts the bits.
      */
     fun invert(): Ubit<`*`> {
