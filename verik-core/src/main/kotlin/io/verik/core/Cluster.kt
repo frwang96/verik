@@ -19,12 +19,12 @@
 package io.verik.core
 
 /**
- * A cluster of components [C] of size [N].
+ * (UNIMPLEMENTED) A cluster of components [C] of size [N].
  */
 class Cluster<N : `*`, C : Component>(instantiator: (Int) -> C) : Component() {
 
     /**
-     * Returns the component at the specified [index].
+     * (UNIMPLEMENTED) Returns the component at the specified [index].
      */
     operator fun get(index: Int): C {
         throw VerikException()

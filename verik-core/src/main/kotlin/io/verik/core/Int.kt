@@ -19,7 +19,7 @@
 package io.verik.core
 
 /**
- * Convert the int to a [Ubit].
+ * (UNIMPLEMENTED) Convert the int to a [Ubit].
  */
 fun Int.toUbit(): Ubit<`*`> {
     throw VerikException()

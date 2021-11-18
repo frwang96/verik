@@ -24,8 +24,6 @@ package io.verik.core
 class Time
 
 /**
- * Returns the current simulation time.
+ * A simulation event.
  */
-fun time(): Time {
-    throw VerikException()
-}
+class Event

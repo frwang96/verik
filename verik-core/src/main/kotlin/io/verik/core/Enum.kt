@@ -19,14 +19,14 @@
 package io.verik.core
 
 /**
- * Convert the enum to a [Ubit].
+ * (UNIMPLEMENTED) Convert the enum to a [Ubit].
  */
 fun <E : Enum<E>> Enum<E>.toUbit(): Ubit<`*`> {
     throw VerikException()
 }
 
 /**
- * Returns true if the enum is unknown.
+ * (UNIMPLEMENTED) Returns true if the enum is unknown.
  */
 fun <E : Enum<E>> Enum<E>.isUnknown(): Boolean {
     throw VerikException()

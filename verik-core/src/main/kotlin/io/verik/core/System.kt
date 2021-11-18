@@ -58,3 +58,10 @@ fun warning(message: String) {
 fun info(message: String) {
     throw VerikException()
 }
+
+/**
+ * Returns the current simulation time.
+ */
+fun time(): Time {
+    throw VerikException()
+}

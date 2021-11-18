@@ -24,14 +24,14 @@ import io.verik.compiler.target.common.Target
 
 object CoreKtClass : CoreScope(CorePackage.KT) {
 
-    val C_Any = CoreClassDeclaration(parent, "Any", null, null)
-    val C_Nothing = CoreClassDeclaration(parent, "Nothing", null, Target.C_Void)
     val C_Function = CoreClassDeclaration(parent, "Function", null, Target.C_Void)
+    val C_Any = CoreClassDeclaration(parent, "Any", null, null)
     val C_Unit = CoreClassDeclaration(parent, "Unit", C_Any, Target.C_Void)
+    val C_Nothing = CoreClassDeclaration(parent, "Nothing", null, Target.C_Void)
+    val C_Enum = CoreClassDeclaration(parent, "Enum", C_Any, null)
     val C_Int = CoreClassDeclaration(parent, "Int", C_Any, Target.C_Int)
     val C_Boolean = CoreClassDeclaration(parent, "Boolean", C_Any, Target.C_Boolean)
     val C_String = CoreClassDeclaration(parent, "String", C_Any, Target.C_String)
-    val C_Enum = CoreClassDeclaration(parent, "Enum", C_Any, null)
 
     object Ranges : CoreScope(CorePackage.Kt_RANGES) {
 

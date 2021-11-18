@@ -33,56 +33,56 @@ fun <N : `*`> rep(x: Any): Ubit<`*`> {
 }
 
 /**
- * Returns the maximum of the arguments.
+ * (UNIMPLEMENTED) Returns the maximum of the arguments.
  */
 fun max(vararg x: Int): Int {
     throw VerikException()
 }
 
 /**
- * Returns the maximum of the arguments.
+ * (UNIMPLEMENTED) Returns the maximum of the arguments.
  */
 fun max(vararg x: Sbit<`*`>): Sbit<`*`> {
     throw VerikException()
 }
 
 /**
- * Returns the maximum of the arguments.
+ * (UNIMPLEMENTED) Returns the maximum of the arguments.
  */
 fun max(vararg x: Ubit<`*`>): Ubit<`*`> {
     throw VerikException()
 }
 
 /**
- * Returns the minimum of the arguments.
+ * (UNIMPLEMENTED) Returns the minimum of the arguments.
  */
 fun min(vararg x: Int): Int {
     throw VerikException()
 }
 
 /**
- * Returns the minimum of the arguments.
+ * (UNIMPLEMENTED) Returns the minimum of the arguments.
  */
 fun min(vararg x: Sbit<`*`>): Sbit<`*`> {
     throw VerikException()
 }
 
 /**
- * Returns the minimum of the arguments.
+ * (UNIMPLEMENTED) Returns the minimum of the arguments.
  */
 fun min(vararg x: Ubit<`*`>): Ubit<`*`> {
     throw VerikException()
 }
 
 /**
- * Returns the ceiling logarithm base two of [x].
+ * (UNIMPLEMENTED) Returns the ceiling logarithm base two of [x].
  */
 fun log(x: Int): Int {
     throw VerikException()
 }
 
 /**
- * Returns the exponential base two of [x].
+ * (UNIMPLEMENTED) Returns the exponential base two of [x].
  */
 fun exp(x: Int): Int {
     throw VerikException()

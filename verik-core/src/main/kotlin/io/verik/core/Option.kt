@@ -19,12 +19,12 @@
 package io.verik.core
 
 /**
- * An optional component [C] that is instantiated based on the logical [X].
+ * (UNIMPLEMENTED) An optional component [C] that is instantiated based on the logical [X].
  */
 class Option<X : `?`, C : Component>(instantiator: () -> C) : Component() {
 
     /**
-     * The instantiated component.
+     * (UNIMPLEMENTED) The instantiated component.
      */
     val option: C by lazy<C> {
         throw VerikException()

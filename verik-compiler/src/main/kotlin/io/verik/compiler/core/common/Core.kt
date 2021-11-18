@@ -28,8 +28,12 @@ import io.verik.compiler.core.declaration.kt.CoreKtInt
 import io.verik.compiler.core.declaration.kt.CoreKtIo
 import io.verik.compiler.core.declaration.kt.CoreKtRanges
 import io.verik.compiler.core.declaration.vk.CoreVk
+import io.verik.compiler.core.declaration.vk.CoreVkBoolean
 import io.verik.compiler.core.declaration.vk.CoreVkCardinal
 import io.verik.compiler.core.declaration.vk.CoreVkClass
+import io.verik.compiler.core.declaration.vk.CoreVkControl
+import io.verik.compiler.core.declaration.vk.CoreVkMisc
+import io.verik.compiler.core.declaration.vk.CoreVkRandom
 import io.verik.compiler.core.declaration.vk.CoreVkSbit
 import io.verik.compiler.core.declaration.vk.CoreVkUbit
 import io.verik.compiler.core.declaration.vk.CoreVkUnpacked
@@ -38,12 +42,11 @@ object Core {
 
     object Kt {
 
+        val C_Function = CoreKtClass.C_Function
         val C_Any = CoreKtClass.C_Any
         val C_Unit = CoreKtClass.C_Unit
         val C_Nothing = CoreKtClass.C_Nothing
         val C_Enum = CoreKtClass.C_Enum
-        val C_Function = CoreKtClass.C_Function
-
         val C_Int = CoreKtClass.C_Int
         val C_Boolean = CoreKtClass.C_Boolean
         val C_String = CoreKtClass.C_String
@@ -119,16 +122,16 @@ object Core {
 
         val C_Ubit = CoreVkClass.C_Ubit
         val C_Sbit = CoreVkClass.C_Sbit
-        val C_Struct = CoreVkClass.C_Struct
         val C_Packed = CoreVkClass.C_Packed
         val C_Unpacked = CoreVkClass.C_Unpacked
+        val C_Time = CoreVkClass.C_Time
+        val C_Event = CoreVkClass.C_Event
+        val C_Struct = CoreVkClass.C_Struct
         val C_Component = CoreVkClass.C_Component
         val C_Module = CoreVkClass.C_Module
         val C_ModuleInterface = CoreVkClass.C_ModuleInterface
         val C_ModulePort = CoreVkClass.C_ModulePort
         val C_ClockingBlock = CoreVkClass.C_ClockingBlock
-        val C_Time = CoreVkClass.C_Time
-        val C_Event = CoreVkClass.C_Event
 
         val F_Struct = CoreVkClass.F_Struct
         val F_Module = CoreVkClass.F_Module
@@ -159,21 +162,6 @@ object Core {
         val F_s_Int = CoreVk.F_s_Int
         val F_s_String = CoreVk.F_s_String
         val F_s_Ubit = CoreVk.F_s_Ubit
-        val F_cat_Any = CoreVk.F_cat_Any
-        val F_rep_Any = CoreVk.F_rep_Any
-        val F_random = CoreVk.F_random
-        val F_random_Int = CoreVk.F_random_Int
-        val F_random_Int_Int = CoreVk.F_random_Int_Int
-        val F_randomBoolean = CoreVk.F_randomBoolean
-        val F_randomUbit = CoreVk.F_randomUbit
-        val F_forever_Function = CoreVk.F_forever_Function
-        val F_on_Event_Function = CoreVk.F_on_Event_Function
-        val F_posedge_Boolean = CoreVk.F_posedge_Boolean
-        val F_negedge_Boolean = CoreVk.F_negedge_Boolean
-        val F_wait_Boolean = CoreVk.F_wait_Boolean
-        val F_wait_Event = CoreVk.F_wait_Event
-        val F_wait_ClockingBlock = CoreVk.F_wait_ClockingBlock
-        val F_delay_Int = CoreVk.F_delay_Int
         val F_time = CoreVk.F_time
         val F_finish = CoreVk.F_finish
         val F_fatal = CoreVk.F_fatal
@@ -181,8 +169,29 @@ object Core {
         val F_error_String = CoreVk.F_error_String
         val F_sv_String = CoreVk.F_sv_String
 
-        val F_Boolean_ext = CoreVk.F_Boolean_ext
-        val F_Boolean_sext = CoreVk.F_Boolean_sext
+        val F_posedge_Boolean = CoreVkControl.F_posedge_Boolean
+        val F_negedge_Boolean = CoreVkControl.F_negedge_Boolean
+        val F_on_Event_Function = CoreVkControl.F_on_Event_Function
+        val F_forever_Function = CoreVkControl.F_forever_Function
+        val F_delay_Int = CoreVkControl.F_delay_Int
+        val F_wait_Boolean = CoreVkControl.F_wait_Boolean
+        val F_wait_Event = CoreVkControl.F_wait_Event
+        val F_wait_ClockingBlock = CoreVkControl.F_wait_ClockingBlock
+
+        val F_cat_Any = CoreVkMisc.F_cat_Any
+        val F_rep_Any = CoreVkMisc.F_rep_Any
+
+        val F_random = CoreVkRandom.F_random
+        val F_random_Int = CoreVkRandom.F_random_Int
+        val F_random_Int_Int = CoreVkRandom.F_random_Int_Int
+        val F_randomBoolean = CoreVkRandom.F_randomBoolean
+        val F_randomUbit = CoreVkRandom.F_randomUbit
+
+        object Boolean {
+
+            val F_Boolean_ext = CoreVkBoolean.F_ext
+            val F_Boolean_sext = CoreVkBoolean.F_sext
+        }
 
         object Ubit {
 
@@ -230,7 +239,6 @@ object Core {
             val F_set_Int_E = CoreVkUnpacked.F_set_Int_E
             val F_get_Ubit = CoreVkUnpacked.F_get_Ubit
             val F_set_Ubit_E = CoreVkUnpacked.F_set_Ubit_E
-            val F_sort = CoreVkUnpacked.F_sort
 
             val P_size = CoreVkUnpacked.P_size
         }

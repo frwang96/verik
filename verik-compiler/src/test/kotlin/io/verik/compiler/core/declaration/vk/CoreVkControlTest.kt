@@ -18,54 +18,58 @@ package io.verik.compiler.core.declaration.vk
 
 import io.verik.compiler.transform.mid.FunctionTransformerStage
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.findExpression
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
-internal class CoreVkTest : BaseTest() {
-
-    @Test
-    fun `transform nc illegal`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                FunctionTransformerStage::class,
-                """
-                    var x = false
-                    fun f() {
-                        x = nc()
-                    }
-                """.trimIndent()
-            )
-        }.apply { assertEquals("Expression used out of context: nc", message) }
-    }
+internal class CoreVkControlTest : BaseTest() {
 
     @Test
-    fun `transform u`() {
+    fun `transform forever`() {
         val projectContext = driveTest(
             FunctionTransformerStage::class,
             """
-                var x = u<`8`>()
+                fun f() {
+                    forever {}
+                }
             """.trimIndent()
         )
         assertElementEquals(
-            "ConstantExpression(Ubit<`4`>, 4'h8)",
-            projectContext.findExpression("x")
+            "ForeverStatement(Void, KtBlockExpression(*))",
+            projectContext.findExpression("f")
         )
     }
 
     @Test
-    fun `transform u0`() {
+    fun `transform wait`() {
         val projectContext = driveTest(
             FunctionTransformerStage::class,
             """
-                var x: Ubit<`8`> = u0()
+                var x = false
+                fun f() {
+                    wait(posedge(x))
+                }
             """.trimIndent()
         )
         assertElementEquals(
-            "ConstantExpression(Ubit<`8`>, 8'h00)",
-            projectContext.findExpression("x")
+            "EventControlExpression(Void, EdgeExpression(Event, *, *))",
+            projectContext.findExpression("f")
+        )
+    }
+
+    @Test
+    fun `transform delay`() {
+        val projectContext = driveTest(
+            FunctionTransformerStage::class,
+            """
+                var x = false
+                fun f() {
+                    delay(1)
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "DelayExpression(Void, ConstantExpression(*))",
+            projectContext.findExpression("f")
         )
     }
 }

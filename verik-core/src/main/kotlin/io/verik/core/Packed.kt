@@ -30,44 +30,37 @@ class Packed<N : `*`, E> private constructor() : Iterable<E> {
     }
 
     /**
-     * The size of the array.
+     * (UNIMPLEMENTED) The size of the array.
      */
     val size: Int by lazy<Int> {
         throw VerikException()
     }
 
     /**
-     * Returns the array element at the specified [index].
+     * (UNIMPLEMENTED) Returns the array element at the specified [index].
      */
     operator fun get(index: Int): E {
         throw VerikException()
     }
 
     /**
-     * Returns the array element at the specified [index].
+     * (UNIMPLEMENTED) Returns the array element at the specified [index].
      */
     operator fun get(index: Ubit<`*`>): E {
         throw VerikException()
     }
 
     /**
-     * Sets the array element at the specified [index] to the specified [element].
+     * (UNIMPLEMENTED) Sets the array element at the specified [index] to the specified [element].
      */
     operator fun set(index: Int, element: E) {
         throw VerikException()
     }
 
     /**
-     * Sets the array element at the specified [index] to the specified [element].
+     * (UNIMPLEMENTED) Sets the array element at the specified [index] to the specified [element].
      */
     operator fun set(index: Ubit<`*`>, element: E) {
-        throw VerikException()
-    }
-
-    /**
-     * Sorts the array in ascending order.
-     */
-    fun sort() {
         throw VerikException()
     }
 }

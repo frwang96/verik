@@ -20,51 +20,48 @@ import io.verik.compiler.transform.mid.FunctionTransformerStage
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.findExpression
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-internal class CoreVkTest : BaseTest() {
+internal class CoreVkMiscTest : BaseTest() {
 
     @Test
-    fun `transform nc illegal`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                FunctionTransformerStage::class,
-                """
-                    var x = false
-                    fun f() {
-                        x = nc()
-                    }
-                """.trimIndent()
-            )
-        }.apply { assertEquals("Expression used out of context: nc", message) }
-    }
-
-    @Test
-    fun `transform u`() {
+    fun `transform cat`() {
         val projectContext = driveTest(
             FunctionTransformerStage::class,
             """
-                var x = u<`8`>()
+                val x = cat(u(0), u(0))
             """.trimIndent()
         )
         assertElementEquals(
-            "ConstantExpression(Ubit<`4`>, 4'h8)",
+            "ConcatenationExpression(Ubit<`2`>, [*, *])",
             projectContext.findExpression("x")
         )
     }
 
     @Test
-    fun `transform u0`() {
+    fun `transform cat illegal`() {
+        assertThrows<TestErrorException> {
+            driveTest(
+                FunctionTransformerStage::class,
+                """
+                val x = cat(u(0))
+                """.trimIndent()
+            )
+        }.apply { Assertions.assertEquals("Concatenation expects at least two arguments", message) }
+    }
+
+    @Test
+    fun `transform rep`() {
         val projectContext = driveTest(
             FunctionTransformerStage::class,
             """
-                var x: Ubit<`8`> = u0()
+                val x = rep<`3`>(false)
             """.trimIndent()
         )
         assertElementEquals(
-            "ConstantExpression(Ubit<`8`>, 8'h00)",
+            "ReplicationExpression(Ubit<`3`>, *, 3)",
             projectContext.findExpression("x")
         )
     }
