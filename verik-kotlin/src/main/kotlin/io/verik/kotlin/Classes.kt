@@ -20,43 +20,16 @@ package io.verik.kotlin
 
 /**
  * The root of the Kotlin class hierarchy. Every Kotlin class has Any as a superclass.
- * See Kotlin [documentation](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/).
  */
 abstract class Any
 
 /**
  * The type with only one value: the Unit object. This type corresponds to the void type in Java.
- * See Kotlin [documentation](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/).
  */
 class Unit private constructor()
 
 /**
  * Nothing has no instances. You can use Nothing to represent "a value that never exists": for example, if a function
  * has the return type of Nothing, it means that it never returns.
- * See Kotlin [documentation](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-nothing.html).
  */
 class Nothing private constructor()
-
-/**
- * The common base class of all enum classes.
- * See Kotlin [documentation](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/).
- */
-abstract class Enum<E : Enum<E>> : Comparable<E>
-
-/**
- * Represents a 32-bit signed integer.
- * See Kotlin [documentation](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/).
- */
-class Int private constructor()
-
-/**
- * Represents a value which is either true or false.
- * See Kotlin [documentation](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/).
- */
-class Boolean private constructor()
-
-/**
- * The String class represents character strings.
- * See Kotlin [documentation](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/).
- */
-class String private constructor()

@@ -14,43 +14,26 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.pre
+package io.verik.compiler.core.declaration.vk
 
+import io.verik.compiler.transform.mid.FunctionTransformerStage
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
-internal class ArrayAccessExpressionReducerStageTest : BaseTest() {
+internal class CoreVkRandomTest : BaseTest() {
 
     @Test
-    fun `reduce get`() {
+    fun `transform random`() {
         val projectContext = driveTest(
-            ArrayAccessExpressionReducerStage::class,
+            FunctionTransformerStage::class,
             """
-                var x = u(0)
-                var y = x[0]
+                val x = random()
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Boolean, get, *, [*], [])",
-            projectContext.findExpression("y")
-        )
-    }
-
-    @Test
-    fun `reduce set`() {
-        val projectContext = driveTest(
-            ArrayAccessExpressionReducerStage::class,
-            """
-                var x = ArrayList<Boolean>()
-                fun f() {
-                    x[0] = true
-                }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtCallExpression(Unit, set, *, [*, *], [])",
-            projectContext.findExpression("f")
+            "KtCallExpression(Int, \$random, null, [], [])",
+            projectContext.findExpression("x")
         )
     }
 }

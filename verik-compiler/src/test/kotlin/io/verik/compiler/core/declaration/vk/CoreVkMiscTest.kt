@@ -14,43 +14,40 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.pre
+package io.verik.compiler.core.declaration.vk
 
+import io.verik.compiler.transform.mid.FunctionTransformerStage
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
-internal class ArrayAccessExpressionReducerStageTest : BaseTest() {
+internal class CoreVkMiscTest : BaseTest() {
 
     @Test
-    fun `reduce get`() {
+    fun `transform cat`() {
         val projectContext = driveTest(
-            ArrayAccessExpressionReducerStage::class,
+            FunctionTransformerStage::class,
             """
-                var x = u(0)
-                var y = x[0]
+                val x = cat(u(0), u(0))
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Boolean, get, *, [*], [])",
-            projectContext.findExpression("y")
+            "ConcatenationExpression(Ubit<`2`>, [*, *])",
+            projectContext.findExpression("x")
         )
     }
 
     @Test
-    fun `reduce set`() {
+    fun `transform rep`() {
         val projectContext = driveTest(
-            ArrayAccessExpressionReducerStage::class,
+            FunctionTransformerStage::class,
             """
-                var x = ArrayList<Boolean>()
-                fun f() {
-                    x[0] = true
-                }
+                val x = rep<`3`>(false)
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Unit, set, *, [*, *], [])",
-            projectContext.findExpression("f")
+            "ReplicationExpression(Ubit<`3`>, *, 3)",
+            projectContext.findExpression("x")
         )
     }
 }

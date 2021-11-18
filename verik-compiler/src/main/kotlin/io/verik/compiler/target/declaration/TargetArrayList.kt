@@ -53,6 +53,16 @@ object TargetArrayList : TargetScope(Target.C_ArrayList) {
         """.trimIndent()
     )
 
+    val F_set = CompositeTargetFunctionDeclaration(
+        parent,
+        "set",
+        """
+            function automatic set(int index, E e);
+                queue[index] = e;
+            endfunction : set
+        """.trimIndent()
+    )
+
     val F_size = CompositeTargetFunctionDeclaration(
         parent,
         "size",

@@ -14,42 +14,61 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.pre
+package io.verik.compiler.core.declaration.vk
 
+import io.verik.compiler.transform.mid.FunctionTransformerStage
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.findExpression
 import org.junit.jupiter.api.Test
 
-internal class ArrayAccessExpressionReducerStageTest : BaseTest() {
+internal class CoreVkControlTest : BaseTest() {
 
     @Test
-    fun `reduce get`() {
+    fun `transform forever`() {
         val projectContext = driveTest(
-            ArrayAccessExpressionReducerStage::class,
+            FunctionTransformerStage::class,
             """
-                var x = u(0)
-                var y = x[0]
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtCallExpression(Boolean, get, *, [*], [])",
-            projectContext.findExpression("y")
-        )
-    }
-
-    @Test
-    fun `reduce set`() {
-        val projectContext = driveTest(
-            ArrayAccessExpressionReducerStage::class,
-            """
-                var x = ArrayList<Boolean>()
                 fun f() {
-                    x[0] = true
+                    forever {}
                 }
             """.trimIndent()
         )
         assertElementEquals(
-            "KtCallExpression(Unit, set, *, [*, *], [])",
+            "ForeverStatement(Void, KtBlockExpression(*))",
+            projectContext.findExpression("f")
+        )
+    }
+
+    @Test
+    fun `transform wait`() {
+        val projectContext = driveTest(
+            FunctionTransformerStage::class,
+            """
+                var x = false
+                fun f() {
+                    wait(posedge(x))
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "EventControlExpression(Void, EdgeExpression(Event, *, *))",
+            projectContext.findExpression("f")
+        )
+    }
+
+    @Test
+    fun `transform delay`() {
+        val projectContext = driveTest(
+            FunctionTransformerStage::class,
+            """
+                var x = false
+                fun f() {
+                    delay(1)
+                }
+            """.trimIndent()
+        )
+        assertElementEquals(
+            "DelayExpression(Void, ConstantExpression(*))",
             projectContext.findExpression("f")
         )
     }

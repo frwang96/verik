@@ -19,13 +19,23 @@
 package io.verik.kotlin
 
 /**
- * Prints the line separator to the standard output stream.
- * See Kotlin [documentation](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.io/println.html).
+ * Executes the given function [action] specified number of [times]. A zero-based index of current iteration is passed
+ * as a parameter to [action].
  */
-fun println() {}
+fun repeat(times: Int, action: (Int) -> Unit) {
+    throw IllegalArgumentException()
+}
 
 /**
- * Prints the given [message] and the line separator to the standard output stream.
- * See Kotlin [documentation](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.io/println.html).
+ * Raises an assertion error if [value] is false.
  */
-fun println(message: Any?) {}
+fun assert(value: Boolean) {
+    throw IllegalArgumentException()
+}
+
+/**
+ * Raises an assertion error with [message] if [value] is false.
+ */
+fun assert(value: Boolean, message: () -> Any) {
+    throw IllegalArgumentException()
+}

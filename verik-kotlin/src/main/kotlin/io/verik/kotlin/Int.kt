@@ -14,19 +14,33 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused", "UNUSED_PARAMETER")
+@file:Suppress("UNUSED_PARAMETER", "unused")
 
-package io.verik.core
+package io.verik.kotlin
 
 /**
- * (UNIMPLEMENTED) An optional component [C] that is instantiated based on the logical [X].
+ * Represents a 32-bit signed integer.
  */
-class Option<X : `?`, C : Component>(instantiator: () -> C) : Component() {
+class Int private constructor() {
 
     /**
-     * (UNIMPLEMENTED) The instantiated component.
+     * Multiplies this value by the [other] value.
      */
-    val option: C by lazy<C> {
-        throw VerikException()
+    operator fun times(other: Int): Int {
+        throw IllegalArgumentException()
+    }
+
+    /**
+     * Adds the [other] value to this value.
+     */
+    operator fun plus(other: Int): Int {
+        throw IllegalArgumentException()
+    }
+
+    /**
+     * Subtracts the [other] value from this value.
+     */
+    operator fun minus(other: Int): Int {
+        throw IllegalArgumentException()
     }
 }

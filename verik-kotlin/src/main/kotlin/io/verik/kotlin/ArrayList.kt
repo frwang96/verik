@@ -16,17 +16,38 @@
 
 @file:Suppress("unused", "UNUSED_PARAMETER")
 
-package io.verik.core
+package io.verik.kotlin
 
 /**
- * (UNIMPLEMENTED) An optional component [C] that is instantiated based on the logical [X].
+ * Resizable array of elements of type [E].
  */
-class Option<X : `?`, C : Component>(instantiator: () -> C) : Component() {
+class ArrayList<E> {
 
     /**
-     * (UNIMPLEMENTED) The instantiated component.
+     * Appends element [e] to the end of this list.
      */
-    val option: C by lazy<C> {
-        throw VerikException()
+    fun add(e: E) {
+        throw IllegalArgumentException()
+    }
+
+    /**
+     * Returns the element at the specified [index] in this list.
+     */
+    fun get(index: Int): E {
+        throw IllegalArgumentException()
+    }
+
+    /**
+     * Replaces the element at the specified [index] in this list.
+     */
+    fun set(index: Int, element: E) {
+        throw IllegalArgumentException()
+    }
+
+    /**
+     * Returns the number of elements in this list.
+     */
+    val size: Int by lazy<Int> {
+        throw IllegalArgumentException()
     }
 }

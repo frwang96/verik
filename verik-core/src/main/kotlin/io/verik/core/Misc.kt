@@ -21,69 +21,69 @@ package io.verik.core
 /**
  * Returns the concatenation of the arguments.
  */
-fun cat(vararg x: Any): Ubit<`*`> {
+fun cat(value: Any, vararg additionalValues: Any): Ubit<`*`> {
     throw VerikException()
 }
 
 /**
- * Returns [x] replicated [N] times.
+ * Returns [value] replicated [N] times.
  */
-fun <N : `*`> rep(x: Any): Ubit<`*`> {
+fun <N : `*`> rep(value: Any): Ubit<`*`> {
     throw VerikException()
 }
 
 /**
- * Returns the maximum of the arguments.
+ * (UNIMPLEMENTED) Returns the maximum of the arguments.
  */
-fun max(vararg x: Int): Int {
+fun max(value: Int, vararg additionalValues: Int): Int {
     throw VerikException()
 }
 
 /**
- * Returns the maximum of the arguments.
+ * (UNIMPLEMENTED) Returns the maximum of the arguments.
  */
-fun max(vararg x: Sbit<`*`>): Sbit<`*`> {
+fun <N : `*`> max(value: Sbit<N>, vararg additionalValues: Sbit<N>): Sbit<N> {
     throw VerikException()
 }
 
 /**
- * Returns the maximum of the arguments.
+ * (UNIMPLEMENTED) Returns the maximum of the arguments.
  */
-fun max(vararg x: Ubit<`*`>): Ubit<`*`> {
+fun <N : `*`> max(value: Ubit<N>, vararg additionalValues: Ubit<N>): Ubit<N> {
     throw VerikException()
 }
 
 /**
- * Returns the minimum of the arguments.
+ * (UNIMPLEMENTED) Returns the minimum of the arguments.
  */
-fun min(vararg x: Int): Int {
+fun min(value: Int, vararg additionalValues: Int): Int {
     throw VerikException()
 }
 
 /**
- * Returns the minimum of the arguments.
+ * (UNIMPLEMENTED) Returns the minimum of the arguments.
  */
-fun min(vararg x: Sbit<`*`>): Sbit<`*`> {
+fun <N : `*`> min(value: Sbit<N>, vararg additionalValues: Sbit<N>): Sbit<N> {
     throw VerikException()
 }
 
 /**
- * Returns the minimum of the arguments.
+ * (UNIMPLEMENTED) Returns the minimum of the arguments.
  */
-fun min(vararg x: Ubit<`*`>): Ubit<`*`> {
+fun <N : `*`> min(value: Ubit<N>, vararg additionalValues: Ubit<N>): Ubit<N> {
     throw VerikException()
 }
 
 /**
- * Returns the ceiling logarithm base two of [x].
+ * (UNIMPLEMENTED) Returns the ceiling logarithm base two of [value].
  */
-fun log(x: Int): Int {
+fun log(value: Int): Int {
     throw VerikException()
 }
 
 /**
- * Returns the exponential base two of [x].
+ * (UNIMPLEMENTED) Returns the exponential base two of [value].
  */
-fun exp(x: Int): Int {
+fun exp(value: Int): Int {
     throw VerikException()
 }

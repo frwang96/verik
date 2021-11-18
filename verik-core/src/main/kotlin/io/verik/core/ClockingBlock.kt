@@ -19,7 +19,7 @@
 package io.verik.core
 
 /**
- * A clocking block to bundle signals synchronized on a clock edge. Clocking blocks can be instantiated in
+ * A clocking block to bundle signals synchronized on an event. Clocking blocks can be instantiated in
  * [modules][Module] and [module interfaces][ModuleInterface]. They correspond to SystemVerilog clocking blocks.
  *
  *      class CB(
@@ -38,5 +38,8 @@ package io.verik.core
  */
 abstract class ClockingBlock : Component() {
 
+    /**
+     * Event that triggers the clocking block.
+     */
     abstract val event: Event
 }

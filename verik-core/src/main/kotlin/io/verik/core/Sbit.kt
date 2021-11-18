@@ -25,56 +25,59 @@ package io.verik.core
 class Sbit<N : `*`> private constructor() {
 
     /**
-     * Convert the [Sbit] to a [Ubit].
-     */
-    fun toUbit(): Ubit<`*`> {
-        throw VerikException()
-    }
-
-    /**
-     * Returns true if any bit of the [Sbit] is unknown.
+     * (UNIMPLEMENTED) Returns true if any bit of the [Sbit] is unknown.
      */
     fun isUnknown(): Boolean {
         throw VerikException()
     }
 
+    /**
+     * Returns this value.
+     */
     operator fun unaryPlus(): Sbit<`*`> {
         throw VerikException()
     }
 
+    /**
+     * Returns the negative of this value.
+     */
     operator fun unaryMinus(): Sbit<`*`> {
         throw VerikException()
     }
 
-    operator fun compareTo(x: Sbit<`*`>): Int {
+    /**
+     * Compares this value with the specified [value]. Returns zero if this value is equal to the specified [value],
+     * a negative number if it is less than [value], or a positive number if it is greater than [value].
+     */
+    operator fun compareTo(value: Sbit<`*`>): Int {
         throw VerikException()
     }
 
     /**
-     * Get bit [n].
+     * (UNIMPLEMENTED) Get bit at [index].
      */
-    operator fun get(n: Int): Boolean {
+    operator fun get(index: Int): Boolean {
         throw VerikException()
     }
 
     /**
-     * Get bit [n].
+     * (UNIMPLEMENTED) Get bit at [index].
      */
-    operator fun get(n: Ubit<`*`>): Boolean {
+    operator fun get(index: Ubit<`*`>): Boolean {
         throw VerikException()
     }
 
     /**
-     * Set bit [n].
+     * (UNIMPLEMENTED) Set bit at [index] to [value].
      */
-    operator fun set(n: Int, value: Boolean) {
+    operator fun set(index: Int, value: Boolean) {
         throw VerikException()
     }
 
     /**
-     * Set bit [n].
+     * (UNIMPLEMENTED) Set bit at [index] to [value].
      */
-    operator fun set(n: Ubit<`*`>, value: Boolean) {
+    operator fun set(index: Ubit<`*`>, value: Boolean) {
         throw VerikException()
     }
 
@@ -100,217 +103,221 @@ class Sbit<N : `*`> private constructor() {
     }
 
     /**
-     * Add [x] to this value with truncated width `Sbit<N> + Ubit<M> = Ubit<MAX<N, M>>`.
+     * (UNIMPLEMENTED) Add specified [value] to this value with truncated width `Sbit<N> + Ubit<M> = Ubit<MAX<N, M>>`.
      */
-    operator fun plus(x: Ubit<`*`>): Ubit<`*`> {
+    operator fun plus(value: Ubit<`*`>): Ubit<`*`> {
         throw VerikException()
     }
 
     /**
-     * Add [x] to this value with truncated width `Sbit<N> + Sbit<M> = Sbit<MAX<N, M>>`.
+     * Add specified [value] to this value with truncated width `Sbit<N> + Sbit<M> = Sbit<MAX<N, M>>`.
      */
-    operator fun plus(x: Sbit<`*`>): Sbit<`*`> {
+    operator fun plus(value: Sbit<`*`>): Sbit<`*`> {
         throw VerikException()
     }
 
     /**
-     * Subtract [x] from this value with truncated width `Sbit<N> - Ubit<M> = Ubit<MAX<N, M>>`.
+     * (UNIMPLEMENTED) Add specified [value] to this value with full width `Sbit<N> + Ubit<M> = Ubit<MAX<N, M> + 1>`.
      */
-    operator fun minus(x: Ubit<`*`>): Ubit<`*`> {
+    infix fun add(value: Ubit<`*`>): Ubit<`*`> {
         throw VerikException()
     }
 
     /**
-     * Subtract [x] from this value with truncated width `Sbit<N> - Sbit<M> = Sbit<MAX<N, M>>`.
+     * (UNIMPLEMENTED) Add specified [value] to this value with full width `Sbit<N> + Sbit<M> = Sbit<MAX<N, M> + 1>`.
      */
-    operator fun minus(x: Sbit<`*`>): Sbit<`*`> {
+    infix fun add(value: Sbit<`*`>): Sbit<`*`> {
         throw VerikException()
     }
 
     /**
-     * Multiply [x] to this value with truncated width `Sbit<N> * Ubit<M> = Ubit<MAX<N, M>>`.
+     * (UNIMPLEMENTED) Subtract specified [value] from this value with truncated width
+     * `Sbit<N> - Ubit<M> = Ubit<MAX<N, M>>`.
      */
-    operator fun times(x: Ubit<`*`>): Ubit<`*`> {
+    operator fun minus(value: Ubit<`*`>): Ubit<`*`> {
         throw VerikException()
     }
 
     /**
-     * Multiply [x] to this value with truncated width `Sbit<N> * Sbit<M> = Sbit<MAX<N, M>>`.
+     * (UNIMPLEMENTED) Subtract specified [value] from this value with truncated width
+     * `Sbit<N> - Sbit<M> = Sbit<MAX<N, M>>`.
      */
-    operator fun times(x: Sbit<`*`>): Sbit<`*`> {
+    operator fun minus(value: Sbit<`*`>): Sbit<`*`> {
         throw VerikException()
     }
 
     /**
-     * Add [x] to this value with full width `Sbit<N> + Ubit<M> = Ubit<MAX<N, M> + 1>`.
+     * (UNIMPLEMENTED) Multiply specified [value] to this value with truncated width
+     * `Sbit<N> * Ubit<M> = Ubit<MAX<N, M>>`.
      */
-    infix fun add(x: Ubit<`*`>): Ubit<`*`> {
+    operator fun times(value: Ubit<`*`>): Ubit<`*`> {
         throw VerikException()
     }
 
     /**
-     * Add [x] to this value with full width `Sbit<N> + Sbit<M> = Sbit<MAX<N, M> + 1>`.
+     * (UNIMPLEMENTED) Multiply specified [value] to this value with truncated width
+     * `Sbit<N> * Sbit<M> = Sbit<MAX<N, M>>`.
      */
-    infix fun add(x: Sbit<`*`>): Sbit<`*`> {
+    operator fun times(value: Sbit<`*`>): Sbit<`*`> {
         throw VerikException()
     }
 
     /**
-     * Multiply [x] to this value with full width `Sbit<N> * Ubit<M> = Ubit<N * M>`.
+     * (UNIMPLEMENTED) Multiply specified [value] to this value with full width `Sbit<N> * Ubit<M> = Ubit<N * M>`.
      */
-    infix fun mul(x: Ubit<`*`>): Ubit<`*`> {
+    infix fun mul(value: Ubit<`*`>): Ubit<`*`> {
         throw VerikException()
     }
 
     /**
-     * Multiply [x] to this value with full width `Sbit<N> * Sbit<M> = Sbit<N * M>`.
+     * Multiply specified [value] to this value with full width `Sbit<N> * Sbit<M> = Sbit<N * M>`.
      */
-    infix fun mul(x: Sbit<`*`>): Sbit<`*`> {
+    infix fun mul(value: Sbit<`*`>): Sbit<`*`> {
         throw VerikException()
     }
 
     /**
-     * Left shift by [x] bits.
+     * (UNIMPLEMENTED) Takes the bitwise and with [value].
      */
-    infix fun shl(x: Int): Sbit<`*`> {
+    infix fun and(value: Ubit<N>): Ubit<N> {
         throw VerikException()
     }
 
     /**
-     * Left shift by [x] bits.
+     * (UNIMPLEMENTED) Takes the bitwise and with [value].
      */
-    infix fun shl(x: Ubit<`*`>): Sbit<`*`> {
+    infix fun and(value: Sbit<N>): Ubit<N> {
         throw VerikException()
     }
 
     /**
-     * Signed right shift by [x] bits.
+     * (UNIMPLEMENTED) Takes the bitwise or with [value].
      */
-    infix fun shr(x: Int): Sbit<`*`> {
+    infix fun or(value: Ubit<N>): Ubit<N> {
         throw VerikException()
     }
 
     /**
-     * Signed right shift by [x] bits.
+     * (UNIMPLEMENTED) Takes the bitwise or with [value].
      */
-    infix fun shr(x: Ubit<`*`>): Sbit<`*`> {
+    infix fun or(value: Sbit<N>): Ubit<N> {
         throw VerikException()
     }
 
     /**
-     * Unsigned right shift by [x] bits.
+     * (UNIMPLEMENTED) Takes the bitwise xor with [value].
      */
-    infix fun ushr(x: Int): Sbit<`*`> {
+    infix fun xor(value: Ubit<N>): Ubit<N> {
         throw VerikException()
     }
 
     /**
-     * Unsigned right shift by [x] bits.
+     * (UNIMPLEMENTED) Takes the bitwise xor with [value].
      */
-    infix fun ushr(x: Ubit<`*`>): Sbit<`*`> {
+    infix fun xor(value: Sbit<N>): Ubit<N> {
         throw VerikException()
     }
 
     /**
-     * Takes the bitwise and.
+     * (UNIMPLEMENTED) Left shift by [value].
      */
-    infix fun and(x: Ubit<`*`>): Ubit<`*`> {
+    infix fun shl(value: Int): Sbit<N> {
         throw VerikException()
     }
 
     /**
-     * Takes the bitwise and.
+     * (UNIMPLEMENTED) Left shift by [value].
      */
-    infix fun and(x: Sbit<`*`>): Ubit<`*`> {
+    infix fun shl(value: Ubit<`*`>): Sbit<N> {
         throw VerikException()
     }
 
     /**
-     * Takes the bitwise or.
+     * (UNIMPLEMENTED) Signed right shift by [value].
      */
-    infix fun or(x: Ubit<`*`>): Ubit<`*`> {
+    infix fun shr(value: Int): Sbit<N> {
         throw VerikException()
     }
 
     /**
-     * Takes the bitwise or.
+     * (UNIMPLEMENTED) Signed right shift by [value].
      */
-    infix fun or(x: Sbit<`*`>): Ubit<`*`> {
+    infix fun shr(value: Ubit<`*`>): Sbit<N> {
         throw VerikException()
     }
 
     /**
-     * Takes the bitwise xor.
+     * (UNIMPLEMENTED) Unsigned right shift by [value].
      */
-    infix fun xor(x: Ubit<`*`>): Ubit<`*`> {
+    infix fun ushr(value: Int): Sbit<N> {
         throw VerikException()
     }
 
     /**
-     * Takes the bitwise xor.
+     * (UNIMPLEMENTED) Unsigned right shift by [value].
      */
-    infix fun xor(x: Sbit<`*`>): Ubit<`*`> {
+    infix fun ushr(value: Ubit<`*`>): Sbit<N> {
         throw VerikException()
     }
 
     /**
-     * Inverts the bits.
+     * (UNIMPLEMENTED) Inverts the bits.
      */
-    fun inv(): Ubit<`*`> {
+    fun invert(): Ubit<N> {
         throw VerikException()
     }
 
     /**
-     * Reduce bits with and.
+     * (UNIMPLEMENTED) Reduce bits with and.
      */
     fun redAnd(): Boolean {
         throw VerikException()
     }
 
     /**
-     * Reduce bits with or.
+     * (UNIMPLEMENTED) Reduce bits with or.
      */
     fun redOr(): Boolean {
         throw VerikException()
     }
 
     /**
-     * Reduce bits with xor.
+     * (UNIMPLEMENTED) Reduce bits with xor.
      */
     fun redXor(): Boolean {
         throw VerikException()
     }
 
     /**
-     * Slice [M] bits starting at n.
+     * (UNIMPLEMENTED) Slice [M] bits starting at [index].
      */
-    fun <M : `*`> slice(n: Int): Ubit<M> {
+    fun <M : `*`> slice(index: Int): Ubit<M> {
         throw VerikException()
     }
 
     /**
-     * Slice [M] bits starting at n.
+     * (UNIMPLEMENTED) Slice [M] bits starting at [index].
      */
-    fun <M : `*`> slice(n: Ubit<`*`>): Ubit<M> {
+    fun <M : `*`> slice(index: Ubit<`*`>): Ubit<M> {
         throw VerikException()
     }
 
     /**
-     * Extend to [M] bits with sign extension.
+     * (UNIMPLEMENTED) Extend to [M] bits with sign extension.
      */
     fun <M : `*`> ext(): Sbit<M> {
         throw VerikException()
     }
 
     /**
-     * Extend to [M] bits with zero extension.
+     * (UNIMPLEMENTED) Extend to [M] bits with zero extension.
      */
     fun <M : `*`> uext(): Ubit<M> {
         throw VerikException()
     }
 
     /**
-     * Truncate to [M] bits.
+     * (UNIMPLEMENTED) Truncate to [M] bits.
      */
     fun <M : `*`> tru(): Sbit<M> {
         throw VerikException()

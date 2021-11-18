@@ -19,7 +19,6 @@ package io.verik.compiler.target.common
 import io.verik.compiler.target.declaration.TargetArrayList
 import io.verik.compiler.target.declaration.TargetClass
 import io.verik.compiler.target.declaration.TargetSystem
-import io.verik.compiler.target.declaration.TargetUnpacked
 
 object Target {
 
@@ -52,16 +51,12 @@ object Target {
     val F_wait = TargetSystem.F_wait
     val F_name = TargetSystem.F_name
 
-    object Unpacked {
-
-        val F_rsort = TargetUnpacked.F_rsort
-    }
-
     object ArrayList {
 
         val F_new = TargetArrayList.F_new
         val F_add = TargetArrayList.F_add
         val F_get = TargetArrayList.F_get
+        val F_set = TargetArrayList.F_set
         val F_size = TargetArrayList.F_size
     }
 }

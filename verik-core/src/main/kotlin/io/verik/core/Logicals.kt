@@ -23,26 +23,26 @@ sealed class Logical
 typealias `?` = Logical
 
 /**
- * Logical true value.
+ * (UNIMPLEMENTED) Logical true value.
  */
 typealias TRUE = `?`
 
 /**
- * Logical false value.
+ * (UNIMPLEMENTED) Logical false value.
  */
 typealias FALSE = `?`
 
 /**
- * Inverts the logical X.
+ * (UNIMPLEMENTED) Inverts the logical X.
  */
 typealias NOT<X> = `?`
 
 /**
- * Takes the conjunction of the logicals X and Y.
+ * (UNIMPLEMENTED) Takes the conjunction of the logicals X and Y.
  */
 typealias AND<X, Y> = `?`
 
 /**
- * Takes the disjunction of the logicals X and Y.
+ * (UNIMPLEMENTED) Takes the disjunction of the logicals X and Y.
  */
 typealias OR<X, Y> = `?`

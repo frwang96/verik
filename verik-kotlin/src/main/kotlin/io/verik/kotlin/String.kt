@@ -14,29 +14,11 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNUSED_PARAMETER", "unused")
+@file:Suppress("unused")
 
-package io.verik.core
-
-/**
- * A simulation event.
- */
-class Event
+package io.verik.kotlin
 
 /**
- * Returns an event for a positive edge transition.
- * @param x the value to trigger on
- * @return an event for the positive edge transition of [x]
+ * The String class represents character strings.
  */
-fun posedge(x: Boolean): Event {
-    throw VerikException()
-}
-
-/**
- * Returns an event for a negative edge transition.
- * @param x the value to trigger on
- * @return an event for the negative edge transition of [x]
- */
-fun negedge(x: Boolean): Event {
-    throw VerikException()
-}
+class String private constructor()

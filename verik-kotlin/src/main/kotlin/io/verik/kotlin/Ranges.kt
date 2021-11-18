@@ -14,13 +14,19 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
+@file:Suppress("unused", "UNUSED_PARAMETER")
 
-package io.verik.core
+package io.verik.kotlin
 
 /**
- * Convert the int to a [Ubit].
+ * A range of values of type [Int].
  */
-fun Int.toUbit(): Ubit<`*`> {
-    throw VerikException()
+class IntRange private constructor()
+
+/**
+ * Returns a range from this value up to but excluding the specified [to] value. If the [to] value is less than or equal
+ * to this value, then the returned range is empty.
+ */
+infix fun Int.until(to: Int): IntRange {
+    throw IllegalArgumentException()
 }

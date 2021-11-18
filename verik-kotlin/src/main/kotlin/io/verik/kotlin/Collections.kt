@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.target.declaration
+@file:Suppress("UNUSED_PARAMETER", "unused")
 
-import io.verik.compiler.target.common.PrimitiveTargetFunctionDeclaration
-import io.verik.compiler.target.common.Target
-import io.verik.compiler.target.common.TargetScope
+package io.verik.kotlin
 
-object TargetUnpacked : TargetScope(Target.C_Unpacked) {
-
-    val F_rsort = PrimitiveTargetFunctionDeclaration(parent, "rsort")
+/**
+ * Performs the given [action] on each element.
+ */
+fun <T> Iterable<T>.forEach(action: (T) -> Unit) {
+    throw IllegalArgumentException()
 }
