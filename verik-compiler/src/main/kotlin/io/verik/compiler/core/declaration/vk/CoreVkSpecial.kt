@@ -22,7 +22,6 @@ import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.common.BitConstant
 import io.verik.compiler.common.ConstantUtil
 import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
-import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.core.common.CoreTransformUtil
@@ -33,9 +32,10 @@ import io.verik.compiler.resolve.TypeConstraint
 import io.verik.compiler.resolve.TypeEqualsTypeConstraint
 import io.verik.compiler.resolve.UnaryOperatorTypeConstraint
 import io.verik.compiler.resolve.UnaryOperatorTypeConstraintKind
-import io.verik.compiler.target.common.Target
 
-object CoreVk : CoreScope(CorePackage.VK) {
+object CoreVkSpecial : CoreScope(CorePackage.VK) {
+
+    val F_sv_String = BasicCoreFunctionDeclaration(parent, "sv", "fun sv(String)", null)
 
     val F_nc = object : TransformableCoreFunctionDeclaration(parent, "nc", "fun nc()") {
 
@@ -152,31 +152,4 @@ object CoreVk : CoreScope(CorePackage.VK) {
             return CoreTransformUtil.callExpressionSigned(callExpression.valueArguments[0])
         }
     }
-
-    val F_time = BasicCoreFunctionDeclaration(parent, "time", "fun time()", Target.F_time)
-
-    val F_finish = BasicCoreFunctionDeclaration(parent, "finish", "fun finish()", Target.F_finish)
-
-    val F_fatal = BasicCoreFunctionDeclaration(parent, "fatal", "fun fatal()", Target.F_fatal)
-
-    val F_fatal_String = object : TransformableCoreFunctionDeclaration(parent, "fatal", "fun fatal(String)") {
-
-        override fun transform(callExpression: EKtCallExpression): EExpression {
-            return EKtCallExpression(
-                callExpression.location,
-                callExpression.type,
-                Target.F_fatal,
-                null,
-                arrayListOf(
-                    EConstantExpression(callExpression.location, Core.Kt.C_Int.toType(), "1"),
-                    callExpression.valueArguments[0]
-                ),
-                ArrayList()
-            )
-        }
-    }
-
-    val F_error_String = BasicCoreFunctionDeclaration(parent, "error", "fun error(String)", Target.F_error)
-
-    val F_sv_String = BasicCoreFunctionDeclaration(parent, "sv", "fun sv(String)", null)
 }

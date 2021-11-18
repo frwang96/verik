@@ -19,7 +19,21 @@
 package io.verik.core
 
 /**
- * Returns the value of the logical [X] as a boolean.
+ * Inject [content] as SystemVerilog to use unsupported language constructs.
+ */
+fun sv(content: String) {
+    throw VerikException()
+}
+
+/**
+ * Represents a value that is not connected in output port connections or property declarations.
+ */
+fun <T> nc(): T {
+    throw VerikException()
+}
+
+/**
+ * (UNIMPLEMENTED) Returns the value of the logical [X] as a boolean.
  */
 fun <X : `?`> b(): Boolean {
     throw VerikException()
@@ -33,7 +47,14 @@ fun <N : `*`> i(): Int {
 }
 
 /**
- * Converts [value] to [Ubit].
+ * Constructs a [Ubit] out of the cardinal [N].
+ */
+fun <N : `*`> u(): Ubit<`*`> {
+    throw VerikException()
+}
+
+/**
+ * (UNIMPLEMENTED) Converts [value] to [Ubit].
  */
 fun u(value: Boolean): Ubit<`*`> {
     throw VerikException()
@@ -61,13 +82,6 @@ fun u(value: Sbit<`*`>): Ubit<`*`> {
 }
 
 /**
- * Constructs a [Ubit] out of the cardinal [N].
- */
-fun <N : `*`> u(): Ubit<`*`> {
-    throw VerikException()
-}
-
-/**
  * Returns a [Ubit] with all bits set to zero.
  */
 fun <N : `*`> u0(): Ubit<N> {
@@ -75,14 +89,14 @@ fun <N : `*`> u0(): Ubit<N> {
 }
 
 /**
- * Returns a [Ubit] with all bits set to one.
+ * (UNIMPLEMENTED) Returns a [Ubit] with all bits set to one.
  */
 fun <N : `*`> u1(): Ubit<N> {
     throw VerikException()
 }
 
 /**
- * Converts [value] to [Sbit].
+ * (UNIMPLEMENTED) Converts [value] to [Sbit].
  */
 fun s(value: Boolean): Sbit<`*`> {
     throw VerikException()
@@ -110,57 +124,43 @@ fun s(value: Ubit<`*`>): Sbit<`*`> {
 }
 
 /**
- * Returns a [Sbit] with all bits set to zero.
+ * (UNIMPLEMENTED) Returns a [Sbit] with all bits set to zero.
  */
 fun <N : `*`> s0(): Sbit<N> {
     throw VerikException()
 }
 
 /**
- * Returns a [Sbit] with all bits set to one.
+ * (UNIMPLEMENTED) Returns a [Sbit] with all bits set to one.
  */
 fun <N : `*`> s1(): Sbit<N> {
     throw VerikException()
 }
 
 /**
- * Returns a value of type [T] with all bits set to X.
+ * (UNIMPLEMENTED) Returns a value of type [T] with all bits set to X.
  */
 fun <T> fill0(): T {
     throw VerikException()
 }
 
 /**
- * Returns a value of type [T] with all bits set to X.
+ * (UNIMPLEMENTED) Returns a value of type [T] with all bits set to X.
  */
 fun <T> fill1(): T {
     throw VerikException()
 }
 
 /**
- * Returns a value of type [T] with all bits set to X.
+ * (UNIMPLEMENTED) Returns a value of type [T] with all bits set to X.
  */
 fun <T> fillx(): T {
     throw VerikException()
 }
 
 /**
- * Returns a value of type [T] with all bits set to Z.
+ * (UNIMPLEMENTED) Returns a value of type [T] with all bits set to Z.
  */
 fun <T> fillz(): T {
-    throw VerikException()
-}
-
-/**
- * Represents a value that is not connected in output port connections or property declarations.
- */
-fun <T> nc(): T {
-    throw VerikException()
-}
-
-/**
- * Inject [content] as SystemVerilog to use unsupported language constructs.
- */
-fun sv(content: String) {
     throw VerikException()
 }

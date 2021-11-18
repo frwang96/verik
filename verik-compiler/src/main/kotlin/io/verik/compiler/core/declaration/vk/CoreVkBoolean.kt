@@ -18,10 +18,8 @@ package io.verik.compiler.core.declaration.vk
 
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
-import io.verik.compiler.ast.element.sv.EWidthCastExpression
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
-import io.verik.compiler.core.common.CoreTransformUtil
 import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
 import io.verik.compiler.resolve.TypeAdapter
 import io.verik.compiler.resolve.TypeConstraint
@@ -29,7 +27,7 @@ import io.verik.compiler.resolve.TypeEqualsTypeConstraint
 
 object CoreVkBoolean : CoreScope(CorePackage.VK) {
 
-    val F_ext = object : TransformableCoreFunctionDeclaration(CoreVk.parent, "ext", "fun ext()") {
+    val F_ext = object : TransformableCoreFunctionDeclaration(parent, "ext", "fun ext()") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -41,31 +39,18 @@ object CoreVkBoolean : CoreScope(CorePackage.VK) {
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
-            return EWidthCastExpression(
-                callExpression.location,
-                callExpression.type,
-                callExpression.receiver!!,
-                value
-            )
+            return CoreVkUbit.F_ext.transform(callExpression)
         }
     }
 
-    val F_sext = object : TransformableCoreFunctionDeclaration(CoreVk.parent, "sext", "fun sext()") {
+    val F_sext = object : TransformableCoreFunctionDeclaration(parent, "sext", "fun sext()") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return F_ext.getTypeConstraints(callExpression)
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            val callExpressionSigned = CoreTransformUtil.callExpressionSigned(callExpression.receiver!!)
-            val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
-            return EWidthCastExpression(
-                callExpression.location,
-                callExpression.type,
-                callExpressionSigned,
-                value
-            )
+            return CoreVkUbit.F_sext.transform(callExpression)
         }
     }
 }

@@ -46,6 +46,31 @@ import io.verik.compiler.resolve.TypeEqualsTypeConstraint
 
 object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
+    val F_lt_Ubit = BinaryCoreFunctionDeclaration(parent, "lt", null, SvBinaryOperatorKind.LT)
+
+    val F_lteq_Ubit = BinaryCoreFunctionDeclaration(parent, "lteq", null, SvBinaryOperatorKind.LTEQ)
+
+    val F_gt_Ubit = BinaryCoreFunctionDeclaration(parent, "gt", null, SvBinaryOperatorKind.GT)
+
+    val F_gteq_Ubit = BinaryCoreFunctionDeclaration(parent, "gteq", null, SvBinaryOperatorKind.GTEQ)
+
+    val F_unaryMinus = object : UnaryCoreFunctionDeclaration(
+        parent,
+        "unaryMinus",
+        "fun unaryMinus()",
+        SvUnaryOperatorKind.MINUS
+    ) {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return listOf(
+                TypeEqualsTypeConstraint(
+                    TypeAdapter.ofElement(callExpression.receiver!!, 0),
+                    TypeAdapter.ofElement(callExpression, 0)
+                )
+            )
+        }
+    }
+
     val F_get_Int = object : TransformableCoreFunctionDeclaration(parent, "get", "fun get(Int)") {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
@@ -106,23 +131,6 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
                 receiver,
                 callExpression.valueArguments[1],
                 KtBinaryOperatorKind.EQ
-            )
-        }
-    }
-
-    val F_unaryMinus = object : UnaryCoreFunctionDeclaration(
-        parent,
-        "unaryMinus",
-        "fun unaryMinus()",
-        SvUnaryOperatorKind.MINUS
-    ) {
-
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
-            return listOf(
-                TypeEqualsTypeConstraint(
-                    TypeAdapter.ofElement(callExpression.receiver!!, 0),
-                    TypeAdapter.ofElement(callExpression, 0)
-                )
             )
         }
     }
@@ -390,14 +398,6 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_lt_Ubit = BinaryCoreFunctionDeclaration(parent, "lt", null, SvBinaryOperatorKind.LT)
-
-    val F_lteq_Ubit = BinaryCoreFunctionDeclaration(parent, "lteq", null, SvBinaryOperatorKind.LTEQ)
-
-    val F_gt_Ubit = BinaryCoreFunctionDeclaration(parent, "gt", null, SvBinaryOperatorKind.GT)
-
-    val F_gteq_Ubit = BinaryCoreFunctionDeclaration(parent, "gteq", null, SvBinaryOperatorKind.GTEQ)
-
     val F_invert = object : UnaryCoreFunctionDeclaration(
         parent,
         "invert",
@@ -428,6 +428,37 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             return EStreamingExpression(callExpression.location, callExpression.type, callExpression.receiver!!)
+        }
+    }
+
+    val F_slice_Int = object : TransformableCoreFunctionDeclaration(parent, "slice", "fun slice(Int)") {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return listOf(
+                TypeEqualsTypeConstraint(
+                    TypeAdapter.ofTypeArgument(callExpression, 0),
+                    TypeAdapter.ofElement(callExpression, 0)
+                )
+            )
+        }
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
+            val msbIndex = EKtCallExpression(
+                callExpression.location,
+                Core.Kt.C_Int.toType(),
+                Core.Kt.Int.F_plus_Int,
+                ExpressionCopier.copy(callExpression.valueArguments[0]),
+                arrayListOf(EConstantExpression(callExpression.location, Core.Kt.C_Int.toType(), "${value - 1}")),
+                arrayListOf()
+            )
+            return EConstantPartSelectExpression(
+                callExpression.location,
+                callExpression.type,
+                callExpression.receiver!!,
+                msbIndex,
+                callExpression.valueArguments[0]
+            )
         }
     }
 
@@ -499,37 +530,6 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
                 callExpression.type,
                 callExpression.receiver!!,
                 value
-            )
-        }
-    }
-
-    val F_slice_Int = object : TransformableCoreFunctionDeclaration(parent, "slice", "fun slice(Int)") {
-
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
-            return listOf(
-                TypeEqualsTypeConstraint(
-                    TypeAdapter.ofTypeArgument(callExpression, 0),
-                    TypeAdapter.ofElement(callExpression, 0)
-                )
-            )
-        }
-
-        override fun transform(callExpression: EKtCallExpression): EExpression {
-            val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
-            val msbIndex = EKtCallExpression(
-                callExpression.location,
-                Core.Kt.C_Int.toType(),
-                Core.Kt.Int.F_plus_Int,
-                ExpressionCopier.copy(callExpression.valueArguments[0]),
-                arrayListOf(EConstantExpression(callExpression.location, Core.Kt.C_Int.toType(), "${value - 1}")),
-                arrayListOf()
-            )
-            return EConstantPartSelectExpression(
-                callExpression.location,
-                callExpression.type,
-                callExpression.receiver!!,
-                msbIndex,
-                callExpression.valueArguments[0]
             )
         }
     }
