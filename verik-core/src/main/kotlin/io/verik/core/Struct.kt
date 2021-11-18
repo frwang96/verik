@@ -24,13 +24,6 @@ package io.verik.core
 abstract class Struct {
 
     /**
-     * Convert the struct to a [Ubit].
-     */
-    fun toUbit(): Ubit<`*`> {
-        throw VerikException()
-    }
-
-    /**
      * Returns true if any bit of the struct is unknown.
      */
     fun isUnknown(): Boolean {

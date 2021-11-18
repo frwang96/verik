@@ -23,22 +23,19 @@ import io.verik.compiler.ast.element.sv.EReplicationExpression
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
-import io.verik.compiler.message.Messages
 import io.verik.compiler.resolve.ConcatenationTypeConstraint
 import io.verik.compiler.resolve.ReplicationTypeConstraint
 import io.verik.compiler.resolve.TypeConstraint
 
 object CoreVkMisc : CoreScope(CorePackage.VK) {
 
-    val F_cat_Any = object : TransformableCoreFunctionDeclaration(parent, "cat", "fun cat(vararg Any)") {
+    val F_cat_Any_Any = object : TransformableCoreFunctionDeclaration(parent, "cat", "fun cat(Any, vararg Any)") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(ConcatenationTypeConstraint(callExpression))
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            if (callExpression.valueArguments.size < 2)
-                Messages.CAT_INSUFFICIENT_ARGUMENTS.on(callExpression)
             return EConcatenationExpression(callExpression.location, callExpression.type, callExpression.valueArguments)
         }
     }

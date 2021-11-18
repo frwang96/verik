@@ -19,13 +19,6 @@
 package io.verik.core
 
 /**
- * (UNIMPLEMENTED) Convert the boolean to a [Ubit].
- */
-fun Boolean.toUbit(): Ubit<`*`> {
-    throw VerikException()
-}
-
-/**
  * (UNIMPLEMENTED) Returns true if the boolean is unknown.
  */
 fun Boolean.isUnknown(): Boolean {

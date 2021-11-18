@@ -227,11 +227,6 @@ object Messages {
         "String literal expected for injected statement"
     )
 
-    val CAT_INSUFFICIENT_ARGUMENTS = MessageTemplate0(
-        Severity.ERROR,
-        "Concatenation expects at least two arguments"
-    )
-
     val SUBEXPRESSION_UNABLE_TO_EXTRACT = MessageTemplate0(
         Severity.ERROR,
         "Unable to extract subexpression"

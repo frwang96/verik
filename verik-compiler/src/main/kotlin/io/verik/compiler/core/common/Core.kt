@@ -171,14 +171,14 @@ object Core {
 
         val F_posedge_Boolean = CoreVkControl.F_posedge_Boolean
         val F_negedge_Boolean = CoreVkControl.F_negedge_Boolean
-        val F_on_Event_Function = CoreVkControl.F_on_Event_Function
+        val F_on_Event_Event_Function = CoreVkControl.F_on_Event_Event_Function
         val F_forever_Function = CoreVkControl.F_forever_Function
         val F_delay_Int = CoreVkControl.F_delay_Int
         val F_wait_Boolean = CoreVkControl.F_wait_Boolean
         val F_wait_Event = CoreVkControl.F_wait_Event
         val F_wait_ClockingBlock = CoreVkControl.F_wait_ClockingBlock
 
-        val F_cat_Any = CoreVkMisc.F_cat_Any
+        val F_cat_Any_Any = CoreVkMisc.F_cat_Any_Any
         val F_rep_Any = CoreVkMisc.F_rep_Any
 
         val F_random = CoreVkRandom.F_random

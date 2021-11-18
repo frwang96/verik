@@ -18,11 +18,8 @@ package io.verik.compiler.core.declaration.vk
 
 import io.verik.compiler.transform.mid.FunctionTransformerStage
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.findExpression
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class CoreVkMiscTest : BaseTest() {
 
@@ -38,18 +35,6 @@ internal class CoreVkMiscTest : BaseTest() {
             "ConcatenationExpression(Ubit<`2`>, [*, *])",
             projectContext.findExpression("x")
         )
-    }
-
-    @Test
-    fun `transform cat illegal`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                FunctionTransformerStage::class,
-                """
-                val x = cat(u(0))
-                """.trimIndent()
-            )
-        }.apply { Assertions.assertEquals("Concatenation expects at least two arguments", message) }
     }
 
     @Test

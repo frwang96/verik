@@ -55,10 +55,10 @@ object CoreVkControl : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_on_Event_Function = object : TransformableCoreFunctionDeclaration(
+    val F_on_Event_Event_Function = object : TransformableCoreFunctionDeclaration(
         parent,
         "on",
-        "fun on(Event, Function)"
+        "fun on(Event, vararg Event, Function)"
     ) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
