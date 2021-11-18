@@ -126,14 +126,28 @@ fun <N : `*`> s1(): Sbit<N> {
 /**
  * Returns a value of type [T] with all bits set to X.
  */
-fun <T> x(): T {
+fun <T> fill0(): T {
+    throw VerikException()
+}
+
+/**
+ * Returns a value of type [T] with all bits set to X.
+ */
+fun <T> fill1(): T {
+    throw VerikException()
+}
+
+/**
+ * Returns a value of type [T] with all bits set to X.
+ */
+fun <T> fillx(): T {
     throw VerikException()
 }
 
 /**
  * Returns a value of type [T] with all bits set to Z.
  */
-fun <T> z(): T {
+fun <T> fillz(): T {
     throw VerikException()
 }
 

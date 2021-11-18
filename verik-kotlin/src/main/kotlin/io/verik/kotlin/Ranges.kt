@@ -14,22 +14,19 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
+@file:Suppress("unused", "UNUSED_PARAMETER")
 
 package io.verik.kotlin
 
 /**
- * The root of the Kotlin class hierarchy. Every Kotlin class has Any as a superclass.
+ * A range of values of type [Int].
  */
-abstract class Any
+class IntRange private constructor()
 
 /**
- * The type with only one value: the Unit object. This type corresponds to the void type in Java.
+ * Returns a range from this value up to but excluding the specified [to] value. If the [to] value is less than or equal
+ * to this value, then the returned range is empty.
  */
-class Unit private constructor()
-
-/**
- * Nothing has no instances. You can use Nothing to represent "a value that never exists": for example, if a function
- * has the return type of Nothing, it means that it never returns.
- */
-class Nothing private constructor()
+infix fun Int.until(to: Int): IntRange {
+    throw IllegalArgumentException()
+}

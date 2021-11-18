@@ -39,13 +39,14 @@ object Core {
     object Kt {
 
         val C_Any = CoreKtClass.C_Any
-        val C_Nothing = CoreKtClass.C_Nothing
-        val C_Function = CoreKtClass.C_Function
         val C_Unit = CoreKtClass.C_Unit
+        val C_Nothing = CoreKtClass.C_Nothing
+        val C_Enum = CoreKtClass.C_Enum
+        val C_Function = CoreKtClass.C_Function
+
         val C_Int = CoreKtClass.C_Int
         val C_Boolean = CoreKtClass.C_Boolean
         val C_String = CoreKtClass.C_String
-        val C_Enum = CoreKtClass.C_Enum
 
         val F_repeat_Int_Function = CoreKt.F_repeat_Int_Function
         val F_assert_Boolean = CoreKt.F_assert_Boolean

@@ -19,23 +19,35 @@
 package io.verik.kotlin
 
 /**
- * Executes the given function [action] specified number of [times]. A zero-based index of current iteration is passed
- * as a parameter to [action].
+ * Resizable array of elements of type [E].
  */
-fun repeat(times: Int, action: (Int) -> Unit) {
-    throw IllegalArgumentException()
-}
+class ArrayList<E> {
 
-/**
- * Raises an assertion error if [value] is false.
- */
-fun assert(value: Boolean) {
-    throw IllegalArgumentException()
-}
+    /**
+     * Appends element [e] to the end of this list.
+     */
+    fun add(e: E) {
+        throw IllegalArgumentException()
+    }
 
-/**
- * Raises an assertion error with [message] if [value] is false.
- */
-fun assert(value: Boolean, message: () -> Any) {
-    throw IllegalArgumentException()
+    /**
+     * Returns the element at the specified [index] in this list.
+     */
+    fun get(index: Int): E {
+        throw IllegalArgumentException()
+    }
+
+    /**
+     * Replaces the element at the specified [index] in this list.
+     */
+    fun set(index: Int, element: E) {
+        throw IllegalArgumentException()
+    }
+
+    /**
+     * Returns the number of elements in this list.
+     */
+    val size: Int by lazy<Int> {
+        throw IllegalArgumentException()
+    }
 }

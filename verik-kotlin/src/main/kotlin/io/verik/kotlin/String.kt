@@ -19,17 +19,6 @@
 package io.verik.kotlin
 
 /**
- * The root of the Kotlin class hierarchy. Every Kotlin class has Any as a superclass.
+ * The String class represents character strings.
  */
-abstract class Any
-
-/**
- * The type with only one value: the Unit object. This type corresponds to the void type in Java.
- */
-class Unit private constructor()
-
-/**
- * Nothing has no instances. You can use Nothing to represent "a value that never exists": for example, if a function
- * has the return type of Nothing, it means that it never returns.
- */
-class Nothing private constructor()
+class String private constructor()

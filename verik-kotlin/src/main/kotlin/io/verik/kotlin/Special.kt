@@ -19,20 +19,22 @@
 package io.verik.kotlin
 
 /**
+ * The common base class of all enum classes.
+ */
+abstract class Enum<E : Enum<E>> : Comparable<E>
+
+/**
  * Classes that inherit from this interface can be represented as a sequence of elements that can be iterated over.
- * See Kotlin [documentation](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-iterable/).
  */
 interface Iterable<out T>
 
 /**
  * An iterator over a collection or another entity that can be represented as a sequence of elements. Allows to
  * sequentially access the elements.
- * See Kotlin [documentation](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-iterable/iterator.html).
  */
 interface Iterator<out T>
 
 /**
  * Classes which inherit from this interface have a defined total ordering between their instances.
- * See Kotlin [documentation](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-comparable/).
  */
 interface Comparable<in T>
