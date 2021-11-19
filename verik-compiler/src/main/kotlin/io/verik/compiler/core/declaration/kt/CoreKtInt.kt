@@ -25,14 +25,6 @@ import io.verik.compiler.core.common.CoreScope
 
 object CoreKtInt : CoreScope(Core.Kt.C_Int) {
 
-    val F_lt_Int = BinaryCoreFunctionDeclaration(parent, "lt", null, SvBinaryOperatorKind.LT)
-
-    val F_lteq_Int = BinaryCoreFunctionDeclaration(parent, "lteq", null, SvBinaryOperatorKind.LTEQ)
-
-    val F_gt_Int = BinaryCoreFunctionDeclaration(parent, "gt", null, SvBinaryOperatorKind.GT)
-
-    val F_gteq_Int = BinaryCoreFunctionDeclaration(parent, "gteq", null, SvBinaryOperatorKind.GTEQ)
-
     val F_times_Int = object : BinaryCoreFunctionDeclaration(
         parent,
         "times",

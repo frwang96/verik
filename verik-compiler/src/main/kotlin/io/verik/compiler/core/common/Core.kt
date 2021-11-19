@@ -58,10 +58,6 @@ object Core {
 
         object Int {
 
-            val F_lt_Int = CoreKtInt.F_lt_Int
-            val F_lteq_Int = CoreKtInt.F_lteq_Int
-            val F_gt_Int = CoreKtInt.F_gt_Int
-            val F_gteq_Int = CoreKtInt.F_gteq_Int
             val F_times_Int = CoreKtInt.F_times_Int
             val F_plus_Int = CoreKtInt.F_plus_Int
             val F_minus_Int = CoreKtInt.F_minus_Int
@@ -197,10 +193,6 @@ object Core {
 
         object Ubit {
 
-            val F_lt_Ubit = CoreVkUbit.F_lt_Ubit
-            val F_lteq_Ubit = CoreVkUbit.F_lteq_Ubit
-            val F_gt_Ubit = CoreVkUbit.F_gt_Ubit
-            val F_gteq_Ubit = CoreVkUbit.F_gteq_Ubit
             val F_unaryMinus = CoreVkUbit.F_unaryMinus
             val F_get_Int = CoreVkUbit.F_get_Int
             val F_set_Int_Boolean = CoreVkUbit.F_set_Int_Boolean
@@ -230,7 +222,6 @@ object Core {
 
         object Sbit {
 
-            val F_lt_Sbit = CoreVkSbit.F_lt_Sbit
             val F_plus_Sbit = CoreVkSbit.F_plus_Sbit
             val F_mul_Sbit = CoreVkSbit.F_mul_Sbit
         }

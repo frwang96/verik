@@ -20,12 +20,14 @@ import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
+import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.sv.ESvForStatement
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvValueParameter
+import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.KtUnaryOperatorKind
 import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.common.ProjectStage
@@ -95,13 +97,12 @@ object ForStatementTransformerStage : ProjectStage() {
                 property,
                 null
             )
-            val condition = EKtCallExpression(
+            val condition = EKtBinaryExpression(
                 callExpression.location,
                 Core.Kt.C_Boolean.toType(),
-                Core.Kt.Int.F_lt_Int,
                 propertyReferenceExpression,
-                arrayListOf(callExpression.valueArguments[0]),
-                ArrayList()
+                callExpression.valueArguments[0],
+                KtBinaryOperatorKind.LT
             )
             val iteration = EKtUnaryExpression(
                 callExpression.location,
@@ -143,13 +144,12 @@ object ForStatementTransformerStage : ProjectStage() {
                 Core.Jv.Util.ArrayList.P_size,
                 referenceExpression
             )
-            val condition = EKtCallExpression(
+            val condition = EKtBinaryExpression(
                 referenceExpression.location,
                 Core.Kt.C_Boolean.toType(),
-                Core.Kt.Int.F_lt_Int,
                 indexReferenceExpression,
-                arrayListOf(sizeReferenceExpression),
-                ArrayList()
+                sizeReferenceExpression,
+                KtBinaryOperatorKind.LT
             )
             val iteration = EKtUnaryExpression(
                 referenceExpression.location,

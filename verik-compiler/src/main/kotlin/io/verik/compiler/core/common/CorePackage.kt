@@ -22,7 +22,7 @@ class CorePackage(
 
     override val parent: CoreDeclaration? = null
 
-    override val signature: String? = null
+    override val signature: String = "package $name"
 
     companion object {
 

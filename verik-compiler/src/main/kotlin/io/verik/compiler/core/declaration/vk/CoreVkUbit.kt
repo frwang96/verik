@@ -46,14 +46,6 @@ import io.verik.compiler.resolve.TypeEqualsTypeConstraint
 
 object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
-    val F_lt_Ubit = BinaryCoreFunctionDeclaration(parent, "lt", null, SvBinaryOperatorKind.LT)
-
-    val F_lteq_Ubit = BinaryCoreFunctionDeclaration(parent, "lteq", null, SvBinaryOperatorKind.LTEQ)
-
-    val F_gt_Ubit = BinaryCoreFunctionDeclaration(parent, "gt", null, SvBinaryOperatorKind.GT)
-
-    val F_gteq_Ubit = BinaryCoreFunctionDeclaration(parent, "gteq", null, SvBinaryOperatorKind.GTEQ)
-
     val F_unaryMinus = object : UnaryCoreFunctionDeclaration(
         parent,
         "unaryMinus",

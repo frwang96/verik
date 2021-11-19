@@ -33,14 +33,14 @@ sealed class CoreFunctionDeclaration : CoreDeclaration {
 open class BasicCoreFunctionDeclaration(
     override val parent: CoreDeclaration,
     override var name: String,
-    override val signature: String?,
+    override val signature: String,
     val targetFunctionDeclaration: TargetFunctionDeclaration?
 ) : CoreFunctionDeclaration()
 
 abstract class TransformableCoreFunctionDeclaration(
     override val parent: CoreDeclaration,
     override var name: String,
-    override val signature: String?
+    override val signature: String
 ) : CoreFunctionDeclaration() {
 
     abstract fun transform(callExpression: EKtCallExpression): EExpression
@@ -49,14 +49,14 @@ abstract class TransformableCoreFunctionDeclaration(
 open class UnaryCoreFunctionDeclaration(
     override val parent: CoreDeclaration,
     override var name: String,
-    override val signature: String?,
+    override val signature: String,
     val kind: SvUnaryOperatorKind
 ) : CoreFunctionDeclaration()
 
 open class BinaryCoreFunctionDeclaration(
     override val parent: CoreDeclaration,
     override var name: String,
-    override val signature: String?,
+    override val signature: String,
     val kind: SvBinaryOperatorKind
 ) : CoreFunctionDeclaration() {
 

@@ -22,13 +22,10 @@ interface CoreDeclaration : Declaration {
 
     val parent: CoreDeclaration?
 
-    val signature: String?
+    val signature: String
 
-    fun getQualifiedSignature(): QualifiedSignature? {
-        val signature = signature
-        return if (signature != null) {
-            QualifiedSignature(getQualifiedName(), signature)
-        } else null
+    fun getQualifiedSignature(): QualifiedSignature {
+        return QualifiedSignature(getQualifiedName(), signature)
     }
 
     private fun getQualifiedName(): String {
