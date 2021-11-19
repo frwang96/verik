@@ -33,11 +33,11 @@
 package io.verik.compiler.util
 
 import io.verik.compiler.ast.element.common.EAbstractContainerClass
+import io.verik.compiler.ast.element.common.EAbstractProperty
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.EReceiverExpression
 import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
-import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.CoreDeclaration
 import io.verik.compiler.main.ProjectContext
@@ -129,7 +129,7 @@ abstract class CoreDeclarationTest : BaseTest() {
         }
 
         private fun eliminateProperties(declarations: ArrayList<EDeclaration>): ArrayList<EDeclaration> {
-            return ArrayList(declarations.filter { it !is ESvProperty })
+            return ArrayList(declarations.filter { it !is EAbstractProperty })
         }
     }
 }

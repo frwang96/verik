@@ -20,10 +20,10 @@ package io.verik.compiler.core.common
 
 import io.verik.compiler.core.declaration.jv.CoreJvArrayList
 import io.verik.compiler.core.declaration.jv.CoreJvClass
-import io.verik.compiler.core.declaration.kt.CoreKt
 import io.verik.compiler.core.declaration.kt.CoreKtBoolean
 import io.verik.compiler.core.declaration.kt.CoreKtClass
 import io.verik.compiler.core.declaration.kt.CoreKtCollections
+import io.verik.compiler.core.declaration.kt.CoreKtFunctions
 import io.verik.compiler.core.declaration.kt.CoreKtInt
 import io.verik.compiler.core.declaration.kt.CoreKtIo
 import io.verik.compiler.core.declaration.kt.CoreKtRanges
@@ -53,15 +53,15 @@ object Core {
         val C_Boolean = CoreKtClass.C_Boolean
         val C_String = CoreKtClass.C_String
 
-        val F_repeat_Int_Function = CoreKt.F_repeat_Int_Function
-        val F_assert_Boolean = CoreKt.F_assert_Boolean
-        val F_assert_Boolean_Function = CoreKt.F_assert_Boolean_Function
+        val F_repeat_Int_Function = CoreKtFunctions.F_repeat_Int_Function
+        val F_assert_Boolean = CoreKtFunctions.F_assert_Boolean
+        val F_assert_Boolean_Function = CoreKtFunctions.F_assert_Boolean_Function
 
         object Int {
 
-            val F_times_Int = CoreKtInt.F_times_Int
             val F_plus_Int = CoreKtInt.F_plus_Int
             val F_minus_Int = CoreKtInt.F_minus_Int
+            val F_times_Int = CoreKtInt.F_times_Int
         }
 
         object Boolean {
@@ -198,6 +198,7 @@ object Core {
             val F_get_Int = CoreVkUbit.F_get_Int
             val F_set_Int_Boolean = CoreVkUbit.F_set_Int_Boolean
             val F_set_Int_Ubit = CoreVkUbit.F_set_Int_Ubit
+
             val F_plus_Ubit = CoreVkUbitBinary.F_plus_Ubit
             val F_add_Ubit = CoreVkUbitBinary.F_add_Ubit
             val F_minus_Ubit = CoreVkUbitBinary.F_minus_Ubit
@@ -213,6 +214,7 @@ object Core {
             val F_shr_Ubit = CoreVkUbitBinary.F_shr_Ubit
             val F_sshr_Int = CoreVkUbitBinary.F_sshr_Int
             val F_sshr_Ubit = CoreVkUbitBinary.F_sshr_Ubit
+
             val F_invert = CoreVkUbit.F_invert
             val F_reverse = CoreVkUbit.F_reverse
             val F_slice_Int = CoreVkUbit.F_slice_Int

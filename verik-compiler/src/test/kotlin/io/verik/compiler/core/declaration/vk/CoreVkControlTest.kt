@@ -16,60 +16,100 @@
 
 package io.verik.compiler.core.declaration.vk
 
-import io.verik.compiler.transform.mid.FunctionTransformerStage
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findExpression
-import org.junit.jupiter.api.Test
+import io.verik.compiler.core.common.Core
+import io.verik.compiler.util.CoreDeclarationTest
+import io.verik.compiler.util.CoreDeclarationTestEntry
 
-internal class CoreVkControlTest : BaseTest() {
+internal class CoreVkControlTest : CoreDeclarationTest() {
 
-    @Test
-    fun `transform forever`() {
-        val projectContext = driveTest(
-            FunctionTransformerStage::class,
-            """
-                fun f() {
-                    forever {}
-                }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "ForeverStatement(Void, KtBlockExpression(*))",
-            projectContext.findExpression("f")
-        )
-    }
+    override fun getEntries(): List<CoreDeclarationTestEntry> {
+        val entries = ArrayList<CoreDeclarationTestEntry>()
+        entries.add(
+            CoreDeclarationTestEntry(
+                "posedge negedge on",
+                listOf(Core.Vk.F_on_Event_Event_Function),
+                """
+                    class M : Module() {
+                        var x: Boolean = nc()
+                        @Seq
+                        fun f() { on (posedge(x)) {} }
+                        @Seq
+                        fun g() { on (negedge(x)) {} }
+                    }
+                """.trimIndent(),
+                """
+                    module M;
 
-    @Test
-    fun `transform wait`() {
-        val projectContext = driveTest(
-            FunctionTransformerStage::class,
-            """
-                var x = false
-                fun f() {
-                    wait(posedge(x))
-                }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "EventControlExpression(Void, EdgeExpression(Event, *, *))",
-            projectContext.findExpression("f")
-        )
-    }
+                        always_ff @(posedge x) begin : f
+                        end : f
 
-    @Test
-    fun `transform delay`() {
-        val projectContext = driveTest(
-            FunctionTransformerStage::class,
-            """
-                var x = false
-                fun f() {
-                    delay(1)
-                }
-            """.trimIndent()
+                        always_ff @(negedge x) begin : g
+                        end : g
+
+                    endmodule : M
+                """.trimIndent()
+            )
         )
-        assertElementEquals(
-            "DelayExpression(Void, ConstantExpression(*))",
-            projectContext.findExpression("f")
+        entries.add(
+            CoreDeclarationTestEntry(
+                "forever",
+                listOf(Core.Vk.F_forever_Function),
+                """
+                    class M : Module() {
+                        @Run
+                        fun f() { forever {} }
+                    }
+                """.trimIndent(),
+                """
+                    module M;
+
+                        initial begin : f
+                            forever begin
+                            end
+                        end : f
+
+                    endmodule : M
+                """.trimIndent()
+            )
         )
+        entries.add(
+            CoreDeclarationTestEntry(
+                "delay wait",
+                listOf(
+                    Core.Vk.F_delay_Int,
+                    Core.Vk.F_wait_Boolean,
+                    Core.Vk.F_wait_Event,
+                    Core.Vk.F_wait_ClockingBlock
+                ),
+                """
+                    class CB(override val event:  Event) : ClockingBlock()
+                    class M : Module() {
+                        var clk: Boolean = nc()
+                        @Make
+                        val cb = CB(posedge(clk))
+                        @Run
+                        fun f() {
+                            delay(0)
+                            wait(clk)
+                            wait(posedge(clk))
+                            wait(cb)
+                        }
+                    }
+                """.trimIndent(),
+                """
+                    module M;
+
+                        initial begin : f
+                            #0;
+                            wait(clk);
+                            @(posedge clk);
+                            @cb;
+                        end : f
+
+                    endmodule : M
+                """.trimIndent()
+            )
+        )
+        return entries
     }
 }

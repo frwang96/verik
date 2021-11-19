@@ -25,16 +25,49 @@ internal class CoreKtIoTest : CoreDeclarationTest() {
     override fun getEntries(): List<CoreDeclarationTestEntry> {
         return listOf(
             CoreDeclarationTestEntry(
+                "print",
+                listOf(
+                    Core.Kt.Io.F_print_Any,
+                    Core.Kt.Io.F_print_Boolean,
+                    Core.Kt.Io.F_print_Int
+                ),
+                """
+                    fun f() {
+                        print("")
+                        print(false)
+                        print(0)
+                    }
+                """.trimIndent(),
+                """
+                    function automatic void f();
+                        ${'$'}write("");
+                        ${'$'}write(1'b0);
+                        ${'$'}write(0);
+                    endfunction : f
+                """.trimIndent()
+            ),
+            CoreDeclarationTestEntry(
                 "println",
-                listOf(Core.Kt.Io.F_println),
+                listOf(
+                    Core.Kt.Io.F_println,
+                    Core.Kt.Io.F_println_Any,
+                    Core.Kt.Io.F_println_Boolean,
+                    Core.Kt.Io.F_println_Int
+                ),
                 """
                     fun f() {
                         println()
+                        println("")
+                        println(false)
+                        println(0)
                     }
                 """.trimIndent(),
                 """
                     function automatic void f();
                         ${'$'}display();
+                        ${'$'}display("");
+                        ${'$'}display(1'b0);
+                        ${'$'}display(0);
                     endfunction : f
                 """.trimIndent()
             )

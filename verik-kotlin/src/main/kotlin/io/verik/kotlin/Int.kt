@@ -24,13 +24,6 @@ package io.verik.kotlin
 class Int private constructor() {
 
     /**
-     * Multiplies this value by the [other] value.
-     */
-    operator fun times(other: Int): Int {
-        throw IllegalArgumentException()
-    }
-
-    /**
      * Adds the [other] value to this value.
      */
     operator fun plus(other: Int): Int {
@@ -41,6 +34,13 @@ class Int private constructor() {
      * Subtracts the [other] value from this value.
      */
     operator fun minus(other: Int): Int {
+        throw IllegalArgumentException()
+    }
+
+    /**
+     * Multiplies this value by the [other] value.
+     */
+    operator fun times(other: Int): Int {
         throw IllegalArgumentException()
     }
 }
