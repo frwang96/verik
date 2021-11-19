@@ -14,27 +14,40 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.declaration.kt
+package io.verik.compiler.core.declaration.jv
 
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.util.CoreDeclarationTest
 import io.verik.compiler.util.CoreDeclarationTestEntry
 
-internal class CoreKtIoTest : CoreDeclarationTest() {
+internal class CoreJvArrayListTest : CoreDeclarationTest() {
 
     override fun getEntries(): List<CoreDeclarationTestEntry> {
         return listOf(
             CoreDeclarationTestEntry(
-                "println",
-                listOf(Core.Kt.Io.F_println),
+                "ArrayList",
+                listOf(
+                    Core.Jv.Util.ArrayList.F_add_E,
+                    Core.Jv.Util.ArrayList.F_get_Int,
+                    Core.Jv.Util.ArrayList.F_set_Int_E,
+                    Core.Jv.Util.ArrayList.P_size
+                ),
                 """
+                    val a = ArrayList<Int>()
+                    var x = 0
                     fun f() {
-                        println()
+                        a.add(0)
+                        x = a[0]
+                        a[0] = x
+                        x = a.size
                     }
                 """.trimIndent(),
                 """
                     function automatic void f();
-                        ${'$'}display();
+                        a.add(0);
+                        x = a.get(0);
+                        a.set(0, x);
+                        x = a.size();
                     endfunction : f
                 """.trimIndent()
             )

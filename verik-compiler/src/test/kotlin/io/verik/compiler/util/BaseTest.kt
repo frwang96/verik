@@ -36,6 +36,19 @@ import kotlin.reflect.KClass
 abstract class BaseTest {
 
     fun <T : ProjectStage> driveTest(stageClass: KClass<T>, @Language("kotlin") content: String): ProjectContext {
+        val projectContext = getProjectContext(content)
+        val stageSequence = StageSequencer.getStageSequence()
+        assert(stageSequence.contains(stageClass))
+        for (it in stageSequence.stages) {
+            it.accept(projectContext)
+            if (it::class == stageClass)
+                break
+        }
+
+        return projectContext
+    }
+
+    fun getProjectContext(@Language("kotlin") content: String): ProjectContext {
         val config = getConfig()
         val contentWithPackageHeader = """
             package test
@@ -46,15 +59,6 @@ abstract class BaseTest {
         val projectContext = ProjectContext(config)
         val sourceSetContext = SourceSetContext(config.sourceSetConfigs[0].name, listOf(textFile))
         projectContext.sourceSetContexts = listOf(sourceSetContext)
-
-        val stageSequence = StageSequencer.getStageSequence()
-        assert(stageSequence.contains(stageClass))
-        for (it in stageSequence.stages) {
-            it.accept(projectContext)
-            if (it::class == stageClass)
-                break
-        }
-
         return projectContext
     }
 
@@ -137,7 +141,10 @@ abstract class BaseTest {
             }
             .dropLastWhile { it.isEmpty() }
 
-        Assertions.assertEquals(expectedLines, actualLines)
+        Assertions.assertEquals(
+            expectedLines.joinToString(separator = "\n"),
+            actualLines.joinToString(separator = "\n")
+        )
     }
 
     companion object {

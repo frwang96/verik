@@ -26,7 +26,7 @@ import io.verik.compiler.resolve.BinaryOperatorTypeConstraintKind
 import io.verik.compiler.resolve.TypeAdapter
 import io.verik.compiler.resolve.TypeConstraint
 
-object CoreVkSbit : CoreScope(Core.Vk.C_Sbit) {
+object CoreVkSbitBinary : CoreScope(Core.Vk.C_Sbit) {
 
     val F_plus_Sbit = object : BinaryCoreFunctionDeclaration(
         parent,
