@@ -23,56 +23,48 @@ internal class TargetSerializerStageTest : BaseTest() {
 
     @Test
     fun `target class`() {
-        val projectContext = driveTest(
+        driveTest(
             """
                 val a: ArrayList<Boolean> = nc()
+            """.trimIndent(),
+            """
+                package verik_pkg;
+                
+                    class ArrayList #(type E = int);
+                
+                        E queue [${'$'}];
+                
+                    endclass : ArrayList
+                
+                endpackage : verik_pkg
             """.trimIndent()
-        )
-        val expected = """
-            package verik_pkg;
-            
-                class ArrayList #(type E = int);
-            
-                    E queue [${'$'}];
-            
-                endclass : ArrayList
-            
-            endpackage : verik_pkg
-        """.trimIndent()
-        assertOutputTextEquals(
-            expected,
-            projectContext.outputContext.targetPackageTextFile!!
-        )
+        ) { it.targetPackageTextFile!! }
     }
 
     @Test
     fun `target function`() {
-        val projectContext = driveTest(
+        driveTest(
             """
                 val a: ArrayList<Boolean> = nc()
                 fun f() {
                     a.add(false)
                 }
+            """.trimIndent(),
+            """
+                package verik_pkg;
+                
+                    class ArrayList #(type E = int);
+                
+                        E queue [${'$'}];
+                
+                        function automatic void add(E e);
+                            queue.push_back(e);
+                        endfunction : add
+                
+                    endclass : ArrayList
+                
+                endpackage : verik_pkg
             """.trimIndent()
-        )
-        val expected = """
-            package verik_pkg;
-            
-                class ArrayList #(type E = int);
-            
-                    E queue [${'$'}];
-            
-                    function automatic void add(E e);
-                        queue.push_back(e);
-                    endfunction : add
-            
-                endclass : ArrayList
-            
-            endpackage : verik_pkg
-        """.trimIndent()
-        assertOutputTextEquals(
-            expected,
-            projectContext.outputContext.targetPackageTextFile!!
-        )
+        ) { it.targetPackageTextFile!! }
     }
 }

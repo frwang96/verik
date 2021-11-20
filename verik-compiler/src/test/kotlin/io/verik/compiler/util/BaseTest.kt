@@ -21,6 +21,7 @@ import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.common.ElementPrinter
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.main.Config
+import io.verik.compiler.main.OutputContext
 import io.verik.compiler.main.Platform
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.SourceSetConfig
@@ -36,13 +37,6 @@ import java.nio.file.Paths
 import kotlin.reflect.KClass
 
 abstract class BaseTest {
-
-    fun driveTest(@Language("kotlin") content: String): ProjectContext {
-        val projectContext = getProjectContext(content)
-        val stageSequence = StageSequencer.getStageSequence()
-        stageSequence.stages.forEach { it.accept(projectContext) }
-        return projectContext
-    }
 
     fun <T : ProjectStage> driveTest(
         @Language("kotlin") content: String,
@@ -68,7 +62,11 @@ abstract class BaseTest {
         }
     }
 
-    fun driveTest(@Language("kotlin") content: String, isError: Boolean, message: String) {
+    fun driveTest(
+        @Language("kotlin") content: String,
+        isError: Boolean,
+        message: String
+    ) {
         val projectContext = getProjectContext(content)
         val stageSequence = StageSequencer.getStageSequence()
         if (isError) {
@@ -82,6 +80,18 @@ abstract class BaseTest {
             }
             assertEquals(throwable.message, message)
         }
+    }
+
+    fun driveTest(
+        @Language("kotlin") content: String,
+        expected: String,
+        selector: (OutputContext) -> TextFile
+    ) {
+        val projectContext = getProjectContext(content)
+        val stageSequence = StageSequencer.getStageSequence()
+        stageSequence.stages.forEach { it.accept(projectContext) }
+        val textFile = selector(projectContext.outputContext)
+        assertOutputTextEquals(expected, textFile)
     }
 
     internal fun getProjectContext(@Language("kotlin") content: String): ProjectContext {
