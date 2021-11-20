@@ -16,17 +16,35 @@
 
 package io.verik.compiler.core.declaration.vk
 
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.transform.mid.FunctionTransformerStage
-import io.verik.compiler.util.BaseTest
+import io.verik.compiler.util.CoreDeclarationTest
 import io.verik.compiler.util.TestErrorException
-import io.verik.compiler.util.findExpression
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-internal class CoreVkSpecialTest : BaseTest() {
+internal class CoreVkSpecialTest : CoreDeclarationTest() {
 
     @Test
+    fun `serialize sv`() {
+        driveCoreDeclarationTest(
+            listOf(Core.Vk.F_sv_String),
+            """
+                fun f() {
+                    sv("xyz")
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    xyz;
+                endfunction : f
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    // TODO update driveTest
     fun `transform nc illegal`() {
         assertThrows<TestErrorException> {
             driveTest(
@@ -38,34 +56,70 @@ internal class CoreVkSpecialTest : BaseTest() {
                     }
                 """.trimIndent()
             )
-        }.apply { assertEquals("Expression used out of context: nc", message) }
+        }.apply { Assertions.assertEquals("Expression used out of context: nc", message) }
     }
 
     @Test
-    fun `transform u`() {
-        val projectContext = driveTest(
-            FunctionTransformerStage::class,
+    fun `serialize i`() {
+        driveCoreDeclarationTest(
+            listOf(Core.Vk.F_i),
             """
-                var x = u<`8`>()
+                var x = 0
+                fun f() {
+                    x = i<`8`>()
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    x = 8;
+                endfunction : f
             """.trimIndent()
-        )
-        assertElementEquals(
-            "ConstantExpression(Ubit<`4`>, 4'h8)",
-            projectContext.findExpression("x")
         )
     }
 
     @Test
-    fun `transform u0`() {
-        val projectContext = driveTest(
-            FunctionTransformerStage::class,
+    fun `serialize u u0`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Vk.F_u,
+                Core.Vk.F_u_Sbit,
+                Core.Vk.F_u0
+            ),
             """
-                var x: Ubit<`8`> = u0()
+                var x = u(0x0)
+                var y = s(0x0)
+                fun f() {
+                    x = u<`8`>()
+                    x = u(y)
+                    x = u0()
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    x = 4'h8;
+                    x = ${'$'}unsigned(y);
+                    x = 4'h0;
+                endfunction : f
             """.trimIndent()
         )
-        assertElementEquals(
-            "ConstantExpression(Ubit<`8`>, 8'h00)",
-            projectContext.findExpression("x")
+    }
+
+    @Test
+    fun `serialize s`() {
+        driveCoreDeclarationTest(
+            listOf(Core.Vk.F_s_Ubit),
+            """
+                var x = s(0x0)
+                var y = u(0x0)
+                fun f() {
+                    x = s(y)
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    x = ${'$'}signed(y);
+                endfunction : f
+            """.trimIndent()
         )
     }
 }

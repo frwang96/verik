@@ -18,40 +18,38 @@ package io.verik.compiler.core.declaration.kt
 
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.util.CoreDeclarationTest
-import io.verik.compiler.util.CoreDeclarationTestEntry
+import org.junit.jupiter.api.Test
 
 internal class CoreKtBooleanTest : CoreDeclarationTest() {
 
-    override fun getEntries(): List<CoreDeclarationTestEntry> {
-        return listOf(
-            CoreDeclarationTestEntry(
-                "Boolean",
-                listOf(
-                    Core.Kt.Boolean.F_not,
-                    Core.Kt.Boolean.F_and_Boolean,
-                    Core.Kt.Boolean.F_or_Boolean,
-                    Core.Kt.Boolean.F_xor_Boolean
-                ),
-                """
-                    var a = false
-                    var b = false
-                    var x = false
-                    fun f() {
-                        x = !a
-                        x = a and b
-                        x = a or b
-                        x = a xor b
-                    }
-                """.trimIndent(),
-                """
-                    function automatic void f();
-                        x = !a;
-                        x = a && b;
-                        x = a || b;
-                        x = a ^ b;
-                    endfunction : f
-                """.trimIndent()
-            )
+    @Test
+    fun `serialize not and or xor`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Kt.Boolean.F_not,
+                Core.Kt.Boolean.F_and_Boolean,
+                Core.Kt.Boolean.F_or_Boolean,
+                Core.Kt.Boolean.F_xor_Boolean
+            ),
+            """
+                var a = false
+                var b = false
+                var x = false
+                fun f() {
+                    x = !a
+                    x = a and b
+                    x = a or b
+                    x = a xor b
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    x = !a;
+                    x = a && b;
+                    x = a || b;
+                    x = a ^ b;
+                endfunction : f
+            """.trimIndent()
         )
     }
 }

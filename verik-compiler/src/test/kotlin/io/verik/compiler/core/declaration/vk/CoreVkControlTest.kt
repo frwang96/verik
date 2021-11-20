@@ -18,98 +18,100 @@ package io.verik.compiler.core.declaration.vk
 
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.util.CoreDeclarationTest
-import io.verik.compiler.util.CoreDeclarationTestEntry
+import org.junit.jupiter.api.Test
 
 internal class CoreVkControlTest : CoreDeclarationTest() {
 
-    override fun getEntries(): List<CoreDeclarationTestEntry> {
-        val entries = ArrayList<CoreDeclarationTestEntry>()
-        entries.add(
-            CoreDeclarationTestEntry(
-                "posedge negedge on",
-                listOf(Core.Vk.F_on_Event_Event_Function),
-                """
-                    class M : Module() {
-                        var x: Boolean = nc()
-                        @Seq
-                        fun f() { on (posedge(x)) {} }
-                        @Seq
-                        fun g() { on (negedge(x)) {} }
-                    }
-                """.trimIndent(),
-                """
-                    module M;
+    @Test
+    fun `serialize posedge negedge on`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Vk.F_posedge_Boolean,
+                Core.Vk.F_negedge_Boolean,
+                Core.Vk.F_on_Event_Event_Function
+            ),
+            """
+                class M : Module() {
+                    var x: Boolean = nc()
+                    @Seq
+                    fun f() { on (posedge(x)) {} }
+                    @Seq
+                    fun g() { on (negedge(x)) {} }
+                }
+            """.trimIndent(),
+            """
+                module M;
 
-                        always_ff @(posedge x) begin : f
-                        end : f
+                    always_ff @(posedge x) begin : f
+                    end : f
 
-                        always_ff @(negedge x) begin : g
-                        end : g
+                    always_ff @(negedge x) begin : g
+                    end : g
 
-                    endmodule : M
-                """.trimIndent()
-            )
+                endmodule : M
+            """.trimIndent()
         )
-        entries.add(
-            CoreDeclarationTestEntry(
-                "forever",
-                listOf(Core.Vk.F_forever_Function),
-                """
-                    class M : Module() {
-                        @Run
-                        fun f() { forever {} }
-                    }
-                """.trimIndent(),
-                """
-                    module M;
+    }
 
-                        initial begin : f
-                            forever begin
-                            end
-                        end : f
+    @Test
+    fun `serialize forever`() {
+        driveCoreDeclarationTest(
+            listOf(Core.Vk.F_forever_Function),
+            """
+                class M : Module() {
+                    @Run
+                    fun f() { forever {} }
+                }
+            """.trimIndent(),
+            """
+                module M;
 
-                    endmodule : M
-                """.trimIndent()
-            )
+                    initial begin : f
+                        forever begin
+                        end
+                    end : f
+
+                endmodule : M
+            """.trimIndent()
         )
-        entries.add(
-            CoreDeclarationTestEntry(
-                "delay wait",
-                listOf(
-                    Core.Vk.F_delay_Int,
-                    Core.Vk.F_wait_Boolean,
-                    Core.Vk.F_wait_Event,
-                    Core.Vk.F_wait_ClockingBlock
-                ),
-                """
-                    class CB(override val event:  Event) : ClockingBlock()
-                    class M : Module() {
-                        var clk: Boolean = nc()
-                        @Make
-                        val cb = CB(posedge(clk))
-                        @Run
-                        fun f() {
-                            delay(0)
-                            wait(clk)
-                            wait(posedge(clk))
-                            wait(cb)
-                        }
+    }
+
+    @Test
+    fun `serialize delay wait`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Vk.F_delay_Int,
+                Core.Vk.F_wait_Boolean,
+                Core.Vk.F_wait_Event,
+                Core.Vk.F_wait_ClockingBlock
+            ),
+            """
+                class CB(override val event:  Event) : ClockingBlock()
+                class M : Module() {
+                    var clk: Boolean = nc()
+                    @Make
+                    val cb = CB(posedge(clk))
+                    @Run
+                    fun f() {
+                        delay(0)
+                        wait(clk)
+                        wait(posedge(clk))
+                        wait(cb)
                     }
-                """.trimIndent(),
-                """
-                    module M;
+                }
+            """.trimIndent(),
+            """
+                module M;
 
-                        initial begin : f
-                            #0;
-                            wait(clk);
-                            @(posedge clk);
-                            @cb;
-                        end : f
+                    initial begin : f
+                        #0;
+                        wait(clk);
+                        @(posedge clk);
+                        @cb;
+                    end : f
 
-                    endmodule : M
-                """.trimIndent()
-            )
+                endmodule : M
+            """.trimIndent()
         )
-        return entries
     }
 }

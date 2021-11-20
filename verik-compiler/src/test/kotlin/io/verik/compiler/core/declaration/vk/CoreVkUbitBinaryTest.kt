@@ -16,40 +16,124 @@
 
 package io.verik.compiler.core.declaration.vk
 
-import io.verik.compiler.transform.mid.FunctionTransformerStage
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findExpression
+import io.verik.compiler.core.common.Core
+import io.verik.compiler.util.CoreDeclarationTest
 import org.junit.jupiter.api.Test
 
-internal class CoreVkUbitBinaryTest : BaseTest() {
+internal class CoreVkUbitBinaryTest : CoreDeclarationTest() {
 
     @Test
-    fun `transform shl`() {
-        val projectContext = driveTest(
-            FunctionTransformerStage::class,
+    fun `serialize plus add minus`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Vk.Ubit.F_plus_Ubit,
+                Core.Vk.Ubit.F_add_Ubit,
+                Core.Vk.Ubit.F_minus_Ubit
+            ),
             """
-                var x = u(0x00)
-                var y = x shl 1
+                var x = u(0b0)
+                var y = u(0b00)
+                fun f() {
+                    x = x + x
+                    y = x add x
+                    x = x - x
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    x = x + x;
+                    y = x + x;
+                    x = x - x;
+                endfunction : f
             """.trimIndent()
-        )
-        assertElementEquals(
-            "SvBinaryExpression(Ubit<`8`>, *, *, LTLT)",
-            projectContext.findExpression("y")
         )
     }
 
     @Test
-    fun `transform shr`() {
-        val projectContext = driveTest(
-            FunctionTransformerStage::class,
+    fun `serialize times mul div`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Vk.Ubit.F_times_Ubit,
+                Core.Vk.Ubit.F_mul_Ubit,
+                Core.Vk.Ubit.F_div_Ubit
+            ),
             """
-                var x = u(0x00)
-                var y = x shr 1
+                var x = u(0x0)
+                var y = u(0x00)
+                fun f() {
+                    x = x * x
+                    y = x mul x
+                    x = x / x
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    x = x * x;
+                    y = x * x;
+                    x = x / x;
+                endfunction : f
             """.trimIndent()
         )
-        assertElementEquals(
-            "SvBinaryExpression(Ubit<`8`>, *, *, GTGT)",
-            projectContext.findExpression("y")
+    }
+
+    @Test
+    fun `serialize and or xor`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Vk.Ubit.F_and_Ubit,
+                Core.Vk.Ubit.F_or_Ubit,
+                Core.Vk.Ubit.F_xor_Ubit
+            ),
+            """
+                var x = u(0x0)
+                fun f() {
+                    x = x and x
+                    x = x or x
+                    x = x xor x
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    x = x & x;
+                    x = x | x;
+                    x = x ^ x;
+                endfunction : f
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `serialize shl shr sshr`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Vk.Ubit.F_shl_Int,
+                Core.Vk.Ubit.F_shl_Ubit,
+                Core.Vk.Ubit.F_shr_Int,
+                Core.Vk.Ubit.F_shr_Ubit,
+                Core.Vk.Ubit.F_sshr_Int,
+                Core.Vk.Ubit.F_sshr_Ubit
+            ),
+            """
+                var x = u(0x0)
+                fun f() {
+                    x = x shl 1
+                    x = x shl u(1)
+                    x = x shr 1
+                    x = x shr u(1)
+                    x = x sshr 1
+                    x = x sshr u(1)
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    x = x << 1;
+                    x = x << 1'h1;
+                    x = x >> 1;
+                    x = x >> 1'h1;
+                    x = ${'$'}unsigned(${'$'}signed(x) >>> 1);
+                    x = ${'$'}unsigned(${'$'}signed(x) >>> 1'h1);
+                endfunction : f
+            """.trimIndent()
         )
     }
 }

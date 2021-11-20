@@ -56,6 +56,33 @@ object CoreVkUnpacked : CoreScope(Core.Vk.C_Unpacked) {
         }
     }
 
+    val F_get_Ubit = object : TransformableCoreFunctionDeclaration(parent, "get", "fun get(Ubit)") {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return listOf(
+                TypeEqualsTypeConstraint(
+                    TypeAdapter.ofElement(callExpression.receiver!!, 1),
+                    TypeAdapter.ofElement(callExpression)
+                ),
+                UnaryOperatorTypeConstraint(
+                    TypeAdapter.ofElement(callExpression.valueArguments[0], 0),
+                    TypeAdapter.ofElement(callExpression.receiver!!, 0),
+                    false,
+                    UnaryOperatorTypeConstraintKind.LOG
+                )
+            )
+        }
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            return ESvArrayAccessExpression(
+                callExpression.location,
+                callExpression.type,
+                callExpression.receiver!!,
+                callExpression.valueArguments[0]
+            )
+        }
+    }
+
     val F_set_Int_E = object : TransformableCoreFunctionDeclaration(parent, "set", "fun set(Int, E)") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
@@ -80,33 +107,6 @@ object CoreVkUnpacked : CoreScope(Core.Vk.C_Unpacked) {
                 receiver,
                 callExpression.valueArguments[1],
                 KtBinaryOperatorKind.EQ
-            )
-        }
-    }
-
-    val F_get_Ubit = object : TransformableCoreFunctionDeclaration(parent, "get", "fun get(Ubit)") {
-
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
-            return listOf(
-                TypeEqualsTypeConstraint(
-                    TypeAdapter.ofElement(callExpression.receiver!!, 1),
-                    TypeAdapter.ofElement(callExpression)
-                ),
-                UnaryOperatorTypeConstraint(
-                    TypeAdapter.ofElement(callExpression.valueArguments[0], 0),
-                    TypeAdapter.ofElement(callExpression.receiver!!, 0),
-                    false,
-                    UnaryOperatorTypeConstraintKind.LOG
-                )
-            )
-        }
-
-        override fun transform(callExpression: EKtCallExpression): EExpression {
-            return ESvArrayAccessExpression(
-                callExpression.location,
-                callExpression.type,
-                callExpression.receiver!!,
-                callExpression.valueArguments[0]
             )
         }
     }

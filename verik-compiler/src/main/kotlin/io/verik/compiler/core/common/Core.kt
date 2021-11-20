@@ -232,8 +232,8 @@ object Core {
         object Unpacked {
 
             val F_get_Int = CoreVkUnpacked.F_get_Int
-            val F_set_Int_E = CoreVkUnpacked.F_set_Int_E
             val F_get_Ubit = CoreVkUnpacked.F_get_Ubit
+            val F_set_Int_E = CoreVkUnpacked.F_set_Int_E
             val F_set_Ubit_E = CoreVkUnpacked.F_set_Ubit_E
 
             val P_size = CoreVkUnpacked.P_size

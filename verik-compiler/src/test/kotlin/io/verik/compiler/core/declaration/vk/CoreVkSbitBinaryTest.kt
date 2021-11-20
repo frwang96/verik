@@ -14,36 +14,33 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.declaration.kt
+package io.verik.compiler.core.declaration.vk
 
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.util.CoreDeclarationTest
 import org.junit.jupiter.api.Test
 
-internal class CoreKtFunctionsTest : CoreDeclarationTest() {
+internal class CoreVkSbitBinaryTest : CoreDeclarationTest() {
 
     @Test
-    fun `serialize repeat assert`() {
+    fun `serialize plus mul`() {
         driveCoreDeclarationTest(
             listOf(
-                Core.Kt.F_repeat_Int_Function,
-                Core.Kt.F_assert_Boolean,
-                Core.Kt.F_assert_Boolean_Function
+                Core.Vk.Sbit.F_plus_Sbit,
+                Core.Vk.Sbit.F_mul_Sbit
             ),
             """
+                var x = s(0x0)
+                var y = s(0x00)
                 fun f() {
-                    repeat(1) {}
-                    assert(true)
-                    assert(true) {}
+                    x = x + x
+                    y = x mul x
                 }
             """.trimIndent(),
             """
                 function automatic void f();
-                    repeat (1) begin
-                    end
-                    assert (1'b1);
-                    assert (1'b1) else begin
-                    end
+                    x = x + x;
+                    y = x * x;
                 endfunction : f
             """.trimIndent()
         )

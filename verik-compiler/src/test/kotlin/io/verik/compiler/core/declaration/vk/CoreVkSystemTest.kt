@@ -20,53 +20,67 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.util.CoreDeclarationTest
 import org.junit.jupiter.api.Test
 
-internal class CoreVkRandomTest : CoreDeclarationTest() {
+internal class CoreVkSystemTest : CoreDeclarationTest() {
 
     @Test
-    fun `serialize random`() {
+    fun `serialize finish fatal`() {
         driveCoreDeclarationTest(
             listOf(
-                Core.Vk.F_random,
-                Core.Vk.F_random_Int,
-                Core.Vk.F_random_Int_Int
+                Core.Vk.F_finish,
+                Core.Vk.F_fatal,
+                Core.Vk.F_fatal_String
             ),
             """
-                var x = 0
+                fun f() { finish() }
+                fun g() { fatal() }
+                fun h() { fatal("") }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    ${'$'}finish();
+                endfunction : f
+
+                function automatic void g();
+                    ${'$'}fatal();
+                endfunction : g
+
+                function automatic void h();
+                    ${'$'}fatal(1, "");
+                endfunction : h
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `serialize error`() {
+        driveCoreDeclarationTest(
+            listOf(Core.Vk.F_error_String),
+            """
                 fun f() {
-                    x = random()
-                    x = random(3)
-                    x = random(2, 3)
+                    error("")
                 }
             """.trimIndent(),
             """
                 function automatic void f();
-                    x = ${'$'}random();
-                    x = ${'$'}urandom_range(3);
-                    x = ${'$'}urandom_range(2, 3);
+                    ${'$'}error("");
                 endfunction : f
             """.trimIndent()
         )
     }
 
     @Test
-    fun `serialize randomBoolean randomInt`() {
+    fun `serialize time`() {
         driveCoreDeclarationTest(
-            listOf(
-                Core.Vk.F_randomBoolean,
-                Core.Vk.F_randomUbit
-            ),
+            listOf(Core.Vk.F_time),
             """
-                var x = false
-                var y = u(0x0)
+                var t = time()
                 fun f() {
-                    x = randomBoolean()
-                    y = randomUbit()
+                    t = time()
                 }
             """.trimIndent(),
             """
                 function automatic void f();
-                    x = ${'$'}urandom();
-                    y = ${'$'}urandom();
+                    t = ${'$'}time();
                 endfunction : f
             """.trimIndent()
         )

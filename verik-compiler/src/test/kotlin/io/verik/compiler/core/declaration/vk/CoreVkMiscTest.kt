@@ -16,38 +16,33 @@
 
 package io.verik.compiler.core.declaration.vk
 
-import io.verik.compiler.transform.mid.FunctionTransformerStage
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findExpression
+import io.verik.compiler.core.common.Core
+import io.verik.compiler.util.CoreDeclarationTest
 import org.junit.jupiter.api.Test
 
-internal class CoreVkMiscTest : BaseTest() {
+internal class CoreVkMiscTest : CoreDeclarationTest() {
 
     @Test
-    fun `transform cat`() {
-        val projectContext = driveTest(
-            FunctionTransformerStage::class,
+    fun `serialize cat rep`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Vk.F_cat_Any_Any,
+                Core.Vk.F_rep_Any
+            ),
             """
-                val x = cat(u(0), u(0))
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "ConcatenationExpression(Ubit<`2`>, [*, *])",
-            projectContext.findExpression("x")
-        )
-    }
-
-    @Test
-    fun `transform rep`() {
-        val projectContext = driveTest(
-            FunctionTransformerStage::class,
+                val x = u(0x0)
+                var y = u(0x00)
+                fun f() {
+                    y = cat(x, x)
+                    y = rep<`2`>(x)
+                }
+            """.trimIndent(),
             """
-                val x = rep<`3`>(false)
+                function automatic void f();
+                    y = { 4'h0, 4'h0 };
+                    y = {2{ 4'h0 }};
+                endfunction : f
             """.trimIndent()
-        )
-        assertElementEquals(
-            "ReplicationExpression(Ubit<`3`>, *, 3)",
-            projectContext.findExpression("x")
         )
     }
 }

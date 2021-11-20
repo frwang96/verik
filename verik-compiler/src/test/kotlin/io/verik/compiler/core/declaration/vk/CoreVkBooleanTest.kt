@@ -18,34 +18,32 @@ package io.verik.compiler.core.declaration.vk
 
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.util.CoreDeclarationTest
-import io.verik.compiler.util.CoreDeclarationTestEntry
+import org.junit.jupiter.api.Test
 
 internal class CoreVkBooleanTest : CoreDeclarationTest() {
 
-    override fun getEntries(): List<CoreDeclarationTestEntry> {
-        return listOf(
-            CoreDeclarationTestEntry(
-                "Boolean",
-                listOf(
-                    Core.Vk.Boolean.F_Boolean_ext,
-                    Core.Vk.Boolean.F_Boolean_sext
-                ),
-                """
-                    var a = false
-                    var x = u(0x0)
-                    var y = s(0x0)
-                    fun f() {
-                        x = a.ext()
-                        y = a.sext()
-                    }
-                """.trimIndent(),
-                """
-                    function automatic void f();
-                        x = 4'(a);
-                        y = 4'(${'$'}signed(a));
-                    endfunction : f
-                """.trimIndent()
-            )
+    @Test
+    fun `serialize ext sext`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Vk.Boolean.F_Boolean_ext,
+                Core.Vk.Boolean.F_Boolean_sext
+            ),
+            """
+                var a = false
+                var x = u(0x0)
+                var y = s(0x0)
+                fun f() {
+                    x = a.ext()
+                    y = a.sext()
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    x = 4'(a);
+                    y = 4'(${'$'}signed(a));
+                endfunction : f
+            """.trimIndent()
         )
     }
 }

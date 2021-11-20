@@ -16,134 +16,124 @@
 
 package io.verik.compiler.core.declaration.vk
 
-import io.verik.compiler.transform.mid.FunctionTransformerStage
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findExpression
+import io.verik.compiler.core.common.Core
+import io.verik.compiler.util.CoreDeclarationTest
 import org.junit.jupiter.api.Test
 
-internal class CoreVkUbitTest : BaseTest() {
+internal class CoreVkUbitTest : CoreDeclarationTest() {
 
     @Test
-    fun `transform get`() {
-        val projectContext = driveTest(
-            FunctionTransformerStage::class,
+    fun `serialize unaryMinus`() {
+        driveCoreDeclarationTest(
+            listOf(Core.Vk.Ubit.F_unaryMinus),
             """
-                var x = u(0)
-                var y = x[0]
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "SvArrayAccessExpression(Boolean, ReferenceExpression(*), ConstantExpression(*))",
-            projectContext.findExpression("y")
-        )
-    }
-
-    @Test
-    fun `transform set`() {
-        val projectContext = driveTest(
-            FunctionTransformerStage::class,
-            """
-                var x = u(0)
+                var x = u(0x0)
                 fun f() {
-                    x[0] = true
+                    x = -x
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            """
-                KtBinaryExpression(
-                    Unit,
-                    SvArrayAccessExpression(Boolean, ReferenceExpression(*), ConstantExpression(*)),
-                    ConstantExpression(*),
-                    EQ
-                )
             """.trimIndent(),
-            projectContext.findExpression("f")
+            """
+                function automatic void f();
+                    x = -x;
+                endfunction : f
+            """.trimIndent()
         )
     }
 
     @Test
-    fun `transform reverse`() {
-        val projectContext = driveTest(
-            FunctionTransformerStage::class,
+    fun `serialize get set`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Vk.Ubit.F_get_Int,
+                Core.Vk.Ubit.F_set_Int_Boolean,
+                Core.Vk.Ubit.F_set_Int_Ubit
+            ),
+            """
+                var x = u(0x0)
+                var y = false
+                fun f() {
+                    y = x[0]
+                    x[0] = y
+                    x[0] = u(0b00)
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    y = x[0];
+                    x[0] = y;
+                    x[1:0] = 2'h0;
+                endfunction : f
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `serialize invert reverse`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Vk.Ubit.F_invert,
+                Core.Vk.Ubit.F_reverse
+            ),
+            """
+                var x = u(0x0)
+                fun f() {
+                    x = x.invert()
+                    x = x.reverse()
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    x = ~x;
+                    x = {<<{ x }};
+                endfunction : f
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `serialize slice`() {
+        driveCoreDeclarationTest(
+            listOf(Core.Vk.Ubit.F_slice_Int),
             """
                 var x = u(0x00)
-                var y = x.reverse()
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "StreamingExpression(Ubit<`8`>, ReferenceExpression(*))",
-            projectContext.findExpression("y")
-        )
-    }
-
-    @Test
-    fun `transform ext`() {
-        val projectContext = driveTest(
-            FunctionTransformerStage::class,
-            """
-                var x = u(0x0).ext<`8`>()
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "WidthCastExpression(Ubit<`8`>, ConstantExpression(*), 8)",
-            projectContext.findExpression("x")
-        )
-    }
-
-    @Test
-    fun `transform sext`() {
-        val projectContext = driveTest(
-            FunctionTransformerStage::class,
-            """
-                var x = u(0x0).sext<`8`>()
-            """.trimIndent()
-        )
-        assertElementEquals(
-            """
-                WidthCastExpression(
-                    Sbit<`8`>,
-                    KtCallExpression(Sbit<`4`>, ${'$'}signed, null, [ConstantExpression(*)], []),
-                    8
-                )
+                var y = u(0x0)
+                fun f() {
+                    y = x.slice(0)
+                }
             """.trimIndent(),
-            projectContext.findExpression("x")
+            """
+                function automatic void f();
+                    y = x[3:0];
+                endfunction : f
+            """.trimIndent()
         )
     }
 
     @Test
-    fun `transform tru`() {
-        val projectContext = driveTest(
-            FunctionTransformerStage::class,
+    fun `serialize ext sext tru`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Vk.Ubit.F_ext,
+                Core.Vk.Ubit.F_sext,
+                Core.Vk.Ubit.F_tru
+            ),
             """
-                var x = u(0x00).tru<`4`>()
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "WidthCastExpression(Ubit<`4`>, ConstantExpression(*), 4)",
-            projectContext.findExpression("x")
-        )
-    }
-
-    @Test
-    fun `transform slice`() {
-        val projectContext = driveTest(
-            FunctionTransformerStage::class,
-            """
-                var x = u(0x00)
-                var y = x.slice<`4`>(0)
-            """.trimIndent()
-        )
-        assertElementEquals(
-            """
-                ConstantPartSelectExpression(
-                    Ubit<`4`>,
-                    ReferenceExpression(*),
-                    KtCallExpression(Int, plus, ConstantExpression(*), [ConstantExpression(Int, 3)], []),
-                    ConstantExpression(*)
-                )
+                var x = u(0x0)
+                var y = u(0x00)
+                var z = s(0x00)
+                fun f() {
+                    y = x.ext()
+                    z = x.sext()
+                    x = y.tru()
+                }
             """.trimIndent(),
-            projectContext.findExpression("y")
+            """
+                function automatic void f();
+                    y = 8'(x);
+                    z = 8'(${'$'}signed(x));
+                    x = 4'(y);
+                endfunction : f
+            """.trimIndent()
         )
     }
 }

@@ -18,37 +18,35 @@ package io.verik.compiler.core.declaration.kt
 
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.util.CoreDeclarationTest
-import io.verik.compiler.util.CoreDeclarationTestEntry
+import org.junit.jupiter.api.Test
 
 internal class CoreKtIntTest : CoreDeclarationTest() {
 
-    override fun getEntries(): List<CoreDeclarationTestEntry> {
-        return listOf(
-            CoreDeclarationTestEntry(
-                "Int",
-                listOf(
-                    Core.Kt.Int.F_plus_Int,
-                    Core.Kt.Int.F_minus_Int,
-                    Core.Kt.Int.F_times_Int
-                ),
-                """
-                    var a = 0
-                    var b = 0
-                    var x = 0
-                    fun f() {
-                        x = a + b
-                        x = a - b
-                        x = a * b
-                    }
-                """.trimIndent(),
-                """
-                    function automatic void f();
-                        x = a + b;
-                        x = a - b;
-                        x = a * b;
-                    endfunction : f
-                """.trimIndent()
-            )
+    @Test
+    fun `serialize plus minus times`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Kt.Int.F_plus_Int,
+                Core.Kt.Int.F_minus_Int,
+                Core.Kt.Int.F_times_Int
+            ),
+            """
+                var a = 0
+                var b = 0
+                var x = 0
+                fun f() {
+                    x = a + b
+                    x = a - b
+                    x = a * b
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    x = a + b;
+                    x = a - b;
+                    x = a * b;
+                endfunction : f
+            """.trimIndent()
         )
     }
 }

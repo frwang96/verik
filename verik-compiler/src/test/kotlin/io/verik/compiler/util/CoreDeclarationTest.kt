@@ -45,38 +45,14 @@ import io.verik.compiler.main.StageSequencer
 import io.verik.compiler.serialize.source.SourceSerializerStage
 import io.verik.compiler.transform.pre.ConstantExpressionTransformerStage
 import org.intellij.lang.annotations.Language
-import org.junit.jupiter.api.DynamicTest
-import org.junit.jupiter.api.TestFactory
 
 abstract class CoreDeclarationTest : BaseTest() {
 
-    abstract fun getEntries(): List<CoreDeclarationTestEntry>
-
-    @TestFactory
-    fun `core declarations`(): List<DynamicTest> {
-        return getEntries().map {
-            DynamicTest.dynamicTest("serialize ${it.name}") {
-                val projectContext = driveCoreDeclarationTest(it.coreDeclarations, it.content)
-                val basicPackageSourceTextFiles = projectContext.outputContext.basicPackageSourceTextFiles
-                val rootPackageSourceTextFiles = projectContext.outputContext.rootPackageSourceTextFiles
-                when {
-                    basicPackageSourceTextFiles.size + rootPackageSourceTextFiles.size > 1 ->
-                        throw IllegalArgumentException("Multiple source files generated")
-                    basicPackageSourceTextFiles.size + rootPackageSourceTextFiles.size == 0 ->
-                        throw IllegalArgumentException("No source files generated")
-                    basicPackageSourceTextFiles.size == 1 ->
-                        assertOutputTextEquals(it.expected, basicPackageSourceTextFiles[0])
-                    rootPackageSourceTextFiles.size == 1 ->
-                        assertOutputTextEquals(it.expected, rootPackageSourceTextFiles[0])
-                }
-            }
-        }
-    }
-
-    private fun driveCoreDeclarationTest(
+    fun driveCoreDeclarationTest(
         coreDeclarations: List<CoreDeclaration>,
-        @Language("kotlin") content: String
-    ): ProjectContext {
+        @Language("kotlin") content: String,
+        expected: String
+    ) {
         val projectContext = getProjectContext(content)
         val stageSequence = StageSequencer.getStageSequence()
         stageSequence.stages.forEach {
@@ -86,7 +62,18 @@ abstract class CoreDeclarationTest : BaseTest() {
                 projectContext.project.accept(PropertyEliminatorVisitor)
             it.accept(projectContext)
         }
-        return projectContext
+        val basicPackageSourceTextFiles = projectContext.outputContext.basicPackageSourceTextFiles
+        val rootPackageSourceTextFiles = projectContext.outputContext.rootPackageSourceTextFiles
+        when {
+            basicPackageSourceTextFiles.size + rootPackageSourceTextFiles.size > 1 ->
+                throw IllegalArgumentException("Multiple source files generated")
+            basicPackageSourceTextFiles.size + rootPackageSourceTextFiles.size == 0 ->
+                throw IllegalArgumentException("No source files generated")
+            basicPackageSourceTextFiles.size == 1 ->
+                assertOutputTextEquals(expected, basicPackageSourceTextFiles[0])
+            rootPackageSourceTextFiles.size == 1 ->
+                assertOutputTextEquals(expected, rootPackageSourceTextFiles[0])
+        }
     }
 
     private fun checkCoreDeclarations(coreDeclarations: List<CoreDeclaration>, projectContext: ProjectContext) {
