@@ -25,91 +25,73 @@ internal class CallExpressionCasterTest : BaseTest() {
 
     @Test
     fun `type argument explicit`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 var x = u(0).ext<`8`>()
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtCallExpression(Ubit<`*`>, ext, *, *, [`8`])",
-            projectContext.findExpression("x")
-        )
+            """.trimIndent(),
+            CasterStage::class,
+            "KtCallExpression(Ubit<`*`>, ext, *, *, [`8`])"
+        ) { it.findExpression("x") }
     }
 
     @Test
     fun `type argument implicit`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 var x: Ubit<`8`> = u(0).ext()
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtCallExpression(Ubit<`*`>, ext, *, *, [`*`])",
-            projectContext.findExpression("x")
-        )
+            """.trimIndent(),
+            CasterStage::class,
+            "KtCallExpression(Ubit<`*`>, ext, *, *, [`*`])"
+        ) { it.findExpression("x") }
     }
 
     @Test
     fun `value argument unnamed`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 fun f(x: Int) {}
                 var x = f(0)
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtCallExpression(Unit, f, null, [ConstantExpression(*)], [])",
-            projectContext.findExpression("x")
-        )
+            """.trimIndent(),
+            CasterStage::class,
+            "KtCallExpression(Unit, f, null, [ConstantExpression(*)], [])"
+        ) { it.findExpression("x") }
     }
 
     @Test
     fun `value argument named`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 fun f(x: Int) {}
                 var x = f(x = 0)
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtCallExpression(Unit, f, null, [ConstantExpression(*)], [])",
-            projectContext.findExpression("x")
-        )
+            """.trimIndent(),
+            CasterStage::class,
+            "KtCallExpression(Unit, f, null, [ConstantExpression(*)], [])"
+        ) { it.findExpression("x") }
     }
 
     @Test
     fun `value argument named order reversed`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 fun f(x: Int, y: String) {}
                 var x = f(y = "", x = 0)
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtCallExpression(Unit, f, null, [ConstantExpression(*), StringTemplateExpression(*)], [])",
-            projectContext.findExpression("x")
-        )
+            """.trimIndent(),
+            CasterStage::class,
+            "KtCallExpression(Unit, f, null, [ConstantExpression(*), StringTemplateExpression(*)], [])"
+        ) { it.findExpression("x") }
     }
 
     @Test
     @Disabled
     // TODO support default arguments
     fun `value argument default`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 fun f(x: Int = 0) {}
                 var x = f()
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtCallExpression(Unit, f, null, [], [ConstantExpression(*)])",
-            projectContext.findExpression("x")
-        )
+            """.trimIndent(),
+            CasterStage::class,
+            "KtCallExpression(Unit, f, null, [], [ConstantExpression(*)])"
+        ) { it.findExpression("x") }
     }
 }

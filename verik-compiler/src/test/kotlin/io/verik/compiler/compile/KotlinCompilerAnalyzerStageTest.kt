@@ -22,20 +22,6 @@ import org.junit.jupiter.api.Test
 class KotlinCompilerAnalyzerStageTest : BaseTest() {
 
     @Test
-    fun `compile simple`() {
-        driveTest(
-            KotlinCompilerAnalyzerStage::class,
-            """
-                class C {
-                    fun f() {
-                        println()
-                    }
-                }
-            """.trimIndent()
-        )
-    }
-
-    @Test
     fun `compile error`() {
         driveTest(
             """

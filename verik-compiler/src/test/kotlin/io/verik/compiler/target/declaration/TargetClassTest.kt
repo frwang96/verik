@@ -16,7 +16,6 @@
 
 package io.verik.compiler.target.declaration
 
-import io.verik.compiler.serialize.source.SourceSerializerStage
 import io.verik.compiler.util.BaseTest
 import org.junit.jupiter.api.Test
 
@@ -25,7 +24,6 @@ internal class TargetClassTest : BaseTest() {
     @Test
     fun `serialize type Boolean`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 var x: Boolean = nc()
             """.trimIndent()
@@ -42,7 +40,6 @@ internal class TargetClassTest : BaseTest() {
     @Test
     fun `serialize type Ubit`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 var x: Ubit<`8`> = nc()
             """.trimIndent()
@@ -59,7 +56,6 @@ internal class TargetClassTest : BaseTest() {
     @Test
     fun `serialize type Sbit`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 var x: Sbit<`8`> = nc()
             """.trimIndent()
@@ -76,7 +72,6 @@ internal class TargetClassTest : BaseTest() {
     @Test
     fun `serialize type Packed`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 var x: Packed<`8`, Boolean> = nc()
             """.trimIndent()
@@ -93,7 +88,6 @@ internal class TargetClassTest : BaseTest() {
     @Test
     fun `serialize type Unpacked`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 var x: Unpacked<`8`, Boolean> = nc()
             """.trimIndent()
@@ -110,7 +104,6 @@ internal class TargetClassTest : BaseTest() {
     @Test
     fun `serialize type ArrayList`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 var x: ArrayList<Boolean> = nc()
             """.trimIndent()

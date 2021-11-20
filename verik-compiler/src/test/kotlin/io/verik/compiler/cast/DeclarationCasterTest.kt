@@ -24,43 +24,35 @@ internal class DeclarationCasterTest : BaseTest() {
 
     @Test
     fun `type alias`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 typealias N = INC<`7`>
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "TypeAlias(N, INC<`7`>)",
-            projectContext.findDeclaration("N")
-        )
+            """.trimIndent(),
+            CasterStage::class,
+            "TypeAlias(N, INC<`7`>)"
+        ) { it.findDeclaration("N") }
     }
 
     @Test
     fun `class simple`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 class C
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtBasicClass(C, C, [], [], [], 0, 0, 0, PrimaryConstructor(C, [], []), null)",
-            projectContext.findDeclaration("C")
-        )
+            """.trimIndent(),
+            CasterStage::class,
+            "KtBasicClass(C, C, [], [], [], 0, 0, 0, PrimaryConstructor(C, [], []), null)"
+        ) { it.findDeclaration("C") }
     }
 
     @Test
     fun `class with class`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 class C {
                     class D
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            CasterStage::class,
             """
                 KtBasicClass(
                     C, C,
@@ -69,22 +61,19 @@ internal class DeclarationCasterTest : BaseTest() {
                     PrimaryConstructor(C, [], []),
                     null
                 )
-            """.trimIndent(),
-            projectContext.findDeclaration("C")
-        )
+            """.trimIndent()
+        ) { it.findDeclaration("C") }
     }
 
     @Test
     fun `class with function`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 class C {
                     fun f() {}
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            CasterStage::class,
             """
                 KtBasicClass(
                     C, C,
@@ -93,22 +82,19 @@ internal class DeclarationCasterTest : BaseTest() {
                     PrimaryConstructor(C, [], []),
                     null
                 )
-            """.trimIndent(),
-            projectContext.findDeclaration("C")
-        )
+            """.trimIndent()
+        ) { it.findDeclaration("C") }
     }
 
     @Test
     fun `class with property`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 class C {
                     val x = false
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            CasterStage::class,
             """
                 KtBasicClass(
                     C, C,
@@ -117,20 +103,17 @@ internal class DeclarationCasterTest : BaseTest() {
                     PrimaryConstructor(C, [], []),
                     null
                 )
-            """.trimIndent(),
-            projectContext.findDeclaration("C")
-        )
+            """.trimIndent()
+        ) { it.findDeclaration("C") }
     }
 
     @Test
     fun `class with companion object`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 class C { companion object }
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            CasterStage::class,
             """
                 KtBasicClass(
                     C, C,
@@ -139,20 +122,17 @@ internal class DeclarationCasterTest : BaseTest() {
                     PrimaryConstructor(C, [], []),
                     null
                 )
-            """.trimIndent(),
-            projectContext.findDeclaration("C")
-        )
+            """.trimIndent()
+        ) { it.findDeclaration("C") }
     }
 
     @Test
     fun `class with type parameter`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 class C<T>
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            CasterStage::class,
             """
                 KtBasicClass(
                     C, C<T>, [],
@@ -161,133 +141,108 @@ internal class DeclarationCasterTest : BaseTest() {
                     PrimaryConstructor(C<T>, [], [T]),
                     null
                 )
-            """.trimIndent(),
-            projectContext.findDeclaration("C")
-        )
+            """.trimIndent()
+        ) { it.findDeclaration("C") }
     }
 
     @Test
     fun `class with primary constructor`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 class C(val x: Int)
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            CasterStage::class,
             """
                 KtBasicClass(
                     C, C, [], [], [], 0, 0, 0,
                     PrimaryConstructor(C, [KtValueParameter(x, Int, [], 1, 0)], []),
                     null
                 )
-            """.trimIndent(),
-            projectContext.findDeclaration("C")
-        )
+            """.trimIndent()
+        ) { it.findDeclaration("C") }
     }
 
     @Test
     fun `class with super type call entry`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 open class C(x: Int)
                 class D : C(0)
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            CasterStage::class,
             """
                 KtBasicClass(
                     D, D, [], [], [], 0, 0, 0,
                     PrimaryConstructor(D, [], []),
                     SuperTypeCallEntry(<init>, [ConstantExpression(*)])
                 )
-            """.trimIndent(),
-            projectContext.findDeclaration("D")
-        )
+            """.trimIndent()
+        ) { it.findDeclaration("D") }
     }
 
     @Test
     fun `enum class`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 enum class E { A }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtBasicClass(E, E, [KtEnumEntry(A, E, [])], [], [], 1, 0, 0, PrimaryConstructor(E, [], []), null)",
-            projectContext.findDeclaration("E")
-        )
+            """.trimIndent(),
+            CasterStage::class,
+            "KtBasicClass(E, E, [KtEnumEntry(A, E, [])], [], [], 1, 0, 0, PrimaryConstructor(E, [], []), null)"
+        ) { it.findDeclaration("E") }
     }
 
     @Test
     fun `object simple`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 object O
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtBasicClass(O, O, [], [], [], 0, 0, 1, null, null)",
-            projectContext.findDeclaration("O")
-        )
+            """.trimIndent(),
+            CasterStage::class,
+            "KtBasicClass(O, O, [], [], [], 0, 0, 1, null, null)"
+        ) { it.findDeclaration("O") }
     }
 
     @Test
     fun `function simple`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 fun f() {}
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtFunction(f, Unit, *, [], [], [], 0)",
-            projectContext.findDeclaration("f")
-        )
+            """.trimIndent(),
+            CasterStage::class,
+            "KtFunction(f, Unit, *, [], [], [], 0)"
+        ) { it.findDeclaration("f") }
     }
 
     @Test
     fun `function with value parameter`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 fun f(x: Int) {}
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtFunction(f, Unit, *, [KtValueParameter(x, Int, [], 0, 0)], [], [], 0)",
-            projectContext.findDeclaration("f")
-        )
+            """.trimIndent(),
+            CasterStage::class,
+            "KtFunction(f, Unit, *, [KtValueParameter(x, Int, [], 0, 0)], [], [], 0)"
+        ) { it.findDeclaration("f") }
     }
 
     @Test
     fun `function with type parameter`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 fun <N : `*`> f() {}
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtFunction(f, Unit, *, [], [TypeParameter(N, `*`)], [], 0)",
-            projectContext.findDeclaration("f")
-        )
+            """.trimIndent(),
+            CasterStage::class,
+            "KtFunction(f, Unit, *, [], [TypeParameter(N, `*`)], [], 0)"
+        ) { it.findDeclaration("f") }
     }
 
     @Test
     fun `property simple`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 var x = false
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtProperty(x, Boolean, *, [], 1)",
-            projectContext.findDeclaration("x")
-        )
+            """.trimIndent(),
+            CasterStage::class,
+            "KtProperty(x, Boolean, *, [], 1)"
+        ) { it.findDeclaration("x") }
     }
 }

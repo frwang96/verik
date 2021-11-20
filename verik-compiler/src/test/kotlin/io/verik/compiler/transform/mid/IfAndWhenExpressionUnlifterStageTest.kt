@@ -24,8 +24,7 @@ internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
 
     @Test
     fun `unlift if expression`() {
-        val projectContext = driveTest(
-            IfAndWhenExpressionUnlifterStage::class,
+        driveTest(
             """
                 var x = true
                 fun f() {
@@ -34,9 +33,8 @@ internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
                         0
                     } else 1
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            IfAndWhenExpressionUnlifterStage::class,
             """
                 [
                     PropertyStatement(Unit, SvProperty(<tmp>, Int, null, 0, 0)),
@@ -51,24 +49,21 @@ internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
                     ),
                     PropertyStatement(Unit, SvProperty(y, Int, ReferenceExpression(Int, <tmp>, null), 0, 0))
                 ]
-            """.trimIndent(),
-            projectContext.findStatements("f")
-        )
+            """.trimIndent()
+        ) { it.findStatements("f") }
     }
 
     @Test
     fun `unlift when expression`() {
-        val projectContext = driveTest(
-            IfAndWhenExpressionUnlifterStage::class,
+        driveTest(
             """
                 fun f() {
                     val y = when {
                         else -> 0
                     }
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            IfAndWhenExpressionUnlifterStage::class,
             """
                 [
                     PropertyStatement(Unit, SvProperty(<tmp>, Int, null, 0, 0)),
@@ -78,15 +73,13 @@ internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
                     ),
                     PropertyStatement(Unit, SvProperty(y, Int, ReferenceExpression(Int, <tmp>, null), 0, 0))
                 ]
-            """.trimIndent(),
-            projectContext.findStatements("f")
-        )
+            """.trimIndent()
+        ) { it.findStatements("f") }
     }
 
     @Test
     fun `unlift when expression Nothing type`() {
-        val projectContext = driveTest(
-            IfAndWhenExpressionUnlifterStage::class,
+        driveTest(
             """
                 fun f() {
                     @Suppress("SimplifyWhenWithBooleanConstantCondition")
@@ -95,9 +88,8 @@ internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
                         else -> fatal()
                     }
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            IfAndWhenExpressionUnlifterStage::class,
             """
                 [
                     PropertyStatement(Unit, SvProperty(<tmp>, Int, null, 0, 0)),
@@ -107,8 +99,7 @@ internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
                     ),
                     PropertyStatement(Unit, SvProperty(y, Int, ReferenceExpression(Int, <tmp>, null), 0, 0))
                 ]
-            """.trimIndent(),
-            projectContext.findStatements("f")
-        )
+            """.trimIndent()
+        ) { it.findStatements("f") }
     }
 }

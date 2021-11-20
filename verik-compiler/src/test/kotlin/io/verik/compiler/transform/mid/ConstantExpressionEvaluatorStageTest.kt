@@ -56,29 +56,23 @@ internal class ConstantExpressionEvaluatorStageTest : BaseTest() {
 
     @Test
     fun `evaluate Int plus`() {
-        val projectContext = driveTest(
-            ConstantExpressionEvaluatorStage::class,
+        driveTest(
             """
                 var x = 1 + 1
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "ConstantExpression(Int, 2)",
-            projectContext.findExpression("x")
-        )
+            """.trimIndent(),
+            ConstantExpressionEvaluatorStage::class,
+            "ConstantExpression(Int, 2)"
+        ) { it.findExpression("x") }
     }
 
     @Test
     fun `evaluate Ubit plus`() {
-        val projectContext = driveTest(
-            ConstantExpressionEvaluatorStage::class,
+        driveTest(
             """
                 var x = u(1) + u(1)
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "ConstantExpression(Ubit<`1`>, 1'h0)",
-            projectContext.findExpression("x")
-        )
+            """.trimIndent(),
+            ConstantExpressionEvaluatorStage::class,
+            "ConstantExpression(Ubit<`1`>, 1'h0)"
+        ) { it.findExpression("x") }
     }
 }

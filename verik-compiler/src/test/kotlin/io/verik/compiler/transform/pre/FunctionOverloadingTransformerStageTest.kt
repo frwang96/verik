@@ -24,20 +24,13 @@ internal class FunctionOverloadingTransformerStageTest : BaseTest() {
 
     @Test
     fun `overloaded function`() {
-        val projectContext = driveTest(
-            FunctionOverloadingTransformerStage::class,
+        driveTest(
             """
                 fun f() {}
                 fun f(x: Int) {}
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtFunction(f, *, *, *, *, *, 0)",
-            projectContext.findDeclaration("f")
-        )
-        assertElementEquals(
-            "KtFunction(f_Int, *, *, *, *, *, 0)",
-            projectContext.findDeclaration("f_Int")
-        )
+            """.trimIndent(),
+            FunctionOverloadingTransformerStage::class,
+            "KtFunction(f_Int, *, *, *, *, *, 0)"
+        ) { it.findDeclaration("f_Int") }
     }
 }

@@ -24,31 +24,25 @@ internal class InlineIfExpressionTransformerStageTest : BaseTest() {
 
     @Test
     fun `transform inline if`() {
-        val projectContext = driveTest(
-            InlineIfExpressionTransformerStage::class,
+        driveTest(
             """
                 var x = true
                 var y = if (x) 1 else 0
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "InlineIfExpression(Int, ReferenceExpression(*), ConstantExpression(*), ConstantExpression(*))",
-            projectContext.findExpression("y")
-        )
+            """.trimIndent(),
+            InlineIfExpressionTransformerStage::class,
+            "InlineIfExpression(Int, ReferenceExpression(*), ConstantExpression(*), ConstantExpression(*))"
+        ) { it.findExpression("y") }
     }
 
     @Test
     fun `transform inline if block expression`() {
-        val projectContext = driveTest(
-            InlineIfExpressionTransformerStage::class,
+        driveTest(
             """
                 var x = true
                 var y = if (x) { 1 } else { 0 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "InlineIfExpression(Int, ReferenceExpression(*), ConstantExpression(*), ConstantExpression(*))",
-            projectContext.findExpression("y")
-        )
+            """.trimIndent(),
+            InlineIfExpressionTransformerStage::class,
+            "InlineIfExpression(Int, ReferenceExpression(*), ConstantExpression(*), ConstantExpression(*))"
+        ) { it.findExpression("y") }
     }
 }

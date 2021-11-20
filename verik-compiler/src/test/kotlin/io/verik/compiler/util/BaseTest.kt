@@ -17,6 +17,7 @@
 package io.verik.compiler.util
 
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.common.ElementPrinter
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.main.Config
@@ -36,7 +37,19 @@ import kotlin.reflect.KClass
 
 abstract class BaseTest {
 
-    fun <T : ProjectStage> driveTest(stageClass: KClass<T>, @Language("kotlin") content: String): ProjectContext {
+    fun driveTest(@Language("kotlin") content: String): ProjectContext {
+        val projectContext = getProjectContext(content)
+        val stageSequence = StageSequencer.getStageSequence()
+        stageSequence.stages.forEach { it.accept(projectContext) }
+        return projectContext
+    }
+
+    fun <T : ProjectStage> driveTest(
+        @Language("kotlin") content: String,
+        stageClass: KClass<T>,
+        expected: String,
+        selector: (EProject) -> Any
+    ) {
         val projectContext = getProjectContext(content)
         val stageSequence = StageSequencer.getStageSequence()
         assert(stageSequence.contains(stageClass))
@@ -45,7 +58,14 @@ abstract class BaseTest {
             if (it::class == stageClass)
                 break
         }
-        return projectContext
+        val selected = selector(projectContext.project)
+        if (selected is List<*>) {
+            val elements = selected.map { it as EElement }
+            assertElementEquals(expected, elements)
+        } else {
+            val element = selected as EElement
+            assertElementEquals(expected, element)
+        }
     }
 
     fun driveTest(@Language("kotlin") content: String, isError: Boolean, message: String) {
@@ -64,15 +84,6 @@ abstract class BaseTest {
         }
     }
 
-    fun assertElementEquals(expected: String, actual: EElement) {
-        assertElementEquals(expected, ElementPrinter.dump(actual))
-    }
-
-    fun assertElementEquals(expected: String, actual: List<EElement>) {
-        val actualString = actual.joinToString(prefix = "[", postfix = "]") { ElementPrinter.dump(it) }
-        assertElementEquals(expected, actualString)
-    }
-
     internal fun getProjectContext(@Language("kotlin") content: String): ProjectContext {
         val config = getConfig()
         val contentWithPackageHeader = """
@@ -85,6 +96,15 @@ abstract class BaseTest {
         val sourceSetContext = SourceSetContext(config.sourceSetConfigs[0].name, listOf(textFile))
         projectContext.sourceSetContexts = listOf(sourceSetContext)
         return projectContext
+    }
+
+    private fun assertElementEquals(expected: String, actual: EElement) {
+        assertElementEquals(expected, ElementPrinter.dump(actual))
+    }
+
+    private fun assertElementEquals(expected: String, actual: List<EElement>) {
+        val actualString = actual.joinToString(prefix = "[", postfix = "]") { ElementPrinter.dump(it) }
+        assertElementEquals(expected, actualString)
     }
 
     private fun assertElementEquals(expected: String, actualString: String) {

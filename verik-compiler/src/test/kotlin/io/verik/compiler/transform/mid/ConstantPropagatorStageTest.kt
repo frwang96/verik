@@ -24,18 +24,15 @@ internal class ConstantPropagatorStageTest : BaseTest() {
 
     @Test
     fun `constant propagation`() {
-        val projectContext = driveTest(
-            ConstantPropagatorStage::class,
+        driveTest(
             """
                 const val x = 0
                 fun f() {
                     println(x)
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtCallExpression(Unit, println, null, [ConstantExpression(Int, 0)], [])",
-            projectContext.findExpression("f")
-        )
+            """.trimIndent(),
+            ConstantPropagatorStage::class,
+            "KtCallExpression(Unit, println, null, [ConstantExpression(Int, 0)], [])"
+        ) { it.findExpression("f") }
     }
 }

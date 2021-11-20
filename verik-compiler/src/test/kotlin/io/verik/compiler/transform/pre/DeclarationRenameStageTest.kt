@@ -24,33 +24,27 @@ internal class DeclarationRenameStageTest : BaseTest() {
 
     @Test
     fun `rename function`() {
-        val projectContext = driveTest(
-            DeclarationRenameStage::class,
+        driveTest(
             """
                 @Rename("g")
                 fun f() {}
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtFunction(g, Unit, *, [], [], *, 0)",
-            projectContext.findDeclaration("g")
-        )
+            """.trimIndent(),
+            DeclarationRenameStage::class,
+            "KtFunction(g, Unit, *, [], [], *, 0)"
+        ) { it.findDeclaration("g") }
     }
 
     @Test
     fun `rename enum entry`() {
-        val projectContext = driveTest(
-            DeclarationRenameStage::class,
+        driveTest(
             """
                 enum class E {
                     @Rename("B")
                     A
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtEnumEntry(B, E, *)",
-            projectContext.findDeclaration("B")
-        )
+            """.trimIndent(),
+            DeclarationRenameStage::class,
+            "KtEnumEntry(B, E, *)"
+        ) { it.findDeclaration("B") }
     }
 }

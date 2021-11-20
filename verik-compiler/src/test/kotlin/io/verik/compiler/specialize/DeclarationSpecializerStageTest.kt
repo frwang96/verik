@@ -24,88 +24,73 @@ internal class DeclarationSpecializerStageTest : BaseTest() {
 
     @Test
     fun `specialize class type parameter cardinal`() {
-        val projectContext = driveTest(
-            DeclarationSpecializerStage::class,
+        driveTest(
             """
                 class C<N : `*`>
                 val c = C<`8`>()
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtBasicClass(C_8, C_8, [], [], [], 0, 0, 0, PrimaryConstructor(C_8, [], []), null)",
-            projectContext.findDeclaration("C_8")
-        )
+            """.trimIndent(),
+            DeclarationSpecializerStage::class,
+            "KtBasicClass(C_8, C_8, [], [], [], 0, 0, 0, PrimaryConstructor(C_8, [], []), null)"
+        ) { it.findDeclaration("C_8") }
     }
 
     @Test
     fun `specialize class type parameter class`() {
-        val projectContext = driveTest(
-            DeclarationSpecializerStage::class,
+        driveTest(
             """
                 class C
                 class D<T>
                 val d = D<C>()
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtBasicClass(D_C, D_C, [], [], [], 0, 0, 0, PrimaryConstructor(D_C, [], []), null)",
-            projectContext.findDeclaration("D_C")
-        )
+            """.trimIndent(),
+            DeclarationSpecializerStage::class,
+            "KtBasicClass(D_C, D_C, [], [], [], 0, 0, 0, PrimaryConstructor(D_C, [], []), null)"
+        ) { it.findDeclaration("D_C") }
     }
 
     @Test
     fun `specialize class with property`() {
-        val projectContext = driveTest(
-            DeclarationSpecializerStage::class,
+        driveTest(
             """
                 class C<N : `*`> {
                     val x: Ubit<N> = nc()
                 }
                 val c = C<`8`>()
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            DeclarationSpecializerStage::class,
             """
                 KtBasicClass(
                     C_8, C_8,
                     [KtProperty(x, Ubit<`8`>, KtCallExpression(*), [], 0)],
                     [], [], 0, 0, 0, *, null
                 )
-            """.trimIndent(),
-            projectContext.findDeclaration("C_8")
-        )
+            """.trimIndent()
+        ) { it.findDeclaration("C_8") }
     }
 
     @Test
     fun `specialize function type parameter`() {
-        val projectContext = driveTest(
-            DeclarationSpecializerStage::class,
+        driveTest(
             """
                 fun <N : `*`> f() {}
                 val x = f<`8`>()
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtFunction(f_8, Unit, KtBlockExpression(*), [], [], [], 0)",
-            projectContext.findDeclaration("f_8")
-        )
+            """.trimIndent(),
+            DeclarationSpecializerStage::class,
+            "KtFunction(f_8, Unit, KtBlockExpression(*), [], [], [], 0)"
+        ) { it.findDeclaration("f_8") }
     }
 
     @Test
     fun `specialize property type parameter`() {
-        val projectContext = driveTest(
-            DeclarationSpecializerStage::class,
+        driveTest(
             """
                 class C
                 class D<E> {
                     val e : E = nc()
                 }
                 val d = D<C>()
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtProperty(e, C, KtCallExpression(*), [], 0)",
-            projectContext.findDeclaration("e")
-        )
+            """.trimIndent(),
+            DeclarationSpecializerStage::class,
+            "KtProperty(e, C, KtCallExpression(*), [], 0)"
+        ) { it.findDeclaration("e") }
     }
 }

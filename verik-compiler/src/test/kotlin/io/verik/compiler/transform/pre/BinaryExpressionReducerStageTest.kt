@@ -24,30 +24,25 @@ internal class BinaryExpressionReducerStageTest : BaseTest() {
 
     @Test
     fun `reduce plus`() {
-        val projectContext = driveTest(
-            BinaryExpressionReducerStage::class,
+        driveTest(
             """
                 var x = 0
                 var y = x + 0
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtCallExpression(Int, plus, ReferenceExpression(*), [ConstantExpression(*)], [])",
-            projectContext.findExpression("y")
-        )
+            """.trimIndent(),
+            BinaryExpressionReducerStage::class,
+            "KtCallExpression(Int, plus, ReferenceExpression(*), [ConstantExpression(*)], [])"
+        ) { it.findExpression("y") }
     }
 
     @Test
     fun `reduce nested plus`() {
-        val projectContext = driveTest(
-            BinaryExpressionReducerStage::class,
+        driveTest(
             """
                 var x = 0
                 var y = 0
                 var z = x + y + 0
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            BinaryExpressionReducerStage::class,
             """
                 KtCallExpression(
                     Int,
@@ -56,8 +51,7 @@ internal class BinaryExpressionReducerStageTest : BaseTest() {
                     [ConstantExpression(*)],
                     []
                 )
-            """.trimIndent(),
-            projectContext.findExpression("z")
-        )
+            """.trimIndent()
+        ) { it.findExpression("z") }
     }
 }

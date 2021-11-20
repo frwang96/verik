@@ -24,7 +24,6 @@ internal class SourceBuilderTest : BaseTest() {
     @Test
     fun `align properties`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 var x: Boolean = nc()
                 var y: Int = nc()
@@ -45,7 +44,6 @@ internal class SourceBuilderTest : BaseTest() {
     @Test
     fun `wrap expression`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 var aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa = 0
                 var bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb = 0
@@ -72,7 +70,6 @@ internal class SourceBuilderTest : BaseTest() {
     @Test
     fun `wrap property`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 var aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa = 0
                 var b = aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa + aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa + 1

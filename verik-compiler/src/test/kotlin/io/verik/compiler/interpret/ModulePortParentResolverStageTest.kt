@@ -24,20 +24,17 @@ internal class ModulePortParentResolverStageTest : BaseTest() {
 
     @Test
     fun `module port resolve parent`() {
-        val projectContext = driveTest(
-            ModulePortParentResolverStage::class,
+        driveTest(
             """
                 class MP : ModulePort()
                 class MI : ModuleInterface() {
                     @Make
                     val mp = MP()
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "ModulePort(MP, MP, [], MI)",
-            projectContext.findDeclaration("MP")
-        )
+            """.trimIndent(),
+            ModulePortParentResolverStage::class,
+            "ModulePort(MP, MP, [], MI)"
+        ) { it.findDeclaration("MP") }
     }
 
     @Test

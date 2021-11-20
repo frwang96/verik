@@ -23,44 +23,38 @@ internal class CasterStageTest : BaseTest() {
 
     @Test
     fun `project empty`() {
-        val projectContext = driveTest(CasterStage::class, "")
-        assertElementEquals(
+        driveTest(
+            "",
+            CasterStage::class,
             "Project([BasicPackage(test, [File([])])], RootPackage(<root>, []))",
-            projectContext.project
-        )
+        ) { it }
     }
 
     @Test
     fun `file class`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 class C
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "File([KtBasicClass(C, C, [], [], [], 0, 0, 0, PrimaryConstructor(C, [], []), null)])",
-            projectContext.project.files().first()
-        )
+            """.trimIndent(),
+            CasterStage::class,
+            "File([KtBasicClass(C, C, [], [], [], 0, 0, 0, PrimaryConstructor(C, [], []), null)])"
+        ) { it.files().first() }
     }
 
     @Test
     fun `file classes`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 class C
                 class D
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            CasterStage::class,
             """
                 File([
                     KtBasicClass(C, C, [], [], [], 0, 0, 0, PrimaryConstructor(C, [], []), null),
                     KtBasicClass(D, D, [], [], [], 0, 0, 0, PrimaryConstructor(D, [], []), null)
                 ])
-            """.trimIndent(),
-            projectContext.project.files().first()
-        )
+            """.trimIndent()
+        ) { it.files().first() }
     }
 }

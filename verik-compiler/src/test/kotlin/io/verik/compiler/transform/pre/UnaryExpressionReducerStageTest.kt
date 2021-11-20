@@ -24,16 +24,13 @@ internal class UnaryExpressionReducerStageTest : BaseTest() {
 
     @Test
     fun `reduce not`() {
-        val projectContext = driveTest(
-            UnaryExpressionReducerStage::class,
+        driveTest(
             """
                 var x = false
                 var y = !x
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtCallExpression(Boolean, not, ReferenceExpression(*), [], [])",
-            projectContext.findExpression("y")
-        )
+            """.trimIndent(),
+            UnaryExpressionReducerStage::class,
+            "KtCallExpression(Boolean, not, ReferenceExpression(*), [], [])"
+        ) { it.findExpression("y") }
     }
 }

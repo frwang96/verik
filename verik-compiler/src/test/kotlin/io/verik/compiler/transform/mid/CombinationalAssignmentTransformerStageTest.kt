@@ -24,15 +24,13 @@ internal class CombinationalAssignmentTransformerStageTest : BaseTest() {
 
     @Test
     fun `combinational assignment`() {
-        val projectContext = driveTest(
-            CombinationalAssignmentTransformerStage::class,
+        driveTest(
             """
                 class M : Module() {
                     var x = false
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            CombinationalAssignmentTransformerStage::class,
             """
                 Module(
                     M, M,
@@ -48,8 +46,7 @@ internal class CombinationalAssignmentTransformerStageTest : BaseTest() {
                     ],
                     []
                 )
-            """.trimIndent(),
-            projectContext.findDeclaration("M")
-        )
+            """.trimIndent()
+        ) { it.findDeclaration("M") }
     }
 }

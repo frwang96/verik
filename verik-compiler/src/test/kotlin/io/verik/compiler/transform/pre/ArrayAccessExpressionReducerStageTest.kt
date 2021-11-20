@@ -24,33 +24,27 @@ internal class ArrayAccessExpressionReducerStageTest : BaseTest() {
 
     @Test
     fun `reduce get`() {
-        val projectContext = driveTest(
-            ArrayAccessExpressionReducerStage::class,
+        driveTest(
             """
                 var x = u(0)
                 var y = x[0]
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtCallExpression(Boolean, get, *, [*], [])",
-            projectContext.findExpression("y")
-        )
+            """.trimIndent(),
+            ArrayAccessExpressionReducerStage::class,
+            "KtCallExpression(Boolean, get, *, [*], [])"
+        ) { it.findExpression("y") }
     }
 
     @Test
     fun `reduce set`() {
-        val projectContext = driveTest(
-            ArrayAccessExpressionReducerStage::class,
+        driveTest(
             """
                 var x = ArrayList<Boolean>()
                 fun f() {
                     x[0] = true
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtCallExpression(Unit, set, *, [*, *], [])",
-            projectContext.findExpression("f")
-        )
+            """.trimIndent(),
+            ArrayAccessExpressionReducerStage::class,
+            "KtCallExpression(Unit, set, *, [*, *], [])"
+        ) { it.findExpression("f") }
     }
 }

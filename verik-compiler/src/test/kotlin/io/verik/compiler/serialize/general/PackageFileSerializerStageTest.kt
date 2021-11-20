@@ -24,7 +24,6 @@ internal class PackageFileSerializerStageTest : BaseTest() {
     @Test
     fun `package file`() {
         val projectContext = driveTest(
-            PackageFileSerializerStage::class,
             """
                 class C
             """.trimIndent()

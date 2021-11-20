@@ -24,32 +24,26 @@ internal class AnnotationCasterTest : BaseTest() {
 
     @Test
     fun `annotation simple`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 @Task
                 fun f() {}
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtFunction(f, Unit, *, [], [], [Annotation(Task, [])], 0)",
-            projectContext.findDeclaration("f")
-        )
+            """.trimIndent(),
+            CasterStage::class,
+            "KtFunction(f, Unit, *, [], [], [Annotation(Task, [])], 0)"
+        ) { it.findDeclaration("f") }
     }
 
     @Test
     fun `annotation with argument`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 @Rename("g")
                 fun f() {}
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtFunction(f, Unit, *, [], [], [Annotation(Rename, [g])], 0)",
-            projectContext.findDeclaration("f")
-        )
+            """.trimIndent(),
+            CasterStage::class,
+            "KtFunction(f, Unit, *, [], [], [Annotation(Rename, [g])], 0)"
+        ) { it.findDeclaration("f") }
     }
 
     @Test
@@ -66,15 +60,12 @@ internal class AnnotationCasterTest : BaseTest() {
 
     @Test
     fun `annotation on value parameter`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 class M(@In val x: Boolean) : Module()
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            CasterStage::class,
             "KtValueParameter(x, Boolean, [Annotation(In, [])], 1, 0)",
-            projectContext.findDeclaration("x")
-        )
+        ) { it.findDeclaration("x") }
     }
 }

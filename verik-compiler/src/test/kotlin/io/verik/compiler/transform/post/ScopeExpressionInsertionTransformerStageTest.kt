@@ -24,15 +24,13 @@ internal class ScopeExpressionInsertionTransformerStageTest : BaseTest() {
 
     @Test
     fun `reference target declaration`() {
-        val projectContext = driveTest(
-            ScopeExpressionInsertionTransformerStage::class,
+        driveTest(
             """
                 fun f() {
                     ArrayList<Boolean>()
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            ScopeExpressionInsertionTransformerStage::class,
             """
                 KtCallExpression(
                     ArrayList<Boolean>,
@@ -41,15 +39,13 @@ internal class ScopeExpressionInsertionTransformerStageTest : BaseTest() {
                     [],
                     [Boolean]
                 )
-            """.trimIndent(),
-            projectContext.findExpression("f")
-        )
+            """.trimIndent()
+        ) { it.findExpression("f") }
     }
 
     @Test
     fun `reference element parent file`() {
-        val projectContext = driveTest(
-            ScopeExpressionInsertionTransformerStage::class,
+        driveTest(
             """
                 var x = false
                 class M : Module() {
@@ -57,18 +53,15 @@ internal class ScopeExpressionInsertionTransformerStageTest : BaseTest() {
                         x
                     }
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "ReferenceExpression(Boolean, x, ScopeExpression(Void, test_pkg))",
-            projectContext.findExpression("f")
-        )
+            """.trimIndent(),
+            ScopeExpressionInsertionTransformerStage::class,
+            "ReferenceExpression(Boolean, x, ScopeExpression(Void, test_pkg))"
+        ) { it.findExpression("f") }
     }
 
     @Test
     fun `reference property parent basic class`() {
-        val projectContext = driveTest(
-            ScopeExpressionInsertionTransformerStage::class,
+        driveTest(
             """
                 object O {
                     var x = false
@@ -78,11 +71,9 @@ internal class ScopeExpressionInsertionTransformerStageTest : BaseTest() {
                         O.x
                     }
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "ReferenceExpression(Boolean, x, ScopeExpression(Void, O))",
-            projectContext.findExpression("f")
-        )
+            """.trimIndent(),
+            ScopeExpressionInsertionTransformerStage::class,
+            "ReferenceExpression(Boolean, x, ScopeExpression(Void, O))"
+        ) { it.findExpression("f") }
     }
 }

@@ -24,53 +24,44 @@ internal class EnumNameTransformerStageTest : BaseTest() {
 
     @Test
     fun `string template expression property`() {
-        val projectContext = driveTest(
-            EnumNameTransformerStage::class,
+        driveTest(
             """
                 enum class E { A }
                 val e = E.A
                 fun f() {
                     "${"$"}e"
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "StringTemplateExpression(String, [KtCallExpression(String, name, ReferenceExpression(*), [], [])])",
-            projectContext.findExpression("f")
-        )
+            """.trimIndent(),
+            EnumNameTransformerStage::class,
+            "StringTemplateExpression(String, [KtCallExpression(String, name, ReferenceExpression(*), [], [])])"
+        ) { it.findExpression("f") }
     }
 
     @Test
     fun `string template expression enum entry`() {
-        val projectContext = driveTest(
-            EnumNameTransformerStage::class,
+        driveTest(
             """
                 enum class E { A }
                 fun f() {
                     "${"$"}{E.A}"
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "StringTemplateExpression(String, [StringExpression(String, A)])",
-            projectContext.findExpression("f")
-        )
+            """.trimIndent(),
+            EnumNameTransformerStage::class,
+            "StringTemplateExpression(String, [StringExpression(String, A)])"
+        ) { it.findExpression("f") }
     }
 
     @Test
     fun `call expression println enum entry`() {
-        val projectContext = driveTest(
-            EnumNameTransformerStage::class,
+        driveTest(
             """
                 enum class E { A }
                 fun f() {
                     println(E.A)
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtCallExpression(Unit, println, null, [StringExpression(String, A)], [])",
-            projectContext.findExpression("f")
-        )
+            """.trimIndent(),
+            EnumNameTransformerStage::class,
+            "KtCallExpression(Unit, println, null, [StringExpression(String, A)], [])"
+        ) { it.findExpression("f") }
     }
 }

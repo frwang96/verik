@@ -24,38 +24,32 @@ internal class PropertyInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret module instantiation`() {
-        val projectContext = driveTest(
-            PropertyInterpreterStage::class,
+        driveTest(
             """
                 class M(@In var x: Boolean) : Module()
                 class Top : Module() {
                     @Make
                     val m = M(false)
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "BasicComponentInstantiation(m, M, [PortInstantiation(x, *, INPUT)])",
-            projectContext.findDeclaration("m")
-        )
+            """.trimIndent(),
+            PropertyInterpreterStage::class,
+            "BasicComponentInstantiation(m, M, [PortInstantiation(x, *, INPUT)])"
+        ) { it.findDeclaration("m") }
     }
 
     @Test
     fun `interpret module instantiation not connected`() {
-        val projectContext = driveTest(
-            PropertyInterpreterStage::class,
+        driveTest(
             """
                 class M(@Out var x: Boolean) : Module()
                 class Top : Module() {
                     @Make
                     val m = M(nc())
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "BasicComponentInstantiation(m, M, [PortInstantiation(x, null, OUTPUT)])",
-            projectContext.findDeclaration("m")
-        )
+            """.trimIndent(),
+            PropertyInterpreterStage::class,
+            "BasicComponentInstantiation(m, M, [PortInstantiation(x, null, OUTPUT)])"
+        ) { it.findDeclaration("m") }
     }
 
     @Test
@@ -75,56 +69,47 @@ internal class PropertyInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret module interface instantiation`() {
-        val projectContext = driveTest(
-            PropertyInterpreterStage::class,
+        driveTest(
             """
                 class MI : ModuleInterface()
                 class Top : Module() {
                     @Make
                     val mi = MI()
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "BasicComponentInstantiation(mi, MI, [])",
-            projectContext.findDeclaration("mi")
-        )
+            """.trimIndent(),
+            PropertyInterpreterStage::class,
+            "BasicComponentInstantiation(mi, MI, [])"
+        ) { it.findDeclaration("mi") }
     }
 
     @Test
     fun `interpret module port instantiation`() {
-        val projectContext = driveTest(
-            PropertyInterpreterStage::class,
+        driveTest(
             """
                 class MP : ModulePort()
                 class Top : Module() {
                     @Make
                     val mp = MP()
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "ModulePortInstantiation(mp, MP, [])",
-            projectContext.findDeclaration("mp")
-        )
+            """.trimIndent(),
+            PropertyInterpreterStage::class,
+            "ModulePortInstantiation(mp, MP, [])"
+        ) { it.findDeclaration("mp") }
     }
 
     @Test
     fun `interpret clocking block instantiation`() {
-        val projectContext = driveTest(
-            PropertyInterpreterStage::class,
+        driveTest(
             """
                 class CB(override val event: Event) : ClockingBlock()
                 class Top : Module() {
                     @Make
                     val cb = CB(posedge(false))
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "ClockingBlockInstantiation(cb, CB, [], EventControlExpression(*))",
-            projectContext.findDeclaration("cb")
-        )
+            """.trimIndent(),
+            PropertyInterpreterStage::class,
+            "ClockingBlockInstantiation(cb, CB, [], EventControlExpression(*))"
+        ) { it.findDeclaration("cb") }
     }
 
     @Test
@@ -144,31 +129,25 @@ internal class PropertyInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret property`() {
-        val projectContext = driveTest(
-            PropertyInterpreterStage::class,
+        driveTest(
             """
                 var x = false
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "SvProperty(x, Boolean, *, 1, null)",
-            projectContext.findDeclaration("x")
-        )
+            """.trimIndent(),
+            PropertyInterpreterStage::class,
+            "SvProperty(x, Boolean, *, 1, null)"
+        ) { it.findDeclaration("x") }
     }
 
     @Test
     fun `interpret property static`() {
-        val projectContext = driveTest(
-            PropertyInterpreterStage::class,
+        driveTest(
             """
                 object O {
                     var x = false
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "SvProperty(x, Boolean, *, 1, 1)",
-            projectContext.findDeclaration("x")
-        )
+            """.trimIndent(),
+            PropertyInterpreterStage::class,
+            "SvProperty(x, Boolean, *, 1, 1)"
+        ) { it.findDeclaration("x") }
     }
 }

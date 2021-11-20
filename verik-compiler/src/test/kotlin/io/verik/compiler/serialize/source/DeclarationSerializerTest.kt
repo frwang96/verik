@@ -24,7 +24,6 @@ internal class DeclarationSerializerTest : BaseTest() {
     @Test
     fun `serialize type definition`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 fun f(x: Unpacked<`8`, Boolean>): Unpacked<`8`, Boolean> {
                     return x
@@ -47,7 +46,6 @@ internal class DeclarationSerializerTest : BaseTest() {
     @Test
     fun `serialize module simple`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 class M: Module()
             """.trimIndent()
@@ -66,7 +64,6 @@ internal class DeclarationSerializerTest : BaseTest() {
     @Test
     fun `serialize module with port`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 class M(@In var x: Boolean): Module()
             """.trimIndent()
@@ -87,7 +84,6 @@ internal class DeclarationSerializerTest : BaseTest() {
     @Test
     fun `serialize module interface simple`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 class MI: ModuleInterface()
             """.trimIndent()
@@ -106,7 +102,6 @@ internal class DeclarationSerializerTest : BaseTest() {
     @Test
     fun `serialize class`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 class C
             """.trimIndent()
@@ -134,7 +129,6 @@ internal class DeclarationSerializerTest : BaseTest() {
     @Test
     fun `serialize enum`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 enum class E { A, B }
             """.trimIndent()
@@ -154,7 +148,6 @@ internal class DeclarationSerializerTest : BaseTest() {
     @Test
     fun `serialize struct`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 class S(val x: Boolean) : Struct()
             """.trimIndent()
@@ -173,7 +166,6 @@ internal class DeclarationSerializerTest : BaseTest() {
     @Test
     fun `serialize function`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 fun f() {}
             """.trimIndent()
@@ -191,7 +183,6 @@ internal class DeclarationSerializerTest : BaseTest() {
     @Test
     fun `serialize task`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 @Task
                 fun t(x: Int) {}
@@ -210,7 +201,6 @@ internal class DeclarationSerializerTest : BaseTest() {
     @Test
     fun `serialize property`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 var x = false
             """.trimIndent()
@@ -227,7 +217,6 @@ internal class DeclarationSerializerTest : BaseTest() {
     @Test
     fun `serialize initial block`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 class M : Module() {
                     @Run
@@ -252,7 +241,6 @@ internal class DeclarationSerializerTest : BaseTest() {
     @Test
     fun `serialize always com block`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 class M : Module() {
                     @Com
@@ -277,7 +265,6 @@ internal class DeclarationSerializerTest : BaseTest() {
     @Test
     fun `serialize always seq block`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 class M : Module() {
                     private var x : Boolean = nc()
@@ -307,7 +294,6 @@ internal class DeclarationSerializerTest : BaseTest() {
     @Test
     fun `serialize module instantiation`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 class M(@In var x: Boolean): Module()
                 class Top : Module() {
@@ -340,7 +326,6 @@ internal class DeclarationSerializerTest : BaseTest() {
     @Test
     fun `serialize module port instantiation`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 class MP(@In var x: Boolean) : ModulePort()
                 class Top : ModuleInterface() {
@@ -370,7 +355,6 @@ internal class DeclarationSerializerTest : BaseTest() {
     @Test
     fun `serialize clocking block instantiation`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 class CB(override val event: Event, @In var x: Boolean) : ClockingBlock()
                 class Top : Module() {
@@ -400,7 +384,6 @@ internal class DeclarationSerializerTest : BaseTest() {
     @Test
     fun `serialize value parameter`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 fun f(x: Int) {}
             """.trimIndent()

@@ -24,17 +24,14 @@ internal class UnpackedTypeDefinitionTransformerStageTest : BaseTest() {
 
     @Test
     fun `unpacked type definition`() {
-        val projectContext = driveTest(
-            UnpackedTypeDefinitionTransformerStage::class,
+        driveTest(
             """
                 fun f(x: Unpacked<`8`, Boolean>): Unpacked<`8`, Boolean> {
                     return x
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "TypeDefinition(<tmp>, Unpacked<`8`, Boolean>)",
-            projectContext.findDeclaration("<tmp>")
-        )
+            """.trimIndent(),
+            UnpackedTypeDefinitionTransformerStage::class,
+            "TypeDefinition(<tmp>, Unpacked<`8`, Boolean>)"
+        ) { it.findDeclaration("<tmp>") }
     }
 }

@@ -16,7 +16,6 @@
 
 package io.verik.compiler.serialize.target
 
-import io.verik.compiler.serialize.source.SourceSerializerStage
 import io.verik.compiler.util.BaseTest
 import org.junit.jupiter.api.Test
 
@@ -25,7 +24,6 @@ internal class TargetSerializerStageTest : BaseTest() {
     @Test
     fun `target class`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 val a: ArrayList<Boolean> = nc()
             """.trimIndent()
@@ -50,7 +48,6 @@ internal class TargetSerializerStageTest : BaseTest() {
     @Test
     fun `target function`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 val a: ArrayList<Boolean> = nc()
                 fun f() {

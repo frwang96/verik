@@ -24,57 +24,45 @@ internal class ConstantExpressionTransformerStageTest : BaseTest() {
 
     @Test
     fun `boolean false`() {
-        val projectContext = driveTest(
-            ConstantExpressionTransformerStage::class,
+        driveTest(
             """
                 var x = false
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "ConstantExpression(Boolean, 1'b0)",
-            projectContext.findExpression("x")
-        )
+            """.trimIndent(),
+            ConstantExpressionTransformerStage::class,
+            "ConstantExpression(Boolean, 1'b0)"
+        ) { it.findExpression("x") }
     }
 
     @Test
     fun `integer decimal`() {
-        val projectContext = driveTest(
-            ConstantExpressionTransformerStage::class,
+        driveTest(
             """
                 var x = 1_2
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "ConstantExpression(Int, 12)",
-            projectContext.findExpression("x")
-        )
+            """.trimIndent(),
+            ConstantExpressionTransformerStage::class,
+            "ConstantExpression(Int, 12)"
+        ) { it.findExpression("x") }
     }
 
     @Test
     fun `integer hexadecimal`() {
-        val projectContext = driveTest(
-            ConstantExpressionTransformerStage::class,
+        driveTest(
             """
                 var x = 0xaA_bB
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "ConstantExpression(Int, 43707)",
-            projectContext.findExpression("x")
-        )
+            """.trimIndent(),
+            ConstantExpressionTransformerStage::class,
+            "ConstantExpression(Int, 43707)"
+        ) { it.findExpression("x") }
     }
 
     @Test
     fun `integer binary`() {
-        val projectContext = driveTest(
-            ConstantExpressionTransformerStage::class,
+        driveTest(
             """
                 var x = 0b0000_1111
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "ConstantExpression(Int, 15)",
-            projectContext.findExpression("x")
-        )
+            """.trimIndent(),
+            ConstantExpressionTransformerStage::class,
+            "ConstantExpression(Int, 15)"
+        ) { it.findExpression("x") }
     }
 }

@@ -24,15 +24,12 @@ internal class StructInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret struct`() {
-        val projectContext = driveTest(
-            StructInterpreterStage::class,
+        driveTest(
             """
                 class S(var x: Boolean): Struct()
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "Struct(S, S, [SvProperty(x, Boolean, null, 1, null)])",
-            projectContext.findDeclaration("S")
-        )
+            """.trimIndent(),
+            StructInterpreterStage::class,
+            "Struct(S, S, [SvProperty(x, Boolean, null, 1, null)])"
+        ) { it.findDeclaration("S") }
     }
 }

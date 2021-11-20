@@ -24,16 +24,14 @@ internal class ForStatementTransformerStageTest : BaseTest() {
 
     @Test
     fun `transform forEach until`() {
-        val projectContext = driveTest(
-            ForStatementTransformerStage::class,
+        driveTest(
             """
                 fun f() {
                     @Suppress("ForEachParameterNotUsed")
                     (0 until 8).forEach { }
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            ForStatementTransformerStage::class,
             """
                 SvForStatement(
                     Void,
@@ -42,24 +40,21 @@ internal class ForStatementTransformerStageTest : BaseTest() {
                     KtUnaryExpression(Int, ReferenceExpression(*), POST_INC),
                     KtBlockExpression(Function, [])
                 )
-            """.trimIndent(),
-            projectContext.findExpression("f")
-        )
+            """.trimIndent()
+        ) { it.findExpression("f") }
     }
 
     @Test
     fun `transform forEach ArrayList`() {
-        val projectContext = driveTest(
-            ForStatementTransformerStage::class,
+        driveTest(
             """
                 val a = ArrayList<Boolean>()
                 fun f() {
                     @Suppress("ForEachParameterNotUsed")
                     a.forEach { }
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            ForStatementTransformerStage::class,
             """
                 SvForStatement(
                     Void,
@@ -78,8 +73,7 @@ internal class ForStatementTransformerStageTest : BaseTest() {
                         )]
                     )
                 )
-            """.trimIndent(),
-            projectContext.findExpression("f")
-        )
+            """.trimIndent()
+        ) { it.findExpression("f") }
     }
 }

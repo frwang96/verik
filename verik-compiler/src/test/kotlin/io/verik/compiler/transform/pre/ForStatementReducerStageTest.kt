@@ -24,16 +24,14 @@ internal class ForStatementReducerStageTest : BaseTest() {
 
     @Test
     fun `reduce for expression`() {
-        val projectContext = driveTest(
-            ForStatementReducerStage::class,
+        driveTest(
             """
                 fun f() {
                     @Suppress("ControlFlowWithEmptyBody")
                     for (i in 0 until 8) {}
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            ForStatementReducerStage::class,
             """
                 KtCallExpression(
                     Unit, forEach,
@@ -41,8 +39,7 @@ internal class ForStatementReducerStageTest : BaseTest() {
                     [FunctionLiteralExpression(Function, [KtValueParameter(*)], KtBlockExpression(*))],
                     [Int]
                 )
-            """.trimIndent(),
-            projectContext.findExpression("f")
-        )
+            """.trimIndent()
+        ) { it.findExpression("f") }
     }
 }

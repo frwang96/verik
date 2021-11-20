@@ -24,50 +24,43 @@ internal class ParenthesisInsertionTransformerStageTest : BaseTest() {
 
     @Test
     fun `binary expression left`() {
-        val projectContext = driveTest(
-            ParenthesisInsertionTransformerStage::class,
+        driveTest(
             """
                 var x = 0
                 var y = (x + 1) * x
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            ParenthesisInsertionTransformerStage::class,
             """
                 SvProperty(
                     y, Int,
                     SvBinaryExpression(Int, ParenthesizedExpression(*), ReferenceExpression(*), MUL),
                     1, null
                 )
-            """.trimIndent(),
-            projectContext.findDeclaration("y")
-        )
+            """.trimIndent()
+        ) { it.findDeclaration("y") }
     }
 
     @Test
     fun `binary expression right`() {
-        val projectContext = driveTest(
-            ParenthesisInsertionTransformerStage::class,
+        driveTest(
             """
                 var x = 0
                 var y = x + (1 + x)
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            ParenthesisInsertionTransformerStage::class,
             """
                 SvProperty(
                     y, Int,
                     SvBinaryExpression(Int, ReferenceExpression(*), ParenthesizedExpression(*), PLUS),
                     1, null
                 )
-            """.trimIndent(),
-            projectContext.findDeclaration("y")
-        )
+            """.trimIndent()
+        ) { it.findDeclaration("y") }
     }
 
     @Test
     fun `event control expression`() {
-        val projectContext = driveTest(
-            ParenthesisInsertionTransformerStage::class,
+        driveTest(
             """
                 class M : Module() {
                     @Seq
@@ -75,11 +68,9 @@ internal class ParenthesisInsertionTransformerStageTest : BaseTest() {
                         on(posedge(false)) {}
                     }
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "AlwaysSeqBlock(f, EventControlExpression(Void, ParenthesizedExpression(*)), *)",
-            projectContext.findDeclaration("f")
-        )
+            """.trimIndent(),
+            ParenthesisInsertionTransformerStage::class,
+            "AlwaysSeqBlock(f, EventControlExpression(Void, ParenthesizedExpression(*)), *)"
+        ) { it.findDeclaration("f") }
     }
 }

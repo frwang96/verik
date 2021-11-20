@@ -24,7 +24,6 @@ internal class ExpressionSerializerTest : BaseTest() {
     @Test
     fun `parenthesized expression`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 var x = 0
                 var y = (x + 1) * x
@@ -43,7 +42,6 @@ internal class ExpressionSerializerTest : BaseTest() {
     @Test
     fun `unary expression prefix`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 var x = false
                 var y = !x
@@ -62,7 +60,6 @@ internal class ExpressionSerializerTest : BaseTest() {
     @Test
     fun `unary expression postfix`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 var x = 0
                 var y = x++
@@ -81,7 +78,6 @@ internal class ExpressionSerializerTest : BaseTest() {
     @Test
     fun `binary expression`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 var x = 0
                 var y = x + 1
@@ -100,7 +96,6 @@ internal class ExpressionSerializerTest : BaseTest() {
     @Test
     fun `reference expression`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 var x = 0
                 var y = x
@@ -119,7 +114,6 @@ internal class ExpressionSerializerTest : BaseTest() {
     @Test
     fun `call expression`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 var x = random()
             """.trimIndent()
@@ -136,7 +130,6 @@ internal class ExpressionSerializerTest : BaseTest() {
     @Test
     fun `scope expression`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 var a = ArrayList<Boolean>()
             """.trimIndent()
@@ -153,7 +146,6 @@ internal class ExpressionSerializerTest : BaseTest() {
     @Test
     fun `constant expression`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 var x = 0
             """.trimIndent()
@@ -170,7 +162,6 @@ internal class ExpressionSerializerTest : BaseTest() {
     @Test
     fun `struct literal expression`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 class S(val x: Boolean) : Struct()
                 var s = S(false)
@@ -192,7 +183,6 @@ internal class ExpressionSerializerTest : BaseTest() {
     @Test
     fun `this expression`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 class C {
                     private var x = 0
@@ -231,7 +221,6 @@ internal class ExpressionSerializerTest : BaseTest() {
     @Test
     fun `return statement`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 fun f() {
                     return
@@ -252,7 +241,6 @@ internal class ExpressionSerializerTest : BaseTest() {
     @Test
     fun `injected statement`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 var x = 0
                 fun f() {
@@ -276,7 +264,6 @@ internal class ExpressionSerializerTest : BaseTest() {
     @Test
     fun `string expression`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 var x = "abc"
             """.trimIndent()
@@ -293,7 +280,6 @@ internal class ExpressionSerializerTest : BaseTest() {
     @Test
     fun `array access expression`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 var x = u(0x00)
                 var y = x[0]
@@ -312,7 +298,6 @@ internal class ExpressionSerializerTest : BaseTest() {
     @Test
     fun `concatenation expression`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 var x = cat(u(0), u(0))
             """.trimIndent()
@@ -329,7 +314,6 @@ internal class ExpressionSerializerTest : BaseTest() {
     @Test
     fun `replication expression`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 var x = rep<`3`>(false)
             """.trimIndent()
@@ -346,7 +330,6 @@ internal class ExpressionSerializerTest : BaseTest() {
     @Test
     fun `streaming expression`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 var x = u(0x00).reverse()
             """.trimIndent()
@@ -363,7 +346,6 @@ internal class ExpressionSerializerTest : BaseTest() {
     @Test
     fun `width cast expression`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 var x = u(0x0).ext<`8`>()
             """.trimIndent()
@@ -380,7 +362,6 @@ internal class ExpressionSerializerTest : BaseTest() {
     @Test
     fun `if expression`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 var x = false
                 fun f() {
@@ -407,7 +388,6 @@ internal class ExpressionSerializerTest : BaseTest() {
     @Test
     fun `if expression no then`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 var x = false
                 fun f() {
@@ -432,7 +412,6 @@ internal class ExpressionSerializerTest : BaseTest() {
     @Test
     fun `if expression nested`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 var x = false
                 fun f() {
@@ -471,7 +450,6 @@ internal class ExpressionSerializerTest : BaseTest() {
     @Test
     fun `inline if expression`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 var x = false
                 var y = if (x) 0 else 1
@@ -490,7 +468,6 @@ internal class ExpressionSerializerTest : BaseTest() {
     @Test
     fun `immediate assert statement`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 fun f() {
                     assert(true) { println() }
@@ -513,7 +490,6 @@ internal class ExpressionSerializerTest : BaseTest() {
     @Test
     fun `case statement`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 var x = 0
                 fun f() {
@@ -545,7 +521,6 @@ internal class ExpressionSerializerTest : BaseTest() {
     @Test
     fun `while expression`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 fun f() {
                     @Suppress("ControlFlowWithEmptyBody")
@@ -568,7 +543,6 @@ internal class ExpressionSerializerTest : BaseTest() {
     @Test
     fun `do while expression`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 fun f() {
                     @Suppress("ControlFlowWithEmptyBody")
@@ -592,7 +566,6 @@ internal class ExpressionSerializerTest : BaseTest() {
     @Test
     fun `for statement`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 fun f() {
                     @Suppress("ControlFlowWithEmptyBody")
@@ -615,7 +588,6 @@ internal class ExpressionSerializerTest : BaseTest() {
     @Test
     fun `forever statement`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 fun f() {
                     forever {}
@@ -637,7 +609,6 @@ internal class ExpressionSerializerTest : BaseTest() {
     @Test
     fun `repeat statement`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 fun f() {
                     repeat(3) {}
@@ -659,7 +630,6 @@ internal class ExpressionSerializerTest : BaseTest() {
     @Test
     fun `event control expression`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 var x = false
                 fun f() {
@@ -683,7 +653,6 @@ internal class ExpressionSerializerTest : BaseTest() {
     @Test
     fun `delay expression`() {
         val projectContext = driveTest(
-            SourceSerializerStage::class,
             """
                 fun f() {
                     delay(1)
