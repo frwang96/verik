@@ -17,12 +17,8 @@
 package io.verik.compiler.core.declaration.vk
 
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.transform.mid.FunctionTransformerStage
 import io.verik.compiler.util.CoreDeclarationTest
-import io.verik.compiler.util.TestErrorException
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class CoreVkSpecialTest : CoreDeclarationTest() {
 
@@ -44,19 +40,17 @@ internal class CoreVkSpecialTest : CoreDeclarationTest() {
     }
 
     @Test
-    // TODO update driveTest
     fun `transform nc illegal`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                FunctionTransformerStage::class,
-                """
-                    var x = false
-                    fun f() {
-                        x = nc()
-                    }
-                """.trimIndent()
-            )
-        }.apply { Assertions.assertEquals("Expression used out of context: nc", message) }
+        driveTest(
+            """
+                var x = false
+                fun f() {
+                    x = nc()
+                }
+            """.trimIndent(),
+            true,
+            "Expression used out of context: nc"
+        )
     }
 
     @Test

@@ -17,11 +17,8 @@
 package io.verik.compiler.interpret
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.findDeclaration
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class FunctionInterpreterStageTest : BaseTest() {
 
@@ -47,17 +44,16 @@ internal class FunctionInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret always seq block error`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                FunctionInterpreterStage::class,
-                """
-                class M: Module() {
-                    @Seq
-                    fun f() {}
-                }
-                """.trimIndent()
-            )
-        }.apply { assertEquals("On expression expected", message) }
+        driveTest(
+            """
+            class M: Module() {
+                @Seq
+                fun f() {}
+            }
+            """.trimIndent(),
+            true,
+            "On expression expected"
+        )
     }
 
     @Test

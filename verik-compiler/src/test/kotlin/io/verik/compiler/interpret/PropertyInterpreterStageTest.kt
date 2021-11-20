@@ -17,11 +17,8 @@
 package io.verik.compiler.interpret
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.findDeclaration
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class PropertyInterpreterStageTest : BaseTest() {
 
@@ -63,18 +60,17 @@ internal class PropertyInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret module instantiation not connected illegal`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                PropertyInterpreterStage::class,
-                """
-                    class M(@In var x: Boolean) : Module()
-                    class Top : Module() {
-                        @Make
-                        val m = M(nc())
-                    }
-                """.trimIndent()
-            )
-        }.apply { assertEquals("Input port not connected: x", message) }
+        driveTest(
+            """
+                class M(@In var x: Boolean) : Module()
+                class Top : Module() {
+                    @Make
+                    val m = M(nc())
+                }
+            """.trimIndent(),
+            true,
+            "Input port not connected: x"
+        )
     }
 
     @Test
@@ -133,18 +129,17 @@ internal class PropertyInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret clocking block instantiation illegal`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                PropertyInterpreterStage::class,
-                """
-                    class CB(override val event: Event, @In var x: Boolean) : ClockingBlock()
-                    class Top : Module() {
-                        @Make
-                        val cb = CB(posedge(false), false)
-                    }
-                """.trimIndent()
-            )
-        }.apply { assertEquals("Port instantiation must match port name: x", message) }
+        driveTest(
+            """
+                class CB(override val event: Event, @In var x: Boolean) : ClockingBlock()
+                class Top : Module() {
+                    @Make
+                    val cb = CB(posedge(false), false)
+                }
+            """.trimIndent(),
+            true,
+            "Port instantiation must match port name: x"
+        )
     }
 
     @Test

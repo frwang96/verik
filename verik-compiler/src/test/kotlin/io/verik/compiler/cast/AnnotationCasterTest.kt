@@ -17,11 +17,8 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.findDeclaration
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class AnnotationCasterTest : BaseTest() {
 
@@ -57,15 +54,14 @@ internal class AnnotationCasterTest : BaseTest() {
 
     @Test
     fun `annotation with argument illegal`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                CasterStage::class,
-                """
+        driveTest(
+            """
                 @Rename("g" + "h")
                 fun f() {}
-                """.trimIndent()
-            )
-        }.apply { assertEquals("String literal expected for annotation argument", message) }
+            """.trimIndent(),
+            true,
+            "String literal expected for annotation argument"
+        )
     }
 
     @Test

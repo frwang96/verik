@@ -17,25 +17,19 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class DeclarationCastIndexerStageTest : BaseTest() {
 
     @Test
     fun `error name unicode`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                DeclarationCastIndexerStage::class,
-                """
-                    @Suppress("ObjectPropertyName")
-                    val αβγ = 0
-                """.trimIndent()
-            )
-        }.apply {
-            Assertions.assertEquals("Illegal name: αβγ", message)
-        }
+        driveTest(
+            """
+                @Suppress("ObjectPropertyName")
+                val αβγ = 0
+            """.trimIndent(),
+            true,
+            "Illegal name: αβγ"
+        )
     }
 }

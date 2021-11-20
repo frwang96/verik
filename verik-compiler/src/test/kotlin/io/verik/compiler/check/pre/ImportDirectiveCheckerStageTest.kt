@@ -17,38 +17,29 @@
 package io.verik.compiler.check.pre
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class ImportDirectiveCheckerStageTest : BaseTest() {
 
     @Test
     fun `import not found`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                ImportDirectiveCheckerStage::class,
-                """
-                    import java.time.LocalDateTime
-                """.trimIndent()
-            )
-        }.apply {
-            assertEquals("Package not found: java.time", message)
-        }
+        driveTest(
+            """
+                import java.time.LocalDateTime
+            """.trimIndent(),
+            true,
+            "Package not found: java.time"
+        )
     }
 
     @Test
     fun `import not found all under`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                ImportDirectiveCheckerStage::class,
-                """
-                    import java.time.*
-                """.trimIndent()
-            )
-        }.apply {
-            assertEquals("Package not found: java.time", message)
-        }
+        driveTest(
+            """
+                import java.time.*
+            """.trimIndent(),
+            true,
+            "Package not found: java.time"
+        )
     }
 }

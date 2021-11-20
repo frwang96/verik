@@ -17,40 +17,31 @@
 package io.verik.compiler.check.pre
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class UnsupportedModifierCheckerStageTest : BaseTest() {
 
     @Test
     fun `operator modifier`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                UnsupportedModifierCheckerStage::class,
-                """
-                    class C {
-                        operator fun get(int: Int) {}
-                    }
-                """.trimIndent()
-            )
-        }.apply {
-            Assertions.assertEquals("Modifier operator not supported", message)
-        }
+        driveTest(
+            """
+                class C {
+                    operator fun get(int: Int) {}
+                }
+            """.trimIndent(),
+            true,
+            "Modifier operator not supported"
+        )
     }
 
     @Test
     fun `operator vararg`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                UnsupportedModifierCheckerStage::class,
-                """
-                    fun f(vararg x: Int) {}
-                """.trimIndent()
-            )
-        }.apply {
-            Assertions.assertEquals("Modifier vararg not supported", message)
-        }
+        driveTest(
+            """
+                fun f(vararg x: Int) {}
+            """.trimIndent(),
+            true,
+            "Modifier vararg not supported"
+        )
     }
 }

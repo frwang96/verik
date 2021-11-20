@@ -17,24 +17,18 @@
 package io.verik.compiler.check.post
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class CardinalPositiveCheckerStageTest : BaseTest() {
 
     @Test
     fun `cardinal not positive`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                CardinalPositiveCheckerStage::class,
-                """
-                    var x: Ubit<`0`> = u0()
-                """.trimIndent()
-            )
-        }.apply {
-            Assertions.assertEquals("Cardinal type not positive: Ubit<`0`>", message)
-        }
+        driveTest(
+            """
+                var x: Ubit<`0`> = u0()
+            """.trimIndent(),
+            true,
+            "Cardinal type not positive: Ubit<`0`>"
+        )
     }
 }

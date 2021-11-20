@@ -28,8 +28,9 @@ import io.verik.compiler.main.StageSequencer
 import io.verik.compiler.main.TextFile
 import io.verik.compiler.message.MessageCollector
 import org.intellij.lang.annotations.Language
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.assertThrows
 import java.nio.file.Paths
 import kotlin.reflect.KClass
 
@@ -44,11 +45,35 @@ abstract class BaseTest {
             if (it::class == stageClass)
                 break
         }
-
         return projectContext
     }
 
-    fun getProjectContext(@Language("kotlin") content: String): ProjectContext {
+    fun driveTest(@Language("kotlin") content: String, isError: Boolean, message: String) {
+        val projectContext = getProjectContext(content)
+        val stageSequence = StageSequencer.getStageSequence()
+        if (isError) {
+            val throwable = assertThrows<TestErrorException> {
+                stageSequence.stages.forEach { it.accept(projectContext) }
+            }
+            assertEquals(throwable.message, message)
+        } else {
+            val throwable = assertThrows<TestWarningException> {
+                stageSequence.stages.forEach { it.accept(projectContext) }
+            }
+            assertEquals(throwable.message, message)
+        }
+    }
+
+    fun assertElementEquals(expected: String, actual: EElement) {
+        assertElementEquals(expected, ElementPrinter.dump(actual))
+    }
+
+    fun assertElementEquals(expected: String, actual: List<EElement>) {
+        val actualString = actual.joinToString(prefix = "[", postfix = "]") { ElementPrinter.dump(it) }
+        assertElementEquals(expected, actualString)
+    }
+
+    internal fun getProjectContext(@Language("kotlin") content: String): ProjectContext {
         val config = getConfig()
         val contentWithPackageHeader = """
             package test
@@ -60,15 +85,6 @@ abstract class BaseTest {
         val sourceSetContext = SourceSetContext(config.sourceSetConfigs[0].name, listOf(textFile))
         projectContext.sourceSetContexts = listOf(sourceSetContext)
         return projectContext
-    }
-
-    fun assertElementEquals(expected: String, actual: EElement) {
-        assertElementEquals(expected, ElementPrinter.dump(actual))
-    }
-
-    fun assertElementEquals(expected: String, actual: List<EElement>) {
-        val actualString = actual.joinToString(prefix = "[", postfix = "]") { ElementPrinter.dump(it) }
-        assertElementEquals(expected, actualString)
     }
 
     private fun assertElementEquals(expected: String, actualString: String) {
@@ -141,7 +157,7 @@ abstract class BaseTest {
             }
             .dropLastWhile { it.isEmpty() }
 
-        Assertions.assertEquals(
+        assertEquals(
             expectedLines.joinToString(separator = "\n"),
             actualLines.joinToString(separator = "\n")
         )

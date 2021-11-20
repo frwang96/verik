@@ -17,41 +17,32 @@
 package io.verik.compiler.interpret
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class AnnotationCheckerStageTest : BaseTest() {
 
     @Test
     fun `class top annotation illegal`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                AnnotationCheckerStage::class,
-                """
-                    @SimTop
-                    class C
-                """.trimIndent()
-            )
-        }.apply {
-            Assertions.assertEquals("Top level declaration must be a module", message)
-        }
+        driveTest(
+            """
+                @SimTop
+                class C
+            """.trimIndent(),
+            true,
+            "Top level declaration must be a module"
+        )
     }
 
     @Test
     fun `function annotations conflicting`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                AnnotationCheckerStage::class,
-                """
-                    @Com
-                    @Seq
-                    fun f() {}
-                """.trimIndent()
-            )
-        }.apply {
-            Assertions.assertEquals("Conflicts with annotation: Com", message)
-        }
+        driveTest(
+            """
+                @Com
+                @Seq
+                fun f() {}
+            """.trimIndent(),
+            true,
+            "Conflicts with annotation: Com"
+        )
     }
 }

@@ -17,11 +17,8 @@
 package io.verik.compiler.transform.pre
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.findExpression
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class BitConstantTransformerStageTest : BaseTest() {
 
@@ -111,13 +108,12 @@ internal class BitConstantTransformerStageTest : BaseTest() {
 
     @Test
     fun `constant string invalid`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                BitConstantTransformerStage::class,
-                """
-                    var x = u("12'hxyz")
-                """.trimIndent()
-            )
-        }.apply { assertEquals("Error parsing bit constant: 12'hxyz", message) }
+        driveTest(
+            """
+                var x = u("12'hxyz")
+            """.trimIndent(),
+            true,
+            "Error parsing bit constant: 12'hxyz"
+        )
     }
 }

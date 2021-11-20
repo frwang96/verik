@@ -17,40 +17,31 @@
 package io.verik.compiler.resolve
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class TypeParameterTypeCheckerStageTest : BaseTest() {
 
     @Test
     fun `cardinal type expected`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                TypeParameterTypeCheckerStage::class,
-                """
-                    var x: Ubit<ADD<`8`, Int>> = u(0)
-                """.trimIndent()
-            )
-        }.apply {
-            Assertions.assertEquals("Cardinal type expected but found: Int", message)
-        }
+        driveTest(
+            """
+                var x: Ubit<ADD<`8`, Int>> = u(0)
+            """.trimIndent(),
+            true,
+            "Cardinal type expected but found: Int"
+        )
     }
 
     @Test
     fun `cardinal type expected type parameter`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                TypeParameterTypeCheckerStage::class,
-                """
-                    class C<N> {
-                        var x: Ubit<INC<N>> = u(0)
-                    }
-                """.trimIndent()
-            )
-        }.apply {
-            Assertions.assertEquals("Cardinal type expected but found: N", message)
-        }
+        driveTest(
+            """
+                class C<N> {
+                    var x: Ubit<INC<N>> = u(0)
+                }
+            """.trimIndent(),
+            true,
+            "Cardinal type expected but found: N"
+        )
     }
 }

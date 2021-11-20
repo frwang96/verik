@@ -17,10 +17,7 @@
 package io.verik.compiler.compile
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 class KotlinCompilerAnalyzerStageTest : BaseTest() {
 
@@ -40,19 +37,16 @@ class KotlinCompilerAnalyzerStageTest : BaseTest() {
 
     @Test
     fun `compile error`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                KotlinCompilerAnalyzerStage::class,
-                """
-                    class C {
-                        fun f() {
-                            g()
-                        }
+        driveTest(
+            """
+                class C {
+                    fun f() {
+                        g()
                     }
-                """.trimIndent()
-            )
-        }.apply {
-            assertEquals("Unresolved reference: g", message)
-        }
+                }
+            """.trimIndent(),
+            true,
+            "Unresolved reference: g"
+        )
     }
 }

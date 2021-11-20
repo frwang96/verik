@@ -17,47 +17,38 @@
 package io.verik.compiler.check.post
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class PortInstantiationCheckerStageTest : BaseTest() {
 
     @Test
     fun `illegal expression`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                PortInstantiationCheckerStage::class,
-                """
-                    class N(@Out var x: Boolean) : Module()
-                    class M : Module() {
-                        @Make
-                        val m = N(false)
-                    }
-                """.trimIndent()
-            )
-        }.apply {
-            Assertions.assertEquals("Illegal expression for output port: x", message)
-        }
+        driveTest(
+            """
+                class N(@Out var x: Boolean) : Module()
+                class M : Module() {
+                    @Make
+                    val m = N(false)
+                }
+            """.trimIndent(),
+            true,
+            "Illegal expression for output port: x"
+        )
     }
 
     @Test
     fun `immutable property`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                PortInstantiationCheckerStage::class,
-                """
-                    class N(@Out var x: Boolean) : Module()
-                    class M : Module() {
-                        private val y: Boolean = nc()
-                        @Make
-                        val m = N(y)
-                    }
-                """.trimIndent()
-            )
-        }.apply {
-            Assertions.assertEquals("Property assigned by output port must be declared as var: y", message)
-        }
+        driveTest(
+            """
+                class N(@Out var x: Boolean) : Module()
+                class M : Module() {
+                    private val y: Boolean = nc()
+                    @Make
+                    val m = N(y)
+                }
+            """.trimIndent(),
+            true,
+            "Property assigned by output port must be declared as var: y"
+        )
     }
 }

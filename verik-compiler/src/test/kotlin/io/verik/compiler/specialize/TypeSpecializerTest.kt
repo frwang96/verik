@@ -17,11 +17,8 @@
 package io.verik.compiler.specialize
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.findDeclaration
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class TypeSpecializerTest : BaseTest() {
 
@@ -74,13 +71,12 @@ internal class TypeSpecializerTest : BaseTest() {
 
     @Test
     fun `property cardinal out of range`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                DeclarationSpecializerStage::class,
-                """
-                    var x: Ubit<EXP<`32`>> = u0()
-                """.trimIndent()
-            )
-        }.apply { assertEquals("Cardinal type out of range", message) }
+        driveTest(
+            """
+                var x: Ubit<EXP<`32`>> = u0()
+            """.trimIndent(),
+            true,
+            "Cardinal type out of range"
+        )
     }
 }

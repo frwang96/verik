@@ -17,11 +17,8 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.findDeclaration
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class TypeCasterTest : BaseTest() {
 
@@ -72,16 +69,13 @@ internal class TypeCasterTest : BaseTest() {
 
     @Test
     fun `type nullable`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                CasterStage::class,
-                """
-                    fun f(x: Int?) {}
-                """.trimIndent()
-            )
-        }.apply {
-            assertEquals("Nullable type not supported", message)
-        }
+        driveTest(
+            """
+                fun f(x: Int?) {}
+            """.trimIndent(),
+            true,
+            "Nullable type not supported"
+        )
     }
 
     @Test

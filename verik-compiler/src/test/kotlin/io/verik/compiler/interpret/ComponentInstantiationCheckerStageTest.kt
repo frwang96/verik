@@ -17,58 +17,46 @@
 package io.verik.compiler.interpret
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class ComponentInstantiationCheckerStageTest : BaseTest() {
 
     @Test
     fun `component instantiation out of context`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                ComponentInstantiationCheckerStage::class,
-                """
-                    class M : Module()
-                    @Make
-                    val m = M()
-                """.trimIndent()
-            )
-        }.apply {
-            Assertions.assertEquals("Component instantiation out of context", message)
-        }
+        driveTest(
+            """
+                class M : Module()
+                @Make
+                val m = M()
+            """.trimIndent(),
+            true,
+            "Component instantiation out of context"
+        )
     }
 
     @Test
     fun `make annotation illegal`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                ComponentInstantiationCheckerStage::class,
-                """
-                    @Make
-                    val x = false
-                """.trimIndent()
-            )
-        }.apply {
-            Assertions.assertEquals("Make annotation only permitted on component instantiations", message)
-        }
+        driveTest(
+            """
+                @Make
+                val x = false
+            """.trimIndent(),
+            true,
+            "Make annotation only permitted on component instantiations"
+        )
     }
 
     @Test
     fun `make annotation required`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                ComponentInstantiationCheckerStage::class,
-                """
-                    class M : Module()
-                    class N : Module() {
-                        val m  = M()
-                    }
-                """.trimIndent()
-            )
-        }.apply {
-            Assertions.assertEquals("Make annotation required", message)
-        }
+        driveTest(
+            """
+                class M : Module()
+                class N : Module() {
+                    val m  = M()
+                }
+            """.trimIndent(),
+            true,
+            "Make annotation required"
+        )
     }
 }

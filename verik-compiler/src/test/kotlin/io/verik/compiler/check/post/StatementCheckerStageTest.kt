@@ -17,26 +17,20 @@
 package io.verik.compiler.check.post
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class StatementCheckerStageTest : BaseTest() {
 
     @Test
     fun `invalid statement`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                StatementCheckerStage::class,
-                """
-                    fun f() {
-                        0
-                    }
-                """.trimIndent()
-            )
-        }.apply {
-            Assertions.assertEquals("Could not interpret expression as statement", message)
-        }
+        driveTest(
+            """
+                fun f() {
+                    0
+                }
+            """.trimIndent(),
+            true,
+            "Could not interpret expression as statement"
+        )
     }
 }

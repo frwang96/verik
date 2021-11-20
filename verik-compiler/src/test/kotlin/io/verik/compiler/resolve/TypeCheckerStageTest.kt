@@ -17,109 +17,99 @@
 package io.verik.compiler.resolve
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class TypeCheckerStageTest : BaseTest() {
 
     @Test
     fun `expression equals violation`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                TypeCheckerStage::class,
-                """
-                    var x = u(0x00)
-                    fun f() {
-                        x = u(0)
-                    }
-                """.trimIndent()
-            )
-        }.apply { assertEquals("Type mismatch: Expected Ubit<`8`> actual Ubit<`1`>", message) }
+        driveTest(
+            """
+                var x = u(0x00)
+                fun f() {
+                    x = u(0)
+                }
+            """.trimIndent(),
+            true,
+            "Type mismatch: Expected Ubit<`8`> actual Ubit<`1`>"
+        )
     }
 
     @Test
     fun `unary operator violation`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                TypeCheckerStage::class,
-                """
-                    var x: Ubit<`4`> = nc()
-                    fun f() {
-                        x = u<`1`>()
-                    }
-                """.trimIndent()
-            )
-        }.apply { assertEquals("Type mismatch: Expected Ubit<`4`> actual Ubit<`1`>", message) }
+        driveTest(
+            """
+                var x: Ubit<`4`> = nc()
+                fun f() {
+                    x = u<`1`>()
+                }
+            """.trimIndent(),
+            true,
+            "Type mismatch: Expected Ubit<`4`> actual Ubit<`1`>"
+        )
     }
 
     @Test
     fun `binary operator violation`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                TypeCheckerStage::class,
-                """
-                    var x: Ubit<`4`> = nc()
-                    fun f() {
-                        x = u(0) + u(0)
-                    }
-                """.trimIndent()
-            )
-        }.apply { assertEquals("Type mismatch: Expected Ubit<`4`> actual Ubit<`1`>", message) }
+        driveTest(
+            """
+                var x: Ubit<`4`> = nc()
+                fun f() {
+                    x = u(0) + u(0)
+                }
+            """.trimIndent(),
+            true,
+            "Type mismatch: Expected Ubit<`4`> actual Ubit<`1`>"
+        )
     }
 
     @Test
     fun `extension violation`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                TypeCheckerStage::class,
-                """
-                    var x: Ubit<`8`> = nc()
-                    fun f() {
-                        println(x.ext<`4`>())
-                    }
-                """.trimIndent()
-            )
-        }.apply { assertEquals("Unable to extend from Ubit<`8`> to Ubit<`4`>", message) }
+        driveTest(
+            """
+                var x: Ubit<`8`> = nc()
+                fun f() {
+                    println(x.ext<`4`>())
+                }
+            """.trimIndent(),
+            true,
+            "Unable to extend from Ubit<`8`> to Ubit<`4`>"
+        )
     }
 
     @Test
     fun `truncation violation`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                TypeCheckerStage::class,
-                """
-                    var x: Ubit<`4`> = nc()
-                    fun f() {
-                        println(x.tru<`8`>())
-                    }
-                """.trimIndent()
-            )
-        }.apply { assertEquals("Unable to truncate from Ubit<`4`> to Ubit<`8`>", message) }
+        driveTest(
+            """
+                var x: Ubit<`4`> = nc()
+                fun f() {
+                    println(x.tru<`8`>())
+                }
+            """.trimIndent(),
+            true,
+            "Unable to truncate from Ubit<`4`> to Ubit<`8`>"
+        )
     }
 
     @Test
     fun `concatenation violation`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                TypeCheckerStage::class,
-                """
-                    var x: Ubit<`1`> = cat(false, false)
-                """.trimIndent()
-            )
-        }.apply { assertEquals("Type mismatch: Expected Ubit<`1`> actual Ubit<`2`>", message) }
+        driveTest(
+            """
+                var x: Ubit<`1`> = cat(false, false)
+            """.trimIndent(),
+            true,
+            "Type mismatch: Expected Ubit<`1`> actual Ubit<`2`>"
+        )
     }
 
     @Test
     fun `replication violation`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                TypeCheckerStage::class,
-                """
-                    var x: Ubit<`1`> = rep<`3`>(false)
-                """.trimIndent()
-            )
-        }.apply { assertEquals("Type mismatch: Expected Ubit<`1`> actual Ubit<`3`>", message) }
+        driveTest(
+            """
+                var x: Ubit<`1`> = rep<`3`>(false)
+            """.trimIndent(),
+            true,
+            "Type mismatch: Expected Ubit<`1`> actual Ubit<`3`>"
+        )
     }
 }

@@ -17,22 +17,18 @@
 package io.verik.compiler.resolve
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class TypeResolvedCheckerStageTest : BaseTest() {
 
     @Test
     fun `cardinal not resolved`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                TypeResolvedCheckerStage::class,
-                """
-                    val x = u(0).ext<`*`>()
-                """.trimIndent()
-            )
-        }.apply { assertEquals("Type of expression could not be resolved", message) }
+        driveTest(
+            """
+                val x = u(0).ext<`*`>()
+            """.trimIndent(),
+            true,
+            "Type of expression could not be resolved"
+        )
     }
 }

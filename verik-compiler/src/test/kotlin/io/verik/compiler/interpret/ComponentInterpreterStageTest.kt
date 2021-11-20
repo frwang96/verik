@@ -17,11 +17,8 @@
 package io.verik.compiler.interpret
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.findDeclaration
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class ComponentInterpreterStageTest : BaseTest() {
 
@@ -55,26 +52,24 @@ internal class ComponentInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret module with port no directionality`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                ComponentInterpreterStage::class,
-                """
-                    class M(var x: Boolean): Module()
-                """.trimIndent()
-            )
-        }.apply { Assertions.assertEquals("Could not determine directionality of port: x", message) }
+        driveTest(
+            """
+                class M(var x: Boolean): Module()
+            """.trimIndent(),
+            true,
+            "Could not determine directionality of port: x"
+        )
     }
 
     @Test
     fun `interpret module with port immutable`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                ComponentInterpreterStage::class,
-                """
-                    class M(@In val x: Boolean): Module()
-                """.trimIndent()
-            )
-        }.apply { Assertions.assertEquals("Port must be declared as var: x", message) }
+        driveTest(
+            """
+                class M(@In val x: Boolean): Module()
+            """.trimIndent(),
+            true,
+            "Port must be declared as var: x"
+        )
     }
 
     @Test
