@@ -24,8 +24,7 @@ internal class WhenExpressionCasterTest : BaseTest() {
 
     @Test
     fun `when expression`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 var x = 0
                 fun f() {
@@ -34,17 +33,15 @@ internal class WhenExpressionCasterTest : BaseTest() {
                         else -> {}
                     }
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            CasterStage::class,
             """
                 WhenExpression(
                     Unit,
                     ReferenceExpression(*),
                     [WhenEntry([ConstantExpression(Int, 0)], *), WhenEntry([], *)]
                 )
-            """.trimIndent(),
-            projectContext.findExpression("f")
-        )
+            """.trimIndent()
+        ) { it.findExpression("f") }
     }
 }

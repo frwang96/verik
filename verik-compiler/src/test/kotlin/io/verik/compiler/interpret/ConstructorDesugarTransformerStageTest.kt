@@ -16,9 +16,6 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.kt.EKtBasicClass
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
-import io.verik.compiler.ast.element.kt.EKtConstructor
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.findDeclaration
 import org.junit.jupiter.api.Test
@@ -27,33 +24,39 @@ internal class ConstructorDesugarTransformerStageTest : BaseTest() {
 
     @Test
     fun `desugar primary constructor simple`() {
-        val projectContext = driveTest(
-            ConstructorDesugarTransformerStage::class,
+        driveTest(
             """
                 class C
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            ConstructorDesugarTransformerStage::class,
             """
                 KtBasicClass(
                     C, C,
                     [KtConstructor(C, KtBlockExpression(Unit, []), [], [], null)],
                     [], [], 0, 0, 0, null, null
                 )
-            """.trimIndent(),
-            projectContext.findDeclaration("C")
-        )
+            """.trimIndent()
+        ) { it.findDeclaration("C") }
     }
 
     @Test
     fun `desugar primary constructor with property`() {
-        val projectContext = driveTest(
-            ConstructorDesugarTransformerStage::class,
+        val blockExpression = """
+            KtBlockExpression(
+                Unit,
+                [KtBinaryExpression(
+                    Unit,
+                    ReferenceExpression(Int, x, ThisExpression(C)),
+                    ReferenceExpression(Int, x, null),
+                    EQ
+                )]
+            )
+        """.trimIndent()
+        driveTest(
             """
                 class C(val x: Int)
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            ConstructorDesugarTransformerStage::class,
             """
                 KtBasicClass(
                     C, C,
@@ -61,7 +64,7 @@ internal class ConstructorDesugarTransformerStageTest : BaseTest() {
                         KtProperty(x, Int, null, [], 0),
                         KtConstructor(
                             C,
-                            KtBlockExpression(*),
+                            $blockExpression,
                             [KtValueParameter(x, Int, [], 0, 0)],
                             [],
                             null
@@ -69,21 +72,7 @@ internal class ConstructorDesugarTransformerStageTest : BaseTest() {
                     ],
                     [], [], 0, 0, 0, null, null
                 )
-            """.trimIndent(),
-            projectContext.findDeclaration("C")
-        )
-        val constructor = (projectContext.findDeclaration("C") as EKtBasicClass).declarations[1]
-        val statements = ((constructor as EKtConstructor).body!! as EKtBlockExpression).statements
-        assertElementEquals(
-            """
-                [KtBinaryExpression(
-                    Unit,
-                    ReferenceExpression(Int, x, ThisExpression(C)),
-                    ReferenceExpression(Int, x, null),
-                    EQ
-                )]
-            """.trimIndent(),
-            statements
-        )
+            """.trimIndent()
+        ) { it.findDeclaration("C") }
     }
 }

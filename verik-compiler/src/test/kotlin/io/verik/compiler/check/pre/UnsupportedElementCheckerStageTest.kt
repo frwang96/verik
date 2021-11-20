@@ -17,24 +17,18 @@
 package io.verik.compiler.check.pre
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class UnsupportedElementCheckerStageTest : BaseTest() {
 
     @Test
     fun `throw expression`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                UnsupportedElementCheckerStage::class,
-                """
-                    fun f() { throw IllegalArgumentException() }
-                """.trimIndent()
-            )
-        }.apply {
-            Assertions.assertEquals("Throw expression not supported", message)
-        }
+        driveTest(
+            """
+                fun f() { throw IllegalArgumentException() }
+            """.trimIndent(),
+            true,
+            "Throw expression not supported"
+        )
     }
 }

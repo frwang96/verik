@@ -24,47 +24,42 @@ internal class ForStatementTransformerStageTest : BaseTest() {
 
     @Test
     fun `transform forEach until`() {
-        val projectContext = driveTest(
-            ForStatementTransformerStage::class,
+        driveTest(
             """
                 fun f() {
                     @Suppress("ForEachParameterNotUsed")
                     (0 until 8).forEach { }
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            ForStatementTransformerStage::class,
             """
                 SvForStatement(
                     Void,
                     SvProperty(it, Int, ConstantExpression(Int, 0), 1, null),
-                    KtCallExpression(Boolean, lt, ReferenceExpression(Int, it, null), [ConstantExpression(*)], []),
+                    KtBinaryExpression(Boolean, ReferenceExpression(Int, it, null), ConstantExpression(*), LT),
                     KtUnaryExpression(Int, ReferenceExpression(*), POST_INC),
                     KtBlockExpression(Function, [])
                 )
-            """.trimIndent(),
-            projectContext.findExpression("f")
-        )
+            """.trimIndent()
+        ) { it.findExpression("f") }
     }
 
     @Test
     fun `transform forEach ArrayList`() {
-        val projectContext = driveTest(
-            ForStatementTransformerStage::class,
+        driveTest(
             """
                 val a = ArrayList<Boolean>()
                 fun f() {
                     @Suppress("ForEachParameterNotUsed")
                     a.forEach { }
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            ForStatementTransformerStage::class,
             """
                 SvForStatement(
                     Void,
                     SvProperty(<tmp>, Int, ConstantExpression(Int, 0), 1, null),
-                    KtCallExpression(Boolean, lt, ReferenceExpression(Int, <tmp>, null), [ReferenceExpression(*)], []),
+                    KtBinaryExpression(Boolean, ReferenceExpression(Int, <tmp>, null), ReferenceExpression(*), LT),
                     KtUnaryExpression(Int, ReferenceExpression(Int, <tmp>, null), POST_INC),
                     KtBlockExpression(
                         Function,
@@ -78,8 +73,7 @@ internal class ForStatementTransformerStageTest : BaseTest() {
                         )]
                     )
                 )
-            """.trimIndent(),
-            projectContext.findExpression("f")
-        )
+            """.trimIndent()
+        ) { it.findExpression("f") }
     }
 }

@@ -24,41 +24,35 @@ internal class PropertyStatementReorderStageTest : BaseTest() {
 
     @Test
     fun `reorder property statement with initializer`() {
-        val projectContext = driveTest(
-            PropertyStatementReorderStage::class,
+        driveTest(
             """
                 fun f() {
                     println()
                     val x = false
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            PropertyStatementReorderStage::class,
             """
                 [
                     PropertyStatement(Unit, SvProperty(x, Boolean, null, 0, 0)),
                     KtCallExpression(*),
                     SvBinaryExpression(Unit, ReferenceExpression(Boolean, x, null), ConstantExpression(*), ASSIGN)
                 ]
-            """.trimIndent(),
-            projectContext.findStatements("f")
-        )
+            """.trimIndent()
+        ) { it.findStatements("f") }
     }
 
     @Test
     fun `reorder property statement without initializer`() {
-        val projectContext = driveTest(
-            PropertyStatementReorderStage::class,
+        driveTest(
             """
                 fun f() {
                     println()
                     val x: Boolean = nc()
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "[PropertyStatement(Unit, SvProperty(x, Boolean, null, 0, 0)), KtCallExpression(*)]",
-            projectContext.findStatements("f")
-        )
+            """.trimIndent(),
+            PropertyStatementReorderStage::class,
+            "[PropertyStatement(Unit, SvProperty(x, Boolean, null, 0, 0)), KtCallExpression(*)]"
+        ) { it.findStatements("f") }
     }
 }

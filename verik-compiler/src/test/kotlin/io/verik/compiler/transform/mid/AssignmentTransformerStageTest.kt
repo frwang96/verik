@@ -24,25 +24,21 @@ internal class AssignmentTransformerStageTest : BaseTest() {
 
     @Test
     fun `transform assign`() {
-        val projectContext = driveTest(
-            AssignmentTransformerStage::class,
+        driveTest(
             """
                 var x = false
                 fun f() {
                     x = true
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "SvBinaryExpression(Unit, ReferenceExpression(*), ConstantExpression(*), ASSIGN)",
-            projectContext.findExpression("f")
-        )
+            """.trimIndent(),
+            AssignmentTransformerStage::class,
+            "SvBinaryExpression(Unit, ReferenceExpression(*), ConstantExpression(*), ASSIGN)"
+        ) { it.findExpression("f") }
     }
 
     @Test
     fun `transform arrow assign seq block`() {
-        val projectContext = driveTest(
-            AssignmentTransformerStage::class,
+        driveTest(
             """
                 class M : Module() {
                     private var x = false
@@ -53,18 +49,15 @@ internal class AssignmentTransformerStageTest : BaseTest() {
                         }
                     }
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "SvBinaryExpression(Unit, ReferenceExpression(*), ConstantExpression(*), ARROW_ASSIGN)",
-            projectContext.findExpression("f")
-        )
+            """.trimIndent(),
+            AssignmentTransformerStage::class,
+            "SvBinaryExpression(Unit, ReferenceExpression(*), ConstantExpression(*), ARROW_ASSIGN)"
+        ) { it.findExpression("f") }
     }
 
     @Test
     fun `transform arrow assign clocking block`() {
-        val projectContext = driveTest(
-            AssignmentTransformerStage::class,
+        driveTest(
             """
                 class CB(override val event: Event, @In var x: Boolean) : ClockingBlock()
                 class M : Module() {
@@ -76,11 +69,9 @@ internal class AssignmentTransformerStageTest : BaseTest() {
                         cb.x = true
                     }
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "SvBinaryExpression(Unit, ReferenceExpression(*), ConstantExpression(*), ARROW_ASSIGN)",
-            projectContext.findExpression("f")
-        )
+            """.trimIndent(),
+            AssignmentTransformerStage::class,
+            "SvBinaryExpression(Unit, ReferenceExpression(*), ConstantExpression(*), ARROW_ASSIGN)"
+        ) { it.findExpression("f") }
     }
 }

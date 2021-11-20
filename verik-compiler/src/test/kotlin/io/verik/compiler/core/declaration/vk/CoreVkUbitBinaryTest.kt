@@ -20,118 +20,118 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.util.CoreDeclarationTest
 import org.junit.jupiter.api.Test
 
-internal class CoreVkUbitTest : CoreDeclarationTest() {
+internal class CoreVkUbitBinaryTest : CoreDeclarationTest() {
 
     @Test
-    fun `serialize unaryMinus`() {
-        driveCoreDeclarationTest(
-            listOf(Core.Vk.Ubit.F_unaryMinus),
-            """
-                var x = u(0x0)
-                fun f() {
-                    x = -x
-                }
-            """.trimIndent(),
-            """
-                function automatic void f();
-                    x = -x;
-                endfunction : f
-            """.trimIndent()
-        )
-    }
-
-    @Test
-    fun `serialize get set`() {
+    fun `serialize plus add minus`() {
         driveCoreDeclarationTest(
             listOf(
-                Core.Vk.Ubit.F_get_Int,
-                Core.Vk.Ubit.F_set_Int_Boolean,
-                Core.Vk.Ubit.F_set_Int_Ubit
+                Core.Vk.Ubit.F_plus_Ubit,
+                Core.Vk.Ubit.F_add_Ubit,
+                Core.Vk.Ubit.F_minus_Ubit
             ),
             """
-                var x = u(0x0)
-                var y = false
+                var x = u(0b0)
+                var y = u(0b00)
                 fun f() {
-                    y = x[0]
-                    x[0] = y
-                    x[0] = u(0b00)
+                    x = x + x
+                    y = x add x
+                    x = x - x
                 }
             """.trimIndent(),
             """
                 function automatic void f();
-                    y = x[0];
-                    x[0] = y;
-                    x[1:0] = 2'h0;
+                    x = x + x;
+                    y = x + x;
+                    x = x - x;
                 endfunction : f
             """.trimIndent()
         )
     }
 
     @Test
-    fun `serialize invert reverse`() {
+    fun `serialize times mul div`() {
         driveCoreDeclarationTest(
             listOf(
-                Core.Vk.Ubit.F_invert,
-                Core.Vk.Ubit.F_reverse
-            ),
-            """
-                var x = u(0x0)
-                fun f() {
-                    x = x.invert()
-                    x = x.reverse()
-                }
-            """.trimIndent(),
-            """
-                function automatic void f();
-                    x = ~x;
-                    x = {<<{ x }};
-                endfunction : f
-            """.trimIndent()
-        )
-    }
-
-    @Test
-    fun `serialize slice`() {
-        driveCoreDeclarationTest(
-            listOf(Core.Vk.Ubit.F_slice_Int),
-            """
-                var x = u(0x00)
-                var y = u(0x0)
-                fun f() {
-                    y = x.slice(0)
-                }
-            """.trimIndent(),
-            """
-                function automatic void f();
-                    y = x[3:0];
-                endfunction : f
-            """.trimIndent()
-        )
-    }
-
-    @Test
-    fun `serialize ext sext tru`() {
-        driveCoreDeclarationTest(
-            listOf(
-                Core.Vk.Ubit.F_ext,
-                Core.Vk.Ubit.F_sext,
-                Core.Vk.Ubit.F_tru
+                Core.Vk.Ubit.F_times_Ubit,
+                Core.Vk.Ubit.F_mul_Ubit,
+                Core.Vk.Ubit.F_div_Ubit
             ),
             """
                 var x = u(0x0)
                 var y = u(0x00)
-                var z = s(0x00)
                 fun f() {
-                    y = x.ext()
-                    z = x.sext()
-                    x = y.tru()
+                    x = x * x
+                    y = x mul x
+                    x = x / x
                 }
             """.trimIndent(),
             """
                 function automatic void f();
-                    y = 8'(x);
-                    z = 8'(${'$'}signed(x));
-                    x = 4'(y);
+                    x = x * x;
+                    y = x * x;
+                    x = x / x;
+                endfunction : f
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `serialize and or xor`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Vk.Ubit.F_and_Ubit,
+                Core.Vk.Ubit.F_or_Ubit,
+                Core.Vk.Ubit.F_xor_Ubit
+            ),
+            """
+                var x = u(0x0)
+                fun f() {
+                    x = x and x
+                    x = x or x
+                    x = x xor x
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    x = x & x;
+                    x = x | x;
+                    x = x ^ x;
+                endfunction : f
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `serialize shl shr sshr`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Vk.Ubit.F_shl_Int,
+                Core.Vk.Ubit.F_shl_Ubit,
+                Core.Vk.Ubit.F_shr_Int,
+                Core.Vk.Ubit.F_shr_Ubit,
+                Core.Vk.Ubit.F_sshr_Int,
+                Core.Vk.Ubit.F_sshr_Ubit
+            ),
+            """
+                var x = u(0x0)
+                fun f() {
+                    x = x shl 1
+                    x = x shl u(1)
+                    x = x shr 1
+                    x = x shr u(1)
+                    x = x sshr 1
+                    x = x sshr u(1)
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    x = x << 1;
+                    x = x << 1'h1;
+                    x = x >> 1;
+                    x = x >> 1'h1;
+                    x = ${'$'}unsigned(${'$'}signed(x) >>> 1);
+                    x = ${'$'}unsigned(${'$'}signed(x) >>> 1'h1);
                 endfunction : f
             """.trimIndent()
         )

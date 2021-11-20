@@ -24,13 +24,11 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
 
     @Test
     fun `basic class simple`() {
-        val projectContext = driveTest(
-            BasicClassInterpreterStage::class,
+        driveTest(
             """
                 class C
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            BasicClassInterpreterStage::class,
             """
                 SvBasicClass(
                     C, C,
@@ -41,19 +39,16 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
                     0, 0
                 )
             """.trimIndent(),
-            projectContext.findDeclaration("C")
-        )
+        ) { it.findDeclaration("C") }
     }
 
     @Test
     fun `basic class with primary constructor parameter`() {
-        val projectContext = driveTest(
-            BasicClassInterpreterStage::class,
+        driveTest(
             """
                 class C(x: Int)
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            BasicClassInterpreterStage::class,
             """
                 SvBasicClass(
                     C, C,
@@ -63,20 +58,17 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
                     ],
                     0, 0
                 )
-            """.trimIndent(),
-            projectContext.findDeclaration("C")
-        )
+            """.trimIndent()
+        ) { it.findDeclaration("C") }
     }
 
     @Test
     fun `basic class with primary constructor property`() {
-        val projectContext = driveTest(
-            BasicClassInterpreterStage::class,
+        driveTest(
             """
                 class C(val x: Int)
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            BasicClassInterpreterStage::class,
             """
                 SvBasicClass(
                     C, C,
@@ -87,21 +79,18 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
                     ],
                     0, 0
                 )
-            """.trimIndent(),
-            projectContext.findDeclaration("C")
-        )
+            """.trimIndent()
+        ) { it.findDeclaration("C") }
     }
 
     @Test
     fun `basic class with primary constructor chained`() {
-        val projectContext = driveTest(
-            BasicClassInterpreterStage::class,
+        driveTest(
             """
                 open class C
                 class D : C()
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            BasicClassInterpreterStage::class,
             """
                 SvBasicClass(
                     D, D,
@@ -115,36 +104,29 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
                     ],
                     0, 0
                 )
-            """.trimIndent(),
-            projectContext.findDeclaration("D")
-        )
+            """.trimIndent()
+        ) { it.findDeclaration("D") }
     }
 
     @Test
     fun `basic class abstract`() {
-        val projectContext = driveTest(
-            BasicClassInterpreterStage::class,
+        driveTest(
             """
                 abstract class C
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "SvBasicClass(C, C, [SvFunction(_${'$'}init, Unit, *, [], REGULAR, 0)], 1, 0)",
-            projectContext.findDeclaration("C")
-        )
+            """.trimIndent(),
+            BasicClassInterpreterStage::class,
+            "SvBasicClass(C, C, [SvFunction(_${'$'}init, Unit, *, [], REGULAR, 0)], 1, 0)"
+        ) { it.findDeclaration("C") }
     }
 
     @Test
     fun `basic class declarations static`() {
-        val projectContext = driveTest(
-            BasicClassInterpreterStage::class,
+        driveTest(
             """
                 object O
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "SvBasicClass(O, O, [], 0, 1)",
-            projectContext.findDeclaration("O")
-        )
+            """.trimIndent(),
+            BasicClassInterpreterStage::class,
+            "SvBasicClass(O, O, [], 0, 1)"
+        ) { it.findDeclaration("O") }
     }
 }

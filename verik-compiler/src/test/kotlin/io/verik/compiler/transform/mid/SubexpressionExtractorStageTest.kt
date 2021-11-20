@@ -24,16 +24,14 @@ internal class SubexpressionExtractorStageTest : BaseTest() {
 
     @Test
     fun `streaming expression`() {
-        val projectContext = driveTest(
-            SubexpressionExtractorStage::class,
+        driveTest(
             """
                 var x = u(0)
                 fun f() {
                     x = x.reverse() + u(0)
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            SubexpressionExtractorStage::class,
             """
                 [
                     PropertyStatement(Unit, SvProperty(<tmp>, Ubit<`1`>, StreamingExpression(*), 0, 0)),
@@ -44,8 +42,7 @@ internal class SubexpressionExtractorStageTest : BaseTest() {
                         EQ
                     )
                 ]
-            """.trimIndent(),
-            projectContext.findStatements("f")
-        )
+            """.trimIndent()
+        ) { it.findStatements("f") }
     }
 }

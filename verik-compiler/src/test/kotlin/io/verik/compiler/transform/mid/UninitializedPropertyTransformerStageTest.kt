@@ -24,15 +24,12 @@ internal class UninitializedPropertyTransformerStageTest : BaseTest() {
 
     @Test
     fun `uninitialized property`() {
-        val projectContext = driveTest(
-            UninitializedPropertyTransformerStage::class,
+        driveTest(
             """
                 val x: Boolean = nc()
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "SvProperty(x, Boolean, null, 0, null)",
-            projectContext.findDeclaration("x")
-        )
+            """.trimIndent(),
+            UninitializedPropertyTransformerStage::class,
+            "SvProperty(x, Boolean, null, 0, null)"
+        ) { it.findDeclaration("x") }
     }
 }

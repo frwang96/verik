@@ -16,42 +16,36 @@
 
 package io.verik.compiler.core.declaration.kt
 
-import io.verik.compiler.transform.mid.FunctionTransformerStage
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findExpression
+import io.verik.compiler.core.common.Core
+import io.verik.compiler.util.CoreDeclarationTest
 import org.junit.jupiter.api.Test
 
-internal class CoreKtTest : BaseTest() {
+internal class CoreKtFunctionsTest : CoreDeclarationTest() {
 
     @Test
-    fun `transform repeat`() {
-        val projectContext = driveTest(
-            FunctionTransformerStage::class,
+    fun `serialize repeat assert`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Kt.F_repeat_Int_Function,
+                Core.Kt.F_assert_Boolean,
+                Core.Kt.F_assert_Boolean_Function
+            ),
             """
                 fun f() {
                     repeat(1) {}
-                }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "RepeatStatement(Void, ConstantExpression(*), KtBlockExpression(*))",
-            projectContext.findExpression("f")
-        )
-    }
-
-    @Test
-    fun `transform assert`() {
-        val projectContext = driveTest(
-            FunctionTransformerStage::class,
-            """
-                fun f() {
                     assert(true)
+                    assert(true) {}
                 }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    repeat (1) begin
+                    end
+                    assert (1'b1);
+                    assert (1'b1) else begin
+                    end
+                endfunction : f
             """.trimIndent()
-        )
-        assertElementEquals(
-            "ImmediateAssertStatement(Unit, ConstantExpression(*), null)",
-            projectContext.findExpression("f")
         )
     }
 }

@@ -21,11 +21,11 @@ import io.verik.compiler.ast.element.common.EAbstractFunction
 import io.verik.compiler.ast.element.common.EAbstractInitializedProperty
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.main.ProjectContext
 
-fun ProjectContext.findDeclaration(name: String): EElement {
+fun EProject.findDeclaration(name: String): EElement {
     val declarationVisitor = object : TreeVisitor() {
         val declarations = ArrayList<Declaration>()
         override fun visitElement(element: EElement) {
@@ -34,7 +34,7 @@ fun ProjectContext.findDeclaration(name: String): EElement {
                 declarations.add(element)
         }
     }
-    project.accept(declarationVisitor)
+    accept(declarationVisitor)
     when (declarationVisitor.declarations.size) {
         0 -> throw IllegalArgumentException("Could not find declaration")
         1 -> {}
@@ -43,7 +43,7 @@ fun ProjectContext.findDeclaration(name: String): EElement {
     return declarationVisitor.declarations[0] as EElement
 }
 
-fun ProjectContext.findExpression(name: String): EExpression {
+fun EProject.findExpression(name: String): EExpression {
     val expressionVisitor = object : TreeVisitor() {
         val expressions = ArrayList<EExpression>()
         override fun visitAbstractFunction(abstractFunction: EAbstractFunction) {
@@ -68,7 +68,7 @@ fun ProjectContext.findExpression(name: String): EExpression {
             }
         }
     }
-    project.accept(expressionVisitor)
+    accept(expressionVisitor)
     when (expressionVisitor.expressions.size) {
         0 -> throw IllegalArgumentException("Could not find expression")
         1 -> {}
@@ -77,7 +77,7 @@ fun ProjectContext.findExpression(name: String): EExpression {
     return expressionVisitor.expressions[0]
 }
 
-fun ProjectContext.findStatements(name: String): List<EExpression> {
+fun EProject.findStatements(name: String): List<EExpression> {
     val statementVisitor = object : TreeVisitor() {
         val statements = ArrayList<List<EExpression>>()
         override fun visitAbstractFunction(abstractFunction: EAbstractFunction) {
@@ -89,7 +89,7 @@ fun ProjectContext.findStatements(name: String): List<EExpression> {
             }
         }
     }
-    project.accept(statementVisitor)
+    accept(statementVisitor)
     when (statementVisitor.statements.size) {
         0 -> throw IllegalArgumentException("Could not find statements")
         1 -> {}

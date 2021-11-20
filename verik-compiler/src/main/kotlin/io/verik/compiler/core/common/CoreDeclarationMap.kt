@@ -39,9 +39,7 @@ object CoreDeclarationMap {
         kClass.declaredMemberProperties.forEach {
             @Suppress("UNCHECKED_CAST")
             val coreDeclaration = (it as KProperty1<Any, *>).get(kClassInstance) as CoreDeclaration
-            val qualifiedSignature = coreDeclaration.getQualifiedSignature()
-            if (qualifiedSignature != null)
-                add(qualifiedSignature, coreDeclaration)
+            add(coreDeclaration.getQualifiedSignature(), coreDeclaration)
         }
         kClass.nestedClasses.forEach { addCoreDeclarations(it) }
     }

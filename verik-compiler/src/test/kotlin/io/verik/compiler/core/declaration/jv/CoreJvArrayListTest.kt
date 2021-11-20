@@ -14,43 +14,39 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.declaration.vk
+package io.verik.compiler.core.declaration.jv
 
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.util.CoreDeclarationTest
 import org.junit.jupiter.api.Test
 
-internal class CoreVkUnpackedTest : CoreDeclarationTest() {
+internal class CoreJvArrayListTest : CoreDeclarationTest() {
 
     @Test
-    fun `serialize get set size`() {
+    fun `serialize add get set size`() {
         driveCoreDeclarationTest(
             listOf(
-                Core.Vk.Unpacked.F_get_Int,
-                Core.Vk.Unpacked.F_get_Ubit,
-                Core.Vk.Unpacked.F_set_Int_E,
-                Core.Vk.Unpacked.F_set_Ubit_E,
-                Core.Vk.Unpacked.P_size
+                Core.Jv.Util.ArrayList.F_add_E,
+                Core.Jv.Util.ArrayList.F_get_Int,
+                Core.Jv.Util.ArrayList.F_set_Int_E,
+                Core.Jv.Util.ArrayList.P_size
             ),
             """
-                var x: Unpacked<`2`, Boolean> = nc()
-                var y = false
-                var z = 0
+                val a = ArrayList<Int>()
+                var x = 0
                 fun f() {
-                    y = x[0]
-                    y = x[u(0)]
-                    x[0] = false
-                    x[u(0)] = false
-                    z = x.size
+                    a.add(0)
+                    x = a[0]
+                    a[0] = x
+                    x = a.size
                 }
             """.trimIndent(),
             """
                 function automatic void f();
-                    y = x[0];
-                    y = x[1'h0];
-                    x[0] = 1'b0;
-                    x[1'h0] = 1'b0;
-                    z = 2;
+                    a.add(0);
+                    x = a.get(0);
+                    a.set(0, x);
+                    x = a.size();
                 endfunction : f
             """.trimIndent()
         )

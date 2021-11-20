@@ -24,15 +24,13 @@ internal class CastTransformerStageTest : BaseTest() {
 
     @Test
     fun `is expression`() {
-        val projectContext = driveTest(
-            CastTransformerStage::class,
+        driveTest(
             """
                 fun f() {
                     0 is Int
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            CastTransformerStage::class,
             """
                 [
                     PropertyStatement(Unit, SvProperty(<tmp>, Int, null, 0, 0)),
@@ -43,21 +41,18 @@ internal class CastTransformerStageTest : BaseTest() {
                     )
                 ]
             """.trimIndent(),
-            projectContext.findStatements("f")
-        )
+        ) { it.findStatements("f") }
     }
 
     @Test
     fun `is not expression`() {
-        val projectContext = driveTest(
-            CastTransformerStage::class,
+        driveTest(
             """
                 fun f() {
                     0 !is Int
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            CastTransformerStage::class,
             """
                 [
                     PropertyStatement(Unit, SvProperty(<tmp>, Int, null, 0, 0)),
@@ -71,22 +66,19 @@ internal class CastTransformerStageTest : BaseTest() {
                         [], []
                     )
                 ]
-            """.trimIndent(),
-            projectContext.findStatements("f")
-        )
+            """.trimIndent()
+        ) { it.findStatements("f") }
     }
 
     @Test
     fun `as expression`() {
-        val projectContext = driveTest(
-            CastTransformerStage::class,
+        driveTest(
             """
                 fun f() {
                     0 as Int
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            CastTransformerStage::class,
             """
                 [
                     PropertyStatement(Unit, SvProperty(<tmp>, Int, null, 0, 0)),
@@ -98,8 +90,7 @@ internal class CastTransformerStageTest : BaseTest() {
                     ),
                     ReferenceExpression(Int, <tmp>, null)
                 ]
-            """.trimIndent(),
-            projectContext.findStatements("f")
-        )
+            """.trimIndent()
+        ) { it.findStatements("f") }
     }
 }

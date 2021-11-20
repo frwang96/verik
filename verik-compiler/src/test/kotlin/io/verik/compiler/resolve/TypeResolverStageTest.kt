@@ -17,175 +17,141 @@
 package io.verik.compiler.resolve
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.findDeclaration
 import io.verik.compiler.util.findExpression
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class TypeResolverStageTest : BaseTest() {
 
     @Test
     fun `resolve property`() {
-        val projectContext = driveTest(
-            TypeResolverStage::class,
+        driveTest(
             """
                 var x = false
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtProperty(x, Boolean, *, [], 1)",
-            projectContext.findDeclaration("x")
-        )
+            """.trimIndent(),
+            TypeResolverStage::class,
+            "KtProperty(x, Boolean, *, [], 1)"
+        ) { it.findDeclaration("x") }
     }
 
     @Test
     fun `resolve property type parameterized`() {
-        val projectContext = driveTest(
-            TypeResolverStage::class,
+        driveTest(
             """
                 class C<N : `*`>
                 var c = C<`8`>()
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtProperty(c, C<`8`>, KtCallExpression(C<`8`>, <init>, null, [], [`8`]), [], 1)",
-            projectContext.findDeclaration("c")
-        )
+            """.trimIndent(),
+            TypeResolverStage::class,
+            "KtProperty(c, C<`8`>, KtCallExpression(C<`8`>, <init>, null, [], [`8`]), [], 1)"
+        ) { it.findDeclaration("c") }
     }
 
     @Test
     fun `resolve reference expression`() {
-        val projectContext = driveTest(
-            TypeResolverStage::class,
+        driveTest(
             """
                 var x = false
                 fun f() {
                     x
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "ReferenceExpression(Boolean, x, null)",
-            projectContext.findExpression("f")
-        )
+            """.trimIndent(),
+            TypeResolverStage::class,
+            "ReferenceExpression(Boolean, x, null)"
+        ) { it.findExpression("f") }
     }
 
     @Test
     fun `resolve reference expression with receiver`() {
-        val projectContext = driveTest(
-            TypeResolverStage::class,
+        driveTest(
             """
                 class S(val x: Ubit<`8`>) : Struct()
                 val s = S(u0())
                 fun f() {
                     s.x
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "ReferenceExpression(Ubit<`8`>, x, *)",
-            projectContext.findExpression("f")
-        )
+            """.trimIndent(),
+            TypeResolverStage::class,
+            "ReferenceExpression(Ubit<`8`>, x, *)"
+        ) { it.findExpression("f") }
     }
 
     @Test
     fun `resolve call expression plus`() {
-        val projectContext = driveTest(
-            TypeResolverStage::class,
+        driveTest(
             """
                 val x = u(0x00) + u(0x0)
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtCallExpression(Ubit<MAX<`8`,`4`>>, plus, *, *, [])",
-            projectContext.findExpression("x")
-        )
+            """.trimIndent(),
+            TypeResolverStage::class,
+            "KtCallExpression(Ubit<MAX<`8`,`4`>>, plus, *, *, [])"
+        ) { it.findExpression("x") }
     }
 
     @Test
     fun `resolve call expression u`() {
-        val projectContext = driveTest(
-            TypeResolverStage::class,
+        driveTest(
             """
                 val x = u<`8`>()
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtCallExpression(Ubit<WIDTH<`8`>>, u, null, [], [`8`])",
-            projectContext.findExpression("x")
-        )
+            """.trimIndent(),
+            TypeResolverStage::class,
+            "KtCallExpression(Ubit<WIDTH<`8`>>, u, null, [], [`8`])"
+        ) { it.findExpression("x") }
     }
 
     @Test
     fun `resolve call expression cat`() {
-        val projectContext = driveTest(
-            TypeResolverStage::class,
+        driveTest(
             """
                 val x = cat(u(0), false)
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtCallExpression(Ubit<ADD<`1`, `1`>>, cat, null, *, [])",
-            projectContext.findExpression("x")
-        )
+            """.trimIndent(),
+            TypeResolverStage::class,
+            "KtCallExpression(Ubit<ADD<`1`, `1`>>, cat, null, *, [])"
+        ) { it.findExpression("x") }
     }
 
     @Test
     fun `resolve call expression cat illegal`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                TypeResolverStage::class,
-                """
-                    val x = cat(posedge(false))
-                """.trimIndent()
-            )
-        }.apply { assertEquals("Could not get width of type: Event", message) }
+        driveTest(
+            """
+                val x = cat(posedge(false))
+            """.trimIndent(),
+            true,
+            "Could not get width of type: Event"
+        )
     }
 
     @Test
     fun `resolve call expression rep`() {
-        val projectContext = driveTest(
-            TypeResolverStage::class,
+        driveTest(
             """
                 val x = rep<`3`>(false)
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtCallExpression(Ubit<MUL<`1`, `3`>>, rep, null, *, [`3`])",
-            projectContext.findExpression("x")
-        )
+            """.trimIndent(),
+            TypeResolverStage::class,
+            "KtCallExpression(Ubit<MUL<`1`, `3`>>, rep, null, *, [`3`])"
+        ) { it.findExpression("x") }
     }
 
     @Test
     fun `resolve call expression function`() {
-        val projectContext = driveTest(
-            TypeResolverStage::class,
+        driveTest(
             """
                 fun f(x: Ubit<`8`>) {}
                 val x = f(u0())
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtCallExpression(Unit, f, null, [KtCallExpression(Ubit<`8`>, u0, null, [], [`8`])], [])",
-            projectContext.findExpression("x")
-        )
+            """.trimIndent(),
+            TypeResolverStage::class,
+            "KtCallExpression(Unit, f, null, [KtCallExpression(Ubit<`8`>, u0, null, [], [`8`])], [])"
+        ) { it.findExpression("x") }
     }
 
     @Test
     fun `resolve return statement`() {
-        val projectContext = driveTest(
-            TypeResolverStage::class,
+        driveTest(
             """
                 fun f(): Ubit<`8`> {
                     return u0()
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "ReturnStatement(Nothing, KtCallExpression(Ubit<`8`>, u0, null, [], [`8`]))",
-            projectContext.findExpression("f")
-        )
+            """.trimIndent(),
+            TypeResolverStage::class,
+            "ReturnStatement(Nothing, KtCallExpression(Ubit<`8`>, u0, null, [], [`8`]))"
+        ) { it.findExpression("f") }
     }
 }

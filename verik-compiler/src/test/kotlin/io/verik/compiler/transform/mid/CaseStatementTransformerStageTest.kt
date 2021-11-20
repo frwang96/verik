@@ -40,8 +40,7 @@ internal class CaseStatementTransformerStageTest : BaseTest() {
 
     @Test
     fun `case statement`() {
-        val projectContext = driveTest(
-            CaseStatementTransformerStage::class,
+        driveTest(
             """
                 var x = 0
                 fun f() {
@@ -50,24 +49,21 @@ internal class CaseStatementTransformerStageTest : BaseTest() {
                         else -> {}
                     }
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            CaseStatementTransformerStage::class,
             """
                 CaseStatement(
                     Unit,
                     ReferenceExpression(*),
                     [CaseEntry([ConstantExpression(Int, 0)], *), CaseEntry([], *)]
                 )
-            """.trimIndent(),
-            projectContext.findExpression("f")
-        )
+            """.trimIndent()
+        ) { it.findExpression("f") }
     }
 
     @Test
     fun `if expression`() {
-        val projectContext = driveTest(
-            CaseStatementTransformerStage::class,
+        driveTest(
             """
                 var x = false
                 fun f() {
@@ -76,9 +72,8 @@ internal class CaseStatementTransformerStageTest : BaseTest() {
                         else -> {}
                     }
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            CaseStatementTransformerStage::class,
             """
                 IfExpression(
                     Unit,
@@ -86,8 +81,7 @@ internal class CaseStatementTransformerStageTest : BaseTest() {
                     KtBlockExpression(*),
                     KtBlockExpression(*)
                 )
-            """.trimIndent(),
-            projectContext.findExpression("f")
-        )
+            """.trimIndent()
+        ) { it.findExpression("f") }
     }
 }

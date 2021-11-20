@@ -24,17 +24,14 @@ internal class InjectedStatementReducerStageTest : BaseTest() {
 
     @Test
     fun `inject literal`() {
-        val projectContext = driveTest(
-            InjectedStatementReducerStage::class,
+        driveTest(
             """
                 fun f() {
                     sv("abc")
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "InjectedStatement(Unit, [abc])",
-            projectContext.findExpression("f")
-        )
+            """.trimIndent(),
+            InjectedStatementReducerStage::class,
+            "InjectedStatement(Unit, [abc])"
+        ) { it.findExpression("f") }
     }
 }

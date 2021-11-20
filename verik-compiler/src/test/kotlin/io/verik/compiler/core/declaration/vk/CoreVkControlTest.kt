@@ -16,60 +16,102 @@
 
 package io.verik.compiler.core.declaration.vk
 
-import io.verik.compiler.transform.mid.FunctionTransformerStage
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findExpression
+import io.verik.compiler.core.common.Core
+import io.verik.compiler.util.CoreDeclarationTest
 import org.junit.jupiter.api.Test
 
-internal class CoreVkControlTest : BaseTest() {
+internal class CoreVkControlTest : CoreDeclarationTest() {
 
     @Test
-    fun `transform forever`() {
-        val projectContext = driveTest(
-            FunctionTransformerStage::class,
+    fun `serialize posedge negedge on`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Vk.F_posedge_Boolean,
+                Core.Vk.F_negedge_Boolean,
+                Core.Vk.F_on_Event_Event_Function
+            ),
             """
-                fun f() {
-                    forever {}
+                class M : Module() {
+                    var x: Boolean = nc()
+                    @Seq
+                    fun f() { on (posedge(x)) {} }
+                    @Seq
+                    fun g() { on (negedge(x)) {} }
                 }
+            """.trimIndent(),
+            """
+                module M;
+
+                    always_ff @(posedge x) begin : f
+                    end : f
+
+                    always_ff @(negedge x) begin : g
+                    end : g
+
+                endmodule : M
             """.trimIndent()
-        )
-        assertElementEquals(
-            "ForeverStatement(Void, KtBlockExpression(*))",
-            projectContext.findExpression("f")
         )
     }
 
     @Test
-    fun `transform wait`() {
-        val projectContext = driveTest(
-            FunctionTransformerStage::class,
+    fun `serialize forever`() {
+        driveCoreDeclarationTest(
+            listOf(Core.Vk.F_forever_Function),
             """
-                var x = false
-                fun f() {
-                    wait(posedge(x))
+                class M : Module() {
+                    @Run
+                    fun f() { forever {} }
                 }
+            """.trimIndent(),
+            """
+                module M;
+
+                    initial begin : f
+                        forever begin
+                        end
+                    end : f
+
+                endmodule : M
             """.trimIndent()
-        )
-        assertElementEquals(
-            "EventControlExpression(Void, EdgeExpression(Event, *, *))",
-            projectContext.findExpression("f")
         )
     }
 
     @Test
-    fun `transform delay`() {
-        val projectContext = driveTest(
-            FunctionTransformerStage::class,
+    fun `serialize delay wait`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Vk.F_delay_Int,
+                Core.Vk.F_wait_Boolean,
+                Core.Vk.F_wait_Event,
+                Core.Vk.F_wait_ClockingBlock
+            ),
             """
-                var x = false
-                fun f() {
-                    delay(1)
+                class CB(override val event:  Event) : ClockingBlock()
+                class M : Module() {
+                    var clk: Boolean = nc()
+                    @Make
+                    val cb = CB(posedge(clk))
+                    @Run
+                    fun f() {
+                        delay(0)
+                        wait(clk)
+                        wait(posedge(clk))
+                        wait(cb)
+                    }
                 }
+            """.trimIndent(),
+            """
+                module M;
+
+                    initial begin : f
+                        #0;
+                        wait(clk);
+                        @(posedge clk);
+                        @cb;
+                    end : f
+
+                endmodule : M
             """.trimIndent()
-        )
-        assertElementEquals(
-            "DelayExpression(Void, ConstantExpression(*))",
-            projectContext.findExpression("f")
         )
     }
 }

@@ -24,66 +24,54 @@ internal class StringTemplateExpressionReducerStageTest : BaseTest() {
 
     @Test
     fun `reduce literal entry`() {
-        val projectContext = driveTest(
-            StringTemplateExpressionReducerStage::class,
+        driveTest(
             """
                 var x = "abc"
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "StringExpression(String, abc)",
-            projectContext.findExpression("x")
-        )
+            """.trimIndent(),
+            StringTemplateExpressionReducerStage::class,
+            "StringExpression(String, abc)"
+        ) { it.findExpression("x") }
     }
 
     @Test
     fun `reduce expression entry`() {
-        val projectContext = driveTest(
-            StringTemplateExpressionReducerStage::class,
+        driveTest(
             """
                 var x = 0
                 var y = "${"$"}x"
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            StringTemplateExpressionReducerStage::class,
             """
                 KtCallExpression(
                     String, ${"$"}sformatf, null,
                     [StringExpression(String, %0d), ReferenceExpression(Int, x, null)],
                     []
                 )
-            """.trimIndent(),
-            projectContext.findExpression("y")
-        )
+            """.trimIndent()
+        ) { it.findExpression("y") }
     }
 
     @Test
     fun `reduce expression entry escape percent`() {
-        val projectContext = driveTest(
-            StringTemplateExpressionReducerStage::class,
+        driveTest(
             """
                 var x = "${"$"}{0}%"
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            StringTemplateExpressionReducerStage::class,
             """
                 KtCallExpression(String, *, null, [StringExpression(String, %0d%%), ConstantExpression(*)], [])
-            """.trimIndent(),
-            projectContext.findExpression("x")
-        )
+            """.trimIndent()
+        ) { it.findExpression("x") }
     }
 
     @Test
     fun `reduce expression entry no escape percent`() {
-        val projectContext = driveTest(
-            StringTemplateExpressionReducerStage::class,
+        driveTest(
             """
                 var x = "%"
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "StringExpression(String, %)",
-            projectContext.findExpression("x")
-        )
+            """.trimIndent(),
+            StringTemplateExpressionReducerStage::class,
+            "StringExpression(String, %)"
+        ) { it.findExpression("x") }
     }
 }

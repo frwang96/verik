@@ -17,187 +17,148 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.findDeclaration
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class TypeCasterTest : BaseTest() {
 
     @Test
     fun `type class simple`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 var x = 0
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtProperty(x, Int, *, [], 1)",
-            projectContext.findDeclaration("x")
-        )
+            """.trimIndent(),
+            CasterStage::class,
+            "KtProperty(x, Int, *, [], 1)"
+        ) { it.findDeclaration("x") }
     }
 
     @Test
     fun `type class parameterized`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 class C<T>
                 var x = C<Int>()
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtProperty(x, C<Int>, *, [], 1)",
-            projectContext.findDeclaration("x")
-        )
+            """.trimIndent(),
+            CasterStage::class,
+            "KtProperty(x, C<Int>, *, [], 1)"
+        ) { it.findDeclaration("x") }
     }
 
     @Test
     fun `type type parameter`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 class C<T> {
                     val x = C<T>()
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtProperty(x, C<T>, *, [], 0)",
-            projectContext.findDeclaration("x")
-        )
+            """.trimIndent(),
+            CasterStage::class,
+            "KtProperty(x, C<T>, *, [], 0)"
+        ) { it.findDeclaration("x") }
     }
 
     @Test
     fun `type nullable`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                CasterStage::class,
-                """
-                    fun f(x: Int?) {}
-                """.trimIndent()
-            )
-        }.apply {
-            assertEquals("Nullable type not supported", message)
-        }
+        driveTest(
+            """
+                fun f(x: Int?) {}
+            """.trimIndent(),
+            true,
+            "Nullable type not supported"
+        )
     }
 
     @Test
     fun `type reference simple`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 var x: Int = 0
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtProperty(x, Int, ConstantExpression(Int, 0), [], 1)",
-            projectContext.findDeclaration("x")
-        )
+            """.trimIndent(),
+            CasterStage::class,
+            "KtProperty(x, Int, ConstantExpression(Int, 0), [], 1)"
+        ) { it.findDeclaration("x") }
     }
 
     @Test
     fun `type reference type parameter`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 class C<T> {
                     val x: C<T> = C()
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtProperty(x, C<T>, *, [], 0)",
-            projectContext.findDeclaration("x")
-        )
+            """.trimIndent(),
+            CasterStage::class,
+            "KtProperty(x, C<T>, *, [], 0)"
+        ) { it.findDeclaration("x") }
     }
 
     @Test
     fun `type reference cardinal simple`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 var x: Ubit<`8`> = u(0)
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtProperty(x, Ubit<`8`>, *, [], 1)",
-            projectContext.findDeclaration("x")
-        )
+            """.trimIndent(),
+            CasterStage::class,
+            "KtProperty(x, Ubit<`8`>, *, [], 1)"
+        ) { it.findDeclaration("x") }
     }
 
     @Test
     fun `type reference cardinal inferred`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 var x: Ubit<`*`> = u(0)
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtProperty(x, Ubit<`*`>, *, [], 1)",
-            projectContext.findDeclaration("x")
-        )
+            """.trimIndent(),
+            CasterStage::class,
+            "KtProperty(x, Ubit<`*`>, *, [], 1)"
+        ) { it.findDeclaration("x") }
     }
 
     @Test
     fun `type reference cardinal cardinal`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 var x: Ubit<Cardinal> = u(0)
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtProperty(x, Ubit<`*`>, *, [], 1)",
-            projectContext.findDeclaration("x")
-        )
+            """.trimIndent(),
+            CasterStage::class,
+            "KtProperty(x, Ubit<`*`>, *, [], 1)"
+        ) { it.findDeclaration("x") }
     }
 
     @Test
     fun `type reference cardinal function`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 var x: Ubit<ADD<`8`, `16`>> = u(0)
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtProperty(x, Ubit<ADD<`8`, `16`>>, *, [], 1)",
-            projectContext.findDeclaration("x")
-        )
+            """.trimIndent(),
+            CasterStage::class,
+            "KtProperty(x, Ubit<ADD<`8`, `16`>>, *, [], 1)"
+        ) { it.findDeclaration("x") }
     }
 
     @Test
     fun `type reference cardinal type parameter`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 class C<N: Cardinal> {
                     var x: Ubit<N> = u(0).ext()
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtProperty(x, Ubit<N>, *, [], 1)",
-            projectContext.findDeclaration("x")
-        )
+            """.trimIndent(),
+            CasterStage::class,
+            "KtProperty(x, Ubit<N>, *, [], 1)"
+        ) { it.findDeclaration("x") }
     }
 
     @Test
     fun `type reference cardinal type alias`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 typealias U = Ubit<`8`>
                 var x: U = nc()
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtProperty(x, U, *, [], 1)",
-            projectContext.findDeclaration("x")
-        )
+            """.trimIndent(),
+            CasterStage::class,
+            "KtProperty(x, U, *, [], 1)"
+        ) { it.findDeclaration("x") }
     }
 }

@@ -14,34 +14,35 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.resolve
+package io.verik.compiler.core.declaration.vk
 
-import io.verik.compiler.util.BaseTest
+import io.verik.compiler.core.common.Core
+import io.verik.compiler.util.CoreDeclarationTest
 import org.junit.jupiter.api.Test
 
-internal class TypeParameterTypeCheckerStageTest : BaseTest() {
+internal class CoreVkSbitBinaryTest : CoreDeclarationTest() {
 
     @Test
-    fun `cardinal type expected`() {
-        driveTest(
+    fun `serialize plus mul`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Vk.Sbit.F_plus_Sbit,
+                Core.Vk.Sbit.F_mul_Sbit
+            ),
             """
-                var x: Ubit<ADD<`8`, Int>> = u(0)
-            """.trimIndent(),
-            true,
-            "Cardinal type expected but found: Int"
-        )
-    }
-
-    @Test
-    fun `cardinal type expected type parameter`() {
-        driveTest(
-            """
-                class C<N> {
-                    var x: Ubit<INC<N>> = u(0)
+                var x = s(0x0)
+                var y = s(0x00)
+                fun f() {
+                    x = x + x
+                    y = x mul x
                 }
             """.trimIndent(),
-            true,
-            "Cardinal type expected but found: N"
+            """
+                function automatic void f();
+                    x = x + x;
+                    y = x * x;
+                endfunction : f
+            """.trimIndent()
         )
     }
 }

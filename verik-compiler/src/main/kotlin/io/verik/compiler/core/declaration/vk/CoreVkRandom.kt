@@ -34,7 +34,7 @@ object CoreVkRandom : CoreScope(CorePackage.VK) {
     val F_random_Int_Int = BasicCoreFunctionDeclaration(
         parent,
         "random",
-        null,
+        "fun random(Int, Int)",
         Target.F_urandom_range
     )
 

@@ -26,7 +26,7 @@ import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
 
-object CoreKt : CoreScope(CorePackage.KT) {
+object CoreKtFunctions : CoreScope(CorePackage.KT) {
 
     val F_repeat_Int_Function = object : TransformableCoreFunctionDeclaration(
         parent,

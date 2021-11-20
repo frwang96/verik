@@ -24,16 +24,13 @@ internal class TypeAliasReducerStageTest : BaseTest() {
 
     @Test
     fun `reduce type alias`() {
-        val projectContext = driveTest(
-            TypeAliasReducerStage::class,
+        driveTest(
             """
                 typealias U = Ubit<`8`>
                 var x: U = nc()
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtProperty(x, Ubit<`8`>, *, [], 1)",
-            projectContext.findDeclaration("x")
-        )
+            """.trimIndent(),
+            TypeAliasReducerStage::class,
+            "KtProperty(x, Ubit<`8`>, *, [], 1)"
+        ) { it.findDeclaration("x") }
     }
 }

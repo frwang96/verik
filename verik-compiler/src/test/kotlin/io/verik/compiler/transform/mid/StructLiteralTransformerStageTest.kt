@@ -24,16 +24,13 @@ internal class StructLiteralTransformerStageTest : BaseTest() {
 
     @Test
     fun `struct literal`() {
-        val projectContext = driveTest(
-            StructLiteralTransformerStage::class,
+        driveTest(
             """
                 class S(val x: Boolean) : Struct()
                 var s = S(false)
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "StructLiteralExpression(S, [StructLiteralEntry(x, ConstantExpression(*))])",
-            projectContext.findExpression("s")
-        )
+            """.trimIndent(),
+            StructLiteralTransformerStage::class,
+            "StructLiteralExpression(S, [StructLiteralEntry(x, ConstantExpression(*))])"
+        ) { it.findExpression("s") }
     }
 }

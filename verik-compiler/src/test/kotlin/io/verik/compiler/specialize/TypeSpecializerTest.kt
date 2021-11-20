@@ -17,70 +17,57 @@
 package io.verik.compiler.specialize
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.findDeclaration
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class TypeSpecializerTest : BaseTest() {
 
     @Test
     fun `property typealias`() {
-        val projectContext = driveTest(
-            DeclarationSpecializerStage::class,
+        driveTest(
             """
                 typealias N = `8`
                 var x: Ubit<N> = u(0x00)
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtProperty(x, Ubit<`8`>, *, [], 1)",
-            projectContext.findDeclaration("x")
-        )
+            """.trimIndent(),
+            DeclarationSpecializerStage::class,
+            "KtProperty(x, Ubit<`8`>, *, [], 1)"
+        ) { it.findDeclaration("x") }
     }
 
     @Test
     fun `property typealias nested`() {
-        val projectContext = driveTest(
-            DeclarationSpecializerStage::class,
+        driveTest(
             """
                 typealias N = `8`
                 typealias M = N
                 var x: Ubit<M> = u(0x00)
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtProperty(x, Ubit<`8`>, *, [], 1)",
-            projectContext.findDeclaration("x")
-        )
+            """.trimIndent(),
+            DeclarationSpecializerStage::class,
+            "KtProperty(x, Ubit<`8`>, *, [], 1)"
+        ) { it.findDeclaration("x") }
     }
 
     @Test
     fun `property typealias function nested`() {
-        val projectContext = driveTest(
-            DeclarationSpecializerStage::class,
+        driveTest(
             """
                 typealias N = `8`
                 typealias M = ADD<N, N>
                 var x: Ubit<M> = u(0x00)
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtProperty(x, Ubit<`16`>, *, [], 1)",
-            projectContext.findDeclaration("x")
-        )
+            """.trimIndent(),
+            DeclarationSpecializerStage::class,
+            "KtProperty(x, Ubit<`16`>, *, [], 1)"
+        ) { it.findDeclaration("x") }
     }
 
     @Test
     fun `property cardinal out of range`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                DeclarationSpecializerStage::class,
-                """
-                    var x: Ubit<EXP<`32`>> = u0()
-                """.trimIndent()
-            )
-        }.apply { assertEquals("Cardinal type out of range", message) }
+        driveTest(
+            """
+                var x: Ubit<EXP<`32`>> = u0()
+            """.trimIndent(),
+            true,
+            "Cardinal type out of range"
+        )
     }
 }

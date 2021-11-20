@@ -17,65 +17,57 @@
 package io.verik.compiler.interpret
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.findDeclaration
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class ModulePortParentResolverStageTest : BaseTest() {
 
     @Test
     fun `module port resolve parent`() {
-        val projectContext = driveTest(
-            ModulePortParentResolverStage::class,
+        driveTest(
             """
                 class MP : ModulePort()
                 class MI : ModuleInterface() {
                     @Make
                     val mp = MP()
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "ModulePort(MP, MP, [], MI)",
-            projectContext.findDeclaration("MP")
-        )
+            """.trimIndent(),
+            ModulePortParentResolverStage::class,
+            "ModulePort(MP, MP, [], MI)"
+        ) { it.findDeclaration("MP") }
     }
 
     @Test
     fun `module port resolve parent illegal out of context`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                ModulePortParentResolverStage::class,
-                """
-                    class MP : ModulePort()
-                    class M : Module() {
-                        @Make
-                        val mp = MP()
-                    }
-                """.trimIndent()
-            )
-        }.apply { assertEquals("Module port instantiation out of context", message) }
+        driveTest(
+            """
+                class MP : ModulePort()
+                class M : Module() {
+                    @Make
+                    val mp = MP()
+                }
+            """.trimIndent(),
+            true,
+            "Module port instantiation out of context"
+        )
     }
 
     @Test
     fun `module port resolve parent illegal multiple parents`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                ModulePortParentResolverStage::class,
-                """
-                    class MP : ModulePort()
-                    class MI0 : ModuleInterface() {
-                        @Make
-                        val mp = MP()
-                    }
-                    class MI1 : ModuleInterface() {
-                        @Make
-                        val mp = MP()
-                    }
-                """.trimIndent()
-            )
-        }.apply { assertEquals("Module port has multiple parent module interfaces: MI0", message) }
+        driveTest(
+            """
+                class MP : ModulePort()
+                class MI0 : ModuleInterface() {
+                    @Make
+                    val mp = MP()
+                }
+                class MI1 : ModuleInterface() {
+                    @Make
+                    val mp = MP()
+                }
+            """.trimIndent(),
+            true,
+            "Module port has multiple parent module interfaces: MI0"
+        )
     }
 }

@@ -17,68 +17,55 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.findDeclaration
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class AnnotationCasterTest : BaseTest() {
 
     @Test
     fun `annotation simple`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 @Task
                 fun f() {}
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtFunction(f, Unit, *, [], [], [Annotation(Task, [])], 0)",
-            projectContext.findDeclaration("f")
-        )
+            """.trimIndent(),
+            CasterStage::class,
+            "KtFunction(f, Unit, *, [], [], [Annotation(Task, [])], 0)"
+        ) { it.findDeclaration("f") }
     }
 
     @Test
     fun `annotation with argument`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 @Rename("g")
                 fun f() {}
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtFunction(f, Unit, *, [], [], [Annotation(Rename, [g])], 0)",
-            projectContext.findDeclaration("f")
-        )
+            """.trimIndent(),
+            CasterStage::class,
+            "KtFunction(f, Unit, *, [], [], [Annotation(Rename, [g])], 0)"
+        ) { it.findDeclaration("f") }
     }
 
     @Test
     fun `annotation with argument illegal`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                CasterStage::class,
-                """
+        driveTest(
+            """
                 @Rename("g" + "h")
                 fun f() {}
-                """.trimIndent()
-            )
-        }.apply { assertEquals("String literal expected for annotation argument", message) }
+            """.trimIndent(),
+            true,
+            "String literal expected for annotation argument"
+        )
     }
 
     @Test
     fun `annotation on value parameter`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 class M(@In val x: Boolean) : Module()
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            CasterStage::class,
             "KtValueParameter(x, Boolean, [Annotation(In, [])], 1, 0)",
-            projectContext.findDeclaration("x")
-        )
+        ) { it.findDeclaration("x") }
     }
 }

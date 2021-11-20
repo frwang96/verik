@@ -24,31 +24,25 @@ internal class UnaryExpressionTransformerStageTest : BaseTest() {
 
     @Test
     fun `transform not`() {
-        val projectContext = driveTest(
-            UnaryExpressionTransformerStage::class,
+        driveTest(
             """
                 var x = false
                 var y = x.not()
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "SvUnaryExpression(Boolean, ReferenceExpression(*), LOGICAL_NEG)",
-            projectContext.findExpression("y")
-        )
+            """.trimIndent(),
+            UnaryExpressionTransformerStage::class,
+            "SvUnaryExpression(Boolean, ReferenceExpression(*), LOGICAL_NEG)"
+        ) { it.findExpression("y") }
     }
 
     @Test
     fun `transform postincrement`() {
-        val projectContext = driveTest(
-            BinaryExpressionTransformerStage::class,
+        driveTest(
             """
                 var x = 0
                 var y = x++
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "SvUnaryExpression(Int, ReferenceExpression(*), POST_INC)",
-            projectContext.findExpression("y")
-        )
+            """.trimIndent(),
+            BinaryExpressionTransformerStage::class,
+            "SvUnaryExpression(Int, ReferenceExpression(*), POST_INC)"
+        ) { it.findExpression("y") }
     }
 }

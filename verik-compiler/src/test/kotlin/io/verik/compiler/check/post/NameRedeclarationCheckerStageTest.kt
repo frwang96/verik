@@ -17,25 +17,19 @@
 package io.verik.compiler.check.post
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class NameRedeclarationCheckerStageTest : BaseTest() {
 
     @Test
     fun `redeclaration in package`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                NameRedeclarationCheckerStage::class,
-                """
-                    enum class E { A }
-                    class A
-                """.trimIndent()
-            )
-        }.apply {
-            Assertions.assertEquals("Name has already been declared: A", message)
-        }
+        driveTest(
+            """
+                enum class E { A }
+                class A
+            """.trimIndent(),
+            true,
+            "Name has already been declared: A"
+        )
     }
 }

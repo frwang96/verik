@@ -23,69 +23,54 @@ internal class SourceBuilderTest : BaseTest() {
 
     @Test
     fun `align properties`() {
-        val projectContext = driveTest(
-            SourceSerializerStage::class,
+        driveTest(
             """
                 var x: Boolean = nc()
                 var y: Int = nc()
                 var z: Ubit<`8`> = nc()
+            """.trimIndent(),
+            """
+                logic       x;
+                int         y;
+                logic [7:0] z;
             """.trimIndent()
-        )
-        val expected = """
-            logic       x;
-            int         y;
-            logic [7:0] z;
-        """.trimIndent()
-        assertOutputTextEquals(
-            expected,
-            projectContext.outputContext.basicPackageSourceTextFiles[0]
-        )
+        ) { it.basicPackageSourceTextFiles[0] }
     }
 
     @Test
     fun `wrap expression`() {
-        val projectContext = driveTest(
-            SourceSerializerStage::class,
+        driveTest(
             """
                 var aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa = 0
                 var bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb = 0
                 fun f() {
                     var x = aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa + bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
                 }
+            """.trimIndent(),
+            """
+                int aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa = 0;
+                int bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb = 0;
+                
+                function automatic void f();
+                    automatic int x = aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                        + bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb;
+                endfunction : f
             """.trimIndent()
-        )
-        val expected = """
-            int aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa = 0;
-            int bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb = 0;
-            
-            function automatic void f();
-                automatic int x = aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-                    + bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb;
-            endfunction : f
-        """.trimIndent()
-        assertOutputTextEquals(
-            expected,
-            projectContext.outputContext.basicPackageSourceTextFiles[0]
-        )
+        ) { it.basicPackageSourceTextFiles[0] }
     }
 
     @Test
     fun `wrap property`() {
-        val projectContext = driveTest(
-            SourceSerializerStage::class,
+        driveTest(
             """
                 var aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa = 0
                 var b = aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa + aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa + 1
+            """.trimIndent(),
+            """
+                int aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa = 0;
+                int b = aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa + aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                    + 1;
             """.trimIndent()
-        )
-        val expected = """
-            int aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa = 0;
-            int b = aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa + aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-                + 1;
-        """.trimIndent()
-        assertOutputTextEquals(
-            expected,
-            projectContext.outputContext.basicPackageSourceTextFiles[0]
-        )
+        ) { it.basicPackageSourceTextFiles[0] }
     }
 }

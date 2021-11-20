@@ -16,8 +16,6 @@
 
 package io.verik.compiler.util
 
-class TestFatalException(override val message: String) : Exception(message)
-
 class TestErrorException(override val message: String) : Exception(message)
 
 class TestWarningException(override val message: String) : Exception(message)

@@ -16,26 +16,62 @@
 
 package io.verik.compiler.core.declaration.kt
 
-import io.verik.compiler.transform.mid.FunctionTransformerStage
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findExpression
+import io.verik.compiler.core.common.Core
+import io.verik.compiler.util.CoreDeclarationTest
 import org.junit.jupiter.api.Test
 
-internal class CoreKtIoTest : BaseTest() {
+internal class CoreKtIoTest : CoreDeclarationTest() {
 
     @Test
-    fun `transform println`() {
-        val projectContext = driveTest(
-            FunctionTransformerStage::class,
+    fun `serialize print`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Kt.Io.F_print_Any,
+                Core.Kt.Io.F_print_Boolean,
+                Core.Kt.Io.F_print_Int
+            ),
+            """
+                fun f() {
+                    print("")
+                    print(false)
+                    print(0)
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    ${'$'}write("");
+                    ${'$'}write(1'b0);
+                    ${'$'}write(0);
+                endfunction : f
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `serialize println`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Kt.Io.F_println,
+                Core.Kt.Io.F_println_Any,
+                Core.Kt.Io.F_println_Boolean,
+                Core.Kt.Io.F_println_Int
+            ),
             """
                 fun f() {
                     println()
+                    println("")
+                    println(false)
+                    println(0)
                 }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    ${'$'}display();
+                    ${'$'}display("");
+                    ${'$'}display(1'b0);
+                    ${'$'}display(0);
+                endfunction : f
             """.trimIndent()
-        )
-        assertElementEquals(
-            "KtCallExpression(Unit, \$display, null, [], [])",
-            projectContext.findExpression("f")
         )
     }
 }

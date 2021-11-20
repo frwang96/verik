@@ -24,31 +24,25 @@ internal class BinaryExpressionTransformerStageTest : BaseTest() {
 
     @Test
     fun `transform plus`() {
-        val projectContext = driveTest(
-            BinaryExpressionTransformerStage::class,
+        driveTest(
             """
                 var x = 0
                 var y = x.plus(1)
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "SvBinaryExpression(Int, ReferenceExpression(*), ConstantExpression(*), PLUS)",
-            projectContext.findExpression("y")
-        )
+            """.trimIndent(),
+            BinaryExpressionTransformerStage::class,
+            "SvBinaryExpression(Int, ReferenceExpression(*), ConstantExpression(*), PLUS)"
+        ) { it.findExpression("y") }
     }
 
     @Test
     fun `transform comparison`() {
-        val projectContext = driveTest(
-            BinaryExpressionTransformerStage::class,
+        driveTest(
             """
                 @Suppress("SimplifyBooleanWithConstants")
                 var x = 0 < 1
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "SvBinaryExpression(Boolean, *, *, LT)",
-            projectContext.findExpression("x")
-        )
+            """.trimIndent(),
+            BinaryExpressionTransformerStage::class,
+            "SvBinaryExpression(Boolean, *, *, LT)"
+        ) { it.findExpression("x") }
     }
 }

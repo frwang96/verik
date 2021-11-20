@@ -24,8 +24,7 @@ internal class SmartCastReducerStageTest : BaseTest() {
 
     @Test
     fun `smart cast simple`() {
-        val projectContext = driveTest(
-            SmartCastReducerStage::class,
+        driveTest(
             """
                 open class C
                 class D : C()
@@ -36,18 +35,15 @@ internal class SmartCastReducerStageTest : BaseTest() {
                         val x = f(c)
                     }
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtCallExpression(Boolean, f, null, [ReferenceExpression(D, <tmp>, null)], [])",
-            projectContext.findExpression("x")
-        )
+            """.trimIndent(),
+            SmartCastReducerStage::class,
+            "KtCallExpression(Boolean, f, null, [ReferenceExpression(D, <tmp>, null)], [])"
+        ) { it.findExpression("x") }
     }
 
     @Test
     fun `smart cast no receiver`() {
-        val projectContext = driveTest(
-            SmartCastReducerStage::class,
+        driveTest(
             """
                 open class C
                 class D : C() { fun f(): Boolean { return false } }
@@ -57,18 +53,15 @@ internal class SmartCastReducerStageTest : BaseTest() {
                         val x = c.f()
                     }
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtCallExpression(Boolean, f, ReferenceExpression(D, <tmp>, null), [], [])",
-            projectContext.findExpression("x")
-        )
+            """.trimIndent(),
+            SmartCastReducerStage::class,
+            "KtCallExpression(Boolean, f, ReferenceExpression(D, <tmp>, null), [], [])"
+        ) { it.findExpression("x") }
     }
 
     @Test
     fun `smart cast with receiver`() {
-        val projectContext = driveTest(
-            SmartCastReducerStage::class,
+        driveTest(
             """
                 open class C
                 class D : C() { fun f(): Boolean { return false } }
@@ -79,11 +72,9 @@ internal class SmartCastReducerStageTest : BaseTest() {
                         val x = e.c.f()
                     }
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "KtCallExpression(Boolean, f, ReferenceExpression(D, <tmp>, null), [], [])",
-            projectContext.findExpression("x")
-        )
+            """.trimIndent(),
+            SmartCastReducerStage::class,
+            "KtCallExpression(Boolean, f, ReferenceExpression(D, <tmp>, null), [], [])"
+        ) { it.findExpression("x") }
     }
 }

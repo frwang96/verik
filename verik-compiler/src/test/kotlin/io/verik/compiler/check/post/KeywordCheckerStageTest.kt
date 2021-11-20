@@ -17,24 +17,18 @@
 package io.verik.compiler.check.post
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class KeywordCheckerStageTest : BaseTest() {
 
     @Test
     fun `keyword property`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                KeywordCheckerStage::class,
-                """
-                    const val alias = false
-                """.trimIndent()
-            )
-        }.apply {
-            assertEquals("Conflict with SystemVerilog reserved keyword: alias", message)
-        }
+        driveTest(
+            """
+                const val alias = false
+            """.trimIndent(),
+            true,
+            "Conflict with SystemVerilog reserved keyword: alias"
+        )
     }
 }

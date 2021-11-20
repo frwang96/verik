@@ -17,9 +17,11 @@
 package io.verik.compiler.util
 
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.common.ElementPrinter
 import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.main.Config
+import io.verik.compiler.main.OutputContext
 import io.verik.compiler.main.Platform
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.SourceSetConfig
@@ -28,14 +30,71 @@ import io.verik.compiler.main.StageSequencer
 import io.verik.compiler.main.TextFile
 import io.verik.compiler.message.MessageCollector
 import org.intellij.lang.annotations.Language
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.assertThrows
 import java.nio.file.Paths
 import kotlin.reflect.KClass
 
 abstract class BaseTest {
 
-    fun <T : ProjectStage> driveTest(stageClass: KClass<T>, @Language("kotlin") content: String): ProjectContext {
+    fun <T : ProjectStage> driveTest(
+        @Language("kotlin") content: String,
+        stageClass: KClass<T>,
+        expected: String,
+        selector: (EProject) -> Any
+    ) {
+        val projectContext = getProjectContext(content)
+        val stageSequence = StageSequencer.getStageSequence()
+        assert(stageSequence.contains(stageClass))
+        for (it in stageSequence.stages) {
+            it.accept(projectContext)
+            if (it::class == stageClass)
+                break
+        }
+        val selected = selector(projectContext.project)
+        if (selected is List<*>) {
+            val elements = selected.map { it as EElement }
+            assertElementEquals(expected, elements)
+        } else {
+            val element = selected as EElement
+            assertElementEquals(expected, element)
+        }
+    }
+
+    fun driveTest(
+        @Language("kotlin") content: String,
+        isError: Boolean,
+        message: String
+    ) {
+        val projectContext = getProjectContext(content)
+        val stageSequence = StageSequencer.getStageSequence()
+        if (isError) {
+            val throwable = assertThrows<TestErrorException> {
+                stageSequence.stages.forEach { it.accept(projectContext) }
+            }
+            assertEquals(throwable.message, message)
+        } else {
+            val throwable = assertThrows<TestWarningException> {
+                stageSequence.stages.forEach { it.accept(projectContext) }
+            }
+            assertEquals(throwable.message, message)
+        }
+    }
+
+    fun driveTest(
+        @Language("kotlin") content: String,
+        expected: String,
+        selector: (OutputContext) -> TextFile
+    ) {
+        val projectContext = getProjectContext(content)
+        val stageSequence = StageSequencer.getStageSequence()
+        stageSequence.stages.forEach { it.accept(projectContext) }
+        val textFile = selector(projectContext.outputContext)
+        assertOutputTextEquals(expected, textFile)
+    }
+
+    internal fun getProjectContext(@Language("kotlin") content: String): ProjectContext {
         val config = getConfig()
         val contentWithPackageHeader = """
             package test
@@ -46,23 +105,14 @@ abstract class BaseTest {
         val projectContext = ProjectContext(config)
         val sourceSetContext = SourceSetContext(config.sourceSetConfigs[0].name, listOf(textFile))
         projectContext.sourceSetContexts = listOf(sourceSetContext)
-
-        val stageSequence = StageSequencer.getStageSequence()
-        assert(stageSequence.contains(stageClass))
-        for (it in stageSequence.stages) {
-            it.accept(projectContext)
-            if (it::class == stageClass)
-                break
-        }
-
         return projectContext
     }
 
-    fun assertElementEquals(expected: String, actual: EElement) {
+    private fun assertElementEquals(expected: String, actual: EElement) {
         assertElementEquals(expected, ElementPrinter.dump(actual))
     }
 
-    fun assertElementEquals(expected: String, actual: List<EElement>) {
+    private fun assertElementEquals(expected: String, actual: List<EElement>) {
         val actualString = actual.joinToString(prefix = "[", postfix = "]") { ElementPrinter.dump(it) }
         assertElementEquals(expected, actualString)
     }
@@ -137,7 +187,10 @@ abstract class BaseTest {
             }
             .dropLastWhile { it.isEmpty() }
 
-        Assertions.assertEquals(expectedLines, actualLines)
+        assertEquals(
+            expectedLines.joinToString(separator = "\n"),
+            actualLines.joinToString(separator = "\n")
+        )
     }
 
     companion object {

@@ -14,43 +14,40 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.declaration.vk
+package io.verik.compiler.core.declaration.kt
 
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.util.CoreDeclarationTest
 import org.junit.jupiter.api.Test
 
-internal class CoreVkUnpackedTest : CoreDeclarationTest() {
+internal class CoreKtBooleanTest : CoreDeclarationTest() {
 
     @Test
-    fun `serialize get set size`() {
+    fun `serialize not and or xor`() {
         driveCoreDeclarationTest(
             listOf(
-                Core.Vk.Unpacked.F_get_Int,
-                Core.Vk.Unpacked.F_get_Ubit,
-                Core.Vk.Unpacked.F_set_Int_E,
-                Core.Vk.Unpacked.F_set_Ubit_E,
-                Core.Vk.Unpacked.P_size
+                Core.Kt.Boolean.F_not,
+                Core.Kt.Boolean.F_and_Boolean,
+                Core.Kt.Boolean.F_or_Boolean,
+                Core.Kt.Boolean.F_xor_Boolean
             ),
             """
-                var x: Unpacked<`2`, Boolean> = nc()
-                var y = false
-                var z = 0
+                var a = false
+                var b = false
+                var x = false
                 fun f() {
-                    y = x[0]
-                    y = x[u(0)]
-                    x[0] = false
-                    x[u(0)] = false
-                    z = x.size
+                    x = !a
+                    x = a and b
+                    x = a or b
+                    x = a xor b
                 }
             """.trimIndent(),
             """
                 function automatic void f();
-                    y = x[0];
-                    y = x[1'h0];
-                    x[0] = 1'b0;
-                    x[1'h0] = 1'b0;
-                    z = 2;
+                    x = !a;
+                    x = a && b;
+                    x = a || b;
+                    x = a ^ b;
                 endfunction : f
             """.trimIndent()
         )

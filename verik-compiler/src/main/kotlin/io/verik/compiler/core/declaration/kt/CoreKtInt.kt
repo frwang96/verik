@@ -25,30 +25,6 @@ import io.verik.compiler.core.common.CoreScope
 
 object CoreKtInt : CoreScope(Core.Kt.C_Int) {
 
-    val F_lt_Int = BinaryCoreFunctionDeclaration(parent, "lt", null, SvBinaryOperatorKind.LT)
-
-    val F_lteq_Int = BinaryCoreFunctionDeclaration(parent, "lteq", null, SvBinaryOperatorKind.LTEQ)
-
-    val F_gt_Int = BinaryCoreFunctionDeclaration(parent, "gt", null, SvBinaryOperatorKind.GT)
-
-    val F_gteq_Int = BinaryCoreFunctionDeclaration(parent, "gteq", null, SvBinaryOperatorKind.GTEQ)
-
-    val F_times_Int = object : BinaryCoreFunctionDeclaration(
-        parent,
-        "times",
-        "fun times(Int)",
-        SvBinaryOperatorKind.MUL
-    ) {
-
-        override fun evaluate(callExpression: EKtCallExpression): String? {
-            val left = ConstantUtil.getInt(callExpression.receiver!!)
-            val right = ConstantUtil.getInt(callExpression.valueArguments[0])
-            return if (left != null && right != null) {
-                (left * right).toString()
-            } else null
-        }
-    }
-
     val F_plus_Int = object : BinaryCoreFunctionDeclaration(
         parent,
         "plus",
@@ -78,6 +54,22 @@ object CoreKtInt : CoreScope(Core.Kt.C_Int) {
             return if (left != null && right != null)
                 (left - right).toString()
             else null
+        }
+    }
+
+    val F_times_Int = object : BinaryCoreFunctionDeclaration(
+        parent,
+        "times",
+        "fun times(Int)",
+        SvBinaryOperatorKind.MUL
+    ) {
+
+        override fun evaluate(callExpression: EKtCallExpression): String? {
+            val left = ConstantUtil.getInt(callExpression.receiver!!)
+            val right = ConstantUtil.getInt(callExpression.valueArguments[0])
+            return if (left != null && right != null) {
+                (left * right).toString()
+            } else null
         }
     }
 }

@@ -24,44 +24,35 @@ internal class StringTemplateExpressionCasterTest : BaseTest() {
 
     @Test
     fun `literal entry`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 var x = "abc"
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "StringTemplateExpression(String, [abc])",
-            projectContext.findExpression("x")
-        )
+            """.trimIndent(),
+            CasterStage::class,
+            "StringTemplateExpression(String, [abc])"
+        ) { it.findExpression("x") }
     }
 
     @Test
     fun `literal entry escaped`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 var x = "\$"
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "StringTemplateExpression(String, [$])",
-            projectContext.findExpression("x")
-        )
+            """.trimIndent(),
+            CasterStage::class,
+            "StringTemplateExpression(String, [$])"
+        ) { it.findExpression("x") }
     }
 
     @Test
     fun `expression entry`() {
-        val projectContext = driveTest(
-            CasterStage::class,
+        driveTest(
             """
                 var x = 0
                 var y = "${"$"}x"
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "StringTemplateExpression(String, [ReferenceExpression(*)])",
-            projectContext.findExpression("y")
-        )
+            """.trimIndent(),
+            CasterStage::class,
+            "StringTemplateExpression(String, [ReferenceExpression(*)])"
+        ) { it.findExpression("y") }
     }
 }

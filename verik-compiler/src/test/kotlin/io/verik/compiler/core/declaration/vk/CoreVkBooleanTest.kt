@@ -14,23 +14,36 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.check.post
+package io.verik.compiler.core.declaration.vk
 
-import io.verik.compiler.util.BaseTest
+import io.verik.compiler.core.common.Core
+import io.verik.compiler.util.CoreDeclarationTest
 import org.junit.jupiter.api.Test
 
-internal class StatementCheckerStageTest : BaseTest() {
+internal class CoreVkBooleanTest : CoreDeclarationTest() {
 
     @Test
-    fun `invalid statement`() {
-        driveTest(
+    fun `serialize ext sext`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Vk.Boolean.F_Boolean_ext,
+                Core.Vk.Boolean.F_Boolean_sext
+            ),
             """
+                var a = false
+                var x = u(0x0)
+                var y = s(0x0)
                 fun f() {
-                    0
+                    x = a.ext()
+                    y = a.sext()
                 }
             """.trimIndent(),
-            true,
-            "Could not interpret expression as statement"
+            """
+                function automatic void f();
+                    x = 4'(a);
+                    y = 4'(${'$'}signed(a));
+                endfunction : f
+            """.trimIndent()
         )
     }
 }

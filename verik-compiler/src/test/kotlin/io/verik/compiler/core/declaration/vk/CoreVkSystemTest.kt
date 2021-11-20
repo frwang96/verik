@@ -20,98 +20,67 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.util.CoreDeclarationTest
 import org.junit.jupiter.api.Test
 
-internal class CoreVkSpecialTest : CoreDeclarationTest() {
+internal class CoreVkSystemTest : CoreDeclarationTest() {
 
     @Test
-    fun `serialize sv`() {
-        driveCoreDeclarationTest(
-            listOf(Core.Vk.F_sv_String),
-            """
-                fun f() {
-                    sv("xyz")
-                }
-            """.trimIndent(),
-            """
-                function automatic void f();
-                    xyz;
-                endfunction : f
-            """.trimIndent()
-        )
-    }
-
-    @Test
-    fun `transform nc illegal`() {
-        driveTest(
-            """
-                var x = false
-                fun f() {
-                    x = nc()
-                }
-            """.trimIndent(),
-            true,
-            "Expression used out of context: nc"
-        )
-    }
-
-    @Test
-    fun `serialize i`() {
-        driveCoreDeclarationTest(
-            listOf(Core.Vk.F_i),
-            """
-                var x = 0
-                fun f() {
-                    x = i<`8`>()
-                }
-            """.trimIndent(),
-            """
-                function automatic void f();
-                    x = 8;
-                endfunction : f
-            """.trimIndent()
-        )
-    }
-
-    @Test
-    fun `serialize u u0`() {
+    fun `serialize finish fatal`() {
         driveCoreDeclarationTest(
             listOf(
-                Core.Vk.F_u,
-                Core.Vk.F_u_Sbit,
-                Core.Vk.F_u0
+                Core.Vk.F_finish,
+                Core.Vk.F_fatal,
+                Core.Vk.F_fatal_String
             ),
             """
-                var x = u(0x0)
-                var y = s(0x0)
+                fun f() { finish() }
+                fun g() { fatal() }
+                fun h() { fatal("") }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    ${'$'}finish();
+                endfunction : f
+
+                function automatic void g();
+                    ${'$'}fatal();
+                endfunction : g
+
+                function automatic void h();
+                    ${'$'}fatal(1, "");
+                endfunction : h
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `serialize error`() {
+        driveCoreDeclarationTest(
+            listOf(Core.Vk.F_error_String),
+            """
                 fun f() {
-                    x = u<`8`>()
-                    x = u(y)
-                    x = u0()
+                    error("")
                 }
             """.trimIndent(),
             """
                 function automatic void f();
-                    x = 4'h8;
-                    x = ${'$'}unsigned(y);
-                    x = 4'h0;
+                    ${'$'}error("");
                 endfunction : f
             """.trimIndent()
         )
     }
 
     @Test
-    fun `serialize s`() {
+    fun `serialize time`() {
         driveCoreDeclarationTest(
-            listOf(Core.Vk.F_s_Ubit),
+            listOf(Core.Vk.F_time),
             """
-                var x = s(0x0)
-                var y = u(0x0)
+                var t = time()
                 fun f() {
-                    x = s(y)
+                    t = time()
                 }
             """.trimIndent(),
             """
                 function automatic void f();
-                    x = ${'$'}signed(y);
+                    t = ${'$'}time();
                 endfunction : f
             """.trimIndent()
         )

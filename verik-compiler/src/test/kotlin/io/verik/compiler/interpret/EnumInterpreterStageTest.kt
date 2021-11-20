@@ -23,15 +23,12 @@ internal class EnumInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret enum`() {
-        val projectContext = driveTest(
-            EnumInterpreterStage::class,
+        driveTest(
             """
                 enum class E { A }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "File([Enum(E, E, [A]), SvEnumEntry(A, E)])",
-            projectContext.project.files().first()
-        )
+            """.trimIndent(),
+            EnumInterpreterStage::class,
+            "File([Enum(E, E, [A]), SvEnumEntry(A, E)])"
+        ) { it.files().first() }
     }
 }

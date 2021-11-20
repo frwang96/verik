@@ -17,18 +17,14 @@
 package io.verik.compiler.interpret
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.findDeclaration
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class FunctionInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret always seq block`() {
-        val projectContext = driveTest(
-            FunctionInterpreterStage::class,
+        driveTest(
             """
                 class M: Module() {
                     private var x = false
@@ -37,104 +33,86 @@ internal class FunctionInterpreterStageTest : BaseTest() {
                         on (posedge(x)) {}
                     }
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "AlwaysSeqBlock(f, EventControlExpression(*), KtBlockExpression(*))",
-            projectContext.findDeclaration("f")
-        )
+            """.trimIndent(),
+            FunctionInterpreterStage::class,
+            "AlwaysSeqBlock(f, EventControlExpression(*), KtBlockExpression(*))"
+        ) { it.findDeclaration("f") }
     }
 
     @Test
     fun `interpret always seq block error`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                FunctionInterpreterStage::class,
-                """
-                class M: Module() {
-                    @Seq
-                    fun f() {}
-                }
-                """.trimIndent()
-            )
-        }.apply { assertEquals("On expression expected", message) }
+        driveTest(
+            """
+            class M: Module() {
+                @Seq
+                fun f() {}
+            }
+            """.trimIndent(),
+            true,
+            "On expression expected"
+        )
     }
 
     @Test
     fun `interpret initial block`() {
-        val projectContext = driveTest(
-            FunctionInterpreterStage::class,
+        driveTest(
             """
                 class M: Module() {
                     @Run
                     fun f() {}
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "InitialBlock(f, KtBlockExpression(*))",
-            projectContext.findDeclaration("f")
-        )
+            """.trimIndent(),
+            FunctionInterpreterStage::class,
+            "InitialBlock(f, KtBlockExpression(*))"
+        ) { it.findDeclaration("f") }
     }
 
     @Test
     fun `interpret task`() {
-        val projectContext = driveTest(
-            FunctionInterpreterStage::class,
+        driveTest(
             """
                 @Task
                 fun t() {}
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "Task(t, *, [])",
-            projectContext.findDeclaration("t")
-        )
+            """.trimIndent(),
+            FunctionInterpreterStage::class,
+            "Task(t, *, [])"
+        ) { it.findDeclaration("t") }
     }
 
     @Test
     fun `interpret function`() {
-        val projectContext = driveTest(
-            FunctionInterpreterStage::class,
+        driveTest(
             """
                 fun f() {}
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "SvFunction(f, Unit, *, [], REGULAR, 0)",
-            projectContext.findDeclaration("f")
-        )
+            """.trimIndent(),
+            FunctionInterpreterStage::class,
+            "SvFunction(f, Unit, *, [], REGULAR, 0)"
+        ) { it.findDeclaration("f") }
     }
 
     @Test
     fun `interpret function in class`() {
-        val projectContext = driveTest(
-            FunctionInterpreterStage::class,
+        driveTest(
             """
                 class C {
                     fun f() {}
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "SvFunction(f, Unit, *, [], VIRTUAL, 0)",
-            projectContext.findDeclaration("f")
-        )
+            """.trimIndent(),
+            FunctionInterpreterStage::class,
+            "SvFunction(f, Unit, *, [], VIRTUAL, 0)"
+        ) { it.findDeclaration("f") }
     }
 
     @Test
     fun `interpret function in object`() {
-        val projectContext = driveTest(
-            FunctionInterpreterStage::class,
+        driveTest(
             """
                 object O {
                     fun f() {}
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "SvFunction(f, Unit, *, [], REGULAR, 1)",
-            projectContext.findDeclaration("f")
-        )
+            """.trimIndent(),
+            FunctionInterpreterStage::class,
+            "SvFunction(f, Unit, *, [], REGULAR, 1)"
+        ) { it.findDeclaration("f") }
     }
 }

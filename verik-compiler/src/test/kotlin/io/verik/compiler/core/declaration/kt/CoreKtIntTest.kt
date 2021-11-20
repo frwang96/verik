@@ -14,32 +14,39 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.pre
+package io.verik.compiler.core.declaration.kt
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findExpression
+import io.verik.compiler.core.common.Core
+import io.verik.compiler.util.CoreDeclarationTest
 import org.junit.jupiter.api.Test
 
-internal class ForStatementReducerStageTest : BaseTest() {
+internal class CoreKtIntTest : CoreDeclarationTest() {
 
     @Test
-    fun `reduce for expression`() {
-        driveTest(
+    fun `serialize plus minus times`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Kt.Int.F_plus_Int,
+                Core.Kt.Int.F_minus_Int,
+                Core.Kt.Int.F_times_Int
+            ),
             """
+                var a = 0
+                var b = 0
+                var x = 0
                 fun f() {
-                    @Suppress("ControlFlowWithEmptyBody")
-                    for (i in 0 until 8) {}
+                    x = a + b
+                    x = a - b
+                    x = a * b
                 }
             """.trimIndent(),
-            ForStatementReducerStage::class,
             """
-                KtCallExpression(
-                    Unit, forEach,
-                    KtCallExpression(IntRange, until, *, [*], []),
-                    [FunctionLiteralExpression(Function, [KtValueParameter(*)], KtBlockExpression(*))],
-                    [Int]
-                )
+                function automatic void f();
+                    x = a + b;
+                    x = a - b;
+                    x = a * b;
+                endfunction : f
             """.trimIndent()
-        ) { it.findExpression("f") }
+        )
     }
 }

@@ -24,16 +24,14 @@ internal class AssignmentOperatorReducerStageTest : BaseTest() {
 
     @Test
     fun `reduce plus eq`() {
-        val projectContext = driveTest(
-            AssignmentOperatorReducerStage::class,
+        driveTest(
             """
                 var x = 0
                 fun f() {
                     x += 1
                 }
-            """.trimIndent()
-        )
-        assertElementEquals(
+            """.trimIndent(),
+            AssignmentOperatorReducerStage::class,
             """
                 KtBinaryExpression(
                     Unit,
@@ -41,8 +39,7 @@ internal class AssignmentOperatorReducerStageTest : BaseTest() {
                     KtBinaryExpression(Int, ReferenceExpression(*), ConstantExpression(*), PLUS),
                     EQ
                 )
-            """.trimIndent(),
-            projectContext.findExpression("f")
-        )
+            """.trimIndent()
+        ) { it.findExpression("f") }
     }
 }

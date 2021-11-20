@@ -23,21 +23,19 @@ internal class PackageFileSerializerStageTest : BaseTest() {
 
     @Test
     fun `package file`() {
-        val projectContext = driveTest(
-            PackageFileSerializerStage::class,
+        driveTest(
             """
                 class C
+            """.trimIndent(),
+            """
+                package test_pkg;
+                
+                    typedef class C;
+                
+                `include "src/test/Test.svh"
+                
+                endpackage : test_pkg
             """.trimIndent()
-        )
-        val expected = """
-            package test_pkg;
-            
-                typedef class C;
-            
-            `include "src/test/Test.svh"
-            
-            endpackage : test_pkg
-        """.trimIndent()
-        assertOutputTextEquals(expected, projectContext.outputContext.packageTextFiles[0])
+        ) { it.packageTextFiles[0] }
     }
 }

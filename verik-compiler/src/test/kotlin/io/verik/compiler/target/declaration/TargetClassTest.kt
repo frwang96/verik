@@ -16,7 +16,6 @@
 
 package io.verik.compiler.target.declaration
 
-import io.verik.compiler.serialize.source.SourceSerializerStage
 import io.verik.compiler.util.BaseTest
 import org.junit.jupiter.api.Test
 
@@ -24,103 +23,73 @@ internal class TargetClassTest : BaseTest() {
 
     @Test
     fun `serialize type Boolean`() {
-        val projectContext = driveTest(
-            SourceSerializerStage::class,
+        driveTest(
             """
                 var x: Boolean = nc()
+            """.trimIndent(),
+            """
+                logic x;
             """.trimIndent()
-        )
-        val expected = """
-            logic x;
-        """.trimIndent()
-        assertOutputTextEquals(
-            expected,
-            projectContext.outputContext.basicPackageSourceTextFiles[0]
-        )
+        ) { it.basicPackageSourceTextFiles[0] }
     }
 
     @Test
     fun `serialize type Ubit`() {
-        val projectContext = driveTest(
-            SourceSerializerStage::class,
+        driveTest(
             """
                 var x: Ubit<`8`> = nc()
+            """.trimIndent(),
+            """
+                logic [7:0] x;
             """.trimIndent()
-        )
-        val expected = """
-            logic [7:0] x;
-        """.trimIndent()
-        assertOutputTextEquals(
-            expected,
-            projectContext.outputContext.basicPackageSourceTextFiles[0]
-        )
+        ) { it.basicPackageSourceTextFiles[0] }
     }
 
     @Test
     fun `serialize type Sbit`() {
-        val projectContext = driveTest(
-            SourceSerializerStage::class,
+        driveTest(
             """
                 var x: Sbit<`8`> = nc()
+            """.trimIndent(),
+            """
+                logic signed [7:0] x;
             """.trimIndent()
-        )
-        val expected = """
-            logic signed [7:0] x;
-        """.trimIndent()
-        assertOutputTextEquals(
-            expected,
-            projectContext.outputContext.basicPackageSourceTextFiles[0]
-        )
+        ) { it.basicPackageSourceTextFiles[0] }
     }
 
     @Test
     fun `serialize type Packed`() {
-        val projectContext = driveTest(
-            SourceSerializerStage::class,
+        driveTest(
             """
                 var x: Packed<`8`, Boolean> = nc()
+            """.trimIndent(),
+            """
+                logic [7:0] x;
             """.trimIndent()
-        )
-        val expected = """
-            logic [7:0] x;
-        """.trimIndent()
-        assertOutputTextEquals(
-            expected,
-            projectContext.outputContext.basicPackageSourceTextFiles[0]
-        )
+        ) { it.basicPackageSourceTextFiles[0] }
     }
 
     @Test
     fun `serialize type Unpacked`() {
-        val projectContext = driveTest(
-            SourceSerializerStage::class,
+        driveTest(
             """
                 var x: Unpacked<`8`, Boolean> = nc()
+            """.trimIndent(),
+            """
+                logic x [7:0];
             """.trimIndent()
-        )
-        val expected = """
-            logic x [7:0];
-        """.trimIndent()
-        assertOutputTextEquals(
-            expected,
-            projectContext.outputContext.basicPackageSourceTextFiles[0]
-        )
+        ) { it.basicPackageSourceTextFiles[0] }
     }
 
     @Test
     fun `serialize type ArrayList`() {
-        val projectContext = driveTest(
-            SourceSerializerStage::class,
+        driveTest(
             """
                 var x: ArrayList<Boolean> = nc()
+            """.trimIndent(),
+            """
+                verik_pkg::ArrayList#(logic) x;
             """.trimIndent()
-        )
-        val expected = """
-            verik_pkg::ArrayList#(logic) x;
-        """.trimIndent()
-        assertOutputTextEquals(
-            expected,
-            projectContext.outputContext.basicPackageSourceTextFiles[0]
-        )
+        ) { it.basicPackageSourceTextFiles[0] }
     }
 }

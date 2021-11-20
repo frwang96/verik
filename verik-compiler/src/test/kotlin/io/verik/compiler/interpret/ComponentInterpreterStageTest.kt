@@ -17,105 +17,85 @@
 package io.verik.compiler.interpret
 
 import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestErrorException
 import io.verik.compiler.util.findDeclaration
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class ComponentInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret module simple`() {
-        val projectContext = driveTest(
-            ComponentInterpreterStage::class,
+        driveTest(
             """
                 class M: Module()
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "Module(M, M, [], [])",
-            projectContext.findDeclaration("M")
-        )
+            """.trimIndent(),
+            ComponentInterpreterStage::class,
+            "Module(M, M, [], [])"
+        ) { it.findDeclaration("M") }
     }
 
     @Test
     fun `interpret module with port`() {
-        val projectContext = driveTest(
-            ComponentInterpreterStage::class,
+        driveTest(
             """
                 class M(@In var x: Boolean): Module()
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "Module(M, M, [], [Port(x, Boolean, INPUT)])",
-            projectContext.findDeclaration("M")
-        )
+            """.trimIndent(),
+            ComponentInterpreterStage::class,
+            "Module(M, M, [], [Port(x, Boolean, INPUT)])"
+        ) { it.findDeclaration("M") }
     }
 
     @Test
     fun `interpret module with port no directionality`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                ComponentInterpreterStage::class,
-                """
-                    class M(var x: Boolean): Module()
-                """.trimIndent()
-            )
-        }.apply { Assertions.assertEquals("Could not determine directionality of port: x", message) }
+        driveTest(
+            """
+                class M(var x: Boolean): Module()
+            """.trimIndent(),
+            true,
+            "Could not determine directionality of port: x"
+        )
     }
 
     @Test
     fun `interpret module with port immutable`() {
-        assertThrows<TestErrorException> {
-            driveTest(
-                ComponentInterpreterStage::class,
-                """
-                    class M(@In val x: Boolean): Module()
-                """.trimIndent()
-            )
-        }.apply { Assertions.assertEquals("Port must be declared as var: x", message) }
+        driveTest(
+            """
+                class M(@In val x: Boolean): Module()
+            """.trimIndent(),
+            true,
+            "Port must be declared as var: x"
+        )
     }
 
     @Test
     fun `interpret module interface`() {
-        val projectContext = driveTest(
-            ComponentInterpreterStage::class,
+        driveTest(
             """
                 class MI: ModuleInterface()
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "ModuleInterface(MI, MI, [], [])",
-            projectContext.findDeclaration("MI")
-        )
+            """.trimIndent(),
+            ComponentInterpreterStage::class,
+            "ModuleInterface(MI, MI, [], [])"
+        ) { it.findDeclaration("MI") }
     }
 
     @Test
     fun `interpret module port`() {
-        val projectContext = driveTest(
-            ComponentInterpreterStage::class,
+        driveTest(
             """
                 class MP: ModulePort()
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "ModulePort(MP, MP, [], null)",
-            projectContext.findDeclaration("MP")
-        )
+            """.trimIndent(),
+            ComponentInterpreterStage::class,
+            "ModulePort(MP, MP, [], null)"
+        ) { it.findDeclaration("MP") }
     }
 
     @Test
     fun `interpret clocking block`() {
-        val projectContext = driveTest(
-            ComponentInterpreterStage::class,
+        driveTest(
             """
                 class CB(override val event: Event): ClockingBlock()
-            """.trimIndent()
-        )
-        assertElementEquals(
-            "ClockingBlock(CB, CB, [], 0)",
-            projectContext.findDeclaration("CB")
-        )
+            """.trimIndent(),
+            ComponentInterpreterStage::class,
+            "ClockingBlock(CB, CB, [], 0)"
+        ) { it.findDeclaration("CB") }
     }
 }
