@@ -33,9 +33,5 @@ class CorePackage(
         val JV = CorePackage("java")
         val JV_UTIL = CorePackage("java.util")
         val VK = CorePackage("io.verik.core")
-
-        fun isReserved(name: String): Boolean {
-            return name in listOf("verik", "io.verik.core")
-        }
     }
 }

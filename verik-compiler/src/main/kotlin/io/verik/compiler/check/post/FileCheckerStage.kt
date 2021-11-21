@@ -27,6 +27,11 @@ object FileCheckerStage : ProjectStage() {
     override val checkNormalization = false
 
     override fun process(projectContext: ProjectContext) {
+        projectContext.project.basicPackages.forEach {
+            if (it.name == "verik_pkg")
+                Messages.PACKAGE_NAME_RESERVED.on(it, it.name)
+        }
+
         val pathSet = HashSet<Path>()
         val duplicatedPathSet = HashSet<Path>()
         projectContext.project.files().forEach {

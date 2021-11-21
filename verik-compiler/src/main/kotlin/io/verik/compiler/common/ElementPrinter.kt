@@ -117,7 +117,6 @@ class ElementPrinter : Visitor() {
     override fun visitAnnotation(annotation: EAnnotation) {
         build("Annotation") {
             build(annotation.name)
-            build(annotation.arguments)
         }
     }
 

@@ -91,7 +91,6 @@ import io.verik.compiler.transform.pre.AssignmentOperatorReducerStage
 import io.verik.compiler.transform.pre.BinaryExpressionReducerStage
 import io.verik.compiler.transform.pre.BitConstantTransformerStage
 import io.verik.compiler.transform.pre.ConstantExpressionTransformerStage
-import io.verik.compiler.transform.pre.DeclarationRenameStage
 import io.verik.compiler.transform.pre.ForStatementReducerStage
 import io.verik.compiler.transform.pre.FunctionOverloadingTransformerStage
 import io.verik.compiler.transform.pre.TypeAliasReducerStage
@@ -119,7 +118,6 @@ object StageSequencer {
 
         // PreTransform
         stageSequence.add(FunctionOverloadingTransformerStage)
-        stageSequence.add(DeclarationRenameStage)
         stageSequence.add(TypeAliasReducerStage)
         stageSequence.add(AssignmentOperatorReducerStage)
         stageSequence.add(UnaryExpressionReducerStage)

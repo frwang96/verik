@@ -16,11 +16,9 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EAnnotation
-import io.verik.compiler.ast.element.kt.EStringTemplateExpression
-import io.verik.compiler.ast.property.LiteralStringEntry
 import io.verik.compiler.common.location
+import io.verik.compiler.core.common.Annotations
 import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.psi.KtAnnotationEntry
 
@@ -31,25 +29,8 @@ object AnnotationCaster {
         val descriptor = castContext.sliceAnnotation[annotationEntry]!!
         val name = descriptor.fqName!!.shortName().asString()
         val qualifiedName = descriptor.fqName!!.asString()
-        val arguments = annotationEntry.valueArguments.map {
-            val expression = castContext.casterVisitor.getExpression(it.getArgumentExpression()!!)
-            castAnnotationArgument(expression)
-        }
-        return EAnnotation(location, name, qualifiedName, arguments)
-    }
-
-    private fun castAnnotationArgument(expression: EExpression): String {
-        return if (expression is EStringTemplateExpression && expression.entries.size == 1) {
-            val stringEntry = expression.entries[0]
-            if (stringEntry is LiteralStringEntry) {
-                stringEntry.text
-            } else {
-                Messages.ANNOTATION_ARGUMENT_NOT_LITERAL.on(expression)
-                ""
-            }
-        } else {
-            Messages.ANNOTATION_ARGUMENT_NOT_LITERAL.on(expression)
-            ""
-        }
+        if (!Annotations.isAnnotation(qualifiedName))
+            Messages.UNIDENTIFIED_ANNOTATION.on(annotationEntry, name)
+        return EAnnotation(location, name, qualifiedName)
     }
 }

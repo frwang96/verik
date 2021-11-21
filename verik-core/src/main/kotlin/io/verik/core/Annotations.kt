@@ -104,9 +104,3 @@ annotation class Task
  */
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY)
 annotation class Extern
-
-/**
- * Renames a declaration in the SystemVerilog output.
- */
-@Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY)
-annotation class Rename(val name: String)

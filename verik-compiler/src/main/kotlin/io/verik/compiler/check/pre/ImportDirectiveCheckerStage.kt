@@ -33,9 +33,7 @@ object ImportDirectiveCheckerStage : ProjectStage() {
         projectContext.getKtFiles().forEach {
             val packageName = it.packageFqName.asString()
             if (packageName == "")
-                Messages.PACKAGE_NAME_ROOT.on(it)
-            if (CorePackage.isReserved(packageName))
-                Messages.PACKAGE_NAME_RESERVED.on(it, packageName)
+                Messages.PACKAGE_ROOT_ILLEGAL.on(it)
             packageNames.add(it.packageFqName.toString())
         }
 

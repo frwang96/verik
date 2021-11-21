@@ -19,7 +19,7 @@ package io.verik.compiler.message
 import io.verik.compiler.ast.property.Type
 import org.jetbrains.kotlin.lexer.KtToken
 import java.nio.file.Path
-import kotlin.reflect.full.memberProperties
+import kotlin.reflect.full.declaredMemberProperties
 
 object Messages {
 
@@ -30,14 +30,9 @@ object Messages {
 
 //  PRE CHECK  /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val PACKAGE_NAME_ROOT = MessageTemplate0(
+    val PACKAGE_ROOT_ILLEGAL = MessageTemplate0(
         Severity.ERROR,
         "Use of the root package is prohibited"
-    )
-
-    val PACKAGE_NAME_RESERVED = MessageTemplate1<String>(
-        Severity.ERROR,
-        "Package name is reserved: $0"
     )
 
     val PACkAGE_NOT_FOUND = MessageTemplate1<String>(
@@ -79,14 +74,14 @@ object Messages {
         "Cardinal type expected but found: $0"
     )
 
-    val ANNOTATION_ARGUMENT_NOT_LITERAL = MessageTemplate0(
-        Severity.ERROR,
-        "String literal expected for annotation argument"
-    )
-
     val ILLEGAL_LOCAL_DECLARATION = MessageTemplate1<String>(
         Severity.ERROR,
         "Illegal local declaration: $0"
+    )
+
+    val UNIDENTIFIED_ANNOTATION = MessageTemplate1<String>(
+        Severity.ERROR,
+        "Could not identify annotation: $0"
     )
 
     val UNIDENTIFIED_DECLARATION = MessageTemplate1<String>(
@@ -241,6 +236,11 @@ object Messages {
 
 //  POST CHECK  ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    val PACKAGE_NAME_RESERVED = MessageTemplate1<String>(
+        Severity.ERROR,
+        "Package name is reserved: $0"
+    )
+
     val FILE_NAME_RESERVED = MessageTemplate1<Path>(
         Severity.ERROR,
         "File name is reserved: $0"
@@ -282,7 +282,7 @@ object Messages {
     )
 
     init {
-        Messages::class.memberProperties.forEach {
+        Messages::class.declaredMemberProperties.forEach {
             val messageTemplate = it.get(Messages)
             if (messageTemplate is AbstractMessageTemplate)
                 messageTemplate.name = it.name
