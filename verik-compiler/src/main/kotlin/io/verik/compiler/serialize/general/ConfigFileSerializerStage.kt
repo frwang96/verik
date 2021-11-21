@@ -37,7 +37,6 @@ object ConfigFileSerializerStage : ProjectStage() {
 
         val synthesisTopNames = ArrayList<String>()
         val simulationTopNames = ArrayList<String>()
-        val externNames = ArrayList<String>()
         val moduleVisitor = object : TreeVisitor() {
             override fun visitModule(module: EModule) {
                 super.visitModule(module)
@@ -45,8 +44,6 @@ object ConfigFileSerializerStage : ProjectStage() {
                     synthesisTopNames.add(module.name)
                 if (module.isSimulationTop)
                     simulationTopNames.add(module.name)
-                if (module.isExtern)
-                    externNames.add(module.name)
             }
         }
         projectContext.project.accept(moduleVisitor)
@@ -63,12 +60,6 @@ object ConfigFileSerializerStage : ProjectStage() {
         if (simulationTopNames.isNotEmpty()) {
             builder.appendLine("simulationTop:")
             simulationTopNames.forEach {
-                builder.appendLine("  - $it")
-            }
-        }
-        if (externNames.isNotEmpty()) {
-            builder.appendLine("extern:")
-            externNames.forEach {
                 builder.appendLine("  - $it")
             }
         }

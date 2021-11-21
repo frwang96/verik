@@ -34,8 +34,6 @@ object Annotations {
     const val RUN = "io.verik.core.Run"
     const val TASK = "io.verik.core.Task"
 
-    const val EXTERN = "io.verik.core.Extern"
-
     private val annotations = ArrayList<String>()
 
     init {

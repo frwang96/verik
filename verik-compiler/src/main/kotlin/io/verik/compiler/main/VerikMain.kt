@@ -20,9 +20,9 @@ import io.verik.compiler.message.GradleMessagePrinter
 import io.verik.compiler.message.MessageCollector
 import java.nio.file.Files
 
-object Main {
+object VerikMain {
 
-    fun run(config: Config) {
+    fun run(config: VerikConfig) {
         MessageCollector.messageCollector = MessageCollector(config, GradleMessagePrinter(config.debug))
         val projectContext = ProjectContext(config)
         val stageSequence = StageSequencer.getStageSequence()

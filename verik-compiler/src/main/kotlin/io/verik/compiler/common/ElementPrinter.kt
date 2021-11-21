@@ -123,7 +123,9 @@ class ElementPrinter : Visitor() {
     override fun visitProject(project: EProject) {
         build("Project") {
             build(project.basicPackages)
+            build(project.externBasicPackages)
             build(project.rootPackage)
+            build(project.externRootPackage)
         }
     }
 

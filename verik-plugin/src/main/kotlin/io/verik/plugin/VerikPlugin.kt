@@ -16,7 +16,7 @@
 
 package io.verik.plugin
 
-import io.verik.compiler.main.Main
+import io.verik.compiler.main.VerikMain
 import io.verik.compiler.message.GradleMessagePrinter
 import io.verik.compiler.message.MessageCollectorException
 import org.gradle.api.GradleException
@@ -33,7 +33,7 @@ class VerikPlugin : Plugin<Project> {
         val task = project.tasks.create("verik") {
             it.doLast {
                 try {
-                    Main.run(ConfigBuilder.getConfig(project, extension))
+                    VerikMain.run(ConfigBuilder.getConfig(project, extension))
                 } catch (exception: Exception) {
                     if (exception !is MessageCollectorException) {
                         print("e: ")
@@ -52,6 +52,7 @@ class VerikPlugin : Plugin<Project> {
         }
 
         task.group = "verik"
+        task.inputs.property("timescale", { extension.timescale })
         task.inputs.property("version", { ConfigBuilder.getVersion(project) })
         task.inputs.property("debug", { extension.debug })
         task.inputs.property("suppressedWarnings", { extension.suppressedWarnings })

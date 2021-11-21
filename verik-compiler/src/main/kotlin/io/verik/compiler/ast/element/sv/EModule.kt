@@ -28,8 +28,7 @@ class EModule(
     override val ports: List<EPort>,
     override var declarations: ArrayList<EDeclaration>,
     val isSynthesisTop: Boolean,
-    val isSimulationTop: Boolean,
-    val isExtern: Boolean
+    val isSimulationTop: Boolean
 ) : EAbstractContainerComponent() {
 
     init {

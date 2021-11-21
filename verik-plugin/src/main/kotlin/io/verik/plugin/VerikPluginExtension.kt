@@ -18,6 +18,7 @@ package io.verik.plugin
 
 abstract class VerikPluginExtension {
 
+    var timescale: String = "1ns / 1ns"
     var debug: Boolean = false
     var suppressedWarnings: List<String> = listOf()
     var promotedWarnings: List<String> = listOf()
