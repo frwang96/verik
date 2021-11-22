@@ -19,9 +19,9 @@ package io.verik.compiler.serialize.general
 import io.verik.compiler.ast.element.common.EBasicPackage
 import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.common.ProjectStage
+import io.verik.compiler.common.TextFile
 import io.verik.compiler.main.Platform
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.TextFile
 
 object PackageFileSerializerStage : ProjectStage() {
 

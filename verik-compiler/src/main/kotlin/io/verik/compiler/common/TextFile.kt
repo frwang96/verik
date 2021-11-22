@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.main
+package io.verik.compiler.common
 
 import java.nio.file.Path
 

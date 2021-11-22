@@ -16,6 +16,7 @@
 
 package io.verik.compiler.main
 
+import io.verik.compiler.common.TextFile
 import io.verik.compiler.message.GradleMessagePrinter
 import io.verik.compiler.message.MessageCollector
 import java.nio.file.Files

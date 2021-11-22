@@ -17,9 +17,9 @@
 package io.verik.compiler.serialize.general
 
 import io.verik.compiler.common.ProjectStage
+import io.verik.compiler.common.TextFile
 import io.verik.compiler.main.Platform
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.TextFile
 import java.nio.file.Path
 
 object SourcesFileSerializerStage : ProjectStage() {

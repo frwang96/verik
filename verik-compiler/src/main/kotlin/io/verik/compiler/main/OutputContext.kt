@@ -16,13 +16,17 @@
 
 package io.verik.compiler.main
 
+import io.verik.compiler.common.TextFile
+
 class OutputContext {
 
     lateinit var configTextFile: TextFile
     var targetPackageTextFile: TextFile? = null
-    lateinit var basicPackageSourceTextFiles: List<TextFile>
-    lateinit var rootPackageSourceTextFiles: List<TextFile>
-    lateinit var packageTextFiles: List<TextFile>
+    var basicPackageSourceTextFiles: List<TextFile> = listOf()
+    var basicPackageSourceTextFilesLabeled: List<TextFile> = listOf()
+    var rootPackageSourceTextFiles: List<TextFile> = listOf()
+    var rootPackageSourceTextFilesLabeled: List<TextFile> = listOf()
+    var packageTextFiles: List<TextFile> = listOf()
     lateinit var sourcesTextFile: TextFile
 
     fun getTextFiles(): List<TextFile> {
@@ -30,7 +34,9 @@ class OutputContext {
         textFiles.add(configTextFile)
         targetPackageTextFile?.let { textFiles.add(it) }
         textFiles.addAll(basicPackageSourceTextFiles)
+        textFiles.addAll(basicPackageSourceTextFilesLabeled)
         textFiles.addAll(rootPackageSourceTextFiles)
+        textFiles.addAll(rootPackageSourceTextFilesLabeled)
         textFiles.addAll(packageTextFiles)
         textFiles.add(sourcesTextFile)
         return textFiles.sortedBy { it.path }

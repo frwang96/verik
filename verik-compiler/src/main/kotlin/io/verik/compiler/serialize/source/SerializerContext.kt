@@ -20,7 +20,6 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.TextFile
 
 class SerializerContext(projectContext: ProjectContext, file: EFile) {
 
@@ -43,8 +42,8 @@ class SerializerContext(projectContext: ProjectContext, file: EFile) {
         sourceSerializerVisitor.serializeAsStatement(expression)
     }
 
-    fun toTextFile(): TextFile {
-        return sourceBuilder.toTextFile()
+    fun getSourceBuilderResult(): SourceBuilderResult {
+        return sourceBuilder.getResult()
     }
 
     fun label(element: EElement, block: () -> Unit) {

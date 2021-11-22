@@ -14,12 +14,8 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.main
+package io.verik.compiler.serialize.source
 
 import io.verik.compiler.common.TextFile
-import org.jetbrains.kotlin.psi.KtFile
 
-class SourceSetContext(val name: String, val textFiles: List<TextFile>) {
-
-    lateinit var ktFiles: List<KtFile>
-}
+data class SourceBuilderResult(val textFile: TextFile, val textFileLabeled: TextFile?)

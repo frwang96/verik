@@ -18,8 +18,8 @@ package io.verik.compiler.serialize.source
 
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
+import io.verik.compiler.common.TextFile
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.TextFile
 import io.verik.compiler.message.Messages
 import io.verik.compiler.serialize.general.FileHeaderBuilder
 import org.jetbrains.kotlin.backend.common.peek
@@ -36,7 +36,7 @@ class SourceBuilder(
     private val labelLineStack = ArrayDeque<Int>()
     private var indent = 0
 
-    fun toTextFile(): TextFile {
+    fun getResult(): SourceBuilderResult {
         if (sourceActionLine.sourceActions.isNotEmpty())
             Messages.INTERNAL_ERROR.on(file, "Serialized source must end with a new line")
 
@@ -61,7 +61,7 @@ class SourceBuilder(
             labelLength
         )
         sourceActionBuilder.build(sourceActionLines)
-        return TextFile(file.getOutputPathNotNull(), sourceBuilder.toString())
+        return SourceBuilderResult(TextFile(file.getOutputPathNotNull(), sourceBuilder.toString()), null)
     }
 
     fun label(element: EElement, block: () -> Unit) {
@@ -106,13 +106,13 @@ class SourceBuilder(
         sourceActionLine.sourceActions.add(SourceAction(SourceActionType.ALIGN, "", labelLineStack.peek()!!))
     }
 
-    enum class SourceActionType { REGULAR, SOFT_BREAK, HARD_BREAK, ALIGN }
+    private enum class SourceActionType { REGULAR, SOFT_BREAK, HARD_BREAK, ALIGN }
 
-    data class SourceAction(val type: SourceActionType, val content: String, val line: Int)
+    private data class SourceAction(val type: SourceActionType, val content: String, val line: Int)
 
-    data class SourceActionLine(val indents: Int, val sourceActions: ArrayList<SourceAction>)
+    private data class SourceActionLine(val indents: Int, val sourceActions: ArrayList<SourceAction>)
 
-    class SourceActionBuilder(
+    private class SourceActionBuilder(
         private val sourceBuilder: StringBuilder,
         private val labelLines: Boolean,
         private val wrapLength: Int,

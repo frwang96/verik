@@ -16,8 +16,8 @@
 
 package io.verik.compiler.serialize.target
 
+import io.verik.compiler.common.TextFile
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.TextFile
 import io.verik.compiler.serialize.general.FileHeaderBuilder
 import java.nio.file.Path
 
