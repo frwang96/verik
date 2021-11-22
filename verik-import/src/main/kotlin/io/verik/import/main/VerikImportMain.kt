@@ -16,9 +16,13 @@
 
 package io.verik.import.main
 
+import java.nio.file.Files
+
 object VerikImportMain {
 
     fun run(config: VerikImportConfig) {
+        if (!Files.exists(config.kotlinSrcDir))
+            throw IllegalArgumentException("Kotlin source directory not found: ${config.kotlinSrcDir}")
         config.externFiles.forEach {
             println(it)
         }

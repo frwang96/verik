@@ -50,5 +50,6 @@ subprojects {
             externFiles = Files.walk(verilogSrcDir).toList()
                 .filter { it.fileName.toString().endsWith(".v") }
         }
+        debug = true
     }
 }

@@ -22,5 +22,10 @@ data class VerikImportConfig(
     val version: String,
     val timestamp: String,
     val projectName: String,
-    val externFiles: List<Path>
-)
+    val projectDir: Path,
+    val externFiles: List<Path>,
+    val debug: Boolean
+) {
+
+    val kotlinSrcDir: Path = projectDir.resolve("src/main/kotlin")
+}

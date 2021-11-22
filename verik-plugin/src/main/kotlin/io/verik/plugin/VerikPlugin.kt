@@ -44,7 +44,7 @@ class VerikPlugin : Plugin<Project> {
                     if (exception !is MessageCollectorException) {
                         print("e: ")
                         if (extension.debug) {
-                            print("INTERNAL_ERROR: Unhandled exception: ${exception::class.simpleName}")
+                            print("INTERNAL_ERROR: ${exception::class.simpleName}")
                             if (exception.message != null) print(": ${exception.message}")
                             println()
                             GradleMessagePrinter.printStackTrace(exception.stackTrace)
@@ -79,6 +79,14 @@ class VerikPlugin : Plugin<Project> {
                 try {
                     VerikImportMain.run(VerikImportConfigBuilder.getConfig(project, extension))
                 } catch (exception: Exception) {
+                    print("e: ")
+                    if (extension.debug) {
+                        print("INTERNAL_ERROR: ${exception::class.simpleName}")
+                        if (exception.message != null) print(": ${exception.message}")
+                        println()
+                    } else {
+                        println("Internal error: Set debug mode for more details")
+                    }
                     throw GradleException("Verik import failed")
                 }
             }

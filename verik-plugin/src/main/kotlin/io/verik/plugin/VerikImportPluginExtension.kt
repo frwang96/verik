@@ -21,4 +21,5 @@ import java.nio.file.Path
 abstract class VerikImportPluginExtension {
 
     var externFiles: List<Path> = listOf()
+    var debug: Boolean = false
 }
