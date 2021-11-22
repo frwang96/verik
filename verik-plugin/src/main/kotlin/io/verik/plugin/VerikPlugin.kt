@@ -59,7 +59,7 @@ class VerikPlugin : Plugin<Project> {
 
         task.group = "verik"
         task.inputs.property("timescale", { extension.timescale })
-        task.inputs.property("version", { VerikConfigBuilder.getVersion(project) })
+        task.inputs.property("version", { VerikConfigUtil.getVersion(project) })
         task.inputs.property("debug", { extension.debug })
         task.inputs.property("suppressedWarnings", { extension.suppressedWarnings })
         task.inputs.property("promotedWarnings", { extension.promotedWarnings })
@@ -73,9 +73,14 @@ class VerikPlugin : Plugin<Project> {
     }
 
     private fun createVerikImportTask(project: Project) {
+        val extension = project.extensions.create("verikImport", VerikImportPluginExtension::class.java)
         val task = project.tasks.create("verikImport") {
             it.doLast {
-                VerikImportMain.run()
+                try {
+                    VerikImportMain.run(VerikImportConfigBuilder.getConfig(project, extension))
+                } catch (exception: Exception) {
+                    throw GradleException("Verik import failed")
+                }
             }
         }
         task.group = "verik"

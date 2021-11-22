@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-package io.verik.import.main
+package io.verik.plugin
 
-object VerikImportMain {
+import java.nio.file.Path
 
-    fun run(config: VerikImportConfig) {
-        config.externFiles.forEach {
-            println(it)
-        }
-    }
+abstract class VerikImportPluginExtension {
+
+    var externFiles: List<Path> = listOf()
 }

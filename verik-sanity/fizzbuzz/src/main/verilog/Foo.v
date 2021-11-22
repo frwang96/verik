@@ -14,13 +14,6 @@
  * limitations under the License.
  */
 
-package io.verik.import.main
+module Foo;
 
-object VerikImportMain {
-
-    fun run(config: VerikImportConfig) {
-        config.externFiles.forEach {
-            println(it)
-        }
-    }
-}
+endmodule

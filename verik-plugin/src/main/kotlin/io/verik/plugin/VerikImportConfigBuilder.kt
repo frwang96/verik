@@ -14,13 +14,19 @@
  * limitations under the License.
  */
 
-package io.verik.import.main
+package io.verik.plugin
 
-object VerikImportMain {
+import io.verik.import.main.VerikImportConfig
+import org.gradle.api.Project
 
-    fun run(config: VerikImportConfig) {
-        config.externFiles.forEach {
-            println(it)
-        }
+object VerikImportConfigBuilder {
+
+    fun getConfig(project: Project, extension: VerikImportPluginExtension): VerikImportConfig {
+        return VerikImportConfig(
+            version = VerikConfigUtil.getVersion(project),
+            timestamp = VerikConfigUtil.getTimestamp(),
+            projectName = project.name,
+            externFiles = extension.externFiles
+        )
     }
 }

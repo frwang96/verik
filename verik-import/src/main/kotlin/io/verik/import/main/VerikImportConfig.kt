@@ -16,11 +16,11 @@
 
 package io.verik.import.main
 
-object VerikImportMain {
+import java.nio.file.Path
 
-    fun run(config: VerikImportConfig) {
-        config.externFiles.forEach {
-            println(it)
-        }
-    }
-}
+data class VerikImportConfig(
+    val version: String,
+    val timestamp: String,
+    val projectName: String,
+    val externFiles: List<Path>
+)

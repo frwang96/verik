@@ -1,4 +1,4 @@
-![Logo](https://verik.io/logo-banner.png)
+[![Logo](https://verik.io/logo-banner.png)](https://verik.io)
 
 [![Test](https://github.com/frwang96/verik/actions/workflows/Sanity.yml/badge.svg)](https://github.com/frwang96/verik)
 [![Maven](https://maven-badges.herokuapp.com/maven-central/io.verik/verik-core/badge.svg?style=flat)](
