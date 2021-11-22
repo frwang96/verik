@@ -19,6 +19,7 @@ package io.verik.plugin
 import io.verik.compiler.main.VerikMain
 import io.verik.compiler.message.GradleMessagePrinter
 import io.verik.compiler.message.MessageCollectorException
+import io.verik.import.main.VerikImportMain
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -29,11 +30,16 @@ class VerikPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         project.plugins.apply(KotlinPluginWrapper::class.java)
+        createVerikTask(project)
+        createVerikImportTask(project)
+    }
+
+    private fun createVerikTask(project: Project) {
         val extension = project.extensions.create("verik", VerikPluginExtension::class.java)
         val task = project.tasks.create("verik") {
             it.doLast {
                 try {
-                    VerikMain.run(ConfigBuilder.getConfig(project, extension))
+                    VerikMain.run(VerikConfigBuilder.getConfig(project, extension))
                 } catch (exception: Exception) {
                     if (exception !is MessageCollectorException) {
                         print("e: ")
@@ -53,7 +59,7 @@ class VerikPlugin : Plugin<Project> {
 
         task.group = "verik"
         task.inputs.property("timescale", { extension.timescale })
-        task.inputs.property("version", { ConfigBuilder.getVersion(project) })
+        task.inputs.property("version", { VerikConfigBuilder.getVersion(project) })
         task.inputs.property("debug", { extension.debug })
         task.inputs.property("suppressedWarnings", { extension.suppressedWarnings })
         task.inputs.property("promotedWarnings", { extension.promotedWarnings })
@@ -62,7 +68,18 @@ class VerikPlugin : Plugin<Project> {
         task.inputs.property("wrapLength", { extension.wrapLength })
         task.inputs.property("indentLength", { extension.indentLength })
         task.inputs.property("enableDeadCodeElimination", { extension.enableDeadCodeElimination })
-        task.inputs.files({ ConfigBuilder.getSourceSetConfigs(project).flatMap { it.files } })
-        task.outputs.dir(ConfigBuilder.getBuildDir(project))
+        task.inputs.files({ VerikConfigBuilder.getSourceSetConfigs(project).flatMap { it.files } })
+        task.outputs.dir(VerikConfigBuilder.getBuildDir(project))
+    }
+
+    private fun createVerikImportTask(project: Project) {
+        val task = project.tasks.create("verikImport") {
+            it.doLast {
+                VerikImportMain.run()
+            }
+        }
+        task.group = "verik"
+        task.outputs.cacheIf { false }
+        task.outputs.upToDateWhen { false }
     }
 }
