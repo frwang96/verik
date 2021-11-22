@@ -52,4 +52,8 @@ class EProject(
             rootPackage.files +
             externRootPackage.files
     }
+
+    fun nonExternFiles(): List<EFile> {
+        return basicPackages.flatMap { it.files } + rootPackage.files
+    }
 }

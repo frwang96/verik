@@ -41,7 +41,7 @@ object PackageFileSerializerStage : ProjectStage() {
         if (basicPackage.files.all { it.isEmptySerialization() })
             return null
 
-        val outputPath = basicPackage.outputPath.resolve("Pkg.sv")
+        val outputPath = basicPackage.getOutputPathNotNull().resolve("Pkg.sv")
         val fileHeader = FileHeaderBuilder.build(
             projectContext,
             null,

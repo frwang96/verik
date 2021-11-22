@@ -30,9 +30,9 @@ object Messages {
 
 //  PRE CHECK  /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val PACKAGE_ROOT_ILLEGAL = MessageTemplate0(
+    val PACKAGE_NAME_ILLEGAL = MessageTemplate1<String>(
         Severity.ERROR,
-        "Use of the root package is prohibited"
+        "Use of the $0 package is prohibited"
     )
 
     val PACkAGE_NOT_FOUND = MessageTemplate1<String>(
@@ -213,6 +213,16 @@ object Messages {
     val MODULE_PORT_MULTIPLE_PARENTS = MessageTemplate1<String>(
         Severity.ERROR,
         "Module port has multiple parent module interfaces: $0"
+    )
+
+    val EXTERN_INVALID_PACKAGE_DECLARATION = MessageTemplate0(
+        Severity.ERROR,
+        "Package declaration expected in extern package"
+    )
+
+    val EXTERN_INVALID_COMPONENT_DECLARATION = MessageTemplate0(
+        Severity.ERROR,
+        "Component declaration expected in extern root package"
     )
 
 //  MID TRANSFORM  /////////////////////////////////////////////////////////////////////////////////////////////////////
