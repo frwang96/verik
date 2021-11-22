@@ -17,9 +17,7 @@
 package io.verik.compiler.interpret
 
 import io.verik.compiler.ast.element.common.EDeclaration
-import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
-import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.element.sv.EAbstractComponent
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EStruct
@@ -40,30 +38,38 @@ object FileSplitterStage : ProjectStage() {
         val componentFiles = ArrayList<EFile>()
         projectContext.project.basicPackages.forEach { basicPackage ->
             val packageFiles = ArrayList<EFile>()
-            basicPackage.files.forEach {
-                val baseFileName = it.inputPath.fileName.toString().removeSuffix(".kt")
-                val splitDeclarationsResult = splitDeclarations(it.declarations)
-
-                if (splitDeclarationsResult.componentDeclarations.isNotEmpty()) {
-                    val componentFilePath = basicPackage.outputPath.resolve("$baseFileName.sv")
-                    val componentFile = EFile(
-                        it.location,
-                        it.inputPath,
-                        componentFilePath,
-                        splitDeclarationsResult.componentDeclarations
-                    )
-                    componentFiles.add(componentFile)
+            basicPackage.files.forEach { file ->
+                val baseFileName = file.inputPath.fileName.toString().removeSuffix(".kt")
+                val packageDeclarations = ArrayList<EDeclaration>()
+                val componentDeclarations = ArrayList<EDeclaration>()
+                file.declarations.forEach {
+                    if (isPackageDeclaration(it)) {
+                        packageDeclarations.add(it)
+                    } else {
+                        componentDeclarations.add(it)
+                    }
                 }
 
-                if (splitDeclarationsResult.packageDeclarations.isNotEmpty()) {
-                    val packageFilePath = basicPackage.outputPath.resolve("$baseFileName.svh")
+                if (packageDeclarations.isNotEmpty()) {
+                    val packageFilePath = basicPackage.getOutputPathNotNull().resolve("$baseFileName.svh")
                     val packageFile = EFile(
-                        it.location,
-                        it.inputPath,
+                        file.location,
+                        file.inputPath,
                         packageFilePath,
-                        splitDeclarationsResult.packageDeclarations
+                        packageDeclarations
                     )
                     packageFiles.add(packageFile)
+                }
+
+                if (componentDeclarations.isNotEmpty()) {
+                    val componentFilePath = basicPackage.getOutputPathNotNull().resolve("$baseFileName.sv")
+                    val componentFile = EFile(
+                        file.location,
+                        file.inputPath,
+                        componentFilePath,
+                        componentDeclarations
+                    )
+                    componentFiles.add(componentFile)
                 }
             }
             packageFiles.forEach { it.parent = basicPackage }
@@ -71,30 +77,41 @@ object FileSplitterStage : ProjectStage() {
         }
         componentFiles.forEach { it.parent = projectContext.project.rootPackage }
         projectContext.project.rootPackage.files = componentFiles
-    }
 
-    private fun splitDeclarations(declarations: List<EElement>): SplitDeclarationsResult {
-        val componentDeclarations = ArrayList<EDeclaration>()
-        val packageDeclarations = ArrayList<EDeclaration>()
-        declarations.forEach {
-            when (it) {
-                is EAbstractComponent -> componentDeclarations.add(it)
-                is ESvBasicClass -> packageDeclarations.add(it)
-                is EEnum -> packageDeclarations.add(it)
-                is EStruct -> packageDeclarations.add(it)
-                is ESvFunction -> packageDeclarations.add(it)
-                is ETask -> packageDeclarations.add(it)
-                is ESvProperty -> packageDeclarations.add(it)
-                is ESvEnumEntry -> packageDeclarations.add(it)
-                is ETypeAlias -> {}
-                else -> Messages.INTERNAL_ERROR.on(it, "Unable to identify as component or package declaration: $it")
+        projectContext.project.externBasicPackages.forEach { basicPackage ->
+            basicPackage.files.forEach { file ->
+                file.declarations.forEach {
+                    if (!isPackageDeclaration(it))
+                        Messages.EXTERN_INVALID_PACKAGE_DECLARATION.on(it)
+                }
             }
         }
-        return SplitDeclarationsResult(componentDeclarations, packageDeclarations)
+
+        projectContext.project.externRootPackage.files.forEach { file ->
+            file.declarations.forEach {
+                if (isPackageDeclaration(it))
+                    Messages.EXTERN_INVALID_COMPONENT_DECLARATION.on(it)
+            }
+        }
     }
 
-    data class SplitDeclarationsResult(
-        val componentDeclarations: ArrayList<EDeclaration>,
-        val packageDeclarations: ArrayList<EDeclaration>
-    )
+    private fun isPackageDeclaration(declaration: EDeclaration): Boolean {
+        return when (declaration) {
+            is EAbstractComponent -> false
+            is ESvBasicClass -> true
+            is EEnum -> true
+            is EStruct -> true
+            is ESvFunction -> true
+            is ETask -> true
+            is ESvProperty -> true
+            is ESvEnumEntry -> true
+            else -> {
+                Messages.INTERNAL_ERROR.on(
+                    declaration,
+                    "Unable to identify as component or package declaration: ${declaration.name}"
+                )
+                true
+            }
+        }
+    }
 }

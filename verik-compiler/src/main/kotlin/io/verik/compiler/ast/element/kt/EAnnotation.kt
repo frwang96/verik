@@ -24,8 +24,7 @@ import io.verik.compiler.message.SourceLocation
 class EAnnotation(
     override val location: SourceLocation,
     val name: String,
-    val qualifiedName: String,
-    val arguments: List<String>
+    val qualifiedName: String
 ) : EElement() {
 
     override fun accept(visitor: Visitor) {

@@ -48,7 +48,7 @@ class GradleMessagePrinter(private val debug: Boolean) : MessagePrinter() {
 
         fun printStackTrace(stackTrace: Array<StackTraceElement>) {
             val firstIndex = stackTrace.indexOfLast { it.className.contains("MessageTemplate") } + 1
-            val lastIndex = stackTrace.indexOfFirst { it.className == "io.verik.compiler.main.Main" } + 1
+            val lastIndex = stackTrace.indexOfFirst { it.className == "io.verik.compiler.main.VerikMain" } + 1
             val truncatedList = stackTrace.toList().subList(firstIndex, lastIndex)
             if (truncatedList.size < STACK_TRACE_SIZE_MAX) {
                 truncatedList.forEach { println("    at $it") }

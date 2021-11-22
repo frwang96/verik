@@ -16,8 +16,8 @@
 
 package io.verik.plugin
 
-import io.verik.compiler.main.Config
 import io.verik.compiler.main.SourceSetConfig
+import io.verik.compiler.main.VerikConfig
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.internal.artifacts.dependencies.DefaultProjectDependency
@@ -26,19 +26,20 @@ import java.nio.file.Path
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-object ConfigBuilder {
+object VerikConfigBuilder {
 
-    fun getConfig(project: Project, extension: VerikPluginExtension): Config {
+    fun getConfig(project: Project, extension: VerikPluginExtension): VerikConfig {
         val version = getVersion(project)
             ?: throw GradleException("Verik configuration failed: Could not determine version number")
 
-        return Config(
+        return VerikConfig(
             version = version,
             timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss")),
             projectName = project.name,
             projectDir = project.projectDir.toPath(),
             buildDir = getBuildDir(project),
             sourceSetConfigs = getSourceSetConfigs(project),
+            timescale = extension.timescale,
             debug = extension.debug,
             suppressedWarnings = extension.suppressedWarnings,
             promotedWarnings = extension.promotedWarnings,

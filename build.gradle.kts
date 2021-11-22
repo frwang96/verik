@@ -27,6 +27,7 @@ val excludedSanityNames = listOf<String>()
 tasks.register("test") {
     group = "verification"
     dependsOn(gradle.includedBuild("verik-compiler").task(":test"))
+    dependsOn(gradle.includedBuild("verik-import").task(":test"))
 }
 
 tasks.register("check") {
@@ -34,6 +35,7 @@ tasks.register("check") {
     dependsOn(gradle.includedBuild("verik-kotlin").task(":check"))
     dependsOn(gradle.includedBuild("verik-core").task(":check"))
     dependsOn(gradle.includedBuild("verik-compiler").task(":check"))
+    dependsOn(gradle.includedBuild("verik-import").task(":check"))
     dependsOn(gradle.includedBuild("verik-plugin").task(":check"))
     sanityNames.forEach {
         dependsOn(gradle.includedBuild("verik-sanity").task(":$it:check"))
@@ -57,6 +59,7 @@ tasks.register("format") {
     dependsOn(gradle.includedBuild("verik-kotlin").task(":ktlintFormat"))
     dependsOn(gradle.includedBuild("verik-core").task(":ktlintFormat"))
     dependsOn(gradle.includedBuild("verik-compiler").task(":ktlintFormat"))
+    dependsOn(gradle.includedBuild("verik-import").task(":ktlintFormat"))
     dependsOn(gradle.includedBuild("verik-plugin").task(":ktlintFormat"))
     sanityNames.forEach {
         dependsOn(gradle.includedBuild("verik-sanity").task(":$it:ktlintFormat"))
@@ -67,6 +70,7 @@ tasks.register("install") {
     group = "build"
     dependsOn(gradle.includedBuild("verik-core").task(":publishToMavenLocal"))
     dependsOn(gradle.includedBuild("verik-compiler").task(":publishToMavenLocal"))
+    dependsOn(gradle.includedBuild("verik-import").task(":publishToMavenLocal"))
     dependsOn(gradle.includedBuild("verik-plugin").task(":publishToMavenLocal"))
 }
 
@@ -75,6 +79,7 @@ tasks.register("clean") {
     dependsOn(gradle.includedBuild("verik-kotlin").task(":clean"))
     dependsOn(gradle.includedBuild("verik-core").task(":clean"))
     dependsOn(gradle.includedBuild("verik-compiler").task(":clean"))
+    dependsOn(gradle.includedBuild("verik-import").task(":clean"))
     dependsOn(gradle.includedBuild("verik-plugin").task(":clean"))
     sanityNames.forEach {
         dependsOn(gradle.includedBuild("verik-sanity").task(":$it:clean"))

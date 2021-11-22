@@ -26,7 +26,7 @@ internal class CasterStageTest : BaseTest() {
         driveTest(
             "",
             CasterStage::class,
-            "Project([BasicPackage(test, [File([])])], RootPackage(<root>, []))",
+            "Project([BasicPackage(test, [File([])])], [], RootPackage(<root>, []), RootPackage(<root>, []))",
         ) { it }
     }
 

@@ -27,7 +27,6 @@ plugins {
 
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 dependencies {
@@ -68,8 +67,8 @@ publishing {
     publications {
         create<MavenPublication>("verik-core") {
             from(components["java"])
-            artifact(tasks.getByName("sourceJar"))
             if (!version.toString().startsWith("local")) {
+                artifact(tasks.getByName("sourceJar"))
                 artifact(tasks.getByName("javadocJar"))
             }
 

@@ -21,6 +21,8 @@ import java.nio.file.Paths
 
 object Platform {
 
+    const val separator = "/"
+
     val isWindows = System.getProperty("os.name").toLowerCase().contains("win")
 
     fun getPathFromString(path: String): Path {

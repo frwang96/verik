@@ -25,7 +25,6 @@ import io.verik.compiler.common.location
 import io.verik.compiler.main.Platform
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.SourceLocation
-import java.nio.file.FileSystems
 
 object CasterStage : ProjectStage() {
 
@@ -46,18 +45,31 @@ object CasterStage : ProjectStage() {
             files[packageName]!!.add(EFile(location, inputPath, null, ArrayList(declarations)))
         }
 
+        val location = SourceLocation(0, 0, projectContext.config.projectDir)
         val basicPackages = ArrayList<EBasicPackage>()
+        val externBasicPackages = ArrayList<EBasicPackage>()
+        var externRootPackage: ERootPackage? = null
         files.forEach { (packageName, files) ->
-            val relativePath = packageName.replace(".", FileSystems.getDefault().separator)
-            val outputPath = projectContext.config.outputSourceDir.resolve(relativePath)
-            val location = SourceLocation(0, 0, projectContext.config.projectDir)
-            val basicPackage = EBasicPackage(location, packageName, files, outputPath)
-            basicPackages.add(basicPackage)
+            when {
+                packageName == "extern.root" ->
+                    externRootPackage = ERootPackage(location, files)
+                packageName.startsWith("extern.") ->
+                    externBasicPackages.add(EBasicPackage(location, packageName, files, null))
+                else -> {
+                    val relativePath = packageName.replace(".", Platform.separator)
+                    val outputPath = projectContext.config.outputSourceDir.resolve(relativePath)
+                    basicPackages.add(EBasicPackage(location, packageName, files, outputPath))
+                }
+            }
         }
 
-        val projectLocation = SourceLocation(0, 0, projectContext.config.projectDir)
-        val rootPackage = ERootPackage(projectLocation, ArrayList())
-        val project = EProject(projectLocation, basicPackages, rootPackage)
+        val project = EProject(
+            location,
+            basicPackages,
+            externBasicPackages,
+            ERootPackage(location, ArrayList()),
+            externRootPackage ?: ERootPackage(location, ArrayList())
+        )
         projectContext.project = project
     }
 }

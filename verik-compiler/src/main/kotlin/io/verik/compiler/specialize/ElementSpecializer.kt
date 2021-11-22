@@ -42,8 +42,7 @@ object ElementSpecializer {
         return EAnnotation(
             annotation.location,
             annotation.name,
-            annotation.qualifiedName,
-            annotation.arguments
+            annotation.qualifiedName
         )
     }
 }

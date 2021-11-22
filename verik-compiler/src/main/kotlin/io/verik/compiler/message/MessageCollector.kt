@@ -16,10 +16,10 @@
 
 package io.verik.compiler.message
 
-import io.verik.compiler.main.Config
+import io.verik.compiler.main.VerikConfig
 
 class MessageCollector(
-    private val config: Config,
+    private val config: VerikConfig,
     private val messagePrinter: MessagePrinter
 ) {
 

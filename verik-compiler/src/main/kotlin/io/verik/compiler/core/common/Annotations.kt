@@ -16,6 +16,9 @@
 
 package io.verik.compiler.core.common
 
+import kotlin.reflect.full.createType
+import kotlin.reflect.full.declaredMemberProperties
+
 object Annotations {
 
     const val MAKE = "io.verik.core.Make"
@@ -31,6 +34,19 @@ object Annotations {
     const val RUN = "io.verik.core.Run"
     const val TASK = "io.verik.core.Task"
 
-    const val EXTERN = "io.verik.core.Extern"
-    const val RENAME = "io.verik.core.Rename"
+    private val annotations = ArrayList<String>()
+
+    init {
+        annotations.add("kotlin.Suppress")
+        Annotations::class.declaredMemberProperties.forEach {
+            if (it.returnType == String::class.createType()) {
+                val annotation = it.call() as String
+                annotations.add(annotation)
+            }
+        }
+    }
+
+    fun isAnnotation(annotation: String): Boolean {
+        return annotation in annotations
+    }
 }

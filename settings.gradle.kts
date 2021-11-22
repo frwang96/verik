@@ -19,5 +19,6 @@ rootProject.name = "verik"
 includeBuild("verik-kotlin")
 includeBuild("verik-core")
 includeBuild("verik-compiler")
+includeBuild("verik-import")
 includeBuild("verik-plugin")
 includeBuild("verik-sanity")

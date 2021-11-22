@@ -23,7 +23,7 @@ import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.resolve.BindingContext
 
 class ProjectContext(
-    val config: Config
+    val config: VerikConfig
 ) {
 
     lateinit var sourceSetContexts: List<SourceSetContext>

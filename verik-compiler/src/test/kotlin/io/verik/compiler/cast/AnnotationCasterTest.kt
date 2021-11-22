@@ -30,31 +30,19 @@ internal class AnnotationCasterTest : BaseTest() {
                 fun f() {}
             """.trimIndent(),
             CasterStage::class,
-            "KtFunction(f, Unit, *, [], [], [Annotation(Task, [])], 0)"
+            "KtFunction(f, Unit, *, [], [], [Annotation(Task)], 0)"
         ) { it.findDeclaration("f") }
     }
 
     @Test
-    fun `annotation with argument`() {
+    fun `annotation unrecognized`() {
         driveTest(
             """
-                @Rename("g")
-                fun f() {}
-            """.trimIndent(),
-            CasterStage::class,
-            "KtFunction(f, Unit, *, [], [], [Annotation(Rename, [g])], 0)"
-        ) { it.findDeclaration("f") }
-    }
-
-    @Test
-    fun `annotation with argument illegal`() {
-        driveTest(
-            """
-                @Rename("g" + "h")
+                @Synchronized
                 fun f() {}
             """.trimIndent(),
             true,
-            "String literal expected for annotation argument"
+            "Could not identify annotation: Synchronized"
         )
     }
 
@@ -65,7 +53,7 @@ internal class AnnotationCasterTest : BaseTest() {
                 class M(@In val x: Boolean) : Module()
             """.trimIndent(),
             CasterStage::class,
-            "KtValueParameter(x, Boolean, [Annotation(In, [])], 1, 0)",
+            "KtValueParameter(x, Boolean, [Annotation(In)], 1, 0)",
         ) { it.findDeclaration("x") }
     }
 }

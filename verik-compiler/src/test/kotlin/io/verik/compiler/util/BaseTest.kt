@@ -20,7 +20,6 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.common.ElementPrinter
 import io.verik.compiler.common.ProjectStage
-import io.verik.compiler.main.Config
 import io.verik.compiler.main.OutputContext
 import io.verik.compiler.main.Platform
 import io.verik.compiler.main.ProjectContext
@@ -28,6 +27,7 @@ import io.verik.compiler.main.SourceSetConfig
 import io.verik.compiler.main.SourceSetContext
 import io.verik.compiler.main.StageSequencer
 import io.verik.compiler.main.TextFile
+import io.verik.compiler.main.VerikConfig
 import io.verik.compiler.message.MessageCollector
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -201,7 +201,7 @@ abstract class BaseTest {
             MessageCollector.messageCollector = MessageCollector(getConfig(), TestMessagePrinter())
         }
 
-        fun getConfig(): Config {
+        fun getConfig(): VerikConfig {
             val projectDir = if (Platform.isWindows) "C:\\" else "/"
             val buildDir = if (Platform.isWindows) "C:\\build\\test" else "/build/test"
             val projectFile = if (Platform.isWindows) {
@@ -210,13 +210,14 @@ abstract class BaseTest {
                 "/src/main/kotlin/test/Test.kt"
             }
             val sourceSetConfig = SourceSetConfig("test", listOf(Paths.get(projectFile)))
-            return Config(
+            return VerikConfig(
                 version = "local-SNAPSHOT",
                 timestamp = "",
                 projectName = "test",
                 projectDir = Paths.get(projectDir),
                 buildDir = Paths.get(buildDir),
                 sourceSetConfigs = listOf(sourceSetConfig),
+                timescale = "1ns / 1ns",
                 debug = true,
                 suppressedWarnings = listOf("KOTLIN_COMPILE_WARNING"),
                 promotedWarnings = listOf(),

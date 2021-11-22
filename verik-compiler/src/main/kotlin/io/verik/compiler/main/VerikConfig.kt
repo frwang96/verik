@@ -18,13 +18,14 @@ package io.verik.compiler.main
 
 import java.nio.file.Path
 
-data class Config(
+data class VerikConfig(
     val version: String,
     val timestamp: String,
     val projectName: String,
     val projectDir: Path,
     val buildDir: Path,
     val sourceSetConfigs: List<SourceSetConfig>,
+    val timescale: String,
     val debug: Boolean,
     val suppressedWarnings: List<String>,
     val promotedWarnings: List<String>,
@@ -36,5 +37,4 @@ data class Config(
 ) {
 
     val outputSourceDir: Path = buildDir.resolve("src")
-    val timescale = "1ns / 1ns"
 }

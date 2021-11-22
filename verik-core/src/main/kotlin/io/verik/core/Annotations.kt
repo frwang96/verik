@@ -98,15 +98,3 @@ annotation class Run
  */
 @Target(AnnotationTarget.FUNCTION)
 annotation class Task
-
-/**
- * Annotates declarations with external implementations.
- */
-@Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY)
-annotation class Extern
-
-/**
- * Renames a declaration in the SystemVerilog output.
- */
-@Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY)
-annotation class Rename(val name: String)

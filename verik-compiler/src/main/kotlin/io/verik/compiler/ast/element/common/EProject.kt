@@ -23,12 +23,16 @@ import io.verik.compiler.message.SourceLocation
 class EProject(
     override val location: SourceLocation,
     val basicPackages: ArrayList<EBasicPackage>,
-    val rootPackage: ERootPackage
+    val externBasicPackages: ArrayList<EBasicPackage>,
+    val rootPackage: ERootPackage,
+    val externRootPackage: ERootPackage
 ) : EElement() {
 
     init {
         basicPackages.forEach { it.parent = this }
+        externBasicPackages.forEach { it.parent = this }
         rootPackage.parent = this
+        externRootPackage.parent = this
     }
 
     override fun accept(visitor: Visitor) {
@@ -37,10 +41,19 @@ class EProject(
 
     override fun acceptChildren(visitor: TreeVisitor) {
         basicPackages.forEach { it.accept(visitor) }
+        externBasicPackages.forEach { it.accept(visitor) }
         rootPackage.accept(visitor)
+        externRootPackage.accept(visitor)
     }
 
     fun files(): List<EFile> {
+        return basicPackages.flatMap { it.files } +
+            externBasicPackages.flatMap { it.files } +
+            rootPackage.files +
+            externRootPackage.files
+    }
+
+    fun nonExternFiles(): List<EFile> {
         return basicPackages.flatMap { it.files } + rootPackage.files
     }
 }

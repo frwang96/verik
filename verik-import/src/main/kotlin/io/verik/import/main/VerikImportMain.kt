@@ -14,24 +14,11 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.common
+package io.verik.import.main
 
-class CorePackage(
-    override var name: String
-) : CoreDeclaration {
+object VerikImportMain {
 
-    override val parent: CoreDeclaration? = null
-
-    override val signature: String = "package $name"
-
-    companion object {
-
-        val KT = CorePackage("kotlin")
-        val KT_IO = CorePackage("kotlin.io")
-        val KT_COLLECTIONS = CorePackage("kotlin.collections")
-        val Kt_RANGES = CorePackage("kotlin.ranges")
-        val JV = CorePackage("java")
-        val JV_UTIL = CorePackage("java.util")
-        val VK = CorePackage("io.verik.core")
+    fun run() {
+        println("verik import")
     }
 }
