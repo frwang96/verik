@@ -26,33 +26,33 @@ object SourceSerializerStage : ProjectStage() {
     override val checkNormalization = false
 
     override fun process(projectContext: ProjectContext) {
-        val basicPackageSourceTextFiles = ArrayList<TextFile>()
-        val basicPackageSourceTextFilesLabeled = ArrayList<TextFile>()
+        val basicPackageTextFiles = ArrayList<TextFile>()
+        val basicPackageTextFilesLabeled = ArrayList<TextFile>()
         projectContext.project.basicPackages.forEach { basicPackage ->
             basicPackage.files.forEach {
                 if (!it.isEmptySerialization()) {
                     val sourceBuilderResult = serialize(projectContext, it)
-                    basicPackageSourceTextFiles.add(sourceBuilderResult.textFile)
+                    basicPackageTextFiles.add(sourceBuilderResult.textFile)
                     if (sourceBuilderResult.textFileLabeled != null)
-                        basicPackageSourceTextFilesLabeled.add(sourceBuilderResult.textFileLabeled)
+                        basicPackageTextFilesLabeled.add(sourceBuilderResult.textFileLabeled)
                 }
             }
         }
-        projectContext.outputContext.basicPackageSourceTextFiles = basicPackageSourceTextFiles
-        projectContext.outputContext.basicPackageSourceTextFilesLabeled = basicPackageSourceTextFilesLabeled
+        projectContext.outputContext.basicPackageTextFiles = basicPackageTextFiles
+        projectContext.outputContext.basicPackageTextFilesLabeled = basicPackageTextFilesLabeled
 
-        val rootPackageSourceTextFiles = ArrayList<TextFile>()
-        val rootPackageSourceTextFilesLabeled = ArrayList<TextFile>()
+        val rootPackageTextFiles = ArrayList<TextFile>()
+        val rootPackageTextFilesLabeled = ArrayList<TextFile>()
         projectContext.project.rootPackage.files.forEach {
             if (!it.isEmptySerialization()) {
                 val sourceBuilderResult = serialize(projectContext, it)
-                rootPackageSourceTextFiles.add(sourceBuilderResult.textFile)
+                rootPackageTextFiles.add(sourceBuilderResult.textFile)
                 if (sourceBuilderResult.textFileLabeled != null)
-                    rootPackageSourceTextFilesLabeled.add(sourceBuilderResult.textFileLabeled)
+                    rootPackageTextFilesLabeled.add(sourceBuilderResult.textFileLabeled)
             }
         }
-        projectContext.outputContext.rootPackageSourceTextFiles = rootPackageSourceTextFiles
-        projectContext.outputContext.rootPackageSourceTextFilesLabeled = rootPackageSourceTextFilesLabeled
+        projectContext.outputContext.rootPackageTextFiles = rootPackageTextFiles
+        projectContext.outputContext.rootPackageTextFilesLabeled = rootPackageTextFilesLabeled
     }
 
     private fun serialize(projectContext: ProjectContext, file: EFile): SourceBuilderResult {

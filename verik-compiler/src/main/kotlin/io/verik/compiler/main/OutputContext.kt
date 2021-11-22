@@ -22,22 +22,22 @@ class OutputContext {
 
     lateinit var configTextFile: TextFile
     var targetPackageTextFile: TextFile? = null
-    var basicPackageSourceTextFiles: List<TextFile> = listOf()
-    var basicPackageSourceTextFilesLabeled: List<TextFile> = listOf()
-    var rootPackageSourceTextFiles: List<TextFile> = listOf()
-    var rootPackageSourceTextFilesLabeled: List<TextFile> = listOf()
-    var packageTextFiles: List<TextFile> = listOf()
+    var basicPackageTextFiles: List<TextFile> = listOf()
+    var basicPackageTextFilesLabeled: List<TextFile> = listOf()
+    var rootPackageTextFiles: List<TextFile> = listOf()
+    var rootPackageTextFilesLabeled: List<TextFile> = listOf()
+    var packageWrapperTextFiles: List<TextFile> = listOf()
     lateinit var sourcesTextFile: TextFile
 
     fun getTextFiles(): List<TextFile> {
         val textFiles = ArrayList<TextFile>()
         textFiles.add(configTextFile)
         targetPackageTextFile?.let { textFiles.add(it) }
-        textFiles.addAll(basicPackageSourceTextFiles)
-        textFiles.addAll(basicPackageSourceTextFilesLabeled)
-        textFiles.addAll(rootPackageSourceTextFiles)
-        textFiles.addAll(rootPackageSourceTextFilesLabeled)
-        textFiles.addAll(packageTextFiles)
+        textFiles.addAll(basicPackageTextFiles)
+        textFiles.addAll(basicPackageTextFilesLabeled)
+        textFiles.addAll(rootPackageTextFiles)
+        textFiles.addAll(rootPackageTextFilesLabeled)
+        textFiles.addAll(packageWrapperTextFiles)
         textFiles.add(sourcesTextFile)
         return textFiles.sortedBy { it.path }
     }

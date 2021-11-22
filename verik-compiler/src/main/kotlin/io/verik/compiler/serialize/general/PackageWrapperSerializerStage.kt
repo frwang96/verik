@@ -23,18 +23,18 @@ import io.verik.compiler.common.TextFile
 import io.verik.compiler.main.Platform
 import io.verik.compiler.main.ProjectContext
 
-object PackageFileSerializerStage : ProjectStage() {
+object PackageWrapperSerializerStage : ProjectStage() {
 
     override val checkNormalization = false
 
     override fun process(projectContext: ProjectContext) {
-        val packageTextFiles = ArrayList<TextFile>()
+        val packageWrapperTextFiles = ArrayList<TextFile>()
         projectContext.project.basicPackages.forEach {
-            val packageOutputFile = serialize(projectContext, it)
-            if (packageOutputFile != null)
-                packageTextFiles.add(packageOutputFile)
+            val packageWrapperTextFile = serialize(projectContext, it)
+            if (packageWrapperTextFile != null)
+                packageWrapperTextFiles.add(packageWrapperTextFile)
         }
-        projectContext.outputContext.packageTextFiles = packageTextFiles
+        projectContext.outputContext.packageWrapperTextFiles = packageWrapperTextFiles
     }
 
     private fun serialize(projectContext: ProjectContext, basicPackage: EBasicPackage): TextFile? {

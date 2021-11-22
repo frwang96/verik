@@ -19,7 +19,7 @@ package io.verik.compiler.serialize.general
 import io.verik.compiler.util.BaseTest
 import org.junit.jupiter.api.Test
 
-internal class PackageFileSerializerStageTest : BaseTest() {
+internal class PackageWrapperSerializerStageTest : BaseTest() {
 
     @Test
     fun `package file`() {
@@ -36,6 +36,6 @@ internal class PackageFileSerializerStageTest : BaseTest() {
                 
                 endpackage : test_pkg
             """.trimIndent()
-        ) { it.packageTextFiles[0] }
+        ) { it.packageWrapperTextFiles[0] }
     }
 }

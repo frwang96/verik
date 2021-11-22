@@ -36,7 +36,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                     return x;
                 endfunction : f
             """.trimIndent()
-        ) { it.basicPackageSourceTextFiles[0] }
+        ) { it.basicPackageTextFiles[0] }
     }
 
     @Test
@@ -50,7 +50,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 
                 endmodule : M
             """.trimIndent()
-        ) { it.rootPackageSourceTextFiles[0] }
+        ) { it.rootPackageTextFiles[0] }
     }
 
     @Test
@@ -66,7 +66,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 
                 endmodule : M
             """.trimIndent()
-        ) { it.rootPackageSourceTextFiles[0] }
+        ) { it.rootPackageTextFiles[0] }
     }
 
     @Test
@@ -80,7 +80,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 
                 endinterface : MI
             """.trimIndent()
-        ) { it.rootPackageSourceTextFiles[0] }
+        ) { it.rootPackageTextFiles[0] }
     }
 
     @Test
@@ -103,7 +103,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 
                 endclass : C
             """.trimIndent()
-        ) { it.basicPackageSourceTextFiles[0] }
+        ) { it.basicPackageTextFiles[0] }
     }
 
     @Test
@@ -118,7 +118,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                     B
                 } E;
             """.trimIndent()
-        ) { it.basicPackageSourceTextFiles[0] }
+        ) { it.basicPackageTextFiles[0] }
     }
 
     @Test
@@ -132,7 +132,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                     logic x;
                 } S;
             """.trimIndent()
-        ) { it.basicPackageSourceTextFiles[0] }
+        ) { it.basicPackageTextFiles[0] }
     }
 
     @Test
@@ -145,7 +145,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 function automatic void f();
                 endfunction : f
             """.trimIndent()
-        ) { it.basicPackageSourceTextFiles[0] }
+        ) { it.basicPackageTextFiles[0] }
     }
 
     @Test
@@ -159,7 +159,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 task automatic t(input int x);
                 endtask : t
             """.trimIndent()
-        ) { it.basicPackageSourceTextFiles[0] }
+        ) { it.basicPackageTextFiles[0] }
     }
 
     @Test
@@ -171,7 +171,7 @@ internal class DeclarationSerializerTest : BaseTest() {
             """
                 logic x = 1'b0;
             """.trimIndent()
-        ) { it.basicPackageSourceTextFiles[0] }
+        ) { it.basicPackageTextFiles[0] }
     }
 
     @Test
@@ -191,7 +191,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 
                 endmodule : M
             """.trimIndent()
-        ) { it.rootPackageSourceTextFiles[0] }
+        ) { it.rootPackageTextFiles[0] }
     }
 
     @Test
@@ -211,7 +211,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 
                 endmodule : M
             """.trimIndent()
-        ) { it.rootPackageSourceTextFiles[0] }
+        ) { it.rootPackageTextFiles[0] }
     }
 
     @Test
@@ -236,7 +236,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 
                 endmodule : M
             """.trimIndent()
-        ) { it.rootPackageSourceTextFiles[0] }
+        ) { it.rootPackageTextFiles[0] }
     }
 
     @Test
@@ -264,7 +264,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 
                 endmodule : Top
             """.trimIndent()
-        ) { it.rootPackageSourceTextFiles[0] }
+        ) { it.rootPackageTextFiles[0] }
     }
 
     @Test
@@ -289,7 +289,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 
                 endinterface : Top
             """.trimIndent()
-        ) { it.rootPackageSourceTextFiles[0] }
+        ) { it.rootPackageTextFiles[0] }
     }
 
     @Test
@@ -314,7 +314,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 
                 endmodule : Top
             """.trimIndent()
-        ) { it.rootPackageSourceTextFiles[0] }
+        ) { it.rootPackageTextFiles[0] }
     }
 
     @Test
@@ -327,6 +327,6 @@ internal class DeclarationSerializerTest : BaseTest() {
                 function automatic void f(input int x);
                 endfunction : f
             """.trimIndent()
-        ) { it.basicPackageSourceTextFiles[0] }
+        ) { it.basicPackageTextFiles[0] }
     }
 }

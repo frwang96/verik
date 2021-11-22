@@ -37,8 +37,8 @@ object SourcesFileSerializerStage : ProjectStage() {
 
         val paths = ArrayList<Path>()
         projectContext.outputContext.targetPackageTextFile?.let { paths.add(it.path) }
-        projectContext.outputContext.packageTextFiles.forEach { paths.add(it.path) }
-        projectContext.outputContext.rootPackageSourceTextFiles.forEach { paths.add(it.path) }
+        projectContext.outputContext.packageWrapperTextFiles.forEach { paths.add(it.path) }
+        projectContext.outputContext.rootPackageTextFiles.forEach { paths.add(it.path) }
 
         val builder = StringBuilder()
         builder.append(fileHeader)
