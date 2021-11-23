@@ -18,7 +18,7 @@ package io.verik.compiler.message
 
 import java.nio.file.Path
 
-class SourceLocation(
+data class SourceLocation(
     val column: Int,
     val line: Int,
     val path: Path

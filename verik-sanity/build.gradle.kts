@@ -43,6 +43,7 @@ subprojects {
     }
     configure<VerikPluginExtension> {
         debug = true
+        labelLines = true
     }
     configure<VerikImportPluginExtension> {
         val verilogSrcDir = Paths.get("verik-sanity/${project.name}/src/main/verilog")

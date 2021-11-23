@@ -107,8 +107,11 @@ class SourceSerializerVisitor(private val serializerContext: SerializerContext) 
         if (expression.serializationType == SerializationType.INTERNAL)
             Messages.INTERNAL_ERROR.on(expression, "Expression or statement expected but got: $expression")
         serialize(expression)
-        if (expression.serializationType == SerializationType.EXPRESSION)
-            serializerContext.appendLine(";")
+        if (expression.serializationType == SerializationType.EXPRESSION) {
+            serializerContext.label(expression) {
+                serializerContext.appendLine(";")
+            }
+        }
     }
 
     override fun visitElement(element: EElement) {
