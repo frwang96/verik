@@ -21,11 +21,11 @@ import io.verik.compiler.message.SourceLocation
 
 class TestMessagePrinter : MessagePrinter() {
 
-    override fun warning(templateName: String, message: String, location: SourceLocation) {
+    override fun warning(message: String, location: SourceLocation) {
         throw TestWarningException(message)
     }
 
-    override fun error(templateName: String, message: String, location: SourceLocation) {
+    override fun error(message: String, location: SourceLocation) {
         throw TestErrorException(message)
     }
 }

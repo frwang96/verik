@@ -41,15 +41,15 @@ class MessageCollector(
         if (templateName in config.promotedWarnings)
             error(templateName, message, location)
         else if (templateName !in config.suppressedWarnings)
-            messagePrinter.warning(templateName, message, location)
+            messagePrinter.warning(message, location)
     }
 
     private fun error(templateName: String, message: String, location: SourceLocation) {
         if (!config.debug && templateName == Messages.INTERNAL_ERROR.name) {
-            messagePrinter.error(templateName, "Internal error: Set debug mode for more details", location)
+            messagePrinter.error("Internal error: Set debug mode for more details", location)
             throw MessageCollectorException()
         } else {
-            messagePrinter.error(templateName, message, location)
+            messagePrinter.error(message, location)
             incrementErrorCount()
         }
     }

@@ -18,7 +18,6 @@ import io.verik.plugin.VerikImportPluginExtension
 import io.verik.plugin.VerikPluginExtension
 import org.jlleitschuh.gradle.ktlint.KtlintExtension
 import java.nio.file.Files
-import java.nio.file.Paths
 import kotlin.streams.toList
 
 plugins {
@@ -46,7 +45,7 @@ subprojects {
         labelLines = true
     }
     configure<VerikImportPluginExtension> {
-        val verilogSrcDir = Paths.get("verik-sanity/${project.name}/src/main/verilog")
+        val verilogSrcDir = projectDir.resolve("src/main/verilog").toPath()
         if (Files.exists(verilogSrcDir)) {
             externFiles = Files.walk(verilogSrcDir).toList()
                 .filter { it.fileName.toString().endsWith(".v") }
