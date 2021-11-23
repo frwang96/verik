@@ -14,8 +14,12 @@
  * limitations under the License.
  */
 
+import io.verik.plugin.VerikImportPluginExtension
 import io.verik.plugin.VerikPluginExtension
 import org.jlleitschuh.gradle.ktlint.KtlintExtension
+import java.nio.file.Files
+import java.nio.file.Paths
+import kotlin.streams.toList
 
 plugins {
     id("io.verik.verik-plugin") apply false
@@ -38,6 +42,15 @@ subprojects {
         mavenCentral()
     }
     configure<VerikPluginExtension> {
+        debug = true
+        labelLines = true
+    }
+    configure<VerikImportPluginExtension> {
+        val verilogSrcDir = Paths.get("verik-sanity/${project.name}/src/main/verilog")
+        if (Files.exists(verilogSrcDir)) {
+            externFiles = Files.walk(verilogSrcDir).toList()
+                .filter { it.fileName.toString().endsWith(".v") }
+        }
         debug = true
     }
 }

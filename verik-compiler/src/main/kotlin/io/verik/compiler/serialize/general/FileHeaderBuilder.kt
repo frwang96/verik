@@ -45,8 +45,6 @@ object FileHeaderBuilder {
                 builder.appendLine()
                 builder.appendLine("`ifndef VERIK")
                 builder.appendLine("`define VERIK")
-                if (projectContext.config.labelLines)
-                    builder.appendLine("`define _(N)")
                 builder.appendLine("`timescale ${projectContext.config.timescale}")
                 builder.appendLine("`endif")
             }

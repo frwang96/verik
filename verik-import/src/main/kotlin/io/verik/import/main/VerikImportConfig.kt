@@ -14,28 +14,18 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.serialize.general
+package io.verik.import.main
 
-import io.verik.compiler.util.BaseTest
-import org.junit.jupiter.api.Test
+import java.nio.file.Path
 
-internal class PackageFileSerializerStageTest : BaseTest() {
+data class VerikImportConfig(
+    val version: String,
+    val timestamp: String,
+    val projectName: String,
+    val projectDir: Path,
+    val externFiles: List<Path>,
+    val debug: Boolean
+) {
 
-    @Test
-    fun `package file`() {
-        driveTest(
-            """
-                class C
-            """.trimIndent(),
-            """
-                package test_pkg;
-                
-                    typedef class C;
-                
-                `include "src/test/Test.svh"
-                
-                endpackage : test_pkg
-            """.trimIndent()
-        ) { it.packageTextFiles[0] }
-    }
+    val kotlinSrcDir: Path = projectDir.resolve("src/main/kotlin")
 }

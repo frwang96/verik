@@ -20,13 +20,13 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.common.ElementPrinter
 import io.verik.compiler.common.ProjectStage
+import io.verik.compiler.common.TextFile
 import io.verik.compiler.main.OutputContext
 import io.verik.compiler.main.Platform
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.SourceSetConfig
 import io.verik.compiler.main.SourceSetContext
 import io.verik.compiler.main.StageSequencer
-import io.verik.compiler.main.TextFile
 import io.verik.compiler.main.VerikConfig
 import io.verik.compiler.message.MessageCollector
 import org.intellij.lang.annotations.Language

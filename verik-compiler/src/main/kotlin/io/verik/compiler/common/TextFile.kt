@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.message
+package io.verik.compiler.common
 
 import java.nio.file.Path
 
-data class SourceLocation(
-    val column: Int,
-    val line: Int,
-    val path: Path
+class TextFile(
+    val path: Path,
+    val content: String
 )

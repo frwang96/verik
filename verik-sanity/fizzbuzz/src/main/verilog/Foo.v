@@ -14,11 +14,6 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.main
+module Foo;
 
-import java.nio.file.Path
-
-class TextFile(
-    val path: Path,
-    val content: String
-)
+endmodule

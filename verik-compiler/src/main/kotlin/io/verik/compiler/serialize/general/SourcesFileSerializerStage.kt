@@ -17,9 +17,9 @@
 package io.verik.compiler.serialize.general
 
 import io.verik.compiler.common.ProjectStage
+import io.verik.compiler.common.TextFile
 import io.verik.compiler.main.Platform
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.TextFile
 import java.nio.file.Path
 
 object SourcesFileSerializerStage : ProjectStage() {
@@ -37,8 +37,8 @@ object SourcesFileSerializerStage : ProjectStage() {
 
         val paths = ArrayList<Path>()
         projectContext.outputContext.targetPackageTextFile?.let { paths.add(it.path) }
-        projectContext.outputContext.packageTextFiles.forEach { paths.add(it.path) }
-        projectContext.outputContext.rootPackageSourceTextFiles.forEach { paths.add(it.path) }
+        projectContext.outputContext.packageWrapperTextFiles.forEach { paths.add(it.path) }
+        projectContext.outputContext.rootPackageTextFiles.forEach { paths.add(it.path) }
 
         val builder = StringBuilder()
         builder.append(fileHeader)

@@ -14,17 +14,28 @@
  * limitations under the License.
  */
 
-package io.verik.import.main
+package io.verik.compiler.serialize.general
 
-import java.nio.file.Files
+import io.verik.compiler.util.BaseTest
+import org.junit.jupiter.api.Test
 
-object VerikImportMain {
+internal class PackageWrapperSerializerStageTest : BaseTest() {
 
-    fun run(config: VerikImportConfig) {
-        if (!Files.exists(config.kotlinSrcDir))
-            throw IllegalArgumentException("Kotlin source directory not found: ${config.kotlinSrcDir}")
-        config.externFiles.forEach {
-            println(it)
-        }
+    @Test
+    fun `package file`() {
+        driveTest(
+            """
+                class C
+            """.trimIndent(),
+            """
+                package test_pkg;
+                
+                    typedef class C;
+                
+                `include "src/test/Test.svh"
+                
+                endpackage : test_pkg
+            """.trimIndent()
+        ) { it.packageWrapperTextFiles[0] }
     }
 }

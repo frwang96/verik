@@ -18,9 +18,9 @@ package io.verik.compiler.serialize.general
 
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.common.ProjectStage
+import io.verik.compiler.common.TextFile
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.TextFile
 
 object ConfigFileSerializerStage : ProjectStage() {
 

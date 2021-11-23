@@ -18,40 +18,48 @@ package io.verik.compiler.serialize.source
 
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.common.ProjectStage
+import io.verik.compiler.common.TextFile
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.TextFile
 
 object SourceSerializerStage : ProjectStage() {
 
     override val checkNormalization = false
 
     override fun process(projectContext: ProjectContext) {
-        val basicPackageSourceTextFiles = ArrayList<TextFile>()
+        val basicPackageTextFiles = ArrayList<TextFile>()
+        val basicPackageTextFilesLabeled = ArrayList<TextFile>()
         projectContext.project.basicPackages.forEach { basicPackage ->
             basicPackage.files.forEach {
-                val sourceOutputFile = serialize(projectContext, it)
-                if (sourceOutputFile != null)
-                    basicPackageSourceTextFiles.add(sourceOutputFile)
+                if (!it.isEmptySerialization()) {
+                    val sourceBuilderResult = serialize(projectContext, it)
+                    basicPackageTextFiles.add(sourceBuilderResult.textFile)
+                    if (sourceBuilderResult.textFileLabeled != null)
+                        basicPackageTextFilesLabeled.add(sourceBuilderResult.textFileLabeled)
+                }
             }
         }
-        projectContext.outputContext.basicPackageSourceTextFiles = basicPackageSourceTextFiles
+        projectContext.outputContext.basicPackageTextFiles = basicPackageTextFiles
+        projectContext.outputContext.basicPackageTextFilesLabeled = basicPackageTextFilesLabeled
 
-        val rootPackageSourceTextFiles = ArrayList<TextFile>()
+        val rootPackageTextFiles = ArrayList<TextFile>()
+        val rootPackageTextFilesLabeled = ArrayList<TextFile>()
         projectContext.project.rootPackage.files.forEach {
-            val sourceOutputFile = serialize(projectContext, it)
-            if (sourceOutputFile != null)
-                rootPackageSourceTextFiles.add(sourceOutputFile)
+            if (!it.isEmptySerialization()) {
+                val sourceBuilderResult = serialize(projectContext, it)
+                rootPackageTextFiles.add(sourceBuilderResult.textFile)
+                if (sourceBuilderResult.textFileLabeled != null)
+                    rootPackageTextFilesLabeled.add(sourceBuilderResult.textFileLabeled)
+            }
         }
-        projectContext.outputContext.rootPackageSourceTextFiles = rootPackageSourceTextFiles
+        projectContext.outputContext.rootPackageTextFiles = rootPackageTextFiles
+        projectContext.outputContext.rootPackageTextFilesLabeled = rootPackageTextFilesLabeled
     }
 
-    private fun serialize(projectContext: ProjectContext, file: EFile): TextFile? {
-        if (file.isEmptySerialization())
-            return null
+    private fun serialize(projectContext: ProjectContext, file: EFile): SourceBuilderResult {
         val serializerContext = SerializerContext(projectContext, file)
         file.declarations.forEach {
             serializerContext.serializeAsDeclaration(it)
         }
-        return serializerContext.toTextFile()
+        return serializerContext.getSourceBuilderResult()
     }
 }

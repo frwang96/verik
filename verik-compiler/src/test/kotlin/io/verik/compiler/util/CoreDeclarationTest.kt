@@ -62,17 +62,17 @@ abstract class CoreDeclarationTest : BaseTest() {
                 projectContext.project.accept(PropertyEliminatorVisitor)
             it.accept(projectContext)
         }
-        val basicPackageSourceTextFiles = projectContext.outputContext.basicPackageSourceTextFiles
-        val rootPackageSourceTextFiles = projectContext.outputContext.rootPackageSourceTextFiles
+        val basicPackageTextFiles = projectContext.outputContext.basicPackageTextFiles
+        val rootPackageTextFiles = projectContext.outputContext.rootPackageTextFiles
         when {
-            basicPackageSourceTextFiles.size + rootPackageSourceTextFiles.size > 1 ->
+            basicPackageTextFiles.size + rootPackageTextFiles.size > 1 ->
                 throw IllegalArgumentException("Multiple source files generated")
-            basicPackageSourceTextFiles.size + rootPackageSourceTextFiles.size == 0 ->
+            basicPackageTextFiles.size + rootPackageTextFiles.size == 0 ->
                 throw IllegalArgumentException("No source files generated")
-            basicPackageSourceTextFiles.size == 1 ->
-                assertOutputTextEquals(expected, basicPackageSourceTextFiles[0])
-            rootPackageSourceTextFiles.size == 1 ->
-                assertOutputTextEquals(expected, rootPackageSourceTextFiles[0])
+            basicPackageTextFiles.size == 1 ->
+                assertOutputTextEquals(expected, basicPackageTextFiles[0])
+            rootPackageTextFiles.size == 1 ->
+                assertOutputTextEquals(expected, rootPackageTextFiles[0])
         }
     }
 

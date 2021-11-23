@@ -44,7 +44,7 @@ class VerikPlugin : Plugin<Project> {
                     if (exception !is MessageCollectorException) {
                         print("e: ")
                         if (extension.debug) {
-                            print("INTERNAL_ERROR: Unhandled exception: ${exception::class.simpleName}")
+                            print("INTERNAL_ERROR: ${exception::class.simpleName}")
                             if (exception.message != null) print(": ${exception.message}")
                             println()
                             GradleMessagePrinter.printStackTrace(exception.stackTrace)
@@ -59,7 +59,7 @@ class VerikPlugin : Plugin<Project> {
 
         task.group = "verik"
         task.inputs.property("timescale", { extension.timescale })
-        task.inputs.property("version", { VerikConfigBuilder.getVersion(project) })
+        task.inputs.property("version", { VerikConfigUtil.getVersion(project) })
         task.inputs.property("debug", { extension.debug })
         task.inputs.property("suppressedWarnings", { extension.suppressedWarnings })
         task.inputs.property("promotedWarnings", { extension.promotedWarnings })
@@ -73,9 +73,22 @@ class VerikPlugin : Plugin<Project> {
     }
 
     private fun createVerikImportTask(project: Project) {
+        val extension = project.extensions.create("verikImport", VerikImportPluginExtension::class.java)
         val task = project.tasks.create("verikImport") {
             it.doLast {
-                VerikImportMain.run()
+                try {
+                    VerikImportMain.run(VerikImportConfigBuilder.getConfig(project, extension))
+                } catch (exception: Exception) {
+                    print("e: ")
+                    if (extension.debug) {
+                        print("INTERNAL_ERROR: ${exception::class.simpleName}")
+                        if (exception.message != null) print(": ${exception.message}")
+                        println()
+                    } else {
+                        println("Internal error: Set debug mode for more details")
+                    }
+                    throw GradleException("Verik import failed")
+                }
             }
         }
         task.group = "verik"

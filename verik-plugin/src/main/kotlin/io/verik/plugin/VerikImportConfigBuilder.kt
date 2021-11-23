@@ -14,12 +14,21 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.message
+package io.verik.plugin
 
-import java.nio.file.Path
+import io.verik.import.main.VerikImportConfig
+import org.gradle.api.Project
 
-data class SourceLocation(
-    val column: Int,
-    val line: Int,
-    val path: Path
-)
+object VerikImportConfigBuilder {
+
+    fun getConfig(project: Project, extension: VerikImportPluginExtension): VerikImportConfig {
+        return VerikImportConfig(
+            version = VerikConfigUtil.getVersion(project),
+            timestamp = VerikConfigUtil.getTimestamp(),
+            projectName = project.name,
+            projectDir = project.projectDir.toPath(),
+            externFiles = extension.externFiles,
+            debug = extension.debug
+        )
+    }
+}

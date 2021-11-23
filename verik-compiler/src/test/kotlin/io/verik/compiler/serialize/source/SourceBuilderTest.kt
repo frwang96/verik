@@ -34,7 +34,7 @@ internal class SourceBuilderTest : BaseTest() {
                 int         y;
                 logic [7:0] z;
             """.trimIndent()
-        ) { it.basicPackageSourceTextFiles[0] }
+        ) { it.basicPackageTextFiles[0] }
     }
 
     @Test
@@ -56,7 +56,7 @@ internal class SourceBuilderTest : BaseTest() {
                         + bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb;
                 endfunction : f
             """.trimIndent()
-        ) { it.basicPackageSourceTextFiles[0] }
+        ) { it.basicPackageTextFiles[0] }
     }
 
     @Test
@@ -71,6 +71,6 @@ internal class SourceBuilderTest : BaseTest() {
                 int b = aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa + aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                     + 1;
             """.trimIndent()
-        ) { it.basicPackageSourceTextFiles[0] }
+        ) { it.basicPackageTextFiles[0] }
     }
 }

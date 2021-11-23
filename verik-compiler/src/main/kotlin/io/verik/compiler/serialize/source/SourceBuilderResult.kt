@@ -14,12 +14,8 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.message
+package io.verik.compiler.serialize.source
 
-import java.nio.file.Path
+import io.verik.compiler.common.TextFile
 
-data class SourceLocation(
-    val column: Int,
-    val line: Int,
-    val path: Path
-)
+data class SourceBuilderResult(val textFile: TextFile, val textFileLabeled: TextFile?)

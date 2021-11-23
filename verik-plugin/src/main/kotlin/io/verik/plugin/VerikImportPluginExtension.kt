@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.message
+package io.verik.plugin
 
 import java.nio.file.Path
 
-data class SourceLocation(
-    val column: Int,
-    val line: Int,
-    val path: Path
-)
+abstract class VerikImportPluginExtension {
+
+    var externFiles: List<Path> = listOf()
+    var debug: Boolean = false
+}
