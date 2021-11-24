@@ -19,7 +19,7 @@ package io.verik.plugin
 import io.verik.compiler.main.VerikMain
 import io.verik.compiler.message.GradleMessagePrinter
 import io.verik.compiler.message.MessageCollectorException
-import io.verik.import.main.VerikImportMain
+import io.verik.importer.main.VerikImporterMain
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -73,11 +73,11 @@ class VerikPlugin : Plugin<Project> {
     }
 
     private fun createVerikImportTask(project: Project) {
-        val extension = project.extensions.create("verikImport", VerikImportPluginExtension::class.java)
+        val extension = project.extensions.create("verikImport", VerikImporterPluginExtension::class.java)
         val task = project.tasks.create("verikImport") {
             it.doLast {
                 try {
-                    VerikImportMain.run(VerikImportConfigBuilder.getConfig(project, extension))
+                    VerikImporterMain.run(VerikImporterConfigBuilder.getConfig(project, extension))
                 } catch (exception: Exception) {
                     print("e: ")
                     if (extension.debug) {

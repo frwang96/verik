@@ -18,6 +18,7 @@ group = "io.verik"
 
 plugins {
     kotlin("jvm") version "1.4.32"
+    id("org.gradle.antlr")
     id("org.jetbrains.dokka") version "1.5.30"
     id("signing")
     id("maven-publish")
@@ -33,6 +34,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.32")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
+    antlr("org.antlr:antlr4:4.9.3")
 }
 
 configure<JavaPluginConvention> {
@@ -73,7 +75,7 @@ signing {
 
 publishing {
     publications {
-        create<MavenPublication>("verik-import") {
+        create<MavenPublication>("verik-importer") {
             from(components["java"])
             if (!version.toString().startsWith("local")) {
                 artifact(tasks.getByName("sourceJar"))
@@ -81,8 +83,8 @@ publishing {
             }
 
             pom {
-                name.set("Verik Import")
-                description.set("Import utility for Verik projects")
+                name.set("Verik Importer")
+                description.set("Importer for Verik projects")
                 url.set("https://verik.io")
                 licenses {
                     license {

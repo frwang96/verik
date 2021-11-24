@@ -16,10 +16,19 @@
 
 package io.verik.plugin
 
-import java.nio.file.Path
+import io.verik.importer.main.VerikImporterConfig
+import org.gradle.api.Project
 
-abstract class VerikImportPluginExtension {
+object VerikImporterConfigBuilder {
 
-    var externFiles: List<Path> = listOf()
-    var debug: Boolean = false
+    fun getConfig(project: Project, extension: VerikImporterPluginExtension): VerikImporterConfig {
+        return VerikImporterConfig(
+            version = VerikConfigUtil.getVersion(project),
+            timestamp = VerikConfigUtil.getTimestamp(),
+            projectName = project.name,
+            projectDir = project.projectDir.toPath(),
+            importedFiles = extension.importedFiles,
+            debug = extension.debug
+        )
+    }
 }

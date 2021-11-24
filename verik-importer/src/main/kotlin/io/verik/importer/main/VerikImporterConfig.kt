@@ -14,21 +14,18 @@
  * limitations under the License.
  */
 
-package io.verik.plugin
+package io.verik.importer.main
 
-import io.verik.import.main.VerikImportConfig
-import org.gradle.api.Project
+import java.nio.file.Path
 
-object VerikImportConfigBuilder {
+data class VerikImporterConfig(
+    val version: String,
+    val timestamp: String,
+    val projectName: String,
+    val projectDir: Path,
+    val importedFiles: List<Path>,
+    val debug: Boolean
+) {
 
-    fun getConfig(project: Project, extension: VerikImportPluginExtension): VerikImportConfig {
-        return VerikImportConfig(
-            version = VerikConfigUtil.getVersion(project),
-            timestamp = VerikConfigUtil.getTimestamp(),
-            projectName = project.name,
-            projectDir = project.projectDir.toPath(),
-            externFiles = extension.externFiles,
-            debug = extension.debug
-        )
-    }
+    val kotlinSrcDir: Path = projectDir.resolve("src/main/kotlin")
 }

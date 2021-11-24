@@ -14,17 +14,12 @@
  * limitations under the License.
  */
 
-package io.verik.import.main
+package io.verik.plugin
 
-import java.nio.file.Files
+import java.nio.file.Path
 
-object VerikImportMain {
+abstract class VerikImporterPluginExtension {
 
-    fun run(config: VerikImportConfig) {
-        if (!Files.exists(config.kotlinSrcDir))
-            throw IllegalArgumentException("Kotlin source directory not found: ${config.kotlinSrcDir}")
-        config.externFiles.forEach {
-            println(it)
-        }
-    }
+    var importedFiles: List<Path> = listOf()
+    var debug: Boolean = false
 }

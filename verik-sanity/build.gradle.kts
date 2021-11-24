@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import io.verik.plugin.VerikImportPluginExtension
+import io.verik.plugin.VerikImporterPluginExtension
 import io.verik.plugin.VerikPluginExtension
 import org.jlleitschuh.gradle.ktlint.KtlintExtension
 import java.nio.file.Files
@@ -44,10 +44,10 @@ subprojects {
         debug = true
         labelLines = true
     }
-    configure<VerikImportPluginExtension> {
+    configure<VerikImporterPluginExtension> {
         val verilogSrcDir = projectDir.resolve("src/main/verilog").toPath()
         if (Files.exists(verilogSrcDir)) {
-            externFiles = Files.walk(verilogSrcDir).toList()
+            importedFiles = Files.walk(verilogSrcDir).toList()
                 .filter { it.fileName.toString().endsWith(".v") }
         }
         debug = true
