@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.common
+package io.verik.importer.common
 
-import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.message.MessageCollector
+import io.verik.importer.main.ImporterContext
 import kotlin.reflect.KClass
 
 class StageSequence {
 
-    val stages = ArrayList<ProjectStage>()
+    val stages = ArrayList<ImporterStage>()
 
-    fun add(stage: ProjectStage) {
+    fun add(stage: ImporterStage) {
         if (contains(stage::class)) {
             val stageName = stage::class.simpleName
             throw IllegalArgumentException("Stage has already been added to the stage sequence: $stageName")
@@ -32,26 +31,13 @@ class StageSequence {
         stages.add(stage)
     }
 
-    fun addFlush() {
-        stages.add(FlushStage)
-    }
-
-    fun <S : ProjectStage> contains(stageClass: KClass<S>): Boolean {
-        return stages.any { it::class == stageClass }
-    }
-
-    fun process(projectContext: ProjectContext) {
+    fun process(importerContext: ImporterContext) {
         stages.forEach {
-            it.accept(projectContext)
+            it.process(importerContext)
         }
     }
 
-    private object FlushStage : ProjectStage() {
-
-        override val checkNormalization = false
-
-        override fun process(projectContext: ProjectContext) {
-            MessageCollector.messageCollector.flush()
-        }
+    private fun <S : ImporterStage> contains(stageClass: KClass<S>): Boolean {
+        return stages.any { it::class == stageClass }
     }
 }

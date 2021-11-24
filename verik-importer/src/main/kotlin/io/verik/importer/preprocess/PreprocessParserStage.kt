@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 
-package io.verik.importer.main
+package io.verik.importer.preprocess
 
-object VerikImporterMain {
+import io.verik.importer.common.ImporterStage
+import io.verik.importer.main.ImporterContext
 
-    fun run(config: VerikImporterConfig) {
-        val importerContext = ImporterContextBuilder.buildContext(config)
-        val stageSequence = StageSequencer.getStageSequence()
-        stageSequence.process(importerContext)
+object PreprocessParserStage : ImporterStage() {
+
+    override fun process(importerContext: ImporterContext) {
+        importerContext.importedTextFiles.forEach {
+            println(it.path)
+        }
     }
 }

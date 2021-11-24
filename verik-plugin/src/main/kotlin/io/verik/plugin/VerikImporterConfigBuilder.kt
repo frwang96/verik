@@ -26,7 +26,6 @@ object VerikImporterConfigBuilder {
             version = VerikConfigUtil.getVersion(project),
             timestamp = VerikConfigUtil.getTimestamp(),
             projectName = project.name,
-            projectDir = project.projectDir.toPath(),
             importedFiles = extension.importedFiles,
             debug = extension.debug
         )

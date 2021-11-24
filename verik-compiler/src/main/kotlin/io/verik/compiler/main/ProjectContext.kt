@@ -26,7 +26,7 @@ class ProjectContext(
     val config: VerikConfig
 ) {
 
-    lateinit var sourceSetContexts: List<SourceSetContext>
+    var sourceSetContexts: List<SourceSetContext> = listOf()
     lateinit var kotlinCoreEnvironment: KotlinCoreEnvironment
     lateinit var bindingContext: BindingContext
     lateinit var castContext: CastContext

@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-package io.verik.importer.main
+package io.verik.importer.common
 
-object VerikImporterMain {
+import io.verik.importer.main.ImporterContext
 
-    fun run(config: VerikImporterConfig) {
-        val importerContext = ImporterContextBuilder.buildContext(config)
-        val stageSequence = StageSequencer.getStageSequence()
-        stageSequence.process(importerContext)
-    }
+abstract class ImporterStage {
+
+    abstract fun process(importerContext: ImporterContext)
 }

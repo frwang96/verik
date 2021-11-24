@@ -16,11 +16,21 @@
 
 package io.verik.importer.main
 
-object VerikImporterMain {
+import io.verik.importer.common.TextFile
+import java.nio.file.Files
 
-    fun run(config: VerikImporterConfig) {
-        val importerContext = ImporterContextBuilder.buildContext(config)
-        val stageSequence = StageSequencer.getStageSequence()
-        stageSequence.process(importerContext)
+object ImporterContextBuilder {
+
+    fun buildContext(config: VerikImporterConfig): ImporterContext {
+        val importerContext = ImporterContext(config)
+        readImportedFiles(importerContext)
+        return importerContext
+    }
+
+    private fun readImportedFiles(importerContext: ImporterContext) {
+        importerContext.importedTextFiles = importerContext.config.importedFiles.map {
+            val lines = Files.readAllLines(it)
+            TextFile(it, lines.joinToString(separator = "\n", postfix = "\n"))
+        }
     }
 }

@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-package io.verik.importer.main
+package io.verik.importer.common
 
-object VerikImporterMain {
+import java.nio.file.Path
 
-    fun run(config: VerikImporterConfig) {
-        val importerContext = ImporterContextBuilder.buildContext(config)
-        val stageSequence = StageSequencer.getStageSequence()
-        stageSequence.process(importerContext)
-    }
-}
+class TextFile(
+    val path: Path,
+    val content: String
+)

@@ -16,11 +16,14 @@
 
 package io.verik.importer.main
 
-object VerikImporterMain {
+import io.verik.importer.common.StageSequence
+import io.verik.importer.preprocess.PreprocessParserStage
 
-    fun run(config: VerikImporterConfig) {
-        val importerContext = ImporterContextBuilder.buildContext(config)
-        val stageSequence = StageSequencer.getStageSequence()
-        stageSequence.process(importerContext)
+object StageSequencer {
+
+    fun getStageSequence(): StageSequence {
+        val stageSequence = StageSequence()
+        stageSequence.add(PreprocessParserStage)
+        return stageSequence
     }
 }
