@@ -16,7 +16,7 @@
 
 package io.verik.compiler.serialize.source
 
-import io.verik.compiler.util.BaseTest
+import io.verik.compiler.test.BaseTest
 import org.junit.jupiter.api.Test
 
 internal class SourceBuilderTest : BaseTest() {

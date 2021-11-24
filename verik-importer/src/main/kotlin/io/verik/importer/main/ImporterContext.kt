@@ -17,10 +17,12 @@
 package io.verik.importer.main
 
 import io.verik.importer.common.TextFile
+import org.antlr.v4.runtime.tree.ParseTree
 
 class ImporterContext(
     val config: VerikImporterConfig
 ) {
 
     var importedTextFiles: List<TextFile> = listOf()
+    var importedParseTrees: List<ParseTree> = listOf()
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.util
+package io.verik.compiler.test
 
 import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.EAbstractFunction

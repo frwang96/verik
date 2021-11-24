@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.util
+package io.verik.compiler.test
 
 class TestErrorException(override val message: String) : Exception(message)
 

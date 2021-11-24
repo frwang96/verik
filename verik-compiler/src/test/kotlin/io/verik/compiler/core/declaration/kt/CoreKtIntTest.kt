@@ -17,7 +17,7 @@
 package io.verik.compiler.core.declaration.kt
 
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.util.CoreDeclarationTest
+import io.verik.compiler.test.CoreDeclarationTest
 import org.junit.jupiter.api.Test
 
 internal class CoreKtIntTest : CoreDeclarationTest() {

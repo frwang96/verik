@@ -14,18 +14,15 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.util
+package io.verik.importer.preprocess
 
-import io.verik.compiler.message.MessagePrinter
-import io.verik.compiler.message.SourceLocation
+import io.verik.importer.test.ParseTreeTest
+import org.junit.jupiter.api.Test
 
-class TestMessagePrinter : MessagePrinter() {
+internal class PreprocessParserStageTest : ParseTreeTest() {
 
-    override fun warning(message: String, location: SourceLocation) {
-        throw TestWarningException(message)
-    }
-
-    override fun error(message: String, location: SourceLocation) {
-        throw TestErrorException(message)
+    @Test
+    fun `parse simple`() {
+        driveTest("1 + 1")
     }
 }

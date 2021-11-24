@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.util
+package io.verik.compiler.test
 
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EProject
@@ -38,9 +38,9 @@ import kotlin.reflect.KClass
 
 abstract class BaseTest {
 
-    fun <T : ProjectStage> driveTest(
+    fun <S : ProjectStage> driveTest(
         @Language("kotlin") content: String,
-        stageClass: KClass<T>,
+        stageClass: KClass<S>,
         expected: String,
         selector: (EProject) -> Any
     ) {
@@ -101,8 +101,8 @@ abstract class BaseTest {
             import io.verik.core.*
             $content
         """.trimIndent()
-        val textFile = TextFile(config.sourceSetConfigs[0].files[0], contentWithPackageHeader)
         val projectContext = ProjectContext(config)
+        val textFile = TextFile(config.sourceSetConfigs[0].files[0], contentWithPackageHeader)
         val sourceSetContext = SourceSetContext(config.sourceSetConfigs[0].name, listOf(textFile))
         projectContext.sourceSetContexts = listOf(sourceSetContext)
         return projectContext

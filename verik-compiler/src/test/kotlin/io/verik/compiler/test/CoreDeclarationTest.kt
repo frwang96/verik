@@ -30,7 +30,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.util
+package io.verik.compiler.test
 
 import io.verik.compiler.ast.element.common.EAbstractContainerClass
 import io.verik.compiler.ast.element.common.EAbstractProperty

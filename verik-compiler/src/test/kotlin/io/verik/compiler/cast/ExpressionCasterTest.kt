@@ -16,9 +16,9 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findDeclaration
-import io.verik.compiler.util.findExpression
+import io.verik.compiler.test.BaseTest
+import io.verik.compiler.test.findDeclaration
+import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
 internal class ExpressionCasterTest : BaseTest() {
