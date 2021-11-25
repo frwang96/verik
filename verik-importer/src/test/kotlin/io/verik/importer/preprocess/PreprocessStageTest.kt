@@ -25,4 +25,9 @@ internal class PreprocessStageTest : FragmentTest() {
     fun `parse simple`() {
         driveTest("a", "a")
     }
+
+    @Test
+    fun `parse directive invalid`() {
+        driveTest("`0", "a")
+    }
 }

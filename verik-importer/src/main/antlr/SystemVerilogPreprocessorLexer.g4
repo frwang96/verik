@@ -1,9 +1,21 @@
 lexer grammar SystemVerilogPreprocessorLexer;
 
-CODE:
-    ~[`"/\r\n]+
+
+BACKTICK
+    : '`' -> mode(DIRECTIVE_MODE)
+    ;
+
+CODE
+    : ~[`"/\r\n]+
     ;
 
 WS
-    : (' ' | '\t' | '\r'| '\n') -> channel(HIDDEN)
+    : [ \t\r\n]+ -> channel(HIDDEN)
+    ;
+
+
+mode DIRECTIVE_MODE;
+
+DIRECTIVE_WS
+    : [ \t]+ -> channel(HIDDEN)
     ;

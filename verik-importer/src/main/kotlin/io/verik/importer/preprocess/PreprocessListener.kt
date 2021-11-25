@@ -30,12 +30,10 @@ class PreprocessListener(
 
     override fun enterCode(ctx: SystemVerilogPreprocessorParser.CodeContext?) {
         super.enterCode(ctx)
-        ctx!!.CODE().forEach {
-            val symbol = it.symbol
-            val line = symbol.line
-            val column = symbol.charPositionInLine
-            val fragment = Fragment(SourceLocation(column, line, file), symbol.text, true)
-            fragmentStream.add(fragment)
-        }
+        val symbol = ctx!!.CODE().symbol
+        val line = symbol.line
+        val column = symbol.charPositionInLine
+        val fragment = Fragment(SourceLocation(column, line, file), symbol.text, true)
+        fragmentStream.add(fragment)
     }
 }

@@ -20,23 +20,66 @@ import io.verik.importer.antlr.SystemVerilogPreprocessorLexer
 import io.verik.importer.antlr.SystemVerilogPreprocessorParser
 import io.verik.importer.common.ImporterStage
 import io.verik.importer.main.ImporterContext
+import org.antlr.v4.runtime.BaseErrorListener
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
+import org.antlr.v4.runtime.RecognitionException
+import org.antlr.v4.runtime.Recognizer
 import org.antlr.v4.runtime.tree.ParseTree
+import java.nio.file.Path
 
 object PreprocessParserStage : ImporterStage() {
 
     override fun process(importerContext: ImporterContext) {
-        importerContext.inputFileContexts.values.forEach {
-            it.parseTree = parse(it.content)
+        importerContext.inputFileContexts.forEach { (file, inputFileContext) ->
+            inputFileContext.parseTree = parse(file, inputFileContext.content)
         }
     }
 
-    private fun parse(content: String): ParseTree {
+    private fun parse(file: Path, content: String): ParseTree {
         val charStream = CharStreams.fromString(content)
         val lexer = SystemVerilogPreprocessorLexer(charStream)
+        val lexerErrorListener = LexerErrorListener(file)
+        lexer.removeErrorListeners()
+        lexer.addErrorListener(lexerErrorListener)
+
         val tokenStream = CommonTokenStream(lexer)
         val parser = SystemVerilogPreprocessorParser(tokenStream)
-        return parser.source_text()
+        val parserErrorListener = ParserErrorListener(file)
+        parser.removeErrorListeners()
+        parser.addErrorListener(parserErrorListener)
+        return parser.file()
+    }
+
+    private class LexerErrorListener(
+        private val file: Path
+    ) : BaseErrorListener() {
+
+        override fun syntaxError(
+            recognizer: Recognizer<*, *>?,
+            offendingSymbol: Any?,
+            line: Int,
+            charPositionInLine: Int,
+            msg: String?,
+            e: RecognitionException?
+        ) {
+            throw IllegalArgumentException("${file.fileName}$line:$charPositionInLine: $msg")
+        }
+    }
+
+    private class ParserErrorListener(
+        private val file: Path
+    ) : BaseErrorListener() {
+
+        override fun syntaxError(
+            recognizer: Recognizer<*, *>?,
+            offendingSymbol: Any?,
+            line: Int,
+            charPositionInLine: Int,
+            msg: String?,
+            e: RecognitionException?
+        ) {
+            throw IllegalArgumentException("${file.fileName}$line:$charPositionInLine: $msg")
+        }
     }
 }

@@ -2,7 +2,8 @@ parser grammar SystemVerilogPreprocessorParser;
 
 options { tokenVocab = SystemVerilogPreprocessorLexer; }
 
-source_text
+
+file
     : text* EOF
     ;
 
@@ -11,5 +12,5 @@ text
     ;
 
 code
-    : CODE+
+    : CODE
     ;

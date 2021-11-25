@@ -44,7 +44,7 @@ class VerikPlugin : Plugin<Project> {
                     if (exception !is MessageCollectorException) {
                         print("e: ")
                         if (extension.debug) {
-                            print("INTERNAL_ERROR: ${exception::class.simpleName}")
+                            print("Internal error")
                             if (exception.message != null) print(": ${exception.message}")
                             println()
                             GradleMessagePrinter.printStackTrace(exception.stackTrace)
@@ -81,7 +81,7 @@ class VerikPlugin : Plugin<Project> {
                 } catch (exception: Exception) {
                     print("e: ")
                     if (extension.debug) {
-                        print("INTERNAL_ERROR: ${exception::class.simpleName}")
+                        print("Internal error")
                         if (exception.message != null) print(": ${exception.message}")
                         println()
                     } else {
