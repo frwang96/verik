@@ -16,15 +16,15 @@
 
 package io.verik.compiler.transform.mid
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findExpression
+import io.verik.compiler.test.BaseTest
+import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
 internal class EnumNameTransformerStageTest : BaseTest() {
 
     @Test
     fun `string template expression property`() {
-        driveTest(
+        driveElementTest(
             """
                 enum class E { A }
                 val e = E.A
@@ -39,7 +39,7 @@ internal class EnumNameTransformerStageTest : BaseTest() {
 
     @Test
     fun `string template expression enum entry`() {
-        driveTest(
+        driveElementTest(
             """
                 enum class E { A }
                 fun f() {
@@ -53,7 +53,7 @@ internal class EnumNameTransformerStageTest : BaseTest() {
 
     @Test
     fun `call expression println enum entry`() {
-        driveTest(
+        driveElementTest(
             """
                 enum class E { A }
                 fun f() {

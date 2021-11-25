@@ -16,15 +16,15 @@
 
 package io.verik.compiler.transform.pre
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findDeclaration
+import io.verik.compiler.test.BaseTest
+import io.verik.compiler.test.findDeclaration
 import org.junit.jupiter.api.Test
 
 internal class TypeAliasReducerStageTest : BaseTest() {
 
     @Test
     fun `reduce type alias`() {
-        driveTest(
+        driveElementTest(
             """
                 typealias U = Ubit<`8`>
                 var x: U = nc()

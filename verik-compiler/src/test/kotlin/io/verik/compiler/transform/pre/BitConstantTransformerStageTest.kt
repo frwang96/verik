@@ -16,15 +16,15 @@
 
 package io.verik.compiler.transform.pre
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findExpression
+import io.verik.compiler.test.BaseTest
+import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
 internal class BitConstantTransformerStageTest : BaseTest() {
 
     @Test
     fun `constant decimal`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = u(255)
             """.trimIndent(),
@@ -35,7 +35,7 @@ internal class BitConstantTransformerStageTest : BaseTest() {
 
     @Test
     fun `constant hexadecimal`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = u(0x00_0000_00ff)
             """.trimIndent(),
@@ -46,7 +46,7 @@ internal class BitConstantTransformerStageTest : BaseTest() {
 
     @Test
     fun `constant string unsigned binary`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = u("4'b0011")
             """.trimIndent(),
@@ -57,7 +57,7 @@ internal class BitConstantTransformerStageTest : BaseTest() {
 
     @Test
     fun `constant string unsigned hexadecimal`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = u("10'h3ff")
             """.trimIndent(),
@@ -68,7 +68,7 @@ internal class BitConstantTransformerStageTest : BaseTest() {
 
     @Test
     fun `constant string signed binary`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = s("4'b0011")
             """.trimIndent(),
@@ -79,7 +79,7 @@ internal class BitConstantTransformerStageTest : BaseTest() {
 
     @Test
     fun `constant string signed hexadecimal`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = s("10'h3ff")
             """.trimIndent(),
@@ -90,7 +90,7 @@ internal class BitConstantTransformerStageTest : BaseTest() {
 
     @Test
     fun `constant string invalid`() {
-        driveTest(
+        driveMessageTest(
             """
                 var x = u("12'hxyz")
             """.trimIndent(),

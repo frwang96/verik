@@ -16,15 +16,15 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findDeclaration
+import io.verik.compiler.test.BaseTest
+import io.verik.compiler.test.findDeclaration
 import org.junit.jupiter.api.Test
 
 internal class DeclarationCasterTest : BaseTest() {
 
     @Test
     fun `type alias`() {
-        driveTest(
+        driveElementTest(
             """
                 typealias N = INC<`7`>
             """.trimIndent(),
@@ -35,7 +35,7 @@ internal class DeclarationCasterTest : BaseTest() {
 
     @Test
     fun `class simple`() {
-        driveTest(
+        driveElementTest(
             """
                 class C
             """.trimIndent(),
@@ -46,7 +46,7 @@ internal class DeclarationCasterTest : BaseTest() {
 
     @Test
     fun `class with class`() {
-        driveTest(
+        driveElementTest(
             """
                 class C {
                     class D
@@ -67,7 +67,7 @@ internal class DeclarationCasterTest : BaseTest() {
 
     @Test
     fun `class with function`() {
-        driveTest(
+        driveElementTest(
             """
                 class C {
                     fun f() {}
@@ -88,7 +88,7 @@ internal class DeclarationCasterTest : BaseTest() {
 
     @Test
     fun `class with property`() {
-        driveTest(
+        driveElementTest(
             """
                 class C {
                     val x = false
@@ -109,7 +109,7 @@ internal class DeclarationCasterTest : BaseTest() {
 
     @Test
     fun `class with companion object`() {
-        driveTest(
+        driveElementTest(
             """
                 class C { companion object }
             """.trimIndent(),
@@ -128,7 +128,7 @@ internal class DeclarationCasterTest : BaseTest() {
 
     @Test
     fun `class with type parameter`() {
-        driveTest(
+        driveElementTest(
             """
                 class C<T>
             """.trimIndent(),
@@ -147,7 +147,7 @@ internal class DeclarationCasterTest : BaseTest() {
 
     @Test
     fun `class with primary constructor`() {
-        driveTest(
+        driveElementTest(
             """
                 class C(val x: Int)
             """.trimIndent(),
@@ -164,7 +164,7 @@ internal class DeclarationCasterTest : BaseTest() {
 
     @Test
     fun `class with super type call entry`() {
-        driveTest(
+        driveElementTest(
             """
                 open class C(x: Int)
                 class D : C(0)
@@ -182,7 +182,7 @@ internal class DeclarationCasterTest : BaseTest() {
 
     @Test
     fun `enum class`() {
-        driveTest(
+        driveElementTest(
             """
                 enum class E { A }
             """.trimIndent(),
@@ -193,7 +193,7 @@ internal class DeclarationCasterTest : BaseTest() {
 
     @Test
     fun `object simple`() {
-        driveTest(
+        driveElementTest(
             """
                 object O
             """.trimIndent(),
@@ -204,7 +204,7 @@ internal class DeclarationCasterTest : BaseTest() {
 
     @Test
     fun `function simple`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f() {}
             """.trimIndent(),
@@ -215,7 +215,7 @@ internal class DeclarationCasterTest : BaseTest() {
 
     @Test
     fun `function with value parameter`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f(x: Int) {}
             """.trimIndent(),
@@ -226,7 +226,7 @@ internal class DeclarationCasterTest : BaseTest() {
 
     @Test
     fun `function with type parameter`() {
-        driveTest(
+        driveElementTest(
             """
                 fun <N : `*`> f() {}
             """.trimIndent(),
@@ -237,7 +237,7 @@ internal class DeclarationCasterTest : BaseTest() {
 
     @Test
     fun `property simple`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = false
             """.trimIndent(),

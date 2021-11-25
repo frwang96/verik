@@ -16,14 +16,14 @@
 
 package io.verik.compiler.serialize.source
 
-import io.verik.compiler.util.BaseTest
+import io.verik.compiler.test.BaseTest
 import org.junit.jupiter.api.Test
 
 internal class SourceBuilderTest : BaseTest() {
 
     @Test
     fun `align properties`() {
-        driveTest(
+        driveTextFileTest(
             """
                 var x: Boolean = nc()
                 var y: Int = nc()
@@ -39,7 +39,7 @@ internal class SourceBuilderTest : BaseTest() {
 
     @Test
     fun `wrap expression`() {
-        driveTest(
+        driveTextFileTest(
             """
                 var aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa = 0
                 var bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb = 0
@@ -61,7 +61,7 @@ internal class SourceBuilderTest : BaseTest() {
 
     @Test
     fun `wrap property`() {
-        driveTest(
+        driveTextFileTest(
             """
                 var aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa = 0
                 var b = aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa + aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa + 1

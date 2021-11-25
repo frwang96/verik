@@ -16,15 +16,15 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findDeclaration
+import io.verik.compiler.test.BaseTest
+import io.verik.compiler.test.findDeclaration
 import org.junit.jupiter.api.Test
 
 internal class ConstructorDesugarTransformerStageTest : BaseTest() {
 
     @Test
     fun `desugar primary constructor simple`() {
-        driveTest(
+        driveElementTest(
             """
                 class C
             """.trimIndent(),
@@ -52,7 +52,7 @@ internal class ConstructorDesugarTransformerStageTest : BaseTest() {
                 )]
             )
         """.trimIndent()
-        driveTest(
+        driveElementTest(
             """
                 class C(val x: Int)
             """.trimIndent(),

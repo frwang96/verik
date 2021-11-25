@@ -16,15 +16,15 @@
 
 package io.verik.compiler.transform.post
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findExpression
+import io.verik.compiler.test.BaseTest
+import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
 internal class ScopeExpressionInsertionTransformerStageTest : BaseTest() {
 
     @Test
     fun `reference target declaration`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f() {
                     ArrayList<Boolean>()
@@ -45,7 +45,7 @@ internal class ScopeExpressionInsertionTransformerStageTest : BaseTest() {
 
     @Test
     fun `reference element parent file`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = false
                 class M : Module() {
@@ -61,7 +61,7 @@ internal class ScopeExpressionInsertionTransformerStageTest : BaseTest() {
 
     @Test
     fun `reference property parent basic class`() {
-        driveTest(
+        driveElementTest(
             """
                 object O {
                     var x = false

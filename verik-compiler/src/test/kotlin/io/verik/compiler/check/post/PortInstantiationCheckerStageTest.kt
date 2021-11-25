@@ -16,14 +16,14 @@
 
 package io.verik.compiler.check.post
 
-import io.verik.compiler.util.BaseTest
+import io.verik.compiler.test.BaseTest
 import org.junit.jupiter.api.Test
 
 internal class PortInstantiationCheckerStageTest : BaseTest() {
 
     @Test
     fun `illegal expression`() {
-        driveTest(
+        driveMessageTest(
             """
                 class N(@Out var x: Boolean) : Module()
                 class M : Module() {
@@ -38,7 +38,7 @@ internal class PortInstantiationCheckerStageTest : BaseTest() {
 
     @Test
     fun `immutable property`() {
-        driveTest(
+        driveMessageTest(
             """
                 class N(@Out var x: Boolean) : Module()
                 class M : Module() {

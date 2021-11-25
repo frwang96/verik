@@ -16,14 +16,14 @@
 
 package io.verik.compiler.resolve
 
-import io.verik.compiler.util.BaseTest
+import io.verik.compiler.test.BaseTest
 import org.junit.jupiter.api.Test
 
 internal class TypeParameterTypeCheckerStageTest : BaseTest() {
 
     @Test
     fun `cardinal type expected`() {
-        driveTest(
+        driveMessageTest(
             """
                 var x: Ubit<ADD<`8`, Int>> = u(0)
             """.trimIndent(),
@@ -34,7 +34,7 @@ internal class TypeParameterTypeCheckerStageTest : BaseTest() {
 
     @Test
     fun `cardinal type expected type parameter`() {
-        driveTest(
+        driveMessageTest(
             """
                 class C<N> {
                     var x: Ubit<INC<N>> = u(0)

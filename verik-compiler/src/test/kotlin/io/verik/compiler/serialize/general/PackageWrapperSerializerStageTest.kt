@@ -16,14 +16,14 @@
 
 package io.verik.compiler.serialize.general
 
-import io.verik.compiler.util.BaseTest
+import io.verik.compiler.test.BaseTest
 import org.junit.jupiter.api.Test
 
 internal class PackageWrapperSerializerStageTest : BaseTest() {
 
     @Test
     fun `package file`() {
-        driveTest(
+        driveTextFileTest(
             """
                 class C
             """.trimIndent(),

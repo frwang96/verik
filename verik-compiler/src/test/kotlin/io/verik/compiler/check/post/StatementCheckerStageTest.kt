@@ -16,14 +16,14 @@
 
 package io.verik.compiler.check.post
 
-import io.verik.compiler.util.BaseTest
+import io.verik.compiler.test.BaseTest
 import org.junit.jupiter.api.Test
 
 internal class StatementCheckerStageTest : BaseTest() {
 
     @Test
     fun `invalid statement`() {
-        driveTest(
+        driveMessageTest(
             """
                 fun f() {
                     0

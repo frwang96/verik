@@ -16,15 +16,15 @@
 
 package io.verik.compiler.transform.mid
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findExpression
+import io.verik.compiler.test.BaseTest
+import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
 internal class AssignmentTransformerStageTest : BaseTest() {
 
     @Test
     fun `transform assign`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = false
                 fun f() {
@@ -38,7 +38,7 @@ internal class AssignmentTransformerStageTest : BaseTest() {
 
     @Test
     fun `transform arrow assign seq block`() {
-        driveTest(
+        driveElementTest(
             """
                 class M : Module() {
                     private var x = false
@@ -57,7 +57,7 @@ internal class AssignmentTransformerStageTest : BaseTest() {
 
     @Test
     fun `transform arrow assign clocking block`() {
-        driveTest(
+        driveElementTest(
             """
                 class CB(override val event: Event, @In var x: Boolean) : ClockingBlock()
                 class M : Module() {

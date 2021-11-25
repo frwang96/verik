@@ -16,15 +16,15 @@
 
 package io.verik.compiler.transform.post
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findExpression
+import io.verik.compiler.test.BaseTest
+import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
 internal class BinaryExpressionTransformerStageTest : BaseTest() {
 
     @Test
     fun `transform plus`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = 0
                 var y = x.plus(1)
@@ -36,7 +36,7 @@ internal class BinaryExpressionTransformerStageTest : BaseTest() {
 
     @Test
     fun `transform comparison`() {
-        driveTest(
+        driveElementTest(
             """
                 @Suppress("SimplifyBooleanWithConstants")
                 var x = 0 < 1

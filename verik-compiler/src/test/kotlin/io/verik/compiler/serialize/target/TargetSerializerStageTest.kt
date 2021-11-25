@@ -16,14 +16,14 @@
 
 package io.verik.compiler.serialize.target
 
-import io.verik.compiler.util.BaseTest
+import io.verik.compiler.test.BaseTest
 import org.junit.jupiter.api.Test
 
 internal class TargetSerializerStageTest : BaseTest() {
 
     @Test
     fun `target class`() {
-        driveTest(
+        driveTextFileTest(
             """
                 val a: ArrayList<Boolean> = nc()
             """.trimIndent(),
@@ -43,7 +43,7 @@ internal class TargetSerializerStageTest : BaseTest() {
 
     @Test
     fun `target function`() {
-        driveTest(
+        driveTextFileTest(
             """
                 val a: ArrayList<Boolean> = nc()
                 fun f() {

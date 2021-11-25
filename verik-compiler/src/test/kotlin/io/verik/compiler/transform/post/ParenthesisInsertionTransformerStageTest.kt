@@ -16,15 +16,15 @@
 
 package io.verik.compiler.transform.post
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findDeclaration
+import io.verik.compiler.test.BaseTest
+import io.verik.compiler.test.findDeclaration
 import org.junit.jupiter.api.Test
 
 internal class ParenthesisInsertionTransformerStageTest : BaseTest() {
 
     @Test
     fun `binary expression left`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = 0
                 var y = (x + 1) * x
@@ -42,7 +42,7 @@ internal class ParenthesisInsertionTransformerStageTest : BaseTest() {
 
     @Test
     fun `binary expression right`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = 0
                 var y = x + (1 + x)
@@ -60,7 +60,7 @@ internal class ParenthesisInsertionTransformerStageTest : BaseTest() {
 
     @Test
     fun `event control expression`() {
-        driveTest(
+        driveElementTest(
             """
                 class M : Module() {
                     @Seq

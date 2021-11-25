@@ -17,6 +17,7 @@
 package io.verik.compiler.message
 
 import io.verik.compiler.main.VerikConfig
+import io.verik.compiler.main.VerikException
 
 class MessageCollector(
     private val config: VerikConfig,
@@ -34,22 +35,22 @@ class MessageCollector(
 
     fun flush() {
         if (errorCount != 0)
-            throw MessageCollectorException()
+            throw VerikException()
     }
 
     private fun warning(templateName: String, message: String, location: SourceLocation) {
         if (templateName in config.promotedWarnings)
             error(templateName, message, location)
         else if (templateName !in config.suppressedWarnings)
-            messagePrinter.warning(templateName, message, location)
+            messagePrinter.warning(message, location)
     }
 
     private fun error(templateName: String, message: String, location: SourceLocation) {
         if (!config.debug && templateName == Messages.INTERNAL_ERROR.name) {
-            messagePrinter.error(templateName, "Internal error: Set debug mode for more details", location)
-            throw MessageCollectorException()
+            messagePrinter.error("Internal error: Set debug mode for more details", location)
+            throw VerikException()
         } else {
-            messagePrinter.error(templateName, message, location)
+            messagePrinter.error(message, location)
             incrementErrorCount()
         }
     }
@@ -57,7 +58,7 @@ class MessageCollector(
     private fun incrementErrorCount() {
         errorCount++
         if (errorCount >= config.maxErrorCount)
-            throw MessageCollectorException()
+            throw VerikException()
     }
 
     companion object {

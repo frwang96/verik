@@ -16,14 +16,14 @@
 
 package io.verik.compiler.check.pre
 
-import io.verik.compiler.util.BaseTest
+import io.verik.compiler.test.BaseTest
 import org.junit.jupiter.api.Test
 
 internal class UnsupportedModifierCheckerStageTest : BaseTest() {
 
     @Test
     fun `operator modifier`() {
-        driveTest(
+        driveMessageTest(
             """
                 class C {
                     operator fun get(int: Int) {}
@@ -36,7 +36,7 @@ internal class UnsupportedModifierCheckerStageTest : BaseTest() {
 
     @Test
     fun `operator vararg`() {
-        driveTest(
+        driveMessageTest(
             """
                 fun f(vararg x: Int) {}
             """.trimIndent(),

@@ -16,15 +16,15 @@
 
 package io.verik.compiler.transform.mid
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findExpression
+import io.verik.compiler.test.BaseTest
+import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
 internal class InlineIfExpressionTransformerStageTest : BaseTest() {
 
     @Test
     fun `transform inline if`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = true
                 var y = if (x) 1 else 0
@@ -36,7 +36,7 @@ internal class InlineIfExpressionTransformerStageTest : BaseTest() {
 
     @Test
     fun `transform inline if block expression`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = true
                 var y = if (x) { 1 } else { 0 }

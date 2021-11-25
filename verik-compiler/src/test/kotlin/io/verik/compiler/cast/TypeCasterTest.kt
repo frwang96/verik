@@ -16,15 +16,15 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findDeclaration
+import io.verik.compiler.test.BaseTest
+import io.verik.compiler.test.findDeclaration
 import org.junit.jupiter.api.Test
 
 internal class TypeCasterTest : BaseTest() {
 
     @Test
     fun `type class simple`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = 0
             """.trimIndent(),
@@ -35,7 +35,7 @@ internal class TypeCasterTest : BaseTest() {
 
     @Test
     fun `type class parameterized`() {
-        driveTest(
+        driveElementTest(
             """
                 class C<T>
                 var x = C<Int>()
@@ -47,7 +47,7 @@ internal class TypeCasterTest : BaseTest() {
 
     @Test
     fun `type type parameter`() {
-        driveTest(
+        driveElementTest(
             """
                 class C<T> {
                     val x = C<T>()
@@ -60,7 +60,7 @@ internal class TypeCasterTest : BaseTest() {
 
     @Test
     fun `type nullable`() {
-        driveTest(
+        driveMessageTest(
             """
                 fun f(x: Int?) {}
             """.trimIndent(),
@@ -71,7 +71,7 @@ internal class TypeCasterTest : BaseTest() {
 
     @Test
     fun `type reference simple`() {
-        driveTest(
+        driveElementTest(
             """
                 var x: Int = 0
             """.trimIndent(),
@@ -82,7 +82,7 @@ internal class TypeCasterTest : BaseTest() {
 
     @Test
     fun `type reference type parameter`() {
-        driveTest(
+        driveElementTest(
             """
                 class C<T> {
                     val x: C<T> = C()
@@ -95,7 +95,7 @@ internal class TypeCasterTest : BaseTest() {
 
     @Test
     fun `type reference cardinal simple`() {
-        driveTest(
+        driveElementTest(
             """
                 var x: Ubit<`8`> = u(0)
             """.trimIndent(),
@@ -106,7 +106,7 @@ internal class TypeCasterTest : BaseTest() {
 
     @Test
     fun `type reference cardinal inferred`() {
-        driveTest(
+        driveElementTest(
             """
                 var x: Ubit<`*`> = u(0)
             """.trimIndent(),
@@ -117,7 +117,7 @@ internal class TypeCasterTest : BaseTest() {
 
     @Test
     fun `type reference cardinal cardinal`() {
-        driveTest(
+        driveElementTest(
             """
                 var x: Ubit<Cardinal> = u(0)
             """.trimIndent(),
@@ -128,7 +128,7 @@ internal class TypeCasterTest : BaseTest() {
 
     @Test
     fun `type reference cardinal function`() {
-        driveTest(
+        driveElementTest(
             """
                 var x: Ubit<ADD<`8`, `16`>> = u(0)
             """.trimIndent(),
@@ -139,7 +139,7 @@ internal class TypeCasterTest : BaseTest() {
 
     @Test
     fun `type reference cardinal type parameter`() {
-        driveTest(
+        driveElementTest(
             """
                 class C<N: Cardinal> {
                     var x: Ubit<N> = u(0).ext()
@@ -152,7 +152,7 @@ internal class TypeCasterTest : BaseTest() {
 
     @Test
     fun `type reference cardinal type alias`() {
-        driveTest(
+        driveElementTest(
             """
                 typealias U = Ubit<`8`>
                 var x: U = nc()

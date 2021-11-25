@@ -16,16 +16,16 @@
 
 package io.verik.compiler.resolve
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findDeclaration
-import io.verik.compiler.util.findExpression
+import io.verik.compiler.test.BaseTest
+import io.verik.compiler.test.findDeclaration
+import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
 internal class TypeResolverStageTest : BaseTest() {
 
     @Test
     fun `resolve property`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = false
             """.trimIndent(),
@@ -36,7 +36,7 @@ internal class TypeResolverStageTest : BaseTest() {
 
     @Test
     fun `resolve property type parameterized`() {
-        driveTest(
+        driveElementTest(
             """
                 class C<N : `*`>
                 var c = C<`8`>()
@@ -48,7 +48,7 @@ internal class TypeResolverStageTest : BaseTest() {
 
     @Test
     fun `resolve reference expression`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = false
                 fun f() {
@@ -62,7 +62,7 @@ internal class TypeResolverStageTest : BaseTest() {
 
     @Test
     fun `resolve reference expression with receiver`() {
-        driveTest(
+        driveElementTest(
             """
                 class S(val x: Ubit<`8`>) : Struct()
                 val s = S(u0())
@@ -77,7 +77,7 @@ internal class TypeResolverStageTest : BaseTest() {
 
     @Test
     fun `resolve call expression plus`() {
-        driveTest(
+        driveElementTest(
             """
                 val x = u(0x00) + u(0x0)
             """.trimIndent(),
@@ -88,7 +88,7 @@ internal class TypeResolverStageTest : BaseTest() {
 
     @Test
     fun `resolve call expression u`() {
-        driveTest(
+        driveElementTest(
             """
                 val x = u<`8`>()
             """.trimIndent(),
@@ -99,7 +99,7 @@ internal class TypeResolverStageTest : BaseTest() {
 
     @Test
     fun `resolve call expression cat`() {
-        driveTest(
+        driveElementTest(
             """
                 val x = cat(u(0), false)
             """.trimIndent(),
@@ -110,7 +110,7 @@ internal class TypeResolverStageTest : BaseTest() {
 
     @Test
     fun `resolve call expression cat illegal`() {
-        driveTest(
+        driveMessageTest(
             """
                 val x = cat(posedge(false))
             """.trimIndent(),
@@ -121,7 +121,7 @@ internal class TypeResolverStageTest : BaseTest() {
 
     @Test
     fun `resolve call expression rep`() {
-        driveTest(
+        driveElementTest(
             """
                 val x = rep<`3`>(false)
             """.trimIndent(),
@@ -132,7 +132,7 @@ internal class TypeResolverStageTest : BaseTest() {
 
     @Test
     fun `resolve call expression function`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f(x: Ubit<`8`>) {}
                 val x = f(u0())
@@ -144,7 +144,7 @@ internal class TypeResolverStageTest : BaseTest() {
 
     @Test
     fun `resolve return statement`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f(): Ubit<`8`> {
                     return u0()

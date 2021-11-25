@@ -16,15 +16,15 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findDeclaration
+import io.verik.compiler.test.BaseTest
+import io.verik.compiler.test.findDeclaration
 import org.junit.jupiter.api.Test
 
 internal class AnnotationCasterTest : BaseTest() {
 
     @Test
     fun `annotation simple`() {
-        driveTest(
+        driveElementTest(
             """
                 @Task
                 fun f() {}
@@ -36,7 +36,7 @@ internal class AnnotationCasterTest : BaseTest() {
 
     @Test
     fun `annotation unrecognized`() {
-        driveTest(
+        driveMessageTest(
             """
                 @Synchronized
                 fun f() {}
@@ -48,7 +48,7 @@ internal class AnnotationCasterTest : BaseTest() {
 
     @Test
     fun `annotation on value parameter`() {
-        driveTest(
+        driveElementTest(
             """
                 class M(@In val x: Boolean) : Module()
             """.trimIndent(),

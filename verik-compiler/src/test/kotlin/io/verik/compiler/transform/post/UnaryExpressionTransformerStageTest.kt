@@ -16,15 +16,15 @@
 
 package io.verik.compiler.transform.post
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findExpression
+import io.verik.compiler.test.BaseTest
+import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
 internal class UnaryExpressionTransformerStageTest : BaseTest() {
 
     @Test
     fun `transform not`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = false
                 var y = x.not()
@@ -36,7 +36,7 @@ internal class UnaryExpressionTransformerStageTest : BaseTest() {
 
     @Test
     fun `transform postincrement`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = 0
                 var y = x++

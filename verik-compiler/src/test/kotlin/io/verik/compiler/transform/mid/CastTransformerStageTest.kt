@@ -16,15 +16,15 @@
 
 package io.verik.compiler.transform.mid
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findStatements
+import io.verik.compiler.test.BaseTest
+import io.verik.compiler.test.findStatements
 import org.junit.jupiter.api.Test
 
 internal class CastTransformerStageTest : BaseTest() {
 
     @Test
     fun `is expression`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f() {
                     0 is Int
@@ -46,7 +46,7 @@ internal class CastTransformerStageTest : BaseTest() {
 
     @Test
     fun `is not expression`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f() {
                     0 !is Int
@@ -72,7 +72,7 @@ internal class CastTransformerStageTest : BaseTest() {
 
     @Test
     fun `as expression`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f() {
                     0 as Int

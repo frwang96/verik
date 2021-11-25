@@ -16,15 +16,15 @@
 
 package io.verik.compiler.transform.pre
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findExpression
+import io.verik.compiler.test.BaseTest
+import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
 internal class BinaryExpressionReducerStageTest : BaseTest() {
 
     @Test
     fun `reduce plus`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = 0
                 var y = x + 0
@@ -36,7 +36,7 @@ internal class BinaryExpressionReducerStageTest : BaseTest() {
 
     @Test
     fun `reduce nested plus`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = 0
                 var y = 0

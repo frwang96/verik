@@ -16,15 +16,15 @@
 
 package io.verik.compiler.transform.mid
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findExpression
+import io.verik.compiler.test.BaseTest
+import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
 internal class StringTemplateExpressionReducerStageTest : BaseTest() {
 
     @Test
     fun `reduce literal entry`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = "abc"
             """.trimIndent(),
@@ -35,7 +35,7 @@ internal class StringTemplateExpressionReducerStageTest : BaseTest() {
 
     @Test
     fun `reduce expression entry`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = 0
                 var y = "${"$"}x"
@@ -53,7 +53,7 @@ internal class StringTemplateExpressionReducerStageTest : BaseTest() {
 
     @Test
     fun `reduce expression entry escape percent`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = "${"$"}{0}%"
             """.trimIndent(),
@@ -66,7 +66,7 @@ internal class StringTemplateExpressionReducerStageTest : BaseTest() {
 
     @Test
     fun `reduce expression entry no escape percent`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = "%"
             """.trimIndent(),

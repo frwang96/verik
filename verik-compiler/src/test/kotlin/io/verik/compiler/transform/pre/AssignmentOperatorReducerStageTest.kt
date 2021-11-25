@@ -16,15 +16,15 @@
 
 package io.verik.compiler.transform.pre
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findExpression
+import io.verik.compiler.test.BaseTest
+import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
 internal class AssignmentOperatorReducerStageTest : BaseTest() {
 
     @Test
     fun `reduce plus eq`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = 0
                 fun f() {

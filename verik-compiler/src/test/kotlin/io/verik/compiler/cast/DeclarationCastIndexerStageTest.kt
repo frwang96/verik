@@ -16,14 +16,14 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.util.BaseTest
+import io.verik.compiler.test.BaseTest
 import org.junit.jupiter.api.Test
 
 internal class DeclarationCastIndexerStageTest : BaseTest() {
 
     @Test
     fun `error name unicode`() {
-        driveTest(
+        driveMessageTest(
             """
                 @Suppress("ObjectPropertyName")
                 val αβγ = 0

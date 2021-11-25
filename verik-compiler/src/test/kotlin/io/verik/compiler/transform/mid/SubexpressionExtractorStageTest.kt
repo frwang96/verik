@@ -16,15 +16,15 @@
 
 package io.verik.compiler.transform.mid
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findStatements
+import io.verik.compiler.test.BaseTest
+import io.verik.compiler.test.findStatements
 import org.junit.jupiter.api.Test
 
 internal class SubexpressionExtractorStageTest : BaseTest() {
 
     @Test
     fun `streaming expression`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = u(0)
                 fun f() {

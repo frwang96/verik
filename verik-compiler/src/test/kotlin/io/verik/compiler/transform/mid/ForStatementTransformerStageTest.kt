@@ -16,15 +16,15 @@
 
 package io.verik.compiler.transform.mid
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findExpression
+import io.verik.compiler.test.BaseTest
+import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
 internal class ForStatementTransformerStageTest : BaseTest() {
 
     @Test
     fun `transform forEach until`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f() {
                     @Suppress("ForEachParameterNotUsed")
@@ -46,7 +46,7 @@ internal class ForStatementTransformerStageTest : BaseTest() {
 
     @Test
     fun `transform forEach ArrayList`() {
-        driveTest(
+        driveElementTest(
             """
                 val a = ArrayList<Boolean>()
                 fun f() {

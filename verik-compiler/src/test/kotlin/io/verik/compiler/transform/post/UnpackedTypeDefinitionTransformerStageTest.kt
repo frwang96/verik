@@ -16,15 +16,15 @@
 
 package io.verik.compiler.transform.post
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findDeclaration
+import io.verik.compiler.test.BaseTest
+import io.verik.compiler.test.findDeclaration
 import org.junit.jupiter.api.Test
 
 internal class UnpackedTypeDefinitionTransformerStageTest : BaseTest() {
 
     @Test
     fun `unpacked type definition`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f(x: Unpacked<`8`, Boolean>): Unpacked<`8`, Boolean> {
                     return x

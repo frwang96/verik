@@ -16,15 +16,15 @@
 
 package io.verik.compiler.transform.mid
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findStatements
+import io.verik.compiler.test.BaseTest
+import io.verik.compiler.test.findStatements
 import org.junit.jupiter.api.Test
 
 internal class PropertyStatementReorderStageTest : BaseTest() {
 
     @Test
     fun `reorder property statement with initializer`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f() {
                     println()
@@ -44,7 +44,7 @@ internal class PropertyStatementReorderStageTest : BaseTest() {
 
     @Test
     fun `reorder property statement without initializer`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f() {
                     println()

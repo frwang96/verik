@@ -16,15 +16,15 @@
 
 package io.verik.compiler.transform.mid
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findDeclaration
+import io.verik.compiler.test.BaseTest
+import io.verik.compiler.test.findDeclaration
 import org.junit.jupiter.api.Test
 
 internal class CombinationalAssignmentTransformerStageTest : BaseTest() {
 
     @Test
     fun `combinational assignment`() {
-        driveTest(
+        driveElementTest(
             """
                 class M : Module() {
                     var x = false

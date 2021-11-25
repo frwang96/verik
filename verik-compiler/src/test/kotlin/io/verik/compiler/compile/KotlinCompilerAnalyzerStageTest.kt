@@ -16,14 +16,14 @@
 
 package io.verik.compiler.compile
 
-import io.verik.compiler.util.BaseTest
+import io.verik.compiler.test.BaseTest
 import org.junit.jupiter.api.Test
 
 class KotlinCompilerAnalyzerStageTest : BaseTest() {
 
     @Test
     fun `compile error`() {
-        driveTest(
+        driveMessageTest(
             """
                 class C {
                     fun f() {

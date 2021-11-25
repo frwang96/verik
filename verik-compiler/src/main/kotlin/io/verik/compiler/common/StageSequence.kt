@@ -36,7 +36,7 @@ class StageSequence {
         stages.add(FlushStage)
     }
 
-    fun <T : ProjectStage> contains(stageClass: KClass<T>): Boolean {
+    fun <S : ProjectStage> contains(stageClass: KClass<S>): Boolean {
         return stages.any { it::class == stageClass }
     }
 

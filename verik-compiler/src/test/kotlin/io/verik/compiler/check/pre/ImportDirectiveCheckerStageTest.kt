@@ -16,14 +16,14 @@
 
 package io.verik.compiler.check.pre
 
-import io.verik.compiler.util.BaseTest
+import io.verik.compiler.test.BaseTest
 import org.junit.jupiter.api.Test
 
 internal class ImportDirectiveCheckerStageTest : BaseTest() {
 
     @Test
     fun `import not found`() {
-        driveTest(
+        driveMessageTest(
             """
                 import java.time.LocalDateTime
             """.trimIndent(),
@@ -34,7 +34,7 @@ internal class ImportDirectiveCheckerStageTest : BaseTest() {
 
     @Test
     fun `import not found all under`() {
-        driveTest(
+        driveMessageTest(
             """
                 import java.time.*
             """.trimIndent(),

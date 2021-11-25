@@ -16,15 +16,15 @@
 
 package io.verik.compiler.transform.mid
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findExpression
+import io.verik.compiler.test.BaseTest
+import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
 internal class ConstantPropagatorStageTest : BaseTest() {
 
     @Test
     fun `constant propagation`() {
-        driveTest(
+        driveElementTest(
             """
                 const val x = 0
                 fun f() {

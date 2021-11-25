@@ -16,14 +16,14 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.util.BaseTest
+import io.verik.compiler.test.BaseTest
 import org.junit.jupiter.api.Test
 
 internal class AnnotationCheckerStageTest : BaseTest() {
 
     @Test
     fun `class top annotation illegal`() {
-        driveTest(
+        driveMessageTest(
             """
                 @SimTop
                 class C
@@ -35,7 +35,7 @@ internal class AnnotationCheckerStageTest : BaseTest() {
 
     @Test
     fun `function annotations conflicting`() {
-        driveTest(
+        driveMessageTest(
             """
                 @Com
                 @Seq

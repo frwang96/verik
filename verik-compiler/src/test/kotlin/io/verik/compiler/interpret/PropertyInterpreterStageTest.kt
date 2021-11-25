@@ -16,15 +16,15 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findDeclaration
+import io.verik.compiler.test.BaseTest
+import io.verik.compiler.test.findDeclaration
 import org.junit.jupiter.api.Test
 
 internal class PropertyInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret module instantiation`() {
-        driveTest(
+        driveElementTest(
             """
                 class M(@In var x: Boolean) : Module()
                 class Top : Module() {
@@ -39,7 +39,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret module instantiation not connected`() {
-        driveTest(
+        driveElementTest(
             """
                 class M(@Out var x: Boolean) : Module()
                 class Top : Module() {
@@ -54,7 +54,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret module instantiation not connected illegal`() {
-        driveTest(
+        driveMessageTest(
             """
                 class M(@In var x: Boolean) : Module()
                 class Top : Module() {
@@ -69,7 +69,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret module interface instantiation`() {
-        driveTest(
+        driveElementTest(
             """
                 class MI : ModuleInterface()
                 class Top : Module() {
@@ -84,7 +84,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret module port instantiation`() {
-        driveTest(
+        driveElementTest(
             """
                 class MP : ModulePort()
                 class Top : Module() {
@@ -99,7 +99,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret clocking block instantiation`() {
-        driveTest(
+        driveElementTest(
             """
                 class CB(override val event: Event) : ClockingBlock()
                 class Top : Module() {
@@ -114,7 +114,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret clocking block instantiation illegal`() {
-        driveTest(
+        driveMessageTest(
             """
                 class CB(override val event: Event, @In var x: Boolean) : ClockingBlock()
                 class Top : Module() {
@@ -129,7 +129,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret property`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = false
             """.trimIndent(),
@@ -140,7 +140,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret property static`() {
-        driveTest(
+        driveElementTest(
             """
                 object O {
                     var x = false

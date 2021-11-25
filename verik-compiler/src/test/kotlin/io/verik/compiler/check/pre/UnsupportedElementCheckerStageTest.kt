@@ -16,14 +16,14 @@
 
 package io.verik.compiler.check.pre
 
-import io.verik.compiler.util.BaseTest
+import io.verik.compiler.test.BaseTest
 import org.junit.jupiter.api.Test
 
 internal class UnsupportedElementCheckerStageTest : BaseTest() {
 
     @Test
     fun `throw expression`() {
-        driveTest(
+        driveMessageTest(
             """
                 fun f() { throw IllegalArgumentException() }
             """.trimIndent(),

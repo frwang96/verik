@@ -16,14 +16,14 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.util.BaseTest
+import io.verik.compiler.test.BaseTest
 import org.junit.jupiter.api.Test
 
 internal class EnumInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret enum`() {
-        driveTest(
+        driveElementTest(
             """
                 enum class E { A }
             """.trimIndent(),

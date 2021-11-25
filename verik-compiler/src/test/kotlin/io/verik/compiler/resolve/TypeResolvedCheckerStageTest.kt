@@ -16,14 +16,14 @@
 
 package io.verik.compiler.resolve
 
-import io.verik.compiler.util.BaseTest
+import io.verik.compiler.test.BaseTest
 import org.junit.jupiter.api.Test
 
 internal class TypeResolvedCheckerStageTest : BaseTest() {
 
     @Test
     fun `cardinal not resolved`() {
-        driveTest(
+        driveMessageTest(
             """
                 val x = u(0).ext<`*`>()
             """.trimIndent(),

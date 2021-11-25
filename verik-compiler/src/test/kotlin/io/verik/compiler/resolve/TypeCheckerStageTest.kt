@@ -16,14 +16,14 @@
 
 package io.verik.compiler.resolve
 
-import io.verik.compiler.util.BaseTest
+import io.verik.compiler.test.BaseTest
 import org.junit.jupiter.api.Test
 
 internal class TypeCheckerStageTest : BaseTest() {
 
     @Test
     fun `expression equals violation`() {
-        driveTest(
+        driveMessageTest(
             """
                 var x = u(0x00)
                 fun f() {
@@ -37,7 +37,7 @@ internal class TypeCheckerStageTest : BaseTest() {
 
     @Test
     fun `unary operator violation`() {
-        driveTest(
+        driveMessageTest(
             """
                 var x: Ubit<`4`> = nc()
                 fun f() {
@@ -51,7 +51,7 @@ internal class TypeCheckerStageTest : BaseTest() {
 
     @Test
     fun `binary operator violation`() {
-        driveTest(
+        driveMessageTest(
             """
                 var x: Ubit<`4`> = nc()
                 fun f() {
@@ -65,7 +65,7 @@ internal class TypeCheckerStageTest : BaseTest() {
 
     @Test
     fun `extension violation`() {
-        driveTest(
+        driveMessageTest(
             """
                 var x: Ubit<`8`> = nc()
                 fun f() {
@@ -79,7 +79,7 @@ internal class TypeCheckerStageTest : BaseTest() {
 
     @Test
     fun `truncation violation`() {
-        driveTest(
+        driveMessageTest(
             """
                 var x: Ubit<`4`> = nc()
                 fun f() {
@@ -93,7 +93,7 @@ internal class TypeCheckerStageTest : BaseTest() {
 
     @Test
     fun `concatenation violation`() {
-        driveTest(
+        driveMessageTest(
             """
                 var x: Ubit<`1`> = cat(false, false)
             """.trimIndent(),
@@ -104,7 +104,7 @@ internal class TypeCheckerStageTest : BaseTest() {
 
     @Test
     fun `replication violation`() {
-        driveTest(
+        driveMessageTest(
             """
                 var x: Ubit<`1`> = rep<`3`>(false)
             """.trimIndent(),

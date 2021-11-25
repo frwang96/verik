@@ -18,26 +18,24 @@ package io.verik.compiler.message
 
 class GradleMessagePrinter(private val debug: Boolean) : MessagePrinter() {
 
-    override fun warning(templateName: String, message: String, location: SourceLocation) {
+    override fun warning(message: String, location: SourceLocation) {
         print("w: ")
-        printMessage(templateName, message, location)
+        printMessage(message, location)
         if (debug)
             printStackTrace(Thread.currentThread().stackTrace)
     }
 
-    override fun error(templateName: String, message: String, location: SourceLocation) {
+    override fun error(message: String, location: SourceLocation) {
         print("e: ")
-        printMessage(templateName, message, location)
+        printMessage(message, location)
         if (debug)
             printStackTrace(Thread.currentThread().stackTrace)
     }
 
-    private fun printMessage(templateName: String, message: String, location: SourceLocation) {
+    private fun printMessage(message: String, location: SourceLocation) {
         print("${location.path}: ")
         if (location.line != 0)
             print("(${location.line}, ${location.column}): ")
-        if (debug)
-            print("$templateName: ")
         println(message)
     }
 

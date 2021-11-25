@@ -16,15 +16,15 @@
 
 package io.verik.compiler.transform.mid
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findStatements
+import io.verik.compiler.test.BaseTest
+import io.verik.compiler.test.findStatements
 import org.junit.jupiter.api.Test
 
 internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
 
     @Test
     fun `unlift if expression`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = true
                 fun f() {
@@ -55,7 +55,7 @@ internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
 
     @Test
     fun `unlift when expression`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f() {
                     val y = when {
@@ -79,7 +79,7 @@ internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
 
     @Test
     fun `unlift when expression Nothing type`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f() {
                     @Suppress("SimplifyWhenWithBooleanConstantCondition")

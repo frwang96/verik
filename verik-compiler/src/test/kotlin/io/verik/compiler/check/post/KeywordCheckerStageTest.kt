@@ -16,14 +16,14 @@
 
 package io.verik.compiler.check.post
 
-import io.verik.compiler.util.BaseTest
+import io.verik.compiler.test.BaseTest
 import org.junit.jupiter.api.Test
 
 internal class KeywordCheckerStageTest : BaseTest() {
 
     @Test
     fun `keyword property`() {
-        driveTest(
+        driveMessageTest(
             """
                 const val alias = false
             """.trimIndent(),

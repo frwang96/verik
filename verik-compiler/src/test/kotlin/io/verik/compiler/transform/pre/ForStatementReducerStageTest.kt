@@ -16,15 +16,15 @@
 
 package io.verik.compiler.transform.pre
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.findExpression
+import io.verik.compiler.test.BaseTest
+import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
 internal class ForStatementReducerStageTest : BaseTest() {
 
     @Test
     fun `reduce for expression`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f() {
                     @Suppress("ControlFlowWithEmptyBody")
