@@ -23,7 +23,7 @@ internal class PackageWrapperSerializerStageTest : BaseTest() {
 
     @Test
     fun `package file`() {
-        driveTest(
+        driveTextFileTest(
             """
                 class C
             """.trimIndent(),

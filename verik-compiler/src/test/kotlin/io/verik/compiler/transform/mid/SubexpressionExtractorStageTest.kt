@@ -24,7 +24,7 @@ internal class SubexpressionExtractorStageTest : BaseTest() {
 
     @Test
     fun `streaming expression`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = u(0)
                 fun f() {

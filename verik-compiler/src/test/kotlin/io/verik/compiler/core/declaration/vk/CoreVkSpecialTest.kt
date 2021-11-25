@@ -41,7 +41,7 @@ internal class CoreVkSpecialTest : CoreDeclarationTest() {
 
     @Test
     fun `transform nc illegal`() {
-        driveTest(
+        driveMessageTest(
             """
                 var x = false
                 fun f() {

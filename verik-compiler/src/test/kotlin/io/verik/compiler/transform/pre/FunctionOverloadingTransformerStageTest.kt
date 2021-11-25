@@ -24,7 +24,7 @@ internal class FunctionOverloadingTransformerStageTest : BaseTest() {
 
     @Test
     fun `overloaded function`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f() {}
                 fun f(x: Int) {}

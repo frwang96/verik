@@ -24,7 +24,7 @@ internal class ForStatementTransformerStageTest : BaseTest() {
 
     @Test
     fun `transform forEach until`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f() {
                     @Suppress("ForEachParameterNotUsed")
@@ -46,7 +46,7 @@ internal class ForStatementTransformerStageTest : BaseTest() {
 
     @Test
     fun `transform forEach ArrayList`() {
-        driveTest(
+        driveElementTest(
             """
                 val a = ArrayList<Boolean>()
                 fun f() {

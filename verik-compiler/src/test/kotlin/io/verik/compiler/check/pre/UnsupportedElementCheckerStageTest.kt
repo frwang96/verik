@@ -23,7 +23,7 @@ internal class UnsupportedElementCheckerStageTest : BaseTest() {
 
     @Test
     fun `throw expression`() {
-        driveTest(
+        driveMessageTest(
             """
                 fun f() { throw IllegalArgumentException() }
             """.trimIndent(),

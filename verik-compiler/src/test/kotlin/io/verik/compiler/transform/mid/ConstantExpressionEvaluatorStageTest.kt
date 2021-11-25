@@ -56,7 +56,7 @@ internal class ConstantExpressionEvaluatorStageTest : BaseTest() {
 
     @Test
     fun `evaluate Int plus`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = 1 + 1
             """.trimIndent(),
@@ -67,7 +67,7 @@ internal class ConstantExpressionEvaluatorStageTest : BaseTest() {
 
     @Test
     fun `evaluate Ubit plus`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = u(1) + u(1)
             """.trimIndent(),

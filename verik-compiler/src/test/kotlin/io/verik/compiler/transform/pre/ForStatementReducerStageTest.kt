@@ -24,7 +24,7 @@ internal class ForStatementReducerStageTest : BaseTest() {
 
     @Test
     fun `reduce for expression`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f() {
                     @Suppress("ControlFlowWithEmptyBody")

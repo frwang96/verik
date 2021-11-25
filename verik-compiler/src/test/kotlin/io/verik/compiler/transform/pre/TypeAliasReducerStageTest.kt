@@ -24,7 +24,7 @@ internal class TypeAliasReducerStageTest : BaseTest() {
 
     @Test
     fun `reduce type alias`() {
-        driveTest(
+        driveElementTest(
             """
                 typealias U = Ubit<`8`>
                 var x: U = nc()

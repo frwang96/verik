@@ -24,7 +24,7 @@ internal class ScopeExpressionInsertionTransformerStageTest : BaseTest() {
 
     @Test
     fun `reference target declaration`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f() {
                     ArrayList<Boolean>()
@@ -45,7 +45,7 @@ internal class ScopeExpressionInsertionTransformerStageTest : BaseTest() {
 
     @Test
     fun `reference element parent file`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = false
                 class M : Module() {
@@ -61,7 +61,7 @@ internal class ScopeExpressionInsertionTransformerStageTest : BaseTest() {
 
     @Test
     fun `reference property parent basic class`() {
-        driveTest(
+        driveElementTest(
             """
                 object O {
                     var x = false

@@ -23,7 +23,7 @@ internal class ExpressionSerializerTest : BaseTest() {
 
     @Test
     fun `parenthesized expression`() {
-        driveTest(
+        driveTextFileTest(
             """
                 var x = 0
                 var y = (x + 1) * x
@@ -37,7 +37,7 @@ internal class ExpressionSerializerTest : BaseTest() {
 
     @Test
     fun `unary expression prefix`() {
-        driveTest(
+        driveTextFileTest(
             """
                 var x = false
                 var y = !x
@@ -51,7 +51,7 @@ internal class ExpressionSerializerTest : BaseTest() {
 
     @Test
     fun `unary expression postfix`() {
-        driveTest(
+        driveTextFileTest(
             """
                 var x = 0
                 var y = x++
@@ -65,7 +65,7 @@ internal class ExpressionSerializerTest : BaseTest() {
 
     @Test
     fun `binary expression`() {
-        driveTest(
+        driveTextFileTest(
             """
                 var x = 0
                 var y = x + 1
@@ -79,7 +79,7 @@ internal class ExpressionSerializerTest : BaseTest() {
 
     @Test
     fun `reference expression`() {
-        driveTest(
+        driveTextFileTest(
             """
                 var x = 0
                 var y = x
@@ -93,7 +93,7 @@ internal class ExpressionSerializerTest : BaseTest() {
 
     @Test
     fun `call expression`() {
-        driveTest(
+        driveTextFileTest(
             """
                 var x = random()
             """.trimIndent(),
@@ -105,7 +105,7 @@ internal class ExpressionSerializerTest : BaseTest() {
 
     @Test
     fun `scope expression`() {
-        driveTest(
+        driveTextFileTest(
             """
                 var a = ArrayList<Boolean>()
             """.trimIndent(),
@@ -117,7 +117,7 @@ internal class ExpressionSerializerTest : BaseTest() {
 
     @Test
     fun `constant expression`() {
-        driveTest(
+        driveTextFileTest(
             """
                 var x = 0
             """.trimIndent(),
@@ -129,7 +129,7 @@ internal class ExpressionSerializerTest : BaseTest() {
 
     @Test
     fun `struct literal expression`() {
-        driveTest(
+        driveTextFileTest(
             """
                 class S(val x: Boolean) : Struct()
                 var s = S(false)
@@ -146,7 +146,7 @@ internal class ExpressionSerializerTest : BaseTest() {
 
     @Test
     fun `this expression`() {
-        driveTest(
+        driveTextFileTest(
             """
                 class C {
                     private var x = 0
@@ -180,7 +180,7 @@ internal class ExpressionSerializerTest : BaseTest() {
 
     @Test
     fun `return statement`() {
-        driveTest(
+        driveTextFileTest(
             """
                 fun f() {
                     return
@@ -196,7 +196,7 @@ internal class ExpressionSerializerTest : BaseTest() {
 
     @Test
     fun `injected statement`() {
-        driveTest(
+        driveTextFileTest(
             """
                 var x = 0
                 fun f() {
@@ -215,7 +215,7 @@ internal class ExpressionSerializerTest : BaseTest() {
 
     @Test
     fun `string expression`() {
-        driveTest(
+        driveTextFileTest(
             """
                 var x = "abc"
             """.trimIndent(),
@@ -227,7 +227,7 @@ internal class ExpressionSerializerTest : BaseTest() {
 
     @Test
     fun `array access expression`() {
-        driveTest(
+        driveTextFileTest(
             """
                 var x = u(0x00)
                 var y = x[0]
@@ -241,7 +241,7 @@ internal class ExpressionSerializerTest : BaseTest() {
 
     @Test
     fun `concatenation expression`() {
-        driveTest(
+        driveTextFileTest(
             """
                 var x = cat(u(0), u(0))
             """.trimIndent(),
@@ -253,7 +253,7 @@ internal class ExpressionSerializerTest : BaseTest() {
 
     @Test
     fun `replication expression`() {
-        driveTest(
+        driveTextFileTest(
             """
                 var x = rep<`3`>(false)
             """.trimIndent(),
@@ -265,7 +265,7 @@ internal class ExpressionSerializerTest : BaseTest() {
 
     @Test
     fun `streaming expression`() {
-        driveTest(
+        driveTextFileTest(
             """
                 var x = u(0x00).reverse()
             """.trimIndent(),
@@ -277,7 +277,7 @@ internal class ExpressionSerializerTest : BaseTest() {
 
     @Test
     fun `width cast expression`() {
-        driveTest(
+        driveTextFileTest(
             """
                 var x = u(0x0).ext<`8`>()
             """.trimIndent(),
@@ -289,7 +289,7 @@ internal class ExpressionSerializerTest : BaseTest() {
 
     @Test
     fun `if expression`() {
-        driveTest(
+        driveTextFileTest(
             """
                 var x = false
                 fun f() {
@@ -311,7 +311,7 @@ internal class ExpressionSerializerTest : BaseTest() {
 
     @Test
     fun `if expression no then`() {
-        driveTest(
+        driveTextFileTest(
             """
                 var x = false
                 fun f() {
@@ -331,7 +331,7 @@ internal class ExpressionSerializerTest : BaseTest() {
 
     @Test
     fun `if expression nested`() {
-        driveTest(
+        driveTextFileTest(
             """
                 var x = false
                 fun f() {
@@ -365,7 +365,7 @@ internal class ExpressionSerializerTest : BaseTest() {
 
     @Test
     fun `inline if expression`() {
-        driveTest(
+        driveTextFileTest(
             """
                 var x = false
                 var y = if (x) 0 else 1
@@ -379,7 +379,7 @@ internal class ExpressionSerializerTest : BaseTest() {
 
     @Test
     fun `immediate assert statement`() {
-        driveTest(
+        driveTextFileTest(
             """
                 fun f() {
                     assert(true) { println() }
@@ -397,7 +397,7 @@ internal class ExpressionSerializerTest : BaseTest() {
 
     @Test
     fun `case statement`() {
-        driveTest(
+        driveTextFileTest(
             """
                 var x = 0
                 fun f() {
@@ -424,7 +424,7 @@ internal class ExpressionSerializerTest : BaseTest() {
 
     @Test
     fun `while expression`() {
-        driveTest(
+        driveTextFileTest(
             """
                 fun f() {
                     @Suppress("ControlFlowWithEmptyBody")
@@ -442,7 +442,7 @@ internal class ExpressionSerializerTest : BaseTest() {
 
     @Test
     fun `do while expression`() {
-        driveTest(
+        driveTextFileTest(
             """
                 fun f() {
                     @Suppress("ControlFlowWithEmptyBody")
@@ -461,7 +461,7 @@ internal class ExpressionSerializerTest : BaseTest() {
 
     @Test
     fun `for statement`() {
-        driveTest(
+        driveTextFileTest(
             """
                 fun f() {
                     @Suppress("ControlFlowWithEmptyBody")
@@ -479,7 +479,7 @@ internal class ExpressionSerializerTest : BaseTest() {
 
     @Test
     fun `forever statement`() {
-        driveTest(
+        driveTextFileTest(
             """
                 fun f() {
                     forever {}
@@ -496,7 +496,7 @@ internal class ExpressionSerializerTest : BaseTest() {
 
     @Test
     fun `repeat statement`() {
-        driveTest(
+        driveTextFileTest(
             """
                 fun f() {
                     repeat(3) {}
@@ -513,7 +513,7 @@ internal class ExpressionSerializerTest : BaseTest() {
 
     @Test
     fun `event control expression`() {
-        driveTest(
+        driveTextFileTest(
             """
                 var x = false
                 fun f() {
@@ -532,7 +532,7 @@ internal class ExpressionSerializerTest : BaseTest() {
 
     @Test
     fun `delay expression`() {
-        driveTest(
+        driveTextFileTest(
             """
                 fun f() {
                     delay(1)

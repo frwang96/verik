@@ -24,7 +24,7 @@ internal class SmartCastReducerStageTest : BaseTest() {
 
     @Test
     fun `smart cast simple`() {
-        driveTest(
+        driveElementTest(
             """
                 open class C
                 class D : C()
@@ -43,7 +43,7 @@ internal class SmartCastReducerStageTest : BaseTest() {
 
     @Test
     fun `smart cast no receiver`() {
-        driveTest(
+        driveElementTest(
             """
                 open class C
                 class D : C() { fun f(): Boolean { return false } }
@@ -61,7 +61,7 @@ internal class SmartCastReducerStageTest : BaseTest() {
 
     @Test
     fun `smart cast with receiver`() {
-        driveTest(
+        driveElementTest(
             """
                 open class C
                 class D : C() { fun f(): Boolean { return false } }

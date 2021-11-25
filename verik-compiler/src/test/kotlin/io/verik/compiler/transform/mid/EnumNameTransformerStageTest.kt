@@ -24,7 +24,7 @@ internal class EnumNameTransformerStageTest : BaseTest() {
 
     @Test
     fun `string template expression property`() {
-        driveTest(
+        driveElementTest(
             """
                 enum class E { A }
                 val e = E.A
@@ -39,7 +39,7 @@ internal class EnumNameTransformerStageTest : BaseTest() {
 
     @Test
     fun `string template expression enum entry`() {
-        driveTest(
+        driveElementTest(
             """
                 enum class E { A }
                 fun f() {
@@ -53,7 +53,7 @@ internal class EnumNameTransformerStageTest : BaseTest() {
 
     @Test
     fun `call expression println enum entry`() {
-        driveTest(
+        driveElementTest(
             """
                 enum class E { A }
                 fun f() {

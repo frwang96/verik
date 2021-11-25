@@ -23,7 +23,7 @@ internal class TargetClassTest : BaseTest() {
 
     @Test
     fun `serialize type Boolean`() {
-        driveTest(
+        driveTextFileTest(
             """
                 var x: Boolean = nc()
             """.trimIndent(),
@@ -35,7 +35,7 @@ internal class TargetClassTest : BaseTest() {
 
     @Test
     fun `serialize type Ubit`() {
-        driveTest(
+        driveTextFileTest(
             """
                 var x: Ubit<`8`> = nc()
             """.trimIndent(),
@@ -47,7 +47,7 @@ internal class TargetClassTest : BaseTest() {
 
     @Test
     fun `serialize type Sbit`() {
-        driveTest(
+        driveTextFileTest(
             """
                 var x: Sbit<`8`> = nc()
             """.trimIndent(),
@@ -59,7 +59,7 @@ internal class TargetClassTest : BaseTest() {
 
     @Test
     fun `serialize type Packed`() {
-        driveTest(
+        driveTextFileTest(
             """
                 var x: Packed<`8`, Boolean> = nc()
             """.trimIndent(),
@@ -71,7 +71,7 @@ internal class TargetClassTest : BaseTest() {
 
     @Test
     fun `serialize type Unpacked`() {
-        driveTest(
+        driveTextFileTest(
             """
                 var x: Unpacked<`8`, Boolean> = nc()
             """.trimIndent(),
@@ -83,7 +83,7 @@ internal class TargetClassTest : BaseTest() {
 
     @Test
     fun `serialize type ArrayList`() {
-        driveTest(
+        driveTextFileTest(
             """
                 var x: ArrayList<Boolean> = nc()
             """.trimIndent(),

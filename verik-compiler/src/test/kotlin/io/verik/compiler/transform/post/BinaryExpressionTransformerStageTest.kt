@@ -24,7 +24,7 @@ internal class BinaryExpressionTransformerStageTest : BaseTest() {
 
     @Test
     fun `transform plus`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = 0
                 var y = x.plus(1)
@@ -36,7 +36,7 @@ internal class BinaryExpressionTransformerStageTest : BaseTest() {
 
     @Test
     fun `transform comparison`() {
-        driveTest(
+        driveElementTest(
             """
                 @Suppress("SimplifyBooleanWithConstants")
                 var x = 0 < 1

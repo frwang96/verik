@@ -23,7 +23,7 @@ internal class TypeResolvedCheckerStageTest : BaseTest() {
 
     @Test
     fun `cardinal not resolved`() {
-        driveTest(
+        driveMessageTest(
             """
                 val x = u(0).ext<`*`>()
             """.trimIndent(),

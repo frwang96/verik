@@ -24,7 +24,7 @@ internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
 
     @Test
     fun `unlift if expression`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = true
                 fun f() {
@@ -55,7 +55,7 @@ internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
 
     @Test
     fun `unlift when expression`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f() {
                     val y = when {
@@ -79,7 +79,7 @@ internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
 
     @Test
     fun `unlift when expression Nothing type`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f() {
                     @Suppress("SimplifyWhenWithBooleanConstantCondition")

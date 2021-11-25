@@ -24,7 +24,7 @@ internal class InjectedStatementReducerStageTest : BaseTest() {
 
     @Test
     fun `inject literal`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f() {
                     sv("abc")

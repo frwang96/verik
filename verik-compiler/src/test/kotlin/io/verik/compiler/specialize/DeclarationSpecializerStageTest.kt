@@ -24,7 +24,7 @@ internal class DeclarationSpecializerStageTest : BaseTest() {
 
     @Test
     fun `specialize class type parameter cardinal`() {
-        driveTest(
+        driveElementTest(
             """
                 class C<N : `*`>
                 val c = C<`8`>()
@@ -36,7 +36,7 @@ internal class DeclarationSpecializerStageTest : BaseTest() {
 
     @Test
     fun `specialize class type parameter class`() {
-        driveTest(
+        driveElementTest(
             """
                 class C
                 class D<T>
@@ -49,7 +49,7 @@ internal class DeclarationSpecializerStageTest : BaseTest() {
 
     @Test
     fun `specialize class with property`() {
-        driveTest(
+        driveElementTest(
             """
                 class C<N : `*`> {
                     val x: Ubit<N> = nc()
@@ -69,7 +69,7 @@ internal class DeclarationSpecializerStageTest : BaseTest() {
 
     @Test
     fun `specialize function type parameter`() {
-        driveTest(
+        driveElementTest(
             """
                 fun <N : `*`> f() {}
                 val x = f<`8`>()
@@ -81,7 +81,7 @@ internal class DeclarationSpecializerStageTest : BaseTest() {
 
     @Test
     fun `specialize property type parameter`() {
-        driveTest(
+        driveElementTest(
             """
                 class C
                 class D<E> {

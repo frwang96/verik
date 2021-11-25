@@ -24,7 +24,7 @@ internal class CombinationalAssignmentTransformerStageTest : BaseTest() {
 
     @Test
     fun `combinational assignment`() {
-        driveTest(
+        driveElementTest(
             """
                 class M : Module() {
                     var x = false

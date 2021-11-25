@@ -23,7 +23,7 @@ internal class EnumInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret enum`() {
-        driveTest(
+        driveElementTest(
             """
                 enum class E { A }
             """.trimIndent(),

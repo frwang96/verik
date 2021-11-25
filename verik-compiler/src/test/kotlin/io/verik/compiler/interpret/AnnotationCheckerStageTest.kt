@@ -23,7 +23,7 @@ internal class AnnotationCheckerStageTest : BaseTest() {
 
     @Test
     fun `class top annotation illegal`() {
-        driveTest(
+        driveMessageTest(
             """
                 @SimTop
                 class C
@@ -35,7 +35,7 @@ internal class AnnotationCheckerStageTest : BaseTest() {
 
     @Test
     fun `function annotations conflicting`() {
-        driveTest(
+        driveMessageTest(
             """
                 @Com
                 @Seq

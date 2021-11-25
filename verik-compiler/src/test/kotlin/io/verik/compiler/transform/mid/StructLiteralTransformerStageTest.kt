@@ -24,7 +24,7 @@ internal class StructLiteralTransformerStageTest : BaseTest() {
 
     @Test
     fun `struct literal`() {
-        driveTest(
+        driveElementTest(
             """
                 class S(val x: Boolean) : Struct()
                 var s = S(false)

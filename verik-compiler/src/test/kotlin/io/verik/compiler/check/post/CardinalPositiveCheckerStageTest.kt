@@ -23,7 +23,7 @@ internal class CardinalPositiveCheckerStageTest : BaseTest() {
 
     @Test
     fun `cardinal not positive`() {
-        driveTest(
+        driveMessageTest(
             """
                 var x: Ubit<`0`> = u0()
             """.trimIndent(),

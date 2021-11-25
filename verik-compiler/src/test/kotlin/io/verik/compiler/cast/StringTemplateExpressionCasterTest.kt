@@ -24,7 +24,7 @@ internal class StringTemplateExpressionCasterTest : BaseTest() {
 
     @Test
     fun `literal entry`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = "abc"
             """.trimIndent(),
@@ -35,7 +35,7 @@ internal class StringTemplateExpressionCasterTest : BaseTest() {
 
     @Test
     fun `literal entry escaped`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = "\$"
             """.trimIndent(),
@@ -46,7 +46,7 @@ internal class StringTemplateExpressionCasterTest : BaseTest() {
 
     @Test
     fun `expression entry`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = 0
                 var y = "${"$"}x"

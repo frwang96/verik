@@ -24,7 +24,7 @@ internal class AnnotationCasterTest : BaseTest() {
 
     @Test
     fun `annotation simple`() {
-        driveTest(
+        driveElementTest(
             """
                 @Task
                 fun f() {}
@@ -36,7 +36,7 @@ internal class AnnotationCasterTest : BaseTest() {
 
     @Test
     fun `annotation unrecognized`() {
-        driveTest(
+        driveMessageTest(
             """
                 @Synchronized
                 fun f() {}
@@ -48,7 +48,7 @@ internal class AnnotationCasterTest : BaseTest() {
 
     @Test
     fun `annotation on value parameter`() {
-        driveTest(
+        driveElementTest(
             """
                 class M(@In val x: Boolean) : Module()
             """.trimIndent(),

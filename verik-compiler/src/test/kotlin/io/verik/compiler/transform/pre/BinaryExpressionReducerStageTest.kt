@@ -24,7 +24,7 @@ internal class BinaryExpressionReducerStageTest : BaseTest() {
 
     @Test
     fun `reduce plus`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = 0
                 var y = x + 0
@@ -36,7 +36,7 @@ internal class BinaryExpressionReducerStageTest : BaseTest() {
 
     @Test
     fun `reduce nested plus`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = 0
                 var y = 0

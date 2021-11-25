@@ -24,7 +24,7 @@ internal class TypeSpecializerTest : BaseTest() {
 
     @Test
     fun `property typealias`() {
-        driveTest(
+        driveElementTest(
             """
                 typealias N = `8`
                 var x: Ubit<N> = u(0x00)
@@ -36,7 +36,7 @@ internal class TypeSpecializerTest : BaseTest() {
 
     @Test
     fun `property typealias nested`() {
-        driveTest(
+        driveElementTest(
             """
                 typealias N = `8`
                 typealias M = N
@@ -49,7 +49,7 @@ internal class TypeSpecializerTest : BaseTest() {
 
     @Test
     fun `property typealias function nested`() {
-        driveTest(
+        driveElementTest(
             """
                 typealias N = `8`
                 typealias M = ADD<N, N>
@@ -62,7 +62,7 @@ internal class TypeSpecializerTest : BaseTest() {
 
     @Test
     fun `property cardinal out of range`() {
-        driveTest(
+        driveMessageTest(
             """
                 var x: Ubit<EXP<`32`>> = u0()
             """.trimIndent(),

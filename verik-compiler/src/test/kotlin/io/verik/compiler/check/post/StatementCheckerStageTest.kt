@@ -23,7 +23,7 @@ internal class StatementCheckerStageTest : BaseTest() {
 
     @Test
     fun `invalid statement`() {
-        driveTest(
+        driveMessageTest(
             """
                 fun f() {
                     0

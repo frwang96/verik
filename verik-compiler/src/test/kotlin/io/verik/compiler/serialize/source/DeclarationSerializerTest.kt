@@ -23,7 +23,7 @@ internal class DeclarationSerializerTest : BaseTest() {
 
     @Test
     fun `serialize type definition`() {
-        driveTest(
+        driveTextFileTest(
             """
                 fun f(x: Unpacked<`8`, Boolean>): Unpacked<`8`, Boolean> {
                     return x
@@ -41,7 +41,7 @@ internal class DeclarationSerializerTest : BaseTest() {
 
     @Test
     fun `serialize module simple`() {
-        driveTest(
+        driveTextFileTest(
             """
                 class M: Module()
             """.trimIndent(),
@@ -55,7 +55,7 @@ internal class DeclarationSerializerTest : BaseTest() {
 
     @Test
     fun `serialize module with port`() {
-        driveTest(
+        driveTextFileTest(
             """
                 class M(@In var x: Boolean): Module()
             """.trimIndent(),
@@ -71,7 +71,7 @@ internal class DeclarationSerializerTest : BaseTest() {
 
     @Test
     fun `serialize module interface simple`() {
-        driveTest(
+        driveTextFileTest(
             """
                 class MI: ModuleInterface()
             """.trimIndent(),
@@ -85,7 +85,7 @@ internal class DeclarationSerializerTest : BaseTest() {
 
     @Test
     fun `serialize class`() {
-        driveTest(
+        driveTextFileTest(
             """
                 class C
             """.trimIndent(),
@@ -108,7 +108,7 @@ internal class DeclarationSerializerTest : BaseTest() {
 
     @Test
     fun `serialize enum`() {
-        driveTest(
+        driveTextFileTest(
             """
                 enum class E { A, B }
             """.trimIndent(),
@@ -123,7 +123,7 @@ internal class DeclarationSerializerTest : BaseTest() {
 
     @Test
     fun `serialize struct`() {
-        driveTest(
+        driveTextFileTest(
             """
                 class S(val x: Boolean) : Struct()
             """.trimIndent(),
@@ -137,7 +137,7 @@ internal class DeclarationSerializerTest : BaseTest() {
 
     @Test
     fun `serialize function`() {
-        driveTest(
+        driveTextFileTest(
             """
                 fun f() {}
             """.trimIndent(),
@@ -150,7 +150,7 @@ internal class DeclarationSerializerTest : BaseTest() {
 
     @Test
     fun `serialize task`() {
-        driveTest(
+        driveTextFileTest(
             """
                 @Task
                 fun t(x: Int) {}
@@ -164,7 +164,7 @@ internal class DeclarationSerializerTest : BaseTest() {
 
     @Test
     fun `serialize property`() {
-        driveTest(
+        driveTextFileTest(
             """
                 var x = false
             """.trimIndent(),
@@ -176,7 +176,7 @@ internal class DeclarationSerializerTest : BaseTest() {
 
     @Test
     fun `serialize initial block`() {
-        driveTest(
+        driveTextFileTest(
             """
                 class M : Module() {
                     @Run
@@ -196,7 +196,7 @@ internal class DeclarationSerializerTest : BaseTest() {
 
     @Test
     fun `serialize always com block`() {
-        driveTest(
+        driveTextFileTest(
             """
                 class M : Module() {
                     @Com
@@ -216,7 +216,7 @@ internal class DeclarationSerializerTest : BaseTest() {
 
     @Test
     fun `serialize always seq block`() {
-        driveTest(
+        driveTextFileTest(
             """
                 class M : Module() {
                     private var x : Boolean = nc()
@@ -241,7 +241,7 @@ internal class DeclarationSerializerTest : BaseTest() {
 
     @Test
     fun `serialize module instantiation`() {
-        driveTest(
+        driveTextFileTest(
             """
                 class M(@In var x: Boolean): Module()
                 class Top : Module() {
@@ -269,7 +269,7 @@ internal class DeclarationSerializerTest : BaseTest() {
 
     @Test
     fun `serialize module port instantiation`() {
-        driveTest(
+        driveTextFileTest(
             """
                 class MP(@In var x: Boolean) : ModulePort()
                 class Top : ModuleInterface() {
@@ -294,7 +294,7 @@ internal class DeclarationSerializerTest : BaseTest() {
 
     @Test
     fun `serialize clocking block instantiation`() {
-        driveTest(
+        driveTextFileTest(
             """
                 class CB(override val event: Event, @In var x: Boolean) : ClockingBlock()
                 class Top : Module() {
@@ -319,7 +319,7 @@ internal class DeclarationSerializerTest : BaseTest() {
 
     @Test
     fun `serialize value parameter`() {
-        driveTest(
+        driveTextFileTest(
             """
                 fun f(x: Int) {}
             """.trimIndent(),

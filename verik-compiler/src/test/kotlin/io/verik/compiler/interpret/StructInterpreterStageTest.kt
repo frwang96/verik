@@ -24,7 +24,7 @@ internal class StructInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret struct`() {
-        driveTest(
+        driveElementTest(
             """
                 class S(var x: Boolean): Struct()
             """.trimIndent(),

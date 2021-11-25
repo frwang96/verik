@@ -24,7 +24,7 @@ internal class UnaryExpressionReducerStageTest : BaseTest() {
 
     @Test
     fun `reduce not`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = false
                 var y = !x

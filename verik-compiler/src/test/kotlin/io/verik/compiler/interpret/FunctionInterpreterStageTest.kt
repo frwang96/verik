@@ -24,7 +24,7 @@ internal class FunctionInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret always seq block`() {
-        driveTest(
+        driveElementTest(
             """
                 class M: Module() {
                     private var x = false
@@ -41,7 +41,7 @@ internal class FunctionInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret always seq block error`() {
-        driveTest(
+        driveMessageTest(
             """
             class M: Module() {
                 @Seq
@@ -55,7 +55,7 @@ internal class FunctionInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret initial block`() {
-        driveTest(
+        driveElementTest(
             """
                 class M: Module() {
                     @Run
@@ -69,7 +69,7 @@ internal class FunctionInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret task`() {
-        driveTest(
+        driveElementTest(
             """
                 @Task
                 fun t() {}
@@ -81,7 +81,7 @@ internal class FunctionInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret function`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f() {}
             """.trimIndent(),
@@ -92,7 +92,7 @@ internal class FunctionInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret function in class`() {
-        driveTest(
+        driveElementTest(
             """
                 class C {
                     fun f() {}
@@ -105,7 +105,7 @@ internal class FunctionInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret function in object`() {
-        driveTest(
+        driveElementTest(
             """
                 object O {
                     fun f() {}

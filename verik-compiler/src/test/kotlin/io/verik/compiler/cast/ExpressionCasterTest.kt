@@ -25,7 +25,7 @@ internal class ExpressionCasterTest : BaseTest() {
 
     @Test
     fun `block expression empty`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f() {}
             """.trimIndent(),
@@ -36,7 +36,7 @@ internal class ExpressionCasterTest : BaseTest() {
 
     @Test
     fun `unary expression prefix`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = !false
             """.trimIndent(),
@@ -47,7 +47,7 @@ internal class ExpressionCasterTest : BaseTest() {
 
     @Test
     fun `unary expression postfix`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = 0
                 fun f() {
@@ -61,7 +61,7 @@ internal class ExpressionCasterTest : BaseTest() {
 
     @Test
     fun `binary expression`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = 0 + 0
             """.trimIndent(),
@@ -72,7 +72,7 @@ internal class ExpressionCasterTest : BaseTest() {
 
     @Test
     fun `binary expression identifier`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = u(1) shl 1
             """.trimIndent(),
@@ -83,7 +83,7 @@ internal class ExpressionCasterTest : BaseTest() {
 
     @Test
     fun `reference expression simple`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = 0
                 var y = x
@@ -95,7 +95,7 @@ internal class ExpressionCasterTest : BaseTest() {
 
     @Test
     fun `reference expression with package`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = 0
                 var y = test.x
@@ -107,7 +107,7 @@ internal class ExpressionCasterTest : BaseTest() {
 
     @Test
     fun `reference expression with class`() {
-        driveTest(
+        driveElementTest(
             """
                 enum class E { A }
                 var x = E.A
@@ -119,7 +119,7 @@ internal class ExpressionCasterTest : BaseTest() {
 
     @Test
     fun `call expression simple`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f() {
                     println()
@@ -132,7 +132,7 @@ internal class ExpressionCasterTest : BaseTest() {
 
     @Test
     fun `call expression with receiver`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = 0
                 var y = x.plus(1)
@@ -144,7 +144,7 @@ internal class ExpressionCasterTest : BaseTest() {
 
     @Test
     fun `call expression with package`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = io.verik.core.random()
             """.trimIndent(),
@@ -155,7 +155,7 @@ internal class ExpressionCasterTest : BaseTest() {
 
     @Test
     fun `constant expression integer`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = 0
             """.trimIndent(),
@@ -166,7 +166,7 @@ internal class ExpressionCasterTest : BaseTest() {
 
     @Test
     fun `this expression`() {
-        driveTest(
+        driveElementTest(
             """
                 class C {
                     fun f() {
@@ -181,7 +181,7 @@ internal class ExpressionCasterTest : BaseTest() {
 
     @Test
     fun `super expression`() {
-        driveTest(
+        driveElementTest(
             """
                 open class C {
                     fun f() {}
@@ -199,7 +199,7 @@ internal class ExpressionCasterTest : BaseTest() {
 
     @Test
     fun `return statement`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f() {
                     return
@@ -212,7 +212,7 @@ internal class ExpressionCasterTest : BaseTest() {
 
     @Test
     fun `function literal expression property explicit`() {
-        driveTest(
+        driveElementTest(
             """
                 val x: Packed<`8`, Boolean> = nc()
                 fun f() {
@@ -234,7 +234,7 @@ internal class ExpressionCasterTest : BaseTest() {
 
     @Test
     fun `function literal expression property implicit`() {
-        driveTest(
+        driveElementTest(
             """
                 val x: Packed<`8`, Boolean> = nc()
                 fun f() {
@@ -256,7 +256,7 @@ internal class ExpressionCasterTest : BaseTest() {
 
     @Test
     fun `array access expression`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = u(0)
                 var y = x[0]
@@ -268,7 +268,7 @@ internal class ExpressionCasterTest : BaseTest() {
 
     @Test
     fun `is expression`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = 0 is Int
             """.trimIndent(),
@@ -279,7 +279,7 @@ internal class ExpressionCasterTest : BaseTest() {
 
     @Test
     fun `as expression`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = 0 as Int
             """.trimIndent(),
@@ -290,7 +290,7 @@ internal class ExpressionCasterTest : BaseTest() {
 
     @Test
     fun `if expression`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = false 
                 var y = if (x) 1 else 0
@@ -302,7 +302,7 @@ internal class ExpressionCasterTest : BaseTest() {
 
     @Test
     fun `while statement`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f() {
                     @Suppress("ControlFlowWithEmptyBody")
@@ -316,7 +316,7 @@ internal class ExpressionCasterTest : BaseTest() {
 
     @Test
     fun `do while statement`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f() {
                     @Suppress("ControlFlowWithEmptyBody")
@@ -330,7 +330,7 @@ internal class ExpressionCasterTest : BaseTest() {
 
     @Test
     fun `for statement`() {
-        driveTest(
+        driveElementTest(
             """
                 var x: Packed<`8`, Boolean> = nc()
                 fun f() {

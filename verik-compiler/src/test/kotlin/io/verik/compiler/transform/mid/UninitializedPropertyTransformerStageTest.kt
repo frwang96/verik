@@ -24,7 +24,7 @@ internal class UninitializedPropertyTransformerStageTest : BaseTest() {
 
     @Test
     fun `uninitialized property`() {
-        driveTest(
+        driveElementTest(
             """
                 val x: Boolean = nc()
             """.trimIndent(),

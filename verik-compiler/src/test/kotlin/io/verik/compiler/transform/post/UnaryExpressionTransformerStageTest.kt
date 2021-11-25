@@ -24,7 +24,7 @@ internal class UnaryExpressionTransformerStageTest : BaseTest() {
 
     @Test
     fun `transform not`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = false
                 var y = x.not()
@@ -36,7 +36,7 @@ internal class UnaryExpressionTransformerStageTest : BaseTest() {
 
     @Test
     fun `transform postincrement`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = 0
                 var y = x++

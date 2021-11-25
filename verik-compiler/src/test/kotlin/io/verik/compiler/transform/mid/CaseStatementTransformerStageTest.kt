@@ -40,7 +40,7 @@ internal class CaseStatementTransformerStageTest : BaseTest() {
 
     @Test
     fun `case statement`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = 0
                 fun f() {
@@ -63,7 +63,7 @@ internal class CaseStatementTransformerStageTest : BaseTest() {
 
     @Test
     fun `if expression`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = false
                 fun f() {

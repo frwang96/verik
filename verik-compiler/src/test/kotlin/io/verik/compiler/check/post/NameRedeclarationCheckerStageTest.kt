@@ -23,7 +23,7 @@ internal class NameRedeclarationCheckerStageTest : BaseTest() {
 
     @Test
     fun `redeclaration in package`() {
-        driveTest(
+        driveMessageTest(
             """
                 enum class E { A }
                 class A

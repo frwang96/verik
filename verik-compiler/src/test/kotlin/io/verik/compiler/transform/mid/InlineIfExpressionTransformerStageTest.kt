@@ -24,7 +24,7 @@ internal class InlineIfExpressionTransformerStageTest : BaseTest() {
 
     @Test
     fun `transform inline if`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = true
                 var y = if (x) 1 else 0
@@ -36,7 +36,7 @@ internal class InlineIfExpressionTransformerStageTest : BaseTest() {
 
     @Test
     fun `transform inline if block expression`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = true
                 var y = if (x) { 1 } else { 0 }

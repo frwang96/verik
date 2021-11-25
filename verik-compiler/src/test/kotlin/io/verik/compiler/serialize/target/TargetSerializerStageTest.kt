@@ -23,7 +23,7 @@ internal class TargetSerializerStageTest : BaseTest() {
 
     @Test
     fun `target class`() {
-        driveTest(
+        driveTextFileTest(
             """
                 val a: ArrayList<Boolean> = nc()
             """.trimIndent(),
@@ -43,7 +43,7 @@ internal class TargetSerializerStageTest : BaseTest() {
 
     @Test
     fun `target function`() {
-        driveTest(
+        driveTextFileTest(
             """
                 val a: ArrayList<Boolean> = nc()
                 fun f() {

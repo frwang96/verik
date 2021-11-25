@@ -23,7 +23,7 @@ internal class ComponentInstantiationCheckerStageTest : BaseTest() {
 
     @Test
     fun `component instantiation out of context`() {
-        driveTest(
+        driveMessageTest(
             """
                 class M : Module()
                 @Make
@@ -36,7 +36,7 @@ internal class ComponentInstantiationCheckerStageTest : BaseTest() {
 
     @Test
     fun `make annotation illegal`() {
-        driveTest(
+        driveMessageTest(
             """
                 @Make
                 val x = false
@@ -48,7 +48,7 @@ internal class ComponentInstantiationCheckerStageTest : BaseTest() {
 
     @Test
     fun `make annotation required`() {
-        driveTest(
+        driveMessageTest(
             """
                 class M : Module()
                 class N : Module() {

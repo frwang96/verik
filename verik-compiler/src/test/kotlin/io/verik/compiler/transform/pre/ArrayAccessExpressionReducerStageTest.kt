@@ -24,7 +24,7 @@ internal class ArrayAccessExpressionReducerStageTest : BaseTest() {
 
     @Test
     fun `reduce get`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = u(0)
                 var y = x[0]
@@ -36,7 +36,7 @@ internal class ArrayAccessExpressionReducerStageTest : BaseTest() {
 
     @Test
     fun `reduce set`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = ArrayList<Boolean>()
                 fun f() {

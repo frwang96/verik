@@ -38,7 +38,7 @@ import kotlin.reflect.KClass
 
 abstract class BaseTest {
 
-    fun <S : ProjectStage> driveTest(
+    fun <S : ProjectStage> driveElementTest(
         @Language("kotlin") content: String,
         stageClass: KClass<S>,
         expected: String,
@@ -62,7 +62,7 @@ abstract class BaseTest {
         }
     }
 
-    fun driveTest(
+    fun driveMessageTest(
         @Language("kotlin") content: String,
         isError: Boolean,
         message: String
@@ -82,7 +82,7 @@ abstract class BaseTest {
         }
     }
 
-    fun driveTest(
+    fun driveTextFileTest(
         @Language("kotlin") content: String,
         expected: String,
         selector: (OutputContext) -> TextFile

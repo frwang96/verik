@@ -23,7 +23,7 @@ internal class DeclarationCastIndexerStageTest : BaseTest() {
 
     @Test
     fun `error name unicode`() {
-        driveTest(
+        driveMessageTest(
             """
                 @Suppress("ObjectPropertyName")
                 val αβγ = 0

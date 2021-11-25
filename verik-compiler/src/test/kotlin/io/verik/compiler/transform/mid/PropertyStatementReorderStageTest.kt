@@ -24,7 +24,7 @@ internal class PropertyStatementReorderStageTest : BaseTest() {
 
     @Test
     fun `reorder property statement with initializer`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f() {
                     println()
@@ -44,7 +44,7 @@ internal class PropertyStatementReorderStageTest : BaseTest() {
 
     @Test
     fun `reorder property statement without initializer`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f() {
                     println()

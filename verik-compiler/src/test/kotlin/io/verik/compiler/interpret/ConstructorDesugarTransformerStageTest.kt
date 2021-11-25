@@ -24,7 +24,7 @@ internal class ConstructorDesugarTransformerStageTest : BaseTest() {
 
     @Test
     fun `desugar primary constructor simple`() {
-        driveTest(
+        driveElementTest(
             """
                 class C
             """.trimIndent(),
@@ -52,7 +52,7 @@ internal class ConstructorDesugarTransformerStageTest : BaseTest() {
                 )]
             )
         """.trimIndent()
-        driveTest(
+        driveElementTest(
             """
                 class C(val x: Int)
             """.trimIndent(),

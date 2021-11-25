@@ -24,7 +24,7 @@ internal class AssignmentOperatorReducerStageTest : BaseTest() {
 
     @Test
     fun `reduce plus eq`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = 0
                 fun f() {

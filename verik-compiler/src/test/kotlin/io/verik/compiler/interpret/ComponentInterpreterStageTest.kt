@@ -24,7 +24,7 @@ internal class ComponentInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret module simple`() {
-        driveTest(
+        driveElementTest(
             """
                 class M: Module()
             """.trimIndent(),
@@ -35,7 +35,7 @@ internal class ComponentInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret module with port`() {
-        driveTest(
+        driveElementTest(
             """
                 class M(@In var x: Boolean): Module()
             """.trimIndent(),
@@ -46,7 +46,7 @@ internal class ComponentInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret module with port no directionality`() {
-        driveTest(
+        driveMessageTest(
             """
                 class M(var x: Boolean): Module()
             """.trimIndent(),
@@ -57,7 +57,7 @@ internal class ComponentInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret module with port immutable`() {
-        driveTest(
+        driveMessageTest(
             """
                 class M(@In val x: Boolean): Module()
             """.trimIndent(),
@@ -68,7 +68,7 @@ internal class ComponentInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret module interface`() {
-        driveTest(
+        driveElementTest(
             """
                 class MI: ModuleInterface()
             """.trimIndent(),
@@ -79,7 +79,7 @@ internal class ComponentInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret module port`() {
-        driveTest(
+        driveElementTest(
             """
                 class MP: ModulePort()
             """.trimIndent(),
@@ -90,7 +90,7 @@ internal class ComponentInterpreterStageTest : BaseTest() {
 
     @Test
     fun `interpret clocking block`() {
-        driveTest(
+        driveElementTest(
             """
                 class CB(override val event: Event): ClockingBlock()
             """.trimIndent(),

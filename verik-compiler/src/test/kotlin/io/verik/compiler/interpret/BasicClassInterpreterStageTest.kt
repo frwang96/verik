@@ -24,7 +24,7 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
 
     @Test
     fun `basic class simple`() {
-        driveTest(
+        driveElementTest(
             """
                 class C
             """.trimIndent(),
@@ -44,7 +44,7 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
 
     @Test
     fun `basic class with primary constructor parameter`() {
-        driveTest(
+        driveElementTest(
             """
                 class C(x: Int)
             """.trimIndent(),
@@ -64,7 +64,7 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
 
     @Test
     fun `basic class with primary constructor property`() {
-        driveTest(
+        driveElementTest(
             """
                 class C(val x: Int)
             """.trimIndent(),
@@ -85,7 +85,7 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
 
     @Test
     fun `basic class with primary constructor chained`() {
-        driveTest(
+        driveElementTest(
             """
                 open class C
                 class D : C()
@@ -110,7 +110,7 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
 
     @Test
     fun `basic class abstract`() {
-        driveTest(
+        driveElementTest(
             """
                 abstract class C
             """.trimIndent(),
@@ -121,7 +121,7 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
 
     @Test
     fun `basic class declarations static`() {
-        driveTest(
+        driveElementTest(
             """
                 object O
             """.trimIndent(),

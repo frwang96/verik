@@ -23,7 +23,7 @@ class KotlinCompilerAnalyzerStageTest : BaseTest() {
 
     @Test
     fun `compile error`() {
-        driveTest(
+        driveMessageTest(
             """
                 class C {
                     fun f() {

@@ -25,7 +25,7 @@ internal class CallExpressionCasterTest : BaseTest() {
 
     @Test
     fun `type argument explicit`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = u(0).ext<`8`>()
             """.trimIndent(),
@@ -36,7 +36,7 @@ internal class CallExpressionCasterTest : BaseTest() {
 
     @Test
     fun `type argument implicit`() {
-        driveTest(
+        driveElementTest(
             """
                 var x: Ubit<`8`> = u(0).ext()
             """.trimIndent(),
@@ -47,7 +47,7 @@ internal class CallExpressionCasterTest : BaseTest() {
 
     @Test
     fun `value argument unnamed`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f(x: Int) {}
                 var x = f(0)
@@ -59,7 +59,7 @@ internal class CallExpressionCasterTest : BaseTest() {
 
     @Test
     fun `value argument named`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f(x: Int) {}
                 var x = f(x = 0)
@@ -71,7 +71,7 @@ internal class CallExpressionCasterTest : BaseTest() {
 
     @Test
     fun `value argument named order reversed`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f(x: Int, y: String) {}
                 var x = f(y = "", x = 0)
@@ -85,7 +85,7 @@ internal class CallExpressionCasterTest : BaseTest() {
     @Disabled
     // TODO support default arguments
     fun `value argument default`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f(x: Int = 0) {}
                 var x = f()

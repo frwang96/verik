@@ -24,7 +24,7 @@ internal class ConstantExpressionTransformerStageTest : BaseTest() {
 
     @Test
     fun `boolean false`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = false
             """.trimIndent(),
@@ -35,7 +35,7 @@ internal class ConstantExpressionTransformerStageTest : BaseTest() {
 
     @Test
     fun `integer decimal`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = 1_2
             """.trimIndent(),
@@ -46,7 +46,7 @@ internal class ConstantExpressionTransformerStageTest : BaseTest() {
 
     @Test
     fun `integer hexadecimal`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = 0xaA_bB
             """.trimIndent(),
@@ -57,7 +57,7 @@ internal class ConstantExpressionTransformerStageTest : BaseTest() {
 
     @Test
     fun `integer binary`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = 0b0000_1111
             """.trimIndent(),

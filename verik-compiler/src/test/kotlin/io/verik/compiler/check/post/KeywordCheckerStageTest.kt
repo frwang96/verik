@@ -23,7 +23,7 @@ internal class KeywordCheckerStageTest : BaseTest() {
 
     @Test
     fun `keyword property`() {
-        driveTest(
+        driveMessageTest(
             """
                 const val alias = false
             """.trimIndent(),

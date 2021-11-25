@@ -24,7 +24,7 @@ internal class CastTransformerStageTest : BaseTest() {
 
     @Test
     fun `is expression`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f() {
                     0 is Int
@@ -46,7 +46,7 @@ internal class CastTransformerStageTest : BaseTest() {
 
     @Test
     fun `is not expression`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f() {
                     0 !is Int
@@ -72,7 +72,7 @@ internal class CastTransformerStageTest : BaseTest() {
 
     @Test
     fun `as expression`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f() {
                     0 as Int

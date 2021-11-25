@@ -24,7 +24,7 @@ internal class ConstantPropagatorStageTest : BaseTest() {
 
     @Test
     fun `constant propagation`() {
-        driveTest(
+        driveElementTest(
             """
                 const val x = 0
                 fun f() {

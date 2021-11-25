@@ -24,7 +24,7 @@ internal class WhenExpressionCasterTest : BaseTest() {
 
     @Test
     fun `when expression`() {
-        driveTest(
+        driveElementTest(
             """
                 var x = 0
                 fun f() {

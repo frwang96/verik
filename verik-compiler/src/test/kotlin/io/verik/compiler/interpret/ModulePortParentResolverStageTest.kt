@@ -24,7 +24,7 @@ internal class ModulePortParentResolverStageTest : BaseTest() {
 
     @Test
     fun `module port resolve parent`() {
-        driveTest(
+        driveElementTest(
             """
                 class MP : ModulePort()
                 class MI : ModuleInterface() {
@@ -39,7 +39,7 @@ internal class ModulePortParentResolverStageTest : BaseTest() {
 
     @Test
     fun `module port resolve parent illegal out of context`() {
-        driveTest(
+        driveMessageTest(
             """
                 class MP : ModulePort()
                 class M : Module() {
@@ -54,7 +54,7 @@ internal class ModulePortParentResolverStageTest : BaseTest() {
 
     @Test
     fun `module port resolve parent illegal multiple parents`() {
-        driveTest(
+        driveMessageTest(
             """
                 class MP : ModulePort()
                 class MI0 : ModuleInterface() {

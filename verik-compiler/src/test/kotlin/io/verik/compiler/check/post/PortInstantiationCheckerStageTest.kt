@@ -23,7 +23,7 @@ internal class PortInstantiationCheckerStageTest : BaseTest() {
 
     @Test
     fun `illegal expression`() {
-        driveTest(
+        driveMessageTest(
             """
                 class N(@Out var x: Boolean) : Module()
                 class M : Module() {
@@ -38,7 +38,7 @@ internal class PortInstantiationCheckerStageTest : BaseTest() {
 
     @Test
     fun `immutable property`() {
-        driveTest(
+        driveMessageTest(
             """
                 class N(@Out var x: Boolean) : Module()
                 class M : Module() {

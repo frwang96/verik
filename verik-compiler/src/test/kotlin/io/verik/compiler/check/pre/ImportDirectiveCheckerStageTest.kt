@@ -23,7 +23,7 @@ internal class ImportDirectiveCheckerStageTest : BaseTest() {
 
     @Test
     fun `import not found`() {
-        driveTest(
+        driveMessageTest(
             """
                 import java.time.LocalDateTime
             """.trimIndent(),
@@ -34,7 +34,7 @@ internal class ImportDirectiveCheckerStageTest : BaseTest() {
 
     @Test
     fun `import not found all under`() {
-        driveTest(
+        driveMessageTest(
             """
                 import java.time.*
             """.trimIndent(),

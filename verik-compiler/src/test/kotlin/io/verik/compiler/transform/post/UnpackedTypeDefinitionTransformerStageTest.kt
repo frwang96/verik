@@ -24,7 +24,7 @@ internal class UnpackedTypeDefinitionTransformerStageTest : BaseTest() {
 
     @Test
     fun `unpacked type definition`() {
-        driveTest(
+        driveElementTest(
             """
                 fun f(x: Unpacked<`8`, Boolean>): Unpacked<`8`, Boolean> {
                     return x
