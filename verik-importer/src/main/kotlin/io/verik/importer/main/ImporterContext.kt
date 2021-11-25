@@ -16,13 +16,13 @@
 
 package io.verik.importer.main
 
-import io.verik.importer.common.TextFile
-import org.antlr.v4.runtime.tree.ParseTree
+import io.verik.importer.common.FragmentStream
+import java.nio.file.Path
 
 class ImporterContext(
     val config: VerikImporterConfig
 ) {
 
-    var importedTextFiles: List<TextFile> = listOf()
-    var importedParseTrees: List<ParseTree> = listOf()
+    val inputFileContexts: HashMap<Path, InputFileContext> = HashMap()
+    lateinit var fragmentStream: FragmentStream
 }

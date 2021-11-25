@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 
-package io.verik.importer.preprocess
+package io.verik.importer.common
 
-import io.verik.importer.test.ParseTreeTest
-import org.junit.jupiter.api.Test
+class FragmentStream {
 
-internal class PreprocessParserStageTest : ParseTreeTest() {
+    val fragments = ArrayList<Fragment>()
 
-    @Test
-    fun `parse simple`() {
-        driveTest("1 + 1")
+    fun add(fragment: Fragment) {
+        fragments.add(fragment)
     }
 }

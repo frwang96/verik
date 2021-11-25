@@ -14,18 +14,12 @@
  * limitations under the License.
  */
 
-package io.verik.importer.main
+package io.verik.importer.message
 
-import io.verik.importer.common.StageSequence
-import io.verik.importer.preprocess.PreprocessParserStage
-import io.verik.importer.preprocess.PreprocessStage
+import java.nio.file.Path
 
-object StageSequencer {
-
-    fun getStageSequence(): StageSequence {
-        val stageSequence = StageSequence()
-        stageSequence.add(PreprocessParserStage)
-        stageSequence.add(PreprocessStage)
-        return stageSequence
-    }
-}
+data class SourceLocation(
+    val column: Int,
+    val line: Int,
+    val path: Path
+)

@@ -42,12 +42,19 @@ configure<JavaPluginConvention> {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
+tasks.generateGrammarSource {
+    arguments = listOf("-package", "io.verik.importer.antlr")
+    outputDirectory = buildDir.resolve("generated-src/antlr/main/io/verik/importer/antlr")
+}
+
 tasks.compileKotlin {
     kotlinOptions.jvmTarget = "1.8"
+    dependsOn(tasks.generateGrammarSource)
 }
 
 tasks.compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
+    dependsOn(tasks.generateGrammarSource)
 }
 
 tasks.test {

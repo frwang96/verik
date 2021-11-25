@@ -16,27 +16,19 @@
 
 package io.verik.importer.preprocess
 
-import io.verik.importer.antlr.SystemVerilogPreprocessorLexer
-import io.verik.importer.antlr.SystemVerilogPreprocessorParser
+import io.verik.importer.common.FragmentStream
 import io.verik.importer.common.ImporterStage
 import io.verik.importer.main.ImporterContext
-import org.antlr.v4.runtime.CharStreams
-import org.antlr.v4.runtime.CommonTokenStream
-import org.antlr.v4.runtime.tree.ParseTree
+import org.antlr.v4.runtime.tree.ParseTreeWalker
 
-object PreprocessParserStage : ImporterStage() {
+object PreprocessStage : ImporterStage() {
 
     override fun process(importerContext: ImporterContext) {
-        importerContext.inputFileContexts.values.forEach {
-            it.parseTree = parse(it.content)
+        val fragmentStream = FragmentStream()
+        importerContext.inputFileContexts.forEach { (file, inputFileContext) ->
+            val preprocessListener = PreprocessListener(file, fragmentStream)
+            ParseTreeWalker.DEFAULT.walk(preprocessListener, inputFileContext.parseTree)
         }
-    }
-
-    private fun parse(content: String): ParseTree {
-        val charStream = CharStreams.fromString(content)
-        val lexer = SystemVerilogPreprocessorLexer(charStream)
-        val tokenStream = CommonTokenStream(lexer)
-        val parser = SystemVerilogPreprocessorParser(tokenStream)
-        return parser.source_text()
+        importerContext.fragmentStream = fragmentStream
     }
 }

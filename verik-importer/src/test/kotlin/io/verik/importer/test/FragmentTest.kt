@@ -16,24 +16,24 @@
 
 package io.verik.importer.test
 
-import io.verik.importer.common.ParseTreePrinter
-import io.verik.importer.common.TextFile
 import io.verik.importer.main.ImporterContext
+import io.verik.importer.main.InputFileContext
 import io.verik.importer.main.Platform
 import io.verik.importer.main.StageSequencer
 import io.verik.importer.main.VerikImporterConfig
+import org.junit.jupiter.api.Assertions.assertEquals
 import java.nio.file.Paths
 
-abstract class ParseTreeTest {
+abstract class FragmentTest {
 
-    fun driveTest(content: String) {
+    fun driveTest(content: String, expected: String) {
         val config = getConfig()
         val importerContext = ImporterContext(config)
-        val textFile = TextFile(config.importedFiles[0], content)
-        importerContext.importedTextFiles = listOf(textFile)
+        importerContext.inputFileContexts[config.importedFiles[0]] = InputFileContext(content)
         val stageSequence = StageSequencer.getStageSequence()
         stageSequence.process(importerContext)
-        ParseTreePrinter.dump(importerContext.importedParseTrees[0])
+        val actual = importerContext.fragmentStream.fragments.joinToString(separator = "\n") { it.content }
+        assertEquals(expected, actual)
     }
 
     private fun getConfig(): VerikImporterConfig {

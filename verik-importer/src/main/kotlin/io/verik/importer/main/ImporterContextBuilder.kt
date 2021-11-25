@@ -16,7 +16,6 @@
 
 package io.verik.importer.main
 
-import io.verik.importer.common.TextFile
 import java.nio.file.Files
 
 object ImporterContextBuilder {
@@ -28,9 +27,12 @@ object ImporterContextBuilder {
     }
 
     private fun readImportedFiles(importerContext: ImporterContext) {
-        importerContext.importedTextFiles = importerContext.config.importedFiles.map {
+        importerContext.config.importedFiles.forEach {
+            if (it in importerContext.inputFileContexts)
+                throw IllegalArgumentException("Duplicated file: ${it.fileName}")
             val lines = Files.readAllLines(it)
-            TextFile(it, lines.joinToString(separator = "\n", postfix = "\n"))
+            val inputFileContext = InputFileContext(lines.joinToString(separator = "\n", postfix = "\n"))
+            importerContext.inputFileContexts[it] = inputFileContext
         }
     }
 }

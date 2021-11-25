@@ -16,16 +16,9 @@
 
 package io.verik.importer.main
 
-import io.verik.importer.common.StageSequence
-import io.verik.importer.preprocess.PreprocessParserStage
-import io.verik.importer.preprocess.PreprocessStage
+import org.antlr.v4.runtime.tree.ParseTree
 
-object StageSequencer {
+class InputFileContext(val content: String) {
 
-    fun getStageSequence(): StageSequence {
-        val stageSequence = StageSequence()
-        stageSequence.add(PreprocessParserStage)
-        stageSequence.add(PreprocessStage)
-        return stageSequence
-    }
+    lateinit var parseTree: ParseTree
 }

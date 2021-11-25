@@ -16,9 +16,10 @@
 
 package io.verik.importer.common
 
-import java.nio.file.Path
+import io.verik.importer.message.SourceLocation
 
-class TextFile(
-    val path: Path,
-    val content: String
+data class Fragment(
+    val location: SourceLocation,
+    val content: String,
+    val isOriginal: Boolean
 )

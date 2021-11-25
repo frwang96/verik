@@ -14,18 +14,15 @@
  * limitations under the License.
  */
 
-package io.verik.importer.main
+package io.verik.importer.preprocess
 
-import io.verik.importer.common.StageSequence
-import io.verik.importer.preprocess.PreprocessParserStage
-import io.verik.importer.preprocess.PreprocessStage
+import io.verik.importer.test.FragmentTest
+import org.junit.jupiter.api.Test
 
-object StageSequencer {
+internal class PreprocessStageTest : FragmentTest() {
 
-    fun getStageSequence(): StageSequence {
-        val stageSequence = StageSequence()
-        stageSequence.add(PreprocessParserStage)
-        stageSequence.add(PreprocessStage)
-        return stageSequence
+    @Test
+    fun `parse simple`() {
+        driveTest("a", "a")
     }
 }
