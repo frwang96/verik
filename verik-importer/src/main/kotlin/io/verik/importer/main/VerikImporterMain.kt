@@ -16,9 +16,13 @@
 
 package io.verik.importer.main
 
+import io.verik.importer.message.GradleMessagePrinter
+import io.verik.importer.message.MessageCollector
+
 object VerikImporterMain {
 
     fun run(config: VerikImporterConfig) {
+        MessageCollector.messageCollector = MessageCollector(config, GradleMessagePrinter(config.debug))
         val importerContext = ImporterContextBuilder.buildContext(config)
         val stageSequence = StageSequencer.getStageSequence()
         stageSequence.process(importerContext)

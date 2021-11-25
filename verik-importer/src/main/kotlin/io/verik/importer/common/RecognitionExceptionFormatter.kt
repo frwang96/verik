@@ -21,10 +21,11 @@ import org.antlr.v4.runtime.RecognitionException
 
 object RecognitionExceptionFormatter {
 
-    fun format(recognitionException: RecognitionException?, message: String?): String {
+    fun format(recognitionException: RecognitionException?): String {
         return when (recognitionException) {
+            null -> "Unknown error"
             is LexerNoViableAltException -> "Unable to recognize token"
-            else -> "$message"
+            else -> "${recognitionException::class.simpleName}"
         }
     }
 }
