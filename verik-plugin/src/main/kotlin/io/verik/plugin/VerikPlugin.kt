@@ -16,9 +16,9 @@
 
 package io.verik.plugin
 
+import io.verik.compiler.main.VerikException
 import io.verik.compiler.main.VerikMain
 import io.verik.compiler.message.GradleMessagePrinter
-import io.verik.compiler.message.MessageCollectorException
 import io.verik.importer.main.VerikImporterMain
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
@@ -41,7 +41,7 @@ class VerikPlugin : Plugin<Project> {
                 try {
                     VerikMain.run(VerikConfigBuilder.getConfig(project, extension))
                 } catch (exception: Exception) {
-                    if (exception !is MessageCollectorException) {
+                    if (exception !is VerikException) {
                         print("e: ")
                         if (extension.debug) {
                             print("Internal error")

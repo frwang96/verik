@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-package io.verik.importer.main
+package io.verik.importer.common
 
-import java.nio.file.Path
+import org.antlr.v4.runtime.LexerNoViableAltException
+import org.antlr.v4.runtime.RecognitionException
 
-data class VerikImporterConfig(
-    val version: String,
-    val timestamp: String,
-    val projectName: String,
-    val importedFiles: List<Path>,
-    val debug: Boolean,
-    val suppressedWarnings: List<String>,
-    val promotedWarnings: List<String>
-)
+object RecognitionExceptionFormatter {
+
+    fun format(recognitionException: RecognitionException?, message: String?): String {
+        return when (recognitionException) {
+            is LexerNoViableAltException -> "Unable to recognize token"
+            else -> "$message"
+        }
+    }
+}

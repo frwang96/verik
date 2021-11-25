@@ -19,7 +19,10 @@ package io.verik.importer.preprocess
 import io.verik.importer.antlr.SystemVerilogPreprocessorLexer
 import io.verik.importer.antlr.SystemVerilogPreprocessorParser
 import io.verik.importer.common.ImporterStage
+import io.verik.importer.common.RecognitionExceptionFormatter
 import io.verik.importer.main.ImporterContext
+import io.verik.importer.message.Messages
+import io.verik.importer.message.SourceLocation
 import org.antlr.v4.runtime.BaseErrorListener
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
@@ -63,7 +66,9 @@ object PreprocessParserStage : ImporterStage() {
             msg: String?,
             e: RecognitionException?
         ) {
-            throw IllegalArgumentException("${file.fileName}$line:$charPositionInLine: $msg")
+            val location = SourceLocation(charPositionInLine, line, file)
+            val message = RecognitionExceptionFormatter.format(e, msg)
+            Messages.PREPROCESSOR_LEXER_ERROR.on(location, "Preprocessor lexer error: $message")
         }
     }
 
@@ -79,7 +84,9 @@ object PreprocessParserStage : ImporterStage() {
             msg: String?,
             e: RecognitionException?
         ) {
-            throw IllegalArgumentException("${file.fileName}$line:$charPositionInLine: $msg")
+            val location = SourceLocation(charPositionInLine, line, file)
+            val message = RecognitionExceptionFormatter.format(e, msg)
+            Messages.PREPROCESSOR_PARSER_ERROR.on(location, "Preprocessor lexer error: $message")
         }
     }
 }

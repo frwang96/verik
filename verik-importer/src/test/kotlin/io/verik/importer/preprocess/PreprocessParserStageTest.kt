@@ -14,16 +14,19 @@
  * limitations under the License.
  */
 
-package io.verik.importer.main
+package io.verik.importer.preprocess
 
-import java.nio.file.Path
+import io.verik.importer.test.BaseTest
+import org.junit.jupiter.api.Test
 
-data class VerikImporterConfig(
-    val version: String,
-    val timestamp: String,
-    val projectName: String,
-    val importedFiles: List<Path>,
-    val debug: Boolean,
-    val suppressedWarnings: List<String>,
-    val promotedWarnings: List<String>
-)
+internal class PreprocessParserStageTest : BaseTest() {
+
+    @Test
+    fun `lexer unrecognized token`() {
+        driveMessageTest(
+            "`0",
+            false,
+            "Preprocessor lexer error: Unable to recognize token"
+        )
+    }
+}

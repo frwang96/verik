@@ -22,4 +22,6 @@ abstract class VerikImporterPluginExtension {
 
     var importedFiles: List<Path> = listOf()
     var debug: Boolean = false
+    var suppressedWarnings: List<String> = listOf()
+    var promotedWarnings: List<String> = listOf()
 }

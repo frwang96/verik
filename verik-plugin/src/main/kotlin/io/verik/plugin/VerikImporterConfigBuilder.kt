@@ -27,7 +27,9 @@ object VerikImporterConfigBuilder {
             timestamp = VerikConfigUtil.getTimestamp(),
             projectName = project.name,
             importedFiles = extension.importedFiles,
-            debug = extension.debug
+            debug = extension.debug,
+            suppressedWarnings = extension.suppressedWarnings,
+            promotedWarnings = extension.promotedWarnings
         )
     }
 }

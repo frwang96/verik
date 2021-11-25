@@ -14,16 +14,9 @@
  * limitations under the License.
  */
 
-package io.verik.importer.main
+package io.verik.importer.message
 
-import java.nio.file.Path
-
-data class VerikImporterConfig(
-    val version: String,
-    val timestamp: String,
-    val projectName: String,
-    val importedFiles: List<Path>,
-    val debug: Boolean,
-    val suppressedWarnings: List<String>,
-    val promotedWarnings: List<String>
-)
+enum class Severity {
+    WARNING,
+    ERROR
+}

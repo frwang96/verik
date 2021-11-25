@@ -14,16 +14,26 @@
  * limitations under the License.
  */
 
-package io.verik.importer.main
+package io.verik.importer.message
 
 import java.nio.file.Path
 
-data class VerikImporterConfig(
-    val version: String,
-    val timestamp: String,
-    val projectName: String,
-    val importedFiles: List<Path>,
-    val debug: Boolean,
-    val suppressedWarnings: List<String>,
-    val promotedWarnings: List<String>
-)
+class MessageTemplate0(
+    override val severity: Severity,
+    override val template: String
+) : AbstractMessageTemplate() {
+
+    fun on(path: Path) {
+        MessageCollector.messageCollector.message(name, format(), SourceLocation(0, 0, path), severity)
+    }
+}
+
+class MessageTemplate1<A>(
+    override val severity: Severity,
+    override val template: String
+) : AbstractMessageTemplate() {
+
+    fun on(location: SourceLocation, a: A) {
+        MessageCollector.messageCollector.message(name, format(a), location, severity)
+    }
+}

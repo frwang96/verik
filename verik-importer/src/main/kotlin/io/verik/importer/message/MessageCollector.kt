@@ -14,28 +14,21 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.message
+package io.verik.importer.message
 
-import io.verik.compiler.main.VerikConfig
-import io.verik.compiler.main.VerikException
+import io.verik.importer.main.VerikImporterConfig
+import io.verik.importer.main.VerikImporterException
 
 class MessageCollector(
-    private val config: VerikConfig,
+    private val config: VerikImporterConfig,
     private val messagePrinter: MessagePrinter
 ) {
-
-    private var errorCount = 0
 
     fun message(templateName: String, message: String, location: SourceLocation, severity: Severity) {
         when (severity) {
             Severity.WARNING -> warning(templateName, message, location)
             Severity.ERROR -> error(templateName, message, location)
         }
-    }
-
-    fun flush() {
-        if (errorCount != 0)
-            throw VerikException()
     }
 
     private fun warning(templateName: String, message: String, location: SourceLocation) {
@@ -46,19 +39,11 @@ class MessageCollector(
     }
 
     private fun error(templateName: String, message: String, location: SourceLocation) {
-        if (!config.debug && templateName == Messages.INTERNAL_ERROR.name) {
+        if (!config.debug && templateName == Messages.INTERNAL_ERROR.name)
             messagePrinter.error("Internal error: Set debug mode for more details", location)
-            throw VerikException()
-        } else {
+        else
             messagePrinter.error(message, location)
-            incrementErrorCount()
-        }
-    }
-
-    private fun incrementErrorCount() {
-        errorCount++
-        if (errorCount >= config.maxErrorCount)
-            throw VerikException()
+        throw VerikImporterException()
     }
 
     companion object {

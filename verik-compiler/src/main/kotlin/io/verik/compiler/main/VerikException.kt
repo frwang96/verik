@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.message
+package io.verik.compiler.main
 
-class MessageCollectorException : Exception()
+class VerikException : Exception()

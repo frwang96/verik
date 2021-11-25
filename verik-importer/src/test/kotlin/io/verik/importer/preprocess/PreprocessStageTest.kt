@@ -16,18 +16,13 @@
 
 package io.verik.importer.preprocess
 
-import io.verik.importer.test.FragmentTest
+import io.verik.importer.test.BaseTest
 import org.junit.jupiter.api.Test
 
-internal class PreprocessStageTest : FragmentTest() {
+internal class PreprocessStageTest : BaseTest() {
 
     @Test
-    fun `parse simple`() {
-        driveTest("a", "a")
-    }
-
-    @Test
-    fun `parse directive invalid`() {
-        driveTest("`0", "a")
+    fun `preprocess simple`() {
+        driveFragmentTest("a", "a")
     }
 }

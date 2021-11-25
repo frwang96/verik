@@ -38,6 +38,26 @@ import kotlin.reflect.KClass
 
 abstract class BaseTest {
 
+    fun driveMessageTest(
+        @Language("kotlin") content: String,
+        isError: Boolean,
+        message: String
+    ) {
+        val projectContext = getProjectContext(content)
+        val stageSequence = StageSequencer.getStageSequence()
+        if (isError) {
+            val throwable = assertThrows<TestErrorException> {
+                stageSequence.process(projectContext)
+            }
+            assertEquals(throwable.message, message)
+        } else {
+            val throwable = assertThrows<TestWarningException> {
+                stageSequence.process(projectContext)
+            }
+            assertEquals(throwable.message, message)
+        }
+    }
+
     fun <S : ProjectStage> driveElementTest(
         @Language("kotlin") content: String,
         stageClass: KClass<S>,
@@ -59,26 +79,6 @@ abstract class BaseTest {
         } else {
             val element = selected as EElement
             assertElementEquals(expected, element)
-        }
-    }
-
-    fun driveMessageTest(
-        @Language("kotlin") content: String,
-        isError: Boolean,
-        message: String
-    ) {
-        val projectContext = getProjectContext(content)
-        val stageSequence = StageSequencer.getStageSequence()
-        if (isError) {
-            val throwable = assertThrows<TestErrorException> {
-                stageSequence.stages.forEach { it.accept(projectContext) }
-            }
-            assertEquals(throwable.message, message)
-        } else {
-            val throwable = assertThrows<TestWarningException> {
-                stageSequence.stages.forEach { it.accept(projectContext) }
-            }
-            assertEquals(throwable.message, message)
         }
     }
 
@@ -177,7 +177,7 @@ abstract class BaseTest {
         }
     }
 
-    fun assertOutputTextEquals(expected: String, actual: TextFile) {
+    internal fun assertOutputTextEquals(expected: String, actual: TextFile) {
         val expectedLines = expected.lines()
             .dropLastWhile { it.isEmpty() }
         val actualLines = actual.content.lines()

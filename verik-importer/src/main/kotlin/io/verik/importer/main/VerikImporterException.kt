@@ -16,14 +16,4 @@
 
 package io.verik.importer.main
 
-import java.nio.file.Path
-
-data class VerikImporterConfig(
-    val version: String,
-    val timestamp: String,
-    val projectName: String,
-    val importedFiles: List<Path>,
-    val debug: Boolean,
-    val suppressedWarnings: List<String>,
-    val promotedWarnings: List<String>
-)
+class VerikImporterException : Exception()
