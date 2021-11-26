@@ -23,6 +23,7 @@ import io.verik.importer.main.VerikImporterMain
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.plugins.JavaPluginConvention
 import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
 import io.verik.compiler.message.GradleMessagePrinter as VerikGradleMessagePrinter
 import io.verik.importer.message.GradleMessagePrinter as VerikImporterGradleMessagePrinter
@@ -91,6 +92,12 @@ class VerikPlugin : Plugin<Project> {
         task.group = "verik"
         task.outputs.cacheIf { false }
         task.outputs.upToDateWhen { false }
+        task.outputs.dir(VerikImporterConfigBuilder.getBuildDir(project))
+
+        val sourceSets = project.convention.getPlugin(JavaPluginConvention::class.java).sourceSets
+        sourceSets.getByName("main").java {
+            it.srcDir(VerikImporterConfigBuilder.getBuildDir(project).resolve("src"))
+        }
     }
 
     private fun printErrorMessage(

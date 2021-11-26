@@ -18,6 +18,7 @@ package io.verik.plugin
 
 import io.verik.importer.main.VerikImporterConfig
 import org.gradle.api.Project
+import java.nio.file.Path
 
 object VerikImporterConfigBuilder {
 
@@ -31,5 +32,9 @@ object VerikImporterConfigBuilder {
             suppressedWarnings = extension.suppressedWarnings,
             promotedWarnings = extension.promotedWarnings
         )
+    }
+
+    fun getBuildDir(project: Project): Path {
+        return project.buildDir.resolve("verik-import").toPath()
     }
 }

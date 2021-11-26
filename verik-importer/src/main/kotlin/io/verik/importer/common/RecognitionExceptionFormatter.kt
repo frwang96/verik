@@ -23,9 +23,8 @@ object RecognitionExceptionFormatter {
 
     fun format(recognitionException: RecognitionException?): String {
         return when (recognitionException) {
-            null -> "Unknown error"
             is LexerNoViableAltException -> "Unable to recognize token"
-            else -> "${recognitionException::class.simpleName}"
+            else -> "Unknown error"
         }
     }
 }
