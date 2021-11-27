@@ -65,7 +65,7 @@ object PreprocessorParserStage : ImporterStage() {
             msg: String?,
             e: RecognitionException?
         ) {
-            val location = SourceLocation(charPositionInLine, line, file)
+            val location = SourceLocation(file, line, charPositionInLine)
             val message = RecognitionExceptionFormatter.format(e)
             Messages.PREPROCESSOR_LEXER_ERROR.on(location, message)
         }
@@ -83,7 +83,7 @@ object PreprocessorParserStage : ImporterStage() {
             msg: String?,
             e: RecognitionException?
         ) {
-            val location = SourceLocation(charPositionInLine, line, file)
+            val location = SourceLocation(file, line, charPositionInLine)
             val message = RecognitionExceptionFormatter.format(e)
             Messages.PREPROCESSOR_PARSER_ERROR.on(location, message)
         }

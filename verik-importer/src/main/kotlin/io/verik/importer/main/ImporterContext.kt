@@ -18,6 +18,8 @@ package io.verik.importer.main
 
 import io.verik.importer.common.LexerFragment
 import io.verik.importer.common.PreprocessorFragment
+import io.verik.importer.parse.LexerCharStream
+import org.antlr.v4.runtime.tree.ParseTree
 import java.nio.file.Path
 
 class ImporterContext(
@@ -26,5 +28,7 @@ class ImporterContext(
 
     val inputFileContexts: HashMap<Path, InputFileContext> = HashMap()
     lateinit var preprocessorFragments: ArrayList<PreprocessorFragment>
+    lateinit var lexerCharStream: LexerCharStream
     lateinit var lexerFragments: ArrayList<LexerFragment>
+    lateinit var parserProject: ParseTree
 }

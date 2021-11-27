@@ -44,10 +44,13 @@ object LexerStage : ImporterStage() {
             if (it.channel == Token.DEFAULT_CHANNEL)
                 lexerFragments.add(LexerFragment(it, lexerCharStream))
         }
+        importerContext.lexerCharStream = lexerCharStream
         importerContext.lexerFragments = lexerFragments
     }
 
-    private class LexerErrorListener(private val lexerCharStream: LexerCharStream) : BaseErrorListener() {
+    private class LexerErrorListener(
+        private val lexerCharStream: LexerCharStream
+    ) : BaseErrorListener() {
 
         override fun syntaxError(
             recognizer: Recognizer<*, *>?,

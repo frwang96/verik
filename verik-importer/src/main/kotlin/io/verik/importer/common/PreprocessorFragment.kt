@@ -30,7 +30,7 @@ data class PreprocessorFragment(
 
         operator fun invoke(token: Token): PreprocessorFragment {
             val file = (token.inputStream as PreprocessorCharStream).file
-            val location = SourceLocation(token.charPositionInLine, token.line, file)
+            val location = SourceLocation(file, token.line, token.charPositionInLine)
             return PreprocessorFragment(location, token.text, true)
         }
     }

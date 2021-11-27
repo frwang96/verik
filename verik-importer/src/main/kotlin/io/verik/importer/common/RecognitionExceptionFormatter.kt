@@ -23,6 +23,7 @@ object RecognitionExceptionFormatter {
 
     fun format(recognitionException: RecognitionException?): String {
         return when (recognitionException) {
+            null -> "Mismatched token"
             is LexerNoViableAltException -> "Unable to recognize token"
             else -> "Unknown error"
         }

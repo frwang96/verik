@@ -27,7 +27,7 @@ fun PsiElement.location(): SourceLocation {
         textRange.startOffset
     )
     val path = Platform.getPathFromString(containingFile.virtualFile.path)
-    return SourceLocation(lineAndColumn.column, lineAndColumn.line, path)
+    return SourceLocation(path, lineAndColumn.line, lineAndColumn.column)
 }
 
 fun <T> ArrayList<T>.replaceIfContains(old: T, new: T): Boolean {

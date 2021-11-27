@@ -24,7 +24,7 @@ class MessageTemplate0(
 ) : AbstractMessageTemplate() {
 
     fun on(path: Path) {
-        MessageCollector.messageCollector.message(name, format(), SourceLocation(0, 0, path), severity)
+        MessageCollector.messageCollector.message(name, format(), SourceLocation(path, 0, 0), severity)
     }
 }
 

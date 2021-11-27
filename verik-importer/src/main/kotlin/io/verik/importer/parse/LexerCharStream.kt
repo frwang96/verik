@@ -37,11 +37,11 @@ class LexerCharStream(val preprocessorFragments: ArrayList<PreprocessorFragment>
 
     fun getLocation(line: Int, charPositionInLine: Int): SourceLocation {
         if (line >= preprocessorFragments.size)
-            return SourceLocation(0, 0, Paths.get("."))
+            return SourceLocation(Paths.get("."), 0, 0)
         val preprocessorFragment = preprocessorFragments[line - 1]
         return if (preprocessorFragment.isOriginal) {
             val location = preprocessorFragment.location
-            return SourceLocation(location.column + charPositionInLine - 1, location.line, location.path)
+            return SourceLocation(location.path, location.line, location.column + charPositionInLine - 1)
         } else {
             preprocessorFragment.location
         }

@@ -44,7 +44,7 @@ configure<JavaPluginConvention> {
 }
 
 tasks.generateGrammarSource {
-    arguments = listOf("-package", "io.verik.importer.antlr")
+    arguments = listOf("-visitor", "-package", "io.verik.importer.antlr")
     outputDirectory = buildDir.resolve("generated-src/antlr/main/io/verik/importer/antlr")
 }
 
