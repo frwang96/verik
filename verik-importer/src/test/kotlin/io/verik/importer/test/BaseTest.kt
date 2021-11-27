@@ -22,6 +22,8 @@ import io.verik.importer.main.Platform
 import io.verik.importer.main.StageSequencer
 import io.verik.importer.main.VerikImporterConfig
 import io.verik.importer.message.MessageCollector
+import io.verik.importer.parse.LexerStage
+import io.verik.importer.preprocess.PreprocessorStage
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.assertThrows
@@ -48,8 +50,24 @@ abstract class BaseTest {
     fun drivePreprocessorFragmentTest(content: String, expected: String) {
         val importerContext = getImporterContext(content)
         val stageSequence = StageSequencer.getStageSequence()
-        stageSequence.process(importerContext)
+        for (stage in stageSequence.stages) {
+            stage.process(importerContext)
+            if (stage is PreprocessorStage)
+                break
+        }
         val actual = importerContext.preprocessorFragments.joinToString(separator = "\n") { it.content }
+        assertEquals(expected, actual)
+    }
+
+    fun driveLexerFragmentTest(content: String, expected: String) {
+        val importerContext = getImporterContext(content)
+        val stageSequence = StageSequencer.getStageSequence()
+        for (stage in stageSequence.stages) {
+            stage.process(importerContext)
+            if (stage is LexerStage)
+                break
+        }
+        val actual = importerContext.lexerFragments.joinToString(separator = "\n") { it.content }
         assertEquals(expected, actual)
     }
 

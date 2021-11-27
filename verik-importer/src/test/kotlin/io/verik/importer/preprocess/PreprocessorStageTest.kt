@@ -22,7 +22,10 @@ import org.junit.jupiter.api.Test
 internal class PreprocessorStageTest : BaseTest() {
 
     @Test
-    fun `preprocess simple`() {
-        drivePreprocessorFragmentTest("a", "a")
+    fun `preprocessor simple`() {
+        drivePreprocessorFragmentTest(
+            "a",
+            "a"
+        )
     }
 }

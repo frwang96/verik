@@ -14,25 +14,23 @@
  * limitations under the License.
  */
 
-package io.verik.importer.main
+package io.verik.importer.common
 
-import io.verik.importer.common.StageSequence
-import io.verik.importer.parse.LexerStage
-import io.verik.importer.preprocess.PreprocessorParserStage
-import io.verik.importer.preprocess.PreprocessorStage
+import io.verik.importer.message.SourceLocation
+import io.verik.importer.parse.LexerCharStream
+import org.antlr.v4.runtime.Token
 
-object StageSequencer {
+data class LexerFragment(
+    val location: SourceLocation,
+    val type: Int,
+    val content: String
+) {
 
-    fun getStageSequence(): StageSequence {
-        val stageSequence = StageSequence()
+    companion object {
 
-        // Preprocess
-        stageSequence.add(PreprocessorParserStage)
-        stageSequence.add(PreprocessorStage)
-
-        // Parse
-        stageSequence.add(LexerStage)
-
-        return stageSequence
+        operator fun invoke(token: Token, lexerCharStream: LexerCharStream): LexerFragment {
+            val location = lexerCharStream.getLocation(token.line, token.charPositionInLine)
+            return LexerFragment(location, token.type, token.text)
+        }
     }
 }

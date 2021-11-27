@@ -36,12 +36,19 @@ object Messages {
 
     val PREPROCESSOR_LEXER_ERROR = MessageTemplate1<String>(
         Severity.WARNING,
-        "$0"
+        "Preprocessor lexer error: $0"
     )
 
     val PREPROCESSOR_PARSER_ERROR = MessageTemplate1<String>(
         Severity.WARNING,
-        "$0"
+        "Preprocessor parser error: $0"
+    )
+
+// PARSE ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    val LEXER_ERROR = MessageTemplate1<String>(
+        Severity.WARNING,
+        "Lexer error: $0"
     )
 
     init {
