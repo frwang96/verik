@@ -16,6 +16,7 @@
 
 package io.verik.importer.ast.element
 
+import io.verik.importer.ast.common.Visitor
 import io.verik.importer.message.Messages
 import io.verik.importer.message.SourceLocation
 
@@ -34,6 +35,10 @@ abstract class EElement {
             }
         }
     }
+
+    abstract fun accept(visitor: Visitor)
+
+    abstract fun acceptChildren(visitor: Visitor)
 
     override fun toString(): String {
         return "${this::class.simpleName}"

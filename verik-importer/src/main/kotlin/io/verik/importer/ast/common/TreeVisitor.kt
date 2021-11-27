@@ -14,19 +14,13 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.element
+package io.verik.importer.ast.common
 
-import io.verik.importer.ast.common.Visitor
-import io.verik.importer.message.SourceLocation
+import io.verik.importer.ast.element.EElement
 
-class EModule(
-    override val location: SourceLocation,
-    override val name: String
-) : EDeclaration() {
+class TreeVisitor : Visitor() {
 
-    override fun accept(visitor: Visitor) {
-        visitor.visitModule(this)
+    override fun visitElement(element: EElement) {
+        element.acceptChildren(this)
     }
-
-    override fun acceptChildren(visitor: Visitor) {}
 }

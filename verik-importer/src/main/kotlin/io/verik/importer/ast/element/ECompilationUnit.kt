@@ -16,9 +16,23 @@
 
 package io.verik.importer.ast.element
 
+import io.verik.importer.ast.common.Visitor
 import io.verik.importer.message.SourceLocation
 
 class ECompilationUnit(
     override val location: SourceLocation,
     val declarations: ArrayList<EDeclaration>
-) : EElement()
+) : EElement() {
+
+    init {
+        declarations.forEach { it.parent = this }
+    }
+
+    override fun accept(visitor: Visitor) {
+        visitor.visitCompilationUnit(this)
+    }
+
+    override fun acceptChildren(visitor: Visitor) {
+        declarations.forEach { it.accept(visitor) }
+    }
+}
