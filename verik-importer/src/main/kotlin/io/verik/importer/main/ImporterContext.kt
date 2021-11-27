@@ -30,5 +30,5 @@ class ImporterContext(
     lateinit var preprocessorFragments: ArrayList<PreprocessorFragment>
     lateinit var lexerCharStream: LexerCharStream
     lateinit var lexerFragments: ArrayList<LexerFragment>
-    lateinit var parserProject: ParseTree
+    lateinit var parseTree: ParseTree
 }

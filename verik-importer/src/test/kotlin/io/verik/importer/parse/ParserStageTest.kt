@@ -14,21 +14,19 @@
  * limitations under the License.
  */
 
-package io.verik.importer.common
+package io.verik.importer.parse
 
-import org.antlr.v4.runtime.Token
+import io.verik.importer.test.BaseTest
+import org.junit.jupiter.api.Test
 
-data class LexerFragment(
-    val virtualLine: Int,
-    val virtualColumn: Int,
-    val type: FragmentType,
-    val content: String
-) {
+internal class ParserStageTest : BaseTest() {
 
-    companion object {
-
-        operator fun invoke(token: Token): LexerFragment {
-            return LexerFragment(token.line, token.charPositionInLine, FragmentType(token.type), token.text)
-        }
+    @Test
+    fun `parser simple`() {
+        driveMessageTest(
+            "module module",
+            false,
+            "Parser error: Mismatched token: MODULE"
+        )
     }
 }
