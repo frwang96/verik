@@ -82,7 +82,7 @@ import org.jetbrains.kotlin.psi.KtWhileExpression
 
 class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, Unit>() {
 
-    inline fun <reified T : EElement> getElement(element: KtElement): T? {
+    inline fun <reified E : EElement> getElement(element: KtElement): E? {
         @Suppress("UNNECESSARY_SAFE_CALL")
         return element.accept(this, Unit)?.cast()
     }

@@ -16,18 +16,20 @@
 
 package io.verik.importer.test
 
+import io.verik.importer.common.ImporterStage
 import io.verik.importer.main.ImporterContext
 import io.verik.importer.main.InputFileContext
 import io.verik.importer.main.Platform
 import io.verik.importer.main.StageSequencer
 import io.verik.importer.main.VerikImporterConfig
 import io.verik.importer.message.MessageCollector
-import io.verik.importer.parse.LexerStage
+import io.verik.importer.parse.ParserStage
 import io.verik.importer.preprocess.PreprocessorStage
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.assertThrows
 import java.nio.file.Paths
+import kotlin.reflect.KClass
 
 abstract class BaseTest {
 
@@ -63,9 +65,9 @@ abstract class BaseTest {
         val importerContext = getImporterContext(content)
         val stageSequence = StageSequencer.getStageSequence()
         for (stage in stageSequence.stages) {
-            stage.process(importerContext)
-            if (stage is LexerStage)
+            if (stage is ParserStage)
                 break
+            stage.process(importerContext)
         }
         val actual = importerContext.lexerFragments.joinToString(separator = " ") { it.type.toString() }
         assertEquals(expected, actual)
@@ -76,6 +78,17 @@ abstract class BaseTest {
         val importerContext = ImporterContext(config)
         importerContext.inputFileContexts[config.importedFiles[0]] = InputFileContext(content)
         return importerContext
+    }
+
+    fun <S : ImporterStage> driveElementTest(content: String, stageClass: KClass<S>) {
+        val importerContext = getImporterContext(content)
+        val stageSequence = StageSequencer.getStageSequence()
+        assert(stageSequence.contains(stageClass))
+        for (stage in stageSequence.stages) {
+            stage.process(importerContext)
+            if (stage::class == stageClass)
+                break
+        }
     }
 
     companion object {

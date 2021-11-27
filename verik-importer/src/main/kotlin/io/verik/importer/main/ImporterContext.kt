@@ -16,6 +16,7 @@
 
 package io.verik.importer.main
 
+import io.verik.importer.ast.element.ECompilationUnit
 import io.verik.importer.common.LexerFragment
 import io.verik.importer.common.PreprocessorFragment
 import io.verik.importer.parse.LexerCharStream
@@ -31,4 +32,5 @@ class ImporterContext(
     lateinit var lexerCharStream: LexerCharStream
     lateinit var lexerFragments: ArrayList<LexerFragment>
     lateinit var parseTree: ParseTree
+    lateinit var compilationUnit: ECompilationUnit
 }

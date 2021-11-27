@@ -31,13 +31,13 @@ class StageSequence {
         stages.add(stage)
     }
 
+    fun <S : ImporterStage> contains(stageClass: KClass<S>): Boolean {
+        return stages.any { it::class == stageClass }
+    }
+
     fun process(importerContext: ImporterContext) {
         stages.forEach {
             it.process(importerContext)
         }
-    }
-
-    private fun <S : ImporterStage> contains(stageClass: KClass<S>): Boolean {
-        return stages.any { it::class == stageClass }
     }
 }

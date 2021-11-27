@@ -16,6 +16,7 @@
 
 package io.verik.importer.message
 
+import io.verik.importer.ast.element.EElement
 import java.nio.file.Path
 
 class MessageTemplate0(
@@ -35,5 +36,9 @@ class MessageTemplate1<A>(
 
     fun on(location: SourceLocation, a: A) {
         MessageCollector.messageCollector.message(name, format(a), location, severity)
+    }
+
+    fun on(element: EElement, a: A) {
+        MessageCollector.messageCollector.message(name, format(a), element.location, severity)
     }
 }
