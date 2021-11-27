@@ -14,21 +14,31 @@
  * limitations under the License.
  */
 
-package io.verik.importer.common
+package io.verik.importer.cast
 
-import org.antlr.v4.runtime.Token
+import io.verik.importer.test.BaseTest
+import org.junit.jupiter.api.Test
 
-data class LexerFragment(
-    val virtualLine: Int,
-    val virtualColumn: Int,
-    val type: FragmentType,
-    val content: String
-) {
+internal class CasterStageTest : BaseTest() {
 
-    companion object {
+    @Test
+    fun `compilation unit empty`() {
+        driveElementTest(
+            "",
+            CasterStage::class,
+            "CompilationUnit([])"
+        ) { it }
+    }
 
-        operator fun invoke(token: Token): LexerFragment {
-            return LexerFragment(token.line, token.charPositionInLine, FragmentType(token.type), token.text)
-        }
+    @Test
+    fun `compilation unit module`() {
+        driveElementTest(
+            """
+                module M;
+                endmodule
+            """.trimIndent(),
+            CasterStage::class,
+            "CompilationUnit([Module(M)])"
+        ) { it }
     }
 }

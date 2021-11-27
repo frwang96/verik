@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.message
+package io.verik.importer.ast.common
 
-import java.nio.file.Path
+import io.verik.importer.ast.element.EElement
 
-data class SourceLocation(
-    val path: Path,
-    val line: Int,
-    val column: Int
-)
+abstract class TreeVisitor : Visitor() {
+
+    override fun visitElement(element: EElement) {
+        element.acceptChildren(this)
+    }
+}

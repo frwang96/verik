@@ -14,12 +14,9 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.message
+package io.verik.importer.ast.interfaces
 
-import java.nio.file.Path
+interface Declaration {
 
-data class SourceLocation(
-    val path: Path,
-    val line: Int,
-    val column: Int
-)
+    val name: String
+}

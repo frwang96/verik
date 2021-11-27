@@ -75,10 +75,13 @@ abstract class BaseTest {
         val selected = selector(projectContext.project)
         if (selected is List<*>) {
             val elements = selected.map { it as EElement }
-            assertElementEquals(expected, elements)
+            assertElementEquals(
+                getExpectedString(expected),
+                elements.joinToString(prefix = "[", postfix = "]") { ElementPrinter.dump(it) }
+            )
         } else {
             val element = selected as EElement
-            assertElementEquals(expected, element)
+            assertElementEquals(getExpectedString(expected), ElementPrinter.dump(element))
         }
     }
 
@@ -108,16 +111,7 @@ abstract class BaseTest {
         return projectContext
     }
 
-    private fun assertElementEquals(expected: String, actual: EElement) {
-        assertElementEquals(expected, ElementPrinter.dump(actual))
-    }
-
-    private fun assertElementEquals(expected: String, actual: List<EElement>) {
-        val actualString = actual.joinToString(prefix = "[", postfix = "]") { ElementPrinter.dump(it) }
-        assertElementEquals(expected, actualString)
-    }
-
-    private fun assertElementEquals(expected: String, actualString: String) {
+    private fun getExpectedString(expected: String): String {
         val leftRoundBracketCount = expected.count { it == '(' }
         val rightRoundBracketCount = expected.count { it == ')' }
         val leftSquareBracketCount = expected.count { it == '[' }
@@ -135,8 +129,10 @@ abstract class BaseTest {
                 else -> expectedBuilder.append(it)
             }
         }
-        val expectedString = expectedBuilder.toString()
+        return expectedBuilder.toString()
+    }
 
+    private fun assertElementEquals(expectedString: String, actualString: String) {
         var expectedIndex = 0
         var actualIndex = 0
         var match = true

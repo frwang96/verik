@@ -31,7 +31,6 @@ import io.verik.compiler.check.post.UntransformedReferenceCheckerStage
 import io.verik.compiler.check.pre.ImportDirectiveCheckerStage
 import io.verik.compiler.check.pre.UnsupportedElementCheckerStage
 import io.verik.compiler.check.pre.UnsupportedModifierCheckerStage
-import io.verik.compiler.common.StageSequence
 import io.verik.compiler.compile.KotlinCompilerAnalyzerStage
 import io.verik.compiler.compile.KotlinCompilerParserStage
 import io.verik.compiler.compile.KotlinEnvironmentBuilderStage

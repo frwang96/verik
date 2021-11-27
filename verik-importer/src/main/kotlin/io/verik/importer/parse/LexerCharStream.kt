@@ -21,7 +21,6 @@ import io.verik.importer.message.SourceLocation
 import org.antlr.v4.runtime.CharStream
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.misc.Interval
-import java.nio.file.Paths
 
 class LexerCharStream(val preprocessorFragments: ArrayList<PreprocessorFragment>) : CharStream {
 
@@ -36,12 +35,14 @@ class LexerCharStream(val preprocessorFragments: ArrayList<PreprocessorFragment>
     }
 
     fun getLocation(line: Int, charPositionInLine: Int): SourceLocation {
-        if (line >= preprocessorFragments.size)
-            return SourceLocation(0, 0, Paths.get("."))
+        if (line > preprocessorFragments.size) {
+            val location = preprocessorFragments.last().location
+            return SourceLocation(location.path, location.line + 1, 1)
+        }
         val preprocessorFragment = preprocessorFragments[line - 1]
         return if (preprocessorFragment.isOriginal) {
             val location = preprocessorFragment.location
-            return SourceLocation(location.column + charPositionInLine - 1, location.line, location.path)
+            return SourceLocation(location.path, location.line, location.column + charPositionInLine)
         } else {
             preprocessorFragment.location
         }

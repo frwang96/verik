@@ -16,6 +16,8 @@
 
 package io.verik.importer.common
 
+import io.verik.importer.parse.ParserToken
+import org.antlr.v4.runtime.InputMismatchException
 import org.antlr.v4.runtime.LexerNoViableAltException
 import org.antlr.v4.runtime.RecognitionException
 
@@ -23,7 +25,12 @@ object RecognitionExceptionFormatter {
 
     fun format(recognitionException: RecognitionException?): String {
         return when (recognitionException) {
+            null -> "Mismatched token"
             is LexerNoViableAltException -> "Unable to recognize token"
+            is InputMismatchException -> {
+                val token = recognitionException.offendingToken as ParserToken
+                "Mismatched token: ${token.lexerFragment.type}"
+            }
             else -> "Unknown error"
         }
     }

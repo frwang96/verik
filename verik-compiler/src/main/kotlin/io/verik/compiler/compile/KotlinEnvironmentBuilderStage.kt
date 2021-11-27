@@ -94,8 +94,8 @@ object KotlinEnvironmentBuilderStage : ProjectStage() {
             location: CompilerMessageSourceLocation?
         ) {
             val sourceLocation = location
-                ?.let { SourceLocation(it.column, it.line, Platform.getPathFromString(it.path)) }
-                ?: SourceLocation(0, 0, projectDir)
+                ?.let { SourceLocation(Platform.getPathFromString(it.path), it.line, it.column) }
+                ?: SourceLocation(projectDir, 0, 0)
 
             when (severity) {
                 CompilerMessageSeverity.EXCEPTION, CompilerMessageSeverity.ERROR ->

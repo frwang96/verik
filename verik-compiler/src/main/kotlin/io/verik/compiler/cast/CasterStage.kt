@@ -45,7 +45,7 @@ object CasterStage : ProjectStage() {
             files[packageName]!!.add(EFile(location, inputPath, null, ArrayList(declarations)))
         }
 
-        val location = SourceLocation(0, 0, projectContext.config.projectDir)
+        val location = SourceLocation(projectContext.config.projectDir, 0, 0)
         val basicPackages = ArrayList<EBasicPackage>()
         val externBasicPackages = ArrayList<EBasicPackage>()
         var externRootPackage: ERootPackage? = null

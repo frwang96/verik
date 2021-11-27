@@ -37,7 +37,7 @@ abstract class EElement {
         }
     }
 
-    inline fun <reified E> cast(): E? {
+    inline fun <reified E : EElement> cast(): E? {
         return when (this) {
             is E -> this
             else -> {

@@ -19,7 +19,7 @@ package io.verik.importer.message
 import java.nio.file.Path
 
 data class SourceLocation(
-    val column: Int,
+    val path: Path,
     val line: Int,
-    val path: Path
+    val column: Int
 )

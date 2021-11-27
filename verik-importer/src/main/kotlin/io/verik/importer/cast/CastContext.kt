@@ -14,23 +14,26 @@
  * limitations under the License.
  */
 
-package io.verik.importer.main
+package io.verik.importer.cast
 
-import io.verik.importer.ast.element.ECompilationUnit
-import io.verik.importer.common.LexerFragment
-import io.verik.importer.common.PreprocessorFragment
+import io.verik.importer.message.SourceLocation
 import io.verik.importer.parse.LexerCharStream
 import org.antlr.v4.runtime.tree.ParseTree
-import java.nio.file.Path
+import org.antlr.v4.runtime.tree.RuleNode
+import org.antlr.v4.runtime.tree.TerminalNode
 
-class ImporterContext(
-    val config: VerikImporterConfig
+class CastContext(
+    private val lexerCharStream: LexerCharStream
 ) {
 
-    val inputFileContexts: HashMap<Path, InputFileContext> = HashMap()
-    lateinit var preprocessorFragments: ArrayList<PreprocessorFragment>
-    lateinit var lexerCharStream: LexerCharStream
-    lateinit var lexerFragments: ArrayList<LexerFragment>
-    lateinit var parseTree: ParseTree
-    lateinit var compilationUnit: ECompilationUnit
+    fun getLocation(parseTree: ParseTree): SourceLocation {
+        return when (parseTree) {
+            is TerminalNode -> {
+                val symbol = parseTree.symbol
+                lexerCharStream.getLocation(symbol.line, symbol.charPositionInLine)
+            }
+            is RuleNode -> getLocation(parseTree.getChild(0))
+            else -> throw IllegalArgumentException("Unrecognized parse tree type")
+        }
+    }
 }

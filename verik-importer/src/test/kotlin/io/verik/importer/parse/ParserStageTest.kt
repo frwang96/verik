@@ -14,12 +14,19 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.message
+package io.verik.importer.parse
 
-import java.nio.file.Path
+import io.verik.importer.test.BaseTest
+import org.junit.jupiter.api.Test
 
-data class SourceLocation(
-    val path: Path,
-    val line: Int,
-    val column: Int
-)
+internal class ParserStageTest : BaseTest() {
+
+    @Test
+    fun `parser simple`() {
+        driveMessageTest(
+            "module module",
+            false,
+            "Parser error: Mismatched token: MODULE"
+        )
+    }
+}

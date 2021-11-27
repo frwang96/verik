@@ -14,24 +14,25 @@
  * limitations under the License.
  */
 
-package io.verik.importer.common
+package io.verik.importer.ast.element
 
+import io.verik.importer.ast.common.Visitor
 import io.verik.importer.message.SourceLocation
-import io.verik.importer.preprocess.PreprocessorCharStream
-import org.antlr.v4.runtime.Token
 
-data class PreprocessorFragment(
-    val location: SourceLocation,
-    val content: String,
-    val isOriginal: Boolean
-) {
+class ECompilationUnit(
+    override val location: SourceLocation,
+    val declarations: ArrayList<EDeclaration>
+) : EElement() {
 
-    companion object {
+    init {
+        declarations.forEach { it.parent = this }
+    }
 
-        operator fun invoke(token: Token): PreprocessorFragment {
-            val file = (token.inputStream as PreprocessorCharStream).file
-            val location = SourceLocation(file, token.line, token.charPositionInLine + 1)
-            return PreprocessorFragment(location, token.text, true)
-        }
+    override fun accept(visitor: Visitor) {
+        visitor.visitCompilationUnit(this)
+    }
+
+    override fun acceptChildren(visitor: Visitor) {
+        declarations.forEach { it.accept(visitor) }
     }
 }

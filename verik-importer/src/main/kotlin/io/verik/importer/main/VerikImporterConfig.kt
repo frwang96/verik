@@ -22,6 +22,7 @@ data class VerikImporterConfig(
     val version: String,
     val timestamp: String,
     val projectName: String,
+    val projectDir: Path,
     val importedFiles: List<Path>,
     val debug: Boolean,
     val suppressedWarnings: List<String>,

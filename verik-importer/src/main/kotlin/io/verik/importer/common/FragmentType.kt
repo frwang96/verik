@@ -17,25 +17,20 @@
 package io.verik.importer.common
 
 import io.verik.importer.antlr.SystemVerilogLexer
-import org.antlr.v4.runtime.Token
 
-enum class FragmentType {
-    EOF,
-    SEMICOLON,
-    ENDMODULE,
-    MODULE,
-    SimpleIdentifier;
+enum class FragmentType(val index: Int) {
+    EOF(SystemVerilogLexer.EOF),
+    SEMICOLON(SystemVerilogLexer.SEMICOLON),
+    ENDMODULE(SystemVerilogLexer.ENDMODULE),
+    MODULE(SystemVerilogLexer.MODULE),
+    SimpleIdentifier(SystemVerilogLexer.SimpleIdentifier);
 
     companion object {
 
         private val typeMap = HashMap<Int, FragmentType>()
 
         init {
-            typeMap[Token.EOF] = EOF
-            typeMap[SystemVerilogLexer.SEMICOLON] = SEMICOLON
-            typeMap[SystemVerilogLexer.ENDMODULE] = ENDMODULE
-            typeMap[SystemVerilogLexer.MODULE] = MODULE
-            typeMap[SystemVerilogLexer.SimpleIdentifier] = SimpleIdentifier
+            values().forEach { typeMap[it.index] = it }
         }
 
         operator fun invoke(type: Int): FragmentType {

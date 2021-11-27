@@ -14,12 +14,8 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.message
+package io.verik.importer.ast.element
 
-import java.nio.file.Path
+import io.verik.importer.ast.interfaces.Declaration
 
-data class SourceLocation(
-    val path: Path,
-    val line: Int,
-    val column: Int
-)
+abstract class EDeclaration : EElement(), Declaration

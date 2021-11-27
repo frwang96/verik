@@ -51,6 +51,11 @@ object Messages {
         "Lexer error: $0"
     )
 
+    val PARSER_ERROR = MessageTemplate1<String>(
+        Severity.WARNING,
+        "Parser error: $0"
+    )
+
     init {
         Messages::class.declaredMemberProperties.forEach {
             val messageTemplate = it.get(Messages)

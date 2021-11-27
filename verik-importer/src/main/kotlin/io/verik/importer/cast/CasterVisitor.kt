@@ -1,0 +1,49 @@
+/*
+ * Copyright (c) 2021 Francis Wang
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.verik.importer.cast
+
+import io.verik.importer.antlr.SystemVerilogParser
+import io.verik.importer.antlr.SystemVerilogParserBaseVisitor
+import io.verik.importer.ast.element.EDeclaration
+import io.verik.importer.ast.element.EElement
+import io.verik.importer.message.Messages
+import org.antlr.v4.runtime.tree.ParseTree
+
+class CasterVisitor(
+    private val castContext: CastContext
+) : SystemVerilogParserBaseVisitor<EElement>() {
+
+    inline fun <reified E : EElement> getElement(parseTree: ParseTree): E? {
+        return parseTree.accept(this)?.cast()
+    }
+
+    fun getDeclaration(declaration: ParseTree): EDeclaration? {
+        val location = castContext.getLocation(declaration)
+        return when (val element = declaration.accept(this)) {
+            null -> null
+            is EDeclaration -> element
+            else -> {
+                Messages.INTERNAL_ERROR.on(location, "Declaration expected but got: ${element::class.simpleName}")
+                null
+            }
+        }
+    }
+
+    override fun visitModuleDeclaration(ctx: SystemVerilogParser.ModuleDeclarationContext?): EElement {
+        return DeclarationCaster.castModule(ctx!!, castContext)
+    }
+}
