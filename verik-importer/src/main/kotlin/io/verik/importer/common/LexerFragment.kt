@@ -14,19 +14,23 @@
  * limitations under the License.
  */
 
-package io.verik.importer.preprocess
+package io.verik.importer.common
 
-import io.verik.importer.test.BaseTest
-import org.junit.jupiter.api.Test
+import io.verik.importer.message.SourceLocation
+import io.verik.importer.parse.LexerCharStream
+import org.antlr.v4.runtime.Token
 
-internal class PreprocessParserStageTest : BaseTest() {
+data class LexerFragment(
+    val location: SourceLocation,
+    val type: FragmentType,
+    val content: String
+) {
 
-    @Test
-    fun `lexer unrecognized token`() {
-        driveMessageTest(
-            "`0",
-            false,
-            "Preprocessor lexer error: Unable to recognize token"
-        )
+    companion object {
+
+        operator fun invoke(token: Token, lexerCharStream: LexerCharStream): LexerFragment {
+            val location = lexerCharStream.getLocation(token.line, token.charPositionInLine)
+            return LexerFragment(location, FragmentType(token.type), token.text)
+        }
     }
 }

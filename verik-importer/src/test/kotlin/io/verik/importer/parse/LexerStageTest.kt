@@ -14,25 +14,27 @@
  * limitations under the License.
  */
 
-package io.verik.importer.main
+package io.verik.importer.parse
 
-import io.verik.importer.common.StageSequence
-import io.verik.importer.parse.LexerStage
-import io.verik.importer.preprocess.PreprocessorParserStage
-import io.verik.importer.preprocess.PreprocessorStage
+import io.verik.importer.test.BaseTest
+import org.junit.jupiter.api.Test
 
-object StageSequencer {
+internal class LexerStageTest : BaseTest() {
 
-    fun getStageSequence(): StageSequence {
-        val stageSequence = StageSequence()
+    @Test
+    fun `lexer unrecognized token`() {
+        driveMessageTest(
+            "0a",
+            false,
+            "Lexer error: Unable to recognize token"
+        )
+    }
 
-        // Preprocess
-        stageSequence.add(PreprocessorParserStage)
-        stageSequence.add(PreprocessorStage)
-
-        // Parse
-        stageSequence.add(LexerStage)
-
-        return stageSequence
+    @Test
+    fun `lexer simple`() {
+        driveLexerFragmentTest(
+            "module",
+            "MODULE EOF"
+        )
     }
 }

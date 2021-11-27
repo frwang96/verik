@@ -19,10 +19,13 @@ package io.verik.importer.preprocess
 import io.verik.importer.test.BaseTest
 import org.junit.jupiter.api.Test
 
-internal class PreprocessStageTest : BaseTest() {
+internal class PreprocessorStageTest : BaseTest() {
 
     @Test
-    fun `preprocess simple`() {
-        driveFragmentTest("a", "a")
+    fun `preprocessor simple`() {
+        drivePreprocessorFragmentTest(
+            "a",
+            "a"
+        )
     }
 }

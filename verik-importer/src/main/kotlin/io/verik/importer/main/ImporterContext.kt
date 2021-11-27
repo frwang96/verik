@@ -16,7 +16,8 @@
 
 package io.verik.importer.main
 
-import io.verik.importer.common.FragmentStream
+import io.verik.importer.common.LexerFragment
+import io.verik.importer.common.PreprocessorFragment
 import java.nio.file.Path
 
 class ImporterContext(
@@ -24,5 +25,6 @@ class ImporterContext(
 ) {
 
     val inputFileContexts: HashMap<Path, InputFileContext> = HashMap()
-    lateinit var fragmentStream: FragmentStream
+    lateinit var preprocessorFragments: ArrayList<PreprocessorFragment>
+    lateinit var lexerFragments: ArrayList<LexerFragment>
 }

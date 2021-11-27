@@ -9,6 +9,14 @@ CODE
     : ~[`"/\r\n]+
     ;
 
+BLOCK_COMMENT
+    :'/*' .*? '*/' -> channel(HIDDEN)
+    ;
+
+LINE_COMMENT
+    : '//' ~[\r\n]* -> channel(HIDDEN)
+    ;
+
 WS
     : [ \t\r\n]+ -> channel(HIDDEN)
     ;

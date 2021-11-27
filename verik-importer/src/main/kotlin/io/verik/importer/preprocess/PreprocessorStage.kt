@@ -16,19 +16,19 @@
 
 package io.verik.importer.preprocess
 
-import io.verik.importer.common.FragmentStream
 import io.verik.importer.common.ImporterStage
+import io.verik.importer.common.PreprocessorFragment
 import io.verik.importer.main.ImporterContext
 import org.antlr.v4.runtime.tree.ParseTreeWalker
 
-object PreprocessStage : ImporterStage() {
+object PreprocessorStage : ImporterStage() {
 
     override fun process(importerContext: ImporterContext) {
-        val fragmentStream = FragmentStream()
-        importerContext.inputFileContexts.forEach { (file, inputFileContext) ->
-            val preprocessListener = PreprocessListener(file, fragmentStream)
-            ParseTreeWalker.DEFAULT.walk(preprocessListener, inputFileContext.parseTree)
+        val preprocessorFragments = ArrayList<PreprocessorFragment>()
+        val preprocessorListener = PreprocessorListener(preprocessorFragments)
+        importerContext.inputFileContexts.values.forEach {
+            ParseTreeWalker.DEFAULT.walk(preprocessorListener, it.parseTree)
         }
-        importerContext.fragmentStream = fragmentStream
+        importerContext.preprocessorFragments = preprocessorFragments
     }
 }
