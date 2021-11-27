@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package io.verik.importer.main
+package io.verik.importer.cast
 
-import java.nio.file.Path
+import io.verik.importer.antlr.SystemVerilogParser
+import io.verik.importer.ast.element.EModule
 
-data class VerikImporterConfig(
-    val version: String,
-    val timestamp: String,
-    val projectName: String,
-    val projectDir: Path,
-    val importedFiles: List<Path>,
-    val debug: Boolean,
-    val suppressedWarnings: List<String>,
-    val promotedWarnings: List<String>
-)
+object DeclarationCaster {
+
+    fun castModule(ctx: SystemVerilogParser.ModuleDeclarationContext, castContext: CastContext): EModule {
+        val location = castContext.getLocation(ctx.MODULE())
+        val name = ctx.identifier().text
+        return EModule(location, name)
+    }
+}

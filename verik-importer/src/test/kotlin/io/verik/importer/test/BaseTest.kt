@@ -172,11 +172,13 @@ abstract class BaseTest {
         }
 
         fun getConfig(): VerikImporterConfig {
+            val projectDir = if (Platform.isWindows) "C:\\" else "/"
             val importedFile = if (Platform.isWindows) "C:\\src\\test.sv" else "/src/test.sv"
             return VerikImporterConfig(
                 version = "local-SNAPSHOT",
                 timestamp = "",
                 projectName = "test",
+                projectDir = Paths.get(projectDir),
                 importedFiles = listOf(Paths.get(importedFile)),
                 debug = true,
                 suppressedWarnings = listOf(),

@@ -14,13 +14,31 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.common
+package io.verik.importer.cast
 
-import io.verik.importer.ast.element.EElement
+import io.verik.importer.test.BaseTest
+import org.junit.jupiter.api.Test
 
-abstract class TreeVisitor : Visitor() {
+internal class CasterStageTest : BaseTest() {
 
-    override fun visitElement(element: EElement) {
-        element.acceptChildren(this)
+    @Test
+    fun `compilation unit empty`() {
+        driveElementTest(
+            "",
+            CasterStage::class,
+            "CompilationUnit([])"
+        ) { it }
+    }
+
+    @Test
+    fun `compilation unit module`() {
+        driveElementTest(
+            """
+                module M;
+                endmodule
+            """.trimIndent(),
+            CasterStage::class,
+            "CompilationUnit([Module(M)])"
+        ) { it }
     }
 }

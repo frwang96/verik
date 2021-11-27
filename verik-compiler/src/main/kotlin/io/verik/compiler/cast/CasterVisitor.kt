@@ -92,11 +92,8 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
         @Suppress("RedundantNullableReturnType")
         val element: EElement? = declaration.accept(this, Unit)
         return when (element) {
+            null -> null
             is EDeclaration -> element
-            null -> {
-                Messages.INTERNAL_ERROR.on(location, "Declaration expected but got: null")
-                null
-            }
             else -> {
                 Messages.INTERNAL_ERROR.on(location, "Declaration expected but got: ${element::class.simpleName}")
                 null
@@ -121,10 +118,7 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
                 EPropertyStatement(location, element)
             }
             is EExpression -> element
-            null -> {
-                Messages.INTERNAL_ERROR.on(location, "Expression expected but got: null")
-                ENullExpression(location)
-            }
+            null -> ENullExpression(location)
             else -> {
                 Messages.INTERNAL_ERROR.on(location, "Expression expected but got: ${element::class.simpleName}")
                 ENullExpression(location)

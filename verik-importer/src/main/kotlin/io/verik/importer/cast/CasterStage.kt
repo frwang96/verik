@@ -16,10 +16,25 @@
 
 package io.verik.importer.cast
 
+import io.verik.importer.ast.element.ECompilationUnit
+import io.verik.importer.ast.element.EDeclaration
 import io.verik.importer.common.ImporterStage
 import io.verik.importer.main.ImporterContext
+import io.verik.importer.message.SourceLocation
 
 object CasterStage : ImporterStage() {
 
-    override fun process(importerContext: ImporterContext) {}
+    override fun process(importerContext: ImporterContext) {
+        val declarations = ArrayList<EDeclaration>()
+        val castContext = CastContext(importerContext.lexerCharStream)
+        val casterVisitor = CasterVisitor(castContext)
+        val parseTree = importerContext.parseTree
+        (0 until parseTree.childCount - 1).forEach {
+            val declaration = casterVisitor.getDeclaration(parseTree.getChild(it))
+            if (declaration != null)
+                declarations.add(declaration)
+        }
+        val location = SourceLocation(importerContext.config.projectDir, 0, 0)
+        importerContext.compilationUnit = ECompilationUnit(location, declarations)
+    }
 }

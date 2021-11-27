@@ -19,18 +19,18 @@ package io.verik.compiler.test
 import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.EAbstractFunction
 import io.verik.compiler.ast.element.common.EAbstractInitializedProperty
+import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EProject
-import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.common.TreeVisitor
 
-fun EProject.findDeclaration(name: String): EElement {
+fun EProject.findDeclaration(name: String): EDeclaration {
     val declarationVisitor = object : TreeVisitor() {
-        val declarations = ArrayList<Declaration>()
+        val declarations = ArrayList<EDeclaration>()
         override fun visitElement(element: EElement) {
             super.visitElement(element)
-            if (element is Declaration && element.name == name)
+            if (element is EDeclaration && element.name == name)
                 declarations.add(element)
         }
     }
@@ -40,7 +40,7 @@ fun EProject.findDeclaration(name: String): EElement {
         1 -> {}
         else -> throw IllegalArgumentException("Could not find unique declaration")
     }
-    return declarationVisitor.declarations[0] as EElement
+    return declarationVisitor.declarations[0]
 }
 
 fun EProject.findExpression(name: String): EExpression {
