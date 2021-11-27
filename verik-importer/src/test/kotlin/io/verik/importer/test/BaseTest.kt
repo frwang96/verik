@@ -67,7 +67,7 @@ abstract class BaseTest {
             if (stage is LexerStage)
                 break
         }
-        val actual = importerContext.lexerFragments.joinToString(separator = "\n") { it.content }
+        val actual = importerContext.lexerFragments.joinToString(separator = " ") { it.type.toString() }
         assertEquals(expected, actual)
     }
 

@@ -1,5 +1,7 @@
 lexer grammar SystemVerilogLexer;
 
+SEMICOLON : ';' ;
+
 ENDMODULE : 'endmodule' ;
 MODULE    : 'module' ;
 

@@ -22,7 +22,7 @@ import org.antlr.v4.runtime.Token
 
 data class LexerFragment(
     val location: SourceLocation,
-    val type: Int,
+    val type: FragmentType,
     val content: String
 ) {
 
@@ -30,7 +30,7 @@ data class LexerFragment(
 
         operator fun invoke(token: Token, lexerCharStream: LexerCharStream): LexerFragment {
             val location = lexerCharStream.getLocation(token.line, token.charPositionInLine)
-            return LexerFragment(location, token.type, token.text)
+            return LexerFragment(location, FragmentType(token.type), token.text)
         }
     }
 }

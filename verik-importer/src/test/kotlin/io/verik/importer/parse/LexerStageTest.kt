@@ -34,7 +34,7 @@ internal class LexerStageTest : BaseTest() {
     fun `lexer simple`() {
         driveLexerFragmentTest(
             "module",
-            "module\n<EOF>"
+            "MODULE EOF"
         )
     }
 }
