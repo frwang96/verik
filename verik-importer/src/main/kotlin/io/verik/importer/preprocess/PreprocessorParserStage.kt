@@ -24,14 +24,13 @@ import io.verik.importer.main.ImporterContext
 import io.verik.importer.message.Messages
 import io.verik.importer.message.SourceLocation
 import org.antlr.v4.runtime.BaseErrorListener
-import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
 import org.antlr.v4.runtime.RecognitionException
 import org.antlr.v4.runtime.Recognizer
 import org.antlr.v4.runtime.tree.ParseTree
 import java.nio.file.Path
 
-object PreprocessParserStage : ImporterStage() {
+object PreprocessorParserStage : ImporterStage() {
 
     override fun process(importerContext: ImporterContext) {
         importerContext.inputFileContexts.forEach { (file, inputFileContext) ->
@@ -40,8 +39,8 @@ object PreprocessParserStage : ImporterStage() {
     }
 
     private fun parse(file: Path, content: String): ParseTree {
-        val charStream = CharStreams.fromString(content)
-        val lexer = SystemVerilogPreprocessorLexer(charStream)
+        val preprocessorCharStream = PreprocessorCharStream(file, content)
+        val lexer = SystemVerilogPreprocessorLexer(preprocessorCharStream)
         val lexerErrorListener = LexerErrorListener(file)
         lexer.removeErrorListeners()
         lexer.addErrorListener(lexerErrorListener)

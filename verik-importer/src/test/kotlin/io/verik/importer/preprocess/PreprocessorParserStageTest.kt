@@ -14,13 +14,19 @@
  * limitations under the License.
  */
 
-package io.verik.importer.common
+package io.verik.importer.preprocess
 
-class FragmentStream {
+import io.verik.importer.test.BaseTest
+import org.junit.jupiter.api.Test
 
-    val fragments = ArrayList<Fragment>()
+internal class PreprocessorParserStageTest : BaseTest() {
 
-    fun add(fragment: Fragment) {
-        fragments.add(fragment)
+    @Test
+    fun `lexer unrecognized token`() {
+        driveMessageTest(
+            "`0",
+            false,
+            "Preprocessor lexer error: Unable to recognize token"
+        )
     }
 }

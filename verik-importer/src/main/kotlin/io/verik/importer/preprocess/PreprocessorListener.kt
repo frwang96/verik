@@ -18,22 +18,14 @@ package io.verik.importer.preprocess
 
 import io.verik.importer.antlr.SystemVerilogPreprocessorParser
 import io.verik.importer.antlr.SystemVerilogPreprocessorParserBaseListener
-import io.verik.importer.common.Fragment
-import io.verik.importer.common.FragmentStream
-import io.verik.importer.message.SourceLocation
-import java.nio.file.Path
+import io.verik.importer.common.PreprocessorFragment
 
-class PreprocessListener(
-    private val file: Path,
-    private val fragmentStream: FragmentStream
+class PreprocessorListener(
+    private val preprocessorFragments: ArrayList<PreprocessorFragment>
 ) : SystemVerilogPreprocessorParserBaseListener() {
 
     override fun enterCode(ctx: SystemVerilogPreprocessorParser.CodeContext?) {
         super.enterCode(ctx)
-        val symbol = ctx!!.CODE().symbol
-        val line = symbol.line
-        val column = symbol.charPositionInLine
-        val fragment = Fragment(SourceLocation(column, line, file), symbol.text, true)
-        fragmentStream.add(fragment)
+        preprocessorFragments.add(PreprocessorFragment(ctx!!.CODE().symbol))
     }
 }

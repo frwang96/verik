@@ -45,11 +45,11 @@ abstract class BaseTest {
         }
     }
 
-    fun driveFragmentTest(content: String, expected: String) {
+    fun drivePreprocessorFragmentTest(content: String, expected: String) {
         val importerContext = getImporterContext(content)
         val stageSequence = StageSequencer.getStageSequence()
         stageSequence.process(importerContext)
-        val actual = importerContext.fragmentStream.fragments.joinToString(separator = "\n") { it.content }
+        val actual = importerContext.preprocessorFragments.joinToString(separator = "\n") { it.content }
         assertEquals(expected, actual)
     }
 

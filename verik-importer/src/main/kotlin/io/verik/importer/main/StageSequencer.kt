@@ -17,15 +17,15 @@
 package io.verik.importer.main
 
 import io.verik.importer.common.StageSequence
-import io.verik.importer.preprocess.PreprocessParserStage
-import io.verik.importer.preprocess.PreprocessStage
+import io.verik.importer.preprocess.PreprocessorParserStage
+import io.verik.importer.preprocess.PreprocessorStage
 
 object StageSequencer {
 
     fun getStageSequence(): StageSequence {
         val stageSequence = StageSequence()
-        stageSequence.add(PreprocessParserStage)
-        stageSequence.add(PreprocessStage)
+        stageSequence.add(PreprocessorParserStage)
+        stageSequence.add(PreprocessorStage)
         return stageSequence
     }
 }

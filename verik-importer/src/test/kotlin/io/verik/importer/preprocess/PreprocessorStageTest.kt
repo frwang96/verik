@@ -19,14 +19,10 @@ package io.verik.importer.preprocess
 import io.verik.importer.test.BaseTest
 import org.junit.jupiter.api.Test
 
-internal class PreprocessParserStageTest : BaseTest() {
+internal class PreprocessorStageTest : BaseTest() {
 
     @Test
-    fun `lexer unrecognized token`() {
-        driveMessageTest(
-            "`0",
-            false,
-            "Preprocessor lexer error: Unable to recognize token"
-        )
+    fun `preprocess simple`() {
+        drivePreprocessorFragmentTest("a", "a")
     }
 }

@@ -17,9 +17,21 @@
 package io.verik.importer.common
 
 import io.verik.importer.message.SourceLocation
+import io.verik.importer.preprocess.PreprocessorCharStream
+import org.antlr.v4.runtime.Token
 
-data class Fragment(
+data class PreprocessorFragment(
     val location: SourceLocation,
     val content: String,
     val isOriginal: Boolean
-)
+) {
+
+    companion object {
+
+        operator fun invoke(token: Token): PreprocessorFragment {
+            val file = (token.inputStream as PreprocessorCharStream).file
+            val location = SourceLocation(token.charPositionInLine, token.line, file)
+            return PreprocessorFragment(location, token.text, true)
+        }
+    }
+}
