@@ -24,6 +24,7 @@ package io.verik.core
 fun finish(): Nothing {
     throw VerikException()
 }
+
 /**
  * Exits the simulation with error status.
  */

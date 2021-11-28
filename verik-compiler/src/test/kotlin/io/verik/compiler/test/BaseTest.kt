@@ -199,7 +199,7 @@ abstract class BaseTest {
 
         fun getConfig(): VerikConfig {
             val projectDir = if (Platform.isWindows) "C:\\" else "/"
-            val buildDir = if (Platform.isWindows) "C:\\build\\test" else "/build/test"
+            val buildDir = if (Platform.isWindows) "C:\\build\\verik" else "/build/verik"
             val projectFile = if (Platform.isWindows) {
                 "C:\\src\\main\\kotlin\\test\\Test.kt"
             } else {

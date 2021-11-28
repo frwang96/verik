@@ -46,7 +46,7 @@ class SourceBuilder(
             projectContext,
             file.inputPath,
             outputPath,
-            FileHeaderBuilder.HeaderStyle.SV
+            FileHeaderBuilder.HeaderStyle.SYSTEM_VERILOG
         )
         val sourceBuilder = StringBuilder()
         sourceBuilder.append(fileHeader)
@@ -57,7 +57,7 @@ class SourceBuilder(
                 projectContext,
                 file.inputPath,
                 outputPathLabeled,
-                FileHeaderBuilder.HeaderStyle.SV
+                FileHeaderBuilder.HeaderStyle.SYSTEM_VERILOG
             )
             val sourceBuilderLabeled = StringBuilder()
             sourceBuilderLabeled.append(fileHeaderLabeled)

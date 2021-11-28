@@ -14,37 +14,32 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.serialize.general
+package io.verik.importer.serialize.general
 
-import io.verik.compiler.main.Platform
-import io.verik.compiler.main.ProjectContext
+import io.verik.importer.main.ImporterContext
+import io.verik.importer.main.Platform
 import java.nio.file.Path
 
 object FileHeaderBuilder {
 
-    fun build(projectContext: ProjectContext, inputPath: Path?, outputPath: Path, headerStyle: HeaderStyle): String {
+    fun build(importerContext: ImporterContext, inputPath: Path?, outputPath: Path, headerStyle: HeaderStyle): String {
         val lines = ArrayList<String>()
         val inputPathString = inputPath?.let { Platform.getStringFromPath(it.toAbsolutePath()) }
         val outputPathString = Platform.getStringFromPath(outputPath.toAbsolutePath())
 
-        lines.add("Project: ${projectContext.config.projectName}")
+        lines.add("Project: ${importerContext.config.projectName}")
         if (inputPathString != null)
             lines.add("Input:   $inputPathString")
         lines.add("Output:  $outputPathString")
-        lines.add("Date:    ${projectContext.config.timestamp}")
-        lines.add("Version: verik:${projectContext.config.version}")
+        lines.add("Date:    ${importerContext.config.timestamp}")
+        lines.add("Version: verik:${importerContext.config.timestamp}")
 
         val builder = StringBuilder()
         when (headerStyle) {
-            HeaderStyle.SYSTEM_VERILOG -> {
+            HeaderStyle.KOTLIN -> {
                 builder.appendLine("/*")
                 lines.forEach { builder.appendLine(" * $it") }
                 builder.appendLine(" */")
-                builder.appendLine()
-                builder.appendLine("`ifndef VERIK")
-                builder.appendLine("`define VERIK")
-                builder.appendLine("`timescale ${projectContext.config.timescale}")
-                builder.appendLine("`endif")
             }
             HeaderStyle.YAML -> {
                 lines.forEach { builder.appendLine("# $it") }
@@ -54,5 +49,5 @@ object FileHeaderBuilder {
         return builder.toString()
     }
 
-    enum class HeaderStyle { SYSTEM_VERILOG, YAML }
+    enum class HeaderStyle { KOTLIN, YAML }
 }

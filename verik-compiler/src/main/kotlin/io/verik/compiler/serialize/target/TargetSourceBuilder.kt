@@ -35,7 +35,7 @@ class TargetSourceBuilder(
             projectContext,
             null,
             path,
-            FileHeaderBuilder.HeaderStyle.SV
+            FileHeaderBuilder.HeaderStyle.SYSTEM_VERILOG
         )
         sourceBuilder.append(fileHeader)
     }

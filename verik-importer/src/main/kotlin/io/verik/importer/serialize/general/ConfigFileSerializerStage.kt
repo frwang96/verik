@@ -14,18 +14,20 @@
  * limitations under the License.
  */
 
-package io.verik.importer.main
+package io.verik.importer.serialize.general
 
-import java.nio.file.Path
+import io.verik.importer.common.ImporterStage
+import io.verik.importer.main.ImporterContext
 
-data class VerikImporterConfig(
-    val version: String,
-    val timestamp: String,
-    val projectName: String,
-    val projectDir: Path,
-    val buildDir: Path,
-    val importedFiles: List<Path>,
-    val debug: Boolean,
-    val suppressedWarnings: List<String>,
-    val promotedWarnings: List<String>
-)
+object ConfigFileSerializerStage : ImporterStage() {
+
+    override fun process(importerContext: ImporterContext) {
+        val outputFile = importerContext.config.buildDir.resolve("config.yaml")
+        FileHeaderBuilder.build(
+            importerContext,
+            null,
+            outputFile,
+            FileHeaderBuilder.HeaderStyle.YAML
+        )
+    }
+}

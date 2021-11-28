@@ -32,7 +32,7 @@ object ConfigFileSerializerStage : ProjectStage() {
             projectContext,
             null,
             outputPath,
-            FileHeaderBuilder.HeaderStyle.TXT
+            FileHeaderBuilder.HeaderStyle.YAML
         )
 
         val synthesisTopNames = ArrayList<String>()

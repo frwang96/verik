@@ -32,7 +32,7 @@ object SourcesFileSerializerStage : ProjectStage() {
             projectContext,
             null,
             outputPath,
-            FileHeaderBuilder.HeaderStyle.TXT
+            FileHeaderBuilder.HeaderStyle.YAML
         )
 
         val paths = ArrayList<Path>()
