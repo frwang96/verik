@@ -33,4 +33,5 @@ class ImporterContext(
     lateinit var lexerFragments: ArrayList<LexerFragment>
     lateinit var parseTree: ParseTree
     lateinit var compilationUnit: ECompilationUnit
+    val outputContext = OutputContext()
 }

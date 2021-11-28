@@ -17,17 +17,27 @@
 package io.verik.importer.serialize.general
 
 import io.verik.importer.common.ImporterStage
+import io.verik.importer.common.TextFile
 import io.verik.importer.main.ImporterContext
+import io.verik.importer.main.Platform
 
 object ConfigFileSerializerStage : ImporterStage() {
 
     override fun process(importerContext: ImporterContext) {
-        val outputFile = importerContext.config.buildDir.resolve("config.yaml")
-        FileHeaderBuilder.build(
+        val outputPath = importerContext.config.buildDir.resolve("config.yaml")
+        val fileHeader = FileHeaderBuilder.build(
             importerContext,
             null,
-            outputFile,
+            outputPath,
             FileHeaderBuilder.HeaderStyle.YAML
         )
+
+        val builder = StringBuilder()
+        builder.append(fileHeader)
+        builder.appendLine("importedFiles:")
+        importerContext.config.importedFiles.forEach {
+            builder.appendLine("  - ${Platform.getStringFromPath(it.toAbsolutePath())}")
+        }
+        importerContext.outputContext.configTextFile = TextFile(outputPath, builder.toString())
     }
 }

@@ -23,6 +23,7 @@ import io.verik.importer.main.VerikImporterMain
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.plugins.JavaPluginConvention
 import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
 import io.verik.compiler.message.GradleMessagePrinter as VerikGradleMessagePrinter
@@ -33,11 +34,17 @@ class VerikPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         project.plugins.apply(KotlinPluginWrapper::class.java)
-        createVerikTask(project)
-        createVerikImportTask(project)
+        val verikTask = createVerikTask(project)
+        val verikImportTask = createVerikImportTask(project)
+        verikTask.dependsOn(verikImportTask)
+
+        val sourceSets = project.convention.getPlugin(JavaPluginConvention::class.java).sourceSets
+        sourceSets.getByName("main").java {
+            it.srcDir(VerikImporterConfigBuilder.getBuildDir(project).resolve("src"))
+        }
     }
 
-    private fun createVerikTask(project: Project) {
+    private fun createVerikTask(project: Project): Task {
         val extension = project.extensions.create("verik", VerikPluginExtension::class.java)
         val task = project.tasks.create("verik") {
             it.doLast {
@@ -69,9 +76,10 @@ class VerikPlugin : Plugin<Project> {
         task.inputs.property("enableDeadCodeElimination", { extension.enableDeadCodeElimination })
         task.inputs.files({ VerikConfigBuilder.getSourceSetConfigs(project).flatMap { it.files } })
         task.outputs.dir(VerikConfigBuilder.getBuildDir(project))
+        return task
     }
 
-    private fun createVerikImportTask(project: Project) {
+    private fun createVerikImportTask(project: Project): Task {
         val extension = project.extensions.create("verikImport", VerikImporterPluginExtension::class.java)
         val task = project.tasks.create("verikImport") {
             it.doLast {
@@ -90,14 +98,16 @@ class VerikPlugin : Plugin<Project> {
             }
         }
         task.group = "verik"
-        task.outputs.cacheIf { false }
-        task.outputs.upToDateWhen { false }
-        task.outputs.dir(VerikImporterConfigBuilder.getBuildDir(project))
-
-        val sourceSets = project.convention.getPlugin(JavaPluginConvention::class.java).sourceSets
-        sourceSets.getByName("main").java {
-            it.srcDir(VerikImporterConfigBuilder.getBuildDir(project).resolve("src"))
-        }
+        task.inputs.property("debug", { extension.debug })
+        task.inputs.property("suppressedWarnings", { extension.suppressedWarnings })
+        task.inputs.property("promotedWarnings", { extension.promotedWarnings })
+        task.inputs.files({ extension.importedFiles })
+        task.outputs.dirs({
+            if (extension.importedFiles.isNotEmpty()) {
+                VerikImporterConfigBuilder.getBuildDir(project)
+            } else listOf()
+        })
+        return task
     }
 
     private fun printErrorMessage(

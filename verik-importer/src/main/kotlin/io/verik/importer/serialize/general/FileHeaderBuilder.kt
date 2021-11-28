@@ -32,7 +32,7 @@ object FileHeaderBuilder {
             lines.add("Input:   $inputPathString")
         lines.add("Output:  $outputPathString")
         lines.add("Date:    ${importerContext.config.timestamp}")
-        lines.add("Version: verik:${importerContext.config.timestamp}")
+        lines.add("Version: verik:${importerContext.config.version}")
 
         val builder = StringBuilder()
         when (headerStyle) {

@@ -46,9 +46,7 @@ object VerikMain {
     private fun writeFiles(projectContext: ProjectContext) {
         MessageCollector.messageCollector.flush()
         if (Files.exists(projectContext.config.buildDir)) {
-            Files.walk(projectContext.config.buildDir)
-                .sorted(Comparator.reverseOrder())
-                .forEach { Files.delete(it) }
+            projectContext.config.buildDir.toFile().deleteRecursively()
         }
         val textFiles = projectContext.outputContext.getTextFiles()
         textFiles.forEach {
