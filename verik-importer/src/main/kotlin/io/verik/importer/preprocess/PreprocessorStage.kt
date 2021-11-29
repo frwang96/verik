@@ -17,7 +17,6 @@
 package io.verik.importer.preprocess
 
 import io.verik.importer.common.ImporterStage
-import io.verik.importer.common.PreprocessorFragment
 import io.verik.importer.main.ImporterContext
 import org.antlr.v4.runtime.tree.ParseTreeWalker
 

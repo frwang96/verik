@@ -17,9 +17,9 @@
 package io.verik.importer.main
 
 import io.verik.importer.ast.element.ECompilationUnit
-import io.verik.importer.common.LexerFragment
-import io.verik.importer.common.PreprocessorFragment
-import io.verik.importer.parse.LexerCharStream
+import io.verik.importer.lex.LexerCharStream
+import io.verik.importer.lex.LexerFragment
+import io.verik.importer.preprocess.PreprocessorFragment
 import org.antlr.v4.runtime.tree.ParseTree
 import java.nio.file.Path
 

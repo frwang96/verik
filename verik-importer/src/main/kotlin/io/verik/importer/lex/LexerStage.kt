@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package io.verik.importer.parse
+package io.verik.importer.lex
 
 import io.verik.importer.antlr.SystemVerilogLexer
 import io.verik.importer.common.ImporterStage
-import io.verik.importer.common.LexerFragment
 import io.verik.importer.common.RecognitionExceptionFormatter
 import io.verik.importer.main.ImporterContext
 import io.verik.importer.message.Messages

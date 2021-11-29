@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package io.verik.importer.parse
+package io.verik.importer.lex
 
-import io.verik.importer.common.PreprocessorFragment
 import io.verik.importer.message.SourceLocation
+import io.verik.importer.preprocess.PreprocessorFragment
 import org.antlr.v4.runtime.CharStream
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.misc.Interval

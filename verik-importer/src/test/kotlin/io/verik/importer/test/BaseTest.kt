@@ -16,6 +16,7 @@
 
 package io.verik.importer.test
 
+import io.verik.importer.antlr.SystemVerilogLexer
 import io.verik.importer.ast.common.ElementPrinter
 import io.verik.importer.ast.element.ECompilationUnit
 import io.verik.importer.ast.element.EElement
@@ -72,7 +73,9 @@ abstract class BaseTest {
                 break
             stage.process(importerContext)
         }
-        val actual = importerContext.lexerFragments.joinToString(separator = " ") { it.type.toString() }
+        val actual = importerContext.lexerFragments.joinToString(separator = " ") {
+            SystemVerilogLexer.VOCABULARY.getSymbolicName(it.type)
+        }
         assertEquals(expected, actual)
     }
 

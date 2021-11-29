@@ -16,6 +16,8 @@
 
 package io.verik.importer.common
 
+import io.verik.importer.antlr.SystemVerilogParser
+import io.verik.importer.antlr.SystemVerilogPreprocessorParser
 import io.verik.importer.parse.ParserToken
 import org.antlr.v4.runtime.InputMismatchException
 import org.antlr.v4.runtime.LexerNoViableAltException
@@ -30,8 +32,12 @@ object RecognitionExceptionFormatter {
             is LexerNoViableAltException -> "Unable to recognize token"
             is NoViableAltException -> "No matching rules"
             is InputMismatchException -> {
-                val token = recognitionException.offendingToken as ParserToken
-                "Mismatched token: ${token.lexerFragment.type}"
+                val token = recognitionException.offendingToken
+                if (token is ParserToken) {
+                    "Mismatched token: ${SystemVerilogParser.VOCABULARY.getDisplayName(token.type)}"
+                } else {
+                    "Mismatched token: ${SystemVerilogPreprocessorParser.VOCABULARY.getDisplayName(token.type)}"
+                }
             }
             else -> "Unknown error"
         }

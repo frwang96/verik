@@ -14,24 +14,21 @@
  * limitations under the License.
  */
 
-package io.verik.importer.common
+package io.verik.importer.lex
 
-import io.verik.importer.message.SourceLocation
-import io.verik.importer.preprocess.PreprocessorCharStream
 import org.antlr.v4.runtime.Token
 
-data class PreprocessorFragment(
-    val location: SourceLocation,
-    val content: String,
-    val isOriginal: Boolean
+data class LexerFragment(
+    val virtualLine: Int,
+    val virtualColumn: Int,
+    val type: Int,
+    val content: String
 ) {
 
     companion object {
 
-        operator fun invoke(token: Token): PreprocessorFragment {
-            val file = (token.inputStream as PreprocessorCharStream).file
-            val location = SourceLocation(file, token.line, token.charPositionInLine + 1)
-            return PreprocessorFragment(location, token.text, true)
+        operator fun invoke(token: Token): LexerFragment {
+            return LexerFragment(token.line, token.charPositionInLine, token.type, token.text)
         }
     }
 }

@@ -14,21 +14,27 @@
  * limitations under the License.
  */
 
-package io.verik.importer.common
+package io.verik.importer.lex
 
-import org.antlr.v4.runtime.Token
+import io.verik.importer.test.BaseTest
+import org.junit.jupiter.api.Test
 
-data class LexerFragment(
-    val virtualLine: Int,
-    val virtualColumn: Int,
-    val type: FragmentType,
-    val content: String
-) {
+internal class LexerStageTest : BaseTest() {
 
-    companion object {
+    @Test
+    fun `lexer unrecognized token`() {
+        driveMessageTest(
+            "0a",
+            false,
+            "Lexer error: Unable to recognize token"
+        )
+    }
 
-        operator fun invoke(token: Token): LexerFragment {
-            return LexerFragment(token.line, token.charPositionInLine, FragmentType(token.type), token.text)
-        }
+    @Test
+    fun `lexer simple`() {
+        driveLexerFragmentTest(
+            "module",
+            "MODULE EOF"
+        )
     }
 }
