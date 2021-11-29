@@ -16,6 +16,7 @@
 
 `timescale 1ns/1ps
 
+(* attribute *)
 module Foo(x, y);
 
 output x;

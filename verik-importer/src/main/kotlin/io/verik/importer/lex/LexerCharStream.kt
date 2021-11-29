@@ -48,6 +48,10 @@ class LexerCharStream(val preprocessorFragments: ArrayList<PreprocessorFragment>
         }
     }
 
+    fun getLocation(lexerFragment: LexerFragment): SourceLocation {
+        return getLocation(lexerFragment.virtualLine, lexerFragment.virtualColumn)
+    }
+
     override fun consume() {
         stream.consume()
     }

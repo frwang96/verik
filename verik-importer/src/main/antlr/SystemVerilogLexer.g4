@@ -2,8 +2,10 @@ lexer grammar SystemVerilogLexer;
 
 COMMA     : ',' ;
 SEMICOLON : ';' ;
-LP        : '(' ;
-RP        : ')' ;
+LPAREN    : '(' ;
+RPAREN    : ')' ;
+LPAREN_STAR : '(*' ;
+RPAREN_STAR : '*)' ;
 
 ENDMODULE : 'endmodule' ;
 INPUT     : 'input' ;

@@ -28,7 +28,7 @@ moduleDeclaration
 // A.1.3 Module Parameters and Ports ///////////////////////////////////////////////////////////////////////////////////
 
 listOfPorts
-    : LP port (COMMA port)* RP
+    : LPAREN port (COMMA port)* RPAREN
     ;
 
 portDeclaration
