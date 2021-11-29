@@ -14,19 +14,23 @@
  * limitations under the License.
  */
 
-package io.verik.importer.main
+package io.verik.importer.serialize.source
 
+import io.verik.importer.ast.element.EDeclaration
 import io.verik.importer.common.TextFile
+import io.verik.importer.main.ImporterContext
+import java.nio.file.Path
 
-class OutputContext {
+class SerializerContext(importerContext: ImporterContext, path: Path) {
 
-    lateinit var configTextFile: TextFile
-    var rootPackageTextFiles: List<TextFile> = listOf()
+    private val sourceSerializerVisitor = SourceSerializerVisitor(this)
+    private val sourceBuilder = SourceBuilder(importerContext, path)
 
-    fun getTextFiles(): List<TextFile> {
-        val textFiles = ArrayList<TextFile>()
-        textFiles.add(configTextFile)
-        textFiles.addAll(rootPackageTextFiles)
-        return textFiles.sortedBy { it.path }
+    fun serializeAsDeclaration(declaration: EDeclaration) {
+        declaration.accept(sourceSerializerVisitor)
+    }
+
+    fun getTextFile(): TextFile {
+        return sourceBuilder.getTextFile()
     }
 }

@@ -22,14 +22,11 @@ import java.nio.file.Path
 
 object FileHeaderBuilder {
 
-    fun build(importerContext: ImporterContext, inputPath: Path?, outputPath: Path, headerStyle: HeaderStyle): String {
+    fun build(importerContext: ImporterContext, outputPath: Path, headerStyle: HeaderStyle): String {
         val lines = ArrayList<String>()
-        val inputPathString = inputPath?.let { Platform.getStringFromPath(it.toAbsolutePath()) }
         val outputPathString = Platform.getStringFromPath(outputPath.toAbsolutePath())
 
         lines.add("Project: ${importerContext.config.projectName}")
-        if (inputPathString != null)
-            lines.add("Input:   $inputPathString")
         lines.add("Output:  $outputPathString")
         lines.add("Date:    ${importerContext.config.timestamp}")
         lines.add("Version: verik:${importerContext.config.version}")

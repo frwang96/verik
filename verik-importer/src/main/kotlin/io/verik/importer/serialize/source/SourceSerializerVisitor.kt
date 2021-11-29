@@ -14,19 +14,16 @@
  * limitations under the License.
  */
 
-package io.verik.importer.main
+package io.verik.importer.serialize.source
 
-import io.verik.importer.common.TextFile
+import io.verik.importer.ast.common.Visitor
+import io.verik.importer.ast.element.EModule
 
-class OutputContext {
+class SourceSerializerVisitor(
+    private val serializerContext: SerializerContext
+) : Visitor() {
 
-    lateinit var configTextFile: TextFile
-    var rootPackageTextFiles: List<TextFile> = listOf()
-
-    fun getTextFiles(): List<TextFile> {
-        val textFiles = ArrayList<TextFile>()
-        textFiles.add(configTextFile)
-        textFiles.addAll(rootPackageTextFiles)
-        return textFiles.sortedBy { it.path }
+    override fun visitModule(module: EModule) {
+        super.visitModule(module)
     }
 }

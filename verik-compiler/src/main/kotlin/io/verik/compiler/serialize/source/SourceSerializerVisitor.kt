@@ -17,6 +17,7 @@
 package io.verik.compiler.serialize.source
 
 import io.verik.compiler.ast.element.common.EConstantExpression
+import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
@@ -68,12 +69,13 @@ import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.element.sv.ETask
 import io.verik.compiler.ast.element.sv.ETypeDefinition
 import io.verik.compiler.ast.element.sv.EWidthCastExpression
-import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.Messages
 
-class SourceSerializerVisitor(private val serializerContext: SerializerContext) : Visitor() {
+class SourceSerializerVisitor(
+    private val serializerContext: SerializerContext
+) : Visitor() {
 
     private var firstDeclaration = true
     private var lastDeclarationIsProperty = false
@@ -84,17 +86,15 @@ class SourceSerializerVisitor(private val serializerContext: SerializerContext) 
         }
     }
 
-    fun serializeAsDeclaration(element: EElement) {
-        if (element !is Declaration)
-            Messages.INTERNAL_ERROR.on(element, "Declaration expected but got: $element")
-        if (SerializerUtil.declarationIsHidden(element))
+    fun serializeAsDeclaration(declaration: EDeclaration) {
+        if (SerializerUtil.declarationIsHidden(declaration))
             return
-        if (!firstDeclaration && !(lastDeclarationIsProperty && element is ESvProperty))
+        if (!firstDeclaration && !(lastDeclarationIsProperty && declaration is ESvProperty))
             serializerContext.appendLine()
         firstDeclaration = false
         lastDeclarationIsProperty = false
-        serialize(element)
-        lastDeclarationIsProperty = element is ESvProperty
+        serialize(declaration)
+        lastDeclarationIsProperty = declaration is ESvProperty
     }
 
     fun serializeAsExpression(expression: EExpression) {

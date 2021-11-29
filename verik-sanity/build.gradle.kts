@@ -32,6 +32,7 @@ subprojects {
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
     configure<KtlintExtension> {
         disabledRules.set(listOf("no-wildcard-imports"))
+        filter { exclude("**/src/imported/**") }
     }
     dependencies {
         val implementation by configurations

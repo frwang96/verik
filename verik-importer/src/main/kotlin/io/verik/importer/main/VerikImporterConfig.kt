@@ -28,4 +28,7 @@ data class VerikImporterConfig(
     val debug: Boolean,
     val suppressedWarnings: List<String>,
     val promotedWarnings: List<String>
-)
+) {
+
+    val outputSourceDir: Path = buildDir.resolve("src/imported")
+}
