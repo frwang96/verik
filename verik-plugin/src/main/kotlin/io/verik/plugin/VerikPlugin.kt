@@ -70,7 +70,7 @@ class VerikPlugin : Plugin<Project> {
         task.inputs.property("suppressedWarnings", { extension.suppressedWarnings })
         task.inputs.property("promotedWarnings", { extension.promotedWarnings })
         task.inputs.property("maxErrorCount", { extension.maxErrorCount })
-        task.inputs.property("labelLines", { extension.labelLines })
+        task.inputs.property("labelSourceLocations", { extension.labelSourceLocations })
         task.inputs.property("wrapLength", { extension.wrapLength })
         task.inputs.property("indentLength", { extension.indentLength })
         task.inputs.property("enableDeadCodeElimination", { extension.enableDeadCodeElimination })
@@ -101,6 +101,7 @@ class VerikPlugin : Plugin<Project> {
         task.inputs.property("debug", { extension.debug })
         task.inputs.property("suppressedWarnings", { extension.suppressedWarnings })
         task.inputs.property("promotedWarnings", { extension.promotedWarnings })
+        task.inputs.property("labelSourceLocations", { extension.labelSourceLocations })
         task.inputs.files({ extension.importedFiles })
         task.outputs.dirs({
             if (extension.importedFiles.isNotEmpty()) {

@@ -31,7 +31,6 @@ repositories {
 
 verik {
     debug = true
-    labelLines = true
 }
 
 verikImport {

@@ -27,6 +27,8 @@ class SerializerContext(
     path: Path
 ) {
 
+    val labelSourceLocations = importerContext.config.labelSourceLocations
+
     private val sourceSerializerVisitor = SourceSerializerVisitor(this)
     private val sourceBuilder = SourceBuilder(importerContext, packageName, path)
 

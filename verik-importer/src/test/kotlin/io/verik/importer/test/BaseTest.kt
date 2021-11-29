@@ -187,7 +187,8 @@ abstract class BaseTest {
                 importedFiles = listOf(Paths.get(importedFile)),
                 debug = true,
                 suppressedWarnings = listOf(),
-                promotedWarnings = listOf()
+                promotedWarnings = listOf(),
+                labelSourceLocations = false
             )
         }
     }

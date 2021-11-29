@@ -38,7 +38,7 @@ object VerikConfigBuilder {
             suppressedWarnings = extension.suppressedWarnings,
             promotedWarnings = extension.promotedWarnings,
             maxErrorCount = extension.maxErrorCount,
-            labelLines = extension.labelLines,
+            labelSourceLocations = extension.labelSourceLocations,
             wrapLength = extension.wrapLength,
             indentLength = extension.indentLength,
             enableDeadCodeElimination = extension.enableDeadCodeElimination

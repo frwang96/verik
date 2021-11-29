@@ -218,7 +218,7 @@ abstract class BaseTest {
                 suppressedWarnings = listOf("KOTLIN_COMPILE_WARNING"),
                 promotedWarnings = listOf(),
                 maxErrorCount = 0,
-                labelLines = false,
+                labelSourceLocations = false,
                 wrapLength = 80,
                 indentLength = 4,
                 enableDeadCodeElimination = false

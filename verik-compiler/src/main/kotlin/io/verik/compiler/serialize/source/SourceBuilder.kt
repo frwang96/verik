@@ -51,7 +51,7 @@ class SourceBuilder(
         val sourceBuilder = StringBuilder()
         sourceBuilder.append(fileHeader)
 
-        if (projectContext.config.labelLines) {
+        if (projectContext.config.labelSourceLocations) {
             val outputPathLabeled = outputPath.parent.resolve("${outputPath.fileName}.labeled")
             val fileHeaderLabeled = FileHeaderBuilder.build(
                 projectContext,

@@ -32,7 +32,8 @@ object VerikImporterConfigBuilder {
             importedFiles = extension.importedFiles,
             debug = extension.debug,
             suppressedWarnings = extension.suppressedWarnings,
-            promotedWarnings = extension.promotedWarnings
+            promotedWarnings = extension.promotedWarnings,
+            labelSourceLocations = extension.labelSourceLocations
         )
     }
 
