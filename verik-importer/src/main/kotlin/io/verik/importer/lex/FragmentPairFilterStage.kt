@@ -21,7 +21,7 @@ import io.verik.importer.common.ImporterStage
 import io.verik.importer.main.ImporterContext
 import io.verik.importer.message.Messages
 
-object LexerFilterStage : ImporterStage() {
+object FragmentPairFilterStage : ImporterStage() {
 
     private val fragmentPairMap = HashMap<Int, Int>()
     private val fragmentPairSet = HashSet<Int>()

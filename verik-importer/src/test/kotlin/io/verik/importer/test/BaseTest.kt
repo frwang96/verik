@@ -44,12 +44,12 @@ abstract class BaseTest {
             val throwable = assertThrows<TestErrorException> {
                 stageSequence.process(importerContext)
             }
-            assertEquals(throwable.message, message)
+            assertEquals(message, throwable.message)
         } else {
             val throwable = assertThrows<TestWarningException> {
                 stageSequence.process(importerContext)
             }
-            assertEquals(throwable.message, message)
+            assertEquals(message, throwable.message)
         }
     }
 

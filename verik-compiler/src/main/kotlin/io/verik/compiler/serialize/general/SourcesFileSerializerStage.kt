@@ -42,10 +42,12 @@ object SourcesFileSerializerStage : ProjectStage() {
 
         val builder = StringBuilder()
         builder.append(fileHeader)
-        builder.appendLine("sources:")
-        paths.forEach {
-            val pathString = Platform.getStringFromPath(projectContext.config.buildDir.relativize(it))
-            builder.appendLine("  - $pathString")
+        if (paths.isNotEmpty()) {
+            builder.appendLine("sources:")
+            paths.forEach {
+                val pathString = Platform.getStringFromPath(projectContext.config.buildDir.relativize(it))
+                builder.appendLine("  - $pathString")
+            }
         }
         projectContext.outputContext.sourcesTextFile = TextFile(outputPath, builder.toString())
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2020 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,32 +14,31 @@
  * limitations under the License.
  */
 
-package adder
+import java.nio.file.Files
+import kotlin.streams.toList
 
-import io.verik.core.*
+plugins {
+    id("io.verik.verik-plugin")
+}
 
-typealias WIDTH = `8`
+dependencies {
+    implementation("io.verik:verik-core:$version")
+}
 
-@SimTop
-class AdderTop : Module() {
+repositories {
+    mavenCentral()
+}
 
-    var a: Ubit<WIDTH> = nc()
-    var b: Ubit<WIDTH> = nc()
-    var x: Ubit<WIDTH> = nc()
+verik {
+    debug = true
+    labelLines = true
+}
 
-    @Make
-    val adder = Adder<WIDTH>(a, b, x)
-
-    @Run
-    fun test() {
-        repeat(64) {
-            a = randomUbit()
-            b = randomUbit()
-            delay(1)
-            val expected = a + b
-            if (x == expected) print("PASS ")
-            else print("FAIL ")
-            println("$a + $b = $x")
-        }
+verikImport {
+    val verilogSrcDir = projectDir.resolve("src/main/verilog").toPath()
+    if (Files.exists(verilogSrcDir)) {
+        importedFiles = Files.walk(verilogSrcDir).toList()
+            .filter { it.fileName.toString().endsWith(".v") }
     }
+    debug = true
 }

@@ -17,7 +17,7 @@
 package io.verik.importer.main
 
 import io.verik.importer.cast.CasterStage
-import io.verik.importer.lex.LexerFilterStage
+import io.verik.importer.lex.FragmentPairFilterStage
 import io.verik.importer.lex.LexerStage
 import io.verik.importer.parse.ParserStage
 import io.verik.importer.preprocess.PreprocessorParserStage
@@ -36,7 +36,7 @@ object StageSequencer {
 
         // Lex
         stageSequence.add(LexerStage)
-        stageSequence.add(LexerFilterStage)
+        stageSequence.add(FragmentPairFilterStage)
 
         // Parse
         stageSequence.add(ParserStage)

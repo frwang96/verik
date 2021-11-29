@@ -22,15 +22,6 @@ import org.junit.jupiter.api.Test
 internal class LexerStageTest : BaseTest() {
 
     @Test
-    fun `lexer unrecognized token`() {
-        driveMessageTest(
-            "0a",
-            false,
-            "Lexer error: Unable to recognize token"
-        )
-    }
-
-    @Test
     fun `lexer simple`() {
         driveLexerFragmentTest(
             "module",

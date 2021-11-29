@@ -19,7 +19,7 @@ package io.verik.importer.lex
 import io.verik.importer.test.BaseTest
 import org.junit.jupiter.api.Test
 
-internal class LexerFilterStageTest : BaseTest() {
+internal class FragmentPairFilterStageTest : BaseTest() {
 
     @Test
     fun `mismatched token begin`() {

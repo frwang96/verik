@@ -123,11 +123,6 @@ object Messages {
         "Type parameters not permitted on top level declaration"
     )
 
-    val NO_TOP_MODULES = MessageTemplate0(
-        Severity.WARNING,
-        "No top level modules found"
-    )
-
     val CARDINAL_OUT_OF_RANGE = MessageTemplate0(
         Severity.ERROR,
         "Cardinal type out of range"
