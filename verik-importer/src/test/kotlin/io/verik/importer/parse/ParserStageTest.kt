@@ -26,7 +26,7 @@ internal class ParserStageTest : BaseTest() {
         driveMessageTest(
             "module module",
             false,
-            "Parser error: Mismatched token: MODULE"
+            "Parser error: No matching rules"
         )
     }
 }

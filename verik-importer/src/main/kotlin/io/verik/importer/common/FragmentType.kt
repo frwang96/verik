@@ -14,15 +14,22 @@
  * limitations under the License.
  */
 
+@file:Suppress("unused")
+
 package io.verik.importer.common
 
 import io.verik.importer.antlr.SystemVerilogLexer
 
 enum class FragmentType(val index: Int) {
     EOF(SystemVerilogLexer.EOF),
+    COMMA(SystemVerilogLexer.COMMA),
     SEMICOLON(SystemVerilogLexer.SEMICOLON),
+    LP(SystemVerilogLexer.LP),
+    RP(SystemVerilogLexer.RP),
     ENDMODULE(SystemVerilogLexer.ENDMODULE),
+    INPUT(SystemVerilogLexer.INPUT),
     MODULE(SystemVerilogLexer.MODULE),
+    OUTPUT(SystemVerilogLexer.OUTPUT),
     SimpleIdentifier(SystemVerilogLexer.SimpleIdentifier);
 
     companion object {

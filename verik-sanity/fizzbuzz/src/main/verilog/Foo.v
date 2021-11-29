@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
-module Foo;
+`timescale 1ns/1ps
+
+module Foo(x, y);
+
+output x;
+input y;
 
 endmodule

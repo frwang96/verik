@@ -27,3 +27,7 @@ mode DIRECTIVE_MODE;
 DIRECTIVE_WS
     : [ \t]+ -> channel(HIDDEN)
     ;
+
+TIMESCALE
+    : 'timescale' ~[\r\n]+ -> mode(DEFAULT_MODE)
+    ;

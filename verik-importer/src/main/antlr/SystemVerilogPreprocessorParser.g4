@@ -9,6 +9,11 @@ file
 
 text
     : code
+    | unescapedDirective
+    ;
+
+unescapedDirective
+    : BACKTICK TIMESCALE
     ;
 
 code
