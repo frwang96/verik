@@ -14,21 +14,23 @@
  * limitations under the License.
  */
 
-package io.verik.importer.main
+package io.verik.importer.ast.element
 
-import java.nio.file.Path
+import io.verik.importer.ast.common.Visitor
+import io.verik.importer.message.SourceLocation
 
-data class VerikImporterConfig(
-    val version: String,
-    val timestamp: String,
-    val projectName: String,
-    val projectDir: Path,
-    val buildDir: Path,
-    val importedFiles: List<Path>,
-    val debug: Boolean,
-    val suppressedWarnings: List<String>,
-    val promotedWarnings: List<String>
-) {
+class ERootPackage(
+    override val location: SourceLocation,
+    override var declarations: ArrayList<EDeclaration>
+) : EAbstractPackage() {
 
-    val outputSourceDir: Path = buildDir.resolve("src")
+    override val name = "imported"
+
+    init {
+        declarations.forEach { it.parent = this }
+    }
+
+    override fun accept(visitor: Visitor) {
+        visitor.visitRootPackage(this)
+    }
 }

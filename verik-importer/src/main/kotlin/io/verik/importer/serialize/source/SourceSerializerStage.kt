@@ -16,42 +16,38 @@
 
 package io.verik.importer.serialize.source
 
+import io.verik.importer.ast.element.EAbstractPackage
 import io.verik.importer.ast.element.EDeclaration
 import io.verik.importer.common.ImporterStage
 import io.verik.importer.common.TextFile
 import io.verik.importer.main.ImporterContext
-import io.verik.importer.message.SourceLocation
-import java.nio.file.Path
 
 object SourceSerializerStage : ImporterStage() {
 
     override fun process(importerContext: ImporterContext) {
-        val declarationsMap = HashMap<Path, ArrayList<EDeclaration>>()
-        importerContext.compilationUnit.declarations.forEach {
-            val outputPath = getOutputPath(importerContext, it.location)
-            val declarations = declarationsMap[outputPath]
+        val packageTextFiles = ArrayList<TextFile>()
+        packageTextFiles.addAll(serializePackage(importerContext.compilationUnit.rootPackage, importerContext))
+        importerContext.outputContext.packageTextFiles = packageTextFiles
+    }
+
+    private fun serializePackage(abstractPackage: EAbstractPackage, importerContext: ImporterContext): List<TextFile> {
+        val declarationMap = HashMap<String, ArrayList<EDeclaration>>()
+        abstractPackage.declarations.forEach {
+            val baseFileName = it.location.path.fileName.toString().substringBefore(".")
+            val declarations = declarationMap[baseFileName]
             if (declarations != null) {
                 declarations.add(it)
             } else {
-                declarationsMap[outputPath] = arrayListOf(it)
+                declarationMap[baseFileName] = arrayListOf(it)
             }
         }
 
-        val rootPackageTextFiles = ArrayList<TextFile>()
-        declarationsMap.forEach { (path, declarations) ->
-            rootPackageTextFiles.add(serialize(importerContext, path, declarations))
+        val packagePath = importerContext.config.outputSourceDir.resolve(abstractPackage.name.replace(".", "/"))
+        return declarationMap.map { (baseFileName, declarations) ->
+            val path = packagePath.resolve("$baseFileName.kt")
+            val serializerContext = SerializerContext(importerContext, abstractPackage.name, path)
+            declarations.forEach { serializerContext.serializeAsDeclaration(it) }
+            serializerContext.getTextFile()
         }
-        importerContext.outputContext.rootPackageTextFiles = rootPackageTextFiles
-    }
-
-    private fun getOutputPath(importerContext: ImporterContext, location: SourceLocation): Path {
-        val name = location.path.fileName.toString().substringBefore(".")
-        return importerContext.config.outputSourceDir.resolve("$name.kt")
-    }
-
-    private fun serialize(importerContext: ImporterContext, path: Path, declarations: List<EDeclaration>): TextFile {
-        val serializerContext = SerializerContext(importerContext, path)
-        declarations.forEach { serializerContext.serializeAsDeclaration(it) }
-        return serializerContext.getTextFile()
     }
 }

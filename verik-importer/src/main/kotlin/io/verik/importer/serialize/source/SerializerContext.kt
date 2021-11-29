@@ -21,16 +21,36 @@ import io.verik.importer.common.TextFile
 import io.verik.importer.main.ImporterContext
 import java.nio.file.Path
 
-class SerializerContext(importerContext: ImporterContext, path: Path) {
+class SerializerContext(
+    importerContext: ImporterContext,
+    packageName: String,
+    path: Path
+) {
 
     private val sourceSerializerVisitor = SourceSerializerVisitor(this)
-    private val sourceBuilder = SourceBuilder(importerContext, path)
+    private val sourceBuilder = SourceBuilder(importerContext, packageName, path)
 
     fun serializeAsDeclaration(declaration: EDeclaration) {
-        declaration.accept(sourceSerializerVisitor)
+        sourceSerializerVisitor.serializeAsDeclaration(declaration)
     }
 
     fun getTextFile(): TextFile {
         return sourceBuilder.getTextFile()
+    }
+
+    fun indent(block: () -> Unit) {
+        sourceBuilder.indent(block)
+    }
+
+    fun append(content: String) {
+        sourceBuilder.append(content)
+    }
+
+    fun appendLine(content: String) {
+        sourceBuilder.appendLine(content)
+    }
+
+    fun appendLine() {
+        sourceBuilder.appendLine()
     }
 }

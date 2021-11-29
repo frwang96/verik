@@ -17,13 +17,29 @@
 package io.verik.importer.serialize.source
 
 import io.verik.importer.ast.common.Visitor
+import io.verik.importer.ast.element.EDeclaration
 import io.verik.importer.ast.element.EModule
+import io.verik.importer.main.Platform
+import io.verik.importer.message.SourceLocation
 
 class SourceSerializerVisitor(
     private val serializerContext: SerializerContext
 ) : Visitor() {
 
+    fun serializeAsDeclaration(declaration: EDeclaration) {
+        serializerContext.appendLine()
+        serializerContext.appendLine("/**")
+        serializerContext.appendLine(" * Imported: ${getLocationString(declaration.location)}")
+        serializerContext.appendLine(" */")
+        declaration.accept(this)
+    }
+
     override fun visitModule(module: EModule) {
-        super.visitModule(module)
+        serializerContext.appendLine("class ${module.name} : Module()")
+    }
+
+    private fun getLocationString(location: SourceLocation): String {
+        val pathString = Platform.getStringFromPath(location.path)
+        return "$pathString:${location.line}:${location.column}"
     }
 }

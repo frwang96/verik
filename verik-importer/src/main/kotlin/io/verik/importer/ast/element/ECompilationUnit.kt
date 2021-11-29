@@ -21,11 +21,11 @@ import io.verik.importer.message.SourceLocation
 
 class ECompilationUnit(
     override val location: SourceLocation,
-    val declarations: ArrayList<EDeclaration>
+    val rootPackage: ERootPackage
 ) : EElement() {
 
     init {
-        declarations.forEach { it.parent = this }
+        rootPackage.parent = this
     }
 
     override fun accept(visitor: Visitor) {
@@ -33,6 +33,6 @@ class ECompilationUnit(
     }
 
     override fun acceptChildren(visitor: Visitor) {
-        declarations.forEach { it.accept(visitor) }
+        rootPackage.accept(visitor)
     }
 }

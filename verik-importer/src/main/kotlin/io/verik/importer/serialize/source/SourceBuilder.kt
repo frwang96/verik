@@ -23,12 +23,17 @@ import java.nio.file.Path
 
 class SourceBuilder(
     private val importerContext: ImporterContext,
+    private val packageName: String,
     private val path: Path
 ) {
 
-    private val builder = StringBuilder()
+    private val lineBuilder = StringBuilder()
+    private val sourceBuilder = StringBuilder()
+    private var indentation = 0
 
-    private val suppressedInspections = listOf(
+    private val INDENT_LENGTH = 4
+    private val SUPPRESSED_INSPECTIONS = listOf(
+        "unused",
         "LongLine"
     )
 
@@ -38,19 +43,45 @@ class SourceBuilder(
             path,
             FileHeaderBuilder.HeaderStyle.KOTLIN
         )
-        builder.append(fileHeader)
+        sourceBuilder.append(fileHeader)
         buildHeader()
     }
 
     fun getTextFile(): TextFile {
-        return TextFile(path, builder.toString())
+        return TextFile(path, sourceBuilder.toString())
+    }
+
+    fun indent(block: () -> Unit) {
+        indentation++
+        block()
+        indentation--
+    }
+
+    fun append(content: String) {
+        lineBuilder.append(content)
+    }
+
+    fun appendLine(content: String) {
+        lineBuilder.append(content)
+        appendLine()
+    }
+
+    fun appendLine() {
+        if (lineBuilder.isEmpty()) {
+            sourceBuilder.appendLine()
+        } else {
+            sourceBuilder.append(" ".repeat(INDENT_LENGTH * indentation))
+            sourceBuilder.appendLine(lineBuilder)
+            lineBuilder.clear()
+        }
     }
 
     private fun buildHeader() {
-        val suppressedInspectionsString = suppressedInspections.joinToString { "\"$it\"" }
-        builder.appendLine("@file:Suppress($suppressedInspectionsString)")
-        builder.appendLine()
-        builder.appendLine("package imported")
-        builder.appendLine()
+        val suppressedInspectionsString = SUPPRESSED_INSPECTIONS.joinToString { "\"$it\"" }
+        sourceBuilder.appendLine("@file:Suppress($suppressedInspectionsString)")
+        sourceBuilder.appendLine()
+        sourceBuilder.appendLine("package $packageName")
+        sourceBuilder.appendLine()
+        sourceBuilder.appendLine("import io.verik.core.*")
     }
 }

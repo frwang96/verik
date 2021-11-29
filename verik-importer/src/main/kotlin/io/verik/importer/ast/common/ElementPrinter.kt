@@ -19,6 +19,7 @@ package io.verik.importer.ast.common
 import io.verik.importer.ast.element.ECompilationUnit
 import io.verik.importer.ast.element.EElement
 import io.verik.importer.ast.element.EModule
+import io.verik.importer.ast.element.ERootPackage
 
 class ElementPrinter : Visitor() {
 
@@ -27,7 +28,13 @@ class ElementPrinter : Visitor() {
 
     override fun visitCompilationUnit(compilationUnit: ECompilationUnit) {
         build("CompilationUnit") {
-            build(compilationUnit.declarations)
+            build(compilationUnit.rootPackage)
+        }
+    }
+
+    override fun visitRootPackage(rootPackage: ERootPackage) {
+        build("RootPackage") {
+            build(rootPackage.declarations)
         }
     }
 
@@ -41,6 +48,10 @@ class ElementPrinter : Visitor() {
         if (!first) builder.append(", ")
         builder.append(content)
         first = false
+    }
+
+    private fun build(element: EElement) {
+        element.accept(this)
     }
 
     private fun build(name: String, content: () -> Unit) {

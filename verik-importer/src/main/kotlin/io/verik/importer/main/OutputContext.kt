@@ -21,12 +21,12 @@ import io.verik.importer.common.TextFile
 class OutputContext {
 
     lateinit var configTextFile: TextFile
-    var rootPackageTextFiles: List<TextFile> = listOf()
+    var packageTextFiles: List<TextFile> = listOf()
 
     fun getTextFiles(): List<TextFile> {
         val textFiles = ArrayList<TextFile>()
         textFiles.add(configTextFile)
-        textFiles.addAll(rootPackageTextFiles)
+        textFiles.addAll(packageTextFiles)
         return textFiles.sortedBy { it.path }
     }
 }
