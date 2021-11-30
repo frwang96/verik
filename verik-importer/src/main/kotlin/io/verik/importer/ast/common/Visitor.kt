@@ -21,6 +21,7 @@ import io.verik.importer.ast.element.ECompilationUnit
 import io.verik.importer.ast.element.EDeclaration
 import io.verik.importer.ast.element.EElement
 import io.verik.importer.ast.element.EModule
+import io.verik.importer.ast.element.EProperty
 import io.verik.importer.ast.element.ERootPackage
 
 abstract class Visitor {
@@ -45,5 +46,9 @@ abstract class Visitor {
 
     open fun visitModule(module: EModule) {
         visitDeclaration(module)
+    }
+
+    open fun visitProperty(property: EProperty) {
+        visitDeclaration(property)
     }
 }

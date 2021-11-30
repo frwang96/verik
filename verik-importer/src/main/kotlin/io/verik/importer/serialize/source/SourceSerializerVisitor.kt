@@ -19,6 +19,7 @@ package io.verik.importer.serialize.source
 import io.verik.importer.ast.common.Visitor
 import io.verik.importer.ast.element.EDeclaration
 import io.verik.importer.ast.element.EModule
+import io.verik.importer.ast.element.EProperty
 import io.verik.importer.main.Platform
 import io.verik.importer.message.SourceLocation
 
@@ -38,6 +39,10 @@ class SourceSerializerVisitor(
 
     override fun visitModule(module: EModule) {
         serializerContext.appendLine("class ${module.name} : Module()")
+    }
+
+    override fun visitProperty(property: EProperty) {
+        serializerContext.appendLine("val ${property.name}: Boolean = imported()")
     }
 
     private fun getLocationString(location: SourceLocation): String {

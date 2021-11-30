@@ -19,6 +19,7 @@ package io.verik.importer.ast.common
 import io.verik.importer.ast.element.ECompilationUnit
 import io.verik.importer.ast.element.EElement
 import io.verik.importer.ast.element.EModule
+import io.verik.importer.ast.element.EProperty
 import io.verik.importer.ast.element.ERootPackage
 
 class ElementPrinter : Visitor() {
@@ -41,6 +42,12 @@ class ElementPrinter : Visitor() {
     override fun visitModule(module: EModule) {
         build("Module") {
             build(module.name)
+        }
+    }
+
+    override fun visitProperty(property: EProperty) {
+        build("Property") {
+            build(property.name)
         }
     }
 

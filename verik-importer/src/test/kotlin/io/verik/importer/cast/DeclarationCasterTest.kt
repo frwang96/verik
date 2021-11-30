@@ -53,4 +53,19 @@ internal class DeclarationCasterTest : BaseTest() {
             it.findDeclaration("M")
         }
     }
+
+    @Test
+    fun `cast property`() {
+        driveElementTest(
+            """
+                logic x;
+            """.trimIndent(),
+            CasterStage::class,
+            """
+                Property(x)
+            """.trimIndent()
+        ) {
+            it.findDeclaration("x")
+        }
+    }
 }

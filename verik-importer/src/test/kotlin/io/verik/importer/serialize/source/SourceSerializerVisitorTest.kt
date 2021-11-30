@@ -33,4 +33,16 @@ internal class SourceSerializerVisitorTest : BaseTest() {
             """.trimIndent()
         )
     }
+
+    @Test
+    fun `serialize property`() {
+        driveTextFileTest(
+            """
+                logic x;
+            """.trimIndent(),
+            """
+                val x: Boolean = imported()
+            """.trimIndent()
+        )
+    }
 }

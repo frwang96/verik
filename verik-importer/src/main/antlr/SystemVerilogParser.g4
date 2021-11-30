@@ -18,7 +18,7 @@ moduleNonAnsiHeader
     ;
 
 moduleAnsiHeader
-    : MODULE identifier SEMICOLON
+    : MODULE identifier listOfPortDeclarations? SEMICOLON
     ;
 
 moduleDeclaration
@@ -30,6 +30,10 @@ moduleDeclaration
 
 listOfPorts
     : LPAREN port (COMMA port)* RPAREN
+    ;
+
+listOfPortDeclarations
+    : LPAREN (ansiPortDeclaration (COMMA ansiPortDeclaration)*)? RPAREN
     ;
 
 portDeclaration
@@ -47,6 +51,19 @@ portExpression
 
 portReference
     : identifier
+    ;
+
+portDirection
+    : INPUT
+    | OUTPUT
+    ;
+
+netPortHeader
+    : portDirection? netPortType
+    ;
+
+ansiPortDeclaration
+    : netPortHeader identifier
     ;
 
 // A.1.4 Module Items //////////////////////////////////////////////////////////////////////////////////////////////////
