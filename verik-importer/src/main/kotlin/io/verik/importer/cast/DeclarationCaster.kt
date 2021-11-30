@@ -22,8 +22,12 @@ import io.verik.importer.ast.element.EModule
 object DeclarationCaster {
 
     fun castModule(ctx: SystemVerilogParser.ModuleDeclarationContext, castContext: CastContext): EModule {
-        val location = castContext.getLocation(ctx.MODULE())
-        val name = ctx.identifier().text
+        val moduleAnsiHeader = ctx.moduleAnsiHeader()
+        val moduleNonAnsiHeader = ctx.moduleNonAnsiHeader()
+        val identifier = moduleAnsiHeader?.identifier()
+            ?: moduleNonAnsiHeader.identifier()
+        val location = castContext.getLocation(identifier)
+        val name = identifier.text
         return EModule(location, name)
     }
 }

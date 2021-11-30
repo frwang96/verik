@@ -24,4 +24,5 @@ abstract class VerikImporterPluginExtension {
     var debug: Boolean = false
     var suppressedWarnings: List<String> = listOf()
     var promotedWarnings: List<String> = listOf()
+    var labelSourceLocations: Boolean = true
 }

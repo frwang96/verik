@@ -28,10 +28,12 @@ object VerikImporterConfigBuilder {
             timestamp = VerikConfigUtil.getTimestamp(),
             projectName = project.name,
             projectDir = project.projectDir.toPath(),
+            buildDir = getBuildDir(project),
             importedFiles = extension.importedFiles,
             debug = extension.debug,
             suppressedWarnings = extension.suppressedWarnings,
-            promotedWarnings = extension.promotedWarnings
+            promotedWarnings = extension.promotedWarnings,
+            labelSourceLocations = extension.labelSourceLocations
         )
     }
 

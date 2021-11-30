@@ -16,6 +16,7 @@
 
 package io.verik.compiler.serialize.source
 
+import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EFile
@@ -30,8 +31,8 @@ class SerializerContext(projectContext: ProjectContext, file: EFile) {
         sourceSerializerVisitor.serialize(element)
     }
 
-    fun serializeAsDeclaration(element: EElement) {
-        sourceSerializerVisitor.serializeAsDeclaration(element)
+    fun serializeAsDeclaration(declaration: EDeclaration) {
+        sourceSerializerVisitor.serializeAsDeclaration(declaration)
     }
 
     fun serializeAsExpression(expression: EExpression) {

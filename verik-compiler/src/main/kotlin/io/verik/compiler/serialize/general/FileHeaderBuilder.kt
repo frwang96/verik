@@ -24,9 +24,7 @@ object FileHeaderBuilder {
 
     fun build(projectContext: ProjectContext, inputPath: Path?, outputPath: Path, headerStyle: HeaderStyle): String {
         val lines = ArrayList<String>()
-
-        val inputPathString = inputPath
-            ?.let { Platform.getStringFromPath(it.toAbsolutePath()) }
+        val inputPathString = inputPath?.let { Platform.getStringFromPath(it.toAbsolutePath()) }
         val outputPathString = Platform.getStringFromPath(outputPath.toAbsolutePath())
 
         lines.add("Project: ${projectContext.config.projectName}")
@@ -38,7 +36,7 @@ object FileHeaderBuilder {
 
         val builder = StringBuilder()
         when (headerStyle) {
-            HeaderStyle.SV -> {
+            HeaderStyle.SYSTEM_VERILOG -> {
                 builder.appendLine("/*")
                 lines.forEach { builder.appendLine(" * $it") }
                 builder.appendLine(" */")
@@ -48,7 +46,7 @@ object FileHeaderBuilder {
                 builder.appendLine("`timescale ${projectContext.config.timescale}")
                 builder.appendLine("`endif")
             }
-            HeaderStyle.TXT -> {
+            HeaderStyle.YAML -> {
                 lines.forEach { builder.appendLine("# $it") }
             }
         }
@@ -56,5 +54,5 @@ object FileHeaderBuilder {
         return builder.toString()
     }
 
-    enum class HeaderStyle { SV, TXT }
+    enum class HeaderStyle { SYSTEM_VERILOG, YAML }
 }

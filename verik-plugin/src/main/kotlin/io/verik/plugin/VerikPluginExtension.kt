@@ -23,7 +23,7 @@ abstract class VerikPluginExtension {
     var suppressedWarnings: List<String> = listOf()
     var promotedWarnings: List<String> = listOf()
     var maxErrorCount: Int = 20
-    var labelLines: Boolean = false
+    var labelSourceLocations: Boolean = true
     var wrapLength: Int = 120
     var indentLength: Int = 4
     var enableDeadCodeElimination: Boolean = true

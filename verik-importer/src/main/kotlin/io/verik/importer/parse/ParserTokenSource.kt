@@ -32,7 +32,7 @@
 
 package io.verik.importer.parse
 
-import io.verik.importer.common.LexerFragment
+import io.verik.importer.lex.LexerFragment
 import org.antlr.v4.runtime.CharStream
 import org.antlr.v4.runtime.IntStream
 import org.antlr.v4.runtime.Token

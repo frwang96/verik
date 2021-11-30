@@ -46,7 +46,7 @@ object PackageWrapperSerializerStage : ProjectStage() {
             projectContext,
             null,
             outputPath,
-            FileHeaderBuilder.HeaderStyle.SV
+            FileHeaderBuilder.HeaderStyle.SYSTEM_VERILOG
         )
         val packageName = basicPackage.name
         val indent = " ".repeat(projectContext.config.indentLength)

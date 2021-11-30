@@ -18,6 +18,7 @@ package io.verik.importer.cast
 
 import io.verik.importer.ast.element.ECompilationUnit
 import io.verik.importer.ast.element.EDeclaration
+import io.verik.importer.ast.element.ERootPackage
 import io.verik.importer.common.ImporterStage
 import io.verik.importer.main.ImporterContext
 import io.verik.importer.message.SourceLocation
@@ -35,6 +36,7 @@ object CasterStage : ImporterStage() {
                 declarations.add(declaration)
         }
         val location = SourceLocation(importerContext.config.projectDir, 0, 0)
-        importerContext.compilationUnit = ECompilationUnit(location, declarations)
+        val rootPackage = ERootPackage(location, declarations)
+        importerContext.compilationUnit = ECompilationUnit(location, rootPackage)
     }
 }

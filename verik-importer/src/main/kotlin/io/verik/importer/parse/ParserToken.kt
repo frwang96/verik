@@ -32,7 +32,7 @@
 
 package io.verik.importer.parse
 
-import io.verik.importer.common.LexerFragment
+import io.verik.importer.lex.LexerFragment
 import org.antlr.v4.runtime.CharStream
 import org.antlr.v4.runtime.Token
 import org.antlr.v4.runtime.TokenSource
@@ -46,7 +46,7 @@ class ParserToken(
     }
 
     override fun getType(): Int {
-        return lexerFragment.type.index
+        return lexerFragment.type
     }
 
     override fun getLine(): Int {

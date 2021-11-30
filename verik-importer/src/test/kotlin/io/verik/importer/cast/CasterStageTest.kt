@@ -26,7 +26,7 @@ internal class CasterStageTest : BaseTest() {
         driveElementTest(
             "",
             CasterStage::class,
-            "CompilationUnit([])"
+            "CompilationUnit(RootPackage([]))"
         ) { it }
     }
 
@@ -38,7 +38,7 @@ internal class CasterStageTest : BaseTest() {
                 endmodule
             """.trimIndent(),
             CasterStage::class,
-            "CompilationUnit([Module(M)])"
+            "CompilationUnit(RootPackage([Module(M)]))"
         ) { it }
     }
 }

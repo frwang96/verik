@@ -1,4 +1,6 @@
-/.run/
+/verik-sandbox/src/main
+
+.run/
 .gradle/
 out/
 build/

@@ -30,7 +30,7 @@ data class VerikConfig(
     val suppressedWarnings: List<String>,
     val promotedWarnings: List<String>,
     val maxErrorCount: Int,
-    val labelLines: Boolean,
+    val labelSourceLocations: Boolean,
     val wrapLength: Int,
     val indentLength: Int,
     val enableDeadCodeElimination: Boolean

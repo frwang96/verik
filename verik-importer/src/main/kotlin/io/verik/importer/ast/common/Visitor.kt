@@ -16,10 +16,12 @@
 
 package io.verik.importer.ast.common
 
+import io.verik.importer.ast.element.EAbstractPackage
 import io.verik.importer.ast.element.ECompilationUnit
 import io.verik.importer.ast.element.EDeclaration
 import io.verik.importer.ast.element.EElement
 import io.verik.importer.ast.element.EModule
+import io.verik.importer.ast.element.ERootPackage
 
 abstract class Visitor {
 
@@ -29,10 +31,16 @@ abstract class Visitor {
         visitElement(compilationUnit)
     }
 
-//  DECLARATION  ///////////////////////////////////////////////////////////////////////////////////////////////////////
-
     open fun visitDeclaration(declaration: EDeclaration) {
         visitElement(declaration)
+    }
+
+    open fun visitAbstractPackage(abstractPackage: EAbstractPackage) {
+        visitElement(abstractPackage)
+    }
+
+    open fun visitRootPackage(rootPackage: ERootPackage) {
+        visitAbstractPackage(rootPackage)
     }
 
     open fun visitModule(module: EModule) {

@@ -16,6 +16,7 @@
 
 package io.verik.importer.test
 
+import io.verik.importer.antlr.SystemVerilogLexer
 import io.verik.importer.ast.common.ElementPrinter
 import io.verik.importer.ast.element.ECompilationUnit
 import io.verik.importer.ast.element.EElement
@@ -43,12 +44,12 @@ abstract class BaseTest {
             val throwable = assertThrows<TestErrorException> {
                 stageSequence.process(importerContext)
             }
-            assertEquals(throwable.message, message)
+            assertEquals(message, throwable.message)
         } else {
             val throwable = assertThrows<TestWarningException> {
                 stageSequence.process(importerContext)
             }
-            assertEquals(throwable.message, message)
+            assertEquals(message, throwable.message)
         }
     }
 
@@ -72,15 +73,10 @@ abstract class BaseTest {
                 break
             stage.process(importerContext)
         }
-        val actual = importerContext.lexerFragments.joinToString(separator = " ") { it.type.toString() }
+        val actual = importerContext.lexerFragments.joinToString(separator = " ") {
+            SystemVerilogLexer.VOCABULARY.getSymbolicName(it.type)
+        }
         assertEquals(expected, actual)
-    }
-
-    private fun getImporterContext(content: String): ImporterContext {
-        val config = getConfig()
-        val importerContext = ImporterContext(config)
-        importerContext.inputFileContexts[config.importedFiles[0]] = InputFileContext(content)
-        return importerContext
     }
 
     fun <S : ImporterStage> driveElementTest(
@@ -99,6 +95,38 @@ abstract class BaseTest {
         }
         val element = selector(importerContext.compilationUnit)
         assertElementEquals(getExpectedString(expected), ElementPrinter.dump(element))
+    }
+
+    fun driveTextFileTest(content: String, expected: String) {
+        val importerContext = getImporterContext(content)
+        val stageSequence = StageSequencer.getStageSequence()
+        stageSequence.process(importerContext)
+        val textFile = when (importerContext.outputContext.packageTextFiles.size) {
+            0 -> throw IllegalArgumentException("No package text files found")
+            1 -> importerContext.outputContext.packageTextFiles[0]
+            else -> throw IllegalArgumentException("Multiple package text files found")
+        }
+
+        val expectedLines = expected.lines()
+            .dropLastWhile { it.isEmpty() }
+        val actualLines = textFile.content.lines()
+            .let { lines ->
+                val index = lines.indexOfLast { it.startsWith("import ") } + 2
+                lines.subList(index, lines.size)
+            }
+            .dropLastWhile { it.isEmpty() }
+
+        assertEquals(
+            expectedLines.joinToString(separator = "\n"),
+            actualLines.joinToString(separator = "\n")
+        )
+    }
+
+    internal fun getImporterContext(content: String): ImporterContext {
+        val config = getConfig()
+        val importerContext = ImporterContext(config)
+        importerContext.inputFileContexts[config.importedFiles[0]] = InputFileContext(content)
+        return importerContext
     }
 
     private fun getExpectedString(expected: String): String {
@@ -173,16 +201,19 @@ abstract class BaseTest {
 
         fun getConfig(): VerikImporterConfig {
             val projectDir = if (Platform.isWindows) "C:\\" else "/"
+            val buildDir = if (Platform.isWindows) "C:\\build\\verik-import" else "/build/verik-import"
             val importedFile = if (Platform.isWindows) "C:\\src\\test.sv" else "/src/test.sv"
             return VerikImporterConfig(
                 version = "local-SNAPSHOT",
                 timestamp = "",
                 projectName = "test",
                 projectDir = Paths.get(projectDir),
+                buildDir = Paths.get(buildDir),
                 importedFiles = listOf(Paths.get(importedFile)),
                 debug = true,
                 suppressedWarnings = listOf(),
-                promotedWarnings = listOf()
+                promotedWarnings = listOf(),
+                labelSourceLocations = false
             )
         }
     }

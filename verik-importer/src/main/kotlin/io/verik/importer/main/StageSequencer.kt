@@ -17,10 +17,13 @@
 package io.verik.importer.main
 
 import io.verik.importer.cast.CasterStage
-import io.verik.importer.parse.LexerStage
+import io.verik.importer.lex.FragmentPairFilterStage
+import io.verik.importer.lex.LexerStage
 import io.verik.importer.parse.ParserStage
 import io.verik.importer.preprocess.PreprocessorParserStage
 import io.verik.importer.preprocess.PreprocessorStage
+import io.verik.importer.serialize.general.ConfigFileSerializerStage
+import io.verik.importer.serialize.source.SourceSerializerStage
 
 object StageSequencer {
 
@@ -31,12 +34,19 @@ object StageSequencer {
         stageSequence.add(PreprocessorParserStage)
         stageSequence.add(PreprocessorStage)
 
-        // Parse
+        // Lex
         stageSequence.add(LexerStage)
+        stageSequence.add(FragmentPairFilterStage)
+
+        // Parse
         stageSequence.add(ParserStage)
 
         // Cast
         stageSequence.add(CasterStage)
+
+        // Serialize
+        stageSequence.add(ConfigFileSerializerStage)
+        stageSequence.add(SourceSerializerStage)
 
         return stageSequence
     }

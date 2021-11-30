@@ -16,8 +16,8 @@
 
 package io.verik.importer.cast
 
+import io.verik.importer.lex.LexerCharStream
 import io.verik.importer.message.SourceLocation
-import io.verik.importer.parse.LexerCharStream
 import org.antlr.v4.runtime.tree.ParseTree
 import org.antlr.v4.runtime.tree.RuleNode
 import org.antlr.v4.runtime.tree.TerminalNode

@@ -18,13 +18,32 @@ package io.verik.importer.main
 
 import io.verik.importer.message.GradleMessagePrinter
 import io.verik.importer.message.MessageCollector
+import java.nio.file.Files
 
 object VerikImporterMain {
 
     fun run(config: VerikImporterConfig) {
+        if (config.importedFiles.isEmpty()) {
+            if (Files.exists(config.buildDir))
+                config.buildDir.toFile().deleteRecursively()
+            return
+        }
+
         MessageCollector.messageCollector = MessageCollector(config, GradleMessagePrinter(config.debug))
         val importerContext = ImporterContextBuilder.buildContext(config)
         val stageSequence = StageSequencer.getStageSequence()
         stageSequence.process(importerContext)
+        writeFiles(importerContext)
+    }
+
+    private fun writeFiles(importerContext: ImporterContext) {
+        if (Files.exists(importerContext.config.buildDir)) {
+            importerContext.config.buildDir.toFile().deleteRecursively()
+        }
+        val textFiles = importerContext.outputContext.getTextFiles()
+        textFiles.forEach {
+            Files.createDirectories(it.path.parent)
+            Files.writeString(it.path, it.content)
+        }
     }
 }

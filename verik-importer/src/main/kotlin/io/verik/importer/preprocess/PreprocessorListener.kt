@@ -18,7 +18,6 @@ package io.verik.importer.preprocess
 
 import io.verik.importer.antlr.SystemVerilogPreprocessorParser
 import io.verik.importer.antlr.SystemVerilogPreprocessorParserBaseListener
-import io.verik.importer.common.PreprocessorFragment
 
 class PreprocessorListener(
     private val preprocessorFragments: ArrayList<PreprocessorFragment>
