@@ -14,19 +14,23 @@
  * limitations under the License.
  */
 
-package io.verik.importer.parse
+package io.verik.importer.serialize.source
 
 import io.verik.importer.test.BaseTest
 import org.junit.jupiter.api.Test
 
-internal class ParserStageTest : BaseTest() {
+internal class SourceSerializerVisitorTest : BaseTest() {
 
     @Test
-    fun `parser simple`() {
-        driveMessageTest(
-            "module module",
-            false,
-            "Parser error: No matching rules"
+    fun `serialize module`() {
+        driveTextFileTest(
+            """
+                module M;
+                endmodule
+            """.trimIndent(),
+            """
+                class M : Module()
+            """.trimIndent()
         )
     }
 }

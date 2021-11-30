@@ -79,13 +79,6 @@ abstract class BaseTest {
         assertEquals(expected, actual)
     }
 
-    private fun getImporterContext(content: String): ImporterContext {
-        val config = getConfig()
-        val importerContext = ImporterContext(config)
-        importerContext.inputFileContexts[config.importedFiles[0]] = InputFileContext(content)
-        return importerContext
-    }
-
     fun <S : ImporterStage> driveElementTest(
         content: String,
         stageClass: KClass<S>,
@@ -102,6 +95,38 @@ abstract class BaseTest {
         }
         val element = selector(importerContext.compilationUnit)
         assertElementEquals(getExpectedString(expected), ElementPrinter.dump(element))
+    }
+
+    fun driveTextFileTest(content: String, expected: String) {
+        val importerContext = getImporterContext(content)
+        val stageSequence = StageSequencer.getStageSequence()
+        stageSequence.process(importerContext)
+        val textFile = when (importerContext.outputContext.packageTextFiles.size) {
+            0 -> throw IllegalArgumentException("No package text files found")
+            1 -> importerContext.outputContext.packageTextFiles[0]
+            else -> throw IllegalArgumentException("Multiple package text files found")
+        }
+
+        val expectedLines = expected.lines()
+            .dropLastWhile { it.isEmpty() }
+        val actualLines = textFile.content.lines()
+            .let { lines ->
+                val index = lines.indexOfLast { it.startsWith("import ") } + 2
+                lines.subList(index, lines.size)
+            }
+            .dropLastWhile { it.isEmpty() }
+
+        assertEquals(
+            expectedLines.joinToString(separator = "\n"),
+            actualLines.joinToString(separator = "\n")
+        )
+    }
+
+    internal fun getImporterContext(content: String): ImporterContext {
+        val config = getConfig()
+        val importerContext = ImporterContext(config)
+        importerContext.inputFileContexts[config.importedFiles[0]] = InputFileContext(content)
+        return importerContext
     }
 
     private fun getExpectedString(expected: String): String {

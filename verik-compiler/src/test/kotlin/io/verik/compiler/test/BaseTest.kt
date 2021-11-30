@@ -92,7 +92,7 @@ abstract class BaseTest {
     ) {
         val projectContext = getProjectContext(content)
         val stageSequence = StageSequencer.getStageSequence()
-        stageSequence.stages.forEach { it.accept(projectContext) }
+        stageSequence.process(projectContext)
         val textFile = selector(projectContext.outputContext)
         assertOutputTextEquals(expected, textFile)
     }
