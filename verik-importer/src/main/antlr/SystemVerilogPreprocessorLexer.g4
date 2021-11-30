@@ -9,6 +9,10 @@ CODE
     : ~[`"/\r\n]+
     ;
 
+STRING_LITERAL
+    : STRING -> type(CODE)
+    ;
+
 BLOCK_COMMENT
     :'/*' .*? '*/' -> channel(HIDDEN)
     ;
@@ -30,4 +34,8 @@ DIRECTIVE_WS
 
 TIMESCALE
     : 'timescale' ~[\r\n]+ -> mode(DEFAULT_MODE)
+    ;
+
+fragment STRING
+    : '"' ('\\"' | '\\\\' | .)*? '"'
     ;

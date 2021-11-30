@@ -1,8 +1,13 @@
 lexer grammar SystemVerilogLexer;
 
+EQ          : '=' ;
 COMMA       : ',' ;
+COLON       : ':' ;
 SEMICOLON   : ';' ;
 UNDERSCORE  : '_' ;
+
+LBRACK      : '[' ;
+RBRACK      : ']' ;
 LPAREN      : '(' ;
 RPAREN      : ')' ;
 LPAREN_STAR : '(*' ;
@@ -13,20 +18,27 @@ INPUT     : 'input' ;
 LOGIC     : 'logic' ;
 MODULE    : 'module' ;
 OUTPUT    : 'output' ;
+SIGNED    : 'signed' ;
+UNSIGNED  : 'unsigned' ;
+WIRE      : 'wire' ;
 
-UnsignedNumber
-    : DecimalDigit (UNDERSCORE | DecimalDigit)*
+UNSIGNED_NUMBER
+    : DECIMAL_DIGIT (UNDERSCORE | DECIMAL_DIGIT)*
     ;
 
-fragment NonZeroDecimalDigit
+fragment NON_ZERO_DECIMAL_DIGIT
     : [1-9]
     ;
 
-fragment DecimalDigit
+fragment DECIMAL_DIGIT
     : [0-9]
     ;
 
-SimpleIdentifier
+STRING_LITERAL
+	: '"' ~["\n\r]* '"'
+	;
+
+SIMPLE_IDENTIFIER
     : [a-zA-Z_][a-zA-Z0-9_$]*
     ;
 

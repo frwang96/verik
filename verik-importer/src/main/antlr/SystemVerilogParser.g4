@@ -57,11 +57,85 @@ moduleItem
 // A.2.1.2 Port Declarations ///////////////////////////////////////////////////////////////////////////////////////////
 
 inputDeclaration
-    : INPUT identifier
+    : INPUT (netPortType identifier | variablePortType identifier)
     ;
 
 outputDeclaration
-    : OUTPUT identifier
+    : OUTPUT (netPortType identifier | variablePortType identifier)
+    ;
+
+// A.2.2.1 Net and Variable Types //////////////////////////////////////////////////////////////////////////////////////
+
+dataType
+    : integerVectorType
+    ;
+
+dataTypeOrImplicit
+    : dataType
+    | implicitDataType
+    ;
+
+implicitDataType
+    :signing? packedDimension*
+    ;
+
+integerType
+    : integerVectorType
+    ;
+
+integerVectorType
+    : LOGIC
+    ;
+
+netType
+    : WIRE
+    ;
+
+netPortType
+    : dataTypeOrImplicit
+    | netType dataTypeOrImplicit
+    ;
+
+variablePortType
+    : varDataType
+    ;
+
+varDataType
+    : dataType
+    ;
+
+signing
+    : SIGNED | UNSIGNED
+    ;
+
+simpleType
+    : integerType
+    ;
+
+// A.2.5 Declaration Ranges ////////////////////////////////////////////////////////////////////////////////////////////
+
+packedDimension
+    : LBRACK (constantRange | constantExpression) RBRACK
+    ;
+
+// A.8.3 Expressions ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+constantExpression
+    : constantPrimary
+    ;
+
+constantRange
+    : constantExpression COLON constantExpression
+    ;
+
+// A.8.4 Primaries /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+constantPrimary
+    : primaryLiteral
+    ;
+
+primaryLiteral
+    : number
     ;
 
 // A.8.7 Numbers ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -75,11 +149,11 @@ integralNumber
     ;
 
 decimalNumber
-    : UnsignedNumber
+    : UNSIGNED_NUMBER
     ;
 
 // A.9.3 Identifiers ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 identifier
-    : SimpleIdentifier
+    : SIMPLE_IDENTIFIER
     ;

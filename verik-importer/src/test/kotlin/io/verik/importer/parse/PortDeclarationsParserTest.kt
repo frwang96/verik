@@ -20,25 +20,19 @@ import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.test.ParserTest
 import org.junit.jupiter.api.Test
 
-internal class SourceTextParserTest : ParserTest() {
+internal class PortDeclarationsParserTest : ParserTest() {
 
     @Test
-    fun `parse moduleNonAnsiHeader`() {
+    fun `parse inputDeclaration outputDeclaration`() {
         driveParserTest(
-            listOf(SystemVerilogParser.RULE_moduleNonAnsiHeader),
+            listOf(
+                SystemVerilogParser.RULE_inputDeclaration,
+                SystemVerilogParser.RULE_outputDeclaration,
+            ),
             """
                 module M(x);
-                endmodule
-            """.trimIndent()
-        )
-    }
-
-    @Test
-    fun `parse moduleAnsiHeader`() {
-        driveParserTest(
-            listOf(SystemVerilogParser.RULE_moduleAnsiHeader),
-            """
-                module M;
+                    input x;
+                    output x;
                 endmodule
             """.trimIndent()
         )
