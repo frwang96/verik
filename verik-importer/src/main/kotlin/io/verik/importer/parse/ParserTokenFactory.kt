@@ -26,12 +26,13 @@ class ParserTokenFactory(
     private val parserTokenSource: ParserTokenSource
 ) : TokenFactory<ParserToken> {
 
-    fun create(lexerFragment: LexerFragment): ParserToken {
+    fun create(lexerFragment: LexerFragment, index: Int): ParserToken {
         return ParserToken(
             lexerFragment.virtualLine,
             lexerFragment.virtualColumn,
             lexerFragment.type,
             lexerFragment.content,
+            index,
             parserTokenSource
         )
     }
@@ -46,10 +47,10 @@ class ParserTokenFactory(
         line: Int,
         charPositionInLine: Int
     ): ParserToken {
-        return ParserToken(line, charPositionInLine, type, text!!, parserTokenSource)
+        return ParserToken(line, charPositionInLine, type, text!!, -1, parserTokenSource)
     }
 
     override fun create(type: Int, text: String?): ParserToken {
-        return ParserToken(0, 0, type, text!!, parserTokenSource)
+        return ParserToken(0, 0, type, text!!, -1, parserTokenSource)
     }
 }

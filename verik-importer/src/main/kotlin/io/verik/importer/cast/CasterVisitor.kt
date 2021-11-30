@@ -32,12 +32,13 @@ class CasterVisitor(
     }
 
     fun getDeclaration(declaration: ParseTree): EDeclaration? {
-        val location = castContext.getLocation(declaration)
+        if (CasterUtil.hasErrorNode(declaration))
+            return null
         return when (val element = declaration.accept(this)) {
             null -> null
             is EDeclaration -> element
             else -> {
-                Messages.INTERNAL_ERROR.on(location, "Declaration expected but got: ${element::class.simpleName}")
+                Messages.INTERNAL_ERROR.on(element, "Declaration expected but got: ${element::class.simpleName}")
                 null
             }
         }

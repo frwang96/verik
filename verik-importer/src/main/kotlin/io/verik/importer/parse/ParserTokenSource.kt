@@ -31,7 +31,7 @@ class ParserTokenSource(
     private var index = 0
 
     override fun nextToken(): Token {
-        val token = parserTokenFactory.create(lexerFragments[index])
+        val token = parserTokenFactory.create(lexerFragments[index], index)
         index++
         return token
     }

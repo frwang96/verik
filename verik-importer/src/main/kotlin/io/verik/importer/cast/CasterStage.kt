@@ -27,7 +27,7 @@ object CasterStage : ImporterStage() {
 
     override fun process(importerContext: ImporterContext) {
         val declarations = ArrayList<EDeclaration>()
-        val castContext = CastContext(importerContext.lexerCharStream)
+        val castContext = CastContext(importerContext.lexerCharStream, importerContext.parserTokenStream)
         val casterVisitor = CasterVisitor(castContext)
         val parseTree = importerContext.parseTree
         (0 until parseTree.childCount - 1).forEach {

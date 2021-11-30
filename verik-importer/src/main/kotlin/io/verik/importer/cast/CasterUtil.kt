@@ -16,19 +16,24 @@
 
 package io.verik.importer.cast
 
-import io.verik.importer.lex.LexerCharStream
-import io.verik.importer.message.SourceLocation
-import org.antlr.v4.runtime.TokenStream
+import io.verik.importer.antlr.SystemVerilogParserBaseVisitor
+import org.antlr.v4.runtime.tree.ErrorNode
 import org.antlr.v4.runtime.tree.ParseTree
 
-class CastContext(
-    private val lexerCharStream: LexerCharStream,
-    private val parserTokenStream: TokenStream
-) {
+object CasterUtil {
 
-    fun getLocation(parseTree: ParseTree): SourceLocation {
-        val index = parseTree.sourceInterval.a
-        val token = parserTokenStream.get(index)
-        return lexerCharStream.getLocation(token.line, token.charPositionInLine)
+    fun hasErrorNode(parseTree: ParseTree): Boolean {
+        val errorNodeVisitor = ErrorNodeVisitor()
+        parseTree.accept(errorNodeVisitor)
+        return errorNodeVisitor.hasErrorNodes
+    }
+
+    private class ErrorNodeVisitor : SystemVerilogParserBaseVisitor<Unit>() {
+
+        var hasErrorNodes = false
+
+        override fun visitErrorNode(node: ErrorNode?) {
+            hasErrorNodes = true
+        }
     }
 }

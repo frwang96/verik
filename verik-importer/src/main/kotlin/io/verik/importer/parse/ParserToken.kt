@@ -25,6 +25,7 @@ class ParserToken(
     private val virtualColumn: Int,
     private val type: Int,
     private val content: String,
+    private val index: Int,
     private val tokenSource: TokenSource
 ) : Token {
 
@@ -49,7 +50,7 @@ class ParserToken(
     }
 
     override fun getTokenIndex(): Int {
-        return -1
+        return index
     }
 
     override fun getStartIndex(): Int {
