@@ -32,9 +32,9 @@ import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.kt.EWhenExpression
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
 object UntransformedElementCheckerStage : ProjectStage() {

@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.common
+package io.verik.compiler.core.common
 
-object CardinalUnresolvedDeclaration : CardinalDeclaration {
+import io.verik.compiler.ast.interfaces.Declaration
 
-    override var name = "`*`"
-}
+interface CardinalDeclaration : Declaration

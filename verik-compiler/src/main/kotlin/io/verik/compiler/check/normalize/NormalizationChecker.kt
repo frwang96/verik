@@ -16,8 +16,8 @@
 
 package io.verik.compiler.check.normalize
 
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 
 object NormalizationChecker : ProjectStage() {
 

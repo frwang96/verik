@@ -16,9 +16,9 @@
 
 package io.verik.compiler.compile
 
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.main.Platform
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 import io.verik.core.*

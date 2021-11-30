@@ -19,11 +19,11 @@ package io.verik.compiler.test
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.common.ElementPrinter
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TextFile
 import io.verik.compiler.main.OutputContext
 import io.verik.compiler.main.Platform
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.main.SourceSetConfig
 import io.verik.compiler.main.SourceSetContext
 import io.verik.compiler.main.StageSequencer

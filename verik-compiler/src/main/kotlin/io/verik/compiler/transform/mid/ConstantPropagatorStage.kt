@@ -21,9 +21,9 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.common.ExpressionCopier
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 
 object ConstantPropagatorStage : ProjectStage() {
 

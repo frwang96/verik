@@ -21,9 +21,9 @@ import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.property.Type
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
 object SmartCastReducerStage : ProjectStage() {

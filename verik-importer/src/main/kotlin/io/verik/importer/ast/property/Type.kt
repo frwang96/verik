@@ -20,10 +20,14 @@ import io.verik.importer.ast.interfaces.Declaration
 import io.verik.importer.ast.interfaces.Reference
 
 class Type(
-    override val reference: Declaration
+    override val reference: Declaration,
+    var arguments: ArrayList<Type>
 ) : Reference {
 
     override fun toString(): String {
-        return reference.name
+        val referenceName = reference.name
+        return if (arguments.isNotEmpty()) {
+            "$referenceName<${arguments.joinToString()}>"
+        } else referenceName
     }
 }

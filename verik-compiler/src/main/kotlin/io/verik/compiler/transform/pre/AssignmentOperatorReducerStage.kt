@@ -19,9 +19,9 @@ package io.verik.compiler.transform.pre
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.common.ExpressionCopier
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 
 object AssignmentOperatorReducerStage : ProjectStage() {
 

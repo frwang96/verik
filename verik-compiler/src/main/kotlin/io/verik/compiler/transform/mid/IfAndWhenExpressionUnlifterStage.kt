@@ -25,10 +25,10 @@ import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 
 object IfAndWhenExpressionUnlifterStage : ProjectStage() {
 

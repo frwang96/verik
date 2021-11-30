@@ -23,9 +23,9 @@ import io.verik.compiler.ast.element.sv.EEventExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 
 object ParenthesisInsertionTransformerStage : ProjectStage() {
 

@@ -16,7 +16,7 @@
 
 package io.verik.importer.ast.element
 
-import io.verik.importer.ast.common.Visitor
+import io.verik.importer.common.Visitor
 import io.verik.importer.core.Core
 
 abstract class EAbstractPackage : EDeclaration() {

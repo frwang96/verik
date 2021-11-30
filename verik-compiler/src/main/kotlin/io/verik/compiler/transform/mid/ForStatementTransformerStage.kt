@@ -30,11 +30,11 @@ import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.KtUnaryOperatorKind
 import io.verik.compiler.common.ExpressionCopier
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
 object ForStatementTransformerStage : ProjectStage() {

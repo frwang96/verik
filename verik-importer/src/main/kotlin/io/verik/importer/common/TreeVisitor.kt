@@ -16,9 +16,11 @@
 
 package io.verik.importer.common
 
-import io.verik.importer.main.ImporterContext
+import io.verik.importer.ast.element.EElement
 
-abstract class ImporterStage {
+abstract class TreeVisitor : Visitor() {
 
-    abstract fun process(importerContext: ImporterContext)
+    override fun visitElement(element: EElement) {
+        element.acceptChildren(this)
+    }
 }

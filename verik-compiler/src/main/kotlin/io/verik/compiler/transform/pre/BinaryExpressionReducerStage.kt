@@ -19,12 +19,12 @@ package io.verik.compiler.transform.pre
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreClassDeclaration
 import io.verik.compiler.core.common.CoreFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
 object BinaryExpressionReducerStage : ProjectStage() {

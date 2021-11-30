@@ -19,9 +19,9 @@ package io.verik.compiler.check.post
 import io.verik.compiler.ast.element.common.EAbstractContainerClass
 import io.verik.compiler.ast.element.common.EAbstractPackage
 import io.verik.compiler.ast.element.common.EDeclaration
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
 object NameRedeclarationCheckerStage : ProjectStage() {

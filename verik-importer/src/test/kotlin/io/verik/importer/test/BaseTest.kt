@@ -17,11 +17,11 @@
 package io.verik.importer.test
 
 import io.verik.importer.antlr.SystemVerilogLexer
-import io.verik.importer.ast.common.ElementPrinter
 import io.verik.importer.ast.element.ECompilationUnit
 import io.verik.importer.ast.element.EElement
-import io.verik.importer.common.ImporterStage
+import io.verik.importer.common.ElementPrinter
 import io.verik.importer.main.ImporterContext
+import io.verik.importer.main.ImporterStage
 import io.verik.importer.main.InputFileContext
 import io.verik.importer.main.Platform
 import io.verik.importer.main.StageSequencer

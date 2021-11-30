@@ -16,7 +16,6 @@
 
 package io.verik.compiler.main
 
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.message.MessageCollector
 import kotlin.reflect.KClass
 

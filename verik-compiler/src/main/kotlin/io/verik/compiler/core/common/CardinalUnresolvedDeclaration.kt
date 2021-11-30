@@ -14,19 +14,9 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.common
+package io.verik.compiler.core.common
 
-class CardinalConstantDeclaration(
-    val value: Int
-) : CardinalDeclaration {
+object CardinalUnresolvedDeclaration : CardinalDeclaration {
 
-    override var name = "`$value`"
-
-    override fun equals(other: Any?): Boolean {
-        return (other is CardinalConstantDeclaration) && (other.value == value)
-    }
-
-    override fun hashCode(): Int {
-        return value
-    }
+    override var name = "`*`"
 }

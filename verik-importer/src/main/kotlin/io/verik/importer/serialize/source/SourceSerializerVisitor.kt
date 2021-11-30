@@ -16,10 +16,10 @@
 
 package io.verik.importer.serialize.source
 
-import io.verik.importer.ast.common.Visitor
 import io.verik.importer.ast.element.EDeclaration
 import io.verik.importer.ast.element.EModule
 import io.verik.importer.ast.element.EProperty
+import io.verik.importer.common.Visitor
 import io.verik.importer.main.Platform
 import io.verik.importer.message.SourceLocation
 

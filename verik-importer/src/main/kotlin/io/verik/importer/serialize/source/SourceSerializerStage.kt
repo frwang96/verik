@@ -18,9 +18,9 @@ package io.verik.importer.serialize.source
 
 import io.verik.importer.ast.element.EAbstractPackage
 import io.verik.importer.ast.element.EDeclaration
-import io.verik.importer.common.ImporterStage
 import io.verik.importer.common.TextFile
 import io.verik.importer.main.ImporterContext
+import io.verik.importer.main.ImporterStage
 
 object SourceSerializerStage : ImporterStage() {
 

@@ -17,9 +17,9 @@
 package io.verik.compiler.transform.post
 
 import io.verik.compiler.ast.element.common.EBasicPackage
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
 object PackageNameTransformerStage : ProjectStage() {

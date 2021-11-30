@@ -24,12 +24,12 @@ import io.verik.compiler.ast.element.sv.EModuleInterface
 import io.verik.compiler.ast.element.sv.EModulePort
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.property.PortType
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Annotations
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
 object ComponentInterpreterStage : ProjectStage() {

@@ -14,8 +14,13 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.common
+package io.verik.compiler.core.common
 
-import io.verik.compiler.ast.interfaces.Declaration
+object Cardinal {
 
-interface CardinalDeclaration : Declaration
+    val UNRESOLVED = CardinalUnresolvedDeclaration
+
+    fun of(value: Int): CardinalConstantDeclaration {
+        return CardinalConstantDeclaration((value))
+    }
+}

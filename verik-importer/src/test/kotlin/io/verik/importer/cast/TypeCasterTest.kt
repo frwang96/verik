@@ -17,17 +17,36 @@
 package io.verik.importer.cast
 
 import io.verik.importer.test.BaseTest
+import io.verik.importer.test.findDeclaration
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class TypeCasterTest : BaseTest() {
 
     @Test
     fun `cast Boolean`() {
-        """
-            logic x;
-        """.trimIndent()
-        """
-            Property(x, Boolean)
-        """.trimIndent()
+        driveElementTest(
+            """
+                logic x;
+            """.trimIndent(),
+            CasterStage::class,
+            """
+                Property(x, Boolean)
+            """.trimIndent()
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    @Disabled
+    fun `cast Ubit`() {
+        driveElementTest(
+            """
+                logic [7:0] x;
+            """.trimIndent(),
+            CasterStage::class,
+            """
+                Property(x, Ubit<`8`>)
+            """.trimIndent()
+        ) { it.findDeclaration("x") }
     }
 }

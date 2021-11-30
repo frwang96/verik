@@ -17,9 +17,9 @@
 package io.verik.compiler.check.normalize
 
 import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 import java.nio.file.Path
 

@@ -26,7 +26,7 @@ import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.interfaces.TypeParameterized
 import io.verik.compiler.ast.interfaces.cast
 import io.verik.compiler.ast.property.SuperTypeCallEntry
-import io.verik.compiler.common.CardinalConstantDeclaration
+import io.verik.compiler.core.common.CardinalConstantDeclaration
 import io.verik.compiler.message.Messages
 
 object DeclarationSpecializer {

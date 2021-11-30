@@ -19,9 +19,9 @@ package io.verik.compiler.transform.pre
 import io.verik.compiler.ast.element.common.EBasicPackage
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtFunction
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 
 object FunctionOverloadingTransformerStage : ProjectStage() {
 

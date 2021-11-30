@@ -17,10 +17,10 @@
 package io.verik.compiler.transform.mid
 
 import io.verik.compiler.ast.element.common.EReferenceExpression
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.CorePropertyDeclaration
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 
 object PropertyTransformerStage : ProjectStage() {
 

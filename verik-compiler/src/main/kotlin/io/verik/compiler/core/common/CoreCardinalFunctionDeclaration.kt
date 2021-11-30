@@ -16,8 +16,6 @@
 
 package io.verik.compiler.core.common
 
-import io.verik.compiler.common.CardinalDeclaration
-
 class CoreCardinalFunctionDeclaration(
     override val parent: CoreDeclaration,
     override var name: String

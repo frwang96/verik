@@ -16,8 +16,8 @@
 
 package io.verik.importer.ast.element
 
-import io.verik.importer.ast.common.Visitor
 import io.verik.importer.ast.property.Type
+import io.verik.importer.common.Visitor
 import io.verik.importer.message.SourceLocation
 
 class EProperty(

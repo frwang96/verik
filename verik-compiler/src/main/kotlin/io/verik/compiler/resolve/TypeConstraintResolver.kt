@@ -18,7 +18,7 @@ package io.verik.compiler.resolve
 
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.property.Type
-import io.verik.compiler.common.Cardinal
+import io.verik.compiler.core.common.Cardinal
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.Messages
 

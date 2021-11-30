@@ -22,7 +22,7 @@ interface Declaration {
 
     val name: String
 
-    fun toType(): Type {
-        return Type(this)
+    fun toType(vararg arguments: Type): Type {
+        return Type(this, arrayListOf(*arguments))
     }
 }

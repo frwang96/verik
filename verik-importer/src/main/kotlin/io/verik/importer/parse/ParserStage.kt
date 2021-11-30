@@ -17,11 +17,11 @@
 package io.verik.importer.parse
 
 import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.common.ImporterStage
-import io.verik.importer.common.RecognitionExceptionFormatter
 import io.verik.importer.lex.LexerCharStream
 import io.verik.importer.main.ImporterContext
+import io.verik.importer.main.ImporterStage
 import io.verik.importer.message.Messages
+import io.verik.importer.message.RecognitionExceptionFormatter
 import org.antlr.v4.runtime.BaseErrorListener
 import org.antlr.v4.runtime.CommonTokenStream
 import org.antlr.v4.runtime.RecognitionException

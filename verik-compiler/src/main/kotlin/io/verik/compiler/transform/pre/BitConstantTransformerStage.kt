@@ -18,12 +18,12 @@ package io.verik.compiler.transform.pre
 
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
-import io.verik.compiler.common.Cardinal
 import io.verik.compiler.common.ConstantUtil
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.core.common.Cardinal
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 
 object BitConstantTransformerStage : ProjectStage() {
 

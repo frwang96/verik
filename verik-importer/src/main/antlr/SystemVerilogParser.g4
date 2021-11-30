@@ -101,7 +101,7 @@ dataDeclaration
 // A.2.2.1 Net and Variable Types //////////////////////////////////////////////////////////////////////////////////////
 
 dataType
-    : integerVectorType
+    : integerVectorType signing? packedDimension*
     ;
 
 dataTypeOrImplicit

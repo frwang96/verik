@@ -17,9 +17,9 @@
 package io.verik.compiler.serialize.source
 
 import io.verik.compiler.ast.element.common.EFile
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TextFile
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 
 object SourceSerializerStage : ProjectStage() {
 

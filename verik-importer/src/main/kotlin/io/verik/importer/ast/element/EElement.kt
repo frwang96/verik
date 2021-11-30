@@ -16,7 +16,7 @@
 
 package io.verik.importer.ast.element
 
-import io.verik.importer.ast.common.Visitor
+import io.verik.importer.common.Visitor
 import io.verik.importer.message.Messages
 import io.verik.importer.message.SourceLocation
 

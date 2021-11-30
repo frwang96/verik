@@ -22,9 +22,9 @@ import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.Reference
-import io.verik.compiler.common.CardinalConstantDeclaration
-import io.verik.compiler.common.CardinalDeclaration
-import io.verik.compiler.common.CardinalUnresolvedDeclaration
+import io.verik.compiler.core.common.CardinalConstantDeclaration
+import io.verik.compiler.core.common.CardinalDeclaration
+import io.verik.compiler.core.common.CardinalUnresolvedDeclaration
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreClassDeclaration
 import io.verik.compiler.message.Messages

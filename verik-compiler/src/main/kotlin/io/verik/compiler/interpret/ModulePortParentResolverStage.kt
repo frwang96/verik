@@ -20,9 +20,9 @@ import io.verik.compiler.ast.element.sv.EModuleInterface
 import io.verik.compiler.ast.element.sv.EModulePort
 import io.verik.compiler.ast.element.sv.EModulePortInstantiation
 import io.verik.compiler.ast.interfaces.cast
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
 object ModulePortParentResolverStage : ProjectStage() {

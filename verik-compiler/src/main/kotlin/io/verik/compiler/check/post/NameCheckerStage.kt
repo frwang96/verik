@@ -21,10 +21,10 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.ERootPackage
 import io.verik.compiler.ast.element.sv.ESvCallExpression
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.CoreDeclaration
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 import io.verik.compiler.target.common.TargetDeclaration
 

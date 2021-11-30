@@ -20,10 +20,10 @@ import io.verik.compiler.ast.element.common.EBasicPackage
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.ast.element.common.ERootPackage
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.location
 import io.verik.compiler.main.Platform
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.SourceLocation
 
 object CasterStage : ProjectStage() {

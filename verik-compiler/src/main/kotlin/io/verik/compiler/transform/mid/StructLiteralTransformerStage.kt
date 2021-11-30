@@ -20,9 +20,9 @@ import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.EStructLiteralExpression
 import io.verik.compiler.ast.property.StructLiteralEntry
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 
 object StructLiteralTransformerStage : ProjectStage() {
 

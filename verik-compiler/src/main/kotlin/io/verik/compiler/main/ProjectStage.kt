@@ -14,13 +14,19 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.common
+package io.verik.compiler.main
 
-object Cardinal {
+import io.verik.compiler.check.normalize.NormalizationChecker
 
-    val UNRESOLVED = CardinalUnresolvedDeclaration
+abstract class ProjectStage {
 
-    fun of(value: Int): CardinalConstantDeclaration {
-        return CardinalConstantDeclaration((value))
+    protected abstract val checkNormalization: Boolean
+
+    protected abstract fun process(projectContext: ProjectContext)
+
+    fun accept(projectContext: ProjectContext) {
+        process(projectContext)
+        if (checkNormalization)
+            NormalizationChecker.accept(projectContext)
     }
 }

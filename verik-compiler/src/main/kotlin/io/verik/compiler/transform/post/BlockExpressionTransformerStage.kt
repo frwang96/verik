@@ -21,9 +21,9 @@ import io.verik.compiler.ast.element.sv.EAbstractProceduralBlock
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ETask
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 
 object BlockExpressionTransformerStage : ProjectStage() {
 

@@ -16,8 +16,8 @@
 
 package io.verik.compiler.check.pre
 
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.KtModifierList
