@@ -52,7 +52,7 @@ object ParserStage : ImporterStage() {
         val parserErrorListener = ParserErrorListener(importerContext.lexerCharStream)
         parser.removeErrorListeners()
         parser.addErrorListener(parserErrorListener)
-        importerContext.parseTree = parser.project()
+        importerContext.parseTree = parser.compilationUnit()
     }
 
     private class ParserErrorListener(

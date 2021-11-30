@@ -4,12 +4,13 @@ options { tokenVocab = SystemVerilogLexer; }
 
 // A.1.2 SystemVerilog Source Text /////////////////////////////////////////////////////////////////////////////////////
 
-project
+compilationUnit
     : description* EOF
     ;
 
 description
     : moduleDeclaration
+    | packageItem
     ;
 
 moduleNonAnsiHeader
@@ -54,6 +55,16 @@ moduleItem
     : portDeclaration SEMICOLON
     ;
 
+// A.1.11 Package Items ////////////////////////////////////////////////////////////////////////////////////////////////
+
+packageItem
+    : packageOrGenerateItemDeclaration
+    ;
+
+packageOrGenerateItemDeclaration
+    : dataDeclaration
+    ;
+
 // A.2.1.2 Port Declarations ///////////////////////////////////////////////////////////////////////////////////////////
 
 inputDeclaration
@@ -62,6 +73,12 @@ inputDeclaration
 
 outputDeclaration
     : OUTPUT (netPortType identifier | variablePortType identifier)
+    ;
+
+// A.2.1.3 Type Declarations ///////////////////////////////////////////////////////////////////////////////////////////
+
+dataDeclaration
+    : dataTypeOrImplicit listOfVariableDeclAssignments SEMICOLON
     ;
 
 // A.2.2.1 Net and Variable Types //////////////////////////////////////////////////////////////////////////////////////
@@ -110,6 +127,18 @@ signing
 
 simpleType
     : integerType
+    ;
+
+// A.2.3 Declaration Lists /////////////////////////////////////////////////////////////////////////////////////////////
+
+listOfVariableDeclAssignments
+    : variableDeclAssignment (COMMA variableDeclAssignment)*
+    ;
+
+// A.2.4 Declaration Assignments ///////////////////////////////////////////////////////////////////////////////////////
+
+variableDeclAssignment
+    : identifier
     ;
 
 // A.2.5 Declaration Ranges ////////////////////////////////////////////////////////////////////////////////////////////

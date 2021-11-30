@@ -43,10 +43,11 @@ class ParserTokenSource(
     private val lexerFragments: ArrayList<LexerFragment>
 ) : TokenSource {
 
+    private val parserTokenFactory = ParserTokenFactory(this)
     private var index = 0
 
     override fun nextToken(): Token {
-        val token = ParserToken(lexerFragments[index])
+        val token = parserTokenFactory.create(lexerFragments[index])
         index++
         return token
     }
@@ -69,7 +70,7 @@ class ParserTokenSource(
 
     override fun setTokenFactory(p0: TokenFactory<*>?) {}
 
-    override fun getTokenFactory(): TokenFactory<*>? {
-        return null
+    override fun getTokenFactory(): TokenFactory<*> {
+        return parserTokenFactory
     }
 }

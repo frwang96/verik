@@ -32,29 +32,32 @@
 
 package io.verik.importer.parse
 
-import io.verik.importer.lex.LexerFragment
 import org.antlr.v4.runtime.CharStream
 import org.antlr.v4.runtime.Token
 import org.antlr.v4.runtime.TokenSource
 
 class ParserToken(
-    val lexerFragment: LexerFragment,
+    private val virtualLine: Int,
+    private val virtualColumn: Int,
+    private val type: Int,
+    private val content: String,
+    private val tokenSource: TokenSource
 ) : Token {
 
     override fun getText(): String {
-        return lexerFragment.content
+        return content
     }
 
     override fun getType(): Int {
-        return lexerFragment.type
+        return type
     }
 
     override fun getLine(): Int {
-        return lexerFragment.virtualLine
+        return virtualLine
     }
 
     override fun getCharPositionInLine(): Int {
-        return lexerFragment.virtualColumn
+        return virtualColumn
     }
 
     override fun getChannel(): Int {
@@ -73,11 +76,11 @@ class ParserToken(
         return -1
     }
 
-    override fun getTokenSource(): TokenSource? {
-        return null
+    override fun getTokenSource(): TokenSource {
+        return tokenSource
     }
 
     override fun getInputStream(): CharStream? {
-        return null
+        return tokenSource.inputStream
     }
 }
