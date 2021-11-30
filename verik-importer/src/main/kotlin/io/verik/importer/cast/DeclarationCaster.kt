@@ -36,6 +36,7 @@ object DeclarationCaster {
         val identifier = ctx.listOfVariableDeclAssignments().variableDeclAssignment(0).identifier()
         val location = castContext.getLocation(identifier)
         val name = identifier.text
-        return EProperty(location, name)
+        val type = TypeCaster.castType(ctx.dataTypeOrImplicit())
+        return EProperty(location, name, type)
     }
 }

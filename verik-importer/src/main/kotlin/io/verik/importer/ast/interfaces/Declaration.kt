@@ -16,7 +16,13 @@
 
 package io.verik.importer.ast.interfaces
 
+import io.verik.importer.ast.property.Type
+
 interface Declaration {
 
     val name: String
+
+    fun toType(): Type {
+        return Type(this)
+    }
 }

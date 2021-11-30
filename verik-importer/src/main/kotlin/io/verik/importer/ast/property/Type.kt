@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.property
+package io.verik.importer.ast.property
 
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.interfaces.Declaration
-import io.verik.compiler.ast.interfaces.Reference
+import io.verik.importer.ast.interfaces.Declaration
+import io.verik.importer.ast.interfaces.Reference
 
-class SuperTypeCallEntry(
-    override var reference: Declaration,
-    var valueArguments: ArrayList<EExpression>
-) : Reference
+class Type(
+    override val reference: Declaration
+) : Reference {
+
+    override fun toString(): String {
+        return reference.name
+    }
+}

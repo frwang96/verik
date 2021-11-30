@@ -14,13 +14,8 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.property
+package io.verik.importer.core
 
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.interfaces.Declaration
-import io.verik.compiler.ast.interfaces.Reference
+import io.verik.importer.ast.interfaces.Declaration
 
-class SuperTypeCallEntry(
-    override var reference: Declaration,
-    var valueArguments: ArrayList<EExpression>
-) : Reference
+interface CoreDeclaration : Declaration

@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.property
+package io.verik.importer.cast
 
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.interfaces.Declaration
-import io.verik.compiler.ast.interfaces.Reference
+import io.verik.importer.antlr.SystemVerilogParser
+import io.verik.importer.ast.property.Type
+import io.verik.importer.core.Core
 
-class SuperTypeCallEntry(
-    override var reference: Declaration,
-    var valueArguments: ArrayList<EExpression>
-) : Reference
+object TypeCaster {
+
+    fun castType(ctx: SystemVerilogParser.DataTypeOrImplicitContext): Type {
+        return Core.C_Boolean.toType()
+    }
+}

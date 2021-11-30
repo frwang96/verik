@@ -14,13 +14,20 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.property
+package io.verik.importer.cast
 
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.interfaces.Declaration
-import io.verik.compiler.ast.interfaces.Reference
+import io.verik.importer.test.BaseTest
+import org.junit.jupiter.api.Test
 
-class SuperTypeCallEntry(
-    override var reference: Declaration,
-    var valueArguments: ArrayList<EExpression>
-) : Reference
+internal class TypeCasterTest : BaseTest() {
+
+    @Test
+    fun `cast Boolean`() {
+        """
+            logic x;
+        """.trimIndent()
+        """
+            Property(x, Boolean)
+        """.trimIndent()
+    }
+}

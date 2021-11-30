@@ -23,6 +23,7 @@ import io.verik.importer.ast.element.EElement
 import io.verik.importer.ast.element.EModule
 import io.verik.importer.ast.element.EProperty
 import io.verik.importer.ast.element.ERootPackage
+import io.verik.importer.ast.element.ETypedElement
 
 abstract class Visitor {
 
@@ -32,8 +33,12 @@ abstract class Visitor {
         visitElement(compilationUnit)
     }
 
+    open fun visitTypedElement(typedElement: ETypedElement) {
+        visitElement(typedElement)
+    }
+
     open fun visitDeclaration(declaration: EDeclaration) {
-        visitElement(declaration)
+        visitTypedElement(declaration)
     }
 
     open fun visitAbstractPackage(abstractPackage: EAbstractPackage) {

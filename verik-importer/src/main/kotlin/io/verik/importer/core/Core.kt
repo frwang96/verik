@@ -14,13 +14,10 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.property
+package io.verik.importer.core
 
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.interfaces.Declaration
-import io.verik.compiler.ast.interfaces.Reference
+object Core {
 
-class SuperTypeCallEntry(
-    override var reference: Declaration,
-    var valueArguments: ArrayList<EExpression>
-) : Reference
+    val C_Unit = CoreClassDeclaration("Unit")
+    val C_Boolean = CoreClassDeclaration("Boolean")
+}

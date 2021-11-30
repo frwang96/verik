@@ -48,6 +48,7 @@ class ElementPrinter : Visitor() {
     override fun visitProperty(property: EProperty) {
         build("Property") {
             build(property.name)
+            build(property.type.toString())
         }
     }
 

@@ -42,7 +42,8 @@ class SourceSerializerVisitor(
     }
 
     override fun visitProperty(property: EProperty) {
-        serializerContext.appendLine("val ${property.name}: Boolean = imported()")
+        serializerContext.append("val ${property.name}: ")
+        serializerContext.appendLine("${property.type} = imported()")
     }
 
     private fun getLocationString(location: SourceLocation): String {

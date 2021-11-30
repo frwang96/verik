@@ -17,11 +17,13 @@
 package io.verik.importer.ast.element
 
 import io.verik.importer.ast.common.Visitor
+import io.verik.importer.ast.property.Type
 import io.verik.importer.message.SourceLocation
 
 class EProperty(
     override val location: SourceLocation,
-    override val name: String
+    override val name: String,
+    override var type: Type
 ) : EDeclaration() {
 
     override fun accept(visitor: Visitor) {

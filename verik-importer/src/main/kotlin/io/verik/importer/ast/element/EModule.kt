@@ -17,12 +17,15 @@
 package io.verik.importer.ast.element
 
 import io.verik.importer.ast.common.Visitor
+import io.verik.importer.core.Core
 import io.verik.importer.message.SourceLocation
 
 class EModule(
     override val location: SourceLocation,
     override val name: String
 ) : EDeclaration() {
+
+    override var type = Core.C_Unit.toType()
 
     override fun accept(visitor: Visitor) {
         visitor.visitModule(this)
