@@ -27,10 +27,6 @@ class CasterVisitor(
     private val castContext: CastContext
 ) : SystemVerilogParserBaseVisitor<EElement>() {
 
-    inline fun <reified E : EElement> getElement(parseTree: ParseTree): E? {
-        return parseTree.accept(this)?.cast()
-    }
-
     fun getDeclaration(declaration: ParseTree): EDeclaration? {
         if (CasterUtil.hasErrorNode(declaration))
             return null
@@ -44,11 +40,11 @@ class CasterVisitor(
         }
     }
 
-    override fun visitModuleDeclaration(ctx: SystemVerilogParser.ModuleDeclarationContext?): EElement {
-        return DeclarationCaster.castModule(ctx!!, castContext)
+    override fun visitModuleDeclaration(ctx: SystemVerilogParser.ModuleDeclarationContext?): EElement? {
+        return ModuleCaster.castModuleFromModuleDeclaration(ctx!!, castContext)
     }
 
     override fun visitDataDeclaration(ctx: SystemVerilogParser.DataDeclarationContext?): EElement? {
-        return DeclarationCaster.castProperty(ctx!!, castContext)
+        return PropertyCaster.castPropertyFromDataDeclaration(ctx!!, castContext)
     }
 }

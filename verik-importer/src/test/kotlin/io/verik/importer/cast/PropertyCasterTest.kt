@@ -17,28 +17,23 @@
 package io.verik.importer.cast
 
 import io.verik.importer.test.BaseTest
+import io.verik.importer.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class CasterStageTest : BaseTest() {
+internal class PropertyCasterTest : BaseTest() {
 
     @Test
-    fun `cast compilationUnit`() {
-        driveElementTest(
-            "",
-            CasterStage::class,
-            "CompilationUnit(RootPackage([]))"
-        ) { it }
-    }
-
-    @Test
-    fun `cast compilationUnit with moduleDeclaration`() {
+    fun `cast property from dataDeclaration`() {
         driveElementTest(
             """
-                module M;
-                endmodule
+                logic x;
             """.trimIndent(),
             CasterStage::class,
-            "CompilationUnit(RootPackage([Module(M, [])]))"
-        ) { it }
+            """
+                Property(x, Boolean)
+            """.trimIndent()
+        ) {
+            it.findDeclaration("x")
+        }
     }
 }

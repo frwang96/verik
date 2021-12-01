@@ -19,6 +19,7 @@ package io.verik.importer.common
 import io.verik.importer.ast.element.ECompilationUnit
 import io.verik.importer.ast.element.EElement
 import io.verik.importer.ast.element.EModule
+import io.verik.importer.ast.element.EPort
 import io.verik.importer.ast.element.EProperty
 import io.verik.importer.ast.element.ERootPackage
 
@@ -42,6 +43,7 @@ class ElementPrinter : Visitor() {
     override fun visitModule(module: EModule) {
         build("Module") {
             build(module.name)
+            build(module.ports)
         }
     }
 
@@ -49,6 +51,14 @@ class ElementPrinter : Visitor() {
         build("Property") {
             build(property.name)
             build(property.type.toString())
+        }
+    }
+
+    override fun visitPort(port: EPort) {
+        build("Port") {
+            build(port.name)
+            build(port.type.toString())
+            build(port.portType.toString())
         }
     }
 

@@ -17,22 +17,14 @@
 package io.verik.importer.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.ast.element.EModule
 import io.verik.importer.ast.element.EProperty
 
-object DeclarationCaster {
+object PropertyCaster {
 
-    fun castModule(ctx: SystemVerilogParser.ModuleDeclarationContext, castContext: CastContext): EModule {
-        val moduleAnsiHeader = ctx.moduleAnsiHeader()
-        val moduleNonAnsiHeader = ctx.moduleNonAnsiHeader()
-        val identifier = moduleAnsiHeader?.identifier()
-            ?: moduleNonAnsiHeader.identifier()
-        val location = castContext.getLocation(identifier)
-        val name = identifier.text
-        return EModule(location, name)
-    }
-
-    fun castProperty(ctx: SystemVerilogParser.DataDeclarationContext, castContext: CastContext): EProperty? {
+    fun castPropertyFromDataDeclaration(
+        ctx: SystemVerilogParser.DataDeclarationContext,
+        castContext: CastContext
+    ): EProperty? {
         val identifier = ctx.listOfVariableDeclAssignments().variableDeclAssignment(0).identifier()
         val location = castContext.getLocation(identifier)
         val name = identifier.text

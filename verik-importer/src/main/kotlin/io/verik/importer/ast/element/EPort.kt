@@ -16,18 +16,20 @@
 
 package io.verik.importer.ast.element
 
+import io.verik.importer.ast.property.PortType
 import io.verik.importer.ast.property.Type
 import io.verik.importer.common.Visitor
 import io.verik.importer.message.SourceLocation
 
-class EProperty(
+class EPort(
     override val location: SourceLocation,
     override val name: String,
-    override var type: Type
+    override var type: Type,
+    val portType: PortType
 ) : EAbstractProperty() {
 
     override fun accept(visitor: Visitor) {
-        visitor.visitProperty(this)
+        visitor.visitPort(this)
     }
 
     override fun acceptChildren(visitor: Visitor) {}

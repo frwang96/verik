@@ -20,10 +20,10 @@ import io.verik.importer.test.BaseTest
 import io.verik.importer.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class DeclarationCasterTest : BaseTest() {
+internal class ModuleCasterTest : BaseTest() {
 
     @Test
-    fun `cast module`() {
+    fun `cast module from moduleAnsiHeader without listOfPortDeclarations`() {
         driveElementTest(
             """
                 module M;
@@ -31,7 +31,7 @@ internal class DeclarationCasterTest : BaseTest() {
             """.trimIndent(),
             CasterStage::class,
             """
-                Module(M)
+                Module(M, [])
             """.trimIndent()
         ) {
             it.findDeclaration("M")
@@ -39,17 +39,18 @@ internal class DeclarationCasterTest : BaseTest() {
     }
 
     @Test
-    fun `cast property`() {
+    fun `cast module from moduleAnsiHeader with listOfPortDeclarations`() {
         driveElementTest(
             """
-                logic x;
+                module M(input x);
+                endmodule
             """.trimIndent(),
             CasterStage::class,
             """
-                Property(x, Boolean)
+                Module(M, [Port(x, Boolean, INPUT)])
             """.trimIndent()
         ) {
-            it.findDeclaration("x")
+            it.findDeclaration("M")
         }
     }
 }
