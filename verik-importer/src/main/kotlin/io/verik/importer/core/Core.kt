@@ -20,4 +20,5 @@ object Core {
 
     val C_Unit = CoreClassDeclaration("Unit")
     val C_Boolean = CoreClassDeclaration("Boolean")
+    val C_Ubit = CoreClassDeclaration("Ubit")
 }

@@ -29,11 +29,8 @@ class SourceSerializerVisitor(
 
     fun serializeAsDeclaration(declaration: EDeclaration) {
         serializerContext.appendLine()
-        if (serializerContext.labelSourceLocations) {
-            serializerContext.appendLine("/**")
-            serializerContext.appendLine(" * Imported: ${getLocationString(declaration.location)}")
-            serializerContext.appendLine(" */")
-        }
+        if (serializerContext.labelSourceLocations)
+            serializerContext.appendLine("@Imported(\"${getLocationString(declaration.location)}\")")
         declaration.accept(this)
     }
 

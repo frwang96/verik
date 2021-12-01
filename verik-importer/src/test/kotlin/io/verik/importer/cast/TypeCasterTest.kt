@@ -18,7 +18,6 @@ package io.verik.importer.cast
 
 import io.verik.importer.test.BaseTest
 import io.verik.importer.test.findDeclaration
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class TypeCasterTest : BaseTest() {
@@ -37,7 +36,6 @@ internal class TypeCasterTest : BaseTest() {
     }
 
     @Test
-    @Disabled
     fun `cast Ubit`() {
         driveElementTest(
             """

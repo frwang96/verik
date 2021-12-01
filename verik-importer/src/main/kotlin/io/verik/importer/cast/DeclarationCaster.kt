@@ -32,11 +32,12 @@ object DeclarationCaster {
         return EModule(location, name)
     }
 
-    fun castProperty(ctx: SystemVerilogParser.DataDeclarationContext, castContext: CastContext): EProperty {
+    fun castProperty(ctx: SystemVerilogParser.DataDeclarationContext, castContext: CastContext): EProperty? {
         val identifier = ctx.listOfVariableDeclAssignments().variableDeclAssignment(0).identifier()
         val location = castContext.getLocation(identifier)
         val name = identifier.text
-        val type = TypeCaster.castType(ctx.dataTypeOrImplicit())
+        val type = TypeCaster.castType(ctx.dataTypeOrImplicit(), castContext)
+            ?: return null
         return EProperty(location, name, type)
     }
 }

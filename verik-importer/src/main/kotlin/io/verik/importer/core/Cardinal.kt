@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.common
+package io.verik.importer.core
 
 object Cardinal {
-
-    val UNRESOLVED = CardinalUnresolvedDeclaration
 
     fun of(value: Int): CardinalConstantDeclaration {
         return CardinalConstantDeclaration(value)

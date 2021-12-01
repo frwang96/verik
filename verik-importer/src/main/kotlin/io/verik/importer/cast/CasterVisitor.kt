@@ -48,7 +48,7 @@ class CasterVisitor(
         return DeclarationCaster.castModule(ctx!!, castContext)
     }
 
-    override fun visitDataDeclaration(ctx: SystemVerilogParser.DataDeclarationContext?): EElement {
+    override fun visitDataDeclaration(ctx: SystemVerilogParser.DataDeclarationContext?): EElement? {
         return DeclarationCaster.castProperty(ctx!!, castContext)
     }
 }
