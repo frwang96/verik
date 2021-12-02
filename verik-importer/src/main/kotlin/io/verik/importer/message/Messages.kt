@@ -20,53 +20,45 @@ import kotlin.reflect.full.declaredMemberProperties
 
 object Messages {
 
-    val INTERNAL_ERROR = MessageTemplate1<String>(
-        Severity.ERROR,
+    val INTERNAL_ERROR = FatalMessageTemplate1<String>(
         "$0"
     )
 
 // CONFIG //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val DUPLICATED_FILE = MessageTemplate0(
-        Severity.ERROR,
+    val DUPLICATED_FILE = FatalMessageTemplate0(
         "Imported file is duplicated"
     )
 
 // PREPROCESS //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val PREPROCESSOR_LEXER_ERROR = MessageTemplate1<String>(
-        Severity.WARNING,
+    val PREPROCESSOR_LEXER_ERROR = WarningMessageTemplate1<String>(
         "Preprocessor lexer error: $0"
     )
 
-    val PREPROCESSOR_PARSER_ERROR = MessageTemplate1<String>(
-        Severity.WARNING,
+    val PREPROCESSOR_PARSER_ERROR = WarningMessageTemplate1<String>(
         "Preprocessor parser error: $0"
     )
 
 // LEX /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val LEXER_ERROR = MessageTemplate1<String>(
-        Severity.WARNING,
+    val LEXER_ERROR = WarningMessageTemplate1<String>(
         "Lexer error: $0"
     )
 
-    val MISMATCHED_TOKEN = MessageTemplate1<String>(
-        Severity.WARNING,
+    val MISMATCHED_TOKEN = WarningMessageTemplate1<String>(
         "Mismatched token: $0"
     )
 
 // PARSE ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val PARSER_ERROR = MessageTemplate1<String>(
-        Severity.WARNING,
+    val PARSER_ERROR = WarningMessageTemplate1<String>(
         "Parser error: $0"
     )
 
 // CAST ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val TYPE_CAST_ERROR = MessageTemplate1<String>(
-        Severity.WARNING,
+    val TYPE_CAST_ERROR = WarningMessageTemplate1<String>(
         "Unable to cast type: $0"
     )
 

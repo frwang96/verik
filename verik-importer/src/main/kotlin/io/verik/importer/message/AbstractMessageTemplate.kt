@@ -20,8 +20,6 @@ abstract class AbstractMessageTemplate {
 
     lateinit var name: String
 
-    abstract val severity: Severity
-
     abstract val template: String
 
     internal fun format(vararg args: Any?): String {

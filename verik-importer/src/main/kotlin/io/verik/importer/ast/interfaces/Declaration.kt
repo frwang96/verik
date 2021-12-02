@@ -29,7 +29,7 @@ interface Declaration {
     }
 }
 
-inline fun <reified T> Declaration.cast(element: EElement): T? {
+inline fun <reified T> Declaration.cast(element: EElement): T {
     return when (this) {
         is T -> this
         else -> {
@@ -39,7 +39,6 @@ inline fun <reified T> Declaration.cast(element: EElement): T? {
                 element.location,
                 "Could not cast declaration: Expected $expectedName actual $actualName"
             )
-            null
         }
     }
 }

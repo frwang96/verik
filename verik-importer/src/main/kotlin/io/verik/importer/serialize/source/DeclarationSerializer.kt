@@ -35,8 +35,7 @@ object DeclarationSerializer {
             serializerContext.indent {
                 serializerContext.serializeJoinAppendLine(module.portReferences) {
                     val port = it.reference.cast<EPort>(module)
-                    if (port != null)
-                        serializerContext.serialize(port)
+                    serializerContext.serialize(port)
                 }
             }
             serializerContext.append(")")

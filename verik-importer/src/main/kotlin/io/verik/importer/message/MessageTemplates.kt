@@ -19,26 +19,33 @@ package io.verik.importer.message
 import io.verik.importer.ast.element.EElement
 import java.nio.file.Path
 
-class MessageTemplate0(
-    override val severity: Severity,
-    override val template: String
-) : AbstractMessageTemplate() {
-
-    fun on(path: Path) {
-        MessageCollector.messageCollector.message(name, format(), SourceLocation(path, 0, 0), severity)
-    }
-}
-
-class MessageTemplate1<A>(
-    override val severity: Severity,
+class WarningMessageTemplate1<A>(
     override val template: String
 ) : AbstractMessageTemplate() {
 
     fun on(location: SourceLocation, a: A) {
-        MessageCollector.messageCollector.message(name, format(a), location, severity)
+        MessageCollector.messageCollector.warning(name, format(a), location)
+    }
+}
+
+class FatalMessageTemplate0(
+    override val template: String
+) : AbstractMessageTemplate() {
+
+    fun on(path: Path): Nothing {
+        MessageCollector.messageCollector.fatal(name, format(), SourceLocation(path, 0, 0))
+    }
+}
+
+class FatalMessageTemplate1<A>(
+    override val template: String
+) : AbstractMessageTemplate() {
+
+    fun on(location: SourceLocation, a: A): Nothing {
+        MessageCollector.messageCollector.fatal(name, format(a), location)
     }
 
-    fun on(element: EElement, a: A) {
-        MessageCollector.messageCollector.message(name, format(a), element.location, severity)
+    fun on(element: EElement, a: A): Nothing {
+        MessageCollector.messageCollector.fatal(name, format(a), element.location)
     }
 }

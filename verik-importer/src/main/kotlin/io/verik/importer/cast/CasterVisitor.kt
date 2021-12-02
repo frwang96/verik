@@ -35,7 +35,6 @@ class CasterVisitor(
             is EDeclaration -> element
             else -> {
                 Messages.INTERNAL_ERROR.on(element, "Declaration expected but got: ${element::class.simpleName}")
-                null
             }
         }
     }
