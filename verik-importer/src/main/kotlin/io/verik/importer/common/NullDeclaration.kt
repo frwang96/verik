@@ -14,20 +14,11 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.property
+package io.verik.importer.common
 
 import io.verik.importer.ast.interfaces.Declaration
-import io.verik.importer.ast.interfaces.Reference
 
-class Type(
-    override var reference: Declaration,
-    var arguments: ArrayList<Type>
-) : Reference {
+object NullDeclaration : Declaration {
 
-    override fun toString(): String {
-        val referenceName = reference.name
-        return if (arguments.isNotEmpty()) {
-            "$referenceName<${arguments.joinToString()}>"
-        } else referenceName
-    }
+    override val name = "null"
 }

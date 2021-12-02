@@ -44,6 +44,12 @@ class ElementPrinter : Visitor() {
         build("Module") {
             build(module.name)
             build(module.ports)
+            buildList(module.portReferences) {
+                build("PortReference") {
+                    build(it.reference.name)
+                    build(it.name)
+                }
+            }
         }
     }
 
@@ -87,6 +93,15 @@ class ElementPrinter : Visitor() {
         first = true
         elements.forEach { it.accept(this) }
         builder.append("]")
+        first = false
+    }
+
+    private fun <T> buildList(entries: List<T>, builder: (T) -> Unit) {
+        if (!first) this.builder.append(", ")
+        this.builder.append("[")
+        first = true
+        entries.forEach { builder(it) }
+        this.builder.append("]")
         first = false
     }
 

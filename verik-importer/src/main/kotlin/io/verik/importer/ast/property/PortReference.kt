@@ -20,6 +20,6 @@ import io.verik.importer.ast.interfaces.Declaration
 import io.verik.importer.ast.interfaces.Reference
 
 class PortReference(
-    override val reference: Declaration,
+    override var reference: Declaration,
     val name: String
 ) : Reference

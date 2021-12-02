@@ -18,5 +18,5 @@ package io.verik.importer.ast.interfaces
 
 interface Reference {
 
-    val reference: Declaration
+    var reference: Declaration
 }

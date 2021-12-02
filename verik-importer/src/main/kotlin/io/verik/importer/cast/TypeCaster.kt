@@ -25,15 +25,15 @@ object TypeCaster {
 
     fun castType(ctx: SystemVerilogParser.DataTypeOrImplicitContext, castContext: CastContext): Type? {
         val type = when {
-            ctx.dataType() != null -> castTypeFromDataTypeContext(ctx.dataType()!!)
-            else -> castTypeFromImplicitDataTypeContext(ctx.implicitDataType()!!)
+            ctx.dataType() != null -> castType(ctx.dataType()!!)
+            else -> castType(ctx.implicitDataType()!!)
         }
         if (type == null)
             Messages.TYPE_CAST_ERROR.on(castContext.getLocation(ctx), ctx.text)
         return type
     }
 
-    private fun castTypeFromDataTypeContext(ctx: SystemVerilogParser.DataTypeContext): Type? {
+    private fun castType(ctx: SystemVerilogParser.DataTypeContext): Type? {
         return when (ctx.packedDimension().size) {
             0 -> Core.C_Boolean.toType()
             1 -> CardinalTypeCaster.castCardinalType(ctx.packedDimension(0))?.let { Core.C_Ubit.toType(it) }
@@ -41,7 +41,7 @@ object TypeCaster {
         }
     }
 
-    private fun castTypeFromImplicitDataTypeContext(ctx: SystemVerilogParser.ImplicitDataTypeContext): Type? {
+    private fun castType(ctx: SystemVerilogParser.ImplicitDataTypeContext): Type? {
         return when (ctx.packedDimension().size) {
             0 -> Core.C_Boolean.toType()
             1 -> CardinalTypeCaster.castCardinalType(ctx.packedDimension(0))?.let { Core.C_Ubit.toType(it) }

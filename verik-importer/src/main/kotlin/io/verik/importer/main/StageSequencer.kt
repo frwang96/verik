@@ -22,6 +22,7 @@ import io.verik.importer.lex.LexerStage
 import io.verik.importer.parse.ParserStage
 import io.verik.importer.preprocess.PreprocessorParserStage
 import io.verik.importer.preprocess.PreprocessorStage
+import io.verik.importer.resolve.PortReferenceResolverStage
 import io.verik.importer.serialize.general.ConfigFileSerializerStage
 import io.verik.importer.serialize.source.SourceSerializerStage
 
@@ -43,6 +44,9 @@ object StageSequencer {
 
         // Cast
         stageSequence.add(CasterStage)
+
+        // Resolve
+        stageSequence.add(PortReferenceResolverStage)
 
         // Serialize
         stageSequence.add(ConfigFileSerializerStage)

@@ -14,31 +14,28 @@
  * limitations under the License.
  */
 
-package io.verik.importer.cast
+package io.verik.importer.resolve
 
 import io.verik.importer.test.BaseTest
+import io.verik.importer.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class CasterStageTest : BaseTest() {
+internal class PortReferenceResolverStageTest : BaseTest() {
 
     @Test
-    fun `cast compilationUnit`() {
-        driveElementTest(
-            "",
-            CasterStage::class,
-            "CompilationUnit(RootPackage([]))"
-        ) { it }
-    }
-
-    @Test
-    fun `cast compilationUnit with moduleDeclaration`() {
+    fun `resolve port reference`() {
         driveElementTest(
             """
-                module M;
+                module M(x);
+                    input x;
                 endmodule
             """.trimIndent(),
-            CasterStage::class,
-            "CompilationUnit(RootPackage([Module(M, [], [])]))"
-        ) { it }
+            PortReferenceResolverStage::class,
+            """
+                Module(M, [Port(x, Boolean, INPUT)], [PortReference(x, x)])
+            """.trimIndent()
+        ) {
+            it.findDeclaration("M")
+        }
     }
 }
