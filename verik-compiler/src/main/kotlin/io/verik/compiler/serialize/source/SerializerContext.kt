@@ -43,6 +43,28 @@ class SerializerContext(projectContext: ProjectContext, file: EFile) {
         sourceSerializerVisitor.serializeAsStatement(expression)
     }
 
+    fun <T> serializeJoin(entries: List<T>, serializer: (T) -> Unit) {
+        if (entries.isNotEmpty()) {
+            serializer(entries[0])
+            entries.drop(1).forEach {
+                sourceBuilder.append(",")
+                sourceBuilder.hardBreak()
+                serializer(it)
+            }
+        }
+    }
+
+    fun <T> serializeJoinAppendLine(entries: List<T>, serializer: (T) -> Unit) {
+        if (entries.isNotEmpty()) {
+            serializer(entries[0])
+            entries.drop(1).forEach {
+                sourceBuilder.appendLine(",")
+                serializer(it)
+            }
+            sourceBuilder.appendLine()
+        }
+    }
+
     fun getSourceBuilderResult(): SourceBuilderResult {
         return sourceBuilder.getResult()
     }
@@ -77,27 +99,5 @@ class SerializerContext(projectContext: ProjectContext, file: EFile) {
 
     fun align() {
         sourceBuilder.align()
-    }
-
-    fun <E> join(elements: List<E>, block: (E) -> Unit) {
-        if (elements.isNotEmpty()) {
-            block(elements[0])
-            elements.drop(1).forEach {
-                sourceBuilder.append(",")
-                sourceBuilder.hardBreak()
-                block(it)
-            }
-        }
-    }
-
-    fun <E> joinLine(elements: List<E>, block: (E) -> Unit) {
-        if (elements.isNotEmpty()) {
-            block(elements[0])
-            elements.drop(1).forEach {
-                sourceBuilder.appendLine(",")
-                block(it)
-            }
-            sourceBuilder.appendLine()
-        }
     }
 }

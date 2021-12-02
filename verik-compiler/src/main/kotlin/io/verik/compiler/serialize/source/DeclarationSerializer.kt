@@ -85,7 +85,7 @@ object DeclarationSerializer {
     fun serializeEnum(enum: EEnum, serializerContext: SerializerContext) {
         serializerContext.appendLine("typedef enum {")
         serializerContext.indent {
-            serializerContext.joinLine(enum.enumEntries) {
+            serializerContext.serializeJoinAppendLine(enum.enumEntries) {
                 serializerContext.serialize(it)
             }
         }
@@ -190,7 +190,7 @@ object DeclarationSerializer {
         if (basicComponentInstantiation.portInstantiations.isNotEmpty()) {
             serializerContext.appendLine()
             serializerContext.indent {
-                serializerContext.joinLine(basicComponentInstantiation.portInstantiations) {
+                serializerContext.serializeJoinAppendLine(basicComponentInstantiation.portInstantiations) {
                     serializerContext.append(".${it.reference.name} ")
                     serializerContext.align()
                     serializerContext.append("( ")
@@ -217,7 +217,7 @@ object DeclarationSerializer {
         } else {
             serializerContext.appendLine(" (")
             serializerContext.indent {
-                serializerContext.joinLine(modulePortInstantiation.portInstantiations) {
+                serializerContext.serializeJoinAppendLine(modulePortInstantiation.portInstantiations) {
                     serializePortType(it.portType, serializerContext)
                     serializerContext.append(it.reference.name)
                 }
@@ -269,7 +269,7 @@ object DeclarationSerializer {
         if (ports.isNotEmpty()) {
             serializerContext.appendLine("(")
             serializerContext.indent {
-                serializerContext.joinLine(ports) {
+                serializerContext.serializeJoinAppendLine(ports) {
                     serializerContext.serialize(it)
                 }
             }
@@ -295,7 +295,7 @@ object DeclarationSerializer {
         serializerContext.append("(")
         if (valueParameters.isNotEmpty()) {
             serializerContext.softBreak()
-            serializerContext.join(valueParameters) {
+            serializerContext.serializeJoin(valueParameters) {
                 serializerContext.serialize(it)
             }
         }

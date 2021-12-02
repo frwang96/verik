@@ -46,7 +46,7 @@ object SourceSerializerStage : ImporterStage() {
         return declarationMap.map { (baseFileName, declarations) ->
             val path = packagePath.resolve("$baseFileName.kt")
             val serializerContext = SerializerContext(importerContext, abstractPackage.name, path)
-            declarations.forEach { serializerContext.serializeAsDeclaration(it) }
+            declarations.forEach { serializerContext.serialize(it) }
             serializerContext.getTextFile()
         }
     }

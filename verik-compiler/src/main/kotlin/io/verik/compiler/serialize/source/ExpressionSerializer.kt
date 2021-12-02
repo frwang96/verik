@@ -124,7 +124,7 @@ object ExpressionSerializer {
         serializerContext.append("(")
         if (callExpression.valueArguments.isNotEmpty()) {
             serializerContext.softBreak()
-            serializerContext.join(callExpression.valueArguments) {
+            serializerContext.serializeJoin(callExpression.valueArguments) {
                 serializerContext.serializeAsExpression(it)
             }
         }
@@ -147,7 +147,7 @@ object ExpressionSerializer {
         serializerContext: SerializerContext
     ) {
         serializerContext.append("'{")
-        serializerContext.join(structLiteralExpression.entries) {
+        serializerContext.serializeJoin(structLiteralExpression.entries) {
             serializerContext.append("${it.reference.name}:")
             serializerContext.serializeAsExpression(it.expression)
         }
@@ -216,7 +216,7 @@ object ExpressionSerializer {
         serializerContext: SerializerContext
     ) {
         serializerContext.append("{ ")
-        serializerContext.join(concatenationExpression.expressions) {
+        serializerContext.serializeJoin(concatenationExpression.expressions) {
             serializerContext.serializeAsExpression(it)
         }
         serializerContext.append(" }")
@@ -316,7 +316,7 @@ object ExpressionSerializer {
         serializerContext.indent {
             caseStatement.entries.forEach { entry ->
                 if (entry.conditions.isNotEmpty()) {
-                    serializerContext.join(entry.conditions) {
+                    serializerContext.serializeJoin(entry.conditions) {
                         serializerContext.serializeAsExpression(it)
                     }
                 } else {
