@@ -18,7 +18,6 @@ package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.message.Messages
 
 class ReferenceForwardingMap {
@@ -37,7 +36,7 @@ class ReferenceForwardingMap {
         declaration: EDeclaration,
         typeParameterContext: TypeParameterContext,
         element: EElement
-    ): Declaration {
+    ): EDeclaration {
         val forwardedDeclaration = referenceForwardingMap[DeclarationBinding(declaration, typeParameterContext)]
         return if (forwardedDeclaration != null) {
             forwardedDeclaration

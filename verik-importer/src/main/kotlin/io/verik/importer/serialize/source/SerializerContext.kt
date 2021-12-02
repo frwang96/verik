@@ -36,12 +36,12 @@ class SerializerContext(
         element.accept(sourceSerializerVisitor)
     }
 
-    fun <E: EElement> serializeJoinAppendLine(elements: List<E>) {
-        if (elements.isNotEmpty()) {
-            serialize(elements[0])
-            elements.drop(1).forEach {
+    fun <T> serializeJoinAppendLine(entries: List<T>, serializer: (T) -> Unit) {
+        if (entries.isNotEmpty()) {
+            serializer(entries[0])
+            entries.drop(1).forEach {
                 sourceBuilder.appendLine(",")
-                serialize(it)
+                serializer(it)
             }
             sourceBuilder.appendLine()
         }

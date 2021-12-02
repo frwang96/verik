@@ -20,6 +20,7 @@ import io.verik.importer.ast.element.EDeclaration
 import io.verik.importer.ast.element.EModule
 import io.verik.importer.ast.element.EPort
 import io.verik.importer.ast.element.EProperty
+import io.verik.importer.ast.interfaces.cast
 import io.verik.importer.ast.property.PortType
 import io.verik.importer.main.Platform
 
@@ -29,10 +30,14 @@ object DeclarationSerializer {
         serializerContext.appendLine()
         serializeLocation(module, serializerContext)
         serializerContext.append("class ${module.name}")
-        if (module.ports.isNotEmpty()) {
+        if (module.portReferences.isNotEmpty()) {
             serializerContext.appendLine("(")
             serializerContext.indent {
-                serializerContext.serializeJoinAppendLine(module.ports)
+                serializerContext.serializeJoinAppendLine(module.portReferences) {
+                    val port = it.reference.cast<EPort>(module)
+                    if (port != null)
+                        serializerContext.serialize(port)
+                }
             }
             serializerContext.append(")")
         }

@@ -19,7 +19,6 @@ package io.verik.compiler.specialize
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypedElement
-import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.Type
 
 class SpecializerContext(
@@ -34,7 +33,7 @@ class SpecializerContext(
         referenceForwardingMap[oldDeclaration, typeParameterContext] = newDeclaration
     }
 
-    operator fun get(declaration: EDeclaration, element: EElement): Declaration {
+    operator fun get(declaration: EDeclaration, element: EElement): EDeclaration {
         return referenceForwardingMap[declaration, typeParameterContext, element]
     }
 
@@ -42,7 +41,7 @@ class SpecializerContext(
         declaration: EDeclaration,
         typeParameterContext: TypeParameterContext,
         element: EElement
-    ): Declaration {
+    ): EDeclaration {
         return referenceForwardingMap[declaration, typeParameterContext, element]
     }
 
