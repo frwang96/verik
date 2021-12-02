@@ -16,8 +16,8 @@
 
 package io.verik.compiler.compile
 
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 import org.jetbrains.kotlin.cli.common.messages.AnalyzerWithCompilerReport
 import org.jetbrains.kotlin.cli.jvm.compiler.NoScopeRecordCliBindingTrace
 import org.jetbrains.kotlin.cli.jvm.compiler.TopDownAnalyzerFacadeForJVM

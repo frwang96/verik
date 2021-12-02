@@ -26,33 +26,26 @@ class MessageCollector(
 
     private var errorCount = 0
 
-    fun message(templateName: String, message: String, location: SourceLocation, severity: Severity) {
-        when (severity) {
-            Severity.WARNING -> warning(templateName, message, location)
-            Severity.ERROR -> error(templateName, message, location)
-        }
-    }
-
     fun flush() {
         if (errorCount != 0)
             throw VerikException()
     }
 
-    private fun warning(templateName: String, message: String, location: SourceLocation) {
+    fun warning(templateName: String, message: String, location: SourceLocation) {
         if (templateName in config.promotedWarnings)
-            error(templateName, message, location)
+            error(message, location)
         else if (templateName !in config.suppressedWarnings)
             messagePrinter.warning(message, location)
     }
 
-    private fun error(templateName: String, message: String, location: SourceLocation) {
-        if (!config.debug && templateName == Messages.INTERNAL_ERROR.name) {
-            messagePrinter.error("Internal error: Set debug mode for more details", location)
-            throw VerikException()
-        } else {
-            messagePrinter.error(message, location)
-            incrementErrorCount()
-        }
+    fun error(message: String, location: SourceLocation) {
+        messagePrinter.error(message, location)
+        incrementErrorCount()
+    }
+
+    fun fatal(message: String, location: SourceLocation): Nothing {
+        messagePrinter.error(message, location)
+        throw VerikException()
     }
 
     private fun incrementErrorCount() {

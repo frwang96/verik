@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.common
+package io.verik.importer.core
 
-import io.verik.compiler.ast.interfaces.Declaration
+import io.verik.importer.ast.interfaces.Declaration
 
-interface CardinalDeclaration : Declaration
+interface CoreDeclaration : Declaration

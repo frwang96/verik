@@ -19,9 +19,9 @@ package io.verik.compiler.specialize
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.interfaces.Annotated
 import io.verik.compiler.ast.interfaces.TypeParameterized
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.core.common.Annotations
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.backend.common.pop
 

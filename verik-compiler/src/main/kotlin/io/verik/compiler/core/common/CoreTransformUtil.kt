@@ -18,7 +18,6 @@ package io.verik.compiler.core.common
 
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
-import io.verik.compiler.common.Cardinal
 import io.verik.compiler.target.common.Target
 
 object CoreTransformUtil {

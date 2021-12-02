@@ -24,9 +24,9 @@ import io.verik.compiler.ast.element.sv.EScopeExpression
 import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvProperty
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.target.common.CompositeTarget
 import io.verik.compiler.target.common.ConstructorTargetFunctionDeclaration
 import io.verik.compiler.target.common.TargetDeclaration

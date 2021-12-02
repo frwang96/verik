@@ -17,12 +17,12 @@
 package io.verik.compiler.transform.mid
 
 import io.verik.compiler.ast.element.kt.EKtCallExpression
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
 import io.verik.compiler.core.common.CoreConstructorDeclaration
 import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 
 object FunctionTransformerStage : ProjectStage() {
 

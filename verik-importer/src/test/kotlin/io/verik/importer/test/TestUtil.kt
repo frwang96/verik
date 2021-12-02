@@ -16,10 +16,10 @@
 
 package io.verik.importer.test
 
-import io.verik.importer.ast.common.TreeVisitor
 import io.verik.importer.ast.element.ECompilationUnit
 import io.verik.importer.ast.element.EDeclaration
 import io.verik.importer.ast.element.EElement
+import io.verik.importer.common.TreeVisitor
 
 fun ECompilationUnit.findDeclaration(name: String): EDeclaration {
     val declarationVisitor = object : TreeVisitor() {

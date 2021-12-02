@@ -24,25 +24,15 @@ class MessageCollector(
     private val messagePrinter: MessagePrinter
 ) {
 
-    fun message(templateName: String, message: String, location: SourceLocation, severity: Severity) {
-        when (severity) {
-            Severity.WARNING -> warning(templateName, message, location)
-            Severity.ERROR -> error(templateName, message, location)
-        }
-    }
-
-    private fun warning(templateName: String, message: String, location: SourceLocation) {
+    fun warning(templateName: String, message: String, location: SourceLocation) {
         if (templateName in config.promotedWarnings)
-            error(templateName, message, location)
+            fatal(message, location)
         else if (templateName !in config.suppressedWarnings)
             messagePrinter.warning(message, location)
     }
 
-    private fun error(templateName: String, message: String, location: SourceLocation) {
-        if (!config.debug && templateName == Messages.INTERNAL_ERROR.name)
-            messagePrinter.error("Internal error: Set debug mode for more details", location)
-        else
-            messagePrinter.error(message, location)
+    fun fatal(message: String, location: SourceLocation): Nothing {
+        messagePrinter.error(message, location)
         throw VerikImporterException()
     }
 

@@ -23,6 +23,7 @@ import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.property.LiteralStringEntry
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.Messages
+import io.verik.compiler.message.SourceLocation
 import java.math.BigInteger
 
 object ConstantUtil {
@@ -31,7 +32,7 @@ object ConstantUtil {
         return when (value) {
             "false" -> false
             "true" -> true
-            else -> throw IllegalArgumentException("Unrecognized boolean value: $value")
+            else -> Messages.INTERNAL_ERROR.on(SourceLocation.NULL, "Unrecognized boolean value: $value")
         }
     }
 
@@ -53,7 +54,6 @@ object ConstantUtil {
                     normalizeBitConstantInt(expression.value, signed)
                 } else {
                     Messages.INTERNAL_ERROR.on(expression, "Unrecognized constant expression type: ${expression.type}")
-                    null
                 }
             }
             is EStringTemplateExpression -> {

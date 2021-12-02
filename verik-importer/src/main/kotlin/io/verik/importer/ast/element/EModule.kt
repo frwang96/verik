@@ -16,17 +16,29 @@
 
 package io.verik.importer.ast.element
 
-import io.verik.importer.ast.common.Visitor
+import io.verik.importer.ast.property.PortReference
+import io.verik.importer.common.Visitor
+import io.verik.importer.core.Core
 import io.verik.importer.message.SourceLocation
 
 class EModule(
     override val location: SourceLocation,
-    override val name: String
+    override val name: String,
+    val ports: List<EPort>,
+    val portReferences: List<PortReference>
 ) : EDeclaration() {
+
+    override var type = Core.C_Unit.toType()
+
+    init {
+        ports.forEach { it.parent = this }
+    }
 
     override fun accept(visitor: Visitor) {
         visitor.visitModule(this)
     }
 
-    override fun acceptChildren(visitor: Visitor) {}
+    override fun acceptChildren(visitor: Visitor) {
+        ports.forEach { it.accept(visitor) }
+    }
 }

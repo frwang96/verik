@@ -16,6 +16,8 @@
 
 package io.verik.compiler.core.common
 
+import io.verik.compiler.message.Messages
+import io.verik.compiler.message.SourceLocation
 import org.jetbrains.kotlin.builtins.isFunctionType
 import org.jetbrains.kotlin.descriptors.ClassConstructorDescriptor
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
@@ -63,7 +65,7 @@ data class QualifiedSignature(val qualifiedName: String, val signature: String) 
                 }
                 else -> {
                     val className = declarationDescriptor::class.simpleName
-                    throw IllegalArgumentException("Unable to get declaration signature: $className")
+                    Messages.INTERNAL_ERROR.on(SourceLocation.NULL, "Unable to get declaration signature: $className")
                 }
             }
         }

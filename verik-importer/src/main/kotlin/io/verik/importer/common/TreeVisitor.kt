@@ -14,20 +14,13 @@
  * limitations under the License.
  */
 
-package io.verik.importer.cast
+package io.verik.importer.common
 
-import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.ast.element.EModule
+import io.verik.importer.ast.element.EElement
 
-object DeclarationCaster {
+abstract class TreeVisitor : Visitor() {
 
-    fun castModule(ctx: SystemVerilogParser.ModuleDeclarationContext, castContext: CastContext): EModule {
-        val moduleAnsiHeader = ctx.moduleAnsiHeader()
-        val moduleNonAnsiHeader = ctx.moduleNonAnsiHeader()
-        val identifier = moduleAnsiHeader?.identifier()
-            ?: moduleNonAnsiHeader.identifier()
-        val location = castContext.getLocation(identifier)
-        val name = identifier.text
-        return EModule(location, name)
+    override fun visitElement(element: EElement) {
+        element.acceptChildren(this)
     }
 }

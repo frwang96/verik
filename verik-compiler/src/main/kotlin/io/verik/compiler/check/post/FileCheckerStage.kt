@@ -16,8 +16,8 @@
 
 package io.verik.compiler.check.post
 
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 import java.nio.file.Path
 import java.nio.file.Paths

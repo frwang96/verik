@@ -14,9 +14,20 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.message
+package io.verik.importer.ast.property
 
-enum class Severity {
-    WARNING,
-    ERROR
+import io.verik.importer.ast.interfaces.Declaration
+import io.verik.importer.ast.interfaces.Reference
+
+class Type(
+    override var reference: Declaration,
+    var arguments: ArrayList<Type>
+) : Reference {
+
+    override fun toString(): String {
+        val referenceName = reference.name
+        return if (arguments.isNotEmpty()) {
+            "$referenceName<${arguments.joinToString()}>"
+        } else referenceName
+    }
 }

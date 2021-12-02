@@ -22,9 +22,9 @@ import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.element.sv.ECaseStatement
 import io.verik.compiler.ast.property.CaseEntry
 import io.verik.compiler.ast.property.WhenEntry
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 
 object CaseStatementTransformerStage : ProjectStage() {
 

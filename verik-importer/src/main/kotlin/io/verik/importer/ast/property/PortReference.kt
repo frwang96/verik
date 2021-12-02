@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package io.verik.importer.common
+package io.verik.importer.ast.property
 
-import io.verik.importer.main.ImporterContext
+import io.verik.importer.ast.interfaces.Declaration
+import io.verik.importer.ast.interfaces.Reference
 
-abstract class ImporterStage {
-
-    abstract fun process(importerContext: ImporterContext)
-}
+class PortReference(
+    override var reference: Declaration,
+    val name: String
+) : Reference

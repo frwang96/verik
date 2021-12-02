@@ -36,11 +36,11 @@ import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.property.PortInstantiation
 import io.verik.compiler.ast.property.PortType
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
 object PropertyInterpreterStage : ProjectStage() {
@@ -93,10 +93,9 @@ object PropertyInterpreterStage : ProjectStage() {
             property: EKtProperty,
             callExpression: EKtCallExpression,
             component: EAbstractContainerComponent
-        ): EBasicComponentInstantiation? {
+        ): EBasicComponentInstantiation {
             if (component.ports.size != callExpression.valueArguments.size) {
                 Messages.INTERNAL_ERROR.on(callExpression, "Incorrect number of value arguments")
-                return null
             }
 
             val portInstantiations = component.ports
@@ -114,10 +113,9 @@ object PropertyInterpreterStage : ProjectStage() {
             property: EKtProperty,
             callExpression: EKtCallExpression,
             modulePort: EModulePort
-        ): EModulePortInstantiation? {
+        ): EModulePortInstantiation {
             if (modulePort.ports.size != callExpression.valueArguments.size) {
                 Messages.INTERNAL_ERROR.on(callExpression, "Incorrect number of value arguments")
-                return null
             }
 
             val portInstantiations = modulePort.ports
@@ -135,13 +133,12 @@ object PropertyInterpreterStage : ProjectStage() {
             property: EKtProperty,
             callExpression: EKtCallExpression,
             clockingBlock: EClockingBlock
-        ): EClockingBlockInstantiation? {
+        ): EClockingBlockInstantiation {
             val valueArguments = callExpression
                 .valueArguments
                 .filterIndexed { index, _ -> index != clockingBlock.eventValueParameterIndex }
             if (clockingBlock.ports.size != valueArguments.size) {
                 Messages.INTERNAL_ERROR.on(callExpression, "Incorrect number of value arguments")
-                return null
             }
 
             val eventExpression = callExpression.valueArguments[clockingBlock.eventValueParameterIndex]

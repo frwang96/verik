@@ -16,9 +16,9 @@
 
 package io.verik.compiler.compile
 
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.main.Platform
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 import io.verik.core.*
@@ -46,7 +46,7 @@ object KotlinEnvironmentBuilderStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
         setIdeaIoUseFallback()
-        val configuration = createCompilerConfiguration(projectContext)
+        val configuration = createCompilerConfiguration()
         val disposable = Disposer.newDisposable()
         projectContext.kotlinCoreEnvironment = KotlinCoreEnvironment.createForProduction(
             disposable,
@@ -55,7 +55,7 @@ object KotlinEnvironmentBuilderStage : ProjectStage() {
         )
     }
 
-    private fun createCompilerConfiguration(projectContext: ProjectContext): CompilerConfiguration {
+    private fun createCompilerConfiguration(): CompilerConfiguration {
         val configuration = CompilerConfiguration()
         configuration.put(JVMConfigurationKeys.JVM_TARGET, JvmTarget.JVM_1_8)
         configuration.put(
@@ -65,7 +65,7 @@ object KotlinEnvironmentBuilderStage : ProjectStage() {
         configuration.put(CommonConfigurationKeys.MODULE_NAME, "verik")
         configuration.put(
             CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY,
-            KotlinCompilerMessageCollector(projectContext)
+            KotlinCompilerMessageCollector
         )
         getJvmClasspathRoots().forEach {
             configuration.addJvmClasspathRoot(it)
@@ -80,9 +80,7 @@ object KotlinEnvironmentBuilderStage : ProjectStage() {
         )
     }
 
-    private class KotlinCompilerMessageCollector(projectContext: ProjectContext) : MessageCollector {
-
-        private val projectDir = projectContext.config.projectDir
+    private object KotlinCompilerMessageCollector : MessageCollector {
 
         override fun clear() {}
 
@@ -95,7 +93,7 @@ object KotlinEnvironmentBuilderStage : ProjectStage() {
         ) {
             val sourceLocation = location
                 ?.let { SourceLocation(Platform.getPathFromString(it.path), it.line, it.column) }
-                ?: SourceLocation(projectDir, 0, 0)
+                ?: SourceLocation.NULL
 
             when (severity) {
                 CompilerMessageSeverity.EXCEPTION, CompilerMessageSeverity.ERROR ->

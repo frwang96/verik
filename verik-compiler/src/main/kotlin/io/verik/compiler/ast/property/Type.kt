@@ -22,12 +22,13 @@ import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.Reference
-import io.verik.compiler.common.CardinalConstantDeclaration
-import io.verik.compiler.common.CardinalDeclaration
-import io.verik.compiler.common.CardinalUnresolvedDeclaration
+import io.verik.compiler.core.common.CardinalConstantDeclaration
+import io.verik.compiler.core.common.CardinalDeclaration
+import io.verik.compiler.core.common.CardinalUnresolvedDeclaration
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreClassDeclaration
 import io.verik.compiler.message.Messages
+import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.target.common.TargetClassDeclaration
 
 class Type(
@@ -79,7 +80,6 @@ class Type(
             reference.value
         } else {
             Messages.INTERNAL_ERROR.on(element, "Could not get value as cardinal: $this")
-            1
         }
     }
 
@@ -87,10 +87,7 @@ class Type(
         return when (reference) {
             Core.Vk.C_Ubit -> arguments[0].asCardinalValue(element)
             Core.Vk.C_Sbit -> arguments[0].asCardinalValue(element)
-            else -> {
-                Messages.INTERNAL_ERROR.on(element, "Bit type expected: $this")
-                1
-            }
+            else -> Messages.INTERNAL_ERROR.on(element, "Bit type expected: $this")
         }
     }
 
@@ -98,10 +95,7 @@ class Type(
         return when (reference) {
             Core.Vk.C_Ubit -> false
             Core.Vk.C_Sbit -> true
-            else -> {
-                Messages.INTERNAL_ERROR.on(element, "Bit type expected: $this")
-                false
-            }
+            else -> Messages.INTERNAL_ERROR.on(element, "Bit type expected: $this")
         }
     }
 
@@ -109,10 +103,7 @@ class Type(
         return when (reference) {
             Core.Kt.C_Boolean -> 1
             Core.Vk.C_Ubit, Core.Vk.C_Sbit -> asBitWidth(element)
-            else -> {
-                Messages.INTERNAL_ERROR.on(element, "Unable to get width of type: $this")
-                1
-            }
+            else -> Messages.INTERNAL_ERROR.on(element, "Unable to get width of type: $this")
         }
     }
 
@@ -156,7 +147,10 @@ class Type(
             is CoreClassDeclaration -> reference.superClass?.toType()
             is TargetClassDeclaration -> null
             is CardinalDeclaration -> null
-            else -> throw IllegalArgumentException("Unexpected type reference: ${reference.name}")
+            else -> Messages.INTERNAL_ERROR.on(
+                SourceLocation.NULL,
+                "Unexpected type reference: ${reference::class.simpleName}"
+            )
         }
     }
 }

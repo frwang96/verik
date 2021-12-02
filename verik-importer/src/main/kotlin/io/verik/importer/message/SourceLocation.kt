@@ -22,4 +22,10 @@ data class SourceLocation(
     val path: Path,
     val line: Int,
     val column: Int
-)
+) {
+
+    companion object {
+
+        val NULL = SourceLocation(Path.of("."), 0, 0)
+    }
+}

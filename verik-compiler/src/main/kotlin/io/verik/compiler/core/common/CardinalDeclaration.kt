@@ -14,13 +14,8 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.common
+package io.verik.compiler.core.common
 
-import io.verik.importer.ast.element.EElement
+import io.verik.compiler.ast.interfaces.Declaration
 
-abstract class TreeVisitor : Visitor() {
-
-    override fun visitElement(element: EElement) {
-        element.acceptChildren(this)
-    }
-}
+interface CardinalDeclaration : Declaration

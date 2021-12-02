@@ -16,32 +16,30 @@
 
 package io.verik.importer.serialize.source
 
-import io.verik.importer.ast.common.Visitor
-import io.verik.importer.ast.element.EDeclaration
+import io.verik.importer.ast.element.EElement
 import io.verik.importer.ast.element.EModule
-import io.verik.importer.main.Platform
-import io.verik.importer.message.SourceLocation
+import io.verik.importer.ast.element.EPort
+import io.verik.importer.ast.element.EProperty
+import io.verik.importer.common.Visitor
+import io.verik.importer.message.Messages
 
 class SourceSerializerVisitor(
     private val serializerContext: SerializerContext
 ) : Visitor() {
 
-    fun serializeAsDeclaration(declaration: EDeclaration) {
-        serializerContext.appendLine()
-        if (serializerContext.labelSourceLocations) {
-            serializerContext.appendLine("/**")
-            serializerContext.appendLine(" * Imported: ${getLocationString(declaration.location)}")
-            serializerContext.appendLine(" */")
-        }
-        declaration.accept(this)
+    override fun visitElement(element: EElement) {
+        Messages.INTERNAL_ERROR.on(element, "Unable to serialize element: $element")
     }
 
     override fun visitModule(module: EModule) {
-        serializerContext.appendLine("class ${module.name} : Module()")
+        DeclarationSerializer.serializeModule(module, serializerContext)
     }
 
-    private fun getLocationString(location: SourceLocation): String {
-        val pathString = Platform.getStringFromPath(location.path)
-        return "$pathString:${location.line}:${location.column}"
+    override fun visitProperty(property: EProperty) {
+        DeclarationSerializer.serializeProperty(property, serializerContext)
+    }
+
+    override fun visitPort(port: EPort) {
+        DeclarationSerializer.serializePort(port, serializerContext)
     }
 }

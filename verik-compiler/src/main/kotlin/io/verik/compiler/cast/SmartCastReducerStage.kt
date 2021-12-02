@@ -21,9 +21,9 @@ import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.property.Type
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
 object SmartCastReducerStage : ProjectStage() {
@@ -54,9 +54,7 @@ object SmartCastReducerStage : ProjectStage() {
                     if (smartCastEntry in smartCastEntryMap) {
                         Messages.INTERNAL_ERROR.on(isExpression, "Unable to reduce smart casts for is expression")
                     } else {
-                        isExpression.property.cast<EKtProperty>()?.let {
-                            smartCastEntryMap[smartCastEntry] = it
-                        }
+                        smartCastEntryMap[smartCastEntry] = isExpression.property.cast()
                     }
                 }
             }

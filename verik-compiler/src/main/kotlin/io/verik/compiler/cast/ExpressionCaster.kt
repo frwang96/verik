@@ -79,20 +79,18 @@ object ExpressionCaster {
         return EKtBlockExpression(location, type, ArrayList(statements))
     }
 
-    fun castKtUnaryExpressionPrefix(expression: KtPrefixExpression, castContext: CastContext): EKtUnaryExpression? {
+    fun castKtUnaryExpressionPrefix(expression: KtPrefixExpression, castContext: CastContext): EKtUnaryExpression {
         val location = expression.location()
         val type = castContext.castType(expression)
         val kind = KtUnaryOperatorKind.getKindPrefix(expression.operationToken, location)
-            ?: return null
         val childExpression = castContext.casterVisitor.getExpression(expression.baseExpression!!)
         return EKtUnaryExpression(location, type, childExpression, kind)
     }
 
-    fun castKtUnaryExpressionPostfix(expression: KtPostfixExpression, castContext: CastContext): EKtUnaryExpression? {
+    fun castKtUnaryExpressionPostfix(expression: KtPostfixExpression, castContext: CastContext): EKtUnaryExpression {
         val location = expression.location()
         val type = castContext.castType(expression)
         val kind = KtUnaryOperatorKind.getKindPostfix(expression.operationToken, location)
-            ?: return null
         val childExpression = castContext.casterVisitor.getExpression(expression.baseExpression!!)
         return EKtUnaryExpression(location, type, childExpression, kind)
     }
@@ -100,7 +98,7 @@ object ExpressionCaster {
     fun castKtBinaryExpressionOrKtCallExpression(
         expression: KtBinaryExpression,
         castContext: CastContext
-    ): EExpression? {
+    ): EExpression {
         val location = expression.location()
         val type = castContext.castType(expression)
         val left = castContext.casterVisitor.getExpression(expression.left!!)
@@ -108,7 +106,6 @@ object ExpressionCaster {
         val token = expression.operationReference.operationSignTokenType
         return if (token != null) {
             val kind = KtBinaryOperatorKind(token, location)
-                ?: return null
             EKtBinaryExpression(location, type, left, right, kind)
         } else {
             val descriptor = castContext.sliceReferenceTarget[expression.operationReference]!!
@@ -143,7 +140,7 @@ object ExpressionCaster {
     fun castKtReferenceExpressionOrKtCallExpression(
         expression: KtDotQualifiedExpression,
         castContext: CastContext
-    ): EExpression? {
+    ): EExpression {
         val location = expression.location()
         val type = castContext.castType(expression)
 
@@ -181,10 +178,7 @@ object ExpressionCaster {
                     typeArguments
                 )
             }
-            else -> {
-                Messages.INTERNAL_ERROR.on(expression, "Simple name expression or call expression expected")
-                null
-            }
+            else -> Messages.INTERNAL_ERROR.on(expression, "Simple name expression or call expression expected")
         }
     }
 
@@ -217,7 +211,7 @@ object ExpressionCaster {
     fun castFunctionLiteralExpression(
         expression: KtLambdaExpression,
         castContext: CastContext
-    ): EFunctionLiteralExpression? {
+    ): EFunctionLiteralExpression {
         val location = expression.location()
         val valueParameters = if (expression.functionLiteral.hasParameterSpecification()) {
             expression.valueParameters.mapNotNull {
@@ -229,7 +223,6 @@ object ExpressionCaster {
                 val parameterDescriptor = functionDescriptor.valueParameters[0]
                 val valueParameter = castContext.getDeclaration(parameterDescriptor, expression)
                     .cast<EKtValueParameter>(expression)
-                    ?: return null
                 valueParameter.type = castContext.castType(parameterDescriptor.type, expression)
                 listOf(valueParameter)
             } else listOf()

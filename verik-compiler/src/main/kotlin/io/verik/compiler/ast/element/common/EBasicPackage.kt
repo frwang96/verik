@@ -20,7 +20,6 @@ import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 import java.nio.file.Path
-import java.nio.file.Paths
 
 class EBasicPackage(
     override val location: SourceLocation,
@@ -38,11 +37,7 @@ class EBasicPackage(
     }
 
     fun getOutputPathNotNull(): Path {
-        return if (outputPath != null) {
-            outputPath
-        } else {
-            Messages.INTERNAL_ERROR.on(location, "Package output path not specified")
-            Paths.get("")
-        }
+        return outputPath
+            ?: Messages.INTERNAL_ERROR.on(location, "Package output path not specified")
     }
 }

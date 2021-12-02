@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.importer.common
+package io.verik.importer.message
 
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.antlr.SystemVerilogPreprocessorParser

@@ -20,6 +20,7 @@ import io.verik.importer.ast.element.ECompilationUnit
 import io.verik.importer.lex.LexerCharStream
 import io.verik.importer.lex.LexerFragment
 import io.verik.importer.preprocess.PreprocessorFragment
+import org.antlr.v4.runtime.TokenStream
 import org.antlr.v4.runtime.tree.ParseTree
 import java.nio.file.Path
 
@@ -31,6 +32,7 @@ class ImporterContext(
     lateinit var preprocessorFragments: ArrayList<PreprocessorFragment>
     lateinit var lexerCharStream: LexerCharStream
     lateinit var lexerFragments: ArrayList<LexerFragment>
+    lateinit var parserTokenStream: TokenStream
     lateinit var parseTree: ParseTree
     lateinit var compilationUnit: ECompilationUnit
     val outputContext = OutputContext()

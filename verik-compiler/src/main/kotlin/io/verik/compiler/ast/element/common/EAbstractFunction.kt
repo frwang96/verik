@@ -37,12 +37,7 @@ abstract class EAbstractFunction : EDeclaration(), ExpressionContainer {
     }
 
     fun getBodyNotNull(): EExpression {
-        val body = body
-        return if (body != null) {
-            body
-        } else {
-            Messages.INTERNAL_ERROR.on(this, "Function body expected")
-            ENullExpression(location)
-        }
+        return body
+            ?: Messages.INTERNAL_ERROR.on(this, "Function body expected")
     }
 }

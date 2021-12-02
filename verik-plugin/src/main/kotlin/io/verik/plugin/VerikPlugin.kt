@@ -52,11 +52,8 @@ class VerikPlugin : Plugin<Project> {
                     VerikMain.run(VerikConfigBuilder.getConfig(project, extension))
                 } catch (exception: Exception) {
                     if (exception !is VerikException) {
-                        printErrorMessage(
-                            exception,
-                            extension.debug,
-                            VerikGradleMessagePrinter.Companion::printStackTrace
-                        )
+                        println("e: Internal error: ${exception.message}")
+                        VerikGradleMessagePrinter.printStackTrace(exception.stackTrace)
                     }
                     throw GradleException("Verik compilation failed")
                 }
@@ -87,11 +84,8 @@ class VerikPlugin : Plugin<Project> {
                     VerikImporterMain.run(VerikImporterConfigBuilder.getConfig(project, extension))
                 } catch (exception: Exception) {
                     if (exception !is VerikImporterException) {
-                        printErrorMessage(
-                            exception,
-                            extension.debug,
-                            VerikImporterGradleMessagePrinter::printStackTrace
-                        )
+                        println("e: Internal error: ${exception.message}")
+                        VerikImporterGradleMessagePrinter.printStackTrace(exception.stackTrace)
                     }
                     throw GradleException("Verik import failed")
                 }
@@ -109,21 +103,5 @@ class VerikPlugin : Plugin<Project> {
             } else listOf()
         })
         return task
-    }
-
-    private fun printErrorMessage(
-        exception: Exception,
-        debug: Boolean,
-        stackTracePrinter: (Array<StackTraceElement>) -> Unit
-    ) {
-        print("e: ")
-        if (debug) {
-            print("Internal error")
-            if (exception.message != null) print(": ${exception.message}")
-            println()
-            stackTracePrinter(exception.stackTrace)
-        } else {
-            println("Internal error: Set debug mode for more details")
-        }
     }
 }

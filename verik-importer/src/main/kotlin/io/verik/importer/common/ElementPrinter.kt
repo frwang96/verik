@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.common
+package io.verik.importer.common
 
 import io.verik.importer.ast.element.ECompilationUnit
 import io.verik.importer.ast.element.EElement
 import io.verik.importer.ast.element.EModule
+import io.verik.importer.ast.element.EPort
+import io.verik.importer.ast.element.EProperty
 import io.verik.importer.ast.element.ERootPackage
 
 class ElementPrinter : Visitor() {
@@ -41,6 +43,28 @@ class ElementPrinter : Visitor() {
     override fun visitModule(module: EModule) {
         build("Module") {
             build(module.name)
+            build(module.ports)
+            buildList(module.portReferences) {
+                build("PortReference") {
+                    build(it.reference.name)
+                    build(it.name)
+                }
+            }
+        }
+    }
+
+    override fun visitProperty(property: EProperty) {
+        build("Property") {
+            build(property.name)
+            build(property.type.toString())
+        }
+    }
+
+    override fun visitPort(port: EPort) {
+        build("Port") {
+            build(port.name)
+            build(port.type.toString())
+            build(port.portType.toString())
         }
     }
 
@@ -69,6 +93,15 @@ class ElementPrinter : Visitor() {
         first = true
         elements.forEach { it.accept(this) }
         builder.append("]")
+        first = false
+    }
+
+    private fun <T> buildList(entries: List<T>, builder: (T) -> Unit) {
+        if (!first) this.builder.append(", ")
+        this.builder.append("[")
+        first = true
+        entries.forEach { builder(it) }
+        this.builder.append("]")
         first = false
     }
 

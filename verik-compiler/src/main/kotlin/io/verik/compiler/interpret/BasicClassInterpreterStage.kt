@@ -32,11 +32,11 @@ import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.property.FunctionQualifierType
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 import io.verik.compiler.target.common.Target
 
@@ -96,15 +96,13 @@ object BasicClassInterpreterStage : ProjectStage() {
             basicClass.declarations.forEach {
                 if (it is EKtConstructor) {
                     val interpretedConstructor = interpretConstructor(basicClass, it)
-                    if (interpretedConstructor != null) {
-                        val instantiator = interpretedConstructor.instantiator
-                        if (instantiator != null) {
-                            instantiator.parent = basicClass
-                            declarations.add(instantiator)
-                        }
-                        interpretedConstructor.initializer.parent = basicClass
-                        declarations.add(interpretedConstructor.initializer)
+                    val instantiator = interpretedConstructor.instantiator
+                    if (instantiator != null) {
+                        instantiator.parent = basicClass
+                        declarations.add(instantiator)
                     }
+                    interpretedConstructor.initializer.parent = basicClass
+                    declarations.add(interpretedConstructor.initializer)
                 } else {
                     declarations.add(it)
                 }
@@ -126,21 +124,15 @@ object BasicClassInterpreterStage : ProjectStage() {
         private fun interpretConstructor(
             basicClass: EKtBasicClass,
             constructor: EKtConstructor
-        ): InterpretedConstructor? {
+        ): InterpretedConstructor {
             val initializer = initializerMap[constructor]
-            if (initializer == null) {
-                Messages.INTERNAL_ERROR.on(constructor, "Initializer not found")
-                return null
-            }
+                ?: Messages.INTERNAL_ERROR.on(constructor, "Initializer not found")
             val superTypeCallEntry = constructor.superTypeCallEntry
             if (superTypeCallEntry != null) {
                 val reference = superTypeCallEntry.reference
                 if (reference is EKtConstructor) {
                     val delegatedInitializer = initializerMap[reference]
-                    if (delegatedInitializer == null) {
-                        Messages.INTERNAL_ERROR.on(reference, "Initializer not found")
-                        return null
-                    }
+                        ?: Messages.INTERNAL_ERROR.on(reference, "Initializer not found")
                     val superExpression = ESuperExpression(
                         constructor.location,
                         reference.type.copy()
@@ -154,10 +146,8 @@ object BasicClassInterpreterStage : ProjectStage() {
                         ArrayList()
                     )
                     val body = initializer.getBodyNotNull().cast<EKtBlockExpression>()
-                    if (body != null) {
-                        callExpression.parent = body
-                        body.statements.add(0, callExpression)
-                    }
+                    callExpression.parent = body
+                    body.statements.add(0, callExpression)
                 }
             }
             val instantiator = interpretInstantiator(basicClass, constructor, initializer)

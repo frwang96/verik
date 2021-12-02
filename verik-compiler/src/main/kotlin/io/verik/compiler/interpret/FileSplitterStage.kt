@@ -26,8 +26,8 @@ import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ETask
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
 object FileSplitterStage : ProjectStage() {
@@ -105,13 +105,10 @@ object FileSplitterStage : ProjectStage() {
             is ETask -> true
             is ESvProperty -> true
             is ESvEnumEntry -> true
-            else -> {
-                Messages.INTERNAL_ERROR.on(
-                    declaration,
-                    "Unable to identify as component or package declaration: ${declaration.name}"
-                )
-                true
-            }
+            else -> Messages.INTERNAL_ERROR.on(
+                declaration,
+                "Unable to identify as component or package declaration: ${declaration.name}"
+            )
         }
     }
 }

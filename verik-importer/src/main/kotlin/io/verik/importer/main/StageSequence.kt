@@ -16,7 +16,6 @@
 
 package io.verik.importer.main
 
-import io.verik.importer.common.ImporterStage
 import kotlin.reflect.KClass
 
 class StageSequence {

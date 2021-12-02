@@ -20,9 +20,9 @@ import io.verik.compiler.ast.element.sv.EModuleInterface
 import io.verik.compiler.ast.element.sv.EModulePort
 import io.verik.compiler.ast.element.sv.EModulePortInstantiation
 import io.verik.compiler.ast.interfaces.cast
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
 object ModulePortParentResolverStage : ProjectStage() {
@@ -58,11 +58,9 @@ object ModulePortParentResolverStage : ProjectStage() {
             val parent = modulePortInstantiation.parent
             if (parent is EModuleInterface) {
                 val modulePort = modulePortInstantiation.type.reference.cast<EModulePort>(modulePortInstantiation)
-                if (modulePort != null) {
-                    if (modulePort.parentModuleInterface != null && modulePort.parentModuleInterface != parent)
-                        multipleParentModulePorts.add(modulePort)
-                    modulePort.parentModuleInterface = parent
-                }
+                if (modulePort.parentModuleInterface != null && modulePort.parentModuleInterface != parent)
+                    multipleParentModulePorts.add(modulePort)
+                modulePort.parentModuleInterface = parent
             } else {
                 Messages.MODULE_PORT_INSTANTIATION_OUT_OF_CONTEXT.on(modulePortInstantiation)
             }

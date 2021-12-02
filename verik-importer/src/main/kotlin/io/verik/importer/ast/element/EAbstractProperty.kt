@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.common
+package io.verik.importer.ast.element
 
-object CardinalUnresolvedDeclaration : CardinalDeclaration {
-
-    override var name = "`*`"
-}
+abstract class EAbstractProperty : EDeclaration()

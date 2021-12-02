@@ -16,7 +16,29 @@
 
 package io.verik.importer.ast.interfaces
 
+import io.verik.importer.ast.element.EElement
+import io.verik.importer.ast.property.Type
+import io.verik.importer.message.Messages
+
 interface Declaration {
 
     val name: String
+
+    fun toType(vararg arguments: Type): Type {
+        return Type(this, arrayListOf(*arguments))
+    }
+}
+
+inline fun <reified T> Declaration.cast(element: EElement): T {
+    return when (this) {
+        is T -> this
+        else -> {
+            val expectedName = T::class.simpleName
+            val actualName = this::class.simpleName
+            Messages.INTERNAL_ERROR.on(
+                element.location,
+                "Could not cast declaration: Expected $expectedName actual $actualName"
+            )
+        }
+    }
 }

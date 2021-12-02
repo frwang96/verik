@@ -23,9 +23,9 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.property.Type
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
 object TypeAliasChecker : ProjectStage() {
@@ -45,16 +45,12 @@ object TypeAliasChecker : ProjectStage() {
             val hashCode = System.identityHashCode(type)
             val typeList = typeMap[hashCode]
             if (typeList != null) {
-                var alias = false
                 for (typeListType in typeList) {
                     if (type === typeListType) {
                         Messages.INTERNAL_ERROR.on(element, "Unexpected type aliasing: $type in $element")
-                        alias = true
-                        break
                     }
                 }
-                if (!alias)
-                    typeList.add(type)
+                typeList.add(type)
             } else {
                 typeMap[hashCode] = arrayListOf(type)
             }

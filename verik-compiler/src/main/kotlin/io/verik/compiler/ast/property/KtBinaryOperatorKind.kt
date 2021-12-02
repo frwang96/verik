@@ -43,7 +43,7 @@ enum class KtBinaryOperatorKind {
 
     companion object {
 
-        operator fun invoke(token: KtSingleValueToken, location: SourceLocation): KtBinaryOperatorKind? {
+        operator fun invoke(token: KtSingleValueToken, location: SourceLocation): KtBinaryOperatorKind {
             return when (token.toString()) {
                 "EQ" -> EQ
                 "MUL" -> MUL
@@ -60,10 +60,7 @@ enum class KtBinaryOperatorKind {
                 "MINUSEQ" -> MINUS_EQ
                 "ANDAND" -> ANDAND
                 "OROR" -> OROR
-                else -> {
-                    Messages.INTERNAL_ERROR.on(location, "Unrecognised binary operator kind: $token")
-                    null
-                }
+                else -> Messages.INTERNAL_ERROR.on(location, "Unrecognised binary operator kind: $token")
             }
         }
     }

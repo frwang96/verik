@@ -32,12 +32,12 @@ import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.element.sv.ETask
 import io.verik.compiler.ast.property.FunctionQualifierType
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Annotations
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
 object FunctionInterpreterStage : ProjectStage() {
@@ -138,9 +138,7 @@ object FunctionInterpreterStage : ProjectStage() {
             }
             val eventExpression = onExpression.valueArguments[0]
             val eventControlExpression = EEventControlExpression(eventExpression.location, eventExpression)
-            val alwaysSeqBody = onExpression.valueArguments[1]
-                .cast<EFunctionLiteralExpression>()?.body
-                ?: return null
+            val alwaysSeqBody = onExpression.valueArguments[1].cast<EFunctionLiteralExpression>().body
             return EAlwaysSeqBlock(
                 function.location,
                 function.name,

@@ -62,10 +62,7 @@ object ExpressionSpecializer {
             is EIfExpression -> specializeIfExpression(expression, specializerContext)
             is EWhenExpression -> specializeWhenExpression(expression, specializerContext)
             is EWhileStatement -> specializeWhileStatement(expression, specializerContext)
-            else -> {
-                Messages.INTERNAL_ERROR.on(expression, "Unable to specialize expression: $expression")
-                expression
-            }
+            else -> Messages.INTERNAL_ERROR.on(expression, "Unable to specialize expression: $expression")
         }
         @Suppress("UNCHECKED_CAST")
         return copiedExpression as E

@@ -27,23 +27,23 @@ class CasterVisitor(
     private val castContext: CastContext
 ) : SystemVerilogParserBaseVisitor<EElement>() {
 
-    inline fun <reified E : EElement> getElement(parseTree: ParseTree): E? {
-        return parseTree.accept(this)?.cast()
-    }
-
     fun getDeclaration(declaration: ParseTree): EDeclaration? {
-        val location = castContext.getLocation(declaration)
+        if (CasterUtil.hasErrorNode(declaration))
+            return null
         return when (val element = declaration.accept(this)) {
             null -> null
             is EDeclaration -> element
             else -> {
-                Messages.INTERNAL_ERROR.on(location, "Declaration expected but got: ${element::class.simpleName}")
-                null
+                Messages.INTERNAL_ERROR.on(element, "Declaration expected but got: ${element::class.simpleName}")
             }
         }
     }
 
-    override fun visitModuleDeclaration(ctx: SystemVerilogParser.ModuleDeclarationContext?): EElement {
-        return DeclarationCaster.castModule(ctx!!, castContext)
+    override fun visitModuleDeclaration(ctx: SystemVerilogParser.ModuleDeclarationContext?): EElement? {
+        return ModuleCaster.castModule(ctx!!, castContext)
+    }
+
+    override fun visitDataDeclaration(ctx: SystemVerilogParser.DataDeclarationContext?): EElement? {
+        return PropertyCaster.castProperty(ctx!!, castContext)
     }
 }

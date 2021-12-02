@@ -20,44 +20,67 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.common.location
 import org.jetbrains.kotlin.psi.KtElement
 
-class MessageTemplate0(
-    override val severity: Severity,
-    override val template: String
-) : AbstractMessageTemplate() {
-
-    fun on(element: KtElement) {
-        MessageCollector.messageCollector.message(name, format(), element.location(), severity)
-    }
-
-    fun on(element: EElement) {
-        MessageCollector.messageCollector.message(name, format(), element.location, severity)
-    }
-}
-
-class MessageTemplate1<A>(
-    override val severity: Severity,
+class WarningMessageTemplate1<A>(
     override val template: String
 ) : AbstractMessageTemplate() {
 
     fun on(location: SourceLocation, a: A) {
-        MessageCollector.messageCollector.message(name, format(a), location, severity)
-    }
-
-    fun on(element: KtElement, a: A) {
-        MessageCollector.messageCollector.message(name, format(a), element.location(), severity)
-    }
-
-    fun on(element: EElement, a: A) {
-        MessageCollector.messageCollector.message(name, format(a), element.location, severity)
+        MessageCollector.messageCollector.warning(name, format(a), location)
     }
 }
 
-class MessageTemplate2<A, B>(
-    override val severity: Severity,
+class ErrorMessageTemplate0(
+    override val template: String
+) : AbstractMessageTemplate() {
+
+    fun on(element: KtElement) {
+        MessageCollector.messageCollector.error(format(), element.location())
+    }
+
+    fun on(element: EElement) {
+        MessageCollector.messageCollector.error(format(), element.location)
+    }
+}
+
+class ErrorMessageTemplate1<A>(
+    override val template: String
+) : AbstractMessageTemplate() {
+
+    fun on(location: SourceLocation, a: A) {
+        MessageCollector.messageCollector.error(format(a), location)
+    }
+
+    fun on(element: KtElement, a: A) {
+        MessageCollector.messageCollector.error(format(a), element.location())
+    }
+
+    fun on(element: EElement, a: A) {
+        MessageCollector.messageCollector.error(format(a), element.location)
+    }
+}
+
+class ErrorMessageTemplate2<A, B>(
     override val template: String
 ) : AbstractMessageTemplate() {
 
     fun on(element: EElement, a: A, b: B) {
-        MessageCollector.messageCollector.message(name, format(a, b), element.location, severity)
+        MessageCollector.messageCollector.error(format(a, b), element.location)
+    }
+}
+
+class FatalMessageTemplate1<A>(
+    override val template: String
+) : AbstractMessageTemplate() {
+
+    fun on(location: SourceLocation, a: A): Nothing {
+        MessageCollector.messageCollector.fatal(format(a), location)
+    }
+
+    fun on(element: KtElement, a: A): Nothing {
+        MessageCollector.messageCollector.fatal(format(a), element.location())
+    }
+
+    fun on(element: EElement, a: A): Nothing {
+        MessageCollector.messageCollector.fatal(format(a), element.location)
     }
 }

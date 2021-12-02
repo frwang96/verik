@@ -18,4 +18,4 @@ package io.verik.importer.ast.element
 
 import io.verik.importer.ast.interfaces.Declaration
 
-abstract class EDeclaration : EElement(), Declaration
+abstract class EDeclaration : ETypedElement(), Declaration

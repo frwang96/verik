@@ -16,7 +16,7 @@
 
 package io.verik.importer.ast.element
 
-import io.verik.importer.ast.common.Visitor
+import io.verik.importer.common.Visitor
 import io.verik.importer.message.Messages
 import io.verik.importer.message.SourceLocation
 
@@ -26,12 +26,11 @@ abstract class EElement {
 
     var parent: EElement? = null
 
-    inline fun <reified E : EElement> cast(): E? {
+    inline fun <reified E : EElement> cast(): E {
         return when (this) {
             is E -> this
             else -> {
                 Messages.INTERNAL_ERROR.on(this, "Could not cast element: Expected ${E::class.simpleName} actual $this")
-                null
             }
         }
     }

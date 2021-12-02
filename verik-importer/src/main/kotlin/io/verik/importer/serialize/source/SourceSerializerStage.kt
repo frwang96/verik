@@ -18,9 +18,9 @@ package io.verik.importer.serialize.source
 
 import io.verik.importer.ast.element.EAbstractPackage
 import io.verik.importer.ast.element.EDeclaration
-import io.verik.importer.common.ImporterStage
 import io.verik.importer.common.TextFile
 import io.verik.importer.main.ImporterContext
+import io.verik.importer.main.ImporterStage
 
 object SourceSerializerStage : ImporterStage() {
 
@@ -46,7 +46,7 @@ object SourceSerializerStage : ImporterStage() {
         return declarationMap.map { (baseFileName, declarations) ->
             val path = packagePath.resolve("$baseFileName.kt")
             val serializerContext = SerializerContext(importerContext, abstractPackage.name, path)
-            declarations.forEach { serializerContext.serializeAsDeclaration(it) }
+            declarations.forEach { serializerContext.serialize(it) }
             serializerContext.getTextFile()
         }
     }

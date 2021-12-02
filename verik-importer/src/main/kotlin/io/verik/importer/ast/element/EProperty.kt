@@ -14,9 +14,21 @@
  * limitations under the License.
  */
 
-package io.verik.importer.message
+package io.verik.importer.ast.element
 
-enum class Severity {
-    WARNING,
-    ERROR
+import io.verik.importer.ast.property.Type
+import io.verik.importer.common.Visitor
+import io.verik.importer.message.SourceLocation
+
+class EProperty(
+    override val location: SourceLocation,
+    override val name: String,
+    override var type: Type
+) : EAbstractProperty() {
+
+    override fun accept(visitor: Visitor) {
+        visitor.visitProperty(this)
+    }
+
+    override fun acceptChildren(visitor: Visitor) {}
 }

@@ -4,12 +4,13 @@ options { tokenVocab = SystemVerilogLexer; }
 
 // A.1.2 SystemVerilog Source Text /////////////////////////////////////////////////////////////////////////////////////
 
-project
+compilationUnit
     : description* EOF
     ;
 
 description
     : moduleDeclaration
+    | packageItem
     ;
 
 moduleNonAnsiHeader
@@ -17,7 +18,7 @@ moduleNonAnsiHeader
     ;
 
 moduleAnsiHeader
-    : MODULE identifier SEMICOLON
+    : MODULE identifier listOfPortDeclarations? SEMICOLON
     ;
 
 moduleDeclaration
@@ -29,6 +30,10 @@ moduleDeclaration
 
 listOfPorts
     : LPAREN port (COMMA port)* RPAREN
+    ;
+
+listOfPortDeclarations
+    : LPAREN (ansiPortDeclaration (COMMA ansiPortDeclaration)*)? RPAREN
     ;
 
 portDeclaration
@@ -48,10 +53,33 @@ portReference
     : identifier
     ;
 
+portDirection
+    : INPUT
+    | OUTPUT
+    ;
+
+netPortHeader
+    : portDirection? netPortType
+    ;
+
+ansiPortDeclaration
+    : netPortHeader identifier
+    ;
+
 // A.1.4 Module Items //////////////////////////////////////////////////////////////////////////////////////////////////
 
 moduleItem
     : portDeclaration SEMICOLON
+    ;
+
+// A.1.11 Package Items ////////////////////////////////////////////////////////////////////////////////////////////////
+
+packageItem
+    : packageOrGenerateItemDeclaration
+    ;
+
+packageOrGenerateItemDeclaration
+    : dataDeclaration
     ;
 
 // A.2.1.2 Port Declarations ///////////////////////////////////////////////////////////////////////////////////////////
@@ -64,10 +92,16 @@ outputDeclaration
     : OUTPUT (netPortType identifier | variablePortType identifier)
     ;
 
+// A.2.1.3 Type Declarations ///////////////////////////////////////////////////////////////////////////////////////////
+
+dataDeclaration
+    : dataTypeOrImplicit listOfVariableDeclAssignments SEMICOLON
+    ;
+
 // A.2.2.1 Net and Variable Types //////////////////////////////////////////////////////////////////////////////////////
 
 dataType
-    : integerVectorType
+    : integerVectorType signing? packedDimension*
     ;
 
 dataTypeOrImplicit
@@ -110,6 +144,18 @@ signing
 
 simpleType
     : integerType
+    ;
+
+// A.2.3 Declaration Lists /////////////////////////////////////////////////////////////////////////////////////////////
+
+listOfVariableDeclAssignments
+    : variableDeclAssignment (COMMA variableDeclAssignment)*
+    ;
+
+// A.2.4 Declaration Assignments ///////////////////////////////////////////////////////////////////////////////////////
+
+variableDeclAssignment
+    : identifier
     ;
 
 // A.2.5 Declaration Ranges ////////////////////////////////////////////////////////////////////////////////////////////

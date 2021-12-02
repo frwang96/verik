@@ -14,14 +14,18 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.common
+package io.verik.importer.common
 
 import io.verik.importer.ast.element.EAbstractPackage
+import io.verik.importer.ast.element.EAbstractProperty
 import io.verik.importer.ast.element.ECompilationUnit
 import io.verik.importer.ast.element.EDeclaration
 import io.verik.importer.ast.element.EElement
 import io.verik.importer.ast.element.EModule
+import io.verik.importer.ast.element.EPort
+import io.verik.importer.ast.element.EProperty
 import io.verik.importer.ast.element.ERootPackage
+import io.verik.importer.ast.element.ETypedElement
 
 abstract class Visitor {
 
@@ -31,8 +35,12 @@ abstract class Visitor {
         visitElement(compilationUnit)
     }
 
+    open fun visitTypedElement(typedElement: ETypedElement) {
+        visitElement(typedElement)
+    }
+
     open fun visitDeclaration(declaration: EDeclaration) {
-        visitElement(declaration)
+        visitTypedElement(declaration)
     }
 
     open fun visitAbstractPackage(abstractPackage: EAbstractPackage) {
@@ -45,5 +53,17 @@ abstract class Visitor {
 
     open fun visitModule(module: EModule) {
         visitDeclaration(module)
+    }
+
+    open fun visitAbstractProperty(abstractProperty: EAbstractProperty) {
+        visitDeclaration(abstractProperty)
+    }
+
+    open fun visitProperty(property: EProperty) {
+        visitAbstractProperty(property)
+    }
+
+    open fun visitPort(port: EPort) {
+        visitAbstractProperty(port)
     }
 }

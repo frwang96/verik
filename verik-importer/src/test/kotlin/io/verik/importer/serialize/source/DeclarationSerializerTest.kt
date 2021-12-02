@@ -19,7 +19,7 @@ package io.verik.importer.serialize.source
 import io.verik.importer.test.BaseTest
 import org.junit.jupiter.api.Test
 
-internal class SourceSerializerVisitorTest : BaseTest() {
+internal class DeclarationSerializerTest : BaseTest() {
 
     @Test
     fun `serialize module`() {
@@ -30,6 +30,33 @@ internal class SourceSerializerVisitorTest : BaseTest() {
             """.trimIndent(),
             """
                 class M : Module()
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `serialize property`() {
+        driveTextFileTest(
+            """
+                logic x;
+            """.trimIndent(),
+            """
+                val x: Boolean = imported()
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `serialize port`() {
+        driveTextFileTest(
+            """
+                module M(input x);
+                endmodule
+            """.trimIndent(),
+            """
+                class M(
+                    @In var x: Boolean
+                ) : Module()
             """.trimIndent()
         )
     }

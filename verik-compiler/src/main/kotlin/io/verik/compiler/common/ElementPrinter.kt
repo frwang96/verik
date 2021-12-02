@@ -21,7 +21,6 @@ import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.EIfExpression
-import io.verik.compiler.ast.element.common.ENullElement
 import io.verik.compiler.ast.element.common.ENullExpression
 import io.verik.compiler.ast.element.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.common.EProject
@@ -100,15 +99,13 @@ import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.LiteralStringEntry
 import io.verik.compiler.ast.property.PortInstantiation
 import io.verik.compiler.ast.property.SuperTypeCallEntry
+import io.verik.compiler.message.Messages
+import io.verik.compiler.message.SourceLocation
 
 class ElementPrinter : Visitor() {
 
     private val builder = StringBuilder()
     private var first = true
-
-    override fun visitNullElement(nullElement: ENullElement) {
-        build("NullElement") {}
-    }
 
     override fun visitNullExpression(nullExpression: ENullExpression) {
         build("NullExpression") {}
@@ -799,37 +796,40 @@ class ElementPrinter : Visitor() {
         first = false
     }
 
-    private fun build(elements: List<Any>) {
+    private fun build(entries: List<Any>) {
         if (!first) builder.append(", ")
         builder.append("[")
         first = true
-        elements.forEach {
+        entries.forEach {
             when (it) {
                 is EElement -> it.accept(this)
                 is String -> build(it)
                 is LiteralStringEntry -> build(it.text)
                 is ExpressionStringEntry -> it.expression.accept(this)
-                else -> throw IllegalArgumentException("Unrecognized type: ${it::class.simpleName}")
+                else -> Messages.INTERNAL_ERROR.on(
+                    SourceLocation.NULL,
+                    "Unrecognized entry type: ${it::class.simpleName}"
+                )
             }
         }
         builder.append("]")
         first = false
     }
 
-    private fun <E> buildList(elements: List<E>, block: (E) -> Unit) {
-        if (!first) builder.append(", ")
-        builder.append("[")
+    private fun <T> buildList(entries: List<T>, builder: (T) -> Unit) {
+        if (!first) this.builder.append(", ")
+        this.builder.append("[")
         first = true
-        elements.forEach { block(it) }
-        builder.append("]")
+        entries.forEach { builder(it) }
+        this.builder.append("]")
         first = false
     }
 
-    private fun <E> buildNullable(element: E?, block: (E) -> Unit) {
-        if (!first) builder.append(", ")
+    private fun <T> buildNullable(entry: T?, builder: (T) -> Unit) {
+        if (!first) this.builder.append(", ")
         first = true
-        if (element != null) block(element)
-        else builder.append("null")
+        if (entry != null) builder(entry)
+        else this.builder.append("null")
         first = false
     }
 

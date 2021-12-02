@@ -20,7 +20,7 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.property.Type
-import io.verik.compiler.common.Cardinal
+import io.verik.compiler.core.common.Cardinal
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreCardinalFunctionDeclaration
 import io.verik.compiler.message.Messages
@@ -95,10 +95,8 @@ object TypeSpecializer {
                     Messages.CARDINAL_OUT_OF_RANGE.on(element)
                 1 shl argumentValues[0]
             }
-            else -> {
+            else ->
                 Messages.INTERNAL_ERROR.on(element, "Unrecognized cardinal function: $reference")
-                1
-            }
         }
     }
 }

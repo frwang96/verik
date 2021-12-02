@@ -83,8 +83,11 @@ import org.jetbrains.kotlin.psi.KtWhileExpression
 class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, Unit>() {
 
     inline fun <reified E : EElement> getElement(element: KtElement): E? {
-        @Suppress("UNNECESSARY_SAFE_CALL")
-        return element.accept(this, Unit)?.cast()
+        @Suppress("RedundantNullableReturnType")
+        val castedElement: EElement? = element.accept(this, Unit)
+        return if (castedElement != null) {
+            return castedElement.cast()
+        } else null
     }
 
     fun getDeclaration(declaration: KtDeclaration): EDeclaration? {
@@ -96,7 +99,6 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
             is EDeclaration -> element
             else -> {
                 Messages.INTERNAL_ERROR.on(location, "Declaration expected but got: ${element::class.simpleName}")
-                null
             }
         }
     }
@@ -121,45 +123,43 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
             null -> ENullExpression(location)
             else -> {
                 Messages.INTERNAL_ERROR.on(location, "Expression expected but got: ${element::class.simpleName}")
-                ENullExpression(location)
             }
         }
     }
 
     override fun visitKtElement(element: KtElement, data: Unit?): EElement? {
         Messages.INTERNAL_ERROR.on(element, "Unrecognized element: $element")
-        return null
     }
 
-    override fun visitTypeAlias(typeAlias: KtTypeAlias, data: Unit?): ETypeAlias? {
+    override fun visitTypeAlias(typeAlias: KtTypeAlias, data: Unit?): ETypeAlias {
         return DeclarationCaster.castTypeAlias(typeAlias, castContext)
     }
 
-    override fun visitTypeParameter(parameter: KtTypeParameter, data: Unit?): ETypeParameter? {
+    override fun visitTypeParameter(parameter: KtTypeParameter, data: Unit?): ETypeParameter {
         return DeclarationCaster.castTypeParameter(parameter, castContext)
     }
 
-    override fun visitClassOrObject(classOrObject: KtClassOrObject, data: Unit?): EKtBasicClass? {
+    override fun visitClassOrObject(classOrObject: KtClassOrObject, data: Unit?): EKtBasicClass {
         return DeclarationCaster.castKtBasicClass(classOrObject, castContext)
     }
 
-    override fun visitPrimaryConstructor(constructor: KtPrimaryConstructor, data: Unit?): EPrimaryConstructor? {
+    override fun visitPrimaryConstructor(constructor: KtPrimaryConstructor, data: Unit?): EPrimaryConstructor {
         return DeclarationCaster.castPrimaryConstructor(constructor, castContext)
     }
 
-    override fun visitNamedFunction(function: KtNamedFunction, data: Unit?): EKtFunction? {
+    override fun visitNamedFunction(function: KtNamedFunction, data: Unit?): EKtFunction {
         return DeclarationCaster.castKtFunction(function, castContext)
     }
 
-    override fun visitProperty(property: KtProperty, data: Unit?): EKtProperty? {
+    override fun visitProperty(property: KtProperty, data: Unit?): EKtProperty {
         return DeclarationCaster.castKtProperty(property, castContext)
     }
 
-    override fun visitEnumEntry(enumEntry: KtEnumEntry, data: Unit?): EKtEnumEntry? {
+    override fun visitEnumEntry(enumEntry: KtEnumEntry, data: Unit?): EKtEnumEntry {
         return DeclarationCaster.castKtEnumEntry(enumEntry, castContext)
     }
 
-    override fun visitParameter(parameter: KtParameter, data: Unit?): EKtValueParameter? {
+    override fun visitParameter(parameter: KtParameter, data: Unit?): EKtValueParameter {
         return DeclarationCaster.castValueParameter(parameter, castContext)
     }
 
@@ -175,15 +175,15 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
         return ExpressionCaster.castKtBlockExpression(expression, castContext)
     }
 
-    override fun visitPrefixExpression(expression: KtPrefixExpression, data: Unit?): EKtUnaryExpression? {
+    override fun visitPrefixExpression(expression: KtPrefixExpression, data: Unit?): EKtUnaryExpression {
         return ExpressionCaster.castKtUnaryExpressionPrefix(expression, castContext)
     }
 
-    override fun visitPostfixExpression(expression: KtPostfixExpression, data: Unit?): EKtUnaryExpression? {
+    override fun visitPostfixExpression(expression: KtPostfixExpression, data: Unit?): EKtUnaryExpression {
         return ExpressionCaster.castKtUnaryExpressionPostfix(expression, castContext)
     }
 
-    override fun visitBinaryExpression(expression: KtBinaryExpression, data: Unit?): EExpression? {
+    override fun visitBinaryExpression(expression: KtBinaryExpression, data: Unit?): EExpression {
         return ExpressionCaster.castKtBinaryExpressionOrKtCallExpression(expression, castContext)
     }
 
@@ -195,7 +195,7 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
         return ExpressionCaster.castKtCallExpression(expression, castContext)
     }
 
-    override fun visitDotQualifiedExpression(expression: KtDotQualifiedExpression, data: Unit?): EExpression? {
+    override fun visitDotQualifiedExpression(expression: KtDotQualifiedExpression, data: Unit?): EExpression {
         return ExpressionCaster.castKtReferenceExpressionOrKtCallExpression(expression, castContext)
     }
 
@@ -215,7 +215,7 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
         return ExpressionCaster.castReturnStatement(expression, castContext)
     }
 
-    override fun visitLambdaExpression(expression: KtLambdaExpression, data: Unit?): EFunctionLiteralExpression? {
+    override fun visitLambdaExpression(expression: KtLambdaExpression, data: Unit?): EFunctionLiteralExpression {
         return ExpressionCaster.castFunctionLiteralExpression(expression, castContext)
     }
 

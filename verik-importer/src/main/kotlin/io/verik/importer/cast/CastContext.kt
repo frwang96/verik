@@ -18,22 +18,17 @@ package io.verik.importer.cast
 
 import io.verik.importer.lex.LexerCharStream
 import io.verik.importer.message.SourceLocation
+import org.antlr.v4.runtime.TokenStream
 import org.antlr.v4.runtime.tree.ParseTree
-import org.antlr.v4.runtime.tree.RuleNode
-import org.antlr.v4.runtime.tree.TerminalNode
 
 class CastContext(
-    private val lexerCharStream: LexerCharStream
+    private val lexerCharStream: LexerCharStream,
+    private val parserTokenStream: TokenStream
 ) {
 
     fun getLocation(parseTree: ParseTree): SourceLocation {
-        return when (parseTree) {
-            is TerminalNode -> {
-                val symbol = parseTree.symbol
-                lexerCharStream.getLocation(symbol.line, symbol.charPositionInLine)
-            }
-            is RuleNode -> getLocation(parseTree.getChild(0))
-            else -> throw IllegalArgumentException("Unrecognized parse tree type")
-        }
+        val index = parseTree.sourceInterval.a
+        val token = parserTokenStream.get(index)
+        return lexerCharStream.getLocation(token.line, token.charPositionInLine)
     }
 }

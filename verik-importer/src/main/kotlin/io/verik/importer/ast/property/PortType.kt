@@ -14,20 +14,9 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.common
+package io.verik.importer.ast.property
 
-import io.verik.compiler.check.normalize.NormalizationChecker
-import io.verik.compiler.main.ProjectContext
-
-abstract class ProjectStage {
-
-    protected abstract val checkNormalization: Boolean
-
-    protected abstract fun process(projectContext: ProjectContext)
-
-    fun accept(projectContext: ProjectContext) {
-        process(projectContext)
-        if (checkNormalization)
-            NormalizationChecker.accept(projectContext)
-    }
+enum class PortType {
+    INPUT,
+    OUTPUT
 }

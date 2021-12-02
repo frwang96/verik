@@ -19,9 +19,9 @@ package io.verik.compiler.transform.post
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ETypeDefinition
 import io.verik.compiler.ast.interfaces.ResizableDeclarationContainer
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
 object UnpackedTypeDefinitionTransformerStage : ProjectStage() {
@@ -33,10 +33,11 @@ object UnpackedTypeDefinitionTransformerStage : ProjectStage() {
         projectContext.project.accept(unpackedTypeDefinitionTransformerVisitor)
         unpackedTypeDefinitionTransformerVisitor.typeDefinitionEntries.forEach {
             val parent = it.function.parent
-            if (parent is ResizableDeclarationContainer)
+            if (parent is ResizableDeclarationContainer) {
                 parent.insertChildBefore(it.function, it.typeDefinition)
-            else
+            } else {
                 Messages.INTERNAL_ERROR.on(it.typeDefinition, "Count not insert ${it.typeDefinition} into $parent")
+            }
         }
     }
 

@@ -59,7 +59,7 @@ class ESvForStatement(
     override fun replaceChild(oldDeclaration: EDeclaration, newDeclaration: EDeclaration): Boolean {
         newDeclaration.parent = this
         return if (property == oldDeclaration) {
-            newDeclaration.cast<ESvProperty>()?.let { property = it }
+            property = newDeclaration.cast()
             true
         } else false
     }

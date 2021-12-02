@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.common
+package io.verik.importer.core
 
-import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.common.Visitor
-import io.verik.compiler.message.SourceLocation
+class CardinalConstantDeclaration(
+    val value: Int
+) : CardinalDeclaration {
 
-class ENullElement(
-    override val location: SourceLocation
-) : EElement() {
+    override val name = "`$value`"
 
-    override fun accept(visitor: Visitor) {
-        visitor.visitNullElement(this)
+    override fun equals(other: Any?): Boolean {
+        return (other is CardinalConstantDeclaration) && (other.value == value)
     }
 
-    override fun acceptChildren(visitor: TreeVisitor) {}
+    override fun hashCode(): Int {
+        return value
+    }
 }

@@ -21,10 +21,10 @@ import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.interfaces.ResizableDeclarationContainer
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
 object EnumInterpreterStage : ProjectStage() {
@@ -39,10 +39,11 @@ object EnumInterpreterStage : ProjectStage() {
         projectContext.project.accept(enumEntryCollectorVisitor)
         enumEntryCollectorVisitor.enumEntries.forEach {
             val parent = it.parent
-            if (parent is ResizableDeclarationContainer)
+            if (parent is ResizableDeclarationContainer) {
                 parent.insertChild(it)
-            else
+            } else {
                 Messages.INTERNAL_ERROR.on(it, "Count not insert $it into $parent")
+            }
         }
         referenceUpdater.flush()
     }
@@ -53,8 +54,7 @@ object EnumInterpreterStage : ProjectStage() {
             super.visitKtBasicClass(basicClass)
             if (basicClass.isEnum) {
                 val enumEntries = basicClass.declarations
-                    .mapNotNull { it.cast<EKtEnumEntry>() }
-                    .map { interpretEnumEntry(it, referenceUpdater) }
+                    .map { interpretEnumEntry(it.cast(), referenceUpdater) }
                 val enum = EEnum(
                     basicClass.location,
                     basicClass.name,

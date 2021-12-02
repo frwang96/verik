@@ -24,7 +24,6 @@ import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.serialize.source.SerializerUtil
 import java.nio.file.Path
-import java.nio.file.Paths
 
 class EFile(
     override val location: SourceLocation,
@@ -66,12 +65,8 @@ class EFile(
     }
 
     fun getOutputPathNotNull(): Path {
-        return if (outputPath != null) {
-            outputPath
-        } else {
-            Messages.INTERNAL_ERROR.on(location, "File output path not specified")
-            Paths.get("")
-        }
+        return outputPath
+            ?: Messages.INTERNAL_ERROR.on(location, "File output path not specified")
     }
 
     fun isEmptySerialization(): Boolean {

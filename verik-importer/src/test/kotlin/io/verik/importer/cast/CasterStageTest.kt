@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test
 internal class CasterStageTest : BaseTest() {
 
     @Test
-    fun `compilation unit empty`() {
+    fun `cast compilationUnit`() {
         driveElementTest(
             "",
             CasterStage::class,
@@ -31,14 +31,14 @@ internal class CasterStageTest : BaseTest() {
     }
 
     @Test
-    fun `compilation unit module`() {
+    fun `cast compilationUnit with moduleDeclaration`() {
         driveElementTest(
             """
                 module M;
                 endmodule
             """.trimIndent(),
             CasterStage::class,
-            "CompilationUnit(RootPackage([Module(M)]))"
+            "CompilationUnit(RootPackage([Module(M, [], [])]))"
         ) { it }
     }
 }

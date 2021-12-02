@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.common
+package io.verik.importer.ast.element
 
-object Cardinal {
+import io.verik.importer.ast.property.Type
 
-    val UNRESOLVED = CardinalUnresolvedDeclaration
+abstract class ETypedElement : EElement() {
 
-    fun of(value: Int): CardinalConstantDeclaration {
-        return CardinalConstantDeclaration((value))
-    }
+    abstract var type: Type
 }

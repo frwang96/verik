@@ -16,7 +16,7 @@
 
 package io.verik.importer.serialize.source
 
-import io.verik.importer.ast.element.EDeclaration
+import io.verik.importer.ast.element.EElement
 import io.verik.importer.common.TextFile
 import io.verik.importer.main.ImporterContext
 import java.nio.file.Path
@@ -32,8 +32,19 @@ class SerializerContext(
     private val sourceSerializerVisitor = SourceSerializerVisitor(this)
     private val sourceBuilder = SourceBuilder(importerContext, packageName, path)
 
-    fun serializeAsDeclaration(declaration: EDeclaration) {
-        sourceSerializerVisitor.serializeAsDeclaration(declaration)
+    fun serialize(element: EElement) {
+        element.accept(sourceSerializerVisitor)
+    }
+
+    fun <T> serializeJoinAppendLine(entries: List<T>, serializer: (T) -> Unit) {
+        if (entries.isNotEmpty()) {
+            serializer(entries[0])
+            entries.drop(1).forEach {
+                sourceBuilder.appendLine(",")
+                serializer(it)
+            }
+            sourceBuilder.appendLine()
+        }
     }
 
     fun getTextFile(): TextFile {

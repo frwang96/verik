@@ -19,9 +19,9 @@ package io.verik.compiler.serialize.target
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.ast.property.Type
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.target.common.CompositeTarget
 import io.verik.compiler.target.common.TargetPackage
 import io.verik.compiler.target.common.TargetSerializationEntry

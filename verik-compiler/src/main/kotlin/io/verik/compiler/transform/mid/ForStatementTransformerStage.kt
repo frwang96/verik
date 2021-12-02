@@ -30,11 +30,11 @@ import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.KtUnaryOperatorKind
 import io.verik.compiler.common.ExpressionCopier
-import io.verik.compiler.common.ProjectStage
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
 object ForStatementTransformerStage : ProjectStage() {
@@ -57,10 +57,8 @@ object ForStatementTransformerStage : ProjectStage() {
             if (callExpression.reference == Core.Kt.Collections.F_forEach_Function) {
                 val functionLiteral = callExpression.valueArguments[0]
                     .cast<EFunctionLiteralExpression>()
-                    ?: return
                 val valueParameter = functionLiteral.valueParameters[0]
                     .cast<ESvValueParameter>()
-                    ?: return
                 val receiver = callExpression.receiver!!
                 val forStatement = when {
                     receiver is EKtCallExpression && receiver.reference == Core.Kt.Ranges.F_until_Int ->

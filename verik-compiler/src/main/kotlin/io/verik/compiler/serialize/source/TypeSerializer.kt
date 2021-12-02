@@ -40,7 +40,6 @@ object TypeSerializer {
                     SerializedType(parentModuleInterface.name)
                 } else {
                     Messages.INTERNAL_ERROR.on(element, "Module port has no parent module interface")
-                    SerializedType("void")
                 }
             }
             is EAbstractClass -> {
@@ -52,7 +51,6 @@ object TypeSerializer {
             }
             else -> {
                 Messages.INTERNAL_ERROR.on(element, "Unable to serialize type: $type")
-                SerializedType("void")
             }
         }
     }
