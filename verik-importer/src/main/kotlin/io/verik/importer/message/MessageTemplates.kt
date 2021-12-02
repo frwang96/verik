@@ -33,7 +33,7 @@ class FatalMessageTemplate0(
 ) : AbstractMessageTemplate() {
 
     fun on(path: Path): Nothing {
-        MessageCollector.messageCollector.fatal(name, format(), SourceLocation(path, 0, 0))
+        MessageCollector.messageCollector.fatal(format(), SourceLocation(path, 0, 0))
     }
 }
 
@@ -42,10 +42,10 @@ class FatalMessageTemplate1<A>(
 ) : AbstractMessageTemplate() {
 
     fun on(location: SourceLocation, a: A): Nothing {
-        MessageCollector.messageCollector.fatal(name, format(a), location)
+        MessageCollector.messageCollector.fatal(format(a), location)
     }
 
     fun on(element: EElement, a: A): Nothing {
-        MessageCollector.messageCollector.fatal(name, format(a), element.location)
+        MessageCollector.messageCollector.fatal(format(a), element.location)
     }
 }

@@ -33,9 +33,11 @@ class GradleMessagePrinter(private val debug: Boolean) : MessagePrinter() {
     }
 
     private fun printMessage(message: String, location: SourceLocation) {
-        print("${location.path}: ")
-        if (location.line != 0)
-            print("(${location.line}, ${location.column}): ")
+        if (location != SourceLocation.NULL) {
+            print("${location.path}: ")
+            if (location.line != 0)
+                print("(${location.line}, ${location.column}): ")
+        }
         println(message)
     }
 

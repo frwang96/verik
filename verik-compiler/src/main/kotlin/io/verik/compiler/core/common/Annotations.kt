@@ -38,6 +38,7 @@ object Annotations {
 
     init {
         annotations.add("kotlin.Suppress")
+        annotations.add("io.verik.core.Imported")
         Annotations::class.declaredMemberProperties.forEach {
             if (it.returnType == String::class.createType()) {
                 val annotation = it.call() as String

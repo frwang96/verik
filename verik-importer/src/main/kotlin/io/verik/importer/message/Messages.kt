@@ -21,7 +21,7 @@ import kotlin.reflect.full.declaredMemberProperties
 object Messages {
 
     val INTERNAL_ERROR = FatalMessageTemplate1<String>(
-        "$0"
+        "Internal error: $0"
     )
 
 // CONFIG //////////////////////////////////////////////////////////////////////////////////////////////////////////////

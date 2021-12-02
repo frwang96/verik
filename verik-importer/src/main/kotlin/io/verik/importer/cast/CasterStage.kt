@@ -35,8 +35,7 @@ object CasterStage : ImporterStage() {
             if (declaration != null)
                 declarations.add(declaration)
         }
-        val location = SourceLocation(importerContext.config.projectDir, 0, 0)
-        val rootPackage = ERootPackage(location, declarations)
-        importerContext.compilationUnit = ECompilationUnit(location, rootPackage)
+        val rootPackage = ERootPackage(SourceLocation.NULL, declarations)
+        importerContext.compilationUnit = ECompilationUnit(SourceLocation.NULL, rootPackage)
     }
 }

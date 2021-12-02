@@ -52,7 +52,7 @@ object ImportDirectiveCheckerStage : ProjectStage() {
                 importDirective.importedFqName!!.parent().toString()
             }
             if (packageName !in packageNames)
-                Messages.PACkAGE_NOT_FOUND.on(importDirective, packageName)
+                Messages.PACKAGE_NOT_FOUND.on(importDirective, packageName)
         }
     }
 }
