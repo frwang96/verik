@@ -23,7 +23,7 @@ import kotlin.reflect.full.declaredMemberProperties
 
 object Messages {
 
-    val INTERNAL_ERROR = ErrorMessageTemplate1<String>(
+    val INTERNAL_ERROR = FatalMessageTemplate1<String>(
         "Internal error: $0"
     )
 

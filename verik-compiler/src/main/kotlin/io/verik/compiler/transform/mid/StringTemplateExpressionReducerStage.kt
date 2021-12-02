@@ -50,7 +50,6 @@ object StringTemplateExpressionReducerStage : ProjectStage() {
             Core.Vk.C_Time -> "%0t"
             else -> {
                 Messages.INTERNAL_ERROR.on(expression, "Unable to get format specifier of type: ${expression.type}")
-                ""
             }
         }
     }

@@ -57,10 +57,8 @@ object ForStatementTransformerStage : ProjectStage() {
             if (callExpression.reference == Core.Kt.Collections.F_forEach_Function) {
                 val functionLiteral = callExpression.valueArguments[0]
                     .cast<EFunctionLiteralExpression>()
-                    ?: return
                 val valueParameter = functionLiteral.valueParameters[0]
                     .cast<ESvValueParameter>()
-                    ?: return
                 val receiver = callExpression.receiver!!
                 val forStatement = when {
                     receiver is EKtCallExpression && receiver.reference == Core.Kt.Ranges.F_until_Int ->

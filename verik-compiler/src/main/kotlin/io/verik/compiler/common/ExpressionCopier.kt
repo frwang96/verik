@@ -29,10 +29,7 @@ object ExpressionCopier {
             is EReferenceExpression -> copyReferenceExpression(expression)
             is EKtCallExpression -> copyKtCallExpression(expression)
             is EConstantExpression -> copyConstantExpression(expression)
-            else -> {
-                Messages.INTERNAL_ERROR.on(expression, "Unable to copy expression: $expression")
-                expression
-            }
+            else -> Messages.INTERNAL_ERROR.on(expression, "Unable to copy expression: $expression")
         }
         @Suppress("UNCHECKED_CAST")
         return copiedExpression as E

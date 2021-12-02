@@ -51,7 +51,6 @@ object StringTemplateExpressionCaster {
             }
             else -> {
                 Messages.INTERNAL_ERROR.on(entry, "Unrecognized string template entry: ${entry::class.simpleName}")
-                LiteralStringEntry("")
             }
         }
     }

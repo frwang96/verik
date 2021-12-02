@@ -52,7 +52,7 @@ class VerikPlugin : Plugin<Project> {
                     VerikMain.run(VerikConfigBuilder.getConfig(project, extension))
                 } catch (exception: Exception) {
                     if (exception !is VerikException) {
-                        println("e: ${exception.message}")
+                        println("e: Internal error: ${exception.message}")
                         VerikGradleMessagePrinter.printStackTrace(exception.stackTrace)
                     }
                     throw GradleException("Verik compilation failed")
@@ -84,7 +84,7 @@ class VerikPlugin : Plugin<Project> {
                     VerikImporterMain.run(VerikImporterConfigBuilder.getConfig(project, extension))
                 } catch (exception: Exception) {
                     if (exception !is VerikImporterException) {
-                        println("e: ${exception.message}")
+                        println("e: Internal error: ${exception.message}")
                         VerikImporterGradleMessagePrinter.printStackTrace(exception.stackTrace)
                     }
                     throw GradleException("Verik import failed")

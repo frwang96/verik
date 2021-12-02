@@ -34,27 +34,21 @@ enum class KtUnaryOperatorKind {
 
     companion object {
 
-        fun getKindPrefix(token: IElementType, location: SourceLocation): KtUnaryOperatorKind? {
+        fun getKindPrefix(token: IElementType, location: SourceLocation): KtUnaryOperatorKind {
             return when (token.toString()) {
                 "EXCL" -> EXCL
                 "MINUS" -> MINUS
                 "PLUSPLUS" -> PRE_INC
                 "MINUSMINUS" -> PRE_DEC
-                else -> {
-                    Messages.INTERNAL_ERROR.on(location, "Unrecognised unary operator kind: $token")
-                    null
-                }
+                else -> Messages.INTERNAL_ERROR.on(location, "Unrecognised unary operator kind: $token")
             }
         }
 
-        fun getKindPostfix(token: IElementType, location: SourceLocation): KtUnaryOperatorKind? {
+        fun getKindPostfix(token: IElementType, location: SourceLocation): KtUnaryOperatorKind {
             return when (token.toString()) {
                 "PLUSPLUS" -> POST_INC
                 "MINUSMINUS" -> POST_DEC
-                else -> {
-                    Messages.INTERNAL_ERROR.on(location, "Unrecognised unary operator kind: $token")
-                    null
-                }
+                else -> Messages.INTERNAL_ERROR.on(location, "Unrecognised unary operator kind: $token")
             }
         }
     }

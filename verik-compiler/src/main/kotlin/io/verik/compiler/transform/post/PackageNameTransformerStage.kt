@@ -35,7 +35,6 @@ object PackageNameTransformerStage : ProjectStage() {
         override fun visitBasicPackage(basicPackage: EBasicPackage) {
             val name = if (basicPackage.name == "") {
                 Messages.INTERNAL_ERROR.on(basicPackage, "Package name cannot be empty")
-                "pkg"
             } else {
                 val names = basicPackage.name.split(".")
                 names.joinToString(separator = "_", postfix = "_pkg")

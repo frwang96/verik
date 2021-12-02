@@ -42,12 +42,11 @@ object WhenExpressionCaster {
         return WhenEntry(ArrayList(conditions), body)
     }
 
-    private fun castWhenCondition(whenCondition: KtWhenCondition, castContext: CastContext): EExpression? {
+    private fun castWhenCondition(whenCondition: KtWhenCondition, castContext: CastContext): EExpression {
         return if (whenCondition is KtWhenConditionWithExpression) {
             castContext.casterVisitor.getExpression(whenCondition.expression!!)
         } else {
             Messages.INTERNAL_ERROR.on(whenCondition, "When condition type not supported")
-            null
         }
     }
 }

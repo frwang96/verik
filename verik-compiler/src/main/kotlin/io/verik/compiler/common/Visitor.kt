@@ -37,7 +37,6 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.EIfExpression
-import io.verik.compiler.ast.element.common.ENullElement
 import io.verik.compiler.ast.element.common.ENullExpression
 import io.verik.compiler.ast.element.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.common.EProject
@@ -124,10 +123,6 @@ import io.verik.compiler.ast.element.sv.EWidthCastExpression
 abstract class Visitor {
 
     open fun visitElement(element: EElement) {}
-
-    open fun visitNullElement(nullElement: ENullElement) {
-        visitElement(nullElement)
-    }
 
     open fun visitTypedElement(typedElement: ETypedElement) {
         visitElement(typedElement)

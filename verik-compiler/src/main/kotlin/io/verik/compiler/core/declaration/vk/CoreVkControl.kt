@@ -77,12 +77,10 @@ object CoreVkControl : CoreScope(CorePackage.VK) {
             val functionLiteralExpression = callExpression
                 .valueArguments[0]
                 .cast<EFunctionLiteralExpression>()
-            return if (functionLiteralExpression != null) {
-                EForeverStatement(
-                    callExpression.location,
-                    functionLiteralExpression.body
-                )
-            } else callExpression
+            return EForeverStatement(
+                callExpression.location,
+                functionLiteralExpression.body
+            )
         }
     }
 

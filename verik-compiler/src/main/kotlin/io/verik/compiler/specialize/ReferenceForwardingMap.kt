@@ -37,13 +37,8 @@ class ReferenceForwardingMap {
         typeParameterContext: TypeParameterContext,
         element: EElement
     ): EDeclaration {
-        val forwardedDeclaration = referenceForwardingMap[DeclarationBinding(declaration, typeParameterContext)]
-        return if (forwardedDeclaration != null) {
-            forwardedDeclaration
-        } else {
-            Messages.INTERNAL_ERROR.on(element, "Forwarded declaration not found: ${declaration.name}")
-            declaration
-        }
+        return referenceForwardingMap[DeclarationBinding(declaration, typeParameterContext)]
+            ?: Messages.INTERNAL_ERROR.on(element, "Forwarded declaration not found: ${declaration.name}")
     }
 
     fun matchTypeParameterContexts(

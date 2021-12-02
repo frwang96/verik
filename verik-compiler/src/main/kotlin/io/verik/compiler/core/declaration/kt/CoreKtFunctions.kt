@@ -38,13 +38,11 @@ object CoreKtFunctions : CoreScope(CorePackage.KT) {
             val functionLiteralExpression = callExpression
                 .valueArguments[1]
                 .cast<EFunctionLiteralExpression>()
-            return if (functionLiteralExpression != null) {
-                ERepeatStatement(
-                    callExpression.location,
-                    callExpression.valueArguments[0],
-                    functionLiteralExpression.body
-                )
-            } else callExpression
+            return ERepeatStatement(
+                callExpression.location,
+                callExpression.valueArguments[0],
+                functionLiteralExpression.body
+            )
         }
     }
 
@@ -68,7 +66,6 @@ object CoreKtFunctions : CoreScope(CorePackage.KT) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             val functionLiteralExpression = callExpression.valueArguments[1].cast<EFunctionLiteralExpression>()
-                ?: return callExpression
             return EImmediateAssertStatement(
                 callExpression.location,
                 Core.Kt.C_Unit.toType(),

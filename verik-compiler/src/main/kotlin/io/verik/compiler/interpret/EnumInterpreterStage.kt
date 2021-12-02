@@ -39,10 +39,11 @@ object EnumInterpreterStage : ProjectStage() {
         projectContext.project.accept(enumEntryCollectorVisitor)
         enumEntryCollectorVisitor.enumEntries.forEach {
             val parent = it.parent
-            if (parent is ResizableDeclarationContainer)
+            if (parent is ResizableDeclarationContainer) {
                 parent.insertChild(it)
-            else
+            } else {
                 Messages.INTERNAL_ERROR.on(it, "Count not insert $it into $parent")
+            }
         }
         referenceUpdater.flush()
     }
@@ -53,8 +54,7 @@ object EnumInterpreterStage : ProjectStage() {
             super.visitKtBasicClass(basicClass)
             if (basicClass.isEnum) {
                 val enumEntries = basicClass.declarations
-                    .mapNotNull { it.cast<EKtEnumEntry>() }
-                    .map { interpretEnumEntry(it, referenceUpdater) }
+                    .map { interpretEnumEntry(it.cast(), referenceUpdater) }
                 val enum = EEnum(
                     basicClass.location,
                     basicClass.name,

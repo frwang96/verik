@@ -93,10 +93,9 @@ object PropertyInterpreterStage : ProjectStage() {
             property: EKtProperty,
             callExpression: EKtCallExpression,
             component: EAbstractContainerComponent
-        ): EBasicComponentInstantiation? {
+        ): EBasicComponentInstantiation {
             if (component.ports.size != callExpression.valueArguments.size) {
                 Messages.INTERNAL_ERROR.on(callExpression, "Incorrect number of value arguments")
-                return null
             }
 
             val portInstantiations = component.ports
@@ -114,10 +113,9 @@ object PropertyInterpreterStage : ProjectStage() {
             property: EKtProperty,
             callExpression: EKtCallExpression,
             modulePort: EModulePort
-        ): EModulePortInstantiation? {
+        ): EModulePortInstantiation {
             if (modulePort.ports.size != callExpression.valueArguments.size) {
                 Messages.INTERNAL_ERROR.on(callExpression, "Incorrect number of value arguments")
-                return null
             }
 
             val portInstantiations = modulePort.ports
@@ -135,13 +133,12 @@ object PropertyInterpreterStage : ProjectStage() {
             property: EKtProperty,
             callExpression: EKtCallExpression,
             clockingBlock: EClockingBlock
-        ): EClockingBlockInstantiation? {
+        ): EClockingBlockInstantiation {
             val valueArguments = callExpression
                 .valueArguments
                 .filterIndexed { index, _ -> index != clockingBlock.eventValueParameterIndex }
             if (clockingBlock.ports.size != valueArguments.size) {
                 Messages.INTERNAL_ERROR.on(callExpression, "Incorrect number of value arguments")
-                return null
             }
 
             val eventExpression = callExpression.valueArguments[clockingBlock.eventValueParameterIndex]

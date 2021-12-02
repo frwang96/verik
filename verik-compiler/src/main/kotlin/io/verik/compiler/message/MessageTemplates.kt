@@ -67,3 +67,20 @@ class ErrorMessageTemplate2<A, B>(
         MessageCollector.messageCollector.error(format(a, b), element.location)
     }
 }
+
+class FatalMessageTemplate1<A>(
+    override val template: String
+) : AbstractMessageTemplate() {
+
+    fun on(location: SourceLocation, a: A): Nothing {
+        MessageCollector.messageCollector.fatal(format(a), location)
+    }
+
+    fun on(element: KtElement, a: A): Nothing {
+        MessageCollector.messageCollector.fatal(format(a), element.location())
+    }
+
+    fun on(element: EElement, a: A): Nothing {
+        MessageCollector.messageCollector.fatal(format(a), element.location)
+    }
+}

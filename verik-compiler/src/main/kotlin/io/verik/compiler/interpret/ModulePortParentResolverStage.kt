@@ -58,11 +58,9 @@ object ModulePortParentResolverStage : ProjectStage() {
             val parent = modulePortInstantiation.parent
             if (parent is EModuleInterface) {
                 val modulePort = modulePortInstantiation.type.reference.cast<EModulePort>(modulePortInstantiation)
-                if (modulePort != null) {
-                    if (modulePort.parentModuleInterface != null && modulePort.parentModuleInterface != parent)
-                        multipleParentModulePorts.add(modulePort)
-                    modulePort.parentModuleInterface = parent
-                }
+                if (modulePort.parentModuleInterface != null && modulePort.parentModuleInterface != parent)
+                    multipleParentModulePorts.add(modulePort)
+                modulePort.parentModuleInterface = parent
             } else {
                 Messages.MODULE_PORT_INSTANTIATION_OUT_OF_CONTEXT.on(modulePortInstantiation)
             }

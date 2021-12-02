@@ -33,10 +33,11 @@ object UnpackedTypeDefinitionTransformerStage : ProjectStage() {
         projectContext.project.accept(unpackedTypeDefinitionTransformerVisitor)
         unpackedTypeDefinitionTransformerVisitor.typeDefinitionEntries.forEach {
             val parent = it.function.parent
-            if (parent is ResizableDeclarationContainer)
+            if (parent is ResizableDeclarationContainer) {
                 parent.insertChildBefore(it.function, it.typeDefinition)
-            else
+            } else {
                 Messages.INTERNAL_ERROR.on(it.typeDefinition, "Count not insert ${it.typeDefinition} into $parent")
+            }
         }
     }
 

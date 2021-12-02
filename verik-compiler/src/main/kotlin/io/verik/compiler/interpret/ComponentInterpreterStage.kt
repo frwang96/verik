@@ -106,7 +106,10 @@ object ComponentInterpreterStage : ProjectStage() {
                         referenceUpdater.replace(basicClass, clockingBlock)
                         basicClass.primaryConstructor?.let { referenceUpdater.update(it, clockingBlock) }
                     } else {
-                        Messages.INTERNAL_ERROR.on(basicClass, "Could not identify clocking block event value parameter")
+                        Messages.INTERNAL_ERROR.on(
+                            basicClass,
+                            "Could not identify clocking block event value parameter"
+                        )
                     }
                 }
             }

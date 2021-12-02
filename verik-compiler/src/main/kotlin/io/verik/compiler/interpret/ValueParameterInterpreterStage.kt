@@ -41,15 +41,13 @@ object ValueParameterInterpreterStage : ProjectStage() {
             super.visitFunctionLiteralExpression(functionLiteralExpression)
             functionLiteralExpression.valueParameters.forEach {
                 val oldValueParameter = it.cast<EKtValueParameter>()
-                if (oldValueParameter != null) {
-                    val newValueParameter = ESvValueParameter(
-                        oldValueParameter.location,
-                        oldValueParameter.name,
-                        oldValueParameter.type,
-                        true
-                    )
-                    referenceUpdater.replace(oldValueParameter, newValueParameter)
-                }
+                val newValueParameter = ESvValueParameter(
+                    oldValueParameter.location,
+                    oldValueParameter.name,
+                    oldValueParameter.type,
+                    true
+                )
+                referenceUpdater.replace(oldValueParameter, newValueParameter)
             }
         }
     }

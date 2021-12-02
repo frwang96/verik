@@ -16,7 +16,6 @@
 
 package io.verik.compiler.check.post
 
-import io.verik.compiler.ast.element.common.ENullElement
 import io.verik.compiler.ast.element.kt.EAsExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
@@ -48,11 +47,6 @@ object UntransformedElementCheckerStage : ProjectStage() {
     private object UntransformedElementVisitor : TreeVisitor() {
 
         private const val message = "has not been transformed to SystemVerilog"
-
-        override fun visitNullElement(nullElement: ENullElement) {
-            super.visitNullElement(nullElement)
-            Messages.INTERNAL_ERROR.on(nullElement, "Unexpected null element")
-        }
 
         override fun visitKtBasicClass(basicClass: EKtBasicClass) {
             super.visitKtBasicClass(basicClass)

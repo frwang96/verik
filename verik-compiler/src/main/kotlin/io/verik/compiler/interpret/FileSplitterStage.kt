@@ -105,13 +105,10 @@ object FileSplitterStage : ProjectStage() {
             is ETask -> true
             is ESvProperty -> true
             is ESvEnumEntry -> true
-            else -> {
-                Messages.INTERNAL_ERROR.on(
-                    declaration,
-                    "Unable to identify as component or package declaration: ${declaration.name}"
-                )
-                true
-            }
+            else -> Messages.INTERNAL_ERROR.on(
+                declaration,
+                "Unable to identify as component or package declaration: ${declaration.name}"
+            )
         }
     }
 }

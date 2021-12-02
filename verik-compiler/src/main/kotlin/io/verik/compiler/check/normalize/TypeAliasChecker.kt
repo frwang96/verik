@@ -45,16 +45,12 @@ object TypeAliasChecker : ProjectStage() {
             val hashCode = System.identityHashCode(type)
             val typeList = typeMap[hashCode]
             if (typeList != null) {
-                var alias = false
                 for (typeListType in typeList) {
                     if (type === typeListType) {
                         Messages.INTERNAL_ERROR.on(element, "Unexpected type aliasing: $type in $element")
-                        alias = true
-                        break
                     }
                 }
-                if (!alias)
-                    typeList.add(type)
+                typeList.add(type)
             } else {
                 typeMap[hashCode] = arrayListOf(type)
             }

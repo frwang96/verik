@@ -57,7 +57,7 @@ class EIsExpression(
     override fun replaceChild(oldDeclaration: EDeclaration, newDeclaration: EDeclaration): Boolean {
         newDeclaration.parent = this
         return if (property == oldDeclaration) {
-            newDeclaration.cast<EAbstractInitializedProperty>()?.let { property = it }
+            property = newDeclaration.cast()
             true
         } else false
     }

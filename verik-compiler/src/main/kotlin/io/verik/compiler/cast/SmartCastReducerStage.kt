@@ -54,9 +54,7 @@ object SmartCastReducerStage : ProjectStage() {
                     if (smartCastEntry in smartCastEntryMap) {
                         Messages.INTERNAL_ERROR.on(isExpression, "Unable to reduce smart casts for is expression")
                     } else {
-                        isExpression.property.cast<EKtProperty>()?.let {
-                            smartCastEntryMap[smartCastEntry] = it
-                        }
+                        smartCastEntryMap[smartCastEntry] = isExpression.property.cast()
                     }
                 }
             }

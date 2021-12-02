@@ -34,7 +34,6 @@ data class TypeParameterContext(val typeParameterBindings: List<TypeParameterBin
                 return it.type.copy()
         }
         Messages.INTERNAL_ERROR.on(element, "Unable to specialize type parameter ${typeParameter.name}")
-        return typeParameter.toType()
     }
 
     fun matches(typeParameterContext: TypeParameterContext): Boolean {
@@ -58,10 +57,8 @@ data class TypeParameterContext(val typeParameterBindings: List<TypeParameterBin
             element: EElement
         ): TypeParameterContext {
             typeArguments.forEach {
-                if (!it.isSpecialized()) {
+                if (!it.isSpecialized())
                     Messages.INTERNAL_ERROR.on(element, "Type argument not specialized: $it")
-                    return EMPTY
-                }
             }
             val expectedSize = typeParameterized.typeParameters.size
             val actualSize = typeArguments.size
@@ -75,7 +72,6 @@ data class TypeParameterContext(val typeParameterBindings: List<TypeParameterBin
                     element,
                     "Mismatch in type parameters: Expected $expectedSize actual $actualSize"
                 )
-                EMPTY
             }
         }
 

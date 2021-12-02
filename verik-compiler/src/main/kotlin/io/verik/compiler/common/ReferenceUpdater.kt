@@ -21,11 +21,9 @@ import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtConstructor
-import io.verik.compiler.ast.interfaces.DeclarationContainer
 import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.message.Messages
 
 class ReferenceUpdater(val projectContext: ProjectContext) {
 
@@ -33,12 +31,7 @@ class ReferenceUpdater(val projectContext: ProjectContext) {
 
     fun replace(oldDeclaration: EDeclaration, newDeclaration: EDeclaration) {
         val parent = oldDeclaration.parentNotNull()
-        if (parent is DeclarationContainer) {
-            if (!parent.replaceChild(oldDeclaration, newDeclaration))
-                Messages.INTERNAL_ERROR.on(oldDeclaration, "Could not find $oldDeclaration in $parent")
-        } else {
-            Messages.INTERNAL_ERROR.on(oldDeclaration, "Could not replace $oldDeclaration in $parent")
-        }
+        parent.replaceChildAsDeclarationContainer(oldDeclaration, newDeclaration)
         referenceMap[oldDeclaration] = newDeclaration
     }
 

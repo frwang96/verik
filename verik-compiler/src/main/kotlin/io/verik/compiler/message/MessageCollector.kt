@@ -43,6 +43,11 @@ class MessageCollector(
         incrementErrorCount()
     }
 
+    fun fatal(message: String, location: SourceLocation): Nothing {
+        messagePrinter.error(message, location)
+        throw VerikException()
+    }
+
     private fun incrementErrorCount() {
         errorCount++
         if (errorCount >= config.maxErrorCount)

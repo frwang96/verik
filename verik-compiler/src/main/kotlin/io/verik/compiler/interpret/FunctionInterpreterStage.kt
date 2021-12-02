@@ -138,9 +138,7 @@ object FunctionInterpreterStage : ProjectStage() {
             }
             val eventExpression = onExpression.valueArguments[0]
             val eventControlExpression = EEventControlExpression(eventExpression.location, eventExpression)
-            val alwaysSeqBody = onExpression.valueArguments[1]
-                .cast<EFunctionLiteralExpression>()?.body
-                ?: return null
+            val alwaysSeqBody = onExpression.valueArguments[1].cast<EFunctionLiteralExpression>().body
             return EAlwaysSeqBlock(
                 function.location,
                 function.name,

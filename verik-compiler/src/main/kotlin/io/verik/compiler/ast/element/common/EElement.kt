@@ -16,6 +16,7 @@
 
 package io.verik.compiler.ast.element.common
 
+import io.verik.compiler.ast.interfaces.DeclarationContainer
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
@@ -29,20 +30,15 @@ abstract class EElement {
     var parent: EElement? = null
 
     fun parentNotNull(): EElement {
-        val parent = parent
-        return if (parent != null) parent
-        else {
-            Messages.INTERNAL_ERROR.on(this, "Parent element of $this should not be null")
-            ENullElement(location)
-        }
+        return parent
+            ?: Messages.INTERNAL_ERROR.on(this, "Parent element of $this should not be null")
     }
 
-    inline fun <reified E : EElement> cast(): E? {
+    inline fun <reified E : EElement> cast(): E {
         return when (this) {
             is E -> this
             else -> {
                 Messages.INTERNAL_ERROR.on(this, "Could not cast element: Expected ${E::class.simpleName} actual $this")
-                null
             }
         }
     }
@@ -53,6 +49,15 @@ abstract class EElement {
                 Messages.INTERNAL_ERROR.on(oldExpression, "Could not find $oldExpression in $this")
         } else {
             Messages.INTERNAL_ERROR.on(oldExpression, "Could not replace $oldExpression in $this")
+        }
+    }
+
+    fun replaceChildAsDeclarationContainer(oldDeclaration: EDeclaration, newDeclaration: EDeclaration) {
+        if (this is DeclarationContainer) {
+            if (!this.replaceChild(oldDeclaration, newDeclaration))
+                Messages.INTERNAL_ERROR.on(oldDeclaration, "Could not find $oldDeclaration in $this")
+        } else {
+            Messages.INTERNAL_ERROR.on(oldDeclaration, "Could not replace $oldDeclaration in $this")
         }
     }
 

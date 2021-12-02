@@ -29,10 +29,7 @@ object ElementSpecializer {
             is EDeclaration -> DeclarationSpecializer.specializeDeclaration(element, specializerContext)
             is EExpression -> ExpressionSpecializer.specializeExpression(element, specializerContext)
             is EAnnotation -> specializeAnnotation(element)
-            else -> {
-                Messages.INTERNAL_ERROR.on(element, "Unable to specialize element: $element")
-                element
-            }
+            else -> Messages.INTERNAL_ERROR.on(element, "Unable to specialize element: $element")
         }
         @Suppress("UNCHECKED_CAST")
         return copiedElement as E

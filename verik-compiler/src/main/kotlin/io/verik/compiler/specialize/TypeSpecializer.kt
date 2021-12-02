@@ -95,10 +95,8 @@ object TypeSpecializer {
                     Messages.CARDINAL_OUT_OF_RANGE.on(element)
                 1 shl argumentValues[0]
             }
-            else -> {
+            else ->
                 Messages.INTERNAL_ERROR.on(element, "Unrecognized cardinal function: $reference")
-                1
-            }
         }
     }
 }

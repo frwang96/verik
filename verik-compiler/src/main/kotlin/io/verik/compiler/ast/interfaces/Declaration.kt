@@ -36,15 +36,15 @@ interface Declaration {
     }
 }
 
-inline fun <reified T> Declaration.cast(element: KtElement): T? {
+inline fun <reified T> Declaration.cast(element: KtElement): T {
     return cast(element.location())
 }
 
-inline fun <reified T> Declaration.cast(element: EElement): T? {
+inline fun <reified T> Declaration.cast(element: EElement): T {
     return cast(element.location)
 }
 
-inline fun <reified T> Declaration.cast(location: SourceLocation): T? {
+inline fun <reified T> Declaration.cast(location: SourceLocation): T {
     return when (this) {
         is T -> this
         else -> {
@@ -54,7 +54,6 @@ inline fun <reified T> Declaration.cast(location: SourceLocation): T? {
                 location,
                 "Could not cast declaration: Expected $expectedName actual $actualName"
             )
-            null
         }
     }
 }
