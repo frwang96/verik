@@ -77,22 +77,6 @@ object FileSplitterStage : ProjectStage() {
         }
         componentFiles.forEach { it.parent = projectContext.project.rootPackage }
         projectContext.project.rootPackage.files = componentFiles
-
-        projectContext.project.externBasicPackages.forEach { basicPackage ->
-            basicPackage.files.forEach { file ->
-                file.declarations.forEach {
-                    if (!isPackageDeclaration(it))
-                        Messages.EXTERN_INVALID_PACKAGE_DECLARATION.on(it)
-                }
-            }
-        }
-
-        projectContext.project.externRootPackage.files.forEach { file ->
-            file.declarations.forEach {
-                if (isPackageDeclaration(it))
-                    Messages.EXTERN_INVALID_COMPONENT_DECLARATION.on(it)
-            }
-        }
     }
 
     private fun isPackageDeclaration(declaration: EDeclaration): Boolean {

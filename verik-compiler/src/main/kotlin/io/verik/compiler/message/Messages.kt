@@ -175,14 +175,6 @@ object Messages {
         "Module port has multiple parent module interfaces: $0"
     )
 
-    val EXTERN_INVALID_PACKAGE_DECLARATION = ErrorMessageTemplate0(
-        "Package declaration expected in extern package"
-    )
-
-    val EXTERN_INVALID_COMPONENT_DECLARATION = ErrorMessageTemplate0(
-        "Component declaration expected in extern root package"
-    )
-
 //  MID TRANSFORM  /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val INJECTED_STATEMENT_NOT_LITERAL = ErrorMessageTemplate0(

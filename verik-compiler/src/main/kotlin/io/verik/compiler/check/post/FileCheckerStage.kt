@@ -34,7 +34,7 @@ object FileCheckerStage : ProjectStage() {
 
         val pathSet = HashSet<Path>()
         val duplicatedPathSet = HashSet<Path>()
-        projectContext.project.nonExternFiles().forEach {
+        projectContext.project.nonImportedFiles().forEach {
             val outputPath = it.getOutputPathNotNull()
             if (outputPath.fileName == Paths.get("Pkg.sv"))
                 Messages.FILE_NAME_RESERVED.on(it, it.inputPath.fileName)
@@ -45,7 +45,7 @@ object FileCheckerStage : ProjectStage() {
         }
 
         if (duplicatedPathSet.isNotEmpty()) {
-            projectContext.project.nonExternFiles().forEach {
+            projectContext.project.nonImportedFiles().forEach {
                 val outputPath = it.getOutputPathNotNull()
                 if (outputPath in duplicatedPathSet)
                     Messages.FILE_NAME_DUPLICATED.on(it, it.inputPath.fileName)

@@ -91,6 +91,13 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
         }
     }
 
+    val F_u_Boolean = object : TransformableCoreFunctionDeclaration(parent, "u", "fun u(Boolean)") {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            return callExpression.valueArguments[0]
+        }
+    }
+
     val F_u_Int = BasicCoreFunctionDeclaration(parent, "u", "fun u(Int)", null)
 
     val F_u_String = BasicCoreFunctionDeclaration(parent, "u", "fun u(String)", null)

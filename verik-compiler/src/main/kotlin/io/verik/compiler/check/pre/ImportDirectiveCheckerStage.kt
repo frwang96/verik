@@ -33,7 +33,6 @@ object ImportDirectiveCheckerStage : ProjectStage() {
         projectContext.getKtFiles().forEach {
             when (it.packageFqName.asString()) {
                 "" -> Messages.PACKAGE_NAME_ILLEGAL.on(it, "root")
-                "extern" -> Messages.PACKAGE_NAME_ILLEGAL.on(it, "root extern")
             }
             packageNames.add(it.packageFqName.toString())
         }

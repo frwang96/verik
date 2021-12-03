@@ -46,14 +46,14 @@ object CasterStage : ProjectStage() {
         }
 
         val basicPackages = ArrayList<EBasicPackage>()
-        val externBasicPackages = ArrayList<EBasicPackage>()
-        var externRootPackage: ERootPackage? = null
+        val importedBasicPackages = ArrayList<EBasicPackage>()
+        var importedRootPackage: ERootPackage? = null
         files.forEach { (packageName, files) ->
             when {
-                packageName == "extern.root" ->
-                    externRootPackage = ERootPackage(SourceLocation.NULL, files)
-                packageName.startsWith("extern.") ->
-                    externBasicPackages.add(EBasicPackage(SourceLocation.NULL, packageName, files, null))
+                packageName == "imported" ->
+                    importedRootPackage = ERootPackage(SourceLocation.NULL, files)
+                packageName.startsWith("imported.") ->
+                    importedBasicPackages.add(EBasicPackage(SourceLocation.NULL, packageName, files, null))
                 else -> {
                     val relativePath = packageName.replace(".", Platform.separator)
                     val outputPath = projectContext.config.outputSourceDir.resolve(relativePath)
@@ -65,9 +65,9 @@ object CasterStage : ProjectStage() {
         val project = EProject(
             SourceLocation.NULL,
             basicPackages,
-            externBasicPackages,
+            importedBasicPackages,
             ERootPackage(SourceLocation.NULL, ArrayList()),
-            externRootPackage ?: ERootPackage(SourceLocation.NULL, ArrayList())
+            importedRootPackage ?: ERootPackage(SourceLocation.NULL, ArrayList())
         )
         projectContext.project = project
     }

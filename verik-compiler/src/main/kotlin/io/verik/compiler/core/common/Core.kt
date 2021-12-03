@@ -160,6 +160,7 @@ object Core {
         val F_nc = CoreVkSpecial.F_nc
         val F_i = CoreVkSpecial.F_i
         val F_u = CoreVkSpecial.F_u
+        val F_u_Boolean = CoreVkSpecial.F_u_Boolean
         val F_u_Int = CoreVkSpecial.F_u_Int
         val F_u_String = CoreVkSpecial.F_u_String
         val F_u_Sbit = CoreVkSpecial.F_u_Sbit
