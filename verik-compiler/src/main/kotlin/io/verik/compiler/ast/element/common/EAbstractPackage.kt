@@ -18,10 +18,13 @@ package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
+import java.nio.file.Path
 
 abstract class EAbstractPackage : EDeclaration() {
 
     abstract var files: ArrayList<EFile>
+
+    abstract val outputPath: Path
 
     override var type = Core.Kt.C_Unit.toType()
 

@@ -35,51 +35,52 @@ object FileSplitterStage : ProjectStage() {
     override val checkNormalization = true
 
     override fun process(projectContext: ProjectContext) {
-        val componentFiles = ArrayList<EFile>()
+        val rootPackage = projectContext.project.rootPackage
         projectContext.project.basicPackages.forEach { basicPackage ->
-            val packageFiles = ArrayList<EFile>()
-            basicPackage.files.forEach { file ->
-                val baseFileName = file.inputPath.fileName.toString().removeSuffix(".kt")
-                val packageDeclarations = ArrayList<EDeclaration>()
-                val componentDeclarations = ArrayList<EDeclaration>()
-                file.declarations.forEach {
-                    if (isPackageDeclaration(it)) {
-                        packageDeclarations.add(it)
-                    } else {
-                        componentDeclarations.add(it)
-                    }
+            val basicPackageFiles = ArrayList<EFile>()
+            basicPackage.files.forEach {
+                val splitResult = splitFile(it)
+                if (splitResult.basicPackageFile != null) {
+                    basicPackageFiles.add(splitResult.basicPackageFile)
                 }
-
-                if (packageDeclarations.isNotEmpty()) {
-                    val packageFilePath = basicPackage.getOutputPathNotNull().resolve("$baseFileName.svh")
-                    val packageFile = EFile(
-                        file.location,
-                        file.inputPath,
-                        packageFilePath,
-                        packageDeclarations
-                    )
-                    packageFiles.add(packageFile)
-                }
-
-                if (componentDeclarations.isNotEmpty()) {
-                    val componentFilePath = basicPackage.getOutputPathNotNull().resolve("$baseFileName.sv")
-                    val componentFile = EFile(
-                        file.location,
-                        file.inputPath,
-                        componentFilePath,
-                        componentDeclarations
-                    )
-                    componentFiles.add(componentFile)
+                if (splitResult.rootPackageFile != null) {
+                    splitResult.rootPackageFile.parent = rootPackage
+                    rootPackage.files.add(splitResult.rootPackageFile)
                 }
             }
-            packageFiles.forEach { it.parent = basicPackage }
-            basicPackage.files = packageFiles
+            basicPackage.files = basicPackageFiles
         }
-        componentFiles.forEach { it.parent = projectContext.project.rootPackage }
-        projectContext.project.rootPackage.files = componentFiles
     }
 
-    private fun isPackageDeclaration(declaration: EDeclaration): Boolean {
+    private fun splitFile(file: EFile): SplitResult {
+        val basicPackageDeclarations = ArrayList<EDeclaration>()
+        val rootPackageDeclarations = ArrayList<EDeclaration>()
+        file.declarations.forEach {
+            if (isBasicPackageDeclaration(it)) {
+                basicPackageDeclarations.add(it)
+            } else {
+                rootPackageDeclarations.add(it)
+            }
+        }
+
+        val basicPackageFile = if (basicPackageDeclarations.isNotEmpty()) {
+            file.declarations = basicPackageDeclarations
+            file
+        } else null
+        val rootPackageFile = if (rootPackageDeclarations.isNotEmpty()) {
+            val baseFileName = file.outputPath.fileName.toString().substringBeforeLast(".")
+            val outputPath = file.outputPath.resolveSibling("$baseFileName.sv")
+            EFile(
+                file.location,
+                file.inputPath,
+                outputPath,
+                rootPackageDeclarations
+            )
+        } else null
+        return SplitResult(basicPackageFile, rootPackageFile)
+    }
+
+    private fun isBasicPackageDeclaration(declaration: EDeclaration): Boolean {
         return when (declaration) {
             is EAbstractComponent -> false
             is ESvBasicClass -> true
@@ -91,8 +92,10 @@ object FileSplitterStage : ProjectStage() {
             is ESvEnumEntry -> true
             else -> Messages.INTERNAL_ERROR.on(
                 declaration,
-                "Unable to identify as component or package declaration: ${declaration.name}"
+                "Unexpected declaration type: ${declaration::class.simpleName}"
             )
         }
     }
+
+    data class SplitResult(val basicPackageFile: EFile?, val rootPackageFile: EFile?)
 }

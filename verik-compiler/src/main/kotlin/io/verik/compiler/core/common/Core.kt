@@ -156,6 +156,7 @@ object Core {
         val F_error_String = CoreVkSystem.F_error_String
         val F_time = CoreVkSystem.F_time
 
+        val F_imported = CoreVkSpecial.F_imported
         val F_sv_String = CoreVkSpecial.F_sv_String
         val F_nc = CoreVkSpecial.F_nc
         val F_i = CoreVkSpecial.F_i

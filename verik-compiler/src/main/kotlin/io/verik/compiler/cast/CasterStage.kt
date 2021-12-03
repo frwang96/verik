@@ -25,39 +25,79 @@ import io.verik.compiler.main.Platform
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.SourceLocation
+import java.nio.file.Path
 
 object CasterStage : ProjectStage() {
 
     override val checkNormalization = true
 
     override fun process(projectContext: ProjectContext) {
-        val files = HashMap<String, ArrayList<EFile>>()
+        val filesMap = HashMap<String, ArrayList<EFile>>()
 
         projectContext.getKtFiles().forEach { file ->
             val location = file.location()
             val packageName = file.packageFqName.asString()
             val inputPath = Platform.getPathFromString(file.virtualFilePath)
+            val baseFileName = inputPath.fileName.toString().substringBeforeLast(".")
+            val fileName = if (packageName in listOf("", "imported")) {
+                "$baseFileName.sv"
+            } else {
+                "$baseFileName.svh"
+            }
+            val outputPath = getPackageOutputPath(packageName, projectContext).resolve(fileName)
             val declarations = file.declarations.mapNotNull {
                 projectContext.castContext.casterVisitor.getDeclaration(it)
             }
-            if (packageName !in files)
-                files[packageName] = ArrayList()
-            files[packageName]!!.add(EFile(location, inputPath, null, ArrayList(declarations)))
+
+            val castedFile = EFile(location, inputPath, outputPath, ArrayList(declarations))
+            val files = filesMap[packageName]
+            if (files != null) {
+                files.add(castedFile)
+            } else {
+                filesMap[packageName] = arrayListOf(castedFile)
+            }
         }
 
         val basicPackages = ArrayList<EBasicPackage>()
+        val rootPackage = ERootPackage(
+            SourceLocation.NULL,
+            ArrayList(),
+            getPackageOutputPath("", projectContext)
+        )
         val importedBasicPackages = ArrayList<EBasicPackage>()
-        var importedRootPackage: ERootPackage? = null
-        files.forEach { (packageName, files) ->
+        val importedRootPackage = ERootPackage(
+            SourceLocation.NULL,
+            ArrayList(),
+            getPackageOutputPath("imported", projectContext)
+        )
+
+        filesMap.forEach { (packageName, files) ->
             when {
-                packageName == "imported" ->
-                    importedRootPackage = ERootPackage(SourceLocation.NULL, files)
-                packageName.startsWith("imported.") ->
-                    importedBasicPackages.add(EBasicPackage(SourceLocation.NULL, packageName, files, null))
+                packageName == "" -> {
+                    files.forEach { it.parent = rootPackage }
+                    rootPackage.files = files
+                }
+                packageName == "imported" -> {
+                    files.forEach { it.parent = importedRootPackage }
+                    importedRootPackage.files = files
+                }
+                packageName.startsWith("imported.") -> {
+                    val basicPackage = EBasicPackage(
+                        SourceLocation.NULL,
+                        packageName,
+                        files,
+                        getPackageOutputPath(packageName, projectContext)
+                    )
+                    importedBasicPackages.add(basicPackage)
+                }
                 else -> {
-                    val relativePath = packageName.replace(".", Platform.separator)
-                    val outputPath = projectContext.config.outputSourceDir.resolve(relativePath)
-                    basicPackages.add(EBasicPackage(SourceLocation.NULL, packageName, files, outputPath))
+                    val basicPackage = EBasicPackage(
+                        SourceLocation.NULL,
+                        packageName,
+                        files,
+                        getPackageOutputPath(packageName, projectContext)
+                    )
+                    basicPackages.add(basicPackage)
                 }
             }
         }
@@ -66,9 +106,14 @@ object CasterStage : ProjectStage() {
             SourceLocation.NULL,
             basicPackages,
             importedBasicPackages,
-            ERootPackage(SourceLocation.NULL, ArrayList()),
-            importedRootPackage ?: ERootPackage(SourceLocation.NULL, ArrayList())
+            rootPackage,
+            importedRootPackage
         )
         projectContext.project = project
+    }
+
+    private fun getPackageOutputPath(packageName: String, projectContext: ProjectContext): Path {
+        val relativePath = packageName.replace(".", Platform.separator)
+        return projectContext.config.outputSourceDir.resolve(relativePath)
     }
 }

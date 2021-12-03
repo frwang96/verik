@@ -31,10 +31,9 @@ object ImportDirectiveCheckerStage : ProjectStage() {
         val packageNames = HashSet<String>()
         packageNames.add(CorePackage.VK.name)
         projectContext.getKtFiles().forEach {
-            when (it.packageFqName.asString()) {
-                "" -> Messages.PACKAGE_NAME_ILLEGAL.on(it, "root")
-            }
-            packageNames.add(it.packageFqName.toString())
+            val packageName = it.packageFqName.asString()
+            if (packageName != "")
+                packageNames.add(packageName)
         }
 
         val importDirectiveCheckerVisitor = ImportDirectiveCheckerVisitor(packageNames)

@@ -17,7 +17,6 @@
 package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 import java.nio.file.Path
 
@@ -25,7 +24,7 @@ class EBasicPackage(
     override val location: SourceLocation,
     override var name: String,
     override var files: ArrayList<EFile>,
-    private val outputPath: Path?
+    override val outputPath: Path
 ) : EAbstractPackage() {
 
     init {
@@ -34,10 +33,5 @@ class EBasicPackage(
 
     override fun accept(visitor: Visitor) {
         visitor.visitBasicPackage(this)
-    }
-
-    fun getOutputPathNotNull(): Path {
-        return outputPath
-            ?: Messages.INTERNAL_ERROR.on(location, "Package output path not specified")
     }
 }

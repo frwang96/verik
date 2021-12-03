@@ -29,10 +29,6 @@ object Messages {
 
 //  PRE CHECK  /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val PACKAGE_NAME_ILLEGAL = ErrorMessageTemplate1<String>(
-        "Use of the $0 package is prohibited"
-    )
-
     val PACKAGE_NOT_FOUND = ErrorMessageTemplate1<String>(
         "Package not found: $0"
     )

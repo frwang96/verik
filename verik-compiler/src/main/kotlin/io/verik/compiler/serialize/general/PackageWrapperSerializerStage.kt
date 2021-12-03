@@ -41,7 +41,7 @@ object PackageWrapperSerializerStage : ProjectStage() {
         if (basicPackage.files.all { it.isEmptySerialization() })
             return null
 
-        val outputPath = basicPackage.getOutputPathNotNull().resolve("Pkg.sv")
+        val outputPath = basicPackage.outputPath.resolve("Pkg.sv")
         val fileHeader = FileHeaderBuilder.build(
             projectContext,
             null,
@@ -66,7 +66,7 @@ object PackageWrapperSerializerStage : ProjectStage() {
         basicPackage.files.forEach {
             if (!it.isEmptySerialization()) {
                 val pathString = Platform.getStringFromPath(
-                    projectContext.config.buildDir.relativize(it.getOutputPathNotNull())
+                    projectContext.config.buildDir.relativize(it.outputPath)
                 )
                 builder.appendLine()
                 builder.appendLine("`include \"$pathString\"")
