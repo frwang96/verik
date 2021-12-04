@@ -20,22 +20,53 @@ import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class CombinationalAssignmentTransformerStageTest : BaseTest() {
+internal class ComAssignmentTransformerStageTest : BaseTest() {
 
     @Test
-    fun `combinational assignment`() {
+    fun `com assignment illegal not mutable`() {
+        driveMessageTest(
+            """
+                fun f(): Boolean { return false }
+                class M : Module() {
+                    @Com val x = f()
+                }
+            """.trimIndent(),
+            true,
+            "Combinational assignment must be declared as var"
+        )
+    }
+
+    @Test
+    fun `com assignment illegal no initializer`() {
+        driveMessageTest(
+            """
+                fun f(): Boolean {
+                    return false
+                }
+                class M : Module() {
+                    @Com var x: Boolean = nc()
+                }
+            """.trimIndent(),
+            true,
+            "Initializer expected for combinational assignment"
+        )
+    }
+
+    @Test
+    fun `com assignment legal`() {
         driveElementTest(
             """
                 class M : Module() {
+                    @Com
                     var x = false
                 }
             """.trimIndent(),
-            CombinationalAssignmentTransformerStage::class,
+            ComAssignmentTransformerStage::class,
             """
                 Module(
                     M, M,
                     [
-                        SvProperty(x, Boolean, null, 1, null),
+                        SvProperty(x, Boolean, null, 1, 1, null),
                         AlwaysComBlock(
                             <tmp>,
                             KtBlockExpression(

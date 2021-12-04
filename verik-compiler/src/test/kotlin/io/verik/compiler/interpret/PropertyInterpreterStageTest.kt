@@ -134,7 +134,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
                 var x = false
             """.trimIndent(),
             PropertyInterpreterStage::class,
-            "SvProperty(x, Boolean, *, 1, null)"
+            "SvProperty(x, Boolean, *, 0, 1, null)"
         ) { it.findDeclaration("x") }
     }
 
@@ -147,7 +147,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
                 }
             """.trimIndent(),
             PropertyInterpreterStage::class,
-            "SvProperty(x, Boolean, *, 1, 1)"
+            "SvProperty(x, Boolean, *, 0, 1, 1)"
         ) { it.findDeclaration("x") }
     }
 }

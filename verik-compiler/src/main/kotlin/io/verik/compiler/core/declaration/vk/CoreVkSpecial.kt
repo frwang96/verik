@@ -35,6 +35,18 @@ import io.verik.compiler.resolve.UnaryOperatorTypeConstraintKind
 
 object CoreVkSpecial : CoreScope(CorePackage.VK) {
 
+    val F_imported = object : BasicCoreFunctionDeclaration(parent, "imported", "fun imported()", null) {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return listOf(
+                TypeEqualsTypeConstraint(
+                    TypeAdapter.ofTypeArgument(callExpression, 0),
+                    TypeAdapter.ofElement(callExpression)
+                )
+            )
+        }
+    }
+
     val F_sv_String = BasicCoreFunctionDeclaration(parent, "sv", "fun sv(String)", null)
 
     val F_nc = object : TransformableCoreFunctionDeclaration(parent, "nc", "fun nc()") {
@@ -88,6 +100,13 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
                 callExpression.type,
                 ConstantUtil.formatBitConstant(bitConstant)
             )
+        }
+    }
+
+    val F_u_Boolean = object : TransformableCoreFunctionDeclaration(parent, "u", "fun u(Boolean)") {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            return callExpression.valueArguments[0]
         }
     }
 

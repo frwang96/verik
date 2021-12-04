@@ -33,7 +33,7 @@ internal class CastTransformerStageTest : BaseTest() {
             CastTransformerStage::class,
             """
                 [
-                    PropertyStatement(Unit, SvProperty(<tmp>, Int, null, 0, 0)),
+                    PropertyStatement(Unit, SvProperty(<tmp>, Int, null, 0, 0, 0)),
                     KtCallExpression(
                         Boolean, ${'$'}cast, null,
                         [ReferenceExpression(Int, <tmp>, null), ConstantExpression(*)],
@@ -55,7 +55,7 @@ internal class CastTransformerStageTest : BaseTest() {
             CastTransformerStage::class,
             """
                 [
-                    PropertyStatement(Unit, SvProperty(<tmp>, Int, null, 0, 0)),
+                    PropertyStatement(Unit, SvProperty(<tmp>, Int, null, 0, 0, 0)),
                     KtCallExpression(
                         Boolean, not,
                         KtCallExpression(
@@ -81,7 +81,7 @@ internal class CastTransformerStageTest : BaseTest() {
             CastTransformerStage::class,
             """
                 [
-                    PropertyStatement(Unit, SvProperty(<tmp>, Int, null, 0, 0)),
+                    PropertyStatement(Unit, SvProperty(<tmp>, Int, null, 0, 0, 0)),
                     IfExpression(
                         Unit,
                         KtCallExpression(Boolean, not, KtCallExpression(Boolean, ${'$'}cast, null, *, []), [], []),

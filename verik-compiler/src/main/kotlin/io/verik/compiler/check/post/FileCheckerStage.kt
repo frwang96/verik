@@ -20,7 +20,6 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 import java.nio.file.Path
-import java.nio.file.Paths
 
 object FileCheckerStage : ProjectStage() {
 
@@ -34,9 +33,9 @@ object FileCheckerStage : ProjectStage() {
 
         val pathSet = HashSet<Path>()
         val duplicatedPathSet = HashSet<Path>()
-        projectContext.project.nonExternFiles().forEach {
-            val outputPath = it.getOutputPathNotNull()
-            if (outputPath.fileName == Paths.get("Pkg.sv"))
+        projectContext.project.nonImportedFiles().forEach {
+            val outputPath = it.outputPath
+            if (outputPath.fileName.toString() == "Pkg.sv")
                 Messages.FILE_NAME_RESERVED.on(it, it.inputPath.fileName)
             if (outputPath in pathSet)
                 duplicatedPathSet.add(outputPath)
@@ -45,9 +44,8 @@ object FileCheckerStage : ProjectStage() {
         }
 
         if (duplicatedPathSet.isNotEmpty()) {
-            projectContext.project.nonExternFiles().forEach {
-                val outputPath = it.getOutputPathNotNull()
-                if (outputPath in duplicatedPathSet)
+            projectContext.project.nonImportedFiles().forEach {
+                if (it.outputPath in duplicatedPathSet)
                     Messages.FILE_NAME_DUPLICATED.on(it, it.inputPath.fileName)
             }
         }

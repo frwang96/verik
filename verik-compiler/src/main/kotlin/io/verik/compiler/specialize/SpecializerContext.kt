@@ -21,9 +21,7 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.property.Type
 
-class SpecializerContext(
-    val enableDeadCodeElimination: Boolean
-) {
+class SpecializerContext {
 
     var typeParameterContext = TypeParameterContext.EMPTY
 

@@ -80,10 +80,9 @@ object CastTransformerStage : ProjectStage() {
 
         override fun visitAsExpression(asExpression: EAsExpression) {
             super.visitAsExpression(asExpression)
-            val property = ESvProperty(
-                asExpression.location,
-                "<tmp>",
-                asExpression.type.copy(),
+            val property = ESvProperty.getTemporary(
+                location = asExpression.location,
+                type = asExpression.type.copy(),
                 initializer = null,
                 isMutable = false,
                 isStatic = false

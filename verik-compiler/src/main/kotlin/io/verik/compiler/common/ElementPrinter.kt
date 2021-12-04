@@ -120,9 +120,9 @@ class ElementPrinter : Visitor() {
     override fun visitProject(project: EProject) {
         build("Project") {
             build(project.basicPackages)
-            build(project.externBasicPackages)
+            build(project.importedBasicPackages)
             build(project.rootPackage)
-            build(project.externRootPackage)
+            build(project.importedRootPackage)
         }
     }
 
@@ -330,6 +330,7 @@ class ElementPrinter : Visitor() {
             build(property.name)
             build(property.type.toString())
             build(property.initializer)
+            build(property.isComAssignment)
             build(property.isMutable)
             build(property.isStatic)
         }

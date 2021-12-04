@@ -28,6 +28,7 @@ class ESvProperty(
     override var name: String,
     override var type: Type,
     override var initializer: EExpression?,
+    val isComAssignment: Boolean,
     val isMutable: Boolean,
     val isStatic: Boolean?
 ) : EAbstractInitializedProperty() {
@@ -42,5 +43,26 @@ class ESvProperty(
 
     override fun accept(visitor: Visitor) {
         return visitor.visitSvProperty(this)
+    }
+
+    companion object {
+
+        fun getTemporary(
+            location: SourceLocation,
+            type: Type,
+            initializer: EExpression?,
+            isMutable: Boolean,
+            isStatic: Boolean?
+        ): ESvProperty {
+            return ESvProperty(
+                location = location,
+                name = "<tmp>",
+                type = type,
+                initializer = initializer,
+                isComAssignment = false,
+                isMutable = isMutable,
+                isStatic = isStatic
+            )
+        }
     }
 }

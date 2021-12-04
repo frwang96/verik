@@ -29,10 +29,6 @@ object Messages {
 
 //  PRE CHECK  /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val PACKAGE_NAME_ILLEGAL = ErrorMessageTemplate1<String>(
-        "Use of the $0 package is prohibited"
-    )
-
     val PACKAGE_NOT_FOUND = ErrorMessageTemplate1<String>(
         "Package not found: $0"
     )
@@ -175,18 +171,18 @@ object Messages {
         "Module port has multiple parent module interfaces: $0"
     )
 
-    val EXTERN_INVALID_PACKAGE_DECLARATION = ErrorMessageTemplate0(
-        "Package declaration expected in extern package"
-    )
-
-    val EXTERN_INVALID_COMPONENT_DECLARATION = ErrorMessageTemplate0(
-        "Component declaration expected in extern root package"
-    )
-
 //  MID TRANSFORM  /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val INJECTED_STATEMENT_NOT_LITERAL = ErrorMessageTemplate0(
         "String literal expected for injected statement"
+    )
+
+    val COM_ASSIGNMENT_NOT_MUTABLE = ErrorMessageTemplate0(
+        "Combinational assignment must be declared as var"
+    )
+
+    val COM_ASSIGNMENT_NO_INITIALIZER = ErrorMessageTemplate0(
+        "Initializer expected for combinational assignment"
     )
 
     val SUBEXPRESSION_UNABLE_TO_EXTRACT = ErrorMessageTemplate0(

@@ -48,11 +48,10 @@ object SubexpressionExtractorStage : ProjectStage() {
                     streamingExpression.type.copy(),
                     streamingExpression.expression
                 )
-                val property = ESvProperty(
-                    streamingExpression.location,
-                    "<tmp>",
-                    streamingExpression.type.copy(),
-                    streamingExpressionReplacement,
+                val property = ESvProperty.getTemporary(
+                    location = streamingExpression.location,
+                    type = streamingExpression.type.copy(),
+                    initializer = streamingExpressionReplacement,
                     isMutable = false,
                     isStatic = false
                 )

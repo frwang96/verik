@@ -41,7 +41,7 @@ class SourceBuilder(
         if (sourceActionLine.sourceActions.isNotEmpty())
             Messages.INTERNAL_ERROR.on(file, "Serialized source must end with a new line")
 
-        val outputPath = file.getOutputPathNotNull()
+        val outputPath = file.outputPath
         val fileHeader = FileHeaderBuilder.build(
             projectContext,
             file.inputPath,

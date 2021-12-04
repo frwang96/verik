@@ -76,22 +76,26 @@ internal class CoreVkSpecialTest : CoreDeclarationTest() {
         driveCoreDeclarationTest(
             listOf(
                 Core.Vk.F_u,
+                Core.Vk.F_u_Boolean,
                 Core.Vk.F_u_Sbit,
                 Core.Vk.F_u0
             ),
             """
                 var x = u(0x0)
-                var y = s(0x0)
+                var y = u(0b0)
+                var z = s(0x0)
                 fun f() {
                     x = u<`8`>()
-                    x = u(y)
+                    y = u(false)
+                    x = u(z)
                     x = u0()
                 }
             """.trimIndent(),
             """
                 function automatic void f();
                     x = 4'h8;
-                    x = ${'$'}unsigned(y);
+                    y = 1'b0;
+                    x = ${'$'}unsigned(z);
                     x = 4'h0;
                 endfunction : f
             """.trimIndent()

@@ -28,7 +28,7 @@ import java.nio.file.Path
 class EFile(
     override val location: SourceLocation,
     val inputPath: Path,
-    private val outputPath: Path?,
+    val outputPath: Path,
     var declarations: ArrayList<EDeclaration>
 ) : EElement(), ResizableDeclarationContainer {
 
@@ -62,11 +62,6 @@ class EFile(
         } else {
             Messages.INTERNAL_ERROR.on(oldDeclaration, "Could not find declaration: ${oldDeclaration.name}")
         }
-    }
-
-    fun getOutputPathNotNull(): Path {
-        return outputPath
-            ?: Messages.INTERNAL_ERROR.on(location, "File output path not specified")
     }
 
     fun isEmptySerialization(): Boolean {

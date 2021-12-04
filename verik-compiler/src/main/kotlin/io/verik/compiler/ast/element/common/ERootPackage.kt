@@ -18,10 +18,12 @@ package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
+import java.nio.file.Path
 
 class ERootPackage(
     override val location: SourceLocation,
-    override var files: ArrayList<EFile>
+    override var files: ArrayList<EFile>,
+    override val outputPath: Path
 ) : EAbstractPackage() {
 
     override var name = "<root>"

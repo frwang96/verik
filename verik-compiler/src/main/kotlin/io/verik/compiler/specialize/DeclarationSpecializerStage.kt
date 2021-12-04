@@ -35,7 +35,7 @@ object DeclarationSpecializerStage : ProjectStage() {
             entryPoints.map { DeclarationBinding(it, TypeParameterContext.EMPTY) }
         )
 
-        val specializerContext = SpecializerContext(projectContext.config.enableDeadCodeElimination)
+        val specializerContext = SpecializerContext()
         val declarationSpecializeIndexerVisitor = DeclarationSpecializeIndexerVisitor(
             declarationBindingQueue,
             specializerContext

@@ -56,15 +56,18 @@ annotation class In
 annotation class Out
 
 /**
- * Annotates combinational action blocks. Combinational action blocks are executed when the value of its contents
- * change and are used to model combinational logic. They correspond to SystemVerilog always_comb blocks.
+ * Annotates combinational action blocks or combinationally assigned properties. They are executed when the value of
+ * their contents change and are used to model combinational logic. They correspond to SystemVerilog always_comb blocks.
  *
  *      @Com
  *      fun f() {
  *          ...
  *      }
+ *
+ *      @Com
+ *      val x = ...
  */
-@Target(AnnotationTarget.FUNCTION)
+@Target(AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY)
 annotation class Com
 
 /**

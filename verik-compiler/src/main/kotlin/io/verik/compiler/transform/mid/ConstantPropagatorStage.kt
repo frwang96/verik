@@ -16,9 +16,13 @@
 
 package io.verik.compiler.transform.mid
 
+import io.verik.compiler.ast.element.common.EAbstractContainerClass
 import io.verik.compiler.ast.element.common.EConstantExpression
+import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.EReferenceExpression
+import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.common.TreeVisitor
@@ -42,14 +46,40 @@ object ConstantPropagatorStage : ProjectStage() {
 
         val constantMap = HashMap<ESvProperty, EExpression>()
 
-        override fun visitSvProperty(property: ESvProperty) {
-            super.visitSvProperty(property)
+        override fun visitFile(file: EFile) {
+            super.visitFile(file)
+            file.declarations = filterConstantProperties(file.declarations)
+        }
+
+        override fun visitAbstractContainerClass(abstractContainerClass: EAbstractContainerClass) {
+            super.visitAbstractContainerClass(abstractContainerClass)
+            abstractContainerClass.declarations = filterConstantProperties(abstractContainerClass.declarations)
+        }
+
+        override fun visitAbstractContainerComponent(abstractContainerComponent: EAbstractContainerComponent) {
+            super.visitAbstractContainerComponent(abstractContainerComponent)
+            abstractContainerComponent.declarations = filterConstantProperties(abstractContainerComponent.declarations)
+        }
+
+        private fun filterConstantProperties(declarations: ArrayList<EDeclaration>): ArrayList<EDeclaration> {
+            val filteredDeclarations = ArrayList<EDeclaration>()
+            declarations.forEach {
+                if (it !is ESvProperty || !indexConstantProperty(it)) {
+                    filteredDeclarations.add(it)
+                }
+            }
+            return filteredDeclarations
+        }
+
+        private fun indexConstantProperty(property: ESvProperty): Boolean {
             if (!property.isMutable) {
                 val initializer = property.initializer
                 if (initializer is EConstantExpression) {
                     constantMap[property] = initializer
+                    return true
                 }
             }
+            return false
         }
     }
 

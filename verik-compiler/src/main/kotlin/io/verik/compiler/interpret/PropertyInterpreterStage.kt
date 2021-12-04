@@ -38,6 +38,7 @@ import io.verik.compiler.ast.property.PortInstantiation
 import io.verik.compiler.ast.property.PortType
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.core.common.Annotations
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
@@ -65,12 +66,13 @@ object PropertyInterpreterStage : ProjectStage() {
                 else -> null
             }
             return ESvProperty(
-                property.location,
-                property.name,
-                property.type,
-                property.initializer,
-                property.isMutable,
-                isStatic
+                location = property.location,
+                name = property.name,
+                type = property.type,
+                initializer = property.initializer,
+                isComAssignment = property.hasAnnotation(Annotations.COM),
+                isMutable = property.isMutable,
+                isStatic = isStatic
             )
         }
 
