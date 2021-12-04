@@ -32,7 +32,6 @@ import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.interfaces.TypeParameterized
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.common.Annotations
 import org.jetbrains.kotlin.backend.common.push
 
 class DeclarationSpecializeIndexerVisitor(
@@ -107,41 +106,10 @@ class DeclarationSpecializeIndexerVisitor(
             if (reference is EDeclaration)
                 declarationBindingQueue.push(DeclarationBinding(reference, TypeParameterContext.EMPTY))
         }
-        if (basicClass.isEnum) {
-            val enumEntries = basicClass.declarations.filterIsInstance<EKtEnumEntry>()
-            enumEntries.forEach {
-                declarationBindingQueue.push(DeclarationBinding(it, TypeParameterContext.EMPTY))
-            }
-        }
 
-        val typeParameterContext = specializerContext.typeParameterContext
-        if (specializerContext.enableDeadCodeElimination) {
-            basicClass.declarations.forEach {
-                when (it) {
-                    is EKtFunction -> {
-                        if (it.typeParameters.isEmpty()) {
-                            if (it.hasAnnotation(Annotations.COM) ||
-                                it.hasAnnotation(Annotations.SEQ) ||
-                                it.hasAnnotation(Annotations.RUN) ||
-                                it.isOverridable ||
-                                it.isOverride
-                            ) {
-                                declarationBindingQueue.push(DeclarationBinding(it, typeParameterContext))
-                            }
-                        }
-                    }
-                    is EKtProperty -> {
-                        if (it.hasAnnotation(Annotations.MAKE)) {
-                            declarationBindingQueue.push(DeclarationBinding(it, typeParameterContext))
-                        }
-                    }
-                }
-            }
-        } else {
-            basicClass.declarations.forEach {
-                if (it !is TypeParameterized || it.typeParameters.isEmpty())
-                    declarationBindingQueue.push(DeclarationBinding(it, typeParameterContext))
-            }
+        basicClass.declarations.forEach {
+            if (it !is TypeParameterized || it.typeParameters.isEmpty())
+                declarationBindingQueue.push(DeclarationBinding(it, specializerContext.typeParameterContext))
         }
 
         basicClass.typeParameters.forEach { it.accept(this) }

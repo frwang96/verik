@@ -25,7 +25,9 @@ internal class KeywordCheckerStageTest : BaseTest() {
     fun `keyword property`() {
         driveMessageTest(
             """
-                const val alias = false
+                class M : Module() {
+                    val alias: Boolean = nc()
+                }
             """.trimIndent(),
             true,
             "Conflict with SystemVerilog reserved keyword: alias"
