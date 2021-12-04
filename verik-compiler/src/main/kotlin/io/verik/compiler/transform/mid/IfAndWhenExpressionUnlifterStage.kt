@@ -48,11 +48,10 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
         override fun visitIfExpression(ifExpression: EIfExpression) {
             super.visitIfExpression(ifExpression)
             if (ifExpression.getExpressionType().isSubexpression()) {
-                val property = ESvProperty(
-                    ifExpression.location,
-                    "<tmp>",
-                    ifExpression.type.copy(),
-                    null,
+                val property = ESvProperty.getTemporary(
+                    location = ifExpression.location,
+                    type = ifExpression.type.copy(),
+                    initializer = null,
                     isMutable = false,
                     isStatic = false
                 )
@@ -78,11 +77,10 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
         override fun visitWhenExpression(whenExpression: EWhenExpression) {
             super.visitWhenExpression(whenExpression)
             if (whenExpression.getExpressionType().isSubexpression()) {
-                val property = ESvProperty(
-                    whenExpression.location,
-                    "<tmp>",
-                    whenExpression.type.copy(),
-                    null,
+                val property = ESvProperty.getTemporary(
+                    location = whenExpression.location,
+                    type = whenExpression.type.copy(),
+                    initializer = null,
                     isMutable = false,
                     isStatic = false
                 )

@@ -81,10 +81,11 @@ object ForStatementTransformerStage : ProjectStage() {
             callExpression: EKtCallExpression
         ): ESvForStatement {
             val property = ESvProperty(
-                valueParameter.location,
-                valueParameter.name,
-                valueParameter.type,
-                callExpression.receiver!!,
+                location = valueParameter.location,
+                name = valueParameter.name,
+                type = valueParameter.type,
+                initializer = callExpression.receiver!!,
+                isComAssignment = false,
                 isMutable = true,
                 isStatic = null
             )
@@ -122,11 +123,10 @@ object ForStatementTransformerStage : ProjectStage() {
             valueParameter: ESvValueParameter,
             referenceExpression: EReferenceExpression
         ): ESvForStatement {
-            val indexProperty = ESvProperty(
-                referenceExpression.location,
-                "<tmp>",
-                Core.Kt.C_Int.toType(),
-                EConstantExpression(referenceExpression.location, Core.Kt.C_Int.toType(), "0"),
+            val indexProperty = ESvProperty.getTemporary(
+                location = referenceExpression.location,
+                type = Core.Kt.C_Int.toType(),
+                initializer = EConstantExpression(referenceExpression.location, Core.Kt.C_Int.toType(), "0"),
                 isMutable = true,
                 isStatic = null
             )
@@ -164,10 +164,11 @@ object ForStatementTransformerStage : ProjectStage() {
                 ArrayList()
             )
             val elementProperty = ESvProperty(
-                valueParameter.location,
-                valueParameter.name,
-                valueParameter.type,
-                elementPropertyInitializer,
+                location = valueParameter.location,
+                name = valueParameter.name,
+                type = valueParameter.type,
+                initializer = elementPropertyInitializer,
+                isComAssignment = false,
                 isMutable = false,
                 isStatic = false
             )

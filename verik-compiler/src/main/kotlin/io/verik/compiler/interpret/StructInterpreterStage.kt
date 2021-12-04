@@ -61,12 +61,13 @@ object StructInterpreterStage : ProjectStage() {
             referenceUpdater: ReferenceUpdater
         ): ESvProperty {
             val property = ESvProperty(
-                valueParameter.location,
-                valueParameter.name,
-                valueParameter.type,
-                null,
-                valueParameter.isMutable,
-                null
+                location = valueParameter.location,
+                name = valueParameter.name,
+                type = valueParameter.type,
+                initializer = null,
+                isComAssignment = false,
+                isMutable = valueParameter.isMutable,
+                isStatic = null
             )
             referenceUpdater.update(valueParameter, property)
             return property

@@ -162,11 +162,10 @@ object BasicClassInterpreterStage : ProjectStage() {
             if (basicClass.isAbstract)
                 return null
 
-            val property = ESvProperty(
-                constructor.location,
-                "<tmp>",
-                constructor.type.copy(),
-                ESvCallExpression(
+            val property = ESvProperty.getTemporary(
+                location = constructor.location,
+                type = constructor.type.copy(),
+                initializer = ESvCallExpression(
                     constructor.location,
                     constructor.type.copy(),
                     Target.F_new,

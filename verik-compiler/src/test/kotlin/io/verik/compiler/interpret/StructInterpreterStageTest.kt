@@ -29,7 +29,7 @@ internal class StructInterpreterStageTest : BaseTest() {
                 class S(var x: Boolean): Struct()
             """.trimIndent(),
             StructInterpreterStage::class,
-            "Struct(S, S, [SvProperty(x, Boolean, null, 1, null)])"
+            "Struct(S, S, [SvProperty(x, Boolean, null, 0, 1, null)])"
         ) { it.findDeclaration("S") }
     }
 }

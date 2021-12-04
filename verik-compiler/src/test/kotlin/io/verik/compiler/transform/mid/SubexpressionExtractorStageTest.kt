@@ -34,7 +34,7 @@ internal class SubexpressionExtractorStageTest : BaseTest() {
             SubexpressionExtractorStage::class,
             """
                 [
-                    PropertyStatement(Unit, SvProperty(<tmp>, Ubit<`1`>, StreamingExpression(*), 0, 0)),
+                    PropertyStatement(Unit, SvProperty(<tmp>, Ubit<`1`>, StreamingExpression(*), 0, 0, 0)),
                     KtBinaryExpression(
                         Unit,
                         ReferenceExpression(Ubit<`1`>, x, null),

@@ -34,7 +34,7 @@ internal class ParenthesisInsertionTransformerStageTest : BaseTest() {
                 SvProperty(
                     y, Int,
                     SvBinaryExpression(Int, ParenthesizedExpression(*), ReferenceExpression(*), MUL),
-                    1, null
+                    0, 1, null
                 )
             """.trimIndent()
         ) { it.findDeclaration("y") }
@@ -52,7 +52,7 @@ internal class ParenthesisInsertionTransformerStageTest : BaseTest() {
                 SvProperty(
                     y, Int,
                     SvBinaryExpression(Int, ReferenceExpression(*), ParenthesizedExpression(*), PLUS),
-                    1, null
+                    0, 1, null
                 )
             """.trimIndent()
         ) { it.findDeclaration("y") }

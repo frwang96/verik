@@ -177,6 +177,14 @@ object Messages {
         "String literal expected for injected statement"
     )
 
+    val COM_ASSIGNMENT_NOT_MUTABLE = ErrorMessageTemplate0(
+        "Combinational assignment must be declared as var"
+    )
+
+    val COM_ASSIGNMENT_NO_INITIALIZER = ErrorMessageTemplate0(
+        "Initializer expected for combinational assignment"
+    )
+
     val SUBEXPRESSION_UNABLE_TO_EXTRACT = ErrorMessageTemplate0(
         "Unable to extract subexpression"
     )
