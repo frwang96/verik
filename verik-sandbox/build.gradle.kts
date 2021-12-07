@@ -17,12 +17,10 @@
 import java.nio.file.Files
 import kotlin.streams.toList
 
+group = "io.verik"
+
 plugins {
     id("io.verik.verik-plugin")
-}
-
-dependencies {
-    implementation("io.verik:verik-core:$version")
 }
 
 repositories {

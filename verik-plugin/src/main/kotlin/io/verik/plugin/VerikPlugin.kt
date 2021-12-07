@@ -34,6 +34,7 @@ class VerikPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         project.plugins.apply(KotlinPluginWrapper::class.java)
+        project.dependencies.add("implementation", "io.verik:verik-core:${VerikConfigUtil.getVersion()}")
         val verikTask = createVerikTask(project)
         val verikImportTask = createVerikImportTask(project)
         verikTask.dependsOn(verikImportTask)
@@ -61,8 +62,8 @@ class VerikPlugin : Plugin<Project> {
         }
 
         task.group = "verik"
+        task.inputs.property("tool", { VerikConfigUtil.getTool() })
         task.inputs.property("timescale", { extension.timescale })
-        task.inputs.property("version", { VerikConfigUtil.getVersion(project) })
         task.inputs.property("debug", { extension.debug })
         task.inputs.property("suppressedWarnings", { extension.suppressedWarnings })
         task.inputs.property("promotedWarnings", { extension.promotedWarnings })
@@ -92,6 +93,7 @@ class VerikPlugin : Plugin<Project> {
             }
         }
         task.group = "verik"
+        task.inputs.property("tool", { VerikConfigUtil.getTool() })
         task.inputs.property("debug", { extension.debug })
         task.inputs.property("suppressedWarnings", { extension.suppressedWarnings })
         task.inputs.property("promotedWarnings", { extension.promotedWarnings })

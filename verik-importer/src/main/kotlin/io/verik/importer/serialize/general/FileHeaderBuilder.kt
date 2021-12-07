@@ -29,7 +29,7 @@ object FileHeaderBuilder {
         lines.add("Project : ${importerContext.config.projectName}")
         lines.add("Output  : $outputPathString")
         lines.add("Date    : ${importerContext.config.timestamp}")
-        lines.add("Tool    : verik:${importerContext.config.version}")
+        lines.add("Tool    : ${importerContext.config.tool}")
 
         val builder = StringBuilder()
         when (headerStyle) {

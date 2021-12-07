@@ -17,19 +17,24 @@
 package io.verik.plugin
 
 import org.gradle.api.GradleException
-import org.gradle.api.Project
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.Properties
 
 object VerikConfigUtil {
 
-    fun getVersion(project: Project): String {
-        val configuration = project.configurations.getByName("compileClasspath")
-        configuration.allDependencies.forEach {
-            if (it.group == "io.verik" && it.name == "verik-core")
-                return it.version.toString()
-        }
-        throw GradleException("Verik configuration failed: Could not determine version number")
+    fun getVersion(): String {
+        val properties = Properties()
+        properties.load(this::class.java.classLoader.getResourceAsStream("verik-plugin.properties"))
+        return properties.getProperty("version")
+            ?: throw GradleException("Verik configuration failed: Could not determine version")
+    }
+
+    fun getTool(): String {
+        val properties = Properties()
+        properties.load(this::class.java.classLoader.getResourceAsStream("verik-plugin.properties"))
+        return properties.getProperty("tool")
+            ?: throw GradleException("Verik configuration failed: Could not determine tool")
     }
 
     fun getTimestamp(): String {

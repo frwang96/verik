@@ -24,7 +24,7 @@ object VerikImporterConfigBuilder {
 
     fun getConfig(project: Project, extension: VerikImporterPluginExtension): VerikImporterConfig {
         return VerikImporterConfig(
-            version = VerikConfigUtil.getVersion(project),
+            tool = VerikConfigUtil.getTool(),
             timestamp = VerikConfigUtil.getTimestamp(),
             projectName = project.name,
             projectDir = project.projectDir.toPath(),

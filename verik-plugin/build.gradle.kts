@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import java.io.ByteArrayOutputStream
+
 group = "io.verik"
 
 plugins {
@@ -46,6 +48,27 @@ tasks.compileKotlin {
 
 tasks.compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+tasks.register("writeProperties", WriteProperties::class) {
+    property("version", version)
+    property("tool") {
+        if (version.toString().startsWith("local")) {
+            val outputStream = ByteArrayOutputStream()
+            project.exec {
+                commandLine = listOf("git", "describe", "--long", "--tags", "--dirty", "--always")
+                standardOutput = outputStream
+            }
+            "verik ${String(outputStream.toByteArray()).trim()}"
+        } else {
+            "verik v$version"
+        }
+    }
+    outputFile = buildDir.resolve("generated/verik-plugin.properties")
+}
+
+tasks.processResources {
+    from(files(tasks.getByName("writeProperties")))
 }
 
 gradlePlugin {
