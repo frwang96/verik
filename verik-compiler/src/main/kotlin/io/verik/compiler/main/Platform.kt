@@ -23,7 +23,7 @@ object Platform {
 
     const val separator = "/"
 
-    val isWindows = System.getProperty("os.name").toLowerCase().contains("win")
+    val isWindows = System.getProperty("os.name").lowercase().contains("win")
 
     fun getPathFromString(path: String): Path {
         return if (path.matches(Regex("/\\w+:.*"))) {

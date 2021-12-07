@@ -20,12 +20,13 @@ import io.verik.compiler.main.VerikException
 import io.verik.compiler.main.VerikMain
 import io.verik.importer.main.VerikImporterException
 import io.verik.importer.main.VerikImporterMain
+import org.gradle.api.Action
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
-import org.gradle.api.plugins.JavaPluginConvention
-import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
+import org.gradle.api.plugins.JavaPluginExtension
+import org.jetbrains.kotlin.gradle.plugin.KotlinCommonPluginWrapper
 import io.verik.compiler.message.GradleMessagePrinter as VerikGradleMessagePrinter
 import io.verik.importer.message.GradleMessagePrinter as VerikImporterGradleMessagePrinter
 
@@ -33,13 +34,13 @@ import io.verik.importer.message.GradleMessagePrinter as VerikImporterGradleMess
 class VerikPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
-        project.plugins.apply(KotlinPluginWrapper::class.java)
+        project.plugins.apply(KotlinCommonPluginWrapper::class.java)
         project.dependencies.add("implementation", "io.verik:verik-core:${VerikConfigUtil.getVersion()}")
         val verikTask = createVerikTask(project)
         val verikImportTask = createVerikImportTask(project)
         verikTask.dependsOn(verikImportTask)
 
-        val sourceSets = project.convention.getPlugin(JavaPluginConvention::class.java).sourceSets
+        val sourceSets = project.extensions.getByType(JavaPluginExtension::class.java).sourceSets
         sourceSets.getByName("main").java {
             it.srcDir(VerikImporterConfigBuilder.getBuildDir(project).resolve("src"))
         }
@@ -48,17 +49,7 @@ class VerikPlugin : Plugin<Project> {
     private fun createVerikTask(project: Project): Task {
         val extension = project.extensions.create("verik", VerikPluginExtension::class.java)
         val task = project.tasks.create("verik") {
-            it.doLast {
-                try {
-                    VerikMain.run(VerikConfigBuilder.getConfig(project, extension))
-                } catch (exception: Exception) {
-                    if (exception !is VerikException) {
-                        println("e: Internal error: ${exception.message}")
-                        VerikGradleMessagePrinter.printStackTrace(exception.stackTrace)
-                    }
-                    throw GradleException("Verik compilation failed")
-                }
-            }
+            it.doLast(VerikAction(project, extension))
         }
 
         task.group = "verik"
@@ -80,17 +71,7 @@ class VerikPlugin : Plugin<Project> {
     private fun createVerikImportTask(project: Project): Task {
         val extension = project.extensions.create("verikImport", VerikImporterPluginExtension::class.java)
         val task = project.tasks.create("verikImport") {
-            it.doLast {
-                try {
-                    VerikImporterMain.run(VerikImporterConfigBuilder.getConfig(project, extension))
-                } catch (exception: Exception) {
-                    if (exception !is VerikImporterException) {
-                        println("e: Internal error: ${exception.message}")
-                        VerikImporterGradleMessagePrinter.printStackTrace(exception.stackTrace)
-                    }
-                    throw GradleException("Verik import failed")
-                }
-            }
+            it.doLast(VerikImportAction(project, extension))
         }
         task.group = "verik"
         task.inputs.property("tool", { VerikConfigUtil.getTool() })
@@ -105,5 +86,41 @@ class VerikPlugin : Plugin<Project> {
             } else listOf()
         })
         return task
+    }
+
+    private class VerikAction(
+        private val project: Project,
+        private val extension: VerikPluginExtension
+    ) : Action<Task> {
+
+        override fun execute(task: Task) {
+            try {
+                VerikMain.run(VerikConfigBuilder.getConfig(project, extension))
+            } catch (exception: Exception) {
+                if (exception !is VerikException) {
+                    println("e: Internal error: ${exception.message}")
+                    VerikGradleMessagePrinter.printStackTrace(exception.stackTrace)
+                }
+                throw GradleException("Verik compilation failed")
+            }
+        }
+    }
+
+    private class VerikImportAction(
+        private val project: Project,
+        private val extension: VerikImporterPluginExtension
+    ) : Action<Task> {
+
+        override fun execute(task: Task) {
+            try {
+                VerikImporterMain.run(VerikImporterConfigBuilder.getConfig(project, extension))
+            } catch (exception: Exception) {
+                if (exception !is VerikImporterException) {
+                    println("e: Internal error: ${exception.message}")
+                    VerikImporterGradleMessagePrinter.printStackTrace(exception.stackTrace)
+                }
+                throw GradleException("Verik import failed")
+            }
+        }
     }
 }

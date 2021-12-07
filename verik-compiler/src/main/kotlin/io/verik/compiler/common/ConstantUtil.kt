@@ -116,8 +116,8 @@ object ConstantUtil {
         }
 
         val trimmedValue = compactedValue.substring(tickIndex + 2)
-        return when (compactedValue[tickIndex + 1].toLowerCase()) {
-            'h' -> {
+        return when (compactedValue[tickIndex + 1].lowercase()) {
+            "h" -> {
                 try {
                     val bigInteger = BigInteger(trimmedValue, 16)
                     BitConstant(bigInteger, signed, width)
@@ -126,7 +126,7 @@ object ConstantUtil {
                     null
                 }
             }
-            'b' -> {
+            "b" -> {
                 try {
                     val bigInteger = BigInteger(trimmedValue, 2)
                     BitConstant(bigInteger, signed, width)

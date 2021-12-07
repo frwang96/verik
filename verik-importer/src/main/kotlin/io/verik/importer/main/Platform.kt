@@ -20,7 +20,7 @@ import java.nio.file.Path
 
 object Platform {
 
-    val isWindows = System.getProperty("os.name").toLowerCase().contains("win")
+    val isWindows = System.getProperty("os.name").lowercase().contains("win")
 
     fun getStringFromPath(path: Path): String {
         val names = (0 until path.nameCount).map { path.getName(it).toString() }

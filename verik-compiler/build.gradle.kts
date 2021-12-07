@@ -19,12 +19,12 @@ import org.jlleitschuh.gradle.ktlint.KtlintExtension
 group = "io.verik"
 
 plugins {
-    kotlin("jvm") version "1.4.32"
-    id("org.jetbrains.dokka") version "1.5.30"
+    kotlin("jvm") version "1.5.31"
+    id("org.jetbrains.dokka") version "1.6.0"
     id("signing")
     id("maven-publish")
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
-    id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
+    id("org.jlleitschuh.gradle.ktlint") version "10.2.0"
 }
 
 repositories {
@@ -32,32 +32,25 @@ repositories {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.32")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.32")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.31")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.31")
     implementation("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.4.10")
+    @Suppress("GradlePackageUpdate")
     implementation("io.verik:verik-core:$version")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
 }
 
-configure<JavaPluginConvention> {
+configure<JavaPluginExtension> {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
-}
-
-tasks.compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
-
-tasks.compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
 }
 
 tasks.test {
     useJUnitPlatform()
     systemProperties["junit.jupiter.execution.parallel.enabled"] = true
     systemProperties["junit.jupiter.execution.parallel.mode.default"] = "concurrent"
-    setForkEvery(32)
+    setForkEvery(24)
 }
 
 tasks.register<Jar>("sourceJar") {
