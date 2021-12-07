@@ -17,13 +17,13 @@
 group = "io.verik"
 
 plugins {
-    kotlin("jvm") version "1.4.32"
+    kotlin("jvm") version "1.5.31"
     id("org.gradle.antlr")
-    id("org.jetbrains.dokka") version "1.5.30"
+    id("org.jetbrains.dokka") version "1.6.0"
     id("signing")
     id("maven-publish")
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
-    id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
+    id("org.jlleitschuh.gradle.ktlint") version "10.2.0"
 }
 
 repositories {
@@ -31,14 +31,14 @@ repositories {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.32")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.32")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.31")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.31")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
     antlr("org.antlr:antlr4:4.9.3")
 }
 
-configure<JavaPluginConvention> {
+configure<JavaPluginExtension> {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
 }
@@ -49,12 +49,10 @@ tasks.generateGrammarSource {
 }
 
 tasks.compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
     dependsOn(tasks.generateGrammarSource)
 }
 
 tasks.compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
     dependsOn(tasks.generateGrammarSource)
 }
 
@@ -72,6 +70,10 @@ tasks.register<Jar>("sourceJar") {
 tasks.register<Jar>("javadocJar") {
     archiveClassifier.set("javadoc")
     from(tasks.dokkaJavadoc)
+}
+
+tasks.runKtlintCheckOverMainSourceSet {
+    dependsOn(tasks.generateGrammarSource)
 }
 
 signing {

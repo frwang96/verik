@@ -20,14 +20,14 @@ import io.verik.compiler.main.SourceSetConfig
 import io.verik.compiler.main.VerikConfig
 import org.gradle.api.Project
 import org.gradle.api.internal.artifacts.dependencies.DefaultProjectDependency
-import org.gradle.api.plugins.JavaPluginConvention
+import org.gradle.api.plugins.JavaPluginExtension
 import java.nio.file.Path
 
 object VerikConfigBuilder {
 
     fun getConfig(project: Project, extension: VerikPluginExtension): VerikConfig {
         return VerikConfig(
-            version = VerikConfigUtil.getVersion(project),
+            tool = VerikConfigUtil.getTool(),
             timestamp = VerikConfigUtil.getTimestamp(),
             projectName = project.name,
             projectDir = project.projectDir.toPath(),
@@ -65,7 +65,7 @@ object VerikConfigBuilder {
 
     private fun getSourceSetConfig(project: Project): SourceSetConfig {
         val files = ArrayList<Path>()
-        project.convention.getPlugin(JavaPluginConvention::class.java).sourceSets.forEach { sourceSet ->
+        project.extensions.getByType(JavaPluginExtension::class.java).sourceSets.forEach { sourceSet ->
             sourceSet.allSource.forEach { file ->
                 files.add(file.toPath())
             }

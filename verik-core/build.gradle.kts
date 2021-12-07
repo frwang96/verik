@@ -17,12 +17,12 @@
 group = "io.verik"
 
 plugins {
-    kotlin("jvm") version "1.4.32"
-    id("org.jetbrains.dokka") version "1.5.30"
+    kotlin("jvm") version "1.5.31"
+    id("org.jetbrains.dokka") version "1.6.0"
     id("signing")
     id("maven-publish")
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
-    id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
+    id("org.jlleitschuh.gradle.ktlint") version "10.2.0"
 }
 
 repositories {
@@ -30,20 +30,12 @@ repositories {
 }
 
 dependencies {
-    api("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.32")
+    api("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.31")
 }
 
-configure<JavaPluginConvention> {
+configure<JavaPluginExtension> {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
-}
-
-tasks.compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
-
-tasks.compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
 }
 
 tasks.register<Jar>("sourceJar") {

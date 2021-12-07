@@ -19,7 +19,7 @@ package io.verik.compiler.main
 import java.nio.file.Path
 
 data class VerikConfig(
-    val version: String,
+    val tool: String,
     val timestamp: String,
     val projectName: String,
     val projectDir: Path,

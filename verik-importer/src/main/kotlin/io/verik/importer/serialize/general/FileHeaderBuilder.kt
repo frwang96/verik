@@ -26,17 +26,15 @@ object FileHeaderBuilder {
         val lines = ArrayList<String>()
         val outputPathString = Platform.getStringFromPath(outputPath.toAbsolutePath())
 
-        lines.add("Project: ${importerContext.config.projectName}")
-        lines.add("Output:  $outputPathString")
-        lines.add("Date:    ${importerContext.config.timestamp}")
-        lines.add("Version: verik:${importerContext.config.version}")
+        lines.add("Project : ${importerContext.config.projectName}")
+        lines.add("Output  : $outputPathString")
+        lines.add("Date    : ${importerContext.config.timestamp}")
+        lines.add("Tool    : ${importerContext.config.tool}")
 
         val builder = StringBuilder()
         when (headerStyle) {
             HeaderStyle.KOTLIN -> {
-                builder.appendLine("/*")
-                lines.forEach { builder.appendLine(" * $it") }
-                builder.appendLine(" */")
+                lines.forEach { builder.appendLine("// $it") }
             }
             HeaderStyle.YAML -> {
                 lines.forEach { builder.appendLine("# $it") }

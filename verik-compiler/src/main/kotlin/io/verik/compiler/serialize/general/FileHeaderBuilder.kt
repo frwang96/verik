@@ -27,19 +27,17 @@ object FileHeaderBuilder {
         val inputPathString = inputPath?.let { Platform.getStringFromPath(it.toAbsolutePath()) }
         val outputPathString = Platform.getStringFromPath(outputPath.toAbsolutePath())
 
-        lines.add("Project: ${projectContext.config.projectName}")
+        lines.add("Project : ${projectContext.config.projectName}")
         if (inputPathString != null)
-            lines.add("Input:   $inputPathString")
-        lines.add("Output:  $outputPathString")
-        lines.add("Date:    ${projectContext.config.timestamp}")
-        lines.add("Version: verik:${projectContext.config.version}")
+            lines.add("Input   : $inputPathString")
+        lines.add("Output  : $outputPathString")
+        lines.add("Date    : ${projectContext.config.timestamp}")
+        lines.add("Tool    : ${projectContext.config.tool}")
 
         val builder = StringBuilder()
         when (headerStyle) {
             HeaderStyle.SYSTEM_VERILOG -> {
-                builder.appendLine("/*")
-                lines.forEach { builder.appendLine(" * $it") }
-                builder.appendLine(" */")
+                lines.forEach { builder.appendLine("// $it") }
                 builder.appendLine()
                 builder.appendLine("`ifndef VERIK")
                 builder.appendLine("`define VERIK")
