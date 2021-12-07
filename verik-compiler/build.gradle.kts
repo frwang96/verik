@@ -34,7 +34,7 @@ repositories {
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.31")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.31")
-    implementation("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.4.10")
+    implementation("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.5.31")
     @Suppress("GradlePackageUpdate")
     implementation("io.verik:verik-core:$version")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
@@ -50,7 +50,7 @@ tasks.test {
     useJUnitPlatform()
     systemProperties["junit.jupiter.execution.parallel.enabled"] = true
     systemProperties["junit.jupiter.execution.parallel.mode.default"] = "concurrent"
-    setForkEvery(24)
+    setForkEvery(32)
 }
 
 tasks.register<Jar>("sourceJar") {

@@ -60,7 +60,7 @@ object KotlinEnvironmentBuilderStage : ProjectStage() {
         configuration.put(JVMConfigurationKeys.JVM_TARGET, JvmTarget.JVM_1_8)
         configuration.put(
             CommonConfigurationKeys.LANGUAGE_VERSION_SETTINGS,
-            LanguageVersionSettingsImpl(LanguageVersion.KOTLIN_1_4, ApiVersion.KOTLIN_1_4)
+            LanguageVersionSettingsImpl(LanguageVersion.KOTLIN_1_5, ApiVersion.KOTLIN_1_5)
         )
         configuration.put(CommonConfigurationKeys.MODULE_NAME, "verik")
         configuration.put(
