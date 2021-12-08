@@ -23,11 +23,9 @@ import java.nio.file.Files
 
 object VerikMain {
 
-    fun run(config: VerikConfig) {
+    fun run(config: VerikConfig, stageSequence: StageSequence) {
         MessageCollector.messageCollector = MessageCollector(config, GradleMessagePrinter(config.debug))
         val projectContext = ProjectContext(config)
-        val stageSequence = StageSequencer.getStageSequence()
-
         readFiles(projectContext)
         stageSequence.process(projectContext)
         writeFiles(projectContext)

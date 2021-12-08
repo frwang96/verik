@@ -15,7 +15,6 @@
  */
 
 import java.nio.file.Files
-import kotlin.streams.toList
 
 group = "io.verik"
 
