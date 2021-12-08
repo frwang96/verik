@@ -14,14 +14,27 @@
  * limitations under the License.
  */
 
-tasks.register("test") {
-    group = "verification"
+plugins {
+    kotlin("jvm") version "1.5.31"
+}
+
+repositories {
+    mavenCentral()
+}
+
+configure<JavaPluginExtension> {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+tasks.register("mainTest") {
+    group = "main"
     dependsOn(gradle.includedBuild("verik-compiler").task(":test"))
     dependsOn(gradle.includedBuild("verik-importer").task(":test"))
 }
 
-tasks.register("sanity") {
-    group = "verification"
+tasks.register("mainCheck") {
+    group = "main"
     dependsOn(gradle.includedBuild("verik-kotlin").task(":check"))
     dependsOn(gradle.includedBuild("verik-core").task(":check"))
     dependsOn(gradle.includedBuild("verik-compiler").task(":check"))
@@ -29,8 +42,8 @@ tasks.register("sanity") {
     dependsOn(gradle.includedBuild("verik-plugin").task(":check"))
 }
 
-tasks.register("format") {
-    group = "formatting"
+tasks.register("mainFormat") {
+    group = "main"
     dependsOn(gradle.includedBuild("verik-kotlin").task(":ktlintFormat"))
     dependsOn(gradle.includedBuild("verik-core").task(":ktlintFormat"))
     dependsOn(gradle.includedBuild("verik-compiler").task(":ktlintFormat"))
@@ -38,16 +51,16 @@ tasks.register("format") {
     dependsOn(gradle.includedBuild("verik-plugin").task(":ktlintFormat"))
 }
 
-tasks.register("install") {
-    group = "build"
+tasks.register("mainInstall") {
+    group = "main"
     dependsOn(gradle.includedBuild("verik-core").task(":publishToMavenLocal"))
     dependsOn(gradle.includedBuild("verik-compiler").task(":publishToMavenLocal"))
     dependsOn(gradle.includedBuild("verik-importer").task(":publishToMavenLocal"))
     dependsOn(gradle.includedBuild("verik-plugin").task(":publishToMavenLocal"))
 }
 
-tasks.register("clean") {
-    group = "build"
+tasks.register("mainClean") {
+    group = "main"
     dependsOn(gradle.includedBuild("verik-kotlin").task(":clean"))
     dependsOn(gradle.includedBuild("verik-core").task(":clean"))
     dependsOn(gradle.includedBuild("verik-compiler").task(":clean"))
@@ -56,12 +69,12 @@ tasks.register("clean") {
     dependsOn(gradle.includedBuild("verik-sandbox").task(":clean"))
 }
 
-tasks.register("verik") {
-    group = "verik"
+tasks.register("mainVerik") {
+    group = "main"
     dependsOn(gradle.includedBuild("verik-sandbox").task(":verik"))
 }
 
-tasks.register("verikImport") {
-    group = "verik"
+tasks.register("mainVerikImport") {
+    group = "main"
     dependsOn(gradle.includedBuild("verik-sandbox").task(":verikImport"))
 }

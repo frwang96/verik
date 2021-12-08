@@ -22,6 +22,7 @@ import io.verik.importer.main.VerikImporterException
 import io.verik.importer.main.VerikImporterMain
 import org.gradle.api.Action
 import org.gradle.api.GradleException
+import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
@@ -42,8 +43,10 @@ class VerikPlugin : Plugin<Project> {
         val verikImportTask = createVerikImportTask(project)
         verikTask.dependsOn(verikImportTask)
 
-        val sourceSets = project.extensions.getByType(JavaPluginExtension::class.java).sourceSets
-        sourceSets.getByName("main").java {
+        val javaPluginExtension = project.extensions.getByType(JavaPluginExtension::class.java)
+        javaPluginExtension.sourceCompatibility = JavaVersion.VERSION_1_8
+        javaPluginExtension.targetCompatibility = JavaVersion.VERSION_1_8
+        javaPluginExtension.sourceSets.getByName("main").java {
             it.srcDir(VerikImporterConfigBuilder.getBuildDir(project).resolve("src"))
         }
     }

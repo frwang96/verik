@@ -17,7 +17,7 @@ jobs:
           distribution: 'adopt'
       - uses: eskatos/gradle-command-action@v1.4.1
         with:
-          arguments: sanity
+          arguments: mainCheck
           distributions-cache-enabled: true
           dependencies-cache-enabled: true
           configuration-cache-enabled: true
