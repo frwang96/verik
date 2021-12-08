@@ -22,7 +22,7 @@ import java.nio.file.Files
 
 object VerikImporterMain {
 
-    fun run(config: VerikImporterConfig) {
+    fun run(config: VerikImporterConfig, stageSequence: StageSequence) {
         if (config.importedFiles.isEmpty()) {
             if (Files.exists(config.buildDir))
                 config.buildDir.toFile().deleteRecursively()
@@ -31,7 +31,6 @@ object VerikImporterMain {
 
         MessageCollector.messageCollector = MessageCollector(config, GradleMessagePrinter(config.debug))
         val importerContext = ImporterContextBuilder.buildContext(config)
-        val stageSequence = StageSequencer.getStageSequence()
         stageSequence.process(importerContext)
         writeFiles(importerContext)
     }

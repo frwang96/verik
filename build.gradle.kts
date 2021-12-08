@@ -20,19 +20,13 @@ tasks.register("test") {
     dependsOn(gradle.includedBuild("verik-importer").task(":test"))
 }
 
-tasks.register("check") {
+tasks.register("sanity") {
     group = "verification"
     dependsOn(gradle.includedBuild("verik-kotlin").task(":check"))
     dependsOn(gradle.includedBuild("verik-core").task(":check"))
     dependsOn(gradle.includedBuild("verik-compiler").task(":check"))
     dependsOn(gradle.includedBuild("verik-importer").task(":check"))
     dependsOn(gradle.includedBuild("verik-plugin").task(":check"))
-}
-
-tasks.register("sanity") {
-    group = "verification"
-    dependsOn("test")
-    dependsOn("check")
 }
 
 tasks.register("format") {

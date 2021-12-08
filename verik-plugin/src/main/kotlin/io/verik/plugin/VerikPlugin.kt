@@ -27,7 +27,9 @@ import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.plugins.JavaPluginExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinCommonPluginWrapper
+import io.verik.compiler.main.StageSequencer as VerikStageSequencer
 import io.verik.compiler.message.GradleMessagePrinter as VerikGradleMessagePrinter
+import io.verik.importer.main.StageSequencer as VerikImporterStageSequencer
 import io.verik.importer.message.GradleMessagePrinter as VerikImporterGradleMessagePrinter
 
 @Suppress("unused")
@@ -35,7 +37,7 @@ class VerikPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         project.plugins.apply(KotlinCommonPluginWrapper::class.java)
-        project.dependencies.add("implementation", "io.verik:verik-core:${VerikConfigUtil.getVersion()}")
+        project.dependencies.add("implementation", "io.verik:verik-core:${ConfigUtil.getVersion()}")
         val verikTask = createVerikTask(project)
         val verikImportTask = createVerikImportTask(project)
         verikTask.dependsOn(verikImportTask)
@@ -53,7 +55,7 @@ class VerikPlugin : Plugin<Project> {
         }
 
         task.group = "verik"
-        task.inputs.property("tool", { VerikConfigUtil.getTool() })
+        task.inputs.property("tool", { ConfigUtil.getTool() })
         task.inputs.property("timescale", { extension.timescale })
         task.inputs.property("debug", { extension.debug })
         task.inputs.property("suppressedWarnings", { extension.suppressedWarnings })
@@ -74,7 +76,7 @@ class VerikPlugin : Plugin<Project> {
             it.doLast(VerikImportAction(project, extension))
         }
         task.group = "verik"
-        task.inputs.property("tool", { VerikConfigUtil.getTool() })
+        task.inputs.property("tool", { ConfigUtil.getTool() })
         task.inputs.property("debug", { extension.debug })
         task.inputs.property("suppressedWarnings", { extension.suppressedWarnings })
         task.inputs.property("promotedWarnings", { extension.promotedWarnings })
@@ -95,7 +97,8 @@ class VerikPlugin : Plugin<Project> {
 
         override fun execute(task: Task) {
             try {
-                VerikMain.run(VerikConfigBuilder.getConfig(project, extension))
+                val stageSequence = VerikStageSequencer.getStageSequence()
+                VerikMain.run(VerikConfigBuilder.getConfig(project, extension), stageSequence)
             } catch (exception: Exception) {
                 if (exception !is VerikException) {
                     println("e: Internal error: ${exception.message}")
@@ -113,7 +116,8 @@ class VerikPlugin : Plugin<Project> {
 
         override fun execute(task: Task) {
             try {
-                VerikImporterMain.run(VerikImporterConfigBuilder.getConfig(project, extension))
+                val stageSequence = VerikImporterStageSequencer.getStageSequence()
+                VerikImporterMain.run(VerikImporterConfigBuilder.getConfig(project, extension), stageSequence)
             } catch (exception: Exception) {
                 if (exception !is VerikImporterException) {
                     println("e: Internal error: ${exception.message}")
