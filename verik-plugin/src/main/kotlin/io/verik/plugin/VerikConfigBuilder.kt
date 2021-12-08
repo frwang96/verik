@@ -45,6 +45,10 @@ object VerikConfigBuilder {
         )
     }
 
+    fun getBuildDir(project: Project): Path {
+        return project.buildDir.resolve("verik").toPath()
+    }
+
     fun getSourceSetConfigs(project: Project): List<SourceSetConfig> {
         val sourceSetConfigs = ArrayList<SourceSetConfig>()
         sourceSetConfigs.add(getSourceSetConfig(project))
@@ -57,10 +61,6 @@ object VerikConfigBuilder {
         }
         sourceSetConfigs.sortBy { it.name }
         return sourceSetConfigs
-    }
-
-    fun getBuildDir(project: Project): Path {
-        return project.buildDir.resolve("verik").toPath()
     }
 
     private fun getSourceSetConfig(project: Project): SourceSetConfig {
