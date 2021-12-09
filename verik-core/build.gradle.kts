@@ -59,10 +59,8 @@ publishing {
     publications {
         create<MavenPublication>("verik-core") {
             from(components["java"])
-            if (!version.toString().startsWith("local")) {
-                artifact(tasks.getByName("sourceJar"))
-                artifact(tasks.getByName("javadocJar"))
-            }
+            artifact(tasks.getByName("javadocJar"))
+            artifact(tasks.getByName("sourceJar"))
 
             pom {
                 name.set("Verik Core")

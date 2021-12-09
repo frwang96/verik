@@ -16,7 +16,12 @@
 
 package io.verik.compiler.message
 
-class GradleMessagePrinter(private val debug: Boolean) : MessagePrinter() {
+import io.verik.compiler.main.VerikConfig
+
+class GradleMessagePrinter(config: VerikConfig) : MessagePrinter() {
+
+    private val debug = config.debug
+    private val projectDir = config.projectDir
 
     override fun warning(message: String, location: SourceLocation) {
         print("w: ")
@@ -34,9 +39,11 @@ class GradleMessagePrinter(private val debug: Boolean) : MessagePrinter() {
 
     private fun printMessage(message: String, location: SourceLocation) {
         if (location != SourceLocation.NULL) {
-            print("${location.path}: ")
+            print("${location.path.toAbsolutePath()}: ")
             if (location.line != 0)
                 print("(${location.line}, ${location.column}): ")
+        } else {
+            print("${projectDir.toAbsolutePath()}: ")
         }
         println(message)
     }

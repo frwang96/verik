@@ -19,17 +19,18 @@ package io.verik.importer.main
 import io.verik.importer.message.GradleMessagePrinter
 import io.verik.importer.message.MessageCollector
 import java.nio.file.Files
+import kotlin.io.path.exists
 
 object VerikImporterMain {
 
     fun run(config: VerikImporterConfig, stageSequence: StageSequence) {
         if (config.importedFiles.isEmpty()) {
-            if (Files.exists(config.buildDir))
+            if (config.buildDir.exists())
                 config.buildDir.toFile().deleteRecursively()
             return
         }
 
-        MessageCollector.messageCollector = MessageCollector(config, GradleMessagePrinter(config.debug))
+        MessageCollector.messageCollector = MessageCollector(config, GradleMessagePrinter(config))
         val importerContext = ImporterContextBuilder.buildContext(config)
         stageSequence.process(importerContext)
         writeFiles(importerContext)
