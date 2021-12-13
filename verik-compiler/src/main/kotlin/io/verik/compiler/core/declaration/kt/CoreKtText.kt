@@ -20,7 +20,7 @@ import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
 
-object CoreKtRanges : CoreScope(CorePackage.KT_RANGES) {
+object CoreKtText : CoreScope(CorePackage.KT_TEXT) {
 
-    val F_until_Int = BasicCoreFunctionDeclaration(parent, "until", "fun until(Int)", null)
+    val F_trimIndent = BasicCoreFunctionDeclaration(parent, "trimIndent", "fun trimIndent()", null)
 }

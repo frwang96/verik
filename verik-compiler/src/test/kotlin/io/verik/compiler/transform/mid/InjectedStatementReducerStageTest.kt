@@ -18,7 +18,6 @@ package io.verik.compiler.transform.mid
 
 import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findExpression
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class InjectedStatementReducerStageTest : BaseTest() {
@@ -37,7 +36,6 @@ internal class InjectedStatementReducerStageTest : BaseTest() {
     }
 
     @Test
-    @Disabled
     fun `inject literal multiline`() {
         driveElementTest(
             """

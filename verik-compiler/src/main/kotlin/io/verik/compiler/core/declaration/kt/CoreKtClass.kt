@@ -33,7 +33,7 @@ object CoreKtClass : CoreScope(CorePackage.KT) {
     val C_Boolean = CoreClassDeclaration(parent, "Boolean", C_Any, Target.C_Boolean)
     val C_String = CoreClassDeclaration(parent, "String", C_Any, Target.C_String)
 
-    object Ranges : CoreScope(CorePackage.Kt_RANGES) {
+    object Ranges : CoreScope(CorePackage.KT_RANGES) {
 
         val C_IntRange = CoreClassDeclaration(parent, "IntRange", Core.Kt.C_Any, null)
     }

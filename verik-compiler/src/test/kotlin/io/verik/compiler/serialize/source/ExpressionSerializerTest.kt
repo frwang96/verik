@@ -195,19 +195,44 @@ internal class ExpressionSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `injected statement`() {
+    fun `injected statement simple`() {
         driveTextFileTest(
             """
-                var x = 0
+                var x = false
                 fun f() {
                     sv("x <= !x;")
                 }
             """.trimIndent(),
             """
-                int x = 0;
+                logic x = 1'b0;
                 
                 function automatic void f();
                     x <= !x;
+                endfunction : f
+            """.trimIndent()
+        ) { it.basicPackageTextFiles[0] }
+    }
+
+    @Test
+    fun `injected statement multiline`() {
+        driveTextFileTest(
+            """
+                var x = false
+                var y = false
+                fun f() {
+                    sv(${"\"\"\""}
+                        x <= !x;
+                        y <= !y;
+                    ${"\"\"\""}.trimIndent())
+                }
+            """.trimIndent(),
+            """
+                logic x = 1'b0;
+                logic y = 1'b0;
+                
+                function automatic void f();
+                    x <= !x;
+                    y <= !y;
                 endfunction : f
             """.trimIndent()
         ) { it.basicPackageTextFiles[0] }

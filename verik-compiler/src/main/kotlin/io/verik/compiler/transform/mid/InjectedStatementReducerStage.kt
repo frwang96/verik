@@ -19,6 +19,7 @@ package io.verik.compiler.transform.mid
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.sv.EInjectedStatement
+import io.verik.compiler.ast.property.StringEntry
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
@@ -45,6 +46,17 @@ object InjectedStatementReducerStage : ProjectStage() {
                         expression.entries
                     )
                     callExpression.replace(injectedStatement)
+                } else if (expression is EKtCallExpression && expression.reference == Core.Kt.Text.F_trimIndent) {
+                    val receiver = expression.receiver!!
+                    if (receiver is EStringTemplateExpression) {
+                        val injectedStatement = EInjectedStatement(
+                            callExpression.location,
+                            StringEntry.trimIndent(receiver.entries)
+                        )
+                        callExpression.replace(injectedStatement)
+                    } else {
+                        Messages.INJECTED_STATEMENT_NOT_LITERAL.on(expression)
+                    }
                 } else {
                     Messages.INJECTED_STATEMENT_NOT_LITERAL.on(expression)
                 }
