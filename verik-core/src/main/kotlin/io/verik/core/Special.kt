@@ -29,7 +29,7 @@ fun <T> imported(): T {
 }
 
 /**
- * Inject [content] as SystemVerilog to use unsupported language constructs.
+ * Inject [content] directly as SystemVerilog.
  */
 fun sv(@Language("TEXT") content: String) {
     throw VerikException()

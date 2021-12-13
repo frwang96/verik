@@ -40,6 +40,22 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `serialize injected property`() {
+        driveTextFileTest(
+            """
+                val M = sv(${"\"\"\""}
+                    module M;
+                    endmodule
+                ${"\"\"\""}.trimIndent())
+            """.trimIndent(),
+            """
+                module M;
+                endmodule
+            """.trimIndent()
+        ) { it.rootPackageTextFiles[0] }
+    }
+
+    @Test
     fun `serialize module simple`() {
         driveTextFileTest(
             """

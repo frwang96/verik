@@ -23,12 +23,14 @@ import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtProperty
+import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.sv.EAbstractComponentInstantiation
 import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
 import io.verik.compiler.ast.element.sv.EBasicComponentInstantiation
 import io.verik.compiler.ast.element.sv.EClockingBlock
 import io.verik.compiler.ast.element.sv.EClockingBlockInstantiation
 import io.verik.compiler.ast.element.sv.EEventControlExpression
+import io.verik.compiler.ast.element.sv.EInjectedProperty
 import io.verik.compiler.ast.element.sv.EModulePort
 import io.verik.compiler.ast.element.sv.EModulePortInstantiation
 import io.verik.compiler.ast.element.sv.EPort
@@ -36,6 +38,7 @@ import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.property.PortInstantiation
 import io.verik.compiler.ast.property.PortType
+import io.verik.compiler.ast.property.StringEntry
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Annotations
@@ -58,6 +61,7 @@ object PropertyInterpreterStage : ProjectStage() {
     private class PropertyInterpreterVisitor(private val referenceUpdater: ReferenceUpdater) : TreeVisitor() {
 
         private fun interpret(property: EKtProperty): EDeclaration {
+            interpretInjectedProperty(property)?.let { return it }
             interpretAbstractComponentInstantiation(property)?.let { return it }
             val isStatic = when (val parent = property.parent) {
                 is ESvBasicClass -> if (parent.isDeclarationsStatic) true else null
@@ -74,6 +78,34 @@ object PropertyInterpreterStage : ProjectStage() {
                 isMutable = property.isMutable,
                 isStatic = isStatic
             )
+        }
+
+        private fun interpretInjectedProperty(property: EKtProperty): EInjectedProperty? {
+            val initializer = property.initializer
+            if (initializer is EKtCallExpression && initializer.reference == Core.Vk.F_sv_String) {
+                val expression = initializer.valueArguments[0]
+                if (expression is EStringTemplateExpression) {
+                    return EInjectedProperty(
+                        property.location,
+                        property.name,
+                        expression.entries
+                    )
+                } else if (expression is EKtCallExpression && expression.reference == Core.Kt.Text.F_trimIndent) {
+                    val receiver = expression.receiver!!
+                    if (receiver is EStringTemplateExpression) {
+                        return EInjectedProperty(
+                            property.location,
+                            property.name,
+                            StringEntry.trimIndent(receiver.entries)
+                        )
+                    } else {
+                        Messages.INJECTED_PROPERTY_NOT_LITERAL.on(property, property.name)
+                    }
+                } else {
+                    Messages.INJECTED_PROPERTY_NOT_LITERAL.on(property, property.name)
+                }
+            }
+            return null
         }
 
         private fun interpretAbstractComponentInstantiation(property: EKtProperty): EAbstractComponentInstantiation? {
