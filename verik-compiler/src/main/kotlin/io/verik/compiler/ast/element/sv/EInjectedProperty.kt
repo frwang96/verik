@@ -16,22 +16,23 @@
 
 package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.element.common.EStringEntryExpression
+import io.verik.compiler.ast.element.common.EAbstractProperty
+import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.ExpressionStringEntry
-import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.ast.property.StringEntry
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.target.common.Target
 
-class EInjectedStatement(
+class EInjectedProperty(
     override val location: SourceLocation,
-    override val entries: List<StringEntry>
-) : EStringEntryExpression() {
+    override var name: String,
+    val entries: List<StringEntry>
+) : EAbstractProperty(), ExpressionContainer {
 
     override var type = Target.C_Void.toType()
-
-    override val serializationType = SerializationType.STATEMENT
 
     init {
         entries.forEach {
@@ -41,6 +42,24 @@ class EInjectedStatement(
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitInjectedStatement(this)
+        visitor.visitInjectedProperty(this)
+    }
+
+    override fun acceptChildren(visitor: TreeVisitor) {
+        entries.forEach {
+            if (it is ExpressionStringEntry)
+                it.expression.accept(visitor)
+        }
+    }
+
+    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
+        newExpression.parent = this
+        entries.forEach {
+            if (it is ExpressionStringEntry && it.expression == oldExpression) {
+                it.expression = newExpression
+                return true
+            }
+        }
+        return false
     }
 }

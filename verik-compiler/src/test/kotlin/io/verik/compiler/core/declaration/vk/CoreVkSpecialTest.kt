@@ -28,7 +28,7 @@ internal class CoreVkSpecialTest : CoreDeclarationTest() {
             listOf(Core.Vk.F_sv_String),
             """
                 fun f() {
-                    sv("xyz")
+                    sv("xyz;")
                 }
             """.trimIndent(),
             """

@@ -42,7 +42,6 @@ object InjectedStatementReducerStage : ProjectStage() {
                 if (expression is EStringTemplateExpression) {
                     val injectedStatement = EInjectedStatement(
                         callExpression.location,
-                        callExpression.type,
                         expression.entries
                     )
                     callExpression.replace(injectedStatement)

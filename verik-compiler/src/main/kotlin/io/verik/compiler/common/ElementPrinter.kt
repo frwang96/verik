@@ -67,6 +67,7 @@ import io.verik.compiler.ast.element.sv.EEventExpression
 import io.verik.compiler.ast.element.sv.EForeverStatement
 import io.verik.compiler.ast.element.sv.EImmediateAssertStatement
 import io.verik.compiler.ast.element.sv.EInitialBlock
+import io.verik.compiler.ast.element.sv.EInjectedProperty
 import io.verik.compiler.ast.element.sv.EInjectedStatement
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.EModule
@@ -312,6 +313,14 @@ class ElementPrinter : Visitor() {
             build(alwaysSeqBlock.name)
             build(alwaysSeqBlock.eventControlExpression)
             build(alwaysSeqBlock.body)
+        }
+    }
+
+    override fun visitInjectedProperty(injectedProperty: EInjectedProperty) {
+        build("InjectedProperty") {
+            build(injectedProperty.name)
+            build(injectedProperty.type.toString())
+            build(injectedProperty.entries)
         }
     }
 

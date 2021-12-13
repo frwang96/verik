@@ -182,7 +182,7 @@ object ExpressionSerializer {
                     serializerContext.serializeAsExpression(it.expression)
             }
         }
-        serializerContext.appendLine(";")
+        serializerContext.appendLine()
     }
 
     fun serializeStringExpression(stringExpression: EStringExpression, serializerContext: SerializerContext) {

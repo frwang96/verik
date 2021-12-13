@@ -200,14 +200,14 @@ internal class ExpressionSerializerTest : BaseTest() {
             """
                 var x = 0
                 fun f() {
-                    sv("${"$"}x <= #1 !${"$"}x")
+                    sv("x <= !x;")
                 }
             """.trimIndent(),
             """
                 int x = 0;
                 
                 function automatic void f();
-                    x <= #1 !x;
+                    x <= !x;
                 endfunction : f
             """.trimIndent()
         ) { it.basicPackageTextFiles[0] }
