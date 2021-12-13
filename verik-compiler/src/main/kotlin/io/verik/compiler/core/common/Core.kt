@@ -27,6 +27,7 @@ import io.verik.compiler.core.declaration.kt.CoreKtFunctions
 import io.verik.compiler.core.declaration.kt.CoreKtInt
 import io.verik.compiler.core.declaration.kt.CoreKtIo
 import io.verik.compiler.core.declaration.kt.CoreKtRanges
+import io.verik.compiler.core.declaration.kt.CoreKtText
 import io.verik.compiler.core.declaration.vk.CoreVkBoolean
 import io.verik.compiler.core.declaration.vk.CoreVkCardinal
 import io.verik.compiler.core.declaration.vk.CoreVkClass
@@ -86,6 +87,11 @@ object Core {
         object Collections {
 
             val F_forEach_Function = CoreKtCollections.F_forEach_Function
+        }
+
+        object Text {
+
+            val F_trimIndent = CoreKtText.F_trimIndent
         }
 
         object Ranges {

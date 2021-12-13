@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test
 internal class InjectedStatementReducerStageTest : BaseTest() {
 
     @Test
-    fun `inject literal`() {
+    fun `inject literal simple`() {
         driveElementTest(
             """
                 fun f() {
@@ -31,7 +31,22 @@ internal class InjectedStatementReducerStageTest : BaseTest() {
                 }
             """.trimIndent(),
             InjectedStatementReducerStage::class,
-            "InjectedStatement(Unit, [abc])"
+            "InjectedStatement(Void, [abc])"
+        ) { it.findExpression("f") }
+    }
+
+    @Test
+    fun `inject literal multiline`() {
+        driveElementTest(
+            """
+                fun f() {
+                    sv(${"\"\"\""}
+                        abc
+                    ${"\"\"\""}.trimIndent())
+                }
+            """.trimIndent(),
+            InjectedStatementReducerStage::class,
+            "InjectedStatement(Void, [abc])"
         ) { it.findExpression("f") }
     }
 }

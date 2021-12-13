@@ -23,6 +23,30 @@ import org.junit.jupiter.api.Test
 internal class PropertyInterpreterStageTest : BaseTest() {
 
     @Test
+    fun `interpret injected property simple`() {
+        driveElementTest(
+            """
+                val x = sv("abc")
+            """.trimIndent(),
+            PropertyInterpreterStage::class,
+            "InjectedProperty(x, Void, [abc])"
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `interpret injected property multiline`() {
+        driveElementTest(
+            """
+                val x = sv(${"\"\"\""}
+                    abc
+                ${"\"\"\""}.trimIndent())
+            """.trimIndent(),
+            PropertyInterpreterStage::class,
+            "InjectedProperty(x, Void, [abc])"
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
     fun `interpret module instantiation`() {
         driveElementTest(
             """

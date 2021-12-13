@@ -176,13 +176,17 @@ object ExpressionSerializer {
     fun serializeInjectedStatement(injectedStatement: EInjectedStatement, serializerContext: SerializerContext) {
         injectedStatement.entries.forEach {
             when (it) {
-                is LiteralStringEntry ->
-                    serializerContext.append(it.text)
+                is LiteralStringEntry -> {
+                    if (it.text == "\n")
+                        serializerContext.appendLine()
+                    else
+                        serializerContext.append(it.text)
+                }
                 is ExpressionStringEntry ->
                     serializerContext.serializeAsExpression(it.expression)
             }
         }
-        serializerContext.appendLine(";")
+        serializerContext.appendLine()
     }
 
     fun serializeStringExpression(stringExpression: EStringExpression, serializerContext: SerializerContext) {

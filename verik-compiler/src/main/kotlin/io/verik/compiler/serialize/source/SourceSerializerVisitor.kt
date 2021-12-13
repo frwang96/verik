@@ -42,6 +42,7 @@ import io.verik.compiler.ast.element.sv.EEventExpression
 import io.verik.compiler.ast.element.sv.EForeverStatement
 import io.verik.compiler.ast.element.sv.EImmediateAssertStatement
 import io.verik.compiler.ast.element.sv.EInitialBlock
+import io.verik.compiler.ast.element.sv.EInjectedProperty
 import io.verik.compiler.ast.element.sv.EInjectedStatement
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.EModule
@@ -120,6 +121,10 @@ class SourceSerializerVisitor(
 
     override fun visitTypeDefinition(typeDefinition: ETypeDefinition) {
         DeclarationSerializer.serializeTypeDefinition(typeDefinition, serializerContext)
+    }
+
+    override fun visitInjectedProperty(injectedProperty: EInjectedProperty) {
+        DeclarationSerializer.serializeInjectedProperty(injectedProperty, serializerContext)
     }
 
     override fun visitSvBasicClass(basicClass: ESvBasicClass) {

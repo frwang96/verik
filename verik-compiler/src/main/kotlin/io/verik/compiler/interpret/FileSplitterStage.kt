@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.sv.EAbstractComponent
 import io.verik.compiler.ast.element.sv.EEnum
+import io.verik.compiler.ast.element.sv.EInjectedProperty
 import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
@@ -88,6 +89,7 @@ object FileSplitterStage : ProjectStage() {
             is EStruct -> true
             is ESvFunction -> true
             is ETask -> true
+            is EInjectedProperty -> false
             is ESvProperty -> true
             is ESvEnumEntry -> true
             else -> Messages.INTERNAL_ERROR.on(

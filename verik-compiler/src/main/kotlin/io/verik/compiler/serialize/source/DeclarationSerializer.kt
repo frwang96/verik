@@ -22,6 +22,7 @@ import io.verik.compiler.ast.element.sv.EBasicComponentInstantiation
 import io.verik.compiler.ast.element.sv.EClockingBlockInstantiation
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EInitialBlock
+import io.verik.compiler.ast.element.sv.EInjectedProperty
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EModuleInterface
 import io.verik.compiler.ast.element.sv.EModulePortInstantiation
@@ -34,7 +35,9 @@ import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.element.sv.ETask
 import io.verik.compiler.ast.element.sv.ETypeDefinition
+import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.FunctionQualifierType
+import io.verik.compiler.ast.property.LiteralStringEntry
 import io.verik.compiler.ast.property.PortType
 import io.verik.compiler.core.common.Core
 
@@ -44,6 +47,22 @@ object DeclarationSerializer {
         val serializedType = TypeSerializer.serialize(typeDefinition.type, typeDefinition)
         serializerContext.append("typedef ${serializedType.getBaseAndPackedDimension()} ")
         serializerContext.appendLine("${typeDefinition.name} ${serializedType.unpackedDimension};")
+    }
+
+    fun serializeInjectedProperty(injectedProperty: EInjectedProperty, serializerContext: SerializerContext) {
+        injectedProperty.entries.forEach {
+            when (it) {
+                is LiteralStringEntry -> {
+                    if (it.text == "\n")
+                        serializerContext.appendLine()
+                    else
+                        serializerContext.append(it.text)
+                }
+                is ExpressionStringEntry ->
+                    serializerContext.serializeAsExpression(it.expression)
+            }
+        }
+        serializerContext.appendLine()
     }
 
     fun serializeSvBasicClass(basicClass: ESvBasicClass, serializerContext: SerializerContext) {

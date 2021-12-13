@@ -91,6 +91,7 @@ import io.verik.compiler.ast.element.sv.EEventExpression
 import io.verik.compiler.ast.element.sv.EForeverStatement
 import io.verik.compiler.ast.element.sv.EImmediateAssertStatement
 import io.verik.compiler.ast.element.sv.EInitialBlock
+import io.verik.compiler.ast.element.sv.EInjectedProperty
 import io.verik.compiler.ast.element.sv.EInjectedStatement
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.EModule
@@ -280,6 +281,10 @@ abstract class Visitor {
 
     open fun visitAbstractProperty(abstractProperty: EAbstractProperty) {
         visitDeclaration(abstractProperty)
+    }
+
+    open fun visitInjectedProperty(injectedProperty: EInjectedProperty) {
+        visitAbstractProperty(injectedProperty)
     }
 
     open fun visitAbstractInitializedProperty(abstractInitializedProperty: EAbstractInitializedProperty) {

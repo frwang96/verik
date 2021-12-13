@@ -171,6 +171,10 @@ object Messages {
         "Module port has multiple parent module interfaces: $0"
     )
 
+    val INJECTED_PROPERTY_NOT_LITERAL = ErrorMessageTemplate1<String>(
+        "String literal expected for injected property: $0"
+    )
+
 //  MID TRANSFORM  /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val INJECTED_STATEMENT_NOT_LITERAL = ErrorMessageTemplate0(
