@@ -207,7 +207,7 @@ abstract class BaseTest {
             }
             val sourceSetConfig = SourceSetConfig("test", listOf(Paths.get(projectFile)))
             return VerikConfig(
-                tool = "verik",
+                toolchain = "verik",
                 timestamp = "",
                 projectName = "test",
                 projectDir = Paths.get(projectDir),

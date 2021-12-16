@@ -46,7 +46,7 @@ configure<JavaPluginExtension> {
 
 tasks.register("writeProperties", WriteProperties::class) {
     property("version", version)
-    property("tool") {
+    property("toolchain") {
         if (version.toString().startsWith("local")) {
             val outputStream = ByteArrayOutputStream()
             project.exec {

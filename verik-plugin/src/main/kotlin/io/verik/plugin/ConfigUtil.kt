@@ -30,11 +30,11 @@ object ConfigUtil {
             ?: throw GradleException("Verik configuration failed: Could not determine version")
     }
 
-    fun getTool(): String {
+    fun getToolchain(): String {
         val properties = Properties()
         properties.load(this::class.java.classLoader.getResourceAsStream("verik-plugin.properties"))
-        return properties.getProperty("tool")
-            ?: throw GradleException("Verik configuration failed: Could not determine tool")
+        return properties.getProperty("toolchain")
+            ?: throw GradleException("Verik configuration failed: Could not determine toolchain")
     }
 
     fun getTimestamp(): String {

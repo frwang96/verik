@@ -26,10 +26,10 @@ object FileHeaderBuilder {
         val lines = ArrayList<String>()
         val outputPathString = Platform.getStringFromPath(outputPath.toAbsolutePath())
 
-        lines.add("Project : ${importerContext.config.projectName}")
-        lines.add("Output  : $outputPathString")
-        lines.add("Date    : ${importerContext.config.timestamp}")
-        lines.add("Tool    : ${importerContext.config.tool}")
+        lines.add("Toolchain : ${importerContext.config.toolchain}")
+        lines.add("Date      : ${importerContext.config.timestamp}")
+        lines.add("Project   : ${importerContext.config.projectName}")
+        lines.add("Output    : $outputPathString")
 
         val builder = StringBuilder()
         when (headerStyle) {

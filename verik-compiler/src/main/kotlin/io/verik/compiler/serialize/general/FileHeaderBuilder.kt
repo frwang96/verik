@@ -27,12 +27,12 @@ object FileHeaderBuilder {
         val inputPathString = inputPath?.let { Platform.getStringFromPath(it.toAbsolutePath()) }
         val outputPathString = Platform.getStringFromPath(outputPath.toAbsolutePath())
 
-        lines.add("Project : ${projectContext.config.projectName}")
+        lines.add("Toolchain : ${projectContext.config.toolchain}")
+        lines.add("Date      : ${projectContext.config.timestamp}")
+        lines.add("Project   : ${projectContext.config.projectName}")
         if (inputPathString != null)
-            lines.add("Input   : $inputPathString")
-        lines.add("Output  : $outputPathString")
-        lines.add("Date    : ${projectContext.config.timestamp}")
-        lines.add("Tool    : ${projectContext.config.tool}")
+            lines.add("Input     : $inputPathString")
+        lines.add("Output    : $outputPathString")
 
         val builder = StringBuilder()
         when (headerStyle) {

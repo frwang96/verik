@@ -58,7 +58,7 @@ class VerikPlugin : Plugin<Project> {
         }
 
         task.group = "verik"
-        task.inputs.property("tool", { ConfigUtil.getTool() })
+        task.inputs.property("toolchain", { ConfigUtil.getToolchain() })
         task.inputs.property("timescale", { extension.timescale })
         task.inputs.property("debug", { extension.debug })
         task.inputs.property("suppressedWarnings", { extension.suppressedWarnings })
@@ -79,7 +79,7 @@ class VerikPlugin : Plugin<Project> {
             it.doLast(VerikImportAction(project, extension))
         }
         task.group = "verik"
-        task.inputs.property("tool", { ConfigUtil.getTool() })
+        task.inputs.property("toolchain", { ConfigUtil.getToolchain() })
         task.inputs.property("debug", { extension.debug })
         task.inputs.property("suppressedWarnings", { extension.suppressedWarnings })
         task.inputs.property("promotedWarnings", { extension.promotedWarnings })
