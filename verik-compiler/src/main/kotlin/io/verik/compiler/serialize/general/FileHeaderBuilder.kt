@@ -17,19 +17,19 @@
 package io.verik.compiler.serialize.general
 
 import io.verik.compiler.main.Platform
-import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.VerikConfig
 import java.nio.file.Path
 
 object FileHeaderBuilder {
 
-    fun build(projectContext: ProjectContext, inputPath: Path?, outputPath: Path, headerStyle: HeaderStyle): String {
+    fun build(config: VerikConfig, inputPath: Path?, outputPath: Path, headerStyle: HeaderStyle): String {
         val lines = ArrayList<String>()
         val inputPathString = inputPath?.let { Platform.getStringFromPath(it.toAbsolutePath()) }
         val outputPathString = Platform.getStringFromPath(outputPath.toAbsolutePath())
 
-        lines.add("Toolchain : ${projectContext.config.toolchain}")
-        lines.add("Date      : ${projectContext.config.timestamp}")
-        lines.add("Project   : ${projectContext.config.projectName}")
+        lines.add("Toolchain : ${config.toolchain}")
+        lines.add("Date      : ${config.timestamp}")
+        lines.add("Project   : ${config.projectName}")
         if (inputPathString != null)
             lines.add("Input     : $inputPathString")
         lines.add("Output    : $outputPathString")
@@ -41,10 +41,10 @@ object FileHeaderBuilder {
                 builder.appendLine()
                 builder.appendLine("`ifndef VERIK")
                 builder.appendLine("`define VERIK")
-                builder.appendLine("`timescale ${projectContext.config.timescale}")
+                builder.appendLine("`timescale ${config.timescale}")
                 builder.appendLine("`endif")
             }
-            HeaderStyle.YAML -> {
+            HeaderStyle.TEXT -> {
                 lines.forEach { builder.appendLine("# $it") }
             }
         }
@@ -52,5 +52,5 @@ object FileHeaderBuilder {
         return builder.toString()
     }
 
-    enum class HeaderStyle { SYSTEM_VERILOG, YAML }
+    enum class HeaderStyle { SYSTEM_VERILOG, TEXT }
 }

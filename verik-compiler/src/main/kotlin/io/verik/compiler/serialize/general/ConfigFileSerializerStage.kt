@@ -29,10 +29,10 @@ object ConfigFileSerializerStage : ProjectStage() {
     override fun process(projectContext: ProjectContext) {
         val outputPath = projectContext.config.buildDir.resolve("config.yaml")
         val fileHeader = FileHeaderBuilder.build(
-            projectContext,
+            projectContext.config,
             null,
             outputPath,
-            FileHeaderBuilder.HeaderStyle.YAML
+            FileHeaderBuilder.HeaderStyle.TEXT
         )
 
         val synthesisTopNames = ArrayList<String>()
