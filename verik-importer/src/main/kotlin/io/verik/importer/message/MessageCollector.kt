@@ -28,11 +28,11 @@ class MessageCollector(
         if (templateName in config.promotedWarnings)
             fatal(message, location)
         else if (templateName !in config.suppressedWarnings)
-            messagePrinter.warning(message, location)
+            messagePrinter.warning(message, location, Thread.currentThread().stackTrace)
     }
 
     fun fatal(message: String, location: SourceLocation): Nothing {
-        messagePrinter.error(message, location)
+        messagePrinter.error(message, location, Thread.currentThread().stackTrace)
         throw VerikImporterException()
     }
 

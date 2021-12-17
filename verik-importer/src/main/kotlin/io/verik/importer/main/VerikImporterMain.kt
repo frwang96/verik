@@ -18,6 +18,7 @@ package io.verik.importer.main
 
 import io.verik.importer.message.GradleMessagePrinter
 import io.verik.importer.message.MessageCollector
+import io.verik.importer.message.SourceLocation
 import java.nio.file.Files
 import kotlin.io.path.exists
 
@@ -30,10 +31,22 @@ object VerikImporterMain {
             return
         }
 
-        MessageCollector.messageCollector = MessageCollector(config, GradleMessagePrinter(config))
-        val importerContext = ImporterContextBuilder.buildContext(config)
-        stageSequence.process(importerContext)
-        writeFiles(importerContext)
+        val messagePrinter = GradleMessagePrinter(config)
+        MessageCollector.messageCollector = MessageCollector(config, messagePrinter)
+        try {
+            val importerContext = ImporterContextBuilder.buildContext(config)
+            stageSequence.process(importerContext)
+            writeFiles(importerContext)
+        } catch (exception: Exception) {
+            if (exception !is VerikImporterException) {
+                messagePrinter.error(
+                    "Uncaught exception: ${exception.message}",
+                    SourceLocation.NULL,
+                    exception.stackTrace
+                )
+            }
+            throw VerikImporterException()
+        }
     }
 
     private fun writeFiles(importerContext: ImporterContext) {

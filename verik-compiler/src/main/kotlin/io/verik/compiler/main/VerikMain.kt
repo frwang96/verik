@@ -19,16 +19,29 @@ package io.verik.compiler.main
 import io.verik.compiler.common.TextFile
 import io.verik.compiler.message.GradleMessagePrinter
 import io.verik.compiler.message.MessageCollector
+import io.verik.compiler.message.SourceLocation
 import java.nio.file.Files
 
 object VerikMain {
 
     fun run(config: VerikConfig, stageSequence: StageSequence) {
-        MessageCollector.messageCollector = MessageCollector(config, GradleMessagePrinter(config))
-        val projectContext = ProjectContext(config)
-        readFiles(projectContext)
-        stageSequence.process(projectContext)
-        writeFiles(projectContext)
+        val messagePrinter = GradleMessagePrinter(config)
+        MessageCollector.messageCollector = MessageCollector(config, messagePrinter)
+        try {
+            val projectContext = ProjectContext(config)
+            readFiles(projectContext)
+            stageSequence.process(projectContext)
+            writeFiles(projectContext)
+        } catch (exception: Exception) {
+            if (exception !is VerikException) {
+                messagePrinter.error(
+                    "Uncaught exception: ${exception.message}",
+                    SourceLocation.NULL,
+                    exception.stackTrace
+                )
+            }
+            throw VerikException()
+        }
     }
 
     private fun readFiles(projectContext: ProjectContext) {

@@ -29,9 +29,7 @@ import org.gradle.api.Task
 import org.gradle.api.plugins.JavaPluginExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinCommonPluginWrapper
 import io.verik.compiler.main.StageSequencer as VerikStageSequencer
-import io.verik.compiler.message.GradleMessagePrinter as VerikGradleMessagePrinter
 import io.verik.importer.main.StageSequencer as VerikImporterStageSequencer
-import io.verik.importer.message.GradleMessagePrinter as VerikImporterGradleMessagePrinter
 
 @Suppress("unused")
 class VerikPlugin : Plugin<Project> {
@@ -102,11 +100,7 @@ class VerikPlugin : Plugin<Project> {
             try {
                 val stageSequence = VerikStageSequencer.getStageSequence()
                 VerikMain.run(VerikConfigBuilder.getConfig(project, extension), stageSequence)
-            } catch (exception: Exception) {
-                if (exception !is VerikException) {
-                    println("e: Internal error: ${exception.message}")
-                    VerikGradleMessagePrinter.printStackTrace(exception.stackTrace)
-                }
+            } catch (exception: VerikException) {
                 throw GradleException("Verik compilation failed")
             }
         }
@@ -121,11 +115,7 @@ class VerikPlugin : Plugin<Project> {
             try {
                 val stageSequence = VerikImporterStageSequencer.getStageSequence()
                 VerikImporterMain.run(VerikImporterConfigBuilder.getConfig(project, extension), stageSequence)
-            } catch (exception: Exception) {
-                if (exception !is VerikImporterException) {
-                    println("e: Internal error: ${exception.message}")
-                    VerikImporterGradleMessagePrinter.printStackTrace(exception.stackTrace)
-                }
+            } catch (exception: VerikImporterException) {
                 throw GradleException("Verik import failed")
             }
         }
