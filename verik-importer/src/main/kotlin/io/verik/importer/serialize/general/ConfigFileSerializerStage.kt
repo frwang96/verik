@@ -26,9 +26,9 @@ object ConfigFileSerializerStage : ImporterStage() {
     override fun process(importerContext: ImporterContext) {
         val outputPath = importerContext.config.buildDir.resolve("config.yaml")
         val fileHeader = FileHeaderBuilder.build(
-            importerContext,
+            importerContext.config,
             outputPath,
-            FileHeaderBuilder.HeaderStyle.YAML
+            FileHeaderBuilder.HeaderStyle.TEXT
         )
 
         val builder = StringBuilder()

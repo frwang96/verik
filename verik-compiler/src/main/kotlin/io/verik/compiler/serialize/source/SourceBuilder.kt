@@ -43,7 +43,7 @@ class SourceBuilder(
 
         val outputPath = file.outputPath
         val fileHeader = FileHeaderBuilder.build(
-            projectContext,
+            projectContext.config,
             file.inputPath,
             outputPath,
             FileHeaderBuilder.HeaderStyle.SYSTEM_VERILOG
@@ -54,7 +54,7 @@ class SourceBuilder(
         if (projectContext.config.labelSourceLocations) {
             val outputPathLabeled = outputPath.parent.resolve("${outputPath.fileName}.labeled")
             val fileHeaderLabeled = FileHeaderBuilder.build(
-                projectContext,
+                projectContext.config,
                 file.inputPath,
                 outputPathLabeled,
                 FileHeaderBuilder.HeaderStyle.SYSTEM_VERILOG

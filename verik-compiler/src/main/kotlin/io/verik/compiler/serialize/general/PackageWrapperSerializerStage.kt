@@ -43,7 +43,7 @@ object PackageWrapperSerializerStage : ProjectStage() {
 
         val outputPath = basicPackage.outputPath.resolve("Pkg.sv")
         val fileHeader = FileHeaderBuilder.build(
-            projectContext,
+            projectContext.config,
             null,
             outputPath,
             FileHeaderBuilder.HeaderStyle.SYSTEM_VERILOG

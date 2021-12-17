@@ -19,7 +19,7 @@ package io.verik.importer.main
 import java.nio.file.Path
 
 data class VerikImporterConfig(
-    val tool: String,
+    val toolchain: String,
     val timestamp: String,
     val projectName: String,
     val projectDir: Path,

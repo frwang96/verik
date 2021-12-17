@@ -204,7 +204,7 @@ abstract class BaseTest {
             val buildDir = if (Platform.isWindows) "C:\\build\\verik-import" else "/build/verik-import"
             val importedFile = if (Platform.isWindows) "C:\\src\\test.sv" else "/src/test.sv"
             return VerikImporterConfig(
-                tool = "verik",
+                toolchain = "verik",
                 timestamp = "",
                 projectName = "test",
                 projectDir = Paths.get(projectDir),

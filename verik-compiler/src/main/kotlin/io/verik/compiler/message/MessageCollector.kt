@@ -35,16 +35,16 @@ class MessageCollector(
         if (templateName in config.promotedWarnings)
             error(message, location)
         else if (templateName !in config.suppressedWarnings)
-            messagePrinter.warning(message, location)
+            messagePrinter.warning(message, location, Thread.currentThread().stackTrace)
     }
 
     fun error(message: String, location: SourceLocation) {
-        messagePrinter.error(message, location)
+        messagePrinter.error(message, location, Thread.currentThread().stackTrace)
         incrementErrorCount()
     }
 
     fun fatal(message: String, location: SourceLocation): Nothing {
-        messagePrinter.error(message, location)
+        messagePrinter.error(message, location, Thread.currentThread().stackTrace)
         throw VerikException()
     }
 

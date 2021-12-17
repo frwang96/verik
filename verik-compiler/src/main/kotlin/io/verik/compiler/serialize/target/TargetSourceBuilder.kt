@@ -32,7 +32,7 @@ class TargetSourceBuilder(
 
     init {
         val fileHeader = FileHeaderBuilder.build(
-            projectContext,
+            projectContext.config,
             null,
             path,
             FileHeaderBuilder.HeaderStyle.SYSTEM_VERILOG

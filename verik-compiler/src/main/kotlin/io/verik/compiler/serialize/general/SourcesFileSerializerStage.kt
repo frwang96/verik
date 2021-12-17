@@ -29,10 +29,10 @@ object SourcesFileSerializerStage : ProjectStage() {
     override fun process(projectContext: ProjectContext) {
         val outputPath = projectContext.config.buildDir.resolve("sources.yaml")
         val fileHeader = FileHeaderBuilder.build(
-            projectContext,
+            projectContext.config,
             null,
             outputPath,
-            FileHeaderBuilder.HeaderStyle.YAML
+            FileHeaderBuilder.HeaderStyle.TEXT
         )
 
         val paths = ArrayList<Path>()
