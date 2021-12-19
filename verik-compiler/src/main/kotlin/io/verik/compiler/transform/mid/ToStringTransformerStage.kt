@@ -30,15 +30,15 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.target.common.Target
 
-object EnumNameTransformerStage : ProjectStage() {
+object ToStringTransformerStage : ProjectStage() {
 
     override val checkNormalization = true
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.project.accept(EnumNameTransformerVisitor)
+        projectContext.project.accept(ToStringTransformerVisitor)
     }
 
-    private object EnumNameTransformerVisitor : TreeVisitor() {
+    private object ToStringTransformerVisitor : TreeVisitor() {
 
         private fun transform(expression: EExpression) {
             if (expression.type.reference is EEnum) {

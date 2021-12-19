@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.check.post
+package io.verik.compiler.interpret
 
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EReferenceExpression
+import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.EBasicComponentInstantiation
-import io.verik.compiler.ast.element.sv.EConcatenationExpression
-import io.verik.compiler.ast.element.sv.EConstantPartSelectExpression
-import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.property.PortInstantiation
 import io.verik.compiler.ast.property.PortType
 import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
@@ -39,6 +38,13 @@ object PortInstantiationCheckerStage : ProjectStage() {
     }
 
     private object PortInstantiationCheckerVisitor : TreeVisitor() {
+
+        private val arrayReferences = listOf(
+            Core.Vk.Ubit.F_get_Int,
+            Core.Vk.Ubit.F_slice_Int,
+            Core.Vk.Unpacked.F_get_Int,
+            Core.Vk.Unpacked.F_get_Ubit
+        )
 
         override fun visitBasicComponentInstantiation(basicComponentInstantiation: EBasicComponentInstantiation) {
             super.visitBasicComponentInstantiation(basicComponentInstantiation)
@@ -58,12 +64,18 @@ object PortInstantiationCheckerStage : ProjectStage() {
                     if (reference is ESvProperty && !reference.isMutable)
                         Messages.OUTPUT_PORT_IMMUTABLE_PROPERTY.on(reference, reference.name)
                 }
-                is ESvArrayAccessExpression -> checkOutputPortExpression(portInstantiation, expression.array)
-                is EConstantPartSelectExpression -> checkOutputPortExpression(portInstantiation, expression.array)
-                is EConcatenationExpression -> expression.expressions.forEach {
-                    checkOutputPortExpression(portInstantiation, it)
+                is EKtCallExpression -> {
+                    when (expression.reference) {
+                        in arrayReferences ->
+                            checkOutputPortExpression(portInstantiation, expression.receiver!!)
+                        Core.Vk.F_cat_Any_Any ->
+                            expression.valueArguments.forEach { checkOutputPortExpression(portInstantiation, it) }
+                        else ->
+                            Messages.OUTPUT_PORT_ILLEGAL_EXPRESSION.on(expression, portInstantiation.reference.name)
+                    }
                 }
-                else -> Messages.OUTPUT_PORT_ILLEGAL_EXPRESSION.on(expression, portInstantiation.reference.name)
+                else ->
+                    Messages.OUTPUT_PORT_ILLEGAL_EXPRESSION.on(expression, portInstantiation.reference.name)
             }
         }
     }

@@ -24,7 +24,6 @@ import io.verik.compiler.check.post.FileCheckerStage
 import io.verik.compiler.check.post.KeywordCheckerStage
 import io.verik.compiler.check.post.NameCheckerStage
 import io.verik.compiler.check.post.NameRedeclarationCheckerStage
-import io.verik.compiler.check.post.PortInstantiationCheckerStage
 import io.verik.compiler.check.post.StatementCheckerStage
 import io.verik.compiler.check.post.UntransformedElementCheckerStage
 import io.verik.compiler.check.post.UntransformedReferenceCheckerStage
@@ -42,10 +41,11 @@ import io.verik.compiler.interpret.ConstructorDesugarTransformerStage
 import io.verik.compiler.interpret.EnumInterpreterStage
 import io.verik.compiler.interpret.FileSplitterStage
 import io.verik.compiler.interpret.FunctionInterpreterStage
+import io.verik.compiler.interpret.FunctionLiteralInterpreterStage
 import io.verik.compiler.interpret.ModulePortParentResolverStage
+import io.verik.compiler.interpret.PortInstantiationCheckerStage
 import io.verik.compiler.interpret.PropertyInterpreterStage
 import io.verik.compiler.interpret.StructInterpreterStage
-import io.verik.compiler.interpret.ValueParameterInterpreterStage
 import io.verik.compiler.resolve.TypeCheckerStage
 import io.verik.compiler.resolve.TypeParameterTypeCheckerStage
 import io.verik.compiler.resolve.TypeResolvedCheckerStage
@@ -63,7 +63,6 @@ import io.verik.compiler.transform.mid.ComAssignmentTransformerStage
 import io.verik.compiler.transform.mid.ConstantExpressionEvaluatorStage
 import io.verik.compiler.transform.mid.ConstantPropagatorStage
 import io.verik.compiler.transform.mid.DeadDeclarationEliminatorStage
-import io.verik.compiler.transform.mid.EnumNameTransformerStage
 import io.verik.compiler.transform.mid.ForStatementTransformerStage
 import io.verik.compiler.transform.mid.FunctionTransformerStage
 import io.verik.compiler.transform.mid.IfAndWhenExpressionUnlifterStage
@@ -74,6 +73,7 @@ import io.verik.compiler.transform.mid.PropertyTransformerStage
 import io.verik.compiler.transform.mid.StringTemplateExpressionReducerStage
 import io.verik.compiler.transform.mid.StructLiteralTransformerStage
 import io.verik.compiler.transform.mid.SubexpressionExtractorStage
+import io.verik.compiler.transform.mid.ToStringTransformerStage
 import io.verik.compiler.transform.mid.UninitializedPropertyTransformerStage
 import io.verik.compiler.transform.post.BinaryExpressionTransformerStage
 import io.verik.compiler.transform.post.BlockExpressionTransformerStage
@@ -145,13 +145,14 @@ object StageSequencer {
         stageSequence.add(BasicClassInterpreterStage)
         stageSequence.add(FunctionInterpreterStage)
         stageSequence.add(PropertyInterpreterStage)
-        stageSequence.add(ValueParameterInterpreterStage)
+        stageSequence.add(FunctionLiteralInterpreterStage)
         stageSequence.add(ModulePortParentResolverStage)
+        stageSequence.add(PortInstantiationCheckerStage)
         stageSequence.add(FileSplitterStage)
         stageSequence.addFlush()
 
         // MidTransform
-        stageSequence.add(EnumNameTransformerStage)
+        stageSequence.add(ToStringTransformerStage)
         stageSequence.add(ConstantPropagatorStage)
         stageSequence.add(InjectedStatementReducerStage)
         stageSequence.add(StringTemplateExpressionReducerStage)
@@ -194,7 +195,6 @@ object StageSequencer {
         stageSequence.add(KeywordCheckerStage)
         stageSequence.add(NameRedeclarationCheckerStage)
         stageSequence.add(StatementCheckerStage)
-        stageSequence.add(PortInstantiationCheckerStage)
         stageSequence.addFlush()
 
         // Serialize

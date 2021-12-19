@@ -20,10 +20,10 @@ import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
-internal class EnumNameTransformerStageTest : BaseTest() {
+internal class ToStringTransformerStageTest : BaseTest() {
 
     @Test
-    fun `string template expression property`() {
+    fun `string template expression enum property`() {
         driveElementTest(
             """
                 enum class E { A }
@@ -32,7 +32,7 @@ internal class EnumNameTransformerStageTest : BaseTest() {
                     "${"$"}e"
                 }
             """.trimIndent(),
-            EnumNameTransformerStage::class,
+            ToStringTransformerStage::class,
             "StringTemplateExpression(String, [KtCallExpression(String, name, ReferenceExpression(*), [], [])])"
         ) { it.findExpression("f") }
     }
@@ -46,13 +46,13 @@ internal class EnumNameTransformerStageTest : BaseTest() {
                     "${"$"}{E.A}"
                 }
             """.trimIndent(),
-            EnumNameTransformerStage::class,
+            ToStringTransformerStage::class,
             "StringTemplateExpression(String, [StringExpression(String, A)])"
         ) { it.findExpression("f") }
     }
 
     @Test
-    fun `call expression println enum entry`() {
+    fun `println enum entry`() {
         driveElementTest(
             """
                 enum class E { A }
@@ -60,7 +60,7 @@ internal class EnumNameTransformerStageTest : BaseTest() {
                     println(E.A)
                 }
             """.trimIndent(),
-            EnumNameTransformerStage::class,
+            ToStringTransformerStage::class,
             "KtCallExpression(Unit, println, null, [StringExpression(String, A)], [])"
         ) { it.findExpression("f") }
     }

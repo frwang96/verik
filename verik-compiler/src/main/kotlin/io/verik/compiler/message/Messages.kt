@@ -175,6 +175,14 @@ object Messages {
         "String literal expected for injected property: $0"
     )
 
+    val OUTPUT_PORT_ILLEGAL_EXPRESSION = ErrorMessageTemplate1<String>(
+        "Illegal expression for output port: $0"
+    )
+
+    val OUTPUT_PORT_IMMUTABLE_PROPERTY = ErrorMessageTemplate1<String>(
+        "Property assigned by output port must be declared as var: $0"
+    )
+
 //  MID TRANSFORM  /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val INJECTED_STATEMENT_NOT_LITERAL = ErrorMessageTemplate0(
@@ -227,14 +235,6 @@ object Messages {
 
     val INVALID_STATEMENT = ErrorMessageTemplate0(
         "Could not interpret expression as statement"
-    )
-
-    val OUTPUT_PORT_ILLEGAL_EXPRESSION = ErrorMessageTemplate1<String>(
-        "Illegal expression for output port: $0"
-    )
-
-    val OUTPUT_PORT_IMMUTABLE_PROPERTY = ErrorMessageTemplate1<String>(
-        "Property assigned by output port must be declared as var: $0"
     )
 
     init {

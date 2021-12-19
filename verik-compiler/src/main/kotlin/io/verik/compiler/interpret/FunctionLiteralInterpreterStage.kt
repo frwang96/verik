@@ -24,18 +24,18 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
-object ValueParameterInterpreterStage : ProjectStage() {
+object FunctionLiteralInterpreterStage : ProjectStage() {
 
     override val checkNormalization = true
 
     override fun process(projectContext: ProjectContext) {
         val referenceUpdater = ReferenceUpdater(projectContext)
-        val valueParameterInterpreterVisitor = ValueParameterInterpreterVisitor(referenceUpdater)
-        projectContext.project.accept(valueParameterInterpreterVisitor)
+        val functionLiteralInterpreterVisitor = FunctionLiteralInterpreterVisitor(referenceUpdater)
+        projectContext.project.accept(functionLiteralInterpreterVisitor)
         referenceUpdater.flush()
     }
 
-    private class ValueParameterInterpreterVisitor(private val referenceUpdater: ReferenceUpdater) : TreeVisitor() {
+    private class FunctionLiteralInterpreterVisitor(private val referenceUpdater: ReferenceUpdater) : TreeVisitor() {
 
         override fun visitFunctionLiteralExpression(functionLiteralExpression: EFunctionLiteralExpression) {
             super.visitFunctionLiteralExpression(functionLiteralExpression)

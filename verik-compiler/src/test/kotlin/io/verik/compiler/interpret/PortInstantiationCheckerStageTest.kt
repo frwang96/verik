@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.check.post
+package io.verik.compiler.interpret
 
 import io.verik.compiler.test.BaseTest
 import org.junit.jupiter.api.Test
