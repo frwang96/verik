@@ -37,14 +37,14 @@ object TypeConstraintResolver {
         val unresolvedTypeConstraints = ArrayList<TypeConstraint>()
         typeConstraints.forEach {
             when (it) {
-                is TypeEqualsTypeConstraint ->
-                    if (!resolveTypeEqualsTypeConstraint(it))
+                is EqualsTypeConstraint ->
+                    if (!resolveEqualsTypeConstraint(it))
                         unresolvedTypeConstraints.add(it)
-                is UnaryOperatorTypeConstraint ->
-                    if (!resolveUnaryOperatorTypeConstraint(it))
+                is UnaryTypeConstraint ->
+                    if (!resolveUnaryTypeConstraint(it))
                         unresolvedTypeConstraints.add(it)
-                is BinaryOperatorTypeConstraint ->
-                    if (!resolveBinaryOperatorTypeConstraint(it))
+                is BinaryTypeConstraint ->
+                    if (!resolveBinaryTypeConstraint(it))
                         unresolvedTypeConstraints.add(it)
                 is ConcatenationTypeConstraint ->
                     if (!resolveConcatenationTypeConstraint(it))
@@ -58,7 +58,7 @@ object TypeConstraintResolver {
         return unresolvedTypeConstraints
     }
 
-    private fun resolveTypeEqualsTypeConstraint(typeConstraint: TypeEqualsTypeConstraint): Boolean {
+    private fun resolveEqualsTypeConstraint(typeConstraint: EqualsTypeConstraint): Boolean {
         val inner = typeConstraint.inner.getType()
         val outer = typeConstraint.outer.getType()
         val innerResolved = inner.isResolved()
@@ -75,7 +75,7 @@ object TypeConstraintResolver {
         }
     }
 
-    private fun resolveUnaryOperatorTypeConstraint(typeConstraint: UnaryOperatorTypeConstraint): Boolean {
+    private fun resolveUnaryTypeConstraint(typeConstraint: UnaryTypeConstraint): Boolean {
         val inner = typeConstraint.inner.getType()
         val outer = typeConstraint.outer.getType()
         val innerResolved = inner.isResolved()
@@ -101,7 +101,7 @@ object TypeConstraintResolver {
         }
     }
 
-    private fun resolveBinaryOperatorTypeConstraint(typeConstraint: BinaryOperatorTypeConstraint): Boolean {
+    private fun resolveBinaryTypeConstraint(typeConstraint: BinaryTypeConstraint): Boolean {
         val left = typeConstraint.left.getType()
         val right = typeConstraint.right.getType()
         val outer = typeConstraint.outer.getType()

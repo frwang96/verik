@@ -27,11 +27,11 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CorePropertyDeclaration
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
+import io.verik.compiler.resolve.EqualsTypeConstraint
 import io.verik.compiler.resolve.TypeAdapter
 import io.verik.compiler.resolve.TypeConstraint
-import io.verik.compiler.resolve.TypeEqualsTypeConstraint
-import io.verik.compiler.resolve.UnaryOperatorTypeConstraint
-import io.verik.compiler.resolve.UnaryOperatorTypeConstraintKind
+import io.verik.compiler.resolve.UnaryTypeConstraint
+import io.verik.compiler.resolve.UnaryTypeConstraintKind
 
 object CoreVkUnpacked : CoreScope(Core.Vk.C_Unpacked) {
 
@@ -39,7 +39,7 @@ object CoreVkUnpacked : CoreScope(Core.Vk.C_Unpacked) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
-                TypeEqualsTypeConstraint(
+                EqualsTypeConstraint(
                     TypeAdapter.ofElement(callExpression.receiver!!, 1),
                     TypeAdapter.ofElement(callExpression)
                 )
@@ -60,15 +60,15 @@ object CoreVkUnpacked : CoreScope(Core.Vk.C_Unpacked) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
-                TypeEqualsTypeConstraint(
+                EqualsTypeConstraint(
                     TypeAdapter.ofElement(callExpression.receiver!!, 1),
                     TypeAdapter.ofElement(callExpression)
                 ),
-                UnaryOperatorTypeConstraint(
+                UnaryTypeConstraint(
                     TypeAdapter.ofElement(callExpression.valueArguments[0], 0),
                     TypeAdapter.ofElement(callExpression.receiver!!, 0),
                     false,
-                    UnaryOperatorTypeConstraintKind.LOG
+                    UnaryTypeConstraintKind.LOG
                 )
             )
         }
@@ -87,7 +87,7 @@ object CoreVkUnpacked : CoreScope(Core.Vk.C_Unpacked) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
-                TypeEqualsTypeConstraint(
+                EqualsTypeConstraint(
                     TypeAdapter.ofElement(callExpression.valueArguments[1]),
                     TypeAdapter.ofElement(callExpression.receiver!!, 1)
                 )
@@ -115,15 +115,15 @@ object CoreVkUnpacked : CoreScope(Core.Vk.C_Unpacked) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
-                TypeEqualsTypeConstraint(
+                EqualsTypeConstraint(
                     TypeAdapter.ofElement(callExpression.valueArguments[1]),
                     TypeAdapter.ofElement(callExpression.receiver!!, 1)
                 ),
-                UnaryOperatorTypeConstraint(
+                UnaryTypeConstraint(
                     TypeAdapter.ofElement(callExpression.valueArguments[0], 0),
                     TypeAdapter.ofElement(callExpression.receiver!!, 0),
                     false,
-                    UnaryOperatorTypeConstraintKind.LOG
+                    UnaryTypeConstraintKind.LOG
                 )
             )
         }

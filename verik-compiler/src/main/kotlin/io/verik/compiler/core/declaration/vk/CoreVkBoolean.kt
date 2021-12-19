@@ -18,12 +18,14 @@ package io.verik.compiler.core.declaration.vk
 
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.sv.EWidthCastExpression
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
+import io.verik.compiler.core.common.CoreTransformUtil
 import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
+import io.verik.compiler.resolve.EqualsTypeConstraint
 import io.verik.compiler.resolve.TypeAdapter
 import io.verik.compiler.resolve.TypeConstraint
-import io.verik.compiler.resolve.TypeEqualsTypeConstraint
 
 object CoreVkBoolean : CoreScope(CorePackage.VK) {
 
@@ -31,7 +33,7 @@ object CoreVkBoolean : CoreScope(CorePackage.VK) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
-                TypeEqualsTypeConstraint(
+                EqualsTypeConstraint(
                     TypeAdapter.ofTypeArgument(callExpression, 0),
                     TypeAdapter.ofElement(callExpression, 0)
                 )
@@ -39,18 +41,36 @@ object CoreVkBoolean : CoreScope(CorePackage.VK) {
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            return CoreVkUbit.F_ext.transform(callExpression)
+            val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
+            return EWidthCastExpression(
+                callExpression.location,
+                callExpression.type,
+                callExpression.receiver!!,
+                value
+            )
         }
     }
 
     val F_sext = object : TransformableCoreFunctionDeclaration(parent, "sext", "fun sext()") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
-            return F_ext.getTypeConstraints(callExpression)
+            return listOf(
+                EqualsTypeConstraint(
+                    TypeAdapter.ofTypeArgument(callExpression, 0),
+                    TypeAdapter.ofElement(callExpression, 0)
+                )
+            )
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            return CoreVkUbit.F_sext.transform(callExpression)
+            val callExpressionSigned = CoreTransformUtil.callExpressionSigned(callExpression.receiver!!)
+            val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
+            return EWidthCastExpression(
+                callExpression.location,
+                callExpression.type,
+                callExpressionSigned,
+                value
+            )
         }
     }
 }

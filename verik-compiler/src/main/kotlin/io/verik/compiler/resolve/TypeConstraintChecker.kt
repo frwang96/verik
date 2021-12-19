@@ -25,9 +25,9 @@ object TypeConstraintChecker {
     fun check(typeConstraints: List<TypeConstraint>) {
         typeConstraints.forEach {
             when (it) {
-                is TypeEqualsTypeConstraint -> checkTypeEqualsTypeConstraint(it)
-                is UnaryOperatorTypeConstraint -> checkUnaryOperatorTypeConstraint(it)
-                is BinaryOperatorTypeConstraint -> checkBinaryOperatorTypeConstraint(it)
+                is EqualsTypeConstraint -> checkEqualsTypeConstraint(it)
+                is UnaryTypeConstraint -> checkUnaryTypeConstraint(it)
+                is BinaryTypeConstraint -> checkBinaryTypeConstraint(it)
                 is ComparisonTypeConstraint -> checkComparisonTypeConstraint(it)
                 is ConcatenationTypeConstraint -> checkConcatenationTypeConstraint(it)
                 is ReplicationTypeConstraint -> checkReplicationTypeConstraint(it)
@@ -35,7 +35,7 @@ object TypeConstraintChecker {
         }
     }
 
-    private fun checkTypeEqualsTypeConstraint(typeConstraint: TypeEqualsTypeConstraint) {
+    private fun checkEqualsTypeConstraint(typeConstraint: EqualsTypeConstraint) {
         val innerType = typeConstraint.inner.getType()
         val outerType = typeConstraint.outer.getType()
         if (outerType != innerType) {
@@ -48,7 +48,7 @@ object TypeConstraintChecker {
         }
     }
 
-    private fun checkUnaryOperatorTypeConstraint(typeConstraint: UnaryOperatorTypeConstraint) {
+    private fun checkUnaryTypeConstraint(typeConstraint: UnaryTypeConstraint) {
         val innerValue = typeConstraint.inner.getType().asCardinalValue(typeConstraint.inner.getElement())
         val outerValue = typeConstraint.outer.getType().asCardinalValue(typeConstraint.outer.getElement())
         if (typeConstraint.isInnerToOuter) {
@@ -74,7 +74,7 @@ object TypeConstraintChecker {
         }
     }
 
-    private fun checkBinaryOperatorTypeConstraint(typeConstraint: BinaryOperatorTypeConstraint) {
+    private fun checkBinaryTypeConstraint(typeConstraint: BinaryTypeConstraint) {
         val leftValue = typeConstraint.left.getType().asCardinalValue(typeConstraint.left.getElement())
         val rightValue = typeConstraint.right.getType().asCardinalValue(typeConstraint.right.getElement())
         val innerValue = typeConstraint.kind.evaluate(leftValue, rightValue)

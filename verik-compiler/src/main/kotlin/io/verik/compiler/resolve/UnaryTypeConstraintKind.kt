@@ -19,7 +19,7 @@ package io.verik.compiler.resolve
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.core.common.Core
 
-enum class UnaryOperatorTypeConstraintKind {
+enum class UnaryTypeConstraintKind {
     LOG,
     WIDTH;
 

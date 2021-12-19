@@ -34,9 +34,9 @@ import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
 import io.verik.compiler.core.common.UnaryCoreFunctionDeclaration
 import io.verik.compiler.resolve.ComparisonTypeConstraint
 import io.verik.compiler.resolve.ComparisonTypeConstraintKind
+import io.verik.compiler.resolve.EqualsTypeConstraint
 import io.verik.compiler.resolve.TypeAdapter
 import io.verik.compiler.resolve.TypeConstraint
-import io.verik.compiler.resolve.TypeEqualsTypeConstraint
 
 object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
@@ -49,7 +49,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
-                TypeEqualsTypeConstraint(
+                EqualsTypeConstraint(
                     TypeAdapter.ofElement(callExpression.receiver!!, 0),
                     TypeAdapter.ofElement(callExpression, 0)
                 )
@@ -130,7 +130,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
-                TypeEqualsTypeConstraint(
+                EqualsTypeConstraint(
                     TypeAdapter.ofElement(callExpression.receiver!!),
                     TypeAdapter.ofElement(callExpression)
                 )
@@ -142,7 +142,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
-                TypeEqualsTypeConstraint(
+                EqualsTypeConstraint(
                     TypeAdapter.ofElement(callExpression.receiver!!),
                     TypeAdapter.ofElement(callExpression)
                 )
@@ -158,7 +158,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
-                TypeEqualsTypeConstraint(
+                EqualsTypeConstraint(
                     TypeAdapter.ofTypeArgument(callExpression, 0),
                     TypeAdapter.ofElement(callExpression, 0)
                 )
@@ -189,7 +189,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
-                TypeEqualsTypeConstraint(
+                EqualsTypeConstraint(
                     TypeAdapter.ofTypeArgument(callExpression, 0),
                     TypeAdapter.ofElement(callExpression, 0)
                 ),
@@ -234,7 +234,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
-                TypeEqualsTypeConstraint(
+                EqualsTypeConstraint(
                     TypeAdapter.ofTypeArgument(callExpression, 0),
                     TypeAdapter.ofElement(callExpression, 0)
                 ),

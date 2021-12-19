@@ -20,9 +20,9 @@ import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
+import io.verik.compiler.resolve.EqualsTypeConstraint
 import io.verik.compiler.resolve.TypeAdapter
 import io.verik.compiler.resolve.TypeConstraint
-import io.verik.compiler.resolve.TypeEqualsTypeConstraint
 import io.verik.compiler.target.common.Target
 
 object CoreVkRandom : CoreScope(CorePackage.VK) {
@@ -54,7 +54,7 @@ object CoreVkRandom : CoreScope(CorePackage.VK) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
-                TypeEqualsTypeConstraint(
+                EqualsTypeConstraint(
                     TypeAdapter.ofTypeArgument(callExpression, 0),
                     TypeAdapter.ofElement(callExpression, 0)
                 )
