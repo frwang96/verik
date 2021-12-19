@@ -36,10 +36,16 @@ object UnsupportedModifierCheckerStage : ProjectStage() {
         private val unsupportedModifiers = listOf(
             KtTokens.ANNOTATION_KEYWORD,
             KtTokens.CROSSINLINE_KEYWORD,
+            KtTokens.DATA_KEYWORD,
+            KtTokens.EXTERNAL_KEYWORD,
+            KtTokens.IN_KEYWORD,
+            KtTokens.NOINLINE_KEYWORD,
             KtTokens.OPERATOR_KEYWORD,
+            KtTokens.OUT_KEYWORD,
             KtTokens.REIFIED_KEYWORD,
             KtTokens.SEALED_KEYWORD,
             KtTokens.SUSPEND_KEYWORD,
+            KtTokens.TAILREC_KEYWORD,
             KtTokens.VARARG_KEYWORD
         )
 

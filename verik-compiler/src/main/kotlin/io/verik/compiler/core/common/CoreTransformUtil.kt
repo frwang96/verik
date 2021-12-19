@@ -25,7 +25,7 @@ object CoreTransformUtil {
     fun callExpressionSigned(expression: EExpression): EKtCallExpression {
         return EKtCallExpression(
             expression.location,
-            Core.Vk.C_Sbit.toType(Cardinal.of(expression.type.getWidth(expression)).toType()),
+            Core.Vk.C_Sbit.toType(expression.type.getWidthAsType(expression)),
             Target.F_signed,
             null,
             arrayListOf(expression),
@@ -36,7 +36,7 @@ object CoreTransformUtil {
     fun callExpressionUnsigned(expression: EExpression): EKtCallExpression {
         return EKtCallExpression(
             expression.location,
-            Core.Vk.C_Ubit.toType(Cardinal.of(expression.type.getWidth(expression)).toType()),
+            Core.Vk.C_Ubit.toType(expression.type.getWidthAsType(expression)),
             Target.F_unsigned,
             null,
             arrayListOf(expression),

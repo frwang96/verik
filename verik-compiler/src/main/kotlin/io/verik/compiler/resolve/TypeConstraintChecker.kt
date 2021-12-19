@@ -28,9 +28,8 @@ object TypeConstraintChecker {
                 is EqualsTypeConstraint -> checkEqualsTypeConstraint(it)
                 is UnaryTypeConstraint -> checkUnaryTypeConstraint(it)
                 is BinaryTypeConstraint -> checkBinaryTypeConstraint(it)
+                is SpecialTypeConstraint -> checkSpecialTypeConstraint(it)
                 is ComparisonTypeConstraint -> checkComparisonTypeConstraint(it)
-                is ConcatenationTypeConstraint -> checkConcatenationTypeConstraint(it)
-                is ReplicationTypeConstraint -> checkReplicationTypeConstraint(it)
             }
         }
     }
@@ -89,6 +88,40 @@ object TypeConstraintChecker {
         }
     }
 
+    private fun checkSpecialTypeConstraint(typeConstraint: SpecialTypeConstraint) {
+        val expressionWidth = typeConstraint.callExpression.type.asBitWidth(typeConstraint.callExpression)
+        val valueArgumentWidths = typeConstraint
+            .callExpression
+            .valueArguments
+            .map { it.type.getWidthAsInt(it) }
+        when (typeConstraint.kind) {
+            SpecialTypeConstraintKind.CAT -> {
+                val catWidth = valueArgumentWidths.sum()
+                if (catWidth != expressionWidth) {
+                    val actualType = Core.Vk.C_Ubit.toType(Cardinal.of(catWidth).toType())
+                    Messages.TYPE_MISMATCH.on(
+                        typeConstraint.callExpression,
+                        typeConstraint.callExpression.type,
+                        actualType
+                    )
+                }
+            }
+            SpecialTypeConstraintKind.REP -> {
+                val typeArgumentWidth = typeConstraint.callExpression
+                    .typeArguments[0].asCardinalValue(typeConstraint.callExpression)
+                val repWidth = valueArgumentWidths[0] * typeArgumentWidth
+                if (expressionWidth != repWidth) {
+                    val actualType = Core.Vk.C_Ubit.toType(Cardinal.of(repWidth).toType())
+                    Messages.TYPE_MISMATCH.on(
+                        typeConstraint.callExpression,
+                        typeConstraint.callExpression.type,
+                        actualType
+                    )
+                }
+            }
+        }
+    }
+
     private fun checkComparisonTypeConstraint(typeConstraint: ComparisonTypeConstraint) {
         val innerValue = typeConstraint.inner.getType().asCardinalValue(typeConstraint.inner.getElement())
         val outerValue = typeConstraint.outer.getType().asCardinalValue(typeConstraint.outer.getElement())
@@ -113,33 +146,6 @@ object TypeConstraintChecker {
                     )
                 }
             }
-        }
-    }
-
-    private fun checkConcatenationTypeConstraint(typeConstraint: ConcatenationTypeConstraint) {
-        val expressionWidth = typeConstraint.callExpression.type.asBitWidth(typeConstraint.callExpression)
-        val valueArgumentWidths = typeConstraint
-            .callExpression
-            .valueArguments
-            .map { it.type.getWidth(it) }
-        val sumWidth = valueArgumentWidths.sum()
-        if (sumWidth != expressionWidth) {
-            val actualType = Core.Vk.C_Ubit.toType(Cardinal.of(sumWidth).toType())
-            Messages.TYPE_MISMATCH.on(typeConstraint.callExpression, typeConstraint.callExpression.type, actualType)
-        }
-    }
-
-    private fun checkReplicationTypeConstraint(typeConstraint: ReplicationTypeConstraint) {
-        val expressionWidth = typeConstraint.callExpression.type.asBitWidth(typeConstraint.callExpression)
-        val valueArgumentWidth = typeConstraint.callExpression.valueArguments[0]
-            .let { it.type.getWidth(it) }
-        val typeArgumentWidth = typeConstraint.callExpression
-            .typeArguments[0].asCardinalValue(typeConstraint.callExpression)
-        if (expressionWidth != valueArgumentWidth * typeArgumentWidth) {
-            val actualType = Core.Vk.C_Ubit.toType(
-                Cardinal.of(valueArgumentWidth * typeArgumentWidth).toType()
-            )
-            Messages.TYPE_MISMATCH.on(typeConstraint.callExpression, typeConstraint.callExpression.type, actualType)
         }
     }
 }

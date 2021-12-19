@@ -23,8 +23,8 @@ import io.verik.compiler.ast.element.sv.EReplicationExpression
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
-import io.verik.compiler.resolve.ConcatenationTypeConstraint
-import io.verik.compiler.resolve.ReplicationTypeConstraint
+import io.verik.compiler.resolve.SpecialTypeConstraint
+import io.verik.compiler.resolve.SpecialTypeConstraintKind
 import io.verik.compiler.resolve.TypeConstraint
 
 object CoreVkMisc : CoreScope(CorePackage.VK) {
@@ -32,7 +32,7 @@ object CoreVkMisc : CoreScope(CorePackage.VK) {
     val F_cat_Any_Any = object : TransformableCoreFunctionDeclaration(parent, "cat", "fun cat(Any, vararg Any)") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
-            return listOf(ConcatenationTypeConstraint(callExpression))
+            return listOf(SpecialTypeConstraint(callExpression, SpecialTypeConstraintKind.CAT))
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
@@ -43,7 +43,7 @@ object CoreVkMisc : CoreScope(CorePackage.VK) {
     val F_rep_Any = object : TransformableCoreFunctionDeclaration(parent, "rep", "fun rep(Any)") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
-            return listOf(ReplicationTypeConstraint(callExpression))
+            return listOf(SpecialTypeConstraint(callExpression, SpecialTypeConstraintKind.REP))
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {

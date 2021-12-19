@@ -22,6 +22,7 @@ import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.Reference
+import io.verik.compiler.core.common.Cardinal
 import io.verik.compiler.core.common.CardinalConstantDeclaration
 import io.verik.compiler.core.common.CardinalDeclaration
 import io.verik.compiler.core.common.CardinalUnresolvedDeclaration
@@ -99,11 +100,25 @@ class Type(
         }
     }
 
-    fun getWidth(element: EElement): Int {
+    fun getWidthAsType(element: EElement): Type {
+        return when (reference) {
+            Core.Kt.C_Boolean -> Cardinal.of(1).toType()
+            Core.Vk.C_Ubit, Core.Vk.C_Sbit -> arguments[0].copy()
+            else -> {
+                Messages.TYPE_NO_WIDTH.on(element, this)
+                Cardinal.of(0).toType()
+            }
+        }
+    }
+
+    fun getWidthAsInt(element: EElement): Int {
         return when (reference) {
             Core.Kt.C_Boolean -> 1
             Core.Vk.C_Ubit, Core.Vk.C_Sbit -> asBitWidth(element)
-            else -> Messages.INTERNAL_ERROR.on(element, "Unable to get width of type: $this")
+            else -> {
+                Messages.TYPE_NO_WIDTH.on(element, this)
+                0
+            }
         }
     }
 

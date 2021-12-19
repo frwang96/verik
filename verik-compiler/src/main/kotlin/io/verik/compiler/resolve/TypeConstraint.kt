@@ -39,16 +39,13 @@ class BinaryTypeConstraint(
     val kind: BinaryTypeConstraintKind
 ) : TypeConstraint()
 
+class SpecialTypeConstraint(
+    val callExpression: EKtCallExpression,
+    val kind: SpecialTypeConstraintKind
+) : TypeConstraint()
+
 class ComparisonTypeConstraint(
     val inner: TypeAdapter,
     val outer: TypeAdapter,
     val kind: ComparisonTypeConstraintKind
-) : TypeConstraint()
-
-class ConcatenationTypeConstraint(
-    val callExpression: EKtCallExpression
-) : TypeConstraint()
-
-class ReplicationTypeConstraint(
-    val callExpression: EKtCallExpression
 ) : TypeConstraint()
