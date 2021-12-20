@@ -43,4 +43,25 @@ class Int private constructor() {
     operator fun times(other: Int): Int {
         throw IllegalArgumentException()
     }
+
+    /**
+     * Shifts this value left by the [bitCount] number of bits.
+     */
+    infix fun shl(bitCount: Int): Int {
+        throw IllegalArgumentException()
+    }
+
+    /**
+     * Shifts this value right by the [bitCount] number of bits, filling the leftmost bits with copies of the sign bit.
+     */
+    infix fun shr(bitCount: Int): Int {
+        throw IllegalArgumentException()
+    }
+
+    /**
+     * Shifts this value right by the [bitCount] number of bits, filling the leftmost bits with zeros.
+     */
+    infix fun ushr(bitCount: Int): Int {
+        throw IllegalArgumentException()
+    }
 }

@@ -72,4 +72,10 @@ object CoreKtInt : CoreScope(Core.Kt.C_Int) {
             } else null
         }
     }
+
+    val F_shl_Int = BinaryCoreFunctionDeclaration(parent, "shl", "fun shl(Int)", SvBinaryOperatorKind.LTLT)
+
+    val F_shr_Int = BinaryCoreFunctionDeclaration(parent, "shr", "fun shr(Int)", SvBinaryOperatorKind.GTGTGT)
+
+    val F_ushr_Int = BinaryCoreFunctionDeclaration(parent, "ushr", "fun ushr(Int)", SvBinaryOperatorKind.GTGT)
 }

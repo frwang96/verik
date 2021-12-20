@@ -45,4 +45,28 @@ internal class CoreVkMiscTest : CoreDeclarationTest() {
             """.trimIndent()
         )
     }
+
+    @Test
+    fun `serialize log exp`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Vk.F_log_Int,
+                Core.Vk.F_exp_Int
+            ),
+            """
+                var x = 1
+                var y = 0
+                fun f() {
+                    y = log(x)
+                    y = exp(x)
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    y = ${'$'}clog2(x);
+                    y = 1 << x;
+                endfunction : f
+            """.trimIndent()
+        )
+    }
 }

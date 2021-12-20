@@ -38,6 +38,7 @@ object Target {
     val F_display = TargetSystem.F_display
     val F_write = TargetSystem.F_write
     val F_sformatf = TargetSystem.F_sformatf
+    val F_clog2 = TargetSystem.F_clog2
     val F_random = TargetSystem.F_random
     val F_urandom = TargetSystem.F_urandom
     val F_urandom_range = TargetSystem.F_urandom_range

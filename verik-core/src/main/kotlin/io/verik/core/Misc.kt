@@ -75,14 +75,14 @@ fun <N : `*`> min(value: Ubit<N>, vararg additionalValues: Ubit<N>): Ubit<N> {
 }
 
 /**
- * (UNIMPLEMENTED) Returns the ceiling logarithm base two of [value].
+ * Returns the ceiling logarithm base two of [value].
  */
 fun log(value: Int): Int {
     throw VerikException()
 }
 
 /**
- * (UNIMPLEMENTED) Returns the exponential base two of [value].
+ * Returns the exponential base two of [value].
  */
 fun exp(value: Int): Int {
     throw VerikException()

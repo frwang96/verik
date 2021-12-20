@@ -26,6 +26,7 @@ object TargetSystem : TargetScope(TargetPackage) {
     val F_display = PrimitiveTargetFunctionDeclaration(parent, "\$display")
     val F_write = PrimitiveTargetFunctionDeclaration(parent, "\$write")
     val F_sformatf = PrimitiveTargetFunctionDeclaration(parent, "\$sformatf")
+    val F_clog2 = PrimitiveTargetFunctionDeclaration(parent, "\$clog2")
     val F_random = PrimitiveTargetFunctionDeclaration(parent, "\$random")
     val F_urandom = PrimitiveTargetFunctionDeclaration(parent, "\$urandom")
     val F_urandom_range = PrimitiveTargetFunctionDeclaration(parent, "\$urandom_range")
