@@ -57,19 +57,19 @@ object TargetSerializerStage : ProjectStage() {
         val compositeTargets = targetSerializationEntry.compositeTargets
         if (targetClassDeclaration in compositeTargetSet) {
             targetSourceBuilder.appendLine()
-            targetSourceBuilder.appendLine(targetClassDeclaration.prolog)
+            targetSourceBuilder.appendLine(targetClassDeclaration.contentProlog)
             targetSourceBuilder.indent {
                 targetSourceBuilder.appendLine()
-                targetSourceBuilder.appendLine(targetClassDeclaration.content)
+                targetSourceBuilder.appendLine(targetClassDeclaration.contentBody)
                 compositeTargets.forEach {
                     if (it in compositeTargetSet) {
                         targetSourceBuilder.appendLine()
-                        targetSourceBuilder.appendLine(it.content)
+                        targetSourceBuilder.appendLine(it.contentBody)
                     }
                 }
                 targetSourceBuilder.appendLine()
             }
-            targetSourceBuilder.appendLine(targetClassDeclaration.epilog)
+            targetSourceBuilder.appendLine(targetClassDeclaration.contentEpilog)
         }
     }
 

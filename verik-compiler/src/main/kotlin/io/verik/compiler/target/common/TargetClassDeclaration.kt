@@ -34,9 +34,9 @@ abstract class PrimitiveTargetClassDeclaration(
 class CompositeTargetClassDeclaration(
     override val parent: TargetDeclaration,
     override var name: String,
-    val prolog: String,
-    override val content: String,
-    val epilog: String
+    override val contentProlog: String,
+    override val contentBody: String,
+    override val contentEpilog: String
 ) : TargetClassDeclaration(), CompositeTarget {
 
     override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
