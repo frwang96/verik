@@ -26,7 +26,7 @@ class Option<X : `?`, C : Component>(instantiator: () -> C) : Component() {
     /**
      * (UNIMPLEMENTED) The instantiated component.
      */
-    val option: C by lazy<C> {
+    val it: C by lazy<C> {
         throw VerikException()
     }
 }

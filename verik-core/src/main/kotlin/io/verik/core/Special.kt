@@ -164,13 +164,13 @@ fun <T> fill1(): T {
 /**
  * (UNIMPLEMENTED) Returns a value of type [T] with all bits set to X.
  */
-fun <T> fillx(): T {
+fun <T> fillX(): T {
     throw VerikException()
 }
 
 /**
  * (UNIMPLEMENTED) Returns a value of type [T] with all bits set to Z.
  */
-fun <T> fillz(): T {
+fun <T> fillZ(): T {
     throw VerikException()
 }
