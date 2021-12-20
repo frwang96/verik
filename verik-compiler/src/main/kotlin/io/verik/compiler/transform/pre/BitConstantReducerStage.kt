@@ -25,15 +25,15 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
-object BitConstantTransformerStage : ProjectStage() {
+object BitConstantReducerStage : ProjectStage() {
 
     override val checkNormalization = true
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.project.accept(BitConstantTransformerVisitor)
+        projectContext.project.accept(BitConstantReducerVisitor)
     }
 
-    private object BitConstantTransformerVisitor : TreeVisitor() {
+    private object BitConstantReducerVisitor : TreeVisitor() {
 
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)

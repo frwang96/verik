@@ -26,8 +26,7 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.CoreDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.StageSequencer
-import io.verik.compiler.serialize.source.SourceSerializerStage
-import io.verik.compiler.transform.pre.ConstantExpressionTransformerStage
+import io.verik.compiler.main.StageType
 import org.intellij.lang.annotations.Language
 
 abstract class CoreDeclarationTest : BaseTest() {
@@ -39,13 +38,12 @@ abstract class CoreDeclarationTest : BaseTest() {
     ) {
         val projectContext = getProjectContext(content)
         val stageSequence = StageSequencer.getStageSequence()
-        stageSequence.stages.forEach {
-            if (it is ConstantExpressionTransformerStage)
-                checkCoreDeclarations(coreDeclarations, projectContext)
-            if (it is SourceSerializerStage)
-                projectContext.project.accept(PropertyEliminatorVisitor)
-            it.accept(projectContext)
-        }
+        stageSequence.processUntil(projectContext, StageType.PRE_TRANSFORM)
+        checkCoreDeclarations(coreDeclarations, projectContext)
+        stageSequence.processUntil(projectContext, StageType.POST_CHECK)
+        projectContext.project.accept(PropertyEliminatorVisitor)
+        stageSequence.processAll(projectContext)
+
         val basicPackageTextFiles = projectContext.outputContext.basicPackageTextFiles
         val rootPackageTextFiles = projectContext.outputContext.rootPackageTextFiles
         when {

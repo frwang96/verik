@@ -20,7 +20,7 @@ import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
-internal class BitConstantTransformerStageTest : BaseTest() {
+internal class BitConstantReducerStageTest : BaseTest() {
 
     @Test
     fun `constant decimal`() {
@@ -28,7 +28,7 @@ internal class BitConstantTransformerStageTest : BaseTest() {
             """
                 var x = u(255)
             """.trimIndent(),
-            BitConstantTransformerStage::class,
+            BitConstantReducerStage::class,
             "ConstantExpression(Ubit<`8`>, 8'hff)"
         ) { it.findExpression("x") }
     }
@@ -39,7 +39,7 @@ internal class BitConstantTransformerStageTest : BaseTest() {
             """
                 var x = u(0x00_0000_00ff)
             """.trimIndent(),
-            BitConstantTransformerStage::class,
+            BitConstantReducerStage::class,
             "ConstantExpression(Ubit<`40`>, 40'h00_0000_00ff)"
         ) { it.findExpression("x") }
     }
@@ -50,7 +50,7 @@ internal class BitConstantTransformerStageTest : BaseTest() {
             """
                 var x = u("4'b0011")
             """.trimIndent(),
-            BitConstantTransformerStage::class,
+            BitConstantReducerStage::class,
             "ConstantExpression(Ubit<`4`>, 4'h3)"
         ) { it.findExpression("x") }
     }
@@ -61,7 +61,7 @@ internal class BitConstantTransformerStageTest : BaseTest() {
             """
                 var x = u("10'h3ff")
             """.trimIndent(),
-            BitConstantTransformerStage::class,
+            BitConstantReducerStage::class,
             "ConstantExpression(Ubit<`10`>, 10'h3ff)"
         ) { it.findExpression("x") }
     }
@@ -72,7 +72,7 @@ internal class BitConstantTransformerStageTest : BaseTest() {
             """
                 var x = s("4'b0011")
             """.trimIndent(),
-            BitConstantTransformerStage::class,
+            BitConstantReducerStage::class,
             "ConstantExpression(Sbit<`4`>, 4'sh3)"
         ) { it.findExpression("x") }
     }
@@ -83,7 +83,7 @@ internal class BitConstantTransformerStageTest : BaseTest() {
             """
                 var x = s("10'h3ff")
             """.trimIndent(),
-            BitConstantTransformerStage::class,
+            BitConstantReducerStage::class,
             "ConstantExpression(Sbit<`10`>, 10'sh3ff)"
         ) { it.findExpression("x") }
     }

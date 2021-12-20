@@ -24,15 +24,15 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
-object ConstantExpressionTransformerStage : ProjectStage() {
+object ConstantExpressionReducerStage : ProjectStage() {
 
     override val checkNormalization = true
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.project.accept(ConstantExpressionTransformerVisitor)
+        projectContext.project.accept(ConstantExpressionReducerVisitor)
     }
 
-    private object ConstantExpressionTransformerVisitor : TreeVisitor() {
+    private object ConstantExpressionReducerVisitor : TreeVisitor() {
 
         override fun visitConstantExpression(constantExpression: EConstantExpression) {
             super.visitConstantExpression(constantExpression)

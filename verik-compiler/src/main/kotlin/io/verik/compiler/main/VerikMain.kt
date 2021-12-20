@@ -37,7 +37,7 @@ object VerikMain {
         try {
             val projectContext = ProjectContext(config)
             readFiles(projectContext)
-            stageSequence.process(projectContext)
+            stageSequence.processAll(projectContext)
             writeFiles(projectContext)
         } catch (exception: Exception) {
             if (exception !is VerikException) {

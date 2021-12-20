@@ -21,36 +21,64 @@ import kotlin.reflect.KClass
 
 class StageSequence {
 
-    val stages = ArrayList<ProjectStage>()
+    private val stages = HashMap<StageType, ArrayList<ProjectStage>>()
 
-    fun add(stage: ProjectStage) {
+    init {
+        StageType.values().forEach {
+            stages[it] = ArrayList()
+        }
+    }
+
+    fun add(stageType: StageType, stage: ProjectStage) {
         if (contains(stage::class)) {
             val stageName = stage::class.simpleName
             throw IllegalArgumentException("Stage has already been added to the stage sequence: $stageName")
         }
-        stages.add(stage)
+        stages[stageType]!!.add(stage)
     }
 
-    fun addFlush() {
-        stages.add(FlushStage)
-    }
-
-    fun <S : ProjectStage> contains(stageClass: KClass<S>): Boolean {
-        return stages.any { it::class == stageClass }
-    }
-
-    fun process(projectContext: ProjectContext) {
-        stages.forEach {
-            it.accept(projectContext)
+    fun processAll(projectContext: ProjectContext) {
+        StageType.values().forEach { stageType ->
+            stages[stageType]!!.forEach {
+                processStage(projectContext, it)
+            }
+            if (stageType.flushAfter()) {
+                MessageCollector.messageCollector.flush()
+            }
         }
     }
 
-    private object FlushStage : ProjectStage() {
+    fun <S : ProjectStage> processUntil(projectContext: ProjectContext, stageClass: KClass<S>) {
+        assert(contains(stageClass))
+        StageType.values().forEach { stageType ->
+            stages[stageType]!!.forEach {
+                processStage(projectContext, it)
+                if (it::class == stageClass)
+                    return
+            }
+        }
+    }
 
-        override val checkNormalization = false
+    fun processUntil(projectContext: ProjectContext, stageType: StageType) {
+        StageType.values().forEach { currentStageType ->
+            stages[currentStageType]!!.forEach {
+                processStage(projectContext, it)
+            }
+            if (currentStageType == stageType)
+                return
+        }
+    }
 
-        override fun process(projectContext: ProjectContext) {
-            MessageCollector.messageCollector.flush()
+    private fun <S : ProjectStage> contains(stageClass: KClass<S>): Boolean {
+        return StageType.values().any { stageType ->
+            stages[stageType]!!.any { it::class == stageClass }
+        }
+    }
+
+    private fun processStage(projectContext: ProjectContext, stage: ProjectStage) {
+        if (stage !in projectContext.processedProjectStages) {
+            stage.accept(projectContext)
+            projectContext.processedProjectStages.add(stage)
         }
     }
 }

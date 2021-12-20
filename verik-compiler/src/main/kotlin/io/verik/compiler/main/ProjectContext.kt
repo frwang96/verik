@@ -27,6 +27,7 @@ class ProjectContext(
 ) {
 
     var sourceSetContexts: List<SourceSetContext> = listOf()
+    val processedProjectStages = HashSet<ProjectStage>()
     lateinit var kotlinCoreEnvironment: KotlinCoreEnvironment
     lateinit var bindingContext: BindingContext
     lateinit var castContext: CastContext

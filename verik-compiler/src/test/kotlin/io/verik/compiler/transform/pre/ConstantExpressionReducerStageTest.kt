@@ -20,7 +20,7 @@ import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
-internal class ConstantExpressionTransformerStageTest : BaseTest() {
+internal class ConstantExpressionReducerStageTest : BaseTest() {
 
     @Test
     fun `boolean false`() {
@@ -28,7 +28,7 @@ internal class ConstantExpressionTransformerStageTest : BaseTest() {
             """
                 var x = false
             """.trimIndent(),
-            ConstantExpressionTransformerStage::class,
+            ConstantExpressionReducerStage::class,
             "ConstantExpression(Boolean, 1'b0)"
         ) { it.findExpression("x") }
     }
@@ -39,7 +39,7 @@ internal class ConstantExpressionTransformerStageTest : BaseTest() {
             """
                 var x = 1_2
             """.trimIndent(),
-            ConstantExpressionTransformerStage::class,
+            ConstantExpressionReducerStage::class,
             "ConstantExpression(Int, 12)"
         ) { it.findExpression("x") }
     }
@@ -50,7 +50,7 @@ internal class ConstantExpressionTransformerStageTest : BaseTest() {
             """
                 var x = 0xaA_bB
             """.trimIndent(),
-            ConstantExpressionTransformerStage::class,
+            ConstantExpressionReducerStage::class,
             "ConstantExpression(Int, 43707)"
         ) { it.findExpression("x") }
     }
@@ -61,7 +61,7 @@ internal class ConstantExpressionTransformerStageTest : BaseTest() {
             """
                 var x = 0b0000_1111
             """.trimIndent(),
-            ConstantExpressionTransformerStage::class,
+            ConstantExpressionReducerStage::class,
             "ConstantExpression(Int, 15)"
         ) { it.findExpression("x") }
     }
