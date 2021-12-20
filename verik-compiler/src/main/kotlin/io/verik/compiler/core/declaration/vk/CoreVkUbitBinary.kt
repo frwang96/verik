@@ -61,6 +61,18 @@ object CoreVkUbitBinary : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
+    val F_plus_Sbit = object : BinaryCoreFunctionDeclaration(
+        parent,
+        "plus",
+        "fun plus(Sbit)",
+        SvBinaryOperatorKind.PLUS
+    ) {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return F_plus_Ubit.getTypeConstraints(callExpression)
+        }
+    }
+
     val F_add_Ubit = object : BinaryCoreFunctionDeclaration(
         parent,
         "add",

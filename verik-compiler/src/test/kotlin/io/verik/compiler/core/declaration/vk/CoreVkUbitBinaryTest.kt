@@ -27,6 +27,7 @@ internal class CoreVkUbitBinaryTest : CoreDeclarationTest() {
         driveCoreDeclarationTest(
             listOf(
                 Core.Vk.Ubit.F_plus_Ubit,
+                Core.Vk.Ubit.F_plus_Sbit,
                 Core.Vk.Ubit.F_add_Ubit,
                 Core.Vk.Ubit.F_minus_Ubit
             ),
@@ -34,14 +35,16 @@ internal class CoreVkUbitBinaryTest : CoreDeclarationTest() {
                 var x = u(0b0)
                 var y = u(0b00)
                 fun f() {
-                    x = x + x
+                    x = x + u(0b0)
+                    x = x + s(0b0)
                     y = x add x
                     x = x - x
                 }
             """.trimIndent(),
             """
                 function automatic void f();
-                    x = x + x;
+                    x = x + 1'h0;
+                    x = x + 1'sh0;
                     y = x + x;
                     x = x - x;
                 endfunction : f

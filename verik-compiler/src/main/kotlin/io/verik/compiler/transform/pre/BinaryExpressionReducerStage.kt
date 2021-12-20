@@ -32,11 +32,6 @@ object BinaryExpressionReducerStage : ProjectStage() {
     private val referenceMap = HashMap<ReducerEntry, CoreFunctionDeclaration>()
 
     init {
-        // TODO handle short circuited logical operations separately
-        referenceMap[ReducerEntry(Core.Kt.C_Boolean, Core.Kt.C_Boolean, KtBinaryOperatorKind.ANDAND)] =
-            Core.Kt.Boolean.F_and_Boolean
-        referenceMap[ReducerEntry(Core.Kt.C_Boolean, Core.Kt.C_Boolean, KtBinaryOperatorKind.OROR)] =
-            Core.Kt.Boolean.F_or_Boolean
         referenceMap[ReducerEntry(Core.Kt.C_Int, Core.Kt.C_Int, KtBinaryOperatorKind.MUL)] =
             Core.Kt.Int.F_times_Int
         referenceMap[ReducerEntry(Core.Kt.C_Int, Core.Kt.C_Int, KtBinaryOperatorKind.PLUS)] =
@@ -45,6 +40,8 @@ object BinaryExpressionReducerStage : ProjectStage() {
             Core.Kt.Int.F_minus_Int
         referenceMap[ReducerEntry(Core.Vk.C_Ubit, Core.Vk.C_Ubit, KtBinaryOperatorKind.PLUS)] =
             Core.Vk.Ubit.F_plus_Ubit
+        referenceMap[ReducerEntry(Core.Vk.C_Ubit, Core.Vk.C_Sbit, KtBinaryOperatorKind.PLUS)] =
+            Core.Vk.Ubit.F_plus_Sbit
         referenceMap[ReducerEntry(Core.Vk.C_Ubit, Core.Vk.C_Ubit, KtBinaryOperatorKind.MINUS)] =
             Core.Vk.Ubit.F_minus_Ubit
         referenceMap[ReducerEntry(Core.Vk.C_Ubit, Core.Vk.C_Ubit, KtBinaryOperatorKind.MUL)] =

@@ -23,7 +23,10 @@ enum class SvUnaryOperatorKind {
     PRE_INC,
     PRE_DEC,
     POST_INC,
-    POST_DEC;
+    POST_DEC,
+    AND,
+    OR,
+    XOR;
 
     fun isIncrementOrDecrement(): Boolean {
         return this in listOf(PRE_INC, PRE_DEC, POST_INC, POST_DEC)
@@ -36,6 +39,9 @@ enum class SvUnaryOperatorKind {
             MINUS -> "-"
             PRE_INC -> "++"
             PRE_DEC -> "--"
+            AND -> "&"
+            OR -> "|"
+            XOR -> "^"
             else -> null
         }
     }

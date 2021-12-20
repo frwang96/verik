@@ -22,18 +22,20 @@ import io.verik.compiler.ast.property.KtUnaryOperatorKind
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreClassDeclaration
-import io.verik.compiler.core.common.UnaryCoreFunctionDeclaration
+import io.verik.compiler.core.common.CoreFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
 object UnaryExpressionReducerStage : ProjectStage() {
 
-    private val referenceMap = HashMap<ReducerEntry, UnaryCoreFunctionDeclaration>()
+    private val referenceMap = HashMap<ReducerEntry, CoreFunctionDeclaration>()
 
     init {
         referenceMap[ReducerEntry(Core.Kt.C_Boolean, KtUnaryOperatorKind.EXCL)] = Core.Kt.Boolean.F_not
+        referenceMap[ReducerEntry(Core.Vk.C_Ubit, KtUnaryOperatorKind.PLUS)] = Core.Vk.Ubit.F_unaryPlus
         referenceMap[ReducerEntry(Core.Vk.C_Ubit, KtUnaryOperatorKind.MINUS)] = Core.Vk.Ubit.F_unaryMinus
+        referenceMap[ReducerEntry(Core.Vk.C_Ubit, KtUnaryOperatorKind.EXCL)] = Core.Vk.Ubit.F_not
     }
 
     override fun process(projectContext: ProjectContext) {
@@ -60,8 +62,8 @@ object UnaryExpressionReducerStage : ProjectStage() {
                             unaryExpression.type,
                             reference,
                             unaryExpression.expression,
-                            arrayListOf(),
-                            arrayListOf()
+                            ArrayList(),
+                            ArrayList()
                         )
                     )
                     return

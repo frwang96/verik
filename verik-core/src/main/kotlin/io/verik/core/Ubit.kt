@@ -38,7 +38,7 @@ class Ubit<N : `*`> private constructor() {
     }
 
     /**
-     * (UNIMPLEMENTED) Returns this value.
+     * Returns this value.
      */
     operator fun unaryPlus(): Ubit<`*`> {
         throw VerikException()
@@ -130,7 +130,7 @@ class Ubit<N : `*`> private constructor() {
     }
 
     /**
-     * (UNIMPLEMENTED) Add specified [value] to this value without bit growth `Ubit<N> + Sbit<M> = Ubit<MAX<N, M>>`.
+     * Add specified [value] to this value without bit growth `Ubit<N> + Sbit<M> = Ubit<MAX<N, M>>`.
      */
     operator fun plus(value: Sbit<`*`>): Ubit<`*`> {
         throw VerikException()
@@ -301,21 +301,21 @@ class Ubit<N : `*`> private constructor() {
     }
 
     /**
-     * (UNIMPLEMENTED) Reduce bits with and.
+     * Reduce bits with and.
      */
     fun reduceAnd(): Boolean {
         throw VerikException()
     }
 
     /**
-     * (UNIMPLEMENTED) Reduce bits with or.
+     * Reduce bits with or.
      */
     fun reduceOr(): Boolean {
         throw VerikException()
     }
 
     /**
-     * (UNIMPLEMENTED) Reduce bits with xor.
+     * Reduce bits with xor.
      */
     fun reduceXor(): Boolean {
         throw VerikException()

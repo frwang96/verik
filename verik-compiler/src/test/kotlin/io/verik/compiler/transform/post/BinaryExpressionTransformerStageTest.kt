@@ -45,4 +45,17 @@ internal class BinaryExpressionTransformerStageTest : BaseTest() {
             "SvBinaryExpression(Boolean, *, *, LT)"
         ) { it.findExpression("x") }
     }
+
+    @Test
+    fun `transform logical and`() {
+        driveElementTest(
+            """
+                var x = false
+                var y = false
+                var z = x && y
+            """.trimIndent(),
+            BinaryExpressionTransformerStage::class,
+            "SvBinaryExpression(Boolean, *, *, ANDAND)"
+        ) { it.findExpression("z") }
+    }
 }

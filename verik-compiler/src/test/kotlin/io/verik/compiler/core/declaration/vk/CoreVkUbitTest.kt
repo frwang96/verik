@@ -23,17 +23,19 @@ import org.junit.jupiter.api.Test
 internal class CoreVkUbitTest : CoreDeclarationTest() {
 
     @Test
-    fun `serialize unaryMinus`() {
+    fun `serialize unaryPlus unaryMinus`() {
         driveCoreDeclarationTest(
             listOf(Core.Vk.Ubit.F_unaryMinus),
             """
                 var x = u(0x0)
                 fun f() {
+                    x = +x
                     x = -x
                 }
             """.trimIndent(),
             """
                 function automatic void f();
+                    x = x;
                     x = -x;
                 endfunction : f
             """.trimIndent()
@@ -77,6 +79,27 @@ internal class CoreVkUbitTest : CoreDeclarationTest() {
     }
 
     @Test
+    fun `serialize not`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Vk.Ubit.F_not
+            ),
+            """
+                var x = u(0x0)
+                var y = false
+                fun f() {
+                    y = !x
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    y = !x;
+                endfunction : f
+            """.trimIndent()
+        )
+    }
+
+    @Test
     fun `serialize invert reverse`() {
         driveCoreDeclarationTest(
             listOf(
@@ -94,6 +117,33 @@ internal class CoreVkUbitTest : CoreDeclarationTest() {
                 function automatic void f();
                     x = ~x;
                     x = {<<{ x }};
+                endfunction : f
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `serialize reduceAnd reduceOr reduceXor`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Vk.Ubit.F_reduceAnd,
+                Core.Vk.Ubit.F_reduceOr,
+                Core.Vk.Ubit.F_reduceXor
+            ),
+            """
+                var x = u(0x00)
+                var y = false
+                fun f() {
+                    y = x.reduceAnd()
+                    y = x.reduceOr()
+                    y = x.reduceXor()
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    y = &x;
+                    y = |x;
+                    y = ^x;
                 endfunction : f
             """.trimIndent()
         )
