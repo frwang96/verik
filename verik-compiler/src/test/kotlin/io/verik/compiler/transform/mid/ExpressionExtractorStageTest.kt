@@ -20,7 +20,7 @@ import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findStatements
 import org.junit.jupiter.api.Test
 
-internal class SubexpressionExtractorStageTest : BaseTest() {
+internal class ExpressionExtractorStageTest : BaseTest() {
 
     @Test
     fun `streaming expression`() {
@@ -31,7 +31,7 @@ internal class SubexpressionExtractorStageTest : BaseTest() {
                     x = x.reverse() + u(0)
                 }
             """.trimIndent(),
-            SubexpressionExtractorStage::class,
+            ExpressionExtractorStage::class,
             """
                 [
                     PropertyStatement(Unit, SvProperty(<tmp>, Ubit<`1`>, StreamingExpression(*), 0, 0, 0)),

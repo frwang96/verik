@@ -25,6 +25,7 @@ enum class StageType {
     RESOLVE,
     INTERPRET,
     MID_TRANSFORM,
+    REORDER,
     POST_TRANSFORM,
     POST_CHECK,
     SERIALIZE;
@@ -45,6 +46,7 @@ enum class StageType {
             RESOLVE,
             INTERPRET,
             MID_TRANSFORM,
+            REORDER,
             POST_TRANSFORM,
         )
     }

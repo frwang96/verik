@@ -25,6 +25,7 @@ import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.common.ExpressionCopier
+import io.verik.compiler.common.ExpressionExtractor
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
@@ -34,14 +35,14 @@ import io.verik.compiler.target.common.Target
 object CastTransformerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        val subexpressionExtractor = SubexpressionExtractor()
-        val castTransformerVisitor = CastTransformerVisitor(subexpressionExtractor)
+        val expressionExtractor = ExpressionExtractor()
+        val castTransformerVisitor = CastTransformerVisitor(expressionExtractor)
         projectContext.project.accept(castTransformerVisitor)
-        subexpressionExtractor.flush()
+        expressionExtractor.flush()
     }
 
     private class CastTransformerVisitor(
-        private val subexpressionExtractor: SubexpressionExtractor
+        private val expressionExtractor: ExpressionExtractor
     ) : TreeVisitor() {
 
         override fun visitIsExpression(isExpression: EIsExpression) {
@@ -70,9 +71,9 @@ object CastTransformerStage : ProjectStage() {
                     ArrayList(),
                     ArrayList()
                 )
-                subexpressionExtractor.extract(isExpression, negatedCallExpression, listOf(propertyStatement))
+                expressionExtractor.extract(isExpression, negatedCallExpression, listOf(propertyStatement))
             } else {
-                subexpressionExtractor.extract(isExpression, callExpression, listOf(propertyStatement))
+                expressionExtractor.extract(isExpression, callExpression, listOf(propertyStatement))
             }
         }
 
@@ -127,7 +128,7 @@ object CastTransformerStage : ProjectStage() {
                 fatalCallExpression,
                 null
             )
-            subexpressionExtractor.extract(
+            expressionExtractor.extract(
                 asExpression,
                 ExpressionCopier.copy(referenceExpression),
                 listOf(propertyStatement, ifExpression)

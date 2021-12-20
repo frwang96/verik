@@ -25,6 +25,7 @@ import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
+import io.verik.compiler.common.ExpressionExtractor
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
@@ -33,14 +34,14 @@ import io.verik.compiler.main.ProjectStage
 object IfAndWhenExpressionUnlifterStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        val subexpressionExtractor = SubexpressionExtractor()
-        val ifAndWhenExpressionUnlifterVisitor = IfAndWhenExpressionUnlifterVisitor(subexpressionExtractor)
+        val expressionExtractor = ExpressionExtractor()
+        val ifAndWhenExpressionUnlifterVisitor = IfAndWhenExpressionUnlifterVisitor(expressionExtractor)
         projectContext.project.accept(ifAndWhenExpressionUnlifterVisitor)
-        subexpressionExtractor.flush()
+        expressionExtractor.flush()
     }
 
     private class IfAndWhenExpressionUnlifterVisitor(
-        private val subexpressionExtractor: SubexpressionExtractor
+        private val expressionExtractor: ExpressionExtractor
     ) : TreeVisitor() {
 
         override fun visitIfExpression(ifExpression: EIfExpression) {
@@ -64,7 +65,7 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
                     property
                 )
                 val ifExpressionReplacement = getIfExpressionReplacement(ifExpression, property)
-                subexpressionExtractor.extract(
+                expressionExtractor.extract(
                     ifExpression,
                     referenceExpression,
                     listOf(propertyStatement, ifExpressionReplacement)
@@ -93,7 +94,7 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
                     property
                 )
                 val whenExpressionReplacement = getWhenExpressionReplacement(whenExpression, property)
-                subexpressionExtractor.extract(
+                expressionExtractor.extract(
                     whenExpression,
                     referenceExpression,
                     listOf(propertyStatement, whenExpressionReplacement)

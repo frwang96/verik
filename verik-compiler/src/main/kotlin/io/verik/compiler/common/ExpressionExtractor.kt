@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.mid
+package io.verik.compiler.common
 
 import io.verik.compiler.ast.element.common.EAbstractClass
 import io.verik.compiler.ast.element.common.EAbstractFunction
@@ -24,23 +24,23 @@ import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.message.Messages
 
-class SubexpressionExtractor {
+class ExpressionExtractor {
 
-    private val entries = ArrayList<SubexpressionExtractorEntry>()
+    private val entries = ArrayList<ExpressionExtractorEntry>()
 
     fun extract(
         oldExpression: EExpression,
         newExpression: EExpression,
         extractedExpressions: List<EExpression>
     ) {
-        entries.add(SubexpressionExtractorEntry(oldExpression, newExpression, extractedExpressions))
+        entries.add(ExpressionExtractorEntry(oldExpression, newExpression, extractedExpressions))
     }
 
     fun flush() {
         entries.forEach { flushEntry(it) }
     }
 
-    private fun flushEntry(entry: SubexpressionExtractorEntry) {
+    private fun flushEntry(entry: ExpressionExtractorEntry) {
         var blockExpression = entry.oldExpression.parent
         var blockExpressionChild: EElement = entry.oldExpression
         while (true) {
@@ -68,14 +68,14 @@ class SubexpressionExtractor {
     private fun flushEntry(
         blockExpression: EKtBlockExpression,
         blockExpressionIndex: Int,
-        subexpressionExtractorEntry: SubexpressionExtractorEntry
+        expressionExtractorEntry: ExpressionExtractorEntry
     ) {
-        subexpressionExtractorEntry.extractedExpressions.forEach { it.parent = blockExpression }
-        blockExpression.statements.addAll(blockExpressionIndex, subexpressionExtractorEntry.extractedExpressions)
-        subexpressionExtractorEntry.oldExpression.replace(subexpressionExtractorEntry.newExpression)
+        expressionExtractorEntry.extractedExpressions.forEach { it.parent = blockExpression }
+        blockExpression.statements.addAll(blockExpressionIndex, expressionExtractorEntry.extractedExpressions)
+        expressionExtractorEntry.oldExpression.replace(expressionExtractorEntry.newExpression)
     }
 
-    private data class SubexpressionExtractorEntry(
+    private data class ExpressionExtractorEntry(
         val oldExpression: EExpression,
         val newExpression: EExpression,
         val extractedExpressions: List<EExpression>

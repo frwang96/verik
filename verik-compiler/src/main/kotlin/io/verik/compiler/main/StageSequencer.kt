@@ -46,6 +46,7 @@ import io.verik.compiler.interpret.StructInterpreterStage
 import io.verik.compiler.kotlin.KotlinCompilerAnalyzerStage
 import io.verik.compiler.kotlin.KotlinCompilerParserStage
 import io.verik.compiler.kotlin.KotlinEnvironmentBuilderStage
+import io.verik.compiler.reorder.DeadDeclarationEliminatorStage
 import io.verik.compiler.resolve.TypeCheckerStage
 import io.verik.compiler.resolve.TypeParameterTypeCheckerStage
 import io.verik.compiler.resolve.TypeResolvedCheckerStage
@@ -62,7 +63,7 @@ import io.verik.compiler.transform.mid.CastTransformerStage
 import io.verik.compiler.transform.mid.ComAssignmentTransformerStage
 import io.verik.compiler.transform.mid.ConstantExpressionEvaluatorStage
 import io.verik.compiler.transform.mid.ConstantPropagatorStage
-import io.verik.compiler.transform.mid.DeadDeclarationEliminatorStage
+import io.verik.compiler.transform.mid.ExpressionExtractorStage
 import io.verik.compiler.transform.mid.ForStatementTransformerStage
 import io.verik.compiler.transform.mid.FunctionTransformerStage
 import io.verik.compiler.transform.mid.IfAndWhenExpressionUnlifterStage
@@ -72,7 +73,6 @@ import io.verik.compiler.transform.mid.PropertyStatementReorderStage
 import io.verik.compiler.transform.mid.PropertyTransformerStage
 import io.verik.compiler.transform.mid.StringTemplateExpressionTransformerStage
 import io.verik.compiler.transform.mid.StructLiteralTransformerStage
-import io.verik.compiler.transform.mid.SubexpressionExtractorStage
 import io.verik.compiler.transform.mid.ToStringTransformerStage
 import io.verik.compiler.transform.mid.UninitializedPropertyTransformerStage
 import io.verik.compiler.transform.post.BinaryExpressionTransformerStage
@@ -158,10 +158,11 @@ object StageSequencer {
         stageSequence.add(StageType.MID_TRANSFORM, FunctionTransformerStage)
         stageSequence.add(StageType.MID_TRANSFORM, PropertyTransformerStage)
         stageSequence.add(StageType.MID_TRANSFORM, ConstantExpressionEvaluatorStage)
-        stageSequence.add(StageType.MID_TRANSFORM, SubexpressionExtractorStage)
+        stageSequence.add(StageType.MID_TRANSFORM, ExpressionExtractorStage)
         stageSequence.add(StageType.MID_TRANSFORM, AssignmentTransformerStage)
         stageSequence.add(StageType.MID_TRANSFORM, PropertyStatementReorderStage)
-        stageSequence.add(StageType.MID_TRANSFORM, DeadDeclarationEliminatorStage)
+
+        stageSequence.add(StageType.REORDER, DeadDeclarationEliminatorStage)
 
         stageSequence.add(StageType.POST_TRANSFORM, TypeReferenceTransformerStage)
         stageSequence.add(StageType.POST_TRANSFORM, UnpackedTypeDefinitionTransformerStage)

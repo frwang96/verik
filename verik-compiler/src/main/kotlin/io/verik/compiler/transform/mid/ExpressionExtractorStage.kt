@@ -21,21 +21,22 @@ import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.sv.EStreamingExpression
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.property.ExpressionType
+import io.verik.compiler.common.ExpressionExtractor
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
-object SubexpressionExtractorStage : ProjectStage() {
+object ExpressionExtractorStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        val subexpressionExtractor = SubexpressionExtractor()
-        val subexpressionExtractorVisitor = SubexpressionExtractorVisitor(subexpressionExtractor)
-        projectContext.project.accept(subexpressionExtractorVisitor)
-        subexpressionExtractor.flush()
+        val expressionExtractor = ExpressionExtractor()
+        val expressionExtractorVisitor = ExpressionExtractorVisitor(expressionExtractor)
+        projectContext.project.accept(expressionExtractorVisitor)
+        expressionExtractor.flush()
     }
 
-    private class SubexpressionExtractorVisitor(
-        private val subexpressionExtractor: SubexpressionExtractor
+    private class ExpressionExtractorVisitor(
+        private val expressionExtractor: ExpressionExtractor
     ) : TreeVisitor() {
 
         override fun visitStreamingExpression(streamingExpression: EStreamingExpression) {
@@ -63,7 +64,7 @@ object SubexpressionExtractorStage : ProjectStage() {
                     streamingExpression.location,
                     property
                 )
-                subexpressionExtractor.extract(streamingExpression, referenceExpression, listOf(propertyStatement))
+                expressionExtractor.extract(streamingExpression, referenceExpression, listOf(propertyStatement))
             }
         }
     }
