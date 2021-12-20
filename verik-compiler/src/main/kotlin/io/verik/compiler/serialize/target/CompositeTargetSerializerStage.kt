@@ -24,10 +24,11 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.target.common.CompositeTarget
 import io.verik.compiler.target.common.TargetPackage
-import io.verik.compiler.target.common.TargetSerializationEntry
-import io.verik.compiler.target.common.TargetSerializationSequencer
+import io.verik.compiler.target.serialize.ClassTargetSerializationEntry
+import io.verik.compiler.target.serialize.FunctionTargetSerializationEntry
+import io.verik.compiler.target.serialize.TargetSerializationSequencer
 
-object TargetSerializerStage : ProjectStage() {
+object CompositeTargetSerializerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
         val compositeTargetIndexerVisitor = CompositeTargetIndexerVisitor()
@@ -40,28 +41,44 @@ object TargetSerializerStage : ProjectStage() {
         val targetSourceBuilder = TargetSourceBuilder(projectContext, targetPackageFilePath)
         targetSourceBuilder.appendLine("package ${TargetPackage.name};")
         targetSourceBuilder.indent {
-            val entries = TargetSerializationSequencer.getEntries(projectContext)
-            entries.forEach { serializeClassDeclaration(targetSourceBuilder, compositeTargetSet, it) }
+            val sequence = TargetSerializationSequencer.getSequence(projectContext)
+            sequence.entries.forEach {
+                when (it) {
+                    is FunctionTargetSerializationEntry ->
+                        serializeFunction(it, compositeTargetSet, targetSourceBuilder)
+                    is ClassTargetSerializationEntry ->
+                        serializeClass(it, compositeTargetSet, targetSourceBuilder)
+                }
+            }
         }
         targetSourceBuilder.appendLine()
         targetSourceBuilder.appendLine("endpackage : ${TargetPackage.name}")
         projectContext.outputContext.targetPackageTextFile = targetSourceBuilder.toTextFile()
     }
 
-    private fun serializeClassDeclaration(
-        targetSourceBuilder: TargetSourceBuilder,
+    private fun serializeFunction(
+        entry: FunctionTargetSerializationEntry,
         compositeTargetSet: Set<CompositeTarget>,
-        targetSerializationEntry: TargetSerializationEntry
+        targetSourceBuilder: TargetSourceBuilder
     ) {
-        val targetClassDeclaration = targetSerializationEntry.targetClassDeclaration
-        val compositeTargets = targetSerializationEntry.compositeTargets
-        if (targetClassDeclaration in compositeTargetSet) {
+        if (entry.functionDeclaration in compositeTargetSet) {
             targetSourceBuilder.appendLine()
-            targetSourceBuilder.appendLine(targetClassDeclaration.contentProlog)
+            targetSourceBuilder.appendLine(entry.functionDeclaration.contentBody)
+        }
+    }
+
+    private fun serializeClass(
+        entry: ClassTargetSerializationEntry,
+        compositeTargetSet: Set<CompositeTarget>,
+        targetSourceBuilder: TargetSourceBuilder
+    ) {
+        if (entry.classDeclaration in compositeTargetSet) {
+            targetSourceBuilder.appendLine()
+            targetSourceBuilder.appendLine(entry.classDeclaration.contentProlog)
             targetSourceBuilder.indent {
                 targetSourceBuilder.appendLine()
-                targetSourceBuilder.appendLine(targetClassDeclaration.contentBody)
-                compositeTargets.forEach {
+                targetSourceBuilder.appendLine(entry.classDeclaration.contentBody)
+                entry.functionDeclarations.forEach {
                     if (it in compositeTargetSet) {
                         targetSourceBuilder.appendLine()
                         targetSourceBuilder.appendLine(it.contentBody)
@@ -69,7 +86,7 @@ object TargetSerializerStage : ProjectStage() {
                 }
                 targetSourceBuilder.appendLine()
             }
-            targetSourceBuilder.appendLine(targetClassDeclaration.contentEpilog)
+            targetSourceBuilder.appendLine(entry.classDeclaration.contentEpilog)
         }
     }
 

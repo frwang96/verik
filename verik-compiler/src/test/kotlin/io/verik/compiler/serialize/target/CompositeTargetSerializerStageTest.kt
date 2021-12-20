@@ -19,7 +19,7 @@ package io.verik.compiler.serialize.target
 import io.verik.compiler.test.BaseTest
 import org.junit.jupiter.api.Test
 
-internal class TargetSerializerStageTest : BaseTest() {
+internal class CompositeTargetSerializerStageTest : BaseTest() {
 
     @Test
     fun `target class`() {
