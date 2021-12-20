@@ -30,9 +30,6 @@ import io.verik.compiler.check.post.UntransformedReferenceCheckerStage
 import io.verik.compiler.check.pre.ImportDirectiveCheckerStage
 import io.verik.compiler.check.pre.UnsupportedElementCheckerStage
 import io.verik.compiler.check.pre.UnsupportedModifierCheckerStage
-import io.verik.compiler.compile.KotlinCompilerAnalyzerStage
-import io.verik.compiler.compile.KotlinCompilerParserStage
-import io.verik.compiler.compile.KotlinEnvironmentBuilderStage
 import io.verik.compiler.interpret.AnnotationCheckerStage
 import io.verik.compiler.interpret.BasicClassInterpreterStage
 import io.verik.compiler.interpret.ComponentInstantiationCheckerStage
@@ -46,6 +43,9 @@ import io.verik.compiler.interpret.ModulePortParentResolverStage
 import io.verik.compiler.interpret.PortInstantiationCheckerStage
 import io.verik.compiler.interpret.PropertyInterpreterStage
 import io.verik.compiler.interpret.StructInterpreterStage
+import io.verik.compiler.kotlin.KotlinCompilerAnalyzerStage
+import io.verik.compiler.kotlin.KotlinCompilerParserStage
+import io.verik.compiler.kotlin.KotlinEnvironmentBuilderStage
 import io.verik.compiler.resolve.TypeCheckerStage
 import io.verik.compiler.resolve.TypeParameterTypeCheckerStage
 import io.verik.compiler.resolve.TypeResolvedCheckerStage
@@ -100,13 +100,14 @@ object StageSequencer {
     fun getStageSequence(): StageSequence {
         val stageSequence = StageSequence()
 
-        stageSequence.add(StageType.COMPILE, KotlinEnvironmentBuilderStage)
-        stageSequence.add(StageType.COMPILE, KotlinCompilerParserStage)
-        stageSequence.add(StageType.COMPILE, KotlinCompilerAnalyzerStage)
+        stageSequence.add(StageType.PARSE, KotlinEnvironmentBuilderStage)
+        stageSequence.add(StageType.PARSE, KotlinCompilerParserStage)
 
         stageSequence.add(StageType.PRE_CHECK, UnsupportedElementCheckerStage)
         stageSequence.add(StageType.PRE_CHECK, UnsupportedModifierCheckerStage)
         stageSequence.add(StageType.PRE_CHECK, ImportDirectiveCheckerStage)
+
+        stageSequence.add(StageType.COMPILE, KotlinCompilerAnalyzerStage)
 
         stageSequence.add(StageType.CAST, DeclarationCastIndexerStage)
         stageSequence.add(StageType.CAST, CasterStage)

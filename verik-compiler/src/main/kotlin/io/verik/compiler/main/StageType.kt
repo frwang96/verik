@@ -17,8 +17,9 @@
 package io.verik.compiler.main
 
 enum class StageType {
-    COMPILE,
+    PARSE,
     PRE_CHECK,
+    COMPILE,
     CAST,
     PRE_TRANSFORM,
     RESOLVE,
@@ -30,8 +31,8 @@ enum class StageType {
 
     fun flushAfter(): Boolean {
         return this in listOf(
-            COMPILE,
             PRE_CHECK,
+            COMPILE,
             CAST,
             INTERPRET,
             SERIALIZE

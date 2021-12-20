@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.compile
+package io.verik.compiler.kotlin
 
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage

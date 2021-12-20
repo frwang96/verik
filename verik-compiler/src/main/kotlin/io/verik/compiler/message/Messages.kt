@@ -70,12 +70,12 @@ object Messages {
         "Illegal local declaration: $0"
     )
 
-    val UNIDENTIFIED_ANNOTATION = ErrorMessageTemplate1<String>(
-        "Could not identify annotation: $0"
+    val UNSUPPORTED_ANNOTATION = ErrorMessageTemplate1<String>(
+        "Unsupported annotation: $0"
     )
 
-    val UNIDENTIFIED_DECLARATION = ErrorMessageTemplate1<String>(
-        "Could not identify declaration: $0"
+    val UNSUPPORTED_DECLARATION = ErrorMessageTemplate1<String>(
+        "Unsupported declaration: $0"
     )
 
 //  PRE TRANSFORM  /////////////////////////////////////////////////////////////////////////////////////////////////////
