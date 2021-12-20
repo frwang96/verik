@@ -19,6 +19,9 @@
 package io.verik.kotlin
 
 /**
- * The String class represents character strings.
+ * Detects a common minimal indent of all the input lines, removes it from every line and also removes the first and
+ * the last lines if they are blank.
  */
-class String private constructor()
+fun String.trimIndent(): String {
+    throw IllegalArgumentException()
+}

@@ -221,12 +221,13 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         override fun transform(callExpression: EKtCallExpression): EExpression {
             val callExpressionSigned = CoreTransformUtil.callExpressionSigned(callExpression.receiver!!)
             val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
-            return EWidthCastExpression(
+            val widthCastExpression = EWidthCastExpression(
                 callExpression.location,
                 callExpression.type,
                 callExpressionSigned,
                 value
             )
+            return CoreTransformUtil.callExpressionUnsigned(widthCastExpression)
         }
     }
 

@@ -113,7 +113,6 @@ object Core {
             object ArrayList {
 
                 val F_add_E = CoreJvArrayList.F_add_E
-
                 val F_get_Int = CoreJvArrayList.F_get_Int
                 val F_set_Int_E = CoreJvArrayList.F_set_Int_E
 

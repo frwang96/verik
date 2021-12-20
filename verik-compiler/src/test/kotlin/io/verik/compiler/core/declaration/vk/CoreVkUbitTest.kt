@@ -120,17 +120,16 @@ internal class CoreVkUbitTest : CoreDeclarationTest() {
             """
                 var x = u(0x0)
                 var y = u(0x00)
-                var z = s(0x00)
                 fun f() {
                     y = x.ext()
-                    z = x.sext()
+                    y = x.sext()
                     x = y.tru()
                 }
             """.trimIndent(),
             """
                 function automatic void f();
                     y = 8'(x);
-                    z = 8'(${'$'}signed(x));
+                    y = ${'$'}unsigned(8'(${'$'}signed(x)));
                     x = 4'(y);
                 endfunction : f
             """.trimIndent()

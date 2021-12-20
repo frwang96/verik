@@ -38,7 +38,7 @@ class Ubit<N : `*`> private constructor() {
     }
 
     /**
-     * Returns this value.
+     * (UNIMPLEMENTED) Returns this value.
      */
     operator fun unaryPlus(): Ubit<`*`> {
         throw VerikException()

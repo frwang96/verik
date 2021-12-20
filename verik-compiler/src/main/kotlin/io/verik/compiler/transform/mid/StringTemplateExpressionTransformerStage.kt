@@ -29,10 +29,10 @@ import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 import io.verik.compiler.target.common.Target
 
-object StringTemplateExpressionReducerStage : ProjectStage() {
+object StringTemplateExpressionTransformerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.project.accept(StringTemplateExpressionReducerVisitor)
+        projectContext.project.accept(StringTemplateExpressionTransformerVisitor)
     }
 
     private fun getFormatSpecifier(expression: EExpression): String {
@@ -52,7 +52,7 @@ object StringTemplateExpressionReducerStage : ProjectStage() {
         }
     }
 
-    private object StringTemplateExpressionReducerVisitor : TreeVisitor() {
+    private object StringTemplateExpressionTransformerVisitor : TreeVisitor() {
 
         override fun visitStringTemplateExpression(stringTemplateExpression: EStringTemplateExpression) {
             super.visitStringTemplateExpression(stringTemplateExpression)

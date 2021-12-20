@@ -26,13 +26,13 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
-object InjectedStatementReducerStage : ProjectStage() {
+object InjectedStatementTransformerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.project.accept(InjectedStatementReducerVisitor)
+        projectContext.project.accept(InjectedStatementTransformerVisitor)
     }
 
-    private object InjectedStatementReducerVisitor : TreeVisitor() {
+    private object InjectedStatementTransformerVisitor : TreeVisitor() {
 
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)

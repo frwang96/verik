@@ -20,7 +20,7 @@ import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
-internal class StringTemplateExpressionReducerStageTest : BaseTest() {
+internal class StringTemplateExpressionTransformerStageTest : BaseTest() {
 
     @Test
     fun `reduce literal entry`() {
@@ -28,7 +28,7 @@ internal class StringTemplateExpressionReducerStageTest : BaseTest() {
             """
                 var x = "abc"
             """.trimIndent(),
-            StringTemplateExpressionReducerStage::class,
+            StringTemplateExpressionTransformerStage::class,
             "StringExpression(String, abc)"
         ) { it.findExpression("x") }
     }
@@ -40,7 +40,7 @@ internal class StringTemplateExpressionReducerStageTest : BaseTest() {
                 var x = 0
                 var y = "${"$"}x"
             """.trimIndent(),
-            StringTemplateExpressionReducerStage::class,
+            StringTemplateExpressionTransformerStage::class,
             """
                 KtCallExpression(
                     String, ${"$"}sformatf, null,
@@ -57,7 +57,7 @@ internal class StringTemplateExpressionReducerStageTest : BaseTest() {
             """
                 var x = "${"$"}{0}%"
             """.trimIndent(),
-            StringTemplateExpressionReducerStage::class,
+            StringTemplateExpressionTransformerStage::class,
             """
                 KtCallExpression(String, *, null, [StringExpression(String, %0d%%), ConstantExpression(*)], [])
             """.trimIndent()
@@ -70,7 +70,7 @@ internal class StringTemplateExpressionReducerStageTest : BaseTest() {
             """
                 var x = "%"
             """.trimIndent(),
-            StringTemplateExpressionReducerStage::class,
+            StringTemplateExpressionTransformerStage::class,
             "StringExpression(String, %)"
         ) { it.findExpression("x") }
     }

@@ -20,7 +20,7 @@ import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
-internal class InjectedStatementReducerStageTest : BaseTest() {
+internal class InjectedStatementTransformerStageTest : BaseTest() {
 
     @Test
     fun `inject literal simple`() {
@@ -30,7 +30,7 @@ internal class InjectedStatementReducerStageTest : BaseTest() {
                     sv("abc")
                 }
             """.trimIndent(),
-            InjectedStatementReducerStage::class,
+            InjectedStatementTransformerStage::class,
             "InjectedStatement(Void, [abc])"
         ) { it.findExpression("f") }
     }
@@ -45,7 +45,7 @@ internal class InjectedStatementReducerStageTest : BaseTest() {
                     ${"\"\"\""}.trimIndent())
                 }
             """.trimIndent(),
-            InjectedStatementReducerStage::class,
+            InjectedStatementTransformerStage::class,
             "InjectedStatement(Void, [abc])"
         ) { it.findExpression("f") }
     }
