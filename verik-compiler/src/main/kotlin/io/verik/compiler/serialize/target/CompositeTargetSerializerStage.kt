@@ -26,6 +26,7 @@ import io.verik.compiler.target.common.CompositeTarget
 import io.verik.compiler.target.common.TargetPackage
 import io.verik.compiler.target.serialize.ClassTargetSerializationEntry
 import io.verik.compiler.target.serialize.FunctionTargetSerializationEntry
+import io.verik.compiler.target.serialize.TargetSerializationSequenceChecker
 import io.verik.compiler.target.serialize.TargetSerializationSequencer
 
 object CompositeTargetSerializerStage : ProjectStage() {
@@ -41,7 +42,9 @@ object CompositeTargetSerializerStage : ProjectStage() {
         val targetSourceBuilder = TargetSourceBuilder(projectContext, targetPackageFilePath)
         targetSourceBuilder.appendLine("package ${TargetPackage.name};")
         targetSourceBuilder.indent {
-            val sequence = TargetSerializationSequencer.getSequence(projectContext)
+            val sequence = TargetSerializationSequencer.getSequence()
+            if (projectContext.config.debug)
+                TargetSerializationSequenceChecker.checkSequence(sequence)
             sequence.entries.forEach {
                 when (it) {
                     is FunctionTargetSerializationEntry ->

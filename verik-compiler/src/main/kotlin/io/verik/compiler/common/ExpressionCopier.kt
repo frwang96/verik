@@ -19,20 +19,37 @@ package io.verik.compiler.common
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EReferenceExpression
+import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.message.Messages
 
 object ExpressionCopier {
 
     fun <E : EExpression> copy(expression: E): E {
         val copiedExpression = when (expression) {
+            is EKtBinaryExpression -> copyKtBinaryExpression(expression)
             is EReferenceExpression -> copyReferenceExpression(expression)
             is EKtCallExpression -> copyKtCallExpression(expression)
             is EConstantExpression -> copyConstantExpression(expression)
+            is EInlineIfExpression -> copyInlineIfExpression(expression)
             else -> Messages.INTERNAL_ERROR.on(expression, "Unable to copy expression: $expression")
         }
         @Suppress("UNCHECKED_CAST")
         return copiedExpression as E
+    }
+
+    private fun copyKtBinaryExpression(binaryExpression: EKtBinaryExpression): EKtBinaryExpression {
+        val type = binaryExpression.type.copy()
+        val left = copy(binaryExpression.left)
+        val right = copy(binaryExpression.right)
+        return EKtBinaryExpression(
+            binaryExpression.location,
+            type,
+            left,
+            right,
+            binaryExpression.kind
+        )
     }
 
     private fun copyReferenceExpression(referenceExpression: EReferenceExpression): EReferenceExpression {
@@ -59,5 +76,19 @@ object ExpressionCopier {
     private fun copyConstantExpression(constantExpression: EConstantExpression): EConstantExpression {
         val type = constantExpression.type.copy()
         return EConstantExpression(constantExpression.location, type, constantExpression.value)
+    }
+
+    private fun copyInlineIfExpression(inlineIfExpression: EInlineIfExpression): EInlineIfExpression {
+        val type = inlineIfExpression.type.copy()
+        val condition = copy(inlineIfExpression.condition)
+        val thenExpression = copy(inlineIfExpression.thenExpression)
+        val elseExpression = copy(inlineIfExpression.elseExpression)
+        return EInlineIfExpression(
+            inlineIfExpression.location,
+            type,
+            condition,
+            thenExpression,
+            elseExpression
+        )
     }
 }

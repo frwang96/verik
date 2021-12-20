@@ -189,6 +189,12 @@ object Core {
 
         val F_cat_Any_Any = CoreVkMisc.F_cat_Any_Any
         val F_rep_Any = CoreVkMisc.F_rep_Any
+        val F_max_Int_Int = CoreVkMisc.F_max_Int_Int
+        val F_max_Ubit_Ubit = CoreVkMisc.F_max_Ubit_Ubit
+        val F_max_Sbit_Sbit = CoreVkMisc.F_max_Sbit_Sbit
+        val F_min_Int_Int = CoreVkMisc.F_min_Int_Int
+        val F_min_Ubit_Ubit = CoreVkMisc.F_min_Ubit_Ubit
+        val F_min_Sbit_Sbit = CoreVkMisc.F_min_Sbit_Sbit
         val F_log_Int = CoreVkMisc.F_log_Int
         val F_exp_Int = CoreVkMisc.F_exp_Int
 
