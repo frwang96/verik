@@ -29,8 +29,6 @@ import java.nio.file.Path
 
 object CasterStage : ProjectStage() {
 
-    override val checkNormalization = true
-
     override fun process(projectContext: ProjectContext) {
         val filesMap = HashMap<String, ArrayList<EFile>>()
 

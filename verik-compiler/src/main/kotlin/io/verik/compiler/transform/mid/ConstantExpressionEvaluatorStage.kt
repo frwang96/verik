@@ -25,8 +25,6 @@ import io.verik.compiler.main.ProjectStage
 
 object ConstantExpressionEvaluatorStage : ProjectStage() {
 
-    override val checkNormalization = true
-
     override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(ConstantExpressionEvaluatorVisitor)
     }

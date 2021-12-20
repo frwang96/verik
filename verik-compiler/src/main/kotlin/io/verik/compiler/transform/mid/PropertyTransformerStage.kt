@@ -24,8 +24,6 @@ import io.verik.compiler.main.ProjectStage
 
 object PropertyTransformerStage : ProjectStage() {
 
-    override val checkNormalization = true
-
     override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(PropertyTransformerVisitor)
     }

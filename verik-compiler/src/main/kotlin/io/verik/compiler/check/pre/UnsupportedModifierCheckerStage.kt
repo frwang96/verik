@@ -25,8 +25,6 @@ import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 
 object UnsupportedModifierCheckerStage : ProjectStage() {
 
-    override val checkNormalization = false
-
     override fun process(projectContext: ProjectContext) {
         projectContext.getKtFiles().forEach { it.accept(UnsupportedModifierCheckerVisitor) }
     }

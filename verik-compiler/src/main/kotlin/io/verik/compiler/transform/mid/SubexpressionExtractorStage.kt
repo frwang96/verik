@@ -27,8 +27,6 @@ import io.verik.compiler.main.ProjectStage
 
 object SubexpressionExtractorStage : ProjectStage() {
 
-    override val checkNormalization = true
-
     override fun process(projectContext: ProjectContext) {
         val subexpressionExtractor = SubexpressionExtractor()
         val subexpressionExtractorVisitor = SubexpressionExtractorVisitor(subexpressionExtractor)

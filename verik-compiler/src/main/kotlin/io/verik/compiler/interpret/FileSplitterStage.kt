@@ -33,8 +33,6 @@ import io.verik.compiler.message.Messages
 
 object FileSplitterStage : ProjectStage() {
 
-    override val checkNormalization = true
-
     override fun process(projectContext: ProjectContext) {
         val rootPackage = projectContext.project.rootPackage
         projectContext.project.basicPackages.forEach { basicPackage ->

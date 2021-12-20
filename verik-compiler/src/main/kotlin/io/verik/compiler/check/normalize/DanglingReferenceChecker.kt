@@ -32,15 +32,13 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
-object DanglingReferenceChecker : ProjectStage() {
+object DanglingReferenceChecker : NormalizationStage {
 
-    override val checkNormalization = false
-
-    override fun process(projectContext: ProjectContext) {
+    override fun process(projectContext: ProjectContext, projectStage: ProjectStage) {
         val danglingReferenceIndexerVisitor = DanglingReferenceIndexerVisitor()
         projectContext.project.accept(danglingReferenceIndexerVisitor)
         val declarations = danglingReferenceIndexerVisitor.declarations
-        val danglingReferenceCheckerVisitor = DanglingReferenceCheckerVisitor(declarations)
+        val danglingReferenceCheckerVisitor = DanglingReferenceCheckerVisitor(declarations, projectStage)
         projectContext.project.accept(danglingReferenceCheckerVisitor)
     }
 
@@ -54,7 +52,10 @@ object DanglingReferenceChecker : ProjectStage() {
         }
     }
 
-    private class DanglingReferenceCheckerVisitor(private val declarations: HashSet<EDeclaration>) : TreeVisitor() {
+    private class DanglingReferenceCheckerVisitor(
+        private val declarations: HashSet<EDeclaration>,
+        private val projectStage: ProjectStage
+    ) : TreeVisitor() {
 
         private fun checkReference(type: Type, element: EElement) {
             type.arguments.forEach { checkReference(it, element) }
@@ -63,7 +64,11 @@ object DanglingReferenceChecker : ProjectStage() {
 
         private fun checkReference(reference: Declaration, element: EElement) {
             if (reference is EDeclaration && reference !in declarations)
-                Messages.INTERNAL_ERROR.on(element, "Dangling reference to ${reference.name} in $element")
+                Messages.NORMALIZATION_ERROR.on(
+                    element,
+                    projectStage,
+                    "Dangling reference to ${reference.name} in $element"
+                )
         }
 
         override fun visitTypedElement(typedElement: ETypedElement) {

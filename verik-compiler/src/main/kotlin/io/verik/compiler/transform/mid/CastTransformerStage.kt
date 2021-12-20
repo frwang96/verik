@@ -33,8 +33,6 @@ import io.verik.compiler.target.common.Target
 
 object CastTransformerStage : ProjectStage() {
 
-    override val checkNormalization = true
-
     override fun process(projectContext: ProjectContext) {
         val subexpressionExtractor = SubexpressionExtractor()
         val castTransformerVisitor = CastTransformerVisitor(subexpressionExtractor)

@@ -33,8 +33,6 @@ import io.verik.compiler.main.ProjectStage
 
 object AssignmentTransformerStage : ProjectStage() {
 
-    override val checkNormalization = true
-
     override fun process(projectContext: ProjectContext) {
         val assignmentTransformerVisitor = AssignmentTransformerVisitor()
         projectContext.project.accept(assignmentTransformerVisitor)

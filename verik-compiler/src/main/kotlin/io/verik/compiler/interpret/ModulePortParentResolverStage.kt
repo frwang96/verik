@@ -27,8 +27,6 @@ import io.verik.compiler.message.Messages
 
 object ModulePortParentResolverStage : ProjectStage() {
 
-    override val checkNormalization = true
-
     override fun process(projectContext: ProjectContext) {
         val modulePortParentResolverVisitor = ModulePortParentResolverVisitor()
         projectContext.project.accept(modulePortParentResolverVisitor)

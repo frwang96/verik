@@ -23,26 +23,29 @@ import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 import java.nio.file.Path
 
-object SourceLocationChecker : ProjectStage() {
+object SourceLocationChecker : NormalizationStage {
 
-    override val checkNormalization = false
-
-    override fun process(projectContext: ProjectContext) {
+    override fun process(projectContext: ProjectContext, projectStage: ProjectStage) {
         projectContext.project.files().forEach {
-            val sourceLocationVisitor = SourceLocationVisitor(projectContext, it.inputPath)
+            val sourceLocationVisitor = SourceLocationVisitor(projectContext, projectStage, it.inputPath)
             it.accept(sourceLocationVisitor)
         }
     }
 
-    private class SourceLocationVisitor(val projectContext: ProjectContext, val path: Path) : TreeVisitor() {
+    private class SourceLocationVisitor(
+        private val projectContext: ProjectContext,
+        private val projectStage: ProjectStage,
+        private val path: Path
+    ) : TreeVisitor() {
 
         override fun visitElement(element: EElement) {
             super.visitElement(element)
             if (element.location.path != path) {
                 val expectedPath = projectContext.config.projectDir.relativize(path)
                 val actualPath = projectContext.config.projectDir.relativize(element.location.path)
-                Messages.INTERNAL_ERROR.on(
+                Messages.NORMALIZATION_ERROR.on(
                     element,
+                    projectStage,
                     "Mismatch in path for source location: Expected $expectedPath actual $actualPath"
                 )
             }

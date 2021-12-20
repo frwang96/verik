@@ -33,8 +33,6 @@ import io.verik.compiler.target.common.TargetDeclaration
 
 object ScopeExpressionInsertionTransformerStage : ProjectStage() {
 
-    override val checkNormalization = true
-
     override fun process(projectContext: ProjectContext) {
         val scopeExpressionInsertionTransformerVisitor = ScopeExpressionInsertionTransformerVisitor()
         projectContext.project.accept(scopeExpressionInsertionTransformerVisitor)

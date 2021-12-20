@@ -31,8 +31,6 @@ import io.verik.compiler.main.ProjectStage
 
 object ConstantPropagatorStage : ProjectStage() {
 
-    override val checkNormalization = true
-
     override fun process(projectContext: ProjectContext) {
         val constantPropagatorIndexerVisitor = ConstantPropagatorIndexerVisitor()
         projectContext.project.accept(constantPropagatorIndexerVisitor)

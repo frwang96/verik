@@ -29,8 +29,6 @@ import io.verik.compiler.target.common.TargetSerializationSequencer
 
 object TargetSerializerStage : ProjectStage() {
 
-    override val checkNormalization = false
-
     override fun process(projectContext: ProjectContext) {
         val compositeTargetIndexerVisitor = CompositeTargetIndexerVisitor()
         projectContext.project.accept(compositeTargetIndexerVisitor)

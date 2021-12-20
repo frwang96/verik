@@ -16,12 +16,14 @@
 
 package io.verik.compiler.main
 
+import io.verik.compiler.check.normalize.NormalizationChecker
 import io.verik.compiler.message.MessageCollector
 import kotlin.reflect.KClass
 
 class StageSequence {
 
-    private val stages = HashMap<StageType, ArrayList<ProjectStage>>()
+    @Suppress("MemberVisibilityCanBePrivate")
+    val stages = HashMap<StageType, ArrayList<ProjectStage>>()
 
     init {
         StageType.values().forEach {
@@ -40,7 +42,7 @@ class StageSequence {
     fun processAll(projectContext: ProjectContext) {
         StageType.values().forEach { stageType ->
             stages[stageType]!!.forEach {
-                processStage(projectContext, it)
+                processStage(projectContext, stageType, it)
             }
             if (stageType.flushAfter()) {
                 MessageCollector.messageCollector.flush()
@@ -52,7 +54,7 @@ class StageSequence {
         assert(contains(stageClass))
         StageType.values().forEach { stageType ->
             stages[stageType]!!.forEach {
-                processStage(projectContext, it)
+                processStage(projectContext, stageType, it)
                 if (it::class == stageClass)
                     return
             }
@@ -62,7 +64,7 @@ class StageSequence {
     fun processUntil(projectContext: ProjectContext, stageType: StageType) {
         StageType.values().forEach { currentStageType ->
             stages[currentStageType]!!.forEach {
-                processStage(projectContext, it)
+                processStage(projectContext, currentStageType, it)
             }
             if (currentStageType == stageType)
                 return
@@ -75,9 +77,11 @@ class StageSequence {
         }
     }
 
-    private fun processStage(projectContext: ProjectContext, stage: ProjectStage) {
+    private fun processStage(projectContext: ProjectContext, stageType: StageType, stage: ProjectStage) {
         if (stage !in projectContext.processedProjectStages) {
-            stage.accept(projectContext)
+            stage.process(projectContext)
+            if (stageType.checkNormalization() && projectContext.config.debug)
+                NormalizationChecker.process(projectContext, stage)
             projectContext.processedProjectStages.add(stage)
         }
     }

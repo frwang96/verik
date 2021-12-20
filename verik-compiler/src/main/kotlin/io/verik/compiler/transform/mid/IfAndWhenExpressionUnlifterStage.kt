@@ -32,8 +32,6 @@ import io.verik.compiler.main.ProjectStage
 
 object IfAndWhenExpressionUnlifterStage : ProjectStage() {
 
-    override val checkNormalization = true
-
     override fun process(projectContext: ProjectContext) {
         val subexpressionExtractor = SubexpressionExtractor()
         val ifAndWhenExpressionUnlifterVisitor = IfAndWhenExpressionUnlifterVisitor(subexpressionExtractor)

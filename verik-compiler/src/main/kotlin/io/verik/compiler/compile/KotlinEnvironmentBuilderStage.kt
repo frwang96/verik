@@ -42,8 +42,6 @@ import java.io.File
 
 object KotlinEnvironmentBuilderStage : ProjectStage() {
 
-    override val checkNormalization = false
-
     override fun process(projectContext: ProjectContext) {
         setIdeaIoUseFallback()
         val configuration = createCompilerConfiguration()

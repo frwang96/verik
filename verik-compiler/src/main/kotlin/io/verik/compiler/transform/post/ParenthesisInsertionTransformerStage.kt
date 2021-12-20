@@ -29,8 +29,6 @@ import io.verik.compiler.main.ProjectStage
 
 object ParenthesisInsertionTransformerStage : ProjectStage() {
 
-    override val checkNormalization = true
-
     override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(ParenthesisInsertionTransformerVisitor)
     }

@@ -29,8 +29,6 @@ import io.verik.compiler.message.Messages
 
 object BinaryExpressionReducerStage : ProjectStage() {
 
-    override val checkNormalization = true
-
     private val referenceMap = HashMap<ReducerEntry, CoreFunctionDeclaration>()
 
     init {

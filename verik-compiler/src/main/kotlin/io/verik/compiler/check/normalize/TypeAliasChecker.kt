@@ -28,16 +28,16 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
-object TypeAliasChecker : ProjectStage() {
+object TypeAliasChecker : NormalizationStage {
 
-    override val checkNormalization = false
-
-    override fun process(projectContext: ProjectContext) {
-        val typeAliasVisitor = TypeAliasVisitor()
+    override fun process(projectContext: ProjectContext, projectStage: ProjectStage) {
+        val typeAliasVisitor = TypeAliasVisitor(projectStage)
         projectContext.project.accept(typeAliasVisitor)
     }
 
-    private class TypeAliasVisitor : TreeVisitor() {
+    private class TypeAliasVisitor(
+        private val projectStage: ProjectStage
+    ) : TreeVisitor() {
 
         private val typeMap = HashMap<Int, ArrayList<Type>>()
 
@@ -47,7 +47,11 @@ object TypeAliasChecker : ProjectStage() {
             if (typeList != null) {
                 for (typeListType in typeList) {
                     if (type === typeListType) {
-                        Messages.INTERNAL_ERROR.on(element, "Unexpected type aliasing: $type in $element")
+                        Messages.NORMALIZATION_ERROR.on(
+                            element,
+                            projectStage,
+                            "Unexpected type aliasing: $type in $element"
+                        )
                     }
                 }
                 typeList.add(type)

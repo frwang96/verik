@@ -28,8 +28,6 @@ import io.verik.compiler.message.Messages
 
 object SmartCastReducerStage : ProjectStage() {
 
-    override val checkNormalization = true
-
     override fun process(projectContext: ProjectContext) {
         val smartCastIndexerVisitor = SmartCastIndexerVisitor()
         projectContext.project.accept(smartCastIndexerVisitor)

@@ -26,8 +26,6 @@ import io.verik.compiler.main.ProjectStage
 
 object InlineIfExpressionTransformerStage : ProjectStage() {
 
-    override val checkNormalization = true
-
     override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(InlineIfExpressionTransformerVisitor)
     }

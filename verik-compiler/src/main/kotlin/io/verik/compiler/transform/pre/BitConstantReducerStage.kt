@@ -27,8 +27,6 @@ import io.verik.compiler.main.ProjectStage
 
 object BitConstantReducerStage : ProjectStage() {
 
-    override val checkNormalization = true
-
     override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(BitConstantReducerVisitor)
     }

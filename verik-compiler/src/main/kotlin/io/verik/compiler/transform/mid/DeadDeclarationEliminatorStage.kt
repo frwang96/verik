@@ -34,8 +34,6 @@ import org.jetbrains.kotlin.backend.common.push
 
 object DeadDeclarationEliminatorStage : ProjectStage() {
 
-    override val checkNormalization = true
-
     override fun process(projectContext: ProjectContext) {
         if (projectContext.config.enableDeadCodeElimination) {
             val declarationQueue = ArrayDeque(getEntryPoints(projectContext.project))

@@ -32,8 +32,6 @@ import io.verik.compiler.message.Messages
 
 object ArrayAccessExpressionReducerStage : ProjectStage() {
 
-    override val checkNormalization = true
-
     private val getReducerEntries = ArrayList<GetReducerEntry>()
     private val setReducerEntries = ArrayList<SetReducerEntry>()
 

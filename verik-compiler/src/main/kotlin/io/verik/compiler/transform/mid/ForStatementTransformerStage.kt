@@ -39,8 +39,6 @@ import io.verik.compiler.message.Messages
 
 object ForStatementTransformerStage : ProjectStage() {
 
-    override val checkNormalization = true
-
     override fun process(projectContext: ProjectContext) {
         val referenceUpdater = ReferenceUpdater(projectContext)
         val forStatementTransformerVisitor = ForStatementTransformerVisitor(referenceUpdater)

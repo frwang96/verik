@@ -38,8 +38,6 @@ import io.verik.compiler.main.ProjectStage
 
 object ConstructorDesugarTransformerStage : ProjectStage() {
 
-    override val checkNormalization = true
-
     override fun process(projectContext: ProjectContext) {
         val referenceUpdater = ReferenceUpdater(projectContext)
         val constructorDesugarTransformerVisitor = ConstructorDesugarTransformerVisitor(referenceUpdater)

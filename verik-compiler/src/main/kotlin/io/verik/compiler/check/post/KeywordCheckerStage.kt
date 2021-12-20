@@ -25,8 +25,6 @@ import io.verik.compiler.message.Messages
 
 object KeywordCheckerStage : ProjectStage() {
 
-    override val checkNormalization = false
-
     override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(KeywordCheckerVisitor)
     }

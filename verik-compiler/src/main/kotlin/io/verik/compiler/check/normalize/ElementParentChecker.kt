@@ -25,16 +25,16 @@ import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.backend.common.pop
 import org.jetbrains.kotlin.backend.common.push
 
-object ElementParentChecker : ProjectStage() {
+object ElementParentChecker : NormalizationStage {
 
-    override val checkNormalization = false
-
-    override fun process(projectContext: ProjectContext) {
-        val elementParentVisitor = ElementParentVisitor()
+    override fun process(projectContext: ProjectContext, projectStage: ProjectStage) {
+        val elementParentVisitor = ElementParentVisitor(projectStage)
         projectContext.project.accept(elementParentVisitor)
     }
 
-    private class ElementParentVisitor : TreeVisitor() {
+    private class ElementParentVisitor(
+        private val projectStage: ProjectStage
+    ) : TreeVisitor() {
 
         private val parentStack = ArrayDeque<EElement>()
 
@@ -42,8 +42,9 @@ object ElementParentChecker : ProjectStage() {
             val parent = element.parentNotNull()
             val expectedParent = parentStack.last()
             if (parent != expectedParent) {
-                Messages.INTERNAL_ERROR.on(
+                Messages.NORMALIZATION_ERROR.on(
                     element,
+                    projectStage,
                     "Mismatch in parent element of $element: Expected $expectedParent but was $parent"
                 )
             }
@@ -54,7 +55,7 @@ object ElementParentChecker : ProjectStage() {
 
         override fun visitProject(project: EProject) {
             if (project.parent != null)
-                Messages.INTERNAL_ERROR.on(project, "Parent element should be null")
+                Messages.NORMALIZATION_ERROR.on(project, projectStage, "Parent element should be null")
             parentStack.push(project)
             project.acceptChildren(this)
             parentStack.pop()

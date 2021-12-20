@@ -31,8 +31,6 @@ import io.verik.compiler.message.Messages
 
 object PortInstantiationCheckerStage : ProjectStage() {
 
-    override val checkNormalization = false
-
     override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(PortInstantiationCheckerVisitor)
     }

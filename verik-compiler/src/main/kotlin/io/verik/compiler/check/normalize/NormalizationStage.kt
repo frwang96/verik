@@ -19,13 +19,7 @@ package io.verik.compiler.check.normalize
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
-object NormalizationChecker : NormalizationStage {
+interface NormalizationStage {
 
-    override fun process(projectContext: ProjectContext, projectStage: ProjectStage) {
-        ElementParentChecker.process(projectContext, projectStage)
-        ElementAliasChecker.process(projectContext, projectStage)
-        TypeAliasChecker.process(projectContext, projectStage)
-        DanglingReferenceChecker.process(projectContext, projectStage)
-        SourceLocationChecker.process(projectContext, projectStage)
-    }
+    fun process(projectContext: ProjectContext, projectStage: ProjectStage)
 }

@@ -27,8 +27,6 @@ import org.jetbrains.kotlin.backend.common.pop
 
 object DeclarationSpecializerStage : ProjectStage() {
 
-    override val checkNormalization = true
-
     override fun process(projectContext: ProjectContext) {
         val entryPoints = getEntryPoints(projectContext)
         val declarationBindingQueue = ArrayDeque(

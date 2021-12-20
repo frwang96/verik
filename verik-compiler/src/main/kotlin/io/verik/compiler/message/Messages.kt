@@ -17,6 +17,7 @@
 package io.verik.compiler.message
 
 import io.verik.compiler.ast.property.Type
+import io.verik.compiler.main.ProjectStage
 import org.jetbrains.kotlin.lexer.KtToken
 import java.nio.file.Path
 import kotlin.reflect.full.declaredMemberProperties
@@ -25,6 +26,10 @@ object Messages {
 
     val INTERNAL_ERROR = FatalMessageTemplate1<String>(
         "Internal error: $0"
+    )
+
+    val NORMALIZATION_ERROR = FatalMessageTemplate2<ProjectStage, String>(
+        "Normalization error at $0: $1"
     )
 
 //  PRE CHECK  /////////////////////////////////////////////////////////////////////////////////////////////////////////

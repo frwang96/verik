@@ -25,8 +25,6 @@ import io.verik.compiler.main.ProjectStage
 
 object AssignmentOperatorReducerStage : ProjectStage() {
 
-    override val checkNormalization = true
-
     private val assignmentOperatorMap = HashMap<KtBinaryOperatorKind, KtBinaryOperatorKind>()
 
     init {

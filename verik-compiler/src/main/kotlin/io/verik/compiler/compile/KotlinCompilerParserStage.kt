@@ -22,8 +22,6 @@ import org.jetbrains.kotlin.psi.KtPsiFactory
 
 object KotlinCompilerParserStage : ProjectStage() {
 
-    override val checkNormalization = false
-
     override fun process(projectContext: ProjectContext) {
         val psiFileFactory = KtPsiFactory(projectContext.kotlinCoreEnvironment.project, false)
         projectContext.sourceSetContexts.forEach { sourceSetContext ->

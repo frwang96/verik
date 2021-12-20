@@ -32,8 +32,6 @@ import io.verik.compiler.target.common.Target
 
 object ToStringTransformerStage : ProjectStage() {
 
-    override val checkNormalization = true
-
     override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(ToStringTransformerVisitor)
     }

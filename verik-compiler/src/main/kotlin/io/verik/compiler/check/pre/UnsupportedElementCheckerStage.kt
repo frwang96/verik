@@ -32,8 +32,6 @@ import org.jetbrains.kotlin.psi.KtTryExpression
 
 object UnsupportedElementCheckerStage : ProjectStage() {
 
-    override val checkNormalization = false
-
     override fun process(projectContext: ProjectContext) {
         projectContext.getKtFiles().forEach { it.accept(UnsupportedElementCheckerVisitor) }
     }

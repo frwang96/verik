@@ -26,8 +26,6 @@ import io.verik.compiler.main.ProjectStage
 
 object FunctionLiteralInterpreterStage : ProjectStage() {
 
-    override val checkNormalization = true
-
     override fun process(projectContext: ProjectContext) {
         val referenceUpdater = ReferenceUpdater(projectContext)
         val functionLiteralInterpreterVisitor = FunctionLiteralInterpreterVisitor(referenceUpdater)

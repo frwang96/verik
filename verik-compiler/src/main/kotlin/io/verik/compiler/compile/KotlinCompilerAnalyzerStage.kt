@@ -25,8 +25,6 @@ import org.jetbrains.kotlin.resolve.lazy.declarations.FileBasedDeclarationProvid
 
 object KotlinCompilerAnalyzerStage : ProjectStage() {
 
-    override val checkNormalization = false
-
     override fun process(projectContext: ProjectContext) {
         val environment = projectContext.kotlinCoreEnvironment
         val analyzer = AnalyzerWithCompilerReport(environment.configuration)
