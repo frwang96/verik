@@ -144,7 +144,7 @@ class Ubit<N : `*`> private constructor() {
     }
 
     /**
-     * (UNIMPLEMENTED) Add specified [value] to this value with bit growth `Ubit<N> add Sbit<M> = Ubit<MAX<N, M> + 1>`.
+     * Add specified [value] to this value with bit growth `Ubit<N> add Sbit<M> = Ubit<MAX<N, M> + 1>`.
      */
     infix fun add(value: Sbit<`*`>): Ubit<`*`> {
         throw VerikException()
@@ -158,8 +158,7 @@ class Ubit<N : `*`> private constructor() {
     }
 
     /**
-     * (UNIMPLEMENTED) Subtract specified [value] from this value without bit growth
-     * `Ubit<N> - Sbit<M> = Ubit<MAX<N, M>>`.
+     * Subtract specified [value] from this value without bit growth * `Ubit<N> - Sbit<M> = Ubit<MAX<N, M>>`.
      */
     operator fun minus(value: Sbit<`*`>): Ubit<`*`> {
         throw VerikException()
@@ -173,8 +172,7 @@ class Ubit<N : `*`> private constructor() {
     }
 
     /**
-     * (UNIMPLEMENTED) Multiply specified [value] to this value without bit growth
-     * `Ubit<N> * SBit<M> = Ubit<MAX<N, M>>`.
+     * Multiply specified [value] to this value without bit growth * `Ubit<N> * SBit<M> = Ubit<MAX<N, M>>`.
      */
     operator fun times(value: Sbit<`*`>): Ubit<`*`> {
         throw VerikException()
@@ -188,8 +186,7 @@ class Ubit<N : `*`> private constructor() {
     }
 
     /**
-     * (UNIMPLEMENTED) Multiply specified [value] to this value with bit growth
-     * `Ubit<N> mul Sbit<M> = Ubit<N * M>`.
+     * Multiply specified [value] to this value with bit growth * `Ubit<N> mul Sbit<M> = Ubit<N * M>`.
      */
     infix fun mul(value: Sbit<`*`>): Ubit<`*`> {
         throw VerikException()
@@ -210,7 +207,7 @@ class Ubit<N : `*`> private constructor() {
     }
 
     /**
-     * (UNIMPLEMENTED) Takes the bitwise and with [value].
+     * Takes the bitwise and with [value].
      */
     infix fun and(value: Sbit<N>): Ubit<N> {
         throw VerikException()
@@ -224,7 +221,7 @@ class Ubit<N : `*`> private constructor() {
     }
 
     /**
-     * (UNIMPLEMENTED) Takes the bitwise or with [value].
+     * Takes the bitwise or with [value].
      */
     infix fun or(value: Sbit<N>): Ubit<N> {
         throw VerikException()
@@ -238,7 +235,7 @@ class Ubit<N : `*`> private constructor() {
     }
 
     /**
-     * (UNIMPLEMENTED) Takes the bitwise xor with [value].
+     * Takes the bitwise xor with [value].
      */
     infix fun xor(value: Sbit<N>): Ubit<N> {
         throw VerikException()
@@ -329,7 +326,7 @@ class Ubit<N : `*`> private constructor() {
     }
 
     /**
-     * (UNIMPLEMENTED) Slice [M] bits starting at [index].
+     * Slice [M] bits starting at [index].
      */
     fun <M : `*`> slice(index: Ubit<`*`>): Ubit<M> {
         throw VerikException()

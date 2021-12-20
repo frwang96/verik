@@ -35,6 +35,7 @@ import io.verik.compiler.core.declaration.vk.CoreVkControl
 import io.verik.compiler.core.declaration.vk.CoreVkMisc
 import io.verik.compiler.core.declaration.vk.CoreVkPacked
 import io.verik.compiler.core.declaration.vk.CoreVkRandom
+import io.verik.compiler.core.declaration.vk.CoreVkSbit
 import io.verik.compiler.core.declaration.vk.CoreVkSbitBinary
 import io.verik.compiler.core.declaration.vk.CoreVkSpecial
 import io.verik.compiler.core.declaration.vk.CoreVkSystem
@@ -226,13 +227,20 @@ object Core {
             val F_plus_Ubit = CoreVkUbitBinary.F_plus_Ubit
             val F_plus_Sbit = CoreVkUbitBinary.F_plus_Sbit
             val F_add_Ubit = CoreVkUbitBinary.F_add_Ubit
+            val F_add_Sbit = CoreVkUbitBinary.F_add_Sbit
             val F_minus_Ubit = CoreVkUbitBinary.F_minus_Ubit
+            val F_minus_Sbit = CoreVkUbitBinary.F_minus_Sbit
             val F_times_Ubit = CoreVkUbitBinary.F_times_Ubit
+            val F_times_Sbit = CoreVkUbitBinary.F_times_Sbit
             val F_mul_Ubit = CoreVkUbitBinary.F_mul_Ubit
+            val F_mul_Sbit = CoreVkUbitBinary.F_mul_Sbit
             val F_div_Ubit = CoreVkUbitBinary.F_div_Ubit
             val F_and_Ubit = CoreVkUbitBinary.F_and_Ubit
+            val F_and_Sbit = CoreVkUbitBinary.F_and_Sbit
             val F_or_Ubit = CoreVkUbitBinary.F_or_Ubit
+            val F_or_Sbit = CoreVkUbitBinary.F_or_Sbit
             val F_xor_Ubit = CoreVkUbitBinary.F_xor_Ubit
+            val F_xor_Sbit = CoreVkUbitBinary.F_xor_Sbit
             val F_shl_Int = CoreVkUbitBinary.F_shl_Int
             val F_shl_Ubit = CoreVkUbitBinary.F_shl_Ubit
             val F_shr_Int = CoreVkUbitBinary.F_shr_Int
@@ -246,12 +254,16 @@ object Core {
             val F_reduceOr = CoreVkUbit.F_reduceOr
             val F_reduceXor = CoreVkUbit.F_reduceXor
             val F_slice_Int = CoreVkUbit.F_slice_Int
+            val F_slice_Ubit = CoreVkUbit.F_slice_Ubit
             val F_ext = CoreVkUbit.F_ext
             val F_sext = CoreVkUbit.F_sext
             val F_tru = CoreVkUbit.F_tru
         }
 
         object Sbit {
+
+            val F_unaryPlus = CoreVkSbit.F_unaryPlus
+            val F_unaryMinus = CoreVkSbit.F_unaryMinus
 
             val F_plus_Sbit = CoreVkSbitBinary.F_plus_Sbit
             val F_mul_Sbit = CoreVkSbitBinary.F_mul_Sbit

@@ -25,7 +25,10 @@ internal class CoreVkUbitTest : CoreDeclarationTest() {
     @Test
     fun `serialize unaryPlus unaryMinus`() {
         driveCoreDeclarationTest(
-            listOf(Core.Vk.Ubit.F_unaryMinus),
+            listOf(
+                Core.Vk.Ubit.F_unaryPlus,
+                Core.Vk.Ubit.F_unaryMinus
+            ),
             """
                 var x = u(0x0)
                 fun f() {
@@ -152,17 +155,22 @@ internal class CoreVkUbitTest : CoreDeclarationTest() {
     @Test
     fun `serialize slice`() {
         driveCoreDeclarationTest(
-            listOf(Core.Vk.Ubit.F_slice_Int),
+            listOf(
+                Core.Vk.Ubit.F_slice_Int,
+                Core.Vk.Ubit.F_slice_Ubit
+            ),
             """
                 var x = u(0x00)
                 var y = u(0x0)
                 fun f() {
                     y = x.slice(0)
+                    y = x.slice(u(0b000))
                 }
             """.trimIndent(),
             """
                 function automatic void f();
                     y = x[3:0];
+                    y = x[3'h3:3'h0];
                 endfunction : f
             """.trimIndent()
         )

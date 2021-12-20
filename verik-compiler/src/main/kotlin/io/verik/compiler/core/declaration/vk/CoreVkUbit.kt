@@ -16,7 +16,6 @@
 
 package io.verik.compiler.core.declaration.vk
 
-import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
@@ -26,9 +25,6 @@ import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.element.sv.EWidthCastExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.SvUnaryOperatorKind
-import io.verik.compiler.common.BitConstant
-import io.verik.compiler.common.ConstantUtil
-import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.core.common.CoreTransformUtil
@@ -144,13 +140,10 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             val width = callExpression.valueArguments[1].type.asBitWidth(callExpression)
-            val msbIndex = EKtCallExpression(
-                callExpression.location,
-                Core.Kt.C_Int.toType(),
-                Core.Kt.Int.F_plus_Int,
-                ExpressionCopier.copy(callExpression.valueArguments[0]),
-                arrayListOf(EConstantExpression(callExpression.location, Core.Kt.C_Int.toType(), "${width - 1}")),
-                arrayListOf()
+            val msbIndex = CoreTransformUtil.plusInt(
+                callExpression.valueArguments[0],
+                width - 1,
+                callExpression.location
             )
             val receiver = EConstantPartSelectExpression(
                 callExpression.location,
@@ -177,16 +170,10 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             val width = callExpression.valueArguments[1].type.asBitWidth(callExpression)
-            val indexType = callExpression.valueArguments[0].type
-            val bitConstant = BitConstant(width - 1, false, indexType.asBitWidth(callExpression))
-            val bitConstantString = ConstantUtil.formatBitConstant(bitConstant)
-            val msbIndex = EKtCallExpression(
-                callExpression.location,
-                indexType.copy(),
-                Core.Vk.Ubit.F_plus_Ubit,
-                ExpressionCopier.copy(callExpression.valueArguments[0]),
-                arrayListOf(EConstantExpression(callExpression.location, indexType.copy(), bitConstantString)),
-                arrayListOf()
+            val msbIndex = CoreTransformUtil.plusUbit(
+                callExpression.valueArguments[0],
+                width - 1,
+                callExpression.location
             )
             val receiver = EConstantPartSelectExpression(
                 callExpression.location,
@@ -263,14 +250,45 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
-            val msbIndex = EKtCallExpression(
+            val width = callExpression.typeArguments[0].asCardinalValue(callExpression)
+            val msbIndex = CoreTransformUtil.plusInt(
+                callExpression.valueArguments[0],
+                width - 1,
+                callExpression.location
+            )
+            return EConstantPartSelectExpression(
                 callExpression.location,
-                Core.Kt.C_Int.toType(),
-                Core.Kt.Int.F_plus_Int,
-                ExpressionCopier.copy(callExpression.valueArguments[0]),
-                arrayListOf(EConstantExpression(callExpression.location, Core.Kt.C_Int.toType(), "${value - 1}")),
-                arrayListOf()
+                callExpression.type,
+                callExpression.receiver!!,
+                msbIndex,
+                callExpression.valueArguments[0]
+            )
+        }
+    }
+
+    val F_slice_Ubit = object : TransformableCoreFunctionDeclaration(parent, "slice", "fun slice(Ubit)") {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return listOf(
+                EqualsTypeConstraint(
+                    TypeAdapter.ofTypeArgument(callExpression, 0),
+                    TypeAdapter.ofElement(callExpression, 0)
+                ),
+                UnaryTypeConstraint(
+                    TypeAdapter.ofElement(callExpression.valueArguments[0], 0),
+                    TypeAdapter.ofElement(callExpression.receiver!!, 0),
+                    false,
+                    UnaryTypeConstraintKind.LOG
+                )
+            )
+        }
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            val width = callExpression.typeArguments[0].asCardinalValue(callExpression)
+            val msbIndex = CoreTransformUtil.plusUbit(
+                callExpression.valueArguments[0],
+                width - 1,
+                callExpression.location
             )
             return EConstantPartSelectExpression(
                 callExpression.location,

@@ -36,6 +36,8 @@ object UnaryExpressionReducerStage : ProjectStage() {
         referenceMap[ReducerEntry(Core.Vk.C_Ubit, KtUnaryOperatorKind.PLUS)] = Core.Vk.Ubit.F_unaryPlus
         referenceMap[ReducerEntry(Core.Vk.C_Ubit, KtUnaryOperatorKind.MINUS)] = Core.Vk.Ubit.F_unaryMinus
         referenceMap[ReducerEntry(Core.Vk.C_Ubit, KtUnaryOperatorKind.EXCL)] = Core.Vk.Ubit.F_not
+        referenceMap[ReducerEntry(Core.Vk.C_Sbit, KtUnaryOperatorKind.PLUS)] = Core.Vk.Sbit.F_unaryPlus
+        referenceMap[ReducerEntry(Core.Vk.C_Sbit, KtUnaryOperatorKind.MINUS)] = Core.Vk.Sbit.F_unaryMinus
     }
 
     override fun process(projectContext: ProjectContext) {

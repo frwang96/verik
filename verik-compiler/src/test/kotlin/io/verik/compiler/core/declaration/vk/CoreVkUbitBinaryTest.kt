@@ -29,7 +29,9 @@ internal class CoreVkUbitBinaryTest : CoreDeclarationTest() {
                 Core.Vk.Ubit.F_plus_Ubit,
                 Core.Vk.Ubit.F_plus_Sbit,
                 Core.Vk.Ubit.F_add_Ubit,
-                Core.Vk.Ubit.F_minus_Ubit
+                Core.Vk.Ubit.F_add_Sbit,
+                Core.Vk.Ubit.F_minus_Ubit,
+                Core.Vk.Ubit.F_minus_Sbit
             ),
             """
                 var x = u(0b0)
@@ -37,16 +39,20 @@ internal class CoreVkUbitBinaryTest : CoreDeclarationTest() {
                 fun f() {
                     x = x + u(0b0)
                     x = x + s(0b0)
-                    y = x add x
-                    x = x - x
+                    y = x add u(0b0)
+                    y = x add s(0b0)
+                    x = x - u(0b0)
+                    x = x - s(0b0)
                 }
             """.trimIndent(),
             """
                 function automatic void f();
                     x = x + 1'h0;
                     x = x + 1'sh0;
-                    y = x + x;
-                    x = x - x;
+                    y = x + 1'h0;
+                    y = x + 1'sh0;
+                    x = x - 1'h0;
+                    x = x - 1'sh0;
                 endfunction : f
             """.trimIndent()
         )
@@ -57,22 +63,28 @@ internal class CoreVkUbitBinaryTest : CoreDeclarationTest() {
         driveCoreDeclarationTest(
             listOf(
                 Core.Vk.Ubit.F_times_Ubit,
+                Core.Vk.Ubit.F_times_Sbit,
                 Core.Vk.Ubit.F_mul_Ubit,
+                Core.Vk.Ubit.F_mul_Sbit,
                 Core.Vk.Ubit.F_div_Ubit
             ),
             """
                 var x = u(0x0)
                 var y = u(0x00)
                 fun f() {
-                    x = x * x
-                    y = x mul x
+                    x = x * u(0x0)
+                    x = x * s(0x0)
+                    y = x mul u(0x0)
+                    y = x mul s(0x0)
                     x = x / x
                 }
             """.trimIndent(),
             """
                 function automatic void f();
-                    x = x * x;
-                    y = x * x;
+                    x = x * 4'h0;
+                    x = x * 4'sh0;
+                    y = x * 4'h0;
+                    y = x * 4'sh0;
                     x = x / x;
                 endfunction : f
             """.trimIndent()
@@ -84,22 +96,32 @@ internal class CoreVkUbitBinaryTest : CoreDeclarationTest() {
         driveCoreDeclarationTest(
             listOf(
                 Core.Vk.Ubit.F_and_Ubit,
+                Core.Vk.Ubit.F_and_Sbit,
                 Core.Vk.Ubit.F_or_Ubit,
-                Core.Vk.Ubit.F_xor_Ubit
+                Core.Vk.Ubit.F_or_Sbit,
+                Core.Vk.Ubit.F_xor_Ubit,
+                Core.Vk.Ubit.F_xor_Sbit
             ),
             """
                 var x = u(0x0)
+                var y = s(0x0)
                 fun f() {
                     x = x and x
+                    x = x and y
                     x = x or x
+                    x = x or y
                     x = x xor x
+                    x = x xor y
                 }
             """.trimIndent(),
             """
                 function automatic void f();
                     x = x & x;
+                    x = x & y;
                     x = x | x;
+                    x = x | y;
                     x = x ^ x;
+                    x = x ^ y;
                 endfunction : f
             """.trimIndent()
         )
