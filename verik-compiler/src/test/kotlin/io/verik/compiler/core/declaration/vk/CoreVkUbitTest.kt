@@ -45,23 +45,32 @@ internal class CoreVkUbitTest : CoreDeclarationTest() {
         driveCoreDeclarationTest(
             listOf(
                 Core.Vk.Ubit.F_get_Int,
+                Core.Vk.Ubit.F_get_Ubit,
                 Core.Vk.Ubit.F_set_Int_Boolean,
-                Core.Vk.Ubit.F_set_Int_Ubit
+                Core.Vk.Ubit.F_set_Ubit_Boolean,
+                Core.Vk.Ubit.F_set_Int_Ubit,
+                Core.Vk.Ubit.F_set_Ubit_Ubit
             ),
             """
                 var x = u(0x0)
                 var y = false
                 fun f() {
                     y = x[0]
+                    y = x[u(0b00)]
                     x[0] = y
+                    x[u(0b00)] = y
                     x[0] = u(0b00)
+                    x[u(0b00)] = u(0b00)
                 }
             """.trimIndent(),
             """
                 function automatic void f();
                     y = x[0];
+                    y = x[2'h0];
                     x[0] = y;
+                    x[2'h0] = y;
                     x[1:0] = 2'h0;
+                    x[2'h1:2'h0] = 2'h0;
                 endfunction : f
             """.trimIndent()
         )

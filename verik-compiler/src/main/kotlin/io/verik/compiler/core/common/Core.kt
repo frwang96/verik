@@ -33,6 +33,7 @@ import io.verik.compiler.core.declaration.vk.CoreVkCardinal
 import io.verik.compiler.core.declaration.vk.CoreVkClass
 import io.verik.compiler.core.declaration.vk.CoreVkControl
 import io.verik.compiler.core.declaration.vk.CoreVkMisc
+import io.verik.compiler.core.declaration.vk.CoreVkPacked
 import io.verik.compiler.core.declaration.vk.CoreVkRandom
 import io.verik.compiler.core.declaration.vk.CoreVkSbitBinary
 import io.verik.compiler.core.declaration.vk.CoreVkSpecial
@@ -214,8 +215,11 @@ object Core {
 
             val F_unaryMinus = CoreVkUbit.F_unaryMinus
             val F_get_Int = CoreVkUbit.F_get_Int
+            val F_get_Ubit = CoreVkUbit.F_get_Ubit
             val F_set_Int_Boolean = CoreVkUbit.F_set_Int_Boolean
+            val F_set_Ubit_Boolean = CoreVkUbit.F_set_Ubit_Boolean
             val F_set_Int_Ubit = CoreVkUbit.F_set_Int_Ubit
+            val F_set_Ubit_Ubit = CoreVkUbit.F_set_Ubit_Ubit
 
             val F_plus_Ubit = CoreVkUbitBinary.F_plus_Ubit
             val F_add_Ubit = CoreVkUbitBinary.F_add_Ubit
@@ -245,6 +249,16 @@ object Core {
 
             val F_plus_Sbit = CoreVkSbitBinary.F_plus_Sbit
             val F_mul_Sbit = CoreVkSbitBinary.F_mul_Sbit
+        }
+
+        object Packed {
+
+            val F_get_Int = CoreVkPacked.F_get_Int
+            val F_get_Ubit = CoreVkPacked.F_get_Ubit
+            val F_set_Int_E = CoreVkPacked.F_set_Int_E
+            val F_set_Ubit_E = CoreVkPacked.F_set_Ubit_E
+
+            val P_size = CoreVkPacked.P_size
         }
 
         object Unpacked {

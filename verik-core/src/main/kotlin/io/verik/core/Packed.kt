@@ -19,9 +19,7 @@
 package io.verik.core
 
 /**
- * A packed array.
- * @param N the size of the array
- * @param E the type of the elements of the array
+ * A packed array of size [N] of elements of type [E].
  */
 class Packed<N : `*`, E> private constructor() : Iterable<E> {
 

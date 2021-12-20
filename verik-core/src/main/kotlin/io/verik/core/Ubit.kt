@@ -81,7 +81,7 @@ class Ubit<N : `*`> private constructor() {
     }
 
     /**
-     * (UNIMPLEMENTED) Set bit at [index] to [value].
+     * Set bit at [index] to [value].
      */
     operator fun set(index: Ubit<`*`>, value: Boolean) {
         throw VerikException()
@@ -91,6 +91,13 @@ class Ubit<N : `*`> private constructor() {
      * Insert [value] at offset [index].
      */
     operator fun set(index: Int, value: Ubit<`*`>) {
+        throw VerikException()
+    }
+
+    /**
+     * Insert [value] at offset [index].
+     */
+    operator fun set(index: Ubit<`*`>, value: Ubit<`*`>) {
         throw VerikException()
     }
 

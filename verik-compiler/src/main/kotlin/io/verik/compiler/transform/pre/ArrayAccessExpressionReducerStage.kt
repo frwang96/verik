@@ -40,6 +40,15 @@ object ArrayAccessExpressionReducerStage : ProjectStage() {
             GetReducerEntry(Core.Vk.C_Ubit, listOf(Core.Kt.C_Int), Core.Vk.Ubit.F_get_Int)
         )
         getReducerEntries.add(
+            GetReducerEntry(Core.Vk.C_Ubit, listOf(Core.Vk.C_Ubit), Core.Vk.Ubit.F_get_Ubit)
+        )
+        getReducerEntries.add(
+            GetReducerEntry(Core.Vk.C_Packed, listOf(Core.Kt.C_Int), Core.Vk.Packed.F_get_Int)
+        )
+        getReducerEntries.add(
+            GetReducerEntry(Core.Vk.C_Packed, listOf(Core.Vk.C_Ubit), Core.Vk.Packed.F_get_Ubit)
+        )
+        getReducerEntries.add(
             GetReducerEntry(Core.Vk.C_Unpacked, listOf(Core.Kt.C_Int), Core.Vk.Unpacked.F_get_Int)
         )
         getReducerEntries.add(
@@ -60,9 +69,41 @@ object ArrayAccessExpressionReducerStage : ProjectStage() {
         setReducerEntries.add(
             SetReducerEntry(
                 Core.Vk.C_Ubit,
+                listOf(Core.Vk.C_Ubit),
+                Core.Kt.C_Boolean.toType(),
+                Core.Vk.Ubit.F_set_Ubit_Boolean
+            )
+        )
+        setReducerEntries.add(
+            SetReducerEntry(
+                Core.Vk.C_Ubit,
                 listOf(Core.Kt.C_Int),
                 Core.Vk.C_Ubit.toType(Cardinal.UNRESOLVED.toType()),
                 Core.Vk.Ubit.F_set_Int_Ubit
+            )
+        )
+        setReducerEntries.add(
+            SetReducerEntry(
+                Core.Vk.C_Ubit,
+                listOf(Core.Vk.C_Ubit),
+                Core.Vk.C_Ubit.toType(Cardinal.UNRESOLVED.toType()),
+                Core.Vk.Ubit.F_set_Ubit_Ubit
+            )
+        )
+        setReducerEntries.add(
+            SetReducerEntry(
+                Core.Vk.C_Packed,
+                listOf(Core.Kt.C_Int),
+                Core.Kt.C_Any.toType(),
+                Core.Vk.Packed.F_set_Int_E
+            )
+        )
+        setReducerEntries.add(
+            SetReducerEntry(
+                Core.Vk.C_Packed,
+                listOf(Core.Vk.C_Ubit),
+                Core.Kt.C_Any.toType(),
+                Core.Vk.Packed.F_set_Ubit_E
             )
         )
         setReducerEntries.add(
