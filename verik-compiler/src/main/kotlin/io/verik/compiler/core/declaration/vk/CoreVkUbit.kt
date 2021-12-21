@@ -317,12 +317,12 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
+            val width = callExpression.typeArguments[0].asCardinalValue(callExpression)
             return EWidthCastExpression(
                 callExpression.location,
                 callExpression.type,
                 callExpression.receiver!!,
-                value
+                width
             )
         }
     }
@@ -335,12 +335,12 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             val callExpressionSigned = CoreTransformUtil.callExpressionSigned(callExpression.receiver!!)
-            val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
+            val width = callExpression.typeArguments[0].asCardinalValue(callExpression)
             val widthCastExpression = EWidthCastExpression(
                 callExpression.location,
                 callExpression.type,
                 callExpressionSigned,
-                value
+                width
             )
             return CoreTransformUtil.callExpressionUnsigned(widthCastExpression)
         }
@@ -363,13 +363,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
-            return EWidthCastExpression(
-                callExpression.location,
-                callExpression.type,
-                callExpression.receiver!!,
-                value
-            )
+            return F_ext.transform(callExpression)
         }
     }
 }

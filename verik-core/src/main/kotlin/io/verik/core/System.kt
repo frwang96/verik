@@ -47,14 +47,14 @@ fun error(message: String) {
 }
 
 /**
- * (UNIMPLEMENTED) Logs [message] with severity warning.
+ * Logs [message] with severity warning.
  */
 fun warning(message: String) {
     throw VerikException()
 }
 
 /**
- * (UNIMPLEMENTED) Logs [message] with severity info.
+ * Logs [message] with severity info.
  */
 fun info(message: String) {
     throw VerikException()

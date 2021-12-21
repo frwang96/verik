@@ -47,6 +47,8 @@ object Target {
     val F_time = TargetSystem.F_time
     val F_fatal = TargetSystem.F_fatal
     val F_error = TargetSystem.F_error
+    val F_warning = TargetSystem.F_warning
+    val F_info = TargetSystem.F_info
     val F_finish = TargetSystem.F_finish
     val F_new = TargetSystem.F_new
     val F_wait = TargetSystem.F_wait

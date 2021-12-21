@@ -278,8 +278,8 @@ object CoreVkUbitBinary : CoreScope(Core.Vk.C_Ubit) {
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
                 EqualsTypeConstraint(
-                    TypeAdapter.ofElement(callExpression.receiver!!),
-                    TypeAdapter.ofElement(callExpression)
+                    TypeAdapter.ofElement(callExpression.receiver!!, 0),
+                    TypeAdapter.ofElement(callExpression, 0)
                 )
             )
         }
@@ -309,12 +309,7 @@ object CoreVkUbitBinary : CoreScope(Core.Vk.C_Ubit) {
     val F_shr_Int = object : TransformableCoreFunctionDeclaration(parent, "shr", "fun shr(Int)") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
-            return listOf(
-                EqualsTypeConstraint(
-                    TypeAdapter.ofElement(callExpression.receiver!!),
-                    TypeAdapter.ofElement(callExpression)
-                )
-            )
+            return F_shl_Int.getTypeConstraints(callExpression)
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
@@ -342,12 +337,7 @@ object CoreVkUbitBinary : CoreScope(Core.Vk.C_Ubit) {
     val F_sshr_Int = object : TransformableCoreFunctionDeclaration(parent, "sshr", "fun sshr(Int)") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
-            return listOf(
-                EqualsTypeConstraint(
-                    TypeAdapter.ofElement(callExpression.receiver!!),
-                    TypeAdapter.ofElement(callExpression)
-                )
-            )
+            return F_shl_Int.getTypeConstraints(callExpression)
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
