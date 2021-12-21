@@ -23,9 +23,7 @@ class OutputContext {
     lateinit var configTextFile: TextFile
     var targetPackageTextFile: TextFile? = null
     var basicPackageTextFiles: List<TextFile> = listOf()
-    var basicPackageTextFilesLabeled: List<TextFile> = listOf()
     var rootPackageTextFiles: List<TextFile> = listOf()
-    var rootPackageTextFilesLabeled: List<TextFile> = listOf()
     var packageWrapperTextFiles: List<TextFile> = listOf()
     lateinit var sourcesTextFile: TextFile
 
@@ -34,9 +32,7 @@ class OutputContext {
         textFiles.add(configTextFile)
         targetPackageTextFile?.let { textFiles.add(it) }
         textFiles.addAll(basicPackageTextFiles)
-        textFiles.addAll(basicPackageTextFilesLabeled)
         textFiles.addAll(rootPackageTextFiles)
-        textFiles.addAll(rootPackageTextFilesLabeled)
         textFiles.addAll(packageWrapperTextFiles)
         textFiles.add(sourcesTextFile)
         return textFiles.sortedBy { it.path }

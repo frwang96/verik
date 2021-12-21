@@ -16,294 +16,162 @@
 
 package io.verik.compiler.serialize.source
 
-import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.common.TextFile
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.message.Messages
-import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.serialize.general.FileHeaderBuilder
-import org.jetbrains.kotlin.backend.common.peek
-import org.jetbrains.kotlin.backend.common.pop
-import org.jetbrains.kotlin.backend.common.push
 
 class SourceBuilder(
-    private val projectContext: ProjectContext,
+    projectContext: ProjectContext,
     private val file: EFile
 ) {
 
-    private var sourceActionLine = SourceActionLine(0, ArrayList())
-    private val sourceActionLines = ArrayList<SourceActionLine>()
-    private val locationStack = ArrayDeque<SourceLocation>()
-    private var indent = 0
+    private val indentLength = projectContext.config.indentLength
+    private val wrapLength = projectContext.config.wrapLength
 
-    fun getResult(): SourceBuilderResult {
-        if (sourceActionLine.sourceActions.isNotEmpty())
-            Messages.INTERNAL_ERROR.on(file, "Serialized source must end with a new line")
+    private val sourceBuilder = StringBuilder()
 
-        val outputPath = file.outputPath
+    init {
         val fileHeader = FileHeaderBuilder.build(
             projectContext.config,
             file.inputPath,
-            outputPath,
+            file.outputPath,
             FileHeaderBuilder.HeaderStyle.SYSTEM_VERILOG
         )
-        val sourceBuilder = StringBuilder()
         sourceBuilder.append(fileHeader)
+    }
 
-        if (projectContext.config.labelSourceLocations) {
-            val outputPathLabeled = outputPath.parent.resolve("${outputPath.fileName}.labeled")
-            val fileHeaderLabeled = FileHeaderBuilder.build(
-                projectContext.config,
-                file.inputPath,
-                outputPathLabeled,
-                FileHeaderBuilder.HeaderStyle.SYSTEM_VERILOG
-            )
-            val sourceBuilderLabeled = StringBuilder()
-            sourceBuilderLabeled.append(fileHeaderLabeled)
+    fun toTextFile(): TextFile {
+        return TextFile(file.outputPath, sourceBuilder.toString())
+    }
 
-            val sourceActionBuilder = SourceActionBuilder(
-                sourceBuilder,
-                sourceBuilderLabeled,
-                projectContext.config.wrapLength,
-                projectContext.config.indentLength
-            )
-            sourceActionBuilder.build(sourceActionLines)
-            val textFile = TextFile(outputPath, sourceBuilder.toString())
-            val textFileLabeled = TextFile(outputPathLabeled, sourceBuilderLabeled.toString())
-            return SourceBuilderResult(textFile, textFileLabeled)
-        } else {
-            val sourceActionBuilder = SourceActionBuilder(
-                sourceBuilder,
-                null,
-                projectContext.config.wrapLength,
-                projectContext.config.indentLength
-            )
-            sourceActionBuilder.build(sourceActionLines)
-            val textFile = TextFile(outputPath, sourceBuilder.toString())
-            return SourceBuilderResult(textFile, null)
+    fun build(sourceActionLines: List<SourceActionLine>) {
+        val alignments = ArrayList(sourceActionLines.map { getAlignment(it) })
+        matchAlignment(alignments)
+        sourceActionLines.zip(alignments).forEach { (sourceActionLine, alignment) ->
+            buildLine(sourceActionLine, alignment)
         }
     }
 
-    fun label(element: EElement, block: () -> Unit) {
-        locationStack.push(element.location)
-        block()
-        locationStack.pop()
-    }
-
-    fun indent(block: () -> Unit) {
-        if (sourceActionLine.sourceActions.isNotEmpty())
-            Messages.INTERNAL_ERROR.on(file, "Indent in must start at a new line")
-        sourceActionLine = SourceActionLine(++indent, ArrayList())
-        block()
-        if (sourceActionLine.sourceActions.isNotEmpty())
-            Messages.INTERNAL_ERROR.on(file, "Indent out must start at a new line")
-        sourceActionLine = SourceActionLine(--indent, ArrayList())
-    }
-
-    fun appendLine(content: String) {
-        append(content)
-        appendLine()
-    }
-
-    fun appendLine() {
-        sourceActionLines.add(sourceActionLine)
-        sourceActionLine = SourceActionLine(indent, ArrayList())
-    }
-
-    fun append(content: String) {
-        sourceActionLine.sourceActions.add(SourceAction(SourceActionType.REGULAR, content, locationStack.peek()!!))
-    }
-
-    fun softBreak() {
-        sourceActionLine.sourceActions.add(SourceAction(SourceActionType.SOFT_BREAK, "", locationStack.peek()!!))
-    }
-
-    fun hardBreak() {
-        sourceActionLine.sourceActions.add(SourceAction(SourceActionType.HARD_BREAK, "", locationStack.peek()!!))
-    }
-
-    fun align() {
-        sourceActionLine.sourceActions.add(SourceAction(SourceActionType.ALIGN, "", locationStack.peek()!!))
-    }
-
-    private enum class SourceActionType { REGULAR, SOFT_BREAK, HARD_BREAK, ALIGN }
-
-    private data class SourceAction(val type: SourceActionType, val content: String, val location: SourceLocation)
-
-    private data class SourceActionLine(val indents: Int, val sourceActions: ArrayList<SourceAction>)
-
-    private class SourceActionBuilder(
-        private val sourceBuilder: StringBuilder,
-        private val sourceBuilderLabeled: StringBuilder?,
-        private val wrapLength: Int,
-        private val indentLength: Int
-    ) {
-
-        private val locationLabels = ArrayList<LocationLabel>()
-
-        fun build(sourceActionLines: ArrayList<SourceActionLine>) {
-            val alignments = ArrayList(sourceActionLines.map { getAlignment(it) })
-            matchAlignment(alignments)
-            sourceActionLines.zip(alignments).forEach { (sourceActionLine, alignment) ->
-                buildLine(sourceActionLine, alignment)
+    private fun getAlignment(sourceActionLine: SourceActionLine): Int? {
+        var alignment = sourceActionLine.indents * indentLength
+        sourceActionLine.sourceActions.forEach {
+            alignment += when (it.type) {
+                SourceActionType.REGULAR -> it.content.length
+                SourceActionType.SOFT_BREAK -> 0
+                SourceActionType.HARD_BREAK -> 1
+                SourceActionType.ALIGN -> return alignment
             }
         }
+        return null
+    }
 
-        private fun getAlignment(sourceActionLine: SourceActionLine): Int? {
-            var alignment = sourceActionLine.indents * indentLength
-            sourceActionLine.sourceActions.forEach {
-                alignment += when (it.type) {
-                    SourceActionType.REGULAR -> it.content.length
-                    SourceActionType.SOFT_BREAK -> 0
-                    SourceActionType.HARD_BREAK -> 1
-                    SourceActionType.ALIGN -> return alignment
-                }
-            }
-            return null
-        }
-
-        private fun matchAlignment(alignments: ArrayList<Int?>) {
-            var index = 0
-            while (index < alignments.size) {
-                val alignment = alignments[index]
-                if (alignment != null) {
-                    var matchedAlignment: Int = alignment
-                    var endIndex = index + 1
-                    while (endIndex < alignments.size) {
-                        val endAlignment = alignments[endIndex]
-                        if (endAlignment != null) {
-                            if (endAlignment > matchedAlignment)
-                                matchedAlignment = endAlignment
-                            endIndex++
-                        } else break
-                    }
-                    while (index < endIndex) {
-                        alignments[index] = matchedAlignment
-                        index++
-                    }
-                } else {
-                    index++
-                }
-            }
-        }
-
-        private fun buildLine(sourceActionLine: SourceActionLine, alignment: Int?) {
-            var index = 0
-            if (sourceActionLine.sourceActions.isEmpty()) {
-                appendLine()
-                return
-            }
-            append(" ".repeat(sourceActionLine.indents * indentLength), sourceActionLine.sourceActions[0].location)
-            var lineLength = sourceActionLine.indents * indentLength
-
-            // no wrap before alignment
+    private fun matchAlignment(alignments: ArrayList<Int?>) {
+        var index = 0
+        while (index < alignments.size) {
+            val alignment = alignments[index]
             if (alignment != null) {
-                while (index < sourceActionLine.sourceActions.size) {
-                    val sourceAction = sourceActionLine.sourceActions[index]
-                    when (sourceAction.type) {
-                        SourceActionType.REGULAR -> {
-                            append(sourceAction.content, sourceAction.location)
-                            lineLength += sourceAction.content.length
-                        }
-                        SourceActionType.SOFT_BREAK -> {}
-                        SourceActionType.HARD_BREAK -> {
-                            append(" ", sourceAction.location)
-                            lineLength += 1
-                        }
-                        SourceActionType.ALIGN -> {
-                            append(" ".repeat(alignment - lineLength), sourceAction.location)
-                            lineLength = alignment
-                            index++
-                            break
-                        }
-                    }
+                var matchedAlignment: Int = alignment
+                var endIndex = index + 1
+                while (endIndex < alignments.size) {
+                    val endAlignment = alignments[endIndex]
+                    if (endAlignment != null) {
+                        if (endAlignment > matchedAlignment)
+                            matchedAlignment = endAlignment
+                        endIndex++
+                    } else break
+                }
+                while (index < endIndex) {
+                    alignments[index] = matchedAlignment
                     index++
                 }
+            } else {
+                index++
             }
+        }
+    }
 
-            // wrap after alignment
+    private fun buildLine(sourceActionLine: SourceActionLine, alignment: Int?) {
+        if (sourceActionLine.sourceActions.isEmpty()) {
+            sourceBuilder.appendLine()
+            return
+        }
+
+        sourceBuilder.append(" ".repeat(sourceActionLine.indents * indentLength))
+        var index = 0
+        var lineLength = sourceActionLine.indents * indentLength
+
+        // no wrap before alignment
+        if (alignment != null) {
             while (index < sourceActionLine.sourceActions.size) {
                 val sourceAction = sourceActionLine.sourceActions[index]
                 when (sourceAction.type) {
                     SourceActionType.REGULAR -> {
-                        append(sourceAction.content, sourceAction.location)
+                        sourceBuilder.append(sourceAction.content)
                         lineLength += sourceAction.content.length
                     }
-                    SourceActionType.SOFT_BREAK -> {
-                        if (isWrap(sourceActionLine.sourceActions, index + 1, lineLength)) {
-                            appendLine()
-                            append(" ".repeat((sourceActionLine.indents + 1) * indentLength), sourceAction.location)
-                            lineLength = (sourceActionLine.indents + 1) * indentLength
-                        }
-                    }
+                    SourceActionType.SOFT_BREAK -> {}
                     SourceActionType.HARD_BREAK -> {
-                        if (isWrap(sourceActionLine.sourceActions, index + 1, lineLength + 1)) {
-                            appendLine()
-                            append(" ".repeat((sourceActionLine.indents + 1) * indentLength), sourceAction.location)
-                            lineLength = (sourceActionLine.indents + 1) * indentLength
-                        } else {
-                            append(" ", sourceAction.location)
-                        }
+                        sourceBuilder.append(" ")
+                        lineLength += 1
                     }
-                    SourceActionType.ALIGN -> {}
+                    SourceActionType.ALIGN -> {
+                        sourceBuilder.append(" ".repeat(alignment - lineLength))
+                        lineLength = alignment
+                        index++
+                        break
+                    }
                 }
                 index++
             }
-            appendLine()
         }
 
-        private fun isWrap(sourceActions: ArrayList<SourceAction>, offset: Int, lineLength: Int): Boolean {
-            var index = offset
-            var endLineLength = lineLength
-            while (index < sourceActions.size) {
-                val sourceAction = sourceActions[index]
-                when (sourceAction.type) {
-                    SourceActionType.REGULAR -> {
-                        endLineLength += sourceAction.content.length
+        // wrap after alignment
+        while (index < sourceActionLine.sourceActions.size) {
+            val sourceAction = sourceActionLine.sourceActions[index]
+            when (sourceAction.type) {
+                SourceActionType.REGULAR -> {
+                    sourceBuilder.append(sourceAction.content)
+                    lineLength += sourceAction.content.length
+                }
+                SourceActionType.SOFT_BREAK -> {
+                    if (isWrap(sourceActionLine.sourceActions, index + 1, lineLength)) {
+                        sourceBuilder.appendLine()
+                        sourceBuilder.append(" ".repeat((sourceActionLine.indents + 1) * indentLength))
+                        lineLength = (sourceActionLine.indents + 1) * indentLength
                     }
-                    SourceActionType.SOFT_BREAK -> break
-                    SourceActionType.HARD_BREAK -> break
-                    SourceActionType.ALIGN -> {}
                 }
-                index++
-            }
-            return endLineLength > wrapLength
-        }
-
-        private fun append(content: String, location: SourceLocation) {
-            sourceBuilder.append(content)
-            if (sourceBuilderLabeled != null) {
-                sourceBuilderLabeled.append(content)
-                val locationLabel = locationLabels.lastOrNull()
-                if (locationLabel != null && locationLabel.matches(location)) {
-                    locationLabel.size += content.length
-                } else {
-                    locationLabels.add(LocationLabel(content.length, location.line, location.column))
+                SourceActionType.HARD_BREAK -> {
+                    if (isWrap(sourceActionLine.sourceActions, index + 1, lineLength + 1)) {
+                        sourceBuilder.appendLine()
+                        sourceBuilder.append(" ".repeat((sourceActionLine.indents + 1) * indentLength))
+                        lineLength = (sourceActionLine.indents + 1) * indentLength
+                    } else {
+                        sourceBuilder.append(" ")
+                    }
                 }
+                SourceActionType.ALIGN -> {}
             }
+            index++
         }
+        sourceBuilder.appendLine()
+    }
 
-        private fun appendLine() {
-            sourceBuilder.appendLine()
-            if (sourceBuilderLabeled != null) {
-                sourceBuilderLabeled.appendLine()
-                sourceBuilderLabeled.append("//")
-                locationLabels.forEach { sourceBuilderLabeled.append(" $it") }
-                sourceBuilderLabeled.appendLine()
-                locationLabels.clear()
+    private fun isWrap(sourceActions: ArrayList<SourceAction>, offset: Int, lineLength: Int): Boolean {
+        var index = offset
+        var endLineLength = lineLength
+        while (index < sourceActions.size) {
+            val sourceAction = sourceActions[index]
+            when (sourceAction.type) {
+                SourceActionType.REGULAR -> {
+                    endLineLength += sourceAction.content.length
+                }
+                SourceActionType.SOFT_BREAK -> break
+                SourceActionType.HARD_BREAK -> break
+                SourceActionType.ALIGN -> {}
             }
+            index++
         }
-
-        private data class LocationLabel(var size: Int, val line: Int, val column: Int) {
-
-            fun matches(location: SourceLocation): Boolean {
-                return line == location.line && column == location.column
-            }
-
-            override fun toString(): String {
-                return "$size:$line:$column"
-            }
-        }
+        return endLineLength > wrapLength
     }
 }

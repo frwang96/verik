@@ -19,7 +19,7 @@ package io.verik.compiler.serialize.source
 import io.verik.compiler.test.BaseTest
 import org.junit.jupiter.api.Test
 
-internal class SourceBuilderTest : BaseTest() {
+internal class UnlabeledSourceBuilderTest : BaseTest() {
 
     @Test
     fun `align properties`() {
