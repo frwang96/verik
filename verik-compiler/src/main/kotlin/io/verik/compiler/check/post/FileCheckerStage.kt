@@ -23,8 +23,6 @@ import java.nio.file.Path
 
 object FileCheckerStage : ProjectStage() {
 
-    override val checkNormalization = false
-
     override fun process(projectContext: ProjectContext) {
         projectContext.project.basicPackages.forEach {
             if (it.name == "verik_pkg")

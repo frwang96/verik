@@ -16,17 +16,11 @@
 
 package io.verik.compiler.main
 
-import io.verik.compiler.check.normalize.NormalizationChecker
-
 abstract class ProjectStage {
 
-    protected abstract val checkNormalization: Boolean
+    abstract fun process(projectContext: ProjectContext)
 
-    protected abstract fun process(projectContext: ProjectContext)
-
-    fun accept(projectContext: ProjectContext) {
-        process(projectContext)
-        if (checkNormalization)
-            NormalizationChecker.accept(projectContext)
+    override fun toString(): String {
+        return this::class.simpleName.toString()
     }
 }

@@ -35,14 +35,14 @@ internal class AnnotationCasterTest : BaseTest() {
     }
 
     @Test
-    fun `annotation unrecognized`() {
+    fun `annotation unsupported`() {
         driveMessageTest(
             """
                 @Synchronized
                 fun f() {}
             """.trimIndent(),
             true,
-            "Could not identify annotation: Synchronized"
+            "Unsupported annotation: Synchronized"
         )
     }
 

@@ -30,7 +30,7 @@ object AnnotationCaster {
         val name = descriptor.fqName!!.shortName().asString()
         val qualifiedName = descriptor.fqName!!.asString()
         if (!Annotations.isAnnotation(qualifiedName))
-            Messages.UNIDENTIFIED_ANNOTATION.on(annotationEntry, name)
+            Messages.UNSUPPORTED_ANNOTATION.on(annotationEntry, name)
         return EAnnotation(location, name, qualifiedName)
     }
 }

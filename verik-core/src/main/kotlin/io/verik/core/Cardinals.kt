@@ -73,7 +73,7 @@ typealias DEC<N> = `*`
 typealias LOG<N> = `*`
 
 /**
- * Width of the binary representation of the cardinal N.
+ * Width of the binary representation of the cardinal N. Equivalent to `LOG<INC<N>>`.
  */
 typealias WIDTH<N> = `*`
 

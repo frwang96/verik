@@ -24,8 +24,6 @@ import java.nio.file.Path
 
 object SourcesFileSerializerStage : ProjectStage() {
 
-    override val checkNormalization = false
-
     override fun process(projectContext: ProjectContext) {
         val outputPath = projectContext.config.buildDir.resolve("sources.yaml")
         val fileHeader = FileHeaderBuilder.build(

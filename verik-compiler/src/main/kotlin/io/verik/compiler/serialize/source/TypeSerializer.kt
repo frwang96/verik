@@ -25,11 +25,13 @@ import io.verik.compiler.ast.element.sv.ETypeDefinition
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.message.Messages
 import io.verik.compiler.target.common.TargetClassDeclaration
+import io.verik.compiler.target.common.TargetPackage
 
 object TypeSerializer {
 
     fun serialize(type: Type, element: EElement): SerializedType {
         return when (val reference = type.reference) {
+            is TargetPackage -> SerializedType(reference.name)
             is TargetClassDeclaration -> reference.serializeType(type.arguments, element)
             is EBasicPackage -> SerializedType(reference.name)
             is ETypeDefinition -> SerializedType(reference.name)

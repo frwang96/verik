@@ -20,35 +20,32 @@ import io.verik.compiler.ast.element.kt.EKtCallExpression
 
 sealed class TypeConstraint
 
-class TypeEqualsTypeConstraint(
+class EqualsTypeConstraint(
     val inner: TypeAdapter,
     val outer: TypeAdapter
 ) : TypeConstraint()
 
-class UnaryOperatorTypeConstraint(
+class UnaryTypeConstraint(
     val inner: TypeAdapter,
     val outer: TypeAdapter,
     val isInnerToOuter: Boolean,
-    val kind: UnaryOperatorTypeConstraintKind
+    val kind: UnaryTypeConstraintKind
 ) : TypeConstraint()
 
-class BinaryOperatorTypeConstraint(
+class BinaryTypeConstraint(
     val left: TypeAdapter,
     val right: TypeAdapter,
     val outer: TypeAdapter,
-    val kind: BinaryOperatorTypeConstraintKind
+    val kind: BinaryTypeConstraintKind
+) : TypeConstraint()
+
+class SpecialTypeConstraint(
+    val callExpression: EKtCallExpression,
+    val kind: SpecialTypeConstraintKind
 ) : TypeConstraint()
 
 class ComparisonTypeConstraint(
     val inner: TypeAdapter,
     val outer: TypeAdapter,
     val kind: ComparisonTypeConstraintKind
-) : TypeConstraint()
-
-class ConcatenationTypeConstraint(
-    val callExpression: EKtCallExpression
-) : TypeConstraint()
-
-class ReplicationTypeConstraint(
-    val callExpression: EKtCallExpression
 ) : TypeConstraint()

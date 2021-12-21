@@ -30,8 +30,6 @@ import io.verik.compiler.target.common.TargetDeclaration
 
 object NameCheckerStage : ProjectStage() {
 
-    override val checkNormalization = false
-
     override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(NameCheckerVisitor)
     }

@@ -51,5 +51,9 @@ object CoreVkSystem : CoreScope(CorePackage.VK) {
 
     val F_error_String = BasicCoreFunctionDeclaration(parent, "error", "fun error(String)", Target.F_error)
 
+    val F_warning_String = BasicCoreFunctionDeclaration(parent, "warning", "fun warning(String)", Target.F_warning)
+
+    val F_info_String = BasicCoreFunctionDeclaration(parent, "info", "fun info(String)", Target.F_info)
+
     val F_time = BasicCoreFunctionDeclaration(parent, "time", "fun time()", Target.F_time)
 }

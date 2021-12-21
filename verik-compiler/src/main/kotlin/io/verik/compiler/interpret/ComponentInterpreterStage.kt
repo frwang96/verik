@@ -34,8 +34,6 @@ import io.verik.compiler.message.Messages
 
 object ComponentInterpreterStage : ProjectStage() {
 
-    override val checkNormalization = true
-
     override fun process(projectContext: ProjectContext) {
         val referenceUpdater = ReferenceUpdater(projectContext)
         val componentInterpreterVisitor = ComponentInterpreterVisitor(referenceUpdater)

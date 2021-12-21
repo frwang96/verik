@@ -42,8 +42,6 @@ import org.jetbrains.kotlin.psi.KtTypeParameter
 
 object DeclarationCastIndexerStage : ProjectStage() {
 
-    override val checkNormalization = false
-
     override fun process(projectContext: ProjectContext) {
         val castContext = CastContext(projectContext.bindingContext)
         val declarationCastIndexerVisitor = DeclarationCastIndexerVisitor(castContext)

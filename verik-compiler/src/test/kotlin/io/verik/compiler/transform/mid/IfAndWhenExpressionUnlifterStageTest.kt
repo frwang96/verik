@@ -95,7 +95,7 @@ internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
                     PropertyStatement(Unit, SvProperty(<tmp>, Int, null, 0, 0, 0)),
                     WhenExpression(
                         Unit, null,
-                        [*, WhenEntry([], KtCallExpression(Nothing, ${'$'}fatal, null, [], []))]
+                        [*, WhenEntry([], KtCallExpression(Nothing, fatal, null, [], []))]
                     ),
                     PropertyStatement(Unit, SvProperty(y, Int, ReferenceExpression(Int, <tmp>, null), 0, 0, 0))
                 ]

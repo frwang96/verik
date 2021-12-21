@@ -25,17 +25,16 @@ object TypeConstraintChecker {
     fun check(typeConstraints: List<TypeConstraint>) {
         typeConstraints.forEach {
             when (it) {
-                is TypeEqualsTypeConstraint -> checkTypeEqualsTypeConstraint(it)
-                is UnaryOperatorTypeConstraint -> checkUnaryOperatorTypeConstraint(it)
-                is BinaryOperatorTypeConstraint -> checkBinaryOperatorTypeConstraint(it)
+                is EqualsTypeConstraint -> checkEqualsTypeConstraint(it)
+                is UnaryTypeConstraint -> checkUnaryTypeConstraint(it)
+                is BinaryTypeConstraint -> checkBinaryTypeConstraint(it)
+                is SpecialTypeConstraint -> checkSpecialTypeConstraint(it)
                 is ComparisonTypeConstraint -> checkComparisonTypeConstraint(it)
-                is ConcatenationTypeConstraint -> checkConcatenationTypeConstraint(it)
-                is ReplicationTypeConstraint -> checkReplicationTypeConstraint(it)
             }
         }
     }
 
-    private fun checkTypeEqualsTypeConstraint(typeConstraint: TypeEqualsTypeConstraint) {
+    private fun checkEqualsTypeConstraint(typeConstraint: EqualsTypeConstraint) {
         val innerType = typeConstraint.inner.getType()
         val outerType = typeConstraint.outer.getType()
         if (outerType != innerType) {
@@ -48,7 +47,7 @@ object TypeConstraintChecker {
         }
     }
 
-    private fun checkUnaryOperatorTypeConstraint(typeConstraint: UnaryOperatorTypeConstraint) {
+    private fun checkUnaryTypeConstraint(typeConstraint: UnaryTypeConstraint) {
         val innerValue = typeConstraint.inner.getType().asCardinalValue(typeConstraint.inner.getElement())
         val outerValue = typeConstraint.outer.getType().asCardinalValue(typeConstraint.outer.getElement())
         if (typeConstraint.isInnerToOuter) {
@@ -74,7 +73,7 @@ object TypeConstraintChecker {
         }
     }
 
-    private fun checkBinaryOperatorTypeConstraint(typeConstraint: BinaryOperatorTypeConstraint) {
+    private fun checkBinaryTypeConstraint(typeConstraint: BinaryTypeConstraint) {
         val leftValue = typeConstraint.left.getType().asCardinalValue(typeConstraint.left.getElement())
         val rightValue = typeConstraint.right.getType().asCardinalValue(typeConstraint.right.getElement())
         val innerValue = typeConstraint.kind.evaluate(leftValue, rightValue)
@@ -86,6 +85,40 @@ object TypeConstraintChecker {
                 substitutionResult.original,
                 substitutionResult.substituted
             )
+        }
+    }
+
+    private fun checkSpecialTypeConstraint(typeConstraint: SpecialTypeConstraint) {
+        val expressionWidth = typeConstraint.callExpression.type.asBitWidth(typeConstraint.callExpression)
+        val valueArgumentWidths = typeConstraint
+            .callExpression
+            .valueArguments
+            .map { it.type.getWidthAsInt(it) }
+        when (typeConstraint.kind) {
+            SpecialTypeConstraintKind.CAT -> {
+                val catWidth = valueArgumentWidths.sum()
+                if (catWidth != expressionWidth) {
+                    val actualType = Core.Vk.C_Ubit.toType(Cardinal.of(catWidth).toType())
+                    Messages.TYPE_MISMATCH.on(
+                        typeConstraint.callExpression,
+                        typeConstraint.callExpression.type,
+                        actualType
+                    )
+                }
+            }
+            SpecialTypeConstraintKind.REP -> {
+                val typeArgumentWidth = typeConstraint.callExpression
+                    .typeArguments[0].asCardinalValue(typeConstraint.callExpression)
+                val repWidth = valueArgumentWidths[0] * typeArgumentWidth
+                if (expressionWidth != repWidth) {
+                    val actualType = Core.Vk.C_Ubit.toType(Cardinal.of(repWidth).toType())
+                    Messages.TYPE_MISMATCH.on(
+                        typeConstraint.callExpression,
+                        typeConstraint.callExpression.type,
+                        actualType
+                    )
+                }
+            }
         }
     }
 
@@ -113,33 +146,6 @@ object TypeConstraintChecker {
                     )
                 }
             }
-        }
-    }
-
-    private fun checkConcatenationTypeConstraint(typeConstraint: ConcatenationTypeConstraint) {
-        val expressionWidth = typeConstraint.callExpression.type.asBitWidth(typeConstraint.callExpression)
-        val valueArgumentWidths = typeConstraint
-            .callExpression
-            .valueArguments
-            .map { it.type.getWidth(it) }
-        val sumWidth = valueArgumentWidths.sum()
-        if (sumWidth != expressionWidth) {
-            val actualType = Core.Vk.C_Ubit.toType(Cardinal.of(sumWidth).toType())
-            Messages.TYPE_MISMATCH.on(typeConstraint.callExpression, typeConstraint.callExpression.type, actualType)
-        }
-    }
-
-    private fun checkReplicationTypeConstraint(typeConstraint: ReplicationTypeConstraint) {
-        val expressionWidth = typeConstraint.callExpression.type.asBitWidth(typeConstraint.callExpression)
-        val valueArgumentWidth = typeConstraint.callExpression.valueArguments[0]
-            .let { it.type.getWidth(it) }
-        val typeArgumentWidth = typeConstraint.callExpression
-            .typeArguments[0].asCardinalValue(typeConstraint.callExpression)
-        if (expressionWidth != valueArgumentWidth * typeArgumentWidth) {
-            val actualType = Core.Vk.C_Ubit.toType(
-                Cardinal.of(valueArgumentWidth * typeArgumentWidth).toType()
-            )
-            Messages.TYPE_MISMATCH.on(typeConstraint.callExpression, typeConstraint.callExpression.type, actualType)
         }
     }
 }

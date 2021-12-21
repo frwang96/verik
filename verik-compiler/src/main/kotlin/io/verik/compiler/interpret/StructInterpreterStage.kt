@@ -28,8 +28,6 @@ import io.verik.compiler.main.ProjectStage
 
 object StructInterpreterStage : ProjectStage() {
 
-    override val checkNormalization = true
-
     override fun process(projectContext: ProjectContext) {
         val referenceUpdater = ReferenceUpdater(projectContext)
         val structInterpreterVisitor = StructInterpreterVisitor(referenceUpdater)

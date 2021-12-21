@@ -22,6 +22,7 @@ import org.jetbrains.kotlin.com.intellij.psi.tree.IElementType
 
 enum class KtUnaryOperatorKind {
     EXCL,
+    PLUS,
     MINUS,
     PRE_INC,
     PRE_DEC,
@@ -37,6 +38,7 @@ enum class KtUnaryOperatorKind {
         fun getKindPrefix(token: IElementType, location: SourceLocation): KtUnaryOperatorKind {
             return when (token.toString()) {
                 "EXCL" -> EXCL
+                "PLUS" -> PLUS
                 "MINUS" -> MINUS
                 "PLUSPLUS" -> PRE_INC
                 "MINUSMINUS" -> PRE_DEC

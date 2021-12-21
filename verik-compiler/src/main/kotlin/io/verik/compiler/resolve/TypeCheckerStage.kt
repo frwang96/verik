@@ -24,8 +24,6 @@ import io.verik.compiler.main.ProjectStage
 
 object TypeCheckerStage : ProjectStage() {
 
-    override val checkNormalization = false
-
     override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(TypeCheckerVisitor)
     }

@@ -17,6 +17,7 @@
 package io.verik.compiler.message
 
 import io.verik.compiler.ast.property.Type
+import io.verik.compiler.main.ProjectStage
 import org.jetbrains.kotlin.lexer.KtToken
 import java.nio.file.Path
 import kotlin.reflect.full.declaredMemberProperties
@@ -25,6 +26,10 @@ object Messages {
 
     val INTERNAL_ERROR = FatalMessageTemplate1<String>(
         "Internal error: $0"
+    )
+
+    val NORMALIZATION_ERROR = FatalMessageTemplate2<ProjectStage, String>(
+        "Normalization error at $0: $1"
     )
 
 //  PRE CHECK  /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -65,12 +70,12 @@ object Messages {
         "Illegal local declaration: $0"
     )
 
-    val UNIDENTIFIED_ANNOTATION = ErrorMessageTemplate1<String>(
-        "Could not identify annotation: $0"
+    val UNSUPPORTED_ANNOTATION = ErrorMessageTemplate1<String>(
+        "Unsupported annotation: $0"
     )
 
-    val UNIDENTIFIED_DECLARATION = ErrorMessageTemplate1<String>(
-        "Could not identify declaration: $0"
+    val UNSUPPORTED_DECLARATION = ErrorMessageTemplate1<String>(
+        "Unsupported declaration: $0"
     )
 
 //  PRE TRANSFORM  /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -175,6 +180,14 @@ object Messages {
         "String literal expected for injected property: $0"
     )
 
+    val OUTPUT_PORT_ILLEGAL_EXPRESSION = ErrorMessageTemplate1<String>(
+        "Illegal expression for output port: $0"
+    )
+
+    val OUTPUT_PORT_IMMUTABLE_PROPERTY = ErrorMessageTemplate1<String>(
+        "Property assigned by output port must be declared as var: $0"
+    )
+
 //  MID TRANSFORM  /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val INJECTED_STATEMENT_NOT_LITERAL = ErrorMessageTemplate0(
@@ -227,14 +240,6 @@ object Messages {
 
     val INVALID_STATEMENT = ErrorMessageTemplate0(
         "Could not interpret expression as statement"
-    )
-
-    val OUTPUT_PORT_ILLEGAL_EXPRESSION = ErrorMessageTemplate1<String>(
-        "Illegal expression for output port: $0"
-    )
-
-    val OUTPUT_PORT_IMMUTABLE_PROPERTY = ErrorMessageTemplate1<String>(
-        "Property assigned by output port must be declared as var: $0"
     )
 
     init {

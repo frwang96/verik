@@ -42,8 +42,6 @@ import io.verik.compiler.target.common.Target
 
 object BasicClassInterpreterStage : ProjectStage() {
 
-    override val checkNormalization = true
-
     override fun process(projectContext: ProjectContext) {
         val referenceUpdater = ReferenceUpdater(projectContext)
         val initializerIndexerVisitor = InitializerIndexerVisitor(referenceUpdater)

@@ -52,17 +52,21 @@ internal class CoreVkSystemTest : CoreDeclarationTest() {
     }
 
     @Test
-    fun `serialize error`() {
+    fun `serialize error warning info`() {
         driveCoreDeclarationTest(
             listOf(Core.Vk.F_error_String),
             """
                 fun f() {
                     error("")
+                    warning("")
+                    info("")
                 }
             """.trimIndent(),
             """
                 function automatic void f();
                     ${'$'}error("");
+                    ${'$'}warning("");
+                    ${'$'}info("");
                 endfunction : f
             """.trimIndent()
         )

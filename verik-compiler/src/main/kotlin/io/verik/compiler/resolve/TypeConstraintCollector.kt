@@ -163,7 +163,7 @@ object TypeConstraintCollector {
             when (val reference = type.reference) {
                 is CardinalDeclaration -> {
                     typeConstraints.add(
-                        TypeEqualsTypeConstraint(
+                        EqualsTypeConstraint(
                             TypeAdapter.ofElement(callExpression, typeArgumentIndices),
                             TypeAdapter.ofElement(function, typeArgumentIndices)
                         )
@@ -173,7 +173,7 @@ object TypeConstraintCollector {
                     val typeParameterIndex = function.typeParameters.indexOf(reference)
                     if (typeParameterIndex != -1) {
                         typeConstraints.add(
-                            TypeEqualsTypeConstraint(
+                            EqualsTypeConstraint(
                                 TypeAdapter.ofElement(callExpression, typeArgumentIndices),
                                 TypeAdapter.ofTypeArgument(callExpression, typeParameterIndex)
                             )
@@ -200,7 +200,7 @@ object TypeConstraintCollector {
             when (val reference = type.reference) {
                 is CardinalDeclaration -> {
                     typeConstraints.add(
-                        TypeEqualsTypeConstraint(
+                        EqualsTypeConstraint(
                             TypeAdapter.ofElement(valueArgument, typeArgumentIndices),
                             TypeAdapter.ofElement(valueParameter, typeArgumentIndices)
                         )
@@ -210,7 +210,7 @@ object TypeConstraintCollector {
                     val typeParameterIndex = function.typeParameters.indexOf(reference)
                     if (typeParameterIndex != -1) {
                         typeConstraints.add(
-                            TypeEqualsTypeConstraint(
+                            EqualsTypeConstraint(
                                 TypeAdapter.ofElement(valueArgument, typeArgumentIndices),
                                 TypeAdapter.ofTypeArgument(callExpression, typeParameterIndex)
                             )
@@ -239,7 +239,7 @@ object TypeConstraintCollector {
             val outerType = outer.type.getArgument(indices)
             if (innerType.isCardinalType() && outerType.isCardinalType()) {
                 typeConstraints.add(
-                    TypeEqualsTypeConstraint(
+                    EqualsTypeConstraint(
                         TypeAdapter.ofElement(inner, indices),
                         TypeAdapter.ofElement(outer, indices)
                     )

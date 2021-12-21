@@ -19,9 +19,7 @@
 package io.verik.core
 
 /**
- * A packed array.
- * @param N the size of the array
- * @param E the type of the elements of the array
+ * A packed array of size [N] of elements of type [E].
  */
 class Packed<N : `*`, E> private constructor() : Iterable<E> {
 
@@ -30,35 +28,35 @@ class Packed<N : `*`, E> private constructor() : Iterable<E> {
     }
 
     /**
-     * (UNIMPLEMENTED) The size of the array.
+     * The size of the array.
      */
     val size: Int by lazy<Int> {
         throw VerikException()
     }
 
     /**
-     * (UNIMPLEMENTED) Returns the array element at the specified [index].
+     * Returns the array element at the specified [index].
      */
     operator fun get(index: Int): E {
         throw VerikException()
     }
 
     /**
-     * (UNIMPLEMENTED) Returns the array element at the specified [index].
+     * Returns the array element at the specified [index].
      */
     operator fun get(index: Ubit<`*`>): E {
         throw VerikException()
     }
 
     /**
-     * (UNIMPLEMENTED) Sets the array element at the specified [index] to the specified [element].
+     * Sets the array element at the specified [index] to the specified [element].
      */
     operator fun set(index: Int, element: E) {
         throw VerikException()
     }
 
     /**
-     * (UNIMPLEMENTED) Sets the array element at the specified [index] to the specified [element].
+     * Sets the array element at the specified [index] to the specified [element].
      */
     operator fun set(index: Ubit<`*`>, element: E) {
         throw VerikException()

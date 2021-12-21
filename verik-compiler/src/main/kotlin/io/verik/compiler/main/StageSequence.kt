@@ -16,41 +16,73 @@
 
 package io.verik.compiler.main
 
+import io.verik.compiler.check.normalize.NormalizationChecker
 import io.verik.compiler.message.MessageCollector
 import kotlin.reflect.KClass
 
 class StageSequence {
 
-    val stages = ArrayList<ProjectStage>()
+    @Suppress("MemberVisibilityCanBePrivate")
+    val stages = HashMap<StageType, ArrayList<ProjectStage>>()
 
-    fun add(stage: ProjectStage) {
+    init {
+        StageType.values().forEach {
+            stages[it] = ArrayList()
+        }
+    }
+
+    fun add(stageType: StageType, stage: ProjectStage) {
         if (contains(stage::class)) {
             val stageName = stage::class.simpleName
             throw IllegalArgumentException("Stage has already been added to the stage sequence: $stageName")
         }
-        stages.add(stage)
+        stages[stageType]!!.add(stage)
     }
 
-    fun addFlush() {
-        stages.add(FlushStage)
-    }
-
-    fun <S : ProjectStage> contains(stageClass: KClass<S>): Boolean {
-        return stages.any { it::class == stageClass }
-    }
-
-    fun process(projectContext: ProjectContext) {
-        stages.forEach {
-            it.accept(projectContext)
+    fun processAll(projectContext: ProjectContext) {
+        StageType.values().forEach { stageType ->
+            stages[stageType]!!.forEach {
+                processStage(projectContext, stageType, it)
+            }
+            if (stageType.flushAfter()) {
+                MessageCollector.messageCollector.flush()
+            }
         }
     }
 
-    private object FlushStage : ProjectStage() {
+    fun <S : ProjectStage> processUntil(projectContext: ProjectContext, stageClass: KClass<S>) {
+        assert(contains(stageClass))
+        StageType.values().forEach { stageType ->
+            stages[stageType]!!.forEach {
+                processStage(projectContext, stageType, it)
+                if (it::class == stageClass)
+                    return
+            }
+        }
+    }
 
-        override val checkNormalization = false
+    fun processUntil(projectContext: ProjectContext, stageType: StageType) {
+        StageType.values().forEach { currentStageType ->
+            stages[currentStageType]!!.forEach {
+                processStage(projectContext, currentStageType, it)
+            }
+            if (currentStageType == stageType)
+                return
+        }
+    }
 
-        override fun process(projectContext: ProjectContext) {
-            MessageCollector.messageCollector.flush()
+    private fun <S : ProjectStage> contains(stageClass: KClass<S>): Boolean {
+        return StageType.values().any { stageType ->
+            stages[stageType]!!.any { it::class == stageClass }
+        }
+    }
+
+    private fun processStage(projectContext: ProjectContext, stageType: StageType, stage: ProjectStage) {
+        if (stage !in projectContext.processedProjectStages) {
+            stage.process(projectContext)
+            if (stageType.checkNormalization() && projectContext.config.debug)
+                NormalizationChecker.process(projectContext, stage)
+            projectContext.processedProjectStages.add(stage)
         }
     }
 }

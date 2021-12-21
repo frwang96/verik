@@ -23,8 +23,6 @@ import io.verik.compiler.main.ProjectStage
 
 object TemporaryDeclarationRenameStage : ProjectStage() {
 
-    override val checkNormalization = true
-
     override fun process(projectContext: ProjectContext) {
         val temporaryDeclarationRenameVisitor = TemporaryDeclarationRenameVisitor()
         projectContext.project.accept(temporaryDeclarationRenameVisitor)

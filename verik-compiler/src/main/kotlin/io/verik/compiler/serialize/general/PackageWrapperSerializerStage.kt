@@ -25,8 +25,6 @@ import io.verik.compiler.main.ProjectStage
 
 object PackageWrapperSerializerStage : ProjectStage() {
 
-    override val checkNormalization = false
-
     override fun process(projectContext: ProjectContext) {
         val packageWrapperTextFiles = ArrayList<TextFile>()
         projectContext.project.basicPackages.forEach {

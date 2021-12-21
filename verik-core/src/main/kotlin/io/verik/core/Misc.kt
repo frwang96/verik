@@ -33,56 +33,56 @@ fun <N : `*`> rep(value: Any): Ubit<`*`> {
 }
 
 /**
- * (UNIMPLEMENTED) Returns the maximum of the arguments.
+ * Returns the maximum of the arguments.
  */
 fun max(value: Int, vararg additionalValues: Int): Int {
     throw VerikException()
 }
 
 /**
- * (UNIMPLEMENTED) Returns the maximum of the arguments.
+ * Returns the maximum of the arguments.
  */
-fun <N : `*`> max(value: Sbit<N>, vararg additionalValues: Sbit<N>): Sbit<N> {
+fun max(value: Ubit<`*`>, vararg additionalValues: Ubit<`*`>): Ubit<`*`> {
     throw VerikException()
 }
 
 /**
- * (UNIMPLEMENTED) Returns the maximum of the arguments.
+ * Returns the maximum of the arguments.
  */
-fun <N : `*`> max(value: Ubit<N>, vararg additionalValues: Ubit<N>): Ubit<N> {
+fun max(value: Sbit<`*`>, vararg additionalValues: Sbit<`*`>): Sbit<`*`> {
     throw VerikException()
 }
 
 /**
- * (UNIMPLEMENTED) Returns the minimum of the arguments.
+ * Returns the minimum of the arguments.
  */
 fun min(value: Int, vararg additionalValues: Int): Int {
     throw VerikException()
 }
 
 /**
- * (UNIMPLEMENTED) Returns the minimum of the arguments.
+ * Returns the minimum of the arguments.
  */
-fun <N : `*`> min(value: Sbit<N>, vararg additionalValues: Sbit<N>): Sbit<N> {
+fun min(value: Ubit<`*`>, vararg additionalValues: Ubit<`*`>): Ubit<`*`> {
     throw VerikException()
 }
 
 /**
- * (UNIMPLEMENTED) Returns the minimum of the arguments.
+ * Returns the minimum of the arguments.
  */
-fun <N : `*`> min(value: Ubit<N>, vararg additionalValues: Ubit<N>): Ubit<N> {
+fun min(value: Sbit<`*`>, vararg additionalValues: Sbit<`*`>): Sbit<`*`> {
     throw VerikException()
 }
 
 /**
- * (UNIMPLEMENTED) Returns the ceiling logarithm base two of [value].
+ * Returns the ceiling logarithm base two of [value].
  */
 fun log(value: Int): Int {
     throw VerikException()
 }
 
 /**
- * (UNIMPLEMENTED) Returns the exponential base two of [value].
+ * Returns the exponential base two of [value].
  */
 fun exp(value: Int): Int {
     throw VerikException()

@@ -47,12 +47,12 @@ abstract class BaseTest {
         val stageSequence = StageSequencer.getStageSequence()
         if (isError) {
             val throwable = assertThrows<TestErrorException> {
-                stageSequence.process(projectContext)
+                stageSequence.processAll(projectContext)
             }
             assertEquals(throwable.message, message)
         } else {
             val throwable = assertThrows<TestWarningException> {
-                stageSequence.process(projectContext)
+                stageSequence.processAll(projectContext)
             }
             assertEquals(throwable.message, message)
         }
@@ -66,12 +66,7 @@ abstract class BaseTest {
     ) {
         val projectContext = getProjectContext(content)
         val stageSequence = StageSequencer.getStageSequence()
-        assert(stageSequence.contains(stageClass))
-        for (it in stageSequence.stages) {
-            it.accept(projectContext)
-            if (it::class == stageClass)
-                break
-        }
+        stageSequence.processUntil(projectContext, stageClass)
         val selected = selector(projectContext.project)
         if (selected is List<*>) {
             val elements = selected.map { it as EElement }
@@ -92,7 +87,7 @@ abstract class BaseTest {
     ) {
         val projectContext = getProjectContext(content)
         val stageSequence = StageSequencer.getStageSequence()
-        stageSequence.process(projectContext)
+        stageSequence.processAll(projectContext)
         val textFile = selector(projectContext.outputContext)
         assertOutputTextEquals(expected, textFile)
     }

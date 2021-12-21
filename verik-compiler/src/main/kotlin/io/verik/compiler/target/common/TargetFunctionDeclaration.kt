@@ -26,13 +26,10 @@ class PrimitiveTargetFunctionDeclaration(
 class CompositeTargetFunctionDeclaration(
     override val parent: TargetDeclaration,
     override var name: String,
-    override val content: String
-) : TargetFunctionDeclaration(), CompositeTarget
-
-class ConstructorTargetFunctionDeclaration(
-    override val parent: TargetDeclaration,
-    override val content: String
+    override val contentBody: String,
+    val isConstructor: Boolean
 ) : TargetFunctionDeclaration(), CompositeTarget {
 
-    override var name = "_${'$'}new"
+    override val contentProlog = ""
+    override val contentEpilog = ""
 }

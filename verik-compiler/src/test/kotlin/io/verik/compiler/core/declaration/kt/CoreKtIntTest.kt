@@ -49,4 +49,32 @@ internal class CoreKtIntTest : CoreDeclarationTest() {
             """.trimIndent()
         )
     }
+
+    @Test
+    fun `serialize shl shr ushr`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Kt.Int.F_shl_Int,
+                Core.Kt.Int.F_shr_Int,
+                Core.Kt.Int.F_ushr_Int
+            ),
+            """
+                var a = 0
+                var b = 0
+                var x = 0
+                fun f() {
+                    x = a shl b
+                    x = a shr b
+                    x = a ushr b
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    x = a << b;
+                    x = a >>> b;
+                    x = a >> b;
+                endfunction : f
+            """.trimIndent()
+        )
+    }
 }

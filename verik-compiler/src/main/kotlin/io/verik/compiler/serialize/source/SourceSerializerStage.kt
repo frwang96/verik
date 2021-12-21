@@ -23,8 +23,6 @@ import io.verik.compiler.main.ProjectStage
 
 object SourceSerializerStage : ProjectStage() {
 
-    override val checkNormalization = false
-
     override fun process(projectContext: ProjectContext) {
         val basicPackageTextFiles = ArrayList<TextFile>()
         val basicPackageTextFilesLabeled = ArrayList<TextFile>()

@@ -43,9 +43,23 @@ fun <T> nc(): T {
 }
 
 /**
- * (UNIMPLEMENTED) Returns the value of the logical [X] as a boolean.
+ * (UNIMPLEMENTED) Returns the value of the logical [X] as a [Boolean].
  */
 fun <X : `?`> b(): Boolean {
+    throw VerikException()
+}
+
+/**
+ * (UNIMPLEMENTED) Returns a [Boolean] set to X.
+ */
+fun bx(): Boolean {
+    throw VerikException()
+}
+
+/**
+ * (UNIMPLEMENTED) Returns a [Boolean] set to Z.
+ */
+fun bz(): Boolean {
     throw VerikException()
 }
 
@@ -106,6 +120,20 @@ fun <N : `*`> u1(): Ubit<N> {
 }
 
 /**
+ * Returns a [Ubit] with all bits set to X.
+ */
+fun <N : `*`> ux(): Ubit<N> {
+    throw VerikException()
+}
+
+/**
+ * (UNIMPLEMENTED) Returns a [Ubit] with all bits set to Z.
+ */
+fun <N : `*`> uz(): Ubit<N> {
+    throw VerikException()
+}
+
+/**
  * (UNIMPLEMENTED) Converts [value] to [Sbit].
  */
 fun s(value: Boolean): Sbit<`*`> {
@@ -144,6 +172,20 @@ fun <N : `*`> s0(): Sbit<N> {
  * (UNIMPLEMENTED) Returns a [Sbit] with all bits set to one.
  */
 fun <N : `*`> s1(): Sbit<N> {
+    throw VerikException()
+}
+
+/**
+ * (UNIMPLEMENTED) Returns a [Sbit] with all bits set to X.
+ */
+fun <N : `*`> sx(): Sbit<N> {
+    throw VerikException()
+}
+
+/**
+ * (UNIMPLEMENTED) Returns a [Sbit] with all bits set to Z.
+ */
+fun <N : `*`> sz(): Sbit<N> {
     throw VerikException()
 }
 

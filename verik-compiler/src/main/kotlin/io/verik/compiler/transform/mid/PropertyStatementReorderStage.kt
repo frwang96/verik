@@ -29,8 +29,6 @@ import io.verik.compiler.main.ProjectStage
 
 object PropertyStatementReorderStage : ProjectStage() {
 
-    override val checkNormalization = true
-
     override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(PropertyStatementReorderVisitor)
     }

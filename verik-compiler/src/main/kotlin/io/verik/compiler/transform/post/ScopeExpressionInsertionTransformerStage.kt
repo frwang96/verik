@@ -27,13 +27,10 @@ import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
-import io.verik.compiler.target.common.CompositeTarget
-import io.verik.compiler.target.common.ConstructorTargetFunctionDeclaration
+import io.verik.compiler.target.common.CompositeTargetFunctionDeclaration
 import io.verik.compiler.target.common.TargetDeclaration
 
 object ScopeExpressionInsertionTransformerStage : ProjectStage() {
-
-    override val checkNormalization = true
 
     override fun process(projectContext: ProjectContext) {
         val scopeExpressionInsertionTransformerVisitor = ScopeExpressionInsertionTransformerVisitor()
@@ -47,14 +44,13 @@ object ScopeExpressionInsertionTransformerStage : ProjectStage() {
         private fun getScopeExpression(receiverExpression: EReceiverExpression): EScopeExpression? {
             when (val reference = receiverExpression.reference) {
                 is TargetDeclaration -> {
-                    when (reference) {
-                        is ConstructorTargetFunctionDeclaration -> {
-                            return EScopeExpression(receiverExpression.location, receiverExpression.type.copy())
+                    if (reference is CompositeTargetFunctionDeclaration) {
+                        val scope = if (reference.isConstructor) {
+                            receiverExpression.type.copy()
+                        } else {
+                            reference.parent.toType()
                         }
-                        is CompositeTarget -> {
-                            val parent = reference.parent!!
-                            return EScopeExpression(receiverExpression.location, parent.toType())
-                        }
+                        return EScopeExpression(receiverExpression.location, scope)
                     }
                 }
                 is EElement -> {

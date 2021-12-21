@@ -17,20 +17,21 @@
 package io.verik.compiler.target.declaration
 
 import io.verik.compiler.target.common.CompositeTargetFunctionDeclaration
-import io.verik.compiler.target.common.ConstructorTargetFunctionDeclaration
 import io.verik.compiler.target.common.Target
 import io.verik.compiler.target.common.TargetScope
 
 object TargetArrayList : TargetScope(Target.C_ArrayList) {
 
-    val F_new = ConstructorTargetFunctionDeclaration(
+    val F_new = CompositeTargetFunctionDeclaration(
         parent,
+        "_${'$'}new",
         """
             static function automatic ArrayList#(E) _${'$'}new();
                 automatic ArrayList#(E) arrayList = new();
                 return arrayList;
             endfunction : _${'$'}new
-        """.trimIndent()
+        """.trimIndent(),
+        true
     )
 
     val F_add = CompositeTargetFunctionDeclaration(
@@ -40,7 +41,8 @@ object TargetArrayList : TargetScope(Target.C_ArrayList) {
             function automatic void add(E e);
                 queue.push_back(e);
             endfunction : add
-        """.trimIndent()
+        """.trimIndent(),
+        false
     )
 
     val F_get = CompositeTargetFunctionDeclaration(
@@ -50,7 +52,8 @@ object TargetArrayList : TargetScope(Target.C_ArrayList) {
             function automatic E get(int index);
                 return queue[index];
             endfunction : get
-        """.trimIndent()
+        """.trimIndent(),
+        false
     )
 
     val F_set = CompositeTargetFunctionDeclaration(
@@ -60,7 +63,8 @@ object TargetArrayList : TargetScope(Target.C_ArrayList) {
             function automatic set(int index, E e);
                 queue[index] = e;
             endfunction : set
-        """.trimIndent()
+        """.trimIndent(),
+        false
     )
 
     val F_size = CompositeTargetFunctionDeclaration(
@@ -70,6 +74,7 @@ object TargetArrayList : TargetScope(Target.C_ArrayList) {
             function automatic int size();
                 return queue.size();
             endfunction : size
-        """.trimIndent()
+        """.trimIndent(),
+        false
     )
 }

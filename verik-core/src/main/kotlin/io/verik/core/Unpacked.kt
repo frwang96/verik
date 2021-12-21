@@ -19,9 +19,7 @@
 package io.verik.core
 
 /**
- * An unpacked array.
- * @param N the size of the array
- * @param E the type of the elements of the array
+ * An unpacked array of size [N] of elements of type [E].
  */
 class Unpacked<N : `*`, E> private constructor() : Iterable<E> {
 

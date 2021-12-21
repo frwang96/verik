@@ -16,8 +16,13 @@
 
 package io.verik.compiler.core.common
 
+import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.common.BitConstant
+import io.verik.compiler.common.ConstantUtil
+import io.verik.compiler.common.ExpressionCopier
+import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.target.common.Target
 
 object CoreTransformUtil {
@@ -25,7 +30,7 @@ object CoreTransformUtil {
     fun callExpressionSigned(expression: EExpression): EKtCallExpression {
         return EKtCallExpression(
             expression.location,
-            Core.Vk.C_Sbit.toType(Cardinal.of(expression.type.getWidth(expression)).toType()),
+            Core.Vk.C_Sbit.toType(expression.type.getWidthAsType(expression)),
             Target.F_signed,
             null,
             arrayListOf(expression),
@@ -36,10 +41,38 @@ object CoreTransformUtil {
     fun callExpressionUnsigned(expression: EExpression): EKtCallExpression {
         return EKtCallExpression(
             expression.location,
-            Core.Vk.C_Ubit.toType(Cardinal.of(expression.type.getWidth(expression)).toType()),
+            Core.Vk.C_Ubit.toType(expression.type.getWidthAsType(expression)),
             Target.F_unsigned,
             null,
             arrayListOf(expression),
+            ArrayList()
+        )
+    }
+
+    fun plusInt(expression: EExpression, value: Int, location: SourceLocation): EKtCallExpression {
+        return EKtCallExpression(
+            location,
+            Core.Kt.C_Int.toType(),
+            Core.Kt.Int.F_plus_Int,
+            ExpressionCopier.copy(expression),
+            arrayListOf(EConstantExpression(location, Core.Kt.C_Int.toType(), ConstantUtil.formatInt(value))),
+            ArrayList()
+        )
+    }
+
+    fun plusUbit(expression: EExpression, value: Int, location: SourceLocation): EKtCallExpression {
+        val bitConstant = BitConstant(value, false, expression.type.asBitWidth(expression))
+        val constantExpression = EConstantExpression(
+            location,
+            expression.type.copy(),
+            ConstantUtil.formatBitConstant(bitConstant)
+        )
+        return EKtCallExpression(
+            location,
+            expression.type.copy(),
+            Core.Vk.Ubit.F_plus_Ubit,
+            ExpressionCopier.copy(expression),
+            arrayListOf(constantExpression),
             ArrayList()
         )
     }

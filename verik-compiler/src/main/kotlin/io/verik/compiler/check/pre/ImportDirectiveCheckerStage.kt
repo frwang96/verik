@@ -25,8 +25,6 @@ import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 
 object ImportDirectiveCheckerStage : ProjectStage() {
 
-    override val checkNormalization = false
-
     override fun process(projectContext: ProjectContext) {
         val packageNames = HashSet<String>()
         packageNames.add(CorePackage.VK.name)

@@ -16,11 +16,8 @@
 
 package io.verik.compiler.resolve
 
-import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.ast.property.Type
 import io.verik.compiler.core.common.Cardinal
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.message.Messages
 
 object TypeConstraintResolver {
 
@@ -37,28 +34,25 @@ object TypeConstraintResolver {
         val unresolvedTypeConstraints = ArrayList<TypeConstraint>()
         typeConstraints.forEach {
             when (it) {
-                is TypeEqualsTypeConstraint ->
-                    if (!resolveTypeEqualsTypeConstraint(it))
+                is EqualsTypeConstraint ->
+                    if (!resolveEqualsTypeConstraint(it))
                         unresolvedTypeConstraints.add(it)
-                is UnaryOperatorTypeConstraint ->
-                    if (!resolveUnaryOperatorTypeConstraint(it))
+                is UnaryTypeConstraint ->
+                    if (!resolveUnaryTypeConstraint(it))
                         unresolvedTypeConstraints.add(it)
-                is BinaryOperatorTypeConstraint ->
-                    if (!resolveBinaryOperatorTypeConstraint(it))
+                is BinaryTypeConstraint ->
+                    if (!resolveBinaryTypeConstraint(it))
                         unresolvedTypeConstraints.add(it)
-                is ConcatenationTypeConstraint ->
-                    if (!resolveConcatenationTypeConstraint(it))
+                is SpecialTypeConstraint ->
+                    if (!resolveSpecialTypeConstraint(it))
                         unresolvedTypeConstraints.add(it)
-                is ReplicationTypeConstraint ->
-                    if (!resolveReplicationTypeConstraint(it))
-                        unresolvedTypeConstraints.add(it)
-                else -> {}
+                is ComparisonTypeConstraint -> {}
             }
         }
         return unresolvedTypeConstraints
     }
 
-    private fun resolveTypeEqualsTypeConstraint(typeConstraint: TypeEqualsTypeConstraint): Boolean {
+    private fun resolveEqualsTypeConstraint(typeConstraint: EqualsTypeConstraint): Boolean {
         val inner = typeConstraint.inner.getType()
         val outer = typeConstraint.outer.getType()
         val innerResolved = inner.isResolved()
@@ -75,7 +69,7 @@ object TypeConstraintResolver {
         }
     }
 
-    private fun resolveUnaryOperatorTypeConstraint(typeConstraint: UnaryOperatorTypeConstraint): Boolean {
+    private fun resolveUnaryTypeConstraint(typeConstraint: UnaryTypeConstraint): Boolean {
         val inner = typeConstraint.inner.getType()
         val outer = typeConstraint.outer.getType()
         val innerResolved = inner.isResolved()
@@ -101,7 +95,7 @@ object TypeConstraintResolver {
         }
     }
 
-    private fun resolveBinaryOperatorTypeConstraint(typeConstraint: BinaryOperatorTypeConstraint): Boolean {
+    private fun resolveBinaryTypeConstraint(typeConstraint: BinaryTypeConstraint): Boolean {
         val left = typeConstraint.left.getType()
         val right = typeConstraint.right.getType()
         val outer = typeConstraint.outer.getType()
@@ -120,55 +114,36 @@ object TypeConstraintResolver {
         }
     }
 
-    private fun resolveConcatenationTypeConstraint(typeConstraint: ConcatenationTypeConstraint): Boolean {
-        val expressionResolved = typeConstraint.callExpression.type.isResolved()
-        val valueArgumentsResolved = typeConstraint.callExpression.valueArguments.all { it.type.isResolved() }
+    private fun resolveSpecialTypeConstraint(typeConstraint: SpecialTypeConstraint): Boolean {
+        val expressionType = typeConstraint.callExpression.type
+        val valueArgumentsType = typeConstraint.callExpression.valueArguments.map { it.type }
+        val expressionResolved = expressionType.isResolved()
+        val valueArgumentsResolved = valueArgumentsType.all { it.isResolved() }
         return if (expressionResolved) {
             true
         } else {
             if (valueArgumentsResolved) {
-                val typeWidths = typeConstraint.callExpression.valueArguments
-                    .map { getTypeWidth(it.type, it) }
-                val type = when (typeWidths.size) {
-                    0 -> Cardinal.of(0).toType()
-                    1 -> typeWidths[0]
-                    else -> typeWidths.reduce { sum, type ->
-                        Core.Vk.N_ADD.toType(sum, type)
+                val widths = typeConstraint.callExpression.valueArguments
+                    .map { it.type.getWidthAsType(it) }
+                when (typeConstraint.kind) {
+                    SpecialTypeConstraintKind.CAT -> {
+                        val type = when (widths.size) {
+                            0 -> Cardinal.of(0).toType()
+                            1 -> widths[0]
+                            else -> widths.reduce { sum, type ->
+                                Core.Vk.N_ADD.toType(sum, type)
+                            }
+                        }
+                        typeConstraint.callExpression.type.arguments[0] = type
+                    }
+                    SpecialTypeConstraintKind.REP -> {
+                        val typeArgument = typeConstraint.callExpression.typeArguments[0]
+                        val type = Core.Vk.N_MUL.toType(widths[0], typeArgument.copy())
+                        typeConstraint.callExpression.type.arguments[0] = type
                     }
                 }
-                typeConstraint.callExpression.type.arguments[0] = type
                 true
             } else false
-        }
-    }
-
-    private fun resolveReplicationTypeConstraint(typeConstraint: ReplicationTypeConstraint): Boolean {
-        val expressionType = typeConstraint.callExpression.type
-        val valueArgumentType = typeConstraint.callExpression.valueArguments[0].type
-        val expressionResolved = expressionType.isResolved()
-        val valueArgumentResolved = valueArgumentType.isResolved()
-        return if (expressionResolved) {
-            true
-        } else {
-            if (valueArgumentResolved) {
-                val typeWidth = getTypeWidth(valueArgumentType, typeConstraint.callExpression.valueArguments[0])
-                val typeArgument = typeConstraint.callExpression.typeArguments[0]
-                val type = Core.Vk.N_MUL.toType(typeWidth, typeArgument.copy())
-                typeConstraint.callExpression.type.arguments[0] = type
-                true
-            } else false
-        }
-    }
-
-    private fun getTypeWidth(type: Type, element: EElement): Type {
-        return when (type.reference) {
-            Core.Kt.C_Boolean -> Cardinal.of(1).toType()
-            Core.Vk.C_Ubit -> type.arguments[0].copy()
-            Core.Vk.C_Sbit -> type.arguments[0].copy()
-            else -> {
-                Messages.TYPE_NO_WIDTH.on(element, type)
-                Cardinal.of(0).toType()
-            }
         }
     }
 }

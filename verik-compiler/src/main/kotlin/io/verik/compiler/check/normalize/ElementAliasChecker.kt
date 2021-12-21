@@ -22,23 +22,23 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
-object ElementAliasChecker : ProjectStage() {
+object ElementAliasChecker : NormalizationStage {
 
-    override val checkNormalization = false
-
-    override fun process(projectContext: ProjectContext) {
-        val elementAliasVisitor = ElementAliasVisitor()
+    override fun process(projectContext: ProjectContext, projectStage: ProjectStage) {
+        val elementAliasVisitor = ElementAliasVisitor(projectStage)
         projectContext.project.accept(elementAliasVisitor)
     }
 
-    private class ElementAliasVisitor : TreeVisitor() {
+    private class ElementAliasVisitor(
+        private val projectStage: ProjectStage
+    ) : TreeVisitor() {
 
         private val elementSet = HashSet<EElement>()
 
         override fun visitElement(element: EElement) {
             super.visitElement(element)
             if (element in elementSet)
-                Messages.INTERNAL_ERROR.on(element, "Unexpected element aliasing: $element")
+                Messages.NORMALIZATION_ERROR.on(element, projectStage, "Unexpected element aliasing: $element")
             elementSet.add(element)
         }
     }

@@ -28,8 +28,6 @@ import io.verik.compiler.main.ProjectStage
 
 object UnaryExpressionTransformerStage : ProjectStage() {
 
-    override val checkNormalization = true
-
     override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(UnaryExpressionTransformerVisitor)
     }

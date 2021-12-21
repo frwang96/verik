@@ -92,7 +92,7 @@ class CastContext(
         return if (coreDeclaration != null) {
             coreDeclaration
         } else {
-            Messages.UNIDENTIFIED_DECLARATION.on(element, unwrappedDeclarationDescriptor.name.asString())
+            Messages.UNSUPPORTED_DECLARATION.on(element, unwrappedDeclarationDescriptor.name.asString())
             NullDeclaration
         }
     }

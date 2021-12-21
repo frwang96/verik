@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test
 internal class TypeCheckerStageTest : BaseTest() {
 
     @Test
-    fun `expression equals violation`() {
+    fun `equals violation`() {
         driveMessageTest(
             """
                 var x = u(0x00)
@@ -36,7 +36,7 @@ internal class TypeCheckerStageTest : BaseTest() {
     }
 
     @Test
-    fun `unary operator violation`() {
+    fun `unary violation`() {
         driveMessageTest(
             """
                 var x: Ubit<`4`> = nc()
@@ -50,7 +50,7 @@ internal class TypeCheckerStageTest : BaseTest() {
     }
 
     @Test
-    fun `binary operator violation`() {
+    fun `binary violation`() {
         driveMessageTest(
             """
                 var x: Ubit<`4`> = nc()
@@ -60,6 +60,28 @@ internal class TypeCheckerStageTest : BaseTest() {
             """.trimIndent(),
             true,
             "Type mismatch: Expected Ubit<`4`> actual Ubit<`1`>"
+        )
+    }
+
+    @Test
+    fun `concatenation violation`() {
+        driveMessageTest(
+            """
+                var x: Ubit<`1`> = cat(false, false)
+            """.trimIndent(),
+            true,
+            "Type mismatch: Expected Ubit<`1`> actual Ubit<`2`>"
+        )
+    }
+
+    @Test
+    fun `replication violation`() {
+        driveMessageTest(
+            """
+                var x: Ubit<`1`> = rep<`3`>(false)
+            """.trimIndent(),
+            true,
+            "Type mismatch: Expected Ubit<`1`> actual Ubit<`3`>"
         )
     }
 
@@ -88,28 +110,6 @@ internal class TypeCheckerStageTest : BaseTest() {
             """.trimIndent(),
             true,
             "Unable to truncate from Ubit<`4`> to Ubit<`8`>"
-        )
-    }
-
-    @Test
-    fun `concatenation violation`() {
-        driveMessageTest(
-            """
-                var x: Ubit<`1`> = cat(false, false)
-            """.trimIndent(),
-            true,
-            "Type mismatch: Expected Ubit<`1`> actual Ubit<`2`>"
-        )
-    }
-
-    @Test
-    fun `replication violation`() {
-        driveMessageTest(
-            """
-                var x: Ubit<`1`> = rep<`3`>(false)
-            """.trimIndent(),
-            true,
-            "Type mismatch: Expected Ubit<`1`> actual Ubit<`3`>"
         )
     }
 }
