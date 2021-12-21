@@ -18,6 +18,7 @@ package io.verik.compiler.serialize.source
 
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.common.TextFile
+import io.verik.compiler.main.Platform
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.serialize.general.FileHeaderBuilder
 
@@ -26,10 +27,13 @@ class SourceBuilder(
     private val file: EFile
 ) {
 
+    private val labelSourceLocations = projectContext.config.labelSourceLocations
     private val indentLength = projectContext.config.indentLength
     private val wrapLength = projectContext.config.wrapLength
+    private val labelLength = if (labelSourceLocations) 12 else 0
 
     private val sourceBuilder = StringBuilder()
+    private var lastLine = 1
 
     init {
         val fileHeader = FileHeaderBuilder.build(
@@ -39,6 +43,19 @@ class SourceBuilder(
             FileHeaderBuilder.HeaderStyle.SYSTEM_VERILOG
         )
         sourceBuilder.append(fileHeader)
+
+        if (labelSourceLocations) {
+            val pathString = Platform.getStringFromPath(file.inputPath.toAbsolutePath())
+            sourceBuilder.appendLine(
+                """
+                    `ifdef _
+                    `undef _
+                    `endif
+                    `define _(n) `line n "$pathString" 0 \
+                """.trimIndent()
+            )
+            sourceBuilder.appendLine()
+        }
     }
 
     fun toTextFile(): TextFile {
@@ -54,7 +71,7 @@ class SourceBuilder(
     }
 
     private fun getAlignment(sourceActionLine: SourceActionLine): Int? {
-        var alignment = sourceActionLine.indents * indentLength
+        var alignment = labelLength + sourceActionLine.indents * indentLength
         sourceActionLine.sourceActions.forEach {
             alignment += when (it.type) {
                 SourceActionType.REGULAR -> it.content.length
@@ -92,6 +109,7 @@ class SourceBuilder(
     }
 
     private fun buildLine(sourceActionLine: SourceActionLine, alignment: Int?) {
+        labelLine(sourceActionLine)
         if (sourceActionLine.sourceActions.isEmpty()) {
             sourceBuilder.appendLine()
             return
@@ -99,7 +117,7 @@ class SourceBuilder(
 
         sourceBuilder.append(" ".repeat(sourceActionLine.indents * indentLength))
         var index = 0
-        var lineLength = sourceActionLine.indents * indentLength
+        var lineLength = labelLength + sourceActionLine.indents * indentLength
 
         // no wrap before alignment
         if (alignment != null) {
@@ -137,17 +155,20 @@ class SourceBuilder(
                 SourceActionType.SOFT_BREAK -> {
                     if (isWrap(sourceActionLine.sourceActions, index + 1, lineLength)) {
                         sourceBuilder.appendLine()
+                        labelLine(sourceActionLine, index + 1)
                         sourceBuilder.append(" ".repeat((sourceActionLine.indents + 1) * indentLength))
-                        lineLength = (sourceActionLine.indents + 1) * indentLength
+                        lineLength = labelLength + (sourceActionLine.indents + 1) * indentLength
                     }
                 }
                 SourceActionType.HARD_BREAK -> {
                     if (isWrap(sourceActionLine.sourceActions, index + 1, lineLength + 1)) {
                         sourceBuilder.appendLine()
+                        labelLine(sourceActionLine, index + 1)
                         sourceBuilder.append(" ".repeat((sourceActionLine.indents + 1) * indentLength))
-                        lineLength = (sourceActionLine.indents + 1) * indentLength
+                        lineLength = labelLength + (sourceActionLine.indents + 1) * indentLength
                     } else {
                         sourceBuilder.append(" ")
+                        lineLength += 1
                     }
                 }
                 SourceActionType.ALIGN -> {}
@@ -155,6 +176,20 @@ class SourceBuilder(
             index++
         }
         sourceBuilder.appendLine()
+    }
+
+    private fun labelLine(sourceActionLine: SourceActionLine, index: Int = 0) {
+        if (labelSourceLocations) {
+            if (index >= sourceActionLine.sourceActions.size) {
+                val lineString = "$lastLine".padStart(6, ' ')
+                sourceBuilder.append("`_($lineString)")
+            } else {
+                val line = sourceActionLine.sourceActions[index].location.line
+                val lineString = "$line".padStart(6, ' ')
+                sourceBuilder.append("`_($lineString)  ")
+                lastLine = line
+            }
+        }
     }
 
     private fun isWrap(sourceActions: ArrayList<SourceAction>, offset: Int, lineLength: Int): Boolean {
