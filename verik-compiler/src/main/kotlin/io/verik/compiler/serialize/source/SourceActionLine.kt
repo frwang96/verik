@@ -14,21 +14,9 @@
  * limitations under the License.
  */
 
-package io.verik.importer.main
+package io.verik.compiler.serialize.source
 
-import java.nio.file.Path
-
-data class VerikImporterConfig(
-    val toolchain: String,
-    val timestamp: String,
-    val projectName: String,
-    val buildDir: Path,
-    val importedFiles: List<Path>,
-    val debug: Boolean,
-    val suppressedWarnings: List<String>,
-    val promotedWarnings: List<String>,
-    val labelSourceLocations: Boolean
-) {
-
-    val outputSourceDir: Path = buildDir.resolve("src")
-}
+data class SourceActionLine(
+    val indents: Int,
+    val sourceActions: ArrayList<SourceAction>
+)

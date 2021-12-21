@@ -26,6 +26,5 @@ object NormalizationChecker : NormalizationStage {
         ElementAliasChecker.process(projectContext, projectStage)
         TypeAliasChecker.process(projectContext, projectStage)
         DanglingReferenceChecker.process(projectContext, projectStage)
-        SourceLocationChecker.process(projectContext, projectStage)
     }
 }

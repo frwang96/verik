@@ -20,12 +20,11 @@ import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EFile
-import io.verik.compiler.main.ProjectContext
 
-class SerializerContext(projectContext: ProjectContext, file: EFile) {
+class SerializerContext(file: EFile) {
 
     private val sourceSerializerVisitor = SourceSerializerVisitor(this)
-    private val sourceBuilder = SourceBuilder(projectContext, file)
+    private val sourceActionBuilder = SourceActionBuilder(file)
 
     fun serialize(element: EElement) {
         sourceSerializerVisitor.serialize(element)
@@ -47,8 +46,8 @@ class SerializerContext(projectContext: ProjectContext, file: EFile) {
         if (entries.isNotEmpty()) {
             serializer(entries[0])
             entries.drop(1).forEach {
-                sourceBuilder.append(",")
-                sourceBuilder.hardBreak()
+                sourceActionBuilder.append(",")
+                sourceActionBuilder.hardBreak()
                 serializer(it)
             }
         }
@@ -58,46 +57,46 @@ class SerializerContext(projectContext: ProjectContext, file: EFile) {
         if (entries.isNotEmpty()) {
             serializer(entries[0])
             entries.drop(1).forEach {
-                sourceBuilder.appendLine(",")
+                sourceActionBuilder.appendLine(",")
                 serializer(it)
             }
-            sourceBuilder.appendLine()
+            sourceActionBuilder.appendLine()
         }
     }
 
-    fun getSourceBuilderResult(): SourceBuilderResult {
-        return sourceBuilder.getResult()
+    fun getSourceActionLines(): List<SourceActionLine> {
+        return sourceActionBuilder.getSourceActionLines()
     }
 
     fun label(element: EElement, block: () -> Unit) {
-        sourceBuilder.label(element, block)
+        sourceActionBuilder.label(element, block)
     }
 
     fun indent(block: () -> Unit) {
-        sourceBuilder.indent(block)
+        sourceActionBuilder.indent(block)
     }
 
     fun appendLine(content: String) {
-        sourceBuilder.appendLine(content)
+        sourceActionBuilder.appendLine(content)
     }
 
     fun appendLine() {
-        sourceBuilder.appendLine()
+        sourceActionBuilder.appendLine()
     }
 
     fun append(content: String) {
-        sourceBuilder.append(content)
+        sourceActionBuilder.append(content)
     }
 
     fun softBreak() {
-        sourceBuilder.softBreak()
+        sourceActionBuilder.softBreak()
     }
 
     fun hardBreak() {
-        sourceBuilder.hardBreak()
+        sourceActionBuilder.hardBreak()
     }
 
     fun align() {
-        sourceBuilder.align()
+        sourceActionBuilder.align()
     }
 }

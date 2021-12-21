@@ -22,7 +22,6 @@ data class VerikConfig(
     val toolchain: String,
     val timestamp: String,
     val projectName: String,
-    val projectDir: Path,
     val buildDir: Path,
     val sourceSetConfigs: List<SourceSetConfig>,
     val timescale: String,

@@ -16,6 +16,9 @@
 
 package io.verik.compiler.serialize.source
 
-import io.verik.compiler.common.TextFile
-
-data class SourceBuilderResult(val textFile: TextFile, val textFileLabeled: TextFile?)
+enum class SourceActionType {
+    REGULAR,
+    SOFT_BREAK,
+    HARD_BREAK,
+    ALIGN
+}

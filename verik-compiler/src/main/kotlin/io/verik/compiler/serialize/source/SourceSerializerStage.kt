@@ -25,39 +25,32 @@ object SourceSerializerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
         val basicPackageTextFiles = ArrayList<TextFile>()
-        val basicPackageTextFilesLabeled = ArrayList<TextFile>()
         projectContext.project.basicPackages.forEach { basicPackage ->
             basicPackage.files.forEach {
                 if (!it.isEmptySerialization()) {
-                    val sourceBuilderResult = serialize(projectContext, it)
-                    basicPackageTextFiles.add(sourceBuilderResult.textFile)
-                    if (sourceBuilderResult.textFileLabeled != null)
-                        basicPackageTextFilesLabeled.add(sourceBuilderResult.textFileLabeled)
+                    basicPackageTextFiles.add(serialize(projectContext, it))
                 }
             }
         }
         projectContext.outputContext.basicPackageTextFiles = basicPackageTextFiles
-        projectContext.outputContext.basicPackageTextFilesLabeled = basicPackageTextFilesLabeled
 
         val rootPackageTextFiles = ArrayList<TextFile>()
-        val rootPackageTextFilesLabeled = ArrayList<TextFile>()
         projectContext.project.rootPackage.files.forEach {
             if (!it.isEmptySerialization()) {
-                val sourceBuilderResult = serialize(projectContext, it)
-                rootPackageTextFiles.add(sourceBuilderResult.textFile)
-                if (sourceBuilderResult.textFileLabeled != null)
-                    rootPackageTextFilesLabeled.add(sourceBuilderResult.textFileLabeled)
+                rootPackageTextFiles.add(serialize(projectContext, it))
             }
         }
         projectContext.outputContext.rootPackageTextFiles = rootPackageTextFiles
-        projectContext.outputContext.rootPackageTextFilesLabeled = rootPackageTextFilesLabeled
     }
 
-    private fun serialize(projectContext: ProjectContext, file: EFile): SourceBuilderResult {
-        val serializerContext = SerializerContext(projectContext, file)
+    private fun serialize(projectContext: ProjectContext, file: EFile): TextFile {
+        val serializerContext = SerializerContext(file)
         file.declarations.forEach {
             serializerContext.serializeAsDeclaration(it)
         }
-        return serializerContext.getSourceBuilderResult()
+        val sourceActionLines = serializerContext.getSourceActionLines()
+        val sourceBuilder = SourceBuilder(projectContext, file)
+        sourceBuilder.build(sourceActionLines)
+        return sourceBuilder.toTextFile()
     }
 }
