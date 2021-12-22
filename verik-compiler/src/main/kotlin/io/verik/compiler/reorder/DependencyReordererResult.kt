@@ -16,24 +16,9 @@
 
 package io.verik.compiler.reorder
 
-import io.verik.compiler.test.BaseTest
-import org.junit.jupiter.api.Test
+import io.verik.compiler.ast.element.common.EDeclaration
 
-internal class PackageDependencyReordererTest : BaseTest() {
-
-    @Test
-    fun `package dependency illegal root`() {
-        driveMessageTest(
-            """
-                object M : Module() { var x: Boolean = nc() }
-                class C {
-                    fun f() {
-                        println(M.x)
-                    }
-                }
-            """.trimIndent(),
-            true,
-            "Illegal package dependency: From test to <root>"
-        )
-    }
-}
+data class DependencyReordererResult(
+    val reorderedDeclarations: List<EDeclaration>,
+    val unsatisfiedDependencies: List<Dependency>
+)

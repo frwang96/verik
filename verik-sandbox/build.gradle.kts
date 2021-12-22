@@ -28,6 +28,7 @@ repositories {
 
 verik {
     debug = true
+    enableDeadCodeElimination = false
 }
 
 verikImport {

@@ -16,13 +16,13 @@
 
 package io.verik.compiler.reorder
 
-import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EDeclaration
 
 class DependencyRegistry {
 
-    private val dependencyRegistry = HashMap<EElement, HashSet<Dependency>>()
+    private val dependencyRegistry = HashMap<EDeclaration, HashSet<Dependency>>()
 
-    fun add(parent: EElement, dependency: Dependency) {
+    fun add(parent: EDeclaration, dependency: Dependency) {
         val dependencySet = dependencyRegistry[parent]
         if (dependencySet != null) {
             dependencySet.add(dependency)
@@ -31,7 +31,7 @@ class DependencyRegistry {
         }
     }
 
-    fun getDependencies(parent: EElement): List<Dependency> {
+    fun getDependencies(parent: EDeclaration): List<Dependency> {
         val dependencySet = dependencyRegistry[parent]
         return dependencySet?.toList() ?: listOf()
     }

@@ -24,6 +24,7 @@ import io.verik.compiler.ast.element.common.EPackage
 import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.ast.element.common.EReceiverExpression
 import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
+import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.common.TreeVisitor
 import java.lang.Integer.min
 
@@ -47,9 +48,11 @@ class DependencyIndexerVisitor(
             val parent = elementParents[commonParentIndex]
             val fromDeclaration = elementParents[commonParentIndex + 1]
             val toDeclaration = referenceParents[commonParentIndex + 1]
-            if (isReorderable(parent) && fromDeclaration is EDeclaration && toDeclaration is EDeclaration) {
-                val dependency = Dependency(fromDeclaration, toDeclaration, element)
-                dependencyRegistry.add(parent, dependency)
+            if (parent is EDeclaration && fromDeclaration is EDeclaration && toDeclaration is EDeclaration) {
+                if (isReorderable(parent)) {
+                    val dependency = Dependency(fromDeclaration, toDeclaration, element)
+                    dependencyRegistry.add(parent, dependency)
+                }
             }
         }
     }
@@ -64,12 +67,19 @@ class DependencyIndexerVisitor(
         return parents.asReversed()
     }
 
-    private fun isReorderable(parent: EElement): Boolean {
+    private fun isReorderable(parent: EDeclaration): Boolean {
         return parent is EProject ||
             parent is EPackage ||
             parent is EFile ||
             parent is EAbstractContainerComponent ||
             parent is EAbstractContainerClass
+    }
+
+    override fun visitSvProperty(property: ESvProperty) {
+        super.visitSvProperty(property)
+        val reference = property.type.reference
+        if (reference is EDeclaration)
+            processDependency(property, reference)
     }
 
     override fun visitReceiverExpression(receiverExpression: EReceiverExpression) {

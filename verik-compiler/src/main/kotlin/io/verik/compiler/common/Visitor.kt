@@ -144,7 +144,7 @@ abstract class Visitor {
     }
 
     open fun visitProject(project: EProject) {
-        visitElement(project)
+        visitDeclaration(project)
     }
 
     open fun visitPackage(`package`: EPackage) {
@@ -152,7 +152,7 @@ abstract class Visitor {
     }
 
     open fun visitFile(file: EFile) {
-        visitElement(file)
+        visitDeclaration(file)
     }
 
     open fun visitClassifier(classifier: EClassifier) {

@@ -18,6 +18,7 @@ package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
 
 class EProject(
@@ -26,7 +27,11 @@ class EProject(
     val nativeRootPackage: EPackage,
     val importedRegularPackages: ArrayList<EPackage>,
     val importedRootPackage: EPackage
-) : EElement() {
+) : EDeclaration() {
+
+    override var name = "<project>"
+
+    override var type = Core.Kt.C_Unit.toType()
 
     init {
         nativeRegularPackages.forEach { it.parent = this }

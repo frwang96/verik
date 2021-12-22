@@ -213,6 +213,10 @@ object Messages {
         "Illegal package dependency: $0"
     )
 
+    val DECLARATION_CIRCULAR_DEPENDENCY = ErrorMessageTemplate1<Dependency>(
+        "Circular dependency between declarations: $0"
+    )
+
 //  POST TRANSFORM  ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val EXPRESSION_OUT_OF_CONTEXT = ErrorMessageTemplate1<String>(

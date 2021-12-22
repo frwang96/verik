@@ -20,6 +20,7 @@ import io.verik.compiler.ast.interfaces.ResizableDeclarationContainer
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.common.replaceIfContains
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.serialize.source.SerializerUtil
@@ -30,7 +31,11 @@ class EFile(
     val inputPath: Path,
     val outputPath: Path,
     var declarations: ArrayList<EDeclaration>
-) : EElement(), ResizableDeclarationContainer {
+) : EDeclaration(), ResizableDeclarationContainer {
+
+    override var name = inputPath.fileName.toString()
+
+    override var type = Core.Kt.C_Unit.toType()
 
     init {
         declarations.forEach { it.parent = this }
