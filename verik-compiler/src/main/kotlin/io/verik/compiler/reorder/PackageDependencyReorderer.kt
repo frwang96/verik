@@ -16,18 +16,17 @@
 
 package io.verik.compiler.reorder
 
-import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.ProjectStage
+import io.verik.compiler.ast.element.common.EBasicPackage
+import io.verik.compiler.ast.element.common.ERootPackage
+import io.verik.compiler.message.Messages
 
-object DependencyReordererStage : ProjectStage() {
+object PackageDependencyReorderer {
 
-    override fun process(projectContext: ProjectContext) {
-        val dependencyRegistry = DependencyRegistry()
-        val dependencyIndexerVisitor = DependencyIndexerVisitor(dependencyRegistry)
-        projectContext.project.accept(dependencyIndexerVisitor)
-
-        PackageDependencyReorderer.reorder(
-            dependencyRegistry.getDependencies(projectContext.project)
-        )
+    fun reorder(dependencies: List<Dependency>) {
+        dependencies.forEach {
+            if (it.fromDeclaration is EBasicPackage && it.toDeclaration is ERootPackage) {
+                Messages.PACKAGE_DEPENDENCY_ILLEGAL.on(it.element, it)
+            }
+        }
     }
 }

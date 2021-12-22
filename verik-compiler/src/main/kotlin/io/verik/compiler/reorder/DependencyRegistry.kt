@@ -30,4 +30,9 @@ class DependencyRegistry {
             dependencyRegistry[parent] = hashSetOf(dependency)
         }
     }
+
+    fun getDependencies(parent: EElement): List<Dependency> {
+        val dependencySet = dependencyRegistry[parent]
+        return dependencySet?.toList() ?: listOf()
+    }
 }

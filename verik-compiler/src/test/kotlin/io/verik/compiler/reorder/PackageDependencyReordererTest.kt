@@ -16,18 +16,24 @@
 
 package io.verik.compiler.reorder
 
-import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.ProjectStage
+import io.verik.compiler.test.BaseTest
+import org.junit.jupiter.api.Test
 
-object DependencyReordererStage : ProjectStage() {
+internal class PackageDependencyReordererTest : BaseTest() {
 
-    override fun process(projectContext: ProjectContext) {
-        val dependencyRegistry = DependencyRegistry()
-        val dependencyIndexerVisitor = DependencyIndexerVisitor(dependencyRegistry)
-        projectContext.project.accept(dependencyIndexerVisitor)
-
-        PackageDependencyReorderer.reorder(
-            dependencyRegistry.getDependencies(projectContext.project)
+    @Test
+    fun `package dependency illegal root`() {
+        driveMessageTest(
+            """
+                object M : Module() { var x: Boolean = nc() }
+                class C {
+                    fun f() {
+                        println(M.x)
+                    }
+                }
+            """.trimIndent(),
+            true,
+            "Illegal package dependency: From test to <root>"
         )
     }
 }

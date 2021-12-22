@@ -18,6 +18,7 @@ package io.verik.compiler.message
 
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.main.ProjectStage
+import io.verik.compiler.reorder.Dependency
 import org.jetbrains.kotlin.lexer.KtToken
 import java.nio.file.Path
 import kotlin.reflect.full.declaredMemberProperties
@@ -204,6 +205,12 @@ object Messages {
 
     val SUBEXPRESSION_UNABLE_TO_EXTRACT = ErrorMessageTemplate0(
         "Unable to extract subexpression"
+    )
+
+//  REORDER  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    val PACKAGE_DEPENDENCY_ILLEGAL = ErrorMessageTemplate1<Dependency>(
+        "Illegal package dependency: $0"
     )
 
 //  POST TRANSFORM  ////////////////////////////////////////////////////////////////////////////////////////////////////
