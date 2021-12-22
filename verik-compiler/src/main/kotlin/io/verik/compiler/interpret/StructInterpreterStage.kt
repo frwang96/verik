@@ -16,7 +16,7 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.kt.EKtBasicClass
+import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.ESvProperty
@@ -37,20 +37,20 @@ object StructInterpreterStage : ProjectStage() {
 
     private class StructInterpreterVisitor(private val referenceUpdater: ReferenceUpdater) : TreeVisitor() {
 
-        override fun visitKtBasicClass(basicClass: EKtBasicClass) {
-            super.visitKtBasicClass(basicClass)
-            if (basicClass.type.isSubtype(Core.Vk.C_Struct.toType())) {
-                val properties = basicClass.primaryConstructor!!
+        override fun visitKtClass(`class`: EKtClass) {
+            super.visitKtClass(`class`)
+            if (`class`.type.isSubtype(Core.Vk.C_Struct.toType())) {
+                val properties = `class`.primaryConstructor!!
                     .valueParameters
                     .map { interpretProperty(it, referenceUpdater) }
                 val struct = EStruct(
-                    basicClass.location,
-                    basicClass.name,
-                    basicClass.type,
+                    `class`.location,
+                    `class`.name,
+                    `class`.type,
                     properties
                 )
-                referenceUpdater.replace(basicClass, struct)
-                referenceUpdater.update(basicClass.primaryConstructor!!, struct)
+                referenceUpdater.replace(`class`, struct)
+                referenceUpdater.update(`class`.primaryConstructor!!, struct)
             }
         }
 

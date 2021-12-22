@@ -55,10 +55,10 @@ import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
-import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtConstructor
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtForStatement
@@ -76,10 +76,10 @@ import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
 import io.verik.compiler.ast.element.sv.EAbstractProceduralBlock
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
-import io.verik.compiler.ast.element.sv.EBasicComponentInstantiation
 import io.verik.compiler.ast.element.sv.ECaseStatement
 import io.verik.compiler.ast.element.sv.EClockingBlock
 import io.verik.compiler.ast.element.sv.EClockingBlockInstantiation
+import io.verik.compiler.ast.element.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.sv.EConstantPartSelectExpression
 import io.verik.compiler.ast.element.sv.EDelayExpression
@@ -105,10 +105,10 @@ import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.EStructLiteralExpression
 import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
-import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
 import io.verik.compiler.ast.element.sv.ESvCallExpression
+import io.verik.compiler.ast.element.sv.ESvClass
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvForStatement
 import io.verik.compiler.ast.element.sv.ESvFunction
@@ -181,12 +181,12 @@ abstract class Visitor {
         visitAbstractClass(abstractContainerClass)
     }
 
-    open fun visitKtBasicClass(basicClass: EKtBasicClass) {
-        visitAbstractContainerClass(basicClass)
+    open fun visitKtClass(`class`: EKtClass) {
+        visitAbstractContainerClass(`class`)
     }
 
-    open fun visitSvBasicClass(basicClass: ESvBasicClass) {
-        visitAbstractContainerClass(basicClass)
+    open fun visitSvClass(`class`: ESvClass) {
+        visitAbstractContainerClass(`class`)
     }
 
     open fun visitAbstractComponent(abstractComponent: EAbstractComponent) {
@@ -305,8 +305,8 @@ abstract class Visitor {
         visitAbstractProperty(abstractComponentInstantiation)
     }
 
-    open fun visitBasicComponentInstantiation(basicComponentInstantiation: EBasicComponentInstantiation) {
-        visitAbstractComponentInstantiation(basicComponentInstantiation)
+    open fun visitComponentInstantiation(componentInstantiation: EComponentInstantiation) {
+        visitAbstractComponentInstantiation(componentInstantiation)
     }
 
     open fun visitModulePortInstantiation(modulePortInstantiation: EModulePortInstantiation) {

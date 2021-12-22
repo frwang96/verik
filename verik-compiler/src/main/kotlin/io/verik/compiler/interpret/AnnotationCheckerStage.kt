@@ -17,7 +17,7 @@
 package io.verik.compiler.interpret
 
 import io.verik.compiler.ast.element.kt.EAnnotation
-import io.verik.compiler.ast.element.kt.EKtBasicClass
+import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Annotations
@@ -54,13 +54,13 @@ object AnnotationCheckerStage : ProjectStage() {
             }
         }
 
-        override fun visitKtBasicClass(basicClass: EKtBasicClass) {
-            super.visitKtBasicClass(basicClass)
-            if (basicClass.hasAnnotation(Annotations.SYNTHESIS_TOP) ||
-                basicClass.hasAnnotation(Annotations.SIMULATION_TOP)
+        override fun visitKtClass(`class`: EKtClass) {
+            super.visitKtClass(`class`)
+            if (`class`.hasAnnotation(Annotations.SYNTHESIS_TOP) ||
+                `class`.hasAnnotation(Annotations.SIMULATION_TOP)
             ) {
-                if (!basicClass.type.isSubtype(Core.Vk.C_Module.toType()))
-                    Messages.TOP_NOT_MODULE.on(basicClass)
+                if (!`class`.type.isSubtype(Core.Vk.C_Module.toType()))
+                    Messages.TOP_NOT_MODULE.on(`class`)
             }
         }
 

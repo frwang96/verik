@@ -27,7 +27,7 @@ import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EInitialBlock
-import io.verik.compiler.ast.element.sv.ESvBasicClass
+import io.verik.compiler.ast.element.sv.ESvClass
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.element.sv.ETask
@@ -92,12 +92,12 @@ object FunctionInterpreterStage : ProjectStage() {
                 else -> {
                     val valueParameters = getValueParameters(function.valueParameters, referenceUpdater)
                     val isStatic = when (val parent = function.parent) {
-                        is ESvBasicClass -> parent.isDeclarationsStatic
+                        is ESvClass -> parent.isDeclarationsStatic
                         else -> false
                     }
                     val qualifierType = when {
                         function.isAbstract -> FunctionQualifierType.PURE_VIRTUAL
-                        function.parent is ESvBasicClass -> {
+                        function.parent is ESvClass -> {
                             when {
                                 isStatic -> FunctionQualifierType.REGULAR
                                 function.isOverride -> FunctionQualifierType.REGULAR

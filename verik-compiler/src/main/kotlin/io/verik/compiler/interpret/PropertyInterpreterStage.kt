@@ -26,15 +26,15 @@ import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.sv.EAbstractComponentInstantiation
 import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
-import io.verik.compiler.ast.element.sv.EBasicComponentInstantiation
 import io.verik.compiler.ast.element.sv.EClockingBlock
 import io.verik.compiler.ast.element.sv.EClockingBlockInstantiation
+import io.verik.compiler.ast.element.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EInjectedProperty
 import io.verik.compiler.ast.element.sv.EModulePort
 import io.verik.compiler.ast.element.sv.EModulePortInstantiation
 import io.verik.compiler.ast.element.sv.EPort
-import io.verik.compiler.ast.element.sv.ESvBasicClass
+import io.verik.compiler.ast.element.sv.ESvClass
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.property.PortInstantiation
 import io.verik.compiler.ast.property.PortType
@@ -62,7 +62,7 @@ object PropertyInterpreterStage : ProjectStage() {
             interpretInjectedProperty(property)?.let { return it }
             interpretAbstractComponentInstantiation(property)?.let { return it }
             val isStatic = when (val parent = property.parent) {
-                is ESvBasicClass -> if (parent.isDeclarationsStatic) true else null
+                is ESvClass -> if (parent.isDeclarationsStatic) true else null
                 is EPropertyStatement -> false
                 is EIsExpression -> false
                 else -> null
@@ -112,7 +112,7 @@ object PropertyInterpreterStage : ProjectStage() {
                 return null
             return when (val component = callExpression.reference) {
                 is EAbstractContainerComponent ->
-                    interpretBasicComponentInstantiation(property, callExpression, component)
+                    interpretComponentInstantiation(property, callExpression, component)
                 is EModulePort ->
                     interpretModulePortInstantiation(property, callExpression, component)
                 is EClockingBlock ->
@@ -121,11 +121,11 @@ object PropertyInterpreterStage : ProjectStage() {
             }
         }
 
-        private fun interpretBasicComponentInstantiation(
+        private fun interpretComponentInstantiation(
             property: EKtProperty,
             callExpression: EKtCallExpression,
             component: EAbstractContainerComponent
-        ): EBasicComponentInstantiation {
+        ): EComponentInstantiation {
             if (component.ports.size != callExpression.valueArguments.size) {
                 Messages.INTERNAL_ERROR.on(callExpression, "Incorrect number of value arguments")
             }
@@ -133,7 +133,7 @@ object PropertyInterpreterStage : ProjectStage() {
             val portInstantiations = component.ports
                 .zip(callExpression.valueArguments)
                 .map { interpretPortInstantiation(it.first, it.second, false) }
-            return EBasicComponentInstantiation(
+            return EComponentInstantiation(
                 property.location,
                 property.name,
                 property.type,

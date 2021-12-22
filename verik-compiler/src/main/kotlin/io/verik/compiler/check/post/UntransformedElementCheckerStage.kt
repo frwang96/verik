@@ -19,10 +19,10 @@ package io.verik.compiler.check.post
 import io.verik.compiler.ast.element.kt.EAsExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
-import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtForStatement
 import io.verik.compiler.ast.element.kt.EKtFunction
@@ -46,9 +46,9 @@ object UntransformedElementCheckerStage : ProjectStage() {
 
         private const val message = "has not been transformed to SystemVerilog"
 
-        override fun visitKtBasicClass(basicClass: EKtBasicClass) {
-            super.visitKtBasicClass(basicClass)
-            Messages.INTERNAL_ERROR.on(basicClass, "Class ${basicClass.name} $message")
+        override fun visitKtClass(`class`: EKtClass) {
+            super.visitKtClass(`class`)
+            Messages.INTERNAL_ERROR.on(`class`, "Class ${`class`.name} $message")
         }
 
         override fun visitKtFunction(function: EKtFunction) {

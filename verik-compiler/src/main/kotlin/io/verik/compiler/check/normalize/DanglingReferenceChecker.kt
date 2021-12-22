@@ -19,8 +19,8 @@ package io.verik.compiler.check.normalize
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypedElement
-import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtConstructor
 import io.verik.compiler.ast.element.sv.EAbstractComponentInstantiation
 import io.verik.compiler.ast.element.sv.EStructLiteralExpression
@@ -78,7 +78,7 @@ object DanglingReferenceChecker : NormalizationStage {
                 checkReference(typedElement.reference, typedElement)
             }
             when (typedElement) {
-                is EKtBasicClass -> {
+                is EKtClass -> {
                     typedElement.superTypeCallEntry?.let { checkReference(it.reference, typedElement) }
                 }
                 is EKtConstructor -> {

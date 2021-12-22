@@ -17,7 +17,7 @@
 package io.verik.compiler.serialize.general
 
 import io.verik.compiler.ast.element.common.EPackage
-import io.verik.compiler.ast.element.sv.ESvBasicClass
+import io.verik.compiler.ast.element.sv.ESvClass
 import io.verik.compiler.common.TextFile
 import io.verik.compiler.main.Platform
 import io.verik.compiler.main.ProjectContext
@@ -54,7 +54,7 @@ object PackageWrapperSerializerStage : ProjectStage() {
         builder.appendLine("package $packageName;")
         `package`.files.forEach { file ->
             file.declarations.forEach {
-                if (it is ESvBasicClass) {
+                if (it is ESvClass) {
                     builder.appendLine()
                     builder.append(indent)
                     builder.appendLine("typedef class ${it.name};")

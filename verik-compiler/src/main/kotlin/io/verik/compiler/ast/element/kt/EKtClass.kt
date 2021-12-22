@@ -28,7 +28,7 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
-class EKtBasicClass(
+class EKtClass(
     override val location: SourceLocation,
     override var name: String
 ) : EAbstractContainerClass(), TypeParameterized, Annotated {
@@ -74,7 +74,7 @@ class EKtBasicClass(
     }
 
     override fun accept(visitor: Visitor) {
-        return visitor.visitKtBasicClass(this)
+        return visitor.visitKtClass(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {

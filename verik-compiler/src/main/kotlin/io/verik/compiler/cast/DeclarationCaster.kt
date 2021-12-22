@@ -17,7 +17,7 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.ast.element.common.ETypeParameter
-import io.verik.compiler.ast.element.kt.EKtBasicClass
+import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
@@ -70,10 +70,10 @@ object DeclarationCaster {
         return castedTypeParameter
     }
 
-    fun castKtBasicClass(classOrObject: KtClassOrObject, castContext: CastContext): EKtBasicClass {
+    fun castKtClass(classOrObject: KtClassOrObject, castContext: CastContext): EKtClass {
         val descriptor = castContext.sliceClass[classOrObject]!!
-        val castedBasicClass = castContext.getDeclaration(descriptor, classOrObject)
-            .cast<EKtBasicClass>(classOrObject)
+        val castedClass = castContext.getDeclaration(descriptor, classOrObject)
+            .cast<EKtClass>(classOrObject)
 
         val type = castContext.castType(descriptor.defaultType, classOrObject)
         val superType = castContext.castType(descriptor.getSuperClassOrAny().defaultType, classOrObject)
@@ -109,7 +109,7 @@ object DeclarationCaster {
             else -> Messages.INTERNAL_ERROR.on(classOrObject, "Multiple inheritance not supported")
         }
 
-        castedBasicClass.init(
+        castedClass.init(
             type,
             superType,
             declarations,
@@ -121,7 +121,7 @@ object DeclarationCaster {
             primaryConstructor,
             superTypeCallEntry
         )
-        return castedBasicClass
+        return castedClass
     }
 
     fun castKtFunction(function: KtNamedFunction, castContext: CastContext): EKtFunction {
@@ -262,7 +262,7 @@ object DeclarationCaster {
         castContext: CastContext
     ): SuperTypeCallEntry {
         val descriptor = castContext.sliceReferenceTarget[
-            superTypeCallEntry.calleeExpression.constructorReferenceExpression
+            superTypeCallEntry.calleeExpression.constructorReferenceExpression!!
         ]!!
         val declaration = castContext.getDeclaration(descriptor, superTypeCallEntry)
         val valueArguments = CallExpressionCaster.castValueArguments(superTypeCallEntry.calleeExpression, castContext)

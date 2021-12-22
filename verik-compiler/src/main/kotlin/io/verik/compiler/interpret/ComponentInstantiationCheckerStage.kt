@@ -16,7 +16,7 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.kt.EKtBasicClass
+import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Annotations
@@ -37,7 +37,7 @@ object ComponentInstantiationCheckerStage : ProjectStage() {
             super.visitKtProperty(property)
             if (property.type.isSubtype(Core.Vk.C_Component.toType())) {
                 val parent = property.parent
-                if (parent is EKtBasicClass && parent.type.isSubtype(Core.Vk.C_Component.toType())) {
+                if (parent is EKtClass && parent.type.isSubtype(Core.Vk.C_Component.toType())) {
                     if (!property.hasAnnotation(Annotations.MAKE))
                         Messages.MAKE_ANNOTATION_REQUIRED.on(property)
                 } else {

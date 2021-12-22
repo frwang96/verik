@@ -17,7 +17,7 @@
 package io.verik.compiler.transform.pre
 
 import io.verik.compiler.ast.element.common.EPackage
-import io.verik.compiler.ast.element.kt.EKtBasicClass
+import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -62,9 +62,9 @@ object FunctionOverloadingTransformerStage : ProjectStage() {
             }
         }
 
-        override fun visitKtBasicClass(basicClass: EKtBasicClass) {
-            super.visitKtBasicClass(basicClass)
-            val functions = basicClass.declarations.filterIsInstance<EKtFunction>()
+        override fun visitKtClass(`class`: EKtClass) {
+            super.visitKtClass(`class`)
+            val functions = `class`.declarations.filterIsInstance<EKtFunction>()
             transformFunctions(functions)
         }
     }

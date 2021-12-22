@@ -21,7 +21,7 @@ import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
-class EBasicComponentInstantiation(
+class EComponentInstantiation(
     override val location: SourceLocation,
     override var name: String,
     override var type: Type,
@@ -33,6 +33,6 @@ class EBasicComponentInstantiation(
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitBasicComponentInstantiation(this)
+        visitor.visitComponentInstantiation(this)
     }
 }

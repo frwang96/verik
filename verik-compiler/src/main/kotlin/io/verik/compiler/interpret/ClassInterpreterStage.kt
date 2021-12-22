@@ -21,13 +21,13 @@ import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ESuperExpression
-import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtConstructor
-import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
 import io.verik.compiler.ast.element.sv.ESvCallExpression
+import io.verik.compiler.ast.element.sv.ESvClass
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvValueParameter
@@ -40,7 +40,7 @@ import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 import io.verik.compiler.target.common.Target
 
-object BasicClassInterpreterStage : ProjectStage() {
+object ClassInterpreterStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
         val referenceUpdater = ReferenceUpdater(projectContext)
@@ -88,41 +88,38 @@ object BasicClassInterpreterStage : ProjectStage() {
         private val initializerMap: HashMap<EKtConstructor, ESvFunction>
     ) : TreeVisitor() {
 
-        override fun visitKtBasicClass(basicClass: EKtBasicClass) {
-            super.visitKtBasicClass(basicClass)
+        override fun visitKtClass(`class`: EKtClass) {
+            super.visitKtClass(`class`)
             val declarations = ArrayList<EDeclaration>()
-            basicClass.declarations.forEach {
+            `class`.declarations.forEach {
                 if (it is EKtConstructor) {
-                    val interpretedConstructor = interpretConstructor(basicClass, it)
+                    val interpretedConstructor = interpretConstructor(`class`, it)
                     val instantiator = interpretedConstructor.instantiator
                     if (instantiator != null) {
-                        instantiator.parent = basicClass
+                        instantiator.parent = `class`
                         declarations.add(instantiator)
                     }
-                    interpretedConstructor.initializer.parent = basicClass
+                    interpretedConstructor.initializer.parent = `class`
                     declarations.add(interpretedConstructor.initializer)
                 } else {
                     declarations.add(it)
                 }
             }
             referenceUpdater.replace(
-                basicClass,
-                ESvBasicClass(
-                    basicClass.location,
-                    basicClass.name,
-                    basicClass.type,
-                    basicClass.superType,
+                `class`,
+                ESvClass(
+                    `class`.location,
+                    `class`.name,
+                    `class`.type,
+                    `class`.superType,
                     declarations,
-                    basicClass.isAbstract,
-                    basicClass.isObject
+                    `class`.isAbstract,
+                    `class`.isObject
                 )
             )
         }
 
-        private fun interpretConstructor(
-            basicClass: EKtBasicClass,
-            constructor: EKtConstructor
-        ): InterpretedConstructor {
+        private fun interpretConstructor(`class`: EKtClass, constructor: EKtConstructor): InterpretedConstructor {
             val initializer = initializerMap[constructor]
                 ?: Messages.INTERNAL_ERROR.on(constructor, "Initializer not found")
             val superTypeCallEntry = constructor.superTypeCallEntry
@@ -148,16 +145,16 @@ object BasicClassInterpreterStage : ProjectStage() {
                     body.statements.add(0, callExpression)
                 }
             }
-            val instantiator = interpretInstantiator(basicClass, constructor, initializer)
+            val instantiator = interpretInstantiator(`class`, constructor, initializer)
             return InterpretedConstructor(instantiator, initializer)
         }
 
         private fun interpretInstantiator(
-            basicClass: EKtBasicClass,
+            `class`: EKtClass,
             constructor: EKtConstructor,
             initializer: ESvFunction
         ): ESvFunction? {
-            if (basicClass.isAbstract)
+            if (`class`.isAbstract)
                 return null
 
             val property = ESvProperty.getTemporary(

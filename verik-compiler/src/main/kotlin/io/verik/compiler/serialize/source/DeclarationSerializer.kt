@@ -18,8 +18,8 @@ package io.verik.compiler.serialize.source
 
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
-import io.verik.compiler.ast.element.sv.EBasicComponentInstantiation
 import io.verik.compiler.ast.element.sv.EClockingBlockInstantiation
+import io.verik.compiler.ast.element.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EInitialBlock
 import io.verik.compiler.ast.element.sv.EInjectedProperty
@@ -28,7 +28,7 @@ import io.verik.compiler.ast.element.sv.EModuleInterface
 import io.verik.compiler.ast.element.sv.EModulePortInstantiation
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.EStruct
-import io.verik.compiler.ast.element.sv.ESvBasicClass
+import io.verik.compiler.ast.element.sv.ESvClass
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvProperty
@@ -65,20 +65,20 @@ object DeclarationSerializer {
         serializerContext.appendLine()
     }
 
-    fun serializeSvBasicClass(basicClass: ESvBasicClass, serializerContext: SerializerContext) {
-        if (basicClass.isVirtual)
+    fun serializeSvClass(`class`: ESvClass, serializerContext: SerializerContext) {
+        if (`class`.isVirtual)
             serializerContext.append("virtual ")
-        serializerContext.append("class ${basicClass.name}")
-        val superType = basicClass.superType
+        serializerContext.append("class ${`class`.name}")
+        val superType = `class`.superType
         if (superType.reference != Core.Kt.C_Any) {
             serializerContext.append(" extends ${superType.reference.name}")
         }
         serializerContext.appendLine(";")
         serializerContext.indent {
-            basicClass.declarations.forEach { serializerContext.serializeAsDeclaration(it) }
+            `class`.declarations.forEach { serializerContext.serializeAsDeclaration(it) }
             serializerContext.appendLine()
         }
-        serializerContext.appendLine("endclass : ${basicClass.name}")
+        serializerContext.appendLine("endclass : ${`class`.name}")
     }
 
     fun serializeModule(module: EModule, serializerContext: SerializerContext) {
@@ -198,18 +198,18 @@ object DeclarationSerializer {
         serializerContext.append(enumEntry.name)
     }
 
-    fun serializeBasicComponentInstantiation(
-        basicComponentInstantiation: EBasicComponentInstantiation,
+    fun serializeComponentInstantiation(
+        componentInstantiation: EComponentInstantiation,
         serializerContext: SerializerContext
     ) {
-        val serializedType = TypeSerializer.serialize(basicComponentInstantiation.type, basicComponentInstantiation)
-        serializedType.checkNoPackedDimension(basicComponentInstantiation)
-        serializedType.checkNoUnpackedDimension(basicComponentInstantiation)
-        serializerContext.append("${serializedType.base} ${basicComponentInstantiation.name} (")
-        if (basicComponentInstantiation.portInstantiations.isNotEmpty()) {
+        val serializedType = TypeSerializer.serialize(componentInstantiation.type, componentInstantiation)
+        serializedType.checkNoPackedDimension(componentInstantiation)
+        serializedType.checkNoUnpackedDimension(componentInstantiation)
+        serializerContext.append("${serializedType.base} ${componentInstantiation.name} (")
+        if (componentInstantiation.portInstantiations.isNotEmpty()) {
             serializerContext.appendLine()
             serializerContext.indent {
-                serializerContext.serializeJoinAppendLine(basicComponentInstantiation.portInstantiations) {
+                serializerContext.serializeJoinAppendLine(componentInstantiation.portInstantiations) {
                     serializerContext.append(".${it.reference.name} ")
                     serializerContext.align()
                     serializerContext.append("( ")

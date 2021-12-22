@@ -36,10 +36,10 @@ import io.verik.compiler.ast.element.kt.EAsExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
-import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtConstructor
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtForStatement
@@ -53,10 +53,10 @@ import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
-import io.verik.compiler.ast.element.sv.EBasicComponentInstantiation
 import io.verik.compiler.ast.element.sv.ECaseStatement
 import io.verik.compiler.ast.element.sv.EClockingBlock
 import io.verik.compiler.ast.element.sv.EClockingBlockInstantiation
+import io.verik.compiler.ast.element.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.sv.EConstantPartSelectExpression
 import io.verik.compiler.ast.element.sv.EDelayExpression
@@ -82,10 +82,10 @@ import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.EStructLiteralExpression
 import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
-import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
 import io.verik.compiler.ast.element.sv.ESvCallExpression
+import io.verik.compiler.ast.element.sv.ESvClass
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvForStatement
 import io.verik.compiler.ast.element.sv.ESvFunction
@@ -161,28 +161,28 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitKtBasicClass(basicClass: EKtBasicClass) {
-        build("KtBasicClass") {
-            build(basicClass.name)
-            build(basicClass.type.toString())
-            build(basicClass.declarations)
-            build(basicClass.typeParameters)
-            build(basicClass.annotations)
-            build(basicClass.isEnum)
-            build(basicClass.isAbstract)
-            build(basicClass.isObject)
-            build(basicClass.primaryConstructor)
-            buildSuperTypeCallEntry(basicClass.superTypeCallEntry)
+    override fun visitKtClass(`class`: EKtClass) {
+        build("KtClass") {
+            build(`class`.name)
+            build(`class`.type.toString())
+            build(`class`.declarations)
+            build(`class`.typeParameters)
+            build(`class`.annotations)
+            build(`class`.isEnum)
+            build(`class`.isAbstract)
+            build(`class`.isObject)
+            build(`class`.primaryConstructor)
+            buildSuperTypeCallEntry(`class`.superTypeCallEntry)
         }
     }
 
-    override fun visitSvBasicClass(basicClass: ESvBasicClass) {
-        build("SvBasicClass") {
-            build(basicClass.name)
-            build(basicClass.type.toString())
-            build(basicClass.declarations)
-            build(basicClass.isVirtual)
-            build(basicClass.isDeclarationsStatic)
+    override fun visitSvClass(`class`: ESvClass) {
+        build("SvClass") {
+            build(`class`.name)
+            build(`class`.type.toString())
+            build(`class`.declarations)
+            build(`class`.isVirtual)
+            build(`class`.isDeclarationsStatic)
         }
     }
 
@@ -353,11 +353,11 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitBasicComponentInstantiation(basicComponentInstantiation: EBasicComponentInstantiation) {
-        build("BasicComponentInstantiation") {
-            build(basicComponentInstantiation.name)
-            build(basicComponentInstantiation.type.toString())
-            buildPortInstantiations(basicComponentInstantiation.portInstantiations)
+    override fun visitComponentInstantiation(componentInstantiation: EComponentInstantiation) {
+        build("ComponentInstantiation") {
+            build(componentInstantiation.name)
+            build(componentInstantiation.type.toString())
+            buildPortInstantiations(componentInstantiation.portInstantiations)
         }
     }
 

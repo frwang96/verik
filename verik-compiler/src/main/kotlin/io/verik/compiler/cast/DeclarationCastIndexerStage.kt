@@ -17,7 +17,7 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.ast.element.common.ETypeParameter
-import io.verik.compiler.ast.element.kt.EKtBasicClass
+import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
@@ -91,8 +91,8 @@ object DeclarationCastIndexerStage : ProjectStage() {
                 castContext.addDeclaration(descriptor.unsubstitutedPrimaryConstructor!!, indexedPrimaryConstructor)
             }
 
-            val indexedBasicClass = EKtBasicClass(location, name)
-            castContext.addDeclaration(descriptor, indexedBasicClass)
+            val indexedClass = EKtClass(location, name)
+            castContext.addDeclaration(descriptor, indexedClass)
         }
 
         override fun visitNamedFunction(function: KtNamedFunction) {

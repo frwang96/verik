@@ -23,7 +23,7 @@ import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
 import io.verik.compiler.ast.element.sv.EModule
-import io.verik.compiler.ast.element.sv.ESvBasicClass
+import io.verik.compiler.ast.element.sv.ESvClass
 import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
@@ -110,9 +110,9 @@ object DeadDeclarationEliminatorStage : ProjectStage() {
             file.declarations = filter(file.declarations)
         }
 
-        override fun visitSvBasicClass(basicClass: ESvBasicClass) {
-            super.visitSvBasicClass(basicClass)
-            basicClass.declarations = filter(basicClass.declarations)
+        override fun visitSvClass(`class`: ESvClass) {
+            super.visitSvClass(`class`)
+            `class`.declarations = filter(`class`.declarations)
         }
 
         override fun visitAbstractContainerComponent(abstractContainerComponent: EAbstractContainerComponent) {

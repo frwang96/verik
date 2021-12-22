@@ -22,7 +22,7 @@ import io.verik.compiler.ast.element.sv.EAbstractComponent
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EInjectedProperty
 import io.verik.compiler.ast.element.sv.EStruct
-import io.verik.compiler.ast.element.sv.ESvBasicClass
+import io.verik.compiler.ast.element.sv.ESvClass
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvProperty
@@ -82,7 +82,7 @@ object FileSplitterStage : ProjectStage() {
     private fun isRegularPackageDeclaration(declaration: EDeclaration): Boolean {
         return when (declaration) {
             is EAbstractComponent -> false
-            is ESvBasicClass -> true
+            is ESvClass -> true
             is EEnum -> true
             is EStruct -> true
             is ESvFunction -> true

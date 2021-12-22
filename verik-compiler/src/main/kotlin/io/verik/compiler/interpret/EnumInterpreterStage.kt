@@ -16,7 +16,7 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.kt.EKtBasicClass
+import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
@@ -48,18 +48,18 @@ object EnumInterpreterStage : ProjectStage() {
 
     private class EnumInterpreterVisitor(private val referenceUpdater: ReferenceUpdater) : TreeVisitor() {
 
-        override fun visitKtBasicClass(basicClass: EKtBasicClass) {
-            super.visitKtBasicClass(basicClass)
-            if (basicClass.isEnum) {
-                val enumEntries = basicClass.declarations
+        override fun visitKtClass(`class`: EKtClass) {
+            super.visitKtClass(`class`)
+            if (`class`.isEnum) {
+                val enumEntries = `class`.declarations
                     .map { interpretEnumEntry(it.cast(), referenceUpdater) }
                 val enum = EEnum(
-                    basicClass.location,
-                    basicClass.name,
-                    basicClass.type,
+                    `class`.location,
+                    `class`.name,
+                    `class`.type,
                     enumEntries
                 )
-                referenceUpdater.replace(basicClass, enum)
+                referenceUpdater.replace(`class`, enum)
             }
         }
 

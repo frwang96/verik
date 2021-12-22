@@ -22,7 +22,7 @@ import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
-class ESvBasicClass(
+class ESvClass(
     override val location: SourceLocation,
     override var name: String,
     override var type: Type,
@@ -37,6 +37,6 @@ class ESvBasicClass(
     }
 
     override fun accept(visitor: Visitor) {
-        return visitor.visitSvBasicClass(this)
+        return visitor.visitSvClass(this)
     }
 }

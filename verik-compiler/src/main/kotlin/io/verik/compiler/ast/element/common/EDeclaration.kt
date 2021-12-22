@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.element.kt.EKtBasicClass
+import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.interfaces.Declaration
 
 abstract class EDeclaration : ETypedElement(), Declaration {
@@ -24,7 +24,7 @@ abstract class EDeclaration : ETypedElement(), Declaration {
     fun isSpecializable(): Boolean {
         return when (val parent = this.parent) {
             is EFile -> true
-            is EKtBasicClass -> this in parent.declarations || this == parent.primaryConstructor
+            is EKtClass -> this in parent.declarations || this == parent.primaryConstructor
             else -> false
         }
     }
