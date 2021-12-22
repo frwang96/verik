@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.mid
+package io.verik.compiler.reorder
 
 import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findStatements
 import org.junit.jupiter.api.Test
 
-internal class PropertyStatementReorderStageTest : BaseTest() {
+internal class PropertyStatementReordererStageTest : BaseTest() {
 
     @Test
     fun `reorder property statement with initializer`() {
@@ -31,7 +31,7 @@ internal class PropertyStatementReorderStageTest : BaseTest() {
                     val x = false
                 }
             """.trimIndent(),
-            PropertyStatementReorderStage::class,
+            PropertyStatementReordererStage::class,
             """
                 [
                     PropertyStatement(Unit, SvProperty(x, Boolean, null, 0, 0, 0)),
@@ -51,7 +51,7 @@ internal class PropertyStatementReorderStageTest : BaseTest() {
                     val x: Boolean = nc()
                 }
             """.trimIndent(),
-            PropertyStatementReorderStage::class,
+            PropertyStatementReordererStage::class,
             "[PropertyStatement(Unit, SvProperty(x, Boolean, null, 0, 0, 0)), KtCallExpression(*)]"
         ) { it.findStatements("f") }
     }
