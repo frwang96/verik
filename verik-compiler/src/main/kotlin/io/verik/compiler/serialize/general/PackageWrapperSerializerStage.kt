@@ -16,7 +16,7 @@
 
 package io.verik.compiler.serialize.general
 
-import io.verik.compiler.ast.element.common.EBasicPackage
+import io.verik.compiler.ast.element.common.EPackage
 import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.common.TextFile
 import io.verik.compiler.main.Platform
@@ -27,7 +27,7 @@ object PackageWrapperSerializerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
         val packageWrapperTextFiles = ArrayList<TextFile>()
-        projectContext.project.basicPackages.forEach {
+        projectContext.project.nativeRegularPackages.forEach {
             val packageWrapperTextFile = serialize(projectContext, it)
             if (packageWrapperTextFile != null)
                 packageWrapperTextFiles.add(packageWrapperTextFile)
@@ -35,24 +35,24 @@ object PackageWrapperSerializerStage : ProjectStage() {
         projectContext.outputContext.packageWrapperTextFiles = packageWrapperTextFiles
     }
 
-    private fun serialize(projectContext: ProjectContext, basicPackage: EBasicPackage): TextFile? {
-        if (basicPackage.files.all { it.isEmptySerialization() })
+    private fun serialize(projectContext: ProjectContext, `package`: EPackage): TextFile? {
+        if (`package`.files.all { it.isEmptySerialization() })
             return null
 
-        val outputPath = basicPackage.outputPath.resolve("Pkg.sv")
+        val outputPath = `package`.outputPath.resolve("Pkg.sv")
         val fileHeader = FileHeaderBuilder.build(
             projectContext.config,
             null,
             outputPath,
             FileHeaderBuilder.HeaderStyle.SYSTEM_VERILOG
         )
-        val packageName = basicPackage.name
+        val packageName = `package`.name
         val indent = " ".repeat(projectContext.config.indentLength)
 
         val builder = StringBuilder()
         builder.append(fileHeader)
         builder.appendLine("package $packageName;")
-        basicPackage.files.forEach { file ->
+        `package`.files.forEach { file ->
             file.declarations.forEach {
                 if (it is ESvBasicClass) {
                     builder.appendLine()
@@ -61,7 +61,7 @@ object PackageWrapperSerializerStage : ProjectStage() {
                 }
             }
         }
-        basicPackage.files.forEach {
+        `package`.files.forEach {
             if (!it.isEmptySerialization()) {
                 val pathString = Platform.getStringFromPath(
                     projectContext.config.buildDir.relativize(it.outputPath)

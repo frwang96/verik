@@ -16,9 +16,9 @@
 
 package io.verik.compiler.transform.post
 
-import io.verik.compiler.ast.element.common.EBasicPackage
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
+import io.verik.compiler.ast.element.common.EPackage
 import io.verik.compiler.ast.element.common.EReceiverExpression
 import io.verik.compiler.ast.element.sv.EScopeExpression
 import io.verik.compiler.ast.element.sv.ESvBasicClass
@@ -39,7 +39,7 @@ object ScopeExpressionInsertionTransformerStage : ProjectStage() {
 
     private class ScopeExpressionInsertionTransformerVisitor : TreeVisitor() {
 
-        private var parentBasicPackage: EBasicPackage? = null
+        private var parentPackage: EPackage? = null
 
         private fun getScopeExpression(receiverExpression: EReceiverExpression): EScopeExpression? {
             when (val reference = receiverExpression.reference) {
@@ -56,9 +56,13 @@ object ScopeExpressionInsertionTransformerStage : ProjectStage() {
                 is EElement -> {
                     when (val parent = reference.parent) {
                         is EFile -> {
-                            val basicPackage = parent.parent
-                            if (basicPackage is EBasicPackage && basicPackage != parentBasicPackage)
-                                return EScopeExpression(receiverExpression.location, basicPackage.toType())
+                            val `package` = parent.parent
+                            if (`package` is EPackage &&
+                                `package`.packageType.isRegular() &&
+                                `package` != parentPackage
+                            ) {
+                                return EScopeExpression(receiverExpression.location, `package`.toType())
+                            }
                         }
                         is ESvBasicClass -> {
                             if (reference is ESvFunction && reference.isStatic)
@@ -72,10 +76,12 @@ object ScopeExpressionInsertionTransformerStage : ProjectStage() {
             return null
         }
 
-        override fun visitBasicPackage(basicPackage: EBasicPackage) {
-            parentBasicPackage = basicPackage
-            super.visitBasicPackage(basicPackage)
-            parentBasicPackage = null
+        override fun visitPackage(`package`: EPackage) {
+            if (`package`.packageType.isNative()) {
+                parentPackage = `package`
+                super.visitPackage(`package`)
+                parentPackage = null
+            }
         }
 
         override fun visitReceiverExpression(receiverExpression: EReceiverExpression) {

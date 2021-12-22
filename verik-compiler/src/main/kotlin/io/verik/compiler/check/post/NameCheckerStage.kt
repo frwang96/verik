@@ -18,8 +18,8 @@ package io.verik.compiler.check.post
 
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EPackage
 import io.verik.compiler.ast.element.common.EReferenceExpression
-import io.verik.compiler.ast.element.common.ERootPackage
 import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.CoreDeclaration
@@ -40,7 +40,7 @@ object NameCheckerStage : ProjectStage() {
 
         override fun visitElement(element: EElement) {
             super.visitElement(element)
-            if (element is EDeclaration && element !is ERootPackage) {
+            if (element is EDeclaration && element !is EPackage) {
                 if (!element.name.matches(nameRegex))
                     Messages.NAME_ILLEGAL.on(element, element.name)
             }

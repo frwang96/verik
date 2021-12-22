@@ -14,25 +14,19 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.common
+package io.verik.compiler.ast.property
 
-import io.verik.compiler.common.Visitor
-import io.verik.compiler.message.SourceLocation
-import java.nio.file.Path
+enum class PackageType {
+    NATIVE_REGULAR,
+    NATIVE_ROOT,
+    IMPORTED_REGULAR,
+    IMPORTED_ROOT;
 
-class ERootPackage(
-    override val location: SourceLocation,
-    override var files: ArrayList<EFile>,
-    override val outputPath: Path
-) : EAbstractPackage() {
-
-    override var name = "<root>"
-
-    init {
-        files.forEach { it.parent = this }
+    fun isRegular(): Boolean {
+        return this in listOf(NATIVE_REGULAR, IMPORTED_REGULAR)
     }
 
-    override fun accept(visitor: Visitor) {
-        visitor.visitRootPackage(this)
+    fun isNative(): Boolean {
+        return this in listOf(NATIVE_REGULAR, NATIVE_ROOT)
     }
 }

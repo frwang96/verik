@@ -26,7 +26,14 @@ internal class CasterStageTest : BaseTest() {
         driveElementTest(
             "",
             CasterStage::class,
-            "Project([BasicPackage(test, [File([])])], [], RootPackage(<root>, []), RootPackage(<root>, []))",
+            """
+                Project(
+                    [Package(test, [File([])], NATIVE_REGULAR)],
+                    Package(<root>, [], NATIVE_ROOT),
+                    [],
+                    Package(imported, [], IMPORTED_ROOT)
+                )
+            """.trimIndent()
         ) { it }
     }
 

@@ -34,36 +34,36 @@ import io.verik.compiler.message.Messages
 object FileSplitterStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        val rootPackage = projectContext.project.rootPackage
-        projectContext.project.basicPackages.forEach { basicPackage ->
-            val basicPackageFiles = ArrayList<EFile>()
-            basicPackage.files.forEach {
+        val rootPackage = projectContext.project.nativeRootPackage
+        projectContext.project.nativeRegularPackages.forEach { regularPackage ->
+            val regularPackageFiles = ArrayList<EFile>()
+            regularPackage.files.forEach {
                 val splitResult = splitFile(it)
-                if (splitResult.basicPackageFile != null) {
-                    basicPackageFiles.add(splitResult.basicPackageFile)
+                if (splitResult.regularPackageFile != null) {
+                    regularPackageFiles.add(splitResult.regularPackageFile)
                 }
                 if (splitResult.rootPackageFile != null) {
                     splitResult.rootPackageFile.parent = rootPackage
                     rootPackage.files.add(splitResult.rootPackageFile)
                 }
             }
-            basicPackage.files = basicPackageFiles
+            regularPackage.files = regularPackageFiles
         }
     }
 
     private fun splitFile(file: EFile): SplitResult {
-        val basicPackageDeclarations = ArrayList<EDeclaration>()
+        val regularPackageDeclarations = ArrayList<EDeclaration>()
         val rootPackageDeclarations = ArrayList<EDeclaration>()
         file.declarations.forEach {
-            if (isBasicPackageDeclaration(it)) {
-                basicPackageDeclarations.add(it)
+            if (isRegularPackageDeclaration(it)) {
+                regularPackageDeclarations.add(it)
             } else {
                 rootPackageDeclarations.add(it)
             }
         }
 
-        val basicPackageFile = if (basicPackageDeclarations.isNotEmpty()) {
-            file.declarations = basicPackageDeclarations
+        val regularPackageFile = if (regularPackageDeclarations.isNotEmpty()) {
+            file.declarations = regularPackageDeclarations
             file
         } else null
         val rootPackageFile = if (rootPackageDeclarations.isNotEmpty()) {
@@ -76,10 +76,10 @@ object FileSplitterStage : ProjectStage() {
                 rootPackageDeclarations
             )
         } else null
-        return SplitResult(basicPackageFile, rootPackageFile)
+        return SplitResult(regularPackageFile, rootPackageFile)
     }
 
-    private fun isBasicPackageDeclaration(declaration: EDeclaration): Boolean {
+    private fun isRegularPackageDeclaration(declaration: EDeclaration): Boolean {
         return when (declaration) {
             is EAbstractComponent -> false
             is ESvBasicClass -> true
@@ -97,5 +97,5 @@ object FileSplitterStage : ProjectStage() {
         }
     }
 
-    data class SplitResult(val basicPackageFile: EFile?, val rootPackageFile: EFile?)
+    data class SplitResult(val regularPackageFile: EFile?, val rootPackageFile: EFile?)
 }

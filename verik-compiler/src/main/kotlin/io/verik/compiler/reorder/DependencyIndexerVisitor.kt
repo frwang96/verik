@@ -17,10 +17,10 @@
 package io.verik.compiler.reorder
 
 import io.verik.compiler.ast.element.common.EAbstractContainerClass
-import io.verik.compiler.ast.element.common.EAbstractPackage
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
+import io.verik.compiler.ast.element.common.EPackage
 import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.ast.element.common.EReceiverExpression
 import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
@@ -66,7 +66,7 @@ class DependencyIndexerVisitor(
 
     private fun isReorderable(parent: EElement): Boolean {
         return parent is EProject ||
-            parent is EAbstractPackage ||
+            parent is EPackage ||
             parent is EFile ||
             parent is EAbstractContainerComponent ||
             parent is EAbstractContainerClass

@@ -32,7 +32,7 @@ internal class ExpressionSerializerTest : BaseTest() {
                 int x = 0;
                 int y = (x + 1) * x;
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -46,7 +46,7 @@ internal class ExpressionSerializerTest : BaseTest() {
                 logic x = 1'b0;
                 logic y = !x;
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -60,7 +60,7 @@ internal class ExpressionSerializerTest : BaseTest() {
                 int x = 0;
                 int y = x++;
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -74,7 +74,7 @@ internal class ExpressionSerializerTest : BaseTest() {
                 int x = 0;
                 int y = x + 1;
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -88,7 +88,7 @@ internal class ExpressionSerializerTest : BaseTest() {
                 int x = 0;
                 int y = x;
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -100,7 +100,7 @@ internal class ExpressionSerializerTest : BaseTest() {
             """
                 int x = ${"$"}random();
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -112,7 +112,7 @@ internal class ExpressionSerializerTest : BaseTest() {
             """
                 verik_pkg::ArrayList#(logic) a = verik_pkg::ArrayList#(logic)::_${'$'}new();
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -124,7 +124,7 @@ internal class ExpressionSerializerTest : BaseTest() {
             """
                 int x = 0;
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -141,7 +141,7 @@ internal class ExpressionSerializerTest : BaseTest() {
                 
                 S s = '{x:1'b0};
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -175,7 +175,7 @@ internal class ExpressionSerializerTest : BaseTest() {
                 
                 endclass : C
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -191,7 +191,7 @@ internal class ExpressionSerializerTest : BaseTest() {
                     return;
                 endfunction : f
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -210,7 +210,7 @@ internal class ExpressionSerializerTest : BaseTest() {
                     x <= !x;
                 endfunction : f
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -235,7 +235,7 @@ internal class ExpressionSerializerTest : BaseTest() {
                     y <= !y;
                 endfunction : f
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -247,7 +247,7 @@ internal class ExpressionSerializerTest : BaseTest() {
             """
                 string x = "abc";
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -261,7 +261,7 @@ internal class ExpressionSerializerTest : BaseTest() {
                 logic [7:0] x = 8'h00;
                 logic       y = x[0];
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -273,7 +273,7 @@ internal class ExpressionSerializerTest : BaseTest() {
             """
                 logic [1:0] x = { 1'h0, 1'h0 };
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -285,7 +285,7 @@ internal class ExpressionSerializerTest : BaseTest() {
             """
                 logic [2:0] x = {3{ 1'b0 }};
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -297,7 +297,7 @@ internal class ExpressionSerializerTest : BaseTest() {
             """
                 logic [7:0] x = {<<{ 8'h00 }};
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -309,7 +309,7 @@ internal class ExpressionSerializerTest : BaseTest() {
             """
                 logic [7:0] x = 8'(4'h0);
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -331,7 +331,7 @@ internal class ExpressionSerializerTest : BaseTest() {
                         0;
                 endfunction : f
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -351,7 +351,7 @@ internal class ExpressionSerializerTest : BaseTest() {
                     if (x);
                 endfunction : f
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -385,7 +385,7 @@ internal class ExpressionSerializerTest : BaseTest() {
                     end
                 endfunction : f
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -399,7 +399,7 @@ internal class ExpressionSerializerTest : BaseTest() {
                 logic x = 1'b0;
                 int   y = x ? 0 : 1;
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -417,7 +417,7 @@ internal class ExpressionSerializerTest : BaseTest() {
                     end
                 endfunction : f
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -444,7 +444,7 @@ internal class ExpressionSerializerTest : BaseTest() {
                     endcase
                 endfunction : f
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -462,7 +462,7 @@ internal class ExpressionSerializerTest : BaseTest() {
                     end
                 endfunction : f
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -481,7 +481,7 @@ internal class ExpressionSerializerTest : BaseTest() {
                     while (1'b1);
                 endfunction : f
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -499,7 +499,7 @@ internal class ExpressionSerializerTest : BaseTest() {
                     end
                 endfunction : f
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -516,7 +516,7 @@ internal class ExpressionSerializerTest : BaseTest() {
                     end
                 endfunction : f
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -533,7 +533,7 @@ internal class ExpressionSerializerTest : BaseTest() {
                     end
                 endfunction : f
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -552,7 +552,7 @@ internal class ExpressionSerializerTest : BaseTest() {
                     @(posedge x);
                 endfunction : f
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -568,6 +568,6 @@ internal class ExpressionSerializerTest : BaseTest() {
                     #1;
                 endfunction : f
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 }

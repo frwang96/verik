@@ -36,7 +36,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                     return x;
                 endfunction : f
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -119,7 +119,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 
                 endclass : C
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -134,7 +134,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                     B
                 } E;
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -148,7 +148,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                     logic x;
                 } S;
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -161,7 +161,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 function automatic void f();
                 endfunction : f
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -175,7 +175,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 task automatic t(input int x);
                 endtask : t
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -187,7 +187,7 @@ internal class DeclarationSerializerTest : BaseTest() {
             """
                 logic x = 1'b0;
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -343,6 +343,6 @@ internal class DeclarationSerializerTest : BaseTest() {
                 function automatic void f(input int x);
                 endfunction : f
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 }

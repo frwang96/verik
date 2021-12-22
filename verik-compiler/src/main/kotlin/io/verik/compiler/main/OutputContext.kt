@@ -22,7 +22,7 @@ class OutputContext {
 
     lateinit var configTextFile: TextFile
     var targetPackageTextFile: TextFile? = null
-    var basicPackageTextFiles: List<TextFile> = listOf()
+    var regularPackageTextFiles: List<TextFile> = listOf()
     var rootPackageTextFiles: List<TextFile> = listOf()
     var packageWrapperTextFiles: List<TextFile> = listOf()
     lateinit var sourcesTextFile: TextFile
@@ -31,7 +31,7 @@ class OutputContext {
         val textFiles = ArrayList<TextFile>()
         textFiles.add(configTextFile)
         targetPackageTextFile?.let { textFiles.add(it) }
-        textFiles.addAll(basicPackageTextFiles)
+        textFiles.addAll(regularPackageTextFiles)
         textFiles.addAll(rootPackageTextFiles)
         textFiles.addAll(packageWrapperTextFiles)
         textFiles.add(sourcesTextFile)

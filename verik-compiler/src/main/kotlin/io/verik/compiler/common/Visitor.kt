@@ -26,10 +26,8 @@ import io.verik.compiler.ast.element.common.EAbstractContainerExpression
 import io.verik.compiler.ast.element.common.EAbstractEnumEntry
 import io.verik.compiler.ast.element.common.EAbstractFunction
 import io.verik.compiler.ast.element.common.EAbstractInitializedProperty
-import io.verik.compiler.ast.element.common.EAbstractPackage
 import io.verik.compiler.ast.element.common.EAbstractProperty
 import io.verik.compiler.ast.element.common.EAbstractValueParameter
-import io.verik.compiler.ast.element.common.EBasicPackage
 import io.verik.compiler.ast.element.common.EClassifier
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EDeclaration
@@ -38,13 +36,13 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.ENullExpression
+import io.verik.compiler.ast.element.common.EPackage
 import io.verik.compiler.ast.element.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReceiverExpression
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
-import io.verik.compiler.ast.element.common.ERootPackage
 import io.verik.compiler.ast.element.common.EStringEntryExpression
 import io.verik.compiler.ast.element.common.ESuperExpression
 import io.verik.compiler.ast.element.common.EThisExpression
@@ -149,16 +147,8 @@ abstract class Visitor {
         visitElement(project)
     }
 
-    open fun visitAbstractPackage(abstractPackage: EAbstractPackage) {
-        visitDeclaration(abstractPackage)
-    }
-
-    open fun visitBasicPackage(basicPackage: EBasicPackage) {
-        visitAbstractPackage(basicPackage)
-    }
-
-    open fun visitRootPackage(rootPackage: ERootPackage) {
-        visitAbstractPackage(rootPackage)
+    open fun visitPackage(`package`: EPackage) {
+        visitDeclaration(`package`)
     }
 
     open fun visitFile(file: EFile) {

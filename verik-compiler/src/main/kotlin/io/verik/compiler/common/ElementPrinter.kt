@@ -16,18 +16,17 @@
 
 package io.verik.compiler.common
 
-import io.verik.compiler.ast.element.common.EBasicPackage
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.ENullExpression
+import io.verik.compiler.ast.element.common.EPackage
 import io.verik.compiler.ast.element.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
-import io.verik.compiler.ast.element.common.ERootPackage
 import io.verik.compiler.ast.element.common.ESuperExpression
 import io.verik.compiler.ast.element.common.EThisExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
@@ -120,24 +119,18 @@ class ElementPrinter : Visitor() {
 
     override fun visitProject(project: EProject) {
         build("Project") {
-            build(project.basicPackages)
-            build(project.importedBasicPackages)
-            build(project.rootPackage)
+            build(project.nativeRegularPackages)
+            build(project.nativeRootPackage)
+            build(project.importedRegularPackages)
             build(project.importedRootPackage)
         }
     }
 
-    override fun visitBasicPackage(basicPackage: EBasicPackage) {
-        build("BasicPackage") {
-            build(basicPackage.name)
-            build(basicPackage.files)
-        }
-    }
-
-    override fun visitRootPackage(rootPackage: ERootPackage) {
-        build("RootPackage") {
-            build(rootPackage.name)
-            build(rootPackage.files)
+    override fun visitPackage(`package`: EPackage) {
+        build("Package") {
+            build(`package`.name)
+            build(`package`.files)
+            build(`package`.packageType.toString())
         }
     }
 

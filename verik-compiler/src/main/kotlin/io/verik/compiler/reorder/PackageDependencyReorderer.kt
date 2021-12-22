@@ -16,15 +16,19 @@
 
 package io.verik.compiler.reorder
 
-import io.verik.compiler.ast.element.common.EBasicPackage
-import io.verik.compiler.ast.element.common.ERootPackage
+import io.verik.compiler.ast.element.common.EPackage
+import io.verik.compiler.ast.property.PackageType
 import io.verik.compiler.message.Messages
 
 object PackageDependencyReorderer {
 
     fun reorder(dependencies: List<Dependency>) {
         dependencies.forEach {
-            if (it.fromDeclaration is EBasicPackage && it.toDeclaration is ERootPackage) {
+            val fromPackage = it.fromDeclaration.cast<EPackage>()
+            val toPackage = it.toDeclaration.cast<EPackage>()
+            if (fromPackage.packageType == PackageType.NATIVE_REGULAR &&
+                toPackage.packageType == PackageType.NATIVE_ROOT
+            ) {
                 Messages.PACKAGE_DEPENDENCY_ILLEGAL.on(it.element, it)
             }
         }

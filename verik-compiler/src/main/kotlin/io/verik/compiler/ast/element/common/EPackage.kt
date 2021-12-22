@@ -16,17 +16,30 @@
 
 package io.verik.compiler.ast.element.common
 
+import io.verik.compiler.ast.property.PackageType
 import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
+import io.verik.compiler.message.SourceLocation
 import java.nio.file.Path
 
-abstract class EAbstractPackage : EDeclaration() {
-
-    abstract var files: ArrayList<EFile>
-
-    abstract val outputPath: Path
+class EPackage(
+    override val location: SourceLocation,
+    override var name: String,
+    var files: ArrayList<EFile>,
+    val outputPath: Path,
+    val packageType: PackageType
+) : EDeclaration() {
 
     override var type = Core.Kt.C_Unit.toType()
+
+    init {
+        files.forEach { it.parent = this }
+    }
+
+    override fun accept(visitor: Visitor) {
+        visitor.visitPackage(this)
+    }
 
     override fun acceptChildren(visitor: TreeVisitor) {
         files.forEach { it.accept(visitor) }
