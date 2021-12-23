@@ -55,6 +55,8 @@ object EnumInterpreterStage : ProjectStage() {
                     .map { interpretEnumEntry(it.cast(), referenceUpdater) }
                 val enum = EEnum(
                     `class`.location,
+                    `class`.bodyStartLocation,
+                    `class`.bodyEndLocation,
                     `class`.name,
                     `class`.type,
                     enumEntries

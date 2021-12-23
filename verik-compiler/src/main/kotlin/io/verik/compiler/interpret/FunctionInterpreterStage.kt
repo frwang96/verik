@@ -113,9 +113,7 @@ object FunctionInterpreterStage : ProjectStage() {
                         function.body,
                         ArrayList(valueParameters),
                         qualifierType,
-                        isStatic,
-                        function.isOverridable,
-                        function.isOverride
+                        isStatic
                     )
                 }
             }

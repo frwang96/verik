@@ -275,7 +275,13 @@ object ExpressionSpecializer {
             val body = specializerContext.specialize(entry.body)
             WhenEntry(ArrayList(conditions), body)
         }
-        return EWhenExpression(whenExpression.location, type, subject, entries)
+        return EWhenExpression(
+            whenExpression.location,
+            whenExpression.endLocation,
+            type,
+            subject,
+            entries
+        )
     }
 
     private fun specializeWhileStatement(

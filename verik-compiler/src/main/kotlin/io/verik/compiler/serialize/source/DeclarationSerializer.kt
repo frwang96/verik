@@ -16,6 +16,7 @@
 
 package io.verik.compiler.serialize.source
 
+import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.EClockingBlockInstantiation
@@ -78,27 +79,33 @@ object DeclarationSerializer {
             `class`.declarations.forEach { serializerContext.serializeAsDeclaration(it) }
             serializerContext.appendLine()
         }
-        serializerContext.appendLine("endclass : ${`class`.name}")
+        serializerContext.label(`class`.bodyEndLocation) {
+            serializerContext.appendLine("endclass : ${`class`.name}")
+        }
     }
 
     fun serializeModule(module: EModule, serializerContext: SerializerContext) {
         serializerContext.append("module ${module.name}")
-        serializePortList(module.ports, serializerContext)
+        serializePortList(module, serializerContext)
         serializerContext.indent {
             module.declarations.forEach { serializerContext.serializeAsDeclaration(it) }
             serializerContext.appendLine()
         }
-        serializerContext.appendLine("endmodule : ${module.name}")
+        serializerContext.label(module.bodyEndLocation) {
+            serializerContext.appendLine("endmodule : ${module.name}")
+        }
     }
 
     fun serializeModuleInterface(moduleInterface: EModuleInterface, serializerContext: SerializerContext) {
         serializerContext.append("interface ${moduleInterface.name}")
-        serializePortList(moduleInterface.ports, serializerContext)
+        serializePortList(moduleInterface, serializerContext)
         serializerContext.indent {
             moduleInterface.declarations.forEach { serializerContext.serializeAsDeclaration(it) }
             serializerContext.appendLine()
         }
-        serializerContext.appendLine("endinterface : ${moduleInterface.name}")
+        serializerContext.label(moduleInterface.bodyEndLocation) {
+            serializerContext.appendLine("endinterface : ${moduleInterface.name}")
+        }
     }
 
     fun serializeEnum(enum: EEnum, serializerContext: SerializerContext) {
@@ -108,7 +115,9 @@ object DeclarationSerializer {
                 serializerContext.serialize(it)
             }
         }
-        serializerContext.appendLine("} ${enum.name};")
+        serializerContext.label(enum.bodyEndLocation) {
+            serializerContext.appendLine("} ${enum.name};")
+        }
     }
 
     fun serializeStruct(struct: EStruct, serializerContext: SerializerContext) {
@@ -118,7 +127,9 @@ object DeclarationSerializer {
                 serializerContext.serialize(it)
             }
         }
-        serializerContext.appendLine("} ${struct.name};")
+        serializerContext.label(struct.bodyEndLocation) {
+            serializerContext.appendLine("} ${struct.name};")
+        }
     }
 
     fun serializeSvFunction(function: ESvFunction, serializerContext: SerializerContext) {
@@ -284,15 +295,20 @@ object DeclarationSerializer {
             serializerContext.append(" ${serializedType.unpackedDimension}")
     }
 
-    private fun serializePortList(ports: List<EPort>, serializerContext: SerializerContext) {
-        if (ports.isNotEmpty()) {
+    private fun serializePortList(
+        abstractContainerComponent: EAbstractContainerComponent,
+        serializerContext: SerializerContext
+    ) {
+        if (abstractContainerComponent.ports.isNotEmpty()) {
             serializerContext.appendLine("(")
             serializerContext.indent {
-                serializerContext.serializeJoinAppendLine(ports) {
+                serializerContext.serializeJoinAppendLine(abstractContainerComponent.ports) {
                     serializerContext.serialize(it)
                 }
             }
-            serializerContext.appendLine(");")
+            serializerContext.label(abstractContainerComponent.bodyStartLocation) {
+                serializerContext.appendLine(");")
+            }
         } else {
             serializerContext.appendLine(";")
         }

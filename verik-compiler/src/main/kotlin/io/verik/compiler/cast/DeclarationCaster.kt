@@ -28,7 +28,6 @@ import io.verik.compiler.ast.interfaces.cast
 import io.verik.compiler.ast.property.SuperTypeCallEntry
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.Messages
-import org.jetbrains.kotlin.descriptors.isOverridable
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtEnumEntry
@@ -148,7 +147,6 @@ object DeclarationCaster {
             AnnotationCaster.castAnnotationEntry(it, castContext)
         }
         val isAbstract = function.hasModifier(KtTokens.ABSTRACT_KEYWORD)
-        val isOverridable = descriptor.isOverridable
         val isOverride = function.hasModifier(KtTokens.OVERRIDE_KEYWORD)
 
         castedFunction.init(
@@ -158,7 +156,6 @@ object DeclarationCaster {
             typeParameters,
             annotations,
             isAbstract,
-            isOverridable,
             isOverride
         )
         return castedFunction

@@ -53,6 +53,8 @@ object ComponentInterpreterStage : ProjectStage() {
                     val isSimulationTop = `class`.hasAnnotation(Annotations.SIMULATION_TOP)
                     val module = EModule(
                         `class`.location,
+                        `class`.bodyStartLocation,
+                        `class`.bodyEndLocation,
                         `class`.name,
                         classType,
                         ports,
@@ -67,6 +69,8 @@ object ComponentInterpreterStage : ProjectStage() {
                     val ports = interpretPorts(`class`.primaryConstructor?.valueParameters, referenceUpdater)
                     val moduleInterface = EModuleInterface(
                         `class`.location,
+                        `class`.bodyStartLocation,
+                        `class`.bodyEndLocation,
                         `class`.name,
                         classType,
                         ports,
@@ -79,6 +83,8 @@ object ComponentInterpreterStage : ProjectStage() {
                     val ports = interpretPorts(`class`.primaryConstructor?.valueParameters, referenceUpdater)
                     val modulePort = EModulePort(
                         `class`.location,
+                        `class`.bodyStartLocation,
+                        `class`.bodyEndLocation,
                         `class`.name,
                         classType,
                         ports,
@@ -96,6 +102,8 @@ object ComponentInterpreterStage : ProjectStage() {
                         val ports = interpretPorts(valueParameters, referenceUpdater)
                         val clockingBlock = EClockingBlock(
                             `class`.location,
+                            `class`.bodyStartLocation,
+                            `class`.bodyEndLocation,
                             `class`.name,
                             classType,
                             ports,

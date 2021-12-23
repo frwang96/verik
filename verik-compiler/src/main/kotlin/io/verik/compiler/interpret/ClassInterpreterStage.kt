@@ -74,9 +74,7 @@ object ClassInterpreterStage : ProjectStage() {
                 constructor.body,
                 ArrayList(valueParameters),
                 FunctionQualifierType.REGULAR,
-                isStatic = false,
-                isOverridable = false,
-                isOverride = false
+                isStatic = false
             )
             initializerMap[constructor] = initializer
         }
@@ -108,6 +106,8 @@ object ClassInterpreterStage : ProjectStage() {
                 `class`,
                 ESvClass(
                     `class`.location,
+                    `class`.bodyStartLocation,
+                    `class`.bodyEndLocation,
                     `class`.name,
                     `class`.type,
                     `class`.superType,
@@ -203,9 +203,7 @@ object ClassInterpreterStage : ProjectStage() {
                 EKtBlockExpression(constructor.location, constructor.location, Core.Kt.C_Unit.toType(), statements),
                 ArrayList(valueParameters),
                 FunctionQualifierType.REGULAR,
-                isStatic = true,
-                isOverridable = false,
-                isOverride = false
+                isStatic = true
             )
             referenceUpdater.replace(constructor, instantiator)
             return instantiator

@@ -112,6 +112,7 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
             }
             return EWhenExpression(
                 whenExpression.location,
+                whenExpression.endLocation,
                 Core.Kt.C_Unit.toType(),
                 whenExpression.subject,
                 whenExpression.entries

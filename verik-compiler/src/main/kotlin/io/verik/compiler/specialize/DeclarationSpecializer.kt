@@ -112,7 +112,6 @@ object DeclarationSpecializer {
             listOf(),
             annotations,
             function.isAbstract,
-            function.isOverridable,
             function.isOverride
         )
         return specializedFunction

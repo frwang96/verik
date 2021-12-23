@@ -45,6 +45,8 @@ object StructInterpreterStage : ProjectStage() {
                     .map { interpretProperty(it, referenceUpdater) }
                 val struct = EStruct(
                     `class`.location,
+                    `class`.bodyStartLocation,
+                    `class`.bodyEndLocation,
                     `class`.name,
                     `class`.type,
                     properties

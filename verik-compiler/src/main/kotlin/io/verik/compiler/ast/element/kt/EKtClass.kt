@@ -30,6 +30,8 @@ import io.verik.compiler.message.SourceLocation
 
 class EKtClass(
     override val location: SourceLocation,
+    override val bodyStartLocation: SourceLocation,
+    override val bodyEndLocation: SourceLocation,
     override var name: String
 ) : EAbstractContainerClass(), TypeParameterized, Annotated {
 

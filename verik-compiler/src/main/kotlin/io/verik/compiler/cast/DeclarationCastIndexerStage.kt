@@ -83,6 +83,12 @@ object DeclarationCastIndexerStage : ProjectStage() {
             val descriptor = castContext.sliceClass[classOrObject]!!
             val location = classOrObject.nameIdentifier?.location()
                 ?: classOrObject.getDeclarationKeyword()!!.location()
+            val bodyStartLocation = classOrObject.body?.lBrace?.location()
+                ?: classOrObject.getColon()?.location()
+                ?: location
+            val bodyEndLocation = classOrObject.body?.rBrace?.location()
+                ?: classOrObject.lastChild?.location()
+                ?: location
             val name = classOrObject.name!!
             checkDeclarationName(name, classOrObject)
 
@@ -91,7 +97,7 @@ object DeclarationCastIndexerStage : ProjectStage() {
                 castContext.addDeclaration(descriptor.unsubstitutedPrimaryConstructor!!, indexedPrimaryConstructor)
             }
 
-            val indexedClass = EKtClass(location, name)
+            val indexedClass = EKtClass(location, bodyStartLocation, bodyEndLocation, name)
             castContext.addDeclaration(descriptor, indexedClass)
         }
 

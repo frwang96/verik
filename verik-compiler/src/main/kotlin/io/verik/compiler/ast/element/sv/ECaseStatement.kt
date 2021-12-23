@@ -28,6 +28,7 @@ import io.verik.compiler.message.SourceLocation
 
 class ECaseStatement(
     override val location: SourceLocation,
+    val endLocation: SourceLocation,
     override var type: Type,
     var subject: EExpression,
     val entries: List<CaseEntry>
