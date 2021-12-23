@@ -156,13 +156,13 @@ object DeclarationSerializer {
     fun serializeTask(task: ETask, serializerContext: SerializerContext) {
         serializerContext.append("task automatic ${task.name}")
         serializeSvValueParameterList(task.valueParameters, serializerContext)
-        val body = task.body
-        if (body != null) {
-            serializerContext.indent {
-                serializerContext.serializeAsStatement(body)
-            }
+        val body = task.getBodyNotNull()
+        serializerContext.indent {
+            serializerContext.serializeAsStatement(body)
         }
-        serializerContext.appendLine("endtask : ${task.name}")
+        serializerContext.label(body.endLocation) {
+            serializerContext.appendLine("endtask : ${task.name}")
+        }
     }
 
     fun serializeInitialBlock(initialBlock: EInitialBlock, serializerContext: SerializerContext) {
@@ -221,20 +221,24 @@ object DeclarationSerializer {
             serializerContext.appendLine()
             serializerContext.indent {
                 serializerContext.serializeJoinAppendLine(componentInstantiation.portInstantiations) {
-                    serializerContext.append(".${it.reference.name} ")
-                    serializerContext.align()
-                    serializerContext.append("( ")
-                    val expression = it.expression
-                    if (expression != null) {
-                        serializerContext.serializeAsExpression(expression)
-                        serializerContext.append(" )")
-                    } else {
-                        serializerContext.append(")")
+                    serializerContext.label(it.location) {
+                        serializerContext.append(".${it.port.name} ")
+                        serializerContext.align()
+                        serializerContext.append("( ")
+                        val expression = it.expression
+                        if (expression != null) {
+                            serializerContext.serializeAsExpression(expression)
+                            serializerContext.append(" )")
+                        } else {
+                            serializerContext.append(")")
+                        }
                     }
                 }
             }
         }
-        serializerContext.appendLine(");")
+        serializerContext.label(componentInstantiation.endLocation) {
+            serializerContext.appendLine(");")
+        }
     }
 
     fun serializeModulePortInstantiation(
@@ -248,11 +252,15 @@ object DeclarationSerializer {
             serializerContext.appendLine(" (")
             serializerContext.indent {
                 serializerContext.serializeJoinAppendLine(modulePortInstantiation.portInstantiations) {
-                    serializePortType(it.portType, serializerContext)
-                    serializerContext.append(it.reference.name)
+                    serializerContext.label(it.location) {
+                        serializePortType(it.port.portType, serializerContext)
+                        serializerContext.append(it.port.name)
+                    }
                 }
             }
-            serializerContext.appendLine(");")
+            serializerContext.label(modulePortInstantiation.endLocation) {
+                serializerContext.appendLine(");")
+            }
         }
     }
 
@@ -265,11 +273,15 @@ object DeclarationSerializer {
         serializerContext.appendLine(";")
         serializerContext.indent {
             clockingBlockInstantiation.portInstantiations.forEach {
-                serializePortType(it.portType, serializerContext)
-                serializerContext.appendLine("${it.reference.name};")
+                serializerContext.label(it.location) {
+                    serializePortType(it.port.portType, serializerContext)
+                    serializerContext.appendLine("${it.port.name};")
+                }
             }
         }
-        serializerContext.appendLine("endclocking")
+        serializerContext.label(clockingBlockInstantiation.endLocation) {
+            serializerContext.appendLine("endclocking")
+        }
     }
 
     fun serializeSvValueParameter(valueParameter: ESvValueParameter, serializerContext: SerializerContext) {

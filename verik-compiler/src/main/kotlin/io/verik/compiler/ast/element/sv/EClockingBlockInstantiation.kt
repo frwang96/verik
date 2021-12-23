@@ -24,6 +24,7 @@ import io.verik.compiler.message.SourceLocation
 
 class EClockingBlockInstantiation(
     override val location: SourceLocation,
+    override val endLocation: SourceLocation,
     override var name: String,
     override var type: Type,
     override val portInstantiations: List<PortInstantiation>,

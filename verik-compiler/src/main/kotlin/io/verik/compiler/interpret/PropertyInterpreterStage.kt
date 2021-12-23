@@ -135,6 +135,7 @@ object PropertyInterpreterStage : ProjectStage() {
                 .map { interpretPortInstantiation(it.first, it.second, false) }
             return EComponentInstantiation(
                 property.location,
+                property.endLocation,
                 property.name,
                 property.type,
                 portInstantiations
@@ -155,6 +156,7 @@ object PropertyInterpreterStage : ProjectStage() {
                 .map { interpretPortInstantiation(it.first, it.second, true) }
             return EModulePortInstantiation(
                 property.location,
+                property.endLocation,
                 property.name,
                 property.type,
                 portInstantiations
@@ -181,6 +183,7 @@ object PropertyInterpreterStage : ProjectStage() {
                 .map { interpretPortInstantiation(it.first, it.second, true) }
             return EClockingBlockInstantiation(
                 property.location,
+                property.endLocation,
                 property.name,
                 property.type,
                 portInstantiations,
@@ -204,9 +207,9 @@ object PropertyInterpreterStage : ProjectStage() {
             return if (expression is EKtCallExpression && expression.reference == Core.Vk.F_nc) {
                 if (port.portType == PortType.INPUT)
                     Messages.INPUT_PORT_NOT_CONNECTED.on(expression, port.name)
-                PortInstantiation(port, null, port.portType)
+                PortInstantiation(expression.location, port, null)
             } else {
-                PortInstantiation(port, expression, port.portType)
+                PortInstantiation(expression.location, port, expression)
             }
         }
 

@@ -848,9 +848,9 @@ class ElementPrinter : Visitor() {
     private fun buildPortInstantiations(portInstantiations: List<PortInstantiation>) {
         buildList(portInstantiations) {
             build("PortInstantiation") {
-                build(it.reference.name)
+                build(it.port.name)
+                build(it.port.portType.toString())
                 build(it.expression)
-                build(it.portType.toString())
             }
         }
     }

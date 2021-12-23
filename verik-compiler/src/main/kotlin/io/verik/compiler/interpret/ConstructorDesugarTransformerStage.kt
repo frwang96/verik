@@ -82,7 +82,7 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
                     val isMutable = it.isMutable
                     it.isPrimaryConstructorProperty = false
                     it.isMutable = false
-                    val property = EKtProperty(it.location, it.name)
+                    val property = EKtProperty(it.location, it.location, it.name)
                     property.init(it.type.copy(), null, listOf(), isMutable)
                     referenceUpdater.update(it, property)
                     property

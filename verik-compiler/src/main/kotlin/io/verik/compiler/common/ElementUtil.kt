@@ -18,7 +18,6 @@ package io.verik.compiler.common
 
 import io.verik.compiler.main.Platform
 import io.verik.compiler.message.SourceLocation
-import org.jetbrains.kotlin.com.intellij.lang.ASTNode
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.diagnostics.PsiDiagnosticUtils
 
@@ -31,12 +30,12 @@ fun PsiElement.location(): SourceLocation {
     return SourceLocation(path, lineAndColumn.line, lineAndColumn.column)
 }
 
-fun ASTNode.location(element: PsiElement): SourceLocation {
+fun PsiElement.endLocation(): SourceLocation {
     val lineAndColumn = PsiDiagnosticUtils.offsetToLineAndColumn(
-        element.containingFile.viewProvider.document,
-        textRange.startOffset
+        containingFile.viewProvider.document,
+        textRange.endOffset
     )
-    val path = Platform.getPathFromString(element.containingFile.virtualFile.path)
+    val path = Platform.getPathFromString(containingFile.virtualFile.path)
     return SourceLocation(path, lineAndColumn.line, lineAndColumn.column)
 }
 

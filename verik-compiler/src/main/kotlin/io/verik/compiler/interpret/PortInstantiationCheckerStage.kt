@@ -47,7 +47,7 @@ object PortInstantiationCheckerStage : ProjectStage() {
         override fun visitComponentInstantiation(componentInstantiation: EComponentInstantiation) {
             super.visitComponentInstantiation(componentInstantiation)
             componentInstantiation.portInstantiations.forEach {
-                if (it.portType == PortType.OUTPUT) {
+                if (it.port.portType == PortType.OUTPUT) {
                     val expression = it.expression
                     if (expression != null)
                         checkOutputPortExpression(it, expression)
@@ -69,11 +69,11 @@ object PortInstantiationCheckerStage : ProjectStage() {
                         Core.Vk.F_cat_Any_Any ->
                             expression.valueArguments.forEach { checkOutputPortExpression(portInstantiation, it) }
                         else ->
-                            Messages.OUTPUT_PORT_ILLEGAL_EXPRESSION.on(expression, portInstantiation.reference.name)
+                            Messages.OUTPUT_PORT_ILLEGAL_EXPRESSION.on(expression, portInstantiation.port.name)
                     }
                 }
                 else ->
-                    Messages.OUTPUT_PORT_ILLEGAL_EXPRESSION.on(expression, portInstantiation.reference.name)
+                    Messages.OUTPUT_PORT_ILLEGAL_EXPRESSION.on(expression, portInstantiation.port.name)
             }
         }
     }

@@ -23,6 +23,7 @@ import io.verik.compiler.message.SourceLocation
 
 class EComponentInstantiation(
     override val location: SourceLocation,
+    override val endLocation: SourceLocation,
     override var name: String,
     override var type: Type,
     override val portInstantiations: List<PortInstantiation>

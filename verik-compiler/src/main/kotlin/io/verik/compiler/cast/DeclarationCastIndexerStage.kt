@@ -24,6 +24,7 @@ import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.kt.ETypeAlias
+import io.verik.compiler.common.endLocation
 import io.verik.compiler.common.location
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
@@ -84,11 +85,8 @@ object DeclarationCastIndexerStage : ProjectStage() {
             val location = classOrObject.nameIdentifier?.location()
                 ?: classOrObject.getDeclarationKeyword()!!.location()
             val bodyStartLocation = classOrObject.body?.lBrace?.location()
-                ?: classOrObject.getColon()?.location()
-                ?: location
-            val bodyEndLocation = classOrObject.body?.rBrace?.location()
-                ?: classOrObject.lastChild?.location()
-                ?: location
+                ?: classOrObject.endLocation()
+            val bodyEndLocation = classOrObject.endLocation()
             val name = classOrObject.name!!
             checkDeclarationName(name, classOrObject)
 
@@ -123,9 +121,10 @@ object DeclarationCastIndexerStage : ProjectStage() {
             super.visitProperty(property)
             val descriptor = castContext.sliceVariable[property]!!
             val location = property.nameIdentifier!!.location()
+            val endLocation = property.endLocation()
             val name = property.name!!
             checkDeclarationName(name, property)
-            val indexedProperty = EKtProperty(location, name)
+            val indexedProperty = EKtProperty(location, endLocation, name)
             castContext.addDeclaration(descriptor, indexedProperty)
         }
 

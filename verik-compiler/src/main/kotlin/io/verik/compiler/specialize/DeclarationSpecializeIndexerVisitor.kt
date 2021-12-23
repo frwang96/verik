@@ -138,7 +138,7 @@ class DeclarationSpecializeIndexerVisitor(
 
     override fun visitKtProperty(property: EKtProperty) {
         super.visitKtProperty(property)
-        val specializedProperty = EKtProperty(property.location, property.name)
+        val specializedProperty = EKtProperty(property.location, property.endLocation, property.name)
         specializerContext[property] = specializedProperty
     }
 

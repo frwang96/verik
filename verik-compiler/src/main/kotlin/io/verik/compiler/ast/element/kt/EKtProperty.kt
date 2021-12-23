@@ -27,6 +27,7 @@ import io.verik.compiler.message.SourceLocation
 
 class EKtProperty(
     override val location: SourceLocation,
+    val endLocation: SourceLocation,
     override var name: String
 ) : EAbstractInitializedProperty(), Annotated {
 
