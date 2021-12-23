@@ -208,10 +208,10 @@ abstract class BaseTest {
                 projectName = "test",
                 buildDir = Paths.get(buildDir),
                 importedFiles = listOf(Paths.get(importedFile)),
-                debug = true,
+                labelSourceLocations = false,
                 suppressedWarnings = listOf(),
                 promotedWarnings = listOf(),
-                labelSourceLocations = false
+                debug = true
             )
         }
     }

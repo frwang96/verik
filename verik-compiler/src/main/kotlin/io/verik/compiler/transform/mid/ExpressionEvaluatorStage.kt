@@ -16,14 +16,13 @@
 
 package io.verik.compiler.transform.mid
 
-import io.verik.compiler.ast.element.common.EConstantExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.common.ExpressionEvaluator
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.common.BinaryCoreFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
-object ConstantExpressionEvaluatorStage : ProjectStage() {
+object ExpressionEvaluatorStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(ConstantExpressionEvaluatorVisitor)
@@ -31,17 +30,11 @@ object ConstantExpressionEvaluatorStage : ProjectStage() {
 
     private object ConstantExpressionEvaluatorVisitor : TreeVisitor() {
 
-        override fun visitKtCallExpression(callExpression: EKtCallExpression) {
-            super.visitKtCallExpression(callExpression)
-            val reference = callExpression.reference
-            if (reference is BinaryCoreFunctionDeclaration) {
-                val value = reference.evaluate(callExpression)
-                if (value != null) {
-                    callExpression.replace(
-                        EConstantExpression(callExpression.location, callExpression.type, value)
-                    )
-                }
-            }
+        override fun visitExpression(expression: EExpression) {
+            super.visitExpression(expression)
+            val evaluatedExpression = ExpressionEvaluator.evaluate(expression)
+            if (evaluatedExpression != null)
+                expression.replace(evaluatedExpression)
         }
     }
 }

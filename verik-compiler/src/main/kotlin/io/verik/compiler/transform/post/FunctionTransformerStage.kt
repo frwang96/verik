@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.mid
+package io.verik.compiler.transform.post
 
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.common.TreeVisitor

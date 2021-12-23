@@ -24,10 +24,10 @@ data class VerikImporterConfig(
     val projectName: String,
     val buildDir: Path,
     val importedFiles: List<Path>,
-    val debug: Boolean,
+    val labelSourceLocations: Boolean,
     val suppressedWarnings: List<String>,
     val promotedWarnings: List<String>,
-    val labelSourceLocations: Boolean
+    val debug: Boolean
 ) {
 
     val outputSourceDir: Path = buildDir.resolve("src")

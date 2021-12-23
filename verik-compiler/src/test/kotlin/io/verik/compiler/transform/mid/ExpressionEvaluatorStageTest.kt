@@ -20,26 +20,26 @@ import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
-internal class ConstantExpressionEvaluatorStageTest : BaseTest() {
+internal class ExpressionEvaluatorStageTest : BaseTest() {
 
     @Test
-    fun `evaluate Int plus`() {
+    fun `evaluate call expression Int plus`() {
         driveElementTest(
             """
                 var x = 1 + 1
             """.trimIndent(),
-            ConstantExpressionEvaluatorStage::class,
+            ExpressionEvaluatorStage::class,
             "ConstantExpression(Int, 2)"
         ) { it.findExpression("x") }
     }
 
     @Test
-    fun `evaluate Ubit plus`() {
+    fun `evaluate call expression Ubit plus`() {
         driveElementTest(
             """
                 var x = u(1) + u(1)
             """.trimIndent(),
-            ConstantExpressionEvaluatorStage::class,
+            ExpressionEvaluatorStage::class,
             "ConstantExpression(Ubit<`1`>, 1'h0)"
         ) { it.findExpression("x") }
     }

@@ -25,14 +25,14 @@ data class VerikConfig(
     val buildDir: Path,
     val sourceSetConfigs: List<SourceSetConfig>,
     val timescale: String,
-    val debug: Boolean,
+    val enableDeadCodeElimination: Boolean,
+    val labelSourceLocations: Boolean,
+    val indentLength: Int,
+    val wrapLength: Int,
     val suppressedWarnings: List<String>,
     val promotedWarnings: List<String>,
     val maxErrorCount: Int,
-    val labelSourceLocations: Boolean,
-    val wrapLength: Int,
-    val indentLength: Int,
-    val enableDeadCodeElimination: Boolean
+    val debug: Boolean
 ) {
 
     val outputSourceDir: Path = buildDir.resolve("src")

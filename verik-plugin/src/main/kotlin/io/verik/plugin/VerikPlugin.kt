@@ -58,14 +58,14 @@ class VerikPlugin : Plugin<Project> {
         task.group = "verik"
         task.inputs.property("toolchain", { ConfigUtil.getToolchain() })
         task.inputs.property("timescale", { extension.timescale })
-        task.inputs.property("debug", { extension.debug })
+        task.inputs.property("enableDeadCodeElimination", { extension.enableDeadCodeElimination })
+        task.inputs.property("labelSourceLocations", { extension.labelSourceLocations })
+        task.inputs.property("indentLength", { extension.indentLength })
+        task.inputs.property("wrapLength", { extension.wrapLength })
         task.inputs.property("suppressedWarnings", { extension.suppressedWarnings })
         task.inputs.property("promotedWarnings", { extension.promotedWarnings })
         task.inputs.property("maxErrorCount", { extension.maxErrorCount })
-        task.inputs.property("labelSourceLocations", { extension.labelSourceLocations })
-        task.inputs.property("wrapLength", { extension.wrapLength })
-        task.inputs.property("indentLength", { extension.indentLength })
-        task.inputs.property("enableDeadCodeElimination", { extension.enableDeadCodeElimination })
+        task.inputs.property("debug", { extension.debug })
         task.inputs.files({ VerikConfigBuilder.getSourceSetConfigs(project).flatMap { it.files } })
         task.outputs.dir(VerikConfigBuilder.getBuildDir(project))
         return task
@@ -78,10 +78,10 @@ class VerikPlugin : Plugin<Project> {
         }
         task.group = "verik"
         task.inputs.property("toolchain", { ConfigUtil.getToolchain() })
-        task.inputs.property("debug", { extension.debug })
+        task.inputs.property("labelSourceLocations", { extension.labelSourceLocations })
         task.inputs.property("suppressedWarnings", { extension.suppressedWarnings })
         task.inputs.property("promotedWarnings", { extension.promotedWarnings })
-        task.inputs.property("labelSourceLocations", { extension.labelSourceLocations })
+        task.inputs.property("debug", { extension.debug })
         task.inputs.files({ extension.importedFiles })
         task.outputs.dirs({
             if (extension.importedFiles.isNotEmpty()) {
