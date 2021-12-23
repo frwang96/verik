@@ -103,6 +103,7 @@ import io.verik.compiler.ast.element.sv.EStreamingExpression
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.EStructLiteralExpression
+import io.verik.compiler.ast.element.sv.ESvAbstractFunction
 import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
@@ -238,12 +239,16 @@ abstract class Visitor {
         visitKtAbstractFunction(constructor)
     }
 
+    open fun visitSvAbstractFunction(abstractFunction: ESvAbstractFunction) {
+        visitAbstractFunction(abstractFunction)
+    }
+
     open fun visitSvFunction(function: ESvFunction) {
-        visitAbstractFunction(function)
+        visitSvAbstractFunction(function)
     }
 
     open fun visitTask(task: ETask) {
-        visitAbstractFunction(task)
+        visitSvAbstractFunction(task)
     }
 
     open fun visitAbstractProceduralBlock(abstractProceduralBlock: EAbstractProceduralBlock) {

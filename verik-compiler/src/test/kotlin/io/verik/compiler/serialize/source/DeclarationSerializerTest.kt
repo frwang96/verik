@@ -32,7 +32,9 @@ internal class DeclarationSerializerTest : BaseTest() {
             """
                 typedef logic _${'$'}0 [7:0];
                 
-                function automatic _${'$'}0 f(input logic x [7:0]);
+                function automatic _${'$'}0 f(
+                    input logic x [7:0]
+                );
                     return x;
                 endfunction : f
             """.trimIndent()
@@ -172,7 +174,9 @@ internal class DeclarationSerializerTest : BaseTest() {
                 fun t(x: Int) {}
             """.trimIndent(),
             """
-                task automatic t(input int x);
+                task automatic t(
+                    input int x
+                );
                 endtask : t
             """.trimIndent()
         ) { it.regularPackageTextFiles[0] }
@@ -340,7 +344,9 @@ internal class DeclarationSerializerTest : BaseTest() {
                 fun f(x: Int) {}
             """.trimIndent(),
             """
-                function automatic void f(input int x);
+                function automatic void f(
+                    input int x
+                );
                 endfunction : f
             """.trimIndent()
         ) { it.regularPackageTextFiles[0] }
