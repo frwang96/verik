@@ -61,28 +61,13 @@ object FunctionInterpreterStage : ProjectStage() {
             val body = function.body
             return when {
                 function.hasAnnotationEntry(AnnotationEntries.COM) -> {
-                    if (body != null) {
-                        EAlwaysComBlock(function.location, function.name, body)
-                    } else {
-                        Messages.FUNCTION_MISSING_BODY.on(function, function.name)
-                        null
-                    }
+                    EAlwaysComBlock(function.location, function.name, body)
                 }
                 function.hasAnnotationEntry(AnnotationEntries.SEQ) -> {
-                    if (body != null) {
-                        getAlwaysSeqBlock(function, body)
-                    } else {
-                        Messages.FUNCTION_MISSING_BODY.on(function, function.name)
-                        null
-                    }
+                    getAlwaysSeqBlock(function, body)
                 }
                 function.hasAnnotationEntry(AnnotationEntries.RUN) -> {
-                    if (body != null) {
-                        EInitialBlock(function.location, function.name, body)
-                    } else {
-                        Messages.FUNCTION_MISSING_BODY.on(function, function.name)
-                        null
-                    }
+                    EInitialBlock(function.location, function.name, body)
                 }
                 function.hasAnnotationEntry(AnnotationEntries.TASK) -> {
                     val valueParameters = getValueParameters(function.valueParameters, referenceUpdater)

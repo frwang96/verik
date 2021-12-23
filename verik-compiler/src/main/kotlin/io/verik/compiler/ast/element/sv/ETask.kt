@@ -24,12 +24,12 @@ import io.verik.compiler.message.SourceLocation
 class ETask(
     override val location: SourceLocation,
     override var name: String,
-    override var body: EAbstractBlockExpression?,
+    override var body: EAbstractBlockExpression,
     override var valueParameters: ArrayList<ESvValueParameter>
 ) : ESvAbstractFunction() {
 
     init {
-        body?.parent = this
+        body.parent = this
         valueParameters.forEach { it.parent = this }
     }
 

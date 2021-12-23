@@ -32,19 +32,23 @@ class EKtConstructor(
     override var name = "<init>"
 
     override var type: Type = NullDeclaration.toType()
-    override var body: EAbstractBlockExpression? = null
+    override var body: EAbstractBlockExpression = EKtBlockExpression.empty(location)
     override var valueParameters: ArrayList<EKtValueParameter> = ArrayList()
     override var typeParameters: ArrayList<ETypeParameter> = ArrayList()
     var superTypeCallEntry: SuperTypeCallEntry? = null
 
+    init {
+        body.parent = this
+    }
+
     fun init(
         type: Type,
-        body: EAbstractBlockExpression?,
+        body: EAbstractBlockExpression,
         valueParameters: List<EKtValueParameter>,
         typeParameters: List<ETypeParameter>,
         superTypeCallEntry: SuperTypeCallEntry?
     ) {
-        body?.parent = this
+        body.parent = this
         valueParameters.forEach { it.parent = this }
         superTypeCallEntry?.valueArguments?.forEach { it.parent = this }
         this.type = type

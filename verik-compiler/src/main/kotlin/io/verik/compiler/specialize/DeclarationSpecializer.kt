@@ -100,7 +100,7 @@ object DeclarationSpecializer {
             specializedFunction.name = "${specializedFunction.name}_$typeParameterString"
 
         val type = specializerContext.specializeType(function)
-        val body = function.body?.let { specializerContext.specialize(it) }
+        val body = specializerContext.specialize(function.body)
         val valueParameters = function.valueParameters.map { specializerContext.specialize(it) }
 
         specializedFunction.init(

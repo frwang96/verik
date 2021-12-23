@@ -16,7 +16,6 @@
 
 package io.verik.compiler.test
 
-import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.EAbstractFunction
 import io.verik.compiler.ast.element.common.EAbstractInitializedProperty
 import io.verik.compiler.ast.element.common.EDeclaration
@@ -49,7 +48,7 @@ fun EProject.findExpression(name: String): EExpression {
         override fun visitAbstractFunction(abstractFunction: EAbstractFunction) {
             super.visitAbstractFunction(abstractFunction)
             if (abstractFunction.name == name) {
-                abstractFunction.body?.let {
+                abstractFunction.body.let {
                     if (it.statements.size == 1)
                         expressions.add(it.statements[0])
                     else
@@ -79,9 +78,7 @@ fun EProject.findStatements(name: String): List<EExpression> {
         override fun visitAbstractFunction(abstractFunction: EAbstractFunction) {
             super.visitAbstractFunction(abstractFunction)
             if (abstractFunction.name == name) {
-                val body = abstractFunction.body
-                if (body is EAbstractBlockExpression)
-                    statements.add(body.statements)
+                statements.add(abstractFunction.body.statements)
             }
         }
     }

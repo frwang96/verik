@@ -26,14 +26,14 @@ class ESvFunction(
     override val location: SourceLocation,
     override var name: String,
     override var type: Type,
-    override var body: EAbstractBlockExpression?,
+    override var body: EAbstractBlockExpression,
     override var valueParameters: ArrayList<ESvValueParameter>,
     val qualifierType: FunctionQualifierType,
     val isStatic: Boolean
 ) : ESvAbstractFunction() {
 
     init {
-        body?.parent = this
+        body.parent = this
         valueParameters.forEach { it.parent = this }
     }
 

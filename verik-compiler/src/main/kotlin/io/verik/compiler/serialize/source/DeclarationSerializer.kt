@@ -145,11 +145,10 @@ object DeclarationSerializer {
         serializerContext.append("function automatic ${serializedType.getBaseAndPackedDimension()} ${function.name}")
         serializeSvValueParameterList(function, serializerContext)
         if (function.qualifierType != FunctionQualifierType.PURE_VIRTUAL) {
-            val body = function.getBodyNotNull()
             serializerContext.indent {
-                serializerContext.serializeAsStatement(body)
+                serializerContext.serializeAsStatement(function.body)
             }
-            serializerContext.label(body.endLocation) {
+            serializerContext.label(function.body.endLocation) {
                 serializerContext.appendLine("endfunction : ${function.name}")
             }
         }
@@ -158,30 +157,29 @@ object DeclarationSerializer {
     fun serializeTask(task: ETask, serializerContext: SerializerContext) {
         serializerContext.append("task automatic ${task.name}")
         serializeSvValueParameterList(task, serializerContext)
-        val body = task.getBodyNotNull()
         serializerContext.indent {
-            serializerContext.serializeAsStatement(body)
+            serializerContext.serializeAsStatement(task.body)
         }
-        serializerContext.label(body.endLocation) {
+        serializerContext.label(task.body.endLocation) {
             serializerContext.appendLine("endtask : ${task.name}")
         }
     }
 
     fun serializeInitialBlock(initialBlock: EInitialBlock, serializerContext: SerializerContext) {
         serializerContext.append("initial ")
-        serializerContext.serializeAsStatement(initialBlock.getBodyNotNull())
+        serializerContext.serializeAsStatement(initialBlock.body)
     }
 
     fun serializeAlwaysComBlock(alwaysComBlock: EAlwaysComBlock, serializerContext: SerializerContext) {
         serializerContext.append("always_comb ")
-        serializerContext.serializeAsStatement(alwaysComBlock.getBodyNotNull())
+        serializerContext.serializeAsStatement(alwaysComBlock.body)
     }
 
     fun serializeAlwaysSeqBlock(alwaysSeqBlock: EAlwaysSeqBlock, serializerContext: SerializerContext) {
         serializerContext.append("always_ff ")
         serializerContext.serializeAsExpression(alwaysSeqBlock.eventControlExpression)
         serializerContext.append(" ")
-        serializerContext.serializeAsStatement(alwaysSeqBlock.getBodyNotNull())
+        serializerContext.serializeAsStatement(alwaysSeqBlock.body)
     }
 
     fun serializeSvProperty(property: ESvProperty, serializerContext: SerializerContext) {
@@ -347,7 +345,7 @@ object DeclarationSerializer {
                     serializerContext.serialize(it)
                 }
             }
-            serializerContext.label(abstractFunction.getBodyNotNull()) {
+            serializerContext.label(abstractFunction.body) {
                 serializerContext.appendLine(");")
             }
         } else {

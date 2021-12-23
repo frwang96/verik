@@ -18,14 +18,13 @@ package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.message.Messages
 
 abstract class EAbstractFunction : EDeclaration(), ExpressionContainer {
 
-    abstract var body: EAbstractBlockExpression?
+    abstract var body: EAbstractBlockExpression
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        body?.accept(visitor)
+        body.accept(visitor)
     }
 
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
@@ -34,10 +33,5 @@ abstract class EAbstractFunction : EDeclaration(), ExpressionContainer {
             body = newExpression.cast()
             true
         } else false
-    }
-
-    fun getBodyNotNull(): EAbstractBlockExpression {
-        return body
-            ?: Messages.INTERNAL_ERROR.on(this, "Function body expected")
     }
 }

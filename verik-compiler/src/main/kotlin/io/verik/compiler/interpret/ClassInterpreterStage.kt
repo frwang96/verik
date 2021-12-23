@@ -139,7 +139,7 @@ object ClassInterpreterStage : ProjectStage() {
                         superTypeCallEntry.valueArguments,
                         ArrayList()
                     )
-                    val body = initializer.getBodyNotNull().cast<EKtBlockExpression>()
+                    val body = initializer.body.cast<EKtBlockExpression>()
                     callExpression.parent = body
                     body.statements.add(0, callExpression)
                 }
