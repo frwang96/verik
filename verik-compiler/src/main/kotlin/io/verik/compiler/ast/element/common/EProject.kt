@@ -23,7 +23,7 @@ import io.verik.compiler.message.SourceLocation
 
 class EProject(
     override val location: SourceLocation,
-    val nativeRegularPackages: ArrayList<EPackage>,
+    var nativeRegularPackages: ArrayList<EPackage>,
     val nativeRootPackage: EPackage,
     val importedRegularPackages: ArrayList<EPackage>,
     val importedRootPackage: EPackage

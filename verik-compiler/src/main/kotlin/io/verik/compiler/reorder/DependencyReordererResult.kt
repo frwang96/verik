@@ -18,7 +18,7 @@ package io.verik.compiler.reorder
 
 import io.verik.compiler.ast.element.common.EDeclaration
 
-data class DependencyReordererResult(
-    val reorderedDeclarations: List<EDeclaration>,
+data class DependencyReordererResult<D : EDeclaration>(
+    val reorderedDeclarations: List<D>,
     val unsatisfiedDependencies: List<Dependency>
 )

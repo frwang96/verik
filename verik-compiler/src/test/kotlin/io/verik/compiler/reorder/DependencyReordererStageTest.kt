@@ -60,4 +60,16 @@ internal class DependencyReordererStageTest : BaseTest() {
             "Circular dependency between declarations: From A to B"
         )
     }
+
+    @Test
+    fun `class dependency not reordered`() {
+        driveElementTest(
+            """
+                class B(val a: A)
+                class A(val x: Boolean)
+            """.trimIndent(),
+            DependencyReordererStage::class,
+            "File([SvClass(B, B, *, *, *), SvClass(A, A, *, *, *)])"
+        ) { it.files().first() }
+    }
 }

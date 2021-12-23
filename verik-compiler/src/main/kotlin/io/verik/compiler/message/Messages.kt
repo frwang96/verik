@@ -213,6 +213,14 @@ object Messages {
         "Illegal package dependency: $0"
     )
 
+    val PACKAGE_CIRCULAR_DEPENDENCY = ErrorMessageTemplate1<Dependency>(
+        "Circular dependency between packages: $0"
+    )
+
+    val FILE_CIRCULAR_DEPENDENCY = ErrorMessageTemplate1<Dependency>(
+        "Circular dependency between files: $0"
+    )
+
     val DECLARATION_CIRCULAR_DEPENDENCY = ErrorMessageTemplate1<Dependency>(
         "Circular dependency between declarations: $0"
     )

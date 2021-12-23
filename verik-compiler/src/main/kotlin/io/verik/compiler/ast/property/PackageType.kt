@@ -26,6 +26,10 @@ enum class PackageType {
         return this in listOf(NATIVE_REGULAR, IMPORTED_REGULAR)
     }
 
+    fun isRoot(): Boolean {
+        return this in listOf(NATIVE_ROOT, IMPORTED_ROOT)
+    }
+
     fun isNative(): Boolean {
         return this in listOf(NATIVE_REGULAR, NATIVE_ROOT)
     }
