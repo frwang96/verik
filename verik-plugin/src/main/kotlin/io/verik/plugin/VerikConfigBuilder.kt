@@ -33,14 +33,14 @@ object VerikConfigBuilder {
             buildDir = getBuildDir(project),
             sourceSetConfigs = getSourceSetConfigs(project),
             timescale = extension.timescale,
-            debug = extension.debug,
+            enableDeadCodeElimination = extension.enableDeadCodeElimination,
+            labelSourceLocations = extension.labelSourceLocations,
+            indentLength = extension.indentLength,
+            wrapLength = extension.wrapLength,
             suppressedWarnings = extension.suppressedWarnings,
             promotedWarnings = extension.promotedWarnings,
             maxErrorCount = extension.maxErrorCount,
-            labelSourceLocations = extension.labelSourceLocations,
-            wrapLength = extension.wrapLength,
-            indentLength = extension.indentLength,
-            enableDeadCodeElimination = extension.enableDeadCodeElimination
+            debug = extension.debug
         )
     }
 

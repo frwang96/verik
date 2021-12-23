@@ -19,12 +19,12 @@ package io.verik.plugin
 abstract class VerikPluginExtension {
 
     var timescale: String = "1ns / 1ns"
-    var debug: Boolean = false
+    var enableDeadCodeElimination: Boolean = true
+    var labelSourceLocations: Boolean = true
+    var indentLength: Int = 4
+    var wrapLength: Int = 120
     var suppressedWarnings: List<String> = listOf()
     var promotedWarnings: List<String> = listOf()
     var maxErrorCount: Int = 20
-    var labelSourceLocations: Boolean = true
-    var wrapLength: Int = 120
-    var indentLength: Int = 4
-    var enableDeadCodeElimination: Boolean = true
+    var debug: Boolean = false
 }

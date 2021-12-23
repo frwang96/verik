@@ -29,10 +29,10 @@ object VerikImporterConfigBuilder {
             projectName = project.name,
             buildDir = getBuildDir(project),
             importedFiles = extension.importedFiles,
-            debug = extension.debug,
+            labelSourceLocations = extension.labelSourceLocations,
             suppressedWarnings = extension.suppressedWarnings,
             promotedWarnings = extension.promotedWarnings,
-            labelSourceLocations = extension.labelSourceLocations
+            debug = extension.debug
         )
     }
 

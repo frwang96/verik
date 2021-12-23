@@ -207,14 +207,14 @@ abstract class BaseTest {
                 buildDir = Paths.get(buildDir),
                 sourceSetConfigs = listOf(sourceSetConfig),
                 timescale = "1ns / 1ns",
-                debug = true,
+                enableDeadCodeElimination = false,
+                labelSourceLocations = false,
+                indentLength = 4,
+                wrapLength = 80,
                 suppressedWarnings = listOf("KOTLIN_COMPILE_WARNING"),
                 promotedWarnings = listOf(),
                 maxErrorCount = 0,
-                labelSourceLocations = false,
-                wrapLength = 80,
-                indentLength = 4,
-                enableDeadCodeElimination = false
+                debug = true
             )
         }
     }
