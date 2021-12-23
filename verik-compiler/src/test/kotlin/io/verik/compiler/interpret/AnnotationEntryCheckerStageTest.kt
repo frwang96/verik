@@ -19,7 +19,7 @@ package io.verik.compiler.interpret
 import io.verik.compiler.test.BaseTest
 import org.junit.jupiter.api.Test
 
-internal class AnnotationCheckerStageTest : BaseTest() {
+internal class AnnotationEntryCheckerStageTest : BaseTest() {
 
     @Test
     fun `class top annotation illegal`() {
@@ -34,6 +34,19 @@ internal class AnnotationCheckerStageTest : BaseTest() {
     }
 
     @Test
+    fun `class annotations conflicting`() {
+        driveMessageTest(
+            """
+                @SynthTop
+                @SimTop
+                class M : Module()
+            """.trimIndent(),
+            true,
+            "Conflicting annotations: @SynthTop and @SimTop"
+        )
+    }
+
+    @Test
     fun `function annotations conflicting`() {
         driveMessageTest(
             """
@@ -42,7 +55,7 @@ internal class AnnotationCheckerStageTest : BaseTest() {
                 fun f() {}
             """.trimIndent(),
             true,
-            "Conflicts with annotation: Com"
+            "Conflicting annotations: @Seq and @Com"
         )
     }
 }

@@ -16,6 +16,7 @@
 
 package io.verik.compiler.message
 
+import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.reorder.Dependency
@@ -71,7 +72,7 @@ object Messages {
         "Illegal local declaration: $0"
     )
 
-    val UNSUPPORTED_ANNOTATION = ErrorMessageTemplate1<String>(
+    val UNSUPPORTED_ANNOTATION = ErrorMessageTemplate1<AnnotationEntry>(
         "Unsupported annotation: $0"
     )
 
@@ -129,8 +130,8 @@ object Messages {
         "Top level declaration must be a module"
     )
 
-    val CONFLICTING_ANNOTATION = ErrorMessageTemplate1<String>(
-        "Conflicts with annotation: $0"
+    val CONFLICTING_ANNOTATIONS = ErrorMessageTemplate2<AnnotationEntry, AnnotationEntry>(
+        "Conflicting annotations: @$0 and @$1"
     )
 
     val MAKE_ANNOTATION_REQUIRED = ErrorMessageTemplate0(
@@ -145,12 +146,16 @@ object Messages {
         "Component instantiation out of context"
     )
 
-    val FUNCTION_MISSING_BODY = ErrorMessageTemplate1<String>(
-        "Function missing body: $0"
+    val SYNTHESIS_TOP_IS_OBJECT = ErrorMessageTemplate0(
+        "Synthesis top must not be declared as object"
     )
 
-    val ON_EXPRESSION_EXPECTED = ErrorMessageTemplate0(
-        "On expression expected"
+    val SIMULATION_TOP_NOT_OBJECT = ErrorMessageTemplate0(
+        "Simulation top must be declared as object"
+    )
+
+    val MODULE_IS_OBJECT = ErrorMessageTemplate0(
+        "Module must not be declared as object"
     )
 
     val PORT_NOT_MUTABLE = ErrorMessageTemplate1<String>(
@@ -159,6 +164,14 @@ object Messages {
 
     val PORT_NO_DIRECTIONALITY = ErrorMessageTemplate1<String>(
         "Could not determine directionality of port: $0"
+    )
+
+    val FUNCTION_MISSING_BODY = ErrorMessageTemplate1<String>(
+        "Function missing body: $0"
+    )
+
+    val ON_EXPRESSION_EXPECTED = ErrorMessageTemplate0(
+        "On expression expected"
     )
 
     val PORT_INSTANTIATION_NAME_MISMATCH = ErrorMessageTemplate1<String>(
@@ -211,6 +224,14 @@ object Messages {
 
     val PACKAGE_DEPENDENCY_ILLEGAL = ErrorMessageTemplate1<Dependency>(
         "Illegal package dependency: $0"
+    )
+
+    val PACKAGE_CIRCULAR_DEPENDENCY = ErrorMessageTemplate1<Dependency>(
+        "Circular dependency between packages: $0"
+    )
+
+    val FILE_CIRCULAR_DEPENDENCY = ErrorMessageTemplate1<Dependency>(
+        "Circular dependency between files: $0"
     )
 
     val DECLARATION_CIRCULAR_DEPENDENCY = ErrorMessageTemplate1<Dependency>(

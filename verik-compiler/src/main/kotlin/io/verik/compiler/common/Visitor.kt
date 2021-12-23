@@ -49,7 +49,6 @@ import io.verik.compiler.ast.element.common.EThisExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.common.EWhileStatement
-import io.verik.compiler.ast.element.kt.EAnnotation
 import io.verik.compiler.ast.element.kt.EAsExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
@@ -137,10 +136,6 @@ abstract class Visitor {
 
     open fun visitNullExpression(nullExpression: ENullExpression) {
         visitExpression(nullExpression)
-    }
-
-    open fun visitAnnotation(annotation: EAnnotation) {
-        visitElement(annotation)
     }
 
     open fun visitProject(project: EProject) {

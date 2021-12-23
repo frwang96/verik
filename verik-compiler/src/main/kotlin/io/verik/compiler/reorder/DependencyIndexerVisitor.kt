@@ -24,6 +24,7 @@ import io.verik.compiler.ast.element.common.EPackage
 import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.ast.element.common.EReceiverExpression
 import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
+import io.verik.compiler.ast.element.sv.ESvClass
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.common.TreeVisitor
 import java.lang.Integer.min
@@ -49,10 +50,9 @@ class DependencyIndexerVisitor(
             val fromDeclaration = elementParents[commonParentIndex + 1]
             val toDeclaration = referenceParents[commonParentIndex + 1]
             if (parent is EDeclaration && fromDeclaration is EDeclaration && toDeclaration is EDeclaration) {
-                if (isReorderable(parent)) {
-                    val dependency = Dependency(fromDeclaration, toDeclaration, element)
+                val dependency = Dependency(fromDeclaration, toDeclaration, element)
+                if (isValidDependency(parent, dependency))
                     dependencyRegistry.add(parent, dependency)
-                }
             }
         }
     }
@@ -65,6 +65,14 @@ class DependencyIndexerVisitor(
             parent = parent.parent
         }
         return parents.asReversed()
+    }
+
+    private fun isValidDependency(parent: EDeclaration, dependency: Dependency): Boolean {
+        return when {
+            !isReorderable(parent) -> false
+            dependency.fromDeclaration is ESvClass && dependency.toDeclaration is ESvClass -> false
+            else -> true
+        }
     }
 
     private fun isReorderable(parent: EDeclaration): Boolean {

@@ -83,8 +83,8 @@ object DeclarationCaster {
         val typeParameters = classOrObject.typeParameters.mapNotNull {
             castContext.casterVisitor.getElement<ETypeParameter>(it)
         }
-        val annotations = classOrObject.annotationEntries.mapNotNull {
-            AnnotationCaster.castAnnotationEntry(it, castContext)
+        val annotationEntries = classOrObject.annotationEntries.mapNotNull {
+            AnnotationEntryCaster.castAnnotationEntry(it, castContext)
         }
         val isEnum = classOrObject.hasModifier(KtTokens.ENUM_KEYWORD)
         val isAbstract = classOrObject.hasModifier(KtTokens.ABSTRACT_KEYWORD)
@@ -114,7 +114,7 @@ object DeclarationCaster {
             superType,
             declarations,
             typeParameters,
-            annotations,
+            annotationEntries,
             isEnum,
             isAbstract,
             isObject,
@@ -144,8 +144,8 @@ object DeclarationCaster {
         val typeParameters = function.typeParameters.mapNotNull {
             castContext.casterVisitor.getElement<ETypeParameter>(it)
         }
-        val annotations = function.annotationEntries.mapNotNull {
-            AnnotationCaster.castAnnotationEntry(it, castContext)
+        val annotationEntries = function.annotationEntries.mapNotNull {
+            AnnotationEntryCaster.castAnnotationEntry(it, castContext)
         }
         val isAbstract = function.hasModifier(KtTokens.ABSTRACT_KEYWORD)
         val isOverride = function.hasModifier(KtTokens.OVERRIDE_KEYWORD)
@@ -155,7 +155,7 @@ object DeclarationCaster {
             body,
             valueParameters,
             typeParameters,
-            annotations,
+            annotationEntries,
             isAbstract,
             isOverride
         )
@@ -210,12 +210,12 @@ object DeclarationCaster {
         val initializer = property.initializer?.let {
             castContext.casterVisitor.getExpression(it)
         }
-        val annotations = property.annotationEntries.mapNotNull {
-            AnnotationCaster.castAnnotationEntry(it, castContext)
+        val annotationEntries = property.annotationEntries.mapNotNull {
+            AnnotationEntryCaster.castAnnotationEntry(it, castContext)
         }
         val isMutable = property.isVar
 
-        castedProperty.init(type, initializer, annotations, isMutable)
+        castedProperty.init(type, initializer, annotationEntries, isMutable)
         return castedProperty
     }
 
@@ -225,11 +225,11 @@ object DeclarationCaster {
             .cast<EKtEnumEntry>(enumEntry)
 
         val type = castContext.castType(descriptor.classValueType!!, enumEntry)
-        val annotations = enumEntry.annotationEntries.mapNotNull {
-            AnnotationCaster.castAnnotationEntry(it, castContext)
+        val annotationEntries = enumEntry.annotationEntries.mapNotNull {
+            AnnotationEntryCaster.castAnnotationEntry(it, castContext)
         }
 
-        castedEnumEntry.init(type, annotations)
+        castedEnumEntry.init(type, annotationEntries)
         return castedEnumEntry
     }
 
@@ -245,13 +245,13 @@ object DeclarationCaster {
         } else {
             castContext.castType(descriptor.type, parameter)
         }
-        val annotations = parameter.annotationEntries.mapNotNull {
-            AnnotationCaster.castAnnotationEntry(it, castContext)
+        val annotationEntries = parameter.annotationEntries.mapNotNull {
+            AnnotationEntryCaster.castAnnotationEntry(it, castContext)
         }
         val isPrimaryConstructorProperty = (propertyDescriptor != null)
         val isMutable = descriptor.isVar
 
-        castedValueParameter.init(type, annotations, isPrimaryConstructorProperty, isMutable)
+        castedValueParameter.init(type, annotationEntries, isPrimaryConstructorProperty, isMutable)
         return castedValueParameter
     }
 

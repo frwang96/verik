@@ -31,7 +31,6 @@ import io.verik.compiler.ast.element.common.ESuperExpression
 import io.verik.compiler.ast.element.common.EThisExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.common.EWhileStatement
-import io.verik.compiler.ast.element.kt.EAnnotation
 import io.verik.compiler.ast.element.kt.EAsExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
@@ -95,6 +94,7 @@ import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.element.sv.ETask
 import io.verik.compiler.ast.element.sv.ETypeDefinition
 import io.verik.compiler.ast.element.sv.EWidthCastExpression
+import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.LiteralStringEntry
 import io.verik.compiler.ast.property.PortInstantiation
@@ -109,12 +109,6 @@ class ElementPrinter : Visitor() {
 
     override fun visitNullExpression(nullExpression: ENullExpression) {
         build("NullExpression") {}
-    }
-
-    override fun visitAnnotation(annotation: EAnnotation) {
-        build("Annotation") {
-            build(annotation.name)
-        }
     }
 
     override fun visitProject(project: EProject) {
@@ -167,7 +161,7 @@ class ElementPrinter : Visitor() {
             build(`class`.type.toString())
             build(`class`.declarations)
             build(`class`.typeParameters)
-            build(`class`.annotations)
+            build(`class`.annotationEntries)
             build(`class`.isEnum)
             build(`class`.isAbstract)
             build(`class`.isObject)
@@ -245,7 +239,7 @@ class ElementPrinter : Visitor() {
             build(function.body)
             build(function.valueParameters)
             build(function.typeParameters)
-            build(function.annotations)
+            build(function.annotationEntries)
             build(function.isAbstract)
         }
     }
@@ -322,7 +316,7 @@ class ElementPrinter : Visitor() {
             build(property.name)
             build(property.type.toString())
             build(property.initializer)
-            build(property.annotations)
+            build(property.annotationEntries)
             build(property.isMutable)
         }
     }
@@ -342,7 +336,7 @@ class ElementPrinter : Visitor() {
         build("KtEnumEntry") {
             build(enumEntry.name)
             build(enumEntry.type.toString())
-            build(enumEntry.annotations)
+            build(enumEntry.annotationEntries)
         }
     }
 
@@ -382,7 +376,7 @@ class ElementPrinter : Visitor() {
         build("KtValueParameter") {
             build(valueParameter.name)
             build(valueParameter.type.toString())
-            build(valueParameter.annotations)
+            build(valueParameter.annotationEntries)
             build(valueParameter.isPrimaryConstructorProperty)
             build(valueParameter.isMutable)
         }
@@ -807,6 +801,7 @@ class ElementPrinter : Visitor() {
             when (it) {
                 is EElement -> it.accept(this)
                 is String -> build(it)
+                is AnnotationEntry -> build(it.name)
                 is LiteralStringEntry -> build(it.text)
                 is ExpressionStringEntry -> it.expression.accept(this)
                 else -> Messages.INTERNAL_ERROR.on(

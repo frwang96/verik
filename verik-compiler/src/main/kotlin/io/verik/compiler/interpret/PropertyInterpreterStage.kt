@@ -41,7 +41,7 @@ import io.verik.compiler.ast.property.PortType
 import io.verik.compiler.ast.property.StringEntry
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.common.Annotations
+import io.verik.compiler.core.common.AnnotationEntries
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
@@ -72,7 +72,7 @@ object PropertyInterpreterStage : ProjectStage() {
                 name = property.name,
                 type = property.type,
                 initializer = property.initializer,
-                isComAssignment = property.hasAnnotation(Annotations.COM),
+                isComAssignment = property.hasAnnotationEntry(AnnotationEntries.COM),
                 isMutable = property.isMutable,
                 isStatic = isStatic
             )

@@ -19,9 +19,9 @@ package io.verik.compiler.ast.element.kt
 import io.verik.compiler.ast.element.common.EAbstractInitializedProperty
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.Annotated
+import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.NullDeclaration
-import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
@@ -33,24 +33,18 @@ class EKtProperty(
 
     override var type = NullDeclaration.toType()
     override var initializer: EExpression? = null
-    override var annotations: List<EAnnotation> = listOf()
+    override var annotationEntries: List<AnnotationEntry> = listOf()
     var isMutable = false
 
-    fun init(type: Type, initializer: EExpression?, annotations: List<EAnnotation>, isMutable: Boolean) {
+    fun init(type: Type, initializer: EExpression?, annotationEntries: List<AnnotationEntry>, isMutable: Boolean) {
         initializer?.parent = this
-        annotations.forEach { it.parent = this }
         this.type = type
         this.initializer = initializer
-        this.annotations = annotations
+        this.annotationEntries = annotationEntries
         this.isMutable = isMutable
     }
 
     override fun accept(visitor: Visitor) {
         return visitor.visitKtProperty(this)
-    }
-
-    override fun acceptChildren(visitor: TreeVisitor) {
-        super.acceptChildren(visitor)
-        annotations.forEach { it.accept(visitor) }
     }
 }

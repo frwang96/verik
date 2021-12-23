@@ -20,17 +20,24 @@ import io.verik.compiler.ast.element.common.EDeclaration
 
 object DependencyReorderer {
 
-    fun reorder(declarations: List<EDeclaration>, dependencies: List<Dependency>): DependencyReordererResult {
+    fun <D : EDeclaration> reorder(
+        declarations: List<D>,
+        dependencies: List<Dependency>
+    ): DependencyReordererResult<D> {
+        val filteredDependencies = dependencies.filter {
+            it.toDeclaration in declarations && it.fromDeclaration in declarations
+        }
+
         val declarationEntries = declarations.map { declaration ->
             DeclarationEntry(
                 declaration,
-                dependencies.filter { it.fromDeclaration == declaration },
+                filteredDependencies.filter { it.fromDeclaration == declaration },
                 false
             )
         }
 
-        val reorderedDeclarationsSet = HashSet<EDeclaration>()
-        val reorderedDeclarationsList = ArrayList<EDeclaration>()
+        val reorderedDeclarationsSet = HashSet<D>()
+        val reorderedDeclarationsList = ArrayList<D>()
         var index = 0
         while (index < declarationEntries.size) {
             val declarationEntry = declarationEntries[index]
@@ -60,8 +67,8 @@ object DependencyReorderer {
         return DependencyReordererResult(reorderedDeclarationsList, unsatisfiedDependencies)
     }
 
-    private data class DeclarationEntry(
-        val declaration: EDeclaration,
+    private data class DeclarationEntry<D : EDeclaration>(
+        val declaration: D,
         val dependencies: List<Dependency>,
         var isReordered: Boolean
     )

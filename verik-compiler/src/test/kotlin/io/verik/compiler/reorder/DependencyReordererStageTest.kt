@@ -25,6 +25,7 @@ internal class DependencyReordererStageTest : BaseTest() {
     fun `package dependency illegal root`() {
         driveMessageTest(
             """
+                @SimTop
                 object M : Module() { var x: Boolean = nc() }
                 class C {
                     fun f() {
@@ -59,5 +60,17 @@ internal class DependencyReordererStageTest : BaseTest() {
             true,
             "Circular dependency between declarations: From A to B"
         )
+    }
+
+    @Test
+    fun `class dependency not reordered`() {
+        driveElementTest(
+            """
+                class B(val a: A)
+                class A(val x: Boolean)
+            """.trimIndent(),
+            DependencyReordererStage::class,
+            "File([SvClass(B, B, *, *, *), SvClass(A, A, *, *, *)])"
+        ) { it.files().first() }
     }
 }

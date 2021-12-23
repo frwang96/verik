@@ -16,9 +16,12 @@
 
 package io.verik.compiler.reorder
 
+import io.verik.compiler.ast.element.common.EAbstractContainerClass
+import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.EPackage
 import io.verik.compiler.ast.element.common.EProject
+import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
 import io.verik.compiler.ast.property.PackageType
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -39,34 +42,74 @@ object DependencyReordererStage : ProjectStage() {
         private val dependencyRegistry: DependencyRegistry
     ) : TreeVisitor() {
 
-        private fun reorderPackages(dependencies: List<Dependency>) {
+        private fun reorderPackages(project: EProject, dependencies: List<Dependency>) {
             dependencies.forEach {
                 val fromPackage = it.fromDeclaration.cast<EPackage>()
                 val toPackage = it.toDeclaration.cast<EPackage>()
-                if (fromPackage.packageType == PackageType.NATIVE_REGULAR &&
-                    toPackage.packageType == PackageType.NATIVE_ROOT
-                ) {
+                if (fromPackage.packageType == PackageType.NATIVE_REGULAR && toPackage.packageType.isRoot()) {
                     Messages.PACKAGE_DEPENDENCY_ILLEGAL.on(it.element, it)
                 }
             }
+            val dependencyReordererResult = DependencyReorderer.reorder(
+                project.nativeRegularPackages,
+                dependencies
+            )
+            dependencyReordererResult.unsatisfiedDependencies.forEach {
+                Messages.PACKAGE_CIRCULAR_DEPENDENCY.on(it.element, it)
+            }
+            project.nativeRegularPackages = ArrayList(dependencyReordererResult.reorderedDeclarations)
         }
 
-        private fun reorderDeclarations(file: EFile, dependencies: List<Dependency>) {
-            val dependencyReordererResult = DependencyReorderer.reorder(file.declarations, dependencies)
+        private fun reorderFiles(`package`: EPackage, dependencies: List<Dependency>) {
+            val dependencyReordererResult = DependencyReorderer.reorder(`package`.files, dependencies)
+            dependencyReordererResult.unsatisfiedDependencies.forEach {
+                Messages.FILE_CIRCULAR_DEPENDENCY.on(it.element, it)
+            }
+            `package`.files = ArrayList(dependencyReordererResult.reorderedDeclarations)
+        }
+
+        private fun reorderDeclarations(
+            declarations: List<EDeclaration>,
+            dependencies: List<Dependency>
+        ): ArrayList<EDeclaration> {
+            val dependencyReordererResult = DependencyReorderer.reorder(declarations, dependencies)
             dependencyReordererResult.unsatisfiedDependencies.forEach {
                 Messages.DECLARATION_CIRCULAR_DEPENDENCY.on(it.element, it)
             }
-            file.declarations = ArrayList(dependencyReordererResult.reorderedDeclarations)
+            return ArrayList(dependencyReordererResult.reorderedDeclarations)
         }
 
         override fun visitProject(project: EProject) {
             super.visitProject(project)
-            reorderPackages(dependencyRegistry.getDependencies(project))
+            reorderPackages(project, dependencyRegistry.getDependencies(project))
+        }
+
+        override fun visitPackage(`package`: EPackage) {
+            if (`package`.packageType.isNative()) {
+                super.visitPackage(`package`)
+                reorderFiles(`package`, dependencyRegistry.getDependencies(`package`))
+            }
         }
 
         override fun visitFile(file: EFile) {
             super.visitFile(file)
-            reorderDeclarations(file, dependencyRegistry.getDependencies(file))
+            file.declarations = reorderDeclarations(file.declarations, dependencyRegistry.getDependencies(file))
+        }
+
+        override fun visitAbstractContainerClass(abstractContainerClass: EAbstractContainerClass) {
+            super.visitAbstractContainerClass(abstractContainerClass)
+            abstractContainerClass.declarations = reorderDeclarations(
+                abstractContainerClass.declarations,
+                dependencyRegistry.getDependencies(abstractContainerClass)
+            )
+        }
+
+        override fun visitAbstractContainerComponent(abstractContainerComponent: EAbstractContainerComponent) {
+            super.visitAbstractContainerComponent(abstractContainerComponent)
+            abstractContainerComponent.declarations = reorderDeclarations(
+                abstractContainerComponent.declarations,
+                dependencyRegistry.getDependencies(abstractContainerComponent)
+            )
         }
     }
 }

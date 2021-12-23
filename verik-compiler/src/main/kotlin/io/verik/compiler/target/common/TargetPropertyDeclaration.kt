@@ -14,23 +14,9 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.property
+package io.verik.compiler.target.common
 
-enum class PackageType {
-    NATIVE_REGULAR,
-    NATIVE_ROOT,
-    IMPORTED_REGULAR,
-    IMPORTED_ROOT;
-
-    fun isRegular(): Boolean {
-        return this in listOf(NATIVE_REGULAR, IMPORTED_REGULAR)
-    }
-
-    fun isRoot(): Boolean {
-        return this in listOf(NATIVE_ROOT, IMPORTED_ROOT)
-    }
-
-    fun isNative(): Boolean {
-        return this in listOf(NATIVE_REGULAR, NATIVE_ROOT)
-    }
-}
+class TargetPropertyDeclaration(
+    override val parent: TargetDeclaration?,
+    override var name: String
+) : TargetDeclaration
