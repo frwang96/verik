@@ -74,7 +74,12 @@ object ExpressionSpecializer {
     ): EKtBlockExpression {
         val type = specializerContext.specializeType(blockExpression)
         val statements = blockExpression.statements.map { specializerContext.specialize(it) }
-        return EKtBlockExpression(blockExpression.location, type, ArrayList(statements))
+        return EKtBlockExpression(
+            blockExpression.location,
+            blockExpression.endLocation,
+            type,
+            ArrayList(statements)
+        )
     }
 
     private fun specializePropertyStatement(

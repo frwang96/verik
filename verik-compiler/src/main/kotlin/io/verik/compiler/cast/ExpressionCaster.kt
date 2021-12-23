@@ -68,6 +68,7 @@ object ExpressionCaster {
 
     fun castKtBlockExpression(expression: KtBlockExpression, castContext: CastContext): EKtBlockExpression {
         val location = expression.location()
+        val endLocation = expression.rBrace!!.location()
         val type = if (expression.parent is KtContainerNodeForControlStructureBody &&
             expression.parent.parent is KtDoWhileExpression
         ) {
@@ -76,7 +77,7 @@ object ExpressionCaster {
             castContext.castType(expression)
         }
         val statements = expression.statements.mapNotNull { castContext.casterVisitor.getExpression(it) }
-        return EKtBlockExpression(location, type, ArrayList(statements))
+        return EKtBlockExpression(location, endLocation, type, ArrayList(statements))
     }
 
     fun castKtUnaryExpressionPrefix(expression: KtPrefixExpression, castContext: CastContext): EKtUnaryExpression {
@@ -213,6 +214,7 @@ object ExpressionCaster {
         castContext: CastContext
     ): EFunctionLiteralExpression {
         val location = expression.location()
+        val endLocation = expression.rightCurlyBrace!!.location(expression)
         val valueParameters = if (expression.functionLiteral.hasParameterSpecification()) {
             expression.valueParameters.mapNotNull {
                 castContext.casterVisitor.getElement<EKtValueParameter>(it)
@@ -233,6 +235,7 @@ object ExpressionCaster {
         }
         val body = EKtBlockExpression(
             location,
+            endLocation,
             Core.Kt.C_Function.toType(),
             ArrayList(statements)
         )

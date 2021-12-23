@@ -16,7 +16,6 @@
 
 package io.verik.compiler.serialize.source
 
-import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
@@ -39,8 +38,8 @@ class SourceActionBuilder(
         return sourceActionLines
     }
 
-    fun label(element: EElement, block: () -> Unit) {
-        locationStack.push(element.location)
+    fun label(location: SourceLocation, block: () -> Unit) {
+        locationStack.push(location)
         block()
         locationStack.pop()
     }

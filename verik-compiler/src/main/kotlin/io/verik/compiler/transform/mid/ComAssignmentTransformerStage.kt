@@ -72,6 +72,7 @@ object ComAssignmentTransformerStage : ProjectStage() {
                         )
                         val blockExpression = EKtBlockExpression(
                             declaration.location,
+                            declaration.location,
                             Core.Kt.C_Unit.toType(),
                             arrayListOf(binaryExpression)
                         )

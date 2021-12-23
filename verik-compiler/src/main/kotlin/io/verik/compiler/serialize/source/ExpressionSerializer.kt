@@ -62,10 +62,12 @@ object ExpressionSerializer {
             serializerContext.indent {
                 blockExpression.statements.forEach { serializerContext.serializeAsStatement(it) }
             }
-            serializerContext.append("end")
-            if (blockExpression.name != null)
-                serializerContext.append(" : ${blockExpression.name}")
-            serializerContext.appendLine()
+            serializerContext.label(blockExpression.endLocation) {
+                serializerContext.append("end")
+                if (blockExpression.name != null)
+                    serializerContext.append(" : ${blockExpression.name}")
+                serializerContext.appendLine()
+            }
         } else {
             blockExpression.statements.forEach { serializerContext.serializeAsStatement(it) }
         }

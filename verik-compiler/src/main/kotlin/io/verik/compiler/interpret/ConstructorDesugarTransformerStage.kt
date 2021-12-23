@@ -123,7 +123,12 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
                     )
                 }
             }
-            return EKtBlockExpression(primaryConstructor.location, Core.Kt.C_Unit.toType(), statements)
+            return EKtBlockExpression(
+                primaryConstructor.location,
+                primaryConstructor.location,
+                Core.Kt.C_Unit.toType(),
+                statements
+            )
         }
     }
 

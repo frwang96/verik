@@ -25,7 +25,6 @@ import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtConstructor
-import io.verik.compiler.ast.element.sv.ESvBlockExpression
 import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.ast.element.sv.ESvClass
 import io.verik.compiler.ast.element.sv.ESvFunction
@@ -201,7 +200,7 @@ object ClassInterpreterStage : ProjectStage() {
                 constructor.location,
                 "_${'$'}new",
                 constructor.type,
-                ESvBlockExpression(constructor.location, statements, false, null),
+                EKtBlockExpression(constructor.location, constructor.location, Core.Kt.C_Unit.toType(), statements),
                 ArrayList(valueParameters),
                 FunctionQualifierType.REGULAR,
                 isStatic = true,

@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EFile
+import io.verik.compiler.message.SourceLocation
 
 class SerializerContext(file: EFile) {
 
@@ -69,7 +70,11 @@ class SerializerContext(file: EFile) {
     }
 
     fun label(element: EElement, block: () -> Unit) {
-        sourceActionBuilder.label(element, block)
+        sourceActionBuilder.label(element.location, block)
+    }
+
+    fun label(location: SourceLocation, block: () -> Unit) {
+        sourceActionBuilder.label(location, block)
     }
 
     fun indent(block: () -> Unit) {

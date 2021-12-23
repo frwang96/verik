@@ -25,6 +25,7 @@ import io.verik.compiler.message.SourceLocation
 
 class EKtBlockExpression(
     override val location: SourceLocation,
+    val endLocation: SourceLocation,
     override var type: Type,
     override var statements: ArrayList<EExpression>
 ) : EAbstractBlockExpression() {
