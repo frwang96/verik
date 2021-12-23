@@ -33,7 +33,7 @@ import io.verik.compiler.ast.element.sv.ETask
 import io.verik.compiler.ast.property.FunctionQualifierType
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.common.Annotations
+import io.verik.compiler.core.common.AnnotationEntries
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
@@ -60,7 +60,7 @@ object FunctionInterpreterStage : ProjectStage() {
         private fun interpret(function: EKtFunction): EDeclaration? {
             val body = function.body
             return when {
-                function.hasAnnotation(Annotations.COM) -> {
+                function.hasAnnotationEntry(AnnotationEntries.COM) -> {
                     if (body != null) {
                         EAlwaysComBlock(function.location, function.name, body)
                     } else {
@@ -68,7 +68,7 @@ object FunctionInterpreterStage : ProjectStage() {
                         null
                     }
                 }
-                function.hasAnnotation(Annotations.SEQ) -> {
+                function.hasAnnotationEntry(AnnotationEntries.SEQ) -> {
                     if (body != null) {
                         getAlwaysSeqBlock(function, body)
                     } else {
@@ -76,7 +76,7 @@ object FunctionInterpreterStage : ProjectStage() {
                         null
                     }
                 }
-                function.hasAnnotation(Annotations.RUN) -> {
+                function.hasAnnotationEntry(AnnotationEntries.RUN) -> {
                     if (body != null) {
                         EInitialBlock(function.location, function.name, body)
                     } else {
@@ -84,7 +84,7 @@ object FunctionInterpreterStage : ProjectStage() {
                         null
                     }
                 }
-                function.hasAnnotation(Annotations.TASK) -> {
+                function.hasAnnotationEntry(AnnotationEntries.TASK) -> {
                     val valueParameters = getValueParameters(function.valueParameters, referenceUpdater)
                     ETask(function.location, function.name, function.body, ArrayList(valueParameters))
                 }

@@ -19,6 +19,7 @@ package io.verik.compiler.ast.element.kt
 import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.interfaces.Annotated
+import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.TreeVisitor
@@ -34,7 +35,7 @@ class EKtFunction(
     override var body: EAbstractBlockExpression? = null
     override var valueParameters: ArrayList<EKtValueParameter> = ArrayList()
     override var typeParameters: ArrayList<ETypeParameter> = ArrayList()
-    override var annotations: List<EAnnotation> = listOf()
+    override var annotationEntries: List<AnnotationEntry> = listOf()
     var isAbstract: Boolean = false
     var isOverride: Boolean = false
 
@@ -43,19 +44,18 @@ class EKtFunction(
         body: EAbstractBlockExpression?,
         valueParameters: List<EKtValueParameter>,
         typeParameters: List<ETypeParameter>,
-        annotations: List<EAnnotation>,
+        annotationEntries: List<AnnotationEntry>,
         isAbstract: Boolean,
         isOverride: Boolean
     ) {
         body?.parent = this
         valueParameters.forEach { it.parent = this }
         typeParameters.forEach { it.parent = this }
-        annotations.forEach { it.parent = this }
         this.type = type
         this.body = body
         this.valueParameters = ArrayList(valueParameters)
         this.typeParameters = ArrayList(typeParameters)
-        this.annotations = annotations
+        this.annotationEntries = annotationEntries
         this.isAbstract = isAbstract
         this.isOverride = isOverride
     }
@@ -67,6 +67,5 @@ class EKtFunction(
     override fun acceptChildren(visitor: TreeVisitor) {
         super.acceptChildren(visitor)
         typeParameters.forEach { it.accept(visitor) }
-        annotations.forEach { it.accept(visitor) }
     }
 }

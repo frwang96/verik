@@ -30,7 +30,7 @@ import io.verik.compiler.check.post.UntransformedReferenceCheckerStage
 import io.verik.compiler.check.pre.ImportDirectiveCheckerStage
 import io.verik.compiler.check.pre.UnsupportedElementCheckerStage
 import io.verik.compiler.check.pre.UnsupportedModifierCheckerStage
-import io.verik.compiler.interpret.AnnotationCheckerStage
+import io.verik.compiler.interpret.AnnotationEntryCheckerStage
 import io.verik.compiler.interpret.ClassInterpreterStage
 import io.verik.compiler.interpret.ComponentInstantiationCheckerStage
 import io.verik.compiler.interpret.ComponentInterpreterStage
@@ -130,7 +130,7 @@ object StageSequencer {
         stageSequence.add(StageType.RESOLVE, DeclarationSpecializerStage)
         stageSequence.add(StageType.RESOLVE, TypeCheckerStage)
 
-        stageSequence.add(StageType.INTERPRET, AnnotationCheckerStage)
+        stageSequence.add(StageType.INTERPRET, AnnotationEntryCheckerStage)
         stageSequence.add(StageType.INTERPRET, ComponentInstantiationCheckerStage)
         stageSequence.add(StageType.INTERPRET, EnumInterpreterStage)
         stageSequence.add(StageType.INTERPRET, StructInterpreterStage)

@@ -1,0 +1,54 @@
+/*
+ * Copyright (c) 2021 Francis Wang
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.verik.compiler.core.common
+
+import io.verik.compiler.ast.property.AnnotationEntry
+import kotlin.reflect.full.createType
+import kotlin.reflect.full.declaredMemberProperties
+
+object AnnotationEntries {
+
+    val MAKE = AnnotationEntry("io.verik.core.Make")
+
+    val SYNTHESIS_TOP = AnnotationEntry("io.verik.core.SynthTop")
+    val SIMULATION_TOP = AnnotationEntry("io.verik.core.SimTop")
+
+    val IN = AnnotationEntry("io.verik.core.In")
+    val OUT = AnnotationEntry("io.verik.core.Out")
+
+    val COM = AnnotationEntry("io.verik.core.Com")
+    val SEQ = AnnotationEntry("io.verik.core.Seq")
+    val RUN = AnnotationEntry("io.verik.core.Run")
+    val TASK = AnnotationEntry("io.verik.core.Task")
+
+    private val annotationEntries = ArrayList<AnnotationEntry>()
+
+    init {
+        annotationEntries.add(AnnotationEntry("kotlin.Suppress"))
+        annotationEntries.add(AnnotationEntry("io.verik.core.Imported"))
+        AnnotationEntries::class.declaredMemberProperties.forEach {
+            if (it.returnType == AnnotationEntry::class.createType()) {
+                val annotationEntry = it.get(AnnotationEntries) as AnnotationEntry
+                annotationEntries.add(annotationEntry)
+            }
+        }
+    }
+
+    fun isAnnotationEntry(annotationEntry: AnnotationEntry): Boolean {
+        return annotationEntry in annotationEntries
+    }
+}

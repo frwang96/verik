@@ -18,6 +18,7 @@ package io.verik.compiler.ast.element.kt
 
 import io.verik.compiler.ast.element.common.EAbstractEnumEntry
 import io.verik.compiler.ast.interfaces.Annotated
+import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.TreeVisitor
@@ -30,19 +31,16 @@ class EKtEnumEntry(
 ) : EAbstractEnumEntry(), Annotated {
 
     override var type = NullDeclaration.toType()
-    override var annotations: List<EAnnotation> = listOf()
+    override var annotationEntries: List<AnnotationEntry> = listOf()
 
-    fun init(type: Type, annotations: List<EAnnotation>) {
-        annotations.forEach { it.parent = this }
+    fun init(type: Type, annotationEntries: List<AnnotationEntry>) {
         this.type = type
-        this.annotations = annotations
+        this.annotationEntries = annotationEntries
     }
 
     override fun accept(visitor: Visitor) {
         visitor.visitKtEnumEntry(this)
     }
 
-    override fun acceptChildren(visitor: TreeVisitor) {
-        annotations.forEach { it.accept(visitor) }
-    }
+    override fun acceptChildren(visitor: TreeVisitor) {}
 }

@@ -18,6 +18,7 @@ package io.verik.compiler.ast.element.kt
 
 import io.verik.compiler.ast.element.common.EAbstractValueParameter
 import io.verik.compiler.ast.interfaces.Annotated
+import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.TreeVisitor
@@ -30,19 +31,18 @@ class EKtValueParameter(
 ) : EAbstractValueParameter(), Annotated {
 
     override var type: Type = NullDeclaration.toType()
-    override var annotations: List<EAnnotation> = listOf()
+    override var annotationEntries: List<AnnotationEntry> = listOf()
     var isPrimaryConstructorProperty = false
     var isMutable: Boolean = false
 
     fun init(
         type: Type,
-        annotations: List<EAnnotation>,
+        annotationEntries: List<AnnotationEntry>,
         isPrimaryConstructorProperty: Boolean,
         isMutable: Boolean
     ) {
-        annotations.forEach { it.parent = this }
         this.type = type
-        this.annotations = annotations
+        this.annotationEntries = annotationEntries
         this.isPrimaryConstructorProperty = isPrimaryConstructorProperty
         this.isMutable = isMutable
     }
@@ -51,7 +51,5 @@ class EKtValueParameter(
         visitor.visitKtValueParameter(this)
     }
 
-    override fun acceptChildren(visitor: TreeVisitor) {
-        annotations.forEach { it.accept(visitor) }
-    }
+    override fun acceptChildren(visitor: TreeVisitor) {}
 }

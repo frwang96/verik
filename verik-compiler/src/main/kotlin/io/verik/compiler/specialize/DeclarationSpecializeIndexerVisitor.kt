@@ -113,7 +113,6 @@ class DeclarationSpecializeIndexerVisitor(
         }
 
         `class`.typeParameters.forEach { it.accept(this) }
-        `class`.annotations.forEach { it.accept(this) }
         `class`.primaryConstructor?.accept(this)
         val specializedClass = EKtClass(
             `class`.location,

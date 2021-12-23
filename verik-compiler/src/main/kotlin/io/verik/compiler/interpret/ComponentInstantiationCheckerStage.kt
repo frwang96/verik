@@ -19,7 +19,7 @@ package io.verik.compiler.interpret
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.common.Annotations
+import io.verik.compiler.core.common.AnnotationEntries
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
@@ -38,14 +38,14 @@ object ComponentInstantiationCheckerStage : ProjectStage() {
             if (property.type.isSubtype(Core.Vk.C_Component.toType())) {
                 val parent = property.parent
                 if (parent is EKtClass && parent.type.isSubtype(Core.Vk.C_Component.toType())) {
-                    if (!property.hasAnnotation(Annotations.MAKE))
+                    if (!property.hasAnnotationEntry(AnnotationEntries.MAKE))
                         Messages.MAKE_ANNOTATION_REQUIRED.on(property)
                 } else {
-                    if (property.hasAnnotation(Annotations.MAKE))
+                    if (property.hasAnnotationEntry(AnnotationEntries.MAKE))
                         Messages.COMPONENT_INSTANTIATION_OUT_OF_CONTEXT.on(property)
                 }
             } else {
-                if (property.hasAnnotation(Annotations.MAKE))
+                if (property.hasAnnotationEntry(AnnotationEntries.MAKE))
                     Messages.MAKE_ANNOTATION_ILLEGAL.on(property)
             }
         }

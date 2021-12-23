@@ -16,6 +16,7 @@
 
 package io.verik.compiler.message
 
+import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.reorder.Dependency
@@ -71,7 +72,7 @@ object Messages {
         "Illegal local declaration: $0"
     )
 
-    val UNSUPPORTED_ANNOTATION = ErrorMessageTemplate1<String>(
+    val UNSUPPORTED_ANNOTATION = ErrorMessageTemplate1<AnnotationEntry>(
         "Unsupported annotation: $0"
     )
 
@@ -129,7 +130,7 @@ object Messages {
         "Top level declaration must be a module"
     )
 
-    val CONFLICTING_ANNOTATIONS = ErrorMessageTemplate2<String, String>(
+    val CONFLICTING_ANNOTATIONS = ErrorMessageTemplate2<AnnotationEntry, AnnotationEntry>(
         "Conflicting annotations: @$0 and @$1"
     )
 

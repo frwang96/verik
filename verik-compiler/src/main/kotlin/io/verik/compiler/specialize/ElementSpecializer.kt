@@ -19,7 +19,6 @@ package io.verik.compiler.specialize
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.kt.EAnnotation
 import io.verik.compiler.message.Messages
 
 object ElementSpecializer {
@@ -28,18 +27,8 @@ object ElementSpecializer {
         val copiedElement = when (element) {
             is EDeclaration -> DeclarationSpecializer.specializeDeclaration(element, specializerContext)
             is EExpression -> ExpressionSpecializer.specializeExpression(element, specializerContext)
-            is EAnnotation -> specializeAnnotation(element)
             else -> Messages.INTERNAL_ERROR.on(element, "Unable to specialize element: $element")
         }
-        @Suppress("UNCHECKED_CAST")
-        return copiedElement as E
-    }
-
-    private fun specializeAnnotation(annotation: EAnnotation): EAnnotation {
-        return EAnnotation(
-            annotation.location,
-            annotation.name,
-            annotation.qualifiedName
-        )
+        return copiedElement
     }
 }

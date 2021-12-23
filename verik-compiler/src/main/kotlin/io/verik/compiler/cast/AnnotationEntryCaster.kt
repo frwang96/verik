@@ -16,21 +16,19 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.element.kt.EAnnotation
-import io.verik.compiler.common.location
-import io.verik.compiler.core.common.Annotations
+import io.verik.compiler.ast.property.AnnotationEntry
+import io.verik.compiler.core.common.AnnotationEntries
 import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.psi.KtAnnotationEntry
 
-object AnnotationCaster {
+object AnnotationEntryCaster {
 
-    fun castAnnotationEntry(annotationEntry: KtAnnotationEntry, castContext: CastContext): EAnnotation {
-        val location = annotationEntry.location()
+    fun castAnnotationEntry(annotationEntry: KtAnnotationEntry, castContext: CastContext): AnnotationEntry {
         val descriptor = castContext.sliceAnnotation[annotationEntry]!!
-        val name = descriptor.fqName!!.shortName().asString()
         val qualifiedName = descriptor.fqName!!.asString()
-        if (!Annotations.isAnnotation(qualifiedName))
-            Messages.UNSUPPORTED_ANNOTATION.on(annotationEntry, name)
-        return EAnnotation(location, name, qualifiedName)
+        val castedAnnotationEntry = AnnotationEntry(qualifiedName)
+        if (!AnnotationEntries.isAnnotationEntry(castedAnnotationEntry))
+            Messages.UNSUPPORTED_ANNOTATION.on(annotationEntry, castedAnnotationEntry)
+        return castedAnnotationEntry
     }
 }

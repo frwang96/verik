@@ -14,22 +14,23 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.kt
+package io.verik.compiler.ast.property
 
-import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.common.Visitor
-import io.verik.compiler.message.SourceLocation
-
-class EAnnotation(
-    override val location: SourceLocation,
-    val name: String,
+class AnnotationEntry(
     val qualifiedName: String
-) : EElement() {
+) {
 
-    override fun accept(visitor: Visitor) {
-        visitor.visitAnnotation(this)
+    val name = qualifiedName.substringAfterLast(".")
+
+    override fun equals(other: Any?): Boolean {
+        return other is AnnotationEntry && other.qualifiedName == qualifiedName
     }
 
-    override fun acceptChildren(visitor: TreeVisitor) {}
+    override fun hashCode(): Int {
+        return qualifiedName.hashCode()
+    }
+
+    override fun toString(): String {
+        return name
+    }
 }

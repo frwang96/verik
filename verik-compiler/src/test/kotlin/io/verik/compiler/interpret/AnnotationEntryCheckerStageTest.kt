@@ -17,10 +17,9 @@
 package io.verik.compiler.interpret
 
 import io.verik.compiler.test.BaseTest
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
-internal class AnnotationCheckerStageTest : BaseTest() {
+internal class AnnotationEntryCheckerStageTest : BaseTest() {
 
     @Test
     fun `class top annotation illegal`() {
@@ -35,7 +34,6 @@ internal class AnnotationCheckerStageTest : BaseTest() {
     }
 
     @Test
-    @Disabled
     fun `class annotations conflicting`() {
         driveMessageTest(
             """

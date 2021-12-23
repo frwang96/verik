@@ -26,7 +26,7 @@ import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.property.PortType
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.common.Annotations
+import io.verik.compiler.core.common.AnnotationEntries
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
@@ -72,8 +72,8 @@ object ComponentInterpreterStage : ProjectStage() {
 
         private fun interpretModule(`class`: EKtClass): EModule {
             val ports = interpretPorts(`class`.primaryConstructor?.valueParameters, referenceUpdater)
-            val isSynthesisTop = `class`.hasAnnotation(Annotations.SYNTHESIS_TOP)
-            val isSimulationTop = `class`.hasAnnotation(Annotations.SIMULATION_TOP)
+            val isSynthesisTop = `class`.hasAnnotationEntry(AnnotationEntries.SYNTHESIS_TOP)
+            val isSimulationTop = `class`.hasAnnotationEntry(AnnotationEntries.SIMULATION_TOP)
             when {
                 isSynthesisTop -> if (`class`.isObject)
                     Messages.SYNTHESIS_TOP_IS_OBJECT.on(`class`)
@@ -151,12 +151,12 @@ object ComponentInterpreterStage : ProjectStage() {
 
         private fun interpretPort(valueParameter: EKtValueParameter, referenceUpdater: ReferenceUpdater): EPort? {
             val portType = when {
-                valueParameter.hasAnnotation(Annotations.IN) -> {
+                valueParameter.hasAnnotationEntry(AnnotationEntries.IN) -> {
                     if (!valueParameter.isMutable)
                         Messages.PORT_NOT_MUTABLE.on(valueParameter, valueParameter.name)
                     PortType.INPUT
                 }
-                valueParameter.hasAnnotation(Annotations.OUT) -> {
+                valueParameter.hasAnnotationEntry(AnnotationEntries.OUT) -> {
                     if (!valueParameter.isMutable)
                         Messages.PORT_NOT_MUTABLE.on(valueParameter, valueParameter.name)
                     PortType.OUTPUT

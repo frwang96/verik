@@ -16,13 +16,13 @@
 
 package io.verik.compiler.ast.interfaces
 
-import io.verik.compiler.ast.element.kt.EAnnotation
+import io.verik.compiler.ast.property.AnnotationEntry
 
 interface Annotated {
 
-    var annotations: List<EAnnotation>
+    var annotationEntries: List<AnnotationEntry>
 
-    fun hasAnnotation(qualifiedName: String): Boolean {
-        return annotations.any { it.qualifiedName == qualifiedName }
+    fun hasAnnotationEntry(annotationEntry: AnnotationEntry): Boolean {
+        return annotationEntries.any { it == annotationEntry }
     }
 }

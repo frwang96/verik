@@ -18,34 +18,39 @@ package io.verik.compiler.interpret
 
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtFunction
+import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.common.Annotations
+import io.verik.compiler.core.common.AnnotationEntries
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
-object AnnotationCheckerStage : ProjectStage() {
+object AnnotationEntryCheckerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.project.accept(AnnotationCheckerVisitor)
+        projectContext.project.accept(AnnotationEntryCheckerVisitor)
     }
 
-    private object AnnotationCheckerVisitor : TreeVisitor() {
+    private object AnnotationEntryCheckerVisitor : TreeVisitor() {
 
-        private val conflictingFunctionAnnotations = listOf(
-            Annotations.COM,
-            Annotations.SEQ,
-            Annotations.RUN,
-            Annotations.TASK
+        private val conflictingAnnotationEntries = listOf(
+            AnnotationEntries.COM,
+            AnnotationEntries.SEQ,
+            AnnotationEntries.RUN,
+            AnnotationEntries.TASK
         )
 
         override fun visitKtClass(`class`: EKtClass) {
             super.visitKtClass(`class`)
-            val isSynthesisTop = `class`.hasAnnotation(Annotations.SYNTHESIS_TOP)
-            val isSimulationTop = `class`.hasAnnotation(Annotations.SIMULATION_TOP)
+            val isSynthesisTop = `class`.hasAnnotationEntry(AnnotationEntries.SYNTHESIS_TOP)
+            val isSimulationTop = `class`.hasAnnotationEntry(AnnotationEntries.SIMULATION_TOP)
             if (isSimulationTop && isSynthesisTop)
-                Messages.CONFLICTING_ANNOTATIONS.on(`class`, Annotations.SYNTHESIS_TOP, Annotations.SIMULATION_TOP)
+                Messages.CONFLICTING_ANNOTATIONS.on(
+                    `class`,
+                    AnnotationEntries.SYNTHESIS_TOP,
+                    AnnotationEntries.SIMULATION_TOP
+                )
             if (isSimulationTop || isSynthesisTop) {
                 if (!`class`.type.isSubtype(Core.Vk.C_Module.toType()))
                     Messages.TOP_NOT_MODULE.on(`class`)
@@ -54,13 +59,13 @@ object AnnotationCheckerStage : ProjectStage() {
 
         override fun visitKtFunction(function: EKtFunction) {
             super.visitKtFunction(function)
-            var conflictingAnnotationName: String? = null
-            for (annotation in function.annotations) {
-                if (annotation.qualifiedName in conflictingFunctionAnnotations) {
-                    if (conflictingAnnotationName == null) {
-                        conflictingAnnotationName = annotation.name
+            var conflictingAnnotationEntry: AnnotationEntry? = null
+            for (annotationEntry in function.annotationEntries) {
+                if (annotationEntry in conflictingAnnotationEntries) {
+                    if (conflictingAnnotationEntry == null) {
+                        conflictingAnnotationEntry = annotationEntry
                     } else {
-                        Messages.CONFLICTING_ANNOTATIONS.on(function, annotation.name, conflictingAnnotationName)
+                        Messages.CONFLICTING_ANNOTATIONS.on(function, annotationEntry, conflictingAnnotationEntry)
                     }
                 }
             }

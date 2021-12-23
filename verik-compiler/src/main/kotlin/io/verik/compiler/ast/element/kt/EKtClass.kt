@@ -21,6 +21,7 @@ import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.interfaces.Annotated
 import io.verik.compiler.ast.interfaces.TypeParameterized
+import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.SuperTypeCallEntry
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.NullDeclaration
@@ -39,7 +40,7 @@ class EKtClass(
     override var superType = NullDeclaration.toType()
     override var declarations: ArrayList<EDeclaration> = arrayListOf()
     override var typeParameters: ArrayList<ETypeParameter> = arrayListOf()
-    override var annotations: List<EAnnotation> = listOf()
+    override var annotationEntries: List<AnnotationEntry> = listOf()
     var isEnum: Boolean = false
     var isAbstract: Boolean = false
     var isObject: Boolean = false
@@ -51,7 +52,7 @@ class EKtClass(
         superType: Type,
         declarations: List<EDeclaration>,
         typeParameters: List<ETypeParameter>,
-        annotations: List<EAnnotation>,
+        annotationEntries: List<AnnotationEntry>,
         isEnum: Boolean,
         isAbstract: Boolean,
         isObject: Boolean,
@@ -60,14 +61,13 @@ class EKtClass(
     ) {
         declarations.forEach { it.parent = this }
         typeParameters.forEach { it.parent = this }
-        annotations.forEach { it.parent = this }
         primaryConstructor?.parent = this
         superTypeCallEntry?.valueArguments?.forEach { it.parent = this }
         this.type = type
         this.superType = superType
         this.declarations = ArrayList(declarations)
         this.typeParameters = ArrayList(typeParameters)
-        this.annotations = annotations
+        this.annotationEntries = annotationEntries
         this.isEnum = isEnum
         this.isAbstract = isAbstract
         this.isObject = isObject
@@ -82,7 +82,6 @@ class EKtClass(
     override fun acceptChildren(visitor: TreeVisitor) {
         super.acceptChildren(visitor)
         typeParameters.forEach { it.accept(visitor) }
-        annotations.forEach { it.accept(visitor) }
         primaryConstructor?.accept(visitor)
         superTypeCallEntry?.valueArguments?.forEach { it.accept(visitor) }
     }

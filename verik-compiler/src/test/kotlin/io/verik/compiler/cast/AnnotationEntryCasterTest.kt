@@ -20,22 +20,22 @@ import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class AnnotationCasterTest : BaseTest() {
+internal class AnnotationEntryCasterTest : BaseTest() {
 
     @Test
-    fun `annotation simple`() {
+    fun `annotation entry simple`() {
         driveElementTest(
             """
                 @Task
                 fun f() {}
             """.trimIndent(),
             CasterStage::class,
-            "KtFunction(f, Unit, *, [], [], [Annotation(Task)], 0)"
+            "KtFunction(f, Unit, *, [], [], [Task], 0)"
         ) { it.findDeclaration("f") }
     }
 
     @Test
-    fun `annotation unsupported`() {
+    fun `annotation entry unsupported`() {
         driveMessageTest(
             """
                 @Synchronized
@@ -47,13 +47,13 @@ internal class AnnotationCasterTest : BaseTest() {
     }
 
     @Test
-    fun `annotation on value parameter`() {
+    fun `annotation entry on value parameter`() {
         driveElementTest(
             """
                 class M(@In val x: Boolean) : Module()
             """.trimIndent(),
             CasterStage::class,
-            "KtValueParameter(x, Boolean, [Annotation(In)], 1, 0)",
+            "KtValueParameter(x, Boolean, [In], 1, 0)",
         ) { it.findDeclaration("x") }
     }
 }
