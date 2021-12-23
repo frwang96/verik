@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.mid
+package io.verik.compiler.transform.post
 
 import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findExpression
@@ -32,7 +32,7 @@ internal class AssignmentTransformerStageTest : BaseTest() {
                 }
             """.trimIndent(),
             AssignmentTransformerStage::class,
-            "SvBinaryExpression(Unit, ReferenceExpression(*), ConstantExpression(*), ASSIGN)"
+            "SvBinaryExpression(Void, ReferenceExpression(*), ConstantExpression(*), ASSIGN)"
         ) { it.findExpression("f") }
     }
 
@@ -51,7 +51,7 @@ internal class AssignmentTransformerStageTest : BaseTest() {
                 }
             """.trimIndent(),
             AssignmentTransformerStage::class,
-            "SvBinaryExpression(Unit, ReferenceExpression(*), ConstantExpression(*), ARROW_ASSIGN)"
+            "SvBinaryExpression(Void, ReferenceExpression(*), ConstantExpression(*), ARROW_ASSIGN)"
         ) { it.findExpression("f") }
     }
 
@@ -71,7 +71,7 @@ internal class AssignmentTransformerStageTest : BaseTest() {
                 }
             """.trimIndent(),
             AssignmentTransformerStage::class,
-            "SvBinaryExpression(Unit, ReferenceExpression(*), ConstantExpression(*), ARROW_ASSIGN)"
+            "SvBinaryExpression(Void, ReferenceExpression(*), ConstantExpression(*), ARROW_ASSIGN)"
         ) { it.findExpression("f") }
     }
 }

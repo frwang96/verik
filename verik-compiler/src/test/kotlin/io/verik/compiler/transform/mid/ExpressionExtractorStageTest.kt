@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test
 internal class ExpressionExtractorStageTest : BaseTest() {
 
     @Test
-    fun `streaming expression`() {
+    fun `Ubit reverse`() {
         driveElementTest(
             """
                 var x = u(0)
@@ -34,7 +34,7 @@ internal class ExpressionExtractorStageTest : BaseTest() {
             ExpressionExtractorStage::class,
             """
                 [
-                    PropertyStatement(Unit, SvProperty(<tmp>, Ubit<`1`>, StreamingExpression(*), 0, 0, 0)),
+                    PropertyStatement(Unit, SvProperty(<tmp>, Ubit<`1`>, KtCallExpression(*), 0, 0, 0)),
                     KtBinaryExpression(
                         Unit,
                         ReferenceExpression(Ubit<`1`>, x, null),

@@ -18,11 +18,12 @@ package io.verik.compiler.transform.mid
 
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
-import io.verik.compiler.ast.element.sv.EStreamingExpression
+import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.property.ExpressionType
 import io.verik.compiler.common.ExpressionExtractor
 import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
@@ -39,32 +40,37 @@ object ExpressionExtractorStage : ProjectStage() {
         private val expressionExtractor: ExpressionExtractor
     ) : TreeVisitor() {
 
-        override fun visitStreamingExpression(streamingExpression: EStreamingExpression) {
-            super.visitStreamingExpression(streamingExpression)
-            if (streamingExpression.getExpressionType() == ExpressionType.INDIRECT_TYPED_SUBEXPRESSION) {
-                val streamingExpressionReplacement = EStreamingExpression(
-                    streamingExpression.location,
-                    streamingExpression.type.copy(),
-                    streamingExpression.expression
+        override fun visitKtCallExpression(callExpression: EKtCallExpression) {
+            super.visitKtCallExpression(callExpression)
+            if (callExpression.reference == Core.Vk.Ubit.F_reverse &&
+                callExpression.getExpressionType() == ExpressionType.INDIRECT_TYPED_SUBEXPRESSION
+            ) {
+                val callExpressionReplacement = EKtCallExpression(
+                    callExpression.location,
+                    callExpression.type,
+                    callExpression.reference,
+                    callExpression.receiver,
+                    callExpression.valueArguments,
+                    callExpression.typeArguments
                 )
                 val property = ESvProperty.getTemporary(
-                    location = streamingExpression.location,
-                    type = streamingExpression.type.copy(),
-                    initializer = streamingExpressionReplacement,
+                    location = callExpression.location,
+                    type = callExpression.type.copy(),
+                    initializer = callExpressionReplacement,
                     isMutable = false,
                     isStatic = false
                 )
                 val referenceExpression = EReferenceExpression(
-                    streamingExpression.location,
+                    callExpression.location,
                     property.type.copy(),
                     property,
                     null
                 )
                 val propertyStatement = EPropertyStatement(
-                    streamingExpression.location,
+                    callExpression.location,
                     property
                 )
-                expressionExtractor.extract(streamingExpression, referenceExpression, listOf(propertyStatement))
+                expressionExtractor.extract(callExpression, referenceExpression, listOf(propertyStatement))
             }
         }
     }

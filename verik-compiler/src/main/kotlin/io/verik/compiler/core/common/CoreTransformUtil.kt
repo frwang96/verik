@@ -22,6 +22,7 @@ import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.common.BitConstant
 import io.verik.compiler.common.ConstantUtil
 import io.verik.compiler.common.ExpressionCopier
+import io.verik.compiler.common.ExpressionEvaluator
 import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.target.common.Target
 
@@ -49,8 +50,8 @@ object CoreTransformUtil {
         )
     }
 
-    fun plusInt(expression: EExpression, value: Int, location: SourceLocation): EKtCallExpression {
-        return EKtCallExpression(
+    fun plusInt(expression: EExpression, value: Int, location: SourceLocation): EExpression {
+        val callExpression = EKtCallExpression(
             location,
             Core.Kt.C_Int.toType(),
             Core.Kt.Int.F_plus_Int,
@@ -58,16 +59,18 @@ object CoreTransformUtil {
             arrayListOf(EConstantExpression(location, Core.Kt.C_Int.toType(), ConstantUtil.formatInt(value))),
             ArrayList()
         )
+        val evaluatedExpression = ExpressionEvaluator.evaluate(callExpression)
+        return evaluatedExpression ?: callExpression
     }
 
-    fun plusUbit(expression: EExpression, value: Int, location: SourceLocation): EKtCallExpression {
+    fun plusUbit(expression: EExpression, value: Int, location: SourceLocation): EExpression {
         val bitConstant = BitConstant(value, false, expression.type.asBitWidth(expression))
         val constantExpression = EConstantExpression(
             location,
             expression.type.copy(),
             ConstantUtil.formatBitConstant(bitConstant)
         )
-        return EKtCallExpression(
+        val callExpression = EKtCallExpression(
             location,
             expression.type.copy(),
             Core.Vk.Ubit.F_plus_Ubit,
@@ -75,5 +78,7 @@ object CoreTransformUtil {
             arrayListOf(constantExpression),
             ArrayList()
         )
+        val evaluatedExpression = ExpressionEvaluator.evaluate(callExpression)
+        return evaluatedExpression ?: callExpression
     }
 }
