@@ -19,8 +19,11 @@ package io.verik.compiler.ast.element.common
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.replaceIfContains
+import io.verik.compiler.message.SourceLocation
 
 abstract class EAbstractBlockExpression : EExpression(), ExpressionContainer {
+
+    abstract val endLocation: SourceLocation
 
     abstract var statements: ArrayList<EExpression>
 

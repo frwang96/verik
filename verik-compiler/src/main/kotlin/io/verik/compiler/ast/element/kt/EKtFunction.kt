@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast.element.kt
 
-import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.interfaces.Annotated
 import io.verik.compiler.ast.property.Type
@@ -31,7 +31,7 @@ class EKtFunction(
 ) : EKtAbstractFunction(), Annotated {
 
     override var type = NullDeclaration.toType()
-    override var body: EExpression? = null
+    override var body: EAbstractBlockExpression? = null
     override var valueParameters: ArrayList<EKtValueParameter> = ArrayList()
     override var typeParameters: ArrayList<ETypeParameter> = ArrayList()
     override var annotations: List<EAnnotation> = listOf()
@@ -40,7 +40,7 @@ class EKtFunction(
 
     fun init(
         type: Type,
-        body: EExpression?,
+        body: EAbstractBlockExpression?,
         valueParameters: List<EKtValueParameter>,
         typeParameters: List<ETypeParameter>,
         annotations: List<EAnnotation>,

@@ -22,7 +22,7 @@ import io.verik.compiler.message.Messages
 
 abstract class EAbstractFunction : EDeclaration(), ExpressionContainer {
 
-    abstract var body: EExpression?
+    abstract var body: EAbstractBlockExpression?
 
     override fun acceptChildren(visitor: TreeVisitor) {
         body?.accept(visitor)
@@ -31,12 +31,12 @@ abstract class EAbstractFunction : EDeclaration(), ExpressionContainer {
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
         newExpression.parent = this
         return if (body == oldExpression) {
-            body = newExpression
+            body = newExpression.cast()
             true
         } else false
     }
 
-    fun getBodyNotNull(): EExpression {
+    fun getBodyNotNull(): EAbstractBlockExpression {
         return body
             ?: Messages.INTERNAL_ERROR.on(this, "Function body expected")
     }

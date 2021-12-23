@@ -16,10 +16,9 @@
 
 package io.verik.compiler.interpret
 
+import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.EDeclaration
-import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtValueParameter
@@ -119,15 +118,13 @@ object FunctionInterpreterStage : ProjectStage() {
             }
         }
 
-        private fun getAlwaysSeqBlock(function: EKtFunction, body: EExpression): EAlwaysSeqBlock? {
-            val onExpression = if (body is EKtBlockExpression) {
-                if (body.statements.size == 1) {
-                    body.statements[0]
-                } else {
-                    Messages.ON_EXPRESSION_EXPECTED.on(body)
-                    return null
-                }
-            } else body
+        private fun getAlwaysSeqBlock(function: EKtFunction, body: EAbstractBlockExpression): EAlwaysSeqBlock? {
+            val onExpression = if (body.statements.size == 1) {
+                body.statements[0]
+            } else {
+                Messages.ON_EXPRESSION_EXPECTED.on(body)
+                return null
+            }
             if (onExpression !is EKtCallExpression || onExpression.reference != Core.Vk.F_on_Event_Event_Function) {
                 Messages.ON_EXPRESSION_EXPECTED.on(body)
                 return null

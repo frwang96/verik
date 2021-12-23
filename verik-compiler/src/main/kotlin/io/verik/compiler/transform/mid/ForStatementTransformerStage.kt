@@ -21,7 +21,6 @@ import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.sv.ESvForStatement
@@ -175,7 +174,7 @@ object ForStatementTransformerStage : ProjectStage() {
                 valueParameter.location,
                 elementProperty
             )
-            val body = functionLiteral.body as EKtBlockExpression
+            val body = functionLiteral.body
             propertyStatement.parent = body
             body.statements.add(0, propertyStatement)
             return ESvForStatement(

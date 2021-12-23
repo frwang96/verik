@@ -329,7 +329,7 @@ internal class ExpressionCasterTest : BaseTest() {
     }
 
     @Test
-    fun `for statement`() {
+    fun `for statement block expression`() {
         driveElementTest(
             """
                 var x: Packed<`8`, Boolean> = nc()
@@ -345,6 +345,27 @@ internal class ExpressionCasterTest : BaseTest() {
                     KtValueParameter(y, Boolean, [], 0, 0),
                     ReferenceExpression(*),
                     KtBlockExpression(Unit, [])
+                )
+            """.trimIndent()
+        ) { it.findExpression("f") }
+    }
+
+    @Test
+    fun `for statement call expression`() {
+        driveElementTest(
+            """
+                var x: Packed<`8`, Boolean> = nc()
+                fun f() {
+                    for (y in x) println()
+                }
+            """.trimIndent(),
+            CasterStage::class,
+            """
+                KtForStatement(
+                    Unit,
+                    KtValueParameter(y, Boolean, [], 0, 0),
+                    ReferenceExpression(*),
+                    KtBlockExpression(Unit, [*])
                 )
             """.trimIndent()
         ) { it.findExpression("f") }

@@ -17,6 +17,7 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.ast.element.common.ETypeParameter
+import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
@@ -135,7 +136,7 @@ object DeclarationCaster {
             Core.Kt.C_Unit.toType()
         }
         val body = function.bodyBlockExpression?.let {
-            castContext.casterVisitor.getExpression(it)
+            castContext.casterVisitor.getExpression(it).cast<EKtBlockExpression>()
         }
         val valueParameters = function.valueParameters.mapNotNull {
             castContext.casterVisitor.getElement<EKtValueParameter>(it)

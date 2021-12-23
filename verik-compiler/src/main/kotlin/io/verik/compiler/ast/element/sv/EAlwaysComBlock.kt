@@ -16,14 +16,14 @@
 
 package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
 class EAlwaysComBlock(
     override val location: SourceLocation,
     override var name: String,
-    override var body: EExpression?
+    override var body: EAbstractBlockExpression?
 ) : EAbstractProceduralBlock() {
 
     init {

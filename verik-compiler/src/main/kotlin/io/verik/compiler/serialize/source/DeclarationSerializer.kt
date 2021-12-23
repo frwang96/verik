@@ -143,13 +143,13 @@ object DeclarationSerializer {
         serializerContext.append("function automatic ${serializedType.getBaseAndPackedDimension()} ${function.name}")
         serializeSvValueParameterList(function.valueParameters, serializerContext)
         if (function.qualifierType != FunctionQualifierType.PURE_VIRTUAL) {
-            val body = function.body
-            if (body != null) {
-                serializerContext.indent {
-                    serializerContext.serializeAsStatement(body)
-                }
+            val body = function.getBodyNotNull()
+            serializerContext.indent {
+                serializerContext.serializeAsStatement(body)
             }
-            serializerContext.appendLine("endfunction : ${function.name}")
+            serializerContext.label(body.endLocation) {
+                serializerContext.appendLine("endfunction : ${function.name}")
+            }
         }
     }
 

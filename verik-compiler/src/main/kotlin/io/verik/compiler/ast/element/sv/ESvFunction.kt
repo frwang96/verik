@@ -16,8 +16,8 @@
 
 package io.verik.compiler.ast.element.sv
 
+import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.EAbstractFunction
-import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.property.FunctionQualifierType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
@@ -28,7 +28,7 @@ class ESvFunction(
     override val location: SourceLocation,
     override var name: String,
     override var type: Type,
-    override var body: EExpression?,
+    override var body: EAbstractBlockExpression?,
     var valueParameters: ArrayList<ESvValueParameter>,
     val qualifierType: FunctionQualifierType,
     val isStatic: Boolean

@@ -315,7 +315,17 @@ object ExpressionCaster {
             .getElement<EKtValueParameter>(expression.loopParameter!!)
             ?: return null
         val range = castContext.casterVisitor.getExpression(expression.loopRange!!)
-        val body = castContext.casterVisitor.getExpression(expression.body!!)
+        val bodyExpression = castContext.casterVisitor.getExpression(expression.body!!)
+        val body = if (bodyExpression is EKtBlockExpression) {
+            bodyExpression
+        } else {
+            EKtBlockExpression(
+                bodyExpression.location,
+                bodyExpression.location,
+                Core.Kt.C_Unit.toType(),
+                arrayListOf(bodyExpression)
+            )
+        }
         return EKtForStatement(location, valueParameter, range, body)
     }
 }

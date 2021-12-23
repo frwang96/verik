@@ -95,7 +95,7 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
         private fun getPrimaryConstructorBody(
             primaryConstructor: EPrimaryConstructor,
             properties: List<EKtProperty?>
-        ): EExpression {
+        ): EKtBlockExpression {
             val statements = ArrayList<EExpression>()
             primaryConstructor.valueParameters.zip(properties).forEach { (valueParameter, property) ->
                 if (property != null) {

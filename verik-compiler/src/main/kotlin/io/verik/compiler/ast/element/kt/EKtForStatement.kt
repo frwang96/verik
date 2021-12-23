@@ -28,7 +28,7 @@ class EKtForStatement(
     override val location: SourceLocation,
     val valueParameter: EKtValueParameter,
     var range: EExpression,
-    var body: EExpression
+    var body: EKtBlockExpression
 ) : EExpression(), ExpressionContainer {
 
     override var type = Core.Kt.C_Unit.toType()
@@ -59,7 +59,7 @@ class EKtForStatement(
                 true
             }
             body -> {
-                body = newExpression
+                body = newExpression.cast()
                 true
             }
             else -> false
