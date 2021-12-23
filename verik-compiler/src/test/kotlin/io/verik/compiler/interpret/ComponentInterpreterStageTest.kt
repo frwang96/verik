@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test
 internal class ComponentInterpreterStageTest : BaseTest() {
 
     @Test
-    fun `interpret module simple`() {
+    fun `module simple`() {
         driveElementTest(
             """
                 class M: Module()
@@ -34,7 +34,31 @@ internal class ComponentInterpreterStageTest : BaseTest() {
     }
 
     @Test
-    fun `interpret module with port`() {
+    fun `module simulation top illegal`() {
+        driveMessageTest(
+            """
+                @SimTop
+                class M: Module()
+            """.trimIndent(),
+            true,
+            "Simulation top must be declared as object"
+        )
+    }
+
+    @Test
+    fun `module synthesis top illegal`() {
+        driveMessageTest(
+            """
+                @SynthTop
+                object M: Module()
+            """.trimIndent(),
+            true,
+            "Synthesis top must not be declared as object"
+        )
+    }
+
+    @Test
+    fun `module with port`() {
         driveElementTest(
             """
                 class M(@In var x: Boolean): Module()
@@ -45,7 +69,7 @@ internal class ComponentInterpreterStageTest : BaseTest() {
     }
 
     @Test
-    fun `interpret module with port no directionality`() {
+    fun `module with port no directionality`() {
         driveMessageTest(
             """
                 class M(var x: Boolean): Module()
@@ -56,7 +80,7 @@ internal class ComponentInterpreterStageTest : BaseTest() {
     }
 
     @Test
-    fun `interpret module with port immutable`() {
+    fun `module with port immutable`() {
         driveMessageTest(
             """
                 class M(@In val x: Boolean): Module()
@@ -67,7 +91,7 @@ internal class ComponentInterpreterStageTest : BaseTest() {
     }
 
     @Test
-    fun `interpret module interface`() {
+    fun `module interface`() {
         driveElementTest(
             """
                 class MI: ModuleInterface()
@@ -78,7 +102,7 @@ internal class ComponentInterpreterStageTest : BaseTest() {
     }
 
     @Test
-    fun `interpret module port`() {
+    fun `module port`() {
         driveElementTest(
             """
                 class MP: ModulePort()
@@ -89,7 +113,7 @@ internal class ComponentInterpreterStageTest : BaseTest() {
     }
 
     @Test
-    fun `interpret clocking block`() {
+    fun `clocking block`() {
         driveElementTest(
             """
                 class CB(override val event: Event): ClockingBlock()

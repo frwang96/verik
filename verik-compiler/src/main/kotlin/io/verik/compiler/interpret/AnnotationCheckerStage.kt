@@ -16,7 +16,6 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.kt.EAnnotation
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.common.TreeVisitor
@@ -41,24 +40,13 @@ object AnnotationCheckerStage : ProjectStage() {
             Annotations.TASK
         )
 
-        private fun checkFunctionAnnotations(annotations: List<EAnnotation>) {
-            var conflictingAnnotation: String? = null
-            for (annotation in annotations) {
-                if (annotation.qualifiedName in conflictingFunctionAnnotations) {
-                    if (conflictingAnnotation == null) {
-                        conflictingAnnotation = annotation.name
-                    } else {
-                        Messages.CONFLICTING_ANNOTATION.on(annotation, conflictingAnnotation)
-                    }
-                }
-            }
-        }
-
         override fun visitKtClass(`class`: EKtClass) {
             super.visitKtClass(`class`)
-            if (`class`.hasAnnotation(Annotations.SYNTHESIS_TOP) ||
-                `class`.hasAnnotation(Annotations.SIMULATION_TOP)
-            ) {
+            val isSynthesisTop = `class`.hasAnnotation(Annotations.SYNTHESIS_TOP)
+            val isSimulationTop = `class`.hasAnnotation(Annotations.SIMULATION_TOP)
+            if (isSimulationTop && isSynthesisTop)
+                Messages.CONFLICTING_ANNOTATIONS.on(`class`, Annotations.SYNTHESIS_TOP, Annotations.SIMULATION_TOP)
+            if (isSimulationTop || isSynthesisTop) {
                 if (!`class`.type.isSubtype(Core.Vk.C_Module.toType()))
                     Messages.TOP_NOT_MODULE.on(`class`)
             }
@@ -66,7 +54,16 @@ object AnnotationCheckerStage : ProjectStage() {
 
         override fun visitKtFunction(function: EKtFunction) {
             super.visitKtFunction(function)
-            checkFunctionAnnotations(function.annotations)
+            var conflictingAnnotationName: String? = null
+            for (annotation in function.annotations) {
+                if (annotation.qualifiedName in conflictingFunctionAnnotations) {
+                    if (conflictingAnnotationName == null) {
+                        conflictingAnnotationName = annotation.name
+                    } else {
+                        Messages.CONFLICTING_ANNOTATIONS.on(function, annotation.name, conflictingAnnotationName)
+                    }
+                }
+            }
         }
     }
 }

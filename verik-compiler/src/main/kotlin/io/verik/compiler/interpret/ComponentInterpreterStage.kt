@@ -48,77 +48,96 @@ object ComponentInterpreterStage : ProjectStage() {
             val classType = `class`.type
             when {
                 classType.isSubtype(Core.Vk.C_Module.toType()) -> {
-                    val ports = interpretPorts(`class`.primaryConstructor?.valueParameters, referenceUpdater)
-                    val isSynthesisTop = `class`.hasAnnotation(Annotations.SYNTHESIS_TOP)
-                    val isSimulationTop = `class`.hasAnnotation(Annotations.SIMULATION_TOP)
-                    val module = EModule(
-                        `class`.location,
-                        `class`.bodyStartLocation,
-                        `class`.bodyEndLocation,
-                        `class`.name,
-                        classType,
-                        ports,
-                        `class`.declarations,
-                        isSynthesisTop,
-                        isSimulationTop
-                    )
+                    val module = interpretModule(`class`)
                     referenceUpdater.replace(`class`, module)
                     `class`.primaryConstructor?.let { referenceUpdater.update(it, module) }
                 }
                 classType.isSubtype(Core.Vk.C_ModuleInterface.toType()) -> {
-                    val ports = interpretPorts(`class`.primaryConstructor?.valueParameters, referenceUpdater)
-                    val moduleInterface = EModuleInterface(
-                        `class`.location,
-                        `class`.bodyStartLocation,
-                        `class`.bodyEndLocation,
-                        `class`.name,
-                        classType,
-                        ports,
-                        `class`.declarations
-                    )
+                    val moduleInterface = interpretModuleInterface(`class`)
                     referenceUpdater.replace(`class`, moduleInterface)
                     `class`.primaryConstructor?.let { referenceUpdater.update(it, moduleInterface) }
                 }
                 classType.isSubtype(Core.Vk.C_ModulePort.toType()) -> {
-                    val ports = interpretPorts(`class`.primaryConstructor?.valueParameters, referenceUpdater)
-                    val modulePort = EModulePort(
-                        `class`.location,
-                        `class`.bodyStartLocation,
-                        `class`.bodyEndLocation,
-                        `class`.name,
-                        classType,
-                        ports,
-                        null
-                    )
+                    val modulePort = interpretModulePort(`class`)
                     referenceUpdater.replace(`class`, modulePort)
                     `class`.primaryConstructor?.let { referenceUpdater.update(it, modulePort) }
                 }
                 classType.isSubtype(Core.Vk.C_ClockingBlock.toType()) -> {
-                    val valueParameters = `class`.primaryConstructor?.valueParameters
-                    val eventValueParameter = valueParameters?.find { it.name == "event" }
-                    if (eventValueParameter != null) {
-                        val eventValueParameterIndex = valueParameters.indexOf(eventValueParameter)
-                        valueParameters.remove(eventValueParameter)
-                        val ports = interpretPorts(valueParameters, referenceUpdater)
-                        val clockingBlock = EClockingBlock(
-                            `class`.location,
-                            `class`.bodyStartLocation,
-                            `class`.bodyEndLocation,
-                            `class`.name,
-                            classType,
-                            ports,
-                            eventValueParameterIndex
-                        )
-                        referenceUpdater.replace(`class`, clockingBlock)
-                        `class`.primaryConstructor?.let { referenceUpdater.update(it, clockingBlock) }
-                    } else {
-                        Messages.INTERNAL_ERROR.on(
-                            `class`,
-                            "Could not identify clocking block event value parameter"
-                        )
-                    }
+                    val clockingBlock = interpretClockingBlock(`class`)
+                    referenceUpdater.replace(`class`, clockingBlock)
+                    `class`.primaryConstructor?.let { referenceUpdater.update(it, clockingBlock) }
                 }
             }
+        }
+
+        private fun interpretModule(`class`: EKtClass): EModule {
+            val ports = interpretPorts(`class`.primaryConstructor?.valueParameters, referenceUpdater)
+            val isSynthesisTop = `class`.hasAnnotation(Annotations.SYNTHESIS_TOP)
+            val isSimulationTop = `class`.hasAnnotation(Annotations.SIMULATION_TOP)
+            when {
+                isSynthesisTop -> if (`class`.isObject)
+                    Messages.SYNTHESIS_TOP_IS_OBJECT.on(`class`)
+                isSimulationTop -> if (!`class`.isObject)
+                    Messages.SIMULATION_TOP_NOT_OBJECT.on(`class`)
+                else -> if (`class`.isObject)
+                    Messages.MODULE_IS_OBJECT.on(`class`)
+            }
+            return EModule(
+                `class`.location,
+                `class`.bodyStartLocation,
+                `class`.bodyEndLocation,
+                `class`.name,
+                `class`.type,
+                ports,
+                `class`.declarations,
+                isSynthesisTop,
+                isSimulationTop
+            )
+        }
+
+        private fun interpretModuleInterface(`class`: EKtClass): EModuleInterface {
+            val ports = interpretPorts(`class`.primaryConstructor?.valueParameters, referenceUpdater)
+            return EModuleInterface(
+                `class`.location,
+                `class`.bodyStartLocation,
+                `class`.bodyEndLocation,
+                `class`.name,
+                `class`.type,
+                ports,
+                `class`.declarations
+            )
+        }
+
+        private fun interpretModulePort(`class`: EKtClass): EModulePort {
+            val ports = interpretPorts(`class`.primaryConstructor?.valueParameters, referenceUpdater)
+            return EModulePort(
+                `class`.location,
+                `class`.bodyStartLocation,
+                `class`.bodyEndLocation,
+                `class`.name,
+                `class`.type,
+                ports,
+                null
+            )
+        }
+
+        private fun interpretClockingBlock(`class`: EKtClass): EClockingBlock {
+            val valueParameters = `class`.primaryConstructor?.valueParameters
+            val eventValueParameter = valueParameters?.find { it.name == "event" }
+                ?: Messages.INTERNAL_ERROR.on(`class`, "Could not identify clocking block event value parameter")
+            val eventValueParameterIndex = valueParameters.indexOf(eventValueParameter)
+            valueParameters.remove(eventValueParameter)
+
+            val ports = interpretPorts(valueParameters, referenceUpdater)
+            return EClockingBlock(
+                `class`.location,
+                `class`.bodyStartLocation,
+                `class`.bodyEndLocation,
+                `class`.name,
+                `class`.type,
+                ports,
+                eventValueParameterIndex
+            )
         }
 
         private fun interpretPorts(
