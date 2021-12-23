@@ -17,13 +17,14 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.ast.element.common.ETypeParameter
-import io.verik.compiler.ast.element.kt.EKtBasicClass
+import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.kt.ETypeAlias
+import io.verik.compiler.common.endLocation
 import io.verik.compiler.common.location
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
@@ -83,6 +84,9 @@ object DeclarationCastIndexerStage : ProjectStage() {
             val descriptor = castContext.sliceClass[classOrObject]!!
             val location = classOrObject.nameIdentifier?.location()
                 ?: classOrObject.getDeclarationKeyword()!!.location()
+            val bodyStartLocation = classOrObject.body?.lBrace?.location()
+                ?: classOrObject.endLocation()
+            val bodyEndLocation = classOrObject.endLocation()
             val name = classOrObject.name!!
             checkDeclarationName(name, classOrObject)
 
@@ -91,8 +95,8 @@ object DeclarationCastIndexerStage : ProjectStage() {
                 castContext.addDeclaration(descriptor.unsubstitutedPrimaryConstructor!!, indexedPrimaryConstructor)
             }
 
-            val indexedBasicClass = EKtBasicClass(location, name)
-            castContext.addDeclaration(descriptor, indexedBasicClass)
+            val indexedClass = EKtClass(location, bodyStartLocation, bodyEndLocation, name)
+            castContext.addDeclaration(descriptor, indexedClass)
         }
 
         override fun visitNamedFunction(function: KtNamedFunction) {
@@ -117,9 +121,10 @@ object DeclarationCastIndexerStage : ProjectStage() {
             super.visitProperty(property)
             val descriptor = castContext.sliceVariable[property]!!
             val location = property.nameIdentifier!!.location()
+            val endLocation = property.endLocation()
             val name = property.name!!
             checkDeclarationName(name, property)
-            val indexedProperty = EKtProperty(location, name)
+            val indexedProperty = EKtProperty(location, endLocation, name)
             castContext.addDeclaration(descriptor, indexedProperty)
         }
 

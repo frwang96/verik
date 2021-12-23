@@ -29,9 +29,9 @@ import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.common.EWhileStatement
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
-import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtForStatement
 import io.verik.compiler.ast.element.kt.EKtFunction
@@ -94,6 +94,7 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
         val location = declaration.location()
         @Suppress("RedundantNullableReturnType")
         val element: EElement? = declaration.accept(this, Unit)
+        @Suppress("KotlinConstantConditions")
         return when (element) {
             null -> null
             is EDeclaration -> element
@@ -107,8 +108,9 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
         val location = expression.location()
         @Suppress("RedundantNullableReturnType")
         val element: EElement? = expression.accept(this, Unit)
+        @Suppress("KotlinConstantConditions")
         return when (element) {
-            is EKtBasicClass -> {
+            is EKtClass -> {
                 Messages.ILLEGAL_LOCAL_DECLARATION.on(element, element.name)
                 ENullExpression(location)
             }
@@ -139,8 +141,8 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
         return DeclarationCaster.castTypeParameter(parameter, castContext)
     }
 
-    override fun visitClassOrObject(classOrObject: KtClassOrObject, data: Unit?): EKtBasicClass {
-        return DeclarationCaster.castKtBasicClass(classOrObject, castContext)
+    override fun visitClassOrObject(classOrObject: KtClassOrObject, data: Unit?): EKtClass {
+        return DeclarationCaster.castKtClass(classOrObject, castContext)
     }
 
     override fun visitPrimaryConstructor(constructor: KtPrimaryConstructor, data: Unit?): EPrimaryConstructor {

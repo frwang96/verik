@@ -30,6 +30,15 @@ fun PsiElement.location(): SourceLocation {
     return SourceLocation(path, lineAndColumn.line, lineAndColumn.column)
 }
 
+fun PsiElement.endLocation(): SourceLocation {
+    val lineAndColumn = PsiDiagnosticUtils.offsetToLineAndColumn(
+        containingFile.viewProvider.document,
+        textRange.endOffset
+    )
+    val path = Platform.getPathFromString(containingFile.virtualFile.path)
+    return SourceLocation(path, lineAndColumn.line, lineAndColumn.column)
+}
+
 fun <T> ArrayList<T>.replaceIfContains(old: T, new: T): Boolean {
     val index = indexOf(old)
     return if (index != -1) {

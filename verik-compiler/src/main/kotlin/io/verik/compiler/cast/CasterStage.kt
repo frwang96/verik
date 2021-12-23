@@ -16,10 +16,10 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.element.common.EBasicPackage
 import io.verik.compiler.ast.element.common.EFile
+import io.verik.compiler.ast.element.common.EPackage
 import io.verik.compiler.ast.element.common.EProject
-import io.verik.compiler.ast.element.common.ERootPackage
+import io.verik.compiler.ast.property.PackageType
 import io.verik.compiler.common.location
 import io.verik.compiler.main.Platform
 import io.verik.compiler.main.ProjectContext
@@ -56,55 +56,63 @@ object CasterStage : ProjectStage() {
             }
         }
 
-        val basicPackages = ArrayList<EBasicPackage>()
-        val rootPackage = ERootPackage(
+        val nativeRegularPackages = ArrayList<EPackage>()
+        val nativeRootPackage = EPackage(
             SourceLocation.NULL,
+            "<root>",
             ArrayList(),
-            getPackageOutputPath("", projectContext)
+            getPackageOutputPath("", projectContext),
+            PackageType.NATIVE_ROOT
         )
-        val importedBasicPackages = ArrayList<EBasicPackage>()
-        val importedRootPackage = ERootPackage(
+        val importedRegularPackages = ArrayList<EPackage>()
+        val importedRootPackage = EPackage(
             SourceLocation.NULL,
+            "imported",
             ArrayList(),
-            getPackageOutputPath("imported", projectContext)
+            getPackageOutputPath("imported", projectContext),
+            PackageType.IMPORTED_ROOT
         )
 
         filesMap.forEach { (packageName, files) ->
             when {
                 packageName == "" -> {
-                    files.forEach { it.parent = rootPackage }
-                    rootPackage.files = files
+                    files.forEach { it.parent = nativeRootPackage }
+                    nativeRootPackage.files = files
                 }
                 packageName == "imported" -> {
                     files.forEach { it.parent = importedRootPackage }
                     importedRootPackage.files = files
                 }
                 packageName.startsWith("imported.") -> {
-                    val basicPackage = EBasicPackage(
-                        SourceLocation.NULL,
-                        packageName,
-                        files,
-                        getPackageOutputPath(packageName, projectContext)
+                    importedRegularPackages.add(
+                        EPackage(
+                            SourceLocation.NULL,
+                            packageName,
+                            files,
+                            getPackageOutputPath(packageName, projectContext),
+                            PackageType.IMPORTED_REGULAR
+                        )
                     )
-                    importedBasicPackages.add(basicPackage)
                 }
                 else -> {
-                    val basicPackage = EBasicPackage(
-                        SourceLocation.NULL,
-                        packageName,
-                        files,
-                        getPackageOutputPath(packageName, projectContext)
+                    nativeRegularPackages.add(
+                        EPackage(
+                            SourceLocation.NULL,
+                            packageName,
+                            files,
+                            getPackageOutputPath(packageName, projectContext),
+                            PackageType.NATIVE_REGULAR
+                        )
                     )
-                    basicPackages.add(basicPackage)
                 }
             }
         }
 
         val project = EProject(
             SourceLocation.NULL,
-            basicPackages,
-            importedBasicPackages,
-            rootPackage,
+            nativeRegularPackages,
+            nativeRootPackage,
+            importedRegularPackages,
             importedRootPackage
         )
         projectContext.project = project

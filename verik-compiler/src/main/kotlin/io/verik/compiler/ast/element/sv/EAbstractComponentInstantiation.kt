@@ -21,8 +21,11 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.PortInstantiation
 import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.message.SourceLocation
 
 abstract class EAbstractComponentInstantiation : EAbstractProperty(), ExpressionContainer {
+
+    abstract val endLocation: SourceLocation
 
     abstract val portInstantiations: List<PortInstantiation>
 

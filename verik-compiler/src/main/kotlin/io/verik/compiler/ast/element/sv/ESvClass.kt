@@ -16,23 +16,29 @@
 
 package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.property.PortInstantiation
+import io.verik.compiler.ast.element.common.EAbstractContainerClass
+import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
-class EBasicComponentInstantiation(
+class ESvClass(
     override val location: SourceLocation,
+    override val bodyStartLocation: SourceLocation,
+    override val bodyEndLocation: SourceLocation,
     override var name: String,
     override var type: Type,
-    override val portInstantiations: List<PortInstantiation>
-) : EAbstractComponentInstantiation() {
+    override var superType: Type,
+    override var declarations: ArrayList<EDeclaration>,
+    val isVirtual: Boolean,
+    val isDeclarationsStatic: Boolean
+) : EAbstractContainerClass() {
 
     init {
-        portInstantiations.forEach { it.expression?.parent = this }
+        declarations.forEach { it.parent = this }
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitBasicComponentInstantiation(this)
+        return visitor.visitSvClass(this)
     }
 }

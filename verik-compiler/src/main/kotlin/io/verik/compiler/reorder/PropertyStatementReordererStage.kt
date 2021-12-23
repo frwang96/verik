@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.mid
+package io.verik.compiler.reorder
 
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EPropertyStatement
@@ -27,7 +27,7 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
-object PropertyStatementReorderStage : ProjectStage() {
+object PropertyStatementReordererStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(PropertyStatementReorderVisitor)

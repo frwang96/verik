@@ -43,6 +43,7 @@ object CaseStatementTransformerStage : ProjectStage() {
                 }
                 val caseStatement = ECaseStatement(
                     whenExpression.location,
+                    whenExpression.endLocation,
                     whenExpression.type,
                     subject,
                     entries

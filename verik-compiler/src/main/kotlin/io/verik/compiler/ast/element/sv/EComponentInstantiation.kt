@@ -14,24 +14,26 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.common
+package io.verik.compiler.ast.element.sv
 
+import io.verik.compiler.ast.property.PortInstantiation
+import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
-import java.nio.file.Path
 
-class EBasicPackage(
+class EComponentInstantiation(
     override val location: SourceLocation,
+    override val endLocation: SourceLocation,
     override var name: String,
-    override var files: ArrayList<EFile>,
-    override val outputPath: Path
-) : EAbstractPackage() {
+    override var type: Type,
+    override val portInstantiations: List<PortInstantiation>
+) : EAbstractComponentInstantiation() {
 
     init {
-        files.forEach { it.parent = this }
+        portInstantiations.forEach { it.expression?.parent = this }
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitBasicPackage(this)
+        visitor.visitComponentInstantiation(this)
     }
 }

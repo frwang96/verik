@@ -24,7 +24,7 @@ import java.nio.file.Path
 object FileCheckerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.project.basicPackages.forEach {
+        projectContext.project.packages().forEach {
             if (it.name == "verik_pkg")
                 Messages.PACKAGE_NAME_RESERVED.on(it, it.name)
         }

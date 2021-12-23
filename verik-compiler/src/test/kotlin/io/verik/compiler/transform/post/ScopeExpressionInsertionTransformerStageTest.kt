@@ -60,7 +60,7 @@ internal class ScopeExpressionInsertionTransformerStageTest : BaseTest() {
     }
 
     @Test
-    fun `reference property parent basic class`() {
+    fun `reference property parent class`() {
         driveElementTest(
             """
                 object O {

@@ -18,20 +18,25 @@ package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
 
 class EProject(
     override val location: SourceLocation,
-    val basicPackages: ArrayList<EBasicPackage>,
-    val importedBasicPackages: ArrayList<EBasicPackage>,
-    val rootPackage: ERootPackage,
-    val importedRootPackage: ERootPackage
-) : EElement() {
+    val nativeRegularPackages: ArrayList<EPackage>,
+    val nativeRootPackage: EPackage,
+    val importedRegularPackages: ArrayList<EPackage>,
+    val importedRootPackage: EPackage
+) : EDeclaration() {
+
+    override var name = "<project>"
+
+    override var type = Core.Kt.C_Unit.toType()
 
     init {
-        basicPackages.forEach { it.parent = this }
-        importedBasicPackages.forEach { it.parent = this }
-        rootPackage.parent = this
+        nativeRegularPackages.forEach { it.parent = this }
+        nativeRootPackage.parent = this
+        importedRegularPackages.forEach { it.parent = this }
         importedRootPackage.parent = this
     }
 
@@ -40,20 +45,24 @@ class EProject(
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        basicPackages.forEach { it.accept(visitor) }
-        importedBasicPackages.forEach { it.accept(visitor) }
-        rootPackage.accept(visitor)
+        nativeRegularPackages.forEach { it.accept(visitor) }
+        nativeRootPackage.accept(visitor)
+        importedRegularPackages.forEach { it.accept(visitor) }
         importedRootPackage.accept(visitor)
     }
 
+    fun packages(): List<EPackage> {
+        return nativeRegularPackages + nativeRootPackage + importedRegularPackages + importedRootPackage
+    }
+
     fun files(): List<EFile> {
-        return basicPackages.flatMap { it.files } +
-            importedBasicPackages.flatMap { it.files } +
-            rootPackage.files +
+        return nativeRegularPackages.flatMap { it.files } +
+            nativeRootPackage.files +
+            importedRegularPackages.flatMap { it.files } +
             importedRootPackage.files
     }
 
     fun nonImportedFiles(): List<EFile> {
-        return basicPackages.flatMap { it.files } + rootPackage.files
+        return nativeRegularPackages.flatMap { it.files } + nativeRootPackage.files
     }
 }

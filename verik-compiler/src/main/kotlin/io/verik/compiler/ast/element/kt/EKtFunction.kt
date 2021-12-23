@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast.element.kt
 
-import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.interfaces.Annotated
 import io.verik.compiler.ast.property.Type
@@ -31,22 +31,20 @@ class EKtFunction(
 ) : EKtAbstractFunction(), Annotated {
 
     override var type = NullDeclaration.toType()
-    override var body: EExpression? = null
+    override var body: EAbstractBlockExpression? = null
     override var valueParameters: ArrayList<EKtValueParameter> = ArrayList()
     override var typeParameters: ArrayList<ETypeParameter> = ArrayList()
     override var annotations: List<EAnnotation> = listOf()
     var isAbstract: Boolean = false
-    var isOverridable: Boolean = false
     var isOverride: Boolean = false
 
     fun init(
         type: Type,
-        body: EExpression?,
+        body: EAbstractBlockExpression?,
         valueParameters: List<EKtValueParameter>,
         typeParameters: List<ETypeParameter>,
         annotations: List<EAnnotation>,
         isAbstract: Boolean,
-        isOverridable: Boolean,
         isOverride: Boolean
     ) {
         body?.parent = this
@@ -59,7 +57,6 @@ class EKtFunction(
         this.typeParameters = ArrayList(typeParameters)
         this.annotations = annotations
         this.isAbstract = isAbstract
-        this.isOverridable = isOverridable
         this.isOverride = isOverride
     }
 

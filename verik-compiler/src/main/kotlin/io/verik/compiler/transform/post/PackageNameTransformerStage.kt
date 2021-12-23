@@ -16,7 +16,8 @@
 
 package io.verik.compiler.transform.post
 
-import io.verik.compiler.ast.element.common.EBasicPackage
+import io.verik.compiler.ast.element.common.EPackage
+import io.verik.compiler.ast.property.PackageType
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
@@ -30,12 +31,14 @@ object PackageNameTransformerStage : ProjectStage() {
 
     private object PackageNameTransformerVisitor : TreeVisitor() {
 
-        override fun visitBasicPackage(basicPackage: EBasicPackage) {
-            if (!basicPackage.name.matches(Regex("[a-zA-Z][a-zA-Z\\d]*(\\.[a-zA-Z][a-zA-Z\\d]*)*")))
-                Messages.INTERNAL_ERROR.on(basicPackage, "Unable to transform package name: ${basicPackage.name}")
-            val names = basicPackage.name.split(".")
-            val name = names.joinToString(separator = "_", postfix = "_pkg")
-            basicPackage.name = name
+        override fun visitPackage(`package`: EPackage) {
+            if (`package`.packageType == PackageType.NATIVE_REGULAR) {
+                if (!`package`.name.matches(Regex("[a-zA-Z][a-zA-Z\\d]*(\\.[a-zA-Z][a-zA-Z\\d]*)*")))
+                    Messages.INTERNAL_ERROR.on(`package`, "Unable to transform package name: ${`package`.name}")
+                val names = `package`.name.split(".")
+                val name = names.joinToString(separator = "_", postfix = "_pkg")
+                `package`.name = name
+            }
         }
     }
 }

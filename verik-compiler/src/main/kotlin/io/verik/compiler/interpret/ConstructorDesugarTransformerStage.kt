@@ -20,9 +20,9 @@ import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EThisExpression
-import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
+import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtConstructor
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtValueParameter
@@ -49,16 +49,16 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
         private val referenceUpdater: ReferenceUpdater
     ) : TreeVisitor() {
 
-        override fun visitKtBasicClass(basicClass: EKtBasicClass) {
-            super.visitKtBasicClass(basicClass)
-            val primaryConstructor = basicClass.primaryConstructor
+        override fun visitKtClass(`class`: EKtClass) {
+            super.visitKtClass(`class`)
+            val primaryConstructor = `class`.primaryConstructor
             if (primaryConstructor != null) {
                 val declarations = ArrayList<EDeclaration>()
                 val properties = desugarValueParameterProperties(primaryConstructor.valueParameters)
                 declarations.addAll(properties.filterNotNull())
 
                 val body = getPrimaryConstructorBody(primaryConstructor, properties)
-                val superTypeCallEntry = getSuperTypeCallEntry(basicClass.superTypeCallEntry)
+                val superTypeCallEntry = getSuperTypeCallEntry(`class`.superTypeCallEntry)
                 val constructor = EKtConstructor(primaryConstructor.location)
                 constructor.init(
                     primaryConstructor.type,
@@ -68,11 +68,11 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
                     superTypeCallEntry
                 )
                 declarations.add(constructor)
-                basicClass.primaryConstructor = null
+                `class`.primaryConstructor = null
                 referenceUpdater.update(primaryConstructor, constructor)
 
-                declarations.forEach { it.parent = basicClass }
-                basicClass.declarations.addAll(0, declarations)
+                declarations.forEach { it.parent = `class` }
+                `class`.declarations.addAll(0, declarations)
             }
         }
 
@@ -82,7 +82,7 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
                     val isMutable = it.isMutable
                     it.isPrimaryConstructorProperty = false
                     it.isMutable = false
-                    val property = EKtProperty(it.location, it.name)
+                    val property = EKtProperty(it.location, it.location, it.name)
                     property.init(it.type.copy(), null, listOf(), isMutable)
                     referenceUpdater.update(it, property)
                     property
@@ -95,7 +95,7 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
         private fun getPrimaryConstructorBody(
             primaryConstructor: EPrimaryConstructor,
             properties: List<EKtProperty?>
-        ): EExpression {
+        ): EKtBlockExpression {
             val statements = ArrayList<EExpression>()
             primaryConstructor.valueParameters.zip(properties).forEach { (valueParameter, property) ->
                 if (property != null) {
@@ -123,7 +123,12 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
                     )
                 }
             }
-            return EKtBlockExpression(primaryConstructor.location, Core.Kt.C_Unit.toType(), statements)
+            return EKtBlockExpression(
+                primaryConstructor.location,
+                primaryConstructor.location,
+                Core.Kt.C_Unit.toType(),
+                statements
+            )
         }
     }
 

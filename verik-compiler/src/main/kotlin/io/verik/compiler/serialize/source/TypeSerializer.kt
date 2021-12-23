@@ -17,8 +17,8 @@
 package io.verik.compiler.serialize.source
 
 import io.verik.compiler.ast.element.common.EAbstractClass
-import io.verik.compiler.ast.element.common.EBasicPackage
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EPackage
 import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
 import io.verik.compiler.ast.element.sv.EModulePort
 import io.verik.compiler.ast.element.sv.ETypeDefinition
@@ -33,7 +33,7 @@ object TypeSerializer {
         return when (val reference = type.reference) {
             is TargetPackage -> SerializedType(reference.name)
             is TargetClassDeclaration -> reference.serializeType(type.arguments, element)
-            is EBasicPackage -> SerializedType(reference.name)
+            is EPackage -> SerializedType(reference.name)
             is ETypeDefinition -> SerializedType(reference.name)
             is EAbstractContainerComponent -> SerializedType(reference.name)
             is EModulePort -> {
@@ -45,10 +45,10 @@ object TypeSerializer {
                 }
             }
             is EAbstractClass -> {
-                val elementBasicPackage = element.getParentBasicPackage()
-                val referenceBasicPackage = reference.getParentBasicPackage()
-                if (referenceBasicPackage != null && referenceBasicPackage != elementBasicPackage) {
-                    SerializedType("${referenceBasicPackage.name}::${reference.name}")
+                val elementPackage = element.getParentPackage()
+                val referencePackage = reference.getParentPackage()
+                if (referencePackage.packageType.isRegular() && referencePackage != elementPackage) {
+                    SerializedType("${referencePackage.name}::${reference.name}")
                 } else SerializedType(reference.name)
             }
             else -> {

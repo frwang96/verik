@@ -16,10 +16,11 @@
 
 package io.verik.compiler.serialize.source
 
+import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
-import io.verik.compiler.ast.element.sv.EBasicComponentInstantiation
 import io.verik.compiler.ast.element.sv.EClockingBlockInstantiation
+import io.verik.compiler.ast.element.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EInitialBlock
 import io.verik.compiler.ast.element.sv.EInjectedProperty
@@ -28,7 +29,7 @@ import io.verik.compiler.ast.element.sv.EModuleInterface
 import io.verik.compiler.ast.element.sv.EModulePortInstantiation
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.EStruct
-import io.verik.compiler.ast.element.sv.ESvBasicClass
+import io.verik.compiler.ast.element.sv.ESvClass
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvProperty
@@ -65,40 +66,46 @@ object DeclarationSerializer {
         serializerContext.appendLine()
     }
 
-    fun serializeSvBasicClass(basicClass: ESvBasicClass, serializerContext: SerializerContext) {
-        if (basicClass.isVirtual)
+    fun serializeSvClass(`class`: ESvClass, serializerContext: SerializerContext) {
+        if (`class`.isVirtual)
             serializerContext.append("virtual ")
-        serializerContext.append("class ${basicClass.name}")
-        val superType = basicClass.superType
+        serializerContext.append("class ${`class`.name}")
+        val superType = `class`.superType
         if (superType.reference != Core.Kt.C_Any) {
             serializerContext.append(" extends ${superType.reference.name}")
         }
         serializerContext.appendLine(";")
         serializerContext.indent {
-            basicClass.declarations.forEach { serializerContext.serializeAsDeclaration(it) }
+            `class`.declarations.forEach { serializerContext.serializeAsDeclaration(it) }
             serializerContext.appendLine()
         }
-        serializerContext.appendLine("endclass : ${basicClass.name}")
+        serializerContext.label(`class`.bodyEndLocation) {
+            serializerContext.appendLine("endclass : ${`class`.name}")
+        }
     }
 
     fun serializeModule(module: EModule, serializerContext: SerializerContext) {
         serializerContext.append("module ${module.name}")
-        serializePortList(module.ports, serializerContext)
+        serializePortList(module, serializerContext)
         serializerContext.indent {
             module.declarations.forEach { serializerContext.serializeAsDeclaration(it) }
             serializerContext.appendLine()
         }
-        serializerContext.appendLine("endmodule : ${module.name}")
+        serializerContext.label(module.bodyEndLocation) {
+            serializerContext.appendLine("endmodule : ${module.name}")
+        }
     }
 
     fun serializeModuleInterface(moduleInterface: EModuleInterface, serializerContext: SerializerContext) {
         serializerContext.append("interface ${moduleInterface.name}")
-        serializePortList(moduleInterface.ports, serializerContext)
+        serializePortList(moduleInterface, serializerContext)
         serializerContext.indent {
             moduleInterface.declarations.forEach { serializerContext.serializeAsDeclaration(it) }
             serializerContext.appendLine()
         }
-        serializerContext.appendLine("endinterface : ${moduleInterface.name}")
+        serializerContext.label(moduleInterface.bodyEndLocation) {
+            serializerContext.appendLine("endinterface : ${moduleInterface.name}")
+        }
     }
 
     fun serializeEnum(enum: EEnum, serializerContext: SerializerContext) {
@@ -108,7 +115,9 @@ object DeclarationSerializer {
                 serializerContext.serialize(it)
             }
         }
-        serializerContext.appendLine("} ${enum.name};")
+        serializerContext.label(enum.bodyEndLocation) {
+            serializerContext.appendLine("} ${enum.name};")
+        }
     }
 
     fun serializeStruct(struct: EStruct, serializerContext: SerializerContext) {
@@ -118,7 +127,9 @@ object DeclarationSerializer {
                 serializerContext.serialize(it)
             }
         }
-        serializerContext.appendLine("} ${struct.name};")
+        serializerContext.label(struct.bodyEndLocation) {
+            serializerContext.appendLine("} ${struct.name};")
+        }
     }
 
     fun serializeSvFunction(function: ESvFunction, serializerContext: SerializerContext) {
@@ -132,26 +143,26 @@ object DeclarationSerializer {
         serializerContext.append("function automatic ${serializedType.getBaseAndPackedDimension()} ${function.name}")
         serializeSvValueParameterList(function.valueParameters, serializerContext)
         if (function.qualifierType != FunctionQualifierType.PURE_VIRTUAL) {
-            val body = function.body
-            if (body != null) {
-                serializerContext.indent {
-                    serializerContext.serializeAsStatement(body)
-                }
+            val body = function.getBodyNotNull()
+            serializerContext.indent {
+                serializerContext.serializeAsStatement(body)
             }
-            serializerContext.appendLine("endfunction : ${function.name}")
+            serializerContext.label(body.endLocation) {
+                serializerContext.appendLine("endfunction : ${function.name}")
+            }
         }
     }
 
     fun serializeTask(task: ETask, serializerContext: SerializerContext) {
         serializerContext.append("task automatic ${task.name}")
         serializeSvValueParameterList(task.valueParameters, serializerContext)
-        val body = task.body
-        if (body != null) {
-            serializerContext.indent {
-                serializerContext.serializeAsStatement(body)
-            }
+        val body = task.getBodyNotNull()
+        serializerContext.indent {
+            serializerContext.serializeAsStatement(body)
         }
-        serializerContext.appendLine("endtask : ${task.name}")
+        serializerContext.label(body.endLocation) {
+            serializerContext.appendLine("endtask : ${task.name}")
+        }
     }
 
     fun serializeInitialBlock(initialBlock: EInitialBlock, serializerContext: SerializerContext) {
@@ -198,32 +209,36 @@ object DeclarationSerializer {
         serializerContext.append(enumEntry.name)
     }
 
-    fun serializeBasicComponentInstantiation(
-        basicComponentInstantiation: EBasicComponentInstantiation,
+    fun serializeComponentInstantiation(
+        componentInstantiation: EComponentInstantiation,
         serializerContext: SerializerContext
     ) {
-        val serializedType = TypeSerializer.serialize(basicComponentInstantiation.type, basicComponentInstantiation)
-        serializedType.checkNoPackedDimension(basicComponentInstantiation)
-        serializedType.checkNoUnpackedDimension(basicComponentInstantiation)
-        serializerContext.append("${serializedType.base} ${basicComponentInstantiation.name} (")
-        if (basicComponentInstantiation.portInstantiations.isNotEmpty()) {
+        val serializedType = TypeSerializer.serialize(componentInstantiation.type, componentInstantiation)
+        serializedType.checkNoPackedDimension(componentInstantiation)
+        serializedType.checkNoUnpackedDimension(componentInstantiation)
+        serializerContext.append("${serializedType.base} ${componentInstantiation.name} (")
+        if (componentInstantiation.portInstantiations.isNotEmpty()) {
             serializerContext.appendLine()
             serializerContext.indent {
-                serializerContext.serializeJoinAppendLine(basicComponentInstantiation.portInstantiations) {
-                    serializerContext.append(".${it.reference.name} ")
-                    serializerContext.align()
-                    serializerContext.append("( ")
-                    val expression = it.expression
-                    if (expression != null) {
-                        serializerContext.serializeAsExpression(expression)
-                        serializerContext.append(" )")
-                    } else {
-                        serializerContext.append(")")
+                serializerContext.serializeJoinAppendLine(componentInstantiation.portInstantiations) {
+                    serializerContext.label(it.location) {
+                        serializerContext.append(".${it.port.name} ")
+                        serializerContext.align()
+                        serializerContext.append("( ")
+                        val expression = it.expression
+                        if (expression != null) {
+                            serializerContext.serializeAsExpression(expression)
+                            serializerContext.append(" )")
+                        } else {
+                            serializerContext.append(")")
+                        }
                     }
                 }
             }
         }
-        serializerContext.appendLine(");")
+        serializerContext.label(componentInstantiation.endLocation) {
+            serializerContext.appendLine(");")
+        }
     }
 
     fun serializeModulePortInstantiation(
@@ -237,11 +252,15 @@ object DeclarationSerializer {
             serializerContext.appendLine(" (")
             serializerContext.indent {
                 serializerContext.serializeJoinAppendLine(modulePortInstantiation.portInstantiations) {
-                    serializePortType(it.portType, serializerContext)
-                    serializerContext.append(it.reference.name)
+                    serializerContext.label(it.location) {
+                        serializePortType(it.port.portType, serializerContext)
+                        serializerContext.append(it.port.name)
+                    }
                 }
             }
-            serializerContext.appendLine(");")
+            serializerContext.label(modulePortInstantiation.endLocation) {
+                serializerContext.appendLine(");")
+            }
         }
     }
 
@@ -254,11 +273,15 @@ object DeclarationSerializer {
         serializerContext.appendLine(";")
         serializerContext.indent {
             clockingBlockInstantiation.portInstantiations.forEach {
-                serializePortType(it.portType, serializerContext)
-                serializerContext.appendLine("${it.reference.name};")
+                serializerContext.label(it.location) {
+                    serializePortType(it.port.portType, serializerContext)
+                    serializerContext.appendLine("${it.port.name};")
+                }
             }
         }
-        serializerContext.appendLine("endclocking")
+        serializerContext.label(clockingBlockInstantiation.endLocation) {
+            serializerContext.appendLine("endclocking")
+        }
     }
 
     fun serializeSvValueParameter(valueParameter: ESvValueParameter, serializerContext: SerializerContext) {
@@ -284,15 +307,20 @@ object DeclarationSerializer {
             serializerContext.append(" ${serializedType.unpackedDimension}")
     }
 
-    private fun serializePortList(ports: List<EPort>, serializerContext: SerializerContext) {
-        if (ports.isNotEmpty()) {
+    private fun serializePortList(
+        abstractContainerComponent: EAbstractContainerComponent,
+        serializerContext: SerializerContext
+    ) {
+        if (abstractContainerComponent.ports.isNotEmpty()) {
             serializerContext.appendLine("(")
             serializerContext.indent {
-                serializerContext.serializeJoinAppendLine(ports) {
+                serializerContext.serializeJoinAppendLine(abstractContainerComponent.ports) {
                     serializerContext.serialize(it)
                 }
             }
-            serializerContext.appendLine(");")
+            serializerContext.label(abstractContainerComponent.bodyStartLocation) {
+                serializerContext.appendLine(");")
+            }
         } else {
             serializerContext.appendLine(";")
         }

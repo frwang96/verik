@@ -16,18 +16,17 @@
 
 package io.verik.compiler.common
 
-import io.verik.compiler.ast.element.common.EBasicPackage
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.ENullExpression
+import io.verik.compiler.ast.element.common.EPackage
 import io.verik.compiler.ast.element.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
-import io.verik.compiler.ast.element.common.ERootPackage
 import io.verik.compiler.ast.element.common.ESuperExpression
 import io.verik.compiler.ast.element.common.EThisExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
@@ -37,10 +36,10 @@ import io.verik.compiler.ast.element.kt.EAsExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
-import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtConstructor
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtForStatement
@@ -54,10 +53,10 @@ import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
-import io.verik.compiler.ast.element.sv.EBasicComponentInstantiation
 import io.verik.compiler.ast.element.sv.ECaseStatement
 import io.verik.compiler.ast.element.sv.EClockingBlock
 import io.verik.compiler.ast.element.sv.EClockingBlockInstantiation
+import io.verik.compiler.ast.element.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.sv.EConstantPartSelectExpression
 import io.verik.compiler.ast.element.sv.EDelayExpression
@@ -83,10 +82,10 @@ import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.EStructLiteralExpression
 import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
-import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
 import io.verik.compiler.ast.element.sv.ESvCallExpression
+import io.verik.compiler.ast.element.sv.ESvClass
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvForStatement
 import io.verik.compiler.ast.element.sv.ESvFunction
@@ -120,24 +119,18 @@ class ElementPrinter : Visitor() {
 
     override fun visitProject(project: EProject) {
         build("Project") {
-            build(project.basicPackages)
-            build(project.importedBasicPackages)
-            build(project.rootPackage)
+            build(project.nativeRegularPackages)
+            build(project.nativeRootPackage)
+            build(project.importedRegularPackages)
             build(project.importedRootPackage)
         }
     }
 
-    override fun visitBasicPackage(basicPackage: EBasicPackage) {
-        build("BasicPackage") {
-            build(basicPackage.name)
-            build(basicPackage.files)
-        }
-    }
-
-    override fun visitRootPackage(rootPackage: ERootPackage) {
-        build("RootPackage") {
-            build(rootPackage.name)
-            build(rootPackage.files)
+    override fun visitPackage(`package`: EPackage) {
+        build("Package") {
+            build(`package`.name)
+            build(`package`.files)
+            build(`package`.packageType.toString())
         }
     }
 
@@ -168,28 +161,28 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitKtBasicClass(basicClass: EKtBasicClass) {
-        build("KtBasicClass") {
-            build(basicClass.name)
-            build(basicClass.type.toString())
-            build(basicClass.declarations)
-            build(basicClass.typeParameters)
-            build(basicClass.annotations)
-            build(basicClass.isEnum)
-            build(basicClass.isAbstract)
-            build(basicClass.isObject)
-            build(basicClass.primaryConstructor)
-            buildSuperTypeCallEntry(basicClass.superTypeCallEntry)
+    override fun visitKtClass(`class`: EKtClass) {
+        build("KtClass") {
+            build(`class`.name)
+            build(`class`.type.toString())
+            build(`class`.declarations)
+            build(`class`.typeParameters)
+            build(`class`.annotations)
+            build(`class`.isEnum)
+            build(`class`.isAbstract)
+            build(`class`.isObject)
+            build(`class`.primaryConstructor)
+            buildSuperTypeCallEntry(`class`.superTypeCallEntry)
         }
     }
 
-    override fun visitSvBasicClass(basicClass: ESvBasicClass) {
-        build("SvBasicClass") {
-            build(basicClass.name)
-            build(basicClass.type.toString())
-            build(basicClass.declarations)
-            build(basicClass.isVirtual)
-            build(basicClass.isDeclarationsStatic)
+    override fun visitSvClass(`class`: ESvClass) {
+        build("SvClass") {
+            build(`class`.name)
+            build(`class`.type.toString())
+            build(`class`.declarations)
+            build(`class`.isVirtual)
+            build(`class`.isDeclarationsStatic)
         }
     }
 
@@ -360,11 +353,11 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitBasicComponentInstantiation(basicComponentInstantiation: EBasicComponentInstantiation) {
-        build("BasicComponentInstantiation") {
-            build(basicComponentInstantiation.name)
-            build(basicComponentInstantiation.type.toString())
-            buildPortInstantiations(basicComponentInstantiation.portInstantiations)
+    override fun visitComponentInstantiation(componentInstantiation: EComponentInstantiation) {
+        build("ComponentInstantiation") {
+            build(componentInstantiation.name)
+            build(componentInstantiation.type.toString())
+            buildPortInstantiations(componentInstantiation.portInstantiations)
         }
     }
 
@@ -855,9 +848,9 @@ class ElementPrinter : Visitor() {
     private fun buildPortInstantiations(portInstantiations: List<PortInstantiation>) {
         buildList(portInstantiations) {
             build("PortInstantiation") {
-                build(it.reference.name)
+                build(it.port.name)
+                build(it.port.portType.toString())
                 build(it.expression)
-                build(it.portType.toString())
             }
         }
     }

@@ -45,6 +45,7 @@ object BlockExpressionTransformerStage : ProjectStage() {
             blockExpression.replace(
                 ESvBlockExpression(
                     blockExpression.location,
+                    blockExpression.endLocation,
                     blockExpression.statements,
                     decorated,
                     name

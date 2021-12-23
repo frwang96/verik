@@ -30,7 +30,7 @@ internal class TargetClassTest : BaseTest() {
             """
                 logic x;
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -42,7 +42,7 @@ internal class TargetClassTest : BaseTest() {
             """
                 logic [7:0] x;
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -54,7 +54,7 @@ internal class TargetClassTest : BaseTest() {
             """
                 logic signed [7:0] x;
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -66,7 +66,7 @@ internal class TargetClassTest : BaseTest() {
             """
                 logic [7:0] x;
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -78,7 +78,7 @@ internal class TargetClassTest : BaseTest() {
             """
                 logic x [7:0];
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
@@ -90,6 +90,6 @@ internal class TargetClassTest : BaseTest() {
             """
                 verik_pkg::ArrayList#(logic) x;
             """.trimIndent()
-        ) { it.basicPackageTextFiles[0] }
+        ) { it.regularPackageTextFiles[0] }
     }
 }

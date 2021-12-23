@@ -31,7 +31,7 @@ import io.verik.compiler.check.pre.ImportDirectiveCheckerStage
 import io.verik.compiler.check.pre.UnsupportedElementCheckerStage
 import io.verik.compiler.check.pre.UnsupportedModifierCheckerStage
 import io.verik.compiler.interpret.AnnotationCheckerStage
-import io.verik.compiler.interpret.BasicClassInterpreterStage
+import io.verik.compiler.interpret.ClassInterpreterStage
 import io.verik.compiler.interpret.ComponentInstantiationCheckerStage
 import io.verik.compiler.interpret.ComponentInterpreterStage
 import io.verik.compiler.interpret.ConstructorDesugarTransformerStage
@@ -47,6 +47,8 @@ import io.verik.compiler.kotlin.KotlinCompilerAnalyzerStage
 import io.verik.compiler.kotlin.KotlinCompilerParserStage
 import io.verik.compiler.kotlin.KotlinEnvironmentBuilderStage
 import io.verik.compiler.reorder.DeadDeclarationEliminatorStage
+import io.verik.compiler.reorder.DependencyReordererStage
+import io.verik.compiler.reorder.PropertyStatementReordererStage
 import io.verik.compiler.resolve.TypeCheckerStage
 import io.verik.compiler.resolve.TypeParameterTypeCheckerStage
 import io.verik.compiler.resolve.TypeResolvedCheckerStage
@@ -69,7 +71,6 @@ import io.verik.compiler.transform.mid.FunctionTransformerStage
 import io.verik.compiler.transform.mid.IfAndWhenExpressionUnlifterStage
 import io.verik.compiler.transform.mid.InjectedStatementTransformerStage
 import io.verik.compiler.transform.mid.InlineIfExpressionTransformerStage
-import io.verik.compiler.transform.mid.PropertyStatementReorderStage
 import io.verik.compiler.transform.mid.PropertyTransformerStage
 import io.verik.compiler.transform.mid.StringTemplateExpressionTransformerStage
 import io.verik.compiler.transform.mid.StructLiteralTransformerStage
@@ -135,7 +136,7 @@ object StageSequencer {
         stageSequence.add(StageType.INTERPRET, StructInterpreterStage)
         stageSequence.add(StageType.INTERPRET, ComponentInterpreterStage)
         stageSequence.add(StageType.INTERPRET, ConstructorDesugarTransformerStage)
-        stageSequence.add(StageType.INTERPRET, BasicClassInterpreterStage)
+        stageSequence.add(StageType.INTERPRET, ClassInterpreterStage)
         stageSequence.add(StageType.INTERPRET, FunctionInterpreterStage)
         stageSequence.add(StageType.INTERPRET, PropertyInterpreterStage)
         stageSequence.add(StageType.INTERPRET, FunctionLiteralInterpreterStage)
@@ -160,9 +161,10 @@ object StageSequencer {
         stageSequence.add(StageType.MID_TRANSFORM, ConstantExpressionEvaluatorStage)
         stageSequence.add(StageType.MID_TRANSFORM, ExpressionExtractorStage)
         stageSequence.add(StageType.MID_TRANSFORM, AssignmentTransformerStage)
-        stageSequence.add(StageType.MID_TRANSFORM, PropertyStatementReorderStage)
 
+        stageSequence.add(StageType.REORDER, PropertyStatementReordererStage)
         stageSequence.add(StageType.REORDER, DeadDeclarationEliminatorStage)
+        stageSequence.add(StageType.REORDER, DependencyReordererStage)
 
         stageSequence.add(StageType.POST_TRANSFORM, TypeReferenceTransformerStage)
         stageSequence.add(StageType.POST_TRANSFORM, UnpackedTypeDefinitionTransformerStage)

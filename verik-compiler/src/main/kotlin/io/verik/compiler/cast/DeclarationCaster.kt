@@ -17,7 +17,8 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.ast.element.common.ETypeParameter
-import io.verik.compiler.ast.element.kt.EKtBasicClass
+import io.verik.compiler.ast.element.kt.EKtBlockExpression
+import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
@@ -28,7 +29,6 @@ import io.verik.compiler.ast.interfaces.cast
 import io.verik.compiler.ast.property.SuperTypeCallEntry
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.Messages
-import org.jetbrains.kotlin.descriptors.isOverridable
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtEnumEntry
@@ -70,10 +70,10 @@ object DeclarationCaster {
         return castedTypeParameter
     }
 
-    fun castKtBasicClass(classOrObject: KtClassOrObject, castContext: CastContext): EKtBasicClass {
+    fun castKtClass(classOrObject: KtClassOrObject, castContext: CastContext): EKtClass {
         val descriptor = castContext.sliceClass[classOrObject]!!
-        val castedBasicClass = castContext.getDeclaration(descriptor, classOrObject)
-            .cast<EKtBasicClass>(classOrObject)
+        val castedClass = castContext.getDeclaration(descriptor, classOrObject)
+            .cast<EKtClass>(classOrObject)
 
         val type = castContext.castType(descriptor.defaultType, classOrObject)
         val superType = castContext.castType(descriptor.getSuperClassOrAny().defaultType, classOrObject)
@@ -109,7 +109,7 @@ object DeclarationCaster {
             else -> Messages.INTERNAL_ERROR.on(classOrObject, "Multiple inheritance not supported")
         }
 
-        castedBasicClass.init(
+        castedClass.init(
             type,
             superType,
             declarations,
@@ -121,7 +121,7 @@ object DeclarationCaster {
             primaryConstructor,
             superTypeCallEntry
         )
-        return castedBasicClass
+        return castedClass
     }
 
     fun castKtFunction(function: KtNamedFunction, castContext: CastContext): EKtFunction {
@@ -136,7 +136,7 @@ object DeclarationCaster {
             Core.Kt.C_Unit.toType()
         }
         val body = function.bodyBlockExpression?.let {
-            castContext.casterVisitor.getExpression(it)
+            castContext.casterVisitor.getExpression(it).cast<EKtBlockExpression>()
         }
         val valueParameters = function.valueParameters.mapNotNull {
             castContext.casterVisitor.getElement<EKtValueParameter>(it)
@@ -148,7 +148,6 @@ object DeclarationCaster {
             AnnotationCaster.castAnnotationEntry(it, castContext)
         }
         val isAbstract = function.hasModifier(KtTokens.ABSTRACT_KEYWORD)
-        val isOverridable = descriptor.isOverridable
         val isOverride = function.hasModifier(KtTokens.OVERRIDE_KEYWORD)
 
         castedFunction.init(
@@ -158,7 +157,6 @@ object DeclarationCaster {
             typeParameters,
             annotations,
             isAbstract,
-            isOverridable,
             isOverride
         )
         return castedFunction
@@ -262,7 +260,7 @@ object DeclarationCaster {
         castContext: CastContext
     ): SuperTypeCallEntry {
         val descriptor = castContext.sliceReferenceTarget[
-            superTypeCallEntry.calleeExpression.constructorReferenceExpression
+            superTypeCallEntry.calleeExpression.constructorReferenceExpression!!
         ]!!
         val declaration = castContext.getDeclaration(descriptor, superTypeCallEntry)
         val valueArguments = CallExpressionCaster.castValueArguments(superTypeCallEntry.calleeExpression, castContext)

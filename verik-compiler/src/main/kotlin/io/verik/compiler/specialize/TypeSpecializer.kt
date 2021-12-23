@@ -18,7 +18,7 @@ package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypeParameter
-import io.verik.compiler.ast.element.kt.EKtBasicClass
+import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.core.common.Cardinal
 import io.verik.compiler.core.common.Core
@@ -40,7 +40,7 @@ object TypeSpecializer {
                 val value = specializeCardinalFunction(reference, argumentValues, element)
                 Cardinal.of(value).toType()
             }
-            is EKtBasicClass -> {
+            is EKtClass -> {
                 if (forwardReferences) {
                     val argumentsNotForwarded = type.arguments
                         .map { specialize(it, specializerContext, element, false) }

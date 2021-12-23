@@ -30,9 +30,9 @@ import io.verik.compiler.ast.element.common.EThisExpression
 import io.verik.compiler.ast.element.common.EWhileStatement
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
-import io.verik.compiler.ast.element.sv.EBasicComponentInstantiation
 import io.verik.compiler.ast.element.sv.ECaseStatement
 import io.verik.compiler.ast.element.sv.EClockingBlockInstantiation
+import io.verik.compiler.ast.element.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.sv.EConstantPartSelectExpression
 import io.verik.compiler.ast.element.sv.EDelayExpression
@@ -57,10 +57,10 @@ import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.EStructLiteralExpression
 import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
-import io.verik.compiler.ast.element.sv.ESvBasicClass
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
 import io.verik.compiler.ast.element.sv.ESvCallExpression
+import io.verik.compiler.ast.element.sv.ESvClass
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvForStatement
 import io.verik.compiler.ast.element.sv.ESvFunction
@@ -127,8 +127,8 @@ class SourceSerializerVisitor(
         DeclarationSerializer.serializeInjectedProperty(injectedProperty, serializerContext)
     }
 
-    override fun visitSvBasicClass(basicClass: ESvBasicClass) {
-        DeclarationSerializer.serializeSvBasicClass(basicClass, serializerContext)
+    override fun visitSvClass(`class`: ESvClass) {
+        DeclarationSerializer.serializeSvClass(`class`, serializerContext)
     }
 
     override fun visitModule(module: EModule) {
@@ -175,8 +175,8 @@ class SourceSerializerVisitor(
         DeclarationSerializer.serializeSvEnumEntry(enumEntry, serializerContext)
     }
 
-    override fun visitBasicComponentInstantiation(basicComponentInstantiation: EBasicComponentInstantiation) {
-        DeclarationSerializer.serializeBasicComponentInstantiation(basicComponentInstantiation, serializerContext)
+    override fun visitComponentInstantiation(componentInstantiation: EComponentInstantiation) {
+        DeclarationSerializer.serializeComponentInstantiation(componentInstantiation, serializerContext)
     }
 
     override fun visitModulePortInstantiation(modulePortInstantiation: EModulePortInstantiation) {

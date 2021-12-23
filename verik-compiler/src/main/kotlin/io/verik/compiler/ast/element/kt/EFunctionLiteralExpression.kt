@@ -31,7 +31,7 @@ import io.verik.compiler.message.SourceLocation
 class EFunctionLiteralExpression(
     override val location: SourceLocation,
     val valueParameters: ArrayList<EAbstractValueParameter>,
-    var body: EExpression
+    var body: EKtBlockExpression
 ) : EExpression(), ExpressionContainer, DeclarationContainer {
 
     override var type = Core.Kt.C_Function.toType()
@@ -55,7 +55,7 @@ class EFunctionLiteralExpression(
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
         newExpression.parent = this
         return if (body == oldExpression) {
-            body = newExpression
+            body = newExpression.cast()
             true
         } else false
     }

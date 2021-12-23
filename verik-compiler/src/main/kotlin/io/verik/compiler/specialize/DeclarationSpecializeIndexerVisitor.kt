@@ -22,8 +22,8 @@ import io.verik.compiler.ast.element.common.EReceiverExpression
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.kt.EKtAbstractFunction
-import io.verik.compiler.ast.element.kt.EKtBasicClass
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
@@ -47,7 +47,7 @@ class DeclarationSpecializeIndexerVisitor(
     private fun addSpecializedType(type: Type, element: EElement) {
         type.arguments.forEach { addSpecializedType(it, element) }
         val reference = type.reference
-        if (reference is EKtBasicClass && reference.isSpecializable()) {
+        if (reference is EKtClass && reference.isSpecializable()) {
             val typeParameterContext = TypeParameterContext.getFromTypeArguments(type.arguments, reference, element)
             declarationBindingQueue.push(DeclarationBinding(reference, typeParameterContext))
         }
@@ -57,7 +57,7 @@ class DeclarationSpecializeIndexerVisitor(
         val reference = receiverExpression.reference
         if (reference is EDeclaration) {
             val parent = reference.parent
-            if (parent is EKtBasicClass && parent.isObject) {
+            if (parent is EKtClass && parent.isObject) {
                 declarationBindingQueue.push(DeclarationBinding(parent, TypeParameterContext.EMPTY))
             }
         }
@@ -99,24 +99,29 @@ class DeclarationSpecializeIndexerVisitor(
         }
     }
 
-    override fun visitKtBasicClass(basicClass: EKtBasicClass) {
-        val superTypeCallEntry = basicClass.superTypeCallEntry
+    override fun visitKtClass(`class`: EKtClass) {
+        val superTypeCallEntry = `class`.superTypeCallEntry
         if (superTypeCallEntry != null) {
             val reference = superTypeCallEntry.reference
             if (reference is EDeclaration)
                 declarationBindingQueue.push(DeclarationBinding(reference, TypeParameterContext.EMPTY))
         }
 
-        basicClass.declarations.forEach {
+        `class`.declarations.forEach {
             if (it !is TypeParameterized || it.typeParameters.isEmpty())
                 declarationBindingQueue.push(DeclarationBinding(it, specializerContext.typeParameterContext))
         }
 
-        basicClass.typeParameters.forEach { it.accept(this) }
-        basicClass.annotations.forEach { it.accept(this) }
-        basicClass.primaryConstructor?.accept(this)
-        val specializedBasicClass = EKtBasicClass(basicClass.location, basicClass.name)
-        specializerContext[basicClass] = specializedBasicClass
+        `class`.typeParameters.forEach { it.accept(this) }
+        `class`.annotations.forEach { it.accept(this) }
+        `class`.primaryConstructor?.accept(this)
+        val specializedClass = EKtClass(
+            `class`.location,
+            `class`.bodyStartLocation,
+            `class`.bodyEndLocation,
+            `class`.name
+        )
+        specializerContext[`class`] = specializedClass
     }
 
     override fun visitKtFunction(function: EKtFunction) {
@@ -133,7 +138,7 @@ class DeclarationSpecializeIndexerVisitor(
 
     override fun visitKtProperty(property: EKtProperty) {
         super.visitKtProperty(property)
-        val specializedProperty = EKtProperty(property.location, property.name)
+        val specializedProperty = EKtProperty(property.location, property.endLocation, property.name)
         specializerContext[property] = specializedProperty
     }
 

@@ -38,6 +38,7 @@ import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.interfaces.cast
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.KtUnaryOperatorKind
+import io.verik.compiler.common.endLocation
 import io.verik.compiler.common.location
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.Messages
@@ -68,6 +69,7 @@ object ExpressionCaster {
 
     fun castKtBlockExpression(expression: KtBlockExpression, castContext: CastContext): EKtBlockExpression {
         val location = expression.location()
+        val endLocation = expression.endLocation()
         val type = if (expression.parent is KtContainerNodeForControlStructureBody &&
             expression.parent.parent is KtDoWhileExpression
         ) {
@@ -76,7 +78,7 @@ object ExpressionCaster {
             castContext.castType(expression)
         }
         val statements = expression.statements.mapNotNull { castContext.casterVisitor.getExpression(it) }
-        return EKtBlockExpression(location, type, ArrayList(statements))
+        return EKtBlockExpression(location, endLocation, type, ArrayList(statements))
     }
 
     fun castKtUnaryExpressionPrefix(expression: KtPrefixExpression, castContext: CastContext): EKtUnaryExpression {
@@ -213,6 +215,7 @@ object ExpressionCaster {
         castContext: CastContext
     ): EFunctionLiteralExpression {
         val location = expression.location()
+        val endLocation = expression.endLocation()
         val valueParameters = if (expression.functionLiteral.hasParameterSpecification()) {
             expression.valueParameters.mapNotNull {
                 castContext.casterVisitor.getElement<EKtValueParameter>(it)
@@ -233,6 +236,7 @@ object ExpressionCaster {
         }
         val body = EKtBlockExpression(
             location,
+            endLocation,
             Core.Kt.C_Function.toType(),
             ArrayList(statements)
         )
@@ -261,7 +265,7 @@ object ExpressionCaster {
         val location = expression.location()
         val childExpression = castContext.casterVisitor.getExpression(expression.leftHandSide)
         val castType = castContext.castType(expression.typeReference!!)
-        val property = EKtProperty(location, "<tmp>")
+        val property = EKtProperty(location, location, "<tmp>")
         property.init(castType, null, listOf(), false)
         return EIsExpression(
             location,
@@ -312,7 +316,17 @@ object ExpressionCaster {
             .getElement<EKtValueParameter>(expression.loopParameter!!)
             ?: return null
         val range = castContext.casterVisitor.getExpression(expression.loopRange!!)
-        val body = castContext.casterVisitor.getExpression(expression.body!!)
+        val bodyExpression = castContext.casterVisitor.getExpression(expression.body!!)
+        val body = if (bodyExpression is EKtBlockExpression) {
+            bodyExpression
+        } else {
+            EKtBlockExpression(
+                bodyExpression.location,
+                bodyExpression.location,
+                Core.Kt.C_Unit.toType(),
+                arrayListOf(bodyExpression)
+            )
+        }
         return EKtForStatement(location, valueParameter, range, body)
     }
 }

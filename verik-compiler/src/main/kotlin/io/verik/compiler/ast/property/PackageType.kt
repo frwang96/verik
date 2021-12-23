@@ -14,21 +14,19 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.common
+package io.verik.compiler.ast.property
 
-import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.common.Core
-import java.nio.file.Path
+enum class PackageType {
+    NATIVE_REGULAR,
+    NATIVE_ROOT,
+    IMPORTED_REGULAR,
+    IMPORTED_ROOT;
 
-abstract class EAbstractPackage : EDeclaration() {
+    fun isRegular(): Boolean {
+        return this in listOf(NATIVE_REGULAR, IMPORTED_REGULAR)
+    }
 
-    abstract var files: ArrayList<EFile>
-
-    abstract val outputPath: Path
-
-    override var type = Core.Kt.C_Unit.toType()
-
-    override fun acceptChildren(visitor: TreeVisitor) {
-        files.forEach { it.accept(visitor) }
+    fun isNative(): Boolean {
+        return this in listOf(NATIVE_REGULAR, NATIVE_ROOT)
     }
 }

@@ -17,11 +17,11 @@
 package io.verik.compiler.ast.property
 
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.interfaces.Declaration
-import io.verik.compiler.ast.interfaces.Reference
+import io.verik.compiler.ast.element.sv.EPort
+import io.verik.compiler.message.SourceLocation
 
 class PortInstantiation(
-    override var reference: Declaration,
-    var expression: EExpression?,
-    val portType: PortType
-) : Reference
+    val location: SourceLocation,
+    val port: EPort,
+    var expression: EExpression?
+)

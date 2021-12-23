@@ -16,8 +16,8 @@
 
 package io.verik.compiler.transform.pre
 
-import io.verik.compiler.ast.element.common.EBasicPackage
-import io.verik.compiler.ast.element.kt.EKtBasicClass
+import io.verik.compiler.ast.element.common.EPackage
+import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -52,17 +52,19 @@ object FunctionOverloadingTransformerStage : ProjectStage() {
                 function.name = "${function.name}_$suffix"
         }
 
-        override fun visitBasicPackage(basicPackage: EBasicPackage) {
-            super.visitBasicPackage(basicPackage)
-            val functions = basicPackage.files
-                .flatMap { it.declarations }
-                .filterIsInstance<EKtFunction>()
-            transformFunctions(functions)
+        override fun visitPackage(`package`: EPackage) {
+            super.visitPackage(`package`)
+            if (`package`.packageType.isNative()) {
+                val functions = `package`.files
+                    .flatMap { it.declarations }
+                    .filterIsInstance<EKtFunction>()
+                transformFunctions(functions)
+            }
         }
 
-        override fun visitKtBasicClass(basicClass: EKtBasicClass) {
-            super.visitKtBasicClass(basicClass)
-            val functions = basicClass.declarations.filterIsInstance<EKtFunction>()
+        override fun visitKtClass(`class`: EKtClass) {
+            super.visitKtClass(`class`)
+            val functions = `class`.declarations.filterIsInstance<EKtFunction>()
             transformFunctions(functions)
         }
     }

@@ -57,7 +57,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
                 }
             """.trimIndent(),
             PropertyInterpreterStage::class,
-            "BasicComponentInstantiation(m, M, [PortInstantiation(x, *, INPUT)])"
+            "ComponentInstantiation(m, M, [PortInstantiation(x, INPUT, *)])"
         ) { it.findDeclaration("m") }
     }
 
@@ -72,7 +72,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
                 }
             """.trimIndent(),
             PropertyInterpreterStage::class,
-            "BasicComponentInstantiation(m, M, [PortInstantiation(x, null, OUTPUT)])"
+            "ComponentInstantiation(m, M, [PortInstantiation(x, OUTPUT, null)])"
         ) { it.findDeclaration("m") }
     }
 
@@ -102,7 +102,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
                 }
             """.trimIndent(),
             PropertyInterpreterStage::class,
-            "BasicComponentInstantiation(mi, MI, [])"
+            "ComponentInstantiation(mi, MI, [])"
         ) { it.findDeclaration("mi") }
     }
 

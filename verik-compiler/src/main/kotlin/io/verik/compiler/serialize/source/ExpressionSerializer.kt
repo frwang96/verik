@@ -62,10 +62,12 @@ object ExpressionSerializer {
             serializerContext.indent {
                 blockExpression.statements.forEach { serializerContext.serializeAsStatement(it) }
             }
-            serializerContext.append("end")
-            if (blockExpression.name != null)
-                serializerContext.append(" : ${blockExpression.name}")
-            serializerContext.appendLine()
+            serializerContext.label(blockExpression.endLocation) {
+                serializerContext.append("end")
+                if (blockExpression.name != null)
+                    serializerContext.append(" : ${blockExpression.name}")
+                serializerContext.appendLine()
+            }
         } else {
             blockExpression.statements.forEach { serializerContext.serializeAsStatement(it) }
         }
@@ -275,13 +277,15 @@ object ExpressionSerializer {
         }
         val elseExpression = ifExpression.elseExpression
         if (elseExpression != null) {
-            if (elseExpression is ESvBlockExpression || elseExpression is EIfExpression) {
-                serializerContext.append("else ")
-                serializerContext.serializeAsStatement(elseExpression)
-            } else {
-                serializerContext.appendLine("else")
-                serializerContext.indent {
+            serializerContext.label(elseExpression) {
+                if (elseExpression is ESvBlockExpression || elseExpression is EIfExpression) {
+                    serializerContext.append("else ")
                     serializerContext.serializeAsStatement(elseExpression)
+                } else {
+                    serializerContext.appendLine("else")
+                    serializerContext.indent {
+                        serializerContext.serializeAsStatement(elseExpression)
+                    }
                 }
             }
         }
@@ -330,7 +334,9 @@ object ExpressionSerializer {
                 serializerContext.serializeAsStatement(entry.body)
             }
         }
-        serializerContext.appendLine("endcase")
+        serializerContext.label(caseStatement.endLocation) {
+            serializerContext.appendLine("endcase")
+        }
     }
 
     fun serializeWhileStatement(whileStatement: EWhileStatement, serializerContext: SerializerContext) {

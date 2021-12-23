@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast.element.kt
 
-import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.property.SuperTypeCallEntry
 import io.verik.compiler.ast.property.Type
@@ -32,14 +32,14 @@ class EKtConstructor(
     override var name = "<init>"
 
     override var type: Type = NullDeclaration.toType()
-    override var body: EExpression? = null
+    override var body: EAbstractBlockExpression? = null
     override var valueParameters: ArrayList<EKtValueParameter> = ArrayList()
     override var typeParameters: ArrayList<ETypeParameter> = ArrayList()
     var superTypeCallEntry: SuperTypeCallEntry? = null
 
     fun init(
         type: Type,
-        body: EExpression?,
+        body: EAbstractBlockExpression?,
         valueParameters: List<EKtValueParameter>,
         typeParameters: List<ETypeParameter>,
         superTypeCallEntry: SuperTypeCallEntry?

@@ -21,7 +21,7 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.EReceiverExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
-import io.verik.compiler.ast.element.kt.EKtBasicClass
+import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.interfaces.TypeParameterized
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.message.Messages
@@ -88,7 +88,7 @@ data class TypeParameterContext(val typeParameterBindings: List<TypeParameterBin
                     false
                 )
                 val specializedTypeReference = specializedType.reference
-                if (specializedTypeReference is EKtBasicClass) {
+                if (specializedTypeReference is EKtClass) {
                     getFromTypeArguments(
                         specializedType.arguments,
                         specializedTypeReference,

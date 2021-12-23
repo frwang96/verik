@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast.element.kt
 
-import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.NullDeclaration
@@ -28,7 +28,7 @@ class EPrimaryConstructor(
 ) : EKtAbstractFunction() {
 
     override var name = "<init>"
-    override var body: EExpression? = null
+    override var body: EAbstractBlockExpression? = null
 
     override var type: Type = NullDeclaration.toType()
     override var valueParameters: ArrayList<EKtValueParameter> = ArrayList()

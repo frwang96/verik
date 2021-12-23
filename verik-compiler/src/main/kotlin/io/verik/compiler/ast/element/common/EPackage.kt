@@ -14,29 +14,34 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.sv
+package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.element.common.EAbstractContainerClass
-import io.verik.compiler.ast.element.common.EDeclaration
-import io.verik.compiler.ast.property.Type
+import io.verik.compiler.ast.property.PackageType
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
+import java.nio.file.Path
 
-class ESvBasicClass(
+class EPackage(
     override val location: SourceLocation,
     override var name: String,
-    override var type: Type,
-    override var superType: Type,
-    override var declarations: ArrayList<EDeclaration>,
-    val isVirtual: Boolean,
-    val isDeclarationsStatic: Boolean
-) : EAbstractContainerClass() {
+    var files: ArrayList<EFile>,
+    val outputPath: Path,
+    val packageType: PackageType
+) : EDeclaration() {
+
+    override var type = Core.Kt.C_Unit.toType()
 
     init {
-        declarations.forEach { it.parent = this }
+        files.forEach { it.parent = this }
     }
 
     override fun accept(visitor: Visitor) {
-        return visitor.visitSvBasicClass(this)
+        visitor.visitPackage(this)
+    }
+
+    override fun acceptChildren(visitor: TreeVisitor) {
+        files.forEach { it.accept(visitor) }
     }
 }

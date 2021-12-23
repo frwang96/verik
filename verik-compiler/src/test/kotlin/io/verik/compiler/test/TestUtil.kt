@@ -50,14 +50,10 @@ fun EProject.findExpression(name: String): EExpression {
             super.visitAbstractFunction(abstractFunction)
             if (abstractFunction.name == name) {
                 abstractFunction.body?.let {
-                    if (it is EAbstractBlockExpression) {
-                        if (it.statements.size == 1)
-                            expressions.add(it.statements[0])
-                        else
-                            throw IllegalArgumentException("Function body block has more than one expression")
-                    } else {
-                        expressions.add(it)
-                    }
+                    if (it.statements.size == 1)
+                        expressions.add(it.statements[0])
+                    else
+                        throw IllegalArgumentException("Function body has more than one expression")
                 }
             }
         }

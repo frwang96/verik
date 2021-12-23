@@ -14,25 +14,11 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.common
+package io.verik.compiler.reorder
 
-import io.verik.compiler.common.Visitor
-import io.verik.compiler.message.SourceLocation
-import java.nio.file.Path
+import io.verik.compiler.ast.element.common.EDeclaration
 
-class ERootPackage(
-    override val location: SourceLocation,
-    override var files: ArrayList<EFile>,
-    override val outputPath: Path
-) : EAbstractPackage() {
-
-    override var name = "<root>"
-
-    init {
-        files.forEach { it.parent = this }
-    }
-
-    override fun accept(visitor: Visitor) {
-        visitor.visitRootPackage(this)
-    }
-}
+data class DependencyReordererResult(
+    val reorderedDeclarations: List<EDeclaration>,
+    val unsatisfiedDependencies: List<Dependency>
+)

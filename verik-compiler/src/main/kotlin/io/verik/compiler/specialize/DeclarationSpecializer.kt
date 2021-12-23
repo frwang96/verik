@@ -17,7 +17,7 @@
 package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EDeclaration
-import io.verik.compiler.ast.element.kt.EKtBasicClass
+import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
@@ -32,7 +32,7 @@ object DeclarationSpecializer {
 
     fun <D : EDeclaration> specializeDeclaration(declaration: D, specializerContext: SpecializerContext): D {
         val copiedDeclaration = when (declaration) {
-            is EKtBasicClass -> specializeKtBasicClass(declaration, specializerContext)
+            is EKtClass -> specializeKtClass(declaration, specializerContext)
             is EKtFunction -> specializeKtFunction(declaration, specializerContext)
             is EPrimaryConstructor -> specializePrimaryConstructor(declaration, specializerContext)
             is EKtProperty -> specializeKtProperty(declaration, specializerContext)
@@ -44,19 +44,16 @@ object DeclarationSpecializer {
         return copiedDeclaration as D
     }
 
-    private fun specializeKtBasicClass(
-        basicClass: EKtBasicClass,
-        specializerContext: SpecializerContext
-    ): EKtBasicClass {
-        val specializedBasicClass = specializerContext[basicClass, basicClass]
-            .cast<EKtBasicClass>()
+    private fun specializeKtClass(`class`: EKtClass, specializerContext: SpecializerContext): EKtClass {
+        val specializedClass = specializerContext[`class`, `class`]
+            .cast<EKtClass>()
 
-        val typeParameterString = getTypeParameterString(basicClass, specializerContext)
+        val typeParameterString = getTypeParameterString(`class`, specializerContext)
         if (typeParameterString != null)
-            specializedBasicClass.name = "${specializedBasicClass.name}_$typeParameterString"
+            specializedClass.name = "${specializedClass.name}_$typeParameterString"
 
         val typeParameterContext = specializerContext.typeParameterContext
-        val declarations = basicClass.declarations.flatMap { declaration ->
+        val declarations = `class`.declarations.flatMap { declaration ->
             val typeParameterContexts = specializerContext.matchTypeParameterContexts(declaration, typeParameterContext)
             typeParameterContexts.map {
                 specializerContext.typeParameterContext = it
@@ -65,14 +62,14 @@ object DeclarationSpecializer {
         }
         specializerContext.typeParameterContext = typeParameterContext
 
-        val type = specializerContext.specializeType(basicClass.type, basicClass)
-        val superType = specializerContext.specializeType(basicClass.superType, basicClass)
-        val annotations = basicClass.annotations.map { specializerContext.specialize(it) }
-        val primaryConstructor = basicClass.primaryConstructor?.let { specializerContext.specialize(it) }
-        val superTypeCallEntry = basicClass.superTypeCallEntry?.let { superTypeCallEntry ->
+        val type = specializerContext.specializeType(`class`.type, `class`)
+        val superType = specializerContext.specializeType(`class`.superType, `class`)
+        val annotations = `class`.annotations.map { specializerContext.specialize(it) }
+        val primaryConstructor = `class`.primaryConstructor?.let { specializerContext.specialize(it) }
+        val superTypeCallEntry = `class`.superTypeCallEntry?.let { superTypeCallEntry ->
             val reference = superTypeCallEntry.reference
             val forwardedReference = if (reference is EDeclaration) {
-                specializerContext[reference, basicClass]
+                specializerContext[reference, `class`]
             } else reference
             SuperTypeCallEntry(
                 forwardedReference,
@@ -80,19 +77,19 @@ object DeclarationSpecializer {
             )
         }
 
-        specializedBasicClass.init(
+        specializedClass.init(
             type,
             superType,
             declarations,
             listOf(),
             annotations,
-            basicClass.isEnum,
-            basicClass.isAbstract,
-            basicClass.isObject,
+            `class`.isEnum,
+            `class`.isAbstract,
+            `class`.isObject,
             primaryConstructor,
             superTypeCallEntry
         )
-        return specializedBasicClass
+        return specializedClass
     }
 
     private fun specializeKtFunction(function: EKtFunction, specializerContext: SpecializerContext): EKtFunction {
@@ -115,7 +112,6 @@ object DeclarationSpecializer {
             listOf(),
             annotations,
             function.isAbstract,
-            function.isOverridable,
             function.isOverride
         )
         return specializedFunction

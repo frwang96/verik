@@ -61,9 +61,12 @@ abstract class EElement {
         }
     }
 
-    fun getParentBasicPackage(): EBasicPackage? {
-        return if (this is EBasicPackage) this
-        else parent?.getParentBasicPackage()
+    fun getParentPackage(): EPackage {
+        return when (val parent = parent) {
+            is EPackage -> parent
+            null -> Messages.INTERNAL_ERROR.on(this, "Parent package not found")
+            else -> parent.getParentPackage()
+        }
     }
 
     abstract fun accept(visitor: Visitor)

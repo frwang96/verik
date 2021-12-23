@@ -19,7 +19,7 @@ package io.verik.compiler.interpret
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
-import io.verik.compiler.ast.element.sv.EBasicComponentInstantiation
+import io.verik.compiler.ast.element.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.property.PortInstantiation
 import io.verik.compiler.ast.property.PortType
@@ -44,10 +44,10 @@ object PortInstantiationCheckerStage : ProjectStage() {
             Core.Vk.Unpacked.F_get_Ubit
         )
 
-        override fun visitBasicComponentInstantiation(basicComponentInstantiation: EBasicComponentInstantiation) {
-            super.visitBasicComponentInstantiation(basicComponentInstantiation)
-            basicComponentInstantiation.portInstantiations.forEach {
-                if (it.portType == PortType.OUTPUT) {
+        override fun visitComponentInstantiation(componentInstantiation: EComponentInstantiation) {
+            super.visitComponentInstantiation(componentInstantiation)
+            componentInstantiation.portInstantiations.forEach {
+                if (it.port.portType == PortType.OUTPUT) {
                     val expression = it.expression
                     if (expression != null)
                         checkOutputPortExpression(it, expression)
@@ -69,11 +69,11 @@ object PortInstantiationCheckerStage : ProjectStage() {
                         Core.Vk.F_cat_Any_Any ->
                             expression.valueArguments.forEach { checkOutputPortExpression(portInstantiation, it) }
                         else ->
-                            Messages.OUTPUT_PORT_ILLEGAL_EXPRESSION.on(expression, portInstantiation.reference.name)
+                            Messages.OUTPUT_PORT_ILLEGAL_EXPRESSION.on(expression, portInstantiation.port.name)
                     }
                 }
                 else ->
-                    Messages.OUTPUT_PORT_ILLEGAL_EXPRESSION.on(expression, portInstantiation.reference.name)
+                    Messages.OUTPUT_PORT_ILLEGAL_EXPRESSION.on(expression, portInstantiation.port.name)
             }
         }
     }

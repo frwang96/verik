@@ -23,6 +23,8 @@ import io.verik.compiler.message.SourceLocation
 
 class EModuleInterface(
     override val location: SourceLocation,
+    override val bodyStartLocation: SourceLocation,
+    override val bodyEndLocation: SourceLocation,
     override var name: String,
     override var type: Type,
     override val ports: List<EPort>,

@@ -24,18 +24,18 @@ import io.verik.compiler.main.ProjectStage
 object SourceSerializerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        val basicPackageTextFiles = ArrayList<TextFile>()
-        projectContext.project.basicPackages.forEach { basicPackage ->
-            basicPackage.files.forEach {
+        val regularPackageTextFiles = ArrayList<TextFile>()
+        projectContext.project.nativeRegularPackages.forEach { regularPackage ->
+            regularPackage.files.forEach {
                 if (!it.isEmptySerialization()) {
-                    basicPackageTextFiles.add(serialize(projectContext, it))
+                    regularPackageTextFiles.add(serialize(projectContext, it))
                 }
             }
         }
-        projectContext.outputContext.basicPackageTextFiles = basicPackageTextFiles
+        projectContext.outputContext.regularPackageTextFiles = regularPackageTextFiles
 
         val rootPackageTextFiles = ArrayList<TextFile>()
-        projectContext.project.rootPackage.files.forEach {
+        projectContext.project.nativeRootPackage.files.forEach {
             if (!it.isEmptySerialization()) {
                 rootPackageTextFiles.add(serialize(projectContext, it))
             }

@@ -16,7 +16,7 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.kt.EKtBasicClass
+import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.sv.EClockingBlock
 import io.verik.compiler.ast.element.sv.EModule
@@ -43,69 +43,77 @@ object ComponentInterpreterStage : ProjectStage() {
 
     private class ComponentInterpreterVisitor(private val referenceUpdater: ReferenceUpdater) : TreeVisitor() {
 
-        override fun visitKtBasicClass(basicClass: EKtBasicClass) {
-            super.visitKtBasicClass(basicClass)
-            val basicClassType = basicClass.type
+        override fun visitKtClass(`class`: EKtClass) {
+            super.visitKtClass(`class`)
+            val classType = `class`.type
             when {
-                basicClassType.isSubtype(Core.Vk.C_Module.toType()) -> {
-                    val ports = interpretPorts(basicClass.primaryConstructor?.valueParameters, referenceUpdater)
-                    val isSynthesisTop = basicClass.hasAnnotation(Annotations.SYNTHESIS_TOP)
-                    val isSimulationTop = basicClass.hasAnnotation(Annotations.SIMULATION_TOP)
+                classType.isSubtype(Core.Vk.C_Module.toType()) -> {
+                    val ports = interpretPorts(`class`.primaryConstructor?.valueParameters, referenceUpdater)
+                    val isSynthesisTop = `class`.hasAnnotation(Annotations.SYNTHESIS_TOP)
+                    val isSimulationTop = `class`.hasAnnotation(Annotations.SIMULATION_TOP)
                     val module = EModule(
-                        basicClass.location,
-                        basicClass.name,
-                        basicClassType,
+                        `class`.location,
+                        `class`.bodyStartLocation,
+                        `class`.bodyEndLocation,
+                        `class`.name,
+                        classType,
                         ports,
-                        basicClass.declarations,
+                        `class`.declarations,
                         isSynthesisTop,
                         isSimulationTop
                     )
-                    referenceUpdater.replace(basicClass, module)
-                    basicClass.primaryConstructor?.let { referenceUpdater.update(it, module) }
+                    referenceUpdater.replace(`class`, module)
+                    `class`.primaryConstructor?.let { referenceUpdater.update(it, module) }
                 }
-                basicClassType.isSubtype(Core.Vk.C_ModuleInterface.toType()) -> {
-                    val ports = interpretPorts(basicClass.primaryConstructor?.valueParameters, referenceUpdater)
+                classType.isSubtype(Core.Vk.C_ModuleInterface.toType()) -> {
+                    val ports = interpretPorts(`class`.primaryConstructor?.valueParameters, referenceUpdater)
                     val moduleInterface = EModuleInterface(
-                        basicClass.location,
-                        basicClass.name,
-                        basicClassType,
+                        `class`.location,
+                        `class`.bodyStartLocation,
+                        `class`.bodyEndLocation,
+                        `class`.name,
+                        classType,
                         ports,
-                        basicClass.declarations
+                        `class`.declarations
                     )
-                    referenceUpdater.replace(basicClass, moduleInterface)
-                    basicClass.primaryConstructor?.let { referenceUpdater.update(it, moduleInterface) }
+                    referenceUpdater.replace(`class`, moduleInterface)
+                    `class`.primaryConstructor?.let { referenceUpdater.update(it, moduleInterface) }
                 }
-                basicClassType.isSubtype(Core.Vk.C_ModulePort.toType()) -> {
-                    val ports = interpretPorts(basicClass.primaryConstructor?.valueParameters, referenceUpdater)
+                classType.isSubtype(Core.Vk.C_ModulePort.toType()) -> {
+                    val ports = interpretPorts(`class`.primaryConstructor?.valueParameters, referenceUpdater)
                     val modulePort = EModulePort(
-                        basicClass.location,
-                        basicClass.name,
-                        basicClassType,
+                        `class`.location,
+                        `class`.bodyStartLocation,
+                        `class`.bodyEndLocation,
+                        `class`.name,
+                        classType,
                         ports,
                         null
                     )
-                    referenceUpdater.replace(basicClass, modulePort)
-                    basicClass.primaryConstructor?.let { referenceUpdater.update(it, modulePort) }
+                    referenceUpdater.replace(`class`, modulePort)
+                    `class`.primaryConstructor?.let { referenceUpdater.update(it, modulePort) }
                 }
-                basicClassType.isSubtype(Core.Vk.C_ClockingBlock.toType()) -> {
-                    val valueParameters = basicClass.primaryConstructor?.valueParameters
+                classType.isSubtype(Core.Vk.C_ClockingBlock.toType()) -> {
+                    val valueParameters = `class`.primaryConstructor?.valueParameters
                     val eventValueParameter = valueParameters?.find { it.name == "event" }
                     if (eventValueParameter != null) {
                         val eventValueParameterIndex = valueParameters.indexOf(eventValueParameter)
                         valueParameters.remove(eventValueParameter)
                         val ports = interpretPorts(valueParameters, referenceUpdater)
                         val clockingBlock = EClockingBlock(
-                            basicClass.location,
-                            basicClass.name,
-                            basicClassType,
+                            `class`.location,
+                            `class`.bodyStartLocation,
+                            `class`.bodyEndLocation,
+                            `class`.name,
+                            classType,
                             ports,
                             eventValueParameterIndex
                         )
-                        referenceUpdater.replace(basicClass, clockingBlock)
-                        basicClass.primaryConstructor?.let { referenceUpdater.update(it, clockingBlock) }
+                        referenceUpdater.replace(`class`, clockingBlock)
+                        `class`.primaryConstructor?.let { referenceUpdater.update(it, clockingBlock) }
                     } else {
                         Messages.INTERNAL_ERROR.on(
-                            basicClass,
+                            `class`,
                             "Could not identify clocking block event value parameter"
                         )
                     }

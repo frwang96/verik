@@ -20,17 +20,17 @@ import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class BasicClassInterpreterStageTest : BaseTest() {
+internal class ClassInterpreterStageTest : BaseTest() {
 
     @Test
-    fun `basic class simple`() {
+    fun `class simple`() {
         driveElementTest(
             """
                 class C
             """.trimIndent(),
-            BasicClassInterpreterStage::class,
+            ClassInterpreterStage::class,
             """
-                SvBasicClass(
+                SvClass(
                     C, C,
                     [
                         SvFunction(_${'$'}new, *, *, [], REGULAR, 1),
@@ -43,14 +43,14 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
     }
 
     @Test
-    fun `basic class with primary constructor parameter`() {
+    fun `class with primary constructor parameter`() {
         driveElementTest(
             """
                 class C(x: Int)
             """.trimIndent(),
-            BasicClassInterpreterStage::class,
+            ClassInterpreterStage::class,
             """
-                SvBasicClass(
+                SvClass(
                     C, C,
                     [
                         SvFunction(_${'$'}new, C, *, [SvValueParameter(x, Int, 1)], REGULAR, 1),
@@ -63,14 +63,14 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
     }
 
     @Test
-    fun `basic class with primary constructor property`() {
+    fun `class with primary constructor property`() {
         driveElementTest(
             """
                 class C(val x: Int)
             """.trimIndent(),
-            BasicClassInterpreterStage::class,
+            ClassInterpreterStage::class,
             """
-                SvBasicClass(
+                SvClass(
                     C, C,
                     [
                         KtProperty(x, Int, null, [], 0),
@@ -84,15 +84,15 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
     }
 
     @Test
-    fun `basic class with primary constructor chained`() {
+    fun `class with primary constructor chained`() {
         driveElementTest(
             """
                 open class C
                 class D : C()
             """.trimIndent(),
-            BasicClassInterpreterStage::class,
+            ClassInterpreterStage::class,
             """
-                SvBasicClass(
+                SvClass(
                     D, D,
                     [
                         SvFunction(_${'$'}new, D, *, [], REGULAR, 1),
@@ -109,24 +109,24 @@ internal class BasicClassInterpreterStageTest : BaseTest() {
     }
 
     @Test
-    fun `basic class abstract`() {
+    fun `class abstract`() {
         driveElementTest(
             """
                 abstract class C
             """.trimIndent(),
-            BasicClassInterpreterStage::class,
-            "SvBasicClass(C, C, [SvFunction(_${'$'}init, Unit, *, [], REGULAR, 0)], 1, 0)"
+            ClassInterpreterStage::class,
+            "SvClass(C, C, [SvFunction(_${'$'}init, Unit, *, [], REGULAR, 0)], 1, 0)"
         ) { it.findDeclaration("C") }
     }
 
     @Test
-    fun `basic class declarations static`() {
+    fun `class declarations static`() {
         driveElementTest(
             """
                 object O
             """.trimIndent(),
-            BasicClassInterpreterStage::class,
-            "SvBasicClass(O, O, [], 0, 1)"
+            ClassInterpreterStage::class,
+            "SvClass(O, O, [], 0, 1)"
         ) { it.findDeclaration("O") }
     }
 }

@@ -16,10 +16,9 @@
 
 package io.verik.compiler.interpret
 
+import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.EDeclaration
-import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtValueParameter
@@ -27,7 +26,7 @@ import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EInitialBlock
-import io.verik.compiler.ast.element.sv.ESvBasicClass
+import io.verik.compiler.ast.element.sv.ESvClass
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.element.sv.ETask
@@ -92,12 +91,12 @@ object FunctionInterpreterStage : ProjectStage() {
                 else -> {
                     val valueParameters = getValueParameters(function.valueParameters, referenceUpdater)
                     val isStatic = when (val parent = function.parent) {
-                        is ESvBasicClass -> parent.isDeclarationsStatic
+                        is ESvClass -> parent.isDeclarationsStatic
                         else -> false
                     }
                     val qualifierType = when {
                         function.isAbstract -> FunctionQualifierType.PURE_VIRTUAL
-                        function.parent is ESvBasicClass -> {
+                        function.parent is ESvClass -> {
                             when {
                                 isStatic -> FunctionQualifierType.REGULAR
                                 function.isOverride -> FunctionQualifierType.REGULAR
@@ -113,23 +112,19 @@ object FunctionInterpreterStage : ProjectStage() {
                         function.body,
                         ArrayList(valueParameters),
                         qualifierType,
-                        isStatic,
-                        function.isOverridable,
-                        function.isOverride
+                        isStatic
                     )
                 }
             }
         }
 
-        private fun getAlwaysSeqBlock(function: EKtFunction, body: EExpression): EAlwaysSeqBlock? {
-            val onExpression = if (body is EKtBlockExpression) {
-                if (body.statements.size == 1) {
-                    body.statements[0]
-                } else {
-                    Messages.ON_EXPRESSION_EXPECTED.on(body)
-                    return null
-                }
-            } else body
+        private fun getAlwaysSeqBlock(function: EKtFunction, body: EAbstractBlockExpression): EAlwaysSeqBlock? {
+            val onExpression = if (body.statements.size == 1) {
+                body.statements[0]
+            } else {
+                Messages.ON_EXPRESSION_EXPECTED.on(body)
+                return null
+            }
             if (onExpression !is EKtCallExpression || onExpression.reference != Core.Vk.F_on_Event_Event_Function) {
                 Messages.ON_EXPRESSION_EXPECTED.on(body)
                 return null

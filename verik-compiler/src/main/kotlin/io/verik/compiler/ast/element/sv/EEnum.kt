@@ -25,6 +25,8 @@ import io.verik.compiler.target.common.Target
 
 class EEnum(
     override val location: SourceLocation,
+    override val bodyStartLocation: SourceLocation,
+    override val bodyEndLocation: SourceLocation,
     override var name: String,
     override var type: Type,
     val enumEntries: List<ESvEnumEntry>
