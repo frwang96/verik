@@ -24,7 +24,6 @@ import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.common.CoreDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
@@ -53,14 +52,14 @@ object NameCheckerStage : ProjectStage() {
         override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
             super.visitReferenceExpression(referenceExpression)
             val reference = referenceExpression.reference
-            if (reference !is CoreDeclaration && !reference.name.matches(nameRegex))
+            if (reference !is TargetDeclaration && !reference.name.matches(nameRegex))
                 Messages.NAME_ILLEGAL.on(referenceExpression, reference.name)
         }
 
         override fun visitSvCallExpression(callExpression: ESvCallExpression) {
             super.visitSvCallExpression(callExpression)
             val reference = callExpression.reference
-            if (reference !is CoreDeclaration && reference !is TargetDeclaration) {
+            if (reference !is TargetDeclaration) {
                 if (!reference.name.matches(nameRegex))
                     Messages.NAME_ILLEGAL.on(callExpression, reference.name)
             }

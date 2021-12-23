@@ -18,6 +18,7 @@ package io.verik.compiler.target.declaration
 
 import io.verik.compiler.target.common.PrimitiveTargetFunctionDeclaration
 import io.verik.compiler.target.common.TargetPackage
+import io.verik.compiler.target.common.TargetPropertyDeclaration
 import io.verik.compiler.target.common.TargetScope
 
 object TargetSystem : TargetScope(TargetPackage) {
@@ -41,4 +42,6 @@ object TargetSystem : TargetScope(TargetPackage) {
     val F_new = PrimitiveTargetFunctionDeclaration(parent, "new")
     val F_wait = PrimitiveTargetFunctionDeclaration(parent, "wait")
     val F_name = PrimitiveTargetFunctionDeclaration(parent, "name")
+
+    val P_root = TargetPropertyDeclaration(parent, "\$root")
 }

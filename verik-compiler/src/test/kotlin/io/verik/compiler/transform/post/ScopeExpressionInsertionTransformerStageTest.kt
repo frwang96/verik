@@ -44,7 +44,7 @@ internal class ScopeExpressionInsertionTransformerStageTest : BaseTest() {
     }
 
     @Test
-    fun `reference element parent file`() {
+    fun `reference package property`() {
         driveElementTest(
             """
                 var x = false
@@ -60,7 +60,7 @@ internal class ScopeExpressionInsertionTransformerStageTest : BaseTest() {
     }
 
     @Test
-    fun `reference property parent class`() {
+    fun `reference package class`() {
         driveElementTest(
             """
                 object O {
@@ -74,6 +74,25 @@ internal class ScopeExpressionInsertionTransformerStageTest : BaseTest() {
             """.trimIndent(),
             ScopeExpressionInsertionTransformerStage::class,
             "ReferenceExpression(Boolean, x, ScopeExpression(Void, O))"
+        ) { it.findExpression("f") }
+    }
+
+    @Test
+    fun `reference module`() {
+        driveElementTest(
+            """
+                @SimTop
+                object M : Module() {
+                    val x: Boolean = nc()
+                }
+                class N : Module() {
+                    fun f() {
+                        M.x
+                    }
+                }
+            """.trimIndent(),
+            ScopeExpressionInsertionTransformerStage::class,
+            "ReferenceExpression(Boolean, x, ReferenceExpression(M, M, ReferenceExpression(Void, ${'$'}root, null)))"
         ) { it.findExpression("f") }
     }
 }

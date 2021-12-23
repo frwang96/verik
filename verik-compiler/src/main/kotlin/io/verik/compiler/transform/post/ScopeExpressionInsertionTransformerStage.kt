@@ -17,9 +17,12 @@
 package io.verik.compiler.transform.post
 
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.EPackage
 import io.verik.compiler.ast.element.common.EReceiverExpression
+import io.verik.compiler.ast.element.common.EReferenceExpression
+import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.EScopeExpression
 import io.verik.compiler.ast.element.sv.ESvClass
 import io.verik.compiler.ast.element.sv.ESvFunction
@@ -28,6 +31,7 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.target.common.CompositeTargetFunctionDeclaration
+import io.verik.compiler.target.common.Target
 import io.verik.compiler.target.common.TargetDeclaration
 
 object ScopeExpressionInsertionTransformerStage : ProjectStage() {
@@ -41,7 +45,7 @@ object ScopeExpressionInsertionTransformerStage : ProjectStage() {
 
         private var parentPackage: EPackage? = null
 
-        private fun getScopeExpression(receiverExpression: EReceiverExpression): EScopeExpression? {
+        private fun getScopeExpression(receiverExpression: EReceiverExpression): EExpression? {
             when (val reference = receiverExpression.reference) {
                 is TargetDeclaration -> {
                     if (reference is CompositeTargetFunctionDeclaration) {
@@ -69,6 +73,22 @@ object ScopeExpressionInsertionTransformerStage : ProjectStage() {
                                 return EScopeExpression(receiverExpression.location, parent.toType())
                             if (reference is ESvProperty && reference.isStatic == true)
                                 return EScopeExpression(receiverExpression.location, parent.toType())
+                        }
+                        is EModule -> {
+                            if (parent.isSimulationTop) {
+                                val referenceExpression = EReferenceExpression(
+                                    receiverExpression.location,
+                                    Target.C_Void.toType(),
+                                    Target.P_root,
+                                    null
+                                )
+                                return EReferenceExpression(
+                                    receiverExpression.location,
+                                    parent.toType(),
+                                    parent,
+                                    referenceExpression
+                                )
+                            }
                         }
                     }
                 }
