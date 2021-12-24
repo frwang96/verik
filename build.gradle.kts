@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import java.io.ByteArrayOutputStream
+
 plugins {
     kotlin("jvm") version "1.5.31"
     id("org.jetbrains.changelog") version "1.3.1"
@@ -29,7 +31,18 @@ configure<JavaPluginExtension> {
 }
 
 changelog {
-    groups.set(emptyList())
+    if (project.version.toString().startsWith("local")) {
+        val outputStream =  ByteArrayOutputStream()
+        project.exec {
+            commandLine = listOf("git", "describe", "--tags", "--abbrev=0")
+            standardOutput = outputStream
+        }
+        val version = String(outputStream.toByteArray()).trim().drop(1)
+        setVersion(version)
+    } else {
+        setVersion(project.version)
+    }
+    groups.set(listOf())
 }
 
 tasks.register("mainTest") {

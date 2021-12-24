@@ -2,6 +2,7 @@ name: Release
 
 on:
   push:
+    branches: [ master ]
     tags:
       - "v*"
 
@@ -11,10 +12,27 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2.3.4
+      - name: Setup Java
+        uses: actions/setup-java@v2.2.0
         with:
-          fetch-depth: 0
-      - name: Generate Release
-        uses: marvinpinto/action-automatic-releases@v1.2.1
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          prerelease: false
+          java-version: 17
+          distribution: 'zulu'
+      - name: Export Changelog
+        id: changelog
+        shell: bash
+        run: |
+          CHANGELOG="$(./gradlew getChangelog --no-header --console=plain -q)"
+          CHANGELOG="${CHANGELOG//'%'/'%25'}"
+          CHANGELOG="${CHANGELOG//$'\n'/'%0A'}"
+          CHANGELOG="${CHANGELOG//$'\r'/'%0D'}"
+          echo "::set-output name=changelog::$CHANGELOG"
+      - name: Create Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create ${{ github.event.release.tag_name }} \
+            --title "${{ github.event.release.tag_name }}" \
+            --notes "$(cat << 'EOM'
+          ${{ steps.changelog.outputs.changelog }}
+          EOM
+          )"
