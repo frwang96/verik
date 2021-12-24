@@ -21,6 +21,7 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
 
 class EKtBlockExpression(
@@ -38,5 +39,12 @@ class EKtBlockExpression(
 
     override fun accept(visitor: Visitor) {
         visitor.visitKtBlockExpression(this)
+    }
+
+    companion object {
+
+        fun empty(location: SourceLocation): EKtBlockExpression {
+            return EKtBlockExpression(location, location, Core.Kt.C_Unit.toType(), ArrayList())
+        }
     }
 }

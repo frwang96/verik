@@ -209,6 +209,7 @@ abstract class BaseTest {
                 timescale = "1ns / 1ns",
                 enableDeadCodeElimination = false,
                 labelSourceLocations = false,
+                enableLineDirective = false,
                 indentLength = 4,
                 wrapLength = 80,
                 suppressedWarnings = listOf("KOTLIN_COMPILE_WARNING"),

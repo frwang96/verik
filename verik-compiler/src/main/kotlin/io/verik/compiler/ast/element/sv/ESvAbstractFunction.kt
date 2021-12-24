@@ -16,21 +16,15 @@
 
 package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.element.common.EAbstractBlockExpression
-import io.verik.compiler.common.Visitor
-import io.verik.compiler.message.SourceLocation
+import io.verik.compiler.ast.element.common.EAbstractFunction
+import io.verik.compiler.common.TreeVisitor
 
-class EInitialBlock(
-    override val location: SourceLocation,
-    override var name: String,
-    override var body: EAbstractBlockExpression
-) : EAbstractProceduralBlock() {
+abstract class ESvAbstractFunction : EAbstractFunction() {
 
-    init {
-        body.parent = this
-    }
+    abstract var valueParameters: ArrayList<ESvValueParameter>
 
-    override fun accept(visitor: Visitor) {
-        visitor.visitInitialBlock(this)
+    override fun acceptChildren(visitor: TreeVisitor) {
+        super.acceptChildren(visitor)
+        valueParameters.forEach { it.accept(visitor) }
     }
 }

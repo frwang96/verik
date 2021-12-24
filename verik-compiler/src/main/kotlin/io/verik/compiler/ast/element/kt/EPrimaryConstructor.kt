@@ -28,11 +28,15 @@ class EPrimaryConstructor(
 ) : EKtAbstractFunction() {
 
     override var name = "<init>"
-    override var body: EAbstractBlockExpression? = null
+    override var body: EAbstractBlockExpression = EKtBlockExpression.empty(location)
 
     override var type: Type = NullDeclaration.toType()
     override var valueParameters: ArrayList<EKtValueParameter> = ArrayList()
     override var typeParameters: ArrayList<ETypeParameter> = ArrayList()
+
+    init {
+        body.parent = this
+    }
 
     fun init(type: Type, valueParameters: List<EKtValueParameter>, typeParameters: List<ETypeParameter>) {
         valueParameters.forEach { it.parent = this }

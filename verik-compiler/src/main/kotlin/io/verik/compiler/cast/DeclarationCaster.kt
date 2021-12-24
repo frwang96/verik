@@ -136,8 +136,8 @@ object DeclarationCaster {
             Core.Kt.C_Unit.toType()
         }
         val body = function.bodyBlockExpression?.let {
-            castContext.casterVisitor.getExpression(it).cast<EKtBlockExpression>()
-        }
+            castContext.casterVisitor.getExpression(it).cast()
+        } ?: EKtBlockExpression.empty(castedFunction.location)
         val valueParameters = function.valueParameters.mapNotNull {
             castContext.casterVisitor.getElement<EKtValueParameter>(it)
         }

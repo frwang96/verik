@@ -166,10 +166,6 @@ object Messages {
         "Could not determine directionality of port: $0"
     )
 
-    val FUNCTION_MISSING_BODY = ErrorMessageTemplate1<String>(
-        "Function missing body: $0"
-    )
-
     val ON_EXPRESSION_EXPECTED = ErrorMessageTemplate0(
         "On expression expected"
     )

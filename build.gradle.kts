@@ -16,6 +16,7 @@
 
 plugins {
     kotlin("jvm") version "1.5.31"
+    id("org.jetbrains.changelog") version "1.3.1"
 }
 
 repositories {
@@ -25,6 +26,10 @@ repositories {
 configure<JavaPluginExtension> {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+changelog {
+    groups.set(emptyList())
 }
 
 tasks.register("mainTest") {

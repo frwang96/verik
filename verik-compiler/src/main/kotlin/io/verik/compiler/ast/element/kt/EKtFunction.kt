@@ -32,23 +32,27 @@ class EKtFunction(
 ) : EKtAbstractFunction(), Annotated {
 
     override var type = NullDeclaration.toType()
-    override var body: EAbstractBlockExpression? = null
+    override var body: EAbstractBlockExpression = EKtBlockExpression.empty(location)
     override var valueParameters: ArrayList<EKtValueParameter> = ArrayList()
     override var typeParameters: ArrayList<ETypeParameter> = ArrayList()
     override var annotationEntries: List<AnnotationEntry> = listOf()
     var isAbstract: Boolean = false
     var isOverride: Boolean = false
 
+    init {
+        body.parent = this
+    }
+
     fun init(
         type: Type,
-        body: EAbstractBlockExpression?,
+        body: EAbstractBlockExpression,
         valueParameters: List<EKtValueParameter>,
         typeParameters: List<ETypeParameter>,
         annotationEntries: List<AnnotationEntry>,
         isAbstract: Boolean,
         isOverride: Boolean
     ) {
-        body?.parent = this
+        body.parent = this
         valueParameters.forEach { it.parent = this }
         typeParameters.forEach { it.parent = this }
         this.type = type

@@ -16,6 +16,7 @@
 
 package io.verik.compiler.serialize.source
 
+import io.verik.compiler.ast.element.common.EAbstractProperty
 import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
@@ -29,6 +30,7 @@ import io.verik.compiler.ast.element.sv.EModuleInterface
 import io.verik.compiler.ast.element.sv.EModulePortInstantiation
 import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.EStruct
+import io.verik.compiler.ast.element.sv.ESvAbstractFunction
 import io.verik.compiler.ast.element.sv.ESvClass
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvFunction
@@ -141,13 +143,12 @@ object DeclarationSerializer {
         val serializedType = TypeSerializer.serialize(function.type, function)
         serializedType.checkNoUnpackedDimension(function)
         serializerContext.append("function automatic ${serializedType.getBaseAndPackedDimension()} ${function.name}")
-        serializeSvValueParameterList(function.valueParameters, serializerContext)
+        serializeSvValueParameterList(function, serializerContext)
         if (function.qualifierType != FunctionQualifierType.PURE_VIRTUAL) {
-            val body = function.getBodyNotNull()
             serializerContext.indent {
-                serializerContext.serializeAsStatement(body)
+                serializerContext.serializeAsStatement(function.body)
             }
-            serializerContext.label(body.endLocation) {
+            serializerContext.label(function.body.endLocation) {
                 serializerContext.appendLine("endfunction : ${function.name}")
             }
         }
@@ -155,31 +156,30 @@ object DeclarationSerializer {
 
     fun serializeTask(task: ETask, serializerContext: SerializerContext) {
         serializerContext.append("task automatic ${task.name}")
-        serializeSvValueParameterList(task.valueParameters, serializerContext)
-        val body = task.getBodyNotNull()
+        serializeSvValueParameterList(task, serializerContext)
         serializerContext.indent {
-            serializerContext.serializeAsStatement(body)
+            serializerContext.serializeAsStatement(task.body)
         }
-        serializerContext.label(body.endLocation) {
+        serializerContext.label(task.body.endLocation) {
             serializerContext.appendLine("endtask : ${task.name}")
         }
     }
 
     fun serializeInitialBlock(initialBlock: EInitialBlock, serializerContext: SerializerContext) {
         serializerContext.append("initial ")
-        serializerContext.serializeAsStatement(initialBlock.getBodyNotNull())
+        serializerContext.serializeAsStatement(initialBlock.body)
     }
 
     fun serializeAlwaysComBlock(alwaysComBlock: EAlwaysComBlock, serializerContext: SerializerContext) {
         serializerContext.append("always_comb ")
-        serializerContext.serializeAsStatement(alwaysComBlock.getBodyNotNull())
+        serializerContext.serializeAsStatement(alwaysComBlock.body)
     }
 
     fun serializeAlwaysSeqBlock(alwaysSeqBlock: EAlwaysSeqBlock, serializerContext: SerializerContext) {
         serializerContext.append("always_ff ")
         serializerContext.serializeAsExpression(alwaysSeqBlock.eventControlExpression)
         serializerContext.append(" ")
-        serializerContext.serializeAsStatement(alwaysSeqBlock.getBodyNotNull())
+        serializerContext.serializeAsStatement(alwaysSeqBlock.body)
     }
 
     fun serializeSvProperty(property: ESvProperty, serializerContext: SerializerContext) {
@@ -189,12 +189,7 @@ object DeclarationSerializer {
         }
         if (property.isVirtual())
             serializerContext.append("virtual ")
-        val serializedType = TypeSerializer.serialize(property.type, property)
-        serializerContext.append(serializedType.getBaseAndPackedDimension() + " ")
-        serializerContext.align()
-        serializerContext.append(property.name)
-        if (serializedType.unpackedDimension != null)
-            serializerContext.append(" ${serializedType.unpackedDimension}")
+        serializePropertyTypeAndName(property, serializerContext)
         val initializer = property.initializer
         if (initializer != null) {
             serializerContext.append(" = ")
@@ -291,20 +286,12 @@ object DeclarationSerializer {
         }
         if (valueParameter.isVirtual())
             serializerContext.append("virtual ")
-        val serializedType = TypeSerializer.serialize(valueParameter.type, valueParameter)
-        serializerContext.append("${serializedType.getBaseAndPackedDimension()} ${valueParameter.name}")
-        if (serializedType.unpackedDimension != null)
-            serializerContext.append(" ${serializedType.unpackedDimension}")
+        serializePropertyTypeAndName(valueParameter, serializerContext)
     }
 
     fun serializePort(port: EPort, serializerContext: SerializerContext) {
         serializePortType(port.portType, serializerContext)
-        val serializedType = TypeSerializer.serialize(port.type, port)
-        serializerContext.append("${serializedType.getBaseAndPackedDimension()} ")
-        serializerContext.align()
-        serializerContext.append(port.name)
-        if (serializedType.unpackedDimension != null)
-            serializerContext.append(" ${serializedType.unpackedDimension}")
+        serializePropertyTypeAndName(port, serializerContext)
     }
 
     private fun serializePortList(
@@ -335,17 +322,34 @@ object DeclarationSerializer {
         }
     }
 
-    private fun serializeSvValueParameterList(
-        valueParameters: List<ESvValueParameter>,
+    private fun serializePropertyTypeAndName(
+        abstractProperty: EAbstractProperty,
         serializerContext: SerializerContext
     ) {
-        serializerContext.append("(")
-        if (valueParameters.isNotEmpty()) {
-            serializerContext.softBreak()
-            serializerContext.serializeJoin(valueParameters) {
-                serializerContext.serialize(it)
+        val serializedType = TypeSerializer.serialize(abstractProperty.type, abstractProperty)
+        serializerContext.append("${serializedType.getBaseAndPackedDimension()} ")
+        serializerContext.align()
+        serializerContext.append(abstractProperty.name)
+        if (serializedType.unpackedDimension != null)
+            serializerContext.append(" ${serializedType.unpackedDimension}")
+    }
+
+    private fun serializeSvValueParameterList(
+        abstractFunction: ESvAbstractFunction,
+        serializerContext: SerializerContext
+    ) {
+        if (abstractFunction.valueParameters.isNotEmpty()) {
+            serializerContext.appendLine("(")
+            serializerContext.indent {
+                serializerContext.serializeJoinAppendLine(abstractFunction.valueParameters) {
+                    serializerContext.serialize(it)
+                }
             }
+            serializerContext.label(abstractFunction.body) {
+                serializerContext.appendLine(");")
+            }
+        } else {
+            serializerContext.appendLine("();")
         }
-        serializerContext.appendLine(");")
     }
 }

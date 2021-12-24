@@ -17,10 +17,8 @@
 package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EAbstractBlockExpression
-import io.verik.compiler.ast.element.common.EAbstractFunction
 import io.verik.compiler.ast.property.FunctionQualifierType
 import io.verik.compiler.ast.property.Type
-import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
@@ -28,23 +26,18 @@ class ESvFunction(
     override val location: SourceLocation,
     override var name: String,
     override var type: Type,
-    override var body: EAbstractBlockExpression?,
-    var valueParameters: ArrayList<ESvValueParameter>,
+    override var body: EAbstractBlockExpression,
+    override var valueParameters: ArrayList<ESvValueParameter>,
     val qualifierType: FunctionQualifierType,
     val isStatic: Boolean
-) : EAbstractFunction() {
+) : ESvAbstractFunction() {
 
     init {
-        body?.parent = this
+        body.parent = this
         valueParameters.forEach { it.parent = this }
     }
 
     override fun accept(visitor: Visitor) {
         return visitor.visitSvFunction(this)
-    }
-
-    override fun acceptChildren(visitor: TreeVisitor) {
-        super.acceptChildren(visitor)
-        valueParameters.forEach { it.accept(visitor) }
     }
 }
