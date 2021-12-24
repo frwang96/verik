@@ -27,6 +27,7 @@ data class VerikConfig(
     val timescale: String,
     val enableDeadCodeElimination: Boolean,
     val labelSourceLocations: Boolean,
+    val enableLineDirective: Boolean,
     val indentLength: Int,
     val wrapLength: Int,
     val suppressedWarnings: List<String>,

@@ -28,6 +28,7 @@ class SourceBuilder(
 ) {
 
     private val labelSourceLocations = projectContext.config.labelSourceLocations
+    private val enableLineDirective = projectContext.config.enableLineDirective
     private val indentLength = projectContext.config.indentLength
     private val wrapLength = projectContext.config.wrapLength
     private val labelLength = if (labelSourceLocations) 12 else 0
@@ -45,16 +46,27 @@ class SourceBuilder(
         sourceBuilder.append(fileHeader)
 
         if (labelSourceLocations) {
-            val pathString = Platform.getStringFromPath(file.inputPath.toAbsolutePath())
-            sourceBuilder.appendLine(
-                """
-                    `ifdef _
-                    `undef _
-                    `endif
-                    `define _(n) `line n "$pathString" 0 \
-                """.trimIndent()
-            )
-            sourceBuilder.appendLine()
+            if (enableLineDirective) {
+                val pathString = Platform.getStringFromPath(file.inputPath.toAbsolutePath())
+                sourceBuilder.appendLine(
+                    """
+                        `ifdef _
+                        `undef _
+                        `endif
+                        `define _(n) `line n "$pathString" 0 \
+                    """.trimIndent()
+                )
+                sourceBuilder.appendLine()
+            } else {
+                sourceBuilder.appendLine(
+                    """
+                        `ifndef _
+                        `define _(n)
+                        `endif
+                    """.trimIndent()
+                )
+                sourceBuilder.appendLine()
+            }
         }
     }
 
