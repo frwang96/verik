@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+
+## [0.1.10]
 ### Added
 - Multiline injected statements and injected properties.
 - Log error and warning messages.
