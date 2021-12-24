@@ -42,7 +42,7 @@ changelog {
     } else {
         setVersion(project.version)
     }
-    groups.set(listOf())
+    groups.set(listOf("Added"))
 }
 
 tasks.register("mainTest") {
