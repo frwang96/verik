@@ -4,6 +4,7 @@
 ### Added
 - `Verik` annotation to enable inspections by IntelliJ plugin.
 - File annotation checker issues warnings if `Verik` annotation is missing.
+- Consolidate interpreter checks to midCheck.
 
 ## [0.1.10]
 ### Added

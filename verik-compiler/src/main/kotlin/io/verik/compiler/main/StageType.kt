@@ -22,6 +22,7 @@ enum class StageType {
     COMPILE,
     CAST,
     PRE_TRANSFORM,
+    MID_CHECK,
     RESOLVE,
     INTERPRET,
     MID_TRANSFORM,
@@ -32,7 +33,6 @@ enum class StageType {
 
     fun flushAfter(): Boolean {
         return this in listOf(
-            PRE_CHECK,
             COMPILE,
             CAST,
             INTERPRET,

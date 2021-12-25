@@ -94,7 +94,17 @@ object Messages {
         "Error parsing bit constant: $0"
     )
 
-//  SPECIALIZE  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  MID CHECK  /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    val TOP_NOT_MODULE = ErrorMessageTemplate0(
+        "Top level declaration must be a module"
+    )
+
+    val CONFLICTING_ANNOTATIONS = ErrorMessageTemplate2<AnnotationEntry, AnnotationEntry>(
+        "Conflicting annotations: @$0 and @$1"
+    )
+
+//  RESOLVE  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val TYPE_NO_WIDTH = ErrorMessageTemplate1<Type>(
         "Could not get width of type: $0"
@@ -129,14 +139,6 @@ object Messages {
     )
 
 //  INTERPRET  /////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    val TOP_NOT_MODULE = ErrorMessageTemplate0(
-        "Top level declaration must be a module"
-    )
-
-    val CONFLICTING_ANNOTATIONS = ErrorMessageTemplate2<AnnotationEntry, AnnotationEntry>(
-        "Conflicting annotations: @$0 and @$1"
-    )
 
     val MAKE_ANNOTATION_REQUIRED = ErrorMessageTemplate0(
         "Make annotation required"

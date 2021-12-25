@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.interpret
+package io.verik.compiler.check.mid
 
 import io.verik.compiler.test.BaseTest
 import org.junit.jupiter.api.Test
@@ -34,7 +34,7 @@ internal class AnnotationEntryCheckerStageTest : BaseTest() {
     }
 
     @Test
-    fun `class annotations conflicting`() {
+    fun `class top annotations conflicting`() {
         driveMessageTest(
             """
                 @SynthTop

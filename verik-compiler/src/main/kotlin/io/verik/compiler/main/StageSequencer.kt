@@ -19,6 +19,7 @@ package io.verik.compiler.main
 import io.verik.compiler.cast.CasterStage
 import io.verik.compiler.cast.DeclarationCastIndexerStage
 import io.verik.compiler.cast.SmartCastReducerStage
+import io.verik.compiler.check.mid.AnnotationEntryCheckerStage
 import io.verik.compiler.check.post.CardinalPositiveCheckerStage
 import io.verik.compiler.check.post.FileCheckerStage
 import io.verik.compiler.check.post.KeywordCheckerStage
@@ -31,7 +32,6 @@ import io.verik.compiler.check.pre.FileAnnotationCheckerStage
 import io.verik.compiler.check.pre.ImportDirectiveCheckerStage
 import io.verik.compiler.check.pre.UnsupportedElementCheckerStage
 import io.verik.compiler.check.pre.UnsupportedModifierCheckerStage
-import io.verik.compiler.interpret.AnnotationEntryCheckerStage
 import io.verik.compiler.interpret.ClassInterpreterStage
 import io.verik.compiler.interpret.ComponentInstantiationCheckerStage
 import io.verik.compiler.interpret.ComponentInterpreterStage
@@ -126,13 +126,14 @@ object StageSequencer {
         stageSequence.add(StageType.PRE_TRANSFORM, BitConstantReducerStage)
         stageSequence.add(StageType.PRE_TRANSFORM, ConstantExpressionReducerStage)
 
+        stageSequence.add(StageType.MID_CHECK, AnnotationEntryCheckerStage)
+
         stageSequence.add(StageType.RESOLVE, TypeParameterTypeCheckerStage)
         stageSequence.add(StageType.RESOLVE, TypeResolverStage)
         stageSequence.add(StageType.RESOLVE, TypeResolvedCheckerStage)
         stageSequence.add(StageType.RESOLVE, DeclarationSpecializerStage)
         stageSequence.add(StageType.RESOLVE, TypeCheckerStage)
 
-        stageSequence.add(StageType.INTERPRET, AnnotationEntryCheckerStage)
         stageSequence.add(StageType.INTERPRET, ComponentInstantiationCheckerStage)
         stageSequence.add(StageType.INTERPRET, EnumInterpreterStage)
         stageSequence.add(StageType.INTERPRET, StructInterpreterStage)

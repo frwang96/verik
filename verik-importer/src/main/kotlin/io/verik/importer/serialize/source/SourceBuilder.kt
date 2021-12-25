@@ -78,6 +78,7 @@ class SourceBuilder(
 
     private fun buildHeader() {
         val suppressedInspectionsString = SUPPRESSED_INSPECTIONS.joinToString { "\"$it\"" }
+        sourceBuilder.appendLine("@file:Verik")
         sourceBuilder.appendLine("@file:Suppress($suppressedInspectionsString)")
         sourceBuilder.appendLine()
         sourceBuilder.appendLine("package $packageName")
