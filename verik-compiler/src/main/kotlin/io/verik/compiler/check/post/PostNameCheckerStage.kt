@@ -21,21 +21,18 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.EPackage
 import io.verik.compiler.ast.element.common.EProject
-import io.verik.compiler.ast.element.common.EReferenceExpression
-import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
-import io.verik.compiler.target.common.TargetDeclaration
 
-object NameCheckerStage : ProjectStage() {
+object PostNameCheckerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.project.accept(NameCheckerVisitor)
+        projectContext.project.accept(PostNameCheckerVisitor)
     }
 
-    private object NameCheckerVisitor : TreeVisitor() {
+    private object PostNameCheckerVisitor : TreeVisitor() {
 
         private val nameRegex = Regex("[_a-zA-Z][_a-zA-Z0-9$]*")
 
@@ -46,22 +43,6 @@ object NameCheckerStage : ProjectStage() {
                     return
                 if (!element.name.matches(nameRegex))
                     Messages.ILLEGAL_NAME.on(element, element.name)
-            }
-        }
-
-        override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
-            super.visitReferenceExpression(referenceExpression)
-            val reference = referenceExpression.reference
-            if (reference !is TargetDeclaration && !reference.name.matches(nameRegex))
-                Messages.ILLEGAL_NAME.on(referenceExpression, reference.name)
-        }
-
-        override fun visitSvCallExpression(callExpression: ESvCallExpression) {
-            super.visitSvCallExpression(callExpression)
-            val reference = callExpression.reference
-            if (reference !is TargetDeclaration) {
-                if (!reference.name.matches(nameRegex))
-                    Messages.ILLEGAL_NAME.on(callExpression, reference.name)
             }
         }
     }

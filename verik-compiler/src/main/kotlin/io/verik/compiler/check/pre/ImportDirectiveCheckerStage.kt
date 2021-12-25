@@ -35,10 +35,12 @@ object ImportDirectiveCheckerStage : ProjectStage() {
         }
 
         val importDirectiveCheckerVisitor = ImportDirectiveCheckerVisitor(packageNames)
-        projectContext.getKtFiles().forEach { it.accept(importDirectiveCheckerVisitor) }
+        projectContext.getKtFiles().forEach {
+            it.accept(importDirectiveCheckerVisitor)
+        }
     }
 
-    class ImportDirectiveCheckerVisitor(private val packageNames: Set<String>) : KtTreeVisitorVoid() {
+    private class ImportDirectiveCheckerVisitor(private val packageNames: Set<String>) : KtTreeVisitorVoid() {
 
         override fun visitImportDirective(importDirective: KtImportDirective) {
             super.visitImportDirective(importDirective)

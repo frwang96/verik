@@ -52,6 +52,10 @@ object Messages {
         "Package not found: $0"
     )
 
+    val ILLEGAL_NAME = ErrorMessageTemplate1<String>(
+        "Illegal name: $0"
+    )
+
 //  COMPILE  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val KOTLIN_COMPILE_WARNING = WarningMessageTemplate1<String>(
@@ -63,10 +67,6 @@ object Messages {
     )
 
 //  CAST  //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    val ILLEGAL_NAME = ErrorMessageTemplate1<String>(
-        "Illegal name: $0"
-    )
 
     val ILLEGAL_LOCAL_DECLARATION = ErrorMessageTemplate1<String>(
         "Illegal local declaration: $0"

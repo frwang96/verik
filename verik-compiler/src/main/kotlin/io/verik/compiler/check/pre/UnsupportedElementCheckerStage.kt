@@ -33,10 +33,12 @@ import org.jetbrains.kotlin.psi.KtTryExpression
 object UnsupportedElementCheckerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.getKtFiles().forEach { it.accept(UnsupportedElementCheckerVisitor) }
+        projectContext.getKtFiles().forEach {
+            it.accept(UnsupportedElementCheckerVisitor)
+        }
     }
 
-    object UnsupportedElementCheckerVisitor : KtTreeVisitorVoid() {
+    private object UnsupportedElementCheckerVisitor : KtTreeVisitorVoid() {
 
         override fun visitDestructuringDeclaration(destructuringDeclaration: KtDestructuringDeclaration) {
             Messages.UNSUPPORTED_ELEMENT.on(destructuringDeclaration, "Destructuring declaration")

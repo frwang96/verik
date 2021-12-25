@@ -26,10 +26,12 @@ import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 object UnsupportedModifierCheckerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.getKtFiles().forEach { it.accept(UnsupportedModifierCheckerVisitor) }
+        projectContext.getKtFiles().forEach {
+            it.accept(UnsupportedModifierCheckerVisitor)
+        }
     }
 
-    object UnsupportedModifierCheckerVisitor : KtTreeVisitorVoid() {
+    private object UnsupportedModifierCheckerVisitor : KtTreeVisitorVoid() {
 
         private val unsupportedModifiers = listOf(
             KtTokens.ANNOTATION_KEYWORD,

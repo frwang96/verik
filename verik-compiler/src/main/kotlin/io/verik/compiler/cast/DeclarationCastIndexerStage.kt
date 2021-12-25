@@ -28,9 +28,7 @@ import io.verik.compiler.common.endLocation
 import io.verik.compiler.common.location
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
-import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.psi.KtClassOrObject
-import org.jetbrains.kotlin.psi.KtElement
 import org.jetbrains.kotlin.psi.KtEnumEntry
 import org.jetbrains.kotlin.psi.KtLambdaExpression
 import org.jetbrains.kotlin.psi.KtNamedFunction
@@ -52,19 +50,11 @@ object DeclarationCastIndexerStage : ProjectStage() {
 
     class DeclarationCastIndexerVisitor(private val castContext: CastContext) : KtTreeVisitorVoid() {
 
-        private val nameRegex = Regex("[_a-zA-Z][_a-zA-Z0-9]*")
-
-        private fun checkDeclarationName(name: String, element: KtElement) {
-            if (!name.matches(nameRegex))
-                Messages.ILLEGAL_NAME.on(element, name)
-        }
-
         override fun visitTypeAlias(alias: KtTypeAlias) {
             super.visitTypeAlias(alias)
             val descriptor = castContext.sliceTypeAlias[alias]!!
             val location = alias.nameIdentifier!!.location()
             val name = alias.name!!
-            checkDeclarationName(name, alias)
             val indexedTypeAlias = ETypeAlias(location, name)
             castContext.addDeclaration(descriptor, indexedTypeAlias)
         }
@@ -74,7 +64,6 @@ object DeclarationCastIndexerStage : ProjectStage() {
             val descriptor = castContext.sliceTypeParameter[parameter]!!
             val location = parameter.nameIdentifier!!.location()
             val name = parameter.name!!
-            checkDeclarationName(name, parameter)
             val indexedTypeParameter = ETypeParameter(location, name)
             castContext.addDeclaration(descriptor, indexedTypeParameter)
         }
@@ -88,7 +77,6 @@ object DeclarationCastIndexerStage : ProjectStage() {
                 ?: classOrObject.endLocation()
             val bodyEndLocation = classOrObject.endLocation()
             val name = classOrObject.name!!
-            checkDeclarationName(name, classOrObject)
 
             if (classOrObject.hasPrimaryConstructor() && !classOrObject.hasExplicitPrimaryConstructor()) {
                 val indexedPrimaryConstructor = EPrimaryConstructor(location)
@@ -104,7 +92,6 @@ object DeclarationCastIndexerStage : ProjectStage() {
             val descriptor = castContext.sliceFunction[function]!!
             val location = function.nameIdentifier!!.location()
             val name = function.name!!
-            checkDeclarationName(name, function)
             val indexedFunction = EKtFunction(location, name)
             castContext.addDeclaration(descriptor, indexedFunction)
         }
@@ -123,7 +110,6 @@ object DeclarationCastIndexerStage : ProjectStage() {
             val location = property.nameIdentifier!!.location()
             val endLocation = property.endLocation()
             val name = property.name!!
-            checkDeclarationName(name, property)
             val indexedProperty = EKtProperty(location, endLocation, name)
             castContext.addDeclaration(descriptor, indexedProperty)
         }
@@ -133,7 +119,6 @@ object DeclarationCastIndexerStage : ProjectStage() {
             val descriptor = castContext.sliceClass[enumEntry]!!
             val location = enumEntry.nameIdentifier!!.location()
             val name = enumEntry.name!!
-            checkDeclarationName(name, enumEntry)
             val indexedEnumEntry = EKtEnumEntry(location, name)
             castContext.addDeclaration(descriptor, indexedEnumEntry)
         }
@@ -144,7 +129,6 @@ object DeclarationCastIndexerStage : ProjectStage() {
                 ?: castContext.sliceValueParameter[parameter]!!
             val location = parameter.nameIdentifier!!.location()
             val name = parameter.name!!
-            checkDeclarationName(name, parameter)
             val indexedValueParameter = EKtValueParameter(location, name)
             castContext.addDeclaration(descriptor, indexedValueParameter)
         }

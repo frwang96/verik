@@ -25,13 +25,14 @@ import io.verik.compiler.check.mid.TypeParameterTypeCheckerStage
 import io.verik.compiler.check.post.CardinalNegativeCheckerStage
 import io.verik.compiler.check.post.FileCheckerStage
 import io.verik.compiler.check.post.KeywordCheckerStage
-import io.verik.compiler.check.post.NameCheckerStage
 import io.verik.compiler.check.post.NameRedeclarationCheckerStage
+import io.verik.compiler.check.post.PostNameCheckerStage
 import io.verik.compiler.check.post.StatementCheckerStage
 import io.verik.compiler.check.post.UntransformedElementCheckerStage
 import io.verik.compiler.check.post.UntransformedReferenceCheckerStage
 import io.verik.compiler.check.pre.FileAnnotationCheckerStage
 import io.verik.compiler.check.pre.ImportDirectiveCheckerStage
+import io.verik.compiler.check.pre.PreNameCheckerStage
 import io.verik.compiler.check.pre.UnsupportedElementCheckerStage
 import io.verik.compiler.check.pre.UnsupportedModifierCheckerStage
 import io.verik.compiler.interpret.ClassInterpreterStage
@@ -109,6 +110,7 @@ object StageSequencer {
         stageSequence.add(StageType.PRE_CHECK, UnsupportedElementCheckerStage)
         stageSequence.add(StageType.PRE_CHECK, UnsupportedModifierCheckerStage)
         stageSequence.add(StageType.PRE_CHECK, ImportDirectiveCheckerStage)
+        stageSequence.add(StageType.PRE_CHECK, PreNameCheckerStage)
 
         stageSequence.add(StageType.COMPILE, KotlinCompilerAnalyzerStage)
 
@@ -184,7 +186,7 @@ object StageSequencer {
         stageSequence.add(StageType.POST_CHECK, UntransformedReferenceCheckerStage)
         stageSequence.add(StageType.POST_CHECK, FileCheckerStage)
         stageSequence.add(StageType.POST_CHECK, CardinalNegativeCheckerStage)
-        stageSequence.add(StageType.POST_CHECK, NameCheckerStage)
+        stageSequence.add(StageType.POST_CHECK, PostNameCheckerStage)
         stageSequence.add(StageType.POST_CHECK, KeywordCheckerStage)
         stageSequence.add(StageType.POST_CHECK, NameRedeclarationCheckerStage)
         stageSequence.add(StageType.POST_CHECK, StatementCheckerStage)
