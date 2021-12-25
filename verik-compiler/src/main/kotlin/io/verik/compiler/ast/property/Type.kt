@@ -158,6 +158,7 @@ class Type(
 
     private fun getSuperType(): Type? {
         return when (val reference = reference) {
+            is ETypeParameter -> reference.type.getSuperType()
             is EAbstractClass -> reference.superType
             is CoreClassDeclaration -> reference.superClass?.toType()
             is TargetClassDeclaration -> null

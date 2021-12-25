@@ -68,10 +68,6 @@ object Messages {
         "Illegal name: $0"
     )
 
-    val CARDINAL_TYPE_EXPECTED = ErrorMessageTemplate1<Type>(
-        "Cardinal type expected but found: $0"
-    )
-
     val ILLEGAL_LOCAL_DECLARATION = ErrorMessageTemplate1<String>(
         "Illegal local declaration: $0"
     )
@@ -102,6 +98,22 @@ object Messages {
 
     val CONFLICTING_ANNOTATIONS = ErrorMessageTemplate2<AnnotationEntry, AnnotationEntry>(
         "Conflicting annotations: @$0 and @$1"
+    )
+
+    val MAKE_ANNOTATION_REQUIRED = ErrorMessageTemplate0(
+        "Make annotation required"
+    )
+
+    val MAKE_ANNOTATION_ILLEGAL = ErrorMessageTemplate0(
+        "Make annotation only permitted on component instantiations"
+    )
+
+    val COMPONENT_INSTANTIATION_OUT_OF_CONTEXT = ErrorMessageTemplate0(
+        "Component instantiation out of context"
+    )
+
+    val CARDINAL_TYPE_EXPECTED = ErrorMessageTemplate1<Type>(
+        "Cardinal type expected but found: $0"
     )
 
 //  RESOLVE  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -139,18 +151,6 @@ object Messages {
     )
 
 //  INTERPRET  /////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    val MAKE_ANNOTATION_REQUIRED = ErrorMessageTemplate0(
-        "Make annotation required"
-    )
-
-    val MAKE_ANNOTATION_ILLEGAL = ErrorMessageTemplate0(
-        "Make annotation only permitted on component instantiations"
-    )
-
-    val COMPONENT_INSTANTIATION_OUT_OF_CONTEXT = ErrorMessageTemplate0(
-        "Component instantiation out of context"
-    )
 
     val SYNTHESIS_TOP_IS_OBJECT = ErrorMessageTemplate0(
         "Synthesis top must not be declared as object"

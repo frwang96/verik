@@ -14,34 +14,49 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.resolve
+package io.verik.compiler.check.mid
 
 import io.verik.compiler.test.BaseTest
 import org.junit.jupiter.api.Test
 
-internal class TypeParameterTypeCheckerStageTest : BaseTest() {
+internal class ComponentInstantiationCheckerStageTest : BaseTest() {
 
     @Test
-    fun `cardinal type expected`() {
+    fun `component instantiation out of context`() {
         driveMessageTest(
             """
-                var x: Ubit<ADD<`8`, Int>> = u(0)
+                class M : Module()
+                @Make
+                val m = M()
             """.trimIndent(),
             true,
-            "Cardinal type expected but found: Int"
+            "Component instantiation out of context"
         )
     }
 
     @Test
-    fun `cardinal type expected type parameter`() {
+    fun `make annotation illegal`() {
         driveMessageTest(
             """
-                class C<N> {
-                    var x: Ubit<INC<N>> = u(0)
+                @Make
+                val x = false
+            """.trimIndent(),
+            true,
+            "Make annotation only permitted on component instantiations"
+        )
+    }
+
+    @Test
+    fun `make annotation required`() {
+        driveMessageTest(
+            """
+                class M : Module()
+                class N : Module() {
+                    val m  = M()
                 }
             """.trimIndent(),
             true,
-            "Cardinal type expected but found: N"
+            "Make annotation required"
         )
     }
 }
