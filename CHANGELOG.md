@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 ### Added
+- `Verik` annotation to enable inspections by IntelliJ plugin.
 
 ## [0.1.10]
 ### Added
