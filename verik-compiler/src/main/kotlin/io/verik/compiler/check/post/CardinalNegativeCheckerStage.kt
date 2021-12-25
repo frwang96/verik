@@ -24,26 +24,26 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
-object CardinalPositiveCheckerStage : ProjectStage() {
+object CardinalNegativeCheckerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.project.accept(CardinalPositiveCheckerVisitor)
+        projectContext.project.accept(CardinalNegativeCheckerVisitor)
     }
 
-    private object CardinalPositiveCheckerVisitor : TreeVisitor() {
+    private object CardinalNegativeCheckerVisitor : TreeVisitor() {
 
         private fun checkType(type: Type, element: EElement): Boolean {
             if (type.arguments.any { !checkType(it, element) })
                 return false
             return if (type.isCardinalType()) {
-                return type.asCardinalValue(element) > 0
+                return type.asCardinalValue(element) >= 0
             } else true
         }
 
         override fun visitTypedElement(typedElement: ETypedElement) {
             super.visitTypedElement(typedElement)
             if (!checkType(typedElement.type, typedElement))
-                Messages.CARDINAL_NOT_POSITIVE.on(typedElement, typedElement.type)
+                Messages.NEGATIVE_CARDINAL.on(typedElement, typedElement.type)
         }
     }
 }

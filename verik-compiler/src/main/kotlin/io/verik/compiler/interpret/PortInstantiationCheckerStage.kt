@@ -60,7 +60,7 @@ object PortInstantiationCheckerStage : ProjectStage() {
                 is EReferenceExpression -> {
                     val reference = expression.reference
                     if (reference is ESvProperty && !reference.isMutable)
-                        Messages.OUTPUT_PORT_IMMUTABLE_PROPERTY.on(reference, reference.name)
+                        Messages.OUTPUT_PORT_NOT_MUTABLE.on(reference, reference.name)
                 }
                 is EKtCallExpression -> {
                     when (expression.reference) {
@@ -69,11 +69,11 @@ object PortInstantiationCheckerStage : ProjectStage() {
                         Core.Vk.F_cat_Any_Any ->
                             expression.valueArguments.forEach { checkOutputPortExpression(portInstantiation, it) }
                         else ->
-                            Messages.OUTPUT_PORT_ILLEGAL_EXPRESSION.on(expression, portInstantiation.port.name)
+                            Messages.ILLEGAL_OUTPUT_PORT_EXPRESSION.on(expression, portInstantiation.port.name)
                     }
                 }
                 else ->
-                    Messages.OUTPUT_PORT_ILLEGAL_EXPRESSION.on(expression, portInstantiation.port.name)
+                    Messages.ILLEGAL_OUTPUT_PORT_EXPRESSION.on(expression, portInstantiation.port.name)
             }
         }
     }

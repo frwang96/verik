@@ -17,12 +17,11 @@
 package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EDeclaration
-import io.verik.compiler.ast.interfaces.Annotated
+import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.interfaces.TypeParameterized
 import io.verik.compiler.core.common.AnnotationEntries
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
-import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.backend.common.pop
 
 object DeclarationSpecializerStage : ProjectStage() {
@@ -67,13 +66,11 @@ object DeclarationSpecializerStage : ProjectStage() {
         if (projectContext.config.enableDeadCodeElimination) {
             projectContext.project.files().forEach { file ->
                 file.declarations.forEach {
-                    if (it is Annotated) {
+                    if (it is EKtClass) {
                         val isSynthesisTop = it.hasAnnotationEntry(AnnotationEntries.SYNTHESIS_TOP)
                         val isSimulationTop = it.hasAnnotationEntry(AnnotationEntries.SIMULATION_TOP)
                         if (isSynthesisTop || isSimulationTop) {
-                            if (it is TypeParameterized && it.typeParameters.isNotEmpty()) {
-                                Messages.TYPE_PARAMETERS_ON_TOP.on(it)
-                            } else {
+                            if (it.typeParameters.isEmpty()) {
                                 entryPoints.add(it)
                             }
                         }

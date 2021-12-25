@@ -53,10 +53,10 @@ object InjectedStatementTransformerStage : ProjectStage() {
                         )
                         callExpression.replace(injectedStatement)
                     } else {
-                        Messages.INJECTED_STATEMENT_NOT_LITERAL.on(expression)
+                        Messages.ILLEGAL_INJECTED_STATEMENT.on(expression)
                     }
                 } else {
-                    Messages.INJECTED_STATEMENT_NOT_LITERAL.on(expression)
+                    Messages.ILLEGAL_INJECTED_STATEMENT.on(expression)
                 }
             }
         }

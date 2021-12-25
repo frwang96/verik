@@ -26,7 +26,7 @@ object FileCheckerStage : ProjectStage() {
     override fun process(projectContext: ProjectContext) {
         projectContext.project.packages().forEach {
             if (it.name == "verik_pkg")
-                Messages.PACKAGE_NAME_RESERVED.on(it, it.name)
+                Messages.RESERVED_PACKAGE_NAME.on(it, it.name)
         }
 
         val pathSet = HashSet<Path>()
@@ -34,7 +34,7 @@ object FileCheckerStage : ProjectStage() {
         projectContext.project.nonImportedFiles().forEach {
             val outputPath = it.outputPath
             if (outputPath.fileName.toString() == "Pkg.sv")
-                Messages.FILE_NAME_RESERVED.on(it, it.inputPath.fileName)
+                Messages.RESERVED_FILE_NAME.on(it, it.inputPath.fileName)
             if (outputPath in pathSet)
                 duplicatedPathSet.add(outputPath)
             else
@@ -44,7 +44,7 @@ object FileCheckerStage : ProjectStage() {
         if (duplicatedPathSet.isNotEmpty()) {
             projectContext.project.nonImportedFiles().forEach {
                 if (it.outputPath in duplicatedPathSet)
-                    Messages.FILE_NAME_DUPLICATED.on(it, it.inputPath.fileName)
+                    Messages.DUPLICATED_FILE_NAME.on(it, it.inputPath.fileName)
             }
         }
     }

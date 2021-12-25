@@ -48,7 +48,7 @@ object ImportDirectiveCheckerStage : ProjectStage() {
                 importDirective.importedFqName!!.parent().toString()
             }
             if (packageName !in packageNames)
-                Messages.PACKAGE_NOT_FOUND.on(importDirective, packageName)
+                Messages.MISSING_PACKAGE.on(importDirective, packageName)
         }
     }
 }

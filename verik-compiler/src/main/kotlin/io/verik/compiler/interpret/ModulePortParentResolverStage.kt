@@ -60,7 +60,7 @@ object ModulePortParentResolverStage : ProjectStage() {
                     multipleParentModulePorts.add(modulePort)
                 modulePort.parentModuleInterface = parent
             } else {
-                Messages.MODULE_PORT_INSTANTIATION_OUT_OF_CONTEXT.on(modulePortInstantiation)
+                Messages.ILLEGAL_MODULE_PORT_INSTANTIATION.on(modulePortInstantiation)
             }
         }
     }

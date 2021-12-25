@@ -19,16 +19,16 @@ package io.verik.compiler.check.post
 import io.verik.compiler.test.BaseTest
 import org.junit.jupiter.api.Test
 
-internal class CardinalPositiveCheckerStageTest : BaseTest() {
+internal class CardinalNegativeCheckerStageTest : BaseTest() {
 
     @Test
-    fun `cardinal not positive`() {
+    fun `cardinal negative`() {
         driveMessageTest(
             """
-                var x: Ubit<`0`> = u0()
+                var x: Ubit<SUB<`0`, `1`>> = u0()
             """.trimIndent(),
             true,
-            "Cardinal type not positive: Ubit<`0`>"
+            "Cardinal type is negative: Ubit<`-1`>"
         )
     }
 }

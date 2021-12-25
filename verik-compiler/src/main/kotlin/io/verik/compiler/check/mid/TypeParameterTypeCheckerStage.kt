@@ -37,7 +37,7 @@ object TypeParameterTypeCheckerStage : ProjectStage() {
             if (type.isCardinalType()) {
                 type.arguments.forEach {
                     if (!it.isCardinalType())
-                        Messages.CARDINAL_TYPE_EXPECTED.on(element, it)
+                        Messages.EXPECTED_CARDINAL_TYPE.on(element, it)
                 }
             }
             type.arguments.forEach { checkType(it, element) }

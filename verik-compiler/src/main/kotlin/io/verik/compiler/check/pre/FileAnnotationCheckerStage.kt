@@ -26,7 +26,7 @@ object FileAnnotationCheckerStage : ProjectStage() {
         projectContext.getKtFiles().forEach { file ->
             val isAnnotated = file.annotationEntries.any { it.shortName.toString() == "Verik" }
             if (!isAnnotated) {
-                Messages.FILE_NOT_ANNOTATED.on(file)
+                Messages.UNANNOTATED_FILE.on(file)
             }
         }
     }

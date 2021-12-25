@@ -50,7 +50,7 @@ object UnsupportedModifierCheckerStage : ProjectStage() {
         override fun visitModifierList(list: KtModifierList) {
             unsupportedModifiers.forEach {
                 if (list.hasModifier(it))
-                    Messages.MODIFIER_NOT_SUPPORTED.on(list, it)
+                    Messages.UNSUPPORTED_MODIFIER.on(list, it)
             }
         }
     }

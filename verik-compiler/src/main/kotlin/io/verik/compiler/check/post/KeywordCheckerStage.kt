@@ -35,7 +35,7 @@ object KeywordCheckerStage : ProjectStage() {
             super.visitElement(element)
             if (element is Declaration) {
                 if (element.name in keywords)
-                    Messages.KEYWORD_CONFLICT_SYSTEM_VERILOG.on(element, element.name)
+                    Messages.KEYWORD_CONFLICT.on(element, element.name)
             }
         }
     }

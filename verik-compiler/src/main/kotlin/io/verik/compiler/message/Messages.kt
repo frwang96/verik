@@ -36,19 +36,19 @@ object Messages {
 
 //  PRE CHECK  /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val FILE_NOT_ANNOTATED = WarningMessageTemplate0(
+    val UNANNOTATED_FILE = WarningMessageTemplate0(
         "File is not annotated as Verik"
     )
 
-    val ELEMENT_NOT_SUPPORTED = ErrorMessageTemplate1<String>(
+    val UNSUPPORTED_ELEMENT = ErrorMessageTemplate1<String>(
         "$0 not supported"
     )
 
-    val MODIFIER_NOT_SUPPORTED = ErrorMessageTemplate1<KtToken>(
+    val UNSUPPORTED_MODIFIER = ErrorMessageTemplate1<KtToken>(
         "Modifier $0 not supported"
     )
 
-    val PACKAGE_NOT_FOUND = ErrorMessageTemplate1<String>(
+    val MISSING_PACKAGE = ErrorMessageTemplate1<String>(
         "Package not found: $0"
     )
 
@@ -64,7 +64,7 @@ object Messages {
 
 //  CAST  //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val NAME_ILLEGAL = ErrorMessageTemplate1<String>(
+    val ILLEGAL_NAME = ErrorMessageTemplate1<String>(
         "Illegal name: $0"
     )
 
@@ -82,11 +82,11 @@ object Messages {
 
 //  PRE TRANSFORM  /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val BIT_CONSTANT_NOT_LITERAL = ErrorMessageTemplate0(
+    val ILLEGAL_BIT_CONSTANT = ErrorMessageTemplate0(
         "Constant literal expected for bit constant"
     )
 
-    val BIT_CONSTANT_ERROR = ErrorMessageTemplate1<String>(
+    val BIT_CONSTANT_PARSE_ERROR = ErrorMessageTemplate1<String>(
         "Error parsing bit constant: $0"
     )
 
@@ -96,23 +96,27 @@ object Messages {
         "Top level declaration must be a module"
     )
 
+    val TOP_PARAMETERIZED = ErrorMessageTemplate0(
+        "Type parameters not permitted on top level declaration"
+    )
+
     val CONFLICTING_ANNOTATIONS = ErrorMessageTemplate2<AnnotationEntry, AnnotationEntry>(
         "Conflicting annotations: @$0 and @$1"
     )
 
-    val MAKE_ANNOTATION_REQUIRED = ErrorMessageTemplate0(
+    val MISSING_MAKE_ANNOTATION = ErrorMessageTemplate0(
         "Make annotation required"
     )
 
-    val MAKE_ANNOTATION_ILLEGAL = ErrorMessageTemplate0(
+    val ILLEGAL_MAKE_ANNOTATION = ErrorMessageTemplate0(
         "Make annotation only permitted on component instantiations"
     )
 
-    val COMPONENT_INSTANTIATION_OUT_OF_CONTEXT = ErrorMessageTemplate0(
+    val ILLEGAL_COMPONENT_INSTANTIATION = ErrorMessageTemplate0(
         "Component instantiation out of context"
     )
 
-    val CARDINAL_TYPE_EXPECTED = ErrorMessageTemplate1<Type>(
+    val EXPECTED_CARDINAL_TYPE = ErrorMessageTemplate1<Type>(
         "Cardinal type expected but found: $0"
     )
 
@@ -122,23 +126,19 @@ object Messages {
         "Could not get width of type: $0"
     )
 
-    val EXPRESSION_UNRESOLVED = ErrorMessageTemplate0(
+    val UNRESOLVED_EXPRESSION = ErrorMessageTemplate0(
         "Type of expression could not be resolved"
     )
 
-    val TYPE_ARGUMENT_UNRESOLVED = ErrorMessageTemplate0(
+    val UNRESOLVED_TYPE_ARGUMENT = ErrorMessageTemplate0(
         "Type of type argument could not be resolved"
-    )
-
-    val TYPE_PARAMETERS_ON_TOP = ErrorMessageTemplate0(
-        "Type parameters not permitted on top level declaration"
     )
 
     val CARDINAL_OUT_OF_RANGE = ErrorMessageTemplate0(
         "Cardinal type out of range"
     )
 
-    val TYPE_MISMATCH = ErrorMessageTemplate2<Type, Type>(
+    val MISMATCHED_TYPE = ErrorMessageTemplate2<Type, Type>(
         "Type mismatch: Expected $0 actual $1"
     )
 
@@ -172,19 +172,19 @@ object Messages {
         "Could not determine directionality of port: $0"
     )
 
-    val ON_EXPRESSION_EXPECTED = ErrorMessageTemplate0(
+    val EXPECTED_ON_EXPRESSION = ErrorMessageTemplate0(
         "On expression expected"
     )
 
-    val PORT_INSTANTIATION_NAME_MISMATCH = ErrorMessageTemplate1<String>(
+    val MISMATCHED_PORT_NAME = ErrorMessageTemplate1<String>(
         "Port instantiation must match port name: $0"
     )
 
-    val INPUT_PORT_NOT_CONNECTED = ErrorMessageTemplate1<String>(
+    val UNCONNECTED_INPUT_PORT = ErrorMessageTemplate1<String>(
         "Input port not connected: $0"
     )
 
-    val MODULE_PORT_INSTANTIATION_OUT_OF_CONTEXT = ErrorMessageTemplate0(
+    val ILLEGAL_MODULE_PORT_INSTANTIATION = ErrorMessageTemplate0(
         "Module port instantiation out of context"
     )
 
@@ -192,21 +192,21 @@ object Messages {
         "Module port has multiple parent module interfaces: $0"
     )
 
-    val INJECTED_PROPERTY_NOT_LITERAL = ErrorMessageTemplate1<String>(
+    val ILLEGAL_INJECTED_PROPERTY = ErrorMessageTemplate1<String>(
         "String literal expected for injected property: $0"
     )
 
-    val OUTPUT_PORT_ILLEGAL_EXPRESSION = ErrorMessageTemplate1<String>(
+    val ILLEGAL_OUTPUT_PORT_EXPRESSION = ErrorMessageTemplate1<String>(
         "Illegal expression for output port: $0"
     )
 
-    val OUTPUT_PORT_IMMUTABLE_PROPERTY = ErrorMessageTemplate1<String>(
+    val OUTPUT_PORT_NOT_MUTABLE = ErrorMessageTemplate1<String>(
         "Property assigned by output port must be declared as var: $0"
     )
 
 //  MID TRANSFORM  /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val INJECTED_STATEMENT_NOT_LITERAL = ErrorMessageTemplate0(
+    val ILLEGAL_INJECTED_STATEMENT = ErrorMessageTemplate0(
         "String literal expected for injected statement"
     )
 
@@ -218,25 +218,25 @@ object Messages {
         "Initializer expected for combinational assignment"
     )
 
-    val SUBEXPRESSION_UNABLE_TO_EXTRACT = ErrorMessageTemplate0(
-        "Unable to extract subexpression"
+    val UNABLE_TO_EXTRACT = ErrorMessageTemplate0(
+        "Unable to extract expression"
     )
 
 //  REORDER  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val PACKAGE_DEPENDENCY_ILLEGAL = ErrorMessageTemplate1<Dependency>(
+    val ILLEGAL_PACKAGE_DEPENDENCY = ErrorMessageTemplate1<Dependency>(
         "Illegal package dependency: $0"
     )
 
-    val PACKAGE_CIRCULAR_DEPENDENCY = ErrorMessageTemplate1<Dependency>(
+    val CIRCULAR_PACKAGE_DEPENDENCY = ErrorMessageTemplate1<Dependency>(
         "Circular dependency between packages: $0"
     )
 
-    val FILE_CIRCULAR_DEPENDENCY = ErrorMessageTemplate1<Dependency>(
+    val CIRCULAR_FILE_DEPENDENCY = ErrorMessageTemplate1<Dependency>(
         "Circular dependency between files: $0"
     )
 
-    val DECLARATION_CIRCULAR_DEPENDENCY = ErrorMessageTemplate1<Dependency>(
+    val CIRCULAR_DECLARATION_DEPENDENCY = ErrorMessageTemplate1<Dependency>(
         "Circular dependency between declarations: $0"
     )
 
@@ -248,23 +248,23 @@ object Messages {
 
 //  POST CHECK  ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val PACKAGE_NAME_RESERVED = ErrorMessageTemplate1<String>(
+    val RESERVED_PACKAGE_NAME = ErrorMessageTemplate1<String>(
         "Package name is reserved: $0"
     )
 
-    val FILE_NAME_RESERVED = ErrorMessageTemplate1<Path>(
+    val RESERVED_FILE_NAME = ErrorMessageTemplate1<Path>(
         "File name is reserved: $0"
     )
 
-    val FILE_NAME_DUPLICATED = ErrorMessageTemplate1<Path>(
+    val DUPLICATED_FILE_NAME = ErrorMessageTemplate1<Path>(
         "File name is duplicated: $0"
     )
 
-    val CARDINAL_NOT_POSITIVE = ErrorMessageTemplate1<Type>(
-        "Cardinal type not positive: $0"
+    val NEGATIVE_CARDINAL = ErrorMessageTemplate1<Type>(
+        "Cardinal type is negative: $0"
     )
 
-    val KEYWORD_CONFLICT_SYSTEM_VERILOG = ErrorMessageTemplate1<String>(
+    val KEYWORD_CONFLICT = ErrorMessageTemplate1<String>(
         "Conflict with SystemVerilog reserved keyword: $0"
     )
 

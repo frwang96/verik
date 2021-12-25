@@ -97,10 +97,10 @@ object PropertyInterpreterStage : ProjectStage() {
                             StringEntry.trimIndent(receiver.entries)
                         )
                     } else {
-                        Messages.INJECTED_PROPERTY_NOT_LITERAL.on(property, property.name)
+                        Messages.ILLEGAL_INJECTED_PROPERTY.on(property, property.name)
                     }
                 } else {
-                    Messages.INJECTED_PROPERTY_NOT_LITERAL.on(property, property.name)
+                    Messages.ILLEGAL_INJECTED_PROPERTY.on(property, property.name)
                 }
             }
             return null
@@ -201,12 +201,12 @@ object PropertyInterpreterStage : ProjectStage() {
                     expression.receiver != null ||
                     expression.reference.name != port.name
                 ) {
-                    Messages.PORT_INSTANTIATION_NAME_MISMATCH.on(expression, port.name)
+                    Messages.MISMATCHED_PORT_NAME.on(expression, port.name)
                 }
             }
             return if (expression is EKtCallExpression && expression.reference == Core.Vk.F_nc) {
                 if (port.portType == PortType.INPUT)
-                    Messages.INPUT_PORT_NOT_CONNECTED.on(expression, port.name)
+                    Messages.UNCONNECTED_INPUT_PORT.on(expression, port.name)
                 PortInstantiation(expression.location, port, null)
             } else {
                 PortInstantiation(expression.location, port, expression)

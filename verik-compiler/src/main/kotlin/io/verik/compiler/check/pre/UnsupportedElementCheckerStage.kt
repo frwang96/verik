@@ -39,39 +39,39 @@ object UnsupportedElementCheckerStage : ProjectStage() {
     object UnsupportedElementCheckerVisitor : KtTreeVisitorVoid() {
 
         override fun visitDestructuringDeclaration(destructuringDeclaration: KtDestructuringDeclaration) {
-            Messages.ELEMENT_NOT_SUPPORTED.on(destructuringDeclaration, "Destructuring declaration")
+            Messages.UNSUPPORTED_ELEMENT.on(destructuringDeclaration, "Destructuring declaration")
         }
 
         override fun visitImportAlias(importAlias: KtImportAlias) {
-            Messages.ELEMENT_NOT_SUPPORTED.on(importAlias, "Import alias")
+            Messages.UNSUPPORTED_ELEMENT.on(importAlias, "Import alias")
         }
 
         override fun visitPropertyDelegate(delegate: KtPropertyDelegate) {
-            Messages.ELEMENT_NOT_SUPPORTED.on(delegate, "Property delegate")
+            Messages.UNSUPPORTED_ELEMENT.on(delegate, "Property delegate")
         }
 
         override fun visitThrowExpression(expression: KtThrowExpression) {
-            Messages.ELEMENT_NOT_SUPPORTED.on(expression, "Throw expression")
+            Messages.UNSUPPORTED_ELEMENT.on(expression, "Throw expression")
         }
 
         override fun visitTryExpression(expression: KtTryExpression) {
-            Messages.ELEMENT_NOT_SUPPORTED.on(expression, "Try expression")
+            Messages.UNSUPPORTED_ELEMENT.on(expression, "Try expression")
         }
 
         override fun visitDoubleColonExpression(expression: KtDoubleColonExpression) {
-            Messages.ELEMENT_NOT_SUPPORTED.on(expression, "Double colon expression")
+            Messages.UNSUPPORTED_ELEMENT.on(expression, "Double colon expression")
         }
 
         override fun visitClassLiteralExpression(expression: KtClassLiteralExpression) {
-            Messages.ELEMENT_NOT_SUPPORTED.on(expression, "Class literal expression")
+            Messages.UNSUPPORTED_ELEMENT.on(expression, "Class literal expression")
         }
 
         override fun visitSafeQualifiedExpression(expression: KtSafeQualifiedExpression) {
-            Messages.ELEMENT_NOT_SUPPORTED.on(expression, "Safe qualified expression")
+            Messages.UNSUPPORTED_ELEMENT.on(expression, "Safe qualified expression")
         }
 
         override fun visitObjectLiteralExpression(expression: KtObjectLiteralExpression) {
-            Messages.ELEMENT_NOT_SUPPORTED.on(expression, "Object literal expression")
+            Messages.UNSUPPORTED_ELEMENT.on(expression, "Object literal expression")
         }
     }
 }

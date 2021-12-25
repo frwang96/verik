@@ -45,7 +45,7 @@ object NameCheckerStage : ProjectStage() {
                 if (element is EProject || element is EPackage || element is EFile)
                     return
                 if (!element.name.matches(nameRegex))
-                    Messages.NAME_ILLEGAL.on(element, element.name)
+                    Messages.ILLEGAL_NAME.on(element, element.name)
             }
         }
 
@@ -53,7 +53,7 @@ object NameCheckerStage : ProjectStage() {
             super.visitReferenceExpression(referenceExpression)
             val reference = referenceExpression.reference
             if (reference !is TargetDeclaration && !reference.name.matches(nameRegex))
-                Messages.NAME_ILLEGAL.on(referenceExpression, reference.name)
+                Messages.ILLEGAL_NAME.on(referenceExpression, reference.name)
         }
 
         override fun visitSvCallExpression(callExpression: ESvCallExpression) {
@@ -61,7 +61,7 @@ object NameCheckerStage : ProjectStage() {
             val reference = callExpression.reference
             if (reference !is TargetDeclaration) {
                 if (!reference.name.matches(nameRegex))
-                    Messages.NAME_ILLEGAL.on(callExpression, reference.name)
+                    Messages.ILLEGAL_NAME.on(callExpression, reference.name)
             }
         }
     }

@@ -22,7 +22,7 @@ import io.verik.compiler.cast.SmartCastReducerStage
 import io.verik.compiler.check.mid.AnnotationEntryCheckerStage
 import io.verik.compiler.check.mid.ComponentInstantiationCheckerStage
 import io.verik.compiler.check.mid.TypeParameterTypeCheckerStage
-import io.verik.compiler.check.post.CardinalPositiveCheckerStage
+import io.verik.compiler.check.post.CardinalNegativeCheckerStage
 import io.verik.compiler.check.post.FileCheckerStage
 import io.verik.compiler.check.post.KeywordCheckerStage
 import io.verik.compiler.check.post.NameCheckerStage
@@ -183,7 +183,7 @@ object StageSequencer {
         stageSequence.add(StageType.POST_CHECK, UntransformedElementCheckerStage)
         stageSequence.add(StageType.POST_CHECK, UntransformedReferenceCheckerStage)
         stageSequence.add(StageType.POST_CHECK, FileCheckerStage)
-        stageSequence.add(StageType.POST_CHECK, CardinalPositiveCheckerStage)
+        stageSequence.add(StageType.POST_CHECK, CardinalNegativeCheckerStage)
         stageSequence.add(StageType.POST_CHECK, NameCheckerStage)
         stageSequence.add(StageType.POST_CHECK, KeywordCheckerStage)
         stageSequence.add(StageType.POST_CHECK, NameRedeclarationCheckerStage)

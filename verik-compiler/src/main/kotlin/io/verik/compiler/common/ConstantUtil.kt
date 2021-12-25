@@ -58,20 +58,20 @@ object ConstantUtil {
             }
             is EStringTemplateExpression -> {
                 if (expression.entries.size != 1) {
-                    Messages.BIT_CONSTANT_NOT_LITERAL.on(expression)
+                    Messages.ILLEGAL_BIT_CONSTANT.on(expression)
                     null
                 } else {
                     val stringEntry = expression.entries[0]
                     if (stringEntry is LiteralStringEntry) {
                         normalizeBitConstantString(stringEntry.text, signed, expression)
                     } else {
-                        Messages.BIT_CONSTANT_NOT_LITERAL.on(expression)
+                        Messages.ILLEGAL_BIT_CONSTANT.on(expression)
                         null
                     }
                 }
             }
             else -> {
-                Messages.BIT_CONSTANT_NOT_LITERAL.on(expression)
+                Messages.ILLEGAL_BIT_CONSTANT.on(expression)
                 null
             }
         }
@@ -105,13 +105,13 @@ object ConstantUtil {
         val compactedValue = value.replace("_", "")
         val tickCount = compactedValue.count { it == '\'' }
         if (tickCount != 1) {
-            Messages.BIT_CONSTANT_ERROR.on(element, value)
+            Messages.BIT_CONSTANT_PARSE_ERROR.on(element, value)
             return null
         }
         val tickIndex = compactedValue.indexOf('\'')
         val width = compactedValue.substring(0, tickIndex).toIntOrNull()
         if (width == null) {
-            Messages.BIT_CONSTANT_ERROR.on(element, value)
+            Messages.BIT_CONSTANT_PARSE_ERROR.on(element, value)
             return null
         }
 
@@ -122,7 +122,7 @@ object ConstantUtil {
                     val bigInteger = BigInteger(trimmedValue, 16)
                     BitConstant(bigInteger, signed, width)
                 } catch (exception: NumberFormatException) {
-                    Messages.BIT_CONSTANT_ERROR.on(element, value)
+                    Messages.BIT_CONSTANT_PARSE_ERROR.on(element, value)
                     null
                 }
             }
@@ -131,12 +131,12 @@ object ConstantUtil {
                     val bigInteger = BigInteger(trimmedValue, 2)
                     BitConstant(bigInteger, signed, width)
                 } catch (exception: java.lang.NumberFormatException) {
-                    Messages.BIT_CONSTANT_ERROR.on(element, value)
+                    Messages.BIT_CONSTANT_PARSE_ERROR.on(element, value)
                     null
                 }
             }
             else -> {
-                Messages.BIT_CONSTANT_ERROR.on(element, value)
+                Messages.BIT_CONSTANT_PARSE_ERROR.on(element, value)
                 null
             }
         }

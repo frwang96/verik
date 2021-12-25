@@ -56,7 +56,7 @@ object DeclarationCastIndexerStage : ProjectStage() {
 
         private fun checkDeclarationName(name: String, element: KtElement) {
             if (!name.matches(nameRegex))
-                Messages.NAME_ILLEGAL.on(element, name)
+                Messages.ILLEGAL_NAME.on(element, name)
         }
 
         override fun visitTypeAlias(alias: KtTypeAlias) {

@@ -39,7 +39,7 @@ object TypeConstraintChecker {
         val outerType = typeConstraint.outer.getType()
         if (outerType != innerType) {
             val substitutionResult = typeConstraint.inner.substitute(outerType)
-            Messages.TYPE_MISMATCH.on(
+            Messages.MISMATCHED_TYPE.on(
                 typeConstraint.inner.getElement(),
                 substitutionResult.substituted,
                 substitutionResult.original
@@ -54,7 +54,7 @@ object TypeConstraintChecker {
             val expectedValue = typeConstraint.kind.evaluate(innerValue)
             if (expectedValue != outerValue) {
                 val substitutionResult = typeConstraint.outer.substitute(Cardinal.of(expectedValue).toType())
-                Messages.TYPE_MISMATCH.on(
+                Messages.MISMATCHED_TYPE.on(
                     typeConstraint.outer.getElement(),
                     substitutionResult.original,
                     substitutionResult.substituted
@@ -64,7 +64,7 @@ object TypeConstraintChecker {
             val expectedValue = typeConstraint.kind.evaluate(outerValue)
             if (expectedValue != innerValue) {
                 val substitutionResult = typeConstraint.inner.substitute(Cardinal.of(expectedValue).toType())
-                Messages.TYPE_MISMATCH.on(
+                Messages.MISMATCHED_TYPE.on(
                     typeConstraint.inner.getElement(),
                     substitutionResult.substituted,
                     substitutionResult.original
@@ -80,7 +80,7 @@ object TypeConstraintChecker {
         val outerValue = typeConstraint.outer.getType().asCardinalValue(typeConstraint.outer.getElement())
         if (outerValue != innerValue) {
             val substitutionResult = typeConstraint.outer.substitute(Cardinal.of(innerValue).toType())
-            Messages.TYPE_MISMATCH.on(
+            Messages.MISMATCHED_TYPE.on(
                 typeConstraint.outer.getElement(),
                 substitutionResult.original,
                 substitutionResult.substituted
@@ -99,7 +99,7 @@ object TypeConstraintChecker {
                 val catWidth = valueArgumentWidths.sum()
                 if (catWidth != expressionWidth) {
                     val actualType = Core.Vk.C_Ubit.toType(Cardinal.of(catWidth).toType())
-                    Messages.TYPE_MISMATCH.on(
+                    Messages.MISMATCHED_TYPE.on(
                         typeConstraint.callExpression,
                         typeConstraint.callExpression.type,
                         actualType
@@ -112,7 +112,7 @@ object TypeConstraintChecker {
                 val repWidth = valueArgumentWidths[0] * typeArgumentWidth
                 if (expressionWidth != repWidth) {
                     val actualType = Core.Vk.C_Ubit.toType(Cardinal.of(repWidth).toType())
-                    Messages.TYPE_MISMATCH.on(
+                    Messages.MISMATCHED_TYPE.on(
                         typeConstraint.callExpression,
                         typeConstraint.callExpression.type,
                         actualType

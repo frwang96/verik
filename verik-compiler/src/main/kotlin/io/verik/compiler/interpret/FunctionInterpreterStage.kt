@@ -107,11 +107,11 @@ object FunctionInterpreterStage : ProjectStage() {
             val onExpression = if (body.statements.size == 1) {
                 body.statements[0]
             } else {
-                Messages.ON_EXPRESSION_EXPECTED.on(body)
+                Messages.EXPECTED_ON_EXPRESSION.on(body)
                 return null
             }
             if (onExpression !is EKtCallExpression || onExpression.reference != Core.Vk.F_on_Event_Event_Function) {
-                Messages.ON_EXPRESSION_EXPECTED.on(body)
+                Messages.EXPECTED_ON_EXPRESSION.on(body)
                 return null
             }
             val eventExpression = onExpression.valueArguments[0]

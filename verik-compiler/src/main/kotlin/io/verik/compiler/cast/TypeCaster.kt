@@ -48,9 +48,9 @@ object TypeCaster {
         val kotlinType: KotlinType = castContext.sliceType[typeReference]
             ?: castContext.sliceAbbreviatedType[typeReference]!!
         if (kotlinType.isMarkedNullable)
-            Messages.ELEMENT_NOT_SUPPORTED.on(typeReference, "Nullable type")
+            Messages.UNSUPPORTED_ELEMENT.on(typeReference, "Nullable type")
         if (kotlinType.isFunctionType)
-            Messages.ELEMENT_NOT_SUPPORTED.on(typeReference, "Function type")
+            Messages.UNSUPPORTED_ELEMENT.on(typeReference, "Function type")
 
         val userType = typeReference.typeElement as KtUserType
         val referenceTarget = castContext.sliceReferenceTarget[userType.referenceExpression!!]!!

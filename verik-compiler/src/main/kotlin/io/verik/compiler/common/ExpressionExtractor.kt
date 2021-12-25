@@ -50,11 +50,11 @@ class ExpressionExtractor {
                     if (blockExpressionIndex != -1)
                         flushEntry(blockExpression, blockExpressionIndex, entry)
                     else
-                        Messages.SUBEXPRESSION_UNABLE_TO_EXTRACT.on(entry.oldExpression)
+                        Messages.UNABLE_TO_EXTRACT.on(entry.oldExpression)
                     return
                 }
                 is EAbstractFunction, is EAbstractClass, is EFile, null -> {
-                    Messages.SUBEXPRESSION_UNABLE_TO_EXTRACT.on(entry.oldExpression)
+                    Messages.UNABLE_TO_EXTRACT.on(entry.oldExpression)
                     return
                 }
                 else -> {

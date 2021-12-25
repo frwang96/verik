@@ -39,14 +39,14 @@ object ComponentInstantiationCheckerStage : ProjectStage() {
                 val parent = property.parent
                 if (parent is EKtClass && parent.type.isSubtype(Core.Vk.C_Component.toType())) {
                     if (!property.hasAnnotationEntry(AnnotationEntries.MAKE))
-                        Messages.MAKE_ANNOTATION_REQUIRED.on(property)
+                        Messages.MISSING_MAKE_ANNOTATION.on(property)
                 } else {
                     if (property.hasAnnotationEntry(AnnotationEntries.MAKE))
-                        Messages.COMPONENT_INSTANTIATION_OUT_OF_CONTEXT.on(property)
+                        Messages.ILLEGAL_COMPONENT_INSTANTIATION.on(property)
                 }
             } else {
                 if (property.hasAnnotationEntry(AnnotationEntries.MAKE))
-                    Messages.MAKE_ANNOTATION_ILLEGAL.on(property)
+                    Messages.ILLEGAL_MAKE_ANNOTATION.on(property)
             }
         }
     }

@@ -47,7 +47,7 @@ object DependencyReordererStage : ProjectStage() {
                 val fromPackage = it.fromDeclaration.cast<EPackage>()
                 val toPackage = it.toDeclaration.cast<EPackage>()
                 if (fromPackage.packageType == PackageType.NATIVE_REGULAR && toPackage.packageType.isRoot()) {
-                    Messages.PACKAGE_DEPENDENCY_ILLEGAL.on(it.element, it)
+                    Messages.ILLEGAL_PACKAGE_DEPENDENCY.on(it.element, it)
                 }
             }
             val dependencyReordererResult = DependencyReorderer.reorder(
@@ -55,7 +55,7 @@ object DependencyReordererStage : ProjectStage() {
                 dependencies
             )
             dependencyReordererResult.unsatisfiedDependencies.forEach {
-                Messages.PACKAGE_CIRCULAR_DEPENDENCY.on(it.element, it)
+                Messages.CIRCULAR_PACKAGE_DEPENDENCY.on(it.element, it)
             }
             project.nativeRegularPackages = ArrayList(dependencyReordererResult.reorderedDeclarations)
         }
@@ -63,7 +63,7 @@ object DependencyReordererStage : ProjectStage() {
         private fun reorderFiles(`package`: EPackage, dependencies: List<Dependency>) {
             val dependencyReordererResult = DependencyReorderer.reorder(`package`.files, dependencies)
             dependencyReordererResult.unsatisfiedDependencies.forEach {
-                Messages.FILE_CIRCULAR_DEPENDENCY.on(it.element, it)
+                Messages.CIRCULAR_FILE_DEPENDENCY.on(it.element, it)
             }
             `package`.files = ArrayList(dependencyReordererResult.reorderedDeclarations)
         }
@@ -74,7 +74,7 @@ object DependencyReordererStage : ProjectStage() {
         ): ArrayList<EDeclaration> {
             val dependencyReordererResult = DependencyReorderer.reorder(declarations, dependencies)
             dependencyReordererResult.unsatisfiedDependencies.forEach {
-                Messages.DECLARATION_CIRCULAR_DEPENDENCY.on(it.element, it)
+                Messages.CIRCULAR_DECLARATION_DEPENDENCY.on(it.element, it)
             }
             return ArrayList(dependencyReordererResult.reorderedDeclarations)
         }
