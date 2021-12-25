@@ -20,6 +20,15 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.common.location
 import org.jetbrains.kotlin.psi.KtElement
 
+class WarningMessageTemplate0(
+    override val template: String
+) : AbstractMessageTemplate() {
+
+    fun on(element: KtElement) {
+        MessageCollector.messageCollector.warning(name, format(), element.location())
+    }
+}
+
 class WarningMessageTemplate1<A>(
     override val template: String
 ) : AbstractMessageTemplate() {

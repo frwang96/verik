@@ -27,6 +27,7 @@ import io.verik.compiler.check.post.NameRedeclarationCheckerStage
 import io.verik.compiler.check.post.StatementCheckerStage
 import io.verik.compiler.check.post.UntransformedElementCheckerStage
 import io.verik.compiler.check.post.UntransformedReferenceCheckerStage
+import io.verik.compiler.check.pre.FileAnnotationCheckerStage
 import io.verik.compiler.check.pre.ImportDirectiveCheckerStage
 import io.verik.compiler.check.pre.UnsupportedElementCheckerStage
 import io.verik.compiler.check.pre.UnsupportedModifierCheckerStage
@@ -104,6 +105,7 @@ object StageSequencer {
         stageSequence.add(StageType.PARSE, KotlinEnvironmentBuilderStage)
         stageSequence.add(StageType.PARSE, KotlinCompilerParserStage)
 
+        stageSequence.add(StageType.PRE_CHECK, FileAnnotationCheckerStage)
         stageSequence.add(StageType.PRE_CHECK, UnsupportedElementCheckerStage)
         stageSequence.add(StageType.PRE_CHECK, UnsupportedModifierCheckerStage)
         stageSequence.add(StageType.PRE_CHECK, ImportDirectiveCheckerStage)
