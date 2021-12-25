@@ -36,8 +36,8 @@ object Messages {
 
 //  PRE CHECK  /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val PACKAGE_NOT_FOUND = ErrorMessageTemplate1<String>(
-        "Package not found: $0"
+    val FILE_NOT_ANNOTATED = WarningMessageTemplate0(
+        "File is not annotated as Verik"
     )
 
     val ELEMENT_NOT_SUPPORTED = ErrorMessageTemplate1<String>(
@@ -46,6 +46,10 @@ object Messages {
 
     val MODIFIER_NOT_SUPPORTED = ErrorMessageTemplate1<KtToken>(
         "Modifier $0 not supported"
+    )
+
+    val PACKAGE_NOT_FOUND = ErrorMessageTemplate1<String>(
+        "Package not found: $0"
     )
 
 //  COMPILE  ///////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -95,6 +95,7 @@ abstract class BaseTest {
     internal fun getProjectContext(@Language("kotlin") content: String): ProjectContext {
         val config = getConfig()
         val contentWithPackageHeader = """
+            @file:Verik
             package test
             import io.verik.core.*
             $content
