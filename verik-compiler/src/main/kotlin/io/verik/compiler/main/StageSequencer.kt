@@ -21,6 +21,7 @@ import io.verik.compiler.cast.DeclarationCastIndexerStage
 import io.verik.compiler.cast.SmartCastReducerStage
 import io.verik.compiler.check.mid.AnnotationEntryCheckerStage
 import io.verik.compiler.check.mid.ComponentInstantiationCheckerStage
+import io.verik.compiler.check.mid.EntryPointCheckerStage
 import io.verik.compiler.check.mid.ObjectCheckerStage
 import io.verik.compiler.check.mid.PortCheckerStage
 import io.verik.compiler.check.mid.PortInstantiationCheckerStage
@@ -33,6 +34,7 @@ import io.verik.compiler.check.post.PostNameCheckerStage
 import io.verik.compiler.check.post.StatementCheckerStage
 import io.verik.compiler.check.post.UntransformedElementCheckerStage
 import io.verik.compiler.check.post.UntransformedReferenceCheckerStage
+import io.verik.compiler.check.pre.ConfigCheckerStage
 import io.verik.compiler.check.pre.FileAnnotationCheckerStage
 import io.verik.compiler.check.pre.ImportDirectiveCheckerStage
 import io.verik.compiler.check.pre.PreNameCheckerStage
@@ -108,6 +110,7 @@ object StageSequencer {
         stageSequence.add(StageType.PARSE, KotlinEnvironmentBuilderStage)
         stageSequence.add(StageType.PARSE, KotlinCompilerParserStage)
 
+        stageSequence.add(StageType.PRE_CHECK, ConfigCheckerStage)
         stageSequence.add(StageType.PRE_CHECK, FileAnnotationCheckerStage)
         stageSequence.add(StageType.PRE_CHECK, UnsupportedElementCheckerStage)
         stageSequence.add(StageType.PRE_CHECK, UnsupportedModifierCheckerStage)
@@ -130,6 +133,7 @@ object StageSequencer {
         stageSequence.add(StageType.PRE_TRANSFORM, BitConstantReducerStage)
         stageSequence.add(StageType.PRE_TRANSFORM, ConstantExpressionReducerStage)
 
+        stageSequence.add(StageType.MID_CHECK, EntryPointCheckerStage)
         stageSequence.add(StageType.MID_CHECK, AnnotationEntryCheckerStage)
         stageSequence.add(StageType.MID_CHECK, ComponentInstantiationCheckerStage)
         stageSequence.add(StageType.MID_CHECK, TypeParameterTypeCheckerStage)

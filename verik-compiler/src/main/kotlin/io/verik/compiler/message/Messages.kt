@@ -36,6 +36,18 @@ object Messages {
 
 //  PRE CHECK  /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    val INVALID_TIMESCALE = FatalMessageTemplate1<String>(
+        "Invalid timescale: $0"
+    )
+
+    val UNRECOGNIZED_WARNING = WarningMessageTemplate1<String>(
+        "Unrecognized warning: $0"
+    )
+
+    val MISSING_ENTRY_POINT = ErrorMessageTemplate1<String>(
+        "Entry point not found: $0"
+    )
+
     val UNANNOTATED_FILE = WarningMessageTemplate0(
         "File is not annotated as Verik"
     )

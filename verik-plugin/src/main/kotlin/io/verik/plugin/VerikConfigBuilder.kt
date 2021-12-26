@@ -33,6 +33,7 @@ object VerikConfigBuilder {
             buildDir = getBuildDir(project),
             sourceSetConfigs = getSourceSetConfigs(project),
             timescale = extension.timescale,
+            entryPoints = extension.entryPoints,
             enableDeadCodeElimination = extension.enableDeadCodeElimination,
             labelSourceLocations = extension.labelSourceLocations,
             enableLineDirective = extension.enableLineDirective,

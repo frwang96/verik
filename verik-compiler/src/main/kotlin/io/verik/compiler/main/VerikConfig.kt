@@ -25,6 +25,7 @@ data class VerikConfig(
     val buildDir: Path,
     val sourceSetConfigs: List<SourceSetConfig>,
     val timescale: String,
+    val entryPoints: List<String>,
     val enableDeadCodeElimination: Boolean,
     val labelSourceLocations: Boolean,
     val enableLineDirective: Boolean,

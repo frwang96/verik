@@ -58,6 +58,7 @@ class VerikPlugin : Plugin<Project> {
         task.group = "verik"
         task.inputs.property("toolchain", { ConfigUtil.getToolchain() })
         task.inputs.property("timescale", { extension.timescale })
+        task.inputs.property("entryPoints", { extension.entryPoints })
         task.inputs.property("enableDeadCodeElimination", { extension.enableDeadCodeElimination })
         task.inputs.property("labelSourceLocations", { extension.labelSourceLocations })
         task.inputs.property("enableLineDirective", { extension.enableLineDirective })
