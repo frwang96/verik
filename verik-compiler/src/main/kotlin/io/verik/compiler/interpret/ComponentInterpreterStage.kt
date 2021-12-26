@@ -137,39 +137,26 @@ object ComponentInterpreterStage : ProjectStage() {
             referenceUpdater: ReferenceUpdater
         ): List<EPort> {
             return valueParameters
-                ?.mapNotNull { interpretPort(it, referenceUpdater) }
+                ?.map { interpretPort(it, referenceUpdater) }
                 ?: listOf()
         }
 
-        private fun interpretPort(valueParameter: EKtValueParameter, referenceUpdater: ReferenceUpdater): EPort? {
+        private fun interpretPort(valueParameter: EKtValueParameter, referenceUpdater: ReferenceUpdater): EPort {
             val portType = when {
-                valueParameter.hasAnnotationEntry(AnnotationEntries.IN) -> {
-                    if (!valueParameter.isMutable)
-                        Messages.PORT_NOT_MUTABLE.on(valueParameter, valueParameter.name)
-                    PortType.INPUT
-                }
-                valueParameter.hasAnnotationEntry(AnnotationEntries.OUT) -> {
-                    if (!valueParameter.isMutable)
-                        Messages.PORT_NOT_MUTABLE.on(valueParameter, valueParameter.name)
-                    PortType.OUTPUT
-                }
+                valueParameter.hasAnnotationEntry(AnnotationEntries.IN) -> PortType.INPUT
+                valueParameter.hasAnnotationEntry(AnnotationEntries.OUT) -> PortType.OUTPUT
                 else -> {
                     when {
                         valueParameter.type.isSubtype(Core.Vk.C_ModuleInterface) -> PortType.MODULE_INTERFACE
                         valueParameter.type.isSubtype(Core.Vk.C_ModulePort) -> PortType.MODULE_PORT
                         valueParameter.type.isSubtype(Core.Vk.C_ClockingBlock) -> PortType.CLOCKING_BLOCK
-                        else -> null
+                        else -> PortType.INPUT
                     }
                 }
             }
-            return if (portType != null) {
-                val port = EPort(valueParameter.location, valueParameter.name, valueParameter.type, portType)
-                referenceUpdater.update(valueParameter, port)
-                port
-            } else {
-                Messages.PORT_NO_DIRECTIONALITY.on(valueParameter, valueParameter.name)
-                null
-            }
+            val port = EPort(valueParameter.location, valueParameter.name, valueParameter.type, portType)
+            referenceUpdater.update(valueParameter, port)
+            return port
         }
     }
 }

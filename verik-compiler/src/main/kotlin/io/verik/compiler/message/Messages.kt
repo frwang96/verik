@@ -120,12 +120,24 @@ object Messages {
         "Cardinal type expected but found: $0"
     )
 
-    val EXPECTED_OBJECT = ErrorMessageTemplate1<String>(
-        "$0 must be declared as object"
+    val EXPECTED_OBJECT = ErrorMessageTemplate2<String, String>(
+        "$0 must be declared as object: $1"
     )
 
-    val EXPECTED_NOT_OBJECT = ErrorMessageTemplate1<String>(
-        "$0 must not be declared as object"
+    val EXPECTED_NOT_OBJECT = ErrorMessageTemplate2<String, String>(
+        "$0 must not be declared as object: $1"
+    )
+
+    val PORT_NOT_MUTABLE = ErrorMessageTemplate2<String, String>(
+        "$0 port must be declared as var: $1"
+    )
+
+    val PORT_MUTABLE = ErrorMessageTemplate2<String, String>(
+        "$0 port must be declared as val: $1"
+    )
+
+    val PORT_NO_DIRECTIONALITY = ErrorMessageTemplate1<String>(
+        "Could not determine directionality of port: $0"
     )
 
 //  RESOLVE  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -159,14 +171,6 @@ object Messages {
     )
 
 //  INTERPRET  /////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    val PORT_NOT_MUTABLE = ErrorMessageTemplate1<String>(
-        "Port must be declared as var: $0"
-    )
-
-    val PORT_NO_DIRECTIONALITY = ErrorMessageTemplate1<String>(
-        "Could not determine directionality of port: $0"
-    )
 
     val EXPECTED_ON_EXPRESSION = ErrorMessageTemplate0(
         "On expression expected"

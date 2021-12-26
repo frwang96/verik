@@ -22,6 +22,7 @@ import io.verik.compiler.cast.SmartCastReducerStage
 import io.verik.compiler.check.mid.AnnotationEntryCheckerStage
 import io.verik.compiler.check.mid.ComponentInstantiationCheckerStage
 import io.verik.compiler.check.mid.ObjectCheckerStage
+import io.verik.compiler.check.mid.PortCheckerStage
 import io.verik.compiler.check.mid.TypeParameterTypeCheckerStage
 import io.verik.compiler.check.post.CardinalNegativeCheckerStage
 import io.verik.compiler.check.post.FileCheckerStage
@@ -133,6 +134,7 @@ object StageSequencer {
         stageSequence.add(StageType.MID_CHECK, ComponentInstantiationCheckerStage)
         stageSequence.add(StageType.MID_CHECK, TypeParameterTypeCheckerStage)
         stageSequence.add(StageType.MID_CHECK, ObjectCheckerStage)
+        stageSequence.add(StageType.MID_CHECK, PortCheckerStage)
 
         stageSequence.add(StageType.RESOLVE, TypeResolverStage)
         stageSequence.add(StageType.RESOLVE, TypeResolvedCheckerStage)

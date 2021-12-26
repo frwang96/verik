@@ -45,28 +45,6 @@ internal class ComponentInterpreterStageTest : BaseTest() {
     }
 
     @Test
-    fun `module with port no directionality`() {
-        driveMessageTest(
-            """
-                class M(var x: Boolean): Module()
-            """.trimIndent(),
-            true,
-            "Could not determine directionality of port: x"
-        )
-    }
-
-    @Test
-    fun `module with port immutable`() {
-        driveMessageTest(
-            """
-                class M(@In val x: Boolean): Module()
-            """.trimIndent(),
-            true,
-            "Port must be declared as var: x"
-        )
-    }
-
-    @Test
     fun `module interface`() {
         driveElementTest(
             """

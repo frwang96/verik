@@ -18,6 +18,7 @@ package io.verik.compiler.check.mid
 
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtFunction
+import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.AnnotationEntries
@@ -70,6 +71,15 @@ object AnnotationEntryCheckerStage : ProjectStage() {
                         Messages.CONFLICTING_ANNOTATIONS.on(function, annotationEntry, conflictingAnnotationEntry)
                     }
                 }
+            }
+        }
+
+        override fun visitKtValueParameter(valueParameter: EKtValueParameter) {
+            super.visitKtValueParameter(valueParameter)
+            if (valueParameter.hasAnnotationEntry(AnnotationEntries.IN) &&
+                valueParameter.hasAnnotationEntry(AnnotationEntries.OUT)
+            ) {
+                Messages.CONFLICTING_ANNOTATIONS.on(valueParameter, AnnotationEntries.IN, AnnotationEntries.OUT)
             }
         }
     }

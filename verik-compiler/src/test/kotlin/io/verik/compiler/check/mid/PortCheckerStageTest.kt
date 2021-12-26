@@ -19,54 +19,39 @@ package io.verik.compiler.check.mid
 import io.verik.compiler.test.BaseTest
 import org.junit.jupiter.api.Test
 
-internal class AnnotationEntryCheckerStageTest : BaseTest() {
+internal class PortCheckerStageTest : BaseTest() {
 
     @Test
-    fun `class top annotation illegal`() {
+    fun `input port not mutable`() {
         driveMessageTest(
             """
-                @SimTop
-                class C
+                class M(@In val x: Boolean): Module()
             """.trimIndent(),
             true,
-            "Top level declaration must be a module"
+            "Input port must be declared as var: x"
         )
     }
 
     @Test
-    fun `class top annotations conflicting`() {
+    fun `module interface port mutable`() {
         driveMessageTest(
             """
-                @SynthTop
-                @SimTop
-                class M : Module()
+                class MI: ModuleInterface()
+                class M(var mi: ModuleInterface): Module()
             """.trimIndent(),
             true,
-            "Conflicting annotations: @SynthTop and @SimTop"
+            "Module interface port must be declared as val: mi"
         )
     }
 
     @Test
-    fun `function annotations conflicting`() {
+    fun `port no directionality`() {
         driveMessageTest(
             """
-                @Com
-                @Seq
-                fun f() {}
+                class M(var x: Boolean): Module()
             """.trimIndent(),
             true,
-            "Conflicting annotations: @Seq and @Com"
-        )
-    }
-
-    @Test
-    fun `value parameter annotations conflicting`() {
-        driveMessageTest(
-            """
-                class M(@In @Out val x: Boolean) : Module()
-            """.trimIndent(),
-            true,
-            "Conflicting annotations: @In and @Out"
+            "Could not determine directionality of port: x"
         )
     }
 }

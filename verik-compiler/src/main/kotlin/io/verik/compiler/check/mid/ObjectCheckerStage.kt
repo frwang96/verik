@@ -37,32 +37,32 @@ object ObjectCheckerStage : ProjectStage() {
             when {
                 `class`.type.isSubtype(Core.Vk.C_Struct) -> {
                     if (`class`.isObject)
-                        Messages.EXPECTED_NOT_OBJECT.on(`class`, "Struct")
+                        Messages.EXPECTED_NOT_OBJECT.on(`class`, "Struct", `class`.name)
                 }
                 `class`.type.isSubtype(Core.Vk.C_Module) -> {
                     val isSynthesisTop = `class`.hasAnnotationEntry(AnnotationEntries.SYNTHESIS_TOP)
                     val isSimulationTop = `class`.hasAnnotationEntry(AnnotationEntries.SIMULATION_TOP)
                     if (`class`.isObject) {
                         if (isSynthesisTop)
-                            Messages.EXPECTED_NOT_OBJECT.on(`class`, "Synthesis top")
+                            Messages.EXPECTED_NOT_OBJECT.on(`class`, "Synthesis top", `class`.name)
                         if (!isSynthesisTop && !isSimulationTop)
-                            Messages.EXPECTED_NOT_OBJECT.on(`class`, "Module")
+                            Messages.EXPECTED_NOT_OBJECT.on(`class`, "Module", `class`.name)
                     } else {
                         if (isSimulationTop)
-                            Messages.EXPECTED_OBJECT.on(`class`, "Simulation top")
+                            Messages.EXPECTED_OBJECT.on(`class`, "Simulation top", `class`.name)
                     }
                 }
                 `class`.type.isSubtype(Core.Vk.C_ModuleInterface) -> {
                     if (`class`.isObject)
-                        Messages.EXPECTED_NOT_OBJECT.on(`class`, "Module interface")
+                        Messages.EXPECTED_NOT_OBJECT.on(`class`, "Module interface", `class`.name)
                 }
                 `class`.type.isSubtype(Core.Vk.C_ModulePort) -> {
                     if (`class`.isObject)
-                        Messages.EXPECTED_NOT_OBJECT.on(`class`, "Module port")
+                        Messages.EXPECTED_NOT_OBJECT.on(`class`, "Module port", `class`.name)
                 }
                 `class`.type.isSubtype(Core.Vk.C_ClockingBlock) -> {
                     if (`class`.isObject)
-                        Messages.EXPECTED_NOT_OBJECT.on(`class`, "Clocking block")
+                        Messages.EXPECTED_NOT_OBJECT.on(`class`, "Clocking block", `class`.name)
                 }
             }
         }

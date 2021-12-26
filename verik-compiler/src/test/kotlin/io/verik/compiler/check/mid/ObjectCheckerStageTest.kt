@@ -28,7 +28,7 @@ internal class ObjectCheckerStageTest : BaseTest() {
                 object S: Struct()
             """.trimIndent(),
             true,
-            "Struct must not be declared as object"
+            "Struct must not be declared as object: S"
         )
     }
 
@@ -40,7 +40,7 @@ internal class ObjectCheckerStageTest : BaseTest() {
                 class M: Module()
             """.trimIndent(),
             true,
-            "Simulation top must be declared as object"
+            "Simulation top must be declared as object: M"
         )
     }
 
@@ -52,7 +52,7 @@ internal class ObjectCheckerStageTest : BaseTest() {
                 object M: Module()
             """.trimIndent(),
             true,
-            "Synthesis top must not be declared as object"
+            "Synthesis top must not be declared as object: M"
         )
     }
 }
