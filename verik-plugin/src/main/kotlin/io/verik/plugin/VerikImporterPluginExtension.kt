@@ -22,7 +22,7 @@ abstract class VerikImporterPluginExtension {
 
     var importedFiles: List<Path> = listOf()
     var labelSourceLocations: Boolean = true
-    var suppressedWarnings: List<String> = listOf()
-    var promotedWarnings: List<String> = listOf()
+    var suppressedWarnings: ArrayList<String> = ArrayList()
+    var promotedWarnings: ArrayList<String> = ArrayList()
     var debug: Boolean = false
 }

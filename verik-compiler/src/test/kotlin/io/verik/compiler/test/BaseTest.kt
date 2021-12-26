@@ -208,6 +208,7 @@ abstract class BaseTest {
                 buildDir = Paths.get(buildDir),
                 sourceSetConfigs = listOf(sourceSetConfig),
                 timescale = "1ns / 1ns",
+                entryPoints = listOf(),
                 enableDeadCodeElimination = false,
                 labelSourceLocations = false,
                 enableLineDirective = false,
