@@ -47,22 +47,22 @@ object ComponentInterpreterStage : ProjectStage() {
             super.visitKtClass(`class`)
             val classType = `class`.type
             when {
-                classType.isSubtype(Core.Vk.C_Module.toType()) -> {
+                classType.isSubtype(Core.Vk.C_Module) -> {
                     val module = interpretModule(`class`)
                     referenceUpdater.replace(`class`, module)
                     `class`.primaryConstructor?.let { referenceUpdater.update(it, module) }
                 }
-                classType.isSubtype(Core.Vk.C_ModuleInterface.toType()) -> {
+                classType.isSubtype(Core.Vk.C_ModuleInterface) -> {
                     val moduleInterface = interpretModuleInterface(`class`)
                     referenceUpdater.replace(`class`, moduleInterface)
                     `class`.primaryConstructor?.let { referenceUpdater.update(it, moduleInterface) }
                 }
-                classType.isSubtype(Core.Vk.C_ModulePort.toType()) -> {
+                classType.isSubtype(Core.Vk.C_ModulePort) -> {
                     val modulePort = interpretModulePort(`class`)
                     referenceUpdater.replace(`class`, modulePort)
                     `class`.primaryConstructor?.let { referenceUpdater.update(it, modulePort) }
                 }
-                classType.isSubtype(Core.Vk.C_ClockingBlock.toType()) -> {
+                classType.isSubtype(Core.Vk.C_ClockingBlock) -> {
                     val clockingBlock = interpretClockingBlock(`class`)
                     referenceUpdater.replace(`class`, clockingBlock)
                     `class`.primaryConstructor?.let { referenceUpdater.update(it, clockingBlock) }
@@ -74,14 +74,6 @@ object ComponentInterpreterStage : ProjectStage() {
             val ports = interpretPorts(`class`.primaryConstructor?.valueParameters, referenceUpdater)
             val isSynthesisTop = `class`.hasAnnotationEntry(AnnotationEntries.SYNTHESIS_TOP)
             val isSimulationTop = `class`.hasAnnotationEntry(AnnotationEntries.SIMULATION_TOP)
-            when {
-                isSynthesisTop -> if (`class`.isObject)
-                    Messages.SYNTHESIS_TOP_IS_OBJECT.on(`class`)
-                isSimulationTop -> if (!`class`.isObject)
-                    Messages.SIMULATION_TOP_NOT_OBJECT.on(`class`)
-                else -> if (`class`.isObject)
-                    Messages.MODULE_IS_OBJECT.on(`class`)
-            }
             return EModule(
                 `class`.location,
                 `class`.bodyStartLocation,
@@ -163,9 +155,9 @@ object ComponentInterpreterStage : ProjectStage() {
                 }
                 else -> {
                     when {
-                        valueParameter.type.isSubtype(Core.Vk.C_ModuleInterface.toType()) -> PortType.MODULE_INTERFACE
-                        valueParameter.type.isSubtype(Core.Vk.C_ModulePort.toType()) -> PortType.MODULE_PORT
-                        valueParameter.type.isSubtype(Core.Vk.C_ClockingBlock.toType()) -> PortType.CLOCKING_BLOCK
+                        valueParameter.type.isSubtype(Core.Vk.C_ModuleInterface) -> PortType.MODULE_INTERFACE
+                        valueParameter.type.isSubtype(Core.Vk.C_ModulePort) -> PortType.MODULE_PORT
+                        valueParameter.type.isSubtype(Core.Vk.C_ClockingBlock) -> PortType.CLOCKING_BLOCK
                         else -> null
                     }
                 }

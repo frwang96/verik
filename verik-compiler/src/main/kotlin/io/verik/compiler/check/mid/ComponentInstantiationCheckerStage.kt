@@ -35,9 +35,9 @@ object ComponentInstantiationCheckerStage : ProjectStage() {
 
         override fun visitKtProperty(property: EKtProperty) {
             super.visitKtProperty(property)
-            if (property.type.isSubtype(Core.Vk.C_Component.toType())) {
+            if (property.type.isSubtype(Core.Vk.C_Component)) {
                 val parent = property.parent
-                if (parent is EKtClass && parent.type.isSubtype(Core.Vk.C_Component.toType())) {
+                if (parent is EKtClass && parent.type.isSubtype(Core.Vk.C_Component)) {
                     if (!property.hasAnnotationEntry(AnnotationEntries.MAKE))
                         Messages.MISSING_MAKE_ANNOTATION.on(property)
                 } else {

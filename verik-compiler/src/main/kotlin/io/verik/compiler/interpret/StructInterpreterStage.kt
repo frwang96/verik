@@ -39,7 +39,7 @@ object StructInterpreterStage : ProjectStage() {
 
         override fun visitKtClass(`class`: EKtClass) {
             super.visitKtClass(`class`)
-            if (`class`.type.isSubtype(Core.Vk.C_Struct.toType())) {
+            if (`class`.type.isSubtype(Core.Vk.C_Struct)) {
                 val properties = `class`.primaryConstructor!!
                     .valueParameters
                     .map { interpretProperty(it, referenceUpdater) }

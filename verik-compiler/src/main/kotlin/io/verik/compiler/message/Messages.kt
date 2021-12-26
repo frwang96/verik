@@ -120,6 +120,14 @@ object Messages {
         "Cardinal type expected but found: $0"
     )
 
+    val EXPECTED_OBJECT = ErrorMessageTemplate1<String>(
+        "$0 must be declared as object"
+    )
+
+    val EXPECTED_NOT_OBJECT = ErrorMessageTemplate1<String>(
+        "$0 must not be declared as object"
+    )
+
 //  RESOLVE  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val TYPE_NO_WIDTH = ErrorMessageTemplate1<Type>(
@@ -151,18 +159,6 @@ object Messages {
     )
 
 //  INTERPRET  /////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    val SYNTHESIS_TOP_IS_OBJECT = ErrorMessageTemplate0(
-        "Synthesis top must not be declared as object"
-    )
-
-    val SIMULATION_TOP_NOT_OBJECT = ErrorMessageTemplate0(
-        "Simulation top must be declared as object"
-    )
-
-    val MODULE_IS_OBJECT = ErrorMessageTemplate0(
-        "Module must not be declared as object"
-    )
 
     val PORT_NOT_MUTABLE = ErrorMessageTemplate1<String>(
         "Port must be declared as var: $0"

@@ -34,30 +34,6 @@ internal class ComponentInterpreterStageTest : BaseTest() {
     }
 
     @Test
-    fun `module simulation top illegal`() {
-        driveMessageTest(
-            """
-                @SimTop
-                class M: Module()
-            """.trimIndent(),
-            true,
-            "Simulation top must be declared as object"
-        )
-    }
-
-    @Test
-    fun `module synthesis top illegal`() {
-        driveMessageTest(
-            """
-                @SynthTop
-                object M: Module()
-            """.trimIndent(),
-            true,
-            "Synthesis top must not be declared as object"
-        )
-    }
-
-    @Test
     fun `module with port`() {
         driveElementTest(
             """

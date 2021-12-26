@@ -38,7 +38,7 @@ class ESvProperty(
     }
 
     fun isVirtual(): Boolean {
-        return type.isSubtype(Core.Vk.C_ModuleInterface.toType())
+        return type.isSubtype(Core.Vk.C_ModuleInterface)
     }
 
     override fun accept(visitor: Visitor) {

@@ -52,7 +52,7 @@ object AnnotationEntryCheckerStage : ProjectStage() {
                     AnnotationEntries.SIMULATION_TOP
                 )
             if (isSimulationTop || isSynthesisTop) {
-                if (!`class`.type.isSubtype(Core.Vk.C_Module.toType()))
+                if (!`class`.type.isSubtype(Core.Vk.C_Module))
                     Messages.TOP_NOT_MODULE.on(`class`)
                 if (`class`.typeParameters.isNotEmpty())
                     Messages.TOP_PARAMETERIZED.on(`class`)

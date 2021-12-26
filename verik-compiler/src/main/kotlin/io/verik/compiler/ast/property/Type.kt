@@ -54,6 +54,10 @@ class Type(
         return getSuperTypes().any { it.reference == type.reference }
     }
 
+    fun isSubtype(declaration: Declaration): Boolean {
+        return isSubtype(declaration.toType())
+    }
+
     fun isCardinalType(): Boolean {
         return when (val reference = reference) {
             is ETypeParameter -> reference.type.isCardinalType()
