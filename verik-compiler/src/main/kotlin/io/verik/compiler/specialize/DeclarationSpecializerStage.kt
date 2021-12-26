@@ -66,11 +66,12 @@ object DeclarationSpecializerStage : ProjectStage() {
         if (projectContext.config.enableDeadCodeElimination) {
             projectContext.project.files().forEach { file ->
                 file.declarations.forEach {
-                    if (it is EKtClass) {
+                    if (it is EKtClass && it.typeParameters.isEmpty()) {
                         val isSynthesisTop = it.hasAnnotationEntry(AnnotationEntries.SYNTHESIS_TOP)
                         val isSimulationTop = it.hasAnnotationEntry(AnnotationEntries.SIMULATION_TOP)
                         if (isSynthesisTop || isSimulationTop) {
-                            if (it.typeParameters.isEmpty()) {
+                            val entryPointNames = projectContext.config.entryPoints
+                            if (entryPointNames.isEmpty() || it.name in entryPointNames) {
                                 entryPoints.add(it)
                             }
                         }

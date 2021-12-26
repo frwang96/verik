@@ -44,6 +44,10 @@ object Messages {
         "Unrecognized warning: $0"
     )
 
+    val MISSING_ENTRY_POINT = ErrorMessageTemplate1<String>(
+        "Entry point not found: $0"
+    )
+
     val UNANNOTATED_FILE = WarningMessageTemplate0(
         "File is not annotated as Verik"
     )
