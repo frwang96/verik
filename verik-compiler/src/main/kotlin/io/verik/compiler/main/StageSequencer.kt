@@ -23,6 +23,7 @@ import io.verik.compiler.check.mid.AnnotationEntryCheckerStage
 import io.verik.compiler.check.mid.ComponentInstantiationCheckerStage
 import io.verik.compiler.check.mid.ObjectCheckerStage
 import io.verik.compiler.check.mid.PortCheckerStage
+import io.verik.compiler.check.mid.PortInstantiationCheckerStage
 import io.verik.compiler.check.mid.TypeParameterTypeCheckerStage
 import io.verik.compiler.check.post.CardinalNegativeCheckerStage
 import io.verik.compiler.check.post.FileCheckerStage
@@ -45,7 +46,6 @@ import io.verik.compiler.interpret.FileSplitterStage
 import io.verik.compiler.interpret.FunctionInterpreterStage
 import io.verik.compiler.interpret.FunctionLiteralInterpreterStage
 import io.verik.compiler.interpret.ModulePortParentResolverStage
-import io.verik.compiler.interpret.PortInstantiationCheckerStage
 import io.verik.compiler.interpret.PropertyInterpreterStage
 import io.verik.compiler.interpret.StructInterpreterStage
 import io.verik.compiler.kotlin.KotlinCompilerAnalyzerStage
@@ -135,6 +135,7 @@ object StageSequencer {
         stageSequence.add(StageType.MID_CHECK, TypeParameterTypeCheckerStage)
         stageSequence.add(StageType.MID_CHECK, ObjectCheckerStage)
         stageSequence.add(StageType.MID_CHECK, PortCheckerStage)
+        stageSequence.add(StageType.MID_CHECK, PortInstantiationCheckerStage)
 
         stageSequence.add(StageType.RESOLVE, TypeResolverStage)
         stageSequence.add(StageType.RESOLVE, TypeResolvedCheckerStage)
@@ -150,7 +151,6 @@ object StageSequencer {
         stageSequence.add(StageType.INTERPRET, PropertyInterpreterStage)
         stageSequence.add(StageType.INTERPRET, FunctionLiteralInterpreterStage)
         stageSequence.add(StageType.INTERPRET, ModulePortParentResolverStage)
-        stageSequence.add(StageType.INTERPRET, PortInstantiationCheckerStage)
         stageSequence.add(StageType.INTERPRET, FileSplitterStage)
 
         stageSequence.add(StageType.MID_TRANSFORM, ConstantPropagatorStage)

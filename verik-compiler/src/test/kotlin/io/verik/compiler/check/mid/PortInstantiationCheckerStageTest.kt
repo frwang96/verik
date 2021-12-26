@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.interpret
+package io.verik.compiler.check.mid
 
 import io.verik.compiler.test.BaseTest
 import org.junit.jupiter.api.Test
@@ -32,7 +32,7 @@ internal class PortInstantiationCheckerStageTest : BaseTest() {
                 }
             """.trimIndent(),
             true,
-            "Illegal expression for output port: x"
+            "Illegal expression for output port"
         )
     }
 

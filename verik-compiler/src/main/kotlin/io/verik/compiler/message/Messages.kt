@@ -140,6 +140,14 @@ object Messages {
         "Could not determine directionality of port: $0"
     )
 
+    val OUTPUT_PORT_NOT_MUTABLE = ErrorMessageTemplate1<String>(
+        "Property assigned by output port must be declared as var: $0"
+    )
+
+    val ILLEGAL_OUTPUT_PORT_EXPRESSION = ErrorMessageTemplate0(
+        "Illegal expression for output port"
+    )
+
 //  RESOLVE  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val TYPE_NO_WIDTH = ErrorMessageTemplate1<Type>(
@@ -194,14 +202,6 @@ object Messages {
 
     val ILLEGAL_INJECTED_PROPERTY = ErrorMessageTemplate1<String>(
         "String literal expected for injected property: $0"
-    )
-
-    val ILLEGAL_OUTPUT_PORT_EXPRESSION = ErrorMessageTemplate1<String>(
-        "Illegal expression for output port: $0"
-    )
-
-    val OUTPUT_PORT_NOT_MUTABLE = ErrorMessageTemplate1<String>(
-        "Property assigned by output port must be declared as var: $0"
     )
 
 //  MID TRANSFORM  /////////////////////////////////////////////////////////////////////////////////////////////////////
