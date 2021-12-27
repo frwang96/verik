@@ -17,8 +17,8 @@
 package io.verik.core
 
 /**
- * A module port to bundle signals in [module interfaces][ModuleInterface] and assign directionality. They correspond to
- * SystemVerilog modports.
+ * A module port to bundle signals in [module interfaces][ModuleInterface] and assign directionality. They correspond
+ * to SystemVerilog modports.
  *
  *      class MP(
  *          @In var x: Boolean

@@ -24,8 +24,7 @@ package io.verik.kotlin
 class IntRange private constructor()
 
 /**
- * Returns a range from this value up to but excluding the specified [to] value. If the [to] value is less than or equal
- * to this value, then the returned range is empty.
+ * Returns a range from this value up to but excluding the specified [to] value.
  */
 infix fun Int.until(to: Int): IntRange {
     throw IllegalArgumentException()

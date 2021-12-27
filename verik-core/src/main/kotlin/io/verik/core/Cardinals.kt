@@ -53,7 +53,7 @@ typealias MAX<N, M> = `*`
 typealias MIN<N, M> = `*`
 
 /**
- * The cardinal N. Used for type parameter shielding.
+ * The cardinal N. Used for shielding the type parameter from the Kotlin type system.
  */
 typealias OF<N> = `*`
 

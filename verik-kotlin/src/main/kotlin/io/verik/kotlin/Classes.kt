@@ -19,12 +19,12 @@
 package io.verik.kotlin
 
 /**
- * The root of the Kotlin class hierarchy. Every Kotlin class has Any as a superclass.
+ * The root of the Verik class hierarchy. Every Verik class has Any as a superclass.
  */
 abstract class Any
 
 /**
- * The type with only one value: the Unit object. This type corresponds to the void type in Java.
+ * The type with only one value: the Unit object.
  */
 class Unit private constructor()
 
