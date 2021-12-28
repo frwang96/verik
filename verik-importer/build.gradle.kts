@@ -18,7 +18,6 @@ group = "io.verik"
 
 plugins {
     kotlin("jvm") version "1.5.31"
-    id("org.gradle.antlr")
     id("org.jetbrains.dokka") version "1.6.0"
     id("signing")
     id("maven-publish")
@@ -33,9 +32,9 @@ repositories {
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.31")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.31")
+    implementation("org.antlr:antlr4-runtime:4.9.3")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
-    antlr("org.antlr:antlr4:4.9.3")
 }
 
 configure<JavaPluginExtension> {
@@ -43,17 +42,12 @@ configure<JavaPluginExtension> {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-tasks.generateGrammarSource {
-    arguments = listOf("-visitor", "-package", "io.verik.importer.antlr")
-    outputDirectory = buildDir.resolve("generated-src/antlr/main/io/verik/importer/antlr")
-}
-
-tasks.compileKotlin {
-    dependsOn(tasks.generateGrammarSource)
-}
-
-tasks.compileTestKotlin {
-    dependsOn(tasks.generateGrammarSource)
+sourceSets {
+    main {
+        java {
+            srcDir("src/main/gen")
+        }
+    }
 }
 
 tasks.test {
@@ -70,10 +64,6 @@ tasks.register<Jar>("sourceJar") {
 tasks.register<Jar>("javadocJar") {
     archiveClassifier.set("javadoc")
     from(tasks.dokkaJavadoc)
-}
-
-tasks.runKtlintCheckOverMainSourceSet {
-    dependsOn(tasks.generateGrammarSource)
 }
 
 signing {

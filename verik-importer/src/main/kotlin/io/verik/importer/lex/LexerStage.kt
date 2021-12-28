@@ -21,11 +21,11 @@ import io.verik.importer.main.ImporterContext
 import io.verik.importer.main.ImporterStage
 import io.verik.importer.message.Messages
 import io.verik.importer.message.RecognitionExceptionFormatter
-import org.antlr.runtime.Token
 import org.antlr.v4.runtime.BaseErrorListener
 import org.antlr.v4.runtime.CommonTokenStream
 import org.antlr.v4.runtime.RecognitionException
 import org.antlr.v4.runtime.Recognizer
+import org.antlr.v4.runtime.Token
 
 object LexerStage : ImporterStage() {
 
