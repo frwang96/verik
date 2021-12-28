@@ -24,7 +24,7 @@ data class VerikImporterConfig(
     val projectName: String,
     val buildDir: Path,
     val importedFiles: List<Path>,
-    val labelSourceLocations: Boolean,
+    val annotateDeclarations: Boolean,
     val suppressedWarnings: List<String>,
     val promotedWarnings: List<String>,
     val debug: Boolean

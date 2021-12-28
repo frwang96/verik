@@ -60,9 +60,9 @@ object DeclarationSerializer {
     }
 
     private fun serializeLocation(declaration: EDeclaration, serializerContext: SerializerContext) {
-        if (serializerContext.labelSourceLocations) {
+        if (serializerContext.annotateDeclarations) {
             val pathString = Platform.getStringFromPath(declaration.location.path)
-            val locationString = "$pathString:${declaration.location.line}:${declaration.location.column}"
+            val locationString = "$pathString:${declaration.location.line}"
             serializerContext.appendLine("@Imported(\"$locationString\")")
         }
     }

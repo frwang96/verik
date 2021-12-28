@@ -35,7 +35,7 @@ object VerikConfigBuilder {
             timescale = extension.timescale,
             entryPoints = extension.entryPoints,
             enableDeadCodeElimination = extension.enableDeadCodeElimination,
-            labelSourceLocations = extension.labelSourceLocations,
+            labelLines = extension.labelLines,
             enableLineDirective = extension.enableLineDirective,
             indentLength = extension.indentLength,
             wrapLength = extension.wrapLength,

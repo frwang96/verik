@@ -210,7 +210,7 @@ abstract class BaseTest {
                 timescale = "1ns / 1ns",
                 entryPoints = listOf(),
                 enableDeadCodeElimination = false,
-                labelSourceLocations = false,
+                labelLines = false,
                 enableLineDirective = false,
                 indentLength = 4,
                 wrapLength = 80,

@@ -27,11 +27,11 @@ class SourceBuilder(
     private val file: EFile
 ) {
 
-    private val labelSourceLocations = projectContext.config.labelSourceLocations
+    private val labelLines = projectContext.config.labelLines
     private val enableLineDirective = projectContext.config.enableLineDirective
     private val indentLength = projectContext.config.indentLength
     private val wrapLength = projectContext.config.wrapLength
-    private val labelLength = if (labelSourceLocations) 12 else 0
+    private val labelLength = if (labelLines) 12 else 0
 
     private val sourceBuilder = StringBuilder()
     private var lastLine = 1
@@ -45,7 +45,7 @@ class SourceBuilder(
         )
         sourceBuilder.append(fileHeader)
 
-        if (labelSourceLocations) {
+        if (labelLines) {
             if (enableLineDirective) {
                 val pathString = Platform.getStringFromPath(file.inputPath.toAbsolutePath())
                 sourceBuilder.appendLine(
@@ -191,7 +191,7 @@ class SourceBuilder(
     }
 
     private fun labelLine(sourceActionLine: SourceActionLine, index: Int = 0) {
-        if (labelSourceLocations) {
+        if (labelLines) {
             if (index >= sourceActionLine.sourceActions.size) {
                 val lineString = "$lastLine".padStart(6, ' ')
                 sourceBuilder.append("`_($lineString)")

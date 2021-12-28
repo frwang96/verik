@@ -208,7 +208,7 @@ abstract class BaseTest {
                 projectName = "test",
                 buildDir = Paths.get(buildDir),
                 importedFiles = listOf(Paths.get(importedFile)),
-                labelSourceLocations = false,
+                annotateDeclarations = false,
                 suppressedWarnings = listOf(),
                 promotedWarnings = listOf(),
                 debug = true

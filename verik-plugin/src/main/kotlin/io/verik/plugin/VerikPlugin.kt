@@ -60,7 +60,7 @@ class VerikPlugin : Plugin<Project> {
         task.inputs.property("timescale", { extension.timescale })
         task.inputs.property("entryPoints", { extension.entryPoints })
         task.inputs.property("enableDeadCodeElimination", { extension.enableDeadCodeElimination })
-        task.inputs.property("labelSourceLocations", { extension.labelSourceLocations })
+        task.inputs.property("labelLines", { extension.labelLines })
         task.inputs.property("enableLineDirective", { extension.enableLineDirective })
         task.inputs.property("indentLength", { extension.indentLength })
         task.inputs.property("wrapLength", { extension.wrapLength })
@@ -80,7 +80,7 @@ class VerikPlugin : Plugin<Project> {
         }
         task.group = "verik"
         task.inputs.property("toolchain", { ConfigUtil.getToolchain() })
-        task.inputs.property("labelSourceLocations", { extension.labelSourceLocations })
+        task.inputs.property("annotateDeclarations", { extension.annotateDeclarations })
         task.inputs.property("suppressedWarnings", { extension.suppressedWarnings })
         task.inputs.property("promotedWarnings", { extension.promotedWarnings })
         task.inputs.property("debug", { extension.debug })

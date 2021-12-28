@@ -21,7 +21,7 @@ import java.nio.file.Path
 abstract class VerikImporterPluginExtension {
 
     var importedFiles: List<Path> = listOf()
-    var labelSourceLocations: Boolean = true
+    var annotateDeclarations: Boolean = true
     var suppressedWarnings: ArrayList<String> = ArrayList()
     var promotedWarnings: ArrayList<String> = ArrayList()
     var debug: Boolean = false
