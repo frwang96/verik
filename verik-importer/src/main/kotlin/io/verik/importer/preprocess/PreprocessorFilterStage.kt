@@ -16,23 +16,25 @@
 
 package io.verik.importer.preprocess
 
-import io.verik.importer.common.TextFile
 import io.verik.importer.main.ImporterContext
 import io.verik.importer.main.ImporterStage
 
-object PreprocessorSerializerStage : ImporterStage() {
+object PreprocessorFilterStage : ImporterStage() {
 
     override fun process(importerContext: ImporterContext) {
-        if (importerContext.config.enablePreprocessorOutput) {
-            val builder = StringBuilder()
-            importerContext.preprocessorFragments.forEach {
-                builder.append(it.content)
-            }
-            val preprocessorTextFile = TextFile(
-                importerContext.config.buildDir.resolve("imported.sv"),
-                builder.toString()
-            )
-            importerContext.outputContext.preprocessorTextFile = preprocessorTextFile
+        val preprocessorFragments = importerContext.preprocessorFragments.filter {
+            !isCommentOrWhitespace(it)
+        }
+        importerContext.preprocessorFragments = ArrayList(preprocessorFragments)
+    }
+
+    private fun isCommentOrWhitespace(preprocessorFragment: PreprocessorFragment): Boolean {
+        val content = preprocessorFragment.content
+        return when {
+            content.startsWith("/*") -> true
+            content.startsWith("//") -> true
+            content.isBlank() -> true
+            else -> false
         }
     }
 }

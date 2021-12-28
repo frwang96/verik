@@ -1,6 +1,5 @@
 lexer grammar SystemVerilogPreprocessorLexer;
 
-
 BACKTICK
     : '`' -> mode(DIRECTIVE_MODE)
     ;
@@ -14,17 +13,16 @@ STRING_LITERAL
     ;
 
 BLOCK_COMMENT
-    :'/*' .*? '*/' -> channel(HIDDEN)
+    :'/*' .*? '*/' -> type(CODE)
     ;
 
 LINE_COMMENT
-    : '//' ~[\r\n]* -> channel(HIDDEN)
+    : '//' ~[\r\n]* -> type(CODE)
     ;
 
 WS
-    : [ \t\r\n]+ -> channel(HIDDEN)
+    : [ \t\r\n]+ -> type(CODE)
     ;
-
 
 mode DIRECTIVE_MODE;
 
@@ -33,7 +31,7 @@ DIRECTIVE_WS
     ;
 
 TIMESCALE
-    : 'timescale' ~[\r\n]+ -> mode(DEFAULT_MODE)
+    : 'timescale' ~[\r\n]+ [\r\n]? -> mode(DEFAULT_MODE)
     ;
 
 fragment STRING

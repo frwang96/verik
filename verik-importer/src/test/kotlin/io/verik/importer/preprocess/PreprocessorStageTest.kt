@@ -22,10 +22,10 @@ import org.junit.jupiter.api.Test
 internal class PreprocessorStageTest : BaseTest() {
 
     @Test
-    fun `preprocessor simple`() {
-        drivePreprocessorFragmentTest(
-            "a",
-            "a"
+    fun `directive timescale`() {
+        drivePreprocessorTest(
+            "`timescale 1ns / 1ns",
+            ""
         )
     }
 }

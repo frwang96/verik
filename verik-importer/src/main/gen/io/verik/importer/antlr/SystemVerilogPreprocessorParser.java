@@ -1,20 +1,5 @@
-/*
- * Copyright (c) 2021 Francis Wang
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-package io.verik.importer.antlr;// Generated from /Users/francis/Documents/Work/Verik/git.nosync/verik/verik-importer/src/main/antlr/io/verik/importer/antlr/SystemVerilogPreprocessorParser.g4 by ANTLR 4.9.2
+// Generated from /Users/francis/Documents/Work/Verik/git.nosync/verik/verik-importer/src/main/gen/io/verik/importer/antlr/SystemVerilogPreprocessorParser.g4 by ANTLR 4.9.2
+package io.verik.importer.antlr;
 
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.atn.ATN;
@@ -36,8 +21,7 @@ public class SystemVerilogPreprocessorParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		BACKTICK=1, CODE=2, BLOCK_COMMENT=3, LINE_COMMENT=4, WS=5, DIRECTIVE_WS=6, 
-		TIMESCALE=7;
+		BACKTICK=1, CODE=2, DIRECTIVE_WS=3, TIMESCALE=4;
 	public static final int
 		RULE_file = 0, RULE_text = 1, RULE_unescapedDirective = 2, RULE_code = 3;
 	private static String[] makeRuleNames() {
@@ -55,8 +39,7 @@ public class SystemVerilogPreprocessorParser extends Parser {
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, "BACKTICK", "CODE", "BLOCK_COMMENT", "LINE_COMMENT", "WS", "DIRECTIVE_WS", 
-			"TIMESCALE"
+			null, "BACKTICK", "CODE", "DIRECTIVE_WS", "TIMESCALE"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -323,13 +306,13 @@ public class SystemVerilogPreprocessorParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\t\34\4\2\t\2\4\3"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\6\34\4\2\t\2\4\3"+
 		"\t\3\4\4\t\4\4\5\t\5\3\2\7\2\f\n\2\f\2\16\2\17\13\2\3\2\3\2\3\3\3\3\5"+
 		"\3\25\n\3\3\4\3\4\3\4\3\5\3\5\3\5\2\2\6\2\4\6\b\2\2\2\31\2\r\3\2\2\2\4"+
 		"\24\3\2\2\2\6\26\3\2\2\2\b\31\3\2\2\2\n\f\5\4\3\2\13\n\3\2\2\2\f\17\3"+
 		"\2\2\2\r\13\3\2\2\2\r\16\3\2\2\2\16\20\3\2\2\2\17\r\3\2\2\2\20\21\7\2"+
 		"\2\3\21\3\3\2\2\2\22\25\5\b\5\2\23\25\5\6\4\2\24\22\3\2\2\2\24\23\3\2"+
-		"\2\2\25\5\3\2\2\2\26\27\7\3\2\2\27\30\7\t\2\2\30\7\3\2\2\2\31\32\7\4\2"+
+		"\2\2\25\5\3\2\2\2\26\27\7\3\2\2\27\30\7\6\2\2\30\7\3\2\2\2\31\32\7\4\2"+
 		"\2\32\t\3\2\2\2\4\r\24";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());

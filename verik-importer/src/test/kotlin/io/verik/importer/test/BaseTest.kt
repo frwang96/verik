@@ -29,7 +29,7 @@ import io.verik.importer.main.StageSequencer
 import io.verik.importer.main.VerikImporterConfig
 import io.verik.importer.message.MessageCollector
 import io.verik.importer.parse.ParserStage
-import io.verik.importer.preprocess.PreprocessorStage
+import io.verik.importer.preprocess.PreprocessorSerializerStage
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.assertThrows
@@ -54,16 +54,19 @@ abstract class BaseTest {
         }
     }
 
-    fun drivePreprocessorFragmentTest(content: String, expected: String) {
+    fun drivePreprocessorTest(content: String, expected: String) {
         val importerContext = getImporterContext(content)
         val stageSequence = StageSequencer.getStageSequence()
         for (stage in stageSequence.stages) {
             stage.process(importerContext)
-            if (stage is PreprocessorStage)
+            if (stage is PreprocessorSerializerStage)
                 break
         }
-        val actual = importerContext.preprocessorFragments.joinToString(separator = "\n") { it.content }
-        assertEquals(expected, actual)
+        val preprocessorTextFile = importerContext.outputContext.preprocessorTextFile!!
+        assertEquals(
+            expected.trim(),
+            preprocessorTextFile.content.trim()
+        )
     }
 
     fun driveLexerFragmentTest(content: String, expected: String) {
@@ -210,7 +213,7 @@ abstract class BaseTest {
                 projectName = "test",
                 buildDir = Paths.get(buildDir),
                 importedFiles = listOf(Paths.get(importedFile)),
-                enablePreprocessorOutput = false,
+                enablePreprocessorOutput = true,
                 annotateDeclarations = false,
                 suppressedWarnings = listOf(),
                 promotedWarnings = listOf(),
