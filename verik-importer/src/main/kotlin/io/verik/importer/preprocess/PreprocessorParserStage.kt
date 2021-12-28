@@ -18,6 +18,7 @@ package io.verik.importer.preprocess
 
 import io.verik.importer.antlr.SystemVerilogPreprocessorLexer
 import io.verik.importer.antlr.SystemVerilogPreprocessorParser
+import io.verik.importer.common.TextFile
 import io.verik.importer.main.ImporterContext
 import io.verik.importer.main.ImporterStage
 import io.verik.importer.message.Messages
@@ -33,28 +34,28 @@ import java.nio.file.Path
 object PreprocessorParserStage : ImporterStage() {
 
     override fun process(importerContext: ImporterContext) {
-        importerContext.inputFileContexts.forEach { (file, inputFileContext) ->
-            inputFileContext.parseTree = parse(file, inputFileContext.content)
+        importerContext.inputFileContexts.forEach {
+            it.parseTree = parse(it.textFile)
         }
     }
 
-    private fun parse(file: Path, content: String): ParseTree {
-        val preprocessorCharStream = PreprocessorCharStream(file, content)
+    private fun parse(textFile: TextFile): ParseTree {
+        val preprocessorCharStream = PreprocessorCharStream(textFile.path, textFile.content)
         val lexer = SystemVerilogPreprocessorLexer(preprocessorCharStream)
-        val lexerErrorListener = LexerErrorListener(file)
+        val lexerErrorListener = LexerErrorListener(textFile.path)
         lexer.removeErrorListeners()
         lexer.addErrorListener(lexerErrorListener)
 
         val tokenStream = CommonTokenStream(lexer)
         val parser = SystemVerilogPreprocessorParser(tokenStream)
-        val parserErrorListener = ParserErrorListener(file)
+        val parserErrorListener = ParserErrorListener(textFile.path)
         parser.removeErrorListeners()
         parser.addErrorListener(parserErrorListener)
         return parser.file()
     }
 
     private class LexerErrorListener(
-        private val file: Path
+        private val path: Path
     ) : BaseErrorListener() {
 
         override fun syntaxError(
@@ -65,14 +66,14 @@ object PreprocessorParserStage : ImporterStage() {
             msg: String?,
             e: RecognitionException?
         ) {
-            val location = SourceLocation(file, line, charPositionInLine)
+            val location = SourceLocation(path, line, charPositionInLine)
             val message = RecognitionExceptionFormatter.format(e)
             Messages.PREPROCESSOR_LEXER_ERROR.on(location, message)
         }
     }
 
     private class ParserErrorListener(
-        private val file: Path
+        private val path: Path
     ) : BaseErrorListener() {
 
         override fun syntaxError(
@@ -83,7 +84,7 @@ object PreprocessorParserStage : ImporterStage() {
             msg: String?,
             e: RecognitionException?
         ) {
-            val location = SourceLocation(file, line, charPositionInLine)
+            val location = SourceLocation(path, line, charPositionInLine)
             val message = RecognitionExceptionFormatter.format(e)
             Messages.PREPROCESSOR_PARSER_ERROR.on(location, message)
         }

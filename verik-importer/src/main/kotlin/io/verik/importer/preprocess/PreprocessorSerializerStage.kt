@@ -16,18 +16,30 @@
 
 package io.verik.importer.preprocess
 
+import io.verik.importer.common.TextFile
 import io.verik.importer.main.ImporterContext
 import io.verik.importer.main.ImporterStage
-import org.antlr.v4.runtime.tree.ParseTreeWalker
 
-object PreprocessorStage : ImporterStage() {
+object PreprocessorSerializerStage : ImporterStage() {
 
     override fun process(importerContext: ImporterContext) {
-        val preprocessorFragments = ArrayList<PreprocessorFragment>()
-        val preprocessorListener = PreprocessorListener(preprocessorFragments)
-        importerContext.inputFileContexts.forEach {
-            ParseTreeWalker.DEFAULT.walk(preprocessorListener, it.parseTree)
+        if (importerContext.config.enablePreprocessorOutput) {
+            val builder = StringBuilder()
+            serializePreprocessorFragments(importerContext.preprocessorFragments, builder)
+            val preprocessorTextFile = TextFile(
+                importerContext.config.buildDir.resolve("imported.sv"),
+                builder.toString()
+            )
+            importerContext.outputContext.preprocessorTextFile = preprocessorTextFile
         }
-        importerContext.preprocessorFragments = preprocessorFragments
+    }
+
+    private fun serializePreprocessorFragments(
+        preprocessorFragments: List<PreprocessorFragment>,
+        builder: StringBuilder
+    ) {
+        preprocessorFragments.forEach {
+            builder.appendLine(it.content)
+        }
     }
 }

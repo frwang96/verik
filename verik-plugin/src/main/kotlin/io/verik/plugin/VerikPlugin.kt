@@ -80,6 +80,7 @@ class VerikPlugin : Plugin<Project> {
         }
         task.group = "verik"
         task.inputs.property("toolchain", { ConfigUtil.getToolchain() })
+        task.inputs.property("enablePreprocessorOutput", { extension.enablePreprocessorOutput })
         task.inputs.property("annotateDeclarations", { extension.annotateDeclarations })
         task.inputs.property("suppressedWarnings", { extension.suppressedWarnings })
         task.inputs.property("promotedWarnings", { extension.promotedWarnings })

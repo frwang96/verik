@@ -17,7 +17,6 @@
 package io.verik.importer.message
 
 import io.verik.importer.ast.element.EElement
-import java.nio.file.Path
 
 class WarningMessageTemplate1<A>(
     override val template: String
@@ -25,15 +24,6 @@ class WarningMessageTemplate1<A>(
 
     fun on(location: SourceLocation, a: A) {
         MessageCollector.messageCollector.warning(name, format(a), location)
-    }
-}
-
-class FatalMessageTemplate0(
-    override val template: String
-) : AbstractMessageTemplate() {
-
-    fun on(path: Path): Nothing {
-        MessageCollector.messageCollector.fatal(format(), SourceLocation(path, 0, 0))
     }
 }
 

@@ -20,6 +20,7 @@ import io.verik.importer.antlr.SystemVerilogLexer
 import io.verik.importer.ast.element.ECompilationUnit
 import io.verik.importer.ast.element.EElement
 import io.verik.importer.common.ElementPrinter
+import io.verik.importer.common.TextFile
 import io.verik.importer.main.ImporterContext
 import io.verik.importer.main.ImporterStage
 import io.verik.importer.main.InputFileContext
@@ -125,7 +126,8 @@ abstract class BaseTest {
     internal fun getImporterContext(content: String): ImporterContext {
         val config = getConfig()
         val importerContext = ImporterContext(config)
-        importerContext.inputFileContexts[config.importedFiles[0]] = InputFileContext(content)
+        val textFile = TextFile(config.importedFiles[0], content)
+        importerContext.inputFileContexts = listOf(InputFileContext(textFile))
         return importerContext
     }
 
@@ -208,6 +210,7 @@ abstract class BaseTest {
                 projectName = "test",
                 buildDir = Paths.get(buildDir),
                 importedFiles = listOf(Paths.get(importedFile)),
+                enablePreprocessorOutput = false,
                 annotateDeclarations = false,
                 suppressedWarnings = listOf(),
                 promotedWarnings = listOf(),

@@ -21,6 +21,7 @@ import io.verik.importer.lex.FragmentPairFilterStage
 import io.verik.importer.lex.LexerStage
 import io.verik.importer.parse.ParserStage
 import io.verik.importer.preprocess.PreprocessorParserStage
+import io.verik.importer.preprocess.PreprocessorSerializerStage
 import io.verik.importer.preprocess.PreprocessorStage
 import io.verik.importer.resolve.PortReferenceResolverStage
 import io.verik.importer.serialize.general.ConfigFileSerializerStage
@@ -34,6 +35,7 @@ object StageSequencer {
         // Preprocess
         stageSequence.add(PreprocessorParserStage)
         stageSequence.add(PreprocessorStage)
+        stageSequence.add(PreprocessorSerializerStage)
 
         // Lex
         stageSequence.add(LexerStage)

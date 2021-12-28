@@ -16,9 +16,12 @@
 
 package io.verik.importer.main
 
+import io.verik.importer.common.TextFile
 import org.antlr.v4.runtime.tree.ParseTree
 
-class InputFileContext(val content: String) {
+class InputFileContext(
+    val textFile: TextFile
+) {
 
     lateinit var parseTree: ParseTree
 }

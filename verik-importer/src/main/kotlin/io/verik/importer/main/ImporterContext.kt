@@ -22,13 +22,12 @@ import io.verik.importer.lex.LexerFragment
 import io.verik.importer.preprocess.PreprocessorFragment
 import org.antlr.v4.runtime.TokenStream
 import org.antlr.v4.runtime.tree.ParseTree
-import java.nio.file.Path
 
 class ImporterContext(
     val config: VerikImporterConfig
 ) {
 
-    val inputFileContexts: HashMap<Path, InputFileContext> = HashMap()
+    var inputFileContexts: List<InputFileContext> = listOf()
     lateinit var preprocessorFragments: ArrayList<PreprocessorFragment>
     lateinit var lexerCharStream: LexerCharStream
     lateinit var lexerFragments: ArrayList<LexerFragment>
