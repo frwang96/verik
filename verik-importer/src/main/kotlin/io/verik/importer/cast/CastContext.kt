@@ -16,19 +16,16 @@
 
 package io.verik.importer.cast
 
-import io.verik.importer.lex.LexerCharStream
 import io.verik.importer.message.SourceLocation
 import org.antlr.v4.runtime.TokenStream
 import org.antlr.v4.runtime.tree.ParseTree
 
 class CastContext(
-    private val lexerCharStream: LexerCharStream,
     private val parserTokenStream: TokenStream
 ) {
 
     fun getLocation(parseTree: ParseTree): SourceLocation {
         val index = parseTree.sourceInterval.a
-        val token = parserTokenStream.get(index)
-        return lexerCharStream.getLocation(token.line, token.charPositionInLine)
+        return SourceLocation.get(parserTokenStream.get(index))
     }
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.importer.lex
+package io.verik.importer.filter
 
 import io.verik.importer.test.BaseTest
 import org.junit.jupiter.api.Test

@@ -30,7 +30,10 @@ import org.antlr.v4.runtime.Recognizer
 object ParserStage : ImporterStage() {
 
     override fun process(importerContext: ImporterContext) {
-        val parserTokenSource = ParserTokenSource(importerContext.lexerFragments)
+        val parserTokenSource = ParserTokenSource(
+            importerContext.lexerCharStream,
+            importerContext.lexerFragments
+        )
         val parserTokenStream = CommonTokenStream(parserTokenSource)
         val parser = SystemVerilogParser(parserTokenStream)
         val parserErrorListener = ParserErrorListener(importerContext.lexerCharStream)

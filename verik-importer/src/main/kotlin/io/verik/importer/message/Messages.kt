@@ -44,6 +44,8 @@ object Messages {
         "Lexer error: $0"
     )
 
+// FILTER //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     val MISMATCHED_TOKEN = WarningMessageTemplate1<String>(
         "Mismatched token: $0"
     )

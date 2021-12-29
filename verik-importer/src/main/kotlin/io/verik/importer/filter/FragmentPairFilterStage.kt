@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package io.verik.importer.lex
+package io.verik.importer.filter
 
 import io.verik.importer.antlr.SystemVerilogLexer
+import io.verik.importer.lex.LexerFragment
 import io.verik.importer.main.ImporterContext
 import io.verik.importer.main.ImporterStage
 import io.verik.importer.message.Messages

@@ -16,7 +16,9 @@
 
 package io.verik.importer.message
 
+import io.verik.importer.lex.LexerCharStream
 import io.verik.importer.preprocess.PreprocessorCharStream
+import org.antlr.v4.runtime.Token
 import org.antlr.v4.runtime.tree.TerminalNode
 import java.nio.file.Path
 
@@ -31,15 +33,25 @@ data class SourceLocation(
         val NULL = SourceLocation(Path.of("."), 0, 0)
 
         fun get(terminalNode: TerminalNode): SourceLocation {
-            val token = terminalNode.symbol
-            val inputStream = token.inputStream
-            return if (inputStream is PreprocessorCharStream) {
-                SourceLocation(
-                    inputStream.file,
-                    token.line,
-                    token.charPositionInLine + 1
+            return get(terminalNode.symbol)
+        }
+
+        fun get(token: Token): SourceLocation {
+            return when (val inputStream = token.inputStream) {
+                is PreprocessorCharStream -> {
+                    SourceLocation(
+                        inputStream.file,
+                        token.line,
+                        token.charPositionInLine + 1
+                    )
+                }
+                is LexerCharStream -> {
+                    inputStream.getLocation(token.line, token.charPositionInLine)
+                }
+                else -> throw IllegalArgumentException(
+                    "Could not get location of token ${inputStream::class.qualifiedName}"
                 )
-            } else throw IllegalArgumentException("Could not get location of terminal node")
+            }
         }
     }
 }

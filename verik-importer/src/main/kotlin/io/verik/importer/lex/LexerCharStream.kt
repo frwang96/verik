@@ -22,7 +22,9 @@ import org.antlr.v4.runtime.CharStream
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.misc.Interval
 
-class LexerCharStream(val preprocessorFragments: ArrayList<PreprocessorFragment>) : CharStream {
+class LexerCharStream(
+    private val preprocessorFragments: ArrayList<PreprocessorFragment>
+) : CharStream {
 
     private val stream: CharStream
 

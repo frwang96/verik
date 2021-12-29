@@ -16,6 +16,7 @@
 
 package io.verik.importer.parse
 
+import io.verik.importer.lex.LexerCharStream
 import io.verik.importer.lex.LexerFragment
 import org.antlr.v4.runtime.CharStream
 import org.antlr.v4.runtime.IntStream
@@ -24,6 +25,7 @@ import org.antlr.v4.runtime.TokenFactory
 import org.antlr.v4.runtime.TokenSource
 
 class ParserTokenSource(
+    private val lexerCharStream: LexerCharStream,
     private val lexerFragments: ArrayList<LexerFragment>
 ) : TokenSource {
 
@@ -44,8 +46,8 @@ class ParserTokenSource(
         return lexerFragments[index].virtualColumn
     }
 
-    override fun getInputStream(): CharStream? {
-        return null
+    override fun getInputStream(): CharStream {
+        return lexerCharStream
     }
 
     override fun getSourceName(): String {
