@@ -19,22 +19,51 @@ package io.verik.importer.preprocess
 import io.verik.importer.test.BaseTest
 import org.junit.jupiter.api.Test
 
-internal class PreprocessorStageTest : BaseTest() {
+internal class MacroPreprocessorTest : BaseTest() {
 
     @Test
-    fun `lexer unrecognized token`() {
+    fun `directive undef`() {
         driveMessageTest(
-            "`0",
+            """
+                `define X abc
+                `undef X
+                `X
+            """.trimIndent(),
             false,
-            "Preprocessor lexer error: Unable to recognize token"
+            "Undefined macro: X"
         )
     }
 
     @Test
-    fun `directive timescale`() {
+    fun `directive undef all`() {
+        driveMessageTest(
+            """
+                `define X abc
+                `undefineall
+                `X
+            """.trimIndent(),
+            false,
+            "Undefined macro: X"
+        )
+    }
+
+    @Test
+    fun `directive macro`() {
         drivePreprocessorTest(
-            "`timescale 1ns / 1ns",
-            ""
+            """
+                `define X abc
+                `X
+            """.trimIndent(),
+            "abc"
+        )
+    }
+
+    @Test
+    fun `directive macro undefined`() {
+        driveMessageTest(
+            "`X",
+            false,
+            "Undefined macro: X"
         )
     }
 }

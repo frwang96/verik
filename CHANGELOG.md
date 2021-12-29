@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Added
 - Support conditional compiler directives in importer.
+- Support macro definitions in importer.
 
 ### Changed
 - Adopt `StageType` based stage sequence in importer.

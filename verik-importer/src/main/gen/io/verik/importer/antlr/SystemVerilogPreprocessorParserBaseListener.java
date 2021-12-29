@@ -40,18 +40,6 @@ public class SystemVerilogPreprocessorParserBaseListener implements SystemVerilo
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIfndef(SystemVerilogPreprocessorParser.IfndefContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitIfndef(SystemVerilogPreprocessorParser.IfndefContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterIfdef(SystemVerilogPreprocessorParser.IfdefContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -59,6 +47,18 @@ public class SystemVerilogPreprocessorParserBaseListener implements SystemVerilo
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitIfdef(SystemVerilogPreprocessorParser.IfdefContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterIfndef(SystemVerilogPreprocessorParser.IfndefContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitIfndef(SystemVerilogPreprocessorParser.IfndefContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -83,6 +83,30 @@ public class SystemVerilogPreprocessorParserBaseListener implements SystemVerilo
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitTimescale(SystemVerilogPreprocessorParser.TimescaleContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterUndefAll(SystemVerilogPreprocessorParser.UndefAllContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitUndefAll(SystemVerilogPreprocessorParser.UndefAllContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterUndef(SystemVerilogPreprocessorParser.UndefContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitUndef(SystemVerilogPreprocessorParser.UndefContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

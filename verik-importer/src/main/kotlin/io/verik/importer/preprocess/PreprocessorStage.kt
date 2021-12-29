@@ -24,7 +24,8 @@ object PreprocessorStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
         val preprocessorFragments = ArrayList<PreprocessorFragment>()
-        val preprocessorListener = PreprocessorListener(preprocessorFragments)
+        val preprocessContext = PreprocessContext(preprocessorFragments)
+        val preprocessorListener = PreprocessorListener(preprocessContext)
         projectContext.inputTextFiles.forEach {
             val parseTree = PreprocessorParser.parse(it)
             ParseTreeWalker.DEFAULT.walk(preprocessorListener, parseTree)

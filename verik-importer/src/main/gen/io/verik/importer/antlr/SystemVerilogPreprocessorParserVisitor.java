@@ -23,19 +23,19 @@ public interface SystemVerilogPreprocessorParserVisitor<T> extends ParseTreeVisi
 	 */
 	T visitText(SystemVerilogPreprocessorParser.TextContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code ifndef}
-	 * labeled alternative in {@link SystemVerilogPreprocessorParser#directive}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIfndef(SystemVerilogPreprocessorParser.IfndefContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code ifdef}
 	 * labeled alternative in {@link SystemVerilogPreprocessorParser#directive}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitIfdef(SystemVerilogPreprocessorParser.IfdefContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ifndef}
+	 * labeled alternative in {@link SystemVerilogPreprocessorParser#directive}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIfndef(SystemVerilogPreprocessorParser.IfndefContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code endif}
 	 * labeled alternative in {@link SystemVerilogPreprocessorParser#directive}.
@@ -50,6 +50,20 @@ public interface SystemVerilogPreprocessorParserVisitor<T> extends ParseTreeVisi
 	 * @return the visitor result
 	 */
 	T visitTimescale(SystemVerilogPreprocessorParser.TimescaleContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code undefAll}
+	 * labeled alternative in {@link SystemVerilogPreprocessorParser#directive}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUndefAll(SystemVerilogPreprocessorParser.UndefAllContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code undef}
+	 * labeled alternative in {@link SystemVerilogPreprocessorParser#directive}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUndef(SystemVerilogPreprocessorParser.UndefContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link SystemVerilogPreprocessorParser#defineDirective}.
 	 * @param ctx the parse tree

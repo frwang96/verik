@@ -19,13 +19,23 @@ package io.verik.importer.preprocess
 import io.verik.importer.message.Messages
 import org.antlr.v4.runtime.tree.TerminalNode
 
-class PreprocessContext {
+class PreprocessContext(
+    val preprocessorFragments: ArrayList<PreprocessorFragment>
+) {
 
     private val macros = HashMap<String, Macro>()
     private val enableStack = ArrayList<Boolean>()
 
     fun setMacro(name: String, macro: Macro) {
         macros[name] = macro
+    }
+
+    fun removeAllMacros() {
+        macros.clear()
+    }
+
+    fun removeMacro(name: String) {
+        macros.remove(name)
     }
 
     fun getMacro(name: String): Macro? {

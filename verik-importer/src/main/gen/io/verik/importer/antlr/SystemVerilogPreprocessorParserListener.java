@@ -28,18 +28,6 @@ public interface SystemVerilogPreprocessorParserListener extends ParseTreeListen
 	 */
 	void exitText(SystemVerilogPreprocessorParser.TextContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code ifndef}
-	 * labeled alternative in {@link SystemVerilogPreprocessorParser#directive}.
-	 * @param ctx the parse tree
-	 */
-	void enterIfndef(SystemVerilogPreprocessorParser.IfndefContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code ifndef}
-	 * labeled alternative in {@link SystemVerilogPreprocessorParser#directive}.
-	 * @param ctx the parse tree
-	 */
-	void exitIfndef(SystemVerilogPreprocessorParser.IfndefContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code ifdef}
 	 * labeled alternative in {@link SystemVerilogPreprocessorParser#directive}.
 	 * @param ctx the parse tree
@@ -51,6 +39,18 @@ public interface SystemVerilogPreprocessorParserListener extends ParseTreeListen
 	 * @param ctx the parse tree
 	 */
 	void exitIfdef(SystemVerilogPreprocessorParser.IfdefContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ifndef}
+	 * labeled alternative in {@link SystemVerilogPreprocessorParser#directive}.
+	 * @param ctx the parse tree
+	 */
+	void enterIfndef(SystemVerilogPreprocessorParser.IfndefContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ifndef}
+	 * labeled alternative in {@link SystemVerilogPreprocessorParser#directive}.
+	 * @param ctx the parse tree
+	 */
+	void exitIfndef(SystemVerilogPreprocessorParser.IfndefContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code endif}
 	 * labeled alternative in {@link SystemVerilogPreprocessorParser#directive}.
@@ -75,6 +75,30 @@ public interface SystemVerilogPreprocessorParserListener extends ParseTreeListen
 	 * @param ctx the parse tree
 	 */
 	void exitTimescale(SystemVerilogPreprocessorParser.TimescaleContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code undefAll}
+	 * labeled alternative in {@link SystemVerilogPreprocessorParser#directive}.
+	 * @param ctx the parse tree
+	 */
+	void enterUndefAll(SystemVerilogPreprocessorParser.UndefAllContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code undefAll}
+	 * labeled alternative in {@link SystemVerilogPreprocessorParser#directive}.
+	 * @param ctx the parse tree
+	 */
+	void exitUndefAll(SystemVerilogPreprocessorParser.UndefAllContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code undef}
+	 * labeled alternative in {@link SystemVerilogPreprocessorParser#directive}.
+	 * @param ctx the parse tree
+	 */
+	void enterUndef(SystemVerilogPreprocessorParser.UndefContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code undef}
+	 * labeled alternative in {@link SystemVerilogPreprocessorParser#directive}.
+	 * @param ctx the parse tree
+	 */
+	void exitUndef(SystemVerilogPreprocessorParser.UndefContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link SystemVerilogPreprocessorParser#defineDirective}.
 	 * @param ctx the parse tree

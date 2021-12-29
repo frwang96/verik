@@ -1,13 +1,17 @@
 // Generated from /Users/francis/Documents/Work/Verik/git.nosync/verik/verik-importer/src/main/gen/io/verik/importer/antlr/SystemVerilogPreprocessorParser.g4 by ANTLR 4.9.2
 package io.verik.importer.antlr;
-import org.antlr.v4.runtime.atn.*;
-import org.antlr.v4.runtime.dfa.DFA;
+
 import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.misc.*;
-import org.antlr.v4.runtime.tree.*;
+import org.antlr.v4.runtime.atn.ATN;
+import org.antlr.v4.runtime.atn.ATNDeserializer;
+import org.antlr.v4.runtime.atn.ParserATNSimulator;
+import org.antlr.v4.runtime.atn.PredictionContextCache;
+import org.antlr.v4.runtime.dfa.DFA;
+import org.antlr.v4.runtime.tree.ParseTreeListener;
+import org.antlr.v4.runtime.tree.ParseTreeVisitor;
+import org.antlr.v4.runtime.tree.TerminalNode;
+
 import java.util.List;
-import java.util.Iterator;
-import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class SystemVerilogPreprocessorParser extends Parser {
@@ -19,10 +23,10 @@ public class SystemVerilogPreprocessorParser extends Parser {
 	public static final int
 		BACKTICK=1, CODE=2, DIRECTIVE_WHITESPACE=3, DIRECTIVE_BLOCK_COMMENT=4, 
 		DIRECTIVE_LINE_COMMENT=5, DIRECTIVE_LINE_CONTINUATION=6, DIRECTIVE_NEW_LINE=7, 
-		DEFINE=8, IFNDEF=9, IFDEF=10, ENDIF=11, TIMESCALE=12, DEFINED_MACRO=13, 
-		DEFINE_WHITESPACE=14, DEFINE_LINE_CONTINUATION=15, DEFINE_NEW_LINE=16, 
-		DEFINE_MACRO=17, TEXT_LINE_CONTINUATION=18, TEXT_NEW_LINE=19, TEXT=20, 
-		TEXT_LINE_BACK_SLASH=21, TEXT_SLASH=22;
+		DEFINE=8, IFDEF=9, IFNDEF=10, ENDIF=11, TIMESCALE=12, UNDEF_ALL=13, UNDEF=14, 
+		DEFINED_MACRO=15, DEFINE_WHITESPACE=16, DEFINE_LINE_CONTINUATION=17, DEFINE_NEW_LINE=18, 
+		DEFINE_MACRO=19, TEXT_LINE_CONTINUATION=20, TEXT_NEW_LINE=21, TEXT=22, 
+		TEXT_LINE_BACK_SLASH=23, TEXT_SLASH=24;
 	public static final int
 		RULE_file = 0, RULE_text = 1, RULE_directive = 2, RULE_defineDirective = 3, 
 		RULE_macroDirective = 4, RULE_code = 5;
@@ -36,7 +40,8 @@ public class SystemVerilogPreprocessorParser extends Parser {
 	private static String[] makeLiteralNames() {
 		return new String[] {
 			null, "'`'", null, null, null, null, null, null, null, null, null, null, 
-			null, null, null, null, null, null, null, null, null, "'\\'", "'/'"
+			null, null, null, null, null, null, null, null, null, null, null, "'\\'", 
+			"'/'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
@@ -44,9 +49,10 @@ public class SystemVerilogPreprocessorParser extends Parser {
 		return new String[] {
 			null, "BACKTICK", "CODE", "DIRECTIVE_WHITESPACE", "DIRECTIVE_BLOCK_COMMENT", 
 			"DIRECTIVE_LINE_COMMENT", "DIRECTIVE_LINE_CONTINUATION", "DIRECTIVE_NEW_LINE", 
-			"DEFINE", "IFNDEF", "IFDEF", "ENDIF", "TIMESCALE", "DEFINED_MACRO", "DEFINE_WHITESPACE", 
-			"DEFINE_LINE_CONTINUATION", "DEFINE_NEW_LINE", "DEFINE_MACRO", "TEXT_LINE_CONTINUATION", 
-			"TEXT_NEW_LINE", "TEXT", "TEXT_LINE_BACK_SLASH", "TEXT_SLASH"
+			"DEFINE", "IFDEF", "IFNDEF", "ENDIF", "TIMESCALE", "UNDEF_ALL", "UNDEF", 
+			"DEFINED_MACRO", "DEFINE_WHITESPACE", "DEFINE_LINE_CONTINUATION", "DEFINE_NEW_LINE", 
+			"DEFINE_MACRO", "TEXT_LINE_CONTINUATION", "TEXT_NEW_LINE", "TEXT", "TEXT_LINE_BACK_SLASH", 
+			"TEXT_SLASH"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -261,6 +267,23 @@ public class SystemVerilogPreprocessorParser extends Parser {
 			super.copyFrom(ctx);
 		}
 	}
+	public static class UndefContext extends DirectiveContext {
+		public TerminalNode UNDEF() { return getToken(SystemVerilogPreprocessorParser.UNDEF, 0); }
+		public UndefContext(DirectiveContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof SystemVerilogPreprocessorParserListener ) ((SystemVerilogPreprocessorParserListener)listener).enterUndef(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof SystemVerilogPreprocessorParserListener ) ((SystemVerilogPreprocessorParserListener)listener).exitUndef(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SystemVerilogPreprocessorParserVisitor ) return ((SystemVerilogPreprocessorParserVisitor<? extends T>)visitor).visitUndef(this);
+			else return visitor.visitChildren(this);
+		}
+	}
 	public static class IfndefContext extends DirectiveContext {
 		public TerminalNode IFNDEF() { return getToken(SystemVerilogPreprocessorParser.IFNDEF, 0); }
 		public IfndefContext(DirectiveContext ctx) { copyFrom(ctx); }
@@ -329,28 +352,45 @@ public class SystemVerilogPreprocessorParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+	public static class UndefAllContext extends DirectiveContext {
+		public TerminalNode UNDEF_ALL() { return getToken(SystemVerilogPreprocessorParser.UNDEF_ALL, 0); }
+		public UndefAllContext(DirectiveContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof SystemVerilogPreprocessorParserListener ) ((SystemVerilogPreprocessorParserListener)listener).enterUndefAll(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof SystemVerilogPreprocessorParserListener ) ((SystemVerilogPreprocessorParserListener)listener).exitUndefAll(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SystemVerilogPreprocessorParserVisitor ) return ((SystemVerilogPreprocessorParserVisitor<? extends T>)visitor).visitUndefAll(this);
+			else return visitor.visitChildren(this);
+		}
+	}
 
 	public final DirectiveContext directive() throws RecognitionException {
 		DirectiveContext _localctx = new DirectiveContext(_ctx, getState());
 		enterRule(_localctx, 4, RULE_directive);
 		try {
-			setState(33);
+			setState(35);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
-			case IFNDEF:
-				_localctx = new IfndefContext(_localctx);
+			case IFDEF:
+				_localctx = new IfdefContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(29);
-				match(IFNDEF);
+				match(IFDEF);
 				}
 				break;
-			case IFDEF:
-				_localctx = new IfdefContext(_localctx);
+			case IFNDEF:
+				_localctx = new IfndefContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(30);
-				match(IFDEF);
+				match(IFNDEF);
 				}
 				break;
 			case ENDIF:
@@ -367,6 +407,22 @@ public class SystemVerilogPreprocessorParser extends Parser {
 				{
 				setState(32);
 				match(TIMESCALE);
+				}
+				break;
+			case UNDEF_ALL:
+				_localctx = new UndefAllContext(_localctx);
+				enterOuterAlt(_localctx, 5);
+				{
+				setState(33);
+				match(UNDEF_ALL);
+				}
+				break;
+			case UNDEF:
+				_localctx = new UndefContext(_localctx);
+				enterOuterAlt(_localctx, 6);
+				{
+				setState(34);
+				match(UNDEF);
 				}
 				break;
 			default:
@@ -421,17 +477,17 @@ public class SystemVerilogPreprocessorParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(35);
+			setState(37);
 			match(DEFINE);
-			setState(36);
+			setState(38);
 			match(DEFINE_MACRO);
-			setState(40);
+			setState(42);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==TEXT_LINE_CONTINUATION || _la==TEXT) {
 				{
 				{
-				setState(37);
+				setState(39);
 				_la = _input.LA(1);
 				if ( !(_la==TEXT_LINE_CONTINUATION || _la==TEXT) ) {
 				_errHandler.recoverInline(this);
@@ -443,7 +499,7 @@ public class SystemVerilogPreprocessorParser extends Parser {
 				}
 				}
 				}
-				setState(42);
+				setState(44);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -487,7 +543,7 @@ public class SystemVerilogPreprocessorParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(43);
+			setState(45);
 			match(DEFINED_MACRO);
 			}
 		}
@@ -529,7 +585,7 @@ public class SystemVerilogPreprocessorParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(45);
+			setState(47);
 			match(CODE);
 			}
 		}
@@ -545,20 +601,21 @@ public class SystemVerilogPreprocessorParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\30\62\4\2\t\2\4\3"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\32\64\4\2\t\2\4\3"+
 		"\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\3\2\7\2\20\n\2\f\2\16\2\23\13\2\3"+
-		"\2\3\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5\3\36\n\3\3\4\3\4\3\4\3\4\5\4$\n\4"+
-		"\3\5\3\5\3\5\7\5)\n\5\f\5\16\5,\13\5\3\6\3\6\3\7\3\7\3\7\2\2\b\2\4\6\b"+
-		"\n\f\2\3\4\2\24\24\26\26\2\63\2\21\3\2\2\2\4\35\3\2\2\2\6#\3\2\2\2\b%"+
-		"\3\2\2\2\n-\3\2\2\2\f/\3\2\2\2\16\20\5\4\3\2\17\16\3\2\2\2\20\23\3\2\2"+
-		"\2\21\17\3\2\2\2\21\22\3\2\2\2\22\24\3\2\2\2\23\21\3\2\2\2\24\25\7\2\2"+
-		"\3\25\3\3\2\2\2\26\36\5\f\7\2\27\30\7\3\2\2\30\36\5\6\4\2\31\32\7\3\2"+
-		"\2\32\36\5\b\5\2\33\34\7\3\2\2\34\36\5\n\6\2\35\26\3\2\2\2\35\27\3\2\2"+
-		"\2\35\31\3\2\2\2\35\33\3\2\2\2\36\5\3\2\2\2\37$\7\13\2\2 $\7\f\2\2!$\7"+
-		"\r\2\2\"$\7\16\2\2#\37\3\2\2\2# \3\2\2\2#!\3\2\2\2#\"\3\2\2\2$\7\3\2\2"+
-		"\2%&\7\n\2\2&*\7\23\2\2\')\t\2\2\2(\'\3\2\2\2),\3\2\2\2*(\3\2\2\2*+\3"+
-		"\2\2\2+\t\3\2\2\2,*\3\2\2\2-.\7\17\2\2.\13\3\2\2\2/\60\7\4\2\2\60\r\3"+
-		"\2\2\2\6\21\35#*";
+		"\2\3\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5\3\36\n\3\3\4\3\4\3\4\3\4\3\4\3\4"+
+		"\5\4&\n\4\3\5\3\5\3\5\7\5+\n\5\f\5\16\5.\13\5\3\6\3\6\3\7\3\7\3\7\2\2"+
+		"\b\2\4\6\b\n\f\2\3\4\2\26\26\30\30\2\67\2\21\3\2\2\2\4\35\3\2\2\2\6%\3"+
+		"\2\2\2\b\'\3\2\2\2\n/\3\2\2\2\f\61\3\2\2\2\16\20\5\4\3\2\17\16\3\2\2\2"+
+		"\20\23\3\2\2\2\21\17\3\2\2\2\21\22\3\2\2\2\22\24\3\2\2\2\23\21\3\2\2\2"+
+		"\24\25\7\2\2\3\25\3\3\2\2\2\26\36\5\f\7\2\27\30\7\3\2\2\30\36\5\6\4\2"+
+		"\31\32\7\3\2\2\32\36\5\b\5\2\33\34\7\3\2\2\34\36\5\n\6\2\35\26\3\2\2\2"+
+		"\35\27\3\2\2\2\35\31\3\2\2\2\35\33\3\2\2\2\36\5\3\2\2\2\37&\7\13\2\2 "+
+		"&\7\f\2\2!&\7\r\2\2\"&\7\16\2\2#&\7\17\2\2$&\7\20\2\2%\37\3\2\2\2% \3"+
+		"\2\2\2%!\3\2\2\2%\"\3\2\2\2%#\3\2\2\2%$\3\2\2\2&\7\3\2\2\2\'(\7\n\2\2"+
+		"(,\7\25\2\2)+\t\2\2\2*)\3\2\2\2+.\3\2\2\2,*\3\2\2\2,-\3\2\2\2-\t\3\2\2"+
+		"\2.,\3\2\2\2/\60\7\21\2\2\60\13\3\2\2\2\61\62\7\4\2\2\62\r\3\2\2\2\6\21"+
+		"\35%,";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

@@ -16,77 +16,42 @@
 
 package io.verik.importer.preprocess
 
-import io.verik.importer.antlr.SystemVerilogPreprocessorLexer
 import io.verik.importer.antlr.SystemVerilogPreprocessorParser
 import io.verik.importer.antlr.SystemVerilogPreprocessorParserBaseListener
-import io.verik.importer.message.Messages
-import io.verik.importer.message.SourceLocation
-import org.antlr.v4.runtime.tree.TerminalNode
 
 class PreprocessorListener(
-    private val preprocessorFragments: ArrayList<PreprocessorFragment>
+    private val preprocessContext: PreprocessContext
 ) : SystemVerilogPreprocessorParserBaseListener() {
 
-    private val preprocessContext = PreprocessContext()
-
-    override fun enterIfndef(ctx: SystemVerilogPreprocessorParser.IfndefContext?) {
-        val name = ctx!!.text.substringAfter("ifndef").trim()
-        val macro = preprocessContext.getMacro(name)
-        preprocessContext.pushEnable(macro == null)
+    override fun enterIfdef(ctx: SystemVerilogPreprocessorParser.IfdefContext?) {
+        BasePreprocessor.preprocessIfdef(ctx!!, preprocessContext)
     }
 
-    override fun enterIfdef(ctx: SystemVerilogPreprocessorParser.IfdefContext?) {
-        val name = ctx!!.text.substringAfter("ifdef").trim()
-        val macro = preprocessContext.getMacro(name)
-        preprocessContext.pushEnable(macro != null)
+    override fun enterIfndef(ctx: SystemVerilogPreprocessorParser.IfndefContext?) {
+        BasePreprocessor.preprocessIfndef(ctx!!, preprocessContext)
     }
 
     override fun enterEndif(ctx: SystemVerilogPreprocessorParser.EndifContext?) {
-        preprocessContext.popEnable(ctx!!.ENDIF())
+        BasePreprocessor.preprocessEndif(ctx!!, preprocessContext)
+    }
+
+    override fun enterUndefAll(ctx: SystemVerilogPreprocessorParser.UndefAllContext?) {
+        MacroPreprocessor.preprocessUndefAll(preprocessContext)
+    }
+
+    override fun enterUndef(ctx: SystemVerilogPreprocessorParser.UndefContext?) {
+        MacroPreprocessor.preprocessUndef(ctx!!, preprocessContext)
     }
 
     override fun enterDefineDirective(ctx: SystemVerilogPreprocessorParser.DefineDirectiveContext?) {
-        val name = ctx!!.DEFINE_MACRO().text
-        val builder = StringBuilder()
-        ctx.children.forEach {
-            if (it is TerminalNode) {
-                when (it.symbol.type) {
-                    SystemVerilogPreprocessorLexer.TEXT ->
-                        builder.append(it.text)
-                    SystemVerilogPreprocessorLexer.TEXT_LINE_CONTINUATION ->
-                        builder.appendLine()
-                }
-            }
-        }
-        val macro = Macro(listOf(), builder.toString())
-        preprocessContext.setMacro(name, macro)
+        MacroPreprocessor.preprocessDefineDirective(ctx!!, preprocessContext)
     }
 
     override fun enterMacroDirective(ctx: SystemVerilogPreprocessorParser.MacroDirectiveContext?) {
-        val terminalNode = ctx!!.DEFINED_MACRO()
-        val name = terminalNode.text
-        val macro = preprocessContext.getMacro(name)
-        if (macro != null) {
-            val preprocessorFragment = PreprocessorFragment(
-                SourceLocation.get(terminalNode),
-                macro.text,
-                false
-            )
-            preprocessorFragments.add(preprocessorFragment)
-        } else {
-            Messages.UNDEFINED_MACRO.on(terminalNode, name)
-        }
+        MacroPreprocessor.preprocessMacroDirective(ctx!!, preprocessContext)
     }
 
     override fun enterCode(ctx: SystemVerilogPreprocessorParser.CodeContext?) {
-        if (preprocessContext.isEnable()) {
-            val terminalNode = ctx!!.CODE()
-            val preprocessorFragment = PreprocessorFragment(
-                SourceLocation.get(terminalNode),
-                terminalNode.text,
-                true
-            )
-            preprocessorFragments.add(preprocessorFragment)
-        }
+        BasePreprocessor.preprocessCode(ctx!!, preprocessContext)
     }
 }

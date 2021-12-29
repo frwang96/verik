@@ -52,12 +52,12 @@ DEFINE
     : 'define' [ \t]+ -> mode(DEFINE_MODE)
     ;
 
-IFNDEF
-    : 'ifndef' [ \t]+ IDENTIFIER [ \t]* [\r\n]? -> mode(DEFAULT_MODE)
-    ;
-
 IFDEF
     : 'ifdef' [ \t]+ IDENTIFIER [ \t]* [\r\n]? -> mode(DEFAULT_MODE)
+    ;
+
+IFNDEF
+    : 'ifndef' [ \t]+ IDENTIFIER [ \t]* [\r\n]? -> mode(DEFAULT_MODE)
     ;
 
 ENDIF
@@ -66,6 +66,14 @@ ENDIF
 
 TIMESCALE
     : 'timescale' ~[\r\n]+ [\r\n]? -> mode(DEFAULT_MODE)
+    ;
+
+UNDEF_ALL
+    : 'undefineall' [ \t]* [\r\n]? -> mode(DEFAULT_MODE)
+    ;
+
+UNDEF
+    : 'undef' [ \t]+ IDENTIFIER [ \t]* [\r\n]? -> mode(DEFAULT_MODE)
     ;
 
 DEFINED_MACRO

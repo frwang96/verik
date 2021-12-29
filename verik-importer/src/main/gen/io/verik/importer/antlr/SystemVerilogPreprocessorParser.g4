@@ -14,10 +14,12 @@ text
     ;
 
 directive
-    : IFNDEF    # ifndef
-    | IFDEF     # ifdef
+    : IFDEF     # ifdef
+    | IFNDEF    # ifndef
     | ENDIF     # endif
     | TIMESCALE # timescale
+    | UNDEF_ALL # undefAll
+    | UNDEF     # undef
     ;
 
 defineDirective
