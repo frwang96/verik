@@ -26,9 +26,9 @@ import io.verik.importer.main.Platform
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 import io.verik.importer.main.StageSequencer
+import io.verik.importer.main.StageType
 import io.verik.importer.main.VerikImporterConfig
 import io.verik.importer.message.MessageCollector
-import io.verik.importer.parse.ParserStage
 import io.verik.importer.preprocess.PreprocessorSerializerStage
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
@@ -43,12 +43,12 @@ abstract class BaseTest {
         val stageSequence = StageSequencer.getStageSequence()
         if (isError) {
             val throwable = assertThrows<TestErrorException> {
-                stageSequence.process(projectContext)
+                stageSequence.processAll(projectContext)
             }
             assertEquals(message, throwable.message)
         } else {
             val throwable = assertThrows<TestWarningException> {
-                stageSequence.process(projectContext)
+                stageSequence.processAll(projectContext)
             }
             assertEquals(message, throwable.message)
         }
@@ -57,11 +57,7 @@ abstract class BaseTest {
     fun drivePreprocessorTest(content: String, expected: String) {
         val projectContext = getProjectContext(content)
         val stageSequence = StageSequencer.getStageSequence()
-        for (stage in stageSequence.stages) {
-            stage.process(projectContext)
-            if (stage is PreprocessorSerializerStage)
-                break
-        }
+        stageSequence.processUntil(projectContext, PreprocessorSerializerStage::class)
         val preprocessorTextFile = projectContext.outputContext.preprocessorTextFile!!
         assertEquals(
             expected.trim(),
@@ -72,11 +68,7 @@ abstract class BaseTest {
     fun driveLexerFragmentTest(content: String, expected: String) {
         val projectContext = getProjectContext(content)
         val stageSequence = StageSequencer.getStageSequence()
-        for (stage in stageSequence.stages) {
-            if (stage is ParserStage)
-                break
-            stage.process(projectContext)
-        }
+        stageSequence.processUntil(projectContext, StageType.FILTER)
         val actual = projectContext.lexerFragments.joinToString(separator = " ") {
             SystemVerilogLexer.VOCABULARY.getSymbolicName(it.type)
         }
@@ -91,12 +83,7 @@ abstract class BaseTest {
     ) {
         val projectContext = getProjectContext(content)
         val stageSequence = StageSequencer.getStageSequence()
-        assert(stageSequence.contains(stageClass))
-        for (stage in stageSequence.stages) {
-            stage.process(projectContext)
-            if (stage::class == stageClass)
-                break
-        }
+        stageSequence.processUntil(projectContext, stageClass)
         val element = selector(projectContext.compilationUnit)
         assertElementEquals(getExpectedString(expected), ElementPrinter.dump(element))
     }
@@ -104,7 +91,7 @@ abstract class BaseTest {
     fun driveTextFileTest(content: String, expected: String) {
         val projectContext = getProjectContext(content)
         val stageSequence = StageSequencer.getStageSequence()
-        stageSequence.process(projectContext)
+        stageSequence.processAll(projectContext)
         val textFile = when (projectContext.outputContext.packageTextFiles.size) {
             0 -> throw IllegalArgumentException("No package text files found")
             1 -> projectContext.outputContext.packageTextFiles[0]

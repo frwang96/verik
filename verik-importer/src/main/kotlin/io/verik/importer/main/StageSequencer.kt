@@ -33,30 +33,23 @@ object StageSequencer {
     fun getStageSequence(): StageSequence {
         val stageSequence = StageSequence()
 
-        // Preprocess
-        stageSequence.add(PreprocessorParserStage)
-        stageSequence.add(PreprocessorStage)
-        stageSequence.add(PreprocessorSerializerStage)
-        stageSequence.add(PreprocessorFilterStage)
+        stageSequence.add(StageType.PREPROCESS, PreprocessorParserStage)
+        stageSequence.add(StageType.PREPROCESS, PreprocessorStage)
+        stageSequence.add(StageType.PREPROCESS, PreprocessorSerializerStage)
+        stageSequence.add(StageType.PREPROCESS, PreprocessorFilterStage)
 
-        // Lex
-        stageSequence.add(LexerStage)
+        stageSequence.add(StageType.LEX, LexerStage)
 
-        // Filter
-        stageSequence.add(FragmentPairFilterStage)
+        stageSequence.add(StageType.FILTER, FragmentPairFilterStage)
 
-        // Parse
-        stageSequence.add(ParserStage)
+        stageSequence.add(StageType.PARSE, ParserStage)
 
-        // Cast
-        stageSequence.add(CasterStage)
+        stageSequence.add(StageType.CAST, CasterStage)
 
-        // Resolve
-        stageSequence.add(PortReferenceResolverStage)
+        stageSequence.add(StageType.RESOLVE, PortReferenceResolverStage)
 
-        // Serialize
-        stageSequence.add(ConfigFileSerializerStage)
-        stageSequence.add(SourceSerializerStage)
+        stageSequence.add(StageType.SERIALIZE, ConfigFileSerializerStage)
+        stageSequence.add(StageType.SERIALIZE, SourceSerializerStage)
 
         return stageSequence
     }

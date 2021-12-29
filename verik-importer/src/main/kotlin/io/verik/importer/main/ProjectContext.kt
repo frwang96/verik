@@ -28,6 +28,7 @@ class ProjectContext(
 ) {
 
     var inputFileContexts: List<InputFileContext> = listOf()
+    val processedProjectStages = HashSet<ProjectStage>()
     lateinit var preprocessorFragments: ArrayList<PreprocessorFragment>
     lateinit var lexerCharStream: LexerCharStream
     lateinit var lexerFragments: ArrayList<LexerFragment>

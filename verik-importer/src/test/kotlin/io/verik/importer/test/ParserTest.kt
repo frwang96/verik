@@ -19,7 +19,7 @@ package io.verik.importer.test
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.antlr.SystemVerilogParserBaseVisitor
 import io.verik.importer.main.StageSequencer
-import io.verik.importer.parse.ParserStage
+import io.verik.importer.main.StageType
 import org.antlr.v4.runtime.tree.RuleNode
 
 abstract class ParserTest : BaseTest() {
@@ -27,11 +27,7 @@ abstract class ParserTest : BaseTest() {
     fun driveParserTest(rules: List<Int>, content: String) {
         val projectContext = getProjectContext(content)
         val stageSequence = StageSequencer.getStageSequence()
-        for (stage in stageSequence.stages) {
-            stage.process(projectContext)
-            if (stage is ParserStage)
-                break
-        }
+        stageSequence.processUntil(projectContext, StageType.PARSE)
         val parseTreeIndexerVisitor = ParseTreeIndexerVisitor()
         projectContext.parseTree.accept(parseTreeIndexerVisitor)
         rules.forEach {
