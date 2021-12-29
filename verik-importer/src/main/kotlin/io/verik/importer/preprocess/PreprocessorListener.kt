@@ -55,6 +55,10 @@ class PreprocessorListener(
         MacroPreprocessor.preprocessDirectiveMacro(ctx!!, preprocessContext)
     }
 
+    override fun enterDirectiveMacroArg(ctx: PreprocessorParser.DirectiveMacroArgContext?) {
+        MacroPreprocessor.preprocessDirectiveMacroArg(ctx!!, preprocessContext)
+    }
+
     override fun enterCode(ctx: PreprocessorParser.CodeContext?) {
         BasePreprocessor.preprocessCode(ctx!!, preprocessContext)
     }

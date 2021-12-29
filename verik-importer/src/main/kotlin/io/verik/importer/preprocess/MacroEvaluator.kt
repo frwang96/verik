@@ -16,17 +16,9 @@
 
 package io.verik.importer.preprocess
 
-import io.verik.importer.main.ProjectContext
-import io.verik.importer.main.ProjectStage
+object MacroEvaluator {
 
-object PreprocessorStage : ProjectStage() {
-
-    override fun process(projectContext: ProjectContext) {
-        val preprocessorFragments = ArrayList<PreprocessorFragment>()
-        val preprocessContext = PreprocessContext(preprocessorFragments)
-        projectContext.inputTextFiles.forEach {
-            preprocessContext.preprocess(it)
-        }
-        projectContext.preprocessorFragments = preprocessorFragments
+    fun evaluate(macro: Macro, @Suppress("UNUSED_PARAMETER") arguments: List<String>): String {
+        return macro.content
     }
 }

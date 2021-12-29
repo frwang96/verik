@@ -44,12 +44,12 @@ public interface PreprocessorParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDirectiveEndif(PreprocessorParser.DirectiveEndifContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code directiveTimescale}
+	 * Visit a parse tree produced by the {@code directiveIgnored}
 	 * labeled alternative in {@link PreprocessorParser#directive}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitDirectiveTimescale(PreprocessorParser.DirectiveTimescaleContext ctx);
+	T visitDirectiveIgnored(PreprocessorParser.DirectiveIgnoredContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code directiveUndefineAll}
 	 * labeled alternative in {@link PreprocessorParser#directive}.
@@ -94,6 +94,24 @@ public interface PreprocessorParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitDirectiveMacro(PreprocessorParser.DirectiveMacroContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PreprocessorParser#directiveMacroArg}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDirectiveMacroArg(PreprocessorParser.DirectiveMacroArgContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PreprocessorParser#runArguments}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRunArguments(PreprocessorParser.RunArgumentsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PreprocessorParser#runArgument}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRunArgument(PreprocessorParser.RunArgumentContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link PreprocessorParser#code}.
 	 * @param ctx the parse tree

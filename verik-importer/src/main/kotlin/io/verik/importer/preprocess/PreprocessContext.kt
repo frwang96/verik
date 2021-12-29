@@ -16,15 +16,29 @@
 
 package io.verik.importer.preprocess
 
+import io.verik.importer.common.TextFile
 import io.verik.importer.message.Messages
+import io.verik.importer.message.SourceLocation
+import org.antlr.v4.runtime.tree.ParseTreeWalker
 import org.antlr.v4.runtime.tree.TerminalNode
 
 class PreprocessContext(
     val preprocessorFragments: ArrayList<PreprocessorFragment>
 ) {
 
+    private val preprocessorListener = PreprocessorListener(this)
     private val macros = HashMap<String, Macro>()
     private val enableStack = ArrayList<Boolean>()
+
+    fun preprocess(textFile: TextFile) {
+        val parseTree = PreprocessorParser.parse(textFile)
+        ParseTreeWalker.DEFAULT.walk(preprocessorListener, parseTree)
+    }
+
+    fun preprocess(content: String, location: SourceLocation) {
+        val parseTree = PreprocessorParser.parse(content, location)
+        ParseTreeWalker.DEFAULT.walk(preprocessorListener, parseTree)
+    }
 
     fun setMacro(name: String, macro: Macro) {
         macros[name] = macro

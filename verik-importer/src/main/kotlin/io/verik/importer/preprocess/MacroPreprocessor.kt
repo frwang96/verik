@@ -42,8 +42,8 @@ object MacroPreprocessor {
         preprocessContext: PreprocessContext
     ) {
         val name = ctx.DEFINE_MACRO().text.trim()
-        val text = getDefineText(ctx)
-        val macro = Macro(listOf(), text)
+        val content = getDefineContent(ctx)
+        val macro = Macro(listOf(), content)
         preprocessContext.setMacro(name, macro)
     }
 
@@ -51,12 +51,12 @@ object MacroPreprocessor {
         ctx: PreprocessorParser.DirectiveDefineArgContext,
         preprocessContext: PreprocessContext
     ) {
-        val name = ctx.DEFINE_MACRO_ARG().text.trim().dropLast(1)
+        val name = ctx.DEFINE_MACRO_ARG().text.dropLast(1).trim()
         val argumentsCtx = ctx.arguments()?.argument() ?: listOf()
         val arguments = argumentsCtx.map { it.text }
 
-        val text = getDefineText(ctx)
-        val macro = Macro(arguments, text)
+        val content = getDefineContent(ctx)
+        val macro = Macro(arguments, content)
         preprocessContext.setMacro(name, macro)
     }
 
@@ -64,22 +64,32 @@ object MacroPreprocessor {
         ctx: PreprocessorParser.DirectiveMacroContext,
         preprocessContext: PreprocessContext
     ) {
-        val terminalNode = ctx.DIRECTIVE_MACRO()
-        val name = terminalNode.text
+        val name = ctx.DIRECTIVE_MACRO().text.trim()
         val macro = preprocessContext.getMacro(name)
         if (macro != null) {
-            val preprocessorFragment = PreprocessorFragment(
-                SourceLocation.get(terminalNode),
-                macro.text,
-                false
-            )
-            preprocessContext.preprocessorFragments.add(preprocessorFragment)
+            val content = MacroEvaluator.evaluate(macro, listOf())
+            preprocessContext.preprocess(content, SourceLocation.get(ctx.BACKTICK()))
         } else {
-            Messages.UNDEFINED_MACRO.on(terminalNode, name)
+            Messages.UNDEFINED_MACRO.on(ctx.BACKTICK(), name)
         }
     }
 
-    private fun getDefineText(ctx: ParserRuleContext): String {
+    fun preprocessDirectiveMacroArg(
+        ctx: PreprocessorParser.DirectiveMacroArgContext,
+        preprocessContext: PreprocessContext
+    ) {
+        val name = ctx.DIRECTIVE_MACRO_ARG().text.dropLast(1).trim()
+        val macro = preprocessContext.getMacro(name)
+        val arguments = ctx.runArguments().runArgument().map { it.text }
+        if (macro != null) {
+            val content = MacroEvaluator.evaluate(macro, arguments)
+            preprocessContext.preprocess(content, SourceLocation.get(ctx.BACKTICK()))
+        } else {
+            Messages.UNDEFINED_MACRO.on(ctx.BACKTICK(), name)
+        }
+    }
+
+    private fun getDefineContent(ctx: ParserRuleContext): String {
         val builder = StringBuilder()
         ctx.children.forEach {
             if (it is TerminalNode) {

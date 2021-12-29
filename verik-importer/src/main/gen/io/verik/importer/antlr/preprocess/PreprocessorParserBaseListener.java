@@ -76,13 +76,13 @@ public class PreprocessorParserBaseListener implements PreprocessorParserListene
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterDirectiveTimescale(PreprocessorParser.DirectiveTimescaleContext ctx) { }
+	@Override public void enterDirectiveIgnored(PreprocessorParser.DirectiveIgnoredContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitDirectiveTimescale(PreprocessorParser.DirectiveTimescaleContext ctx) { }
+	@Override public void exitDirectiveIgnored(PreprocessorParser.DirectiveIgnoredContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -167,6 +167,42 @@ public class PreprocessorParserBaseListener implements PreprocessorParserListene
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitDirectiveMacro(PreprocessorParser.DirectiveMacroContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterDirectiveMacroArg(PreprocessorParser.DirectiveMacroArgContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDirectiveMacroArg(PreprocessorParser.DirectiveMacroArgContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterRunArguments(PreprocessorParser.RunArgumentsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRunArguments(PreprocessorParser.RunArgumentsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterRunArgument(PreprocessorParser.RunArgumentContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRunArgument(PreprocessorParser.RunArgumentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

@@ -22,27 +22,29 @@ file
 
 text
     : code
-    | BACKTICK directive
-    | BACKTICK directiveDefine
-    | BACKTICK directiveDefineArg
-    | BACKTICK directiveMacro
+    | directive
+    | directiveDefine
+    | directiveDefineArg
+    | directiveMacro
+    | directiveMacroArg
     ;
 
 directive
-    : DIRECTIVE_IFDEF       # directiveIfdef
-    | DIRECTIVE_IFNDEF      # directiveIfndef
-    | DIRECTIVE_ENDIF       # directiveEndif
-    | DIRECTIVE_TIMESCALE   # directiveTimescale
-    | DIRECTIVE_UNDEFINEALL # directiveUndefineAll
-    | DIRECTIVE_UNDEF       # directiveUndef
+    : BACKTICK DIRECTIVE_IFDEF       # directiveIfdef
+    | BACKTICK DIRECTIVE_IFNDEF      # directiveIfndef
+    | BACKTICK DIRECTIVE_ENDIF       # directiveEndif
+    | BACKTICK DIRECTIVE_LINE        # directiveIgnored
+    | BACKTICK DIRECTIVE_TIMESCALE   # directiveIgnored
+    | BACKTICK DIRECTIVE_UNDEFINEALL # directiveUndefineAll
+    | BACKTICK DIRECTIVE_UNDEF       # directiveUndef
     ;
 
 directiveDefine
-    : DIRECTIVE_DEFINE DEFINE_MACRO (TEXT | TEXT_LINE_CONTINUATION)*
+    : BACKTICK DIRECTIVE_DEFINE DEFINE_MACRO (TEXT | TEXT_LINE_CONTINUATION)*
     ;
 
 directiveDefineArg
-    : DIRECTIVE_DEFINE DEFINE_MACRO_ARG arguments? DEFINE_ARG_RP (TEXT | TEXT_LINE_CONTINUATION)*
+    : BACKTICK DIRECTIVE_DEFINE DEFINE_MACRO_ARG arguments? DEFINE_ARG_RP (TEXT | TEXT_LINE_CONTINUATION)*
     ;
 
 arguments
@@ -54,7 +56,19 @@ argument
     ;
 
 directiveMacro
-    : DIRECTIVE_MACRO
+    : BACKTICK DIRECTIVE_MACRO
+    ;
+
+directiveMacroArg
+    : BACKTICK DIRECTIVE_MACRO_ARG runArguments RUN_RP
+    ;
+
+runArguments
+    : runArgument (RUN_COMMA runArgument)*
+    ;
+
+runArgument
+    : RUN_TEXT*
     ;
 
 code

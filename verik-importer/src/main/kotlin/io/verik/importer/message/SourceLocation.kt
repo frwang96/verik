@@ -39,11 +39,15 @@ data class SourceLocation(
         fun get(token: Token): SourceLocation {
             return when (val inputStream = token.inputStream) {
                 is PreprocessorCharStream -> {
-                    SourceLocation(
-                        inputStream.file,
-                        token.line,
-                        token.charPositionInLine + 1
-                    )
+                    if (inputStream.isOriginal) {
+                        SourceLocation(
+                            inputStream.location.path,
+                            token.line,
+                            token.charPositionInLine + 1
+                        )
+                    } else {
+                        inputStream.location
+                    }
                 }
                 is LexerCharStream -> {
                     inputStream.getLocation(token.line, token.charPositionInLine)

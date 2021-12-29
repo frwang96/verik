@@ -48,10 +48,9 @@ object BasePreprocessor {
 
     fun preprocessCode(ctx: PreprocessorParser.CodeContext, preprocessContext: PreprocessContext) {
         if (preprocessContext.isEnable()) {
-            val terminalNode = ctx.CODE()
             val preprocessorFragment = PreprocessorFragment(
-                SourceLocation.get(terminalNode),
-                terminalNode.text,
+                SourceLocation.get(ctx.CODE()),
+                ctx.CODE().text,
                 true
             )
             preprocessContext.preprocessorFragments.add(preprocessorFragment)

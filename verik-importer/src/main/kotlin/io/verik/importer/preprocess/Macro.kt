@@ -18,5 +18,5 @@ package io.verik.importer.preprocess
 
 class Macro(
     val arguments: List<String>,
-    val text: String
+    val content: String
 )

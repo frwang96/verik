@@ -27,7 +27,7 @@ CODE
     ;
 
 STRING_LITERAL
-    : STRING -> type(CODE)
+    : '"' ('\\"' | '\\\\' | .)*? '"' -> type(CODE)
     ;
 
 BLOCK_COMMENT
@@ -82,6 +82,10 @@ DIRECTIVE_ENDIF
     : 'endif' [ \t]* [\r\n]? -> mode(DEFAULT_MODE)
     ;
 
+DIRECTIVE_LINE
+    : 'line' ~[\r\n]+ [\r\n]? -> mode(DEFAULT_MODE)
+    ;
+
 DIRECTIVE_TIMESCALE
     : 'timescale' ~[\r\n]+ [\r\n]? -> mode(DEFAULT_MODE)
     ;
@@ -94,8 +98,12 @@ DIRECTIVE_UNDEF
     : 'undef' [ \t]+ IDENTIFIER [ \t]* [\r\n]? -> mode(DEFAULT_MODE)
     ;
 
+DIRECTIVE_MACRO_ARG
+    : IDENTIFIER [ \t]* '(' { runLevel++; } -> mode(RUN_MODE)
+    ;
+
 DIRECTIVE_MACRO
-    : IDENTIFIER -> mode(DEFAULT_MODE)
+    : IDENTIFIER [ \t]* -> mode(DEFAULT_MODE)
     ;
 
 //  DEFINE MODE  ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -171,7 +179,7 @@ TEXT_BLOCK_COMMENT
     ;
 
 TEXT_LINE_COMMENT
-    : '//' ~[\r\n]* -> type(TEXT)
+    : '//' ~[\r\n]* -> channel(HIDDEN)
     ;
 
 TEXT_SLASH
@@ -186,8 +194,32 @@ TEXT
     : ~[\\/\r\n]+
     ;
 
-fragment STRING
-    : '"' ('\\"' | '\\\\' | .)*? '"'
+//  RUN MODE  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+mode RUN_MODE;
+
+RUN_WHITESPACE
+    : [ \t]+ -> type(RUN_TEXT)
+    ;
+
+RUN_COMMA
+    : ',' { if (runLevel != 1) setType(RUN_TEXT); }
+    ;
+
+RUN_PUSH
+    : [([{] { runLevel++; } -> type(RUN_TEXT)
+    ;
+
+RUN_POP
+    : [\]}] { runLevel--; } -> type(RUN_TEXT)
+    ;
+
+RUN_RP
+    : ')' { runLevel--; if (runLevel == 0) mode(DEFAULT_MODE); else setType(RUN_TEXT); }
+    ;
+
+RUN_TEXT
+    : ~[",(){}[\]\r\n\\/]+
     ;
 
 fragment IDENTIFIER

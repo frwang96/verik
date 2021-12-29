@@ -64,17 +64,17 @@ public interface PreprocessorParserListener extends ParseTreeListener {
 	 */
 	void exitDirectiveEndif(PreprocessorParser.DirectiveEndifContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code directiveTimescale}
+	 * Enter a parse tree produced by the {@code directiveIgnored}
 	 * labeled alternative in {@link PreprocessorParser#directive}.
 	 * @param ctx the parse tree
 	 */
-	void enterDirectiveTimescale(PreprocessorParser.DirectiveTimescaleContext ctx);
+	void enterDirectiveIgnored(PreprocessorParser.DirectiveIgnoredContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code directiveTimescale}
+	 * Exit a parse tree produced by the {@code directiveIgnored}
 	 * labeled alternative in {@link PreprocessorParser#directive}.
 	 * @param ctx the parse tree
 	 */
-	void exitDirectiveTimescale(PreprocessorParser.DirectiveTimescaleContext ctx);
+	void exitDirectiveIgnored(PreprocessorParser.DirectiveIgnoredContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code directiveUndefineAll}
 	 * labeled alternative in {@link PreprocessorParser#directive}.
@@ -149,6 +149,36 @@ public interface PreprocessorParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitDirectiveMacro(PreprocessorParser.DirectiveMacroContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link PreprocessorParser#directiveMacroArg}.
+	 * @param ctx the parse tree
+	 */
+	void enterDirectiveMacroArg(PreprocessorParser.DirectiveMacroArgContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PreprocessorParser#directiveMacroArg}.
+	 * @param ctx the parse tree
+	 */
+	void exitDirectiveMacroArg(PreprocessorParser.DirectiveMacroArgContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link PreprocessorParser#runArguments}.
+	 * @param ctx the parse tree
+	 */
+	void enterRunArguments(PreprocessorParser.RunArgumentsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PreprocessorParser#runArguments}.
+	 * @param ctx the parse tree
+	 */
+	void exitRunArguments(PreprocessorParser.RunArgumentsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link PreprocessorParser#runArgument}.
+	 * @param ctx the parse tree
+	 */
+	void enterRunArgument(PreprocessorParser.RunArgumentContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PreprocessorParser#runArgument}.
+	 * @param ctx the parse tree
+	 */
+	void exitRunArgument(PreprocessorParser.RunArgumentContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link PreprocessorParser#code}.
 	 * @param ctx the parse tree
