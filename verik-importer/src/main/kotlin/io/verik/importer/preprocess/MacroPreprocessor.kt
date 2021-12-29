@@ -20,6 +20,7 @@ import io.verik.importer.antlr.SystemVerilogPreprocessorLexer
 import io.verik.importer.antlr.SystemVerilogPreprocessorParser
 import io.verik.importer.message.Messages
 import io.verik.importer.message.SourceLocation
+import org.antlr.v4.runtime.ParserRuleContext
 import org.antlr.v4.runtime.tree.TerminalNode
 
 object MacroPreprocessor {
@@ -40,19 +41,22 @@ object MacroPreprocessor {
         ctx: SystemVerilogPreprocessorParser.DefineDirectiveContext,
         preprocessContext: PreprocessContext
     ) {
-        val name = ctx.DEFINE_MACRO().text
-        val builder = StringBuilder()
-        ctx.children.forEach {
-            if (it is TerminalNode) {
-                when (it.symbol.type) {
-                    SystemVerilogPreprocessorLexer.TEXT ->
-                        builder.append(it.text)
-                    SystemVerilogPreprocessorLexer.TEXT_LINE_CONTINUATION ->
-                        builder.appendLine()
-                }
-            }
-        }
-        val macro = Macro(listOf(), builder.toString())
+        val name = ctx.DEFINE_MACRO().text.trim()
+        val text = getDefineText(ctx)
+        val macro = Macro(listOf(), text)
+        preprocessContext.setMacro(name, macro)
+    }
+
+    fun preprocessArgumentsDefineDirective(
+        ctx: SystemVerilogPreprocessorParser.ArgumentsDefineDirectiveContext,
+        preprocessContext: PreprocessContext
+    ) {
+        val name = ctx.DEFINE_MACRO_ARG().text.trim().dropLast(1)
+        val argumentsCtx = ctx.arguments()?.argument() ?: listOf()
+        val arguments = argumentsCtx.map { it.text }
+
+        val text = getDefineText(ctx)
+        val macro = Macro(arguments, text)
         preprocessContext.setMacro(name, macro)
     }
 
@@ -73,5 +77,20 @@ object MacroPreprocessor {
         } else {
             Messages.UNDEFINED_MACRO.on(terminalNode, name)
         }
+    }
+
+    private fun getDefineText(ctx: ParserRuleContext): String {
+        val builder = StringBuilder()
+        ctx.children.forEach {
+            if (it is TerminalNode) {
+                when (it.symbol.type) {
+                    SystemVerilogPreprocessorLexer.TEXT ->
+                        builder.append(it.text)
+                    SystemVerilogPreprocessorLexer.TEXT_LINE_CONTINUATION ->
+                        builder.appendLine()
+                }
+            }
+        }
+        return builder.toString()
     }
 }

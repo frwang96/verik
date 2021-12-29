@@ -59,6 +59,21 @@ internal class MacroPreprocessorTest : BaseTest() {
     }
 
     @Test
+    fun `directive macro multiline`() {
+        drivePreprocessorTest(
+            """
+                `define X abc\
+                def
+                `X
+            """.trimIndent(),
+            """
+                abc
+                def
+            """.trimIndent()
+        )
+    }
+
+    @Test
     fun `directive macro undefined`() {
         driveMessageTest(
             "`X",

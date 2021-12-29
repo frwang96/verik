@@ -1,3 +1,17 @@
+//  Copyright (c) 2021 Francis Wang
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      https://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+
 parser grammar SystemVerilogPreprocessorParser;
 
 options { tokenVocab = SystemVerilogPreprocessorLexer; }
@@ -10,6 +24,7 @@ text
     : code
     | BACKTICK directive
     | BACKTICK defineDirective
+    | BACKTICK argumentsDefineDirective
     | BACKTICK macroDirective
     ;
 
@@ -24,6 +39,18 @@ directive
 
 defineDirective
     : DEFINE DEFINE_MACRO (TEXT | TEXT_LINE_CONTINUATION)*
+    ;
+
+argumentsDefineDirective
+    : DEFINE DEFINE_MACRO_ARG arguments? DEFINE_ARG_RP (TEXT | TEXT_LINE_CONTINUATION)*
+    ;
+
+arguments
+    : argument (DEFINE_ARG_COMMA argument)*
+    ;
+
+argument
+    : DEFINE_ARG_IDENTIFIER
     ;
 
 macroDirective

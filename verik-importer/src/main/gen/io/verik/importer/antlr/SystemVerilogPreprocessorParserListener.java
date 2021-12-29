@@ -110,6 +110,36 @@ public interface SystemVerilogPreprocessorParserListener extends ParseTreeListen
 	 */
 	void exitDefineDirective(SystemVerilogPreprocessorParser.DefineDirectiveContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link SystemVerilogPreprocessorParser#argumentsDefineDirective}.
+	 * @param ctx the parse tree
+	 */
+	void enterArgumentsDefineDirective(SystemVerilogPreprocessorParser.ArgumentsDefineDirectiveContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SystemVerilogPreprocessorParser#argumentsDefineDirective}.
+	 * @param ctx the parse tree
+	 */
+	void exitArgumentsDefineDirective(SystemVerilogPreprocessorParser.ArgumentsDefineDirectiveContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SystemVerilogPreprocessorParser#arguments}.
+	 * @param ctx the parse tree
+	 */
+	void enterArguments(SystemVerilogPreprocessorParser.ArgumentsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SystemVerilogPreprocessorParser#arguments}.
+	 * @param ctx the parse tree
+	 */
+	void exitArguments(SystemVerilogPreprocessorParser.ArgumentsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SystemVerilogPreprocessorParser#argument}.
+	 * @param ctx the parse tree
+	 */
+	void enterArgument(SystemVerilogPreprocessorParser.ArgumentContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SystemVerilogPreprocessorParser#argument}.
+	 * @param ctx the parse tree
+	 */
+	void exitArgument(SystemVerilogPreprocessorParser.ArgumentContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link SystemVerilogPreprocessorParser#macroDirective}.
 	 * @param ctx the parse tree
 	 */

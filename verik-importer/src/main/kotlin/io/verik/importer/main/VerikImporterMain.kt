@@ -35,8 +35,8 @@ object VerikImporterMain {
         val messagePrinter = GradleMessagePrinter(config)
         MessageCollector.messageCollector = MessageCollector(config, messagePrinter)
         val startTime = System.currentTimeMillis()
+        val projectContext = ProjectContext(config)
         try {
-            val projectContext = ProjectContext(config)
             readFiles(projectContext)
             stageSequence.processAll(projectContext)
             writeFiles(projectContext)
@@ -49,6 +49,11 @@ object VerikImporterMain {
                 )
             }
             writeLogFile(config, messagePrinter, startTime, false)
+            val preprocessorTextFile = projectContext.outputContext.preprocessorTextFile
+            if (preprocessorTextFile != null) {
+                Files.createDirectories(preprocessorTextFile.path.parent)
+                Files.writeString(preprocessorTextFile.path, preprocessorTextFile.content)
+            }
             throw VerikImporterException()
         }
         writeLogFile(config, messagePrinter, startTime, true)

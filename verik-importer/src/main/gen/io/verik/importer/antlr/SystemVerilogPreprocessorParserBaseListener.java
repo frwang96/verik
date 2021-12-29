@@ -124,6 +124,42 @@ public class SystemVerilogPreprocessorParserBaseListener implements SystemVerilo
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterArgumentsDefineDirective(SystemVerilogPreprocessorParser.ArgumentsDefineDirectiveContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArgumentsDefineDirective(SystemVerilogPreprocessorParser.ArgumentsDefineDirectiveContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterArguments(SystemVerilogPreprocessorParser.ArgumentsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArguments(SystemVerilogPreprocessorParser.ArgumentsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterArgument(SystemVerilogPreprocessorParser.ArgumentContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArgument(SystemVerilogPreprocessorParser.ArgumentContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterMacroDirective(SystemVerilogPreprocessorParser.MacroDirectiveContext ctx) { }
 	/**
 	 * {@inheritDoc}

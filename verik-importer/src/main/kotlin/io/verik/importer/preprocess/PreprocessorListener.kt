@@ -47,6 +47,10 @@ class PreprocessorListener(
         MacroPreprocessor.preprocessDefineDirective(ctx!!, preprocessContext)
     }
 
+    override fun enterArgumentsDefineDirective(ctx: SystemVerilogPreprocessorParser.ArgumentsDefineDirectiveContext?) {
+        MacroPreprocessor.preprocessArgumentsDefineDirective(ctx!!, preprocessContext)
+    }
+
     override fun enterMacroDirective(ctx: SystemVerilogPreprocessorParser.MacroDirectiveContext?) {
         MacroPreprocessor.preprocessMacroDirective(ctx!!, preprocessContext)
     }

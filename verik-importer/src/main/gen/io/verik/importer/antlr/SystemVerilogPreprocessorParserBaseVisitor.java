@@ -80,6 +80,27 @@ public class SystemVerilogPreprocessorParserBaseVisitor<T> extends AbstractParse
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitArgumentsDefineDirective(SystemVerilogPreprocessorParser.ArgumentsDefineDirectiveContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitArguments(SystemVerilogPreprocessorParser.ArgumentsContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitArgument(SystemVerilogPreprocessorParser.ArgumentContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitMacroDirective(SystemVerilogPreprocessorParser.MacroDirectiveContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}

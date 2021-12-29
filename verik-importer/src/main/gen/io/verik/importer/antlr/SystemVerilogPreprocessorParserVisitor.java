@@ -71,6 +71,24 @@ public interface SystemVerilogPreprocessorParserVisitor<T> extends ParseTreeVisi
 	 */
 	T visitDefineDirective(SystemVerilogPreprocessorParser.DefineDirectiveContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link SystemVerilogPreprocessorParser#argumentsDefineDirective}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArgumentsDefineDirective(SystemVerilogPreprocessorParser.ArgumentsDefineDirectiveContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SystemVerilogPreprocessorParser#arguments}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArguments(SystemVerilogPreprocessorParser.ArgumentsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SystemVerilogPreprocessorParser#argument}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArgument(SystemVerilogPreprocessorParser.ArgumentContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link SystemVerilogPreprocessorParser#macroDirective}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
