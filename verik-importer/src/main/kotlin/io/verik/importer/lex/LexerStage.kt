@@ -40,8 +40,17 @@ object LexerStage : ProjectStage() {
         val lexerFragments = ArrayList<LexerFragment>()
         tokenStream.fill()
         tokenStream.tokens.forEach {
-            if (it.channel == Token.DEFAULT_CHANNEL)
-                lexerFragments.add(LexerFragment(it))
+            if (it.channel == Token.DEFAULT_CHANNEL) {
+                val location = lexerCharStream.getLocation(it.line, it.charPositionInLine)
+                val lexerFragment = LexerFragment(
+                    location,
+                    it.line,
+                    it.charPositionInLine,
+                    it.type,
+                    it.text
+                )
+                lexerFragments.add(lexerFragment)
+            }
         }
         projectContext.lexerCharStream = lexerCharStream
         projectContext.lexerFragments = lexerFragments

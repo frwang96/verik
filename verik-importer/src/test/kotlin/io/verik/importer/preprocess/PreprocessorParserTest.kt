@@ -19,7 +19,7 @@ package io.verik.importer.preprocess
 import io.verik.importer.test.BaseTest
 import org.junit.jupiter.api.Test
 
-internal class PreprocessorParserStageTest : BaseTest() {
+internal class PreprocessorParserTest : BaseTest() {
 
     @Test
     fun `lexer unrecognized token`() {

@@ -46,8 +46,7 @@ object FragmentPairFilterStage : ProjectStage() {
                     if (fragmentPairFragment != null && it.type == fragmentPairMap[fragmentPairFragment.type]) {
                         fragmentPairStack.removeLast()
                     } else {
-                        val location = projectContext.lexerCharStream.getLocation(it)
-                        Messages.MISMATCHED_TOKEN.on(location, SystemVerilogLexer.VOCABULARY.getDisplayName(it.type))
+                        Messages.MISMATCHED_TOKEN.on(it, SystemVerilogLexer.VOCABULARY.getDisplayName(it.type))
                     }
                 }
             } else {
@@ -57,8 +56,7 @@ object FragmentPairFilterStage : ProjectStage() {
         }
         if (fragmentPairStack.isNotEmpty()) {
             fragmentPairStack.forEach {
-                val location = projectContext.lexerCharStream.getLocation(it)
-                Messages.MISMATCHED_TOKEN.on(location, SystemVerilogLexer.VOCABULARY.getDisplayName(it.type))
+                Messages.MISMATCHED_TOKEN.on(it, SystemVerilogLexer.VOCABULARY.getDisplayName(it.type))
             }
             lexerFragments.add(projectContext.lexerFragments.last())
         }

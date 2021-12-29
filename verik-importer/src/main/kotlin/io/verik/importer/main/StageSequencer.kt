@@ -21,7 +21,6 @@ import io.verik.importer.filter.FragmentPairFilterStage
 import io.verik.importer.lex.LexerStage
 import io.verik.importer.parse.ParserStage
 import io.verik.importer.preprocess.PreprocessorFilterStage
-import io.verik.importer.preprocess.PreprocessorParserStage
 import io.verik.importer.preprocess.PreprocessorSerializerStage
 import io.verik.importer.preprocess.PreprocessorStage
 import io.verik.importer.resolve.PortReferenceResolverStage
@@ -33,7 +32,6 @@ object StageSequencer {
     fun getStageSequence(): StageSequence {
         val stageSequence = StageSequence()
 
-        stageSequence.add(StageType.PREPROCESS, PreprocessorParserStage)
         stageSequence.add(StageType.PREPROCESS, PreprocessorStage)
         stageSequence.add(StageType.PREPROCESS, PreprocessorSerializerStage)
         stageSequence.add(StageType.PREPROCESS, PreprocessorFilterStage)

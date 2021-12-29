@@ -17,6 +17,7 @@
 package io.verik.importer.main
 
 import io.verik.importer.ast.element.ECompilationUnit
+import io.verik.importer.common.TextFile
 import io.verik.importer.lex.LexerCharStream
 import io.verik.importer.lex.LexerFragment
 import io.verik.importer.preprocess.PreprocessorFragment
@@ -27,7 +28,7 @@ class ProjectContext(
     val config: VerikImporterConfig
 ) {
 
-    var inputFileContexts: List<InputFileContext> = listOf()
+    var inputTextFiles: List<TextFile> = listOf()
     val processedProjectStages = HashSet<ProjectStage>()
     lateinit var preprocessorFragments: ArrayList<PreprocessorFragment>
     lateinit var lexerCharStream: LexerCharStream

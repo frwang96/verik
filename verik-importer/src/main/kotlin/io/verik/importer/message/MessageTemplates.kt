@@ -17,6 +17,7 @@
 package io.verik.importer.message
 
 import io.verik.importer.ast.element.EElement
+import io.verik.importer.lex.LexerFragment
 import org.antlr.v4.runtime.tree.TerminalNode
 
 class WarningMessageTemplate0(
@@ -34,6 +35,10 @@ class WarningMessageTemplate1<A>(
 
     fun on(location: SourceLocation, a: A) {
         MessageCollector.messageCollector.warning(name, format(a), location)
+    }
+
+    fun on(lexerFragment: LexerFragment, a: A) {
+        MessageCollector.messageCollector.warning(name, format(a), lexerFragment.location)
     }
 }
 
