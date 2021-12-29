@@ -16,8 +16,8 @@
 
 package io.verik.importer.message
 
-import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.antlr.SystemVerilogPreprocessorParser
+import io.verik.importer.antlr.parse.SystemVerilogParser
+import io.verik.importer.antlr.preprocess.PreprocessorParser
 import io.verik.importer.parse.ParserToken
 import org.antlr.v4.runtime.InputMismatchException
 import org.antlr.v4.runtime.LexerNoViableAltException
@@ -36,7 +36,7 @@ object RecognitionExceptionFormatter {
                 if (token is ParserToken) {
                     "Mismatched token: ${SystemVerilogParser.VOCABULARY.getDisplayName(token.type)}"
                 } else {
-                    "Mismatched token: ${SystemVerilogPreprocessorParser.VOCABULARY.getDisplayName(token.type)}"
+                    "Mismatched token: ${PreprocessorParser.VOCABULARY.getDisplayName(token.type)}"
                 }
             }
             else -> "Unknown error"

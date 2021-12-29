@@ -16,7 +16,7 @@
 
 package io.verik.importer.cast
 
-import io.verik.importer.antlr.SystemVerilogParser
+import io.verik.importer.antlr.parse.SystemVerilogParser
 import io.verik.importer.ast.element.EModule
 import io.verik.importer.ast.element.EPort
 import io.verik.importer.ast.property.PortReference

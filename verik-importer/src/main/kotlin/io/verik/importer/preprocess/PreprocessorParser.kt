@@ -16,8 +16,8 @@
 
 package io.verik.importer.preprocess
 
-import io.verik.importer.antlr.SystemVerilogPreprocessorLexer
-import io.verik.importer.antlr.SystemVerilogPreprocessorParser
+import io.verik.importer.antlr.preprocess.PreprocessorLexer
+import io.verik.importer.antlr.preprocess.PreprocessorParser
 import io.verik.importer.common.TextFile
 import io.verik.importer.message.Messages
 import io.verik.importer.message.RecognitionExceptionFormatter
@@ -33,13 +33,13 @@ object PreprocessorParser {
 
     fun parse(textFile: TextFile): ParseTree {
         val preprocessorCharStream = PreprocessorCharStream(textFile.path, textFile.content)
-        val lexer = SystemVerilogPreprocessorLexer(preprocessorCharStream)
+        val lexer = PreprocessorLexer(preprocessorCharStream)
         val lexerErrorListener = LexerErrorListener(textFile.path)
         lexer.removeErrorListeners()
         lexer.addErrorListener(lexerErrorListener)
 
         val tokenStream = CommonTokenStream(lexer)
-        val parser = SystemVerilogPreprocessorParser(tokenStream)
+        val parser = PreprocessorParser(tokenStream)
         val parserErrorListener = ParserErrorListener(textFile.path)
         parser.removeErrorListeners()
         parser.addErrorListener(parserErrorListener)

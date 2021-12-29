@@ -16,8 +16,8 @@
 
 package io.verik.importer.preprocess
 
-import io.verik.importer.antlr.SystemVerilogPreprocessorLexer
-import io.verik.importer.antlr.SystemVerilogPreprocessorParser
+import io.verik.importer.antlr.preprocess.PreprocessorLexer
+import io.verik.importer.antlr.preprocess.PreprocessorParser
 import io.verik.importer.message.Messages
 import io.verik.importer.message.SourceLocation
 import org.antlr.v4.runtime.ParserRuleContext
@@ -25,20 +25,20 @@ import org.antlr.v4.runtime.tree.TerminalNode
 
 object MacroPreprocessor {
 
-    fun preprocessUndefAll(preprocessContext: PreprocessContext) {
+    fun preprocessDirectiveUndefineAll(preprocessContext: PreprocessContext) {
         preprocessContext.removeAllMacros()
     }
 
-    fun preprocessUndef(
-        ctx: SystemVerilogPreprocessorParser.UndefContext,
+    fun preprocessDirectiveUndef(
+        ctx: PreprocessorParser.DirectiveUndefContext,
         preprocessContext: PreprocessContext
     ) {
         val name = ctx.text.substringAfter("undef").trim()
         preprocessContext.removeMacro(name)
     }
 
-    fun preprocessDefineDirective(
-        ctx: SystemVerilogPreprocessorParser.DefineDirectiveContext,
+    fun preprocessDirectiveDefine(
+        ctx: PreprocessorParser.DirectiveDefineContext,
         preprocessContext: PreprocessContext
     ) {
         val name = ctx.DEFINE_MACRO().text.trim()
@@ -47,8 +47,8 @@ object MacroPreprocessor {
         preprocessContext.setMacro(name, macro)
     }
 
-    fun preprocessArgumentsDefineDirective(
-        ctx: SystemVerilogPreprocessorParser.ArgumentsDefineDirectiveContext,
+    fun preprocessDirectiveDefineArg(
+        ctx: PreprocessorParser.DirectiveDefineArgContext,
         preprocessContext: PreprocessContext
     ) {
         val name = ctx.DEFINE_MACRO_ARG().text.trim().dropLast(1)
@@ -60,11 +60,11 @@ object MacroPreprocessor {
         preprocessContext.setMacro(name, macro)
     }
 
-    fun preprocessMacroDirective(
-        ctx: SystemVerilogPreprocessorParser.MacroDirectiveContext,
+    fun preprocessDirectiveMacro(
+        ctx: PreprocessorParser.DirectiveMacroContext,
         preprocessContext: PreprocessContext
     ) {
-        val terminalNode = ctx.DEFINED_MACRO()
+        val terminalNode = ctx.DIRECTIVE_MACRO()
         val name = terminalNode.text
         val macro = preprocessContext.getMacro(name)
         if (macro != null) {
@@ -84,9 +84,9 @@ object MacroPreprocessor {
         ctx.children.forEach {
             if (it is TerminalNode) {
                 when (it.symbol.type) {
-                    SystemVerilogPreprocessorLexer.TEXT ->
+                    PreprocessorLexer.TEXT ->
                         builder.append(it.text)
-                    SystemVerilogPreprocessorLexer.TEXT_LINE_CONTINUATION ->
+                    PreprocessorLexer.TEXT_LINE_CONTINUATION ->
                         builder.appendLine()
                 }
             }

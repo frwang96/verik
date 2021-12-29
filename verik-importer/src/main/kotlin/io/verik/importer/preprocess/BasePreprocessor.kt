@@ -16,28 +16,37 @@
 
 package io.verik.importer.preprocess
 
-import io.verik.importer.antlr.SystemVerilogPreprocessorParser
+import io.verik.importer.antlr.preprocess.PreprocessorParser
 import io.verik.importer.message.SourceLocation
 
 object BasePreprocessor {
 
-    fun preprocessIfdef(ctx: SystemVerilogPreprocessorParser.IfdefContext, preprocessContext: PreprocessContext) {
+    fun preprocessDirectiveIfdef(
+        ctx: PreprocessorParser.DirectiveIfdefContext,
+        preprocessContext: PreprocessContext,
+    ) {
         val name = ctx.text.substringAfter("ifdef").trim()
         val macro = preprocessContext.getMacro(name)
         preprocessContext.pushEnable(macro != null)
     }
 
-    fun preprocessIfndef(ctx: SystemVerilogPreprocessorParser.IfndefContext, preprocessContext: PreprocessContext) {
+    fun preprocessDirectiveIfndef(
+        ctx: PreprocessorParser.DirectiveIfndefContext,
+        preprocessContext: PreprocessContext,
+    ) {
         val name = ctx.text.substringAfter("ifndef").trim()
         val macro = preprocessContext.getMacro(name)
         preprocessContext.pushEnable(macro == null)
     }
 
-    fun preprocessEndif(ctx: SystemVerilogPreprocessorParser.EndifContext, preprocessContext: PreprocessContext) {
-        preprocessContext.popEnable(ctx.ENDIF())
+    fun preprocessDirectiveEndif(
+        ctx: PreprocessorParser.DirectiveEndifContext,
+        preprocessContext: PreprocessContext,
+    ) {
+        preprocessContext.popEnable(ctx.DIRECTIVE_ENDIF())
     }
 
-    fun preprocessCode(ctx: SystemVerilogPreprocessorParser.CodeContext, preprocessContext: PreprocessContext) {
+    fun preprocessCode(ctx: PreprocessorParser.CodeContext, preprocessContext: PreprocessContext) {
         if (preprocessContext.isEnable()) {
             val terminalNode = ctx.CODE()
             val preprocessorFragment = PreprocessorFragment(

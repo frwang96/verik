@@ -1,5 +1,5 @@
-// Generated from /Users/francis/Documents/Work/Verik/git.nosync/verik/verik-importer/src/main/gen/io/verik/importer/antlr/SystemVerilogPreprocessorLexer.g4 by ANTLR 4.9.2
-package io.verik.importer.antlr;
+// Generated from /Users/francis/Documents/Work/Verik/git.nosync/verik/verik-importer/src/main/gen/io/verik/importer/antlr/preprocess/PreprocessorLexer.g4 by ANTLR 4.9.2
+package io.verik.importer.antlr.preprocess;
 
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.atn.ATN;
@@ -9,7 +9,7 @@ import org.antlr.v4.runtime.atn.PredictionContextCache;
 import org.antlr.v4.runtime.dfa.DFA;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
-public class SystemVerilogPreprocessorLexer extends Lexer {
+public class PreprocessorLexer extends Lexer {
 	static { RuntimeMetaData.checkVersion("4.9.2", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
@@ -18,12 +18,13 @@ public class SystemVerilogPreprocessorLexer extends Lexer {
 	public static final int
 		BACKTICK=1, CODE=2, DIRECTIVE_WHITESPACE=3, DIRECTIVE_BLOCK_COMMENT=4, 
 		DIRECTIVE_LINE_COMMENT=5, DIRECTIVE_LINE_CONTINUATION=6, DIRECTIVE_NEW_LINE=7, 
-		DEFINE=8, IFDEF=9, IFNDEF=10, ENDIF=11, TIMESCALE=12, UNDEF_ALL=13, UNDEF=14, 
-		DEFINED_MACRO=15, DEFINE_WHITESPACE=16, DEFINE_LINE_CONTINUATION=17, DEFINE_NEW_LINE=18, 
-		DEFINE_MACRO_ARG=19, DEFINE_MACRO=20, DEFINE_ARG_WHITESPACE=21, DEFINE_ARG_LINE_CONTINUATION=22, 
-		DEFINE_ARG_NEW_LINE=23, DEFINE_ARG_COMMA=24, DEFINE_ARG_RP=25, DEFINE_ARG_IDENTIFIER=26, 
-		TEXT_LINE_CONTINUATION=27, TEXT_NEW_LINE=28, TEXT=29, TEXT_LINE_BACK_SLASH=30, 
-		TEXT_SLASH=31;
+		DIRECTIVE_DEFINE=8, DIRECTIVE_IFDEF=9, DIRECTIVE_IFNDEF=10, DIRECTIVE_ENDIF=11, 
+		DIRECTIVE_TIMESCALE=12, DIRECTIVE_UNDEFINEALL=13, DIRECTIVE_UNDEF=14, 
+		DIRECTIVE_MACRO=15, DEFINE_WHITESPACE=16, DEFINE_LINE_CONTINUATION=17, 
+		DEFINE_NEW_LINE=18, DEFINE_MACRO_ARG=19, DEFINE_MACRO=20, DEFINE_ARG_WHITESPACE=21, 
+		DEFINE_ARG_LINE_CONTINUATION=22, DEFINE_ARG_NEW_LINE=23, DEFINE_ARG_COMMA=24, 
+		DEFINE_ARG_RP=25, DEFINE_ARG_IDENTIFIER=26, TEXT_LINE_CONTINUATION=27, 
+		TEXT_NEW_LINE=28, TEXT=29, TEXT_LINE_BACK_SLASH=30, TEXT_SLASH=31;
 	public static final int
 		DIRECTIVE_MODE=1, DEFINE_MODE=2, DEFINE_ARG_MODE=3, TEXT_MODE=4;
 	public static String[] channelNames = {
@@ -38,14 +39,14 @@ public class SystemVerilogPreprocessorLexer extends Lexer {
 		return new String[] {
 			"BACKTICK", "CODE", "STRING_LITERAL", "BLOCK_COMMENT", "LINE_COMMENT", 
 			"WHITESPACE", "DIRECTIVE_WHITESPACE", "DIRECTIVE_BLOCK_COMMENT", "DIRECTIVE_LINE_COMMENT", 
-			"DIRECTIVE_LINE_CONTINUATION", "DIRECTIVE_NEW_LINE", "DEFINE", "IFDEF", 
-			"IFNDEF", "ENDIF", "TIMESCALE", "UNDEF_ALL", "UNDEF", "DEFINED_MACRO", 
-			"DEFINE_WHITESPACE", "DEFINE_LINE_CONTINUATION", "DEFINE_NEW_LINE", "DEFINE_MACRO_ARG", 
-			"DEFINE_MACRO", "DEFINE_ARG_WHITESPACE", "DEFINE_ARG_LINE_CONTINUATION", 
-			"DEFINE_ARG_NEW_LINE", "DEFINE_ARG_COMMA", "DEFINE_ARG_RP", "DEFINE_ARG_IDENTIFIER", 
-			"TEXT_LINE_CONTINUATION", "TEXT_LINE_BACK_SLASH", "TEXT_NEW_LINE", "TEXT_BLOCK_COMMENT", 
-			"TEXT_LINE_COMMENT", "TEXT_SLASH", "TEXT_WHITESPACE", "TEXT", "STRING", 
-			"IDENTIFIER"
+			"DIRECTIVE_LINE_CONTINUATION", "DIRECTIVE_NEW_LINE", "DIRECTIVE_DEFINE", 
+			"DIRECTIVE_IFDEF", "DIRECTIVE_IFNDEF", "DIRECTIVE_ENDIF", "DIRECTIVE_TIMESCALE", 
+			"DIRECTIVE_UNDEFINEALL", "DIRECTIVE_UNDEF", "DIRECTIVE_MACRO", "DEFINE_WHITESPACE", 
+			"DEFINE_LINE_CONTINUATION", "DEFINE_NEW_LINE", "DEFINE_MACRO_ARG", "DEFINE_MACRO", 
+			"DEFINE_ARG_WHITESPACE", "DEFINE_ARG_LINE_CONTINUATION", "DEFINE_ARG_NEW_LINE", 
+			"DEFINE_ARG_COMMA", "DEFINE_ARG_RP", "DEFINE_ARG_IDENTIFIER", "TEXT_LINE_CONTINUATION", 
+			"TEXT_LINE_BACK_SLASH", "TEXT_NEW_LINE", "TEXT_BLOCK_COMMENT", "TEXT_LINE_COMMENT", 
+			"TEXT_SLASH", "TEXT_WHITESPACE", "TEXT", "STRING", "IDENTIFIER"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
@@ -62,9 +63,10 @@ public class SystemVerilogPreprocessorLexer extends Lexer {
 		return new String[] {
 			null, "BACKTICK", "CODE", "DIRECTIVE_WHITESPACE", "DIRECTIVE_BLOCK_COMMENT", 
 			"DIRECTIVE_LINE_COMMENT", "DIRECTIVE_LINE_CONTINUATION", "DIRECTIVE_NEW_LINE", 
-			"DEFINE", "IFDEF", "IFNDEF", "ENDIF", "TIMESCALE", "UNDEF_ALL", "UNDEF", 
-			"DEFINED_MACRO", "DEFINE_WHITESPACE", "DEFINE_LINE_CONTINUATION", "DEFINE_NEW_LINE", 
-			"DEFINE_MACRO_ARG", "DEFINE_MACRO", "DEFINE_ARG_WHITESPACE", "DEFINE_ARG_LINE_CONTINUATION", 
+			"DIRECTIVE_DEFINE", "DIRECTIVE_IFDEF", "DIRECTIVE_IFNDEF", "DIRECTIVE_ENDIF", 
+			"DIRECTIVE_TIMESCALE", "DIRECTIVE_UNDEFINEALL", "DIRECTIVE_UNDEF", "DIRECTIVE_MACRO", 
+			"DEFINE_WHITESPACE", "DEFINE_LINE_CONTINUATION", "DEFINE_NEW_LINE", "DEFINE_MACRO_ARG", 
+			"DEFINE_MACRO", "DEFINE_ARG_WHITESPACE", "DEFINE_ARG_LINE_CONTINUATION", 
 			"DEFINE_ARG_NEW_LINE", "DEFINE_ARG_COMMA", "DEFINE_ARG_RP", "DEFINE_ARG_IDENTIFIER", 
 			"TEXT_LINE_CONTINUATION", "TEXT_NEW_LINE", "TEXT", "TEXT_LINE_BACK_SLASH", 
 			"TEXT_SLASH"
@@ -108,13 +110,13 @@ public class SystemVerilogPreprocessorLexer extends Lexer {
 	   private int runLevel;
 
 
-	public SystemVerilogPreprocessorLexer(CharStream input) {
+	public PreprocessorLexer(CharStream input) {
 		super(input);
 		_interp = new LexerATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 
 	@Override
-	public String getGrammarFileName() { return "SystemVerilogPreprocessorLexer.g4"; }
+	public String getGrammarFileName() { return "PreprocessorLexer.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }

@@ -16,8 +16,8 @@
 
 package io.verik.importer.test
 
-import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.antlr.SystemVerilogParserBaseVisitor
+import io.verik.importer.antlr.parse.SystemVerilogParser
+import io.verik.importer.antlr.parse.SystemVerilogParserBaseVisitor
 import io.verik.importer.main.StageSequencer
 import io.verik.importer.main.StageType
 import org.antlr.v4.runtime.tree.RuleNode

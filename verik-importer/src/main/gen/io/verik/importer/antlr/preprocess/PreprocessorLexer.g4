@@ -12,7 +12,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-lexer grammar SystemVerilogPreprocessorLexer;
+lexer grammar PreprocessorLexer;
 
 @members {
    private int runLevel;
@@ -66,35 +66,35 @@ DIRECTIVE_NEW_LINE
     : '\r'? '\n' -> channel(HIDDEN), mode(DEFAULT_MODE)
     ;
 
-DEFINE
+DIRECTIVE_DEFINE
     : 'define' [ \t]+ -> mode(DEFINE_MODE)
     ;
 
-IFDEF
+DIRECTIVE_IFDEF
     : 'ifdef' [ \t]+ IDENTIFIER [ \t]* [\r\n]? -> mode(DEFAULT_MODE)
     ;
 
-IFNDEF
+DIRECTIVE_IFNDEF
     : 'ifndef' [ \t]+ IDENTIFIER [ \t]* [\r\n]? -> mode(DEFAULT_MODE)
     ;
 
-ENDIF
+DIRECTIVE_ENDIF
     : 'endif' [ \t]* [\r\n]? -> mode(DEFAULT_MODE)
     ;
 
-TIMESCALE
+DIRECTIVE_TIMESCALE
     : 'timescale' ~[\r\n]+ [\r\n]? -> mode(DEFAULT_MODE)
     ;
 
-UNDEF_ALL
+DIRECTIVE_UNDEFINEALL
     : 'undefineall' [ \t]* [\r\n]? -> mode(DEFAULT_MODE)
     ;
 
-UNDEF
+DIRECTIVE_UNDEF
     : 'undef' [ \t]+ IDENTIFIER [ \t]* [\r\n]? -> mode(DEFAULT_MODE)
     ;
 
-DEFINED_MACRO
+DIRECTIVE_MACRO
     : IDENTIFIER -> mode(DEFAULT_MODE)
     ;
 

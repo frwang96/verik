@@ -1,184 +1,184 @@
-// Generated from /Users/francis/Documents/Work/Verik/git.nosync/verik/verik-importer/src/main/gen/io/verik/importer/antlr/SystemVerilogPreprocessorParser.g4 by ANTLR 4.9.2
-package io.verik.importer.antlr;
+// Generated from /Users/francis/Documents/Work/Verik/git.nosync/verik/verik-importer/src/main/gen/io/verik/importer/antlr/preprocess/PreprocessorParser.g4 by ANTLR 4.9.2
+package io.verik.importer.antlr.preprocess;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 /**
- * This class provides an empty implementation of {@link SystemVerilogPreprocessorParserListener},
+ * This class provides an empty implementation of {@link PreprocessorParserListener},
  * which can be extended to create a listener which only needs to handle a subset
  * of the available methods.
  */
-public class SystemVerilogPreprocessorParserBaseListener implements SystemVerilogPreprocessorParserListener {
+public class PreprocessorParserBaseListener implements PreprocessorParserListener {
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFile(SystemVerilogPreprocessorParser.FileContext ctx) { }
+	@Override public void enterFile(PreprocessorParser.FileContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFile(SystemVerilogPreprocessorParser.FileContext ctx) { }
+	@Override public void exitFile(PreprocessorParser.FileContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterText(SystemVerilogPreprocessorParser.TextContext ctx) { }
+	@Override public void enterText(PreprocessorParser.TextContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitText(SystemVerilogPreprocessorParser.TextContext ctx) { }
+	@Override public void exitText(PreprocessorParser.TextContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIfdef(SystemVerilogPreprocessorParser.IfdefContext ctx) { }
+	@Override public void enterDirectiveIfdef(PreprocessorParser.DirectiveIfdefContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitIfdef(SystemVerilogPreprocessorParser.IfdefContext ctx) { }
+	@Override public void exitDirectiveIfdef(PreprocessorParser.DirectiveIfdefContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIfndef(SystemVerilogPreprocessorParser.IfndefContext ctx) { }
+	@Override public void enterDirectiveIfndef(PreprocessorParser.DirectiveIfndefContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitIfndef(SystemVerilogPreprocessorParser.IfndefContext ctx) { }
+	@Override public void exitDirectiveIfndef(PreprocessorParser.DirectiveIfndefContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterEndif(SystemVerilogPreprocessorParser.EndifContext ctx) { }
+	@Override public void enterDirectiveEndif(PreprocessorParser.DirectiveEndifContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitEndif(SystemVerilogPreprocessorParser.EndifContext ctx) { }
+	@Override public void exitDirectiveEndif(PreprocessorParser.DirectiveEndifContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterTimescale(SystemVerilogPreprocessorParser.TimescaleContext ctx) { }
+	@Override public void enterDirectiveTimescale(PreprocessorParser.DirectiveTimescaleContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitTimescale(SystemVerilogPreprocessorParser.TimescaleContext ctx) { }
+	@Override public void exitDirectiveTimescale(PreprocessorParser.DirectiveTimescaleContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterUndefAll(SystemVerilogPreprocessorParser.UndefAllContext ctx) { }
+	@Override public void enterDirectiveUndefineAll(PreprocessorParser.DirectiveUndefineAllContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitUndefAll(SystemVerilogPreprocessorParser.UndefAllContext ctx) { }
+	@Override public void exitDirectiveUndefineAll(PreprocessorParser.DirectiveUndefineAllContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterUndef(SystemVerilogPreprocessorParser.UndefContext ctx) { }
+	@Override public void enterDirectiveUndef(PreprocessorParser.DirectiveUndefContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitUndef(SystemVerilogPreprocessorParser.UndefContext ctx) { }
+	@Override public void exitDirectiveUndef(PreprocessorParser.DirectiveUndefContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterDefineDirective(SystemVerilogPreprocessorParser.DefineDirectiveContext ctx) { }
+	@Override public void enterDirectiveDefine(PreprocessorParser.DirectiveDefineContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitDefineDirective(SystemVerilogPreprocessorParser.DefineDirectiveContext ctx) { }
+	@Override public void exitDirectiveDefine(PreprocessorParser.DirectiveDefineContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterArgumentsDefineDirective(SystemVerilogPreprocessorParser.ArgumentsDefineDirectiveContext ctx) { }
+	@Override public void enterDirectiveDefineArg(PreprocessorParser.DirectiveDefineArgContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitArgumentsDefineDirective(SystemVerilogPreprocessorParser.ArgumentsDefineDirectiveContext ctx) { }
+	@Override public void exitDirectiveDefineArg(PreprocessorParser.DirectiveDefineArgContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterArguments(SystemVerilogPreprocessorParser.ArgumentsContext ctx) { }
+	@Override public void enterArguments(PreprocessorParser.ArgumentsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitArguments(SystemVerilogPreprocessorParser.ArgumentsContext ctx) { }
+	@Override public void exitArguments(PreprocessorParser.ArgumentsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterArgument(SystemVerilogPreprocessorParser.ArgumentContext ctx) { }
+	@Override public void enterArgument(PreprocessorParser.ArgumentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitArgument(SystemVerilogPreprocessorParser.ArgumentContext ctx) { }
+	@Override public void exitArgument(PreprocessorParser.ArgumentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMacroDirective(SystemVerilogPreprocessorParser.MacroDirectiveContext ctx) { }
+	@Override public void enterDirectiveMacro(PreprocessorParser.DirectiveMacroContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMacroDirective(SystemVerilogPreprocessorParser.MacroDirectiveContext ctx) { }
+	@Override public void exitDirectiveMacro(PreprocessorParser.DirectiveMacroContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCode(SystemVerilogPreprocessorParser.CodeContext ctx) { }
+	@Override public void enterCode(PreprocessorParser.CodeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCode(SystemVerilogPreprocessorParser.CodeContext ctx) { }
+	@Override public void exitCode(PreprocessorParser.CodeContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

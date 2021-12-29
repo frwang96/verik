@@ -16,46 +16,46 @@
 
 package io.verik.importer.preprocess
 
-import io.verik.importer.antlr.SystemVerilogPreprocessorParser
-import io.verik.importer.antlr.SystemVerilogPreprocessorParserBaseListener
+import io.verik.importer.antlr.preprocess.PreprocessorParser
+import io.verik.importer.antlr.preprocess.PreprocessorParserBaseListener
 
 class PreprocessorListener(
     private val preprocessContext: PreprocessContext
-) : SystemVerilogPreprocessorParserBaseListener() {
+) : PreprocessorParserBaseListener() {
 
-    override fun enterIfdef(ctx: SystemVerilogPreprocessorParser.IfdefContext?) {
-        BasePreprocessor.preprocessIfdef(ctx!!, preprocessContext)
+    override fun enterDirectiveIfdef(ctx: PreprocessorParser.DirectiveIfdefContext?) {
+        BasePreprocessor.preprocessDirectiveIfdef(ctx!!, preprocessContext)
     }
 
-    override fun enterIfndef(ctx: SystemVerilogPreprocessorParser.IfndefContext?) {
-        BasePreprocessor.preprocessIfndef(ctx!!, preprocessContext)
+    override fun enterDirectiveIfndef(ctx: PreprocessorParser.DirectiveIfndefContext?) {
+        BasePreprocessor.preprocessDirectiveIfndef(ctx!!, preprocessContext)
     }
 
-    override fun enterEndif(ctx: SystemVerilogPreprocessorParser.EndifContext?) {
-        BasePreprocessor.preprocessEndif(ctx!!, preprocessContext)
+    override fun enterDirectiveEndif(ctx: PreprocessorParser.DirectiveEndifContext?) {
+        BasePreprocessor.preprocessDirectiveEndif(ctx!!, preprocessContext)
     }
 
-    override fun enterUndefAll(ctx: SystemVerilogPreprocessorParser.UndefAllContext?) {
-        MacroPreprocessor.preprocessUndefAll(preprocessContext)
+    override fun enterDirectiveUndefineAll(ctx: PreprocessorParser.DirectiveUndefineAllContext?) {
+        MacroPreprocessor.preprocessDirectiveUndefineAll(preprocessContext)
     }
 
-    override fun enterUndef(ctx: SystemVerilogPreprocessorParser.UndefContext?) {
-        MacroPreprocessor.preprocessUndef(ctx!!, preprocessContext)
+    override fun enterDirectiveUndef(ctx: PreprocessorParser.DirectiveUndefContext?) {
+        MacroPreprocessor.preprocessDirectiveUndef(ctx!!, preprocessContext)
     }
 
-    override fun enterDefineDirective(ctx: SystemVerilogPreprocessorParser.DefineDirectiveContext?) {
-        MacroPreprocessor.preprocessDefineDirective(ctx!!, preprocessContext)
+    override fun enterDirectiveDefine(ctx: PreprocessorParser.DirectiveDefineContext?) {
+        MacroPreprocessor.preprocessDirectiveDefine(ctx!!, preprocessContext)
     }
 
-    override fun enterArgumentsDefineDirective(ctx: SystemVerilogPreprocessorParser.ArgumentsDefineDirectiveContext?) {
-        MacroPreprocessor.preprocessArgumentsDefineDirective(ctx!!, preprocessContext)
+    override fun enterDirectiveDefineArg(ctx: PreprocessorParser.DirectiveDefineArgContext?) {
+        MacroPreprocessor.preprocessDirectiveDefineArg(ctx!!, preprocessContext)
     }
 
-    override fun enterMacroDirective(ctx: SystemVerilogPreprocessorParser.MacroDirectiveContext?) {
-        MacroPreprocessor.preprocessMacroDirective(ctx!!, preprocessContext)
+    override fun enterDirectiveMacro(ctx: PreprocessorParser.DirectiveMacroContext?) {
+        MacroPreprocessor.preprocessDirectiveMacro(ctx!!, preprocessContext)
     }
 
-    override fun enterCode(ctx: SystemVerilogPreprocessorParser.CodeContext?) {
+    override fun enterCode(ctx: PreprocessorParser.CodeContext?) {
         BasePreprocessor.preprocessCode(ctx!!, preprocessContext)
     }
 }

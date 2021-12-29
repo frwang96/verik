@@ -1,112 +1,112 @@
-// Generated from /Users/francis/Documents/Work/Verik/git.nosync/verik/verik-importer/src/main/gen/io/verik/importer/antlr/SystemVerilogPreprocessorParser.g4 by ANTLR 4.9.2
-package io.verik.importer.antlr;
+// Generated from /Users/francis/Documents/Work/Verik/git.nosync/verik/verik-importer/src/main/gen/io/verik/importer/antlr/preprocess/PreprocessorParser.g4 by ANTLR 4.9.2
+package io.verik.importer.antlr.preprocess;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 /**
- * This class provides an empty implementation of {@link SystemVerilogPreprocessorParserVisitor},
+ * This class provides an empty implementation of {@link PreprocessorParserVisitor},
  * which can be extended to create a visitor which only needs to handle a subset
  * of the available methods.
  *
  * @param <T> The return type of the visit operation. Use {@link Void} for
  * operations with no return type.
  */
-public class SystemVerilogPreprocessorParserBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements SystemVerilogPreprocessorParserVisitor<T> {
+public class PreprocessorParserBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements PreprocessorParserVisitor<T> {
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitFile(SystemVerilogPreprocessorParser.FileContext ctx) { return visitChildren(ctx); }
+	@Override public T visitFile(PreprocessorParser.FileContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitText(SystemVerilogPreprocessorParser.TextContext ctx) { return visitChildren(ctx); }
+	@Override public T visitText(PreprocessorParser.TextContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIfdef(SystemVerilogPreprocessorParser.IfdefContext ctx) { return visitChildren(ctx); }
+	@Override public T visitDirectiveIfdef(PreprocessorParser.DirectiveIfdefContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIfndef(SystemVerilogPreprocessorParser.IfndefContext ctx) { return visitChildren(ctx); }
+	@Override public T visitDirectiveIfndef(PreprocessorParser.DirectiveIfndefContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitEndif(SystemVerilogPreprocessorParser.EndifContext ctx) { return visitChildren(ctx); }
+	@Override public T visitDirectiveEndif(PreprocessorParser.DirectiveEndifContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitTimescale(SystemVerilogPreprocessorParser.TimescaleContext ctx) { return visitChildren(ctx); }
+	@Override public T visitDirectiveTimescale(PreprocessorParser.DirectiveTimescaleContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitUndefAll(SystemVerilogPreprocessorParser.UndefAllContext ctx) { return visitChildren(ctx); }
+	@Override public T visitDirectiveUndefineAll(PreprocessorParser.DirectiveUndefineAllContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitUndef(SystemVerilogPreprocessorParser.UndefContext ctx) { return visitChildren(ctx); }
+	@Override public T visitDirectiveUndef(PreprocessorParser.DirectiveUndefContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitDefineDirective(SystemVerilogPreprocessorParser.DefineDirectiveContext ctx) { return visitChildren(ctx); }
+	@Override public T visitDirectiveDefine(PreprocessorParser.DirectiveDefineContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitArgumentsDefineDirective(SystemVerilogPreprocessorParser.ArgumentsDefineDirectiveContext ctx) { return visitChildren(ctx); }
+	@Override public T visitDirectiveDefineArg(PreprocessorParser.DirectiveDefineArgContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitArguments(SystemVerilogPreprocessorParser.ArgumentsContext ctx) { return visitChildren(ctx); }
+	@Override public T visitArguments(PreprocessorParser.ArgumentsContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitArgument(SystemVerilogPreprocessorParser.ArgumentContext ctx) { return visitChildren(ctx); }
+	@Override public T visitArgument(PreprocessorParser.ArgumentContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMacroDirective(SystemVerilogPreprocessorParser.MacroDirectiveContext ctx) { return visitChildren(ctx); }
+	@Override public T visitDirectiveMacro(PreprocessorParser.DirectiveMacroContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitCode(SystemVerilogPreprocessorParser.CodeContext ctx) { return visitChildren(ctx); }
+	@Override public T visitCode(PreprocessorParser.CodeContext ctx) { return visitChildren(ctx); }
 }

@@ -12,9 +12,9 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-parser grammar SystemVerilogPreprocessorParser;
+parser grammar PreprocessorParser;
 
-options { tokenVocab = SystemVerilogPreprocessorLexer; }
+options { tokenVocab = PreprocessorLexer; }
 
 file
     : text* EOF
@@ -23,26 +23,26 @@ file
 text
     : code
     | BACKTICK directive
-    | BACKTICK defineDirective
-    | BACKTICK argumentsDefineDirective
-    | BACKTICK macroDirective
+    | BACKTICK directiveDefine
+    | BACKTICK directiveDefineArg
+    | BACKTICK directiveMacro
     ;
 
 directive
-    : IFDEF     # ifdef
-    | IFNDEF    # ifndef
-    | ENDIF     # endif
-    | TIMESCALE # timescale
-    | UNDEF_ALL # undefAll
-    | UNDEF     # undef
+    : DIRECTIVE_IFDEF       # directiveIfdef
+    | DIRECTIVE_IFNDEF      # directiveIfndef
+    | DIRECTIVE_ENDIF       # directiveEndif
+    | DIRECTIVE_TIMESCALE   # directiveTimescale
+    | DIRECTIVE_UNDEFINEALL # directiveUndefineAll
+    | DIRECTIVE_UNDEF       # directiveUndef
     ;
 
-defineDirective
-    : DEFINE DEFINE_MACRO (TEXT | TEXT_LINE_CONTINUATION)*
+directiveDefine
+    : DIRECTIVE_DEFINE DEFINE_MACRO (TEXT | TEXT_LINE_CONTINUATION)*
     ;
 
-argumentsDefineDirective
-    : DEFINE DEFINE_MACRO_ARG arguments? DEFINE_ARG_RP (TEXT | TEXT_LINE_CONTINUATION)*
+directiveDefineArg
+    : DIRECTIVE_DEFINE DEFINE_MACRO_ARG arguments? DEFINE_ARG_RP (TEXT | TEXT_LINE_CONTINUATION)*
     ;
 
 arguments
@@ -53,8 +53,8 @@ argument
     : DEFINE_ARG_IDENTIFIER
     ;
 
-macroDirective
-    : DEFINED_MACRO
+directiveMacro
+    : DIRECTIVE_MACRO
     ;
 
 code
