@@ -15,7 +15,7 @@
 lexer grammar PreprocessorLexer;
 
 @members {
-   private int runLevel;
+   private int argLevel;
 }
 
 BACKTICK
@@ -99,7 +99,7 @@ DIRECTIVE_UNDEF
     ;
 
 DIRECTIVE_MACRO_ARG
-    : IDENTIFIER [ \t]* '(' { runLevel++; } -> mode(RUN_MODE)
+    : IDENTIFIER [ \t]* '(' { argLevel++; } -> mode(ARG_MODE)
     ;
 
 DIRECTIVE_MACRO
@@ -122,103 +122,103 @@ DEFINE_NEW_LINE
     : '\r'? '\n' -> channel(HIDDEN)
     ;
 
-DEFINE_MACRO_ARG
-    : IDENTIFIER [ \t]* '(' -> mode(DEFINE_ARG_MODE)
+DEFINE_MACRO_PARAM
+    : IDENTIFIER [ \t]* '(' -> mode(DEFINE_PARAM_MODE)
     ;
 
 DEFINE_MACRO
-    : IDENTIFIER [ \t]* -> mode(TEXT_MODE)
+    : IDENTIFIER [ \t]* -> mode(CONTENT_MODE)
     ;
 
-//  DEFINE ARG MODE  ///////////////////////////////////////////////////////////////////////////////////////////////////
+//  DEFINE PARAM MODE  /////////////////////////////////////////////////////////////////////////////////////////////////
 
-mode DEFINE_ARG_MODE;
+mode DEFINE_PARAM_MODE;
 
-DEFINE_ARG_WHITESPACE
+DEFINE_PARAM_WHITESPACE
     : [ \t]+ -> channel(HIDDEN)
     ;
 
-DEFINE_ARG_LINE_CONTINUATION
+DEFINE_PARAM_LINE_CONTINUATION
     : '\\' '\r'? '\n' -> channel(HIDDEN)
     ;
 
-DEFINE_ARG_NEW_LINE
+DEFINE_PARAM_NEW_LINE
     : '\r'? '\n' -> channel(HIDDEN)
     ;
 
-DEFINE_ARG_COMMA
+DEFINE_PARAM_COMMA
     : ','
     ;
 
-DEFINE_ARG_RP
-    : ')' [ \t]* -> mode(TEXT_MODE)
+DEFINE_PARAM_RP
+    : ')' [ \t]* -> mode(CONTENT_MODE)
     ;
 
-DEFINE_ARG_IDENTIFIER
+DEFINE_PARAM_IDENTIFIER
     : IDENTIFIER
     ;
 
-//  TEXT MODE  /////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  CONTENT MODE  //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-mode TEXT_MODE;
+mode CONTENT_MODE;
 
-TEXT_LINE_CONTINUATION
+CONTENT_LINE_CONTINUATION
     : '\\' '\r'? '\n'
     ;
 
-TEXT_LINE_BACK_SLASH
-    : '\\' -> type(TEXT)
+CONTENT_LINE_BACK_SLASH
+    : '\\' -> type(CONTENT_TEXT)
     ;
 
-TEXT_NEW_LINE
+CONTENT_NEW_LINE
     : '\r'? '\n' -> channel(HIDDEN), mode(DEFAULT_MODE)
     ;
 
-TEXT_BLOCK_COMMENT
-    : '/*' .*? '*/' -> type(TEXT)
+CONTENT_BLOCK_COMMENT
+    : '/*' .*? '*/' -> type(CONTENT_TEXT)
     ;
 
-TEXT_LINE_COMMENT
+CONTENT_LINE_COMMENT
     : '//' ~[\r\n]* -> channel(HIDDEN)
     ;
 
-TEXT_SLASH
-    : '/' -> type(TEXT)
+CONTENT_SLASH
+    : '/' -> type(CONTENT_TEXT)
     ;
 
-TEXT_WHITESPACE
-    : [ \t]+ -> type(TEXT)
+CONTENT_WHITESPACE
+    : [ \t]+ -> type(CONTENT_TEXT)
     ;
 
-TEXT
+CONTENT_TEXT
     : ~[\\/\r\n]+
     ;
 
-//  RUN MODE  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  ARG MODE  //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-mode RUN_MODE;
+mode ARG_MODE;
 
-RUN_WHITESPACE
-    : [ \t]+ -> type(RUN_TEXT)
+ARG_WHITESPACE
+    : [ \t]+ -> type(ARG_TEXT)
     ;
 
-RUN_COMMA
-    : ',' { if (runLevel != 1) setType(RUN_TEXT); }
+ARG_COMMA
+    : ',' { if (argLevel != 1) setType(ARG_TEXT); }
     ;
 
-RUN_PUSH
-    : [([{] { runLevel++; } -> type(RUN_TEXT)
+ARG_PUSH
+    : [([{] { argLevel++; } -> type(ARG_TEXT)
     ;
 
-RUN_POP
-    : [\]}] { runLevel--; } -> type(RUN_TEXT)
+ARG_POP
+    : [\]}] { argLevel--; } -> type(ARG_TEXT)
     ;
 
-RUN_RP
-    : ')' { runLevel--; if (runLevel == 0) mode(DEFAULT_MODE); else setType(RUN_TEXT); }
+ARG_RP
+    : ')' { argLevel--; if (argLevel == 0) mode(DEFAULT_MODE); else setType(ARG_TEXT); }
     ;
 
-RUN_TEXT
+ARG_TEXT
     : ~[",(){}[\]\r\n\\/]+
     ;
 

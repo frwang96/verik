@@ -1,0 +1,10 @@
+CONCAT=1
+ESCAPE_DQ=2
+ESCAPE_SLASH_DQ=3
+IDENTIFIER=4
+TEXT=5
+BACK_TICK=6
+'``'=1
+'`"'=2
+'`\\`"'=3
+'`'=6

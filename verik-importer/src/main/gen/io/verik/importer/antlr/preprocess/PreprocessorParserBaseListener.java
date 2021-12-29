@@ -124,37 +124,37 @@ public class PreprocessorParserBaseListener implements PreprocessorParserListene
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterDirectiveDefineArg(PreprocessorParser.DirectiveDefineArgContext ctx) { }
+	@Override public void enterDirectiveDefineParam(PreprocessorParser.DirectiveDefineParamContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitDirectiveDefineArg(PreprocessorParser.DirectiveDefineArgContext ctx) { }
+	@Override public void exitDirectiveDefineParam(PreprocessorParser.DirectiveDefineParamContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterArguments(PreprocessorParser.ArgumentsContext ctx) { }
+	@Override public void enterParameters(PreprocessorParser.ParametersContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitArguments(PreprocessorParser.ArgumentsContext ctx) { }
+	@Override public void exitParameters(PreprocessorParser.ParametersContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterArgument(PreprocessorParser.ArgumentContext ctx) { }
+	@Override public void enterParameter(PreprocessorParser.ParameterContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitArgument(PreprocessorParser.ArgumentContext ctx) { }
+	@Override public void exitParameter(PreprocessorParser.ParameterContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -184,25 +184,25 @@ public class PreprocessorParserBaseListener implements PreprocessorParserListene
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterRunArguments(PreprocessorParser.RunArgumentsContext ctx) { }
+	@Override public void enterArguments(PreprocessorParser.ArgumentsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitRunArguments(PreprocessorParser.RunArgumentsContext ctx) { }
+	@Override public void exitArguments(PreprocessorParser.ArgumentsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterRunArgument(PreprocessorParser.RunArgumentContext ctx) { }
+	@Override public void enterArgument(PreprocessorParser.ArgumentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitRunArgument(PreprocessorParser.RunArgumentContext ctx) { }
+	@Override public void exitArgument(PreprocessorParser.ArgumentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

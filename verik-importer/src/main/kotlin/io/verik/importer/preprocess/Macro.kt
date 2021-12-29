@@ -16,7 +16,9 @@
 
 package io.verik.importer.preprocess
 
+import org.antlr.v4.runtime.Token
+
 class Macro(
-    val arguments: List<String>,
-    val content: String
+    val parameters: List<String>,
+    val tokens: List<Token>
 )

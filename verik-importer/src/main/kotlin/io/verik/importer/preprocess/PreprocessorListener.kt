@@ -47,8 +47,8 @@ class PreprocessorListener(
         MacroPreprocessor.preprocessDirectiveDefine(ctx!!, preprocessContext)
     }
 
-    override fun enterDirectiveDefineArg(ctx: PreprocessorParser.DirectiveDefineArgContext?) {
-        MacroPreprocessor.preprocessDirectiveDefineArg(ctx!!, preprocessContext)
+    override fun enterDirectiveDefineParam(ctx: PreprocessorParser.DirectiveDefineParamContext?) {
+        MacroPreprocessor.preprocessDirectiveDefineParam(ctx!!, preprocessContext)
     }
 
     override fun enterDirectiveMacro(ctx: PreprocessorParser.DirectiveMacroContext?) {

@@ -21,20 +21,21 @@ public class PreprocessorLexer extends Lexer {
 		DIRECTIVE_DEFINE=8, DIRECTIVE_IFDEF=9, DIRECTIVE_IFNDEF=10, DIRECTIVE_ENDIF=11, 
 		DIRECTIVE_LINE=12, DIRECTIVE_TIMESCALE=13, DIRECTIVE_UNDEFINEALL=14, DIRECTIVE_UNDEF=15, 
 		DIRECTIVE_MACRO_ARG=16, DIRECTIVE_MACRO=17, DEFINE_WHITESPACE=18, DEFINE_LINE_CONTINUATION=19, 
-		DEFINE_NEW_LINE=20, DEFINE_MACRO_ARG=21, DEFINE_MACRO=22, DEFINE_ARG_WHITESPACE=23, 
-		DEFINE_ARG_LINE_CONTINUATION=24, DEFINE_ARG_NEW_LINE=25, DEFINE_ARG_COMMA=26, 
-		DEFINE_ARG_RP=27, DEFINE_ARG_IDENTIFIER=28, TEXT_LINE_CONTINUATION=29, 
-		TEXT_NEW_LINE=30, TEXT_LINE_COMMENT=31, TEXT=32, RUN_COMMA=33, RUN_RP=34, 
-		RUN_TEXT=35, TEXT_LINE_BACK_SLASH=36, TEXT_SLASH=37;
+		DEFINE_NEW_LINE=20, DEFINE_MACRO_PARAM=21, DEFINE_MACRO=22, DEFINE_PARAM_WHITESPACE=23, 
+		DEFINE_PARAM_LINE_CONTINUATION=24, DEFINE_PARAM_NEW_LINE=25, DEFINE_PARAM_COMMA=26, 
+		DEFINE_PARAM_RP=27, DEFINE_PARAM_IDENTIFIER=28, CONTENT_LINE_CONTINUATION=29, 
+		CONTENT_NEW_LINE=30, CONTENT_LINE_COMMENT=31, CONTENT_TEXT=32, ARG_COMMA=33, 
+		ARG_RP=34, ARG_TEXT=35, CONTENT_LINE_BACK_SLASH=36, CONTENT_SLASH=37;
 	public static final int
-		DIRECTIVE_MODE=1, DEFINE_MODE=2, DEFINE_ARG_MODE=3, TEXT_MODE=4, RUN_MODE=5;
+		DIRECTIVE_MODE=1, DEFINE_MODE=2, DEFINE_PARAM_MODE=3, CONTENT_MODE=4, 
+		ARG_MODE=5;
 	public static String[] channelNames = {
 		"DEFAULT_TOKEN_CHANNEL", "HIDDEN"
 	};
 
 	public static String[] modeNames = {
-		"DEFAULT_MODE", "DIRECTIVE_MODE", "DEFINE_MODE", "DEFINE_ARG_MODE", "TEXT_MODE", 
-		"RUN_MODE"
+		"DEFAULT_MODE", "DIRECTIVE_MODE", "DEFINE_MODE", "DEFINE_PARAM_MODE", 
+		"CONTENT_MODE", "ARG_MODE"
 	};
 
 	private static String[] makeRuleNames() {
@@ -45,11 +46,12 @@ public class PreprocessorLexer extends Lexer {
 			"DIRECTIVE_IFDEF", "DIRECTIVE_IFNDEF", "DIRECTIVE_ENDIF", "DIRECTIVE_LINE", 
 			"DIRECTIVE_TIMESCALE", "DIRECTIVE_UNDEFINEALL", "DIRECTIVE_UNDEF", "DIRECTIVE_MACRO_ARG", 
 			"DIRECTIVE_MACRO", "DEFINE_WHITESPACE", "DEFINE_LINE_CONTINUATION", "DEFINE_NEW_LINE", 
-			"DEFINE_MACRO_ARG", "DEFINE_MACRO", "DEFINE_ARG_WHITESPACE", "DEFINE_ARG_LINE_CONTINUATION", 
-			"DEFINE_ARG_NEW_LINE", "DEFINE_ARG_COMMA", "DEFINE_ARG_RP", "DEFINE_ARG_IDENTIFIER", 
-			"TEXT_LINE_CONTINUATION", "TEXT_LINE_BACK_SLASH", "TEXT_NEW_LINE", "TEXT_BLOCK_COMMENT", 
-			"TEXT_LINE_COMMENT", "TEXT_SLASH", "TEXT_WHITESPACE", "TEXT", "RUN_WHITESPACE", 
-			"RUN_COMMA", "RUN_PUSH", "RUN_POP", "RUN_RP", "RUN_TEXT", "IDENTIFIER"
+			"DEFINE_MACRO_PARAM", "DEFINE_MACRO", "DEFINE_PARAM_WHITESPACE", "DEFINE_PARAM_LINE_CONTINUATION", 
+			"DEFINE_PARAM_NEW_LINE", "DEFINE_PARAM_COMMA", "DEFINE_PARAM_RP", "DEFINE_PARAM_IDENTIFIER", 
+			"CONTENT_LINE_CONTINUATION", "CONTENT_LINE_BACK_SLASH", "CONTENT_NEW_LINE", 
+			"CONTENT_BLOCK_COMMENT", "CONTENT_LINE_COMMENT", "CONTENT_SLASH", "CONTENT_WHITESPACE", 
+			"CONTENT_TEXT", "ARG_WHITESPACE", "ARG_COMMA", "ARG_PUSH", "ARG_POP", 
+			"ARG_RP", "ARG_TEXT", "IDENTIFIER"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
@@ -70,11 +72,11 @@ public class PreprocessorLexer extends Lexer {
 			"DIRECTIVE_DEFINE", "DIRECTIVE_IFDEF", "DIRECTIVE_IFNDEF", "DIRECTIVE_ENDIF", 
 			"DIRECTIVE_LINE", "DIRECTIVE_TIMESCALE", "DIRECTIVE_UNDEFINEALL", "DIRECTIVE_UNDEF", 
 			"DIRECTIVE_MACRO_ARG", "DIRECTIVE_MACRO", "DEFINE_WHITESPACE", "DEFINE_LINE_CONTINUATION", 
-			"DEFINE_NEW_LINE", "DEFINE_MACRO_ARG", "DEFINE_MACRO", "DEFINE_ARG_WHITESPACE", 
-			"DEFINE_ARG_LINE_CONTINUATION", "DEFINE_ARG_NEW_LINE", "DEFINE_ARG_COMMA", 
-			"DEFINE_ARG_RP", "DEFINE_ARG_IDENTIFIER", "TEXT_LINE_CONTINUATION", "TEXT_NEW_LINE", 
-			"TEXT_LINE_COMMENT", "TEXT", "RUN_COMMA", "RUN_RP", "RUN_TEXT", "TEXT_LINE_BACK_SLASH", 
-			"TEXT_SLASH"
+			"DEFINE_NEW_LINE", "DEFINE_MACRO_PARAM", "DEFINE_MACRO", "DEFINE_PARAM_WHITESPACE", 
+			"DEFINE_PARAM_LINE_CONTINUATION", "DEFINE_PARAM_NEW_LINE", "DEFINE_PARAM_COMMA", 
+			"DEFINE_PARAM_RP", "DEFINE_PARAM_IDENTIFIER", "CONTENT_LINE_CONTINUATION", 
+			"CONTENT_NEW_LINE", "CONTENT_LINE_COMMENT", "CONTENT_TEXT", "ARG_COMMA", 
+			"ARG_RP", "ARG_TEXT", "CONTENT_LINE_BACK_SLASH", "CONTENT_SLASH"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -112,7 +114,7 @@ public class PreprocessorLexer extends Lexer {
 	}
 
 
-	   private int runLevel;
+	   private int argLevel;
 
 
 	public PreprocessorLexer(CharStream input) {
@@ -145,51 +147,51 @@ public class PreprocessorLexer extends Lexer {
 			DIRECTIVE_MACRO_ARG_action((RuleContext)_localctx, actionIndex);
 			break;
 		case 41:
-			RUN_COMMA_action((RuleContext)_localctx, actionIndex);
+			ARG_COMMA_action((RuleContext)_localctx, actionIndex);
 			break;
 		case 42:
-			RUN_PUSH_action((RuleContext)_localctx, actionIndex);
+			ARG_PUSH_action((RuleContext)_localctx, actionIndex);
 			break;
 		case 43:
-			RUN_POP_action((RuleContext)_localctx, actionIndex);
+			ARG_POP_action((RuleContext)_localctx, actionIndex);
 			break;
 		case 44:
-			RUN_RP_action((RuleContext)_localctx, actionIndex);
+			ARG_RP_action((RuleContext)_localctx, actionIndex);
 			break;
 		}
 	}
 	private void DIRECTIVE_MACRO_ARG_action(RuleContext _localctx, int actionIndex) {
 		switch (actionIndex) {
 		case 0:
-			 runLevel++; 
+			 argLevel++; 
 			break;
 		}
 	}
-	private void RUN_COMMA_action(RuleContext _localctx, int actionIndex) {
+	private void ARG_COMMA_action(RuleContext _localctx, int actionIndex) {
 		switch (actionIndex) {
 		case 1:
-			 if (runLevel != 1) setType(RUN_TEXT); 
+			 if (argLevel != 1) setType(ARG_TEXT); 
 			break;
 		}
 	}
-	private void RUN_PUSH_action(RuleContext _localctx, int actionIndex) {
+	private void ARG_PUSH_action(RuleContext _localctx, int actionIndex) {
 		switch (actionIndex) {
 		case 2:
-			 runLevel++; 
+			 argLevel++; 
 			break;
 		}
 	}
-	private void RUN_POP_action(RuleContext _localctx, int actionIndex) {
+	private void ARG_POP_action(RuleContext _localctx, int actionIndex) {
 		switch (actionIndex) {
 		case 3:
-			 runLevel--; 
+			 argLevel--; 
 			break;
 		}
 	}
-	private void RUN_RP_action(RuleContext _localctx, int actionIndex) {
+	private void ARG_RP_action(RuleContext _localctx, int actionIndex) {
 		switch (actionIndex) {
 		case 4:
-			 runLevel--; if (runLevel == 0) mode(DEFAULT_MODE); else setType(RUN_TEXT); 
+			 argLevel--; if (argLevel == 0) mode(DEFAULT_MODE); else setType(ARG_TEXT); 
 			break;
 		}
 	}

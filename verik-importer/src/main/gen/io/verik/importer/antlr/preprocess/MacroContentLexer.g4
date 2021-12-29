@@ -12,10 +12,10 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-lexer grammar MacroTextLexer;
+lexer grammar MacroContentLexer;
 
 STRING_LITERAL
-    : '"' ('\\"' | '\\\\' | .)*? '"'
+    : '"' ('\\"' | '\\\\' | .)*? '"' -> type(TEXT)
     ;
 
 CONCAT
@@ -31,7 +31,7 @@ ESCAPE_SLASH_DQ
     ;
 
 BACK_TICK
-    : '`'
+    : '`' -> type(TEXT)
     ;
 
 IDENTIFIER

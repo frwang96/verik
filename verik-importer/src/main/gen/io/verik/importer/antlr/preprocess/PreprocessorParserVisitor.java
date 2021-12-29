@@ -71,23 +71,23 @@ public interface PreprocessorParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDirectiveDefine(PreprocessorParser.DirectiveDefineContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link PreprocessorParser#directiveDefineArg}.
+	 * Visit a parse tree produced by {@link PreprocessorParser#directiveDefineParam}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitDirectiveDefineArg(PreprocessorParser.DirectiveDefineArgContext ctx);
+	T visitDirectiveDefineParam(PreprocessorParser.DirectiveDefineParamContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link PreprocessorParser#arguments}.
+	 * Visit a parse tree produced by {@link PreprocessorParser#parameters}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitArguments(PreprocessorParser.ArgumentsContext ctx);
+	T visitParameters(PreprocessorParser.ParametersContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link PreprocessorParser#argument}.
+	 * Visit a parse tree produced by {@link PreprocessorParser#parameter}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitArgument(PreprocessorParser.ArgumentContext ctx);
+	T visitParameter(PreprocessorParser.ParameterContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link PreprocessorParser#directiveMacro}.
 	 * @param ctx the parse tree
@@ -101,17 +101,17 @@ public interface PreprocessorParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDirectiveMacroArg(PreprocessorParser.DirectiveMacroArgContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link PreprocessorParser#runArguments}.
+	 * Visit a parse tree produced by {@link PreprocessorParser#arguments}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitRunArguments(PreprocessorParser.RunArgumentsContext ctx);
+	T visitArguments(PreprocessorParser.ArgumentsContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link PreprocessorParser#runArgument}.
+	 * Visit a parse tree produced by {@link PreprocessorParser#argument}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitRunArgument(PreprocessorParser.RunArgumentContext ctx);
+	T visitArgument(PreprocessorParser.ArgumentContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link PreprocessorParser#code}.
 	 * @param ctx the parse tree

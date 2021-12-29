@@ -24,7 +24,7 @@ text
     : code
     | directive
     | directiveDefine
-    | directiveDefineArg
+    | directiveDefineParam
     | directiveMacro
     | directiveMacroArg
     ;
@@ -40,19 +40,20 @@ directive
     ;
 
 directiveDefine
-    : BACKTICK DIRECTIVE_DEFINE DEFINE_MACRO (TEXT | TEXT_LINE_CONTINUATION)*
+    : BACKTICK DIRECTIVE_DEFINE DEFINE_MACRO (CONTENT_TEXT | CONTENT_LINE_CONTINUATION)*
     ;
 
-directiveDefineArg
-    : BACKTICK DIRECTIVE_DEFINE DEFINE_MACRO_ARG arguments? DEFINE_ARG_RP (TEXT | TEXT_LINE_CONTINUATION)*
+directiveDefineParam
+    : BACKTICK DIRECTIVE_DEFINE DEFINE_MACRO_PARAM parameters?
+      DEFINE_PARAM_RP (CONTENT_TEXT | CONTENT_LINE_CONTINUATION)*
     ;
 
-arguments
-    : argument (DEFINE_ARG_COMMA argument)*
+parameters
+    : parameter (DEFINE_PARAM_COMMA parameter)*
     ;
 
-argument
-    : DEFINE_ARG_IDENTIFIER
+parameter
+    : DEFINE_PARAM_IDENTIFIER
     ;
 
 directiveMacro
@@ -60,15 +61,15 @@ directiveMacro
     ;
 
 directiveMacroArg
-    : BACKTICK DIRECTIVE_MACRO_ARG runArguments RUN_RP
+    : BACKTICK DIRECTIVE_MACRO_ARG arguments ARG_RP
     ;
 
-runArguments
-    : runArgument (RUN_COMMA runArgument)*
+arguments
+    : argument (ARG_COMMA argument)*
     ;
 
-runArgument
-    : RUN_TEXT*
+argument
+    : ARG_TEXT*
     ;
 
 code

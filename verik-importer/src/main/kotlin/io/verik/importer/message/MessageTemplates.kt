@@ -46,6 +46,15 @@ class WarningMessageTemplate1<A>(
     }
 }
 
+class WarningMessageTemplate2<A, B>(
+    override val template: String
+) : AbstractMessageTemplate() {
+
+    fun on(location: SourceLocation, a: A, b: B) {
+        MessageCollector.messageCollector.warning(name, format(a, b), location)
+    }
+}
+
 class FatalMessageTemplate1<A>(
     override val template: String
 ) : AbstractMessageTemplate() {
