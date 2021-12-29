@@ -37,6 +37,10 @@ class WarningMessageTemplate1<A>(
         MessageCollector.messageCollector.warning(name, format(a), location)
     }
 
+    fun on(terminalNode: TerminalNode, a: A) {
+        MessageCollector.messageCollector.warning(name, format(a), SourceLocation.get(terminalNode))
+    }
+
     fun on(lexerFragment: LexerFragment, a: A) {
         MessageCollector.messageCollector.warning(name, format(a), lexerFragment.location)
     }

@@ -38,6 +38,10 @@ object Messages {
         "Unmatched endif directive"
     )
 
+    val UNDEFINED_MACRO = WarningMessageTemplate1<String>(
+        "Undefined macro: $0"
+    )
+
 // LEX /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val LEXER_ERROR = WarningMessageTemplate1<String>(

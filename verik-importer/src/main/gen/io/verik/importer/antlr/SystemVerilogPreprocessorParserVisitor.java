@@ -23,11 +23,45 @@ public interface SystemVerilogPreprocessorParserVisitor<T> extends ParseTreeVisi
 	 */
 	T visitText(SystemVerilogPreprocessorParser.TextContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link SystemVerilogPreprocessorParser#directive}.
+	 * Visit a parse tree produced by the {@code ifndef}
+	 * labeled alternative in {@link SystemVerilogPreprocessorParser#directive}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitDirective(SystemVerilogPreprocessorParser.DirectiveContext ctx);
+	T visitIfndef(SystemVerilogPreprocessorParser.IfndefContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ifdef}
+	 * labeled alternative in {@link SystemVerilogPreprocessorParser#directive}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIfdef(SystemVerilogPreprocessorParser.IfdefContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code endif}
+	 * labeled alternative in {@link SystemVerilogPreprocessorParser#directive}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEndif(SystemVerilogPreprocessorParser.EndifContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code timescale}
+	 * labeled alternative in {@link SystemVerilogPreprocessorParser#directive}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTimescale(SystemVerilogPreprocessorParser.TimescaleContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SystemVerilogPreprocessorParser#defineDirective}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDefineDirective(SystemVerilogPreprocessorParser.DefineDirectiveContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SystemVerilogPreprocessorParser#macroDirective}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMacroDirective(SystemVerilogPreprocessorParser.MacroDirectiveContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link SystemVerilogPreprocessorParser#code}.
 	 * @param ctx the parse tree

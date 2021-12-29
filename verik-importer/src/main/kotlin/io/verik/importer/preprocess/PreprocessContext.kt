@@ -21,11 +21,15 @@ import org.antlr.v4.runtime.tree.TerminalNode
 
 class PreprocessContext {
 
-    private val macros = HashSet<String>()
+    private val macros = HashMap<String, Macro>()
     private val enableStack = ArrayList<Boolean>()
 
-    fun isDefined(identifier: String): Boolean {
-        return identifier in macros
+    fun setMacro(name: String, macro: Macro) {
+        macros[name] = macro
+    }
+
+    fun getMacro(name: String): Macro? {
+        return macros[name]
     }
 
     fun pushEnable(enable: Boolean) {

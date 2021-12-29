@@ -42,11 +42,44 @@ internal class PreprocessorStageTest : BaseTest() {
     }
 
     @Test
+    fun `directive ifdef`() {
+        drivePreprocessorTest(
+            """
+                `define X
+                `ifdef X
+                    abc
+                `endif
+            """.trimIndent(),
+            "abc"
+        )
+    }
+
+    @Test
     fun `directive endif unmatched`() {
         driveMessageTest(
             "`endif",
             false,
             "Unmatched endif directive"
+        )
+    }
+
+    @Test
+    fun `directive symbol`() {
+        drivePreprocessorTest(
+            """
+                `define X abc
+                `X
+            """.trimIndent(),
+            "abc"
+        )
+    }
+
+    @Test
+    fun `directive symbol undefined`() {
+        driveMessageTest(
+            "`X",
+            false,
+            "Undefined macro: X"
         )
     }
 }

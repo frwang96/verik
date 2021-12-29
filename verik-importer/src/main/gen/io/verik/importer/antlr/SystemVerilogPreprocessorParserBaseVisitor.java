@@ -31,7 +31,42 @@ public class SystemVerilogPreprocessorParserBaseVisitor<T> extends AbstractParse
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitDirective(SystemVerilogPreprocessorParser.DirectiveContext ctx) { return visitChildren(ctx); }
+	@Override public T visitIfndef(SystemVerilogPreprocessorParser.IfndefContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitIfdef(SystemVerilogPreprocessorParser.IfdefContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitEndif(SystemVerilogPreprocessorParser.EndifContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitTimescale(SystemVerilogPreprocessorParser.TimescaleContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitDefineDirective(SystemVerilogPreprocessorParser.DefineDirectiveContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitMacroDirective(SystemVerilogPreprocessorParser.MacroDirectiveContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
