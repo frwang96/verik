@@ -20,9 +20,9 @@ import kotlin.reflect.KClass
 
 class StageSequence {
 
-    val stages = ArrayList<ImporterStage>()
+    val stages = ArrayList<ProjectStage>()
 
-    fun add(stage: ImporterStage) {
+    fun add(stage: ProjectStage) {
         if (contains(stage::class)) {
             val stageName = stage::class.simpleName
             throw IllegalArgumentException("Stage has already been added to the stage sequence: $stageName")
@@ -30,13 +30,13 @@ class StageSequence {
         stages.add(stage)
     }
 
-    fun <S : ImporterStage> contains(stageClass: KClass<S>): Boolean {
+    fun <S : ProjectStage> contains(stageClass: KClass<S>): Boolean {
         return stages.any { it::class == stageClass }
     }
 
-    fun process(importerContext: ImporterContext) {
+    fun process(projectContext: ProjectContext) {
         stages.forEach {
-            it.process(importerContext)
+            it.process(projectContext)
         }
     }
 }

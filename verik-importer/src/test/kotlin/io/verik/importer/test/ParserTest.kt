@@ -25,15 +25,15 @@ import org.antlr.v4.runtime.tree.RuleNode
 abstract class ParserTest : BaseTest() {
 
     fun driveParserTest(rules: List<Int>, content: String) {
-        val importerContext = getImporterContext(content)
+        val projectContext = getProjectContext(content)
         val stageSequence = StageSequencer.getStageSequence()
         for (stage in stageSequence.stages) {
-            stage.process(importerContext)
+            stage.process(projectContext)
             if (stage is ParserStage)
                 break
         }
         val parseTreeIndexerVisitor = ParseTreeIndexerVisitor()
-        importerContext.parseTree.accept(parseTreeIndexerVisitor)
+        projectContext.parseTree.accept(parseTreeIndexerVisitor)
         rules.forEach {
             assert(it in parseTreeIndexerVisitor.ruleSet) {
                 "Rule not found: ${SystemVerilogParser.ruleNames[it]}"

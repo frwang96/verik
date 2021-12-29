@@ -36,10 +36,10 @@ object VerikImporterMain {
         MessageCollector.messageCollector = MessageCollector(config, messagePrinter)
         val startTime = System.currentTimeMillis()
         try {
-            val importerContext = ImporterContext(config)
-            readFiles(importerContext)
-            stageSequence.process(importerContext)
-            writeFiles(importerContext)
+            val projectContext = ProjectContext(config)
+            readFiles(projectContext)
+            stageSequence.process(projectContext)
+            writeFiles(projectContext)
         } catch (exception: Exception) {
             if (exception !is VerikImporterException) {
                 messagePrinter.error(
@@ -54,16 +54,16 @@ object VerikImporterMain {
         writeLogFile(config, messagePrinter, startTime, true)
     }
 
-    private fun readFiles(importerContext: ImporterContext) {
-        importerContext.inputFileContexts = importerContext.config.importedFiles.map {
+    private fun readFiles(projectContext: ProjectContext) {
+        projectContext.inputFileContexts = projectContext.config.importedFiles.map {
             val lines = Files.readAllLines(it)
             val textFile = TextFile(it, lines.joinToString(separator = "\n", postfix = "\n"))
             InputFileContext(textFile)
         }
     }
 
-    private fun writeFiles(importerContext: ImporterContext) {
-        val textFiles = importerContext.outputContext.getTextFiles()
+    private fun writeFiles(projectContext: ProjectContext) {
+        val textFiles = projectContext.outputContext.getTextFiles()
         textFiles.forEach {
             Files.createDirectories(it.path.parent)
             Files.writeString(it.path, it.content)

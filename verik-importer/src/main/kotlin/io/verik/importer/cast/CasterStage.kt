@@ -19,23 +19,23 @@ package io.verik.importer.cast
 import io.verik.importer.ast.element.ECompilationUnit
 import io.verik.importer.ast.element.EDeclaration
 import io.verik.importer.ast.element.ERootPackage
-import io.verik.importer.main.ImporterContext
-import io.verik.importer.main.ImporterStage
+import io.verik.importer.main.ProjectContext
+import io.verik.importer.main.ProjectStage
 import io.verik.importer.message.SourceLocation
 
-object CasterStage : ImporterStage() {
+object CasterStage : ProjectStage() {
 
-    override fun process(importerContext: ImporterContext) {
+    override fun process(projectContext: ProjectContext) {
         val declarations = ArrayList<EDeclaration>()
-        val castContext = CastContext(importerContext.parserTokenStream)
+        val castContext = CastContext(projectContext.parserTokenStream)
         val casterVisitor = CasterVisitor(castContext)
-        val parseTree = importerContext.parseTree
+        val parseTree = projectContext.parseTree
         (0 until parseTree.childCount - 1).forEach {
             val declaration = casterVisitor.getDeclaration(parseTree.getChild(it))
             if (declaration != null)
                 declarations.add(declaration)
         }
         val rootPackage = ERootPackage(SourceLocation.NULL, declarations)
-        importerContext.compilationUnit = ECompilationUnit(SourceLocation.NULL, rootPackage)
+        projectContext.compilationUnit = ECompilationUnit(SourceLocation.NULL, rootPackage)
     }
 }

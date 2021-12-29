@@ -17,22 +17,22 @@
 package io.verik.importer.preprocess
 
 import io.verik.importer.common.TextFile
-import io.verik.importer.main.ImporterContext
-import io.verik.importer.main.ImporterStage
+import io.verik.importer.main.ProjectContext
+import io.verik.importer.main.ProjectStage
 
-object PreprocessorSerializerStage : ImporterStage() {
+object PreprocessorSerializerStage : ProjectStage() {
 
-    override fun process(importerContext: ImporterContext) {
-        if (importerContext.config.enablePreprocessorOutput) {
+    override fun process(projectContext: ProjectContext) {
+        if (projectContext.config.enablePreprocessorOutput) {
             val builder = StringBuilder()
-            importerContext.preprocessorFragments.forEach {
+            projectContext.preprocessorFragments.forEach {
                 builder.append(it.content)
             }
             val preprocessorTextFile = TextFile(
-                importerContext.config.buildDir.resolve("imported.sv"),
+                projectContext.config.buildDir.resolve("imported.sv"),
                 builder.toString()
             )
-            importerContext.outputContext.preprocessorTextFile = preprocessorTextFile
+            projectContext.outputContext.preprocessorTextFile = preprocessorTextFile
         }
     }
 }

@@ -17,8 +17,8 @@
 package io.verik.importer.lex
 
 import io.verik.importer.antlr.SystemVerilogLexer
-import io.verik.importer.main.ImporterContext
-import io.verik.importer.main.ImporterStage
+import io.verik.importer.main.ProjectContext
+import io.verik.importer.main.ProjectStage
 import io.verik.importer.message.Messages
 import io.verik.importer.message.RecognitionExceptionFormatter
 import org.antlr.v4.runtime.BaseErrorListener
@@ -27,10 +27,10 @@ import org.antlr.v4.runtime.RecognitionException
 import org.antlr.v4.runtime.Recognizer
 import org.antlr.v4.runtime.Token
 
-object LexerStage : ImporterStage() {
+object LexerStage : ProjectStage() {
 
-    override fun process(importerContext: ImporterContext) {
-        val lexerCharStream = LexerCharStream(importerContext.preprocessorFragments)
+    override fun process(projectContext: ProjectContext) {
+        val lexerCharStream = LexerCharStream(projectContext.preprocessorFragments)
         val lexer = SystemVerilogLexer(lexerCharStream)
         val lexerErrorListener = LexerErrorListener(lexerCharStream)
         lexer.removeErrorListeners()
@@ -43,8 +43,8 @@ object LexerStage : ImporterStage() {
             if (it.channel == Token.DEFAULT_CHANNEL)
                 lexerFragments.add(LexerFragment(it))
         }
-        importerContext.lexerCharStream = lexerCharStream
-        importerContext.lexerFragments = lexerFragments
+        projectContext.lexerCharStream = lexerCharStream
+        projectContext.lexerFragments = lexerFragments
     }
 
     private class LexerErrorListener(

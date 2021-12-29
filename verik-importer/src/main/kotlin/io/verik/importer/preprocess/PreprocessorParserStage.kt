@@ -19,8 +19,8 @@ package io.verik.importer.preprocess
 import io.verik.importer.antlr.SystemVerilogPreprocessorLexer
 import io.verik.importer.antlr.SystemVerilogPreprocessorParser
 import io.verik.importer.common.TextFile
-import io.verik.importer.main.ImporterContext
-import io.verik.importer.main.ImporterStage
+import io.verik.importer.main.ProjectContext
+import io.verik.importer.main.ProjectStage
 import io.verik.importer.message.Messages
 import io.verik.importer.message.RecognitionExceptionFormatter
 import io.verik.importer.message.SourceLocation
@@ -31,10 +31,10 @@ import org.antlr.v4.runtime.Recognizer
 import org.antlr.v4.runtime.tree.ParseTree
 import java.nio.file.Path
 
-object PreprocessorParserStage : ImporterStage() {
+object PreprocessorParserStage : ProjectStage() {
 
-    override fun process(importerContext: ImporterContext) {
-        importerContext.inputFileContexts.forEach {
+    override fun process(projectContext: ProjectContext) {
+        projectContext.inputFileContexts.forEach {
             it.parseTree = parse(it.textFile)
         }
     }

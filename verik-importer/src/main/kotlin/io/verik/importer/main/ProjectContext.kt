@@ -23,7 +23,7 @@ import io.verik.importer.preprocess.PreprocessorFragment
 import org.antlr.v4.runtime.TokenStream
 import org.antlr.v4.runtime.tree.ParseTree
 
-class ImporterContext(
+class ProjectContext(
     val config: VerikImporterConfig
 ) {
 

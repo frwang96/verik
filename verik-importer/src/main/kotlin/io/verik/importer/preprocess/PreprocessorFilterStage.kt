@@ -16,16 +16,16 @@
 
 package io.verik.importer.preprocess
 
-import io.verik.importer.main.ImporterContext
-import io.verik.importer.main.ImporterStage
+import io.verik.importer.main.ProjectContext
+import io.verik.importer.main.ProjectStage
 
-object PreprocessorFilterStage : ImporterStage() {
+object PreprocessorFilterStage : ProjectStage() {
 
-    override fun process(importerContext: ImporterContext) {
-        val preprocessorFragments = importerContext.preprocessorFragments.filter {
+    override fun process(projectContext: ProjectContext) {
+        val preprocessorFragments = projectContext.preprocessorFragments.filter {
             !isCommentOrWhitespace(it)
         }
-        importerContext.preprocessorFragments = ArrayList(preprocessorFragments)
+        projectContext.preprocessorFragments = ArrayList(preprocessorFragments)
     }
 
     private fun isCommentOrWhitespace(preprocessorFragment: PreprocessorFragment): Boolean {

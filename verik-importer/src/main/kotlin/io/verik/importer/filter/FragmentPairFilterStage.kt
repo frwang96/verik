@@ -18,11 +18,11 @@ package io.verik.importer.filter
 
 import io.verik.importer.antlr.SystemVerilogLexer
 import io.verik.importer.lex.LexerFragment
-import io.verik.importer.main.ImporterContext
-import io.verik.importer.main.ImporterStage
+import io.verik.importer.main.ProjectContext
+import io.verik.importer.main.ProjectStage
 import io.verik.importer.message.Messages
 
-object FragmentPairFilterStage : ImporterStage() {
+object FragmentPairFilterStage : ProjectStage() {
 
     private val fragmentPairMap = HashMap<Int, Int>()
     private val fragmentPairSet = HashSet<Int>()
@@ -34,10 +34,10 @@ object FragmentPairFilterStage : ImporterStage() {
         fragmentPairMap.values.forEach { fragmentPairSet.add(it) }
     }
 
-    override fun process(importerContext: ImporterContext) {
+    override fun process(projectContext: ProjectContext) {
         val fragmentPairStack = ArrayList<LexerFragment>()
         val lexerFragments = ArrayList<LexerFragment>()
-        importerContext.lexerFragments.forEach {
+        projectContext.lexerFragments.forEach {
             if (it.type in fragmentPairSet) {
                 if (it.type in fragmentPairMap) {
                     fragmentPairStack.add(it)
@@ -46,7 +46,7 @@ object FragmentPairFilterStage : ImporterStage() {
                     if (fragmentPairFragment != null && it.type == fragmentPairMap[fragmentPairFragment.type]) {
                         fragmentPairStack.removeLast()
                     } else {
-                        val location = importerContext.lexerCharStream.getLocation(it)
+                        val location = projectContext.lexerCharStream.getLocation(it)
                         Messages.MISMATCHED_TOKEN.on(location, SystemVerilogLexer.VOCABULARY.getDisplayName(it.type))
                     }
                 }
@@ -57,11 +57,11 @@ object FragmentPairFilterStage : ImporterStage() {
         }
         if (fragmentPairStack.isNotEmpty()) {
             fragmentPairStack.forEach {
-                val location = importerContext.lexerCharStream.getLocation(it)
+                val location = projectContext.lexerCharStream.getLocation(it)
                 Messages.MISMATCHED_TOKEN.on(location, SystemVerilogLexer.VOCABULARY.getDisplayName(it.type))
             }
-            lexerFragments.add(importerContext.lexerFragments.last())
+            lexerFragments.add(projectContext.lexerFragments.last())
         }
-        importerContext.lexerFragments = lexerFragments
+        projectContext.lexerFragments = lexerFragments
     }
 }

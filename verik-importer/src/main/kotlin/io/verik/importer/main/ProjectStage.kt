@@ -16,7 +16,7 @@
 
 package io.verik.importer.main
 
-abstract class ImporterStage {
+abstract class ProjectStage {
 
-    abstract fun process(importerContext: ImporterContext)
+    abstract fun process(projectContext: ProjectContext)
 }
