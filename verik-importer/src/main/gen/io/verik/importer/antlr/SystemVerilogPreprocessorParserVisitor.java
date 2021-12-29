@@ -23,11 +23,11 @@ public interface SystemVerilogPreprocessorParserVisitor<T> extends ParseTreeVisi
 	 */
 	T visitText(SystemVerilogPreprocessorParser.TextContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link SystemVerilogPreprocessorParser#unescapedDirective}.
+	 * Visit a parse tree produced by {@link SystemVerilogPreprocessorParser#directive}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitUnescapedDirective(SystemVerilogPreprocessorParser.UnescapedDirectiveContext ctx);
+	T visitDirective(SystemVerilogPreprocessorParser.DirectiveContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link SystemVerilogPreprocessorParser#code}.
 	 * @param ctx the parse tree

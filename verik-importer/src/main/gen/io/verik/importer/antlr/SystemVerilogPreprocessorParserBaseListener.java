@@ -40,13 +40,13 @@ public class SystemVerilogPreprocessorParserBaseListener implements SystemVerilo
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterUnescapedDirective(SystemVerilogPreprocessorParser.UnescapedDirectiveContext ctx) { }
+	@Override public void enterDirective(SystemVerilogPreprocessorParser.DirectiveContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitUnescapedDirective(SystemVerilogPreprocessorParser.UnescapedDirectiveContext ctx) { }
+	@Override public void exitDirective(SystemVerilogPreprocessorParser.DirectiveContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

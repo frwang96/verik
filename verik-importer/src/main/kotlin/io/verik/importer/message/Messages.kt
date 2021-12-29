@@ -34,6 +34,10 @@ object Messages {
         "Preprocessor parser error: $0"
     )
 
+    val UNMATCHED_ENDIF = WarningMessageTemplate0(
+        "Unmatched endif directive"
+    )
+
 // LEX /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val LEXER_ERROR = WarningMessageTemplate1<String>(

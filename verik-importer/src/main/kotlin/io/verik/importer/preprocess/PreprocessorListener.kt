@@ -18,13 +18,47 @@ package io.verik.importer.preprocess
 
 import io.verik.importer.antlr.SystemVerilogPreprocessorParser
 import io.verik.importer.antlr.SystemVerilogPreprocessorParserBaseListener
+import io.verik.importer.message.SourceLocation
+import org.antlr.v4.runtime.tree.TerminalNode
 
 class PreprocessorListener(
     private val preprocessorFragments: ArrayList<PreprocessorFragment>
 ) : SystemVerilogPreprocessorParserBaseListener() {
 
+    private val preprocessContext = PreprocessContext()
+
+    override fun enterDirective(ctx: SystemVerilogPreprocessorParser.DirectiveContext?) {
+        if (ctx != null) {
+            ctx.IFNDEF()?.let { processIfndef(it) }
+            ctx.IFDEF()?.let { processIfdef(it) }
+            ctx.ENDIF()?.let { processEndif(it) }
+        }
+    }
+
     override fun enterCode(ctx: SystemVerilogPreprocessorParser.CodeContext?) {
         super.enterCode(ctx)
-        preprocessorFragments.add(PreprocessorFragment(ctx!!.CODE().symbol))
+        if (preprocessContext.isEnable()) {
+            val terminalNode = ctx!!.CODE()
+            val preprocessorFragment = PreprocessorFragment(
+                SourceLocation.get(terminalNode),
+                terminalNode.text,
+                true
+            )
+            preprocessorFragments.add(preprocessorFragment)
+        }
+    }
+
+    private fun processIfndef(terminalNode: TerminalNode) {
+        val identifier = terminalNode.text.substringAfter("ifndef").trim()
+        preprocessContext.pushEnable(!preprocessContext.isDefined(identifier))
+    }
+
+    private fun processIfdef(terminalNode: TerminalNode) {
+        val identifier = terminalNode.text.substringAfter("ifdef").trim()
+        preprocessContext.pushEnable(preprocessContext.isDefined(identifier))
+    }
+
+    private fun processEndif(terminalNode: TerminalNode) {
+        preprocessContext.popEnable(terminalNode)
     }
 }

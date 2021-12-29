@@ -28,15 +28,15 @@ public interface SystemVerilogPreprocessorParserListener extends ParseTreeListen
 	 */
 	void exitText(SystemVerilogPreprocessorParser.TextContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link SystemVerilogPreprocessorParser#unescapedDirective}.
+	 * Enter a parse tree produced by {@link SystemVerilogPreprocessorParser#directive}.
 	 * @param ctx the parse tree
 	 */
-	void enterUnescapedDirective(SystemVerilogPreprocessorParser.UnescapedDirectiveContext ctx);
+	void enterDirective(SystemVerilogPreprocessorParser.DirectiveContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link SystemVerilogPreprocessorParser#unescapedDirective}.
+	 * Exit a parse tree produced by {@link SystemVerilogPreprocessorParser#directive}.
 	 * @param ctx the parse tree
 	 */
-	void exitUnescapedDirective(SystemVerilogPreprocessorParser.UnescapedDirectiveContext ctx);
+	void exitDirective(SystemVerilogPreprocessorParser.DirectiveContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link SystemVerilogPreprocessorParser#code}.
 	 * @param ctx the parse tree

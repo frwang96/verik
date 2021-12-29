@@ -8,11 +8,14 @@ file
 
 text
     : code
-    | unescapedDirective
+    | BACKTICK directive
     ;
 
-unescapedDirective
-    : BACKTICK TIMESCALE
+directive
+    : IFNDEF
+    | IFDEF
+    | ENDIF
+    | TIMESCALE
     ;
 
 code

@@ -31,7 +31,7 @@ public class SystemVerilogPreprocessorParserBaseVisitor<T> extends AbstractParse
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitUnescapedDirective(SystemVerilogPreprocessorParser.UnescapedDirectiveContext ctx) { return visitChildren(ctx); }
+	@Override public T visitDirective(SystemVerilogPreprocessorParser.DirectiveContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

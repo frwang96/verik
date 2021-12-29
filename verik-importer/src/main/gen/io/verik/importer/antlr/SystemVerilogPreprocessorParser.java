@@ -21,12 +21,12 @@ public class SystemVerilogPreprocessorParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		BACKTICK=1, CODE=2, DIRECTIVE_WS=3, TIMESCALE=4;
+		BACKTICK=1, CODE=2, DIRECTIVE_WS=3, IFNDEF=4, IFDEF=5, ENDIF=6, TIMESCALE=7;
 	public static final int
-		RULE_file = 0, RULE_text = 1, RULE_unescapedDirective = 2, RULE_code = 3;
+		RULE_file = 0, RULE_text = 1, RULE_directive = 2, RULE_code = 3;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"file", "text", "unescapedDirective", "code"
+			"file", "text", "directive", "code"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
@@ -39,7 +39,8 @@ public class SystemVerilogPreprocessorParser extends Parser {
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, "BACKTICK", "CODE", "DIRECTIVE_WS", "TIMESCALE"
+			null, "BACKTICK", "CODE", "DIRECTIVE_WS", "IFNDEF", "IFDEF", "ENDIF", 
+			"TIMESCALE"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -160,8 +161,9 @@ public class SystemVerilogPreprocessorParser extends Parser {
 		public CodeContext code() {
 			return getRuleContext(CodeContext.class,0);
 		}
-		public UnescapedDirectiveContext unescapedDirective() {
-			return getRuleContext(UnescapedDirectiveContext.class,0);
+		public TerminalNode BACKTICK() { return getToken(SystemVerilogPreprocessorParser.BACKTICK, 0); }
+		public DirectiveContext directive() {
+			return getRuleContext(DirectiveContext.class,0);
 		}
 		public TextContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -186,7 +188,7 @@ public class SystemVerilogPreprocessorParser extends Parser {
 		TextContext _localctx = new TextContext(_ctx, getState());
 		enterRule(_localctx, 2, RULE_text);
 		try {
-			setState(18);
+			setState(19);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case CODE:
@@ -200,7 +202,9 @@ public class SystemVerilogPreprocessorParser extends Parser {
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(17);
-				unescapedDirective();
+				match(BACKTICK);
+				setState(18);
+				directive();
 				}
 				break;
 			default:
@@ -218,38 +222,47 @@ public class SystemVerilogPreprocessorParser extends Parser {
 		return _localctx;
 	}
 
-	public static class UnescapedDirectiveContext extends ParserRuleContext {
-		public TerminalNode BACKTICK() { return getToken(SystemVerilogPreprocessorParser.BACKTICK, 0); }
+	public static class DirectiveContext extends ParserRuleContext {
+		public TerminalNode IFNDEF() { return getToken(SystemVerilogPreprocessorParser.IFNDEF, 0); }
+		public TerminalNode IFDEF() { return getToken(SystemVerilogPreprocessorParser.IFDEF, 0); }
+		public TerminalNode ENDIF() { return getToken(SystemVerilogPreprocessorParser.ENDIF, 0); }
 		public TerminalNode TIMESCALE() { return getToken(SystemVerilogPreprocessorParser.TIMESCALE, 0); }
-		public UnescapedDirectiveContext(ParserRuleContext parent, int invokingState) {
+		public DirectiveContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_unescapedDirective; }
+		@Override public int getRuleIndex() { return RULE_directive; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof SystemVerilogPreprocessorParserListener ) ((SystemVerilogPreprocessorParserListener)listener).enterUnescapedDirective(this);
+			if ( listener instanceof SystemVerilogPreprocessorParserListener ) ((SystemVerilogPreprocessorParserListener)listener).enterDirective(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof SystemVerilogPreprocessorParserListener ) ((SystemVerilogPreprocessorParserListener)listener).exitUnescapedDirective(this);
+			if ( listener instanceof SystemVerilogPreprocessorParserListener ) ((SystemVerilogPreprocessorParserListener)listener).exitDirective(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SystemVerilogPreprocessorParserVisitor ) return ((SystemVerilogPreprocessorParserVisitor<? extends T>)visitor).visitUnescapedDirective(this);
+			if ( visitor instanceof SystemVerilogPreprocessorParserVisitor ) return ((SystemVerilogPreprocessorParserVisitor<? extends T>)visitor).visitDirective(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final UnescapedDirectiveContext unescapedDirective() throws RecognitionException {
-		UnescapedDirectiveContext _localctx = new UnescapedDirectiveContext(_ctx, getState());
-		enterRule(_localctx, 4, RULE_unescapedDirective);
+	public final DirectiveContext directive() throws RecognitionException {
+		DirectiveContext _localctx = new DirectiveContext(_ctx, getState());
+		enterRule(_localctx, 4, RULE_directive);
+		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(20);
-			match(BACKTICK);
 			setState(21);
-			match(TIMESCALE);
+			_la = _input.LA(1);
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << IFNDEF) | (1L << IFDEF) | (1L << ENDIF) | (1L << TIMESCALE))) != 0)) ) {
+			_errHandler.recoverInline(this);
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
 			}
 		}
 		catch (RecognitionException re) {
@@ -306,14 +319,14 @@ public class SystemVerilogPreprocessorParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\6\34\4\2\t\2\4\3"+
-		"\t\3\4\4\t\4\4\5\t\5\3\2\7\2\f\n\2\f\2\16\2\17\13\2\3\2\3\2\3\3\3\3\5"+
-		"\3\25\n\3\3\4\3\4\3\4\3\5\3\5\3\5\2\2\6\2\4\6\b\2\2\2\31\2\r\3\2\2\2\4"+
-		"\24\3\2\2\2\6\26\3\2\2\2\b\31\3\2\2\2\n\f\5\4\3\2\13\n\3\2\2\2\f\17\3"+
-		"\2\2\2\r\13\3\2\2\2\r\16\3\2\2\2\16\20\3\2\2\2\17\r\3\2\2\2\20\21\7\2"+
-		"\2\3\21\3\3\2\2\2\22\25\5\b\5\2\23\25\5\6\4\2\24\22\3\2\2\2\24\23\3\2"+
-		"\2\2\25\5\3\2\2\2\26\27\7\3\2\2\27\30\7\6\2\2\30\7\3\2\2\2\31\32\7\4\2"+
-		"\2\32\t\3\2\2\2\4\r\24";
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\t\34\4\2\t\2\4\3"+
+		"\t\3\4\4\t\4\4\5\t\5\3\2\7\2\f\n\2\f\2\16\2\17\13\2\3\2\3\2\3\3\3\3\3"+
+		"\3\5\3\26\n\3\3\4\3\4\3\5\3\5\3\5\2\2\6\2\4\6\b\2\3\3\2\6\t\2\31\2\r\3"+
+		"\2\2\2\4\25\3\2\2\2\6\27\3\2\2\2\b\31\3\2\2\2\n\f\5\4\3\2\13\n\3\2\2\2"+
+		"\f\17\3\2\2\2\r\13\3\2\2\2\r\16\3\2\2\2\16\20\3\2\2\2\17\r\3\2\2\2\20"+
+		"\21\7\2\2\3\21\3\3\2\2\2\22\26\5\b\5\2\23\24\7\3\2\2\24\26\5\6\4\2\25"+
+		"\22\3\2\2\2\25\23\3\2\2\2\26\5\3\2\2\2\27\30\t\2\2\2\30\7\3\2\2\2\31\32"+
+		"\7\4\2\2\32\t\3\2\2\2\4\r\25";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

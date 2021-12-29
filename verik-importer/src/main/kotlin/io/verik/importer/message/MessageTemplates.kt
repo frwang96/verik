@@ -17,6 +17,16 @@
 package io.verik.importer.message
 
 import io.verik.importer.ast.element.EElement
+import org.antlr.v4.runtime.tree.TerminalNode
+
+class WarningMessageTemplate0(
+    override val template: String
+) : AbstractMessageTemplate() {
+
+    fun on(terminalNode: TerminalNode) {
+        MessageCollector.messageCollector.warning(name, format(), SourceLocation.get(terminalNode))
+    }
+}
 
 class WarningMessageTemplate1<A>(
     override val template: String

@@ -28,4 +28,25 @@ internal class PreprocessorStageTest : BaseTest() {
             ""
         )
     }
+
+    @Test
+    fun `directive ifndef`() {
+        drivePreprocessorTest(
+            """
+                `ifndef X
+                    abc
+                `endif
+            """.trimIndent(),
+            "abc"
+        )
+    }
+
+    @Test
+    fun `directive endif unmatched`() {
+        driveMessageTest(
+            "`endif",
+            false,
+            "Unmatched endif directive"
+        )
+    }
 }
