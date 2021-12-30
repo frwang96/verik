@@ -16,6 +16,7 @@
 
 package io.verik.importer.main
 
+import io.verik.importer.common.TextFile
 import io.verik.importer.message.GradleMessagePrinter
 import io.verik.importer.message.MessageCollector
 import io.verik.importer.message.SourceLocation
@@ -34,10 +35,11 @@ object VerikImporterMain {
         val messagePrinter = GradleMessagePrinter(config)
         MessageCollector.messageCollector = MessageCollector(config, messagePrinter)
         val startTime = System.currentTimeMillis()
+        val projectContext = ProjectContext(config)
         try {
-            val importerContext = ImporterContextBuilder.buildContext(config)
-            stageSequence.process(importerContext)
-            writeFiles(importerContext)
+            readFiles(projectContext)
+            stageSequence.processAll(projectContext)
+            writeFiles(projectContext)
         } catch (exception: Exception) {
             if (exception !is VerikImporterException) {
                 messagePrinter.error(
@@ -47,16 +49,25 @@ object VerikImporterMain {
                 )
             }
             writeLogFile(config, messagePrinter, startTime, false)
+            val preprocessorTextFile = projectContext.outputContext.preprocessorTextFile
+            if (preprocessorTextFile != null) {
+                Files.createDirectories(preprocessorTextFile.path.parent)
+                Files.writeString(preprocessorTextFile.path, preprocessorTextFile.content)
+            }
             throw VerikImporterException()
         }
         writeLogFile(config, messagePrinter, startTime, true)
     }
 
-    private fun writeFiles(importerContext: ImporterContext) {
-        if (Files.exists(importerContext.config.buildDir)) {
-            importerContext.config.buildDir.toFile().deleteRecursively()
+    private fun readFiles(projectContext: ProjectContext) {
+        projectContext.inputTextFiles = projectContext.config.importedFiles.map {
+            val lines = Files.readAllLines(it)
+            TextFile(it, lines.joinToString(separator = "\n", postfix = "\n"))
         }
-        val textFiles = importerContext.outputContext.getTextFiles()
+    }
+
+    private fun writeFiles(projectContext: ProjectContext) {
+        val textFiles = projectContext.outputContext.getTextFiles()
         textFiles.forEach {
             Files.createDirectories(it.path.parent)
             Files.writeString(it.path, it.content)

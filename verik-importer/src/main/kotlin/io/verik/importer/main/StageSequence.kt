@@ -20,23 +20,62 @@ import kotlin.reflect.KClass
 
 class StageSequence {
 
-    val stages = ArrayList<ImporterStage>()
+    @Suppress("MemberVisibilityCanBePrivate")
+    val stages = HashMap<StageType, ArrayList<ProjectStage>>()
 
-    fun add(stage: ImporterStage) {
+    init {
+        StageType.values().forEach {
+            stages[it] = ArrayList()
+        }
+    }
+
+    fun add(stageType: StageType, stage: ProjectStage) {
         if (contains(stage::class)) {
             val stageName = stage::class.simpleName
             throw IllegalArgumentException("Stage has already been added to the stage sequence: $stageName")
         }
-        stages.add(stage)
+        stages[stageType]!!.add(stage)
     }
 
-    fun <S : ImporterStage> contains(stageClass: KClass<S>): Boolean {
-        return stages.any { it::class == stageClass }
+    fun processAll(projectContext: ProjectContext) {
+        StageType.values().forEach { stageType ->
+            stages[stageType]!!.forEach {
+                processStage(projectContext, it)
+            }
+        }
     }
 
-    fun process(importerContext: ImporterContext) {
-        stages.forEach {
-            it.process(importerContext)
+    fun <S : ProjectStage> processUntil(projectContext: ProjectContext, stageClass: KClass<S>) {
+        assert(contains(stageClass))
+        StageType.values().forEach { stageType ->
+            stages[stageType]!!.forEach {
+                processStage(projectContext, it)
+                if (it::class == stageClass)
+                    return
+            }
+        }
+    }
+
+    fun processUntil(projectContext: ProjectContext, stageType: StageType) {
+        StageType.values().forEach { currentStageType ->
+            stages[currentStageType]!!.forEach {
+                processStage(projectContext, it)
+            }
+            if (currentStageType == stageType)
+                return
+        }
+    }
+
+    private fun <S : ProjectStage> contains(stageClass: KClass<S>): Boolean {
+        return StageType.values().any { stageType ->
+            stages[stageType]!!.any { it::class == stageClass }
+        }
+    }
+
+    private fun processStage(projectContext: ProjectContext, stage: ProjectStage) {
+        if (stage !in projectContext.processedProjectStages) {
+            stage.process(projectContext)
+            projectContext.processedProjectStages.add(stage)
         }
     }
 }

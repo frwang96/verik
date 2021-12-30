@@ -17,10 +17,11 @@
 package io.verik.importer.main
 
 import io.verik.importer.cast.CasterStage
-import io.verik.importer.lex.FragmentPairFilterStage
+import io.verik.importer.filter.FragmentPairFilterStage
 import io.verik.importer.lex.LexerStage
 import io.verik.importer.parse.ParserStage
-import io.verik.importer.preprocess.PreprocessorParserStage
+import io.verik.importer.preprocess.PreprocessorFilterStage
+import io.verik.importer.preprocess.PreprocessorSerializerStage
 import io.verik.importer.preprocess.PreprocessorStage
 import io.verik.importer.resolve.PortReferenceResolverStage
 import io.verik.importer.serialize.general.ConfigFileSerializerStage
@@ -31,26 +32,22 @@ object StageSequencer {
     fun getStageSequence(): StageSequence {
         val stageSequence = StageSequence()
 
-        // Preprocess
-        stageSequence.add(PreprocessorParserStage)
-        stageSequence.add(PreprocessorStage)
+        stageSequence.add(StageType.PREPROCESS, PreprocessorStage)
+        stageSequence.add(StageType.PREPROCESS, PreprocessorSerializerStage)
+        stageSequence.add(StageType.PREPROCESS, PreprocessorFilterStage)
 
-        // Lex
-        stageSequence.add(LexerStage)
-        stageSequence.add(FragmentPairFilterStage)
+        stageSequence.add(StageType.LEX, LexerStage)
 
-        // Parse
-        stageSequence.add(ParserStage)
+        stageSequence.add(StageType.FILTER, FragmentPairFilterStage)
 
-        // Cast
-        stageSequence.add(CasterStage)
+        stageSequence.add(StageType.PARSE, ParserStage)
 
-        // Resolve
-        stageSequence.add(PortReferenceResolverStage)
+        stageSequence.add(StageType.CAST, CasterStage)
 
-        // Serialize
-        stageSequence.add(ConfigFileSerializerStage)
-        stageSequence.add(SourceSerializerStage)
+        stageSequence.add(StageType.RESOLVE, PortReferenceResolverStage)
+
+        stageSequence.add(StageType.SERIALIZE, ConfigFileSerializerStage)
+        stageSequence.add(StageType.SERIALIZE, SourceSerializerStage)
 
         return stageSequence
     }

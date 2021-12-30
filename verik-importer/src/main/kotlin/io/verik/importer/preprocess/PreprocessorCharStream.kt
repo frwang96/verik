@@ -16,12 +16,16 @@
 
 package io.verik.importer.preprocess
 
+import io.verik.importer.message.SourceLocation
 import org.antlr.v4.runtime.CharStream
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.misc.Interval
-import java.nio.file.Path
 
-class PreprocessorCharStream(val file: Path, content: String) : CharStream {
+class PreprocessorCharStream(
+    val location: SourceLocation,
+    val isOriginal: Boolean,
+    content: String,
+) : CharStream {
 
     private val stream = CharStreams.fromString(content)
 

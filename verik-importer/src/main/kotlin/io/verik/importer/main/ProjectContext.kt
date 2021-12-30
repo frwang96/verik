@@ -17,18 +17,19 @@
 package io.verik.importer.main
 
 import io.verik.importer.ast.element.ECompilationUnit
+import io.verik.importer.common.TextFile
 import io.verik.importer.lex.LexerCharStream
 import io.verik.importer.lex.LexerFragment
 import io.verik.importer.preprocess.PreprocessorFragment
 import org.antlr.v4.runtime.TokenStream
 import org.antlr.v4.runtime.tree.ParseTree
-import java.nio.file.Path
 
-class ImporterContext(
+class ProjectContext(
     val config: VerikImporterConfig
 ) {
 
-    val inputFileContexts: HashMap<Path, InputFileContext> = HashMap()
+    var inputTextFiles: List<TextFile> = listOf()
+    val processedProjectStages = HashSet<ProjectStage>()
     lateinit var preprocessorFragments: ArrayList<PreprocessorFragment>
     lateinit var lexerCharStream: LexerCharStream
     lateinit var lexerFragments: ArrayList<LexerFragment>

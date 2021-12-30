@@ -14,16 +14,11 @@
  * limitations under the License.
  */
 
-package io.verik.plugin
+package io.verik.importer.preprocess
 
-import java.nio.file.Path
+import org.antlr.v4.runtime.Token
 
-abstract class VerikImporterPluginExtension {
-
-    var importedFiles: List<Path> = listOf()
-    var enablePreprocessorOutput: Boolean = true
-    var annotateDeclarations: Boolean = true
-    var suppressedWarnings: ArrayList<String> = ArrayList()
-    var promotedWarnings: ArrayList<String> = ArrayList()
-    var debug: Boolean = false
-}
+class Macro(
+    val parameters: List<String>,
+    val tokens: List<Token>
+)

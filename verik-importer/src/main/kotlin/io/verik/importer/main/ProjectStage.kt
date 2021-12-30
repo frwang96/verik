@@ -16,9 +16,7 @@
 
 package io.verik.importer.main
 
-import org.antlr.v4.runtime.tree.ParseTree
+abstract class ProjectStage {
 
-class InputFileContext(val content: String) {
-
-    lateinit var parseTree: ParseTree
+    abstract fun process(projectContext: ProjectContext)
 }

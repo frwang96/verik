@@ -29,7 +29,8 @@ object VerikImporterConfigBuilder {
             projectName = project.name,
             buildDir = getBuildDir(project),
             importedFiles = extension.importedFiles,
-            labelSourceLocations = extension.labelSourceLocations,
+            enablePreprocessorOutput = extension.enablePreprocessorOutput,
+            annotateDeclarations = extension.annotateDeclarations,
             suppressedWarnings = extension.suppressedWarnings,
             promotedWarnings = extension.promotedWarnings,
             debug = extension.debug

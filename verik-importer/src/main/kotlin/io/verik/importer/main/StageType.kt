@@ -16,7 +16,12 @@
 
 package io.verik.importer.main
 
-abstract class ImporterStage {
-
-    abstract fun process(importerContext: ImporterContext)
+enum class StageType {
+    PREPROCESS,
+    LEX,
+    FILTER,
+    PARSE,
+    CAST,
+    RESOLVE,
+    SERIALIZE
 }

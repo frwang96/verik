@@ -14,36 +14,44 @@
  * limitations under the License.
  */
 
-package io.verik.importer.lex
+package io.verik.importer.preprocess
 
 import io.verik.importer.test.BaseTest
 import org.junit.jupiter.api.Test
 
-internal class FragmentPairFilterStageTest : BaseTest() {
+internal class MacroEvaluatorTest : BaseTest() {
 
     @Test
-    fun `mismatched token begin`() {
-        driveMessageTest(
-            "(*",
-            false,
-            "Mismatched token: '(*'"
+    fun `macro simple`() {
+        drivePreprocessorTest(
+            """
+                `define X(x) x
+                `X(abc)
+            """.trimIndent(),
+            "abc"
         )
     }
 
     @Test
-    fun `mismatched token end`() {
-        driveMessageTest(
-            "*)",
-            false,
-            "Mismatched token: '*)'"
+    fun `macro brackets`() {
+        drivePreprocessorTest(
+            """
+                `define X(x) x
+                `X(())
+            """.trimIndent(),
+            "()"
         )
     }
 
     @Test
-    fun `filter attribute`() {
-        driveLexerFragmentTest(
-            "(* attribute *)",
-            "EOF"
+    fun `macro incorrect arguments`() {
+        driveMessageTest(
+            """
+                `define X(x) x
+                `X
+            """.trimIndent(),
+            false,
+            "Incorrect number of macro arguments: Expected 1 actual 0"
         )
     }
 }

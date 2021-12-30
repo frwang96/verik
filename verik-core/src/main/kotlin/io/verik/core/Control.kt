@@ -34,6 +34,13 @@ fun negedge(value: Boolean): Event {
 
 /**
  * Trigger a [sequential][Seq] action block on event [event] and optionally [additionalEvents].
+ *
+ *      @Seq
+ *      fun f() {
+ *          on(posedge(clk)) {
+ *              x = !y
+ *          }
+ *      }
  */
 fun on(event: Event, vararg additionalEvents: Event, block: () -> Unit) {
     throw Exception()
@@ -41,6 +48,11 @@ fun on(event: Event, vararg additionalEvents: Event, block: () -> Unit) {
 
 /**
  * Loop [action] forever.
+ *
+ *      forever {
+ *          clk = !clk
+ *          delay(1)
+ *      }
  */
 fun forever(action: () -> Unit) {
     throw VerikException()

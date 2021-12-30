@@ -16,19 +16,12 @@
 
 package io.verik.importer.lex
 
-import org.antlr.v4.runtime.Token
+import io.verik.importer.message.SourceLocation
 
 data class LexerFragment(
+    val location: SourceLocation,
     val virtualLine: Int,
     val virtualColumn: Int,
     val type: Int,
     val content: String
-) {
-
-    companion object {
-
-        operator fun invoke(token: Token): LexerFragment {
-            return LexerFragment(token.line, token.charPositionInLine, token.type, token.text)
-        }
-    }
-}
+)

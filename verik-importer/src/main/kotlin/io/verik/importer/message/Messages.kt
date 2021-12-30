@@ -24,12 +24,6 @@ object Messages {
         "Internal error: $0"
     )
 
-// CONFIG //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    val DUPLICATED_FILE = FatalMessageTemplate0(
-        "Imported file is duplicated"
-    )
-
 // PREPROCESS //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val PREPROCESSOR_LEXER_ERROR = WarningMessageTemplate1<String>(
@@ -40,11 +34,29 @@ object Messages {
         "Preprocessor parser error: $0"
     )
 
+    val UNMATCHED_ENDIF = WarningMessageTemplate0(
+        "Unmatched endif directive"
+    )
+
+    val UNDEFINED_MACRO = WarningMessageTemplate1<String>(
+        "Undefined macro: $0"
+    )
+
+    val MACRO_CONTENT_LEXER_ERROR = WarningMessageTemplate1<String>(
+        "Macro content lexer error: $0"
+    )
+
+    val INCORRECT_MACRO_ARGUMENTS = WarningMessageTemplate2<Int, Int>(
+        "Incorrect number of macro arguments: Expected $0 actual $1"
+    )
+
 // LEX /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val LEXER_ERROR = WarningMessageTemplate1<String>(
         "Lexer error: $0"
     )
+
+// FILTER //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val MISMATCHED_TOKEN = WarningMessageTemplate1<String>(
         "Mismatched token: $0"

@@ -19,14 +19,22 @@ package io.verik.importer.preprocess
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 
-object PreprocessorStage : ProjectStage() {
+object PreprocessorFilterStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        val preprocessorFragments = ArrayList<PreprocessorFragment>()
-        val preprocessContext = PreprocessContext(preprocessorFragments)
-        projectContext.inputTextFiles.forEach {
-            preprocessContext.preprocess(it)
+        val preprocessorFragments = projectContext.preprocessorFragments.filter {
+            !isCommentOrWhitespace(it)
         }
-        projectContext.preprocessorFragments = preprocessorFragments
+        projectContext.preprocessorFragments = ArrayList(preprocessorFragments)
+    }
+
+    private fun isCommentOrWhitespace(preprocessorFragment: PreprocessorFragment): Boolean {
+        val content = preprocessorFragment.content
+        return when {
+            content.startsWith("/*") -> true
+            content.startsWith("//") -> true
+            content.isBlank() -> true
+            else -> false
+        }
     }
 }

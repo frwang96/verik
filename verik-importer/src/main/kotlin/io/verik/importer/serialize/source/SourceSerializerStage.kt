@@ -19,18 +19,18 @@ package io.verik.importer.serialize.source
 import io.verik.importer.ast.element.EAbstractPackage
 import io.verik.importer.ast.element.EDeclaration
 import io.verik.importer.common.TextFile
-import io.verik.importer.main.ImporterContext
-import io.verik.importer.main.ImporterStage
+import io.verik.importer.main.ProjectContext
+import io.verik.importer.main.ProjectStage
 
-object SourceSerializerStage : ImporterStage() {
+object SourceSerializerStage : ProjectStage() {
 
-    override fun process(importerContext: ImporterContext) {
+    override fun process(projectContext: ProjectContext) {
         val packageTextFiles = ArrayList<TextFile>()
-        packageTextFiles.addAll(serializePackage(importerContext.compilationUnit.rootPackage, importerContext))
-        importerContext.outputContext.packageTextFiles = packageTextFiles
+        packageTextFiles.addAll(serializePackage(projectContext.compilationUnit.rootPackage, projectContext))
+        projectContext.outputContext.packageTextFiles = packageTextFiles
     }
 
-    private fun serializePackage(abstractPackage: EAbstractPackage, importerContext: ImporterContext): List<TextFile> {
+    private fun serializePackage(abstractPackage: EAbstractPackage, projectContext: ProjectContext): List<TextFile> {
         val declarationMap = HashMap<String, ArrayList<EDeclaration>>()
         abstractPackage.declarations.forEach {
             val baseFileName = it.location.path.fileName.toString().substringBefore(".")
@@ -42,10 +42,10 @@ object SourceSerializerStage : ImporterStage() {
             }
         }
 
-        val packagePath = importerContext.config.outputSourceDir.resolve(abstractPackage.name.replace(".", "/"))
+        val packagePath = projectContext.config.outputSourceDir.resolve(abstractPackage.name.replace(".", "/"))
         return declarationMap.map { (baseFileName, declarations) ->
             val path = packagePath.resolve("$baseFileName.kt")
-            val serializerContext = SerializerContext(importerContext, abstractPackage.name, path)
+            val serializerContext = SerializerContext(projectContext, abstractPackage.name, path)
             declarations.forEach { serializerContext.serialize(it) }
             serializerContext.getTextFile()
         }

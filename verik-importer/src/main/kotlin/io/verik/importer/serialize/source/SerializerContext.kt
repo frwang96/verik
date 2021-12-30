@@ -18,19 +18,19 @@ package io.verik.importer.serialize.source
 
 import io.verik.importer.ast.element.EElement
 import io.verik.importer.common.TextFile
-import io.verik.importer.main.ImporterContext
+import io.verik.importer.main.ProjectContext
 import java.nio.file.Path
 
 class SerializerContext(
-    importerContext: ImporterContext,
+    projectContext: ProjectContext,
     packageName: String,
     path: Path
 ) {
 
-    val labelSourceLocations = importerContext.config.labelSourceLocations
+    val annotateDeclarations = projectContext.config.annotateDeclarations
 
     private val sourceSerializerVisitor = SourceSerializerVisitor(this)
-    private val sourceBuilder = SourceBuilder(importerContext, packageName, path)
+    private val sourceBuilder = SourceBuilder(projectContext, packageName, path)
 
     fun serialize(element: EElement) {
         element.accept(sourceSerializerVisitor)

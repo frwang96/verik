@@ -19,14 +19,39 @@ package io.verik.importer.preprocess
 import io.verik.importer.test.BaseTest
 import org.junit.jupiter.api.Test
 
-internal class PreprocessorParserStageTest : BaseTest() {
+internal class BasePreprocessorTest : BaseTest() {
 
     @Test
-    fun `lexer unrecognized token`() {
+    fun `directive ifdef`() {
+        drivePreprocessorTest(
+            """
+                `define X
+                `ifdef X
+                    abc
+                `endif
+            """.trimIndent(),
+            "abc"
+        )
+    }
+
+    @Test
+    fun `directive ifndef`() {
+        drivePreprocessorTest(
+            """
+                `ifndef X
+                    abc
+                `endif
+            """.trimIndent(),
+            "abc"
+        )
+    }
+
+    @Test
+    fun `directive endif unmatched`() {
         driveMessageTest(
-            "`0",
+            "`endif",
             false,
-            "Preprocessor lexer error: Unable to recognize token"
+            "Unmatched endif directive"
         )
     }
 }

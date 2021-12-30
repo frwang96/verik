@@ -16,9 +16,11 @@
 
 package io.verik.importer.message
 
+import io.verik.importer.antlr.MacroContentLexer
+import io.verik.importer.antlr.PreprocessorParser
 import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.antlr.SystemVerilogPreprocessorParser
-import io.verik.importer.parse.ParserToken
+import io.verik.importer.lex.LexerCharStream
+import io.verik.importer.preprocess.PreprocessorCharStream
 import org.antlr.v4.runtime.InputMismatchException
 import org.antlr.v4.runtime.LexerNoViableAltException
 import org.antlr.v4.runtime.NoViableAltException
@@ -33,10 +35,13 @@ object RecognitionExceptionFormatter {
             is NoViableAltException -> "No matching rules"
             is InputMismatchException -> {
                 val token = recognitionException.offendingToken
-                if (token is ParserToken) {
-                    "Mismatched token: ${SystemVerilogParser.VOCABULARY.getDisplayName(token.type)}"
-                } else {
-                    "Mismatched token: ${SystemVerilogPreprocessorParser.VOCABULARY.getDisplayName(token.type)}"
+                when (token.inputStream) {
+                    is LexerCharStream ->
+                        "Mismatched token: ${SystemVerilogParser.VOCABULARY.getDisplayName(token.type)}"
+                    is PreprocessorCharStream ->
+                        "Mismatched token: ${PreprocessorParser.VOCABULARY.getDisplayName(token.type)}"
+                    else ->
+                        "Mismatched token: ${MacroContentLexer.VOCABULARY.getDisplayName(token.type)}"
                 }
             }
             else -> "Unknown error"

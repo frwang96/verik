@@ -19,21 +19,17 @@ package io.verik.importer.test
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.antlr.SystemVerilogParserBaseVisitor
 import io.verik.importer.main.StageSequencer
-import io.verik.importer.parse.ParserStage
+import io.verik.importer.main.StageType
 import org.antlr.v4.runtime.tree.RuleNode
 
 abstract class ParserTest : BaseTest() {
 
     fun driveParserTest(rules: List<Int>, content: String) {
-        val importerContext = getImporterContext(content)
+        val projectContext = getProjectContext(content)
         val stageSequence = StageSequencer.getStageSequence()
-        for (stage in stageSequence.stages) {
-            stage.process(importerContext)
-            if (stage is ParserStage)
-                break
-        }
+        stageSequence.processUntil(projectContext, StageType.PARSE)
         val parseTreeIndexerVisitor = ParseTreeIndexerVisitor()
-        importerContext.parseTree.accept(parseTreeIndexerVisitor)
+        projectContext.parseTree.accept(parseTreeIndexerVisitor)
         rules.forEach {
             assert(it in parseTreeIndexerVisitor.ruleSet) {
                 "Rule not found: ${SystemVerilogParser.ruleNames[it]}"

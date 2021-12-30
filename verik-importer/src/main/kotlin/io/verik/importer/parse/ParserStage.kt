@@ -18,8 +18,8 @@ package io.verik.importer.parse
 
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.lex.LexerCharStream
-import io.verik.importer.main.ImporterContext
-import io.verik.importer.main.ImporterStage
+import io.verik.importer.main.ProjectContext
+import io.verik.importer.main.ProjectStage
 import io.verik.importer.message.Messages
 import io.verik.importer.message.RecognitionExceptionFormatter
 import org.antlr.v4.runtime.BaseErrorListener
@@ -27,17 +27,20 @@ import org.antlr.v4.runtime.CommonTokenStream
 import org.antlr.v4.runtime.RecognitionException
 import org.antlr.v4.runtime.Recognizer
 
-object ParserStage : ImporterStage() {
+object ParserStage : ProjectStage() {
 
-    override fun process(importerContext: ImporterContext) {
-        val parserTokenSource = ParserTokenSource(importerContext.lexerFragments)
+    override fun process(projectContext: ProjectContext) {
+        val parserTokenSource = ParserTokenSource(
+            projectContext.lexerCharStream,
+            projectContext.lexerFragments
+        )
         val parserTokenStream = CommonTokenStream(parserTokenSource)
         val parser = SystemVerilogParser(parserTokenStream)
-        val parserErrorListener = ParserErrorListener(importerContext.lexerCharStream)
+        val parserErrorListener = ParserErrorListener(projectContext.lexerCharStream)
         parser.removeErrorListeners()
         parser.addErrorListener(parserErrorListener)
-        importerContext.parserTokenStream = parserTokenStream
-        importerContext.parseTree = parser.compilationUnit()
+        projectContext.parserTokenStream = parserTokenStream
+        projectContext.parseTree = parser.compilationUnit()
     }
 
     private class ParserErrorListener(

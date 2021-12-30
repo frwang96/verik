@@ -56,6 +56,10 @@ tasks.compileTestKotlin {
     dependsOn(tasks.generateGrammarSource)
 }
 
+tasks.runKtlintCheckOverMainSourceSet {
+    dependsOn(tasks.generateGrammarSource)
+}
+
 tasks.test {
     useJUnitPlatform()
     systemProperties["junit.jupiter.execution.parallel.enabled"] = true
@@ -70,10 +74,6 @@ tasks.register<Jar>("sourceJar") {
 tasks.register<Jar>("javadocJar") {
     archiveClassifier.set("javadoc")
     from(tasks.dokkaJavadoc)
-}
-
-tasks.runKtlintCheckOverMainSourceSet {
-    dependsOn(tasks.generateGrammarSource)
 }
 
 signing {

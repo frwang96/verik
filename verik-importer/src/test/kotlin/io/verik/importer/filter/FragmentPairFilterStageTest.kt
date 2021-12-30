@@ -14,27 +14,36 @@
  * limitations under the License.
  */
 
-package io.verik.importer.preprocess
+package io.verik.importer.filter
 
 import io.verik.importer.test.BaseTest
 import org.junit.jupiter.api.Test
 
-internal class PreprocessorStageTest : BaseTest() {
+internal class FragmentPairFilterStageTest : BaseTest() {
 
     @Test
-    fun `lexer unrecognized token`() {
+    fun `mismatched token begin`() {
         driveMessageTest(
-            "`0",
+            "(*",
             false,
-            "Preprocessor lexer error: Unable to recognize token"
+            "Mismatched token: '(*'"
         )
     }
 
     @Test
-    fun `directive timescale`() {
-        drivePreprocessorTest(
-            "`timescale 1ns / 1ns",
-            ""
+    fun `mismatched token end`() {
+        driveMessageTest(
+            "*)",
+            false,
+            "Mismatched token: '*)'"
+        )
+    }
+
+    @Test
+    fun `filter attribute`() {
+        driveLexerFragmentTest(
+            "(* attribute *)",
+            "EOF"
         )
     }
 }

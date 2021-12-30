@@ -17,12 +17,12 @@
 package io.verik.importer.serialize.source
 
 import io.verik.importer.common.TextFile
-import io.verik.importer.main.ImporterContext
+import io.verik.importer.main.ProjectContext
 import io.verik.importer.serialize.general.FileHeaderBuilder
 import java.nio.file.Path
 
 class SourceBuilder(
-    importerContext: ImporterContext,
+    projectContext: ProjectContext,
     private val packageName: String,
     private val path: Path
 ) {
@@ -39,7 +39,7 @@ class SourceBuilder(
 
     init {
         val fileHeader = FileHeaderBuilder.build(
-            importerContext.config,
+            projectContext.config,
             path,
             FileHeaderBuilder.HeaderStyle.KOTLIN
         )

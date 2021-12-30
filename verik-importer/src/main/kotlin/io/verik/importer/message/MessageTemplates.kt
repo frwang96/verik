@@ -17,7 +17,17 @@
 package io.verik.importer.message
 
 import io.verik.importer.ast.element.EElement
-import java.nio.file.Path
+import io.verik.importer.lex.LexerFragment
+import org.antlr.v4.runtime.tree.TerminalNode
+
+class WarningMessageTemplate0(
+    override val template: String
+) : AbstractMessageTemplate() {
+
+    fun on(terminalNode: TerminalNode) {
+        MessageCollector.messageCollector.warning(name, format(), SourceLocation.get(terminalNode))
+    }
+}
 
 class WarningMessageTemplate1<A>(
     override val template: String
@@ -26,14 +36,22 @@ class WarningMessageTemplate1<A>(
     fun on(location: SourceLocation, a: A) {
         MessageCollector.messageCollector.warning(name, format(a), location)
     }
+
+    fun on(terminalNode: TerminalNode, a: A) {
+        MessageCollector.messageCollector.warning(name, format(a), SourceLocation.get(terminalNode))
+    }
+
+    fun on(lexerFragment: LexerFragment, a: A) {
+        MessageCollector.messageCollector.warning(name, format(a), lexerFragment.location)
+    }
 }
 
-class FatalMessageTemplate0(
+class WarningMessageTemplate2<A, B>(
     override val template: String
 ) : AbstractMessageTemplate() {
 
-    fun on(path: Path): Nothing {
-        MessageCollector.messageCollector.fatal(format(), SourceLocation(path, 0, 0))
+    fun on(location: SourceLocation, a: A, b: B) {
+        MessageCollector.messageCollector.warning(name, format(a, b), location)
     }
 }
 

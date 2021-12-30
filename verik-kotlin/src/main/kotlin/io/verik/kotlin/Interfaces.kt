@@ -19,7 +19,13 @@
 package io.verik.kotlin
 
 /**
- * The common base class of all enum classes.
+ * The common base class of all enum classes. Enums are declared with the enum keyword.
+ *
+ *      enum class Op {
+ *          ADD,
+ *          SUB,
+ *          MUL
+ *      }
  */
 abstract class Enum<E : Enum<E>> : Comparable<E>
 

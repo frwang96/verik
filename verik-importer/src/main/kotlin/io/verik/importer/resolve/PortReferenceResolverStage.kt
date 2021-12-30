@@ -19,14 +19,14 @@ package io.verik.importer.resolve
 import io.verik.importer.ast.element.EModule
 import io.verik.importer.common.NullDeclaration
 import io.verik.importer.common.TreeVisitor
-import io.verik.importer.main.ImporterContext
-import io.verik.importer.main.ImporterStage
+import io.verik.importer.main.ProjectContext
+import io.verik.importer.main.ProjectStage
 import io.verik.importer.message.Messages
 
-object PortReferenceResolverStage : ImporterStage() {
+object PortReferenceResolverStage : ProjectStage() {
 
-    override fun process(importerContext: ImporterContext) {
-        importerContext.compilationUnit.accept(PortReferenceResolverVisitor)
+    override fun process(projectContext: ProjectContext) {
+        projectContext.compilationUnit.accept(PortReferenceResolverVisitor)
     }
 
     private object PortReferenceResolverVisitor : TreeVisitor() {

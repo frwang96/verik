@@ -35,7 +35,7 @@ verikImport {
     val verilogSrcDir = projectDir.resolve("src/main/verilog").toPath()
     if (Files.exists(verilogSrcDir)) {
         importedFiles = Files.walk(verilogSrcDir).toList()
-            .filter { it.fileName.toString().endsWith(".v") }
+            .filter { it.toFile().extension in listOf("v", "vh", "sv", "svh") }
     }
     debug = true
 }
