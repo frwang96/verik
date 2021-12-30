@@ -5,7 +5,6 @@
       <list>
         <PerGrammarGenerationSettings>
           <option name="fileName" value="$PROJECT_DIR$/verik-importer/src/main/antlr/MacroContentLexer.g4" />
-          <option name="autoGen" value="true" />
           <option name="outputDir" value="$PROJECT_DIR$/verik-importer/build/generated-src/antlr/main" />
           <option name="libDir" value="" />
           <option name="encoding" value="" />
@@ -15,7 +14,6 @@
         </PerGrammarGenerationSettings>
         <PerGrammarGenerationSettings>
           <option name="fileName" value="$PROJECT_DIR$/verik-importer/src/main/antlr/SystemVerilogLexer.g4" />
-          <option name="autoGen" value="true" />
           <option name="outputDir" value="$PROJECT_DIR$/verik-importer/build/generated-src/antlr/main" />
           <option name="libDir" value="" />
           <option name="encoding" value="" />
@@ -34,8 +32,7 @@
           <option name="generateVisitor" value="true" />
         </PerGrammarGenerationSettings>
         <PerGrammarGenerationSettings>
-          <option name="fileName" value="$PROJECT_DIR$/verik-importer/src/main/antlr/PreprocessorLexer.g4" />
-          <option name="autoGen" value="true" />
+          <option name="fileName" value="$PROJECT_DIR$/verik-importer/src/main/antlr/SystemVerilogPreprocessorLexer.g4" />
           <option name="outputDir" value="$PROJECT_DIR$/verik-importer/build/generated-src/antlr/main" />
           <option name="libDir" value="" />
           <option name="encoding" value="" />
@@ -44,8 +41,7 @@
           <option name="generateVisitor" value="true" />
         </PerGrammarGenerationSettings>
         <PerGrammarGenerationSettings>
-          <option name="fileName" value="$PROJECT_DIR$/verik-importer/src/main/antlr/PreprocessorParser.g4" />
-          <option name="autoGen" value="true" />
+          <option name="fileName" value="$PROJECT_DIR$/verik-importer/src/main/antlr/SystemVerilogPreprocessorParser.g4" />
           <option name="outputDir" value="$PROJECT_DIR$/verik-importer/build/generated-src/antlr/main" />
           <option name="libDir" value="" />
           <option name="encoding" value="" />

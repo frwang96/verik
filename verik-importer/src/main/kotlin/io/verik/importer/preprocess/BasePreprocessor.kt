@@ -16,13 +16,13 @@
 
 package io.verik.importer.preprocess
 
-import io.verik.importer.antlr.PreprocessorParser
+import io.verik.importer.antlr.SystemVerilogPreprocessorParser
 import io.verik.importer.message.SourceLocation
 
 object BasePreprocessor {
 
     fun preprocessDirectiveIfdef(
-        ctx: PreprocessorParser.DirectiveIfdefContext,
+        ctx: SystemVerilogPreprocessorParser.DirectiveIfdefContext,
         preprocessContext: PreprocessContext,
     ) {
         val name = ctx.text.substringAfter("ifdef").trim()
@@ -31,7 +31,7 @@ object BasePreprocessor {
     }
 
     fun preprocessDirectiveIfndef(
-        ctx: PreprocessorParser.DirectiveIfndefContext,
+        ctx: SystemVerilogPreprocessorParser.DirectiveIfndefContext,
         preprocessContext: PreprocessContext,
     ) {
         val name = ctx.text.substringAfter("ifndef").trim()
@@ -40,13 +40,13 @@ object BasePreprocessor {
     }
 
     fun preprocessDirectiveEndif(
-        ctx: PreprocessorParser.DirectiveEndifContext,
+        ctx: SystemVerilogPreprocessorParser.DirectiveEndifContext,
         preprocessContext: PreprocessContext,
     ) {
         preprocessContext.popEnable(ctx.DIRECTIVE_ENDIF())
     }
 
-    fun preprocessCode(ctx: PreprocessorParser.CodeContext, preprocessContext: PreprocessContext) {
+    fun preprocessCode(ctx: SystemVerilogPreprocessorParser.CodeContext, preprocessContext: PreprocessContext) {
         if (preprocessContext.isEnable()) {
             val preprocessorFragment = PreprocessorFragment(
                 SourceLocation.get(ctx.CODE()),

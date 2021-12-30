@@ -93,4 +93,38 @@ internal class MacroPreprocessorTest : BaseTest() {
             "Undefined macro: X"
         )
     }
+
+    @Test
+    fun `directive macro args`() {
+        drivePreprocessorTest(
+            """
+                `define X(x) x
+                `X(abc)
+            """.trimIndent(),
+            "abc"
+        )
+    }
+
+    @Test
+    fun `directive macro args brackets`() {
+        drivePreprocessorTest(
+            """
+                `define X(x) x
+                `X(())
+            """.trimIndent(),
+            "()"
+        )
+    }
+
+    @Test
+    fun `directive macro args incorrect arguments`() {
+        driveMessageTest(
+            """
+                `define X(x) x
+                `X
+            """.trimIndent(),
+            false,
+            "Incorrect number of macro arguments: Expected 1 actual 0"
+        )
+    }
 }

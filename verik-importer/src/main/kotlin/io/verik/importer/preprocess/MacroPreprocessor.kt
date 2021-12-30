@@ -16,11 +16,10 @@
 
 package io.verik.importer.preprocess
 
-import io.verik.importer.antlr.PreprocessorLexer
-import io.verik.importer.antlr.PreprocessorParser
+import io.verik.importer.antlr.SystemVerilogPreprocessorLexer
+import io.verik.importer.antlr.SystemVerilogPreprocessorParser
 import io.verik.importer.message.Messages
 import io.verik.importer.message.SourceLocation
-import org.antlr.v4.runtime.ParserRuleContext
 import org.antlr.v4.runtime.tree.TerminalNode
 
 object MacroPreprocessor {
@@ -30,7 +29,7 @@ object MacroPreprocessor {
     }
 
     fun preprocessDirectiveUndef(
-        ctx: PreprocessorParser.DirectiveUndefContext,
+        ctx: SystemVerilogPreprocessorParser.DirectiveUndefContext,
         preprocessContext: PreprocessContext
     ) {
         val name = ctx.text.substringAfter("undef").trim()
@@ -38,39 +37,35 @@ object MacroPreprocessor {
     }
 
     fun preprocessDirectiveDefine(
-        ctx: PreprocessorParser.DirectiveDefineContext,
+        ctx: SystemVerilogPreprocessorParser.DirectiveDefineContext,
         preprocessContext: PreprocessContext
     ) {
         val name = ctx.DEFINE_MACRO().text.trim()
-        val content = getDefineContent(ctx)
-        val tokens = MacroEvaluator.tokenize(content, SourceLocation.get(ctx.BACKTICK()))
-        val macro = Macro(listOf(), tokens)
+        val contentEntries = ctx.content().mapNotNull { getContentEntry(it, listOf()) }
+        val macro = Macro(listOf(), contentEntries)
         preprocessContext.setMacro(name, macro)
     }
 
     fun preprocessDirectiveDefineParam(
-        ctx: PreprocessorParser.DirectiveDefineParamContext,
+        ctx: SystemVerilogPreprocessorParser.DirectiveDefineParamContext,
         preprocessContext: PreprocessContext
     ) {
         val name = ctx.DEFINE_MACRO_PARAM().text.dropLast(1).trim()
-        val parametersCtx = ctx.parameters()?.parameter() ?: listOf()
-        val parameters = parametersCtx.map { it.text }
-
-        val content = getDefineContent(ctx)
-        val tokens = MacroEvaluator.tokenize(content, SourceLocation.get(ctx.BACKTICK()))
-        val macro = Macro(parameters, tokens)
+        val parameters = (ctx.parameters()?.parameter() ?: listOf()).map { it.text }
+        val contentEntries = ctx.content().mapNotNull { getContentEntry(it, parameters) }
+        val macro = Macro(parameters, contentEntries)
         preprocessContext.setMacro(name, macro)
     }
 
     fun preprocessDirectiveMacro(
-        ctx: PreprocessorParser.DirectiveMacroContext,
+        ctx: SystemVerilogPreprocessorParser.DirectiveMacroContext,
         preprocessContext: PreprocessContext
     ) {
         val name = ctx.DIRECTIVE_MACRO().text.trim()
         val macro = preprocessContext.getMacro(name)
         if (macro != null) {
             val location = SourceLocation.get(ctx.BACKTICK())
-            val content = MacroEvaluator.evaluate(macro, listOf(), location)
+            val content = evaluate(macro, listOf(), location)
             preprocessContext.preprocess(content, location)
         } else {
             Messages.UNDEFINED_MACRO.on(ctx.BACKTICK(), name)
@@ -78,7 +73,7 @@ object MacroPreprocessor {
     }
 
     fun preprocessDirectiveMacroArg(
-        ctx: PreprocessorParser.DirectiveMacroArgContext,
+        ctx: SystemVerilogPreprocessorParser.DirectiveMacroArgContext,
         preprocessContext: PreprocessContext
     ) {
         val name = ctx.DIRECTIVE_MACRO_ARG().text.dropLast(1).trim()
@@ -86,22 +81,47 @@ object MacroPreprocessor {
         val arguments = ctx.arguments().argument().map { it.text }
         if (macro != null) {
             val location = SourceLocation.get(ctx.BACKTICK())
-            val content = MacroEvaluator.evaluate(macro, arguments, location)
+            val content = evaluate(macro, arguments, location)
             preprocessContext.preprocess(content, location)
         } else {
             Messages.UNDEFINED_MACRO.on(ctx.BACKTICK(), name)
         }
     }
 
-    private fun getDefineContent(ctx: ParserRuleContext): String {
+    private fun getContentEntry(
+        ctx: SystemVerilogPreprocessorParser.ContentContext,
+        parameters: List<String>,
+    ): MacroContentEntry? {
+        val child = ctx.children.first() as TerminalNode
+        return when (child.symbol.type) {
+            SystemVerilogPreprocessorLexer.CONTENT_LINE_CONTINUATION -> TextMacroContentEntry("\n")
+            SystemVerilogPreprocessorLexer.CONTENT_CONCAT -> TextMacroContentEntry("\"")
+            SystemVerilogPreprocessorLexer.CONTENT_ESCAPE_DQ -> TextMacroContentEntry("\\\"")
+            SystemVerilogPreprocessorLexer.CONTENT_ESCAPE_BACK_SLASH_DQ -> null
+            SystemVerilogPreprocessorLexer.CONTENT_IDENTIFIER -> {
+                val index = parameters.indexOf(ctx.text)
+                if (index != -1) {
+                    ParameterMacroContentEntry(index)
+                } else {
+                    TextMacroContentEntry(ctx.text)
+                }
+            }
+            else -> TextMacroContentEntry(ctx.text)
+        }
+    }
+
+    private fun evaluate(macro: Macro, arguments: List<String>, location: SourceLocation): String {
+        if (macro.parameters.size != arguments.size) {
+            Messages.INCORRECT_MACRO_ARGUMENTS.on(location, macro.parameters.size, arguments.size)
+        }
         val builder = StringBuilder()
-        ctx.children.forEach {
-            if (it is TerminalNode) {
-                when (it.symbol.type) {
-                    PreprocessorLexer.CONTENT_TEXT ->
-                        builder.append(it.text)
-                    PreprocessorLexer.CONTENT_LINE_CONTINUATION ->
-                        builder.appendLine()
+        macro.contentEntries.forEach {
+            when (it) {
+                is TextMacroContentEntry -> builder.append(it.text)
+                is ParameterMacroContentEntry -> {
+                    if (it.index < arguments.size) {
+                        builder.append(arguments[it.index])
+                    }
                 }
             }
         }

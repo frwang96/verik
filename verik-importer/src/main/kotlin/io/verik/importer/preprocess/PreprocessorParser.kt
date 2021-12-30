@@ -16,8 +16,8 @@
 
 package io.verik.importer.preprocess
 
-import io.verik.importer.antlr.PreprocessorLexer
-import io.verik.importer.antlr.PreprocessorParser
+import io.verik.importer.antlr.SystemVerilogPreprocessorLexer
+import io.verik.importer.antlr.SystemVerilogPreprocessorParser
 import io.verik.importer.common.TextFile
 import io.verik.importer.message.Messages
 import io.verik.importer.message.RecognitionExceptionFormatter
@@ -28,7 +28,7 @@ import org.antlr.v4.runtime.RecognitionException
 import org.antlr.v4.runtime.Recognizer
 import org.antlr.v4.runtime.tree.ParseTree
 
-object PreprocessorParseUtil {
+object PreprocessorParser {
 
     fun parse(textFile: TextFile): ParseTree {
         return parse(textFile.content, SourceLocation(textFile.path, 0, 0), true)
@@ -40,13 +40,13 @@ object PreprocessorParseUtil {
 
     private fun parse(content: String, location: SourceLocation, isOriginal: Boolean): ParseTree {
         val preprocessorCharStream = PreprocessorCharStream(location, isOriginal, content)
-        val lexer = PreprocessorLexer(preprocessorCharStream)
+        val lexer = SystemVerilogPreprocessorLexer(preprocessorCharStream)
         val lexerErrorListener = LexerErrorListener(location, isOriginal)
         lexer.removeErrorListeners()
         lexer.addErrorListener(lexerErrorListener)
 
         val tokenStream = CommonTokenStream(lexer)
-        val parser = PreprocessorParser(tokenStream)
+        val parser = SystemVerilogPreprocessorParser(tokenStream)
         val parserErrorListener = ParserErrorListener(location, isOriginal)
         parser.removeErrorListeners()
         parser.addErrorListener(parserErrorListener)

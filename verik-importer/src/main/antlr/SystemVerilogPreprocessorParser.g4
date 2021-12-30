@@ -12,9 +12,9 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-parser grammar PreprocessorParser;
+parser grammar SystemVerilogPreprocessorParser;
 
-options { tokenVocab = PreprocessorLexer; }
+options { tokenVocab = SystemVerilogPreprocessorLexer; }
 
 file
     : text* EOF
@@ -40,12 +40,11 @@ directive
     ;
 
 directiveDefine
-    : BACKTICK DIRECTIVE_DEFINE DEFINE_MACRO (CONTENT_TEXT | CONTENT_LINE_CONTINUATION)*
+    : BACKTICK DIRECTIVE_DEFINE DEFINE_MACRO content*
     ;
 
 directiveDefineParam
-    : BACKTICK DIRECTIVE_DEFINE DEFINE_MACRO_PARAM parameters?
-      DEFINE_PARAM_RP (CONTENT_TEXT | CONTENT_LINE_CONTINUATION)*
+    : BACKTICK DIRECTIVE_DEFINE DEFINE_MACRO_PARAM parameters? DEFINE_PARAM_RP content*
     ;
 
 parameters
@@ -54,6 +53,15 @@ parameters
 
 parameter
     : DEFINE_PARAM_IDENTIFIER
+    ;
+
+content
+    : CONTENT_LINE_CONTINUATION
+    | CONTENT_CONCAT
+    | CONTENT_ESCAPE_DQ
+    | CONTENT_ESCAPE_BACK_SLASH_DQ
+    | CONTENT_IDENTIFIER
+    | CONTENT_TEXT
     ;
 
 directiveMacro

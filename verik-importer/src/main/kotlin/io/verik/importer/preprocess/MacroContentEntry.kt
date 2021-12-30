@@ -16,33 +16,8 @@
 
 package io.verik.importer.preprocess
 
-import io.verik.importer.test.BaseTest
-import org.junit.jupiter.api.Test
+sealed class MacroContentEntry
 
-internal class PreprocessorStageTest : BaseTest() {
+class TextMacroContentEntry(val text: String) : MacroContentEntry()
 
-    @Test
-    fun `lexer unrecognized token`() {
-        driveMessageTest(
-            "`0",
-            false,
-            "Preprocessor lexer error: Unable to recognize token"
-        )
-    }
-
-    @Test
-    fun `directive timescale`() {
-        drivePreprocessorTest(
-            "`timescale 1ns / 1ns",
-            ""
-        )
-    }
-
-    @Test
-    fun `directive line`() {
-        drivePreprocessorTest(
-            "`line 1",
-            ""
-        )
-    }
-}
+class ParameterMacroContentEntry(val index: Int) : MacroContentEntry()

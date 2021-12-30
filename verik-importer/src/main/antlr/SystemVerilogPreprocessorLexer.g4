@@ -12,7 +12,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-lexer grammar PreprocessorLexer;
+lexer grammar SystemVerilogPreprocessorLexer;
 
 @members {
    private int argLevel;
@@ -186,12 +186,32 @@ CONTENT_SLASH
     : '/' -> type(CONTENT_TEXT)
     ;
 
-CONTENT_WHITESPACE
-    : [ \t]+ -> type(CONTENT_TEXT)
+CONTENT_STRING_LITERAL
+    : '"' ('\\"' | '\\\\' | .)*? '"' -> type(CONTENT_TEXT)
+    ;
+
+CONTENT_CONCAT
+    : '``'
+    ;
+
+CONTENT_ESCAPE_DQ
+    : '`"'
+    ;
+
+CONTENT_ESCAPE_BACK_SLASH_DQ
+    : '`\\`"'
+    ;
+
+CONTENT_BACK_TICK
+    : '`' -> type(CONTENT_TEXT)
+    ;
+
+CONTENT_IDENTIFIER
+    : IDENTIFIER
     ;
 
 CONTENT_TEXT
-    : ~[\\/\r\n]+
+    : ~[\\/"`a-zA-Z_\r\n]+
     ;
 
 //  ARG MODE  //////////////////////////////////////////////////////////////////////////////////////////////////////////
