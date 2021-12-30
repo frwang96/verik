@@ -16,8 +16,8 @@
 
 package io.verik.importer.preprocess
 
-import io.verik.importer.antlr.preprocess.PreprocessorParser
-import io.verik.importer.antlr.preprocess.PreprocessorParserBaseListener
+import io.verik.importer.antlr.PreprocessorParser
+import io.verik.importer.antlr.PreprocessorParserBaseListener
 
 class PreprocessorListener(
     private val preprocessContext: PreprocessContext

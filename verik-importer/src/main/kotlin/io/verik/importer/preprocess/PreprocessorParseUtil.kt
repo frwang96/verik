@@ -16,8 +16,8 @@
 
 package io.verik.importer.preprocess
 
-import io.verik.importer.antlr.preprocess.PreprocessorLexer
-import io.verik.importer.antlr.preprocess.PreprocessorParser
+import io.verik.importer.antlr.PreprocessorLexer
+import io.verik.importer.antlr.PreprocessorParser
 import io.verik.importer.common.TextFile
 import io.verik.importer.message.Messages
 import io.verik.importer.message.RecognitionExceptionFormatter
@@ -28,7 +28,7 @@ import org.antlr.v4.runtime.RecognitionException
 import org.antlr.v4.runtime.Recognizer
 import org.antlr.v4.runtime.tree.ParseTree
 
-object PreprocessorParser {
+object PreprocessorParseUtil {
 
     fun parse(textFile: TextFile): ParseTree {
         return parse(textFile.content, SourceLocation(textFile.path, 0, 0), true)

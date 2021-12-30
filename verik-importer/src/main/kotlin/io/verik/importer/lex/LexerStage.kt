@@ -16,7 +16,7 @@
 
 package io.verik.importer.lex
 
-import io.verik.importer.antlr.parse.SystemVerilogLexer
+import io.verik.importer.antlr.SystemVerilogLexer
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 import io.verik.importer.message.Messages

@@ -16,8 +16,8 @@
 
 package io.verik.importer.cast
 
-import io.verik.importer.antlr.parse.SystemVerilogParser
-import io.verik.importer.antlr.parse.SystemVerilogParserBaseVisitor
+import io.verik.importer.antlr.SystemVerilogParser
+import io.verik.importer.antlr.SystemVerilogParserBaseVisitor
 import io.verik.importer.ast.element.EDeclaration
 import io.verik.importer.ast.element.EElement
 import io.verik.importer.message.Messages

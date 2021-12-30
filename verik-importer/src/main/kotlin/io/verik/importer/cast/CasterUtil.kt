@@ -16,7 +16,7 @@
 
 package io.verik.importer.cast
 
-import io.verik.importer.antlr.parse.SystemVerilogParserBaseVisitor
+import io.verik.importer.antlr.SystemVerilogParserBaseVisitor
 import org.antlr.v4.runtime.tree.ErrorNode
 import org.antlr.v4.runtime.tree.ParseTree
 

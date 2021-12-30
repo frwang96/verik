@@ -16,8 +16,8 @@
 
 package io.verik.importer.preprocess
 
-import io.verik.importer.antlr.preprocess.PreprocessorLexer
-import io.verik.importer.antlr.preprocess.PreprocessorParser
+import io.verik.importer.antlr.PreprocessorLexer
+import io.verik.importer.antlr.PreprocessorParser
 import io.verik.importer.message.Messages
 import io.verik.importer.message.SourceLocation
 import org.antlr.v4.runtime.ParserRuleContext

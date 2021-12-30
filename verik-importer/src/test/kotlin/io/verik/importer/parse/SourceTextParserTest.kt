@@ -16,7 +16,7 @@
 
 package io.verik.importer.parse
 
-import io.verik.importer.antlr.parse.SystemVerilogParser
+import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.test.ParserTest
 import org.junit.jupiter.api.Test
 

@@ -31,12 +31,12 @@ class PreprocessContext(
     private val enableStack = ArrayList<Boolean>()
 
     fun preprocess(textFile: TextFile) {
-        val parseTree = PreprocessorParser.parse(textFile)
+        val parseTree = PreprocessorParseUtil.parse(textFile)
         ParseTreeWalker.DEFAULT.walk(preprocessorListener, parseTree)
     }
 
     fun preprocess(content: String, location: SourceLocation) {
-        val parseTree = PreprocessorParser.parse(content, location)
+        val parseTree = PreprocessorParseUtil.parse(content, location)
         ParseTreeWalker.DEFAULT.walk(preprocessorListener, parseTree)
     }
 

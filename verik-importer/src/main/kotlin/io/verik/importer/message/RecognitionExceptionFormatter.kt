@@ -16,9 +16,9 @@
 
 package io.verik.importer.message
 
-import io.verik.importer.antlr.parse.SystemVerilogParser
-import io.verik.importer.antlr.preprocess.MacroContentLexer
-import io.verik.importer.antlr.preprocess.PreprocessorParser
+import io.verik.importer.antlr.MacroContentLexer
+import io.verik.importer.antlr.PreprocessorParser
+import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.lex.LexerCharStream
 import io.verik.importer.preprocess.PreprocessorCharStream
 import org.antlr.v4.runtime.InputMismatchException

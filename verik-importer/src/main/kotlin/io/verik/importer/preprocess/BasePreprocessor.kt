@@ -16,7 +16,7 @@
 
 package io.verik.importer.preprocess
 
-import io.verik.importer.antlr.preprocess.PreprocessorParser
+import io.verik.importer.antlr.PreprocessorParser
 import io.verik.importer.message.SourceLocation
 
 object BasePreprocessor {

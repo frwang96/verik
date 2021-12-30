@@ -16,7 +16,7 @@
 
 package io.verik.importer.preprocess
 
-import io.verik.importer.antlr.preprocess.MacroContentLexer
+import io.verik.importer.antlr.MacroContentLexer
 import io.verik.importer.message.Messages
 import io.verik.importer.message.RecognitionExceptionFormatter
 import io.verik.importer.message.SourceLocation

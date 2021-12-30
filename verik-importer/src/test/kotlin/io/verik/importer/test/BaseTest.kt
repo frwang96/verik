@@ -16,7 +16,7 @@
 
 package io.verik.importer.test
 
-import io.verik.importer.antlr.parse.SystemVerilogLexer
+import io.verik.importer.antlr.SystemVerilogLexer
 import io.verik.importer.ast.element.ECompilationUnit
 import io.verik.importer.ast.element.EElement
 import io.verik.importer.common.ElementPrinter
