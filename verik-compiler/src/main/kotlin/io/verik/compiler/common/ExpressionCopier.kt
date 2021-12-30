@@ -19,6 +19,7 @@ package io.verik.compiler.common
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EReferenceExpression
+import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
@@ -32,6 +33,7 @@ object ExpressionCopier {
             is EReferenceExpression -> copyReferenceExpression(expression)
             is EKtCallExpression -> copyKtCallExpression(expression)
             is EConstantExpression -> copyConstantExpression(expression)
+            is EKtArrayAccessExpression -> copyKtArrayAccessExpression(expression)
             is EInlineIfExpression -> copyInlineIfExpression(expression)
             else -> Messages.INTERNAL_ERROR.on(expression, "Unable to copy expression: $expression")
         }
@@ -76,6 +78,18 @@ object ExpressionCopier {
     private fun copyConstantExpression(constantExpression: EConstantExpression): EConstantExpression {
         val type = constantExpression.type.copy()
         return EConstantExpression(constantExpression.location, type, constantExpression.value)
+    }
+
+    private fun copyKtArrayAccessExpression(arrayAccessExpression: EKtArrayAccessExpression): EKtArrayAccessExpression {
+        val type = arrayAccessExpression.type.copy()
+        val array = copy(arrayAccessExpression.array)
+        val indices = arrayAccessExpression.indices.map { copy(it) }
+        return EKtArrayAccessExpression(
+            arrayAccessExpression.location,
+            type,
+            array,
+            ArrayList(indices)
+        )
     }
 
     private fun copyInlineIfExpression(inlineIfExpression: EInlineIfExpression): EInlineIfExpression {

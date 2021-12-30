@@ -28,6 +28,8 @@ import io.verik.compiler.core.common.CoreTransformUtil
 import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
 import io.verik.compiler.message.Messages
 import io.verik.compiler.resolve.EqualsTypeConstraint
+import io.verik.compiler.resolve.SpecialTypeConstraint
+import io.verik.compiler.resolve.SpecialTypeConstraintKind
 import io.verik.compiler.resolve.TypeAdapter
 import io.verik.compiler.resolve.TypeConstraint
 import io.verik.compiler.resolve.UnaryTypeConstraint
@@ -104,6 +106,10 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
     }
 
     val F_u_Boolean = object : TransformableCoreFunctionDeclaration(parent, "u", "fun u(Boolean)") {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return listOf(SpecialTypeConstraint(callExpression, SpecialTypeConstraintKind.CONSTANT_ONE))
+        }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             return callExpression.valueArguments[0]

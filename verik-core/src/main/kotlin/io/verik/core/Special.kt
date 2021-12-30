@@ -78,7 +78,7 @@ fun <N : `*`> u(): Ubit<`*`> {
 }
 
 /**
- * (UNIMPLEMENTED) Converts [value] to [Ubit].
+ * Converts [value] to [Ubit].
  */
 fun u(value: Boolean): Ubit<`*`> {
     throw VerikException()
@@ -130,13 +130,6 @@ fun <N : `*`> ux(): Ubit<N> {
  * (UNIMPLEMENTED) Returns a [Ubit] with all bits set to Z.
  */
 fun <N : `*`> uz(): Ubit<N> {
-    throw VerikException()
-}
-
-/**
- * (UNIMPLEMENTED) Converts [value] to [Sbit].
- */
-fun s(value: Boolean): Sbit<`*`> {
     throw VerikException()
 }
 

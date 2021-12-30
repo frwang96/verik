@@ -17,6 +17,7 @@
 package io.verik.compiler.resolve
 
 enum class SpecialTypeConstraintKind {
+    CONSTANT_ONE,
     CAT,
     REP
 }

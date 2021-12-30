@@ -64,6 +64,17 @@ internal class TypeCheckerStageTest : BaseTest() {
     }
 
     @Test
+    fun `constant one violation`() {
+        driveMessageTest(
+            """
+                var x: Ubit<`8`> = u(false)
+            """.trimIndent(),
+            true,
+            "Type mismatch: Expected Ubit<`8`> actual Ubit<`1`>"
+        )
+    }
+
+    @Test
     fun `concatenation violation`() {
         driveMessageTest(
             """

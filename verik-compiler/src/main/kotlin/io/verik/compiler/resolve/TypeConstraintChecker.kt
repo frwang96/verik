@@ -95,6 +95,16 @@ object TypeConstraintChecker {
             .valueArguments
             .map { it.type.getWidthAsInt(it) }
         when (typeConstraint.kind) {
+            SpecialTypeConstraintKind.CONSTANT_ONE -> {
+                if (expressionWidth != 1) {
+                    val actualType = typeConstraint.callExpression.type.reference.toType(Cardinal.of(1).toType())
+                    Messages.MISMATCHED_TYPE.on(
+                        typeConstraint.callExpression,
+                        typeConstraint.callExpression.type,
+                        actualType
+                    )
+                }
+            }
             SpecialTypeConstraintKind.CAT -> {
                 val catWidth = valueArgumentWidths.sum()
                 if (catWidth != expressionWidth) {

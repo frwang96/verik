@@ -126,6 +126,9 @@ object TypeConstraintResolver {
                 val widths = typeConstraint.callExpression.valueArguments
                     .map { it.type.getWidthAsType(it) }
                 when (typeConstraint.kind) {
+                    SpecialTypeConstraintKind.CONSTANT_ONE -> {
+                        typeConstraint.callExpression.type.arguments[0] = Cardinal.of(1).toType()
+                    }
                     SpecialTypeConstraintKind.CAT -> {
                         val type = when (widths.size) {
                             0 -> Cardinal.of(0).toType()
