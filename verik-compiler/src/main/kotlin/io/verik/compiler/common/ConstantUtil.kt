@@ -116,11 +116,24 @@ object ConstantUtil {
         }
 
         val trimmedValue = compactedValue.substring(tickIndex + 2)
-        return when (compactedValue[tickIndex + 1].lowercase()) {
+        val bitConstant = when (compactedValue[tickIndex + 1].lowercase()) {
+            "d" -> {
+                try {
+                    val bigInteger = BigInteger(trimmedValue, 10)
+                    BitConstant(bigInteger, signed, width)
+                } catch (exception: NumberFormatException) {
+                    Messages.BIT_CONSTANT_PARSE_ERROR.on(element, value)
+                    null
+                }
+            }
             "h" -> {
                 try {
                     val bigInteger = BigInteger(trimmedValue, 16)
-                    BitConstant(bigInteger, signed, width)
+                    if (signed && bigInteger.testBit(width - 1)) {
+                        BitConstant(bigInteger - BigInteger.ONE.shiftLeft(width), true, width)
+                    } else {
+                        BitConstant(bigInteger, signed, width)
+                    }
                 } catch (exception: NumberFormatException) {
                     Messages.BIT_CONSTANT_PARSE_ERROR.on(element, value)
                     null
@@ -129,7 +142,11 @@ object ConstantUtil {
             "b" -> {
                 try {
                     val bigInteger = BigInteger(trimmedValue, 2)
-                    BitConstant(bigInteger, signed, width)
+                    if (signed && bigInteger.testBit(width - 1)) {
+                        BitConstant(bigInteger - BigInteger.ONE.shiftLeft(width), true, width)
+                    } else {
+                        BitConstant(bigInteger, signed, width)
+                    }
                 } catch (exception: java.lang.NumberFormatException) {
                     Messages.BIT_CONSTANT_PARSE_ERROR.on(element, value)
                     null
@@ -140,6 +157,10 @@ object ConstantUtil {
                 null
             }
         }
+        if (bitConstant != null && !bitConstant.isInRange()) {
+            Messages.BIT_CONSTANT_INSUFFICIENT_WIDTH.on(element, value)
+        }
+        return bitConstant
     }
 
     fun getInt(expression: EExpression): Int? {
@@ -173,7 +194,7 @@ object ConstantUtil {
     }
 
     fun formatBitConstant(bitConstant: BitConstant): String {
-        val valueString = bitConstant.value.toString(16)
+        val valueString = bitConstant.getModValue().toString(16)
         val valueStringLength = (bitConstant.width + 3) / 4
         val valueStringPadded = valueString.padStart(valueStringLength, '0')
 

@@ -20,31 +20,52 @@ import io.verik.compiler.ast.element.common.EExpression
 import java.math.BigInteger
 
 class BitConstant(
-    val value: BigInteger,
+    private val value: BigInteger,
     val signed: Boolean,
     val width: Int
 ) {
 
     constructor(value: Int, signed: Boolean, width: Int) : this(BigInteger.valueOf(value.toLong()), signed, width)
 
+    fun isInRange(): Boolean {
+        return if (signed) {
+            val maxValue = BigInteger.ONE.shiftLeft(width - 1)
+            (value < maxValue) && (value >= -maxValue)
+        } else {
+            value < BigInteger.ONE.shiftLeft(width)
+        }
+    }
+
+    fun getModValue(): BigInteger {
+        return mod(value, width)
+    }
+
     fun add(bitConstant: BitConstant, expression: EExpression): BitConstant {
         val resultWidth = expression.type.asBitWidth(expression)
         val resultSigned = expression.type.asBitSigned(expression)
-        val resultValue = truncate(this.value + bitConstant.value, resultWidth)
+        val resultValue = mod(value + bitConstant.value, resultWidth)
         return BitConstant(resultValue, resultSigned, resultWidth)
     }
 
     fun sub(bitConstant: BitConstant, expression: EExpression): BitConstant {
         val resultWidth = expression.type.asBitWidth(expression)
         val resultSigned = expression.type.asBitSigned(expression)
-        val resultValue = truncate(this.value - bitConstant.value, resultWidth)
+        val resultValue = mod(value - bitConstant.value, resultWidth)
         return BitConstant(resultValue, resultSigned, resultWidth)
     }
 
     companion object {
 
-        private fun truncate(value: BigInteger, width: Int): BigInteger {
-            return value.mod(BigInteger.ONE.shiftLeft(width))
+        private fun mod(value: BigInteger, width: Int): BigInteger {
+            val maxValue = BigInteger.ONE.shiftLeft(width)
+            return when {
+                value == BigInteger.ZERO -> BigInteger.ZERO
+                value > BigInteger.ZERO -> value.mod(maxValue)
+                else -> {
+                    val negativeMod = value.unaryMinus().mod(maxValue)
+                    (maxValue - negativeMod).mod(maxValue)
+                }
+            }
         }
     }
 }

@@ -102,6 +102,10 @@ object Messages {
         "Error parsing bit constant: $0"
     )
 
+    val BIT_CONSTANT_INSUFFICIENT_WIDTH = ErrorMessageTemplate1<String>(
+        "Bit constant is insufficiently wide: $0"
+    )
+
 //  MID CHECK  /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val TOP_NOT_MODULE = ErrorMessageTemplate0(

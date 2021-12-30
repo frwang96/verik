@@ -45,6 +45,17 @@ internal class BitConstantReducerStageTest : BaseTest() {
     }
 
     @Test
+    fun `constant string unsigned decimal`() {
+        driveElementTest(
+            """
+                var x = u("4'd3")
+            """.trimIndent(),
+            BitConstantReducerStage::class,
+            "ConstantExpression(Ubit<`4`>, 4'h3)"
+        ) { it.findExpression("x") }
+    }
+
+    @Test
     fun `constant string unsigned binary`() {
         driveElementTest(
             """
@@ -96,6 +107,17 @@ internal class BitConstantReducerStageTest : BaseTest() {
             """.trimIndent(),
             true,
             "Error parsing bit constant: 12'hxyz"
+        )
+    }
+
+    @Test
+    fun `constant string insufficient width`() {
+        driveMessageTest(
+            """
+                var x = u("1'hf")
+            """.trimIndent(),
+            true,
+            "Bit constant is insufficiently wide: 1'hf"
         )
     }
 }

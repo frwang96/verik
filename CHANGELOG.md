@@ -4,6 +4,7 @@
 ### Added
 - Support conditional compiler directives in importer.
 - Support macro definitions in importer.
+- Support decimal literals in `u` and `s` functions.
 
 ### Changed
 - Adopt `StageType` based stage sequence in importer.
