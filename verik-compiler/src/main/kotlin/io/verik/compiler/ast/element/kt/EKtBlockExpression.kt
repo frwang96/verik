@@ -46,5 +46,16 @@ class EKtBlockExpression(
         fun empty(location: SourceLocation): EKtBlockExpression {
             return EKtBlockExpression(location, location, Core.Kt.C_Unit.toType(), ArrayList())
         }
+
+        fun wrap(expression: EExpression): EKtBlockExpression {
+            return if (expression !is EKtBlockExpression) {
+                EKtBlockExpression(
+                    expression.location,
+                    expression.location,
+                    expression.type.copy(),
+                    arrayListOf(expression)
+                )
+            } else expression
+        }
     }
 }

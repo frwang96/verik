@@ -29,7 +29,7 @@ internal class AnnotationEntryCheckerStageTest : BaseTest() {
                 class C
             """.trimIndent(),
             true,
-            "Top level declaration must be a module"
+            "Declaration annotated as top must be a module"
         )
     }
 

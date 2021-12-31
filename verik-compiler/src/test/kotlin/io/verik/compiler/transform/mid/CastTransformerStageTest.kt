@@ -85,7 +85,7 @@ internal class CastTransformerStageTest : BaseTest() {
                     IfExpression(
                         Unit,
                         KtCallExpression(Boolean, not, KtCallExpression(Boolean, ${'$'}cast, null, *, []), [], []),
-                        KtCallExpression(Nothing, fatal, null, [StringExpression(*)], []),
+                        KtBlockExpression(Nothing, [KtCallExpression(Nothing, fatal, null, [StringExpression(*)], [])]),
                         null
                     ),
                     ReferenceExpression(Int, <tmp>, null)

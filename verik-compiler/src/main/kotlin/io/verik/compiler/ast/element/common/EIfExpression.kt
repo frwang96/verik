@@ -27,8 +27,8 @@ class EIfExpression(
     override val location: SourceLocation,
     override var type: Type,
     var condition: EExpression,
-    var thenExpression: EExpression?,
-    var elseExpression: EExpression?
+    var thenExpression: EAbstractBlockExpression?,
+    var elseExpression: EAbstractBlockExpression?
 ) : EExpression(), ExpressionContainer {
 
     override val serializationType = SerializationType.STATEMENT
@@ -58,11 +58,11 @@ class EIfExpression(
                 true
             }
             thenExpression -> {
-                thenExpression = newExpression
+                thenExpression = newExpression.cast()
                 true
             }
             elseExpression -> {
-                elseExpression = newExpression
+                elseExpression = newExpression.cast()
                 true
             }
             else -> false

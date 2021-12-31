@@ -17,6 +17,7 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.property.WhenEntry
 import io.verik.compiler.common.location
@@ -40,7 +41,7 @@ object WhenExpressionCaster {
     private fun castWhenEntry(whenEntry: KtWhenEntry, castContext: CastContext): WhenEntry {
         val conditions = whenEntry.conditions.mapNotNull { castWhenCondition(it, castContext) }
         val body = castContext.casterVisitor.getExpression(whenEntry.expression!!)
-        return WhenEntry(ArrayList(conditions), body)
+        return WhenEntry(ArrayList(conditions), EKtBlockExpression.wrap(body))
     }
 
     private fun castWhenCondition(whenCondition: KtWhenCondition, castContext: CastContext): EExpression {

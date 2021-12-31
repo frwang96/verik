@@ -296,7 +296,14 @@ internal class ExpressionCasterTest : BaseTest() {
                 var y = if (x) 1 else 0
             """.trimIndent(),
             CasterStage::class,
-            "IfExpression(Int, ReferenceExpression(*), ConstantExpression(*), ConstantExpression(*))"
+            """
+                IfExpression(
+                    Int,
+                    ReferenceExpression(Boolean, x, null),
+                    KtBlockExpression(Int, [ConstantExpression(*)]),
+                    KtBlockExpression(Int, [ConstantExpression(*)])
+                )
+            """.trimIndent()
         ) { it.findExpression("y") }
     }
 

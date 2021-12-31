@@ -16,12 +16,12 @@
 
 package io.verik.compiler.transform.mid
 
+import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
@@ -107,7 +107,7 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
             property: ESvProperty
         ): EWhenExpression {
             whenExpression.entries.forEach {
-                it.body = wrapAssignment(it.body, property)
+                it.body = wrapAssignmentBlock(it.body, property)
                 it.body.parent = whenExpression
             }
             return EWhenExpression(
@@ -123,8 +123,8 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
             ifExpression: EIfExpression,
             property: ESvProperty
         ): EIfExpression {
-            val thenExpression = wrapAssignment(ifExpression.thenExpression!!, property)
-            val elseExpression = wrapAssignment(ifExpression.elseExpression!!, property)
+            val thenExpression = wrapAssignmentBlock(ifExpression.thenExpression!!, property)
+            val elseExpression = wrapAssignmentBlock(ifExpression.elseExpression!!, property)
             return EIfExpression(
                 ifExpression.location,
                 Core.Kt.C_Unit.toType(),
@@ -134,24 +134,29 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
             )
         }
 
-        private fun wrapAssignment(expression: EExpression, property: ESvProperty): EExpression {
-            return if (expression is EKtBlockExpression) {
-                val index = expression.statements.lastIndex
-                expression.statements[index] = wrapAssignment(expression.statements[index], property)
-                expression.statements[index].parent = expression
+        private fun wrapAssignmentBlock(
+            expression: EAbstractBlockExpression,
+            property: ESvProperty
+        ): EAbstractBlockExpression {
+            val index = expression.statements.lastIndex
+            val wrappedExpression = wrapAssignmentExpression(expression.statements[index], property)
+            wrappedExpression.parent = expression
+            expression.statements[index] = wrappedExpression
+            expression.type = wrappedExpression.type.copy()
+            return expression
+        }
+
+        private fun wrapAssignmentExpression(expression: EExpression, property: ESvProperty): EExpression {
+            return if (expression.type.reference == Core.Kt.C_Nothing) {
                 expression
             } else {
-                if (expression.type.reference == Core.Kt.C_Nothing) {
-                    expression
-                } else {
-                    EKtBinaryExpression(
-                        expression.location,
-                        Core.Kt.C_Unit.toType(),
-                        EReferenceExpression(expression.location, property.type.copy(), property, null),
-                        expression,
-                        KtBinaryOperatorKind.EQ
-                    )
-                }
+                EKtBinaryExpression(
+                    expression.location,
+                    Core.Kt.C_Unit.toType(),
+                    EReferenceExpression(expression.location, property.type.copy(), property, null),
+                    expression,
+                    KtBinaryOperatorKind.EQ
+                )
             }
         }
     }

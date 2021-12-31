@@ -66,7 +66,7 @@ class EWhenExpression(
             if (entry.conditions.replaceIfContains(oldExpression, newExpression))
                 return true
             if (entry.body == oldExpression) {
-                entry.body = newExpression
+                entry.body = newExpression.cast()
                 return true
             }
         }

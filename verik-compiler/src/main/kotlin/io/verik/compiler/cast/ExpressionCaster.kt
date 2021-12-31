@@ -288,10 +288,10 @@ object ExpressionCaster {
         val type = castContext.castType(expression)
         val condition = castContext.casterVisitor.getExpression(expression.condition!!)
         val thenExpression = expression.then?.let {
-            castContext.casterVisitor.getExpression(it)
+            EKtBlockExpression.wrap(castContext.casterVisitor.getExpression(it))
         }
         val elseExpression = expression.`else`?.let {
-            castContext.casterVisitor.getExpression(it)
+            EKtBlockExpression.wrap(castContext.casterVisitor.getExpression(it))
         }
         return EIfExpression(location, type, condition, thenExpression, elseExpression)
     }

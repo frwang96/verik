@@ -41,11 +41,13 @@ internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
                     IfExpression(
                         Unit,
                         ReferenceExpression(*),
-                        KtBlockExpression(Int, [
+                        KtBlockExpression(Unit, [
                             KtCallExpression(*),
                             KtBinaryExpression(Unit, ReferenceExpression(Int, <tmp>, null), ConstantExpression(*), EQ)
                         ]),
-                        KtBinaryExpression(Unit, ReferenceExpression(Int, <tmp>, null), ConstantExpression(*), EQ)
+                        KtBlockExpression(Unit, [
+                            KtBinaryExpression(Unit, ReferenceExpression(Int, <tmp>, null), ConstantExpression(*), EQ)
+                        ])
                     ),
                     PropertyStatement(Unit, SvProperty(y, Int, ReferenceExpression(Int, <tmp>, null), 0, 0, 0))
                 ]
@@ -67,10 +69,11 @@ internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
             """
                 [
                     PropertyStatement(Unit, SvProperty(<tmp>, Int, null, 0, 0, 0)),
-                    WhenExpression(
-                        Unit, null,
-                        [WhenEntry([], KtBinaryExpression(Unit, ReferenceExpression(Int, <tmp>, null), *, EQ))]
-                    ),
+                    WhenExpression(Unit, null, [
+                        WhenEntry([], KtBlockExpression(
+                            Unit, [KtBinaryExpression(Unit, ReferenceExpression(Int, <tmp>, null), *, EQ)]
+                        ))
+                    ]),
                     PropertyStatement(Unit, SvProperty(y, Int, ReferenceExpression(Int, <tmp>, null), 0, 0, 0))
                 ]
             """.trimIndent()
@@ -95,7 +98,7 @@ internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
                     PropertyStatement(Unit, SvProperty(<tmp>, Int, null, 0, 0, 0)),
                     WhenExpression(
                         Unit, null,
-                        [*, WhenEntry([], KtCallExpression(Nothing, fatal, null, [], []))]
+                        [*, WhenEntry([], KtBlockExpression(Nothing, [KtCallExpression(Nothing, fatal, null, [], [])]))]
                     ),
                     PropertyStatement(Unit, SvProperty(y, Int, ReferenceExpression(Int, <tmp>, null), 0, 0, 0))
                 ]
