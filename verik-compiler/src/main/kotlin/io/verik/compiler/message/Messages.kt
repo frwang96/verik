@@ -109,11 +109,11 @@ object Messages {
 //  MID CHECK  /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val TOP_NOT_MODULE = ErrorMessageTemplate0(
-        "Top level declaration must be a module"
+        "Declaration annotated as top must be a module"
     )
 
     val TOP_PARAMETERIZED = ErrorMessageTemplate0(
-        "Type parameters not permitted on top level declaration"
+        "Type parameters not permitted on declaration annotated as top"
     )
 
     val CONFLICTING_ANNOTATIONS = ErrorMessageTemplate2<AnnotationEntry, AnnotationEntry>(

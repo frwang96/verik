@@ -263,29 +263,19 @@ object ExpressionSerializer {
         serializerContext.append(")")
         val thenExpression = ifExpression.thenExpression
         if (thenExpression != null) {
-            if (thenExpression is ESvBlockExpression) {
-                serializerContext.append(" ")
-                serializerContext.serializeAsStatement(thenExpression)
-            } else {
-                serializerContext.appendLine()
-                serializerContext.indent {
-                    serializerContext.serializeAsStatement(thenExpression)
-                }
-            }
+            serializerContext.append(" ")
+            serializerContext.serializeAsStatement(thenExpression)
         } else {
             serializerContext.appendLine(";")
         }
         val elseExpression = ifExpression.elseExpression
         if (elseExpression != null) {
             serializerContext.label(elseExpression) {
-                if (elseExpression is ESvBlockExpression || elseExpression is EIfExpression) {
-                    serializerContext.append("else ")
-                    serializerContext.serializeAsStatement(elseExpression)
+                serializerContext.append("else ")
+                if (elseExpression.statements.size == 1 && elseExpression.statements[0] is EIfExpression) {
+                    serializerContext.serializeAsStatement(elseExpression.statements[0])
                 } else {
-                    serializerContext.appendLine("else")
-                    serializerContext.indent {
-                        serializerContext.serializeAsStatement(elseExpression)
-                    }
+                    serializerContext.serializeAsStatement(elseExpression)
                 }
             }
         }

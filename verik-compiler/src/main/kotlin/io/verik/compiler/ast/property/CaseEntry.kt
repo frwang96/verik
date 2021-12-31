@@ -16,9 +16,10 @@
 
 package io.verik.compiler.ast.property
 
+import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.EExpression
 
 class CaseEntry(
     var conditions: ArrayList<EExpression>,
-    var body: EExpression
+    var body: EAbstractBlockExpression
 )

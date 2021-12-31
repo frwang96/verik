@@ -318,17 +318,19 @@ internal class ExpressionSerializerTest : BaseTest() {
             """
                 var x = false
                 fun f() {
-                    if (x) 1 else 0
+                    if (x) println() else println()
                 }
             """.trimIndent(),
             """
                 logic x = 1'b0;
                 
                 function automatic void f();
-                    if (x)
-                        1;
-                    else
-                        0;
+                    if (x) begin
+                        ${'$'}display();
+                    end
+                    else begin
+                        ${'$'}display();
+                    end
                 endfunction : f
             """.trimIndent()
         ) { it.regularPackageTextFiles[0] }

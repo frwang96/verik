@@ -18,6 +18,7 @@ package io.verik.compiler.transform.mid
 
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
+import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.element.sv.ECaseStatement
 import io.verik.compiler.ast.property.CaseEntry
@@ -60,7 +61,7 @@ object CaseStatementTransformerStage : ProjectStage() {
             if (entry.conditions.isEmpty())
                 return entry.body
             val elseExpression = if (entries.size > 1) {
-                getIfExpression(entries.drop(1))
+                EKtBlockExpression.wrap(getIfExpression(entries.drop(1)))
             } else null
             return EIfExpression(
                 entry.body.location,

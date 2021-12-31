@@ -95,4 +95,22 @@ internal class ScopeExpressionInsertionTransformerStageTest : BaseTest() {
             "ReferenceExpression(Boolean, x, ReferenceExpression(M, M, ReferenceExpression(Void, ${'$'}root, null)))"
         ) { it.findExpression("f") }
     }
+
+    @Test
+    fun `reference module parent`() {
+        driveElementTest(
+            """
+                @SimTop
+                object M : Module() {
+                    @Suppress("MemberVisibilityCanBePrivate")
+                    val x: Boolean = nc()
+                    fun f() {
+                        x
+                    }
+                }
+            """.trimIndent(),
+            ScopeExpressionInsertionTransformerStage::class,
+            "ReferenceExpression(Boolean, x, null)"
+        ) { it.findExpression("f") }
+    }
 }

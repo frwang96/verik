@@ -21,6 +21,7 @@ import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EAsExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
+import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.ESvProperty
@@ -125,7 +126,7 @@ object CastTransformerStage : ProjectStage() {
                 asExpression.location,
                 Core.Kt.C_Unit.toType(),
                 negatedCallExpression,
-                fatalCallExpression,
+                EKtBlockExpression.wrap(fatalCallExpression),
                 null
             )
             expressionExtractor.extract(

@@ -66,7 +66,7 @@ class ECaseStatement(
             if (it.conditions.replaceIfContains(oldExpression, newExpression))
                 return true
             if (it.body == oldExpression) {
-                it.body = newExpression
+                it.body = newExpression.cast()
                 return true
             }
         }
