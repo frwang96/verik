@@ -16,6 +16,7 @@
 
 package io.verik.compiler.transform.post
 
+import io.verik.compiler.ast.element.common.EAbstractClass
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EFile
@@ -44,6 +45,7 @@ object ScopeExpressionInsertionTransformerStage : ProjectStage() {
     private class ScopeExpressionInsertionTransformerVisitor : TreeVisitor() {
 
         private var parentPackage: EPackage? = null
+        private var parentClass: EAbstractClass? = null
 
         private fun getScopeExpression(receiverExpression: EReceiverExpression): EExpression? {
             when (val reference = receiverExpression.reference) {
@@ -69,13 +71,15 @@ object ScopeExpressionInsertionTransformerStage : ProjectStage() {
                             }
                         }
                         is ESvClass -> {
-                            if (reference is ESvFunction && reference.isStatic)
-                                return EScopeExpression(receiverExpression.location, parent.toType())
-                            if (reference is ESvProperty && reference.isStatic == true)
-                                return EScopeExpression(receiverExpression.location, parent.toType())
+                            if (parent != parentClass) {
+                                if (reference is ESvFunction && reference.isStatic)
+                                    return EScopeExpression(receiverExpression.location, parent.toType())
+                                if (reference is ESvProperty && reference.isStatic == true)
+                                    return EScopeExpression(receiverExpression.location, parent.toType())
+                            }
                         }
                         is EModule -> {
-                            if (parent.isSimulationTop) {
+                            if (parent.isSimulationTop && parent != parentClass) {
                                 val referenceExpression = EReferenceExpression(
                                     receiverExpression.location,
                                     Target.C_Void.toType(),
@@ -102,6 +106,12 @@ object ScopeExpressionInsertionTransformerStage : ProjectStage() {
                 super.visitPackage(`package`)
                 parentPackage = null
             }
+        }
+
+        override fun visitAbstractClass(abstractClass: EAbstractClass) {
+            parentClass = abstractClass
+            super.visitAbstractClass(abstractClass)
+            parentClass = null
         }
 
         override fun visitReceiverExpression(receiverExpression: EReceiverExpression) {
