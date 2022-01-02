@@ -34,7 +34,7 @@ object TemporaryDeclarationRenameStage : ProjectStage() {
 
         override fun visitDeclaration(declaration: EDeclaration) {
             if (declaration.name == "<tmp>") {
-                declaration.name = "_$$index"
+                declaration.name = "__$index"
                 index++
             }
             super.visitDeclaration(declaration)

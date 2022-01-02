@@ -158,14 +158,14 @@ internal class ExpressionSerializerTest : BaseTest() {
             """
                 class C;
                 
-                    static function automatic C _${'$'}new();
-                        automatic C _${'$'}0 = new();
-                        _${'$'}0._${'$'}init();
-                        return _${'$'}0;
-                    endfunction : _${'$'}new
+                    static function automatic C __new();
+                        automatic C __0 = new();
+                        __0.__init();
+                        return __0;
+                    endfunction : __new
                 
-                    function automatic void _${'$'}init();
-                    endfunction : _${'$'}init
+                    function automatic void __init();
+                    endfunction : __init
                 
                     int x = 0;
                 

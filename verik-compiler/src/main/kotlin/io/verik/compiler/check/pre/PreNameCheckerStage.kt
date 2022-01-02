@@ -39,6 +39,8 @@ object PreNameCheckerStage : ProjectStage() {
             val name = dcl.name!!
             if (!name.matches(nameRegex)) {
                 Messages.ILLEGAL_NAME.on(dcl, name)
+            } else if (name.startsWith("__")) {
+                Messages.RESERVED_NAME.on(dcl, name)
             }
         }
     }
