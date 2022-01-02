@@ -187,7 +187,7 @@ object DeclarationSerializer {
             true -> serializerContext.append("static ")
             false -> serializerContext.append("automatic ")
         }
-        if (property.isVirtual())
+        if (TypeSerializer.isVirtual(property.type))
             serializerContext.append("virtual ")
         serializePropertyTypeAndName(property, serializerContext)
         val initializer = property.initializer
@@ -284,7 +284,7 @@ object DeclarationSerializer {
             true -> serializerContext.append("input ")
             false -> serializerContext.append("output ")
         }
-        if (valueParameter.isVirtual())
+        if (TypeSerializer.isVirtual(valueParameter.type))
             serializerContext.append("virtual ")
         serializePropertyTypeAndName(valueParameter, serializerContext)
     }
