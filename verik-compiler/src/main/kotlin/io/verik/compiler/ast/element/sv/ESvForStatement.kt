@@ -16,6 +16,7 @@
 
 package io.verik.compiler.ast.element.sv
 
+import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.DeclarationContainer
@@ -31,7 +32,7 @@ class ESvForStatement(
     var property: ESvProperty,
     var condition: EExpression,
     var iteration: EExpression,
-    var body: EExpression
+    var body: EAbstractBlockExpression
 ) : EExpression(), DeclarationContainer, ExpressionContainer {
 
     override var type = Target.C_Void.toType()
@@ -76,7 +77,7 @@ class ESvForStatement(
                 true
             }
             body -> {
-                body = newExpression
+                body = newExpression.cast()
                 true
             }
             else -> false

@@ -85,3 +85,21 @@ fun wait(event: Event) {
 fun wait(clockingBlock: ClockingBlock) {
     throw VerikException()
 }
+
+/**
+ * Spawn the process [action] and execute it concurrently with the parent process.
+ * To wait until all immediate child processes have terminated use [join].
+ *
+ *      fork { delay(10) }
+ *      join()
+ */
+fun fork(action: () -> Unit) {
+    throw VerikException()
+}
+
+/**
+ * Wait until all immediate child processes spawned by [fork] have terminated.
+ */
+fun join() {
+    throw VerikException()
+}

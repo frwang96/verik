@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,41 +16,24 @@
 
 package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.target.common.Target
 
-class EForeverStatement(
-    override val location: SourceLocation,
-    var body: EAbstractBlockExpression
-) : EExpression(), ExpressionContainer {
+class EWaitForkStatement(
+    override val location: SourceLocation
+) : EExpression() {
 
     override var type = Target.C_Void.toType()
 
     override val serializationType = SerializationType.STATEMENT
 
-    init {
-        body.parent = this
-    }
-
     override fun accept(visitor: Visitor) {
-        visitor.visitForeverStatement(this)
+        visitor.visitWaitForkStatement(this)
     }
 
-    override fun acceptChildren(visitor: TreeVisitor) {
-        body.accept(visitor)
-    }
-
-    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
-        newExpression.parent = this
-        return if (body == oldExpression) {
-            body = newExpression.cast()
-            true
-        } else false
-    }
+    override fun acceptChildren(visitor: TreeVisitor) {}
 }

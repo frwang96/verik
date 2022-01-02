@@ -539,6 +539,44 @@ internal class ExpressionSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `fork statement`() {
+        driveTextFileTest(
+            """
+                @Task
+                fun f() {
+                    fork { delay(10) }
+                }
+            """.trimIndent(),
+            """
+                task automatic f();
+                    fork
+                        begin
+                            #10;
+                        end
+                    join_none
+                endtask : f
+            """.trimIndent()
+        ) { it.regularPackageTextFiles[0] }
+    }
+
+    @Test
+    fun `wait fork statement`() {
+        driveTextFileTest(
+            """
+                @Task
+                fun f() {
+                    join()
+                }
+            """.trimIndent(),
+            """
+                task automatic f();
+                    wait fork;
+                endtask : f
+            """.trimIndent()
+        ) { it.regularPackageTextFiles[0] }
+    }
+
+    @Test
     fun `event control expression`() {
         driveTextFileTest(
             """

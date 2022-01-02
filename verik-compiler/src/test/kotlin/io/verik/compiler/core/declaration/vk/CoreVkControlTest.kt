@@ -114,4 +114,31 @@ internal class CoreVkControlTest : CoreDeclarationTest() {
             """.trimIndent()
         )
     }
+
+    @Test
+    fun `serialize fork join`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Vk.F_fork_Function,
+                Core.Vk.F_join
+            ),
+            """
+                @Task
+                fun f() {
+                    fork { delay(10) }
+                    join()
+                }
+            """.trimIndent(),
+            """
+                task automatic f();
+                    fork
+                        begin
+                            #10;
+                        end
+                    join_none
+                    wait fork;
+                endtask : f
+            """.trimIndent()
+        )
+    }
 }

@@ -23,6 +23,8 @@ import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EEventExpression
 import io.verik.compiler.ast.element.sv.EForeverStatement
+import io.verik.compiler.ast.element.sv.EForkStatement
+import io.verik.compiler.ast.element.sv.EWaitForkStatement
 import io.verik.compiler.ast.property.EdgeType
 import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
 import io.verik.compiler.core.common.CorePackage
@@ -108,6 +110,23 @@ object CoreVkControl : CoreScope(CorePackage.VK) {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             return EEventControlExpression(callExpression.location, callExpression.valueArguments[0])
+        }
+    }
+
+    val F_fork_Function = object : TransformableCoreFunctionDeclaration(parent, "fork", "fun fork(Function)") {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            val functionLiteralExpression = callExpression
+                .valueArguments[0]
+                .cast<EFunctionLiteralExpression>()
+            return EForkStatement(callExpression.location, functionLiteralExpression.body)
+        }
+    }
+
+    val F_join = object : TransformableCoreFunctionDeclaration(parent, "join", "fun join()") {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            return EWaitForkStatement(callExpression.location)
         }
     }
 }
