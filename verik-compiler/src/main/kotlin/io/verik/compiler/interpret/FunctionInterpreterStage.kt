@@ -16,7 +16,6 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
@@ -60,50 +59,20 @@ object FunctionInterpreterStage : ProjectStage() {
         private fun interpret(function: EKtFunction): EDeclaration? {
             val body = function.body
             return when {
-                function.hasAnnotationEntry(AnnotationEntries.COM) -> {
+                function.hasAnnotationEntry(AnnotationEntries.COM) ->
                     EAlwaysComBlock(function.location, function.name, body)
-                }
-                function.hasAnnotationEntry(AnnotationEntries.SEQ) -> {
-                    getAlwaysSeqBlock(function, body)
-                }
-                function.hasAnnotationEntry(AnnotationEntries.RUN) -> {
+                function.hasAnnotationEntry(AnnotationEntries.SEQ) ->
+                    getAlwaysSeqBlock(function)
+                function.hasAnnotationEntry(AnnotationEntries.RUN) ->
                     EInitialBlock(function.location, function.name, body)
-                }
-                function.hasAnnotationEntry(AnnotationEntries.TASK) -> {
-                    val valueParameters = getValueParameters(function.valueParameters, referenceUpdater)
-                    ETask(function.location, function.name, function.body, ArrayList(valueParameters))
-                }
-                else -> {
-                    val valueParameters = getValueParameters(function.valueParameters, referenceUpdater)
-                    val isStatic = when (val parent = function.parent) {
-                        is ESvClass -> parent.isDeclarationsStatic
-                        else -> false
-                    }
-                    val qualifierType = when {
-                        function.isAbstract -> FunctionQualifierType.PURE_VIRTUAL
-                        function.parent is ESvClass -> {
-                            when {
-                                isStatic -> FunctionQualifierType.REGULAR
-                                function.isOverride -> FunctionQualifierType.REGULAR
-                                else -> FunctionQualifierType.VIRTUAL
-                            }
-                        }
-                        else -> FunctionQualifierType.REGULAR
-                    }
-                    ESvFunction(
-                        function.location,
-                        function.name,
-                        function.type,
-                        function.body,
-                        ArrayList(valueParameters),
-                        qualifierType,
-                        isStatic
-                    )
-                }
+                function.hasAnnotationEntry(AnnotationEntries.TASK) ->
+                    getTask(function)
+                else -> getFunction(function)
             }
         }
 
-        private fun getAlwaysSeqBlock(function: EKtFunction, body: EAbstractBlockExpression): EAlwaysSeqBlock? {
+        private fun getAlwaysSeqBlock(function: EKtFunction): EAlwaysSeqBlock? {
+            val body = function.body
             val onExpression = if (body.statements.size == 1) {
                 body.statements[0]
             } else {
@@ -122,6 +91,43 @@ object FunctionInterpreterStage : ProjectStage() {
                 function.name,
                 alwaysSeqBody,
                 eventControlExpression
+            )
+        }
+
+        private fun getTask(function: EKtFunction): ETask {
+            val valueParameters = ArrayList(getValueParameters(function.valueParameters, referenceUpdater))
+            if (function.type.reference != Core.Kt.C_Unit) {
+                val valueParameter = ESvValueParameter(function.location, "__return", function.type.copy(), false)
+                valueParameters.add(valueParameter)
+            }
+            return ETask(function.location, function.name, function.body, valueParameters)
+        }
+
+        private fun getFunction(function: EKtFunction): ESvFunction {
+            val valueParameters = getValueParameters(function.valueParameters, referenceUpdater)
+            val isStatic = when (val parent = function.parent) {
+                is ESvClass -> parent.isDeclarationsStatic
+                else -> false
+            }
+            val qualifierType = when {
+                function.isAbstract -> FunctionQualifierType.PURE_VIRTUAL
+                function.parent is ESvClass -> {
+                    when {
+                        isStatic -> FunctionQualifierType.REGULAR
+                        function.isOverride -> FunctionQualifierType.REGULAR
+                        else -> FunctionQualifierType.VIRTUAL
+                    }
+                }
+                else -> FunctionQualifierType.REGULAR
+            }
+            return ESvFunction(
+                function.location,
+                function.name,
+                function.type,
+                function.body,
+                ArrayList(valueParameters),
+                qualifierType,
+                isStatic
             )
         }
 

@@ -58,7 +58,7 @@ internal class ForStatementTransformerStageTest : BaseTest() {
             """
                 SvForStatement(
                     Void,
-                    SvProperty(<tmp>, Int, ConstantExpression(Int, 0), 0, 1, null),
+                    SvProperty(<tmp>, Int, ConstantExpression(Int, 0), 0, 1, 0),
                     KtBinaryExpression(Boolean, ReferenceExpression(Int, <tmp>, null), ReferenceExpression(*), LT),
                     KtUnaryExpression(Int, ReferenceExpression(Int, <tmp>, null), POST_INC),
                     KtBlockExpression(

@@ -57,8 +57,7 @@ object ExpressionExtractorStage : ProjectStage() {
                     location = callExpression.location,
                     type = callExpression.type.copy(),
                     initializer = callExpressionReplacement,
-                    isMutable = false,
-                    isStatic = false
+                    isMutable = false
                 )
                 val referenceExpression = EReferenceExpression(
                     callExpression.location,

@@ -166,8 +166,7 @@ object ClassInterpreterStage : ProjectStage() {
                     null,
                     arrayListOf()
                 ),
-                isMutable = false,
-                isStatic = false
+                isMutable = false
             )
             val valueParameters = constructor.valueParameters.map {
                 ESvValueParameter(it.location, it.name, it.type.copy(), true)

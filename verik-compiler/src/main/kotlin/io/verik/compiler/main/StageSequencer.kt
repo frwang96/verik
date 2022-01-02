@@ -77,6 +77,7 @@ import io.verik.compiler.transform.mid.InjectedStatementTransformerStage
 import io.verik.compiler.transform.mid.InlineIfExpressionTransformerStage
 import io.verik.compiler.transform.mid.StringTemplateExpressionTransformerStage
 import io.verik.compiler.transform.mid.StructLiteralTransformerStage
+import io.verik.compiler.transform.mid.TaskReturnTransformerStage
 import io.verik.compiler.transform.mid.ToStringTransformerStage
 import io.verik.compiler.transform.mid.UninitializedPropertyTransformerStage
 import io.verik.compiler.transform.post.AssignmentTransformerStage
@@ -162,6 +163,7 @@ object StageSequencer {
         stageSequence.add(StageType.MID_TRANSFORM, InjectedStatementTransformerStage)
         stageSequence.add(StageType.MID_TRANSFORM, StringTemplateExpressionTransformerStage)
         stageSequence.add(StageType.MID_TRANSFORM, CastTransformerStage)
+        stageSequence.add(StageType.MID_TRANSFORM, TaskReturnTransformerStage)
         stageSequence.add(StageType.MID_TRANSFORM, UninitializedPropertyTransformerStage)
         stageSequence.add(StageType.MID_TRANSFORM, ComAssignmentTransformerStage)
         stageSequence.add(StageType.MID_TRANSFORM, ForStatementTransformerStage)

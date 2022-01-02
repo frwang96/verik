@@ -80,6 +80,18 @@ internal class FunctionInterpreterStageTest : BaseTest() {
     }
 
     @Test
+    fun `interpret task with return`() {
+        driveElementTest(
+            """
+                @Task
+                fun t(): Boolean { return false }
+            """.trimIndent(),
+            FunctionInterpreterStage::class,
+            "Task(t, *, [SvValueParameter(__return, Boolean, 0)])"
+        ) { it.findDeclaration("t") }
+    }
+
+    @Test
     fun `interpret function`() {
         driveElementTest(
             """

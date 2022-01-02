@@ -124,8 +124,7 @@ object ForStatementTransformerStage : ProjectStage() {
                 location = referenceExpression.location,
                 type = Core.Kt.C_Int.toType(),
                 initializer = EConstantExpression(referenceExpression.location, Core.Kt.C_Int.toType(), "0"),
-                isMutable = true,
-                isStatic = null
+                isMutable = true
             )
             val indexReferenceExpression = EReferenceExpression(
                 indexProperty.location,

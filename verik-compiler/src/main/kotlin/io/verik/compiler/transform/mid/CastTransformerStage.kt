@@ -84,8 +84,7 @@ object CastTransformerStage : ProjectStage() {
                 location = asExpression.location,
                 type = asExpression.type.copy(),
                 initializer = null,
-                isMutable = false,
-                isStatic = false
+                isMutable = false
             )
             val referenceExpression = EReferenceExpression(
                 property.location,

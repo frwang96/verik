@@ -51,8 +51,7 @@ class ESvProperty(
             location: SourceLocation,
             type: Type,
             initializer: EExpression?,
-            isMutable: Boolean,
-            isStatic: Boolean?
+            isMutable: Boolean
         ): ESvProperty {
             return ESvProperty(
                 location = location,
@@ -61,7 +60,7 @@ class ESvProperty(
                 initializer = initializer,
                 isComAssignment = false,
                 isMutable = isMutable,
-                isStatic = isStatic
+                isStatic = false
             )
         }
     }
