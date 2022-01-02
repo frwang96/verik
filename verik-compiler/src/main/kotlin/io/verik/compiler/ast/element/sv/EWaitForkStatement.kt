@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,21 +16,23 @@
 
 package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.element.common.EAbstractValueParameter
-import io.verik.compiler.ast.property.Type
+import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
+import io.verik.compiler.target.common.Target
 
-class ESvValueParameter(
-    override val location: SourceLocation,
-    override var name: String,
-    override var type: Type,
-    val isInput: Boolean
-) : EAbstractValueParameter() {
+class EWaitForkStatement(
+    override val location: SourceLocation
+) : EExpression() {
+
+    override var type = Target.C_Void.toType()
+
+    override val serializationType = SerializationType.STATEMENT
 
     override fun accept(visitor: Visitor) {
-        visitor.visitSvValueParameter(this)
+        visitor.visitWaitForkStatement(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {}

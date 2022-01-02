@@ -30,6 +30,7 @@ import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EEventExpression
 import io.verik.compiler.ast.element.sv.EForeverStatement
+import io.verik.compiler.ast.element.sv.EForkStatement
 import io.verik.compiler.ast.element.sv.EImmediateAssertStatement
 import io.verik.compiler.ast.element.sv.EInjectedStatement
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
@@ -365,6 +366,18 @@ object ExpressionSerializer {
         serializerContext.serializeAsExpression(repeatStatement.condition)
         serializerContext.append(") ")
         serializerContext.serializeAsStatement(repeatStatement.body)
+    }
+
+    fun serializeForkStatement(forkStatement: EForkStatement, serializerContext: SerializerContext) {
+        serializerContext.appendLine("fork")
+        serializerContext.indent {
+            serializerContext.serializeAsStatement(forkStatement.body)
+        }
+        serializerContext.appendLine("join_none")
+    }
+
+    fun serializeWaitForkStatement(serializerContext: SerializerContext) {
+        serializerContext.appendLine("wait fork;")
     }
 
     fun serializeEventExpression(eventExpression: EEventExpression, serializerContext: SerializerContext) {

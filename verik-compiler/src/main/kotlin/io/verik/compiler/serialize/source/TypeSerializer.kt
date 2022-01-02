@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.common.EAbstractClass
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EPackage
 import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
+import io.verik.compiler.ast.element.sv.EModuleInterface
 import io.verik.compiler.ast.element.sv.EModulePort
 import io.verik.compiler.ast.element.sv.ETypeDefinition
 import io.verik.compiler.ast.property.Type
@@ -55,5 +56,9 @@ object TypeSerializer {
                 Messages.INTERNAL_ERROR.on(element, "Unable to serialize type: $type")
             }
         }
+    }
+
+    fun isVirtual(type: Type): Boolean {
+        return type.reference is EModuleInterface
     }
 }

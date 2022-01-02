@@ -40,6 +40,7 @@ import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EEventExpression
 import io.verik.compiler.ast.element.sv.EForeverStatement
+import io.verik.compiler.ast.element.sv.EForkStatement
 import io.verik.compiler.ast.element.sv.EImmediateAssertStatement
 import io.verik.compiler.ast.element.sv.EInitialBlock
 import io.verik.compiler.ast.element.sv.EInjectedProperty
@@ -69,6 +70,7 @@ import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.element.sv.ETask
 import io.verik.compiler.ast.element.sv.ETypeDefinition
+import io.verik.compiler.ast.element.sv.EWaitForkStatement
 import io.verik.compiler.ast.element.sv.EWidthCastExpression
 import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.common.Visitor
@@ -309,6 +311,14 @@ class SourceSerializerVisitor(
 
     override fun visitRepeatStatement(repeatStatement: ERepeatStatement) {
         ExpressionSerializer.serializeRepeatStatement(repeatStatement, serializerContext)
+    }
+
+    override fun visitForkStatement(forkStatement: EForkStatement) {
+        ExpressionSerializer.serializeForkStatement(forkStatement, serializerContext)
+    }
+
+    override fun visitWaitForkStatement(waitForkStatement: EWaitForkStatement) {
+        ExpressionSerializer.serializeWaitForkStatement(serializerContext)
     }
 
     override fun visitEventExpression(eventExpression: EEventExpression) {

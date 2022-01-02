@@ -51,8 +51,7 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
                     location = ifExpression.location,
                     type = ifExpression.type.copy(),
                     initializer = null,
-                    isMutable = false,
-                    isStatic = false
+                    isMutable = false
                 )
                 val referenceExpression = EReferenceExpression(
                     ifExpression.location,
@@ -60,10 +59,7 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
                     property,
                     null
                 )
-                val propertyStatement = EPropertyStatement(
-                    ifExpression.location,
-                    property
-                )
+                val propertyStatement = EPropertyStatement(ifExpression.location, property)
                 val ifExpressionReplacement = getIfExpressionReplacement(ifExpression, property)
                 expressionExtractor.extract(
                     ifExpression,
@@ -80,8 +76,7 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
                     location = whenExpression.location,
                     type = whenExpression.type.copy(),
                     initializer = null,
-                    isMutable = false,
-                    isStatic = false
+                    isMutable = false
                 )
                 val referenceExpression = EReferenceExpression(
                     whenExpression.location,

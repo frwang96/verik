@@ -16,6 +16,7 @@
 
 package io.verik.compiler.ast.element.sv
 
+import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.SerializationType
@@ -27,7 +28,7 @@ import io.verik.compiler.target.common.Target
 class ERepeatStatement(
     override val location: SourceLocation,
     var condition: EExpression,
-    var body: EExpression
+    var body: EAbstractBlockExpression
 ) : EExpression(), ExpressionContainer {
 
     override var type = Target.C_Void.toType()
@@ -56,7 +57,7 @@ class ERepeatStatement(
                 true
             }
             body -> {
-                body = newExpression
+                body = newExpression.cast()
                 true
             }
             else -> false

@@ -20,7 +20,6 @@ import io.verik.compiler.ast.element.common.EAbstractInitializedProperty
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
 
 class ESvProperty(
@@ -37,10 +36,6 @@ class ESvProperty(
         initializer?.parent = this
     }
 
-    fun isVirtual(): Boolean {
-        return type.isSubtype(Core.Vk.C_ModuleInterface)
-    }
-
     override fun accept(visitor: Visitor) {
         return visitor.visitSvProperty(this)
     }
@@ -51,8 +46,7 @@ class ESvProperty(
             location: SourceLocation,
             type: Type,
             initializer: EExpression?,
-            isMutable: Boolean,
-            isStatic: Boolean?
+            isMutable: Boolean
         ): ESvProperty {
             return ESvProperty(
                 location = location,
@@ -61,7 +55,7 @@ class ESvProperty(
                 initializer = initializer,
                 isComAssignment = false,
                 isMutable = isMutable,
-                isStatic = isStatic
+                isStatic = false
             )
         }
     }

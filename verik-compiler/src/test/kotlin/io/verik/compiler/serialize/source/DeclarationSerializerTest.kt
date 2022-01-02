@@ -30,9 +30,9 @@ internal class DeclarationSerializerTest : BaseTest() {
                 }
             """.trimIndent(),
             """
-                typedef logic _${'$'}0 [7:0];
+                typedef logic __0 [7:0];
                 
-                function automatic _${'$'}0 f(
+                function automatic __0 f(
                     input logic x [7:0]
                 );
                     return x;
@@ -110,14 +110,14 @@ internal class DeclarationSerializerTest : BaseTest() {
             """
                 class C;
                 
-                    static function automatic C _${'$'}new();
-                        automatic C _${'$'}0 = new();
-                        _${'$'}0._${'$'}init();
-                        return _${'$'}0;
-                    endfunction : _${'$'}new
+                    static function automatic C __new();
+                        automatic C __0 = new();
+                        __0.__init();
+                        return __0;
+                    endfunction : __new
                 
-                    function automatic void _${'$'}init();
-                    endfunction : _${'$'}init
+                    function automatic void __init();
+                    endfunction : __init
                 
                 endclass : C
             """.trimIndent()

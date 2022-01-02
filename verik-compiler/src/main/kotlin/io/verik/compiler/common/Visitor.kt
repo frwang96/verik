@@ -86,6 +86,7 @@ import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EEventExpression
 import io.verik.compiler.ast.element.sv.EForeverStatement
+import io.verik.compiler.ast.element.sv.EForkStatement
 import io.verik.compiler.ast.element.sv.EImmediateAssertStatement
 import io.verik.compiler.ast.element.sv.EInitialBlock
 import io.verik.compiler.ast.element.sv.EInjectedProperty
@@ -117,6 +118,7 @@ import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.element.sv.ETask
 import io.verik.compiler.ast.element.sv.ETypeDefinition
+import io.verik.compiler.ast.element.sv.EWaitForkStatement
 import io.verik.compiler.ast.element.sv.EWidthCastExpression
 
 abstract class Visitor {
@@ -521,6 +523,14 @@ abstract class Visitor {
 
     open fun visitRepeatStatement(repeatStatement: ERepeatStatement) {
         visitExpression(repeatStatement)
+    }
+
+    open fun visitForkStatement(forkStatement: EForkStatement) {
+        visitExpression(forkStatement)
+    }
+
+    open fun visitWaitForkStatement(waitForkStatement: EWaitForkStatement) {
+        visitExpression(waitForkStatement)
     }
 
     open fun visitEventExpression(eventExpression: EEventExpression) {

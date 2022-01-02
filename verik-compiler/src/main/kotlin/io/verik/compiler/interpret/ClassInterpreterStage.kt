@@ -69,7 +69,7 @@ object ClassInterpreterStage : ProjectStage() {
             }
             val initializer = ESvFunction(
                 constructor.location,
-                "_${'$'}init",
+                "__init",
                 Core.Kt.C_Unit.toType(),
                 constructor.body,
                 ArrayList(valueParameters),
@@ -166,8 +166,7 @@ object ClassInterpreterStage : ProjectStage() {
                     null,
                     arrayListOf()
                 ),
-                isMutable = false,
-                isStatic = false
+                isMutable = false
             )
             val valueParameters = constructor.valueParameters.map {
                 ESvValueParameter(it.location, it.name, it.type.copy(), true)
@@ -198,7 +197,7 @@ object ClassInterpreterStage : ProjectStage() {
 
             val instantiator = ESvFunction(
                 constructor.location,
-                "_${'$'}new",
+                "__new",
                 constructor.type,
                 EKtBlockExpression(constructor.location, constructor.location, Core.Kt.C_Unit.toType(), statements),
                 ArrayList(valueParameters),

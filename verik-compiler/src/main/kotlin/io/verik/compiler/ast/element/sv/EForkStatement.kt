@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.target.common.Target
 
-class EForeverStatement(
+class EForkStatement(
     override val location: SourceLocation,
     var body: EAbstractBlockExpression
 ) : EExpression(), ExpressionContainer {
@@ -39,7 +39,7 @@ class EForeverStatement(
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitForeverStatement(this)
+        visitor.visitForkStatement(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {

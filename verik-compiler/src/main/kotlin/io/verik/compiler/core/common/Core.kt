@@ -190,6 +190,8 @@ object Core {
         val F_wait_Boolean = CoreVkControl.F_wait_Boolean
         val F_wait_Event = CoreVkControl.F_wait_Event
         val F_wait_ClockingBlock = CoreVkControl.F_wait_ClockingBlock
+        val F_fork_Function = CoreVkControl.F_fork_Function
+        val F_join = CoreVkControl.F_join
 
         val F_cat_Any_Any = CoreVkMisc.F_cat_Any_Any
         val F_rep_Any = CoreVkMisc.F_rep_Any

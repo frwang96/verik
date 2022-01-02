@@ -5,9 +5,12 @@
 - Support conditional compiler directives in importer.
 - Support macro definitions in importer.
 - Support decimal literals in `u` and `s` functions.
+- Support tasks with return values.
+- `fork` and `join` functions.
 
 ### Changed
 - Adopt `StageType` based stage sequence in importer.
+- Turn off `enableLineDirective` by default.
 
 ## [0.1.11]
 ### Added
