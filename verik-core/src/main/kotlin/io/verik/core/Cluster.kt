@@ -21,7 +21,7 @@ package io.verik.core
 /**
  * (UNIMPLEMENTED) A cluster of components [C] of size [N].
  */
-class Cluster<N : `*`, C : Component>(instantiator: (Int) -> C) : Component(), Iterable<C> {
+class Cluster<N : `*`, C : Component> private constructor() : Component(), Iterable<C> {
 
     override fun iterator(): Iterator<C> {
         throw VerikException()
@@ -33,4 +33,11 @@ class Cluster<N : `*`, C : Component>(instantiator: (Int) -> C) : Component(), I
     operator fun get(index: Int): C {
         throw VerikException()
     }
+}
+
+/**
+ * (UNIMPLEMENTED) Instantiate a [Cluster] of components [C] of size [N].
+ */
+fun <N : `*`, C : Component> cluster(instantiator: (Int) -> C): Cluster<N, C> {
+    throw VerikException()
 }

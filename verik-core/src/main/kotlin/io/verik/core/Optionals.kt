@@ -14,35 +14,32 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused", "UNUSED_TYPEALIAS_PARAMETER")
+@file:Suppress("unused", "UNUSED_TYPEALIAS_PARAMETER", "UNUSED_PARAMETER")
 
 package io.verik.core
 
-sealed class Logical
+sealed class Optional
 
-typealias `?` = Logical
+typealias `?` = Optional
 
 /**
- * (UNIMPLEMENTED) Logical true value.
+ * (UNIMPLEMENTED) Optional true value.
  */
 typealias TRUE = `?`
 
 /**
- * (UNIMPLEMENTED) Logical false value.
+ * (UNIMPLEMENTED) Optional false value.
  */
 typealias FALSE = `?`
 
 /**
- * (UNIMPLEMENTED) Inverts the logical X.
+ * (UNIMPLEMENTED) Inverts the optional X.
  */
 typealias NOT<X> = `?`
 
 /**
- * (UNIMPLEMENTED) Takes the conjunction of the logicals X and Y.
+ * Optionally instantiates component [C] based on the optional [X].
  */
-typealias AND<X, Y> = `?`
-
-/**
- * (UNIMPLEMENTED) Takes the disjunction of the logicals X and Y.
- */
-typealias OR<X, Y> = `?`
+fun <X : `?`, C : Component> optional(instantiator: () -> C): C? {
+    throw VerikException()
+}
