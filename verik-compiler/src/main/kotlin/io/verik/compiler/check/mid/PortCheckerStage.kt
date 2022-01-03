@@ -69,7 +69,8 @@ object PortCheckerStage : ProjectStage() {
                         Messages.PORT_MUTABLE.on(valueParameter, "Clocking block", valueParameter.name)
                 }
                 else -> {
-                    Messages.PORT_NO_DIRECTIONALITY.on(valueParameter, valueParameter.name)
+                    if (valueParameter.isMutable)
+                        Messages.PORT_NO_DIRECTIONALITY.on(valueParameter, valueParameter.name)
                 }
             }
         }

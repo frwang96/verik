@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtProperty
+import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.AnnotationEntries
@@ -68,9 +69,18 @@ object PortInstantiationCheckerStage : ProjectStage() {
             callExpression.valueArguments
                 .zip(primaryConstructor.valueParameters)
                 .forEach { (valueArgument, valueParameter) ->
-                    if (valueParameter.hasAnnotationEntry(AnnotationEntries.OUT))
-                        checkOutputPortExpression(valueArgument)
+                    when {
+                        valueParameter.hasAnnotationEntry(AnnotationEntries.IN) ->
+                            checkInputPortExpression(valueArgument, valueParameter)
+                        valueParameter.hasAnnotationEntry(AnnotationEntries.OUT) ->
+                            checkOutputPortExpression(valueArgument)
+                    }
                 }
+        }
+
+        private fun checkInputPortExpression(expression: EExpression, valueParameter: EKtValueParameter) {
+            if (expression is EKtCallExpression && expression.reference == Core.Vk.F_nc)
+                Messages.UNCONNECTED_INPUT_PORT.on(expression, valueParameter.name)
         }
 
         private fun checkOutputPortExpression(expression: EExpression) {

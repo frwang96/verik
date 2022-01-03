@@ -150,6 +150,7 @@ object ComponentInterpreterStage : ProjectStage() {
                         valueParameter.type.isSubtype(Core.Vk.C_ModuleInterface) -> PortType.MODULE_INTERFACE
                         valueParameter.type.isSubtype(Core.Vk.C_ModulePort) -> PortType.MODULE_PORT
                         valueParameter.type.isSubtype(Core.Vk.C_ClockingBlock) -> PortType.CLOCKING_BLOCK
+                        !valueParameter.isMutable -> PortType.CONSTANT
                         else -> PortType.INPUT
                     }
                 }

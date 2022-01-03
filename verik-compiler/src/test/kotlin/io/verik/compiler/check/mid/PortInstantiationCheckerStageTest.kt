@@ -22,7 +22,22 @@ import org.junit.jupiter.api.Test
 internal class PortInstantiationCheckerStageTest : BaseTest() {
 
     @Test
-    fun `illegal expression`() {
+    fun `input not connected`() {
+        driveMessageTest(
+            """
+                class M(@In var x: Boolean) : Module()
+                class Top : Module() {
+                    @Make
+                    val m = M(nc())
+                }
+            """.trimIndent(),
+            true,
+            "Input port not connected: x"
+        )
+    }
+
+    @Test
+    fun `output illegal expression`() {
         driveMessageTest(
             """
                 class N(@Out var x: Boolean) : Module()
@@ -37,7 +52,7 @@ internal class PortInstantiationCheckerStageTest : BaseTest() {
     }
 
     @Test
-    fun `immutable property`() {
+    fun `output immutable property`() {
         driveMessageTest(
             """
                 class N(@Out var x: Boolean) : Module()

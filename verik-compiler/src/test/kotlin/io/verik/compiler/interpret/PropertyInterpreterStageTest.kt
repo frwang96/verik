@@ -77,21 +77,6 @@ internal class PropertyInterpreterStageTest : BaseTest() {
     }
 
     @Test
-    fun `interpret module instantiation not connected illegal`() {
-        driveMessageTest(
-            """
-                class M(@In var x: Boolean) : Module()
-                class Top : Module() {
-                    @Make
-                    val m = M(nc())
-                }
-            """.trimIndent(),
-            true,
-            "Input port not connected: x"
-        )
-    }
-
-    @Test
     fun `interpret module interface instantiation`() {
         driveElementTest(
             """
