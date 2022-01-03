@@ -25,8 +25,8 @@ enum class UnaryTypeConstraintKind {
 
     fun resolve(type: Type): Type {
         return when (this) {
-            LOG -> Core.Vk.N_LOG.toType(type.copy())
-            WIDTH -> Core.Vk.N_WIDTH.toType(type.copy())
+            LOG -> Core.Vk.T_LOG.toType(type.copy())
+            WIDTH -> Core.Vk.T_WIDTH.toType(type.copy())
         }
     }
 

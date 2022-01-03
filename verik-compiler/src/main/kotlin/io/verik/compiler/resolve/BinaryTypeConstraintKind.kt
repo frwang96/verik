@@ -26,9 +26,9 @@ enum class BinaryTypeConstraintKind {
 
     fun resolve(left: Type, right: Type): Type {
         return when (this) {
-            MAX -> Core.Vk.N_MAX.toType(left.copy(), right.copy())
-            MAX_INC -> Core.Vk.N_INC.toType(Core.Vk.N_MAX.toType(left.copy(), right.copy()))
-            ADD -> Core.Vk.N_ADD.toType(left.copy(), right.copy())
+            MAX -> Core.Vk.T_MAX.toType(left.copy(), right.copy())
+            MAX_INC -> Core.Vk.T_INC.toType(Core.Vk.T_MAX.toType(left.copy(), right.copy()))
+            ADD -> Core.Vk.T_ADD.toType(left.copy(), right.copy())
         }
     }
 

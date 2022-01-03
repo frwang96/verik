@@ -18,7 +18,6 @@ package io.verik.compiler.cast
 
 import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findDeclaration
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class TypeCasterTest : BaseTest() {
@@ -200,7 +199,6 @@ internal class TypeCasterTest : BaseTest() {
     }
 
     @Test
-    @Disabled
     fun `type reference optional function`() {
         driveElementTest(
             """
@@ -208,7 +206,7 @@ internal class TypeCasterTest : BaseTest() {
                 var x: C<NOT<TRUE>> = C()
             """.trimIndent(),
             CasterStage::class,
-            "KtProperty(x, C<`?`>, *, [], 1)"
+            "KtProperty(x, C<NOT<TRUE>>, *, [], 1)"
         ) { it.findDeclaration("x") }
     }
 }

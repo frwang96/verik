@@ -134,14 +134,14 @@ object TypeConstraintResolver {
                             0 -> Cardinal.of(0).toType()
                             1 -> widths[0]
                             else -> widths.reduce { sum, type ->
-                                Core.Vk.N_ADD.toType(sum, type)
+                                Core.Vk.T_ADD.toType(sum, type)
                             }
                         }
                         typeConstraint.callExpression.type.arguments[0] = type
                     }
                     SpecialTypeConstraintKind.REP -> {
                         val typeArgument = typeConstraint.callExpression.typeArguments[0]
-                        val type = Core.Vk.N_MUL.toType(widths[0], typeArgument.copy())
+                        val type = Core.Vk.T_MUL.toType(widths[0], typeArgument.copy())
                         typeConstraint.callExpression.type.arguments[0] = type
                     }
                 }

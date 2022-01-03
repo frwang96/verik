@@ -33,6 +33,8 @@ object CoreDeclarationMap {
         add(QualifiedSignature("${CorePackage.VK.name}.*", "typealias *"), Cardinal.UNRESOLVED)
         add(QualifiedSignature("${CorePackage.VK.name}.Optional", "class Optional"), Optional.UNRESOLVED)
         add(QualifiedSignature("${CorePackage.VK.name}.?", "typealias ?"), Optional.UNRESOLVED)
+        add(QualifiedSignature("${CorePackage.VK.name}.TRUE", "typealias TRUE"), Optional.of(true))
+        add(QualifiedSignature("${CorePackage.VK.name}.FALSE", "typealias FALSE"), Optional.of(false))
     }
 
     private fun addCoreDeclarations(kClass: KClass<*>) {
@@ -59,15 +61,8 @@ object CoreDeclarationMap {
             declarationDescriptor is AbstractTypeAliasDescriptor -> {
                 val name = declarationDescriptor.name.asString()
                 val cardinal = name.toIntOrNull()
-                if (cardinal != null) {
-                    Cardinal.of(cardinal)
-                } else {
-                    when (name) {
-                        "TRUE" -> Optional.of(true)
-                        "FALSE" -> Optional.of(false)
-                        else -> null
-                    }
-                }
+                if (cardinal != null) Cardinal.of(cardinal)
+                else null
             }
             else -> null
         }
