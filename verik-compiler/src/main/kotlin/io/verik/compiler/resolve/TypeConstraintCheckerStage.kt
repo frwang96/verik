@@ -22,7 +22,7 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
-object TypeCheckerStage : ProjectStage() {
+object TypeConstraintCheckerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(TypeCheckerVisitor)

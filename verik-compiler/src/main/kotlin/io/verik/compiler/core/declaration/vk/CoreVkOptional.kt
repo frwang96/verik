@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.property
+package io.verik.compiler.core.declaration.vk
 
-enum class PortType {
-    CONSTANT,
-    INPUT,
-    OUTPUT,
-    MODULE_INTERFACE,
-    MODULE_PORT,
-    CLOCKING_BLOCK
+import io.verik.compiler.core.common.CoreOptionalFunctionDeclaration
+import io.verik.compiler.core.common.CorePackage
+import io.verik.compiler.core.common.CoreScope
+
+object CoreVkOptional : CoreScope(CorePackage.VK) {
+
+    val T_NOT = CoreOptionalFunctionDeclaration(parent, "NOT")
 }

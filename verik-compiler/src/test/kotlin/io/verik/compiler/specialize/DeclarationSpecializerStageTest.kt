@@ -30,8 +30,8 @@ internal class DeclarationSpecializerStageTest : BaseTest() {
                 val c = C<`8`>()
             """.trimIndent(),
             DeclarationSpecializerStage::class,
-            "KtClass(C_8, C_8, [], [], [], 0, 0, 0, PrimaryConstructor(C_8, [], []), null)"
-        ) { it.findDeclaration("C_8") }
+            "KtClass(C_N_8, C_N_8, [], [], [], 0, 0, 0, PrimaryConstructor(C_N_8, [], []), null)"
+        ) { it.findDeclaration("C_N_8") }
     }
 
     @Test
@@ -43,8 +43,8 @@ internal class DeclarationSpecializerStageTest : BaseTest() {
                 val d = D<C>()
             """.trimIndent(),
             DeclarationSpecializerStage::class,
-            "KtClass(D_C, D_C, [], [], [], 0, 0, 0, PrimaryConstructor(D_C, [], []), null)"
-        ) { it.findDeclaration("D_C") }
+            "KtClass(D_T_C, D_T_C, [], [], [], 0, 0, 0, PrimaryConstructor(D_T_C, [], []), null)"
+        ) { it.findDeclaration("D_T_C") }
     }
 
     @Test
@@ -59,12 +59,12 @@ internal class DeclarationSpecializerStageTest : BaseTest() {
             DeclarationSpecializerStage::class,
             """
                 KtClass(
-                    C_8, C_8,
+                    C_N_8, C_N_8,
                     [KtProperty(x, Ubit<`8`>, KtCallExpression(*), [], 0)],
                     [], [], 0, 0, 0, *, null
                 )
             """.trimIndent()
-        ) { it.findDeclaration("C_8") }
+        ) { it.findDeclaration("C_N_8") }
     }
 
     @Test
@@ -75,8 +75,8 @@ internal class DeclarationSpecializerStageTest : BaseTest() {
                 val x = f<`8`>()
             """.trimIndent(),
             DeclarationSpecializerStage::class,
-            "KtFunction(f_8, Unit, KtBlockExpression(*), [], [], [], 0)"
-        ) { it.findDeclaration("f_8") }
+            "KtFunction(f_N_8, Unit, KtBlockExpression(*), [], [], [], 0)"
+        ) { it.findDeclaration("f_N_8") }
     }
 
     @Test

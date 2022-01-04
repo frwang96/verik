@@ -37,7 +37,6 @@ import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.ESvClass
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.property.PortInstantiation
-import io.verik.compiler.ast.property.PortType
 import io.verik.compiler.ast.property.StringEntry
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
@@ -205,8 +204,6 @@ object PropertyInterpreterStage : ProjectStage() {
                 }
             }
             return if (expression is EKtCallExpression && expression.reference == Core.Vk.F_nc) {
-                if (port.portType == PortType.INPUT)
-                    Messages.UNCONNECTED_INPUT_PORT.on(expression, port.name)
                 PortInstantiation(expression.location, port, null)
             } else {
                 PortInstantiation(expression.location, port, expression)

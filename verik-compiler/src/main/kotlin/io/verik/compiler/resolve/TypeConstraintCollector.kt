@@ -237,7 +237,9 @@ object TypeConstraintCollector {
         ) {
             val innerType = inner.type.getArgument(indices)
             val outerType = outer.type.getArgument(indices)
-            if (innerType.isCardinalType() && outerType.isCardinalType()) {
+            val bothAreCardinal = innerType.isCardinalType() && outerType.isCardinalType()
+            val bothAreOptional = innerType.isOptionalType() && outerType.isOptionalType()
+            if (bothAreCardinal || bothAreOptional) {
                 typeConstraints.add(
                     EqualsTypeConstraint(
                         TypeAdapter.ofElement(inner, indices),

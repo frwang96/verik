@@ -45,6 +45,7 @@ object ConstantExpressionReducerStage : ProjectStage() {
                 }
                 Core.Vk.C_Ubit -> {}
                 Core.Vk.C_Sbit -> {}
+                Core.Kt.C_Nothing -> {}
                 else ->
                     Messages.INTERNAL_ERROR.on(
                         constantExpression,

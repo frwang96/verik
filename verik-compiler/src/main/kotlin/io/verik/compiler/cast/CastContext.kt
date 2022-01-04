@@ -19,9 +19,9 @@ package io.verik.compiler.cast
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.Type
-import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.core.common.CoreDeclarationMap
 import io.verik.compiler.core.common.CorePackage
+import io.verik.compiler.core.common.NullDeclaration
 import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.backend.common.serialization.findPackage
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor

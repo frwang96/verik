@@ -31,6 +31,10 @@ object CoreDeclarationMap {
         addCoreDeclarations(Core::class)
         add(QualifiedSignature("${CorePackage.VK.name}.Cardinal", "class Cardinal"), Cardinal.UNRESOLVED)
         add(QualifiedSignature("${CorePackage.VK.name}.*", "typealias *"), Cardinal.UNRESOLVED)
+        add(QualifiedSignature("${CorePackage.VK.name}.Optional", "class Optional"), Optional.UNRESOLVED)
+        add(QualifiedSignature("${CorePackage.VK.name}.?", "typealias ?"), Optional.UNRESOLVED)
+        add(QualifiedSignature("${CorePackage.VK.name}.TRUE", "typealias TRUE"), Optional.of(true))
+        add(QualifiedSignature("${CorePackage.VK.name}.FALSE", "typealias FALSE"), Optional.of(false))
     }
 
     private fun addCoreDeclarations(kClass: KClass<*>) {

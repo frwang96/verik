@@ -160,6 +160,10 @@ object Messages {
         "Could not determine directionality of port: $0"
     )
 
+    val UNCONNECTED_INPUT_PORT = ErrorMessageTemplate1<String>(
+        "Input port not connected: $0"
+    )
+
     val OUTPUT_PORT_NOT_MUTABLE = ErrorMessageTemplate1<String>(
         "Property assigned by output port must be declared as var: $0"
     )
@@ -172,6 +176,10 @@ object Messages {
 
     val TYPE_NO_WIDTH = ErrorMessageTemplate1<Type>(
         "Could not get width of type: $0"
+    )
+
+    val UNRESOLVED_DECLARATION = ErrorMessageTemplate1<String>(
+        "Type of declaration could not be resolved: $0"
     )
 
     val UNRESOLVED_EXPRESSION = ErrorMessageTemplate0(
@@ -206,10 +214,6 @@ object Messages {
 
     val MISMATCHED_PORT_NAME = ErrorMessageTemplate1<String>(
         "Port instantiation must match port name: $0"
-    )
-
-    val UNCONNECTED_INPUT_PORT = ErrorMessageTemplate1<String>(
-        "Input port not connected: $0"
     )
 
     val ILLEGAL_MODULE_PORT_INSTANTIATION = ErrorMessageTemplate0(

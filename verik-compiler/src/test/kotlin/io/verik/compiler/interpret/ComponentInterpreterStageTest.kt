@@ -34,13 +34,17 @@ internal class ComponentInterpreterStageTest : BaseTest() {
     }
 
     @Test
-    fun `module with port`() {
+    fun `module with ports`() {
         driveElementTest(
             """
-                class M(@In var x: Boolean): Module()
+                class M(
+                    val x: Boolean,
+                    @In var y: Boolean,
+                    @Out var z: Boolean,
+                ): Module()
             """.trimIndent(),
             ComponentInterpreterStage::class,
-            "Module(M, M, [], [Port(x, Boolean, INPUT)])"
+            "Module(M, M, [], [Port(x, Boolean, CONSTANT), Port(y, Boolean, INPUT), Port(z, Boolean, OUTPUT)])"
         ) { it.findDeclaration("M") }
     }
 

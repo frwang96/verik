@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,9 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused", "UNUSED_PARAMETER")
+package io.verik.compiler.core.common
 
-package io.verik.core
+object OptionalUnresolvedDeclaration : OptionalDeclaration {
 
-/**
- * (UNIMPLEMENTED) An optional component [C] that is instantiated based on the logical [X].
- */
-class Option<X : `?`, C : Component>(instantiator: () -> C) : Component() {
-
-    /**
-     * (UNIMPLEMENTED) The instantiated component.
-     */
-    val it: C by lazy<C> {
-        throw VerikException()
-    }
+    override var name = "`?`"
 }

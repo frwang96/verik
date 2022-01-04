@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,19 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.property
+package io.verik.compiler.core.common
 
-enum class PortType {
-    CONSTANT,
-    INPUT,
-    OUTPUT,
-    MODULE_INTERFACE,
-    MODULE_PORT,
-    CLOCKING_BLOCK
+class OptionalConstantDeclaration(
+    val value: Boolean
+) : OptionalDeclaration {
+
+    override var name = if (value) "TRUE" else "FALSE"
+
+    override fun equals(other: Any?): Boolean {
+        return (other is OptionalConstantDeclaration) && (other.value == value)
+    }
+
+    override fun hashCode(): Int {
+        return value.hashCode()
+    }
 }

@@ -33,6 +33,7 @@ import io.verik.compiler.core.declaration.vk.CoreVkCardinal
 import io.verik.compiler.core.declaration.vk.CoreVkClass
 import io.verik.compiler.core.declaration.vk.CoreVkControl
 import io.verik.compiler.core.declaration.vk.CoreVkMisc
+import io.verik.compiler.core.declaration.vk.CoreVkOptional
 import io.verik.compiler.core.declaration.vk.CoreVkPacked
 import io.verik.compiler.core.declaration.vk.CoreVkRandom
 import io.verik.compiler.core.declaration.vk.CoreVkSbit
@@ -147,18 +148,20 @@ object Core {
         val F_ModulePort = CoreVkClass.F_ModulePort
         val F_ClockingBlock = CoreVkClass.F_ClockingBlock
 
-        val N_ADD = CoreVkCardinal.N_ADD
-        val N_SUB = CoreVkCardinal.N_SUB
-        val N_MUL = CoreVkCardinal.N_MUL
-        val N_DIV = CoreVkCardinal.N_DIV
-        val N_MAX = CoreVkCardinal.N_MAX
-        val N_MIN = CoreVkCardinal.N_MIN
-        val N_OF = CoreVkCardinal.N_OF
-        val N_INC = CoreVkCardinal.N_INC
-        val N_DEC = CoreVkCardinal.N_DEC
-        val N_LOG = CoreVkCardinal.N_LOG
-        val N_WIDTH = CoreVkCardinal.N_WIDTH
-        val N_EXP = CoreVkCardinal.N_EXP
+        val T_ADD = CoreVkCardinal.T_ADD
+        val T_SUB = CoreVkCardinal.T_SUB
+        val T_MUL = CoreVkCardinal.T_MUL
+        val T_DIV = CoreVkCardinal.T_DIV
+        val T_MAX = CoreVkCardinal.T_MAX
+        val T_MIN = CoreVkCardinal.T_MIN
+        val T_OF = CoreVkCardinal.T_OF
+        val T_INC = CoreVkCardinal.T_INC
+        val T_DEC = CoreVkCardinal.T_DEC
+        val T_LOG = CoreVkCardinal.T_LOG
+        val T_WIDTH = CoreVkCardinal.T_WIDTH
+        val T_EXP = CoreVkCardinal.T_EXP
+
+        val T_NOT = CoreVkOptional.T_NOT
 
         val F_finish = CoreVkSystem.F_finish
         val F_fatal = CoreVkSystem.F_fatal

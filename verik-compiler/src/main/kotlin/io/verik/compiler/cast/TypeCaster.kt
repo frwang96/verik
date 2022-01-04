@@ -22,6 +22,7 @@ import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.builtins.isFunctionType
 import org.jetbrains.kotlin.psi.KtElement
 import org.jetbrains.kotlin.psi.KtExpression
+import org.jetbrains.kotlin.psi.KtNullableType
 import org.jetbrains.kotlin.psi.KtTypeReference
 import org.jetbrains.kotlin.psi.KtUserType
 import org.jetbrains.kotlin.types.KotlinType
@@ -47,12 +48,13 @@ object TypeCaster {
     fun cast(castContext: CastContext, typeReference: KtTypeReference): Type {
         val kotlinType: KotlinType = castContext.sliceType[typeReference]
             ?: castContext.sliceAbbreviatedType[typeReference]!!
-        if (kotlinType.isMarkedNullable)
-            Messages.UNSUPPORTED_ELEMENT.on(typeReference, "Nullable type")
         if (kotlinType.isFunctionType)
             Messages.UNSUPPORTED_ELEMENT.on(typeReference, "Function type")
 
-        val userType = typeReference.typeElement as KtUserType
+        val typeElement = typeReference.typeElement
+        val userType = if (typeElement is KtNullableType) {
+            typeElement.innerType as KtUserType // ignore nullable type for now
+        } else typeElement as KtUserType
         val referenceTarget = castContext.sliceReferenceTarget[userType.referenceExpression!!]!!
         val declaration = castContext.getDeclaration(referenceTarget, typeReference)
         val arguments = userType.typeArgumentsAsTypes.map { cast(castContext, it) }

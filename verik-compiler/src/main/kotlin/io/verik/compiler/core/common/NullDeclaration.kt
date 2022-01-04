@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.property
+package io.verik.compiler.core.common
 
-enum class PortType {
-    CONSTANT,
-    INPUT,
-    OUTPUT,
-    MODULE_INTERFACE,
-    MODULE_PORT,
-    CLOCKING_BLOCK
+import io.verik.compiler.ast.interfaces.Declaration
+
+object NullDeclaration : Declaration {
+
+    override var name = "null"
 }

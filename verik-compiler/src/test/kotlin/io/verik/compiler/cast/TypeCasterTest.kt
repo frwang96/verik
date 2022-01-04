@@ -59,17 +59,6 @@ internal class TypeCasterTest : BaseTest() {
     }
 
     @Test
-    fun `type nullable`() {
-        driveMessageTest(
-            """
-                fun f(x: Int?) {}
-            """.trimIndent(),
-            true,
-            "Nullable type not supported"
-        )
-    }
-
-    @Test
     fun `type reference simple`() {
         driveElementTest(
             """
@@ -105,7 +94,7 @@ internal class TypeCasterTest : BaseTest() {
     }
 
     @Test
-    fun `type reference cardinal inferred`() {
+    fun `type reference cardinal symbolic`() {
         driveElementTest(
             """
                 var x: Ubit<`*`> = u(0)
@@ -159,6 +148,54 @@ internal class TypeCasterTest : BaseTest() {
             """.trimIndent(),
             CasterStage::class,
             "KtProperty(x, U, *, [], 1)"
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `type reference optional simple`() {
+        driveElementTest(
+            """
+                class C<X : `?`>
+                var x: C<TRUE> = C()
+            """.trimIndent(),
+            CasterStage::class,
+            "KtProperty(x, C<TRUE>, *, [], 1)"
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `type reference optional symbolic`() {
+        driveElementTest(
+            """
+                class C<X : `?`>
+                var x: C<`?`> = C()
+            """.trimIndent(),
+            CasterStage::class,
+            "KtProperty(x, C<`?`>, *, [], 1)"
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `type reference optional optional`() {
+        driveElementTest(
+            """
+                class C<X : `?`>
+                var x: C<Optional> = C()
+            """.trimIndent(),
+            CasterStage::class,
+            "KtProperty(x, C<`?`>, *, [], 1)"
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `type reference optional function`() {
+        driveElementTest(
+            """
+                class C<X : `?`>
+                var x: C<NOT<TRUE>> = C()
+            """.trimIndent(),
+            CasterStage::class,
+            "KtProperty(x, C<NOT<TRUE>>, *, [], 1)"
         ) { it.findDeclaration("x") }
     }
 }
