@@ -16,7 +16,9 @@
 
 package io.verik.compiler.resolve
 
+import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -30,6 +32,14 @@ object TypeResolvedCheckerStage : ProjectStage() {
     }
 
     private object TypeResolvedCheckerVisitor : TreeVisitor() {
+
+        override fun visitDeclaration(declaration: EDeclaration) {
+            super.visitDeclaration(declaration)
+            if (declaration !is ETypeParameter) {
+                if (!declaration.type.isResolved())
+                    Messages.UNRESOLVED_DECLARATION.on(declaration, declaration.name)
+            }
+        }
 
         override fun visitExpression(expression: EExpression) {
             super.visitExpression(expression)

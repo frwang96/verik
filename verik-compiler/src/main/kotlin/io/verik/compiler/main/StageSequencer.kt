@@ -56,7 +56,7 @@ import io.verik.compiler.kotlin.KotlinEnvironmentBuilderStage
 import io.verik.compiler.reorder.DeadDeclarationEliminatorStage
 import io.verik.compiler.reorder.DependencyReordererStage
 import io.verik.compiler.reorder.PropertyStatementReordererStage
-import io.verik.compiler.resolve.TypeCheckerStage
+import io.verik.compiler.resolve.TypeConstraintCheckerStage
 import io.verik.compiler.resolve.TypeResolvedCheckerStage
 import io.verik.compiler.resolve.TypeResolverStage
 import io.verik.compiler.serialize.general.ConfigFileSerializerStage
@@ -145,7 +145,7 @@ object StageSequencer {
         stageSequence.add(StageType.RESOLVE, TypeResolverStage)
         stageSequence.add(StageType.RESOLVE, TypeResolvedCheckerStage)
         stageSequence.add(StageType.RESOLVE, DeclarationSpecializerStage)
-        stageSequence.add(StageType.RESOLVE, TypeCheckerStage)
+        stageSequence.add(StageType.RESOLVE, TypeConstraintCheckerStage)
 
         stageSequence.add(StageType.INTERPRET, EnumInterpreterStage)
         stageSequence.add(StageType.INTERPRET, StructInterpreterStage)

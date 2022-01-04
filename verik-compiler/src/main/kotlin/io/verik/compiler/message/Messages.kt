@@ -178,6 +178,10 @@ object Messages {
         "Could not get width of type: $0"
     )
 
+    val UNRESOLVED_DECLARATION = ErrorMessageTemplate1<String>(
+        "Type of declaration could not be resolved: $0"
+    )
+
     val UNRESOLVED_EXPRESSION = ErrorMessageTemplate0(
         "Type of expression could not be resolved"
     )
