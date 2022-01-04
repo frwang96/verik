@@ -59,17 +59,6 @@ internal class TypeCasterTest : BaseTest() {
     }
 
     @Test
-    fun `type nullable`() {
-        driveMessageTest(
-            """
-                fun f(x: Int?) {}
-            """.trimIndent(),
-            true,
-            "Nullable type not supported"
-        )
-    }
-
-    @Test
     fun `type reference simple`() {
         driveElementTest(
             """

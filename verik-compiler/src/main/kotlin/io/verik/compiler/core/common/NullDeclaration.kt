@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.common
+package io.verik.compiler.core.common
 
 import io.verik.compiler.ast.interfaces.Declaration
 

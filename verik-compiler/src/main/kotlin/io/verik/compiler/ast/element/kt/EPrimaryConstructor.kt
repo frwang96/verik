@@ -19,8 +19,8 @@ package io.verik.compiler.ast.element.kt
 import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.property.Type
-import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.Visitor
+import io.verik.compiler.core.common.NullDeclaration
 import io.verik.compiler.message.SourceLocation
 
 class EPrimaryConstructor(

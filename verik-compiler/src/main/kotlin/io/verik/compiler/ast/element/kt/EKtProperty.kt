@@ -21,8 +21,8 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.Annotated
 import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.Type
-import io.verik.compiler.common.NullDeclaration
 import io.verik.compiler.common.Visitor
+import io.verik.compiler.core.common.NullDeclaration
 import io.verik.compiler.message.SourceLocation
 
 class EKtProperty(
