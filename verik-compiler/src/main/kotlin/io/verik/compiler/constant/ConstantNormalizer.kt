@@ -21,8 +21,6 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.property.LiteralStringEntry
-import io.verik.compiler.core.common.Cardinal
-import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 import java.math.BigInteger
@@ -37,11 +35,7 @@ object ConstantNormalizer {
                 Messages.INTERNAL_ERROR.on(SourceLocation.NULL, "Unrecognized boolean value: $value")
             }
         }
-        return EConstantExpression(
-            constantExpression.location,
-            constantExpression.type,
-            ConstantFormatter.formatBoolean(boolean)
-        )
+        return ConstantBuilder.buildBoolean(constantExpression, boolean)
     }
 
     fun normalizeInt(constantExpression: EConstantExpression): EConstantExpression {
@@ -51,11 +45,7 @@ object ConstantNormalizer {
             value.startsWith("0b") || value.startsWith("0B") -> value.substring(2).toInt(2)
             else -> value.toInt()
         }
-        return EConstantExpression(
-            constantExpression.location,
-            constantExpression.type,
-            ConstantFormatter.formatInt(int)
-        )
+        return ConstantBuilder.buildInt(constantExpression, int)
     }
 
     fun normalizeBitConstant(expression: EExpression, signed: Boolean): EConstantExpression? {
@@ -82,13 +72,7 @@ object ConstantNormalizer {
                 null
             }
         } ?: return null
-        val type = if (signed) Core.Vk.C_Sbit.toType(Cardinal.of(bitConstant.width).toType())
-        else Core.Vk.C_Ubit.toType(Cardinal.of(bitConstant.width).toType())
-        return EConstantExpression(
-            expression.location,
-            type,
-            ConstantFormatter.formatBitConstant(bitConstant)
-        )
+        return ConstantBuilder.buildBitConstant(expression.location, bitConstant)
     }
 
     private fun normalizeBitConstantInt(value: String, signed: Boolean): BitConstant {

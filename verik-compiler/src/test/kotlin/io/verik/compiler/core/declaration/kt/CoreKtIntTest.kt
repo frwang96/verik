@@ -51,6 +51,32 @@ internal class CoreKtIntTest : CoreDeclarationTest() {
     }
 
     @Test
+    fun `evaluate plus minus times`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Kt.Int.F_plus_Int,
+                Core.Kt.Int.F_minus_Int,
+                Core.Kt.Int.F_times_Int
+            ),
+            """
+                var x = 0
+                fun f() {
+                    x = 1 + 1
+                    x = 2 - 1
+                    x = 1 * 2
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    x = 2;
+                    x = 1;
+                    x = 2;
+                endfunction : f
+            """.trimIndent()
+        )
+    }
+
+    @Test
     fun `serialize shl shr ushr`() {
         driveCoreDeclarationTest(
             listOf(

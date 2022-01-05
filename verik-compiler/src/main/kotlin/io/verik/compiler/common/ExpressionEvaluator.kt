@@ -16,7 +16,6 @@
 
 package io.verik.compiler.common
 
-import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.core.common.BinaryCoreFunctionDeclaration
@@ -27,9 +26,7 @@ object ExpressionEvaluator {
         if (expression is EKtCallExpression) {
             val reference = expression.reference
             if (reference is BinaryCoreFunctionDeclaration) {
-                val value = reference.evaluate(expression)
-                if (value != null)
-                    return EConstantExpression(expression.location, expression.type, value)
+                return reference.evaluate(expression)
             }
         }
         return null

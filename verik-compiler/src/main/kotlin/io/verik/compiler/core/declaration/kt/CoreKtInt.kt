@@ -16,9 +16,10 @@
 
 package io.verik.compiler.core.declaration.kt
 
+import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
-import io.verik.compiler.constant.ConstantParser
+import io.verik.compiler.constant.IntConstantEvaluator
 import io.verik.compiler.core.common.BinaryCoreFunctionDeclaration
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreScope
@@ -32,11 +33,11 @@ object CoreKtInt : CoreScope(Core.Kt.C_Int) {
         SvBinaryOperatorKind.PLUS
     ) {
 
-        override fun evaluate(callExpression: EKtCallExpression): String? {
-            val left = ConstantParser.getInt(callExpression.receiver!!)
-            val right = ConstantParser.getInt(callExpression.valueArguments[0])
-            return if (left != null && right != null) {
-                (left + right).toString()
+        override fun evaluate(callExpression: EKtCallExpression): EConstantExpression? {
+            val left = callExpression.receiver!!
+            val right = callExpression.valueArguments[0]
+            return if (left is EConstantExpression && right is EConstantExpression) {
+                IntConstantEvaluator.plusInt(callExpression, left, right)
             } else null
         }
     }
@@ -48,12 +49,12 @@ object CoreKtInt : CoreScope(Core.Kt.C_Int) {
         SvBinaryOperatorKind.MINUS
     ) {
 
-        override fun evaluate(callExpression: EKtCallExpression): String? {
-            val left = ConstantParser.getInt(callExpression.receiver!!)
-            val right = ConstantParser.getInt(callExpression.valueArguments[0])
-            return if (left != null && right != null)
-                (left - right).toString()
-            else null
+        override fun evaluate(callExpression: EKtCallExpression): EConstantExpression? {
+            val left = callExpression.receiver!!
+            val right = callExpression.valueArguments[0]
+            return if (left is EConstantExpression && right is EConstantExpression) {
+                IntConstantEvaluator.minusInt(callExpression, left, right)
+            } else null
         }
     }
 
@@ -64,11 +65,11 @@ object CoreKtInt : CoreScope(Core.Kt.C_Int) {
         SvBinaryOperatorKind.MUL
     ) {
 
-        override fun evaluate(callExpression: EKtCallExpression): String? {
-            val left = ConstantParser.getInt(callExpression.receiver!!)
-            val right = ConstantParser.getInt(callExpression.valueArguments[0])
-            return if (left != null && right != null) {
-                (left * right).toString()
+        override fun evaluate(callExpression: EKtCallExpression): EConstantExpression? {
+            val left = callExpression.receiver!!
+            val right = callExpression.valueArguments[0]
+            return if (left is EConstantExpression && right is EConstantExpression) {
+                IntConstantEvaluator.timesInt(callExpression, left, right)
             } else null
         }
     }

@@ -17,6 +17,9 @@
 package io.verik.compiler.constant
 
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.property.Type
+import io.verik.compiler.core.common.Cardinal
+import io.verik.compiler.core.common.Core
 import java.math.BigInteger
 
 class BitConstant(
@@ -26,6 +29,14 @@ class BitConstant(
 ) {
 
     constructor(value: Int, signed: Boolean, width: Int) : this(BigInteger.valueOf(value.toLong()), signed, width)
+
+    fun getType(): Type {
+        return if (signed) {
+            Core.Vk.C_Sbit.toType(Cardinal.of(width).toType())
+        } else {
+            Core.Vk.C_Ubit.toType(Cardinal.of(width).toType())
+        }
+    }
 
     fun isInRange(): Boolean {
         return if (signed) {

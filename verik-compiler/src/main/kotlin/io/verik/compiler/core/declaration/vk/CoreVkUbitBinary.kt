@@ -16,12 +16,12 @@
 
 package io.verik.compiler.core.declaration.vk
 
+import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
-import io.verik.compiler.constant.ConstantFormatter
-import io.verik.compiler.constant.ConstantParser
+import io.verik.compiler.constant.UbitConstantEvaluator
 import io.verik.compiler.core.common.BinaryCoreFunctionDeclaration
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreScope
@@ -53,11 +53,11 @@ object CoreVkUbitBinary : CoreScope(Core.Vk.C_Ubit) {
             )
         }
 
-        override fun evaluate(callExpression: EKtCallExpression): String? {
-            val left = ConstantParser.getBitConstant(callExpression.receiver!!)
-            val right = ConstantParser.getBitConstant(callExpression.valueArguments[0])
-            return if (left != null && right != null) {
-                ConstantFormatter.formatBitConstant(left.add(right, callExpression))
+        override fun evaluate(callExpression: EKtCallExpression): EConstantExpression? {
+            val left = callExpression.receiver!!
+            val right = callExpression.valueArguments[0]
+            return if (left is EConstantExpression && right is EConstantExpression) {
+                UbitConstantEvaluator.plusUbit(callExpression, left, right)
             } else null
         }
     }
@@ -123,11 +123,11 @@ object CoreVkUbitBinary : CoreScope(Core.Vk.C_Ubit) {
             )
         }
 
-        override fun evaluate(callExpression: EKtCallExpression): String? {
-            val left = ConstantParser.getBitConstant(callExpression.receiver!!)
-            val right = ConstantParser.getBitConstant(callExpression.valueArguments[0])
-            return if (left != null && right != null) {
-                ConstantFormatter.formatBitConstant(left.sub(right, callExpression))
+        override fun evaluate(callExpression: EKtCallExpression): EConstantExpression? {
+            val left = callExpression.receiver!!
+            val right = callExpression.valueArguments[0]
+            return if (left is EConstantExpression && right is EConstantExpression) {
+                UbitConstantEvaluator.minusUbit(callExpression, left, right)
             } else null
         }
     }
