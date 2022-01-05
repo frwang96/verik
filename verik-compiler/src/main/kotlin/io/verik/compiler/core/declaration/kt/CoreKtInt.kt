@@ -18,7 +18,7 @@ package io.verik.compiler.core.declaration.kt
 
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
-import io.verik.compiler.common.ConstantUtil
+import io.verik.compiler.constant.ConstantParser
 import io.verik.compiler.core.common.BinaryCoreFunctionDeclaration
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreScope
@@ -33,8 +33,8 @@ object CoreKtInt : CoreScope(Core.Kt.C_Int) {
     ) {
 
         override fun evaluate(callExpression: EKtCallExpression): String? {
-            val left = ConstantUtil.getInt(callExpression.receiver!!)
-            val right = ConstantUtil.getInt(callExpression.valueArguments[0])
+            val left = ConstantParser.getInt(callExpression.receiver!!)
+            val right = ConstantParser.getInt(callExpression.valueArguments[0])
             return if (left != null && right != null) {
                 (left + right).toString()
             } else null
@@ -49,8 +49,8 @@ object CoreKtInt : CoreScope(Core.Kt.C_Int) {
     ) {
 
         override fun evaluate(callExpression: EKtCallExpression): String? {
-            val left = ConstantUtil.getInt(callExpression.receiver!!)
-            val right = ConstantUtil.getInt(callExpression.valueArguments[0])
+            val left = ConstantParser.getInt(callExpression.receiver!!)
+            val right = ConstantParser.getInt(callExpression.valueArguments[0])
             return if (left != null && right != null)
                 (left - right).toString()
             else null
@@ -65,8 +65,8 @@ object CoreKtInt : CoreScope(Core.Kt.C_Int) {
     ) {
 
         override fun evaluate(callExpression: EKtCallExpression): String? {
-            val left = ConstantUtil.getInt(callExpression.receiver!!)
-            val right = ConstantUtil.getInt(callExpression.valueArguments[0])
+            val left = ConstantParser.getInt(callExpression.receiver!!)
+            val right = ConstantParser.getInt(callExpression.valueArguments[0])
             return if (left != null && right != null) {
                 (left * right).toString()
             } else null

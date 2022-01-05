@@ -17,12 +17,11 @@
 package io.verik.compiler.transform.pre
 
 import io.verik.compiler.ast.element.common.EConstantExpression
-import io.verik.compiler.common.ConstantUtil
 import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.constant.ConstantNormalizer
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
-import io.verik.compiler.message.Messages
 
 object ConstantExpressionReducerStage : ProjectStage() {
 
@@ -35,21 +34,10 @@ object ConstantExpressionReducerStage : ProjectStage() {
         override fun visitConstantExpression(constantExpression: EConstantExpression) {
             super.visitConstantExpression(constantExpression)
             when (constantExpression.type.reference) {
-                Core.Kt.C_Boolean -> {
-                    val value = ConstantUtil.normalizeBoolean(constantExpression.value)
-                    constantExpression.value = ConstantUtil.formatBoolean(value)
-                }
-                Core.Kt.C_Int -> {
-                    val value = ConstantUtil.normalizeInt(constantExpression.value)
-                    constantExpression.value = ConstantUtil.formatInt(value)
-                }
-                Core.Vk.C_Ubit -> {}
-                Core.Vk.C_Sbit -> {}
-                else ->
-                    Messages.INTERNAL_ERROR.on(
-                        constantExpression,
-                        "Constant expression type not recognized: ${constantExpression.type}"
-                    )
+                Core.Kt.C_Boolean ->
+                    constantExpression.replace(ConstantNormalizer.normalizeBoolean(constantExpression))
+                Core.Kt.C_Int ->
+                    constantExpression.replace(ConstantNormalizer.normalizeInt(constantExpression))
             }
         }
     }

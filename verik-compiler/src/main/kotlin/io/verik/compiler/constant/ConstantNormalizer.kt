@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,47 +14,54 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.common
+package io.verik.compiler.constant
 
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.property.LiteralStringEntry
+import io.verik.compiler.core.common.Cardinal
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 import java.math.BigInteger
 
-object ConstantUtil {
+object ConstantNormalizer {
 
-    fun normalizeBoolean(value: String): Boolean {
-        return when (value) {
+    fun normalizeBoolean(constantExpression: EConstantExpression): EConstantExpression {
+        val boolean = when (val value = constantExpression.value) {
             "false" -> false
             "true" -> true
-            else -> Messages.INTERNAL_ERROR.on(SourceLocation.NULL, "Unrecognized boolean value: $value")
+            else -> {
+                Messages.INTERNAL_ERROR.on(SourceLocation.NULL, "Unrecognized boolean value: $value")
+            }
         }
+        return EConstantExpression(
+            constantExpression.location,
+            constantExpression.type,
+            ConstantFormatter.formatBoolean(boolean)
+        )
     }
 
-    fun normalizeInt(value: String): Int {
-        val compactedValue = value.replace("_", "")
-        return when {
-            compactedValue.startsWith("0x") || compactedValue.startsWith("0X") ->
-                compactedValue.substring(2).toInt(16)
-            compactedValue.startsWith("0b") || compactedValue.startsWith("0B") ->
-                compactedValue.substring(2).toInt(2)
-            else -> compactedValue.toInt()
+    fun normalizeInt(constantExpression: EConstantExpression): EConstantExpression {
+        val value = constantExpression.value.replace("_", "")
+        val int = when {
+            value.startsWith("0x") || value.startsWith("0X") -> value.substring(2).toInt(16)
+            value.startsWith("0b") || value.startsWith("0B") -> value.substring(2).toInt(2)
+            else -> value.toInt()
         }
+        return EConstantExpression(
+            constantExpression.location,
+            constantExpression.type,
+            ConstantFormatter.formatInt(int)
+        )
     }
 
-    fun normalizeBitConstant(expression: EExpression, signed: Boolean): BitConstant? {
-        return when (expression) {
+    fun normalizeBitConstant(expression: EExpression, signed: Boolean): EConstantExpression? {
+        val bitConstant = when (expression) {
             is EConstantExpression -> {
-                if (expression.type.reference == Core.Kt.C_Int) {
-                    normalizeBitConstantInt(expression.value, signed)
-                } else {
-                    Messages.INTERNAL_ERROR.on(expression, "Unrecognized constant expression type: ${expression.type}")
-                }
+                normalizeBitConstantInt(expression.value, signed)
             }
             is EStringTemplateExpression -> {
                 if (expression.entries.size != 1) {
@@ -74,7 +81,14 @@ object ConstantUtil {
                 Messages.ILLEGAL_BIT_CONSTANT.on(expression)
                 null
             }
-        }
+        } ?: return null
+        val type = if (signed) Core.Vk.C_Sbit.toType(Cardinal.of(bitConstant.width).toType())
+        else Core.Vk.C_Ubit.toType(Cardinal.of(bitConstant.width).toType())
+        return EConstantExpression(
+            expression.location,
+            type,
+            ConstantFormatter.formatBitConstant(bitConstant)
+        )
     }
 
     private fun normalizeBitConstantInt(value: String, signed: Boolean): BitConstant {
@@ -161,53 +175,5 @@ object ConstantUtil {
             Messages.BIT_CONSTANT_INSUFFICIENT_WIDTH.on(element, value)
         }
         return bitConstant
-    }
-
-    fun getInt(expression: EExpression): Int? {
-        return if (expression is EConstantExpression && expression.type.reference == Core.Kt.C_Int) {
-            expression.value.toInt()
-        } else null
-    }
-
-    fun getBitConstant(expression: EExpression): BitConstant? {
-        return if (expression is EConstantExpression &&
-            expression.type.reference in listOf(Core.Vk.C_Ubit, Core.Vk.C_Sbit)
-        ) {
-            val width = expression.type.asBitWidth(expression)
-            val signed = expression.type.asBitSigned(expression)
-            val trimmedValue = expression.value.substringAfter("'").substring(if (signed) 2 else 1)
-            val compactedValue = trimmedValue.replace("_", "")
-            val bigInteger = BigInteger(compactedValue, 16)
-            BitConstant(bigInteger, signed, width)
-        } else null
-    }
-
-    fun formatBoolean(boolean: Boolean): String {
-        return when (boolean) {
-            true -> "1'b1"
-            false -> "1'b0"
-        }
-    }
-
-    fun formatInt(int: Int): String {
-        return int.toString()
-    }
-
-    fun formatBitConstant(bitConstant: BitConstant): String {
-        val valueString = bitConstant.getModValue().toString(16)
-        val valueStringLength = (bitConstant.width + 3) / 4
-        val valueStringPadded = valueString.padStart(valueStringLength, '0')
-
-        val builder = StringBuilder()
-        builder.append("${bitConstant.width}")
-        if (bitConstant.signed) builder.append("'sh")
-        else builder.append("'h")
-        valueStringPadded.forEachIndexed { index, it ->
-            builder.append(it)
-            val countToEnd = valueStringLength - index - 1
-            if (countToEnd > 0 && countToEnd % 4 == 0)
-                builder.append("_")
-        }
-        return builder.toString()
     }
 }

@@ -20,7 +20,8 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
-import io.verik.compiler.common.ConstantUtil
+import io.verik.compiler.constant.ConstantFormatter
+import io.verik.compiler.constant.ConstantParser
 import io.verik.compiler.core.common.BinaryCoreFunctionDeclaration
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreScope
@@ -53,10 +54,10 @@ object CoreVkUbitBinary : CoreScope(Core.Vk.C_Ubit) {
         }
 
         override fun evaluate(callExpression: EKtCallExpression): String? {
-            val left = ConstantUtil.getBitConstant(callExpression.receiver!!)
-            val right = ConstantUtil.getBitConstant(callExpression.valueArguments[0])
+            val left = ConstantParser.getBitConstant(callExpression.receiver!!)
+            val right = ConstantParser.getBitConstant(callExpression.valueArguments[0])
             return if (left != null && right != null) {
-                ConstantUtil.formatBitConstant(left.add(right, callExpression))
+                ConstantFormatter.formatBitConstant(left.add(right, callExpression))
             } else null
         }
     }
@@ -123,10 +124,10 @@ object CoreVkUbitBinary : CoreScope(Core.Vk.C_Ubit) {
         }
 
         override fun evaluate(callExpression: EKtCallExpression): String? {
-            val left = ConstantUtil.getBitConstant(callExpression.receiver!!)
-            val right = ConstantUtil.getBitConstant(callExpression.valueArguments[0])
+            val left = ConstantParser.getBitConstant(callExpression.receiver!!)
+            val right = ConstantParser.getBitConstant(callExpression.valueArguments[0])
             return if (left != null && right != null) {
-                ConstantUtil.formatBitConstant(left.sub(right, callExpression))
+                ConstantFormatter.formatBitConstant(left.sub(right, callExpression))
             } else null
         }
     }

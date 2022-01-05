@@ -19,8 +19,8 @@ package io.verik.compiler.core.declaration.vk
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
-import io.verik.compiler.common.BitConstant
-import io.verik.compiler.common.ConstantUtil
+import io.verik.compiler.constant.BitConstant
+import io.verik.compiler.constant.ConstantFormatter
 import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
@@ -100,7 +100,7 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
             return EConstantExpression(
                 callExpression.location,
                 callExpression.type,
-                ConstantUtil.formatBitConstant(bitConstant)
+                ConstantFormatter.formatBitConstant(bitConstant)
             )
         }
     }
@@ -153,7 +153,7 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
             return EConstantExpression(
                 callExpression.location,
                 callExpression.type,
-                ConstantUtil.formatBitConstant(bitConstant)
+                ConstantFormatter.formatBitConstant(bitConstant)
             )
         }
     }
