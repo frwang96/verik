@@ -18,13 +18,13 @@ package io.verik.compiler.interpret
 
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.ENullExpression
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
-import io.verik.compiler.ast.element.sv.EAbstractComponentInstantiation
 import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
 import io.verik.compiler.ast.element.sv.EClockingBlock
 import io.verik.compiler.ast.element.sv.EClockingBlockInstantiation
@@ -105,17 +105,32 @@ object PropertyInterpreterStage : ProjectStage() {
             return null
         }
 
-        private fun interpretAbstractComponentInstantiation(property: EKtProperty): EAbstractComponentInstantiation? {
-            val callExpression = property.initializer
-            if (callExpression !is EKtCallExpression)
+        private fun interpretAbstractComponentInstantiation(property: EKtProperty): EDeclaration? {
+            if (!property.hasAnnotationEntry(AnnotationEntries.MAKE))
                 return null
-            return when (val component = callExpression.reference) {
-                is EAbstractContainerComponent ->
-                    interpretComponentInstantiation(property, callExpression, component)
-                is EModulePort ->
-                    interpretModulePortInstantiation(property, callExpression, component)
-                is EClockingBlock ->
-                    interpretClockingBlockInstantiation(property, callExpression, component)
+            return when (val initializer = property.initializer) {
+                is EKtCallExpression -> {
+                    when (val component = initializer.reference) {
+                        is EAbstractContainerComponent ->
+                            interpretComponentInstantiation(property, initializer, component)
+                        is EModulePort ->
+                            interpretModulePortInstantiation(property, initializer, component)
+                        is EClockingBlock ->
+                            interpretClockingBlockInstantiation(property, initializer, component)
+                        else -> null
+                    }
+                }
+                is ENullExpression -> {
+                    ESvProperty(
+                        location = property.endLocation,
+                        name = property.name,
+                        type = property.type,
+                        initializer = initializer,
+                        isComAssignment = false,
+                        isMutable = false,
+                        isStatic = null
+                    )
+                }
                 else -> null
             }
         }

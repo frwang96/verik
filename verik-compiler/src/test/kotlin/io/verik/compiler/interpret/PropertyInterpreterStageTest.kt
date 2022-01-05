@@ -62,6 +62,21 @@ internal class PropertyInterpreterStageTest : BaseTest() {
     }
 
     @Test
+    fun `interpret module instantiation null`() {
+        driveElementTest(
+            """
+                class M : Module()
+                class Top : Module() {
+                    @Make
+                    val m = optional<FALSE, M> { M() }
+                }
+            """.trimIndent(),
+            PropertyInterpreterStage::class,
+            "SvProperty(m, M, NullExpression(), 0, 0, null)"
+        ) { it.findDeclaration("m") }
+    }
+
+    @Test
     fun `interpret module instantiation not connected`() {
         driveElementTest(
             """

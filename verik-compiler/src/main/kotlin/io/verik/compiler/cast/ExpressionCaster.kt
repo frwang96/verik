@@ -19,6 +19,7 @@ package io.verik.compiler.cast
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
+import io.verik.compiler.ast.element.common.ENullExpression
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ESuperExpression
@@ -184,11 +185,15 @@ object ExpressionCaster {
         }
     }
 
-    fun castConstantExpression(expression: KtConstantExpression, castContext: CastContext): EConstantExpression {
+    fun castConstantExpression(expression: KtConstantExpression, castContext: CastContext): EExpression {
         val location = expression.location()
         val type = castContext.castType(expression)
         val value = expression.text
-        return EConstantExpression(location, type, value)
+        return if (value != "null") {
+            EConstantExpression(location, type, value)
+        } else {
+            ENullExpression(location)
+        }
     }
 
     fun castThisExpression(expression: KtThisExpression, castContext: CastContext): EThisExpression {

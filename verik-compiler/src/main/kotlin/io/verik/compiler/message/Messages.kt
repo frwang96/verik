@@ -132,8 +132,8 @@ object Messages {
         "Make annotation only permitted on component instantiations"
     )
 
-    val ILLEGAL_COMPONENT_INSTANTIATION = ErrorMessageTemplate0(
-        "Component instantiation out of context"
+    val MAKE_OUT_OF_CONTEXT = ErrorMessageTemplate0(
+        "Make annotation out of context"
     )
 
     val EXPECTED_CARDINAL_TYPE = ErrorMessageTemplate1<Type>(

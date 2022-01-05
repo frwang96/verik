@@ -42,7 +42,7 @@ object ComponentInstantiationCheckerStage : ProjectStage() {
                         Messages.MISSING_MAKE_ANNOTATION.on(property)
                 } else {
                     if (property.hasAnnotationEntry(AnnotationEntries.MAKE))
-                        Messages.ILLEGAL_COMPONENT_INSTANTIATION.on(property)
+                        Messages.MAKE_OUT_OF_CONTEXT.on(property)
                 }
             } else {
                 if (property.hasAnnotationEntry(AnnotationEntries.MAKE))
