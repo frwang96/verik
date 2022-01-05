@@ -162,6 +162,7 @@ object Core {
         val T_EXP = CoreVkCardinal.T_EXP
 
         val T_NOT = CoreVkOptional.T_NOT
+        val F_optional_Function = CoreVkOptional.F_optional_Function
 
         val F_finish = CoreVkSystem.F_finish
         val F_fatal = CoreVkSystem.F_fatal

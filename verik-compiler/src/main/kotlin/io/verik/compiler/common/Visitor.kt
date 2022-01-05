@@ -137,10 +137,6 @@ abstract class Visitor {
         visitTypedElement(expression)
     }
 
-    open fun visitNullExpression(nullExpression: ENullExpression) {
-        visitExpression(nullExpression)
-    }
-
     open fun visitProject(project: EProject) {
         visitDeclaration(project)
     }
@@ -411,6 +407,10 @@ abstract class Visitor {
 
     open fun visitStructLiteralExpression(structLiteralExpression: EStructLiteralExpression) {
         visitExpression(structLiteralExpression)
+    }
+
+    open fun visitNullExpression(nullExpression: ENullExpression) {
+        visitExpression(nullExpression)
     }
 
     open fun visitThisExpression(thisExpression: EThisExpression) {

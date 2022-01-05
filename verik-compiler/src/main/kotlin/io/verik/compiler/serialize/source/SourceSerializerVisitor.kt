@@ -21,6 +21,7 @@ import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
+import io.verik.compiler.ast.element.common.ENullExpression
 import io.verik.compiler.ast.element.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
@@ -235,6 +236,10 @@ class SourceSerializerVisitor(
 
     override fun visitStructLiteralExpression(structLiteralExpression: EStructLiteralExpression) {
         ExpressionSerializer.serializeStructLiteralExpression(structLiteralExpression, serializerContext)
+    }
+
+    override fun visitNullExpression(nullExpression: ENullExpression) {
+        ExpressionSerializer.serializeNullExpression(serializerContext)
     }
 
     override fun visitThisExpression(thisExpression: EThisExpression) {

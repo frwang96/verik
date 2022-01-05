@@ -28,7 +28,7 @@ class ENullExpression(
 
     override var type = Core.Kt.C_Unit.toType()
 
-    override val serializationType = SerializationType.INTERNAL
+    override val serializationType = SerializationType.EXPRESSION
 
     override fun accept(visitor: Visitor) {
         visitor.visitNullExpression(this)
