@@ -25,6 +25,7 @@ import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.element.sv.EWidthCastExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.SvUnaryOperatorKind
+import io.verik.compiler.constant.ConstantBuilder
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.core.common.CoreTransformUtil
@@ -363,7 +364,16 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            return F_ext.transform(callExpression)
+            val width = callExpression.typeArguments[0].asCardinalValue(callExpression)
+            val msbIndex = ConstantBuilder.buildInt(callExpression, width - 1)
+            val lsbIndex = ConstantBuilder.buildInt(callExpression, 0)
+            return EConstantPartSelectExpression(
+                callExpression.location,
+                callExpression.type,
+                callExpression.receiver!!,
+                msbIndex,
+                lsbIndex
+            )
         }
     }
 }

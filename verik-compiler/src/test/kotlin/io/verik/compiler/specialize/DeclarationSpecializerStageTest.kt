@@ -48,7 +48,7 @@ internal class DeclarationSpecializerStageTest : BaseTest() {
     }
 
     @Test
-    fun `specialize class with property`() {
+    fun `specialize class with property parameterized`() {
         driveElementTest(
             """
                 class C<N : `*`> {
@@ -57,14 +57,39 @@ internal class DeclarationSpecializerStageTest : BaseTest() {
                 val c = C<`8`>()
             """.trimIndent(),
             DeclarationSpecializerStage::class,
+            "KtProperty(x, Ubit<`8`>, KtCallExpression(*), [], 0)"
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `specialize class with call expression parameterized`() {
+        driveElementTest(
             """
-                KtClass(
-                    C_N_8, C_N_8,
-                    [KtProperty(x, Ubit<`8`>, KtCallExpression(*), [], 0)],
-                    [], [], 0, 0, 0, *, null
-                )
-            """.trimIndent()
-        ) { it.findDeclaration("C_N_8") }
+                @Suppress("MemberVisibilityCanBePrivate")
+                class C<N : `*`> {
+                    fun f(): Boolean { return false }
+                    val x = f()
+                }
+                val c = C<`8`>()
+            """.trimIndent(),
+            DeclarationSpecializerStage::class,
+            "KtProperty(x, Boolean, KtCallExpression(Boolean, f, null, [], []), [], 0)"
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `specialize class with call expression not parameterized`() {
+        driveElementTest(
+            """
+                class D
+                class C<N : `*`> {
+                    val x = D()
+                }
+                val c = C<`8`>()
+            """.trimIndent(),
+            DeclarationSpecializerStage::class,
+            "KtProperty(x, D, KtCallExpression(D, <init>, null, [], []), [], 0)"
+        ) { it.findDeclaration("x") }
     }
 
     @Test

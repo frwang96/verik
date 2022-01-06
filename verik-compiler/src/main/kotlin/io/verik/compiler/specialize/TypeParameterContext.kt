@@ -22,6 +22,7 @@ import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.EReceiverExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.EKtClass
+import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.interfaces.TypeParameterized
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.message.Messages
@@ -97,7 +98,7 @@ data class TypeParameterContext(val typeParameterBindings: List<TypeParameterBin
                 } else EMPTY
             } else {
                 val reference = receiverExpression.reference
-                if (reference is EDeclaration && reference.parent !is EFile)
+                if (reference is EDeclaration && reference !is EPrimaryConstructor && reference.parent !is EFile)
                     specializerContext.typeParameterContext
                 else EMPTY
             }

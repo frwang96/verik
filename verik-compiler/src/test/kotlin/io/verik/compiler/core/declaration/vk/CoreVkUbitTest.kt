@@ -197,7 +197,7 @@ internal class CoreVkUbitTest : CoreDeclarationTest() {
                 function automatic void f();
                     y = 8'(x);
                     y = ${'$'}unsigned(8'(${'$'}signed(x)));
-                    x = 4'(y);
+                    x = y[3:0];
                 endfunction : f
             """.trimIndent()
         )
