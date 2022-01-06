@@ -19,6 +19,8 @@ package io.verik.compiler.core.declaration.vk
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.constant.BitComponent
+import io.verik.compiler.constant.BitConstant
 import io.verik.compiler.constant.ConstantBuilder
 import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
 import io.verik.compiler.core.common.CorePackage
@@ -144,6 +146,32 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
         override fun transform(callExpression: EKtCallExpression): EExpression {
             val width = callExpression.type.asBitWidth(callExpression)
             return ConstantBuilder.buildBitConstant(callExpression.location, width, 0)
+        }
+    }
+
+    val F_ux = object : TransformableCoreFunctionDeclaration(parent, "ux", "fun ux()") {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return F_u0.getTypeConstraints(callExpression)
+        }
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            val width = callExpression.type.asBitWidth(callExpression)
+            val bitConstant = BitConstant(BitComponent.ones(width), BitComponent.zeroes(width), false, width)
+            return ConstantBuilder.buildBitConstant(callExpression.location, bitConstant)
+        }
+    }
+
+    val F_uz = object : TransformableCoreFunctionDeclaration(parent, "uz", "fun uz()") {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return F_u0.getTypeConstraints(callExpression)
+        }
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            val width = callExpression.type.asBitWidth(callExpression)
+            val bitConstant = BitConstant(BitComponent.ones(width), BitComponent.ones(width), false, width)
+            return ConstantBuilder.buildBitConstant(callExpression.location, bitConstant)
         }
     }
 

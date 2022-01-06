@@ -33,8 +33,12 @@ class BitComponent(
         }
     }
 
-    fun allZero(): Boolean {
-        return value.all { it.toInt() == 0 }
+    fun allZeroes(): Boolean {
+        return (0 until width).all { !get(it) }
+    }
+
+    fun allOnes(): Boolean {
+        return (0 until width).all { get(it) }
     }
 
     fun toBigIntegerUnsigned(): BigInteger {

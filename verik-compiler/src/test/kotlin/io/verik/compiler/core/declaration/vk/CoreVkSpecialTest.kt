@@ -103,6 +103,29 @@ internal class CoreVkSpecialTest : CoreDeclarationTest() {
     }
 
     @Test
+    fun `serialize ux uz`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Vk.F_ux,
+                Core.Vk.F_uz
+            ),
+            """
+                var x = u(0x0)
+                fun f() {
+                    x = ux()
+                    x = uz()
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    x = 4'bx;
+                    x = 4'bz;
+                endfunction : f
+            """.trimIndent()
+        )
+    }
+
+    @Test
     fun `serialize s`() {
         driveCoreDeclarationTest(
             listOf(Core.Vk.F_s_Ubit),

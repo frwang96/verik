@@ -70,10 +70,10 @@ internal class BitConstantReducerStageTest : BaseTest() {
     fun `constant string unsigned binary unknown floating`() {
         driveElementTest(
             """
-                var x = u("9'b1000000xz")
+                var x = u("5'b100xz")
             """.trimIndent(),
             BitConstantReducerStage::class,
-            "ConstantExpression(Ubit<`9`>, 9'b1_0000_00xz)"
+            "ConstantExpression(Ubit<`5`>, 5'b1_00xz)"
         ) { it.findExpression("x") }
     }
 
@@ -85,17 +85,6 @@ internal class BitConstantReducerStageTest : BaseTest() {
             """.trimIndent(),
             BitConstantReducerStage::class,
             "ConstantExpression(Ubit<`10`>, 10'h3ff)"
-        ) { it.findExpression("x") }
-    }
-
-    @Test
-    fun `constant string unsigned hexadecimal unknown floating`() {
-        driveElementTest(
-            """
-                var x = u("10'h3xz")
-            """.trimIndent(),
-            BitConstantReducerStage::class,
-            "ConstantExpression(Ubit<`10`>, 10'h3xz)"
         ) { it.findExpression("x") }
     }
 

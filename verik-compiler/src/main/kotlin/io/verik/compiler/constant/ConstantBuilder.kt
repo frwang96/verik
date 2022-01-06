@@ -64,22 +64,17 @@ object ConstantBuilder {
     }
 
     private fun formatBitConstant(bitConstant: BitConstant): String {
-        if (bitConstant.width < 8) {
-            return formatBinBitConstant(bitConstant)
+        if (bitConstant.kind.allOnes()) {
+            if (bitConstant.value.allZeroes())
+                return if (bitConstant.signed) "${bitConstant.width}'sbx" else "${bitConstant.width}'bx"
+            if (bitConstant.value.allOnes())
+                return if (bitConstant.signed) "${bitConstant.width}'sbz" else "${bitConstant.width}'bz"
         }
-        val hexStringLength = (bitConstant.width + 3) / 4
-        for (charIndex in 0 until hexStringLength) {
-            if ((0 until 4).any { bitConstant.kind[(charIndex * 4) + it] }) {
-                val kind = bitConstant.kind[charIndex * 4]
-                val value = bitConstant.value[charIndex * 4]
-                val isKindMatch = (1 until 3).all { bitConstant.kind[(charIndex * 4) + it] == kind }
-                val isValueMatch = (1 until 3).all { bitConstant.value[(charIndex * 4) + it] == value }
-                if (!isKindMatch || !isValueMatch) {
-                    return formatBinBitConstant(bitConstant)
-                }
-            }
+        return if (bitConstant.width < 8 || !bitConstant.kind.allZeroes()) {
+            formatBinBitConstant(bitConstant)
+        } else {
+            formatHexBitConstant(bitConstant)
         }
-        return formatHexBitConstant(bitConstant)
     }
 
     private fun formatHexBitConstant(bitConstant: BitConstant): String {

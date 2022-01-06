@@ -127,7 +127,7 @@ fun <N : `*`> ux(): Ubit<N> {
 }
 
 /**
- * (UNIMPLEMENTED) Returns a [Ubit] with all bits set to Z.
+ * Returns a [Ubit] with all bits set to Z.
  */
 fun <N : `*`> uz(): Ubit<N> {
     throw VerikException()

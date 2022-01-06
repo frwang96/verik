@@ -53,7 +53,7 @@ class BitConstant(
     fun add(bitConstant: BitConstant, expression: EExpression): BitConstant {
         val width = expression.type.asBitWidth(expression)
         val signed = expression.type.asBitSigned(expression)
-        if (!kind.allZero() || !bitConstant.kind.allZero()) {
+        if (!kind.allZeroes() || !bitConstant.kind.allZeroes()) {
             return BitConstant(BitComponent.ones(width), BitComponent.zeroes(width), signed, width)
         }
         val bigInteger = value.toBigIntegerUnsigned() + bitConstant.value.toBigIntegerUnsigned()
@@ -64,7 +64,7 @@ class BitConstant(
     fun sub(bitConstant: BitConstant, expression: EExpression): BitConstant {
         val width = expression.type.asBitWidth(expression)
         val signed = expression.type.asBitSigned(expression)
-        if (!kind.allZero() || !bitConstant.kind.allZero()) {
+        if (!kind.allZeroes() || !bitConstant.kind.allZeroes()) {
             return BitConstant(BitComponent.ones(width), BitComponent.zeroes(width), signed, width)
         }
         val bigInteger = value.toBigIntegerUnsigned() - bitConstant.value.toBigIntegerUnsigned()
