@@ -82,7 +82,8 @@ object ConstantNormalizer {
     fun parseBitConstant(constantExpression: EConstantExpression): BitConstant {
         val width = constantExpression.type.asBitWidth(constantExpression)
         val signed = constantExpression.type.asBitSigned(constantExpression)
-        return normalizeBitConstantString(constantExpression.value, signed, constantExpression)
+        val value = constantExpression.value.replace("s", "")
+        return normalizeBitConstantString(value, signed, constantExpression)
             ?: BitConstant(0, signed, width)
     }
 

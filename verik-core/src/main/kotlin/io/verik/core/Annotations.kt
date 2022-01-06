@@ -53,10 +53,10 @@ annotation class Imported(val location: String)
  *          var rst: Boolean = nc()
  *
  *          @Make
- *          val m1 = M(clk, rst)
+ *          val m0 = M(clk, rst)
  *
  *          @Make
- *          val m2 = M(
+ *          val m1 = M(
  *              clk = clk,
  *              rst = rst
  *          )
