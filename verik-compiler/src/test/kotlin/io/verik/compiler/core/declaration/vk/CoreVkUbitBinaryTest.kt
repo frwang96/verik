@@ -47,12 +47,12 @@ internal class CoreVkUbitBinaryTest : CoreDeclarationTest() {
             """.trimIndent(),
             """
                 function automatic void f();
-                    x = x + 1'h0;
-                    x = x + 1'sh0;
-                    y = x + 1'h0;
-                    y = x + 1'sh0;
-                    x = x - 1'h0;
-                    x = x - 1'sh0;
+                    x = x + 1'b0;
+                    x = x + 1'sb0;
+                    y = x + 1'b0;
+                    y = x + 1'sb0;
+                    x = x - 1'b0;
+                    x = x - 1'sb0;
                 endfunction : f
             """.trimIndent()
         )
@@ -81,10 +81,10 @@ internal class CoreVkUbitBinaryTest : CoreDeclarationTest() {
             """.trimIndent(),
             """
                 function automatic void f();
-                    x = x * 4'h0;
-                    x = x * 4'sh0;
-                    y = x * 4'h0;
-                    y = x * 4'sh0;
+                    x = x * 4'b0000;
+                    x = x * 4'sb0000;
+                    y = x * 4'b0000;
+                    y = x * 4'sb0000;
                     x = x / x;
                 endfunction : f
             """.trimIndent()
@@ -152,11 +152,11 @@ internal class CoreVkUbitBinaryTest : CoreDeclarationTest() {
             """
                 function automatic void f();
                     x = x << 1;
-                    x = x << 1'h1;
+                    x = x << 1'b1;
                     x = x >> 1;
-                    x = x >> 1'h1;
+                    x = x >> 1'b1;
                     x = ${'$'}unsigned(${'$'}signed(x) >>> 1);
-                    x = ${'$'}unsigned(${'$'}signed(x) >>> 1'h1);
+                    x = ${'$'}unsigned(${'$'}signed(x) >>> 1'b1);
                 endfunction : f
             """.trimIndent()
         )

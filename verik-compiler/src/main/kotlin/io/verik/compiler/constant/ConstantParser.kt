@@ -26,6 +26,7 @@ object ConstantParser {
         return expression.value.toInt()
     }
 
+    // TODO parse four state values
     fun parseBitConstant(expression: EConstantExpression): BitConstant {
         val tickIndex = expression.value.indexOf("'")
         val width = expression.value.substring(0, tickIndex).toIntOrNull()
@@ -34,6 +35,6 @@ object ConstantParser {
         val trimmedValue = expression.value.substring(tickIndex).substring(if (signed) 3 else 2)
         val compactedValue = trimmedValue.replace("_", "")
         val bigInteger = BigInteger(compactedValue, 16)
-        return BitConstant(BitComponent(bigInteger, width), signed, width)
+        return BitConstant(BitComponent.zeroes(width), BitComponent(bigInteger, width), signed, width)
     }
 }

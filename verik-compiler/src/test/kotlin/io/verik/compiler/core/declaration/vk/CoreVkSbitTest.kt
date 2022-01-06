@@ -67,9 +67,9 @@ internal class CoreVkSbitTest : CoreDeclarationTest() {
             """
                 function automatic void f();
                     y = x[0];
-                    y = x[2'h0];
+                    y = x[2'b00];
                     x[0] = y;
-                    x[2'h0] = y;
+                    x[2'b00] = y;
                 endfunction : f
             """.trimIndent()
         )

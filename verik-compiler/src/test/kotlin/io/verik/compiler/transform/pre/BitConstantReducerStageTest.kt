@@ -51,7 +51,7 @@ internal class BitConstantReducerStageTest : BaseTest() {
                 var x = u("4'd3")
             """.trimIndent(),
             BitConstantReducerStage::class,
-            "ConstantExpression(Ubit<`4`>, 4'h3)"
+            "ConstantExpression(Ubit<`4`>, 4'b0011)"
         ) { it.findExpression("x") }
     }
 
@@ -67,6 +67,17 @@ internal class BitConstantReducerStageTest : BaseTest() {
     }
 
     @Test
+    fun `constant string unsigned binary unknown floating`() {
+        driveElementTest(
+            """
+                var x = u("9'b1000000xz")
+            """.trimIndent(),
+            BitConstantReducerStage::class,
+            "ConstantExpression(Ubit<`9`>, 9'b1_0000_00xz)"
+        ) { it.findExpression("x") }
+    }
+
+    @Test
     fun `constant string unsigned hexadecimal`() {
         driveElementTest(
             """
@@ -75,6 +86,28 @@ internal class BitConstantReducerStageTest : BaseTest() {
             BitConstantReducerStage::class,
             "ConstantExpression(Ubit<`10`>, 10'h3ff)"
         ) { it.findExpression("x") }
+    }
+
+    @Test
+    fun `constant string unsigned hexadecimal unknown floating`() {
+        driveElementTest(
+            """
+                var x = u("10'h3xz")
+            """.trimIndent(),
+            BitConstantReducerStage::class,
+            "ConstantExpression(Ubit<`10`>, 10'h3xz)"
+        ) { it.findExpression("x") }
+    }
+
+    @Test
+    fun `constant string unsigned hexadecimal insufficient width`() {
+        driveMessageTest(
+            """
+                var x = u("1'h3")
+            """.trimIndent(),
+            true,
+            "Bit constant is insufficiently wide: 1'h3"
+        )
     }
 
     @Test
@@ -107,17 +140,6 @@ internal class BitConstantReducerStageTest : BaseTest() {
             """.trimIndent(),
             true,
             "Error parsing bit constant: 12'hxyz"
-        )
-    }
-
-    @Test
-    fun `constant string insufficient width`() {
-        driveMessageTest(
-            """
-                var x = u("1'h3")
-            """.trimIndent(),
-            true,
-            "Bit constant is insufficiently wide: 1'h3"
         )
     }
 }

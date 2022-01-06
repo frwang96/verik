@@ -23,12 +23,20 @@ import io.verik.compiler.core.common.Core
 import java.math.BigInteger
 
 class BitConstant(
+    val kind: BitComponent,
     val value: BitComponent,
     val signed: Boolean,
     val width: Int
 ) {
 
+    // encoding (kind, value)
+    // 00: 0
+    // 01: 1
+    // 10: x
+    // 11: z
+
     constructor(value: Int, signed: Boolean, width: Int) : this(
+        BitComponent.zeroes(width),
         BitComponent(BigInteger.valueOf(value.toLong()), width),
         signed,
         width
@@ -45,16 +53,22 @@ class BitConstant(
     fun add(bitConstant: BitConstant, expression: EExpression): BitConstant {
         val width = expression.type.asBitWidth(expression)
         val signed = expression.type.asBitSigned(expression)
+        if (!kind.allZero() || !bitConstant.kind.allZero()) {
+            return BitConstant(BitComponent.ones(width), BitComponent.zeroes(width), signed, width)
+        }
         val bigInteger = value.toBigIntegerUnsigned() + bitConstant.value.toBigIntegerUnsigned()
         val value = BitComponent(bigInteger, width)
-        return BitConstant(value, signed, width)
+        return BitConstant(BitComponent.zeroes(width), value, signed, width)
     }
 
     fun sub(bitConstant: BitConstant, expression: EExpression): BitConstant {
         val width = expression.type.asBitWidth(expression)
         val signed = expression.type.asBitSigned(expression)
+        if (!kind.allZero() || !bitConstant.kind.allZero()) {
+            return BitConstant(BitComponent.ones(width), BitComponent.zeroes(width), signed, width)
+        }
         val bigInteger = value.toBigIntegerUnsigned() - bitConstant.value.toBigIntegerUnsigned()
         val value = BitComponent(bigInteger, width)
-        return BitConstant(value, signed, width)
+        return BitConstant(BitComponent.zeroes(width), value, signed, width)
     }
 }

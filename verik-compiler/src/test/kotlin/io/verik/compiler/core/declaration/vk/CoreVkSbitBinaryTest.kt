@@ -48,12 +48,12 @@ internal class CoreVkSbitBinaryTest : CoreDeclarationTest() {
             """.trimIndent(),
             """
                 function automatic void f();
-                    y = x + 2'h0;
-                    z = x + 2'sh0;
-                    y = x + 1'h0;
-                    z = x + 1'sh0;
-                    y = x - 2'h0;
-                    z = x - 2'sh0;
+                    y = x + 2'b00;
+                    z = x + 2'sb00;
+                    y = x + 1'b0;
+                    z = x + 1'sb0;
+                    y = x - 2'b00;
+                    z = x - 2'sb00;
                 endfunction : f
             """.trimIndent()
         )
@@ -83,8 +83,8 @@ internal class CoreVkSbitBinaryTest : CoreDeclarationTest() {
                 function automatic void f();
                     y = x * 8'h00;
                     z = x * 8'sh00;
-                    y = x * 4'h0;
-                    z = x * 4'sh0;
+                    y = x * 4'b0000;
+                    z = x * 4'sb0000;
                 endfunction : f
             """.trimIndent()
         )
@@ -151,11 +151,11 @@ internal class CoreVkSbitBinaryTest : CoreDeclarationTest() {
             """
                 function automatic void f();
                     x = x << 1;
-                    x = x << 1'h1;
+                    x = x << 1'b1;
                     x = x >>> 1;
-                    x = x >>> 1'h1;
+                    x = x >>> 1'b1;
                     x = x >> 1;
-                    x = x >> 1'h1;
+                    x = x >> 1'b1;
                 endfunction : f
             """.trimIndent()
         )

@@ -64,6 +64,25 @@ object ConstantBuilder {
     }
 
     private fun formatBitConstant(bitConstant: BitConstant): String {
+        if (bitConstant.width < 8) {
+            return formatBinBitConstant(bitConstant)
+        }
+        val hexStringLength = (bitConstant.width + 3) / 4
+        for (charIndex in 0 until hexStringLength) {
+            if ((0 until 4).any { bitConstant.kind[(charIndex * 4) + it] }) {
+                val kind = bitConstant.kind[charIndex * 4]
+                val value = bitConstant.value[charIndex * 4]
+                val isKindMatch = (1 until 3).all { bitConstant.kind[(charIndex * 4) + it] == kind }
+                val isValueMatch = (1 until 3).all { bitConstant.value[(charIndex * 4) + it] == value }
+                if (!isKindMatch || !isValueMatch) {
+                    return formatBinBitConstant(bitConstant)
+                }
+            }
+        }
+        return formatHexBitConstant(bitConstant)
+    }
+
+    private fun formatHexBitConstant(bitConstant: BitConstant): String {
         val valueString = bitConstant.value.toBigIntegerUnsigned().toString(16)
         val valueStringLength = (bitConstant.width + 3) / 4
         val valueStringPadded = valueString.padStart(valueStringLength, '0')
@@ -72,11 +91,40 @@ object ConstantBuilder {
         builder.append("${bitConstant.width}")
         if (bitConstant.signed) builder.append("'sh")
         else builder.append("'h")
-        valueStringPadded.forEachIndexed { index, it ->
-            builder.append(it)
-            val countToEnd = valueStringLength - index - 1
-            if (countToEnd > 0 && countToEnd % 4 == 0)
+        valueStringPadded.indices.forEach {
+            val reverseIndex = (valueStringLength - it - 1)
+            val kind = bitConstant.kind[reverseIndex * 4]
+            val value = bitConstant.value[reverseIndex * 4]
+            when {
+                kind && !value -> builder.append("x")
+                kind && value -> builder.append("z")
+                else -> builder.append(valueStringPadded[it])
+            }
+            if (reverseIndex > 0 && reverseIndex % 4 == 0) {
                 builder.append("_")
+            }
+        }
+        return builder.toString()
+    }
+
+    private fun formatBinBitConstant(bitConstant: BitConstant): String {
+        val builder = StringBuilder()
+        builder.append("${bitConstant.width}")
+        if (bitConstant.signed) {
+            builder.append("'sb")
+        } else builder.append("'b")
+        (0 until bitConstant.width).reversed().forEach {
+            val kind = bitConstant.kind[it]
+            val value = bitConstant.value[it]
+            when {
+                !kind && !value -> builder.append("0")
+                !kind && value -> builder.append("1")
+                kind && !value -> builder.append("x")
+                else -> builder.append("z")
+            }
+            if (it > 0 && it % 4 == 0) {
+                builder.append("_")
+            }
         }
         return builder.toString()
     }

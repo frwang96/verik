@@ -93,10 +93,10 @@ internal class CoreVkSpecialTest : CoreDeclarationTest() {
             """.trimIndent(),
             """
                 function automatic void f();
-                    x = 4'h8;
+                    x = 4'b1000;
                     y = 1'b0;
                     x = ${'$'}unsigned(z);
-                    x = 4'h0;
+                    x = 4'b0000;
                 endfunction : f
             """.trimIndent()
         )

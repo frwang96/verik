@@ -17,13 +17,25 @@
 package io.verik.compiler.constant
 
 import java.math.BigInteger
-import kotlin.experimental.and
-import kotlin.experimental.inv
 
 class BitComponent(
     private val value: ByteArray,
     val width: Int
 ) {
+
+    operator fun get(index: Int): Boolean {
+        return if (index >= value.size * 8) {
+            false
+        } else {
+            val byteIndex = value.size - (index / 8) - 1
+            val bitIndex = index % 8
+            value[byteIndex].toInt() and (1 shl bitIndex) != 0
+        }
+    }
+
+    fun allZero(): Boolean {
+        return value.all { it.toInt() == 0 }
+    }
 
     fun toBigIntegerUnsigned(): BigInteger {
         return BigInteger(1, value)
@@ -37,9 +49,24 @@ class BitComponent(
                 for (bitIndex in 0 until 8) {
                     val index = (value.size - byteIndex - 1) * 8 + bitIndex
                     if (index >= width) {
-                        value[byteIndex] = value[byteIndex] and (1 shl bitIndex).toByte().inv()
+                        value[byteIndex] = (value[byteIndex].toInt() and (1 shl bitIndex).inv()).toByte()
                     }
                 }
+            }
+            return BitComponent(value, width)
+        }
+
+        fun zeroes(width: Int): BitComponent {
+            val value = ByteArray(0)
+            return BitComponent(value, width)
+        }
+
+        fun ones(width: Int): BitComponent {
+            val value = ByteArray((width + 7) / 8)
+            for (index in 0 until width) {
+                val byteIndex = value.size - (index / 8) - 1
+                val bitIndex = index % 8
+                value[byteIndex] = (value[byteIndex].toInt() or (1 shl bitIndex)).toByte()
             }
             return BitComponent(value, width)
         }

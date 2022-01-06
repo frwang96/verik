@@ -40,7 +40,7 @@ internal class ExpressionEvaluatorStageTest : BaseTest() {
                 var x = u(1) + u(1)
             """.trimIndent(),
             ExpressionEvaluatorStage::class,
-            "ConstantExpression(Ubit<`1`>, 1'h0)"
+            "ConstantExpression(Ubit<`1`>, 1'b0)"
         ) { it.findExpression("x") }
     }
 }
