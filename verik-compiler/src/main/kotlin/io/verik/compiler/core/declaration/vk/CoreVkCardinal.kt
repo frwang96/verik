@@ -22,6 +22,8 @@ import io.verik.compiler.core.common.CoreScope
 
 object CoreVkCardinal : CoreScope(CorePackage.VK) {
 
+    val T_TRUE = CoreCardinalFunctionDeclaration(parent, "TRUE")
+    val T_FALSE = CoreCardinalFunctionDeclaration(parent, "FALSE")
     val T_ADD = CoreCardinalFunctionDeclaration(parent, "ADD")
     val T_SUB = CoreCardinalFunctionDeclaration(parent, "SUB")
     val T_MUL = CoreCardinalFunctionDeclaration(parent, "MUL")
@@ -34,5 +36,4 @@ object CoreVkCardinal : CoreScope(CorePackage.VK) {
     val T_LOG = CoreCardinalFunctionDeclaration(parent, "LOG")
     val T_WIDTH = CoreCardinalFunctionDeclaration(parent, "WIDTH")
     val T_EXP = CoreCardinalFunctionDeclaration(parent, "EXP")
-    val T_IF = CoreCardinalFunctionDeclaration(parent, "IF")
 }

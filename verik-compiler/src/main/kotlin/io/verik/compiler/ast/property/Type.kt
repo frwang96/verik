@@ -28,9 +28,6 @@ import io.verik.compiler.core.common.CardinalDeclaration
 import io.verik.compiler.core.common.CardinalUnresolvedDeclaration
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreClassDeclaration
-import io.verik.compiler.core.common.OptionalConstantDeclaration
-import io.verik.compiler.core.common.OptionalDeclaration
-import io.verik.compiler.core.common.OptionalUnresolvedDeclaration
 import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.target.common.TargetClassDeclaration
@@ -70,17 +67,8 @@ class Type(
         }
     }
 
-    fun isOptionalType(): Boolean {
-        return when (val reference = reference) {
-            is ETypeParameter -> reference.type.isOptionalType()
-            is ETypeAlias -> reference.type.isOptionalType()
-            is OptionalDeclaration -> true
-            else -> false
-        }
-    }
-
     fun isResolved(): Boolean {
-        if (reference is CardinalUnresolvedDeclaration || reference is OptionalUnresolvedDeclaration)
+        if (reference is CardinalUnresolvedDeclaration)
             return false
         return arguments.all { it.isResolved() }
     }
@@ -91,15 +79,6 @@ class Type(
             reference.value
         } else {
             Messages.INTERNAL_ERROR.on(element, "Could not get value as cardinal: $this")
-        }
-    }
-
-    fun asOptionalValue(element: EElement): Boolean {
-        val reference = reference
-        return if (reference is OptionalConstantDeclaration) {
-            reference.value
-        } else {
-            Messages.INTERNAL_ERROR.on(element, "Could not get value as optional: $this")
         }
     }
 

@@ -26,7 +26,6 @@ import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.interfaces.TypeParameterized
 import io.verik.compiler.ast.property.SuperTypeCallEntry
 import io.verik.compiler.core.common.CardinalConstantDeclaration
-import io.verik.compiler.core.common.OptionalConstantDeclaration
 import io.verik.compiler.message.Messages
 
 object DeclarationSpecializer {
@@ -171,10 +170,11 @@ object DeclarationSpecializer {
     ): String? {
         val typeParameterTypeStrings = typeParameterized.typeParameters.map {
             val typeParameterType = specializerContext.typeParameterContext.specialize(it, it)
-            "${it.name}_" + when (val reference = typeParameterType.reference) {
-                is CardinalConstantDeclaration -> reference.value.toString()
-                is OptionalConstantDeclaration -> if (reference.value) "1" else "0"
-                else -> reference.name
+            val reference = typeParameterType.reference
+            if (reference is CardinalConstantDeclaration) {
+                "${it.name}_${reference.value}"
+            } else {
+                "${it.name}_${reference.name}"
             }
         }
         return if (typeParameterTypeStrings.isNotEmpty()) {

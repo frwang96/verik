@@ -23,8 +23,6 @@ import io.verik.compiler.ast.property.Type
 import io.verik.compiler.core.common.Cardinal
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreCardinalFunctionDeclaration
-import io.verik.compiler.core.common.CoreOptionalFunctionDeclaration
-import io.verik.compiler.core.common.Optional
 import io.verik.compiler.message.Messages
 
 object TypeSpecializer {
@@ -38,12 +36,9 @@ object TypeSpecializer {
         val arguments = type.arguments.map { specialize(it, specializerContext, element, forwardReferences) }
         return when (val reference = type.reference) {
             is CoreCardinalFunctionDeclaration -> {
-                val value = specializeCardinalFunction(reference, arguments, element)
+                val argumentValues = arguments.map { it.asCardinalValue(element) }
+                val value = specializeCardinalFunction(reference, argumentValues, element)
                 Cardinal.of(value).toType()
-            }
-            is CoreOptionalFunctionDeclaration -> {
-                val value = specializeOptionalFunction(reference, arguments, element)
-                Optional.of(value).toType()
             }
             is EKtClass -> {
                 if (forwardReferences) {
@@ -69,62 +64,43 @@ object TypeSpecializer {
 
     private fun specializeCardinalFunction(
         reference: CoreCardinalFunctionDeclaration,
-        arguments: List<Type>,
+        argumentValues: List<Int>,
         element: EElement
     ): Int {
         return when (reference) {
+            Core.Vk.T_TRUE ->
+                1
+            Core.Vk.T_FALSE ->
+                0
             Core.Vk.T_ADD ->
-                arguments[0].asCardinalValue(element) + arguments[1].asCardinalValue(element)
+                argumentValues[0] + argumentValues[1]
             Core.Vk.T_SUB ->
-                arguments[0].asCardinalValue(element) - arguments[1].asCardinalValue(element)
+                argumentValues[0] - argumentValues[1]
             Core.Vk.T_MUL ->
-                arguments[0].asCardinalValue(element) * arguments[1].asCardinalValue(element)
+                argumentValues[0] * argumentValues[1]
             Core.Vk.T_DIV ->
-                arguments[0].asCardinalValue(element) / arguments[1].asCardinalValue(element)
+                argumentValues[0] / argumentValues[1]
             Core.Vk.T_MAX ->
-                Integer.max(arguments[0].asCardinalValue(element), arguments[1].asCardinalValue(element))
+                Integer.max(argumentValues[0], argumentValues[1])
             Core.Vk.T_MIN ->
-                Integer.min(arguments[0].asCardinalValue(element), arguments[1].asCardinalValue(element))
+                Integer.min(argumentValues[0], argumentValues[1])
             Core.Vk.T_OF ->
-                arguments[0].asCardinalValue(element)
+                argumentValues[0]
             Core.Vk.T_INC ->
-                arguments[0].asCardinalValue(element) + 1
+                argumentValues[0] + 1
             Core.Vk.T_DEC ->
-                arguments[0].asCardinalValue(element) - 1
-            Core.Vk.T_LOG -> {
-                val value = arguments[0].asCardinalValue(element)
-                if (value <= 0) 0 else (32 - (value - 1).countLeadingZeroBits())
-            }
-            Core.Vk.T_WIDTH -> {
-                val value = arguments[0].asCardinalValue(element)
-                if (value < 0) 0 else (32 - value.countLeadingZeroBits())
-            }
+                argumentValues[0] - 1
+            Core.Vk.T_LOG ->
+                if (argumentValues[0] <= 0) 0 else (32 - (argumentValues[0] - 1).countLeadingZeroBits())
+            Core.Vk.T_WIDTH ->
+                if (argumentValues[0] < 0) 0 else (32 - argumentValues[0].countLeadingZeroBits())
             Core.Vk.T_EXP -> {
-                val value = arguments[0].asCardinalValue(element)
-                if (value >= 31)
+                if (argumentValues[0] >= 31)
                     Messages.CARDINAL_OUT_OF_RANGE.on(element)
-                1 shl value
-            }
-            Core.Vk.T_IF -> {
-                if (arguments[0].asOptionalValue(element)) {
-                    arguments[1].asCardinalValue(element)
-                } else arguments[2].asCardinalValue(element)
+                1 shl argumentValues[0]
             }
             else ->
                 Messages.INTERNAL_ERROR.on(element, "Unrecognized cardinal function: ${reference.name}")
-        }
-    }
-
-    private fun specializeOptionalFunction(
-        reference: CoreOptionalFunctionDeclaration,
-        arguments: List<Type>,
-        element: EElement
-    ): Boolean {
-        return when (reference) {
-            Core.Vk.T_NOT ->
-                !arguments[0].asOptionalValue(element)
-            else ->
-                Messages.INTERNAL_ERROR.on(element, "Unrecognized optional function: ${reference.name}")
         }
     }
 }

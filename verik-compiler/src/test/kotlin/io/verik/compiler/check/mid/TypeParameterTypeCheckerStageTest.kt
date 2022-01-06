@@ -44,15 +44,4 @@ internal class TypeParameterTypeCheckerStageTest : BaseTest() {
             "Cardinal type expected but found: N"
         )
     }
-
-    @Test
-    fun `optional type expected`() {
-        driveMessageTest(
-            """
-                var x: Ubit<IF<`1`, `2`, `3`>> = u(0)
-            """.trimIndent(),
-            true,
-            "Optional type expected but found: `1`"
-        )
-    }
 }

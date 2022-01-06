@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("unused", "UNUSED_PARAMETER")
+
 package io.verik.core
 
 /**
@@ -21,3 +23,17 @@ package io.verik.core
  * [@Make][Make] annotation.
  */
 abstract class Component
+
+/**
+ * (UNIMPLEMENTED) Instantiate a [Cluster] of components [C] of size [N].
+ */
+fun <N : `*`, C : Component> cluster(instantiator: (Int) -> C): Cluster<N, C> {
+    throw VerikException()
+}
+
+/**
+ * Instantiate component [C] if the cardinal [N] takes the value one. [N] must take the value of either zero or one.
+ */
+fun <N : `*`, C : Component> optional(instantiator: () -> C): C? {
+    throw VerikException()
+}

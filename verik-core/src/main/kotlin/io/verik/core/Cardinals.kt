@@ -23,6 +23,16 @@ sealed class Cardinal
 typealias `*` = Cardinal
 
 /**
+ * True cardinal with value one.
+ */
+typealias TRUE = `*`
+
+/**
+ * False cardinal with value zero.
+ */
+typealias FALSE = `*`
+
+/**
  * Adds the cardinals N and M.
  */
 typealias ADD<N, M> = `*`
@@ -81,8 +91,3 @@ typealias WIDTH<N> = `*`
  * Exponential base two of the cardinal N.
  */
 typealias EXP<N> = `*`
-
-/**
- * Selects the cardinal N if the optional X is true and M otherwise.
- */
-typealias IF<X, N, M> = `*`
