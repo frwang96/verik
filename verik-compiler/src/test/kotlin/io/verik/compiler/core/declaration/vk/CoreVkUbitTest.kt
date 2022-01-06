@@ -71,11 +71,11 @@ internal class CoreVkUbitTest : CoreDeclarationTest() {
             """
                 function automatic void f();
                     y = x[0];
-                    y = x[2'h0];
+                    y = x[2'b00];
                     x[0] = y;
-                    x[2'h0] = y;
-                    x[1:0] = 2'h0;
-                    x[2'h1:2'h0] = 2'h0;
+                    x[2'b00] = y;
+                    x[1:0] = 2'b00;
+                    x[2'b01:2'b00] = 2'b00;
                 endfunction : f
             """.trimIndent()
         )
@@ -170,7 +170,7 @@ internal class CoreVkUbitTest : CoreDeclarationTest() {
             """
                 function automatic void f();
                     y = x[3:0];
-                    y = x[3'h3:3'h0];
+                    y = x[3'b011:3'b000];
                 endfunction : f
             """.trimIndent()
         )

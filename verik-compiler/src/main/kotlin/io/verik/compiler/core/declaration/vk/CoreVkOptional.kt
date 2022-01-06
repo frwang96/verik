@@ -16,6 +16,7 @@
 
 package io.verik.compiler.core.declaration.vk
 
+import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
 import io.verik.compiler.core.common.CoreOptionalFunctionDeclaration
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
@@ -23,4 +24,6 @@ import io.verik.compiler.core.common.CoreScope
 object CoreVkOptional : CoreScope(CorePackage.VK) {
 
     val T_NOT = CoreOptionalFunctionDeclaration(parent, "NOT")
+
+    val F_optional_Function = BasicCoreFunctionDeclaration(parent, "optional", "fun optional(Function)", null)
 }

@@ -165,6 +165,17 @@ internal class ExpressionCasterTest : BaseTest() {
     }
 
     @Test
+    fun `constant expression null`() {
+        driveElementTest(
+            """
+                val x = null
+            """.trimIndent(),
+            CasterStage::class,
+            "NullExpression()"
+        ) { it.findExpression("x") }
+    }
+
+    @Test
     fun `this expression`() {
         driveElementTest(
             """

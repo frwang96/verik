@@ -162,6 +162,7 @@ object Core {
         val T_EXP = CoreVkCardinal.T_EXP
 
         val T_NOT = CoreVkOptional.T_NOT
+        val F_optional_Function = CoreVkOptional.F_optional_Function
 
         val F_finish = CoreVkSystem.F_finish
         val F_fatal = CoreVkSystem.F_fatal
@@ -181,6 +182,8 @@ object Core {
         val F_u_String = CoreVkSpecial.F_u_String
         val F_u_Sbit = CoreVkSpecial.F_u_Sbit
         val F_u0 = CoreVkSpecial.F_u0
+        val F_ux = CoreVkSpecial.F_ux
+        val F_uz = CoreVkSpecial.F_uz
         val F_s_Int = CoreVkSpecial.F_s_Int
         val F_s_String = CoreVkSpecial.F_s_String
         val F_s_Ubit = CoreVkSpecial.F_s_Ubit

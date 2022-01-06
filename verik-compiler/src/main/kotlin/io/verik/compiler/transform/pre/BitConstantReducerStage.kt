@@ -16,11 +16,9 @@
 
 package io.verik.compiler.transform.pre
 
-import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
-import io.verik.compiler.common.ConstantUtil
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.common.Cardinal
+import io.verik.compiler.constant.ConstantNormalizer
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
@@ -42,15 +40,8 @@ object BitConstantReducerStage : ProjectStage() {
             }
             if (signed != null) {
                 val expression = callExpression.valueArguments[0]
-                val bitConstant = ConstantUtil.normalizeBitConstant(expression, signed)
-                if (bitConstant != null) {
-                    val type = if (signed) Core.Vk.C_Sbit.toType(Cardinal.of(bitConstant.width).toType())
-                    else Core.Vk.C_Ubit.toType(Cardinal.of(bitConstant.width).toType())
-                    val constantExpression = EConstantExpression(
-                        expression.location,
-                        type,
-                        ConstantUtil.formatBitConstant(bitConstant)
-                    )
+                val constantExpression = ConstantNormalizer.normalizeBitConstant(expression, signed)
+                if (constantExpression != null) {
                     callExpression.replace(constantExpression)
                 }
             }

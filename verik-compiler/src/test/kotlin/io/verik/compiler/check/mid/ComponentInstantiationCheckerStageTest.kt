@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test
 internal class ComponentInstantiationCheckerStageTest : BaseTest() {
 
     @Test
-    fun `component instantiation out of context`() {
+    fun `make annotation out of context`() {
         driveMessageTest(
             """
                 class M : Module()
@@ -30,7 +30,7 @@ internal class ComponentInstantiationCheckerStageTest : BaseTest() {
                 val m = M()
             """.trimIndent(),
             true,
-            "Component instantiation out of context"
+            "Make annotation out of context"
         )
     }
 

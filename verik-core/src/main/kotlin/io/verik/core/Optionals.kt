@@ -23,12 +23,12 @@ sealed class Optional
 typealias `?` = Optional
 
 /**
- * (UNIMPLEMENTED) Optional true value.
+ * Optional true value.
  */
 typealias TRUE = `?`
 
 /**
- * (UNIMPLEMENTED) Optional false value.
+ * Optional false value.
  */
 typealias FALSE = `?`
 

@@ -21,6 +21,7 @@ import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EFile
+import io.verik.compiler.ast.element.common.ENullExpression
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
 import io.verik.compiler.ast.element.sv.ESvProperty
@@ -72,7 +73,7 @@ object ConstantPropagatorStage : ProjectStage() {
         private fun indexConstantProperty(property: ESvProperty): Boolean {
             if (!property.isMutable) {
                 val initializer = property.initializer
-                if (initializer is EConstantExpression) {
+                if (initializer is EConstantExpression || initializer is ENullExpression) {
                     constantMap[property] = initializer
                     return true
                 }

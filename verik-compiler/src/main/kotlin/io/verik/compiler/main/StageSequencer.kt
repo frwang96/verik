@@ -26,7 +26,6 @@ import io.verik.compiler.check.mid.ObjectCheckerStage
 import io.verik.compiler.check.mid.PortCheckerStage
 import io.verik.compiler.check.mid.PortInstantiationCheckerStage
 import io.verik.compiler.check.mid.TypeParameterTypeCheckerStage
-import io.verik.compiler.check.post.CardinalNegativeCheckerStage
 import io.verik.compiler.check.post.FileCheckerStage
 import io.verik.compiler.check.post.KeywordCheckerStage
 import io.verik.compiler.check.post.NameRedeclarationCheckerStage
@@ -56,6 +55,8 @@ import io.verik.compiler.kotlin.KotlinEnvironmentBuilderStage
 import io.verik.compiler.reorder.DeadDeclarationEliminatorStage
 import io.verik.compiler.reorder.DependencyReordererStage
 import io.verik.compiler.reorder.PropertyStatementReordererStage
+import io.verik.compiler.resolve.CardinalNegativeCheckerStage
+import io.verik.compiler.resolve.OptionalReducerStage
 import io.verik.compiler.resolve.TypeConstraintCheckerStage
 import io.verik.compiler.resolve.TypeResolvedCheckerStage
 import io.verik.compiler.resolve.TypeResolverStage
@@ -146,6 +147,8 @@ object StageSequencer {
         stageSequence.add(StageType.RESOLVE, TypeResolvedCheckerStage)
         stageSequence.add(StageType.RESOLVE, DeclarationSpecializerStage)
         stageSequence.add(StageType.RESOLVE, TypeConstraintCheckerStage)
+        stageSequence.add(StageType.RESOLVE, CardinalNegativeCheckerStage)
+        stageSequence.add(StageType.RESOLVE, OptionalReducerStage)
 
         stageSequence.add(StageType.INTERPRET, EnumInterpreterStage)
         stageSequence.add(StageType.INTERPRET, StructInterpreterStage)
@@ -195,7 +198,6 @@ object StageSequencer {
         stageSequence.add(StageType.POST_CHECK, UntransformedElementCheckerStage)
         stageSequence.add(StageType.POST_CHECK, UntransformedReferenceCheckerStage)
         stageSequence.add(StageType.POST_CHECK, FileCheckerStage)
-        stageSequence.add(StageType.POST_CHECK, CardinalNegativeCheckerStage)
         stageSequence.add(StageType.POST_CHECK, PostNameCheckerStage)
         stageSequence.add(StageType.POST_CHECK, KeywordCheckerStage)
         stageSequence.add(StageType.POST_CHECK, NameRedeclarationCheckerStage)

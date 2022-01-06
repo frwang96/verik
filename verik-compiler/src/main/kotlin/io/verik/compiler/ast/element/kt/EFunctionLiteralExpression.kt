@@ -16,6 +16,7 @@
 
 package io.verik.compiler.ast.element.kt
 
+import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.EAbstractValueParameter
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
@@ -31,7 +32,7 @@ import io.verik.compiler.message.SourceLocation
 class EFunctionLiteralExpression(
     override val location: SourceLocation,
     val valueParameters: ArrayList<EAbstractValueParameter>,
-    var body: EKtBlockExpression
+    var body: EAbstractBlockExpression
 ) : EExpression(), ExpressionContainer, DeclarationContainer {
 
     override var type = Core.Kt.C_Function.toType()

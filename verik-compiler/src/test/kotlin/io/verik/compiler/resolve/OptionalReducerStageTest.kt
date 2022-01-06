@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,33 +14,35 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.mid
+package io.verik.compiler.resolve
 
 import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
-internal class ExpressionEvaluatorStageTest : BaseTest() {
+internal class OptionalReducerStageTest : BaseTest() {
 
     @Test
-    fun `evaluate call expression Int plus`() {
+    fun `reduce true`() {
         driveElementTest(
             """
-                var x = 1 + 1
+                class M : Module()
+                val m = optional<TRUE, M> { M() }
             """.trimIndent(),
-            ExpressionEvaluatorStage::class,
-            "ConstantExpression(Int, 2)"
-        ) { it.findExpression("x") }
+            OptionalReducerStage::class,
+            "KtCallExpression(M, <init>, null, [], [])"
+        ) { it.findExpression("m") }
     }
 
     @Test
-    fun `evaluate call expression Ubit plus`() {
+    fun `reduce false`() {
         driveElementTest(
             """
-                var x = u(1) + u(1)
+                class M : Module()
+                val m = optional<FALSE, M> { M() }
             """.trimIndent(),
-            ExpressionEvaluatorStage::class,
-            "ConstantExpression(Ubit<`1`>, 1'b0)"
-        ) { it.findExpression("x") }
+            OptionalReducerStage::class,
+            "NullExpression()"
+        ) { it.findExpression("m") }
     }
 }

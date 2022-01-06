@@ -271,7 +271,7 @@ internal class ExpressionSerializerTest : BaseTest() {
                 var x = cat(u(0), u(0))
             """.trimIndent(),
             """
-                logic [1:0] x = { 1'h0, 1'h0 };
+                logic [1:0] x = { 1'b0, 1'b0 };
             """.trimIndent()
         ) { it.regularPackageTextFiles[0] }
     }
@@ -307,7 +307,7 @@ internal class ExpressionSerializerTest : BaseTest() {
                 var x = u(0x0).ext<`8`>()
             """.trimIndent(),
             """
-                logic [7:0] x = 8'(4'h0);
+                logic [7:0] x = 8'(4'b0000);
             """.trimIndent()
         ) { it.regularPackageTextFiles[0] }
     }

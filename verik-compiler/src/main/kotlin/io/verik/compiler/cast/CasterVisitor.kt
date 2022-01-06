@@ -16,7 +16,6 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
@@ -201,7 +200,7 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
         return ExpressionCaster.castKtReferenceExpressionOrKtCallExpression(expression, castContext)
     }
 
-    override fun visitConstantExpression(expression: KtConstantExpression, data: Unit?): EConstantExpression {
+    override fun visitConstantExpression(expression: KtConstantExpression, data: Unit?): EExpression {
         return ExpressionCaster.castConstantExpression(expression, castContext)
     }
 

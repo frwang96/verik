@@ -47,9 +47,9 @@ internal class CoreVkUnpackedTest : CoreDeclarationTest() {
             """
                 function automatic void f();
                     y = x[0];
-                    y = x[1'h0];
+                    y = x[1'b0];
                     x[0] = 1'b0;
-                    x[1'h0] = 1'b0;
+                    x[1'b0] = 1'b0;
                     z = 2;
                 endfunction : f
             """.trimIndent()

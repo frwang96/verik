@@ -16,6 +16,7 @@
 
 package io.verik.compiler.core.common
 
+import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
@@ -60,7 +61,7 @@ open class BinaryCoreFunctionDeclaration(
     val kind: SvBinaryOperatorKind
 ) : CoreFunctionDeclaration() {
 
-    open fun evaluate(callExpression: EKtCallExpression): String? {
+    open fun evaluate(callExpression: EKtCallExpression): EConstantExpression? {
         return null
     }
 }
