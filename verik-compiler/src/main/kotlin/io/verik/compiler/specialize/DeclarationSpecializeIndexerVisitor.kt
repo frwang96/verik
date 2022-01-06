@@ -48,7 +48,12 @@ class DeclarationSpecializeIndexerVisitor(
         type.arguments.forEach { addSpecializedType(it, element) }
         val reference = type.reference
         if (reference is EKtClass && reference.isSpecializable()) {
-            val typeParameterContext = TypeParameterContext.getFromTypeArguments(type.arguments, reference, element)
+            val typeParameterContext = TypeParameterContext.getFromTypeArguments(
+                type.arguments,
+                reference,
+                specializerContext,
+                element
+            )
             declarationBindingQueue.push(DeclarationBinding(reference, typeParameterContext))
         }
     }
@@ -87,6 +92,7 @@ class DeclarationSpecializeIndexerVisitor(
                 val callExpressionTypeParameterContext = TypeParameterContext.getFromTypeArguments(
                     typedElement.typeArguments,
                     reference,
+                    specializerContext,
                     typedElement
                 )
                 val typeParameterContext = TypeParameterContext(

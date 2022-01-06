@@ -23,6 +23,8 @@ import io.verik.compiler.ast.property.Type
 import io.verik.compiler.core.common.Cardinal
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreCardinalFunctionDeclaration
+import io.verik.compiler.core.common.CoreOptionalFunctionDeclaration
+import io.verik.compiler.core.common.Optional
 import io.verik.compiler.message.Messages
 
 object TypeSpecializer {
@@ -36,16 +38,19 @@ object TypeSpecializer {
         val arguments = type.arguments.map { specialize(it, specializerContext, element, forwardReferences) }
         return when (val reference = type.reference) {
             is CoreCardinalFunctionDeclaration -> {
-                val argumentValues = arguments.map { it.asCardinalValue(element) }
-                val value = specializeCardinalFunction(reference, argumentValues, element)
+                val value = specializeCardinalFunction(reference, arguments, element)
                 Cardinal.of(value).toType()
+            }
+            is CoreOptionalFunctionDeclaration -> {
+                val value = specializeOptionalFunction(reference, arguments, element)
+                Optional.of(value).toType()
             }
             is EKtClass -> {
                 if (forwardReferences) {
                     val argumentsNotForwarded = type.arguments
                         .map { specialize(it, specializerContext, element, false) }
                     val typeParameterContext = TypeParameterContext
-                        .getFromTypeArguments(argumentsNotForwarded, reference, element)
+                        .getFromTypeArguments(argumentsNotForwarded, reference, specializerContext, element)
                     val forwardedReference = specializerContext[reference, typeParameterContext, element]
                     forwardedReference.toType()
                 } else {
@@ -64,39 +69,57 @@ object TypeSpecializer {
 
     private fun specializeCardinalFunction(
         reference: CoreCardinalFunctionDeclaration,
-        argumentValues: List<Int>,
+        arguments: List<Type>,
         element: EElement
     ): Int {
         return when (reference) {
             Core.Vk.T_ADD ->
-                argumentValues[0] + argumentValues[1]
+                arguments[0].asCardinalValue(element) + arguments[1].asCardinalValue(element)
             Core.Vk.T_SUB ->
-                argumentValues[0] - argumentValues[1]
+                arguments[0].asCardinalValue(element) - arguments[1].asCardinalValue(element)
             Core.Vk.T_MUL ->
-                argumentValues[0] * argumentValues[1]
+                arguments[0].asCardinalValue(element) * arguments[1].asCardinalValue(element)
             Core.Vk.T_DIV ->
-                argumentValues[0] / argumentValues[1]
+                arguments[0].asCardinalValue(element) / arguments[1].asCardinalValue(element)
             Core.Vk.T_MAX ->
-                Integer.max(argumentValues[0], argumentValues[1])
+                Integer.max(arguments[0].asCardinalValue(element), arguments[1].asCardinalValue(element))
             Core.Vk.T_MIN ->
-                Integer.min(argumentValues[0], argumentValues[1])
+                Integer.min(arguments[0].asCardinalValue(element), arguments[1].asCardinalValue(element))
             Core.Vk.T_OF ->
-                argumentValues[0]
+                arguments[0].asCardinalValue(element)
             Core.Vk.T_INC ->
-                argumentValues[0] + 1
+                arguments[0].asCardinalValue(element) + 1
             Core.Vk.T_DEC ->
-                argumentValues[0] - 1
-            Core.Vk.T_LOG ->
-                if (argumentValues[0] <= 0) 0 else (32 - (argumentValues[0] - 1).countLeadingZeroBits())
-            Core.Vk.T_WIDTH ->
-                if (argumentValues[0] < 0) 0 else (32 - argumentValues[0].countLeadingZeroBits())
+                arguments[0].asCardinalValue(element) - 1
+            Core.Vk.T_LOG -> {
+                val value = arguments[0].asCardinalValue(element)
+                if (value <= 0) 0 else (32 - (value - 1).countLeadingZeroBits())
+            }
+            Core.Vk.T_WIDTH -> {
+                val value = arguments[0].asCardinalValue(element)
+                if (value < 0) 0 else (32 - value.countLeadingZeroBits())
+            }
             Core.Vk.T_EXP -> {
-                if (argumentValues[0] >= 31)
+                val value = arguments[0].asCardinalValue(element)
+                if (value >= 31)
                     Messages.CARDINAL_OUT_OF_RANGE.on(element)
-                1 shl argumentValues[0]
+                1 shl value
             }
             else ->
                 Messages.INTERNAL_ERROR.on(element, "Unrecognized cardinal function: $reference")
+        }
+    }
+
+    private fun specializeOptionalFunction(
+        reference: CoreOptionalFunctionDeclaration,
+        arguments: List<Type>,
+        element: EElement
+    ): Boolean {
+        return when (reference) {
+            Core.Vk.T_NOT ->
+                !arguments[0].asOptionalValue(element)
+            else ->
+                Messages.INTERNAL_ERROR.on(element, "Unrecognized optional function: $reference")
         }
     }
 }

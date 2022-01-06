@@ -28,6 +28,7 @@ import io.verik.compiler.core.common.CardinalDeclaration
 import io.verik.compiler.core.common.CardinalUnresolvedDeclaration
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreClassDeclaration
+import io.verik.compiler.core.common.OptionalConstantDeclaration
 import io.verik.compiler.core.common.OptionalDeclaration
 import io.verik.compiler.core.common.OptionalUnresolvedDeclaration
 import io.verik.compiler.message.Messages
@@ -84,18 +85,21 @@ class Type(
         return arguments.all { it.isResolved() }
     }
 
-    fun isSpecialized(): Boolean {
-        if (isCardinalType() && reference !is CardinalConstantDeclaration)
-            return false
-        return arguments.all { it.isSpecialized() }
-    }
-
     fun asCardinalValue(element: EElement): Int {
         val reference = reference
         return if (reference is CardinalConstantDeclaration) {
             reference.value
         } else {
             Messages.INTERNAL_ERROR.on(element, "Could not get value as cardinal: $this")
+        }
+    }
+
+    fun asOptionalValue(element: EElement): Boolean {
+        val reference = reference
+        return if (reference is OptionalConstantDeclaration) {
+            reference.value
+        } else {
+            Messages.INTERNAL_ERROR.on(element, "Could not get value as optional: $this")
         }
     }
 

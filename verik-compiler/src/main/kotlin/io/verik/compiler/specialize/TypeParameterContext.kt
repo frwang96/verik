@@ -55,17 +55,17 @@ data class TypeParameterContext(val typeParameterBindings: List<TypeParameterBin
         fun getFromTypeArguments(
             typeArguments: List<Type>,
             typeParameterized: TypeParameterized,
+            specializerContext: SpecializerContext,
             element: EElement
         ): TypeParameterContext {
-            typeArguments.forEach {
-                if (!it.isSpecialized())
-                    Messages.INTERNAL_ERROR.on(element, "Type argument not specialized: $it")
+            val specializedTypeArguments = typeArguments.map {
+                TypeSpecializer.specialize(it, specializerContext, element, false)
             }
             val expectedSize = typeParameterized.typeParameters.size
-            val actualSize = typeArguments.size
+            val actualSize = specializedTypeArguments.size
             return if (expectedSize == actualSize) {
                 val typeParameterBindings = typeParameterized.typeParameters
-                    .zip(typeArguments)
+                    .zip(specializedTypeArguments)
                     .map { (typeParameter, type) -> TypeParameterBinding(typeParameter, type) }
                 TypeParameterContext(typeParameterBindings)
             } else {
@@ -93,6 +93,7 @@ data class TypeParameterContext(val typeParameterBindings: List<TypeParameterBin
                     getFromTypeArguments(
                         specializedType.arguments,
                         specializedTypeReference,
+                        specializerContext,
                         receiverExpression
                     )
                 } else EMPTY

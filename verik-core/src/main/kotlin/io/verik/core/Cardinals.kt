@@ -81,3 +81,8 @@ typealias WIDTH<N> = `*`
  * Exponential base two of the cardinal N.
  */
 typealias EXP<N> = `*`
+
+/**
+ * Selects the cardinal N if the optional X is true and M otherwise.
+ */
+typealias IF<X, N, M> = `*`

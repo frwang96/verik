@@ -35,6 +35,18 @@ internal class DeclarationSpecializerStageTest : BaseTest() {
     }
 
     @Test
+    fun `specialize class type parameter cardinal function`() {
+        driveElementTest(
+            """
+                class C<N : `*`>
+                val c = C<INC<`7`>>()
+            """.trimIndent(),
+            DeclarationSpecializerStage::class,
+            "KtClass(C_N_8, C_N_8, [], [], [], 0, 0, 0, PrimaryConstructor(C_N_8, [], []), null)"
+        ) { it.findDeclaration("C_N_8") }
+    }
+
+    @Test
     fun `specialize class type parameter class`() {
         driveElementTest(
             """
