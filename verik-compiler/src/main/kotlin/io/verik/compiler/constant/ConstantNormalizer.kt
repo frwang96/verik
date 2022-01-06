@@ -114,50 +114,112 @@ object ConstantNormalizer {
         }
 
         val trimmedValue = compactedValue.substring(tickIndex + 2)
-        val bitConstant = when (compactedValue[tickIndex + 1].lowercase()) {
-            "d" -> {
-                try {
-                    val bigInteger = BigInteger(trimmedValue, 10)
-                    BitConstant(bigInteger, signed, width)
-                } catch (exception: NumberFormatException) {
-                    Messages.BIT_CONSTANT_PARSE_ERROR.on(element, value)
-                    null
-                }
-            }
-            "h" -> {
-                try {
-                    val bigInteger = BigInteger(trimmedValue, 16)
-                    if (signed && bigInteger.testBit(width - 1)) {
-                        BitConstant(bigInteger - BigInteger.ONE.shiftLeft(width), true, width)
-                    } else {
-                        BitConstant(bigInteger, signed, width)
-                    }
-                } catch (exception: NumberFormatException) {
-                    Messages.BIT_CONSTANT_PARSE_ERROR.on(element, value)
-                    null
-                }
-            }
-            "b" -> {
-                try {
-                    val bigInteger = BigInteger(trimmedValue, 2)
-                    if (signed && bigInteger.testBit(width - 1)) {
-                        BitConstant(bigInteger - BigInteger.ONE.shiftLeft(width), true, width)
-                    } else {
-                        BitConstant(bigInteger, signed, width)
-                    }
-                } catch (exception: java.lang.NumberFormatException) {
-                    Messages.BIT_CONSTANT_PARSE_ERROR.on(element, value)
-                    null
-                }
-            }
+        return when (compactedValue[tickIndex + 1].lowercase()) {
+            "d" -> parseDecBitConstant(value, width, signed, trimmedValue, element)
+            "h" -> parseHexBitConstant(value, width, signed, trimmedValue, element)
+            "b" -> parseBinBitConstant(value, width, signed, trimmedValue, element)
             else -> {
                 Messages.BIT_CONSTANT_PARSE_ERROR.on(element, value)
                 null
             }
         }
-        if (bitConstant != null && !bitConstant.isInRange()) {
-            Messages.BIT_CONSTANT_INSUFFICIENT_WIDTH.on(element, value)
+    }
+
+    private fun parseDecBitConstant(
+        value: String,
+        width: Int,
+        signed: Boolean,
+        trimmedValue: String,
+        element: EElement,
+    ): BitConstant? {
+        return try {
+            val bigInteger = BigInteger(trimmedValue)
+            if (bigInteger >= BigInteger.ONE.shiftLeft(width)) {
+                Messages.BIT_CONSTANT_INSUFFICIENT_WIDTH.on(element, value)
+                return null
+            }
+            BitConstant(BitComponent(bigInteger, width), signed, width)
+        } catch (exception: NumberFormatException) {
+            Messages.BIT_CONSTANT_PARSE_ERROR.on(element, value)
+            null
         }
-        return bitConstant
+    }
+
+    private fun parseHexBitConstant(
+        value: String,
+        width: Int,
+        signed: Boolean,
+        trimmedValue: String,
+        element: EElement,
+    ): BitConstant? {
+        val byteArray = ByteArray((trimmedValue.length + 1) / 2)
+        trimmedValue.forEachIndexed { charIndex, char ->
+            val charValue = when (char) {
+                in '0'..'9' -> char - '0'
+                in 'a'..'f' -> char - 'a' + 10
+                in 'A'..'F' -> char - 'A' + 10
+                else -> {
+                    Messages.BIT_CONSTANT_PARSE_ERROR.on(element, value)
+                    return null
+                }
+            }
+            for (charBitIndex in 0 until 4) {
+                if (charValue and (1 shl charBitIndex) != 0) {
+                    val index = (trimmedValue.length - charIndex - 1) * 4 + charBitIndex
+                    val byteIndex = byteArray.size - (index / 8) - 1
+                    val byteBitIndex = index % 8
+                    byteArray[byteIndex] = (byteArray[byteIndex].toInt() or (1 shl byteBitIndex)).toByte()
+                }
+            }
+        }
+        if (!checkWidth(byteArray, width)) {
+            Messages.BIT_CONSTANT_INSUFFICIENT_WIDTH.on(element, value)
+            return null
+        }
+        return BitConstant(BitComponent(byteArray, width), signed, width)
+    }
+
+    private fun parseBinBitConstant(
+        value: String,
+        width: Int,
+        signed: Boolean,
+        trimmedValue: String,
+        element: EElement,
+    ): BitConstant? {
+        val byteArray = ByteArray((trimmedValue.length + 7) / 8)
+        trimmedValue.reversed().forEachIndexed { index, char ->
+            val charValue = when (char) {
+                '0' -> false
+                '1' -> true
+                else -> {
+                    Messages.BIT_CONSTANT_PARSE_ERROR.on(element, value)
+                    return null
+                }
+            }
+            val byteIndex = byteArray.size - (index / 8) - 1
+            val byteBitIndex = index % 8
+            if (charValue) {
+                byteArray[byteIndex] = (byteArray[byteIndex].toInt() or (1 shl byteBitIndex)).toByte()
+            }
+        }
+        if (!checkWidth(byteArray, width)) {
+            Messages.BIT_CONSTANT_INSUFFICIENT_WIDTH.on(element, value)
+            return null
+        }
+        return BitConstant(BitComponent(byteArray, width), signed, width)
+    }
+
+    private fun checkWidth(byteArray: ByteArray, width: Int): Boolean {
+        byteArray.indices.forEach { byteIndex ->
+            for (byteBitIndex in 0 until 8) {
+                val index = (byteArray.size - byteIndex - 1) * 8 + byteBitIndex
+                if (index >= width) {
+                    if (byteArray[byteIndex].toInt() and (1 shl byteBitIndex) != 0) {
+                        return false
+                    }
+                }
+            }
+        }
+        return true
     }
 }

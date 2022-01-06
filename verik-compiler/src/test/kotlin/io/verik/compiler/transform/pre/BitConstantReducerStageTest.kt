@@ -59,10 +59,10 @@ internal class BitConstantReducerStageTest : BaseTest() {
     fun `constant string unsigned binary`() {
         driveElementTest(
             """
-                var x = u("4'b0011")
+                var x = u("9'b100000011")
             """.trimIndent(),
             BitConstantReducerStage::class,
-            "ConstantExpression(Ubit<`4`>, 4'h3)"
+            "ConstantExpression(Ubit<`9`>, 9'h103)"
         ) { it.findExpression("x") }
     }
 
@@ -81,10 +81,10 @@ internal class BitConstantReducerStageTest : BaseTest() {
     fun `constant string signed binary`() {
         driveElementTest(
             """
-                var x = s("4'b0011")
+                var x = s("9'b100000011")
             """.trimIndent(),
             BitConstantReducerStage::class,
-            "ConstantExpression(Sbit<`4`>, 4'sh3)"
+            "ConstantExpression(Sbit<`9`>, 9'sh103)"
         ) { it.findExpression("x") }
     }
 
@@ -114,10 +114,10 @@ internal class BitConstantReducerStageTest : BaseTest() {
     fun `constant string insufficient width`() {
         driveMessageTest(
             """
-                var x = u("1'hf")
+                var x = u("1'h3")
             """.trimIndent(),
             true,
-            "Bit constant is insufficiently wide: 1'hf"
+            "Bit constant is insufficiently wide: 1'h3"
         )
     }
 }

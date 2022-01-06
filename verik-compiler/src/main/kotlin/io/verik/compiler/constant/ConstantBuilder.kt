@@ -64,7 +64,7 @@ object ConstantBuilder {
     }
 
     private fun formatBitConstant(bitConstant: BitConstant): String {
-        val valueString = bitConstant.getModValue().toString(16)
+        val valueString = bitConstant.value.toBigIntegerUnsigned().toString(16)
         val valueStringLength = (bitConstant.width + 3) / 4
         val valueStringPadded = valueString.padStart(valueStringLength, '0')
 

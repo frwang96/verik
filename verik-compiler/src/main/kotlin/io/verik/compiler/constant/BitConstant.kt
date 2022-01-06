@@ -23,12 +23,16 @@ import io.verik.compiler.core.common.Core
 import java.math.BigInteger
 
 class BitConstant(
-    private val value: BigInteger,
+    val value: BitComponent,
     val signed: Boolean,
     val width: Int
 ) {
 
-    constructor(value: Int, signed: Boolean, width: Int) : this(BigInteger.valueOf(value.toLong()), signed, width)
+    constructor(value: Int, signed: Boolean, width: Int) : this(
+        BitComponent(BigInteger.valueOf(value.toLong()), width),
+        signed,
+        width
+    )
 
     fun getType(): Type {
         return if (signed) {
@@ -38,45 +42,19 @@ class BitConstant(
         }
     }
 
-    fun isInRange(): Boolean {
-        return if (signed) {
-            val maxValue = BigInteger.ONE.shiftLeft(width - 1)
-            (value < maxValue) && (value >= -maxValue)
-        } else {
-            value < BigInteger.ONE.shiftLeft(width)
-        }
-    }
-
-    fun getModValue(): BigInteger {
-        return mod(value, width)
-    }
-
     fun add(bitConstant: BitConstant, expression: EExpression): BitConstant {
-        val resultWidth = expression.type.asBitWidth(expression)
-        val resultSigned = expression.type.asBitSigned(expression)
-        val resultValue = mod(value + bitConstant.value, resultWidth)
-        return BitConstant(resultValue, resultSigned, resultWidth)
+        val width = expression.type.asBitWidth(expression)
+        val signed = expression.type.asBitSigned(expression)
+        val bigInteger = value.toBigIntegerUnsigned() + bitConstant.value.toBigIntegerUnsigned()
+        val value = BitComponent(bigInteger, width)
+        return BitConstant(value, signed, width)
     }
 
     fun sub(bitConstant: BitConstant, expression: EExpression): BitConstant {
-        val resultWidth = expression.type.asBitWidth(expression)
-        val resultSigned = expression.type.asBitSigned(expression)
-        val resultValue = mod(value - bitConstant.value, resultWidth)
-        return BitConstant(resultValue, resultSigned, resultWidth)
-    }
-
-    companion object {
-
-        private fun mod(value: BigInteger, width: Int): BigInteger {
-            val maxValue = BigInteger.ONE.shiftLeft(width)
-            return when {
-                value == BigInteger.ZERO -> BigInteger.ZERO
-                value > BigInteger.ZERO -> value.mod(maxValue)
-                else -> {
-                    val negativeMod = value.unaryMinus().mod(maxValue)
-                    (maxValue - negativeMod).mod(maxValue)
-                }
-            }
-        }
+        val width = expression.type.asBitWidth(expression)
+        val signed = expression.type.asBitSigned(expression)
+        val bigInteger = value.toBigIntegerUnsigned() - bitConstant.value.toBigIntegerUnsigned()
+        val value = BitComponent(bigInteger, width)
+        return BitConstant(value, signed, width)
     }
 }

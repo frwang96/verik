@@ -34,6 +34,6 @@ object ConstantParser {
         val trimmedValue = expression.value.substring(tickIndex).substring(if (signed) 3 else 2)
         val compactedValue = trimmedValue.replace("_", "")
         val bigInteger = BigInteger(compactedValue, 16)
-        return BitConstant(bigInteger, signed, width)
+        return BitConstant(BitComponent(bigInteger, width), signed, width)
     }
 }
