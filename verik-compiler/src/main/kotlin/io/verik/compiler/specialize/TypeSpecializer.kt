@@ -72,6 +72,32 @@ object TypeSpecializer {
                 1
             Core.Vk.T_FALSE ->
                 0
+            Core.Vk.T_NOT -> {
+                if (argumentValues[0] !in 0..1)
+                    Messages.CARDINAL_NOT_BOOLEAN.on(element, Cardinal.of(argumentValues[0]).toType())
+                if (argumentValues[0] != 0) 0 else 1
+            }
+            Core.Vk.T_AND -> {
+                if (argumentValues[0] !in 0..1)
+                    Messages.CARDINAL_NOT_BOOLEAN.on(element, Cardinal.of(argumentValues[0]).toType())
+                if (argumentValues[1] !in 0..1)
+                    Messages.CARDINAL_NOT_BOOLEAN.on(element, Cardinal.of(argumentValues[1]).toType())
+                if ((argumentValues[0] != 0) && (argumentValues[1] != 0)) 1 else 0
+            }
+            Core.Vk.T_OR -> {
+                if (argumentValues[0] !in 0..1)
+                    Messages.CARDINAL_NOT_BOOLEAN.on(element, Cardinal.of(argumentValues[0]).toType())
+                if (argumentValues[1] !in 0..1)
+                    Messages.CARDINAL_NOT_BOOLEAN.on(element, Cardinal.of(argumentValues[1]).toType())
+                if ((argumentValues[0] != 0) || (argumentValues[1] != 0)) 1 else 0
+            }
+            Core.Vk.T_IF -> {
+                if (argumentValues[0] !in 0..1)
+                    Messages.CARDINAL_NOT_BOOLEAN.on(element, Cardinal.of(argumentValues[0]).toType())
+                if (argumentValues[0] != 0) {
+                    argumentValues[1]
+                } else argumentValues[2]
+            }
             Core.Vk.T_ADD ->
                 argumentValues[0] + argumentValues[1]
             Core.Vk.T_SUB ->

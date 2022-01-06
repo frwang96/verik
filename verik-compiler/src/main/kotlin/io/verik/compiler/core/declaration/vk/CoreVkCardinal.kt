@@ -24,6 +24,10 @@ object CoreVkCardinal : CoreScope(CorePackage.VK) {
 
     val T_TRUE = CoreCardinalFunctionDeclaration(parent, "TRUE")
     val T_FALSE = CoreCardinalFunctionDeclaration(parent, "FALSE")
+    val T_NOT = CoreCardinalFunctionDeclaration(parent, "NOT")
+    val T_AND = CoreCardinalFunctionDeclaration(parent, "AND")
+    val T_OR = CoreCardinalFunctionDeclaration(parent, "OR")
+    val T_IF = CoreCardinalFunctionDeclaration(parent, "IF")
     val T_ADD = CoreCardinalFunctionDeclaration(parent, "ADD")
     val T_SUB = CoreCardinalFunctionDeclaration(parent, "SUB")
     val T_MUL = CoreCardinalFunctionDeclaration(parent, "MUL")

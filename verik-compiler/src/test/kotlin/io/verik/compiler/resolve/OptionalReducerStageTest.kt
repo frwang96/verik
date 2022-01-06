@@ -45,4 +45,16 @@ internal class OptionalReducerStageTest : BaseTest() {
             "NullExpression()"
         ) { it.findExpression("m") }
     }
+
+    @Test
+    fun `illegal false`() {
+        driveMessageTest(
+            """
+                class M : Module()
+                val m = optional<`2`, M> { M() }
+            """.trimIndent(),
+            true,
+            "Could not interpret cardinal as either true or false: `2`"
+        )
+    }
 }

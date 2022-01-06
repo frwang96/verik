@@ -54,7 +54,11 @@ object OptionalReducerStage : ProjectStage() {
                         return
                     }
                 }
-                Messages.INTERNAL_ERROR.on(callExpression, "Unable to reduce optional function")
+                if (typeArgument.isCardinalType()) {
+                    Messages.CARDINAL_NOT_BOOLEAN.on(callExpression, typeArgument)
+                } else {
+                    Messages.INTERNAL_ERROR.on(callExpression, "Unable to reduce optional function")
+                }
             }
         }
     }

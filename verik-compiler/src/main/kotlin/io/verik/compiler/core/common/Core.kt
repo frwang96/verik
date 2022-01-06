@@ -150,6 +150,10 @@ object Core {
 
         val T_TRUE = CoreVkCardinal.T_TRUE
         val T_FALSE = CoreVkCardinal.T_FALSE
+        val T_NOT = CoreVkCardinal.T_NOT
+        val T_AND = CoreVkCardinal.T_AND
+        val T_OR = CoreVkCardinal.T_OR
+        val T_IF = CoreVkCardinal.T_IF
         val T_ADD = CoreVkCardinal.T_ADD
         val T_SUB = CoreVkCardinal.T_SUB
         val T_MUL = CoreVkCardinal.T_MUL
