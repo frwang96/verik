@@ -170,7 +170,7 @@ internal class CoreVkUbitTest : CoreDeclarationTest() {
             """
                 function automatic void f();
                     y = x[3:0];
-                    y = x[3'b001:3'b000];
+                    y = x[3'b011:3'b000];
                 endfunction : f
             """.trimIndent()
         )

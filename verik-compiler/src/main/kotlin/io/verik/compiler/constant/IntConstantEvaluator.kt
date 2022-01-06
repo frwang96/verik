@@ -22,20 +22,20 @@ import io.verik.compiler.ast.element.common.EExpression
 object IntConstantEvaluator {
 
     fun plusInt(original: EExpression, left: EConstantExpression, right: EConstantExpression): EConstantExpression {
-        val leftInt = ConstantParser.parseInt(left)
-        val rightInt = ConstantParser.parseInt(right)
+        val leftInt = ConstantNormalizer.parseInt(left)
+        val rightInt = ConstantNormalizer.parseInt(right)
         return ConstantBuilder.buildInt(original, leftInt + rightInt)
     }
 
     fun minusInt(original: EExpression, left: EConstantExpression, right: EConstantExpression): EConstantExpression {
-        val leftInt = ConstantParser.parseInt(left)
-        val rightInt = ConstantParser.parseInt(right)
+        val leftInt = ConstantNormalizer.parseInt(left)
+        val rightInt = ConstantNormalizer.parseInt(right)
         return ConstantBuilder.buildInt(original, leftInt - rightInt)
     }
 
     fun timesInt(original: EExpression, left: EConstantExpression, right: EConstantExpression): EConstantExpression {
-        val leftInt = ConstantParser.parseInt(left)
-        val rightInt = ConstantParser.parseInt(right)
+        val leftInt = ConstantNormalizer.parseInt(left)
+        val rightInt = ConstantNormalizer.parseInt(right)
         return ConstantBuilder.buildInt(original, leftInt * rightInt)
     }
 }

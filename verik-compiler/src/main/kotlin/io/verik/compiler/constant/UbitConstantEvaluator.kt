@@ -22,14 +22,14 @@ import io.verik.compiler.ast.element.common.EExpression
 object UbitConstantEvaluator {
 
     fun plusUbit(original: EExpression, left: EConstantExpression, right: EConstantExpression): EConstantExpression {
-        val leftBitConstant = ConstantParser.parseBitConstant(left)
-        val rightBitConstant = ConstantParser.parseBitConstant(right)
+        val leftBitConstant = ConstantNormalizer.parseBitConstant(left)
+        val rightBitConstant = ConstantNormalizer.parseBitConstant(right)
         return ConstantBuilder.buildBitConstant(original, leftBitConstant.add(rightBitConstant, original))
     }
 
     fun minusUbit(original: EExpression, left: EConstantExpression, right: EConstantExpression): EConstantExpression {
-        val leftBitConstant = ConstantParser.parseBitConstant(left)
-        val rightBitConstant = ConstantParser.parseBitConstant(right)
+        val leftBitConstant = ConstantNormalizer.parseBitConstant(left)
+        val rightBitConstant = ConstantNormalizer.parseBitConstant(right)
         return ConstantBuilder.buildBitConstant(original, leftBitConstant.sub(rightBitConstant, original))
     }
 }

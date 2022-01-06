@@ -75,6 +75,17 @@ object ConstantNormalizer {
         return ConstantBuilder.buildBitConstant(expression.location, bitConstant)
     }
 
+    fun parseInt(constantExpression: EConstantExpression): Int {
+        return constantExpression.value.toInt()
+    }
+
+    fun parseBitConstant(constantExpression: EConstantExpression): BitConstant {
+        val width = constantExpression.type.asBitWidth(constantExpression)
+        val signed = constantExpression.type.asBitSigned(constantExpression)
+        return normalizeBitConstantString(constantExpression.value, signed, constantExpression)
+            ?: BitConstant(0, signed, width)
+    }
+
     private fun normalizeBitConstantInt(value: String, signed: Boolean): BitConstant {
         val compactedValue = value.replace("_", "")
         return when {
@@ -152,8 +163,12 @@ object ConstantNormalizer {
         trimmedValue: String,
         element: EElement,
     ): BitConstant? {
-        val kindByteArray = ByteArray((trimmedValue.length + 1) / 2)
-        val valueByteArray = ByteArray((trimmedValue.length + 1) / 2)
+        if ((width + 3) / 4 < trimmedValue.length) {
+            Messages.BIT_CONSTANT_INSUFFICIENT_WIDTH.on(element, value)
+            return null
+        }
+        val kindByteArray = ByteArray(width + 7 / 8)
+        val valueByteArray = ByteArray(width + 7 / 8)
         trimmedValue.forEachIndexed { charIndex, char ->
             val charKind = char in listOf('x', 'X', 'z', 'Z')
             val charValue = when (char) {
@@ -169,6 +184,8 @@ object ConstantNormalizer {
             }
             for (charBitIndex in 0 until 4) {
                 val index = (trimmedValue.length - charIndex - 1) * 4 + charBitIndex
+                if (index >= width)
+                    break
                 val byteIndex = valueByteArray.size - (index / 8) - 1
                 val byteBitIndex = index % 8
                 if (charKind) {
@@ -181,9 +198,8 @@ object ConstantNormalizer {
                 }
             }
         }
-        if (!checkWidth(kindByteArray, width) || !checkWidth(valueByteArray, width)) {
-            Messages.BIT_CONSTANT_INSUFFICIENT_WIDTH.on(element, value)
-            return null
+        if (trimmedValue.length < (width + 3) / 4) {
+            extend(kindByteArray, valueByteArray, trimmedValue.length * 4, width, signed)
         }
         return BitConstant(
             BitComponent(kindByteArray, width),
@@ -200,8 +216,12 @@ object ConstantNormalizer {
         trimmedValue: String,
         element: EElement,
     ): BitConstant? {
-        val kindByteArray = ByteArray((trimmedValue.length + 7) / 8)
-        val valueByteArray = ByteArray((trimmedValue.length + 7) / 8)
+        if (width < trimmedValue.length) {
+            Messages.BIT_CONSTANT_INSUFFICIENT_WIDTH.on(element, value)
+            return null
+        }
+        val kindByteArray = ByteArray(width + 7 / 8)
+        val valueByteArray = ByteArray(width + 7 / 8)
         trimmedValue.reversed().forEachIndexed { index, char ->
             val charKind = char in listOf('x', 'X', 'z', 'Z')
             val charValue = when (char) {
@@ -221,9 +241,8 @@ object ConstantNormalizer {
             if (charValue)
                 valueByteArray[byteIndex] = (valueByteArray[byteIndex].toInt() or (1 shl byteBitIndex)).toByte()
         }
-        if (!checkWidth(kindByteArray, width) || !checkWidth(valueByteArray, width)) {
-            Messages.BIT_CONSTANT_INSUFFICIENT_WIDTH.on(element, value)
-            return null
+        if (trimmedValue.length < width) {
+            extend(kindByteArray, valueByteArray, trimmedValue.length, width, signed)
         }
         return BitConstant(
             BitComponent(kindByteArray, width),
@@ -233,17 +252,25 @@ object ConstantNormalizer {
         )
     }
 
-    private fun checkWidth(byteArray: ByteArray, width: Int): Boolean {
-        byteArray.indices.forEach { byteIndex ->
-            for (byteBitIndex in 0 until 8) {
-                val index = (byteArray.size - byteIndex - 1) * 8 + byteBitIndex
-                if (index >= width) {
-                    if (byteArray[byteIndex].toInt() and (1 shl byteBitIndex) != 0) {
-                        return false
-                    }
-                }
-            }
+    private fun extend(
+        kindByteArray: ByteArray,
+        valueByteArray: ByteArray,
+        fromWidth: Int,
+        toWidth: Int,
+        signed: Boolean
+    ) {
+        val leadingByteIndex = kindByteArray.size - ((fromWidth - 1) / 8) - 1
+        val leadingByteBitIndex = (fromWidth - 1) % 8
+        val leadingKind = (kindByteArray[leadingByteIndex].toInt() and (1 shl leadingByteBitIndex)) != 0
+        val leadingValue = (valueByteArray[leadingByteIndex].toInt() and (1 shl leadingByteBitIndex)) != 0
+        val extendValue = if (!leadingKind && !signed) false else leadingValue
+        (fromWidth until toWidth).forEach {
+            val byteIndex = kindByteArray.size - (it / 8) - 1
+            val byteBitIndex = it % 8
+            if (leadingKind)
+                kindByteArray[byteIndex] = ((1 shl byteBitIndex) or kindByteArray[byteIndex].toInt()).toByte()
+            if (extendValue)
+                valueByteArray[byteIndex] = ((1 shl byteBitIndex) or valueByteArray[byteIndex].toInt()).toByte()
         }
-        return true
     }
 }

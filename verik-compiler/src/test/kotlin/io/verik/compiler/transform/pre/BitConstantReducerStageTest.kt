@@ -67,6 +67,17 @@ internal class BitConstantReducerStageTest : BaseTest() {
     }
 
     @Test
+    fun `constant string unsigned binary zero extension`() {
+        driveElementTest(
+            """
+                var x = u("4'b1")
+            """.trimIndent(),
+            BitConstantReducerStage::class,
+            "ConstantExpression(Ubit<`4`>, 4'b0001)"
+        ) { it.findExpression("x") }
+    }
+
+    @Test
     fun `constant string unsigned binary unknown floating`() {
         driveElementTest(
             """
@@ -92,10 +103,10 @@ internal class BitConstantReducerStageTest : BaseTest() {
     fun `constant string unsigned hexadecimal insufficient width`() {
         driveMessageTest(
             """
-                var x = u("1'h3")
+                var x = u("1'b11")
             """.trimIndent(),
             true,
-            "Bit constant is insufficiently wide: 1'h3"
+            "Bit constant is insufficiently wide: 1'b11"
         )
     }
 
@@ -118,6 +129,17 @@ internal class BitConstantReducerStageTest : BaseTest() {
             """.trimIndent(),
             BitConstantReducerStage::class,
             "ConstantExpression(Sbit<`10`>, 10'sh3ff)"
+        ) { it.findExpression("x") }
+    }
+
+    @Test
+    fun `constant string signed hexadecimal sign extension`() {
+        driveElementTest(
+            """
+                var x = s("8'hf")
+            """.trimIndent(),
+            BitConstantReducerStage::class,
+            "ConstantExpression(Sbit<`8`>, 8'shff)"
         ) { it.findExpression("x") }
     }
 
