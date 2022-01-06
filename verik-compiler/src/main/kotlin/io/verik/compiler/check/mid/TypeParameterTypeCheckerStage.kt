@@ -21,6 +21,9 @@ import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.core.common.Core
+import io.verik.compiler.core.common.CoreCardinalFunctionDeclaration
+import io.verik.compiler.core.common.CoreOptionalFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
@@ -34,13 +37,40 @@ object TypeParameterTypeCheckerStage : ProjectStage() {
     private object TypeParameterTypeCheckerVisitor : TreeVisitor() {
 
         private fun checkType(type: Type, element: EElement) {
-            if (type.isCardinalType()) {
-                type.arguments.forEach {
+            when (val reference = type.reference) {
+                is CoreCardinalFunctionDeclaration ->
+                    checkCardinalFunction(reference, type.arguments, element)
+                is CoreOptionalFunctionDeclaration ->
+                    checkOptionalFunction(type.arguments, element)
+            }
+            type.arguments.forEach { checkType(it, element) }
+        }
+
+        private fun checkCardinalFunction(
+            declaration: CoreCardinalFunctionDeclaration,
+            arguments: List<Type>,
+            element: EElement
+        ) {
+            if (declaration == Core.Vk.T_IF) {
+                if (!arguments[0].isOptionalType())
+                    Messages.EXPECTED_OPTIONAL_TYPE.on(element, arguments[0])
+                if (!arguments[1].isCardinalType())
+                    Messages.EXPECTED_CARDINAL_TYPE.on(element, arguments[1])
+                if (!arguments[2].isCardinalType())
+                    Messages.EXPECTED_CARDINAL_TYPE.on(element, arguments[2])
+            } else {
+                arguments.forEach {
                     if (!it.isCardinalType())
                         Messages.EXPECTED_CARDINAL_TYPE.on(element, it)
                 }
             }
-            type.arguments.forEach { checkType(it, element) }
+        }
+
+        private fun checkOptionalFunction(arguments: List<Type>, element: EElement) {
+            arguments.forEach {
+                if (!it.isOptionalType())
+                    Messages.EXPECTED_OPTIONAL_TYPE.on(element, it)
+            }
         }
 
         override fun visitTypedElement(typedElement: ETypedElement) {

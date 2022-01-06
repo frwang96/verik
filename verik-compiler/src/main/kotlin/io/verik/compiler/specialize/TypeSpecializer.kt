@@ -105,8 +105,13 @@ object TypeSpecializer {
                     Messages.CARDINAL_OUT_OF_RANGE.on(element)
                 1 shl value
             }
+            Core.Vk.T_IF -> {
+                if (arguments[0].asOptionalValue(element)) {
+                    arguments[1].asCardinalValue(element)
+                } else arguments[2].asCardinalValue(element)
+            }
             else ->
-                Messages.INTERNAL_ERROR.on(element, "Unrecognized cardinal function: $reference")
+                Messages.INTERNAL_ERROR.on(element, "Unrecognized cardinal function: ${reference.name}")
         }
     }
 
@@ -119,7 +124,7 @@ object TypeSpecializer {
             Core.Vk.T_NOT ->
                 !arguments[0].asOptionalValue(element)
             else ->
-                Messages.INTERNAL_ERROR.on(element, "Unrecognized optional function: $reference")
+                Messages.INTERNAL_ERROR.on(element, "Unrecognized optional function: ${reference.name}")
         }
     }
 }

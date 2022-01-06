@@ -34,4 +34,5 @@ object CoreVkCardinal : CoreScope(CorePackage.VK) {
     val T_LOG = CoreCardinalFunctionDeclaration(parent, "LOG")
     val T_WIDTH = CoreCardinalFunctionDeclaration(parent, "WIDTH")
     val T_EXP = CoreCardinalFunctionDeclaration(parent, "EXP")
+    val T_IF = CoreCardinalFunctionDeclaration(parent, "IF")
 }

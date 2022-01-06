@@ -160,6 +160,7 @@ object Core {
         val T_LOG = CoreVkCardinal.T_LOG
         val T_WIDTH = CoreVkCardinal.T_WIDTH
         val T_EXP = CoreVkCardinal.T_EXP
+        val T_IF = CoreVkCardinal.T_IF
 
         val T_NOT = CoreVkOptional.T_NOT
         val F_optional_Function = CoreVkOptional.F_optional_Function

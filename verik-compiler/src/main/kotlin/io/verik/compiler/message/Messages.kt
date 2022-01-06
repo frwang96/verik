@@ -140,6 +140,10 @@ object Messages {
         "Cardinal type expected but found: $0"
     )
 
+    val EXPECTED_OPTIONAL_TYPE = ErrorMessageTemplate1<Type>(
+        "Optional type expected but found: $0"
+    )
+
     val EXPECTED_OBJECT = ErrorMessageTemplate2<String, String>(
         "$0 must be declared as object: $1"
     )
