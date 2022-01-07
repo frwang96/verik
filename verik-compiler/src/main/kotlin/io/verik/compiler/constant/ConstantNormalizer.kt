@@ -75,6 +75,18 @@ object ConstantNormalizer {
         return ConstantBuilder.buildBitConstant(expression.location, bitConstant)
     }
 
+    fun parseBooleanOrNull(expression: EExpression): Boolean? {
+        return if (expression is EConstantExpression) {
+            when (val value = expression.value) {
+                "1'b0" -> false
+                "1'b1" -> true
+                else -> {
+                    Messages.INTERNAL_ERROR.on(SourceLocation.NULL, "Unrecognized boolean value: $value")
+                }
+            }
+        } else null
+    }
+
     fun parseInt(constantExpression: EConstantExpression): Int {
         return constantExpression.value.toInt()
     }

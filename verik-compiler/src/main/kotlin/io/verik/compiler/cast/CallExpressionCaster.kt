@@ -36,7 +36,7 @@ object CallExpressionCaster {
     }
 
     fun castTypeArguments(expression: KtCallExpression, castContext: CastContext): ArrayList<Type> {
-        val call = castContext.sliceCall[expression.calleeExpression]!!
+        val call = castContext.sliceCall[expression.calleeExpression!!]!!
         return if (call.typeArgumentList != null) {
             val typeArguments = call.typeArguments.map {
                 castContext.castType(it.typeReference!!)

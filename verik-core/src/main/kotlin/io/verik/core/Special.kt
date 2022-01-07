@@ -43,7 +43,7 @@ fun <T> nc(): T {
 }
 
 /**
- * (UNIMPLEMENTED) Returns the value of the cardinal [N] as a [Boolean]. [N] must take the value of either zero or one.
+ * Returns the value of the cardinal [N] as a [Boolean]. [N] must take the value of either zero or one.
  */
 fun <N : `*`> b(): Boolean {
     throw VerikException()

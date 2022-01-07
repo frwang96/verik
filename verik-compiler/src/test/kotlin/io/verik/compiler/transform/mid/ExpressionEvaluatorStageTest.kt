@@ -43,4 +43,42 @@ internal class ExpressionEvaluatorStageTest : BaseTest() {
             "ConstantExpression(Ubit<`1`>, 1'b0)"
         ) { it.findExpression("x") }
     }
+
+    @Test
+    fun `evaluate binary expression Boolean and`() {
+        driveElementTest(
+            """
+                var x = false
+                @Suppress("SimplifyBooleanWithConstants")
+                var y = false && x
+            """.trimIndent(),
+            ExpressionEvaluatorStage::class,
+            "ConstantExpression(Boolean, 1'b0)"
+        ) { it.findExpression("y") }
+    }
+
+    @Test
+    fun `evaluate binary expression Boolean or`() {
+        driveElementTest(
+            """
+                var x = false
+                @Suppress("SimplifyBooleanWithConstants")
+                var y = x || false
+            """.trimIndent(),
+            ExpressionEvaluatorStage::class,
+            "ReferenceExpression(Boolean, x, null)"
+        ) { it.findExpression("y") }
+    }
+
+    @Test
+    fun `evaluate inline if expression`() {
+        driveElementTest(
+            """
+                @Suppress("ConstantConditionIf")
+                val x = if (true) 1 else 0
+            """.trimIndent(),
+            ExpressionEvaluatorStage::class,
+            "ConstantExpression(Int, 1)"
+        ) { it.findExpression("x") }
+    }
 }

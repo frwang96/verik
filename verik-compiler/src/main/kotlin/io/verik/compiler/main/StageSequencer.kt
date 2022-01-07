@@ -73,9 +73,11 @@ import io.verik.compiler.transform.mid.ConstantPropagatorStage
 import io.verik.compiler.transform.mid.ExpressionEvaluatorStage
 import io.verik.compiler.transform.mid.ExpressionExtractorStage
 import io.verik.compiler.transform.mid.ForStatementTransformerStage
+import io.verik.compiler.transform.mid.FunctionTransformerStage
 import io.verik.compiler.transform.mid.IfAndWhenExpressionUnlifterStage
 import io.verik.compiler.transform.mid.InjectedStatementTransformerStage
 import io.verik.compiler.transform.mid.InlineIfExpressionTransformerStage
+import io.verik.compiler.transform.mid.PropertyTransformerStage
 import io.verik.compiler.transform.mid.StringTemplateExpressionTransformerStage
 import io.verik.compiler.transform.mid.StructLiteralTransformerStage
 import io.verik.compiler.transform.mid.TaskReturnTransformerStage
@@ -85,10 +87,8 @@ import io.verik.compiler.transform.post.AssignmentTransformerStage
 import io.verik.compiler.transform.post.BinaryExpressionTransformerStage
 import io.verik.compiler.transform.post.BlockExpressionTransformerStage
 import io.verik.compiler.transform.post.CallExpressionTransformerStage
-import io.verik.compiler.transform.post.FunctionTransformerStage
 import io.verik.compiler.transform.post.PackageNameTransformerStage
 import io.verik.compiler.transform.post.ParenthesisInsertionTransformerStage
-import io.verik.compiler.transform.post.PropertyTransformerStage
 import io.verik.compiler.transform.post.ScopeExpressionInsertionTransformerStage
 import io.verik.compiler.transform.post.TemporaryDeclarationRenameStage
 import io.verik.compiler.transform.post.TypeReferenceTransformerStage
@@ -174,15 +174,15 @@ object StageSequencer {
         stageSequence.add(StageType.MID_TRANSFORM, IfAndWhenExpressionUnlifterStage)
         stageSequence.add(StageType.MID_TRANSFORM, CaseStatementTransformerStage)
         stageSequence.add(StageType.MID_TRANSFORM, StructLiteralTransformerStage)
-        stageSequence.add(StageType.MID_TRANSFORM, ExpressionEvaluatorStage)
         stageSequence.add(StageType.MID_TRANSFORM, ExpressionExtractorStage)
+        stageSequence.add(StageType.MID_TRANSFORM, FunctionTransformerStage)
+        stageSequence.add(StageType.MID_TRANSFORM, PropertyTransformerStage)
+        stageSequence.add(StageType.MID_TRANSFORM, ExpressionEvaluatorStage)
 
         stageSequence.add(StageType.REORDER, PropertyStatementReordererStage)
         stageSequence.add(StageType.REORDER, DeadDeclarationEliminatorStage)
         stageSequence.add(StageType.REORDER, DependencyReordererStage)
 
-        stageSequence.add(StageType.POST_TRANSFORM, FunctionTransformerStage)
-        stageSequence.add(StageType.POST_TRANSFORM, PropertyTransformerStage)
         stageSequence.add(StageType.POST_TRANSFORM, TypeReferenceTransformerStage)
         stageSequence.add(StageType.POST_TRANSFORM, AssignmentTransformerStage)
         stageSequence.add(StageType.POST_TRANSFORM, UnpackedTypeDefinitionTransformerStage)
