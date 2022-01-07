@@ -31,21 +31,25 @@ internal class CoreVkControlTest : CoreDeclarationTest() {
                 Core.Vk.F_on_Event_Event_Function
             ),
             """
+                @Suppress("MemberVisibilityCanBePrivate")
                 class M : Module() {
                     var x: Boolean = nc()
+                    var y: Boolean = nc()
                     @Seq
-                    fun f() { on (posedge(x)) {} }
+                    fun f() { on (posedge(x)) { y = !y } }
                     @Seq
-                    fun g() { on (negedge(x)) {} }
+                    fun g() { on (negedge(x)) { y = !y} }
                 }
             """.trimIndent(),
             """
                 module M;
 
                     always_ff @(posedge x) begin : f
+                        y <= !y;
                     end : f
 
                     always_ff @(negedge x) begin : g
+                        y <= !y;
                     end : g
 
                 endmodule : M
@@ -87,6 +91,7 @@ internal class CoreVkControlTest : CoreDeclarationTest() {
             ),
             """
                 class CB(override val event:  Event) : ClockingBlock()
+                @Suppress("MemberVisibilityCanBePrivate")
                 class M : Module() {
                     var clk: Boolean = nc()
                     @Make

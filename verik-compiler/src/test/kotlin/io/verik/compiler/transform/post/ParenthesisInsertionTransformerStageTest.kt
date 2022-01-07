@@ -63,9 +63,11 @@ internal class ParenthesisInsertionTransformerStageTest : BaseTest() {
         driveElementTest(
             """
                 class M : Module() {
+                    @Suppress("MemberVisibilityCanBePrivate")
+                    var x: Boolean = nc()
                     @Seq
                     fun f() {
-                        on(posedge(false)) {}
+                        on(posedge(false)) { x = !x }
                     }
                 }
             """.trimIndent(),

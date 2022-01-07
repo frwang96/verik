@@ -25,6 +25,7 @@ import io.verik.compiler.check.mid.EntryPointCheckerStage
 import io.verik.compiler.check.mid.ObjectCheckerStage
 import io.verik.compiler.check.mid.PortCheckerStage
 import io.verik.compiler.check.mid.PortInstantiationCheckerStage
+import io.verik.compiler.check.mid.ProceduralBlockReferenceCheckerStage
 import io.verik.compiler.check.mid.TypeParameterTypeCheckerStage
 import io.verik.compiler.check.post.FileCheckerStage
 import io.verik.compiler.check.post.KeywordCheckerStage
@@ -69,6 +70,7 @@ import io.verik.compiler.specialize.DeclarationSpecializerStage
 import io.verik.compiler.transform.lower.ExpressionEvaluatorStage
 import io.verik.compiler.transform.lower.FunctionTransformerStage
 import io.verik.compiler.transform.lower.IfExpressionEvaluatorStage
+import io.verik.compiler.transform.lower.ProceduralBlockEliminatorStage
 import io.verik.compiler.transform.lower.PropertyTransformerStage
 import io.verik.compiler.transform.post.AssignmentTransformerStage
 import io.verik.compiler.transform.post.BinaryExpressionTransformerStage
@@ -143,6 +145,7 @@ object StageSequencer {
         stageSequence.add(StageType.MID_CHECK, ObjectCheckerStage)
         stageSequence.add(StageType.MID_CHECK, PortCheckerStage)
         stageSequence.add(StageType.MID_CHECK, PortInstantiationCheckerStage)
+        stageSequence.add(StageType.MID_CHECK, ProceduralBlockReferenceCheckerStage)
 
         stageSequence.add(StageType.RESOLVE, TypeResolverStage)
         stageSequence.add(StageType.RESOLVE, TypeResolvedCheckerStage)
@@ -181,6 +184,7 @@ object StageSequencer {
         stageSequence.add(StageType.LOWER_TRANSFORM, PropertyTransformerStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, ExpressionEvaluatorStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, IfExpressionEvaluatorStage)
+        stageSequence.add(StageType.LOWER_TRANSFORM, ProceduralBlockEliminatorStage)
 
         stageSequence.add(StageType.REORDER, PropertyStatementReordererStage)
         stageSequence.add(StageType.REORDER, DeadDeclarationEliminatorStage)
