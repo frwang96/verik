@@ -138,6 +138,7 @@ class ElementPrinter : Visitor() {
         build("TypeAlias") {
             build(typeAlias.name)
             build(typeAlias.type.toString())
+            build(typeAlias.typeParameters)
         }
     }
 

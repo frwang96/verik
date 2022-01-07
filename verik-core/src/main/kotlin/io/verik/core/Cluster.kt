@@ -34,10 +34,3 @@ class Cluster<N : `*`, C : Component> private constructor() : Component(), Itera
         throw VerikException()
     }
 }
-
-/**
- * (UNIMPLEMENTED) Instantiate a [Cluster] of components [C] of size [N].
- */
-fun <N : `*`, C : Component> cluster(instantiator: (Int) -> C): Cluster<N, C> {
-    throw VerikException()
-}

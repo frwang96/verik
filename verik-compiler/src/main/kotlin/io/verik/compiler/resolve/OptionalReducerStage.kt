@@ -20,8 +20,8 @@ import io.verik.compiler.ast.element.common.ENullExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.core.common.Cardinal
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.core.common.Optional
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
@@ -39,7 +39,7 @@ object OptionalReducerStage : ProjectStage() {
             if (callExpression.reference == Core.Vk.F_optional_Function) {
                 val typeArgument = callExpression.typeArguments[0]
                 when (typeArgument.reference) {
-                    Optional.of(true) -> {
+                    Cardinal.TRUE -> {
                         val functionLiteralExpression = callExpression
                             .valueArguments[0]
                             .cast<EFunctionLiteralExpression>()
@@ -48,13 +48,17 @@ object OptionalReducerStage : ProjectStage() {
                             return
                         }
                     }
-                    Optional.of(false) -> {
+                    Cardinal.FALSE -> {
                         val nullExpression = ENullExpression(callExpression.location)
                         callExpression.replace(nullExpression)
                         return
                     }
                 }
-                Messages.INTERNAL_ERROR.on(callExpression, "Unable to reduce optional")
+                if (typeArgument.isCardinalType()) {
+                    Messages.CARDINAL_NOT_BOOLEAN.on(callExpression, typeArgument)
+                } else {
+                    Messages.INTERNAL_ERROR.on(callExpression, "Unable to reduce optional function")
+                }
             }
         }
     }

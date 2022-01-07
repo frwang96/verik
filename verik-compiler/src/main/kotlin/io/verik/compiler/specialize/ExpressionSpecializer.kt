@@ -143,6 +143,7 @@ object ExpressionSpecializer {
             val callExpressionTypeParameterContext = TypeParameterContext.getFromTypeArguments(
                 callExpression.typeArguments,
                 reference,
+                specializerContext,
                 callExpression
             )
             val typeParameterContext = TypeParameterContext(

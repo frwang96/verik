@@ -38,8 +38,8 @@ class EKtClass(
 
     override var type = NullDeclaration.toType()
     override var superType = NullDeclaration.toType()
-    override var declarations: ArrayList<EDeclaration> = arrayListOf()
-    override var typeParameters: ArrayList<ETypeParameter> = arrayListOf()
+    override var declarations: ArrayList<EDeclaration> = ArrayList()
+    override var typeParameters: ArrayList<ETypeParameter> = ArrayList()
     override var annotationEntries: List<AnnotationEntry> = listOf()
     var isEnum: Boolean = false
     var isAbstract: Boolean = false

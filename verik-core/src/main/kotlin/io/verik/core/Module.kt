@@ -26,7 +26,7 @@ package io.verik.core
  *          var clk = false
  *
  *          @Run
- *          fun toggle_clk() {
+ *          fun runClk() {
  *              forever {
  *                  delay(1)
  *                  clk = !clk

@@ -45,7 +45,7 @@ object TypeSpecializer {
                     val argumentsNotForwarded = type.arguments
                         .map { specialize(it, specializerContext, element, false) }
                     val typeParameterContext = TypeParameterContext
-                        .getFromTypeArguments(argumentsNotForwarded, reference, element)
+                        .getFromTypeArguments(argumentsNotForwarded, reference, specializerContext, element)
                     val forwardedReference = specializerContext[reference, typeParameterContext, element]
                     forwardedReference.toType()
                 } else {
@@ -68,6 +68,36 @@ object TypeSpecializer {
         element: EElement
     ): Int {
         return when (reference) {
+            Core.Vk.T_TRUE ->
+                1
+            Core.Vk.T_FALSE ->
+                0
+            Core.Vk.T_NOT -> {
+                if (argumentValues[0] !in 0..1)
+                    Messages.CARDINAL_NOT_BOOLEAN.on(element, Cardinal.of(argumentValues[0]).toType())
+                if (argumentValues[0] != 0) 0 else 1
+            }
+            Core.Vk.T_AND -> {
+                if (argumentValues[0] !in 0..1)
+                    Messages.CARDINAL_NOT_BOOLEAN.on(element, Cardinal.of(argumentValues[0]).toType())
+                if (argumentValues[1] !in 0..1)
+                    Messages.CARDINAL_NOT_BOOLEAN.on(element, Cardinal.of(argumentValues[1]).toType())
+                if ((argumentValues[0] != 0) && (argumentValues[1] != 0)) 1 else 0
+            }
+            Core.Vk.T_OR -> {
+                if (argumentValues[0] !in 0..1)
+                    Messages.CARDINAL_NOT_BOOLEAN.on(element, Cardinal.of(argumentValues[0]).toType())
+                if (argumentValues[1] !in 0..1)
+                    Messages.CARDINAL_NOT_BOOLEAN.on(element, Cardinal.of(argumentValues[1]).toType())
+                if ((argumentValues[0] != 0) || (argumentValues[1] != 0)) 1 else 0
+            }
+            Core.Vk.T_IF -> {
+                if (argumentValues[0] !in 0..1)
+                    Messages.CARDINAL_NOT_BOOLEAN.on(element, Cardinal.of(argumentValues[0]).toType())
+                if (argumentValues[0] != 0) {
+                    argumentValues[1]
+                } else argumentValues[2]
+            }
             Core.Vk.T_ADD ->
                 argumentValues[0] + argumentValues[1]
             Core.Vk.T_SUB ->
@@ -96,7 +126,7 @@ object TypeSpecializer {
                 1 shl argumentValues[0]
             }
             else ->
-                Messages.INTERNAL_ERROR.on(element, "Unrecognized cardinal function: $reference")
+                Messages.INTERNAL_ERROR.on(element, "Unrecognized cardinal function: ${reference.name}")
         }
     }
 }

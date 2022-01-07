@@ -31,9 +31,9 @@ import io.verik.compiler.core.declaration.kt.CoreKtText
 import io.verik.compiler.core.declaration.vk.CoreVkBoolean
 import io.verik.compiler.core.declaration.vk.CoreVkCardinal
 import io.verik.compiler.core.declaration.vk.CoreVkClass
+import io.verik.compiler.core.declaration.vk.CoreVkComponent
 import io.verik.compiler.core.declaration.vk.CoreVkControl
 import io.verik.compiler.core.declaration.vk.CoreVkMisc
-import io.verik.compiler.core.declaration.vk.CoreVkOptional
 import io.verik.compiler.core.declaration.vk.CoreVkPacked
 import io.verik.compiler.core.declaration.vk.CoreVkRandom
 import io.verik.compiler.core.declaration.vk.CoreVkSbit
@@ -148,6 +148,12 @@ object Core {
         val F_ModulePort = CoreVkClass.F_ModulePort
         val F_ClockingBlock = CoreVkClass.F_ClockingBlock
 
+        val T_TRUE = CoreVkCardinal.T_TRUE
+        val T_FALSE = CoreVkCardinal.T_FALSE
+        val T_NOT = CoreVkCardinal.T_NOT
+        val T_AND = CoreVkCardinal.T_AND
+        val T_OR = CoreVkCardinal.T_OR
+        val T_IF = CoreVkCardinal.T_IF
         val T_ADD = CoreVkCardinal.T_ADD
         val T_SUB = CoreVkCardinal.T_SUB
         val T_MUL = CoreVkCardinal.T_MUL
@@ -161,8 +167,7 @@ object Core {
         val T_WIDTH = CoreVkCardinal.T_WIDTH
         val T_EXP = CoreVkCardinal.T_EXP
 
-        val T_NOT = CoreVkOptional.T_NOT
-        val F_optional_Function = CoreVkOptional.F_optional_Function
+        val F_optional_Function = CoreVkComponent.F_optional_Function
 
         val F_finish = CoreVkSystem.F_finish
         val F_fatal = CoreVkSystem.F_fatal

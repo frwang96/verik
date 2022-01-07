@@ -17,6 +17,7 @@
 package io.verik.compiler.transform.pre
 
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.ETypeAlias
@@ -24,6 +25,7 @@ import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
+import io.verik.compiler.message.Messages
 
 object TypeAliasReducerStage : ProjectStage() {
 
@@ -33,15 +35,44 @@ object TypeAliasReducerStage : ProjectStage() {
 
     private object TypeAliasReducerVisitor : TreeVisitor() {
 
-        // TODO handle type alias with type parameters
         private fun reduce(type: Type, element: EElement) {
             var reference = type.reference
             while (reference is ETypeAlias) {
+                val expectedSize = reference.typeParameters.size
+                val actualSize = type.arguments.size
+                if (expectedSize != actualSize) {
+                    Messages.INTERNAL_ERROR.on(
+                        element,
+                        "Type alias expected $expectedSize arguments but found $actualSize"
+                    )
+                }
+                val typeParameterBindings = reference.typeParameters
+                    .zip(type.arguments)
+                    .map { (typeParameter, type) ->
+                        TypeParameterBinding(typeParameter, type)
+                    }
+                val arguments = reference.type.arguments.map { substitute(it, typeParameterBindings, element) }
                 type.reference = reference.type.reference
-                type.arguments = ArrayList(reference.type.arguments.map { it.copy() })
+                type.arguments = ArrayList(arguments)
                 reference = type.reference
             }
             type.arguments.forEach { reduce(it, element) }
+        }
+
+        private fun substitute(
+            type: Type,
+            typeParameterBindings: List<TypeParameterBinding>,
+            element: EElement
+        ): Type {
+            val reference = type.reference
+            return if (reference is ETypeParameter) {
+                val typeParameterBinding = typeParameterBindings.find { it.typeParameter == reference }
+                    ?: Messages.INTERNAL_ERROR.on(element, "Could not bind type parameter: ${reference.name}")
+                typeParameterBinding.type.copy()
+            } else {
+                val arguments = type.arguments.map { substitute(it, typeParameterBindings, element) }
+                reference.toType(arguments)
+            }
         }
 
         override fun visitTypedElement(typedElement: ETypedElement) {
@@ -54,4 +85,6 @@ object TypeAliasReducerStage : ProjectStage() {
             callExpression.typeArguments.forEach { reduce(it, callExpression) }
         }
     }
+
+    private data class TypeParameterBinding(val typeParameter: ETypeParameter, val type: Type)
 }

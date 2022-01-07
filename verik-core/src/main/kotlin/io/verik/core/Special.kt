@@ -43,9 +43,9 @@ fun <T> nc(): T {
 }
 
 /**
- * (UNIMPLEMENTED) Returns the value of the logical [X] as a [Boolean].
+ * (UNIMPLEMENTED) Returns the value of the cardinal [N] as a [Boolean]. [N] must take the value of either zero or one.
  */
-fun <X : `?`> b(): Boolean {
+fun <N : `*`> b(): Boolean {
     throw VerikException()
 }
 

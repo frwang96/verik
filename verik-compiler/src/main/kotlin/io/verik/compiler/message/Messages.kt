@@ -206,6 +206,10 @@ object Messages {
         "Unable to truncate from $0 to $1"
     )
 
+    val CARDINAL_NOT_BOOLEAN = ErrorMessageTemplate1<Type>(
+        "Could not interpret cardinal as either true or false: $0"
+    )
+
 //  INTERPRET  /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val EXPECTED_ON_EXPRESSION = ErrorMessageTemplate0(

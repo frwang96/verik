@@ -19,8 +19,10 @@ package io.verik.compiler.check.mid
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.core.common.CoreCardinalFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
@@ -34,10 +36,11 @@ object TypeParameterTypeCheckerStage : ProjectStage() {
     private object TypeParameterTypeCheckerVisitor : TreeVisitor() {
 
         private fun checkType(type: Type, element: EElement) {
-            if (type.isCardinalType()) {
+            if (type.reference is CoreCardinalFunctionDeclaration) {
                 type.arguments.forEach {
-                    if (!it.isCardinalType())
+                    if (!it.isCardinalType()) {
                         Messages.EXPECTED_CARDINAL_TYPE.on(element, it)
+                    }
                 }
             }
             type.arguments.forEach { checkType(it, element) }
@@ -47,6 +50,8 @@ object TypeParameterTypeCheckerStage : ProjectStage() {
             super.visitTypedElement(typedElement)
             checkType(typedElement.type, typedElement)
         }
+
+        override fun visitTypeAlias(typeAlias: ETypeAlias) {}
 
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)

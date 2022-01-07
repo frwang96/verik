@@ -23,6 +23,37 @@ sealed class Cardinal
 typealias `*` = Cardinal
 
 /**
+ * True cardinal with value one.
+ */
+typealias TRUE = `*`
+
+/**
+ * False cardinal with value zero.
+ */
+typealias FALSE = `*`
+
+/**
+ * Logical not of the cardinal N.
+ */
+typealias NOT<N> = `*`
+
+/**
+ * Logical and of the cardinals N and M.
+ */
+typealias AND<N, M> = `*`
+
+/**
+ * Logical or of the cardinals N and M.
+ */
+typealias OR<N, M> = `*`
+
+/**
+ * Evaluate as the cardinal N if the cardinal X is one and the cardinal M otherwise. X must take the value of either
+ * zero or one.
+ */
+typealias IF<X, N, M> = `*`
+
+/**
  * Adds the cardinals N and M.
  */
 typealias ADD<N, M> = `*`

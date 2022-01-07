@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.common
+package io.verik.compiler.core.declaration.vk
 
-class CoreOptionalFunctionDeclaration(
-    override val parent: CoreDeclaration,
-    override var name: String
-) : CoreDeclaration, OptionalDeclaration {
+import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
+import io.verik.compiler.core.common.CorePackage
+import io.verik.compiler.core.common.CoreScope
 
-    override val signature: String = "typealias $name"
+object CoreVkComponent : CoreScope(CorePackage.VK) {
+
+    val F_optional_Function = BasicCoreFunctionDeclaration(parent, "optional", "fun optional(Function)", null)
 }
