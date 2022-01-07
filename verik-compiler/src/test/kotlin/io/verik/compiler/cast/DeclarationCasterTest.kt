@@ -23,13 +23,24 @@ import org.junit.jupiter.api.Test
 internal class DeclarationCasterTest : BaseTest() {
 
     @Test
-    fun `type alias`() {
+    fun `type alias simple`() {
         driveElementTest(
             """
                 typealias N = INC<`7`>
             """.trimIndent(),
             CasterStage::class,
-            "TypeAlias(N, INC<`7`>)"
+            "TypeAlias(N, INC<`7`>, [])"
+        ) { it.findDeclaration("N") }
+    }
+
+    @Test
+    fun `type alias with type parameter`() {
+        driveElementTest(
+            """
+                typealias N<X> = INC<X>
+            """.trimIndent(),
+            CasterStage::class,
+            "TypeAlias(N, INC<X>, [TypeParameter(X, Any)])"
         ) { it.findDeclaration("N") }
     }
 

@@ -8,7 +8,7 @@
 - Support tasks with return values.
 - `fork` and `join` functions.
 - Support x and z bit constants.
-- Type parameter binding annotation `@Bind`.
+- Support type alias with type parameters.
 
 ### Changed
 - Adopt `StageType` based stage sequence in importer.

@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test
 internal class TypeAliasReducerStageTest : BaseTest() {
 
     @Test
-    fun `reduce type alias`() {
+    fun `reduce type alias simple`() {
         driveElementTest(
             """
                 typealias U = Ubit<`8`>
@@ -31,6 +31,31 @@ internal class TypeAliasReducerStageTest : BaseTest() {
             """.trimIndent(),
             TypeAliasReducerStage::class,
             "KtProperty(x, Ubit<`8`>, *, [], 1)"
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `reduce type alias nested`() {
+        driveElementTest(
+            """
+                typealias X = `8`
+                typealias Y = X
+                var x: Ubit<Y> = nc()
+            """.trimIndent(),
+            TypeAliasReducerStage::class,
+            "KtProperty(x, Ubit<`8`>, *, [], 1)"
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `reduce type alias with type parameter`() {
+        driveElementTest(
+            """
+                typealias X<Y> = INC<Y>
+                var x: Ubit<X<`1`>> = nc()
+            """.trimIndent(),
+            TypeAliasReducerStage::class,
+            "KtProperty(x, Ubit<INC<`1`>>, *, [], 1)"
         ) { it.findDeclaration("x") }
     }
 }

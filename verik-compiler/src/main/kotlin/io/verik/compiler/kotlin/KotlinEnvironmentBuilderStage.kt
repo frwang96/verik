@@ -80,6 +80,10 @@ object KotlinEnvironmentBuilderStage : ProjectStage() {
 
     private object KotlinCompilerMessageCollector : MessageCollector {
 
+        private val ignoredWarningPatterns = listOf(
+            Regex("Type alias parameter .+ is not used in the expanded type .+ and does not affect type checking")
+        )
+
         override fun clear() {}
 
         override fun hasErrors() = false
@@ -94,10 +98,14 @@ object KotlinEnvironmentBuilderStage : ProjectStage() {
                 ?: SourceLocation.NULL
 
             when (severity) {
-                CompilerMessageSeverity.EXCEPTION, CompilerMessageSeverity.ERROR ->
+                CompilerMessageSeverity.EXCEPTION, CompilerMessageSeverity.ERROR -> {
                     Messages.KOTLIN_COMPILE_ERROR.on(sourceLocation, message)
-                CompilerMessageSeverity.STRONG_WARNING, CompilerMessageSeverity.WARNING ->
-                    Messages.KOTLIN_COMPILE_WARNING.on(sourceLocation, message)
+                }
+                CompilerMessageSeverity.STRONG_WARNING, CompilerMessageSeverity.WARNING -> {
+                    if (ignoredWarningPatterns.all { !message.matches(it) }) {
+                        Messages.KOTLIN_COMPILE_WARNING.on(sourceLocation, message)
+                    }
+                }
                 else -> {}
             }
         }

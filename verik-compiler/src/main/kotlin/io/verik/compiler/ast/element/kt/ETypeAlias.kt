@@ -17,6 +17,8 @@
 package io.verik.compiler.ast.element.kt
 
 import io.verik.compiler.ast.element.common.EClassifier
+import io.verik.compiler.ast.element.common.ETypeParameter
+import io.verik.compiler.ast.interfaces.TypeParameterized
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
@@ -26,17 +28,22 @@ import io.verik.compiler.message.SourceLocation
 class ETypeAlias(
     override val location: SourceLocation,
     override var name: String
-) : EClassifier() {
+) : EClassifier(), TypeParameterized {
 
     override var type = NullDeclaration.toType()
+    override var typeParameters: ArrayList<ETypeParameter> = ArrayList()
 
-    fun init(type: Type) {
+    fun init(type: Type, typeParameters: List<ETypeParameter>) {
+        typeParameters.forEach { it.parent = this }
         this.type = type
+        this.typeParameters = ArrayList(typeParameters)
     }
 
     override fun accept(visitor: Visitor) {
         return visitor.visitTypeAlias(this)
     }
 
-    override fun acceptChildren(visitor: TreeVisitor) {}
+    override fun acceptChildren(visitor: TreeVisitor) {
+        typeParameters.forEach { it.accept(visitor) }
+    }
 }

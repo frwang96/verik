@@ -154,15 +154,3 @@ annotation class Run
  */
 @Target(AnnotationTarget.FUNCTION)
 annotation class Task
-
-/**
- * Annotates type alias type parameter bindings.
- *
- *      typealias WIDTH_X = WIDTH<@Bind("X") `*`>
- *
- *      class M<X : `*`> : Module() {
- *          val x: Ubit<WIDTH_X> = nc()
- *      }
- */
-@Target(AnnotationTarget.TYPE)
-annotation class Bind(val name: String)

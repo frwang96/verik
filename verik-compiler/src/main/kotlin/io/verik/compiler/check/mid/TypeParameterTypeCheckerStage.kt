@@ -19,6 +19,7 @@ package io.verik.compiler.check.mid
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.CoreCardinalFunctionDeclaration
@@ -49,6 +50,8 @@ object TypeParameterTypeCheckerStage : ProjectStage() {
             super.visitTypedElement(typedElement)
             checkType(typedElement.type, typedElement)
         }
+
+        override fun visitTypeAlias(typeAlias: ETypeAlias) {}
 
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)

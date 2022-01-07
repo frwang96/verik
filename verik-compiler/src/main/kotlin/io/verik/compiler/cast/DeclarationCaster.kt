@@ -53,8 +53,11 @@ object DeclarationCaster {
             .cast<ETypeAlias>(alias)
 
         val type = castContext.castType(alias.getTypeReference()!!)
+        val typeParameters = alias.typeParameters.mapNotNull {
+            castContext.casterVisitor.getElement<ETypeParameter>(it)
+        }
 
-        castedTypeAlias.init(type)
+        castedTypeAlias.init(type, typeParameters)
         return castedTypeAlias
     }
 
