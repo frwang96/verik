@@ -66,23 +66,9 @@ import io.verik.compiler.serialize.general.SourcesFileSerializerStage
 import io.verik.compiler.serialize.source.SourceSerializerStage
 import io.verik.compiler.serialize.target.CompositeTargetSerializerStage
 import io.verik.compiler.specialize.DeclarationSpecializerStage
-import io.verik.compiler.transform.mid.CaseStatementTransformerStage
-import io.verik.compiler.transform.mid.CastTransformerStage
-import io.verik.compiler.transform.mid.ComAssignmentTransformerStage
-import io.verik.compiler.transform.mid.ConstantPropagatorStage
-import io.verik.compiler.transform.mid.ExpressionEvaluatorStage
-import io.verik.compiler.transform.mid.ExpressionExtractorStage
-import io.verik.compiler.transform.mid.ForStatementTransformerStage
-import io.verik.compiler.transform.mid.FunctionTransformerStage
-import io.verik.compiler.transform.mid.IfAndWhenExpressionUnlifterStage
-import io.verik.compiler.transform.mid.InjectedStatementTransformerStage
-import io.verik.compiler.transform.mid.InlineIfExpressionTransformerStage
-import io.verik.compiler.transform.mid.PropertyTransformerStage
-import io.verik.compiler.transform.mid.StringTemplateExpressionTransformerStage
-import io.verik.compiler.transform.mid.StructLiteralTransformerStage
-import io.verik.compiler.transform.mid.TaskReturnTransformerStage
-import io.verik.compiler.transform.mid.ToStringTransformerStage
-import io.verik.compiler.transform.mid.UninitializedPropertyTransformerStage
+import io.verik.compiler.transform.lower.ExpressionEvaluatorStage
+import io.verik.compiler.transform.lower.FunctionTransformerStage
+import io.verik.compiler.transform.lower.PropertyTransformerStage
 import io.verik.compiler.transform.post.AssignmentTransformerStage
 import io.verik.compiler.transform.post.BinaryExpressionTransformerStage
 import io.verik.compiler.transform.post.BlockExpressionTransformerStage
@@ -103,6 +89,20 @@ import io.verik.compiler.transform.pre.ForStatementReducerStage
 import io.verik.compiler.transform.pre.FunctionOverloadingTransformerStage
 import io.verik.compiler.transform.pre.TypeAliasReducerStage
 import io.verik.compiler.transform.pre.UnaryExpressionReducerStage
+import io.verik.compiler.transform.upper.CaseStatementTransformerStage
+import io.verik.compiler.transform.upper.CastTransformerStage
+import io.verik.compiler.transform.upper.ComAssignmentTransformerStage
+import io.verik.compiler.transform.upper.ConstantPropagatorStage
+import io.verik.compiler.transform.upper.ExpressionExtractorStage
+import io.verik.compiler.transform.upper.ForStatementTransformerStage
+import io.verik.compiler.transform.upper.IfAndWhenExpressionUnlifterStage
+import io.verik.compiler.transform.upper.InjectedStatementTransformerStage
+import io.verik.compiler.transform.upper.InlineIfExpressionTransformerStage
+import io.verik.compiler.transform.upper.StringTemplateExpressionTransformerStage
+import io.verik.compiler.transform.upper.StructLiteralTransformerStage
+import io.verik.compiler.transform.upper.TaskReturnTransformerStage
+import io.verik.compiler.transform.upper.ToStringTransformerStage
+import io.verik.compiler.transform.upper.UninitializedPropertyTransformerStage
 
 object StageSequencer {
 
@@ -161,23 +161,24 @@ object StageSequencer {
         stageSequence.add(StageType.INTERPRET, ModulePortParentResolverStage)
         stageSequence.add(StageType.INTERPRET, FileSplitterStage)
 
-        stageSequence.add(StageType.MID_TRANSFORM, ConstantPropagatorStage)
-        stageSequence.add(StageType.MID_TRANSFORM, ToStringTransformerStage)
-        stageSequence.add(StageType.MID_TRANSFORM, InjectedStatementTransformerStage)
-        stageSequence.add(StageType.MID_TRANSFORM, StringTemplateExpressionTransformerStage)
-        stageSequence.add(StageType.MID_TRANSFORM, CastTransformerStage)
-        stageSequence.add(StageType.MID_TRANSFORM, TaskReturnTransformerStage)
-        stageSequence.add(StageType.MID_TRANSFORM, UninitializedPropertyTransformerStage)
-        stageSequence.add(StageType.MID_TRANSFORM, ComAssignmentTransformerStage)
-        stageSequence.add(StageType.MID_TRANSFORM, ForStatementTransformerStage)
-        stageSequence.add(StageType.MID_TRANSFORM, InlineIfExpressionTransformerStage)
-        stageSequence.add(StageType.MID_TRANSFORM, IfAndWhenExpressionUnlifterStage)
-        stageSequence.add(StageType.MID_TRANSFORM, CaseStatementTransformerStage)
-        stageSequence.add(StageType.MID_TRANSFORM, StructLiteralTransformerStage)
-        stageSequence.add(StageType.MID_TRANSFORM, ExpressionExtractorStage)
-        stageSequence.add(StageType.MID_TRANSFORM, FunctionTransformerStage)
-        stageSequence.add(StageType.MID_TRANSFORM, PropertyTransformerStage)
-        stageSequence.add(StageType.MID_TRANSFORM, ExpressionEvaluatorStage)
+        stageSequence.add(StageType.UPPER_TRANSFORM, ConstantPropagatorStage)
+        stageSequence.add(StageType.UPPER_TRANSFORM, ToStringTransformerStage)
+        stageSequence.add(StageType.UPPER_TRANSFORM, InjectedStatementTransformerStage)
+        stageSequence.add(StageType.UPPER_TRANSFORM, StringTemplateExpressionTransformerStage)
+        stageSequence.add(StageType.UPPER_TRANSFORM, CastTransformerStage)
+        stageSequence.add(StageType.UPPER_TRANSFORM, TaskReturnTransformerStage)
+        stageSequence.add(StageType.UPPER_TRANSFORM, UninitializedPropertyTransformerStage)
+        stageSequence.add(StageType.UPPER_TRANSFORM, ComAssignmentTransformerStage)
+        stageSequence.add(StageType.UPPER_TRANSFORM, ForStatementTransformerStage)
+        stageSequence.add(StageType.UPPER_TRANSFORM, InlineIfExpressionTransformerStage)
+        stageSequence.add(StageType.UPPER_TRANSFORM, IfAndWhenExpressionUnlifterStage)
+        stageSequence.add(StageType.UPPER_TRANSFORM, CaseStatementTransformerStage)
+        stageSequence.add(StageType.UPPER_TRANSFORM, StructLiteralTransformerStage)
+        stageSequence.add(StageType.UPPER_TRANSFORM, ExpressionExtractorStage)
+
+        stageSequence.add(StageType.LOWER_TRANSFORM, FunctionTransformerStage)
+        stageSequence.add(StageType.LOWER_TRANSFORM, PropertyTransformerStage)
+        stageSequence.add(StageType.LOWER_TRANSFORM, ExpressionEvaluatorStage)
 
         stageSequence.add(StageType.REORDER, PropertyStatementReordererStage)
         stageSequence.add(StageType.REORDER, DeadDeclarationEliminatorStage)
