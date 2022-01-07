@@ -75,7 +75,7 @@ internal class ExpressionEvaluatorStageTest : BaseTest() {
         driveElementTest(
             """
                 @Suppress("ConstantConditionIf")
-                val x = if (true) 1 else 0
+                var x = if (true) 1 else 0
             """.trimIndent(),
             ExpressionEvaluatorStage::class,
             "ConstantExpression(Int, 1)"

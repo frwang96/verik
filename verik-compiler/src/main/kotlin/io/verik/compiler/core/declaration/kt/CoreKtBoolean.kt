@@ -16,8 +16,11 @@
 
 package io.verik.compiler.core.declaration.kt
 
+import io.verik.compiler.ast.element.common.EConstantExpression
+import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.ast.property.SvUnaryOperatorKind
+import io.verik.compiler.constant.BooleanConstantEvaluator
 import io.verik.compiler.core.common.BinaryCoreFunctionDeclaration
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreScope
@@ -25,7 +28,15 @@ import io.verik.compiler.core.common.UnaryCoreFunctionDeclaration
 
 object CoreKtBoolean : CoreScope(Core.Kt.C_Boolean) {
 
-    val F_not = UnaryCoreFunctionDeclaration(parent, "not", "fun not()", SvUnaryOperatorKind.LOGICAL_NEG)
+    val F_not = object : UnaryCoreFunctionDeclaration(parent, "not", "fun not()", SvUnaryOperatorKind.LOGICAL_NEG) {
+
+        override fun evaluate(callExpression: EKtCallExpression): EConstantExpression? {
+            val expression = callExpression.receiver!!
+            return if (expression is EConstantExpression) {
+                BooleanConstantEvaluator.not(callExpression, expression)
+            } else null
+        }
+    }
 
     val F_and_Boolean = BinaryCoreFunctionDeclaration(parent, "and", "fun and(Boolean)", SvBinaryOperatorKind.ANDAND)
 

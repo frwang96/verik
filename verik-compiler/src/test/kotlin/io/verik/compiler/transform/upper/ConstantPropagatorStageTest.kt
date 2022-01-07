@@ -23,7 +23,21 @@ import org.junit.jupiter.api.Test
 internal class ConstantPropagatorStageTest : BaseTest() {
 
     @Test
-    fun `constant propagation`() {
+    fun `call expression`() {
+        driveElementTest(
+            """
+                val x = b<TRUE>()
+                fun f() {
+                    println(x)
+                }
+            """.trimIndent(),
+            ConstantPropagatorStage::class,
+            "KtCallExpression(Unit, println, null, [KtCallExpression(Boolean, b, null, [], [`1`])], [])"
+        ) { it.findExpression("f") }
+    }
+
+    @Test
+    fun `constant expression`() {
         driveElementTest(
             """
                 const val x = 0

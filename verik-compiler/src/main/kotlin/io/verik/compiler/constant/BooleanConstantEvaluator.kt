@@ -16,6 +16,7 @@
 
 package io.verik.compiler.constant
 
+import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
 
 object BooleanConstantEvaluator {
@@ -40,5 +41,10 @@ object BooleanConstantEvaluator {
             rightBoolean == false -> left
             else -> null
         }
+    }
+
+    fun not(original: EExpression, expression: EConstantExpression): EConstantExpression {
+        val boolean = ConstantNormalizer.parseBoolean(expression)
+        return ConstantBuilder.buildBoolean(original, !boolean)
     }
 }

@@ -23,7 +23,7 @@ import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.constant.BooleanConstantEvaluator
 import io.verik.compiler.constant.ConstantNormalizer
-import io.verik.compiler.core.common.BinaryCoreFunctionDeclaration
+import io.verik.compiler.core.common.CoreFunctionDeclaration
 
 object ExpressionEvaluator {
 
@@ -33,7 +33,7 @@ object ExpressionEvaluator {
                 evaluateBinaryExpression(expression)
             is EKtCallExpression -> {
                 val reference = expression.reference
-                if (reference is BinaryCoreFunctionDeclaration) {
+                if (reference is CoreFunctionDeclaration) {
                     reference.evaluate(expression)
                 } else null
             }
