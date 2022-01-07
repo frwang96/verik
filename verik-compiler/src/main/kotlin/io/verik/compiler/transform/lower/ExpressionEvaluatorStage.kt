@@ -25,10 +25,10 @@ import io.verik.compiler.main.ProjectStage
 object ExpressionEvaluatorStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.project.accept(ConstantExpressionEvaluatorVisitor)
+        projectContext.project.accept(ExpressionEvaluatorVisitor)
     }
 
-    private object ConstantExpressionEvaluatorVisitor : TreeVisitor() {
+    private object ExpressionEvaluatorVisitor : TreeVisitor() {
 
         override fun visitExpression(expression: EExpression) {
             super.visitExpression(expression)

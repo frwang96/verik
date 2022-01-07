@@ -9,6 +9,7 @@
 - `fork` and `join` functions.
 - Support x and z bit constants.
 - Support type alias with type parameters.
+- Evaluate logical operators and if expressions.
 
 ### Changed
 - Adopt `StageType` based stage sequence in importer.
