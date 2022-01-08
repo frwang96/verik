@@ -24,7 +24,7 @@ package io.verik.core
 class Ubit<X : `*`> private constructor() {
 
     /**
-     * (UNIMPLEMENTED) Returns true if any bit of the [Ubit] is unknown.
+     * (UNIMPLEMENTED) Returns true if any bit is X.
      */
     fun isUnknown(): Boolean {
         throw VerikException()
@@ -319,9 +319,16 @@ class Ubit<X : `*`> private constructor() {
     }
 
     /**
-     * Slice [Y] bits starting at index [Z].
+     * Returns true if all bits are zero.
      */
-    fun <Y : `*`, Z : `*`> slice(): Ubit<Y> {
+    fun isZeroes(): Boolean {
+        throw VerikException()
+    }
+
+    /**
+     * Returns true if all bits are one.
+     */
+    fun isOnes(): Boolean {
         throw VerikException()
     }
 

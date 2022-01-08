@@ -25,6 +25,8 @@ import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.element.sv.EWidthCastExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.SvUnaryOperatorKind
+import io.verik.compiler.constant.BitComponent
+import io.verik.compiler.constant.BitConstant
 import io.verik.compiler.constant.ConstantBuilder
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreScope
@@ -239,7 +241,25 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
     val F_reduceXor = UnaryCoreFunctionDeclaration(parent, "reduceXor", "fun reduceXor()", SvUnaryOperatorKind.XOR)
 
-    val F_slice = object : TransformableCoreFunctionDeclaration(parent, "slice", "fun slice()") {
+    val F_isZeroes = UnaryCoreFunctionDeclaration(parent, "isZeroes", "fun isZeroes()", SvUnaryOperatorKind.LOGICAL_NEG)
+
+    val F_isOnes = object : TransformableCoreFunctionDeclaration(parent, "isOnes", "fun isOnes()") {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            val width = callExpression.receiver!!.type.asBitWidth(callExpression)
+            val bitConstant = BitConstant(BitComponent.zeroes(width), BitComponent.ones(width), false, width)
+            val constantExpression = ConstantBuilder.buildBitConstant(callExpression.location, bitConstant)
+            return EKtBinaryExpression(
+                callExpression.location,
+                Core.Kt.C_Boolean.toType(),
+                callExpression.receiver!!,
+                constantExpression,
+                KtBinaryOperatorKind.EQEQ
+            )
+        }
+    }
+
+    val F_slice_Int = object : TransformableCoreFunctionDeclaration(parent, "slice", "fun slice(Int)") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -248,25 +268,6 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
                     TypeAdapter.ofElement(callExpression, 0)
                 )
             )
-        }
-
-        override fun transform(callExpression: EKtCallExpression): EExpression {
-            val width = callExpression.typeArguments[0].asCardinalValue(callExpression)
-            val index = callExpression.typeArguments[1].asCardinalValue(callExpression)
-            return EConstantPartSelectExpression(
-                callExpression.location,
-                callExpression.type,
-                callExpression.receiver!!,
-                ConstantBuilder.buildInt(callExpression, width + index - 1),
-                ConstantBuilder.buildInt(callExpression, index)
-            )
-        }
-    }
-
-    val F_slice_Int = object : TransformableCoreFunctionDeclaration(parent, "slice", "fun slice(Int)") {
-
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
-            return F_slice.getTypeConstraints(callExpression)
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {

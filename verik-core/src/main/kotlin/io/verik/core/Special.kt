@@ -113,7 +113,7 @@ fun <X : `*`> u0(): Ubit<X> {
 }
 
 /**
- * (UNIMPLEMENTED) Returns a [Ubit] with all bits set to one.
+ * Returns a [Ubit] with all bits set to one.
  */
 fun <X : `*`> u1(): Ubit<X> {
     throw VerikException()

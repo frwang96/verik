@@ -315,7 +315,7 @@ object DeclarationSerializer {
 
     private fun serializePortType(portType: PortType, serializerContext: SerializerContext) {
         when (portType) {
-            PortType.CONSTANT, PortType.INPUT -> serializerContext.append("input ")
+            PortType.CONSTANT, PortType.INPUT -> serializerContext.append("input  ")
             PortType.OUTPUT -> serializerContext.append("output ")
             PortType.MODULE_INTERFACE, PortType.MODULE_PORT -> {}
             PortType.CLOCKING_BLOCK -> serializerContext.append("clocking ")

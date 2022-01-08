@@ -79,7 +79,7 @@ internal class DeclarationSerializerTest : BaseTest() {
             """.trimIndent(),
             """
                 module M(
-                    input logic x
+                    input  logic x
                 );
                 
                 endmodule : M
@@ -281,7 +281,7 @@ internal class DeclarationSerializerTest : BaseTest() {
             """.trimIndent(),
             """
                 module M(
-                    input logic x
+                    input  logic x
                 );
                 
                 endmodule : M
@@ -314,7 +314,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                     logic x;
                 
                     modport mp (
-                        input x
+                        input  x
                     );
                 
                 endinterface : Top
@@ -339,7 +339,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                     logic x;
                 
                     clocking cb @(posedge x);
-                        input x;
+                        input  x;
                     endclocking
                 
                 endmodule : Top

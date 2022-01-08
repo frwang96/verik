@@ -154,6 +154,19 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
         }
     }
 
+    val F_u1 = object : TransformableCoreFunctionDeclaration(parent, "u1", "fun u1()") {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return F_u0.getTypeConstraints(callExpression)
+        }
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            val width = callExpression.type.asBitWidth(callExpression)
+            val bitConstant = BitConstant(BitComponent.zeroes(width), BitComponent.ones(width), false, width)
+            return ConstantBuilder.buildBitConstant(callExpression.location, bitConstant)
+        }
+    }
+
     val F_ux = object : TransformableCoreFunctionDeclaration(parent, "ux", "fun ux()") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
