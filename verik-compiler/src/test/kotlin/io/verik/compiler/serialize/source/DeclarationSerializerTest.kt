@@ -200,13 +200,14 @@ internal class DeclarationSerializerTest : BaseTest() {
             """
                 class M : Module() {
                     @Run
-                    fun f() {}
+                    fun f() { println() }
                 }
             """.trimIndent(),
             """
                 module M;
                 
                     initial begin : f
+                        ${'$'}display();
                     end : f
                 
                 endmodule : M
@@ -219,14 +220,19 @@ internal class DeclarationSerializerTest : BaseTest() {
         driveTextFileTest(
             """
                 class M : Module() {
+                    @Suppress("MemberVisibilityCanBePrivate")
+                    var x: Boolean = nc()
                     @Com
-                    fun f() {}
+                    fun f() { x = false }
                 }
             """.trimIndent(),
             """
                 module M;
                 
+                    logic x;
+                
                     always_comb begin : f
+                        x = 1'b0;
                     end : f
                 
                 endmodule : M
@@ -238,11 +244,13 @@ internal class DeclarationSerializerTest : BaseTest() {
     fun `serialize always seq block`() {
         driveTextFileTest(
             """
+                @Suppress("MemberVisibilityCanBePrivate")
                 class M : Module() {
-                    private var x : Boolean = nc()
+                    var x : Boolean = nc()
+                    var y : Boolean = nc()
                     @Seq
                     fun f() {
-                        on (posedge(x)) {}
+                        on (posedge(x)) { y = !y }
                     }
                 }
             """.trimIndent(),
@@ -250,8 +258,10 @@ internal class DeclarationSerializerTest : BaseTest() {
                 module M;
                 
                     logic x;
+                    logic y;
                 
                     always_ff @(posedge x) begin : f
+                        y <= ~y;
                     end : f
                 
                 endmodule : M

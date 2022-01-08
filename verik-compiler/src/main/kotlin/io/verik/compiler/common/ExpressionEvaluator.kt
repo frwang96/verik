@@ -17,18 +17,47 @@
 package io.verik.compiler.common
 
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
-import io.verik.compiler.core.common.BinaryCoreFunctionDeclaration
+import io.verik.compiler.ast.element.sv.EInlineIfExpression
+import io.verik.compiler.ast.property.KtBinaryOperatorKind
+import io.verik.compiler.constant.BooleanConstantEvaluator
+import io.verik.compiler.constant.ConstantNormalizer
+import io.verik.compiler.core.common.CoreFunctionDeclaration
 
 object ExpressionEvaluator {
 
     fun evaluate(expression: EExpression): EExpression? {
-        if (expression is EKtCallExpression) {
-            val reference = expression.reference
-            if (reference is BinaryCoreFunctionDeclaration) {
-                return reference.evaluate(expression)
+        return when (expression) {
+            is EKtBinaryExpression ->
+                evaluateBinaryExpression(expression)
+            is EKtCallExpression -> {
+                val reference = expression.reference
+                if (reference is CoreFunctionDeclaration) {
+                    reference.evaluate(expression)
+                } else null
             }
+            is EInlineIfExpression ->
+                evaluateInlineIfExpression(expression)
+            else -> null
         }
-        return null
+    }
+
+    private fun evaluateBinaryExpression(binaryExpression: EKtBinaryExpression): EExpression? {
+        val left = binaryExpression.left
+        val right = binaryExpression.right
+        return when (binaryExpression.kind) {
+            KtBinaryOperatorKind.ANDAND -> BooleanConstantEvaluator.binaryAndBoolean(binaryExpression, left, right)
+            KtBinaryOperatorKind.OROR -> BooleanConstantEvaluator.binaryOrBoolean(binaryExpression, left, right)
+            else -> null
+        }
+    }
+
+    private fun evaluateInlineIfExpression(inlineIfExpression: EInlineIfExpression): EExpression? {
+        return when (ConstantNormalizer.parseBooleanOrNull(inlineIfExpression.condition)) {
+            true -> inlineIfExpression.thenExpression
+            false -> inlineIfExpression.elseExpression
+            else -> null
+        }
     }
 }

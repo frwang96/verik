@@ -397,8 +397,9 @@ object ExpressionSerializer {
         eventControlExpression: EEventControlExpression,
         serializerContext: SerializerContext
     ) {
-        serializerContext.append("@")
+        serializerContext.append("@(")
         serializerContext.serializeAsExpression(eventControlExpression.expression)
+        serializerContext.append(")")
     }
 
     fun serializeDelayExpression(delayExpression: EDelayExpression, serializerContext: SerializerContext) {

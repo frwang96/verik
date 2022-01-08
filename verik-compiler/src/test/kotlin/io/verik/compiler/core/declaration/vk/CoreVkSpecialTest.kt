@@ -54,18 +54,21 @@ internal class CoreVkSpecialTest : CoreDeclarationTest() {
     }
 
     @Test
-    fun `serialize i`() {
+    fun `serialize b i`() {
         driveCoreDeclarationTest(
             listOf(Core.Vk.F_i),
             """
-                var x = 0
+                var x = false
+                var y = 0
                 fun f() {
-                    x = i<`8`>()
+                    x = b<TRUE>()
+                    y = i<`8`>()
                 }
             """.trimIndent(),
             """
                 function automatic void f();
-                    x = 8;
+                    x = 1'b1;
+                    y = 8;
                 endfunction : f
             """.trimIndent()
         )

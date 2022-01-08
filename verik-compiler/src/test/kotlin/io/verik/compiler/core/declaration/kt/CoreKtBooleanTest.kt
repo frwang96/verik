@@ -44,10 +44,31 @@ internal class CoreKtBooleanTest : CoreDeclarationTest() {
             """.trimIndent(),
             """
                 function automatic void f();
-                    x = !a;
+                    x = ~a;
                     x = a && b;
                     x = a || b;
                     x = a ^ b;
+                endfunction : f
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `evaluate not`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Kt.Boolean.F_not
+            ),
+            """
+                var x = false
+                fun f() {
+                    @Suppress("KotlinConstantConditions")
+                    x = !false
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    x = 1'b1;
                 endfunction : f
             """.trimIndent()
         )

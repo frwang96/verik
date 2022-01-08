@@ -135,7 +135,7 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
     private fun getSuperTypeCallEntry(superTypeCallEntry: SuperTypeCallEntry?): SuperTypeCallEntry? {
         return if (superTypeCallEntry != null) {
             val valueArguments = superTypeCallEntry.valueArguments.map {
-                ExpressionCopier.copy(it)
+                ExpressionCopier.deepCopy(it)
             }
             SuperTypeCallEntry(superTypeCallEntry.reference, ArrayList(valueArguments))
         } else null

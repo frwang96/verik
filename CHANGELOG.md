@@ -9,13 +9,15 @@
 - `fork` and `join` functions.
 - Support x and z bit constants.
 - Support type alias with type parameters.
+- Evaluate logical operators and if expressions.
 
 ### Changed
 - Adopt `StageType` based stage sequence in importer.
 - Turn off `enableLineDirective` by default.
-- Renamed `Logical` to `Optional`.
-- Rewrote constant expression handling.
-- Merged `Optional` with `Cardinal`.
+- Rename `Logical` to `Optional`.
+- Rewrite constant expression handling.
+- Merge `Optional` with `Cardinal`.
+- Separate `MID_TRANSFORM` into `UPPER_TRANSFORM` and `LOWER_TRANSFORM`.
 
 ## [0.1.11]
 ### Added

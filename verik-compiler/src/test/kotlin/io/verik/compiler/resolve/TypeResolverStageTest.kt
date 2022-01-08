@@ -38,7 +38,7 @@ internal class TypeResolverStageTest : BaseTest() {
     fun `resolve property type parameterized`() {
         driveElementTest(
             """
-                class C<N : `*`>
+                class C<X : `*`>
                 var c = C<`8`>()
             """.trimIndent(),
             TypeResolverStage::class,

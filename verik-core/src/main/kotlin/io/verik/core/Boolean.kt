@@ -26,15 +26,15 @@ fun Boolean.isUnknown(): Boolean {
 }
 
 /**
- * Extend to [N] bits with zero extension.
+ * Extend to [X] bits with zero extension.
  */
-fun <N : `*`> Boolean.ext(): Ubit<N> {
+fun <X : `*`> Boolean.ext(): Ubit<X> {
     throw VerikException()
 }
 
 /**
- * Extend to [N] bits with sign extension.
+ * Extend to [X] bits with sign extension.
  */
-fun <N : `*`> Boolean.sext(): Sbit<N> {
+fun <X : `*`> Boolean.sext(): Sbit<X> {
     throw VerikException()
 }

@@ -239,7 +239,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
     val F_reduceXor = UnaryCoreFunctionDeclaration(parent, "reduceXor", "fun reduceXor()", SvUnaryOperatorKind.XOR)
 
-    val F_slice_Int = object : TransformableCoreFunctionDeclaration(parent, "slice", "fun slice(Int)") {
+    val F_slice = object : TransformableCoreFunctionDeclaration(parent, "slice", "fun slice()") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
@@ -248,6 +248,25 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
                     TypeAdapter.ofElement(callExpression, 0)
                 )
             )
+        }
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            val width = callExpression.typeArguments[0].asCardinalValue(callExpression)
+            val index = callExpression.typeArguments[1].asCardinalValue(callExpression)
+            return EConstantPartSelectExpression(
+                callExpression.location,
+                callExpression.type,
+                callExpression.receiver!!,
+                ConstantBuilder.buildInt(callExpression, width + index - 1),
+                ConstantBuilder.buildInt(callExpression, index)
+            )
+        }
+    }
+
+    val F_slice_Int = object : TransformableCoreFunctionDeclaration(parent, "slice", "fun slice(Int)") {
+
+        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+            return F_slice.getTypeConstraints(callExpression)
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {

@@ -44,7 +44,7 @@ internal class ExpressionSerializerTest : BaseTest() {
             """.trimIndent(),
             """
                 logic x = 1'b0;
-                logic y = !x;
+                logic y = ~x;
             """.trimIndent()
         ) { it.regularPackageTextFiles[0] }
     }

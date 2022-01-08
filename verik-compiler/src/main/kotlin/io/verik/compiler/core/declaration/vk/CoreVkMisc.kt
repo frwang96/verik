@@ -86,8 +86,8 @@ object CoreVkMisc : CoreScope(CorePackage.VK) {
                             callExpression.location,
                             callExpression.type.copy(),
                             binaryExpression,
-                            ExpressionCopier.copy(accumulatedValueArgument),
-                            ExpressionCopier.copy(valueArgument)
+                            ExpressionCopier.deepCopy(accumulatedValueArgument),
+                            ExpressionCopier.deepCopy(valueArgument)
                         )
                     }
                 }
@@ -146,8 +146,8 @@ object CoreVkMisc : CoreScope(CorePackage.VK) {
                             callExpression.location,
                             callExpression.type.copy(),
                             binaryExpression,
-                            ExpressionCopier.copy(accumulatedValueArgument),
-                            ExpressionCopier.copy(valueArgument)
+                            ExpressionCopier.deepCopy(accumulatedValueArgument),
+                            ExpressionCopier.deepCopy(valueArgument)
                         )
                     }
                 }

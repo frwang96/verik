@@ -180,6 +180,7 @@ object Core {
         val F_imported = CoreVkSpecial.F_imported
         val F_sv_String = CoreVkSpecial.F_sv_String
         val F_nc = CoreVkSpecial.F_nc
+        val F_b = CoreVkSpecial.F_b
         val F_i = CoreVkSpecial.F_i
         val F_u = CoreVkSpecial.F_u
         val F_u_Boolean = CoreVkSpecial.F_u_Boolean
@@ -268,6 +269,7 @@ object Core {
             val F_reduceAnd = CoreVkUbit.F_reduceAnd
             val F_reduceOr = CoreVkUbit.F_reduceOr
             val F_reduceXor = CoreVkUbit.F_reduceXor
+            val F_slice = CoreVkUbit.F_slice
             val F_slice_Int = CoreVkUbit.F_slice_Int
             val F_slice_Ubit = CoreVkUbit.F_slice_Ubit
             val F_ext = CoreVkUbit.F_ext

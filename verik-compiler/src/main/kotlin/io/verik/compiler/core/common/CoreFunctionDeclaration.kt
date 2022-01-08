@@ -29,6 +29,10 @@ sealed class CoreFunctionDeclaration : CoreDeclaration {
     open fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
         return listOf()
     }
+
+    open fun evaluate(callExpression: EKtCallExpression): EConstantExpression? {
+        return null
+    }
 }
 
 open class BasicCoreFunctionDeclaration(
@@ -59,9 +63,4 @@ open class BinaryCoreFunctionDeclaration(
     override var name: String,
     override val signature: String,
     val kind: SvBinaryOperatorKind
-) : CoreFunctionDeclaration() {
-
-    open fun evaluate(callExpression: EKtCallExpression): EConstantExpression? {
-        return null
-    }
-}
+) : CoreFunctionDeclaration()

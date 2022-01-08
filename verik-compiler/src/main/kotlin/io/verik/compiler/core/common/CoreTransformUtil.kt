@@ -19,7 +19,6 @@ package io.verik.compiler.core.common
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.common.ExpressionCopier
-import io.verik.compiler.common.ExpressionEvaluator
 import io.verik.compiler.constant.ConstantBuilder
 import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.target.common.Target
@@ -50,16 +49,14 @@ object CoreTransformUtil {
 
     fun plusInt(expression: EExpression, value: Int, location: SourceLocation): EExpression {
         val constantExpression = ConstantBuilder.buildInt(location, value)
-        val callExpression = EKtCallExpression(
+        return EKtCallExpression(
             location,
             Core.Kt.C_Int.toType(),
             Core.Kt.Int.F_plus_Int,
-            ExpressionCopier.copy(expression),
+            ExpressionCopier.deepCopy(expression),
             arrayListOf(constantExpression),
             ArrayList()
         )
-        val evaluatedExpression = ExpressionEvaluator.evaluate(callExpression)
-        return evaluatedExpression ?: callExpression
     }
 
     fun plusUbit(expression: EExpression, value: Int, location: SourceLocation): EExpression {
@@ -68,15 +65,13 @@ object CoreTransformUtil {
             expression.type.asBitWidth(expression),
             value
         )
-        val callExpression = EKtCallExpression(
+        return EKtCallExpression(
             location,
             expression.type.copy(),
             Core.Vk.Ubit.F_plus_Ubit,
-            ExpressionCopier.copy(expression),
+            ExpressionCopier.deepCopy(expression),
             arrayListOf(constantExpression),
             ArrayList()
         )
-        val evaluatedExpression = ExpressionEvaluator.evaluate(callExpression)
-        return evaluatedExpression ?: callExpression
     }
 }

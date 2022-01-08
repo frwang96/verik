@@ -26,22 +26,22 @@ internal class DeclarationCasterTest : BaseTest() {
     fun `type alias simple`() {
         driveElementTest(
             """
-                typealias N = INC<`7`>
+                typealias X = INC<`7`>
             """.trimIndent(),
             CasterStage::class,
-            "TypeAlias(N, INC<`7`>, [])"
-        ) { it.findDeclaration("N") }
+            "TypeAlias(X, INC<`7`>, [])"
+        ) { it.findDeclaration("X") }
     }
 
     @Test
     fun `type alias with type parameter`() {
         driveElementTest(
             """
-                typealias N<X> = INC<X>
+                typealias X<Y> = INC<Y>
             """.trimIndent(),
             CasterStage::class,
-            "TypeAlias(N, INC<X>, [TypeParameter(X, Any)])"
-        ) { it.findDeclaration("N") }
+            "TypeAlias(X, INC<Y>, [TypeParameter(Y, Any)])"
+        ) { it.findDeclaration("X") }
     }
 
     @Test
@@ -239,10 +239,10 @@ internal class DeclarationCasterTest : BaseTest() {
     fun `function with type parameter`() {
         driveElementTest(
             """
-                fun <N : `*`> f() {}
+                fun <X : `*`> f() {}
             """.trimIndent(),
             CasterStage::class,
-            "KtFunction(f, Unit, *, [], [TypeParameter(N, `*`)], [], 0)"
+            "KtFunction(f, Unit, *, [], [TypeParameter(X, `*`)], [], 0)"
         ) { it.findDeclaration("f") }
     }
 

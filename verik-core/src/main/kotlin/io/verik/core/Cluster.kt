@@ -19,9 +19,9 @@
 package io.verik.core
 
 /**
- * (UNIMPLEMENTED) A cluster of components [C] of size [N].
+ * (UNIMPLEMENTED) A cluster of components [C] of size [X].
  */
-class Cluster<N : `*`, C : Component> private constructor() : Component(), Iterable<C> {
+class Cluster<X : `*`, C : Component> private constructor() : Component(), Iterable<C> {
 
     override fun iterator(): Iterator<C> {
         throw VerikException()

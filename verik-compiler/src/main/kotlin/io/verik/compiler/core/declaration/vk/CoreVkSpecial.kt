@@ -16,7 +16,6 @@
 
 package io.verik.compiler.core.declaration.vk
 
-import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.constant.BitComponent
@@ -69,15 +68,21 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
         }
     }
 
+    val F_b = object : TransformableCoreFunctionDeclaration(parent, "b", "fun b()") {
+
+        override fun transform(callExpression: EKtCallExpression): EExpression {
+            val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
+            if (value !in 0..1)
+                Messages.CARDINAL_NOT_BOOLEAN.on(callExpression, callExpression.typeArguments[0])
+            return ConstantBuilder.buildBoolean(callExpression, value != 0)
+        }
+    }
+
     val F_i = object : TransformableCoreFunctionDeclaration(parent, "i", "fun i()") {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
             val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
-            return EConstantExpression(
-                callExpression.location,
-                callExpression.type,
-                value.toString()
-            )
+            return ConstantBuilder.buildInt(callExpression, value)
         }
     }
 

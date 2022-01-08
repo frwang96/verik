@@ -47,8 +47,8 @@ fun randomBoolean(): Boolean {
 }
 
 /**
- * Returns a random [Ubit] of width [N].
+ * Returns a random [Ubit] of width [X].
  */
-fun <N : `*`> randomUbit(): Ubit<N> {
+fun <X : `*`> randomUbit(): Ubit<X> {
     throw VerikException()
 }
