@@ -124,7 +124,7 @@ object TaskReturnTransformerStage : ProjectStage() {
             callExpressionReplacement.valueArguments.add(referenceExpression)
             expressionExtractor.extract(
                 callExpression,
-                ExpressionCopier.copy(referenceExpression),
+                ExpressionCopier.deepCopy(referenceExpression),
                 listOf(propertyStatement, callExpressionReplacement)
             )
         }

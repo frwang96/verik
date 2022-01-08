@@ -130,7 +130,7 @@ object CastTransformerStage : ProjectStage() {
             )
             expressionExtractor.extract(
                 asExpression,
-                ExpressionCopier.copy(referenceExpression),
+                ExpressionCopier.deepCopy(referenceExpression),
                 listOf(propertyStatement, ifExpression)
             )
         }

@@ -68,6 +68,7 @@ import io.verik.compiler.serialize.source.SourceSerializerStage
 import io.verik.compiler.serialize.target.CompositeTargetSerializerStage
 import io.verik.compiler.specialize.DeclarationSpecializerStage
 import io.verik.compiler.transform.lower.ExpressionEvaluatorStage
+import io.verik.compiler.transform.lower.ExpressionExtractorStage
 import io.verik.compiler.transform.lower.FunctionTransformerStage
 import io.verik.compiler.transform.lower.IfExpressionEvaluatorStage
 import io.verik.compiler.transform.lower.ProceduralBlockEliminatorStage
@@ -96,7 +97,6 @@ import io.verik.compiler.transform.upper.CaseStatementTransformerStage
 import io.verik.compiler.transform.upper.CastTransformerStage
 import io.verik.compiler.transform.upper.ComAssignmentTransformerStage
 import io.verik.compiler.transform.upper.ConstantPropagatorStage
-import io.verik.compiler.transform.upper.ExpressionExtractorStage
 import io.verik.compiler.transform.upper.ForStatementTransformerStage
 import io.verik.compiler.transform.upper.IfAndWhenExpressionUnlifterStage
 import io.verik.compiler.transform.upper.InjectedStatementTransformerStage
@@ -178,10 +178,10 @@ object StageSequencer {
         stageSequence.add(StageType.UPPER_TRANSFORM, IfAndWhenExpressionUnlifterStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, CaseStatementTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, StructLiteralTransformerStage)
-        stageSequence.add(StageType.UPPER_TRANSFORM, ExpressionExtractorStage)
 
         stageSequence.add(StageType.LOWER_TRANSFORM, FunctionTransformerStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, PropertyTransformerStage)
+        stageSequence.add(StageType.LOWER_TRANSFORM, ExpressionExtractorStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, ExpressionEvaluatorStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, IfExpressionEvaluatorStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, ProceduralBlockEliminatorStage)

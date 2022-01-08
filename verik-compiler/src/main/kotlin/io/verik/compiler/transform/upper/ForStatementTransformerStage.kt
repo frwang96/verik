@@ -103,7 +103,7 @@ object ForStatementTransformerStage : ProjectStage() {
             val iteration = EKtUnaryExpression(
                 callExpression.location,
                 Core.Kt.C_Int.toType(),
-                ExpressionCopier.copy(propertyReferenceExpression),
+                ExpressionCopier.deepCopy(propertyReferenceExpression),
                 KtUnaryOperatorKind.POST_INC
             )
             return ESvForStatement(
@@ -148,15 +148,15 @@ object ForStatementTransformerStage : ProjectStage() {
             val iteration = EKtUnaryExpression(
                 referenceExpression.location,
                 Core.Kt.C_Int.toType(),
-                ExpressionCopier.copy(indexReferenceExpression),
+                ExpressionCopier.deepCopy(indexReferenceExpression),
                 KtUnaryOperatorKind.POST_INC
             )
             val elementPropertyInitializer = EKtCallExpression(
                 valueParameter.location,
                 valueParameter.type.copy(),
                 Core.Jv.Util.ArrayList.F_get_Int,
-                ExpressionCopier.copy(referenceExpression),
-                arrayListOf(ExpressionCopier.copy(indexReferenceExpression)),
+                ExpressionCopier.deepCopy(referenceExpression),
+                arrayListOf(ExpressionCopier.deepCopy(indexReferenceExpression)),
                 ArrayList()
             )
             val elementProperty = ESvProperty(

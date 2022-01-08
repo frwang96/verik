@@ -89,7 +89,7 @@ object ConstantPropagatorStage : ProjectStage() {
             super.visitReferenceExpression(referenceExpression)
             val expression = constantMap[referenceExpression.reference]
             if (expression != null) {
-                referenceExpression.replace(ExpressionCopier.copy(expression))
+                referenceExpression.replace(ExpressionCopier.deepCopy(expression))
             }
         }
     }

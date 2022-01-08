@@ -53,7 +53,7 @@ object CoreTransformUtil {
             location,
             Core.Kt.C_Int.toType(),
             Core.Kt.Int.F_plus_Int,
-            ExpressionCopier.copy(expression),
+            ExpressionCopier.deepCopy(expression),
             arrayListOf(constantExpression),
             ArrayList()
         )
@@ -69,7 +69,7 @@ object CoreTransformUtil {
             location,
             expression.type.copy(),
             Core.Vk.Ubit.F_plus_Ubit,
-            ExpressionCopier.copy(expression),
+            ExpressionCopier.deepCopy(expression),
             arrayListOf(constantExpression),
             ArrayList()
         )

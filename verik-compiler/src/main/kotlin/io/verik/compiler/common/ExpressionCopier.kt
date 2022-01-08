@@ -23,17 +23,26 @@ import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
+import io.verik.compiler.ast.element.sv.EStreamingExpression
+import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.message.Messages
 
 object ExpressionCopier {
 
-    fun <E : EExpression> copy(expression: E): E {
+    // TODO implement shallow copy
+    fun <E : EExpression> shallowCopy(expression: E): E {
+        return deepCopy(expression)
+    }
+
+    fun <E : EExpression> deepCopy(expression: E): E {
         val copiedExpression = when (expression) {
             is EKtBinaryExpression -> copyKtBinaryExpression(expression)
+            is ESvBinaryExpression -> copySvBinaryExpression(expression)
             is EReferenceExpression -> copyReferenceExpression(expression)
             is EKtCallExpression -> copyKtCallExpression(expression)
             is EConstantExpression -> copyConstantExpression(expression)
             is EKtArrayAccessExpression -> copyKtArrayAccessExpression(expression)
+            is EStreamingExpression -> copyStreamingExpression(expression)
             is EInlineIfExpression -> copyInlineIfExpression(expression)
             else -> Messages.INTERNAL_ERROR.on(expression, "Unable to copy expression: $expression")
         }
@@ -43,9 +52,22 @@ object ExpressionCopier {
 
     private fun copyKtBinaryExpression(binaryExpression: EKtBinaryExpression): EKtBinaryExpression {
         val type = binaryExpression.type.copy()
-        val left = copy(binaryExpression.left)
-        val right = copy(binaryExpression.right)
+        val left = deepCopy(binaryExpression.left)
+        val right = deepCopy(binaryExpression.right)
         return EKtBinaryExpression(
+            binaryExpression.location,
+            type,
+            left,
+            right,
+            binaryExpression.kind
+        )
+    }
+
+    private fun copySvBinaryExpression(binaryExpression: ESvBinaryExpression): ESvBinaryExpression {
+        val type = binaryExpression.type.copy()
+        val left = deepCopy(binaryExpression.left)
+        val right = deepCopy(binaryExpression.right)
+        return ESvBinaryExpression(
             binaryExpression.location,
             type,
             left,
@@ -56,14 +78,14 @@ object ExpressionCopier {
 
     private fun copyReferenceExpression(referenceExpression: EReferenceExpression): EReferenceExpression {
         val type = referenceExpression.type.copy()
-        val receiver = referenceExpression.receiver?.let { copy(it) }
+        val receiver = referenceExpression.receiver?.let { deepCopy(it) }
         return EReferenceExpression(referenceExpression.location, type, referenceExpression.reference, receiver)
     }
 
     private fun copyKtCallExpression(callExpression: EKtCallExpression): EKtCallExpression {
         val type = callExpression.type.copy()
-        val receiver = callExpression.receiver?.let { copy(it) }
-        val valueArguments = callExpression.valueArguments.map { copy(it) }
+        val receiver = callExpression.receiver?.let { deepCopy(it) }
+        val valueArguments = callExpression.valueArguments.map { deepCopy(it) }
         val typeArguments = callExpression.typeArguments.map { it.copy() }
         return EKtCallExpression(
             callExpression.location,
@@ -82,8 +104,8 @@ object ExpressionCopier {
 
     private fun copyKtArrayAccessExpression(arrayAccessExpression: EKtArrayAccessExpression): EKtArrayAccessExpression {
         val type = arrayAccessExpression.type.copy()
-        val array = copy(arrayAccessExpression.array)
-        val indices = arrayAccessExpression.indices.map { copy(it) }
+        val array = deepCopy(arrayAccessExpression.array)
+        val indices = arrayAccessExpression.indices.map { deepCopy(it) }
         return EKtArrayAccessExpression(
             arrayAccessExpression.location,
             type,
@@ -92,11 +114,21 @@ object ExpressionCopier {
         )
     }
 
+    private fun copyStreamingExpression(streamingExpression: EStreamingExpression): EStreamingExpression {
+        val type = streamingExpression.type.copy()
+        val expression = deepCopy(streamingExpression.expression)
+        return EStreamingExpression(
+            streamingExpression.location,
+            type,
+            expression
+        )
+    }
+
     private fun copyInlineIfExpression(inlineIfExpression: EInlineIfExpression): EInlineIfExpression {
         val type = inlineIfExpression.type.copy()
-        val condition = copy(inlineIfExpression.condition)
-        val thenExpression = copy(inlineIfExpression.thenExpression)
-        val elseExpression = copy(inlineIfExpression.elseExpression)
+        val condition = deepCopy(inlineIfExpression.condition)
+        val thenExpression = deepCopy(inlineIfExpression.thenExpression)
+        val elseExpression = deepCopy(inlineIfExpression.elseExpression)
         return EInlineIfExpression(
             inlineIfExpression.location,
             type,
