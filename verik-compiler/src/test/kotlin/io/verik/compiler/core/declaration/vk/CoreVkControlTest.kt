@@ -45,11 +45,11 @@ internal class CoreVkControlTest : CoreDeclarationTest() {
                 module M;
 
                     always_ff @(posedge x) begin : f
-                        y <= !y;
+                        y <= ~y;
                     end : f
 
                     always_ff @(negedge x) begin : g
-                        y <= !y;
+                        y <= ~y;
                     end : g
 
                 endmodule : M
@@ -112,7 +112,7 @@ internal class CoreVkControlTest : CoreDeclarationTest() {
                         #0;
                         wait(clk);
                         @(posedge clk);
-                        @cb;
+                        @(cb);
                     end : f
 
                 endmodule : M

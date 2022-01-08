@@ -35,14 +35,19 @@ internal class InlineIfExpressionTransformerStageTest : BaseTest() {
     }
 
     @Test
-    fun `transform inline if block expression`() {
+    fun `transform inline if nested`() {
         driveElementTest(
             """
                 var x = true
-                var y = if (x) { 1 } else { 0 }
+                var y = if (x) 1 else if (x) 2 else 3
             """.trimIndent(),
             InlineIfExpressionTransformerStage::class,
-            "InlineIfExpression(Int, ReferenceExpression(*), ConstantExpression(*), ConstantExpression(*))"
+            """
+                InlineIfExpression(
+                    Int, ReferenceExpression(*), ConstantExpression(*),
+                    InlineIfExpression(Int, ReferenceExpression(*), ConstantExpression(*), ConstantExpression(*))
+                )
+            """.trimIndent()
         ) { it.findExpression("y") }
     }
 }

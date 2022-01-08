@@ -30,10 +30,16 @@ abstract class EExpression : ETypedElement() {
         parentNotNull().replaceChildAsExpressionContainer(this, expression)
     }
 
+    // TODO more robust mechanism for differentiating statements and expressions
     fun getExpressionType(): ExpressionType {
         return when (val parent = this.parent) {
             is EAbstractInitializedProperty -> ExpressionType.DIRECT_TYPED_SUBEXPRESSION
-            is EAbstractBlockExpression -> ExpressionType.STATEMENT
+            is EAbstractBlockExpression -> {
+                val parentParent = parent.parent
+                if (parentParent is EIfExpression && parent.statements.last() == this) {
+                    parentParent.getExpressionType()
+                } else ExpressionType.STATEMENT
+            }
             is EKtBinaryExpression -> {
                 if (parent.kind == KtBinaryOperatorKind.EQ) ExpressionType.DIRECT_TYPED_SUBEXPRESSION
                 else ExpressionType.INDIRECT_TYPED_SUBEXPRESSION

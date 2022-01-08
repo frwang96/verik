@@ -16,9 +16,9 @@
 
 package io.verik.compiler.transform.upper
 
+import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -32,13 +32,10 @@ object InlineIfExpressionTransformerStage : ProjectStage() {
 
     private object InlineIfExpressionTransformerVisitor : TreeVisitor() {
 
-        private fun reduceExpression(expression: EExpression?): EExpression? {
-            return when (expression) {
-                is EKtBlockExpression ->
-                    if (expression.statements.size == 1) expression.statements.first() else null
-                is EExpression -> expression
-                else -> null
-            }
+        private fun reduceExpression(expression: EAbstractBlockExpression?): EExpression? {
+            return if (expression?.statements?.size == 1) {
+                expression.statements.first()
+            } else null
         }
 
         override fun visitIfExpression(ifExpression: EIfExpression) {

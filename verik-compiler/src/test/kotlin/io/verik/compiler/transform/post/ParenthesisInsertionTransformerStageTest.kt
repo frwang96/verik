@@ -17,62 +17,96 @@
 package io.verik.compiler.transform.post
 
 import io.verik.compiler.test.BaseTest
-import io.verik.compiler.test.findDeclaration
 import org.junit.jupiter.api.Test
 
 internal class ParenthesisInsertionTransformerStageTest : BaseTest() {
 
     @Test
-    fun `binary expression left`() {
-        driveElementTest(
+    fun `binary expression same kind left`() {
+        driveTextFileTest(
             """
                 var x = 0
-                var y = (x + 1) * x
+                var y = (x + 1) + x
             """.trimIndent(),
-            ParenthesisInsertionTransformerStage::class,
             """
-                SvProperty(
-                    y, Int,
-                    SvBinaryExpression(Int, ParenthesizedExpression(*), ReferenceExpression(*), MUL),
-                    0, 1, null
-                )
+                int x = 0;
+                int y = x + 1 + x;
             """.trimIndent()
-        ) { it.findDeclaration("y") }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
-    fun `binary expression right`() {
-        driveElementTest(
+    fun `binary expression same kind right`() {
+        driveTextFileTest(
             """
                 var x = 0
                 var y = x + (1 + x)
             """.trimIndent(),
-            ParenthesisInsertionTransformerStage::class,
             """
-                SvProperty(
-                    y, Int,
-                    SvBinaryExpression(Int, ReferenceExpression(*), ParenthesizedExpression(*), PLUS),
-                    0, 1, null
-                )
+                int x = 0;
+                int y = x + (1 + x);
             """.trimIndent()
-        ) { it.findDeclaration("y") }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
-    fun `event control expression`() {
-        driveElementTest(
+    fun `binary expression different kind`() {
+        driveTextFileTest(
             """
-                class M : Module() {
-                    @Suppress("MemberVisibilityCanBePrivate")
-                    var x: Boolean = nc()
-                    @Seq
-                    fun f() {
-                        on(posedge(false)) { x = !x }
-                    }
-                }
+                var x = 0
+                var y = (x * 2) + x
             """.trimIndent(),
-            ParenthesisInsertionTransformerStage::class,
-            "AlwaysSeqBlock(f, EventControlExpression(Void, ParenthesizedExpression(*)), *)"
-        ) { it.findDeclaration("f") }
+            """
+                int x = 0;
+                int y = (x * 2) + x;
+            """.trimIndent()
+        ) { it.regularPackageTextFiles[0] }
+    }
+
+    @Test
+    fun `inline if expression same kind left`() {
+        driveTextFileTest(
+            """
+                var x = false
+                @Suppress("RedundantIf")
+                var y = if (if (x) true else false) 3 else 4
+            """.trimIndent(),
+            """
+                logic x = 1'b0;
+                int   y = (x ? 1'b1 : 1'b0) ? 3 : 4;
+            """.trimIndent()
+        ) { it.regularPackageTextFiles[0] }
+    }
+
+    @Test
+    fun `inline if expression same kind right`() {
+        driveTextFileTest(
+            """
+                var x = false
+                var y = false
+                var z = if (x) 1 else if (y) 2 else 3
+            """.trimIndent(),
+            """
+                logic x = 1'b0;
+                logic y = 1'b0;
+                int   z = x ? 1 : y ? 2 : 3;
+            """.trimIndent()
+        ) { it.regularPackageTextFiles[0] }
+    }
+
+    @Test
+    fun `inline if expression different kind`() {
+        driveTextFileTest(
+            """
+                var x = false
+                var y = false
+                var z = if (x && y) 1 else 0
+            """.trimIndent(),
+            """
+                logic x = 1'b0;
+                logic y = 1'b0;
+                int   z = (x && y) ? 1 : 0;
+            """.trimIndent()
+        ) { it.regularPackageTextFiles[0] }
     }
 }

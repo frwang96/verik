@@ -66,9 +66,9 @@ internal class CoreVkMiscTest : CoreDeclarationTest() {
             """.trimIndent(),
             """
                 function automatic void f();
-                    x = 1 > x ? 1 : x;
-                    y = 4'b0001 > y ? 4'b0001 : y;
-                    z = 4'sb0001 > z ? 4'sb0001 : z;
+                    x = (1 > x) ? 1 : x;
+                    y = (4'b0001 > y) ? 4'b0001 : y;
+                    z = (4'sb0001 > z) ? 4'sb0001 : z;
                 endfunction : f
             """.trimIndent()
         )
@@ -94,9 +94,9 @@ internal class CoreVkMiscTest : CoreDeclarationTest() {
             """.trimIndent(),
             """
                 function automatic void f();
-                    x = 1 < x ? 1 : x;
-                    y = 4'b0001 < y ? 4'b0001 : y;
-                    z = 4'sb0001 < z ? 4'sb0001 : z;
+                    x = (1 < x) ? 1 : x;
+                    y = (4'b0001 < y) ? 4'b0001 : y;
+                    z = (4'sb0001 < z) ? 4'sb0001 : z;
                 endfunction : f
             """.trimIndent()
         )

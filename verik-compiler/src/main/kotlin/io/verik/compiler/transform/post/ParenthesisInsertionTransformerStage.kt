@@ -18,8 +18,6 @@ package io.verik.compiler.transform.post
 
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EParenthesizedExpression
-import io.verik.compiler.ast.element.sv.EEventControlExpression
-import io.verik.compiler.ast.element.sv.EEventExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
@@ -27,73 +25,100 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
+/**
+ * Inserts parenthesis to enforce correctness of order of operations.
+ * Conservative parenthesis insertion strategy inserts more parenthesis than necessary for readability.
+ */
 object ParenthesisInsertionTransformerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(ParenthesisInsertionTransformerVisitor)
     }
 
-    private fun parenthesize(expression: EExpression) {
-        val parent = expression.parentNotNull()
-        val parenthesizedExpression = EParenthesizedExpression(
-            expression.location,
-            expression.type.copy(),
-            expression
-        )
-        parent.replaceChildAsExpressionContainer(expression, parenthesizedExpression)
-    }
-
     private object ParenthesisInsertionTransformerVisitor : TreeVisitor() {
 
-        private fun getPriority(expression: EExpression): Int {
-            // higher priority expressions are prioritized for parenthesis insertion
+        private fun getParenthesisKind(expression: EExpression): ParenthesisKind {
             return when (expression) {
-                is ESvBinaryExpression -> getBinaryOperatorPriority(expression.kind)
-                is EInlineIfExpression -> 12
-                is EEventExpression -> 1
-                else -> 0
+                is ESvBinaryExpression -> getBinaryOperatorParenthesisKind(expression.kind)
+                is EInlineIfExpression -> ParenthesisKind.INLINE_IF
+                else -> ParenthesisKind.SINGULAR
             }
         }
 
-        private fun getBinaryOperatorPriority(kind: SvBinaryOperatorKind): Int {
+        private fun getBinaryOperatorParenthesisKind(kind: SvBinaryOperatorKind): ParenthesisKind {
             return when (kind) {
-                SvBinaryOperatorKind.MUL -> 2
-                SvBinaryOperatorKind.DIV -> 2
-                SvBinaryOperatorKind.PLUS -> 3
-                SvBinaryOperatorKind.MINUS -> 3
-                SvBinaryOperatorKind.LTLT -> 4
-                SvBinaryOperatorKind.GTGT -> 4
-                SvBinaryOperatorKind.GTGTGT -> 4
-                SvBinaryOperatorKind.LT -> 5
-                SvBinaryOperatorKind.LTEQ -> 5
-                SvBinaryOperatorKind.GT -> 5
-                SvBinaryOperatorKind.GTEQ -> 5
-                SvBinaryOperatorKind.EQEQ -> 6
-                SvBinaryOperatorKind.EXCL_EQ -> 6
-                SvBinaryOperatorKind.AND -> 7
-                SvBinaryOperatorKind.XOR -> 8
-                SvBinaryOperatorKind.OR -> 9
-                SvBinaryOperatorKind.ANDAND -> 10
-                SvBinaryOperatorKind.OROR -> 11
-                SvBinaryOperatorKind.ASSIGN -> 13
-                SvBinaryOperatorKind.ARROW_ASSIGN -> 13
+                SvBinaryOperatorKind.MUL -> ParenthesisKind.MUL_DIV
+                SvBinaryOperatorKind.DIV -> ParenthesisKind.MUL_DIV
+                SvBinaryOperatorKind.PLUS -> ParenthesisKind.PLUS_MINUS
+                SvBinaryOperatorKind.MINUS -> ParenthesisKind.PLUS_MINUS
+                SvBinaryOperatorKind.LTLT -> ParenthesisKind.SHIFT
+                SvBinaryOperatorKind.GTGT -> ParenthesisKind.SHIFT
+                SvBinaryOperatorKind.GTGTGT -> ParenthesisKind.SHIFT
+                SvBinaryOperatorKind.LT -> ParenthesisKind.COMPARE
+                SvBinaryOperatorKind.LTEQ -> ParenthesisKind.COMPARE
+                SvBinaryOperatorKind.GT -> ParenthesisKind.COMPARE
+                SvBinaryOperatorKind.GTEQ -> ParenthesisKind.COMPARE
+                SvBinaryOperatorKind.EQEQ -> ParenthesisKind.EQUALITY
+                SvBinaryOperatorKind.EXCL_EQ -> ParenthesisKind.EQUALITY
+                SvBinaryOperatorKind.AND -> ParenthesisKind.BITWISE_AND
+                SvBinaryOperatorKind.XOR -> ParenthesisKind.BITWISE_XOR
+                SvBinaryOperatorKind.OR -> ParenthesisKind.BITWISE_OR
+                SvBinaryOperatorKind.ANDAND -> ParenthesisKind.LOGICAL_AND
+                SvBinaryOperatorKind.OROR -> ParenthesisKind.LOGICAL_OR
+                SvBinaryOperatorKind.ASSIGN -> ParenthesisKind.SINGULAR
+                SvBinaryOperatorKind.ARROW_ASSIGN -> ParenthesisKind.SINGULAR
             }
+        }
+
+        private fun parenthesize(expression: EExpression) {
+            val parent = expression.parentNotNull()
+            val parenthesizedExpression = EParenthesizedExpression(
+                expression.location,
+                expression.type.copy(),
+                expression
+            )
+            parent.replaceChildAsExpressionContainer(expression, parenthesizedExpression)
         }
 
         override fun visitSvBinaryExpression(binaryExpression: ESvBinaryExpression) {
             super.visitSvBinaryExpression(binaryExpression)
-            val priority = getPriority(binaryExpression)
-            if (priority < getPriority(binaryExpression.left))
+            val kind = getParenthesisKind(binaryExpression)
+            if (kind == ParenthesisKind.SINGULAR)
+                return
+            val leftKind = getParenthesisKind(binaryExpression.left)
+            val rightKind = getParenthesisKind(binaryExpression.right)
+            if (leftKind != ParenthesisKind.SINGULAR && leftKind != kind)
                 parenthesize(binaryExpression.left)
-            if (priority <= getPriority(binaryExpression.right))
+            if (rightKind != ParenthesisKind.SINGULAR)
                 parenthesize(binaryExpression.right)
         }
 
-        override fun visitEventControlExpression(eventControlExpression: EEventControlExpression) {
-            super.visitEventControlExpression(eventControlExpression)
-            val priority = getPriority(eventControlExpression)
-            if (priority < getPriority(eventControlExpression.expression))
-                parenthesize(eventControlExpression.expression)
+        override fun visitInlineIfExpression(inlineIfExpression: EInlineIfExpression) {
+            super.visitInlineIfExpression(inlineIfExpression)
+            val conditionKind = getParenthesisKind(inlineIfExpression.condition)
+            val thenExpressionKind = getParenthesisKind(inlineIfExpression.thenExpression)
+            val elseExpressionKind = getParenthesisKind(inlineIfExpression.elseExpression)
+            if (conditionKind != ParenthesisKind.SINGULAR)
+                parenthesize(inlineIfExpression.condition)
+            if (thenExpressionKind != ParenthesisKind.SINGULAR)
+                parenthesize(inlineIfExpression.thenExpression)
+            if (elseExpressionKind != ParenthesisKind.SINGULAR && elseExpressionKind != ParenthesisKind.INLINE_IF)
+                parenthesize(inlineIfExpression.elseExpression)
+        }
+
+        private enum class ParenthesisKind {
+            SINGULAR,
+            MUL_DIV,
+            PLUS_MINUS,
+            SHIFT,
+            COMPARE,
+            EQUALITY,
+            BITWISE_AND,
+            BITWISE_XOR,
+            BITWISE_OR,
+            LOGICAL_AND,
+            LOGICAL_OR,
+            INLINE_IF
         }
     }
 }

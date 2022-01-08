@@ -261,7 +261,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                     logic y;
                 
                     always_ff @(posedge x) begin : f
-                        y <= !y;
+                        y <= ~y;
                     end : f
                 
                 endmodule : M
