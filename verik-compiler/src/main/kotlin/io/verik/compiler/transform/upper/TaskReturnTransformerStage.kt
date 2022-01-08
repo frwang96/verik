@@ -112,14 +112,7 @@ object TaskReturnTransformerStage : ProjectStage() {
                 property,
                 null
             )
-            val callExpressionReplacement = EKtCallExpression(
-                callExpression.location,
-                callExpression.type,
-                callExpression.reference,
-                callExpression.receiver,
-                callExpression.valueArguments,
-                callExpression.typeArguments
-            )
+            val callExpressionReplacement = ExpressionCopier.shallowCopy(callExpression)
             referenceExpression.parent = callExpressionReplacement
             callExpressionReplacement.valueArguments.add(referenceExpression)
             expressionExtractor.extract(
