@@ -33,82 +33,82 @@ typealias TRUE = `*`
 typealias FALSE = `*`
 
 /**
- * Logical not of the cardinal N.
+ * Logical not of the cardinal X.
  */
-typealias NOT<N> = `*`
+typealias NOT<X> = `*`
 
 /**
- * Logical and of the cardinals N and M.
+ * Logical and of the cardinals X and Y.
  */
-typealias AND<N, M> = `*`
+typealias AND<X, Y> = `*`
 
 /**
- * Logical or of the cardinals N and M.
+ * Logical or of the cardinals X and Y.
  */
-typealias OR<N, M> = `*`
+typealias OR<X, Y> = `*`
 
 /**
- * Evaluate as the cardinal N if the cardinal X is one and the cardinal M otherwise. X must take the value of either
+ * Evaluate as the cardinal Y if the cardinal X is one and the cardinal Z otherwise. X must take the value of either
  * zero or one.
  */
-typealias IF<X, N, M> = `*`
+typealias IF<X, Y, Z> = `*`
 
 /**
- * Adds the cardinals N and M.
+ * Adds the cardinals X and Y.
  */
-typealias ADD<N, M> = `*`
+typealias ADD<X, Y> = `*`
 
 /**
- * Subtracts the cardinals N and M.
+ * Subtracts the cardinals X and Y.
  */
-typealias SUB<N, M> = `*`
+typealias SUB<X, Y> = `*`
 
 /**
- * Multiplies the cardinals N and M.
+ * Multiplies the cardinals X and Y.
  */
-typealias MUL<N, M> = `*`
+typealias MUL<X, Y> = `*`
 
 /**
- * Divides the cardinals N and M
+ * Divides the cardinals X and Y
  */
-typealias DIV<N, M> = `*`
+typealias DIV<X, Y> = `*`
 
 /**
- * Takes the maximum of the cardinals N and M.
+ * Takes the maximum of the cardinals X and Y.
  */
-typealias MAX<N, M> = `*`
+typealias MAX<X, Y> = `*`
 
 /**
- * Takes the minimum of the cardinals N and M.
+ * Takes the minimum of the cardinals X and Y.
  */
-typealias MIN<N, M> = `*`
+typealias MIN<X, Y> = `*`
 
 /**
- * The cardinal N. Used for shielding the type parameter from the Kotlin type system.
+ * The cardinal X. Used for shielding the type parameter from the Kotlin type system.
  */
-typealias OF<N> = `*`
+typealias OF<X> = `*`
 
 /**
- * Increments the cardinal N.
+ * Increments the cardinal X.
  */
-typealias INC<N> = `*`
+typealias INC<X> = `*`
 
 /**
- * Decrements the cardinal N.
+ * Decrements the cardinal X.
  */
-typealias DEC<N> = `*`
+typealias DEC<X> = `*`
 
 /**
- * Ceiling logarithm base two of the cardinal N.
+ * Ceiling logarithm base two of the cardinal X.
  */
-typealias LOG<N> = `*`
+typealias LOG<X> = `*`
 
 /**
- * Width of the binary representation of the cardinal N. Equivalent to `LOG<INC<N>>`.
+ * Width of the binary representation of the cardinal X. Equivalent to `LOG<INC<X>>`.
  */
-typealias WIDTH<N> = `*`
+typealias WIDTH<X> = `*`
 
 /**
- * Exponential base two of the cardinal N.
+ * Exponential base two of the cardinal X.
  */
-typealias EXP<N> = `*`
+typealias EXP<X> = `*`

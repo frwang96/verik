@@ -19,9 +19,9 @@
 package io.verik.core
 
 /**
- * An unpacked array of size [N] of elements of type [E].
+ * An unpacked array of size [X] of elements of type [E].
  */
-class Unpacked<N : `*`, E> private constructor() : Iterable<E> {
+class Unpacked<X : `*`, E> private constructor() : Iterable<E> {
 
     override fun iterator(): Iterator<E> {
         throw VerikException()

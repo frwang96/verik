@@ -269,6 +269,7 @@ object Core {
             val F_reduceAnd = CoreVkUbit.F_reduceAnd
             val F_reduceOr = CoreVkUbit.F_reduceOr
             val F_reduceXor = CoreVkUbit.F_reduceXor
+            val F_slice = CoreVkUbit.F_slice
             val F_slice_Int = CoreVkUbit.F_slice_Int
             val F_slice_Ubit = CoreVkUbit.F_slice_Ubit
             val F_ext = CoreVkUbit.F_ext
