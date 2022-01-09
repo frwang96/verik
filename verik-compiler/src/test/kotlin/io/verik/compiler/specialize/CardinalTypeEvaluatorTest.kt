@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.resolve
+package io.verik.compiler.specialize
 
 import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class CardinalTypeResolverStageTest : BaseTest() {
+internal class CardinalTypeEvaluatorTest : BaseTest() {
 
     @Test
     fun `function true`() {
@@ -28,7 +28,7 @@ internal class CardinalTypeResolverStageTest : BaseTest() {
             """
                 var x: Ubit<TRUE> = nc()
             """.trimIndent(),
-            CardinalTypeResolverStage::class,
+            SpecializerStage::class,
             "KtProperty(x, Ubit<`1`>, *, [], 1)"
         ) { it.findDeclaration("x") }
     }
@@ -39,7 +39,7 @@ internal class CardinalTypeResolverStageTest : BaseTest() {
             """
                 var x: Ubit<FALSE> = nc()
             """.trimIndent(),
-            CardinalTypeResolverStage::class,
+            SpecializerStage::class,
             "KtProperty(x, Ubit<`0`>, *, [], 1)"
         ) { it.findDeclaration("x") }
     }
@@ -50,7 +50,7 @@ internal class CardinalTypeResolverStageTest : BaseTest() {
             """
                 var x: Ubit<NOT<`0`>> = nc()
             """.trimIndent(),
-            CardinalTypeResolverStage::class,
+            SpecializerStage::class,
             "KtProperty(x, Ubit<`1`>, *, [], 1)"
         ) { it.findDeclaration("x") }
     }
@@ -61,7 +61,7 @@ internal class CardinalTypeResolverStageTest : BaseTest() {
             """
                 var x: Ubit<AND<`1`, `1`>> = nc()
             """.trimIndent(),
-            CardinalTypeResolverStage::class,
+            SpecializerStage::class,
             "KtProperty(x, Ubit<`1`>, *, [], 1)"
         ) { it.findDeclaration("x") }
     }
@@ -72,7 +72,7 @@ internal class CardinalTypeResolverStageTest : BaseTest() {
             """
                 var x: Ubit<OR<`1`, `1`>> = nc()
             """.trimIndent(),
-            CardinalTypeResolverStage::class,
+            SpecializerStage::class,
             "KtProperty(x, Ubit<`1`>, *, [], 1)"
         ) { it.findDeclaration("x") }
     }
@@ -83,7 +83,7 @@ internal class CardinalTypeResolverStageTest : BaseTest() {
             """
                 var x: Ubit<IF<`1`, `2`, `3`>> = nc()
             """.trimIndent(),
-            CardinalTypeResolverStage::class,
+            SpecializerStage::class,
             "KtProperty(x, Ubit<`2`>, *, [], 1)"
         ) { it.findDeclaration("x") }
     }
@@ -94,7 +94,7 @@ internal class CardinalTypeResolverStageTest : BaseTest() {
             """
                 var x: Ubit<ADD<`1`, `1`>> = nc()
             """.trimIndent(),
-            CardinalTypeResolverStage::class,
+            SpecializerStage::class,
             "KtProperty(x, Ubit<`2`>, *, [], 1)"
         ) { it.findDeclaration("x") }
     }
@@ -105,7 +105,7 @@ internal class CardinalTypeResolverStageTest : BaseTest() {
             """
                 var x: Ubit<SUB<`3`, `2`>> = nc()
             """.trimIndent(),
-            CardinalTypeResolverStage::class,
+            SpecializerStage::class,
             "KtProperty(x, Ubit<`1`>, *, [], 1)"
         ) { it.findDeclaration("x") }
     }
@@ -116,7 +116,7 @@ internal class CardinalTypeResolverStageTest : BaseTest() {
             """
                 var x: Ubit<MUL<`3`, `2`>> = nc()
             """.trimIndent(),
-            CardinalTypeResolverStage::class,
+            SpecializerStage::class,
             "KtProperty(x, Ubit<`6`>, *, [], 1)"
         ) { it.findDeclaration("x") }
     }
@@ -127,7 +127,7 @@ internal class CardinalTypeResolverStageTest : BaseTest() {
             """
                 var x: Ubit<DIV<`6`, `2`>> = nc()
             """.trimIndent(),
-            CardinalTypeResolverStage::class,
+            SpecializerStage::class,
             "KtProperty(x, Ubit<`3`>, *, [], 1)"
         ) { it.findDeclaration("x") }
     }
@@ -138,7 +138,7 @@ internal class CardinalTypeResolverStageTest : BaseTest() {
             """
                 var x: Ubit<LOG<`4`>> = nc()
             """.trimIndent(),
-            CardinalTypeResolverStage::class,
+            SpecializerStage::class,
             "KtProperty(x, Ubit<`2`>, *, [], 1)"
         ) { it.findDeclaration("x") }
     }
@@ -149,7 +149,7 @@ internal class CardinalTypeResolverStageTest : BaseTest() {
             """
                 var x: Ubit<WIDTH<`4`>> = nc()
             """.trimIndent(),
-            CardinalTypeResolverStage::class,
+            SpecializerStage::class,
             "KtProperty(x, Ubit<`3`>, *, [], 1)"
         ) { it.findDeclaration("x") }
     }
@@ -160,7 +160,7 @@ internal class CardinalTypeResolverStageTest : BaseTest() {
             """
                 var x: Ubit<EXP<`2`>> = nc()
             """.trimIndent(),
-            CardinalTypeResolverStage::class,
+            SpecializerStage::class,
             "KtProperty(x, Ubit<`4`>, *, [], 1)"
         ) { it.findDeclaration("x") }
     }

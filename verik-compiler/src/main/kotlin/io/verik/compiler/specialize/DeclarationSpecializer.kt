@@ -44,6 +44,8 @@ object DeclarationSpecializer {
             val typeParameterStrings = declaration.typeParameters.map { getTypeParameterString(it) }
             declaration.name = "${declaration.name}_${typeParameterStrings.joinToString(separator = "_")}"
         }
+        CardinalTypeEvaluator.evaluate(declaration)
+        OptionalReducer.reduce(declaration)
         return SpecializerIndexer.index(declaration)
     }
 

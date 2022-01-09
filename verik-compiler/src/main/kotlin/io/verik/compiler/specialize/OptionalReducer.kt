@@ -14,22 +14,21 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.resolve
+package io.verik.compiler.specialize
 
+import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.ENullExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Cardinal
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
-object OptionalReducerStage : ProjectStage() {
+object OptionalReducer {
 
-    override fun process(projectContext: ProjectContext) {
-        projectContext.project.accept(OptionalReducerVisitor)
+    fun reduce(declaration: EDeclaration) {
+        declaration.accept(OptionalReducerVisitor)
     }
 
     private object OptionalReducerVisitor : TreeVisitor() {
@@ -54,11 +53,7 @@ object OptionalReducerStage : ProjectStage() {
                         return
                     }
                 }
-                if (typeArgument.isCardinalType()) {
-                    Messages.CARDINAL_NOT_BOOLEAN.on(callExpression, typeArgument)
-                } else {
-                    Messages.INTERNAL_ERROR.on(callExpression, "Unable to reduce optional function")
-                }
+                Messages.CARDINAL_NOT_BOOLEAN.on(callExpression, typeArgument)
             }
         }
     }

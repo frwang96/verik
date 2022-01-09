@@ -57,10 +57,9 @@ import io.verik.compiler.reorder.DeadDeclarationEliminatorStage
 import io.verik.compiler.reorder.DependencyReordererStage
 import io.verik.compiler.reorder.PropertyStatementReordererStage
 import io.verik.compiler.resolve.CardinalNegativeCheckerStage
-import io.verik.compiler.resolve.CardinalTypeResolverStage
-import io.verik.compiler.resolve.OptionalReducerStage
 import io.verik.compiler.resolve.TypeConstraintCheckerStage
 import io.verik.compiler.resolve.TypeConstraintResolverStage
+import io.verik.compiler.resolve.TypeReferenceForwarderStage
 import io.verik.compiler.resolve.TypeResolvedCheckerStage
 import io.verik.compiler.serialize.general.ConfigFileSerializerStage
 import io.verik.compiler.serialize.general.PackageWrapperSerializerStage
@@ -152,12 +151,11 @@ object StageSequencer {
         stageSequence.add(StageType.SPECIALIZE, SpecializerStage)
         stageSequence.add(StageType.SPECIALIZE, ExpressionReferenceForwarderStage)
 
-        stageSequence.add(StageType.RESOLVE, CardinalTypeResolverStage)
         stageSequence.add(StageType.RESOLVE, TypeConstraintResolverStage)
         stageSequence.add(StageType.RESOLVE, TypeResolvedCheckerStage)
         stageSequence.add(StageType.RESOLVE, TypeConstraintCheckerStage)
         stageSequence.add(StageType.RESOLVE, CardinalNegativeCheckerStage)
-        stageSequence.add(StageType.RESOLVE, OptionalReducerStage)
+        stageSequence.add(StageType.RESOLVE, TypeReferenceForwarderStage)
 
         stageSequence.add(StageType.INTERPRET, EnumInterpreterStage)
         stageSequence.add(StageType.INTERPRET, StructInterpreterStage)

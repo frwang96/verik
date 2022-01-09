@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.resolve
+package io.verik.compiler.specialize
 
+import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.kt.EKtCallExpression
@@ -25,31 +26,29 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Cardinal
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreCardinalFunctionDeclaration
-import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
-object CardinalTypeResolverStage : ProjectStage() {
+object CardinalTypeEvaluator {
 
-    override fun process(projectContext: ProjectContext) {
-        projectContext.project.accept(CardinalTypeResolverVisitor)
+    fun evaluate(declaration: EDeclaration) {
+        declaration.accept(CardinalTypeEvaluatorVisitor)
     }
 
-    private object CardinalTypeResolverVisitor : TreeVisitor() {
+    private object CardinalTypeEvaluatorVisitor : TreeVisitor() {
 
-        fun resolve(type: Type, element: EElement): Type {
+        fun evaluate(type: Type, element: EElement): Type {
             val reference = type.reference
-            val arguments = type.arguments.map { resolve(it, element) }
+            val arguments = type.arguments.map { evaluate(it, element) }
             return if (reference is CoreCardinalFunctionDeclaration) {
                 val argumentValues = arguments.map { it.asCardinalValue(element) }
-                val value = resolveCardinalFunction(reference, argumentValues, element)
+                val value = evaluateCardinalFunction(reference, argumentValues, element)
                 Cardinal.of(value).toType()
             } else {
                 reference.toType(arguments)
             }
         }
 
-        private fun resolveCardinalFunction(
+        private fun evaluateCardinalFunction(
             reference: CoreCardinalFunctionDeclaration,
             argumentValues: List<Int>,
             element: EElement
@@ -119,18 +118,18 @@ object CardinalTypeResolverStage : ProjectStage() {
 
         override fun visitTypedElement(typedElement: ETypedElement) {
             super.visitTypedElement(typedElement)
-            typedElement.type = resolve(typedElement.type, typedElement)
+            typedElement.type = evaluate(typedElement.type, typedElement)
         }
 
         override fun visitKtClass(`class`: EKtClass) {
             super.visitKtClass(`class`)
-            `class`.superType = resolve(`class`.superType, `class`)
+            `class`.superType = evaluate(`class`.superType, `class`)
         }
 
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
             callExpression.typeArguments = ArrayList(
-                callExpression.typeArguments.map { resolve(it, callExpression) }
+                callExpression.typeArguments.map { evaluate(it, callExpression) }
             )
         }
     }

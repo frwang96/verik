@@ -20,29 +20,41 @@ import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
-internal class ExpressionReferenceForwarderStageTest : BaseTest() {
+internal class OptionalReducerTest : BaseTest() {
 
     @Test
-    fun `forward function`() {
+    fun `reduce true`() {
         driveElementTest(
             """
-                fun <X : `*`> f(): Boolean { return false }
-                val x = f<`8`>()
+                class M : Module()
+                val m = optional<TRUE, M> { M() }
             """.trimIndent(),
-            ExpressionReferenceForwarderStage::class,
-            "KtCallExpression(Boolean, f_X_8, null, [], [`8`])"
-        ) { it.findExpression("x") }
+            SpecializerStage::class,
+            "KtCallExpression(M, <init>, null, [], [])"
+        ) { it.findExpression("m") }
     }
 
     @Test
-    fun `forward primary constructor`() {
+    fun `reduce false`() {
         driveElementTest(
             """
-                class C<X : `*`>
-                val x = C<`8`>()
+                class M : Module()
+                val m = optional<FALSE, M> { M() }
             """.trimIndent(),
-            ExpressionReferenceForwarderStage::class,
-            "KtCallExpression(C<`*`>, <init>, null, [], [`8`])"
-        ) { it.findExpression("x") }
+            SpecializerStage::class,
+            "NullExpression()"
+        ) { it.findExpression("m") }
+    }
+
+    @Test
+    fun `illegal false`() {
+        driveMessageTest(
+            """
+                class M : Module()
+                val m = optional<`2`, M> { M() }
+            """.trimIndent(),
+            true,
+            "Could not interpret cardinal as either true or false: `2`"
+        )
     }
 }

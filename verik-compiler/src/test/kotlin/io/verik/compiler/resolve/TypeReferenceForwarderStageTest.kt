@@ -17,44 +17,32 @@
 package io.verik.compiler.resolve
 
 import io.verik.compiler.test.BaseTest
-import io.verik.compiler.test.findExpression
+import io.verik.compiler.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class OptionalReducerStageTest : BaseTest() {
+internal class TypeReferenceForwarderStageTest : BaseTest() {
 
     @Test
-    fun `reduce true`() {
+    fun `forward type not parameterized`() {
         driveElementTest(
             """
-                class M : Module()
-                val m = optional<TRUE, M> { M() }
+                class C
+                val x = C()
             """.trimIndent(),
-            OptionalReducerStage::class,
-            "KtCallExpression(M, <init>, null, [], [])"
-        ) { it.findExpression("m") }
+            TypeReferenceForwarderStage::class,
+            "KtProperty(x, Boolean, *, [], 1)"
+        ) { it.findDeclaration("x") }
     }
 
     @Test
-    fun `reduce false`() {
+    fun `forward type parameterized`() {
         driveElementTest(
             """
-                class M : Module()
-                val m = optional<FALSE, M> { M() }
+                class C<X : `*`>
+                val x = C<`1`>()
             """.trimIndent(),
-            OptionalReducerStage::class,
-            "NullExpression()"
-        ) { it.findExpression("m") }
-    }
-
-    @Test
-    fun `illegal false`() {
-        driveMessageTest(
-            """
-                class M : Module()
-                val m = optional<`2`, M> { M() }
-            """.trimIndent(),
-            true,
-            "Could not interpret cardinal as either true or false: `2`"
-        )
+            TypeReferenceForwarderStage::class,
+            "KtProperty(x, Boolean, *, [], 1)"
+        ) { it.findDeclaration("x") }
     }
 }
