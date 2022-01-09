@@ -18,6 +18,7 @@
 - Rewrite constant expression handling.
 - Merge `Optional` with `Cardinal`.
 - Separate `MID_TRANSFORM` into `UPPER_TRANSFORM` and `LOWER_TRANSFORM`.
+- Rewrite specialize and resolve stages to move type resolution after specialization.
 
 ## [0.1.11]
 ### Added

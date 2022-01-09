@@ -22,13 +22,13 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
-object TypeResolverStage : ProjectStage() {
+object TypeConstraintResolverStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.project.accept(TypeResolverVisitor)
+        projectContext.project.accept(TypeConstraintResolverVisitor)
     }
 
-    private object TypeResolverVisitor : TreeVisitor() {
+    private object TypeConstraintResolverVisitor : TreeVisitor() {
 
         override fun visitKtFunction(function: EKtFunction) {
             val typeConstraints = TypeConstraintCollector.collect(function)

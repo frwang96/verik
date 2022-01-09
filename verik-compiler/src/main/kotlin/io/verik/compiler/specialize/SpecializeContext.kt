@@ -17,6 +17,9 @@
 package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EDeclaration
+import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.interfaces.Declaration
+import io.verik.compiler.message.Messages
 
 class SpecializeContext {
 
@@ -34,6 +37,17 @@ class SpecializeContext {
 
     fun contains(declarationBinding: DeclarationBinding): Boolean {
         return declarationBinding in referenceForwardingMap
+    }
+
+    fun forward(
+        declaration: Declaration,
+        typeParameterBindings: List<TypeParameterBinding>,
+        element: EElement
+    ): Declaration {
+        if (declaration !is EDeclaration)
+            return declaration
+        return referenceForwardingMap[DeclarationBinding(declaration, typeParameterBindings)]
+            ?: Messages.INTERNAL_ERROR.on(element, "Forwarded declaration not found: ${declaration.name}")
     }
 
     fun getSpecializedDeclarations(declaration: EDeclaration): List<EDeclaration> {

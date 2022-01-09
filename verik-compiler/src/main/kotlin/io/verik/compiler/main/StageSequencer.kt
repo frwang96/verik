@@ -57,15 +57,17 @@ import io.verik.compiler.reorder.DeadDeclarationEliminatorStage
 import io.verik.compiler.reorder.DependencyReordererStage
 import io.verik.compiler.reorder.PropertyStatementReordererStage
 import io.verik.compiler.resolve.CardinalNegativeCheckerStage
+import io.verik.compiler.resolve.CardinalTypeResolverStage
 import io.verik.compiler.resolve.OptionalReducerStage
 import io.verik.compiler.resolve.TypeConstraintCheckerStage
+import io.verik.compiler.resolve.TypeConstraintResolverStage
 import io.verik.compiler.resolve.TypeResolvedCheckerStage
-import io.verik.compiler.resolve.TypeResolverStage
 import io.verik.compiler.serialize.general.ConfigFileSerializerStage
 import io.verik.compiler.serialize.general.PackageWrapperSerializerStage
 import io.verik.compiler.serialize.general.SourcesFileSerializerStage
 import io.verik.compiler.serialize.source.SourceSerializerStage
 import io.verik.compiler.serialize.target.CompositeTargetSerializerStage
+import io.verik.compiler.specialize.ExpressionReferenceForwarderStage
 import io.verik.compiler.specialize.SpecializerStage
 import io.verik.compiler.transform.lower.ExpressionEvaluatorStage
 import io.verik.compiler.transform.lower.ExpressionExtractorStage
@@ -148,8 +150,10 @@ object StageSequencer {
         stageSequence.add(StageType.MID_CHECK, ProceduralBlockReferenceCheckerStage)
 
         stageSequence.add(StageType.SPECIALIZE, SpecializerStage)
+        stageSequence.add(StageType.SPECIALIZE, ExpressionReferenceForwarderStage)
 
-        stageSequence.add(StageType.RESOLVE, TypeResolverStage)
+        stageSequence.add(StageType.RESOLVE, CardinalTypeResolverStage)
+        stageSequence.add(StageType.RESOLVE, TypeConstraintResolverStage)
         stageSequence.add(StageType.RESOLVE, TypeResolvedCheckerStage)
         stageSequence.add(StageType.RESOLVE, TypeConstraintCheckerStage)
         stageSequence.add(StageType.RESOLVE, CardinalNegativeCheckerStage)

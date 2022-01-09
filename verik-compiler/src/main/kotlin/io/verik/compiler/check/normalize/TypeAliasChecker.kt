@@ -17,10 +17,8 @@
 package io.verik.compiler.check.normalize
 
 import io.verik.compiler.ast.element.common.EAbstractClass
-import io.verik.compiler.ast.element.common.EAbstractFunction
 import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.common.ETypeParameter
+import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
@@ -61,24 +59,14 @@ object TypeAliasChecker : NormalizationStage {
             type.arguments.forEach { addTypeRecursive(it, element) }
         }
 
-        override fun visitExpression(expression: EExpression) {
-            super.visitExpression(expression)
-            addTypeRecursive(expression.type, expression)
-        }
-
-        override fun visitTypeParameter(typeParameter: ETypeParameter) {
-            super.visitTypeParameter(typeParameter)
-            addTypeRecursive(typeParameter.type, typeParameter)
+        override fun visitTypedElement(typedElement: ETypedElement) {
+            super.visitTypedElement(typedElement)
+            addTypeRecursive(typedElement.type, typedElement)
         }
 
         override fun visitAbstractClass(abstractClass: EAbstractClass) {
             super.visitAbstractClass(abstractClass)
             addTypeRecursive(abstractClass.superType, abstractClass)
-        }
-
-        override fun visitAbstractFunction(abstractFunction: EAbstractFunction) {
-            super.visitAbstractFunction(abstractFunction)
-            addTypeRecursive(abstractFunction.type, abstractFunction)
         }
 
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {

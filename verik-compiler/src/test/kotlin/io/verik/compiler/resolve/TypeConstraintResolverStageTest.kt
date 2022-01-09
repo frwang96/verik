@@ -21,7 +21,7 @@ import io.verik.compiler.test.findDeclaration
 import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
-internal class TypeResolverStageTest : BaseTest() {
+internal class TypeConstraintResolverStageTest : BaseTest() {
 
     @Test
     fun `resolve property`() {
@@ -29,7 +29,7 @@ internal class TypeResolverStageTest : BaseTest() {
             """
                 var x = false
             """.trimIndent(),
-            TypeResolverStage::class,
+            TypeConstraintResolverStage::class,
             "KtProperty(x, Boolean, *, [], 1)"
         ) { it.findDeclaration("x") }
     }
@@ -41,7 +41,7 @@ internal class TypeResolverStageTest : BaseTest() {
                 class C<X : `*`>
                 var c = C<`8`>()
             """.trimIndent(),
-            TypeResolverStage::class,
+            TypeConstraintResolverStage::class,
             "KtProperty(c, C<`8`>, KtCallExpression(C<`8`>, <init>, null, [], [`8`]), [], 1)"
         ) { it.findDeclaration("c") }
     }
@@ -55,7 +55,7 @@ internal class TypeResolverStageTest : BaseTest() {
                     x
                 }
             """.trimIndent(),
-            TypeResolverStage::class,
+            TypeConstraintResolverStage::class,
             "ReferenceExpression(Boolean, x, null)"
         ) { it.findExpression("f") }
     }
@@ -70,7 +70,7 @@ internal class TypeResolverStageTest : BaseTest() {
                     s.x
                 }
             """.trimIndent(),
-            TypeResolverStage::class,
+            TypeConstraintResolverStage::class,
             "ReferenceExpression(Ubit<`8`>, x, *)"
         ) { it.findExpression("f") }
     }
@@ -81,7 +81,7 @@ internal class TypeResolverStageTest : BaseTest() {
             """
                 val x = u(0x00) + u(0x0)
             """.trimIndent(),
-            TypeResolverStage::class,
+            TypeConstraintResolverStage::class,
             "KtCallExpression(Ubit<MAX<`8`,`4`>>, plus, *, *, [])"
         ) { it.findExpression("x") }
     }
@@ -92,7 +92,7 @@ internal class TypeResolverStageTest : BaseTest() {
             """
                 val x = u<`8`>()
             """.trimIndent(),
-            TypeResolverStage::class,
+            TypeConstraintResolverStage::class,
             "KtCallExpression(Ubit<WIDTH<`8`>>, u, null, [], [`8`])"
         ) { it.findExpression("x") }
     }
@@ -103,7 +103,7 @@ internal class TypeResolverStageTest : BaseTest() {
             """
                 val x = cat(u(0), false)
             """.trimIndent(),
-            TypeResolverStage::class,
+            TypeConstraintResolverStage::class,
             "KtCallExpression(Ubit<ADD<`1`, `1`>>, cat, null, *, [])"
         ) { it.findExpression("x") }
     }
@@ -125,7 +125,7 @@ internal class TypeResolverStageTest : BaseTest() {
             """
                 val x = rep<`3`>(false)
             """.trimIndent(),
-            TypeResolverStage::class,
+            TypeConstraintResolverStage::class,
             "KtCallExpression(Ubit<MUL<`1`, `3`>>, rep, null, *, [`3`])"
         ) { it.findExpression("x") }
     }
@@ -137,7 +137,7 @@ internal class TypeResolverStageTest : BaseTest() {
                 fun f(x: Ubit<`8`>) {}
                 val x = f(u0())
             """.trimIndent(),
-            TypeResolverStage::class,
+            TypeConstraintResolverStage::class,
             "KtCallExpression(Unit, f, null, [KtCallExpression(Ubit<`8`>, u0, null, [], [`8`])], [])"
         ) { it.findExpression("x") }
     }
@@ -150,7 +150,7 @@ internal class TypeResolverStageTest : BaseTest() {
                     return u0()
                 }
             """.trimIndent(),
-            TypeResolverStage::class,
+            TypeConstraintResolverStage::class,
             "ReturnStatement(Nothing, KtCallExpression(Ubit<`8`>, u0, null, [], [`8`]))"
         ) { it.findExpression("f") }
     }
