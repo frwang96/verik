@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,57 +14,34 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.specialize
+package io.verik.compiler.xspecialize
 
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.kt.EKtClass
+import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.interfaces.TypeParameterized
 import io.verik.compiler.core.common.AnnotationEntries
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import org.jetbrains.kotlin.backend.common.pop
 
-object DeclarationSpecializerStage : ProjectStage() {
+object SpecializerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        val entryPoints = getEntryPoints(projectContext)
-        val declarationBindingQueue = ArrayDeque(
-            entryPoints.map { DeclarationBinding(it, TypeParameterContext.EMPTY) }
-        )
-
+        val declarationBindings = ArrayList(getEntryPoints(projectContext))
         val specializeContext = SpecializeContext()
-        val declarationSpecializeIndexerVisitor = DeclarationSpecializeIndexerVisitor(
-            declarationBindingQueue,
-            specializeContext
-        )
-        while (declarationBindingQueue.isNotEmpty()) {
-            val declarationBinding = declarationBindingQueue.pop()
+        while (declarationBindings.isNotEmpty()) {
+            val declarationBinding = declarationBindings.pop()
             if (!specializeContext.contains(declarationBinding)) {
-                specializeContext.typeParameterContext = declarationBinding.typeParameterContext
-                declarationBinding.declaration.accept(declarationSpecializeIndexerVisitor)
+                DeclarationSpecializer.specialize(declarationBinding, specializeContext)
             }
-        }
-
-        projectContext.project.files().forEach { file ->
-            val declarations = file.declarations.flatMap { declaration ->
-                val typeParameterContexts = specializeContext.matchTypeParameterContexts(
-                    declaration,
-                    TypeParameterContext.EMPTY
-                )
-                typeParameterContexts.map {
-                    specializeContext.typeParameterContext = it
-                    specializeContext.specialize(declaration)
-                }
-            }
-            declarations.forEach { it.parent = file }
-            file.declarations = ArrayList(declarations)
         }
     }
 
     // TODO Remove
     @Suppress("DuplicatedCode")
-    private fun getEntryPoints(projectContext: ProjectContext): List<EDeclaration> {
-        val entryPoints = ArrayList<EDeclaration>()
+    private fun getEntryPoints(projectContext: ProjectContext): List<DeclarationBinding> {
+        val declarations = ArrayList<EDeclaration>()
         if (projectContext.config.enableDeadCodeElimination) {
             projectContext.project.files().forEach { file ->
                 file.declarations.forEach {
@@ -74,7 +51,7 @@ object DeclarationSpecializerStage : ProjectStage() {
                         if (isSynthesisTop || isSimulationTop) {
                             val entryPointNames = projectContext.config.entryPoints
                             if (entryPointNames.isEmpty() || it.name in entryPointNames) {
-                                entryPoints.add(it)
+                                declarations.add(it)
                             }
                         }
                     }
@@ -83,12 +60,14 @@ object DeclarationSpecializerStage : ProjectStage() {
         } else {
             projectContext.project.files().forEach { file ->
                 file.declarations.forEach {
-                    if (it !is TypeParameterized || it.typeParameters.isEmpty()) {
-                        entryPoints.add(it)
+                    if (it !is TypeParameterized) {
+                        declarations.add(it)
+                    } else if (it !is ETypeAlias && it.typeParameters.isEmpty()) {
+                        declarations.add(it)
                     }
                 }
             }
         }
-        return entryPoints
+        return declarations.map { DeclarationBinding(it, listOf()) }
     }
 }

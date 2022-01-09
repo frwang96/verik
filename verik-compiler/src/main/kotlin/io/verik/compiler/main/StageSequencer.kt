@@ -106,6 +106,7 @@ import io.verik.compiler.transform.upper.StructLiteralTransformerStage
 import io.verik.compiler.transform.upper.TaskReturnTransformerStage
 import io.verik.compiler.transform.upper.ToStringTransformerStage
 import io.verik.compiler.transform.upper.UninitializedPropertyTransformerStage
+import io.verik.compiler.xspecialize.SpecializerStage
 
 object StageSequencer {
 
@@ -146,6 +147,8 @@ object StageSequencer {
         stageSequence.add(StageType.MID_CHECK, PortCheckerStage)
         stageSequence.add(StageType.MID_CHECK, PortInstantiationCheckerStage)
         stageSequence.add(StageType.MID_CHECK, ProceduralBlockReferenceCheckerStage)
+
+        stageSequence.add(StageType.SPECIALIZE, SpecializerStage)
 
         stageSequence.add(StageType.RESOLVE, TypeResolverStage)
         stageSequence.add(StageType.RESOLVE, TypeResolvedCheckerStage)
