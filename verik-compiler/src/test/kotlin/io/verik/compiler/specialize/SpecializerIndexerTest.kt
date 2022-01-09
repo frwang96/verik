@@ -16,34 +16,33 @@
 
 package io.verik.compiler.specialize
 
-import io.verik.compiler.resolve.TypeConstraintResolverStage
 import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
-internal class ExpressionReferenceForwarderStageTest : BaseTest() {
+internal class SpecializerIndexerTest : BaseTest() {
 
     @Test
-    fun `forward function`() {
+    fun `call expression resolved`() {
         driveElementTest(
             """
-                fun <X : `*`> f(): Boolean { return false }
-                val x = f<`8`>()
+                class C<X: `*`>
+                val x = C<`1`>()
             """.trimIndent(),
-            TypeConstraintResolverStage::class,
-            "KtCallExpression(Boolean, f_X_8, null, [], [`8`])"
+            SpecializerStage::class,
+            "KtCallExpression(C<`*`>, <init>, null, [], [`1`])"
         ) { it.findExpression("x") }
     }
 
     @Test
-    fun `forward primary constructor`() {
-        driveElementTest(
+    fun `call expression unresolved`() {
+        driveMessageTest(
             """
-                class C<X : `*`>
-                val x = C<`8`>()
+                class C<X: `*`>
+                val x = C<`*`>()
             """.trimIndent(),
-            TypeConstraintResolverStage::class,
-            "KtCallExpression(C<`8`>, <init>, null, [], [`8`])"
-        ) { it.findExpression("x") }
+            true,
+            "Could not infer type arguments: <init>"
+        )
     }
 }

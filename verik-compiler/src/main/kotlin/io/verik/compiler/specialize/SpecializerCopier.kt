@@ -24,6 +24,7 @@ import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ESuperExpression
 import io.verik.compiler.ast.element.common.EThisExpression
+import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.common.EWhileStatement
 import io.verik.compiler.ast.element.kt.EAsExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
@@ -55,6 +56,8 @@ object SpecializerCopier {
     ): E {
         val copiedElement = when (element) {
             // Declarations
+            is ETypeParameter ->
+                copyTypeParameter(element, typeParameterBindings, specializeContext)
             is EKtClass ->
                 copyKtClass(element, typeParameterBindings, specializeContext)
             is EKtFunction ->
@@ -107,6 +110,21 @@ object SpecializerCopier {
         }
         @Suppress("UNCHECKED_CAST")
         return copiedElement as E
+    }
+
+    private fun copyTypeParameter(
+        typeParameter: ETypeParameter,
+        typeParameterBindings: List<TypeParameterBinding>,
+        specializeContext: SpecializeContext
+    ): ETypeParameter {
+        val type = typeParameter.toType()
+        val copiedTypeParameter = ETypeParameter(
+            typeParameter.location,
+            typeParameter.name
+        )
+        copiedTypeParameter.init(type)
+        specializeContext.register(typeParameter, typeParameterBindings, copiedTypeParameter)
+        return copiedTypeParameter
     }
 
     private fun copyKtClass(

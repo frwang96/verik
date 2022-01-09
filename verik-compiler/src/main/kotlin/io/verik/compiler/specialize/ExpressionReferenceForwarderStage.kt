@@ -20,6 +20,8 @@ import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.EReceiverExpression
+import io.verik.compiler.ast.element.kt.EKtAbstractFunction
+import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.common.TreeVisitor
@@ -59,7 +61,15 @@ object ExpressionReferenceForwarderStage : ProjectStage() {
             val receiver = receiverExpression.receiver
             val expressionTypeParameterBindings = when {
                 receiver != null -> getTypeParameterBindingsFromReceiver(receiver)
-                isTopLevel(reference) -> listOf()
+                isTopLevel(reference) -> {
+                    if (receiverExpression is EKtCallExpression && reference is EKtAbstractFunction) {
+                        reference.typeParameters
+                            .zip(receiverExpression.typeArguments)
+                            .map { (typeParameter, typeArgument) ->
+                                TypeParameterBinding(typeParameter, typeArgument)
+                            }
+                    } else listOf()
+                }
                 else -> typeParameterBindings
             }
             receiverExpression.reference = specializeContext.forward(

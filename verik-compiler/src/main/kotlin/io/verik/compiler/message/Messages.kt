@@ -176,26 +176,22 @@ object Messages {
         "Illegal reference to procedural block: $0"
     )
 
-//  RESOLVE  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  SPECIALIZE  ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val TYPE_NO_WIDTH = ErrorMessageTemplate1<Type>(
         "Could not get width of type: $0"
     )
 
-    val UNRESOLVED_DECLARATION = ErrorMessageTemplate1<String>(
-        "Type of declaration could not be resolved: $0"
-    )
-
-    val UNRESOLVED_EXPRESSION = ErrorMessageTemplate0(
-        "Type of expression could not be resolved"
-    )
-
-    val UNRESOLVED_TYPE_ARGUMENT = ErrorMessageTemplate0(
-        "Type of type argument could not be resolved"
+    val CARDINAL_NOT_BOOLEAN = ErrorMessageTemplate1<Type>(
+        "Could not interpret cardinal as either true or false: $0"
     )
 
     val CARDINAL_OUT_OF_RANGE = ErrorMessageTemplate0(
         "Cardinal type out of range"
+    )
+
+    val UNRESOLVED_CALL_EXPRESSION_TYPE_ARGUMENTS = ErrorMessageTemplate1<String>(
+        "Could not infer type arguments: $0"
     )
 
     val MISMATCHED_TYPE = ErrorMessageTemplate2<Type, Type>(
@@ -210,8 +206,16 @@ object Messages {
         "Unable to truncate from $0 to $1"
     )
 
-    val CARDINAL_NOT_BOOLEAN = ErrorMessageTemplate1<Type>(
-        "Could not interpret cardinal as either true or false: $0"
+    val UNRESOLVED_DECLARATION = ErrorMessageTemplate1<String>(
+        "Type of declaration could not be resolved: $0"
+    )
+
+    val UNRESOLVED_EXPRESSION = ErrorMessageTemplate0(
+        "Type of expression could not be resolved"
+    )
+
+    val UNRESOLVED_TYPE_ARGUMENT = ErrorMessageTemplate0(
+        "Type of type argument could not be resolved"
     )
 
 //  INTERPRET  /////////////////////////////////////////////////////////////////////////////////////////////////////////

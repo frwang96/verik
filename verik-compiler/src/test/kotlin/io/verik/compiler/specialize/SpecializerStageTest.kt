@@ -41,7 +41,7 @@ internal class SpecializerStageTest : BaseTest() {
                 val c = C<`8`>()
             """.trimIndent(),
             SpecializerStage::class,
-            "KtClass(C_X_8, C_X_8, [], [], [], 0, 0, 0, PrimaryConstructor(C_X_8, [], []), null)"
+            "KtClass(C_X_8, C_X_8, [], [TypeParameter(X, `8`)], [], 0, 0, 0, PrimaryConstructor(C_X_8, [], []), null)"
         ) { it.findDeclaration("C_X_8") }
     }
 
@@ -53,7 +53,7 @@ internal class SpecializerStageTest : BaseTest() {
                 val c = C<INC<`7`>>()
             """.trimIndent(),
             SpecializerStage::class,
-            "KtClass(C_X_8, C_X_8, [], [], [], 0, 0, 0, PrimaryConstructor(C_X_8, [], []), null)"
+            "KtClass(C_X_8, C_X_8, [], [TypeParameter(X, `8`)], [], 0, 0, 0, PrimaryConstructor(C_X_8, [], []), null)"
         ) { it.findDeclaration("C_X_8") }
     }
 
@@ -123,7 +123,7 @@ internal class SpecializerStageTest : BaseTest() {
                 val x = f<`8`>()
             """.trimIndent(),
             SpecializerStage::class,
-            "KtFunction(f_X_8, Unit, KtBlockExpression(*), [], [], [], 0)"
+            "KtFunction(f_X_8, Unit, KtBlockExpression(*), [], [TypeParameter(X, `8`)], [], 0)"
         ) { it.findDeclaration("f_X_8") }
     }
 }
