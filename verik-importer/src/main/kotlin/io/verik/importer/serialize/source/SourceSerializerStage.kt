@@ -45,9 +45,9 @@ object SourceSerializerStage : ProjectStage() {
         val packagePath = projectContext.config.outputSourceDir.resolve(abstractPackage.name.replace(".", "/"))
         return declarationMap.map { (baseFileName, declarations) ->
             val path = packagePath.resolve("$baseFileName.kt")
-            val serializerContext = SerializerContext(projectContext, abstractPackage.name, path)
-            declarations.forEach { serializerContext.serialize(it) }
-            serializerContext.getTextFile()
+            val serializeContext = SerializeContext(projectContext, abstractPackage.name, path)
+            declarations.forEach { serializeContext.serialize(it) }
+            serializeContext.getTextFile()
         }
     }
 }

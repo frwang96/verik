@@ -46,310 +46,310 @@ import io.verik.compiler.core.common.Core
 
 object DeclarationSerializer {
 
-    fun serializeTypeDefinition(typeDefinition: ETypeDefinition, serializerContext: SerializerContext) {
+    fun serializeTypeDefinition(typeDefinition: ETypeDefinition, serializeContext: SerializeContext) {
         val serializedType = TypeSerializer.serialize(typeDefinition.type, typeDefinition)
-        serializerContext.append("typedef ${serializedType.getBaseAndPackedDimension()} ")
-        serializerContext.appendLine("${typeDefinition.name} ${serializedType.unpackedDimension};")
+        serializeContext.append("typedef ${serializedType.getBaseAndPackedDimension()} ")
+        serializeContext.appendLine("${typeDefinition.name} ${serializedType.unpackedDimension};")
     }
 
-    fun serializeInjectedProperty(injectedProperty: EInjectedProperty, serializerContext: SerializerContext) {
+    fun serializeInjectedProperty(injectedProperty: EInjectedProperty, serializeContext: SerializeContext) {
         injectedProperty.entries.forEach {
             when (it) {
                 is LiteralStringEntry -> {
                     if (it.text == "\n")
-                        serializerContext.appendLine()
+                        serializeContext.appendLine()
                     else
-                        serializerContext.append(it.text)
+                        serializeContext.append(it.text)
                 }
                 is ExpressionStringEntry ->
-                    serializerContext.serializeAsExpression(it.expression)
+                    serializeContext.serializeAsExpression(it.expression)
             }
         }
-        serializerContext.appendLine()
+        serializeContext.appendLine()
     }
 
-    fun serializeSvClass(`class`: ESvClass, serializerContext: SerializerContext) {
+    fun serializeSvClass(`class`: ESvClass, serializeContext: SerializeContext) {
         if (`class`.isVirtual)
-            serializerContext.append("virtual ")
-        serializerContext.append("class ${`class`.name}")
+            serializeContext.append("virtual ")
+        serializeContext.append("class ${`class`.name}")
         val superType = `class`.superType
         if (superType.reference != Core.Kt.C_Any) {
-            serializerContext.append(" extends ${superType.reference.name}")
+            serializeContext.append(" extends ${superType.reference.name}")
         }
-        serializerContext.appendLine(";")
-        serializerContext.indent {
-            `class`.declarations.forEach { serializerContext.serializeAsDeclaration(it) }
-            serializerContext.appendLine()
+        serializeContext.appendLine(";")
+        serializeContext.indent {
+            `class`.declarations.forEach { serializeContext.serializeAsDeclaration(it) }
+            serializeContext.appendLine()
         }
-        serializerContext.label(`class`.bodyEndLocation) {
-            serializerContext.appendLine("endclass : ${`class`.name}")
-        }
-    }
-
-    fun serializeModule(module: EModule, serializerContext: SerializerContext) {
-        serializerContext.append("module ${module.name}")
-        serializePortList(module, serializerContext)
-        serializerContext.indent {
-            module.declarations.forEach { serializerContext.serializeAsDeclaration(it) }
-            serializerContext.appendLine()
-        }
-        serializerContext.label(module.bodyEndLocation) {
-            serializerContext.appendLine("endmodule : ${module.name}")
+        serializeContext.label(`class`.bodyEndLocation) {
+            serializeContext.appendLine("endclass : ${`class`.name}")
         }
     }
 
-    fun serializeModuleInterface(moduleInterface: EModuleInterface, serializerContext: SerializerContext) {
-        serializerContext.append("interface ${moduleInterface.name}")
-        serializePortList(moduleInterface, serializerContext)
-        serializerContext.indent {
-            moduleInterface.declarations.forEach { serializerContext.serializeAsDeclaration(it) }
-            serializerContext.appendLine()
+    fun serializeModule(module: EModule, serializeContext: SerializeContext) {
+        serializeContext.append("module ${module.name}")
+        serializePortList(module, serializeContext)
+        serializeContext.indent {
+            module.declarations.forEach { serializeContext.serializeAsDeclaration(it) }
+            serializeContext.appendLine()
         }
-        serializerContext.label(moduleInterface.bodyEndLocation) {
-            serializerContext.appendLine("endinterface : ${moduleInterface.name}")
+        serializeContext.label(module.bodyEndLocation) {
+            serializeContext.appendLine("endmodule : ${module.name}")
         }
     }
 
-    fun serializeEnum(enum: EEnum, serializerContext: SerializerContext) {
-        serializerContext.appendLine("typedef enum {")
-        serializerContext.indent {
-            serializerContext.serializeJoinAppendLine(enum.enumEntries) {
-                serializerContext.serialize(it)
+    fun serializeModuleInterface(moduleInterface: EModuleInterface, serializeContext: SerializeContext) {
+        serializeContext.append("interface ${moduleInterface.name}")
+        serializePortList(moduleInterface, serializeContext)
+        serializeContext.indent {
+            moduleInterface.declarations.forEach { serializeContext.serializeAsDeclaration(it) }
+            serializeContext.appendLine()
+        }
+        serializeContext.label(moduleInterface.bodyEndLocation) {
+            serializeContext.appendLine("endinterface : ${moduleInterface.name}")
+        }
+    }
+
+    fun serializeEnum(enum: EEnum, serializeContext: SerializeContext) {
+        serializeContext.appendLine("typedef enum {")
+        serializeContext.indent {
+            serializeContext.serializeJoinAppendLine(enum.enumEntries) {
+                serializeContext.serialize(it)
             }
         }
-        serializerContext.label(enum.bodyEndLocation) {
-            serializerContext.appendLine("} ${enum.name};")
+        serializeContext.label(enum.bodyEndLocation) {
+            serializeContext.appendLine("} ${enum.name};")
         }
     }
 
-    fun serializeStruct(struct: EStruct, serializerContext: SerializerContext) {
-        serializerContext.appendLine("typedef struct packed {")
-        serializerContext.indent {
+    fun serializeStruct(struct: EStruct, serializeContext: SerializeContext) {
+        serializeContext.appendLine("typedef struct packed {")
+        serializeContext.indent {
             struct.properties.forEach {
-                serializerContext.serialize(it)
+                serializeContext.serialize(it)
             }
         }
-        serializerContext.label(struct.bodyEndLocation) {
-            serializerContext.appendLine("} ${struct.name};")
+        serializeContext.label(struct.bodyEndLocation) {
+            serializeContext.appendLine("} ${struct.name};")
         }
     }
 
-    fun serializeSvFunction(function: ESvFunction, serializerContext: SerializerContext) {
+    fun serializeSvFunction(function: ESvFunction, serializeContext: SerializeContext) {
         when (function.qualifierType) {
-            FunctionQualifierType.VIRTUAL -> serializerContext.append("virtual ")
-            FunctionQualifierType.PURE_VIRTUAL -> serializerContext.append("pure virtual ")
-            else -> if (function.isStatic) serializerContext.append("static ")
+            FunctionQualifierType.VIRTUAL -> serializeContext.append("virtual ")
+            FunctionQualifierType.PURE_VIRTUAL -> serializeContext.append("pure virtual ")
+            else -> if (function.isStatic) serializeContext.append("static ")
         }
         val serializedType = TypeSerializer.serialize(function.type, function)
         serializedType.checkNoUnpackedDimension(function)
-        serializerContext.append("function automatic ${serializedType.getBaseAndPackedDimension()} ${function.name}")
-        serializeSvValueParameterList(function, serializerContext)
+        serializeContext.append("function automatic ${serializedType.getBaseAndPackedDimension()} ${function.name}")
+        serializeSvValueParameterList(function, serializeContext)
         if (function.qualifierType != FunctionQualifierType.PURE_VIRTUAL) {
-            serializerContext.indent {
-                serializerContext.serializeAsStatement(function.body)
+            serializeContext.indent {
+                serializeContext.serializeAsStatement(function.body)
             }
-            serializerContext.label(function.body.endLocation) {
-                serializerContext.appendLine("endfunction : ${function.name}")
+            serializeContext.label(function.body.endLocation) {
+                serializeContext.appendLine("endfunction : ${function.name}")
             }
         }
     }
 
-    fun serializeTask(task: ETask, serializerContext: SerializerContext) {
-        serializerContext.append("task automatic ${task.name}")
-        serializeSvValueParameterList(task, serializerContext)
-        serializerContext.indent {
-            serializerContext.serializeAsStatement(task.body)
+    fun serializeTask(task: ETask, serializeContext: SerializeContext) {
+        serializeContext.append("task automatic ${task.name}")
+        serializeSvValueParameterList(task, serializeContext)
+        serializeContext.indent {
+            serializeContext.serializeAsStatement(task.body)
         }
-        serializerContext.label(task.body.endLocation) {
-            serializerContext.appendLine("endtask : ${task.name}")
+        serializeContext.label(task.body.endLocation) {
+            serializeContext.appendLine("endtask : ${task.name}")
         }
     }
 
-    fun serializeInitialBlock(initialBlock: EInitialBlock, serializerContext: SerializerContext) {
-        serializerContext.append("initial ")
-        serializerContext.serializeAsStatement(initialBlock.body)
+    fun serializeInitialBlock(initialBlock: EInitialBlock, serializeContext: SerializeContext) {
+        serializeContext.append("initial ")
+        serializeContext.serializeAsStatement(initialBlock.body)
     }
 
-    fun serializeAlwaysComBlock(alwaysComBlock: EAlwaysComBlock, serializerContext: SerializerContext) {
-        serializerContext.append("always_comb ")
-        serializerContext.serializeAsStatement(alwaysComBlock.body)
+    fun serializeAlwaysComBlock(alwaysComBlock: EAlwaysComBlock, serializeContext: SerializeContext) {
+        serializeContext.append("always_comb ")
+        serializeContext.serializeAsStatement(alwaysComBlock.body)
     }
 
-    fun serializeAlwaysSeqBlock(alwaysSeqBlock: EAlwaysSeqBlock, serializerContext: SerializerContext) {
-        serializerContext.append("always_ff ")
-        serializerContext.serializeAsExpression(alwaysSeqBlock.eventControlExpression)
-        serializerContext.append(" ")
-        serializerContext.serializeAsStatement(alwaysSeqBlock.body)
+    fun serializeAlwaysSeqBlock(alwaysSeqBlock: EAlwaysSeqBlock, serializeContext: SerializeContext) {
+        serializeContext.append("always_ff ")
+        serializeContext.serializeAsExpression(alwaysSeqBlock.eventControlExpression)
+        serializeContext.append(" ")
+        serializeContext.serializeAsStatement(alwaysSeqBlock.body)
     }
 
-    fun serializeSvProperty(property: ESvProperty, serializerContext: SerializerContext) {
+    fun serializeSvProperty(property: ESvProperty, serializeContext: SerializeContext) {
         when (property.isStatic) {
-            true -> serializerContext.append("static ")
-            false -> serializerContext.append("automatic ")
+            true -> serializeContext.append("static ")
+            false -> serializeContext.append("automatic ")
         }
         if (TypeSerializer.isVirtual(property.type))
-            serializerContext.append("virtual ")
-        serializePropertyTypeAndName(property, serializerContext)
+            serializeContext.append("virtual ")
+        serializePropertyTypeAndName(property, serializeContext)
         val initializer = property.initializer
         if (initializer != null) {
-            serializerContext.append(" = ")
-            serializerContext.serializeAsExpression(initializer)
-            serializerContext.appendLine(";")
+            serializeContext.append(" = ")
+            serializeContext.serializeAsExpression(initializer)
+            serializeContext.appendLine(";")
         } else {
-            serializerContext.appendLine(";")
+            serializeContext.appendLine(";")
         }
     }
 
-    fun serializeSvEnumEntry(enumEntry: ESvEnumEntry, serializerContext: SerializerContext) {
-        serializerContext.append(enumEntry.name)
+    fun serializeSvEnumEntry(enumEntry: ESvEnumEntry, serializeContext: SerializeContext) {
+        serializeContext.append(enumEntry.name)
     }
 
     fun serializeComponentInstantiation(
         componentInstantiation: EComponentInstantiation,
-        serializerContext: SerializerContext
+        serializeContext: SerializeContext
     ) {
         val serializedType = TypeSerializer.serialize(componentInstantiation.type, componentInstantiation)
         serializedType.checkNoPackedDimension(componentInstantiation)
         serializedType.checkNoUnpackedDimension(componentInstantiation)
-        serializerContext.append("${serializedType.base} ${componentInstantiation.name} (")
+        serializeContext.append("${serializedType.base} ${componentInstantiation.name} (")
         if (componentInstantiation.portInstantiations.isNotEmpty()) {
-            serializerContext.appendLine()
-            serializerContext.indent {
-                serializerContext.serializeJoinAppendLine(componentInstantiation.portInstantiations) {
-                    serializerContext.label(it.location) {
-                        serializerContext.append(".${it.port.name} ")
-                        serializerContext.align()
-                        serializerContext.append("( ")
+            serializeContext.appendLine()
+            serializeContext.indent {
+                serializeContext.serializeJoinAppendLine(componentInstantiation.portInstantiations) {
+                    serializeContext.label(it.location) {
+                        serializeContext.append(".${it.port.name} ")
+                        serializeContext.align()
+                        serializeContext.append("( ")
                         val expression = it.expression
                         if (expression != null) {
-                            serializerContext.serializeAsExpression(expression)
-                            serializerContext.append(" )")
+                            serializeContext.serializeAsExpression(expression)
+                            serializeContext.append(" )")
                         } else {
-                            serializerContext.append(")")
+                            serializeContext.append(")")
                         }
                     }
                 }
             }
         }
-        serializerContext.label(componentInstantiation.endLocation) {
-            serializerContext.appendLine(");")
+        serializeContext.label(componentInstantiation.endLocation) {
+            serializeContext.appendLine(");")
         }
     }
 
     fun serializeModulePortInstantiation(
         modulePortInstantiation: EModulePortInstantiation,
-        serializerContext: SerializerContext
+        serializeContext: SerializeContext
     ) {
-        serializerContext.append("modport ${modulePortInstantiation.name}")
+        serializeContext.append("modport ${modulePortInstantiation.name}")
         if (modulePortInstantiation.portInstantiations.isEmpty()) {
-            serializerContext.appendLine(";")
+            serializeContext.appendLine(";")
         } else {
-            serializerContext.appendLine(" (")
-            serializerContext.indent {
-                serializerContext.serializeJoinAppendLine(modulePortInstantiation.portInstantiations) {
-                    serializerContext.label(it.location) {
-                        serializePortType(it.port.portType, serializerContext)
-                        serializerContext.append(it.port.name)
+            serializeContext.appendLine(" (")
+            serializeContext.indent {
+                serializeContext.serializeJoinAppendLine(modulePortInstantiation.portInstantiations) {
+                    serializeContext.label(it.location) {
+                        serializePortType(it.port.portType, serializeContext)
+                        serializeContext.append(it.port.name)
                     }
                 }
             }
-            serializerContext.label(modulePortInstantiation.endLocation) {
-                serializerContext.appendLine(");")
+            serializeContext.label(modulePortInstantiation.endLocation) {
+                serializeContext.appendLine(");")
             }
         }
     }
 
     fun serializeClockingBlockInstantiation(
         clockingBlockInstantiation: EClockingBlockInstantiation,
-        serializerContext: SerializerContext
+        serializeContext: SerializeContext
     ) {
-        serializerContext.append("clocking ${clockingBlockInstantiation.name} ")
-        serializerContext.serializeAsExpression(clockingBlockInstantiation.eventControlExpression)
-        serializerContext.appendLine(";")
-        serializerContext.indent {
+        serializeContext.append("clocking ${clockingBlockInstantiation.name} ")
+        serializeContext.serializeAsExpression(clockingBlockInstantiation.eventControlExpression)
+        serializeContext.appendLine(";")
+        serializeContext.indent {
             clockingBlockInstantiation.portInstantiations.forEach {
-                serializerContext.label(it.location) {
-                    serializePortType(it.port.portType, serializerContext)
-                    serializerContext.appendLine("${it.port.name};")
+                serializeContext.label(it.location) {
+                    serializePortType(it.port.portType, serializeContext)
+                    serializeContext.appendLine("${it.port.name};")
                 }
             }
         }
-        serializerContext.label(clockingBlockInstantiation.endLocation) {
-            serializerContext.appendLine("endclocking")
+        serializeContext.label(clockingBlockInstantiation.endLocation) {
+            serializeContext.appendLine("endclocking")
         }
     }
 
-    fun serializeSvValueParameter(valueParameter: ESvValueParameter, serializerContext: SerializerContext) {
+    fun serializeSvValueParameter(valueParameter: ESvValueParameter, serializeContext: SerializeContext) {
         when (valueParameter.isInput) {
-            true -> serializerContext.append("input ")
-            false -> serializerContext.append("output ")
+            true -> serializeContext.append("input ")
+            false -> serializeContext.append("output ")
         }
         if (TypeSerializer.isVirtual(valueParameter.type))
-            serializerContext.append("virtual ")
-        serializePropertyTypeAndName(valueParameter, serializerContext)
+            serializeContext.append("virtual ")
+        serializePropertyTypeAndName(valueParameter, serializeContext)
     }
 
-    fun serializePort(port: EPort, serializerContext: SerializerContext) {
-        serializePortType(port.portType, serializerContext)
-        serializePropertyTypeAndName(port, serializerContext)
+    fun serializePort(port: EPort, serializeContext: SerializeContext) {
+        serializePortType(port.portType, serializeContext)
+        serializePropertyTypeAndName(port, serializeContext)
     }
 
     private fun serializePortList(
         abstractContainerComponent: EAbstractContainerComponent,
-        serializerContext: SerializerContext
+        serializeContext: SerializeContext
     ) {
         if (abstractContainerComponent.ports.isNotEmpty()) {
-            serializerContext.appendLine("(")
-            serializerContext.indent {
-                serializerContext.serializeJoinAppendLine(abstractContainerComponent.ports) {
-                    serializerContext.serialize(it)
+            serializeContext.appendLine("(")
+            serializeContext.indent {
+                serializeContext.serializeJoinAppendLine(abstractContainerComponent.ports) {
+                    serializeContext.serialize(it)
                 }
             }
-            serializerContext.label(abstractContainerComponent.bodyStartLocation) {
-                serializerContext.appendLine(");")
+            serializeContext.label(abstractContainerComponent.bodyStartLocation) {
+                serializeContext.appendLine(");")
             }
         } else {
-            serializerContext.appendLine(";")
+            serializeContext.appendLine(";")
         }
     }
 
-    private fun serializePortType(portType: PortType, serializerContext: SerializerContext) {
+    private fun serializePortType(portType: PortType, serializeContext: SerializeContext) {
         when (portType) {
-            PortType.CONSTANT, PortType.INPUT -> serializerContext.append("input  ")
-            PortType.OUTPUT -> serializerContext.append("output ")
+            PortType.CONSTANT, PortType.INPUT -> serializeContext.append("input  ")
+            PortType.OUTPUT -> serializeContext.append("output ")
             PortType.MODULE_INTERFACE, PortType.MODULE_PORT -> {}
-            PortType.CLOCKING_BLOCK -> serializerContext.append("clocking ")
+            PortType.CLOCKING_BLOCK -> serializeContext.append("clocking ")
         }
     }
 
     private fun serializePropertyTypeAndName(
         abstractProperty: EAbstractProperty,
-        serializerContext: SerializerContext
+        serializeContext: SerializeContext
     ) {
         val serializedType = TypeSerializer.serialize(abstractProperty.type, abstractProperty)
-        serializerContext.append("${serializedType.getBaseAndPackedDimension()} ")
-        serializerContext.align()
-        serializerContext.append(abstractProperty.name)
+        serializeContext.append("${serializedType.getBaseAndPackedDimension()} ")
+        serializeContext.align()
+        serializeContext.append(abstractProperty.name)
         if (serializedType.unpackedDimension != null)
-            serializerContext.append(" ${serializedType.unpackedDimension}")
+            serializeContext.append(" ${serializedType.unpackedDimension}")
     }
 
     private fun serializeSvValueParameterList(
         abstractFunction: ESvAbstractFunction,
-        serializerContext: SerializerContext
+        serializeContext: SerializeContext
     ) {
         if (abstractFunction.valueParameters.isNotEmpty()) {
-            serializerContext.appendLine("(")
-            serializerContext.indent {
-                serializerContext.serializeJoinAppendLine(abstractFunction.valueParameters) {
-                    serializerContext.serialize(it)
+            serializeContext.appendLine("(")
+            serializeContext.indent {
+                serializeContext.serializeJoinAppendLine(abstractFunction.valueParameters) {
+                    serializeContext.serialize(it)
                 }
             }
-            serializerContext.label(abstractFunction.body) {
-                serializerContext.appendLine(");")
+            serializeContext.label(abstractFunction.body) {
+                serializeContext.appendLine(");")
             }
         } else {
-            serializerContext.appendLine("();")
+            serializeContext.appendLine("();")
         }
     }
 }

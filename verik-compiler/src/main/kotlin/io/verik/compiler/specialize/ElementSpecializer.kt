@@ -23,10 +23,10 @@ import io.verik.compiler.message.Messages
 
 object ElementSpecializer {
 
-    fun <E : EElement> specialize(element: E, specializerContext: SpecializerContext): E {
+    fun <E : EElement> specialize(element: E, specializeContext: SpecializeContext): E {
         val copiedElement = when (element) {
-            is EDeclaration -> DeclarationSpecializer.specializeDeclaration(element, specializerContext)
-            is EExpression -> ExpressionSpecializer.specializeExpression(element, specializerContext)
+            is EDeclaration -> DeclarationSpecializer.specializeDeclaration(element, specializeContext)
+            is EExpression -> ExpressionSpecializer.specializeExpression(element, specializeContext)
             else -> Messages.INTERNAL_ERROR.on(element, "Unable to specialize element: $element")
         }
         return copiedElement

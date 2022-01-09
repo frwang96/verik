@@ -29,11 +29,11 @@ object TypeSpecializer {
 
     fun specialize(
         type: Type,
-        specializerContext: SpecializerContext,
+        specializeContext: SpecializeContext,
         element: EElement,
         forwardReferences: Boolean
     ): Type {
-        val arguments = type.arguments.map { specialize(it, specializerContext, element, forwardReferences) }
+        val arguments = type.arguments.map { specialize(it, specializeContext, element, forwardReferences) }
         return when (val reference = type.reference) {
             is CoreCardinalFunctionDeclaration -> {
                 val argumentValues = arguments.map { it.asCardinalValue(element) }
@@ -43,18 +43,18 @@ object TypeSpecializer {
             is EKtClass -> {
                 if (forwardReferences) {
                     val argumentsNotForwarded = type.arguments
-                        .map { specialize(it, specializerContext, element, false) }
+                        .map { specialize(it, specializeContext, element, false) }
                     val typeParameterContext = TypeParameterContext
-                        .getFromTypeArguments(argumentsNotForwarded, reference, specializerContext, element)
-                    val forwardedReference = specializerContext[reference, typeParameterContext, element]
+                        .getFromTypeArguments(argumentsNotForwarded, reference, specializeContext, element)
+                    val forwardedReference = specializeContext[reference, typeParameterContext, element]
                     forwardedReference.toType()
                 } else {
                     reference.toType(arguments)
                 }
             }
             is ETypeParameter -> {
-                val typeParameterType = specializerContext.typeParameterContext.specialize(reference, element)
-                specialize(typeParameterType, specializerContext, element, forwardReferences)
+                val typeParameterType = specializeContext.typeParameterContext.specialize(reference, element)
+                specialize(typeParameterType, specializeContext, element, forwardReferences)
             }
             else -> {
                 type.reference.toType(arguments)

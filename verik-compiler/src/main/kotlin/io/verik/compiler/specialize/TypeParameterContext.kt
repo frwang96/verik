@@ -55,11 +55,11 @@ data class TypeParameterContext(val typeParameterBindings: List<TypeParameterBin
         fun getFromTypeArguments(
             typeArguments: List<Type>,
             typeParameterized: TypeParameterized,
-            specializerContext: SpecializerContext,
+            specializeContext: SpecializeContext,
             element: EElement
         ): TypeParameterContext {
             val specializedTypeArguments = typeArguments.map {
-                TypeSpecializer.specialize(it, specializerContext, element, false)
+                TypeSpecializer.specialize(it, specializeContext, element, false)
             }
             val expectedSize = typeParameterized.typeParameters.size
             val actualSize = specializedTypeArguments.size
@@ -78,13 +78,13 @@ data class TypeParameterContext(val typeParameterBindings: List<TypeParameterBin
 
         fun getFromReceiver(
             receiverExpression: EReceiverExpression,
-            specializerContext: SpecializerContext
+            specializeContext: SpecializeContext
         ): TypeParameterContext {
             val receiver = receiverExpression.receiver
             return if (receiver != null) {
                 val specializedType = TypeSpecializer.specialize(
                     receiver.type,
-                    specializerContext,
+                    specializeContext,
                     receiverExpression,
                     false
                 )
@@ -93,14 +93,14 @@ data class TypeParameterContext(val typeParameterBindings: List<TypeParameterBin
                     getFromTypeArguments(
                         specializedType.arguments,
                         specializedTypeReference,
-                        specializerContext,
+                        specializeContext,
                         receiverExpression
                     )
                 } else EMPTY
             } else {
                 val reference = receiverExpression.reference
                 if (reference is EDeclaration && reference !is EPrimaryConstructor && reference.parent !is EFile)
-                    specializerContext.typeParameterContext
+                    specializeContext.typeParameterContext
                 else EMPTY
             }
         }

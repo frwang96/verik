@@ -30,49 +30,49 @@ import io.verik.compiler.message.Messages
 
 object DeclarationSpecializer {
 
-    fun <D : EDeclaration> specializeDeclaration(declaration: D, specializerContext: SpecializerContext): D {
+    fun <D : EDeclaration> specializeDeclaration(declaration: D, specializeContext: SpecializeContext): D {
         val copiedDeclaration = when (declaration) {
-            is EKtClass -> specializeKtClass(declaration, specializerContext)
-            is EKtFunction -> specializeKtFunction(declaration, specializerContext)
-            is EPrimaryConstructor -> specializePrimaryConstructor(declaration, specializerContext)
-            is EKtProperty -> specializeKtProperty(declaration, specializerContext)
-            is EKtEnumEntry -> specializeKtEnumEntry(declaration, specializerContext)
-            is EKtValueParameter -> specializeKtValueParameter(declaration, specializerContext)
+            is EKtClass -> specializeKtClass(declaration, specializeContext)
+            is EKtFunction -> specializeKtFunction(declaration, specializeContext)
+            is EPrimaryConstructor -> specializePrimaryConstructor(declaration, specializeContext)
+            is EKtProperty -> specializeKtProperty(declaration, specializeContext)
+            is EKtEnumEntry -> specializeKtEnumEntry(declaration, specializeContext)
+            is EKtValueParameter -> specializeKtValueParameter(declaration, specializeContext)
             else -> Messages.INTERNAL_ERROR.on(declaration, "Unable to specialize declaration: $declaration")
         }
         @Suppress("UNCHECKED_CAST")
         return copiedDeclaration as D
     }
 
-    private fun specializeKtClass(`class`: EKtClass, specializerContext: SpecializerContext): EKtClass {
-        val specializedClass = specializerContext[`class`, `class`]
+    private fun specializeKtClass(`class`: EKtClass, specializeContext: SpecializeContext): EKtClass {
+        val specializedClass = specializeContext[`class`, `class`]
             .cast<EKtClass>()
 
-        val typeParameterString = getTypeParameterString(`class`, specializerContext)
+        val typeParameterString = getTypeParameterString(`class`, specializeContext)
         if (typeParameterString != null)
             specializedClass.name = "${specializedClass.name}_$typeParameterString"
 
-        val typeParameterContext = specializerContext.typeParameterContext
+        val typeParameterContext = specializeContext.typeParameterContext
         val declarations = `class`.declarations.flatMap { declaration ->
-            val typeParameterContexts = specializerContext.matchTypeParameterContexts(declaration, typeParameterContext)
+            val typeParameterContexts = specializeContext.matchTypeParameterContexts(declaration, typeParameterContext)
             typeParameterContexts.map {
-                specializerContext.typeParameterContext = it
-                specializerContext.specialize(declaration)
+                specializeContext.typeParameterContext = it
+                specializeContext.specialize(declaration)
             }
         }
-        specializerContext.typeParameterContext = typeParameterContext
+        specializeContext.typeParameterContext = typeParameterContext
 
-        val type = specializerContext.specializeType(`class`.type, `class`)
-        val superType = specializerContext.specializeType(`class`.superType, `class`)
-        val primaryConstructor = `class`.primaryConstructor?.let { specializerContext.specialize(it) }
+        val type = specializeContext.specializeType(`class`.type, `class`)
+        val superType = specializeContext.specializeType(`class`.superType, `class`)
+        val primaryConstructor = `class`.primaryConstructor?.let { specializeContext.specialize(it) }
         val superTypeCallEntry = `class`.superTypeCallEntry?.let { superTypeCallEntry ->
             val reference = superTypeCallEntry.reference
             val forwardedReference = if (reference is EDeclaration) {
-                specializerContext[reference, `class`]
+                specializeContext[reference, `class`]
             } else reference
             SuperTypeCallEntry(
                 forwardedReference,
-                ArrayList(superTypeCallEntry.valueArguments.map { specializerContext.specialize(it) })
+                ArrayList(superTypeCallEntry.valueArguments.map { specializeContext.specialize(it) })
             )
         }
 
@@ -91,17 +91,17 @@ object DeclarationSpecializer {
         return specializedClass
     }
 
-    private fun specializeKtFunction(function: EKtFunction, specializerContext: SpecializerContext): EKtFunction {
-        val specializedFunction = specializerContext[function, function]
+    private fun specializeKtFunction(function: EKtFunction, specializeContext: SpecializeContext): EKtFunction {
+        val specializedFunction = specializeContext[function, function]
             .cast<EKtFunction>()
 
-        val typeParameterString = getTypeParameterString(function, specializerContext)
+        val typeParameterString = getTypeParameterString(function, specializeContext)
         if (typeParameterString != null)
             specializedFunction.name = "${specializedFunction.name}_$typeParameterString"
 
-        val type = specializerContext.specializeType(function)
-        val body = specializerContext.specialize(function.body)
-        val valueParameters = function.valueParameters.map { specializerContext.specialize(it) }
+        val type = specializeContext.specializeType(function)
+        val body = specializeContext.specialize(function.body)
+        val valueParameters = function.valueParameters.map { specializeContext.specialize(it) }
 
         specializedFunction.init(
             type,
@@ -117,31 +117,31 @@ object DeclarationSpecializer {
 
     private fun specializePrimaryConstructor(
         primaryConstructor: EPrimaryConstructor,
-        specializerContext: SpecializerContext
+        specializeContext: SpecializeContext
     ): EPrimaryConstructor {
-        val specializedPrimaryConstructor = specializerContext[primaryConstructor, primaryConstructor]
+        val specializedPrimaryConstructor = specializeContext[primaryConstructor, primaryConstructor]
             .cast<EPrimaryConstructor>()
-        val type = specializerContext.specializeType(primaryConstructor)
-        val valueParameters = primaryConstructor.valueParameters.map { specializerContext.specialize(it) }
+        val type = specializeContext.specializeType(primaryConstructor)
+        val valueParameters = primaryConstructor.valueParameters.map { specializeContext.specialize(it) }
 
         specializedPrimaryConstructor.init(type, valueParameters, arrayListOf())
         return specializedPrimaryConstructor
     }
 
-    private fun specializeKtProperty(property: EKtProperty, specializerContext: SpecializerContext): EKtProperty {
-        val specializedProperty = specializerContext[property, property]
+    private fun specializeKtProperty(property: EKtProperty, specializeContext: SpecializeContext): EKtProperty {
+        val specializedProperty = specializeContext[property, property]
             .cast<EKtProperty>()
-        val type = specializerContext.specializeType(property)
-        val initializer = property.initializer?.let { specializerContext.specialize(it) }
+        val type = specializeContext.specializeType(property)
+        val initializer = property.initializer?.let { specializeContext.specialize(it) }
 
         specializedProperty.init(type, initializer, property.annotationEntries, property.isMutable)
         return specializedProperty
     }
 
-    private fun specializeKtEnumEntry(enumEntry: EKtEnumEntry, specializerContext: SpecializerContext): EKtEnumEntry {
-        val specializedEnumEntry = specializerContext[enumEntry, enumEntry]
+    private fun specializeKtEnumEntry(enumEntry: EKtEnumEntry, specializeContext: SpecializeContext): EKtEnumEntry {
+        val specializedEnumEntry = specializeContext[enumEntry, enumEntry]
             .cast<EKtEnumEntry>()
-        val type = specializerContext.specializeType(enumEntry)
+        val type = specializeContext.specializeType(enumEntry)
 
         specializedEnumEntry.init(type, enumEntry.annotationEntries)
         return specializedEnumEntry
@@ -149,11 +149,11 @@ object DeclarationSpecializer {
 
     private fun specializeKtValueParameter(
         valueParameter: EKtValueParameter,
-        specializerContext: SpecializerContext
+        specializeContext: SpecializeContext
     ): EKtValueParameter {
-        val specializedValueParameter = specializerContext[valueParameter, valueParameter]
+        val specializedValueParameter = specializeContext[valueParameter, valueParameter]
             .cast<EKtValueParameter>()
-        val type = specializerContext.specializeType(valueParameter)
+        val type = specializeContext.specializeType(valueParameter)
 
         specializedValueParameter.init(
             type,
@@ -166,10 +166,10 @@ object DeclarationSpecializer {
 
     private fun getTypeParameterString(
         typeParameterized: TypeParameterized,
-        specializerContext: SpecializerContext
+        specializeContext: SpecializeContext
     ): String? {
         val typeParameterTypeStrings = typeParameterized.typeParameters.map {
-            val typeParameterType = specializerContext.typeParameterContext.specialize(it, it)
+            val typeParameterType = specializeContext.typeParameterContext.specialize(it, it)
             val reference = typeParameterType.reference
             if (reference is CardinalConstantDeclaration) {
                 "${it.name}_${reference.value}"

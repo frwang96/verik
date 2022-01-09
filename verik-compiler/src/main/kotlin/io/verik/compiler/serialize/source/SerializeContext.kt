@@ -22,7 +22,7 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.message.SourceLocation
 
-class SerializerContext(file: EFile) {
+class SerializeContext(file: EFile) {
 
     private val sourceSerializerVisitor = SourceSerializerVisitor(this)
     private val sourceActionBuilder = SourceActionBuilder(file)

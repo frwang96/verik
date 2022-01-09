@@ -43,25 +43,25 @@ import io.verik.compiler.message.Messages
 
 object ExpressionSpecializer {
 
-    fun <E : EExpression> specializeExpression(expression: E, specializerContext: SpecializerContext): E {
+    fun <E : EExpression> specializeExpression(expression: E, specializeContext: SpecializeContext): E {
         val copiedExpression = when (expression) {
-            is EKtBlockExpression -> specializeKtBlockExpression(expression, specializerContext)
-            is EPropertyStatement -> specializePropertyStatement(expression, specializerContext)
-            is EKtUnaryExpression -> specializeKtUnaryExpression(expression, specializerContext)
-            is EKtBinaryExpression -> specializeKtBinaryExpression(expression, specializerContext)
-            is EReferenceExpression -> specializeReferenceExpression(expression, specializerContext)
-            is EKtCallExpression -> specializeKtCallExpression(expression, specializerContext)
-            is EConstantExpression -> specializeConstantExpression(expression, specializerContext)
-            is EThisExpression -> specializeThisExpression(expression, specializerContext)
-            is ESuperExpression -> specializeSuperExpression(expression, specializerContext)
-            is EReturnStatement -> specializeReturnStatement(expression, specializerContext)
-            is EFunctionLiteralExpression -> specializeFunctionLiteralExpression(expression, specializerContext)
-            is EStringTemplateExpression -> specializeStringTemplateExpression(expression, specializerContext)
-            is EIsExpression -> specializeIsExpression(expression, specializerContext)
-            is EAsExpression -> specializeAsExpression(expression, specializerContext)
-            is EIfExpression -> specializeIfExpression(expression, specializerContext)
-            is EWhenExpression -> specializeWhenExpression(expression, specializerContext)
-            is EWhileStatement -> specializeWhileStatement(expression, specializerContext)
+            is EKtBlockExpression -> specializeKtBlockExpression(expression, specializeContext)
+            is EPropertyStatement -> specializePropertyStatement(expression, specializeContext)
+            is EKtUnaryExpression -> specializeKtUnaryExpression(expression, specializeContext)
+            is EKtBinaryExpression -> specializeKtBinaryExpression(expression, specializeContext)
+            is EReferenceExpression -> specializeReferenceExpression(expression, specializeContext)
+            is EKtCallExpression -> specializeKtCallExpression(expression, specializeContext)
+            is EConstantExpression -> specializeConstantExpression(expression, specializeContext)
+            is EThisExpression -> specializeThisExpression(expression, specializeContext)
+            is ESuperExpression -> specializeSuperExpression(expression, specializeContext)
+            is EReturnStatement -> specializeReturnStatement(expression, specializeContext)
+            is EFunctionLiteralExpression -> specializeFunctionLiteralExpression(expression, specializeContext)
+            is EStringTemplateExpression -> specializeStringTemplateExpression(expression, specializeContext)
+            is EIsExpression -> specializeIsExpression(expression, specializeContext)
+            is EAsExpression -> specializeAsExpression(expression, specializeContext)
+            is EIfExpression -> specializeIfExpression(expression, specializeContext)
+            is EWhenExpression -> specializeWhenExpression(expression, specializeContext)
+            is EWhileStatement -> specializeWhileStatement(expression, specializeContext)
             else -> Messages.INTERNAL_ERROR.on(expression, "Unable to specialize expression: $expression")
         }
         @Suppress("UNCHECKED_CAST")
@@ -70,10 +70,10 @@ object ExpressionSpecializer {
 
     private fun specializeKtBlockExpression(
         blockExpression: EKtBlockExpression,
-        specializerContext: SpecializerContext
+        specializeContext: SpecializeContext
     ): EKtBlockExpression {
-        val type = specializerContext.specializeType(blockExpression)
-        val statements = blockExpression.statements.map { specializerContext.specialize(it) }
+        val type = specializeContext.specializeType(blockExpression)
+        val statements = blockExpression.statements.map { specializeContext.specialize(it) }
         return EKtBlockExpression(
             blockExpression.location,
             blockExpression.endLocation,
@@ -84,42 +84,42 @@ object ExpressionSpecializer {
 
     private fun specializePropertyStatement(
         propertyStatement: EPropertyStatement,
-        specializerContext: SpecializerContext
+        specializeContext: SpecializeContext
     ): EPropertyStatement {
-        val property = specializerContext.specialize(propertyStatement.property)
+        val property = specializeContext.specialize(propertyStatement.property)
         return EPropertyStatement(propertyStatement.location, property)
     }
 
     private fun specializeKtUnaryExpression(
         unaryExpression: EKtUnaryExpression,
-        specializerContext: SpecializerContext
+        specializeContext: SpecializeContext
     ): EKtUnaryExpression {
-        val type = specializerContext.specializeType(unaryExpression)
-        val expression = specializerContext.specialize(unaryExpression.expression)
+        val type = specializeContext.specializeType(unaryExpression)
+        val expression = specializeContext.specialize(unaryExpression.expression)
         return EKtUnaryExpression(unaryExpression.location, type, expression, unaryExpression.kind)
     }
 
     private fun specializeKtBinaryExpression(
         binaryExpression: EKtBinaryExpression,
-        specializerContext: SpecializerContext
+        specializeContext: SpecializeContext
     ): EKtBinaryExpression {
-        val type = specializerContext.specializeType(binaryExpression)
-        val left = specializerContext.specialize(binaryExpression.left)
-        val right = specializerContext.specialize(binaryExpression.right)
+        val type = specializeContext.specializeType(binaryExpression)
+        val left = specializeContext.specialize(binaryExpression.left)
+        val right = specializeContext.specialize(binaryExpression.right)
         return EKtBinaryExpression(binaryExpression.location, type, left, right, binaryExpression.kind)
     }
 
     private fun specializeReferenceExpression(
         referenceExpression: EReferenceExpression,
-        specializerContext: SpecializerContext
+        specializeContext: SpecializeContext
     ): EReferenceExpression {
-        val type = specializerContext.specializeType(referenceExpression)
-        val receiver = referenceExpression.receiver?.let { specializerContext.specialize(it) }
+        val type = specializeContext.specializeType(referenceExpression)
+        val receiver = referenceExpression.receiver?.let { specializeContext.specialize(it) }
 
         val reference = referenceExpression.reference
         return if (reference is EDeclaration) {
-            val typeParameterContext = TypeParameterContext.getFromReceiver(referenceExpression, specializerContext)
-            val forwardedReference = specializerContext[reference, typeParameterContext, referenceExpression]
+            val typeParameterContext = TypeParameterContext.getFromReceiver(referenceExpression, specializeContext)
+            val forwardedReference = specializeContext[reference, typeParameterContext, referenceExpression]
             EReferenceExpression(referenceExpression.location, type, forwardedReference, receiver)
         } else {
             EReferenceExpression(referenceExpression.location, type, reference, receiver)
@@ -128,29 +128,29 @@ object ExpressionSpecializer {
 
     private fun specializeKtCallExpression(
         callExpression: EKtCallExpression,
-        specializerContext: SpecializerContext
+        specializeContext: SpecializeContext
     ): EKtCallExpression {
-        val type = specializerContext.specializeType(callExpression)
-        val receiver = callExpression.receiver?.let { specializerContext.specialize(it) }
-        val valueArguments = callExpression.valueArguments.map { specializerContext.specialize(it) }
+        val type = specializeContext.specializeType(callExpression)
+        val receiver = callExpression.receiver?.let { specializeContext.specialize(it) }
+        val valueArguments = callExpression.valueArguments.map { specializeContext.specialize(it) }
 
         val reference = callExpression.reference
         return if (reference is EKtAbstractFunction) {
             val receiverTypeParameterContext = TypeParameterContext.getFromReceiver(
                 callExpression,
-                specializerContext
+                specializeContext
             )
             val callExpressionTypeParameterContext = TypeParameterContext.getFromTypeArguments(
                 callExpression.typeArguments,
                 reference,
-                specializerContext,
+                specializeContext,
                 callExpression
             )
             val typeParameterContext = TypeParameterContext(
                 receiverTypeParameterContext.typeParameterBindings +
                     callExpressionTypeParameterContext.typeParameterBindings
             )
-            val forwardedReference = specializerContext[reference, typeParameterContext, callExpression]
+            val forwardedReference = specializeContext[reference, typeParameterContext, callExpression]
             EKtCallExpression(
                 callExpression.location,
                 type,
@@ -161,7 +161,7 @@ object ExpressionSpecializer {
             )
         } else {
             val typeArguments = callExpression.typeArguments.map {
-                specializerContext.specializeType(it, callExpression)
+                specializeContext.specializeType(it, callExpression)
             }
             EKtCallExpression(
                 callExpression.location,
@@ -176,54 +176,54 @@ object ExpressionSpecializer {
 
     private fun specializeConstantExpression(
         constantExpression: EConstantExpression,
-        specializerContext: SpecializerContext
+        specializeContext: SpecializeContext
     ): EConstantExpression {
-        val type = specializerContext.specializeType(constantExpression)
+        val type = specializeContext.specializeType(constantExpression)
         return EConstantExpression(constantExpression.location, type, constantExpression.value)
     }
 
     private fun specializeThisExpression(
         thisExpression: EThisExpression,
-        specializerContext: SpecializerContext
+        specializeContext: SpecializeContext
     ): EThisExpression {
-        val type = specializerContext.specializeType(thisExpression)
+        val type = specializeContext.specializeType(thisExpression)
         return EThisExpression(thisExpression.location, type)
     }
 
     private fun specializeSuperExpression(
         superExpression: ESuperExpression,
-        specializerContext: SpecializerContext
+        specializeContext: SpecializeContext
     ): ESuperExpression {
-        val type = specializerContext.specializeType(superExpression)
+        val type = specializeContext.specializeType(superExpression)
         return ESuperExpression(superExpression.location, type)
     }
 
     private fun specializeReturnStatement(
         returnStatement: EReturnStatement,
-        specializerContext: SpecializerContext
+        specializeContext: SpecializeContext
     ): EReturnStatement {
-        val type = specializerContext.specializeType(returnStatement)
-        val expression = returnStatement.expression?.let { specializerContext.specialize(it) }
+        val type = specializeContext.specializeType(returnStatement)
+        val expression = returnStatement.expression?.let { specializeContext.specialize(it) }
         return EReturnStatement(returnStatement.location, type, expression)
     }
 
     private fun specializeFunctionLiteralExpression(
         functionLiteralExpression: EFunctionLiteralExpression,
-        specializerContext: SpecializerContext
+        specializeContext: SpecializeContext
     ): EFunctionLiteralExpression {
-        val valueParameters = functionLiteralExpression.valueParameters.map { specializerContext.specialize(it) }
-        val body = specializerContext.specialize(functionLiteralExpression.body)
+        val valueParameters = functionLiteralExpression.valueParameters.map { specializeContext.specialize(it) }
+        val body = specializeContext.specialize(functionLiteralExpression.body)
         return EFunctionLiteralExpression(functionLiteralExpression.location, ArrayList(valueParameters), body)
     }
 
     private fun specializeStringTemplateExpression(
         stringTemplateExpression: EStringTemplateExpression,
-        specializerContext: SpecializerContext
+        specializeContext: SpecializeContext
     ): EStringTemplateExpression {
         val entries = stringTemplateExpression.entries.map { entry ->
             when (entry) {
                 is LiteralStringEntry -> LiteralStringEntry(entry.text)
-                is ExpressionStringEntry -> ExpressionStringEntry(specializerContext.specialize(entry.expression))
+                is ExpressionStringEntry -> ExpressionStringEntry(specializeContext.specialize(entry.expression))
             }
         }
         return EStringTemplateExpression(stringTemplateExpression.location, entries)
@@ -231,11 +231,11 @@ object ExpressionSpecializer {
 
     private fun specializeIsExpression(
         isExpression: EIsExpression,
-        specializerContext: SpecializerContext
+        specializeContext: SpecializeContext
     ): EIsExpression {
-        val expression = specializerContext.specialize(isExpression.expression)
-        val property = specializerContext.specialize(isExpression.property)
-        val castType = specializerContext.specializeType(isExpression.castType, isExpression)
+        val expression = specializeContext.specialize(isExpression.expression)
+        val property = specializeContext.specialize(isExpression.property)
+        val castType = specializeContext.specializeType(isExpression.castType, isExpression)
         return EIsExpression(
             isExpression.location,
             expression,
@@ -247,33 +247,33 @@ object ExpressionSpecializer {
 
     private fun specializeAsExpression(
         asExpression: EAsExpression,
-        specializerContext: SpecializerContext
+        specializeContext: SpecializeContext
     ): EAsExpression {
-        val type = specializerContext.specializeType(asExpression)
-        val expression = specializerContext.specialize(asExpression.expression)
+        val type = specializeContext.specializeType(asExpression)
+        val expression = specializeContext.specialize(asExpression.expression)
         return EAsExpression(asExpression.location, type, expression)
     }
 
     private fun specializeIfExpression(
         ifExpression: EIfExpression,
-        specializerContext: SpecializerContext
+        specializeContext: SpecializeContext
     ): EIfExpression {
-        val type = specializerContext.specializeType(ifExpression)
-        val condition = specializerContext.specialize(ifExpression.condition)
-        val thenExpression = ifExpression.thenExpression?.let { specializerContext.specialize(it) }
-        val elseExpression = ifExpression.elseExpression?.let { specializerContext.specialize(it) }
+        val type = specializeContext.specializeType(ifExpression)
+        val condition = specializeContext.specialize(ifExpression.condition)
+        val thenExpression = ifExpression.thenExpression?.let { specializeContext.specialize(it) }
+        val elseExpression = ifExpression.elseExpression?.let { specializeContext.specialize(it) }
         return EIfExpression(ifExpression.location, type, condition, thenExpression, elseExpression)
     }
 
     private fun specializeWhenExpression(
         whenExpression: EWhenExpression,
-        specializerContext: SpecializerContext
+        specializeContext: SpecializeContext
     ): EWhenExpression {
-        val type = specializerContext.specializeType(whenExpression)
-        val subject = whenExpression.subject?.let { specializerContext.specialize(it) }
+        val type = specializeContext.specializeType(whenExpression)
+        val subject = whenExpression.subject?.let { specializeContext.specialize(it) }
         val entries = whenExpression.entries.map { entry ->
-            val conditions = entry.conditions.map { specializerContext.specialize(it) }
-            val body = specializerContext.specialize(entry.body)
+            val conditions = entry.conditions.map { specializeContext.specialize(it) }
+            val body = specializeContext.specialize(entry.body)
             WhenEntry(ArrayList(conditions), body)
         }
         return EWhenExpression(
@@ -287,10 +287,10 @@ object ExpressionSpecializer {
 
     private fun specializeWhileStatement(
         whileStatement: EWhileStatement,
-        specializerContext: SpecializerContext
+        specializeContext: SpecializeContext
     ): EWhileStatement {
-        val condition = specializerContext.specialize(whileStatement.condition)
-        val body = specializerContext.specialize(whileStatement.body)
+        val condition = specializeContext.specialize(whileStatement.condition)
+        val body = specializeContext.specialize(whileStatement.body)
         return EWhileStatement(whileStatement.location, condition, body, whileStatement.isDoWhile)
     }
 }

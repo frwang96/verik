@@ -21,7 +21,7 @@ import io.verik.importer.common.TextFile
 import io.verik.importer.main.ProjectContext
 import java.nio.file.Path
 
-class SerializerContext(
+class SerializeContext(
     projectContext: ProjectContext,
     packageName: String,
     path: Path

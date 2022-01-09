@@ -36,11 +36,11 @@ import org.jetbrains.kotlin.backend.common.push
 
 class DeclarationSpecializeIndexerVisitor(
     private val declarationBindingQueue: ArrayDeque<DeclarationBinding>,
-    private val specializerContext: SpecializerContext
+    private val specializeContext: SpecializeContext
 ) : TreeVisitor() {
 
     private fun addType(type: Type, element: EElement) {
-        val specializedType = TypeSpecializer.specialize(type, specializerContext, element, false)
+        val specializedType = TypeSpecializer.specialize(type, specializeContext, element, false)
         addSpecializedType(specializedType, element)
     }
 
@@ -51,7 +51,7 @@ class DeclarationSpecializeIndexerVisitor(
             val typeParameterContext = TypeParameterContext.getFromTypeArguments(
                 type.arguments,
                 reference,
-                specializerContext,
+                specializeContext,
                 element
             )
             declarationBindingQueue.push(DeclarationBinding(reference, typeParameterContext))
@@ -74,7 +74,7 @@ class DeclarationSpecializeIndexerVisitor(
         if (typedElement is EReferenceExpression) {
             val reference = typedElement.reference
             if (reference is EDeclaration && reference.isSpecializable()) {
-                val typeParameterContext = TypeParameterContext.getFromReceiver(typedElement, specializerContext)
+                val typeParameterContext = TypeParameterContext.getFromReceiver(typedElement, specializeContext)
                 declarationBindingQueue.push(DeclarationBinding(reference, typeParameterContext))
             }
             addParentObject(typedElement)
@@ -87,12 +87,12 @@ class DeclarationSpecializeIndexerVisitor(
             if (reference is EKtAbstractFunction && reference.isSpecializable()) {
                 val receiverTypeParameterContext = TypeParameterContext.getFromReceiver(
                     typedElement,
-                    specializerContext
+                    specializeContext
                 )
                 val callExpressionTypeParameterContext = TypeParameterContext.getFromTypeArguments(
                     typedElement.typeArguments,
                     reference,
-                    specializerContext,
+                    specializeContext,
                     typedElement
                 )
                 val typeParameterContext = TypeParameterContext(
@@ -115,7 +115,7 @@ class DeclarationSpecializeIndexerVisitor(
 
         `class`.declarations.forEach {
             if (it !is TypeParameterized || it.typeParameters.isEmpty())
-                declarationBindingQueue.push(DeclarationBinding(it, specializerContext.typeParameterContext))
+                declarationBindingQueue.push(DeclarationBinding(it, specializeContext.typeParameterContext))
         }
 
         `class`.typeParameters.forEach { it.accept(this) }
@@ -126,36 +126,36 @@ class DeclarationSpecializeIndexerVisitor(
             `class`.bodyEndLocation,
             `class`.name
         )
-        specializerContext[`class`] = specializedClass
+        specializeContext[`class`] = specializedClass
     }
 
     override fun visitKtFunction(function: EKtFunction) {
         super.visitKtFunction(function)
         val specializedFunction = EKtFunction(function.location, function.name)
-        specializerContext[function] = specializedFunction
+        specializeContext[function] = specializedFunction
     }
 
     override fun visitPrimaryConstructor(primaryConstructor: EPrimaryConstructor) {
         super.visitPrimaryConstructor(primaryConstructor)
         val specializedPrimaryConstructor = EPrimaryConstructor(primaryConstructor.location)
-        specializerContext[primaryConstructor] = specializedPrimaryConstructor
+        specializeContext[primaryConstructor] = specializedPrimaryConstructor
     }
 
     override fun visitKtProperty(property: EKtProperty) {
         super.visitKtProperty(property)
         val specializedProperty = EKtProperty(property.location, property.endLocation, property.name)
-        specializerContext[property] = specializedProperty
+        specializeContext[property] = specializedProperty
     }
 
     override fun visitKtEnumEntry(enumEntry: EKtEnumEntry) {
         super.visitKtEnumEntry(enumEntry)
         val specializedEnumEntry = EKtEnumEntry(enumEntry.location, enumEntry.name)
-        specializerContext[enumEntry] = specializedEnumEntry
+        specializeContext[enumEntry] = specializedEnumEntry
     }
 
     override fun visitKtValueParameter(valueParameter: EKtValueParameter) {
         super.visitKtValueParameter(valueParameter)
         val specializedValueParameter = EKtValueParameter(valueParameter.location, valueParameter.name)
-        specializerContext[valueParameter] = specializedValueParameter
+        specializeContext[valueParameter] = specializedValueParameter
     }
 }

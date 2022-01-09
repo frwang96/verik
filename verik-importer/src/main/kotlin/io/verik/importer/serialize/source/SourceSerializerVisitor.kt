@@ -24,7 +24,7 @@ import io.verik.importer.common.Visitor
 import io.verik.importer.message.Messages
 
 class SourceSerializerVisitor(
-    private val serializerContext: SerializerContext
+    private val serializeContext: SerializeContext
 ) : Visitor() {
 
     override fun visitElement(element: EElement) {
@@ -32,14 +32,14 @@ class SourceSerializerVisitor(
     }
 
     override fun visitModule(module: EModule) {
-        DeclarationSerializer.serializeModule(module, serializerContext)
+        DeclarationSerializer.serializeModule(module, serializeContext)
     }
 
     override fun visitProperty(property: EProperty) {
-        DeclarationSerializer.serializeProperty(property, serializerContext)
+        DeclarationSerializer.serializeProperty(property, serializeContext)
     }
 
     override fun visitPort(port: EPort) {
-        DeclarationSerializer.serializePort(port, serializerContext)
+        DeclarationSerializer.serializePort(port, serializeContext)
     }
 }

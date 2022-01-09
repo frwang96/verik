@@ -32,28 +32,28 @@ object DeclarationSpecializerStage : ProjectStage() {
             entryPoints.map { DeclarationBinding(it, TypeParameterContext.EMPTY) }
         )
 
-        val specializerContext = SpecializerContext()
+        val specializeContext = SpecializeContext()
         val declarationSpecializeIndexerVisitor = DeclarationSpecializeIndexerVisitor(
             declarationBindingQueue,
-            specializerContext
+            specializeContext
         )
         while (declarationBindingQueue.isNotEmpty()) {
             val declarationBinding = declarationBindingQueue.pop()
-            if (!specializerContext.contains(declarationBinding)) {
-                specializerContext.typeParameterContext = declarationBinding.typeParameterContext
+            if (!specializeContext.contains(declarationBinding)) {
+                specializeContext.typeParameterContext = declarationBinding.typeParameterContext
                 declarationBinding.declaration.accept(declarationSpecializeIndexerVisitor)
             }
         }
 
         projectContext.project.files().forEach { file ->
             val declarations = file.declarations.flatMap { declaration ->
-                val typeParameterContexts = specializerContext.matchTypeParameterContexts(
+                val typeParameterContexts = specializeContext.matchTypeParameterContexts(
                     declaration,
                     TypeParameterContext.EMPTY
                 )
                 typeParameterContexts.map {
-                    specializerContext.typeParameterContext = it
-                    specializerContext.specialize(declaration)
+                    specializeContext.typeParameterContext = it
+                    specializeContext.specialize(declaration)
                 }
             }
             declarations.forEach { it.parent = file }

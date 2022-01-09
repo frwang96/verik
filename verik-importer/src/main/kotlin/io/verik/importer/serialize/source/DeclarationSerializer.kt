@@ -26,44 +26,44 @@ import io.verik.importer.main.Platform
 
 object DeclarationSerializer {
 
-    fun serializeModule(module: EModule, serializerContext: SerializerContext) {
-        serializerContext.appendLine()
-        serializeLocation(module, serializerContext)
-        serializerContext.append("class ${module.name}")
+    fun serializeModule(module: EModule, serializeContext: SerializeContext) {
+        serializeContext.appendLine()
+        serializeLocation(module, serializeContext)
+        serializeContext.append("class ${module.name}")
         if (module.portReferences.isNotEmpty()) {
-            serializerContext.appendLine("(")
-            serializerContext.indent {
-                serializerContext.serializeJoinAppendLine(module.portReferences) {
+            serializeContext.appendLine("(")
+            serializeContext.indent {
+                serializeContext.serializeJoinAppendLine(module.portReferences) {
                     val port = it.reference.cast<EPort>(module)
-                    serializerContext.serialize(port)
+                    serializeContext.serialize(port)
                 }
             }
-            serializerContext.append(")")
+            serializeContext.append(")")
         }
-        serializerContext.appendLine(" : Module()")
+        serializeContext.appendLine(" : Module()")
     }
 
-    fun serializeProperty(property: EProperty, serializerContext: SerializerContext) {
-        serializerContext.appendLine()
-        serializeLocation(property, serializerContext)
-        serializerContext.append("val ${property.name}: ")
-        serializerContext.appendLine("${property.type} = imported()")
+    fun serializeProperty(property: EProperty, serializeContext: SerializeContext) {
+        serializeContext.appendLine()
+        serializeLocation(property, serializeContext)
+        serializeContext.append("val ${property.name}: ")
+        serializeContext.appendLine("${property.type} = imported()")
     }
 
-    fun serializePort(port: EPort, serializerContext: SerializerContext) {
-        serializeLocation(port, serializerContext)
+    fun serializePort(port: EPort, serializeContext: SerializeContext) {
+        serializeLocation(port, serializeContext)
         when (port.portType) {
-            PortType.INPUT -> serializerContext.append("@In ")
-            PortType.OUTPUT -> serializerContext.append("@Out ")
+            PortType.INPUT -> serializeContext.append("@In ")
+            PortType.OUTPUT -> serializeContext.append("@Out ")
         }
-        serializerContext.append("var ${port.name}: ${port.type}")
+        serializeContext.append("var ${port.name}: ${port.type}")
     }
 
-    private fun serializeLocation(declaration: EDeclaration, serializerContext: SerializerContext) {
-        if (serializerContext.annotateDeclarations) {
+    private fun serializeLocation(declaration: EDeclaration, serializeContext: SerializeContext) {
+        if (serializeContext.annotateDeclarations) {
             val pathString = Platform.getStringFromPath(declaration.location.path)
             val locationString = "$pathString:${declaration.location.line}"
-            serializerContext.appendLine("@Imported(\"$locationString\")")
+            serializeContext.appendLine("@Imported(\"$locationString\")")
         }
     }
 }
