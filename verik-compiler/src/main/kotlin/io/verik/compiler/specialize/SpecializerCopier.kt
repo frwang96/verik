@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.xspecialize
+package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EElement

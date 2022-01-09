@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.xspecialize
+package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EDeclaration
+import io.verik.compiler.common.TreeVisitor
 
-class SpecializeContext {
+object SpecializerIndexer {
 
-    private val referenceForwardingMap = HashMap<DeclarationBinding, EDeclaration>()
-
-    fun register(
-        declaration: EDeclaration,
-        typeParameterBindings: List<TypeParameterBinding>,
-        copiedDeclaration: EDeclaration
-    ) {
-        referenceForwardingMap[DeclarationBinding(declaration, typeParameterBindings)] = copiedDeclaration
+    fun index(declaration: EDeclaration, typeParameterBindings: List<TypeParameterBinding>): List<DeclarationBinding> {
+        val specializerIndexerVisitor = SpecializerIndexerVisitor(typeParameterBindings)
+        declaration.accept(specializerIndexerVisitor)
+        return specializerIndexerVisitor.declarationBindings
     }
 
-    fun contains(declarationBinding: DeclarationBinding): Boolean {
-        return declarationBinding in referenceForwardingMap
+    private class SpecializerIndexerVisitor(
+        private val typeParameterBindings: List<TypeParameterBinding>
+    ) : TreeVisitor() {
+
+        val declarationBindings = ArrayList<DeclarationBinding>()
     }
 }

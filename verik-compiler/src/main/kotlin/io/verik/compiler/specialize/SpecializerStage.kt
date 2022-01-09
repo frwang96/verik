@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.xspecialize
+package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.kt.EKtClass
@@ -33,13 +33,18 @@ object SpecializerStage : ProjectStage() {
         while (declarationBindings.isNotEmpty()) {
             val declarationBinding = declarationBindings.pop()
             if (!specializeContext.contains(declarationBinding)) {
-                DeclarationSpecializer.specialize(declarationBinding, specializeContext)
+                declarationBindings.addAll(DeclarationSpecializer.specialize(declarationBinding, specializeContext))
             }
         }
+
+        projectContext.project.files().forEach { file ->
+            val declarations = file.declarations.flatMap { specializeContext.getSpecializedDeclarations(it) }
+            declarations.forEach { it.parent = file }
+            file.declarations = ArrayList(declarations)
+        }
+        projectContext.specializeContext = specializeContext
     }
 
-    // TODO Remove
-    @Suppress("DuplicatedCode")
     private fun getEntryPoints(projectContext: ProjectContext): List<DeclarationBinding> {
         val declarations = ArrayList<EDeclaration>()
         if (projectContext.config.enableDeadCodeElimination) {

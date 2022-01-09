@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,18 @@ import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class DeclarationSpecializerStageTest : BaseTest() {
+internal class SpecializerStageTest : BaseTest() {
+
+    @Test
+    fun `specialize class simple`() {
+        driveElementTest(
+            """
+                class C
+            """.trimIndent(),
+            SpecializerStage::class,
+            "KtClass(C, C, [], [], [], 0, 0, 0, PrimaryConstructor(C, [], []), null)"
+        ) { it.findDeclaration("C") }
+    }
 
     @Test
     fun `specialize class type parameter cardinal`() {
@@ -29,7 +40,7 @@ internal class DeclarationSpecializerStageTest : BaseTest() {
                 class C<X : `*`>
                 val c = C<`8`>()
             """.trimIndent(),
-            DeclarationSpecializerStage::class,
+            SpecializerStage::class,
             "KtClass(C_X_8, C_X_8, [], [], [], 0, 0, 0, PrimaryConstructor(C_X_8, [], []), null)"
         ) { it.findDeclaration("C_X_8") }
     }
@@ -41,7 +52,7 @@ internal class DeclarationSpecializerStageTest : BaseTest() {
                 class C<X : `*`>
                 val c = C<INC<`7`>>()
             """.trimIndent(),
-            DeclarationSpecializerStage::class,
+            SpecializerStage::class,
             "KtClass(C_X_8, C_X_8, [], [], [], 0, 0, 0, PrimaryConstructor(C_X_8, [], []), null)"
         ) { it.findDeclaration("C_X_8") }
     }
@@ -54,7 +65,7 @@ internal class DeclarationSpecializerStageTest : BaseTest() {
                 class D<T>
                 val d = D<C>()
             """.trimIndent(),
-            DeclarationSpecializerStage::class,
+            SpecializerStage::class,
             "KtClass(D_T_C, D_T_C, [], [], [], 0, 0, 0, PrimaryConstructor(D_T_C, [], []), null)"
         ) { it.findDeclaration("D_T_C") }
     }
@@ -68,7 +79,7 @@ internal class DeclarationSpecializerStageTest : BaseTest() {
                 }
                 val c = C<`8`>()
             """.trimIndent(),
-            DeclarationSpecializerStage::class,
+            SpecializerStage::class,
             "KtProperty(x, Ubit<`8`>, KtCallExpression(*), [], 0)"
         ) { it.findDeclaration("x") }
     }
@@ -84,7 +95,7 @@ internal class DeclarationSpecializerStageTest : BaseTest() {
                 }
                 val c = C<`8`>()
             """.trimIndent(),
-            DeclarationSpecializerStage::class,
+            SpecializerStage::class,
             "KtProperty(x, Boolean, KtCallExpression(Boolean, f, null, [], []), [], 0)"
         ) { it.findDeclaration("x") }
     }
@@ -99,7 +110,7 @@ internal class DeclarationSpecializerStageTest : BaseTest() {
                 }
                 val c = C<`8`>()
             """.trimIndent(),
-            DeclarationSpecializerStage::class,
+            SpecializerStage::class,
             "KtProperty(x, D, KtCallExpression(D, <init>, null, [], []), [], 0)"
         ) { it.findDeclaration("x") }
     }
@@ -111,23 +122,8 @@ internal class DeclarationSpecializerStageTest : BaseTest() {
                 fun <X : `*`> f() {}
                 val x = f<`8`>()
             """.trimIndent(),
-            DeclarationSpecializerStage::class,
+            SpecializerStage::class,
             "KtFunction(f_X_8, Unit, KtBlockExpression(*), [], [], [], 0)"
         ) { it.findDeclaration("f_X_8") }
-    }
-
-    @Test
-    fun `specialize property type parameter`() {
-        driveElementTest(
-            """
-                class C
-                class D<E> {
-                    val e : E = nc()
-                }
-                val d = D<C>()
-            """.trimIndent(),
-            DeclarationSpecializerStage::class,
-            "KtProperty(e, C, KtCallExpression(*), [], 0)"
-        ) { it.findDeclaration("e") }
     }
 }

@@ -18,6 +18,7 @@ package io.verik.compiler.main
 
 import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.cast.CastContext
+import io.verik.compiler.specialize.SpecializeContext
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.resolve.BindingContext
@@ -31,6 +32,7 @@ class ProjectContext(
     lateinit var kotlinCoreEnvironment: KotlinCoreEnvironment
     lateinit var bindingContext: BindingContext
     lateinit var castContext: CastContext
+    var specializeContext: SpecializeContext? = null
     lateinit var project: EProject
     val outputContext = OutputContext()
 

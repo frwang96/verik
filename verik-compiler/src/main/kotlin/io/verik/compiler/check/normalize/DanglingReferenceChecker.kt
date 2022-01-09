@@ -39,6 +39,11 @@ object DanglingReferenceChecker : NormalizationStage {
         val danglingReferenceIndexerVisitor = DanglingReferenceIndexerVisitor()
         projectContext.project.accept(danglingReferenceIndexerVisitor)
         val declarations = danglingReferenceIndexerVisitor.declarations
+        val specializeContext = projectContext.specializeContext
+        if (specializeContext != null) {
+            declarations.addAll(specializeContext.getOriginalDeclarations())
+        }
+
         val danglingReferenceCheckerVisitor = DanglingReferenceCheckerVisitor(declarations, projectStage)
         projectContext.project.accept(danglingReferenceCheckerVisitor)
     }

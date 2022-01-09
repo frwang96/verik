@@ -66,7 +66,7 @@ import io.verik.compiler.serialize.general.PackageWrapperSerializerStage
 import io.verik.compiler.serialize.general.SourcesFileSerializerStage
 import io.verik.compiler.serialize.source.SourceSerializerStage
 import io.verik.compiler.serialize.target.CompositeTargetSerializerStage
-import io.verik.compiler.specialize.DeclarationSpecializerStage
+import io.verik.compiler.specialize.SpecializerStage
 import io.verik.compiler.transform.lower.ExpressionEvaluatorStage
 import io.verik.compiler.transform.lower.ExpressionExtractorStage
 import io.verik.compiler.transform.lower.FunctionTransformerStage
@@ -106,7 +106,6 @@ import io.verik.compiler.transform.upper.StructLiteralTransformerStage
 import io.verik.compiler.transform.upper.TaskReturnTransformerStage
 import io.verik.compiler.transform.upper.ToStringTransformerStage
 import io.verik.compiler.transform.upper.UninitializedPropertyTransformerStage
-import io.verik.compiler.xspecialize.SpecializerStage
 
 object StageSequencer {
 
@@ -152,7 +151,6 @@ object StageSequencer {
 
         stageSequence.add(StageType.RESOLVE, TypeResolverStage)
         stageSequence.add(StageType.RESOLVE, TypeResolvedCheckerStage)
-        stageSequence.add(StageType.RESOLVE, DeclarationSpecializerStage)
         stageSequence.add(StageType.RESOLVE, TypeConstraintCheckerStage)
         stageSequence.add(StageType.RESOLVE, CardinalNegativeCheckerStage)
         stageSequence.add(StageType.RESOLVE, OptionalReducerStage)

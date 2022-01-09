@@ -18,4 +18,7 @@ package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.element.common.EDeclaration
 
-data class DeclarationBinding(val declaration: EDeclaration, val typeParameterContext: TypeParameterContext)
+data class DeclarationBinding(
+    val declaration: EDeclaration,
+    val typeParameterBindings: List<TypeParameterBinding>
+)
