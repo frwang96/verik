@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test
 internal class TypeConstraintResolverTest : BaseTest() {
 
     @Test
-    fun `equals violation`() {
+    fun `equals violation assignment left`() {
         driveMessageTest(
             """
                 var x = u(0x00)
@@ -32,6 +32,20 @@ internal class TypeConstraintResolverTest : BaseTest() {
             """.trimIndent(),
             true,
             "Type mismatch: Expected Ubit<`8`> actual Ubit<`1`>"
+        )
+    }
+
+    @Test
+    fun `equals violation assignment right`() {
+        driveMessageTest(
+            """
+                var x = u(0x00)
+                fun f() {
+                    val y: Ubit<`1`> = x
+                }
+            """.trimIndent(),
+            true,
+            "Type mismatch: Expected Ubit<`1`> actual Ubit<`8`>"
         )
     }
 

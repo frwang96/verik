@@ -17,7 +17,11 @@
 package io.verik.compiler.resolve
 
 import io.verik.compiler.ast.element.common.EAbstractProperty
+import io.verik.compiler.ast.element.common.EDeclaration
+import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
+import io.verik.compiler.ast.element.common.EReceiverExpression
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.kt.EKtAbstractFunction
@@ -33,20 +37,81 @@ import io.verik.compiler.ast.property.KtUnaryOperatorKind
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreFunctionDeclaration
+import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 
 object TypeConstraintCollector {
 
-    fun collect(function: EKtFunction): List<TypeConstraint> {
+    fun collect(projectContext: ProjectContext): List<TypeConstraint> {
         val typeConstraintCollectorVisitor = TypeConstraintCollectorVisitor()
-        function.accept(typeConstraintCollectorVisitor)
+        projectContext.project.accept(typeConstraintCollectorVisitor)
         return typeConstraintCollectorVisitor.typeConstraints
     }
 
-    fun collect(property: EKtProperty): List<TypeConstraint> {
-        val typeConstraintCollectorVisitor = TypeConstraintCollectorVisitor()
-        property.accept(typeConstraintCollectorVisitor)
-        return typeConstraintCollectorVisitor.typeConstraints
+    fun collect(receiverExpression: EReceiverExpression): List<TypeConstraint> {
+        return when (receiverExpression) {
+            is EKtCallExpression -> collectCallExpression(receiverExpression)
+            is EReferenceExpression -> collectReferenceExpression(receiverExpression)
+            else -> Messages.INTERNAL_ERROR.on(receiverExpression, "Call expression or reference expression expected")
+        }
+    }
+
+    private fun collectCallExpression(callExpression: EKtCallExpression): List<TypeConstraint> {
+        val reference = callExpression.reference
+        if (reference !is EDeclaration)
+            return listOf()
+        if (reference !is EKtAbstractFunction) {
+            Messages.INTERNAL_ERROR.on(callExpression, "Expected function as reference")
+        }
+        val returnTypeConstraint = TypeConstraint(
+            TypeConstraintKind.EQ_OUT,
+            TypeAdapter.ofElement(callExpression),
+            TypeAdapter.ofElement(reference)
+        )
+        val expectedArgumentSize = reference.valueParameters.size
+        val actualArgumentSize = callExpression.valueArguments.size
+        if (expectedArgumentSize != actualArgumentSize) {
+            Messages.INTERNAL_ERROR.on(
+                callExpression,
+                "Expected $expectedArgumentSize arguments but found $actualArgumentSize"
+            )
+        }
+        val argumentTypeConstraints = callExpression.valueArguments
+            .zip(reference.valueParameters)
+            .map { (valueArgument, valueParameter) ->
+                TypeConstraint(
+                    TypeConstraintKind.EQ_IN,
+                    TypeAdapter.ofElement(valueArgument),
+                    TypeAdapter.ofElement(valueParameter)
+                )
+            }
+        return listOf(returnTypeConstraint) + argumentTypeConstraints
+    }
+
+    private fun collectReferenceExpression(referenceExpression: EReferenceExpression): List<TypeConstraint> {
+        val reference = referenceExpression.reference
+        if (reference !is EDeclaration)
+            return listOf()
+        if (reference !is EAbstractProperty) {
+            Messages.INTERNAL_ERROR.on(reference, "Expected property as reference")
+        }
+        var parent: EElement? = referenceExpression
+        var isLeftOfAssignment = false
+        while (parent is EExpression) {
+            val parentParent = parent.parent
+            if (parentParent is EKtBinaryExpression &&
+                parentParent.kind == KtBinaryOperatorKind.EQ &&
+                parentParent.left == parent
+            ) isLeftOfAssignment = true
+            parent = parentParent
+        }
+        return listOf(
+            TypeConstraint(
+                if (isLeftOfAssignment) TypeConstraintKind.EQ_IN else TypeConstraintKind.EQ_OUT,
+                TypeAdapter.ofElement(referenceExpression),
+                TypeAdapter.ofElement(reference)
+            )
+        )
     }
 
     private class TypeConstraintCollectorVisitor : TreeVisitor() {
@@ -126,28 +191,11 @@ object TypeConstraintCollector {
             }
         }
 
-        override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
-            super.visitReferenceExpression(referenceExpression)
-            val reference = referenceExpression.reference
-            if (reference is EAbstractProperty) {
-                typeConstraints.add(
-                    TypeConstraint(
-                        TypeConstraintKind.EQ_OUT,
-                        TypeAdapter.ofElement(referenceExpression),
-                        TypeAdapter.ofElement(reference)
-                    )
-                )
-            }
-        }
-
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
-            when (val reference = callExpression.reference) {
-                is CoreFunctionDeclaration ->
-                    typeConstraints.addAll(reference.getTypeConstraints(callExpression))
-                is EKtAbstractFunction -> {
-                    // TODO get type constraints after forwarding reference
-                }
+            val reference = callExpression.reference
+            if (reference is CoreFunctionDeclaration) {
+                typeConstraints.addAll(reference.getTypeConstraints(callExpression))
             }
         }
 

@@ -23,49 +23,33 @@ import io.verik.compiler.message.Messages
 
 object TypeConstraintResolver {
 
-    fun resolve(typeConstraints: List<TypeConstraint>) {
-        var unresolvedCount = typeConstraints.size
-        var unresolvedTypeConstraints = resolveTypeConstraints(typeConstraints)
-        while (unresolvedTypeConstraints.isNotEmpty() && unresolvedTypeConstraints.size < unresolvedCount) {
-            unresolvedCount = unresolvedTypeConstraints.size
-            unresolvedTypeConstraints = resolveTypeConstraints(unresolvedTypeConstraints)
+    fun resolve(typeConstraint: TypeConstraint): Boolean {
+        return when (typeConstraint.kind) {
+            TypeConstraintKind.EQ_IN ->
+                resolveTypeConstraintEqIn(typeConstraint.typeAdapters)
+            TypeConstraintKind.EQ_OUT ->
+                resolveTypeConstraintEqOut(typeConstraint.typeAdapters)
+            TypeConstraintKind.EQ_INOUT ->
+                resolveTypeConstraintEqInout(typeConstraint.typeAdapters)
+            TypeConstraintKind.LOG_IN ->
+                resolveTypeConstraintLogIn(typeConstraint.typeAdapters)
+            TypeConstraintKind.WIDTH_OUT ->
+                resolveTypeConstraintWidthOut(typeConstraint.typeAdapters)
+            TypeConstraintKind.MAX_OUT ->
+                resolveTypeConstraintMaxAdd(typeConstraint.typeAdapters, TypeConstraintKind.MAX_OUT)
+            TypeConstraintKind.MAX_INC_OUT ->
+                resolveTypeConstraintMaxAdd(typeConstraint.typeAdapters, TypeConstraintKind.MAX_INC_OUT)
+            TypeConstraintKind.ADD_OUT ->
+                resolveTypeConstraintMaxAdd(typeConstraint.typeAdapters, TypeConstraintKind.ADD_OUT)
+            TypeConstraintKind.CAT_OUT ->
+                resolveTypeConstraintCatOut(typeConstraint.typeAdapters)
+            TypeConstraintKind.REP_OUT ->
+                resolveTypeConstraintRepOut(typeConstraint.typeAdapters)
+            TypeConstraintKind.EXT_IN ->
+                resolveTypeConstraintExtTru(typeConstraint.typeAdapters, true)
+            TypeConstraintKind.TRU_IN ->
+                resolveTypeConstraintExtTru(typeConstraint.typeAdapters, false)
         }
-    }
-
-    private fun resolveTypeConstraints(typeConstraints: List<TypeConstraint>): List<TypeConstraint> {
-        val unresolvedTypeConstraints = ArrayList<TypeConstraint>()
-        typeConstraints.forEach {
-            val isResolved = when (it.kind) {
-                TypeConstraintKind.EQ_IN ->
-                    resolveTypeConstraintEqIn(it.typeAdapters)
-                TypeConstraintKind.EQ_OUT ->
-                    resolveTypeConstraintEqOut(it.typeAdapters)
-                TypeConstraintKind.EQ_INOUT ->
-                    resolveTypeConstraintEqInout(it.typeAdapters)
-                TypeConstraintKind.LOG_IN ->
-                    resolveTypeConstraintLogIn(it.typeAdapters)
-                TypeConstraintKind.WIDTH_OUT ->
-                    resolveTypeConstraintWidthOut(it.typeAdapters)
-                TypeConstraintKind.MAX_OUT ->
-                    resolveTypeConstraintMaxAdd(it.typeAdapters, TypeConstraintKind.MAX_OUT)
-                TypeConstraintKind.MAX_INC_OUT ->
-                    resolveTypeConstraintMaxAdd(it.typeAdapters, TypeConstraintKind.MAX_INC_OUT)
-                TypeConstraintKind.ADD_OUT ->
-                    resolveTypeConstraintMaxAdd(it.typeAdapters, TypeConstraintKind.ADD_OUT)
-                TypeConstraintKind.CAT_OUT ->
-                    resolveTypeConstraintCatOut(it.typeAdapters)
-                TypeConstraintKind.REP_OUT ->
-                    resolveTypeConstraintRepOut(it.typeAdapters)
-                TypeConstraintKind.EXT_IN ->
-                    resolveTypeConstraintExtTru(it.typeAdapters, true)
-                TypeConstraintKind.TRU_IN ->
-                    resolveTypeConstraintExtTru(it.typeAdapters, false)
-            }
-            if (!isResolved) {
-                unresolvedTypeConstraints.add(it)
-            }
-        }
-        return unresolvedTypeConstraints
     }
 
     private fun resolveTypeConstraintEqIn(typeAdapters: List<TypeAdapter>): Boolean {

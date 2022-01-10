@@ -24,53 +24,6 @@ import org.junit.jupiter.api.Test
 internal class TypeResolverStageTest : BaseTest() {
 
     @Test
-    fun `forward property parameterized`() {
-        driveElementTest(
-            """
-                @Suppress("MemberVisibilityCanBePrivate")
-                class C<X : `*`> {
-                    var x: Ubit<X> = nc()
-                    var y = x
-                }
-                val c = C<`8`>()
-            """.trimIndent(),
-            TypeResolverStage::class,
-            "KtProperty(x, Boolean, *, [], 1)"
-        ) { it.findExpression("y") }
-    }
-
-    @Test
-    fun `forward call expression parameterized`() {
-        driveElementTest(
-            """
-                @Suppress("MemberVisibilityCanBePrivate")
-                class C<X : `*`> {
-                    fun f(): Boolean { return false }
-                    var x = f()
-                }
-                val c = C<`8`>()
-            """.trimIndent(),
-            TypeResolverStage::class,
-            "KtProperty(x, Boolean, *, [], 1)"
-        ) { it.findExpression("x") }
-    }
-
-    @Test
-    fun `forward call expression not parameterized`() {
-        driveElementTest(
-            """
-                class D
-                class C<X : `*`> {
-                    var x = D()
-                }
-                val c = C<`8`>()
-            """.trimIndent(),
-            TypeResolverStage::class,
-            "KtCallExpression(D, <init>, null, [], [])"
-        ) { it.findExpression("x") }
-    }
-
-    @Test
     fun `resolve property`() {
         driveElementTest(
             """
