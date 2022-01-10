@@ -19,7 +19,7 @@ package io.verik.compiler.resolve
 import io.verik.compiler.test.BaseTest
 import org.junit.jupiter.api.Test
 
-internal class TypeConstraintCheckerStageTest : BaseTest() {
+internal class TypeConstraintResolverTest : BaseTest() {
 
     @Test
     fun `equals violation`() {

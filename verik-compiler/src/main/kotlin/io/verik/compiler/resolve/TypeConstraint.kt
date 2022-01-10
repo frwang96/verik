@@ -24,5 +24,5 @@ class TypeConstraint(
     constructor(
         kind: TypeConstraintKind,
         vararg typeAdapters: TypeAdapter
-    ): this(kind, typeAdapters.toList())
+    ) : this(kind, typeAdapters.toList())
 }

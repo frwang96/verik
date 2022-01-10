@@ -194,6 +194,8 @@ object Messages {
         "Could not infer type arguments: $0"
     )
 
+//  RESOLVE  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     val MISMATCHED_TYPE = ErrorMessageTemplate2<Type, Type>(
         "Type mismatch: Expected $0 actual $1"
     )
@@ -216,6 +218,10 @@ object Messages {
 
     val UNRESOLVED_TYPE_ARGUMENT = ErrorMessageTemplate0(
         "Type of type argument could not be resolved"
+    )
+
+    val CARDINAL_NEGATIVE = ErrorMessageTemplate1<Type>(
+        "Cardinal type is negative: $0"
     )
 
 //  INTERPRET  /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -294,10 +300,6 @@ object Messages {
 
     val DUPLICATED_FILE_NAME = ErrorMessageTemplate1<Path>(
         "File name is duplicated: $0"
-    )
-
-    val NEGATIVE_CARDINAL = ErrorMessageTemplate1<Type>(
-        "Cardinal type is negative: $0"
     )
 
     val KEYWORD_CONFLICT = ErrorMessageTemplate1<String>(
