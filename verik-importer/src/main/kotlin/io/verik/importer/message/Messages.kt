@@ -42,10 +42,6 @@ object Messages {
         "Undefined macro: $0"
     )
 
-    val MACRO_CONTENT_LEXER_ERROR = WarningMessageTemplate1<String>(
-        "Macro content lexer error: $0"
-    )
-
     val INCORRECT_MACRO_ARGUMENTS = WarningMessageTemplate2<Int, Int>(
         "Incorrect number of macro arguments: Expected $0 actual $1"
     )

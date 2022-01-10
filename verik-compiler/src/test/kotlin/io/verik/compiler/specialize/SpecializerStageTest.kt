@@ -41,7 +41,11 @@ internal class SpecializerStageTest : BaseTest() {
                 val c = C<`8`>()
             """.trimIndent(),
             SpecializerStage::class,
-            "KtClass(C_X_8, C<`8`>, [], [TypeParameter(X, `8`)], [], 0, 0, 0, PrimaryConstructor(C<`8`>, [], []), null)"
+            """
+                KtClass(
+                    C_X_8, C<`8`>, [], [TypeParameter(X, `8`)], [], 0, 0, 0, PrimaryConstructor(C<`8`>, [], [X]), null
+                )
+            """.trimIndent()
         ) { it.findDeclaration("C_X_8") }
     }
 
@@ -53,7 +57,11 @@ internal class SpecializerStageTest : BaseTest() {
                 val c = C<INC<`7`>>()
             """.trimIndent(),
             SpecializerStage::class,
-            "KtClass(C_X_8, C<`8`>, [], [TypeParameter(X, `8`)], [], 0, 0, 0, PrimaryConstructor(C<`8`>, [], []), null)"
+            """
+                KtClass(
+                    C_X_8, C<`8`>, [], [TypeParameter(X, `8`)], [], 0, 0, 0, PrimaryConstructor(C<`8`>, [], [X]), null
+                )
+            """.trimIndent()
         ) { it.findDeclaration("C_X_8") }
     }
 
@@ -66,7 +74,7 @@ internal class SpecializerStageTest : BaseTest() {
                 val d = D<C>()
             """.trimIndent(),
             SpecializerStage::class,
-            "KtClass(D_T_C, D<C>, [], [], [], 0, 0, 0, PrimaryConstructor(D<C>, [], []), null)"
+            "KtClass(D_T_C, D<C>, [], [TypeParameter(T, C)], [], 0, 0, 0, PrimaryConstructor(D<C>, [], [T]), null)"
         ) { it.findDeclaration("D_T_C") }
     }
 

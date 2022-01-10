@@ -16,8 +16,10 @@
 
 package io.verik.compiler.resolve
 
+import io.verik.compiler.ast.property.Type
 import io.verik.compiler.core.common.Cardinal
 import io.verik.compiler.core.common.Core
+import io.verik.compiler.message.Messages
 
 object TypeConstraintResolver {
 
@@ -33,120 +35,189 @@ object TypeConstraintResolver {
     private fun resolveTypeConstraints(typeConstraints: List<TypeConstraint>): List<TypeConstraint> {
         val unresolvedTypeConstraints = ArrayList<TypeConstraint>()
         typeConstraints.forEach {
-            when (it) {
-                is EqualsTypeConstraint ->
-                    if (!resolveEqualsTypeConstraint(it))
-                        unresolvedTypeConstraints.add(it)
-                is UnaryTypeConstraint ->
-                    if (!resolveUnaryTypeConstraint(it))
-                        unresolvedTypeConstraints.add(it)
-                is BinaryTypeConstraint ->
-                    if (!resolveBinaryTypeConstraint(it))
-                        unresolvedTypeConstraints.add(it)
-                is SpecialTypeConstraint ->
-                    if (!resolveSpecialTypeConstraint(it))
-                        unresolvedTypeConstraints.add(it)
-                is ComparisonTypeConstraint -> {}
+            val isResolved = when (it.kind) {
+                TypeConstraintKind.EQ_IN ->
+                    resolveTypeConstraintEqIn(it.typeAdapters)
+                TypeConstraintKind.EQ_OUT ->
+                    resolveTypeConstraintEqOut(it.typeAdapters)
+                TypeConstraintKind.EQ_INOUT ->
+                    resolveTypeConstraintEqInout(it.typeAdapters)
+                TypeConstraintKind.LOG_IN ->
+                    resolveTypeConstraintLogIn(it.typeAdapters)
+                TypeConstraintKind.WIDTH_OUT ->
+                    resolveTypeConstraintWidthOut(it.typeAdapters)
+                TypeConstraintKind.MAX_OUT ->
+                    resolveTypeConstraintMaxAdd(it.typeAdapters, TypeConstraintKind.MAX_OUT)
+                TypeConstraintKind.MAX_INC_OUT ->
+                    resolveTypeConstraintMaxAdd(it.typeAdapters, TypeConstraintKind.MAX_INC_OUT)
+                TypeConstraintKind.ADD_OUT ->
+                    resolveTypeConstraintMaxAdd(it.typeAdapters, TypeConstraintKind.ADD_OUT)
+                TypeConstraintKind.CAT_OUT ->
+                    resolveTypeConstraintCatOut(it.typeAdapters)
+                TypeConstraintKind.REP_OUT ->
+                    resolveTypeConstraintRepOut(it.typeAdapters)
+                TypeConstraintKind.EXT_IN ->
+                    resolveTypeConstraintExtTru(it.typeAdapters, true)
+                TypeConstraintKind.TRU_IN ->
+                    resolveTypeConstraintExtTru(it.typeAdapters, false)
+            }
+            if (!isResolved) {
+                unresolvedTypeConstraints.add(it)
             }
         }
         return unresolvedTypeConstraints
     }
 
-    private fun resolveEqualsTypeConstraint(typeConstraint: EqualsTypeConstraint): Boolean {
-        val inner = typeConstraint.inner.getType()
-        val outer = typeConstraint.outer.getType()
-        val innerResolved = inner.isResolved()
-        val outerResolved = outer.isResolved()
-        return if (outerResolved) {
-            if (!innerResolved)
-                typeConstraint.inner.setType(outer.copy())
-            true
-        } else {
-            if (innerResolved) {
-                typeConstraint.outer.setType(inner.copy())
+    private fun resolveTypeConstraintEqIn(typeAdapters: List<TypeAdapter>): Boolean {
+        val outerType = typeAdapters[1].getType()
+        if (!outerType.isResolved())
+            return false
+        setType(typeAdapters, outerType, false)
+        return true
+    }
+
+    private fun resolveTypeConstraintEqOut(typeAdapters: List<TypeAdapter>): Boolean {
+        val innerType = typeAdapters[1].getType()
+        if (!innerType.isResolved())
+            return false
+        setType(typeAdapters, innerType, true)
+        return true
+    }
+
+    private fun resolveTypeConstraintEqInout(typeAdapters: List<TypeAdapter>): Boolean {
+        val innerType = typeAdapters[1].getType()
+        val outerType = typeAdapters[0].getType()
+        return when {
+            innerType.isResolved() -> {
+                setType(typeAdapters, innerType, true)
                 true
-            } else false
+            }
+            outerType.isResolved() -> {
+                typeAdapters[1].setType(outerType.copy())
+                true
+            }
+            else -> false
         }
     }
 
-    private fun resolveUnaryTypeConstraint(typeConstraint: UnaryTypeConstraint): Boolean {
-        val inner = typeConstraint.inner.getType()
-        val outer = typeConstraint.outer.getType()
-        val innerResolved = inner.isResolved()
-        val outerResolved = outer.isResolved()
-        return if (typeConstraint.isInnerToOuter) {
-            if (outerResolved) {
-                true
-            } else {
-                if (innerResolved) {
-                    typeConstraint.outer.setType(typeConstraint.kind.resolve(inner))
-                    true
-                } else false
-            }
-        } else {
-            if (innerResolved) {
-                true
-            } else {
-                if (outerResolved) {
-                    typeConstraint.inner.setType(typeConstraint.kind.resolve(outer))
-                    true
-                } else false
-            }
-        }
+    private fun resolveTypeConstraintLogIn(typeAdapters: List<TypeAdapter>): Boolean {
+        val outerType = typeAdapters[1].getType()
+        if (!outerType.isResolved())
+            return false
+        val outerValue = outerType.asCardinalValue(typeAdapters[1].getElement())
+        val expectedInnerValue = if (outerValue <= 0) 0 else (32 - (outerValue - 1).countLeadingZeroBits())
+        val expectedInnerType = Cardinal.of(expectedInnerValue).toType()
+        setType(typeAdapters, expectedInnerType, false)
+        return true
     }
 
-    private fun resolveBinaryTypeConstraint(typeConstraint: BinaryTypeConstraint): Boolean {
-        val left = typeConstraint.left.getType()
-        val right = typeConstraint.right.getType()
-        val outer = typeConstraint.outer.getType()
-        val leftResolved = left.isResolved()
-        val rightResolved = right.isResolved()
-        val outerResolved = outer.isResolved()
-        return if (outerResolved) {
-            true
-        } else {
-            if (leftResolved && rightResolved) {
-                typeConstraint.outer.setType(typeConstraint.kind.resolve(left, right))
-                true
-            } else {
-                false
-            }
-        }
+    private fun resolveTypeConstraintWidthOut(typeAdapters: List<TypeAdapter>): Boolean {
+        val innerType = typeAdapters[1].getType()
+        if (!innerType.isResolved())
+            return false
+        val innerValue = innerType.asCardinalValue(typeAdapters[1].getElement())
+        val actualOuterValue = if (innerValue < 0) 0 else (32 - innerValue.countLeadingZeroBits())
+        val actualOuterType = Cardinal.of(actualOuterValue).toType()
+        setType(typeAdapters, actualOuterType, true)
+        return true
     }
 
-    private fun resolveSpecialTypeConstraint(typeConstraint: SpecialTypeConstraint): Boolean {
-        val expressionType = typeConstraint.callExpression.type
-        val valueArgumentsType = typeConstraint.callExpression.valueArguments.map { it.type }
-        val expressionResolved = expressionType.isResolved()
-        val valueArgumentsResolved = valueArgumentsType.all { it.isResolved() }
-        return if (expressionResolved) {
-            true
+    private fun resolveTypeConstraintMaxAdd(
+        typeAdapters: List<TypeAdapter>,
+        typeConstraintKind: TypeConstraintKind
+    ): Boolean {
+        val innerTypes = typeAdapters.drop(1).map { it.getType() }
+        if (innerTypes.any { !it.isResolved() })
+            return false
+        val innerValues = typeAdapters.drop(1).map { it.getType().asCardinalValue(it.getElement()) }
+        val actualOuterValue = when (typeConstraintKind) {
+            TypeConstraintKind.MAX_OUT -> innerValues.maxOrNull() ?: 0
+            TypeConstraintKind.MAX_INC_OUT -> (innerValues.maxOrNull() ?: 0) + 1
+            TypeConstraintKind.ADD_OUT -> innerValues.sum()
+            else -> Messages.INTERNAL_ERROR.on(typeAdapters[0].getElement(), "Unexpected type constraint kind")
+        }
+        val actualOuterType = Cardinal.of(actualOuterValue).toType()
+        setType(typeAdapters, actualOuterType, true)
+        return true
+    }
+
+    private fun resolveTypeConstraintCatOut(typeAdapters: List<TypeAdapter>): Boolean {
+        val innerTypes = typeAdapters.drop(1).map { it.getType() }
+        if (innerTypes.any { !it.isResolved() })
+            return false
+        val innerValues = typeAdapters.drop(1).map { it.getType().getWidthAsInt(it.getElement()) }
+        val actualOuterValue = innerValues.sum()
+        val actualOuterType = Cardinal.of(actualOuterValue).toType()
+        setType(typeAdapters, actualOuterType, true)
+        return true
+    }
+
+    private fun resolveTypeConstraintRepOut(typeAdapters: List<TypeAdapter>): Boolean {
+        val replicationCountType = typeAdapters[1].getType()
+        val replicationValueType = typeAdapters[2].getType()
+        if (!replicationCountType.isResolved() || !replicationValueType.isResolved())
+            return false
+        val replicationCountValue = replicationCountType.asCardinalValue(typeAdapters[1].getElement())
+        val replicationValueWidth = replicationValueType.getWidthAsInt(typeAdapters[2].getElement())
+        val actualOuterValue = replicationCountValue * replicationValueWidth
+        val actualOuterType = Cardinal.of(actualOuterValue).toType()
+        setType(typeAdapters, actualOuterType, true)
+        return true
+    }
+
+    private fun resolveTypeConstraintExtTru(typeAdapters: List<TypeAdapter>, isExt: Boolean): Boolean {
+        val innerType = typeAdapters[0].getType()
+        val outerType = typeAdapters[1].getType()
+        if (!innerType.isResolved() || !outerType.isResolved())
+            return false
+        val innerValue = innerType.asCardinalValue(typeAdapters[0].getElement())
+        val outerValue = outerType.asCardinalValue(typeAdapters[1].getElement())
+        if (isExt) {
+            if (innerValue > outerValue) {
+                Messages.EXTENSION_ERROR.on(
+                    typeAdapters[0].getElement(),
+                    typeAdapters[0].getFullType(),
+                    typeAdapters[0].substituteFullType(outerType)
+                )
+            }
         } else {
-            if (valueArgumentsResolved) {
-                val widths = typeConstraint.callExpression.valueArguments
-                    .map { it.type.getWidthAsType(it) }
-                when (typeConstraint.kind) {
-                    SpecialTypeConstraintKind.CONSTANT_ONE -> {
-                        typeConstraint.callExpression.type.arguments[0] = Cardinal.of(1).toType()
-                    }
-                    SpecialTypeConstraintKind.CAT -> {
-                        val type = when (widths.size) {
-                            0 -> Cardinal.of(0).toType()
-                            1 -> widths[0]
-                            else -> widths.reduce { sum, type ->
-                                Core.Vk.T_ADD.toType(sum, type)
-                            }
-                        }
-                        typeConstraint.callExpression.type.arguments[0] = type
-                    }
-                    SpecialTypeConstraintKind.REP -> {
-                        val typeArgument = typeConstraint.callExpression.typeArguments[0]
-                        val type = Core.Vk.T_MUL.toType(widths[0], typeArgument.copy())
-                        typeConstraint.callExpression.type.arguments[0] = type
-                    }
+            if (innerValue < outerValue) {
+                Messages.TRUNCATION_ERROR.on(
+                    typeAdapters[0].getElement(),
+                    typeAdapters[0].getFullType(),
+                    typeAdapters[0].substituteFullType(outerType)
+                )
+            }
+        }
+        return true
+    }
+
+    private fun setType(typeAdapters: List<TypeAdapter>, type: Type, isActual: Boolean) {
+        val typeAdapterType = typeAdapters[0].getType()
+        if (isIgnored(type) || isIgnored(typeAdapterType))
+            return
+        if (typeAdapterType.isResolved()) {
+            if (typeAdapterType != type) {
+                if (isActual) {
+                    Messages.MISMATCHED_TYPE.on(
+                        typeAdapters[0].getElement(),
+                        typeAdapters[0].getFullType(),
+                        typeAdapters[0].substituteFullType(type)
+                    )
+                } else {
+                    Messages.MISMATCHED_TYPE.on(
+                        typeAdapters[0].getElement(),
+                        typeAdapters[0].substituteFullType(type),
+                        typeAdapters[0].getFullType()
+                    )
                 }
-                true
-            } else false
+            }
+        } else {
+            typeAdapters[0].setType(type.copy())
         }
+    }
+
+    private fun isIgnored(type: Type): Boolean {
+        return type.reference in listOf(Core.Kt.C_Function, Core.Kt.C_Nothing)
     }
 }

@@ -29,23 +29,48 @@ sealed class TypeAdapter {
 
     abstract fun setType(type: Type)
 
-    abstract fun substitute(type: Type): SubstitutionResult
+    abstract fun getFullType(): Type
 
-    class SubstitutionResult(val original: Type, val substituted: Type)
+    abstract fun substituteFullType(type: Type): Type
 
     companion object {
+
+        fun ofConstant(type: Type): TypeAdapter {
+            return ConstantTypeAdapter(type)
+        }
 
         fun ofElement(element: ETypedElement, vararg indices: Int): TypeAdapter {
             return ElementTypeAdapter(element, indices.toList())
         }
 
-        fun ofElement(element: ETypedElement, indices: List<Int>): TypeAdapter {
-            return ElementTypeAdapter(element, indices)
-        }
-
         fun ofTypeArgument(callExpression: EKtCallExpression, index: Int): TypeAdapter {
             return TypeArgumentTypeAdapter(callExpression, index)
         }
+    }
+}
+
+class ConstantTypeAdapter(
+    private val type: Type
+) : TypeAdapter() {
+
+    override fun getElement(): EElement {
+        throw IllegalArgumentException("Cannot get element of constant type adapter")
+    }
+
+    override fun getType(): Type {
+        return type
+    }
+
+    override fun setType(type: Type) {
+        throw IllegalArgumentException("Cannot set type of constant type adapter")
+    }
+
+    override fun getFullType(): Type {
+        return type
+    }
+
+    override fun substituteFullType(type: Type): Type {
+        throw IllegalArgumentException("Cannot substitute type of constant type adapter")
     }
 }
 
@@ -71,14 +96,18 @@ class ElementTypeAdapter(
         }
     }
 
-    override fun substitute(type: Type): SubstitutionResult {
+    override fun getFullType(): Type {
+        return typedElement.type
+    }
+
+    override fun substituteFullType(type: Type): Type {
         return if (indices.isEmpty()) {
-            SubstitutionResult(typedElement.type, type)
+            type
         } else {
-            val substituted = typedElement.type.copy()
-            val parentType = substituted.getArgument(indices.dropLast(1))
+            val substitutedType = typedElement.type.copy()
+            val parentType = substitutedType.getArgument(indices.dropLast(1))
             parentType.arguments[indices.last()] = type
-            SubstitutionResult(typedElement.type, substituted)
+            substitutedType
         }
     }
 }
@@ -100,7 +129,11 @@ class TypeArgumentTypeAdapter(
         callExpression.typeArguments[index] = type
     }
 
-    override fun substitute(type: Type): SubstitutionResult {
-        return SubstitutionResult(callExpression.typeArguments[index], type)
+    override fun getFullType(): Type {
+        return callExpression.typeArguments[index]
+    }
+
+    override fun substituteFullType(type: Type): Type {
+        return type
     }
 }

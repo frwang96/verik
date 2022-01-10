@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,21 @@
 
 package io.verik.compiler.resolve
 
-enum class SpecialTypeConstraintKind {
-    CONSTANT_ONE,
-    CAT,
-    REP
+/**
+ * Type constraint kind. IN / OUT is whether the type under consideration is inward or outwards and is used to
+ * generate expected type and actual type in error messages.
+ */
+enum class TypeConstraintKind {
+    EQ_IN,
+    EQ_OUT,
+    EQ_INOUT,
+    LOG_IN,
+    WIDTH_OUT,
+    MAX_OUT,
+    MAX_INC_OUT,
+    ADD_OUT,
+    CAT_OUT,
+    REP_OUT,
+    EXT_IN,
+    TRU_IN
 }

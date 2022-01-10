@@ -57,7 +57,6 @@ import io.verik.compiler.reorder.DeadDeclarationEliminatorStage
 import io.verik.compiler.reorder.DependencyReordererStage
 import io.verik.compiler.reorder.PropertyStatementReordererStage
 import io.verik.compiler.resolve.CardinalNegativeCheckerStage
-import io.verik.compiler.resolve.TypeConstraintCheckerStage
 import io.verik.compiler.resolve.TypeConstraintResolverStage
 import io.verik.compiler.resolve.TypeReferenceForwarderStage
 import io.verik.compiler.resolve.TypeResolvedCheckerStage
@@ -153,7 +152,6 @@ object StageSequencer {
 
         stageSequence.add(StageType.RESOLVE, TypeConstraintResolverStage)
         stageSequence.add(StageType.RESOLVE, TypeResolvedCheckerStage)
-        stageSequence.add(StageType.RESOLVE, TypeConstraintCheckerStage)
         stageSequence.add(StageType.RESOLVE, CardinalNegativeCheckerStage)
         stageSequence.add(StageType.RESOLVE, TypeReferenceForwarderStage)
 

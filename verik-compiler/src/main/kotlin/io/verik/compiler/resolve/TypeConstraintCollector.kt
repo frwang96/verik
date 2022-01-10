@@ -17,12 +17,9 @@
 package io.verik.compiler.resolve
 
 import io.verik.compiler.ast.element.common.EAbstractProperty
-import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
-import io.verik.compiler.ast.element.common.ETypeParameter
-import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
@@ -34,7 +31,7 @@ import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.KtUnaryOperatorKind
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.common.CardinalDeclaration
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreFunctionDeclaration
 import io.verik.compiler.message.Messages
 
@@ -67,15 +64,28 @@ object TypeConstraintCollector {
         override fun visitKtProperty(property: EKtProperty) {
             super.visitKtProperty(property)
             val initializer = property.initializer
-            if (initializer != null)
-                collectTypeEquals(initializer, property)
+            if (initializer != null) {
+                typeConstraints.add(
+                    TypeConstraint(
+                        TypeConstraintKind.EQ_INOUT,
+                        TypeAdapter.ofElement(property),
+                        TypeAdapter.ofElement(initializer)
+                    )
+                )
+            }
         }
 
         override fun visitKtBlockExpression(blockExpression: EKtBlockExpression) {
             super.visitKtBlockExpression(blockExpression)
-            if (blockExpression.statements.isNotEmpty()) {
+            if (blockExpression.statements.isNotEmpty() && blockExpression.type.reference != Core.Kt.C_Unit) {
                 val statement = blockExpression.statements.last()
-                collectTypeEquals(statement, blockExpression)
+                typeConstraints.add(
+                    TypeConstraint(
+                        TypeConstraintKind.EQ_INOUT,
+                        TypeAdapter.ofElement(blockExpression),
+                        TypeAdapter.ofElement(statement)
+                    )
+                )
             }
         }
 
@@ -87,8 +97,15 @@ object TypeConstraintCollector {
                 KtUnaryOperatorKind.POST_INC,
                 KtUnaryOperatorKind.POST_DEC
             )
-            if (unaryExpression.kind in kinds)
-                collectTypeEquals(unaryExpression.expression, unaryExpression)
+            if (unaryExpression.kind in kinds) {
+                typeConstraints.add(
+                    TypeConstraint(
+                        TypeConstraintKind.EQ_INOUT,
+                        TypeAdapter.ofElement(unaryExpression),
+                        TypeAdapter.ofElement(unaryExpression.expression)
+                    )
+                )
+            }
         }
 
         override fun visitKtBinaryExpression(binaryExpression: EKtBinaryExpression) {
@@ -98,15 +115,28 @@ object TypeConstraintCollector {
                 KtBinaryOperatorKind.EQEQ,
                 KtBinaryOperatorKind.EXCL_EQ
             )
-            if (binaryExpression.kind in kinds)
-                collectTypeEquals(binaryExpression.right, binaryExpression.left)
+            if (binaryExpression.kind in kinds) {
+                typeConstraints.add(
+                    TypeConstraint(
+                        TypeConstraintKind.EQ_INOUT,
+                        TypeAdapter.ofElement(binaryExpression.left),
+                        TypeAdapter.ofElement(binaryExpression.right)
+                    )
+                )
+            }
         }
 
         override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
             super.visitReferenceExpression(referenceExpression)
-            when (val reference = referenceExpression.reference) {
-                is EExpression -> collectTypeEquals(referenceExpression, reference)
-                is EAbstractProperty -> collectTypeEquals(referenceExpression, reference)
+            val reference = referenceExpression.reference
+            if (reference is EAbstractProperty) {
+                typeConstraints.add(
+                    TypeConstraint(
+                        TypeConstraintKind.EQ_OUT,
+                        TypeAdapter.ofElement(referenceExpression),
+                        TypeAdapter.ofElement(reference)
+                    )
+                )
             }
         }
 
@@ -116,10 +146,7 @@ object TypeConstraintCollector {
                 is CoreFunctionDeclaration ->
                     typeConstraints.addAll(reference.getTypeConstraints(callExpression))
                 is EKtAbstractFunction -> {
-                    collectCallExpressionReturn(callExpression, reference, listOf())
-                    callExpression.valueArguments.indices.forEach {
-                        collectCallExpressionValueArgument(callExpression, reference, it, listOf())
-                    }
+                    // TODO get type constraints after forwarding reference
                 }
             }
         }
@@ -130,7 +157,13 @@ object TypeConstraintCollector {
             if (expression != null) {
                 val function = this.function
                 if (function != null) {
-                    collectTypeEquals(expression, function)
+                    typeConstraints.add(
+                        TypeConstraint(
+                            TypeConstraintKind.EQ_OUT,
+                            TypeAdapter.ofElement(expression),
+                            TypeAdapter.ofElement(function)
+                        )
+                    )
                 } else {
                     Messages.INTERNAL_ERROR.on(returnStatement, "Could not identify return type")
                 }
@@ -142,116 +175,33 @@ object TypeConstraintCollector {
             val thenExpression = ifExpression.thenExpression
             val elseExpression = ifExpression.elseExpression
             if (thenExpression != null && elseExpression != null) {
-                collectTypeEquals(thenExpression, ifExpression)
-                collectTypeEquals(elseExpression, ifExpression)
+                typeConstraints.add(
+                    TypeConstraint(
+                        TypeConstraintKind.EQ_INOUT,
+                        TypeAdapter.ofElement(ifExpression),
+                        TypeAdapter.ofElement(thenExpression)
+                    )
+                )
+                typeConstraints.add(
+                    TypeConstraint(
+                        TypeConstraintKind.EQ_INOUT,
+                        TypeAdapter.ofElement(ifExpression),
+                        TypeAdapter.ofElement(elseExpression)
+                    )
+                )
             }
         }
 
         override fun visitWhenExpression(whenExpression: EWhenExpression) {
             super.visitWhenExpression(whenExpression)
             whenExpression.entries.forEach {
-                collectTypeEquals(it.body, whenExpression)
-            }
-        }
-
-        private fun collectCallExpressionReturn(
-            callExpression: EKtCallExpression,
-            function: EKtAbstractFunction,
-            typeArgumentIndices: List<Int>
-        ) {
-            val type = function.type.getArgument(typeArgumentIndices)
-            when (val reference = type.reference) {
-                is CardinalDeclaration -> {
-                    typeConstraints.add(
-                        EqualsTypeConstraint(
-                            TypeAdapter.ofElement(callExpression, typeArgumentIndices),
-                            TypeAdapter.ofElement(function, typeArgumentIndices)
-                        )
-                    )
-                }
-                is ETypeParameter -> {
-                    val typeParameterIndex = function.typeParameters.indexOf(reference)
-                    if (typeParameterIndex != -1) {
-                        typeConstraints.add(
-                            EqualsTypeConstraint(
-                                TypeAdapter.ofElement(callExpression, typeArgumentIndices),
-                                TypeAdapter.ofTypeArgument(callExpression, typeParameterIndex)
-                            )
-                        )
-                    }
-                }
-                else -> {
-                    type.arguments.indices.forEach {
-                        collectCallExpressionReturn(callExpression, function, typeArgumentIndices + it)
-                    }
-                }
-            }
-        }
-
-        private fun collectCallExpressionValueArgument(
-            callExpression: EKtCallExpression,
-            function: EKtAbstractFunction,
-            valueArgumentIndex: Int,
-            typeArgumentIndices: List<Int>
-        ) {
-            val valueArgument = callExpression.valueArguments[valueArgumentIndex]
-            val valueParameter = function.valueParameters[valueArgumentIndex]
-            val type = valueParameter.type.getArgument(typeArgumentIndices)
-            when (val reference = type.reference) {
-                is CardinalDeclaration -> {
-                    typeConstraints.add(
-                        EqualsTypeConstraint(
-                            TypeAdapter.ofElement(valueArgument, typeArgumentIndices),
-                            TypeAdapter.ofElement(valueParameter, typeArgumentIndices)
-                        )
-                    )
-                }
-                is ETypeParameter -> {
-                    val typeParameterIndex = function.typeParameters.indexOf(reference)
-                    if (typeParameterIndex != -1) {
-                        typeConstraints.add(
-                            EqualsTypeConstraint(
-                                TypeAdapter.ofElement(valueArgument, typeArgumentIndices),
-                                TypeAdapter.ofTypeArgument(callExpression, typeParameterIndex)
-                            )
-                        )
-                    }
-                }
-                else -> {
-                    type.arguments.indices.forEach {
-                        collectCallExpressionValueArgument(
-                            callExpression,
-                            function,
-                            valueArgumentIndex,
-                            typeArgumentIndices + it
-                        )
-                    }
-                }
-            }
-        }
-
-        private fun collectTypeEquals(
-            inner: ETypedElement,
-            outer: ETypedElement,
-            indices: List<Int> = listOf()
-        ) {
-            val innerType = inner.type.getArgument(indices)
-            val outerType = outer.type.getArgument(indices)
-            if (innerType.isCardinalType() && outerType.isCardinalType()) {
                 typeConstraints.add(
-                    EqualsTypeConstraint(
-                        TypeAdapter.ofElement(inner, indices),
-                        TypeAdapter.ofElement(outer, indices)
+                    TypeConstraint(
+                        TypeConstraintKind.EQ_INOUT,
+                        TypeAdapter.ofElement(whenExpression),
+                        TypeAdapter.ofElement(it.body)
                     )
                 )
-                return
-            }
-            val innerTypeReference = innerType.reference
-            val outerTypeReference = outerType.reference
-            if (innerTypeReference == outerTypeReference) {
-                innerType.arguments.indices.forEach {
-                    collectTypeEquals(inner, outer, indices + it)
-                }
             }
         }
     }
