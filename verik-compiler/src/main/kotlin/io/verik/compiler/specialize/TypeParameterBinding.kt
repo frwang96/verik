@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,10 @@
 
 package io.verik.compiler.specialize
 
-import io.verik.compiler.ast.element.common.ETypeParameter
+import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.property.Type
 
 data class TypeParameterBinding(
-    val typeParameter: ETypeParameter,
-    val type: Type,
+    val declaration: EDeclaration,
+    val typeArguments: List<Type>
 )

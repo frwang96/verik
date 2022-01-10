@@ -44,45 +44,42 @@ import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.LiteralStringEntry
 import io.verik.compiler.ast.property.SuperTypeCallEntry
+import io.verik.compiler.ast.property.Type
 import io.verik.compiler.ast.property.WhenEntry
 import io.verik.compiler.message.Messages
 
 object SpecializerCopier {
 
-    fun <E : EElement> copy(
-        element: E,
-        typeParameterBindings: List<TypeParameterBinding>,
-        specializeContext: SpecializeContext
-    ): E {
+    fun <E : EElement> copy(element: E, typeArguments: List<Type>, specializeContext: SpecializeContext): E {
         val copiedElement = when (element) {
             // Declarations
             is ETypeParameter ->
-                copyTypeParameter(element, typeParameterBindings, specializeContext)
+                copyTypeParameter(element, typeArguments, specializeContext)
             is EKtClass ->
-                copyKtClass(element, typeParameterBindings, specializeContext)
+                copyKtClass(element, typeArguments, specializeContext)
             is EKtFunction ->
-                copyKtFunction(element, typeParameterBindings, specializeContext)
+                copyKtFunction(element, typeArguments, specializeContext)
             is EPrimaryConstructor ->
-                copyPrimaryConstructor(element, typeParameterBindings, specializeContext)
+                copyPrimaryConstructor(element, typeArguments, specializeContext)
             is EKtProperty ->
-                copyKtProperty(element, typeParameterBindings, specializeContext)
+                copyKtProperty(element, typeArguments, specializeContext)
             is EKtEnumEntry ->
-                copyKtEnumEntry(element, typeParameterBindings, specializeContext)
+                copyKtEnumEntry(element, typeArguments, specializeContext)
             is EKtValueParameter ->
-                copyKtValueParameter(element, typeParameterBindings, specializeContext)
+                copyKtValueParameter(element, typeArguments, specializeContext)
             // Expressions
             is EKtBlockExpression ->
-                copyKtBlockExpression(element, typeParameterBindings, specializeContext)
+                copyKtBlockExpression(element, typeArguments, specializeContext)
             is EPropertyStatement ->
-                copyPropertyStatement(element, typeParameterBindings, specializeContext)
+                copyPropertyStatement(element, typeArguments, specializeContext)
             is EKtUnaryExpression ->
-                copyKtUnaryExpression(element, typeParameterBindings, specializeContext)
+                copyKtUnaryExpression(element, typeArguments, specializeContext)
             is EKtBinaryExpression ->
-                copyKtBinaryExpression(element, typeParameterBindings, specializeContext)
+                copyKtBinaryExpression(element, typeArguments, specializeContext)
             is EReferenceExpression ->
-                copyReferenceExpression(element, typeParameterBindings, specializeContext)
+                copyReferenceExpression(element, typeArguments, specializeContext)
             is EKtCallExpression ->
-                copyKtCallExpression(element, typeParameterBindings, specializeContext)
+                copyKtCallExpression(element, typeArguments, specializeContext)
             is EConstantExpression ->
                 copyConstantExpression(element)
             is EThisExpression ->
@@ -90,21 +87,21 @@ object SpecializerCopier {
             is ESuperExpression ->
                 copySuperExpression(element)
             is EReturnStatement ->
-                copyReturnStatement(element, typeParameterBindings, specializeContext)
+                copyReturnStatement(element, typeArguments, specializeContext)
             is EFunctionLiteralExpression ->
-                copyFunctionLiteralExpression(element, typeParameterBindings, specializeContext)
+                copyFunctionLiteralExpression(element, typeArguments, specializeContext)
             is EStringTemplateExpression ->
-                copyStringTemplateExpression(element, typeParameterBindings, specializeContext)
+                copyStringTemplateExpression(element, typeArguments, specializeContext)
             is EIsExpression ->
-                copyIsExpression(element, typeParameterBindings, specializeContext)
+                copyIsExpression(element, typeArguments, specializeContext)
             is EAsExpression ->
-                copyAsExpression(element, typeParameterBindings, specializeContext)
+                copyAsExpression(element, typeArguments, specializeContext)
             is EIfExpression ->
-                copyIfExpression(element, typeParameterBindings, specializeContext)
+                copyIfExpression(element, typeArguments, specializeContext)
             is EWhenExpression ->
-                copyWhenExpression(element, typeParameterBindings, specializeContext)
+                copyWhenExpression(element, typeArguments, specializeContext)
             is EWhileStatement ->
-                copyWhileStatement(element, typeParameterBindings, specializeContext)
+                copyWhileStatement(element, typeArguments, specializeContext)
             else ->
                 Messages.INTERNAL_ERROR.on(element, "Unable to copy element: $element")
         }
@@ -114,7 +111,7 @@ object SpecializerCopier {
 
     private fun copyTypeParameter(
         typeParameter: ETypeParameter,
-        typeParameterBindings: List<TypeParameterBinding>,
+        typeArguments: List<Type>,
         specializeContext: SpecializeContext
     ): ETypeParameter {
         val type = typeParameter.toType()
@@ -123,24 +120,24 @@ object SpecializerCopier {
             typeParameter.name
         )
         copiedTypeParameter.init(type)
-        specializeContext.register(typeParameter, typeParameterBindings, copiedTypeParameter)
+        specializeContext.register(typeParameter, typeArguments, copiedTypeParameter)
         return copiedTypeParameter
     }
 
     private fun copyKtClass(
         `class`: EKtClass,
-        typeParameterBindings: List<TypeParameterBinding>,
+        typeArguments: List<Type>,
         specializeContext: SpecializeContext,
     ): EKtClass {
         val type = `class`.type.copy()
         val superType = `class`.superType.copy()
-        val declarations = `class`.declarations.map { copy(it, typeParameterBindings, specializeContext) }
-        val typeParameters = `class`.typeParameters.map { copy(it, typeParameterBindings, specializeContext) }
-        val primaryConstructor = `class`.primaryConstructor?.let { copy(it, typeParameterBindings, specializeContext) }
+        val declarations = `class`.declarations.map { copy(it, typeArguments, specializeContext) }
+        val typeParameters = `class`.typeParameters.map { copy(it, typeArguments, specializeContext) }
+        val primaryConstructor = `class`.primaryConstructor?.let { copy(it, typeArguments, specializeContext) }
         val superTypeCallEntry = `class`.superTypeCallEntry?.let { superTypeCallEntry ->
             SuperTypeCallEntry(
                 superTypeCallEntry.reference,
-                ArrayList(superTypeCallEntry.valueArguments.map { copy(it, typeParameterBindings, specializeContext) })
+                ArrayList(superTypeCallEntry.valueArguments.map { copy(it, typeArguments, specializeContext) })
             )
         }
         val copiedClass = EKtClass(
@@ -161,19 +158,19 @@ object SpecializerCopier {
             primaryConstructor,
             superTypeCallEntry
         )
-        specializeContext.register(`class`, typeParameterBindings, copiedClass)
+        specializeContext.register(`class`, typeArguments, copiedClass)
         return copiedClass
     }
 
     private fun copyKtFunction(
         function: EKtFunction,
-        typeParameterBindings: List<TypeParameterBinding>,
+        typeArguments: List<Type>,
         specializeContext: SpecializeContext
     ): EKtFunction {
         val type = function.type.copy()
-        val body = copy(function.body, typeParameterBindings, specializeContext)
-        val valueParameters = function.valueParameters.map { copy(it, typeParameterBindings, specializeContext) }
-        val typeParameters = function.typeParameters.map { copy(it, typeParameterBindings, specializeContext) }
+        val body = copy(function.body, typeArguments, specializeContext)
+        val valueParameters = function.valueParameters.map { copy(it, typeArguments, specializeContext) }
+        val typeParameters = function.typeParameters.map { copy(it, typeArguments, specializeContext) }
         val copiedFunction = EKtFunction(
             function.location,
             function.name
@@ -187,33 +184,31 @@ object SpecializerCopier {
             function.isOverride,
             function.isOverride
         )
-        specializeContext.register(function, typeParameterBindings, copiedFunction)
+        specializeContext.register(function, typeArguments, copiedFunction)
         return copiedFunction
     }
 
     private fun copyPrimaryConstructor(
         primaryConstructor: EPrimaryConstructor,
-        typeParameterBindings: List<TypeParameterBinding>,
+        typeArguments: List<Type>,
         specializeContext: SpecializeContext
     ): EPrimaryConstructor {
         val type = primaryConstructor.type.copy()
-        val valueParameters = primaryConstructor.valueParameters
-            .map { copy(it, typeParameterBindings, specializeContext) }
-        val typeParameters = primaryConstructor.typeParameters
-            .map { copy(it, typeParameterBindings, specializeContext) }
+        val valueParameters = primaryConstructor.valueParameters.map { copy(it, typeArguments, specializeContext) }
+        val typeParameters = primaryConstructor.typeParameters.map { copy(it, typeArguments, specializeContext) }
         val copiedPrimaryConstructor = EPrimaryConstructor(primaryConstructor.location)
         copiedPrimaryConstructor.init(type, valueParameters, typeParameters)
-        specializeContext.register(primaryConstructor, typeParameterBindings, copiedPrimaryConstructor)
+        specializeContext.register(primaryConstructor, typeArguments, copiedPrimaryConstructor)
         return copiedPrimaryConstructor
     }
 
     private fun copyKtProperty(
         property: EKtProperty,
-        typeParameterBindings: List<TypeParameterBinding>,
+        typeArguments: List<Type>,
         specializeContext: SpecializeContext
     ): EKtProperty {
         val type = property.type.copy()
-        val initializer = property.initializer?.let { copy(it, typeParameterBindings, specializeContext) }
+        val initializer = property.initializer?.let { copy(it, typeArguments, specializeContext) }
         val copiedProperty = EKtProperty(
             property.location,
             property.endLocation,
@@ -225,25 +220,25 @@ object SpecializerCopier {
             property.annotationEntries,
             property.isMutable
         )
-        specializeContext.register(property, typeParameterBindings, copiedProperty)
+        specializeContext.register(property, typeArguments, copiedProperty)
         return copiedProperty
     }
 
     private fun copyKtEnumEntry(
         enumEntry: EKtEnumEntry,
-        typeParameterBindings: List<TypeParameterBinding>,
+        typeArguments: List<Type>,
         specializeContext: SpecializeContext
     ): EKtEnumEntry {
         val type = enumEntry.type.copy()
         val copiedEnumEntry = EKtEnumEntry(enumEntry.location, enumEntry.name)
         copiedEnumEntry.init(type, enumEntry.annotationEntries)
-        specializeContext.register(enumEntry, typeParameterBindings, copiedEnumEntry)
+        specializeContext.register(enumEntry, typeArguments, copiedEnumEntry)
         return copiedEnumEntry
     }
 
     private fun copyKtValueParameter(
         valueParameter: EKtValueParameter,
-        typeParameterBindings: List<TypeParameterBinding>,
+        typeArguments: List<Type>,
         specializeContext: SpecializeContext
     ): EKtValueParameter {
         val type = valueParameter.type.copy()
@@ -254,17 +249,17 @@ object SpecializerCopier {
             valueParameter.isPrimaryConstructorProperty,
             valueParameter.isMutable
         )
-        specializeContext.register(valueParameter, typeParameterBindings, copiedValueParameter)
+        specializeContext.register(valueParameter, typeArguments, copiedValueParameter)
         return copiedValueParameter
     }
 
     private fun copyKtBlockExpression(
         blockExpression: EKtBlockExpression,
-        typeParameterBindings: List<TypeParameterBinding>,
+        typeArguments: List<Type>,
         specializeContext: SpecializeContext
     ): EKtBlockExpression {
         val type = blockExpression.type.copy()
-        val statements = blockExpression.statements.map { copy(it, typeParameterBindings, specializeContext) }
+        val statements = blockExpression.statements.map { copy(it, typeArguments, specializeContext) }
         return EKtBlockExpression(
             blockExpression.location,
             blockExpression.endLocation,
@@ -275,10 +270,10 @@ object SpecializerCopier {
 
     private fun copyPropertyStatement(
         propertyStatement: EPropertyStatement,
-        typeParameterBindings: List<TypeParameterBinding>,
+        typeArguments: List<Type>,
         specializeContext: SpecializeContext
     ): EPropertyStatement {
-        val property = copy(propertyStatement.property, typeParameterBindings, specializeContext)
+        val property = copy(propertyStatement.property, typeArguments, specializeContext)
         return EPropertyStatement(
             propertyStatement.location,
             property
@@ -287,11 +282,11 @@ object SpecializerCopier {
 
     private fun copyKtUnaryExpression(
         unaryExpression: EKtUnaryExpression,
-        typeParameterBindings: List<TypeParameterBinding>,
+        typeArguments: List<Type>,
         specializeContext: SpecializeContext
     ): EKtUnaryExpression {
         val type = unaryExpression.type.copy()
-        val expression = copy(unaryExpression.expression, typeParameterBindings, specializeContext)
+        val expression = copy(unaryExpression.expression, typeArguments, specializeContext)
         return EKtUnaryExpression(
             unaryExpression.location,
             type,
@@ -302,12 +297,12 @@ object SpecializerCopier {
 
     private fun copyKtBinaryExpression(
         binaryExpression: EKtBinaryExpression,
-        typeParameterBindings: List<TypeParameterBinding>,
+        typeArguments: List<Type>,
         specializeContext: SpecializeContext
     ): EKtBinaryExpression {
         val type = binaryExpression.type.copy()
-        val left = copy(binaryExpression.left, typeParameterBindings, specializeContext)
-        val right = copy(binaryExpression.right, typeParameterBindings, specializeContext)
+        val left = copy(binaryExpression.left, typeArguments, specializeContext)
+        val right = copy(binaryExpression.right, typeArguments, specializeContext)
         return EKtBinaryExpression(
             binaryExpression.location,
             type,
@@ -319,11 +314,11 @@ object SpecializerCopier {
 
     private fun copyReferenceExpression(
         referenceExpression: EReferenceExpression,
-        typeParameterBindings: List<TypeParameterBinding>,
+        typeArguments: List<Type>,
         specializeContext: SpecializeContext
     ): EReferenceExpression {
         val type = referenceExpression.type.copy()
-        val receiver = referenceExpression.receiver?.let { copy(it, typeParameterBindings, specializeContext) }
+        val receiver = referenceExpression.receiver?.let { copy(it, typeArguments, specializeContext) }
         return EReferenceExpression(
             referenceExpression.location,
             type,
@@ -334,20 +329,20 @@ object SpecializerCopier {
 
     private fun copyKtCallExpression(
         callExpression: EKtCallExpression,
-        typeParameterBindings: List<TypeParameterBinding>,
+        typeArguments: List<Type>,
         specializeContext: SpecializeContext
     ): EKtCallExpression {
         val type = callExpression.type.copy()
-        val receiver = callExpression.receiver?.let { copy(it, typeParameterBindings, specializeContext) }
-        val valueArguments = callExpression.valueArguments.map { copy(it, typeParameterBindings, specializeContext) }
-        val typeArguments = callExpression.typeArguments.map { it.copy() }
+        val receiver = callExpression.receiver?.let { copy(it, typeArguments, specializeContext) }
+        val copiedValueArguments = callExpression.valueArguments.map { copy(it, typeArguments, specializeContext) }
+        val copiedTypeArguments = callExpression.typeArguments.map { it.copy() }
         return EKtCallExpression(
             callExpression.location,
             type,
             callExpression.reference,
             receiver,
-            ArrayList(valueArguments),
-            ArrayList(typeArguments)
+            ArrayList(copiedValueArguments),
+            ArrayList(copiedTypeArguments)
         )
     }
 
@@ -378,11 +373,11 @@ object SpecializerCopier {
 
     private fun copyReturnStatement(
         returnStatement: EReturnStatement,
-        typeParameterBindings: List<TypeParameterBinding>,
+        typeArguments: List<Type>,
         specializeContext: SpecializeContext
     ): EReturnStatement {
         val type = returnStatement.type.copy()
-        val expression = returnStatement.expression?.let { copy(it, typeParameterBindings, specializeContext) }
+        val expression = returnStatement.expression?.let { copy(it, typeArguments, specializeContext) }
         return EReturnStatement(
             returnStatement.location,
             type,
@@ -392,12 +387,12 @@ object SpecializerCopier {
 
     private fun copyFunctionLiteralExpression(
         functionLiteralExpression: EFunctionLiteralExpression,
-        typeParameterBindings: List<TypeParameterBinding>,
+        typeArguments: List<Type>,
         specializeContext: SpecializeContext
     ): EFunctionLiteralExpression {
         val valueParameters = functionLiteralExpression.valueParameters
-            .map { copy(it, typeParameterBindings, specializeContext) }
-        val body = copy(functionLiteralExpression.body, typeParameterBindings, specializeContext)
+            .map { copy(it, typeArguments, specializeContext) }
+        val body = copy(functionLiteralExpression.body, typeArguments, specializeContext)
         return EFunctionLiteralExpression(
             functionLiteralExpression.location,
             ArrayList(valueParameters),
@@ -407,7 +402,7 @@ object SpecializerCopier {
 
     private fun copyStringTemplateExpression(
         stringTemplateExpression: EStringTemplateExpression,
-        typeParameterBindings: List<TypeParameterBinding>,
+        typeArguments: List<Type>,
         specializeContext: SpecializeContext
     ): EStringTemplateExpression {
         val entries = stringTemplateExpression.entries.map {
@@ -415,7 +410,7 @@ object SpecializerCopier {
                 is LiteralStringEntry ->
                     LiteralStringEntry(it.text)
                 is ExpressionStringEntry ->
-                    ExpressionStringEntry(copy(it.expression, typeParameterBindings, specializeContext))
+                    ExpressionStringEntry(copy(it.expression, typeArguments, specializeContext))
             }
         }
         return EStringTemplateExpression(
@@ -426,11 +421,11 @@ object SpecializerCopier {
 
     private fun copyIsExpression(
         isExpression: EIsExpression,
-        typeParameterBindings: List<TypeParameterBinding>,
+        typeArguments: List<Type>,
         specializeContext: SpecializeContext
     ): EIsExpression {
-        val expression = copy(isExpression.expression, typeParameterBindings, specializeContext)
-        val property = copy(isExpression.property, typeParameterBindings, specializeContext)
+        val expression = copy(isExpression.expression, typeArguments, specializeContext)
+        val property = copy(isExpression.property, typeArguments, specializeContext)
         val castType = isExpression.castType.copy()
         return EIsExpression(
             isExpression.location,
@@ -443,11 +438,11 @@ object SpecializerCopier {
 
     private fun copyAsExpression(
         asExpression: EAsExpression,
-        typeParameterBindings: List<TypeParameterBinding>,
+        typeArguments: List<Type>,
         specializeContext: SpecializeContext
     ): EAsExpression {
         val type = asExpression.type.copy()
-        val expression = copy(asExpression.expression, typeParameterBindings, specializeContext)
+        val expression = copy(asExpression.expression, typeArguments, specializeContext)
         return EAsExpression(
             asExpression.location,
             type,
@@ -457,13 +452,13 @@ object SpecializerCopier {
 
     private fun copyIfExpression(
         ifExpression: EIfExpression,
-        typeParameterBindings: List<TypeParameterBinding>,
+        typeArguments: List<Type>,
         specializeContext: SpecializeContext
     ): EIfExpression {
         val type = ifExpression.type.copy()
-        val condition = copy(ifExpression.condition, typeParameterBindings, specializeContext)
-        val thenExpression = ifExpression.thenExpression?.let { copy(it, typeParameterBindings, specializeContext) }
-        val elseExpression = ifExpression.elseExpression?.let { copy(it, typeParameterBindings, specializeContext) }
+        val condition = copy(ifExpression.condition, typeArguments, specializeContext)
+        val thenExpression = ifExpression.thenExpression?.let { copy(it, typeArguments, specializeContext) }
+        val elseExpression = ifExpression.elseExpression?.let { copy(it, typeArguments, specializeContext) }
         return EIfExpression(
             ifExpression.location,
             type,
@@ -475,15 +470,15 @@ object SpecializerCopier {
 
     private fun copyWhenExpression(
         whenExpression: EWhenExpression,
-        typeParameterBindings: List<TypeParameterBinding>,
+        typeArguments: List<Type>,
         specializeContext: SpecializeContext
     ): EWhenExpression {
         val type = whenExpression.type.copy()
-        val subject = whenExpression.subject?.let { copy(it, typeParameterBindings, specializeContext) }
+        val subject = whenExpression.subject?.let { copy(it, typeArguments, specializeContext) }
         val entries = whenExpression.entries.map { entry ->
             WhenEntry(
-                ArrayList(entry.conditions.map { copy(it, typeParameterBindings, specializeContext) }),
-                copy(entry.body, typeParameterBindings, specializeContext)
+                ArrayList(entry.conditions.map { copy(it, typeArguments, specializeContext) }),
+                copy(entry.body, typeArguments, specializeContext)
             )
         }
         return EWhenExpression(
@@ -497,11 +492,11 @@ object SpecializerCopier {
 
     private fun copyWhileStatement(
         whileStatement: EWhileStatement,
-        typeParameterBindings: List<TypeParameterBinding>,
+        typeArguments: List<Type>,
         specializeContext: SpecializeContext
     ): EWhileStatement {
-        val condition = copy(whileStatement.condition, typeParameterBindings, specializeContext)
-        val body = copy(whileStatement.body, typeParameterBindings, specializeContext)
+        val condition = copy(whileStatement.condition, typeArguments, specializeContext)
+        val body = copy(whileStatement.body, typeArguments, specializeContext)
         return EWhileStatement(
             whileStatement.location,
             condition,

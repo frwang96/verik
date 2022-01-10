@@ -30,7 +30,7 @@ internal class TypeReferenceForwarderStageTest : BaseTest() {
                 val x = C()
             """.trimIndent(),
             TypeReferenceForwarderStage::class,
-            "KtProperty(x, Boolean, *, [], 1)"
+            "KtProperty(x, C, *, [], 0)"
         ) { it.findDeclaration("x") }
     }
 
@@ -42,7 +42,7 @@ internal class TypeReferenceForwarderStageTest : BaseTest() {
                 val x = C<`1`>()
             """.trimIndent(),
             TypeReferenceForwarderStage::class,
-            "KtProperty(x, Boolean, *, [], 1)"
+            "KtProperty(x, C_X_1, *, [], 0)"
         ) { it.findDeclaration("x") }
     }
 }

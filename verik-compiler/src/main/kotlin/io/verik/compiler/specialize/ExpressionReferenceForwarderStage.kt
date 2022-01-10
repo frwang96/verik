@@ -24,6 +24,7 @@ import io.verik.compiler.ast.element.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.interfaces.Declaration
+import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
@@ -42,12 +43,12 @@ object ExpressionReferenceForwarderStage : ProjectStage() {
     }
 
     private class ExpressionReferenceForwarderVisitor(
-        private val typeParameterBindings: List<TypeParameterBinding>,
+        private val typeArguments: List<Type>,
         private val specializeContext: SpecializeContext
     ) : TreeVisitor() {
 
-        // TODO get type parameter bindings from receiver
-        private fun getTypeParameterBindingsFromReceiver(receiver: EExpression): List<TypeParameterBinding> {
+        // TODO get type arguments from receiver
+        private fun getTypeArgumentsFromReceiver(receiver: EExpression): List<Type> {
             return listOf()
         }
 
@@ -59,24 +60,23 @@ object ExpressionReferenceForwarderStage : ProjectStage() {
             super.visitReceiverExpression(receiverExpression)
             val reference = receiverExpression.reference
             val receiver = receiverExpression.receiver
-            val expressionTypeParameterBindings = when {
-                receiver != null -> getTypeParameterBindingsFromReceiver(receiver)
+            val expressionTypeArguments = when {
+                receiver != null -> getTypeArgumentsFromReceiver(receiver)
                 isTopLevel(reference) -> {
                     if (receiverExpression is EKtCallExpression && reference is EKtAbstractFunction) {
-                        reference.typeParameters
-                            .zip(receiverExpression.typeArguments)
-                            .map { (typeParameter, typeArgument) ->
-                                TypeParameterBinding(typeParameter, typeArgument)
-                            }
+                        receiverExpression.typeArguments
                     } else listOf()
                 }
-                else -> typeParameterBindings
+                else -> typeArguments
             }
             receiverExpression.reference = specializeContext.forward(
                 reference,
-                expressionTypeParameterBindings,
+                expressionTypeArguments,
                 receiverExpression
             )
+            if (reference is EDeclaration && receiverExpression is EKtCallExpression) {
+                receiverExpression.typeArguments = ArrayList()
+            }
         }
     }
 }

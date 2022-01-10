@@ -28,12 +28,14 @@ import org.jetbrains.kotlin.backend.common.pop
 object SpecializerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        val declarationBindings = ArrayList(getEntryPoints(projectContext))
+        val typeParameterBindings = ArrayList(getEntryPoints(projectContext))
         val specializeContext = SpecializeContext()
-        while (declarationBindings.isNotEmpty()) {
-            val declarationBinding = declarationBindings.pop()
-            if (!specializeContext.contains(declarationBinding)) {
-                declarationBindings.addAll(DeclarationSpecializer.specialize(declarationBinding, specializeContext))
+        while (typeParameterBindings.isNotEmpty()) {
+            val typeParameterBinding = typeParameterBindings.pop()
+            if (!specializeContext.contains(typeParameterBinding)) {
+                typeParameterBindings.addAll(
+                    DeclarationSpecializer.specialize(typeParameterBinding, specializeContext)
+                )
             }
         }
 
@@ -45,7 +47,7 @@ object SpecializerStage : ProjectStage() {
         projectContext.specializeContext = specializeContext
     }
 
-    private fun getEntryPoints(projectContext: ProjectContext): List<DeclarationBinding> {
+    private fun getEntryPoints(projectContext: ProjectContext): List<TypeParameterBinding> {
         val declarations = ArrayList<EDeclaration>()
         if (projectContext.config.enableDeadCodeElimination) {
             projectContext.project.files().forEach { file ->
@@ -73,6 +75,6 @@ object SpecializerStage : ProjectStage() {
                 }
             }
         }
-        return declarations.map { DeclarationBinding(it, listOf()) }
+        return declarations.map { TypeParameterBinding(it, listOf()) }
     }
 }

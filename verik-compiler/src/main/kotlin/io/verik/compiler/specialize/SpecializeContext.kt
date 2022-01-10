@@ -19,34 +19,27 @@ package io.verik.compiler.specialize
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.interfaces.Declaration
+import io.verik.compiler.ast.property.Type
 import io.verik.compiler.message.Messages
 
 class SpecializeContext {
 
     private val originalDeclarations = HashSet<EDeclaration>()
-    private val referenceForwardingMap = HashMap<DeclarationBinding, EDeclaration>()
+    private val referenceForwardingMap = HashMap<TypeParameterBinding, EDeclaration>()
 
-    fun register(
-        declaration: EDeclaration,
-        typeParameterBindings: List<TypeParameterBinding>,
-        copiedDeclaration: EDeclaration
-    ) {
+    fun register(declaration: EDeclaration, typeArguments: List<Type>, copiedDeclaration: EDeclaration) {
         originalDeclarations.add(declaration)
-        referenceForwardingMap[DeclarationBinding(declaration, typeParameterBindings)] = copiedDeclaration
+        referenceForwardingMap[TypeParameterBinding(declaration, typeArguments)] = copiedDeclaration
     }
 
-    fun contains(declarationBinding: DeclarationBinding): Boolean {
-        return declarationBinding in referenceForwardingMap
+    fun contains(typeParameterBinding: TypeParameterBinding): Boolean {
+        return typeParameterBinding in referenceForwardingMap
     }
 
-    fun forward(
-        declaration: Declaration,
-        typeParameterBindings: List<TypeParameterBinding>,
-        element: EElement
-    ): Declaration {
+    fun forward(declaration: Declaration, typeArguments: List<Type>, element: EElement): Declaration {
         if (declaration !is EDeclaration)
             return declaration
-        return referenceForwardingMap[DeclarationBinding(declaration, typeParameterBindings)]
+        return referenceForwardingMap[TypeParameterBinding(declaration, typeArguments)]
             ?: Messages.INTERNAL_ERROR.on(element, "Forwarded declaration not found: ${declaration.name}")
     }
 

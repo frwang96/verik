@@ -16,30 +16,22 @@
 
 package io.verik.compiler.specialize
 
-import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypeParameter
-import io.verik.compiler.ast.element.common.ETypedElement
-import io.verik.compiler.ast.element.kt.EKtCallExpression
-import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.interfaces.TypeParameterized
-import io.verik.compiler.ast.property.Type
-import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.CardinalConstantDeclaration
-import io.verik.compiler.message.Messages
 
 object DeclarationSpecializer {
 
     fun specialize(
-        declarationBinding: DeclarationBinding,
+        typeParameterBinding: TypeParameterBinding,
         specializeContext: SpecializeContext,
-    ): List<DeclarationBinding> {
+    ): List<TypeParameterBinding> {
         val declaration = SpecializerCopier.copy(
-            declarationBinding.declaration,
-            declarationBinding.typeParameterBindings,
+            typeParameterBinding.declaration,
+            typeParameterBinding.typeArguments,
             specializeContext
         )
-        val typeParameterSubstitutorVisitor = TypeParameterSubstitutorVisitor(declarationBinding.typeParameterBindings)
-        declaration.accept(typeParameterSubstitutorVisitor)
+        TypeParameterSubstitutor.substitute(typeParameterBinding, declaration)
         if (declaration is TypeParameterized && declaration.typeParameters.isNotEmpty()) {
             val typeParameterStrings = declaration.typeParameters.map { getTypeParameterString(it) }
             declaration.name = "${declaration.name}_${typeParameterStrings.joinToString(separator = "_")}"
@@ -55,40 +47,6 @@ object DeclarationSpecializer {
             "${typeParameter.name}_${reference.value}"
         } else {
             "${typeParameter.name}_${reference.name}"
-        }
-    }
-
-    private class TypeParameterSubstitutorVisitor(
-        private val typeParameterBindings: List<TypeParameterBinding>
-    ) : TreeVisitor() {
-
-        private fun substitute(type: Type, element: EElement): Type {
-            val reference = type.reference
-            return if (reference is ETypeParameter) {
-                val typeParameterBinding = typeParameterBindings.find { it.typeParameter == reference }
-                    ?: Messages.INTERNAL_ERROR.on(element, "Unable to substitute type parameter: ${reference.name}")
-                typeParameterBinding.type.copy()
-            } else {
-                val arguments = type.arguments.map { substitute(it, element) }
-                reference.toType(arguments)
-            }
-        }
-
-        override fun visitTypedElement(typedElement: ETypedElement) {
-            super.visitTypedElement(typedElement)
-            typedElement.type = substitute(typedElement.type, typedElement)
-        }
-
-        override fun visitKtClass(`class`: EKtClass) {
-            super.visitKtClass(`class`)
-            `class`.superType = substitute(`class`.superType, `class`)
-        }
-
-        override fun visitKtCallExpression(callExpression: EKtCallExpression) {
-            super.visitKtCallExpression(callExpression)
-            callExpression.typeArguments = ArrayList(
-                callExpression.typeArguments.map { substitute(it, callExpression) }
-            )
         }
     }
 }

@@ -27,15 +27,15 @@ import io.verik.compiler.message.Messages
 
 object SpecializerIndexer {
 
-    fun index(declaration: EDeclaration): List<DeclarationBinding> {
+    fun index(declaration: EDeclaration): List<TypeParameterBinding> {
         val specializerIndexerVisitor = SpecializerIndexerVisitor()
         declaration.accept(specializerIndexerVisitor)
-        return specializerIndexerVisitor.declarationBindings
+        return specializerIndexerVisitor.typeParameterBindings
     }
 
     private class SpecializerIndexerVisitor : TreeVisitor() {
 
-        val declarationBindings = ArrayList<DeclarationBinding>()
+        val typeParameterBindings = ArrayList<TypeParameterBinding>()
 
         private fun isTopLevel(reference: EDeclaration): Boolean {
             return reference.parent is EFile || reference is EPrimaryConstructor
@@ -46,7 +46,7 @@ object SpecializerIndexer {
             if (referenceExpression.receiver == null) {
                 val reference = referenceExpression.reference
                 if (reference is EDeclaration && isTopLevel(reference)) {
-                    declarationBindings.add(DeclarationBinding(reference, listOf()))
+                    typeParameterBindings.add(TypeParameterBinding(reference, listOf()))
                 }
             }
         }
@@ -60,17 +60,12 @@ object SpecializerIndexer {
                         Messages.UNRESOLVED_CALL_EXPRESSION_TYPE_ARGUMENTS.on(callExpression, reference.name)
                         return
                     }
-                    val typeParameterBindings = reference.typeParameters
-                        .zip(callExpression.typeArguments)
-                        .map { (typeParameter, typeArgument) ->
-                            TypeParameterBinding(typeParameter, typeArgument)
-                        }
-                    val declarationBinding = if (reference is EPrimaryConstructor) {
-                        DeclarationBinding(reference.parentNotNull().cast(), typeParameterBindings)
+                    val typeParameterBinding = if (reference is EPrimaryConstructor) {
+                        TypeParameterBinding(reference.parentNotNull().cast(), callExpression.typeArguments)
                     } else {
-                        DeclarationBinding(reference, typeParameterBindings)
+                        TypeParameterBinding(reference, callExpression.typeArguments)
                     }
-                    declarationBindings.add(declarationBinding)
+                    typeParameterBindings.add(typeParameterBinding)
                 }
             }
         }
