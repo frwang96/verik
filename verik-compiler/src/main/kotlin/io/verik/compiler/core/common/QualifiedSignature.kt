@@ -35,7 +35,7 @@ data class QualifiedSignature(val qualifiedName: String, val signature: String) 
         fun get(declarationDescriptor: DeclarationDescriptor): QualifiedSignature {
             val fqNameSafe = declarationDescriptor.fqNameSafe
             val qualifiedName = if (fqNameSafe.shortName().asString() == "<init>") {
-               "${fqNameSafe.parent().asString()}.${fqNameSafe.parent().shortName().asString()}"
+                "${fqNameSafe.parent().asString()}.${fqNameSafe.parent().shortName().asString()}"
             } else {
                 fqNameSafe.asString()
             }

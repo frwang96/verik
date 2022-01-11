@@ -47,6 +47,7 @@ configure<JavaPluginExtension> {
 }
 
 tasks.test {
+    inputs.dir(projectDir.resolve("regression"))
     useJUnitPlatform()
     systemProperties["junit.jupiter.execution.parallel.enabled"] = true
     systemProperties["junit.jupiter.execution.parallel.mode.default"] = "concurrent"

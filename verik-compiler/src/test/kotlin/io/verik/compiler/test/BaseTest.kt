@@ -21,7 +21,6 @@ import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.common.ElementPrinter
 import io.verik.compiler.common.TextFile
 import io.verik.compiler.main.OutputContext
-import io.verik.compiler.main.Platform
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.main.SourceSetConfig
@@ -194,18 +193,14 @@ abstract class BaseTest {
         }
 
         fun getConfig(): VerikConfig {
-            val buildDir = if (Platform.isWindows) "C:\\build\\verik" else "/build/verik"
-            val projectFile = if (Platform.isWindows) {
-                "C:\\src\\main\\kotlin\\test\\Test.kt"
-            } else {
-                "/src/main/kotlin/test/Test.kt"
-            }
-            val sourceSetConfig = SourceSetConfig("test", listOf(Paths.get(projectFile)))
+            val buildDir = Paths.get("/build/verik")
+            val projectFile = Paths.get("/src/main/kotlin/test/Test.kt")
+            val sourceSetConfig = SourceSetConfig("test", listOf(projectFile))
             return VerikConfig(
                 toolchain = "verik",
                 timestamp = "",
                 projectName = "test",
-                buildDir = Paths.get(buildDir),
+                buildDir = buildDir,
                 sourceSetConfigs = listOf(sourceSetConfig),
                 timescale = "1ns / 1ns",
                 entryPoints = listOf(),
