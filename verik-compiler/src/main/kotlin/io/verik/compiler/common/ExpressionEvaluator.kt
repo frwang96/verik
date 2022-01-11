@@ -17,7 +17,9 @@
 package io.verik.compiler.common
 
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
+import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
@@ -29,16 +31,15 @@ object ExpressionEvaluator {
 
     fun evaluate(expression: EExpression): EExpression? {
         return when (expression) {
-            is EKtBinaryExpression ->
-                evaluateBinaryExpression(expression)
+            is EKtBinaryExpression -> evaluateBinaryExpression(expression)
             is EKtCallExpression -> {
                 val reference = expression.reference
                 if (reference is CoreFunctionDeclaration) {
                     reference.evaluate(expression)
                 } else null
             }
-            is EInlineIfExpression ->
-                evaluateInlineIfExpression(expression)
+            is EIfExpression -> evaluateIfExpression(expression)
+            is EInlineIfExpression -> evaluateInlineIfExpression(expression)
             else -> null
         }
     }
@@ -49,6 +50,14 @@ object ExpressionEvaluator {
         return when (binaryExpression.kind) {
             KtBinaryOperatorKind.ANDAND -> BooleanConstantEvaluator.binaryAndBoolean(binaryExpression, left, right)
             KtBinaryOperatorKind.OROR -> BooleanConstantEvaluator.binaryOrBoolean(binaryExpression, left, right)
+            else -> null
+        }
+    }
+
+    private fun evaluateIfExpression(ifExpression: EIfExpression): EExpression? {
+        return when (ConstantNormalizer.parseBooleanOrNull(ifExpression.condition)) {
+            true -> ifExpression.thenExpression ?: EKtBlockExpression.empty(ifExpression.location)
+            false -> ifExpression.elseExpression ?: EKtBlockExpression.empty(ifExpression.location)
             else -> null
         }
     }

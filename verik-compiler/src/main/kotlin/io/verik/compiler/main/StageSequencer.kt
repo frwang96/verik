@@ -70,7 +70,6 @@ import io.verik.compiler.transform.lower.BlockExpressionReducerStage
 import io.verik.compiler.transform.lower.ExpressionEvaluatorStage
 import io.verik.compiler.transform.lower.ExpressionExtractorStage
 import io.verik.compiler.transform.lower.FunctionTransformerStage
-import io.verik.compiler.transform.lower.IfExpressionEvaluatorStage
 import io.verik.compiler.transform.lower.ProceduralBlockEliminatorStage
 import io.verik.compiler.transform.lower.PropertyTransformerStage
 import io.verik.compiler.transform.post.AssignmentTransformerStage
@@ -183,7 +182,6 @@ object StageSequencer {
         stageSequence.add(StageType.LOWER_TRANSFORM, PropertyTransformerStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, ExpressionExtractorStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, ExpressionEvaluatorStage)
-        stageSequence.add(StageType.LOWER_TRANSFORM, IfExpressionEvaluatorStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, BlockExpressionReducerStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, ProceduralBlockEliminatorStage)
 
