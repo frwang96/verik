@@ -18,6 +18,7 @@ package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.common.TreeVisitor
@@ -47,6 +48,10 @@ class ERepeatStatement(
     override fun acceptChildren(visitor: TreeVisitor) {
         condition.accept(visitor)
         body.accept(visitor)
+    }
+
+    override fun childBlockExpressionShouldBeReduced(blockExpression: EKtBlockExpression): Boolean {
+        return false
     }
 
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {

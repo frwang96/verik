@@ -66,6 +66,7 @@ import io.verik.compiler.serialize.general.SourcesFileSerializerStage
 import io.verik.compiler.serialize.source.SourceSerializerStage
 import io.verik.compiler.serialize.target.CompositeTargetSerializerStage
 import io.verik.compiler.specialize.SpecializerStage
+import io.verik.compiler.transform.lower.BlockExpressionReducerStage
 import io.verik.compiler.transform.lower.ExpressionEvaluatorStage
 import io.verik.compiler.transform.lower.ExpressionExtractorStage
 import io.verik.compiler.transform.lower.FunctionTransformerStage
@@ -183,6 +184,7 @@ object StageSequencer {
         stageSequence.add(StageType.LOWER_TRANSFORM, ExpressionExtractorStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, ExpressionEvaluatorStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, IfExpressionEvaluatorStage)
+        stageSequence.add(StageType.LOWER_TRANSFORM, BlockExpressionReducerStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, ProceduralBlockEliminatorStage)
 
         stageSequence.add(StageType.REORDER, PropertyStatementReordererStage)

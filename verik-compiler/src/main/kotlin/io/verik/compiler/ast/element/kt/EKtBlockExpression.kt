@@ -57,5 +57,15 @@ class EKtBlockExpression(
                 )
             } else expression
         }
+
+        fun extract(expression: EExpression, extractedExpressions: List<EExpression>) {
+            val blockExpression = EKtBlockExpression(
+                expression.location,
+                expression.location,
+                expression.type.copy(),
+                ArrayList(extractedExpressions)
+            )
+            expression.replace(blockExpression)
+        }
     }
 }

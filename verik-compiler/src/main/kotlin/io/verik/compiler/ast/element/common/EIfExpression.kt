@@ -16,6 +16,7 @@
 
 package io.verik.compiler.ast.element.common
 
+import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.ast.property.Type
@@ -47,6 +48,10 @@ class EIfExpression(
         condition.accept(visitor)
         thenExpression?.accept(visitor)
         elseExpression?.accept(visitor)
+    }
+
+    override fun childBlockExpressionShouldBeReduced(blockExpression: EKtBlockExpression): Boolean {
+        return (blockExpression == condition)
     }
 
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {

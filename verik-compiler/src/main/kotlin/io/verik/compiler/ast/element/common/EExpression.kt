@@ -17,6 +17,7 @@
 package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
+import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.property.ExpressionType
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
@@ -25,6 +26,10 @@ import io.verik.compiler.ast.property.SerializationType
 abstract class EExpression : ETypedElement() {
 
     abstract val serializationType: SerializationType
+
+    open fun childBlockExpressionShouldBeReduced(blockExpression: EKtBlockExpression): Boolean {
+        return true
+    }
 
     fun replace(expression: EExpression) {
         parentNotNull().replaceChildAsExpressionContainer(this, expression)

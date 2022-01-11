@@ -17,6 +17,7 @@
 package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.CaseEntry
 import io.verik.compiler.ast.property.SerializationType
@@ -54,6 +55,10 @@ class ECaseStatement(
             entry.conditions.forEach { it.accept(visitor) }
             entry.body.accept(visitor)
         }
+    }
+
+    override fun childBlockExpressionShouldBeReduced(blockExpression: EKtBlockExpression): Boolean {
+        return (blockExpression == subject)
     }
 
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {

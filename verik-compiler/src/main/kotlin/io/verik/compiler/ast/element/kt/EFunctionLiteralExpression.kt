@@ -53,6 +53,10 @@ class EFunctionLiteralExpression(
         body.accept(visitor)
     }
 
+    override fun childBlockExpressionShouldBeReduced(blockExpression: EKtBlockExpression): Boolean {
+        return false
+    }
+
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
         newExpression.parent = this
         return if (body == oldExpression) {

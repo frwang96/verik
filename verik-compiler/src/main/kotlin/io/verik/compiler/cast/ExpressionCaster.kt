@@ -312,14 +312,24 @@ object ExpressionCaster {
         val location = expression.location()
         val condition = castContext.casterVisitor.getExpression(expression.condition!!)
         val body = castContext.casterVisitor.getExpression(expression.body!!)
-        return EWhileStatement(location, condition, body, false)
+        return EWhileStatement(
+            location,
+            condition,
+            EKtBlockExpression.wrap(body),
+            false
+        )
     }
 
     fun castDoWhileStatement(expression: KtDoWhileExpression, castContext: CastContext): EWhileStatement {
         val location = expression.location()
         val condition = castContext.casterVisitor.getExpression(expression.condition!!)
         val body = castContext.casterVisitor.getExpression(expression.body!!)
-        return EWhileStatement(location, condition, body, true)
+        return EWhileStatement(
+            location,
+            condition,
+            EKtBlockExpression.wrap(body),
+            true
+        )
     }
 
     fun castKtForStatement(expression: KtForExpression, castContext: CastContext): EKtForStatement? {

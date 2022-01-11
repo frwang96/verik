@@ -20,6 +20,7 @@
 - Merge `Optional` with `Cardinal`.
 - Separate `MID_TRANSFORM` into `UPPER_TRANSFORM` and `LOWER_TRANSFORM`.
 - Rewrite specialize and resolve stages to move type resolution after specialization.
+- New scheme for extracting expressions with `BlockExpressionReducerStage`.
 
 ## [0.1.11]
 ### Added

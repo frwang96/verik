@@ -19,6 +19,7 @@ package io.verik.compiler.ast.element.sv
 import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.interfaces.DeclarationContainer
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.SerializationType
@@ -55,6 +56,10 @@ class ESvForStatement(
         condition.accept(visitor)
         iteration.accept(visitor)
         body.accept(visitor)
+    }
+
+    override fun childBlockExpressionShouldBeReduced(blockExpression: EKtBlockExpression): Boolean {
+        return (blockExpression == condition) || (blockExpression == iteration)
     }
 
     override fun replaceChild(oldDeclaration: EDeclaration, newDeclaration: EDeclaration): Boolean {
