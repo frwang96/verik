@@ -180,8 +180,9 @@ object TypeConstraintResolver {
         val typeAdapterType = typeAdapters[0].getType()
         if (isIgnored(type) || isIgnored(typeAdapterType))
             return
+        // TODO take inheritance into account when setting types
         if (typeAdapterType.isResolved()) {
-            if (typeAdapterType != type) {
+            if (hasCardinalType(type) && typeAdapterType != type) {
                 if (isActual) {
                     Messages.MISMATCHED_TYPE.on(
                         typeAdapters[0].getElement(),
@@ -203,5 +204,13 @@ object TypeConstraintResolver {
 
     private fun isIgnored(type: Type): Boolean {
         return type.reference in listOf(Core.Kt.C_Function, Core.Kt.C_Nothing)
+    }
+
+    private fun hasCardinalType(type: Type): Boolean {
+        return if (type.isCardinalType()) {
+            true
+        } else {
+            type.arguments.any { hasCardinalType(it) }
+        }
     }
 }

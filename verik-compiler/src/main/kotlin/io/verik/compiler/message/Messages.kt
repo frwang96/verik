@@ -136,6 +136,10 @@ object Messages {
         "Make annotation out of context"
     )
 
+    val PARAMETERIZED_FUNCTION_NOT_TOP = ErrorMessageTemplate1<String>(
+        "Function that is not top level cannot be parameterized: $0"
+    )
+
     val EXPECTED_CARDINAL_TYPE = ErrorMessageTemplate1<Type>(
         "Cardinal type expected but found: $0"
     )

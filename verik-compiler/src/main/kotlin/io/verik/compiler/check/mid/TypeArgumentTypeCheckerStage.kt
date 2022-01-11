@@ -27,13 +27,13 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
-object TypeParameterTypeCheckerStage : ProjectStage() {
+object TypeArgumentTypeCheckerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.project.accept(TypeParameterTypeCheckerVisitor)
+        projectContext.project.accept(TypeArgumentTypeCheckerVisitor)
     }
 
-    private object TypeParameterTypeCheckerVisitor : TreeVisitor() {
+    private object TypeArgumentTypeCheckerVisitor : TreeVisitor() {
 
         private fun checkType(type: Type, element: EElement) {
             if (type.reference is CoreCardinalFunctionDeclaration) {

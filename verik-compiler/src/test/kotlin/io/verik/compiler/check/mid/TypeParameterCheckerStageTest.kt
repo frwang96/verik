@@ -19,29 +19,18 @@ package io.verik.compiler.check.mid
 import io.verik.compiler.test.BaseTest
 import org.junit.jupiter.api.Test
 
-internal class TypeParameterTypeCheckerStageTest : BaseTest() {
+internal class TypeParameterCheckerStageTest : BaseTest() {
 
     @Test
-    fun `cardinal type expected`() {
+    fun `parameterized function illegal`() {
         driveMessageTest(
             """
-                var x: Ubit<ADD<`8`, Int>> = u(0)
-            """.trimIndent(),
-            true,
-            "Cardinal type expected but found: Int"
-        )
-    }
-
-    @Test
-    fun `cardinal type expected type parameter`() {
-        driveMessageTest(
-            """
-                class C<N> {
-                    var x: Ubit<INC<N>> = u(0)
+                class C {
+                    fun <T> f() {}
                 }
             """.trimIndent(),
             true,
-            "Cardinal type expected but found: N"
+            "Function that is not top level cannot be parameterized: f"
         )
     }
 }

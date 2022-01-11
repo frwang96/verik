@@ -26,7 +26,8 @@ import io.verik.compiler.check.mid.ObjectCheckerStage
 import io.verik.compiler.check.mid.PortCheckerStage
 import io.verik.compiler.check.mid.PortInstantiationCheckerStage
 import io.verik.compiler.check.mid.ProceduralBlockReferenceCheckerStage
-import io.verik.compiler.check.mid.TypeParameterTypeCheckerStage
+import io.verik.compiler.check.mid.TypeArgumentTypeCheckerStage
+import io.verik.compiler.check.mid.TypeParameterCheckerStage
 import io.verik.compiler.check.post.FileCheckerStage
 import io.verik.compiler.check.post.KeywordCheckerStage
 import io.verik.compiler.check.post.NameRedeclarationCheckerStage
@@ -139,7 +140,8 @@ object StageSequencer {
         stageSequence.add(StageType.MID_CHECK, EntryPointCheckerStage)
         stageSequence.add(StageType.MID_CHECK, AnnotationEntryCheckerStage)
         stageSequence.add(StageType.MID_CHECK, ComponentInstantiationCheckerStage)
-        stageSequence.add(StageType.MID_CHECK, TypeParameterTypeCheckerStage)
+        stageSequence.add(StageType.MID_CHECK, TypeParameterCheckerStage)
+        stageSequence.add(StageType.MID_CHECK, TypeArgumentTypeCheckerStage)
         stageSequence.add(StageType.MID_CHECK, ObjectCheckerStage)
         stageSequence.add(StageType.MID_CHECK, PortCheckerStage)
         stageSequence.add(StageType.MID_CHECK, PortInstantiationCheckerStage)
