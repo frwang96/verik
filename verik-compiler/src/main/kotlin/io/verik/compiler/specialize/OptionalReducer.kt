@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.ENullExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Cardinal
 import io.verik.compiler.core.common.Core
@@ -36,6 +37,15 @@ object OptionalReducer {
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
             if (callExpression.reference == Core.Vk.F_optional_Function) {
+                val property = callExpression.parent
+                if (property !is EKtProperty) {
+                    Messages.OPTIONAL_NOT_DIRECT_ASSIGNMENT.on(callExpression)
+                    return
+                }
+                if (property.isMutable) {
+                    Messages.OPTIONAL_NOT_VAL.on(callExpression)
+                }
+
                 val typeArgument = callExpression.typeArguments[0]
                 when (typeArgument.reference) {
                     Cardinal.TRUE -> {
@@ -50,6 +60,7 @@ object OptionalReducer {
                     Cardinal.FALSE -> {
                         val nullExpression = ENullExpression(callExpression.location)
                         callExpression.replace(nullExpression)
+                        property.type = nullExpression.type.copy()
                         return
                     }
                 }

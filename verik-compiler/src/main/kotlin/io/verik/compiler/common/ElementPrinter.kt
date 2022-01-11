@@ -98,7 +98,6 @@ import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.LiteralStringEntry
 import io.verik.compiler.ast.property.PortInstantiation
-import io.verik.compiler.ast.property.SuperTypeCallEntry
 import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 
@@ -167,7 +166,7 @@ class ElementPrinter : Visitor() {
             build(`class`.isAbstract)
             build(`class`.isObject)
             build(`class`.primaryConstructor)
-            buildSuperTypeCallEntry(`class`.superTypeCallEntry)
+            build(`class`.superTypeCallExpression)
         }
     }
 
@@ -278,7 +277,7 @@ class ElementPrinter : Visitor() {
             build(constructor.body)
             build(constructor.valueParameters)
             build(constructor.typeParameters.map { it.name })
-            buildSuperTypeCallEntry(constructor.superTypeCallEntry)
+            build(constructor.superTypeCallExpression)
         }
     }
 
@@ -822,23 +821,6 @@ class ElementPrinter : Visitor() {
         entries.forEach { builder(it) }
         this.builder.append("]")
         first = false
-    }
-
-    private fun <T> buildNullable(entry: T?, builder: (T) -> Unit) {
-        if (!first) this.builder.append(", ")
-        first = true
-        if (entry != null) builder(entry)
-        else this.builder.append("null")
-        first = false
-    }
-
-    private fun buildSuperTypeCallEntry(superTypeCallEntry: SuperTypeCallEntry?) {
-        buildNullable(superTypeCallEntry) {
-            build("SuperTypeCallEntry") {
-                build(it.reference.name)
-                build(it.valueArguments)
-            }
-        }
     }
 
     private fun buildPortInstantiations(portInstantiations: List<PortInstantiation>) {

@@ -190,8 +190,16 @@ object Messages {
         "Cardinal type out of range"
     )
 
+    val OPTIONAL_NOT_DIRECT_ASSIGNMENT = ErrorMessageTemplate0(
+        "Optional must be directly assigned to a property"
+    )
+
+    val OPTIONAL_NOT_VAL = ErrorMessageTemplate0(
+        "Property assigned as optional must be declared as val"
+    )
+
     val UNRESOLVED_CALL_EXPRESSION_TYPE_ARGUMENTS = ErrorMessageTemplate1<String>(
-        "Could not infer type arguments: $0"
+        "Type arguments must be explicitly provided: $0"
     )
 
 //  RESOLVE  ///////////////////////////////////////////////////////////////////////////////////////////////////////////

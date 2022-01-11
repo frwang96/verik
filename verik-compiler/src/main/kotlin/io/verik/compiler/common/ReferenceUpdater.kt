@@ -19,8 +19,6 @@ package io.verik.compiler.common
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.kt.EKtCallExpression
-import io.verik.compiler.ast.element.kt.EKtClass
-import io.verik.compiler.ast.element.kt.EKtConstructor
 import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.main.ProjectContext
@@ -66,16 +64,8 @@ class ReferenceUpdater(val projectContext: ProjectContext) {
             if (typedElement is Reference) {
                 updateReference(typedElement)
             }
-            when (typedElement) {
-                is EKtClass -> {
-                    typedElement.superTypeCallEntry?.let { updateReference(it) }
-                }
-                is EKtConstructor -> {
-                    typedElement.superTypeCallEntry?.let { updateReference(it) }
-                }
-                is EKtCallExpression -> {
-                    typedElement.typeArguments.forEach { updateTypeReferences(it) }
-                }
+            if (typedElement is EKtCallExpression) {
+                typedElement.typeArguments.forEach { updateTypeReferences(it) }
             }
         }
     }

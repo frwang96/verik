@@ -17,7 +17,7 @@
 package io.verik.compiler.specialize
 
 import io.verik.compiler.test.BaseTest
-import io.verik.compiler.test.findExpression
+import io.verik.compiler.test.findDeclaration
 import org.junit.jupiter.api.Test
 
 internal class OptionalReducerTest : BaseTest() {
@@ -30,8 +30,8 @@ internal class OptionalReducerTest : BaseTest() {
                 val m = optional<TRUE, M> { M() }
             """.trimIndent(),
             SpecializerStage::class,
-            "KtCallExpression(M, <init>, null, [], [])"
-        ) { it.findExpression("m") }
+            "KtProperty(m, M, KtCallExpression(M, <init>, null, [], []), [], 0)"
+        ) { it.findDeclaration("m") }
     }
 
     @Test
@@ -42,19 +42,34 @@ internal class OptionalReducerTest : BaseTest() {
                 val m = optional<FALSE, M> { M() }
             """.trimIndent(),
             SpecializerStage::class,
-            "NullExpression()"
-        ) { it.findExpression("m") }
+            "KtProperty(m, Nothing, NullExpression(), [], 0)"
+        ) { it.findDeclaration("m") }
     }
 
     @Test
-    fun `illegal false`() {
+    fun `illegal not direct assignment`() {
         driveMessageTest(
             """
                 class M : Module()
-                val m = optional<`2`, M> { M() }
+                var m: M? = nc()
+                fun f() {
+                    m = optional<TRUE, M> { M() }
+                }
             """.trimIndent(),
             true,
-            "Could not interpret cardinal as either true or false: `2`"
+            "Optional must be directly assigned to a property"
+        )
+    }
+
+    @Test
+    fun `illegal not val`() {
+        driveMessageTest(
+            """
+                class M : Module()
+                var m = optional<TRUE, M> { M() }
+            """.trimIndent(),
+            true,
+            "Property assigned as optional must be declared as val"
         )
     }
 }

@@ -18,6 +18,7 @@ package io.verik.compiler.cast
 
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
+import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
@@ -26,8 +27,9 @@ import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.interfaces.cast
-import io.verik.compiler.ast.property.SuperTypeCallEntry
+import io.verik.compiler.common.location
 import io.verik.compiler.core.common.Core
+import io.verik.compiler.core.common.CoreConstructorDeclaration
 import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.KtClassOrObject
@@ -104,7 +106,7 @@ object DeclarationCaster {
             1 -> {
                 val superTypeListEntry = classOrObject.superTypeListEntries[0]
                 if (superTypeListEntry is KtSuperTypeCallEntry) {
-                    castSuperTypeCallEntry(superTypeListEntry, castContext)
+                    castSuperTypeCallExpression(superTypeListEntry, castContext)
                 } else {
                     Messages.INTERNAL_ERROR.on(classOrObject, "Super type call entry expected")
                 }
@@ -258,15 +260,28 @@ object DeclarationCaster {
         return castedValueParameter
     }
 
-    private fun castSuperTypeCallEntry(
+    private fun castSuperTypeCallExpression(
         superTypeCallEntry: KtSuperTypeCallEntry,
         castContext: CastContext
-    ): SuperTypeCallEntry {
+    ): EKtCallExpression {
+        val location = superTypeCallEntry.location()
         val descriptor = castContext.sliceReferenceTarget[
             superTypeCallEntry.calleeExpression.constructorReferenceExpression!!
         ]!!
         val declaration = castContext.getDeclaration(descriptor, superTypeCallEntry)
+        val type = if (declaration is CoreConstructorDeclaration) {
+            declaration.parent.toType()
+        } else {
+            (declaration as EPrimaryConstructor).type.copy()
+        }
         val valueArguments = CallExpressionCaster.castValueArguments(superTypeCallEntry.calleeExpression, castContext)
-        return SuperTypeCallEntry(declaration, valueArguments)
+        return EKtCallExpression(
+            location,
+            type,
+            declaration,
+            null,
+            valueArguments,
+            ArrayList()
+        )
     }
 }

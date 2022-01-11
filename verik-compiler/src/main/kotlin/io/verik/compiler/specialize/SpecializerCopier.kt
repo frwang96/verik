@@ -43,7 +43,6 @@ import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.LiteralStringEntry
-import io.verik.compiler.ast.property.SuperTypeCallEntry
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.ast.property.WhenEntry
 import io.verik.compiler.message.Messages
@@ -134,12 +133,8 @@ object SpecializerCopier {
         val declarations = `class`.declarations.map { copy(it, typeArguments, specializeContext) }
         val typeParameters = `class`.typeParameters.map { copy(it, typeArguments, specializeContext) }
         val primaryConstructor = `class`.primaryConstructor?.let { copy(it, typeArguments, specializeContext) }
-        val superTypeCallEntry = `class`.superTypeCallEntry?.let { superTypeCallEntry ->
-            SuperTypeCallEntry(
-                superTypeCallEntry.reference,
-                ArrayList(superTypeCallEntry.valueArguments.map { copy(it, typeArguments, specializeContext) })
-            )
-        }
+        val superTypeCallExpression = `class`.superTypeCallExpression
+            ?.let { copy(it, typeArguments, specializeContext) }
         val copiedClass = EKtClass(
             `class`.location,
             `class`.bodyStartLocation,
@@ -156,7 +151,7 @@ object SpecializerCopier {
             `class`.isAbstract,
             `class`.isObject,
             primaryConstructor,
-            superTypeCallEntry
+            superTypeCallExpression
         )
         specializeContext.register(`class`, typeArguments, copiedClass)
         return copiedClass

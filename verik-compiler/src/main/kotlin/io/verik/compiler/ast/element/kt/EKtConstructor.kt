@@ -18,7 +18,6 @@ package io.verik.compiler.ast.element.kt
 
 import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
-import io.verik.compiler.ast.property.SuperTypeCallEntry
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
@@ -35,7 +34,7 @@ class EKtConstructor(
     override var body: EAbstractBlockExpression = EKtBlockExpression.empty(location)
     override var valueParameters: ArrayList<EKtValueParameter> = ArrayList()
     override var typeParameters: ArrayList<ETypeParameter> = ArrayList()
-    var superTypeCallEntry: SuperTypeCallEntry? = null
+    var superTypeCallExpression: EKtCallExpression? = null
 
     init {
         body.parent = this
@@ -46,16 +45,16 @@ class EKtConstructor(
         body: EAbstractBlockExpression,
         valueParameters: List<EKtValueParameter>,
         typeParameters: List<ETypeParameter>,
-        superTypeCallEntry: SuperTypeCallEntry?
+        superTypeCallExpression: EKtCallExpression?
     ) {
         body.parent = this
         valueParameters.forEach { it.parent = this }
-        superTypeCallEntry?.valueArguments?.forEach { it.parent = this }
+        superTypeCallExpression?.parent = this
         this.type = type
         this.body = body
         this.valueParameters = ArrayList(valueParameters)
         this.typeParameters = ArrayList(typeParameters)
-        this.superTypeCallEntry = superTypeCallEntry
+        this.superTypeCallExpression = superTypeCallExpression
     }
 
     override fun accept(visitor: Visitor) {
@@ -64,6 +63,6 @@ class EKtConstructor(
 
     override fun acceptChildren(visitor: TreeVisitor) {
         super.acceptChildren(visitor)
-        superTypeCallEntry?.valueArguments?.forEach { it.accept(visitor) }
+        superTypeCallExpression?.accept(visitor)
     }
 }

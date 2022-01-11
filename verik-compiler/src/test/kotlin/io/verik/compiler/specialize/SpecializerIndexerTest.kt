@@ -42,7 +42,7 @@ internal class SpecializerIndexerTest : BaseTest() {
                 val x = C<`*`>()
             """.trimIndent(),
             true,
-            "Could not infer type arguments: <init>"
+            "Type arguments must be explicitly provided: <init>"
         )
     }
 }

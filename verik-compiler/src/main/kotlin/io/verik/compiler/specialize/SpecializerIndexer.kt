@@ -21,6 +21,8 @@ import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.kt.EKtClass
+import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.message.Messages
@@ -37,31 +39,41 @@ object SpecializerIndexer {
 
         val typeParameterBindings = ArrayList<TypeParameterBinding>()
 
-        private fun isTopLevel(reference: EDeclaration): Boolean {
-            return reference.parent is EFile || reference is EPrimaryConstructor
-        }
-
         override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
             super.visitReferenceExpression(referenceExpression)
-            if (referenceExpression.receiver == null) {
-                val reference = referenceExpression.reference
-                if (reference is EDeclaration && isTopLevel(reference)) {
-                    typeParameterBindings.add(TypeParameterBinding(reference, listOf()))
+            if (referenceExpression.receiver != null)
+                return
+            val reference = referenceExpression.reference
+            if (reference is EDeclaration) {
+                when (val parent = reference.parent) {
+                    is EFile -> {
+                        typeParameterBindings.add(TypeParameterBinding(reference, listOf()))
+                    }
+                    is EKtClass -> {
+                        if (parent.isObject || (parent.isEnum && reference is EKtEnumEntry)) {
+                            typeParameterBindings.add(TypeParameterBinding(parent, listOf()))
+                        }
+                    }
                 }
             }
         }
 
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
-            if (callExpression.receiver == null) {
-                val reference = callExpression.reference
-                if (reference is EKtAbstractFunction && isTopLevel(reference)) {
+            if (callExpression.receiver != null)
+                return
+            val reference = callExpression.reference
+            if (reference is EKtAbstractFunction) {
+                val parent = reference.parent
+                if (parent is EKtClass && parent.isObject) {
+                    typeParameterBindings.add(TypeParameterBinding(parent, listOf()))
+                } else if (parent is EFile || reference is EPrimaryConstructor) {
                     if (callExpression.typeArguments.any { !it.isResolved() }) {
                         Messages.UNRESOLVED_CALL_EXPRESSION_TYPE_ARGUMENTS.on(callExpression, reference.name)
                         return
                     }
                     val typeParameterBinding = if (reference is EPrimaryConstructor) {
-                        TypeParameterBinding(reference.parentNotNull().cast(), callExpression.typeArguments)
+                        TypeParameterBinding(parent!!.cast(), callExpression.typeArguments)
                     } else {
                         TypeParameterBinding(reference, callExpression.typeArguments)
                     }

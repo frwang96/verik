@@ -22,7 +22,6 @@ import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.interfaces.Annotated
 import io.verik.compiler.ast.interfaces.TypeParameterized
 import io.verik.compiler.ast.property.AnnotationEntry
-import io.verik.compiler.ast.property.SuperTypeCallEntry
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
@@ -45,7 +44,7 @@ class EKtClass(
     var isAbstract: Boolean = false
     var isObject: Boolean = false
     var primaryConstructor: EPrimaryConstructor? = null
-    var superTypeCallEntry: SuperTypeCallEntry? = null
+    var superTypeCallExpression: EKtCallExpression? = null
 
     fun init(
         type: Type,
@@ -57,12 +56,12 @@ class EKtClass(
         isAbstract: Boolean,
         isObject: Boolean,
         primaryConstructor: EPrimaryConstructor?,
-        superTypeCallEntry: SuperTypeCallEntry?
+        superTypeCallExpression: EKtCallExpression?
     ) {
         declarations.forEach { it.parent = this }
         typeParameters.forEach { it.parent = this }
         primaryConstructor?.parent = this
-        superTypeCallEntry?.valueArguments?.forEach { it.parent = this }
+        superTypeCallExpression?.parent = this
         this.type = type
         this.superType = superType
         this.declarations = ArrayList(declarations)
@@ -72,7 +71,7 @@ class EKtClass(
         this.isAbstract = isAbstract
         this.isObject = isObject
         this.primaryConstructor = primaryConstructor
-        this.superTypeCallEntry = superTypeCallEntry
+        this.superTypeCallExpression = superTypeCallExpression
     }
 
     override fun accept(visitor: Visitor) {
@@ -83,6 +82,6 @@ class EKtClass(
         super.acceptChildren(visitor)
         typeParameters.forEach { it.accept(visitor) }
         primaryConstructor?.accept(visitor)
-        superTypeCallEntry?.valueArguments?.forEach { it.accept(visitor) }
+        superTypeCallExpression?.accept(visitor)
     }
 }

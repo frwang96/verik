@@ -121,9 +121,9 @@ object ClassInterpreterStage : ProjectStage() {
         private fun interpretConstructor(`class`: EKtClass, constructor: EKtConstructor): InterpretedConstructor {
             val initializer = initializerMap[constructor]
                 ?: Messages.INTERNAL_ERROR.on(constructor, "Initializer not found")
-            val superTypeCallEntry = constructor.superTypeCallEntry
-            if (superTypeCallEntry != null) {
-                val reference = superTypeCallEntry.reference
+            val superTypeCallExpression = constructor.superTypeCallExpression
+            if (superTypeCallExpression != null) {
+                val reference = superTypeCallExpression.reference
                 if (reference is EKtConstructor) {
                     val delegatedInitializer = initializerMap[reference]
                         ?: Messages.INTERNAL_ERROR.on(reference, "Initializer not found")
@@ -136,7 +136,7 @@ object ClassInterpreterStage : ProjectStage() {
                         Core.Kt.C_Unit.toType(),
                         delegatedInitializer,
                         superExpression,
-                        superTypeCallEntry.valueArguments,
+                        superTypeCallExpression.valueArguments,
                         ArrayList()
                     )
                     val body = initializer.body.cast<EKtBlockExpression>()

@@ -185,7 +185,7 @@ internal class DeclarationCasterTest : BaseTest() {
                 KtClass(
                     D, D, [], [], [], 0, 0, 0,
                     PrimaryConstructor(D, [], []),
-                    SuperTypeCallEntry(<init>, [ConstantExpression(*)])
+                    KtCallExpression(C, <init>, null, [ConstantExpression(*)], [])
                 )
             """.trimIndent()
         ) { it.findDeclaration("D") }
