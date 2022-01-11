@@ -23,27 +23,27 @@ import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.core.common.NullDeclaration
 import io.verik.compiler.message.SourceLocation
 
 class EKtFunction(
     override val location: SourceLocation,
-    override var name: String
+    override var name: String,
+    override var type: Type,
+    override var body: EAbstractBlockExpression,
+    override var valueParameters: ArrayList<EKtValueParameter>,
+    override var typeParameters: ArrayList<ETypeParameter>,
+    override var annotationEntries: List<AnnotationEntry>,
+    var isAbstract: Boolean,
+    var isOverride: Boolean
 ) : EKtAbstractFunction(), Annotated {
-
-    override var type = NullDeclaration.toType()
-    override var body: EAbstractBlockExpression = EKtBlockExpression.empty(location)
-    override var valueParameters: ArrayList<EKtValueParameter> = ArrayList()
-    override var typeParameters: ArrayList<ETypeParameter> = ArrayList()
-    override var annotationEntries: List<AnnotationEntry> = listOf()
-    var isAbstract: Boolean = false
-    var isOverride: Boolean = false
 
     init {
         body.parent = this
+        valueParameters.forEach { it.parent = this }
+        typeParameters.forEach { it.parent = this }
     }
 
-    fun init(
+    fun fill(
         type: Type,
         body: EAbstractBlockExpression,
         valueParameters: List<EKtValueParameter>,

@@ -58,8 +58,8 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
 
                 val body = getPrimaryConstructorBody(primaryConstructor, properties)
                 val superTypeCallExpression = `class`.superTypeCallExpression?.let { ExpressionCopier.deepCopy(it) }
-                val constructor = EKtConstructor(primaryConstructor.location)
-                constructor.init(
+                val constructor = EKtConstructor(
+                    primaryConstructor.location,
                     primaryConstructor.type,
                     body,
                     primaryConstructor.valueParameters,
@@ -81,8 +81,15 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
                     val isMutable = it.isMutable
                     it.isPrimaryConstructorProperty = false
                     it.isMutable = false
-                    val property = EKtProperty(it.location, it.location, it.name)
-                    property.init(it.type.copy(), null, listOf(), isMutable)
+                    val property = EKtProperty(
+                        location = it.location,
+                        endLocation = it.location,
+                        name = it.name,
+                        type = it.type.copy(),
+                        initializer = null,
+                        annotationEntries = listOf(),
+                        isMutable = isMutable
+                    )
                     referenceUpdater.update(it, property)
                     property
                 } else {

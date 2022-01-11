@@ -59,7 +59,7 @@ object DeclarationCaster {
             castContext.casterVisitor.getElement<ETypeParameter>(it)
         }
 
-        castedTypeAlias.init(type, typeParameters)
+        castedTypeAlias.fill(type, typeParameters)
         return castedTypeAlias
     }
 
@@ -71,7 +71,7 @@ object DeclarationCaster {
         val type = if (descriptor.representativeUpperBound.isNullableAny()) Core.Kt.C_Any.toType()
         else castContext.castType(descriptor.representativeUpperBound, parameter)
 
-        castedTypeParameter.init(type)
+        castedTypeParameter.fill(type)
         return castedTypeParameter
     }
 
@@ -114,7 +114,7 @@ object DeclarationCaster {
             else -> Messages.INTERNAL_ERROR.on(classOrObject, "Multiple inheritance not supported")
         }
 
-        castedClass.init(
+        castedClass.fill(
             type,
             superType,
             declarations,
@@ -155,7 +155,7 @@ object DeclarationCaster {
         val isAbstract = function.hasModifier(KtTokens.ABSTRACT_KEYWORD)
         val isOverride = function.hasModifier(KtTokens.OVERRIDE_KEYWORD)
 
-        castedFunction.init(
+        castedFunction.fill(
             type,
             body,
             valueParameters,
@@ -180,7 +180,7 @@ object DeclarationCaster {
             castContext.getDeclaration(it, constructor).cast<ETypeParameter>(constructor)
         }
 
-        castedPrimaryConstructor.init(type, valueParameters, typeParameters)
+        castedPrimaryConstructor.fill(type, valueParameters, typeParameters)
         return castedPrimaryConstructor
     }
 
@@ -199,7 +199,7 @@ object DeclarationCaster {
             castContext.getDeclaration(it, classOrObject).cast<ETypeParameter>(classOrObject)
         }
 
-        castedPrimaryConstructor.init(type, listOf(), typeParameters)
+        castedPrimaryConstructor.fill(type, listOf(), typeParameters)
         return castedPrimaryConstructor
     }
 
@@ -220,7 +220,7 @@ object DeclarationCaster {
         }
         val isMutable = property.isVar
 
-        castedProperty.init(type, initializer, annotationEntries, isMutable)
+        castedProperty.fill(type, initializer, annotationEntries, isMutable)
         return castedProperty
     }
 
@@ -234,7 +234,7 @@ object DeclarationCaster {
             AnnotationEntryCaster.castAnnotationEntry(it, castContext)
         }
 
-        castedEnumEntry.init(type, annotationEntries)
+        castedEnumEntry.fill(type, annotationEntries)
         return castedEnumEntry
     }
 
@@ -256,7 +256,7 @@ object DeclarationCaster {
         val isPrimaryConstructorProperty = (propertyDescriptor != null)
         val isMutable = descriptor.isVar
 
-        castedValueParameter.init(type, annotationEntries, isPrimaryConstructorProperty, isMutable)
+        castedValueParameter.fill(type, annotationEntries, isPrimaryConstructorProperty, isMutable)
         return castedValueParameter
     }
 

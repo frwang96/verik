@@ -22,20 +22,18 @@ import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.core.common.NullDeclaration
 import io.verik.compiler.message.SourceLocation
 
 class EKtValueParameter(
     override val location: SourceLocation,
-    override var name: String
+    override var name: String,
+    override var type: Type,
+    override var annotationEntries: List<AnnotationEntry>,
+    var isPrimaryConstructorProperty: Boolean,
+    var isMutable: Boolean
 ) : EAbstractValueParameter(), Annotated {
 
-    override var type: Type = NullDeclaration.toType()
-    override var annotationEntries: List<AnnotationEntry> = listOf()
-    var isPrimaryConstructorProperty = false
-    var isMutable: Boolean = false
-
-    fun init(
+    fun fill(
         type: Type,
         annotationEntries: List<AnnotationEntry>,
         isPrimaryConstructorProperty: Boolean,

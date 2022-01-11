@@ -25,28 +25,33 @@ import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.core.common.NullDeclaration
 import io.verik.compiler.message.SourceLocation
 
 class EKtClass(
     override val location: SourceLocation,
     override val bodyStartLocation: SourceLocation,
     override val bodyEndLocation: SourceLocation,
-    override var name: String
+    override var name: String,
+    override var type: Type,
+    override var superType: Type,
+    override var declarations: ArrayList<EDeclaration>,
+    override var typeParameters: ArrayList<ETypeParameter>,
+    override var annotationEntries: List<AnnotationEntry>,
+    var isEnum: Boolean,
+    var isAbstract: Boolean,
+    var isObject: Boolean,
+    var primaryConstructor: EPrimaryConstructor?,
+    var superTypeCallExpression: EKtCallExpression?,
 ) : EAbstractContainerClass(), TypeParameterized, Annotated {
 
-    override var type = NullDeclaration.toType()
-    override var superType = NullDeclaration.toType()
-    override var declarations: ArrayList<EDeclaration> = ArrayList()
-    override var typeParameters: ArrayList<ETypeParameter> = ArrayList()
-    override var annotationEntries: List<AnnotationEntry> = listOf()
-    var isEnum: Boolean = false
-    var isAbstract: Boolean = false
-    var isObject: Boolean = false
-    var primaryConstructor: EPrimaryConstructor? = null
-    var superTypeCallExpression: EKtCallExpression? = null
+    init {
+        declarations.forEach { it.parent = this }
+        typeParameters.forEach { it.parent = this }
+        primaryConstructor?.parent = this
+        superTypeCallExpression?.parent = this
+    }
 
-    fun init(
+    fun fill(
         type: Type,
         superType: Type,
         declarations: List<EDeclaration>,

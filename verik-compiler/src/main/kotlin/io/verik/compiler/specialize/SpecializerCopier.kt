@@ -116,9 +116,9 @@ object SpecializerCopier {
         val type = typeParameter.toType()
         val copiedTypeParameter = ETypeParameter(
             typeParameter.location,
-            typeParameter.name
+            typeParameter.name,
+            type
         )
-        copiedTypeParameter.init(type)
         specializeContext.register(typeParameter, typeArguments, copiedTypeParameter)
         return copiedTypeParameter
     }
@@ -139,13 +139,11 @@ object SpecializerCopier {
             `class`.location,
             `class`.bodyStartLocation,
             `class`.bodyEndLocation,
-            `class`.name
-        )
-        copiedClass.init(
+            `class`.name,
             type,
             superType,
-            declarations,
-            typeParameters,
+            ArrayList(declarations),
+            ArrayList(typeParameters),
             `class`.annotationEntries,
             `class`.isEnum,
             `class`.isAbstract,
@@ -168,13 +166,11 @@ object SpecializerCopier {
         val typeParameters = function.typeParameters.map { copy(it, typeArguments, specializeContext) }
         val copiedFunction = EKtFunction(
             function.location,
-            function.name
-        )
-        copiedFunction.init(
+            function.name,
             type,
             body,
-            valueParameters,
-            typeParameters,
+            ArrayList(valueParameters),
+            ArrayList(typeParameters),
             function.annotationEntries,
             function.isOverride,
             function.isOverride
@@ -191,8 +187,12 @@ object SpecializerCopier {
         val type = primaryConstructor.type.copy()
         val valueParameters = primaryConstructor.valueParameters.map { copy(it, typeArguments, specializeContext) }
         val typeParameters = primaryConstructor.typeParameters.map { copy(it, typeArguments, specializeContext) }
-        val copiedPrimaryConstructor = EPrimaryConstructor(primaryConstructor.location)
-        copiedPrimaryConstructor.init(type, valueParameters, typeParameters)
+        val copiedPrimaryConstructor = EPrimaryConstructor(
+            primaryConstructor.location,
+            type,
+            ArrayList(valueParameters),
+            ArrayList(typeParameters)
+        )
         specializeContext.register(primaryConstructor, typeArguments, copiedPrimaryConstructor)
         return copiedPrimaryConstructor
     }
@@ -207,9 +207,7 @@ object SpecializerCopier {
         val copiedProperty = EKtProperty(
             property.location,
             property.endLocation,
-            property.name
-        )
-        copiedProperty.init(
+            property.name,
             type,
             initializer,
             property.annotationEntries,
@@ -225,8 +223,12 @@ object SpecializerCopier {
         specializeContext: SpecializeContext
     ): EKtEnumEntry {
         val type = enumEntry.type.copy()
-        val copiedEnumEntry = EKtEnumEntry(enumEntry.location, enumEntry.name)
-        copiedEnumEntry.init(type, enumEntry.annotationEntries)
+        val copiedEnumEntry = EKtEnumEntry(
+            enumEntry.location,
+            enumEntry.name,
+            type,
+            enumEntry.annotationEntries
+        )
         specializeContext.register(enumEntry, typeArguments, copiedEnumEntry)
         return copiedEnumEntry
     }
@@ -237,8 +239,9 @@ object SpecializerCopier {
         specializeContext: SpecializeContext
     ): EKtValueParameter {
         val type = valueParameter.type.copy()
-        val copiedValueParameter = EKtValueParameter(valueParameter.location, valueParameter.name)
-        copiedValueParameter.init(
+        val copiedValueParameter = EKtValueParameter(
+            valueParameter.location,
+            valueParameter.name,
             type,
             valueParameter.annotationEntries,
             valueParameter.isPrimaryConstructorProperty,

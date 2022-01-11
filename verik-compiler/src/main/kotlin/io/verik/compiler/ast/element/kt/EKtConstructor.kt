@@ -21,40 +21,23 @@ import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.core.common.NullDeclaration
 import io.verik.compiler.message.SourceLocation
 
 class EKtConstructor(
-    override val location: SourceLocation
+    override val location: SourceLocation,
+    override var type: Type,
+    override var body: EAbstractBlockExpression,
+    override var valueParameters: ArrayList<EKtValueParameter>,
+    override var typeParameters: ArrayList<ETypeParameter>,
+    var superTypeCallExpression: EKtCallExpression?
 ) : EKtAbstractFunction() {
 
     override var name = "<init>"
 
-    override var type: Type = NullDeclaration.toType()
-    override var body: EAbstractBlockExpression = EKtBlockExpression.empty(location)
-    override var valueParameters: ArrayList<EKtValueParameter> = ArrayList()
-    override var typeParameters: ArrayList<ETypeParameter> = ArrayList()
-    var superTypeCallExpression: EKtCallExpression? = null
-
     init {
-        body.parent = this
-    }
-
-    fun init(
-        type: Type,
-        body: EAbstractBlockExpression,
-        valueParameters: List<EKtValueParameter>,
-        typeParameters: List<ETypeParameter>,
-        superTypeCallExpression: EKtCallExpression?
-    ) {
         body.parent = this
         valueParameters.forEach { it.parent = this }
         superTypeCallExpression?.parent = this
-        this.type = type
-        this.body = body
-        this.valueParameters = ArrayList(valueParameters)
-        this.typeParameters = ArrayList(typeParameters)
-        this.superTypeCallExpression = superTypeCallExpression
     }
 
     override fun accept(visitor: Visitor) {
