@@ -28,9 +28,9 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreCardinalFunctionDeclaration
 import io.verik.compiler.message.Messages
 
-object CardinalTypeEvaluator {
+object CardinalTypeEvaluatorSubstage : SpecializerSubstage() {
 
-    fun evaluate(declaration: EDeclaration) {
+    override fun process(declaration: EDeclaration, typeParameterBinding: TypeParameterBinding) {
         declaration.accept(CardinalTypeEvaluatorVisitor)
     }
 

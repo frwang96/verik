@@ -25,11 +25,12 @@ import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.interfaces.TypeParameterized
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.core.common.CardinalConstantDeclaration
 import io.verik.compiler.message.Messages
 
-object TypeParameterSubstitutor {
+object TypeParameterSubstitutorSubstage : SpecializerSubstage() {
 
-    fun substitute(typeParameterBinding: TypeParameterBinding, declaration: EDeclaration) {
+    override fun process(declaration: EDeclaration, typeParameterBinding: TypeParameterBinding) {
         val typeParameters = if (typeParameterBinding.declaration is TypeParameterized) {
             typeParameterBinding.declaration.typeParameters
         } else listOf()
@@ -44,6 +45,22 @@ object TypeParameterSubstitutor {
         val typeParameterSubstitutorVisitor =
             TypeParameterSubstitutorVisitor(typeParameters, typeParameterBinding.typeArguments)
         declaration.accept(typeParameterSubstitutorVisitor)
+
+        if (typeParameters.isNotEmpty()) {
+            val typeParameterStrings = typeParameters
+                .zip(typeParameterBinding.typeArguments)
+                .map { (typeParameter, typeArgument) -> getTypeArgumentString(typeParameter, typeArgument) }
+            declaration.name = "${declaration.name}_${typeParameterStrings.joinToString(separator = "_")}"
+        }
+    }
+
+    private fun getTypeArgumentString(typeParameter: ETypeParameter, typeArgument: Type): String {
+        val reference = typeArgument.reference
+        return if (reference is CardinalConstantDeclaration) {
+            "${typeParameter.name}_${reference.value}"
+        } else {
+            "${typeParameter.name}_${reference.name}"
+        }
     }
 
     private class TypeParameterSubstitutorVisitor(

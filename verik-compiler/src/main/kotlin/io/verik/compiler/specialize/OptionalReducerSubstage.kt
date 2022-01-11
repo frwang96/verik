@@ -26,9 +26,9 @@ import io.verik.compiler.core.common.Cardinal
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.Messages
 
-object OptionalReducer {
+object OptionalReducerSubstage : SpecializerSubstage() {
 
-    fun reduce(declaration: EDeclaration) {
+    override fun process(declaration: EDeclaration, typeParameterBinding: TypeParameterBinding) {
         declaration.accept(OptionalReducerVisitor)
     }
 

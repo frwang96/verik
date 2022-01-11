@@ -20,7 +20,7 @@ import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class OptionalReducerTest : BaseTest() {
+internal class OptionalReducerSubstageTest : BaseTest() {
 
     @Test
     fun `reduce true`() {

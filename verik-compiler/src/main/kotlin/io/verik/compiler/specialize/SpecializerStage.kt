@@ -33,9 +33,7 @@ object SpecializerStage : ProjectStage() {
         while (typeParameterBindings.isNotEmpty()) {
             val typeParameterBinding = typeParameterBindings.pop()
             if (!specializeContext.contains(typeParameterBinding)) {
-                typeParameterBindings.addAll(
-                    DeclarationSpecializer.specialize(typeParameterBinding, specializeContext)
-                )
+                typeParameterBindings.addAll(specialize(typeParameterBinding, specializeContext))
             }
         }
 
@@ -76,5 +74,20 @@ object SpecializerStage : ProjectStage() {
             }
         }
         return declarations.map { TypeParameterBinding(it, listOf()) }
+    }
+
+    private fun specialize(
+        typeParameterBinding: TypeParameterBinding,
+        specializeContext: SpecializeContext
+    ): List<TypeParameterBinding> {
+        val declaration = SpecializerCopier.copy(
+            typeParameterBinding.declaration,
+            typeParameterBinding.typeArguments,
+            specializeContext
+        )
+        TypeParameterSubstitutorSubstage.process(declaration, typeParameterBinding)
+        CardinalTypeEvaluatorSubstage.process(declaration, typeParameterBinding)
+        OptionalReducerSubstage.process(declaration, typeParameterBinding)
+        return SpecializerIndexer.index(declaration)
     }
 }

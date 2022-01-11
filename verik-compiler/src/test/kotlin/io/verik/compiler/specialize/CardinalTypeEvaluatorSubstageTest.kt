@@ -20,7 +20,7 @@ import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class CardinalTypeEvaluatorTest : BaseTest() {
+internal class CardinalTypeEvaluatorSubstageTest : BaseTest() {
 
     @Test
     fun `function true`() {
