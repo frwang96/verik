@@ -16,28 +16,40 @@
 
 package io.verik.compiler.resolve
 
-import io.verik.compiler.ast.element.kt.EKtFunction
-import io.verik.compiler.ast.element.kt.EKtProperty
-import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
 object TypeResolverStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.project.accept(TypeResolverVisitor)
-    }
-
-    private object TypeResolverVisitor : TreeVisitor() {
-
-        override fun visitKtFunction(function: EKtFunction) {
-            val typeConstraints = TypeConstraintCollector.collect(function)
-            TypeConstraintResolver.resolve(typeConstraints)
-        }
-
-        override fun visitKtProperty(property: EKtProperty) {
-            val typeConstraints = TypeConstraintCollector.collect(property)
-            TypeConstraintResolver.resolve(typeConstraints)
-        }
+        val specializeContext = projectContext.specializeContext!!
+        var expressionReferenceForwarderEntries =
+            ExpressionReferenceForwarder.getExpressionReferenceForwarderEntries(projectContext)
+        var typeConstraints = TypeConstraintCollector.collect(projectContext)
+        var isLoop: Boolean
+        do {
+            isLoop = false
+            val newTypeConstraints = ArrayList<TypeConstraint>()
+            if (expressionReferenceForwarderEntries.isNotEmpty()) {
+                expressionReferenceForwarderEntries = expressionReferenceForwarderEntries.filter {
+                    val isForwarded = ExpressionReferenceForwarder.forward(it, specializeContext)
+                    if (isForwarded) {
+                        newTypeConstraints.addAll(TypeConstraintCollector.collect(it.receiverExpression))
+                        isLoop = true
+                    }
+                    !isForwarded
+                }
+            }
+            newTypeConstraints.addAll(typeConstraints)
+            if (newTypeConstraints.isNotEmpty()) {
+                typeConstraints = newTypeConstraints.filter {
+                    val isResolved = TypeConstraintResolver.resolve(it)
+                    if (isResolved) {
+                        isLoop = true
+                    }
+                    !isResolved
+                }
+            }
+        } while (isLoop)
     }
 }

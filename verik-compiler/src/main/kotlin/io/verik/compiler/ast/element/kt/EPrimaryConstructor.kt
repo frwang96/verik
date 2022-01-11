@@ -20,25 +20,28 @@ import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.core.common.NullDeclaration
 import io.verik.compiler.message.SourceLocation
 
 class EPrimaryConstructor(
-    override val location: SourceLocation
+    override val location: SourceLocation,
+    override var name: String,
+    override var type: Type,
+    override var valueParameters: ArrayList<EKtValueParameter>,
+    override var typeParameters: ArrayList<ETypeParameter>
 ) : EKtAbstractFunction() {
 
-    override var name = "<init>"
     override var body: EAbstractBlockExpression = EKtBlockExpression.empty(location)
 
-    override var type: Type = NullDeclaration.toType()
-    override var valueParameters: ArrayList<EKtValueParameter> = ArrayList()
-    override var typeParameters: ArrayList<ETypeParameter> = ArrayList()
-
     init {
+        valueParameters.forEach { it.parent = this }
         body.parent = this
     }
 
-    fun init(type: Type, valueParameters: List<EKtValueParameter>, typeParameters: List<ETypeParameter>) {
+    fun fill(
+        type: Type,
+        valueParameters: List<EKtValueParameter>,
+        typeParameters: List<ETypeParameter>
+    ) {
         valueParameters.forEach { it.parent = this }
         this.type = type
         this.valueParameters = ArrayList(valueParameters)

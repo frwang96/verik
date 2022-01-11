@@ -40,6 +40,7 @@ import io.verik.compiler.ast.element.sv.EScopeExpression
 import io.verik.compiler.ast.element.sv.EStreamingExpression
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.EStructLiteralExpression
+import io.verik.compiler.ast.element.sv.ESvAbstractFunction
 import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
@@ -54,368 +55,379 @@ import io.verik.compiler.ast.property.LiteralStringEntry
 
 object ExpressionSerializer {
 
-    fun serializeSvBlockExpression(blockExpression: ESvBlockExpression, serializerContext: SerializerContext) {
+    fun serializeSvBlockExpression(blockExpression: ESvBlockExpression, serializeContext: SerializeContext) {
         if (blockExpression.decorated) {
-            serializerContext.append("begin")
+            serializeContext.append("begin")
             if (blockExpression.name != null)
-                serializerContext.append(" : ${blockExpression.name}")
-            serializerContext.appendLine()
-            serializerContext.indent {
-                blockExpression.statements.forEach { serializerContext.serializeAsStatement(it) }
+                serializeContext.append(" : ${blockExpression.name}")
+            serializeContext.appendLine()
+            serializeContext.indent {
+                blockExpression.statements.forEach { serializeContext.serializeAsStatement(it) }
             }
-            serializerContext.label(blockExpression.endLocation) {
-                serializerContext.append("end")
+            serializeContext.label(blockExpression.endLocation) {
+                serializeContext.append("end")
                 if (blockExpression.name != null)
-                    serializerContext.append(" : ${blockExpression.name}")
-                serializerContext.appendLine()
+                    serializeContext.append(" : ${blockExpression.name}")
+                serializeContext.appendLine()
             }
         } else {
-            blockExpression.statements.forEach { serializerContext.serializeAsStatement(it) }
+            blockExpression.statements.forEach { serializeContext.serializeAsStatement(it) }
         }
     }
 
-    fun serializePropertyStatement(propertyStatement: EPropertyStatement, serializerContext: SerializerContext) {
-        serializerContext.serialize(propertyStatement.property)
+    fun serializePropertyStatement(propertyStatement: EPropertyStatement, serializeContext: SerializeContext) {
+        serializeContext.serialize(propertyStatement.property)
     }
 
     fun serializeParenthesizedExpression(
         parenthesizedExpression: EParenthesizedExpression,
-        serializerContext: SerializerContext
+        serializeContext: SerializeContext
     ) {
-        serializerContext.append("(")
-        serializerContext.serializeAsExpression(parenthesizedExpression.expression)
-        serializerContext.append(")")
+        serializeContext.append("(")
+        serializeContext.serializeAsExpression(parenthesizedExpression.expression)
+        serializeContext.append(")")
     }
 
-    fun serializeSvUnaryExpression(unaryExpression: ESvUnaryExpression, serializerContext: SerializerContext) {
+    fun serializeSvUnaryExpression(unaryExpression: ESvUnaryExpression, serializeContext: SerializeContext) {
         val prefix = unaryExpression.kind.serializePrefix()
         if (prefix != null)
-            serializerContext.append(prefix)
-        serializerContext.serializeAsExpression(unaryExpression.expression)
+            serializeContext.append(prefix)
+        serializeContext.serializeAsExpression(unaryExpression.expression)
         val postfix = unaryExpression.kind.serializePostfix()
         if (postfix != null)
-            serializerContext.append(postfix)
+            serializeContext.append(postfix)
     }
 
-    fun serializeSvBinaryExpression(binaryExpression: ESvBinaryExpression, serializerContext: SerializerContext) {
-        serializerContext.serializeAsExpression(binaryExpression.left)
-        serializerContext.hardBreak()
-        serializerContext.append(binaryExpression.kind.serialize())
-        serializerContext.append(" ")
-        serializerContext.serializeAsExpression(binaryExpression.right)
+    fun serializeSvBinaryExpression(binaryExpression: ESvBinaryExpression, serializeContext: SerializeContext) {
+        serializeContext.serializeAsExpression(binaryExpression.left)
+        serializeContext.hardBreak()
+        serializeContext.append(binaryExpression.kind.serialize())
+        serializeContext.append(" ")
+        serializeContext.serializeAsExpression(binaryExpression.right)
     }
 
     fun serializeReferenceExpression(
         referenceExpression: EReferenceExpression,
-        serializerContext: SerializerContext
+        serializeContext: SerializeContext
     ) {
         val receiver = referenceExpression.receiver
         if (receiver != null) {
-            serializerContext.serializeAsExpression(receiver)
-            serializerContext.append(if (receiver is EScopeExpression) "::" else ".")
+            serializeContext.serializeAsExpression(receiver)
+            serializeContext.append(if (receiver is EScopeExpression) "::" else ".")
         }
-        serializerContext.append(referenceExpression.reference.name)
+        serializeContext.append(referenceExpression.reference.name)
     }
 
-    fun serializeSvCallExpression(callExpression: ESvCallExpression, serializerContext: SerializerContext) {
+    fun serializeSvCallExpression(callExpression: ESvCallExpression, serializeContext: SerializeContext) {
         val receiver = callExpression.receiver
         if (receiver != null) {
-            serializerContext.serializeAsExpression(receiver)
-            serializerContext.append(if (receiver is EScopeExpression) "::" else ".")
+            serializeContext.serializeAsExpression(receiver)
+            serializeContext.softBreak()
+            serializeContext.append(if (receiver is EScopeExpression) "::" else ".")
         }
-        serializerContext.append(callExpression.reference.name)
-        serializerContext.append("(")
+        serializeContext.append(callExpression.reference.name)
+        serializeContext.append("(")
         if (callExpression.valueArguments.isNotEmpty()) {
-            serializerContext.softBreak()
-            serializerContext.serializeJoin(callExpression.valueArguments) {
-                serializerContext.serializeAsExpression(it)
+            serializeContext.softBreak()
+            val reference = callExpression.reference
+            if (reference is ESvAbstractFunction) {
+                val valueParametersAndArguments = reference.valueParameters.zip(callExpression.valueArguments)
+                serializeContext.serializeJoin(valueParametersAndArguments) { (valueParameter, valueArgument) ->
+                    serializeContext.append(".${valueParameter.name}(")
+                    serializeContext.serializeAsExpression(valueArgument)
+                    serializeContext.append(")")
+                }
+            } else {
+                serializeContext.serializeJoin(callExpression.valueArguments) {
+                    serializeContext.serializeAsExpression(it)
+                }
             }
         }
-        serializerContext.append(")")
+        serializeContext.append(")")
     }
 
-    fun serializeScopeExpression(scopeExpression: EScopeExpression, serializerContext: SerializerContext) {
+    fun serializeScopeExpression(scopeExpression: EScopeExpression, serializeContext: SerializeContext) {
         val serializedType = TypeSerializer.serialize(scopeExpression.scope, scopeExpression)
         serializedType.checkNoPackedDimension(scopeExpression)
         serializedType.checkNoUnpackedDimension(scopeExpression)
-        serializerContext.append(serializedType.base)
+        serializeContext.append(serializedType.base)
     }
 
-    fun serializeConstantExpression(constantExpression: EConstantExpression, serializerContext: SerializerContext) {
-        serializerContext.append(constantExpression.value)
+    fun serializeConstantExpression(constantExpression: EConstantExpression, serializeContext: SerializeContext) {
+        serializeContext.append(constantExpression.value)
     }
 
     fun serializeStructLiteralExpression(
         structLiteralExpression: EStructLiteralExpression,
-        serializerContext: SerializerContext
+        serializeContext: SerializeContext
     ) {
-        serializerContext.append("'{")
-        serializerContext.serializeJoin(structLiteralExpression.entries) {
-            serializerContext.append("${it.reference.name}:")
-            serializerContext.serializeAsExpression(it.expression)
+        serializeContext.append("'{")
+        serializeContext.serializeJoin(structLiteralExpression.entries) {
+            serializeContext.append("${it.reference.name}:")
+            serializeContext.serializeAsExpression(it.expression)
         }
-        serializerContext.append("}")
+        serializeContext.append("}")
     }
 
-    fun serializeNullExpression(serializerContext: SerializerContext) {
-        serializerContext.append("null")
+    fun serializeNullExpression(serializeContext: SerializeContext) {
+        serializeContext.append("null")
     }
 
-    fun serializeThisExpression(serializerContext: SerializerContext) {
-        serializerContext.append("this")
+    fun serializeThisExpression(serializeContext: SerializeContext) {
+        serializeContext.append("this")
     }
 
-    fun serializeSuperExpression(serializerContext: SerializerContext) {
-        serializerContext.append("super")
+    fun serializeSuperExpression(serializeContext: SerializeContext) {
+        serializeContext.append("super")
     }
 
-    fun serializeReturnStatement(returnStatement: EReturnStatement, serializerContext: SerializerContext) {
+    fun serializeReturnStatement(returnStatement: EReturnStatement, serializeContext: SerializeContext) {
         val expression = returnStatement.expression
         if (expression == null) {
-            serializerContext.appendLine("return;")
+            serializeContext.appendLine("return;")
         } else {
-            serializerContext.append("return ")
-            serializerContext.serializeAsExpression(expression)
-            serializerContext.appendLine(";")
+            serializeContext.append("return ")
+            serializeContext.serializeAsExpression(expression)
+            serializeContext.appendLine(";")
         }
     }
 
-    fun serializeInjectedStatement(injectedStatement: EInjectedStatement, serializerContext: SerializerContext) {
+    fun serializeInjectedStatement(injectedStatement: EInjectedStatement, serializeContext: SerializeContext) {
         injectedStatement.entries.forEach {
             when (it) {
                 is LiteralStringEntry -> {
                     if (it.text == "\n")
-                        serializerContext.appendLine()
+                        serializeContext.appendLine()
                     else
-                        serializerContext.append(it.text)
+                        serializeContext.append(it.text)
                 }
                 is ExpressionStringEntry ->
-                    serializerContext.serializeAsExpression(it.expression)
+                    serializeContext.serializeAsExpression(it.expression)
             }
         }
-        serializerContext.appendLine()
+        serializeContext.appendLine()
     }
 
-    fun serializeStringExpression(stringExpression: EStringExpression, serializerContext: SerializerContext) {
-        serializerContext.append("\"${stringExpression.text}\"")
+    fun serializeStringExpression(stringExpression: EStringExpression, serializeContext: SerializeContext) {
+        serializeContext.append("\"${stringExpression.text}\"")
     }
 
     fun serializeSvArrayAccessExpression(
         arrayAccessExpression: ESvArrayAccessExpression,
-        serializerContext: SerializerContext
+        serializeContext: SerializeContext
     ) {
-        serializerContext.serializeAsExpression(arrayAccessExpression.array)
-        serializerContext.append("[")
-        serializerContext.serializeAsExpression(arrayAccessExpression.index)
-        serializerContext.append("]")
+        serializeContext.serializeAsExpression(arrayAccessExpression.array)
+        serializeContext.append("[")
+        serializeContext.serializeAsExpression(arrayAccessExpression.index)
+        serializeContext.append("]")
     }
 
     fun serializeConstantPartSelectExpression(
         constantPartSelectExpression: EConstantPartSelectExpression,
-        serializerContext: SerializerContext
+        serializeContext: SerializeContext
     ) {
-        serializerContext.serializeAsExpression(constantPartSelectExpression.array)
-        serializerContext.append("[")
-        serializerContext.serializeAsExpression(constantPartSelectExpression.msbIndex)
-        serializerContext.append(":")
-        serializerContext.serializeAsExpression(constantPartSelectExpression.lsbIndex)
-        serializerContext.append("]")
+        serializeContext.serializeAsExpression(constantPartSelectExpression.array)
+        serializeContext.append("[")
+        serializeContext.serializeAsExpression(constantPartSelectExpression.msbIndex)
+        serializeContext.append(":")
+        serializeContext.serializeAsExpression(constantPartSelectExpression.lsbIndex)
+        serializeContext.append("]")
     }
 
     fun serializeConcatenationExpression(
         concatenationExpression: EConcatenationExpression,
-        serializerContext: SerializerContext
+        serializeContext: SerializeContext
     ) {
-        serializerContext.append("{ ")
-        serializerContext.serializeJoin(concatenationExpression.expressions) {
-            serializerContext.serializeAsExpression(it)
+        serializeContext.append("{ ")
+        serializeContext.serializeJoin(concatenationExpression.expressions) {
+            serializeContext.serializeAsExpression(it)
         }
-        serializerContext.append(" }")
+        serializeContext.append(" }")
     }
 
     fun serializeReplicationExpression(
         replicationExpression: EReplicationExpression,
-        serializerContext: SerializerContext
+        serializeContext: SerializeContext
     ) {
-        serializerContext.append("{")
-        serializerContext.append(replicationExpression.value.toString())
-        serializerContext.append("{ ")
-        serializerContext.serializeAsExpression(replicationExpression.expression)
-        serializerContext.append(" }}")
+        serializeContext.append("{")
+        serializeContext.append(replicationExpression.value.toString())
+        serializeContext.append("{ ")
+        serializeContext.serializeAsExpression(replicationExpression.expression)
+        serializeContext.append(" }}")
     }
 
     fun serializeStreamingExpression(
         streamingExpression: EStreamingExpression,
-        serializerContext: SerializerContext
+        serializeContext: SerializeContext
     ) {
-        serializerContext.append("{<<{ ")
-        serializerContext.serializeAsExpression(streamingExpression.expression)
-        serializerContext.append(" }}")
+        serializeContext.append("{<<{ ")
+        serializeContext.serializeAsExpression(streamingExpression.expression)
+        serializeContext.append(" }}")
     }
 
     fun serializeWidthCastExpression(
         widthCastExpression: EWidthCastExpression,
-        serializerContext: SerializerContext
+        serializeContext: SerializeContext
     ) {
-        serializerContext.append("${widthCastExpression.value}'(")
-        serializerContext.serializeAsExpression(widthCastExpression.expression)
-        serializerContext.append(")")
+        serializeContext.append("${widthCastExpression.value}'(")
+        serializeContext.serializeAsExpression(widthCastExpression.expression)
+        serializeContext.append(")")
     }
 
-    fun serializeIfExpression(ifExpression: EIfExpression, serializerContext: SerializerContext) {
-        serializerContext.append("if (")
-        serializerContext.serializeAsExpression(ifExpression.condition)
-        serializerContext.append(")")
+    fun serializeIfExpression(ifExpression: EIfExpression, serializeContext: SerializeContext) {
+        serializeContext.append("if (")
+        serializeContext.serializeAsExpression(ifExpression.condition)
+        serializeContext.append(")")
         val thenExpression = ifExpression.thenExpression
         if (thenExpression != null) {
-            serializerContext.append(" ")
-            serializerContext.serializeAsStatement(thenExpression)
+            serializeContext.append(" ")
+            serializeContext.serializeAsStatement(thenExpression)
         } else {
-            serializerContext.appendLine(";")
+            serializeContext.appendLine(";")
         }
         val elseExpression = ifExpression.elseExpression
         if (elseExpression != null) {
-            serializerContext.label(elseExpression) {
-                serializerContext.append("else ")
+            serializeContext.label(elseExpression) {
+                serializeContext.append("else ")
                 if (elseExpression.statements.size == 1 && elseExpression.statements[0] is EIfExpression) {
-                    serializerContext.serializeAsStatement(elseExpression.statements[0])
+                    serializeContext.serializeAsStatement(elseExpression.statements[0])
                 } else {
-                    serializerContext.serializeAsStatement(elseExpression)
+                    serializeContext.serializeAsStatement(elseExpression)
                 }
             }
         }
     }
 
-    fun serializeInlineIfExpression(inlineIfExpression: EInlineIfExpression, serializerContext: SerializerContext) {
-        serializerContext.serializeAsExpression(inlineIfExpression.condition)
-        serializerContext.hardBreak()
-        serializerContext.append("? ")
-        serializerContext.serializeAsExpression(inlineIfExpression.thenExpression)
-        serializerContext.hardBreak()
-        serializerContext.append(": ")
-        serializerContext.serializeAsExpression(inlineIfExpression.elseExpression)
+    fun serializeInlineIfExpression(inlineIfExpression: EInlineIfExpression, serializeContext: SerializeContext) {
+        serializeContext.serializeAsExpression(inlineIfExpression.condition)
+        serializeContext.hardBreak()
+        serializeContext.append("? ")
+        serializeContext.serializeAsExpression(inlineIfExpression.thenExpression)
+        serializeContext.hardBreak()
+        serializeContext.append(": ")
+        serializeContext.serializeAsExpression(inlineIfExpression.elseExpression)
     }
 
     fun serializeImmediateAssertStatement(
         immediateAssertStatement: EImmediateAssertStatement,
-        serializerContext: SerializerContext
+        serializeContext: SerializeContext
     ) {
-        serializerContext.append("assert (")
-        serializerContext.serializeAsExpression(immediateAssertStatement.condition)
-        serializerContext.append(")")
+        serializeContext.append("assert (")
+        serializeContext.serializeAsExpression(immediateAssertStatement.condition)
+        serializeContext.append(")")
         val elseExpression = immediateAssertStatement.elseExpression
         if (elseExpression != null) {
-            serializerContext.append(" else ")
-            serializerContext.serializeAsStatement(elseExpression)
+            serializeContext.append(" else ")
+            serializeContext.serializeAsStatement(elseExpression)
         } else {
-            serializerContext.appendLine(";")
+            serializeContext.appendLine(";")
         }
     }
 
-    fun serializeCaseStatement(caseStatement: ECaseStatement, serializerContext: SerializerContext) {
-        serializerContext.append("case (")
-        serializerContext.serializeAsExpression(caseStatement.subject)
-        serializerContext.appendLine(")")
-        serializerContext.indent {
+    fun serializeCaseStatement(caseStatement: ECaseStatement, serializeContext: SerializeContext) {
+        serializeContext.append("case (")
+        serializeContext.serializeAsExpression(caseStatement.subject)
+        serializeContext.appendLine(")")
+        serializeContext.indent {
             caseStatement.entries.forEach { entry ->
                 if (entry.conditions.isNotEmpty()) {
-                    serializerContext.serializeJoin(entry.conditions) {
-                        serializerContext.serializeAsExpression(it)
+                    serializeContext.serializeJoin(entry.conditions) {
+                        serializeContext.serializeAsExpression(it)
                     }
                 } else {
-                    serializerContext.append("default")
+                    serializeContext.append("default")
                 }
-                serializerContext.append(" : ")
-                serializerContext.serializeAsStatement(entry.body)
+                serializeContext.append(" : ")
+                serializeContext.serializeAsStatement(entry.body)
             }
         }
-        serializerContext.label(caseStatement.endLocation) {
-            serializerContext.appendLine("endcase")
+        serializeContext.label(caseStatement.endLocation) {
+            serializeContext.appendLine("endcase")
         }
     }
 
-    fun serializeWhileStatement(whileStatement: EWhileStatement, serializerContext: SerializerContext) {
+    fun serializeWhileStatement(whileStatement: EWhileStatement, serializeContext: SerializeContext) {
         if (whileStatement.isDoWhile) {
-            serializerContext.append("do ")
-            serializerContext.serializeAsStatement(whileStatement.body)
-            serializerContext.append("while (")
-            serializerContext.serializeAsExpression(whileStatement.condition)
-            serializerContext.appendLine(");")
+            serializeContext.append("do ")
+            serializeContext.serializeAsStatement(whileStatement.body)
+            serializeContext.append("while (")
+            serializeContext.serializeAsExpression(whileStatement.condition)
+            serializeContext.appendLine(");")
         } else {
-            serializerContext.append("while (")
-            serializerContext.serializeAsExpression(whileStatement.condition)
-            serializerContext.append(") ")
-            serializerContext.serializeAsStatement(whileStatement.body)
+            serializeContext.append("while (")
+            serializeContext.serializeAsExpression(whileStatement.condition)
+            serializeContext.append(") ")
+            serializeContext.serializeAsStatement(whileStatement.body)
         }
     }
 
-    fun serializeForStatement(forStatement: ESvForStatement, serializerContext: SerializerContext) {
-        serializerContext.append("for (")
-        serializePropertyInline(forStatement.property, serializerContext)
-        serializerContext.append("; ")
-        serializerContext.serializeAsExpression(forStatement.condition)
-        serializerContext.append("; ")
-        serializerContext.serializeAsExpression(forStatement.iteration)
-        serializerContext.append(") ")
-        serializerContext.serializeAsStatement(forStatement.body)
+    fun serializeForStatement(forStatement: ESvForStatement, serializeContext: SerializeContext) {
+        serializeContext.append("for (")
+        serializePropertyInline(forStatement.property, serializeContext)
+        serializeContext.append("; ")
+        serializeContext.serializeAsExpression(forStatement.condition)
+        serializeContext.append("; ")
+        serializeContext.serializeAsExpression(forStatement.iteration)
+        serializeContext.append(") ")
+        serializeContext.serializeAsStatement(forStatement.body)
     }
 
-    fun serializeForeverStatement(foreverStatement: EForeverStatement, serializerContext: SerializerContext) {
-        serializerContext.append("forever ")
-        serializerContext.serializeAsStatement(foreverStatement.body)
+    fun serializeForeverStatement(foreverStatement: EForeverStatement, serializeContext: SerializeContext) {
+        serializeContext.append("forever ")
+        serializeContext.serializeAsStatement(foreverStatement.body)
     }
 
-    fun serializeRepeatStatement(repeatStatement: ERepeatStatement, serializerContext: SerializerContext) {
-        serializerContext.append("repeat (")
-        serializerContext.serializeAsExpression(repeatStatement.condition)
-        serializerContext.append(") ")
-        serializerContext.serializeAsStatement(repeatStatement.body)
+    fun serializeRepeatStatement(repeatStatement: ERepeatStatement, serializeContext: SerializeContext) {
+        serializeContext.append("repeat (")
+        serializeContext.serializeAsExpression(repeatStatement.condition)
+        serializeContext.append(") ")
+        serializeContext.serializeAsStatement(repeatStatement.body)
     }
 
-    fun serializeForkStatement(forkStatement: EForkStatement, serializerContext: SerializerContext) {
-        serializerContext.appendLine("fork")
-        serializerContext.indent {
-            serializerContext.serializeAsStatement(forkStatement.body)
+    fun serializeForkStatement(forkStatement: EForkStatement, serializeContext: SerializeContext) {
+        serializeContext.appendLine("fork")
+        serializeContext.indent {
+            serializeContext.serializeAsStatement(forkStatement.body)
         }
-        serializerContext.appendLine("join_none")
+        serializeContext.appendLine("join_none")
     }
 
-    fun serializeWaitForkStatement(serializerContext: SerializerContext) {
-        serializerContext.appendLine("wait fork;")
+    fun serializeWaitForkStatement(serializeContext: SerializeContext) {
+        serializeContext.appendLine("wait fork;")
     }
 
-    fun serializeEventExpression(eventExpression: EEventExpression, serializerContext: SerializerContext) {
+    fun serializeEventExpression(eventExpression: EEventExpression, serializeContext: SerializeContext) {
         when (eventExpression.edgeType) {
-            EdgeType.POSEDGE -> serializerContext.append("posedge ")
-            EdgeType.NEGEDGE -> serializerContext.append("negedge ")
-            EdgeType.EDGE -> serializerContext.append("edge ")
+            EdgeType.POSEDGE -> serializeContext.append("posedge ")
+            EdgeType.NEGEDGE -> serializeContext.append("negedge ")
+            EdgeType.EDGE -> serializeContext.append("edge ")
         }
-        serializerContext.serializeAsExpression(eventExpression.expression)
+        serializeContext.serializeAsExpression(eventExpression.expression)
     }
 
     fun serializeEventControlExpression(
         eventControlExpression: EEventControlExpression,
-        serializerContext: SerializerContext
+        serializeContext: SerializeContext
     ) {
-        serializerContext.append("@(")
-        serializerContext.serializeAsExpression(eventControlExpression.expression)
-        serializerContext.append(")")
+        serializeContext.append("@(")
+        serializeContext.serializeAsExpression(eventControlExpression.expression)
+        serializeContext.append(")")
     }
 
-    fun serializeDelayExpression(delayExpression: EDelayExpression, serializerContext: SerializerContext) {
-        serializerContext.append("#")
-        serializerContext.serializeAsExpression(delayExpression.expression)
+    fun serializeDelayExpression(delayExpression: EDelayExpression, serializeContext: SerializeContext) {
+        serializeContext.append("#")
+        serializeContext.serializeAsExpression(delayExpression.expression)
     }
 
-    private fun serializePropertyInline(property: ESvProperty, serializerContext: SerializerContext) {
+    private fun serializePropertyInline(property: ESvProperty, serializeContext: SerializeContext) {
         val serializedType = TypeSerializer.serialize(property.type, property)
         serializedType.checkNoUnpackedDimension(property)
-        serializerContext.append(serializedType.getBaseAndPackedDimension() + " ")
-        serializerContext.append(property.name)
+        serializeContext.append(serializedType.getBaseAndPackedDimension() + " ")
+        serializeContext.append(property.name)
         val initializer = property.initializer
         if (initializer != null) {
-            serializerContext.append(" = ")
-            serializerContext.serializeAsExpression(initializer)
+            serializeContext.append(" = ")
+            serializeContext.serializeAsExpression(initializer)
         }
     }
 }

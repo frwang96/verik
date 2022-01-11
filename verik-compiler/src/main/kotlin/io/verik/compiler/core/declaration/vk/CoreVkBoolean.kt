@@ -23,9 +23,9 @@ import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.core.common.CoreTransformUtil
 import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
-import io.verik.compiler.resolve.EqualsTypeConstraint
 import io.verik.compiler.resolve.TypeAdapter
 import io.verik.compiler.resolve.TypeConstraint
+import io.verik.compiler.resolve.TypeConstraintKind
 
 object CoreVkBoolean : CoreScope(CorePackage.VK) {
 
@@ -33,9 +33,10 @@ object CoreVkBoolean : CoreScope(CorePackage.VK) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
-                EqualsTypeConstraint(
-                    TypeAdapter.ofTypeArgument(callExpression, 0),
-                    TypeAdapter.ofElement(callExpression, 0)
+                TypeConstraint(
+                    TypeConstraintKind.EQ_INOUT,
+                    TypeAdapter.ofElement(callExpression, 0),
+                    TypeAdapter.ofTypeArgument(callExpression, 0)
                 )
             )
         }
@@ -54,12 +55,7 @@ object CoreVkBoolean : CoreScope(CorePackage.VK) {
     val F_sext = object : TransformableCoreFunctionDeclaration(parent, "sext", "fun sext()") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
-            return listOf(
-                EqualsTypeConstraint(
-                    TypeAdapter.ofTypeArgument(callExpression, 0),
-                    TypeAdapter.ofElement(callExpression, 0)
-                )
-            )
+            return F_ext.getTypeConstraints(callExpression)
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {

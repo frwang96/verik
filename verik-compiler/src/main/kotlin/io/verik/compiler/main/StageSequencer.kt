@@ -26,7 +26,8 @@ import io.verik.compiler.check.mid.ObjectCheckerStage
 import io.verik.compiler.check.mid.PortCheckerStage
 import io.verik.compiler.check.mid.PortInstantiationCheckerStage
 import io.verik.compiler.check.mid.ProceduralBlockReferenceCheckerStage
-import io.verik.compiler.check.mid.TypeParameterTypeCheckerStage
+import io.verik.compiler.check.mid.TypeArgumentTypeCheckerStage
+import io.verik.compiler.check.mid.TypeParameterCheckerStage
 import io.verik.compiler.check.post.FileCheckerStage
 import io.verik.compiler.check.post.KeywordCheckerStage
 import io.verik.compiler.check.post.NameRedeclarationCheckerStage
@@ -56,9 +57,7 @@ import io.verik.compiler.kotlin.KotlinEnvironmentBuilderStage
 import io.verik.compiler.reorder.DeadDeclarationEliminatorStage
 import io.verik.compiler.reorder.DependencyReordererStage
 import io.verik.compiler.reorder.PropertyStatementReordererStage
-import io.verik.compiler.resolve.CardinalNegativeCheckerStage
-import io.verik.compiler.resolve.OptionalReducerStage
-import io.verik.compiler.resolve.TypeConstraintCheckerStage
+import io.verik.compiler.resolve.TypeReferenceForwarderStage
 import io.verik.compiler.resolve.TypeResolvedCheckerStage
 import io.verik.compiler.resolve.TypeResolverStage
 import io.verik.compiler.serialize.general.ConfigFileSerializerStage
@@ -66,7 +65,7 @@ import io.verik.compiler.serialize.general.PackageWrapperSerializerStage
 import io.verik.compiler.serialize.general.SourcesFileSerializerStage
 import io.verik.compiler.serialize.source.SourceSerializerStage
 import io.verik.compiler.serialize.target.CompositeTargetSerializerStage
-import io.verik.compiler.specialize.DeclarationSpecializerStage
+import io.verik.compiler.specialize.SpecializerStage
 import io.verik.compiler.transform.lower.ExpressionEvaluatorStage
 import io.verik.compiler.transform.lower.ExpressionExtractorStage
 import io.verik.compiler.transform.lower.FunctionTransformerStage
@@ -141,18 +140,18 @@ object StageSequencer {
         stageSequence.add(StageType.MID_CHECK, EntryPointCheckerStage)
         stageSequence.add(StageType.MID_CHECK, AnnotationEntryCheckerStage)
         stageSequence.add(StageType.MID_CHECK, ComponentInstantiationCheckerStage)
-        stageSequence.add(StageType.MID_CHECK, TypeParameterTypeCheckerStage)
+        stageSequence.add(StageType.MID_CHECK, TypeParameterCheckerStage)
+        stageSequence.add(StageType.MID_CHECK, TypeArgumentTypeCheckerStage)
         stageSequence.add(StageType.MID_CHECK, ObjectCheckerStage)
         stageSequence.add(StageType.MID_CHECK, PortCheckerStage)
         stageSequence.add(StageType.MID_CHECK, PortInstantiationCheckerStage)
         stageSequence.add(StageType.MID_CHECK, ProceduralBlockReferenceCheckerStage)
 
+        stageSequence.add(StageType.SPECIALIZE, SpecializerStage)
+
         stageSequence.add(StageType.RESOLVE, TypeResolverStage)
         stageSequence.add(StageType.RESOLVE, TypeResolvedCheckerStage)
-        stageSequence.add(StageType.RESOLVE, DeclarationSpecializerStage)
-        stageSequence.add(StageType.RESOLVE, TypeConstraintCheckerStage)
-        stageSequence.add(StageType.RESOLVE, CardinalNegativeCheckerStage)
-        stageSequence.add(StageType.RESOLVE, OptionalReducerStage)
+        stageSequence.add(StageType.RESOLVE, TypeReferenceForwarderStage)
 
         stageSequence.add(StageType.INTERPRET, EnumInterpreterStage)
         stageSequence.add(StageType.INTERPRET, StructInterpreterStage)

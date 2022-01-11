@@ -136,6 +136,10 @@ object Messages {
         "Make annotation out of context"
     )
 
+    val PARAMETERIZED_FUNCTION_NOT_TOP = ErrorMessageTemplate1<String>(
+        "Function that is not top level cannot be parameterized: $0"
+    )
+
     val EXPECTED_CARDINAL_TYPE = ErrorMessageTemplate1<Type>(
         "Cardinal type expected but found: $0"
     )
@@ -176,10 +180,44 @@ object Messages {
         "Illegal reference to procedural block: $0"
     )
 
-//  RESOLVE  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  SPECIALIZE  ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val TYPE_NO_WIDTH = ErrorMessageTemplate1<Type>(
         "Could not get width of type: $0"
+    )
+
+    val CARDINAL_NOT_BOOLEAN = ErrorMessageTemplate1<Type>(
+        "Could not interpret cardinal as either true or false: $0"
+    )
+
+    val CARDINAL_OUT_OF_RANGE = ErrorMessageTemplate0(
+        "Cardinal type out of range"
+    )
+
+    val OPTIONAL_NOT_DIRECT_ASSIGNMENT = ErrorMessageTemplate0(
+        "Optional must be directly assigned to a property"
+    )
+
+    val OPTIONAL_NOT_VAL = ErrorMessageTemplate0(
+        "Property assigned as optional must be declared as val"
+    )
+
+    val UNRESOLVED_CALL_EXPRESSION_TYPE_ARGUMENTS = ErrorMessageTemplate1<String>(
+        "Type arguments must be explicitly provided: $0"
+    )
+
+//  RESOLVE  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    val MISMATCHED_TYPE = ErrorMessageTemplate2<Type, Type>(
+        "Type mismatch: Expected $0 actual $1"
+    )
+
+    val EXTENSION_ERROR = ErrorMessageTemplate2<Type, Type>(
+        "Unable to extend from $0 to $1"
+    )
+
+    val TRUNCATION_ERROR = ErrorMessageTemplate2<Type, Type>(
+        "Unable to truncate from $0 to $1"
     )
 
     val UNRESOLVED_DECLARATION = ErrorMessageTemplate1<String>(
@@ -194,24 +232,8 @@ object Messages {
         "Type of type argument could not be resolved"
     )
 
-    val CARDINAL_OUT_OF_RANGE = ErrorMessageTemplate0(
-        "Cardinal type out of range"
-    )
-
-    val MISMATCHED_TYPE = ErrorMessageTemplate2<Type, Type>(
-        "Type mismatch: Expected $0 actual $1"
-    )
-
-    val EXTENSION_ERROR = ErrorMessageTemplate2<Type, Type>(
-        "Unable to extend from $0 to $1"
-    )
-
-    val TRUNCATION_ERROR = ErrorMessageTemplate2<Type, Type>(
-        "Unable to truncate from $0 to $1"
-    )
-
-    val CARDINAL_NOT_BOOLEAN = ErrorMessageTemplate1<Type>(
-        "Could not interpret cardinal as either true or false: $0"
+    val CARDINAL_NEGATIVE = ErrorMessageTemplate1<Type>(
+        "Cardinal type is negative: $0"
     )
 
 //  INTERPRET  /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -290,10 +312,6 @@ object Messages {
 
     val DUPLICATED_FILE_NAME = ErrorMessageTemplate1<Path>(
         "File name is duplicated: $0"
-    )
-
-    val NEGATIVE_CARDINAL = ErrorMessageTemplate1<Type>(
-        "Cardinal type is negative: $0"
     )
 
     val KEYWORD_CONFLICT = ErrorMessageTemplate1<String>(

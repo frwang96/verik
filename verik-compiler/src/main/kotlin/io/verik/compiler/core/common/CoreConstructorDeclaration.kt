@@ -23,7 +23,6 @@ class CoreConstructorDeclaration(
     val targetFunctionDeclaration: TargetFunctionDeclaration?
 ) : CoreDeclaration {
 
-    override var name = "<init>"
-
-    override val signature: String = "fun ${parent.name}(): ${parent.name}"
+    override var name = parent.name
+    override val signature: String = "fun $name(): $name"
 }

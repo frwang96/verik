@@ -30,7 +30,7 @@ class EKtCallExpression(
     override var reference: Declaration,
     override var receiver: EExpression?,
     override val valueArguments: ArrayList<EExpression>,
-    val typeArguments: ArrayList<Type>
+    var typeArguments: ArrayList<Type>
 ) : EAbstractCallExpression() {
 
     override val serializationType = SerializationType.INTERNAL

@@ -22,6 +22,8 @@ import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EProject
+import io.verik.compiler.ast.element.kt.EKtConstructor
+import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.common.TreeVisitor
 
 fun EProject.findDeclaration(name: String): EDeclaration {
@@ -29,8 +31,11 @@ fun EProject.findDeclaration(name: String): EDeclaration {
         val declarations = ArrayList<EDeclaration>()
         override fun visitElement(element: EElement) {
             super.visitElement(element)
-            if (element is EDeclaration && element.name == name)
-                declarations.add(element)
+            if (element is EDeclaration &&
+                element !is EPrimaryConstructor &&
+                element !is EKtConstructor &&
+                element.name == name
+            ) declarations.add(element)
         }
     }
     accept(declarationVisitor)

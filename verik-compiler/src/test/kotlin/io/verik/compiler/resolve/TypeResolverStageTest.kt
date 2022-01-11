@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ internal class TypeResolverStageTest : BaseTest() {
                 var c = C<`8`>()
             """.trimIndent(),
             TypeResolverStage::class,
-            "KtProperty(c, C<`8`>, KtCallExpression(C<`8`>, <init>, null, [], [`8`]), [], 1)"
+            "KtProperty(c, C<`8`>, KtCallExpression(C<`8`>, C_X_8, null, [], []), [], 1)"
         ) { it.findDeclaration("c") }
     }
 
@@ -82,7 +82,7 @@ internal class TypeResolverStageTest : BaseTest() {
                 val x = u(0x00) + u(0x0)
             """.trimIndent(),
             TypeResolverStage::class,
-            "KtCallExpression(Ubit<MAX<`8`,`4`>>, plus, *, *, [])"
+            "KtCallExpression(Ubit<`8`>, plus, *, *, [])"
         ) { it.findExpression("x") }
     }
 
@@ -93,7 +93,7 @@ internal class TypeResolverStageTest : BaseTest() {
                 val x = u<`8`>()
             """.trimIndent(),
             TypeResolverStage::class,
-            "KtCallExpression(Ubit<WIDTH<`8`>>, u, null, [], [`8`])"
+            "KtCallExpression(Ubit<`4`>, u, null, [], [`8`])"
         ) { it.findExpression("x") }
     }
 
@@ -104,7 +104,7 @@ internal class TypeResolverStageTest : BaseTest() {
                 val x = cat(u(0), false)
             """.trimIndent(),
             TypeResolverStage::class,
-            "KtCallExpression(Ubit<ADD<`1`, `1`>>, cat, null, *, [])"
+            "KtCallExpression(Ubit<`2`>, cat, null, *, [])"
         ) { it.findExpression("x") }
     }
 
@@ -126,7 +126,7 @@ internal class TypeResolverStageTest : BaseTest() {
                 val x = rep<`3`>(false)
             """.trimIndent(),
             TypeResolverStage::class,
-            "KtCallExpression(Ubit<MUL<`1`, `3`>>, rep, null, *, [`3`])"
+            "KtCallExpression(Ubit<`3`>, rep, null, *, [`3`])"
         ) { it.findExpression("x") }
     }
 

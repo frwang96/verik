@@ -25,7 +25,6 @@ import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.core.common.Cardinal
 import io.verik.compiler.core.common.CardinalConstantDeclaration
 import io.verik.compiler.core.common.CardinalDeclaration
-import io.verik.compiler.core.common.CardinalUnresolvedDeclaration
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreClassDeclaration
 import io.verik.compiler.message.Messages
@@ -68,7 +67,7 @@ class Type(
     }
 
     fun isResolved(): Boolean {
-        if (reference is CardinalUnresolvedDeclaration)
+        if (isCardinalType() && reference !is CardinalConstantDeclaration)
             return false
         return arguments.all { it.isResolved() }
     }

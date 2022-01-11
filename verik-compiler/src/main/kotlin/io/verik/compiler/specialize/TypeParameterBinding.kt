@@ -16,7 +16,10 @@
 
 package io.verik.compiler.specialize
 
-import io.verik.compiler.ast.element.common.ETypeParameter
+import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.property.Type
 
-data class TypeParameterBinding(val typeParameter: ETypeParameter, val type: Type)
+data class TypeParameterBinding(
+    val declaration: EDeclaration,
+    val typeArguments: List<Type>
+)

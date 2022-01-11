@@ -75,13 +75,14 @@ internal class CoreVkSpecialTest : CoreDeclarationTest() {
     }
 
     @Test
-    fun `serialize u u0`() {
+    fun `serialize u u0 u1`() {
         driveCoreDeclarationTest(
             listOf(
                 Core.Vk.F_u,
                 Core.Vk.F_u_Boolean,
                 Core.Vk.F_u_Sbit,
-                Core.Vk.F_u0
+                Core.Vk.F_u0,
+                Core.Vk.F_u1
             ),
             """
                 var x = u(0x0)
@@ -92,6 +93,7 @@ internal class CoreVkSpecialTest : CoreDeclarationTest() {
                     y = u(false)
                     x = u(z)
                     x = u0()
+                    x = u1()
                 }
             """.trimIndent(),
             """
@@ -100,6 +102,7 @@ internal class CoreVkSpecialTest : CoreDeclarationTest() {
                     y = 1'b0;
                     x = ${'$'}unsigned(z);
                     x = 4'b0000;
+                    x = 4'b1111;
                 endfunction : f
             """.trimIndent()
         )

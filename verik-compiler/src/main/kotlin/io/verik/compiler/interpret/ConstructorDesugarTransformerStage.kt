@@ -28,7 +28,6 @@ import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
-import io.verik.compiler.ast.property.SuperTypeCallEntry
 import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
@@ -58,14 +57,15 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
                 declarations.addAll(properties.filterNotNull())
 
                 val body = getPrimaryConstructorBody(primaryConstructor, properties)
-                val superTypeCallEntry = getSuperTypeCallEntry(`class`.superTypeCallEntry)
-                val constructor = EKtConstructor(primaryConstructor.location)
-                constructor.init(
+                val superTypeCallExpression = `class`.superTypeCallExpression?.let { ExpressionCopier.deepCopy(it) }
+                val constructor = EKtConstructor(
+                    primaryConstructor.location,
+                    primaryConstructor.name,
                     primaryConstructor.type,
                     body,
                     primaryConstructor.valueParameters,
                     primaryConstructor.typeParameters,
-                    superTypeCallEntry
+                    superTypeCallExpression
                 )
                 declarations.add(constructor)
                 `class`.primaryConstructor = null
@@ -82,8 +82,15 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
                     val isMutable = it.isMutable
                     it.isPrimaryConstructorProperty = false
                     it.isMutable = false
-                    val property = EKtProperty(it.location, it.location, it.name)
-                    property.init(it.type.copy(), null, listOf(), isMutable)
+                    val property = EKtProperty(
+                        location = it.location,
+                        endLocation = it.location,
+                        name = it.name,
+                        type = it.type.copy(),
+                        initializer = null,
+                        annotationEntries = listOf(),
+                        isMutable = isMutable
+                    )
                     referenceUpdater.update(it, property)
                     property
                 } else {
@@ -130,14 +137,5 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
                 statements
             )
         }
-    }
-
-    private fun getSuperTypeCallEntry(superTypeCallEntry: SuperTypeCallEntry?): SuperTypeCallEntry? {
-        return if (superTypeCallEntry != null) {
-            val valueArguments = superTypeCallEntry.valueArguments.map {
-                ExpressionCopier.deepCopy(it)
-            }
-            SuperTypeCallEntry(superTypeCallEntry.reference, ArrayList(valueArguments))
-        } else null
     }
 }

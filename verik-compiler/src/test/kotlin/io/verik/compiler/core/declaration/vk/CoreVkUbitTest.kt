@@ -153,10 +153,33 @@ internal class CoreVkUbitTest : CoreDeclarationTest() {
     }
 
     @Test
+    fun `isZeroes isOnes`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Vk.Ubit.F_isZeroes,
+                Core.Vk.Ubit.F_isOnes
+            ),
+            """
+                var x = u(0x00)
+                var y = false
+                fun f() {
+                    y = x.isZeroes()
+                    y = x.isOnes()
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    y = !x;
+                    y = x == 8'hff;
+                endfunction : f
+            """.trimIndent()
+        )
+    }
+
+    @Test
     fun `serialize slice`() {
         driveCoreDeclarationTest(
             listOf(
-                Core.Vk.Ubit.F_slice,
                 Core.Vk.Ubit.F_slice_Int,
                 Core.Vk.Ubit.F_slice_Ubit
             ),
@@ -164,14 +187,12 @@ internal class CoreVkUbitTest : CoreDeclarationTest() {
                 var x = u(0x00)
                 var y = u(0x0)
                 fun f() {
-                    y = x.slice<`4`, `2`>()
                     y = x.slice(0)
                     y = x.slice(u(0b000))
                 }
             """.trimIndent(),
             """
                 function automatic void f();
-                    y = x[5:2];
                     y = x[3:0];
                     y = x[3'b011:3'b000];
                 endfunction : f

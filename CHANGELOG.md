@@ -10,6 +10,7 @@
 - Support x and z bit constants.
 - Support type alias with type parameters.
 - Evaluate logical operators and if expressions.
+- Added end-to-end regression tests.
 
 ### Changed
 - Adopt `StageType` based stage sequence in importer.
@@ -18,6 +19,7 @@
 - Rewrite constant expression handling.
 - Merge `Optional` with `Cardinal`.
 - Separate `MID_TRANSFORM` into `UPPER_TRANSFORM` and `LOWER_TRANSFORM`.
+- Rewrite specialize and resolve stages to move type resolution after specialization.
 
 ## [0.1.11]
 ### Added

@@ -17,6 +17,7 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.ast.element.common.ETypeParameter
+import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
@@ -26,6 +27,7 @@ import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.common.endLocation
 import io.verik.compiler.common.location
+import io.verik.compiler.core.common.NullDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import org.jetbrains.kotlin.psi.KtClassOrObject
@@ -55,7 +57,12 @@ object DeclarationCastIndexerStage : ProjectStage() {
             val descriptor = castContext.sliceTypeAlias[alias]!!
             val location = alias.nameIdentifier!!.location()
             val name = alias.name!!
-            val indexedTypeAlias = ETypeAlias(location, name)
+            val indexedTypeAlias = ETypeAlias(
+                location,
+                name,
+                NullDeclaration.toType(),
+                ArrayList()
+            )
             castContext.addDeclaration(descriptor, indexedTypeAlias)
         }
 
@@ -64,7 +71,11 @@ object DeclarationCastIndexerStage : ProjectStage() {
             val descriptor = castContext.sliceTypeParameter[parameter]!!
             val location = parameter.nameIdentifier!!.location()
             val name = parameter.name!!
-            val indexedTypeParameter = ETypeParameter(location, name)
+            val indexedTypeParameter = ETypeParameter(
+                location,
+                name,
+                NullDeclaration.toType()
+            )
             castContext.addDeclaration(descriptor, indexedTypeParameter)
         }
 
@@ -79,11 +90,32 @@ object DeclarationCastIndexerStage : ProjectStage() {
             val name = classOrObject.name!!
 
             if (classOrObject.hasPrimaryConstructor() && !classOrObject.hasExplicitPrimaryConstructor()) {
-                val indexedPrimaryConstructor = EPrimaryConstructor(location)
+                val indexedPrimaryConstructor = EPrimaryConstructor(
+                    location,
+                    name,
+                    NullDeclaration.toType(),
+                    ArrayList(),
+                    ArrayList()
+                )
                 castContext.addDeclaration(descriptor.unsubstitutedPrimaryConstructor!!, indexedPrimaryConstructor)
             }
 
-            val indexedClass = EKtClass(location, bodyStartLocation, bodyEndLocation, name)
+            val indexedClass = EKtClass(
+                location = location,
+                bodyStartLocation = bodyStartLocation,
+                bodyEndLocation = bodyEndLocation,
+                name = name,
+                type = NullDeclaration.toType(),
+                superType = NullDeclaration.toType(),
+                declarations = ArrayList(),
+                typeParameters = ArrayList(),
+                annotationEntries = listOf(),
+                isEnum = false,
+                isAbstract = false,
+                isObject = false,
+                primaryConstructor = null,
+                superTypeCallExpression = null
+            )
             castContext.addDeclaration(descriptor, indexedClass)
         }
 
@@ -92,7 +124,17 @@ object DeclarationCastIndexerStage : ProjectStage() {
             val descriptor = castContext.sliceFunction[function]!!
             val location = function.nameIdentifier!!.location()
             val name = function.name!!
-            val indexedFunction = EKtFunction(location, name)
+            val indexedFunction = EKtFunction(
+                location = location,
+                name = name,
+                type = NullDeclaration.toType(),
+                body = EKtBlockExpression.empty(location),
+                valueParameters = ArrayList(),
+                typeParameters = ArrayList(),
+                annotationEntries = listOf(),
+                isAbstract = false,
+                isOverride = false
+            )
             castContext.addDeclaration(descriptor, indexedFunction)
         }
 
@@ -100,7 +142,14 @@ object DeclarationCastIndexerStage : ProjectStage() {
             super.visitPrimaryConstructor(constructor)
             val descriptor = castContext.sliceConstructor[constructor]!!
             val location = constructor.location()
-            val indexedPrimaryConstructor = EPrimaryConstructor(location)
+            val name = constructor.name!!
+            val indexedPrimaryConstructor = EPrimaryConstructor(
+                location,
+                name,
+                NullDeclaration.toType(),
+                ArrayList(),
+                ArrayList()
+            )
             castContext.addDeclaration(descriptor, indexedPrimaryConstructor)
         }
 
@@ -110,7 +159,15 @@ object DeclarationCastIndexerStage : ProjectStage() {
             val location = property.nameIdentifier!!.location()
             val endLocation = property.endLocation()
             val name = property.name!!
-            val indexedProperty = EKtProperty(location, endLocation, name)
+            val indexedProperty = EKtProperty(
+                location = location,
+                endLocation = endLocation,
+                name = name,
+                type = NullDeclaration.toType(),
+                initializer = null,
+                annotationEntries = listOf(),
+                isMutable = false
+            )
             castContext.addDeclaration(descriptor, indexedProperty)
         }
 
@@ -119,7 +176,12 @@ object DeclarationCastIndexerStage : ProjectStage() {
             val descriptor = castContext.sliceClass[enumEntry]!!
             val location = enumEntry.nameIdentifier!!.location()
             val name = enumEntry.name!!
-            val indexedEnumEntry = EKtEnumEntry(location, name)
+            val indexedEnumEntry = EKtEnumEntry(
+                location,
+                name,
+                NullDeclaration.toType(),
+                listOf()
+            )
             castContext.addDeclaration(descriptor, indexedEnumEntry)
         }
 
@@ -129,7 +191,14 @@ object DeclarationCastIndexerStage : ProjectStage() {
                 ?: castContext.sliceValueParameter[parameter]!!
             val location = parameter.nameIdentifier!!.location()
             val name = parameter.name!!
-            val indexedValueParameter = EKtValueParameter(location, name)
+            val indexedValueParameter = EKtValueParameter(
+                location = location,
+                name = name,
+                type = NullDeclaration.toType(),
+                annotationEntries = listOf(),
+                isPrimaryConstructorProperty = false,
+                isMutable = false
+            )
             castContext.addDeclaration(descriptor, indexedValueParameter)
         }
 
@@ -141,7 +210,14 @@ object DeclarationCastIndexerStage : ProjectStage() {
                 val parameterDescriptor = functionDescriptor.valueParameters[0]
                 val location = functionLiteral.location()
                 val name = parameterDescriptor.name.toString()
-                val indexedValueParameter = EKtValueParameter(location, name)
+                val indexedValueParameter = EKtValueParameter(
+                    location = location,
+                    name = name,
+                    type = NullDeclaration.toType(),
+                    annotationEntries = listOf(),
+                    isPrimaryConstructorProperty = false,
+                    isMutable = false
+                )
                 castContext.addDeclaration(parameterDescriptor, indexedValueParameter)
             }
         }

@@ -44,11 +44,11 @@ object SourceSerializerStage : ProjectStage() {
     }
 
     private fun serialize(projectContext: ProjectContext, file: EFile): TextFile {
-        val serializerContext = SerializerContext(file)
+        val serializeContext = SerializeContext(file)
         file.declarations.forEach {
-            serializerContext.serializeAsDeclaration(it)
+            serializeContext.serializeAsDeclaration(it)
         }
-        val sourceActionLines = serializerContext.getSourceActionLines()
+        val sourceActionLines = serializeContext.getSourceActionLines()
         val sourceBuilder = SourceBuilder(projectContext, file)
         sourceBuilder.build(sourceActionLines)
         return sourceBuilder.toTextFile()

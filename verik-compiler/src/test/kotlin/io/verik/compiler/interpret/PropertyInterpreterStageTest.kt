@@ -72,7 +72,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
                 }
             """.trimIndent(),
             PropertyInterpreterStage::class,
-            "SvProperty(m, M, NullExpression(), 0, 0, null)"
+            "SvProperty(m, Nothing, NullExpression(), 0, 0, null)"
         ) { it.findDeclaration("m") }
     }
 

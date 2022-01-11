@@ -22,6 +22,7 @@ import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
+import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EModule
 import io.verik.compiler.ast.element.sv.ESvClass
 import io.verik.compiler.ast.interfaces.Reference
@@ -71,15 +72,17 @@ object DeadDeclarationEliminatorStage : ProjectStage() {
         private fun addType(type: Type) {
             type.arguments.forEach { addType(it) }
             val reference = type.reference
-            if (reference is EDeclaration)
-                declarationQueue.push(reference)
+            if (reference is EDeclaration) {
+                addDeclaration(reference)
+            }
         }
 
         private fun addDeclaration(declaration: EDeclaration) {
             declarationQueue.push(declaration)
             val parent = declaration.parent
-            if (parent is EDeclaration)
+            if (parent is EDeclaration && parent !is EFile) {
                 addDeclaration(parent)
+            }
         }
 
         override fun visitTypedElement(typedElement: ETypedElement) {
@@ -87,17 +90,22 @@ object DeadDeclarationEliminatorStage : ProjectStage() {
             addType(typedElement.type)
             if (typedElement is Reference) {
                 val reference = typedElement.reference
-                if (reference is EDeclaration)
+                if (reference is EDeclaration) {
                     addDeclaration(reference)
+                }
             }
         }
 
         override fun visitAbstractContainerClass(abstractContainerClass: EAbstractContainerClass) {
-            abstractContainerClass.declarations.forEach { declarationQueue.push(it) }
+            abstractContainerClass.declarations.forEach { addDeclaration(it) }
         }
 
         override fun visitAbstractContainerComponent(abstractContainerComponent: EAbstractContainerComponent) {
-            abstractContainerComponent.declarations.forEach { declarationQueue.push(it) }
+            abstractContainerComponent.declarations.forEach { addDeclaration(it) }
+        }
+
+        override fun visitEnum(enum: EEnum) {
+            enum.enumEntries.forEach { addDeclaration(it) }
         }
     }
 

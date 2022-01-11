@@ -18,6 +18,7 @@ package io.verik.compiler.cast
 
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
+import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
@@ -26,8 +27,9 @@ import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.interfaces.cast
-import io.verik.compiler.ast.property.SuperTypeCallEntry
+import io.verik.compiler.common.location
 import io.verik.compiler.core.common.Core
+import io.verik.compiler.core.common.CoreConstructorDeclaration
 import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.KtClassOrObject
@@ -57,7 +59,7 @@ object DeclarationCaster {
             castContext.casterVisitor.getElement<ETypeParameter>(it)
         }
 
-        castedTypeAlias.init(type, typeParameters)
+        castedTypeAlias.fill(type, typeParameters)
         return castedTypeAlias
     }
 
@@ -69,7 +71,7 @@ object DeclarationCaster {
         val type = if (descriptor.representativeUpperBound.isNullableAny()) Core.Kt.C_Any.toType()
         else castContext.castType(descriptor.representativeUpperBound, parameter)
 
-        castedTypeParameter.init(type)
+        castedTypeParameter.fill(type)
         return castedTypeParameter
     }
 
@@ -104,7 +106,7 @@ object DeclarationCaster {
             1 -> {
                 val superTypeListEntry = classOrObject.superTypeListEntries[0]
                 if (superTypeListEntry is KtSuperTypeCallEntry) {
-                    castSuperTypeCallEntry(superTypeListEntry, castContext)
+                    castSuperTypeCallExpression(superTypeListEntry, castContext)
                 } else {
                     Messages.INTERNAL_ERROR.on(classOrObject, "Super type call entry expected")
                 }
@@ -112,7 +114,7 @@ object DeclarationCaster {
             else -> Messages.INTERNAL_ERROR.on(classOrObject, "Multiple inheritance not supported")
         }
 
-        castedClass.init(
+        castedClass.fill(
             type,
             superType,
             declarations,
@@ -153,14 +155,14 @@ object DeclarationCaster {
         val isAbstract = function.hasModifier(KtTokens.ABSTRACT_KEYWORD)
         val isOverride = function.hasModifier(KtTokens.OVERRIDE_KEYWORD)
 
-        castedFunction.init(
-            type,
-            body,
-            valueParameters,
-            typeParameters,
-            annotationEntries,
-            isAbstract,
-            isOverride
+        castedFunction.fill(
+            type = type,
+            body = body,
+            valueParameters = valueParameters,
+            typeParameters = typeParameters,
+            annotationEntries = annotationEntries,
+            isAbstract = isAbstract,
+            isOverride = isOverride
         )
         return castedFunction
     }
@@ -178,7 +180,7 @@ object DeclarationCaster {
             castContext.getDeclaration(it, constructor).cast<ETypeParameter>(constructor)
         }
 
-        castedPrimaryConstructor.init(type, valueParameters, typeParameters)
+        castedPrimaryConstructor.fill(type, valueParameters, typeParameters)
         return castedPrimaryConstructor
     }
 
@@ -197,7 +199,7 @@ object DeclarationCaster {
             castContext.getDeclaration(it, classOrObject).cast<ETypeParameter>(classOrObject)
         }
 
-        castedPrimaryConstructor.init(type, listOf(), typeParameters)
+        castedPrimaryConstructor.fill(type, listOf(), typeParameters)
         return castedPrimaryConstructor
     }
 
@@ -218,7 +220,7 @@ object DeclarationCaster {
         }
         val isMutable = property.isVar
 
-        castedProperty.init(type, initializer, annotationEntries, isMutable)
+        castedProperty.fill(type, initializer, annotationEntries, isMutable)
         return castedProperty
     }
 
@@ -232,7 +234,7 @@ object DeclarationCaster {
             AnnotationEntryCaster.castAnnotationEntry(it, castContext)
         }
 
-        castedEnumEntry.init(type, annotationEntries)
+        castedEnumEntry.fill(type, annotationEntries)
         return castedEnumEntry
     }
 
@@ -254,19 +256,32 @@ object DeclarationCaster {
         val isPrimaryConstructorProperty = (propertyDescriptor != null)
         val isMutable = descriptor.isVar
 
-        castedValueParameter.init(type, annotationEntries, isPrimaryConstructorProperty, isMutable)
+        castedValueParameter.fill(type, annotationEntries, isPrimaryConstructorProperty, isMutable)
         return castedValueParameter
     }
 
-    private fun castSuperTypeCallEntry(
+    private fun castSuperTypeCallExpression(
         superTypeCallEntry: KtSuperTypeCallEntry,
         castContext: CastContext
-    ): SuperTypeCallEntry {
+    ): EKtCallExpression {
+        val location = superTypeCallEntry.location()
         val descriptor = castContext.sliceReferenceTarget[
             superTypeCallEntry.calleeExpression.constructorReferenceExpression!!
         ]!!
         val declaration = castContext.getDeclaration(descriptor, superTypeCallEntry)
+        val type = if (declaration is CoreConstructorDeclaration) {
+            declaration.parent.toType()
+        } else {
+            (declaration as EPrimaryConstructor).type.copy()
+        }
         val valueArguments = CallExpressionCaster.castValueArguments(superTypeCallEntry.calleeExpression, castContext)
-        return SuperTypeCallEntry(declaration, valueArguments)
+        return EKtCallExpression(
+            location,
+            type,
+            declaration,
+            null,
+            valueArguments,
+            ArrayList()
+        )
     }
 }

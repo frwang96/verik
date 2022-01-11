@@ -31,4 +31,15 @@ internal class TypeResolvedCheckerStageTest : BaseTest() {
             "Type of expression could not be resolved"
         )
     }
+
+    @Test
+    fun `cardinal negative`() {
+        driveMessageTest(
+            """
+                var x: Ubit<SUB<`0`, `1`>> = u0()
+            """.trimIndent(),
+            true,
+            "Cardinal type is negative: Ubit<`-1`>"
+        )
+    }
 }

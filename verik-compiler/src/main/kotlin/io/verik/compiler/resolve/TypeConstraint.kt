@@ -16,36 +16,13 @@
 
 package io.verik.compiler.resolve
 
-import io.verik.compiler.ast.element.kt.EKtCallExpression
+class TypeConstraint(
+    val kind: TypeConstraintKind,
+    val typeAdapters: List<TypeAdapter>
+) {
 
-sealed class TypeConstraint
-
-class EqualsTypeConstraint(
-    val inner: TypeAdapter,
-    val outer: TypeAdapter
-) : TypeConstraint()
-
-class UnaryTypeConstraint(
-    val inner: TypeAdapter,
-    val outer: TypeAdapter,
-    val isInnerToOuter: Boolean,
-    val kind: UnaryTypeConstraintKind
-) : TypeConstraint()
-
-class BinaryTypeConstraint(
-    val left: TypeAdapter,
-    val right: TypeAdapter,
-    val outer: TypeAdapter,
-    val kind: BinaryTypeConstraintKind
-) : TypeConstraint()
-
-class SpecialTypeConstraint(
-    val callExpression: EKtCallExpression,
-    val kind: SpecialTypeConstraintKind
-) : TypeConstraint()
-
-class ComparisonTypeConstraint(
-    val inner: TypeAdapter,
-    val outer: TypeAdapter,
-    val kind: ComparisonTypeConstraintKind
-) : TypeConstraint()
+    constructor(
+        kind: TypeConstraintKind,
+        vararg typeAdapters: TypeAdapter
+    ) : this(kind, typeAdapters.toList())
+}

@@ -25,19 +25,17 @@ import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.element.sv.EWidthCastExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.SvUnaryOperatorKind
+import io.verik.compiler.constant.BitComponent
+import io.verik.compiler.constant.BitConstant
 import io.verik.compiler.constant.ConstantBuilder
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.core.common.CoreTransformUtil
 import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
 import io.verik.compiler.core.common.UnaryCoreFunctionDeclaration
-import io.verik.compiler.resolve.ComparisonTypeConstraint
-import io.verik.compiler.resolve.ComparisonTypeConstraintKind
-import io.verik.compiler.resolve.EqualsTypeConstraint
 import io.verik.compiler.resolve.TypeAdapter
 import io.verik.compiler.resolve.TypeConstraint
-import io.verik.compiler.resolve.UnaryTypeConstraint
-import io.verik.compiler.resolve.UnaryTypeConstraintKind
+import io.verik.compiler.resolve.TypeConstraintKind
 
 object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
@@ -45,9 +43,10 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
-                EqualsTypeConstraint(
-                    TypeAdapter.ofElement(callExpression.receiver!!, 0),
-                    TypeAdapter.ofElement(callExpression, 0)
+                TypeConstraint(
+                    TypeConstraintKind.EQ_INOUT,
+                    TypeAdapter.ofElement(callExpression, 0),
+                    TypeAdapter.ofElement(callExpression.receiver!!, 0)
                 )
             )
         }
@@ -85,11 +84,10 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
-                UnaryTypeConstraint(
+                TypeConstraint(
+                    TypeConstraintKind.LOG_IN,
                     TypeAdapter.ofElement(callExpression.valueArguments[0], 0),
-                    TypeAdapter.ofElement(callExpression.receiver!!, 0),
-                    false,
-                    UnaryTypeConstraintKind.LOG
+                    TypeAdapter.ofElement(callExpression.receiver!!, 0)
                 )
             )
         }
@@ -209,9 +207,10 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
-                EqualsTypeConstraint(
-                    TypeAdapter.ofElement(callExpression.receiver!!, 0),
-                    TypeAdapter.ofElement(callExpression, 0)
+                TypeConstraint(
+                    TypeConstraintKind.EQ_INOUT,
+                    TypeAdapter.ofElement(callExpression, 0),
+                    TypeAdapter.ofElement(callExpression.receiver!!, 0)
                 )
             )
         }
@@ -220,12 +219,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
     val F_reverse = object : TransformableCoreFunctionDeclaration(parent, "reverse", "fun reverse()") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
-            return listOf(
-                EqualsTypeConstraint(
-                    TypeAdapter.ofElement(callExpression.receiver!!, 0),
-                    TypeAdapter.ofElement(callExpression, 0)
-                )
-            )
+            return F_invert.getTypeConstraints(callExpression)
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
@@ -239,26 +233,20 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
     val F_reduceXor = UnaryCoreFunctionDeclaration(parent, "reduceXor", "fun reduceXor()", SvUnaryOperatorKind.XOR)
 
-    val F_slice = object : TransformableCoreFunctionDeclaration(parent, "slice", "fun slice()") {
+    val F_isZeroes = UnaryCoreFunctionDeclaration(parent, "isZeroes", "fun isZeroes()", SvUnaryOperatorKind.LOGICAL_NEG)
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
-            return listOf(
-                EqualsTypeConstraint(
-                    TypeAdapter.ofTypeArgument(callExpression, 0),
-                    TypeAdapter.ofElement(callExpression, 0)
-                )
-            )
-        }
+    val F_isOnes = object : TransformableCoreFunctionDeclaration(parent, "isOnes", "fun isOnes()") {
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
-            val width = callExpression.typeArguments[0].asCardinalValue(callExpression)
-            val index = callExpression.typeArguments[1].asCardinalValue(callExpression)
-            return EConstantPartSelectExpression(
+            val width = callExpression.receiver!!.type.asBitWidth(callExpression)
+            val bitConstant = BitConstant(BitComponent.zeroes(width), BitComponent.ones(width), false, width)
+            val constantExpression = ConstantBuilder.buildBitConstant(callExpression.location, bitConstant)
+            return EKtBinaryExpression(
                 callExpression.location,
-                callExpression.type,
+                Core.Kt.C_Boolean.toType(),
                 callExpression.receiver!!,
-                ConstantBuilder.buildInt(callExpression, width + index - 1),
-                ConstantBuilder.buildInt(callExpression, index)
+                constantExpression,
+                KtBinaryOperatorKind.EQEQ
             )
         }
     }
@@ -266,7 +254,13 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
     val F_slice_Int = object : TransformableCoreFunctionDeclaration(parent, "slice", "fun slice(Int)") {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
-            return F_slice.getTypeConstraints(callExpression)
+            return listOf(
+                TypeConstraint(
+                    TypeConstraintKind.EQ_INOUT,
+                    TypeAdapter.ofElement(callExpression, 0),
+                    TypeAdapter.ofTypeArgument(callExpression, 0)
+                )
+            )
         }
 
         override fun transform(callExpression: EKtCallExpression): EExpression {
@@ -290,15 +284,15 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
-                EqualsTypeConstraint(
-                    TypeAdapter.ofTypeArgument(callExpression, 0),
-                    TypeAdapter.ofElement(callExpression, 0)
+                TypeConstraint(
+                    TypeConstraintKind.EQ_INOUT,
+                    TypeAdapter.ofElement(callExpression, 0),
+                    TypeAdapter.ofTypeArgument(callExpression, 0)
                 ),
-                UnaryTypeConstraint(
+                TypeConstraint(
+                    TypeConstraintKind.LOG_IN,
                     TypeAdapter.ofElement(callExpression.valueArguments[0], 0),
-                    TypeAdapter.ofElement(callExpression.receiver!!, 0),
-                    false,
-                    UnaryTypeConstraintKind.LOG
+                    TypeAdapter.ofElement(callExpression.receiver!!, 0)
                 )
             )
         }
@@ -324,14 +318,15 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
-                EqualsTypeConstraint(
+                TypeConstraint(
+                    TypeConstraintKind.EQ_INOUT,
                     TypeAdapter.ofTypeArgument(callExpression, 0),
                     TypeAdapter.ofElement(callExpression, 0)
                 ),
-                ComparisonTypeConstraint(
+                TypeConstraint(
+                    TypeConstraintKind.EXT_IN,
                     TypeAdapter.ofElement(callExpression.receiver!!, 0),
-                    TypeAdapter.ofElement(callExpression, 0),
-                    ComparisonTypeConstraintKind.EXT
+                    TypeAdapter.ofTypeArgument(callExpression, 0)
                 )
             )
         }
@@ -370,14 +365,15 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
         override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
             return listOf(
-                EqualsTypeConstraint(
+                TypeConstraint(
+                    TypeConstraintKind.EQ_INOUT,
                     TypeAdapter.ofTypeArgument(callExpression, 0),
                     TypeAdapter.ofElement(callExpression, 0)
                 ),
-                ComparisonTypeConstraint(
+                TypeConstraint(
+                    TypeConstraintKind.TRU_IN,
                     TypeAdapter.ofElement(callExpression.receiver!!, 0),
-                    TypeAdapter.ofElement(callExpression, 0),
-                    ComparisonTypeConstraintKind.TRU
+                    TypeAdapter.ofTypeArgument(callExpression, 0)
                 )
             )
         }

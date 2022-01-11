@@ -17,9 +17,11 @@
 package io.verik.compiler.resolve
 
 import io.verik.compiler.ast.element.common.EDeclaration
+import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
@@ -33,25 +35,42 @@ object TypeResolvedCheckerStage : ProjectStage() {
 
     private object TypeResolvedCheckerVisitor : TreeVisitor() {
 
+        private fun isPositive(type: Type, element: EElement): Boolean {
+            if (type.arguments.any { !isPositive(it, element) })
+                return false
+            return if (type.isCardinalType()) {
+                return type.asCardinalValue(element) >= 0
+            } else true
+        }
+
         override fun visitDeclaration(declaration: EDeclaration) {
             super.visitDeclaration(declaration)
             if (declaration !is ETypeParameter) {
-                if (!declaration.type.isResolved())
+                if (!declaration.type.isResolved()) {
                     Messages.UNRESOLVED_DECLARATION.on(declaration, declaration.name)
+                } else if (!isPositive(declaration.type, declaration)) {
+                    Messages.CARDINAL_NEGATIVE.on(declaration, declaration.type)
+                }
             }
         }
 
         override fun visitExpression(expression: EExpression) {
             super.visitExpression(expression)
-            if (!expression.type.isResolved())
+            if (!expression.type.isResolved()) {
                 Messages.UNRESOLVED_EXPRESSION.on(expression)
+            } else if (!isPositive(expression.type, expression)) {
+                Messages.CARDINAL_NEGATIVE.on(expression, expression.type)
+            }
         }
 
         override fun visitKtCallExpression(callExpression: EKtCallExpression) {
             super.visitKtCallExpression(callExpression)
             callExpression.typeArguments.forEach {
-                if (!it.isResolved())
+                if (!it.isResolved()) {
                     Messages.UNRESOLVED_TYPE_ARGUMENT.on(callExpression)
+                } else if (!isPositive(it, callExpression)) {
+                    Messages.CARDINAL_NEGATIVE.on(callExpression, it)
+                }
             }
         }
     }

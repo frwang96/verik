@@ -79,7 +79,7 @@ internal class DeclarationSerializerTest : BaseTest() {
             """.trimIndent(),
             """
                 module M(
-                    input logic x
+                    input  logic x
                 );
                 
                 endmodule : M
@@ -110,14 +110,14 @@ internal class DeclarationSerializerTest : BaseTest() {
             """
                 class C;
                 
-                    static function automatic C __new();
+                    static function automatic C C_new();
                         automatic C __0 = new();
-                        __0.__init();
+                        __0.C_init();
                         return __0;
-                    endfunction : __new
+                    endfunction : C_new
                 
-                    function automatic void __init();
-                    endfunction : __init
+                    function automatic void C_init();
+                    endfunction : C_init
                 
                 endclass : C
             """.trimIndent()
@@ -281,7 +281,7 @@ internal class DeclarationSerializerTest : BaseTest() {
             """.trimIndent(),
             """
                 module M(
-                    input logic x
+                    input  logic x
                 );
                 
                 endmodule : M
@@ -314,7 +314,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                     logic x;
                 
                     modport mp (
-                        input x
+                        input  x
                     );
                 
                 endinterface : Top
@@ -339,7 +339,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                     logic x;
                 
                     clocking cb @(posedge x);
-                        input x;
+                        input  x;
                     endclocking
                 
                 endmodule : Top

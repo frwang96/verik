@@ -22,18 +22,16 @@ import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.core.common.NullDeclaration
 import io.verik.compiler.message.SourceLocation
 
 class EKtEnumEntry(
     override val location: SourceLocation,
-    override var name: String
+    override var name: String,
+    override var type: Type,
+    override var annotationEntries: List<AnnotationEntry>
 ) : EAbstractEnumEntry(), Annotated {
 
-    override var type = NullDeclaration.toType()
-    override var annotationEntries: List<AnnotationEntry> = listOf()
-
-    fun init(type: Type, annotationEntries: List<AnnotationEntry>) {
+    fun fill(type: Type, annotationEntries: List<AnnotationEntry>) {
         this.type = type
         this.annotationEntries = annotationEntries
     }

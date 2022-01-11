@@ -22,18 +22,20 @@ import io.verik.compiler.ast.interfaces.TypeParameterized
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.core.common.NullDeclaration
 import io.verik.compiler.message.SourceLocation
 
 class ETypeAlias(
     override val location: SourceLocation,
-    override var name: String
+    override var name: String,
+    override var type: Type,
+    override var typeParameters: ArrayList<ETypeParameter>
 ) : EClassifier(), TypeParameterized {
 
-    override var type = NullDeclaration.toType()
-    override var typeParameters: ArrayList<ETypeParameter> = ArrayList()
+    init {
+        typeParameters.forEach { it.parent = this }
+    }
 
-    fun init(type: Type, typeParameters: List<ETypeParameter>) {
+    fun fill(type: Type, typeParameters: List<ETypeParameter>) {
         typeParameters.forEach { it.parent = this }
         this.type = type
         this.typeParameters = ArrayList(typeParameters)

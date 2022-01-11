@@ -32,7 +32,7 @@ internal class ConstructorDesugarTransformerStageTest : BaseTest() {
             """
                 KtClass(
                     C, C,
-                    [KtConstructor(C, KtBlockExpression(Unit, []), [], [], null)],
+                    [KtConstructor(C, C, KtBlockExpression(Unit, []), [], [], null)],
                     [], [], 0, 0, 0, null, null
                 )
             """.trimIndent()
@@ -63,11 +63,9 @@ internal class ConstructorDesugarTransformerStageTest : BaseTest() {
                     [
                         KtProperty(x, Int, null, [], 0),
                         KtConstructor(
-                            C,
+                            C, C,
                             $blockExpression,
-                            [KtValueParameter(x, Int, [], 0, 0)],
-                            [],
-                            null
+                            [KtValueParameter(x, Int, [], 0, 0)], [], null
                         )
                     ],
                     [], [], 0, 0, 0, null, null

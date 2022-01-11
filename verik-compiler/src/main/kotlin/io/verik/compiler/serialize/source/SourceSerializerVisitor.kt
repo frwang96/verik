@@ -78,14 +78,14 @@ import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.Messages
 
 class SourceSerializerVisitor(
-    private val serializerContext: SerializerContext
+    private val serializeContext: SerializeContext
 ) : Visitor() {
 
     private var firstDeclaration = true
     private var lastDeclarationIsProperty = false
 
     fun serialize(element: EElement) {
-        serializerContext.label(element) {
+        serializeContext.label(element) {
             element.accept(this)
         }
     }
@@ -94,7 +94,7 @@ class SourceSerializerVisitor(
         if (SerializerUtil.declarationIsHidden(declaration))
             return
         if (!firstDeclaration && !(lastDeclarationIsProperty && declaration is ESvProperty))
-            serializerContext.appendLine()
+            serializeContext.appendLine()
         firstDeclaration = false
         lastDeclarationIsProperty = false
         serialize(declaration)
@@ -112,8 +112,8 @@ class SourceSerializerVisitor(
             Messages.INTERNAL_ERROR.on(expression, "Expression or statement expected but got: $expression")
         serialize(expression)
         if (expression.serializationType == SerializationType.EXPRESSION) {
-            serializerContext.label(expression) {
-                serializerContext.appendLine(";")
+            serializeContext.label(expression) {
+                serializeContext.appendLine(";")
             }
         }
     }
@@ -123,218 +123,218 @@ class SourceSerializerVisitor(
     }
 
     override fun visitTypeDefinition(typeDefinition: ETypeDefinition) {
-        DeclarationSerializer.serializeTypeDefinition(typeDefinition, serializerContext)
+        DeclarationSerializer.serializeTypeDefinition(typeDefinition, serializeContext)
     }
 
     override fun visitInjectedProperty(injectedProperty: EInjectedProperty) {
-        DeclarationSerializer.serializeInjectedProperty(injectedProperty, serializerContext)
+        DeclarationSerializer.serializeInjectedProperty(injectedProperty, serializeContext)
     }
 
     override fun visitSvClass(`class`: ESvClass) {
-        DeclarationSerializer.serializeSvClass(`class`, serializerContext)
+        DeclarationSerializer.serializeSvClass(`class`, serializeContext)
     }
 
     override fun visitModule(module: EModule) {
-        DeclarationSerializer.serializeModule(module, serializerContext)
+        DeclarationSerializer.serializeModule(module, serializeContext)
     }
 
     override fun visitModuleInterface(moduleInterface: EModuleInterface) {
-        DeclarationSerializer.serializeModuleInterface(moduleInterface, serializerContext)
+        DeclarationSerializer.serializeModuleInterface(moduleInterface, serializeContext)
     }
 
     override fun visitEnum(enum: EEnum) {
-        DeclarationSerializer.serializeEnum(enum, serializerContext)
+        DeclarationSerializer.serializeEnum(enum, serializeContext)
     }
 
     override fun visitStruct(struct: EStruct) {
-        DeclarationSerializer.serializeStruct(struct, serializerContext)
+        DeclarationSerializer.serializeStruct(struct, serializeContext)
     }
 
     override fun visitSvFunction(function: ESvFunction) {
-        DeclarationSerializer.serializeSvFunction(function, serializerContext)
+        DeclarationSerializer.serializeSvFunction(function, serializeContext)
     }
 
     override fun visitTask(task: ETask) {
-        DeclarationSerializer.serializeTask(task, serializerContext)
+        DeclarationSerializer.serializeTask(task, serializeContext)
     }
 
     override fun visitInitialBlock(initialBlock: EInitialBlock) {
-        DeclarationSerializer.serializeInitialBlock(initialBlock, serializerContext)
+        DeclarationSerializer.serializeInitialBlock(initialBlock, serializeContext)
     }
 
     override fun visitAlwaysComBlock(alwaysComBlock: EAlwaysComBlock) {
-        DeclarationSerializer.serializeAlwaysComBlock(alwaysComBlock, serializerContext)
+        DeclarationSerializer.serializeAlwaysComBlock(alwaysComBlock, serializeContext)
     }
 
     override fun visitAlwaysSeqBlock(alwaysSeqBlock: EAlwaysSeqBlock) {
-        DeclarationSerializer.serializeAlwaysSeqBlock(alwaysSeqBlock, serializerContext)
+        DeclarationSerializer.serializeAlwaysSeqBlock(alwaysSeqBlock, serializeContext)
     }
 
     override fun visitSvProperty(property: ESvProperty) {
-        DeclarationSerializer.serializeSvProperty(property, serializerContext)
+        DeclarationSerializer.serializeSvProperty(property, serializeContext)
     }
 
     override fun visitSvEnumEntry(enumEntry: ESvEnumEntry) {
-        DeclarationSerializer.serializeSvEnumEntry(enumEntry, serializerContext)
+        DeclarationSerializer.serializeSvEnumEntry(enumEntry, serializeContext)
     }
 
     override fun visitComponentInstantiation(componentInstantiation: EComponentInstantiation) {
-        DeclarationSerializer.serializeComponentInstantiation(componentInstantiation, serializerContext)
+        DeclarationSerializer.serializeComponentInstantiation(componentInstantiation, serializeContext)
     }
 
     override fun visitModulePortInstantiation(modulePortInstantiation: EModulePortInstantiation) {
-        DeclarationSerializer.serializeModulePortInstantiation(modulePortInstantiation, serializerContext)
+        DeclarationSerializer.serializeModulePortInstantiation(modulePortInstantiation, serializeContext)
     }
 
     override fun visitClockingBlockInstantiation(clockingBlockInstantiation: EClockingBlockInstantiation) {
-        DeclarationSerializer.serializeClockingBlockInstantiation(clockingBlockInstantiation, serializerContext)
+        DeclarationSerializer.serializeClockingBlockInstantiation(clockingBlockInstantiation, serializeContext)
     }
 
     override fun visitSvValueParameter(valueParameter: ESvValueParameter) {
-        DeclarationSerializer.serializeSvValueParameter(valueParameter, serializerContext)
+        DeclarationSerializer.serializeSvValueParameter(valueParameter, serializeContext)
     }
 
     override fun visitPort(port: EPort) {
-        DeclarationSerializer.serializePort(port, serializerContext)
+        DeclarationSerializer.serializePort(port, serializeContext)
     }
 
     override fun visitSvBlockExpression(blockExpression: ESvBlockExpression) {
-        ExpressionSerializer.serializeSvBlockExpression(blockExpression, serializerContext)
+        ExpressionSerializer.serializeSvBlockExpression(blockExpression, serializeContext)
     }
 
     override fun visitPropertyStatement(propertyStatement: EPropertyStatement) {
-        ExpressionSerializer.serializePropertyStatement(propertyStatement, serializerContext)
+        ExpressionSerializer.serializePropertyStatement(propertyStatement, serializeContext)
     }
 
     override fun visitParenthesizedExpression(parenthesizedExpression: EParenthesizedExpression) {
-        ExpressionSerializer.serializeParenthesizedExpression(parenthesizedExpression, serializerContext)
+        ExpressionSerializer.serializeParenthesizedExpression(parenthesizedExpression, serializeContext)
     }
 
     override fun visitSvUnaryExpression(unaryExpression: ESvUnaryExpression) {
-        ExpressionSerializer.serializeSvUnaryExpression(unaryExpression, serializerContext)
+        ExpressionSerializer.serializeSvUnaryExpression(unaryExpression, serializeContext)
     }
 
     override fun visitSvBinaryExpression(binaryExpression: ESvBinaryExpression) {
-        ExpressionSerializer.serializeSvBinaryExpression(binaryExpression, serializerContext)
+        ExpressionSerializer.serializeSvBinaryExpression(binaryExpression, serializeContext)
     }
 
     override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
-        ExpressionSerializer.serializeReferenceExpression(referenceExpression, serializerContext)
+        ExpressionSerializer.serializeReferenceExpression(referenceExpression, serializeContext)
     }
 
     override fun visitSvCallExpression(callExpression: ESvCallExpression) {
-        ExpressionSerializer.serializeSvCallExpression(callExpression, serializerContext)
+        ExpressionSerializer.serializeSvCallExpression(callExpression, serializeContext)
     }
 
     override fun visitScopeExpression(scopeExpression: EScopeExpression) {
-        ExpressionSerializer.serializeScopeExpression(scopeExpression, serializerContext)
+        ExpressionSerializer.serializeScopeExpression(scopeExpression, serializeContext)
     }
 
     override fun visitConstantExpression(constantExpression: EConstantExpression) {
-        ExpressionSerializer.serializeConstantExpression(constantExpression, serializerContext)
+        ExpressionSerializer.serializeConstantExpression(constantExpression, serializeContext)
     }
 
     override fun visitStructLiteralExpression(structLiteralExpression: EStructLiteralExpression) {
-        ExpressionSerializer.serializeStructLiteralExpression(structLiteralExpression, serializerContext)
+        ExpressionSerializer.serializeStructLiteralExpression(structLiteralExpression, serializeContext)
     }
 
     override fun visitNullExpression(nullExpression: ENullExpression) {
-        ExpressionSerializer.serializeNullExpression(serializerContext)
+        ExpressionSerializer.serializeNullExpression(serializeContext)
     }
 
     override fun visitThisExpression(thisExpression: EThisExpression) {
-        ExpressionSerializer.serializeThisExpression(serializerContext)
+        ExpressionSerializer.serializeThisExpression(serializeContext)
     }
 
     override fun visitSuperExpression(superExpression: ESuperExpression) {
-        ExpressionSerializer.serializeSuperExpression(serializerContext)
+        ExpressionSerializer.serializeSuperExpression(serializeContext)
     }
 
     override fun visitReturnStatement(returnStatement: EReturnStatement) {
-        ExpressionSerializer.serializeReturnStatement(returnStatement, serializerContext)
+        ExpressionSerializer.serializeReturnStatement(returnStatement, serializeContext)
     }
 
     override fun visitInjectedStatement(injectedStatement: EInjectedStatement) {
-        ExpressionSerializer.serializeInjectedStatement(injectedStatement, serializerContext)
+        ExpressionSerializer.serializeInjectedStatement(injectedStatement, serializeContext)
     }
 
     override fun visitStringExpression(stringExpression: EStringExpression) {
-        ExpressionSerializer.serializeStringExpression(stringExpression, serializerContext)
+        ExpressionSerializer.serializeStringExpression(stringExpression, serializeContext)
     }
 
     override fun visitSvArrayAccessExpression(arrayAccessExpression: ESvArrayAccessExpression) {
-        ExpressionSerializer.serializeSvArrayAccessExpression(arrayAccessExpression, serializerContext)
+        ExpressionSerializer.serializeSvArrayAccessExpression(arrayAccessExpression, serializeContext)
     }
 
     override fun visitConstantPartSelectExpression(constantPartSelectExpression: EConstantPartSelectExpression) {
-        ExpressionSerializer.serializeConstantPartSelectExpression(constantPartSelectExpression, serializerContext)
+        ExpressionSerializer.serializeConstantPartSelectExpression(constantPartSelectExpression, serializeContext)
     }
 
     override fun visitConcatenationExpression(concatenationExpression: EConcatenationExpression) {
-        ExpressionSerializer.serializeConcatenationExpression(concatenationExpression, serializerContext)
+        ExpressionSerializer.serializeConcatenationExpression(concatenationExpression, serializeContext)
     }
 
     override fun visitReplicationExpression(replicationExpression: EReplicationExpression) {
-        ExpressionSerializer.serializeReplicationExpression(replicationExpression, serializerContext)
+        ExpressionSerializer.serializeReplicationExpression(replicationExpression, serializeContext)
     }
 
     override fun visitStreamingExpression(streamingExpression: EStreamingExpression) {
-        ExpressionSerializer.serializeStreamingExpression(streamingExpression, serializerContext)
+        ExpressionSerializer.serializeStreamingExpression(streamingExpression, serializeContext)
     }
 
     override fun visitWidthCastExpression(widthCastExpression: EWidthCastExpression) {
-        ExpressionSerializer.serializeWidthCastExpression(widthCastExpression, serializerContext)
+        ExpressionSerializer.serializeWidthCastExpression(widthCastExpression, serializeContext)
     }
 
     override fun visitIfExpression(ifExpression: EIfExpression) {
-        ExpressionSerializer.serializeIfExpression(ifExpression, serializerContext)
+        ExpressionSerializer.serializeIfExpression(ifExpression, serializeContext)
     }
 
     override fun visitInlineIfExpression(inlineIfExpression: EInlineIfExpression) {
-        ExpressionSerializer.serializeInlineIfExpression(inlineIfExpression, serializerContext)
+        ExpressionSerializer.serializeInlineIfExpression(inlineIfExpression, serializeContext)
     }
 
     override fun visitImmediateAssertStatement(immediateAssertStatement: EImmediateAssertStatement) {
-        ExpressionSerializer.serializeImmediateAssertStatement(immediateAssertStatement, serializerContext)
+        ExpressionSerializer.serializeImmediateAssertStatement(immediateAssertStatement, serializeContext)
     }
 
     override fun visitCaseStatement(caseStatement: ECaseStatement) {
-        ExpressionSerializer.serializeCaseStatement(caseStatement, serializerContext)
+        ExpressionSerializer.serializeCaseStatement(caseStatement, serializeContext)
     }
 
     override fun visitWhileStatement(whileStatement: EWhileStatement) {
-        ExpressionSerializer.serializeWhileStatement(whileStatement, serializerContext)
+        ExpressionSerializer.serializeWhileStatement(whileStatement, serializeContext)
     }
 
     override fun visitSvForStatement(forStatement: ESvForStatement) {
-        ExpressionSerializer.serializeForStatement(forStatement, serializerContext)
+        ExpressionSerializer.serializeForStatement(forStatement, serializeContext)
     }
 
     override fun visitForeverStatement(foreverStatement: EForeverStatement) {
-        ExpressionSerializer.serializeForeverStatement(foreverStatement, serializerContext)
+        ExpressionSerializer.serializeForeverStatement(foreverStatement, serializeContext)
     }
 
     override fun visitRepeatStatement(repeatStatement: ERepeatStatement) {
-        ExpressionSerializer.serializeRepeatStatement(repeatStatement, serializerContext)
+        ExpressionSerializer.serializeRepeatStatement(repeatStatement, serializeContext)
     }
 
     override fun visitForkStatement(forkStatement: EForkStatement) {
-        ExpressionSerializer.serializeForkStatement(forkStatement, serializerContext)
+        ExpressionSerializer.serializeForkStatement(forkStatement, serializeContext)
     }
 
     override fun visitWaitForkStatement(waitForkStatement: EWaitForkStatement) {
-        ExpressionSerializer.serializeWaitForkStatement(serializerContext)
+        ExpressionSerializer.serializeWaitForkStatement(serializeContext)
     }
 
     override fun visitEventExpression(eventExpression: EEventExpression) {
-        ExpressionSerializer.serializeEventExpression(eventExpression, serializerContext)
+        ExpressionSerializer.serializeEventExpression(eventExpression, serializeContext)
     }
 
     override fun visitEventControlExpression(eventControlExpression: EEventControlExpression) {
-        ExpressionSerializer.serializeEventControlExpression(eventControlExpression, serializerContext)
+        ExpressionSerializer.serializeEventControlExpression(eventControlExpression, serializeContext)
     }
 
     override fun visitDelayExpression(delayExpression: EDelayExpression) {
-        ExpressionSerializer.serializeDelayExpression(delayExpression, serializerContext)
+        ExpressionSerializer.serializeDelayExpression(delayExpression, serializeContext)
     }
 }

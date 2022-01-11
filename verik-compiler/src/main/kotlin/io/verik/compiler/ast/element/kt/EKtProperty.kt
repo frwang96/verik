@@ -22,21 +22,28 @@ import io.verik.compiler.ast.interfaces.Annotated
 import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.core.common.NullDeclaration
 import io.verik.compiler.message.SourceLocation
 
 class EKtProperty(
     override val location: SourceLocation,
     val endLocation: SourceLocation,
-    override var name: String
+    override var name: String,
+    override var type: Type,
+    override var initializer: EExpression?,
+    override var annotationEntries: List<AnnotationEntry>,
+    var isMutable: Boolean
 ) : EAbstractInitializedProperty(), Annotated {
 
-    override var type = NullDeclaration.toType()
-    override var initializer: EExpression? = null
-    override var annotationEntries: List<AnnotationEntry> = listOf()
-    var isMutable = false
+    init {
+        initializer?.parent = this
+    }
 
-    fun init(type: Type, initializer: EExpression?, annotationEntries: List<AnnotationEntry>, isMutable: Boolean) {
+    fun fill(
+        type: Type,
+        initializer: EExpression?,
+        annotationEntries: List<AnnotationEntry>,
+        isMutable: Boolean
+    ) {
         initializer?.parent = this
         this.type = type
         this.initializer = initializer
