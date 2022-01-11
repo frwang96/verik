@@ -21,4 +21,23 @@
 import io.verik.core.*
 
 @SimTop
-object M : Module()
+object M : Module() {
+
+    @Task
+    fun f() {
+        delay(1)
+    }
+
+    @Task
+    fun g(x: Ubit<`8`>): Ubit<`8`> {
+        delay(1)
+        return x.invert()
+    }
+
+    @Run
+    fun h() {
+        f()
+        val x = g(u0())
+        println(x)
+    }
+}

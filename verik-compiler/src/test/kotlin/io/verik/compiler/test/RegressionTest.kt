@@ -24,7 +24,6 @@ import io.verik.compiler.main.SourceSetConfig
 import io.verik.compiler.main.SourceSetContext
 import io.verik.compiler.main.StageSequencer
 import io.verik.compiler.main.VerikConfig
-import io.verik.compiler.message.MessageCollector
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DynamicTest
@@ -36,6 +35,7 @@ import kotlin.io.path.exists
 import kotlin.io.path.extension
 import kotlin.io.path.listDirectoryEntries
 import kotlin.io.path.nameWithoutExtension
+import kotlin.io.path.relativeTo
 
 internal class RegressionTest {
 
@@ -45,7 +45,7 @@ internal class RegressionTest {
         val regressionDir = Paths.get("regression")
         val kotlinFiles = regressionDir.listDirectoryEntries().filter { it.extension == "kt" }
         kotlinFiles.forEach {
-            val match = Regex("regression/\\d+-(\\w+)\\.\\w+").matchEntire(Platform.getStringFromPath(it))
+            val match = Regex("regression/\\d+-([\\w-]+)\\.\\w+").matchEntire(Platform.getStringFromPath(it))
             if (match != null) {
                 val name = match.destructured.component1().replace("-", " ")
                 val test = DynamicTest.dynamicTest(name) {
@@ -103,24 +103,23 @@ internal class RegressionTest {
 
     private fun getProjectContext(kotlinTextFiles: List<TextFile>): ProjectContext {
         val sourceSetConfig = SourceSetConfig("test", kotlinTextFiles.map { it.path })
-        val baseConfig = getBaseConfig()
         val config = VerikConfig(
-            toolchain = baseConfig.toolchain,
-            timestamp = baseConfig.timestamp,
-            projectName = baseConfig.projectName,
-            buildDir = baseConfig.buildDir,
+            toolchain = "verik",
+            timestamp = "",
+            projectName = "test",
+            buildDir = Paths.get(""),
             sourceSetConfigs = listOf(sourceSetConfig),
-            timescale = baseConfig.timescale,
-            entryPoints = baseConfig.entryPoints,
-            enableDeadCodeElimination = baseConfig.enableDeadCodeElimination,
-            labelLines = baseConfig.labelLines,
-            enableLineDirective = baseConfig.enableLineDirective,
-            indentLength = baseConfig.indentLength,
-            wrapLength = baseConfig.wrapLength,
-            suppressedWarnings = baseConfig.suppressedWarnings,
-            promotedWarnings = baseConfig.promotedWarnings,
-            maxErrorCount = baseConfig.maxErrorCount,
-            debug = baseConfig.debug
+            timescale = "1ns / 1ns",
+            entryPoints = listOf(),
+            enableDeadCodeElimination = true,
+            labelLines = false,
+            enableLineDirective = false,
+            indentLength = 4,
+            wrapLength = 80,
+            suppressedWarnings = listOf(),
+            promotedWarnings = listOf(),
+            maxErrorCount = 0,
+            debug = true
         )
         val projectContext = ProjectContext(config)
         val sourceSetContext = SourceSetContext("test", kotlinTextFiles)
@@ -146,7 +145,8 @@ internal class RegressionTest {
         val builder = StringBuilder()
         val textFiles = outputContext.getTextFiles().filter { it.path.extension in listOf("sv", "svh") }
         textFiles.forEach { textFile ->
-            val pathLine = "// ${Platform.getStringFromPath(textFile.path)} ".padEnd(120, '/')
+            val path = textFile.path.relativeTo(Paths.get("src"))
+            val pathLine = "// ${Platform.getStringFromPath(path)} ".padEnd(120, '/')
             builder.appendLine(pathLine)
             var isHeader = true
             for (line in textFile.content.lines()) {
@@ -165,28 +165,7 @@ internal class RegressionTest {
         @BeforeAll
         @JvmStatic
         fun setup() {
-            MessageCollector.messageCollector = MessageCollector(getBaseConfig(), TestMessagePrinter())
-        }
-
-        fun getBaseConfig(): VerikConfig {
-            return VerikConfig(
-                toolchain = "verik",
-                timestamp = "",
-                projectName = "test",
-                buildDir = Paths.get(""),
-                sourceSetConfigs = listOf(),
-                timescale = "1ns / 1ns",
-                entryPoints = listOf(),
-                enableDeadCodeElimination = true,
-                labelLines = false,
-                enableLineDirective = false,
-                indentLength = 4,
-                wrapLength = 80,
-                suppressedWarnings = listOf(),
-                promotedWarnings = listOf(),
-                maxErrorCount = 0,
-                debug = true
-            )
+            BaseTest.setup()
         }
     }
 }

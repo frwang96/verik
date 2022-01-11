@@ -14,13 +14,30 @@
  * limitations under the License.
  */
 
-// src/M.sv ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// M.kt ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-`ifndef VERIK
-`define VERIK
-`timescale 1ns / 1ns
-`endif
+@file:Verik
 
-module M;
+import io.verik.core.*
 
-endmodule : M
+@SimTop
+object M : Module() {
+
+    @Make
+    val n1 = N(u0(), false, u(0x0), nc())
+
+    @Make
+    val n2 = N(
+        A = u0(),
+        x = false,
+        y = u(0x0),
+        z = nc()
+    )
+}
+
+class N(
+    val A: Ubit<`8`>,
+    @In var x: Boolean,
+    @In var y: Ubit<`4`>,
+    @Out var z: Boolean
+) : Module()
