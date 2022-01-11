@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.jlleitschuh.gradle.ktlint.KtlintExtension
 
 group = "io.verik"
@@ -51,6 +52,9 @@ tasks.test {
     useJUnitPlatform()
     systemProperties["junit.jupiter.execution.parallel.enabled"] = true
     systemProperties["junit.jupiter.execution.parallel.mode.default"] = "concurrent"
+    testLogging {
+        exceptionFormat = TestExceptionFormat.FULL
+    }
     setForkEvery(24)
 }
 
