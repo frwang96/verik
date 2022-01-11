@@ -26,7 +26,6 @@ import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.common.ExpressionCopier
-import io.verik.compiler.common.ExpressionExtractor
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
@@ -36,15 +35,10 @@ import io.verik.compiler.target.common.Target
 object CastTransformerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        val expressionExtractor = ExpressionExtractor()
-        val castTransformerVisitor = CastTransformerVisitor(expressionExtractor)
-        projectContext.project.accept(castTransformerVisitor)
-        expressionExtractor.flush()
+        projectContext.project.accept(CastTransformerVisitor)
     }
 
-    private class CastTransformerVisitor(
-        private val expressionExtractor: ExpressionExtractor
-    ) : TreeVisitor() {
+    private object CastTransformerVisitor : TreeVisitor() {
 
         override fun visitIsExpression(isExpression: EIsExpression) {
             super.visitIsExpression(isExpression)
@@ -72,9 +66,9 @@ object CastTransformerStage : ProjectStage() {
                     ArrayList(),
                     ArrayList()
                 )
-                expressionExtractor.extract(isExpression, negatedCallExpression, listOf(propertyStatement))
+                EKtBlockExpression.extract(isExpression, listOf(propertyStatement, negatedCallExpression))
             } else {
-                expressionExtractor.extract(isExpression, callExpression, listOf(propertyStatement))
+                EKtBlockExpression.extract(isExpression, listOf(propertyStatement, callExpression))
             }
         }
 
@@ -128,11 +122,12 @@ object CastTransformerStage : ProjectStage() {
                 EKtBlockExpression.wrap(fatalCallExpression),
                 null
             )
-            expressionExtractor.extract(
-                asExpression,
-                ExpressionCopier.deepCopy(referenceExpression),
-                listOf(propertyStatement, ifExpression)
+            val extractedExpressions = listOf(
+                propertyStatement,
+                ifExpression,
+                ExpressionCopier.deepCopy(referenceExpression)
             )
+            EKtBlockExpression.extract(asExpression, extractedExpressions)
         }
     }
 }

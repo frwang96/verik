@@ -22,10 +22,10 @@ import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
+import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
-import io.verik.compiler.common.ExpressionExtractor
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
@@ -34,15 +34,10 @@ import io.verik.compiler.main.ProjectStage
 object IfAndWhenExpressionUnlifterStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        val expressionExtractor = ExpressionExtractor()
-        val ifAndWhenExpressionUnlifterVisitor = IfAndWhenExpressionUnlifterVisitor(expressionExtractor)
-        projectContext.project.accept(ifAndWhenExpressionUnlifterVisitor)
-        expressionExtractor.flush()
+        projectContext.project.accept(IfAndWhenExpressionUnlifterVisitor)
     }
 
-    private class IfAndWhenExpressionUnlifterVisitor(
-        private val expressionExtractor: ExpressionExtractor
-    ) : TreeVisitor() {
+    private object IfAndWhenExpressionUnlifterVisitor : TreeVisitor() {
 
         override fun visitIfExpression(ifExpression: EIfExpression) {
             super.visitIfExpression(ifExpression)
@@ -53,19 +48,20 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
                     initializer = null,
                     isMutable = false
                 )
+                val propertyStatement = EPropertyStatement(ifExpression.location, property)
+                val newIfExpression = getIfExpressionReplacement(ifExpression, property)
                 val referenceExpression = EReferenceExpression(
                     ifExpression.location,
                     property.type.copy(),
                     property,
                     null
                 )
-                val propertyStatement = EPropertyStatement(ifExpression.location, property)
-                val ifExpressionReplacement = getIfExpressionReplacement(ifExpression, property)
-                expressionExtractor.extract(
-                    ifExpression,
-                    referenceExpression,
-                    listOf(propertyStatement, ifExpressionReplacement)
+                val extractedExpressions = listOf(
+                    propertyStatement,
+                    newIfExpression,
+                    referenceExpression
                 )
+                EKtBlockExpression.extract(ifExpression, extractedExpressions)
             }
         }
 
@@ -88,12 +84,13 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
                     whenExpression.location,
                     property
                 )
-                val whenExpressionReplacement = getWhenExpressionReplacement(whenExpression, property)
-                expressionExtractor.extract(
-                    whenExpression,
-                    referenceExpression,
-                    listOf(propertyStatement, whenExpressionReplacement)
+                val newWhenExpression = getWhenExpressionReplacement(whenExpression, property)
+                val extractedExpressions = listOf(
+                    propertyStatement,
+                    newWhenExpression,
+                    referenceExpression
                 )
+                EKtBlockExpression.extract(whenExpression, extractedExpressions)
             }
         }
 

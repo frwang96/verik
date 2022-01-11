@@ -18,6 +18,7 @@ package io.verik.compiler.transform.lower
 
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
+import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
@@ -65,7 +66,9 @@ object BlockExpressionReducerStage : ProjectStage() {
 
         override fun visitKtBlockExpression(blockExpression: EKtBlockExpression) {
             val parent = blockExpression.parent
-            if (parent is EExpression && parent.childBlockExpressionShouldBeReduced(blockExpression)) {
+            if ((parent is EExpression && parent.childBlockExpressionShouldBeReduced(blockExpression)) ||
+                parent is ESvProperty
+            ) {
                 reducibleBlockExpressions.add(blockExpression)
             }
         }
