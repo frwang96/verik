@@ -42,7 +42,7 @@ internal class TypeResolverStageTest : BaseTest() {
                 var c = C<`8`>()
             """.trimIndent(),
             TypeResolverStage::class,
-            "KtProperty(c, C<`8`>, KtCallExpression(C<`8`>, <init>, null, [], []), [], 1)"
+            "KtProperty(c, C<`8`>, KtCallExpression(C<`8`>, C_X_8, null, [], []), [], 1)"
         ) { it.findDeclaration("c") }
     }
 

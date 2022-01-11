@@ -30,7 +30,7 @@ internal class SpecializerIndexerTest : BaseTest() {
                 val x = C<`1`>()
             """.trimIndent(),
             SpecializerStage::class,
-            "KtCallExpression(C<`*`>, <init>, null, [], [`1`])"
+            "KtCallExpression(C<`*`>, C, null, [], [`1`])"
         ) { it.findExpression("x") }
     }
 
@@ -42,7 +42,7 @@ internal class SpecializerIndexerTest : BaseTest() {
                 val x = C<`*`>()
             """.trimIndent(),
             true,
-            "Type arguments must be explicitly provided: <init>"
+            "Type arguments must be explicitly provided: C"
         )
     }
 }

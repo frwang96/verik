@@ -24,12 +24,12 @@ import io.verik.compiler.message.SourceLocation
 
 class EPrimaryConstructor(
     override val location: SourceLocation,
+    override var name: String,
     override var type: Type,
     override var valueParameters: ArrayList<EKtValueParameter>,
     override var typeParameters: ArrayList<ETypeParameter>
 ) : EKtAbstractFunction() {
 
-    override var name = "<init>"
     override var body: EAbstractBlockExpression = EKtBlockExpression.empty(location)
 
     init {

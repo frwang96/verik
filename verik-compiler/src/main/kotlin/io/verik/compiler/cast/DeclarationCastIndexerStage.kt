@@ -92,6 +92,7 @@ object DeclarationCastIndexerStage : ProjectStage() {
             if (classOrObject.hasPrimaryConstructor() && !classOrObject.hasExplicitPrimaryConstructor()) {
                 val indexedPrimaryConstructor = EPrimaryConstructor(
                     location,
+                    name,
                     NullDeclaration.toType(),
                     ArrayList(),
                     ArrayList()
@@ -141,8 +142,10 @@ object DeclarationCastIndexerStage : ProjectStage() {
             super.visitPrimaryConstructor(constructor)
             val descriptor = castContext.sliceConstructor[constructor]!!
             val location = constructor.location()
+            val name = constructor.name!!
             val indexedPrimaryConstructor = EPrimaryConstructor(
                 location,
+                name,
                 NullDeclaration.toType(),
                 ArrayList(),
                 ArrayList()

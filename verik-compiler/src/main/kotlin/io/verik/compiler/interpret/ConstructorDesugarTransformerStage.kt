@@ -60,6 +60,7 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
                 val superTypeCallExpression = `class`.superTypeCallExpression?.let { ExpressionCopier.deepCopy(it) }
                 val constructor = EKtConstructor(
                     primaryConstructor.location,
+                    primaryConstructor.name,
                     primaryConstructor.type,
                     body,
                     primaryConstructor.valueParameters,

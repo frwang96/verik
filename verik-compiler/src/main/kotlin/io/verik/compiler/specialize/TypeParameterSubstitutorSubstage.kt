@@ -50,7 +50,11 @@ object TypeParameterSubstitutorSubstage : SpecializerSubstage() {
             val typeParameterStrings = typeParameters
                 .zip(typeParameterBinding.typeArguments)
                 .map { (typeParameter, typeArgument) -> getTypeArgumentString(typeParameter, typeArgument) }
-            declaration.name = "${declaration.name}_${typeParameterStrings.joinToString(separator = "_")}"
+            val name = "${declaration.name}_${typeParameterStrings.joinToString(separator = "_")}"
+            declaration.name = name
+            if (declaration is EKtClass) {
+                declaration.primaryConstructor?.name = name
+            }
         }
     }
 

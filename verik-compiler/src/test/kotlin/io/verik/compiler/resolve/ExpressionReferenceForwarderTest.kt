@@ -65,7 +65,7 @@ internal class ExpressionReferenceForwarderTest : BaseTest() {
                 val c = C<`8`>()
             """.trimIndent(),
             TypeResolverStage::class,
-            "KtCallExpression(D, <init>, null, [], [])"
+            "KtCallExpression(D, D, null, [], [])"
         ) { it.findExpression("x") }
     }
 }

@@ -265,6 +265,7 @@ class ElementPrinter : Visitor() {
 
     override fun visitPrimaryConstructor(primaryConstructor: EPrimaryConstructor) {
         build("PrimaryConstructor") {
+            build(primaryConstructor.name)
             build(primaryConstructor.type.toString())
             build(primaryConstructor.valueParameters)
             build(primaryConstructor.typeParameters.map { it.name })
@@ -273,6 +274,7 @@ class ElementPrinter : Visitor() {
 
     override fun visitKtConstructor(constructor: EKtConstructor) {
         build("KtConstructor") {
+            build(constructor.name)
             build(constructor.type.toString())
             build(constructor.body)
             build(constructor.valueParameters)
