@@ -40,6 +40,7 @@ import io.verik.compiler.ast.element.sv.EScopeExpression
 import io.verik.compiler.ast.element.sv.EStreamingExpression
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.EStructLiteralExpression
+import io.verik.compiler.ast.element.sv.ESvAbstractFunction
 import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
@@ -121,14 +122,25 @@ object ExpressionSerializer {
         val receiver = callExpression.receiver
         if (receiver != null) {
             serializeContext.serializeAsExpression(receiver)
+            serializeContext.softBreak()
             serializeContext.append(if (receiver is EScopeExpression) "::" else ".")
         }
         serializeContext.append(callExpression.reference.name)
         serializeContext.append("(")
         if (callExpression.valueArguments.isNotEmpty()) {
             serializeContext.softBreak()
-            serializeContext.serializeJoin(callExpression.valueArguments) {
-                serializeContext.serializeAsExpression(it)
+            val reference = callExpression.reference
+            if (reference is ESvAbstractFunction) {
+                val valueParametersAndArguments = reference.valueParameters.zip(callExpression.valueArguments)
+                serializeContext.serializeJoin(valueParametersAndArguments) { (valueParameter, valueArgument) ->
+                    serializeContext.append(".${valueParameter.name}(")
+                    serializeContext.serializeAsExpression(valueArgument)
+                    serializeContext.append(")")
+                }
+            } else {
+                serializeContext.serializeJoin(callExpression.valueArguments) {
+                    serializeContext.serializeAsExpression(it)
+                }
             }
         }
         serializeContext.append(")")

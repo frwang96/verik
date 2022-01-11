@@ -136,20 +136,20 @@ object SpecializerCopier {
         val superTypeCallExpression = `class`.superTypeCallExpression
             ?.let { copy(it, typeArguments, specializeContext) }
         val copiedClass = EKtClass(
-            `class`.location,
-            `class`.bodyStartLocation,
-            `class`.bodyEndLocation,
-            `class`.name,
-            type,
-            superType,
-            ArrayList(declarations),
-            ArrayList(typeParameters),
-            `class`.annotationEntries,
-            `class`.isEnum,
-            `class`.isAbstract,
-            `class`.isObject,
-            primaryConstructor,
-            superTypeCallExpression
+            location = `class`.location,
+            bodyStartLocation = `class`.bodyStartLocation,
+            bodyEndLocation = `class`.bodyEndLocation,
+            name = `class`.name,
+            type = type,
+            superType = superType,
+            declarations = ArrayList(declarations),
+            typeParameters = ArrayList(typeParameters),
+            annotationEntries = `class`.annotationEntries,
+            isEnum = `class`.isEnum,
+            isAbstract = `class`.isAbstract,
+            isObject = `class`.isObject,
+            primaryConstructor = primaryConstructor,
+            superTypeCallExpression = superTypeCallExpression
         )
         specializeContext.register(`class`, typeArguments, copiedClass)
         return copiedClass
@@ -165,15 +165,15 @@ object SpecializerCopier {
         val valueParameters = function.valueParameters.map { copy(it, typeArguments, specializeContext) }
         val typeParameters = function.typeParameters.map { copy(it, typeArguments, specializeContext) }
         val copiedFunction = EKtFunction(
-            function.location,
-            function.name,
-            type,
-            body,
-            ArrayList(valueParameters),
-            ArrayList(typeParameters),
-            function.annotationEntries,
-            function.isOverride,
-            function.isOverride
+            location = function.location,
+            name = function.name,
+            type = type,
+            body = body,
+            valueParameters = ArrayList(valueParameters),
+            typeParameters = ArrayList(typeParameters),
+            annotationEntries = function.annotationEntries,
+            isAbstract = function.isAbstract,
+            isOverride = function.isOverride
         )
         specializeContext.register(function, typeArguments, copiedFunction)
         return copiedFunction
@@ -206,13 +206,13 @@ object SpecializerCopier {
         val type = property.type.copy()
         val initializer = property.initializer?.let { copy(it, typeArguments, specializeContext) }
         val copiedProperty = EKtProperty(
-            property.location,
-            property.endLocation,
-            property.name,
-            type,
-            initializer,
-            property.annotationEntries,
-            property.isMutable
+            location = property.location,
+            endLocation = property.endLocation,
+            name = property.name,
+            type = type,
+            initializer = initializer,
+            annotationEntries = property.annotationEntries,
+            isMutable = property.isMutable
         )
         specializeContext.register(property, typeArguments, copiedProperty)
         return copiedProperty

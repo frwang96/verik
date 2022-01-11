@@ -156,13 +156,13 @@ object DeclarationCaster {
         val isOverride = function.hasModifier(KtTokens.OVERRIDE_KEYWORD)
 
         castedFunction.fill(
-            type,
-            body,
-            valueParameters,
-            typeParameters,
-            annotationEntries,
-            isAbstract,
-            isOverride
+            type = type,
+            body = body,
+            valueParameters = valueParameters,
+            typeParameters = typeParameters,
+            annotationEntries = annotationEntries,
+            isAbstract = isAbstract,
+            isOverride = isOverride
         )
         return castedFunction
     }
