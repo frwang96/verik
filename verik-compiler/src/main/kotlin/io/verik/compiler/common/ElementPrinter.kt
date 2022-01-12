@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EEnumEntry
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.ENullExpression
@@ -40,7 +41,6 @@ import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtConstructor
-import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtForStatement
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
@@ -83,7 +83,6 @@ import io.verik.compiler.ast.element.sv.EStructLiteralExpression
 import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.ESvClass
-import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvForStatement
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvProperty
@@ -253,7 +252,7 @@ class ElementPrinter : Visitor() {
             build(function.body)
             build(function.valueParameters)
             build(function.qualifierType.toString())
-            build(function.isStatic)
+            build(function.isConstructor)
         }
     }
 
@@ -337,18 +336,11 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitKtEnumEntry(enumEntry: EKtEnumEntry) {
-        build("KtEnumEntry") {
+    override fun visitEnumEntry(enumEntry: EEnumEntry) {
+        build("EnumEntry") {
             build(enumEntry.name)
             build(enumEntry.type.toString())
             build(enumEntry.annotationEntries)
-        }
-    }
-
-    override fun visitSvEnumEntry(enumEntry: ESvEnumEntry) {
-        build("SvEnumEntry") {
-            build(enumEntry.name)
-            build(enumEntry.type.toString())
         }
     }
 

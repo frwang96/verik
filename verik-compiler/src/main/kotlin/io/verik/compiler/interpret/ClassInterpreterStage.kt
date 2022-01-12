@@ -73,7 +73,7 @@ object ClassInterpreterStage : ProjectStage() {
                 constructor.body,
                 ArrayList(valueParameters),
                 FunctionQualifierType.REGULAR,
-                isStatic = false
+                isConstructor = false
             )
             initializerMap[constructor] = initializer
         }
@@ -89,14 +89,13 @@ object ClassInterpreterStage : ProjectStage() {
             val declarations = ArrayList<EDeclaration>()
             `class`.declarations.forEach {
                 if (it is EKtConstructor) {
-                    val interpretedConstructor = interpretConstructor(`class`, it)
-                    val instantiator = interpretedConstructor.instantiator
-                    if (instantiator != null) {
-                        instantiator.parent = `class`
-                        declarations.add(instantiator)
+                    val (constructor, initializer) = interpretConstructorAndInitializer(`class`, it)
+                    if (constructor != null) {
+                        constructor.parent = `class`
+                        declarations.add(constructor)
                     }
-                    interpretedConstructor.initializer.parent = `class`
-                    declarations.add(interpretedConstructor.initializer)
+                    initializer.parent = `class`
+                    declarations.add(initializer)
                 } else {
                     declarations.add(it)
                 }
@@ -117,7 +116,10 @@ object ClassInterpreterStage : ProjectStage() {
             )
         }
 
-        private fun interpretConstructor(`class`: EKtClass, constructor: EKtConstructor): InterpretedConstructor {
+        private fun interpretConstructorAndInitializer(
+            `class`: EKtClass,
+            constructor: EKtConstructor
+        ): Pair<ESvFunction?, ESvFunction> {
             val initializer = initializerMap[constructor]
                 ?: Messages.INTERNAL_ERROR.on(constructor, "Initializer not found")
             val superTypeCallExpression = constructor.superTypeCallExpression
@@ -143,11 +145,11 @@ object ClassInterpreterStage : ProjectStage() {
                     body.statements.add(0, callExpression)
                 }
             }
-            val instantiator = interpretInstantiator(`class`, constructor, initializer)
-            return InterpretedConstructor(instantiator, initializer)
+            val interpretedConstructor = interpretConstructor(`class`, constructor, initializer)
+            return Pair(interpretedConstructor, initializer)
         }
 
-        private fun interpretInstantiator(
+        private fun interpretConstructor(
             `class`: EKtClass,
             constructor: EKtConstructor,
             initializer: ESvFunction
@@ -195,7 +197,7 @@ object ClassInterpreterStage : ProjectStage() {
             )
             val statements = arrayListOf(propertyStatement, callExpression, returnStatement)
 
-            val instantiator = ESvFunction(
+            val interpretedConstructor = ESvFunction(
                 location = constructor.location,
                 name = "${constructor.name}_new",
                 type = constructor.type,
@@ -207,15 +209,10 @@ object ClassInterpreterStage : ProjectStage() {
                 ),
                 valueParameters = ArrayList(valueParameters),
                 qualifierType = FunctionQualifierType.REGULAR,
-                isStatic = true
+                isConstructor = true
             )
-            referenceUpdater.replace(constructor, instantiator)
-            return instantiator
+            referenceUpdater.replace(constructor, interpretedConstructor)
+            return interpretedConstructor
         }
     }
-
-    data class InterpretedConstructor(
-        val instantiator: ESvFunction?,
-        val initializer: ESvFunction
-    )
 }

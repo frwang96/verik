@@ -18,9 +18,9 @@ package io.verik.compiler.cast
 
 import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.ECallExpression
+import io.verik.compiler.ast.element.common.EEnumEntry
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.EKtClass
-import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtValueParameter
@@ -224,10 +224,10 @@ object DeclarationCaster {
         return castedProperty
     }
 
-    fun castKtEnumEntry(enumEntry: KtEnumEntry, castContext: CastContext): EKtEnumEntry {
+    fun castEnumEntry(enumEntry: KtEnumEntry, castContext: CastContext): EEnumEntry {
         val descriptor = castContext.sliceClass[enumEntry]!!
         val castedEnumEntry = castContext.getDeclaration(descriptor, enumEntry)
-            .cast<EKtEnumEntry>(enumEntry)
+            .cast<EEnumEntry>(enumEntry)
 
         val type = castContext.castType(descriptor.classValueType!!, enumEntry)
         val annotationEntries = enumEntry.annotationEntries.mapNotNull {

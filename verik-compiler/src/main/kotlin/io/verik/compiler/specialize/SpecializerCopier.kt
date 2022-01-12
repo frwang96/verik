@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EEnumEntry
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
@@ -33,7 +34,6 @@ import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtClass
-import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
@@ -62,8 +62,8 @@ object SpecializerCopier {
                 copyPrimaryConstructor(element, typeArguments, specializeContext)
             is EKtProperty ->
                 copyKtProperty(element, typeArguments, specializeContext)
-            is EKtEnumEntry ->
-                copyKtEnumEntry(element, typeArguments, specializeContext)
+            is EEnumEntry ->
+                copyEnumEntry(element, typeArguments, specializeContext)
             is EKtValueParameter ->
                 copyKtValueParameter(element, typeArguments, specializeContext)
             // Expressions
@@ -218,13 +218,13 @@ object SpecializerCopier {
         return copiedProperty
     }
 
-    private fun copyKtEnumEntry(
-        enumEntry: EKtEnumEntry,
+    private fun copyEnumEntry(
+        enumEntry: EEnumEntry,
         typeArguments: List<Type>,
         specializeContext: SpecializeContext
-    ): EKtEnumEntry {
+    ): EEnumEntry {
         val type = enumEntry.type.copy()
-        val copiedEnumEntry = EKtEnumEntry(
+        val copiedEnumEntry = EEnumEntry(
             enumEntry.location,
             enumEntry.name,
             type,

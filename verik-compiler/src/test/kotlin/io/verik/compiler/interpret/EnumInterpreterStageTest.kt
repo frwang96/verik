@@ -28,7 +28,7 @@ internal class EnumInterpreterStageTest : BaseTest() {
                 enum class E { A }
             """.trimIndent(),
             EnumInterpreterStage::class,
-            "File([Enum(E, E, [A]), SvEnumEntry(A, E)])"
+            "File([Enum(E, E, [A]), EnumEntry(A, E, [])])"
         ) { it.files().first() }
     }
 }

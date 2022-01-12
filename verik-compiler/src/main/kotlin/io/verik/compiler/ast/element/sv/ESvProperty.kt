@@ -35,6 +35,11 @@ class ESvProperty(
         initializer?.parent = this
     }
 
+    fun isStatic(): Boolean {
+        val parent = parent
+        return (parent is ESvClass && parent.isDeclarationsStatic)
+    }
+
     override fun accept(visitor: Visitor) {
         return visitor.visitSvProperty(this)
     }

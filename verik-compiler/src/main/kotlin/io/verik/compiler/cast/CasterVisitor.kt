@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EEnumEntry
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.ENullExpression
@@ -31,7 +32,6 @@ import io.verik.compiler.ast.element.common.EWhileStatement
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtClass
-import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtForStatement
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
@@ -156,8 +156,8 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
         return DeclarationCaster.castKtProperty(property, castContext)
     }
 
-    override fun visitEnumEntry(enumEntry: KtEnumEntry, data: Unit?): EKtEnumEntry {
-        return DeclarationCaster.castKtEnumEntry(enumEntry, castContext)
+    override fun visitEnumEntry(enumEntry: KtEnumEntry, data: Unit?): EEnumEntry {
+        return DeclarationCaster.castEnumEntry(enumEntry, castContext)
     }
 
     override fun visitParameter(parameter: KtParameter, data: Unit?): EKtValueParameter {

@@ -17,15 +17,15 @@
 package io.verik.compiler.serialize.source
 
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EEnumEntry
 import io.verik.compiler.ast.element.sv.EClockingBlock
 import io.verik.compiler.ast.element.sv.EModulePort
-import io.verik.compiler.ast.element.sv.ESvEnumEntry
 
 object SerializerUtil {
 
     fun declarationIsHidden(element: EElement): Boolean {
         return element is EModulePort ||
             element is EClockingBlock ||
-            element is ESvEnumEntry
+            element is EEnumEntry
     }
 }

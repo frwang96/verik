@@ -198,7 +198,7 @@ internal class DeclarationCasterTest : BaseTest() {
                 enum class E { A }
             """.trimIndent(),
             CasterStage::class,
-            "KtClass(E, E, [KtEnumEntry(A, E, [])], [], [], 1, 0, 0, PrimaryConstructor(E, E, [], []), null)"
+            "KtClass(E, E, [EnumEntry(A, E, [])], [], [], 1, 0, 0, PrimaryConstructor(E, E, [], []), null)"
         ) { it.findDeclaration("E") }
     }
 

@@ -21,6 +21,7 @@ import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EEnumEntry
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.ENullExpression
@@ -63,7 +64,6 @@ import io.verik.compiler.ast.element.sv.EStructLiteralExpression
 import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.ESvClass
-import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvForStatement
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvProperty
@@ -174,8 +174,8 @@ class SourceSerializerVisitor(
         DeclarationSerializer.serializeSvProperty(property, serializeContext)
     }
 
-    override fun visitSvEnumEntry(enumEntry: ESvEnumEntry) {
-        DeclarationSerializer.serializeSvEnumEntry(enumEntry, serializeContext)
+    override fun visitEnumEntry(enumEntry: EEnumEntry) {
+        DeclarationSerializer.serializeEnumEntry(enumEntry, serializeContext)
     }
 
     override fun visitComponentInstantiation(componentInstantiation: EComponentInstantiation) {

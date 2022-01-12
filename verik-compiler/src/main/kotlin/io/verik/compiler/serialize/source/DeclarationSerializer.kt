@@ -17,6 +17,7 @@
 package io.verik.compiler.serialize.source
 
 import io.verik.compiler.ast.element.common.EAbstractProperty
+import io.verik.compiler.ast.element.common.EEnumEntry
 import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
@@ -32,7 +33,6 @@ import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.ESvAbstractFunction
 import io.verik.compiler.ast.element.sv.ESvClass
-import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvValueParameter
@@ -135,10 +135,13 @@ object DeclarationSerializer {
     }
 
     fun serializeSvFunction(function: ESvFunction, serializeContext: SerializeContext) {
+        if (function.isStatic()) {
+            serializeContext.append("static ")
+        }
         when (function.qualifierType) {
             FunctionQualifierType.VIRTUAL -> serializeContext.append("virtual ")
             FunctionQualifierType.PURE_VIRTUAL -> serializeContext.append("pure virtual ")
-            else -> if (function.isStatic) serializeContext.append("static ")
+            else -> {}
         }
         val serializedType = TypeSerializer.serialize(function.type, function)
         serializedType.checkNoUnpackedDimension(function)
@@ -211,7 +214,7 @@ object DeclarationSerializer {
         }
     }
 
-    fun serializeSvEnumEntry(enumEntry: ESvEnumEntry, serializeContext: SerializeContext) {
+    fun serializeEnumEntry(enumEntry: EEnumEntry, serializeContext: SerializeContext) {
         serializeContext.append(enumEntry.name)
     }
 

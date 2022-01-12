@@ -17,12 +17,12 @@
 package io.verik.compiler.transform.upper
 
 import io.verik.compiler.ast.element.common.ECallExpression
+import io.verik.compiler.ast.element.common.EEnumEntry
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EStringExpression
-import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
@@ -40,7 +40,7 @@ object ToStringTransformerStage : ProjectStage() {
 
         private fun transform(expression: EExpression) {
             if (expression.type.reference is EEnum) {
-                if (expression is EReferenceExpression && expression.reference is ESvEnumEntry) {
+                if (expression is EReferenceExpression && expression.reference is EEnumEntry) {
                     val stringExpression = EStringExpression(
                         expression.location,
                         expression.reference.name

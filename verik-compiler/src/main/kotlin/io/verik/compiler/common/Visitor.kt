@@ -21,7 +21,6 @@ import io.verik.compiler.ast.element.common.EAbstractBinaryExpression
 import io.verik.compiler.ast.element.common.EAbstractClass
 import io.verik.compiler.ast.element.common.EAbstractContainerClass
 import io.verik.compiler.ast.element.common.EAbstractContainerExpression
-import io.verik.compiler.ast.element.common.EAbstractEnumEntry
 import io.verik.compiler.ast.element.common.EAbstractFunction
 import io.verik.compiler.ast.element.common.EAbstractInitializedProperty
 import io.verik.compiler.ast.element.common.EAbstractProperty
@@ -32,6 +31,7 @@ import io.verik.compiler.ast.element.common.EClassifier
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EEnumEntry
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.EIfExpression
@@ -57,7 +57,6 @@ import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtConstructor
-import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtForStatement
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
@@ -106,7 +105,6 @@ import io.verik.compiler.ast.element.sv.ESvAbstractFunction
 import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.ESvClass
-import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvForStatement
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvProperty
@@ -283,16 +281,8 @@ abstract class Visitor {
         visitAbstractInitializedProperty(property)
     }
 
-    open fun visitAbstractEnumEntry(abstractEnumEntry: EAbstractEnumEntry) {
-        visitAbstractProperty(abstractEnumEntry)
-    }
-
-    open fun visitKtEnumEntry(enumEntry: EKtEnumEntry) {
-        visitAbstractEnumEntry(enumEntry)
-    }
-
-    open fun visitSvEnumEntry(enumEntry: ESvEnumEntry) {
-        visitAbstractEnumEntry(enumEntry)
+    open fun visitEnumEntry(enumEntry: EEnumEntry) {
+        visitAbstractProperty(enumEntry)
     }
 
     open fun visitAbstractComponentInstantiation(abstractComponentInstantiation: EAbstractComponentInstantiation) {
