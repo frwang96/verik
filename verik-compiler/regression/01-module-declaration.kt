@@ -23,29 +23,29 @@ import io.verik.core.*
 @SimTop
 object M : Module() {
 
-    var x: Boolean = nc()
-    var y: Ubit<`8`> = nc()
-    var z: Ubit<`8`> = nc()
+    var x0: Boolean = nc()
+    var x1: Ubit<`8`> = nc()
+    var x2: Ubit<`8`> = nc()
 
     @Run
-    fun f() {
+    fun f0() {
         println()
     }
 
     @Seq
-    fun g() {
-        on(posedge(x)) {
-            y = z
+    fun f1() {
+        on(posedge(x0)) {
+            x1 = x2
         }
     }
 
     @Com
-    var a = !x
+    var x3 = !x0
 
-    var b: Boolean = nc()
+    var x4: Boolean = nc()
 
     @Com
-    fun h() {
-        b = !a
+    fun f2() {
+        x4 = !x0
     }
 }

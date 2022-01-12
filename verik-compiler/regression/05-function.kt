@@ -23,17 +23,17 @@ import io.verik.core.*
 @SimTop
 object M : Module() {
 
-    fun f(): Boolean {
+    fun f0(): Boolean {
         return false
     }
 
-    fun g(x: Ubit<`8`>): Ubit<`8`> {
+    fun f1(x: Ubit<`8`>): Ubit<`8`> {
         return x.invert()
     }
 
     @Run
-    fun h() {
-        println(f())
-        println(g(u0()))
+    fun f2() {
+        println(f0())
+        println(f1(u0()))
     }
 }

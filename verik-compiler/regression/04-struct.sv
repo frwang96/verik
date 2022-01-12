@@ -22,8 +22,8 @@
 `endif
 
 typedef struct packed {
-    logic       x;
-    logic [7:0] y;
+    logic       x0;
+    logic [7:0] x1;
 } S;
 
 module M;
@@ -31,7 +31,7 @@ module M;
     S s;
 
     initial begin : f
-        s = '{x:1'b0, y:8'h00};
+        s = '{x0:1'b0, x1:8'h00};
     end : f
 
 endmodule : M

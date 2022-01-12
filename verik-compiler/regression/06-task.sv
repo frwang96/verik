@@ -23,26 +23,26 @@
 
 module M;
 
-    task automatic f();
+    task automatic f0();
         #1;
-    endtask : f
+    endtask : f0
 
-    task automatic g(
+    task automatic f1(
         input logic [7:0]  x,
         output logic [7:0] __return
     );
         #1;
         __return = ~x;
         return;
-    endtask : g
+    endtask : f1
 
-    initial begin : h
+    initial begin : f2
         logic [7:0] __0;
         logic [7:0] x;
-        f();
-        g(.x(8'h00), .__return(__0));
+        f0();
+        f1(.x(8'h00), .__return(__0));
         x = __0;
         $display(x);
-    end : h
+    end : f2
 
 endmodule : M

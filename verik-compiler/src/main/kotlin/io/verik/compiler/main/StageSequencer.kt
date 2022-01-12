@@ -67,6 +67,7 @@ import io.verik.compiler.serialize.source.SourceSerializerStage
 import io.verik.compiler.serialize.target.CompositeTargetSerializerStage
 import io.verik.compiler.specialize.SpecializerStage
 import io.verik.compiler.transform.lower.BlockExpressionReducerStage
+import io.verik.compiler.transform.lower.ConstantPropagatorStage
 import io.verik.compiler.transform.lower.ExpressionEvaluatorStage
 import io.verik.compiler.transform.lower.ExpressionExtractorStage
 import io.verik.compiler.transform.lower.FunctionTransformerStage
@@ -93,7 +94,6 @@ import io.verik.compiler.transform.pre.UnaryExpressionReducerStage
 import io.verik.compiler.transform.upper.CaseStatementTransformerStage
 import io.verik.compiler.transform.upper.CastTransformerStage
 import io.verik.compiler.transform.upper.ComAssignmentTransformerStage
-import io.verik.compiler.transform.upper.ConstantPropagatorStage
 import io.verik.compiler.transform.upper.ForStatementTransformerStage
 import io.verik.compiler.transform.upper.IfAndWhenExpressionUnlifterStage
 import io.verik.compiler.transform.upper.InjectedStatementTransformerStage
@@ -162,7 +162,6 @@ object StageSequencer {
         stageSequence.add(StageType.INTERPRET, ModulePortParentResolverStage)
         stageSequence.add(StageType.INTERPRET, FileSplitterStage)
 
-        stageSequence.add(StageType.UPPER_TRANSFORM, ConstantPropagatorStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, ToStringTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, InjectedStatementTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, StringTemplateExpressionTransformerStage)
@@ -176,10 +175,11 @@ object StageSequencer {
         stageSequence.add(StageType.UPPER_TRANSFORM, CaseStatementTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, StructLiteralTransformerStage)
 
+        stageSequence.add(StageType.LOWER_TRANSFORM, ConstantPropagatorStage)
+        stageSequence.add(StageType.LOWER_TRANSFORM, ExpressionEvaluatorStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, FunctionTransformerStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, PropertyTransformerStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, ExpressionExtractorStage)
-        stageSequence.add(StageType.LOWER_TRANSFORM, ExpressionEvaluatorStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, BlockExpressionReducerStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, ProceduralBlockEliminatorStage)
 

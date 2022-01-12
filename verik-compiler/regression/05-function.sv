@@ -23,19 +23,19 @@
 
 module M;
 
-    function automatic logic f();
+    function automatic logic f0();
         return 1'b0;
-    endfunction : f
+    endfunction : f0
 
-    function automatic logic [7:0] g(
+    function automatic logic [7:0] f1(
         input logic [7:0] x
     );
         return ~x;
-    endfunction : g
+    endfunction : f1
 
-    initial begin : h
-        $display(f());
-        $display(g(.x(8'h00)));
-    end : h
+    initial begin : f2
+        $display(f0());
+        $display(f1(.x(8'h00)));
+    end : f2
 
 endmodule : M

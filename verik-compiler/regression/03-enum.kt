@@ -27,12 +27,12 @@ object M : Module() {
 
     @Run
     fun f() {
-        if (e == E.A) {
-            println(E.B)
+        if (e == E.E0) {
+            println(E.E1)
         }
     }
 }
 
 enum class E {
-    A, B, C
+    E0, E1, E2
 }

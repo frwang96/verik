@@ -14,30 +14,36 @@
  * limitations under the License.
  */
 
-// M.kt ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// M0.kt ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 @file:Verik
 
 import io.verik.core.*
 
 @SimTop
-object M : Module() {
+object M0 : Module() {
 
     @Make
-    val n1 = N(u0(), false, u(0x0), nc())
+    val m0 = M1(u0(), false, u(0x0), nc())
 
     @Make
-    val n2 = N(
-        A = u0(),
-        x = false,
-        y = u(0x0),
-        z = nc()
+    val m1 = M1(
+        C = u0(),
+        x0 = false,
+        x1 = u(0x0),
+        x2 = nc()
     )
 }
 
-class N(
-    val A: Ubit<`8`>,
-    @In var x: Boolean,
-    @In var y: Ubit<`4`>,
-    @Out var z: Boolean
+// M1.kt ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+@file:Verik
+
+import io.verik.core.*
+
+class M1(
+    val C: Ubit<`8`>,
+    @In var x0: Boolean,
+    @In var x1: Ubit<`4`>,
+    @Out var x2: Boolean
 ) : Module()
