@@ -17,80 +17,70 @@
 package io.verik.compiler.transform.upper
 
 import io.verik.compiler.test.BaseTest
-import io.verik.compiler.test.findStatements
 import org.junit.jupiter.api.Test
 
 internal class CastTransformerStageTest : BaseTest() {
 
     @Test
     fun `is expression`() {
-        driveElementTest(
+        driveTextFileTest(
             """
+                var x = false
                 fun f() {
-                    0 is Int
+                    x = 0 is Int
                 }
             """.trimIndent(),
-            CastTransformerStage::class,
             """
-                [
-                    PropertyStatement(Unit, SvProperty(<tmp>, Int, null, 0, 0, 0)),
-                    KtCallExpression(
-                        Boolean, ${'$'}cast, null,
-                        [ReferenceExpression(Int, <tmp>, null), ConstantExpression(*)],
-                        []
-                    )
-                ]
-            """.trimIndent(),
-        ) { it.findStatements("f") }
+                logic x = 1'b0;
+
+                function automatic void f();
+                    int __0;
+                    x = ${'$'}cast(__0, 0);
+                endfunction : f
+            """.trimIndent()
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
     fun `is not expression`() {
-        driveElementTest(
+        driveTextFileTest(
             """
+                var x = false
                 fun f() {
-                    0 !is Int
+                    x = 0 !is Int
                 }
             """.trimIndent(),
-            CastTransformerStage::class,
             """
-                [
-                    PropertyStatement(Unit, SvProperty(<tmp>, Int, null, 0, 0, 0)),
-                    KtCallExpression(
-                        Boolean, not,
-                        KtCallExpression(
-                            Boolean, ${'$'}cast, null,
-                            [ReferenceExpression(Int, <tmp>, null), ConstantExpression(*)],
-                            []
-                        ),
-                        [], []
-                    )
-                ]
+                logic x = 1'b0;
+
+                function automatic void f();
+                    int __0;
+                    x = ~${'$'}cast(__0, 0);
+                endfunction : f
             """.trimIndent()
-        ) { it.findStatements("f") }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
     fun `as expression`() {
-        driveElementTest(
+        driveTextFileTest(
             """
+                var x = 0
                 fun f() {
-                    0 as Int
+                    x = 0 as Int
                 }
             """.trimIndent(),
-            CastTransformerStage::class,
             """
-                [
-                    PropertyStatement(Unit, SvProperty(<tmp>, Int, null, 0, 0, 0)),
-                    IfExpression(
-                        Unit,
-                        KtCallExpression(Boolean, not, KtCallExpression(Boolean, ${'$'}cast, null, *, []), [], []),
-                        KtBlockExpression(Nothing, [KtCallExpression(Nothing, fatal, null, [StringExpression(*)], [])]),
-                        null
-                    ),
-                    ReferenceExpression(Int, <tmp>, null)
-                ]
+                int x = 0;
+
+                function automatic void f();
+                    int __0;
+                    if (~${'$'}cast(__0, 0)) begin
+                        ${'$'}fatal(1, "Failed to cast from Int to Int");
+                    end
+                    x = __0;
+                endfunction : f
             """.trimIndent()
-        ) { it.findStatements("f") }
+        ) { it.regularPackageTextFiles[0] }
     }
 }

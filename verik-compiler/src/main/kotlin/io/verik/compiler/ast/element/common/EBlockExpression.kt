@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,67 +14,68 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.sv
+package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.element.common.EBlockExpression
-import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.ExpressionContainer
-import io.verik.compiler.ast.property.CaseEntry
 import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.common.replaceIfContains
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
 
-class ECaseStatement(
+class EBlockExpression(
     override val location: SourceLocation,
     val endLocation: SourceLocation,
     override var type: Type,
-    var subject: EExpression,
-    val entries: List<CaseEntry>
+    var statements: ArrayList<EExpression>
 ) : EExpression(), ExpressionContainer {
 
     override val serializationType = SerializationType.STATEMENT
 
     init {
-        subject.parent = this
-        entries.forEach { entry ->
-            entry.conditions.forEach { it.parent = this }
-            entry.body.parent = this
-        }
+        statements.forEach { it.parent = this }
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitCaseStatement(this)
+        visitor.visitBlockExpression(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        subject.accept(visitor)
-        entries.forEach { entry ->
-            entry.conditions.forEach { it.accept(visitor) }
-            entry.body.accept(visitor)
-        }
-    }
-
-    override fun childBlockExpressionShouldBeReduced(blockExpression: EBlockExpression): Boolean {
-        return (blockExpression == subject)
+        statements.forEach { it.accept(visitor) }
     }
 
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
         newExpression.parent = this
-        if (subject == oldExpression) {
-            subject = newExpression
-            return true
+        return statements.replaceIfContains(oldExpression, newExpression)
+    }
+
+    companion object {
+
+        fun empty(location: SourceLocation): EBlockExpression {
+            return EBlockExpression(location, location, Core.Kt.C_Unit.toType(), ArrayList())
         }
-        entries.forEach {
-            if (it.conditions.replaceIfContains(oldExpression, newExpression))
-                return true
-            if (it.body == oldExpression) {
-                it.body = newExpression.cast()
-                return true
-            }
+
+        fun wrap(expression: EExpression): EBlockExpression {
+            return if (expression !is EBlockExpression) {
+                EBlockExpression(
+                    expression.location,
+                    expression.location,
+                    expression.type.copy(),
+                    arrayListOf(expression)
+                )
+            } else expression
         }
-        return false
+
+        fun extract(expression: EExpression, extractedExpressions: List<EExpression>) {
+            val blockExpression = EBlockExpression(
+                expression.location,
+                expression.location,
+                expression.type.copy(),
+                ArrayList(extractedExpressions)
+            )
+            expression.replace(blockExpression)
+        }
     }
 }

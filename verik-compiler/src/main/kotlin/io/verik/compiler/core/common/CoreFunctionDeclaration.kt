@@ -16,9 +16,9 @@
 
 package io.verik.compiler.core.common
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.ast.property.SvUnaryOperatorKind
 import io.verik.compiler.resolve.TypeConstraint
@@ -26,11 +26,11 @@ import io.verik.compiler.target.common.TargetFunctionDeclaration
 
 sealed class CoreFunctionDeclaration : CoreDeclaration {
 
-    open fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+    open fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
         return listOf()
     }
 
-    open fun evaluate(callExpression: EKtCallExpression): EConstantExpression? {
+    open fun evaluate(callExpression: ECallExpression): EConstantExpression? {
         return null
     }
 }
@@ -48,7 +48,7 @@ abstract class TransformableCoreFunctionDeclaration(
     override val signature: String
 ) : CoreFunctionDeclaration() {
 
-    abstract fun transform(callExpression: EKtCallExpression): EExpression
+    abstract fun transform(callExpression: ECallExpression): EExpression
 }
 
 open class UnaryCoreFunctionDeclaration(

@@ -62,8 +62,8 @@ internal class CaseStatementTransformerStageTest : BaseTest() {
                 IfExpression(
                     Unit,
                     ReferenceExpression(Boolean, x, null),
-                    KtBlockExpression(*),
-                    KtBlockExpression(*)
+                    BlockExpression(*),
+                    BlockExpression(*)
                 )
             """.trimIndent()
         ) { it.findExpression("f") }

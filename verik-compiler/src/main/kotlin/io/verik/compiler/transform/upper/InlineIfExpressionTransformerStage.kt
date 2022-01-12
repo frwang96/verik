@@ -16,7 +16,7 @@
 
 package io.verik.compiler.transform.upper
 
-import io.verik.compiler.ast.element.common.EAbstractBlockExpression
+import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
@@ -32,7 +32,7 @@ object InlineIfExpressionTransformerStage : ProjectStage() {
 
     private object InlineIfExpressionTransformerVisitor : TreeVisitor() {
 
-        private fun reduceExpression(expression: EAbstractBlockExpression?): EExpression? {
+        private fun reduceExpression(expression: EBlockExpression?): EExpression? {
             return if (expression?.statements?.size == 1) {
                 expression.statements.first()
             } else null

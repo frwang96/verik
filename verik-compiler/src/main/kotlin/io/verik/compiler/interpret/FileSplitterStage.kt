@@ -17,15 +17,15 @@
 package io.verik.compiler.interpret
 
 import io.verik.compiler.ast.element.common.EDeclaration
+import io.verik.compiler.ast.element.common.EEnumEntry
 import io.verik.compiler.ast.element.common.EFile
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.sv.EAbstractComponent
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EInjectedProperty
 import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.ESvClass
-import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvFunction
-import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ETask
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
@@ -88,8 +88,8 @@ object FileSplitterStage : ProjectStage() {
             is ESvFunction -> true
             is ETask -> true
             is EInjectedProperty -> false
-            is ESvProperty -> true
-            is ESvEnumEntry -> true
+            is EProperty -> true
+            is EEnumEntry -> true
             else -> Messages.INTERNAL_ERROR.on(
                 declaration,
                 "Unexpected declaration type: ${declaration::class.simpleName}"

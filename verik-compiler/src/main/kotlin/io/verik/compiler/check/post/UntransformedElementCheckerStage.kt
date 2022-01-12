@@ -20,13 +20,9 @@ import io.verik.compiler.ast.element.kt.EAsExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtClass
-import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtForStatement
 import io.verik.compiler.ast.element.kt.EKtFunction
-import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
@@ -56,24 +52,9 @@ object UntransformedElementCheckerStage : ProjectStage() {
             Messages.INTERNAL_ERROR.on(function, "Function ${function.name} $message")
         }
 
-        override fun visitKtProperty(property: EKtProperty) {
-            super.visitKtProperty(property)
-            Messages.INTERNAL_ERROR.on(property, "Property ${property.name} $message")
-        }
-
-        override fun visitKtEnumEntry(enumEntry: EKtEnumEntry) {
-            super.visitKtEnumEntry(enumEntry)
-            Messages.INTERNAL_ERROR.on(enumEntry, "Enum entry ${enumEntry.name} $message")
-        }
-
         override fun visitKtValueParameter(valueParameter: EKtValueParameter) {
             super.visitKtValueParameter(valueParameter)
             Messages.INTERNAL_ERROR.on(valueParameter, "Value parameter ${valueParameter.name} $message")
-        }
-
-        override fun visitKtBlockExpression(blockExpression: EKtBlockExpression) {
-            super.visitKtBlockExpression(blockExpression)
-            Messages.INTERNAL_ERROR.on(blockExpression, "Block expression $message")
         }
 
         override fun visitKtUnaryExpression(unaryExpression: EKtUnaryExpression) {
@@ -84,11 +65,6 @@ object UntransformedElementCheckerStage : ProjectStage() {
         override fun visitKtBinaryExpression(binaryExpression: EKtBinaryExpression) {
             super.visitKtBinaryExpression(binaryExpression)
             Messages.INTERNAL_ERROR.on(binaryExpression, "Binary expression $message")
-        }
-
-        override fun visitKtCallExpression(callExpression: EKtCallExpression) {
-            super.visitKtCallExpression(callExpression)
-            Messages.INTERNAL_ERROR.on(callExpression, "Call expression $message")
         }
 
         override fun visitStringTemplateExpression(stringTemplateExpression: EStringTemplateExpression) {

@@ -18,20 +18,19 @@ package io.verik.compiler.common
 
 import io.verik.compiler.ast.element.common.EAbstractArrayAccessExpression
 import io.verik.compiler.ast.element.common.EAbstractBinaryExpression
-import io.verik.compiler.ast.element.common.EAbstractBlockExpression
-import io.verik.compiler.ast.element.common.EAbstractCallExpression
 import io.verik.compiler.ast.element.common.EAbstractClass
 import io.verik.compiler.ast.element.common.EAbstractContainerClass
 import io.verik.compiler.ast.element.common.EAbstractContainerExpression
-import io.verik.compiler.ast.element.common.EAbstractEnumEntry
 import io.verik.compiler.ast.element.common.EAbstractFunction
-import io.verik.compiler.ast.element.common.EAbstractInitializedProperty
 import io.verik.compiler.ast.element.common.EAbstractProperty
 import io.verik.compiler.ast.element.common.EAbstractValueParameter
+import io.verik.compiler.ast.element.common.EBlockExpression
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EClassifier
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EEnumEntry
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.EIfExpression
@@ -39,6 +38,7 @@ import io.verik.compiler.ast.element.common.ENullExpression
 import io.verik.compiler.ast.element.common.EPackage
 import io.verik.compiler.ast.element.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.common.EProject
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReceiverExpression
 import io.verik.compiler.ast.element.common.EReferenceExpression
@@ -55,14 +55,10 @@ import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtConstructor
-import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtForStatement
 import io.verik.compiler.ast.element.kt.EKtFunction
-import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
@@ -107,13 +103,9 @@ import io.verik.compiler.ast.element.sv.EStructLiteralExpression
 import io.verik.compiler.ast.element.sv.ESvAbstractFunction
 import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
-import io.verik.compiler.ast.element.sv.ESvBlockExpression
-import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.ast.element.sv.ESvClass
-import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvForStatement
 import io.verik.compiler.ast.element.sv.ESvFunction
-import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.element.sv.ETask
@@ -271,32 +263,16 @@ abstract class Visitor {
         visitDeclaration(abstractProperty)
     }
 
+    open fun visitProperty(property: EProperty) {
+        visitAbstractProperty(property)
+    }
+
     open fun visitInjectedProperty(injectedProperty: EInjectedProperty) {
         visitAbstractProperty(injectedProperty)
     }
 
-    open fun visitAbstractInitializedProperty(abstractInitializedProperty: EAbstractInitializedProperty) {
-        visitAbstractProperty(abstractInitializedProperty)
-    }
-
-    open fun visitKtProperty(property: EKtProperty) {
-        visitAbstractInitializedProperty(property)
-    }
-
-    open fun visitSvProperty(property: ESvProperty) {
-        visitAbstractInitializedProperty(property)
-    }
-
-    open fun visitAbstractEnumEntry(abstractEnumEntry: EAbstractEnumEntry) {
-        visitAbstractProperty(abstractEnumEntry)
-    }
-
-    open fun visitKtEnumEntry(enumEntry: EKtEnumEntry) {
-        visitAbstractEnumEntry(enumEntry)
-    }
-
-    open fun visitSvEnumEntry(enumEntry: ESvEnumEntry) {
-        visitAbstractEnumEntry(enumEntry)
+    open fun visitEnumEntry(enumEntry: EEnumEntry) {
+        visitAbstractProperty(enumEntry)
     }
 
     open fun visitAbstractComponentInstantiation(abstractComponentInstantiation: EAbstractComponentInstantiation) {
@@ -333,16 +309,8 @@ abstract class Visitor {
 
 //  EXPRESSION  ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    open fun visitAbstractBlockExpression(abstractBlockExpression: EAbstractBlockExpression) {
-        visitExpression(abstractBlockExpression)
-    }
-
-    open fun visitKtBlockExpression(blockExpression: EKtBlockExpression) {
-        visitAbstractBlockExpression(blockExpression)
-    }
-
-    open fun visitSvBlockExpression(blockExpression: ESvBlockExpression) {
-        visitAbstractBlockExpression(blockExpression)
+    open fun visitBlockExpression(blockExpression: EBlockExpression) {
+        visitExpression(blockExpression)
     }
 
     open fun visitAbstractContainerExpression(containerExpression: EAbstractContainerExpression) {
@@ -385,16 +353,8 @@ abstract class Visitor {
         visitReceiverExpression(referenceExpression)
     }
 
-    open fun visitAbstractCallExpression(abstractCallExpression: EAbstractCallExpression) {
-        visitReceiverExpression(abstractCallExpression)
-    }
-
-    open fun visitKtCallExpression(callExpression: EKtCallExpression) {
-        visitAbstractCallExpression(callExpression)
-    }
-
-    open fun visitSvCallExpression(callExpression: ESvCallExpression) {
-        visitAbstractCallExpression(callExpression)
+    open fun visitCallExpression(callExpression: ECallExpression) {
+        visitReceiverExpression(callExpression)
     }
 
     open fun visitScopeExpression(scopeExpression: EScopeExpression) {

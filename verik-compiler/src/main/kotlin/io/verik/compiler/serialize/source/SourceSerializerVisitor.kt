@@ -16,13 +16,17 @@
 
 package io.verik.compiler.serialize.source
 
+import io.verik.compiler.ast.element.common.EBlockExpression
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EEnumEntry
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.ENullExpression
 import io.verik.compiler.ast.element.common.EParenthesizedExpression
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
@@ -60,13 +64,9 @@ import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.EStructLiteralExpression
 import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
-import io.verik.compiler.ast.element.sv.ESvBlockExpression
-import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.ast.element.sv.ESvClass
-import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvForStatement
 import io.verik.compiler.ast.element.sv.ESvFunction
-import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.element.sv.ETask
@@ -93,12 +93,12 @@ class SourceSerializerVisitor(
     fun serializeAsDeclaration(declaration: EDeclaration) {
         if (SerializerUtil.declarationIsHidden(declaration))
             return
-        if (!firstDeclaration && !(lastDeclarationIsProperty && declaration is ESvProperty))
+        if (!firstDeclaration && !(lastDeclarationIsProperty && declaration is EProperty))
             serializeContext.appendLine()
         firstDeclaration = false
         lastDeclarationIsProperty = false
         serialize(declaration)
-        lastDeclarationIsProperty = declaration is ESvProperty
+        lastDeclarationIsProperty = declaration is EProperty
     }
 
     fun serializeAsExpression(expression: EExpression) {
@@ -170,12 +170,12 @@ class SourceSerializerVisitor(
         DeclarationSerializer.serializeAlwaysSeqBlock(alwaysSeqBlock, serializeContext)
     }
 
-    override fun visitSvProperty(property: ESvProperty) {
-        DeclarationSerializer.serializeSvProperty(property, serializeContext)
+    override fun visitProperty(property: EProperty) {
+        DeclarationSerializer.serializeProperty(property, serializeContext)
     }
 
-    override fun visitSvEnumEntry(enumEntry: ESvEnumEntry) {
-        DeclarationSerializer.serializeSvEnumEntry(enumEntry, serializeContext)
+    override fun visitEnumEntry(enumEntry: EEnumEntry) {
+        DeclarationSerializer.serializeEnumEntry(enumEntry, serializeContext)
     }
 
     override fun visitComponentInstantiation(componentInstantiation: EComponentInstantiation) {
@@ -198,8 +198,8 @@ class SourceSerializerVisitor(
         DeclarationSerializer.serializePort(port, serializeContext)
     }
 
-    override fun visitSvBlockExpression(blockExpression: ESvBlockExpression) {
-        ExpressionSerializer.serializeSvBlockExpression(blockExpression, serializeContext)
+    override fun visitBlockExpression(blockExpression: EBlockExpression) {
+        ExpressionSerializer.serializeBlockExpression(blockExpression, serializeContext)
     }
 
     override fun visitPropertyStatement(propertyStatement: EPropertyStatement) {
@@ -222,8 +222,8 @@ class SourceSerializerVisitor(
         ExpressionSerializer.serializeReferenceExpression(referenceExpression, serializeContext)
     }
 
-    override fun visitSvCallExpression(callExpression: ESvCallExpression) {
-        ExpressionSerializer.serializeSvCallExpression(callExpression, serializeContext)
+    override fun visitCallExpression(callExpression: ECallExpression) {
+        ExpressionSerializer.serializeCallExpression(callExpression, serializeContext)
     }
 
     override fun visitScopeExpression(scopeExpression: EScopeExpression) {

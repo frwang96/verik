@@ -16,7 +16,7 @@
 
 package io.verik.compiler.transform.lower
 
-import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
 import io.verik.compiler.core.common.CoreConstructorDeclaration
@@ -32,8 +32,8 @@ object FunctionTransformerStage : ProjectStage() {
 
     private object FunctionTransformerVisitor : TreeVisitor() {
 
-        override fun visitKtCallExpression(callExpression: EKtCallExpression) {
-            super.visitKtCallExpression(callExpression)
+        override fun visitCallExpression(callExpression: ECallExpression) {
+            super.visitCallExpression(callExpression)
             when (val reference = callExpression.reference) {
                 is BasicCoreFunctionDeclaration -> {
                     val targetFunctionDeclaration = reference.targetFunctionDeclaration

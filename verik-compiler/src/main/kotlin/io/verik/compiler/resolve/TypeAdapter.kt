@@ -16,9 +16,9 @@
 
 package io.verik.compiler.resolve
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypedElement
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.property.Type
 
 sealed class TypeAdapter {
@@ -43,7 +43,7 @@ sealed class TypeAdapter {
             return ElementTypeAdapter(element, indices.toList())
         }
 
-        fun ofTypeArgument(callExpression: EKtCallExpression, index: Int): TypeAdapter {
+        fun ofTypeArgument(callExpression: ECallExpression, index: Int): TypeAdapter {
             return TypeArgumentTypeAdapter(callExpression, index)
         }
     }
@@ -113,7 +113,7 @@ class ElementTypeAdapter(
 }
 
 class TypeArgumentTypeAdapter(
-    private val callExpression: EKtCallExpression,
+    private val callExpression: ECallExpression,
     private val index: Int
 ) : TypeAdapter() {
 

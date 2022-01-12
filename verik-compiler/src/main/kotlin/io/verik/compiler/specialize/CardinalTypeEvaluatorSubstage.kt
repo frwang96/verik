@@ -16,10 +16,10 @@
 
 package io.verik.compiler.specialize
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypedElement
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
@@ -126,8 +126,8 @@ object CardinalTypeEvaluatorSubstage : SpecializerSubstage() {
             `class`.superType = evaluate(`class`.superType, `class`)
         }
 
-        override fun visitKtCallExpression(callExpression: EKtCallExpression) {
-            super.visitKtCallExpression(callExpression)
+        override fun visitCallExpression(callExpression: ECallExpression) {
+            super.visitCallExpression(callExpression)
             callExpression.typeArguments = ArrayList(
                 callExpression.typeArguments.map { evaluate(it, callExpression) }
             )

@@ -16,12 +16,12 @@
 
 package io.verik.compiler.resolve
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.EReceiverExpression
 import io.verik.compiler.ast.element.kt.EKtAbstractFunction
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
@@ -76,7 +76,7 @@ object ExpressionReferenceForwarder {
         val receiverExpression = entry.receiverExpression
         val isTopLevel = reference.parent is EFile || reference is EPrimaryConstructor
         return if (isTopLevel) {
-            if (receiverExpression is EKtCallExpression && reference is EKtAbstractFunction) {
+            if (receiverExpression is ECallExpression && reference is EKtAbstractFunction) {
                 val typeArguments = receiverExpression.typeArguments
                 if (typeArguments.any { !it.isResolved() }) {
                     false

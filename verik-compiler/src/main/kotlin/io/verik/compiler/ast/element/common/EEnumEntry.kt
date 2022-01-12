@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,23 +16,28 @@
 
 package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.interfaces.ExpressionContainer
+import io.verik.compiler.ast.interfaces.Annotated
+import io.verik.compiler.ast.property.AnnotationEntry
+import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.common.replaceIfContains
+import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
-abstract class EAbstractBlockExpression : EExpression(), ExpressionContainer {
+class EEnumEntry(
+    override val location: SourceLocation,
+    override var name: String,
+    override var type: Type,
+    override var annotationEntries: List<AnnotationEntry>
+) : EAbstractProperty(), Annotated {
 
-    abstract val endLocation: SourceLocation
-
-    abstract var statements: ArrayList<EExpression>
-
-    override fun acceptChildren(visitor: TreeVisitor) {
-        statements.forEach { it.accept(visitor) }
+    fun fill(type: Type, annotationEntries: List<AnnotationEntry>) {
+        this.type = type
+        this.annotationEntries = annotationEntries
     }
 
-    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
-        newExpression.parent = this
-        return statements.replaceIfContains(oldExpression, newExpression)
+    override fun accept(visitor: Visitor) {
+        visitor.visitEnumEntry(this)
     }
+
+    override fun acceptChildren(visitor: TreeVisitor) {}
 }

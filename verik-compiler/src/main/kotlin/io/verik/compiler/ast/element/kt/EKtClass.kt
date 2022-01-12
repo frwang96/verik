@@ -17,6 +17,7 @@
 package io.verik.compiler.ast.element.kt
 
 import io.verik.compiler.ast.element.common.EAbstractContainerClass
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.interfaces.Annotated
@@ -41,7 +42,7 @@ class EKtClass(
     var isAbstract: Boolean,
     var isObject: Boolean,
     var primaryConstructor: EPrimaryConstructor?,
-    var superTypeCallExpression: EKtCallExpression?,
+    var superTypeCallExpression: ECallExpression?,
 ) : EAbstractContainerClass(), TypeParameterized, Annotated {
 
     init {
@@ -61,7 +62,7 @@ class EKtClass(
         isAbstract: Boolean,
         isObject: Boolean,
         primaryConstructor: EPrimaryConstructor?,
-        superTypeCallExpression: EKtCallExpression?
+        superTypeCallExpression: ECallExpression?
     ) {
         declarations.forEach { it.parent = this }
         typeParameters.forEach { it.parent = this }

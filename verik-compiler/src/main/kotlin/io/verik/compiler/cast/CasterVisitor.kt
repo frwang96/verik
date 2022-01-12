@@ -16,11 +16,15 @@
 
 package io.verik.compiler.cast
 
+import io.verik.compiler.ast.element.common.EBlockExpression
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EEnumEntry
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.ENullExpression
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
@@ -28,13 +32,9 @@ import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.common.EWhileStatement
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtClass
-import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtForStatement
 import io.verik.compiler.ast.element.kt.EKtFunction
-import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
@@ -117,7 +117,7 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
                 Messages.ILLEGAL_LOCAL_DECLARATION.on(element, element.name)
                 ENullExpression(location)
             }
-            is EKtProperty -> {
+            is EProperty -> {
                 EPropertyStatement(location, element)
             }
             is EExpression -> element
@@ -152,12 +152,12 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
         return DeclarationCaster.castKtFunction(function, castContext)
     }
 
-    override fun visitProperty(property: KtProperty, data: Unit?): EKtProperty {
-        return DeclarationCaster.castKtProperty(property, castContext)
+    override fun visitProperty(property: KtProperty, data: Unit?): EProperty {
+        return DeclarationCaster.castProperty(property, castContext)
     }
 
-    override fun visitEnumEntry(enumEntry: KtEnumEntry, data: Unit?): EKtEnumEntry {
-        return DeclarationCaster.castKtEnumEntry(enumEntry, castContext)
+    override fun visitEnumEntry(enumEntry: KtEnumEntry, data: Unit?): EEnumEntry {
+        return DeclarationCaster.castEnumEntry(enumEntry, castContext)
     }
 
     override fun visitParameter(parameter: KtParameter, data: Unit?): EKtValueParameter {
@@ -172,7 +172,7 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
         return getExpression(expression.expression!!)
     }
 
-    override fun visitBlockExpression(expression: KtBlockExpression, data: Unit?): EKtBlockExpression {
+    override fun visitBlockExpression(expression: KtBlockExpression, data: Unit?): EBlockExpression {
         return ExpressionCaster.castKtBlockExpression(expression, castContext)
     }
 
@@ -185,19 +185,19 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
     }
 
     override fun visitBinaryExpression(expression: KtBinaryExpression, data: Unit?): EExpression {
-        return ExpressionCaster.castKtBinaryExpressionOrKtCallExpression(expression, castContext)
+        return ExpressionCaster.castKtBinaryExpressionOrCallExpression(expression, castContext)
     }
 
     override fun visitSimpleNameExpression(expression: KtSimpleNameExpression, data: Unit?): EReferenceExpression {
         return ExpressionCaster.castReferenceExpression(expression, castContext)
     }
 
-    override fun visitCallExpression(expression: KtCallExpression, data: Unit?): EKtCallExpression {
-        return ExpressionCaster.castKtCallExpression(expression, castContext)
+    override fun visitCallExpression(expression: KtCallExpression, data: Unit?): ECallExpression {
+        return ExpressionCaster.castCallExpression(expression, castContext)
     }
 
     override fun visitDotQualifiedExpression(expression: KtDotQualifiedExpression, data: Unit?): EExpression {
-        return ExpressionCaster.castKtReferenceExpressionOrKtCallExpression(expression, castContext)
+        return ExpressionCaster.castReferenceExpressionOrCallExpression(expression, castContext)
     }
 
     override fun visitConstantExpression(expression: KtConstantExpression, data: Unit?): EExpression {

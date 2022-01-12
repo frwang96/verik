@@ -16,9 +16,9 @@
 
 package io.verik.compiler.core.declaration.jv
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EReferenceExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CorePropertyDeclaration
@@ -36,7 +36,7 @@ object CoreJvArrayList : CoreScope(Core.Jv.Util.C_ArrayList) {
     val P_size = object : CorePropertyDeclaration(parent, "size") {
 
         override fun transform(referenceExpression: EReferenceExpression): EExpression {
-            return EKtCallExpression(
+            return ECallExpression(
                 referenceExpression.location,
                 referenceExpression.type,
                 Target.ArrayList.F_size,

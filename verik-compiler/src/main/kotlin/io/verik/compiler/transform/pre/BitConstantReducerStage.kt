@@ -16,7 +16,7 @@
 
 package io.verik.compiler.transform.pre
 
-import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.constant.ConstantNormalizer
 import io.verik.compiler.core.common.Core
@@ -31,8 +31,8 @@ object BitConstantReducerStage : ProjectStage() {
 
     private object BitConstantReducerVisitor : TreeVisitor() {
 
-        override fun visitKtCallExpression(callExpression: EKtCallExpression) {
-            super.visitKtCallExpression(callExpression)
+        override fun visitCallExpression(callExpression: ECallExpression) {
+            super.visitCallExpression(callExpression)
             val signed = when (callExpression.reference) {
                 Core.Vk.F_u_Int, Core.Vk.F_u_String -> false
                 Core.Vk.F_s_Int, Core.Vk.F_s_String -> true

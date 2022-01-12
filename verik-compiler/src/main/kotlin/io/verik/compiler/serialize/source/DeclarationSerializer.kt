@@ -17,6 +17,8 @@
 package io.verik.compiler.serialize.source
 
 import io.verik.compiler.ast.element.common.EAbstractProperty
+import io.verik.compiler.ast.element.common.EEnumEntry
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
@@ -32,9 +34,7 @@ import io.verik.compiler.ast.element.sv.EPort
 import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.ESvAbstractFunction
 import io.verik.compiler.ast.element.sv.ESvClass
-import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvFunction
-import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.element.sv.ETask
 import io.verik.compiler.ast.element.sv.ETypeDefinition
@@ -135,10 +135,13 @@ object DeclarationSerializer {
     }
 
     fun serializeSvFunction(function: ESvFunction, serializeContext: SerializeContext) {
+        if (function.isStatic()) {
+            serializeContext.append("static ")
+        }
         when (function.qualifierType) {
             FunctionQualifierType.VIRTUAL -> serializeContext.append("virtual ")
             FunctionQualifierType.PURE_VIRTUAL -> serializeContext.append("pure virtual ")
-            else -> if (function.isStatic) serializeContext.append("static ")
+            else -> {}
         }
         val serializedType = TypeSerializer.serialize(function.type, function)
         serializedType.checkNoUnpackedDimension(function)
@@ -146,7 +149,7 @@ object DeclarationSerializer {
         serializeSvValueParameterList(function, serializeContext)
         if (function.qualifierType != FunctionQualifierType.PURE_VIRTUAL) {
             serializeContext.indent {
-                serializeContext.serializeAsStatement(function.body)
+                function.body.statements.forEach { serializeContext.serializeAsStatement(it) }
             }
             serializeContext.label(function.body.endLocation) {
                 serializeContext.appendLine("endfunction : ${function.name}")
@@ -158,7 +161,7 @@ object DeclarationSerializer {
         serializeContext.append("task automatic ${task.name}")
         serializeSvValueParameterList(task, serializeContext)
         serializeContext.indent {
-            serializeContext.serializeAsStatement(task.body)
+            task.body.statements.forEach { serializeContext.serializeAsStatement(it) }
         }
         serializeContext.label(task.body.endLocation) {
             serializeContext.appendLine("endtask : ${task.name}")
@@ -166,27 +169,38 @@ object DeclarationSerializer {
     }
 
     fun serializeInitialBlock(initialBlock: EInitialBlock, serializeContext: SerializeContext) {
-        serializeContext.append("initial ")
-        serializeContext.serializeAsStatement(initialBlock.body)
+        serializeContext.appendLine("initial begin : ${initialBlock.name}")
+        serializeContext.indent {
+            initialBlock.body.statements.forEach { serializeContext.serializeAsStatement(it) }
+        }
+        serializeContext.label(initialBlock.body.endLocation) {
+            serializeContext.appendLine("end : ${initialBlock.name}")
+        }
     }
 
     fun serializeAlwaysComBlock(alwaysComBlock: EAlwaysComBlock, serializeContext: SerializeContext) {
-        serializeContext.append("always_comb ")
-        serializeContext.serializeAsStatement(alwaysComBlock.body)
+        serializeContext.appendLine("always_comb begin : ${alwaysComBlock.name}")
+        serializeContext.indent {
+            alwaysComBlock.body.statements.forEach { serializeContext.serializeAsStatement(it) }
+        }
+        serializeContext.label(alwaysComBlock.body.endLocation) {
+            serializeContext.appendLine("end : ${alwaysComBlock.name}")
+        }
     }
 
     fun serializeAlwaysSeqBlock(alwaysSeqBlock: EAlwaysSeqBlock, serializeContext: SerializeContext) {
         serializeContext.append("always_ff ")
         serializeContext.serializeAsExpression(alwaysSeqBlock.eventControlExpression)
-        serializeContext.append(" ")
-        serializeContext.serializeAsStatement(alwaysSeqBlock.body)
+        serializeContext.appendLine(" begin : ${alwaysSeqBlock.name}")
+        serializeContext.indent {
+            alwaysSeqBlock.body.statements.forEach { serializeContext.serializeAsStatement(it) }
+        }
+        serializeContext.label(alwaysSeqBlock.body.endLocation) {
+            serializeContext.appendLine("end : ${alwaysSeqBlock.name}")
+        }
     }
 
-    fun serializeSvProperty(property: ESvProperty, serializeContext: SerializeContext) {
-        when (property.isStatic) {
-            true -> serializeContext.append("static ")
-            false -> serializeContext.append("automatic ")
-        }
+    fun serializeProperty(property: EProperty, serializeContext: SerializeContext) {
         if (TypeSerializer.isVirtual(property.type))
             serializeContext.append("virtual ")
         serializePropertyTypeAndName(property, serializeContext)
@@ -200,7 +214,7 @@ object DeclarationSerializer {
         }
     }
 
-    fun serializeSvEnumEntry(enumEntry: ESvEnumEntry, serializeContext: SerializeContext) {
+    fun serializeEnumEntry(enumEntry: EEnumEntry, serializeContext: SerializeContext) {
         serializeContext.append(enumEntry.name)
     }
 

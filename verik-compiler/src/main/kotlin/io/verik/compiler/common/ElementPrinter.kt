@@ -16,14 +16,18 @@
 
 package io.verik.compiler.common
 
+import io.verik.compiler.ast.element.common.EBlockExpression
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EEnumEntry
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.ENullExpression
 import io.verik.compiler.ast.element.common.EPackage
 import io.verik.compiler.ast.element.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.common.EProject
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
@@ -36,14 +40,10 @@ import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtConstructor
-import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtForStatement
 import io.verik.compiler.ast.element.kt.EKtFunction
-import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
@@ -82,13 +82,9 @@ import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.EStructLiteralExpression
 import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
-import io.verik.compiler.ast.element.sv.ESvBlockExpression
-import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.ast.element.sv.ESvClass
-import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvForStatement
 import io.verik.compiler.ast.element.sv.ESvFunction
-import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.element.sv.ETask
@@ -154,6 +150,8 @@ class ElementPrinter : Visitor() {
             build(typeParameter.type.toString())
         }
     }
+
+//  CLASS  /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     override fun visitKtClass(`class`: EKtClass) {
         build("KtClass") {
@@ -232,6 +230,8 @@ class ElementPrinter : Visitor() {
         }
     }
 
+//  FUNCTION  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     override fun visitKtFunction(function: EKtFunction) {
         build("KtFunction") {
             build(function.name)
@@ -251,7 +251,7 @@ class ElementPrinter : Visitor() {
             build(function.body)
             build(function.valueParameters)
             build(function.qualifierType.toString())
-            build(function.isStatic)
+            build(function.isConstructor)
         }
     }
 
@@ -305,6 +305,18 @@ class ElementPrinter : Visitor() {
         }
     }
 
+//  PROPERTY  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    override fun visitProperty(property: EProperty) {
+        build("Property") {
+            build(property.name)
+            build(property.type.toString())
+            build(property.annotationEntries)
+            build(property.initializer)
+            build(property.isMutable)
+        }
+    }
+
     override fun visitInjectedProperty(injectedProperty: EInjectedProperty) {
         build("InjectedProperty") {
             build(injectedProperty.name)
@@ -313,39 +325,11 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitKtProperty(property: EKtProperty) {
-        build("KtProperty") {
-            build(property.name)
-            build(property.type.toString())
-            build(property.initializer)
-            build(property.annotationEntries)
-            build(property.isMutable)
-        }
-    }
-
-    override fun visitSvProperty(property: ESvProperty) {
-        build("SvProperty") {
-            build(property.name)
-            build(property.type.toString())
-            build(property.initializer)
-            build(property.isComAssignment)
-            build(property.isMutable)
-            build(property.isStatic)
-        }
-    }
-
-    override fun visitKtEnumEntry(enumEntry: EKtEnumEntry) {
-        build("KtEnumEntry") {
+    override fun visitEnumEntry(enumEntry: EEnumEntry) {
+        build("EnumEntry") {
             build(enumEntry.name)
             build(enumEntry.type.toString())
             build(enumEntry.annotationEntries)
-        }
-    }
-
-    override fun visitSvEnumEntry(enumEntry: ESvEnumEntry) {
-        build("SvEnumEntry") {
-            build(enumEntry.name)
-            build(enumEntry.type.toString())
         }
     }
 
@@ -400,18 +384,11 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitKtBlockExpression(blockExpression: EKtBlockExpression) {
-        build("KtBlockExpression") {
-            build(blockExpression.type.toString())
-            build(blockExpression.statements)
-        }
-    }
+//  EXPRESSION  ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitSvBlockExpression(blockExpression: ESvBlockExpression) {
-        build("SvBlockExpression") {
+    override fun visitBlockExpression(blockExpression: EBlockExpression) {
+        build("BlockExpression") {
             build(blockExpression.type.toString())
-            build(blockExpression.decorated.toString())
-            build(blockExpression.name.toString())
             build(blockExpression.statements)
         }
     }
@@ -472,22 +449,13 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitKtCallExpression(callExpression: EKtCallExpression) {
-        build("KtCallExpression") {
+    override fun visitCallExpression(callExpression: ECallExpression) {
+        build("CallExpression") {
             build(callExpression.type.toString())
             build(callExpression.reference.name)
             build(callExpression.receiver)
             build(callExpression.valueArguments)
             build(callExpression.typeArguments.map { it.toString() })
-        }
-    }
-
-    override fun visitSvCallExpression(callExpression: ESvCallExpression) {
-        build("SvCallExpression") {
-            build(callExpression.type.toString())
-            build(callExpression.reference.name)
-            build(callExpression.receiver)
-            build(callExpression.valueArguments)
         }
     }
 

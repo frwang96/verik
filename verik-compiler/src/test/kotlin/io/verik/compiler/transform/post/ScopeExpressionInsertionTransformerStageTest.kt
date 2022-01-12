@@ -32,7 +32,7 @@ internal class ScopeExpressionInsertionTransformerStageTest : BaseTest() {
             """.trimIndent(),
             ScopeExpressionInsertionTransformerStage::class,
             """
-                KtCallExpression(
+                CallExpression(
                     ArrayList<Boolean>,
                     _${'$'}new,
                     ScopeExpression(Void, ArrayList<Boolean>),

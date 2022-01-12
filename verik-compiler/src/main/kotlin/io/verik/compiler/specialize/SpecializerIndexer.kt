@@ -16,13 +16,13 @@
 
 package io.verik.compiler.specialize
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EDeclaration
+import io.verik.compiler.ast.element.common.EEnumEntry
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtAbstractFunction
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtClass
-import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.message.Messages
@@ -50,7 +50,7 @@ object SpecializerIndexer {
                         typeParameterBindings.add(TypeParameterBinding(reference, listOf()))
                     }
                     is EKtClass -> {
-                        if (parent.isObject || (parent.isEnum && reference is EKtEnumEntry)) {
+                        if (parent.isObject || (parent.isEnum && reference is EEnumEntry)) {
                             typeParameterBindings.add(TypeParameterBinding(parent, listOf()))
                         }
                     }
@@ -58,8 +58,8 @@ object SpecializerIndexer {
             }
         }
 
-        override fun visitKtCallExpression(callExpression: EKtCallExpression) {
-            super.visitKtCallExpression(callExpression)
+        override fun visitCallExpression(callExpression: ECallExpression) {
+            super.visitCallExpression(callExpression)
             if (callExpression.receiver != null)
                 return
             val reference = callExpression.reference

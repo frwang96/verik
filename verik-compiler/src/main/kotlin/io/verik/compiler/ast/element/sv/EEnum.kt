@@ -17,6 +17,7 @@
 package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EAbstractClass
+import io.verik.compiler.ast.element.common.EEnumEntry
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
@@ -29,7 +30,7 @@ class EEnum(
     override val bodyEndLocation: SourceLocation,
     override var name: String,
     override var type: Type,
-    val enumEntries: List<ESvEnumEntry>
+    val enumEntries: List<EEnumEntry>
 ) : EAbstractClass() {
 
     override var superType = Target.C_Void.toType()

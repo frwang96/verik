@@ -33,10 +33,10 @@ internal class ForStatementReducerStageTest : BaseTest() {
             """.trimIndent(),
             ForStatementReducerStage::class,
             """
-                KtCallExpression(
+                CallExpression(
                     Unit, forEach,
-                    KtCallExpression(IntRange, until, *, [*], []),
-                    [FunctionLiteralExpression(Function, [KtValueParameter(*)], KtBlockExpression(*))],
+                    CallExpression(IntRange, until, *, [*], []),
+                    [FunctionLiteralExpression(Function, [KtValueParameter(*)], BlockExpression(*))],
                     [Int]
                 )
             """.trimIndent()

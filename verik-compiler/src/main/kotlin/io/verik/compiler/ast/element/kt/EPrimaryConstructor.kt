@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast.element.kt
 
-import io.verik.compiler.ast.element.common.EAbstractBlockExpression
+import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
@@ -30,7 +30,7 @@ class EPrimaryConstructor(
     override var typeParameters: ArrayList<ETypeParameter>
 ) : EKtAbstractFunction() {
 
-    override var body: EAbstractBlockExpression = EKtBlockExpression.empty(location)
+    override var body: EBlockExpression = EBlockExpression.empty(location)
 
     init {
         valueParameters.forEach { it.parent = this }

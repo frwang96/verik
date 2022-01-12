@@ -16,11 +16,11 @@
 
 package io.verik.compiler.specialize
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.common.ETypedElement
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.interfaces.TypeParameterized
 import io.verik.compiler.ast.property.Type
@@ -96,8 +96,8 @@ object TypeParameterSubstitutorSubstage : SpecializerSubstage() {
             `class`.superType = substitute(`class`.superType, `class`)
         }
 
-        override fun visitKtCallExpression(callExpression: EKtCallExpression) {
-            super.visitKtCallExpression(callExpression)
+        override fun visitCallExpression(callExpression: ECallExpression) {
+            super.visitCallExpression(callExpression)
             callExpression.typeArguments = ArrayList(
                 callExpression.typeArguments.map { substitute(it, callExpression) }
             )

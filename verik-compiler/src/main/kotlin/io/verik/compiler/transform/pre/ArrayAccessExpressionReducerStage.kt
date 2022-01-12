@@ -16,9 +16,9 @@
 
 package io.verik.compiler.transform.pre
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.Type
@@ -228,7 +228,7 @@ object ArrayAccessExpressionReducerStage : ProjectStage() {
                 val reference = getSetReference(arrayDeclaration, indexDeclarations, expressionType)
                 if (reference != null) {
                     binaryExpression.replace(
-                        EKtCallExpression(
+                        ECallExpression(
                             binaryExpression.location,
                             binaryExpression.type,
                             reference,
@@ -252,7 +252,7 @@ object ArrayAccessExpressionReducerStage : ProjectStage() {
             val reference = getGetReference(arrayDeclaration, indexDeclarations)
             if (reference != null) {
                 arrayAccessExpression.replace(
-                    EKtCallExpression(
+                    ECallExpression(
                         arrayAccessExpression.location,
                         arrayAccessExpression.type,
                         reference,

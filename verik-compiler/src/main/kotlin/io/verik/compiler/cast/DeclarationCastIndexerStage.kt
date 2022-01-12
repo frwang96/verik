@@ -16,12 +16,12 @@
 
 package io.verik.compiler.cast
 
+import io.verik.compiler.ast.element.common.EBlockExpression
+import io.verik.compiler.ast.element.common.EEnumEntry
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.common.ETypeParameter
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtClass
-import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
-import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.kt.ETypeAlias
@@ -128,7 +128,7 @@ object DeclarationCastIndexerStage : ProjectStage() {
                 location = location,
                 name = name,
                 type = NullDeclaration.toType(),
-                body = EKtBlockExpression.empty(location),
+                body = EBlockExpression.empty(location),
                 valueParameters = ArrayList(),
                 typeParameters = ArrayList(),
                 annotationEntries = listOf(),
@@ -159,13 +159,13 @@ object DeclarationCastIndexerStage : ProjectStage() {
             val location = property.nameIdentifier!!.location()
             val endLocation = property.endLocation()
             val name = property.name!!
-            val indexedProperty = EKtProperty(
+            val indexedProperty = EProperty(
                 location = location,
                 endLocation = endLocation,
                 name = name,
                 type = NullDeclaration.toType(),
-                initializer = null,
                 annotationEntries = listOf(),
+                initializer = null,
                 isMutable = false
             )
             castContext.addDeclaration(descriptor, indexedProperty)
@@ -176,7 +176,7 @@ object DeclarationCastIndexerStage : ProjectStage() {
             val descriptor = castContext.sliceClass[enumEntry]!!
             val location = enumEntry.nameIdentifier!!.location()
             val name = enumEntry.name!!
-            val indexedEnumEntry = EKtEnumEntry(
+            val indexedEnumEntry = EEnumEntry(
                 location,
                 name,
                 NullDeclaration.toType(),

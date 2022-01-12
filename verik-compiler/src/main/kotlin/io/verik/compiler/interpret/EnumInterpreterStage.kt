@@ -16,10 +16,9 @@
 
 package io.verik.compiler.interpret
 
+import io.verik.compiler.ast.element.common.EEnumEntry
 import io.verik.compiler.ast.element.kt.EKtClass
-import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.sv.EEnum
-import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.interfaces.ResizableDeclarationContainer
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
@@ -51,8 +50,7 @@ object EnumInterpreterStage : ProjectStage() {
         override fun visitKtClass(`class`: EKtClass) {
             super.visitKtClass(`class`)
             if (`class`.isEnum) {
-                val enumEntries = `class`.declarations
-                    .map { interpretEnumEntry(it.cast(), referenceUpdater) }
+                val enumEntries = `class`.declarations.map { it.cast<EEnumEntry>() }
                 val enum = EEnum(
                     `class`.location,
                     `class`.bodyStartLocation,
@@ -64,21 +62,11 @@ object EnumInterpreterStage : ProjectStage() {
                 referenceUpdater.replace(`class`, enum)
             }
         }
-
-        private fun interpretEnumEntry(enumEntry: EKtEnumEntry, referenceUpdater: ReferenceUpdater): ESvEnumEntry {
-            val newEnumEntry = ESvEnumEntry(
-                enumEntry.location,
-                enumEntry.name,
-                enumEntry.type
-            )
-            referenceUpdater.update(enumEntry, newEnumEntry)
-            return newEnumEntry
-        }
     }
 
     private class EnumEntryCollectorVisitor : TreeVisitor() {
 
-        val enumEntries = ArrayList<ESvEnumEntry>()
+        val enumEntries = ArrayList<EEnumEntry>()
 
         override fun visitEnum(enum: EEnum) {
             enum.enumEntries.forEach {

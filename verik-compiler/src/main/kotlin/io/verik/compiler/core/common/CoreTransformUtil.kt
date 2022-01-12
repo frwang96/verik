@@ -16,8 +16,8 @@
 
 package io.verik.compiler.core.common
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.constant.ConstantBuilder
 import io.verik.compiler.message.SourceLocation
@@ -25,8 +25,8 @@ import io.verik.compiler.target.common.Target
 
 object CoreTransformUtil {
 
-    fun callExpressionSigned(expression: EExpression): EKtCallExpression {
-        return EKtCallExpression(
+    fun callExpressionSigned(expression: EExpression): ECallExpression {
+        return ECallExpression(
             expression.location,
             Core.Vk.C_Sbit.toType(expression.type.getWidthAsType(expression)),
             Target.F_signed,
@@ -36,8 +36,8 @@ object CoreTransformUtil {
         )
     }
 
-    fun callExpressionUnsigned(expression: EExpression): EKtCallExpression {
-        return EKtCallExpression(
+    fun callExpressionUnsigned(expression: EExpression): ECallExpression {
+        return ECallExpression(
             expression.location,
             Core.Vk.C_Ubit.toType(expression.type.getWidthAsType(expression)),
             Target.F_unsigned,
@@ -49,7 +49,7 @@ object CoreTransformUtil {
 
     fun plusInt(expression: EExpression, value: Int, location: SourceLocation): EExpression {
         val constantExpression = ConstantBuilder.buildInt(location, value)
-        return EKtCallExpression(
+        return ECallExpression(
             location,
             Core.Kt.C_Int.toType(),
             Core.Kt.Int.F_plus_Int,
@@ -65,7 +65,7 @@ object CoreTransformUtil {
             expression.type.asBitWidth(expression),
             value
         )
-        return EKtCallExpression(
+        return ECallExpression(
             location,
             expression.type.copy(),
             Core.Vk.Ubit.F_plus_Ubit,

@@ -20,9 +20,9 @@ import io.verik.compiler.ast.element.common.EAbstractContainerClass
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EFile
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
-import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -41,7 +41,7 @@ object ConstantPropagatorStage : ProjectStage() {
 
     private class ConstantPropagatorIndexerVisitor : TreeVisitor() {
 
-        val constantMap = HashMap<ESvProperty, EExpression>()
+        val constantMap = HashMap<EProperty, EExpression>()
 
         override fun visitFile(file: EFile) {
             super.visitFile(file)
@@ -61,14 +61,14 @@ object ConstantPropagatorStage : ProjectStage() {
         private fun filterConstantProperties(declarations: ArrayList<EDeclaration>): ArrayList<EDeclaration> {
             val filteredDeclarations = ArrayList<EDeclaration>()
             declarations.forEach {
-                if (it !is ESvProperty || !indexConstantProperty(it)) {
+                if (it !is EProperty || !indexConstantProperty(it)) {
                     filteredDeclarations.add(it)
                 }
             }
             return filteredDeclarations
         }
 
-        private fun indexConstantProperty(property: ESvProperty): Boolean {
+        private fun indexConstantProperty(property: EProperty): Boolean {
             val initializer = property.initializer
             if (!property.isMutable && initializer != null) {
                 val expression = ConstantPropagator.expandExpression(initializer)
@@ -82,7 +82,7 @@ object ConstantPropagatorStage : ProjectStage() {
     }
 
     private class ConstantPropagatorTransformerVisitor(
-        private val constantMap: HashMap<ESvProperty, EExpression>
+        private val constantMap: HashMap<EProperty, EExpression>
     ) : TreeVisitor() {
 
         override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {

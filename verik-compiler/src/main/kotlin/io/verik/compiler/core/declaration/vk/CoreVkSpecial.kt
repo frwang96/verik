@@ -16,8 +16,9 @@
 
 package io.verik.compiler.core.declaration.vk
 
+import io.verik.compiler.ast.element.common.ECallExpression
+import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.constant.BitComponent
 import io.verik.compiler.constant.BitConstant
 import io.verik.compiler.constant.ConstantBuilder
@@ -36,7 +37,7 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
 
     val F_imported = object : BasicCoreFunctionDeclaration(parent, "imported", "fun imported()", null) {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return listOf(
                 TypeConstraint(
                     TypeConstraintKind.EQ_INOUT,
@@ -51,11 +52,11 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
 
     val F_nc = object : TransformableCoreFunctionDeclaration(parent, "nc", "fun nc()") {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return F_imported.getTypeConstraints(callExpression)
         }
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             Messages.EXPRESSION_OUT_OF_CONTEXT.on(callExpression, name)
             return callExpression
         }
@@ -63,7 +64,11 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
 
     val F_b = object : TransformableCoreFunctionDeclaration(parent, "b", "fun b()") {
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
+            return evaluate(callExpression)
+        }
+
+        override fun evaluate(callExpression: ECallExpression): EConstantExpression {
             val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
             if (value !in 0..1)
                 Messages.CARDINAL_NOT_BOOLEAN.on(callExpression, callExpression.typeArguments[0])
@@ -73,7 +78,7 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
 
     val F_i = object : TransformableCoreFunctionDeclaration(parent, "i", "fun i()") {
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
             return ConstantBuilder.buildInt(callExpression, value)
         }
@@ -81,7 +86,7 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
 
     val F_u = object : TransformableCoreFunctionDeclaration(parent, "u", "fun u()") {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return listOf(
                 TypeConstraint(
                     TypeConstraintKind.WIDTH_OUT,
@@ -91,7 +96,7 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
             )
         }
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
             val width = callExpression.type.asBitWidth(callExpression)
             return ConstantBuilder.buildBitConstant(callExpression.location, width, value)
@@ -100,7 +105,7 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
 
     val F_u_Boolean = object : TransformableCoreFunctionDeclaration(parent, "u", "fun u(Boolean)") {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return listOf(
                 TypeConstraint(
                     TypeConstraintKind.EQ_OUT,
@@ -110,7 +115,7 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
             )
         }
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             return callExpression.valueArguments[0]
         }
     }
@@ -121,7 +126,7 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
 
     val F_u_Sbit = object : TransformableCoreFunctionDeclaration(parent, "u", "fun u(Sbit)") {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return listOf(
                 TypeConstraint(
                     TypeConstraintKind.EQ_INOUT,
@@ -131,14 +136,14 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
             )
         }
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             return CoreTransformUtil.callExpressionUnsigned(callExpression.valueArguments[0])
         }
     }
 
     val F_u0 = object : TransformableCoreFunctionDeclaration(parent, "u0", "fun u0()") {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return listOf(
                 TypeConstraint(
                     TypeConstraintKind.EQ_INOUT,
@@ -148,7 +153,7 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
             )
         }
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             val width = callExpression.type.asBitWidth(callExpression)
             return ConstantBuilder.buildBitConstant(callExpression.location, width, 0)
         }
@@ -156,11 +161,11 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
 
     val F_u1 = object : TransformableCoreFunctionDeclaration(parent, "u1", "fun u1()") {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return F_u0.getTypeConstraints(callExpression)
         }
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             val width = callExpression.type.asBitWidth(callExpression)
             val bitConstant = BitConstant(BitComponent.zeroes(width), BitComponent.ones(width), false, width)
             return ConstantBuilder.buildBitConstant(callExpression.location, bitConstant)
@@ -169,11 +174,11 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
 
     val F_ux = object : TransformableCoreFunctionDeclaration(parent, "ux", "fun ux()") {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return F_u0.getTypeConstraints(callExpression)
         }
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             val width = callExpression.type.asBitWidth(callExpression)
             val bitConstant = BitConstant(BitComponent.ones(width), BitComponent.zeroes(width), false, width)
             return ConstantBuilder.buildBitConstant(callExpression.location, bitConstant)
@@ -182,11 +187,11 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
 
     val F_uz = object : TransformableCoreFunctionDeclaration(parent, "uz", "fun uz()") {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return F_u0.getTypeConstraints(callExpression)
         }
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             val width = callExpression.type.asBitWidth(callExpression)
             val bitConstant = BitConstant(BitComponent.ones(width), BitComponent.ones(width), false, width)
             return ConstantBuilder.buildBitConstant(callExpression.location, bitConstant)
@@ -199,11 +204,11 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
 
     val F_s_Ubit = object : TransformableCoreFunctionDeclaration(parent, "s", "fun s(Ubit)") {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return F_u_Sbit.getTypeConstraints(callExpression)
         }
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             return CoreTransformUtil.callExpressionSigned(callExpression.valueArguments[0])
         }
     }

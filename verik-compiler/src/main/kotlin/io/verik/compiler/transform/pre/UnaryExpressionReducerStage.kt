@@ -16,7 +16,7 @@
 
 package io.verik.compiler.transform.pre
 
-import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.property.KtUnaryOperatorKind
 import io.verik.compiler.common.TreeVisitor
@@ -60,7 +60,7 @@ object UnaryExpressionReducerStage : ProjectStage() {
                 val reference = referenceMap[ReducerEntry(expressionDeclaration, kind)]
                 if (reference != null) {
                     unaryExpression.replace(
-                        EKtCallExpression(
+                        ECallExpression(
                             unaryExpression.location,
                             unaryExpression.type,
                             reference,

@@ -16,10 +16,10 @@
 
 package io.verik.compiler.interpret
 
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.sv.EStruct
-import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
@@ -59,15 +59,15 @@ object StructInterpreterStage : ProjectStage() {
         private fun interpretProperty(
             valueParameter: EKtValueParameter,
             referenceUpdater: ReferenceUpdater
-        ): ESvProperty {
-            val property = ESvProperty(
+        ): EProperty {
+            val property = EProperty(
                 location = valueParameter.location,
+                endLocation = valueParameter.location,
                 name = valueParameter.name,
                 type = valueParameter.type,
+                annotationEntries = listOf(),
                 initializer = null,
-                isComAssignment = false,
-                isMutable = valueParameter.isMutable,
-                isStatic = null
+                isMutable = valueParameter.isMutable
             )
             referenceUpdater.update(valueParameter, property)
             return property

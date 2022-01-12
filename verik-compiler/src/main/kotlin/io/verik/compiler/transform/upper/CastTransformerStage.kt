@@ -16,17 +16,16 @@
 
 package io.verik.compiler.transform.upper
 
+import io.verik.compiler.ast.element.common.EBlockExpression
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EIfExpression
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EAsExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.EStringExpression
-import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.common.ExpressionCopier
-import io.verik.compiler.common.ExpressionExtractor
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
@@ -36,15 +35,10 @@ import io.verik.compiler.target.common.Target
 object CastTransformerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        val expressionExtractor = ExpressionExtractor()
-        val castTransformerVisitor = CastTransformerVisitor(expressionExtractor)
-        projectContext.project.accept(castTransformerVisitor)
-        expressionExtractor.flush()
+        projectContext.project.accept(CastTransformerVisitor)
     }
 
-    private class CastTransformerVisitor(
-        private val expressionExtractor: ExpressionExtractor
-    ) : TreeVisitor() {
+    private object CastTransformerVisitor : TreeVisitor() {
 
         override fun visitIsExpression(isExpression: EIsExpression) {
             super.visitIsExpression(isExpression)
@@ -54,7 +48,7 @@ object CastTransformerStage : ProjectStage() {
                 isExpression.property,
                 null
             )
-            val callExpression = EKtCallExpression(
+            val callExpression = ECallExpression(
                 isExpression.location,
                 Core.Kt.C_Boolean.toType(),
                 Target.F_cast,
@@ -64,7 +58,7 @@ object CastTransformerStage : ProjectStage() {
             )
             val propertyStatement = EPropertyStatement(isExpression.location, isExpression.property)
             if (isExpression.isNegated) {
-                val negatedCallExpression = EKtCallExpression(
+                val negatedCallExpression = ECallExpression(
                     isExpression.location,
                     Core.Kt.C_Boolean.toType(),
                     Core.Kt.Boolean.F_not,
@@ -72,15 +66,15 @@ object CastTransformerStage : ProjectStage() {
                     ArrayList(),
                     ArrayList()
                 )
-                expressionExtractor.extract(isExpression, negatedCallExpression, listOf(propertyStatement))
+                EBlockExpression.extract(isExpression, listOf(propertyStatement, negatedCallExpression))
             } else {
-                expressionExtractor.extract(isExpression, callExpression, listOf(propertyStatement))
+                EBlockExpression.extract(isExpression, listOf(propertyStatement, callExpression))
             }
         }
 
         override fun visitAsExpression(asExpression: EAsExpression) {
             super.visitAsExpression(asExpression)
-            val property = ESvProperty.getTemporary(
+            val property = EProperty.getTemporary(
                 location = asExpression.location,
                 type = asExpression.type.copy(),
                 initializer = null,
@@ -93,7 +87,7 @@ object CastTransformerStage : ProjectStage() {
                 null
             )
             val propertyStatement = EPropertyStatement(property.location, property)
-            val castCallExpression = EKtCallExpression(
+            val castCallExpression = ECallExpression(
                 asExpression.location,
                 Core.Kt.C_Boolean.toType(),
                 Target.F_cast,
@@ -101,7 +95,7 @@ object CastTransformerStage : ProjectStage() {
                 arrayListOf(referenceExpression, asExpression.expression),
                 ArrayList()
             )
-            val negatedCallExpression = EKtCallExpression(
+            val negatedCallExpression = ECallExpression(
                 asExpression.location,
                 Core.Kt.C_Boolean.toType(),
                 Core.Kt.Boolean.F_not,
@@ -113,7 +107,7 @@ object CastTransformerStage : ProjectStage() {
                 asExpression.location,
                 "Failed to cast from ${asExpression.expression.type} to ${asExpression.type}"
             )
-            val fatalCallExpression = EKtCallExpression(
+            val fatalCallExpression = ECallExpression(
                 asExpression.location,
                 Core.Kt.C_Nothing.toType(),
                 Core.Vk.F_fatal_String,
@@ -125,14 +119,15 @@ object CastTransformerStage : ProjectStage() {
                 asExpression.location,
                 Core.Kt.C_Unit.toType(),
                 negatedCallExpression,
-                EKtBlockExpression.wrap(fatalCallExpression),
+                EBlockExpression.wrap(fatalCallExpression),
                 null
             )
-            expressionExtractor.extract(
-                asExpression,
-                ExpressionCopier.deepCopy(referenceExpression),
-                listOf(propertyStatement, ifExpression)
+            val extractedExpressions = listOf(
+                propertyStatement,
+                ifExpression,
+                ExpressionCopier.deepCopy(referenceExpression)
             )
+            EBlockExpression.extract(asExpression, extractedExpressions)
         }
     }
 }

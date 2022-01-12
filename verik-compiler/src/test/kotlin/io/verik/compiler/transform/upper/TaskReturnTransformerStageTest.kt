@@ -17,31 +17,31 @@
 package io.verik.compiler.transform.upper
 
 import io.verik.compiler.test.BaseTest
-import io.verik.compiler.test.findStatements
 import org.junit.jupiter.api.Test
 
 internal class TaskReturnTransformerStageTest : BaseTest() {
 
     @Test
     fun `internal return`() {
-        driveElementTest(
+        driveTextFileTest(
             """
                 @Task
                 fun f(): Boolean { return false }
             """.trimIndent(),
-            TaskReturnTransformerStage::class,
             """
-                [
-                    KtBinaryExpression(Unit, ReferenceExpression(Boolean, __return, null), ConstantExpression(*), EQ),
-                    ReturnStatement(Unit, null)
-                ]
+                task automatic f(
+                    output logic __return
+                );
+                    __return = 1'b0;
+                    return;
+                endtask : f
             """.trimIndent()
-        ) { it.findStatements("f") }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
     fun `external return`() {
-        driveElementTest(
+        driveTextFileTest(
             """
                 var x = false
                 @Task
@@ -49,14 +49,22 @@ internal class TaskReturnTransformerStageTest : BaseTest() {
                 @Task
                 fun g() { x = f() }
             """.trimIndent(),
-            TaskReturnTransformerStage::class,
             """
-                [
-                    PropertyStatement(Unit, SvProperty(<tmp>, Boolean, null, 0, 1, 0)),
-                    KtCallExpression(Boolean, f, null, [ReferenceExpression(Boolean, <tmp>, null)], []),
-                    KtBinaryExpression(Unit, ReferenceExpression(*), ReferenceExpression(Boolean, <tmp>, null), EQ)
-                ]
+                logic x = 1'b0;
+
+                task automatic f(
+                    output logic __return
+                );
+                    __return = 1'b0;
+                    return;
+                endtask : f
+
+                task automatic g();
+                    logic __0;
+                    f(.__return(__0));
+                    x = __0;
+                endtask : g
             """.trimIndent()
-        ) { it.findStatements("g") }
+        ) { it.regularPackageTextFiles[0] }
     }
 }

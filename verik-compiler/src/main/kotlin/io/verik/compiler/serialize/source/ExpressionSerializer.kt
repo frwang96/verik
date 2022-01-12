@@ -16,9 +16,12 @@
 
 package io.verik.compiler.serialize.source
 
+import io.verik.compiler.ast.element.common.EBlockExpression
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EParenthesizedExpression
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
@@ -43,10 +46,7 @@ import io.verik.compiler.ast.element.sv.EStructLiteralExpression
 import io.verik.compiler.ast.element.sv.ESvAbstractFunction
 import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
-import io.verik.compiler.ast.element.sv.ESvBlockExpression
-import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.ast.element.sv.ESvForStatement
-import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.sv.EWidthCastExpression
 import io.verik.compiler.ast.property.EdgeType
@@ -55,23 +55,13 @@ import io.verik.compiler.ast.property.LiteralStringEntry
 
 object ExpressionSerializer {
 
-    fun serializeSvBlockExpression(blockExpression: ESvBlockExpression, serializeContext: SerializeContext) {
-        if (blockExpression.decorated) {
-            serializeContext.append("begin")
-            if (blockExpression.name != null)
-                serializeContext.append(" : ${blockExpression.name}")
-            serializeContext.appendLine()
-            serializeContext.indent {
-                blockExpression.statements.forEach { serializeContext.serializeAsStatement(it) }
-            }
-            serializeContext.label(blockExpression.endLocation) {
-                serializeContext.append("end")
-                if (blockExpression.name != null)
-                    serializeContext.append(" : ${blockExpression.name}")
-                serializeContext.appendLine()
-            }
-        } else {
+    fun serializeBlockExpression(blockExpression: EBlockExpression, serializeContext: SerializeContext) {
+        serializeContext.appendLine("begin")
+        serializeContext.indent {
             blockExpression.statements.forEach { serializeContext.serializeAsStatement(it) }
+        }
+        serializeContext.label(blockExpression.endLocation) {
+            serializeContext.appendLine("end")
         }
     }
 
@@ -118,7 +108,7 @@ object ExpressionSerializer {
         serializeContext.append(referenceExpression.reference.name)
     }
 
-    fun serializeSvCallExpression(callExpression: ESvCallExpression, serializeContext: SerializeContext) {
+    fun serializeCallExpression(callExpression: ECallExpression, serializeContext: SerializeContext) {
         val receiver = callExpression.receiver
         if (receiver != null) {
             serializeContext.serializeAsExpression(receiver)
@@ -419,7 +409,7 @@ object ExpressionSerializer {
         serializeContext.serializeAsExpression(delayExpression.expression)
     }
 
-    private fun serializePropertyInline(property: ESvProperty, serializeContext: SerializeContext) {
+    private fun serializePropertyInline(property: EProperty, serializeContext: SerializeContext) {
         val serializedType = TypeSerializer.serialize(property.type, property)
         serializedType.checkNoUnpackedDimension(property)
         serializeContext.append(serializedType.getBaseAndPackedDimension() + " ")

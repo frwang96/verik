@@ -17,14 +17,13 @@
 package io.verik.compiler.transform.upper
 
 import io.verik.compiler.test.BaseTest
-import io.verik.compiler.test.findStatements
 import org.junit.jupiter.api.Test
 
 internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
 
     @Test
     fun `unlift if expression`() {
-        driveElementTest(
+        driveTextFileTest(
             """
                 var x = true
                 fun f() {
@@ -34,75 +33,83 @@ internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
                     } else 1
                 }
             """.trimIndent(),
-            IfAndWhenExpressionUnlifterStage::class,
             """
-                [
-                    PropertyStatement(Unit, SvProperty(<tmp>, Int, null, 0, 0, 0)),
-                    IfExpression(
-                        Unit,
-                        ReferenceExpression(*),
-                        KtBlockExpression(Unit, [
-                            KtCallExpression(*),
-                            KtBinaryExpression(Unit, ReferenceExpression(Int, <tmp>, null), ConstantExpression(*), EQ)
-                        ]),
-                        KtBlockExpression(Unit, [
-                            KtBinaryExpression(Unit, ReferenceExpression(Int, <tmp>, null), ConstantExpression(*), EQ)
-                        ])
-                    ),
-                    PropertyStatement(Unit, SvProperty(y, Int, ReferenceExpression(Int, <tmp>, null), 0, 0, 0))
-                ]
+                logic x = 1'b1;
+
+                function automatic void f();
+                    int __0;
+                    int y;
+                    if (x) begin
+                        ${'$'}display();
+                        __0 = 0;
+                    end
+                    else begin
+                        __0 = 1;
+                    end
+                    y = __0;
+                endfunction : f
             """.trimIndent()
-        ) { it.findStatements("f") }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
     fun `unlift when expression`() {
-        driveElementTest(
+        driveTextFileTest(
             """
+                var x = true
                 fun f() {
                     val y = when {
+                        x -> 1
                         else -> 0
                     }
                 }
             """.trimIndent(),
-            IfAndWhenExpressionUnlifterStage::class,
             """
-                [
-                    PropertyStatement(Unit, SvProperty(<tmp>, Int, null, 0, 0, 0)),
-                    WhenExpression(Unit, null, [
-                        WhenEntry([], KtBlockExpression(
-                            Unit, [KtBinaryExpression(Unit, ReferenceExpression(Int, <tmp>, null), *, EQ)]
-                        ))
-                    ]),
-                    PropertyStatement(Unit, SvProperty(y, Int, ReferenceExpression(Int, <tmp>, null), 0, 0, 0))
-                ]
+                logic x = 1'b1;
+
+                function automatic void f();
+                    int __0;
+                    int y;
+                    if (x) begin
+                        __0 = 1;
+                    end
+                    else begin
+                        __0 = 0;
+                    end
+                    y = __0;
+                endfunction : f
             """.trimIndent()
-        ) { it.findStatements("f") }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
     fun `unlift when expression Nothing type`() {
-        driveElementTest(
+        driveTextFileTest(
             """
+                var x = true
                 fun f() {
                     @Suppress("SimplifyWhenWithBooleanConstantCondition")
                     val y = when {
-                        true -> 0
+                        x -> 0
                         else -> fatal()
                     }
                 }
             """.trimIndent(),
-            IfAndWhenExpressionUnlifterStage::class,
             """
-                [
-                    PropertyStatement(Unit, SvProperty(<tmp>, Int, null, 0, 0, 0)),
-                    WhenExpression(
-                        Unit, null,
-                        [*, WhenEntry([], KtBlockExpression(Nothing, [KtCallExpression(Nothing, fatal, null, [], [])]))]
-                    ),
-                    PropertyStatement(Unit, SvProperty(y, Int, ReferenceExpression(Int, <tmp>, null), 0, 0, 0))
-                ]
+                logic x = 1'b1;
+
+                function automatic void f();
+                    int __0;
+                    int y;
+                    if (x) begin
+                        __0 = 0;
+                    end
+                    else begin
+                        ${'$'}fatal();
+                    end
+                    y = __0;
+                endfunction : f
             """.trimIndent()
-        ) { it.findStatements("f") }
+        ) { it.regularPackageTextFiles[0] }
     }
 }

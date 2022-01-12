@@ -26,6 +26,10 @@ abstract class EExpression : ETypedElement() {
 
     abstract val serializationType: SerializationType
 
+    open fun childBlockExpressionShouldBeReduced(blockExpression: EBlockExpression): Boolean {
+        return true
+    }
+
     fun replace(expression: EExpression) {
         parentNotNull().replaceChildAsExpressionContainer(this, expression)
     }
@@ -33,8 +37,8 @@ abstract class EExpression : ETypedElement() {
     // TODO more robust mechanism for differentiating statements and expressions
     fun getExpressionType(): ExpressionType {
         return when (val parent = this.parent) {
-            is EAbstractInitializedProperty -> ExpressionType.DIRECT_TYPED_SUBEXPRESSION
-            is EAbstractBlockExpression -> {
+            is EProperty -> ExpressionType.DIRECT_TYPED_SUBEXPRESSION
+            is EBlockExpression -> {
                 val parentParent = parent.parent
                 if (parentParent is EIfExpression && parent.statements.last() == this) {
                     parentParent.getExpressionType()
@@ -44,7 +48,7 @@ abstract class EExpression : ETypedElement() {
                 if (parent.kind == KtBinaryOperatorKind.EQ) ExpressionType.DIRECT_TYPED_SUBEXPRESSION
                 else ExpressionType.INDIRECT_TYPED_SUBEXPRESSION
             }
-            is EAbstractCallExpression -> {
+            is ECallExpression -> {
                 if (this in parent.valueArguments) ExpressionType.DIRECT_TYPED_SUBEXPRESSION
                 else ExpressionType.INDIRECT_TYPED_SUBEXPRESSION
             }

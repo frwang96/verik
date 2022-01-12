@@ -16,17 +16,17 @@
 
 package io.verik.compiler.transform.upper
 
+import io.verik.compiler.ast.element.common.EBlockExpression
+import io.verik.compiler.ast.element.common.ECallExpression
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
-import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.element.sv.ETask
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.common.ExpressionCopier
-import io.verik.compiler.common.ExpressionExtractor
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
@@ -36,17 +36,11 @@ import io.verik.compiler.message.Messages
 object TaskReturnTransformerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        val expressionExtractor = ExpressionExtractor()
-        val taskReturnInternalTransformerVisitor = TaskReturnInternalTransformerVisitor(expressionExtractor)
-        projectContext.project.accept(taskReturnInternalTransformerVisitor)
-        val taskReturnExternalTransformerVisitor = TaskReturnExternalTransformerVisitor(expressionExtractor)
-        projectContext.project.accept(taskReturnExternalTransformerVisitor)
-        expressionExtractor.flush()
+        projectContext.project.accept(TaskReturnInternalTransformerVisitor)
+        projectContext.project.accept(TaskReturnExternalTransformerVisitor)
     }
 
-    private class TaskReturnInternalTransformerVisitor(
-        private val expressionExtractor: ExpressionExtractor
-    ) : TreeVisitor() {
+    private object TaskReturnInternalTransformerVisitor : TreeVisitor() {
 
         private var returnValueParameter: ESvValueParameter? = null
 
@@ -66,25 +60,23 @@ object TaskReturnTransformerStage : ProjectStage() {
             val valueParameter = returnValueParameter
             val expression = returnStatement.expression
             if (valueParameter != null && expression != null) {
-                val newExpression = EReturnStatement(returnStatement.location, Core.Kt.C_Unit.toType(), null)
-                val extractedExpression = EKtBinaryExpression(
+                val newReturnStatement = EReturnStatement(returnStatement.location, Core.Kt.C_Unit.toType(), null)
+                val binaryExpression = EKtBinaryExpression(
                     returnStatement.location,
                     Core.Kt.C_Unit.toType(),
                     EReferenceExpression(returnStatement.location, valueParameter.type.copy(), valueParameter, null),
                     expression,
                     KtBinaryOperatorKind.EQ
                 )
-                expressionExtractor.extract(returnStatement, newExpression, listOf(extractedExpression))
+                EBlockExpression.extract(returnStatement, listOf(binaryExpression, newReturnStatement))
             }
         }
     }
 
-    private class TaskReturnExternalTransformerVisitor(
-        private val expressionExtractor: ExpressionExtractor
-    ) : TreeVisitor() {
+    private object TaskReturnExternalTransformerVisitor : TreeVisitor() {
 
-        override fun visitKtCallExpression(callExpression: EKtCallExpression) {
-            super.visitKtCallExpression(callExpression)
+        override fun visitCallExpression(callExpression: ECallExpression) {
+            super.visitCallExpression(callExpression)
             val task = callExpression.reference
             if (task is ETask && callExpression.type.reference != Core.Kt.C_Unit) {
                 if (task.valueParameters.isNotEmpty()) {
@@ -98,8 +90,8 @@ object TaskReturnTransformerStage : ProjectStage() {
             }
         }
 
-        private fun extract(callExpression: EKtCallExpression, valueParameter: ESvValueParameter) {
-            val property = ESvProperty.getTemporary(
+        private fun extract(callExpression: ECallExpression, valueParameter: ESvValueParameter) {
+            val property = EProperty.getTemporary(
                 callExpression.location,
                 valueParameter.type.copy(),
                 initializer = null,
@@ -112,14 +104,15 @@ object TaskReturnTransformerStage : ProjectStage() {
                 property,
                 null
             )
-            val callExpressionReplacement = ExpressionCopier.shallowCopy(callExpression)
-            referenceExpression.parent = callExpressionReplacement
-            callExpressionReplacement.valueArguments.add(referenceExpression)
-            expressionExtractor.extract(
-                callExpression,
-                ExpressionCopier.deepCopy(referenceExpression),
-                listOf(propertyStatement, callExpressionReplacement)
+            val newCallExpression = ExpressionCopier.shallowCopy(callExpression)
+            referenceExpression.parent = newCallExpression
+            newCallExpression.valueArguments.add(referenceExpression)
+            val extractedExpressions = listOf(
+                propertyStatement,
+                newCallExpression,
+                ExpressionCopier.deepCopy(referenceExpression)
             )
+            EBlockExpression.extract(callExpression, extractedExpressions)
         }
     }
 }

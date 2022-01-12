@@ -22,10 +22,10 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.EPackage
 import io.verik.compiler.ast.element.common.EProject
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.common.EReceiverExpression
 import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
 import io.verik.compiler.ast.element.sv.ESvClass
-import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.common.TreeVisitor
 import java.lang.Integer.min
 
@@ -83,8 +83,8 @@ class DependencyIndexerVisitor(
             parent is EAbstractContainerClass
     }
 
-    override fun visitSvProperty(property: ESvProperty) {
-        super.visitSvProperty(property)
+    override fun visitProperty(property: EProperty) {
+        super.visitProperty(property)
         val reference = property.type.reference
         if (reference is EDeclaration)
             processDependency(property, reference)

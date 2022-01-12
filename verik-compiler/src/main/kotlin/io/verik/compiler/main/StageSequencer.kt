@@ -66,16 +66,14 @@ import io.verik.compiler.serialize.general.SourcesFileSerializerStage
 import io.verik.compiler.serialize.source.SourceSerializerStage
 import io.verik.compiler.serialize.target.CompositeTargetSerializerStage
 import io.verik.compiler.specialize.SpecializerStage
+import io.verik.compiler.transform.lower.BlockExpressionReducerStage
 import io.verik.compiler.transform.lower.ExpressionEvaluatorStage
 import io.verik.compiler.transform.lower.ExpressionExtractorStage
 import io.verik.compiler.transform.lower.FunctionTransformerStage
-import io.verik.compiler.transform.lower.IfExpressionEvaluatorStage
 import io.verik.compiler.transform.lower.ProceduralBlockEliminatorStage
 import io.verik.compiler.transform.lower.PropertyTransformerStage
 import io.verik.compiler.transform.post.AssignmentTransformerStage
 import io.verik.compiler.transform.post.BinaryExpressionTransformerStage
-import io.verik.compiler.transform.post.BlockExpressionTransformerStage
-import io.verik.compiler.transform.post.CallExpressionTransformerStage
 import io.verik.compiler.transform.post.PackageNameTransformerStage
 import io.verik.compiler.transform.post.ParenthesisInsertionTransformerStage
 import io.verik.compiler.transform.post.ScopeExpressionInsertionTransformerStage
@@ -182,7 +180,7 @@ object StageSequencer {
         stageSequence.add(StageType.LOWER_TRANSFORM, PropertyTransformerStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, ExpressionExtractorStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, ExpressionEvaluatorStage)
-        stageSequence.add(StageType.LOWER_TRANSFORM, IfExpressionEvaluatorStage)
+        stageSequence.add(StageType.LOWER_TRANSFORM, BlockExpressionReducerStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, ProceduralBlockEliminatorStage)
 
         stageSequence.add(StageType.REORDER, PropertyStatementReordererStage)
@@ -197,8 +195,6 @@ object StageSequencer {
         stageSequence.add(StageType.POST_TRANSFORM, BinaryExpressionTransformerStage)
         stageSequence.add(StageType.POST_TRANSFORM, PackageNameTransformerStage)
         stageSequence.add(StageType.POST_TRANSFORM, ScopeExpressionInsertionTransformerStage)
-        stageSequence.add(StageType.POST_TRANSFORM, CallExpressionTransformerStage)
-        stageSequence.add(StageType.POST_TRANSFORM, BlockExpressionTransformerStage)
         stageSequence.add(StageType.POST_TRANSFORM, ParenthesisInsertionTransformerStage)
 
         stageSequence.add(StageType.POST_CHECK, UntransformedElementCheckerStage)

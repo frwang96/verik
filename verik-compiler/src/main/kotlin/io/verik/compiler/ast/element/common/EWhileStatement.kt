@@ -26,7 +26,7 @@ import io.verik.compiler.message.SourceLocation
 class EWhileStatement(
     override val location: SourceLocation,
     var condition: EExpression,
-    var body: EExpression,
+    var body: EBlockExpression,
     val isDoWhile: Boolean
 ) : EExpression(), ExpressionContainer {
 
@@ -48,6 +48,10 @@ class EWhileStatement(
         body.accept(visitor)
     }
 
+    override fun childBlockExpressionShouldBeReduced(blockExpression: EBlockExpression): Boolean {
+        return (blockExpression == condition)
+    }
+
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
         newExpression.parent = this
         return when (oldExpression) {
@@ -56,7 +60,7 @@ class EWhileStatement(
                 true
             }
             body -> {
-                body = newExpression
+                body = newExpression.cast()
                 true
             }
             else -> false

@@ -16,10 +16,10 @@
 
 package io.verik.compiler.reorder
 
+import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.common.TreeVisitor
@@ -35,8 +35,8 @@ object PropertyStatementReordererStage : ProjectStage() {
 
     private object PropertyStatementReorderVisitor : TreeVisitor() {
 
-        override fun visitKtBlockExpression(blockExpression: EKtBlockExpression) {
-            super.visitKtBlockExpression(blockExpression)
+        override fun visitBlockExpression(blockExpression: EBlockExpression) {
+            super.visitBlockExpression(blockExpression)
             val propertyStatements = ArrayList<EPropertyStatement>()
             val statements = ArrayList<EExpression>()
             var reorder = false

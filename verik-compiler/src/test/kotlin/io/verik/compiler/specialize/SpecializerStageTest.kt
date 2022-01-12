@@ -95,7 +95,7 @@ internal class SpecializerStageTest : BaseTest() {
                 val c = C<`8`>()
             """.trimIndent(),
             SpecializerStage::class,
-            "KtProperty(x, Ubit<`8`>, KtCallExpression(*), [], 0)"
+            "Property(x, Ubit<`8`>, [], CallExpression(*), 0)"
         ) { it.findDeclaration("x") }
     }
 
@@ -111,7 +111,7 @@ internal class SpecializerStageTest : BaseTest() {
                 val c = C<`8`>()
             """.trimIndent(),
             SpecializerStage::class,
-            "KtProperty(x, Boolean, KtCallExpression(Boolean, f, null, [], []), [], 0)"
+            "Property(x, Boolean, [], CallExpression(Boolean, f, null, [], []), 0)"
         ) { it.findDeclaration("x") }
     }
 
@@ -126,7 +126,7 @@ internal class SpecializerStageTest : BaseTest() {
                 val c = C<`8`>()
             """.trimIndent(),
             SpecializerStage::class,
-            "KtProperty(x, D, KtCallExpression(D, D, null, [], []), [], 0)"
+            "Property(x, D, [], CallExpression(D, D, null, [], []), 0)"
         ) { it.findDeclaration("x") }
     }
 
@@ -138,7 +138,7 @@ internal class SpecializerStageTest : BaseTest() {
                 val x = f<`8`>()
             """.trimIndent(),
             SpecializerStage::class,
-            "KtFunction(f_X_8, Unit, KtBlockExpression(*), [], [TypeParameter(X, `8`)], [], 0)"
+            "KtFunction(f_X_8, Unit, BlockExpression(*), [], [TypeParameter(X, `8`)], [], 0)"
         ) { it.findDeclaration("f_X_8") }
     }
 }

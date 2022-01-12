@@ -16,9 +16,9 @@
 
 package io.verik.compiler.core.declaration.vk
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CorePackage
@@ -34,8 +34,8 @@ object CoreVkSystem : CoreScope(CorePackage.VK) {
 
     val F_fatal_String = object : TransformableCoreFunctionDeclaration(parent, "fatal", "fun fatal(String)") {
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
-            return EKtCallExpression(
+        override fun transform(callExpression: ECallExpression): EExpression {
+            return ECallExpression(
                 callExpression.location,
                 callExpression.type,
                 Target.F_fatal,

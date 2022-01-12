@@ -16,9 +16,9 @@
 
 package io.verik.compiler.core.declaration.vk
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.EEventExpression
@@ -37,7 +37,7 @@ object CoreVkControl : CoreScope(CorePackage.VK) {
 
     val F_posedge_Boolean = object : TransformableCoreFunctionDeclaration(parent, "posedge", "fun posedge(Boolean)") {
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             return EEventExpression(
                 callExpression.location,
                 callExpression.valueArguments[0],
@@ -48,7 +48,7 @@ object CoreVkControl : CoreScope(CorePackage.VK) {
 
     val F_negedge_Boolean = object : TransformableCoreFunctionDeclaration(parent, "negedge", "fun negedge(Boolean)") {
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             return EEventExpression(
                 callExpression.location,
                 callExpression.valueArguments[0],
@@ -63,7 +63,7 @@ object CoreVkControl : CoreScope(CorePackage.VK) {
         "fun on(Event, vararg Event, Function)"
     ) {
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             Messages.EXPRESSION_OUT_OF_CONTEXT.on(callExpression, name)
             return callExpression
         }
@@ -75,7 +75,7 @@ object CoreVkControl : CoreScope(CorePackage.VK) {
         "fun forever(Function)"
     ) {
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             val functionLiteralExpression = callExpression
                 .valueArguments[0]
                 .cast<EFunctionLiteralExpression>()
@@ -88,7 +88,7 @@ object CoreVkControl : CoreScope(CorePackage.VK) {
 
     val F_delay_Int = object : TransformableCoreFunctionDeclaration(parent, "delay", "fun delay(Int)") {
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             return EDelayExpression(callExpression.location, callExpression.valueArguments[0])
         }
     }
@@ -97,7 +97,7 @@ object CoreVkControl : CoreScope(CorePackage.VK) {
 
     val F_wait_Event = object : TransformableCoreFunctionDeclaration(parent, "wait", "fun wait(Event)") {
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             return EEventControlExpression(callExpression.location, callExpression.valueArguments[0])
         }
     }
@@ -108,14 +108,14 @@ object CoreVkControl : CoreScope(CorePackage.VK) {
         "fun wait(ClockingBlock)"
     ) {
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             return EEventControlExpression(callExpression.location, callExpression.valueArguments[0])
         }
     }
 
     val F_fork_Function = object : TransformableCoreFunctionDeclaration(parent, "fork", "fun fork(Function)") {
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             val functionLiteralExpression = callExpression
                 .valueArguments[0]
                 .cast<EFunctionLiteralExpression>()
@@ -125,7 +125,7 @@ object CoreVkControl : CoreScope(CorePackage.VK) {
 
     val F_join = object : TransformableCoreFunctionDeclaration(parent, "join", "fun join()") {
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             return EWaitForkStatement(callExpression.location)
         }
     }

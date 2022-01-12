@@ -30,7 +30,7 @@ internal class ArrayAccessExpressionReducerStageTest : BaseTest() {
                 var y = x[0]
             """.trimIndent(),
             ArrayAccessExpressionReducerStage::class,
-            "KtCallExpression(Boolean, get, *, [*], [])"
+            "CallExpression(Boolean, get, *, [*], [])"
         ) { it.findExpression("y") }
     }
 
@@ -44,7 +44,7 @@ internal class ArrayAccessExpressionReducerStageTest : BaseTest() {
                 }
             """.trimIndent(),
             ArrayAccessExpressionReducerStage::class,
-            "KtCallExpression(Unit, set, *, [*, *], [])"
+            "CallExpression(Unit, set, *, [*, *], [])"
         ) { it.findExpression("f") }
     }
 }

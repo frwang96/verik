@@ -16,16 +16,16 @@
 
 package io.verik.compiler.transform.lower
 
+import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.sv.EConstantPartSelectExpression
 import io.verik.compiler.ast.element.sv.EStreamingExpression
 import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
-import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.property.ExpressionType
 import io.verik.compiler.common.ExpressionCopier
-import io.verik.compiler.common.ExpressionExtractor
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
@@ -33,15 +33,10 @@ import io.verik.compiler.main.ProjectStage
 object ExpressionExtractorStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        val expressionExtractor = ExpressionExtractor()
-        val expressionExtractorVisitor = ExpressionExtractorVisitor(expressionExtractor)
-        projectContext.project.accept(expressionExtractorVisitor)
-        expressionExtractor.flush()
+        projectContext.project.accept(ExpressionExtractorVisitor)
     }
 
-    private class ExpressionExtractorVisitor(
-        private val expressionExtractor: ExpressionExtractor
-    ) : TreeVisitor() {
+    private object ExpressionExtractorVisitor : TreeVisitor() {
 
         override fun visitConstantPartSelectExpression(constantPartSelectExpression: EConstantPartSelectExpression) {
             super.visitConstantPartSelectExpression(constantPartSelectExpression)
@@ -51,29 +46,33 @@ object ExpressionExtractorStage : ProjectStage() {
                 array is ESvArrayAccessExpression
             ) return
             val arrayReplacement = ExpressionCopier.shallowCopy(array)
-            val (referenceExpression, propertyStatement) =
-                getReferenceExpressionAndPropertyStatement(arrayReplacement)
-            expressionExtractor.extract(array, referenceExpression, listOf(propertyStatement))
+            val (propertyStatement, referenceExpression) =
+                getPropertyStatementAndReferenceExpression(arrayReplacement)
+            EBlockExpression.extract(array, listOf(propertyStatement, referenceExpression))
         }
 
         override fun visitStreamingExpression(streamingExpression: EStreamingExpression) {
             super.visitStreamingExpression(streamingExpression)
             if (streamingExpression.getExpressionType() == ExpressionType.INDIRECT_TYPED_SUBEXPRESSION) {
                 val streamingExpressionReplacement = ExpressionCopier.shallowCopy(streamingExpression)
-                val (referenceExpression, propertyStatement) =
-                    getReferenceExpressionAndPropertyStatement(streamingExpressionReplacement)
-                expressionExtractor.extract(streamingExpression, referenceExpression, listOf(propertyStatement))
+                val (propertyStatement, referenceExpression) =
+                    getPropertyStatementAndReferenceExpression(streamingExpressionReplacement)
+                EBlockExpression.extract(streamingExpression, listOf(propertyStatement, referenceExpression))
             }
         }
 
-        private fun getReferenceExpressionAndPropertyStatement(
+        private fun getPropertyStatementAndReferenceExpression(
             expression: EExpression
-        ): Pair<EReferenceExpression, EPropertyStatement> {
-            val property = ESvProperty.getTemporary(
+        ): Pair<EPropertyStatement, EReferenceExpression> {
+            val property = EProperty.getTemporary(
                 expression.location,
                 expression.type.copy(),
                 expression,
                 false
+            )
+            val propertyStatement = EPropertyStatement(
+                expression.location,
+                property
             )
             val referenceExpression = EReferenceExpression(
                 expression.location,
@@ -81,11 +80,7 @@ object ExpressionExtractorStage : ProjectStage() {
                 property,
                 null
             )
-            val propertyStatement = EPropertyStatement(
-                expression.location,
-                property
-            )
-            return Pair(referenceExpression, propertyStatement)
+            return Pair(propertyStatement, referenceExpression)
         }
     }
 }

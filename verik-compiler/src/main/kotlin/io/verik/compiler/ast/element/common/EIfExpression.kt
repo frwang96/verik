@@ -27,8 +27,8 @@ class EIfExpression(
     override val location: SourceLocation,
     override var type: Type,
     var condition: EExpression,
-    var thenExpression: EAbstractBlockExpression?,
-    var elseExpression: EAbstractBlockExpression?
+    var thenExpression: EBlockExpression?,
+    var elseExpression: EBlockExpression?
 ) : EExpression(), ExpressionContainer {
 
     override val serializationType = SerializationType.STATEMENT
@@ -47,6 +47,10 @@ class EIfExpression(
         condition.accept(visitor)
         thenExpression?.accept(visitor)
         elseExpression?.accept(visitor)
+    }
+
+    override fun childBlockExpressionShouldBeReduced(blockExpression: EBlockExpression): Boolean {
+        return (blockExpression == condition)
     }
 
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {

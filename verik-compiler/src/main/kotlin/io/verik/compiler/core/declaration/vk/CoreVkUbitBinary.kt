@@ -16,9 +16,9 @@
 
 package io.verik.compiler.core.declaration.vk
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.constant.UbitConstantEvaluator
@@ -40,7 +40,7 @@ object CoreVkUbitBinary : CoreScope(Core.Vk.C_Ubit) {
         SvBinaryOperatorKind.PLUS
     ) {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return listOf(
                 TypeConstraint(
                     TypeConstraintKind.MAX_OUT,
@@ -51,7 +51,7 @@ object CoreVkUbitBinary : CoreScope(Core.Vk.C_Ubit) {
             )
         }
 
-        override fun evaluate(callExpression: EKtCallExpression): EConstantExpression? {
+        override fun evaluate(callExpression: ECallExpression): EConstantExpression? {
             val left = callExpression.receiver!!
             val right = callExpression.valueArguments[0]
             return if (left is EConstantExpression && right is EConstantExpression) {
@@ -67,7 +67,7 @@ object CoreVkUbitBinary : CoreScope(Core.Vk.C_Ubit) {
         SvBinaryOperatorKind.PLUS
     ) {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return F_plus_Ubit.getTypeConstraints(callExpression)
         }
     }
@@ -79,7 +79,7 @@ object CoreVkUbitBinary : CoreScope(Core.Vk.C_Ubit) {
         SvBinaryOperatorKind.PLUS
     ) {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return listOf(
                 TypeConstraint(
                     TypeConstraintKind.MAX_INC_OUT,
@@ -98,7 +98,7 @@ object CoreVkUbitBinary : CoreScope(Core.Vk.C_Ubit) {
         SvBinaryOperatorKind.PLUS
     ) {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return F_add_Ubit.getTypeConstraints(callExpression)
         }
     }
@@ -110,11 +110,11 @@ object CoreVkUbitBinary : CoreScope(Core.Vk.C_Ubit) {
         SvBinaryOperatorKind.MINUS
     ) {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return F_plus_Ubit.getTypeConstraints(callExpression)
         }
 
-        override fun evaluate(callExpression: EKtCallExpression): EConstantExpression? {
+        override fun evaluate(callExpression: ECallExpression): EConstantExpression? {
             val left = callExpression.receiver!!
             val right = callExpression.valueArguments[0]
             return if (left is EConstantExpression && right is EConstantExpression) {
@@ -130,7 +130,7 @@ object CoreVkUbitBinary : CoreScope(Core.Vk.C_Ubit) {
         SvBinaryOperatorKind.MINUS
     ) {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return F_minus_Ubit.getTypeConstraints(callExpression)
         }
     }
@@ -142,7 +142,7 @@ object CoreVkUbitBinary : CoreScope(Core.Vk.C_Ubit) {
         SvBinaryOperatorKind.MUL
     ) {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return F_plus_Ubit.getTypeConstraints(callExpression)
         }
     }
@@ -154,7 +154,7 @@ object CoreVkUbitBinary : CoreScope(Core.Vk.C_Ubit) {
         SvBinaryOperatorKind.MUL
     ) {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return F_times_Ubit.getTypeConstraints(callExpression)
         }
     }
@@ -166,7 +166,7 @@ object CoreVkUbitBinary : CoreScope(Core.Vk.C_Ubit) {
         SvBinaryOperatorKind.MUL
     ) {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return listOf(
                 TypeConstraint(
                     TypeConstraintKind.ADD_OUT,
@@ -185,7 +185,7 @@ object CoreVkUbitBinary : CoreScope(Core.Vk.C_Ubit) {
         SvBinaryOperatorKind.MUL
     ) {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return F_mul_Ubit.getTypeConstraints(callExpression)
         }
     }
@@ -197,7 +197,7 @@ object CoreVkUbitBinary : CoreScope(Core.Vk.C_Ubit) {
         SvBinaryOperatorKind.DIV
     ) {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return listOf(
                 TypeConstraint(
                     TypeConstraintKind.EQ_INOUT,
@@ -210,7 +210,7 @@ object CoreVkUbitBinary : CoreScope(Core.Vk.C_Ubit) {
 
     val F_and_Ubit = object : BinaryCoreFunctionDeclaration(parent, "and", "fun and(Ubit)", SvBinaryOperatorKind.AND) {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return listOf(
                 TypeConstraint(
                     TypeConstraintKind.EQ_INOUT,
@@ -228,42 +228,42 @@ object CoreVkUbitBinary : CoreScope(Core.Vk.C_Ubit) {
 
     val F_and_Sbit = object : BinaryCoreFunctionDeclaration(parent, "and", "fun and(Sbit)", SvBinaryOperatorKind.AND) {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return F_and_Ubit.getTypeConstraints(callExpression)
         }
     }
 
     val F_or_Ubit = object : BinaryCoreFunctionDeclaration(parent, "or", "fun or(Ubit)", SvBinaryOperatorKind.OR) {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return F_and_Ubit.getTypeConstraints(callExpression)
         }
     }
 
     val F_or_Sbit = object : BinaryCoreFunctionDeclaration(parent, "or", "fun or(Sbit)", SvBinaryOperatorKind.OR) {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return F_and_Ubit.getTypeConstraints(callExpression)
         }
     }
 
     val F_xor_Ubit = object : BinaryCoreFunctionDeclaration(parent, "xor", "fun xor(Ubit)", SvBinaryOperatorKind.XOR) {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return F_and_Ubit.getTypeConstraints(callExpression)
         }
     }
 
     val F_xor_Sbit = object : BinaryCoreFunctionDeclaration(parent, "xor", "fun xor(Sbit)", SvBinaryOperatorKind.XOR) {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return F_and_Ubit.getTypeConstraints(callExpression)
         }
     }
 
     val F_shl_Int = object : TransformableCoreFunctionDeclaration(parent, "shl", "fun shl(Int)") {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return listOf(
                 TypeConstraint(
                     TypeConstraintKind.EQ_INOUT,
@@ -273,7 +273,7 @@ object CoreVkUbitBinary : CoreScope(Core.Vk.C_Ubit) {
             )
         }
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             return ESvBinaryExpression(
                 callExpression.location,
                 callExpression.type,
@@ -286,22 +286,22 @@ object CoreVkUbitBinary : CoreScope(Core.Vk.C_Ubit) {
 
     val F_shl_Ubit = object : TransformableCoreFunctionDeclaration(parent, "shl", "fun shl(Ubit)") {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return F_shl_Int.getTypeConstraints(callExpression)
         }
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             return F_shl_Int.transform(callExpression)
         }
     }
 
     val F_shr_Int = object : TransformableCoreFunctionDeclaration(parent, "shr", "fun shr(Int)") {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return F_shl_Int.getTypeConstraints(callExpression)
         }
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             return ESvBinaryExpression(
                 callExpression.location,
                 callExpression.type,
@@ -314,22 +314,22 @@ object CoreVkUbitBinary : CoreScope(Core.Vk.C_Ubit) {
 
     val F_shr_Ubit = object : TransformableCoreFunctionDeclaration(parent, "shr", "fun shr(Ubit)") {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return F_shr_Int.getTypeConstraints(callExpression)
         }
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             return F_shr_Int.transform(callExpression)
         }
     }
 
     val F_sshr_Int = object : TransformableCoreFunctionDeclaration(parent, "sshr", "fun sshr(Int)") {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return F_shl_Int.getTypeConstraints(callExpression)
         }
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             val callExpressionSigned = CoreTransformUtil.callExpressionSigned(callExpression.receiver!!)
             val binaryExpression = ESvBinaryExpression(
                 callExpression.location,
@@ -344,11 +344,11 @@ object CoreVkUbitBinary : CoreScope(Core.Vk.C_Ubit) {
 
     val F_sshr_Ubit = object : TransformableCoreFunctionDeclaration(parent, "sshr", "fun sshr(Ubit)") {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return F_sshr_Int.getTypeConstraints(callExpression)
         }
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             return F_sshr_Int.transform(callExpression)
         }
     }

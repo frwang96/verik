@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,23 +14,24 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.sv
+package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.element.common.EAbstractCallExpression
-import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.ast.property.Type
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
+import io.verik.compiler.common.replaceIfContains
 import io.verik.compiler.message.SourceLocation
 
-class ESvCallExpression(
+class ECallExpression(
     override val location: SourceLocation,
     override var type: Type,
     override var reference: Declaration,
     override var receiver: EExpression?,
-    override val valueArguments: ArrayList<EExpression>
-) : EAbstractCallExpression() {
+    val valueArguments: ArrayList<EExpression>,
+    var typeArguments: ArrayList<Type>
+) : EReceiverExpression() {
 
     override val serializationType = SerializationType.EXPRESSION
 
@@ -40,6 +41,16 @@ class ESvCallExpression(
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitSvCallExpression(this)
+        visitor.visitCallExpression(this)
+    }
+
+    override fun acceptChildren(visitor: TreeVisitor) {
+        super.acceptChildren(visitor)
+        valueArguments.forEach { it.accept(visitor) }
+    }
+
+    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
+        return if (super.replaceChild(oldExpression, newExpression)) true
+        else valueArguments.replaceIfContains(oldExpression, newExpression)
     }
 }

@@ -16,13 +16,13 @@
 
 package io.verik.compiler.cast
 
+import io.verik.compiler.ast.element.common.EBlockExpression
+import io.verik.compiler.ast.element.common.ECallExpression
+import io.verik.compiler.ast.element.common.EEnumEntry
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.common.ETypeParameter
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtClass
-import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
-import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.kt.ETypeAlias
@@ -142,7 +142,7 @@ object DeclarationCaster {
         }
         val body = function.bodyBlockExpression?.let {
             castContext.casterVisitor.getExpression(it).cast()
-        } ?: EKtBlockExpression.empty(castedFunction.location)
+        } ?: EBlockExpression.empty(castedFunction.location)
         val valueParameters = function.valueParameters.mapNotNull {
             castContext.casterVisitor.getElement<EKtValueParameter>(it)
         }
@@ -203,10 +203,10 @@ object DeclarationCaster {
         return castedPrimaryConstructor
     }
 
-    fun castKtProperty(property: KtProperty, castContext: CastContext): EKtProperty {
+    fun castProperty(property: KtProperty, castContext: CastContext): EProperty {
         val descriptor = castContext.sliceVariable[property]!!
         val castedProperty = castContext.getDeclaration(descriptor, property)
-            .cast<EKtProperty>(property)
+            .cast<EProperty>(property)
 
         val typeReference = property.typeReference
         val type = if (typeReference != null) castContext.castType(typeReference)
@@ -224,10 +224,10 @@ object DeclarationCaster {
         return castedProperty
     }
 
-    fun castKtEnumEntry(enumEntry: KtEnumEntry, castContext: CastContext): EKtEnumEntry {
+    fun castEnumEntry(enumEntry: KtEnumEntry, castContext: CastContext): EEnumEntry {
         val descriptor = castContext.sliceClass[enumEntry]!!
         val castedEnumEntry = castContext.getDeclaration(descriptor, enumEntry)
-            .cast<EKtEnumEntry>(enumEntry)
+            .cast<EEnumEntry>(enumEntry)
 
         val type = castContext.castType(descriptor.classValueType!!, enumEntry)
         val annotationEntries = enumEntry.annotationEntries.mapNotNull {
@@ -263,7 +263,7 @@ object DeclarationCaster {
     private fun castSuperTypeCallExpression(
         superTypeCallEntry: KtSuperTypeCallEntry,
         castContext: CastContext
-    ): EKtCallExpression {
+    ): ECallExpression {
         val location = superTypeCallEntry.location()
         val descriptor = castContext.sliceReferenceTarget[
             superTypeCallEntry.calleeExpression.constructorReferenceExpression!!
@@ -275,7 +275,7 @@ object DeclarationCaster {
             (declaration as EPrimaryConstructor).type.copy()
         }
         val valueArguments = CallExpressionCaster.castValueArguments(superTypeCallEntry.calleeExpression, castContext)
-        return EKtCallExpression(
+        return ECallExpression(
             location,
             type,
             declaration,

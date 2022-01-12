@@ -35,10 +35,10 @@ internal class ForStatementTransformerStageTest : BaseTest() {
             """
                 SvForStatement(
                     Void,
-                    SvProperty(it, Int, ConstantExpression(Int, 0), 0, 1, null),
+                    Property(it, Int, [], ConstantExpression(Int, 0), 1),
                     KtBinaryExpression(Boolean, ReferenceExpression(Int, it, null), ConstantExpression(*), LT),
                     KtUnaryExpression(Int, ReferenceExpression(*), POST_INC),
-                    KtBlockExpression(Function, [])
+                    BlockExpression(Function, [])
                 )
             """.trimIndent()
         ) { it.findExpression("f") }
@@ -58,17 +58,17 @@ internal class ForStatementTransformerStageTest : BaseTest() {
             """
                 SvForStatement(
                     Void,
-                    SvProperty(<tmp>, Int, ConstantExpression(Int, 0), 0, 1, 0),
+                    Property(<tmp>, Int, [], ConstantExpression(Int, 0), 1),
                     KtBinaryExpression(Boolean, ReferenceExpression(Int, <tmp>, null), ReferenceExpression(*), LT),
                     KtUnaryExpression(Int, ReferenceExpression(Int, <tmp>, null), POST_INC),
-                    KtBlockExpression(
+                    BlockExpression(
                         Function,
                         [PropertyStatement(
                             Unit,
-                            SvProperty(
-                                it, Boolean,
-                                KtCallExpression(Boolean, get, ReferenceExpression(*), [ReferenceExpression(*)], []),
-                                0, 0, 0
+                            Property(
+                                it, Boolean, [],
+                                CallExpression(Boolean, get, ReferenceExpression(*), [ReferenceExpression(*)], []),
+                                0
                             )
                         )]
                     )

@@ -50,7 +50,7 @@ internal class ExpressionReferenceForwarderTest : BaseTest() {
                 val c = C<`8`>()
             """.trimIndent(),
             TypeResolverStage::class,
-            "KtCallExpression(Boolean, f, null, [], [])"
+            "CallExpression(Boolean, f, null, [], [])"
         ) { it.findExpression("x") }
     }
 
@@ -65,7 +65,7 @@ internal class ExpressionReferenceForwarderTest : BaseTest() {
                 val c = C<`8`>()
             """.trimIndent(),
             TypeResolverStage::class,
-            "KtCallExpression(D, D, null, [], [])"
+            "CallExpression(D, D, null, [], [])"
         ) { it.findExpression("x") }
     }
 }

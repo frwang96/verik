@@ -40,7 +40,7 @@ internal class CoreVkSpecialTest : CoreDeclarationTest() {
     }
 
     @Test
-    fun `transform nc illegal`() {
+    fun `serialize nc illegal`() {
         driveMessageTest(
             """
                 var x = false

@@ -16,6 +16,7 @@
 
 package io.verik.compiler.ast.element.sv
 
+import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.SerializationType
@@ -28,7 +29,7 @@ class EImmediateAssertStatement(
     override val location: SourceLocation,
     override var type: Type,
     var condition: EExpression,
-    var elseExpression: EExpression?
+    var elseExpression: EBlockExpression?
 ) : EExpression(), ExpressionContainer {
 
     override val serializationType = SerializationType.STATEMENT
@@ -47,6 +48,10 @@ class EImmediateAssertStatement(
         elseExpression?.accept(visitor)
     }
 
+    override fun childBlockExpressionShouldBeReduced(blockExpression: EBlockExpression): Boolean {
+        return (blockExpression == condition)
+    }
+
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
         newExpression.parent = this
         return when (oldExpression) {
@@ -55,7 +60,7 @@ class EImmediateAssertStatement(
                 true
             }
             elseExpression -> {
-                elseExpression = newExpression
+                elseExpression = newExpression.cast()
                 true
             }
             else -> false

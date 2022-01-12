@@ -20,6 +20,10 @@
 - Merge `Optional` with `Cardinal`.
 - Separate `MID_TRANSFORM` into `UPPER_TRANSFORM` and `LOWER_TRANSFORM`.
 - Rewrite specialize and resolve stages to move type resolution after specialization.
+- New scheme for extracting expressions with `BlockExpressionReducerStage`.
+- Merge `KtCallExpression` and `SvCallExpression`.
+- Merge `KtBlockExpression` and `SvBlockExpression`.
+- Merge `KtProperty` and `SvProperty`.
 
 ## [0.1.11]
 ### Added

@@ -16,13 +16,13 @@
 
 package io.verik.compiler.transform.upper
 
+import io.verik.compiler.ast.element.common.ECallExpression
+import io.verik.compiler.ast.element.common.EEnumEntry
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EReferenceExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EStringExpression
-import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
@@ -40,7 +40,7 @@ object ToStringTransformerStage : ProjectStage() {
 
         private fun transform(expression: EExpression) {
             if (expression.type.reference is EEnum) {
-                if (expression is EReferenceExpression && expression.reference is ESvEnumEntry) {
+                if (expression is EReferenceExpression && expression.reference is EEnumEntry) {
                     val stringExpression = EStringExpression(
                         expression.location,
                         expression.reference.name
@@ -48,7 +48,7 @@ object ToStringTransformerStage : ProjectStage() {
                     expression.replace(stringExpression)
                 } else {
                     val parent = expression.parentNotNull()
-                    val callExpression = EKtCallExpression(
+                    val callExpression = ECallExpression(
                         expression.location,
                         Core.Kt.C_String.toType(),
                         Target.F_name,
@@ -69,8 +69,8 @@ object ToStringTransformerStage : ProjectStage() {
             }
         }
 
-        override fun visitKtCallExpression(callExpression: EKtCallExpression) {
-            super.visitKtCallExpression(callExpression)
+        override fun visitCallExpression(callExpression: ECallExpression) {
+            super.visitCallExpression(callExpression)
             when (callExpression.reference) {
                 Core.Kt.Io.F_print_Any -> transform(callExpression.valueArguments[0])
                 Core.Kt.Io.F_println_Any -> transform(callExpression.valueArguments[0])

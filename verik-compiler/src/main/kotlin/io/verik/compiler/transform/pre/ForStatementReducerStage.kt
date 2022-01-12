@@ -16,8 +16,8 @@
 
 package io.verik.compiler.transform.pre
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtForStatement
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
@@ -39,7 +39,7 @@ object ForStatementReducerStage : ProjectStage() {
                 arrayListOf(forStatement.valueParameter),
                 forStatement.body
             )
-            val callExpression = EKtCallExpression(
+            val callExpression = ECallExpression(
                 forStatement.location,
                 forStatement.type,
                 Core.Kt.Collections.F_forEach_Function,

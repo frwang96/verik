@@ -109,7 +109,7 @@ internal class DeclarationCasterTest : BaseTest() {
             """
                 KtClass(
                     C, C,
-                    [KtProperty(x, Boolean, *, [], 0)],
+                    [Property(x, Boolean, [], *, 0)],
                     [], [], 0, 0, 0,
                     PrimaryConstructor(C, C, [], []),
                     null
@@ -185,7 +185,7 @@ internal class DeclarationCasterTest : BaseTest() {
                 KtClass(
                     D, D, [], [], [], 0, 0, 0,
                     PrimaryConstructor(D, D, [], []),
-                    KtCallExpression(C, C, null, [ConstantExpression(*)], [])
+                    CallExpression(C, C, null, [ConstantExpression(*)], [])
                 )
             """.trimIndent()
         ) { it.findDeclaration("D") }
@@ -198,7 +198,7 @@ internal class DeclarationCasterTest : BaseTest() {
                 enum class E { A }
             """.trimIndent(),
             CasterStage::class,
-            "KtClass(E, E, [KtEnumEntry(A, E, [])], [], [], 1, 0, 0, PrimaryConstructor(E, E, [], []), null)"
+            "KtClass(E, E, [EnumEntry(A, E, [])], [], [], 1, 0, 0, PrimaryConstructor(E, E, [], []), null)"
         ) { it.findDeclaration("E") }
     }
 
@@ -253,7 +253,7 @@ internal class DeclarationCasterTest : BaseTest() {
                 var x = false
             """.trimIndent(),
             CasterStage::class,
-            "KtProperty(x, Boolean, *, [], 1)"
+            "Property(x, Boolean, [], *, 1)"
         ) { it.findDeclaration("x") }
     }
 }

@@ -16,10 +16,10 @@
 
 package io.verik.compiler.ast.property
 
-import io.verik.compiler.ast.element.common.EAbstractBlockExpression
+import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.EExpression
 
 class WhenEntry(
     var conditions: ArrayList<EExpression>,
-    var body: EAbstractBlockExpression
+    var body: EBlockExpression
 )

@@ -16,7 +16,7 @@
 
 package io.verik.compiler.check.mid
 
-import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.AnnotationEntries
@@ -38,8 +38,8 @@ object ProceduralBlockReferenceCheckerStage : ProjectStage() {
             AnnotationEntries.RUN
         )
 
-        override fun visitKtCallExpression(callExpression: EKtCallExpression) {
-            super.visitKtCallExpression(callExpression)
+        override fun visitCallExpression(callExpression: ECallExpression) {
+            super.visitCallExpression(callExpression)
             val reference = callExpression.reference
             if (reference is EKtFunction) {
                 if (proceduralBlockAnnotationEntries.any { reference.hasAnnotationEntry(it) }) {

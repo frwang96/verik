@@ -16,8 +16,8 @@
 
 package io.verik.compiler.check.mid
 
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.kt.EKtClass
-import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.AnnotationEntries
 import io.verik.compiler.core.common.Core
@@ -33,8 +33,8 @@ object ComponentInstantiationCheckerStage : ProjectStage() {
 
     private object ComponentInstantiationCheckerVisitor : TreeVisitor() {
 
-        override fun visitKtProperty(property: EKtProperty) {
-            super.visitKtProperty(property)
+        override fun visitProperty(property: EProperty) {
+            super.visitProperty(property)
             if (property.type.isSubtype(Core.Vk.C_Component)) {
                 val parent = property.parent
                 if (parent is EKtClass && parent.type.isSubtype(Core.Vk.C_Component)) {

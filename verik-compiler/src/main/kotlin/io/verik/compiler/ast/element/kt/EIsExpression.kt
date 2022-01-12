@@ -17,9 +17,9 @@
 package io.verik.compiler.ast.element.kt
 
 import io.verik.compiler.ast.element.common.EAbstractContainerExpression
-import io.verik.compiler.ast.element.common.EAbstractInitializedProperty
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.interfaces.DeclarationContainer
 import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.ast.property.Type
@@ -31,7 +31,7 @@ import io.verik.compiler.message.SourceLocation
 class EIsExpression(
     override val location: SourceLocation,
     override var expression: EExpression,
-    var property: EAbstractInitializedProperty,
+    var property: EProperty,
     val isNegated: Boolean,
     var castType: Type
 ) : EAbstractContainerExpression(), DeclarationContainer {

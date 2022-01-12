@@ -16,8 +16,8 @@
 
 package io.verik.compiler.ast.element.kt
 
-import io.verik.compiler.ast.element.common.EAbstractBlockExpression
 import io.verik.compiler.ast.element.common.EAbstractValueParameter
+import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.DeclarationContainer
@@ -32,7 +32,7 @@ import io.verik.compiler.message.SourceLocation
 class EFunctionLiteralExpression(
     override val location: SourceLocation,
     val valueParameters: ArrayList<EAbstractValueParameter>,
-    var body: EAbstractBlockExpression
+    var body: EBlockExpression
 ) : EExpression(), ExpressionContainer, DeclarationContainer {
 
     override var type = Core.Kt.C_Function.toType()
@@ -51,6 +51,10 @@ class EFunctionLiteralExpression(
     override fun acceptChildren(visitor: TreeVisitor) {
         valueParameters.forEach { it.accept(visitor) }
         body.accept(visitor)
+    }
+
+    override fun childBlockExpressionShouldBeReduced(blockExpression: EBlockExpression): Boolean {
+        return false
     }
 
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {

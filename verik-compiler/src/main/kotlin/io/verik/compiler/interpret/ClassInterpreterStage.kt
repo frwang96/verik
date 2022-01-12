@@ -16,19 +16,18 @@
 
 package io.verik.compiler.interpret
 
+import io.verik.compiler.ast.element.common.EBlockExpression
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EDeclaration
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ESuperExpression
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtConstructor
-import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.ast.element.sv.ESvClass
 import io.verik.compiler.ast.element.sv.ESvFunction
-import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.property.FunctionQualifierType
 import io.verik.compiler.common.ReferenceUpdater
@@ -74,7 +73,7 @@ object ClassInterpreterStage : ProjectStage() {
                 constructor.body,
                 ArrayList(valueParameters),
                 FunctionQualifierType.REGULAR,
-                isStatic = false
+                isConstructor = false
             )
             initializerMap[constructor] = initializer
         }
@@ -90,14 +89,13 @@ object ClassInterpreterStage : ProjectStage() {
             val declarations = ArrayList<EDeclaration>()
             `class`.declarations.forEach {
                 if (it is EKtConstructor) {
-                    val interpretedConstructor = interpretConstructor(`class`, it)
-                    val instantiator = interpretedConstructor.instantiator
-                    if (instantiator != null) {
-                        instantiator.parent = `class`
-                        declarations.add(instantiator)
+                    val (constructor, initializer) = interpretConstructorAndInitializer(`class`, it)
+                    if (constructor != null) {
+                        constructor.parent = `class`
+                        declarations.add(constructor)
                     }
-                    interpretedConstructor.initializer.parent = `class`
-                    declarations.add(interpretedConstructor.initializer)
+                    initializer.parent = `class`
+                    declarations.add(initializer)
                 } else {
                     declarations.add(it)
                 }
@@ -118,7 +116,10 @@ object ClassInterpreterStage : ProjectStage() {
             )
         }
 
-        private fun interpretConstructor(`class`: EKtClass, constructor: EKtConstructor): InterpretedConstructor {
+        private fun interpretConstructorAndInitializer(
+            `class`: EKtClass,
+            constructor: EKtConstructor
+        ): Pair<ESvFunction?, ESvFunction> {
             val initializer = initializerMap[constructor]
                 ?: Messages.INTERNAL_ERROR.on(constructor, "Initializer not found")
             val superTypeCallExpression = constructor.superTypeCallExpression
@@ -131,7 +132,7 @@ object ClassInterpreterStage : ProjectStage() {
                         constructor.location,
                         reference.type.copy()
                     )
-                    val callExpression = EKtCallExpression(
+                    val callExpression = ECallExpression(
                         constructor.location,
                         Core.Kt.C_Unit.toType(),
                         delegatedInitializer,
@@ -139,16 +140,16 @@ object ClassInterpreterStage : ProjectStage() {
                         superTypeCallExpression.valueArguments,
                         ArrayList()
                     )
-                    val body = initializer.body.cast<EKtBlockExpression>()
+                    val body = initializer.body.cast<EBlockExpression>()
                     callExpression.parent = body
                     body.statements.add(0, callExpression)
                 }
             }
-            val instantiator = interpretInstantiator(`class`, constructor, initializer)
-            return InterpretedConstructor(instantiator, initializer)
+            val interpretedConstructor = interpretConstructor(`class`, constructor, initializer)
+            return Pair(interpretedConstructor, initializer)
         }
 
-        private fun interpretInstantiator(
+        private fun interpretConstructor(
             `class`: EKtClass,
             constructor: EKtConstructor,
             initializer: ESvFunction
@@ -156,17 +157,18 @@ object ClassInterpreterStage : ProjectStage() {
             if (`class`.isAbstract)
                 return null
 
-            val property = ESvProperty.getTemporary(
-                location = constructor.location,
-                type = constructor.type.copy(),
-                initializer = ESvCallExpression(
-                    constructor.location,
-                    constructor.type.copy(),
-                    Target.F_new,
-                    null,
-                    arrayListOf()
+            val property = EProperty.getTemporary(
+                constructor.location,
+                constructor.type.copy(),
+                ECallExpression(
+                    location = constructor.location,
+                    type = constructor.type.copy(),
+                    reference = Target.F_new,
+                    receiver = null,
+                    valueArguments = ArrayList(),
+                    typeArguments = ArrayList()
                 ),
-                isMutable = false
+                false
             )
             val valueParameters = constructor.valueParameters.map {
                 ESvValueParameter(it.location, it.name, it.type.copy(), true)
@@ -175,13 +177,13 @@ object ClassInterpreterStage : ProjectStage() {
             val valueArguments = valueParameters.map {
                 EReferenceExpression(it.location, it.type.copy(), it, null)
             }
-            val callExpression = EKtCallExpression(
-                constructor.location,
-                Core.Kt.C_Unit.toType(),
-                initializer,
-                EReferenceExpression(constructor.location, constructor.type.copy(), property, null),
-                ArrayList(valueArguments),
-                arrayListOf()
+            val callExpression = ECallExpression(
+                location = constructor.location,
+                type = Core.Kt.C_Unit.toType(),
+                reference = initializer,
+                receiver = EReferenceExpression(constructor.location, constructor.type.copy(), property, null),
+                valueArguments = ArrayList(valueArguments),
+                typeArguments = ArrayList()
             )
             val returnStatement = EReturnStatement(
                 constructor.location,
@@ -195,22 +197,22 @@ object ClassInterpreterStage : ProjectStage() {
             )
             val statements = arrayListOf(propertyStatement, callExpression, returnStatement)
 
-            val instantiator = ESvFunction(
-                constructor.location,
-                "${constructor.name}_new",
-                constructor.type,
-                EKtBlockExpression(constructor.location, constructor.location, Core.Kt.C_Unit.toType(), statements),
-                ArrayList(valueParameters),
-                FunctionQualifierType.REGULAR,
-                isStatic = true
+            val interpretedConstructor = ESvFunction(
+                location = constructor.location,
+                name = "${constructor.name}_new",
+                type = constructor.type,
+                body = EBlockExpression(
+                    constructor.location,
+                    constructor.location,
+                    Core.Kt.C_Unit.toType(),
+                    statements
+                ),
+                valueParameters = ArrayList(valueParameters),
+                qualifierType = FunctionQualifierType.REGULAR,
+                isConstructor = true
             )
-            referenceUpdater.replace(constructor, instantiator)
-            return instantiator
+            referenceUpdater.replace(constructor, interpretedConstructor)
+            return interpretedConstructor
         }
     }
-
-    data class InterpretedConstructor(
-        val instantiator: ESvFunction?,
-        val initializer: ESvFunction
-    )
 }

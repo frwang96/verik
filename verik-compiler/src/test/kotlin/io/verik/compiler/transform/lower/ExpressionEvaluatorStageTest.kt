@@ -18,6 +18,7 @@ package io.verik.compiler.transform.lower
 
 import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findExpression
+import io.verik.compiler.test.findStatements
 import org.junit.jupiter.api.Test
 
 internal class ExpressionEvaluatorStageTest : BaseTest() {
@@ -68,6 +69,38 @@ internal class ExpressionEvaluatorStageTest : BaseTest() {
             ExpressionEvaluatorStage::class,
             "ReferenceExpression(Boolean, x, null)"
         ) { it.findExpression("y") }
+    }
+
+    @Test
+    fun `evaluate if expression true`() {
+        driveElementTest(
+            """
+                fun f() {
+                    @Suppress("ConstantConditionIf")
+                    if (true) {
+                        println()
+                    }
+                }
+            """.trimIndent(),
+            ExpressionEvaluatorStage::class,
+            "[CallExpression(Unit, ${'$'}display, null, [], [])]"
+        ) { it.findStatements("f") }
+    }
+
+    @Test
+    fun `evaluate if expression false`() {
+        driveElementTest(
+            """
+                fun f() {
+                    @Suppress("ConstantConditionIf")
+                    if (false) {
+                        println()
+                    }
+                }
+            """.trimIndent(),
+            ExpressionEvaluatorStage::class,
+            "[BlockExpression(Unit, [])]"
+        ) { it.findStatements("f") }
     }
 
     @Test

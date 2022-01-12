@@ -16,15 +16,16 @@
 
 package io.verik.compiler.transform.upper
 
+import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.EDeclaration
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
-import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.core.common.AnnotationEntries
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
@@ -52,7 +53,7 @@ object ComAssignmentTransformerStage : ProjectStage() {
         }
 
         private fun splitComAssignment(declaration: EDeclaration): EAlwaysComBlock? {
-            if (declaration is ESvProperty && declaration.isComAssignment) {
+            if (declaration is EProperty && declaration.hasAnnotationEntry(AnnotationEntries.COM)) {
                 if (declaration.isMutable) {
                     val initializer = declaration.initializer
                     if (initializer != null) {
@@ -70,7 +71,7 @@ object ComAssignmentTransformerStage : ProjectStage() {
                             initializer,
                             KtBinaryOperatorKind.EQ
                         )
-                        val blockExpression = EKtBlockExpression(
+                        val blockExpression = EBlockExpression(
                             declaration.location,
                             declaration.location,
                             Core.Kt.C_Unit.toType(),

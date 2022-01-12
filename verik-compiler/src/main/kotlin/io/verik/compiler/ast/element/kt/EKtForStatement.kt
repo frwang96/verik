@@ -16,6 +16,7 @@
 
 package io.verik.compiler.ast.element.kt
 
+import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.SerializationType
@@ -28,7 +29,7 @@ class EKtForStatement(
     override val location: SourceLocation,
     val valueParameter: EKtValueParameter,
     var range: EExpression,
-    var body: EKtBlockExpression
+    var body: EBlockExpression
 ) : EExpression(), ExpressionContainer {
 
     override var type = Core.Kt.C_Unit.toType()

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,26 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.kt
+package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.element.common.EAbstractInitializedProperty
-import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.sv.ESvClass
 import io.verik.compiler.ast.interfaces.Annotated
+import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.Type
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
-class EKtProperty(
+class EProperty(
     override val location: SourceLocation,
     val endLocation: SourceLocation,
     override var name: String,
     override var type: Type,
-    override var initializer: EExpression?,
     override var annotationEntries: List<AnnotationEntry>,
+    var initializer: EExpression?,
     var isMutable: Boolean
-) : EAbstractInitializedProperty(), Annotated {
+) : EAbstractProperty(), Annotated, ExpressionContainer {
 
     init {
         initializer?.parent = this
@@ -51,7 +52,44 @@ class EKtProperty(
         this.isMutable = isMutable
     }
 
+    fun isStatic(): Boolean {
+        val parent = parent
+        return (parent is ESvClass && parent.isDeclarationsStatic)
+    }
+
     override fun accept(visitor: Visitor) {
-        return visitor.visitKtProperty(this)
+        return visitor.visitProperty(this)
+    }
+
+    override fun acceptChildren(visitor: TreeVisitor) {
+        initializer?.accept(visitor)
+    }
+
+    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
+        newExpression.parent = this
+        return if (initializer == oldExpression) {
+            initializer = newExpression
+            true
+        } else false
+    }
+
+    companion object {
+
+        fun getTemporary(
+            location: SourceLocation,
+            type: Type,
+            initializer: EExpression?,
+            isMutable: Boolean
+        ): EProperty {
+            return EProperty(
+                location = location,
+                endLocation = location,
+                name = "<tmp>",
+                type = type,
+                annotationEntries = listOf(),
+                initializer = initializer,
+                isMutable = isMutable
+            )
+        }
     }
 }
