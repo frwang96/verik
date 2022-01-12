@@ -56,22 +56,12 @@ import io.verik.compiler.ast.property.LiteralStringEntry
 object ExpressionSerializer {
 
     fun serializeSvBlockExpression(blockExpression: ESvBlockExpression, serializeContext: SerializeContext) {
-        if (blockExpression.decorated) {
-            serializeContext.append("begin")
-            if (blockExpression.name != null)
-                serializeContext.append(" : ${blockExpression.name}")
-            serializeContext.appendLine()
-            serializeContext.indent {
-                blockExpression.statements.forEach { serializeContext.serializeAsStatement(it) }
-            }
-            serializeContext.label(blockExpression.endLocation) {
-                serializeContext.append("end")
-                if (blockExpression.name != null)
-                    serializeContext.append(" : ${blockExpression.name}")
-                serializeContext.appendLine()
-            }
-        } else {
+        serializeContext.appendLine("begin")
+        serializeContext.indent {
             blockExpression.statements.forEach { serializeContext.serializeAsStatement(it) }
+        }
+        serializeContext.label(blockExpression.endLocation) {
+            serializeContext.appendLine("end")
         }
     }
 

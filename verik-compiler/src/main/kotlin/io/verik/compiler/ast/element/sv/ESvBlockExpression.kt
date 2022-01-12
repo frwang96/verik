@@ -26,9 +26,7 @@ import io.verik.compiler.target.common.Target
 class ESvBlockExpression(
     override val location: SourceLocation,
     override val endLocation: SourceLocation,
-    override var statements: ArrayList<EExpression>,
-    val decorated: Boolean,
-    val name: String?
+    override var statements: ArrayList<EExpression>
 ) : EAbstractBlockExpression() {
 
     override val serializationType = SerializationType.STATEMENT

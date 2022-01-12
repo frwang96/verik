@@ -17,10 +17,7 @@
 package io.verik.compiler.transform.post
 
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
-import io.verik.compiler.ast.element.sv.EAbstractProceduralBlock
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
-import io.verik.compiler.ast.element.sv.ESvFunction
-import io.verik.compiler.ast.element.sv.ETask
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
@@ -35,20 +32,11 @@ object BlockExpressionTransformerStage : ProjectStage() {
 
         override fun visitKtBlockExpression(blockExpression: EKtBlockExpression) {
             super.visitKtBlockExpression(blockExpression)
-            var decorated = true
-            var name: String? = null
-            when (val parent = blockExpression.parent) {
-                is ESvFunction -> decorated = false
-                is ETask -> decorated = false
-                is EAbstractProceduralBlock -> name = parent.name
-            }
             blockExpression.replace(
                 ESvBlockExpression(
                     blockExpression.location,
                     blockExpression.endLocation,
-                    blockExpression.statements,
-                    decorated,
-                    name
+                    blockExpression.statements
                 )
             )
         }

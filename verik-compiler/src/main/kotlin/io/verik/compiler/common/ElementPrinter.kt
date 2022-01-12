@@ -409,8 +409,6 @@ class ElementPrinter : Visitor() {
     override fun visitSvBlockExpression(blockExpression: ESvBlockExpression) {
         build("SvBlockExpression") {
             build(blockExpression.type.toString())
-            build(blockExpression.decorated.toString())
-            build(blockExpression.name.toString())
             build(blockExpression.statements)
         }
     }

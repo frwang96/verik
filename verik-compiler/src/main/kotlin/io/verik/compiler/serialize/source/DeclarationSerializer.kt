@@ -146,7 +146,7 @@ object DeclarationSerializer {
         serializeSvValueParameterList(function, serializeContext)
         if (function.qualifierType != FunctionQualifierType.PURE_VIRTUAL) {
             serializeContext.indent {
-                serializeContext.serializeAsStatement(function.body)
+                function.body.statements.forEach { serializeContext.serializeAsStatement(it) }
             }
             serializeContext.label(function.body.endLocation) {
                 serializeContext.appendLine("endfunction : ${function.name}")
@@ -158,7 +158,7 @@ object DeclarationSerializer {
         serializeContext.append("task automatic ${task.name}")
         serializeSvValueParameterList(task, serializeContext)
         serializeContext.indent {
-            serializeContext.serializeAsStatement(task.body)
+            task.body.statements.forEach { serializeContext.serializeAsStatement(it) }
         }
         serializeContext.label(task.body.endLocation) {
             serializeContext.appendLine("endtask : ${task.name}")
@@ -166,20 +166,35 @@ object DeclarationSerializer {
     }
 
     fun serializeInitialBlock(initialBlock: EInitialBlock, serializeContext: SerializeContext) {
-        serializeContext.append("initial ")
-        serializeContext.serializeAsStatement(initialBlock.body)
+        serializeContext.appendLine("initial begin : ${initialBlock.name}")
+        serializeContext.indent {
+            initialBlock.body.statements.forEach { serializeContext.serializeAsStatement(it) }
+        }
+        serializeContext.label(initialBlock.body.endLocation) {
+            serializeContext.appendLine("end : ${initialBlock.name}")
+        }
     }
 
     fun serializeAlwaysComBlock(alwaysComBlock: EAlwaysComBlock, serializeContext: SerializeContext) {
-        serializeContext.append("always_comb ")
-        serializeContext.serializeAsStatement(alwaysComBlock.body)
+        serializeContext.appendLine("always_comb begin : ${alwaysComBlock.name}")
+        serializeContext.indent {
+            alwaysComBlock.body.statements.forEach { serializeContext.serializeAsStatement(it) }
+        }
+        serializeContext.label(alwaysComBlock.body.endLocation) {
+            serializeContext.appendLine("end : ${alwaysComBlock.name}")
+        }
     }
 
     fun serializeAlwaysSeqBlock(alwaysSeqBlock: EAlwaysSeqBlock, serializeContext: SerializeContext) {
         serializeContext.append("always_ff ")
         serializeContext.serializeAsExpression(alwaysSeqBlock.eventControlExpression)
-        serializeContext.append(" ")
-        serializeContext.serializeAsStatement(alwaysSeqBlock.body)
+        serializeContext.appendLine(" begin : ${alwaysSeqBlock.name}")
+        serializeContext.indent {
+            alwaysSeqBlock.body.statements.forEach { serializeContext.serializeAsStatement(it) }
+        }
+        serializeContext.label(alwaysSeqBlock.body.endLocation) {
+            serializeContext.appendLine("end : ${alwaysSeqBlock.name}")
+        }
     }
 
     fun serializeSvProperty(property: ESvProperty, serializeContext: SerializeContext) {
