@@ -16,6 +16,7 @@
 
 package io.verik.compiler.cast
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
@@ -29,7 +30,6 @@ import io.verik.compiler.ast.element.common.EWhileStatement
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtForStatement
@@ -185,19 +185,19 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
     }
 
     override fun visitBinaryExpression(expression: KtBinaryExpression, data: Unit?): EExpression {
-        return ExpressionCaster.castKtBinaryExpressionOrKtCallExpression(expression, castContext)
+        return ExpressionCaster.castKtBinaryExpressionOrCallExpression(expression, castContext)
     }
 
     override fun visitSimpleNameExpression(expression: KtSimpleNameExpression, data: Unit?): EReferenceExpression {
         return ExpressionCaster.castReferenceExpression(expression, castContext)
     }
 
-    override fun visitCallExpression(expression: KtCallExpression, data: Unit?): EKtCallExpression {
-        return ExpressionCaster.castKtCallExpression(expression, castContext)
+    override fun visitCallExpression(expression: KtCallExpression, data: Unit?): ECallExpression {
+        return ExpressionCaster.castCallExpression(expression, castContext)
     }
 
     override fun visitDotQualifiedExpression(expression: KtDotQualifiedExpression, data: Unit?): EExpression {
-        return ExpressionCaster.castKtReferenceExpressionOrKtCallExpression(expression, castContext)
+        return ExpressionCaster.castReferenceExpressionOrCallExpression(expression, castContext)
     }
 
     override fun visitConstantExpression(expression: KtConstantExpression, data: Unit?): EExpression {

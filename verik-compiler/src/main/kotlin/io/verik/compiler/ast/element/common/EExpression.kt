@@ -49,7 +49,7 @@ abstract class EExpression : ETypedElement() {
                 if (parent.kind == KtBinaryOperatorKind.EQ) ExpressionType.DIRECT_TYPED_SUBEXPRESSION
                 else ExpressionType.INDIRECT_TYPED_SUBEXPRESSION
             }
-            is EAbstractCallExpression -> {
+            is ECallExpression -> {
                 if (this in parent.valueArguments) ExpressionType.DIRECT_TYPED_SUBEXPRESSION
                 else ExpressionType.INDIRECT_TYPED_SUBEXPRESSION
             }

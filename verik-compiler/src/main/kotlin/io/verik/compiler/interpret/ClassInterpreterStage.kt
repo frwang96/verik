@@ -16,16 +16,15 @@
 
 package io.verik.compiler.interpret
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ESuperExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtConstructor
-import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.ast.element.sv.ESvClass
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ESvProperty
@@ -131,7 +130,7 @@ object ClassInterpreterStage : ProjectStage() {
                         constructor.location,
                         reference.type.copy()
                     )
-                    val callExpression = EKtCallExpression(
+                    val callExpression = ECallExpression(
                         constructor.location,
                         Core.Kt.C_Unit.toType(),
                         delegatedInitializer,
@@ -157,16 +156,17 @@ object ClassInterpreterStage : ProjectStage() {
                 return null
 
             val property = ESvProperty.getTemporary(
-                location = constructor.location,
-                type = constructor.type.copy(),
-                initializer = ESvCallExpression(
-                    constructor.location,
-                    constructor.type.copy(),
-                    Target.F_new,
-                    null,
-                    arrayListOf()
+                constructor.location,
+                constructor.type.copy(),
+                ECallExpression(
+                    location = constructor.location,
+                    type = constructor.type.copy(),
+                    reference = Target.F_new,
+                    receiver = null,
+                    valueArguments = ArrayList(),
+                    typeArguments = ArrayList()
                 ),
-                isMutable = false
+                false
             )
             val valueParameters = constructor.valueParameters.map {
                 ESvValueParameter(it.location, it.name, it.type.copy(), true)
@@ -175,13 +175,13 @@ object ClassInterpreterStage : ProjectStage() {
             val valueArguments = valueParameters.map {
                 EReferenceExpression(it.location, it.type.copy(), it, null)
             }
-            val callExpression = EKtCallExpression(
-                constructor.location,
-                Core.Kt.C_Unit.toType(),
-                initializer,
-                EReferenceExpression(constructor.location, constructor.type.copy(), property, null),
-                ArrayList(valueArguments),
-                arrayListOf()
+            val callExpression = ECallExpression(
+                location = constructor.location,
+                type = Core.Kt.C_Unit.toType(),
+                reference = initializer,
+                receiver = EReferenceExpression(constructor.location, constructor.type.copy(), property, null),
+                valueArguments = ArrayList(valueArguments),
+                typeArguments = ArrayList()
             )
             val returnStatement = EReturnStatement(
                 constructor.location,
@@ -196,12 +196,12 @@ object ClassInterpreterStage : ProjectStage() {
             val statements = arrayListOf(propertyStatement, callExpression, returnStatement)
 
             val instantiator = ESvFunction(
-                constructor.location,
-                "${constructor.name}_new",
-                constructor.type,
-                EKtBlockExpression(constructor.location, constructor.location, Core.Kt.C_Unit.toType(), statements),
-                ArrayList(valueParameters),
-                FunctionQualifierType.REGULAR,
+                location = constructor.location,
+                name = "${constructor.name}_new",
+                type = constructor.type,
+                body = EKtBlockExpression(constructor.location, constructor.location, Core.Kt.C_Unit.toType(), statements),
+                valueParameters = ArrayList(valueParameters),
+                qualifierType = FunctionQualifierType.REGULAR,
                 isStatic = true
             )
             referenceUpdater.replace(constructor, instantiator)

@@ -16,6 +16,7 @@
 
 package io.verik.compiler.specialize
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EIfExpression
@@ -31,7 +32,6 @@ import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
@@ -77,8 +77,8 @@ object SpecializerCopier {
                 copyKtBinaryExpression(element, typeArguments, specializeContext)
             is EReferenceExpression ->
                 copyReferenceExpression(element, typeArguments, specializeContext)
-            is EKtCallExpression ->
-                copyKtCallExpression(element, typeArguments, specializeContext)
+            is ECallExpression ->
+                copyCallExpression(element, typeArguments, specializeContext)
             is EConstantExpression ->
                 copyConstantExpression(element)
             is EThisExpression ->
@@ -326,16 +326,16 @@ object SpecializerCopier {
         )
     }
 
-    private fun copyKtCallExpression(
-        callExpression: EKtCallExpression,
+    private fun copyCallExpression(
+        callExpression: ECallExpression,
         typeArguments: List<Type>,
         specializeContext: SpecializeContext
-    ): EKtCallExpression {
+    ): ECallExpression {
         val type = callExpression.type.copy()
         val receiver = callExpression.receiver?.let { copy(it, typeArguments, specializeContext) }
         val copiedValueArguments = callExpression.valueArguments.map { copy(it, typeArguments, specializeContext) }
         val copiedTypeArguments = callExpression.typeArguments.map { it.copy() }
-        return EKtCallExpression(
+        return ECallExpression(
             callExpression.location,
             type,
             callExpression.reference,

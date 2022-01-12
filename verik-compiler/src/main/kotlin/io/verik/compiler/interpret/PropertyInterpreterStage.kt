@@ -16,13 +16,13 @@
 
 package io.verik.compiler.interpret
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.ENullExpression
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
@@ -79,7 +79,7 @@ object PropertyInterpreterStage : ProjectStage() {
 
         private fun interpretInjectedProperty(property: EKtProperty): EInjectedProperty? {
             val initializer = property.initializer
-            if (initializer is EKtCallExpression && initializer.reference == Core.Vk.F_sv_String) {
+            if (initializer is ECallExpression && initializer.reference == Core.Vk.F_sv_String) {
                 val expression = initializer.valueArguments[0]
                 if (expression is EStringTemplateExpression) {
                     return EInjectedProperty(
@@ -87,7 +87,7 @@ object PropertyInterpreterStage : ProjectStage() {
                         property.name,
                         expression.entries
                     )
-                } else if (expression is EKtCallExpression && expression.reference == Core.Kt.Text.F_trimIndent) {
+                } else if (expression is ECallExpression && expression.reference == Core.Kt.Text.F_trimIndent) {
                     val receiver = expression.receiver!!
                     if (receiver is EStringTemplateExpression) {
                         return EInjectedProperty(
@@ -109,7 +109,7 @@ object PropertyInterpreterStage : ProjectStage() {
             if (!property.hasAnnotationEntry(AnnotationEntries.MAKE))
                 return null
             return when (val initializer = property.initializer) {
-                is EKtCallExpression -> {
+                is ECallExpression -> {
                     when (val component = initializer.reference) {
                         is EAbstractContainerComponent ->
                             interpretComponentInstantiation(property, initializer, component)
@@ -137,7 +137,7 @@ object PropertyInterpreterStage : ProjectStage() {
 
         private fun interpretComponentInstantiation(
             property: EKtProperty,
-            callExpression: EKtCallExpression,
+            callExpression: ECallExpression,
             component: EAbstractContainerComponent
         ): EComponentInstantiation {
             if (component.ports.size != callExpression.valueArguments.size) {
@@ -158,7 +158,7 @@ object PropertyInterpreterStage : ProjectStage() {
 
         private fun interpretModulePortInstantiation(
             property: EKtProperty,
-            callExpression: EKtCallExpression,
+            callExpression: ECallExpression,
             modulePort: EModulePort
         ): EModulePortInstantiation {
             if (modulePort.ports.size != callExpression.valueArguments.size) {
@@ -179,7 +179,7 @@ object PropertyInterpreterStage : ProjectStage() {
 
         private fun interpretClockingBlockInstantiation(
             property: EKtProperty,
-            callExpression: EKtCallExpression,
+            callExpression: ECallExpression,
             clockingBlock: EClockingBlock
         ): EClockingBlockInstantiation {
             val valueArguments = callExpression
@@ -218,7 +218,7 @@ object PropertyInterpreterStage : ProjectStage() {
                     Messages.MISMATCHED_PORT_NAME.on(expression, port.name)
                 }
             }
-            return if (expression is EKtCallExpression && expression.reference == Core.Vk.F_nc) {
+            return if (expression is ECallExpression && expression.reference == Core.Vk.F_nc) {
                 PortInstantiation(expression.location, port, null)
             } else {
                 PortInstantiation(expression.location, port, expression)

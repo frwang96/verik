@@ -77,7 +77,7 @@ internal class ExpressionCasterTest : BaseTest() {
                 var x = u(1) shl 1
             """.trimIndent(),
             CasterStage::class,
-            "KtCallExpression(Ubit<`*`>, shl, KtCallExpression(*), [ConstantExpression(*)], [])"
+            "CallExpression(Ubit<`*`>, shl, CallExpression(*), [ConstantExpression(*)], [])"
         ) { it.findExpression("x") }
     }
 
@@ -126,7 +126,7 @@ internal class ExpressionCasterTest : BaseTest() {
                 }
             """.trimIndent(),
             CasterStage::class,
-            "KtCallExpression(Unit, println, null, [], [])"
+            "CallExpression(Unit, println, null, [], [])"
         ) { it.findExpression("f") }
     }
 
@@ -138,7 +138,7 @@ internal class ExpressionCasterTest : BaseTest() {
                 var y = x.plus(1)
             """.trimIndent(),
             CasterStage::class,
-            "KtCallExpression(Int, plus, ReferenceExpression(*), [ConstantExpression(*)], [])"
+            "CallExpression(Int, plus, ReferenceExpression(*), [ConstantExpression(*)], [])"
         ) { it.findExpression("y") }
     }
 
@@ -149,7 +149,7 @@ internal class ExpressionCasterTest : BaseTest() {
                 var x = io.verik.core.random()
             """.trimIndent(),
             CasterStage::class,
-            "KtCallExpression(Int, random, null, [], [])"
+            "CallExpression(Int, random, null, [], [])"
         ) { it.findExpression("x") }
     }
 
@@ -204,7 +204,7 @@ internal class ExpressionCasterTest : BaseTest() {
                 }
             """.trimIndent(),
             CasterStage::class,
-            "KtCallExpression(Unit, f, SuperExpression(C), [], [])"
+            "CallExpression(Unit, f, SuperExpression(C), [], [])"
         ) { it.findExpression("g") }
     }
 
@@ -232,7 +232,7 @@ internal class ExpressionCasterTest : BaseTest() {
             """.trimIndent(),
             CasterStage::class,
             """
-                KtCallExpression(
+                CallExpression(
                     Unit,
                     forEach,
                     ReferenceExpression(*),
@@ -254,7 +254,7 @@ internal class ExpressionCasterTest : BaseTest() {
             """.trimIndent(),
             CasterStage::class,
             """
-                KtCallExpression(
+                CallExpression(
                     Unit,
                     forEach,
                     ReferenceExpression(*),

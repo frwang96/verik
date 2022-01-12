@@ -30,7 +30,7 @@ internal class OptionalReducerSubstageTest : BaseTest() {
                 val m = optional<TRUE, M> { M() }
             """.trimIndent(),
             SpecializerStage::class,
-            "KtProperty(m, M, KtCallExpression(M, M, null, [], []), [], 0)"
+            "KtProperty(m, M, CallExpression(M, M, null, [], []), [], 0)"
         ) { it.findDeclaration("m") }
     }
 

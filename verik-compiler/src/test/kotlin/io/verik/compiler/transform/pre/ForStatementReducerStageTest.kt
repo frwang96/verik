@@ -33,9 +33,9 @@ internal class ForStatementReducerStageTest : BaseTest() {
             """.trimIndent(),
             ForStatementReducerStage::class,
             """
-                KtCallExpression(
+                CallExpression(
                     Unit, forEach,
-                    KtCallExpression(IntRange, until, *, [*], []),
+                    CallExpression(IntRange, until, *, [*], []),
                     [FunctionLiteralExpression(Function, [KtValueParameter(*)], KtBlockExpression(*))],
                     [Int]
                 )

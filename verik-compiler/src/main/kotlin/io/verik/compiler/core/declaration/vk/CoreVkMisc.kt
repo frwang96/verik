@@ -16,10 +16,10 @@
 
 package io.verik.compiler.core.declaration.vk
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.EReplicationExpression
@@ -40,7 +40,7 @@ object CoreVkMisc : CoreScope(CorePackage.VK) {
 
     val F_cat_Any_Any = object : TransformableCoreFunctionDeclaration(parent, "cat", "fun cat(Any, vararg Any)") {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             val typeAdapters = callExpression.valueArguments.map { TypeAdapter.ofElement(it) }
             return listOf(
                 TypeConstraint(
@@ -50,14 +50,14 @@ object CoreVkMisc : CoreScope(CorePackage.VK) {
             )
         }
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             return EConcatenationExpression(callExpression.location, callExpression.type, callExpression.valueArguments)
         }
     }
 
     val F_rep_Any = object : TransformableCoreFunctionDeclaration(parent, "rep", "fun rep(Any)") {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return listOf(
                 TypeConstraint(
                     TypeConstraintKind.REP_OUT,
@@ -68,7 +68,7 @@ object CoreVkMisc : CoreScope(CorePackage.VK) {
             )
         }
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             return EReplicationExpression(
                 callExpression.location,
                 callExpression.type,
@@ -80,7 +80,7 @@ object CoreVkMisc : CoreScope(CorePackage.VK) {
 
     val F_max_Int_Int = object : TransformableCoreFunctionDeclaration(parent, "max", "fun max(Int, vararg Int)") {
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             return when (callExpression.valueArguments.size) {
                 0 -> Messages.INTERNAL_ERROR.on(callExpression, "Value arguments expected for max")
                 1 -> callExpression.valueArguments[0]
@@ -108,7 +108,7 @@ object CoreVkMisc : CoreScope(CorePackage.VK) {
 
     val F_max_Ubit_Ubit = object : TransformableCoreFunctionDeclaration(parent, "max", "fun max(Ubit, vararg Ubit)") {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return callExpression.valueArguments.map {
                 TypeConstraint(
                     TypeConstraintKind.EQ_INOUT,
@@ -118,25 +118,25 @@ object CoreVkMisc : CoreScope(CorePackage.VK) {
             }
         }
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             return F_max_Int_Int.transform(callExpression)
         }
     }
 
     val F_max_Sbit_Sbit = object : TransformableCoreFunctionDeclaration(parent, "max", "fun max(Sbit, vararg Sbit)") {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return F_max_Ubit_Ubit.getTypeConstraints(callExpression)
         }
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             return F_max_Int_Int.transform(callExpression)
         }
     }
 
     val F_min_Int_Int = object : TransformableCoreFunctionDeclaration(parent, "min", "fun min(Int, vararg Int)") {
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             return when (callExpression.valueArguments.size) {
                 0 -> Messages.INTERNAL_ERROR.on(callExpression, "Value arguments expected for min")
                 1 -> callExpression.valueArguments[0]
@@ -164,22 +164,22 @@ object CoreVkMisc : CoreScope(CorePackage.VK) {
 
     val F_min_Ubit_Ubit = object : TransformableCoreFunctionDeclaration(parent, "min", "fun min(Ubit, vararg Ubit)") {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return F_max_Ubit_Ubit.getTypeConstraints(callExpression)
         }
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             return F_min_Int_Int.transform(callExpression)
         }
     }
 
     val F_min_Sbit_Sbit = object : TransformableCoreFunctionDeclaration(parent, "min", "fun min(Sbit, vararg Sbit)") {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return F_max_Ubit_Ubit.getTypeConstraints(callExpression)
         }
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             return F_min_Int_Int.transform(callExpression)
         }
     }
@@ -188,13 +188,13 @@ object CoreVkMisc : CoreScope(CorePackage.VK) {
 
     val F_exp_Int = object : TransformableCoreFunctionDeclaration(parent, "exp", "fun exp(Int)") {
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             val constantExpression = EConstantExpression(
                 callExpression.location,
                 Core.Kt.C_Int.toType(),
                 "1"
             )
-            return EKtCallExpression(
+            return ECallExpression(
                 callExpression.location,
                 Core.Kt.C_Int.toType(),
                 Core.Kt.Int.F_shl_Int,

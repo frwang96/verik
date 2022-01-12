@@ -16,7 +16,7 @@
 
 package io.verik.compiler.transform.post
 
-import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.property.KtUnaryOperatorKind
@@ -34,8 +34,8 @@ object UnaryExpressionTransformerStage : ProjectStage() {
 
     private object UnaryExpressionTransformerVisitor : TreeVisitor() {
 
-        override fun visitKtCallExpression(callExpression: EKtCallExpression) {
-            super.visitKtCallExpression(callExpression)
+        override fun visitCallExpression(callExpression: ECallExpression) {
+            super.visitCallExpression(callExpression)
             val reference = callExpression.reference
             if (reference is UnaryCoreFunctionDeclaration) {
                 val kind = reference.kind

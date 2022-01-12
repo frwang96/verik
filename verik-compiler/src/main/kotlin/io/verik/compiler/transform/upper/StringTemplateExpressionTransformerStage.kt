@@ -16,8 +16,8 @@
 
 package io.verik.compiler.transform.upper
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.property.ExpressionStringEntry
@@ -90,7 +90,7 @@ object StringTemplateExpressionTransformerStage : ProjectStage() {
                 stringTemplateExpression.replace(stringExpression)
             } else {
                 valueArguments.add(0, stringExpression)
-                val callExpression = EKtCallExpression(
+                val callExpression = ECallExpression(
                     stringTemplateExpression.location,
                     stringTemplateExpression.type,
                     Target.F_sformatf,

@@ -16,6 +16,7 @@
 
 package io.verik.compiler.common
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EFile
@@ -37,7 +38,6 @@ import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtConstructor
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
@@ -83,7 +83,6 @@ import io.verik.compiler.ast.element.sv.EStructLiteralExpression
 import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
-import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.ast.element.sv.ESvClass
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvForStatement
@@ -472,22 +471,13 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitKtCallExpression(callExpression: EKtCallExpression) {
-        build("KtCallExpression") {
+    override fun visitCallExpression(callExpression: ECallExpression) {
+        build("CallExpression") {
             build(callExpression.type.toString())
             build(callExpression.reference.name)
             build(callExpression.receiver)
             build(callExpression.valueArguments)
             build(callExpression.typeArguments.map { it.toString() })
-        }
-    }
-
-    override fun visitSvCallExpression(callExpression: ESvCallExpression) {
-        build("SvCallExpression") {
-            build(callExpression.type.toString())
-            build(callExpression.reference.name)
-            build(callExpression.receiver)
-            build(callExpression.valueArguments)
         }
     }
 

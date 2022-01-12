@@ -32,7 +32,7 @@ internal class ConstantPropagatorStageTest : BaseTest() {
                 }
             """.trimIndent(),
             ConstantPropagatorStage::class,
-            "KtCallExpression(Unit, println, null, [ConstantExpression(Int, 0)], [])"
+            "CallExpression(Unit, println, null, [ConstantExpression(Int, 0)], [])"
         ) { it.findExpression("f") }
     }
 }

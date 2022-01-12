@@ -30,7 +30,7 @@ internal class CallExpressionCasterTest : BaseTest() {
                 var x = u(0).ext<`8`>()
             """.trimIndent(),
             CasterStage::class,
-            "KtCallExpression(Ubit<`*`>, ext, *, *, [`8`])"
+            "CallExpression(Ubit<`*`>, ext, *, *, [`8`])"
         ) { it.findExpression("x") }
     }
 
@@ -41,7 +41,7 @@ internal class CallExpressionCasterTest : BaseTest() {
                 var x: Ubit<`8`> = u(0).ext()
             """.trimIndent(),
             CasterStage::class,
-            "KtCallExpression(Ubit<`*`>, ext, *, *, [`*`])"
+            "CallExpression(Ubit<`*`>, ext, *, *, [`*`])"
         ) { it.findExpression("x") }
     }
 
@@ -53,7 +53,7 @@ internal class CallExpressionCasterTest : BaseTest() {
                 var x = f(0)
             """.trimIndent(),
             CasterStage::class,
-            "KtCallExpression(Unit, f, null, [ConstantExpression(*)], [])"
+            "CallExpression(Unit, f, null, [ConstantExpression(*)], [])"
         ) { it.findExpression("x") }
     }
 
@@ -65,7 +65,7 @@ internal class CallExpressionCasterTest : BaseTest() {
                 var x = f(x = 0)
             """.trimIndent(),
             CasterStage::class,
-            "KtCallExpression(Unit, f, null, [ConstantExpression(*)], [])"
+            "CallExpression(Unit, f, null, [ConstantExpression(*)], [])"
         ) { it.findExpression("x") }
     }
 
@@ -77,7 +77,7 @@ internal class CallExpressionCasterTest : BaseTest() {
                 var x = f(y = "", x = 0)
             """.trimIndent(),
             CasterStage::class,
-            "KtCallExpression(Unit, f, null, [ConstantExpression(*), StringTemplateExpression(*)], [])"
+            "CallExpression(Unit, f, null, [ConstantExpression(*), StringTemplateExpression(*)], [])"
         ) { it.findExpression("x") }
     }
 
@@ -91,7 +91,7 @@ internal class CallExpressionCasterTest : BaseTest() {
                 var x = f()
             """.trimIndent(),
             CasterStage::class,
-            "KtCallExpression(Unit, f, null, [], [ConstantExpression(*)])"
+            "CallExpression(Unit, f, null, [], [ConstantExpression(*)])"
         ) { it.findExpression("x") }
     }
 }

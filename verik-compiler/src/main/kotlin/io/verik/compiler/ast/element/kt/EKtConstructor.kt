@@ -17,6 +17,7 @@
 package io.verik.compiler.ast.element.kt
 
 import io.verik.compiler.ast.element.common.EAbstractBlockExpression
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
@@ -30,7 +31,7 @@ class EKtConstructor(
     override var body: EAbstractBlockExpression,
     override var valueParameters: ArrayList<EKtValueParameter>,
     override var typeParameters: ArrayList<ETypeParameter>,
-    var superTypeCallExpression: EKtCallExpression?
+    var superTypeCallExpression: ECallExpression?
 ) : EKtAbstractFunction() {
 
     init {

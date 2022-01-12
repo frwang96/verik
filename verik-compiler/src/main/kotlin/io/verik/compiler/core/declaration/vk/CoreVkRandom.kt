@@ -16,7 +16,7 @@
 
 package io.verik.compiler.core.declaration.vk
 
-import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
@@ -52,7 +52,7 @@ object CoreVkRandom : CoreScope(CorePackage.VK) {
         Target.F_urandom
     ) {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return listOf(
                 TypeConstraint(
                     TypeConstraintKind.EQ_INOUT,

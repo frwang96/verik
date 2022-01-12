@@ -16,9 +16,9 @@
 
 package io.verik.compiler.core.declaration.kt
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.EImmediateAssertStatement
 import io.verik.compiler.ast.element.sv.ERepeatStatement
 import io.verik.compiler.core.common.Core
@@ -34,7 +34,7 @@ object CoreKtFunctions : CoreScope(CorePackage.KT) {
         "fun repeat(Int, Function)"
     ) {
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             val functionLiteralExpression = callExpression
                 .valueArguments[1]
                 .cast<EFunctionLiteralExpression>()
@@ -48,7 +48,7 @@ object CoreKtFunctions : CoreScope(CorePackage.KT) {
 
     val F_assert_Boolean = object : TransformableCoreFunctionDeclaration(parent, "assert", "fun assert(Boolean)") {
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             return EImmediateAssertStatement(
                 callExpression.location,
                 Core.Kt.C_Unit.toType(),
@@ -64,7 +64,7 @@ object CoreKtFunctions : CoreScope(CorePackage.KT) {
         "fun assert(Boolean, Function)"
     ) {
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             val functionLiteralExpression = callExpression.valueArguments[1].cast<EFunctionLiteralExpression>()
             return EImmediateAssertStatement(
                 callExpression.location,

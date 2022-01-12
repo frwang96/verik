@@ -16,12 +16,12 @@
 
 package io.verik.compiler.transform.upper
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.sv.ESvForStatement
 import io.verik.compiler.ast.element.sv.ESvProperty
@@ -49,8 +49,8 @@ object ForStatementTransformerStage : ProjectStage() {
         private val referenceUpdater: ReferenceUpdater
     ) : TreeVisitor() {
 
-        override fun visitKtCallExpression(callExpression: EKtCallExpression) {
-            super.visitKtCallExpression(callExpression)
+        override fun visitCallExpression(callExpression: ECallExpression) {
+            super.visitCallExpression(callExpression)
             if (callExpression.reference == Core.Kt.Collections.F_forEach_Function) {
                 val functionLiteral = callExpression.valueArguments[0]
                     .cast<EFunctionLiteralExpression>()
@@ -58,7 +58,7 @@ object ForStatementTransformerStage : ProjectStage() {
                     .cast<ESvValueParameter>()
                 val receiver = callExpression.receiver!!
                 val forStatement = when {
-                    receiver is EKtCallExpression && receiver.reference == Core.Kt.Ranges.F_until_Int ->
+                    receiver is ECallExpression && receiver.reference == Core.Kt.Ranges.F_until_Int ->
                         transformForStatementUntil(functionLiteral, valueParameter, receiver)
                     receiver is EReferenceExpression && receiver.type.reference == Core.Jv.Util.C_ArrayList ->
                         transformForStatementArrayList(functionLiteral, valueParameter, receiver)
@@ -75,7 +75,7 @@ object ForStatementTransformerStage : ProjectStage() {
         private fun transformForStatementUntil(
             functionLiteral: EFunctionLiteralExpression,
             valueParameter: ESvValueParameter,
-            callExpression: EKtCallExpression
+            callExpression: ECallExpression
         ): ESvForStatement {
             val property = ESvProperty(
                 location = valueParameter.location,
@@ -151,7 +151,7 @@ object ForStatementTransformerStage : ProjectStage() {
                 ExpressionCopier.deepCopy(indexReferenceExpression),
                 KtUnaryOperatorKind.POST_INC
             )
-            val elementPropertyInitializer = EKtCallExpression(
+            val elementPropertyInitializer = ECallExpression(
                 valueParameter.location,
                 valueParameter.type.copy(),
                 Core.Jv.Util.ArrayList.F_get_Int,

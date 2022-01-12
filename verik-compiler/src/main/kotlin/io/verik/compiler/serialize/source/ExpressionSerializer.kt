@@ -16,6 +16,7 @@
 
 package io.verik.compiler.serialize.source
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EParenthesizedExpression
@@ -44,7 +45,6 @@ import io.verik.compiler.ast.element.sv.ESvAbstractFunction
 import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
-import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.ast.element.sv.ESvForStatement
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
@@ -118,7 +118,7 @@ object ExpressionSerializer {
         serializeContext.append(referenceExpression.reference.name)
     }
 
-    fun serializeSvCallExpression(callExpression: ESvCallExpression, serializeContext: SerializeContext) {
+    fun serializeCallExpression(callExpression: ECallExpression, serializeContext: SerializeContext) {
         val receiver = callExpression.receiver
         if (receiver != null) {
             serializeContext.serializeAsExpression(receiver)

@@ -16,12 +16,12 @@
 
 package io.verik.compiler.common
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.EStreamingExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
@@ -47,7 +47,7 @@ object ExpressionCopier {
             is EKtBinaryExpression -> copyKtBinaryExpression(expression, isDeepCopy, location)
             is ESvBinaryExpression -> copySvBinaryExpression(expression, isDeepCopy, location)
             is EReferenceExpression -> copyReferenceExpression(expression, isDeepCopy, location)
-            is EKtCallExpression -> copyKtCallExpression(expression, isDeepCopy, location)
+            is ECallExpression -> copyCallExpression(expression, isDeepCopy, location)
             is EConstantExpression -> copyConstantExpression(expression, isDeepCopy, location)
             is EKtArrayAccessExpression -> copyKtArrayAccessExpression(expression, isDeepCopy, location)
             is EStreamingExpression -> copyStreamingExpression(expression, isDeepCopy, location)
@@ -136,17 +136,17 @@ object ExpressionCopier {
         }
     }
 
-    private fun copyKtCallExpression(
-        callExpression: EKtCallExpression,
+    private fun copyCallExpression(
+        callExpression: ECallExpression,
         isDeepCopy: Boolean,
         location: SourceLocation?
-    ): EKtCallExpression {
+    ): ECallExpression {
         return if (isDeepCopy) {
             val type = callExpression.type.copy()
             val receiver = callExpression.receiver?.let { copy(it, true, location) }
             val valueArguments = callExpression.valueArguments.map { copy(it, true, location) }
             val typeArguments = callExpression.typeArguments.map { it.copy() }
-            EKtCallExpression(
+            ECallExpression(
                 location ?: callExpression.location,
                 type,
                 callExpression.reference,
@@ -155,7 +155,7 @@ object ExpressionCopier {
                 ArrayList(typeArguments)
             )
         } else {
-            EKtCallExpression(
+            ECallExpression(
                 callExpression.location,
                 callExpression.type,
                 callExpression.reference,

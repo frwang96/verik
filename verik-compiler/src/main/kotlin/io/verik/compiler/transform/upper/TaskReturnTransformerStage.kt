@@ -16,12 +16,12 @@
 
 package io.verik.compiler.transform.upper
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.element.sv.ETask
@@ -75,8 +75,8 @@ object TaskReturnTransformerStage : ProjectStage() {
 
     private object TaskReturnExternalTransformerVisitor : TreeVisitor() {
 
-        override fun visitKtCallExpression(callExpression: EKtCallExpression) {
-            super.visitKtCallExpression(callExpression)
+        override fun visitCallExpression(callExpression: ECallExpression) {
+            super.visitCallExpression(callExpression)
             val task = callExpression.reference
             if (task is ETask && callExpression.type.reference != Core.Kt.C_Unit) {
                 if (task.valueParameters.isNotEmpty()) {
@@ -90,7 +90,7 @@ object TaskReturnTransformerStage : ProjectStage() {
             }
         }
 
-        private fun extract(callExpression: EKtCallExpression, valueParameter: ESvValueParameter) {
+        private fun extract(callExpression: ECallExpression, valueParameter: ESvValueParameter) {
             val property = ESvProperty.getTemporary(
                 callExpression.location,
                 valueParameter.type.copy(),

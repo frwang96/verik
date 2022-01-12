@@ -21,6 +21,7 @@
 - Separate `MID_TRANSFORM` into `UPPER_TRANSFORM` and `LOWER_TRANSFORM`.
 - Rewrite specialize and resolve stages to move type resolution after specialization.
 - New scheme for extracting expressions with `BlockExpressionReducerStage`.
+- Merge `KtCallExpression` and `SvCallExpression`.
 
 ## [0.1.11]
 ### Added

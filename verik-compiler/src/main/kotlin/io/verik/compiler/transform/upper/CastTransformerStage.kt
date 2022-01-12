@@ -16,13 +16,13 @@
 
 package io.verik.compiler.transform.upper
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EAsExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.common.ExpressionCopier
@@ -48,7 +48,7 @@ object CastTransformerStage : ProjectStage() {
                 isExpression.property,
                 null
             )
-            val callExpression = EKtCallExpression(
+            val callExpression = ECallExpression(
                 isExpression.location,
                 Core.Kt.C_Boolean.toType(),
                 Target.F_cast,
@@ -58,7 +58,7 @@ object CastTransformerStage : ProjectStage() {
             )
             val propertyStatement = EPropertyStatement(isExpression.location, isExpression.property)
             if (isExpression.isNegated) {
-                val negatedCallExpression = EKtCallExpression(
+                val negatedCallExpression = ECallExpression(
                     isExpression.location,
                     Core.Kt.C_Boolean.toType(),
                     Core.Kt.Boolean.F_not,
@@ -87,7 +87,7 @@ object CastTransformerStage : ProjectStage() {
                 null
             )
             val propertyStatement = EPropertyStatement(property.location, property)
-            val castCallExpression = EKtCallExpression(
+            val castCallExpression = ECallExpression(
                 asExpression.location,
                 Core.Kt.C_Boolean.toType(),
                 Target.F_cast,
@@ -95,7 +95,7 @@ object CastTransformerStage : ProjectStage() {
                 arrayListOf(referenceExpression, asExpression.expression),
                 ArrayList()
             )
-            val negatedCallExpression = EKtCallExpression(
+            val negatedCallExpression = ECallExpression(
                 asExpression.location,
                 Core.Kt.C_Boolean.toType(),
                 Core.Kt.Boolean.F_not,
@@ -107,7 +107,7 @@ object CastTransformerStage : ProjectStage() {
                 asExpression.location,
                 "Failed to cast from ${asExpression.expression.type} to ${asExpression.type}"
             )
-            val fatalCallExpression = EKtCallExpression(
+            val fatalCallExpression = ECallExpression(
                 asExpression.location,
                 Core.Kt.C_Nothing.toType(),
                 Core.Vk.F_fatal_String,

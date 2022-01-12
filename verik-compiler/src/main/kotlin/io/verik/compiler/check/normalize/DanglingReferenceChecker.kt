@@ -16,10 +16,10 @@
 
 package io.verik.compiler.check.normalize
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypedElement
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.EAbstractComponentInstantiation
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EStructLiteralExpression
@@ -88,7 +88,7 @@ object DanglingReferenceChecker : NormalizationStage {
                 is EAbstractComponentInstantiation -> {
                     typedElement.portInstantiations.forEach { checkReference(it.port, typedElement) }
                 }
-                is EKtCallExpression -> {
+                is ECallExpression -> {
                     typedElement.typeArguments.forEach { checkReference(it, typedElement) }
                 }
                 is EStructLiteralExpression -> {

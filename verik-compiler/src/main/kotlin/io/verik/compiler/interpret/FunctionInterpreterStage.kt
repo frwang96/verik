@@ -16,9 +16,9 @@
 
 package io.verik.compiler.interpret
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
@@ -79,7 +79,7 @@ object FunctionInterpreterStage : ProjectStage() {
                 Messages.EXPECTED_ON_EXPRESSION.on(body)
                 return null
             }
-            if (onExpression !is EKtCallExpression || onExpression.reference != Core.Vk.F_on_Event_Event_Function) {
+            if (onExpression !is ECallExpression || onExpression.reference != Core.Vk.F_on_Event_Event_Function) {
                 Messages.EXPECTED_ON_EXPRESSION.on(body)
                 return null
             }

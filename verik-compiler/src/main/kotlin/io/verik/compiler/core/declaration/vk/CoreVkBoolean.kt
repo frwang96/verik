@@ -16,8 +16,8 @@
 
 package io.verik.compiler.core.declaration.vk
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.EWidthCastExpression
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
@@ -31,7 +31,7 @@ object CoreVkBoolean : CoreScope(CorePackage.VK) {
 
     val F_ext = object : TransformableCoreFunctionDeclaration(parent, "ext", "fun ext()") {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return listOf(
                 TypeConstraint(
                     TypeConstraintKind.EQ_INOUT,
@@ -41,7 +41,7 @@ object CoreVkBoolean : CoreScope(CorePackage.VK) {
             )
         }
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
             return EWidthCastExpression(
                 callExpression.location,
@@ -54,11 +54,11 @@ object CoreVkBoolean : CoreScope(CorePackage.VK) {
 
     val F_sext = object : TransformableCoreFunctionDeclaration(parent, "sext", "fun sext()") {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return F_ext.getTypeConstraints(callExpression)
         }
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             val callExpressionSigned = CoreTransformUtil.callExpressionSigned(callExpression.receiver!!)
             val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
             return EWidthCastExpression(

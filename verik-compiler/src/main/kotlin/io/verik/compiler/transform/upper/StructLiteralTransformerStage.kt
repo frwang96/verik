@@ -16,7 +16,7 @@
 
 package io.verik.compiler.transform.upper
 
-import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.EStructLiteralExpression
 import io.verik.compiler.ast.property.StructLiteralEntry
@@ -32,8 +32,8 @@ object StructLiteralTransformerStage : ProjectStage() {
 
     private object StructLiteralTransformerVisitor : TreeVisitor() {
 
-        override fun visitKtCallExpression(callExpression: EKtCallExpression) {
-            super.visitKtCallExpression(callExpression)
+        override fun visitCallExpression(callExpression: ECallExpression) {
+            super.visitCallExpression(callExpression)
             val reference = callExpression.reference
             if (reference is EStruct) {
                 val entries = callExpression.valueArguments

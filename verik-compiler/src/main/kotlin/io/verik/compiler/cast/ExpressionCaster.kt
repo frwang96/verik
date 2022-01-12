@@ -16,6 +16,7 @@
 
 package io.verik.compiler.cast
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
@@ -31,7 +32,6 @@ import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtForStatement
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
@@ -98,7 +98,7 @@ object ExpressionCaster {
         return EKtUnaryExpression(location, type, childExpression, kind)
     }
 
-    fun castKtBinaryExpressionOrKtCallExpression(
+    fun castKtBinaryExpressionOrCallExpression(
         expression: KtBinaryExpression,
         castContext: CastContext
     ): EExpression {
@@ -113,7 +113,7 @@ object ExpressionCaster {
         } else {
             val descriptor = castContext.sliceReferenceTarget[expression.operationReference]!!
             val declaration = castContext.getDeclaration(descriptor, expression)
-            EKtCallExpression(location, type, declaration, left, arrayListOf(right), arrayListOf())
+            ECallExpression(location, type, declaration, left, arrayListOf(right), arrayListOf())
         }
     }
 
@@ -130,17 +130,17 @@ object ExpressionCaster {
         return referenceExpression
     }
 
-    fun castKtCallExpression(expression: KtCallExpression, castContext: CastContext): EKtCallExpression {
+    fun castCallExpression(expression: KtCallExpression, castContext: CastContext): ECallExpression {
         val location = expression.location()
         val descriptor = castContext.sliceReferenceTarget[expression.calleeExpression]!!
         val type = castContext.castType(expression)
         val declaration = castContext.getDeclaration(descriptor, expression)
         val valueArguments = CallExpressionCaster.castValueArguments(expression.calleeExpression!!, castContext)
         val typeArguments = CallExpressionCaster.castTypeArguments(expression, castContext)
-        return EKtCallExpression(location, type, declaration, null, valueArguments, typeArguments)
+        return ECallExpression(location, type, declaration, null, valueArguments, typeArguments)
     }
 
-    fun castKtReferenceExpressionOrKtCallExpression(
+    fun castReferenceExpressionOrCallExpression(
         expression: KtDotQualifiedExpression,
         castContext: CastContext
     ): EExpression {
@@ -172,7 +172,7 @@ object ExpressionCaster {
                 val declaration = castContext.getDeclaration(descriptor, expression)
                 val valueArguments = CallExpressionCaster.castValueArguments(selector.calleeExpression!!, castContext)
                 val typeArguments = CallExpressionCaster.castTypeArguments(selector, castContext)
-                return EKtCallExpression(
+                return ECallExpression(
                     location,
                     type,
                     declaration,

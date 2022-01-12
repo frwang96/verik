@@ -16,11 +16,11 @@
 
 package io.verik.compiler.core.declaration.vk
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.core.common.Core
@@ -35,7 +35,7 @@ object CoreVkPacked : CoreScope(Core.Vk.C_Packed) {
 
     val F_get_Int = object : TransformableCoreFunctionDeclaration(parent, "get", "fun get(Int)") {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return listOf(
                 TypeConstraint(
                     TypeConstraintKind.EQ_OUT,
@@ -45,7 +45,7 @@ object CoreVkPacked : CoreScope(Core.Vk.C_Packed) {
             )
         }
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             return ESvArrayAccessExpression(
                 callExpression.location,
                 callExpression.type,
@@ -57,7 +57,7 @@ object CoreVkPacked : CoreScope(Core.Vk.C_Packed) {
 
     val F_get_Ubit = object : TransformableCoreFunctionDeclaration(parent, "get", "fun get(Ubit)") {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return listOf(
                 TypeConstraint(
                     TypeConstraintKind.EQ_OUT,
@@ -72,7 +72,7 @@ object CoreVkPacked : CoreScope(Core.Vk.C_Packed) {
             )
         }
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             return ESvArrayAccessExpression(
                 callExpression.location,
                 callExpression.type,
@@ -84,7 +84,7 @@ object CoreVkPacked : CoreScope(Core.Vk.C_Packed) {
 
     val F_set_Int_E = object : TransformableCoreFunctionDeclaration(parent, "set", "fun set(Int, E)") {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return listOf(
                 TypeConstraint(
                     TypeConstraintKind.EQ_IN,
@@ -94,7 +94,7 @@ object CoreVkPacked : CoreScope(Core.Vk.C_Packed) {
             )
         }
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             val receiver = ESvArrayAccessExpression(
                 callExpression.location,
                 callExpression.valueArguments[1].type.copy(),
@@ -113,7 +113,7 @@ object CoreVkPacked : CoreScope(Core.Vk.C_Packed) {
 
     val F_set_Ubit_E = object : TransformableCoreFunctionDeclaration(parent, "set", "fun set(E)") {
 
-        override fun getTypeConstraints(callExpression: EKtCallExpression): List<TypeConstraint> {
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return listOf(
                 TypeConstraint(
                     TypeConstraintKind.EQ_IN,
@@ -128,7 +128,7 @@ object CoreVkPacked : CoreScope(Core.Vk.C_Packed) {
             )
         }
 
-        override fun transform(callExpression: EKtCallExpression): EExpression {
+        override fun transform(callExpression: ECallExpression): EExpression {
             val receiver = ESvArrayAccessExpression(
                 callExpression.location,
                 callExpression.valueArguments[1].type.copy(),

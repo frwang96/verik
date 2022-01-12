@@ -33,7 +33,7 @@ internal class ToStringTransformerStageTest : BaseTest() {
                 }
             """.trimIndent(),
             ToStringTransformerStage::class,
-            "StringTemplateExpression(String, [KtCallExpression(String, name, ReferenceExpression(*), [], [])])"
+            "StringTemplateExpression(String, [CallExpression(String, name, ReferenceExpression(*), [], [])])"
         ) { it.findExpression("f") }
     }
 
@@ -61,7 +61,7 @@ internal class ToStringTransformerStageTest : BaseTest() {
                 }
             """.trimIndent(),
             ToStringTransformerStage::class,
-            "KtCallExpression(Unit, println, null, [StringExpression(String, A)], [])"
+            "CallExpression(Unit, println, null, [StringExpression(String, A)], [])"
         ) { it.findExpression("f") }
     }
 }

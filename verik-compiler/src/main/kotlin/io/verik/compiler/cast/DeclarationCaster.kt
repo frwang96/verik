@@ -16,9 +16,9 @@
 
 package io.verik.compiler.cast
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
@@ -263,7 +263,7 @@ object DeclarationCaster {
     private fun castSuperTypeCallExpression(
         superTypeCallEntry: KtSuperTypeCallEntry,
         castContext: CastContext
-    ): EKtCallExpression {
+    ): ECallExpression {
         val location = superTypeCallEntry.location()
         val descriptor = castContext.sliceReferenceTarget[
             superTypeCallEntry.calleeExpression.constructorReferenceExpression!!
@@ -275,7 +275,7 @@ object DeclarationCaster {
             (declaration as EPrimaryConstructor).type.copy()
         }
         val valueArguments = CallExpressionCaster.castValueArguments(superTypeCallEntry.calleeExpression, castContext)
-        return EKtCallExpression(
+        return ECallExpression(
             location,
             type,
             declaration,

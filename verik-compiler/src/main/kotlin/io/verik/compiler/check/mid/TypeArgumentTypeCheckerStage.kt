@@ -16,9 +16,9 @@
 
 package io.verik.compiler.check.mid
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypedElement
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
@@ -53,8 +53,8 @@ object TypeArgumentTypeCheckerStage : ProjectStage() {
 
         override fun visitTypeAlias(typeAlias: ETypeAlias) {}
 
-        override fun visitKtCallExpression(callExpression: EKtCallExpression) {
-            super.visitKtCallExpression(callExpression)
+        override fun visitCallExpression(callExpression: ECallExpression) {
+            super.visitCallExpression(callExpression)
             callExpression.typeArguments.forEach { checkType(it, callExpression) }
         }
     }

@@ -16,6 +16,7 @@
 
 package io.verik.compiler.serialize.source
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
@@ -61,7 +62,6 @@ import io.verik.compiler.ast.element.sv.EStructLiteralExpression
 import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
-import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.ast.element.sv.ESvClass
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvForStatement
@@ -222,8 +222,8 @@ class SourceSerializerVisitor(
         ExpressionSerializer.serializeReferenceExpression(referenceExpression, serializeContext)
     }
 
-    override fun visitSvCallExpression(callExpression: ESvCallExpression) {
-        ExpressionSerializer.serializeSvCallExpression(callExpression, serializeContext)
+    override fun visitCallExpression(callExpression: ECallExpression) {
+        ExpressionSerializer.serializeCallExpression(callExpression, serializeContext)
     }
 
     override fun visitScopeExpression(scopeExpression: EScopeExpression) {

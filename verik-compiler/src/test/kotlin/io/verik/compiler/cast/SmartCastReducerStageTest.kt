@@ -37,7 +37,7 @@ internal class SmartCastReducerStageTest : BaseTest() {
                 }
             """.trimIndent(),
             SmartCastReducerStage::class,
-            "KtCallExpression(Boolean, f, null, [ReferenceExpression(D, <tmp>, null)], [])"
+            "CallExpression(Boolean, f, null, [ReferenceExpression(D, <tmp>, null)], [])"
         ) { it.findExpression("x") }
     }
 
@@ -55,7 +55,7 @@ internal class SmartCastReducerStageTest : BaseTest() {
                 }
             """.trimIndent(),
             SmartCastReducerStage::class,
-            "KtCallExpression(Boolean, f, ReferenceExpression(D, <tmp>, null), [], [])"
+            "CallExpression(Boolean, f, ReferenceExpression(D, <tmp>, null), [], [])"
         ) { it.findExpression("x") }
     }
 
@@ -74,7 +74,7 @@ internal class SmartCastReducerStageTest : BaseTest() {
                 }
             """.trimIndent(),
             SmartCastReducerStage::class,
-            "KtCallExpression(Boolean, f, ReferenceExpression(D, <tmp>, null), [], [])"
+            "CallExpression(Boolean, f, ReferenceExpression(D, <tmp>, null), [], [])"
         ) { it.findExpression("x") }
     }
 }

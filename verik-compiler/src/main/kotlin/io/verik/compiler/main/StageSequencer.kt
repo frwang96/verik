@@ -75,7 +75,6 @@ import io.verik.compiler.transform.lower.PropertyTransformerStage
 import io.verik.compiler.transform.post.AssignmentTransformerStage
 import io.verik.compiler.transform.post.BinaryExpressionTransformerStage
 import io.verik.compiler.transform.post.BlockExpressionTransformerStage
-import io.verik.compiler.transform.post.CallExpressionTransformerStage
 import io.verik.compiler.transform.post.PackageNameTransformerStage
 import io.verik.compiler.transform.post.ParenthesisInsertionTransformerStage
 import io.verik.compiler.transform.post.ScopeExpressionInsertionTransformerStage
@@ -197,7 +196,6 @@ object StageSequencer {
         stageSequence.add(StageType.POST_TRANSFORM, BinaryExpressionTransformerStage)
         stageSequence.add(StageType.POST_TRANSFORM, PackageNameTransformerStage)
         stageSequence.add(StageType.POST_TRANSFORM, ScopeExpressionInsertionTransformerStage)
-        stageSequence.add(StageType.POST_TRANSFORM, CallExpressionTransformerStage)
         stageSequence.add(StageType.POST_TRANSFORM, BlockExpressionTransformerStage)
         stageSequence.add(StageType.POST_TRANSFORM, ParenthesisInsertionTransformerStage)
 

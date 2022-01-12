@@ -16,8 +16,8 @@
 
 package io.verik.compiler.transform.pre
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
@@ -87,7 +87,7 @@ object BinaryExpressionReducerStage : ProjectStage() {
                 val reference = referenceMap[ReducerEntry(receiverDeclaration, selectorDeclaration, kind)]
                 if (reference != null) {
                     binaryExpression.replace(
-                        EKtCallExpression(
+                        ECallExpression(
                             binaryExpression.location,
                             binaryExpression.type,
                             reference,

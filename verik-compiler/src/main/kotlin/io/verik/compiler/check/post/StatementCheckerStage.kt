@@ -16,13 +16,13 @@
 
 package io.verik.compiler.check.post
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.ESvBlockExpression
-import io.verik.compiler.ast.element.sv.ESvCallExpression
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
@@ -55,7 +55,7 @@ object StatementCheckerStage : ProjectStage() {
                     statement.kind.isIncrementOrDecrement()
                 is ESvBinaryExpression ->
                     statement.kind in listOf(SvBinaryOperatorKind.ASSIGN, SvBinaryOperatorKind.ARROW_ASSIGN)
-                is ESvCallExpression -> true
+                is ECallExpression -> true
                 is EIfExpression -> true
                 is EEventControlExpression -> true
                 is EDelayExpression -> true

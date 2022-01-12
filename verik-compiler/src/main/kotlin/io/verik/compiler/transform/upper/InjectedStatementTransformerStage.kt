@@ -16,7 +16,7 @@
 
 package io.verik.compiler.transform.upper
 
-import io.verik.compiler.ast.element.kt.EKtCallExpression
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.sv.EInjectedStatement
 import io.verik.compiler.ast.property.StringEntry
@@ -34,8 +34,8 @@ object InjectedStatementTransformerStage : ProjectStage() {
 
     private object InjectedStatementTransformerVisitor : TreeVisitor() {
 
-        override fun visitKtCallExpression(callExpression: EKtCallExpression) {
-            super.visitKtCallExpression(callExpression)
+        override fun visitCallExpression(callExpression: ECallExpression) {
+            super.visitCallExpression(callExpression)
             if (callExpression.reference == Core.Vk.F_sv_String) {
                 val expression = callExpression.valueArguments[0]
                 if (expression is EStringTemplateExpression) {
@@ -44,7 +44,7 @@ object InjectedStatementTransformerStage : ProjectStage() {
                         expression.entries
                     )
                     callExpression.replace(injectedStatement)
-                } else if (expression is EKtCallExpression && expression.reference == Core.Kt.Text.F_trimIndent) {
+                } else if (expression is ECallExpression && expression.reference == Core.Kt.Text.F_trimIndent) {
                     val receiver = expression.receiver!!
                     if (receiver is EStringTemplateExpression) {
                         val injectedStatement = EInjectedStatement(

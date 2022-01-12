@@ -17,6 +17,7 @@
 package io.verik.compiler.resolve
 
 import io.verik.compiler.ast.element.common.EAbstractProperty
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
@@ -27,7 +28,6 @@ import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
@@ -50,13 +50,13 @@ object TypeConstraintCollector {
 
     fun collect(receiverExpression: EReceiverExpression): List<TypeConstraint> {
         return when (receiverExpression) {
-            is EKtCallExpression -> collectCallExpression(receiverExpression)
+            is ECallExpression -> collectCallExpression(receiverExpression)
             is EReferenceExpression -> collectReferenceExpression(receiverExpression)
             else -> Messages.INTERNAL_ERROR.on(receiverExpression, "Call expression or reference expression expected")
         }
     }
 
-    private fun collectCallExpression(callExpression: EKtCallExpression): List<TypeConstraint> {
+    private fun collectCallExpression(callExpression: ECallExpression): List<TypeConstraint> {
         val reference = callExpression.reference
         if (reference !is EDeclaration)
             return listOf()
@@ -191,8 +191,8 @@ object TypeConstraintCollector {
             }
         }
 
-        override fun visitKtCallExpression(callExpression: EKtCallExpression) {
-            super.visitKtCallExpression(callExpression)
+        override fun visitCallExpression(callExpression: ECallExpression) {
+            super.visitCallExpression(callExpression)
             val reference = callExpression.reference
             if (reference is CoreFunctionDeclaration) {
                 typeConstraints.addAll(reference.getTypeConstraints(callExpression))

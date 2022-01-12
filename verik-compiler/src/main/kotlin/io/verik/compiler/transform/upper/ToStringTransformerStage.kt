@@ -16,9 +16,9 @@
 
 package io.verik.compiler.transform.upper
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EReferenceExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.sv.EEnum
 import io.verik.compiler.ast.element.sv.EStringExpression
@@ -48,7 +48,7 @@ object ToStringTransformerStage : ProjectStage() {
                     expression.replace(stringExpression)
                 } else {
                     val parent = expression.parentNotNull()
-                    val callExpression = EKtCallExpression(
+                    val callExpression = ECallExpression(
                         expression.location,
                         Core.Kt.C_String.toType(),
                         Target.F_name,
@@ -69,8 +69,8 @@ object ToStringTransformerStage : ProjectStage() {
             }
         }
 
-        override fun visitKtCallExpression(callExpression: EKtCallExpression) {
-            super.visitKtCallExpression(callExpression)
+        override fun visitCallExpression(callExpression: ECallExpression) {
+            super.visitCallExpression(callExpression)
             when (callExpression.reference) {
                 Core.Kt.Io.F_print_Any -> transform(callExpression.valueArguments[0])
                 Core.Kt.Io.F_println_Any -> transform(callExpression.valueArguments[0])

@@ -16,11 +16,11 @@
 
 package io.verik.compiler.common
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtBlockExpression
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.constant.BooleanConstantEvaluator
@@ -32,7 +32,7 @@ object ExpressionEvaluator {
     fun evaluate(expression: EExpression): EExpression? {
         return when (expression) {
             is EKtBinaryExpression -> evaluateBinaryExpression(expression)
-            is EKtCallExpression -> evaluateCallExpression(expression)
+            is ECallExpression -> evaluateCallExpression(expression)
             is EIfExpression -> evaluateIfExpression(expression)
             is EInlineIfExpression -> evaluateInlineIfExpression(expression)
             else -> null
@@ -49,7 +49,7 @@ object ExpressionEvaluator {
         }
     }
 
-    private fun evaluateCallExpression(callExpression: EKtCallExpression): EExpression? {
+    private fun evaluateCallExpression(callExpression: ECallExpression): EExpression? {
         val reference = callExpression.reference
         if (reference is CoreFunctionDeclaration) {
             if (callExpression.type.isResolved() &&

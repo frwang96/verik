@@ -16,11 +16,11 @@
 
 package io.verik.compiler.resolve
 
+import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
-import io.verik.compiler.ast.element.kt.EKtCallExpression
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -63,8 +63,8 @@ object TypeResolvedCheckerStage : ProjectStage() {
             }
         }
 
-        override fun visitKtCallExpression(callExpression: EKtCallExpression) {
-            super.visitKtCallExpression(callExpression)
+        override fun visitCallExpression(callExpression: ECallExpression) {
+            super.visitCallExpression(callExpression)
             callExpression.typeArguments.forEach {
                 if (!it.isResolved()) {
                     Messages.UNRESOLVED_TYPE_ARGUMENT.on(callExpression)
