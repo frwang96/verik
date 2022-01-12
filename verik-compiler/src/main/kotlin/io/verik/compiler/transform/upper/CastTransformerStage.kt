@@ -16,13 +16,13 @@
 
 package io.verik.compiler.transform.upper
 
+import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EAsExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.common.ExpressionCopier
@@ -66,9 +66,9 @@ object CastTransformerStage : ProjectStage() {
                     ArrayList(),
                     ArrayList()
                 )
-                EKtBlockExpression.extract(isExpression, listOf(propertyStatement, negatedCallExpression))
+                EBlockExpression.extract(isExpression, listOf(propertyStatement, negatedCallExpression))
             } else {
-                EKtBlockExpression.extract(isExpression, listOf(propertyStatement, callExpression))
+                EBlockExpression.extract(isExpression, listOf(propertyStatement, callExpression))
             }
         }
 
@@ -119,7 +119,7 @@ object CastTransformerStage : ProjectStage() {
                 asExpression.location,
                 Core.Kt.C_Unit.toType(),
                 negatedCallExpression,
-                EKtBlockExpression.wrap(fatalCallExpression),
+                EBlockExpression.wrap(fatalCallExpression),
                 null
             )
             val extractedExpressions = listOf(
@@ -127,7 +127,7 @@ object CastTransformerStage : ProjectStage() {
                 ifExpression,
                 ExpressionCopier.deepCopy(referenceExpression)
             )
-            EKtBlockExpression.extract(asExpression, extractedExpressions)
+            EBlockExpression.extract(asExpression, extractedExpressions)
         }
     }
 }

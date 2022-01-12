@@ -22,6 +22,7 @@
 - Rewrite specialize and resolve stages to move type resolution after specialization.
 - New scheme for extracting expressions with `BlockExpressionReducerStage`.
 - Merge `KtCallExpression` and `SvCallExpression`.
+- Merge `KtBlockExpression` and `SvBlockExpression`.
 
 ## [0.1.11]
 ### Added

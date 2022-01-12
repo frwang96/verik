@@ -35,7 +35,7 @@ internal class FunctionInterpreterStageTest : BaseTest() {
                 }
             """.trimIndent(),
             FunctionInterpreterStage::class,
-            "AlwaysSeqBlock(f, EventControlExpression(*), KtBlockExpression(*))"
+            "AlwaysSeqBlock(f, EventControlExpression(*), BlockExpression(*))"
         ) { it.findDeclaration("f") }
     }
 
@@ -63,7 +63,7 @@ internal class FunctionInterpreterStageTest : BaseTest() {
                 }
             """.trimIndent(),
             FunctionInterpreterStage::class,
-            "InitialBlock(f, KtBlockExpression(*))"
+            "InitialBlock(f, BlockExpression(*))"
         ) { it.findDeclaration("f") }
     }
 

@@ -16,13 +16,12 @@
 
 package io.verik.compiler.transform.upper
 
-import io.verik.compiler.ast.element.common.EAbstractBlockExpression
+import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
@@ -61,7 +60,7 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
                     newIfExpression,
                     referenceExpression
                 )
-                EKtBlockExpression.extract(ifExpression, extractedExpressions)
+                EBlockExpression.extract(ifExpression, extractedExpressions)
             }
         }
 
@@ -90,7 +89,7 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
                     newWhenExpression,
                     referenceExpression
                 )
-                EKtBlockExpression.extract(whenExpression, extractedExpressions)
+                EBlockExpression.extract(whenExpression, extractedExpressions)
             }
         }
 
@@ -126,10 +125,7 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
             )
         }
 
-        private fun wrapAssignmentBlock(
-            expression: EAbstractBlockExpression,
-            property: ESvProperty
-        ): EAbstractBlockExpression {
+        private fun wrapAssignmentBlock(expression: EBlockExpression, property: ESvProperty): EBlockExpression {
             val index = expression.statements.lastIndex
             val wrappedExpression = wrapAssignmentExpression(expression.statements[index], property)
             wrappedExpression.parent = expression

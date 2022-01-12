@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast.element.kt
 
-import io.verik.compiler.ast.element.common.EAbstractBlockExpression
+import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.property.Type
@@ -28,7 +28,7 @@ class EKtConstructor(
     override val location: SourceLocation,
     override var name: String,
     override var type: Type,
-    override var body: EAbstractBlockExpression,
+    override var body: EBlockExpression,
     override var valueParameters: ArrayList<EKtValueParameter>,
     override var typeParameters: ArrayList<ETypeParameter>,
     var superTypeCallExpression: ECallExpression?

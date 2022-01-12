@@ -20,7 +20,6 @@ import io.verik.compiler.ast.element.kt.EAsExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtForStatement
@@ -68,11 +67,6 @@ object UntransformedElementCheckerStage : ProjectStage() {
         override fun visitKtValueParameter(valueParameter: EKtValueParameter) {
             super.visitKtValueParameter(valueParameter)
             Messages.INTERNAL_ERROR.on(valueParameter, "Value parameter ${valueParameter.name} $message")
-        }
-
-        override fun visitKtBlockExpression(blockExpression: EKtBlockExpression) {
-            super.visitKtBlockExpression(blockExpression)
-            Messages.INTERNAL_ERROR.on(blockExpression, "Block expression $message")
         }
 
         override fun visitKtUnaryExpression(unaryExpression: EKtUnaryExpression) {

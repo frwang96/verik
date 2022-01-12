@@ -36,7 +36,7 @@ internal class ForStatementReducerStageTest : BaseTest() {
                 CallExpression(
                     Unit, forEach,
                     CallExpression(IntRange, until, *, [*], []),
-                    [FunctionLiteralExpression(Function, [KtValueParameter(*)], KtBlockExpression(*))],
+                    [FunctionLiteralExpression(Function, [KtValueParameter(*)], BlockExpression(*))],
                     [Int]
                 )
             """.trimIndent()

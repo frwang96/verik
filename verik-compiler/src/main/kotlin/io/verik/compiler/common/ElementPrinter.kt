@@ -16,6 +16,7 @@
 
 package io.verik.compiler.common
 
+import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EElement
@@ -37,7 +38,6 @@ import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtConstructor
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
@@ -82,7 +82,6 @@ import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.EStructLiteralExpression
 import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
-import io.verik.compiler.ast.element.sv.ESvBlockExpression
 import io.verik.compiler.ast.element.sv.ESvClass
 import io.verik.compiler.ast.element.sv.ESvEnumEntry
 import io.verik.compiler.ast.element.sv.ESvForStatement
@@ -153,6 +152,8 @@ class ElementPrinter : Visitor() {
             build(typeParameter.type.toString())
         }
     }
+
+//  CLASS  /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     override fun visitKtClass(`class`: EKtClass) {
         build("KtClass") {
@@ -231,6 +232,8 @@ class ElementPrinter : Visitor() {
         }
     }
 
+//  FUNCTION  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     override fun visitKtFunction(function: EKtFunction) {
         build("KtFunction") {
             build(function.name)
@@ -303,6 +306,8 @@ class ElementPrinter : Visitor() {
             build(alwaysSeqBlock.body)
         }
     }
+
+//  PROPERTY  //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     override fun visitInjectedProperty(injectedProperty: EInjectedProperty) {
         build("InjectedProperty") {
@@ -399,15 +404,10 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitKtBlockExpression(blockExpression: EKtBlockExpression) {
-        build("KtBlockExpression") {
-            build(blockExpression.type.toString())
-            build(blockExpression.statements)
-        }
-    }
+//  EXPRESSION  ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitSvBlockExpression(blockExpression: ESvBlockExpression) {
-        build("SvBlockExpression") {
+    override fun visitBlockExpression(blockExpression: EBlockExpression) {
+        build("BlockExpression") {
             build(blockExpression.type.toString())
             build(blockExpression.statements)
         }

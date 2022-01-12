@@ -16,8 +16,8 @@
 
 package io.verik.compiler.ast.element.sv
 
+import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.CaseEntry
 import io.verik.compiler.ast.property.SerializationType
@@ -57,7 +57,7 @@ class ECaseStatement(
         }
     }
 
-    override fun childBlockExpressionShouldBeReduced(blockExpression: EKtBlockExpression): Boolean {
+    override fun childBlockExpressionShouldBeReduced(blockExpression: EBlockExpression): Boolean {
         return (blockExpression == subject)
     }
 

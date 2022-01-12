@@ -30,7 +30,7 @@ internal class ExpressionCasterTest : BaseTest() {
                 fun f() {}
             """.trimIndent(),
             CasterStage::class,
-            "KtFunction(f, Unit, KtBlockExpression(Unit, []), [], [], [], 0)"
+            "KtFunction(f, Unit, BlockExpression(Unit, []), [], [], [], 0)"
         ) { it.findDeclaration("f") }
     }
 
@@ -311,8 +311,8 @@ internal class ExpressionCasterTest : BaseTest() {
                 IfExpression(
                     Int,
                     ReferenceExpression(Boolean, x, null),
-                    KtBlockExpression(Int, [ConstantExpression(*)]),
-                    KtBlockExpression(Int, [ConstantExpression(*)])
+                    BlockExpression(Int, [ConstantExpression(*)]),
+                    BlockExpression(Int, [ConstantExpression(*)])
                 )
             """.trimIndent()
         ) { it.findExpression("y") }
@@ -328,7 +328,7 @@ internal class ExpressionCasterTest : BaseTest() {
                 }
             """.trimIndent(),
             CasterStage::class,
-            "WhileStatement(Unit, ConstantExpression(*), KtBlockExpression(*), 0)"
+            "WhileStatement(Unit, ConstantExpression(*), BlockExpression(*), 0)"
         ) { it.findExpression("f") }
     }
 
@@ -342,7 +342,7 @@ internal class ExpressionCasterTest : BaseTest() {
                 }
             """.trimIndent(),
             CasterStage::class,
-            "WhileStatement(Unit, ConstantExpression(*), KtBlockExpression(*), 1)"
+            "WhileStatement(Unit, ConstantExpression(*), BlockExpression(*), 1)"
         ) { it.findExpression("f") }
     }
 
@@ -362,7 +362,7 @@ internal class ExpressionCasterTest : BaseTest() {
                     Unit,
                     KtValueParameter(y, Boolean, [], 0, 0),
                     ReferenceExpression(*),
-                    KtBlockExpression(Unit, [])
+                    BlockExpression(Unit, [])
                 )
             """.trimIndent()
         ) { it.findExpression("f") }
@@ -383,7 +383,7 @@ internal class ExpressionCasterTest : BaseTest() {
                     Unit,
                     KtValueParameter(y, Boolean, [], 0, 0),
                     ReferenceExpression(*),
-                    KtBlockExpression(Unit, [*])
+                    BlockExpression(Unit, [*])
                 )
             """.trimIndent()
         ) { it.findExpression("f") }

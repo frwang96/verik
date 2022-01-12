@@ -16,13 +16,13 @@
 
 package io.verik.compiler.check.post
 
+import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.sv.EDelayExpression
 import io.verik.compiler.ast.element.sv.EEventControlExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
-import io.verik.compiler.ast.element.sv.ESvBlockExpression
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
@@ -39,8 +39,8 @@ object StatementCheckerStage : ProjectStage() {
 
     private object StatementCheckerVisitor : TreeVisitor() {
 
-        override fun visitSvBlockExpression(blockExpression: ESvBlockExpression) {
-            super.visitSvBlockExpression(blockExpression)
+        override fun visitBlockExpression(blockExpression: EBlockExpression) {
+            super.visitBlockExpression(blockExpression)
             blockExpression.statements.forEach {
                 if (!isValid(it))
                     Messages.INVALID_STATEMENT.on(it)

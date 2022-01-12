@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,42 +14,52 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.kt
+package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.element.common.EAbstractBlockExpression
-import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.ast.property.Type
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
+import io.verik.compiler.common.replaceIfContains
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
 
-class EKtBlockExpression(
+class EBlockExpression(
     override val location: SourceLocation,
-    override val endLocation: SourceLocation,
+    val endLocation: SourceLocation,
     override var type: Type,
-    override var statements: ArrayList<EExpression>
-) : EAbstractBlockExpression() {
+    var statements: ArrayList<EExpression>
+) : EExpression(), ExpressionContainer {
 
-    override val serializationType = SerializationType.INTERNAL
+    override val serializationType = SerializationType.STATEMENT
 
     init {
         statements.forEach { it.parent = this }
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitKtBlockExpression(this)
+        visitor.visitBlockExpression(this)
+    }
+
+    override fun acceptChildren(visitor: TreeVisitor) {
+        statements.forEach { it.accept(visitor) }
+    }
+
+    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
+        newExpression.parent = this
+        return statements.replaceIfContains(oldExpression, newExpression)
     }
 
     companion object {
 
-        fun empty(location: SourceLocation): EKtBlockExpression {
-            return EKtBlockExpression(location, location, Core.Kt.C_Unit.toType(), ArrayList())
+        fun empty(location: SourceLocation): EBlockExpression {
+            return EBlockExpression(location, location, Core.Kt.C_Unit.toType(), ArrayList())
         }
 
-        fun wrap(expression: EExpression): EKtBlockExpression {
-            return if (expression !is EKtBlockExpression) {
-                EKtBlockExpression(
+        fun wrap(expression: EExpression): EBlockExpression {
+            return if (expression !is EBlockExpression) {
+                EBlockExpression(
                     expression.location,
                     expression.location,
                     expression.type.copy(),
@@ -59,7 +69,7 @@ class EKtBlockExpression(
         }
 
         fun extract(expression: EExpression, extractedExpressions: List<EExpression>) {
-            val blockExpression = EKtBlockExpression(
+            val blockExpression = EBlockExpression(
                 expression.location,
                 expression.location,
                 expression.type.copy(),

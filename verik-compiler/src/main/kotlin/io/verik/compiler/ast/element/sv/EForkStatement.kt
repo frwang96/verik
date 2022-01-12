@@ -16,9 +16,8 @@
 
 package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.element.common.EAbstractBlockExpression
+import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.common.TreeVisitor
@@ -28,7 +27,7 @@ import io.verik.compiler.target.common.Target
 
 class EForkStatement(
     override val location: SourceLocation,
-    var body: EAbstractBlockExpression
+    var body: EBlockExpression
 ) : EExpression(), ExpressionContainer {
 
     override var type = Target.C_Void.toType()
@@ -47,7 +46,7 @@ class EForkStatement(
         body.accept(visitor)
     }
 
-    override fun childBlockExpressionShouldBeReduced(blockExpression: EKtBlockExpression): Boolean {
+    override fun childBlockExpressionShouldBeReduced(blockExpression: EBlockExpression): Boolean {
         return false
     }
 

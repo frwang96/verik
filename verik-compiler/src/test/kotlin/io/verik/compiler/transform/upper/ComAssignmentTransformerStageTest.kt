@@ -69,7 +69,7 @@ internal class ComAssignmentTransformerStageTest : BaseTest() {
                         SvProperty(x, Boolean, null, 1, 1, null),
                         AlwaysComBlock(
                             <tmp>,
-                            KtBlockExpression(
+                            BlockExpression(
                                 Unit,
                                 [KtBinaryExpression(*, ReferenceExpression(*, x, null), ConstantExpression(*), EQ)]
                             )

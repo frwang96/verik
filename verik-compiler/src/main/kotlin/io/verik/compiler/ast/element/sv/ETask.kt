@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast.element.sv
 
-import io.verik.compiler.ast.element.common.EAbstractBlockExpression
+import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
@@ -24,7 +24,7 @@ import io.verik.compiler.message.SourceLocation
 class ETask(
     override val location: SourceLocation,
     override var name: String,
-    override var body: EAbstractBlockExpression,
+    override var body: EBlockExpression,
     override var valueParameters: ArrayList<ESvValueParameter>
 ) : ESvAbstractFunction() {
 

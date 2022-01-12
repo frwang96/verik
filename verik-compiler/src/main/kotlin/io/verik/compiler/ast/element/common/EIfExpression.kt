@@ -16,7 +16,6 @@
 
 package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.ast.property.Type
@@ -28,8 +27,8 @@ class EIfExpression(
     override val location: SourceLocation,
     override var type: Type,
     var condition: EExpression,
-    var thenExpression: EAbstractBlockExpression?,
-    var elseExpression: EAbstractBlockExpression?
+    var thenExpression: EBlockExpression?,
+    var elseExpression: EBlockExpression?
 ) : EExpression(), ExpressionContainer {
 
     override val serializationType = SerializationType.STATEMENT
@@ -50,7 +49,7 @@ class EIfExpression(
         elseExpression?.accept(visitor)
     }
 
-    override fun childBlockExpressionShouldBeReduced(blockExpression: EKtBlockExpression): Boolean {
+    override fun childBlockExpressionShouldBeReduced(blockExpression: EBlockExpression): Boolean {
         return (blockExpression == condition)
     }
 

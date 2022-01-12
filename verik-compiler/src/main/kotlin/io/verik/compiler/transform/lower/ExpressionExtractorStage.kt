@@ -16,10 +16,10 @@
 
 package io.verik.compiler.transform.lower
 
+import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.sv.EConstantPartSelectExpression
 import io.verik.compiler.ast.element.sv.EStreamingExpression
 import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
@@ -48,7 +48,7 @@ object ExpressionExtractorStage : ProjectStage() {
             val arrayReplacement = ExpressionCopier.shallowCopy(array)
             val (propertyStatement, referenceExpression) =
                 getPropertyStatementAndReferenceExpression(arrayReplacement)
-            EKtBlockExpression.extract(array, listOf(propertyStatement, referenceExpression))
+            EBlockExpression.extract(array, listOf(propertyStatement, referenceExpression))
         }
 
         override fun visitStreamingExpression(streamingExpression: EStreamingExpression) {
@@ -57,7 +57,7 @@ object ExpressionExtractorStage : ProjectStage() {
                 val streamingExpressionReplacement = ExpressionCopier.shallowCopy(streamingExpression)
                 val (propertyStatement, referenceExpression) =
                     getPropertyStatementAndReferenceExpression(streamingExpressionReplacement)
-                EKtBlockExpression.extract(streamingExpression, listOf(propertyStatement, referenceExpression))
+                EBlockExpression.extract(streamingExpression, listOf(propertyStatement, referenceExpression))
             }
         }
 

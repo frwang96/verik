@@ -16,8 +16,8 @@
 
 package io.verik.compiler.transform.lower
 
+import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -32,12 +32,12 @@ object BlockExpressionReducerStage : ProjectStage() {
 
     private object BlockExpressionReducerVisitor : TreeVisitor() {
 
-        override fun visitKtBlockExpression(blockExpression: EKtBlockExpression) {
-            super.visitKtBlockExpression(blockExpression)
+        override fun visitBlockExpression(blockExpression: EBlockExpression) {
+            super.visitBlockExpression(blockExpression)
             val blockExpressionIndexerVisitor = BlockExpressionIndexerVisitor()
             val statements = ArrayList<EExpression>()
             for (statement in blockExpression.statements) {
-                if (statement is EKtBlockExpression) {
+                if (statement is EBlockExpression) {
                     statements.addAll(statement.statements)
                     continue
                 }
@@ -52,7 +52,7 @@ object BlockExpressionReducerStage : ProjectStage() {
             blockExpression.statements = statements
         }
 
-        private fun reduceBlockExpression(statements: ArrayList<EExpression>, blockExpression: EKtBlockExpression) {
+        private fun reduceBlockExpression(statements: ArrayList<EExpression>, blockExpression: EBlockExpression) {
             if (blockExpression.statements.isEmpty())
                 Messages.INTERNAL_ERROR.on(blockExpression, "Unexpected empty block expression")
             statements.addAll(blockExpression.statements.dropLast(1))
@@ -62,9 +62,9 @@ object BlockExpressionReducerStage : ProjectStage() {
 
     private class BlockExpressionIndexerVisitor : TreeVisitor() {
 
-        val reducibleBlockExpressions = ArrayList<EKtBlockExpression>()
+        val reducibleBlockExpressions = ArrayList<EBlockExpression>()
 
-        override fun visitKtBlockExpression(blockExpression: EKtBlockExpression) {
+        override fun visitBlockExpression(blockExpression: EBlockExpression) {
             val parent = blockExpression.parent
             if ((parent is EExpression && parent.childBlockExpressionShouldBeReduced(blockExpression)) ||
                 parent is ESvProperty

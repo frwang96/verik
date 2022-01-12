@@ -98,7 +98,7 @@ internal class ClassInterpreterStageTest : BaseTest() {
                         SvFunction(D_new, D, *, [], REGULAR, 1),
                         SvFunction(
                             D_init, Unit,
-                            KtBlockExpression(Unit, [CallExpression(Unit, C_init, SuperExpression(C), [], [])]),
+                            BlockExpression(Unit, [CallExpression(Unit, C_init, SuperExpression(C), [], [])]),
                             [], REGULAR, 0
                         )
                     ],

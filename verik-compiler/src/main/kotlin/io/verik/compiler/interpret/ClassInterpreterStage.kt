@@ -16,13 +16,13 @@
 
 package io.verik.compiler.interpret
 
+import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ESuperExpression
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtConstructor
 import io.verik.compiler.ast.element.sv.ESvClass
@@ -138,7 +138,7 @@ object ClassInterpreterStage : ProjectStage() {
                         superTypeCallExpression.valueArguments,
                         ArrayList()
                     )
-                    val body = initializer.body.cast<EKtBlockExpression>()
+                    val body = initializer.body.cast<EBlockExpression>()
                     callExpression.parent = body
                     body.statements.add(0, callExpression)
                 }
@@ -199,7 +199,12 @@ object ClassInterpreterStage : ProjectStage() {
                 location = constructor.location,
                 name = "${constructor.name}_new",
                 type = constructor.type,
-                body = EKtBlockExpression(constructor.location, constructor.location, Core.Kt.C_Unit.toType(), statements),
+                body = EBlockExpression(
+                    constructor.location,
+                    constructor.location,
+                    Core.Kt.C_Unit.toType(),
+                    statements
+                ),
                 valueParameters = ArrayList(valueParameters),
                 qualifierType = FunctionQualifierType.REGULAR,
                 isStatic = true

@@ -16,8 +16,8 @@
 
 package io.verik.compiler.cast
 
+import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
@@ -128,7 +128,7 @@ object DeclarationCastIndexerStage : ProjectStage() {
                 location = location,
                 name = name,
                 type = NullDeclaration.toType(),
-                body = EKtBlockExpression.empty(location),
+                body = EBlockExpression.empty(location),
                 valueParameters = ArrayList(),
                 typeParameters = ArrayList(),
                 annotationEntries = listOf(),

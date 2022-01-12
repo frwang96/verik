@@ -16,6 +16,7 @@
 
 package io.verik.compiler.serialize.source
 
+import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EIfExpression
@@ -44,7 +45,6 @@ import io.verik.compiler.ast.element.sv.EStructLiteralExpression
 import io.verik.compiler.ast.element.sv.ESvAbstractFunction
 import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
-import io.verik.compiler.ast.element.sv.ESvBlockExpression
 import io.verik.compiler.ast.element.sv.ESvForStatement
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
@@ -55,7 +55,7 @@ import io.verik.compiler.ast.property.LiteralStringEntry
 
 object ExpressionSerializer {
 
-    fun serializeSvBlockExpression(blockExpression: ESvBlockExpression, serializeContext: SerializeContext) {
+    fun serializeBlockExpression(blockExpression: EBlockExpression, serializeContext: SerializeContext) {
         serializeContext.appendLine("begin")
         serializeContext.indent {
             blockExpression.statements.forEach { serializeContext.serializeAsStatement(it) }

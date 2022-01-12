@@ -16,6 +16,7 @@
 
 package io.verik.compiler.specialize
 
+import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EElement
@@ -31,7 +32,6 @@ import io.verik.compiler.ast.element.kt.EAsExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtFunction
@@ -67,8 +67,8 @@ object SpecializerCopier {
             is EKtValueParameter ->
                 copyKtValueParameter(element, typeArguments, specializeContext)
             // Expressions
-            is EKtBlockExpression ->
-                copyKtBlockExpression(element, typeArguments, specializeContext)
+            is EBlockExpression ->
+                copyBlockExpression(element, typeArguments, specializeContext)
             is EPropertyStatement ->
                 copyPropertyStatement(element, typeArguments, specializeContext)
             is EKtUnaryExpression ->
@@ -252,14 +252,14 @@ object SpecializerCopier {
         return copiedValueParameter
     }
 
-    private fun copyKtBlockExpression(
-        blockExpression: EKtBlockExpression,
+    private fun copyBlockExpression(
+        blockExpression: EBlockExpression,
         typeArguments: List<Type>,
         specializeContext: SpecializeContext
-    ): EKtBlockExpression {
+    ): EBlockExpression {
         val type = blockExpression.type.copy()
         val statements = blockExpression.statements.map { copy(it, typeArguments, specializeContext) }
-        return EKtBlockExpression(
+        return EBlockExpression(
             blockExpression.location,
             blockExpression.endLocation,
             type,

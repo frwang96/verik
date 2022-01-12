@@ -16,6 +16,7 @@
 
 package io.verik.compiler.cast
 
+import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
@@ -29,7 +30,6 @@ import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.common.EWhileStatement
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtEnumEntry
 import io.verik.compiler.ast.element.kt.EKtForStatement
@@ -172,7 +172,7 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
         return getExpression(expression.expression!!)
     }
 
-    override fun visitBlockExpression(expression: KtBlockExpression, data: Unit?): EKtBlockExpression {
+    override fun visitBlockExpression(expression: KtBlockExpression, data: Unit?): EBlockExpression {
         return ExpressionCaster.castKtBlockExpression(expression, castContext)
     }
 

@@ -16,12 +16,12 @@
 
 package io.verik.compiler.transform.upper
 
+import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.element.sv.ETask
@@ -68,7 +68,7 @@ object TaskReturnTransformerStage : ProjectStage() {
                     expression,
                     KtBinaryOperatorKind.EQ
                 )
-                EKtBlockExpression.extract(returnStatement, listOf(binaryExpression, newReturnStatement))
+                EBlockExpression.extract(returnStatement, listOf(binaryExpression, newReturnStatement))
             }
         }
     }
@@ -112,7 +112,7 @@ object TaskReturnTransformerStage : ProjectStage() {
                 newCallExpression,
                 ExpressionCopier.deepCopy(referenceExpression)
             )
-            EKtBlockExpression.extract(callExpression, extractedExpressions)
+            EBlockExpression.extract(callExpression, extractedExpressions)
         }
     }
 }

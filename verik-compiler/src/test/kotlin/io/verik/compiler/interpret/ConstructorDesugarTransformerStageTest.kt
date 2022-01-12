@@ -32,7 +32,7 @@ internal class ConstructorDesugarTransformerStageTest : BaseTest() {
             """
                 KtClass(
                     C, C,
-                    [KtConstructor(C, C, KtBlockExpression(Unit, []), [], [], null)],
+                    [KtConstructor(C, C, BlockExpression(Unit, []), [], [], null)],
                     [], [], 0, 0, 0, null, null
                 )
             """.trimIndent()
@@ -42,7 +42,7 @@ internal class ConstructorDesugarTransformerStageTest : BaseTest() {
     @Test
     fun `desugar primary constructor with property`() {
         val blockExpression = """
-            KtBlockExpression(
+            BlockExpression(
                 Unit,
                 [KtBinaryExpression(
                     Unit,

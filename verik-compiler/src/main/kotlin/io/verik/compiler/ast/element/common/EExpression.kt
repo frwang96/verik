@@ -17,7 +17,6 @@
 package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.property.ExpressionType
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
@@ -27,7 +26,7 @@ abstract class EExpression : ETypedElement() {
 
     abstract val serializationType: SerializationType
 
-    open fun childBlockExpressionShouldBeReduced(blockExpression: EKtBlockExpression): Boolean {
+    open fun childBlockExpressionShouldBeReduced(blockExpression: EBlockExpression): Boolean {
         return true
     }
 
@@ -39,7 +38,7 @@ abstract class EExpression : ETypedElement() {
     fun getExpressionType(): ExpressionType {
         return when (val parent = this.parent) {
             is EAbstractInitializedProperty -> ExpressionType.DIRECT_TYPED_SUBEXPRESSION
-            is EAbstractBlockExpression -> {
+            is EBlockExpression -> {
                 val parentParent = parent.parent
                 if (parentParent is EIfExpression && parent.statements.last() == this) {
                     parentParent.getExpressionType()

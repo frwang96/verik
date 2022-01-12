@@ -16,11 +16,11 @@
 
 package io.verik.compiler.common
 
+import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.constant.BooleanConstantEvaluator
@@ -65,7 +65,7 @@ object ExpressionEvaluator {
             true -> {
                 val thenExpression = ifExpression.thenExpression
                 when {
-                    thenExpression == null -> EKtBlockExpression.empty(ifExpression.location)
+                    thenExpression == null -> EBlockExpression.empty(ifExpression.location)
                     thenExpression.statements.size == 1 -> thenExpression.statements[0]
                     else -> thenExpression
                 }
@@ -73,7 +73,7 @@ object ExpressionEvaluator {
             false -> {
                 val elseExpression = ifExpression.elseExpression
                 when {
-                    elseExpression == null -> EKtBlockExpression.empty(ifExpression.location)
+                    elseExpression == null -> EBlockExpression.empty(ifExpression.location)
                     elseExpression.statements.size == 1 -> elseExpression.statements[0]
                     else -> elseExpression
                 }

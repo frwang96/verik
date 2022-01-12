@@ -16,7 +16,6 @@
 
 package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.common.TreeVisitor
@@ -27,7 +26,7 @@ import io.verik.compiler.message.SourceLocation
 class EWhileStatement(
     override val location: SourceLocation,
     var condition: EExpression,
-    var body: EAbstractBlockExpression,
+    var body: EBlockExpression,
     val isDoWhile: Boolean
 ) : EExpression(), ExpressionContainer {
 
@@ -49,7 +48,7 @@ class EWhileStatement(
         body.accept(visitor)
     }
 
-    override fun childBlockExpressionShouldBeReduced(blockExpression: EKtBlockExpression): Boolean {
+    override fun childBlockExpressionShouldBeReduced(blockExpression: EBlockExpression): Boolean {
         return (blockExpression == condition)
     }
 

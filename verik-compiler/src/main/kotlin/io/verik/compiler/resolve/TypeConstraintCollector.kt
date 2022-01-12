@@ -17,6 +17,7 @@
 package io.verik.compiler.resolve
 
 import io.verik.compiler.ast.element.common.EAbstractProperty
+import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
@@ -27,7 +28,6 @@ import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
@@ -140,8 +140,8 @@ object TypeConstraintCollector {
             }
         }
 
-        override fun visitKtBlockExpression(blockExpression: EKtBlockExpression) {
-            super.visitKtBlockExpression(blockExpression)
+        override fun visitBlockExpression(blockExpression: EBlockExpression) {
+            super.visitBlockExpression(blockExpression)
             if (blockExpression.statements.isNotEmpty() && blockExpression.type.reference != Core.Kt.C_Unit) {
                 val statement = blockExpression.statements.last()
                 typeConstraints.add(

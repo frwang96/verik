@@ -21,7 +21,7 @@ import io.verik.compiler.common.TreeVisitor
 
 abstract class EAbstractFunction : EDeclaration(), ExpressionContainer {
 
-    abstract var body: EAbstractBlockExpression
+    abstract var body: EBlockExpression
 
     override fun acceptChildren(visitor: TreeVisitor) {
         body.accept(visitor)

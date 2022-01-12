@@ -138,7 +138,7 @@ internal class SpecializerStageTest : BaseTest() {
                 val x = f<`8`>()
             """.trimIndent(),
             SpecializerStage::class,
-            "KtFunction(f_X_8, Unit, KtBlockExpression(*), [], [TypeParameter(X, `8`)], [], 0)"
+            "KtFunction(f_X_8, Unit, BlockExpression(*), [], [TypeParameter(X, `8`)], [], 0)"
         ) { it.findDeclaration("f_X_8") }
     }
 }

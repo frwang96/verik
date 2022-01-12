@@ -16,12 +16,12 @@
 
 package io.verik.compiler.interpret
 
+import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EThisExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
-import io.verik.compiler.ast.element.kt.EKtBlockExpression
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtConstructor
 import io.verik.compiler.ast.element.kt.EKtProperty
@@ -102,7 +102,7 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
         private fun getPrimaryConstructorBody(
             primaryConstructor: EPrimaryConstructor,
             properties: List<EKtProperty?>
-        ): EKtBlockExpression {
+        ): EBlockExpression {
             val statements = ArrayList<EExpression>()
             primaryConstructor.valueParameters.zip(properties).forEach { (valueParameter, property) ->
                 if (property != null) {
@@ -130,7 +130,7 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
                     )
                 }
             }
-            return EKtBlockExpression(
+            return EBlockExpression(
                 primaryConstructor.location,
                 primaryConstructor.location,
                 Core.Kt.C_Unit.toType(),
