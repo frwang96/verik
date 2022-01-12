@@ -258,7 +258,7 @@ object Messages {
         "String literal expected for injected property: $0"
     )
 
-//  MID TRANSFORM  /////////////////////////////////////////////////////////////////////////////////////////////////////
+//  UPPER TRANSFORM  ///////////////////////////////////////////////////////////////////////////////////////////////////
 
     val ILLEGAL_INJECTED_STATEMENT = ErrorMessageTemplate0(
         "String literal expected for injected statement"
@@ -270,10 +270,6 @@ object Messages {
 
     val COM_ASSIGNMENT_NO_INITIALIZER = ErrorMessageTemplate0(
         "Initializer expected for combinational assignment"
-    )
-
-    val UNABLE_TO_EXTRACT = ErrorMessageTemplate0(
-        "Unable to extract expression"
     )
 
 //  REORDER  ///////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -42,7 +42,7 @@ module M;
         f0();
         f1(.x(8'h00), .__return(__0));
         x = __0;
-        $display(x);
+        $display($sformatf("%02h", x));
     end : f2
 
 endmodule : M

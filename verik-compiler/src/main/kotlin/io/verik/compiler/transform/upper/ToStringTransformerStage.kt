@@ -22,8 +22,8 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.sv.EEnum
-import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.property.ExpressionStringEntry
+import io.verik.compiler.ast.property.LiteralStringEntry
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
@@ -41,11 +41,11 @@ object ToStringTransformerStage : ProjectStage() {
         private fun transform(expression: EExpression) {
             if (expression.type.reference is EEnum) {
                 if (expression is EReferenceExpression && expression.reference is EEnumEntry) {
-                    val stringExpression = EStringExpression(
+                    val stringTemplateExpression = EStringTemplateExpression(
                         expression.location,
-                        expression.reference.name
+                        listOf(LiteralStringEntry(expression.reference.name))
                     )
-                    expression.replace(stringExpression)
+                    expression.replace(stringTemplateExpression)
                 } else {
                     val parent = expression.parentNotNull()
                     val callExpression = ECallExpression(

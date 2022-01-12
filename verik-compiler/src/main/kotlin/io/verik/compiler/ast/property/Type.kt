@@ -29,6 +29,7 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreClassDeclaration
 import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
+import io.verik.compiler.target.common.Target
 import io.verik.compiler.target.common.TargetClassDeclaration
 
 class Type(
@@ -85,6 +86,8 @@ class Type(
         return when (reference) {
             Core.Vk.C_Ubit -> arguments[0].asCardinalValue(element)
             Core.Vk.C_Sbit -> arguments[0].asCardinalValue(element)
+            Target.C_Ubit -> arguments[0].asCardinalValue(element)
+            Target.C_Sbit -> arguments[0].asCardinalValue(element)
             else -> Messages.INTERNAL_ERROR.on(element, "Bit type expected: $this")
         }
     }

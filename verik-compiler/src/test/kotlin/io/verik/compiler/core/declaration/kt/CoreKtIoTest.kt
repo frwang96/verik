@@ -40,8 +40,8 @@ internal class CoreKtIoTest : CoreDeclarationTest() {
             """
                 function automatic void f();
                     ${'$'}write("");
-                    ${'$'}write(1'b0);
-                    ${'$'}write(0);
+                    ${'$'}write(${'$'}sformatf("%b", 1'b0));
+                    ${'$'}write(${'$'}sformatf("%0d", 0));
                 endfunction : f
             """.trimIndent()
         )
@@ -68,8 +68,8 @@ internal class CoreKtIoTest : CoreDeclarationTest() {
                 function automatic void f();
                     ${'$'}display();
                     ${'$'}display("");
-                    ${'$'}display(1'b0);
-                    ${'$'}display(0);
+                    ${'$'}display(${'$'}sformatf("%b", 1'b0));
+                    ${'$'}display(${'$'}sformatf("%0d", 0));
                 endfunction : f
             """.trimIndent()
         )

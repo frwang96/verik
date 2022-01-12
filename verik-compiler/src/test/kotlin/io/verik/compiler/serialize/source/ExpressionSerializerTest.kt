@@ -170,7 +170,7 @@ internal class ExpressionSerializerTest : BaseTest() {
                     int x = 0;
                 
                     virtual function automatic void f();
-                        ${'$'}display(this.x);
+                        ${'$'}display(${'$'}sformatf("%0d", this.x));
                     endfunction : f
                 
                 endclass : C

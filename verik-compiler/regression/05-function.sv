@@ -34,8 +34,8 @@ module M;
     endfunction : f1
 
     initial begin : f2
-        $display(f0());
-        $display(f1(.x(8'h00)));
+        $display($sformatf("%b", f0()));
+        $display($sformatf("%02h", f1(.x(8'h00))));
     end : f2
 
 endmodule : M
