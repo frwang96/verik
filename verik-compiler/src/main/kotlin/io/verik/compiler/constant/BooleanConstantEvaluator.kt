@@ -22,29 +22,42 @@ import io.verik.compiler.ast.element.common.EExpression
 object BooleanConstantEvaluator {
 
     fun binaryAndBoolean(original: EExpression, left: EExpression, right: EExpression): EExpression? {
-        val leftBoolean = ConstantNormalizer.parseBooleanOrNull(left)
-        val rightBoolean = ConstantNormalizer.parseBooleanOrNull(right)
+        val leftKind = ConstantNormalizer.parseBooleanOrNull(left)
+        val rightKind = ConstantNormalizer.parseBooleanOrNull(right)
         return when {
-            leftBoolean == false || rightBoolean == false -> ConstantBuilder.buildBoolean(original, false)
-            leftBoolean == true -> right
-            rightBoolean == true -> left
+            leftKind == BooleanConstantKind.FALSE || rightKind == BooleanConstantKind.FALSE ->
+                ConstantBuilder.buildBoolean(original, BooleanConstantKind.FALSE)
+            leftKind == BooleanConstantKind.TRUE -> right
+            rightKind == BooleanConstantKind.TRUE -> left
+            leftKind != null && leftKind.isUnknownOrFloating() ->
+                ConstantBuilder.buildBoolean(original, BooleanConstantKind.UNKNOWN)
+            rightKind != null && rightKind.isUnknownOrFloating() ->
+                ConstantBuilder.buildBoolean(original, BooleanConstantKind.UNKNOWN)
             else -> null
         }
     }
 
     fun binaryOrBoolean(original: EExpression, left: EExpression, right: EExpression): EExpression? {
-        val leftBoolean = ConstantNormalizer.parseBooleanOrNull(left)
-        val rightBoolean = ConstantNormalizer.parseBooleanOrNull(right)
+        val leftKind = ConstantNormalizer.parseBooleanOrNull(left)
+        val rightKind = ConstantNormalizer.parseBooleanOrNull(right)
         return when {
-            leftBoolean == true || rightBoolean == true -> ConstantBuilder.buildBoolean(original, true)
-            leftBoolean == false -> right
-            rightBoolean == false -> left
+            leftKind == BooleanConstantKind.TRUE || rightKind == BooleanConstantKind.TRUE ->
+                ConstantBuilder.buildBoolean(original, BooleanConstantKind.TRUE)
+            leftKind == BooleanConstantKind.FALSE -> right
+            rightKind == BooleanConstantKind.FALSE -> left
+            leftKind != null && leftKind.isUnknownOrFloating() ->
+                ConstantBuilder.buildBoolean(original, BooleanConstantKind.UNKNOWN)
+            rightKind != null && rightKind.isUnknownOrFloating() ->
+                ConstantBuilder.buildBoolean(original, BooleanConstantKind.UNKNOWN)
             else -> null
         }
     }
 
     fun not(original: EExpression, expression: EConstantExpression): EConstantExpression {
-        val boolean = ConstantNormalizer.parseBoolean(expression)
-        return ConstantBuilder.buildBoolean(original, !boolean)
+        return when (ConstantNormalizer.parseBoolean(expression)) {
+            BooleanConstantKind.TRUE -> ConstantBuilder.buildBoolean(original, BooleanConstantKind.FALSE)
+            BooleanConstantKind.FALSE -> ConstantBuilder.buildBoolean(original, BooleanConstantKind.TRUE)
+            else -> ConstantBuilder.buildBoolean(original, BooleanConstantKind.UNKNOWN)
+        }
     }
 }

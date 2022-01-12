@@ -24,6 +24,7 @@ import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.constant.BooleanConstantEvaluator
+import io.verik.compiler.constant.BooleanConstantKind
 import io.verik.compiler.constant.ConstantNormalizer
 import io.verik.compiler.core.common.CoreFunctionDeclaration
 
@@ -58,7 +59,7 @@ object ExpressionEvaluator {
 
     private fun evaluateIfExpression(ifExpression: EIfExpression): EExpression? {
         return when (ConstantNormalizer.parseBooleanOrNull(ifExpression.condition)) {
-            true -> {
+            BooleanConstantKind.TRUE -> {
                 val thenExpression = ifExpression.thenExpression
                 when {
                     thenExpression == null -> EBlockExpression.empty(ifExpression.location)
@@ -66,7 +67,7 @@ object ExpressionEvaluator {
                     else -> thenExpression
                 }
             }
-            false -> {
+            BooleanConstantKind.FALSE -> {
                 val elseExpression = ifExpression.elseExpression
                 when {
                     elseExpression == null -> EBlockExpression.empty(ifExpression.location)
@@ -80,8 +81,8 @@ object ExpressionEvaluator {
 
     private fun evaluateInlineIfExpression(inlineIfExpression: EInlineIfExpression): EExpression? {
         return when (ConstantNormalizer.parseBooleanOrNull(inlineIfExpression.condition)) {
-            true -> inlineIfExpression.thenExpression
-            false -> inlineIfExpression.elseExpression
+            BooleanConstantKind.TRUE -> inlineIfExpression.thenExpression
+            BooleanConstantKind.FALSE -> inlineIfExpression.elseExpression
             else -> null
         }
     }

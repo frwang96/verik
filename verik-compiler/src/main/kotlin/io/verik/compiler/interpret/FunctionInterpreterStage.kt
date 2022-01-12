@@ -33,6 +33,7 @@ import io.verik.compiler.ast.element.sv.ETask
 import io.verik.compiler.ast.property.FunctionQualifierType
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.constant.BooleanConstantKind
 import io.verik.compiler.constant.ConstantBuilder
 import io.verik.compiler.core.common.AnnotationEntries
 import io.verik.compiler.core.common.Core
@@ -97,7 +98,7 @@ object FunctionInterpreterStage : ProjectStage() {
             val body = EBlockExpression.empty(function.location)
             val eventControlExpression = EEventControlExpression(
                 function.location,
-                ConstantBuilder.buildBoolean(function.location, false)
+                ConstantBuilder.buildBoolean(function.location, BooleanConstantKind.FALSE)
             )
             return EAlwaysSeqBlock(
                 function.location,

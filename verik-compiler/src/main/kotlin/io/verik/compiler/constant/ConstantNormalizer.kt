@@ -28,14 +28,14 @@ import java.math.BigInteger
 object ConstantNormalizer {
 
     fun normalizeBoolean(constantExpression: EConstantExpression): EConstantExpression {
-        val boolean = when (val value = constantExpression.value) {
-            "false" -> false
-            "true" -> true
+        val kind = when (val value = constantExpression.value) {
+            "false" -> BooleanConstantKind.FALSE
+            "true" -> BooleanConstantKind.TRUE
             else -> {
                 Messages.INTERNAL_ERROR.on(SourceLocation.NULL, "Unrecognized boolean value: $value")
             }
         }
-        return ConstantBuilder.buildBoolean(constantExpression, boolean)
+        return ConstantBuilder.buildBoolean(constantExpression, kind)
     }
 
     fun normalizeInt(constantExpression: EConstantExpression): EConstantExpression {
@@ -75,17 +75,19 @@ object ConstantNormalizer {
         return ConstantBuilder.buildBitConstant(expression.location, bitConstant)
     }
 
-    fun parseBoolean(constantExpression: EConstantExpression): Boolean {
+    fun parseBoolean(constantExpression: EConstantExpression): BooleanConstantKind {
         return when (val value = constantExpression.value) {
-            "1'b0" -> false
-            "1'b1" -> true
+            "1'b0" -> BooleanConstantKind.FALSE
+            "1'b1" -> BooleanConstantKind.TRUE
+            "1'bx" -> BooleanConstantKind.UNKNOWN
+            "1'bz" -> BooleanConstantKind.FLOATING
             else -> {
                 Messages.INTERNAL_ERROR.on(SourceLocation.NULL, "Unrecognized boolean value: $value")
             }
         }
     }
 
-    fun parseBooleanOrNull(expression: EExpression): Boolean? {
+    fun parseBooleanOrNull(expression: EExpression): BooleanConstantKind? {
         return if (expression is EConstantExpression) {
             parseBoolean(expression)
         } else null

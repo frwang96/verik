@@ -30,6 +30,7 @@ import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.common.ExpressionEvaluator
 import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.constant.BooleanConstantKind
 import io.verik.compiler.constant.ConstantNormalizer
 import io.verik.compiler.transform.upper.ConstantPropagator
 
@@ -53,14 +54,15 @@ object ExpressionEliminatorSubstage : SpecializerSubstage() {
             condition.accept(ExpressionEvaluatorVisitor)
             val evaluatedCondition = blockExpression.statements[0]
             when (ConstantNormalizer.parseBooleanOrNull(evaluatedCondition)) {
-                true -> {
+                BooleanConstantKind.TRUE -> {
                     val expression = getExpressionFromBlockExpression(ifExpression.thenExpression, ifExpression)
                     ifExpression.replace(expression)
                 }
-                false -> {
+                BooleanConstantKind.FALSE -> {
                     val expression = getExpressionFromBlockExpression(ifExpression.elseExpression, ifExpression)
                     ifExpression.replace(expression)
                 }
+                else -> {}
             }
         }
 

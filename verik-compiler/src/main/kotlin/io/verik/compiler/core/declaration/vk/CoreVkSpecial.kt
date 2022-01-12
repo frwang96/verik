@@ -22,6 +22,7 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.constant.BitComponent
 import io.verik.compiler.constant.BitConstant
+import io.verik.compiler.constant.BooleanConstantKind
 import io.verik.compiler.constant.ConstantBuilder
 import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
 import io.verik.compiler.core.common.Cardinal
@@ -74,7 +75,7 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
             val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
             if (value !in 0..1)
                 Messages.CARDINAL_NOT_BOOLEAN.on(callExpression, callExpression.typeArguments[0])
-            return ConstantBuilder.buildBoolean(callExpression, value != 0)
+            return ConstantBuilder.buildBoolean(callExpression, BooleanConstantKind.fromBoolean(value != 0))
         }
     }
 
@@ -218,14 +219,14 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
     val P_unknown = object : CorePropertyDeclaration(parent, "unknown") {
 
         override fun transform(referenceExpression: EReferenceExpression): EExpression {
-            return ConstantBuilder.buildBoolean(referenceExpression, true)
+            return ConstantBuilder.buildBoolean(referenceExpression, BooleanConstantKind.UNKNOWN)
         }
     }
 
     val P_floating = object : CorePropertyDeclaration(parent, "floating") {
 
         override fun transform(referenceExpression: EReferenceExpression): EExpression {
-            return ConstantBuilder.buildBoolean(referenceExpression, true)
+            return ConstantBuilder.buildBoolean(referenceExpression, BooleanConstantKind.FLOATING)
         }
     }
 }
