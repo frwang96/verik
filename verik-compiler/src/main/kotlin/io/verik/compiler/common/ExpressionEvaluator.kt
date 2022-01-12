@@ -32,12 +32,7 @@ object ExpressionEvaluator {
     fun evaluate(expression: EExpression): EExpression? {
         return when (expression) {
             is EKtBinaryExpression -> evaluateBinaryExpression(expression)
-            is EKtCallExpression -> {
-                val reference = expression.reference
-                if (reference is CoreFunctionDeclaration) {
-                    reference.evaluate(expression)
-                } else null
-            }
+            is EKtCallExpression -> evaluateCallExpression(expression)
             is EIfExpression -> evaluateIfExpression(expression)
             is EInlineIfExpression -> evaluateInlineIfExpression(expression)
             else -> null
@@ -54,10 +49,35 @@ object ExpressionEvaluator {
         }
     }
 
+    private fun evaluateCallExpression(callExpression: EKtCallExpression): EExpression? {
+        val reference = callExpression.reference
+        if (reference is CoreFunctionDeclaration) {
+            if (callExpression.type.isResolved() &&
+                callExpression.valueArguments.all { it.type.isResolved() } &&
+                callExpression.typeArguments.all { it.isResolved() }
+            ) return reference.evaluate(callExpression)
+        }
+        return null
+    }
+
     private fun evaluateIfExpression(ifExpression: EIfExpression): EExpression? {
         return when (ConstantNormalizer.parseBooleanOrNull(ifExpression.condition)) {
-            true -> ifExpression.thenExpression ?: EKtBlockExpression.empty(ifExpression.location)
-            false -> ifExpression.elseExpression ?: EKtBlockExpression.empty(ifExpression.location)
+            true -> {
+                val thenExpression = ifExpression.thenExpression
+                when {
+                    thenExpression == null -> EKtBlockExpression.empty(ifExpression.location)
+                    thenExpression.statements.size == 1 -> thenExpression.statements[0]
+                    else -> thenExpression
+                }
+            }
+            false -> {
+                val elseExpression = ifExpression.elseExpression
+                when {
+                    elseExpression == null -> EKtBlockExpression.empty(ifExpression.location)
+                    elseExpression.statements.size == 1 -> elseExpression.statements[0]
+                    else -> elseExpression
+                }
+            }
             else -> null
         }
     }

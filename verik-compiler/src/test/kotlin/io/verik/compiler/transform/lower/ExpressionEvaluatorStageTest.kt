@@ -83,7 +83,7 @@ internal class ExpressionEvaluatorStageTest : BaseTest() {
                 }
             """.trimIndent(),
             ExpressionEvaluatorStage::class,
-            "[KtBlockExpression(Unit, [KtCallExpression(Unit, ${'$'}display, null, [], [])])]"
+            "[KtCallExpression(Unit, ${'$'}display, null, [], [])]"
         ) { it.findStatements("f") }
     }
 

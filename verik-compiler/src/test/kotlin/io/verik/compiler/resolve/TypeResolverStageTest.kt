@@ -47,6 +47,17 @@ internal class TypeResolverStageTest : BaseTest() {
     }
 
     @Test
+    fun `resolve property type parameterized inferred`() {
+        driveElementTest(
+            """
+                var x = if (b<TRUE>()) u(0x0) else u(0x00)
+            """.trimIndent(),
+            TypeResolverStage::class,
+            "KtProperty(x, Ubit<`4`>, *, [], 1)"
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
     fun `resolve reference expression`() {
         driveElementTest(
             """
