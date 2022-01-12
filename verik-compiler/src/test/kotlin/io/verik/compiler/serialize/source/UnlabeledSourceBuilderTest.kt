@@ -52,7 +52,7 @@ internal class UnlabeledSourceBuilderTest : BaseTest() {
                 int bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb = 0;
                 
                 function automatic void f();
-                    automatic int x = aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                    int x = aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                         + bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb;
                 endfunction : f
             """.trimIndent()

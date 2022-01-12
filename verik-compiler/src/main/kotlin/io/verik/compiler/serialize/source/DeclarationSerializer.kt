@@ -198,10 +198,6 @@ object DeclarationSerializer {
     }
 
     fun serializeSvProperty(property: ESvProperty, serializeContext: SerializeContext) {
-        when (property.isStatic) {
-            true -> serializeContext.append("static ")
-            false -> serializeContext.append("automatic ")
-        }
         if (TypeSerializer.isVirtual(property.type))
             serializeContext.append("virtual ")
         serializePropertyTypeAndName(property, serializeContext)

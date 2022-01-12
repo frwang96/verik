@@ -334,7 +334,6 @@ class ElementPrinter : Visitor() {
             build(property.initializer)
             build(property.isComAssignment)
             build(property.isMutable)
-            build(property.isStatic)
         }
     }
 

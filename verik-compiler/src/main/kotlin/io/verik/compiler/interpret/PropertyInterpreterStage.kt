@@ -20,9 +20,7 @@ import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.ENullExpression
-import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
-import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
@@ -34,7 +32,6 @@ import io.verik.compiler.ast.element.sv.EInjectedProperty
 import io.verik.compiler.ast.element.sv.EModulePort
 import io.verik.compiler.ast.element.sv.EModulePortInstantiation
 import io.verik.compiler.ast.element.sv.EPort
-import io.verik.compiler.ast.element.sv.ESvClass
 import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.property.PortInstantiation
 import io.verik.compiler.ast.property.StringEntry
@@ -60,20 +57,13 @@ object PropertyInterpreterStage : ProjectStage() {
         private fun interpret(property: EKtProperty): EDeclaration {
             interpretInjectedProperty(property)?.let { return it }
             interpretAbstractComponentInstantiation(property)?.let { return it }
-            val isStatic = when (val parent = property.parent) {
-                is ESvClass -> if (parent.isDeclarationsStatic) true else null
-                is EPropertyStatement -> false
-                is EIsExpression -> false
-                else -> null
-            }
             return ESvProperty(
                 location = property.location,
                 name = property.name,
                 type = property.type,
                 initializer = property.initializer,
                 isComAssignment = property.hasAnnotationEntry(AnnotationEntries.COM),
-                isMutable = property.isMutable,
-                isStatic = isStatic
+                isMutable = property.isMutable
             )
         }
 
@@ -127,8 +117,7 @@ object PropertyInterpreterStage : ProjectStage() {
                         type = property.type,
                         initializer = initializer,
                         isComAssignment = false,
-                        isMutable = false,
-                        isStatic = null
+                        isMutable = false
                     )
                 }
                 else -> null

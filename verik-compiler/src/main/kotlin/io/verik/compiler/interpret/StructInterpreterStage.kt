@@ -66,8 +66,7 @@ object StructInterpreterStage : ProjectStage() {
                 type = valueParameter.type,
                 initializer = null,
                 isComAssignment = false,
-                isMutable = valueParameter.isMutable,
-                isStatic = null
+                isMutable = valueParameter.isMutable
             )
             referenceUpdater.update(valueParameter, property)
             return property

@@ -34,7 +34,7 @@ internal class CastTransformerStageTest : BaseTest() {
                 logic x = 1'b0;
 
                 function automatic void f();
-                    automatic int __0;
+                    int __0;
                     x = ${'$'}cast(__0, 0);
                 endfunction : f
             """.trimIndent()
@@ -54,7 +54,7 @@ internal class CastTransformerStageTest : BaseTest() {
                 logic x = 1'b0;
 
                 function automatic void f();
-                    automatic int __0;
+                    int __0;
                     x = ~${'$'}cast(__0, 0);
                 endfunction : f
             """.trimIndent()
@@ -74,7 +74,7 @@ internal class CastTransformerStageTest : BaseTest() {
                 int x = 0;
 
                 function automatic void f();
-                    automatic int __0;
+                    int __0;
                     if (~${'$'}cast(__0, 0)) begin
                         ${'$'}fatal(1, "Failed to cast from Int to Int");
                     end

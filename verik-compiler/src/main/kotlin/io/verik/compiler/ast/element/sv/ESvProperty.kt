@@ -28,8 +28,7 @@ class ESvProperty(
     override var type: Type,
     override var initializer: EExpression?,
     val isComAssignment: Boolean,
-    val isMutable: Boolean,
-    val isStatic: Boolean?
+    val isMutable: Boolean
 ) : EAbstractInitializedProperty() {
 
     init {
@@ -54,8 +53,7 @@ class ESvProperty(
                 type = type,
                 initializer = initializer,
                 isComAssignment = false,
-                isMutable = isMutable,
-                isStatic = false
+                isMutable = isMutable
             )
         }
     }

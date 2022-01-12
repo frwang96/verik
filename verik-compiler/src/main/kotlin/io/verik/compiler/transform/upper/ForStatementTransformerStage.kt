@@ -83,8 +83,7 @@ object ForStatementTransformerStage : ProjectStage() {
                 type = valueParameter.type,
                 initializer = callExpression.receiver!!,
                 isComAssignment = false,
-                isMutable = true,
-                isStatic = null
+                isMutable = true
             )
             referenceUpdater.update(valueParameter, property)
             val propertyReferenceExpression = EReferenceExpression(
@@ -165,8 +164,7 @@ object ForStatementTransformerStage : ProjectStage() {
                 type = valueParameter.type,
                 initializer = elementPropertyInitializer,
                 isComAssignment = false,
-                isMutable = false,
-                isStatic = false
+                isMutable = false
             )
             referenceUpdater.update(valueParameter, elementProperty)
             val propertyStatement = EPropertyStatement(

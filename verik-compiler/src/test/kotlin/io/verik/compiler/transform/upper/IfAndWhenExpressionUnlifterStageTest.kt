@@ -37,8 +37,8 @@ internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
                 logic x = 1'b1;
 
                 function automatic void f();
-                    automatic int __0;
-                    automatic int y;
+                    int __0;
+                    int y;
                     if (x) begin
                         ${'$'}display();
                         __0 = 0;
@@ -68,8 +68,8 @@ internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
                 logic x = 1'b1;
 
                 function automatic void f();
-                    automatic int __0;
-                    automatic int y;
+                    int __0;
+                    int y;
                     if (x) begin
                         __0 = 1;
                     end
@@ -99,8 +99,8 @@ internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
                 logic x = 1'b1;
 
                 function automatic void f();
-                    automatic int __0;
-                    automatic int y;
+                    int __0;
+                    int y;
                     if (x) begin
                         __0 = 0;
                     end

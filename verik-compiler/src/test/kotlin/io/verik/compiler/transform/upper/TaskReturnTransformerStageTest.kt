@@ -60,7 +60,7 @@ internal class TaskReturnTransformerStageTest : BaseTest() {
                 endtask : f
 
                 task automatic g();
-                    automatic logic __0;
+                    logic __0;
                     f(.__return(__0));
                     x = __0;
                 endtask : g

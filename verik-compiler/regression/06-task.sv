@@ -37,8 +37,8 @@ module M;
     endtask : g
 
     initial begin : h
-        automatic logic [7:0] __0;
-        automatic logic [7:0] x;
+        logic [7:0] __0;
+        logic [7:0] x;
         f();
         g(.x(8'h00), .__return(__0));
         x = __0;
