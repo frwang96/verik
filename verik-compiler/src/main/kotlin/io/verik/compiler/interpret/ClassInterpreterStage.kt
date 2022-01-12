@@ -19,6 +19,7 @@ package io.verik.compiler.interpret
 import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EDeclaration
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
@@ -27,7 +28,6 @@ import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtConstructor
 import io.verik.compiler.ast.element.sv.ESvClass
 import io.verik.compiler.ast.element.sv.ESvFunction
-import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.property.FunctionQualifierType
 import io.verik.compiler.common.ReferenceUpdater
@@ -157,7 +157,7 @@ object ClassInterpreterStage : ProjectStage() {
             if (`class`.isAbstract)
                 return null
 
-            val property = ESvProperty.getTemporary(
+            val property = EProperty.getTemporary(
                 constructor.location,
                 constructor.type.copy(),
                 ECallExpression(

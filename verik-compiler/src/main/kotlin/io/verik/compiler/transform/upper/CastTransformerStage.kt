@@ -19,12 +19,12 @@ package io.verik.compiler.transform.upper
 import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EIfExpression
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EAsExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.sv.EStringExpression
-import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
@@ -74,7 +74,7 @@ object CastTransformerStage : ProjectStage() {
 
         override fun visitAsExpression(asExpression: EAsExpression) {
             super.visitAsExpression(asExpression)
-            val property = ESvProperty.getTemporary(
+            val property = EProperty.getTemporary(
                 location = asExpression.location,
                 type = asExpression.type.copy(),
                 initializer = null,

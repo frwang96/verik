@@ -66,7 +66,7 @@ internal class ComAssignmentTransformerStageTest : BaseTest() {
                 Module(
                     M, M,
                     [
-                        SvProperty(x, Boolean, null, 1, 1),
+                        Property(x, Boolean, [Com], null, 1),
                         AlwaysComBlock(
                             <tmp>,
                             BlockExpression(

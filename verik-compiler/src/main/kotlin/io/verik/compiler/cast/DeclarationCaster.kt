@@ -19,10 +19,10 @@ package io.verik.compiler.cast
 import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EEnumEntry
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtFunction
-import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.kt.ETypeAlias
@@ -203,10 +203,10 @@ object DeclarationCaster {
         return castedPrimaryConstructor
     }
 
-    fun castKtProperty(property: KtProperty, castContext: CastContext): EKtProperty {
+    fun castProperty(property: KtProperty, castContext: CastContext): EProperty {
         val descriptor = castContext.sliceVariable[property]!!
         val castedProperty = castContext.getDeclaration(descriptor, property)
-            .cast<EKtProperty>(property)
+            .cast<EProperty>(property)
 
         val typeReference = property.typeReference
         val type = if (typeReference != null) castContext.castType(typeReference)

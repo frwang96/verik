@@ -25,7 +25,7 @@ import io.verik.compiler.message.SourceLocation
 
 class EPropertyStatement(
     override val location: SourceLocation,
-    var property: EAbstractInitializedProperty
+    var property: EProperty
 ) : EExpression(), DeclarationContainer {
 
     init {

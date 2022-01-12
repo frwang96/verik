@@ -22,6 +22,7 @@ import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EEnumEntry
 import io.verik.compiler.ast.element.common.EIfExpression
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
@@ -35,7 +36,6 @@ import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtFunction
-import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
@@ -60,8 +60,8 @@ object SpecializerCopier {
                 copyKtFunction(element, typeArguments, specializeContext)
             is EPrimaryConstructor ->
                 copyPrimaryConstructor(element, typeArguments, specializeContext)
-            is EKtProperty ->
-                copyKtProperty(element, typeArguments, specializeContext)
+            is EProperty ->
+                copyProperty(element, typeArguments, specializeContext)
             is EEnumEntry ->
                 copyEnumEntry(element, typeArguments, specializeContext)
             is EKtValueParameter ->
@@ -198,20 +198,20 @@ object SpecializerCopier {
         return copiedPrimaryConstructor
     }
 
-    private fun copyKtProperty(
-        property: EKtProperty,
+    private fun copyProperty(
+        property: EProperty,
         typeArguments: List<Type>,
         specializeContext: SpecializeContext
-    ): EKtProperty {
+    ): EProperty {
         val type = property.type.copy()
         val initializer = property.initializer?.let { copy(it, typeArguments, specializeContext) }
-        val copiedProperty = EKtProperty(
+        val copiedProperty = EProperty(
             location = property.location,
             endLocation = property.endLocation,
             name = property.name,
             type = type,
-            initializer = initializer,
             annotationEntries = property.annotationEntries,
+            initializer = initializer,
             isMutable = property.isMutable
         )
         specializeContext.register(property, typeArguments, copiedProperty)

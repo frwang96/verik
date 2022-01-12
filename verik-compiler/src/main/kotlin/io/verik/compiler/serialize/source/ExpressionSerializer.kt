@@ -21,6 +21,7 @@ import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EParenthesizedExpression
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
@@ -46,7 +47,6 @@ import io.verik.compiler.ast.element.sv.ESvAbstractFunction
 import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.ESvForStatement
-import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.sv.EWidthCastExpression
 import io.verik.compiler.ast.property.EdgeType
@@ -409,7 +409,7 @@ object ExpressionSerializer {
         serializeContext.serializeAsExpression(delayExpression.expression)
     }
 
-    private fun serializePropertyInline(property: ESvProperty, serializeContext: SerializeContext) {
+    private fun serializePropertyInline(property: EProperty, serializeContext: SerializeContext) {
         val serializedType = TypeSerializer.serialize(property.type, property)
         serializedType.checkNoUnpackedDimension(property)
         serializeContext.append(serializedType.getBaseAndPackedDimension() + " ")

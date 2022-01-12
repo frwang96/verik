@@ -17,7 +17,7 @@
 package io.verik.compiler.transform.upper
 
 import io.verik.compiler.ast.element.common.ECallExpression
-import io.verik.compiler.ast.element.sv.ESvProperty
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
@@ -31,8 +31,8 @@ object UninitializedPropertyTransformerStage : ProjectStage() {
 
     private object UninitializedPropertyTransformerVisitor : TreeVisitor() {
 
-        override fun visitSvProperty(property: ESvProperty) {
-            super.visitSvProperty(property)
+        override fun visitProperty(property: EProperty) {
+            super.visitProperty(property)
             val initializer = property.initializer
             if (initializer is ECallExpression && initializer.reference == Core.Vk.F_nc) {
                 property.initializer = null

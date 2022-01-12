@@ -18,8 +18,8 @@ package io.verik.compiler.check.mid
 
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.common.EReferenceExpression
-import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.common.TreeVisitor
@@ -44,8 +44,8 @@ object PortInstantiationCheckerStage : ProjectStage() {
             Core.Vk.Unpacked.F_get_Ubit
         )
 
-        override fun visitKtProperty(property: EKtProperty) {
-            super.visitKtProperty(property)
+        override fun visitProperty(property: EProperty) {
+            super.visitProperty(property)
             val initializer = property.initializer
             if (property.hasAnnotationEntry(AnnotationEntries.MAKE) && initializer != null) {
                 if (initializer is ECallExpression) {
@@ -87,7 +87,7 @@ object PortInstantiationCheckerStage : ProjectStage() {
             when (expression) {
                 is EReferenceExpression -> {
                     val reference = expression.reference
-                    if (reference is EKtProperty && !reference.isMutable)
+                    if (reference is EProperty && !reference.isMutable)
                         Messages.OUTPUT_PORT_NOT_MUTABLE.on(expression, reference.name)
                 }
                 is ECallExpression -> {

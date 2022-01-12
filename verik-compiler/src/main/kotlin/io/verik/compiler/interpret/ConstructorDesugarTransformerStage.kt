@@ -19,12 +19,12 @@ package io.verik.compiler.interpret
 import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EThisExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtConstructor
-import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
@@ -76,19 +76,19 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
             }
         }
 
-        private fun desugarValueParameterProperties(valueParameters: List<EKtValueParameter>): List<EKtProperty?> {
+        private fun desugarValueParameterProperties(valueParameters: List<EKtValueParameter>): List<EProperty?> {
             return valueParameters.map {
                 if (it.isPrimaryConstructorProperty) {
                     val isMutable = it.isMutable
                     it.isPrimaryConstructorProperty = false
                     it.isMutable = false
-                    val property = EKtProperty(
+                    val property = EProperty(
                         location = it.location,
                         endLocation = it.location,
                         name = it.name,
                         type = it.type.copy(),
-                        initializer = null,
                         annotationEntries = listOf(),
+                        initializer = null,
                         isMutable = isMutable
                     )
                     referenceUpdater.update(it, property)
@@ -101,7 +101,7 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
 
         private fun getPrimaryConstructorBody(
             primaryConstructor: EPrimaryConstructor,
-            properties: List<EKtProperty?>
+            properties: List<EProperty?>
         ): EBlockExpression {
             val statements = ArrayList<EExpression>()
             primaryConstructor.valueParameters.zip(properties).forEach { (valueParameter, property) ->

@@ -27,6 +27,7 @@ import io.verik.compiler.ast.element.common.ENullExpression
 import io.verik.compiler.ast.element.common.EPackage
 import io.verik.compiler.ast.element.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.common.EProject
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
@@ -43,7 +44,6 @@ import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtConstructor
 import io.verik.compiler.ast.element.kt.EKtForStatement
 import io.verik.compiler.ast.element.kt.EKtFunction
-import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
@@ -85,7 +85,6 @@ import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.ESvClass
 import io.verik.compiler.ast.element.sv.ESvForStatement
 import io.verik.compiler.ast.element.sv.ESvFunction
-import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.element.sv.ETask
@@ -308,31 +307,21 @@ class ElementPrinter : Visitor() {
 
 //  PROPERTY  //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    override fun visitProperty(property: EProperty) {
+        build("Property") {
+            build(property.name)
+            build(property.type.toString())
+            build(property.annotationEntries)
+            build(property.initializer)
+            build(property.isMutable)
+        }
+    }
+
     override fun visitInjectedProperty(injectedProperty: EInjectedProperty) {
         build("InjectedProperty") {
             build(injectedProperty.name)
             build(injectedProperty.type.toString())
             build(injectedProperty.entries)
-        }
-    }
-
-    override fun visitKtProperty(property: EKtProperty) {
-        build("KtProperty") {
-            build(property.name)
-            build(property.type.toString())
-            build(property.initializer)
-            build(property.annotationEntries)
-            build(property.isMutable)
-        }
-    }
-
-    override fun visitSvProperty(property: ESvProperty) {
-        build("SvProperty") {
-            build(property.name)
-            build(property.type.toString())
-            build(property.initializer)
-            build(property.isComAssignment)
-            build(property.isMutable)
         }
     }
 

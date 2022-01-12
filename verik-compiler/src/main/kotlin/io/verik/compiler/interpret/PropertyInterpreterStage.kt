@@ -19,9 +19,8 @@ package io.verik.compiler.interpret
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.common.ENullExpression
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.common.EReferenceExpression
-import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
 import io.verik.compiler.ast.element.sv.EClockingBlock
@@ -32,7 +31,6 @@ import io.verik.compiler.ast.element.sv.EInjectedProperty
 import io.verik.compiler.ast.element.sv.EModulePort
 import io.verik.compiler.ast.element.sv.EModulePortInstantiation
 import io.verik.compiler.ast.element.sv.EPort
-import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.property.PortInstantiation
 import io.verik.compiler.ast.property.StringEntry
 import io.verik.compiler.common.ReferenceUpdater
@@ -54,20 +52,13 @@ object PropertyInterpreterStage : ProjectStage() {
 
     private class PropertyInterpreterVisitor(private val referenceUpdater: ReferenceUpdater) : TreeVisitor() {
 
-        private fun interpret(property: EKtProperty): EDeclaration {
+        private fun interpret(property: EProperty): EDeclaration? {
             interpretInjectedProperty(property)?.let { return it }
             interpretAbstractComponentInstantiation(property)?.let { return it }
-            return ESvProperty(
-                location = property.location,
-                name = property.name,
-                type = property.type,
-                initializer = property.initializer,
-                isComAssignment = property.hasAnnotationEntry(AnnotationEntries.COM),
-                isMutable = property.isMutable
-            )
+            return null
         }
 
-        private fun interpretInjectedProperty(property: EKtProperty): EInjectedProperty? {
+        private fun interpretInjectedProperty(property: EProperty): EInjectedProperty? {
             val initializer = property.initializer
             if (initializer is ECallExpression && initializer.reference == Core.Vk.F_sv_String) {
                 val expression = initializer.valueArguments[0]
@@ -95,37 +86,25 @@ object PropertyInterpreterStage : ProjectStage() {
             return null
         }
 
-        private fun interpretAbstractComponentInstantiation(property: EKtProperty): EDeclaration? {
+        private fun interpretAbstractComponentInstantiation(property: EProperty): EDeclaration? {
             if (!property.hasAnnotationEntry(AnnotationEntries.MAKE))
                 return null
-            return when (val initializer = property.initializer) {
-                is ECallExpression -> {
-                    when (val component = initializer.reference) {
-                        is EAbstractContainerComponent ->
-                            interpretComponentInstantiation(property, initializer, component)
-                        is EModulePort ->
-                            interpretModulePortInstantiation(property, initializer, component)
-                        is EClockingBlock ->
-                            interpretClockingBlockInstantiation(property, initializer, component)
-                        else -> null
-                    }
+            val initializer = property.initializer
+            return if (initializer is ECallExpression) {
+                when (val component = initializer.reference) {
+                    is EAbstractContainerComponent ->
+                        interpretComponentInstantiation(property, initializer, component)
+                    is EModulePort ->
+                        interpretModulePortInstantiation(property, initializer, component)
+                    is EClockingBlock ->
+                        interpretClockingBlockInstantiation(property, initializer, component)
+                    else -> null
                 }
-                is ENullExpression -> {
-                    ESvProperty(
-                        location = property.endLocation,
-                        name = property.name,
-                        type = property.type,
-                        initializer = initializer,
-                        isComAssignment = false,
-                        isMutable = false
-                    )
-                }
-                else -> null
-            }
+            } else null
         }
 
         private fun interpretComponentInstantiation(
-            property: EKtProperty,
+            property: EProperty,
             callExpression: ECallExpression,
             component: EAbstractContainerComponent
         ): EComponentInstantiation {
@@ -146,7 +125,7 @@ object PropertyInterpreterStage : ProjectStage() {
         }
 
         private fun interpretModulePortInstantiation(
-            property: EKtProperty,
+            property: EProperty,
             callExpression: ECallExpression,
             modulePort: EModulePort
         ): EModulePortInstantiation {
@@ -167,7 +146,7 @@ object PropertyInterpreterStage : ProjectStage() {
         }
 
         private fun interpretClockingBlockInstantiation(
-            property: EKtProperty,
+            property: EProperty,
             callExpression: ECallExpression,
             clockingBlock: EClockingBlock
         ): EClockingBlockInstantiation {
@@ -214,9 +193,12 @@ object PropertyInterpreterStage : ProjectStage() {
             }
         }
 
-        override fun visitKtProperty(property: EKtProperty) {
-            super.visitKtProperty(property)
-            referenceUpdater.replace(property, interpret(property))
+        override fun visitProperty(property: EProperty) {
+            super.visitProperty(property)
+            val interpretedProperty = interpret(property)
+            if (interpretedProperty != null) {
+                referenceUpdater.replace(property, interpretedProperty)
+            }
         }
     }
 }

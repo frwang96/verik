@@ -23,6 +23,7 @@
 - New scheme for extracting expressions with `BlockExpressionReducerStage`.
 - Merge `KtCallExpression` and `SvCallExpression`.
 - Merge `KtBlockExpression` and `SvBlockExpression`.
+- Merge `KtProperty` and `SvProperty`.
 
 ## [0.1.11]
 ### Added

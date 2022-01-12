@@ -19,11 +19,11 @@ package io.verik.compiler.transform.upper
 import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EWhenExpression
-import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
@@ -41,7 +41,7 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
         override fun visitIfExpression(ifExpression: EIfExpression) {
             super.visitIfExpression(ifExpression)
             if (ifExpression.getExpressionType().isSubexpression()) {
-                val property = ESvProperty.getTemporary(
+                val property = EProperty.getTemporary(
                     location = ifExpression.location,
                     type = ifExpression.type.copy(),
                     initializer = null,
@@ -67,7 +67,7 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
         override fun visitWhenExpression(whenExpression: EWhenExpression) {
             super.visitWhenExpression(whenExpression)
             if (whenExpression.getExpressionType().isSubexpression()) {
-                val property = ESvProperty.getTemporary(
+                val property = EProperty.getTemporary(
                     location = whenExpression.location,
                     type = whenExpression.type.copy(),
                     initializer = null,
@@ -95,7 +95,7 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
 
         private fun getWhenExpressionReplacement(
             whenExpression: EWhenExpression,
-            property: ESvProperty
+            property: EProperty
         ): EWhenExpression {
             whenExpression.entries.forEach {
                 it.body = wrapAssignmentBlock(it.body, property)
@@ -112,7 +112,7 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
 
         private fun getIfExpressionReplacement(
             ifExpression: EIfExpression,
-            property: ESvProperty
+            property: EProperty
         ): EIfExpression {
             val thenExpression = wrapAssignmentBlock(ifExpression.thenExpression!!, property)
             val elseExpression = wrapAssignmentBlock(ifExpression.elseExpression!!, property)
@@ -125,7 +125,7 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
             )
         }
 
-        private fun wrapAssignmentBlock(expression: EBlockExpression, property: ESvProperty): EBlockExpression {
+        private fun wrapAssignmentBlock(expression: EBlockExpression, property: EProperty): EBlockExpression {
             val index = expression.statements.lastIndex
             val wrappedExpression = wrapAssignmentExpression(expression.statements[index], property)
             wrappedExpression.parent = expression
@@ -134,7 +134,7 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
             return expression
         }
 
-        private fun wrapAssignmentExpression(expression: EExpression, property: ESvProperty): EExpression {
+        private fun wrapAssignmentExpression(expression: EExpression, property: EProperty): EExpression {
             return if (expression.type.reference == Core.Kt.C_Nothing) {
                 expression
             } else {

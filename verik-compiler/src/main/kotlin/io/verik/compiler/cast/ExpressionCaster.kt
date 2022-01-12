@@ -22,6 +22,7 @@ import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.ENullExpression
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ESuperExpression
@@ -33,7 +34,6 @@ import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtForStatement
-import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.interfaces.cast
@@ -270,13 +270,13 @@ object ExpressionCaster {
         val location = expression.location()
         val childExpression = castContext.casterVisitor.getExpression(expression.leftHandSide)
         val castType = castContext.castType(expression.typeReference!!)
-        val property = EKtProperty(
+        val property = EProperty(
             location = location,
             endLocation = location,
             name = "<tmp>",
             type = castType,
-            initializer = null,
             annotationEntries = listOf(),
+            initializer = null,
             isMutable = false
         )
         return EIsExpression(

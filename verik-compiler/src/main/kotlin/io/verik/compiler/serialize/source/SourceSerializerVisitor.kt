@@ -26,6 +26,7 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.ENullExpression
 import io.verik.compiler.ast.element.common.EParenthesizedExpression
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
@@ -66,7 +67,6 @@ import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.sv.ESvClass
 import io.verik.compiler.ast.element.sv.ESvForStatement
 import io.verik.compiler.ast.element.sv.ESvFunction
-import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.element.sv.ETask
@@ -93,12 +93,12 @@ class SourceSerializerVisitor(
     fun serializeAsDeclaration(declaration: EDeclaration) {
         if (SerializerUtil.declarationIsHidden(declaration))
             return
-        if (!firstDeclaration && !(lastDeclarationIsProperty && declaration is ESvProperty))
+        if (!firstDeclaration && !(lastDeclarationIsProperty && declaration is EProperty))
             serializeContext.appendLine()
         firstDeclaration = false
         lastDeclarationIsProperty = false
         serialize(declaration)
-        lastDeclarationIsProperty = declaration is ESvProperty
+        lastDeclarationIsProperty = declaration is EProperty
     }
 
     fun serializeAsExpression(expression: EExpression) {
@@ -170,8 +170,8 @@ class SourceSerializerVisitor(
         DeclarationSerializer.serializeAlwaysSeqBlock(alwaysSeqBlock, serializeContext)
     }
 
-    override fun visitSvProperty(property: ESvProperty) {
-        DeclarationSerializer.serializeSvProperty(property, serializeContext)
+    override fun visitProperty(property: EProperty) {
+        DeclarationSerializer.serializeProperty(property, serializeContext)
     }
 
     override fun visitEnumEntry(enumEntry: EEnumEntry) {

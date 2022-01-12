@@ -109,7 +109,7 @@ internal class DeclarationCasterTest : BaseTest() {
             """
                 KtClass(
                     C, C,
-                    [KtProperty(x, Boolean, *, [], 0)],
+                    [Property(x, Boolean, [], *, 0)],
                     [], [], 0, 0, 0,
                     PrimaryConstructor(C, C, [], []),
                     null
@@ -253,7 +253,7 @@ internal class DeclarationCasterTest : BaseTest() {
                 var x = false
             """.trimIndent(),
             CasterStage::class,
-            "KtProperty(x, Boolean, *, [], 1)"
+            "Property(x, Boolean, [], *, 1)"
         ) { it.findDeclaration("x") }
     }
 }

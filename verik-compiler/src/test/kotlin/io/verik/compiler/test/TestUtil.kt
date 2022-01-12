@@ -17,11 +17,11 @@
 package io.verik.compiler.test
 
 import io.verik.compiler.ast.element.common.EAbstractFunction
-import io.verik.compiler.ast.element.common.EAbstractInitializedProperty
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EProject
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.kt.EKtConstructor
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.common.TreeVisitor
@@ -61,10 +61,10 @@ fun EProject.findExpression(name: String): EExpression {
                 }
             }
         }
-        override fun visitAbstractInitializedProperty(abstractInitializedProperty: EAbstractInitializedProperty) {
-            super.visitAbstractInitializedProperty(abstractInitializedProperty)
-            if (abstractInitializedProperty.name == name) {
-                abstractInitializedProperty.initializer?.let { expressions.add(it) }
+        override fun visitProperty(property: EProperty) {
+            super.visitProperty(property)
+            if (property.name == name) {
+                property.initializer?.let { expressions.add(it) }
             }
         }
     }

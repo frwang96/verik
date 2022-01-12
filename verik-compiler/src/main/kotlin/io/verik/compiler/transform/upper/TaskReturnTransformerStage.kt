@@ -18,11 +18,11 @@ package io.verik.compiler.transform.upper
 
 import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.ECallExpression
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
-import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.element.sv.ETask
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
@@ -91,7 +91,7 @@ object TaskReturnTransformerStage : ProjectStage() {
         }
 
         private fun extract(callExpression: ECallExpression, valueParameter: ESvValueParameter) {
-            val property = ESvProperty.getTemporary(
+            val property = EProperty.getTemporary(
                 callExpression.location,
                 valueParameter.type.copy(),
                 initializer = null,

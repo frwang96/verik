@@ -29,7 +29,7 @@ internal class TypeCasterTest : BaseTest() {
                 var x = 0
             """.trimIndent(),
             CasterStage::class,
-            "KtProperty(x, Int, *, [], 1)"
+            "Property(x, Int, [], *, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -41,7 +41,7 @@ internal class TypeCasterTest : BaseTest() {
                 var x = C<Int>()
             """.trimIndent(),
             CasterStage::class,
-            "KtProperty(x, C<Int>, *, [], 1)"
+            "Property(x, C<Int>, [], *, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -54,7 +54,7 @@ internal class TypeCasterTest : BaseTest() {
                 }
             """.trimIndent(),
             CasterStage::class,
-            "KtProperty(x, C<T>, *, [], 0)"
+            "Property(x, C<T>, [], *, 0)"
         ) { it.findDeclaration("x") }
     }
 
@@ -65,7 +65,7 @@ internal class TypeCasterTest : BaseTest() {
                 var x: Int = 0
             """.trimIndent(),
             CasterStage::class,
-            "KtProperty(x, Int, ConstantExpression(Int, 0), [], 1)"
+            "Property(x, Int, [], ConstantExpression(Int, 0), 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -78,7 +78,7 @@ internal class TypeCasterTest : BaseTest() {
                 }
             """.trimIndent(),
             CasterStage::class,
-            "KtProperty(x, C<T>, *, [], 0)"
+            "Property(x, C<T>, [], *, 0)"
         ) { it.findDeclaration("x") }
     }
 
@@ -89,7 +89,7 @@ internal class TypeCasterTest : BaseTest() {
                 var x: Ubit<`8`> = u(0)
             """.trimIndent(),
             CasterStage::class,
-            "KtProperty(x, Ubit<`8`>, *, [], 1)"
+            "Property(x, Ubit<`8`>, [], *, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -100,7 +100,7 @@ internal class TypeCasterTest : BaseTest() {
                 var x: Ubit<`*`> = u(0)
             """.trimIndent(),
             CasterStage::class,
-            "KtProperty(x, Ubit<`*`>, *, [], 1)"
+            "Property(x, Ubit<`*`>, [], *, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -111,7 +111,7 @@ internal class TypeCasterTest : BaseTest() {
                 var x: Ubit<Cardinal> = u(0)
             """.trimIndent(),
             CasterStage::class,
-            "KtProperty(x, Ubit<`*`>, *, [], 1)"
+            "Property(x, Ubit<`*`>, [], *, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -122,7 +122,7 @@ internal class TypeCasterTest : BaseTest() {
                 var x: Ubit<ADD<`8`, `16`>> = u(0)
             """.trimIndent(),
             CasterStage::class,
-            "KtProperty(x, Ubit<ADD<`8`, `16`>>, *, [], 1)"
+            "Property(x, Ubit<ADD<`8`, `16`>>, [], *, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -135,7 +135,7 @@ internal class TypeCasterTest : BaseTest() {
                 }
             """.trimIndent(),
             CasterStage::class,
-            "KtProperty(x, Ubit<N>, *, [], 1)"
+            "Property(x, Ubit<N>, [], *, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -147,7 +147,7 @@ internal class TypeCasterTest : BaseTest() {
                 var x: U = nc()
             """.trimIndent(),
             CasterStage::class,
-            "KtProperty(x, U, *, [], 1)"
+            "Property(x, U, [], *, 1)"
         ) { it.findDeclaration("x") }
     }
 }

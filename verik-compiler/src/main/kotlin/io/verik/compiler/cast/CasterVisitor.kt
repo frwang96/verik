@@ -24,6 +24,7 @@ import io.verik.compiler.ast.element.common.EEnumEntry
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.ENullExpression
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
@@ -34,7 +35,6 @@ import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtForStatement
 import io.verik.compiler.ast.element.kt.EKtFunction
-import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
@@ -117,7 +117,7 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
                 Messages.ILLEGAL_LOCAL_DECLARATION.on(element, element.name)
                 ENullExpression(location)
             }
-            is EKtProperty -> {
+            is EProperty -> {
                 EPropertyStatement(location, element)
             }
             is EExpression -> element
@@ -152,8 +152,8 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
         return DeclarationCaster.castKtFunction(function, castContext)
     }
 
-    override fun visitProperty(property: KtProperty, data: Unit?): EKtProperty {
-        return DeclarationCaster.castKtProperty(property, castContext)
+    override fun visitProperty(property: KtProperty, data: Unit?): EProperty {
+        return DeclarationCaster.castProperty(property, castContext)
     }
 
     override fun visitEnumEntry(enumEntry: KtEnumEntry, data: Unit?): EEnumEntry {

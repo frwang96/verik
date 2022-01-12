@@ -23,7 +23,6 @@ import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtForStatement
 import io.verik.compiler.ast.element.kt.EKtFunction
-import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
@@ -51,11 +50,6 @@ object UntransformedElementCheckerStage : ProjectStage() {
         override fun visitKtFunction(function: EKtFunction) {
             super.visitKtFunction(function)
             Messages.INTERNAL_ERROR.on(function, "Function ${function.name} $message")
-        }
-
-        override fun visitKtProperty(property: EKtProperty) {
-            super.visitKtProperty(property)
-            Messages.INTERNAL_ERROR.on(property, "Property ${property.name} $message")
         }
 
         override fun visitKtValueParameter(valueParameter: EKtValueParameter) {

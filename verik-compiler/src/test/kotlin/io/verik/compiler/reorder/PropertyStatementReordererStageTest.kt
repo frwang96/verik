@@ -34,7 +34,7 @@ internal class PropertyStatementReordererStageTest : BaseTest() {
             PropertyStatementReordererStage::class,
             """
                 [
-                    PropertyStatement(Unit, SvProperty(x, Boolean, null, 0, 0)),
+                    PropertyStatement(Unit, Property(x, Boolean, [], null, 0)),
                     CallExpression(*),
                     SvBinaryExpression(Unit, ReferenceExpression(Boolean, x, null), ConstantExpression(*), ASSIGN)
                 ]
@@ -52,7 +52,7 @@ internal class PropertyStatementReordererStageTest : BaseTest() {
                 }
             """.trimIndent(),
             PropertyStatementReordererStage::class,
-            "[PropertyStatement(Unit, SvProperty(x, Boolean, null, 0, 0)), CallExpression(*)]"
+            "[PropertyStatement(Unit, Property(x, Boolean, [], null, 0)), CallExpression(*)]"
         ) { it.findStatements("f") }
     }
 }

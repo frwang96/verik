@@ -18,13 +18,13 @@ package io.verik.compiler.transform.upper
 
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EConstantExpression
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.sv.ESvForStatement
-import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.KtUnaryOperatorKind
@@ -77,12 +77,13 @@ object ForStatementTransformerStage : ProjectStage() {
             valueParameter: ESvValueParameter,
             callExpression: ECallExpression
         ): ESvForStatement {
-            val property = ESvProperty(
+            val property = EProperty(
                 location = valueParameter.location,
+                endLocation = valueParameter.location,
                 name = valueParameter.name,
                 type = valueParameter.type,
+                annotationEntries = listOf(),
                 initializer = callExpression.receiver!!,
-                isComAssignment = false,
                 isMutable = true
             )
             referenceUpdater.update(valueParameter, property)
@@ -119,7 +120,7 @@ object ForStatementTransformerStage : ProjectStage() {
             valueParameter: ESvValueParameter,
             referenceExpression: EReferenceExpression
         ): ESvForStatement {
-            val indexProperty = ESvProperty.getTemporary(
+            val indexProperty = EProperty.getTemporary(
                 location = referenceExpression.location,
                 type = Core.Kt.C_Int.toType(),
                 initializer = EConstantExpression(referenceExpression.location, Core.Kt.C_Int.toType(), "0"),
@@ -158,12 +159,13 @@ object ForStatementTransformerStage : ProjectStage() {
                 arrayListOf(ExpressionCopier.deepCopy(indexReferenceExpression)),
                 ArrayList()
             )
-            val elementProperty = ESvProperty(
+            val elementProperty = EProperty(
                 location = valueParameter.location,
+                endLocation = valueParameter.location,
                 name = valueParameter.name,
                 type = valueParameter.type,
+                annotationEntries = listOf(),
                 initializer = elementPropertyInitializer,
-                isComAssignment = false,
                 isMutable = false
             )
             referenceUpdater.update(valueParameter, elementProperty)

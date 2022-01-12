@@ -19,8 +19,8 @@ package io.verik.compiler.specialize
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.ENullExpression
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
-import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Cardinal
 import io.verik.compiler.core.common.Core
@@ -38,7 +38,7 @@ object OptionalReducerSubstage : SpecializerSubstage() {
             super.visitCallExpression(callExpression)
             if (callExpression.reference == Core.Vk.F_optional_Function) {
                 val property = callExpression.parent
-                if (property !is EKtProperty) {
+                if (property !is EProperty) {
                     Messages.OPTIONAL_NOT_DIRECT_ASSIGNMENT.on(callExpression)
                     return
                 }

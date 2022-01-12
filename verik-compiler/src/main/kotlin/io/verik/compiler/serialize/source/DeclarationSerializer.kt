@@ -18,6 +18,7 @@ package io.verik.compiler.serialize.source
 
 import io.verik.compiler.ast.element.common.EAbstractProperty
 import io.verik.compiler.ast.element.common.EEnumEntry
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
 import io.verik.compiler.ast.element.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
@@ -34,7 +35,6 @@ import io.verik.compiler.ast.element.sv.EStruct
 import io.verik.compiler.ast.element.sv.ESvAbstractFunction
 import io.verik.compiler.ast.element.sv.ESvClass
 import io.verik.compiler.ast.element.sv.ESvFunction
-import io.verik.compiler.ast.element.sv.ESvProperty
 import io.verik.compiler.ast.element.sv.ESvValueParameter
 import io.verik.compiler.ast.element.sv.ETask
 import io.verik.compiler.ast.element.sv.ETypeDefinition
@@ -200,7 +200,7 @@ object DeclarationSerializer {
         }
     }
 
-    fun serializeSvProperty(property: ESvProperty, serializeContext: SerializeContext) {
+    fun serializeProperty(property: EProperty, serializeContext: SerializeContext) {
         if (TypeSerializer.isVirtual(property.type))
             serializeContext.append("virtual ")
         serializePropertyTypeAndName(property, serializeContext)

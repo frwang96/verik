@@ -19,6 +19,7 @@ package io.verik.compiler.ast.element.sv
 import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.interfaces.DeclarationContainer
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.SerializationType
@@ -29,7 +30,7 @@ import io.verik.compiler.target.common.Target
 
 class ESvForStatement(
     override val location: SourceLocation,
-    var property: ESvProperty,
+    var property: EProperty,
     var condition: EExpression,
     var iteration: EExpression,
     var body: EBlockExpression

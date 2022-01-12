@@ -29,7 +29,7 @@ internal class CardinalTypeEvaluatorSubstageTest : BaseTest() {
                 var x: Ubit<TRUE> = nc()
             """.trimIndent(),
             SpecializerStage::class,
-            "KtProperty(x, Ubit<`1`>, *, [], 1)"
+            "Property(x, Ubit<`1`>, [], *, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -40,7 +40,7 @@ internal class CardinalTypeEvaluatorSubstageTest : BaseTest() {
                 var x: Ubit<FALSE> = nc()
             """.trimIndent(),
             SpecializerStage::class,
-            "KtProperty(x, Ubit<`0`>, *, [], 1)"
+            "Property(x, Ubit<`0`>, [], *, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -51,7 +51,7 @@ internal class CardinalTypeEvaluatorSubstageTest : BaseTest() {
                 var x: Ubit<NOT<`0`>> = nc()
             """.trimIndent(),
             SpecializerStage::class,
-            "KtProperty(x, Ubit<`1`>, *, [], 1)"
+            "Property(x, Ubit<`1`>, [], *, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -62,7 +62,7 @@ internal class CardinalTypeEvaluatorSubstageTest : BaseTest() {
                 var x: Ubit<AND<`1`, `1`>> = nc()
             """.trimIndent(),
             SpecializerStage::class,
-            "KtProperty(x, Ubit<`1`>, *, [], 1)"
+            "Property(x, Ubit<`1`>, [], *, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -73,7 +73,7 @@ internal class CardinalTypeEvaluatorSubstageTest : BaseTest() {
                 var x: Ubit<OR<`1`, `1`>> = nc()
             """.trimIndent(),
             SpecializerStage::class,
-            "KtProperty(x, Ubit<`1`>, *, [], 1)"
+            "Property(x, Ubit<`1`>, [], *, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -84,7 +84,7 @@ internal class CardinalTypeEvaluatorSubstageTest : BaseTest() {
                 var x: Ubit<IF<`1`, `2`, `3`>> = nc()
             """.trimIndent(),
             SpecializerStage::class,
-            "KtProperty(x, Ubit<`2`>, *, [], 1)"
+            "Property(x, Ubit<`2`>, [], *, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -95,7 +95,7 @@ internal class CardinalTypeEvaluatorSubstageTest : BaseTest() {
                 var x: Ubit<ADD<`1`, `1`>> = nc()
             """.trimIndent(),
             SpecializerStage::class,
-            "KtProperty(x, Ubit<`2`>, *, [], 1)"
+            "Property(x, Ubit<`2`>, [], *, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -106,7 +106,7 @@ internal class CardinalTypeEvaluatorSubstageTest : BaseTest() {
                 var x: Ubit<SUB<`3`, `2`>> = nc()
             """.trimIndent(),
             SpecializerStage::class,
-            "KtProperty(x, Ubit<`1`>, *, [], 1)"
+            "Property(x, Ubit<`1`>, [], *, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -117,7 +117,7 @@ internal class CardinalTypeEvaluatorSubstageTest : BaseTest() {
                 var x: Ubit<MUL<`3`, `2`>> = nc()
             """.trimIndent(),
             SpecializerStage::class,
-            "KtProperty(x, Ubit<`6`>, *, [], 1)"
+            "Property(x, Ubit<`6`>, [], *, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -128,7 +128,7 @@ internal class CardinalTypeEvaluatorSubstageTest : BaseTest() {
                 var x: Ubit<DIV<`6`, `2`>> = nc()
             """.trimIndent(),
             SpecializerStage::class,
-            "KtProperty(x, Ubit<`3`>, *, [], 1)"
+            "Property(x, Ubit<`3`>, [], *, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -139,7 +139,7 @@ internal class CardinalTypeEvaluatorSubstageTest : BaseTest() {
                 var x: Ubit<LOG<`4`>> = nc()
             """.trimIndent(),
             SpecializerStage::class,
-            "KtProperty(x, Ubit<`2`>, *, [], 1)"
+            "Property(x, Ubit<`2`>, [], *, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -150,7 +150,7 @@ internal class CardinalTypeEvaluatorSubstageTest : BaseTest() {
                 var x: Ubit<WIDTH<`4`>> = nc()
             """.trimIndent(),
             SpecializerStage::class,
-            "KtProperty(x, Ubit<`3`>, *, [], 1)"
+            "Property(x, Ubit<`3`>, [], *, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -161,7 +161,7 @@ internal class CardinalTypeEvaluatorSubstageTest : BaseTest() {
                 var x: Ubit<EXP<`2`>> = nc()
             """.trimIndent(),
             SpecializerStage::class,
-            "KtProperty(x, Ubit<`4`>, *, [], 1)"
+            "Property(x, Ubit<`4`>, [], *, 1)"
         ) { it.findDeclaration("x") }
     }
 

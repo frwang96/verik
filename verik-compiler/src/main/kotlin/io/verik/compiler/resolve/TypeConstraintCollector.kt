@@ -23,13 +23,13 @@ import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.common.EReceiverExpression
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EKtFunction
-import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.element.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
@@ -126,8 +126,8 @@ object TypeConstraintCollector {
             this.function = null
         }
 
-        override fun visitKtProperty(property: EKtProperty) {
-            super.visitKtProperty(property)
+        override fun visitProperty(property: EProperty) {
+            super.visitProperty(property)
             val initializer = property.initializer
             if (initializer != null) {
                 typeConstraints.add(

@@ -17,9 +17,9 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.ast.element.common.EAbstractProperty
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
-import io.verik.compiler.ast.element.kt.EKtProperty
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -40,7 +40,7 @@ object SmartCastReducerStage : ProjectStage() {
 
     private class SmartCastIndexerVisitor : TreeVisitor() {
 
-        val smartCastEntryMap = HashMap<SmartCastEntry, EKtProperty>()
+        val smartCastEntryMap = HashMap<SmartCastEntry, EProperty>()
 
         override fun visitIsExpression(isExpression: EIsExpression) {
             super.visitIsExpression(isExpression)
@@ -61,7 +61,7 @@ object SmartCastReducerStage : ProjectStage() {
 
     private class SmartCastReducerVisitor(
         private val smartCastExpressions: HashSet<EReferenceExpression>,
-        private val smartCastEntryMap: HashMap<SmartCastEntry, EKtProperty>
+        private val smartCastEntryMap: HashMap<SmartCastEntry, EProperty>
     ) : TreeVisitor() {
 
         override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
