@@ -23,12 +23,16 @@ import io.verik.compiler.message.SourceLocation
 
 object ConstantBuilder {
 
-    fun buildBoolean(original: EExpression, boolean: Boolean): EConstantExpression {
+    fun buildBoolean(location: SourceLocation, boolean: Boolean): EConstantExpression {
         return EConstantExpression(
-            original.location,
+            location,
             Core.Kt.C_Boolean.toType(),
             formatBoolean(boolean)
         )
+    }
+
+    fun buildBoolean(original: EExpression, boolean: Boolean): EConstantExpression {
+        return buildBoolean(original.location, boolean)
     }
 
     fun buildInt(location: SourceLocation, int: Int): EConstantExpression {

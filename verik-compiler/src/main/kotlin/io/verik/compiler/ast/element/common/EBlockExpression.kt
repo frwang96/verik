@@ -38,6 +38,19 @@ class EBlockExpression(
         statements.forEach { it.parent = this }
     }
 
+    fun getOnlyStatement(): EExpression? {
+        return if (statements.size == 1) {
+            val statement = statements[0]
+            if (statement is EBlockExpression) {
+                statement.getOnlyStatement()
+            } else statement
+        } else null
+    }
+
+    fun isEmpty(): Boolean {
+        return statements.all { it is EBlockExpression && it.isEmpty() }
+    }
+
     override fun accept(visitor: Visitor) {
         visitor.visitBlockExpression(this)
     }

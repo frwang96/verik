@@ -25,6 +25,7 @@ import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
+import io.verik.compiler.ast.element.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.EStreamingExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
@@ -54,6 +55,7 @@ object ExpressionCopier {
             is ECallExpression -> copyCallExpression(expression, isDeepCopy, location)
             is EConstantExpression -> copyConstantExpression(expression, isDeepCopy, location)
             is EKtArrayAccessExpression -> copyKtArrayAccessExpression(expression, isDeepCopy, location)
+            is EConcatenationExpression -> copyConcatenationExpression(expression, isDeepCopy, location)
             is EStreamingExpression -> copyStreamingExpression(expression, isDeepCopy, location)
             is EIsExpression -> copyIsExpression(expression, isDeepCopy, location)
             is EIfExpression -> copyIfExpression(expression, isDeepCopy, location)
@@ -238,6 +240,28 @@ object ExpressionCopier {
                 arrayAccessExpression.type,
                 arrayAccessExpression.array,
                 arrayAccessExpression.indices
+            )
+        }
+    }
+
+    private fun copyConcatenationExpression(
+        concatenationExpression: EConcatenationExpression,
+        isDeepCopy: Boolean,
+        location: SourceLocation?
+    ): EConcatenationExpression {
+        return if (isDeepCopy) {
+            val type = concatenationExpression.type.copy()
+            val expressions = concatenationExpression.expressions.map { copy(it, true, location) }
+            EConcatenationExpression(
+                concatenationExpression.location,
+                type,
+                ArrayList(expressions)
+            )
+        } else {
+            EConcatenationExpression(
+                concatenationExpression.location,
+                concatenationExpression.type,
+                concatenationExpression.expressions
             )
         }
     }
