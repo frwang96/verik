@@ -201,12 +201,13 @@ internal class CoreVkUbitTest : CoreDeclarationTest() {
     }
 
     @Test
-    fun `serialize ext sext tru`() {
+    fun `serialize ext sext tru extTru`() {
         driveCoreDeclarationTest(
             listOf(
                 Core.Vk.Ubit.F_ext,
                 Core.Vk.Ubit.F_sext,
-                Core.Vk.Ubit.F_tru
+                Core.Vk.Ubit.F_tru,
+                Core.Vk.Ubit.F_extTru
             ),
             """
                 var x = u(0x0)
@@ -215,12 +216,16 @@ internal class CoreVkUbitTest : CoreDeclarationTest() {
                     y = x.ext()
                     y = x.sext()
                     x = y.tru()
+                    y = x.extTru()
+                    x = y.extTru()
                 }
             """.trimIndent(),
             """
                 function automatic void f();
                     y = 8'(x);
                     y = ${'$'}unsigned(8'(${'$'}signed(x)));
+                    x = y[3:0];
+                    y = 8'(x);
                     x = y[3:0];
                 endfunction : f
             """.trimIndent()

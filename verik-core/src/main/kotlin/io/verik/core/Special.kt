@@ -64,16 +64,16 @@ fun bz(): Boolean {
 }
 
 /**
- * Returns the value of cardinal [X] as an integer.
+ * Returns the value of cardinal [N] as an integer.
  */
-fun <X : `*`> i(): Int {
+fun <N : `*`> i(): Int {
     throw VerikException()
 }
 
 /**
- * Constructs a [Ubit] out of the cardinal [X].
+ * Constructs a [Ubit] out of the cardinal [N].
  */
-fun <X : `*`> u(): Ubit<`*`> {
+fun <N : `*`> u(): Ubit<`*`> {
     throw VerikException()
 }
 
@@ -108,28 +108,28 @@ fun u(value: Sbit<`*`>): Ubit<`*`> {
 /**
  * Returns a [Ubit] with all bits set to zero.
  */
-fun <X : `*`> u0(): Ubit<X> {
+fun <N : `*`> u0(): Ubit<N> {
     throw VerikException()
 }
 
 /**
  * Returns a [Ubit] with all bits set to one.
  */
-fun <X : `*`> u1(): Ubit<X> {
+fun <N : `*`> u1(): Ubit<N> {
     throw VerikException()
 }
 
 /**
  * Returns a [Ubit] with all bits set to X.
  */
-fun <X : `*`> ux(): Ubit<X> {
+fun <N : `*`> ux(): Ubit<N> {
     throw VerikException()
 }
 
 /**
  * Returns a [Ubit] with all bits set to Z.
  */
-fun <X : `*`> uz(): Ubit<X> {
+fun <N : `*`> uz(): Ubit<N> {
     throw VerikException()
 }
 
@@ -157,28 +157,28 @@ fun s(value: Ubit<`*`>): Sbit<`*`> {
 /**
  * (UNIMPLEMENTED) Returns a [Sbit] with all bits set to zero.
  */
-fun <X : `*`> s0(): Sbit<X> {
+fun <N : `*`> s0(): Sbit<N> {
     throw VerikException()
 }
 
 /**
  * (UNIMPLEMENTED) Returns a [Sbit] with all bits set to one.
  */
-fun <X : `*`> s1(): Sbit<X> {
+fun <N : `*`> s1(): Sbit<N> {
     throw VerikException()
 }
 
 /**
  * (UNIMPLEMENTED) Returns a [Sbit] with all bits set to X.
  */
-fun <X : `*`> sx(): Sbit<X> {
+fun <N : `*`> sx(): Sbit<N> {
     throw VerikException()
 }
 
 /**
  * (UNIMPLEMENTED) Returns a [Sbit] with all bits set to Z.
  */
-fun <X : `*`> sz(): Sbit<X> {
+fun <N : `*`> sz(): Sbit<N> {
     throw VerikException()
 }
 

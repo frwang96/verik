@@ -56,8 +56,8 @@ internal class ExpressionEliminatorSubstageTest : BaseTest() {
         driveElementTest(
             """
                 @Suppress("MemberVisibilityCanBePrivate")
-                class C<X : `*`> {
-                    val x = b<X>()
+                class C<N : `*`> {
+                    val x = b<N>()
                     fun f() {
                         @Suppress("ConstantConditionIf")
                         if (x) println()

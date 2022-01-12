@@ -277,6 +277,7 @@ object Core {
             val F_ext = CoreVkUbit.F_ext
             val F_sext = CoreVkUbit.F_sext
             val F_tru = CoreVkUbit.F_tru
+            val F_extTru = CoreVkUbit.F_extTru
         }
 
         object Sbit {

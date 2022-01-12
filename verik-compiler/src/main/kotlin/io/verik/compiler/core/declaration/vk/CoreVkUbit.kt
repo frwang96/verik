@@ -391,4 +391,27 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
             )
         }
     }
+
+    val F_extTru = object : TransformableCoreFunctionDeclaration(parent, "extTru", "fun extTru()") {
+
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
+            return listOf(
+                TypeConstraint(
+                    TypeConstraintKind.EQ_INOUT,
+                    TypeAdapter.ofTypeArgument(callExpression, 0),
+                    TypeAdapter.ofElement(callExpression, 0)
+                )
+            )
+        }
+
+        override fun transform(callExpression: ECallExpression): EExpression {
+            val receiverWidth = callExpression.receiver!!.type.asBitWidth(callExpression)
+            val width = callExpression.typeArguments[0].asCardinalValue(callExpression)
+            return when {
+                receiverWidth < width -> F_ext.transform(callExpression)
+                receiverWidth > width -> F_tru.transform(callExpression)
+                else -> callExpression.receiver!!
+            }
+        }
+    }
 }

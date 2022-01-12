@@ -239,10 +239,10 @@ internal class DeclarationCasterTest : BaseTest() {
     fun `function with type parameter`() {
         driveElementTest(
             """
-                fun <X : `*`> f() {}
+                fun <N : `*`> f() {}
             """.trimIndent(),
             CasterStage::class,
-            "KtFunction(f, Unit, *, [], [TypeParameter(X, `*`)], [], 0)"
+            "KtFunction(f, Unit, *, [], [TypeParameter(N, `*`)], [], 0)"
         ) { it.findDeclaration("f") }
     }
 
