@@ -51,13 +51,9 @@ object ExpressionEvaluator {
 
     private fun evaluateCallExpression(callExpression: ECallExpression): EExpression? {
         val reference = callExpression.reference
-        if (reference is CoreFunctionDeclaration) {
-            if (callExpression.type.isResolved() &&
-                callExpression.valueArguments.all { it.type.isResolved() } &&
-                callExpression.typeArguments.all { it.isResolved() }
-            ) return reference.evaluate(callExpression)
-        }
-        return null
+        return if (reference is CoreFunctionDeclaration) {
+            reference.evaluate(callExpression)
+        } else null
     }
 
     private fun evaluateIfExpression(ifExpression: EIfExpression): EExpression? {

@@ -17,16 +17,61 @@
 package io.verik.compiler.transform.upper
 
 import io.verik.compiler.ast.element.common.ECallExpression
+import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.common.EReferenceExpression
+import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreFunctionDeclaration
 
 object ConstantPropagator {
 
-    fun expandExpression(expression: EExpression): EExpression {
-        return expression
+    fun expand(expression: EExpression): EExpression {
+        return when (expression) {
+            is EKtBinaryExpression -> expandKtBinaryExpression(expression)
+            is EReferenceExpression -> expandReferenceExpression(expression)
+            is ECallExpression -> expandCallExpression(expression)
+            is EConstantExpression -> expression
+            else -> expression
+        }
+    }
+
+    private fun expandKtBinaryExpression(binaryExpression: EKtBinaryExpression): EExpression {
+        val left = expand(binaryExpression.left)
+        val right = expand(binaryExpression.right)
+        return EKtBinaryExpression(
+            binaryExpression.location,
+            binaryExpression.type,
+            left,
+            right,
+            binaryExpression.kind
+        )
+    }
+
+    private fun expandReferenceExpression(referenceExpression: EReferenceExpression): EExpression {
+        val reference = referenceExpression.reference
+        if (reference is EProperty && !reference.isMutable) {
+            val initializer = reference.initializer
+            if (initializer != null) {
+                return expand(initializer)
+            }
+        }
+        return referenceExpression
+    }
+
+    private fun expandCallExpression(callExpression: ECallExpression): EExpression {
+        val receiver = callExpression.receiver?.let { expand(it) }
+        val valueArguments = callExpression.valueArguments.map { expand(it) }
+        return ECallExpression(
+            callExpression.location,
+            callExpression.type,
+            callExpression.reference,
+            receiver,
+            ArrayList(valueArguments),
+            callExpression.typeArguments
+        )
     }
 
     fun isConstant(expression: EExpression): Boolean {

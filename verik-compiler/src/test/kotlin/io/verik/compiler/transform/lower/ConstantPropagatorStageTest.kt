@@ -35,4 +35,33 @@ internal class ConstantPropagatorStageTest : BaseTest() {
             "CallExpression(Unit, println, null, [ConstantExpression(Int, 0)], [])"
         ) { it.findExpression("f") }
     }
+
+    @Test
+    fun `constant reference expression`() {
+        driveElementTest(
+            """
+                const val x = 0
+                const val y = x
+                fun f() {
+                    println(y)
+                }
+            """.trimIndent(),
+            ConstantPropagatorStage::class,
+            "CallExpression(Unit, println, null, [ConstantExpression(Int, 0)], [])"
+        ) { it.findExpression("f") }
+    }
+
+    @Test
+    fun `constant call expression`() {
+        driveElementTest(
+            """
+                val y = b<TRUE>()
+                fun f() {
+                    println(y)
+                }
+            """.trimIndent(),
+            ConstantPropagatorStage::class,
+            "CallExpression(Unit, println, null, [CallExpression(Boolean, b, null, [], [`1`])], [])"
+        ) { it.findExpression("f") }
+    }
 }

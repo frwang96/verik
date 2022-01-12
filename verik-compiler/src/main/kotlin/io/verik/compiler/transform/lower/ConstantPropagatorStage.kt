@@ -72,7 +72,7 @@ object ConstantPropagatorStage : ProjectStage() {
         private fun indexConstantProperty(property: EProperty): Boolean {
             val initializer = property.initializer
             if (!property.isMutable && initializer != null) {
-                val expression = ConstantPropagator.expandExpression(initializer)
+                val expression = ConstantPropagator.expand(initializer)
                 if (ConstantPropagator.isConstant(expression)) {
                     constantMap[property] = expression
                     return true

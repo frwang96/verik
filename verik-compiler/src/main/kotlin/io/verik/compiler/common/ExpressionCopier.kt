@@ -16,10 +16,13 @@
 
 package io.verik.compiler.common
 
+import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.EReferenceExpression
+import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
@@ -43,7 +46,8 @@ object ExpressionCopier {
     }
 
     private fun <E : EExpression> copy(expression: E, isDeepCopy: Boolean, location: SourceLocation?): E {
-        val copiedExpression = when (expression) {
+        val copiedExpression: EExpression = when (expression) {
+            is EBlockExpression -> copyBlockExpression(expression, isDeepCopy, location)
             is EKtBinaryExpression -> copyKtBinaryExpression(expression, isDeepCopy, location)
             is ESvBinaryExpression -> copySvBinaryExpression(expression, isDeepCopy, location)
             is EReferenceExpression -> copyReferenceExpression(expression, isDeepCopy, location)
@@ -51,11 +55,37 @@ object ExpressionCopier {
             is EConstantExpression -> copyConstantExpression(expression, isDeepCopy, location)
             is EKtArrayAccessExpression -> copyKtArrayAccessExpression(expression, isDeepCopy, location)
             is EStreamingExpression -> copyStreamingExpression(expression, isDeepCopy, location)
+            is EIsExpression -> copyIsExpression(expression, isDeepCopy, location)
+            is EIfExpression -> copyIfExpression(expression, isDeepCopy, location)
             is EInlineIfExpression -> copyInlineIfExpression(expression, isDeepCopy, location)
             else -> Messages.INTERNAL_ERROR.on(expression, "Unable to copy expression: $expression")
         }
         @Suppress("UNCHECKED_CAST")
         return copiedExpression as E
+    }
+
+    private fun copyBlockExpression(
+        blockExpression: EBlockExpression,
+        isDeepCopy: Boolean,
+        location: SourceLocation?
+    ): EBlockExpression {
+        return if (isDeepCopy) {
+            val type = blockExpression.type.copy()
+            val statements = blockExpression.statements.map { copy(it, true, location) }
+            EBlockExpression(
+                blockExpression.location,
+                blockExpression.endLocation,
+                type,
+                ArrayList(statements)
+            )
+        } else {
+            EBlockExpression(
+                blockExpression.location,
+                blockExpression.endLocation,
+                blockExpression.type,
+                blockExpression.statements
+            )
+        }
     }
 
     private fun copyKtBinaryExpression(
@@ -230,6 +260,60 @@ object ExpressionCopier {
                 streamingExpression.location,
                 streamingExpression.type,
                 streamingExpression.expression
+            )
+        }
+    }
+
+    private fun copyIsExpression(
+        isExpression: EIsExpression,
+        isDeepCopy: Boolean,
+        location: SourceLocation?
+    ): EIsExpression {
+        return if (isDeepCopy) {
+            val expression = copy(isExpression.expression, true, location)
+            val castType = isExpression.castType.copy()
+            EIsExpression(
+                isExpression.location,
+                expression,
+                isExpression.property,
+                isExpression.isNegated,
+                castType
+            )
+        } else {
+            EIsExpression(
+                isExpression.location,
+                isExpression.expression,
+                isExpression.property,
+                isExpression.isNegated,
+                isExpression.castType
+            )
+        }
+    }
+
+    private fun copyIfExpression(
+        ifExpression: EIfExpression,
+        isDeepCopy: Boolean,
+        location: SourceLocation?
+    ): EIfExpression {
+        return if (isDeepCopy) {
+            val type = ifExpression.type.copy()
+            val condition = copy(ifExpression.condition, true, location)
+            val thenExpression = ifExpression.thenExpression?.let { copy(it, true, location) }
+            val elseExpression = ifExpression.elseExpression?.let { copy(it, true, location) }
+            EIfExpression(
+                ifExpression.location,
+                type,
+                condition,
+                thenExpression,
+                elseExpression
+            )
+        } else {
+            EIfExpression(
+                ifExpression.location,
+                ifExpression.type,
+                ifExpression.condition,
+                ifExpression.elseExpression,
+                ifExpression.thenExpression
             )
         }
     }
