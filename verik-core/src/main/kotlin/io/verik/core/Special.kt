@@ -50,20 +50,6 @@ fun <X : `*`> b(): Boolean {
 }
 
 /**
- * (UNIMPLEMENTED) Returns a [Boolean] set to X.
- */
-fun bx(): Boolean {
-    throw VerikException()
-}
-
-/**
- * (UNIMPLEMENTED) Returns a [Boolean] set to Z.
- */
-fun bz(): Boolean {
-    throw VerikException()
-}
-
-/**
  * Returns the value of cardinal [N] as an integer.
  */
 fun <N : `*`> i(): Int {
@@ -106,28 +92,28 @@ fun u(value: Sbit<`*`>): Ubit<`*`> {
 }
 
 /**
- * Returns a [Ubit] with all bits set to zero.
+ * Returns a [Ubit] with all bits set to false.
  */
 fun <N : `*`> u0(): Ubit<N> {
     throw VerikException()
 }
 
 /**
- * Returns a [Ubit] with all bits set to one.
+ * Returns a [Ubit] with all bits set to true.
  */
 fun <N : `*`> u1(): Ubit<N> {
     throw VerikException()
 }
 
 /**
- * Returns a [Ubit] with all bits set to X.
+ * Returns a [Ubit] with all bits set to unknown.
  */
 fun <N : `*`> ux(): Ubit<N> {
     throw VerikException()
 }
 
 /**
- * Returns a [Ubit] with all bits set to Z.
+ * Returns a [Ubit] with all bits set to floating.
  */
 fun <N : `*`> uz(): Ubit<N> {
     throw VerikException()
@@ -155,56 +141,56 @@ fun s(value: Ubit<`*`>): Sbit<`*`> {
 }
 
 /**
- * (UNIMPLEMENTED) Returns a [Sbit] with all bits set to zero.
+ * (UNIMPLEMENTED) Returns a [Sbit] with all bits set to false.
  */
 fun <N : `*`> s0(): Sbit<N> {
     throw VerikException()
 }
 
 /**
- * (UNIMPLEMENTED) Returns a [Sbit] with all bits set to one.
+ * (UNIMPLEMENTED) Returns a [Sbit] with all bits set to true.
  */
 fun <N : `*`> s1(): Sbit<N> {
     throw VerikException()
 }
 
 /**
- * (UNIMPLEMENTED) Returns a [Sbit] with all bits set to X.
+ * (UNIMPLEMENTED) Returns a [Sbit] with all bits set to unknown.
  */
 fun <N : `*`> sx(): Sbit<N> {
     throw VerikException()
 }
 
 /**
- * (UNIMPLEMENTED) Returns a [Sbit] with all bits set to Z.
+ * (UNIMPLEMENTED) Returns a [Sbit] with all bits set to floating.
  */
 fun <N : `*`> sz(): Sbit<N> {
     throw VerikException()
 }
 
 /**
- * (UNIMPLEMENTED) Returns a value of type [T] with all bits set to X.
+ * (UNIMPLEMENTED) Returns a value of type [T] with all bits set to false.
  */
 fun <T> fill0(): T {
     throw VerikException()
 }
 
 /**
- * (UNIMPLEMENTED) Returns a value of type [T] with all bits set to X.
+ * (UNIMPLEMENTED) Returns a value of type [T] with all bits set to true.
  */
 fun <T> fill1(): T {
     throw VerikException()
 }
 
 /**
- * (UNIMPLEMENTED) Returns a value of type [T] with all bits set to X.
+ * (UNIMPLEMENTED) Returns a value of type [T] with all bits set to unknown.
  */
 fun <T> fillx(): T {
     throw VerikException()
 }
 
 /**
- * (UNIMPLEMENTED) Returns a value of type [T] with all bits set to Z.
+ * (UNIMPLEMENTED) Returns a value of type [T] with all bits set to floating.
  */
 fun <T> fillz(): T {
     throw VerikException()

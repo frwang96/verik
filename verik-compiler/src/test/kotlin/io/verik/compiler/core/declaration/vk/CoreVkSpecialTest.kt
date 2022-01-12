@@ -18,6 +18,7 @@ package io.verik.compiler.core.declaration.vk
 
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.test.CoreDeclarationTest
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class CoreVkSpecialTest : CoreDeclarationTest() {
@@ -145,6 +146,31 @@ internal class CoreVkSpecialTest : CoreDeclarationTest() {
             """
                 function automatic void f();
                     x = ${'$'}signed(y);
+                endfunction : f
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    @Disabled
+    // TODO implement four state Boolean
+    fun `serialize unknown floating`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Vk.P_unknown,
+                Core.Vk.P_floating
+            ),
+            """
+                var x = false
+                fun f() {
+                    x = unknown
+                    x = floating
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    x = 1'bx;
+                    x = 1'bz;
                 endfunction : f
             """.trimIndent()
         )

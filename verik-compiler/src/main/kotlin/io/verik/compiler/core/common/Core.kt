@@ -194,6 +194,8 @@ object Core {
         val F_s_Int = CoreVkSpecial.F_s_Int
         val F_s_String = CoreVkSpecial.F_s_String
         val F_s_Ubit = CoreVkSpecial.F_s_Ubit
+        val P_unknown = CoreVkSpecial.P_unknown
+        val P_floating = CoreVkSpecial.P_floating
 
         val F_posedge_Boolean = CoreVkControl.F_posedge_Boolean
         val F_negedge_Boolean = CoreVkControl.F_negedge_Boolean
