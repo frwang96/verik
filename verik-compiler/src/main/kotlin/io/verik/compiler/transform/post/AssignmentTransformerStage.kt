@@ -24,6 +24,8 @@ import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
 import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.sv.EClockingBlock
+import io.verik.compiler.ast.element.sv.EConstantPartSelectExpression
+import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
@@ -44,20 +46,34 @@ object AssignmentTransformerStage : ProjectStage() {
 
         private fun getKind(binaryExpression: EKtBinaryExpression): SvBinaryOperatorKind {
             if (inAlwaysSeqBlock) {
-                var referenceExpression: EExpression? = binaryExpression.left
-                while (referenceExpression is EReferenceExpression) {
-                    val reference = referenceExpression.reference
-                    if (reference is EDeclaration && reference.parent is EAbstractContainerComponent)
-                        return SvBinaryOperatorKind.ARROW_ASSIGN
-                    referenceExpression = referenceExpression.receiver
+                var expression: EExpression? = binaryExpression.left
+                while (true) {
+                    expression = when (expression) {
+                        is EReferenceExpression -> {
+                            val reference = expression.reference
+                            if (reference is EDeclaration && reference.parent is EAbstractContainerComponent)
+                                return SvBinaryOperatorKind.ARROW_ASSIGN
+                            expression.receiver
+                        }
+                        is ESvArrayAccessExpression -> expression.array
+                        is EConstantPartSelectExpression -> expression.array
+                        else -> break
+                    }
                 }
             } else {
-                var referenceExpression: EExpression? = binaryExpression.left
-                while (referenceExpression is EReferenceExpression) {
-                    val reference = referenceExpression.reference
-                    if (reference is ETypedElement && reference.type.reference is EClockingBlock)
-                        return SvBinaryOperatorKind.ARROW_ASSIGN
-                    referenceExpression = referenceExpression.receiver
+                var expression: EExpression? = binaryExpression.left
+                while (true) {
+                    expression = when (expression) {
+                        is EReferenceExpression -> {
+                            val reference = expression.reference
+                            if (reference is ETypedElement && reference.type.reference is EClockingBlock)
+                                return SvBinaryOperatorKind.ARROW_ASSIGN
+                            expression.receiver
+                        }
+                        is ESvArrayAccessExpression -> expression.array
+                        is EConstantPartSelectExpression -> expression.array
+                        else -> break
+                    }
                 }
             }
             return SvBinaryOperatorKind.ASSIGN

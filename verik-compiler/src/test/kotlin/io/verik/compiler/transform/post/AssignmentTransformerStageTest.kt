@@ -56,6 +56,24 @@ internal class AssignmentTransformerStageTest : BaseTest() {
     }
 
     @Test
+    fun `transform arrow assign seq block port`() {
+        driveElementTest(
+            """
+                class M(@Out var x: Ubit<`4`>) : Module() {
+                    @Seq
+                    fun f() {
+                        on(posedge(false)) {
+                            x[0] = true
+                        }
+                    }
+                }
+            """.trimIndent(),
+            AssignmentTransformerStage::class,
+            "SvBinaryExpression(Void, SvArrayAccessExpression(*), ConstantExpression(*), ARROW_ASSIGN)"
+        ) { it.findExpression("f") }
+    }
+
+    @Test
     fun `transform arrow assign clocking block`() {
         driveElementTest(
             """
