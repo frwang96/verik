@@ -39,7 +39,7 @@ object PortInstantiationCheckerStage : ProjectStage() {
 
         private val arrayTypeReferences = listOf(
             Core.Vk.Ubit.F_get_Int,
-            Core.Vk.Ubit.F_slice_Int,
+            Core.Vk.Ubit.F_sli_Int,
             Core.Vk.Unpacked.F_get_Int,
             Core.Vk.Unpacked.F_get_Ubit
         )

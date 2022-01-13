@@ -196,10 +196,10 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         SvUnaryOperatorKind.LOGICAL_NEG
     )
 
-    val F_invert = object : UnaryCoreFunctionDeclaration(
+    val F_inv = object : UnaryCoreFunctionDeclaration(
         parent,
-        "invert",
-        "fun invert()",
+        "inv",
+        "fun inv()",
         SvUnaryOperatorKind.BITWISE_NEG
     ) {
 
@@ -214,10 +214,10 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_reverse = object : TransformableCoreFunctionDeclaration(parent, "reverse", "fun reverse()") {
+    val F_rev = object : TransformableCoreFunctionDeclaration(parent, "rev", "fun rev()") {
 
         override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
-            return F_invert.getTypeConstraints(callExpression)
+            return F_inv.getTypeConstraints(callExpression)
         }
 
         override fun transform(callExpression: ECallExpression): EExpression {
@@ -261,7 +261,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_slice_Int = object : TransformableCoreFunctionDeclaration(parent, "slice", "fun slice(Int)") {
+    val F_sli_Int = object : TransformableCoreFunctionDeclaration(parent, "sli", "fun sli(Int)") {
 
         override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return listOf(
@@ -290,7 +290,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_slice_Ubit = object : TransformableCoreFunctionDeclaration(parent, "slice", "fun slice(Ubit)") {
+    val F_sli_Ubit = object : TransformableCoreFunctionDeclaration(parent, "sli", "fun sli(Ubit)") {
 
         override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return listOf(

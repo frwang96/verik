@@ -31,7 +31,7 @@ object M : Module() {
     @Task
     fun f1(x: Ubit<`8`>): Ubit<`8`> {
         delay(1)
-        return x.invert()
+        return x.inv()
     }
 
     @Run

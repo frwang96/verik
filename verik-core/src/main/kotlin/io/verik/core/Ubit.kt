@@ -286,14 +286,14 @@ class Ubit<N : `*`> private constructor() {
     /**
      * Inverts the bits.
      */
-    fun invert(): Ubit<N> {
+    fun inv(): Ubit<N> {
         throw VerikException()
     }
 
     /**
      * Reverses the bits.
      */
-    fun reverse(): Ubit<N> {
+    fun rev(): Ubit<N> {
         throw VerikException()
     }
 
@@ -335,14 +335,14 @@ class Ubit<N : `*`> private constructor() {
     /**
      * Slice [M] bits starting at [index].
      */
-    fun <M : `*`> slice(index: Int): Ubit<M> {
+    fun <M : `*`> sli(index: Int): Ubit<M> {
         throw VerikException()
     }
 
     /**
      * Slice [M] bits starting at [index].
      */
-    fun <M : `*`> slice(index: Ubit<`*`>): Ubit<M> {
+    fun <M : `*`> sli(index: Ubit<`*`>): Ubit<M> {
         throw VerikException()
     }
 

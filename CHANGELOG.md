@@ -25,6 +25,7 @@
 - Merge `KtCallExpression` and `SvCallExpression`.
 - Merge `KtBlockExpression` and `SvBlockExpression`.
 - Merge `KtProperty` and `SvProperty`.
+- Shorten function names on `Ubit` such as `sli`, `rev`, and `inv`.
 
 ## [0.1.11]
 ### Added

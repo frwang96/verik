@@ -103,17 +103,17 @@ internal class CoreVkUbitTest : CoreDeclarationTest() {
     }
 
     @Test
-    fun `serialize invert reverse`() {
+    fun `serialize inv rev`() {
         driveCoreDeclarationTest(
             listOf(
-                Core.Vk.Ubit.F_invert,
-                Core.Vk.Ubit.F_reverse
+                Core.Vk.Ubit.F_inv,
+                Core.Vk.Ubit.F_rev
             ),
             """
                 var x = u(0x0)
                 fun f() {
-                    x = x.invert()
-                    x = x.reverse()
+                    x = x.inv()
+                    x = x.rev()
                 }
             """.trimIndent(),
             """
@@ -177,18 +177,18 @@ internal class CoreVkUbitTest : CoreDeclarationTest() {
     }
 
     @Test
-    fun `serialize slice`() {
+    fun `serialize sli`() {
         driveCoreDeclarationTest(
             listOf(
-                Core.Vk.Ubit.F_slice_Int,
-                Core.Vk.Ubit.F_slice_Ubit
+                Core.Vk.Ubit.F_sli_Int,
+                Core.Vk.Ubit.F_sli_Ubit
             ),
             """
                 var x = u(0x00)
                 var y = u(0x0)
                 fun f() {
-                    y = x.slice(0)
-                    y = x.slice(u(0b000))
+                    y = x.sli(0)
+                    y = x.sli(u(0b000))
                 }
             """.trimIndent(),
             """

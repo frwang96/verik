@@ -50,7 +50,7 @@ internal class ExpressionExtractorStageTest : BaseTest() {
             """
                 var x = u(0)
                 fun f() {
-                    x = x.reverse() + u(0)
+                    x = x.rev() + u(0)
                 }
             """.trimIndent(),
             """

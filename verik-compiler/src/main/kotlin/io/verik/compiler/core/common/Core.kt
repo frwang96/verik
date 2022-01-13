@@ -268,15 +268,15 @@ object Core {
             val F_sshr_Int = CoreVkUbitBinary.F_sshr_Int
             val F_sshr_Ubit = CoreVkUbitBinary.F_sshr_Ubit
 
-            val F_invert = CoreVkUbit.F_invert
-            val F_reverse = CoreVkUbit.F_reverse
+            val F_inv = CoreVkUbit.F_inv
+            val F_rev = CoreVkUbit.F_rev
             val F_andRed = CoreVkUbit.F_andRed
             val F_orRed = CoreVkUbit.F_orRed
             val F_xorRed = CoreVkUbit.F_xorRed
             val F_eqz = CoreVkUbit.F_eqz
             val F_neqz = CoreVkUbit.F_neqz
-            val F_slice_Int = CoreVkUbit.F_slice_Int
-            val F_slice_Ubit = CoreVkUbit.F_slice_Ubit
+            val F_sli_Int = CoreVkUbit.F_sli_Int
+            val F_sli_Ubit = CoreVkUbit.F_sli_Ubit
             val F_ext = CoreVkUbit.F_ext
             val F_sext = CoreVkUbit.F_sext
             val F_tru = CoreVkUbit.F_tru
