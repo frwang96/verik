@@ -19,12 +19,15 @@ package io.verik.compiler.core.declaration.vk
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.constant.BitComponent
 import io.verik.compiler.constant.BitConstant
+import io.verik.compiler.constant.BooleanConstantKind
 import io.verik.compiler.constant.ConstantBuilder
 import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
 import io.verik.compiler.core.common.Cardinal
 import io.verik.compiler.core.common.CorePackage
+import io.verik.compiler.core.common.CorePropertyDeclaration
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.core.common.CoreTransformUtil
 import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
@@ -72,7 +75,7 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
             val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
             if (value !in 0..1)
                 Messages.CARDINAL_NOT_BOOLEAN.on(callExpression, callExpression.typeArguments[0])
-            return ConstantBuilder.buildBoolean(callExpression, value != 0)
+            return ConstantBuilder.buildBoolean(callExpression, BooleanConstantKind.fromBoolean(value != 0))
         }
     }
 
@@ -210,6 +213,20 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
 
         override fun transform(callExpression: ECallExpression): EExpression {
             return CoreTransformUtil.callExpressionSigned(callExpression.valueArguments[0])
+        }
+    }
+
+    val P_unknown = object : CorePropertyDeclaration(parent, "unknown") {
+
+        override fun transform(referenceExpression: EReferenceExpression): EExpression {
+            return ConstantBuilder.buildBoolean(referenceExpression, BooleanConstantKind.UNKNOWN)
+        }
+    }
+
+    val P_floating = object : CorePropertyDeclaration(parent, "floating") {
+
+        override fun transform(referenceExpression: EReferenceExpression): EExpression {
+            return ConstantBuilder.buildBoolean(referenceExpression, BooleanConstantKind.FLOATING)
         }
     }
 }

@@ -87,7 +87,7 @@ object SpecializerStage : ProjectStage() {
         )
         TypeParameterSubstitutorSubstage.process(declaration, typeParameterBinding)
         CardinalTypeEvaluatorSubstage.process(declaration, typeParameterBinding)
-        ExpressionEvaluatorSubstage.process(declaration, typeParameterBinding)
+        ExpressionEliminatorSubstage.process(declaration, typeParameterBinding)
         OptionalReducerSubstage.process(declaration, typeParameterBinding)
         return SpecializerIndexer.index(declaration)
     }

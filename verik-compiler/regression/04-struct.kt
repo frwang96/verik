@@ -32,6 +32,6 @@ object M : Module() {
 }
 
 class S(
-    val x: Boolean,
-    val y: Ubit<`8`>
+    val x0: Boolean,
+    val x1: Ubit<`8`>
 ) : Struct()

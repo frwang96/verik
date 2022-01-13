@@ -18,6 +18,8 @@
 
 package io.verik.core
 
+import kotlin.properties.Delegates
+
 /**
  * (UNIMPLEMENTED) Returns true if the boolean is unknown.
  */
@@ -26,15 +28,29 @@ fun Boolean.isUnknown(): Boolean {
 }
 
 /**
- * Extend to [X] bits with zero extension.
+ * Extend to [N] bits with zero extension.
  */
-fun <X : `*`> Boolean.ext(): Ubit<X> {
+fun <N : `*`> Boolean.ext(): Ubit<N> {
     throw VerikException()
 }
 
 /**
- * Extend to [X] bits with sign extension.
+ * Extend to [N] bits with sign extension.
  */
-fun <X : `*`> Boolean.sext(): Sbit<X> {
+fun <N : `*`> Boolean.sext(): Sbit<N> {
+    throw VerikException()
+}
+
+/**
+ * Unknown boolean value.
+ */
+val unknown: Boolean by Delegates.observable(false) { _, _, _ ->
+    throw VerikException()
+}
+
+/**
+ * Floating boolean value.
+ */
+val floating: Boolean by Delegates.observable(false) { _, _, _ ->
     throw VerikException()
 }

@@ -14,36 +14,43 @@
  * limitations under the License.
  */
 
-// M.sv ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// M0.sv ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 `ifndef VERIK
 `define VERIK
 `timescale 1ns / 1ns
 `endif
 
-module M;
+module M0;
 
-    N n1 (
-        .A ( 8'h00 ),
-        .x ( 1'b0 ),
-        .y ( 4'b0000 ),
-        .z ( )
+    M1 m0 (
+        .C  ( 8'h00 ),
+        .x0 ( 1'b0 ),
+        .x1 ( 4'b0000 ),
+        .x2 ( )
     );
 
-    N n2 (
-        .A ( 8'h00 ),
-        .x ( 1'b0 ),
-        .y ( 4'b0000 ),
-        .z ( )
+    M1 m1 (
+        .C  ( 8'h00 ),
+        .x0 ( 1'b0 ),
+        .x1 ( 4'b0000 ),
+        .x2 ( )
     );
 
-endmodule : M
+endmodule : M0
 
-module N(
-    input  logic [7:0] A,
-    input  logic       x,
-    input  logic [3:0] y,
-    output logic       z
+// M1.sv ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+`ifndef VERIK
+`define VERIK
+`timescale 1ns / 1ns
+`endif
+
+module M1(
+    input  logic [7:0] C,
+    input  logic       x0,
+    input  logic [3:0] x1,
+    output logic       x2
 );
 
-endmodule : N
+endmodule : M1

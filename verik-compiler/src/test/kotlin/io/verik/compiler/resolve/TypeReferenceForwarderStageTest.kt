@@ -38,11 +38,11 @@ internal class TypeReferenceForwarderStageTest : BaseTest() {
     fun `forward type parameterized`() {
         driveElementTest(
             """
-                class C<X : `*`>
+                class C<N : `*`>
                 val x = C<`1`>()
             """.trimIndent(),
             TypeReferenceForwarderStage::class,
-            "Property(x, C_X_1, [], *, 0)"
+            "Property(x, C_N_1, [], *, 0)"
         ) { it.findDeclaration("x") }
     }
 }

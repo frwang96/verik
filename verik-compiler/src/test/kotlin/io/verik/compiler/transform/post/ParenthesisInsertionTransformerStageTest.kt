@@ -22,6 +22,34 @@ import org.junit.jupiter.api.Test
 internal class ParenthesisInsertionTransformerStageTest : BaseTest() {
 
     @Test
+    fun `unary expression with unary expression`() {
+        driveTextFileTest(
+            """
+                var x = !u(0x0).reduceOr()
+            """.trimIndent(),
+            """
+                logic x = !(|4'b0000);
+            """.trimIndent()
+        ) { it.regularPackageTextFiles[0] }
+    }
+
+    @Test
+    fun `unary expression with binary expression`() {
+        driveTextFileTest(
+            """
+                var x = false
+                var y = false
+                var z = !(x && y)
+            """.trimIndent(),
+            """
+                logic x = 1'b0;
+                logic y = 1'b0;
+                logic z = !(x && y);
+            """.trimIndent()
+        ) { it.regularPackageTextFiles[0] }
+    }
+
+    @Test
     fun `binary expression same kind left`() {
         driveTextFileTest(
             """

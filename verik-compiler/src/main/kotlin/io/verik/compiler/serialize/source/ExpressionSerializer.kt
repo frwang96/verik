@@ -400,7 +400,9 @@ object ExpressionSerializer {
         serializeContext: SerializeContext
     ) {
         serializeContext.append("@(")
-        serializeContext.serializeAsExpression(eventControlExpression.expression)
+        serializeContext.serializeJoin(eventControlExpression.expressions) {
+            serializeContext.serializeAsExpression(it)
+        }
         serializeContext.append(")")
     }
 

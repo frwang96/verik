@@ -25,9 +25,9 @@ package io.verik.core
 abstract class Component
 
 /**
- * (UNIMPLEMENTED) Instantiate a [Cluster] of components [C] of size [X].
+ * (UNIMPLEMENTED) Instantiate a [Cluster] of components [C] of size [N].
  */
-fun <X : `*`, C : Component> cluster(instantiator: (Int) -> C): Cluster<X, C> {
+fun <N : `*`, C : Component> cluster(instantiator: (Int) -> C): Cluster<N, C> {
     throw VerikException()
 }
 

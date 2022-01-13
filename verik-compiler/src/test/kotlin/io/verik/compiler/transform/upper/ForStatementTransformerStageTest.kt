@@ -38,7 +38,7 @@ internal class ForStatementTransformerStageTest : BaseTest() {
                     Property(it, Int, [], ConstantExpression(Int, 0), 1),
                     KtBinaryExpression(Boolean, ReferenceExpression(Int, it, null), ConstantExpression(*), LT),
                     KtUnaryExpression(Int, ReferenceExpression(*), POST_INC),
-                    BlockExpression(Function, [])
+                    BlockExpression(Unit, [])
                 )
             """.trimIndent()
         ) { it.findExpression("f") }
@@ -62,7 +62,7 @@ internal class ForStatementTransformerStageTest : BaseTest() {
                     KtBinaryExpression(Boolean, ReferenceExpression(Int, <tmp>, null), ReferenceExpression(*), LT),
                     KtUnaryExpression(Int, ReferenceExpression(Int, <tmp>, null), POST_INC),
                     BlockExpression(
-                        Function,
+                        Unit,
                         [PropertyStatement(
                             Unit,
                             Property(

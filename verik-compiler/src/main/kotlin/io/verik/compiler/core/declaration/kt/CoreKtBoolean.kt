@@ -28,7 +28,7 @@ import io.verik.compiler.core.common.UnaryCoreFunctionDeclaration
 
 object CoreKtBoolean : CoreScope(Core.Kt.C_Boolean) {
 
-    val F_not = object : UnaryCoreFunctionDeclaration(parent, "not", "fun not()", SvUnaryOperatorKind.BITWISE_NEG) {
+    val F_not = object : UnaryCoreFunctionDeclaration(parent, "not", "fun not()", SvUnaryOperatorKind.LOGICAL_NEG) {
 
         override fun evaluate(callExpression: ECallExpression): EConstantExpression? {
             val expression = callExpression.receiver!!

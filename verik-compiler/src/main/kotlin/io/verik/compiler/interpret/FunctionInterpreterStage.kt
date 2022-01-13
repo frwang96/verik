@@ -16,6 +16,7 @@
 
 package io.verik.compiler.interpret
 
+import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
@@ -32,6 +33,8 @@ import io.verik.compiler.ast.element.sv.ETask
 import io.verik.compiler.ast.property.FunctionQualifierType
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.constant.BooleanConstantKind
+import io.verik.compiler.constant.ConstantBuilder
 import io.verik.compiler.core.common.AnnotationEntries
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
@@ -51,12 +54,10 @@ object FunctionInterpreterStage : ProjectStage() {
 
         override fun visitKtFunction(function: EKtFunction) {
             super.visitKtFunction(function)
-            val interpretedFunction = interpret(function)
-            if (interpretedFunction != null)
-                referenceUpdater.replace(function, interpretedFunction)
+            referenceUpdater.replace(function, interpret(function))
         }
 
-        private fun interpret(function: EKtFunction): EDeclaration? {
+        private fun interpret(function: EKtFunction): EDeclaration {
             val body = function.body
             return when {
                 function.hasAnnotationEntry(AnnotationEntries.COM) ->
@@ -71,25 +72,38 @@ object FunctionInterpreterStage : ProjectStage() {
             }
         }
 
-        private fun getAlwaysSeqBlock(function: EKtFunction): EAlwaysSeqBlock? {
-            val body = function.body
-            val onExpression = if (body.statements.size == 1) {
-                body.statements[0]
-            } else {
-                Messages.EXPECTED_ON_EXPRESSION.on(body)
-                return null
+        private fun getAlwaysSeqBlock(function: EKtFunction): EAlwaysSeqBlock {
+            val onExpression = function.body.getOnlyStatement()
+            if (onExpression == null) {
+                if (!function.body.isEmpty())
+                    Messages.EXPECTED_ON_EXPRESSION.on(function)
+                return getEmptyAlwaysSeqBlock(function)
             }
             if (onExpression !is ECallExpression || onExpression.reference != Core.Vk.F_on_Event_Event_Function) {
-                Messages.EXPECTED_ON_EXPRESSION.on(body)
-                return null
+                Messages.EXPECTED_ON_EXPRESSION.on(function)
+                return getEmptyAlwaysSeqBlock(function)
             }
-            val eventExpression = onExpression.valueArguments[0]
-            val eventControlExpression = EEventControlExpression(eventExpression.location, eventExpression)
-            val alwaysSeqBody = onExpression.valueArguments[1].cast<EFunctionLiteralExpression>().body
+            val eventExpressions = onExpression.valueArguments.dropLast(1)
+            val eventControlExpression = EEventControlExpression(function.location, ArrayList(eventExpressions))
+            val alwaysSeqBody = onExpression.valueArguments.last().cast<EFunctionLiteralExpression>().body
             return EAlwaysSeqBlock(
                 function.location,
                 function.name,
                 alwaysSeqBody,
+                eventControlExpression
+            )
+        }
+
+        private fun getEmptyAlwaysSeqBlock(function: EKtFunction): EAlwaysSeqBlock {
+            val body = EBlockExpression.empty(function.location)
+            val eventControlExpression = EEventControlExpression(
+                function.location,
+                arrayListOf(ConstantBuilder.buildBoolean(function.location, BooleanConstantKind.FALSE))
+            )
+            return EAlwaysSeqBlock(
+                function.location,
+                function.name,
+                body,
                 eventControlExpression
             )
         }

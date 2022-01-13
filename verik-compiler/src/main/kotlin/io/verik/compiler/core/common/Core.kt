@@ -194,10 +194,13 @@ object Core {
         val F_s_Int = CoreVkSpecial.F_s_Int
         val F_s_String = CoreVkSpecial.F_s_String
         val F_s_Ubit = CoreVkSpecial.F_s_Ubit
+        val P_unknown = CoreVkSpecial.P_unknown
+        val P_floating = CoreVkSpecial.P_floating
 
         val F_posedge_Boolean = CoreVkControl.F_posedge_Boolean
         val F_negedge_Boolean = CoreVkControl.F_negedge_Boolean
         val F_on_Event_Event_Function = CoreVkControl.F_on_Event_Event_Function
+        val F_onr_Event_Event_Function = CoreVkControl.F_onr_Event_Event_Function
         val F_forever_Function = CoreVkControl.F_forever_Function
         val F_delay_Int = CoreVkControl.F_delay_Int
         val F_wait_Boolean = CoreVkControl.F_wait_Boolean
@@ -277,6 +280,7 @@ object Core {
             val F_ext = CoreVkUbit.F_ext
             val F_sext = CoreVkUbit.F_sext
             val F_tru = CoreVkUbit.F_tru
+            val F_extTru = CoreVkUbit.F_extTru
         }
 
         object Sbit {

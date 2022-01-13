@@ -44,7 +44,7 @@ internal class CoreKtBooleanTest : CoreDeclarationTest() {
             """.trimIndent(),
             """
                 function automatic void f();
-                    x = ~a;
+                    x = !a;
                     x = a && b;
                     x = a || b;
                     x = a ^ b;

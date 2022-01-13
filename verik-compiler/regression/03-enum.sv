@@ -22,9 +22,9 @@
 `endif
 
 typedef enum {
-    A,
-    B,
-    C
+    E0,
+    E1,
+    E2
 } E;
 
 module M;
@@ -32,8 +32,8 @@ module M;
     E e;
 
     initial begin : f
-        if (e == A) begin
-            $display("B");
+        if (e == E0) begin
+            $display("E1");
         end
     end : f
 

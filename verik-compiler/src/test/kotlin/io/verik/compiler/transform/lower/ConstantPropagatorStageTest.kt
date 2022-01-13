@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,54 +14,54 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.upper
+package io.verik.compiler.transform.lower
 
 import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
-internal class ToStringTransformerStageTest : BaseTest() {
+internal class ConstantPropagatorStageTest : BaseTest() {
 
     @Test
-    fun `string template expression enum property`() {
+    fun `constant expression`() {
         driveElementTest(
             """
-                enum class E { A }
-                val e = E.A
+                const val x = 0
                 fun f() {
-                    "${"$"}e"
+                    println(x)
                 }
             """.trimIndent(),
-            ToStringTransformerStage::class,
-            "StringTemplateExpression(String, [CallExpression(String, name, ReferenceExpression(*), [], [])])"
+            ConstantPropagatorStage::class,
+            "CallExpression(Unit, println, null, [ConstantExpression(Int, 0)], [])"
         ) { it.findExpression("f") }
     }
 
     @Test
-    fun `string template expression enum entry`() {
+    fun `constant reference expression`() {
         driveElementTest(
             """
-                enum class E { A }
+                const val x = 0
+                const val y = x
                 fun f() {
-                    "${"$"}{E.A}"
+                    println(y)
                 }
             """.trimIndent(),
-            ToStringTransformerStage::class,
-            "StringTemplateExpression(String, [StringTemplateExpression(String, [A])])"
+            ConstantPropagatorStage::class,
+            "CallExpression(Unit, println, null, [ConstantExpression(Int, 0)], [])"
         ) { it.findExpression("f") }
     }
 
     @Test
-    fun `println enum entry`() {
+    fun `constant call expression`() {
         driveElementTest(
             """
-                enum class E { A }
+                val y = b<TRUE>()
                 fun f() {
-                    println(E.A)
+                    println(y)
                 }
             """.trimIndent(),
-            ToStringTransformerStage::class,
-            "CallExpression(Unit, println, null, [StringTemplateExpression(String, [A])], [])"
+            ConstantPropagatorStage::class,
+            "CallExpression(Unit, println, null, [CallExpression(Boolean, b, null, [], [`1`])], [])"
         ) { it.findExpression("f") }
     }
 }

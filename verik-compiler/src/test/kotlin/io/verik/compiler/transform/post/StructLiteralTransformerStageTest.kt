@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,23 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.upper
+package io.verik.compiler.transform.post
 
 import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
-internal class ConstantPropagatorStageTest : BaseTest() {
+internal class StructLiteralTransformerStageTest : BaseTest() {
 
     @Test
-    fun `constant expression`() {
+    fun `struct literal`() {
         driveElementTest(
             """
-                const val x = 0
-                fun f() {
-                    println(x)
-                }
+                class S(val x: Boolean) : Struct()
+                var s = S(false)
             """.trimIndent(),
-            ConstantPropagatorStage::class,
-            "CallExpression(Unit, println, null, [ConstantExpression(Int, 0)], [])"
-        ) { it.findExpression("f") }
+            StructLiteralTransformerStage::class,
+            "StructLiteralExpression(S, [StructLiteralEntry(x, ConstantExpression(*))])"
+        ) { it.findExpression("s") }
     }
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.upper
+package io.verik.compiler.transform.post
 
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EExpression
@@ -23,7 +23,6 @@ import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.LiteralStringEntry
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
@@ -38,14 +37,14 @@ object StringTemplateExpressionTransformerStage : ProjectStage() {
     private fun getFormatSpecifier(expression: EExpression): String {
         val type = expression.type
         return when (type.reference) {
-            Core.Kt.C_Boolean -> "%b"
-            Core.Kt.C_Int -> "%0d"
-            Core.Kt.C_String -> "%s"
-            Core.Vk.C_Ubit, Core.Vk.C_Sbit -> {
+            Target.C_Boolean -> "%b"
+            Target.C_Int -> "%0d"
+            Target.C_String -> "%s"
+            Target.C_Ubit, Target.C_Sbit -> {
                 val width = type.asBitWidth(expression)
                 "%0${(width + 3) / 4}h"
             }
-            Core.Vk.C_Time -> "%0t"
+            Target.C_Time -> "%0t"
             else -> {
                 Messages.INTERNAL_ERROR.on(expression, "Unable to get format specifier of type: ${expression.type}")
             }

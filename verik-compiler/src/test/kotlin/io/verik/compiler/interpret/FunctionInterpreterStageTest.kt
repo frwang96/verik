@@ -40,16 +40,54 @@ internal class FunctionInterpreterStageTest : BaseTest() {
     }
 
     @Test
+    fun `interpret always seq block if expression true`() {
+        driveElementTest(
+            """
+                class M: Module() {
+                    private var x = false
+                    @Seq
+                    fun f() {
+                        @Suppress("ConstantConditionIf")
+                        if (true) on (posedge(x)) {}
+                    }
+                }
+            """.trimIndent(),
+            FunctionInterpreterStage::class,
+            "AlwaysSeqBlock(f, EventControlExpression(*), BlockExpression(Unit, []))"
+        ) { it.findDeclaration("f") }
+    }
+
+    @Test
+    fun `interpret always seq block if expression false`() {
+        driveElementTest(
+            """
+                class M: Module() {
+                    private var x = false
+                    @Seq
+                    fun f() {
+                        @Suppress("ConstantConditionIf")
+                        if (false) on (posedge(x)) {}
+                    }
+                }
+            """.trimIndent(),
+            FunctionInterpreterStage::class,
+            "AlwaysSeqBlock(f, EventControlExpression(*), BlockExpression(Unit, []))"
+        ) { it.findDeclaration("f") }
+    }
+
+    @Test
     fun `interpret always seq block error`() {
         driveMessageTest(
             """
             class M: Module() {
                 @Seq
-                fun f() {}
+                fun f() {
+                    println()
+                }
             }
             """.trimIndent(),
             true,
-            "On expression expected"
+            "Expected on expression"
         )
     }
 

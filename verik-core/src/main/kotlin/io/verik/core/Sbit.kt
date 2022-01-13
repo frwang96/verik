@@ -19,9 +19,9 @@
 package io.verik.core
 
 /**
- * Represents a sequence of [X] bits that is signed. Corresponds to SystemVerilog packed signed logic.
+ * Represents a sequence of [N] bits that is signed. Corresponds to SystemVerilog packed signed logic.
  */
-class Sbit<X : `*`> private constructor() {
+class Sbit<N : `*`> private constructor() {
 
     /**
      * (UNIMPLEMENTED) Returns true if any bit of the [Sbit] is unknown.
@@ -83,14 +83,14 @@ class Sbit<X : `*`> private constructor() {
     /**
      * Increment by one.
      */
-    operator fun inc(): Sbit<X> {
+    operator fun inc(): Sbit<N> {
         throw VerikException()
     }
 
     /**
      * Decrement by one.
      */
-    operator fun dec(): Sbit<X> {
+    operator fun dec(): Sbit<N> {
         throw VerikException()
     }
 
@@ -174,105 +174,105 @@ class Sbit<X : `*`> private constructor() {
     /**
      * Takes the bitwise and with [value].
      */
-    infix fun and(value: Ubit<X>): Ubit<X> {
+    infix fun and(value: Ubit<N>): Ubit<N> {
         throw VerikException()
     }
 
     /**
      * Takes the bitwise and with [value].
      */
-    infix fun and(value: Sbit<X>): Ubit<X> {
+    infix fun and(value: Sbit<N>): Ubit<N> {
         throw VerikException()
     }
 
     /**
      * Takes the bitwise or with [value].
      */
-    infix fun or(value: Ubit<X>): Ubit<X> {
+    infix fun or(value: Ubit<N>): Ubit<N> {
         throw VerikException()
     }
 
     /**
      * Takes the bitwise or with [value].
      */
-    infix fun or(value: Sbit<X>): Ubit<X> {
+    infix fun or(value: Sbit<N>): Ubit<N> {
         throw VerikException()
     }
 
     /**
      * Takes the bitwise xor with [value].
      */
-    infix fun xor(value: Ubit<X>): Ubit<X> {
+    infix fun xor(value: Ubit<N>): Ubit<N> {
         throw VerikException()
     }
 
     /**
      * Takes the bitwise xor with [value].
      */
-    infix fun xor(value: Sbit<X>): Ubit<X> {
+    infix fun xor(value: Sbit<N>): Ubit<N> {
         throw VerikException()
     }
 
     /**
      * Left shift by [value].
      */
-    infix fun shl(value: Int): Sbit<X> {
+    infix fun shl(value: Int): Sbit<N> {
         throw VerikException()
     }
 
     /**
      * Left shift by [value].
      */
-    infix fun shl(value: Ubit<`*`>): Sbit<X> {
+    infix fun shl(value: Ubit<`*`>): Sbit<N> {
         throw VerikException()
     }
 
     /**
      * Signed right shift by [value].
      */
-    infix fun shr(value: Int): Sbit<X> {
+    infix fun shr(value: Int): Sbit<N> {
         throw VerikException()
     }
 
     /**
      * Signed right shift by [value].
      */
-    infix fun shr(value: Ubit<`*`>): Sbit<X> {
+    infix fun shr(value: Ubit<`*`>): Sbit<N> {
         throw VerikException()
     }
 
     /**
      * Unsigned right shift by [value].
      */
-    infix fun ushr(value: Int): Sbit<X> {
+    infix fun ushr(value: Int): Sbit<N> {
         throw VerikException()
     }
 
     /**
      * Unsigned right shift by [value].
      */
-    infix fun ushr(value: Ubit<`*`>): Sbit<X> {
+    infix fun ushr(value: Ubit<`*`>): Sbit<N> {
         throw VerikException()
     }
 
     /**
-     * Extend to [Y] bits with sign extension.
+     * Extend to [M] bits with sign extension.
      */
-    fun <Y : `*`> ext(): Sbit<Y> {
+    fun <M : `*`> ext(): Sbit<M> {
         throw VerikException()
     }
 
     /**
-     * Extend to [Y] bits with zero extension.
+     * Extend to [M] bits with zero extension.
      */
-    fun <Y : `*`> uext(): Sbit<Y> {
+    fun <M : `*`> uext(): Sbit<M> {
         throw VerikException()
     }
 
     /**
-     * Truncate to [Y] bits.
+     * Truncate to [M] bits.
      */
-    fun <Y : `*`> tru(): Sbit<Y> {
+    fun <M : `*`> tru(): Sbit<M> {
         throw VerikException()
     }
 }

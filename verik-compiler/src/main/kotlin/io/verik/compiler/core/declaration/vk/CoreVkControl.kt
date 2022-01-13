@@ -31,6 +31,9 @@ import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
 import io.verik.compiler.message.Messages
+import io.verik.compiler.resolve.TypeAdapter
+import io.verik.compiler.resolve.TypeConstraint
+import io.verik.compiler.resolve.TypeConstraintKind
 import io.verik.compiler.target.common.Target
 
 object CoreVkControl : CoreScope(CorePackage.VK) {
@@ -69,6 +72,34 @@ object CoreVkControl : CoreScope(CorePackage.VK) {
         }
     }
 
+    val F_onr_Event_Event_Function = object : TransformableCoreFunctionDeclaration(
+        parent,
+        "onr",
+        "fun onr(Event, vararg Event, Function)"
+    ) {
+
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
+            val blockExpression = callExpression.valueArguments.last().cast<EFunctionLiteralExpression>().body
+            return listOf(
+                TypeConstraint(
+                    TypeConstraintKind.EQ_INOUT,
+                    TypeAdapter.ofElement(callExpression),
+                    TypeAdapter.ofTypeArgument(callExpression, 0)
+                ),
+                TypeConstraint(
+                    TypeConstraintKind.EQ_INOUT,
+                    TypeAdapter.ofTypeArgument(callExpression, 0),
+                    TypeAdapter.ofElement(blockExpression)
+                )
+            )
+        }
+
+        override fun transform(callExpression: ECallExpression): EExpression {
+            Messages.EXPRESSION_OUT_OF_CONTEXT.on(callExpression, name)
+            return callExpression
+        }
+    }
+
     val F_forever_Function = object : TransformableCoreFunctionDeclaration(
         parent,
         "forever",
@@ -98,7 +129,7 @@ object CoreVkControl : CoreScope(CorePackage.VK) {
     val F_wait_Event = object : TransformableCoreFunctionDeclaration(parent, "wait", "fun wait(Event)") {
 
         override fun transform(callExpression: ECallExpression): EExpression {
-            return EEventControlExpression(callExpression.location, callExpression.valueArguments[0])
+            return EEventControlExpression(callExpression.location, arrayListOf(callExpression.valueArguments[0]))
         }
     }
 
@@ -109,7 +140,7 @@ object CoreVkControl : CoreScope(CorePackage.VK) {
     ) {
 
         override fun transform(callExpression: ECallExpression): EExpression {
-            return EEventControlExpression(callExpression.location, callExpression.valueArguments[0])
+            return EEventControlExpression(callExpression.location, arrayListOf(callExpression.valueArguments[0]))
         }
     }
 

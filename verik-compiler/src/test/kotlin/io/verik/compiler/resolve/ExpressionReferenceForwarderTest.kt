@@ -27,8 +27,8 @@ internal class ExpressionReferenceForwarderTest : BaseTest() {
         driveElementTest(
             """
                 @Suppress("MemberVisibilityCanBePrivate")
-                class C<X : `*`> {
-                    var x: Ubit<X> = nc()
+                class C<N : `*`> {
+                    var x: Ubit<N> = nc()
                     var y = x
                 }
                 val c = C<`8`>()
@@ -43,7 +43,7 @@ internal class ExpressionReferenceForwarderTest : BaseTest() {
         driveElementTest(
             """
                 @Suppress("MemberVisibilityCanBePrivate")
-                class C<X : `*`> {
+                class C<N : `*`> {
                     fun f(): Boolean { return false }
                     var x = f()
                 }
@@ -59,7 +59,7 @@ internal class ExpressionReferenceForwarderTest : BaseTest() {
         driveElementTest(
             """
                 class D
-                class C<X : `*`> {
+                class C<N : `*`> {
                     var x = D()
                 }
                 val c = C<`8`>()

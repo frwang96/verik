@@ -23,28 +23,34 @@
 
 module M;
 
-    logic       x;
-    logic [7:0] y;
-    logic [7:0] z;
+    logic       x0;
+    logic [7:0] x1;
+    logic [7:0] x2;
 
-    initial begin : f
+    initial begin : f0
         $display();
-    end : f
+    end : f0
 
-    always_ff @(posedge x) begin : g
-        y <= z;
-    end : g
-
-    logic a;
+    logic x3;
 
     always_comb begin : __0
-        a = ~x;
+        x3 = !x0;
     end : __0
 
-    logic b;
+    logic x4;
 
-    always_comb begin : h
-        b = ~a;
-    end : h
+    always_comb begin : f1
+        x4 = !x0;
+    end : f1
+
+    logic [7:0] x5;
+
+    always_ff @(posedge x0) begin : __1
+        x5 <= x1;
+    end : __1
+
+    always_ff @(posedge x0) begin : f2
+        x2 <= x1;
+    end : f2
 
 endmodule : M

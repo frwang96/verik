@@ -60,6 +60,38 @@ internal class AnnotationEntryCheckerStageTest : BaseTest() {
     }
 
     @Test
+    fun `property com not mutable`() {
+        driveMessageTest(
+            """
+                @Suppress("MemberVisibilityCanBePrivate")
+                class M : Module() {
+                    var x: Boolean = nc()
+                    @Com
+                    val y = x
+                }
+            """.trimIndent(),
+            true,
+            "Combinational assignment must be declared as var: y"
+        )
+    }
+
+    @Test
+    fun `property seq not mutable`() {
+        driveMessageTest(
+            """
+                @Suppress("MemberVisibilityCanBePrivate")
+                class M : Module() {
+                    var x: Boolean = nc()
+                    @Seq
+                    val y = on(posedge(false)) { x }
+                }
+            """.trimIndent(),
+            true,
+            "Sequential assignment must be declared as var: y"
+        )
+    }
+
+    @Test
     fun `value parameter annotations conflicting`() {
         driveMessageTest(
             """

@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
+import io.verik.compiler.ast.element.sv.ESvUnaryExpression
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -78,6 +79,14 @@ object ParenthesisInsertionTransformerStage : ProjectStage() {
                 expression
             )
             parent.replaceChildAsExpressionContainer(expression, parenthesizedExpression)
+        }
+
+        override fun visitSvUnaryExpression(unaryExpression: ESvUnaryExpression) {
+            super.visitSvUnaryExpression(unaryExpression)
+            val expressionKind = getParenthesisKind(unaryExpression.expression)
+            if (expressionKind != ParenthesisKind.SINGULAR || unaryExpression.expression is ESvUnaryExpression) {
+                parenthesize(unaryExpression.expression)
+            }
         }
 
         override fun visitSvBinaryExpression(binaryExpression: ESvBinaryExpression) {

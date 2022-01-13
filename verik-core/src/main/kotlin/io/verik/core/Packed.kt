@@ -18,10 +18,12 @@
 
 package io.verik.core
 
+import kotlin.properties.Delegates
+
 /**
- * A packed array of size [X] of elements of type [E].
+ * A packed array of size [N] of elements of type [E].
  */
-class Packed<X : `*`, E> private constructor() : Iterable<E> {
+class Packed<N : `*`, E> private constructor() : Iterable<E> {
 
     override fun iterator(): Iterator<E> {
         throw VerikException()
@@ -30,7 +32,7 @@ class Packed<X : `*`, E> private constructor() : Iterable<E> {
     /**
      * The size of the array.
      */
-    val size: Int by lazy<Int> {
+    var size: Int by Delegates.observable(0) { _, _, _ ->
         throw VerikException()
     }
 

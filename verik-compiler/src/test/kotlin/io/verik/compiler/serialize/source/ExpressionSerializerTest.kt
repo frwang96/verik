@@ -44,7 +44,7 @@ internal class ExpressionSerializerTest : BaseTest() {
             """.trimIndent(),
             """
                 logic x = 1'b0;
-                logic y = ~x;
+                logic y = !x;
             """.trimIndent()
         ) { it.regularPackageTextFiles[0] }
     }
@@ -159,7 +159,8 @@ internal class ExpressionSerializerTest : BaseTest() {
                 class C;
                 
                     static function automatic C C_new();
-                        C __0 = new();
+                        C __0;
+                        __0 = new();
                         __0.C_init();
                         return __0;
                     endfunction : C_new
@@ -170,7 +171,7 @@ internal class ExpressionSerializerTest : BaseTest() {
                     int x = 0;
                 
                     virtual function automatic void f();
-                        ${'$'}display(this.x);
+                        ${'$'}display(${'$'}sformatf("%0d", this.x));
                     endfunction : f
                 
                 endclass : C

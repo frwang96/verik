@@ -38,11 +38,11 @@ internal class TypeResolverStageTest : BaseTest() {
     fun `resolve property type parameterized`() {
         driveElementTest(
             """
-                class C<X : `*`>
+                class C<N : `*`>
                 var c = C<`8`>()
             """.trimIndent(),
             TypeResolverStage::class,
-            "Property(c, C<`8`>, [], CallExpression(C<`8`>, C_X_8, null, [], []), 1)"
+            "Property(c, C<`8`>, [], CallExpression(C<`8`>, C_N_8, null, [], []), 1)"
         ) { it.findDeclaration("c") }
     }
 

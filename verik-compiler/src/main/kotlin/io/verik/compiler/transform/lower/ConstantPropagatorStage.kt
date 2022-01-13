@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.upper
+package io.verik.compiler.transform.lower
 
 import io.verik.compiler.ast.element.common.EAbstractContainerClass
 import io.verik.compiler.ast.element.common.EDeclaration
@@ -27,6 +27,7 @@ import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
+import io.verik.compiler.transform.upper.ConstantPropagator
 
 object ConstantPropagatorStage : ProjectStage() {
 
@@ -71,7 +72,7 @@ object ConstantPropagatorStage : ProjectStage() {
         private fun indexConstantProperty(property: EProperty): Boolean {
             val initializer = property.initializer
             if (!property.isMutable && initializer != null) {
-                val expression = ConstantPropagator.expandExpression(initializer)
+                val expression = ConstantPropagator.expand(initializer)
                 if (ConstantPropagator.isConstant(expression)) {
                     constantMap[property] = expression
                     return true

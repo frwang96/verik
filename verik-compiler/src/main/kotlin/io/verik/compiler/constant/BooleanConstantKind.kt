@@ -14,24 +14,22 @@
  * limitations under the License.
  */
 
-// M.sv ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+package io.verik.compiler.constant
 
-`ifndef VERIK
-`define VERIK
-`timescale 1ns / 1ns
-`endif
+enum class BooleanConstantKind {
+    TRUE,
+    FALSE,
+    UNKNOWN,
+    FLOATING;
 
-typedef struct packed {
-    logic       x0;
-    logic [7:0] x1;
-} S;
+    fun isUnknownOrFloating(): Boolean {
+        return (this == UNKNOWN) || (this == FLOATING)
+    }
 
-module M;
+    companion object {
 
-    S s;
-
-    initial begin : f
-        s = '{x0:1'b0, x1:8'h00};
-    end : f
-
-endmodule : M
+        fun fromBoolean(boolean: Boolean): BooleanConstantKind {
+            return if (boolean) TRUE else FALSE
+        }
+    }
+}

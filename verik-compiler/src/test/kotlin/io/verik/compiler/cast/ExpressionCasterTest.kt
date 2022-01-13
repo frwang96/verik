@@ -266,6 +266,24 @@ internal class ExpressionCasterTest : BaseTest() {
     }
 
     @Test
+    fun `function literal expression with return`() {
+        driveElementTest(
+            """
+                val x = onr(posedge(false)) { false }
+            """.trimIndent(),
+            CasterStage::class,
+            """
+                CallExpression(
+                    Boolean, onr, null, [
+                        CallExpression(*),
+                        FunctionLiteralExpression(Function, [], BlockExpression(Boolean, [*]))
+                    ], [Boolean]
+                )
+            """.trimIndent()
+        ) { it.findExpression("x") }
+    }
+
+    @Test
     fun `array access expression`() {
         driveElementTest(
             """

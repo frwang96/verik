@@ -19,9 +19,9 @@
 package io.verik.core
 
 /**
- * Represents a sequence of [X] bits that is unsigned. Corresponds to SystemVerilog packed logic.
+ * Represents a sequence of [N] bits that is unsigned. Corresponds to SystemVerilog packed logic.
  */
-class Ubit<X : `*`> private constructor() {
+class Ubit<N : `*`> private constructor() {
 
     /**
      * (UNIMPLEMENTED) Returns true if any bit is X.
@@ -104,14 +104,14 @@ class Ubit<X : `*`> private constructor() {
     /**
      * Increment by one.
      */
-    operator fun inc(): Ubit<X> {
+    operator fun inc(): Ubit<N> {
         throw VerikException()
     }
 
     /**
      * Decrement by one.
      */
-    operator fun dec(): Ubit<X> {
+    operator fun dec(): Ubit<N> {
         throw VerikException()
     }
 
@@ -202,98 +202,98 @@ class Ubit<X : `*`> private constructor() {
     /**
      * Takes the bitwise and with [value].
      */
-    infix fun and(value: Ubit<X>): Ubit<X> {
+    infix fun and(value: Ubit<N>): Ubit<N> {
         throw VerikException()
     }
 
     /**
      * Takes the bitwise and with [value].
      */
-    infix fun and(value: Sbit<X>): Ubit<X> {
+    infix fun and(value: Sbit<N>): Ubit<N> {
         throw VerikException()
     }
 
     /**
      * Takes the bitwise or with [value].
      */
-    infix fun or(value: Ubit<X>): Ubit<X> {
+    infix fun or(value: Ubit<N>): Ubit<N> {
         throw VerikException()
     }
 
     /**
      * Takes the bitwise or with [value].
      */
-    infix fun or(value: Sbit<X>): Ubit<X> {
+    infix fun or(value: Sbit<N>): Ubit<N> {
         throw VerikException()
     }
 
     /**
      * Takes the bitwise xor with [value].
      */
-    infix fun xor(value: Ubit<X>): Ubit<X> {
+    infix fun xor(value: Ubit<N>): Ubit<N> {
         throw VerikException()
     }
 
     /**
      * Takes the bitwise xor with [value].
      */
-    infix fun xor(value: Sbit<X>): Ubit<X> {
+    infix fun xor(value: Sbit<N>): Ubit<N> {
         throw VerikException()
     }
 
     /**
      * Left shift by [value].
      */
-    infix fun shl(value: Int): Ubit<X> {
+    infix fun shl(value: Int): Ubit<N> {
         throw VerikException()
     }
 
     /**
      * Left shift by [value].
      */
-    infix fun shl(value: Ubit<`*`>): Ubit<X> {
+    infix fun shl(value: Ubit<`*`>): Ubit<N> {
         throw VerikException()
     }
 
     /**
      * Unsigned right shift by [value].
      */
-    infix fun shr(value: Int): Ubit<X> {
+    infix fun shr(value: Int): Ubit<N> {
         throw VerikException()
     }
 
     /**
      * Unsigned right shift by [value].
      */
-    infix fun shr(value: Ubit<`*`>): Ubit<X> {
+    infix fun shr(value: Ubit<`*`>): Ubit<N> {
         throw VerikException()
     }
 
     /**
      * Signed right shift by [value].
      */
-    infix fun sshr(value: Int): Ubit<X> {
+    infix fun sshr(value: Int): Ubit<N> {
         throw VerikException()
     }
 
     /**
      * Signed right shift by [value].
      */
-    infix fun sshr(value: Ubit<`*`>): Ubit<X> {
+    infix fun sshr(value: Ubit<`*`>): Ubit<N> {
         throw VerikException()
     }
 
     /**
      * Inverts the bits.
      */
-    fun invert(): Ubit<X> {
+    fun invert(): Ubit<N> {
         throw VerikException()
     }
 
     /**
      * Reverses the bits.
      */
-    fun reverse(): Ubit<X> {
+    fun reverse(): Ubit<N> {
         throw VerikException()
     }
 
@@ -333,37 +333,45 @@ class Ubit<X : `*`> private constructor() {
     }
 
     /**
-     * Slice [Y] bits starting at [index].
+     * Slice [M] bits starting at [index].
      */
-    fun <Y : `*`> slice(index: Int): Ubit<Y> {
+    fun <M : `*`> slice(index: Int): Ubit<M> {
         throw VerikException()
     }
 
     /**
-     * Slice [Y] bits starting at [index].
+     * Slice [M] bits starting at [index].
      */
-    fun <Y : `*`> slice(index: Ubit<`*`>): Ubit<Y> {
+    fun <M : `*`> slice(index: Ubit<`*`>): Ubit<M> {
         throw VerikException()
     }
 
     /**
-     * Extend to [Y] bits with zero extension.
+     * Extend to [M] bits with zero extension.
      */
-    fun <Y : `*`> ext(): Ubit<Y> {
+    fun <M : `*`> ext(): Ubit<M> {
         throw VerikException()
     }
 
     /**
-     * Extend to [Y] bits with sign extension.
+     * Extend to [M] bits with sign extension.
      */
-    fun <Y : `*`> sext(): Ubit<Y> {
+    fun <M : `*`> sext(): Ubit<M> {
         throw VerikException()
     }
 
     /**
-     * Truncate to [Y] bits.
+     * Truncate to [M] bits.
      */
-    fun <Y : `*`> tru(): Ubit<Y> {
+    fun <M : `*`> tru(): Ubit<M> {
+        throw VerikException()
+    }
+
+    /**
+     * Extend to [M] bits with zero extension if [M] is larger than [N] and truncate to [M] bits otherwise. This should
+     * only be used if it is not known beforehand whether the value will be extended or truncated.
+     */
+    fun <M : `*`> extTru(): Ubit<M> {
         throw VerikException()
     }
 }

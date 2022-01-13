@@ -55,7 +55,7 @@ internal class CastTransformerStageTest : BaseTest() {
 
                 function automatic void f();
                     int __0;
-                    x = ~${'$'}cast(__0, 0);
+                    x = !${'$'}cast(__0, 0);
                 endfunction : f
             """.trimIndent()
         ) { it.regularPackageTextFiles[0] }
@@ -75,7 +75,7 @@ internal class CastTransformerStageTest : BaseTest() {
 
                 function automatic void f();
                     int __0;
-                    if (~${'$'}cast(__0, 0)) begin
+                    if (!${'$'}cast(__0, 0)) begin
                         ${'$'}fatal(1, "Failed to cast from Int to Int");
                     end
                     x = __0;

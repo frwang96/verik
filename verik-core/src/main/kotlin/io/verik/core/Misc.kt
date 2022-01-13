@@ -26,9 +26,9 @@ fun cat(value: Any, vararg additionalValues: Any): Ubit<`*`> {
 }
 
 /**
- * Returns [value] replicated [X] times.
+ * Returns [value] replicated [N] times.
  */
-fun <X : `*`> rep(value: Any): Ubit<`*`> {
+fun <N : `*`> rep(value: Any): Ubit<`*`> {
     throw VerikException()
 }
 

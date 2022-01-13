@@ -37,34 +37,34 @@ internal class SpecializerStageTest : BaseTest() {
     fun `specialize class type parameter cardinal`() {
         driveElementTest(
             """
-                class C<X : `*`>
+                class C<N : `*`>
                 val c = C<`8`>()
             """.trimIndent(),
             SpecializerStage::class,
             """
                 KtClass(
-                    C_X_8, C<`8`>, [], [TypeParameter(X, `8`)],
-                    [], 0, 0, 0, PrimaryConstructor(C_X_8, C<`8`>, [], [X]), null
+                    C_N_8, C<`8`>, [], [TypeParameter(N, `8`)],
+                    [], 0, 0, 0, PrimaryConstructor(C_N_8, C<`8`>, [], [N]), null
                 )
             """.trimIndent()
-        ) { it.findDeclaration("C_X_8") }
+        ) { it.findDeclaration("C_N_8") }
     }
 
     @Test
     fun `specialize class type parameter cardinal function`() {
         driveElementTest(
             """
-                class C<X : `*`>
+                class C<N : `*`>
                 val c = C<INC<`7`>>()
             """.trimIndent(),
             SpecializerStage::class,
             """
                 KtClass(
-                    C_X_8, C<`8`>, [], [TypeParameter(X, `8`)],
-                    [], 0, 0, 0, PrimaryConstructor(C_X_8, C<`8`>, [], [X]), null
+                    C_N_8, C<`8`>, [], [TypeParameter(N, `8`)],
+                    [], 0, 0, 0, PrimaryConstructor(C_N_8, C<`8`>, [], [N]), null
                 )
             """.trimIndent()
-        ) { it.findDeclaration("C_X_8") }
+        ) { it.findDeclaration("C_N_8") }
     }
 
     @Test
@@ -89,8 +89,8 @@ internal class SpecializerStageTest : BaseTest() {
     fun `specialize class with property parameterized`() {
         driveElementTest(
             """
-                class C<X : `*`> {
-                    val x: Ubit<X> = nc()
+                class C<N : `*`> {
+                    val x: Ubit<N> = nc()
                 }
                 val c = C<`8`>()
             """.trimIndent(),
@@ -104,7 +104,7 @@ internal class SpecializerStageTest : BaseTest() {
         driveElementTest(
             """
                 @Suppress("MemberVisibilityCanBePrivate")
-                class C<X : `*`> {
+                class C<N : `*`> {
                     fun f(): Boolean { return false }
                     val x = f()
                 }
@@ -120,7 +120,7 @@ internal class SpecializerStageTest : BaseTest() {
         driveElementTest(
             """
                 class D
-                class C<X : `*`> {
+                class C<N : `*`> {
                     val x = D()
                 }
                 val c = C<`8`>()
@@ -134,11 +134,11 @@ internal class SpecializerStageTest : BaseTest() {
     fun `specialize function type parameter`() {
         driveElementTest(
             """
-                fun <X : `*`> f() {}
+                fun <N : `*`> f() {}
                 val x = f<`8`>()
             """.trimIndent(),
             SpecializerStage::class,
-            "KtFunction(f_X_8, Unit, BlockExpression(*), [], [TypeParameter(X, `8`)], [], 0)"
-        ) { it.findDeclaration("f_X_8") }
+            "KtFunction(f_N_8, Unit, BlockExpression(*), [], [TypeParameter(N, `8`)], [], 0)"
+        ) { it.findDeclaration("f_N_8") }
     }
 }

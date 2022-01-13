@@ -115,9 +115,10 @@ annotation class Out
 annotation class Com
 
 /**
- * Annotates sequential action blocks. A sequential action blocks is executed when its event expression is triggered
- * and is used to model sequential logic. Sequential action blocks must contain an [on] expression to specify its
- * event expression. They correspond to SystemVerilog always_ff blocks.
+ * Annotates sequential action blocks or sequentially assigned properties. It is executed when its event expression is
+ * triggered and is used to model sequential logic. Sequential action blocks must contain an [on] expression and
+ * sequentially assigned properties must contain an [onr] expression to specify their event expressions. They
+ * correspond to SystemVerilog always_ff blocks.
  *
  *      @Seq
  *      fun f() {
@@ -125,8 +126,11 @@ annotation class Com
  *              x = !y
  *          }
  *      }
+ *
+ *      @Seq
+ *      var x = onr(posedge(clk)) { !y }
  */
-@Target(AnnotationTarget.FUNCTION)
+@Target(AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY)
 annotation class Seq
 
 /**

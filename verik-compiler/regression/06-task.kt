@@ -24,20 +24,20 @@ import io.verik.core.*
 object M : Module() {
 
     @Task
-    fun f() {
+    fun f0() {
         delay(1)
     }
 
     @Task
-    fun g(x: Ubit<`8`>): Ubit<`8`> {
+    fun f1(x: Ubit<`8`>): Ubit<`8`> {
         delay(1)
         return x.invert()
     }
 
     @Run
-    fun h() {
-        f()
-        val x = g(u0())
+    fun f2() {
+        f0()
+        val x = f1(u0())
         println(x)
     }
 }
