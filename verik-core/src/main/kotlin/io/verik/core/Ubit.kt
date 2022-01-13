@@ -300,35 +300,35 @@ class Ubit<N : `*`> private constructor() {
     /**
      * Reduce bits with and.
      */
-    fun reduceAnd(): Boolean {
+    fun andRed(): Boolean {
         throw VerikException()
     }
 
     /**
      * Reduce bits with or.
      */
-    fun reduceOr(): Boolean {
+    fun orRed(): Boolean {
         throw VerikException()
     }
 
     /**
      * Reduce bits with xor.
      */
-    fun reduceXor(): Boolean {
+    fun xorRed(): Boolean {
         throw VerikException()
     }
 
     /**
      * Returns true if all bits are zero.
      */
-    fun isZeroes(): Boolean {
+    fun eqz(): Boolean {
         throw VerikException()
     }
 
     /**
-     * Returns true if all bits are one.
+     * Returns true if not all bits are zero.
      */
-    fun isOnes(): Boolean {
+    fun neqz(): Boolean {
         throw VerikException()
     }
 
@@ -368,10 +368,20 @@ class Ubit<N : `*`> private constructor() {
     }
 
     /**
-     * Extend to [M] bits with zero extension if [M] is larger than [N] and truncate to [M] bits otherwise. This should
-     * only be used if it is not known beforehand whether the value will be extended or truncated.
+     * Resize to [M] bits with zero extension. This will extend to [M] bits with zero extension if [M] is larger than
+     * [N] and truncate to [M] bits otherwise. It should only be used if it is not known beforehand whether the value
+     * will be extended or truncated.
      */
-    fun <M : `*`> extTru(): Ubit<M> {
+    fun <M : `*`> res(): Ubit<M> {
+        throw VerikException()
+    }
+
+    /**
+     * Resize to [M] bits with sign extension. This will extend to [M] bits with sign extension if [M] is larger than
+     * [N] and truncate to [M] bits otherwise. It should only be used if it is not known beforehand whether the value
+     * will be extended or truncated.
+     */
+    fun <M : `*`> sres(): Ubit<M> {
         throw VerikException()
     }
 }

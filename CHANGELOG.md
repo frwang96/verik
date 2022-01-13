@@ -11,6 +11,7 @@
 - Support type alias with type parameters.
 - Evaluate logical operators and if expressions.
 - Added end-to-end regression tests.
+- Four state boolean values `unknown` and `floating`.
 
 ### Changed
 - Adopt `StageType` based stage sequence in importer.

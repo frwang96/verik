@@ -25,7 +25,7 @@ internal class ParenthesisInsertionTransformerStageTest : BaseTest() {
     fun `unary expression with unary expression`() {
         driveTextFileTest(
             """
-                var x = !u(0x0).reduceOr()
+                var x = !u(0x0).orRed()
             """.trimIndent(),
             """
                 logic x = !(|4'b0000);

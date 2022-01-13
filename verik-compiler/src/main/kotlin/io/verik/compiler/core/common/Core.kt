@@ -270,17 +270,18 @@ object Core {
 
             val F_invert = CoreVkUbit.F_invert
             val F_reverse = CoreVkUbit.F_reverse
-            val F_reduceAnd = CoreVkUbit.F_reduceAnd
-            val F_reduceOr = CoreVkUbit.F_reduceOr
-            val F_reduceXor = CoreVkUbit.F_reduceXor
-            val F_isZeroes = CoreVkUbit.F_isZeroes
-            val F_isOnes = CoreVkUbit.F_isOnes
+            val F_andRed = CoreVkUbit.F_andRed
+            val F_orRed = CoreVkUbit.F_orRed
+            val F_xorRed = CoreVkUbit.F_xorRed
+            val F_eqz = CoreVkUbit.F_eqz
+            val F_neqz = CoreVkUbit.F_neqz
             val F_slice_Int = CoreVkUbit.F_slice_Int
             val F_slice_Ubit = CoreVkUbit.F_slice_Ubit
             val F_ext = CoreVkUbit.F_ext
             val F_sext = CoreVkUbit.F_sext
             val F_tru = CoreVkUbit.F_tru
-            val F_extTru = CoreVkUbit.F_extTru
+            val F_res = CoreVkUbit.F_res
+            val F_sres = CoreVkUbit.F_sres
         }
 
         object Sbit {
