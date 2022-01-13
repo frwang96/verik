@@ -28,7 +28,8 @@ internal class CoreVkControlTest : CoreDeclarationTest() {
             listOf(
                 Core.Vk.F_posedge_Boolean,
                 Core.Vk.F_negedge_Boolean,
-                Core.Vk.F_on_Event_Event_Function
+                Core.Vk.F_on_Event_Event_Function,
+                Core.Vk.F_onr_Event_Event_Function
             ),
             """
                 @Suppress("MemberVisibilityCanBePrivate")
@@ -38,7 +39,9 @@ internal class CoreVkControlTest : CoreDeclarationTest() {
                     @Seq
                     fun f() { on (posedge(x)) { y = !y } }
                     @Seq
-                    fun g() { on (negedge(x)) { y = !y} }
+                    fun g() { on (posedge(x), negedge(x)) { y = !y } }
+                    @Seq
+                    var z = onr(negedge(x)) { !y }
                 }
             """.trimIndent(),
             """
@@ -47,10 +50,14 @@ internal class CoreVkControlTest : CoreDeclarationTest() {
                     always_ff @(posedge x) begin : f
                         y <= ~y;
                     end : f
-
-                    always_ff @(negedge x) begin : g
+                
+                    always_ff @(posedge x, negedge x) begin : g
                         y <= ~y;
                     end : g
+
+                    always_ff @(negedge x) begin : __0
+                        z <= ~y;
+                    end : __0
 
                 endmodule : M
             """.trimIndent()

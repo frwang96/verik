@@ -498,7 +498,7 @@ abstract class Visitor {
     }
 
     open fun visitEventControlExpression(eventControlExpression: EEventControlExpression) {
-        visitAbstractContainerExpression(eventControlExpression)
+        visitExpression(eventControlExpression)
     }
 
     open fun visitDelayExpression(delayExpression: EDelayExpression) {

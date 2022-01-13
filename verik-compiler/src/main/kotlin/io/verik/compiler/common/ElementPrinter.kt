@@ -711,7 +711,7 @@ class ElementPrinter : Visitor() {
     override fun visitEventControlExpression(eventControlExpression: EEventControlExpression) {
         build("EventControlExpression") {
             build(eventControlExpression.type.toString())
-            build(eventControlExpression.expression)
+            build(eventControlExpression.expressions)
         }
     }
 

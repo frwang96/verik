@@ -112,7 +112,7 @@ object ProceduralAssignmentTransformerStage : ProjectStage() {
                     property,
                     null
                 )
-                val body = initializer.valueArguments[1].cast<EFunctionLiteralExpression>().body
+                val body = initializer.valueArguments.last().cast<EFunctionLiteralExpression>().body
                 if (body.isEmpty()) {
                     Messages.SEQ_ASSIGNMENT_NO_ONR_EXPRESSION.on(property)
                     return null
@@ -126,8 +126,8 @@ object ProceduralAssignmentTransformerStage : ProjectStage() {
                 )
                 binaryExpression.parent = body
                 body.statements.add(binaryExpression)
-                val eventExpression = initializer.valueArguments[0]
-                val eventControlExpression = EEventControlExpression(eventExpression.location, eventExpression)
+                val eventExpressions = initializer.valueArguments.dropLast(1)
+                val eventControlExpression = EEventControlExpression(property.location, ArrayList(eventExpressions))
                 EAlwaysSeqBlock(
                     property.location,
                     "<tmp>",

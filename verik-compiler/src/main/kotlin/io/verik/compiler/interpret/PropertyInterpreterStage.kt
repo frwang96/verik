@@ -158,7 +158,10 @@ object PropertyInterpreterStage : ProjectStage() {
             }
 
             val eventExpression = callExpression.valueArguments[clockingBlock.eventValueParameterIndex]
-            val eventControlExpression = EEventControlExpression(eventExpression.location, eventExpression)
+            val eventControlExpression = EEventControlExpression(
+                eventExpression.location,
+                arrayListOf(eventExpression)
+            )
 
             val portInstantiations = clockingBlock.ports
                 .zip(valueArguments)

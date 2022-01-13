@@ -129,7 +129,7 @@ object CoreVkControl : CoreScope(CorePackage.VK) {
     val F_wait_Event = object : TransformableCoreFunctionDeclaration(parent, "wait", "fun wait(Event)") {
 
         override fun transform(callExpression: ECallExpression): EExpression {
-            return EEventControlExpression(callExpression.location, callExpression.valueArguments[0])
+            return EEventControlExpression(callExpression.location, arrayListOf(callExpression.valueArguments[0]))
         }
     }
 
@@ -140,7 +140,7 @@ object CoreVkControl : CoreScope(CorePackage.VK) {
     ) {
 
         override fun transform(callExpression: ECallExpression): EExpression {
-            return EEventControlExpression(callExpression.location, callExpression.valueArguments[0])
+            return EEventControlExpression(callExpression.location, arrayListOf(callExpression.valueArguments[0]))
         }
     }
 
