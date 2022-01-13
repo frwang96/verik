@@ -47,6 +47,17 @@ fun on(event: Event, vararg additionalEvents: Event, block: () -> Unit) {
 }
 
 /**
+ * Similar to [on] but with a return value. Trigger a [sequentially][Seq] assigned property on event [event] and
+ * optionally [additionalEvents].
+ *
+ *      @Seq
+ *      var x = onr(posedge(clk)) { !y }
+ */
+fun <T> onr(event: Event, vararg additionalEvents: Event, block: () -> T): T {
+    throw Exception()
+}
+
+/**
  * Loop [action] forever.
  *
  *      forever {

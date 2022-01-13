@@ -112,6 +112,10 @@ object Messages {
 
 //  MID CHECK  /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    val CONFLICTING_ANNOTATIONS = ErrorMessageTemplate2<AnnotationEntry, AnnotationEntry>(
+        "Conflicting annotations: @$0 and @$1"
+    )
+
     val TOP_NOT_MODULE = ErrorMessageTemplate0(
         "Declaration annotated as top must be a module"
     )
@@ -120,8 +124,8 @@ object Messages {
         "Type parameters not permitted on declaration annotated as top"
     )
 
-    val CONFLICTING_ANNOTATIONS = ErrorMessageTemplate2<AnnotationEntry, AnnotationEntry>(
-        "Conflicting annotations: @$0 and @$1"
+    val PROCEDURAL_ASSIGNMENT_NOT_MUTABLE = ErrorMessageTemplate2<String, String>(
+        "$0 assignment must be declared as var: $1"
     )
 
     val MISSING_MAKE_ANNOTATION = ErrorMessageTemplate0(
@@ -239,7 +243,7 @@ object Messages {
 //  INTERPRET  /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val EXPECTED_ON_EXPRESSION = ErrorMessageTemplate0(
-        "On expression expected"
+        "Expected on expression"
     )
 
     val MISMATCHED_PORT_NAME = ErrorMessageTemplate1<String>(
@@ -264,12 +268,12 @@ object Messages {
         "String literal expected for injected statement"
     )
 
-    val COM_ASSIGNMENT_NOT_MUTABLE = ErrorMessageTemplate0(
-        "Combinational assignment must be declared as var"
+    val COM_ASSIGNMENT_NO_INITIALIZER = ErrorMessageTemplate0(
+        "Expected initializer for combinational assignment"
     )
 
-    val COM_ASSIGNMENT_NO_INITIALIZER = ErrorMessageTemplate0(
-        "Initializer expected for combinational assignment"
+    val SEQ_ASSIGNMENT_NO_ONR_EXPRESSION = ErrorMessageTemplate0(
+        "Expected onr expression with return value for sequential assignment"
     )
 
 //  REORDER  ///////////////////////////////////////////////////////////////////////////////////////////////////////////

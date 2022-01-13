@@ -16,6 +16,7 @@
 
 package io.verik.compiler.check.mid
 
+import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.EKtFunction
 import io.verik.compiler.ast.element.kt.EKtValueParameter
@@ -69,6 +70,26 @@ object AnnotationEntryCheckerStage : ProjectStage() {
                         conflictingAnnotationEntry = annotationEntry
                     } else {
                         Messages.CONFLICTING_ANNOTATIONS.on(function, annotationEntry, conflictingAnnotationEntry)
+                    }
+                }
+            }
+        }
+
+        override fun visitProperty(property: EProperty) {
+            super.visitProperty(property)
+            val isComAssignment = property.hasAnnotationEntry(AnnotationEntries.COM)
+            val isSeqAssignment = property.hasAnnotationEntry(AnnotationEntries.SEQ)
+            when {
+                isComAssignment && isSeqAssignment ->
+                    Messages.CONFLICTING_ANNOTATIONS.on(property, AnnotationEntries.COM, AnnotationEntries.SEQ)
+                isComAssignment -> {
+                    if (!property.isMutable) {
+                        Messages.PROCEDURAL_ASSIGNMENT_NOT_MUTABLE.on(property, "Combinational", property.name)
+                    }
+                }
+                isSeqAssignment -> {
+                    if (!property.isMutable) {
+                        Messages.PROCEDURAL_ASSIGNMENT_NOT_MUTABLE.on(property, "Sequential", property.name)
                     }
                 }
             }

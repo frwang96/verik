@@ -32,20 +32,23 @@ object M : Module() {
         println()
     }
 
-    @Seq
-    fun f1() {
-        on(posedge(x0)) {
-            x1 = x2
-        }
-    }
-
     @Com
     var x3 = !x0
 
     var x4: Boolean = nc()
 
     @Com
-    fun f2() {
+    fun f1() {
         x4 = !x0
+    }
+
+    @Seq
+    var x5 = onr(posedge(x0)) { x1 }
+
+    @Seq
+    fun f2() {
+        on(posedge(x0)) {
+            x2 = x1
+        }
     }
 }

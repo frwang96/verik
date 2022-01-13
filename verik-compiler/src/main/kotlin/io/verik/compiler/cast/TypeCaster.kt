@@ -19,6 +19,7 @@ package io.verik.compiler.cast
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.Messages
+import org.jetbrains.kotlin.builtins.getReturnTypeFromFunctionType
 import org.jetbrains.kotlin.builtins.isFunctionType
 import org.jetbrains.kotlin.psi.KtElement
 import org.jetbrains.kotlin.psi.KtExpression
@@ -35,8 +36,9 @@ object TypeCaster {
     }
 
     fun cast(castContext: CastContext, type: KotlinType, element: KtElement): Type {
-        if (type.isFunctionType)
-            return Type(Core.Kt.C_Function, ArrayList())
+        if (type.isFunctionType) {
+            return cast(castContext, type.getReturnTypeFromFunctionType(), element)
+        }
         val declarationDescriptor = type.constructor.declarationDescriptor!!
         val declaration = castContext.getDeclaration(declarationDescriptor, element)
         val arguments = if (declaration != Core.Kt.C_Enum) {

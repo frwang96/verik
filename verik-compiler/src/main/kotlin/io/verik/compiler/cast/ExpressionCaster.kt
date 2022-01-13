@@ -239,10 +239,11 @@ object ExpressionCaster {
         val statements = expression.bodyExpression!!.statements.map {
             castContext.casterVisitor.getExpression(it)
         }
+        val bodyType = castContext.castType(expression)
         val body = EBlockExpression(
             location,
             endLocation,
-            Core.Kt.C_Function.toType(),
+            bodyType,
             ArrayList(statements)
         )
         return EFunctionLiteralExpression(location, ArrayList(valueParameters), body)

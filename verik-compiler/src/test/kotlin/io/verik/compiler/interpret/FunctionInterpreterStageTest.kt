@@ -53,7 +53,7 @@ internal class FunctionInterpreterStageTest : BaseTest() {
                 }
             """.trimIndent(),
             FunctionInterpreterStage::class,
-            "AlwaysSeqBlock(f, EventControlExpression(*), BlockExpression(Function, []))"
+            "AlwaysSeqBlock(f, EventControlExpression(*), BlockExpression(Unit, []))"
         ) { it.findDeclaration("f") }
     }
 
@@ -87,7 +87,7 @@ internal class FunctionInterpreterStageTest : BaseTest() {
             }
             """.trimIndent(),
             true,
-            "On expression expected"
+            "Expected on expression"
         )
     }
 

@@ -31,10 +31,6 @@ module M;
         $display();
     end : f0
 
-    always_ff @(posedge x0) begin : f1
-        x1 <= x2;
-    end : f1
-
     logic x3;
 
     always_comb begin : __0
@@ -43,8 +39,18 @@ module M;
 
     logic x4;
 
-    always_comb begin : f2
+    always_comb begin : f1
         x4 = ~x0;
+    end : f1
+
+    logic [7:0] x5;
+
+    always_ff @(posedge x0) begin : __1
+        x5 <= x1;
+    end : __1
+
+    always_ff @(posedge x0) begin : f2
+        x2 <= x1;
     end : f2
 
 endmodule : M
