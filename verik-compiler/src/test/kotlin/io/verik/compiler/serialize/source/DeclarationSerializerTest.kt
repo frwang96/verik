@@ -111,7 +111,8 @@ internal class DeclarationSerializerTest : BaseTest() {
                 class C;
                 
                     static function automatic C C_new();
-                        C __0 = new();
+                        C __0;
+                        __0 = new();
                         __0.C_init();
                         return __0;
                     endfunction : C_new
@@ -261,7 +262,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                     logic y;
                 
                     always_ff @(posedge x) begin : f
-                        y <= ~y;
+                        y <= !y;
                     end : f
                 
                 endmodule : M

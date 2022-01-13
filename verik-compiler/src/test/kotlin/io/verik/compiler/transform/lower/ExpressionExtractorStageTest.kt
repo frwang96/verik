@@ -36,7 +36,8 @@ internal class ExpressionExtractorStageTest : BaseTest() {
                 logic [3:0] y = 4'b0000;
 
                 function automatic void f();
-                    logic [7:0] __0 = x + x;
+                    logic [7:0] __0;
+                    __0 = x + x;
                     y = __0[3:0];
                 endfunction : f
             """.trimIndent()
@@ -56,7 +57,8 @@ internal class ExpressionExtractorStageTest : BaseTest() {
                 logic [0:0] x = 1'b0;
 
                 function automatic void f();
-                    logic [0:0] __0 = {<<{ x }};
+                    logic [0:0] __0;
+                    __0 = {<<{ x }};
                     x = __0 + 1'b0;
                 endfunction : f
             """.trimIndent()

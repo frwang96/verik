@@ -17,42 +17,46 @@
 package io.verik.compiler.reorder
 
 import io.verik.compiler.test.BaseTest
-import io.verik.compiler.test.findStatements
 import org.junit.jupiter.api.Test
 
 internal class PropertyStatementReordererStageTest : BaseTest() {
 
     @Test
     fun `reorder property statement with initializer`() {
-        driveElementTest(
+        driveTextFileTest(
             """
                 fun f() {
                     println()
                     val x = false
                 }
             """.trimIndent(),
-            PropertyStatementReordererStage::class,
             """
-                [
-                    PropertyStatement(Unit, Property(x, Boolean, [], null, 0)),
-                    CallExpression(*),
-                    SvBinaryExpression(Unit, ReferenceExpression(Boolean, x, null), ConstantExpression(*), ASSIGN)
-                ]
+                function automatic void f();
+                    logic x;
+                    ${'$'}display();
+                    x = 1'b0;
+                endfunction : f
             """.trimIndent()
-        ) { it.findStatements("f") }
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
     fun `reorder property statement without initializer`() {
-        driveElementTest(
+        driveTextFileTest(
             """
                 fun f() {
                     println()
-                    val x: Boolean = nc()
+                    var x: Boolean = nc()
+                    x = false
                 }
             """.trimIndent(),
-            PropertyStatementReordererStage::class,
-            "[PropertyStatement(Unit, Property(x, Boolean, [], null, 0)), CallExpression(*)]"
-        ) { it.findStatements("f") }
+            """
+                function automatic void f();
+                    logic x;
+                    ${'$'}display();
+                    x = 1'b0;
+                endfunction : f
+            """.trimIndent()
+        ) { it.regularPackageTextFiles[0] }
     }
 }

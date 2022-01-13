@@ -34,13 +34,13 @@ module M;
     logic x3;
 
     always_comb begin : __0
-        x3 = ~x0;
+        x3 = !x0;
     end : __0
 
     logic x4;
 
     always_comb begin : f1
-        x4 = ~x0;
+        x4 = !x0;
     end : f1
 
     logic [7:0] x5;

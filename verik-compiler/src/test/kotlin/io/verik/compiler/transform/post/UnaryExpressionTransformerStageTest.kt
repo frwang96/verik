@@ -30,7 +30,7 @@ internal class UnaryExpressionTransformerStageTest : BaseTest() {
                 var y = x.not()
             """.trimIndent(),
             UnaryExpressionTransformerStage::class,
-            "SvUnaryExpression(Boolean, ReferenceExpression(*), BITWISE_NEG)"
+            "SvUnaryExpression(Boolean, ReferenceExpression(*), LOGICAL_NEG)"
         ) { it.findExpression("y") }
     }
 
