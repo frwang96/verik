@@ -263,7 +263,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_sli_Int = object : TransformableCoreFunctionDeclaration(parent, "sli", "fun sli(Int)") {
+    val F_sli = object : TransformableCoreFunctionDeclaration(parent, "sli", "fun sli()") {
 
         override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return listOf(
@@ -273,6 +273,25 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
                     TypeAdapter.ofTypeArgument(callExpression, 0)
                 )
             )
+        }
+
+        override fun transform(callExpression: ECallExpression): EExpression {
+            val width = callExpression.typeArguments[0].asCardinalValue(callExpression)
+            val index = callExpression.typeArguments[1].asCardinalValue(callExpression)
+            return EConstantPartSelectExpression(
+                callExpression.location,
+                callExpression.type,
+                callExpression.receiver!!,
+                ConstantBuilder.buildInt(callExpression, index + width - 1),
+                ConstantBuilder.buildInt(callExpression, index)
+            )
+        }
+    }
+
+    val F_sli_Int = object : TransformableCoreFunctionDeclaration(parent, "sli", "fun sli(Int)") {
+
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
+            return F_sli.getTypeConstraints(callExpression)
         }
 
         override fun transform(callExpression: ECallExpression): EExpression {

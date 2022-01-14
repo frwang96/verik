@@ -274,6 +274,7 @@ object Core {
             val F_xorRed = CoreVkUbit.F_xorRed
             val F_eqz = CoreVkUbit.F_eqz
             val F_neqz = CoreVkUbit.F_neqz
+            val F_sli = CoreVkUbit.F_sli
             val F_sli_Int = CoreVkUbit.F_sli_Int
             val F_sli_Ubit = CoreVkUbit.F_sli_Ubit
             val F_ext = CoreVkUbit.F_ext

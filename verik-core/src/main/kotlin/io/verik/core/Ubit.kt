@@ -340,6 +340,13 @@ class Ubit<N : `*`> private constructor() {
     }
 
     /**
+     * Slice [M] bits starting at index [X].
+     */
+    fun <M : `*`, X : `*`> sli(): Ubit<M> {
+        throw VerikException()
+    }
+
+    /**
      * Slice [M] bits starting at [index].
      */
     fun <M : `*`> sli(index: Int): Ubit<M> {

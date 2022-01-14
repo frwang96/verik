@@ -180,6 +180,7 @@ internal class CoreVkUbitTest : CoreDeclarationTest() {
     fun `serialize sli`() {
         driveCoreDeclarationTest(
             listOf(
+                Core.Vk.Ubit.F_sli,
                 Core.Vk.Ubit.F_sli_Int,
                 Core.Vk.Ubit.F_sli_Ubit
             ),
@@ -187,12 +188,14 @@ internal class CoreVkUbitTest : CoreDeclarationTest() {
                 var x = u(0x00)
                 var y = u(0x0)
                 fun f() {
+                    y = x.sli<`4`, `0`>()
                     y = x.sli(0)
                     y = x.sli(u(0b000))
                 }
             """.trimIndent(),
             """
                 function automatic void f();
+                    y = x[3:0];
                     y = x[3:0];
                     y = x[3'b011:3'b000];
                 endfunction : f
