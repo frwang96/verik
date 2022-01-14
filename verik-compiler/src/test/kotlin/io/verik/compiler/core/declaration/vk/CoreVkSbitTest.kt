@@ -122,4 +122,23 @@ internal class CoreVkSbitTest : CoreDeclarationTest() {
             """.trimIndent()
         )
     }
+
+    @Test
+    fun `serialize toUbit`() {
+        driveCoreDeclarationTest(
+            listOf(Core.Vk.Sbit.F_toUbit),
+            """
+                var x = s(0x0)
+                var y = u(0x0)
+                fun f() {
+                    y = x.toUbit()
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    y = ${'$'}unsigned(x);
+                endfunction : f
+            """.trimIndent()
+        )
+    }
 }

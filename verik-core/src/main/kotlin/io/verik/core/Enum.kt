@@ -21,6 +21,20 @@ package io.verik.core
 /**
  * (UNIMPLEMENTED) Returns true if the enum is unknown.
  */
-fun <E : Enum<E>> Enum<E>.isUnknown(): Boolean {
+fun <E : Enum<E>> Enum<E>.isx(): Boolean {
+    throw VerikException()
+}
+
+/**
+ * (UNIMPLEMENTED) Returns true if the enum is floating.
+ */
+fun <E : Enum<E>> Enum<E>.isz(): Boolean {
+    throw VerikException()
+}
+
+/**
+ * (UNIMPLEMENTED) Returns true if the enum is unknown or floating.
+ */
+fun <E : Enum<E>> Enum<E>.isxz(): Boolean {
     throw VerikException()
 }

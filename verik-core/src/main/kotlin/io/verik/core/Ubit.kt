@@ -24,16 +24,23 @@ package io.verik.core
 class Ubit<N : `*`> private constructor() {
 
     /**
-     * (UNIMPLEMENTED) Returns true if any bit is X.
+     * (UNIMPLEMENTED) Returns true if any bit is unknown.
      */
-    fun isUnknown(): Boolean {
+    fun isx(): Boolean {
         throw VerikException()
     }
 
     /**
-     * (UNIMPLEMENTED) Convert the [Ubit] to type [T].
+     * (UNIMPLEMENTED) Returns true if any bit is floating.
      */
-    fun <T> fromUbit(): T {
+    fun isz(): Boolean {
+        throw VerikException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) Returns true if any bit is unknown or floating.
+     */
+    fun isxz(): Boolean {
         throw VerikException()
     }
 
@@ -286,63 +293,63 @@ class Ubit<N : `*`> private constructor() {
     /**
      * Inverts the bits.
      */
-    fun invert(): Ubit<N> {
+    fun inv(): Ubit<N> {
         throw VerikException()
     }
 
     /**
      * Reverses the bits.
      */
-    fun reverse(): Ubit<N> {
+    fun rev(): Ubit<N> {
         throw VerikException()
     }
 
     /**
      * Reduce bits with and.
      */
-    fun reduceAnd(): Boolean {
+    fun andRed(): Boolean {
         throw VerikException()
     }
 
     /**
      * Reduce bits with or.
      */
-    fun reduceOr(): Boolean {
+    fun orRed(): Boolean {
         throw VerikException()
     }
 
     /**
      * Reduce bits with xor.
      */
-    fun reduceXor(): Boolean {
+    fun xorRed(): Boolean {
         throw VerikException()
     }
 
     /**
      * Returns true if all bits are zero.
      */
-    fun isZeroes(): Boolean {
+    fun eqz(): Boolean {
         throw VerikException()
     }
 
     /**
-     * Returns true if all bits are one.
+     * Returns true if not all bits are zero.
      */
-    fun isOnes(): Boolean {
-        throw VerikException()
-    }
-
-    /**
-     * Slice [M] bits starting at [index].
-     */
-    fun <M : `*`> slice(index: Int): Ubit<M> {
+    fun neqz(): Boolean {
         throw VerikException()
     }
 
     /**
      * Slice [M] bits starting at [index].
      */
-    fun <M : `*`> slice(index: Ubit<`*`>): Ubit<M> {
+    fun <M : `*`> sli(index: Int): Ubit<M> {
+        throw VerikException()
+    }
+
+    /**
+     * Slice [M] bits starting at [index].
+     */
+    fun <M : `*`> sli(index: Ubit<`*`>): Ubit<M> {
         throw VerikException()
     }
 
@@ -368,10 +375,55 @@ class Ubit<N : `*`> private constructor() {
     }
 
     /**
-     * Extend to [M] bits with zero extension if [M] is larger than [N] and truncate to [M] bits otherwise. This should
-     * only be used if it is not known beforehand whether the value will be extended or truncated.
+     * Resize to [M] bits with zero extension. This will extend to [M] bits with zero extension if [M] is larger than
+     * [N] and truncate to [M] bits otherwise. It should only be used if it is not known beforehand whether the value
+     * will be extended or truncated.
      */
-    fun <M : `*`> extTru(): Ubit<M> {
+    fun <M : `*`> res(): Ubit<M> {
+        throw VerikException()
+    }
+
+    /**
+     * Resize to [M] bits with sign extension. This will extend to [M] bits with sign extension if [M] is larger than
+     * [N] and truncate to [M] bits otherwise. It should only be used if it is not known beforehand whether the value
+     * will be extended or truncated.
+     */
+    fun <M : `*`> sres(): Ubit<M> {
+        throw VerikException()
+    }
+
+    /**
+     * Converts this value to an [Sbit].
+     */
+    fun toSbit(): Sbit<N> {
+        throw VerikException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) Converts this value to an [Int].
+     */
+    fun toInt(): Int {
+        throw VerikException()
+    }
+
+    /**
+     * Converts this value to a binary string.
+     */
+    fun toBinString(): String {
+        throw VerikException()
+    }
+
+    /**
+     * Converts this value to a decimal string.
+     */
+    fun toDecString(): String {
+        throw VerikException()
+    }
+
+    /**
+     * Converts this value to a hexadecimal string.
+     */
+    fun toHexString(): String {
         throw VerikException()
     }
 }

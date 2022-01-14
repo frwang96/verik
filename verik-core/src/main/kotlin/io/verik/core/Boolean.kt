@@ -23,21 +23,35 @@ import kotlin.properties.Delegates
 /**
  * (UNIMPLEMENTED) Returns true if the boolean is unknown.
  */
-fun Boolean.isUnknown(): Boolean {
+fun Boolean.isx(): Boolean {
     throw VerikException()
 }
 
 /**
- * Extend to [N] bits with zero extension.
+ * (UNIMPLEMENTED) Returns true if the boolean is floating.
  */
-fun <N : `*`> Boolean.ext(): Ubit<N> {
+fun Boolean.isz(): Boolean {
     throw VerikException()
 }
 
 /**
- * Extend to [N] bits with sign extension.
+ * (UNIMPLEMENTED) Returns true if the boolean is unknown or floating.
  */
-fun <N : `*`> Boolean.sext(): Sbit<N> {
+fun Boolean.isxz(): Boolean {
+    throw VerikException()
+}
+
+/**
+ * Converts this value to a [Ubit] of width [N]. The value is extended with zero extension.
+ */
+fun <N : `*`> Boolean.toUbit(): Ubit<N> {
+    throw VerikException()
+}
+
+/**
+ * Converts this value to an [Sbit] of width [N]. The value is extended with sign extension.
+ */
+fun <N : `*`> Boolean.toSbit(): Sbit<N> {
     throw VerikException()
 }
 

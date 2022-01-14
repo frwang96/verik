@@ -29,9 +29,23 @@ package io.verik.core
 abstract class Struct {
 
     /**
-     * (UNIMPLEMENTED) Returns true if any bit of the struct is unknown.
+     * (UNIMPLEMENTED) Returns true if any bit is unknown.
      */
-    fun isUnknown(): Boolean {
+    fun isx(): Boolean {
+        throw VerikException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) Returns true if any bit is floating.
+     */
+    fun isz(): Boolean {
+        throw VerikException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) Returns true if any bit is unknown or floating.
+     */
+    fun isxz(): Boolean {
         throw VerikException()
     }
 }

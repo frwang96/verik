@@ -14,30 +14,20 @@
  * limitations under the License.
  */
 
-// M.kt ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+@file:Suppress("unused")
 
-@file:Verik
+package io.verik.core
 
-import io.verik.core.*
+/**
+ * Convert this value to a [Ubit] of width [N].
+ */
+fun <N : `*`> Int.toUbit(): Ubit<N> {
+    throw VerikException()
+}
 
-@SimTop
-object M : Module() {
-
-    @Task
-    fun f0() {
-        delay(1)
-    }
-
-    @Task
-    fun f1(x: Ubit<`8`>): Ubit<`8`> {
-        delay(1)
-        return x.inv()
-    }
-
-    @Run
-    fun f2() {
-        f0()
-        val x = f1(u0())
-        println(x)
-    }
+/**
+ * Convert this value to an [Sbit] of width [N].
+ */
+fun <N : `*`> Int.toSbit(): Ubit<N> {
+    throw VerikException()
 }

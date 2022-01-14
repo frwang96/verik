@@ -293,7 +293,7 @@ internal class ExpressionSerializerTest : BaseTest() {
     fun `streaming expression`() {
         driveTextFileTest(
             """
-                var x = u(0x00).reverse()
+                var x = u(0x00).rev()
             """.trimIndent(),
             """
                 logic [7:0] x = {<<{ 8'h00 }};

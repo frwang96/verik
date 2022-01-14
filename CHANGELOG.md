@@ -11,6 +11,7 @@
 - Support type alias with type parameters.
 - Evaluate logical operators and if expressions.
 - Added end-to-end regression tests.
+- Four state boolean values `unknown` and `floating`.
 
 ### Changed
 - Adopt `StageType` based stage sequence in importer.
@@ -24,6 +25,7 @@
 - Merge `KtCallExpression` and `SvCallExpression`.
 - Merge `KtBlockExpression` and `SvBlockExpression`.
 - Merge `KtProperty` and `SvProperty`.
+- Shorten function names on `Ubit` such as `sli`, `rev`, and `inv`.
 
 ## [0.1.11]
 ### Added

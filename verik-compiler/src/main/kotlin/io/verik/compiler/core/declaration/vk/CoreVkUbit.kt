@@ -21,12 +21,11 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.sv.EConstantPartSelectExpression
 import io.verik.compiler.ast.element.sv.EStreamingExpression
+import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.element.sv.EWidthCastExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.SvUnaryOperatorKind
-import io.verik.compiler.constant.BitComponent
-import io.verik.compiler.constant.BitConstant
 import io.verik.compiler.constant.ConstantBuilder
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreScope
@@ -36,6 +35,7 @@ import io.verik.compiler.core.common.UnaryCoreFunctionDeclaration
 import io.verik.compiler.resolve.TypeAdapter
 import io.verik.compiler.resolve.TypeConstraint
 import io.verik.compiler.resolve.TypeConstraintKind
+import io.verik.compiler.target.common.Target
 
 object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
@@ -198,10 +198,10 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         SvUnaryOperatorKind.LOGICAL_NEG
     )
 
-    val F_invert = object : UnaryCoreFunctionDeclaration(
+    val F_inv = object : UnaryCoreFunctionDeclaration(
         parent,
-        "invert",
-        "fun invert()",
+        "inv",
+        "fun inv()",
         SvUnaryOperatorKind.BITWISE_NEG
     ) {
 
@@ -216,10 +216,10 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_reverse = object : TransformableCoreFunctionDeclaration(parent, "reverse", "fun reverse()") {
+    val F_rev = object : TransformableCoreFunctionDeclaration(parent, "rev", "fun rev()") {
 
         override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
-            return F_invert.getTypeConstraints(callExpression)
+            return F_inv.getTypeConstraints(callExpression)
         }
 
         override fun transform(callExpression: ECallExpression): EExpression {
@@ -227,20 +227,17 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_reduceAnd = UnaryCoreFunctionDeclaration(parent, "reduceAnd", "fun reduceAnd()", SvUnaryOperatorKind.AND)
+    val F_andRed = UnaryCoreFunctionDeclaration(parent, "andRed", "fun andRed()", SvUnaryOperatorKind.AND)
 
-    val F_reduceOr = UnaryCoreFunctionDeclaration(parent, "reduceOr", "fun reduceOr()", SvUnaryOperatorKind.OR)
+    val F_orRed = UnaryCoreFunctionDeclaration(parent, "orRed", "fun orRed()", SvUnaryOperatorKind.OR)
 
-    val F_reduceXor = UnaryCoreFunctionDeclaration(parent, "reduceXor", "fun reduceXor()", SvUnaryOperatorKind.XOR)
+    val F_xorRed = UnaryCoreFunctionDeclaration(parent, "xorRed", "fun xorRed()", SvUnaryOperatorKind.XOR)
 
-    val F_isZeroes = UnaryCoreFunctionDeclaration(parent, "isZeroes", "fun isZeroes()", SvUnaryOperatorKind.LOGICAL_NEG)
-
-    val F_isOnes = object : TransformableCoreFunctionDeclaration(parent, "isOnes", "fun isOnes()") {
+    val F_eqz = object : TransformableCoreFunctionDeclaration(parent, "eqz", "fun eqz()") {
 
         override fun transform(callExpression: ECallExpression): EExpression {
             val width = callExpression.receiver!!.type.asBitWidth(callExpression)
-            val bitConstant = BitConstant(BitComponent.zeroes(width), BitComponent.ones(width), false, width)
-            val constantExpression = ConstantBuilder.buildBitConstant(callExpression.location, bitConstant)
+            val constantExpression = ConstantBuilder.buildBitConstant(callExpression.location, width, 0)
             return EKtBinaryExpression(
                 callExpression.location,
                 Core.Kt.C_Boolean.toType(),
@@ -251,7 +248,22 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_slice_Int = object : TransformableCoreFunctionDeclaration(parent, "slice", "fun slice(Int)") {
+    val F_neqz = object : TransformableCoreFunctionDeclaration(parent, "neqz", "fun neqz()") {
+
+        override fun transform(callExpression: ECallExpression): EExpression {
+            val width = callExpression.receiver!!.type.asBitWidth(callExpression)
+            val constantExpression = ConstantBuilder.buildBitConstant(callExpression.location, width, 0)
+            return EKtBinaryExpression(
+                callExpression.location,
+                Core.Kt.C_Boolean.toType(),
+                callExpression.receiver!!,
+                constantExpression,
+                KtBinaryOperatorKind.EXCL_EQ
+            )
+        }
+    }
+
+    val F_sli_Int = object : TransformableCoreFunctionDeclaration(parent, "sli", "fun sli(Int)") {
 
         override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return listOf(
@@ -280,7 +292,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_slice_Ubit = object : TransformableCoreFunctionDeclaration(parent, "slice", "fun slice(Ubit)") {
+    val F_sli_Ubit = object : TransformableCoreFunctionDeclaration(parent, "sli", "fun sli(Ubit)") {
 
         override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return listOf(
@@ -392,7 +404,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_extTru = object : TransformableCoreFunctionDeclaration(parent, "extTru", "fun extTru()") {
+    val F_res = object : TransformableCoreFunctionDeclaration(parent, "res", "fun res()") {
 
         override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return listOf(
@@ -412,6 +424,85 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
                 receiverWidth > width -> F_tru.transform(callExpression)
                 else -> callExpression.receiver!!
             }
+        }
+    }
+
+    val F_sres = object : TransformableCoreFunctionDeclaration(parent, "sres", "fun sres()") {
+
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
+            return F_res.getTypeConstraints(callExpression)
+        }
+
+        override fun transform(callExpression: ECallExpression): EExpression {
+            val receiverWidth = callExpression.receiver!!.type.asBitWidth(callExpression)
+            val width = callExpression.typeArguments[0].asCardinalValue(callExpression)
+            return when {
+                receiverWidth < width -> F_sext.transform(callExpression)
+                receiverWidth > width -> F_tru.transform(callExpression)
+                else -> callExpression.receiver!!
+            }
+        }
+    }
+
+    val F_toSbit = object : TransformableCoreFunctionDeclaration(parent, "toSbit", "fun toSbit()") {
+
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
+            return listOf(
+                TypeConstraint(
+                    TypeConstraintKind.EQ_INOUT,
+                    TypeAdapter.ofElement(callExpression, 0),
+                    TypeAdapter.ofElement(callExpression.receiver!!, 0)
+                )
+            )
+        }
+
+        override fun transform(callExpression: ECallExpression): EExpression {
+            return CoreTransformUtil.callExpressionSigned(callExpression.receiver!!)
+        }
+    }
+
+    val F_toBinString = object : TransformableCoreFunctionDeclaration(parent, "toBinString", "fun toBinString()") {
+
+        override fun transform(callExpression: ECallExpression): EExpression {
+            val stringExpression = EStringExpression(callExpression.location, "%b")
+            return ECallExpression(
+                callExpression.location,
+                Core.Kt.C_String.toType(),
+                Target.F_sformatf,
+                null,
+                arrayListOf(stringExpression, callExpression.receiver!!),
+                ArrayList()
+            )
+        }
+    }
+
+    val F_toDecString = object : TransformableCoreFunctionDeclaration(parent, "toDecString", "fun toDecString()") {
+
+        override fun transform(callExpression: ECallExpression): EExpression {
+            val stringExpression = EStringExpression(callExpression.location, "%0d")
+            return ECallExpression(
+                callExpression.location,
+                Core.Kt.C_String.toType(),
+                Target.F_sformatf,
+                null,
+                arrayListOf(stringExpression, callExpression.receiver!!),
+                ArrayList()
+            )
+        }
+    }
+
+    val F_toHexString = object : TransformableCoreFunctionDeclaration(parent, "toHexString", "fun toHexString()") {
+
+        override fun transform(callExpression: ECallExpression): EExpression {
+            val stringExpression = EStringExpression(callExpression.location, "%h")
+            return ECallExpression(
+                callExpression.location,
+                Core.Kt.C_String.toType(),
+                Target.F_sformatf,
+                null,
+                arrayListOf(stringExpression, callExpression.receiver!!),
+                ArrayList()
+            )
         }
     }
 }

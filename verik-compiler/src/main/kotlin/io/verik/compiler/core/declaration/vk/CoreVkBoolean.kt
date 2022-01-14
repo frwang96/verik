@@ -29,7 +29,7 @@ import io.verik.compiler.resolve.TypeConstraintKind
 
 object CoreVkBoolean : CoreScope(CorePackage.VK) {
 
-    val F_ext = object : TransformableCoreFunctionDeclaration(parent, "ext", "fun ext()") {
+    val F_toUbit = object : TransformableCoreFunctionDeclaration(parent, "toUbit", "fun toUbit()") {
 
         override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return listOf(
@@ -43,30 +43,38 @@ object CoreVkBoolean : CoreScope(CorePackage.VK) {
 
         override fun transform(callExpression: ECallExpression): EExpression {
             val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
-            return EWidthCastExpression(
-                callExpression.location,
-                callExpression.type,
-                callExpression.receiver!!,
-                value
-            )
+            return if (value == 1) {
+                callExpression.receiver!!
+            } else {
+                EWidthCastExpression(
+                    callExpression.location,
+                    callExpression.type,
+                    callExpression.receiver!!,
+                    value
+                )
+            }
         }
     }
 
-    val F_sext = object : TransformableCoreFunctionDeclaration(parent, "sext", "fun sext()") {
+    val F_toSbit = object : TransformableCoreFunctionDeclaration(parent, "toSbit", "fun toSbit()") {
 
         override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
-            return F_ext.getTypeConstraints(callExpression)
+            return F_toUbit.getTypeConstraints(callExpression)
         }
 
         override fun transform(callExpression: ECallExpression): EExpression {
             val callExpressionSigned = CoreTransformUtil.callExpressionSigned(callExpression.receiver!!)
             val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
-            return EWidthCastExpression(
-                callExpression.location,
-                callExpression.type,
-                callExpressionSigned,
-                value
-            )
+            return if (value == 1) {
+                callExpressionSigned
+            } else {
+                EWidthCastExpression(
+                    callExpression.location,
+                    callExpression.type,
+                    callExpressionSigned,
+                    value
+                )
+            }
         }
     }
 }

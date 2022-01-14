@@ -28,7 +28,7 @@ object M : Module() {
     }
 
     fun f1(x: Ubit<`8`>): Ubit<`8`> {
-        return x.invert()
+        return x.inv()
     }
 
     @Run

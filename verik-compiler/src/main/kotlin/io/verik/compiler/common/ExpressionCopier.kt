@@ -25,10 +25,13 @@ import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
+import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.EStreamingExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
+import io.verik.compiler.ast.property.ExpressionStringEntry
+import io.verik.compiler.ast.property.LiteralStringEntry
 import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 
@@ -54,6 +57,7 @@ object ExpressionCopier {
             is EReferenceExpression -> copyReferenceExpression(expression, isDeepCopy, location)
             is ECallExpression -> copyCallExpression(expression, isDeepCopy, location)
             is EConstantExpression -> copyConstantExpression(expression, isDeepCopy, location)
+            is EStringTemplateExpression -> copyStringTemplateExpression(expression, isDeepCopy, location)
             is EKtArrayAccessExpression -> copyKtArrayAccessExpression(expression, isDeepCopy, location)
             is EConcatenationExpression -> copyConcatenationExpression(expression, isDeepCopy, location)
             is EStreamingExpression -> copyStreamingExpression(expression, isDeepCopy, location)
@@ -215,6 +219,30 @@ object ExpressionCopier {
                 constantExpression.location,
                 constantExpression.type,
                 constantExpression.value
+            )
+        }
+    }
+
+    private fun copyStringTemplateExpression(
+        stringTemplateExpression: EStringTemplateExpression,
+        isDeepCopy: Boolean,
+        location: SourceLocation?
+    ): EStringTemplateExpression {
+        return if (isDeepCopy) {
+            val entries = stringTemplateExpression.entries.map {
+                when (it) {
+                    is LiteralStringEntry -> LiteralStringEntry(it.text)
+                    is ExpressionStringEntry -> ExpressionStringEntry(copy(it.expression, true, location))
+                }
+            }
+            EStringTemplateExpression(
+                stringTemplateExpression.location,
+                entries
+            )
+        } else {
+            EStringTemplateExpression(
+                stringTemplateExpression.location,
+                stringTemplateExpression.entries
             )
         }
     }

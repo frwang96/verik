@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavaProjectCodeInsightSettings">
+    <excluded-names>
+      <name>apple.laf.*</name>
+      <name>apple.security.*</name>
+      <name>com.apple.eawt</name>
+      <name>com.apple.laf</name>
+      <name>com.sun.*</name>
+      <name>netscape.javascript</name>
+      <name>org.ietf.*</name>
+      <name>org.jcp.*</name>
+      <name>org.w3c.*</name>
+      <name>org.xml.*</name>
+      <name>sun.*</name>
+    </excluded-names>
+  </component>
+</project>

@@ -24,9 +24,23 @@ package io.verik.core
 class Sbit<N : `*`> private constructor() {
 
     /**
-     * (UNIMPLEMENTED) Returns true if any bit of the [Sbit] is unknown.
+     * (UNIMPLEMENTED) Returns true if any bit is unknown.
      */
-    fun isUnknown(): Boolean {
+    fun isx(): Boolean {
+        throw VerikException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) Returns true if any bit is floating.
+     */
+    fun isz(): Boolean {
+        throw VerikException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) Returns true if any bit is unknown or floating.
+     */
+    fun isxz(): Boolean {
         throw VerikException()
     }
 
@@ -256,6 +270,20 @@ class Sbit<N : `*`> private constructor() {
     }
 
     /**
+     * Returns true if all bits are zero.
+     */
+    fun eqz(): Boolean {
+        throw VerikException()
+    }
+
+    /**
+     * Returns true if not all bits are zero.
+     */
+    fun neqz(): Boolean {
+        throw VerikException()
+    }
+
+    /**
      * Extend to [M] bits with sign extension.
      */
     fun <M : `*`> ext(): Sbit<M> {
@@ -273,6 +301,20 @@ class Sbit<N : `*`> private constructor() {
      * Truncate to [M] bits.
      */
     fun <M : `*`> tru(): Sbit<M> {
+        throw VerikException()
+    }
+
+    /**
+     * Converts this value to a [Ubit].
+     */
+    fun toUbit(): Ubit<N> {
+        throw VerikException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) Converts this value to an [Int].
+     */
+    fun toInt(): Int {
         throw VerikException()
     }
 }

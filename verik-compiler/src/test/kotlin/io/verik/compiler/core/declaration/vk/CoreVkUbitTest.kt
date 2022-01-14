@@ -103,17 +103,17 @@ internal class CoreVkUbitTest : CoreDeclarationTest() {
     }
 
     @Test
-    fun `serialize invert reverse`() {
+    fun `serialize inv rev`() {
         driveCoreDeclarationTest(
             listOf(
-                Core.Vk.Ubit.F_invert,
-                Core.Vk.Ubit.F_reverse
+                Core.Vk.Ubit.F_inv,
+                Core.Vk.Ubit.F_rev
             ),
             """
                 var x = u(0x0)
                 fun f() {
-                    x = x.invert()
-                    x = x.reverse()
+                    x = x.inv()
+                    x = x.rev()
                 }
             """.trimIndent(),
             """
@@ -126,20 +126,20 @@ internal class CoreVkUbitTest : CoreDeclarationTest() {
     }
 
     @Test
-    fun `serialize reduceAnd reduceOr reduceXor`() {
+    fun `serialize andRed orRed xorRed`() {
         driveCoreDeclarationTest(
             listOf(
-                Core.Vk.Ubit.F_reduceAnd,
-                Core.Vk.Ubit.F_reduceOr,
-                Core.Vk.Ubit.F_reduceXor
+                Core.Vk.Ubit.F_andRed,
+                Core.Vk.Ubit.F_orRed,
+                Core.Vk.Ubit.F_xorRed
             ),
             """
                 var x = u(0x00)
                 var y = false
                 fun f() {
-                    y = x.reduceAnd()
-                    y = x.reduceOr()
-                    y = x.reduceXor()
+                    y = x.andRed()
+                    y = x.orRed()
+                    y = x.xorRed()
                 }
             """.trimIndent(),
             """
@@ -153,42 +153,42 @@ internal class CoreVkUbitTest : CoreDeclarationTest() {
     }
 
     @Test
-    fun `isZeroes isOnes`() {
+    fun `eqz neqz`() {
         driveCoreDeclarationTest(
             listOf(
-                Core.Vk.Ubit.F_isZeroes,
-                Core.Vk.Ubit.F_isOnes
+                Core.Vk.Ubit.F_eqz,
+                Core.Vk.Ubit.F_neqz
             ),
             """
                 var x = u(0x00)
                 var y = false
                 fun f() {
-                    y = x.isZeroes()
-                    y = x.isOnes()
+                    y = x.eqz()
+                    y = x.neqz()
                 }
             """.trimIndent(),
             """
                 function automatic void f();
-                    y = !x;
-                    y = x == 8'hff;
+                    y = x == 8'h00;
+                    y = x != 8'h00;
                 endfunction : f
             """.trimIndent()
         )
     }
 
     @Test
-    fun `serialize slice`() {
+    fun `serialize sli`() {
         driveCoreDeclarationTest(
             listOf(
-                Core.Vk.Ubit.F_slice_Int,
-                Core.Vk.Ubit.F_slice_Ubit
+                Core.Vk.Ubit.F_sli_Int,
+                Core.Vk.Ubit.F_sli_Ubit
             ),
             """
                 var x = u(0x00)
                 var y = u(0x0)
                 fun f() {
-                    y = x.slice(0)
-                    y = x.slice(u(0b000))
+                    y = x.sli(0)
+                    y = x.sli(u(0b000))
                 }
             """.trimIndent(),
             """
@@ -201,13 +201,12 @@ internal class CoreVkUbitTest : CoreDeclarationTest() {
     }
 
     @Test
-    fun `serialize ext sext tru extTru`() {
+    fun `serialize ext sext tru`() {
         driveCoreDeclarationTest(
             listOf(
                 Core.Vk.Ubit.F_ext,
                 Core.Vk.Ubit.F_sext,
-                Core.Vk.Ubit.F_tru,
-                Core.Vk.Ubit.F_extTru
+                Core.Vk.Ubit.F_tru
             ),
             """
                 var x = u(0x0)
@@ -216,8 +215,6 @@ internal class CoreVkUbitTest : CoreDeclarationTest() {
                     y = x.ext()
                     y = x.sext()
                     x = y.tru()
-                    y = x.extTru()
-                    x = y.extTru()
                 }
             """.trimIndent(),
             """
@@ -225,8 +222,80 @@ internal class CoreVkUbitTest : CoreDeclarationTest() {
                     y = 8'(x);
                     y = ${'$'}unsigned(8'(${'$'}signed(x)));
                     x = y[3:0];
+                endfunction : f
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `serialize res sres`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Vk.Ubit.F_res,
+                Core.Vk.Ubit.F_sres
+            ),
+            """
+                var x = u(0x0)
+                var y = u(0x00)
+                fun f() {
+                    y = x.res()
+                    x = y.res()
+                    y = x.sres()
+                    x = y.sres()
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
                     y = 8'(x);
                     x = y[3:0];
+                    y = ${'$'}unsigned(8'(${'$'}signed(x)));
+                    x = y[3:0];
+                endfunction : f
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `serialize toSbit`() {
+        driveCoreDeclarationTest(
+            listOf(Core.Vk.Ubit.F_toSbit),
+            """
+                var x = u(0x0)
+                var y = s(0x0)
+                fun f() {
+                    y = x.toSbit()
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    y = ${'$'}signed(x);
+                endfunction : f
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `serialize toBinString toDecString toHexString`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Vk.Ubit.F_toBinString,
+                Core.Vk.Ubit.F_toDecString,
+                Core.Vk.Ubit.F_toHexString
+            ),
+            """
+                var x = u(0x0)
+                var y = ""
+                fun f() {
+                    y = x.toBinString()
+                    y = x.toDecString()
+                    y = x.toHexString()
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    y = ${'$'}sformatf("%b", x);
+                    y = ${'$'}sformatf("%0d", x);
+                    y = ${'$'}sformatf("%h", x);
                 endfunction : f
             """.trimIndent()
         )
