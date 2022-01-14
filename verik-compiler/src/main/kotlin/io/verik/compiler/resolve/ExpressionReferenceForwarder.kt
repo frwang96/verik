@@ -18,6 +18,7 @@ package io.verik.compiler.resolve
 
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EDeclaration
+import io.verik.compiler.ast.element.common.EEnumEntry
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.EReceiverExpression
@@ -74,7 +75,7 @@ object ExpressionReferenceForwarder {
         specializeContext: SpecializeContext
     ): Boolean {
         val receiverExpression = entry.receiverExpression
-        val isTopLevel = reference.parent is EFile || reference is EPrimaryConstructor
+        val isTopLevel = reference.parent is EFile || reference is EPrimaryConstructor || reference is EEnumEntry
         return if (isTopLevel) {
             if (receiverExpression is ECallExpression && reference is EKtAbstractFunction) {
                 val typeArguments = receiverExpression.typeArguments

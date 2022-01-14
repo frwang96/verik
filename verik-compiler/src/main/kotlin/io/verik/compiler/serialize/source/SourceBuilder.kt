@@ -34,7 +34,6 @@ class SourceBuilder(
     private val labelLength = if (labelLines) 12 else 0
 
     private val sourceBuilder = StringBuilder()
-    private var lastLine = 1
 
     init {
         val fileHeader = FileHeaderBuilder.build(
@@ -192,14 +191,10 @@ class SourceBuilder(
 
     private fun labelLine(sourceActionLine: SourceActionLine, index: Int = 0) {
         if (labelLines) {
-            if (index >= sourceActionLine.sourceActions.size) {
-                val lineString = "$lastLine".padStart(6, ' ')
-                sourceBuilder.append("`_($lineString)")
-            } else {
+            if (index < sourceActionLine.sourceActions.size) {
                 val line = sourceActionLine.sourceActions[index].location.line
                 val lineString = "$line".padStart(6, ' ')
                 sourceBuilder.append("`_($lineString)  ")
-                lastLine = line
             }
         }
     }

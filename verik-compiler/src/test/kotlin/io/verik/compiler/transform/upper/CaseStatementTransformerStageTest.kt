@@ -68,4 +68,18 @@ internal class CaseStatementTransformerStageTest : BaseTest() {
             """.trimIndent()
         ) { it.findExpression("f") }
     }
+
+    @Test
+    fun `block expression`() {
+        driveElementTest(
+            """
+                fun f() {
+                    @Suppress("ControlFlowWithEmptyBody")
+                    when {}
+                }
+            """.trimIndent(),
+            CaseStatementTransformerStage::class,
+            "BlockExpression(Unit, [])"
+        ) { it.findExpression("f") }
+    }
 }

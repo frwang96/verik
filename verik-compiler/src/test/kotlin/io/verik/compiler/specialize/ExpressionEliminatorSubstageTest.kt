@@ -86,4 +86,37 @@ internal class ExpressionEliminatorSubstageTest : BaseTest() {
             "[BlockExpression(Unit, [])]"
         ) { it.findStatements("f") }
     }
+
+    @Test
+    fun `when expression constant false`() {
+        driveElementTest(
+            """
+                fun f() {
+                    @Suppress("SimplifyWhenWithBooleanConstantCondition")
+                    when {
+                        false -> println()
+                    }
+                }
+            """.trimIndent(),
+            SpecializerStage::class,
+            "[WhenExpression(Unit, null, [])]"
+        ) { it.findStatements("f") }
+    }
+
+    @Test
+    fun `when expression constant true`() {
+        driveElementTest(
+            """
+                fun f() {
+                    @Suppress("SimplifyWhenWithBooleanConstantCondition")
+                    when {
+                        true -> println()
+                        else -> println()
+                    }
+                }
+            """.trimIndent(),
+            SpecializerStage::class,
+            "[WhenExpression(Unit, null, [WhenEntry([], BlockExpression(*))])]"
+        ) { it.findStatements("f") }
+    }
 }

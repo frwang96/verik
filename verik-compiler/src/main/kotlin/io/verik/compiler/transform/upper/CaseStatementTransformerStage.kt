@@ -51,8 +51,13 @@ object CaseStatementTransformerStage : ProjectStage() {
                 )
                 whenExpression.replace(caseStatement)
             } else {
-                val ifExpression = getIfExpression(whenExpression.entries)
-                whenExpression.replace(ifExpression)
+                if (whenExpression.entries.isEmpty()) {
+                    val blockExpression = EBlockExpression.empty(whenExpression.location)
+                    whenExpression.replace(blockExpression)
+                } else {
+                    val ifExpression = getIfExpression(whenExpression.entries)
+                    whenExpression.replace(ifExpression)
+                }
             }
         }
 

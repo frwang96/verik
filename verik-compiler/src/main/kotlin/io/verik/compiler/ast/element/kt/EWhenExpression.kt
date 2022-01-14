@@ -31,7 +31,7 @@ class EWhenExpression(
     val endLocation: SourceLocation,
     override var type: Type,
     var subject: EExpression?,
-    val entries: List<WhenEntry>
+    var entries: List<WhenEntry>
 ) : EExpression(), ExpressionContainer {
 
     override val serializationType = SerializationType.INTERNAL
