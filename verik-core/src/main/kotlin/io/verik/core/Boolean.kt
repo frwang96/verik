@@ -42,16 +42,16 @@ fun Boolean.isxz(): Boolean {
 }
 
 /**
- * Extend to [N] bits with zero extension.
+ * Converts this value to a [Ubit] of width [N]. The value is extended with zero extension.
  */
-fun <N : `*`> Boolean.ext(): Ubit<N> {
+fun <N : `*`> Boolean.toUbit(): Ubit<N> {
     throw VerikException()
 }
 
 /**
- * Extend to [N] bits with sign extension.
+ * Converts this value to an [Sbit] of width [N]. The value is extended with sign extension.
  */
-fun <N : `*`> Boolean.sext(): Sbit<N> {
+fun <N : `*`> Boolean.toSbit(): Sbit<N> {
     throw VerikException()
 }
 

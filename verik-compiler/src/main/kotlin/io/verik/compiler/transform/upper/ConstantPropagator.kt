@@ -102,10 +102,12 @@ object ConstantPropagator {
                 Core.Vk.F_b,
                 Core.Vk.F_i,
                 Core.Vk.F_u,
-                Core.Vk.F_u_Boolean,
                 Core.Vk.F_u_Int,
                 Core.Vk.F_u_String,
-                Core.Vk.F_u_Sbit
+                Core.Vk.F_u0,
+                Core.Vk.F_u1,
+                Core.Vk.F_s0,
+                Core.Vk.F_s1
             )
         }
     }

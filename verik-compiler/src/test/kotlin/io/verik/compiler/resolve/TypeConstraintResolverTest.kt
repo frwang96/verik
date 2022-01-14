@@ -81,7 +81,7 @@ internal class TypeConstraintResolverTest : BaseTest() {
     fun `constant one violation`() {
         driveMessageTest(
             """
-                var x: Ubit<`8`> = u(false)
+                var x: Ubit<`8`> = u(0b0)
             """.trimIndent(),
             true,
             "Type mismatch: Expected Ubit<`8`> actual Ubit<`1`>"

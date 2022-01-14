@@ -256,6 +256,25 @@ internal class CoreVkUbitTest : CoreDeclarationTest() {
     }
 
     @Test
+    fun `serialize toSbit`() {
+        driveCoreDeclarationTest(
+            listOf(Core.Vk.Ubit.F_toSbit),
+            """
+                var x = u(0x0)
+                var y = s(0x0)
+                fun f() {
+                    y = x.toSbit()
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    y = ${'$'}signed(x);
+                endfunction : f
+            """.trimIndent()
+        )
+    }
+
+    @Test
     fun `serialize toBinString toDecString toHexString`() {
         driveCoreDeclarationTest(
             listOf(

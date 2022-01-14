@@ -444,6 +444,23 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
+    val F_toSbit = object : TransformableCoreFunctionDeclaration(parent, "toSbit", "fun toSbit()") {
+
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
+            return listOf(
+                TypeConstraint(
+                    TypeConstraintKind.EQ_INOUT,
+                    TypeAdapter.ofElement(callExpression, 0),
+                    TypeAdapter.ofElement(callExpression.receiver!!, 0)
+                )
+            )
+        }
+
+        override fun transform(callExpression: ECallExpression): EExpression {
+            return CoreTransformUtil.callExpressionSigned(callExpression.receiver!!)
+        }
+    }
+
     val F_toBinString = object : TransformableCoreFunctionDeclaration(parent, "toBinString", "fun toBinString()") {
 
         override fun transform(callExpression: ECallExpression): EExpression {

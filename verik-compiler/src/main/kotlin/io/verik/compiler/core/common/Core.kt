@@ -183,17 +183,16 @@ object Core {
         val F_b = CoreVkSpecial.F_b
         val F_i = CoreVkSpecial.F_i
         val F_u = CoreVkSpecial.F_u
-        val F_u_Boolean = CoreVkSpecial.F_u_Boolean
         val F_u_Int = CoreVkSpecial.F_u_Int
         val F_u_String = CoreVkSpecial.F_u_String
-        val F_u_Sbit = CoreVkSpecial.F_u_Sbit
         val F_u0 = CoreVkSpecial.F_u0
         val F_u1 = CoreVkSpecial.F_u1
         val F_ux = CoreVkSpecial.F_ux
         val F_uz = CoreVkSpecial.F_uz
         val F_s_Int = CoreVkSpecial.F_s_Int
         val F_s_String = CoreVkSpecial.F_s_String
-        val F_s_Ubit = CoreVkSpecial.F_s_Ubit
+        val F_s0 = CoreVkSpecial.F_s0
+        val F_s1 = CoreVkSpecial.F_s1
         val P_unknown = CoreVkSpecial.P_unknown
         val P_floating = CoreVkSpecial.P_floating
 
@@ -228,8 +227,8 @@ object Core {
 
         object Boolean {
 
-            val F_Boolean_ext = CoreVkBoolean.F_ext
-            val F_Boolean_sext = CoreVkBoolean.F_sext
+            val F_Boolean_toUbit = CoreVkBoolean.F_toUbit
+            val F_Boolean_toSbit = CoreVkBoolean.F_toSbit
         }
 
         object Ubit {
@@ -282,6 +281,7 @@ object Core {
             val F_tru = CoreVkUbit.F_tru
             val F_res = CoreVkUbit.F_res
             val F_sres = CoreVkUbit.F_sres
+            val F_toSbit = CoreVkUbit.F_toSbit
             val F_toBinString = CoreVkUbit.F_toBinString
             val F_toDecString = CoreVkUbit.F_toDecString
             val F_toHexString = CoreVkUbit.F_toHexString
@@ -323,6 +323,7 @@ object Core {
             val F_ext = CoreVkSbit.F_ext
             val F_uext = CoreVkSbit.F_uext
             val F_tru = CoreVkSbit.F_tru
+            val F_toUbit = CoreVkSbit.F_toUbit
         }
 
         object Packed {

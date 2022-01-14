@@ -80,51 +80,26 @@ internal class CoreVkSpecialTest : CoreDeclarationTest() {
         driveCoreDeclarationTest(
             listOf(
                 Core.Vk.F_u,
-                Core.Vk.F_u_Boolean,
-                Core.Vk.F_u_Sbit,
                 Core.Vk.F_u0,
-                Core.Vk.F_u1
-            ),
-            """
-                var x = u(0x0)
-                var y = u(0b0)
-                var z = s(0x0)
-                fun f() {
-                    x = u<`8`>()
-                    y = u(false)
-                    x = u(z)
-                    x = u0()
-                    x = u1()
-                }
-            """.trimIndent(),
-            """
-                function automatic void f();
-                    x = 4'b1000;
-                    y = 1'b0;
-                    x = ${'$'}unsigned(z);
-                    x = 4'b0000;
-                    x = 4'b1111;
-                endfunction : f
-            """.trimIndent()
-        )
-    }
-
-    @Test
-    fun `serialize ux uz`() {
-        driveCoreDeclarationTest(
-            listOf(
+                Core.Vk.F_u1,
                 Core.Vk.F_ux,
                 Core.Vk.F_uz
             ),
             """
                 var x = u(0x0)
                 fun f() {
+                    x = u<`8`>()
+                    x = u0()
+                    x = u1()
                     x = ux()
                     x = uz()
                 }
             """.trimIndent(),
             """
                 function automatic void f();
+                    x = 4'b1000;
+                    x = 4'b0000;
+                    x = 4'b1111;
                     x = 4'bx;
                     x = 4'bz;
                 endfunction : f
@@ -133,19 +108,23 @@ internal class CoreVkSpecialTest : CoreDeclarationTest() {
     }
 
     @Test
-    fun `serialize s`() {
+    fun `serialize s0 s1`() {
         driveCoreDeclarationTest(
-            listOf(Core.Vk.F_s_Ubit),
+            listOf(
+                Core.Vk.F_s0,
+                Core.Vk.F_s1
+            ),
             """
                 var x = s(0x0)
-                var y = u(0x0)
                 fun f() {
-                    x = s(y)
+                    x = s0()
+                    x = s1()
                 }
             """.trimIndent(),
             """
                 function automatic void f();
-                    x = ${'$'}signed(y);
+                    x = 4'sb0000;
+                    x = 4'sb1111;
                 endfunction : f
             """.trimIndent()
         )

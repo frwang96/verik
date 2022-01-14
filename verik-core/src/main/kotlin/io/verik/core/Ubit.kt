@@ -393,6 +393,13 @@ class Ubit<N : `*`> private constructor() {
     }
 
     /**
+     * Converts this value to an [Sbit].
+     */
+    fun toSbit(): Sbit<N> {
+        throw VerikException()
+    }
+
+    /**
      * (UNIMPLEMENTED) Converts this value to an [Int].
      */
     fun toInt(): Int {
