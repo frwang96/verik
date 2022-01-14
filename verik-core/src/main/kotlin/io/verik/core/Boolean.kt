@@ -23,7 +23,21 @@ import kotlin.properties.Delegates
 /**
  * (UNIMPLEMENTED) Returns true if the boolean is unknown.
  */
-fun Boolean.isUnknown(): Boolean {
+fun Boolean.isx(): Boolean {
+    throw VerikException()
+}
+
+/**
+ * (UNIMPLEMENTED) Returns true if the boolean is floating.
+ */
+fun Boolean.isz(): Boolean {
+    throw VerikException()
+}
+
+/**
+ * (UNIMPLEMENTED) Returns true if the boolean is unknown or floating.
+ */
+fun Boolean.isxz(): Boolean {
     throw VerikException()
 }
 

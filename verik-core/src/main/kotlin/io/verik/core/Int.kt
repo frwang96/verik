@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,22 +19,15 @@
 package io.verik.core
 
 /**
- * (UNIMPLEMENTED) Returns true if the enum is unknown.
+ * Convert this value to a [Ubit] of width [N].
  */
-fun <E : Enum<E>> Enum<E>.isx(): Boolean {
+fun <N : `*`> Int.toUbit(): Ubit<N> {
     throw VerikException()
 }
 
 /**
- * (UNIMPLEMENTED) Returns true if the enum is floating.
+ * Convert this value to an [Sbit] of width [N].
  */
-fun <E : Enum<E>> Enum<E>.isz(): Boolean {
-    throw VerikException()
-}
-
-/**
- * (UNIMPLEMENTED) Returns true if the enum is unknown or floating.
- */
-fun <E : Enum<E>> Enum<E>.isxz(): Boolean {
+fun <N : `*`> Int.toSbit(): Ubit<N> {
     throw VerikException()
 }

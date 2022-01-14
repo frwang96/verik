@@ -195,3 +195,17 @@ fun <T> fillx(): T {
 fun <T> fillz(): T {
     throw VerikException()
 }
+
+/**
+ * (UNIMPLEMENTED) Pack [value] as a [Ubit].
+ */
+fun pack(value: Any): Ubit<`*`> {
+    throw VerikException()
+}
+
+/**
+ * (UNIMPLEMENTED) Unpack [value] to type [T].
+ */
+fun <T> unpack(value: Ubit<`*`>): T {
+    throw VerikException()
+}

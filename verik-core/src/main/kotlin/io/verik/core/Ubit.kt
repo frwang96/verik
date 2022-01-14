@@ -24,16 +24,23 @@ package io.verik.core
 class Ubit<N : `*`> private constructor() {
 
     /**
-     * (UNIMPLEMENTED) Returns true if any bit is X.
+     * (UNIMPLEMENTED) Returns true if any bit is unknown.
      */
-    fun isUnknown(): Boolean {
+    fun isx(): Boolean {
         throw VerikException()
     }
 
     /**
-     * (UNIMPLEMENTED) Convert the [Ubit] to type [T].
+     * (UNIMPLEMENTED) Returns true if any bit is floating.
      */
-    fun <T> fromUbit(): T {
+    fun isz(): Boolean {
+        throw VerikException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) Returns true if any bit is unknown or floating.
+     */
+    fun isxz(): Boolean {
         throw VerikException()
     }
 
@@ -382,6 +389,13 @@ class Ubit<N : `*`> private constructor() {
      * will be extended or truncated.
      */
     fun <M : `*`> sres(): Ubit<M> {
+        throw VerikException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) Converts this value to an [Int].
+     */
+    fun toInt(): Int {
         throw VerikException()
     }
 
