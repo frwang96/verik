@@ -40,10 +40,7 @@ object StringTemplateExpressionTransformerStage : ProjectStage() {
             Target.C_Boolean -> "%b"
             Target.C_Int -> "%0d"
             Target.C_String -> "%s"
-            Target.C_Ubit, Target.C_Sbit -> {
-                val width = type.asBitWidth(expression)
-                "%0${(width + 3) / 4}h"
-            }
+            Target.C_Ubit, Target.C_Sbit -> "%h"
             Target.C_Time -> "%0t"
             else -> {
                 Messages.INTERNAL_ERROR.on(expression, "Unable to get format specifier of type: ${expression.type}")
@@ -91,11 +88,11 @@ object StringTemplateExpressionTransformerStage : ProjectStage() {
                 valueArguments.add(0, stringExpression)
                 val callExpression = ECallExpression(
                     stringTemplateExpression.location,
-                    stringTemplateExpression.type,
+                    Target.C_String.toType(),
                     Target.F_sformatf,
                     null,
                     valueArguments,
-                    arrayListOf()
+                    ArrayList()
                 )
                 stringTemplateExpression.replace(callExpression)
             }

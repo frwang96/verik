@@ -384,4 +384,25 @@ class Ubit<N : `*`> private constructor() {
     fun <M : `*`> sres(): Ubit<M> {
         throw VerikException()
     }
+
+    /**
+     * Converts this value to a binary string.
+     */
+    fun toBinString(): String {
+        throw VerikException()
+    }
+
+    /**
+     * Converts this value to a decimal string.
+     */
+    fun toDecString(): String {
+        throw VerikException()
+    }
+
+    /**
+     * Converts this value to a hexadecimal string.
+     */
+    fun toHexString(): String {
+        throw VerikException()
+    }
 }

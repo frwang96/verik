@@ -21,6 +21,7 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.sv.EConstantPartSelectExpression
 import io.verik.compiler.ast.element.sv.EStreamingExpression
+import io.verik.compiler.ast.element.sv.EStringExpression
 import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.element.sv.EWidthCastExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
@@ -34,6 +35,7 @@ import io.verik.compiler.core.common.UnaryCoreFunctionDeclaration
 import io.verik.compiler.resolve.TypeAdapter
 import io.verik.compiler.resolve.TypeConstraint
 import io.verik.compiler.resolve.TypeConstraintKind
+import io.verik.compiler.target.common.Target
 
 object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
@@ -439,6 +441,51 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
                 receiverWidth > width -> F_tru.transform(callExpression)
                 else -> callExpression.receiver!!
             }
+        }
+    }
+
+    val F_toBinString = object : TransformableCoreFunctionDeclaration(parent, "toBinString", "fun toBinString()") {
+
+        override fun transform(callExpression: ECallExpression): EExpression {
+            val stringExpression = EStringExpression(callExpression.location, "%b")
+            return ECallExpression(
+                callExpression.location,
+                Core.Kt.C_String.toType(),
+                Target.F_sformatf,
+                null,
+                arrayListOf(stringExpression, callExpression.receiver!!),
+                ArrayList()
+            )
+        }
+    }
+
+    val F_toDecString = object : TransformableCoreFunctionDeclaration(parent, "toDecString", "fun toDecString()") {
+
+        override fun transform(callExpression: ECallExpression): EExpression {
+            val stringExpression = EStringExpression(callExpression.location, "%0d")
+            return ECallExpression(
+                callExpression.location,
+                Core.Kt.C_String.toType(),
+                Target.F_sformatf,
+                null,
+                arrayListOf(stringExpression, callExpression.receiver!!),
+                ArrayList()
+            )
+        }
+    }
+
+    val F_toHexString = object : TransformableCoreFunctionDeclaration(parent, "toHexString", "fun toHexString()") {
+
+        override fun transform(callExpression: ECallExpression): EExpression {
+            val stringExpression = EStringExpression(callExpression.location, "%h")
+            return ECallExpression(
+                callExpression.location,
+                Core.Kt.C_String.toType(),
+                Target.F_sformatf,
+                null,
+                arrayListOf(stringExpression, callExpression.receiver!!),
+                ArrayList()
+            )
         }
     }
 }
