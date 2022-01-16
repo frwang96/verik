@@ -211,6 +211,7 @@ object SpecializerCopier {
             name = property.name,
             type = type,
             annotationEntries = property.annotationEntries,
+            documentationLines = property.documentationLines,
             initializer = initializer,
             isMutable = property.isMutable
         )

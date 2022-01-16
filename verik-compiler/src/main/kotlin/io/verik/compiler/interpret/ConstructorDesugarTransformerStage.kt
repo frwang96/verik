@@ -82,12 +82,10 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
                     val isMutable = it.isMutable
                     it.isPrimaryConstructorProperty = false
                     it.isMutable = false
-                    val property = EProperty(
+                    val property = EProperty.named(
                         location = it.location,
-                        endLocation = it.location,
                         name = it.name,
                         type = it.type.copy(),
-                        annotationEntries = listOf(),
                         initializer = null,
                         isMutable = isMutable
                     )

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,9 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.interpret
+package io.verik.compiler.ast.interfaces
 
-import io.verik.compiler.test.BaseTest
-import io.verik.compiler.test.findDeclaration
-import org.junit.jupiter.api.Test
+interface Documented {
 
-internal class StructInterpreterStageTest : BaseTest() {
-
-    @Test
-    fun `interpret struct`() {
-        driveElementTest(
-            """
-                class S(var x: Boolean): Struct()
-            """.trimIndent(),
-            StructInterpreterStage::class,
-            "Struct(S, S, [Property(x, Boolean, null, 1)])"
-        ) { it.findDeclaration("S") }
-    }
+    var documentationLines: List<String>?
 }

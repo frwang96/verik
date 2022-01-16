@@ -30,7 +30,7 @@ internal class ExpressionCasterTest : BaseTest() {
                 fun f() {}
             """.trimIndent(),
             CasterStage::class,
-            "KtFunction(f, Unit, BlockExpression(Unit, []), [], [], [], 0)"
+            "KtFunction(f, Unit, BlockExpression(Unit, []), [], [], 0)"
         ) { it.findDeclaration("f") }
     }
 
@@ -236,7 +236,7 @@ internal class ExpressionCasterTest : BaseTest() {
                     Unit,
                     forEach,
                     ReferenceExpression(*),
-                    [FunctionLiteralExpression(Function, [KtValueParameter(y, Boolean, [], 0, 0)], *)],
+                    [FunctionLiteralExpression(Function, [KtValueParameter(y, Boolean, 0, 0)], *)],
                     [Boolean]
                 )
             """.trimIndent()
@@ -258,7 +258,7 @@ internal class ExpressionCasterTest : BaseTest() {
                     Unit,
                     forEach,
                     ReferenceExpression(*),
-                    [FunctionLiteralExpression(Function, [KtValueParameter(it, Boolean, [], 0, 0)], *)],
+                    [FunctionLiteralExpression(Function, [KtValueParameter(it, Boolean, 0, 0)], *)],
                     [Boolean]
                 )
             """.trimIndent()
@@ -302,7 +302,7 @@ internal class ExpressionCasterTest : BaseTest() {
                 var x = 0 is Int
             """.trimIndent(),
             CasterStage::class,
-            "IsExpression(Boolean, ConstantExpression(*), Property(<tmp>, Int, [], null, 0), 0, Int)"
+            "IsExpression(Boolean, ConstantExpression(*), Property(<tmp>, Int, null, 0), 0, Int)"
         ) { it.findExpression("x") }
     }
 
@@ -378,7 +378,7 @@ internal class ExpressionCasterTest : BaseTest() {
             """
                 KtForStatement(
                     Unit,
-                    KtValueParameter(y, Boolean, [], 0, 0),
+                    KtValueParameter(y, Boolean, 0, 0),
                     ReferenceExpression(*),
                     BlockExpression(Unit, [])
                 )
@@ -399,7 +399,7 @@ internal class ExpressionCasterTest : BaseTest() {
             """
                 KtForStatement(
                     Unit,
-                    KtValueParameter(y, Boolean, [], 0, 0),
+                    KtValueParameter(y, Boolean, 0, 0),
                     ReferenceExpression(*),
                     BlockExpression(Unit, [*])
                 )

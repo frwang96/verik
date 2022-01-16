@@ -30,7 +30,7 @@ internal class TypeReferenceForwarderStageTest : BaseTest() {
                 val x = C()
             """.trimIndent(),
             TypeReferenceForwarderStage::class,
-            "Property(x, C, [], *, 0)"
+            "Property(x, C, *, 0)"
         ) { it.findDeclaration("x") }
     }
 
@@ -42,7 +42,7 @@ internal class TypeReferenceForwarderStageTest : BaseTest() {
                 val x = C<`1`>()
             """.trimIndent(),
             TypeReferenceForwarderStage::class,
-            "Property(x, C_N_1, [], *, 0)"
+            "Property(x, C_N_1, *, 0)"
         ) { it.findDeclaration("x") }
     }
 }

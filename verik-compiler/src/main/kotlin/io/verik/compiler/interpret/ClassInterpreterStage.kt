@@ -157,7 +157,7 @@ object ClassInterpreterStage : ProjectStage() {
             if (`class`.isAbstract)
                 return null
 
-            val property = EProperty.getTemporary(
+            val property = EProperty.temporary(
                 constructor.location,
                 constructor.type.copy(),
                 ECallExpression(

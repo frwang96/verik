@@ -60,12 +60,10 @@ object StructInterpreterStage : ProjectStage() {
             valueParameter: EKtValueParameter,
             referenceUpdater: ReferenceUpdater
         ): EProperty {
-            val property = EProperty(
+            val property = EProperty.named(
                 location = valueParameter.location,
-                endLocation = valueParameter.location,
                 name = valueParameter.name,
                 type = valueParameter.type,
-                annotationEntries = listOf(),
                 initializer = null,
                 isMutable = valueParameter.isMutable
             )

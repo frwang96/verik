@@ -73,6 +73,7 @@ import io.verik.compiler.ast.element.sv.ETask
 import io.verik.compiler.ast.element.sv.ETypeDefinition
 import io.verik.compiler.ast.element.sv.EWaitForkStatement
 import io.verik.compiler.ast.element.sv.EWidthCastExpression
+import io.verik.compiler.ast.interfaces.Documented
 import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.Messages
@@ -97,6 +98,14 @@ class SourceSerializerVisitor(
             serializeContext.appendLine()
         firstDeclaration = false
         lastDeclarationIsProperty = false
+        if (declaration is Documented) {
+            val documentationLines = declaration.documentationLines
+            if (documentationLines != null) {
+                serializeContext.label(declaration) {
+                    serializeDocumentationLines(documentationLines, serializeContext)
+                }
+            }
+        }
         serialize(declaration)
         lastDeclarationIsProperty = declaration is EProperty
     }
@@ -336,5 +345,13 @@ class SourceSerializerVisitor(
 
     override fun visitDelayExpression(delayExpression: EDelayExpression) {
         ExpressionSerializer.serializeDelayExpression(delayExpression, serializeContext)
+    }
+
+    private fun serializeDocumentationLines(documentationLines: List<String>, serializeContext: SerializeContext) {
+        serializeContext.appendLine("/**")
+        documentationLines.forEach {
+            serializeContext.appendLine(" * $it")
+        }
+        serializeContext.appendLine(" */")
     }
 }

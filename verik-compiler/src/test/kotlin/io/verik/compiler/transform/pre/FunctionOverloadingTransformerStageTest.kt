@@ -30,7 +30,7 @@ internal class FunctionOverloadingTransformerStageTest : BaseTest() {
                 fun f(x: Int) {}
             """.trimIndent(),
             FunctionOverloadingTransformerStage::class,
-            "KtFunction(f_Int, *, *, *, *, *, 0)"
+            "KtFunction(f_Int, Unit, BlockExpression(*), *, [], 0)"
         ) { it.findDeclaration("f_Int") }
     }
 }

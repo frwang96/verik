@@ -31,6 +31,7 @@ import io.verik.compiler.common.location
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreConstructorDeclaration
 import io.verik.compiler.message.Messages
+import org.jetbrains.kotlin.kdoc.psi.api.KDoc
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtEnumEntry
@@ -212,15 +213,23 @@ object DeclarationCaster {
         val type = if (typeReference != null) castContext.castType(typeReference)
         else castContext.castType(descriptor.type, property)
 
-        val initializer = property.initializer?.let {
-            castContext.casterVisitor.getExpression(it)
-        }
         val annotationEntries = property.annotationEntries.mapNotNull {
             AnnotationEntryCaster.castAnnotationEntry(it, castContext)
         }
+        val documentationLines = castDocumentationLines(property.docComment)
+        castedProperty.documentationLines = documentationLines
+        val initializer = property.initializer?.let {
+            castContext.casterVisitor.getExpression(it)
+        }
         val isMutable = property.isVar
 
-        castedProperty.fill(type, initializer, annotationEntries, isMutable)
+        castedProperty.fill(
+            type,
+            annotationEntries,
+            documentationLines,
+            initializer,
+            isMutable
+        )
         return castedProperty
     }
 
@@ -258,6 +267,17 @@ object DeclarationCaster {
 
         castedValueParameter.fill(type, annotationEntries, isPrimaryConstructorProperty, isMutable)
         return castedValueParameter
+    }
+
+    private fun castDocumentationLines(docComment: KDoc?): List<String>? {
+        if (docComment == null)
+            return null
+        return docComment.text
+            .removePrefix("/**")
+            .removeSuffix("*/")
+            .trim()
+            .lines()
+            .map { it.trim().removePrefix("*").removePrefix(" ") }
     }
 
     private fun castSuperTypeCallExpression(

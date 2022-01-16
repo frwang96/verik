@@ -196,6 +196,24 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `serialize property with documentation`() {
+        driveTextFileTest(
+            """
+                /**
+                 * ABC
+                 */
+                var x = false
+            """.trimIndent(),
+            """
+                /**
+                 * ABC
+                 */
+                logic x = 1'b0;
+            """.trimIndent()
+        ) { it.regularPackageTextFiles[0] }
+    }
+
+    @Test
     fun `serialize initial block`() {
         driveTextFileTest(
             """

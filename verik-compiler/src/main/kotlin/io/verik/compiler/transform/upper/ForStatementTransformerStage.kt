@@ -77,12 +77,10 @@ object ForStatementTransformerStage : ProjectStage() {
             valueParameter: ESvValueParameter,
             callExpression: ECallExpression
         ): ESvForStatement {
-            val property = EProperty(
+            val property = EProperty.named(
                 location = valueParameter.location,
-                endLocation = valueParameter.location,
                 name = valueParameter.name,
                 type = valueParameter.type,
-                annotationEntries = listOf(),
                 initializer = callExpression.receiver!!,
                 isMutable = true
             )
@@ -120,7 +118,7 @@ object ForStatementTransformerStage : ProjectStage() {
             valueParameter: ESvValueParameter,
             referenceExpression: EReferenceExpression
         ): ESvForStatement {
-            val indexProperty = EProperty.getTemporary(
+            val indexProperty = EProperty.temporary(
                 location = referenceExpression.location,
                 type = Core.Kt.C_Int.toType(),
                 initializer = EConstantExpression(referenceExpression.location, Core.Kt.C_Int.toType(), "0"),
@@ -159,12 +157,10 @@ object ForStatementTransformerStage : ProjectStage() {
                 arrayListOf(ExpressionCopier.deepCopy(indexReferenceExpression)),
                 ArrayList()
             )
-            val elementProperty = EProperty(
+            val elementProperty = EProperty.named(
                 location = valueParameter.location,
-                endLocation = valueParameter.location,
                 name = valueParameter.name,
                 type = valueParameter.type,
-                annotationEntries = listOf(),
                 initializer = elementPropertyInitializer,
                 isMutable = false
             )

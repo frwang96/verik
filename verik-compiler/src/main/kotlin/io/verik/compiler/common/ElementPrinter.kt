@@ -159,7 +159,6 @@ class ElementPrinter : Visitor() {
             build(`class`.type.toString())
             build(`class`.declarations)
             build(`class`.typeParameters)
-            build(`class`.annotationEntries)
             build(`class`.isEnum)
             build(`class`.isAbstract)
             build(`class`.isObject)
@@ -239,7 +238,6 @@ class ElementPrinter : Visitor() {
             build(function.body)
             build(function.valueParameters)
             build(function.typeParameters)
-            build(function.annotationEntries)
             build(function.isAbstract)
         }
     }
@@ -311,7 +309,6 @@ class ElementPrinter : Visitor() {
         build("Property") {
             build(property.name)
             build(property.type.toString())
-            build(property.annotationEntries)
             build(property.initializer)
             build(property.isMutable)
         }
@@ -329,7 +326,6 @@ class ElementPrinter : Visitor() {
         build("EnumEntry") {
             build(enumEntry.name)
             build(enumEntry.type.toString())
-            build(enumEntry.annotationEntries)
         }
     }
 
@@ -362,7 +358,6 @@ class ElementPrinter : Visitor() {
         build("KtValueParameter") {
             build(valueParameter.name)
             build(valueParameter.type.toString())
-            build(valueParameter.annotationEntries)
             build(valueParameter.isPrimaryConstructorProperty)
             build(valueParameter.isMutable)
         }

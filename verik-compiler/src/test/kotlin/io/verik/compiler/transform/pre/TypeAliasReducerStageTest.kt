@@ -30,7 +30,7 @@ internal class TypeAliasReducerStageTest : BaseTest() {
                 var x: U = nc()
             """.trimIndent(),
             TypeAliasReducerStage::class,
-            "Property(x, Ubit<`8`>, [], *, 1)"
+            "Property(x, Ubit<`8`>, *, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -43,7 +43,7 @@ internal class TypeAliasReducerStageTest : BaseTest() {
                 var x: Ubit<Y> = nc()
             """.trimIndent(),
             TypeAliasReducerStage::class,
-            "Property(x, Ubit<`8`>, [], *, 1)"
+            "Property(x, Ubit<`8`>, *, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -55,7 +55,7 @@ internal class TypeAliasReducerStageTest : BaseTest() {
                 var x: Ubit<X<`1`>> = nc()
             """.trimIndent(),
             TypeAliasReducerStage::class,
-            "Property(x, Ubit<INC<`1`>>, [], *, 1)"
+            "Property(x, Ubit<INC<`1`>>, *, 1)"
         ) { it.findDeclaration("x") }
     }
 }

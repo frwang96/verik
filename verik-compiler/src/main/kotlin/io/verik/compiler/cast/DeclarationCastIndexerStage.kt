@@ -165,6 +165,7 @@ object DeclarationCastIndexerStage : ProjectStage() {
                 name = name,
                 type = NullDeclaration.toType(),
                 annotationEntries = listOf(),
+                documentationLines = null,
                 initializer = null,
                 isMutable = false
             )
