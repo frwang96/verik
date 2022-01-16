@@ -60,12 +60,26 @@ object FunctionInterpreterStage : ProjectStage() {
         private fun interpret(function: EKtFunction): EDeclaration {
             val body = function.body
             return when {
-                function.hasAnnotationEntry(AnnotationEntries.COM) ->
-                    EAlwaysComBlock(function.location, function.name, body)
+                function.hasAnnotationEntry(AnnotationEntries.COM) -> {
+                    EAlwaysComBlock(
+                        function.location,
+                        function.name,
+                        function.annotationEntries,
+                        function.documentationLines,
+                        body
+                    )
+                }
                 function.hasAnnotationEntry(AnnotationEntries.SEQ) ->
                     getAlwaysSeqBlock(function)
-                function.hasAnnotationEntry(AnnotationEntries.RUN) ->
-                    EInitialBlock(function.location, function.name, body)
+                function.hasAnnotationEntry(AnnotationEntries.RUN) -> {
+                    EInitialBlock(
+                        function.location,
+                        function.name,
+                        function.annotationEntries,
+                        function.documentationLines,
+                        body
+                    )
+                }
                 function.hasAnnotationEntry(AnnotationEntries.TASK) ->
                     getTask(function)
                 else -> getFunction(function)
@@ -89,6 +103,8 @@ object FunctionInterpreterStage : ProjectStage() {
             return EAlwaysSeqBlock(
                 function.location,
                 function.name,
+                function.annotationEntries,
+                function.documentationLines,
                 alwaysSeqBody,
                 eventControlExpression
             )
@@ -103,6 +119,8 @@ object FunctionInterpreterStage : ProjectStage() {
             return EAlwaysSeqBlock(
                 function.location,
                 function.name,
+                function.annotationEntries,
+                function.documentationLines,
                 body,
                 eventControlExpression
             )
@@ -111,10 +129,23 @@ object FunctionInterpreterStage : ProjectStage() {
         private fun getTask(function: EKtFunction): ETask {
             val valueParameters = ArrayList(getValueParameters(function.valueParameters, referenceUpdater))
             if (function.type.reference != Core.Kt.C_Unit) {
-                val valueParameter = ESvValueParameter(function.location, "__return", function.type.copy(), false)
+                val valueParameter = ESvValueParameter(
+                    location = function.location,
+                    name = "__return",
+                    type = function.type.copy(),
+                    annotationEntries = listOf(),
+                    isInput = false
+                )
                 valueParameters.add(valueParameter)
             }
-            return ETask(function.location, function.name, function.body, valueParameters)
+            return ETask(
+                function.location,
+                function.name,
+                function.annotationEntries,
+                function.documentationLines,
+                function.body,
+                valueParameters
+            )
         }
 
         private fun getFunction(function: EKtFunction): ESvFunction {
@@ -138,6 +169,8 @@ object FunctionInterpreterStage : ProjectStage() {
                 function.location,
                 function.name,
                 function.type,
+                function.annotationEntries,
+                function.documentationLines,
                 function.body,
                 ArrayList(valueParameters),
                 qualifierType,
@@ -150,7 +183,7 @@ object FunctionInterpreterStage : ProjectStage() {
             referenceUpdater: ReferenceUpdater
         ): List<ESvValueParameter> {
             return valueParameters.map {
-                val valueParameter = ESvValueParameter(it.location, it.name, it.type, true)
+                val valueParameter = ESvValueParameter(it.location, it.name, it.type, it.annotationEntries, true)
                 referenceUpdater.update(it, valueParameter)
                 valueParameter
             }

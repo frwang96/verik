@@ -16,6 +16,7 @@
 
 package io.verik.compiler.ast.element.common
 
+import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
@@ -26,6 +27,9 @@ class ETypeParameter(
     override var name: String,
     override var type: Type
 ) : EClassifier() {
+
+    override var annotationEntries: List<AnnotationEntry> = listOf()
+    override var documentationLines: List<String>? = null
 
     fun fill(type: Type) {
         this.type = type

@@ -17,7 +17,6 @@
 package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.ast.element.sv.ESvClass
-import io.verik.compiler.ast.interfaces.Annotated
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.Type
@@ -31,9 +30,10 @@ class EProperty(
     override var name: String,
     override var type: Type,
     override var annotationEntries: List<AnnotationEntry>,
+    override var documentationLines: List<String>?,
     var initializer: EExpression?,
     var isMutable: Boolean
-) : EAbstractProperty(), Annotated, ExpressionContainer {
+) : EAbstractProperty(), ExpressionContainer {
 
     init {
         initializer?.parent = this
@@ -41,14 +41,16 @@ class EProperty(
 
     fun fill(
         type: Type,
-        initializer: EExpression?,
         annotationEntries: List<AnnotationEntry>,
+        documentationLines: List<String>?,
+        initializer: EExpression?,
         isMutable: Boolean
     ) {
         initializer?.parent = this
         this.type = type
-        this.initializer = initializer
         this.annotationEntries = annotationEntries
+        this.documentationLines = documentationLines
+        this.initializer = initializer
         this.isMutable = isMutable
     }
 
@@ -75,7 +77,7 @@ class EProperty(
 
     companion object {
 
-        fun getTemporary(
+        fun temporary(
             location: SourceLocation,
             type: Type,
             initializer: EExpression?,
@@ -87,6 +89,26 @@ class EProperty(
                 name = "<tmp>",
                 type = type,
                 annotationEntries = listOf(),
+                documentationLines = null,
+                initializer = initializer,
+                isMutable = isMutable
+            )
+        }
+
+        fun named(
+            location: SourceLocation,
+            name: String,
+            type: Type,
+            initializer: EExpression?,
+            isMutable: Boolean
+        ): EProperty {
+            return EProperty(
+                location = location,
+                endLocation = location,
+                name = name,
+                type = type,
+                annotationEntries = listOf(),
+                documentationLines = null,
                 initializer = initializer,
                 isMutable = isMutable
             )

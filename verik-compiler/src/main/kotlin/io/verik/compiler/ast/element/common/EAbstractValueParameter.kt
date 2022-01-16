@@ -16,4 +16,7 @@
 
 package io.verik.compiler.ast.element.common
 
-abstract class EAbstractValueParameter : EAbstractProperty()
+abstract class EAbstractValueParameter : EAbstractProperty() {
+
+    override var documentationLines: List<String>? = null
+}

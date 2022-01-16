@@ -17,37 +17,50 @@
 package io.verik.compiler.transform.upper
 
 import io.verik.compiler.test.BaseTest
-import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
 internal class InlineIfExpressionTransformerStageTest : BaseTest() {
 
     @Test
     fun `transform inline if`() {
-        driveElementTest(
+        driveTextFileTest(
             """
                 var x = true
                 var y = if (x) 1 else 0
             """.trimIndent(),
-            InlineIfExpressionTransformerStage::class,
-            "InlineIfExpression(Int, ReferenceExpression(*), ConstantExpression(*), ConstantExpression(*))"
-        ) { it.findExpression("y") }
+            """
+                logic x = 1'b1;
+                int   y = x ? 1 : 0;
+            """.trimIndent()
+        ) { it.regularPackageTextFiles[0] }
     }
 
     @Test
     fun `transform inline if nested`() {
-        driveElementTest(
+        driveTextFileTest(
             """
                 var x = true
                 var y = if (x) 1 else if (x) 2 else 3
             """.trimIndent(),
-            InlineIfExpressionTransformerStage::class,
             """
-                InlineIfExpression(
-                    Int, ReferenceExpression(*), ConstantExpression(*),
-                    InlineIfExpression(Int, ReferenceExpression(*), ConstantExpression(*), ConstantExpression(*))
-                )
+                logic x = 1'b1;
+                int   y = x ? 1 : x ? 2 : 3;
             """.trimIndent()
-        ) { it.findExpression("y") }
+        ) { it.regularPackageTextFiles[0] }
+    }
+
+    @Test
+    fun `transform inline if condition`() {
+        driveTextFileTest(
+            """
+                var x = true
+                @Suppress("RedundantIf")
+                var y = if (if (x) true else false) 1 else 0
+            """.trimIndent(),
+            """
+                logic x = 1'b1;
+                int   y = (x ? 1'b1 : 1'b0) ? 1 : 0;
+            """.trimIndent()
+        ) { it.regularPackageTextFiles[0] }
     }
 }

@@ -19,6 +19,7 @@ package io.verik.compiler.ast.element.kt
 import io.verik.compiler.ast.element.common.EClassifier
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.interfaces.TypeParameterized
+import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
@@ -30,6 +31,9 @@ class ETypeAlias(
     override var type: Type,
     override var typeParameters: ArrayList<ETypeParameter>
 ) : EClassifier(), TypeParameterized {
+
+    override var annotationEntries: List<AnnotationEntry> = listOf()
+    override var documentationLines: List<String>? = null
 
     init {
         typeParameters.forEach { it.parent = this }

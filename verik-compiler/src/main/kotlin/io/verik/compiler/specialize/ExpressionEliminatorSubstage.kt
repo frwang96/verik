@@ -25,8 +25,10 @@ import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.kt.EKtClass
+import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.interfaces.TypeParameterized
 import io.verik.compiler.ast.property.Type
+import io.verik.compiler.ast.property.WhenEntry
 import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.common.ExpressionEvaluator
 import io.verik.compiler.common.TreeVisitor
@@ -44,16 +46,7 @@ object ExpressionEliminatorSubstage : SpecializerSubstage() {
 
         override fun visitIfExpression(ifExpression: EIfExpression) {
             super.visitIfExpression(ifExpression)
-            val condition = ConstantPropagator.expand(ExpressionCopier.deepCopy(ifExpression.condition))
-            val typeParameterSubstitutorVisitor = TypeParameterSubstitutorVisitor(ifExpression)
-            condition.accept(typeParameterSubstitutorVisitor)
-            if (!typeParameterSubstitutorVisitor.isAbleToBind)
-                return
-
-            val blockExpression = EBlockExpression.wrap(condition)
-            condition.accept(ExpressionEvaluatorVisitor)
-            val evaluatedCondition = blockExpression.statements[0]
-            when (ConstantNormalizer.parseBooleanOrNull(evaluatedCondition)) {
+            when (evaluateExpression(ifExpression.condition)) {
                 BooleanConstantKind.TRUE -> {
                     val expression = getExpressionFromBlockExpression(ifExpression.thenExpression, ifExpression)
                     ifExpression.replace(expression)
@@ -64,6 +57,37 @@ object ExpressionEliminatorSubstage : SpecializerSubstage() {
                 }
                 else -> {}
             }
+        }
+
+        override fun visitWhenExpression(whenExpression: EWhenExpression) {
+            super.visitWhenExpression(whenExpression)
+            if (whenExpression.subject == null) {
+                val entries = ArrayList<WhenEntry>()
+                for (entry in whenExpression.entries) {
+                    val evaluatedConditions = entry.conditions.map { evaluateExpression(it) }
+                    if (evaluatedConditions.isEmpty() || evaluatedConditions.any { it == BooleanConstantKind.TRUE }) {
+                        entries.add(WhenEntry(ArrayList(), entry.body))
+                        break
+                    }
+                    if (!evaluatedConditions.all { it == BooleanConstantKind.FALSE }) {
+                        entries.add(entry)
+                    }
+                }
+                whenExpression.entries = entries
+            }
+        }
+
+        private fun evaluateExpression(expression: EExpression): BooleanConstantKind? {
+            val expandedExpression = ConstantPropagator.expand(ExpressionCopier.deepCopy(expression))
+            val typeParameterSubstitutorVisitor = TypeParameterSubstitutorVisitor(expression)
+            expandedExpression.accept(typeParameterSubstitutorVisitor)
+            if (!typeParameterSubstitutorVisitor.isAbleToBind)
+                return null
+
+            val blockExpression = EBlockExpression.wrap(expandedExpression)
+            expandedExpression.accept(ExpressionEvaluatorVisitor)
+            val evaluatedExpression = blockExpression.statements[0]
+            return ConstantNormalizer.parseBooleanOrNull(evaluatedExpression)
         }
 
         private fun getExpressionFromBlockExpression(

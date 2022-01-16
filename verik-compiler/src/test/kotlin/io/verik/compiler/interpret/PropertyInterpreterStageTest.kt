@@ -72,7 +72,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
                 }
             """.trimIndent(),
             PropertyInterpreterStage::class,
-            "Property(m, Nothing, [Make], NullExpression(), 0)"
+            "Property(m, Nothing, NullExpression(), 0)"
         ) { it.findDeclaration("m") }
     }
 
@@ -158,7 +158,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
                 var x = false
             """.trimIndent(),
             PropertyInterpreterStage::class,
-            "Property(x, Boolean, [], *, 1)"
+            "Property(x, Boolean, *, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -171,7 +171,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
                 }
             """.trimIndent(),
             PropertyInterpreterStage::class,
-            "Property(x, Boolean, [], *, 1)"
+            "Property(x, Boolean, *, 1)"
         ) { it.findDeclaration("x") }
     }
 }

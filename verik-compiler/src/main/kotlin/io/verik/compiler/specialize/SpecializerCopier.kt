@@ -141,10 +141,11 @@ object SpecializerCopier {
             bodyEndLocation = `class`.bodyEndLocation,
             name = `class`.name,
             type = type,
+            annotationEntries = `class`.annotationEntries,
+            documentationLines = `class`.documentationLines,
             superType = superType,
             declarations = ArrayList(declarations),
             typeParameters = ArrayList(typeParameters),
-            annotationEntries = `class`.annotationEntries,
             isEnum = `class`.isEnum,
             isAbstract = `class`.isAbstract,
             isObject = `class`.isObject,
@@ -168,10 +169,11 @@ object SpecializerCopier {
             location = function.location,
             name = function.name,
             type = type,
+            annotationEntries = function.annotationEntries,
+            documentationLines = function.documentationLines,
             body = body,
             valueParameters = ArrayList(valueParameters),
             typeParameters = ArrayList(typeParameters),
-            annotationEntries = function.annotationEntries,
             isAbstract = function.isAbstract,
             isOverride = function.isOverride
         )
@@ -211,6 +213,7 @@ object SpecializerCopier {
             name = property.name,
             type = type,
             annotationEntries = property.annotationEntries,
+            documentationLines = property.documentationLines,
             initializer = initializer,
             isMutable = property.isMutable
         )
@@ -225,10 +228,11 @@ object SpecializerCopier {
     ): EEnumEntry {
         val type = enumEntry.type.copy()
         val copiedEnumEntry = EEnumEntry(
-            enumEntry.location,
-            enumEntry.name,
-            type,
-            enumEntry.annotationEntries
+            location = enumEntry.location,
+            name = enumEntry.name,
+            type = type,
+            annotationEntries = enumEntry.annotationEntries,
+            documentationLines = enumEntry.documentationLines,
         )
         specializeContext.register(enumEntry, typeArguments, copiedEnumEntry)
         return copiedEnumEntry
@@ -241,12 +245,12 @@ object SpecializerCopier {
     ): EKtValueParameter {
         val type = valueParameter.type.copy()
         val copiedValueParameter = EKtValueParameter(
-            valueParameter.location,
-            valueParameter.name,
-            type,
-            valueParameter.annotationEntries,
-            valueParameter.isPrimaryConstructorProperty,
-            valueParameter.isMutable
+            location = valueParameter.location,
+            name = valueParameter.name,
+            type = type,
+            annotationEntries = valueParameter.annotationEntries,
+            isPrimaryConstructorProperty = valueParameter.isPrimaryConstructorProperty,
+            isMutable = valueParameter.isMutable
         )
         specializeContext.register(valueParameter, typeArguments, copiedValueParameter)
         return copiedValueParameter

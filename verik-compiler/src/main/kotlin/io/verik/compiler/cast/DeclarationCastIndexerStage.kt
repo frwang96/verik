@@ -106,10 +106,11 @@ object DeclarationCastIndexerStage : ProjectStage() {
                 bodyEndLocation = bodyEndLocation,
                 name = name,
                 type = NullDeclaration.toType(),
+                annotationEntries = listOf(),
+                documentationLines = null,
                 superType = NullDeclaration.toType(),
                 declarations = ArrayList(),
                 typeParameters = ArrayList(),
-                annotationEntries = listOf(),
                 isEnum = false,
                 isAbstract = false,
                 isObject = false,
@@ -128,10 +129,11 @@ object DeclarationCastIndexerStage : ProjectStage() {
                 location = location,
                 name = name,
                 type = NullDeclaration.toType(),
+                annotationEntries = listOf(),
+                documentationLines = null,
                 body = EBlockExpression.empty(location),
                 valueParameters = ArrayList(),
                 typeParameters = ArrayList(),
-                annotationEntries = listOf(),
                 isAbstract = false,
                 isOverride = false
             )
@@ -165,6 +167,7 @@ object DeclarationCastIndexerStage : ProjectStage() {
                 name = name,
                 type = NullDeclaration.toType(),
                 annotationEntries = listOf(),
+                documentationLines = null,
                 initializer = null,
                 isMutable = false
             )
@@ -177,10 +180,11 @@ object DeclarationCastIndexerStage : ProjectStage() {
             val location = enumEntry.nameIdentifier!!.location()
             val name = enumEntry.name!!
             val indexedEnumEntry = EEnumEntry(
-                location,
-                name,
-                NullDeclaration.toType(),
-                listOf()
+                location = location,
+                name = name,
+                type = NullDeclaration.toType(),
+                annotationEntries = listOf(),
+                documentationLines = null,
             )
             castContext.addDeclaration(descriptor, indexedEnumEntry)
         }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,7 @@
 
 package io.verik.compiler.ast.interfaces
 
-import io.verik.compiler.ast.property.AnnotationEntry
+interface Documented {
 
-interface Annotated {
-
-    var annotationEntries: List<AnnotationEntry>
-
-    fun hasAnnotationEntry(annotationEntry: AnnotationEntry): Boolean {
-        return annotationEntries.any { it == annotationEntry }
-    }
+    var documentationLines: List<String>?
 }

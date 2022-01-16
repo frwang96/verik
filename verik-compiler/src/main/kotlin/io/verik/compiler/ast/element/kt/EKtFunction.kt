@@ -18,7 +18,6 @@ package io.verik.compiler.ast.element.kt
 
 import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
-import io.verik.compiler.ast.interfaces.Annotated
 import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
@@ -29,13 +28,14 @@ class EKtFunction(
     override val location: SourceLocation,
     override var name: String,
     override var type: Type,
+    override var annotationEntries: List<AnnotationEntry>,
+    override var documentationLines: List<String>?,
     override var body: EBlockExpression,
     override var valueParameters: ArrayList<EKtValueParameter>,
     override var typeParameters: ArrayList<ETypeParameter>,
-    override var annotationEntries: List<AnnotationEntry>,
     var isAbstract: Boolean,
     var isOverride: Boolean
-) : EKtAbstractFunction(), Annotated {
+) : EKtAbstractFunction() {
 
     init {
         body.parent = this
@@ -43,12 +43,14 @@ class EKtFunction(
         typeParameters.forEach { it.parent = this }
     }
 
+    @Suppress("DuplicatedCode")
     fun fill(
         type: Type,
+        annotationEntries: List<AnnotationEntry>,
+        documentationLines: List<String>?,
         body: EBlockExpression,
         valueParameters: List<EKtValueParameter>,
         typeParameters: List<ETypeParameter>,
-        annotationEntries: List<AnnotationEntry>,
         isAbstract: Boolean,
         isOverride: Boolean
     ) {
@@ -56,10 +58,11 @@ class EKtFunction(
         valueParameters.forEach { it.parent = this }
         typeParameters.forEach { it.parent = this }
         this.type = type
+        this.annotationEntries = annotationEntries
+        this.documentationLines = documentationLines
         this.body = body
         this.valueParameters = ArrayList(valueParameters)
         this.typeParameters = ArrayList(typeParameters)
-        this.annotationEntries = annotationEntries
         this.isAbstract = isAbstract
         this.isOverride = isOverride
     }

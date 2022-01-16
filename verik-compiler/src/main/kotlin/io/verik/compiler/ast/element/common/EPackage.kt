@@ -16,6 +16,7 @@
 
 package io.verik.compiler.ast.element.common
 
+import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.PackageType
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
@@ -32,6 +33,8 @@ class EPackage(
 ) : EDeclaration() {
 
     override var type = Core.Kt.C_Unit.toType()
+    override var annotationEntries: List<AnnotationEntry> = listOf()
+    override var documentationLines: List<String>? = null
 
     init {
         files.forEach { it.parent = this }

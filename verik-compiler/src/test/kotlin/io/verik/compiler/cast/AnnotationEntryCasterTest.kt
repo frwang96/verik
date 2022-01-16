@@ -17,22 +17,9 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.test.BaseTest
-import io.verik.compiler.test.findDeclaration
 import org.junit.jupiter.api.Test
 
 internal class AnnotationEntryCasterTest : BaseTest() {
-
-    @Test
-    fun `annotation entry simple`() {
-        driveElementTest(
-            """
-                @Task
-                fun f() {}
-            """.trimIndent(),
-            CasterStage::class,
-            "KtFunction(f, Unit, *, [], [], [Task], 0)"
-        ) { it.findDeclaration("f") }
-    }
 
     @Test
     fun `annotation entry unsupported`() {
@@ -44,16 +31,5 @@ internal class AnnotationEntryCasterTest : BaseTest() {
             true,
             "Unsupported annotation: Synchronized"
         )
-    }
-
-    @Test
-    fun `annotation entry on value parameter`() {
-        driveElementTest(
-            """
-                class M(@In val x: Boolean) : Module()
-            """.trimIndent(),
-            CasterStage::class,
-            "KtValueParameter(x, Boolean, [In], 1, 0)",
-        ) { it.findDeclaration("x") }
     }
 }

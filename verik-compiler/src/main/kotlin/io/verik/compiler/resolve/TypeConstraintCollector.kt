@@ -176,6 +176,10 @@ object TypeConstraintCollector {
         override fun visitKtBinaryExpression(binaryExpression: EKtBinaryExpression) {
             super.visitKtBinaryExpression(binaryExpression)
             val kinds = listOf(
+                KtBinaryOperatorKind.LT,
+                KtBinaryOperatorKind.LTEQ,
+                KtBinaryOperatorKind.GT,
+                KtBinaryOperatorKind.GTEQ,
                 KtBinaryOperatorKind.EQ,
                 KtBinaryOperatorKind.EQEQ,
                 KtBinaryOperatorKind.EXCL_EQ

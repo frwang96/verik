@@ -146,7 +146,7 @@ object DeclarationSerializer {
         val serializedType = TypeSerializer.serialize(function.type, function)
         serializedType.checkNoUnpackedDimension(function)
         serializeContext.append("function automatic ${serializedType.getBaseAndPackedDimension()} ${function.name}")
-        serializeSvValueParameterList(function, serializeContext)
+        serializeValueParameterList(function, serializeContext)
         if (function.qualifierType != FunctionQualifierType.PURE_VIRTUAL) {
             serializeContext.indent {
                 function.body.statements.forEach { serializeContext.serializeAsStatement(it) }
@@ -159,7 +159,7 @@ object DeclarationSerializer {
 
     fun serializeTask(task: ETask, serializeContext: SerializeContext) {
         serializeContext.append("task automatic ${task.name}")
-        serializeSvValueParameterList(task, serializeContext)
+        serializeValueParameterList(task, serializeContext)
         serializeContext.indent {
             task.body.statements.forEach { serializeContext.serializeAsStatement(it) }
         }
@@ -348,7 +348,7 @@ object DeclarationSerializer {
             serializeContext.append(" ${serializedType.unpackedDimension}")
     }
 
-    private fun serializeSvValueParameterList(
+    private fun serializeValueParameterList(
         abstractFunction: ESvAbstractFunction,
         serializeContext: SerializeContext
     ) {

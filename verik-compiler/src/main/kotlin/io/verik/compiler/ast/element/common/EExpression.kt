@@ -53,8 +53,11 @@ abstract class EExpression : ETypedElement() {
                 else ExpressionType.INDIRECT_TYPED_SUBEXPRESSION
             }
             is EIfExpression -> {
-                if (parent.getExpressionType().isSubexpression()) ExpressionType.INDIRECT_TYPED_SUBEXPRESSION
-                else ExpressionType.STATEMENT
+                when {
+                    this == parent.condition -> ExpressionType.DIRECT_TYPED_SUBEXPRESSION
+                    parent.getExpressionType().isSubexpression() -> ExpressionType.INDIRECT_TYPED_SUBEXPRESSION
+                    else -> ExpressionType.STATEMENT
+                }
             }
             is EWhenExpression -> {
                 if (parent.getExpressionType().isSubexpression()) ExpressionType.INDIRECT_TYPED_SUBEXPRESSION

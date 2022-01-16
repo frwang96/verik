@@ -17,12 +17,15 @@
 package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EBlockExpression
+import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
 class EInitialBlock(
     override val location: SourceLocation,
     override var name: String,
+    override var annotationEntries: List<AnnotationEntry>,
+    override var documentationLines: List<String>?,
     override var body: EBlockExpression
 ) : EAbstractProceduralBlock() {
 

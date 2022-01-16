@@ -18,6 +18,7 @@ package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EAbstractClass
 import io.verik.compiler.ast.element.common.EProperty
+import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
@@ -30,6 +31,8 @@ class EStruct(
     override val bodyEndLocation: SourceLocation,
     override var name: String,
     override var type: Type,
+    override var annotationEntries: List<AnnotationEntry>,
+    override var documentationLines: List<String>?,
     val properties: List<EProperty>
 ) : EAbstractClass() {
 

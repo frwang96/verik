@@ -74,7 +74,7 @@ object CastTransformerStage : ProjectStage() {
 
         override fun visitAsExpression(asExpression: EAsExpression) {
             super.visitAsExpression(asExpression)
-            val property = EProperty.getTemporary(
+            val property = EProperty.temporary(
                 location = asExpression.location,
                 type = asExpression.type.copy(),
                 initializer = null,

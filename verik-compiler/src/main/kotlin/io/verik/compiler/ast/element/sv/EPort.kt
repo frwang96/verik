@@ -17,6 +17,7 @@
 package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EAbstractValueParameter
+import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.PortType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
@@ -27,6 +28,7 @@ class EPort(
     override val location: SourceLocation,
     override var name: String,
     override var type: Type,
+    override var annotationEntries: List<AnnotationEntry>,
     val portType: PortType
 ) : EAbstractValueParameter() {
 

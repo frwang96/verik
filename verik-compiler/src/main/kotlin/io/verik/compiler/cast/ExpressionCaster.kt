@@ -271,12 +271,9 @@ object ExpressionCaster {
         val location = expression.location()
         val childExpression = castContext.casterVisitor.getExpression(expression.leftHandSide)
         val castType = castContext.castType(expression.typeReference!!)
-        val property = EProperty(
+        val property = EProperty.temporary(
             location = location,
-            endLocation = location,
-            name = "<tmp>",
             type = castType,
-            annotationEntries = listOf(),
             initializer = null,
             isMutable = false
         )

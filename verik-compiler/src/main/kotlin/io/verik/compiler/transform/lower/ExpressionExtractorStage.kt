@@ -64,7 +64,7 @@ object ExpressionExtractorStage : ProjectStage() {
         private fun getPropertyStatementAndReferenceExpression(
             expression: EExpression
         ): Pair<EPropertyStatement, EReferenceExpression> {
-            val property = EProperty.getTemporary(
+            val property = EProperty.temporary(
                 expression.location,
                 expression.type.copy(),
                 expression,

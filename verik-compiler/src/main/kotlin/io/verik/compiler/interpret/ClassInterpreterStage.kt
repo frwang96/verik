@@ -62,17 +62,25 @@ object ClassInterpreterStage : ProjectStage() {
             super.visitKtConstructor(constructor)
             val valueParameters = ArrayList<ESvValueParameter>()
             constructor.valueParameters.forEach {
-                val valueParameter = ESvValueParameter(it.location, it.name, it.type, true)
+                val valueParameter = ESvValueParameter(
+                    it.location,
+                    it.name,
+                    it.type,
+                    it.annotationEntries,
+                    true
+                )
                 valueParameters.add(valueParameter)
                 referenceUpdater.update(it, valueParameter)
             }
             val initializer = ESvFunction(
-                constructor.location,
-                "${constructor.name}_init",
-                Core.Kt.C_Unit.toType(),
-                constructor.body,
-                ArrayList(valueParameters),
-                FunctionQualifierType.REGULAR,
+                location = constructor.location,
+                name = "${constructor.name}_init",
+                type = Core.Kt.C_Unit.toType(),
+                annotationEntries = listOf(),
+                documentationLines = null,
+                body = constructor.body,
+                valueParameters = ArrayList(valueParameters),
+                qualifierType = FunctionQualifierType.REGULAR,
                 isConstructor = false
             )
             initializerMap[constructor] = initializer
@@ -108,6 +116,8 @@ object ClassInterpreterStage : ProjectStage() {
                     `class`.bodyEndLocation,
                     `class`.name,
                     `class`.type,
+                    `class`.annotationEntries,
+                    `class`.documentationLines,
                     `class`.superType,
                     declarations,
                     `class`.isAbstract,
@@ -157,7 +167,7 @@ object ClassInterpreterStage : ProjectStage() {
             if (`class`.isAbstract)
                 return null
 
-            val property = EProperty.getTemporary(
+            val property = EProperty.temporary(
                 constructor.location,
                 constructor.type.copy(),
                 ECallExpression(
@@ -171,7 +181,13 @@ object ClassInterpreterStage : ProjectStage() {
                 false
             )
             val valueParameters = constructor.valueParameters.map {
-                ESvValueParameter(it.location, it.name, it.type.copy(), true)
+                ESvValueParameter(
+                    it.location,
+                    it.name,
+                    it.type.copy(),
+                    it.annotationEntries,
+                    true
+                )
             }
             val propertyStatement = EPropertyStatement(constructor.location, property)
             val valueArguments = valueParameters.map {
@@ -201,6 +217,8 @@ object ClassInterpreterStage : ProjectStage() {
                 location = constructor.location,
                 name = "${constructor.name}_new",
                 type = constructor.type,
+                annotationEntries = constructor.annotationEntries,
+                documentationLines = constructor.documentationLines,
                 body = EBlockExpression(
                     constructor.location,
                     constructor.location,

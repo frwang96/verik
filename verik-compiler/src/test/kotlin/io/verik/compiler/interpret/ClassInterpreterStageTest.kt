@@ -73,7 +73,7 @@ internal class ClassInterpreterStageTest : BaseTest() {
                 SvClass(
                     C, C,
                     [
-                        Property(x, Int, [], null, 0),
+                        Property(x, Int, null, 0),
                         SvFunction(C_new, C, *, [SvValueParameter(x, Int, 1)], REGULAR, 1),
                         SvFunction(C_init, Unit, *, [SvValueParameter(x, Int, 1)], REGULAR, 0)
                     ],

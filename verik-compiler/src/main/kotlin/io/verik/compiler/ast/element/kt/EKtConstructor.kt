@@ -19,6 +19,7 @@ package io.verik.compiler.ast.element.kt
 import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
+import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
@@ -28,6 +29,8 @@ class EKtConstructor(
     override val location: SourceLocation,
     override var name: String,
     override var type: Type,
+    override var annotationEntries: List<AnnotationEntry>,
+    override var documentationLines: List<String>?,
     override var body: EBlockExpression,
     override var valueParameters: ArrayList<EKtValueParameter>,
     override var typeParameters: ArrayList<ETypeParameter>,

@@ -18,8 +18,16 @@ package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.interfaces.Declaration
+import io.verik.compiler.ast.property.AnnotationEntry
 
 abstract class EDeclaration : ETypedElement(), Declaration {
+
+    abstract var annotationEntries: List<AnnotationEntry>
+    abstract var documentationLines: List<String>?
+
+    fun hasAnnotationEntry(annotationEntry: AnnotationEntry): Boolean {
+        return annotationEntries.any { it == annotationEntry }
+    }
 
     fun isSpecializable(): Boolean {
         return when (val parent = this.parent) {

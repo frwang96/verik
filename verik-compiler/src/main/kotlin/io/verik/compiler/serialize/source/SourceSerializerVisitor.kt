@@ -97,6 +97,7 @@ class SourceSerializerVisitor(
             serializeContext.appendLine()
         firstDeclaration = false
         lastDeclarationIsProperty = false
+        serializeDocumentationLines(declaration, serializeContext)
         serialize(declaration)
         lastDeclarationIsProperty = declaration is EProperty
     }
@@ -336,5 +337,18 @@ class SourceSerializerVisitor(
 
     override fun visitDelayExpression(delayExpression: EDelayExpression) {
         ExpressionSerializer.serializeDelayExpression(delayExpression, serializeContext)
+    }
+
+    private fun serializeDocumentationLines(declaration: EDeclaration, serializeContext: SerializeContext) {
+        val documentationLines = declaration.documentationLines
+        if (documentationLines != null) {
+            serializeContext.label(declaration) {
+                serializeContext.appendLine("/**")
+                documentationLines.forEach {
+                    serializeContext.appendLine(" * $it")
+                }
+                serializeContext.appendLine(" */")
+            }
+        }
     }
 }

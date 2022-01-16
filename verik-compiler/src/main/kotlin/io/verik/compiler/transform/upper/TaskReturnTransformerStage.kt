@@ -91,7 +91,7 @@ object TaskReturnTransformerStage : ProjectStage() {
         }
 
         private fun extract(callExpression: ECallExpression, valueParameter: ESvValueParameter) {
-            val property = EProperty.getTemporary(
+            val property = EProperty.temporary(
                 callExpression.location,
                 valueParameter.type.copy(),
                 initializer = null,

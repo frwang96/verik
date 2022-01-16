@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test
 internal class CaseStatementTransformerStageTest : BaseTest() {
 
     @Test
-    fun `case statement`() {
+    fun `when expression with subject`() {
         driveElementTest(
             """
                 var x = 0
@@ -38,7 +38,7 @@ internal class CaseStatementTransformerStageTest : BaseTest() {
             """
                 CaseStatement(
                     Unit,
-                    ReferenceExpression(*),
+                    ReferenceExpression(Int, x, null),
                     [CaseEntry([ConstantExpression(Int, 0)], *), CaseEntry([], *)]
                 )
             """.trimIndent()
@@ -46,7 +46,7 @@ internal class CaseStatementTransformerStageTest : BaseTest() {
     }
 
     @Test
-    fun `if expression`() {
+    fun `when expression without subject`() {
         driveElementTest(
             """
                 var x = false
@@ -59,13 +59,26 @@ internal class CaseStatementTransformerStageTest : BaseTest() {
             """.trimIndent(),
             CaseStatementTransformerStage::class,
             """
-                IfExpression(
+                CaseStatement(
                     Unit,
-                    ReferenceExpression(Boolean, x, null),
-                    BlockExpression(*),
-                    BlockExpression(*)
+                    ConstantExpression(Boolean, 1'b1),
+                    [CaseEntry([ReferenceExpression(Boolean, x, null)], *), CaseEntry([], *)]
                 )
             """.trimIndent()
+        ) { it.findExpression("f") }
+    }
+
+    @Test
+    fun `when expression empty`() {
+        driveElementTest(
+            """
+                fun f() {
+                    @Suppress("ControlFlowWithEmptyBody")
+                    when {}
+                }
+            """.trimIndent(),
+            CaseStatementTransformerStage::class,
+            "BlockExpression(Unit, [])"
         ) { it.findExpression("f") }
     }
 }

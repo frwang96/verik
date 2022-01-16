@@ -120,6 +120,8 @@ object PropertyInterpreterStage : ProjectStage() {
                 property.endLocation,
                 property.name,
                 property.type,
+                property.annotationEntries,
+                property.documentationLines,
                 portInstantiations
             )
         }
@@ -141,6 +143,8 @@ object PropertyInterpreterStage : ProjectStage() {
                 property.endLocation,
                 property.name,
                 property.type,
+                property.annotationEntries,
+                property.documentationLines,
                 portInstantiations
             )
         }
@@ -171,6 +175,8 @@ object PropertyInterpreterStage : ProjectStage() {
                 property.endLocation,
                 property.name,
                 property.type,
+                property.annotationEntries,
+                property.documentationLines,
                 portInstantiations,
                 eventControlExpression
             )

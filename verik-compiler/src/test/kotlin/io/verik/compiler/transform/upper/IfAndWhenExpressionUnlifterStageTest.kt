@@ -70,12 +70,14 @@ internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
                 function automatic void f();
                     int __0;
                     int y;
-                    if (x) begin
-                        __0 = 1;
-                    end
-                    else begin
-                        __0 = 0;
-                    end
+                    case (1'b1)
+                        x : begin
+                            __0 = 1;
+                        end
+                        default : begin
+                            __0 = 0;
+                        end
+                    endcase
                     y = __0;
                 endfunction : f
             """.trimIndent()
@@ -101,12 +103,14 @@ internal class IfAndWhenExpressionUnlifterStageTest : BaseTest() {
                 function automatic void f();
                     int __0;
                     int y;
-                    if (x) begin
-                        __0 = 0;
-                    end
-                    else begin
-                        ${'$'}fatal();
-                    end
+                    case (1'b1)
+                        x : begin
+                            __0 = 0;
+                        end
+                        default : begin
+                            ${'$'}fatal();
+                        end
+                    endcase
                     y = __0;
                 endfunction : f
             """.trimIndent()

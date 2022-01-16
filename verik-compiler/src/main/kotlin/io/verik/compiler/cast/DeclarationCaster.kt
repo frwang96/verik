@@ -27,11 +27,14 @@ import io.verik.compiler.ast.element.kt.EKtValueParameter
 import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.interfaces.cast
+import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.common.location
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreConstructorDeclaration
 import io.verik.compiler.message.Messages
+import org.jetbrains.kotlin.kdoc.psi.api.KDoc
 import org.jetbrains.kotlin.lexer.KtTokens
+import org.jetbrains.kotlin.psi.KtAnnotationEntry
 import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtEnumEntry
 import org.jetbrains.kotlin.psi.KtNamedFunction
@@ -81,15 +84,14 @@ object DeclarationCaster {
             .cast<EKtClass>(classOrObject)
 
         val type = castContext.castType(descriptor.defaultType, classOrObject)
+        val annotationEntries = castAnnotationEntries(classOrObject.annotationEntries, castContext)
+        val documentationLines = castDocumentationLines(classOrObject.docComment)
         val superType = castContext.castType(descriptor.getSuperClassOrAny().defaultType, classOrObject)
         val declarations = classOrObject.declarations.mapNotNull {
             castContext.casterVisitor.getDeclaration(it)
         }
         val typeParameters = classOrObject.typeParameters.mapNotNull {
             castContext.casterVisitor.getElement<ETypeParameter>(it)
-        }
-        val annotationEntries = classOrObject.annotationEntries.mapNotNull {
-            AnnotationEntryCaster.castAnnotationEntry(it, castContext)
         }
         val isEnum = classOrObject.hasModifier(KtTokens.ENUM_KEYWORD)
         val isAbstract = classOrObject.hasModifier(KtTokens.ABSTRACT_KEYWORD)
@@ -115,16 +117,17 @@ object DeclarationCaster {
         }
 
         castedClass.fill(
-            type,
-            superType,
-            declarations,
-            typeParameters,
-            annotationEntries,
-            isEnum,
-            isAbstract,
-            isObject,
-            primaryConstructor,
-            superTypeCallEntry
+            type = type,
+            annotationEntries = annotationEntries,
+            documentationLines = documentationLines,
+            superType = superType,
+            declarations = declarations,
+            typeParameters = typeParameters,
+            isEnum = isEnum,
+            isAbstract = isAbstract,
+            isObject = isObject,
+            primaryConstructor = primaryConstructor,
+            superTypeCallExpression = superTypeCallEntry
         )
         return castedClass
     }
@@ -140,6 +143,8 @@ object DeclarationCaster {
         } else {
             Core.Kt.C_Unit.toType()
         }
+        val annotationEntries = castAnnotationEntries(function.annotationEntries, castContext)
+        val documentationLines = castDocumentationLines(function.docComment)
         val body = function.bodyBlockExpression?.let {
             castContext.casterVisitor.getExpression(it).cast()
         } ?: EBlockExpression.empty(castedFunction.location)
@@ -149,18 +154,16 @@ object DeclarationCaster {
         val typeParameters = function.typeParameters.mapNotNull {
             castContext.casterVisitor.getElement<ETypeParameter>(it)
         }
-        val annotationEntries = function.annotationEntries.mapNotNull {
-            AnnotationEntryCaster.castAnnotationEntry(it, castContext)
-        }
         val isAbstract = function.hasModifier(KtTokens.ABSTRACT_KEYWORD)
         val isOverride = function.hasModifier(KtTokens.OVERRIDE_KEYWORD)
 
         castedFunction.fill(
             type = type,
+            annotationEntries = annotationEntries,
+            documentationLines = documentationLines,
             body = body,
             valueParameters = valueParameters,
             typeParameters = typeParameters,
-            annotationEntries = annotationEntries,
             isAbstract = isAbstract,
             isOverride = isOverride
         )
@@ -212,15 +215,21 @@ object DeclarationCaster {
         val type = if (typeReference != null) castContext.castType(typeReference)
         else castContext.castType(descriptor.type, property)
 
+        val annotationEntries = castAnnotationEntries(property.annotationEntries, castContext)
+        val documentationLines = castDocumentationLines(property.docComment)
+        castedProperty.documentationLines = documentationLines
         val initializer = property.initializer?.let {
             castContext.casterVisitor.getExpression(it)
         }
-        val annotationEntries = property.annotationEntries.mapNotNull {
-            AnnotationEntryCaster.castAnnotationEntry(it, castContext)
-        }
         val isMutable = property.isVar
 
-        castedProperty.fill(type, initializer, annotationEntries, isMutable)
+        castedProperty.fill(
+            type,
+            annotationEntries,
+            documentationLines,
+            initializer,
+            isMutable
+        )
         return castedProperty
     }
 
@@ -230,11 +239,10 @@ object DeclarationCaster {
             .cast<EEnumEntry>(enumEntry)
 
         val type = castContext.castType(descriptor.classValueType!!, enumEntry)
-        val annotationEntries = enumEntry.annotationEntries.mapNotNull {
-            AnnotationEntryCaster.castAnnotationEntry(it, castContext)
-        }
+        val annotationEntries = castAnnotationEntries(enumEntry.annotationEntries, castContext)
+        val documentationLines = castDocumentationLines(enumEntry.docComment)
 
-        castedEnumEntry.fill(type, annotationEntries)
+        castedEnumEntry.fill(type, annotationEntries, documentationLines)
         return castedEnumEntry
     }
 
@@ -250,14 +258,32 @@ object DeclarationCaster {
         } else {
             castContext.castType(descriptor.type, parameter)
         }
-        val annotationEntries = parameter.annotationEntries.mapNotNull {
-            AnnotationEntryCaster.castAnnotationEntry(it, castContext)
-        }
+        val annotationEntries = castAnnotationEntries(parameter.annotationEntries, castContext)
         val isPrimaryConstructorProperty = (propertyDescriptor != null)
         val isMutable = descriptor.isVar
 
         castedValueParameter.fill(type, annotationEntries, isPrimaryConstructorProperty, isMutable)
         return castedValueParameter
+    }
+
+    private fun castAnnotationEntries(
+        annotationEntries: List<KtAnnotationEntry>,
+        castContext: CastContext
+    ): List<AnnotationEntry> {
+        return annotationEntries.map {
+            AnnotationEntryCaster.castAnnotationEntry(it, castContext)
+        }
+    }
+
+    private fun castDocumentationLines(docComment: KDoc?): List<String>? {
+        if (docComment == null)
+            return null
+        return docComment.text
+            .removePrefix("/**")
+            .removeSuffix("*/")
+            .trim()
+            .lines()
+            .map { it.trim().removePrefix("*").removePrefix(" ") }
     }
 
     private fun castSuperTypeCallExpression(
