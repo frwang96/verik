@@ -20,7 +20,6 @@ import io.verik.compiler.ast.element.common.EAbstractContainerClass
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.ETypeParameter
-import io.verik.compiler.ast.interfaces.Annotated
 import io.verik.compiler.ast.interfaces.TypeParameterized
 import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.Type
@@ -34,16 +33,16 @@ class EKtClass(
     override val bodyEndLocation: SourceLocation,
     override var name: String,
     override var type: Type,
+    override var annotationEntries: List<AnnotationEntry>,
     override var superType: Type,
     override var declarations: ArrayList<EDeclaration>,
     override var typeParameters: ArrayList<ETypeParameter>,
-    override var annotationEntries: List<AnnotationEntry>,
     var isEnum: Boolean,
     var isAbstract: Boolean,
     var isObject: Boolean,
     var primaryConstructor: EPrimaryConstructor?,
     var superTypeCallExpression: ECallExpression?,
-) : EAbstractContainerClass(), TypeParameterized, Annotated {
+) : EAbstractContainerClass(), TypeParameterized {
 
     init {
         declarations.forEach { it.parent = this }
@@ -54,10 +53,10 @@ class EKtClass(
 
     fun fill(
         type: Type,
+        annotationEntries: List<AnnotationEntry>,
         superType: Type,
         declarations: List<EDeclaration>,
         typeParameters: List<ETypeParameter>,
-        annotationEntries: List<AnnotationEntry>,
         isEnum: Boolean,
         isAbstract: Boolean,
         isObject: Boolean,
@@ -69,10 +68,10 @@ class EKtClass(
         primaryConstructor?.parent = this
         superTypeCallExpression?.parent = this
         this.type = type
+        this.annotationEntries = annotationEntries
         this.superType = superType
         this.declarations = ArrayList(declarations)
         this.typeParameters = ArrayList(typeParameters)
-        this.annotationEntries = annotationEntries
         this.isEnum = isEnum
         this.isAbstract = isAbstract
         this.isObject = isObject

@@ -57,6 +57,7 @@ object EnumInterpreterStage : ProjectStage() {
                     `class`.bodyEndLocation,
                     `class`.name,
                     `class`.type,
+                    `class`.annotationEntries,
                     enumEntries
                 )
                 referenceUpdater.replace(`class`, enum)

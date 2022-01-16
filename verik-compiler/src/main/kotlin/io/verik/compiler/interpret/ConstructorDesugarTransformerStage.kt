@@ -62,6 +62,7 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
                     primaryConstructor.location,
                     primaryConstructor.name,
                     primaryConstructor.type,
+                    listOf(),
                     body,
                     primaryConstructor.valueParameters,
                     primaryConstructor.typeParameters,

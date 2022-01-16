@@ -16,7 +16,6 @@
 
 package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.interfaces.Annotated
 import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
@@ -28,7 +27,7 @@ class EEnumEntry(
     override var name: String,
     override var type: Type,
     override var annotationEntries: List<AnnotationEntry>
-) : EAbstractProperty(), Annotated {
+) : EAbstractProperty() {
 
     fun fill(type: Type, annotationEntries: List<AnnotationEntry>) {
         this.type = type

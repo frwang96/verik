@@ -80,6 +80,7 @@ object ComponentInterpreterStage : ProjectStage() {
                 `class`.bodyEndLocation,
                 `class`.name,
                 `class`.type,
+                `class`.annotationEntries,
                 ports,
                 `class`.declarations,
                 isSynthesisTop,
@@ -95,6 +96,7 @@ object ComponentInterpreterStage : ProjectStage() {
                 `class`.bodyEndLocation,
                 `class`.name,
                 `class`.type,
+                `class`.annotationEntries,
                 ports,
                 `class`.declarations
             )
@@ -108,6 +110,7 @@ object ComponentInterpreterStage : ProjectStage() {
                 `class`.bodyEndLocation,
                 `class`.name,
                 `class`.type,
+                `class`.annotationEntries,
                 ports,
                 null
             )
@@ -127,6 +130,7 @@ object ComponentInterpreterStage : ProjectStage() {
                 `class`.bodyEndLocation,
                 `class`.name,
                 `class`.type,
+                `class`.annotationEntries,
                 ports,
                 eventValueParameterIndex
             )
@@ -155,7 +159,13 @@ object ComponentInterpreterStage : ProjectStage() {
                     }
                 }
             }
-            val port = EPort(valueParameter.location, valueParameter.name, valueParameter.type, portType)
+            val port = EPort(
+                valueParameter.location,
+                valueParameter.name,
+                valueParameter.type,
+                valueParameter.annotationEntries,
+                portType
+            )
             referenceUpdater.update(valueParameter, port)
             return port
         }

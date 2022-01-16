@@ -141,10 +141,10 @@ object SpecializerCopier {
             bodyEndLocation = `class`.bodyEndLocation,
             name = `class`.name,
             type = type,
+            annotationEntries = `class`.annotationEntries,
             superType = superType,
             declarations = ArrayList(declarations),
             typeParameters = ArrayList(typeParameters),
-            annotationEntries = `class`.annotationEntries,
             isEnum = `class`.isEnum,
             isAbstract = `class`.isAbstract,
             isObject = `class`.isObject,
@@ -168,10 +168,10 @@ object SpecializerCopier {
             location = function.location,
             name = function.name,
             type = type,
+            annotationEntries = function.annotationEntries,
             body = body,
             valueParameters = ArrayList(valueParameters),
             typeParameters = ArrayList(typeParameters),
-            annotationEntries = function.annotationEntries,
             isAbstract = function.isAbstract,
             isOverride = function.isOverride
         )

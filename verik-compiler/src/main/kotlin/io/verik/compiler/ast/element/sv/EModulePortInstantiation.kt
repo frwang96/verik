@@ -16,6 +16,7 @@
 
 package io.verik.compiler.ast.element.sv
 
+import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.PortInstantiation
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
@@ -26,6 +27,7 @@ class EModulePortInstantiation(
     override val endLocation: SourceLocation,
     override var name: String,
     override var type: Type,
+    override var annotationEntries: List<AnnotationEntry>,
     override val portInstantiations: List<PortInstantiation>
 ) : EAbstractComponentInstantiation() {
 

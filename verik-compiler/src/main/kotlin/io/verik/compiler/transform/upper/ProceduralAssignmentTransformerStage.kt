@@ -94,6 +94,7 @@ object ProceduralAssignmentTransformerStage : ProjectStage() {
                 EAlwaysComBlock(
                     property.location,
                     "<tmp>",
+                    listOf(),
                     blockExpression
                 )
             } else {
@@ -131,6 +132,7 @@ object ProceduralAssignmentTransformerStage : ProjectStage() {
                 EAlwaysSeqBlock(
                     property.location,
                     "<tmp>",
+                    listOf(),
                     body,
                     eventControlExpression
                 )

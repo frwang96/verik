@@ -17,6 +17,7 @@
 package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EClassifier
+import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
@@ -27,6 +28,8 @@ class ETypeDefinition(
     override var name: String,
     override var type: Type
 ) : EClassifier() {
+
+    override var annotationEntries: List<AnnotationEntry> = listOf()
 
     override fun accept(visitor: Visitor) {
         visitor.visitTypeDefinition(this)

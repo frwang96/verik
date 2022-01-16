@@ -17,6 +17,7 @@
 package io.verik.compiler.ast.element.sv
 
 import io.verik.compiler.ast.element.common.EBlockExpression
+import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.FunctionQualifierType
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
@@ -26,6 +27,7 @@ class ESvFunction(
     override val location: SourceLocation,
     override var name: String,
     override var type: Type,
+    override var annotationEntries: List<AnnotationEntry>,
     override var body: EBlockExpression,
     override var valueParameters: ArrayList<ESvValueParameter>,
     val qualifierType: FunctionQualifierType,

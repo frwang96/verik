@@ -43,6 +43,7 @@ object FunctionLiteralInterpreterStage : ProjectStage() {
                     oldValueParameter.location,
                     oldValueParameter.name,
                     oldValueParameter.type,
+                    oldValueParameter.annotationEntries,
                     true
                 )
                 referenceUpdater.replace(oldValueParameter, newValueParameter)

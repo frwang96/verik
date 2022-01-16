@@ -106,10 +106,10 @@ object DeclarationCastIndexerStage : ProjectStage() {
                 bodyEndLocation = bodyEndLocation,
                 name = name,
                 type = NullDeclaration.toType(),
+                annotationEntries = listOf(),
                 superType = NullDeclaration.toType(),
                 declarations = ArrayList(),
                 typeParameters = ArrayList(),
-                annotationEntries = listOf(),
                 isEnum = false,
                 isAbstract = false,
                 isObject = false,
@@ -128,10 +128,10 @@ object DeclarationCastIndexerStage : ProjectStage() {
                 location = location,
                 name = name,
                 type = NullDeclaration.toType(),
+                annotationEntries = listOf(),
                 body = EBlockExpression.empty(location),
                 valueParameters = ArrayList(),
                 typeParameters = ArrayList(),
-                annotationEntries = listOf(),
                 isAbstract = false,
                 isOverride = false
             )

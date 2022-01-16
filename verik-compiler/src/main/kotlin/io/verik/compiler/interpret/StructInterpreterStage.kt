@@ -49,6 +49,7 @@ object StructInterpreterStage : ProjectStage() {
                     `class`.bodyEndLocation,
                     `class`.name,
                     `class`.type,
+                    `class`.annotationEntries,
                     properties
                 )
                 referenceUpdater.replace(`class`, struct)

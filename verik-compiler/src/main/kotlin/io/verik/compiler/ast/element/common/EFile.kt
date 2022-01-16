@@ -17,6 +17,7 @@
 package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.ast.interfaces.ResizableDeclarationContainer
+import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.common.replaceIfContains
@@ -36,6 +37,7 @@ class EFile(
     override var name = inputPath.fileName.toString()
 
     override var type = Core.Kt.C_Unit.toType()
+    override var annotationEntries: List<AnnotationEntry> = listOf()
 
     init {
         declarations.forEach { it.parent = this }

@@ -19,6 +19,7 @@ package io.verik.compiler.ast.element.sv
 import io.verik.compiler.ast.element.common.EAbstractProperty
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.ExpressionContainer
+import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.StringEntry
 import io.verik.compiler.common.TreeVisitor
@@ -33,6 +34,7 @@ class EInjectedProperty(
 ) : EAbstractProperty(), ExpressionContainer {
 
     override var type = Target.C_Void.toType()
+    override var annotationEntries: List<AnnotationEntry> = listOf()
 
     init {
         entries.forEach {

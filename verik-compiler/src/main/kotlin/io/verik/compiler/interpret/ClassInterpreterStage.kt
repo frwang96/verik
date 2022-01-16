@@ -62,7 +62,13 @@ object ClassInterpreterStage : ProjectStage() {
             super.visitKtConstructor(constructor)
             val valueParameters = ArrayList<ESvValueParameter>()
             constructor.valueParameters.forEach {
-                val valueParameter = ESvValueParameter(it.location, it.name, it.type, true)
+                val valueParameter = ESvValueParameter(
+                    it.location,
+                    it.name,
+                    it.type,
+                    it.annotationEntries,
+                    true
+                )
                 valueParameters.add(valueParameter)
                 referenceUpdater.update(it, valueParameter)
             }
@@ -70,6 +76,7 @@ object ClassInterpreterStage : ProjectStage() {
                 constructor.location,
                 "${constructor.name}_init",
                 Core.Kt.C_Unit.toType(),
+                listOf(),
                 constructor.body,
                 ArrayList(valueParameters),
                 FunctionQualifierType.REGULAR,
@@ -108,6 +115,7 @@ object ClassInterpreterStage : ProjectStage() {
                     `class`.bodyEndLocation,
                     `class`.name,
                     `class`.type,
+                    `class`.annotationEntries,
                     `class`.superType,
                     declarations,
                     `class`.isAbstract,
@@ -171,7 +179,13 @@ object ClassInterpreterStage : ProjectStage() {
                 false
             )
             val valueParameters = constructor.valueParameters.map {
-                ESvValueParameter(it.location, it.name, it.type.copy(), true)
+                ESvValueParameter(
+                    it.location,
+                    it.name,
+                    it.type.copy(),
+                    it.annotationEntries,
+                    true
+                )
             }
             val propertyStatement = EPropertyStatement(constructor.location, property)
             val valueArguments = valueParameters.map {
@@ -201,6 +215,7 @@ object ClassInterpreterStage : ProjectStage() {
                 location = constructor.location,
                 name = "${constructor.name}_new",
                 type = constructor.type,
+                annotationEntries = constructor.annotationEntries,
                 body = EBlockExpression(
                     constructor.location,
                     constructor.location,
