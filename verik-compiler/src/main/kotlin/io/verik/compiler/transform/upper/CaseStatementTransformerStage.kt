@@ -17,13 +17,12 @@
 package io.verik.compiler.transform.upper
 
 import io.verik.compiler.ast.element.common.EBlockExpression
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.element.sv.ECaseStatement
 import io.verik.compiler.ast.property.CaseEntry
-import io.verik.compiler.ast.property.WhenEntry
 import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.constant.BooleanConstantKind
+import io.verik.compiler.constant.ConstantBuilder
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
@@ -37,44 +36,24 @@ object CaseStatementTransformerStage : ProjectStage() {
 
         override fun visitWhenExpression(whenExpression: EWhenExpression) {
             super.visitWhenExpression(whenExpression)
-            val subject = whenExpression.subject
-            if (subject != null) {
-                val entries = whenExpression.entries.map {
-                    CaseEntry(it.conditions, it.body)
-                }
-                val caseStatement = ECaseStatement(
-                    whenExpression.location,
-                    whenExpression.endLocation,
-                    whenExpression.type,
-                    subject,
-                    entries
-                )
-                whenExpression.replace(caseStatement)
-            } else {
-                if (whenExpression.entries.isEmpty()) {
-                    val blockExpression = EBlockExpression.empty(whenExpression.location)
-                    whenExpression.replace(blockExpression)
-                } else {
-                    val ifExpression = getIfExpression(whenExpression.entries)
-                    whenExpression.replace(ifExpression)
-                }
+            if (whenExpression.entries.isEmpty()) {
+                val blockExpression = EBlockExpression.empty(whenExpression.location)
+                whenExpression.replace(blockExpression)
+                return
             }
-        }
-
-        private fun getIfExpression(entries: List<WhenEntry>): EExpression {
-            val entry = entries[0]
-            if (entry.conditions.isEmpty())
-                return entry.body
-            val elseExpression = if (entries.size > 1) {
-                EBlockExpression.wrap(getIfExpression(entries.drop(1)))
-            } else null
-            return EIfExpression(
-                entry.body.location,
-                entry.body.type.copy(),
-                entry.conditions[0],
-                entry.body,
-                elseExpression
+            val subject = whenExpression.subject
+                ?: ConstantBuilder.buildBoolean(whenExpression, BooleanConstantKind.TRUE)
+            val entries = whenExpression.entries.map {
+                CaseEntry(it.conditions, it.body)
+            }
+            val caseStatement = ECaseStatement(
+                whenExpression.location,
+                whenExpression.endLocation,
+                whenExpression.type,
+                subject,
+                entries
             )
+            whenExpression.replace(caseStatement)
         }
     }
 }
