@@ -12,6 +12,7 @@
 - Evaluate logical operators and if expressions.
 - Added end-to-end regression tests.
 - Four state boolean values `unknown` and `floating`.
+- Copy KDoc comments into generated SystemVerilog.
 
 ### Changed
 - Adopt `StageType` based stage sequence in importer.

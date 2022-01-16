@@ -95,6 +95,7 @@ object ProceduralAssignmentTransformerStage : ProjectStage() {
                     property.location,
                     "<tmp>",
                     listOf(),
+                    null,
                     blockExpression
                 )
             } else {
@@ -133,6 +134,7 @@ object ProceduralAssignmentTransformerStage : ProjectStage() {
                     property.location,
                     "<tmp>",
                     listOf(),
+                    null,
                     body,
                     eventControlExpression
                 )

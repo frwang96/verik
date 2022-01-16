@@ -29,6 +29,7 @@ class ETypeParameter(
 ) : EClassifier() {
 
     override var annotationEntries: List<AnnotationEntry> = listOf()
+    override var documentationLines: List<String>? = null
 
     fun fill(type: Type) {
         this.type = type

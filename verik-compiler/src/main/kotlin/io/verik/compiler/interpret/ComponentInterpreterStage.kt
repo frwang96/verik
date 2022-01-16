@@ -81,6 +81,7 @@ object ComponentInterpreterStage : ProjectStage() {
                 `class`.name,
                 `class`.type,
                 `class`.annotationEntries,
+                `class`.documentationLines,
                 ports,
                 `class`.declarations,
                 isSynthesisTop,
@@ -97,6 +98,7 @@ object ComponentInterpreterStage : ProjectStage() {
                 `class`.name,
                 `class`.type,
                 `class`.annotationEntries,
+                `class`.documentationLines,
                 ports,
                 `class`.declarations
             )
@@ -111,6 +113,7 @@ object ComponentInterpreterStage : ProjectStage() {
                 `class`.name,
                 `class`.type,
                 `class`.annotationEntries,
+                `class`.documentationLines,
                 ports,
                 null
             )
@@ -131,6 +134,7 @@ object ComponentInterpreterStage : ProjectStage() {
                 `class`.name,
                 `class`.type,
                 `class`.annotationEntries,
+                `class`.documentationLines,
                 ports,
                 eventValueParameterIndex
             )

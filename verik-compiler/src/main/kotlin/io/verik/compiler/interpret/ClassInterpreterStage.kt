@@ -73,13 +73,14 @@ object ClassInterpreterStage : ProjectStage() {
                 referenceUpdater.update(it, valueParameter)
             }
             val initializer = ESvFunction(
-                constructor.location,
-                "${constructor.name}_init",
-                Core.Kt.C_Unit.toType(),
-                listOf(),
-                constructor.body,
-                ArrayList(valueParameters),
-                FunctionQualifierType.REGULAR,
+                location = constructor.location,
+                name = "${constructor.name}_init",
+                type = Core.Kt.C_Unit.toType(),
+                annotationEntries = listOf(),
+                documentationLines = null,
+                body = constructor.body,
+                valueParameters = ArrayList(valueParameters),
+                qualifierType = FunctionQualifierType.REGULAR,
                 isConstructor = false
             )
             initializerMap[constructor] = initializer
@@ -116,6 +117,7 @@ object ClassInterpreterStage : ProjectStage() {
                     `class`.name,
                     `class`.type,
                     `class`.annotationEntries,
+                    `class`.documentationLines,
                     `class`.superType,
                     declarations,
                     `class`.isAbstract,
@@ -216,6 +218,7 @@ object ClassInterpreterStage : ProjectStage() {
                 name = "${constructor.name}_new",
                 type = constructor.type,
                 annotationEntries = constructor.annotationEntries,
+                documentationLines = constructor.documentationLines,
                 body = EBlockExpression(
                     constructor.location,
                     constructor.location,

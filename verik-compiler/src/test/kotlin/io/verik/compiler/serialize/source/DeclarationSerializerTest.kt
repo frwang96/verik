@@ -88,6 +88,26 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `serialize module with documentation`() {
+        driveTextFileTest(
+            """
+                /**
+                 * ABC
+                 */
+                class M: Module()
+            """.trimIndent(),
+            """
+                /**
+                 * ABC
+                 */
+                module M;
+                
+                endmodule : M
+            """.trimIndent()
+        ) { it.rootPackageTextFiles[0] }
+    }
+
+    @Test
     fun `serialize module interface simple`() {
         driveTextFileTest(
             """

@@ -25,6 +25,7 @@ class EInitialBlock(
     override val location: SourceLocation,
     override var name: String,
     override var annotationEntries: List<AnnotationEntry>,
+    override var documentationLines: List<String>?,
     override var body: EBlockExpression
 ) : EAbstractProceduralBlock() {
 

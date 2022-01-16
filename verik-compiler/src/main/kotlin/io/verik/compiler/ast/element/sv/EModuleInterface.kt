@@ -29,6 +29,7 @@ class EModuleInterface(
     override var name: String,
     override var type: Type,
     override var annotationEntries: List<AnnotationEntry>,
+    override var documentationLines: List<String>?,
     override val ports: List<EPort>,
     override var declarations: ArrayList<EDeclaration>
 ) : EAbstractContainerComponent() {

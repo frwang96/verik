@@ -60,12 +60,26 @@ object FunctionInterpreterStage : ProjectStage() {
         private fun interpret(function: EKtFunction): EDeclaration {
             val body = function.body
             return when {
-                function.hasAnnotationEntry(AnnotationEntries.COM) ->
-                    EAlwaysComBlock(function.location, function.name, function.annotationEntries, body)
+                function.hasAnnotationEntry(AnnotationEntries.COM) -> {
+                    EAlwaysComBlock(
+                        function.location,
+                        function.name,
+                        function.annotationEntries,
+                        function.documentationLines,
+                        body
+                    )
+                }
                 function.hasAnnotationEntry(AnnotationEntries.SEQ) ->
                     getAlwaysSeqBlock(function)
-                function.hasAnnotationEntry(AnnotationEntries.RUN) ->
-                    EInitialBlock(function.location, function.name, function.annotationEntries, body)
+                function.hasAnnotationEntry(AnnotationEntries.RUN) -> {
+                    EInitialBlock(
+                        function.location,
+                        function.name,
+                        function.annotationEntries,
+                        function.documentationLines,
+                        body
+                    )
+                }
                 function.hasAnnotationEntry(AnnotationEntries.TASK) ->
                     getTask(function)
                 else -> getFunction(function)
@@ -90,6 +104,7 @@ object FunctionInterpreterStage : ProjectStage() {
                 function.location,
                 function.name,
                 function.annotationEntries,
+                function.documentationLines,
                 alwaysSeqBody,
                 eventControlExpression
             )
@@ -105,6 +120,7 @@ object FunctionInterpreterStage : ProjectStage() {
                 function.location,
                 function.name,
                 function.annotationEntries,
+                function.documentationLines,
                 body,
                 eventControlExpression
             )
@@ -126,6 +142,7 @@ object FunctionInterpreterStage : ProjectStage() {
                 function.location,
                 function.name,
                 function.annotationEntries,
+                function.documentationLines,
                 function.body,
                 valueParameters
             )
@@ -153,6 +170,7 @@ object FunctionInterpreterStage : ProjectStage() {
                 function.name,
                 function.type,
                 function.annotationEntries,
+                function.documentationLines,
                 function.body,
                 ArrayList(valueParameters),
                 qualifierType,

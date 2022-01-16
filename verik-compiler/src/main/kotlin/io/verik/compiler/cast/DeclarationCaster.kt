@@ -85,6 +85,7 @@ object DeclarationCaster {
 
         val type = castContext.castType(descriptor.defaultType, classOrObject)
         val annotationEntries = castAnnotationEntries(classOrObject.annotationEntries, castContext)
+        val documentationLines = castDocumentationLines(classOrObject.docComment)
         val superType = castContext.castType(descriptor.getSuperClassOrAny().defaultType, classOrObject)
         val declarations = classOrObject.declarations.mapNotNull {
             castContext.casterVisitor.getDeclaration(it)
@@ -116,16 +117,17 @@ object DeclarationCaster {
         }
 
         castedClass.fill(
-            type,
-            annotationEntries,
-            superType,
-            declarations,
-            typeParameters,
-            isEnum,
-            isAbstract,
-            isObject,
-            primaryConstructor,
-            superTypeCallEntry
+            type = type,
+            annotationEntries = annotationEntries,
+            documentationLines = documentationLines,
+            superType = superType,
+            declarations = declarations,
+            typeParameters = typeParameters,
+            isEnum = isEnum,
+            isAbstract = isAbstract,
+            isObject = isObject,
+            primaryConstructor = primaryConstructor,
+            superTypeCallExpression = superTypeCallEntry
         )
         return castedClass
     }
@@ -142,6 +144,7 @@ object DeclarationCaster {
             Core.Kt.C_Unit.toType()
         }
         val annotationEntries = castAnnotationEntries(function.annotationEntries, castContext)
+        val documentationLines = castDocumentationLines(function.docComment)
         val body = function.bodyBlockExpression?.let {
             castContext.casterVisitor.getExpression(it).cast()
         } ?: EBlockExpression.empty(castedFunction.location)
@@ -157,6 +160,7 @@ object DeclarationCaster {
         castedFunction.fill(
             type = type,
             annotationEntries = annotationEntries,
+            documentationLines = documentationLines,
             body = body,
             valueParameters = valueParameters,
             typeParameters = typeParameters,
@@ -236,8 +240,9 @@ object DeclarationCaster {
 
         val type = castContext.castType(descriptor.classValueType!!, enumEntry)
         val annotationEntries = castAnnotationEntries(enumEntry.annotationEntries, castContext)
+        val documentationLines = castDocumentationLines(enumEntry.docComment)
 
-        castedEnumEntry.fill(type, annotationEntries)
+        castedEnumEntry.fill(type, annotationEntries, documentationLines)
         return castedEnumEntry
     }
 

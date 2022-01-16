@@ -34,6 +34,7 @@ class EProject(
 
     override var type = Core.Kt.C_Unit.toType()
     override var annotationEntries: List<AnnotationEntry> = listOf()
+    override var documentationLines: List<String>? = null
 
     init {
         nativeRegularPackages.forEach { it.parent = this }

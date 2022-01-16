@@ -35,6 +35,7 @@ class EInjectedProperty(
 
     override var type = Target.C_Void.toType()
     override var annotationEntries: List<AnnotationEntry> = listOf()
+    override var documentationLines: List<String>? = null
 
     init {
         entries.forEach {

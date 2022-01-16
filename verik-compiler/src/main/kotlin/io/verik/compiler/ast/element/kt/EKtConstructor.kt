@@ -30,6 +30,7 @@ class EKtConstructor(
     override var name: String,
     override var type: Type,
     override var annotationEntries: List<AnnotationEntry>,
+    override var documentationLines: List<String>?,
     override var body: EBlockExpression,
     override var valueParameters: ArrayList<EKtValueParameter>,
     override var typeParameters: ArrayList<ETypeParameter>,

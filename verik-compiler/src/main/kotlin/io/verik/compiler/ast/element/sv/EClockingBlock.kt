@@ -28,6 +28,7 @@ class EClockingBlock(
     override var name: String,
     override var type: Type,
     override var annotationEntries: List<AnnotationEntry>,
+    override var documentationLines: List<String>?,
     override val ports: List<EPort>,
     val eventValueParameterIndex: Int
 ) : EAbstractComponent() {

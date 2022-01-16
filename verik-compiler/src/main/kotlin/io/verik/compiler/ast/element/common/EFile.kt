@@ -38,6 +38,7 @@ class EFile(
 
     override var type = Core.Kt.C_Unit.toType()
     override var annotationEntries: List<AnnotationEntry> = listOf()
+    override var documentationLines: List<String>? = null
 
     init {
         declarations.forEach { it.parent = this }

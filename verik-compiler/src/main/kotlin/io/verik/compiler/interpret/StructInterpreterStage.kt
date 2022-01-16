@@ -50,6 +50,7 @@ object StructInterpreterStage : ProjectStage() {
                     `class`.name,
                     `class`.type,
                     `class`.annotationEntries,
+                    `class`.documentationLines,
                     properties
                 )
                 referenceUpdater.replace(`class`, struct)

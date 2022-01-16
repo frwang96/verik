@@ -29,6 +29,7 @@ class EKtFunction(
     override var name: String,
     override var type: Type,
     override var annotationEntries: List<AnnotationEntry>,
+    override var documentationLines: List<String>?,
     override var body: EBlockExpression,
     override var valueParameters: ArrayList<EKtValueParameter>,
     override var typeParameters: ArrayList<ETypeParameter>,
@@ -42,9 +43,11 @@ class EKtFunction(
         typeParameters.forEach { it.parent = this }
     }
 
+    @Suppress("DuplicatedCode")
     fun fill(
         type: Type,
         annotationEntries: List<AnnotationEntry>,
+        documentationLines: List<String>?,
         body: EBlockExpression,
         valueParameters: List<EKtValueParameter>,
         typeParameters: List<ETypeParameter>,
@@ -56,6 +59,7 @@ class EKtFunction(
         typeParameters.forEach { it.parent = this }
         this.type = type
         this.annotationEntries = annotationEntries
+        this.documentationLines = documentationLines
         this.body = body
         this.valueParameters = ArrayList(valueParameters)
         this.typeParameters = ArrayList(typeParameters)

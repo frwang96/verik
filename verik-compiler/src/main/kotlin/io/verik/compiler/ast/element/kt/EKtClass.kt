@@ -34,6 +34,7 @@ class EKtClass(
     override var name: String,
     override var type: Type,
     override var annotationEntries: List<AnnotationEntry>,
+    override var documentationLines: List<String>?,
     override var superType: Type,
     override var declarations: ArrayList<EDeclaration>,
     override var typeParameters: ArrayList<ETypeParameter>,
@@ -51,9 +52,11 @@ class EKtClass(
         superTypeCallExpression?.parent = this
     }
 
+    @Suppress("DuplicatedCode")
     fun fill(
         type: Type,
         annotationEntries: List<AnnotationEntry>,
+        documentationLines: List<String>?,
         superType: Type,
         declarations: List<EDeclaration>,
         typeParameters: List<ETypeParameter>,
@@ -69,6 +72,7 @@ class EKtClass(
         superTypeCallExpression?.parent = this
         this.type = type
         this.annotationEntries = annotationEntries
+        this.documentationLines = documentationLines
         this.superType = superType
         this.declarations = ArrayList(declarations)
         this.typeParameters = ArrayList(typeParameters)

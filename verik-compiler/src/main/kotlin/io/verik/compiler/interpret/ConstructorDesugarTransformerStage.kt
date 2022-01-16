@@ -59,14 +59,15 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
                 val body = getPrimaryConstructorBody(primaryConstructor, properties)
                 val superTypeCallExpression = `class`.superTypeCallExpression?.let { ExpressionCopier.deepCopy(it) }
                 val constructor = EKtConstructor(
-                    primaryConstructor.location,
-                    primaryConstructor.name,
-                    primaryConstructor.type,
-                    listOf(),
-                    body,
-                    primaryConstructor.valueParameters,
-                    primaryConstructor.typeParameters,
-                    superTypeCallExpression
+                    location = primaryConstructor.location,
+                    name = primaryConstructor.name,
+                    type = primaryConstructor.type,
+                    annotationEntries = listOf(),
+                    documentationLines = null,
+                    body = body,
+                    valueParameters = primaryConstructor.valueParameters,
+                    typeParameters = primaryConstructor.typeParameters,
+                    superTypeCallExpression = superTypeCallExpression
                 )
                 declarations.add(constructor)
                 `class`.primaryConstructor = null

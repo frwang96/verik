@@ -30,6 +30,7 @@ class ETypeDefinition(
 ) : EClassifier() {
 
     override var annotationEntries: List<AnnotationEntry> = listOf()
+    override var documentationLines: List<String>? = null
 
     override fun accept(visitor: Visitor) {
         visitor.visitTypeDefinition(this)

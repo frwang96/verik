@@ -32,6 +32,7 @@ class EPrimaryConstructor(
 ) : EKtAbstractFunction() {
 
     override var annotationEntries: List<AnnotationEntry> = listOf()
+    override var documentationLines: List<String>? = null
     override var body: EBlockExpression = EBlockExpression.empty(location)
 
     init {

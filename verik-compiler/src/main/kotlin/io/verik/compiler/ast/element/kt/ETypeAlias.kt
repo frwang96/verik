@@ -33,6 +33,7 @@ class ETypeAlias(
 ) : EClassifier(), TypeParameterized {
 
     override var annotationEntries: List<AnnotationEntry> = listOf()
+    override var documentationLines: List<String>? = null
 
     init {
         typeParameters.forEach { it.parent = this }

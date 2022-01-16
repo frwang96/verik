@@ -26,12 +26,18 @@ class EEnumEntry(
     override val location: SourceLocation,
     override var name: String,
     override var type: Type,
-    override var annotationEntries: List<AnnotationEntry>
+    override var annotationEntries: List<AnnotationEntry>,
+    override var documentationLines: List<String>?
 ) : EAbstractProperty() {
 
-    fun fill(type: Type, annotationEntries: List<AnnotationEntry>) {
+    fun fill(
+        type: Type,
+        annotationEntries: List<AnnotationEntry>,
+        documentationLines: List<String>?
+    ) {
         this.type = type
         this.annotationEntries = annotationEntries
+        this.documentationLines = documentationLines
     }
 
     override fun accept(visitor: Visitor) {

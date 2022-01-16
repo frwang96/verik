@@ -32,6 +32,7 @@ class EStruct(
     override var name: String,
     override var type: Type,
     override var annotationEntries: List<AnnotationEntry>,
+    override var documentationLines: List<String>?,
     val properties: List<EProperty>
 ) : EAbstractClass() {
 

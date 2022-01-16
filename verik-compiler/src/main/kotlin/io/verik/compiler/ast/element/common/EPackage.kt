@@ -34,6 +34,7 @@ class EPackage(
 
     override var type = Core.Kt.C_Unit.toType()
     override var annotationEntries: List<AnnotationEntry> = listOf()
+    override var documentationLines: List<String>? = null
 
     init {
         files.forEach { it.parent = this }

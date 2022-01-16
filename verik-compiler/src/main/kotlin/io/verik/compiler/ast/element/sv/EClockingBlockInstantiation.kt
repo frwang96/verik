@@ -29,6 +29,7 @@ class EClockingBlockInstantiation(
     override var name: String,
     override var type: Type,
     override var annotationEntries: List<AnnotationEntry>,
+    override var documentationLines: List<String>?,
     override val portInstantiations: List<PortInstantiation>,
     var eventControlExpression: EEventControlExpression
 ) : EAbstractComponentInstantiation() {

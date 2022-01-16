@@ -32,6 +32,7 @@ class EEnum(
     override var name: String,
     override var type: Type,
     override var annotationEntries: List<AnnotationEntry>,
+    override var documentationLines: List<String>?,
     val enumEntries: List<EEnumEntry>
 ) : EAbstractClass() {
 

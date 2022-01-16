@@ -30,6 +30,7 @@ class ESvClass(
     override var name: String,
     override var type: Type,
     override var annotationEntries: List<AnnotationEntry>,
+    override var documentationLines: List<String>?,
     override var superType: Type,
     override var declarations: ArrayList<EDeclaration>,
     val isVirtual: Boolean,

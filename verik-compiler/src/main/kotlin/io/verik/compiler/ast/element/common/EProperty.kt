@@ -17,7 +17,6 @@
 package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.ast.element.sv.ESvClass
-import io.verik.compiler.ast.interfaces.Documented
 import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.Type
@@ -34,7 +33,7 @@ class EProperty(
     override var documentationLines: List<String>?,
     var initializer: EExpression?,
     var isMutable: Boolean
-) : EAbstractProperty(), Documented, ExpressionContainer {
+) : EAbstractProperty(), ExpressionContainer {
 
     init {
         initializer?.parent = this
