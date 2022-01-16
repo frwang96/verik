@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 ### Added
+
+## [0.1.12]
+### Added
 - Support conditional compiler directives in importer.
 - Support macro definitions in importer.
 - Support decimal literals in `u` and `s` functions.
