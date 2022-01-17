@@ -33,41 +33,41 @@ object Messages {
         "Unable to write file: $0"
     )
 
-    val INCLUDED_FILE_NOT_FOUND = FatalMessageTemplate1<Path>(
+    val INCLUDED_FILE_NOT_FOUND = ErrorMessageTemplate1<Path>(
         "Included file not found: $0"
     )
 
 // PREPROCESS //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val PREPROCESSOR_LEXER_ERROR = WarningMessageTemplate1<String>(
+    val PREPROCESSOR_LEXER_ERROR = ErrorMessageTemplate1<String>(
         "Preprocessor lexer error: $0"
     )
 
-    val PREPROCESSOR_PARSER_ERROR = WarningMessageTemplate1<String>(
+    val PREPROCESSOR_PARSER_ERROR = ErrorMessageTemplate1<String>(
         "Preprocessor parser error: $0"
     )
 
-    val UNMATCHED_DIRECTIVE = WarningMessageTemplate0(
+    val UNMATCHED_DIRECTIVE = ErrorMessageTemplate0(
         "Unmatched directive"
     )
 
-    val UNDEFINED_MACRO = WarningMessageTemplate1<String>(
+    val UNDEFINED_MACRO = ErrorMessageTemplate1<String>(
         "Undefined macro: $0"
     )
 
-    val INCORRECT_MACRO_ARGUMENTS = WarningMessageTemplate2<Int, Int>(
+    val INCORRECT_MACRO_ARGUMENTS = ErrorMessageTemplate2<Int, Int>(
         "Incorrect number of macro arguments: Expected $0 actual $1"
     )
 
 // LEX /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val LEXER_ERROR = WarningMessageTemplate1<String>(
+    val LEXER_ERROR = ErrorMessageTemplate1<String>(
         "Lexer error: $0"
     )
 
 // PARSE ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val PARSER_ERROR = WarningMessageTemplate1<String>(
+    val PARSER_ERROR = ErrorMessageTemplate1<String>(
         "Parser error: $0"
     )
 

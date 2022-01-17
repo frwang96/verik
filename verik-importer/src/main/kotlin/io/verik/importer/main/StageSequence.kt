@@ -16,6 +16,7 @@
 
 package io.verik.importer.main
 
+import io.verik.importer.message.MessageCollector
 import kotlin.reflect.KClass
 
 class StageSequence {
@@ -42,6 +43,9 @@ class StageSequence {
             stages[stageType]!!.forEach {
                 processStage(projectContext, it)
             }
+            if (stageType.flushAfter()) {
+                MessageCollector.messageCollector.flush()
+            }
         }
     }
 
@@ -53,16 +57,6 @@ class StageSequence {
                 if (it::class == stageClass)
                     return
             }
-        }
-    }
-
-    fun processUntil(projectContext: ProjectContext, stageType: StageType) {
-        StageType.values().forEach { currentStageType ->
-            stages[currentStageType]!!.forEach {
-                processStage(projectContext, it)
-            }
-            if (currentStageType == stageType)
-                return
         }
     }
 

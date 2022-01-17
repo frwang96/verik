@@ -24,6 +24,13 @@ class MessageCollector(
     private val messagePrinter: MessagePrinter
 ) {
 
+    private var errorCount = 0
+
+    fun flush() {
+        if (errorCount != 0)
+            throw VerikImporterException()
+    }
+
     fun warning(templateName: String, message: String, location: SourceLocation) {
         if (templateName in config.promotedWarnings)
             fatal(message, location)
@@ -31,9 +38,20 @@ class MessageCollector(
             messagePrinter.warning(message, location, Thread.currentThread().stackTrace)
     }
 
+    fun error(message: String, location: SourceLocation) {
+        messagePrinter.error(message, location, Thread.currentThread().stackTrace)
+        incrementErrorCount()
+    }
+
     fun fatal(message: String, location: SourceLocation): Nothing {
         messagePrinter.error(message, location, Thread.currentThread().stackTrace)
         throw VerikImporterException()
+    }
+
+    private fun incrementErrorCount() {
+        errorCount++
+        if (errorCount >= config.maxErrorCount)
+            throw VerikImporterException()
     }
 
     companion object {

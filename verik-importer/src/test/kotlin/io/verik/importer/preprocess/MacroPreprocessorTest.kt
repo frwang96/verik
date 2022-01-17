@@ -29,7 +29,7 @@ internal class MacroPreprocessorTest : BaseTest() {
                 `undef X
                 `X
             """.trimIndent(),
-            false,
+            true,
             "Undefined macro: X"
         )
     }
@@ -42,7 +42,7 @@ internal class MacroPreprocessorTest : BaseTest() {
                 `undefineall
                 `X
             """.trimIndent(),
-            false,
+            true,
             "Undefined macro: X"
         )
     }
@@ -100,7 +100,7 @@ internal class MacroPreprocessorTest : BaseTest() {
     fun `directive macro undefined`() {
         driveMessageTest(
             "`X",
-            false,
+            true,
             "Undefined macro: X"
         )
     }
@@ -128,6 +128,17 @@ internal class MacroPreprocessorTest : BaseTest() {
     }
 
     @Test
+    fun `directive macro string`() {
+        drivePreprocessorTest(
+            """
+                `define X(x) x
+                `X("abc")
+            """.trimIndent(),
+            "\"abc\""
+        )
+    }
+
+    @Test
     fun `directive macro args escape quotes`() {
         drivePreprocessorTest(
             """
@@ -145,7 +156,7 @@ internal class MacroPreprocessorTest : BaseTest() {
                 `define X(x) x
                 `X
             """.trimIndent(),
-            false,
+            true,
             "Incorrect number of macro arguments: Expected 1 actual 0"
         )
     }

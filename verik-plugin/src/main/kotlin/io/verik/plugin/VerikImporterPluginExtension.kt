@@ -26,5 +26,6 @@ abstract class VerikImporterPluginExtension {
     var annotateDeclarations: Boolean = true
     var suppressedWarnings: ArrayList<String> = ArrayList()
     var promotedWarnings: ArrayList<String> = ArrayList()
+    var maxErrorCount: Int = 20
     var debug: Boolean = false
 }

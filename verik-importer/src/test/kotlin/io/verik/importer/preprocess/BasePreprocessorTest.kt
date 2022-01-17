@@ -63,7 +63,7 @@ internal class BasePreprocessorTest : BaseTest() {
     fun `directive endif unmatched`() {
         driveMessageTest(
             "`endif",
-            false,
+            true,
             "Unmatched directive"
         )
     }

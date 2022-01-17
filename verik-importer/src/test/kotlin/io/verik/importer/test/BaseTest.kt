@@ -193,6 +193,7 @@ abstract class BaseTest {
                 annotateDeclarations = false,
                 suppressedWarnings = listOf(),
                 promotedWarnings = listOf(),
+                maxErrorCount = 0,
                 debug = true
             )
         }

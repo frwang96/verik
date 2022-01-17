@@ -29,6 +29,7 @@ data class VerikImporterConfig(
     val annotateDeclarations: Boolean,
     val suppressedWarnings: List<String>,
     val promotedWarnings: List<String>,
+    val maxErrorCount: Int,
     val debug: Boolean
 ) {
 

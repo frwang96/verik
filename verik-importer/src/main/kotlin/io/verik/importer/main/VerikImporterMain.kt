@@ -69,6 +69,7 @@ object VerikImporterMain {
     }
 
     private fun writeFiles(projectContext: ProjectContext) {
+        MessageCollector.messageCollector.flush()
         val textFiles = projectContext.outputContext.getTextFiles()
         textFiles.forEach { Platform.writeTextFile(it) }
     }

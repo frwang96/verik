@@ -215,7 +215,7 @@ ARG_WHITESPACE
     ;
 
 ARG_COMMA
-    : ',' { if (argLevel != 1) setType(ARG_TEXT); }
+    : ',' [ \t]* [\r\n]? { if (argLevel != 1) setType(ARG_TEXT); }
     ;
 
 ARG_PUSH
@@ -228,6 +228,10 @@ ARG_POP
 
 ARG_RP
     : ')' { argLevel--; if (argLevel == 0) mode(DEFAULT_MODE); else setType(ARG_TEXT); }
+    ;
+
+ARG_STRING_LITERAL
+    : '"' ('\\"' | '\\\\' | .)*? '"' -> type(ARG_TEXT)
     ;
 
 ARG_TEXT

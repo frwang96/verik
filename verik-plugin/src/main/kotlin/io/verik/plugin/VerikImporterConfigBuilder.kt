@@ -34,6 +34,7 @@ object VerikImporterConfigBuilder {
             annotateDeclarations = extension.annotateDeclarations,
             suppressedWarnings = extension.suppressedWarnings,
             promotedWarnings = extension.promotedWarnings,
+            maxErrorCount = extension.maxErrorCount,
             debug = extension.debug
         )
     }
