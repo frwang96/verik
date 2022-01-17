@@ -40,30 +40,37 @@ class PreprocessorListener(
     }
 
     override fun enterDirectiveInclude(ctx: SystemVerilogPreprocessorParser.DirectiveIncludeContext?) {
-        BasePreprocessor.preprocessDirectiveInclude(ctx!!, preprocessContext)
+        if (preprocessContext.isEnable())
+            BasePreprocessor.preprocessDirectiveInclude(ctx!!, preprocessContext)
     }
 
     override fun enterDirectiveUndefineAll(ctx: SystemVerilogPreprocessorParser.DirectiveUndefineAllContext?) {
-        MacroPreprocessor.preprocessDirectiveUndefineAll(preprocessContext)
+        if (preprocessContext.isEnable())
+            MacroPreprocessor.preprocessDirectiveUndefineAll(preprocessContext)
     }
 
     override fun enterDirectiveUndef(ctx: SystemVerilogPreprocessorParser.DirectiveUndefContext?) {
-        MacroPreprocessor.preprocessDirectiveUndef(ctx!!, preprocessContext)
+        if (preprocessContext.isEnable())
+            MacroPreprocessor.preprocessDirectiveUndef(ctx!!, preprocessContext)
     }
 
     override fun enterDirectiveDefine(ctx: SystemVerilogPreprocessorParser.DirectiveDefineContext?) {
-        MacroPreprocessor.preprocessDirectiveDefine(ctx!!, preprocessContext)
+        if (preprocessContext.isEnable())
+            MacroPreprocessor.preprocessDirectiveDefine(ctx!!, preprocessContext)
     }
 
     override fun enterDirectiveMacro(ctx: SystemVerilogPreprocessorParser.DirectiveMacroContext?) {
-        MacroPreprocessor.preprocessDirectiveMacro(ctx!!, preprocessContext)
+        if (preprocessContext.isEnable())
+            MacroPreprocessor.preprocessDirectiveMacro(ctx!!, preprocessContext)
     }
 
     override fun enterDirectiveMacroArg(ctx: SystemVerilogPreprocessorParser.DirectiveMacroArgContext?) {
-        MacroPreprocessor.preprocessDirectiveMacroArg(ctx!!, preprocessContext)
+        if (preprocessContext.isEnable())
+            MacroPreprocessor.preprocessDirectiveMacroArg(ctx!!, preprocessContext)
     }
 
     override fun enterCode(ctx: SystemVerilogPreprocessorParser.CodeContext?) {
-        BasePreprocessor.preprocessCode(ctx!!, preprocessContext)
+        if (preprocessContext.isEnable())
+            BasePreprocessor.preprocessCode(ctx!!, preprocessContext)
     }
 }

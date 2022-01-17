@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 ### Added
+- Importer preprocess include compiler directive.
+- Importer preprocess file and line compiler directive.
 
 ## [0.1.12]
 ### Added

@@ -52,6 +52,20 @@ object MacroPreprocessor {
         preprocessContext: PreprocessContext
     ) {
         val name = ctx.DIRECTIVE_MACRO().text.trim()
+        when (name) {
+            "__FILE__" -> {
+                val location = SourceLocation.get(ctx.DIRECTIVE_MACRO())
+                val preprocessorFragment = PreprocessorFragment(location, "\"${location.path}\"", false)
+                preprocessContext.preprocessorFragments.add(preprocessorFragment)
+                return
+            }
+            "__LINE__" -> {
+                val location = SourceLocation.get(ctx.DIRECTIVE_MACRO())
+                val preprocessorFragment = PreprocessorFragment(location, location.line.toString(), false)
+                preprocessContext.preprocessorFragments.add(preprocessorFragment)
+                return
+            }
+        }
         val macro = preprocessContext.getMacro(name)
         if (macro != null) {
             val location = SourceLocation.get(ctx.BACKTICK())
@@ -68,7 +82,7 @@ object MacroPreprocessor {
     ) {
         val name = ctx.DIRECTIVE_MACRO_ARG().text.dropLast(1).trim()
         val macro = preprocessContext.getMacro(name)
-        val arguments = ctx.arguments().argument().map { it.text }
+        val arguments = ctx.arguments().argument().map { it.text.trim() }
         if (macro != null) {
             val location = SourceLocation.get(ctx.BACKTICK())
             val content = evaluate(macro, arguments, location)

@@ -26,18 +26,18 @@ text
     ;
 
 directive
-    : BACKTICK DIRECTIVE_IFDEF                                                          # directiveIfdef
-    | BACKTICK DIRECTIVE_IFNDEF                                                         # directiveIfndef
-    | BACKTICK DIRECTIVE_ELSE                                                           # directiveElse
-    | BACKTICK DIRECTIVE_ENDIF                                                          # directiveEndif
-    | BACKTICK DIRECTIVE_LINE                                                           # directiveIgnored
-    | BACKTICK DIRECTIVE_TIMESCALE                                                      # directiveIgnored
-    | BACKTICK DIRECTIVE_INCLUDE contents                                               # directiveInclude
-    | BACKTICK DIRECTIVE_UNDEFINEALL                                                    # directiveUndefineAll
-    | BACKTICK DIRECTIVE_UNDEF                                                          # directiveUndef
-    | BACKTICK DIRECTIVE_DEFINE DEFINE_MACRO parameters? contents                       # directiveDefine
-    | BACKTICK DIRECTIVE_MACRO                                                          # directiveMacro
-    | BACKTICK DIRECTIVE_MACRO_ARG arguments ARG_RP                                     # directiveMacroArg
+    : BACKTICK DIRECTIVE_IFDEF                                    # directiveIfdef
+    | BACKTICK DIRECTIVE_IFNDEF                                   # directiveIfndef
+    | BACKTICK DIRECTIVE_ELSE                                     # directiveElse
+    | BACKTICK DIRECTIVE_ENDIF                                    # directiveEndif
+    | BACKTICK DIRECTIVE_LINE                                     # directiveIgnored
+    | BACKTICK DIRECTIVE_TIMESCALE                                # directiveIgnored
+    | BACKTICK DIRECTIVE_INCLUDE contents                         # directiveInclude
+    | BACKTICK DIRECTIVE_UNDEFINEALL                              # directiveUndefineAll
+    | BACKTICK DIRECTIVE_UNDEF                                    # directiveUndef
+    | BACKTICK DIRECTIVE_DEFINE DEFINE_MACRO parameters? contents # directiveDefine
+    | BACKTICK DIRECTIVE_MACRO                                    # directiveMacro
+    | BACKTICK DIRECTIVE_MACRO_ARG arguments ARG_RP               # directiveMacroArg
     ;
 
 parameters

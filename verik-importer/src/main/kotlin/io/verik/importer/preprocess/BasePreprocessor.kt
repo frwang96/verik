@@ -62,15 +62,15 @@ object BasePreprocessor {
 
     fun preprocessDirectiveInclude(
         ctx: SystemVerilogPreprocessorParser.DirectiveIncludeContext,
-        preprocessorContext: PreprocessContext
+        preprocessContext: PreprocessContext
     ) {
         val match = INCLUDE_PATTERN.matchEntire(ctx.contents().text)
         if (match != null) {
             val path = Paths.get(match.destructured.component1())
             val location = SourceLocation.get(ctx.DIRECTIVE_INCLUDE())
-            val textFile = getIncludedTextFile(path, location, preprocessorContext)
+            val textFile = getIncludedTextFile(path, location, preprocessContext)
             if (textFile != null) {
-                preprocessorContext.preprocess(textFile)
+                preprocessContext.preprocess(textFile)
             } else {
                 Messages.INCLUDED_FILE_NOT_FOUND.on(location, path)
             }
@@ -78,14 +78,12 @@ object BasePreprocessor {
     }
 
     fun preprocessCode(ctx: SystemVerilogPreprocessorParser.CodeContext, preprocessContext: PreprocessContext) {
-        if (preprocessContext.isEnable()) {
-            val preprocessorFragment = PreprocessorFragment(
-                SourceLocation.get(ctx.CODE()),
-                ctx.CODE().text,
-                true
-            )
-            preprocessContext.preprocessorFragments.add(preprocessorFragment)
-        }
+        val preprocessorFragment = PreprocessorFragment(
+            SourceLocation.get(ctx.CODE()),
+            ctx.CODE().text,
+            true
+        )
+        preprocessContext.preprocessorFragments.add(preprocessorFragment)
     }
 
     private fun getIncludedTextFile(

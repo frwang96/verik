@@ -48,6 +48,22 @@ internal class MacroPreprocessorTest : BaseTest() {
     }
 
     @Test
+    fun `directive macro file`() {
+        drivePreprocessorTest(
+            "`__FILE__",
+            "\"/src/test.sv\""
+        )
+    }
+
+    @Test
+    fun `directive macro line`() {
+        drivePreprocessorTest(
+            "`__LINE__",
+            "1"
+        )
+    }
+
+    @Test
     fun `directive macro`() {
         drivePreprocessorTest(
             """

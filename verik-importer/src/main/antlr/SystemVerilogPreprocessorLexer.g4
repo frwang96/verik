@@ -38,6 +38,10 @@ LINE_COMMENT
     : '//' ~[\r\n]* -> type(CODE)
     ;
 
+SLASH
+    : '/' -> type(CODE)
+    ;
+
 WHITESPACE
     : [ \t\r\n]+ -> type(CODE)
     ;
@@ -212,6 +216,10 @@ mode ARG_MODE;
 
 ARG_WHITESPACE
     : [ \t]+ -> type(ARG_TEXT)
+    ;
+
+ARG_NEW_LINE
+    : '\r'? '\n' -> type(ARG_TEXT)
     ;
 
 ARG_COMMA
