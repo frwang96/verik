@@ -20,6 +20,7 @@ import io.verik.importer.ast.element.ECompilationUnit
 import io.verik.importer.ast.element.EElement
 import io.verik.importer.common.ElementPrinter
 import io.verik.importer.common.TextFile
+import io.verik.importer.main.InputFileContext
 import io.verik.importer.main.Platform
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
@@ -104,7 +105,8 @@ abstract class BaseTest {
         val config = getConfig()
         val projectContext = ProjectContext(config)
         val textFile = TextFile(config.importedFiles[0], content)
-        projectContext.inputTextFiles = listOf(textFile)
+        val inputFileContext = InputFileContext(textFile)
+        projectContext.inputFileContexts = listOf(inputFileContext)
         return projectContext
     }
 

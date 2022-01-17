@@ -19,6 +19,7 @@ package io.verik.importer.cast
 import io.verik.importer.ast.element.ECompilationUnit
 import io.verik.importer.ast.element.EDeclaration
 import io.verik.importer.ast.element.ERootPackage
+import io.verik.importer.main.InputFileContext
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 import io.verik.importer.message.SourceLocation
@@ -27,15 +28,23 @@ object CasterStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
         val declarations = ArrayList<EDeclaration>()
-        val castContext = CastContext(projectContext.parserTokenStream)
+        projectContext.inputFileContexts.forEach {
+            declarations.addAll(castInputFileContext(it))
+        }
+        val rootPackage = ERootPackage(SourceLocation.NULL, declarations)
+        projectContext.compilationUnit = ECompilationUnit(SourceLocation.NULL, rootPackage)
+    }
+
+    private fun castInputFileContext(inputFileContext: InputFileContext): List<EDeclaration> {
+        val declarations = ArrayList<EDeclaration>()
+        val castContext = CastContext(inputFileContext.parserTokenStream)
         val casterVisitor = CasterVisitor(castContext)
-        val parseTree = projectContext.parseTree
+        val parseTree = inputFileContext.parseTree
         (0 until parseTree.childCount - 1).forEach {
             val declaration = casterVisitor.getDeclaration(parseTree.getChild(it))
             if (declaration != null)
                 declarations.add(declaration)
         }
-        val rootPackage = ERootPackage(SourceLocation.NULL, declarations)
-        projectContext.compilationUnit = ECompilationUnit(SourceLocation.NULL, rootPackage)
+        return declarations
     }
 }

@@ -60,9 +60,10 @@ object VerikImporterMain {
     }
 
     private fun readFiles(projectContext: ProjectContext) {
-        projectContext.inputTextFiles = projectContext.config.importedFiles.map {
+        projectContext.inputFileContexts = projectContext.config.importedFiles.map {
             val lines = Files.readAllLines(it)
-            TextFile(it, lines.joinToString(separator = "\n", postfix = "\n"))
+            val textFile = TextFile(it, lines.joinToString(separator = "\n", postfix = "\n"))
+            InputFileContext(textFile)
         }
     }
 

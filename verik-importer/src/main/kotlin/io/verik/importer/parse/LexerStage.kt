@@ -17,6 +17,7 @@
 package io.verik.importer.parse
 
 import io.verik.importer.antlr.SystemVerilogLexer
+import io.verik.importer.main.InputFileContext
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 import io.verik.importer.message.Messages
@@ -30,7 +31,16 @@ import org.antlr.v4.runtime.Token
 object LexerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        val lexerCharStream = LexerCharStream(projectContext.preprocessorFragments)
+        projectContext.inputFileContexts.forEach {
+            processInputFileContext(it)
+        }
+    }
+
+    private fun processInputFileContext(inputFileContext: InputFileContext) {
+        val lexerCharStream = LexerCharStream(
+            inputFileContext.preprocessorFragments,
+            inputFileContext.textFile
+        )
         val lexer = SystemVerilogLexer(lexerCharStream)
         val lexerErrorListener = LexerErrorListener(lexerCharStream)
         lexer.removeErrorListeners()
@@ -52,8 +62,8 @@ object LexerStage : ProjectStage() {
                 lexerFragments.add(lexerFragment)
             }
         }
-        projectContext.lexerCharStream = lexerCharStream
-        projectContext.lexerFragments = lexerFragments
+        inputFileContext.lexerCharStream = lexerCharStream
+        inputFileContext.lexerFragments = lexerFragments
     }
 
     private class LexerErrorListener(

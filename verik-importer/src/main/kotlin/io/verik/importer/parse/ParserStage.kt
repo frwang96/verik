@@ -17,6 +17,7 @@
 package io.verik.importer.parse
 
 import io.verik.importer.antlr.SystemVerilogParser
+import io.verik.importer.main.InputFileContext
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 import io.verik.importer.message.Messages
@@ -29,17 +30,23 @@ import org.antlr.v4.runtime.Recognizer
 object ParserStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
+        projectContext.inputFileContexts.forEach {
+            processInputFileContext(it)
+        }
+    }
+
+    private fun processInputFileContext(inputFileContext: InputFileContext) {
         val parserTokenSource = ParserTokenSource(
-            projectContext.lexerCharStream,
-            projectContext.lexerFragments
+            inputFileContext.lexerCharStream,
+            inputFileContext.lexerFragments
         )
         val parserTokenStream = CommonTokenStream(parserTokenSource)
         val parser = SystemVerilogParser(parserTokenStream)
-        val parserErrorListener = ParserErrorListener(projectContext.lexerCharStream)
+        val parserErrorListener = ParserErrorListener(inputFileContext.lexerCharStream)
         parser.removeErrorListeners()
         parser.addErrorListener(parserErrorListener)
-        projectContext.parserTokenStream = parserTokenStream
-        projectContext.parseTree = parser.compilationUnit()
+        inputFileContext.parserTokenStream = parserTokenStream
+        inputFileContext.parseTree = parser.compilationUnit()
     }
 
     private class ParserErrorListener(

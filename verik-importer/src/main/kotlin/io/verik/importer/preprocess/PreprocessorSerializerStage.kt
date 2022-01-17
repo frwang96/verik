@@ -25,8 +25,10 @@ object PreprocessorSerializerStage : ProjectStage() {
     override fun process(projectContext: ProjectContext) {
         if (projectContext.config.enablePreprocessorOutput) {
             val builder = StringBuilder()
-            projectContext.preprocessorFragments.forEach {
-                builder.append(it.content)
+            projectContext.inputFileContexts.forEach { inputFileContext ->
+                inputFileContext.preprocessorFragments.forEach {
+                    builder.append(it.content)
+                }
             }
             val preprocessorTextFile = TextFile(
                 projectContext.config.buildDir.resolve("imported.sv"),
