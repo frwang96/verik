@@ -82,6 +82,10 @@ DIRECTIVE_IFNDEF
     : 'ifndef' [ \t]+ IDENTIFIER [ \t]* [\r\n]? -> mode(DEFAULT_MODE)
     ;
 
+DIRECTIVE_ELSE
+    : 'else' [ \t]* [\r\n]? -> mode(DEFAULT_MODE)
+    ;
+
 DIRECTIVE_ENDIF
     : 'endif' [ \t]* [\r\n]? -> mode(DEFAULT_MODE)
     ;
@@ -126,45 +130,17 @@ DEFINE_NEW_LINE
     : '\r'? '\n' -> channel(HIDDEN)
     ;
 
-DEFINE_MACRO_PARAM
-    : IDENTIFIER [ \t]* '(' -> mode(DEFINE_PARAM_MODE)
-    ;
-
 DEFINE_MACRO
     : IDENTIFIER [ \t]* -> mode(CONTENT_MODE)
-    ;
-
-//  DEFINE PARAM MODE  /////////////////////////////////////////////////////////////////////////////////////////////////
-
-mode DEFINE_PARAM_MODE;
-
-DEFINE_PARAM_WHITESPACE
-    : [ \t]+ -> channel(HIDDEN)
-    ;
-
-DEFINE_PARAM_LINE_CONTINUATION
-    : '\\' '\r'? '\n' -> channel(HIDDEN)
-    ;
-
-DEFINE_PARAM_NEW_LINE
-    : '\r'? '\n' -> channel(HIDDEN)
-    ;
-
-DEFINE_PARAM_COMMA
-    : ','
-    ;
-
-DEFINE_PARAM_RP
-    : ')' [ \t]* -> mode(CONTENT_MODE)
-    ;
-
-DEFINE_PARAM_IDENTIFIER
-    : IDENTIFIER
     ;
 
 //  CONTENT MODE  //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 mode CONTENT_MODE;
+
+CONTENT_WHITESPACE
+    : [ \t]+
+    ;
 
 CONTENT_LINE_CONTINUATION
     : '\\' '\r'? '\n'
@@ -183,7 +159,7 @@ CONTENT_BLOCK_COMMENT
     ;
 
 CONTENT_LINE_COMMENT
-    : '//' ~[\r\n]* -> channel(HIDDEN)
+    : '//' (~[\r\n\\] | '\\' ~[\r\n])* -> channel(HIDDEN)
     ;
 
 CONTENT_SLASH
@@ -210,12 +186,24 @@ CONTENT_BACK_TICK
     : '`' -> type(CONTENT_TEXT)
     ;
 
+CONTENT_LP
+    : '('
+    ;
+
+CONTENT_RP
+    : ')' [ \t]*
+    ;
+
+CONTENT_COMMA
+    : ','
+    ;
+
 CONTENT_IDENTIFIER
     : IDENTIFIER
     ;
 
 CONTENT_TEXT
-    : ~[\\/"`a-zA-Z_\r\n]+
+    : ~[\\/"`(),a-zA-Z_ \t\r\n]+
     ;
 
 //  ARG MODE  //////////////////////////////////////////////////////////////////////////////////////////////////////////

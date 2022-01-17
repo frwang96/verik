@@ -1,3 +1,4 @@
+/verik-importer/src/main/antlr/*.tokens
 /verik-sandbox/src/main
 
 .run/

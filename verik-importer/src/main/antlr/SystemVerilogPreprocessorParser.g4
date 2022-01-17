@@ -28,24 +28,24 @@ text
 directive
     : BACKTICK DIRECTIVE_IFDEF                                                          # directiveIfdef
     | BACKTICK DIRECTIVE_IFNDEF                                                         # directiveIfndef
+    | BACKTICK DIRECTIVE_ELSE                                                           # directiveElse
     | BACKTICK DIRECTIVE_ENDIF                                                          # directiveEndif
     | BACKTICK DIRECTIVE_LINE                                                           # directiveIgnored
     | BACKTICK DIRECTIVE_TIMESCALE                                                      # directiveIgnored
     | BACKTICK DIRECTIVE_INCLUDE contents                                               # directiveInclude
     | BACKTICK DIRECTIVE_UNDEFINEALL                                                    # directiveUndefineAll
     | BACKTICK DIRECTIVE_UNDEF                                                          # directiveUndef
-    | BACKTICK DIRECTIVE_DEFINE DEFINE_MACRO contents                                   # directiveDefine
-    | BACKTICK DIRECTIVE_DEFINE DEFINE_MACRO_PARAM parameters? DEFINE_PARAM_RP contents # directiveDefineParam
+    | BACKTICK DIRECTIVE_DEFINE DEFINE_MACRO parameters? contents                       # directiveDefine
     | BACKTICK DIRECTIVE_MACRO                                                          # directiveMacro
     | BACKTICK DIRECTIVE_MACRO_ARG arguments ARG_RP                                     # directiveMacroArg
     ;
 
 parameters
-    : parameter (DEFINE_PARAM_COMMA parameter)*
+    : CONTENT_LP  parameter (CONTENT_COMMA parameter)* CONTENT_RP
     ;
 
 parameter
-    : DEFINE_PARAM_IDENTIFIER
+    : CONTENT_WHITESPACE* CONTENT_IDENTIFIER CONTENT_WHITESPACE*
     ;
 
 contents
@@ -53,10 +53,14 @@ contents
     ;
 
 content
-    : CONTENT_LINE_CONTINUATION
+    : CONTENT_WHITESPACE
+    | CONTENT_LINE_CONTINUATION
     | CONTENT_CONCAT
     | CONTENT_ESCAPE_DQ
     | CONTENT_ESCAPE_BACK_SLASH_DQ
+    | CONTENT_LP
+    | CONTENT_RP
+    | CONTENT_COMMA
     | CONTENT_IDENTIFIER
     | CONTENT_TEXT
     ;

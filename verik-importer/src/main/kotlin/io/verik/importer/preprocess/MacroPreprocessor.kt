@@ -41,17 +41,7 @@ object MacroPreprocessor {
         preprocessContext: PreprocessContext
     ) {
         val name = ctx.DEFINE_MACRO().text.trim()
-        val contentEntries = ctx.contents().content().mapNotNull { getContentEntry(it, listOf()) }
-        val macro = Macro(listOf(), contentEntries)
-        preprocessContext.setMacro(name, macro)
-    }
-
-    fun preprocessDirectiveDefineParam(
-        ctx: SystemVerilogPreprocessorParser.DirectiveDefineParamContext,
-        preprocessContext: PreprocessContext
-    ) {
-        val name = ctx.DEFINE_MACRO_PARAM().text.dropLast(1).trim()
-        val parameters = (ctx.parameters()?.parameter() ?: listOf()).map { it.text }
+        val parameters = (ctx.parameters()?.parameter() ?: listOf()).map { it.CONTENT_IDENTIFIER().text }
         val contentEntries = ctx.contents().content().mapNotNull { getContentEntry(it, parameters) }
         val macro = Macro(parameters, contentEntries)
         preprocessContext.setMacro(name, macro)
@@ -95,9 +85,9 @@ object MacroPreprocessor {
         val child = ctx.children.first() as TerminalNode
         return when (child.symbol.type) {
             SystemVerilogPreprocessorLexer.CONTENT_LINE_CONTINUATION -> TextMacroContentEntry("\n")
-            SystemVerilogPreprocessorLexer.CONTENT_CONCAT -> TextMacroContentEntry("\"")
-            SystemVerilogPreprocessorLexer.CONTENT_ESCAPE_DQ -> TextMacroContentEntry("\\\"")
-            SystemVerilogPreprocessorLexer.CONTENT_ESCAPE_BACK_SLASH_DQ -> null
+            SystemVerilogPreprocessorLexer.CONTENT_CONCAT -> null
+            SystemVerilogPreprocessorLexer.CONTENT_ESCAPE_DQ -> TextMacroContentEntry("\"")
+            SystemVerilogPreprocessorLexer.CONTENT_ESCAPE_BACK_SLASH_DQ -> TextMacroContentEntry("\\\"")
             SystemVerilogPreprocessorLexer.CONTENT_IDENTIFIER -> {
                 val index = parameters.indexOf(ctx.text)
                 if (index != -1) {

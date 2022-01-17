@@ -66,7 +66,7 @@ class PreprocessContext(
     fun popEnable(terminalNode: TerminalNode): Boolean {
         val enable = isEnable()
         if (enableStack.isEmpty()) {
-            Messages.UNMATCHED_ENDIF.on(terminalNode)
+            Messages.UNMATCHED_DIRECTIVE.on(terminalNode)
         } else {
             enableStack.removeLast()
         }

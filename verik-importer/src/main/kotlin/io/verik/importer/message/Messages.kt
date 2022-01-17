@@ -47,8 +47,8 @@ object Messages {
         "Preprocessor parser error: $0"
     )
 
-    val UNMATCHED_ENDIF = WarningMessageTemplate0(
-        "Unmatched endif directive"
+    val UNMATCHED_DIRECTIVE = WarningMessageTemplate0(
+        "Unmatched directive"
     )
 
     val UNDEFINED_MACRO = WarningMessageTemplate1<String>(

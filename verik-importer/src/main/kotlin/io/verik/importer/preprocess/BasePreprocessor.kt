@@ -45,6 +45,14 @@ object BasePreprocessor {
         preprocessContext.pushEnable(macro == null)
     }
 
+    fun preprocessDirectiveElse(
+        ctx: SystemVerilogPreprocessorParser.DirectiveElseContext,
+        preprocessContext: PreprocessContext
+    ) {
+        val enable = preprocessContext.popEnable(ctx.DIRECTIVE_ELSE())
+        preprocessContext.pushEnable(!enable)
+    }
+
     fun preprocessDirectiveEndif(
         ctx: SystemVerilogPreprocessorParser.DirectiveEndifContext,
         preprocessContext: PreprocessContext,

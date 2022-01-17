@@ -31,6 +31,10 @@ class PreprocessorListener(
         BasePreprocessor.preprocessDirectiveIfndef(ctx!!, preprocessContext)
     }
 
+    override fun enterDirectiveElse(ctx: SystemVerilogPreprocessorParser.DirectiveElseContext?) {
+        BasePreprocessor.preprocessDirectiveElse(ctx!!, preprocessContext)
+    }
+
     override fun enterDirectiveEndif(ctx: SystemVerilogPreprocessorParser.DirectiveEndifContext?) {
         BasePreprocessor.preprocessDirectiveEndif(ctx!!, preprocessContext)
     }
@@ -49,10 +53,6 @@ class PreprocessorListener(
 
     override fun enterDirectiveDefine(ctx: SystemVerilogPreprocessorParser.DirectiveDefineContext?) {
         MacroPreprocessor.preprocessDirectiveDefine(ctx!!, preprocessContext)
-    }
-
-    override fun enterDirectiveDefineParam(ctx: SystemVerilogPreprocessorParser.DirectiveDefineParamContext?) {
-        MacroPreprocessor.preprocessDirectiveDefineParam(ctx!!, preprocessContext)
     }
 
     override fun enterDirectiveMacro(ctx: SystemVerilogPreprocessorParser.DirectiveMacroContext?) {

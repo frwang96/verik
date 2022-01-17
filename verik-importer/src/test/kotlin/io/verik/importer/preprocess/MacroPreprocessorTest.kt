@@ -86,6 +86,17 @@ internal class MacroPreprocessorTest : BaseTest() {
     }
 
     @Test
+    fun `directive macro parenthesis`() {
+        drivePreprocessorTest(
+            """
+                `define X (1)
+                `X
+            """.trimIndent(),
+            "(1)"
+        )
+    }
+
+    @Test
     fun `directive macro undefined`() {
         driveMessageTest(
             "`X",
@@ -113,6 +124,17 @@ internal class MacroPreprocessorTest : BaseTest() {
                 `X(())
             """.trimIndent(),
             "()"
+        )
+    }
+
+    @Test
+    fun `directive macro args escape quotes`() {
+        drivePreprocessorTest(
+            """
+                `define X(x) `"x`"
+                `X(abc)
+            """.trimIndent(),
+            "\"abc\""
         )
     }
 
