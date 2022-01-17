@@ -16,7 +16,6 @@
 
 package io.verik.importer.test
 
-import io.verik.importer.antlr.SystemVerilogLexer
 import io.verik.importer.ast.element.ECompilationUnit
 import io.verik.importer.ast.element.EElement
 import io.verik.importer.common.ElementPrinter
@@ -25,7 +24,6 @@ import io.verik.importer.main.Platform
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 import io.verik.importer.main.StageSequencer
-import io.verik.importer.main.StageType
 import io.verik.importer.main.VerikImporterConfig
 import io.verik.importer.message.MessageCollector
 import io.verik.importer.preprocess.PreprocessorSerializerStage
@@ -62,16 +60,6 @@ abstract class BaseTest {
             expected.trim(),
             preprocessorTextFile.content.trim()
         )
-    }
-
-    fun driveLexerFragmentTest(content: String, expected: String) {
-        val projectContext = getProjectContext(content)
-        val stageSequence = StageSequencer.getStageSequence()
-        stageSequence.processUntil(projectContext, StageType.FILTER)
-        val actual = projectContext.lexerFragments.joinToString(separator = " ") {
-            SystemVerilogLexer.VOCABULARY.getSymbolicName(it.type)
-        }
-        assertEquals(expected, actual)
     }
 
     fun <S : ProjectStage> driveElementTest(

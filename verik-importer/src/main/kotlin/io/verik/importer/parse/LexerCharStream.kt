@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.importer.lex
+package io.verik.importer.parse
 
 import io.verik.importer.message.SourceLocation
 import io.verik.importer.preprocess.PreprocessorFragment

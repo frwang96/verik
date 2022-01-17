@@ -18,8 +18,8 @@ package io.verik.importer.main
 
 import io.verik.importer.ast.element.ECompilationUnit
 import io.verik.importer.common.TextFile
-import io.verik.importer.lex.LexerCharStream
-import io.verik.importer.lex.LexerFragment
+import io.verik.importer.parse.LexerCharStream
+import io.verik.importer.parse.LexerFragment
 import io.verik.importer.preprocess.PreprocessorFragment
 import org.antlr.v4.runtime.TokenStream
 import org.antlr.v4.runtime.tree.ParseTree

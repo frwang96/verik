@@ -17,7 +17,6 @@
 package io.verik.importer.parse
 
 import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.lex.LexerCharStream
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 import io.verik.importer.message.Messages

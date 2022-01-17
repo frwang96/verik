@@ -14,18 +14,14 @@
  * limitations under the License.
  */
 
-package io.verik.importer.lex
+package io.verik.importer.parse
 
-import io.verik.importer.test.BaseTest
-import org.junit.jupiter.api.Test
+import io.verik.importer.message.SourceLocation
 
-internal class LexerStageTest : BaseTest() {
-
-    @Test
-    fun `lexer simple`() {
-        driveLexerFragmentTest(
-            "module",
-            "MODULE EOF"
-        )
-    }
-}
+data class LexerFragment(
+    val location: SourceLocation,
+    val virtualLine: Int,
+    val virtualColumn: Int,
+    val type: Int,
+    val content: String
+)

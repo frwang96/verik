@@ -132,7 +132,9 @@ integerType
     ;
 
 integerVectorType
-    : LOGIC
+    : BIT
+    | LOGIC
+    | REG
     ;
 
 netType

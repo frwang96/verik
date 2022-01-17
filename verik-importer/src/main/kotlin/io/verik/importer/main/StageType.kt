@@ -18,8 +18,6 @@ package io.verik.importer.main
 
 enum class StageType {
     PREPROCESS,
-    LEX,
-    FILTER,
     PARSE,
     CAST,
     RESOLVE,

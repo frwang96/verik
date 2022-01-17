@@ -17,7 +17,7 @@
 package io.verik.importer.message
 
 import io.verik.importer.ast.element.EElement
-import io.verik.importer.lex.LexerFragment
+import io.verik.importer.parse.LexerFragment
 import org.antlr.v4.runtime.tree.TerminalNode
 
 class WarningMessageTemplate0(

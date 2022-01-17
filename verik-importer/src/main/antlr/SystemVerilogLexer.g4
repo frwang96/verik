@@ -27,11 +27,13 @@ RPAREN      : ')' ;
 LPAREN_STAR : '(*' ;
 RPAREN_STAR : '*)' ;
 
+BIT       : 'bit' ;
 ENDMODULE : 'endmodule' ;
 INPUT     : 'input' ;
 LOGIC     : 'logic' ;
 MODULE    : 'module' ;
 OUTPUT    : 'output' ;
+REG       : 'reg' ;
 SIGNED    : 'signed' ;
 UNSIGNED  : 'unsigned' ;
 WIRE      : 'wire' ;
