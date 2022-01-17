@@ -45,6 +45,20 @@ changelog {
     groups.set(listOf("Added"))
 }
 
+tasks.register("mainGenerate") {
+    group = "main"
+    dependsOn(gradle.includedBuild("verik-importer").task(":generateGrammarSource"))
+}
+
+tasks.register("mainFormat") {
+    group = "main"
+    dependsOn(gradle.includedBuild("verik-kotlin").task(":ktlintFormat"))
+    dependsOn(gradle.includedBuild("verik-core").task(":ktlintFormat"))
+    dependsOn(gradle.includedBuild("verik-compiler").task(":ktlintFormat"))
+    dependsOn(gradle.includedBuild("verik-importer").task(":ktlintFormat"))
+    dependsOn(gradle.includedBuild("verik-plugin").task(":ktlintFormat"))
+}
+
 tasks.register("mainTest") {
     group = "main"
     dependsOn(gradle.includedBuild("verik-compiler").task(":test"))
@@ -58,15 +72,6 @@ tasks.register("mainCheck") {
     dependsOn(gradle.includedBuild("verik-compiler").task(":check"))
     dependsOn(gradle.includedBuild("verik-importer").task(":check"))
     dependsOn(gradle.includedBuild("verik-plugin").task(":check"))
-}
-
-tasks.register("mainFormat") {
-    group = "main"
-    dependsOn(gradle.includedBuild("verik-kotlin").task(":ktlintFormat"))
-    dependsOn(gradle.includedBuild("verik-core").task(":ktlintFormat"))
-    dependsOn(gradle.includedBuild("verik-compiler").task(":ktlintFormat"))
-    dependsOn(gradle.includedBuild("verik-importer").task(":ktlintFormat"))
-    dependsOn(gradle.includedBuild("verik-plugin").task(":ktlintFormat"))
 }
 
 tasks.register("mainInstall") {

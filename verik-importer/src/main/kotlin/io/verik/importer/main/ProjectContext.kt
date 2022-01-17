@@ -17,12 +17,15 @@
 package io.verik.importer.main
 
 import io.verik.importer.ast.element.ECompilationUnit
+import io.verik.importer.common.TextFile
+import java.nio.file.Path
 
 class ProjectContext(
     val config: VerikImporterConfig
 ) {
 
     var inputFileContexts: List<InputFileContext> = listOf()
+    var includedTextFiles: HashMap<Path, TextFile> = HashMap()
     val processedProjectStages = HashSet<ProjectStage>()
     lateinit var compilationUnit: ECompilationUnit
     val outputContext = OutputContext()

@@ -24,6 +24,10 @@ object Messages {
         "Internal error: $0"
     )
 
+    val INCLUDED_FILE_NOT_FOUND = FatalMessageTemplate1<String>(
+        "Included file not found: $0"
+    )
+
 // PREPROCESS //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val PREPROCESSOR_LEXER_ERROR = WarningMessageTemplate1<String>(
@@ -50,12 +54,6 @@ object Messages {
 
     val LEXER_ERROR = WarningMessageTemplate1<String>(
         "Lexer error: $0"
-    )
-
-// FILTER //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    val MISMATCHED_TOKEN = WarningMessageTemplate1<String>(
-        "Mismatched token: $0"
     )
 
 // PARSE ///////////////////////////////////////////////////////////////////////////////////////////////////////////////

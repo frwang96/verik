@@ -189,6 +189,7 @@ abstract class BaseTest {
                 projectName = "test",
                 buildDir = Paths.get(buildDir),
                 importedFiles = listOf(Paths.get(importedFile)),
+                includeDirs = listOf(),
                 enablePreprocessorOutput = true,
                 annotateDeclarations = false,
                 suppressedWarnings = listOf(),
