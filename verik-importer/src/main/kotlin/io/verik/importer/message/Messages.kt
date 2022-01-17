@@ -16,6 +16,7 @@
 
 package io.verik.importer.message
 
+import java.nio.file.Path
 import kotlin.reflect.full.declaredMemberProperties
 
 object Messages {
@@ -24,7 +25,15 @@ object Messages {
         "Internal error: $0"
     )
 
-    val INCLUDED_FILE_NOT_FOUND = FatalMessageTemplate1<String>(
+    val FILE_READ_ERROR = FatalMessageTemplate1<Path>(
+        "Unable to read file: $0"
+    )
+
+    val FILE_WRITE_ERROR = FatalMessageTemplate1<Path>(
+        "Unable to write file: $0"
+    )
+
+    val INCLUDED_FILE_NOT_FOUND = FatalMessageTemplate1<Path>(
         "Included file not found: $0"
     )
 

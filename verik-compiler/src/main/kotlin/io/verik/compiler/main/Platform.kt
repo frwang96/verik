@@ -16,6 +16,15 @@
 
 package io.verik.compiler.main
 
+import io.verik.compiler.common.TextFile
+import io.verik.compiler.message.Messages
+import io.verik.compiler.message.SourceLocation
+import java.io.BufferedReader
+import java.io.FileInputStream
+import java.io.InputStreamReader
+import java.nio.charset.Charset
+import java.nio.charset.CodingErrorAction
+import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
@@ -23,7 +32,28 @@ object Platform {
 
     const val separator = "/"
 
-    val isWindows = System.getProperty("os.name").lowercase().contains("win")
+    fun readTextFile(path: Path): TextFile {
+        try {
+            val inputStream = FileInputStream(path.toFile())
+            val charsetDecoder = Charset.forName("UTF-8").newDecoder()
+            charsetDecoder.onMalformedInput(CodingErrorAction.IGNORE)
+            val inputStreamReader = InputStreamReader(inputStream, charsetDecoder)
+            val bufferedReader = BufferedReader(inputStreamReader)
+            val lines = bufferedReader.readLines()
+            return TextFile(path.toAbsolutePath(), lines.joinToString(separator = "\n", postfix = "\n"))
+        } catch (exception: Exception) {
+            Messages.FILE_READ_ERROR.on(SourceLocation.NULL, path)
+        }
+    }
+
+    fun writeTextFile(textFile: TextFile) {
+        try {
+            Files.createDirectories(textFile.path.parent)
+            Files.writeString(textFile.path, textFile.content)
+        } catch (exception: Exception) {
+            Messages.FILE_WRITE_ERROR.on(SourceLocation.NULL, textFile.path)
+        }
+    }
 
     fun getPathFromString(path: String): Path {
         return if (path.matches(Regex("/\\w+:.*"))) {

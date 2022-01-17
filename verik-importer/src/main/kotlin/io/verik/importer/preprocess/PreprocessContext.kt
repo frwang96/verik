@@ -21,9 +21,12 @@ import io.verik.importer.message.Messages
 import io.verik.importer.message.SourceLocation
 import org.antlr.v4.runtime.tree.ParseTreeWalker
 import org.antlr.v4.runtime.tree.TerminalNode
+import java.nio.file.Path
 
 class PreprocessContext(
-    val preprocessorFragments: ArrayList<PreprocessorFragment>
+    val preprocessorFragments: ArrayList<PreprocessorFragment>,
+    val includedTextFiles: HashMap<Path, TextFile>,
+    val includeDirs: List<Path>
 ) {
 
     private val preprocessorListener = PreprocessorListener(this)

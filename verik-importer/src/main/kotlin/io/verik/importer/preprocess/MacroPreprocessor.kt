@@ -41,7 +41,7 @@ object MacroPreprocessor {
         preprocessContext: PreprocessContext
     ) {
         val name = ctx.DEFINE_MACRO().text.trim()
-        val contentEntries = ctx.content().mapNotNull { getContentEntry(it, listOf()) }
+        val contentEntries = ctx.contents().content().mapNotNull { getContentEntry(it, listOf()) }
         val macro = Macro(listOf(), contentEntries)
         preprocessContext.setMacro(name, macro)
     }
@@ -52,7 +52,7 @@ object MacroPreprocessor {
     ) {
         val name = ctx.DEFINE_MACRO_PARAM().text.dropLast(1).trim()
         val parameters = (ctx.parameters()?.parameter() ?: listOf()).map { it.text }
-        val contentEntries = ctx.content().mapNotNull { getContentEntry(it, parameters) }
+        val contentEntries = ctx.contents().content().mapNotNull { getContentEntry(it, parameters) }
         val macro = Macro(parameters, contentEntries)
         preprocessContext.setMacro(name, macro)
     }

@@ -70,6 +70,10 @@ DIRECTIVE_DEFINE
     : 'define' [ \t]+ -> mode(DEFINE_MODE)
     ;
 
+DIRECTIVE_INCLUDE
+    : 'include' [ \t]+ -> mode(CONTENT_MODE)
+    ;
+
 DIRECTIVE_IFDEF
     : 'ifdef' [ \t]+ IDENTIFIER [ \t]* [\r\n]? -> mode(DEFAULT_MODE)
     ;

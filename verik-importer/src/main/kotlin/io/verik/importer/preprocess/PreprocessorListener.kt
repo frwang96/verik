@@ -35,6 +35,10 @@ class PreprocessorListener(
         BasePreprocessor.preprocessDirectiveEndif(ctx!!, preprocessContext)
     }
 
+    override fun enterDirectiveInclude(ctx: SystemVerilogPreprocessorParser.DirectiveIncludeContext?) {
+        BasePreprocessor.preprocessDirectiveInclude(ctx!!, preprocessContext)
+    }
+
     override fun enterDirectiveUndefineAll(ctx: SystemVerilogPreprocessorParser.DirectiveUndefineAllContext?) {
         MacroPreprocessor.preprocessDirectiveUndefineAll(preprocessContext)
     }

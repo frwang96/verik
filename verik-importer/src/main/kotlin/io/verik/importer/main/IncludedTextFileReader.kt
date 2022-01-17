@@ -19,7 +19,6 @@ package io.verik.importer.main
 import io.verik.importer.common.TextFile
 import io.verik.importer.message.Messages
 import io.verik.importer.message.SourceLocation
-import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 import kotlin.io.path.isReadable
@@ -37,11 +36,12 @@ object IncludedTextFileReader {
             includedPaths.addAll(getIncludedPaths(it.textFile, includeDirs))
         }
         val includedTextFiles = HashMap<Path, TextFile>()
-        includedPaths.forEach {
-            if (it !in includedTextFiles) {
-                val lines = Files.readAllLines(it)
-                val textFile = TextFile(it, lines.joinToString(separator = "\n", postfix = "\n"))
-                includedTextFiles[it] = textFile
+        while (includedPaths.isNotEmpty()) {
+            val includedPath = includedPaths.removeLast()
+            if (includedPath !in includedTextFiles) {
+                val textFile = Platform.readTextFile(includedPath)
+                includedTextFiles[includedPath] = textFile
+                includedPaths.addAll(getIncludedPaths(textFile, includeDirs))
             }
         }
         return includedTextFiles
@@ -53,20 +53,19 @@ object IncludedTextFileReader {
             val match = INCLUDE_PATTERN.matchEntire(line)
             if (match != null) {
                 val location = SourceLocation(textFile.path, index + 1, 0)
-                val pathString = match.destructured.component1()
-                val path = Paths.get(pathString)
+                val path = Paths.get(match.destructured.component1())
                 if (path.isAbsolute) {
                     if (path.isReadable()) {
                         includedPaths.add(path)
                     } else {
-                        Messages.INCLUDED_FILE_NOT_FOUND.on(location, pathString)
+                        Messages.INCLUDED_FILE_NOT_FOUND.on(location, path)
                     }
                 } else {
                     val includedPath = searchIncludeDirs(path, textFile, includeDirs)
                     if (includedPath != null) {
                         includedPaths.add(includedPath)
                     } else {
-                        Messages.INCLUDED_FILE_NOT_FOUND.on(location, pathString)
+                        Messages.INCLUDED_FILE_NOT_FOUND.on(location, path)
                     }
                 }
             }

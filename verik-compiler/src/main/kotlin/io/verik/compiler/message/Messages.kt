@@ -30,6 +30,14 @@ object Messages {
         "Internal error: $0"
     )
 
+    val FILE_READ_ERROR = FatalMessageTemplate1<Path>(
+        "Unable to read file: $0"
+    )
+
+    val FILE_WRITE_ERROR = FatalMessageTemplate1<Path>(
+        "Unable to write file: $0"
+    )
+
     val NORMALIZATION_ERROR = FatalMessageTemplate2<ProjectStage, String>(
         "Normalization error at $0: $1"
     )

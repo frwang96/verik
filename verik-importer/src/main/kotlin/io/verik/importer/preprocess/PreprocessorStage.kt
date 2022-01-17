@@ -24,13 +24,17 @@ object PreprocessorStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
         projectContext.inputFileContexts.forEach {
-            processInputFileContext(it)
+            processInputFileContext(it, projectContext)
         }
     }
 
-    private fun processInputFileContext(inputFileContext: InputFileContext) {
+    private fun processInputFileContext(inputFileContext: InputFileContext, projectContext: ProjectContext) {
         val preprocessorFragments = ArrayList<PreprocessorFragment>()
-        val preprocessContext = PreprocessContext(preprocessorFragments)
+        val preprocessContext = PreprocessContext(
+            preprocessorFragments,
+            projectContext.includedTextFiles,
+            projectContext.config.includeDirs
+        )
         preprocessContext.preprocess(inputFileContext.textFile)
         inputFileContext.preprocessorFragments = preprocessorFragments
     }

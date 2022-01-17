@@ -23,28 +23,21 @@ file
 text
     : code
     | directive
-    | directiveDefine
-    | directiveDefineParam
-    | directiveMacro
-    | directiveMacroArg
     ;
 
 directive
-    : BACKTICK DIRECTIVE_IFDEF       # directiveIfdef
-    | BACKTICK DIRECTIVE_IFNDEF      # directiveIfndef
-    | BACKTICK DIRECTIVE_ENDIF       # directiveEndif
-    | BACKTICK DIRECTIVE_LINE        # directiveIgnored
-    | BACKTICK DIRECTIVE_TIMESCALE   # directiveIgnored
-    | BACKTICK DIRECTIVE_UNDEFINEALL # directiveUndefineAll
-    | BACKTICK DIRECTIVE_UNDEF       # directiveUndef
-    ;
-
-directiveDefine
-    : BACKTICK DIRECTIVE_DEFINE DEFINE_MACRO content*
-    ;
-
-directiveDefineParam
-    : BACKTICK DIRECTIVE_DEFINE DEFINE_MACRO_PARAM parameters? DEFINE_PARAM_RP content*
+    : BACKTICK DIRECTIVE_IFDEF                                                          # directiveIfdef
+    | BACKTICK DIRECTIVE_IFNDEF                                                         # directiveIfndef
+    | BACKTICK DIRECTIVE_ENDIF                                                          # directiveEndif
+    | BACKTICK DIRECTIVE_LINE                                                           # directiveIgnored
+    | BACKTICK DIRECTIVE_TIMESCALE                                                      # directiveIgnored
+    | BACKTICK DIRECTIVE_INCLUDE contents                                               # directiveInclude
+    | BACKTICK DIRECTIVE_UNDEFINEALL                                                    # directiveUndefineAll
+    | BACKTICK DIRECTIVE_UNDEF                                                          # directiveUndef
+    | BACKTICK DIRECTIVE_DEFINE DEFINE_MACRO contents                                   # directiveDefine
+    | BACKTICK DIRECTIVE_DEFINE DEFINE_MACRO_PARAM parameters? DEFINE_PARAM_RP contents # directiveDefineParam
+    | BACKTICK DIRECTIVE_MACRO                                                          # directiveMacro
+    | BACKTICK DIRECTIVE_MACRO_ARG arguments ARG_RP                                     # directiveMacroArg
     ;
 
 parameters
@@ -55,6 +48,10 @@ parameter
     : DEFINE_PARAM_IDENTIFIER
     ;
 
+contents
+    : content*
+    ;
+
 content
     : CONTENT_LINE_CONTINUATION
     | CONTENT_CONCAT
@@ -62,14 +59,6 @@ content
     | CONTENT_ESCAPE_BACK_SLASH_DQ
     | CONTENT_IDENTIFIER
     | CONTENT_TEXT
-    ;
-
-directiveMacro
-    : BACKTICK DIRECTIVE_MACRO
-    ;
-
-directiveMacroArg
-    : BACKTICK DIRECTIVE_MACRO_ARG arguments ARG_RP
     ;
 
 arguments

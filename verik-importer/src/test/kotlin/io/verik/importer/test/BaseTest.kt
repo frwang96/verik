@@ -21,7 +21,6 @@ import io.verik.importer.ast.element.EElement
 import io.verik.importer.common.ElementPrinter
 import io.verik.importer.common.TextFile
 import io.verik.importer.main.InputFileContext
-import io.verik.importer.main.Platform
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 import io.verik.importer.main.StageSequencer
@@ -181,14 +180,14 @@ abstract class BaseTest {
         }
 
         fun getConfig(): VerikImporterConfig {
-            val buildDir = if (Platform.isWindows) "C:\\build\\verik-import" else "/build/verik-import"
-            val importedFile = if (Platform.isWindows) "C:\\src\\test.sv" else "/src/test.sv"
+            val buildDir = Paths.get("/build/verik-import")
+            val importedFile = Paths.get("/src/test.sv")
             return VerikImporterConfig(
                 toolchain = "verik",
                 timestamp = "",
                 projectName = "test",
-                buildDir = Paths.get(buildDir),
-                importedFiles = listOf(Paths.get(importedFile)),
+                buildDir = buildDir,
+                importedFiles = listOf(importedFile),
                 includeDirs = listOf(),
                 enablePreprocessorOutput = true,
                 annotateDeclarations = false,
