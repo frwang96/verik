@@ -31,6 +31,7 @@ COLON2              : '::' ;
 COMMA               : ',' ;
 DOLLAR              : '$' ;
 DOT                 : '.' ;
+DOT_STAR            : '.*' ;
 EQ                  : '=' ;
 EQ2                 : '==' ;
 EQ2_QUEST           : '==?' ;
@@ -70,6 +71,7 @@ SLASH               : '/' ;
 STAR                : '*' ;
 STAR2               : '**' ;
 TICK                : '\'' ;
+TICK_LBRACE         : '\'{' ;
 
 LBRACK              : '[' ;
 RBRACK              : ']' ;
@@ -122,6 +124,7 @@ COVERGROUP          : 'covergroup' ;
 COVERPOINT          : 'coverpoint' ;
 CROSS               : 'cross' ;
 DEASSIGN            : 'deassign' ;
+DEFAULT             : 'default' ;
 DEFPARAM            : 'defparam' ;
 DESIGN              : 'design' ;
 DISABLE             : 'disable' ;
@@ -194,7 +197,6 @@ JOIN_NONE           : 'join_none' ;
 LAND                : 'and' ;
 LARGE               : 'large' ;
 LASSIGN             : 'assign' ;
-LDEFAULT            : 'default' ;
 LET                 : 'let' ;
 LIBLIST             : 'liblist' ;
 LNOT                : 'not' ;
@@ -348,16 +350,32 @@ BINARY_NUMBER
     : SIZE? BINARY_BASE BINARY_VALUE
     ;
 
+OCTAL_NUMBER
+    : SIZE? OCTAL_BASE OCTAL_VALUE
+    ;
+
+HEX_NUMBER
+    : SIZE? HEX_BASE HEX_VALUE
+    ;
+
 fragment SIZE
     : NON_ZERO_UNSIGNED_NUMBER
     ;
 
 fragment NON_ZERO_UNSIGNED_NUMBER
-    : NON_ZERO_DECIMAL_DIGIT ('_' | NON_ZERO_DECIMAL_DIGIT)*
+    : NON_ZERO_DECIMAL_DIGIT ('_' | DECIMAL_DIGIT)*
     ;
 
 fragment BINARY_VALUE
     : BINARY_DIGIT ('_' | BINARY_DIGIT)*
+    ;
+
+fragment OCTAL_VALUE
+    : OCTAL_DIGIT ('_' | OCTAL_DIGIT)*
+    ;
+
+fragment HEX_VALUE
+    : HEX_DIGIT ('_' | HEX_DIGIT)*
     ;
 
 fragment DECIMAL_BASE
@@ -366,6 +384,14 @@ fragment DECIMAL_BASE
 
 fragment BINARY_BASE
     : '\'' [sS]? [bB]
+    ;
+
+fragment OCTAL_BASE
+    : '\'' [sS]? [oO]
+    ;
+
+fragment HEX_BASE
+    : '\'' [sS]? [hH]
     ;
 
 fragment NON_ZERO_DECIMAL_DIGIT
@@ -378,6 +404,14 @@ fragment DECIMAL_DIGIT
 
 fragment BINARY_DIGIT
     : X_DIGIT | Z_DIGIT | [01]
+    ;
+
+fragment OCTAL_DIGIT
+    : X_DIGIT | Z_DIGIT | [0-7]
+    ;
+
+fragment HEX_DIGIT
+    : X_DIGIT | Z_DIGIT | [0-9a-fA-F]
     ;
 
 fragment X_DIGIT
@@ -394,6 +428,10 @@ STRING_LITERAL
 
 SIMPLE_IDENTIFIER
     : [a-zA-Z_][a-zA-Z0-9_$]*
+    ;
+
+SYSTEM_TF_IDENTIFIER
+    : '$'[a-zA-Z0-9_$]+
     ;
 
 WS

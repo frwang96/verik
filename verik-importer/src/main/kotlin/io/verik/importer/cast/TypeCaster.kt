@@ -75,7 +75,7 @@ object TypeCaster {
         return castContext.getType(ctx.constantExpression(0))
     }
 
-    fun castTypeFromConstantPrimary(ctx: SystemVerilogParser.ConstantPrimaryContext): Type? {
+    fun castTypeFromConstantPrimaryLiteral(ctx: SystemVerilogParser.ConstantPrimaryLiteralContext): Type? {
         val value = ctx.text.toIntOrNull()
             ?: return null
         return Cardinal.of(value + 1).toType()

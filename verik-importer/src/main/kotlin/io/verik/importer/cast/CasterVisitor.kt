@@ -113,8 +113,8 @@ class CasterVisitor(
 
 // A.8.3 Expressions ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitConstantPrimary(ctx: SystemVerilogParser.ConstantPrimaryContext?): Castable? {
-        return TypeCaster.castTypeFromConstantPrimary(ctx!!)
+    override fun visitConstantPrimaryLiteral(ctx: SystemVerilogParser.ConstantPrimaryLiteralContext?): Castable? {
+        return TypeCaster.castTypeFromConstantPrimaryLiteral(ctx!!)
     }
 
     override fun visitConstantRange(ctx: SystemVerilogParser.ConstantRangeContext?): Type? {
