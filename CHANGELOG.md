@@ -4,6 +4,7 @@
 ### Added
 - Importer preprocess include compiler directive.
 - Importer preprocess file and line compiler directive.
+- More rules in SystemVerilog lexer and parser.
 
 ## [0.1.12]
 ### Added

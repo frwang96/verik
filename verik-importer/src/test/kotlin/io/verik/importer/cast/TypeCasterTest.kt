@@ -16,6 +16,7 @@
 
 package io.verik.importer.cast
 
+import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.test.BaseTest
 import io.verik.importer.test.findDeclaration
 import org.junit.jupiter.api.Test
@@ -23,12 +24,12 @@ import org.junit.jupiter.api.Test
 internal class TypeCasterTest : BaseTest() {
 
     @Test
-    fun `cast Boolean`() {
-        driveElementTest(
+    fun `cast type from dataType`() {
+        driveCasterTest(
+            SystemVerilogParser.DataTypeContext::class,
             """
                 logic x;
             """.trimIndent(),
-            CasterStage::class,
             """
                 Property(x, Boolean)
             """.trimIndent()
@@ -36,12 +37,12 @@ internal class TypeCasterTest : BaseTest() {
     }
 
     @Test
-    fun `cast Ubit`() {
-        driveElementTest(
+    fun `cast type from packedDimension`() {
+        driveCasterTest(
+            SystemVerilogParser.PackedDimensionContext::class,
             """
                 logic [7:0] x;
             """.trimIndent(),
-            CasterStage::class,
             """
                 Property(x, Ubit<`8`>)
             """.trimIndent()

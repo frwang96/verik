@@ -28,11 +28,11 @@ description
     ;
 
 moduleNonAnsiHeader
-    : MODULE identifier listOfPorts SEMICOLON
+    : (attributeInstance)* MODULE identifier listOfPorts SEMICOLON
     ;
 
 moduleAnsiHeader
-    : MODULE identifier listOfPortDeclarations? SEMICOLON
+    : (attributeInstance)* MODULE identifier listOfPortDeclarations? SEMICOLON
     ;
 
 moduleDeclaration
@@ -198,6 +198,7 @@ constantPrimary
 
 primaryLiteral
     : number
+    | STRING_LITERAL
     ;
 
 // A.8.7 Numbers ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -212,6 +213,20 @@ integralNumber
 
 decimalNumber
     : UNSIGNED_NUMBER
+    ;
+
+// A.9.1 Attributes ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+attributeInstance
+    : LPAREN_STAR attrSpec (COMMA attrSpec)* RPAREN_STAR
+    ;
+
+attrSpec
+    : attrName (EQ constantExpression)?
+    ;
+
+attrName
+    : identifier
     ;
 
 // A.9.3 Identifiers ///////////////////////////////////////////////////////////////////////////////////////////////////

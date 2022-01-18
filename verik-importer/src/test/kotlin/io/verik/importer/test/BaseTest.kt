@@ -16,8 +16,10 @@
 
 package io.verik.importer.test
 
+import io.verik.importer.antlr.SystemVerilogParserBaseVisitor
 import io.verik.importer.ast.element.EElement
 import io.verik.importer.ast.element.EProject
+import io.verik.importer.cast.CasterStage
 import io.verik.importer.common.ElementPrinter
 import io.verik.importer.common.TextFile
 import io.verik.importer.main.InputFileContext
@@ -27,7 +29,10 @@ import io.verik.importer.main.StageSequencer
 import io.verik.importer.main.VerikImporterConfig
 import io.verik.importer.message.MessageCollector
 import io.verik.importer.preprocess.PreprocessorSerializerStage
+import org.antlr.v4.runtime.RuleContext
+import org.antlr.v4.runtime.tree.RuleNode
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.assertThrows
 import java.nio.file.Paths
@@ -60,6 +65,26 @@ abstract class BaseTest {
             expected.trim(),
             preprocessorTextFile.content.trim()
         )
+    }
+
+    fun driveCasterTest(
+        ruleContextClass: KClass<out RuleContext>,
+        content: String,
+        expected: String,
+        selector: (EProject) -> EElement
+    ) {
+        val projectContext = getProjectContext(content)
+        val stageSequence = StageSequencer.getStageSequence()
+        stageSequence.processUntil(projectContext, CasterStage::class)
+        val ruleContextCheckerVisitor = RuleContextCheckerVisitor(ruleContextClass)
+        projectContext.inputFileContexts.forEach {
+            it.ruleContext.accept(ruleContextCheckerVisitor)
+        }
+        assertTrue(ruleContextCheckerVisitor.hasRuleContext) {
+            "Rule context not found: ${ruleContextClass.simpleName}"
+        }
+        val element = selector(projectContext.project)
+        assertElementEquals(getExpectedString(expected), ElementPrinter.dump(element))
     }
 
     fun <S : ProjectStage> driveElementTest(
@@ -100,7 +125,7 @@ abstract class BaseTest {
         )
     }
 
-    internal fun getProjectContext(content: String): ProjectContext {
+    private fun getProjectContext(content: String): ProjectContext {
         val config = getConfig()
         val projectContext = ProjectContext(config)
         val textFile = TextFile(config.importedFiles[0], content)
@@ -168,6 +193,22 @@ abstract class BaseTest {
             match = false
         assert(match) {
             "expected: <$expectedString> but was: <$actualString>"
+        }
+    }
+
+    private class RuleContextCheckerVisitor(
+        private val ruleContextClass: KClass<out RuleContext>
+    ) : SystemVerilogParserBaseVisitor<Unit>() {
+
+        var hasRuleContext = false
+
+        override fun visitChildren(node: RuleNode?) {
+            if (hasRuleContext)
+                return
+            super.visitChildren(node)
+            if (ruleContextClass.isInstance(node)) {
+                hasRuleContext = true
+            }
         }
     }
 
