@@ -31,14 +31,14 @@ internal class CasterStageTest : BaseTest() {
     }
 
     @Test
-    fun `cast project with moduleDeclaration`() {
+    fun `cast project with module`() {
         driveElementTest(
             """
                 module M;
                 endmodule
             """.trimIndent(),
             CasterStage::class,
-            "Project(RootPackage([Module(M, [], [])]))"
+            "Project(RootPackage([Module(M, [])]))"
         ) { it }
     }
 }

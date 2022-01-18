@@ -38,10 +38,9 @@ object CasterStage : ProjectStage() {
     private fun castInputFileContext(inputFileContext: InputFileContext): List<EDeclaration> {
         val declarations = ArrayList<EDeclaration>()
         val castContext = CastContext(inputFileContext.parserTokenStream)
-        val casterVisitor = CasterVisitor(castContext)
         val parseTree = inputFileContext.parseTree
         (0 until parseTree.childCount - 1).forEach {
-            val declaration = casterVisitor.getDeclaration(parseTree.getChild(it))
+            val declaration = castContext.casterVisitor.getDeclaration(parseTree.getChild(it))
             if (declaration != null)
                 declarations.add(declaration)
         }

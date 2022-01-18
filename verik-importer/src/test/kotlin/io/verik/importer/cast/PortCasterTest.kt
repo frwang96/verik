@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,24 @@
  * limitations under the License.
  */
 
-package io.verik.importer.resolve
+package io.verik.importer.cast
 
 import io.verik.importer.test.BaseTest
 import io.verik.importer.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class PortReferenceResolverStageTest : BaseTest() {
+internal class PortCasterTest : BaseTest() {
 
     @Test
-    fun `resolve port reference`() {
+    fun `cast port from inputDeclaration`() {
         driveElementTest(
             """
-                module M(x);
-                    input x;
+                module M(input x);
                 endmodule
             """.trimIndent(),
-            PortReferenceResolverStage::class,
+            CasterStage::class,
             """
-                Module(M, [Port(x, Boolean, INPUT)], [PortReference(x, x)])
+                Module(M, [Port(x, Boolean, INPUT)])
             """.trimIndent()
         ) {
             it.findDeclaration("M")

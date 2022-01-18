@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test
 internal class ModuleCasterTest : BaseTest() {
 
     @Test
-    fun `cast module with moduleAnsiHeader without listOfPortDeclarations`() {
+    fun `cast module from moduleDeclarationAnsi`() {
         driveElementTest(
             """
                 module M;
@@ -31,7 +31,7 @@ internal class ModuleCasterTest : BaseTest() {
             """.trimIndent(),
             CasterStage::class,
             """
-                Module(M, [], [])
+                Module(M, [])
             """.trimIndent()
         ) {
             it.findDeclaration("M")
@@ -39,23 +39,7 @@ internal class ModuleCasterTest : BaseTest() {
     }
 
     @Test
-    fun `cast module with moduleAnsiHeader with listOfPortDeclarations`() {
-        driveElementTest(
-            """
-                module M(input x);
-                endmodule
-            """.trimIndent(),
-            CasterStage::class,
-            """
-                Module(M, [Port(x, Boolean, INPUT)], [PortReference(x, x)])
-            """.trimIndent()
-        ) {
-            it.findDeclaration("M")
-        }
-    }
-
-    @Test
-    fun `cast module with moduleNonAnsiHeader`() {
+    fun `cast module from moduleDeclarationNonAnsi`() {
         driveElementTest(
             """
                 module M(x);
@@ -64,7 +48,7 @@ internal class ModuleCasterTest : BaseTest() {
             """.trimIndent(),
             CasterStage::class,
             """
-                Module(M, [Port(x, Boolean, INPUT)], [PortReference(null, x)])
+                Module(M, [Port(x, Boolean, INPUT)])
             """.trimIndent()
         ) {
             it.findDeclaration("M")

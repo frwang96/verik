@@ -36,8 +36,8 @@ moduleAnsiHeader
     ;
 
 moduleDeclaration
-    : moduleNonAnsiHeader moduleItem* ENDMODULE
-    | moduleAnsiHeader ENDMODULE
+    : moduleNonAnsiHeader moduleItem* ENDMODULE # moduleDeclarationNonAnsi
+    | moduleAnsiHeader ENDMODULE                # moduleDeclarationAnsi
     ;
 
 // A.1.3 Module Parameters and Ports ///////////////////////////////////////////////////////////////////////////////////

@@ -24,6 +24,8 @@ class CastContext(
     private val parserTokenStream: TokenStream
 ) {
 
+    val casterVisitor = CasterVisitor(this)
+
     fun getLocation(parseTree: ParseTree): SourceLocation {
         val index = parseTree.sourceInterval.a
         return SourceLocation.get(parserTokenStream.get(index))
