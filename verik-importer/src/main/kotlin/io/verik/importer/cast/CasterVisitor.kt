@@ -18,30 +18,41 @@ package io.verik.importer.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.antlr.SystemVerilogParserBaseVisitor
-import io.verik.importer.ast.element.EDeclaration
 import io.verik.importer.ast.element.EElement
 import io.verik.importer.ast.element.EModule
 import io.verik.importer.ast.element.EPort
 import io.verik.importer.ast.element.EProperty
+import io.verik.importer.ast.property.Type
+import io.verik.importer.common.Castable
 import io.verik.importer.message.Messages
 import org.antlr.v4.runtime.RuleContext
-import org.antlr.v4.runtime.tree.ParseTree
 
 class CasterVisitor(
-    private val castContext: CastContext
-) : SystemVerilogParserBaseVisitor<EElement>() {
+    val castContext: CastContext
+) : SystemVerilogParserBaseVisitor<Castable>() {
 
-    inline fun <reified E : EElement> getElement(element: RuleContext): E? {
-        val castedElement = element.accept(this)
-        return castedElement?.cast()
+    inline fun <reified E : EElement> getElement(ctx: RuleContext): E? {
+        return when (val castable = ctx.accept(this)) {
+            null -> null
+            is EElement -> castable.cast()
+            else -> {
+                Messages.INTERNAL_ERROR.on(
+                    castContext.getLocation(ctx),
+                    "Could not cast element: Expected ${E::class.simpleName} actual ${castable::class.simpleName}"
+                )
+            }
+        }
     }
 
-    fun getDeclaration(declaration: ParseTree): EDeclaration? {
-        return when (val element = declaration.accept(this)) {
+    fun getType(ctx: RuleContext): Type? {
+        return when (val castable = ctx.accept(this)) {
             null -> null
-            is EDeclaration -> element
+            is Type -> castable
             else -> {
-                Messages.INTERNAL_ERROR.on(element, "Declaration expected but got: ${element::class.simpleName}")
+                Messages.INTERNAL_ERROR.on(
+                    castContext.getLocation(ctx),
+                    "Expected type but found: ${castable::class.simpleName}"
+                )
             }
         }
     }
@@ -78,5 +89,35 @@ class CasterVisitor(
 
     override fun visitOutputDeclaration(ctx: SystemVerilogParser.OutputDeclarationContext?): EPort? {
         return PortCaster.castPortFromOutputDeclaration(ctx!!, castContext)
+    }
+
+// A.2.2.1 Net and Variable Types //////////////////////////////////////////////////////////////////////////////////////
+
+    override fun visitDataType(ctx: SystemVerilogParser.DataTypeContext?): Type? {
+        return TypeCaster.castTypeFromDataType(ctx!!, castContext)
+    }
+
+    override fun visitDataTypeOrImplicit(ctx: SystemVerilogParser.DataTypeOrImplicitContext?): Type? {
+        return TypeCaster.castTypeFromDataTypeOrImplicit(ctx!!, castContext)
+    }
+
+    override fun visitImplicitDataType(ctx: SystemVerilogParser.ImplicitDataTypeContext?): Type? {
+        return TypeCaster.castTypeFromImplicitDataType(ctx!!, castContext)
+    }
+
+// A.2.5 Declaration Ranges ////////////////////////////////////////////////////////////////////////////////////////////
+
+    override fun visitPackedDimension(ctx: SystemVerilogParser.PackedDimensionContext?): Type? {
+        return TypeCaster.castTypeFromPackedDimension(ctx!!, castContext)
+    }
+
+// A.8.3 Expressions ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+    override fun visitConstantExpression(ctx: SystemVerilogParser.ConstantExpressionContext?): Type? {
+        return TypeCaster.castTypeFromConstantExpression(ctx!!)
+    }
+
+    override fun visitConstantRange(ctx: SystemVerilogParser.ConstantRangeContext?): Type? {
+        return TypeCaster.castTypeFromConstantRange(ctx!!, castContext)
     }
 }

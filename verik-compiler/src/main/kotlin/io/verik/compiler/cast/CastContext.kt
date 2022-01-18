@@ -16,9 +16,21 @@
 
 package io.verik.compiler.cast
 
+import io.verik.compiler.ast.element.common.EDeclaration
+import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.common.ENullExpression
+import io.verik.compiler.ast.element.common.EProperty
+import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
+import io.verik.compiler.ast.element.common.ETypeParameter
+import io.verik.compiler.ast.element.kt.EKtClass
+import io.verik.compiler.ast.element.kt.EKtFunction
+import io.verik.compiler.ast.element.kt.EKtValueParameter
+import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.Type
+import io.verik.compiler.common.location
 import io.verik.compiler.core.common.CoreDeclarationMap
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.NullDeclaration
@@ -28,8 +40,12 @@ import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
 import org.jetbrains.kotlin.descriptors.impl.PropertyDescriptorImpl
 import org.jetbrains.kotlin.descriptors.impl.SimpleFunctionDescriptorImpl
 import org.jetbrains.kotlin.descriptors.impl.TypeAliasConstructorDescriptorImpl
+import org.jetbrains.kotlin.psi.KtDeclaration
 import org.jetbrains.kotlin.psi.KtElement
 import org.jetbrains.kotlin.psi.KtExpression
+import org.jetbrains.kotlin.psi.KtParameter
+import org.jetbrains.kotlin.psi.KtPrimaryConstructor
+import org.jetbrains.kotlin.psi.KtTypeParameter
 import org.jetbrains.kotlin.psi.KtTypeReference
 import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.descriptorUtil.overriddenTreeAsSequence
@@ -57,17 +73,16 @@ class CastContext(
     val sliceResolvedCall = bindingContext.getSliceContents(BindingContext.RESOLVED_CALL)
     val sliceSmartCast = bindingContext.getSliceContents(BindingContext.SMARTCAST)
 
-    val casterVisitor = CasterVisitor(this)
-
     val smartCastExpressions = HashSet<EReferenceExpression>()
 
     private val declarationMap = HashMap<DeclarationDescriptor, Declaration>()
+    private val casterVisitor = CasterVisitor(this)
 
-    fun addDeclaration(declarationDescriptor: DeclarationDescriptor, declaration: Declaration) {
+    fun registerDeclaration(declarationDescriptor: DeclarationDescriptor, declaration: Declaration) {
         declarationMap[declarationDescriptor] = declaration
     }
 
-    fun getDeclaration(declarationDescriptor: DeclarationDescriptor, element: KtElement): Declaration {
+    fun resolveDeclaration(declarationDescriptor: DeclarationDescriptor, element: KtElement): Declaration {
         val unwrappedDeclarationDescriptor = unwrapDeclarationDescriptor(declarationDescriptor)
         val declaration = declarationMap[unwrappedDeclarationDescriptor]
         if (declaration != null)
@@ -94,6 +109,44 @@ class CastContext(
         } else {
             Messages.UNSUPPORTED_DECLARATION.on(element, unwrappedDeclarationDescriptor.name.asString())
             NullDeclaration
+        }
+    }
+
+    fun castDeclaration(declaration: KtDeclaration): EDeclaration? {
+        return casterVisitor.getElement(declaration)
+    }
+
+    fun castTypeParameter(typeParameter: KtTypeParameter): ETypeParameter? {
+        return casterVisitor.getElement(typeParameter)
+    }
+
+    fun castValueParameter(parameter: KtParameter): EKtValueParameter? {
+        return casterVisitor.getElement(parameter)
+    }
+
+    fun castPrimaryConstructor(primaryConstructor: KtPrimaryConstructor): EPrimaryConstructor? {
+        return casterVisitor.getElement(primaryConstructor)
+    }
+
+    fun castExpression(expression: KtExpression): EExpression {
+        val location = expression.location()
+        return when (val element = casterVisitor.getElement<EElement>(expression)) {
+            is EKtClass -> {
+                Messages.ILLEGAL_LOCAL_DECLARATION.on(element, element.name)
+                ENullExpression(location)
+            }
+            is EKtFunction -> {
+                Messages.ILLEGAL_LOCAL_DECLARATION.on(element, element.name)
+                ENullExpression(location)
+            }
+            is EProperty -> {
+                EPropertyStatement(location, element)
+            }
+            is EExpression -> element
+            null -> ENullExpression(location)
+            else -> {
+                Messages.INTERNAL_ERROR.on(location, "Expression expected but got: ${element::class.simpleName}")
+            }
         }
     }
 

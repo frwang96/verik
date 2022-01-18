@@ -31,7 +31,7 @@ object CallExpressionCaster {
         val resolvedValueArguments = resolvedCall.valueArgumentsByIndex!!
         val valueArguments = resolvedValueArguments
             .flatMap { it.arguments }
-            .map { castContext.casterVisitor.getExpression(it.getArgumentExpression()!!) }
+            .map { castContext.castExpression(it.getArgumentExpression()!!) }
         return ArrayList(valueArguments)
     }
 

@@ -26,8 +26,8 @@ object PortCaster {
         ctx: SystemVerilogParser.PortDeclarationContext,
         castContext: CastContext
     ): EPort? {
-        ctx.inputDeclaration()?.let { return castContext.casterVisitor.getElement(it) }
-        ctx.outputDeclaration()?.let { return castContext.casterVisitor.getElement(it) }
+        ctx.inputDeclaration()?.let { return castContext.getPort(it) }
+        ctx.outputDeclaration()?.let { return castContext.getPort(it) }
         return null
     }
 
@@ -38,10 +38,7 @@ object PortCaster {
         val identifier = ctx.identifier()
         val location = castContext.getLocation(identifier)
         val name = identifier.text
-        val type = TypeCaster.castTypeFromDataTypeOrImplicit(
-            ctx.netPortHeader().netPortType().dataTypeOrImplicit(),
-            castContext
-        ) ?: return null
+        val type = castContext.getType(ctx.netPortHeader().netPortType().dataTypeOrImplicit()) ?: return null
         val portType = castPortType(ctx.netPortHeader())
         return EPort(location, name, type, portType)
     }
@@ -53,8 +50,7 @@ object PortCaster {
         val identifier = ctx.identifier()
         val location = castContext.getLocation(identifier)
         val name = identifier.text
-        val type = TypeCaster.castTypeFromDataTypeOrImplicit(ctx.netPortType().dataTypeOrImplicit(), castContext)
-            ?: return null
+        val type = castContext.getType(ctx.netPortType().dataTypeOrImplicit()) ?: return null
         return EPort(location, name, type, PortType.INPUT)
     }
 
@@ -65,8 +61,7 @@ object PortCaster {
         val identifier = ctx.identifier()
         val location = castContext.getLocation(identifier)
         val name = identifier.text
-        val type = TypeCaster.castTypeFromDataTypeOrImplicit(ctx.netPortType().dataTypeOrImplicit(), castContext)
-            ?: return null
+        val type = castContext.getType(ctx.netPortType().dataTypeOrImplicit()) ?: return null
         return EPort(location, name, type, PortType.OUTPUT)
     }
 

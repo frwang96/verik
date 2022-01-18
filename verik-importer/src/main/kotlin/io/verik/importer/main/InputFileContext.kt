@@ -16,12 +16,12 @@
 
 package io.verik.importer.main
 
+import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.common.TextFile
 import io.verik.importer.parse.LexerCharStream
 import io.verik.importer.parse.LexerFragment
 import io.verik.importer.preprocess.PreprocessorFragment
 import org.antlr.v4.runtime.TokenStream
-import org.antlr.v4.runtime.tree.ParseTree
 
 class InputFileContext(val textFile: TextFile) {
 
@@ -29,5 +29,5 @@ class InputFileContext(val textFile: TextFile) {
     lateinit var lexerCharStream: LexerCharStream
     lateinit var lexerFragments: ArrayList<LexerFragment>
     lateinit var parserTokenStream: TokenStream
-    lateinit var parseTree: ParseTree
+    lateinit var ruleContext: SystemVerilogParser.SourceTextContext
 }

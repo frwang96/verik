@@ -46,7 +46,7 @@ object ParserStage : ProjectStage() {
         parser.removeErrorListeners()
         parser.addErrorListener(parserErrorListener)
         inputFileContext.parserTokenStream = parserTokenStream
-        inputFileContext.parseTree = parser.sourceText()
+        inputFileContext.ruleContext = parser.sourceText()
     }
 
     private class ParserErrorListener(

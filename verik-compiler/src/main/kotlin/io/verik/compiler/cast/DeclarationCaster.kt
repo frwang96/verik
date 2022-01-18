@@ -54,12 +54,12 @@ object DeclarationCaster {
 
     fun castTypeAlias(alias: KtTypeAlias, castContext: CastContext): ETypeAlias {
         val descriptor = castContext.sliceTypeAlias[alias]!!
-        val castedTypeAlias = castContext.getDeclaration(descriptor, alias)
+        val castedTypeAlias = castContext.resolveDeclaration(descriptor, alias)
             .cast<ETypeAlias>(alias)
 
         val type = castContext.castType(alias.getTypeReference()!!)
         val typeParameters = alias.typeParameters.mapNotNull {
-            castContext.casterVisitor.getElement<ETypeParameter>(it)
+            castContext.castTypeParameter(it)
         }
 
         castedTypeAlias.fill(type, typeParameters)
@@ -68,7 +68,7 @@ object DeclarationCaster {
 
     fun castTypeParameter(parameter: KtTypeParameter, castContext: CastContext): ETypeParameter {
         val descriptor = castContext.sliceTypeParameter[parameter]!!
-        val castedTypeParameter = castContext.getDeclaration(descriptor, parameter)
+        val castedTypeParameter = castContext.resolveDeclaration(descriptor, parameter)
             .cast<ETypeParameter>(parameter)
 
         val type = if (descriptor.representativeUpperBound.isNullableAny()) Core.Kt.C_Any.toType()
@@ -80,7 +80,7 @@ object DeclarationCaster {
 
     fun castKtClass(classOrObject: KtClassOrObject, castContext: CastContext): EKtClass {
         val descriptor = castContext.sliceClass[classOrObject]!!
-        val castedClass = castContext.getDeclaration(descriptor, classOrObject)
+        val castedClass = castContext.resolveDeclaration(descriptor, classOrObject)
             .cast<EKtClass>(classOrObject)
 
         val type = castContext.castType(descriptor.defaultType, classOrObject)
@@ -88,17 +88,17 @@ object DeclarationCaster {
         val documentationLines = castDocumentationLines(classOrObject.docComment)
         val superType = castContext.castType(descriptor.getSuperClassOrAny().defaultType, classOrObject)
         val declarations = classOrObject.declarations.mapNotNull {
-            castContext.casterVisitor.getDeclaration(it)
+            castContext.castDeclaration(it)
         }
         val typeParameters = classOrObject.typeParameters.mapNotNull {
-            castContext.casterVisitor.getElement<ETypeParameter>(it)
+            castContext.castTypeParameter(it)
         }
         val isEnum = classOrObject.hasModifier(KtTokens.ENUM_KEYWORD)
         val isAbstract = classOrObject.hasModifier(KtTokens.ABSTRACT_KEYWORD)
         val isObject = classOrObject is KtObjectDeclaration
         val primaryConstructor = when {
             classOrObject.hasExplicitPrimaryConstructor() ->
-                castContext.casterVisitor.getElement(classOrObject.primaryConstructor!!)
+                castContext.castPrimaryConstructor(classOrObject.primaryConstructor!!)
             classOrObject.hasPrimaryConstructor() && !isObject ->
                 castImplicitPrimaryConstructor(classOrObject, castContext)
             else -> null
@@ -134,7 +134,7 @@ object DeclarationCaster {
 
     fun castKtFunction(function: KtNamedFunction, castContext: CastContext): EKtFunction {
         val descriptor = castContext.sliceFunction[function]!!
-        val castedFunction = castContext.getDeclaration(descriptor, function)
+        val castedFunction = castContext.resolveDeclaration(descriptor, function)
             .cast<EKtFunction>(function)
 
         val typeReference = function.typeReference
@@ -146,13 +146,13 @@ object DeclarationCaster {
         val annotationEntries = castAnnotationEntries(function.annotationEntries, castContext)
         val documentationLines = castDocumentationLines(function.docComment)
         val body = function.bodyBlockExpression?.let {
-            castContext.casterVisitor.getExpression(it).cast()
+            castContext.castExpression(it).cast()
         } ?: EBlockExpression.empty(castedFunction.location)
         val valueParameters = function.valueParameters.mapNotNull {
-            castContext.casterVisitor.getElement<EKtValueParameter>(it)
+            castContext.castValueParameter(it)
         }
         val typeParameters = function.typeParameters.mapNotNull {
-            castContext.casterVisitor.getElement<ETypeParameter>(it)
+            castContext.castTypeParameter(it)
         }
         val isAbstract = function.hasModifier(KtTokens.ABSTRACT_KEYWORD)
         val isOverride = function.hasModifier(KtTokens.OVERRIDE_KEYWORD)
@@ -172,15 +172,15 @@ object DeclarationCaster {
 
     fun castPrimaryConstructor(constructor: KtPrimaryConstructor, castContext: CastContext): EPrimaryConstructor {
         val descriptor = castContext.sliceConstructor[constructor]!!
-        val castedPrimaryConstructor = castContext.getDeclaration(descriptor, constructor)
+        val castedPrimaryConstructor = castContext.resolveDeclaration(descriptor, constructor)
             .cast<EPrimaryConstructor>(constructor)
 
         val type = castContext.castType(descriptor.returnType, constructor)
         val valueParameters = constructor.valueParameters.mapNotNull {
-            castContext.casterVisitor.getElement<EKtValueParameter>(it)
+            castContext.castValueParameter(it)
         }
         val typeParameters = descriptor.typeParameters.map {
-            castContext.getDeclaration(it, constructor).cast<ETypeParameter>(constructor)
+            castContext.resolveDeclaration(it, constructor).cast<ETypeParameter>(constructor)
         }
 
         castedPrimaryConstructor.fill(type, valueParameters, typeParameters)
@@ -194,12 +194,12 @@ object DeclarationCaster {
         val descriptor = castContext.sliceClass[classOrObject]!!
         val primaryConstructorDescriptor = descriptor.unsubstitutedPrimaryConstructor!!
         val castedPrimaryConstructor = castContext
-            .getDeclaration(primaryConstructorDescriptor, classOrObject)
+            .resolveDeclaration(primaryConstructorDescriptor, classOrObject)
             .cast<EPrimaryConstructor>(classOrObject)
 
         val type = castContext.castType(primaryConstructorDescriptor.returnType, classOrObject)
         val typeParameters = primaryConstructorDescriptor.typeParameters.map {
-            castContext.getDeclaration(it, classOrObject).cast<ETypeParameter>(classOrObject)
+            castContext.resolveDeclaration(it, classOrObject).cast<ETypeParameter>(classOrObject)
         }
 
         castedPrimaryConstructor.fill(type, listOf(), typeParameters)
@@ -208,7 +208,7 @@ object DeclarationCaster {
 
     fun castProperty(property: KtProperty, castContext: CastContext): EProperty {
         val descriptor = castContext.sliceVariable[property]!!
-        val castedProperty = castContext.getDeclaration(descriptor, property)
+        val castedProperty = castContext.resolveDeclaration(descriptor, property)
             .cast<EProperty>(property)
 
         val typeReference = property.typeReference
@@ -219,7 +219,7 @@ object DeclarationCaster {
         val documentationLines = castDocumentationLines(property.docComment)
         castedProperty.documentationLines = documentationLines
         val initializer = property.initializer?.let {
-            castContext.casterVisitor.getExpression(it)
+            castContext.castExpression(it)
         }
         val isMutable = property.isVar
 
@@ -235,7 +235,7 @@ object DeclarationCaster {
 
     fun castEnumEntry(enumEntry: KtEnumEntry, castContext: CastContext): EEnumEntry {
         val descriptor = castContext.sliceClass[enumEntry]!!
-        val castedEnumEntry = castContext.getDeclaration(descriptor, enumEntry)
+        val castedEnumEntry = castContext.resolveDeclaration(descriptor, enumEntry)
             .cast<EEnumEntry>(enumEntry)
 
         val type = castContext.castType(descriptor.classValueType!!, enumEntry)
@@ -249,7 +249,7 @@ object DeclarationCaster {
     fun castValueParameter(parameter: KtParameter, castContext: CastContext): EKtValueParameter {
         val propertyDescriptor = castContext.slicePrimaryConstructorParameter[parameter]
         val descriptor = propertyDescriptor ?: castContext.sliceValueParameter[parameter]!!
-        val castedValueParameter = castContext.getDeclaration(descriptor, parameter)
+        val castedValueParameter = castContext.resolveDeclaration(descriptor, parameter)
             .cast<EKtValueParameter>(parameter)
 
         val typeReference = parameter.typeReference
@@ -294,7 +294,7 @@ object DeclarationCaster {
         val descriptor = castContext.sliceReferenceTarget[
             superTypeCallEntry.calleeExpression.constructorReferenceExpression!!
         ]!!
-        val declaration = castContext.getDeclaration(descriptor, superTypeCallEntry)
+        val declaration = castContext.resolveDeclaration(descriptor, superTypeCallEntry)
         val type = if (declaration is CoreConstructorDeclaration) {
             declaration.parent.toType()
         } else {

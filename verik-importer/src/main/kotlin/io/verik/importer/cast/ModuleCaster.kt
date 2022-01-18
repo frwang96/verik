@@ -18,7 +18,6 @@ package io.verik.importer.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.ast.element.EModule
-import io.verik.importer.ast.element.EPort
 
 object ModuleCaster {
 
@@ -32,7 +31,7 @@ object ModuleCaster {
         val name = identifier.text
         val ports = ctx.moduleItem().mapNotNull {
             if (it.portDeclaration() != null) {
-                castContext.casterVisitor.getElement<EPort>(it.portDeclaration()) ?: return null
+                castContext.getPort(it.portDeclaration()) ?: return null
             } else null
         }
         return EModule(location, name, ports)
@@ -47,7 +46,7 @@ object ModuleCaster {
         val location = castContext.getLocation(identifier)
         val name = identifier.text
         val ports = moduleAnsiHeader.listOfPortDeclarations()?.ansiPortDeclaration()?.map {
-            castContext.casterVisitor.getElement<EPort>(it) ?: return null
+            castContext.getPort(it) ?: return null
         } ?: listOf()
         return EModule(location, name, ports)
     }

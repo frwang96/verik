@@ -40,7 +40,7 @@ object TypeCaster {
             return cast(castContext, type.getReturnTypeFromFunctionType(), element)
         }
         val declarationDescriptor = type.constructor.declarationDescriptor!!
-        val declaration = castContext.getDeclaration(declarationDescriptor, element)
+        val declaration = castContext.resolveDeclaration(declarationDescriptor, element)
         val arguments = if (declaration != Core.Kt.C_Enum) {
             type.arguments.map { cast(castContext, it.type, element) }
         } else listOf()
@@ -58,7 +58,7 @@ object TypeCaster {
             typeElement.innerType as KtUserType // ignore nullable type for now
         } else typeElement as KtUserType
         val referenceTarget = castContext.sliceReferenceTarget[userType.referenceExpression!!]!!
-        val declaration = castContext.getDeclaration(referenceTarget, typeReference)
+        val declaration = castContext.resolveDeclaration(referenceTarget, typeReference)
         val arguments = userType.typeArgumentsAsTypes.map { cast(castContext, it) }
         return Type(declaration, ArrayList(arguments))
     }
