@@ -26,7 +26,7 @@ import io.verik.importer.message.Messages
 object PortReferenceResolverStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.compilationUnit.accept(PortReferenceResolverVisitor)
+        projectContext.project.accept(PortReferenceResolverVisitor)
     }
 
     private object PortReferenceResolverVisitor : TreeVisitor() {

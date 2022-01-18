@@ -18,7 +18,7 @@ options { tokenVocab = SystemVerilogLexer; }
 
 // A.1.2 SystemVerilog Source Text /////////////////////////////////////////////////////////////////////////////////////
 
-compilationUnit
+sourceText
     : description* EOF
     ;
 

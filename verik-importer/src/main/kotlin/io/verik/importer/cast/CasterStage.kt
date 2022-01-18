@@ -16,8 +16,8 @@
 
 package io.verik.importer.cast
 
-import io.verik.importer.ast.element.ECompilationUnit
 import io.verik.importer.ast.element.EDeclaration
+import io.verik.importer.ast.element.EProject
 import io.verik.importer.ast.element.ERootPackage
 import io.verik.importer.main.InputFileContext
 import io.verik.importer.main.ProjectContext
@@ -32,7 +32,7 @@ object CasterStage : ProjectStage() {
             declarations.addAll(castInputFileContext(it))
         }
         val rootPackage = ERootPackage(SourceLocation.NULL, declarations)
-        projectContext.compilationUnit = ECompilationUnit(SourceLocation.NULL, rootPackage)
+        projectContext.project = EProject(SourceLocation.NULL, rootPackage)
     }
 
     private fun castInputFileContext(inputFileContext: InputFileContext): List<EDeclaration> {

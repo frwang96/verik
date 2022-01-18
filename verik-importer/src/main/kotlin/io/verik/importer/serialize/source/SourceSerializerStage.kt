@@ -26,7 +26,7 @@ object SourceSerializerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
         val packageTextFiles = ArrayList<TextFile>()
-        packageTextFiles.addAll(serializePackage(projectContext.compilationUnit.rootPackage, projectContext))
+        packageTextFiles.addAll(serializePackage(projectContext.project.rootPackage, projectContext))
         projectContext.outputContext.packageTextFiles = packageTextFiles
     }
 

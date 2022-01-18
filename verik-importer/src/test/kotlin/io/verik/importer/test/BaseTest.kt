@@ -16,8 +16,8 @@
 
 package io.verik.importer.test
 
-import io.verik.importer.ast.element.ECompilationUnit
 import io.verik.importer.ast.element.EElement
+import io.verik.importer.ast.element.EProject
 import io.verik.importer.common.ElementPrinter
 import io.verik.importer.common.TextFile
 import io.verik.importer.main.InputFileContext
@@ -66,12 +66,12 @@ abstract class BaseTest {
         content: String,
         stageClass: KClass<S>,
         expected: String,
-        selector: (ECompilationUnit) -> EElement
+        selector: (EProject) -> EElement
     ) {
         val projectContext = getProjectContext(content)
         val stageSequence = StageSequencer.getStageSequence()
         stageSequence.processUntil(projectContext, stageClass)
-        val element = selector(projectContext.compilationUnit)
+        val element = selector(projectContext.project)
         assertElementEquals(getExpectedString(expected), ElementPrinter.dump(element))
     }
 

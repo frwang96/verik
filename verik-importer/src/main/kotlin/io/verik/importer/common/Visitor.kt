@@ -18,11 +18,11 @@ package io.verik.importer.common
 
 import io.verik.importer.ast.element.EAbstractPackage
 import io.verik.importer.ast.element.EAbstractProperty
-import io.verik.importer.ast.element.ECompilationUnit
 import io.verik.importer.ast.element.EDeclaration
 import io.verik.importer.ast.element.EElement
 import io.verik.importer.ast.element.EModule
 import io.verik.importer.ast.element.EPort
+import io.verik.importer.ast.element.EProject
 import io.verik.importer.ast.element.EProperty
 import io.verik.importer.ast.element.ERootPackage
 import io.verik.importer.ast.element.ETypedElement
@@ -31,7 +31,7 @@ abstract class Visitor {
 
     open fun visitElement(element: EElement) {}
 
-    open fun visitCompilationUnit(compilationUnit: ECompilationUnit) {
+    open fun visitProject(compilationUnit: EProject) {
         visitElement(compilationUnit)
     }
 

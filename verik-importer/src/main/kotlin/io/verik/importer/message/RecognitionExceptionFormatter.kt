@@ -29,7 +29,7 @@ object RecognitionExceptionFormatter {
 
     fun format(recognitionException: RecognitionException?): String {
         return when (recognitionException) {
-            null -> "Mismatched token"
+            null -> "No matching rules"
             is LexerNoViableAltException -> "Unable to recognize token"
             is NoViableAltException -> "No matching rules"
             is InputMismatchException -> {
