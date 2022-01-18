@@ -84,6 +84,8 @@ ansiPortDeclaration
 
 moduleCommonItem
     : moduleOrGenerateItemDeclaration
+    | initialConstruct
+    | alwaysConstruct
     ;
 
 moduleItem
@@ -139,6 +141,7 @@ lifetime
 
 dataType
     : integerVectorType signing? packedDimension* # dataTypeVector
+    | integerAtomType signing?                    # dataTypeInteger
     | classType                                   # dataTypeClassType
     ;
 
@@ -153,6 +156,15 @@ implicitDataType
 
 classType
     : psClassIdentifier
+    ;
+
+integerAtomType
+    : BYTE
+    | SHORTINT
+    | INT
+    | LONGINT
+    | INTEGER
+    | TIME
     ;
 
 integerVectorType
@@ -186,6 +198,12 @@ signing
 dataTypeOrVoid
     : dataType
     | VOID
+    ;
+
+// A.2.2.3 Delays //////////////////////////////////////////////////////////////////////////////////////////////////////
+
+delayValue
+    : UNSIGNED_NUMBER
     ;
 
 // A.2.3 Declaration Lists /////////////////////////////////////////////////////////////////////////////////////////////
@@ -273,14 +291,66 @@ blockItemDeclaration
     : attributeInstance* dataDeclaration # blockItemDeclarationData
     ;
 
+// A.6.1 Continuous Assignment and Net Alias Statements ////////////////////////////////////////////////////////////////
+
+listOfVariableAssignments
+    : variableAssignment (COMMA variableAssignment)*
+    ;
+
+// A.6.2 Procedural Blocks and Assignmemts /////////////////////////////////////////////////////////////////////////////
+
+initialConstruct
+    : INITIAL statementOrNull
+    ;
+
+alwaysConstruct
+    : alwaysKeyword statement
+    ;
+
+alwaysKeyword
+    : ALWAYS
+    | ALWAYS_COMB
+    | ALWAYS_LATCH
+    | ALWAYS_FF
+    ;
+
+blockingAssignment
+    : variableLeftValue EQ delayOrEventControl? expression
+    ;
+
+nonBlockingAssignment
+    : variableLeftValue LT_EQ delayOrEventControl? expression
+    ;
+
+variableAssignment
+    : variableLeftValue EQ expression
+    ;
+
+// A.6.3 Parallel and Sequential Blocks ////////////////////////////////////////////////////////////////////////////////
+
+seqBlock
+    : BEGIN (COLON blockIdentifier)? blockItemDeclaration* statementOrNull* END (COLON blockIdentifier)?
+    ;
+
 // A.6.4 Statements ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+statementOrNull
+    : statement
+    | attributeInstance* SEMICOLON
+    ;
 
 statement
     : (blockIdentifier COLON)? attributeInstance* statementItem
     ;
 
 statementItem
-    : jumpStatement # statementItemJump
+    : blockingAssignment SEMICOLON     # statementItemBlocking
+    | nonBlockingAssignment SEMICOLON  # statementItemNonBlocking
+    | conditionalStatement             # statementItemConditional
+    | loopStatement                    # statementItemLoop
+    | jumpStatement                    # statementItemJump
+    | seqBlock                         # statementItemSeqBlock
+    | proceduralTimingControlStatement # statementItemTiming
     ;
 
 functionStatement
@@ -294,19 +364,130 @@ functionStatementOrNull
 
 // A.6.5 Timing Control Statements /////////////////////////////////////////////////////////////////////////////////////
 
+proceduralTimingControlStatement
+    : proceduralTimingControl statementOrNull
+    ;
+
+delayOrEventControl
+    : delayControl                                 # delayOrEventControlDelay
+    | eventControl                                 # delayOrEventControlEvent
+    | REPEAT LPAREN expression RPAREN eventControl # delayOrEventControlRepeat
+    ;
+
+delayControl
+    : SHARP delayValue                        # delayControlValue
+    | SHARP LPAREN minTypMaxExpression RPAREN # delayControlExpression
+    ;
+
+eventControl
+    : AT hierarchicalEventIdentifier   # eventControlAtIdentifier
+    | AT LPAREN eventExpression RPAREN # eventControlAtParen
+    | AT_STAR                          # eventControlAtStar
+    ;
+
+eventExpression
+    : edgeIdentifier? expression (IFF expression)? # eventExpressionExpression
+    | LPAREN eventExpression RPAREN                # eventExpressionParen
+    ;
+
+proceduralTimingControl
+    : eventControl
+    ;
+
 jumpStatement
-    : BREAK SEMICOLON    # jumpStatementBreak
-    | CONTINUE SEMICOLON # jumpStatementContinue
+    : RETURN expression? SEMICOLON # jumpStatementReturn
+    | BREAK SEMICOLON              # jumpStatementBreak
+    | CONTINUE SEMICOLON           # jumpStatementContinue
+    ;
+
+// A.6.6 Conditional Statements ////////////////////////////////////////////////////////////////////////////////////////
+
+conditionalStatement
+    : uniquePriority? IF LPAREN condPredicate RPAREN statementOrNull
+      (ELSE IF LPAREN condPredicate RPAREN statementOrNull)* (ELSE statementOrNull)
+    ;
+
+uniquePriority
+    : UNIQUE
+    | UNIQUE0
+    | PRIORITY
+    ;
+
+condPredicate
+    : expressionOrCondPattern (AND3 expressionOrCondPattern)*
+    ;
+
+expressionOrCondPattern
+    : expression
+    ;
+
+// A.6.8 Looping Statements ////////////////////////////////////////////////////////////////////////////////////////////
+
+loopStatement
+    : FOREVER statementOrNull
+      # loopStatementForever
+    | FOR LPAREN forInitialization? SEMICOLON expression? SEMICOLON forStep? RPAREN statementOrNull
+      # loopStatementFor
+    ;
+
+forInitialization
+    : listOfVariableAssignments                              # forInitializationAssignment
+    | forVariableDeclaration (COMMA forVariableDeclaration)* # forInitializationDeclaration
+    ;
+
+forVariableDeclaration
+    : VAR? dataType variableIdentifier EQ expression (COMMA variableIdentifier EQ expression)*
+    ;
+
+forStep
+    : forStepAssignment (COMMA forStepAssignment)*
+    ;
+
+forStepAssignment
+    : incOrDecExpression
+    ;
+
+// A.7.4 Specify Path Delays ///////////////////////////////////////////////////////////////////////////////////////////
+
+edgeIdentifier
+    : POSEDGE
+    | NEGEDGE
+    | EDGE
     ;
 
 // A.8.3 Expressions ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+incOrDecExpression
+    : incOrDecOperator attributeInstance* variableLeftValue # incOrDecExpressionPrefix
+    | variableLeftValue attributeInstance* incOrDecOperator # incOrDecExpressionPostfix
+    ;
+
 constantExpression
-    : constantPrimary
+    : constantPrimary                                                         # constantExpressionPrimary
+    | constantExpression binaryOperator attributeInstance* constantExpression # constantExpressionBinary
     ;
 
 constantRange
     : constantExpression COLON constantExpression
+    ;
+
+expression
+    : primary                                                 # expressionPrimary
+    | expression binaryOperator attributeInstance* expression # expressionBinary
+    ;
+
+minTypMaxExpression
+    : expression                                   # minTypMaxExpressionNoColon
+    | expression COLON expression COLON expression # minTypMaxExpressionColon
+    ;
+
+partSelectRange
+    : constantRange
+    | indexedRange
+    ;
+
+indexedRange
+    : expression (PLUS_COLON | MINUS_COLON) constantExpression
     ;
 
 // A.8.4 Primaries /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -315,9 +496,72 @@ constantPrimary
     : primaryLiteral
     ;
 
+primary
+    : primaryLiteral                # primaryPrimaryLiteral
+    | hierarchicalIdentifier select # primaryHierarchical
+    | THIS                          # primaryThis
+    ;
+
 primaryLiteral
     : number
     | STRING_LITERAL
+    ;
+
+bitSelect
+    : (LBRACK expression RBRACK)*
+    ;
+
+select
+    : ((DOT memberIdentifier bitSelect)* DOT memberIdentifier)? bitSelect (LBRACK partSelectRange RBRACK)?
+    ;
+
+constantBitSelect
+    : (LBRACK constantExpression RBRACK)*
+    ;
+
+// A.8.5 Expression Left-Side Values ///////////////////////////////////////////////////////////////////////////////////
+
+variableLeftValue
+    : hierarchicalVariableIdentifier select
+    ;
+
+// A.8.6 Operators /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+binaryOperator
+    : PLUS
+    | MINUS
+    | STAR
+    | SLASH
+    | MOD
+    | EQ2
+    | BANG_EQ
+    | EQ3
+    | BANG_EQ2
+    | EQ2_QUEST
+    | BANG_EQ_QUEST
+    | AND2
+    | OR2
+    | STAR2
+    | LT
+    | LT_EQ
+    | GT
+    | GT_EQ
+    | AND
+    | OR
+    | CARET
+    | CARET_NOT
+    | NOT_CARET
+    | GT2
+    | LT2
+    | GT3
+    | LT3
+    | MINUS_GT
+    | LT_MINUS_GT
+    ;
+
+incOrDecOperator
+    : PLUS2
+    | MINUS2
     ;
 
 // A.8.7 Numbers ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -327,11 +571,9 @@ number
     ;
 
 integralNumber
-    : decimalNumber
-    ;
-
-decimalNumber
     : UNSIGNED_NUMBER
+    | DECIMAL_NUMBER
+    | BINARY_NUMBER
     ;
 
 // A.9.1 Attributes ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -362,8 +604,24 @@ functionIdentifier
     : identifier
     ;
 
+hierarchicalEventIdentifier
+    : hierarchicalIdentifier
+    ;
+
+hierarchicalIdentifier
+    : (ROOT DOT)? (identifier constantBitSelect DOT)* identifier
+    ;
+
+hierarchicalVariableIdentifier
+    : hierarchicalIdentifier
+    ;
+
 identifier
     : SIMPLE_IDENTIFIER
+    ;
+
+memberIdentifier
+    : identifier
     ;
 
 moduleIdentifier

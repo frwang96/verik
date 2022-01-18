@@ -21,6 +21,8 @@ AT                  : '@' ;
 AT_STAR             : '@*' ;
 BANG                : '!' ;
 BANG_EQ             : '!=' ;
+BANG_EQ2            : '!==' ;
+BANG_EQ_QUEST       : '!=?' ;
 CARET               : '^' ;
 CARET_EQ            : '^=' ;
 CARET_NOT           : '^~' ;
@@ -35,6 +37,9 @@ EQ2_QUEST           : '==?' ;
 EQ3                 : '===' ;
 EQ_GT               : '=>' ;
 GT                  : '>' ;
+GT2                 : '>>' ;
+GT3                 : '>>>' ;
+GT_EQ               : '>=' ;
 LT                  : '<' ;
 LT2                 : '<<' ;
 LT2_EQ              : '<<=' ;
@@ -44,6 +49,8 @@ LT_EQ               : '<=' ;
 LT_MINUS_GT         : '<->' ;
 MINUS               : '-' ;
 MINUS2              : '--' ;
+MINUS_COLON         : '-:' ;
+MINUS_GT            : '->' ;
 MOD                 : '%';
 MOD_EQ              : '%=';
 NOT                 : '~' ;
@@ -54,12 +61,14 @@ OR                  : '|' ;
 OR2                 : '||' ;
 PLUS                : '+' ;
 PLUS2               : '++' ;
+PLUS_COLON          : '+:' ;
 QUEST               : '?' ;
 SEMICOLON           : ';' ;
 SHARP               : '#' ;
 SHARP2              : '##' ;
 SLASH               : '/' ;
 STAR                : '*' ;
+STAR2               : '**' ;
 TICK                : '\'' ;
 
 LBRACK              : '[' ;
@@ -297,6 +306,8 @@ TRIREG              : 'trireg' ;
 TYPE                : 'type' ;
 TYPEDEF             : 'typedef' ;
 UNION               : 'union' ;
+UNIQUE              : 'unique' ;
+UNIQUE0             : 'unique0' ;
 UNSIGNED            : 'unsigned' ;
 UNTIL               : 'until' ;
 UNTIL_WITH          : 'until_with' ;
@@ -322,10 +333,39 @@ WOR                 : 'wor' ;
 XNOR                : 'xnor' ;
 XOR                 : 'xor' ;
 
+ROOT                : '$root' ;
 UNIT                : '$unit' ;
 
 UNSIGNED_NUMBER
     : DECIMAL_DIGIT ('_' | DECIMAL_DIGIT)*
+    ;
+
+DECIMAL_NUMBER
+    : SIZE? DECIMAL_BASE UNSIGNED_NUMBER
+    ;
+
+BINARY_NUMBER
+    : SIZE? BINARY_BASE BINARY_VALUE
+    ;
+
+fragment SIZE
+    : NON_ZERO_UNSIGNED_NUMBER
+    ;
+
+fragment NON_ZERO_UNSIGNED_NUMBER
+    : NON_ZERO_DECIMAL_DIGIT ('_' | NON_ZERO_DECIMAL_DIGIT)*
+    ;
+
+fragment BINARY_VALUE
+    : BINARY_DIGIT ('_' | BINARY_DIGIT)*
+    ;
+
+fragment DECIMAL_BASE
+    : '\'' [sS]? [dD]
+    ;
+
+fragment BINARY_BASE
+    : '\'' [sS]? [bB]
     ;
 
 fragment NON_ZERO_DECIMAL_DIGIT
@@ -334,6 +374,18 @@ fragment NON_ZERO_DECIMAL_DIGIT
 
 fragment DECIMAL_DIGIT
     : [0-9]
+    ;
+
+fragment BINARY_DIGIT
+    : X_DIGIT | Z_DIGIT | [01]
+    ;
+
+fragment X_DIGIT
+    : [xX]
+    ;
+
+fragment Z_DIGIT
+    : [zZ?]
     ;
 
 STRING_LITERAL
