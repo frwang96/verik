@@ -93,8 +93,8 @@ class CasterVisitor(
 
 // A.2.2.1 Net and Variable Types //////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitDataType(ctx: SystemVerilogParser.DataTypeContext?): Type? {
-        return TypeCaster.castTypeFromDataType(ctx!!, castContext)
+    override fun visitDataTypeVector(ctx: SystemVerilogParser.DataTypeVectorContext?): Type? {
+        return TypeCaster.castTypeFromDataTypeVector(ctx!!, castContext)
     }
 
     override fun visitDataTypeOrImplicit(ctx: SystemVerilogParser.DataTypeOrImplicitContext?): Type? {
@@ -107,8 +107,8 @@ class CasterVisitor(
 
 // A.2.5 Declaration Ranges ////////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitPackedDimension(ctx: SystemVerilogParser.PackedDimensionContext?): Type? {
-        return TypeCaster.castTypeFromPackedDimension(ctx!!, castContext)
+    override fun visitPackedDimensionRange(ctx: SystemVerilogParser.PackedDimensionRangeContext?): Type? {
+        return TypeCaster.castTypeFromPackedDimensionRange(ctx!!, castContext)
     }
 
 // A.8.3 Expressions ///////////////////////////////////////////////////////////////////////////////////////////////////

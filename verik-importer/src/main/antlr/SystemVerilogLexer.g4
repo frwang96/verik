@@ -25,6 +25,7 @@ CARET               : '^' ;
 CARET_EQ            : '^=' ;
 CARET_NOT           : '^~' ;
 COLON               : ':' ;
+COLON2              : '::' ;
 COMMA               : ',' ;
 DOLLAR              : '$' ;
 DOT                 : '.' ;
@@ -320,6 +321,8 @@ WITHIN              : 'within' ;
 WOR                 : 'wor' ;
 XNOR                : 'xnor' ;
 XOR                 : 'xor' ;
+
+UNIT                : '$unit' ;
 
 UNSIGNED_NUMBER
     : DECIMAL_DIGIT ('_' | DECIMAL_DIGIT)*

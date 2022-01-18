@@ -28,16 +28,16 @@ description
     ;
 
 moduleNonAnsiHeader
-    : (attributeInstance)* MODULE identifier listOfPorts SEMICOLON
+    : attributeInstance* MODULE identifier listOfPorts SEMICOLON
     ;
 
 moduleAnsiHeader
-    : (attributeInstance)* MODULE identifier listOfPortDeclarations? SEMICOLON
+    : attributeInstance* MODULE identifier listOfPortDeclarations? SEMICOLON
     ;
 
 moduleDeclaration
-    : moduleNonAnsiHeader moduleItem* ENDMODULE # moduleDeclarationNonAnsi
-    | moduleAnsiHeader ENDMODULE                # moduleDeclarationAnsi
+    : moduleNonAnsiHeader moduleItem* ENDMODULE (COLON moduleIdentifier)?     # moduleDeclarationNonAnsi
+    | moduleAnsiHeader nonPortModuleItem* ENDMODULE (COLON moduleIdentifier)? # moduleDeclarationAnsi
     ;
 
 // A.1.3 Module Parameters and Ports ///////////////////////////////////////////////////////////////////////////////////
@@ -64,7 +64,7 @@ portExpression
     ;
 
 portReference
-    : identifier
+    : portIdentifier
     ;
 
 portDirection
@@ -82,8 +82,25 @@ ansiPortDeclaration
 
 // A.1.4 Module Items //////////////////////////////////////////////////////////////////////////////////////////////////
 
+moduleCommonItem
+    : moduleOrGenerateItemDeclaration
+    ;
+
 moduleItem
-    : portDeclaration SEMICOLON
+    : portDeclaration SEMICOLON # moduleItemPortDeclaration
+    | nonPortModuleItem         # moduleItemNonPortItem
+    ;
+
+moduleOrGenerateItem
+    : attributeInstance* moduleCommonItem
+    ;
+
+moduleOrGenerateItemDeclaration
+    : packageOrGenerateItemDeclaration
+    ;
+
+nonPortModuleItem
+    : moduleOrGenerateItem
     ;
 
 // A.1.11 Package Items ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -94,6 +111,7 @@ packageItem
 
 packageOrGenerateItemDeclaration
     : dataDeclaration
+    | functionDeclaration
     ;
 
 // A.2.1.2 Port Declarations ///////////////////////////////////////////////////////////////////////////////////////////
@@ -112,10 +130,16 @@ dataDeclaration
     : dataTypeOrImplicit listOfVariableDeclAssignments SEMICOLON
     ;
 
+lifetime
+    : STATIC
+    | AUTOMATIC
+    ;
+
 // A.2.2.1 Net and Variable Types //////////////////////////////////////////////////////////////////////////////////////
 
 dataType
-    : integerVectorType signing? packedDimension*
+    : integerVectorType signing? packedDimension* # dataTypeVector
+    | classType                                   # dataTypeClassType
     ;
 
 dataTypeOrImplicit
@@ -124,11 +148,11 @@ dataTypeOrImplicit
     ;
 
 implicitDataType
-    :signing? packedDimension*
+    : signing? packedDimension*
     ;
 
-integerType
-    : integerVectorType
+classType
+    : psClassIdentifier
     ;
 
 integerVectorType
@@ -144,6 +168,7 @@ netType
 netPortType
     : dataTypeOrImplicit
     | netType dataTypeOrImplicit
+    | netTypeIdentifier
     ;
 
 variablePortType
@@ -158,8 +183,9 @@ signing
     : SIGNED | UNSIGNED
     ;
 
-simpleType
-    : integerType
+dataTypeOrVoid
+    : dataType
+    | VOID
     ;
 
 // A.2.3 Declaration Lists /////////////////////////////////////////////////////////////////////////////////////////////
@@ -171,13 +197,106 @@ listOfVariableDeclAssignments
 // A.2.4 Declaration Assignments ///////////////////////////////////////////////////////////////////////////////////////
 
 variableDeclAssignment
-    : identifier
+    : variableIdentifier variableDimension*
     ;
 
 // A.2.5 Declaration Ranges ////////////////////////////////////////////////////////////////////////////////////////////
 
+unpackedDimension
+    : LBRACK constantRange RBRACK      # unpackedDimensionRange
+    | LBRACK constantExpression RBRACK # unpackedDimensionExpression
+    ;
+
 packedDimension
-    : LBRACK (constantRange | constantExpression) RBRACK
+    : LBRACK constantRange RBRACK # packedDimensionRange
+    | unsizedDimension            # packedDimensionUnsized
+    ;
+
+associativeDimension
+    : LBRACK dataType RBRACK # associativeDimensionDataType
+    | LBRACK STAR RBRACK     # associativeDimensionStar
+    ;
+
+variableDimension
+    : unsizedDimension
+    | unpackedDimension
+    | associativeDimension
+    | queueDimension
+    ;
+
+queueDimension
+    : LBRACK DOLLAR RBRACK
+    ;
+
+unsizedDimension
+    : LBRACK RBRACK
+    ;
+
+// A.2.6 Function Declarations /////////////////////////////////////////////////////////////////////////////////////////
+
+functionDataTypeOrImplicit
+    : dataTypeOrVoid
+    | implicitDataType
+    ;
+
+functionDeclaration
+    : FUNCTION lifetime? functionBodyDeclaration
+    ;
+
+functionBodyDeclaration
+    : functionDataTypeOrImplicit functionIdentifier SEMICOLON functionStatementOrNull* ENDFUNCTION
+      (COLON functionIdentifier)?
+      # functionBodyDeclarationNoPortList
+    | functionDataTypeOrImplicit functionIdentifier LPAREN tfPortList? RPAREN blockItemDeclaration*
+      functionStatementOrNull* ENDFUNCTION (COLON functionIdentifier)?
+      # functionBodyDeclarationPortList
+    ;
+
+// A.2.7 Task Declarations /////////////////////////////////////////////////////////////////////////////////////////////
+
+tfPortList
+    : tfPortItem (COMMA tfPortItem)*
+    ;
+
+tfPortItem
+    : attributeInstance* tfPortDirection? VAR? dataTypeOrImplicit portIdentifier variableDimension*
+    ;
+
+tfPortDirection
+    : portDirection
+    | CONST REF
+    ;
+
+// A.2.8 Block Item Declarations ///////////////////////////////////////////////////////////////////////////////////////
+
+blockItemDeclaration
+    : attributeInstance* dataDeclaration # blockItemDeclarationData
+    ;
+
+// A.6.4 Statements ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+statement
+    : (blockIdentifier COLON)? attributeInstance* statementItem
+    ;
+
+statementItem
+    : jumpStatement # statementItemJump
+    ;
+
+functionStatement
+    : statement
+    ;
+
+functionStatementOrNull
+    : functionStatement              # functionStatementOrNullFunction
+    | attributeInstance* SEMICOLON # functionStatementOrNullNull
+    ;
+
+// A.6.5 Timing Control Statements /////////////////////////////////////////////////////////////////////////////////////
+
+jumpStatement
+    : BREAK SEMICOLON    # jumpStatementBreak
+    | CONTINUE SEMICOLON # jumpStatementContinue
     ;
 
 // A.8.3 Expressions ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -231,6 +350,47 @@ attrName
 
 // A.9.3 Identifiers ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+blockIdentifier
+    : identifier
+    ;
+
+classIdentifier
+    : identifier
+    ;
+
+functionIdentifier
+    : identifier
+    ;
+
 identifier
     : SIMPLE_IDENTIFIER
+    ;
+
+moduleIdentifier
+    : identifier
+    ;
+
+netTypeIdentifier
+    : identifier
+    ;
+
+packageIdentifier
+    : identifier
+    ;
+
+packageScope
+    : packageIdentifier COLON2  # packageScopeIdentifier
+    | UNIT COLON2               # packageScopeUnit
+    ;
+
+portIdentifier
+    : identifier
+    ;
+
+psClassIdentifier
+    : packageScope? classIdentifier
+    ;
+
+variableIdentifier
+    : identifier
     ;
