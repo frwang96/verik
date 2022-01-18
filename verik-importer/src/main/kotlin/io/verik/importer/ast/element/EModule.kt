@@ -16,7 +16,6 @@
 
 package io.verik.importer.ast.element
 
-import io.verik.importer.ast.property.PortReference
 import io.verik.importer.common.Visitor
 import io.verik.importer.core.Core
 import io.verik.importer.message.SourceLocation
@@ -24,8 +23,7 @@ import io.verik.importer.message.SourceLocation
 class EModule(
     override val location: SourceLocation,
     override val name: String,
-    val ports: List<EPort>,
-    val portReferences: List<PortReference>
+    val ports: List<EPort>
 ) : EDeclaration() {
 
     override var type = Core.C_Unit.toType()

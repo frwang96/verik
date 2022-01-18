@@ -16,6 +16,7 @@
 
 package io.verik.importer.cast
 
+import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.test.BaseTest
 import io.verik.importer.test.findDeclaration
 import org.junit.jupiter.api.Test
@@ -23,15 +24,15 @@ import org.junit.jupiter.api.Test
 internal class ModuleCasterTest : BaseTest() {
 
     @Test
-    fun `cast module with moduleAnsiHeader without listOfPortDeclarations`() {
-        driveElementTest(
+    fun `cast module from moduleDeclarationAnsi`() {
+        driveCasterTest(
+            SystemVerilogParser.ModuleDeclarationAnsiContext::class,
             """
                 module M;
                 endmodule
             """.trimIndent(),
-            CasterStage::class,
             """
-                Module(M, [], [])
+                Module(M, [])
             """.trimIndent()
         ) {
             it.findDeclaration("M")
@@ -39,32 +40,16 @@ internal class ModuleCasterTest : BaseTest() {
     }
 
     @Test
-    fun `cast module with moduleAnsiHeader with listOfPortDeclarations`() {
-        driveElementTest(
-            """
-                module M(input x);
-                endmodule
-            """.trimIndent(),
-            CasterStage::class,
-            """
-                Module(M, [Port(x, Boolean, INPUT)], [PortReference(x, x)])
-            """.trimIndent()
-        ) {
-            it.findDeclaration("M")
-        }
-    }
-
-    @Test
-    fun `cast module with moduleNonAnsiHeader`() {
-        driveElementTest(
+    fun `cast module from moduleDeclarationNonAnsi`() {
+        driveCasterTest(
+            SystemVerilogParser.ModuleDeclarationNonAnsiContext::class,
             """
                 module M(x);
                     input x;
                 endmodule
             """.trimIndent(),
-            CasterStage::class,
             """
-                Module(M, [Port(x, Boolean, INPUT)], [PortReference(null, x)])
+                Module(M, [Port(x, Boolean, INPUT)])
             """.trimIndent()
         ) {
             it.findDeclaration("M")

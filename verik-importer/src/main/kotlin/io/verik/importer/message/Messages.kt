@@ -16,6 +16,7 @@
 
 package io.verik.importer.message
 
+import java.nio.file.Path
 import kotlin.reflect.full.declaredMemberProperties
 
 object Messages {
@@ -24,43 +25,49 @@ object Messages {
         "Internal error: $0"
     )
 
+    val FILE_READ_ERROR = FatalMessageTemplate1<Path>(
+        "Unable to read file: $0"
+    )
+
+    val FILE_WRITE_ERROR = FatalMessageTemplate1<Path>(
+        "Unable to write file: $0"
+    )
+
+    val INCLUDED_FILE_NOT_FOUND = ErrorMessageTemplate1<Path>(
+        "Included file not found: $0"
+    )
+
 // PREPROCESS //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val PREPROCESSOR_LEXER_ERROR = WarningMessageTemplate1<String>(
+    val PREPROCESSOR_LEXER_ERROR = ErrorMessageTemplate1<String>(
         "Preprocessor lexer error: $0"
     )
 
-    val PREPROCESSOR_PARSER_ERROR = WarningMessageTemplate1<String>(
+    val PREPROCESSOR_PARSER_ERROR = ErrorMessageTemplate1<String>(
         "Preprocessor parser error: $0"
     )
 
-    val UNMATCHED_ENDIF = WarningMessageTemplate0(
-        "Unmatched endif directive"
+    val UNMATCHED_DIRECTIVE = ErrorMessageTemplate0(
+        "Unmatched directive"
     )
 
-    val UNDEFINED_MACRO = WarningMessageTemplate1<String>(
+    val UNDEFINED_MACRO = ErrorMessageTemplate1<String>(
         "Undefined macro: $0"
     )
 
-    val INCORRECT_MACRO_ARGUMENTS = WarningMessageTemplate2<Int, Int>(
+    val INCORRECT_MACRO_ARGUMENTS = ErrorMessageTemplate2<Int, Int>(
         "Incorrect number of macro arguments: Expected $0 actual $1"
     )
 
 // LEX /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val LEXER_ERROR = WarningMessageTemplate1<String>(
+    val LEXER_ERROR = ErrorMessageTemplate1<String>(
         "Lexer error: $0"
-    )
-
-// FILTER //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    val MISMATCHED_TOKEN = WarningMessageTemplate1<String>(
-        "Mismatched token: $0"
     )
 
 // PARSE ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val PARSER_ERROR = WarningMessageTemplate1<String>(
+    val PARSER_ERROR = ErrorMessageTemplate1<String>(
         "Parser error: $0"
     )
 

@@ -25,8 +25,7 @@ object PropertyCaster {
         val identifier = ctx.listOfVariableDeclAssignments().variableDeclAssignment(0).identifier()
         val location = castContext.getLocation(identifier)
         val name = identifier.text
-        val type = TypeCaster.castType(ctx.dataTypeOrImplicit(), castContext)
-            ?: return null
+        val type = castContext.getType(ctx.dataTypeOrImplicit()) ?: return null
         return EProperty(location, name, type)
     }
 }

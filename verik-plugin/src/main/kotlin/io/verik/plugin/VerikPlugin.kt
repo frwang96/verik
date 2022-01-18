@@ -49,6 +49,7 @@ class VerikPlugin : Plugin<Project> {
         }
     }
 
+    @Suppress("DuplicatedCode")
     private fun createVerikTask(project: Project): Task {
         val extension = project.extensions.create("verik", VerikPluginExtension::class.java)
         val task = project.tasks.create("verik") {
@@ -73,6 +74,7 @@ class VerikPlugin : Plugin<Project> {
         return task
     }
 
+    @Suppress("DuplicatedCode")
     private fun createVerikImportTask(project: Project): Task {
         val extension = project.extensions.create("verikImport", VerikImporterPluginExtension::class.java)
         val task = project.tasks.create("verikImport") {
@@ -80,10 +82,12 @@ class VerikPlugin : Plugin<Project> {
         }
         task.group = "verik"
         task.inputs.property("toolchain", { ConfigUtil.getToolchain() })
+        task.inputs.property("includeDirs", { extension.includeDirs.joinToString() })
         task.inputs.property("enablePreprocessorOutput", { extension.enablePreprocessorOutput })
         task.inputs.property("annotateDeclarations", { extension.annotateDeclarations })
         task.inputs.property("suppressedWarnings", { extension.suppressedWarnings })
         task.inputs.property("promotedWarnings", { extension.promotedWarnings })
+        task.inputs.property("maxErrorCount", { extension.maxErrorCount })
         task.inputs.property("debug", { extension.debug })
         task.inputs.files({ extension.importedFiles })
         task.outputs.dirs({

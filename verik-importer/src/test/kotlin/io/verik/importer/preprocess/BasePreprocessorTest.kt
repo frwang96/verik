@@ -47,11 +47,24 @@ internal class BasePreprocessorTest : BaseTest() {
     }
 
     @Test
+    fun `directive else`() {
+        drivePreprocessorTest(
+            """
+                `ifdef X
+                `else
+                    abc
+                `endif
+            """.trimIndent(),
+            "abc"
+        )
+    }
+
+    @Test
     fun `directive endif unmatched`() {
         driveMessageTest(
             "`endif",
-            false,
-            "Unmatched endif directive"
+            true,
+            "Unmatched directive"
         )
     }
 }

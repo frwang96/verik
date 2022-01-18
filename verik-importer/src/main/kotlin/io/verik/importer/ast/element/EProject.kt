@@ -19,7 +19,7 @@ package io.verik.importer.ast.element
 import io.verik.importer.common.Visitor
 import io.verik.importer.message.SourceLocation
 
-class ECompilationUnit(
+class EProject(
     override val location: SourceLocation,
     val rootPackage: ERootPackage
 ) : EElement() {
@@ -29,7 +29,7 @@ class ECompilationUnit(
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitCompilationUnit(this)
+        visitor.visitProject(this)
     }
 
     override fun acceptChildren(visitor: Visitor) {

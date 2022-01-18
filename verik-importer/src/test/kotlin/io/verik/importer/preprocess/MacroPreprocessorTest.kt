@@ -29,7 +29,7 @@ internal class MacroPreprocessorTest : BaseTest() {
                 `undef X
                 `X
             """.trimIndent(),
-            false,
+            true,
             "Undefined macro: X"
         )
     }
@@ -42,8 +42,24 @@ internal class MacroPreprocessorTest : BaseTest() {
                 `undefineall
                 `X
             """.trimIndent(),
-            false,
+            true,
             "Undefined macro: X"
+        )
+    }
+
+    @Test
+    fun `directive macro file`() {
+        drivePreprocessorTest(
+            "`__FILE__",
+            "\"/src/test.sv\""
+        )
+    }
+
+    @Test
+    fun `directive macro line`() {
+        drivePreprocessorTest(
+            "`__LINE__",
+            "1"
         )
     }
 
@@ -86,10 +102,21 @@ internal class MacroPreprocessorTest : BaseTest() {
     }
 
     @Test
+    fun `directive macro parenthesis`() {
+        drivePreprocessorTest(
+            """
+                `define X (1)
+                `X
+            """.trimIndent(),
+            "(1)"
+        )
+    }
+
+    @Test
     fun `directive macro undefined`() {
         driveMessageTest(
             "`X",
-            false,
+            true,
             "Undefined macro: X"
         )
     }
@@ -117,13 +144,35 @@ internal class MacroPreprocessorTest : BaseTest() {
     }
 
     @Test
+    fun `directive macro string`() {
+        drivePreprocessorTest(
+            """
+                `define X(x) x
+                `X("abc")
+            """.trimIndent(),
+            "\"abc\""
+        )
+    }
+
+    @Test
+    fun `directive macro args escape quotes`() {
+        drivePreprocessorTest(
+            """
+                `define X(x) `"x`"
+                `X(abc)
+            """.trimIndent(),
+            "\"abc\""
+        )
+    }
+
+    @Test
     fun `directive macro args incorrect arguments`() {
         driveMessageTest(
             """
                 `define X(x) x
                 `X
             """.trimIndent(),
-            false,
+            true,
             "Incorrect number of macro arguments: Expected 1 actual 0"
         )
     }

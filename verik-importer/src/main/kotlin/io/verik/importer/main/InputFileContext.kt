@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,18 @@
 
 package io.verik.importer.main
 
-import io.verik.importer.ast.element.EProject
+import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.common.TextFile
-import java.nio.file.Path
+import io.verik.importer.parse.LexerCharStream
+import io.verik.importer.parse.LexerFragment
+import io.verik.importer.preprocess.PreprocessorFragment
+import org.antlr.v4.runtime.TokenStream
 
-class ProjectContext(
-    val config: VerikImporterConfig
-) {
+class InputFileContext(val textFile: TextFile) {
 
-    var inputFileContexts: List<InputFileContext> = listOf()
-    var includedTextFiles: HashMap<Path, TextFile> = HashMap()
-    val processedProjectStages = HashSet<ProjectStage>()
-    lateinit var project: EProject
-    val outputContext = OutputContext()
+    lateinit var preprocessorFragments: ArrayList<PreprocessorFragment>
+    lateinit var lexerCharStream: LexerCharStream
+    lateinit var lexerFragments: ArrayList<LexerFragment>
+    lateinit var parserTokenStream: TokenStream
+    lateinit var ruleContext: SystemVerilogParser.SourceTextContext
 }

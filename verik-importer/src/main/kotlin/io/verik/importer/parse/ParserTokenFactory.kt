@@ -16,7 +16,6 @@
 
 package io.verik.importer.parse
 
-import io.verik.importer.lex.LexerFragment
 import org.antlr.v4.runtime.CharStream
 import org.antlr.v4.runtime.TokenFactory
 import org.antlr.v4.runtime.TokenSource

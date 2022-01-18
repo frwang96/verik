@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,27 +14,28 @@
  * limitations under the License.
  */
 
-package io.verik.importer.parse
+package io.verik.importer.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.test.ParserTest
+import io.verik.importer.test.BaseTest
+import io.verik.importer.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class PortDeclarationsParserTest : ParserTest() {
+internal class PortCasterTest : BaseTest() {
 
     @Test
-    fun `parse inputDeclaration outputDeclaration`() {
-        driveParserTest(
-            listOf(
-                SystemVerilogParser.RULE_inputDeclaration,
-                SystemVerilogParser.RULE_outputDeclaration,
-            ),
+    fun `cast port from ansiPortDeclaration`() {
+        driveCasterTest(
+            SystemVerilogParser.AnsiPortDeclarationContext::class,
             """
-                module M(x);
-                    input x;
-                    output x;
+                module M(input x);
                 endmodule
+            """.trimIndent(),
+            """
+                Module(M, [Port(x, Boolean, INPUT)])
             """.trimIndent()
-        )
+        ) {
+            it.findDeclaration("M")
+        }
     }
 }

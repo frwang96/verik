@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,6 @@
  * limitations under the License.
  */
 
-package io.verik.importer.lex
+package io.verik.importer.common
 
-import io.verik.importer.test.BaseTest
-import org.junit.jupiter.api.Test
-
-internal class LexerStageTest : BaseTest() {
-
-    @Test
-    fun `lexer simple`() {
-        driveLexerFragmentTest(
-            "module",
-            "MODULE EOF"
-        )
-    }
-}
+interface Castable

@@ -16,7 +16,6 @@
 
 package io.verik.compiler.main
 
-import io.verik.compiler.common.TextFile
 import io.verik.compiler.message.GradleMessagePrinter
 import io.verik.compiler.message.MessageCollector
 import io.verik.compiler.message.SourceLocation
@@ -55,10 +54,7 @@ object VerikMain {
 
     private fun readFiles(projectContext: ProjectContext) {
         projectContext.sourceSetContexts = projectContext.config.sourceSetConfigs.map { sourceSetConfig ->
-            val textFiles = sourceSetConfig.files.map {
-                val lines = Files.readAllLines(it)
-                TextFile(it, lines.joinToString(separator = "\n", postfix = "\n"))
-            }
+            val textFiles = sourceSetConfig.files.map { Platform.readTextFile(it) }
             SourceSetContext(sourceSetConfig.name, textFiles)
         }
     }
@@ -66,10 +62,7 @@ object VerikMain {
     private fun writeFiles(projectContext: ProjectContext) {
         MessageCollector.messageCollector.flush()
         val textFiles = projectContext.outputContext.getTextFiles()
-        textFiles.forEach {
-            Files.createDirectories(it.path.parent)
-            Files.writeString(it.path, it.content)
-        }
+        textFiles.forEach { Platform.writeTextFile(it) }
     }
 
     private fun writeLogFile(

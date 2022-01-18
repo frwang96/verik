@@ -16,10 +16,10 @@
 
 package io.verik.importer.common
 
-import io.verik.importer.ast.element.ECompilationUnit
 import io.verik.importer.ast.element.EElement
 import io.verik.importer.ast.element.EModule
 import io.verik.importer.ast.element.EPort
+import io.verik.importer.ast.element.EProject
 import io.verik.importer.ast.element.EProperty
 import io.verik.importer.ast.element.ERootPackage
 
@@ -28,8 +28,8 @@ class ElementPrinter : Visitor() {
     private val builder = StringBuilder()
     private var first = true
 
-    override fun visitCompilationUnit(compilationUnit: ECompilationUnit) {
-        build("CompilationUnit") {
+    override fun visitProject(compilationUnit: EProject) {
+        build("Project") {
             build(compilationUnit.rootPackage)
         }
     }
@@ -44,12 +44,6 @@ class ElementPrinter : Visitor() {
         build("Module") {
             build(module.name)
             build(module.ports)
-            buildList(module.portReferences) {
-                build("PortReference") {
-                    build(it.reference.name)
-                    build(it.name)
-                }
-            }
         }
     }
 
@@ -93,15 +87,6 @@ class ElementPrinter : Visitor() {
         first = true
         elements.forEach { it.accept(this) }
         builder.append("]")
-        first = false
-    }
-
-    private fun <T> buildList(entries: List<T>, builder: (T) -> Unit) {
-        if (!first) this.builder.append(", ")
-        this.builder.append("[")
-        first = true
-        entries.forEach { builder(it) }
-        this.builder.append("]")
         first = false
     }
 

@@ -16,17 +16,26 @@
 
 package io.verik.importer.preprocess
 
+import io.verik.importer.main.InputFileContext
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 
 object PreprocessorStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        val preprocessorFragments = ArrayList<PreprocessorFragment>()
-        val preprocessContext = PreprocessContext(preprocessorFragments)
-        projectContext.inputTextFiles.forEach {
-            preprocessContext.preprocess(it)
+        projectContext.inputFileContexts.forEach {
+            processInputFileContext(it, projectContext)
         }
-        projectContext.preprocessorFragments = preprocessorFragments
+    }
+
+    private fun processInputFileContext(inputFileContext: InputFileContext, projectContext: ProjectContext) {
+        val preprocessorFragments = ArrayList<PreprocessorFragment>()
+        val preprocessContext = PreprocessContext(
+            preprocessorFragments,
+            projectContext.includedTextFiles,
+            projectContext.config.includeDirs
+        )
+        preprocessContext.preprocess(inputFileContext.textFile)
+        inputFileContext.preprocessorFragments = preprocessorFragments
     }
 }

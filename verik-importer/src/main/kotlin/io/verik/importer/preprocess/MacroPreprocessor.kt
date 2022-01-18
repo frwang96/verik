@@ -41,18 +41,8 @@ object MacroPreprocessor {
         preprocessContext: PreprocessContext
     ) {
         val name = ctx.DEFINE_MACRO().text.trim()
-        val contentEntries = ctx.content().mapNotNull { getContentEntry(it, listOf()) }
-        val macro = Macro(listOf(), contentEntries)
-        preprocessContext.setMacro(name, macro)
-    }
-
-    fun preprocessDirectiveDefineParam(
-        ctx: SystemVerilogPreprocessorParser.DirectiveDefineParamContext,
-        preprocessContext: PreprocessContext
-    ) {
-        val name = ctx.DEFINE_MACRO_PARAM().text.dropLast(1).trim()
-        val parameters = (ctx.parameters()?.parameter() ?: listOf()).map { it.text }
-        val contentEntries = ctx.content().mapNotNull { getContentEntry(it, parameters) }
+        val parameters = (ctx.parameters()?.parameter() ?: listOf()).map { it.CONTENT_IDENTIFIER().text }
+        val contentEntries = ctx.contents().content().mapNotNull { getContentEntry(it, parameters) }
         val macro = Macro(parameters, contentEntries)
         preprocessContext.setMacro(name, macro)
     }
@@ -62,6 +52,20 @@ object MacroPreprocessor {
         preprocessContext: PreprocessContext
     ) {
         val name = ctx.DIRECTIVE_MACRO().text.trim()
+        when (name) {
+            "__FILE__" -> {
+                val location = SourceLocation.get(ctx.DIRECTIVE_MACRO())
+                val preprocessorFragment = PreprocessorFragment(location, "\"${location.path}\"", false)
+                preprocessContext.preprocessorFragments.add(preprocessorFragment)
+                return
+            }
+            "__LINE__" -> {
+                val location = SourceLocation.get(ctx.DIRECTIVE_MACRO())
+                val preprocessorFragment = PreprocessorFragment(location, location.line.toString(), false)
+                preprocessContext.preprocessorFragments.add(preprocessorFragment)
+                return
+            }
+        }
         val macro = preprocessContext.getMacro(name)
         if (macro != null) {
             val location = SourceLocation.get(ctx.BACKTICK())
@@ -78,7 +82,7 @@ object MacroPreprocessor {
     ) {
         val name = ctx.DIRECTIVE_MACRO_ARG().text.dropLast(1).trim()
         val macro = preprocessContext.getMacro(name)
-        val arguments = ctx.arguments().argument().map { it.text }
+        val arguments = ctx.arguments().argument().map { it.text.trim() }
         if (macro != null) {
             val location = SourceLocation.get(ctx.BACKTICK())
             val content = evaluate(macro, arguments, location)
@@ -95,9 +99,9 @@ object MacroPreprocessor {
         val child = ctx.children.first() as TerminalNode
         return when (child.symbol.type) {
             SystemVerilogPreprocessorLexer.CONTENT_LINE_CONTINUATION -> TextMacroContentEntry("\n")
-            SystemVerilogPreprocessorLexer.CONTENT_CONCAT -> TextMacroContentEntry("\"")
-            SystemVerilogPreprocessorLexer.CONTENT_ESCAPE_DQ -> TextMacroContentEntry("\\\"")
-            SystemVerilogPreprocessorLexer.CONTENT_ESCAPE_BACK_SLASH_DQ -> null
+            SystemVerilogPreprocessorLexer.CONTENT_CONCAT -> null
+            SystemVerilogPreprocessorLexer.CONTENT_ESCAPE_DQ -> TextMacroContentEntry("\"")
+            SystemVerilogPreprocessorLexer.CONTENT_ESCAPE_BACK_SLASH_DQ -> TextMacroContentEntry("\\\"")
             SystemVerilogPreprocessorLexer.CONTENT_IDENTIFIER -> {
                 val index = parameters.indexOf(ctx.text)
                 if (index != -1) {

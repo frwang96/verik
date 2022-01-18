@@ -18,34 +18,66 @@ package io.verik.importer.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.ast.property.Type
+import io.verik.importer.core.Cardinal
 import io.verik.importer.core.Core
 import io.verik.importer.message.Messages
 
 object TypeCaster {
 
-    fun castType(ctx: SystemVerilogParser.DataTypeOrImplicitContext, castContext: CastContext): Type? {
+    fun castTypeFromDataType(
+        ctx: SystemVerilogParser.DataTypeContext,
+        castContext: CastContext
+    ): Type? {
+        return when (ctx.packedDimension().size) {
+            0 -> Core.C_Boolean.toType()
+            1 -> castContext.getType(ctx.packedDimension(0))?.let { Core.C_Ubit.toType(it) }
+            else -> null
+        }
+    }
+
+    fun castTypeFromDataTypeOrImplicit(
+        ctx: SystemVerilogParser.DataTypeOrImplicitContext,
+        castContext: CastContext
+    ): Type? {
         val type = when {
-            ctx.dataType() != null -> castType(ctx.dataType()!!)
-            else -> castType(ctx.implicitDataType()!!)
+            ctx.dataType() != null -> castContext.getType(ctx.dataType()!!)
+            else -> castContext.getType(ctx.implicitDataType()!!)
         }
         if (type == null)
             Messages.TYPE_CAST_ERROR.on(castContext.getLocation(ctx), ctx.text)
         return type
     }
 
-    private fun castType(ctx: SystemVerilogParser.DataTypeContext): Type? {
+    fun castTypeFromImplicitDataType(
+        ctx: SystemVerilogParser.ImplicitDataTypeContext,
+        castContext: CastContext
+    ): Type? {
         return when (ctx.packedDimension().size) {
             0 -> Core.C_Boolean.toType()
-            1 -> CardinalTypeCaster.castCardinalType(ctx.packedDimension(0))?.let { Core.C_Ubit.toType(it) }
+            1 -> castContext.getType(ctx.packedDimension(0))?.let { Core.C_Ubit.toType(it) }
             else -> null
         }
     }
 
-    private fun castType(ctx: SystemVerilogParser.ImplicitDataTypeContext): Type? {
-        return when (ctx.packedDimension().size) {
-            0 -> Core.C_Boolean.toType()
-            1 -> CardinalTypeCaster.castCardinalType(ctx.packedDimension(0))?.let { Core.C_Ubit.toType(it) }
-            else -> null
-        }
+    fun castTypeFromPackedDimension(
+        ctx: SystemVerilogParser.PackedDimensionContext,
+        castContext: CastContext
+    ): Type? {
+        ctx.constantRange()?.let { return castContext.getType(it) }
+        Messages.TYPE_CAST_ERROR.on(castContext.getLocation(ctx), ctx.text)
+        return null
+    }
+
+    fun castTypeFromConstantRange(
+        ctx: SystemVerilogParser.ConstantRangeContext,
+        castContext: CastContext
+    ): Type? {
+        return castContext.getType(ctx.constantExpression(0))
+    }
+
+    fun castTypeFromConstantExpression(ctx: SystemVerilogParser.ConstantExpressionContext): Type? {
+        val value = ctx.text.toIntOrNull()
+            ?: return null
+        return Cardinal.of(value + 1).toType()
     }
 }

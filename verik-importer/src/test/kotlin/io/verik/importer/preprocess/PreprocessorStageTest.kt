@@ -25,7 +25,7 @@ internal class PreprocessorStageTest : BaseTest() {
     fun `lexer unrecognized token`() {
         driveMessageTest(
             "`0",
-            false,
+            true,
             "Preprocessor lexer error: Unable to recognize token"
         )
     }

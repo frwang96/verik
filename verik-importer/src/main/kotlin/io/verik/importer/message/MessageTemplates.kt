@@ -17,17 +17,7 @@
 package io.verik.importer.message
 
 import io.verik.importer.ast.element.EElement
-import io.verik.importer.lex.LexerFragment
 import org.antlr.v4.runtime.tree.TerminalNode
-
-class WarningMessageTemplate0(
-    override val template: String
-) : AbstractMessageTemplate() {
-
-    fun on(terminalNode: TerminalNode) {
-        MessageCollector.messageCollector.warning(name, format(), SourceLocation.get(terminalNode))
-    }
-}
 
 class WarningMessageTemplate1<A>(
     override val template: String
@@ -36,22 +26,36 @@ class WarningMessageTemplate1<A>(
     fun on(location: SourceLocation, a: A) {
         MessageCollector.messageCollector.warning(name, format(a), location)
     }
+}
 
-    fun on(terminalNode: TerminalNode, a: A) {
-        MessageCollector.messageCollector.warning(name, format(a), SourceLocation.get(terminalNode))
-    }
+class ErrorMessageTemplate0(
+    override val template: String
+) : AbstractMessageTemplate() {
 
-    fun on(lexerFragment: LexerFragment, a: A) {
-        MessageCollector.messageCollector.warning(name, format(a), lexerFragment.location)
+    fun on(terminalNode: TerminalNode) {
+        MessageCollector.messageCollector.error(format(), SourceLocation.get(terminalNode))
     }
 }
 
-class WarningMessageTemplate2<A, B>(
+class ErrorMessageTemplate1<A>(
+    override val template: String
+) : AbstractMessageTemplate() {
+
+    fun on(location: SourceLocation, a: A) {
+        MessageCollector.messageCollector.error(format(a), location)
+    }
+
+    fun on(terminalNode: TerminalNode, a: A) {
+        MessageCollector.messageCollector.error(format(a), SourceLocation.get(terminalNode))
+    }
+}
+
+class ErrorMessageTemplate2<A, B>(
     override val template: String
 ) : AbstractMessageTemplate() {
 
     fun on(location: SourceLocation, a: A, b: B) {
-        MessageCollector.messageCollector.warning(name, format(a, b), location)
+        MessageCollector.messageCollector.error(format(a, b), location)
     }
 }
 

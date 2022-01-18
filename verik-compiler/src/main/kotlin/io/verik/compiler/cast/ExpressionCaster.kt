@@ -78,7 +78,7 @@ object ExpressionCaster {
         } else {
             castContext.castType(expression)
         }
-        val statements = expression.statements.mapNotNull { castContext.casterVisitor.getExpression(it) }
+        val statements = expression.statements.mapNotNull { castContext.castExpression(it) }
         return EBlockExpression(location, endLocation, type, ArrayList(statements))
     }
 
@@ -86,7 +86,7 @@ object ExpressionCaster {
         val location = expression.location()
         val type = castContext.castType(expression)
         val kind = KtUnaryOperatorKind.getKindPrefix(expression.operationToken, location)
-        val childExpression = castContext.casterVisitor.getExpression(expression.baseExpression!!)
+        val childExpression = castContext.castExpression(expression.baseExpression!!)
         return EKtUnaryExpression(location, type, childExpression, kind)
     }
 
@@ -94,7 +94,7 @@ object ExpressionCaster {
         val location = expression.location()
         val type = castContext.castType(expression)
         val kind = KtUnaryOperatorKind.getKindPostfix(expression.operationToken, location)
-        val childExpression = castContext.casterVisitor.getExpression(expression.baseExpression!!)
+        val childExpression = castContext.castExpression(expression.baseExpression!!)
         return EKtUnaryExpression(location, type, childExpression, kind)
     }
 
@@ -104,15 +104,15 @@ object ExpressionCaster {
     ): EExpression {
         val location = expression.location()
         val type = castContext.castType(expression)
-        val left = castContext.casterVisitor.getExpression(expression.left!!)
-        val right = castContext.casterVisitor.getExpression(expression.right!!)
+        val left = castContext.castExpression(expression.left!!)
+        val right = castContext.castExpression(expression.right!!)
         val token = expression.operationReference.operationSignTokenType
         return if (token != null) {
             val kind = KtBinaryOperatorKind(token, location)
             EKtBinaryExpression(location, type, left, right, kind)
         } else {
             val descriptor = castContext.sliceReferenceTarget[expression.operationReference]!!
-            val declaration = castContext.getDeclaration(descriptor, expression)
+            val declaration = castContext.resolveDeclaration(descriptor, expression)
             ECallExpression(location, type, declaration, left, arrayListOf(right), arrayListOf())
         }
     }
@@ -124,7 +124,7 @@ object ExpressionCaster {
         val location = expression.location()
         val descriptor = castContext.sliceReferenceTarget[expression]!!
         val type = castContext.castType(expression)
-        val declaration = castContext.getDeclaration(descriptor, expression)
+        val declaration = castContext.resolveDeclaration(descriptor, expression)
         val referenceExpression = EReferenceExpression(location, type, declaration, null)
         ReferenceExpressionCaster.checkSmartCast(expression, referenceExpression, castContext)
         return referenceExpression
@@ -134,7 +134,7 @@ object ExpressionCaster {
         val location = expression.location()
         val descriptor = castContext.sliceReferenceTarget[expression.calleeExpression]!!
         val type = castContext.castType(expression)
-        val declaration = castContext.getDeclaration(descriptor, expression)
+        val declaration = castContext.resolveDeclaration(descriptor, expression)
         val valueArguments = CallExpressionCaster.castValueArguments(expression.calleeExpression!!, castContext)
         val typeArguments = CallExpressionCaster.castTypeArguments(expression, castContext)
         return ECallExpression(location, type, declaration, null, valueArguments, typeArguments)
@@ -156,20 +156,20 @@ object ExpressionCaster {
         val receiver = when (receiverReferenceTarget) {
             is PackageViewDescriptor -> null
             is LazyClassDescriptor -> null
-            else -> castContext.casterVisitor.getExpression(expression.receiverExpression)
+            else -> castContext.castExpression(expression.receiverExpression)
         }
 
         return when (val selector = expression.selectorExpression) {
             is KtSimpleNameExpression -> {
                 val descriptor = castContext.sliceReferenceTarget[selector]!!
-                val declaration = castContext.getDeclaration(descriptor, expression)
+                val declaration = castContext.resolveDeclaration(descriptor, expression)
                 val referenceExpression = EReferenceExpression(location, type, declaration, receiver)
                 ReferenceExpressionCaster.checkSmartCast(expression, referenceExpression, castContext)
                 referenceExpression
             }
             is KtCallExpression -> {
                 val descriptor = castContext.sliceReferenceTarget[selector.calleeExpression]!!
-                val declaration = castContext.getDeclaration(descriptor, expression)
+                val declaration = castContext.resolveDeclaration(descriptor, expression)
                 val valueArguments = CallExpressionCaster.castValueArguments(selector.calleeExpression!!, castContext)
                 val typeArguments = CallExpressionCaster.castTypeArguments(selector, castContext)
                 return ECallExpression(
@@ -211,7 +211,7 @@ object ExpressionCaster {
     fun castReturnStatement(expression: KtReturnExpression, castContext: CastContext): EReturnStatement {
         val location = expression.location()
         val type = castContext.castType(expression)
-        val returnedExpression = expression.returnedExpression?.let { castContext.casterVisitor.getExpression(it) }
+        val returnedExpression = expression.returnedExpression?.let { castContext.castExpression(it) }
         return EReturnStatement(location, type, returnedExpression)
     }
 
@@ -223,13 +223,13 @@ object ExpressionCaster {
         val endLocation = expression.endLocation()
         val valueParameters = if (expression.functionLiteral.hasParameterSpecification()) {
             expression.valueParameters.mapNotNull {
-                castContext.casterVisitor.getElement<EKtValueParameter>(it)
+                castContext.castValueParameter(it)
             }
         } else {
             val functionDescriptor = castContext.sliceFunction[expression.functionLiteral]!!
             if (functionDescriptor.valueParameters.isNotEmpty()) {
                 val parameterDescriptor = functionDescriptor.valueParameters[0]
-                val valueParameter = castContext.getDeclaration(parameterDescriptor, expression)
+                val valueParameter = castContext.resolveDeclaration(parameterDescriptor, expression)
                     .cast<EKtValueParameter>(expression)
                 valueParameter.type = castContext.castType(parameterDescriptor.type, expression)
                 listOf(valueParameter)
@@ -237,7 +237,7 @@ object ExpressionCaster {
         }
 
         val statements = expression.bodyExpression!!.statements.map {
-            castContext.casterVisitor.getExpression(it)
+            castContext.castExpression(it)
         }
         val bodyType = castContext.castType(expression)
         val body = EBlockExpression(
@@ -262,14 +262,14 @@ object ExpressionCaster {
         } else {
             castContext.castType(expression)
         }
-        val array = castContext.casterVisitor.getExpression(expression.arrayExpression!!)
-        val indices = expression.indexExpressions.map { castContext.casterVisitor.getExpression(it) }
+        val array = castContext.castExpression(expression.arrayExpression!!)
+        val indices = expression.indexExpressions.map { castContext.castExpression(it) }
         return EKtArrayAccessExpression(location, type, array, ArrayList(indices))
     }
 
     fun castIsExpression(expression: KtIsExpression, castContext: CastContext): EIsExpression {
         val location = expression.location()
-        val childExpression = castContext.casterVisitor.getExpression(expression.leftHandSide)
+        val childExpression = castContext.castExpression(expression.leftHandSide)
         val castType = castContext.castType(expression.typeReference!!)
         val property = EProperty.temporary(
             location = location,
@@ -289,27 +289,27 @@ object ExpressionCaster {
     fun castAsExpression(expression: KtBinaryExpressionWithTypeRHS, castContext: CastContext): EAsExpression {
         val location = expression.location()
         val type = castContext.castType(expression.right!!)
-        val childExpression = castContext.casterVisitor.getExpression(expression.left)
+        val childExpression = castContext.castExpression(expression.left)
         return EAsExpression(location, type, childExpression)
     }
 
     fun castIfExpression(expression: KtIfExpression, castContext: CastContext): EIfExpression {
         val location = expression.location()
         val type = castContext.castType(expression)
-        val condition = castContext.casterVisitor.getExpression(expression.condition!!)
+        val condition = castContext.castExpression(expression.condition!!)
         val thenExpression = expression.then?.let {
-            EBlockExpression.wrap(castContext.casterVisitor.getExpression(it))
+            EBlockExpression.wrap(castContext.castExpression(it))
         }
         val elseExpression = expression.`else`?.let {
-            EBlockExpression.wrap(castContext.casterVisitor.getExpression(it))
+            EBlockExpression.wrap(castContext.castExpression(it))
         }
         return EIfExpression(location, type, condition, thenExpression, elseExpression)
     }
 
     fun castWhileStatement(expression: KtWhileExpression, castContext: CastContext): EWhileStatement {
         val location = expression.location()
-        val condition = castContext.casterVisitor.getExpression(expression.condition!!)
-        val body = castContext.casterVisitor.getExpression(expression.body!!)
+        val condition = castContext.castExpression(expression.condition!!)
+        val body = castContext.castExpression(expression.body!!)
         return EWhileStatement(
             location,
             condition,
@@ -320,8 +320,8 @@ object ExpressionCaster {
 
     fun castDoWhileStatement(expression: KtDoWhileExpression, castContext: CastContext): EWhileStatement {
         val location = expression.location()
-        val condition = castContext.casterVisitor.getExpression(expression.condition!!)
-        val body = castContext.casterVisitor.getExpression(expression.body!!)
+        val condition = castContext.castExpression(expression.condition!!)
+        val body = castContext.castExpression(expression.body!!)
         return EWhileStatement(
             location,
             condition,
@@ -332,11 +332,10 @@ object ExpressionCaster {
 
     fun castKtForStatement(expression: KtForExpression, castContext: CastContext): EKtForStatement? {
         val location = expression.location()
-        val valueParameter = castContext.casterVisitor
-            .getElement<EKtValueParameter>(expression.loopParameter!!)
+        val valueParameter = castContext.castValueParameter(expression.loopParameter!!)
             ?: return null
-        val range = castContext.casterVisitor.getExpression(expression.loopRange!!)
-        val bodyExpression = castContext.casterVisitor.getExpression(expression.body!!)
+        val range = castContext.castExpression(expression.loopRange!!)
+        val bodyExpression = castContext.castExpression(expression.body!!)
         val body = if (bodyExpression is EBlockExpression) {
             bodyExpression
         } else {

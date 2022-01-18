@@ -16,6 +16,7 @@
 
 package io.verik.importer.cast
 
+import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.test.BaseTest
 import io.verik.importer.test.findDeclaration
 import org.junit.jupiter.api.Test
@@ -24,11 +25,11 @@ internal class PropertyCasterTest : BaseTest() {
 
     @Test
     fun `cast property from dataDeclaration`() {
-        driveElementTest(
+        driveCasterTest(
+            SystemVerilogParser.DataDeclarationContext::class,
             """
                 logic x;
             """.trimIndent(),
-            CasterStage::class,
             """
                 Property(x, Boolean)
             """.trimIndent()

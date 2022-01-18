@@ -18,7 +18,7 @@ options { tokenVocab = SystemVerilogLexer; }
 
 // A.1.2 SystemVerilog Source Text /////////////////////////////////////////////////////////////////////////////////////
 
-compilationUnit
+sourceText
     : description* EOF
     ;
 
@@ -28,16 +28,16 @@ description
     ;
 
 moduleNonAnsiHeader
-    : MODULE identifier listOfPorts SEMICOLON
+    : (attributeInstance)* MODULE identifier listOfPorts SEMICOLON
     ;
 
 moduleAnsiHeader
-    : MODULE identifier listOfPortDeclarations? SEMICOLON
+    : (attributeInstance)* MODULE identifier listOfPortDeclarations? SEMICOLON
     ;
 
 moduleDeclaration
-    : moduleNonAnsiHeader moduleItem* ENDMODULE
-    | moduleAnsiHeader ENDMODULE
+    : moduleNonAnsiHeader moduleItem* ENDMODULE # moduleDeclarationNonAnsi
+    | moduleAnsiHeader ENDMODULE                # moduleDeclarationAnsi
     ;
 
 // A.1.3 Module Parameters and Ports ///////////////////////////////////////////////////////////////////////////////////
@@ -132,7 +132,9 @@ integerType
     ;
 
 integerVectorType
-    : LOGIC
+    : BIT
+    | LOGIC
+    | REG
     ;
 
 netType
@@ -196,6 +198,7 @@ constantPrimary
 
 primaryLiteral
     : number
+    | STRING_LITERAL
     ;
 
 // A.8.7 Numbers ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -210,6 +213,20 @@ integralNumber
 
 decimalNumber
     : UNSIGNED_NUMBER
+    ;
+
+// A.9.1 Attributes ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+attributeInstance
+    : LPAREN_STAR attrSpec (COMMA attrSpec)* RPAREN_STAR
+    ;
+
+attrSpec
+    : attrName (EQ constantExpression)?
+    ;
+
+attrName
+    : identifier
     ;
 
 // A.9.3 Identifiers ///////////////////////////////////////////////////////////////////////////////////////////////////

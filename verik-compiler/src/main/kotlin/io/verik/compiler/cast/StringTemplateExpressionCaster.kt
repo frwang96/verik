@@ -46,7 +46,7 @@ object StringTemplateExpressionCaster {
             is KtLiteralStringTemplateEntry -> LiteralStringEntry(entry.text)
             is KtEscapeStringTemplateEntry -> LiteralStringEntry(entry.unescapedValue)
             is KtStringTemplateEntryWithExpression -> {
-                val expression = castContext.casterVisitor.getExpression(entry.expression!!)
+                val expression = castContext.castExpression(entry.expression!!)
                 ExpressionStringEntry(expression)
             }
             else -> {

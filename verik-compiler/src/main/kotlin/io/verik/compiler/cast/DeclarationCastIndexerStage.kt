@@ -63,7 +63,7 @@ object DeclarationCastIndexerStage : ProjectStage() {
                 NullDeclaration.toType(),
                 ArrayList()
             )
-            castContext.addDeclaration(descriptor, indexedTypeAlias)
+            castContext.registerDeclaration(descriptor, indexedTypeAlias)
         }
 
         override fun visitTypeParameter(parameter: KtTypeParameter) {
@@ -76,7 +76,7 @@ object DeclarationCastIndexerStage : ProjectStage() {
                 name,
                 NullDeclaration.toType()
             )
-            castContext.addDeclaration(descriptor, indexedTypeParameter)
+            castContext.registerDeclaration(descriptor, indexedTypeParameter)
         }
 
         override fun visitClassOrObject(classOrObject: KtClassOrObject) {
@@ -97,7 +97,7 @@ object DeclarationCastIndexerStage : ProjectStage() {
                     ArrayList(),
                     ArrayList()
                 )
-                castContext.addDeclaration(descriptor.unsubstitutedPrimaryConstructor!!, indexedPrimaryConstructor)
+                castContext.registerDeclaration(descriptor.unsubstitutedPrimaryConstructor!!, indexedPrimaryConstructor)
             }
 
             val indexedClass = EKtClass(
@@ -117,7 +117,7 @@ object DeclarationCastIndexerStage : ProjectStage() {
                 primaryConstructor = null,
                 superTypeCallExpression = null
             )
-            castContext.addDeclaration(descriptor, indexedClass)
+            castContext.registerDeclaration(descriptor, indexedClass)
         }
 
         override fun visitNamedFunction(function: KtNamedFunction) {
@@ -137,7 +137,7 @@ object DeclarationCastIndexerStage : ProjectStage() {
                 isAbstract = false,
                 isOverride = false
             )
-            castContext.addDeclaration(descriptor, indexedFunction)
+            castContext.registerDeclaration(descriptor, indexedFunction)
         }
 
         override fun visitPrimaryConstructor(constructor: KtPrimaryConstructor) {
@@ -152,7 +152,7 @@ object DeclarationCastIndexerStage : ProjectStage() {
                 ArrayList(),
                 ArrayList()
             )
-            castContext.addDeclaration(descriptor, indexedPrimaryConstructor)
+            castContext.registerDeclaration(descriptor, indexedPrimaryConstructor)
         }
 
         override fun visitProperty(property: KtProperty) {
@@ -171,7 +171,7 @@ object DeclarationCastIndexerStage : ProjectStage() {
                 initializer = null,
                 isMutable = false
             )
-            castContext.addDeclaration(descriptor, indexedProperty)
+            castContext.registerDeclaration(descriptor, indexedProperty)
         }
 
         override fun visitEnumEntry(enumEntry: KtEnumEntry) {
@@ -186,7 +186,7 @@ object DeclarationCastIndexerStage : ProjectStage() {
                 annotationEntries = listOf(),
                 documentationLines = null,
             )
-            castContext.addDeclaration(descriptor, indexedEnumEntry)
+            castContext.registerDeclaration(descriptor, indexedEnumEntry)
         }
 
         override fun visitParameter(parameter: KtParameter) {
@@ -203,7 +203,7 @@ object DeclarationCastIndexerStage : ProjectStage() {
                 isPrimaryConstructorProperty = false,
                 isMutable = false
             )
-            castContext.addDeclaration(descriptor, indexedValueParameter)
+            castContext.registerDeclaration(descriptor, indexedValueParameter)
         }
 
         override fun visitLambdaExpression(lambdaExpression: KtLambdaExpression) {
@@ -222,7 +222,7 @@ object DeclarationCastIndexerStage : ProjectStage() {
                     isPrimaryConstructorProperty = false,
                     isMutable = false
                 )
-                castContext.addDeclaration(parameterDescriptor, indexedValueParameter)
+                castContext.registerDeclaration(parameterDescriptor, indexedValueParameter)
             }
         }
     }

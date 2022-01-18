@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package io.verik.importer.lex
+package io.verik.importer.parse
 
+import io.verik.importer.common.TextFile
 import io.verik.importer.message.SourceLocation
 import io.verik.importer.preprocess.PreprocessorFragment
 import org.antlr.v4.runtime.CharStream
@@ -23,10 +24,12 @@ import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.misc.Interval
 
 class LexerCharStream(
-    private val preprocessorFragments: ArrayList<PreprocessorFragment>
+    private val preprocessorFragments: ArrayList<PreprocessorFragment>,
+    textFile: TextFile
 ) : CharStream {
 
     private val stream: CharStream
+    private val endLocation: SourceLocation
 
     init {
         val builder = StringBuilder()
@@ -34,14 +37,12 @@ class LexerCharStream(
             builder.appendLine(it.content)
         }
         stream = CharStreams.fromString(builder.toString())
+        endLocation = textFile.getEndLocation()
     }
 
     fun getLocation(line: Int, charPositionInLine: Int): SourceLocation {
         if (line > preprocessorFragments.size) {
-            val location = if (preprocessorFragments.isNotEmpty()) {
-                preprocessorFragments.last().location
-            } else SourceLocation.NULL
-            return SourceLocation(location.path, location.line + 1, 1)
+            return endLocation
         }
         val preprocessorFragment = preprocessorFragments[line - 1]
         return if (preprocessorFragment.isOriginal) {

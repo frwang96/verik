@@ -18,7 +18,7 @@ package io.verik.importer.message
 
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.antlr.SystemVerilogPreprocessorParser
-import io.verik.importer.lex.LexerCharStream
+import io.verik.importer.parse.LexerCharStream
 import io.verik.importer.preprocess.PreprocessorCharStream
 import org.antlr.v4.runtime.InputMismatchException
 import org.antlr.v4.runtime.LexerNoViableAltException
@@ -29,7 +29,7 @@ object RecognitionExceptionFormatter {
 
     fun format(recognitionException: RecognitionException?): String {
         return when (recognitionException) {
-            null -> "Mismatched token"
+            null -> "No matching rules"
             is LexerNoViableAltException -> "Unable to recognize token"
             is NoViableAltException -> "No matching rules"
             is InputMismatchException -> {

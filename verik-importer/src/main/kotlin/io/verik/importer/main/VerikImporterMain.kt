@@ -16,7 +16,6 @@
 
 package io.verik.importer.main
 
-import io.verik.importer.common.TextFile
 import io.verik.importer.message.GradleMessagePrinter
 import io.verik.importer.message.MessageCollector
 import io.verik.importer.message.SourceLocation
@@ -51,8 +50,7 @@ object VerikImporterMain {
             writeLogFile(config, messagePrinter, startTime, false)
             val preprocessorTextFile = projectContext.outputContext.preprocessorTextFile
             if (preprocessorTextFile != null) {
-                Files.createDirectories(preprocessorTextFile.path.parent)
-                Files.writeString(preprocessorTextFile.path, preprocessorTextFile.content)
+                Platform.writeTextFile(preprocessorTextFile)
             }
             throw VerikImporterException()
         }
@@ -60,18 +58,20 @@ object VerikImporterMain {
     }
 
     private fun readFiles(projectContext: ProjectContext) {
-        projectContext.inputTextFiles = projectContext.config.importedFiles.map {
-            val lines = Files.readAllLines(it)
-            TextFile(it, lines.joinToString(separator = "\n", postfix = "\n"))
+        projectContext.inputFileContexts = projectContext.config.importedFiles.map {
+            val textFile = Platform.readTextFile(it)
+            InputFileContext(textFile)
         }
+        projectContext.includedTextFiles = IncludedTextFileReader.read(
+            projectContext.inputFileContexts,
+            projectContext.config.includeDirs
+        )
     }
 
     private fun writeFiles(projectContext: ProjectContext) {
+        MessageCollector.messageCollector.flush()
         val textFiles = projectContext.outputContext.getTextFiles()
-        textFiles.forEach {
-            Files.createDirectories(it.path.parent)
-            Files.writeString(it.path, it.content)
-        }
+        textFiles.forEach { Platform.writeTextFile(it) }
     }
 
     private fun writeLogFile(

@@ -33,20 +33,20 @@ object WhenExpressionCaster {
         val location = expression.location()
         val endLocation = expression.closeBrace!!.location()
         val type = castContext.castType(expression)
-        val subject = expression.subjectExpression?.let { castContext.casterVisitor.getExpression(it) }
+        val subject = expression.subjectExpression?.let { castContext.castExpression(it) }
         val entries = expression.entries.map { castWhenEntry(it, castContext) }
         return EWhenExpression(location, endLocation, type, subject, entries)
     }
 
     private fun castWhenEntry(whenEntry: KtWhenEntry, castContext: CastContext): WhenEntry {
         val conditions = whenEntry.conditions.mapNotNull { castWhenCondition(it, castContext) }
-        val body = castContext.casterVisitor.getExpression(whenEntry.expression!!)
+        val body = castContext.castExpression(whenEntry.expression!!)
         return WhenEntry(ArrayList(conditions), EBlockExpression.wrap(body))
     }
 
     private fun castWhenCondition(whenCondition: KtWhenCondition, castContext: CastContext): EExpression {
         return if (whenCondition is KtWhenConditionWithExpression) {
-            castContext.casterVisitor.getExpression(whenCondition.expression!!)
+            castContext.castExpression(whenCondition.expression!!)
         } else {
             Messages.INTERNAL_ERROR.on(whenCondition, "When condition type not supported")
         }

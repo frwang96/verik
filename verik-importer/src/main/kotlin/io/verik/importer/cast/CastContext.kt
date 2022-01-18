@@ -16,16 +16,33 @@
 
 package io.verik.importer.cast
 
+import io.verik.importer.ast.element.EDeclaration
+import io.verik.importer.ast.element.EPort
+import io.verik.importer.ast.property.Type
 import io.verik.importer.message.SourceLocation
+import org.antlr.v4.runtime.RuleContext
 import org.antlr.v4.runtime.TokenStream
-import org.antlr.v4.runtime.tree.ParseTree
 
 class CastContext(
     private val parserTokenStream: TokenStream
 ) {
 
-    fun getLocation(parseTree: ParseTree): SourceLocation {
-        val index = parseTree.sourceInterval.a
+    private val casterVisitor = CasterVisitor(this)
+
+    fun getLocation(ctx: RuleContext): SourceLocation {
+        val index = ctx.sourceInterval.a
         return SourceLocation.get(parserTokenStream.get(index))
+    }
+
+    fun getDeclaration(ctx: RuleContext): EDeclaration? {
+        return casterVisitor.getElement(ctx)
+    }
+
+    fun getPort(ctx: RuleContext): EPort? {
+        return casterVisitor.getElement(ctx)
+    }
+
+    fun getType(ctx: RuleContext): Type? {
+        return casterVisitor.getType(ctx)
     }
 }

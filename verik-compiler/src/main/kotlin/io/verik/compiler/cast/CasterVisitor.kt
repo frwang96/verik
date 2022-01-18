@@ -18,14 +18,11 @@ package io.verik.compiler.cast
 
 import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.ECallExpression
-import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EEnumEntry
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
-import io.verik.compiler.ast.element.common.ENullExpression
 import io.verik.compiler.ast.element.common.EProperty
-import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.EReturnStatement
 import io.verik.compiler.ast.element.common.ETypeParameter
@@ -41,7 +38,6 @@ import io.verik.compiler.ast.element.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.element.kt.EWhenExpression
-import io.verik.compiler.common.location
 import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.psi.KtAnnotatedExpression
 import org.jetbrains.kotlin.psi.KtArrayAccessExpression
@@ -51,12 +47,10 @@ import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtConstantExpression
-import org.jetbrains.kotlin.psi.KtDeclaration
 import org.jetbrains.kotlin.psi.KtDoWhileExpression
 import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
 import org.jetbrains.kotlin.psi.KtElement
 import org.jetbrains.kotlin.psi.KtEnumEntry
-import org.jetbrains.kotlin.psi.KtExpression
 import org.jetbrains.kotlin.psi.KtForExpression
 import org.jetbrains.kotlin.psi.KtIfExpression
 import org.jetbrains.kotlin.psi.KtIsExpression
@@ -87,45 +81,6 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
         return if (castedElement != null) {
             return castedElement.cast()
         } else null
-    }
-
-    fun getDeclaration(declaration: KtDeclaration): EDeclaration? {
-        val location = declaration.location()
-        @Suppress("RedundantNullableReturnType")
-        val element: EElement? = declaration.accept(this, Unit)
-        @Suppress("KotlinConstantConditions")
-        return when (element) {
-            null -> null
-            is EDeclaration -> element
-            else -> {
-                Messages.INTERNAL_ERROR.on(location, "Declaration expected but got: ${element::class.simpleName}")
-            }
-        }
-    }
-
-    fun getExpression(expression: KtExpression): EExpression {
-        val location = expression.location()
-        @Suppress("RedundantNullableReturnType")
-        val element: EElement? = expression.accept(this, Unit)
-        @Suppress("KotlinConstantConditions")
-        return when (element) {
-            is EKtClass -> {
-                Messages.ILLEGAL_LOCAL_DECLARATION.on(element, element.name)
-                ENullExpression(location)
-            }
-            is EKtFunction -> {
-                Messages.ILLEGAL_LOCAL_DECLARATION.on(element, element.name)
-                ENullExpression(location)
-            }
-            is EProperty -> {
-                EPropertyStatement(location, element)
-            }
-            is EExpression -> element
-            null -> ENullExpression(location)
-            else -> {
-                Messages.INTERNAL_ERROR.on(location, "Expression expected but got: ${element::class.simpleName}")
-            }
-        }
     }
 
     override fun visitKtElement(element: KtElement, data: Unit?): EElement? {
@@ -165,11 +120,11 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
     }
 
     override fun visitAnnotatedExpression(expression: KtAnnotatedExpression, data: Unit?): EExpression {
-        return getExpression(expression.baseExpression!!)
+        return castContext.castExpression(expression.baseExpression!!)
     }
 
     override fun visitParenthesizedExpression(expression: KtParenthesizedExpression, data: Unit?): EExpression {
-        return getExpression(expression.expression!!)
+        return castContext.castExpression(expression.expression!!)
     }
 
     override fun visitBlockExpression(expression: KtBlockExpression, data: Unit?): EBlockExpression {

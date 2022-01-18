@@ -44,7 +44,7 @@ object CasterStage : ProjectStage() {
             }
             val outputPath = getPackageOutputPath(packageName, projectContext).resolve(fileName)
             val declarations = file.declarations.mapNotNull {
-                projectContext.castContext.casterVisitor.getDeclaration(it)
+                projectContext.castContext.castDeclaration(it)
             }
 
             val castedFile = EFile(location, inputPath, outputPath, ArrayList(declarations))
