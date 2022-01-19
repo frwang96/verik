@@ -17,7 +17,7 @@
 package io.verik.importer.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.ast.property.Type
+import io.verik.importer.ast.common.Type
 import io.verik.importer.core.Cardinal
 import io.verik.importer.core.Core
 import io.verik.importer.message.Messages

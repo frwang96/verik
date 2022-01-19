@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,24 @@
 
 package io.verik.importer.common
 
-import io.verik.importer.ast.element.EElement
+import io.verik.importer.ast.kt.element.KtDeclaration
+import io.verik.importer.ast.kt.element.KtElement
+import io.verik.importer.ast.kt.element.KtPackage
+import io.verik.importer.ast.kt.element.KtProject
 
-abstract class TreeVisitor : Visitor() {
+abstract class KtVisitor {
 
-    override fun visitElement(element: EElement) {
-        element.acceptChildren(this)
+    open fun visitElement(element: KtElement) {}
+
+    open fun visitProject(project: KtProject) {
+        visitElement(project)
+    }
+
+    open fun visitDeclaration(declaration: KtDeclaration) {
+        visitElement(declaration)
+    }
+
+    open fun visitPackage(`package`: KtPackage) {
+        visitDeclaration(`package`)
     }
 }

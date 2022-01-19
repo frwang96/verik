@@ -5,6 +5,7 @@
 - Importer preprocess include compiler directive.
 - Importer preprocess file and line compiler directive.
 - More rules in SystemVerilog lexer and parser.
+- Separate SystemVerilog and Kotlin AST in importer.
 
 ## [0.1.12]
 ### Added

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,29 +14,26 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.element
+package io.verik.importer.ast.sv.element
 
-import io.verik.importer.common.Visitor
-import io.verik.importer.core.Core
+import io.verik.importer.common.SvVisitor
 import io.verik.importer.message.SourceLocation
 
-class EModule(
-    override val location: SourceLocation,
-    override val name: String,
-    val ports: List<EPort>
-) : EDeclaration() {
+class SvCompilationUnit(
+    var declarations: ArrayList<SvDeclaration>
+) : SvElement() {
 
-    override var type = Core.C_Unit.toType()
+    override val location: SourceLocation = SourceLocation.NULL
 
     init {
-        ports.forEach { it.parent = this }
+        declarations.forEach { it.parent = this }
     }
 
-    override fun accept(visitor: Visitor) {
-        visitor.visitModule(this)
+    override fun accept(visitor: SvVisitor) {
+        visitor.visitCompilationUnit(this)
     }
 
-    override fun acceptChildren(visitor: Visitor) {
-        ports.forEach { it.accept(visitor) }
+    override fun acceptChildren(visitor: SvVisitor) {
+        declarations.forEach { it.accept(visitor) }
     }
 }

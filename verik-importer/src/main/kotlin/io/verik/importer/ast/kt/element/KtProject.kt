@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,22 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.element
+package io.verik.importer.ast.kt.element
 
-import io.verik.importer.ast.property.Type
-import io.verik.importer.common.Visitor
+import io.verik.importer.common.KtVisitor
 import io.verik.importer.message.SourceLocation
 
-class EProperty(
-    override val location: SourceLocation,
-    override val name: String,
-    override var type: Type
-) : EAbstractProperty() {
+class KtProject(
+    private val packages: ArrayList<KtPackage>
+) : KtElement() {
 
-    override fun accept(visitor: Visitor) {
-        visitor.visitProperty(this)
+    override val location: SourceLocation = SourceLocation.NULL
+
+    override fun accept(visitor: KtVisitor) {
+        visitor.visitProject(this)
     }
 
-    override fun acceptChildren(visitor: Visitor) {}
+    override fun acceptChildren(visitor: KtVisitor) {
+        packages.forEach { it.accept(visitor) }
+    }
 }

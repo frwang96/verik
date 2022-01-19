@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,21 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.element
+package io.verik.importer.ast.sv.element
 
-import io.verik.importer.ast.interfaces.Declaration
+import io.verik.importer.ast.common.Type
+import io.verik.importer.common.SvVisitor
+import io.verik.importer.message.SourceLocation
 
-abstract class EDeclaration : ETypedElement(), Declaration
+class SvProperty(
+    override val location: SourceLocation,
+    override val name: String,
+    override var type: Type
+) : SvDeclaration() {
+
+    override fun accept(visitor: SvVisitor) {
+        visitor.visitProperty(this)
+    }
+
+    override fun acceptChildren(visitor: SvVisitor) {}
+}

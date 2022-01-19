@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.element
+package io.verik.importer.ast.kt.element
 
-import io.verik.importer.common.Visitor
-import io.verik.importer.core.Core
+import io.verik.importer.common.KtVisitor
+import io.verik.importer.message.SourceLocation
 
-abstract class EAbstractPackage : EDeclaration() {
+class KtPackage(
+    override val location: SourceLocation,
+    override val name: String
+) : KtDeclaration() {
 
-    override var type = Core.C_Unit.toType()
-
-    abstract var declarations: ArrayList<EDeclaration>
-
-    override fun acceptChildren(visitor: Visitor) {
-        declarations.forEach { it.accept(visitor) }
+    override fun accept(visitor: KtVisitor) {
+        visitor.visitPackage(this)
     }
+
+    override fun acceptChildren(visitor: KtVisitor) {}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.interfaces
+package io.verik.importer.ast.kt.element
 
-interface Reference {
+import io.verik.importer.ast.common.Declaration
 
-    var reference: Declaration
-}
+abstract class KtDeclaration : KtElement(), Declaration

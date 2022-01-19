@@ -16,9 +16,9 @@
 
 package io.verik.importer.cast
 
-import io.verik.importer.ast.element.EDeclaration
-import io.verik.importer.ast.element.EPort
-import io.verik.importer.ast.property.Type
+import io.verik.importer.ast.common.Type
+import io.verik.importer.ast.sv.element.SvDeclaration
+import io.verik.importer.ast.sv.element.SvPort
 import io.verik.importer.message.SourceLocation
 import org.antlr.v4.runtime.RuleContext
 import org.antlr.v4.runtime.TokenStream
@@ -34,11 +34,11 @@ class CastContext(
         return SourceLocation.get(parserTokenStream.get(index))
     }
 
-    fun getDeclaration(ctx: RuleContext): EDeclaration? {
+    fun getDeclaration(ctx: RuleContext): SvDeclaration? {
         return casterVisitor.getElement(ctx)
     }
 
-    fun getPort(ctx: RuleContext): EPort? {
+    fun getPort(ctx: RuleContext): SvPort? {
         return casterVisitor.getElement(ctx)
     }
 

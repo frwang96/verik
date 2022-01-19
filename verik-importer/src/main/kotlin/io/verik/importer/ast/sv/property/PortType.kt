@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.property
+package io.verik.importer.ast.sv.property
 
 enum class PortType {
     INPUT,

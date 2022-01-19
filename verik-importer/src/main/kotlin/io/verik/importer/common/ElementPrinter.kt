@@ -16,45 +16,45 @@
 
 package io.verik.importer.common
 
-import io.verik.importer.ast.element.EElement
-import io.verik.importer.ast.element.EModule
-import io.verik.importer.ast.element.EPort
-import io.verik.importer.ast.element.EProject
-import io.verik.importer.ast.element.EProperty
-import io.verik.importer.ast.element.ERootPackage
+import io.verik.importer.ast.sv.element.SvCompilationUnit
+import io.verik.importer.ast.sv.element.SvElement
+import io.verik.importer.ast.sv.element.SvModule
+import io.verik.importer.ast.sv.element.SvPackage
+import io.verik.importer.ast.sv.element.SvPort
+import io.verik.importer.ast.sv.element.SvProperty
 
-class ElementPrinter : Visitor() {
+class ElementPrinter : SvVisitor() {
 
     private val builder = StringBuilder()
     private var first = true
 
-    override fun visitProject(compilationUnit: EProject) {
-        build("Project") {
-            build(compilationUnit.rootPackage)
+    override fun visitCompilationUnit(compilationUnit: SvCompilationUnit) {
+        build("CompilationUnit") {
+            build(compilationUnit.declarations)
         }
     }
 
-    override fun visitRootPackage(rootPackage: ERootPackage) {
-        build("RootPackage") {
-            build(rootPackage.declarations)
+    override fun visitPackage(`package`: SvPackage) {
+        build("Package") {
+            build(`package`.declarations)
         }
     }
 
-    override fun visitModule(module: EModule) {
+    override fun visitModule(module: SvModule) {
         build("Module") {
             build(module.name)
             build(module.ports)
         }
     }
 
-    override fun visitProperty(property: EProperty) {
+    override fun visitProperty(property: SvProperty) {
         build("Property") {
             build(property.name)
             build(property.type.toString())
         }
     }
 
-    override fun visitPort(port: EPort) {
+    override fun visitPort(port: SvPort) {
         build("Port") {
             build(port.name)
             build(port.type.toString())
@@ -68,10 +68,6 @@ class ElementPrinter : Visitor() {
         first = false
     }
 
-    private fun build(element: EElement) {
-        element.accept(this)
-    }
-
     private fun build(name: String, content: () -> Unit) {
         if (!first) builder.append(", ")
         builder.append("$name(")
@@ -81,7 +77,7 @@ class ElementPrinter : Visitor() {
         first = false
     }
 
-    private fun build(elements: List<EElement>) {
+    private fun build(elements: List<SvElement>) {
         if (!first) builder.append(", ")
         builder.append("[")
         first = true
@@ -92,7 +88,7 @@ class ElementPrinter : Visitor() {
 
     companion object {
 
-        fun dump(element: EElement): String {
+        fun dump(element: SvElement): String {
             val elementPrinter = ElementPrinter()
             element.accept(elementPrinter)
             return elementPrinter.builder.toString()

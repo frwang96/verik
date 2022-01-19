@@ -16,16 +16,16 @@
 
 package io.verik.importer.serialize.source
 
-import io.verik.importer.ast.element.EDeclaration
-import io.verik.importer.ast.element.EModule
-import io.verik.importer.ast.element.EPort
-import io.verik.importer.ast.element.EProperty
-import io.verik.importer.ast.property.PortType
+import io.verik.importer.ast.sv.element.SvDeclaration
+import io.verik.importer.ast.sv.element.SvModule
+import io.verik.importer.ast.sv.element.SvPort
+import io.verik.importer.ast.sv.element.SvProperty
+import io.verik.importer.ast.sv.property.PortType
 import io.verik.importer.main.Platform
 
 object DeclarationSerializer {
 
-    fun serializeModule(module: EModule, serializeContext: SerializeContext) {
+    fun serializeModule(module: SvModule, serializeContext: SerializeContext) {
         serializeContext.appendLine()
         serializeLocation(module, serializeContext)
         serializeContext.append("class ${module.name}")
@@ -41,14 +41,14 @@ object DeclarationSerializer {
         serializeContext.appendLine(" : Module()")
     }
 
-    fun serializeProperty(property: EProperty, serializeContext: SerializeContext) {
+    fun serializeProperty(property: SvProperty, serializeContext: SerializeContext) {
         serializeContext.appendLine()
         serializeLocation(property, serializeContext)
         serializeContext.append("val ${property.name}: ")
         serializeContext.appendLine("${property.type} = imported()")
     }
 
-    fun serializePort(port: EPort, serializeContext: SerializeContext) {
+    fun serializePort(port: SvPort, serializeContext: SerializeContext) {
         serializeLocation(port, serializeContext)
         when (port.portType) {
             PortType.INPUT -> serializeContext.append("@In ")
@@ -57,7 +57,7 @@ object DeclarationSerializer {
         serializeContext.append("var ${port.name}: ${port.type}")
     }
 
-    private fun serializeLocation(declaration: EDeclaration, serializeContext: SerializeContext) {
+    private fun serializeLocation(declaration: SvDeclaration, serializeContext: SerializeContext) {
         if (serializeContext.annotateDeclarations) {
             val pathString = Platform.getStringFromPath(declaration.location.path)
             val locationString = "$pathString:${declaration.location.line}"

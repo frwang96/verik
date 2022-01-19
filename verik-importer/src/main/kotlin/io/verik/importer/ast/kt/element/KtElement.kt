@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,31 +14,18 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.element
+package io.verik.importer.ast.kt.element
 
-import io.verik.importer.common.Castable
-import io.verik.importer.common.Visitor
-import io.verik.importer.message.Messages
+import io.verik.importer.common.KtVisitor
 import io.verik.importer.message.SourceLocation
 
-abstract class EElement : Castable {
+abstract class KtElement {
 
     abstract val location: SourceLocation
 
-    var parent: EElement? = null
+    abstract fun accept(visitor: KtVisitor)
 
-    inline fun <reified E : EElement> cast(): E {
-        return when (this) {
-            is E -> this
-            else -> {
-                Messages.INTERNAL_ERROR.on(this, "Could not cast element: Expected ${E::class.simpleName} actual $this")
-            }
-        }
-    }
-
-    abstract fun accept(visitor: Visitor)
-
-    abstract fun acceptChildren(visitor: Visitor)
+    abstract fun acceptChildren(visitor: KtVisitor)
 
     override fun toString(): String {
         return "${this::class.simpleName}"

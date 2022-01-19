@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,19 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.element
+package io.verik.importer.ast.common
 
-import io.verik.importer.common.Visitor
-import io.verik.importer.message.SourceLocation
+import io.verik.importer.common.Castable
 
-class EProject(
-    override val location: SourceLocation,
-    val rootPackage: ERootPackage
-) : EElement() {
+class Type(
+    var reference: Declaration,
+    var arguments: ArrayList<Type>
+) : Castable {
 
-    init {
-        rootPackage.parent = this
-    }
-
-    override fun accept(visitor: Visitor) {
-        visitor.visitProject(this)
-    }
-
-    override fun acceptChildren(visitor: Visitor) {
-        rootPackage.accept(visitor)
+    override fun toString(): String {
+        val referenceName = reference.name
+        return if (arguments.isNotEmpty()) {
+            "$referenceName<${arguments.joinToString()}>"
+        } else referenceName
     }
 }

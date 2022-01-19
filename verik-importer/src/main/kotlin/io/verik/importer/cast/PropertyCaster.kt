@@ -17,20 +17,20 @@
 package io.verik.importer.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.ast.element.EProperty
+import io.verik.importer.ast.sv.element.SvProperty
 
 object PropertyCaster {
 
     fun castPropertyFromDataDeclarationData(
         ctx: SystemVerilogParser.DataDeclarationDataContext,
         castContext: CastContext
-    ): EProperty? {
+    ): SvProperty? {
         val variableDeclAssignment = ctx.listOfVariableDeclAssignments().variableDeclAssignment(0)
         val variableIdentifier = (variableDeclAssignment as SystemVerilogParser.VariableDeclAssignmentVariableContext)
             .variableIdentifier()
         val location = castContext.getLocation(variableIdentifier)
         val name = variableIdentifier.text
         val type = castContext.getType(ctx.dataTypeOrImplicit()) ?: return null
-        return EProperty(location, name, type)
+        return SvProperty(location, name, type)
     }
 }

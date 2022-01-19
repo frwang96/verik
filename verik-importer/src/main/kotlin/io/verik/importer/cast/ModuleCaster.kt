@@ -17,14 +17,14 @@
 package io.verik.importer.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.ast.element.EModule
+import io.verik.importer.ast.sv.element.SvModule
 
 object ModuleCaster {
 
     fun castModuleFromModuleDeclarationNonAnsi(
         ctx: SystemVerilogParser.ModuleDeclarationNonAnsiContext,
         castContext: CastContext
-    ): EModule? {
+    ): SvModule? {
         val moduleNonAnsiHeader = ctx.moduleNonAnsiHeader()
         val identifier = moduleNonAnsiHeader.moduleIdentifier()
         val location = castContext.getLocation(identifier)
@@ -34,13 +34,13 @@ object ModuleCaster {
                 castContext.getPort(it.portDeclaration()) ?: return null
             } else null
         }
-        return EModule(location, name, ports)
+        return SvModule(location, name, ports)
     }
 
     fun castModuleFromModuleDeclarationAnsi(
         ctx: SystemVerilogParser.ModuleDeclarationAnsiContext,
         castContext: CastContext
-    ): EModule? {
+    ): SvModule? {
         val moduleAnsiHeader = ctx.moduleAnsiHeader()
         val identifier = moduleAnsiHeader.moduleIdentifier()
         val location = castContext.getLocation(identifier)
@@ -48,6 +48,6 @@ object ModuleCaster {
         val ports = moduleAnsiHeader.listOfPortDeclarations()?.ansiPortDeclaration()?.map {
             castContext.getPort(it) ?: return null
         } ?: listOf()
-        return EModule(location, name, ports)
+        return SvModule(location, name, ports)
     }
 }

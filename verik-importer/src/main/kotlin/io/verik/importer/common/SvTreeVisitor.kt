@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.element
+package io.verik.importer.common
 
-abstract class EAbstractProperty : EDeclaration()
+import io.verik.importer.ast.sv.element.SvElement
+
+abstract class SvTreeVisitor : SvVisitor() {
+
+    override fun visitElement(element: SvElement) {
+        element.acceptChildren(this)
+    }
+}

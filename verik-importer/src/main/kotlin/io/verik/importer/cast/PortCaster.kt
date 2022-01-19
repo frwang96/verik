@@ -17,15 +17,15 @@
 package io.verik.importer.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.ast.element.EPort
-import io.verik.importer.ast.property.PortType
+import io.verik.importer.ast.sv.element.SvPort
+import io.verik.importer.ast.sv.property.PortType
 
 object PortCaster {
 
     fun castPortFromPortDeclaration(
         ctx: SystemVerilogParser.PortDeclarationContext,
         castContext: CastContext
-    ): EPort? {
+    ): SvPort? {
         ctx.inputDeclaration()?.let { return castContext.getPort(it) }
         ctx.outputDeclaration()?.let { return castContext.getPort(it) }
         return null
@@ -34,13 +34,13 @@ object PortCaster {
     fun castPortFromAnsiPortDeclaration(
         ctx: SystemVerilogParser.AnsiPortDeclarationContext,
         castContext: CastContext
-    ): EPort? {
+    ): SvPort? {
         val identifier = ctx.identifier()
         val location = castContext.getLocation(identifier)
         val name = identifier.text
         val type = castContext.getType(ctx.netPortHeader().netPortType().dataTypeOrImplicit()) ?: return null
         val portType = castPortType(ctx.netPortHeader())
-        return EPort(location, name, type, portType)
+        return SvPort(location, name, type, portType)
     }
 
     private fun castPortType(ctx: SystemVerilogParser.NetPortHeaderContext): PortType {

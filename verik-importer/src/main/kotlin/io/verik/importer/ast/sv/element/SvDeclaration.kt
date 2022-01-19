@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,12 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.property
+package io.verik.importer.ast.sv.element
 
-import io.verik.importer.ast.interfaces.Declaration
-import io.verik.importer.ast.interfaces.Reference
-import io.verik.importer.common.Castable
+import io.verik.importer.ast.common.Declaration
+import io.verik.importer.ast.common.Type
 
-class Type(
-    override var reference: Declaration,
-    var arguments: ArrayList<Type>
-) : Reference, Castable {
+abstract class SvDeclaration : SvElement(), Declaration {
 
-    override fun toString(): String {
-        val referenceName = reference.name
-        return if (arguments.isNotEmpty()) {
-            "$referenceName<${arguments.joinToString()}>"
-        } else referenceName
-    }
+    abstract var type: Type
 }

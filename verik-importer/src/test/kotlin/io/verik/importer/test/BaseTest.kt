@@ -17,8 +17,8 @@
 package io.verik.importer.test
 
 import io.verik.importer.antlr.SystemVerilogParserBaseVisitor
-import io.verik.importer.ast.element.EElement
-import io.verik.importer.ast.element.EProject
+import io.verik.importer.ast.sv.element.SvCompilationUnit
+import io.verik.importer.ast.sv.element.SvElement
 import io.verik.importer.cast.CasterStage
 import io.verik.importer.common.ElementPrinter
 import io.verik.importer.common.TextFile
@@ -71,7 +71,7 @@ abstract class BaseTest {
         ruleContextClass: KClass<out RuleContext>,
         content: String,
         expected: String,
-        selector: (EProject) -> EElement
+        selector: (SvCompilationUnit) -> SvElement
     ) {
         val projectContext = getProjectContext(content)
         val stageSequence = StageSequencer.getStageSequence()
@@ -83,7 +83,7 @@ abstract class BaseTest {
         assertTrue(ruleContextCheckerVisitor.hasRuleContext) {
             "Rule context not found: ${ruleContextClass.simpleName}"
         }
-        val element = selector(projectContext.project)
+        val element = selector(projectContext.compilationUnit)
         assertElementEquals(getExpectedString(expected), ElementPrinter.dump(element))
     }
 
@@ -91,12 +91,12 @@ abstract class BaseTest {
         content: String,
         stageClass: KClass<S>,
         expected: String,
-        selector: (EProject) -> EElement
+        selector: (SvCompilationUnit) -> SvElement
     ) {
         val projectContext = getProjectContext(content)
         val stageSequence = StageSequencer.getStageSequence()
         stageSequence.processUntil(projectContext, stageClass)
-        val element = selector(projectContext.project)
+        val element = selector(projectContext.compilationUnit)
         assertElementEquals(getExpectedString(expected), ElementPrinter.dump(element))
     }
 
@@ -104,10 +104,10 @@ abstract class BaseTest {
         val projectContext = getProjectContext(content)
         val stageSequence = StageSequencer.getStageSequence()
         stageSequence.processAll(projectContext)
-        val textFile = when (projectContext.outputContext.packageTextFiles.size) {
-            0 -> throw IllegalArgumentException("No package text files found")
-            1 -> projectContext.outputContext.packageTextFiles[0]
-            else -> throw IllegalArgumentException("Multiple package text files found")
+        val textFile = when (projectContext.outputContext.sourceTextFiles.size) {
+            0 -> throw IllegalArgumentException("No source text files found")
+            1 -> projectContext.outputContext.sourceTextFiles[0]
+            else -> throw IllegalArgumentException("Multiple source text files found")
         }
 
         val expectedLines = expected.lines()

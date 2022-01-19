@@ -34,7 +34,9 @@ class SourceBuilder(
     private val INDENT_LENGTH = 4
     private val SUPPRESSED_INSPECTIONS = listOf(
         "unused",
-        "LongLine"
+        "ClassName",
+        "LongLine",
+        "PropertyName"
     )
 
     init {

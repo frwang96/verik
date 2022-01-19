@@ -14,32 +14,41 @@
  * limitations under the License.
  */
 
-package io.verik.importer.serialize.source
+package io.verik.importer.common
 
+import io.verik.importer.ast.sv.element.SvCompilationUnit
+import io.verik.importer.ast.sv.element.SvDeclaration
 import io.verik.importer.ast.sv.element.SvElement
 import io.verik.importer.ast.sv.element.SvModule
+import io.verik.importer.ast.sv.element.SvPackage
 import io.verik.importer.ast.sv.element.SvPort
 import io.verik.importer.ast.sv.element.SvProperty
-import io.verik.importer.common.SvVisitor
-import io.verik.importer.message.Messages
 
-class SourceSerializerVisitor(
-    private val serializeContext: SerializeContext
-) : SvVisitor() {
+abstract class SvVisitor {
 
-    override fun visitElement(element: SvElement) {
-        Messages.INTERNAL_ERROR.on(element, "Unable to serialize element: $element")
+    open fun visitElement(element: SvElement) {}
+
+    open fun visitCompilationUnit(compilationUnit: SvCompilationUnit) {
+        visitElement(compilationUnit)
     }
 
-    override fun visitModule(module: SvModule) {
-        DeclarationSerializer.serializeModule(module, serializeContext)
+    open fun visitDeclaration(declaration: SvDeclaration) {
+        visitElement(declaration)
     }
 
-    override fun visitProperty(property: SvProperty) {
-        DeclarationSerializer.serializeProperty(property, serializeContext)
+    open fun visitPackage(`package`: SvPackage) {
+        visitDeclaration(`package`)
     }
 
-    override fun visitPort(port: SvPort) {
-        DeclarationSerializer.serializePort(port, serializeContext)
+    open fun visitModule(module: SvModule) {
+        visitDeclaration(module)
+    }
+
+    open fun visitProperty(property: SvProperty) {
+        visitDeclaration(property)
+    }
+
+    open fun visitPort(port: SvPort) {
+        visitDeclaration(port)
     }
 }

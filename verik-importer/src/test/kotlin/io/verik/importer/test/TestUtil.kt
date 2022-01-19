@@ -16,17 +16,17 @@
 
 package io.verik.importer.test
 
-import io.verik.importer.ast.element.EDeclaration
-import io.verik.importer.ast.element.EElement
-import io.verik.importer.ast.element.EProject
-import io.verik.importer.common.TreeVisitor
+import io.verik.importer.ast.sv.element.SvCompilationUnit
+import io.verik.importer.ast.sv.element.SvDeclaration
+import io.verik.importer.ast.sv.element.SvElement
+import io.verik.importer.common.SvTreeVisitor
 
-fun EProject.findDeclaration(name: String): EDeclaration {
-    val declarationVisitor = object : TreeVisitor() {
-        val declarations = ArrayList<EDeclaration>()
-        override fun visitElement(element: EElement) {
+fun SvCompilationUnit.findDeclaration(name: String): SvDeclaration {
+    val declarationVisitor = object : SvTreeVisitor() {
+        val declarations = ArrayList<SvDeclaration>()
+        override fun visitElement(element: SvElement) {
             super.visitElement(element)
-            if (element is EDeclaration && element.name == name)
+            if (element is SvDeclaration && element.name == name)
                 declarations.add(element)
         }
     }

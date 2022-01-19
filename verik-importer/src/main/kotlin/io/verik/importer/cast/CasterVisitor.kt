@@ -18,11 +18,11 @@ package io.verik.importer.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.antlr.SystemVerilogParserBaseVisitor
-import io.verik.importer.ast.element.EElement
-import io.verik.importer.ast.element.EModule
-import io.verik.importer.ast.element.EPort
-import io.verik.importer.ast.element.EProperty
-import io.verik.importer.ast.property.Type
+import io.verik.importer.ast.common.Type
+import io.verik.importer.ast.sv.element.SvElement
+import io.verik.importer.ast.sv.element.SvModule
+import io.verik.importer.ast.sv.element.SvPort
+import io.verik.importer.ast.sv.element.SvProperty
 import io.verik.importer.common.Castable
 import io.verik.importer.message.Messages
 import org.antlr.v4.runtime.RuleContext
@@ -31,10 +31,10 @@ class CasterVisitor(
     val castContext: CastContext
 ) : SystemVerilogParserBaseVisitor<Castable>() {
 
-    inline fun <reified E : EElement> getElement(ctx: RuleContext): E? {
+    inline fun <reified E : SvElement> getElement(ctx: RuleContext): E? {
         return when (val castable = ctx.accept(this)) {
             null -> null
-            is EElement -> castable.cast()
+            is SvElement -> castable.cast()
             else -> {
                 Messages.INTERNAL_ERROR.on(
                     castContext.getLocation(ctx),
@@ -59,25 +59,25 @@ class CasterVisitor(
 
 // A.1.2 SystemVerilog Source Text /////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitModuleDeclarationNonAnsi(ctx: SystemVerilogParser.ModuleDeclarationNonAnsiContext?): EModule? {
+    override fun visitModuleDeclarationNonAnsi(ctx: SystemVerilogParser.ModuleDeclarationNonAnsiContext?): SvModule? {
         return ModuleCaster.castModuleFromModuleDeclarationNonAnsi(ctx!!, castContext)
     }
 
-    override fun visitModuleDeclarationAnsi(ctx: SystemVerilogParser.ModuleDeclarationAnsiContext?): EModule? {
+    override fun visitModuleDeclarationAnsi(ctx: SystemVerilogParser.ModuleDeclarationAnsiContext?): SvModule? {
         return ModuleCaster.castModuleFromModuleDeclarationAnsi(ctx!!, castContext)
     }
 
-    override fun visitDataDeclarationData(ctx: SystemVerilogParser.DataDeclarationDataContext?): EProperty? {
+    override fun visitDataDeclarationData(ctx: SystemVerilogParser.DataDeclarationDataContext?): SvProperty? {
         return PropertyCaster.castPropertyFromDataDeclarationData(ctx!!, castContext)
     }
 
 // A.1.3 Module Parameters and Ports ///////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitPortDeclaration(ctx: SystemVerilogParser.PortDeclarationContext?): EPort? {
+    override fun visitPortDeclaration(ctx: SystemVerilogParser.PortDeclarationContext?): SvPort? {
         return PortCaster.castPortFromPortDeclaration(ctx!!, castContext)
     }
 
-    override fun visitAnsiPortDeclaration(ctx: SystemVerilogParser.AnsiPortDeclarationContext?): EPort? {
+    override fun visitAnsiPortDeclaration(ctx: SystemVerilogParser.AnsiPortDeclarationContext?): SvPort? {
         return PortCaster.castPortFromAnsiPortDeclaration(ctx!!, castContext)
     }
 

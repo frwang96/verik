@@ -16,27 +16,24 @@
 
 package io.verik.importer.cast
 
-import io.verik.importer.ast.element.EDeclaration
-import io.verik.importer.ast.element.EProject
-import io.verik.importer.ast.element.ERootPackage
+import io.verik.importer.ast.sv.element.SvCompilationUnit
+import io.verik.importer.ast.sv.element.SvDeclaration
 import io.verik.importer.main.InputFileContext
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
-import io.verik.importer.message.SourceLocation
 
 object CasterStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        val declarations = ArrayList<EDeclaration>()
+        val declarations = ArrayList<SvDeclaration>()
         projectContext.inputFileContexts.forEach {
-            declarations.addAll(castInputFileContext(it))
+            declarations.addAll(castDeclarations(it))
         }
-        val rootPackage = ERootPackage(SourceLocation.NULL, declarations)
-        projectContext.project = EProject(SourceLocation.NULL, rootPackage)
+        projectContext.compilationUnit = SvCompilationUnit(declarations)
     }
 
-    private fun castInputFileContext(inputFileContext: InputFileContext): List<EDeclaration> {
-        val declarations = ArrayList<EDeclaration>()
+    private fun castDeclarations(inputFileContext: InputFileContext): List<SvDeclaration> {
+        val declarations = ArrayList<SvDeclaration>()
         val castContext = CastContext(inputFileContext.parserTokenStream)
         inputFileContext.ruleContext.description().forEach {
             val declaration = castContext.getDeclaration(it)

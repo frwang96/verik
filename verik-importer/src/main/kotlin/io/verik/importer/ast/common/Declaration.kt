@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.interfaces
-
-import io.verik.importer.ast.element.EElement
-import io.verik.importer.ast.property.Type
-import io.verik.importer.message.Messages
+package io.verik.importer.ast.common
 
 interface Declaration {
 
@@ -26,19 +22,5 @@ interface Declaration {
 
     fun toType(vararg arguments: Type): Type {
         return Type(this, arrayListOf(*arguments))
-    }
-}
-
-inline fun <reified T> Declaration.cast(element: EElement): T {
-    return when (this) {
-        is T -> this
-        else -> {
-            val expectedName = T::class.simpleName
-            val actualName = this::class.simpleName
-            Messages.INTERNAL_ERROR.on(
-                element.location,
-                "Could not cast declaration: Expected $expectedName actual $actualName"
-            )
-        }
     }
 }
