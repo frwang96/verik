@@ -24,21 +24,50 @@ sourceText
 
 description
     : moduleDeclaration
+    | interfaceDeclaration
     | packageDeclaration
     | packageItem
     ;
 
 moduleNonAnsiHeader
-    : attributeInstance* MODULE identifier listOfPorts SEMICOLON
+    : attributeInstance* moduleKeyword lifetime? moduleIdentifier packageImportDeclaration* parameterPortList?
+      listOfPorts SEMICOLON
+    | attributeInstance* moduleKeyword lifetime? moduleIdentifier parameterPortList? listOfPorts SEMICOLON
+      packageImportDeclaration*
     ;
 
 moduleAnsiHeader
-    : attributeInstance* MODULE identifier listOfPortDeclarations? SEMICOLON
+    : attributeInstance* moduleKeyword lifetime? moduleIdentifier packageImportDeclaration* parameterPortList?
+      listOfPortDeclarations? SEMICOLON
+    | attributeInstance* moduleKeyword lifetime? moduleIdentifier parameterPortList? listOfPortDeclarations? SEMICOLON
+      packageImportDeclaration*
     ;
 
 moduleDeclaration
     : moduleNonAnsiHeader moduleItem* ENDMODULE (COLON moduleIdentifier)?     # moduleDeclarationNonAnsi
     | moduleAnsiHeader nonPortModuleItem* ENDMODULE (COLON moduleIdentifier)? # moduleDeclarationAnsi
+    ;
+
+moduleKeyword
+    : MODULE
+    | MACROMODULE
+    ;
+
+interfaceDeclaration
+    : interfaceNonAnsiHeader timeunitsDeclaration? interfaceItem* ENDINTERFACE (COLON interfaceIdentifier)?
+      # interfaceDeclarationNonAnsi
+    | interfaceAnsiHeader timeunitsDeclaration? nonPortInterfaceItem* ENDINTERFACE (COLON interfaceIdentifier)?
+      # interfaceDeclarationAnsi
+    ;
+
+interfaceNonAnsiHeader
+    : attributeInstance* INTERFACE lifetime? interfaceIdentifier packageImportDeclaration* parameterPortList?
+      listOfPorts SEMICOLON
+    ;
+
+interfaceAnsiHeader
+    : attributeInstance* INTERFACE lifetime? interfaceIdentifier packageImportDeclaration* parameterPortList?
+      listOfPortDeclarations? SEMICOLON
     ;
 
 classDeclaration
@@ -133,19 +162,47 @@ moduleOrGenerateItem
     ;
 
 moduleOrGenerateItemDeclaration
-    : packageOrGenerateItemDeclaration
+    : packageOrGenerateItemDeclaration               # moduleOrGenerateItemDeclarationItem
+    | clockingDeclaration                            # moduleOrGenerateItemDeclarationClocking
+    | DEFAULT CLOCKING clockingIdentifier SEMICOLON  # moduleOrGenerateItemDeclarationDefaultClocking
+    | DEFAULT DISABLE IFF expressionOrDist SEMICOLON # moduleOrGenerateItemDeclarationDefaultDisable
     ;
 
 nonPortModuleItem
     : moduleOrGenerateItem
     ;
 
+// A.1.6 Interface Items ///////////////////////////////////////////////////////////////////////////////////////////////
+
+interfaceOrGenerateItem
+    : attributeInstance* moduleCommonItem
+    | attributeInstance* externTfDeclaration
+    ;
+
+externTfDeclaration
+    : EXTERN methodPrototype SEMICOLON        # externTfDeclarationMethod
+    | EXTERN FORKJOIN taskPrototype SEMICOLON # externTfDeclarationTask
+    ;
+
+interfaceItem
+    : portDeclaration SEMICOLON
+    | nonPortInterfaceItem
+    ;
+
+nonPortInterfaceItem
+    : modportDeclaration
+    | interfaceOrGenerateItem
+    | interfaceDeclaration
+    | timeunitsDeclaration
+    ;
+
 // A.1.9 Class Items ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 classItem
-    : attributeInstance* classProperty # classItemProperty
-    | attributeInstance* classMethod   # classItemMethod
-    | parameterDeclaration SEMICOLON   # classItemParameter
+    : attributeInstance* classProperty   # classItemProperty
+    | attributeInstance* classMethod     # classItemMethod
+    | attributeInstance* classConstraint # classItemConstraint
+    | parameterDeclaration SEMICOLON     # classItemParameter
     ;
 
 classProperty
@@ -163,6 +220,11 @@ classMethod
 
 classConstructorPrototype
     : FUNCTION NEW (LPAREN tfPortList? RPAREN)? SEMICOLON
+    ;
+
+classConstraint
+    : constraintPrototype
+    | constraintDeclaration
     ;
 
 classItemQualifier
@@ -194,6 +256,77 @@ methodPrototype
 classConstructorDeclaration
     : FUNCTION classScope? NEW (LPAREN tfPortList? RPAREN)? SEMICOLON blockItemDeclaration*
       (SUPER DOT NEW (LPAREN listOfArguments RPAREN)? SEMICOLON)? functionStatementOrNull* ENDFUNCTION (COLON NEW)?
+    ;
+
+// A.1.10 Constraints //////////////////////////////////////////////////////////////////////////////////////////////////
+
+constraintDeclaration
+    : STATIC? CONSTRAINT constraintIdentifier constraintBlock
+    ;
+
+constraintBlock
+    : LBRACE constraintBlockItem* RBRACE
+    ;
+
+constraintBlockItem
+    : SOLVE solveBeforeList BEFORE solveBeforeList SEMICOLON # constraintBlockItemSolve
+    | constraintExpression                                   # constraintBlockItemExpression
+    ;
+
+solveBeforeList
+    : constraintPrimary (COMMA constraintPrimary)*
+    ;
+
+constraintPrimary
+    : (implicitClassHandle DOT | classScope)? hierarchicalIdentifier select
+    ;
+
+constraintExpression
+    : SOFT? expressionOrDist SEMICOLON
+      # constraintExpressionExpression
+    | uniquenessConstraint
+      # constraintExpressionUniqueness
+    | expression MINUS_GT constraintSet
+      # constraintExpressionImplication
+    | IF LPAREN expression RPAREN constraintSet (ELSE constraintSet)?
+      # constraintExpressionIf
+    | FOREACH LPAREN psOrHierarchicalArrayIdentifier LBRACK loopVariables RBRACK RPAREN constraintSet
+      # constraintExpressionForEach
+    ;
+
+uniquenessConstraint
+    : UNIQUE LBRACE openRangeList RBRACE
+    ;
+
+constraintSet
+    : constraintExpression
+    | LBRACE constraintExpression* RBRACE
+    ;
+
+distList
+    : distItem (COMMA distItem)*
+    ;
+
+distItem
+    : (valueRange distWeight)?
+    ;
+
+distWeight
+    : COLON_EQ expression    # distWeightEquals
+    | COLON_SLASH expression # distWeightSlash
+    ;
+
+constraintPrototype
+    : constraintPrototypeQualifier? STATIC? CONSTRAINT constraintIdentifier SEMICOLON
+    ;
+
+constraintPrototypeQualifier
+    : EXTERN
+    | PURE
+    ;
+
+identifierList
+    : identifier (COMMA identifier)*
     ;
 
 // A.1.11 Package Items ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -238,6 +371,15 @@ dataDeclaration
     | typeDeclaration                                                                  # dataDeclarationType
     ;
 
+packageImportDeclaration
+    : IMPORT packageImportItem (COMMA packageImportItem)* SEMICOLON
+    ;
+
+packageImportItem
+    : packageIdentifier COLON2 identifier # packageImportItemIdentifier
+    | packageIdentifier COLON2 STAR       # packageImportItemStar
+    ;
+
 typeDeclaration
     : TYPEDEF dataType typeIdentifier variableDimension* SEMICOLON                        # typeDeclarationData
     | TYPEDEF (ENUM | STRUCT | UNION | CLASS | INTERFACE CLASS)? typeIdentifier SEMICOLON # typeDeclarationMisc
@@ -263,6 +405,10 @@ dataType
       # dataTypeVector
     | integerAtomType signing?
       # dataTypeInteger
+    | nonIntegerType
+      # dataTypeNonInteger
+    | structUnion (PACKED signing?)? LBRACE structUnionMember+ RBRACE packedDimension*
+      # dataTypeStruct
     | ENUM enumBaseType? LBRACE enumNameDeclaration (COMMA enumNameDeclaration)* RBRACE packedDimension*
       # dataTypeEnum
     | STRING
@@ -275,6 +421,8 @@ dataType
       # dataTypeClassType
     | EVENT
       # dataTypeEvent
+    | typeReference
+      # dataTypeTypeReference
     ;
 
 dataTypeOrImplicit
@@ -301,7 +449,7 @@ classScope
     ;
 
 classType
-    : psClassIdentifier
+    : psClassIdentifier parameterValueAssignment? (COLON2 classIdentifier parameterValueAssignment?)*
     ;
 
 integerType
@@ -322,6 +470,12 @@ integerVectorType
     : BIT
     | LOGIC
     | REG
+    ;
+
+nonIntegerType
+    : SHORTREAL
+    | REAL
+    | REALTIME
     ;
 
 netType
@@ -348,11 +502,28 @@ signing
 
 simpleType
     : integerType
+    | nonIntegerType
+    | psTypeIdentifier
+    | psParameterIdentifier
+    ;
+
+structUnionMember
+    : attributeInstance* randomQualifier? dataTypeOrVoid listOfVariableDeclAssignments SEMICOLON
     ;
 
 dataTypeOrVoid
     : dataType
     | VOID
+    ;
+
+structUnion
+    : STRUCT
+    | UNION TAGGED?
+    ;
+
+typeReference
+    : TYPE LPAREN expression RPAREN # typeReferenceExpression
+    | TYPE LPAREN dataType RPAREN   # typeReferenceType
     ;
 
 // A.2.2.3 Delays //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -361,6 +532,7 @@ delayValue
     : UNSIGNED_NUMBER
     | REAL_NUMBER
     | psIdentifier
+    | hierarchicalVariableIdentifier
     | timeLiteral
     | STEP1
     ;
@@ -394,8 +566,12 @@ listOfVariableIdentifiers
 // A.2.4 Declaration Assignments ///////////////////////////////////////////////////////////////////////////////////////
 
 variableDeclAssignment
-    : variableIdentifier variableDimension* (EQ expression)? # variableDeclAssignmentVariable
-    | classVariableIdentifier (EQ classNew)?                 # variableDeclAssignmentClassVariable
+    : variableIdentifier variableDimension* (EQ expression)?
+      # variableDeclAssignmentVariable
+    | dynamicArrayVariableIdentifier unsizedDimension variableDimension* (EQ dynamicArrayNew)
+      # variableDeclAssignmentDynamicArray
+    | classVariableIdentifier (EQ classNew)?
+      # variableDeclAssignmentClassVariable
     ;
 
 paramAssignment
@@ -409,6 +585,10 @@ typeAssignment
 classNew
     : classScope? NEW (LPAREN listOfArguments RPAREN)?
     | NEW expression
+    ;
+
+dynamicArrayNew
+    : NEW LBRACK expression RBRACK (LPAREN expression RPAREN)?
     ;
 
 // A.2.5 Declaration Ranges ////////////////////////////////////////////////////////////////////////////////////////////
@@ -527,6 +707,26 @@ taskPrototype
     : TASK taskIdentifier (LPAREN tfPortList? RPAREN)?
     ;
 
+// A.2.10 Assertion Declarations ///////////////////////////////////////////////////////////////////////////////////////
+
+assertionItemDeclaration
+    : letDeclaration
+    ;
+
+expressionOrDist
+    : expression (DIST LBRACE distList RBRACE)?
+    ;
+
+// A.2.12 Let Declarations /////////////////////////////////////////////////////////////////////////////////////////////
+
+letDeclaration
+    : LET letIdentifier EQ expression SEMICOLON
+    ;
+
+letIdentifier
+    : identifier
+    ;
+
 // A.4.1.1 Module Instantiations ///////////////////////////////////////////////////////////////////////////////////////
 
 moduleInstantiation
@@ -579,6 +779,50 @@ blockItemDeclaration
     | attributeInstance* parameterDeclaration SEMICOLON # blockItemDeclarationParameter
     ;
 
+// A.2.9 Interface Declarations ////////////////////////////////////////////////////////////////////////////////////////
+
+
+modportDeclaration
+    : MODPORT modportItem (COMMA modportItem)* SEMICOLON
+    ;
+
+modportItem
+    : modportIdentifier LPAREN modportPortsDeclaration (COMMA modportPortsDeclaration)* RPAREN
+    ;
+
+modportPortsDeclaration
+    : attributeInstance* modportSimplePortsDeclaration
+    | attributeInstance* modportTfPortsDeclaration
+    | attributeInstance* modportClockingDeclaration
+    ;
+
+modportClockingDeclaration
+    : CLOCKING clockingIdentifier
+    ;
+
+modportSimplePortsDeclaration
+    : portDirection modportSimplePort (COMMA modportSimplePort)*
+    ;
+
+modportSimplePort
+    : portIdentifier                               # modportSimplePortNoExpression
+    | DOT portIdentifier LPAREN expression? RPAREN # modportSimplePortExpression
+    ;
+
+modportTfPortsDeclaration
+    : importExport modportTfPort (COMMA modportTfPort)*
+    ;
+
+modportTfPort
+    : methodPrototype
+    | tfIdentifier
+    ;
+
+importExport
+    : IMPORT
+    | EXPORT
+    ;
+
 // A.6.1 Continuous Assignment and Net Alias Statements ////////////////////////////////////////////////////////////////
 
 listOfVariableAssignments
@@ -605,6 +849,8 @@ alwaysKeyword
 blockingAssignment
     : variableLeftValue EQ delayOrEventControl? expression
       # blockingAssignmentExpression
+    | nonRangeVariableLeftValue EQ dynamicArrayNew
+      # blockingAssignmentDynamicArray
     | (implicitClassHandle DOT | classScope | packageScope)? hierarchicalVariableIdentifier select EQ classNew
       # blockingAssignmentClass
     | operatorAssignment
@@ -650,6 +896,16 @@ seqBlock
     : BEGIN (COLON blockIdentifier)? blockItemDeclaration* statementOrNull* END (COLON blockIdentifier)?
     ;
 
+parBlock
+    : FORK (COLON blockIdentifier)? blockItemDeclaration* statementOrNull* joinKeyword (COLON blockIdentifier)?
+    ;
+
+joinKeyword
+    : JOIN
+    | JOIN_ANY
+    | JOIN_NONE
+    ;
+
 // A.6.4 Statements ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 statementOrNull
@@ -668,10 +924,14 @@ statementItem
     | conditionalStatement             # statementItemConditional
     | incOrDecExpression SEMICOLON     # statementItemIncOrDec
     | subroutineCallStatement          # statementItemSubroutine
+    | disableStatement                 # statementItemDisable
+    | eventTrigger                     # statementItemEvent
     | loopStatement                    # statementItemLoop
     | jumpStatement                    # statementItemJump
+    | parBlock                         # statementItemParBlock
     | proceduralTimingControlStatement # statementItemTiming
     | seqBlock                         # statementItemSeqBlock
+    | waitStatement                    # statementItemWait
     | proceduralAssertionStatement     # statementItemAssert
     ;
 
@@ -682,6 +942,10 @@ functionStatement
 functionStatementOrNull
     : functionStatement              # functionStatementOrNullFunction
     | attributeInstance* SEMICOLON # functionStatementOrNullNull
+    ;
+
+variableIdentifierList
+    : variableIdentifier (COMMA variableIdentifier)*
     ;
 
 // A.6.5 Timing Control Statements /////////////////////////////////////////////////////////////////////////////////////
@@ -721,6 +985,25 @@ jumpStatement
     : RETURN expression? SEMICOLON # jumpStatementReturn
     | BREAK SEMICOLON              # jumpStatementBreak
     | CONTINUE SEMICOLON           # jumpStatementContinue
+    ;
+
+waitStatement
+    : WAIT LPAREN expression RPAREN statementOrNull
+      # waitStatementExpression
+    | WAIT FORK SEMICOLON
+      # waitStatementFork
+    | WAIT_ORDER LPAREN hierarchicalIdentifier (COMMA hierarchicalIdentifier)* RPAREN actionBlock
+      # waitStatementOrder
+    ;
+
+eventTrigger
+    : MINUS_GT hierarchicalEventIdentifier SEMICOLON                       # eventTriggerNamed
+    | MINUS_GT2 delayOrEventControl? hierarchicalEventIdentifier SEMICOLON # eventTriggerNonBlock
+    ;
+
+disableStatement
+    : DISABLE hierarchicalTaskIdentifier SEMICOLON  # disableStatementTask
+    | DISABLE FORK SEMICOLON                        # disableStatementFork
     ;
 
 // A.6.6 Conditional Statements ////////////////////////////////////////////////////////////////////////////////////////
@@ -775,6 +1058,14 @@ caseItemExpression
     : expression
     ;
 
+openRangeList
+    : openValueRange (COMMA openValueRange)*
+    ;
+
+openValueRange
+    : valueRange
+    ;
+
 // A.6.7.1 Patterns ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 pattern
@@ -783,14 +1074,23 @@ pattern
     ;
 
 assignmentPattern
-    : TICK_LBRACE structurePatternKey COLON expression (COMMA structurePatternKey COLON expression)* RBRACE
+    : TICK_LBRACE expression (COMMA expression)* RBRACE
+      # assignmentPatternMultipleExpressions
+    | TICK_LBRACE structurePatternKey COLON expression (COMMA structurePatternKey COLON expression)* RBRACE
       # assignmentPatternStructure
+    | TICK_LBRACE arrayPatternKey COLON expression (COMMA arrayPatternKey COLON expression)* RBRACE
+      # assignmentPatternArray
     | TICK_LBRACE constantExpression LBRACE expression (COMMA expression)* RBRACE RBRACE
       # assignmentPatternConstant
     ;
 
 structurePatternKey
     : memberIdentifier
+    | assignmentPatternKey
+    ;
+
+arrayPatternKey
+    : constantExpression
     | assignmentPatternKey
     ;
 
@@ -838,7 +1138,9 @@ forStep
     ;
 
 forStepAssignment
-    : incOrDecExpression
+    : operatorAssignment
+    | incOrDecExpression
+    | functionSubroutineCall
     ;
 
 loopVariables
@@ -873,6 +1175,46 @@ simpleImmediateAssertStatement
 
 simpleImmediateAssumeStatement
     : ASSUME LPAREN expression RPAREN actionBlock
+    ;
+
+// A.6.11 Clocking Block ///////////////////////////////////////////////////////////////////////////////////////////////
+
+clockingDeclaration
+    : DEFAULT? CLOCKING clockingIdentifier? clockingEvent SEMICOLON clockingItem* ENDCLOCKING
+      (COLON clockingIdentifier)?
+      # clockingDeclarationNoGlobal
+    | GLOBAL CLOCKING clockingIdentifier? clockingEvent SEMICOLON ENDCLOCKING (COLON clockingIdentifier)?
+      # clockingDeclarationGlobal
+    ;
+
+clockingEvent
+    : AT identifier                    # clockingEventIdentifier
+    | AT LPAREN eventExpression RPAREN # clockingEventExpression
+    ;
+
+clockingItem
+    : clockingDirection listOfClockingDeclAssign SEMICOLON # clockingItemDecl
+    | attributeInstance* assertionItemDeclaration          # clockingItemAssertion
+    ;
+
+clockingDirection
+    : INPUT clockingSkew?                      # clockingDirectionInput
+    | OUTPUT clockingSkew?                     # clockingDirectionOutput
+    | INPUT clockingSkew? OUTPUT clockingSkew? # clockingDirectionInputOutput
+    | INOUT                                    # clockingDirectionInout
+    ;
+
+listOfClockingDeclAssign
+    : clockingDeclAssign (COMMA clockingDeclAssign)*
+    ;
+
+clockingDeclAssign
+    : signalIdentifier (EQ expression)?
+    ;
+
+clockingSkew
+    : edgeIdentifier delayControl? # clockingSkewIdentifier
+    | delayControl                 # clockingSkewDelay
     ;
 
 // A.7.4 Specify Path Delays ///////////////////////////////////////////////////////////////////////////////////////////
@@ -920,8 +1262,9 @@ listOfArguments
     ;
 
 methodCall
-    : methodCallRoot DOT methodCallBody
-    | methodCallBody
+    : methodCallBody
+    | methodCallRoot DOT methodCallBody
+    | classQualifier methodCallBody
     ;
 
 methodCallBody
@@ -931,14 +1274,21 @@ methodCallBody
 
 builtInMethodCall
     : arrayManipulationCall
-    ;
-
-methodCallRoot
-    : primary
+    | randomizeCall
     ;
 
 arrayManipulationCall
     : arrayMethodName attributeInstance* (LPAREN listOfArguments RPAREN)? (WITH LPAREN expression RPAREN)?
+    ;
+
+randomizeCall
+    : RANDOMIZE attributeInstance* (LPAREN (variableIdentifierList | NULL)? RPAREN)?
+      (WITH (LPAREN identifierList? RPAREN)? constraintBlock)?
+    ;
+
+methodCallRoot
+    : primary
+    | implicitClassHandle
     ;
 
 arrayMethodName
@@ -1008,6 +1358,19 @@ expression
       # expressionBinary
     | expression (AND3 expressionOrCondPattern)* QUEST attributeInstance* expression COLON expression
       # expressionConditional // conditionalExpression
+    | expression INSIDE LBRACE openRangeList RBRACE
+      # expressionInside // insideExpression
+    | taggedUnionExpression
+      # expressionTaggedUnion
+    ;
+
+taggedUnionExpression
+    : TAGGED memberIdentifier expression?
+    ;
+
+valueRange
+    : expression                                # valueRangeExpression
+    | LBRACK expression COLON expression RBRACK # valueRangeRange
     ;
 
 minTypMaxExpression
@@ -1036,7 +1399,7 @@ constantPrimary
 primary
     : primaryLiteral
       # primaryPrimaryLiteral
-    | hierarchicalIdentifier select
+    | (classQualifier | packageScope) hierarchicalIdentifier select
       # primaryHierarchical
     | concatenation (LBRACK rangeExpression RBRACK)?
       # primaryConcatenation
@@ -1049,6 +1412,8 @@ primary
     | methodCallBody
       # primaryMethodCallNoPrimary    // methodCall
     | primary DOT? methodCallBody
+      # primaryMethodCallPrimary      // methodCall
+    | classQualifier methodCallBody
       # primaryMethodCallPrimary      // methodCall
     | LPAREN minTypMaxExpression RPAREN
       # primaryMinTypMaxExpression
@@ -1064,6 +1429,10 @@ primary
       # primaryNull
     ;
 
+classQualifier
+    : (LOCAL COLON2)? (implicitClassHandle DOT | classScope)?
+    ;
+
 rangeExpression
     : expression
     | partSelectRange
@@ -1071,6 +1440,8 @@ rangeExpression
 
 primaryLiteral
     : number
+    | timeLiteral
+    | UNBASED_UNSIZED_LITERAL
     | STRING_LITERAL
     ;
 
@@ -1092,6 +1463,10 @@ select
     : ((DOT memberIdentifier bitSelect)* DOT memberIdentifier)? bitSelect (LBRACK partSelectRange RBRACK)?
     ;
 
+nonRangeSelect
+    : ((DOT memberIdentifier bitSelect)* DOT memberIdentifier)? bitSelect
+    ;
+
 constantBitSelect
     : (LBRACK constantExpression RBRACK)*
     ;
@@ -1110,6 +1485,10 @@ cast
 variableLeftValue
     : (implicitClassHandle DOT | packageScope)? hierarchicalVariableIdentifier select # variableLeftValueHierarchical
     | LBRACE variableLeftValue (COMMA variableLeftValue)* RBRACE                      # variableLeftValueConcatenate
+    ;
+
+nonRangeVariableLeftValue
+    : (implicitClassHandle DOT | packageScope)? hierarchicalVariableIdentifier nonRangeSelect
     ;
 
 // A.8.6 Operators /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1169,6 +1548,7 @@ incOrDecOperator
 
 number
     : integralNumber
+    | REAL_NUMBER
     ;
 
 integralNumber
@@ -1211,6 +1591,18 @@ classVariableIdentifier
     : variableIdentifier
     ;
 
+clockingIdentifier
+    : identifier
+    ;
+
+constraintIdentifier
+    : identifier
+    ;
+
+dynamicArrayVariableIdentifier
+    : variableIdentifier
+    ;
+
 enumIdentifier
     : identifier
     ;
@@ -1229,6 +1621,10 @@ hierarchicalEventIdentifier
 
 hierarchicalIdentifier
     : (ROOT DOT)? (identifier constantBitSelect DOT)* identifier
+    ;
+
+hierarchicalTaskIdentifier
+    : hierarchicalIdentifier
     ;
 
 hierarchicalTfIdentifier
@@ -1260,6 +1656,10 @@ memberIdentifier
     ;
 
 methodIdentifier
+    : identifier
+    ;
+
+modportIdentifier
     : identifier
     ;
 
@@ -1307,6 +1707,14 @@ psOrHierarchicalTfIdentifier
 
 psParameterIdentifier
     : (packageScope | classScope)? parameterIdentifier
+    ;
+
+psTypeIdentifier
+    : (LOCAL COLON2 | packageScope | classScope)? typeIdentifier
+    ;
+
+signalIdentifier
+    : identifier
     ;
 
 systemTfIdentifier

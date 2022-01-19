@@ -29,6 +29,8 @@ CARET_EQ            : '^=' ;
 CARET_NOT           : '^~' ;
 COLON               : ':' ;
 COLON2              : '::' ;
+COLON_EQ            : ':=' ;
+COLON_SLASH         : ':/' ;
 COMMA               : ',' ;
 DOLLAR              : '$' ;
 DOT                 : '.' ;
@@ -54,8 +56,9 @@ LT_MINUS_GT         : '<->' ;
 MINUS               : '-' ;
 MINUS2              : '--' ;
 MINUS_COLON         : '-:' ;
-MINUS_EQ            : '-=:' ;
+MINUS_EQ            : '-=' ;
 MINUS_GT            : '->' ;
+MINUS_GT2           : '->>' ;
 MOD                 : '%';
 MOD_EQ              : '%=';
 NOT                 : '~' ;
@@ -356,19 +359,19 @@ UNSIGNED_NUMBER
     ;
 
 DECIMAL_NUMBER
-    : SIZE? DECIMAL_BASE UNSIGNED_NUMBER
+    : (SIZE WS?)? DECIMAL_BASE UNSIGNED_NUMBER
     ;
 
 BINARY_NUMBER
-    : SIZE? BINARY_BASE BINARY_VALUE
+    : (SIZE WS?)? BINARY_BASE BINARY_VALUE
     ;
 
 OCTAL_NUMBER
-    : SIZE? OCTAL_BASE OCTAL_VALUE
+    : (SIZE WS?)? OCTAL_BASE OCTAL_VALUE
     ;
 
 HEX_NUMBER
-    : SIZE? HEX_BASE HEX_VALUE
+    : (SIZE WS?)? HEX_BASE HEX_VALUE
     ;
 
 fragment SIZE
@@ -442,6 +445,10 @@ fragment X_DIGIT
 
 fragment Z_DIGIT
     : [zZ?]
+    ;
+
+UNBASED_UNSIZED_LITERAL
+    : '\'' [01xXzZ]
     ;
 
 STRING_LITERAL

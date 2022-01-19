@@ -131,7 +131,7 @@ object FunctionInterpreterStage : ProjectStage() {
             if (function.type.reference != Core.Kt.C_Unit) {
                 val valueParameter = ESvValueParameter(
                     location = function.location,
-                    name = "__return",
+                    name = "<tmp>",
                     type = function.type.copy(),
                     annotationEntries = listOf(),
                     isInput = false

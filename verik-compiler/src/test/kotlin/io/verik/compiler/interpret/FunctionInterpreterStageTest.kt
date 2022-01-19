@@ -125,7 +125,7 @@ internal class FunctionInterpreterStageTest : BaseTest() {
                 fun t(): Boolean { return false }
             """.trimIndent(),
             FunctionInterpreterStage::class,
-            "Task(t, *, [SvValueParameter(__return, Boolean, 0)])"
+            "Task(t, *, [SvValueParameter(<tmp>, Boolean, 0)])"
         ) { it.findDeclaration("t") }
     }
 
