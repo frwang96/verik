@@ -16,6 +16,7 @@
 
 package io.verik.importer.common
 
+import io.verik.importer.ast.sv.element.SvClass
 import io.verik.importer.ast.sv.element.SvCompilationUnit
 import io.verik.importer.ast.sv.element.SvElement
 import io.verik.importer.ast.sv.element.SvModule
@@ -36,7 +37,14 @@ class ElementPrinter : SvVisitor() {
 
     override fun visitPackage(`package`: SvPackage) {
         build("Package") {
+            build(`package`.name)
             build(`package`.declarations)
+        }
+    }
+
+    override fun visitClass(`class`: SvClass) {
+        build("Class") {
+            build(`class`.name)
         }
     }
 
@@ -47,18 +55,18 @@ class ElementPrinter : SvVisitor() {
         }
     }
 
-    override fun visitProperty(property: SvProperty) {
-        build("Property") {
-            build(property.name)
-            build(property.type.toString())
-        }
-    }
-
     override fun visitPort(port: SvPort) {
         build("Port") {
             build(port.name)
             build(port.type.toString())
             build(port.portType.toString())
+        }
+    }
+
+    override fun visitProperty(property: SvProperty) {
+        build("Property") {
+            build(property.name)
+            build(property.type.toString())
         }
     }
 

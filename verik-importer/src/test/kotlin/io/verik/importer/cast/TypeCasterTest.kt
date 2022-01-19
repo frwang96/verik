@@ -30,9 +30,7 @@ internal class TypeCasterTest : BaseTest() {
             """
                 logic x;
             """.trimIndent(),
-            """
-                Property(x, Boolean)
-            """.trimIndent()
+            "Property(x, Boolean)"
         ) { it.findDeclaration("x") }
     }
 
@@ -43,9 +41,7 @@ internal class TypeCasterTest : BaseTest() {
             """
                 logic [7:0] x;
             """.trimIndent(),
-            """
-                Property(x, Ubit<`8`>)
-            """.trimIndent()
+            "Property(x, Ubit<`8`>)"
         ) { it.findDeclaration("x") }
     }
 }

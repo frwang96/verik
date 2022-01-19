@@ -19,8 +19,10 @@ package io.verik.importer.cast
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.antlr.SystemVerilogParserBaseVisitor
 import io.verik.importer.ast.common.Type
+import io.verik.importer.ast.sv.element.SvClass
 import io.verik.importer.ast.sv.element.SvElement
 import io.verik.importer.ast.sv.element.SvModule
+import io.verik.importer.ast.sv.element.SvPackage
 import io.verik.importer.ast.sv.element.SvPort
 import io.verik.importer.ast.sv.element.SvProperty
 import io.verik.importer.common.Castable
@@ -67,8 +69,12 @@ class CasterVisitor(
         return ModuleCaster.castModuleFromModuleDeclarationAnsi(ctx!!, castContext)
     }
 
-    override fun visitDataDeclarationData(ctx: SystemVerilogParser.DataDeclarationDataContext?): SvProperty? {
-        return PropertyCaster.castPropertyFromDataDeclarationData(ctx!!, castContext)
+    override fun visitClassDeclaration(ctx: SystemVerilogParser.ClassDeclarationContext?): SvClass {
+        return ClassCaster.castClassFromClassDeclaration(ctx!!)
+    }
+
+    override fun visitPackageDeclaration(ctx: SystemVerilogParser.PackageDeclarationContext?): SvPackage {
+        return PackageCaster.castPackageFromPackageDeclaration(ctx!!, castContext)
     }
 
 // A.1.3 Module Parameters and Ports ///////////////////////////////////////////////////////////////////////////////////
@@ -79,6 +85,12 @@ class CasterVisitor(
 
     override fun visitAnsiPortDeclaration(ctx: SystemVerilogParser.AnsiPortDeclarationContext?): SvPort? {
         return PortCaster.castPortFromAnsiPortDeclaration(ctx!!, castContext)
+    }
+
+// A.2.1.3 Type Declarations ///////////////////////////////////////////////////////////////////////////////////////////
+
+    override fun visitDataDeclarationData(ctx: SystemVerilogParser.DataDeclarationDataContext?): SvProperty? {
+        return PropertyCaster.castPropertyFromDataDeclarationData(ctx!!, castContext)
     }
 
 // A.2.2.1 Net and Variable Types //////////////////////////////////////////////////////////////////////////////////////

@@ -22,14 +22,27 @@ import org.junit.jupiter.api.Test
 internal class DeclarationSerializerTest : BaseTest() {
 
     @Test
-    fun `serialize module`() {
+    fun `serialize class`() {
         driveTextFileTest(
             """
-                module M;
+                class c;
+                endclass
+            """.trimIndent(),
+            """
+                class c
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `serialize class module`() {
+        driveTextFileTest(
+            """
+                module m;
                 endmodule
             """.trimIndent(),
             """
-                class M : Module()
+                class m : Module()
             """.trimIndent()
         )
     }
@@ -47,14 +60,14 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize port`() {
+    fun `serialize value parameter`() {
         driveTextFileTest(
             """
-                module M(input x);
+                module m(input x);
                 endmodule
             """.trimIndent(),
             """
-                class M(
+                class m(
                     @In var x: Boolean
                 ) : Module()
             """.trimIndent()

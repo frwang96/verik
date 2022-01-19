@@ -29,14 +29,12 @@ internal class ModuleCasterTest : BaseTest() {
         driveCasterTest(
             SystemVerilogParser.ModuleDeclarationAnsiContext::class,
             """
-                module M;
+                module m;
                 endmodule
             """.trimIndent(),
-            """
-                Module(M, [])
-            """.trimIndent()
+            "Module(m, [])"
         ) {
-            it.findDeclaration("M")
+            it.findDeclaration("m")
         }
     }
 
@@ -46,15 +44,13 @@ internal class ModuleCasterTest : BaseTest() {
         driveCasterTest(
             SystemVerilogParser.ModuleDeclarationNonAnsiContext::class,
             """
-                module M(x);
+                module m(x);
                     input x;
                 endmodule
             """.trimIndent(),
-            """
-                Module(M, [Port(x, Boolean, INPUT)])
-            """.trimIndent()
+            "Module(m, [Port(x, Boolean, INPUT)])"
         ) {
-            it.findDeclaration("M")
+            it.findDeclaration("m")
         }
     }
 }

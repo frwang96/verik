@@ -42,7 +42,7 @@ changelog {
     } else {
         setVersion(project.version)
     }
-    groups.set(listOf("Added"))
+    groups.set(listOf())
 }
 
 tasks.register("mainGenerate") {

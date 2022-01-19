@@ -20,23 +20,16 @@ import io.verik.importer.common.SvVisitor
 import io.verik.importer.core.Core
 import io.verik.importer.message.SourceLocation
 
-class SvPackage(
+class SvClass(
     override val location: SourceLocation,
-    override val name: String,
-    var declarations: ArrayList<SvDeclaration>
+    override val name: String
 ) : SvDeclaration() {
 
     override var type = Core.C_Unit.toType()
 
-    init {
-        declarations.forEach { it.parent = this }
-    }
-
     override fun accept(visitor: SvVisitor) {
-        visitor.visitPackage(this)
+        visitor.visitClass(this)
     }
 
-    override fun acceptChildren(visitor: SvVisitor) {
-        declarations.forEach { it.accept(visitor) }
-    }
+    override fun acceptChildren(visitor: SvVisitor) {}
 }

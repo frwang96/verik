@@ -16,6 +16,7 @@
 
 package io.verik.importer.common
 
+import io.verik.importer.ast.sv.element.SvClass
 import io.verik.importer.ast.sv.element.SvCompilationUnit
 import io.verik.importer.ast.sv.element.SvDeclaration
 import io.verik.importer.ast.sv.element.SvElement
@@ -40,15 +41,19 @@ abstract class SvVisitor {
         visitDeclaration(`package`)
     }
 
+    open fun visitClass(`class`: SvClass) {
+        visitDeclaration(`class`)
+    }
+
     open fun visitModule(module: SvModule) {
         visitDeclaration(module)
     }
 
-    open fun visitProperty(property: SvProperty) {
-        visitDeclaration(property)
-    }
-
     open fun visitPort(port: SvPort) {
         visitDeclaration(port)
+    }
+
+    open fun visitProperty(property: SvProperty) {
+        visitDeclaration(property)
     }
 }

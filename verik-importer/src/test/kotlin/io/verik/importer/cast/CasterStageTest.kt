@@ -34,11 +34,11 @@ internal class CasterStageTest : BaseTest() {
     fun `cast compilation unit with module`() {
         driveElementTest(
             """
-                module M;
+                module m;
                 endmodule
             """.trimIndent(),
             CasterStage::class,
-            "CompilationUnit([Module(M, [])])"
+            "CompilationUnit([Module(m, [])])"
         ) { it }
     }
 }

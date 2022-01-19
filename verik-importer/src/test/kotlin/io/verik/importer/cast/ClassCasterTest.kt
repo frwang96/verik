@@ -21,19 +21,19 @@ import io.verik.importer.test.BaseTest
 import io.verik.importer.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class PortCasterTest : BaseTest() {
+internal class ClassCasterTest : BaseTest() {
 
     @Test
-    fun `cast port from ansiPortDeclaration`() {
+    fun `cast class from classDeclaration`() {
         driveCasterTest(
-            SystemVerilogParser.AnsiPortDeclarationContext::class,
+            SystemVerilogParser.ClassDeclarationContext::class,
             """
-                module m(input x);
-                endmodule
+                class c;
+                endclass
             """.trimIndent(),
-            "Module(m, [Port(x, Boolean, INPUT)])"
+            "Class(c)"
         ) {
-            it.findDeclaration("m")
+            it.findDeclaration("c")
         }
     }
 }

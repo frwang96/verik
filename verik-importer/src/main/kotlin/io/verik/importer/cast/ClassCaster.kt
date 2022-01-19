@@ -17,23 +17,16 @@
 package io.verik.importer.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.test.BaseTest
-import io.verik.importer.test.findDeclaration
-import org.junit.jupiter.api.Test
+import io.verik.importer.ast.sv.element.SvClass
+import io.verik.importer.message.SourceLocation
 
-internal class PortCasterTest : BaseTest() {
+object ClassCaster {
 
-    @Test
-    fun `cast port from ansiPortDeclaration`() {
-        driveCasterTest(
-            SystemVerilogParser.AnsiPortDeclarationContext::class,
-            """
-                module m(input x);
-                endmodule
-            """.trimIndent(),
-            "Module(m, [Port(x, Boolean, INPUT)])"
-        ) {
-            it.findDeclaration("m")
-        }
+    fun castClassFromClassDeclaration(
+        ctx: SystemVerilogParser.ClassDeclarationContext
+    ): SvClass {
+        val location = SourceLocation.get(ctx.CLASS())
+        val name = ctx.classIdentifier()[0].text
+        return SvClass(location, name)
     }
 }
