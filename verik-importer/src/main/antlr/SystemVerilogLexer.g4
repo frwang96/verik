@@ -273,6 +273,7 @@ SPECIFY             : 'specify' ;
 SPECPARAM           : 'specparam' ;
 STATIC              : 'static' ;
 STD                 : 'std' ;
+STEP1               : '1step' ;
 STRING              : 'string' ;
 STRONG              : 'strong' ;
 STRONG0             : 'strong0' ;
@@ -338,6 +339,10 @@ XOR                 : 'xor' ;
 ROOT                : '$root' ;
 UNIT                : '$unit' ;
 
+TIME_LITERAL
+    : (UNSIGNED_NUMBER | FIXED_POINT_NUMBER) 's' | 'ms' | 'us' | 'ns' | 'ps' | 'fs'
+    ;
+
 UNSIGNED_NUMBER
     : DECIMAL_DIGIT ('_' | DECIMAL_DIGIT)*
     ;
@@ -364,6 +369,15 @@ fragment SIZE
 
 fragment NON_ZERO_UNSIGNED_NUMBER
     : NON_ZERO_DECIMAL_DIGIT ('_' | DECIMAL_DIGIT)*
+    ;
+
+REAL_NUMBER
+    : FIXED_POINT_NUMBER
+    | UNSIGNED_NUMBER ('.' UNSIGNED_NUMBER)? [eE] [+-]? UNSIGNED_NUMBER
+    ;
+
+FIXED_POINT_NUMBER
+    : UNSIGNED_NUMBER '.' UNSIGNED_NUMBER
     ;
 
 fragment BINARY_VALUE
@@ -432,6 +446,10 @@ SIMPLE_IDENTIFIER
 
 SYSTEM_TF_IDENTIFIER
     : '$'[a-zA-Z0-9_$]+
+    ;
+
+C_IDENTIFIER
+    : [a-zA-Z_][a-zA-Z0-9_]*
     ;
 
 WS

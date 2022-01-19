@@ -24,6 +24,7 @@ sourceText
 
 description
     : moduleDeclaration
+    | packageDeclaration
     | packageItem
     ;
 
@@ -40,7 +41,38 @@ moduleDeclaration
     | moduleAnsiHeader nonPortModuleItem* ENDMODULE (COLON moduleIdentifier)? # moduleDeclarationAnsi
     ;
 
+classDeclaration
+    : VIRTUAL? CLASS lifetime? classIdentifier parameterPortList? (EXTENDS classType (LPAREN listOfArguments RPAREN)?)?
+      (IMPLEMENTS interfaceClassType (COMMA interfaceClassType)*)? SEMICOLON classItem* ENDCLASS
+      (COLON classIdentifier)?
+    ;
+
+interfaceClassType
+    : psClassIdentifier parameterValueAssignment?
+    ;
+
+packageDeclaration
+    : attributeInstance* PACKAGE lifetime? packageIdentifier SEMICOLON timeunitsDeclaration?
+      ((attributeInstance)* packageItem)* ENDPACKAGE (COLON packageIdentifier)?
+    ;
+
+timeunitsDeclaration
+    : TIMEUNIT timeLiteral (SLASH timeLiteral)? SEMICOLON
+    ;
+
 // A.1.3 Module Parameters and Ports ///////////////////////////////////////////////////////////////////////////////////
+
+parameterPortList
+    : SHARP LPAREN listOfParamAssignments (COMMA parameterPortDeclaration)* RPAREN   # parameterPortListParamAssign
+    | SHARP LPAREN parameterPortDeclaration (COMMA parameterPortDeclaration)* RPAREN # parameterPortListNoParamAssign
+    | SHARP LPAREN RPAREN                                                            # parameterPortListEmpty
+    ;
+
+parameterPortDeclaration
+    : parameterDeclaration
+    | dataType listOfParamAssignments
+    | TYPE listOfParamAssignments
+    ;
 
 listOfPorts
     : LPAREN port (COMMA port)* RPAREN
@@ -70,6 +102,8 @@ portReference
 portDirection
     : INPUT
     | OUTPUT
+    | INOUT
+    | REF
     ;
 
 netPortHeader
@@ -106,6 +140,44 @@ nonPortModuleItem
     : moduleOrGenerateItem
     ;
 
+// A.1.9 Class Items ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+classItem
+    : attributeInstance* classProperty # classItemProperty
+    | attributeInstance* classMethod   # classItemMethod
+    | parameterDeclaration SEMICOLON   # classItemParameter
+    ;
+
+classProperty
+    : propertyQualifier* dataDeclaration
+    ;
+
+classMethod
+    : methodQualifier* taskDeclaration     # classMethodTask
+    | methodQualifier* functionDeclaration # classMethodFunction
+    ;
+
+classItemQualifier
+    : STATIC
+    | PROTECTED
+    | LOCAL
+    ;
+
+propertyQualifier
+    : randomQualifier
+    | classItemQualifier
+    ;
+
+randomQualifier
+    : RAND
+    | RANDC
+    ;
+
+methodQualifier
+    : PURE? VIRTUAL
+    | classItemQualifier
+    ;
+
 // A.1.11 Package Items ////////////////////////////////////////////////////////////////////////////////////////////////
 
 packageItem
@@ -114,23 +186,42 @@ packageItem
 
 packageOrGenerateItemDeclaration
     : dataDeclaration
+    | taskDeclaration
     | functionDeclaration
+    | dpiImportExport
+    | classDeclaration
+    | parameterDeclaration SEMICOLON
+    ;
+
+// A.2.1.1 Module Parameter Declarations ///////////////////////////////////////////////////////////////////////////////
+
+parameterDeclaration
+    : PARAMETER dataTypeOrImplicit listOfParamAssignments
+    | PARAMETER TYPE listOfTypeAssignments
     ;
 
 // A.2.1.2 Port Declarations ///////////////////////////////////////////////////////////////////////////////////////////
 
 inputDeclaration
-    : INPUT (netPortType identifier | variablePortType identifier)
+    : INPUT netPortType listOfPortIdentifiers          # inputDeclarationNet
+    | INPUT variablePortType listOfVariableIdentifiers # inputDeclarationVariable
     ;
 
 outputDeclaration
-    : OUTPUT (netPortType identifier | variablePortType identifier)
+    : OUTPUT netPortType listOfPortIdentifiers          # outputDeclarationNet
+    | OUTPUT variablePortType listOfVariableIdentifiers # outputDeclarationVariable
     ;
 
 // A.2.1.3 Type Declarations ///////////////////////////////////////////////////////////////////////////////////////////
 
 dataDeclaration
-    : dataTypeOrImplicit listOfVariableDeclAssignments SEMICOLON
+    : CONST? VAR? lifetime? dataTypeOrImplicit listOfVariableDeclAssignments SEMICOLON # dataDeclarationData
+    | typeDeclaration                                                                  # dataDeclarationType
+    ;
+
+typeDeclaration
+    : TYPEDEF dataType typeIdentifier variableDimension* SEMICOLON                        # typeDeclarationData
+    | TYPEDEF (ENUM | STRUCT | UNION | CLASS | INTERFACE CLASS)? typeIdentifier SEMICOLON # typeDeclarationMisc
     ;
 
 lifetime
@@ -149,16 +240,35 @@ castingType
     ;
 
 dataType
-    : integerVectorType signing? packedDimension* # dataTypeVector
-    | integerAtomType signing?                    # dataTypeInteger
-    | STRING                                      # dataTypeString
-    | classType                                   # dataTypeClassType
-    | EVENT                                       # dataTypeEvent
+    : integerVectorType signing? packedDimension*
+      # dataTypeVector
+    | integerAtomType signing?
+      # dataTypeInteger
+    | ENUM enumBaseType? LBRACE enumNameDeclaration (COMMA enumNameDeclaration)* RBRACE packedDimension*
+      # dataTypeEnum
+    | STRING
+      # dataTypeString
+    | CHANDLE
+      # dataTypeCHandle
+    | classType
+      # dataTypeClassType
+    | EVENT
+      # dataTypeEvent
     ;
 
 dataTypeOrImplicit
     : dataType
     | implicitDataType
+    ;
+
+enumBaseType
+    : integerAtomType signing?                    # enumBaseTypeAtom
+    | integerVectorType signing? packedDimension? # enumBaseTypeVector
+    | typeIdentifier packedDimension?             # enumBaseTypeTypeIdentifier
+    ;
+
+enumNameDeclaration
+    : enumIdentifier (LBRACK integralNumber (COLON integralNumber)? RBRACK)? (EQ constantExpression)?
     ;
 
 implicitDataType
@@ -228,6 +338,10 @@ dataTypeOrVoid
 
 delayValue
     : UNSIGNED_NUMBER
+    | REAL_NUMBER
+    | psIdentifier
+    | timeLiteral
+    | STEP1
     ;
 
 // A.2.3 Declaration Lists /////////////////////////////////////////////////////////////////////////////////////////////
@@ -236,10 +350,44 @@ listOfVariableDeclAssignments
     : variableDeclAssignment (COMMA variableDeclAssignment)*
     ;
 
+listOfParamAssignments
+    : paramAssignment (COMMA paramAssignment)*
+    ;
+
+listOfPortIdentifiers
+    : portIdentifier unpackedDimension* (COMMA portIdentifier unpackedDimension*)*
+    ;
+
+listOfTfVariableIdentifiers
+    : portIdentifier variableDimension* (EQ expression)? (COMMA portIdentifier variableDimension* (EQ expression)?)*
+    ;
+
+listOfTypeAssignments
+    : typeAssignment (COMMA typeAssignment)*
+    ;
+
+listOfVariableIdentifiers
+    : variableIdentifier variableDimension* (COMMA variableIdentifier variableDimension*)*
+    ;
+
 // A.2.4 Declaration Assignments ///////////////////////////////////////////////////////////////////////////////////////
 
 variableDeclAssignment
-    : variableIdentifier variableDimension* (EQ expression)?
+    : variableIdentifier variableDimension* (EQ expression)? # variableDeclAssignmentVariable
+    | classVariableIdentifier (EQ classNew)?                 # variableDeclAssignmentClassVariable
+    ;
+
+paramAssignment
+    : parameterIdentifier unpackedDimension* (EQ constantParamExpression)?
+    ;
+
+typeAssignment
+    : typeIdentifier (EQ dataType)?
+    ;
+
+classNew
+    : classScope? NEW (LPAREN listOfArguments RPAREN)?
+    | NEW expression
     ;
 
 // A.2.5 Declaration Ranges ////////////////////////////////////////////////////////////////////////////////////////////
@@ -286,27 +434,72 @@ functionDeclaration
     ;
 
 functionBodyDeclaration
-    : functionDataTypeOrImplicit functionIdentifier SEMICOLON functionStatementOrNull* ENDFUNCTION
+    : functionDataTypeOrImplicit functionIdentifier SEMICOLON tfItemDeclaration* functionStatementOrNull* ENDFUNCTION
       (COLON functionIdentifier)?
       # functionBodyDeclarationNoPortList
-    | functionDataTypeOrImplicit functionIdentifier LPAREN tfPortList? RPAREN blockItemDeclaration*
+    | functionDataTypeOrImplicit functionIdentifier LPAREN tfPortList? RPAREN SEMICOLON blockItemDeclaration*
       functionStatementOrNull* ENDFUNCTION (COLON functionIdentifier)?
       # functionBodyDeclarationPortList
     ;
 
+functionPrototype
+    : FUNCTION dataTypeOrVoid functionIdentifier (LPAREN tfPortList? RPAREN)?
+    ;
+
+dpiImportExport
+    : IMPORT dpiSpecString (dpiFunctionImportProperty)? (cIdentifier EQ)? dpiFunctionProto SEMICOLON
+      # dpiImportExportImportFunction
+    ;
+
+dpiSpecString
+    : DPI_C
+    | DPI
+    ;
+
+dpiFunctionImportProperty
+    : CONTEXT
+    | PURE
+    ;
+
+dpiFunctionProto
+    : functionPrototype
+    ;
+
 // A.2.7 Task Declarations /////////////////////////////////////////////////////////////////////////////////////////////
+
+taskDeclaration
+    : TASK lifetime? taskBodyDeclaration
+    ;
+
+taskBodyDeclaration
+    : (interfaceIdentifier DOT | classScope)? taskIdentifier SEMICOLON tfItemDeclaration* statementOrNull* ENDTASK
+      (COLON taskIdentifier)?
+      # taskBodyDeclarationNoPorts
+    | (interfaceIdentifier DOT | classScope)? taskIdentifier LPAREN tfPortList? RPAREN SEMICOLON blockItemDeclaration*
+      statementOrNull* ENDTASK (COLON taskIdentifier)?
+      # taskBodyDeclarationPorts
+    ;
+
+tfItemDeclaration
+    : blockItemDeclaration
+    | tfPortDeclaration
+    ;
 
 tfPortList
     : tfPortItem (COMMA tfPortItem)*
     ;
 
 tfPortItem
-    : attributeInstance* tfPortDirection? VAR? dataTypeOrImplicit portIdentifier variableDimension*
+    : attributeInstance* tfPortDirection? VAR? dataTypeOrImplicit portIdentifier variableDimension* (EQ expression)?
     ;
 
 tfPortDirection
     : portDirection
     | CONST REF
+    ;
+
+tfPortDeclaration
+    : attributeInstance* tfPortDirection VAR? dataTypeOrImplicit listOfTfVariableIdentifiers SEMICOLON
     ;
 
 // A.4.1.1 Module Instantiations ///////////////////////////////////////////////////////////////////////////////////////
@@ -357,7 +550,8 @@ namedPortConnection
 // A.2.8 Block Item Declarations ///////////////////////////////////////////////////////////////////////////////////////
 
 blockItemDeclaration
-    : attributeInstance* dataDeclaration # blockItemDeclarationData
+    : attributeInstance* dataDeclaration                # blockItemDeclarationData
+    | attributeInstance* parameterDeclaration SEMICOLON # blockItemDeclarationParameter
     ;
 
 // A.6.1 Continuous Assignment and Net Alias Statements ////////////////////////////////////////////////////////////////
@@ -469,7 +663,8 @@ eventExpression
     ;
 
 proceduralTimingControl
-    : eventControl
+    : delayControl
+    | eventControl
     ;
 
 jumpStatement
@@ -567,8 +762,14 @@ assignmentPatternExpressionType
 loopStatement
     : FOREVER statementOrNull
       # loopStatementForever
+    | REPEAT LPAREN expression RPAREN statementOrNull
+      # loopStatementRepeat
+    | WHILE LPAREN expression RPAREN statementOrNull
+      # loopStatementWhile
     | FOR LPAREN forInitialization? SEMICOLON expression? SEMICOLON forStep? RPAREN statementOrNull
       # loopStatementFor
+    | DO statementOrNull WHILE LPAREN expression RPAREN SEMICOLON
+      # loopStatementDoWhile
     ;
 
 forInitialization
@@ -693,6 +894,17 @@ constantExpression
       # constantExpressionConditional
     ;
 
+constantMinTypMaxExpression
+    : constantExpression                                                   # constantMinTypMaxExpressionNoColon
+    | constantExpression COLON constantExpression COLON constantExpression # constantMinTypMaxExpressionColon
+    ;
+
+constantParamExpression
+    : constantMinTypMaxExpression
+    | dataType
+    | DOLLAR
+    ;
+
 paramExpression
     : minTypMaxExpression
     | dataType
@@ -740,8 +952,10 @@ indexedRange
 // A.8.4 Primaries /////////////////////////////////////////////////////////////////////////////////////////////////////
 
 constantPrimary
-    : primaryLiteral                       # constantPrimaryLiteral
-    | psParameterIdentifier constantSelect # constantPrimaryParameter
+    : primaryLiteral                            # constantPrimaryLiteral
+    | psParameterIdentifier constantSelect      # constantPrimaryParameter
+    | LPAREN constantMinTypMaxExpression RPAREN # constantPrimaryMinTypMax
+    | NULL                                      # constantPrimaryNull
     ;
 
 primary
@@ -779,6 +993,10 @@ rangeExpression
 primaryLiteral
     : number
     | STRING_LITERAL
+    ;
+
+timeLiteral
+    : TIME_LITERAL
     ;
 
 implicitClassHandle
@@ -902,7 +1120,19 @@ blockIdentifier
     : identifier
     ;
 
+cIdentifier
+    : C_IDENTIFIER
+    ;
+
 classIdentifier
+    : identifier
+    ;
+
+classVariableIdentifier
+    : variableIdentifier
+    ;
+
+enumIdentifier
     : identifier
     ;
 
@@ -928,6 +1158,10 @@ hierarchicalVariableIdentifier
 
 identifier
     : SIMPLE_IDENTIFIER
+    ;
+
+interfaceIdentifier
+    : identifier
     ;
 
 instanceIdentifier
@@ -971,6 +1205,10 @@ psClassIdentifier
     : packageScope? classIdentifier
     ;
 
+psIdentifier
+    : packageScope? identifier
+    ;
+
 psOrHierarchicalTfIdentifier
     : packageScope? tfIdentifier
     | hierarchicalTfIdentifier
@@ -984,7 +1222,15 @@ systemTfIdentifier
     : SYSTEM_TF_IDENTIFIER
     ;
 
+taskIdentifier
+    : identifier
+    ;
+
 tfIdentifier
+    : identifier
+    ;
+
+typeIdentifier
     : identifier
     ;
 

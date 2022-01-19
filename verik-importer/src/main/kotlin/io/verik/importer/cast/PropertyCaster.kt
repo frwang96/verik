@@ -21,8 +21,13 @@ import io.verik.importer.ast.element.EProperty
 
 object PropertyCaster {
 
-    fun castProperty(ctx: SystemVerilogParser.DataDeclarationContext, castContext: CastContext): EProperty? {
-        val variableIdentifier = ctx.listOfVariableDeclAssignments().variableDeclAssignment(0).variableIdentifier()
+    fun castPropertyFromDataDeclarationData(
+        ctx: SystemVerilogParser.DataDeclarationDataContext,
+        castContext: CastContext
+    ): EProperty? {
+        val variableDeclAssignment = ctx.listOfVariableDeclAssignments().variableDeclAssignment(0)
+        val variableIdentifier = (variableDeclAssignment as SystemVerilogParser.VariableDeclAssignmentVariableContext)
+            .variableIdentifier()
         val location = castContext.getLocation(variableIdentifier)
         val name = variableIdentifier.text
         val type = castContext.getType(ctx.dataTypeOrImplicit()) ?: return null

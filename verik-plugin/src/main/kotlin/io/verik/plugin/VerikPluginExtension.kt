@@ -27,6 +27,6 @@ abstract class VerikPluginExtension {
     var wrapLength: Int = 120
     var suppressedWarnings: ArrayList<String> = ArrayList()
     var promotedWarnings: ArrayList<String> = ArrayList()
-    var maxErrorCount: Int = 20
+    var maxErrorCount: Int = 60
     var debug: Boolean = false
 }

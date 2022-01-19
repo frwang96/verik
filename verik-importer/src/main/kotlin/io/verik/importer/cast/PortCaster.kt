@@ -43,28 +43,6 @@ object PortCaster {
         return EPort(location, name, type, portType)
     }
 
-    fun castPortFromInputDeclaration(
-        ctx: SystemVerilogParser.InputDeclarationContext,
-        castContext: CastContext
-    ): EPort? {
-        val identifier = ctx.identifier()
-        val location = castContext.getLocation(identifier)
-        val name = identifier.text
-        val type = castContext.getType(ctx.netPortType().dataTypeOrImplicit()) ?: return null
-        return EPort(location, name, type, PortType.INPUT)
-    }
-
-    fun castPortFromOutputDeclaration(
-        ctx: SystemVerilogParser.OutputDeclarationContext,
-        castContext: CastContext
-    ): EPort? {
-        val identifier = ctx.identifier()
-        val location = castContext.getLocation(identifier)
-        val name = identifier.text
-        val type = castContext.getType(ctx.netPortType().dataTypeOrImplicit()) ?: return null
-        return EPort(location, name, type, PortType.OUTPUT)
-    }
-
     private fun castPortType(ctx: SystemVerilogParser.NetPortHeaderContext): PortType {
         return when {
             ctx.portDirection()?.INPUT() != null -> PortType.INPUT

@@ -67,8 +67,8 @@ class CasterVisitor(
         return ModuleCaster.castModuleFromModuleDeclarationAnsi(ctx!!, castContext)
     }
 
-    override fun visitDataDeclaration(ctx: SystemVerilogParser.DataDeclarationContext?): EProperty? {
-        return PropertyCaster.castProperty(ctx!!, castContext)
+    override fun visitDataDeclarationData(ctx: SystemVerilogParser.DataDeclarationDataContext?): EProperty? {
+        return PropertyCaster.castPropertyFromDataDeclarationData(ctx!!, castContext)
     }
 
 // A.1.3 Module Parameters and Ports ///////////////////////////////////////////////////////////////////////////////////
@@ -79,16 +79,6 @@ class CasterVisitor(
 
     override fun visitAnsiPortDeclaration(ctx: SystemVerilogParser.AnsiPortDeclarationContext?): EPort? {
         return PortCaster.castPortFromAnsiPortDeclaration(ctx!!, castContext)
-    }
-
-// A.2.1.2 Port Declarations ///////////////////////////////////////////////////////////////////////////////////////////
-
-    override fun visitInputDeclaration(ctx: SystemVerilogParser.InputDeclarationContext?): EPort? {
-        return PortCaster.castPortFromInputDeclaration(ctx!!, castContext)
-    }
-
-    override fun visitOutputDeclaration(ctx: SystemVerilogParser.OutputDeclarationContext?): EPort? {
-        return PortCaster.castPortFromOutputDeclaration(ctx!!, castContext)
     }
 
 // A.2.2.1 Net and Variable Types //////////////////////////////////////////////////////////////////////////////////////
