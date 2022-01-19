@@ -24,7 +24,7 @@ import java.nio.file.Path
 class SourceBuilder(
     projectContext: ProjectContext,
     private val packageName: String,
-    private val path: Path
+    private val outputPath: Path
 ) {
 
     private val lineBuilder = StringBuilder()
@@ -42,7 +42,7 @@ class SourceBuilder(
     init {
         val fileHeader = FileHeaderBuilder.build(
             projectContext.config,
-            path,
+            outputPath,
             FileHeaderBuilder.HeaderStyle.KOTLIN
         )
         sourceBuilder.append(fileHeader)
@@ -50,7 +50,7 @@ class SourceBuilder(
     }
 
     fun getTextFile(): TextFile {
-        return TextFile(path, sourceBuilder.toString())
+        return TextFile(outputPath, sourceBuilder.toString())
     }
 
     fun indent(block: () -> Unit) {

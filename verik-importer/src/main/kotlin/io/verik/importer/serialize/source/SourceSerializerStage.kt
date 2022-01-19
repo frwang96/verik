@@ -16,8 +16,7 @@
 
 package io.verik.importer.serialize.source
 
-import io.verik.importer.ast.sv.element.SvCompilationUnit
-import io.verik.importer.ast.sv.element.SvDeclaration
+import io.verik.importer.ast.kt.element.KtPackage
 import io.verik.importer.common.TextFile
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
@@ -26,27 +25,16 @@ object SourceSerializerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
         val sourceTextFiles = ArrayList<TextFile>()
-        sourceTextFiles.addAll(serialize(projectContext.compilationUnit, projectContext))
+        projectContext.project.packages.forEach {
+            sourceTextFiles.addAll(serialize(it, projectContext))
+        }
         projectContext.outputContext.sourceTextFiles = sourceTextFiles
     }
 
-    private fun serialize(compilationUnit: SvCompilationUnit, projectContext: ProjectContext): List<TextFile> {
-        val declarationMap = HashMap<String, ArrayList<SvDeclaration>>()
-        compilationUnit.declarations.forEach {
-            val baseFileName = it.location.path.fileName.toString().substringBefore(".")
-            val declarations = declarationMap[baseFileName]
-            if (declarations != null) {
-                declarations.add(it)
-            } else {
-                declarationMap[baseFileName] = arrayListOf(it)
-            }
-        }
-
-        val packagePath = projectContext.config.outputSourceDir.resolve("imported")
-        return declarationMap.map { (baseFileName, declarations) ->
-            val path = packagePath.resolve("$baseFileName.kt")
-            val serializeContext = SerializeContext(projectContext, "imported", path)
-            declarations.forEach { serializeContext.serialize(it) }
+    private fun serialize(`package`: KtPackage, projectContext: ProjectContext): List<TextFile> {
+        return `package`.files.map { file ->
+            val serializeContext = SerializeContext(projectContext, `package`.name, file.outputPath)
+            file.declarations.forEach { serializeContext.serialize(it) }
             serializeContext.getTextFile()
         }
     }

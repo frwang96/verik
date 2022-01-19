@@ -21,12 +21,15 @@ import io.verik.importer.message.SourceLocation
 
 class KtPackage(
     override val location: SourceLocation,
-    override val name: String
+    override val name: String,
+    val files: ArrayList<KtFile>
 ) : KtDeclaration() {
 
     override fun accept(visitor: KtVisitor) {
         visitor.visitPackage(this)
     }
 
-    override fun acceptChildren(visitor: KtVisitor) {}
+    override fun acceptChildren(visitor: KtVisitor) {
+        files.forEach { it.accept(visitor) }
+    }
 }

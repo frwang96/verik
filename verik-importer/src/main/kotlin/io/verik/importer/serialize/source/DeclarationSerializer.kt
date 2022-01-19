@@ -16,52 +16,12 @@
 
 package io.verik.importer.serialize.source
 
-import io.verik.importer.ast.sv.element.SvDeclaration
-import io.verik.importer.ast.sv.element.SvModule
-import io.verik.importer.ast.sv.element.SvPort
-import io.verik.importer.ast.sv.element.SvProperty
-import io.verik.importer.ast.sv.property.PortType
-import io.verik.importer.main.Platform
+import io.verik.importer.ast.kt.element.KtClass
 
 object DeclarationSerializer {
 
-    fun serializeModule(module: SvModule, serializeContext: SerializeContext) {
+    fun serializeClass(`class`: KtClass, serializeContext: SerializeContext) {
         serializeContext.appendLine()
-        serializeLocation(module, serializeContext)
-        serializeContext.append("class ${module.name}")
-        if (module.ports.isNotEmpty()) {
-            serializeContext.appendLine("(")
-            serializeContext.indent {
-                serializeContext.serializeJoinAppendLine(module.ports) {
-                    serializeContext.serialize(it)
-                }
-            }
-            serializeContext.append(")")
-        }
-        serializeContext.appendLine(" : Module()")
-    }
-
-    fun serializeProperty(property: SvProperty, serializeContext: SerializeContext) {
-        serializeContext.appendLine()
-        serializeLocation(property, serializeContext)
-        serializeContext.append("val ${property.name}: ")
-        serializeContext.appendLine("${property.type} = imported()")
-    }
-
-    fun serializePort(port: SvPort, serializeContext: SerializeContext) {
-        serializeLocation(port, serializeContext)
-        when (port.portType) {
-            PortType.INPUT -> serializeContext.append("@In ")
-            PortType.OUTPUT -> serializeContext.append("@Out ")
-        }
-        serializeContext.append("var ${port.name}: ${port.type}")
-    }
-
-    private fun serializeLocation(declaration: SvDeclaration, serializeContext: SerializeContext) {
-        if (serializeContext.annotateDeclarations) {
-            val pathString = Platform.getStringFromPath(declaration.location.path)
-            val locationString = "$pathString:${declaration.location.line}"
-            serializeContext.appendLine("@Imported(\"$locationString\")")
-        }
+        serializeContext.appendLine("class ${`class`.name}")
     }
 }

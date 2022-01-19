@@ -26,12 +26,12 @@ data class VerikImporterConfig(
     val importedFiles: List<Path>,
     val includeDirs: List<Path>,
     val enablePreprocessorOutput: Boolean,
-    val annotateDeclarations: Boolean,
     val suppressedWarnings: List<String>,
     val promotedWarnings: List<String>,
     val maxErrorCount: Int,
     val debug: Boolean
 ) {
 
-    val outputSourceDir: Path = buildDir.resolve("src")
+    val rootPackageName = "imported"
+    val rootPackageOutputPath: Path = buildDir.resolve("src/$rootPackageName")
 }

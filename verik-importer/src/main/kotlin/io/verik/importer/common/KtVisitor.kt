@@ -16,8 +16,10 @@
 
 package io.verik.importer.common
 
+import io.verik.importer.ast.kt.element.KtClass
 import io.verik.importer.ast.kt.element.KtDeclaration
 import io.verik.importer.ast.kt.element.KtElement
+import io.verik.importer.ast.kt.element.KtFile
 import io.verik.importer.ast.kt.element.KtPackage
 import io.verik.importer.ast.kt.element.KtProject
 
@@ -29,11 +31,19 @@ abstract class KtVisitor {
         visitElement(project)
     }
 
+    open fun visitFile(file: KtFile) {
+        visitElement(file)
+    }
+
     open fun visitDeclaration(declaration: KtDeclaration) {
         visitElement(declaration)
     }
 
     open fun visitPackage(`package`: KtPackage) {
         visitDeclaration(`package`)
+    }
+
+    open fun visitClass(`class`: KtClass) {
+        visitDeclaration(`class`)
     }
 }

@@ -20,7 +20,7 @@ import io.verik.importer.common.KtVisitor
 import io.verik.importer.message.SourceLocation
 
 class KtProject(
-    private val packages: ArrayList<KtPackage>
+    val packages: ArrayList<KtPackage>
 ) : KtElement() {
 
     override val location: SourceLocation = SourceLocation.NULL

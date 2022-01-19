@@ -20,6 +20,7 @@ enum class StageType {
     PREPROCESS,
     PARSE,
     CAST,
+    INTERPRET,
     SERIALIZE;
 
     fun flushAfter(): Boolean {

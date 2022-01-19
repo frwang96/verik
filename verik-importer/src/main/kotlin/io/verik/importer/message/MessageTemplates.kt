@@ -16,6 +16,7 @@
 
 package io.verik.importer.message
 
+import io.verik.importer.ast.kt.element.KtElement
 import io.verik.importer.ast.sv.element.SvElement
 import org.antlr.v4.runtime.tree.TerminalNode
 
@@ -68,6 +69,10 @@ class FatalMessageTemplate1<A>(
     }
 
     fun on(element: SvElement, a: A): Nothing {
+        MessageCollector.messageCollector.fatal(format(a), element.location)
+    }
+
+    fun on(element: KtElement, a: A): Nothing {
         MessageCollector.messageCollector.fatal(format(a), element.location)
     }
 }

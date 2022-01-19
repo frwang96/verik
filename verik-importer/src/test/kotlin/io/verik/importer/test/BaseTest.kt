@@ -231,7 +231,6 @@ abstract class BaseTest {
                 importedFiles = listOf(importedFile),
                 includeDirs = listOf(),
                 enablePreprocessorOutput = true,
-                annotateDeclarations = false,
                 suppressedWarnings = listOf(),
                 promotedWarnings = listOf(),
                 maxErrorCount = 0,

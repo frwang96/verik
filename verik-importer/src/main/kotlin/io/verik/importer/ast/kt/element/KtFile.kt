@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,23 @@
  * limitations under the License.
  */
 
-package io.verik.plugin
+package io.verik.importer.ast.kt.element
 
+import io.verik.importer.common.KtVisitor
+import io.verik.importer.message.SourceLocation
 import java.nio.file.Path
 
-abstract class VerikImporterPluginExtension {
+class KtFile(
+    override val location: SourceLocation,
+    val outputPath: Path,
+    val declarations: ArrayList<KtDeclaration>
+) : KtElement() {
 
-    var importedFiles: List<Path> = listOf()
-    var includeDirs: List<Path> = listOf()
-    var enablePreprocessorOutput: Boolean = true
-    var suppressedWarnings: ArrayList<String> = ArrayList()
-    var promotedWarnings: ArrayList<String> = ArrayList()
-    var maxErrorCount: Int = 60
-    var debug: Boolean = false
+    override fun accept(visitor: KtVisitor) {
+        visitor.visitFile(this)
+    }
+
+    override fun acceptChildren(visitor: KtVisitor) {
+        declarations.forEach { it.accept(visitor) }
+    }
 }

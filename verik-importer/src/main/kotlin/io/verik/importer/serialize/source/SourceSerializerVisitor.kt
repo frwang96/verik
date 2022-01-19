@@ -16,30 +16,20 @@
 
 package io.verik.importer.serialize.source
 
-import io.verik.importer.ast.sv.element.SvElement
-import io.verik.importer.ast.sv.element.SvModule
-import io.verik.importer.ast.sv.element.SvPort
-import io.verik.importer.ast.sv.element.SvProperty
-import io.verik.importer.common.SvVisitor
+import io.verik.importer.ast.kt.element.KtClass
+import io.verik.importer.ast.kt.element.KtElement
+import io.verik.importer.common.KtVisitor
 import io.verik.importer.message.Messages
 
 class SourceSerializerVisitor(
     private val serializeContext: SerializeContext
-) : SvVisitor() {
+) : KtVisitor() {
 
-    override fun visitElement(element: SvElement) {
+    override fun visitElement(element: KtElement) {
         Messages.INTERNAL_ERROR.on(element, "Unable to serialize element: $element")
     }
 
-    override fun visitModule(module: SvModule) {
-        DeclarationSerializer.serializeModule(module, serializeContext)
-    }
-
-    override fun visitProperty(property: SvProperty) {
-        DeclarationSerializer.serializeProperty(property, serializeContext)
-    }
-
-    override fun visitPort(port: SvPort) {
-        DeclarationSerializer.serializePort(port, serializeContext)
+    override fun visitClass(`class`: KtClass) {
+        DeclarationSerializer.serializeClass(`class`, serializeContext)
     }
 }

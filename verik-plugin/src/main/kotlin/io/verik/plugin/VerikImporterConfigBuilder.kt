@@ -31,7 +31,6 @@ object VerikImporterConfigBuilder {
             importedFiles = extension.importedFiles,
             includeDirs = extension.includeDirs,
             enablePreprocessorOutput = extension.enablePreprocessorOutput,
-            annotateDeclarations = extension.annotateDeclarations,
             suppressedWarnings = extension.suppressedWarnings,
             promotedWarnings = extension.promotedWarnings,
             maxErrorCount = extension.maxErrorCount,
