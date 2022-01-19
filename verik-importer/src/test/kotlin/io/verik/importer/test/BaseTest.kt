@@ -40,6 +40,8 @@ import kotlin.reflect.KClass
 
 abstract class BaseTest {
 
+    private val DOCSTRING_REGEX = Regex(".*/\\*\\*.*\\*/")
+
     fun driveMessageTest(content: String, isError: Boolean, message: String) {
         val projectContext = getProjectContext(content)
         val stageSequence = StageSequencer.getStageSequence()
@@ -117,6 +119,7 @@ abstract class BaseTest {
                 val index = lines.indexOfLast { it.startsWith("import ") } + 2
                 lines.subList(index, lines.size)
             }
+            .filter { !it.matches(DOCSTRING_REGEX) }
             .dropLastWhile { it.isEmpty() }
 
         assertEquals(

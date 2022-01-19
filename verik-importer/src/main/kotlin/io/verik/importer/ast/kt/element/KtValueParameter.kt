@@ -16,10 +16,22 @@
 
 package io.verik.importer.ast.kt.element
 
-import io.verik.importer.ast.common.Declaration
 import io.verik.importer.ast.common.Type
+import io.verik.importer.ast.kt.property.AnnotationEntry
+import io.verik.importer.common.KtVisitor
+import io.verik.importer.message.SourceLocation
 
-abstract class KtDeclaration : KtElement(), Declaration {
+class KtValueParameter(
+    override val location: SourceLocation,
+    override val name: String,
+    override val type: Type,
+    val annotationEntries: List<AnnotationEntry>,
+    val isMutable: Boolean?
+) : KtDeclaration() {
 
-    abstract val type: Type
+    override fun accept(visitor: KtVisitor) {
+        visitor.visitValueParameter(this)
+    }
+
+    override fun acceptChildren(visitor: KtVisitor) {}
 }

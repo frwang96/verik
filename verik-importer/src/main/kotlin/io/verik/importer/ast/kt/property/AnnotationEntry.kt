@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,6 @@
  * limitations under the License.
  */
 
-package io.verik.importer.core
+package io.verik.importer.ast.kt.property
 
-object Core {
-
-    val C_Any = CoreClassDeclaration("Any")
-    val C_Unit = CoreClassDeclaration("Unit")
-    val C_Boolean = CoreClassDeclaration("Boolean")
-    val C_Ubit = CoreClassDeclaration("Ubit")
-
-    val C_Module = CoreClassDeclaration("Module")
-}
+data class AnnotationEntry(val name: String)

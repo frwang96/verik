@@ -16,17 +16,27 @@
 
 package io.verik.importer.ast.kt.element
 
+import io.verik.importer.ast.common.Type
 import io.verik.importer.common.KtVisitor
+import io.verik.importer.core.Core
 import io.verik.importer.message.SourceLocation
 
 class KtClass(
     override val location: SourceLocation,
-    override val name: String
+    override val name: String,
+    val superType: Type,
+    val valueParameters: ArrayList<KtValueParameter>,
+    val declarations: ArrayList<KtDeclaration>
 ) : KtDeclaration() {
+
+    override val type = Core.C_Unit.toType()
 
     override fun accept(visitor: KtVisitor) {
         visitor.visitClass(this)
     }
 
-    override fun acceptChildren(visitor: KtVisitor) {}
+    override fun acceptChildren(visitor: KtVisitor) {
+        valueParameters.forEach { it.accept(visitor) }
+        declarations.forEach { it.accept(visitor) }
+    }
 }

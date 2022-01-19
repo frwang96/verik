@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,21 @@
  * limitations under the License.
  */
 
-package io.verik.importer.core
+package io.verik.importer.ast.kt.element
 
-object Core {
+import io.verik.importer.ast.common.Type
+import io.verik.importer.common.KtVisitor
+import io.verik.importer.message.SourceLocation
 
-    val C_Any = CoreClassDeclaration("Any")
-    val C_Unit = CoreClassDeclaration("Unit")
-    val C_Boolean = CoreClassDeclaration("Boolean")
-    val C_Ubit = CoreClassDeclaration("Ubit")
+class KtProperty(
+    override val location: SourceLocation,
+    override val name: String,
+    override val type: Type
+) : KtDeclaration() {
 
-    val C_Module = CoreClassDeclaration("Module")
+    override fun accept(visitor: KtVisitor) {
+        visitor.visitProperty(this)
+    }
+
+    override fun acceptChildren(visitor: KtVisitor) {}
 }

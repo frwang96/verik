@@ -17,6 +17,7 @@
 package io.verik.importer.ast.kt.element
 
 import io.verik.importer.common.KtVisitor
+import io.verik.importer.core.Core
 import io.verik.importer.message.SourceLocation
 
 class KtPackage(
@@ -24,6 +25,8 @@ class KtPackage(
     override val name: String,
     val files: ArrayList<KtFile>
 ) : KtDeclaration() {
+
+    override val type = Core.C_Unit.toType()
 
     override fun accept(visitor: KtVisitor) {
         visitor.visitPackage(this)

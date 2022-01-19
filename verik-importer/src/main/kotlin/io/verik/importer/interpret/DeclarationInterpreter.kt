@@ -18,9 +18,14 @@ package io.verik.importer.interpret
 
 import io.verik.importer.ast.kt.element.KtClass
 import io.verik.importer.ast.kt.element.KtDeclaration
+import io.verik.importer.ast.kt.element.KtProperty
+import io.verik.importer.ast.kt.element.KtValueParameter
 import io.verik.importer.ast.sv.element.SvDeclaration
 import io.verik.importer.ast.sv.element.SvModule
 import io.verik.importer.ast.sv.element.SvPackage
+import io.verik.importer.ast.sv.element.SvPort
+import io.verik.importer.ast.sv.element.SvProperty
+import io.verik.importer.core.Core
 import io.verik.importer.message.Messages
 
 object DeclarationInterpreter {
@@ -29,6 +34,7 @@ object DeclarationInterpreter {
         return when (declaration) {
             is SvPackage -> null
             is SvModule -> interpretClassFromModule(declaration)
+            is SvProperty -> interpretPropertyFromProperty(declaration)
             else -> {
                 Messages.INTERNAL_ERROR.on(
                     declaration,
@@ -39,6 +45,28 @@ object DeclarationInterpreter {
     }
 
     private fun interpretClassFromModule(module: SvModule): KtClass {
-        return KtClass(module.location, module.name)
+        val valueParameters = module.ports.map { interpretValueParameterFromPort(it) }
+        return KtClass(
+            module.location,
+            module.name,
+            Core.C_Module.toType(),
+            ArrayList(valueParameters),
+            ArrayList()
+        )
+    }
+
+    private fun interpretPropertyFromProperty(property: SvProperty): KtProperty {
+        return KtProperty(property.location, property.name, property.type)
+    }
+
+    private fun interpretValueParameterFromPort(port: SvPort): KtValueParameter {
+        val annotationEntry = port.portType.getAnnotationEntry()
+        return KtValueParameter(
+            port.location,
+            port.name,
+            port.type,
+            listOf(annotationEntry),
+            true
+        )
     }
 }
