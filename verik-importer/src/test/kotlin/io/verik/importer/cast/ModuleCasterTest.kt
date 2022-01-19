@@ -19,6 +19,7 @@ package io.verik.importer.cast
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.test.BaseTest
 import io.verik.importer.test.findDeclaration
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class ModuleCasterTest : BaseTest() {
@@ -40,6 +41,7 @@ internal class ModuleCasterTest : BaseTest() {
     }
 
     @Test
+    @Disabled
     fun `cast module from moduleDeclarationNonAnsi`() {
         driveCasterTest(
             SystemVerilogParser.ModuleDeclarationNonAnsiContext::class,

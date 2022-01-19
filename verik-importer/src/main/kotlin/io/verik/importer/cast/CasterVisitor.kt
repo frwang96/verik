@@ -67,8 +67,8 @@ class CasterVisitor(
         return ModuleCaster.castModuleFromModuleDeclarationAnsi(ctx!!, castContext)
     }
 
-    override fun visitDataDeclaration(ctx: SystemVerilogParser.DataDeclarationContext?): EProperty? {
-        return PropertyCaster.castProperty(ctx!!, castContext)
+    override fun visitDataDeclarationData(ctx: SystemVerilogParser.DataDeclarationDataContext?): EProperty? {
+        return PropertyCaster.castPropertyFromDataDeclarationData(ctx!!, castContext)
     }
 
 // A.1.3 Module Parameters and Ports ///////////////////////////////////////////////////////////////////////////////////
@@ -81,20 +81,10 @@ class CasterVisitor(
         return PortCaster.castPortFromAnsiPortDeclaration(ctx!!, castContext)
     }
 
-// A.2.1.2 Port Declarations ///////////////////////////////////////////////////////////////////////////////////////////
-
-    override fun visitInputDeclaration(ctx: SystemVerilogParser.InputDeclarationContext?): EPort? {
-        return PortCaster.castPortFromInputDeclaration(ctx!!, castContext)
-    }
-
-    override fun visitOutputDeclaration(ctx: SystemVerilogParser.OutputDeclarationContext?): EPort? {
-        return PortCaster.castPortFromOutputDeclaration(ctx!!, castContext)
-    }
-
 // A.2.2.1 Net and Variable Types //////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitDataType(ctx: SystemVerilogParser.DataTypeContext?): Type? {
-        return TypeCaster.castTypeFromDataType(ctx!!, castContext)
+    override fun visitDataTypeVector(ctx: SystemVerilogParser.DataTypeVectorContext?): Type? {
+        return TypeCaster.castTypeFromDataTypeVector(ctx!!, castContext)
     }
 
     override fun visitDataTypeOrImplicit(ctx: SystemVerilogParser.DataTypeOrImplicitContext?): Type? {
@@ -107,14 +97,14 @@ class CasterVisitor(
 
 // A.2.5 Declaration Ranges ////////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitPackedDimension(ctx: SystemVerilogParser.PackedDimensionContext?): Type? {
-        return TypeCaster.castTypeFromPackedDimension(ctx!!, castContext)
+    override fun visitPackedDimensionRange(ctx: SystemVerilogParser.PackedDimensionRangeContext?): Type? {
+        return TypeCaster.castTypeFromPackedDimensionRange(ctx!!, castContext)
     }
 
 // A.8.3 Expressions ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitConstantExpression(ctx: SystemVerilogParser.ConstantExpressionContext?): Type? {
-        return TypeCaster.castTypeFromConstantExpression(ctx!!)
+    override fun visitConstantPrimaryLiteral(ctx: SystemVerilogParser.ConstantPrimaryLiteralContext?): Castable? {
+        return TypeCaster.castTypeFromConstantPrimaryLiteral(ctx!!)
     }
 
     override fun visitConstantRange(ctx: SystemVerilogParser.ConstantRangeContext?): Type? {

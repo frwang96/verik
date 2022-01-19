@@ -30,9 +30,9 @@ internal class TaskReturnTransformerStageTest : BaseTest() {
             """.trimIndent(),
             """
                 task automatic f(
-                    output logic __return
+                    output logic __0
                 );
-                    __return = 1'b0;
+                    __0 = 1'b0;
                     return;
                 endtask : f
             """.trimIndent()
@@ -53,16 +53,16 @@ internal class TaskReturnTransformerStageTest : BaseTest() {
                 logic x = 1'b0;
 
                 task automatic f(
-                    output logic __return
+                    output logic __0
                 );
-                    __return = 1'b0;
+                    __0 = 1'b0;
                     return;
                 endtask : f
 
                 task automatic g();
-                    logic __0;
-                    f(.__return(__0));
-                    x = __0;
+                    logic __1;
+                    f(.__0(__1));
+                    x = __1;
                 endtask : g
             """.trimIndent()
         ) { it.regularPackageTextFiles[0] }

@@ -24,8 +24,8 @@ import io.verik.importer.message.Messages
 
 object TypeCaster {
 
-    fun castTypeFromDataType(
-        ctx: SystemVerilogParser.DataTypeContext,
+    fun castTypeFromDataTypeVector(
+        ctx: SystemVerilogParser.DataTypeVectorContext,
         castContext: CastContext
     ): Type? {
         return when (ctx.packedDimension().size) {
@@ -59,8 +59,8 @@ object TypeCaster {
         }
     }
 
-    fun castTypeFromPackedDimension(
-        ctx: SystemVerilogParser.PackedDimensionContext,
+    fun castTypeFromPackedDimensionRange(
+        ctx: SystemVerilogParser.PackedDimensionRangeContext,
         castContext: CastContext
     ): Type? {
         ctx.constantRange()?.let { return castContext.getType(it) }
@@ -75,7 +75,7 @@ object TypeCaster {
         return castContext.getType(ctx.constantExpression(0))
     }
 
-    fun castTypeFromConstantExpression(ctx: SystemVerilogParser.ConstantExpressionContext): Type? {
+    fun castTypeFromConstantPrimaryLiteral(ctx: SystemVerilogParser.ConstantPrimaryLiteralContext): Type? {
         val value = ctx.text.toIntOrNull()
             ?: return null
         return Cardinal.of(value + 1).toType()

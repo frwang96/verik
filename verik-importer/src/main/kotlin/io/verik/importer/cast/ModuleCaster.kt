@@ -26,11 +26,11 @@ object ModuleCaster {
         castContext: CastContext
     ): EModule? {
         val moduleNonAnsiHeader = ctx.moduleNonAnsiHeader()
-        val identifier = moduleNonAnsiHeader.identifier()
+        val identifier = moduleNonAnsiHeader.moduleIdentifier()
         val location = castContext.getLocation(identifier)
         val name = identifier.text
         val ports = ctx.moduleItem().mapNotNull {
-            if (it.portDeclaration() != null) {
+            if (it is SystemVerilogParser.ModuleItemPortDeclarationContext) {
                 castContext.getPort(it.portDeclaration()) ?: return null
             } else null
         }
@@ -42,7 +42,7 @@ object ModuleCaster {
         castContext: CastContext
     ): EModule? {
         val moduleAnsiHeader = ctx.moduleAnsiHeader()
-        val identifier = moduleAnsiHeader.identifier()
+        val identifier = moduleAnsiHeader.moduleIdentifier()
         val location = castContext.getLocation(identifier)
         val name = identifier.text
         val ports = moduleAnsiHeader.listOfPortDeclarations()?.ansiPortDeclaration()?.map {

@@ -17,23 +17,35 @@ lexer grammar SystemVerilogLexer;
 AND                 : '&' ;
 AND2                : '&&' ;
 AND3                : '&&&' ;
+AND_EQ              : '&=' ;
 AT                  : '@' ;
 AT_STAR             : '@*' ;
 BANG                : '!' ;
 BANG_EQ             : '!=' ;
+BANG_EQ2            : '!==' ;
+BANG_EQ_QUEST       : '!=?' ;
 CARET               : '^' ;
 CARET_EQ            : '^=' ;
 CARET_NOT           : '^~' ;
 COLON               : ':' ;
+COLON2              : '::' ;
+COLON_EQ            : ':=' ;
+COLON_SLASH         : ':/' ;
 COMMA               : ',' ;
 DOLLAR              : '$' ;
 DOT                 : '.' ;
+DOT_STAR            : '.*' ;
 EQ                  : '=' ;
 EQ2                 : '==' ;
 EQ2_QUEST           : '==?' ;
 EQ3                 : '===' ;
 EQ_GT               : '=>' ;
 GT                  : '>' ;
+GT2                 : '>>' ;
+GT2_EQ              : '>>=' ;
+GT3                 : '>>>' ;
+GT3_EQ              : '>>>=' ;
+GT_EQ               : '>=' ;
 LT                  : '<' ;
 LT2                 : '<<' ;
 LT2_EQ              : '<<=' ;
@@ -43,6 +55,10 @@ LT_EQ               : '<=' ;
 LT_MINUS_GT         : '<->' ;
 MINUS               : '-' ;
 MINUS2              : '--' ;
+MINUS_COLON         : '-:' ;
+MINUS_EQ            : '-=' ;
+MINUS_GT            : '->' ;
+MINUS_GT2           : '->>' ;
 MOD                 : '%';
 MOD_EQ              : '%=';
 NOT                 : '~' ;
@@ -51,15 +67,22 @@ NOT_CARET           : '~^' ;
 NOT_OR              : '~|' ;
 OR                  : '|' ;
 OR2                 : '||' ;
+OR_EQ               : '|=' ;
 PLUS                : '+' ;
 PLUS2               : '++' ;
+PLUS_COLON          : '+:' ;
+PLUS_EQ             : '+=' ;
 QUEST               : '?' ;
 SEMICOLON           : ';' ;
 SHARP               : '#' ;
 SHARP2              : '##' ;
 SLASH               : '/' ;
+SLASH_EQ            : '/=' ;
 STAR                : '*' ;
+STAR2               : '**' ;
+STAR_EQ             : '*=' ;
 TICK                : '\'' ;
+TICK_LBRACE         : '\'{' ;
 
 LBRACK              : '[' ;
 RBRACK              : ']' ;
@@ -112,6 +135,7 @@ COVERGROUP          : 'covergroup' ;
 COVERPOINT          : 'coverpoint' ;
 CROSS               : 'cross' ;
 DEASSIGN            : 'deassign' ;
+DEFAULT             : 'default' ;
 DEFPARAM            : 'defparam' ;
 DESIGN              : 'design' ;
 DISABLE             : 'disable' ;
@@ -184,7 +208,6 @@ JOIN_NONE           : 'join_none' ;
 LAND                : 'and' ;
 LARGE               : 'large' ;
 LASSIGN             : 'assign' ;
-LDEFAULT            : 'default' ;
 LET                 : 'let' ;
 LIBLIST             : 'liblist' ;
 LNOT                : 'not' ;
@@ -261,6 +284,7 @@ SPECIFY             : 'specify' ;
 SPECPARAM           : 'specparam' ;
 STATIC              : 'static' ;
 STD                 : 'std' ;
+STEP1               : '1step' ;
 STRING              : 'string' ;
 STRONG              : 'strong' ;
 STRONG0             : 'strong0' ;
@@ -296,6 +320,8 @@ TRIREG              : 'trireg' ;
 TYPE                : 'type' ;
 TYPEDEF             : 'typedef' ;
 UNION               : 'union' ;
+UNIQUE              : 'unique' ;
+UNIQUE0             : 'unique0' ;
 UNSIGNED            : 'unsigned' ;
 UNTIL               : 'until' ;
 UNTIL_WITH          : 'until_with' ;
@@ -321,8 +347,76 @@ WOR                 : 'wor' ;
 XNOR                : 'xnor' ;
 XOR                 : 'xor' ;
 
+ROOT                : '$root' ;
+UNIT                : '$unit' ;
+
+TIME_LITERAL
+    : (UNSIGNED_NUMBER | FIXED_POINT_NUMBER) 's' | 'ms' | 'us' | 'ns' | 'ps' | 'fs'
+    ;
+
 UNSIGNED_NUMBER
     : DECIMAL_DIGIT ('_' | DECIMAL_DIGIT)*
+    ;
+
+DECIMAL_NUMBER
+    : (SIZE WS?)? DECIMAL_BASE UNSIGNED_NUMBER
+    ;
+
+BINARY_NUMBER
+    : (SIZE WS?)? BINARY_BASE BINARY_VALUE
+    ;
+
+OCTAL_NUMBER
+    : (SIZE WS?)? OCTAL_BASE OCTAL_VALUE
+    ;
+
+HEX_NUMBER
+    : (SIZE WS?)? HEX_BASE HEX_VALUE
+    ;
+
+fragment SIZE
+    : NON_ZERO_UNSIGNED_NUMBER
+    ;
+
+fragment NON_ZERO_UNSIGNED_NUMBER
+    : NON_ZERO_DECIMAL_DIGIT ('_' | DECIMAL_DIGIT)*
+    ;
+
+REAL_NUMBER
+    : FIXED_POINT_NUMBER
+    | UNSIGNED_NUMBER ('.' UNSIGNED_NUMBER)? [eE] [+-]? UNSIGNED_NUMBER
+    ;
+
+FIXED_POINT_NUMBER
+    : UNSIGNED_NUMBER '.' UNSIGNED_NUMBER
+    ;
+
+fragment BINARY_VALUE
+    : BINARY_DIGIT ('_' | BINARY_DIGIT)*
+    ;
+
+fragment OCTAL_VALUE
+    : OCTAL_DIGIT ('_' | OCTAL_DIGIT)*
+    ;
+
+fragment HEX_VALUE
+    : HEX_DIGIT ('_' | HEX_DIGIT)*
+    ;
+
+fragment DECIMAL_BASE
+    : '\'' [sS]? [dD]
+    ;
+
+fragment BINARY_BASE
+    : '\'' [sS]? [bB]
+    ;
+
+fragment OCTAL_BASE
+    : '\'' [sS]? [oO]
+    ;
+
+fragment HEX_BASE
+    : '\'' [sS]? [hH]
     ;
 
 fragment NON_ZERO_DECIMAL_DIGIT
@@ -333,12 +427,44 @@ fragment DECIMAL_DIGIT
     : [0-9]
     ;
 
+fragment BINARY_DIGIT
+    : X_DIGIT | Z_DIGIT | [01]
+    ;
+
+fragment OCTAL_DIGIT
+    : X_DIGIT | Z_DIGIT | [0-7]
+    ;
+
+fragment HEX_DIGIT
+    : X_DIGIT | Z_DIGIT | [0-9a-fA-F]
+    ;
+
+fragment X_DIGIT
+    : [xX]
+    ;
+
+fragment Z_DIGIT
+    : [zZ?]
+    ;
+
+UNBASED_UNSIZED_LITERAL
+    : '\'' [01xXzZ]
+    ;
+
 STRING_LITERAL
     : '"' ('\\"' | '\\\\' | .)*? '"'
     ;
 
 SIMPLE_IDENTIFIER
     : [a-zA-Z_][a-zA-Z0-9_$]*
+    ;
+
+SYSTEM_TF_IDENTIFIER
+    : '$'[a-zA-Z0-9_$]+
+    ;
+
+C_IDENTIFIER
+    : [a-zA-Z_][a-zA-Z0-9_]*
     ;
 
 WS
