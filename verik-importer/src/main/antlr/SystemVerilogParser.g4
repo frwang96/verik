@@ -153,8 +153,16 @@ classProperty
     ;
 
 classMethod
-    : methodQualifier* taskDeclaration     # classMethodTask
-    | methodQualifier* functionDeclaration # classMethodFunction
+    : methodQualifier* taskDeclaration                           # classMethodTask
+    | methodQualifier* functionDeclaration                       # classMethodFunction
+    | PURE VIRTUAL classItemQualifier* methodPrototype SEMICOLON # classMethodPureVirtual
+    | EXTERN methodQualifier* methodPrototype SEMICOLON          # classMethodExternMethod
+    | methodQualifier* classConstructorDeclaration               # classMethodConstructor
+    | EXTERN methodQualifier* classConstructorPrototype          # classMethodExternConstructor
+    ;
+
+classConstructorPrototype
+    : FUNCTION NEW (LPAREN tfPortList? RPAREN)? SEMICOLON
     ;
 
 classItemQualifier
@@ -178,6 +186,16 @@ methodQualifier
     | classItemQualifier
     ;
 
+methodPrototype
+    : taskPrototype
+    | functionPrototype
+    ;
+
+classConstructorDeclaration
+    : FUNCTION classScope? NEW (LPAREN tfPortList? RPAREN)? SEMICOLON blockItemDeclaration*
+      (SUPER DOT NEW (LPAREN listOfArguments RPAREN)? SEMICOLON)? functionStatementOrNull* ENDFUNCTION (COLON NEW)?
+    ;
+
 // A.1.11 Package Items ////////////////////////////////////////////////////////////////////////////////////////////////
 
 packageItem
@@ -190,6 +208,7 @@ packageOrGenerateItemDeclaration
     | functionDeclaration
     | dpiImportExport
     | classDeclaration
+    | classConstructorDeclaration
     | parameterDeclaration SEMICOLON
     ;
 
@@ -250,6 +269,8 @@ dataType
       # dataTypeString
     | CHANDLE
       # dataTypeCHandle
+    | (classScope | packageScope)? typeIdentifier packedDimension*
+      # dataTypeTypeIdentifier
     | classType
       # dataTypeClassType
     | EVENT
@@ -434,11 +455,11 @@ functionDeclaration
     ;
 
 functionBodyDeclaration
-    : functionDataTypeOrImplicit functionIdentifier SEMICOLON tfItemDeclaration* functionStatementOrNull* ENDFUNCTION
-      (COLON functionIdentifier)?
+    : functionDataTypeOrImplicit (interfaceIdentifier DOT | classScope)? functionIdentifier SEMICOLON
+      tfItemDeclaration* functionStatementOrNull* ENDFUNCTION (COLON functionIdentifier)?
       # functionBodyDeclarationNoPortList
-    | functionDataTypeOrImplicit functionIdentifier LPAREN tfPortList? RPAREN SEMICOLON blockItemDeclaration*
-      functionStatementOrNull* ENDFUNCTION (COLON functionIdentifier)?
+    | functionDataTypeOrImplicit (interfaceIdentifier DOT | classScope)? functionIdentifier LPAREN tfPortList? RPAREN
+      SEMICOLON blockItemDeclaration* functionStatementOrNull* ENDFUNCTION (COLON functionIdentifier)?
       # functionBodyDeclarationPortList
     ;
 
@@ -500,6 +521,10 @@ tfPortDirection
 
 tfPortDeclaration
     : attributeInstance* tfPortDirection VAR? dataTypeOrImplicit listOfTfVariableIdentifiers SEMICOLON
+    ;
+
+taskPrototype
+    : TASK taskIdentifier (LPAREN tfPortList? RPAREN)?
     ;
 
 // A.4.1.1 Module Instantiations ///////////////////////////////////////////////////////////////////////////////////////
@@ -579,6 +604,31 @@ alwaysKeyword
 
 blockingAssignment
     : variableLeftValue EQ delayOrEventControl? expression
+      # blockingAssignmentExpression
+    | (implicitClassHandle DOT | classScope | packageScope)? hierarchicalVariableIdentifier select EQ classNew
+      # blockingAssignmentClass
+    | operatorAssignment
+      # blockingAssignmentOperator
+    ;
+
+operatorAssignment
+    : variableLeftValue assignmentOperator expression
+    ;
+
+assignmentOperator
+    : EQ
+    | PLUS_EQ
+    | MINUS_EQ
+    | STAR_EQ
+    | SLASH_EQ
+    | MOD_EQ
+    | AND_EQ
+    | OR_EQ
+    | CARET_EQ
+    | LT2_EQ
+    | GT2_EQ
+    | LT3_EQ
+    | GT3_EQ
     ;
 
 nonBlockingAssignment
@@ -616,7 +666,7 @@ statementItem
     | nonBlockingAssignment SEMICOLON  # statementItemNonBlocking
     | caseStatement                    # statementItemCase
     | conditionalStatement             # statementItemConditional
-    | incOrDecExpression               # statementItemIncOrDec
+    | incOrDecExpression SEMICOLON     # statementItemIncOrDec
     | subroutineCallStatement          # statementItemSubroutine
     | loopStatement                    # statementItemLoop
     | jumpStatement                    # statementItemJump
@@ -770,6 +820,8 @@ loopStatement
       # loopStatementFor
     | DO statementOrNull WHILE LPAREN expression RPAREN SEMICOLON
       # loopStatementDoWhile
+    | FOREACH LPAREN psOrHierarchicalArrayIdentifier LBRACK loopVariables RBRACK RPAREN statement
+      # loopStatementForEach
     ;
 
 forInitialization
@@ -787,6 +839,10 @@ forStep
 
 forStepAssignment
     : incOrDecExpression
+    ;
+
+loopVariables
+    : indexVariableIdentifier? (COMMA indexVariableIdentifier?)*
     ;
 
 // A.6.9 Subroutine Call Statements ////////////////////////////////////////////////////////////////////////////////////
@@ -869,11 +925,28 @@ methodCall
     ;
 
 methodCallBody
-    : methodIdentifier attributeInstance* (LPAREN listOfArguments RPAREN)*
+    : methodIdentifier attributeInstance* (LPAREN listOfArguments RPAREN)* # methodCallIdentifier
+    | builtInMethodCall                                                    # methodCallBuiltIn
+    ;
+
+builtInMethodCall
+    : arrayManipulationCall
     ;
 
 methodCallRoot
     : primary
+    ;
+
+arrayManipulationCall
+    : arrayMethodName attributeInstance* (LPAREN listOfArguments RPAREN)? (WITH LPAREN expression RPAREN)?
+    ;
+
+arrayMethodName
+    : methodIdentifier
+    | UNIQUE
+    | AND
+    | OR
+    | XOR
     ;
 
 // A.8.3 Expressions ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -929,6 +1002,8 @@ expression
       # expressionPrimary
     | unaryOperator attributeInstance* primary
       # expressionUnary
+    | incOrDecExpression
+      # expressionIncOrDec
     | expression binaryOperator attributeInstance* expression
       # expressionBinary
     | expression (AND3 expressionOrCondPattern)* QUEST attributeInstance* expression COLON expression
@@ -983,6 +1058,10 @@ primary
       # primaryAssignmentPatternExpression
     | THIS
       # primaryThis
+    | DOLLAR
+      # primaryDollar
+    | NULL
+      # primaryNull
     ;
 
 rangeExpression
@@ -1140,6 +1219,10 @@ functionIdentifier
     : identifier
     ;
 
+hierarchicalArrayIdentifier
+    : hierarchicalIdentifier
+    ;
+
 hierarchicalEventIdentifier
     : hierarchicalIdentifier
     ;
@@ -1158,6 +1241,10 @@ hierarchicalVariableIdentifier
 
 identifier
     : SIMPLE_IDENTIFIER
+    ;
+
+indexVariableIdentifier
+    : identifier
     ;
 
 interfaceIdentifier
@@ -1207,6 +1294,10 @@ psClassIdentifier
 
 psIdentifier
     : packageScope? identifier
+    ;
+
+psOrHierarchicalArrayIdentifier
+    : (implicitClassHandle DOT | classScope | packageScope)? hierarchicalArrayIdentifier
     ;
 
 psOrHierarchicalTfIdentifier
