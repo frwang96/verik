@@ -16,7 +16,7 @@
 
 package io.verik.importer.message
 
-import io.verik.importer.parse.LexerCharStream
+import io.verik.importer.parse.ParserCharStream
 import io.verik.importer.preprocess.PreprocessorCharStream
 import org.antlr.v4.runtime.Token
 import org.antlr.v4.runtime.tree.TerminalNode
@@ -49,7 +49,7 @@ data class SourceLocation(
                         inputStream.location
                     }
                 }
-                is LexerCharStream -> {
+                is ParserCharStream -> {
                     inputStream.getLocation(token.line, token.charPositionInLine)
                 }
                 else -> throw IllegalArgumentException(

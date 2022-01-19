@@ -16,6 +16,7 @@
 
 package io.verik.importer.parse
 
+import io.verik.importer.antlr.SystemVerilogLexer
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.main.InputFileContext
 import io.verik.importer.main.ProjectContext
@@ -36,21 +37,26 @@ object ParserStage : ProjectStage() {
     }
 
     private fun processInputFileContext(inputFileContext: InputFileContext) {
-        val parserTokenSource = ParserTokenSource(
-            inputFileContext.lexerCharStream,
-            inputFileContext.lexerFragments
+        val parserCharStream = ParserCharStream(
+            inputFileContext.preprocessorFragments,
+            inputFileContext.textFile
         )
-        val parserTokenStream = CommonTokenStream(parserTokenSource)
+        val lexer = SystemVerilogLexer(parserCharStream)
+        val lexerErrorListener = LexerErrorListener(parserCharStream)
+        lexer.removeErrorListeners()
+        lexer.addErrorListener(lexerErrorListener)
+
+        val parserTokenStream = CommonTokenStream(lexer)
         val parser = SystemVerilogParser(parserTokenStream)
-        val parserErrorListener = ParserErrorListener(inputFileContext.lexerCharStream)
+        val parserErrorListener = ParserErrorListener(parserCharStream)
         parser.removeErrorListeners()
         parser.addErrorListener(parserErrorListener)
         inputFileContext.parserTokenStream = parserTokenStream
         inputFileContext.ruleContext = parser.sourceText()
     }
 
-    private class ParserErrorListener(
-        private val lexerCharStream: LexerCharStream
+    private class LexerErrorListener(
+        private val parserCharStream: ParserCharStream
     ) : BaseErrorListener() {
 
         override fun syntaxError(
@@ -61,7 +67,25 @@ object ParserStage : ProjectStage() {
             msg: String?,
             e: RecognitionException?
         ) {
-            val location = lexerCharStream.getLocation(line, charPositionInLine)
+            val location = parserCharStream.getLocation(line, charPositionInLine)
+            val message = RecognitionExceptionFormatter.format(e)
+            Messages.LEXER_ERROR.on(location, message)
+        }
+    }
+
+    private class ParserErrorListener(
+        private val parserCharStream: ParserCharStream
+    ) : BaseErrorListener() {
+
+        override fun syntaxError(
+            recognizer: Recognizer<*, *>?,
+            offendingSymbol: Any?,
+            line: Int,
+            charPositionInLine: Int,
+            msg: String?,
+            e: RecognitionException?
+        ) {
+            val location = parserCharStream.getLocation(line, charPositionInLine)
             val message = RecognitionExceptionFormatter.format(e)
             Messages.PARSER_ERROR.on(location, message)
         }

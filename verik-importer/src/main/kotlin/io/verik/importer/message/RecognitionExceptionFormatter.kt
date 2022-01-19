@@ -18,7 +18,7 @@ package io.verik.importer.message
 
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.antlr.SystemVerilogPreprocessorParser
-import io.verik.importer.parse.LexerCharStream
+import io.verik.importer.parse.ParserCharStream
 import io.verik.importer.preprocess.PreprocessorCharStream
 import org.antlr.v4.runtime.InputMismatchException
 import org.antlr.v4.runtime.LexerNoViableAltException
@@ -35,7 +35,7 @@ object RecognitionExceptionFormatter {
             is InputMismatchException -> {
                 val token = recognitionException.offendingToken
                 when (token.inputStream) {
-                    is LexerCharStream ->
+                    is ParserCharStream ->
                         "Mismatched token: ${SystemVerilogParser.VOCABULARY.getDisplayName(token.type)}"
                     is PreprocessorCharStream ->
                         "Mismatched token: ${SystemVerilogPreprocessorParser.VOCABULARY.getDisplayName(token.type)}"
