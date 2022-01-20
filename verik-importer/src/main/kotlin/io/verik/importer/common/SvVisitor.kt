@@ -26,6 +26,7 @@ import io.verik.importer.ast.sv.element.declaration.SvModule
 import io.verik.importer.ast.sv.element.declaration.SvPackage
 import io.verik.importer.ast.sv.element.declaration.SvPort
 import io.verik.importer.ast.sv.element.declaration.SvProperty
+import io.verik.importer.ast.sv.element.descriptor.SvBitDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvPackedDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvSimpleDescriptor
@@ -85,6 +86,10 @@ abstract class SvVisitor {
 
     open fun visitSimpleDescriptor(simpleDescriptor: SvSimpleDescriptor) {
         visitDescriptor(simpleDescriptor)
+    }
+
+    open fun visitBitDescriptor(bitDescriptor: SvBitDescriptor) {
+        visitDescriptor(bitDescriptor)
     }
 
     open fun visitPackedDescriptor(packedDescriptor: SvPackedDescriptor) {

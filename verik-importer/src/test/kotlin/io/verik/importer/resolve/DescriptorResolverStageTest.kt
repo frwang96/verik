@@ -23,13 +23,24 @@ import org.junit.jupiter.api.Test
 internal class DescriptorResolverStageTest : BaseTest() {
 
     @Test
-    fun `resolve packedDescriptor`() {
+    fun `resolve bitDescriptor`() {
         driveElementTest(
             """
                 logic [1:0] x;
             """.trimIndent(),
             DescriptorResolverStage::class,
-            "Property(x, Nothing, PackedDescriptor(Packed<`2`, Boolean>, *, *, *))"
+            "Property(x, Nothing, BitDescriptor(Ubit<`2`>, *, *, *))"
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `resolve packedDescriptor`() {
+        driveElementTest(
+            """
+                logic [1:0][3:0] x;
+            """.trimIndent(),
+            DescriptorResolverStage::class,
+            "Property(x, Nothing, PackedDescriptor(Packed<`4`, Ubit<`2`>>, *, *, *))"
         ) { it.findDeclaration("x") }
     }
 }

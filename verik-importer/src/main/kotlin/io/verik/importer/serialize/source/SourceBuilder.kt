@@ -36,7 +36,8 @@ class SourceBuilder(
         "unused",
         "ClassName",
         "LongLine",
-        "PropertyName"
+        "PropertyName",
+        "SpellCheckingInspection"
     )
 
     init {

@@ -23,6 +23,7 @@ import io.verik.importer.ast.sv.element.declaration.SvModule
 import io.verik.importer.ast.sv.element.declaration.SvPackage
 import io.verik.importer.ast.sv.element.declaration.SvPort
 import io.verik.importer.ast.sv.element.declaration.SvProperty
+import io.verik.importer.ast.sv.element.descriptor.SvBitDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvPackedDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvSimpleDescriptor
 import io.verik.importer.ast.sv.element.expression.SvLiteralExpression
@@ -89,6 +90,15 @@ class ElementPrinter : SvVisitor() {
         }
     }
 
+    override fun visitBitDescriptor(bitDescriptor: SvBitDescriptor) {
+        build("BitDescriptor") {
+            build(bitDescriptor.type.toString())
+            build(bitDescriptor.left)
+            build(bitDescriptor.right)
+            build(bitDescriptor.isSigned)
+        }
+    }
+
     override fun visitPackedDescriptor(packedDescriptor: SvPackedDescriptor) {
         build("PackedDescriptor") {
             build(packedDescriptor.type.toString())
@@ -106,6 +116,12 @@ class ElementPrinter : SvVisitor() {
         build("LiteralExpression") {
             build(literalExpression.value)
         }
+    }
+
+    private fun build(content: Boolean) {
+        if (!first) builder.append(", ")
+        builder.append(if (content) "1" else "0")
+        first = false
     }
 
     private fun build(content: String) {

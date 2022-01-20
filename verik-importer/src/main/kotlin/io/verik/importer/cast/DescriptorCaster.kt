@@ -17,11 +17,13 @@
 package io.verik.importer.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
+import io.verik.importer.ast.sv.element.descriptor.SvBitDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvPackedDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvSimpleDescriptor
 import io.verik.importer.common.Type
 import io.verik.importer.core.Core
+import io.verik.importer.message.SourceLocation
 
 object DescriptorCaster {
 
@@ -29,36 +31,70 @@ object DescriptorCaster {
         ctx: SystemVerilogParser.DataTypeVectorContext,
         castContext: CastContext
     ): SvDescriptor? {
-        var descriptor = castContext.getDescriptor(ctx.integerVectorType()) ?: return null
-        ctx.packedDimension().forEach {
-            if (it is SystemVerilogParser.PackedDimensionRangeContext) {
-                val location = castContext.getLocation(it)
-                val left = castContext.getExpression(it.constantRange().constantExpression(0))
-                val right = castContext.getExpression(it.constantRange().constantExpression(1))
-                descriptor = SvPackedDescriptor(location, Type.unresolved(), descriptor, left, right)
-            }
-        }
-        return descriptor
+        val location = castContext.getLocation(ctx)
+        val isSigned = castIsSignedFromSigning(ctx.signing())
+        return castDescriptorFromPackedDimension(
+            location,
+            ctx.packedDimension(),
+            isSigned,
+            castContext
+        )
     }
 
     fun castDescriptorFromImplicitDataType(
         ctx: SystemVerilogParser.ImplicitDataTypeContext,
         castContext: CastContext
     ): SvDescriptor? {
-        return when (ctx.packedDimension().size) {
-            0 -> {
-                val location = castContext.getLocation(ctx)
-                SvSimpleDescriptor(location, Core.C_Boolean.toType())
-            }
-            else -> null
+        val location = castContext.getLocation(ctx)
+        val isSigned = castIsSignedFromSigning(ctx.signing())
+        return castDescriptorFromPackedDimension(
+            location,
+            ctx.packedDimension(),
+            isSigned,
+            castContext
+        )
+    }
+
+    private fun castIsSignedFromSigning(
+        ctx: SystemVerilogParser.SigningContext?
+    ): Boolean {
+        return when {
+            ctx == null -> false
+            ctx.SIGNED() != null -> true
+            else -> false
         }
     }
 
-    fun castDescriptorFromIntegerVectorType(
-        ctx: SystemVerilogParser.IntegerVectorTypeContext,
+    private fun castDescriptorFromPackedDimension(
+        location: SourceLocation,
+        ctxs: List<SystemVerilogParser.PackedDimensionContext>,
+        isSigned: Boolean,
         castContext: CastContext
-    ): SvDescriptor {
-        val location = castContext.getLocation(ctx)
-        return SvSimpleDescriptor(location, Core.C_Boolean.toType())
+    ): SvDescriptor? {
+        if (ctxs.isEmpty()) {
+            return SvSimpleDescriptor(location, Core.C_Boolean.toType())
+        }
+        val packedDimensionRanges = ctxs.map {
+            if (it is SystemVerilogParser.PackedDimensionRangeContext) it
+            else return null
+        }
+        val initialDescriptor: SvDescriptor = SvBitDescriptor(
+            location,
+            Type.unresolved(),
+            castContext.getExpression(packedDimensionRanges[0].constantRange().constantExpression()[0]),
+            castContext.getExpression(packedDimensionRanges[0].constantRange().constantExpression()[1]),
+            isSigned
+        )
+        return packedDimensionRanges
+            .drop(1)
+            .fold(initialDescriptor) { descriptor, packedDimensionRange ->
+                SvPackedDescriptor(
+                    castContext.getLocation(packedDimensionRange),
+                    Type.unresolved(),
+                    descriptor,
+                    castContext.getExpression(packedDimensionRange.constantRange().constantExpression(0)),
+                    castContext.getExpression(packedDimensionRange.constantRange().constantExpression(1))
+                )
+            }
     }
 }

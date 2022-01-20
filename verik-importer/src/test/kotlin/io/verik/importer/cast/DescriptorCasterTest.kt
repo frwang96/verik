@@ -24,9 +24,9 @@ import org.junit.jupiter.api.Test
 internal class DescriptorCasterTest : BaseTest() {
 
     @Test
-    fun `cast descriptor from integerVectorType`() {
+    fun `cast descriptor from dataTypeVector`() {
         driveCasterTest(
-            SystemVerilogParser.IntegerVectorTypeContext::class,
+            SystemVerilogParser.DataTypeVectorContext::class,
             """
                 logic x;
             """.trimIndent(),
@@ -35,7 +35,18 @@ internal class DescriptorCasterTest : BaseTest() {
     }
 
     @Test
-    fun `cast descriptor from packedDimensionRange`() {
+    fun `cast descriptor from implicitDataType`() {
+        driveCasterTest(
+            SystemVerilogParser.ImplicitDataTypeContext::class,
+            """
+                x;
+            """.trimIndent(),
+            "Property(x, Nothing, SimpleDescriptor(Boolean))"
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `cast descriptor from packedDimensionRange single`() {
         driveCasterTest(
             SystemVerilogParser.PackedDimensionRangeContext::class,
             """
@@ -44,7 +55,23 @@ internal class DescriptorCasterTest : BaseTest() {
             """
                 Property(
                     x, Nothing,
-                    PackedDescriptor(Nothing, SimpleDescriptor(Boolean), LiteralExpression(1), LiteralExpression(0))
+                    BitDescriptor(Nothing, LiteralExpression(1), LiteralExpression(0), 0)
+                )
+            """.trimIndent()
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `cast descriptor from packedDimensionRange multiple`() {
+        driveCasterTest(
+            SystemVerilogParser.PackedDimensionRangeContext::class,
+            """
+                logic [1:0][1:0] x;
+            """.trimIndent(),
+            """
+                Property(
+                    x, Nothing,
+                    PackedDescriptor(Nothing, BitDescriptor(*), LiteralExpression(1), LiteralExpression(0))
                 )
             """.trimIndent()
         ) { it.findDeclaration("x") }

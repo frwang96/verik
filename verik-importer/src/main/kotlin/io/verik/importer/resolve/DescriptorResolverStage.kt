@@ -16,6 +16,7 @@
 
 package io.verik.importer.resolve
 
+import io.verik.importer.ast.sv.element.descriptor.SvBitDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvPackedDescriptor
 import io.verik.importer.common.ExpressionEvaluator
 import io.verik.importer.common.SvTreeVisitor
@@ -32,6 +33,20 @@ object DescriptorResolverStage : ProjectStage() {
     }
 
     private object DescriptorResolverVisitor : SvTreeVisitor() {
+
+        override fun visitBitDescriptor(bitDescriptor: SvBitDescriptor) {
+            super.visitBitDescriptor(bitDescriptor)
+            val leftValue = ExpressionEvaluator.evaluate(bitDescriptor.left)
+            val rightValue = ExpressionEvaluator.evaluate(bitDescriptor.right)
+            if (leftValue != null && rightValue != null) {
+                val width = abs(leftValue - rightValue) + 1
+                bitDescriptor.type = if (bitDescriptor.isSigned) {
+                    Core.C_Sbit.toType(Cardinal.of(width).toType())
+                } else {
+                    Core.C_Ubit.toType(Cardinal.of(width).toType())
+                }
+            }
+        }
 
         override fun visitPackedDescriptor(packedDescriptor: SvPackedDescriptor) {
             super.visitPackedDescriptor(packedDescriptor)

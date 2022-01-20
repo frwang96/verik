@@ -23,6 +23,7 @@ object Core {
     val C_Unit = CoreClassDeclaration("Unit")
     val C_Boolean = CoreClassDeclaration("Boolean")
     val C_Ubit = CoreClassDeclaration("Ubit")
+    val C_Sbit = CoreClassDeclaration("Sbit")
     val C_Packed = CoreClassDeclaration("Packed")
 
     val C_Module = CoreClassDeclaration("Module")

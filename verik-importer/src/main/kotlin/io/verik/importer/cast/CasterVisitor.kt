@@ -90,10 +90,6 @@ class CasterVisitor(
         return DescriptorCaster.castDescriptorFromImplicitDataType(ctx!!, castContext)
     }
 
-    override fun visitIntegerVectorType(ctx: SystemVerilogParser.IntegerVectorTypeContext?): SvDescriptor {
-        return DescriptorCaster.castDescriptorFromIntegerVectorType(ctx!!, castContext)
-    }
-
 // A.8.4 Primaries /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     override fun visitConstantPrimaryLiteral(ctx: SystemVerilogParser.ConstantPrimaryLiteralContext?): SvExpression {
