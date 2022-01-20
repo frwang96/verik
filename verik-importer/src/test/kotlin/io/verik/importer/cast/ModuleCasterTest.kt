@@ -19,7 +19,6 @@ package io.verik.importer.cast
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.test.BaseTest
 import io.verik.importer.test.findDeclaration
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class ModuleCasterTest : BaseTest() {
@@ -32,12 +31,11 @@ internal class ModuleCasterTest : BaseTest() {
                 module m;
                 endmodule
             """.trimIndent(),
-            "Module(m, [])"
+            "Module(m, [], [])"
         ) { it.findDeclaration("m") }
     }
 
     @Test
-    @Disabled
     fun `cast module from moduleDeclarationNonAnsi`() {
         driveCasterTest(
             SystemVerilogParser.ModuleDeclarationNonAnsiContext::class,
@@ -46,7 +44,7 @@ internal class ModuleCasterTest : BaseTest() {
                     input x;
                 endmodule
             """.trimIndent(),
-            "Module(m, [Port(x, Boolean, INPUT)])"
+            "Module(m, [], [Port(x, Nothing, SimpleDescriptor(Boolean), INPUT)])"
         ) { it.findDeclaration("m") }
     }
 }

@@ -23,8 +23,9 @@ import io.verik.importer.message.SourceLocation
 class SvModule(
     override val location: SourceLocation,
     override val name: String,
-    val ports: List<SvPort>
-) : SvDeclaration() {
+    override var declarations: ArrayList<SvDeclaration>,
+    val ports: ArrayList<SvPort>,
+) : SvContainerDeclaration() {
 
     override var type = Core.C_Unit.toType()
 

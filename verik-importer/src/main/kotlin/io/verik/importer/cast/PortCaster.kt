@@ -19,18 +19,9 @@ package io.verik.importer.cast
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.ast.sv.element.declaration.SvPort
 import io.verik.importer.ast.sv.property.PortType
-import io.verik.importer.core.Core
+import io.verik.importer.common.Type
 
 object PortCaster {
-
-    fun castPortFromPortDeclaration(
-        ctx: SystemVerilogParser.PortDeclarationContext,
-        castContext: CastContext
-    ): SvPort? {
-        ctx.inputDeclaration()?.let { return castContext.getPort(it) }
-        ctx.outputDeclaration()?.let { return castContext.getPort(it) }
-        return null
-    }
 
     fun castPortFromAnsiPortDeclaration(
         ctx: SystemVerilogParser.AnsiPortDeclarationContext,
@@ -44,9 +35,43 @@ object PortCaster {
         return SvPort(
             location,
             name,
-            Core.C_Nothing.toType(),
+            Type.unresolved(),
             descriptor,
             portType
+        )
+    }
+
+    fun castPortFromInputDeclarationNet(
+        ctx: SystemVerilogParser.InputDeclarationNetContext,
+        castContext: CastContext
+    ): SvPort? {
+        val identifier = ctx.listOfPortIdentifiers().portIdentifier()[0]
+        val location = castContext.getLocation(identifier)
+        val name = identifier.text
+        val descriptor = castContext.getDescriptor(ctx.netPortType()) ?: return null
+        return SvPort(
+            location,
+            name,
+            Type.unresolved(),
+            descriptor,
+            PortType.INPUT
+        )
+    }
+
+    fun castPortFromOutputDeclarationNet(
+        ctx: SystemVerilogParser.OutputDeclarationNetContext,
+        castContext: CastContext
+    ): SvPort? {
+        val identifier = ctx.listOfPortIdentifiers().portIdentifier()[0]
+        val location = castContext.getLocation(identifier)
+        val name = identifier.text
+        val descriptor = castContext.getDescriptor(ctx.netPortType()) ?: return null
+        return SvPort(
+            location,
+            name,
+            Type.unresolved(),
+            descriptor,
+            PortType.OUTPUT
         )
     }
 

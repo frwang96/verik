@@ -23,10 +23,12 @@ import io.verik.importer.message.SourceLocation
 object ClassCaster {
 
     fun castClassFromClassDeclaration(
-        ctx: SystemVerilogParser.ClassDeclarationContext
+        ctx: SystemVerilogParser.ClassDeclarationContext,
+        castContext: CastContext
     ): SvClass {
         val location = SourceLocation.get(ctx.CLASS())
         val name = ctx.classIdentifier()[0].text
-        return SvClass(location, name)
+        val declarations = ctx.classItem().mapNotNull { castContext.getDeclaration(it) }
+        return SvClass(location, name, ArrayList(declarations))
     }
 }

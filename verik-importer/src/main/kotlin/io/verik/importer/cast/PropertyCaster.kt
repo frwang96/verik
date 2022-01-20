@@ -18,7 +18,7 @@ package io.verik.importer.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.ast.sv.element.declaration.SvProperty
-import io.verik.importer.core.Core
+import io.verik.importer.common.Type
 
 object PropertyCaster {
 
@@ -35,7 +35,7 @@ object PropertyCaster {
         return SvProperty(
             location,
             name,
-            Core.C_Nothing.toType(),
+            Type.unresolved(),
             descriptor
         )
     }

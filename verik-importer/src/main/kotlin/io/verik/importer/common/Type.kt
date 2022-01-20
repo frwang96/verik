@@ -16,15 +16,32 @@
 
 package io.verik.importer.common
 
+import io.verik.importer.core.Core
+
 class Type(
     var reference: Declaration,
     var arguments: ArrayList<Type>
 ) {
+
+    fun isResolved(): Boolean {
+        return if (arguments.any { !it.isResolved() }) {
+            false
+        } else {
+            reference != Core.C_Nothing
+        }
+    }
 
     override fun toString(): String {
         val referenceName = reference.name
         return if (arguments.isNotEmpty()) {
             "$referenceName<${arguments.joinToString()}>"
         } else referenceName
+    }
+
+    companion object {
+
+        fun unresolved(): Type {
+            return Core.C_Nothing.toType()
+        }
     }
 }

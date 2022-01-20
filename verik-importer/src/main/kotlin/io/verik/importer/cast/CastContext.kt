@@ -55,7 +55,7 @@ class CastContext(
             element
         } else {
             val location = getLocation(ctx)
-            Messages.CAST_ERROR.on(location, "expression")
+            Messages.UNABLE_TO_CAST.on(location, "expression")
             SvNothingExpression(location)
         }
     }

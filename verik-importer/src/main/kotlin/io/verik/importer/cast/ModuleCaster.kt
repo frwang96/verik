@@ -17,7 +17,10 @@
 package io.verik.importer.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
+import io.verik.importer.ast.sv.element.declaration.SvDeclaration
 import io.verik.importer.ast.sv.element.declaration.SvModule
+import io.verik.importer.ast.sv.element.declaration.SvPort
+import io.verik.importer.message.Messages
 
 object ModuleCaster {
 
@@ -25,16 +28,26 @@ object ModuleCaster {
         ctx: SystemVerilogParser.ModuleDeclarationNonAnsiContext,
         castContext: CastContext
     ): SvModule? {
-        val moduleNonAnsiHeader = ctx.moduleNonAnsiHeader()
-        val identifier = moduleNonAnsiHeader.moduleIdentifier()
+        val identifier = ctx.moduleNonAnsiHeader().moduleIdentifier()
         val location = castContext.getLocation(identifier)
         val name = identifier.text
-        val ports = ctx.moduleItem().mapNotNull {
+        val declarations = ArrayList<SvDeclaration>()
+        val ports = ArrayList<SvPort>()
+        ctx.moduleItem().forEach {
             if (it is SystemVerilogParser.ModuleItemPortDeclarationContext) {
-                castContext.getPort(it.portDeclaration()) ?: return null
-            } else null
+                val port = castContext.getPort(it)
+                if (port == null) {
+                    Messages.UNABLE_TO_CAST.on(castContext.getLocation(it), "port")
+                    return null
+                }
+                ports.add(port)
+            } else {
+                val declaration = castContext.getDeclaration(it)
+                if (declaration != null)
+                    declarations.add(declaration)
+            }
         }
-        return SvModule(location, name, ports)
+        return SvModule(location, name, declarations, ports)
     }
 
     fun castModuleFromModuleDeclarationAnsi(
@@ -45,9 +58,15 @@ object ModuleCaster {
         val identifier = moduleAnsiHeader.moduleIdentifier()
         val location = castContext.getLocation(identifier)
         val name = identifier.text
+        val declarations = ctx.nonPortModuleItem().mapNotNull { castContext.getDeclaration(it) }
         val ports = moduleAnsiHeader.listOfPortDeclarations()?.ansiPortDeclaration()?.map {
             castContext.getPort(it) ?: return null
         } ?: listOf()
-        return SvModule(location, name, ports)
+        return SvModule(
+            location,
+            name,
+            ArrayList(declarations),
+            ArrayList(ports)
+        )
     }
 }

@@ -23,8 +23,8 @@ import io.verik.importer.message.SourceLocation
 class SvPackage(
     override val location: SourceLocation,
     override val name: String,
-    var declarations: ArrayList<SvDeclaration>
-) : SvDeclaration() {
+    override var declarations: ArrayList<SvDeclaration>
+) : SvContainerDeclaration() {
 
     override var type = Core.C_Unit.toType()
 

@@ -14,24 +14,9 @@
  * limitations under the License.
  */
 
-package io.verik.importer.cast
+package io.verik.importer.ast.sv.element.declaration
 
-import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.test.BaseTest
-import io.verik.importer.test.findDeclaration
-import org.junit.jupiter.api.Test
+abstract class SvContainerDeclaration : SvDeclaration() {
 
-internal class ClassCasterTest : BaseTest() {
-
-    @Test
-    fun `cast class from classDeclaration`() {
-        driveCasterTest(
-            SystemVerilogParser.ClassDeclarationContext::class,
-            """
-                class c;
-                endclass
-            """.trimIndent(),
-            "Class(c, [])"
-        ) { it.findDeclaration("c") }
-    }
+    abstract var declarations: ArrayList<SvDeclaration>
 }

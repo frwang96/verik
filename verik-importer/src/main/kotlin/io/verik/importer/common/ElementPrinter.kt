@@ -54,12 +54,14 @@ class ElementPrinter : SvVisitor() {
     override fun visitClass(`class`: SvClass) {
         build("Class") {
             build(`class`.name)
+            build(`class`.declarations)
         }
     }
 
     override fun visitModule(module: SvModule) {
         build("Module") {
             build(module.name)
+            build(module.declarations)
             build(module.ports)
         }
     }

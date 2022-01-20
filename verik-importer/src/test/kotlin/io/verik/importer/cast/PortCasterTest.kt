@@ -31,7 +31,33 @@ internal class PortCasterTest : BaseTest() {
                 module m(input x);
                 endmodule
             """.trimIndent(),
-            "Module(m, [Port(x, Nothing, SimpleDescriptor(Boolean), INPUT)])"
-        ) { it.findDeclaration("m") }
+            "Port(x, Nothing, SimpleDescriptor(Boolean), INPUT)"
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `cast port from inputDeclarationNet`() {
+        driveCasterTest(
+            SystemVerilogParser.InputDeclarationNetContext::class,
+            """
+                module m(x);
+                    input x;
+                endmodule
+            """.trimIndent(),
+            "Port(x, Nothing, SimpleDescriptor(Boolean), INPUT)"
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `cast port from outputDeclarationNet`() {
+        driveCasterTest(
+            SystemVerilogParser.OutputDeclarationNetContext::class,
+            """
+                module m(x);
+                    output x;
+                endmodule
+            """.trimIndent(),
+            "Port(x, Nothing, SimpleDescriptor(Boolean), OUTPUT)"
+        ) { it.findDeclaration("x") }
     }
 }

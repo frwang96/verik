@@ -20,6 +20,7 @@ import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.ast.sv.element.descriptor.SvDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvPackedDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvSimpleDescriptor
+import io.verik.importer.common.Type
 import io.verik.importer.core.Core
 
 object DescriptorCaster {
@@ -34,7 +35,7 @@ object DescriptorCaster {
                 val location = castContext.getLocation(it)
                 val left = castContext.getExpression(it.constantRange().constantExpression(0))
                 val right = castContext.getExpression(it.constantRange().constantExpression(1))
-                descriptor = SvPackedDescriptor(location, Core.C_Nothing.toType(), descriptor, left, right)
+                descriptor = SvPackedDescriptor(location, Type.unresolved(), descriptor, left, right)
             }
         }
         return descriptor

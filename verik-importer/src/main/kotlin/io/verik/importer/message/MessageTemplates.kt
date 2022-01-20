@@ -27,6 +27,10 @@ class WarningMessageTemplate1<A>(
     fun on(location: SourceLocation, a: A) {
         MessageCollector.messageCollector.warning(name, format(a), location)
     }
+
+    fun on(element: SvElement, a: A) {
+        MessageCollector.messageCollector.warning(name, format(a), element.location)
+    }
 }
 
 class ErrorMessageTemplate0(

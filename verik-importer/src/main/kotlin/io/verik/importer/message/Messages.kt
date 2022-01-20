@@ -73,8 +73,14 @@ object Messages {
 
 // CAST ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val CAST_ERROR = WarningMessageTemplate1<String>(
+    val UNABLE_TO_CAST = WarningMessageTemplate1<String>(
         "Unable to cast $0"
+    )
+
+// RESOLVE /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    val DECLARATION_NOT_RESOLVED = WarningMessageTemplate1<String>(
+        "Declaration cannot be resolved and will be eliminated: $0"
     )
 
     init {

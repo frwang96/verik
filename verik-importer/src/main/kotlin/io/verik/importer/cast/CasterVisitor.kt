@@ -36,6 +36,10 @@ class CasterVisitor(
         return ctx.accept(this)?.cast()
     }
 
+    override fun aggregateResult(aggregate: SvElement?, nextResult: SvElement?): SvElement? {
+        return nextResult ?: aggregate
+    }
+
 // A.1.2 SystemVerilog Source Text /////////////////////////////////////////////////////////////////////////////////////
 
     override fun visitModuleDeclarationNonAnsi(ctx: SystemVerilogParser.ModuleDeclarationNonAnsiContext?): SvModule? {
@@ -47,7 +51,7 @@ class CasterVisitor(
     }
 
     override fun visitClassDeclaration(ctx: SystemVerilogParser.ClassDeclarationContext?): SvClass {
-        return ClassCaster.castClassFromClassDeclaration(ctx!!)
+        return ClassCaster.castClassFromClassDeclaration(ctx!!, castContext)
     }
 
     override fun visitPackageDeclaration(ctx: SystemVerilogParser.PackageDeclarationContext?): SvPackage {
@@ -56,12 +60,18 @@ class CasterVisitor(
 
 // A.1.3 Module Parameters and Ports ///////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitPortDeclaration(ctx: SystemVerilogParser.PortDeclarationContext?): SvPort? {
-        return PortCaster.castPortFromPortDeclaration(ctx!!, castContext)
-    }
-
     override fun visitAnsiPortDeclaration(ctx: SystemVerilogParser.AnsiPortDeclarationContext?): SvPort? {
         return PortCaster.castPortFromAnsiPortDeclaration(ctx!!, castContext)
+    }
+
+// A.2.1.2 Port Declarations ///////////////////////////////////////////////////////////////////////////////////////////
+
+    override fun visitInputDeclarationNet(ctx: SystemVerilogParser.InputDeclarationNetContext?): SvPort? {
+        return PortCaster.castPortFromInputDeclarationNet(ctx!!, castContext)
+    }
+
+    override fun visitOutputDeclarationNet(ctx: SystemVerilogParser.OutputDeclarationNetContext?): SvPort? {
+        return PortCaster.castPortFromOutputDeclarationNet(ctx!!, castContext)
     }
 
 // A.2.1.3 Type Declarations ///////////////////////////////////////////////////////////////////////////////////////////

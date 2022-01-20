@@ -20,6 +20,7 @@ import io.verik.importer.ast.sv.element.common.SvCompilationUnit
 import io.verik.importer.ast.sv.element.common.SvElement
 import io.verik.importer.ast.sv.element.common.SvTypedElement
 import io.verik.importer.ast.sv.element.declaration.SvClass
+import io.verik.importer.ast.sv.element.declaration.SvContainerDeclaration
 import io.verik.importer.ast.sv.element.declaration.SvDeclaration
 import io.verik.importer.ast.sv.element.declaration.SvModule
 import io.verik.importer.ast.sv.element.declaration.SvPackage
@@ -36,10 +37,6 @@ abstract class SvVisitor {
 
     open fun visitElement(element: SvElement) {}
 
-    open fun visitCompilationUnit(compilationUnit: SvCompilationUnit) {
-        visitElement(compilationUnit)
-    }
-
     open fun visitTypedElement(typedElement: SvTypedElement) {
         visitElement(typedElement)
     }
@@ -48,18 +45,26 @@ abstract class SvVisitor {
         visitTypedElement(declaration)
     }
 
+    open fun visitContainerDeclaration(containerDeclaration: SvContainerDeclaration) {
+        visitDeclaration(containerDeclaration)
+    }
+
+    open fun visitCompilationUnit(compilationUnit: SvCompilationUnit) {
+        visitContainerDeclaration(compilationUnit)
+    }
+
     open fun visitPackage(`package`: SvPackage) {
-        visitDeclaration(`package`)
+        visitContainerDeclaration(`package`)
     }
 
 // Class Like //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     open fun visitClass(`class`: SvClass) {
-        visitDeclaration(`class`)
+        visitContainerDeclaration(`class`)
     }
 
     open fun visitModule(module: SvModule) {
-        visitDeclaration(module)
+        visitContainerDeclaration(module)
     }
 
 // Property Like ///////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -38,7 +38,7 @@ internal class CasterStageTest : BaseTest() {
                 endmodule
             """.trimIndent(),
             CasterStage::class,
-            "CompilationUnit([Module(m, [])])"
+            "CompilationUnit([Module(m, [], [])])"
         ) { it }
     }
 }
