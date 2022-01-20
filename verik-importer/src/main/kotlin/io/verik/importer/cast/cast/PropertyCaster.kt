@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-package io.verik.importer.cast
+package io.verik.importer.cast.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.ast.sv.element.declaration.SvProperty
+import io.verik.importer.cast.common.CastContext
+import io.verik.importer.cast.common.SignatureBuilder
 import io.verik.importer.common.Type
 
 object PropertyCaster {
@@ -31,7 +33,7 @@ object PropertyCaster {
             .variableIdentifier()
         val location = castContext.getLocation(variableIdentifier)
         val name = variableIdentifier.text
-        val signature = SignatureBuilder.buildSignature(ctx)
+        val signature = SignatureBuilder.buildSignature(ctx, name)
         val descriptor = castContext.getDescriptor(ctx.dataTypeOrImplicit()) ?: return null
         return SvProperty(
             location,

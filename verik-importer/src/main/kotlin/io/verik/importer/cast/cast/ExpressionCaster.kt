@@ -14,26 +14,20 @@
  * limitations under the License.
  */
 
-package io.verik.importer.cast
+package io.verik.importer.cast.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.antlr.SystemVerilogParserBaseVisitor
-import org.antlr.v4.runtime.RuleContext
+import io.verik.importer.ast.sv.element.expression.SvExpression
+import io.verik.importer.ast.sv.element.expression.SvLiteralExpression
+import io.verik.importer.cast.common.CastContext
 
-object SignatureBuilder {
+object ExpressionCaster {
 
-    fun buildSignature(ctx: RuleContext): String {
-        val signatureBuilderVisitor = SignatureBuilderVisitor()
-        ctx.accept(signatureBuilderVisitor)
-        return signatureBuilderVisitor.builder.toString()
-    }
-
-    private class SignatureBuilderVisitor : SystemVerilogParserBaseVisitor<Unit>() {
-
-        val builder = StringBuilder()
-
-        override fun visitDataDeclarationData(ctx: SystemVerilogParser.DataDeclarationDataContext?) {
-            builder.append(ctx!!.text)
-        }
+    fun castExpressionFromConstantPrimaryLiteral(
+        ctx: SystemVerilogParser.ConstantPrimaryLiteralContext,
+        castContext: CastContext
+    ): SvExpression {
+        val location = castContext.getLocation(ctx)
+        return SvLiteralExpression(location, ctx.text)
     }
 }

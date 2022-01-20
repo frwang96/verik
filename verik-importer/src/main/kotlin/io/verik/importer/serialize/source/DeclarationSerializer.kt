@@ -71,7 +71,7 @@ object DeclarationSerializer {
 
         val signature = declaration.signature
         if (signature != null && signature.isNotBlank()) {
-            serializeContext.appendLine()
+            serializeContext.appendLine(" *")
             serializeContext.appendLine(" *  ```")
             signature.lines().forEach {
                 serializeContext.appendLine(" *  $it")

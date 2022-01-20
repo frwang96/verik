@@ -14,25 +14,24 @@
  * limitations under the License.
  */
 
-package io.verik.importer.cast
+package io.verik.importer.cast.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.test.BaseTest
 import io.verik.importer.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class PackageCasterTest : BaseTest() {
+internal class ClassCasterTest : BaseTest() {
 
     @Test
-    fun `cast package from packageDeclaration`() {
+    fun `cast class from classDeclaration`() {
         driveCasterTest(
-            SystemVerilogParser.PackageDeclarationContext::class,
+            SystemVerilogParser.ClassDeclarationContext::class,
             """
-                package p;
-                    logic x;
-                endpackage
+                class c;
+                endclass
             """.trimIndent(),
-            "Package(p, [Property(x, Nothing, SimpleDescriptor(Boolean))])"
-        ) { it.findDeclaration("p") }
+            "Class(c, [])"
+        ) { it.findDeclaration("c") }
     }
 }

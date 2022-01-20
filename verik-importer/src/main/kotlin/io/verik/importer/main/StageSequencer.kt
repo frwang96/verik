@@ -16,7 +16,7 @@
 
 package io.verik.importer.main
 
-import io.verik.importer.cast.CasterStage
+import io.verik.importer.cast.common.CasterStage
 import io.verik.importer.interpret.InterpreterStage
 import io.verik.importer.parse.ParserStage
 import io.verik.importer.preprocess.PreprocessorFilterStage

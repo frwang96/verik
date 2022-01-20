@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package io.verik.importer.cast
+package io.verik.importer.cast.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.ast.sv.element.descriptor.SvBitDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvPackedDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvSimpleDescriptor
+import io.verik.importer.cast.common.CastContext
 import io.verik.importer.common.Type
 import io.verik.importer.core.Core
 import io.verik.importer.message.SourceLocation

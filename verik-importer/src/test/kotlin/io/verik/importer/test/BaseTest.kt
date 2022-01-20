@@ -19,7 +19,8 @@ package io.verik.importer.test
 import io.verik.importer.antlr.SystemVerilogParserBaseVisitor
 import io.verik.importer.ast.sv.element.common.SvCompilationUnit
 import io.verik.importer.ast.sv.element.common.SvElement
-import io.verik.importer.cast.CasterStage
+import io.verik.importer.ast.sv.element.declaration.SvDeclaration
+import io.verik.importer.cast.common.CasterStage
 import io.verik.importer.common.ElementPrinter
 import io.verik.importer.common.TextFile
 import io.verik.importer.main.InputFileContext
@@ -40,7 +41,7 @@ import kotlin.reflect.KClass
 
 abstract class BaseTest {
 
-    private val DOCSTRING_REGEX = Regex(".*/\\*\\*.*\\*/")
+    private val DOCSTRING_REGEX = Regex("(.*/\\*\\*.*|.*\\*.*)")
 
     fun driveMessageTest(content: String, isError: Boolean, message: String) {
         val projectContext = getProjectContext(content)
@@ -87,6 +88,26 @@ abstract class BaseTest {
         }
         val element = selector(projectContext.compilationUnit)
         assertElementEquals(getExpectedString(expected), ElementPrinter.dump(element))
+    }
+
+    fun driveSignatureTest(
+        ruleContextClass: KClass<out RuleContext>,
+        content: String,
+        expected: String,
+        selector: (SvCompilationUnit) -> SvDeclaration
+    ) {
+        val projectContext = getProjectContext(content)
+        val stageSequence = StageSequencer.getStageSequence()
+        stageSequence.processUntil(projectContext, CasterStage::class)
+        val ruleContextCheckerVisitor = RuleContextCheckerVisitor(ruleContextClass)
+        projectContext.inputFileContexts.forEach {
+            it.ruleContext.accept(ruleContextCheckerVisitor)
+        }
+        assertTrue(ruleContextCheckerVisitor.hasRuleContext) {
+            "Rule context not found: ${ruleContextClass.simpleName}"
+        }
+        val declaration = selector(projectContext.compilationUnit)
+        assertEquals(expected, declaration.signature)
     }
 
     fun <S : ProjectStage> driveElementTest(

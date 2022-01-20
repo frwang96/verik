@@ -14,19 +14,20 @@
  * limitations under the License.
  */
 
-package io.verik.importer.cast
+package io.verik.importer.cast.common
 
-import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.ast.sv.element.expression.SvExpression
-import io.verik.importer.ast.sv.element.expression.SvLiteralExpression
+class SignatureFragment {
 
-object ExpressionCaster {
+    val kind: SignatureFragmentKind
+    val text: String
 
-    fun castExpressionFromConstantPrimaryLiteral(
-        ctx: SystemVerilogParser.ConstantPrimaryLiteralContext,
-        castContext: CastContext
-    ): SvExpression {
-        val location = castContext.getLocation(ctx)
-        return SvLiteralExpression(location, ctx.text)
+    constructor(text: String) {
+        this.kind = SignatureFragmentKind.TEXT
+        this.text = text
+    }
+
+    constructor(kind: SignatureFragmentKind) {
+        this.kind = kind
+        this.text = ""
     }
 }

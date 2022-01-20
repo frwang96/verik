@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package io.verik.importer.cast
+package io.verik.importer.cast.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.ast.sv.element.declaration.SvDeclaration
 import io.verik.importer.ast.sv.element.declaration.SvModule
 import io.verik.importer.ast.sv.element.declaration.SvPort
+import io.verik.importer.cast.common.CastContext
+import io.verik.importer.cast.common.SignatureBuilder
 import io.verik.importer.message.Messages
 
 object ModuleCaster {
@@ -31,7 +33,7 @@ object ModuleCaster {
         val identifier = ctx.moduleNonAnsiHeader().moduleIdentifier()
         val location = castContext.getLocation(identifier)
         val name = identifier.text
-        val signature = SignatureBuilder.buildSignature(ctx)
+        val signature = SignatureBuilder.buildSignature(ctx, name)
         val declarations = ArrayList<SvDeclaration>()
         val ports = ArrayList<SvPort>()
         ctx.moduleItem().forEach {
@@ -65,7 +67,7 @@ object ModuleCaster {
         val identifier = moduleAnsiHeader.moduleIdentifier()
         val location = castContext.getLocation(identifier)
         val name = identifier.text
-        val signature = SignatureBuilder.buildSignature(ctx)
+        val signature = SignatureBuilder.buildSignature(ctx, name)
         val declarations = ctx.nonPortModuleItem().mapNotNull { castContext.getDeclaration(it) }
         val ports = moduleAnsiHeader.listOfPortDeclarations()?.ansiPortDeclaration()?.map {
             castContext.getPort(it) ?: return null

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.importer.cast
+package io.verik.importer.cast.common
 
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.antlr.SystemVerilogParserBaseVisitor
@@ -26,6 +26,13 @@ import io.verik.importer.ast.sv.element.declaration.SvPort
 import io.verik.importer.ast.sv.element.declaration.SvProperty
 import io.verik.importer.ast.sv.element.descriptor.SvDescriptor
 import io.verik.importer.ast.sv.element.expression.SvExpression
+import io.verik.importer.cast.cast.ClassCaster
+import io.verik.importer.cast.cast.DescriptorCaster
+import io.verik.importer.cast.cast.ExpressionCaster
+import io.verik.importer.cast.cast.ModuleCaster
+import io.verik.importer.cast.cast.PackageCaster
+import io.verik.importer.cast.cast.PortCaster
+import io.verik.importer.cast.cast.PropertyCaster
 import org.antlr.v4.runtime.RuleContext
 
 class CasterVisitor(

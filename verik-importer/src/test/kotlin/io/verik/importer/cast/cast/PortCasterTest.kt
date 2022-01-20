@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,37 +14,50 @@
  * limitations under the License.
  */
 
-package io.verik.importer.cast
+package io.verik.importer.cast.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.test.BaseTest
 import io.verik.importer.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class ModuleCasterTest : BaseTest() {
+internal class PortCasterTest : BaseTest() {
 
     @Test
-    fun `cast module from moduleDeclarationAnsi`() {
+    fun `cast port from ansiPortDeclaration`() {
         driveCasterTest(
-            SystemVerilogParser.ModuleDeclarationAnsiContext::class,
+            SystemVerilogParser.AnsiPortDeclarationContext::class,
             """
-                module m;
+                module m(input x);
                 endmodule
             """.trimIndent(),
-            "Module(m, [], [])"
-        ) { it.findDeclaration("m") }
+            "Port(x, Nothing, SimpleDescriptor(Boolean), INPUT)"
+        ) { it.findDeclaration("x") }
     }
 
     @Test
-    fun `cast module from moduleDeclarationNonAnsi`() {
+    fun `cast port from inputDeclarationNet`() {
         driveCasterTest(
-            SystemVerilogParser.ModuleDeclarationNonAnsiContext::class,
+            SystemVerilogParser.InputDeclarationNetContext::class,
             """
                 module m(x);
                     input x;
                 endmodule
             """.trimIndent(),
-            "Module(m, [], [Port(x, Nothing, SimpleDescriptor(Boolean), INPUT)])"
-        ) { it.findDeclaration("m") }
+            "Port(x, Nothing, SimpleDescriptor(Boolean), INPUT)"
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `cast port from outputDeclarationNet`() {
+        driveCasterTest(
+            SystemVerilogParser.OutputDeclarationNetContext::class,
+            """
+                module m(x);
+                    output x;
+                endmodule
+            """.trimIndent(),
+            "Port(x, Nothing, SimpleDescriptor(Boolean), OUTPUT)"
+        ) { it.findDeclaration("x") }
     }
 }

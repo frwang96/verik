@@ -14,24 +14,31 @@
  * limitations under the License.
  */
 
-package io.verik.importer.cast
+package io.verik.importer.cast.common
 
-import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.test.BaseTest
-import io.verik.importer.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class ClassCasterTest : BaseTest() {
+internal class CasterStageTest : BaseTest() {
 
     @Test
-    fun `cast class from classDeclaration`() {
-        driveCasterTest(
-            SystemVerilogParser.ClassDeclarationContext::class,
+    fun `cast compilationUnit `() {
+        driveElementTest(
+            "",
+            CasterStage::class,
+            "CompilationUnit([])"
+        ) { it }
+    }
+
+    @Test
+    fun `cast compilationUnit with module`() {
+        driveElementTest(
             """
-                class c;
-                endclass
+                module m;
+                endmodule
             """.trimIndent(),
-            "Class(c, [])"
-        ) { it.findDeclaration("c") }
+            CasterStage::class,
+            "CompilationUnit([Module(m, [], [])])"
+        ) { it }
     }
 }

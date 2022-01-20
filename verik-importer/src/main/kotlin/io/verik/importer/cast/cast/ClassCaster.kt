@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-package io.verik.importer.cast
+package io.verik.importer.cast.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.ast.sv.element.declaration.SvClass
+import io.verik.importer.cast.common.CastContext
+import io.verik.importer.cast.common.SignatureBuilder
 import io.verik.importer.message.SourceLocation
 
 object ClassCaster {
@@ -28,7 +30,7 @@ object ClassCaster {
     ): SvClass {
         val location = SourceLocation.get(ctx.CLASS())
         val name = ctx.classIdentifier()[0].text
-        val signature = SignatureBuilder.buildSignature(ctx)
+        val signature = SignatureBuilder.buildSignature(ctx, name)
         val declarations = ctx.classItem().mapNotNull { castContext.getDeclaration(it) }
         return SvClass(location, name, signature, ArrayList(declarations))
     }
