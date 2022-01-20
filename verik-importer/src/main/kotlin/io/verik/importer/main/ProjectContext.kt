@@ -16,7 +16,8 @@
 
 package io.verik.importer.main
 
-import io.verik.importer.ast.element.EProject
+import io.verik.importer.ast.kt.element.KtProject
+import io.verik.importer.ast.sv.element.common.SvCompilationUnit
 import io.verik.importer.common.TextFile
 import java.nio.file.Path
 
@@ -27,6 +28,7 @@ class ProjectContext(
     var inputFileContexts: List<InputFileContext> = listOf()
     var includedTextFiles: HashMap<Path, TextFile> = HashMap()
     val processedProjectStages = HashSet<ProjectStage>()
-    lateinit var project: EProject
+    lateinit var compilationUnit: SvCompilationUnit
+    lateinit var project: KtProject
     val outputContext = OutputContext()
 }

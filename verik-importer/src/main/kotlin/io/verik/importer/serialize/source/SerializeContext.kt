@@ -16,7 +16,7 @@
 
 package io.verik.importer.serialize.source
 
-import io.verik.importer.ast.element.EElement
+import io.verik.importer.ast.kt.element.KtElement
 import io.verik.importer.common.TextFile
 import io.verik.importer.main.ProjectContext
 import java.nio.file.Path
@@ -24,15 +24,13 @@ import java.nio.file.Path
 class SerializeContext(
     projectContext: ProjectContext,
     packageName: String,
-    path: Path
+    outputPath: Path
 ) {
 
-    val annotateDeclarations = projectContext.config.annotateDeclarations
-
     private val sourceSerializerVisitor = SourceSerializerVisitor(this)
-    private val sourceBuilder = SourceBuilder(projectContext, packageName, path)
+    private val sourceBuilder = SourceBuilder(projectContext, packageName, outputPath)
 
-    fun serialize(element: EElement) {
+    fun serialize(element: KtElement) {
         element.accept(sourceSerializerVisitor)
     }
 

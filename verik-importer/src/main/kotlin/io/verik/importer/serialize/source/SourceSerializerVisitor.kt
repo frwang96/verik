@@ -16,30 +16,30 @@
 
 package io.verik.importer.serialize.source
 
-import io.verik.importer.ast.element.EElement
-import io.verik.importer.ast.element.EModule
-import io.verik.importer.ast.element.EPort
-import io.verik.importer.ast.element.EProperty
-import io.verik.importer.common.Visitor
+import io.verik.importer.ast.kt.element.KtClass
+import io.verik.importer.ast.kt.element.KtElement
+import io.verik.importer.ast.kt.element.KtProperty
+import io.verik.importer.ast.kt.element.KtValueParameter
+import io.verik.importer.common.KtVisitor
 import io.verik.importer.message.Messages
 
 class SourceSerializerVisitor(
     private val serializeContext: SerializeContext
-) : Visitor() {
+) : KtVisitor() {
 
-    override fun visitElement(element: EElement) {
+    override fun visitElement(element: KtElement) {
         Messages.INTERNAL_ERROR.on(element, "Unable to serialize element: $element")
     }
 
-    override fun visitModule(module: EModule) {
-        DeclarationSerializer.serializeModule(module, serializeContext)
+    override fun visitClass(`class`: KtClass) {
+        DeclarationSerializer.serializeClass(`class`, serializeContext)
     }
 
-    override fun visitProperty(property: EProperty) {
+    override fun visitProperty(property: KtProperty) {
         DeclarationSerializer.serializeProperty(property, serializeContext)
     }
 
-    override fun visitPort(port: EPort) {
-        DeclarationSerializer.serializePort(port, serializeContext)
+    override fun visitValueParameter(valueParameter: KtValueParameter) {
+        DeclarationSerializer.serializeValueParameter(valueParameter, serializeContext)
     }
 }

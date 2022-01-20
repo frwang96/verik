@@ -16,6 +16,6 @@
 
 package io.verik.importer.core
 
-import io.verik.importer.ast.interfaces.Declaration
+import io.verik.importer.common.Declaration
 
 interface CoreDeclaration : Declaration

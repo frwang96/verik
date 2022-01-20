@@ -17,9 +17,10 @@
 package io.verik.importer.test
 
 import io.verik.importer.antlr.SystemVerilogParserBaseVisitor
-import io.verik.importer.ast.element.EElement
-import io.verik.importer.ast.element.EProject
-import io.verik.importer.cast.CasterStage
+import io.verik.importer.ast.sv.element.common.SvCompilationUnit
+import io.verik.importer.ast.sv.element.common.SvElement
+import io.verik.importer.ast.sv.element.declaration.SvDeclaration
+import io.verik.importer.cast.common.CasterStage
 import io.verik.importer.common.ElementPrinter
 import io.verik.importer.common.TextFile
 import io.verik.importer.main.InputFileContext
@@ -39,6 +40,8 @@ import java.nio.file.Paths
 import kotlin.reflect.KClass
 
 abstract class BaseTest {
+
+    private val DOCSTRING_REGEX = Regex("(.*/\\*\\*.*|.*\\*.*)")
 
     fun driveMessageTest(content: String, isError: Boolean, message: String) {
         val projectContext = getProjectContext(content)
@@ -71,7 +74,7 @@ abstract class BaseTest {
         ruleContextClass: KClass<out RuleContext>,
         content: String,
         expected: String,
-        selector: (EProject) -> EElement
+        selector: (SvCompilationUnit) -> SvElement
     ) {
         val projectContext = getProjectContext(content)
         val stageSequence = StageSequencer.getStageSequence()
@@ -83,20 +86,40 @@ abstract class BaseTest {
         assertTrue(ruleContextCheckerVisitor.hasRuleContext) {
             "Rule context not found: ${ruleContextClass.simpleName}"
         }
-        val element = selector(projectContext.project)
+        val element = selector(projectContext.compilationUnit)
         assertElementEquals(getExpectedString(expected), ElementPrinter.dump(element))
+    }
+
+    fun driveSignatureTest(
+        ruleContextClass: KClass<out RuleContext>,
+        content: String,
+        expected: String,
+        selector: (SvCompilationUnit) -> SvDeclaration
+    ) {
+        val projectContext = getProjectContext(content)
+        val stageSequence = StageSequencer.getStageSequence()
+        stageSequence.processUntil(projectContext, CasterStage::class)
+        val ruleContextCheckerVisitor = RuleContextCheckerVisitor(ruleContextClass)
+        projectContext.inputFileContexts.forEach {
+            it.ruleContext.accept(ruleContextCheckerVisitor)
+        }
+        assertTrue(ruleContextCheckerVisitor.hasRuleContext) {
+            "Rule context not found: ${ruleContextClass.simpleName}"
+        }
+        val declaration = selector(projectContext.compilationUnit)
+        assertEquals(expected, declaration.signature)
     }
 
     fun <S : ProjectStage> driveElementTest(
         content: String,
         stageClass: KClass<S>,
         expected: String,
-        selector: (EProject) -> EElement
+        selector: (SvCompilationUnit) -> SvElement
     ) {
         val projectContext = getProjectContext(content)
         val stageSequence = StageSequencer.getStageSequence()
         stageSequence.processUntil(projectContext, stageClass)
-        val element = selector(projectContext.project)
+        val element = selector(projectContext.compilationUnit)
         assertElementEquals(getExpectedString(expected), ElementPrinter.dump(element))
     }
 
@@ -104,10 +127,10 @@ abstract class BaseTest {
         val projectContext = getProjectContext(content)
         val stageSequence = StageSequencer.getStageSequence()
         stageSequence.processAll(projectContext)
-        val textFile = when (projectContext.outputContext.packageTextFiles.size) {
-            0 -> throw IllegalArgumentException("No package text files found")
-            1 -> projectContext.outputContext.packageTextFiles[0]
-            else -> throw IllegalArgumentException("Multiple package text files found")
+        val textFile = when (projectContext.outputContext.sourceTextFiles.size) {
+            0 -> throw IllegalArgumentException("No source text files found")
+            1 -> projectContext.outputContext.sourceTextFiles[0]
+            else -> throw IllegalArgumentException("Multiple source text files found")
         }
 
         val expectedLines = expected.lines()
@@ -117,6 +140,7 @@ abstract class BaseTest {
                 val index = lines.indexOfLast { it.startsWith("import ") } + 2
                 lines.subList(index, lines.size)
             }
+            .filter { !it.matches(DOCSTRING_REGEX) }
             .dropLastWhile { it.isEmpty() }
 
         assertEquals(
@@ -231,7 +255,6 @@ abstract class BaseTest {
                 importedFiles = listOf(importedFile),
                 includeDirs = listOf(),
                 enablePreprocessorOutput = true,
-                annotateDeclarations = false,
                 suppressedWarnings = listOf(),
                 promotedWarnings = listOf(),
                 maxErrorCount = 0,

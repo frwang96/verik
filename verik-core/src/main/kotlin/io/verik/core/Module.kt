@@ -19,19 +19,21 @@
 package io.verik.core
 
 /**
- * Module that can be synthesized to hardware. They correspond to SystemVerilog modules.
+ * Module that may be synthesized to hardware. They correspond to SystemVerilog modules.
  *
- *      class M : Module() {
+ *  ```
+ *  class M : Module() {
  *
- *          var clk = false
+ *      var clk = false
  *
- *          @Run
- *          fun runClk() {
- *              forever {
- *                  delay(1)
- *                  clk = !clk
- *              }
+ *      @Run
+ *      fun runClk() {
+ *          forever {
+ *              delay(1)
+ *              clk = !clk
  *          }
  *      }
+ *  }
+ *  ```
  */
 abstract class Module : Component()

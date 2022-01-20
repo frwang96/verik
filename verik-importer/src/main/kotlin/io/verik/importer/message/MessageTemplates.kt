@@ -16,7 +16,8 @@
 
 package io.verik.importer.message
 
-import io.verik.importer.ast.element.EElement
+import io.verik.importer.ast.kt.element.KtElement
+import io.verik.importer.ast.sv.element.common.SvElement
 import org.antlr.v4.runtime.tree.TerminalNode
 
 class WarningMessageTemplate1<A>(
@@ -25,6 +26,10 @@ class WarningMessageTemplate1<A>(
 
     fun on(location: SourceLocation, a: A) {
         MessageCollector.messageCollector.warning(name, format(a), location)
+    }
+
+    fun on(element: SvElement, a: A) {
+        MessageCollector.messageCollector.warning(name, format(a), element.location)
     }
 }
 
@@ -67,7 +72,11 @@ class FatalMessageTemplate1<A>(
         MessageCollector.messageCollector.fatal(format(a), location)
     }
 
-    fun on(element: EElement, a: A): Nothing {
+    fun on(element: SvElement, a: A): Nothing {
+        MessageCollector.messageCollector.fatal(format(a), element.location)
+    }
+
+    fun on(element: KtElement, a: A): Nothing {
         MessageCollector.messageCollector.fatal(format(a), element.location)
     }
 }

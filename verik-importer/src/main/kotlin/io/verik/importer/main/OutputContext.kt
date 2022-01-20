@@ -22,13 +22,13 @@ class OutputContext {
 
     var preprocessorTextFile: TextFile? = null
     lateinit var configTextFile: TextFile
-    var packageTextFiles: List<TextFile> = listOf()
+    var sourceTextFiles: List<TextFile> = listOf()
 
     fun getTextFiles(): List<TextFile> {
         val textFiles = ArrayList<TextFile>()
         preprocessorTextFile?.let { textFiles.add(it) }
         textFiles.add(configTextFile)
-        textFiles.addAll(packageTextFiles)
+        textFiles.addAll(sourceTextFiles)
         return textFiles.sortedBy { it.path }
     }
 }

@@ -21,10 +21,12 @@ package io.verik.core
 /**
  * The base class of all structs. Corresponds to SystemVerilog structs.
  *
- *      class S(
- *          var a: Boolean,
- *          var b: Boolean
- *      ): Struct()
+ *  ```
+ *  class S(
+ *      var a: Boolean,
+ *      var b: Boolean
+ *  ): Struct()
+ *  ```
  */
 abstract class Struct {
 

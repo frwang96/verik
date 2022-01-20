@@ -16,52 +16,68 @@
 
 package io.verik.importer.serialize.source
 
-import io.verik.importer.ast.element.EDeclaration
-import io.verik.importer.ast.element.EModule
-import io.verik.importer.ast.element.EPort
-import io.verik.importer.ast.element.EProperty
-import io.verik.importer.ast.property.PortType
-import io.verik.importer.main.Platform
+import io.verik.importer.ast.kt.element.KtClass
+import io.verik.importer.ast.kt.element.KtDeclaration
+import io.verik.importer.ast.kt.element.KtProperty
+import io.verik.importer.ast.kt.element.KtValueParameter
+import io.verik.importer.core.Core
 
 object DeclarationSerializer {
 
-    fun serializeModule(module: EModule, serializeContext: SerializeContext) {
+    fun serializeClass(`class`: KtClass, serializeContext: SerializeContext) {
         serializeContext.appendLine()
-        serializeLocation(module, serializeContext)
-        serializeContext.append("class ${module.name}")
-        if (module.ports.isNotEmpty()) {
+        serializeDocs(`class`, serializeContext)
+        serializeContext.append("class ${`class`.name}")
+        if (`class`.valueParameters.isNotEmpty()) {
             serializeContext.appendLine("(")
             serializeContext.indent {
-                serializeContext.serializeJoinAppendLine(module.ports) {
+                serializeContext.serializeJoinAppendLine(`class`.valueParameters) {
                     serializeContext.serialize(it)
                 }
             }
             serializeContext.append(")")
         }
-        serializeContext.appendLine(" : Module()")
+        if (`class`.superType.reference != Core.C_Any) {
+            serializeContext.appendLine(" : ${`class`.superType}()")
+        } else {
+            serializeContext.appendLine()
+        }
     }
 
-    fun serializeProperty(property: EProperty, serializeContext: SerializeContext) {
+    fun serializeProperty(property: KtProperty, serializeContext: SerializeContext) {
         serializeContext.appendLine()
-        serializeLocation(property, serializeContext)
-        serializeContext.append("val ${property.name}: ")
-        serializeContext.appendLine("${property.type} = imported()")
+        serializeDocs(property, serializeContext)
+        serializeContext.appendLine("val ${property.name}: ${property.type} = imported()")
     }
 
-    fun serializePort(port: EPort, serializeContext: SerializeContext) {
-        serializeLocation(port, serializeContext)
-        when (port.portType) {
-            PortType.INPUT -> serializeContext.append("@In ")
-            PortType.OUTPUT -> serializeContext.append("@Out ")
+    fun serializeValueParameter(valueParameter: KtValueParameter, serializeContext: SerializeContext) {
+        valueParameter.annotationEntries.forEach {
+            serializeContext.append("@${it.name} ")
         }
-        serializeContext.append("var ${port.name}: ${port.type}")
+        when (valueParameter.isMutable) {
+            true -> serializeContext.append("var ")
+            false -> serializeContext.append("val ")
+        }
+        serializeContext.append("${valueParameter.name}: ${valueParameter.type}")
     }
 
-    private fun serializeLocation(declaration: EDeclaration, serializeContext: SerializeContext) {
-        if (serializeContext.annotateDeclarations) {
-            val pathString = Platform.getStringFromPath(declaration.location.path)
-            val locationString = "$pathString:${declaration.location.line}"
-            serializeContext.appendLine("@Imported(\"$locationString\")")
+    private fun serializeDocs(declaration: KtDeclaration, serializeContext: SerializeContext) {
+        serializeContext.appendLine("/**")
+        val locationLine = declaration.location.line
+        val locationStringShort = "${declaration.location.path.fileName}:$locationLine"
+        val locationStringLong = "${declaration.location.path}:$locationLine"
+        serializeContext.appendLine(" * $locationStringShort")
+        serializeContext.appendLine(" * []($locationStringLong)")
+
+        val signature = declaration.signature
+        if (signature != null && signature.isNotBlank()) {
+            serializeContext.appendLine(" *")
+            serializeContext.appendLine(" *  ```")
+            signature.lines().forEach {
+                serializeContext.appendLine(" *  $it")
+            }
+            serializeContext.appendLine(" *  ```")
         }
+        serializeContext.appendLine(" */")
     }
 }

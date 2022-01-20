@@ -35,12 +35,14 @@ fun negedge(value: Boolean): Event {
 /**
  * Trigger a [sequential][Seq] action block on event [event] and optionally [additionalEvents].
  *
- *      @Seq
- *      fun f() {
- *          on(posedge(clk)) {
- *              x = !y
- *          }
+ *  ```
+ *  @Seq
+ *  fun f() {
+ *      on(posedge(clk)) {
+ *          x = !y
  *      }
+ *  }
+ *  ```
  */
 fun on(event: Event, vararg additionalEvents: Event, block: () -> Unit) {
     throw Exception()
@@ -50,8 +52,10 @@ fun on(event: Event, vararg additionalEvents: Event, block: () -> Unit) {
  * Similar to [on] but with a return value. Trigger a [sequentially][Seq] assigned property on event [event] and
  * optionally [additionalEvents].
  *
- *      @Seq
- *      var x = onr(posedge(clk)) { !y }
+ *  ```
+ *  @Seq
+ *  var x = onr(posedge(clk)) { !y }
+ *  ```
  */
 fun <T> onr(event: Event, vararg additionalEvents: Event, block: () -> T): T {
     throw Exception()
@@ -60,10 +64,12 @@ fun <T> onr(event: Event, vararg additionalEvents: Event, block: () -> T): T {
 /**
  * Loop [action] forever.
  *
- *      forever {
- *          clk = !clk
- *          delay(1)
- *      }
+ *  ```
+ *  forever {
+ *      clk = !clk
+ *      delay(1)
+ *  }
+ *  ```
  */
 fun forever(action: () -> Unit) {
     throw VerikException()
@@ -101,8 +107,10 @@ fun wait(clockingBlock: ClockingBlock) {
  * Spawn the process [action] and execute it concurrently with the parent process.
  * To wait until all immediate child processes have terminated use [join].
  *
- *      fork { delay(10) }
- *      join()
+ *  ```
+ *  fork { delay(10) }
+ *  join()
+ *  ```
  */
 fun fork(action: () -> Unit) {
     throw VerikException()

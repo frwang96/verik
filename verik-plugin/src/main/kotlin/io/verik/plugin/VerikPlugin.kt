@@ -84,7 +84,6 @@ class VerikPlugin : Plugin<Project> {
         task.inputs.property("toolchain", { ConfigUtil.getToolchain() })
         task.inputs.property("includeDirs", { extension.includeDirs.joinToString() })
         task.inputs.property("enablePreprocessorOutput", { extension.enablePreprocessorOutput })
-        task.inputs.property("annotateDeclarations", { extension.annotateDeclarations })
         task.inputs.property("suppressedWarnings", { extension.suppressedWarnings })
         task.inputs.property("promotedWarnings", { extension.promotedWarnings })
         task.inputs.property("maxErrorCount", { extension.maxErrorCount })

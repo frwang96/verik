@@ -16,12 +16,15 @@
 
 package io.verik.importer.main
 
-import io.verik.importer.cast.CasterStage
-import io.verik.importer.parse.LexerStage
+import io.verik.importer.cast.common.CasterStage
+import io.verik.importer.interpret.InterpreterStage
 import io.verik.importer.parse.ParserStage
 import io.verik.importer.preprocess.PreprocessorFilterStage
 import io.verik.importer.preprocess.PreprocessorSerializerStage
 import io.verik.importer.preprocess.PreprocessorStage
+import io.verik.importer.resolve.DeclarationResolvedCheckerStage
+import io.verik.importer.resolve.DeclarationTypeResolverStage
+import io.verik.importer.resolve.DescriptorResolverStage
 import io.verik.importer.serialize.general.ConfigFileSerializerStage
 import io.verik.importer.serialize.source.SourceSerializerStage
 
@@ -34,10 +37,15 @@ object StageSequencer {
         stageSequence.add(StageType.PREPROCESS, PreprocessorSerializerStage)
         stageSequence.add(StageType.PREPROCESS, PreprocessorFilterStage)
 
-        stageSequence.add(StageType.PARSE, LexerStage)
         stageSequence.add(StageType.PARSE, ParserStage)
 
         stageSequence.add(StageType.CAST, CasterStage)
+
+        stageSequence.add(StageType.RESOLVE, DescriptorResolverStage)
+        stageSequence.add(StageType.RESOLVE, DeclarationTypeResolverStage)
+        stageSequence.add(StageType.RESOLVE, DeclarationResolvedCheckerStage)
+
+        stageSequence.add(StageType.INTERPRET, InterpreterStage)
 
         stageSequence.add(StageType.SERIALIZE, ConfigFileSerializerStage)
         stageSequence.add(StageType.SERIALIZE, SourceSerializerStage)

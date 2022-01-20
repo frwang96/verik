@@ -22,19 +22,21 @@ package io.verik.core
  * A clocking block to bundle signals synchronized on an event. Clocking blocks can be instantiated in
  * [modules][Module] and [module interfaces][ModuleInterface]. They correspond to SystemVerilog clocking blocks.
  *
- *      class CB(
- *          override val event: Event,
- *          @In var x: Boolean
- *      ) : ClockingBlock()
+ *  ```
+ *  class CB(
+ *      override val event: Event,
+ *      @In var x: Boolean
+ *  ) : ClockingBlock()
  *
- *      class M : Module() {
+ *  class M : Module() {
  *
- *          var clk: Boolean = x()
- *          var x: Boolean = x()
+ *      var clk: Boolean = x()
+ *      var x: Boolean = x()
  *
- *          @Make
- *          val cb = CB(posedge(clk), x)
- *      }
+ *      @Make
+ *      val cb = CB(posedge(clk), x)
+ *  }
+ *  ```
  */
 abstract class ClockingBlock : Component() {
 

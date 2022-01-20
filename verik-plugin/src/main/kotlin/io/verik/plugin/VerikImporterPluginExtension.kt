@@ -23,7 +23,6 @@ abstract class VerikImporterPluginExtension {
     var importedFiles: List<Path> = listOf()
     var includeDirs: List<Path> = listOf()
     var enablePreprocessorOutput: Boolean = true
-    var annotateDeclarations: Boolean = true
     var suppressedWarnings: ArrayList<String> = ArrayList()
     var promotedWarnings: ArrayList<String> = ArrayList()
     var maxErrorCount: Int = 60
