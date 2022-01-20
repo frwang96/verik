@@ -14,30 +14,29 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.sv.element
+package io.verik.importer.ast.sv.element.declaration
 
-import io.verik.importer.ast.common.Type
-import io.verik.importer.ast.sv.property.PortType
 import io.verik.importer.common.SvVisitor
+import io.verik.importer.core.Core
 import io.verik.importer.message.SourceLocation
 
-class SvPort(
+class SvModule(
     override val location: SourceLocation,
     override val name: String,
-    override var type: Type,
-    val typeDescriptor: SvTypeDescriptor,
-    val portType: PortType
+    val ports: List<SvPort>
 ) : SvDeclaration() {
 
+    override var type = Core.C_Unit.toType()
+
     init {
-        typeDescriptor.parent = this
+        ports.forEach { it.parent = this }
     }
 
     override fun accept(visitor: SvVisitor) {
-        visitor.visitPort(this)
+        visitor.visitModule(this)
     }
 
     override fun acceptChildren(visitor: SvVisitor) {
-        typeDescriptor.accept(visitor)
+        ports.forEach { it.accept(visitor) }
     }
 }

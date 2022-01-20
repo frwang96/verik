@@ -17,7 +17,7 @@
 package io.verik.importer.main
 
 import io.verik.importer.ast.kt.element.KtProject
-import io.verik.importer.ast.sv.element.SvCompilationUnit
+import io.verik.importer.ast.sv.element.common.SvCompilationUnit
 import io.verik.importer.common.TextFile
 import java.nio.file.Path
 

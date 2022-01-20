@@ -20,12 +20,12 @@ import io.verik.importer.ast.kt.element.KtClass
 import io.verik.importer.ast.kt.element.KtDeclaration
 import io.verik.importer.ast.kt.element.KtProperty
 import io.verik.importer.ast.kt.element.KtValueParameter
-import io.verik.importer.ast.sv.element.SvClass
-import io.verik.importer.ast.sv.element.SvDeclaration
-import io.verik.importer.ast.sv.element.SvModule
-import io.verik.importer.ast.sv.element.SvPackage
-import io.verik.importer.ast.sv.element.SvPort
-import io.verik.importer.ast.sv.element.SvProperty
+import io.verik.importer.ast.sv.element.declaration.SvClass
+import io.verik.importer.ast.sv.element.declaration.SvDeclaration
+import io.verik.importer.ast.sv.element.declaration.SvModule
+import io.verik.importer.ast.sv.element.declaration.SvPackage
+import io.verik.importer.ast.sv.element.declaration.SvPort
+import io.verik.importer.ast.sv.element.declaration.SvProperty
 import io.verik.importer.core.Core
 import io.verik.importer.message.Messages
 

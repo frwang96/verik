@@ -14,22 +14,11 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.sv.element
+package io.verik.importer.ast.sv.element.common
 
-import io.verik.importer.common.SvVisitor
-import io.verik.importer.core.Core
-import io.verik.importer.message.SourceLocation
+import io.verik.importer.ast.common.Type
 
-class SvClass(
-    override val location: SourceLocation,
-    override val name: String
-) : SvDeclaration() {
+abstract class SvTypedElement : SvElement() {
 
-    override var type = Core.C_Unit.toType()
-
-    override fun accept(visitor: SvVisitor) {
-        visitor.visitClass(this)
-    }
-
-    override fun acceptChildren(visitor: SvVisitor) {}
+    abstract var type: Type
 }

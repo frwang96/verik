@@ -17,7 +17,7 @@
 package io.verik.importer.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.ast.sv.element.SvProperty
+import io.verik.importer.ast.sv.element.declaration.SvProperty
 import io.verik.importer.core.Core
 
 object PropertyCaster {

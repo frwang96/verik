@@ -14,19 +14,8 @@
  * limitations under the License.
  */
 
-package io.verik.importer.cast
+package io.verik.importer.ast.sv.element.expression
 
-import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.ast.sv.element.declaration.SvClass
-import io.verik.importer.message.SourceLocation
+import io.verik.importer.ast.sv.element.common.SvElement
 
-object ClassCaster {
-
-    fun castClassFromClassDeclaration(
-        ctx: SystemVerilogParser.ClassDeclarationContext
-    ): SvClass {
-        val location = SourceLocation.get(ctx.CLASS())
-        val name = ctx.classIdentifier()[0].text
-        return SvClass(location, name)
-    }
-}
+abstract class SvExpression : SvElement()

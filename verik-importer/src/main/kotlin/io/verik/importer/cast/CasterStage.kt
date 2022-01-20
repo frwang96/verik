@@ -16,8 +16,8 @@
 
 package io.verik.importer.cast
 
-import io.verik.importer.ast.sv.element.SvCompilationUnit
-import io.verik.importer.ast.sv.element.SvDeclaration
+import io.verik.importer.ast.sv.element.common.SvCompilationUnit
+import io.verik.importer.ast.sv.element.declaration.SvDeclaration
 import io.verik.importer.main.InputFileContext
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage

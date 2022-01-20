@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.sv.element
+package io.verik.importer.ast.sv.element.declaration
 
 import io.verik.importer.ast.common.Declaration
+import io.verik.importer.ast.sv.element.common.SvTypedElement
 
 abstract class SvDeclaration : SvTypedElement(), Declaration

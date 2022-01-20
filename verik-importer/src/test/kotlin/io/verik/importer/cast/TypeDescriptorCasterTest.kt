@@ -33,4 +33,20 @@ internal class TypeDescriptorCasterTest : BaseTest() {
             "Property(x, Nothing, SimpleTypeDescriptor(Boolean))"
         ) { it.findDeclaration("x") }
     }
+
+    @Test
+    fun `cast typeDescriptor from packedDimensionRange`() {
+        driveCasterTest(
+            SystemVerilogParser.PackedDimensionRangeContext::class,
+            """
+                logic [1:0] x;
+            """.trimIndent(),
+            """
+                Property(
+                    x, Nothing,
+                    PackedTypeDescriptor(SimpleTypeDescriptor(Boolean), LiteralExpression(1), LiteralExpression(0))
+                )
+            """.trimIndent()
+        ) { it.findDeclaration("x") }
+    }
 }

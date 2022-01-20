@@ -16,9 +16,12 @@
 
 package io.verik.importer.cast
 
-import io.verik.importer.ast.sv.element.SvDeclaration
-import io.verik.importer.ast.sv.element.SvPort
-import io.verik.importer.ast.sv.element.SvTypeDescriptor
+import io.verik.importer.ast.sv.element.common.SvTypeDescriptor
+import io.verik.importer.ast.sv.element.declaration.SvDeclaration
+import io.verik.importer.ast.sv.element.declaration.SvPort
+import io.verik.importer.ast.sv.element.expression.SvExpression
+import io.verik.importer.ast.sv.element.expression.SvNothingExpression
+import io.verik.importer.message.Messages
 import io.verik.importer.message.SourceLocation
 import org.antlr.v4.runtime.RuleContext
 import org.antlr.v4.runtime.TokenStream
@@ -44,5 +47,16 @@ class CastContext(
 
     fun getTypeDescriptor(ctx: RuleContext): SvTypeDescriptor? {
         return casterVisitor.getElement(ctx)
+    }
+
+    fun getExpression(ctx: RuleContext): SvExpression {
+        val element = casterVisitor.getElement<SvExpression>(ctx)
+        return if (element != null) {
+            element
+        } else {
+            val location = getLocation(ctx)
+            Messages.CAST_ERROR.on(location, "expression")
+            SvNothingExpression(location)
+        }
     }
 }

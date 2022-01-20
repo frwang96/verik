@@ -14,26 +14,24 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.sv.element
+package io.verik.importer.ast.sv.element.common
 
+import io.verik.importer.ast.sv.element.declaration.SvDeclaration
 import io.verik.importer.common.SvVisitor
-import io.verik.importer.core.Core
 import io.verik.importer.message.SourceLocation
 
-class SvPackage(
-    override val location: SourceLocation,
-    override val name: String,
+class SvCompilationUnit(
     var declarations: ArrayList<SvDeclaration>
-) : SvDeclaration() {
+) : SvElement() {
 
-    override var type = Core.C_Unit.toType()
+    override val location: SourceLocation = SourceLocation.NULL
 
     init {
         declarations.forEach { it.parent = this }
     }
 
     override fun accept(visitor: SvVisitor) {
-        visitor.visitPackage(this)
+        visitor.visitCompilationUnit(this)
     }
 
     override fun acceptChildren(visitor: SvVisitor) {

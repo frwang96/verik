@@ -17,16 +17,16 @@
 package io.verik.importer.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.ast.sv.element.declaration.SvClass
-import io.verik.importer.message.SourceLocation
+import io.verik.importer.ast.sv.element.expression.SvExpression
+import io.verik.importer.ast.sv.element.expression.SvLiteralExpression
 
-object ClassCaster {
+object ExpressionCaster {
 
-    fun castClassFromClassDeclaration(
-        ctx: SystemVerilogParser.ClassDeclarationContext
-    ): SvClass {
-        val location = SourceLocation.get(ctx.CLASS())
-        val name = ctx.classIdentifier()[0].text
-        return SvClass(location, name)
+    fun castExpressionFromConstantPrimaryLiteral(
+        ctx: SystemVerilogParser.ConstantPrimaryLiteralContext,
+        castContext: CastContext
+    ): SvExpression {
+        val location = castContext.getLocation(ctx)
+        return SvLiteralExpression(location, ctx.text)
     }
 }

@@ -14,32 +14,31 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.sv.element
+package io.verik.importer.ast.sv.element.declaration
 
+import io.verik.importer.ast.common.Type
+import io.verik.importer.ast.sv.element.common.SvTypeDescriptor
+import io.verik.importer.ast.sv.property.PortType
 import io.verik.importer.common.SvVisitor
-import io.verik.importer.message.Messages
 import io.verik.importer.message.SourceLocation
 
-abstract class SvElement {
+class SvPort(
+    override val location: SourceLocation,
+    override val name: String,
+    override var type: Type,
+    val typeDescriptor: SvTypeDescriptor,
+    val portType: PortType
+) : SvDeclaration() {
 
-    abstract val location: SourceLocation
-
-    var parent: SvElement? = null
-
-    inline fun <reified E : SvElement> cast(): E {
-        return when (this) {
-            is E -> this
-            else -> {
-                Messages.INTERNAL_ERROR.on(this, "Could not cast element: Expected ${E::class.simpleName} actual $this")
-            }
-        }
+    init {
+        typeDescriptor.parent = this
     }
 
-    abstract fun accept(visitor: SvVisitor)
+    override fun accept(visitor: SvVisitor) {
+        visitor.visitPort(this)
+    }
 
-    abstract fun acceptChildren(visitor: SvVisitor)
-
-    override fun toString(): String {
-        return "${this::class.simpleName}"
+    override fun acceptChildren(visitor: SvVisitor) {
+        typeDescriptor.accept(visitor)
     }
 }

@@ -16,19 +16,27 @@
 
 package io.verik.importer.common
 
-import io.verik.importer.ast.sv.element.SvClass
-import io.verik.importer.ast.sv.element.SvCompilationUnit
-import io.verik.importer.ast.sv.element.SvElement
-import io.verik.importer.ast.sv.element.SvModule
-import io.verik.importer.ast.sv.element.SvPackage
-import io.verik.importer.ast.sv.element.SvPort
-import io.verik.importer.ast.sv.element.SvProperty
-import io.verik.importer.ast.sv.element.SvSimpleTypeDescriptor
+import io.verik.importer.ast.sv.element.common.SvCompilationUnit
+import io.verik.importer.ast.sv.element.common.SvElement
+import io.verik.importer.ast.sv.element.common.SvPackedTypeDescriptor
+import io.verik.importer.ast.sv.element.common.SvSimpleTypeDescriptor
+import io.verik.importer.ast.sv.element.declaration.SvClass
+import io.verik.importer.ast.sv.element.declaration.SvModule
+import io.verik.importer.ast.sv.element.declaration.SvPackage
+import io.verik.importer.ast.sv.element.declaration.SvPort
+import io.verik.importer.ast.sv.element.declaration.SvProperty
+import io.verik.importer.ast.sv.element.expression.SvLiteralExpression
+import io.verik.importer.ast.sv.element.expression.SvNothingExpression
+import io.verik.importer.message.Messages
 
 class ElementPrinter : SvVisitor() {
 
     private val builder = StringBuilder()
     private var first = true
+
+    override fun visitElement(element: SvElement) {
+        Messages.INTERNAL_ERROR.on(element, "Unable to print element: $element")
+    }
 
     override fun visitCompilationUnit(compilationUnit: SvCompilationUnit) {
         build("CompilationUnit") {
@@ -76,6 +84,24 @@ class ElementPrinter : SvVisitor() {
     override fun visitSimpleTypeDescriptor(simpleTypeDescriptor: SvSimpleTypeDescriptor) {
         build("SimpleTypeDescriptor") {
             build(simpleTypeDescriptor.type.toString())
+        }
+    }
+
+    override fun visitPackedTypeDescriptor(packedTypeDescriptor: SvPackedTypeDescriptor) {
+        build("PackedTypeDescriptor") {
+            build(packedTypeDescriptor.typeDescriptor)
+            build(packedTypeDescriptor.left)
+            build(packedTypeDescriptor.right)
+        }
+    }
+
+    override fun visitNothingExpression(nothingExpression: SvNothingExpression) {
+        build("NothingExpression") {}
+    }
+
+    override fun visitLiteralExpression(literalExpression: SvLiteralExpression) {
+        build("LiteralExpression") {
+            build(literalExpression.value)
         }
     }
 

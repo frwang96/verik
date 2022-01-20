@@ -14,20 +14,32 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.sv.element
+package io.verik.importer.ast.sv.element.common
 
-import io.verik.importer.ast.common.Type
 import io.verik.importer.common.SvVisitor
+import io.verik.importer.message.Messages
 import io.verik.importer.message.SourceLocation
 
-class SvSimpleTypeDescriptor(
-    override val location: SourceLocation,
-    override var type: Type
-) : SvTypeDescriptor() {
+abstract class SvElement {
 
-    override fun accept(visitor: SvVisitor) {
-        visitor.visitSimpleTypeDescriptor(this)
+    abstract val location: SourceLocation
+
+    var parent: SvElement? = null
+
+    inline fun <reified E : SvElement> cast(): E {
+        return when (this) {
+            is E -> this
+            else -> {
+                Messages.INTERNAL_ERROR.on(this, "Could not cast element: Expected ${E::class.simpleName} actual $this")
+            }
+        }
     }
 
-    override fun acceptChildren(visitor: SvVisitor) {}
+    abstract fun accept(visitor: SvVisitor)
+
+    abstract fun acceptChildren(visitor: SvVisitor)
+
+    override fun toString(): String {
+        return "${this::class.simpleName}"
+    }
 }

@@ -16,8 +16,8 @@
 
 package io.verik.importer.resolve
 
-import io.verik.importer.ast.sv.element.SvPort
-import io.verik.importer.ast.sv.element.SvProperty
+import io.verik.importer.ast.sv.element.declaration.SvPort
+import io.verik.importer.ast.sv.element.declaration.SvProperty
 import io.verik.importer.common.SvTreeVisitor
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage

@@ -17,7 +17,7 @@
 package io.verik.importer.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.ast.sv.element.SvPort
+import io.verik.importer.ast.sv.element.declaration.SvPort
 import io.verik.importer.ast.sv.property.PortType
 import io.verik.importer.core.Core
 

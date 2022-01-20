@@ -14,11 +14,6 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.sv.element
+package io.verik.importer.ast.sv.element.common
 
-import io.verik.importer.ast.common.Type
-
-abstract class SvTypedElement : SvElement() {
-
-    abstract var type: Type
-}
+abstract class SvTypeDescriptor : SvTypedElement()

@@ -16,7 +16,7 @@
 
 package io.verik.importer.common
 
-import io.verik.importer.ast.sv.element.SvElement
+import io.verik.importer.ast.sv.element.common.SvElement
 
 abstract class SvTreeVisitor : SvVisitor() {
 

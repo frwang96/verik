@@ -17,7 +17,7 @@
 package io.verik.importer.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.ast.sv.element.SvModule
+import io.verik.importer.ast.sv.element.declaration.SvModule
 
 object ModuleCaster {
 

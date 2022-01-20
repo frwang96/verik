@@ -17,7 +17,7 @@
 package io.verik.importer.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.ast.sv.element.SvPackage
+import io.verik.importer.ast.sv.element.declaration.SvPackage
 import io.verik.importer.message.SourceLocation
 
 object PackageCaster {

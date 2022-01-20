@@ -17,11 +17,28 @@
 package io.verik.importer.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.ast.sv.element.SvSimpleTypeDescriptor
-import io.verik.importer.ast.sv.element.SvTypeDescriptor
+import io.verik.importer.ast.sv.element.common.SvPackedTypeDescriptor
+import io.verik.importer.ast.sv.element.common.SvSimpleTypeDescriptor
+import io.verik.importer.ast.sv.element.common.SvTypeDescriptor
 import io.verik.importer.core.Core
 
 object TypeDescriptorCaster {
+
+    fun castTypeDescriptorFromDataTypeVector(
+        ctx: SystemVerilogParser.DataTypeVectorContext,
+        castContext: CastContext
+    ): SvTypeDescriptor? {
+        var typeDescriptor = castContext.getTypeDescriptor(ctx.integerVectorType()) ?: return null
+        ctx.packedDimension().forEach {
+            if (it is SystemVerilogParser.PackedDimensionRangeContext) {
+                val location = castContext.getLocation(it)
+                val left = castContext.getExpression(it.constantRange().constantExpression(0))
+                val right = castContext.getExpression(it.constantRange().constantExpression(1))
+                typeDescriptor = SvPackedTypeDescriptor(location, Core.C_Nothing.toType(), typeDescriptor, left, right)
+            }
+        }
+        return typeDescriptor
+    }
 
     fun castTypeDescriptorFromImplicitDataType(
         ctx: SystemVerilogParser.ImplicitDataTypeContext,

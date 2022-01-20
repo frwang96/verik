@@ -17,7 +17,7 @@
 package io.verik.importer.message
 
 import io.verik.importer.ast.kt.element.KtElement
-import io.verik.importer.ast.sv.element.SvElement
+import io.verik.importer.ast.sv.element.common.SvElement
 import org.antlr.v4.runtime.tree.TerminalNode
 
 class WarningMessageTemplate1<A>(

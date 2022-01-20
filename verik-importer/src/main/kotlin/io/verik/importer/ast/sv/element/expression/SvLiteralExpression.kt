@@ -14,6 +14,19 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.sv.element
+package io.verik.importer.ast.sv.element.expression
 
-abstract class SvTypeDescriptor : SvTypedElement()
+import io.verik.importer.common.SvVisitor
+import io.verik.importer.message.SourceLocation
+
+class SvLiteralExpression(
+    override val location: SourceLocation,
+    val value: String
+) : SvExpression() {
+
+    override fun accept(visitor: SvVisitor) {
+        visitor.visitLiteralExpression(this)
+    }
+
+    override fun acceptChildren(visitor: SvVisitor) {}
+}

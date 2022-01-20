@@ -14,19 +14,29 @@
  * limitations under the License.
  */
 
-package io.verik.importer.cast
+package io.verik.importer.ast.sv.element.declaration
 
-import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.ast.sv.element.declaration.SvClass
+import io.verik.importer.ast.common.Type
+import io.verik.importer.ast.sv.element.common.SvTypeDescriptor
+import io.verik.importer.common.SvVisitor
 import io.verik.importer.message.SourceLocation
 
-object ClassCaster {
+class SvProperty(
+    override val location: SourceLocation,
+    override val name: String,
+    override var type: Type,
+    val typeDescriptor: SvTypeDescriptor
+) : SvDeclaration() {
 
-    fun castClassFromClassDeclaration(
-        ctx: SystemVerilogParser.ClassDeclarationContext
-    ): SvClass {
-        val location = SourceLocation.get(ctx.CLASS())
-        val name = ctx.classIdentifier()[0].text
-        return SvClass(location, name)
+    init {
+        typeDescriptor.parent = this
+    }
+
+    override fun accept(visitor: SvVisitor) {
+        visitor.visitProperty(this)
+    }
+
+    override fun acceptChildren(visitor: SvVisitor) {
+        typeDescriptor.accept(visitor)
     }
 }

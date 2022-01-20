@@ -16,17 +16,21 @@
 
 package io.verik.importer.common
 
-import io.verik.importer.ast.sv.element.SvClass
-import io.verik.importer.ast.sv.element.SvCompilationUnit
-import io.verik.importer.ast.sv.element.SvDeclaration
-import io.verik.importer.ast.sv.element.SvElement
-import io.verik.importer.ast.sv.element.SvModule
-import io.verik.importer.ast.sv.element.SvPackage
-import io.verik.importer.ast.sv.element.SvPort
-import io.verik.importer.ast.sv.element.SvProperty
-import io.verik.importer.ast.sv.element.SvSimpleTypeDescriptor
-import io.verik.importer.ast.sv.element.SvTypeDescriptor
-import io.verik.importer.ast.sv.element.SvTypedElement
+import io.verik.importer.ast.sv.element.common.SvCompilationUnit
+import io.verik.importer.ast.sv.element.common.SvElement
+import io.verik.importer.ast.sv.element.common.SvPackedTypeDescriptor
+import io.verik.importer.ast.sv.element.common.SvSimpleTypeDescriptor
+import io.verik.importer.ast.sv.element.common.SvTypeDescriptor
+import io.verik.importer.ast.sv.element.common.SvTypedElement
+import io.verik.importer.ast.sv.element.declaration.SvClass
+import io.verik.importer.ast.sv.element.declaration.SvDeclaration
+import io.verik.importer.ast.sv.element.declaration.SvModule
+import io.verik.importer.ast.sv.element.declaration.SvPackage
+import io.verik.importer.ast.sv.element.declaration.SvPort
+import io.verik.importer.ast.sv.element.declaration.SvProperty
+import io.verik.importer.ast.sv.element.expression.SvExpression
+import io.verik.importer.ast.sv.element.expression.SvLiteralExpression
+import io.verik.importer.ast.sv.element.expression.SvNothingExpression
 
 abstract class SvVisitor {
 
@@ -48,7 +52,7 @@ abstract class SvVisitor {
         visitDeclaration(`package`)
     }
 
-//  Class Like  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Class Like //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     open fun visitClass(`class`: SvClass) {
         visitDeclaration(`class`)
@@ -58,7 +62,7 @@ abstract class SvVisitor {
         visitDeclaration(module)
     }
 
-//  Property Like  /////////////////////////////////////////////////////////////////////////////////////////////////////
+// Property Like ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     open fun visitProperty(property: SvProperty) {
         visitDeclaration(property)
@@ -68,7 +72,7 @@ abstract class SvVisitor {
         visitDeclaration(port)
     }
 
-//  Type Like  /////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Type Like ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     open fun visitTypeDescriptor(typeDescriptor: SvTypeDescriptor) {
         visitTypedElement(typeDescriptor)
@@ -76,5 +80,23 @@ abstract class SvVisitor {
 
     open fun visitSimpleTypeDescriptor(simpleTypeDescriptor: SvSimpleTypeDescriptor) {
         visitTypeDescriptor(simpleTypeDescriptor)
+    }
+
+    open fun visitPackedTypeDescriptor(packedTypeDescriptor: SvPackedTypeDescriptor) {
+        visitTypeDescriptor(packedTypeDescriptor)
+    }
+
+// Expression Like /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    open fun visitExpression(expression: SvExpression) {
+        visitElement(expression)
+    }
+
+    open fun visitNothingExpression(nothingExpression: SvNothingExpression) {
+        visitExpression(nothingExpression)
+    }
+
+    open fun visitLiteralExpression(literalExpression: SvLiteralExpression) {
+        visitExpression(literalExpression)
     }
 }

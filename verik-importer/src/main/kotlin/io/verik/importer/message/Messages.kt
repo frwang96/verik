@@ -71,6 +71,12 @@ object Messages {
         "Parser error: $0"
     )
 
+// CAST ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    val CAST_ERROR = WarningMessageTemplate1<String>(
+        "Unable to cast $0"
+    )
+
     init {
         Messages::class.declaredMemberProperties.forEach {
             val messageTemplate = it.get(Messages)

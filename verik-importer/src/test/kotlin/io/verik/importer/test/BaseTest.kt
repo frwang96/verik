@@ -17,8 +17,8 @@
 package io.verik.importer.test
 
 import io.verik.importer.antlr.SystemVerilogParserBaseVisitor
-import io.verik.importer.ast.sv.element.SvCompilationUnit
-import io.verik.importer.ast.sv.element.SvElement
+import io.verik.importer.ast.sv.element.common.SvCompilationUnit
+import io.verik.importer.ast.sv.element.common.SvElement
 import io.verik.importer.cast.CasterStage
 import io.verik.importer.common.ElementPrinter
 import io.verik.importer.common.TextFile
