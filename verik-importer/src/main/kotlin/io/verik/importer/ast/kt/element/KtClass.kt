@@ -24,6 +24,7 @@ import io.verik.importer.message.SourceLocation
 class KtClass(
     override val location: SourceLocation,
     override val name: String,
+    override val signature: String,
     val superType: Type,
     val valueParameters: ArrayList<KtValueParameter>,
     val declarations: ArrayList<KtDeclaration>

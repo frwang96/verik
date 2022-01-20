@@ -26,6 +26,7 @@ class SvPackage(
     override var declarations: ArrayList<SvDeclaration>
 ) : SvContainerDeclaration() {
 
+    override val signature: String? = null
     override var type = Core.C_Unit.toType()
 
     init {

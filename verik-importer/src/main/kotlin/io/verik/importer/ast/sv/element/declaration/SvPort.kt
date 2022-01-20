@@ -30,6 +30,8 @@ class SvPort(
     val portType: PortType
 ) : SvDeclaration() {
 
+    override val signature: String? = null
+
     init {
         descriptor.parent = this
     }

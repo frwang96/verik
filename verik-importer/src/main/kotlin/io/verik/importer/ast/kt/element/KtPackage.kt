@@ -26,6 +26,7 @@ class KtPackage(
     val files: ArrayList<KtFile>
 ) : KtDeclaration() {
 
+    override val signature: String? = null
     override val type = Core.C_Unit.toType()
 
     override fun accept(visitor: KtVisitor) {

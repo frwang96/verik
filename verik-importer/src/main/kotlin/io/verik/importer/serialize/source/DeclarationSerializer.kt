@@ -17,7 +17,7 @@
 package io.verik.importer.serialize.source
 
 import io.verik.importer.ast.kt.element.KtClass
-import io.verik.importer.ast.kt.element.KtElement
+import io.verik.importer.ast.kt.element.KtDeclaration
 import io.verik.importer.ast.kt.element.KtProperty
 import io.verik.importer.ast.kt.element.KtValueParameter
 import io.verik.importer.core.Core
@@ -26,7 +26,7 @@ object DeclarationSerializer {
 
     fun serializeClass(`class`: KtClass, serializeContext: SerializeContext) {
         serializeContext.appendLine()
-        serializeLocation(`class`, serializeContext)
+        serializeDocs(`class`, serializeContext)
         serializeContext.append("class ${`class`.name}")
         if (`class`.valueParameters.isNotEmpty()) {
             serializeContext.appendLine("(")
@@ -46,7 +46,7 @@ object DeclarationSerializer {
 
     fun serializeProperty(property: KtProperty, serializeContext: SerializeContext) {
         serializeContext.appendLine()
-        serializeLocation(property, serializeContext)
+        serializeDocs(property, serializeContext)
         serializeContext.appendLine("val ${property.name}: ${property.type} = imported()")
     }
 
@@ -61,8 +61,23 @@ object DeclarationSerializer {
         serializeContext.append("${valueParameter.name}: ${valueParameter.type}")
     }
 
-    private fun serializeLocation(element: KtElement, serializeContext: SerializeContext) {
-        val locationString = "${element.location.path}:${element.location.line}"
-        serializeContext.appendLine("/** Imported from: $locationString */")
+    private fun serializeDocs(declaration: KtDeclaration, serializeContext: SerializeContext) {
+        serializeContext.appendLine("/**")
+        val locationLine = declaration.location.line
+        val locationStringShort = "${declaration.location.path.fileName}:$locationLine"
+        val locationStringLong = "${declaration.location.path}:$locationLine"
+        serializeContext.appendLine(" * $locationStringShort")
+        serializeContext.appendLine(" * []($locationStringLong)")
+
+        val signature = declaration.signature
+        if (signature != null && signature.isNotBlank()) {
+            serializeContext.appendLine()
+            serializeContext.appendLine(" *  ```")
+            signature.lines().forEach {
+                serializeContext.appendLine(" *  $it")
+            }
+            serializeContext.appendLine(" *  ```")
+        }
+        serializeContext.appendLine(" */")
     }
 }

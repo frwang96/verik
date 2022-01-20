@@ -23,6 +23,7 @@ import io.verik.importer.message.SourceLocation
 class SvClass(
     override val location: SourceLocation,
     override val name: String,
+    override val signature: String,
     override var declarations: ArrayList<SvDeclaration>
 ) : SvContainerDeclaration() {
 

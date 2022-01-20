@@ -17,19 +17,23 @@
 package io.verik.importer.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.ast.sv.element.declaration.SvClass
-import io.verik.importer.message.SourceLocation
+import io.verik.importer.antlr.SystemVerilogParserBaseVisitor
+import org.antlr.v4.runtime.RuleContext
 
-object ClassCaster {
+object SignatureBuilder {
 
-    fun castClassFromClassDeclaration(
-        ctx: SystemVerilogParser.ClassDeclarationContext,
-        castContext: CastContext
-    ): SvClass {
-        val location = SourceLocation.get(ctx.CLASS())
-        val name = ctx.classIdentifier()[0].text
-        val signature = SignatureBuilder.buildSignature(ctx)
-        val declarations = ctx.classItem().mapNotNull { castContext.getDeclaration(it) }
-        return SvClass(location, name, signature, ArrayList(declarations))
+    fun buildSignature(ctx: RuleContext): String {
+        val signatureBuilderVisitor = SignatureBuilderVisitor()
+        ctx.accept(signatureBuilderVisitor)
+        return signatureBuilderVisitor.builder.toString()
+    }
+
+    private class SignatureBuilderVisitor : SystemVerilogParserBaseVisitor<Unit>() {
+
+        val builder = StringBuilder()
+
+        override fun visitDataDeclarationData(ctx: SystemVerilogParser.DataDeclarationDataContext?) {
+            builder.append(ctx!!.text)
+        }
     }
 }

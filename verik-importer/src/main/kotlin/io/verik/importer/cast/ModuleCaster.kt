@@ -31,6 +31,7 @@ object ModuleCaster {
         val identifier = ctx.moduleNonAnsiHeader().moduleIdentifier()
         val location = castContext.getLocation(identifier)
         val name = identifier.text
+        val signature = SignatureBuilder.buildSignature(ctx)
         val declarations = ArrayList<SvDeclaration>()
         val ports = ArrayList<SvPort>()
         ctx.moduleItem().forEach {
@@ -47,7 +48,13 @@ object ModuleCaster {
                     declarations.add(declaration)
             }
         }
-        return SvModule(location, name, declarations, ports)
+        return SvModule(
+            location,
+            name,
+            signature,
+            declarations,
+            ports
+        )
     }
 
     fun castModuleFromModuleDeclarationAnsi(
@@ -58,6 +65,7 @@ object ModuleCaster {
         val identifier = moduleAnsiHeader.moduleIdentifier()
         val location = castContext.getLocation(identifier)
         val name = identifier.text
+        val signature = SignatureBuilder.buildSignature(ctx)
         val declarations = ctx.nonPortModuleItem().mapNotNull { castContext.getDeclaration(it) }
         val ports = moduleAnsiHeader.listOfPortDeclarations()?.ansiPortDeclaration()?.map {
             castContext.getPort(it) ?: return null
@@ -65,6 +73,7 @@ object ModuleCaster {
         return SvModule(
             location,
             name,
+            signature,
             ArrayList(declarations),
             ArrayList(ports)
         )

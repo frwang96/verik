@@ -31,10 +31,12 @@ object PropertyCaster {
             .variableIdentifier()
         val location = castContext.getLocation(variableIdentifier)
         val name = variableIdentifier.text
+        val signature = SignatureBuilder.buildSignature(ctx)
         val descriptor = castContext.getDescriptor(ctx.dataTypeOrImplicit()) ?: return null
         return SvProperty(
             location,
             name,
+            signature,
             Type.unresolved(),
             descriptor
         )

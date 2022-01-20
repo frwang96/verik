@@ -50,6 +50,7 @@ object DeclarationInterpreter {
         return KtClass(
             `class`.location,
             `class`.name,
+            `class`.signature,
             Core.C_Any.toType(),
             ArrayList(),
             ArrayList()
@@ -61,6 +62,7 @@ object DeclarationInterpreter {
         return KtClass(
             module.location,
             module.name,
+            module.signature,
             Core.C_Module.toType(),
             ArrayList(valueParameters),
             ArrayList()
@@ -68,7 +70,12 @@ object DeclarationInterpreter {
     }
 
     private fun interpretPropertyFromProperty(property: SvProperty): KtProperty {
-        return KtProperty(property.location, property.name, property.type)
+        return KtProperty(
+            property.location,
+            property.name,
+            property.signature,
+            property.type
+        )
     }
 
     private fun interpretValueParameterFromPort(port: SvPort): KtValueParameter {

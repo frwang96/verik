@@ -29,6 +29,8 @@ class KtValueParameter(
     val isMutable: Boolean?
 ) : KtDeclaration() {
 
+    override val signature: String? = null
+
     override fun accept(visitor: KtVisitor) {
         visitor.visitValueParameter(this)
     }

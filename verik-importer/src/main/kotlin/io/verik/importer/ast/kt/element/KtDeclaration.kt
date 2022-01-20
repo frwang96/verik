@@ -21,5 +21,6 @@ import io.verik.importer.common.Type
 
 abstract class KtDeclaration : KtElement(), Declaration {
 
+    abstract val signature: String?
     abstract val type: Type
 }
