@@ -19,12 +19,12 @@ package io.verik.importer.cast
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.antlr.SystemVerilogParserBaseVisitor
 import io.verik.importer.ast.sv.element.common.SvElement
-import io.verik.importer.ast.sv.element.common.SvTypeDescriptor
 import io.verik.importer.ast.sv.element.declaration.SvClass
 import io.verik.importer.ast.sv.element.declaration.SvModule
 import io.verik.importer.ast.sv.element.declaration.SvPackage
 import io.verik.importer.ast.sv.element.declaration.SvPort
 import io.verik.importer.ast.sv.element.declaration.SvProperty
+import io.verik.importer.ast.sv.element.descriptor.SvDescriptor
 import io.verik.importer.ast.sv.element.expression.SvExpression
 import org.antlr.v4.runtime.RuleContext
 
@@ -72,16 +72,16 @@ class CasterVisitor(
 
 // A.2.2.1 Net and Variable Types //////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitDataTypeVector(ctx: SystemVerilogParser.DataTypeVectorContext?): SvTypeDescriptor? {
-        return TypeDescriptorCaster.castTypeDescriptorFromDataTypeVector(ctx!!, castContext)
+    override fun visitDataTypeVector(ctx: SystemVerilogParser.DataTypeVectorContext?): SvDescriptor? {
+        return DescriptorCaster.castDescriptorFromDataTypeVector(ctx!!, castContext)
     }
 
-    override fun visitImplicitDataType(ctx: SystemVerilogParser.ImplicitDataTypeContext?): SvTypeDescriptor? {
-        return TypeDescriptorCaster.castTypeDescriptorFromImplicitDataType(ctx!!, castContext)
+    override fun visitImplicitDataType(ctx: SystemVerilogParser.ImplicitDataTypeContext?): SvDescriptor? {
+        return DescriptorCaster.castDescriptorFromImplicitDataType(ctx!!, castContext)
     }
 
-    override fun visitIntegerVectorType(ctx: SystemVerilogParser.IntegerVectorTypeContext?): SvTypeDescriptor {
-        return TypeDescriptorCaster.castTypeDescriptorFromIntegerVectorType(ctx!!, castContext)
+    override fun visitIntegerVectorType(ctx: SystemVerilogParser.IntegerVectorTypeContext?): SvDescriptor {
+        return DescriptorCaster.castDescriptorFromIntegerVectorType(ctx!!, castContext)
     }
 
 // A.8.4 Primaries /////////////////////////////////////////////////////////////////////////////////////////////////////

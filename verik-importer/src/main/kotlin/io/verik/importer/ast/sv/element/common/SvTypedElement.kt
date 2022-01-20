@@ -16,7 +16,7 @@
 
 package io.verik.importer.ast.sv.element.common
 
-import io.verik.importer.ast.common.Type
+import io.verik.importer.common.Type
 
 abstract class SvTypedElement : SvElement() {
 

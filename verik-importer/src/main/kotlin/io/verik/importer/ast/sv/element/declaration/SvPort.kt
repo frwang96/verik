@@ -16,22 +16,22 @@
 
 package io.verik.importer.ast.sv.element.declaration
 
-import io.verik.importer.ast.common.Type
-import io.verik.importer.ast.sv.element.common.SvTypeDescriptor
+import io.verik.importer.ast.sv.element.descriptor.SvDescriptor
 import io.verik.importer.ast.sv.property.PortType
 import io.verik.importer.common.SvVisitor
+import io.verik.importer.common.Type
 import io.verik.importer.message.SourceLocation
 
 class SvPort(
     override val location: SourceLocation,
     override val name: String,
     override var type: Type,
-    val typeDescriptor: SvTypeDescriptor,
+    val descriptor: SvDescriptor,
     val portType: PortType
 ) : SvDeclaration() {
 
     init {
-        typeDescriptor.parent = this
+        descriptor.parent = this
     }
 
     override fun accept(visitor: SvVisitor) {
@@ -39,6 +39,6 @@ class SvPort(
     }
 
     override fun acceptChildren(visitor: SvVisitor) {
-        typeDescriptor.accept(visitor)
+        descriptor.accept(visitor)
     }
 }

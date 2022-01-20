@@ -16,8 +16,8 @@
 
 package io.verik.importer.ast.kt.element
 
-import io.verik.importer.ast.common.Declaration
-import io.verik.importer.ast.common.Type
+import io.verik.importer.common.Declaration
+import io.verik.importer.common.Type
 
 abstract class KtDeclaration : KtElement(), Declaration {
 

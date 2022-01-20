@@ -39,13 +39,13 @@ object PortCaster {
         val identifier = ctx.identifier()
         val location = castContext.getLocation(identifier)
         val name = identifier.text
-        val typeDescriptor = castContext.getTypeDescriptor(ctx.netPortHeader()) ?: return null
+        val descriptor = castContext.getDescriptor(ctx.netPortHeader()) ?: return null
         val portType = castPortType(ctx.netPortHeader())
         return SvPort(
             location,
             name,
             Core.C_Nothing.toType(),
-            typeDescriptor,
+            descriptor,
             portType
         )
     }

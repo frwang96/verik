@@ -6,6 +6,7 @@
 - Preprocess file and line compiler directive.
 - More rules for lexer and parser.
 - Separate SystemVerilog and Kotlin AST.
+- Descriptor AST element to track types.
 
 ## [0.1.12]
 ### Compiler

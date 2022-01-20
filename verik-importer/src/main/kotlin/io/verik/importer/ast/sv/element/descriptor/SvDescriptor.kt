@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
-package io.verik.importer.common
+package io.verik.importer.ast.sv.element.descriptor
 
-interface Castable
+import io.verik.importer.ast.sv.element.common.SvTypedElement
+
+abstract class SvDescriptor : SvTypedElement()

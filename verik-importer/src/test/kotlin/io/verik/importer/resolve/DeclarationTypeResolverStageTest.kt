@@ -20,7 +20,7 @@ import io.verik.importer.test.BaseTest
 import io.verik.importer.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class TypeResolverStageTest : BaseTest() {
+internal class DeclarationTypeResolverStageTest : BaseTest() {
 
     @Test
     fun `resolve property`() {
@@ -28,8 +28,8 @@ internal class TypeResolverStageTest : BaseTest() {
             """
                 logic x;
             """.trimIndent(),
-            TypeResolverStage::class,
-            "Property(x, Boolean, SimpleTypeDescriptor(Boolean))"
+            DeclarationTypeResolverStage::class,
+            "Property(x, Boolean, SimpleDescriptor(Boolean))"
         ) { it.findDeclaration("x") }
     }
 }

@@ -18,13 +18,13 @@ package io.verik.importer.common
 
 import io.verik.importer.ast.sv.element.common.SvCompilationUnit
 import io.verik.importer.ast.sv.element.common.SvElement
-import io.verik.importer.ast.sv.element.common.SvPackedTypeDescriptor
-import io.verik.importer.ast.sv.element.common.SvSimpleTypeDescriptor
 import io.verik.importer.ast.sv.element.declaration.SvClass
 import io.verik.importer.ast.sv.element.declaration.SvModule
 import io.verik.importer.ast.sv.element.declaration.SvPackage
 import io.verik.importer.ast.sv.element.declaration.SvPort
 import io.verik.importer.ast.sv.element.declaration.SvProperty
+import io.verik.importer.ast.sv.element.descriptor.SvPackedDescriptor
+import io.verik.importer.ast.sv.element.descriptor.SvSimpleDescriptor
 import io.verik.importer.ast.sv.element.expression.SvLiteralExpression
 import io.verik.importer.ast.sv.element.expression.SvNothingExpression
 import io.verik.importer.message.Messages
@@ -68,7 +68,7 @@ class ElementPrinter : SvVisitor() {
         build("Property") {
             build(property.name)
             build(property.type.toString())
-            build(property.typeDescriptor)
+            build(property.descriptor)
         }
     }
 
@@ -76,22 +76,22 @@ class ElementPrinter : SvVisitor() {
         build("Port") {
             build(port.name)
             build(port.type.toString())
-            build(port.typeDescriptor)
+            build(port.descriptor)
             build(port.portType.toString())
         }
     }
 
-    override fun visitSimpleTypeDescriptor(simpleTypeDescriptor: SvSimpleTypeDescriptor) {
-        build("SimpleTypeDescriptor") {
-            build(simpleTypeDescriptor.type.toString())
+    override fun visitSimpleDescriptor(simpleDescriptor: SvSimpleDescriptor) {
+        build("SimpleDescriptor") {
+            build(simpleDescriptor.type.toString())
         }
     }
 
-    override fun visitPackedTypeDescriptor(packedTypeDescriptor: SvPackedTypeDescriptor) {
-        build("PackedTypeDescriptor") {
-            build(packedTypeDescriptor.typeDescriptor)
-            build(packedTypeDescriptor.left)
-            build(packedTypeDescriptor.right)
+    override fun visitPackedDescriptor(packedDescriptor: SvPackedDescriptor) {
+        build("PackedDescriptor") {
+            build(packedDescriptor.descriptor)
+            build(packedDescriptor.left)
+            build(packedDescriptor.right)
         }
     }
 

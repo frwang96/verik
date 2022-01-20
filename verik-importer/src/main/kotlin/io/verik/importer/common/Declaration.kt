@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.sv.element.common
+package io.verik.importer.common
 
-abstract class SvTypeDescriptor : SvTypedElement()
+interface Declaration {
+
+    val name: String
+
+    fun toType(vararg arguments: Type): Type {
+        return Type(this, arrayListOf(*arguments))
+    }
+}

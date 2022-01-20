@@ -16,8 +16,8 @@
 
 package io.verik.importer.ast.kt.element
 
-import io.verik.importer.ast.common.Type
 import io.verik.importer.common.KtVisitor
+import io.verik.importer.common.Type
 import io.verik.importer.message.SourceLocation
 
 class KtProperty(

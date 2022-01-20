@@ -30,7 +30,7 @@ internal class PropertyCasterTest : BaseTest() {
             """
                 logic x;
             """.trimIndent(),
-            "Property(x, Nothing, SimpleTypeDescriptor(Boolean))"
+            "Property(x, Nothing, SimpleDescriptor(Boolean))"
         ) { it.findDeclaration("x") }
     }
 }

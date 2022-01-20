@@ -22,7 +22,7 @@ import io.verik.importer.common.SvTreeVisitor
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 
-object TypeResolverStage : ProjectStage() {
+object DeclarationTypeResolverStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
         projectContext.compilationUnit.accept(TypeResolverVisitor)
@@ -31,11 +31,11 @@ object TypeResolverStage : ProjectStage() {
     private object TypeResolverVisitor : SvTreeVisitor() {
 
         override fun visitProperty(property: SvProperty) {
-            property.type = property.typeDescriptor.type
+            property.type = property.descriptor.type
         }
 
         override fun visitPort(port: SvPort) {
-            port.type = port.typeDescriptor.type
+            port.type = port.descriptor.type
         }
     }
 }

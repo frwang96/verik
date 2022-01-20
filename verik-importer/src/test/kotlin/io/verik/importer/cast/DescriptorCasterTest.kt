@@ -21,21 +21,21 @@ import io.verik.importer.test.BaseTest
 import io.verik.importer.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class TypeDescriptorCasterTest : BaseTest() {
+internal class DescriptorCasterTest : BaseTest() {
 
     @Test
-    fun `cast typeDescriptor from integerVectorType`() {
+    fun `cast descriptor from integerVectorType`() {
         driveCasterTest(
             SystemVerilogParser.IntegerVectorTypeContext::class,
             """
                 logic x;
             """.trimIndent(),
-            "Property(x, Nothing, SimpleTypeDescriptor(Boolean))"
+            "Property(x, Nothing, SimpleDescriptor(Boolean))"
         ) { it.findDeclaration("x") }
     }
 
     @Test
-    fun `cast typeDescriptor from packedDimensionRange`() {
+    fun `cast descriptor from packedDimensionRange`() {
         driveCasterTest(
             SystemVerilogParser.PackedDimensionRangeContext::class,
             """
@@ -44,7 +44,7 @@ internal class TypeDescriptorCasterTest : BaseTest() {
             """
                 Property(
                     x, Nothing,
-                    PackedTypeDescriptor(SimpleTypeDescriptor(Boolean), LiteralExpression(1), LiteralExpression(0))
+                    PackedDescriptor(SimpleDescriptor(Boolean), LiteralExpression(1), LiteralExpression(0))
                 )
             """.trimIndent()
         ) { it.findDeclaration("x") }

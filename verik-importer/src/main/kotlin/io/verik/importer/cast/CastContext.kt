@@ -16,9 +16,9 @@
 
 package io.verik.importer.cast
 
-import io.verik.importer.ast.sv.element.common.SvTypeDescriptor
 import io.verik.importer.ast.sv.element.declaration.SvDeclaration
 import io.verik.importer.ast.sv.element.declaration.SvPort
+import io.verik.importer.ast.sv.element.descriptor.SvDescriptor
 import io.verik.importer.ast.sv.element.expression.SvExpression
 import io.verik.importer.ast.sv.element.expression.SvNothingExpression
 import io.verik.importer.message.Messages
@@ -45,7 +45,7 @@ class CastContext(
         return casterVisitor.getElement(ctx)
     }
 
-    fun getTypeDescriptor(ctx: RuleContext): SvTypeDescriptor? {
+    fun getDescriptor(ctx: RuleContext): SvDescriptor? {
         return casterVisitor.getElement(ctx)
     }
 

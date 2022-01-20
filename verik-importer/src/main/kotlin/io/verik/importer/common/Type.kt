@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.common
+package io.verik.importer.common
 
 class Type(
     var reference: Declaration,

@@ -31,12 +31,12 @@ object PropertyCaster {
             .variableIdentifier()
         val location = castContext.getLocation(variableIdentifier)
         val name = variableIdentifier.text
-        val typeDescriptor = castContext.getTypeDescriptor(ctx.dataTypeOrImplicit()) ?: return null
+        val descriptor = castContext.getDescriptor(ctx.dataTypeOrImplicit()) ?: return null
         return SvProperty(
             location,
             name,
             Core.C_Nothing.toType(),
-            typeDescriptor
+            descriptor
         )
     }
 }

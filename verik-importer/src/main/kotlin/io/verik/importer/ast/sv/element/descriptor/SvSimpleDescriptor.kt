@@ -14,34 +14,20 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.sv.element.common
+package io.verik.importer.ast.sv.element.descriptor
 
-import io.verik.importer.ast.common.Type
-import io.verik.importer.ast.sv.element.expression.SvExpression
 import io.verik.importer.common.SvVisitor
+import io.verik.importer.common.Type
 import io.verik.importer.message.SourceLocation
 
-class SvPackedTypeDescriptor(
+class SvSimpleDescriptor(
     override val location: SourceLocation,
-    override var type: Type,
-    val typeDescriptor: SvTypeDescriptor,
-    val left: SvExpression,
-    val right: SvExpression
-) : SvTypeDescriptor() {
-
-    init {
-        typeDescriptor.parent = this
-        left.parent = this
-        right.parent = this
-    }
+    override var type: Type
+) : SvDescriptor() {
 
     override fun accept(visitor: SvVisitor) {
-        visitor.visitPackedTypeDescriptor(this)
+        visitor.visitSimpleDescriptor(this)
     }
 
-    override fun acceptChildren(visitor: SvVisitor) {
-        typeDescriptor.accept(visitor)
-        left.accept(visitor)
-        right.accept(visitor)
-    }
+    override fun acceptChildren(visitor: SvVisitor) {}
 }

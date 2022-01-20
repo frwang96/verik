@@ -16,7 +16,7 @@
 
 package io.verik.importer.ast.sv.element.declaration
 
-import io.verik.importer.ast.common.Declaration
 import io.verik.importer.ast.sv.element.common.SvTypedElement
+import io.verik.importer.common.Declaration
 
 abstract class SvDeclaration : SvTypedElement(), Declaration
