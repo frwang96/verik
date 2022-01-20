@@ -31,9 +31,7 @@ internal class PortCasterTest : BaseTest() {
                 module m(input x);
                 endmodule
             """.trimIndent(),
-            "Module(m, [Port(x, Boolean, INPUT)])"
-        ) {
-            it.findDeclaration("m")
-        }
+            "Module(m, [Port(x, Nothing, SimpleTypeDescriptor(Boolean), INPUT)])"
+        ) { it.findDeclaration("m") }
     }
 }

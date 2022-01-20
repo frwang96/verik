@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,34 +14,22 @@
  * limitations under the License.
  */
 
-package io.verik.importer.cast
+package io.verik.importer.resolve
 
-import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.test.BaseTest
 import io.verik.importer.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class TypeCasterTest : BaseTest() {
+internal class TypeResolverStageTest : BaseTest() {
 
     @Test
-    fun `cast type from dataType`() {
-        driveCasterTest(
-            SystemVerilogParser.DataTypeContext::class,
+    fun `resolve property`() {
+        driveElementTest(
             """
                 logic x;
             """.trimIndent(),
-            "Property(x, Boolean)"
-        ) { it.findDeclaration("x") }
-    }
-
-    @Test
-    fun `cast type from packedDimension`() {
-        driveCasterTest(
-            SystemVerilogParser.PackedDimensionContext::class,
-            """
-                logic [7:0] x;
-            """.trimIndent(),
-            "Property(x, Ubit<`8`>)"
+            TypeResolverStage::class,
+            "Property(x, Boolean, SimpleTypeDescriptor(Boolean))"
         ) { it.findDeclaration("x") }
     }
 }

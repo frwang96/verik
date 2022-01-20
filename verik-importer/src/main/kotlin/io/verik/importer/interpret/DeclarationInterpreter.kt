@@ -67,6 +67,10 @@ object DeclarationInterpreter {
         )
     }
 
+    private fun interpretPropertyFromProperty(property: SvProperty): KtProperty {
+        return KtProperty(property.location, property.name, property.type)
+    }
+
     private fun interpretValueParameterFromPort(port: SvPort): KtValueParameter {
         val annotationEntry = port.portType.getAnnotationEntry()
         return KtValueParameter(
@@ -76,9 +80,5 @@ object DeclarationInterpreter {
             listOf(annotationEntry),
             true
         )
-    }
-
-    private fun interpretPropertyFromProperty(property: SvProperty): KtProperty {
-        return KtProperty(property.location, property.name, property.type)
     }
 }

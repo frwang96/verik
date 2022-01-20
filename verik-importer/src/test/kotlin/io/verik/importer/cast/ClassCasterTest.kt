@@ -32,8 +32,6 @@ internal class ClassCasterTest : BaseTest() {
                 endclass
             """.trimIndent(),
             "Class(c)"
-        ) {
-            it.findDeclaration("c")
-        }
+        ) { it.findDeclaration("c") }
     }
 }

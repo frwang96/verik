@@ -24,6 +24,9 @@ import io.verik.importer.ast.sv.element.SvModule
 import io.verik.importer.ast.sv.element.SvPackage
 import io.verik.importer.ast.sv.element.SvPort
 import io.verik.importer.ast.sv.element.SvProperty
+import io.verik.importer.ast.sv.element.SvSimpleTypeDescriptor
+import io.verik.importer.ast.sv.element.SvTypeDescriptor
+import io.verik.importer.ast.sv.element.SvTypedElement
 
 abstract class SvVisitor {
 
@@ -33,13 +36,19 @@ abstract class SvVisitor {
         visitElement(compilationUnit)
     }
 
+    open fun visitTypedElement(typedElement: SvTypedElement) {
+        visitElement(typedElement)
+    }
+
     open fun visitDeclaration(declaration: SvDeclaration) {
-        visitElement(declaration)
+        visitTypedElement(declaration)
     }
 
     open fun visitPackage(`package`: SvPackage) {
         visitDeclaration(`package`)
     }
+
+//  Class Like  ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     open fun visitClass(`class`: SvClass) {
         visitDeclaration(`class`)
@@ -49,11 +58,23 @@ abstract class SvVisitor {
         visitDeclaration(module)
     }
 
+//  Property Like  /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    open fun visitProperty(property: SvProperty) {
+        visitDeclaration(property)
+    }
+
     open fun visitPort(port: SvPort) {
         visitDeclaration(port)
     }
 
-    open fun visitProperty(property: SvProperty) {
-        visitDeclaration(property)
+//  Type Like  /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    open fun visitTypeDescriptor(typeDescriptor: SvTypeDescriptor) {
+        visitTypedElement(typeDescriptor)
+    }
+
+    open fun visitSimpleTypeDescriptor(simpleTypeDescriptor: SvSimpleTypeDescriptor) {
+        visitTypeDescriptor(simpleTypeDescriptor)
     }
 }

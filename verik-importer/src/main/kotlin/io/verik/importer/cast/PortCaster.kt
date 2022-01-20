@@ -19,6 +19,7 @@ package io.verik.importer.cast
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.ast.sv.element.SvPort
 import io.verik.importer.ast.sv.property.PortType
+import io.verik.importer.core.Core
 
 object PortCaster {
 
@@ -38,9 +39,15 @@ object PortCaster {
         val identifier = ctx.identifier()
         val location = castContext.getLocation(identifier)
         val name = identifier.text
-        val type = castContext.getType(ctx.netPortHeader().netPortType().dataTypeOrImplicit()) ?: return null
+        val typeDescriptor = castContext.getTypeDescriptor(ctx.netPortHeader()) ?: return null
         val portType = castPortType(ctx.netPortHeader())
-        return SvPort(location, name, type, portType)
+        return SvPort(
+            location,
+            name,
+            Core.C_Nothing.toType(),
+            typeDescriptor,
+            portType
+        )
     }
 
     private fun castPortType(ctx: SystemVerilogParser.NetPortHeaderContext): PortType {

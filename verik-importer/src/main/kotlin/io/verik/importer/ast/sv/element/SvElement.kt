@@ -16,12 +16,11 @@
 
 package io.verik.importer.ast.sv.element
 
-import io.verik.importer.common.Castable
 import io.verik.importer.common.SvVisitor
 import io.verik.importer.message.Messages
 import io.verik.importer.message.SourceLocation
 
-abstract class SvElement : Castable {
+abstract class SvElement {
 
     abstract val location: SourceLocation
 

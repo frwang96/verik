@@ -18,6 +18,7 @@ package io.verik.importer.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.ast.sv.element.SvProperty
+import io.verik.importer.core.Core
 
 object PropertyCaster {
 
@@ -30,7 +31,12 @@ object PropertyCaster {
             .variableIdentifier()
         val location = castContext.getLocation(variableIdentifier)
         val name = variableIdentifier.text
-        val type = castContext.getType(ctx.dataTypeOrImplicit()) ?: return null
-        return SvProperty(location, name, type)
+        val typeDescriptor = castContext.getTypeDescriptor(ctx.dataTypeOrImplicit()) ?: return null
+        return SvProperty(
+            location,
+            name,
+            Core.C_Nothing.toType(),
+            typeDescriptor
+        )
     }
 }

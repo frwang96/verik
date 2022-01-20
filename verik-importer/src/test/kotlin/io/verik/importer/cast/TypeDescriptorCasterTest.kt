@@ -21,12 +21,12 @@ import io.verik.importer.test.BaseTest
 import io.verik.importer.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class PropertyCasterTest : BaseTest() {
+internal class TypeDescriptorCasterTest : BaseTest() {
 
     @Test
-    fun `cast property from dataDeclaration`() {
+    fun `cast typeDescriptor from integerVectorType`() {
         driveCasterTest(
-            SystemVerilogParser.DataDeclarationContext::class,
+            SystemVerilogParser.IntegerVectorTypeContext::class,
             """
                 logic x;
             """.trimIndent(),

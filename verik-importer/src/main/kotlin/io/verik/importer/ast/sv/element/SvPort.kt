@@ -25,12 +25,19 @@ class SvPort(
     override val location: SourceLocation,
     override val name: String,
     override var type: Type,
+    val typeDescriptor: SvTypeDescriptor,
     val portType: PortType
 ) : SvDeclaration() {
+
+    init {
+        typeDescriptor.parent = this
+    }
 
     override fun accept(visitor: SvVisitor) {
         visitor.visitPort(this)
     }
 
-    override fun acceptChildren(visitor: SvVisitor) {}
+    override fun acceptChildren(visitor: SvVisitor) {
+        typeDescriptor.accept(visitor)
+    }
 }

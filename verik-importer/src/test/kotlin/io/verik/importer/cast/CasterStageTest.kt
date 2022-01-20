@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test
 internal class CasterStageTest : BaseTest() {
 
     @Test
-    fun `cast compilation unit`() {
+    fun `cast compilationUnit `() {
         driveElementTest(
             "",
             CasterStage::class,
@@ -31,7 +31,7 @@ internal class CasterStageTest : BaseTest() {
     }
 
     @Test
-    fun `cast compilation unit with module`() {
+    fun `cast compilationUnit with module`() {
         driveElementTest(
             """
                 module m;

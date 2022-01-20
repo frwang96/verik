@@ -23,12 +23,19 @@ import io.verik.importer.message.SourceLocation
 class SvProperty(
     override val location: SourceLocation,
     override val name: String,
-    override var type: Type
+    override var type: Type,
+    val typeDescriptor: SvTypeDescriptor
 ) : SvDeclaration() {
+
+    init {
+        typeDescriptor.parent = this
+    }
 
     override fun accept(visitor: SvVisitor) {
         visitor.visitProperty(this)
     }
 
-    override fun acceptChildren(visitor: SvVisitor) {}
+    override fun acceptChildren(visitor: SvVisitor) {
+        typeDescriptor.accept(visitor)
+    }
 }

@@ -14,17 +14,20 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.common
+package io.verik.importer.ast.sv.element
 
-class Type(
-    var reference: Declaration,
-    var arguments: ArrayList<Type>
-) {
+import io.verik.importer.ast.common.Type
+import io.verik.importer.common.SvVisitor
+import io.verik.importer.message.SourceLocation
 
-    override fun toString(): String {
-        val referenceName = reference.name
-        return if (arguments.isNotEmpty()) {
-            "$referenceName<${arguments.joinToString()}>"
-        } else referenceName
+class SvSimpleTypeDescriptor(
+    override val location: SourceLocation,
+    override var type: Type
+) : SvTypeDescriptor() {
+
+    override fun accept(visitor: SvVisitor) {
+        visitor.visitSimpleTypeDescriptor(this)
     }
+
+    override fun acceptChildren(visitor: SvVisitor) {}
 }

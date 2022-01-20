@@ -18,6 +18,7 @@ package io.verik.importer.core
 
 object Core {
 
+    val C_Nothing = CoreClassDeclaration("Nothing")
     val C_Any = CoreClassDeclaration("Any")
     val C_Unit = CoreClassDeclaration("Unit")
     val C_Boolean = CoreClassDeclaration("Boolean")

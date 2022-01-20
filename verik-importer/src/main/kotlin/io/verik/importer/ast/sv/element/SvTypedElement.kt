@@ -14,17 +14,11 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.common
+package io.verik.importer.ast.sv.element
 
-class Type(
-    var reference: Declaration,
-    var arguments: ArrayList<Type>
-) {
+import io.verik.importer.ast.common.Type
 
-    override fun toString(): String {
-        val referenceName = reference.name
-        return if (arguments.isNotEmpty()) {
-            "$referenceName<${arguments.joinToString()}>"
-        } else referenceName
-    }
+abstract class SvTypedElement : SvElement() {
+
+    abstract var type: Type
 }

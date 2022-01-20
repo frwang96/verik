@@ -18,45 +18,21 @@ package io.verik.importer.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.antlr.SystemVerilogParserBaseVisitor
-import io.verik.importer.ast.common.Type
 import io.verik.importer.ast.sv.element.SvClass
 import io.verik.importer.ast.sv.element.SvElement
 import io.verik.importer.ast.sv.element.SvModule
 import io.verik.importer.ast.sv.element.SvPackage
 import io.verik.importer.ast.sv.element.SvPort
 import io.verik.importer.ast.sv.element.SvProperty
-import io.verik.importer.common.Castable
-import io.verik.importer.message.Messages
+import io.verik.importer.ast.sv.element.SvTypeDescriptor
 import org.antlr.v4.runtime.RuleContext
 
 class CasterVisitor(
     val castContext: CastContext
-) : SystemVerilogParserBaseVisitor<Castable>() {
+) : SystemVerilogParserBaseVisitor<SvElement>() {
 
     inline fun <reified E : SvElement> getElement(ctx: RuleContext): E? {
-        return when (val castable = ctx.accept(this)) {
-            null -> null
-            is SvElement -> castable.cast()
-            else -> {
-                Messages.INTERNAL_ERROR.on(
-                    castContext.getLocation(ctx),
-                    "Could not cast element: Expected ${E::class.simpleName} actual ${castable::class.simpleName}"
-                )
-            }
-        }
-    }
-
-    fun getType(ctx: RuleContext): Type? {
-        return when (val castable = ctx.accept(this)) {
-            null -> null
-            is Type -> castable
-            else -> {
-                Messages.INTERNAL_ERROR.on(
-                    castContext.getLocation(ctx),
-                    "Expected type but found: ${castable::class.simpleName}"
-                )
-            }
-        }
+        return ctx.accept(this)?.cast()
     }
 
 // A.1.2 SystemVerilog Source Text /////////////////////////////////////////////////////////////////////////////////////
@@ -95,31 +71,11 @@ class CasterVisitor(
 
 // A.2.2.1 Net and Variable Types //////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitDataTypeVector(ctx: SystemVerilogParser.DataTypeVectorContext?): Type? {
-        return TypeCaster.castTypeFromDataTypeVector(ctx!!, castContext)
+    override fun visitImplicitDataType(ctx: SystemVerilogParser.ImplicitDataTypeContext?): SvTypeDescriptor? {
+        return TypeDescriptorCaster.castTypeDescriptorFromImplicitDataType(ctx!!, castContext)
     }
 
-    override fun visitDataTypeOrImplicit(ctx: SystemVerilogParser.DataTypeOrImplicitContext?): Type? {
-        return TypeCaster.castTypeFromDataTypeOrImplicit(ctx!!, castContext)
-    }
-
-    override fun visitImplicitDataType(ctx: SystemVerilogParser.ImplicitDataTypeContext?): Type? {
-        return TypeCaster.castTypeFromImplicitDataType(ctx!!, castContext)
-    }
-
-// A.2.5 Declaration Ranges ////////////////////////////////////////////////////////////////////////////////////////////
-
-    override fun visitPackedDimensionRange(ctx: SystemVerilogParser.PackedDimensionRangeContext?): Type? {
-        return TypeCaster.castTypeFromPackedDimensionRange(ctx!!, castContext)
-    }
-
-// A.8.3 Expressions ///////////////////////////////////////////////////////////////////////////////////////////////////
-
-    override fun visitConstantPrimaryLiteral(ctx: SystemVerilogParser.ConstantPrimaryLiteralContext?): Castable? {
-        return TypeCaster.castTypeFromConstantPrimaryLiteral(ctx!!)
-    }
-
-    override fun visitConstantRange(ctx: SystemVerilogParser.ConstantRangeContext?): Type? {
-        return TypeCaster.castTypeFromConstantRange(ctx!!, castContext)
+    override fun visitIntegerVectorType(ctx: SystemVerilogParser.IntegerVectorTypeContext?): SvTypeDescriptor {
+        return TypeDescriptorCaster.castTypeDescriptorFromIntegerVectorType(ctx!!, castContext)
     }
 }

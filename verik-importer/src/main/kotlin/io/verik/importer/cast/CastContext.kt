@@ -16,9 +16,9 @@
 
 package io.verik.importer.cast
 
-import io.verik.importer.ast.common.Type
 import io.verik.importer.ast.sv.element.SvDeclaration
 import io.verik.importer.ast.sv.element.SvPort
+import io.verik.importer.ast.sv.element.SvTypeDescriptor
 import io.verik.importer.message.SourceLocation
 import org.antlr.v4.runtime.RuleContext
 import org.antlr.v4.runtime.TokenStream
@@ -42,7 +42,7 @@ class CastContext(
         return casterVisitor.getElement(ctx)
     }
 
-    fun getType(ctx: RuleContext): Type? {
-        return casterVisitor.getType(ctx)
+    fun getTypeDescriptor(ctx: RuleContext): SvTypeDescriptor? {
+        return casterVisitor.getElement(ctx)
     }
 }

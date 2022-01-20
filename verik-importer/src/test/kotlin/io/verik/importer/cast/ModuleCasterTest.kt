@@ -33,9 +33,7 @@ internal class ModuleCasterTest : BaseTest() {
                 endmodule
             """.trimIndent(),
             "Module(m, [])"
-        ) {
-            it.findDeclaration("m")
-        }
+        ) { it.findDeclaration("m") }
     }
 
     @Test
@@ -49,8 +47,6 @@ internal class ModuleCasterTest : BaseTest() {
                 endmodule
             """.trimIndent(),
             "Module(m, [Port(x, Boolean, INPUT)])"
-        ) {
-            it.findDeclaration("m")
-        }
+        ) { it.findDeclaration("m") }
     }
 }

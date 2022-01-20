@@ -23,6 +23,7 @@ import io.verik.importer.ast.sv.element.SvModule
 import io.verik.importer.ast.sv.element.SvPackage
 import io.verik.importer.ast.sv.element.SvPort
 import io.verik.importer.ast.sv.element.SvProperty
+import io.verik.importer.ast.sv.element.SvSimpleTypeDescriptor
 
 class ElementPrinter : SvVisitor() {
 
@@ -55,18 +56,26 @@ class ElementPrinter : SvVisitor() {
         }
     }
 
-    override fun visitPort(port: SvPort) {
-        build("Port") {
-            build(port.name)
-            build(port.type.toString())
-            build(port.portType.toString())
-        }
-    }
-
     override fun visitProperty(property: SvProperty) {
         build("Property") {
             build(property.name)
             build(property.type.toString())
+            build(property.typeDescriptor)
+        }
+    }
+
+    override fun visitPort(port: SvPort) {
+        build("Port") {
+            build(port.name)
+            build(port.type.toString())
+            build(port.typeDescriptor)
+            build(port.portType.toString())
+        }
+    }
+
+    override fun visitSimpleTypeDescriptor(simpleTypeDescriptor: SvSimpleTypeDescriptor) {
+        build("SimpleTypeDescriptor") {
+            build(simpleTypeDescriptor.type.toString())
         }
     }
 
@@ -74,6 +83,10 @@ class ElementPrinter : SvVisitor() {
         if (!first) builder.append(", ")
         builder.append(content)
         first = false
+    }
+
+    private fun build(element: SvElement) {
+        element.accept(this)
     }
 
     private fun build(name: String, content: () -> Unit) {
