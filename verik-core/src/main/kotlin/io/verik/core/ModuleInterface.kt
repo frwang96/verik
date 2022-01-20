@@ -22,11 +22,13 @@ package io.verik.core
  * A module interface that carries signals between [modules][Module]. Module interfaces can contain
  * [module ports][ModulePort] to control signal direction. They correspond to SystemVerilog interfaces.
  *
- *      class MI(
- *          @In var clk: Boolean
- *      ) : ModuleInterface() {
+ *  ```
+ *  class MI(
+ *      @In var clk: Boolean
+ *  ) : ModuleInterface() {
  *
- *          var x: Boolean = x()
- *      }
+ *      var x: Boolean = x()
+ *  }
+ *  ```
  */
 abstract class ModuleInterface : Component()
