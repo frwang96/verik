@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package io.verik.importer.core
+package io.verik.importer.common
 
-object Core {
+import io.verik.importer.ast.sv.element.expression.SvExpression
+import io.verik.importer.ast.sv.element.expression.SvLiteralExpression
 
-    val C_Nothing = CoreClassDeclaration("Nothing")
-    val C_Any = CoreClassDeclaration("Any")
-    val C_Unit = CoreClassDeclaration("Unit")
-    val C_Boolean = CoreClassDeclaration("Boolean")
-    val C_Ubit = CoreClassDeclaration("Ubit")
-    val C_Packed = CoreClassDeclaration("Packed")
+object ExpressionEvaluator {
 
-    val C_Module = CoreClassDeclaration("Module")
+    fun evaluate(expression: SvExpression): Int? {
+        return if (expression is SvLiteralExpression) {
+            expression.value.toIntOrNull()
+        } else null
+    }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,22 @@
  * limitations under the License.
  */
 
-package io.verik.importer.core
+package io.verik.importer.resolve
 
-object Core {
+import io.verik.importer.test.BaseTest
+import io.verik.importer.test.findDeclaration
+import org.junit.jupiter.api.Test
 
-    val C_Nothing = CoreClassDeclaration("Nothing")
-    val C_Any = CoreClassDeclaration("Any")
-    val C_Unit = CoreClassDeclaration("Unit")
-    val C_Boolean = CoreClassDeclaration("Boolean")
-    val C_Ubit = CoreClassDeclaration("Ubit")
-    val C_Packed = CoreClassDeclaration("Packed")
+internal class DescriptorResolverStageTest : BaseTest() {
 
-    val C_Module = CoreClassDeclaration("Module")
+    @Test
+    fun `resolve packedDescriptor`() {
+        driveElementTest(
+            """
+                logic [1:0] x;
+            """.trimIndent(),
+            DescriptorResolverStage::class,
+            "Property(x, Nothing, PackedDescriptor(Packed<`2`, Boolean>, *, *, *))"
+        ) { it.findDeclaration("x") }
+    }
 }

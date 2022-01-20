@@ -44,7 +44,7 @@ internal class DescriptorCasterTest : BaseTest() {
             """
                 Property(
                     x, Nothing,
-                    PackedDescriptor(SimpleDescriptor(Boolean), LiteralExpression(1), LiteralExpression(0))
+                    PackedDescriptor(Nothing, SimpleDescriptor(Boolean), LiteralExpression(1), LiteralExpression(0))
                 )
             """.trimIndent()
         ) { it.findDeclaration("x") }

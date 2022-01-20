@@ -91,6 +91,7 @@ class ElementPrinter : SvVisitor() {
 
     override fun visitPackedDescriptor(packedDescriptor: SvPackedDescriptor) {
         build("PackedDescriptor") {
+            build(packedDescriptor.type.toString())
             build(packedDescriptor.descriptor)
             build(packedDescriptor.left)
             build(packedDescriptor.right)
