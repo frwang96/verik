@@ -18,7 +18,6 @@ package io.verik.compiler.core.declaration.vk
 
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.test.CoreDeclarationTest
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class CoreVkSpecialTest : CoreDeclarationTest() {
@@ -131,8 +130,6 @@ internal class CoreVkSpecialTest : CoreDeclarationTest() {
     }
 
     @Test
-    @Disabled
-    // TODO implement four state Boolean
     fun `serialize unknown floating`() {
         driveCoreDeclarationTest(
             listOf(

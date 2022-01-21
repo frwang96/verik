@@ -220,6 +220,10 @@ object Messages {
 
 //  RESOLVE  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    val INDETERMINATE_SLICE_WIDTH = ErrorMessageTemplate0(
+        "Unable to determine width of slice"
+    )
+
     val MISMATCHED_TYPE = ErrorMessageTemplate2<Type, Type>(
         "Type mismatch: Expected $0 actual $1"
     )
