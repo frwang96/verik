@@ -16,12 +16,13 @@
 
 package io.verik.compiler.ast.element.common
 
+import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.interfaces.ExpressionContainer
-import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.common.TreeVisitor
 
-abstract class EReceiverExpression : EExpression(), Reference, ExpressionContainer {
+abstract class EReceiverExpression : EExpression(), ExpressionContainer {
 
+    abstract var reference: Declaration
     abstract var receiver: EExpression?
 
     override fun acceptChildren(visitor: TreeVisitor) {

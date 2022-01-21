@@ -18,8 +18,8 @@ package io.verik.compiler.common
 
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EDeclaration
+import io.verik.compiler.ast.element.common.EReceiverExpression
 import io.verik.compiler.ast.element.common.ETypedElement
-import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.main.ProjectContext
 
@@ -45,10 +45,10 @@ class ReferenceUpdater(val projectContext: ProjectContext) {
 
     private class ReferenceUpdaterVisitor(private val referenceMap: Map<EDeclaration, EDeclaration>) : TreeVisitor() {
 
-        private fun updateReference(reference: Reference) {
-            val updatedReference = referenceMap[reference.reference]
+        private fun updateReference(receiverExpression: EReceiverExpression) {
+            val updatedReference = referenceMap[receiverExpression.reference]
             if (updatedReference != null)
-                reference.reference = updatedReference
+                receiverExpression.reference = updatedReference
         }
 
         private fun updateTypeReferences(type: Type) {
@@ -61,7 +61,7 @@ class ReferenceUpdater(val projectContext: ProjectContext) {
         override fun visitTypedElement(typedElement: ETypedElement) {
             super.visitTypedElement(typedElement)
             updateTypeReferences(typedElement.type)
-            if (typedElement is Reference) {
+            if (typedElement is EReceiverExpression) {
                 updateReference(typedElement)
             }
             if (typedElement is ECallExpression) {

@@ -182,6 +182,7 @@ object StageSequencer {
         stageSequence.add(StageType.LOWER_TRANSFORM, ExpressionExtractorStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, BlockExpressionReducerStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, ProceduralBlockEliminatorStage)
+        stageSequence.add(StageType.LOWER_TRANSFORM, UnpackedTypeDefinitionTransformerStage)
 
         stageSequence.add(StageType.REORDER, PropertyStatementReordererStage)
         stageSequence.add(StageType.REORDER, DeadDeclarationEliminatorStage)
@@ -189,7 +190,6 @@ object StageSequencer {
 
         stageSequence.add(StageType.POST_TRANSFORM, TypeReferenceTransformerStage)
         stageSequence.add(StageType.POST_TRANSFORM, AssignmentTransformerStage)
-        stageSequence.add(StageType.POST_TRANSFORM, UnpackedTypeDefinitionTransformerStage)
         stageSequence.add(StageType.POST_TRANSFORM, TemporaryDeclarationRenameStage)
         stageSequence.add(StageType.POST_TRANSFORM, StringTemplateExpressionTransformerStage)
         stageSequence.add(StageType.POST_TRANSFORM, UnaryExpressionTransformerStage)
