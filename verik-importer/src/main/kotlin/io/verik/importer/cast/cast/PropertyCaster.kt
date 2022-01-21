@@ -29,8 +29,9 @@ object PropertyCaster {
         castContext: CastContext
     ): SvProperty? {
         val variableDeclAssignment = ctx.listOfVariableDeclAssignments().variableDeclAssignment(0)
-        val variableIdentifier = (variableDeclAssignment as SystemVerilogParser.VariableDeclAssignmentVariableContext)
-            .variableIdentifier()
+        if (variableDeclAssignment !is SystemVerilogParser.VariableDeclAssignmentVariableContext)
+            return null
+        val variableIdentifier = variableDeclAssignment.variableIdentifier()
         val location = castContext.getLocation(variableIdentifier)
         val name = variableIdentifier.text
         val signature = SignatureBuilder.buildSignature(ctx, name)

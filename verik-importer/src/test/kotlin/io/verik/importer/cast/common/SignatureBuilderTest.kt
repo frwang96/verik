@@ -66,6 +66,22 @@ class SignatureBuilderTest : BaseTest() {
     }
 
     @Test
+    fun `signature classDeclaration`() {
+        driveSignatureTest(
+            SystemVerilogParser.ClassDeclarationContext::class,
+            """
+                class c #(type T) extends d #(e);
+                    logic x;
+                endclass
+            """.trimIndent(),
+            """
+                class c #(type T) extends d #(e);
+                endclass
+            """.trimIndent()
+        ) { it.findDeclaration("c") }
+    }
+
+    @Test
     fun `signature dataDeclarationData`() {
         driveSignatureTest(
             SystemVerilogParser.DataDeclarationDataContext::class,

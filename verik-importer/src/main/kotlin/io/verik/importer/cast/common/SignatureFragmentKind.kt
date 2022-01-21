@@ -25,6 +25,8 @@ enum class SignatureFragmentKind {
     INDENT_OUT,
     SEMICOLON,
     COLON,
+    SHARP,
+    COMMA,
     COMMA_BREAK,
     LBRACK,
     RBRACK,

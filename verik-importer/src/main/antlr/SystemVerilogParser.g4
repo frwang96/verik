@@ -829,7 +829,7 @@ listOfVariableAssignments
     : variableAssignment (COMMA variableAssignment)*
     ;
 
-// A.6.2 Procedural Blocks and Assignmemts /////////////////////////////////////////////////////////////////////////////
+// A.6.2 Procedural Blocks and Assignments /////////////////////////////////////////////////////////////////////////////
 
 initialConstruct
     : INITIAL statementOrNull

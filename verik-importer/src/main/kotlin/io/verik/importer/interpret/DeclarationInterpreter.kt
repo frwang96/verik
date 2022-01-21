@@ -47,25 +47,27 @@ object DeclarationInterpreter {
     }
 
     private fun interpretClassFromClass(`class`: SvClass): KtClass {
+        val declarations = `class`.declarations.mapNotNull { interpretDeclaration(it) }
         return KtClass(
             `class`.location,
             `class`.name,
             `class`.signature,
             Core.C_Any.toType(),
             ArrayList(),
-            ArrayList()
+            ArrayList(declarations)
         )
     }
 
     private fun interpretClassFromModule(module: SvModule): KtClass {
         val valueParameters = module.ports.map { interpretValueParameterFromPort(it) }
+        val declarations = module.declarations.mapNotNull { interpretDeclaration(it) }
         return KtClass(
             module.location,
             module.name,
             module.signature,
             Core.C_Module.toType(),
             ArrayList(valueParameters),
-            ArrayList()
+            ArrayList(declarations)
         )
     }
 

@@ -71,6 +71,30 @@ class CasterVisitor(
         return PortCaster.castPortFromAnsiPortDeclaration(ctx!!, castContext)
     }
 
+// A.1.9 Class Items ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+    override fun visitClassMethodExternMethod(ctx: SystemVerilogParser.ClassMethodExternMethodContext?): SvElement? {
+        return null
+    }
+
+    override fun visitClassMethodExternConstructor(
+        ctx: SystemVerilogParser.ClassMethodExternConstructorContext?
+    ): SvElement? {
+        return null
+    }
+
+    override fun visitClassConstructorDeclaration(
+        ctx: SystemVerilogParser.ClassConstructorDeclarationContext?
+    ): SvElement? {
+        return null
+    }
+
+// A.2.1.1 Module Parameter Declarations ///////////////////////////////////////////////////////////////////////////////
+
+    override fun visitParameterDeclaration(ctx: SystemVerilogParser.ParameterDeclarationContext?): SvElement? {
+        return null
+    }
+
 // A.2.1.2 Port Declarations ///////////////////////////////////////////////////////////////////////////////////////////
 
     override fun visitInputDeclarationNet(ctx: SystemVerilogParser.InputDeclarationNetContext?): SvPort? {
@@ -87,6 +111,14 @@ class CasterVisitor(
         return PropertyCaster.castPropertyFromDataDeclarationData(ctx!!, castContext)
     }
 
+    override fun visitTypeDeclarationData(ctx: SystemVerilogParser.TypeDeclarationDataContext?): SvElement? {
+        return null
+    }
+
+    override fun visitTypeDeclarationMisc(ctx: SystemVerilogParser.TypeDeclarationMiscContext?): SvElement? {
+        return null
+    }
+
 // A.2.2.1 Net and Variable Types //////////////////////////////////////////////////////////////////////////////////////
 
     override fun visitDataTypeVector(ctx: SystemVerilogParser.DataTypeVectorContext?): SvDescriptor? {
@@ -95,6 +127,36 @@ class CasterVisitor(
 
     override fun visitImplicitDataType(ctx: SystemVerilogParser.ImplicitDataTypeContext?): SvDescriptor? {
         return DescriptorCaster.castDescriptorFromImplicitDataType(ctx!!, castContext)
+    }
+
+// A.2.6 Function Declarations /////////////////////////////////////////////////////////////////////////////////////////
+
+    override fun visitFunctionDeclaration(ctx: SystemVerilogParser.FunctionDeclarationContext?): SvElement? {
+        return null
+    }
+
+    override fun visitFunctionPrototype(ctx: SystemVerilogParser.FunctionPrototypeContext?): SvElement? {
+        return null
+    }
+
+// A.2.7 Task Declarations /////////////////////////////////////////////////////////////////////////////////////////////
+
+    override fun visitTaskDeclaration(ctx: SystemVerilogParser.TaskDeclarationContext?): SvElement? {
+        return null
+    }
+
+    override fun visitTaskPrototype(ctx: SystemVerilogParser.TaskPrototypeContext?): SvElement {
+        return super.visitTaskPrototype(ctx)
+    }
+
+// A.6.2 Procedural Blocks and Assignments /////////////////////////////////////////////////////////////////////////////
+
+    override fun visitInitialConstruct(ctx: SystemVerilogParser.InitialConstructContext?): SvElement? {
+        return null
+    }
+
+    override fun visitAlwaysConstruct(ctx: SystemVerilogParser.AlwaysConstructContext?): SvElement? {
+        return null
     }
 
 // A.8.4 Primaries /////////////////////////////////////////////////////////////////////////////////////////////////////
