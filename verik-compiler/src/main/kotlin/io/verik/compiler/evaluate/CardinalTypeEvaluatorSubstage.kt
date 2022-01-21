@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.specialize
+package io.verik.compiler.evaluate
 
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EDeclaration
@@ -27,6 +27,8 @@ import io.verik.compiler.core.common.Cardinal
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreCardinalFunctionDeclaration
 import io.verik.compiler.message.Messages
+import io.verik.compiler.specialize.SpecializerSubstage
+import io.verik.compiler.specialize.TypeParameterBinding
 
 object CardinalTypeEvaluatorSubstage : SpecializerSubstage() {
 

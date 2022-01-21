@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.specialize
+package io.verik.compiler.evaluate
 
 import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.ECallExpression
@@ -30,13 +30,13 @@ import io.verik.compiler.ast.interfaces.TypeParameterized
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.ast.property.WhenEntry
 import io.verik.compiler.common.ExpressionCopier
-import io.verik.compiler.common.ExpressionEvaluator
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.constant.BooleanConstantKind
 import io.verik.compiler.constant.ConstantNormalizer
-import io.verik.compiler.transform.upper.ConstantPropagator
+import io.verik.compiler.specialize.SpecializerSubstage
+import io.verik.compiler.specialize.TypeParameterBinding
 
-object ExpressionEliminatorSubstage : SpecializerSubstage() {
+object ExpressionEvaluatorSubstage : SpecializerSubstage() {
 
     override fun process(declaration: EDeclaration, typeParameterBinding: TypeParameterBinding) {
         declaration.accept(ExpressionEliminatorVisitor)

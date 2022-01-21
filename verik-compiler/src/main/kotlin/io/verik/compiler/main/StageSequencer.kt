@@ -41,6 +41,8 @@ import io.verik.compiler.check.pre.ImportDirectiveCheckerStage
 import io.verik.compiler.check.pre.PreNameCheckerStage
 import io.verik.compiler.check.pre.UnsupportedElementCheckerStage
 import io.verik.compiler.check.pre.UnsupportedModifierCheckerStage
+import io.verik.compiler.evaluate.ConstantPropagatorStage
+import io.verik.compiler.evaluate.ExpressionEvaluatorStage
 import io.verik.compiler.interpret.ClassInterpreterStage
 import io.verik.compiler.interpret.ComponentInterpreterStage
 import io.verik.compiler.interpret.ConstructorDesugarTransformerStage
@@ -68,8 +70,6 @@ import io.verik.compiler.serialize.source.SourceSerializerStage
 import io.verik.compiler.serialize.target.CompositeTargetSerializerStage
 import io.verik.compiler.specialize.SpecializerStage
 import io.verik.compiler.transform.lower.BlockExpressionReducerStage
-import io.verik.compiler.transform.lower.ConstantPropagatorStage
-import io.verik.compiler.transform.lower.ExpressionEvaluatorStage
 import io.verik.compiler.transform.lower.ExpressionExtractorStage
 import io.verik.compiler.transform.lower.FunctionTransformerStage
 import io.verik.compiler.transform.lower.ProceduralBlockEliminatorStage

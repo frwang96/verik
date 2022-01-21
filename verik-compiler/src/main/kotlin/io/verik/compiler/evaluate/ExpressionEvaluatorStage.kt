@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.lower
+package io.verik.compiler.evaluate
 
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.common.ExpressionEvaluator
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage

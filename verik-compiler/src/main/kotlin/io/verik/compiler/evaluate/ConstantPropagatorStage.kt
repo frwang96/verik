@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.lower
+package io.verik.compiler.evaluate
 
 import io.verik.compiler.ast.element.common.EAbstractContainerClass
 import io.verik.compiler.ast.element.common.EDeclaration
@@ -27,8 +27,11 @@ import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
-import io.verik.compiler.transform.upper.ConstantPropagator
 
+/**
+ * Most constant propagation happens in [ConstantPropagatorSubstage] during specialization. This catches remaining
+ * constant expressions that have not been propagated.
+ */
 object ConstantPropagatorStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

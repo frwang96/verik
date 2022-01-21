@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.specialize
+package io.verik.compiler.evaluate
 
+import io.verik.compiler.specialize.SpecializerStage
 import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findStatements
 import org.junit.jupiter.api.Test
 
-internal class ExpressionEliminatorSubstageTest : BaseTest() {
+internal class ExpressionEvaluatorSubstageTest : BaseTest() {
 
     @Test
     fun `if expression constant`() {

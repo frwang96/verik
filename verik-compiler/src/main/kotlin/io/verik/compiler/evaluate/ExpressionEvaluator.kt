@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.common
+package io.verik.compiler.evaluate
 
 import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.ECallExpression
@@ -28,6 +28,10 @@ import io.verik.compiler.constant.BooleanConstantKind
 import io.verik.compiler.constant.ConstantNormalizer
 import io.verik.compiler.core.common.CoreFunctionDeclaration
 
+/**
+ * Most expression evaluation happens in [ExpressionEvaluatorSubstage] during specialization. This catches remaining
+ * expressions that have not been evaluated.
+ */
 object ExpressionEvaluator {
 
     fun evaluate(expression: EExpression): EExpression? {

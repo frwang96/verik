@@ -19,8 +19,8 @@ package io.verik.compiler.core.common
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.common.ExpressionCopier
-import io.verik.compiler.common.ExpressionEvaluator
 import io.verik.compiler.constant.ConstantBuilder
+import io.verik.compiler.evaluate.ExpressionEvaluator
 import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.target.common.Target
 

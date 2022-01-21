@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.lower
+package io.verik.compiler.evaluate
 
 import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findExpression
