@@ -16,6 +16,8 @@
 
 package io.verik.importer.cast.common
 
+import io.verik.importer.ast.sv.element.common.SvContainerElement
+import io.verik.importer.ast.sv.element.common.SvElement
 import io.verik.importer.ast.sv.element.declaration.SvDeclaration
 import io.verik.importer.ast.sv.element.declaration.SvPort
 import io.verik.importer.ast.sv.element.descriptor.SvDescriptor
@@ -37,19 +39,23 @@ class CastContext(
         return SourceLocation.get(parserTokenStream.get(index))
     }
 
-    fun getDeclaration(ctx: RuleContext): SvDeclaration? {
+    fun castDeclarations(ctx: RuleContext): List<SvDeclaration> {
+        return when (val element = casterVisitor.getElement<SvElement>(ctx)) {
+            null -> listOf()
+            is SvContainerElement -> element.elements.map { it.cast() }
+            else -> listOf(element.cast())
+        }
+    }
+
+    fun castPort(ctx: RuleContext): SvPort? {
         return casterVisitor.getElement(ctx)
     }
 
-    fun getPort(ctx: RuleContext): SvPort? {
+    fun castDescriptor(ctx: RuleContext): SvDescriptor? {
         return casterVisitor.getElement(ctx)
     }
 
-    fun getDescriptor(ctx: RuleContext): SvDescriptor? {
-        return casterVisitor.getElement(ctx)
-    }
-
-    fun getExpression(ctx: RuleContext): SvExpression {
+    fun castExpression(ctx: RuleContext): SvExpression {
         val element = casterVisitor.getElement<SvExpression>(ctx)
         return if (element != null) {
             element

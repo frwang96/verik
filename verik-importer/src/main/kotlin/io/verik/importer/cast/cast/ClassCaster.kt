@@ -31,7 +31,7 @@ object ClassCaster {
         val location = SourceLocation.get(ctx.CLASS())
         val name = ctx.classIdentifier()[0].text
         val signature = SignatureBuilder.buildSignature(ctx, name)
-        val declarations = ctx.classItem().mapNotNull { castContext.getDeclaration(it) }
+        val declarations = ctx.classItem().flatMap { castContext.castDeclarations(it) }
         return SvClass(location, name, signature, ArrayList(declarations))
     }
 }

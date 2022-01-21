@@ -86,7 +86,7 @@ class SignatureBuilderTest : BaseTest() {
         driveSignatureTest(
             SystemVerilogParser.DataDeclarationDataContext::class,
             """
-                const var automatic logic x;
+                const var automatic logic x = 0;
             """.trimIndent(),
             "const var automatic logic x;"
         ) { it.findDeclaration("x") }

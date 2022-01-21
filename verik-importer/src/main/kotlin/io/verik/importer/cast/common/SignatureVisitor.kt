@@ -104,6 +104,17 @@ class SignatureVisitor : SystemVerilogParserBaseVisitor<Unit>() {
         acceptWrapParenthesisBreak(ctx!!.ansiPortDeclaration())
     }
 
+// A.2.1.3 Type Declarations ///////////////////////////////////////////////////////////////////////////////////////////
+
+    override fun visitDataDeclarationData(ctx: SystemVerilogParser.DataDeclarationDataContext?) {
+        accept(ctx!!.CONST())
+        accept(ctx.VAR())
+        accept(ctx.lifetime())
+        accept(ctx.dataTypeOrImplicit())
+        add(SignatureFragmentKind.NAME)
+        accept(ctx.SEMICOLON())
+    }
+
 // A.9.1 Attributes ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     override fun visitAttributeInstance(ctx: SystemVerilogParser.AttributeInstanceContext?) {}

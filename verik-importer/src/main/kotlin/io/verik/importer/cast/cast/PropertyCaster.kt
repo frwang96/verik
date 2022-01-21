@@ -17,6 +17,7 @@
 package io.verik.importer.cast.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
+import io.verik.importer.ast.sv.element.common.SvContainerElement
 import io.verik.importer.ast.sv.element.declaration.SvProperty
 import io.verik.importer.cast.common.CastContext
 import io.verik.importer.cast.common.SignatureBuilder
@@ -24,24 +25,27 @@ import io.verik.importer.common.Type
 
 object PropertyCaster {
 
-    fun castPropertyFromDataDeclarationData(
+    fun castPropertiesFromDataDeclarationData(
         ctx: SystemVerilogParser.DataDeclarationDataContext,
         castContext: CastContext
-    ): SvProperty? {
-        val variableDeclAssignment = ctx.listOfVariableDeclAssignments().variableDeclAssignment(0)
-        if (variableDeclAssignment !is SystemVerilogParser.VariableDeclAssignmentVariableContext)
-            return null
-        val variableIdentifier = variableDeclAssignment.variableIdentifier()
-        val location = castContext.getLocation(variableIdentifier)
-        val name = variableIdentifier.text
-        val signature = SignatureBuilder.buildSignature(ctx, name)
-        val descriptor = castContext.getDescriptor(ctx.dataTypeOrImplicit()) ?: return null
-        return SvProperty(
-            location,
-            name,
-            signature,
-            Type.unresolved(),
-            descriptor
-        )
+    ): SvContainerElement? {
+        val identifiers = ctx.listOfVariableDeclAssignments()
+            .variableDeclAssignment()
+            .filterIsInstance<SystemVerilogParser.VariableDeclAssignmentVariableContext>()
+            .map { it.variableIdentifier() }
+        val properties = identifiers.map {
+            val location = castContext.getLocation(it)
+            val name = it.text
+            val signature = SignatureBuilder.buildSignature(ctx, name)
+            val descriptor = castContext.castDescriptor(ctx.dataTypeOrImplicit()) ?: return null
+            SvProperty(
+                location,
+                name,
+                signature,
+                Type.unresolved(),
+                descriptor
+            )
+        }
+        return SvContainerElement(castContext.getLocation(ctx), properties)
     }
 }

@@ -33,13 +33,7 @@ object CasterStage : ProjectStage() {
     }
 
     private fun castDeclarations(inputFileContext: InputFileContext): List<SvDeclaration> {
-        val declarations = ArrayList<SvDeclaration>()
         val castContext = CastContext(inputFileContext.parserTokenStream)
-        inputFileContext.ruleContext.description().forEach {
-            val declaration = castContext.getDeclaration(it)
-            if (declaration != null)
-                declarations.add(declaration)
-        }
-        return declarations
+        return inputFileContext.ruleContext.description().flatMap { castContext.castDeclarations(it) }
     }
 }
