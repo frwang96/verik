@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test
 internal class ArrayAccessExpressionReducerStageTest : BaseTest() {
 
     @Test
-    fun `reduce get`() {
+    fun `reduce get single argument`() {
         driveElementTest(
             """
                 var x = u(0)
@@ -31,6 +31,18 @@ internal class ArrayAccessExpressionReducerStageTest : BaseTest() {
             """.trimIndent(),
             ArrayAccessExpressionReducerStage::class,
             "CallExpression(Boolean, get, *, [*], [])"
+        ) { it.findExpression("y") }
+    }
+
+    @Test
+    fun `reduce get multiple arguments`() {
+        driveElementTest(
+            """
+                var x = u(0)
+                var y = x[1, 0]
+            """.trimIndent(),
+            ArrayAccessExpressionReducerStage::class,
+            "CallExpression(Ubit<`*`>, get, *, [*], [])"
         ) { it.findExpression("y") }
     }
 

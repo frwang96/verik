@@ -81,6 +81,13 @@ class Ubit<N : `*`> private constructor() {
     }
 
     /**
+     * Get bits from the most significant bit at index [start_index] to the least significant bit at index [end_index].
+     */
+    operator fun get(start_index: Int, end_index: Int): Ubit<`*`> {
+        throw VerikException()
+    }
+
+    /**
      * Set bit at [index] to [value].
      */
     operator fun set(index: Int, value: Boolean) {
@@ -91,6 +98,13 @@ class Ubit<N : `*`> private constructor() {
      * Set bit at [index] to [value].
      */
     operator fun set(index: Ubit<`*`>, value: Boolean) {
+        throw VerikException()
+    }
+
+    /**
+     * Set bits from the most significant bit at index [start_index] to the least significant bit at index [end_index].
+     */
+    operator fun set(start_index: Int, end_index: Int, value: Ubit<`*`>) {
         throw VerikException()
     }
 

@@ -218,9 +218,9 @@ object ExpressionSerializer {
     ) {
         serializeContext.serializeAsExpression(constantPartSelectExpression.array)
         serializeContext.append("[")
-        serializeContext.serializeAsExpression(constantPartSelectExpression.msbIndex)
+        serializeContext.serializeAsExpression(constantPartSelectExpression.startIndex)
         serializeContext.append(":")
-        serializeContext.serializeAsExpression(constantPartSelectExpression.lsbIndex)
+        serializeContext.serializeAsExpression(constantPartSelectExpression.endIndex)
         serializeContext.append("]")
     }
 

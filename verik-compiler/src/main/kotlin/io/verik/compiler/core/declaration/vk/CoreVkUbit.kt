@@ -97,14 +97,23 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_set_Int_Boolean = object : TransformableCoreFunctionDeclaration(
-        parent,
-        "set",
-        "fun set(Int, Boolean)"
-    ) {
+    val F_get_Int_Int = object : TransformableCoreFunctionDeclaration(parent, "get", "fun get(Int, Int)") {
 
         override fun transform(callExpression: ECallExpression): EExpression {
-            val receiver = ESvArrayAccessExpression(
+            return EConstantPartSelectExpression(
+                callExpression.location,
+                callExpression.type,
+                callExpression.receiver!!,
+                callExpression.valueArguments[0],
+                callExpression.valueArguments[1]
+            )
+        }
+    }
+
+    val F_set_Int_Boolean = object : TransformableCoreFunctionDeclaration(parent, "set", "fun set(Int, Boolean)") {
+
+        override fun transform(callExpression: ECallExpression): EExpression {
+            val arrayAccessExpression = ESvArrayAccessExpression(
                 callExpression.location,
                 callExpression.valueArguments[1].type.copy(),
                 callExpression.receiver!!,
@@ -113,18 +122,14 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
             return EKtBinaryExpression(
                 callExpression.location,
                 callExpression.type,
-                receiver,
+                arrayAccessExpression,
                 callExpression.valueArguments[1],
                 KtBinaryOperatorKind.EQ
             )
         }
     }
 
-    val F_set_Ubit_Boolean = object : TransformableCoreFunctionDeclaration(
-        parent,
-        "set",
-        "fun set(Ubit, Boolean)"
-    ) {
+    val F_set_Ubit_Boolean = object : TransformableCoreFunctionDeclaration(parent, "set", "fun set(Ubit, Boolean)") {
 
         override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return F_get_Ubit.getTypeConstraints(callExpression)
@@ -132,6 +137,26 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
         override fun transform(callExpression: ECallExpression): EExpression {
             return F_set_Int_Boolean.transform(callExpression)
+        }
+    }
+
+    val F_set_Int_Int_Ubit = object : TransformableCoreFunctionDeclaration(parent, "set", "fun set(Int, Int, Ubit)") {
+
+        override fun transform(callExpression: ECallExpression): EExpression {
+            val constantPartSelectExpression = EConstantPartSelectExpression(
+                callExpression.location,
+                callExpression.type,
+                callExpression.receiver!!,
+                callExpression.valueArguments[0],
+                callExpression.valueArguments[1]
+            )
+            return EKtBinaryExpression(
+                callExpression.location,
+                callExpression.type.copy(),
+                constantPartSelectExpression,
+                callExpression.valueArguments[2],
+                KtBinaryOperatorKind.EQ
+            )
         }
     }
 

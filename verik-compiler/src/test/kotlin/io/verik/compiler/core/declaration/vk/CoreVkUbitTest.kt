@@ -46,6 +46,7 @@ internal class CoreVkUbitTest : CoreDeclarationTest() {
     }
 
     @Test
+    // TODO add tests for F_get_Int_Int and F_set_Int_Int_Ubit
     fun `serialize get set`() {
         driveCoreDeclarationTest(
             listOf(

@@ -9,6 +9,9 @@
 - Descriptor AST element to track types.
 - Document with original signature
 
+### Compiler
+- Replace slice function with array indexing notation.
+
 ## [0.1.12]
 ### Compiler
 - Support conditional compiler directives in importer.

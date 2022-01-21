@@ -33,7 +33,7 @@ fun negedge(value: Boolean): Event {
 }
 
 /**
- * Trigger a [sequential][Seq] action block on event [event] and optionally [additionalEvents].
+ * Trigger a [sequential][Seq] action block on event [event] and optionally [additional_events].
  *
  *  ```
  *  @Seq
@@ -44,20 +44,20 @@ fun negedge(value: Boolean): Event {
  *  }
  *  ```
  */
-fun on(event: Event, vararg additionalEvents: Event, block: () -> Unit) {
+fun on(event: Event, vararg additional_events: Event, block: () -> Unit) {
     throw Exception()
 }
 
 /**
  * Similar to [on] but with a return value. Trigger a [sequentially][Seq] assigned property on event [event] and
- * optionally [additionalEvents].
+ * optionally [additional_events].
  *
  *  ```
  *  @Seq
  *  var x = onr(posedge(clk)) { !y }
  *  ```
  */
-fun <T> onr(event: Event, vararg additionalEvents: Event, block: () -> T): T {
+fun <T> onr(event: Event, vararg additional_events: Event, block: () -> T): T {
     throw Exception()
 }
 
@@ -99,7 +99,7 @@ fun wait(event: Event) {
 /**
  * Wait until clocking block event occurs.
  */
-fun wait(clockingBlock: ClockingBlock) {
+fun wait(clocking_block: ClockingBlock) {
     throw VerikException()
 }
 

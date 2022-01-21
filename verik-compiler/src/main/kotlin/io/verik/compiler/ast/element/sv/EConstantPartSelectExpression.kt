@@ -28,16 +28,16 @@ class EConstantPartSelectExpression(
     override val location: SourceLocation,
     override var type: Type,
     override var array: EExpression,
-    var msbIndex: EExpression,
-    var lsbIndex: EExpression
+    var startIndex: EExpression,
+    var endIndex: EExpression
 ) : EAbstractArrayAccessExpression() {
 
     override val serializationType = SerializationType.EXPRESSION
 
     init {
         array.parent = this
-        msbIndex.parent = this
-        lsbIndex.parent = this
+        startIndex.parent = this
+        endIndex.parent = this
     }
 
     override fun accept(visitor: Visitor) {
@@ -46,8 +46,8 @@ class EConstantPartSelectExpression(
 
     override fun acceptChildren(visitor: TreeVisitor) {
         super.acceptChildren(visitor)
-        msbIndex.accept(visitor)
-        lsbIndex.accept(visitor)
+        startIndex.accept(visitor)
+        endIndex.accept(visitor)
     }
 
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
@@ -58,12 +58,12 @@ class EConstantPartSelectExpression(
                 array = newExpression
                 true
             }
-            msbIndex -> {
-                msbIndex = newExpression
+            startIndex -> {
+                startIndex = newExpression
                 true
             }
-            lsbIndex -> {
-                lsbIndex = newExpression
+            endIndex -> {
+                endIndex = newExpression
                 true
             }
             else -> false

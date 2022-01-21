@@ -237,8 +237,10 @@ object Core {
             val F_unaryMinus = CoreVkUbit.F_unaryMinus
             val F_get_Int = CoreVkUbit.F_get_Int
             val F_get_Ubit = CoreVkUbit.F_get_Ubit
+            val F_get_Int_Int = CoreVkUbit.F_get_Int_Int
             val F_set_Int_Boolean = CoreVkUbit.F_set_Int_Boolean
             val F_set_Ubit_Boolean = CoreVkUbit.F_set_Ubit_Boolean
+            val F_set_Int_Int_Ubit = CoreVkUbit.F_set_Int_Int_Ubit
             val F_set_Int_Ubit = CoreVkUbit.F_set_Int_Ubit
             val F_set_Ubit_Ubit = CoreVkUbit.F_set_Ubit_Ubit
             val F_not = CoreVkUbit.F_not
