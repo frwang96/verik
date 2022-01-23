@@ -32,7 +32,7 @@ internal class ConstantPropagatorStageTest : BaseTest() {
                 val y = C<`8`>().x
             """.trimIndent(),
             ConstantPropagatorStage::class,
-            "CallExpression(Int, i, null, [], [`8`])"
+            "ConstantExpression(Int, 8)"
         ) { it.findExpression("y") }
     }
 }

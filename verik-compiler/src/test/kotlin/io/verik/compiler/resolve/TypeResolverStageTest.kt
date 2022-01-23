@@ -90,11 +90,12 @@ internal class TypeResolverStageTest : BaseTest() {
     fun `resolve call expression plus`() {
         driveElementTest(
             """
-                val x = u(0x00) + u(0x0)
+                var x = u(0x0)
+                val y = u(0x00) + x
             """.trimIndent(),
             TypeResolverStage::class,
             "CallExpression(Ubit<`8`>, plus, *, *, [])"
-        ) { it.findExpression("x") }
+        ) { it.findExpression("y") }
     }
 
     @Test

@@ -18,100 +18,21 @@ package io.verik.compiler.evaluate
 
 import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findExpression
-import io.verik.compiler.test.findStatements
 import org.junit.jupiter.api.Test
 
 internal class ExpressionEvaluatorStageTest : BaseTest() {
 
     @Test
-    fun `evaluate call expression Int plus`() {
+    fun `constant expression type parameterized`() {
         driveElementTest(
             """
-                var x = 1 + 1
-            """.trimIndent(),
-            ExpressionEvaluatorStage::class,
-            "ConstantExpression(Int, 2)"
-        ) { it.findExpression("x") }
-    }
-
-    @Test
-    fun `evaluate call expression Ubit plus`() {
-        driveElementTest(
-            """
-                var x = u(1) + u(1)
-            """.trimIndent(),
-            ExpressionEvaluatorStage::class,
-            "ConstantExpression(Ubit<`1`>, 1'b0)"
-        ) { it.findExpression("x") }
-    }
-
-    @Test
-    fun `evaluate binary expression Boolean and`() {
-        driveElementTest(
-            """
-                var x = false
-                @Suppress("SimplifyBooleanWithConstants")
-                var y = false && x
-            """.trimIndent(),
-            ExpressionEvaluatorStage::class,
-            "ConstantExpression(Boolean, 1'b0)"
-        ) { it.findExpression("y") }
-    }
-
-    @Test
-    fun `evaluate binary expression Boolean or`() {
-        driveElementTest(
-            """
-                var x = false
-                @Suppress("SimplifyBooleanWithConstants")
-                var y = x || false
-            """.trimIndent(),
-            ExpressionEvaluatorStage::class,
-            "ReferenceExpression(Boolean, x, null)"
-        ) { it.findExpression("y") }
-    }
-
-    @Test
-    fun `evaluate if expression true`() {
-        driveElementTest(
-            """
-                fun f() {
-                    @Suppress("ConstantConditionIf")
-                    if (true) {
-                        println()
-                    }
+                class C<N : `*`> {
+                    val x = i<N>()
                 }
+                val y = C<`8`>().x + 1
             """.trimIndent(),
             ExpressionEvaluatorStage::class,
-            "[CallExpression(Unit, println, null, [], [])]"
-        ) { it.findStatements("f") }
-    }
-
-    @Test
-    fun `evaluate if expression false`() {
-        driveElementTest(
-            """
-                fun f() {
-                    @Suppress("ConstantConditionIf")
-                    if (false) {
-                        println()
-                    }
-                }
-            """.trimIndent(),
-            ExpressionEvaluatorStage::class,
-            "[BlockExpression(Unit, [])]"
-        ) { it.findStatements("f") }
-    }
-
-    @Test
-    fun `evaluate inline if expression`() {
-        driveElementTest(
-            """
-                @Suppress("ConstantConditionIf")
-                var x = if (true) 1 else 0
-            """.trimIndent(),
-            ExpressionEvaluatorStage::class,
-            "ConstantExpression(Int, 1)"
-        ) { it.findExpression("x") }
+            "ConstantExpression(Int, 9)"
+        ) { it.findExpression("y") }
     }
 }

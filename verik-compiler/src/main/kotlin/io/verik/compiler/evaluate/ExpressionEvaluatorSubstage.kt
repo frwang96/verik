@@ -16,140 +16,16 @@
 
 package io.verik.compiler.evaluate
 
-import io.verik.compiler.ast.element.common.EBlockExpression
-import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EDeclaration
-import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.common.EIfExpression
-import io.verik.compiler.ast.element.common.ETypeParameter
-import io.verik.compiler.ast.element.common.ETypedElement
-import io.verik.compiler.ast.element.kt.EKtClass
-import io.verik.compiler.ast.element.kt.EWhenExpression
-import io.verik.compiler.ast.interfaces.TypeParameterized
-import io.verik.compiler.ast.property.Type
-import io.verik.compiler.ast.property.WhenEntry
-import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.constant.BooleanConstantKind
-import io.verik.compiler.constant.ConstantNormalizer
 import io.verik.compiler.specialize.SpecializerSubstage
 import io.verik.compiler.specialize.TypeParameterBinding
 
 object ExpressionEvaluatorSubstage : SpecializerSubstage() {
 
     override fun process(declaration: EDeclaration, typeParameterBinding: TypeParameterBinding) {
-        declaration.accept(ExpressionEliminatorVisitor)
-    }
-
-    private object ExpressionEliminatorVisitor : TreeVisitor() {
-
-        override fun visitIfExpression(ifExpression: EIfExpression) {
-            super.visitIfExpression(ifExpression)
-            when (evaluateExpression(ifExpression.condition)) {
-                BooleanConstantKind.TRUE -> {
-                    val expression = getExpressionFromBlockExpression(ifExpression.thenExpression, ifExpression)
-                    ifExpression.replace(expression)
-                }
-                BooleanConstantKind.FALSE -> {
-                    val expression = getExpressionFromBlockExpression(ifExpression.elseExpression, ifExpression)
-                    ifExpression.replace(expression)
-                }
-                else -> {}
-            }
-        }
-
-        override fun visitWhenExpression(whenExpression: EWhenExpression) {
-            super.visitWhenExpression(whenExpression)
-            if (whenExpression.subject == null) {
-                val entries = ArrayList<WhenEntry>()
-                for (entry in whenExpression.entries) {
-                    val evaluatedConditions = entry.conditions.map { evaluateExpression(it) }
-                    if (evaluatedConditions.isEmpty() || evaluatedConditions.any { it == BooleanConstantKind.TRUE }) {
-                        entries.add(WhenEntry(ArrayList(), entry.body))
-                        break
-                    }
-                    if (!evaluatedConditions.all { it == BooleanConstantKind.FALSE }) {
-                        entries.add(entry)
-                    }
-                }
-                whenExpression.entries = entries
-            }
-        }
-
-        private fun evaluateExpression(expression: EExpression): BooleanConstantKind? {
-            val expandedExpression = ConstantPropagator.expand(ExpressionCopier.deepCopy(expression))
-            val typeParameterSubstitutorVisitor = TypeParameterSubstitutorVisitor(expression)
-            expandedExpression.accept(typeParameterSubstitutorVisitor)
-            if (!typeParameterSubstitutorVisitor.isAbleToBind)
-                return null
-
-            val blockExpression = EBlockExpression.wrap(expandedExpression)
-            expandedExpression.accept(ExpressionEvaluatorVisitor)
-            val evaluatedExpression = blockExpression.statements[0]
-            return ConstantNormalizer.parseBooleanOrNull(evaluatedExpression)
-        }
-
-        private fun getExpressionFromBlockExpression(
-            blockExpression: EBlockExpression?,
-            parentExpression: EExpression
-        ): EExpression {
-            return when {
-                blockExpression == null -> EBlockExpression.empty(parentExpression.location)
-                blockExpression.statements.size == 1 -> blockExpression.statements[0]
-                else -> blockExpression
-            }
-        }
-    }
-
-    private class TypeParameterSubstitutorVisitor(expression: EExpression) : TreeVisitor() {
-
-        private val typeParameters: List<ETypeParameter>
-        var isAbleToBind = true
-
-        init {
-            var parent: EElement = expression
-            while (parent.parent != null) {
-                parent = parent.parent!!
-            }
-            typeParameters = if (parent is TypeParameterized) {
-                parent.typeParameters
-            } else listOf()
-        }
-
-        private fun substitute(type: Type, element: EElement): Type {
-            val reference = type.reference
-            // TODO bind type parameter by identity and not name
-            return if (reference is ETypeParameter) {
-                val typeParameter = typeParameters.find { it.name == reference.name }
-                if (typeParameter != null) {
-                    typeParameter.type.copy()
-                } else {
-                    isAbleToBind = false
-                    type
-                }
-            } else {
-                val arguments = type.arguments.map { substitute(it, element) }
-                reference.toType(arguments)
-            }
-        }
-
-        override fun visitTypedElement(typedElement: ETypedElement) {
-            super.visitTypedElement(typedElement)
-            typedElement.type = substitute(typedElement.type, typedElement)
-        }
-
-        override fun visitKtClass(`class`: EKtClass) {
-            super.visitKtClass(`class`)
-            `class`.superType = substitute(`class`.superType, `class`)
-        }
-
-        override fun visitCallExpression(callExpression: ECallExpression) {
-            super.visitCallExpression(callExpression)
-            callExpression.typeArguments = ArrayList(
-                callExpression.typeArguments.map { substitute(it, callExpression) }
-            )
-        }
+        declaration.accept(ExpressionEvaluatorVisitor)
     }
 
     private object ExpressionEvaluatorVisitor : TreeVisitor() {

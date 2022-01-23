@@ -62,7 +62,7 @@ internal class ConstantPropagatorSubstageTest : BaseTest() {
                 }
             """.trimIndent(),
             SpecializerStage::class,
-            "CallExpression(Unit, println, null, [CallExpression(Boolean, b, null, [], [`1`])], [])"
+            "CallExpression(Unit, println, null, [ConstantExpression(Boolean, 1'b1)], [])"
         ) { it.findExpression("f") }
     }
 }
