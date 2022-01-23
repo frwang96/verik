@@ -28,10 +28,6 @@ import io.verik.compiler.constant.BooleanConstantKind
 import io.verik.compiler.constant.ConstantNormalizer
 import io.verik.compiler.core.common.CoreFunctionDeclaration
 
-/**
- * Most expression evaluation happens in [ExpressionEvaluatorSubstage] during specialization. This catches remaining
- * expressions that have not been evaluated.
- */
 object ExpressionEvaluator {
 
     fun evaluate(expression: EExpression): EExpression? {

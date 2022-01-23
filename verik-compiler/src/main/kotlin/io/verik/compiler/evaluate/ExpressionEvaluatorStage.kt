@@ -21,6 +21,10 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
+/**
+ * Most expression evaluation happens in [ExpressionEvaluatorSubstage] during specialization. This catches remaining
+ * expressions that need to be evaluated after resolve.
+ */
 object ExpressionEvaluatorStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

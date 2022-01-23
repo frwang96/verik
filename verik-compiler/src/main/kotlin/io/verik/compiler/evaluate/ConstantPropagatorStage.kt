@@ -16,13 +16,8 @@
 
 package io.verik.compiler.evaluate
 
-import io.verik.compiler.ast.element.common.EAbstractContainerClass
-import io.verik.compiler.ast.element.common.EDeclaration
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.common.EFile
 import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.common.EReferenceExpression
-import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
 import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -30,70 +25,28 @@ import io.verik.compiler.main.ProjectStage
 
 /**
  * Most constant propagation happens in [ConstantPropagatorSubstage] during specialization. This catches remaining
- * constant expressions that have not been propagated.
+ * constant expressions that need to be propagated after resolve.
  */
 object ConstantPropagatorStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        val constantPropagatorIndexerVisitor = ConstantPropagatorIndexerVisitor()
-        projectContext.project.accept(constantPropagatorIndexerVisitor)
-        val constantPropagatorTransformerVisitor = ConstantPropagatorTransformerVisitor(
-            constantPropagatorIndexerVisitor.constantMap
-        )
-        projectContext.project.accept(constantPropagatorTransformerVisitor)
+        projectContext.project.accept(ConstantPropagatorVisitor)
     }
 
-    private class ConstantPropagatorIndexerVisitor : TreeVisitor() {
-
-        val constantMap = HashMap<EProperty, EExpression>()
-
-        override fun visitFile(file: EFile) {
-            super.visitFile(file)
-            file.declarations = filterConstantProperties(file.declarations)
-        }
-
-        override fun visitAbstractContainerClass(abstractContainerClass: EAbstractContainerClass) {
-            super.visitAbstractContainerClass(abstractContainerClass)
-            abstractContainerClass.declarations = filterConstantProperties(abstractContainerClass.declarations)
-        }
-
-        override fun visitAbstractContainerComponent(abstractContainerComponent: EAbstractContainerComponent) {
-            super.visitAbstractContainerComponent(abstractContainerComponent)
-            abstractContainerComponent.declarations = filterConstantProperties(abstractContainerComponent.declarations)
-        }
-
-        private fun filterConstantProperties(declarations: ArrayList<EDeclaration>): ArrayList<EDeclaration> {
-            val filteredDeclarations = ArrayList<EDeclaration>()
-            declarations.forEach {
-                if (it !is EProperty || !indexConstantProperty(it)) {
-                    filteredDeclarations.add(it)
-                }
-            }
-            return filteredDeclarations
-        }
-
-        private fun indexConstantProperty(property: EProperty): Boolean {
-            val initializer = property.initializer
-            if (!property.isMutable && initializer != null) {
-                val expression = ConstantPropagator.expand(initializer)
-                if (ConstantPropagator.isConstant(expression)) {
-                    constantMap[property] = expression
-                    return true
-                }
-            }
-            return false
-        }
-    }
-
-    private class ConstantPropagatorTransformerVisitor(
-        private val constantMap: HashMap<EProperty, EExpression>
-    ) : TreeVisitor() {
+    private object ConstantPropagatorVisitor : TreeVisitor() {
 
         override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
             super.visitReferenceExpression(referenceExpression)
-            val expression = constantMap[referenceExpression.reference]
-            if (expression != null) {
-                referenceExpression.replace(ExpressionCopier.deepCopy(expression, referenceExpression.location))
+            val reference = referenceExpression.reference
+            if (reference is EProperty && !reference.isMutable) {
+                val initializer = reference.initializer
+                if (initializer != null) {
+                    val copiedInitializer = ExpressionCopier.deepCopy(initializer, referenceExpression.location)
+                    val expandedInitializer = ConstantPropagator.expand(copiedInitializer)
+                    if (ConstantPropagator.isConstant(expandedInitializer)) {
+                        referenceExpression.replace(expandedInitializer)
+                    }
+                }
             }
         }
     }

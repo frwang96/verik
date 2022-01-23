@@ -25,6 +25,7 @@ enum class StageType {
     MID_CHECK,
     SPECIALIZE,
     RESOLVE,
+    EVALUATE,
     INTERPRET,
     UPPER_TRANSFORM,
     LOWER_TRANSFORM,

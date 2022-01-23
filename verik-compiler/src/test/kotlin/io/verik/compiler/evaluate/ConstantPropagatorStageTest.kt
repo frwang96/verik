@@ -23,45 +23,16 @@ import org.junit.jupiter.api.Test
 internal class ConstantPropagatorStageTest : BaseTest() {
 
     @Test
-    fun `constant expression`() {
+    fun `constant expression type parameterized`() {
         driveElementTest(
             """
-                const val x = 0
-                fun f() {
-                    println(x)
+                class C<N : `*`> {
+                    val x = i<N>()
                 }
+                val y = C<`8`>().x
             """.trimIndent(),
             ConstantPropagatorStage::class,
-            "CallExpression(Unit, println, null, [ConstantExpression(Int, 0)], [])"
-        ) { it.findExpression("f") }
-    }
-
-    @Test
-    fun `constant reference expression`() {
-        driveElementTest(
-            """
-                const val x = 0
-                const val y = x
-                fun f() {
-                    println(y)
-                }
-            """.trimIndent(),
-            ConstantPropagatorStage::class,
-            "CallExpression(Unit, println, null, [ConstantExpression(Int, 0)], [])"
-        ) { it.findExpression("f") }
-    }
-
-    @Test
-    fun `constant call expression`() {
-        driveElementTest(
-            """
-                val y = b<TRUE>()
-                fun f() {
-                    println(y)
-                }
-            """.trimIndent(),
-            ConstantPropagatorStage::class,
-            "CallExpression(Unit, println, null, [CallExpression(Boolean, b, null, [], [`1`])], [])"
-        ) { it.findExpression("f") }
+            "CallExpression(Int, i, null, [], [`8`])"
+        ) { it.findExpression("y") }
     }
 }

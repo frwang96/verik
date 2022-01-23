@@ -11,6 +11,7 @@
 
 ### Compiler
 - Replace slice function with array indexing notation.
+- Consolidate expression evaluation in stages specialize and evaluate.
 
 ## [0.1.12]
 ### Compiler

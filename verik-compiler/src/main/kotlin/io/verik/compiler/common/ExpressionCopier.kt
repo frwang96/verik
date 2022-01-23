@@ -21,6 +21,8 @@ import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EConstantExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
+import io.verik.compiler.ast.element.common.EProperty
+import io.verik.compiler.ast.element.common.EPropertyStatement
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
@@ -52,6 +54,7 @@ object ExpressionCopier {
     private fun <E : EExpression> copy(expression: E, isDeepCopy: Boolean, location: SourceLocation?): E {
         val copiedExpression: EExpression = when (expression) {
             is EBlockExpression -> copyBlockExpression(expression, isDeepCopy, location)
+            is EPropertyStatement -> copyPropertyStatement(expression, isDeepCopy, location)
             is EKtBinaryExpression -> copyKtBinaryExpression(expression, isDeepCopy, location)
             is ESvBinaryExpression -> copySvBinaryExpression(expression, isDeepCopy, location)
             is EReferenceExpression -> copyReferenceExpression(expression, isDeepCopy, location)
@@ -90,6 +93,37 @@ object ExpressionCopier {
                 blockExpression.endLocation,
                 blockExpression.type,
                 blockExpression.statements
+            )
+        }
+    }
+
+    private fun copyPropertyStatement(
+        propertyStatement: EPropertyStatement,
+        isDeepCopy: Boolean,
+        location: SourceLocation?
+    ): EPropertyStatement {
+        return if (isDeepCopy) {
+            val type = propertyStatement.property.type.copy()
+            val initializer = propertyStatement.property.initializer?.let { copy(it, true, location) }
+            // TODO replace references to property
+            val property = EProperty(
+                propertyStatement.property.location,
+                propertyStatement.property.endLocation,
+                propertyStatement.property.name,
+                type,
+                propertyStatement.property.annotationEntries,
+                propertyStatement.property.documentationLines,
+                initializer,
+                propertyStatement.property.isMutable
+            )
+            EPropertyStatement(
+                propertyStatement.location,
+                property
+            )
+        } else {
+            EPropertyStatement(
+                propertyStatement.location,
+                propertyStatement.property
             )
         }
     }

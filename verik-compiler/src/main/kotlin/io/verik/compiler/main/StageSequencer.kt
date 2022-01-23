@@ -153,6 +153,9 @@ object StageSequencer {
         stageSequence.add(StageType.RESOLVE, TypeResolvedCheckerStage)
         stageSequence.add(StageType.RESOLVE, TypeReferenceForwarderStage)
 
+        stageSequence.add(StageType.EVALUATE, ConstantPropagatorStage)
+        stageSequence.add(StageType.EVALUATE, ExpressionEvaluatorStage)
+
         stageSequence.add(StageType.INTERPRET, EnumInterpreterStage)
         stageSequence.add(StageType.INTERPRET, StructInterpreterStage)
         stageSequence.add(StageType.INTERPRET, ComponentInterpreterStage)
@@ -175,8 +178,6 @@ object StageSequencer {
         stageSequence.add(StageType.UPPER_TRANSFORM, IfAndWhenExpressionUnlifterStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, CaseStatementTransformerStage)
 
-        stageSequence.add(StageType.LOWER_TRANSFORM, ConstantPropagatorStage)
-        stageSequence.add(StageType.LOWER_TRANSFORM, ExpressionEvaluatorStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, FunctionTransformerStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, PropertyTransformerStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, ExpressionExtractorStage)
