@@ -99,6 +99,16 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
     val F_get_Int_Int = object : TransformableCoreFunctionDeclaration(parent, "get", "fun get(Int, Int)") {
 
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
+            return listOf(
+                TypeConstraint(
+                    TypeConstraintKind.EQ_OUT,
+                    TypeAdapter.ofElement(callExpression, 0),
+                    TypeAdapter.ofTypeArgument(callExpression, 0)
+                )
+            )
+        }
+
         override fun transform(callExpression: ECallExpression): EExpression {
             return EConstantPartSelectExpression(
                 callExpression.location,
@@ -142,6 +152,16 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
     val F_set_Int_Int_Ubit = object : TransformableCoreFunctionDeclaration(parent, "set", "fun set(Int, Int, Ubit)") {
 
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
+            return listOf(
+                TypeConstraint(
+                    TypeConstraintKind.EQ_IN,
+                    TypeAdapter.ofElement(callExpression.valueArguments[2], 0),
+                    TypeAdapter.ofTypeArgument(callExpression, 0)
+                )
+            )
+        }
+
         override fun transform(callExpression: ECallExpression): EExpression {
             val constantPartSelectExpression = EConstantPartSelectExpression(
                 callExpression.location,
@@ -155,62 +175,6 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
                 callExpression.type.copy(),
                 constantPartSelectExpression,
                 callExpression.valueArguments[2],
-                KtBinaryOperatorKind.EQ
-            )
-        }
-    }
-
-    val F_set_Int_Ubit = object : TransformableCoreFunctionDeclaration(parent, "set", "fun set(Int, Ubit)") {
-
-        override fun transform(callExpression: ECallExpression): EExpression {
-            val width = callExpression.valueArguments[1].type.asBitWidth(callExpression)
-            val msbIndex = CoreTransformUtil.plusInt(
-                callExpression.valueArguments[0],
-                width - 1,
-                callExpression.location
-            )
-            val receiver = EConstantPartSelectExpression(
-                callExpression.location,
-                callExpression.valueArguments[1].type.copy(),
-                callExpression.receiver!!,
-                msbIndex,
-                callExpression.valueArguments[0]
-            )
-            return EKtBinaryExpression(
-                callExpression.location,
-                callExpression.type,
-                receiver,
-                callExpression.valueArguments[1],
-                KtBinaryOperatorKind.EQ
-            )
-        }
-    }
-
-    val F_set_Ubit_Ubit = object : TransformableCoreFunctionDeclaration(parent, "set", "fun set(Ubit, Ubit)") {
-
-        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
-            return F_get_Ubit.getTypeConstraints(callExpression)
-        }
-
-        override fun transform(callExpression: ECallExpression): EExpression {
-            val width = callExpression.valueArguments[1].type.asBitWidth(callExpression)
-            val msbIndex = CoreTransformUtil.plusUbit(
-                callExpression.valueArguments[0],
-                width - 1,
-                callExpression.location
-            )
-            val receiver = EConstantPartSelectExpression(
-                callExpression.location,
-                callExpression.valueArguments[1].type.copy(),
-                callExpression.receiver!!,
-                msbIndex,
-                callExpression.valueArguments[0]
-            )
-            return EKtBinaryExpression(
-                callExpression.location,
-                callExpression.type,
-                receiver,
-                callExpression.valueArguments[1],
                 KtBinaryOperatorKind.EQ
             )
         }
@@ -288,96 +252,14 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
     }
 
-    val F_sli = object : TransformableCoreFunctionDeclaration(parent, "sli", "fun sli()") {
-
-        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
-            return listOf(
-                TypeConstraint(
-                    TypeConstraintKind.EQ_INOUT,
-                    TypeAdapter.ofElement(callExpression, 0),
-                    TypeAdapter.ofTypeArgument(callExpression, 0)
-                )
-            )
-        }
-
-        override fun transform(callExpression: ECallExpression): EExpression {
-            val width = callExpression.typeArguments[0].asCardinalValue(callExpression)
-            val index = callExpression.typeArguments[1].asCardinalValue(callExpression)
-            return EConstantPartSelectExpression(
-                callExpression.location,
-                callExpression.type,
-                callExpression.receiver!!,
-                ConstantBuilder.buildInt(callExpression, index + width - 1),
-                ConstantBuilder.buildInt(callExpression, index)
-            )
-        }
-    }
-
-    val F_sli_Int = object : TransformableCoreFunctionDeclaration(parent, "sli", "fun sli(Int)") {
-
-        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
-            return F_sli.getTypeConstraints(callExpression)
-        }
-
-        override fun transform(callExpression: ECallExpression): EExpression {
-            val width = callExpression.typeArguments[0].asCardinalValue(callExpression)
-            val msbIndex = CoreTransformUtil.plusInt(
-                callExpression.valueArguments[0],
-                width - 1,
-                callExpression.location
-            )
-            return EConstantPartSelectExpression(
-                callExpression.location,
-                callExpression.type,
-                callExpression.receiver!!,
-                msbIndex,
-                callExpression.valueArguments[0]
-            )
-        }
-    }
-
-    val F_sli_Ubit = object : TransformableCoreFunctionDeclaration(parent, "sli", "fun sli(Ubit)") {
-
-        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
-            return listOf(
-                TypeConstraint(
-                    TypeConstraintKind.EQ_INOUT,
-                    TypeAdapter.ofElement(callExpression, 0),
-                    TypeAdapter.ofTypeArgument(callExpression, 0)
-                ),
-                TypeConstraint(
-                    TypeConstraintKind.LOG_IN,
-                    TypeAdapter.ofElement(callExpression.valueArguments[0], 0),
-                    TypeAdapter.ofElement(callExpression.receiver!!, 0)
-                )
-            )
-        }
-
-        override fun transform(callExpression: ECallExpression): EExpression {
-            val width = callExpression.typeArguments[0].asCardinalValue(callExpression)
-            val msbIndex = CoreTransformUtil.plusUbit(
-                callExpression.valueArguments[0],
-                width - 1,
-                callExpression.location
-            )
-            return EConstantPartSelectExpression(
-                callExpression.location,
-                callExpression.type,
-                callExpression.receiver!!,
-                msbIndex,
-                callExpression.valueArguments[0]
-            )
-        }
-    }
-
     val F_ext = object : TransformableCoreFunctionDeclaration(parent, "ext", "fun ext()") {
 
         override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return listOf(
                 TypeConstraint(
                     TypeConstraintKind.EQ_INOUT,
-                    TypeAdapter.ofTypeArgument(callExpression, 0),
-                    TypeAdapter.ofElement(callExpression, 0)
+                    TypeAdapter.ofElement(callExpression, 0),
+                    TypeAdapter.ofTypeArgument(callExpression, 0)
                 ),
                 TypeConstraint(
                     TypeConstraintKind.EXT_IN,

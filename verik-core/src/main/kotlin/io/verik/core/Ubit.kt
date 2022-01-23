@@ -109,20 +109,6 @@ class Ubit<N : `*`> private constructor() {
     }
 
     /**
-     * Insert [value] at offset [index].
-     */
-    operator fun set(index: Int, value: Ubit<`*`>) {
-        throw VerikException()
-    }
-
-    /**
-     * Insert [value] at offset [index].
-     */
-    operator fun set(index: Ubit<`*`>, value: Ubit<`*`>) {
-        throw VerikException()
-    }
-
-    /**
      * Increment by one.
      */
     operator fun inc(): Ubit<N> {
@@ -350,27 +336,6 @@ class Ubit<N : `*`> private constructor() {
      * Returns true if not all bits are zero.
      */
     fun neqz(): Boolean {
-        throw VerikException()
-    }
-
-    /**
-     * Slice [M] bits starting at index [X].
-     */
-    fun <M : `*`, X : `*`> sli(): Ubit<M> {
-        throw VerikException()
-    }
-
-    /**
-     * Slice [M] bits starting at [index].
-     */
-    fun <M : `*`> sli(index: Int): Ubit<M> {
-        throw VerikException()
-    }
-
-    /**
-     * Slice [M] bits starting at [index].
-     */
-    fun <M : `*`> sli(index: Ubit<`*`>): Ubit<M> {
         throw VerikException()
     }
 

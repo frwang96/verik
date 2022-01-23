@@ -48,6 +48,7 @@ enum class StageType {
             PRE_TRANSFORM,
             SPECIALIZE,
             RESOLVE,
+            EVALUATE,
             INTERPRET,
             UPPER_TRANSFORM,
             LOWER_TRANSFORM,

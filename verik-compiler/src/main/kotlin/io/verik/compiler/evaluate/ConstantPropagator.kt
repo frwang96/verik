@@ -22,6 +22,7 @@ import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
+import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreFunctionDeclaration
@@ -55,7 +56,8 @@ object ConstantPropagator {
         if (reference is EProperty && !reference.isMutable) {
             val initializer = reference.initializer
             if (initializer != null) {
-                return expand(initializer)
+                val copiedInitializer = ExpressionCopier.deepCopy(initializer, referenceExpression.location)
+                return expand(copiedInitializer)
             }
         }
         return referenceExpression

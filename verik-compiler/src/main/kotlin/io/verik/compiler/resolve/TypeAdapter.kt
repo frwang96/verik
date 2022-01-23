@@ -35,10 +35,6 @@ sealed class TypeAdapter {
 
     companion object {
 
-        fun ofConstant(type: Type): TypeAdapter {
-            return ConstantTypeAdapter(type)
-        }
-
         fun ofElement(element: ETypedElement, vararg indices: Int): TypeAdapter {
             return ElementTypeAdapter(element, indices.toList())
         }
@@ -46,31 +42,6 @@ sealed class TypeAdapter {
         fun ofTypeArgument(callExpression: ECallExpression, index: Int): TypeAdapter {
             return TypeArgumentTypeAdapter(callExpression, index)
         }
-    }
-}
-
-class ConstantTypeAdapter(
-    private val type: Type
-) : TypeAdapter() {
-
-    override fun getElement(): EElement {
-        throw IllegalArgumentException("Cannot get element of constant type adapter")
-    }
-
-    override fun getType(): Type {
-        return type
-    }
-
-    override fun setType(type: Type) {
-        throw IllegalArgumentException("Cannot set type of constant type adapter")
-    }
-
-    override fun getFullType(): Type {
-        return type
-    }
-
-    override fun substituteFullType(type: Type): Type {
-        throw IllegalArgumentException("Cannot substitute type of constant type adapter")
     }
 }
 

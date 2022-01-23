@@ -14,36 +14,38 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.resolve
+package io.verik.compiler.evaluate
 
 import io.verik.compiler.test.BaseTest
-import io.verik.compiler.test.findExpression
+import io.verik.compiler.test.findDeclaration
+import io.verik.compiler.test.findStatements
 import org.junit.jupiter.api.Test
 
-internal class SliceResolverStageTest : BaseTest() {
+internal class ConstantPropertyEliminatorStageTest : BaseTest() {
 
     @Test
-    fun `slice constant`() {
+    fun `eliminate property`() {
         driveElementTest(
             """
-                var x = u(0x00)
-                var y = x[1, 0]
+                class C {
+                    val x = 0
+                }
             """.trimIndent(),
-            SliceResolverStage::class,
-            "CallExpression(Ubit<`*`>, get, ReferenceExpression(*), [*], [`2`])"
-        ) { it.findExpression("y") }
+            ConstantPropertyEliminatorStage::class,
+            "KtClass(C, C, [], [], 0, 0, 0, PrimaryConstructor(*), null)"
+        ) { it.findDeclaration("C") }
     }
 
     @Test
-    fun `slice illegal`() {
-        driveMessageTest(
+    fun `eliminate property statement`() {
+        driveElementTest(
             """
-                val x = u(0x00)
-                var y = 0
-                val z = x[y, 0]
+                fun f() {
+                    val x = 0
+                }
             """.trimIndent(),
-            true,
-            "Unable to determine width of slice"
-        )
+            ConstantPropertyEliminatorStage::class,
+            "[]"
+        ) { it.findStatements("f") }
     }
 }

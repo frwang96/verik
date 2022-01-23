@@ -42,6 +42,7 @@ import io.verik.compiler.check.pre.PreNameCheckerStage
 import io.verik.compiler.check.pre.UnsupportedElementCheckerStage
 import io.verik.compiler.check.pre.UnsupportedModifierCheckerStage
 import io.verik.compiler.evaluate.ConstantPropagatorStage
+import io.verik.compiler.evaluate.ConstantPropertyEliminatorStage
 import io.verik.compiler.evaluate.ExpressionEvaluatorStage
 import io.verik.compiler.interpret.ClassInterpreterStage
 import io.verik.compiler.interpret.ComponentInterpreterStage
@@ -155,6 +156,7 @@ object StageSequencer {
 
         stageSequence.add(StageType.EVALUATE, ConstantPropagatorStage)
         stageSequence.add(StageType.EVALUATE, ExpressionEvaluatorStage)
+        stageSequence.add(StageType.EVALUATE, ConstantPropertyEliminatorStage)
 
         stageSequence.add(StageType.INTERPRET, EnumInterpreterStage)
         stageSequence.add(StageType.INTERPRET, StructInterpreterStage)

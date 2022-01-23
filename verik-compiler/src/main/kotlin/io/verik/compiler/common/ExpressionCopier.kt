@@ -28,12 +28,14 @@ import io.verik.compiler.ast.element.kt.EIsExpression
 import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.kt.EStringTemplateExpression
+import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.element.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.sv.EStreamingExpression
 import io.verik.compiler.ast.element.sv.ESvBinaryExpression
 import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.LiteralStringEntry
+import io.verik.compiler.ast.property.WhenEntry
 import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 
@@ -67,6 +69,7 @@ object ExpressionCopier {
             is EIsExpression -> copyIsExpression(expression, isDeepCopy, location)
             is EIfExpression -> copyIfExpression(expression, isDeepCopy, location)
             is EInlineIfExpression -> copyInlineIfExpression(expression, isDeepCopy, location)
+            is EWhenExpression -> copyWhenExpression(expression, isDeepCopy, location)
             else -> Messages.INTERNAL_ERROR.on(expression, "Unable to copy expression: $expression")
         }
         @Suppress("UNCHECKED_CAST")
@@ -428,6 +431,37 @@ object ExpressionCopier {
                 inlineIfExpression.condition,
                 inlineIfExpression.thenExpression,
                 inlineIfExpression.elseExpression
+            )
+        }
+    }
+
+    private fun copyWhenExpression(
+        whenExpression: EWhenExpression,
+        isDeepCopy: Boolean,
+        location: SourceLocation?
+    ): EWhenExpression {
+        return if (isDeepCopy) {
+            val type = whenExpression.type.copy()
+            val subject = whenExpression.subject?.let { copy(it, true, location) }
+            val entries = whenExpression.entries.map { whenEntry ->
+                val conditions = whenEntry.conditions.map { copy(it, true, location) }
+                val body = copy(whenEntry.body, true, location)
+                WhenEntry(ArrayList(conditions), body)
+            }
+            return EWhenExpression(
+                whenExpression.location,
+                whenExpression.endLocation,
+                type,
+                subject,
+                entries
+            )
+        } else {
+            EWhenExpression(
+                whenExpression.location,
+                whenExpression.endLocation,
+                whenExpression.type,
+                whenExpression.subject,
+                whenExpression.entries
             )
         }
     }

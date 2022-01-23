@@ -27,7 +27,7 @@ internal class PropertyStatementReordererStageTest : BaseTest() {
             """
                 fun f() {
                     println()
-                    val x = false
+                    var x = false
                 }
             """.trimIndent(),
             """
