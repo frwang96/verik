@@ -34,8 +34,12 @@ class SignatureVisitor : SystemVerilogParserBaseVisitor<Unit>() {
         val signatureFragment = when (val text = node!!.text) {
             ";" -> SignatureFragment(SignatureFragmentKind.SEMICOLON)
             ":" -> SignatureFragment(SignatureFragmentKind.COLON)
+            "#" -> SignatureFragment(SignatureFragmentKind.SHARP)
+            "," -> SignatureFragment(SignatureFragmentKind.COMMA)
             "[" -> SignatureFragment(SignatureFragmentKind.LBRACK)
             "]" -> SignatureFragment(SignatureFragmentKind.RBRACK)
+            "(" -> SignatureFragment(SignatureFragmentKind.LPAREN)
+            ")" -> SignatureFragment(SignatureFragmentKind.RPAREN)
             else -> SignatureFragment(text)
         }
         signatureFragments.add(signatureFragment)
@@ -74,6 +78,22 @@ class SignatureVisitor : SystemVerilogParserBaseVisitor<Unit>() {
         accept(ctx.ENDMODULE())
     }
 
+    override fun visitClassDeclaration(ctx: SystemVerilogParser.ClassDeclarationContext?) {
+        accept(ctx!!.VIRTUAL())
+        accept(ctx.CLASS())
+        accept(ctx.lifetime())
+        add(SignatureFragmentKind.NAME)
+        accept(ctx.parameterPortList())
+        accept(ctx.EXTENDS())
+        accept(ctx.classType())
+        accept(ctx.LPAREN())
+        accept(ctx.listOfArguments())
+        accept(ctx.RPAREN())
+        accept(ctx.SEMICOLON())
+        add(SignatureFragmentKind.BREAK)
+        accept(ctx.ENDCLASS())
+    }
+
 // A.1.3 Module Parameters and Ports ///////////////////////////////////////////////////////////////////////////////////
 
     override fun visitListOfPorts(ctx: SystemVerilogParser.ListOfPortsContext?) {
@@ -82,6 +102,17 @@ class SignatureVisitor : SystemVerilogParserBaseVisitor<Unit>() {
 
     override fun visitListOfPortDeclarations(ctx: SystemVerilogParser.ListOfPortDeclarationsContext?) {
         acceptWrapParenthesisBreak(ctx!!.ansiPortDeclaration())
+    }
+
+// A.2.1.3 Type Declarations ///////////////////////////////////////////////////////////////////////////////////////////
+
+    override fun visitDataDeclarationData(ctx: SystemVerilogParser.DataDeclarationDataContext?) {
+        accept(ctx!!.CONST())
+        accept(ctx.VAR())
+        accept(ctx.lifetime())
+        accept(ctx.dataTypeOrImplicit())
+        add(SignatureFragmentKind.NAME)
+        accept(ctx.SEMICOLON())
     }
 
 // A.9.1 Attributes ////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.common
+package io.verik.compiler.evaluate
 
 import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.element.common.EIfExpression
 import io.verik.compiler.ast.element.kt.EKtBinaryExpression
-import io.verik.compiler.ast.element.sv.EInlineIfExpression
+import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
+import io.verik.compiler.ast.property.WhenEntry
 import io.verik.compiler.constant.BooleanConstantEvaluator
 import io.verik.compiler.constant.BooleanConstantKind
 import io.verik.compiler.constant.ConstantNormalizer
@@ -35,7 +36,7 @@ object ExpressionEvaluator {
             is EKtBinaryExpression -> evaluateBinaryExpression(expression)
             is ECallExpression -> evaluateCallExpression(expression)
             is EIfExpression -> evaluateIfExpression(expression)
-            is EInlineIfExpression -> evaluateInlineIfExpression(expression)
+            is EWhenExpression -> evaluateWhenExpression(expression)
             else -> null
         }
     }
@@ -79,11 +80,32 @@ object ExpressionEvaluator {
         }
     }
 
-    private fun evaluateInlineIfExpression(inlineIfExpression: EInlineIfExpression): EExpression? {
-        return when (ConstantNormalizer.parseBooleanOrNull(inlineIfExpression.condition)) {
-            BooleanConstantKind.TRUE -> inlineIfExpression.thenExpression
-            BooleanConstantKind.FALSE -> inlineIfExpression.elseExpression
-            else -> null
+    private fun evaluateWhenExpression(whenExpression: EWhenExpression): EExpression? {
+        if (whenExpression.subject != null)
+            return null
+        val entries = ArrayList<WhenEntry>()
+        for (entry in whenExpression.entries) {
+            val evaluatedConditions = entry.conditions.map { ConstantNormalizer.parseBooleanOrNull(it) }
+            if (evaluatedConditions.isEmpty() || evaluatedConditions.any { it == BooleanConstantKind.TRUE }) {
+                entries.add(WhenEntry(ArrayList(), entry.body))
+                break
+            }
+            if (!evaluatedConditions.all { it == BooleanConstantKind.FALSE }) {
+                entries.add(entry)
+            }
+        }
+        return when (entries.size) {
+            0 -> EBlockExpression.empty(whenExpression.location)
+            whenExpression.entries.size -> null
+            else -> {
+                EWhenExpression(
+                    whenExpression.location,
+                    whenExpression.endLocation,
+                    whenExpression.type.copy(),
+                    null,
+                    entries
+                )
+            }
         }
     }
 }

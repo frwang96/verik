@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.lower
+package io.verik.compiler.evaluate
 
+import io.verik.compiler.specialize.SpecializerStage
 import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
-internal class ConstantPropagatorStageTest : BaseTest() {
+internal class ConstantPropagatorSubstageTest : BaseTest() {
 
     @Test
     fun `constant expression`() {
@@ -31,7 +32,7 @@ internal class ConstantPropagatorStageTest : BaseTest() {
                     println(x)
                 }
             """.trimIndent(),
-            ConstantPropagatorStage::class,
+            SpecializerStage::class,
             "CallExpression(Unit, println, null, [ConstantExpression(Int, 0)], [])"
         ) { it.findExpression("f") }
     }
@@ -46,7 +47,7 @@ internal class ConstantPropagatorStageTest : BaseTest() {
                     println(y)
                 }
             """.trimIndent(),
-            ConstantPropagatorStage::class,
+            SpecializerStage::class,
             "CallExpression(Unit, println, null, [ConstantExpression(Int, 0)], [])"
         ) { it.findExpression("f") }
     }
@@ -60,8 +61,8 @@ internal class ConstantPropagatorStageTest : BaseTest() {
                     println(y)
                 }
             """.trimIndent(),
-            ConstantPropagatorStage::class,
-            "CallExpression(Unit, println, null, [CallExpression(Boolean, b, null, [], [`1`])], [])"
+            SpecializerStage::class,
+            "CallExpression(Unit, println, null, [ConstantExpression(Boolean, 1'b1)], [])"
         ) { it.findExpression("f") }
     }
 }

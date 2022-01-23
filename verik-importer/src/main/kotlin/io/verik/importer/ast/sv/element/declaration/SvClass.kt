@@ -29,9 +29,15 @@ class SvClass(
 
     override var type = Core.C_Unit.toType()
 
+    init {
+        declarations.forEach { it.parent = this }
+    }
+
     override fun accept(visitor: SvVisitor) {
         visitor.visitClass(this)
     }
 
-    override fun acceptChildren(visitor: SvVisitor) {}
+    override fun acceptChildren(visitor: SvVisitor) {
+        declarations.forEach { it.accept(visitor) }
+    }
 }

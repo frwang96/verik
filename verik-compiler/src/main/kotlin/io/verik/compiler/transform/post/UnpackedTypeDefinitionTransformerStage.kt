@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ETypeDefinition
 import io.verik.compiler.ast.interfaces.ResizableDeclarationContainer
 import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
@@ -45,7 +46,7 @@ object UnpackedTypeDefinitionTransformerStage : ProjectStage() {
 
         override fun visitSvFunction(function: ESvFunction) {
             super.visitSvFunction(function)
-            if (function.type.hasUnpackedDimension(function)) {
+            if (function.type.reference == Core.Vk.C_Unpacked) {
                 val typeDefinition = ETypeDefinition(
                     function.location,
                     "<tmp>",

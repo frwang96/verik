@@ -18,9 +18,8 @@ package io.verik.compiler.ast.property
 
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.interfaces.Declaration
-import io.verik.compiler.ast.interfaces.Reference
 
 class StructLiteralEntry(
-    override var reference: Declaration,
+    val reference: Declaration,
     var expression: EExpression
-) : Reference
+)

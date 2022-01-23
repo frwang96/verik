@@ -14,9 +14,25 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.interfaces
+package io.verik.compiler.evaluate
 
-interface Documented {
+import io.verik.compiler.test.BaseTest
+import io.verik.compiler.test.findExpression
+import org.junit.jupiter.api.Test
 
-    var documentationLines: List<String>?
+internal class ExpressionEvaluatorStageTest : BaseTest() {
+
+    @Test
+    fun `constant expression type parameterized`() {
+        driveElementTest(
+            """
+                class C<N : `*`> {
+                    val x = i<N>()
+                }
+                val y = C<`8`>().x + 1
+            """.trimIndent(),
+            ExpressionEvaluatorStage::class,
+            "ConstantExpression(Int, 9)"
+        ) { it.findExpression("y") }
+    }
 }

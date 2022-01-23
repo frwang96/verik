@@ -43,41 +43,58 @@ class SignatureBuilder private constructor(private val name: String) {
         } else if (hasSpace(fragment.kind, lastFragment.kind)) {
             builder.append(" ")
         }
+
         when (fragment.kind) {
-            SignatureFragmentKind.TEXT ->
+            SignatureFragmentKind.TEXT -> {
                 builder.append(fragment.text)
+            }
             SignatureFragmentKind.NULL -> {}
-            SignatureFragmentKind.NAME ->
+            SignatureFragmentKind.NAME -> {
                 builder.append(name)
+            }
             SignatureFragmentKind.BREAK -> {
                 builder.appendLine()
                 isNewLine = true
             }
-            SignatureFragmentKind.INDENT_IN ->
+            SignatureFragmentKind.INDENT_IN -> {
                 isIndented = true
-            SignatureFragmentKind.INDENT_OUT ->
+            }
+            SignatureFragmentKind.INDENT_OUT -> {
                 isIndented = false
-            SignatureFragmentKind.SEMICOLON ->
+            }
+            SignatureFragmentKind.SEMICOLON -> {
                 builder.append(";")
-            SignatureFragmentKind.COLON ->
+            }
+            SignatureFragmentKind.COLON -> {
                 builder.append(":")
-            SignatureFragmentKind.LBRACK ->
+            }
+            SignatureFragmentKind.SHARP -> {
+                builder.append("#")
+            }
+            SignatureFragmentKind.LBRACK -> {
                 builder.append("[")
-            SignatureFragmentKind.RBRACK ->
+            }
+            SignatureFragmentKind.RBRACK -> {
                 builder.append("]")
+            }
+            SignatureFragmentKind.COMMA -> {
+                builder.append(",")
+            }
             SignatureFragmentKind.COMMA_BREAK -> {
                 builder.appendLine(",")
                 isNewLine = true
             }
-            SignatureFragmentKind.LPAREN ->
+            SignatureFragmentKind.LPAREN -> {
                 builder.append("(")
+            }
             SignatureFragmentKind.LPAREN_BREAK -> {
                 builder.appendLine("(")
                 isNewLine = true
                 isIndented = true
             }
-            SignatureFragmentKind.RPAREN ->
+            SignatureFragmentKind.RPAREN -> {
                 builder.append(")")
+            }
             SignatureFragmentKind.RPAREN_BREAK -> {
                 builder.appendLine()
                 builder.append(")")
@@ -90,11 +107,14 @@ class SignatureBuilder private constructor(private val name: String) {
         return when {
             lastKind == SignatureFragmentKind.NULL -> false
             lastKind == SignatureFragmentKind.COLON -> false
+            lastKind == SignatureFragmentKind.SHARP -> false
             lastKind == SignatureFragmentKind.LBRACK -> false
+            lastKind == SignatureFragmentKind.LPAREN -> false
             kind == SignatureFragmentKind.BREAK -> false
             kind == SignatureFragmentKind.INDENT_IN -> false
             kind == SignatureFragmentKind.INDENT_OUT -> false
             kind == SignatureFragmentKind.SEMICOLON -> false
+            kind == SignatureFragmentKind.COMMA -> false
             kind == SignatureFragmentKind.COMMA_BREAK -> false
             kind == SignatureFragmentKind.COLON -> false
             kind == SignatureFragmentKind.RBRACK -> false

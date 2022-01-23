@@ -82,8 +82,8 @@ object DescriptorCaster {
         val initialDescriptor: SvDescriptor = SvBitDescriptor(
             location,
             Type.unresolved(),
-            castContext.getExpression(packedDimensionRanges[0].constantRange().constantExpression()[0]),
-            castContext.getExpression(packedDimensionRanges[0].constantRange().constantExpression()[1]),
+            castContext.castExpression(packedDimensionRanges[0].constantRange().constantExpression()[0]),
+            castContext.castExpression(packedDimensionRanges[0].constantRange().constantExpression()[1]),
             isSigned
         )
         return packedDimensionRanges
@@ -93,8 +93,8 @@ object DescriptorCaster {
                     castContext.getLocation(packedDimensionRange),
                     Type.unresolved(),
                     descriptor,
-                    castContext.getExpression(packedDimensionRange.constantRange().constantExpression(0)),
-                    castContext.getExpression(packedDimensionRange.constantRange().constantExpression(1))
+                    castContext.castExpression(packedDimensionRange.constantRange().constantExpression(0)),
+                    castContext.castExpression(packedDimensionRange.constantRange().constantExpression(1))
                 )
             }
     }

@@ -46,36 +46,55 @@ internal class CoreVkUbitTest : CoreDeclarationTest() {
     }
 
     @Test
-    fun `serialize get set`() {
+    fun `serialize get`() {
         driveCoreDeclarationTest(
             listOf(
                 Core.Vk.Ubit.F_get_Int,
                 Core.Vk.Ubit.F_get_Ubit,
-                Core.Vk.Ubit.F_set_Int_Boolean,
-                Core.Vk.Ubit.F_set_Ubit_Boolean,
-                Core.Vk.Ubit.F_set_Int_Ubit,
-                Core.Vk.Ubit.F_set_Ubit_Ubit
+                Core.Vk.Ubit.F_get_Int_Int
             ),
             """
                 var x = u(0x0)
                 var y = false
+                var z = u(0b00)
                 fun f() {
                     y = x[0]
                     y = x[u(0b00)]
-                    x[0] = y
-                    x[u(0b00)] = y
-                    x[0] = u(0b00)
-                    x[u(0b00)] = u(0b00)
+                    z = x[1, 0]
                 }
             """.trimIndent(),
             """
                 function automatic void f();
                     y = x[0];
                     y = x[2'b00];
+                    z = x[1:0];
+                endfunction : f
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `serialize set`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Vk.Ubit.F_set_Int_Boolean,
+                Core.Vk.Ubit.F_set_Ubit_Boolean,
+                Core.Vk.Ubit.F_set_Int_Int_Ubit
+            ),
+            """
+                var x = u(0x0)
+                var y = false
+                fun f() {
+                    x[0] = y
+                    x[u(0b00)] = y
+                    x[1, 0] = u(0b00)
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
                     x[0] = y;
                     x[2'b00] = y;
                     x[1:0] = 2'b00;
-                    x[2'b01:2'b00] = 2'b00;
                 endfunction : f
             """.trimIndent()
         )
@@ -171,33 +190,6 @@ internal class CoreVkUbitTest : CoreDeclarationTest() {
                 function automatic void f();
                     y = x == 8'h00;
                     y = x != 8'h00;
-                endfunction : f
-            """.trimIndent()
-        )
-    }
-
-    @Test
-    fun `serialize sli`() {
-        driveCoreDeclarationTest(
-            listOf(
-                Core.Vk.Ubit.F_sli,
-                Core.Vk.Ubit.F_sli_Int,
-                Core.Vk.Ubit.F_sli_Ubit
-            ),
-            """
-                var x = u(0x00)
-                var y = u(0x0)
-                fun f() {
-                    y = x.sli<`4`, `0`>()
-                    y = x.sli(0)
-                    y = x.sli(u(0b000))
-                }
-            """.trimIndent(),
-            """
-                function automatic void f();
-                    y = x[3:0];
-                    y = x[3:0];
-                    y = x[3'b011:3'b000];
                 endfunction : f
             """.trimIndent()
         )

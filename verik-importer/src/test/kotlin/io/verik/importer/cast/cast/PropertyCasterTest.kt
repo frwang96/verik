@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test
 internal class PropertyCasterTest : BaseTest() {
 
     @Test
-    fun `cast property from dataDeclaration`() {
+    fun `cast property from dataDeclaration single`() {
         driveCasterTest(
             SystemVerilogParser.DataDeclarationContext::class,
             """
@@ -32,5 +32,21 @@ internal class PropertyCasterTest : BaseTest() {
             """.trimIndent(),
             "Property(x, Nothing, SimpleDescriptor(Boolean))"
         ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `cast property from dataDeclaration multiple`() {
+        driveCasterTest(
+            SystemVerilogParser.DataDeclarationContext::class,
+            """
+                logic x, y;
+            """.trimIndent(),
+            """
+                CompilationUnit([
+                    Property(x, Nothing, SimpleDescriptor(Boolean)),
+                    Property(y, Nothing, SimpleDescriptor(Boolean))
+                ])
+            """.trimIndent()
+        ) { it }
     }
 }

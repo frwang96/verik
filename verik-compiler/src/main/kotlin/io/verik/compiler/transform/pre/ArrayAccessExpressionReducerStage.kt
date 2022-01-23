@@ -43,6 +43,9 @@ object ArrayAccessExpressionReducerStage : ProjectStage() {
             GetReducerEntry(Core.Vk.C_Ubit, listOf(Core.Vk.C_Ubit), Core.Vk.Ubit.F_get_Ubit)
         )
         getReducerEntries.add(
+            GetReducerEntry(Core.Vk.C_Ubit, listOf(Core.Kt.C_Int, Core.Kt.C_Int), Core.Vk.Ubit.F_get_Int_Int)
+        )
+        getReducerEntries.add(
             GetReducerEntry(Core.Vk.C_Sbit, listOf(Core.Kt.C_Int), Core.Vk.Sbit.F_get_Int)
         )
         getReducerEntries.add(
@@ -83,17 +86,9 @@ object ArrayAccessExpressionReducerStage : ProjectStage() {
         setReducerEntries.add(
             SetReducerEntry(
                 Core.Vk.C_Ubit,
-                listOf(Core.Kt.C_Int),
+                listOf(Core.Kt.C_Int, Core.Kt.C_Int),
                 Core.Vk.C_Ubit.toType(Cardinal.UNRESOLVED.toType()),
-                Core.Vk.Ubit.F_set_Int_Ubit
-            )
-        )
-        setReducerEntries.add(
-            SetReducerEntry(
-                Core.Vk.C_Ubit,
-                listOf(Core.Vk.C_Ubit),
-                Core.Vk.C_Ubit.toType(Cardinal.UNRESOLVED.toType()),
-                Core.Vk.Ubit.F_set_Ubit_Ubit
+                Core.Vk.Ubit.F_set_Int_Int_Ubit
             )
         )
         setReducerEntries.add(

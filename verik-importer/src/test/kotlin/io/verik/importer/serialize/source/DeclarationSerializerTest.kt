@@ -48,6 +48,23 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `serialize class with property`() {
+        driveTextFileTest(
+            """
+                class c;
+                    logic x;
+                endclass
+            """.trimIndent(),
+            """
+                class c {
+                
+                    val x: Boolean = imported()
+                }
+            """.trimIndent()
+        )
+    }
+
+    @Test
     fun `serialize property`() {
         driveTextFileTest(
             """

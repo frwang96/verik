@@ -14,24 +14,25 @@
  * limitations under the License.
  */
 
-package io.verik.importer.cast.common
+package io.verik.compiler.evaluate
 
-enum class SignatureFragmentKind {
-    TEXT,
-    NULL,
-    NAME,
-    BREAK,
-    INDENT_IN,
-    INDENT_OUT,
-    SEMICOLON,
-    COLON,
-    SHARP,
-    COMMA,
-    COMMA_BREAK,
-    LBRACK,
-    RBRACK,
-    LPAREN,
-    LPAREN_BREAK,
-    RPAREN,
-    RPAREN_BREAK
+import io.verik.compiler.test.BaseTest
+import io.verik.compiler.test.findExpression
+import org.junit.jupiter.api.Test
+
+internal class ConstantPropagatorStageTest : BaseTest() {
+
+    @Test
+    fun `constant expression type parameterized`() {
+        driveElementTest(
+            """
+                class C<N : `*`> {
+                    val x = i<N>()
+                }
+                val y = C<`8`>().x
+            """.trimIndent(),
+            ConstantPropagatorStage::class,
+            "ConstantExpression(Int, 8)"
+        ) { it.findExpression("y") }
+    }
 }

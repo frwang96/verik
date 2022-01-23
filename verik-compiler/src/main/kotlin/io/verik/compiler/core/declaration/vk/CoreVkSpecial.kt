@@ -80,6 +80,10 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
     val F_i = object : TransformableCoreFunctionDeclaration(parent, "i", "fun i()") {
 
         override fun transform(callExpression: ECallExpression): EExpression {
+            return evaluate(callExpression)
+        }
+
+        override fun evaluate(callExpression: ECallExpression): EConstantExpression {
             val value = callExpression.typeArguments[0].asCardinalValue(callExpression)
             return ConstantBuilder.buildInt(callExpression, value)
         }

@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.lower
+package io.verik.compiler.evaluate
 
+import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.common.ExpressionEvaluator
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.ProjectStage
+import io.verik.compiler.specialize.SpecializerSubstage
+import io.verik.compiler.specialize.TypeParameterBinding
 
-object ExpressionEvaluatorStage : ProjectStage() {
+object ExpressionEvaluatorSubstage : SpecializerSubstage() {
 
-    override fun process(projectContext: ProjectContext) {
-        projectContext.project.accept(ExpressionEvaluatorVisitor)
+    override fun process(declaration: EDeclaration, typeParameterBinding: TypeParameterBinding) {
+        declaration.accept(ExpressionEvaluatorVisitor)
     }
 
     private object ExpressionEvaluatorVisitor : TreeVisitor() {

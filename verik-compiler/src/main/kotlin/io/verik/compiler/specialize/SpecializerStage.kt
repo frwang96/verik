@@ -21,6 +21,9 @@ import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.interfaces.TypeParameterized
 import io.verik.compiler.core.common.AnnotationEntries
+import io.verik.compiler.evaluate.CardinalTypeEvaluatorSubstage
+import io.verik.compiler.evaluate.ConstantPropagatorSubstage
+import io.verik.compiler.evaluate.ExpressionEvaluatorSubstage
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import org.jetbrains.kotlin.backend.common.pop
@@ -85,9 +88,10 @@ object SpecializerStage : ProjectStage() {
             typeParameterBinding.typeArguments,
             specializeContext
         )
+        ConstantPropagatorSubstage.process(declaration, typeParameterBinding)
         TypeParameterSubstitutorSubstage.process(declaration, typeParameterBinding)
         CardinalTypeEvaluatorSubstage.process(declaration, typeParameterBinding)
-        ExpressionEliminatorSubstage.process(declaration, typeParameterBinding)
+        ExpressionEvaluatorSubstage.process(declaration, typeParameterBinding)
         OptionalReducerSubstage.process(declaration, typeParameterBinding)
         return SpecializerIndexer.index(declaration)
     }

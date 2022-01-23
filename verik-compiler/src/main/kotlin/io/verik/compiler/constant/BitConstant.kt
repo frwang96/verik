@@ -16,10 +16,10 @@
 
 package io.verik.compiler.constant
 
-import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.core.common.Cardinal
 import io.verik.compiler.core.common.Core
+import java.lang.Integer.max
 import java.math.BigInteger
 
 class BitConstant(
@@ -50,9 +50,9 @@ class BitConstant(
         }
     }
 
-    fun add(bitConstant: BitConstant, expression: EExpression): BitConstant {
-        val width = expression.type.asBitWidth(expression)
-        val signed = expression.type.asBitSigned(expression)
+    fun plus(bitConstant: BitConstant): BitConstant {
+        val width = max(width, bitConstant.width)
+        val signed = signed && bitConstant.signed
         if (!kind.allZeroes() || !bitConstant.kind.allZeroes()) {
             return BitConstant(BitComponent.ones(width), BitComponent.zeroes(width), signed, width)
         }
@@ -61,9 +61,9 @@ class BitConstant(
         return BitConstant(BitComponent.zeroes(width), value, signed, width)
     }
 
-    fun sub(bitConstant: BitConstant, expression: EExpression): BitConstant {
-        val width = expression.type.asBitWidth(expression)
-        val signed = expression.type.asBitSigned(expression)
+    fun minus(bitConstant: BitConstant): BitConstant {
+        val width = max(width, bitConstant.width)
+        val signed = signed && bitConstant.signed
         if (!kind.allZeroes() || !bitConstant.kind.allZeroes()) {
             return BitConstant(BitComponent.ones(width), BitComponent.zeroes(width), signed, width)
         }

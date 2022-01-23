@@ -31,7 +31,7 @@ object PortCaster {
         val identifier = ctx.identifier()
         val location = castContext.getLocation(identifier)
         val name = identifier.text
-        val descriptor = castContext.getDescriptor(ctx.netPortHeader()) ?: return null
+        val descriptor = castContext.castDescriptor(ctx.netPortHeader()) ?: return null
         val portType = castPortType(ctx.netPortHeader())
         return SvPort(
             location,
@@ -49,7 +49,7 @@ object PortCaster {
         val identifier = ctx.listOfPortIdentifiers().portIdentifier()[0]
         val location = castContext.getLocation(identifier)
         val name = identifier.text
-        val descriptor = castContext.getDescriptor(ctx.netPortType()) ?: return null
+        val descriptor = castContext.castDescriptor(ctx.netPortType()) ?: return null
         return SvPort(
             location,
             name,
@@ -66,7 +66,7 @@ object PortCaster {
         val identifier = ctx.listOfPortIdentifiers().portIdentifier()[0]
         val location = castContext.getLocation(identifier)
         val name = identifier.text
-        val descriptor = castContext.getDescriptor(ctx.netPortType()) ?: return null
+        val descriptor = castContext.castDescriptor(ctx.netPortType()) ?: return null
         return SvPort(
             location,
             name,

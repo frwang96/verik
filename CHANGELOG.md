@@ -9,6 +9,11 @@
 - Descriptor AST element to track types.
 - Document with original signature
 
+### Compiler
+- Replace slice function with array indexing notation.
+- Consolidate expression evaluation in stages specialize and evaluate.
+- Extended immutability checking for array access expressions.
+
 ## [0.1.12]
 ### Compiler
 - Support conditional compiler directives in importer.

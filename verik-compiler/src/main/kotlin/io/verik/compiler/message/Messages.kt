@@ -192,6 +192,10 @@ object Messages {
         "Illegal reference to procedural block: $0"
     )
 
+    val VAL_REASSIGNED = ErrorMessageTemplate1<String>(
+        "Property declared val cannot be reassigned: $0"
+    )
+
 //  SPECIALIZE  ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val TYPE_NO_WIDTH = ErrorMessageTemplate1<Type>(
@@ -219,6 +223,10 @@ object Messages {
     )
 
 //  RESOLVE  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    val INDETERMINATE_SLICE_WIDTH = ErrorMessageTemplate0(
+        "Unable to determine width of slice"
+    )
 
     val MISMATCHED_TYPE = ErrorMessageTemplate2<Type, Type>(
         "Type mismatch: Expected $0 actual $1"

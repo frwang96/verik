@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.specialize
+package io.verik.compiler.evaluate
 
+import io.verik.compiler.specialize.SpecializerStage
 import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findDeclaration
 import org.junit.jupiter.api.Test

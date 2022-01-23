@@ -21,7 +21,6 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.kt.ETypeAlias
 import io.verik.compiler.ast.interfaces.Declaration
-import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.core.common.Cardinal
 import io.verik.compiler.core.common.CardinalConstantDeclaration
 import io.verik.compiler.core.common.CardinalDeclaration
@@ -33,9 +32,9 @@ import io.verik.compiler.target.common.Target
 import io.verik.compiler.target.common.TargetClassDeclaration
 
 class Type(
-    override var reference: Declaration,
+    var reference: Declaration,
     var arguments: ArrayList<Type>
-) : Reference {
+) {
 
     fun copy(): Type {
         val copyArguments = arguments.map { it.copy() }
@@ -120,13 +119,6 @@ class Type(
                 0
             }
         }
-    }
-
-    fun hasUnpackedDimension(element: EElement): Boolean {
-        val reference = reference
-        return if (reference is TargetClassDeclaration) {
-            reference.serializeType(arguments, element).unpackedDimension != null
-        } else false
     }
 
     override fun toString(): String {

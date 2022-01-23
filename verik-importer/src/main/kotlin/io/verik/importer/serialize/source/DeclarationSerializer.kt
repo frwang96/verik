@@ -38,7 +38,14 @@ object DeclarationSerializer {
             serializeContext.append(")")
         }
         if (`class`.superType.reference != Core.C_Any) {
-            serializeContext.appendLine(" : ${`class`.superType}()")
+            serializeContext.append(" : ${`class`.superType}()")
+        }
+        if (`class`.declarations.isNotEmpty()) {
+            serializeContext.appendLine(" {")
+            serializeContext.indent {
+                `class`.declarations.forEach { serializeContext.serialize(it) }
+            }
+            serializeContext.appendLine("}")
         } else {
             serializeContext.appendLine()
         }

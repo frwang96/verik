@@ -97,6 +97,12 @@ object ConstantNormalizer {
         return constantExpression.value.toInt()
     }
 
+    fun parseIntOrNull(expression: EExpression): Int? {
+        return if (expression is EConstantExpression) {
+            parseInt(expression)
+        } else null
+    }
+
     fun parseBitConstant(constantExpression: EConstantExpression): BitConstant {
         val width = constantExpression.type.asBitWidth(constantExpression)
         val signed = constantExpression.type.asBitSigned(constantExpression)

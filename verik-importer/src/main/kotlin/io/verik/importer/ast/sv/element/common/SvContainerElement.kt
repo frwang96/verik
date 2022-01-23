@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-package io.verik.importer.cast.cast
+package io.verik.importer.ast.sv.element.common
 
-import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.ast.sv.element.declaration.SvPackage
-import io.verik.importer.cast.common.CastContext
+import io.verik.importer.common.SvVisitor
+import io.verik.importer.message.Messages
 import io.verik.importer.message.SourceLocation
 
-object PackageCaster {
+class SvContainerElement(
+    override val location: SourceLocation,
+    val elements: List<SvElement>
+) : SvElement() {
 
-    fun castPackageFromPackageDeclaration(
-        ctx: SystemVerilogParser.PackageDeclarationContext,
-        castContext: CastContext
-    ): SvPackage {
-        val location = SourceLocation.get(ctx.PACKAGE())
-        val name = ctx.packageIdentifier()[0].text
-        val declarations = ctx.packageItem().flatMap { castContext.castDeclarations(it) }
-        return SvPackage(location, name, ArrayList(declarations))
+    override fun accept(visitor: SvVisitor) {
+        Messages.INTERNAL_ERROR.on(this, "Container element should not be part of the AST")
+    }
+
+    override fun acceptChildren(visitor: SvVisitor) {
+        Messages.INTERNAL_ERROR.on(this, "Container element should not be part of the AST")
     }
 }

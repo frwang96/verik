@@ -20,6 +20,7 @@ import io.verik.compiler.cast.CasterStage
 import io.verik.compiler.cast.DeclarationCastIndexerStage
 import io.verik.compiler.cast.SmartCastReducerStage
 import io.verik.compiler.check.mid.AnnotationEntryCheckerStage
+import io.verik.compiler.check.mid.ArrayAccessMutabilityChecker
 import io.verik.compiler.check.mid.ComponentInstantiationCheckerStage
 import io.verik.compiler.check.mid.EntryPointCheckerStage
 import io.verik.compiler.check.mid.ObjectCheckerStage
@@ -41,6 +42,9 @@ import io.verik.compiler.check.pre.ImportDirectiveCheckerStage
 import io.verik.compiler.check.pre.PreNameCheckerStage
 import io.verik.compiler.check.pre.UnsupportedElementCheckerStage
 import io.verik.compiler.check.pre.UnsupportedModifierCheckerStage
+import io.verik.compiler.evaluate.ConstantPropagatorStage
+import io.verik.compiler.evaluate.ConstantPropertyEliminatorStage
+import io.verik.compiler.evaluate.ExpressionEvaluatorStage
 import io.verik.compiler.interpret.ClassInterpreterStage
 import io.verik.compiler.interpret.ComponentInterpreterStage
 import io.verik.compiler.interpret.ConstructorDesugarTransformerStage
@@ -57,6 +61,7 @@ import io.verik.compiler.kotlin.KotlinEnvironmentBuilderStage
 import io.verik.compiler.reorder.DeadDeclarationEliminatorStage
 import io.verik.compiler.reorder.DependencyReordererStage
 import io.verik.compiler.reorder.PropertyStatementReordererStage
+import io.verik.compiler.resolve.SliceResolverStage
 import io.verik.compiler.resolve.TypeReferenceForwarderStage
 import io.verik.compiler.resolve.TypeResolvedCheckerStage
 import io.verik.compiler.resolve.TypeResolverStage
@@ -67,8 +72,6 @@ import io.verik.compiler.serialize.source.SourceSerializerStage
 import io.verik.compiler.serialize.target.CompositeTargetSerializerStage
 import io.verik.compiler.specialize.SpecializerStage
 import io.verik.compiler.transform.lower.BlockExpressionReducerStage
-import io.verik.compiler.transform.lower.ConstantPropagatorStage
-import io.verik.compiler.transform.lower.ExpressionEvaluatorStage
 import io.verik.compiler.transform.lower.ExpressionExtractorStage
 import io.verik.compiler.transform.lower.FunctionTransformerStage
 import io.verik.compiler.transform.lower.ProceduralBlockEliminatorStage
@@ -144,12 +147,18 @@ object StageSequencer {
         stageSequence.add(StageType.MID_CHECK, PortCheckerStage)
         stageSequence.add(StageType.MID_CHECK, PortInstantiationCheckerStage)
         stageSequence.add(StageType.MID_CHECK, ProceduralBlockReferenceCheckerStage)
+        stageSequence.add(StageType.MID_CHECK, ArrayAccessMutabilityChecker)
 
         stageSequence.add(StageType.SPECIALIZE, SpecializerStage)
 
+        stageSequence.add(StageType.RESOLVE, SliceResolverStage)
         stageSequence.add(StageType.RESOLVE, TypeResolverStage)
         stageSequence.add(StageType.RESOLVE, TypeResolvedCheckerStage)
         stageSequence.add(StageType.RESOLVE, TypeReferenceForwarderStage)
+
+        stageSequence.add(StageType.EVALUATE, ConstantPropagatorStage)
+        stageSequence.add(StageType.EVALUATE, ExpressionEvaluatorStage)
+        stageSequence.add(StageType.EVALUATE, ConstantPropertyEliminatorStage)
 
         stageSequence.add(StageType.INTERPRET, EnumInterpreterStage)
         stageSequence.add(StageType.INTERPRET, StructInterpreterStage)
@@ -173,13 +182,12 @@ object StageSequencer {
         stageSequence.add(StageType.UPPER_TRANSFORM, IfAndWhenExpressionUnlifterStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, CaseStatementTransformerStage)
 
-        stageSequence.add(StageType.LOWER_TRANSFORM, ConstantPropagatorStage)
-        stageSequence.add(StageType.LOWER_TRANSFORM, ExpressionEvaluatorStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, FunctionTransformerStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, PropertyTransformerStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, ExpressionExtractorStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, BlockExpressionReducerStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, ProceduralBlockEliminatorStage)
+        stageSequence.add(StageType.LOWER_TRANSFORM, UnpackedTypeDefinitionTransformerStage)
 
         stageSequence.add(StageType.REORDER, PropertyStatementReordererStage)
         stageSequence.add(StageType.REORDER, DeadDeclarationEliminatorStage)
@@ -187,7 +195,6 @@ object StageSequencer {
 
         stageSequence.add(StageType.POST_TRANSFORM, TypeReferenceTransformerStage)
         stageSequence.add(StageType.POST_TRANSFORM, AssignmentTransformerStage)
-        stageSequence.add(StageType.POST_TRANSFORM, UnpackedTypeDefinitionTransformerStage)
         stageSequence.add(StageType.POST_TRANSFORM, TemporaryDeclarationRenameStage)
         stageSequence.add(StageType.POST_TRANSFORM, StringTemplateExpressionTransformerStage)
         stageSequence.add(StageType.POST_TRANSFORM, UnaryExpressionTransformerStage)

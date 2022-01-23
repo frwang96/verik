@@ -548,8 +548,8 @@ class ElementPrinter : Visitor() {
         build("ConstantPartSelectExpression") {
             build(constantPartSelectExpression.type.toString())
             build(constantPartSelectExpression.array)
-            build(constantPartSelectExpression.msbIndex)
-            build(constantPartSelectExpression.lsbIndex)
+            build(constantPartSelectExpression.startIndex)
+            build(constantPartSelectExpression.endIndex)
         }
     }
 

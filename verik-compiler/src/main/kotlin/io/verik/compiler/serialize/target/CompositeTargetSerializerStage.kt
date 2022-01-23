@@ -16,8 +16,8 @@
 
 package io.verik.compiler.serialize.target
 
+import io.verik.compiler.ast.element.common.EReceiverExpression
 import io.verik.compiler.ast.element.common.ETypedElement
-import io.verik.compiler.ast.interfaces.Reference
 import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -100,7 +100,7 @@ object CompositeTargetSerializerStage : ProjectStage() {
         override fun visitTypedElement(typedElement: ETypedElement) {
             super.visitTypedElement(typedElement)
             addTargets(typedElement.type)
-            if (typedElement is Reference) {
+            if (typedElement is EReceiverExpression) {
                 val reference = typedElement.reference
                 if (reference is CompositeTarget)
                     compositeTargetSet.add(reference)

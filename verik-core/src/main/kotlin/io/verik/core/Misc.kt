@@ -21,7 +21,7 @@ package io.verik.core
 /**
  * Returns the concatenation of the arguments.
  */
-fun cat(value: Any, vararg additionalValues: Any): Ubit<`*`> {
+fun cat(value: Any, vararg additional_values: Any): Ubit<`*`> {
     throw VerikException()
 }
 
@@ -35,42 +35,42 @@ fun <N : `*`> rep(value: Any): Ubit<`*`> {
 /**
  * Returns the maximum of the arguments.
  */
-fun max(value: Int, vararg additionalValues: Int): Int {
+fun max(value: Int, vararg additional_values: Int): Int {
     throw VerikException()
 }
 
 /**
  * Returns the maximum of the arguments.
  */
-fun max(value: Ubit<`*`>, vararg additionalValues: Ubit<`*`>): Ubit<`*`> {
+fun max(value: Ubit<`*`>, vararg additional_values: Ubit<`*`>): Ubit<`*`> {
     throw VerikException()
 }
 
 /**
  * Returns the maximum of the arguments.
  */
-fun max(value: Sbit<`*`>, vararg additionalValues: Sbit<`*`>): Sbit<`*`> {
+fun max(value: Sbit<`*`>, vararg additional_values: Sbit<`*`>): Sbit<`*`> {
     throw VerikException()
 }
 
 /**
  * Returns the minimum of the arguments.
  */
-fun min(value: Int, vararg additionalValues: Int): Int {
+fun min(value: Int, vararg additional_values: Int): Int {
     throw VerikException()
 }
 
 /**
  * Returns the minimum of the arguments.
  */
-fun min(value: Ubit<`*`>, vararg additionalValues: Ubit<`*`>): Ubit<`*`> {
+fun min(value: Ubit<`*`>, vararg additional_values: Ubit<`*`>): Ubit<`*`> {
     throw VerikException()
 }
 
 /**
  * Returns the minimum of the arguments.
  */
-fun min(value: Sbit<`*`>, vararg additionalValues: Sbit<`*`>): Sbit<`*`> {
+fun min(value: Sbit<`*`>, vararg additional_values: Sbit<`*`>): Sbit<`*`> {
     throw VerikException()
 }
 

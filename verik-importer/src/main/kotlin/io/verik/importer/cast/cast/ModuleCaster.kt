@@ -38,16 +38,14 @@ object ModuleCaster {
         val ports = ArrayList<SvPort>()
         ctx.moduleItem().forEach {
             if (it is SystemVerilogParser.ModuleItemPortDeclarationContext) {
-                val port = castContext.getPort(it)
+                val port = castContext.castPort(it)
                 if (port == null) {
                     Messages.UNABLE_TO_CAST.on(castContext.getLocation(it), "port")
                     return null
                 }
                 ports.add(port)
             } else {
-                val declaration = castContext.getDeclaration(it)
-                if (declaration != null)
-                    declarations.add(declaration)
+                declarations.addAll(castContext.castDeclarations(it))
             }
         }
         return SvModule(
@@ -68,9 +66,9 @@ object ModuleCaster {
         val location = castContext.getLocation(identifier)
         val name = identifier.text
         val signature = SignatureBuilder.buildSignature(ctx, name)
-        val declarations = ctx.nonPortModuleItem().mapNotNull { castContext.getDeclaration(it) }
+        val declarations = ctx.nonPortModuleItem().flatMap { castContext.castDeclarations(it) }
         val ports = moduleAnsiHeader.listOfPortDeclarations()?.ansiPortDeclaration()?.map {
-            castContext.getPort(it) ?: return null
+            castContext.castPort(it) ?: return null
         } ?: listOf()
         return SvModule(
             location,

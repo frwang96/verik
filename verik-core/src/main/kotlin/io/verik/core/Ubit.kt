@@ -81,6 +81,13 @@ class Ubit<N : `*`> private constructor() {
     }
 
     /**
+     * Get bits from the most significant bit at index [start_index] to the least significant bit at index [end_index].
+     */
+    operator fun get(start_index: Int, end_index: Int): Ubit<`*`> {
+        throw VerikException()
+    }
+
+    /**
      * Set bit at [index] to [value].
      */
     operator fun set(index: Int, value: Boolean) {
@@ -95,16 +102,9 @@ class Ubit<N : `*`> private constructor() {
     }
 
     /**
-     * Insert [value] at offset [index].
+     * Set bits from the most significant bit at index [start_index] to the least significant bit at index [end_index].
      */
-    operator fun set(index: Int, value: Ubit<`*`>) {
-        throw VerikException()
-    }
-
-    /**
-     * Insert [value] at offset [index].
-     */
-    operator fun set(index: Ubit<`*`>, value: Ubit<`*`>) {
+    operator fun set(start_index: Int, end_index: Int, value: Ubit<`*`>) {
         throw VerikException()
     }
 
@@ -336,27 +336,6 @@ class Ubit<N : `*`> private constructor() {
      * Returns true if not all bits are zero.
      */
     fun neqz(): Boolean {
-        throw VerikException()
-    }
-
-    /**
-     * Slice [M] bits starting at index [X].
-     */
-    fun <M : `*`, X : `*`> sli(): Ubit<M> {
-        throw VerikException()
-    }
-
-    /**
-     * Slice [M] bits starting at [index].
-     */
-    fun <M : `*`> sli(index: Int): Ubit<M> {
-        throw VerikException()
-    }
-
-    /**
-     * Slice [M] bits starting at [index].
-     */
-    fun <M : `*`> sli(index: Ubit<`*`>): Ubit<M> {
         throw VerikException()
     }
 
