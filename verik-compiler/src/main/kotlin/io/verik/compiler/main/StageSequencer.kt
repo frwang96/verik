@@ -20,6 +20,7 @@ import io.verik.compiler.cast.CasterStage
 import io.verik.compiler.cast.DeclarationCastIndexerStage
 import io.verik.compiler.cast.SmartCastReducerStage
 import io.verik.compiler.check.mid.AnnotationEntryCheckerStage
+import io.verik.compiler.check.mid.ArrayAccessMutabilityChecker
 import io.verik.compiler.check.mid.ComponentInstantiationCheckerStage
 import io.verik.compiler.check.mid.EntryPointCheckerStage
 import io.verik.compiler.check.mid.ObjectCheckerStage
@@ -146,6 +147,7 @@ object StageSequencer {
         stageSequence.add(StageType.MID_CHECK, PortCheckerStage)
         stageSequence.add(StageType.MID_CHECK, PortInstantiationCheckerStage)
         stageSequence.add(StageType.MID_CHECK, ProceduralBlockReferenceCheckerStage)
+        stageSequence.add(StageType.MID_CHECK, ArrayAccessMutabilityChecker)
 
         stageSequence.add(StageType.SPECIALIZE, SpecializerStage)
 

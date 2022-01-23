@@ -192,6 +192,10 @@ object Messages {
         "Illegal reference to procedural block: $0"
     )
 
+    val VAL_REASSIGNED = ErrorMessageTemplate1<String>(
+        "Property declared val cannot be reassigned: $0"
+    )
+
 //  SPECIALIZE  ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val TYPE_NO_WIDTH = ErrorMessageTemplate1<Type>(
