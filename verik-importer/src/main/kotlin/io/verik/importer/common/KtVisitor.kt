@@ -17,9 +17,13 @@
 package io.verik.importer.common
 
 import io.verik.importer.ast.kt.element.KtClass
+import io.verik.importer.ast.kt.element.KtConstructor
 import io.verik.importer.ast.kt.element.KtDeclaration
 import io.verik.importer.ast.kt.element.KtElement
+import io.verik.importer.ast.kt.element.KtEnum
+import io.verik.importer.ast.kt.element.KtEnumEntry
 import io.verik.importer.ast.kt.element.KtFile
+import io.verik.importer.ast.kt.element.KtFunction
 import io.verik.importer.ast.kt.element.KtPackage
 import io.verik.importer.ast.kt.element.KtProject
 import io.verik.importer.ast.kt.element.KtProperty
@@ -49,11 +53,27 @@ abstract class KtVisitor {
         visitDeclaration(`class`)
     }
 
+    open fun visitEnum(enum: KtEnum) {
+        visitDeclaration(enum)
+    }
+
+    open fun visitFunction(function: KtFunction) {
+        visitDeclaration(function)
+    }
+
+    open fun visitConstructor(constructor: KtConstructor) {
+        visitDeclaration(constructor)
+    }
+
     open fun visitProperty(property: KtProperty) {
         visitDeclaration(property)
     }
 
     open fun visitValueParameter(valueParameter: KtValueParameter) {
         visitDeclaration(valueParameter)
+    }
+
+    open fun visitEnumEntry(enumEntry: KtEnumEntry) {
+        visitDeclaration(enumEntry)
     }
 }

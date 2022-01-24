@@ -14,28 +14,15 @@
  * limitations under the License.
  */
 
-package io.verik.importer.cast.common
+package io.verik.importer.ast.sv.element.declaration
 
-enum class SignatureFragmentKind {
-    TEXT,
-    NULL,
-    NAME,
-    BREAK,
-    INDENT_IN,
-    INDENT_OUT,
-    SEMICOLON,
-    COLON,
-    SHARP,
-    COMMA,
-    COMMA_BREAK,
-    LBRACK,
-    RBRACK,
-    LPAREN,
-    LPAREN_BREAK,
-    RPAREN,
-    RPAREN_BREAK,
-    LBRACE,
-    LBRACE_BREAK,
-    RBRACE,
-    RBRACE_BREAK
+import io.verik.importer.common.SvVisitor
+
+abstract class SvAbstractFunction : SvDeclaration() {
+
+    abstract val valueParameters: List<SvValueParameter>
+
+    override fun acceptChildren(visitor: SvVisitor) {
+        valueParameters.forEach { it.accept(visitor) }
+    }
 }

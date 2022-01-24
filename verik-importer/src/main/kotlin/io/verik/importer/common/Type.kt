@@ -19,8 +19,8 @@ package io.verik.importer.common
 import io.verik.importer.core.Core
 
 class Type(
-    var reference: Declaration,
-    var arguments: ArrayList<Type>
+    val reference: Declaration,
+    val arguments: ArrayList<Type>
 ) {
 
     fun isResolved(): Boolean {

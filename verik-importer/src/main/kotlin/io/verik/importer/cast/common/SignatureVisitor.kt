@@ -51,7 +51,6 @@ class SignatureVisitor : SystemVerilogParserBaseVisitor<Unit>() {
         accept(ctx!!.moduleKeyword())
         accept(ctx.lifetime())
         add(SignatureFragmentKind.NAME)
-        accept(ctx.listOfPorts())
         accept(ctx.SEMICOLON())
     }
 
@@ -74,8 +73,6 @@ class SignatureVisitor : SystemVerilogParserBaseVisitor<Unit>() {
 
     override fun visitModuleDeclarationAnsi(ctx: SystemVerilogParser.ModuleDeclarationAnsiContext?) {
         accept(ctx!!.moduleAnsiHeader())
-        add(SignatureFragmentKind.BREAK)
-        accept(ctx.ENDMODULE())
     }
 
     override fun visitClassDeclaration(ctx: SystemVerilogParser.ClassDeclarationContext?) {
@@ -90,18 +87,23 @@ class SignatureVisitor : SystemVerilogParserBaseVisitor<Unit>() {
         accept(ctx.listOfArguments())
         accept(ctx.RPAREN())
         accept(ctx.SEMICOLON())
-        add(SignatureFragmentKind.BREAK)
-        accept(ctx.ENDCLASS())
     }
 
 // A.1.3 Module Parameters and Ports ///////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitListOfPorts(ctx: SystemVerilogParser.ListOfPortsContext?) {
-        acceptWrapParenthesisBreak(ctx!!.port())
-    }
-
     override fun visitListOfPortDeclarations(ctx: SystemVerilogParser.ListOfPortDeclarationsContext?) {
         acceptWrapParenthesisBreak(ctx!!.ansiPortDeclaration())
+    }
+
+// A.1.9 Class Items ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+    override fun visitClassConstructorDeclaration(ctx: SystemVerilogParser.ClassConstructorDeclarationContext?) {
+        accept(ctx!!.FUNCTION())
+        accept(ctx.classScope())
+        add(SignatureFragmentKind.NAME)
+        val tfPortItems = ctx.tfPortList()?.tfPortItem() ?: listOf()
+        acceptWrapParenthesisBreak(tfPortItems)
+        accept(ctx.SEMICOLON()[0])
     }
 
 // A.2.1.3 Type Declarations ///////////////////////////////////////////////////////////////////////////////////////////
@@ -112,6 +114,81 @@ class SignatureVisitor : SystemVerilogParserBaseVisitor<Unit>() {
         accept(ctx.lifetime())
         accept(ctx.dataTypeOrImplicit())
         add(SignatureFragmentKind.NAME)
+        accept(ctx.SEMICOLON())
+    }
+
+// A.2.2.1 Net and Variable Types //////////////////////////////////////////////////////////////////////////////////////
+
+    override fun visitDataTypeEnum(ctx: SystemVerilogParser.DataTypeEnumContext?) {
+        accept(ctx!!.ENUM())
+        accept(ctx.enumBaseType())
+        acceptWrapBraceBreak(ctx.enumNameDeclaration(), true)
+        accept(ctx.packedDimension())
+    }
+
+    override fun visitDataTypeStruct(ctx: SystemVerilogParser.DataTypeStructContext?) {
+        accept(ctx!!.structUnion())
+        accept(ctx.PACKED())
+        accept(ctx.signing())
+        acceptWrapBraceBreak(ctx.structUnionMember(), false)
+        accept(ctx.packedDimension())
+    }
+
+// A.2.6 Function Declarations /////////////////////////////////////////////////////////////////////////////////////////
+
+    @Suppress("DuplicatedCode")
+    override fun visitFunctionBodyDeclarationNoPortList(
+        ctx: SystemVerilogParser.FunctionBodyDeclarationNoPortListContext?
+    ) {
+        accept(ctx!!.functionDataTypeOrImplicit())
+        accept(ctx.interfaceIdentifier())
+        accept(ctx.DOT())
+        accept(ctx.classScope())
+        add(SignatureFragmentKind.NAME)
+        accept(ctx.SEMICOLON())
+        val tfPortDeclarations = ctx.tfItemDeclaration()
+            .mapNotNull { it.tfPortDeclaration() }
+        acceptWrapBreak(tfPortDeclarations)
+        add(SignatureFragmentKind.BREAK)
+        accept(ctx.ENDFUNCTION())
+    }
+
+    override fun visitFunctionBodyDeclarationPortList(
+        ctx: SystemVerilogParser.FunctionBodyDeclarationPortListContext?
+    ) {
+        accept(ctx!!.functionDataTypeOrImplicit())
+        accept(ctx.interfaceIdentifier())
+        accept(ctx.DOT())
+        accept(ctx.classScope())
+        add(SignatureFragmentKind.NAME)
+        val tfPortItems = ctx.tfPortList()?.tfPortItem() ?: listOf()
+        acceptWrapParenthesisBreak(tfPortItems)
+        accept(ctx.SEMICOLON())
+    }
+
+// A.2.7 Task Declarations /////////////////////////////////////////////////////////////////////////////////////////////
+
+    @Suppress("DuplicatedCode")
+    override fun visitTaskBodyDeclarationNoPortList(ctx: SystemVerilogParser.TaskBodyDeclarationNoPortListContext?) {
+        accept(ctx!!.interfaceIdentifier())
+        accept(ctx.DOT())
+        accept(ctx.classScope())
+        add(SignatureFragmentKind.NAME)
+        accept(ctx.SEMICOLON())
+        val tfPortDeclarations = ctx.tfItemDeclaration()
+            .mapNotNull { it.tfPortDeclaration() }
+        acceptWrapBreak(tfPortDeclarations)
+        add(SignatureFragmentKind.BREAK)
+        accept(ctx.ENDTASK())
+    }
+
+    override fun visitTaskBodyDeclarationPortList(ctx: SystemVerilogParser.TaskBodyDeclarationPortListContext?) {
+        accept(ctx!!.interfaceIdentifier())
+        accept(ctx.DOT())
+        accept(ctx.classScope())
+        add(SignatureFragmentKind.NAME)
+        val tfPortItems = ctx.tfPortList()?.tfPortItem() ?: listOf()
+        acceptWrapParenthesisBreak(tfPortItems)
         accept(ctx.SEMICOLON())
     }
 
@@ -135,6 +212,25 @@ class SignatureVisitor : SystemVerilogParserBaseVisitor<Unit>() {
                 accept(it)
             }
             add(SignatureFragmentKind.RPAREN_BREAK)
+        }
+    }
+
+    private fun acceptWrapBraceBreak(ctxs: List<RuleContext>, isCommaBreak: Boolean) {
+        if (ctxs.isEmpty()) {
+            add(SignatureFragmentKind.LBRACE)
+            add(SignatureFragmentKind.RBRACE)
+        } else {
+            add(SignatureFragmentKind.LBRACE_BREAK)
+            accept(ctxs[0])
+            ctxs.drop(1).forEach {
+                if (isCommaBreak) {
+                    add(SignatureFragmentKind.COMMA_BREAK)
+                } else {
+                    add(SignatureFragmentKind.BREAK)
+                }
+                accept(it)
+            }
+            add(SignatureFragmentKind.RBRACE_BREAK)
         }
     }
 

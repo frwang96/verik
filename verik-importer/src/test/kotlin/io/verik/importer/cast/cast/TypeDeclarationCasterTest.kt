@@ -21,45 +21,29 @@ import io.verik.importer.test.BaseTest
 import io.verik.importer.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class PropertyCasterTest : BaseTest() {
+internal class TypeDeclarationCasterTest : BaseTest() {
 
     @Test
-    fun `cast property from dataDeclaration single`() {
+    fun `cast enum from dataTypeEnum`() {
         driveCasterTest(
-            SystemVerilogParser.DataDeclarationContext::class,
+            SystemVerilogParser.DataTypeEnumContext::class,
             """
-                logic x;
+                typedef enum { A } e;
             """.trimIndent(),
-            "Property(x, Nothing, SimpleDescriptor(Boolean))"
-        ) { it.findDeclaration("x") }
+            "Enum(e, [EnumEntry(A)])"
+        ) { it.findDeclaration("e") }
     }
 
     @Test
-    fun `cast property from dataDeclaration multiple`() {
+    fun `cast struct from dataTypeStruct`() {
         driveCasterTest(
-            SystemVerilogParser.DataDeclarationContext::class,
-            """
-                logic x, y;
-            """.trimIndent(),
-            """
-                CompilationUnit([
-                    Property(x, Nothing, SimpleDescriptor(Boolean)),
-                    Property(y, Nothing, SimpleDescriptor(Boolean))
-                ])
-            """.trimIndent()
-        ) { it }
-    }
-
-    @Test
-    fun `cast property from structUnionMember`() {
-        driveCasterTest(
-            SystemVerilogParser.DataDeclarationContext::class,
+            SystemVerilogParser.DataTypeStructContext::class,
             """
                 typedef struct {
                     logic x;
                 } s;
             """.trimIndent(),
-            "Property(x, Nothing, SimpleDescriptor(Boolean))"
-        ) { it.findDeclaration("x") }
+            "Struct(s, [Property(x, Nothing, SimpleDescriptor(Boolean))])"
+        ) { it.findDeclaration("s") }
     }
 }

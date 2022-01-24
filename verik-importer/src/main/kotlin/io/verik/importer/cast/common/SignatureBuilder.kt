@@ -100,6 +100,22 @@ class SignatureBuilder private constructor(private val name: String) {
                 builder.append(")")
                 isIndented = false
             }
+            SignatureFragmentKind.LBRACE -> {
+                builder.append("{")
+            }
+            SignatureFragmentKind.LBRACE_BREAK -> {
+                builder.appendLine("{")
+                isNewLine = true
+                isIndented = true
+            }
+            SignatureFragmentKind.RBRACE -> {
+                builder.append("}")
+            }
+            SignatureFragmentKind.RBRACE_BREAK -> {
+                builder.appendLine()
+                builder.append("}")
+                isIndented = false
+            }
         }
     }
 
@@ -120,6 +136,7 @@ class SignatureBuilder private constructor(private val name: String) {
             kind == SignatureFragmentKind.RBRACK -> false
             kind == SignatureFragmentKind.RPAREN -> false
             kind == SignatureFragmentKind.RPAREN_BREAK -> false
+            kind == SignatureFragmentKind.RBRACE_BREAK -> false
             lastKind == SignatureFragmentKind.NAME && kind == SignatureFragmentKind.LPAREN -> false
             lastKind == SignatureFragmentKind.NAME && kind == SignatureFragmentKind.LPAREN_BREAK -> false
             lastKind == SignatureFragmentKind.RBRACK && kind == SignatureFragmentKind.LBRACK -> false

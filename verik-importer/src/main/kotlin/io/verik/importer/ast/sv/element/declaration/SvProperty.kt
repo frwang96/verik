@@ -24,9 +24,10 @@ import io.verik.importer.message.SourceLocation
 class SvProperty(
     override val location: SourceLocation,
     override val name: String,
-    override val signature: String,
+    override var signature: String?,
     override var type: Type,
-    val descriptor: SvDescriptor
+    val descriptor: SvDescriptor,
+    val isMutable: Boolean,
 ) : SvDeclaration() {
 
     init {

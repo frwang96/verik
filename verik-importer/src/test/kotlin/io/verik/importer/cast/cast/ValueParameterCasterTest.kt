@@ -17,20 +17,21 @@
 package io.verik.importer.cast.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.ast.sv.element.declaration.SvClass
-import io.verik.importer.cast.common.CastContext
-import io.verik.importer.cast.common.SignatureBuilder
+import io.verik.importer.test.BaseTest
+import io.verik.importer.test.findDeclaration
+import org.junit.jupiter.api.Test
 
-object ClassCaster {
+internal class ValueParameterCasterTest : BaseTest() {
 
-    fun castClassFromClassDeclaration(
-        ctx: SystemVerilogParser.ClassDeclarationContext,
-        castContext: CastContext
-    ): SvClass {
-        val location = castContext.getLocation(ctx.CLASS())
-        val name = ctx.classIdentifier()[0].text
-        val signature = SignatureBuilder.buildSignature(ctx, name)
-        val declarations = ctx.classItem().flatMap { castContext.castDeclarations(it) }
-        return SvClass(location, name, signature, ArrayList(declarations))
+    @Test
+    fun `cast valueParameter from tfPortItem`() {
+        driveCasterTest(
+            SystemVerilogParser.TfPortItemContext::class,
+            """
+                function void f(int x);
+                endfunction
+            """.trimIndent(),
+            "ValueParameter(x, Nothing, SimpleDescriptor(Int))"
+        ) { it.findDeclaration("x") }
     }
 }

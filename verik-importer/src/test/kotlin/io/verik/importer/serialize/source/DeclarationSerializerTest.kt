@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test
 internal class DeclarationSerializerTest : BaseTest() {
 
     @Test
-    fun `serialize class`() {
+    fun `serialize class simple`() {
         driveTextFileTest(
             """
                 class c;
@@ -30,6 +30,23 @@ internal class DeclarationSerializerTest : BaseTest() {
             """.trimIndent(),
             """
                 class c
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `serialize class with property`() {
+        driveTextFileTest(
+            """
+                class c;
+                    logic x;
+                endclass
+            """.trimIndent(),
+            """
+                class c {
+                
+                    var x: Boolean = imported()
+                }
             """.trimIndent()
         )
     }
@@ -48,36 +65,7 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize class with property`() {
-        driveTextFileTest(
-            """
-                class c;
-                    logic x;
-                endclass
-            """.trimIndent(),
-            """
-                class c {
-                
-                    val x: Boolean = imported()
-                }
-            """.trimIndent()
-        )
-    }
-
-    @Test
-    fun `serialize property`() {
-        driveTextFileTest(
-            """
-                logic x;
-            """.trimIndent(),
-            """
-                val x: Boolean = imported()
-            """.trimIndent()
-        )
-    }
-
-    @Test
-    fun `serialize value parameter`() {
+    fun `serialize class module with value parameter`() {
         driveTextFileTest(
             """
                 module m(input x);
@@ -87,6 +75,123 @@ internal class DeclarationSerializerTest : BaseTest() {
                 class m(
                     @In var x: Boolean
                 ) : Module()
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `serialize class struct`() {
+        driveTextFileTest(
+            """
+                typedef struct {
+                    logic x;
+                } s;
+            """.trimIndent(),
+            """
+                class s(
+                    var x: Boolean
+                ) : Struct()
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `serialize enum`() {
+        driveTextFileTest(
+            """
+                typedef enum { A, B } e;
+            """.trimIndent(),
+            """
+                enum class e {
+                    A,
+                    B
+                }
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `serialize function simple`() {
+        driveTextFileTest(
+            """
+                function int f();
+                endfunction
+            """.trimIndent(),
+            """
+                fun f(): Int = imported()
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `serialize function with value parameter`() {
+        driveTextFileTest(
+            """
+                function void f(int x);
+                endfunction
+            """.trimIndent(),
+            """
+                fun f(
+                    x: Int
+                ): Unit = imported()
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `serialize function task`() {
+        driveTextFileTest(
+            """
+                task t;
+                endtask
+            """.trimIndent(),
+            """
+                @Task
+                fun t(): Unit = imported()
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `serialize constructor`() {
+        driveTextFileTest(
+            """
+                class c;
+                    function new(logic x);
+                    endfunction
+                endclass
+            """.trimIndent(),
+            """
+                class c {
+                
+                    constructor(
+                        x: Boolean
+                    )
+                }
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `serialize property mutable`() {
+        driveTextFileTest(
+            """
+                logic x;
+            """.trimIndent(),
+            """
+                var x: Boolean = imported()
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `serialize property immutable`() {
+        driveTextFileTest(
+            """
+                const string x;
+            """.trimIndent(),
+            """
+                val x: String = imported()
             """.trimIndent()
         )
     }

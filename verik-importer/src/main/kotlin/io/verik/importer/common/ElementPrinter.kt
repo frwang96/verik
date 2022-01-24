@@ -19,12 +19,20 @@ package io.verik.importer.common
 import io.verik.importer.ast.sv.element.common.SvCompilationUnit
 import io.verik.importer.ast.sv.element.common.SvElement
 import io.verik.importer.ast.sv.element.declaration.SvClass
+import io.verik.importer.ast.sv.element.declaration.SvConstructor
+import io.verik.importer.ast.sv.element.declaration.SvEnum
+import io.verik.importer.ast.sv.element.declaration.SvEnumEntry
+import io.verik.importer.ast.sv.element.declaration.SvFunction
 import io.verik.importer.ast.sv.element.declaration.SvModule
 import io.verik.importer.ast.sv.element.declaration.SvPackage
 import io.verik.importer.ast.sv.element.declaration.SvPort
 import io.verik.importer.ast.sv.element.declaration.SvProperty
+import io.verik.importer.ast.sv.element.declaration.SvStruct
+import io.verik.importer.ast.sv.element.declaration.SvTask
+import io.verik.importer.ast.sv.element.declaration.SvValueParameter
 import io.verik.importer.ast.sv.element.descriptor.SvBitDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvPackedDescriptor
+import io.verik.importer.ast.sv.element.descriptor.SvReferenceDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvSimpleDescriptor
 import io.verik.importer.ast.sv.element.expression.SvLiteralExpression
 import io.verik.importer.ast.sv.element.expression.SvNothingExpression
@@ -67,11 +75,55 @@ class ElementPrinter : SvVisitor() {
         }
     }
 
+    override fun visitStruct(struct: SvStruct) {
+        build("Struct") {
+            build(struct.name)
+            build(struct.properties)
+        }
+    }
+
+    override fun visitEnum(enum: SvEnum) {
+        build("Enum") {
+            build(enum.name)
+            build(enum.entries)
+        }
+    }
+
+    override fun visitFunction(function: SvFunction) {
+        build("Function") {
+            build(function.name)
+            build(function.type.toString())
+            build(function.valueParameters)
+            build(function.descriptor)
+        }
+    }
+
+    override fun visitTask(task: SvTask) {
+        build("Task") {
+            build(task.name)
+            build(task.valueParameters)
+        }
+    }
+
+    override fun visitConstructor(constructor: SvConstructor) {
+        build("Constructor") {
+            build(constructor.valueParameters)
+        }
+    }
+
     override fun visitProperty(property: SvProperty) {
         build("Property") {
             build(property.name)
             build(property.type.toString())
             build(property.descriptor)
+        }
+    }
+
+    override fun visitValueParameter(valueParameter: SvValueParameter) {
+        build("ValueParameter") {
+            build(valueParameter.name)
+            build(valueParameter.type.toString())
+            build(valueParameter.descriptor)
         }
     }
 
@@ -81,6 +133,12 @@ class ElementPrinter : SvVisitor() {
             build(port.type.toString())
             build(port.descriptor)
             build(port.portType.toString())
+        }
+    }
+
+    override fun visitEnumEntry(enumEntry: SvEnumEntry) {
+        build("EnumEntry") {
+            build(enumEntry.name)
         }
     }
 
@@ -105,6 +163,13 @@ class ElementPrinter : SvVisitor() {
             build(packedDescriptor.descriptor)
             build(packedDescriptor.left)
             build(packedDescriptor.right)
+        }
+    }
+
+    override fun visitReferenceDescriptor(referenceDescriptor: SvReferenceDescriptor) {
+        build("ReferenceDescriptor") {
+            build(referenceDescriptor.type.toString())
+            build(referenceDescriptor.name)
         }
     }
 

@@ -17,7 +17,11 @@
 package io.verik.importer.serialize.source
 
 import io.verik.importer.ast.kt.element.KtClass
+import io.verik.importer.ast.kt.element.KtConstructor
 import io.verik.importer.ast.kt.element.KtDeclaration
+import io.verik.importer.ast.kt.element.KtEnum
+import io.verik.importer.ast.kt.element.KtEnumEntry
+import io.verik.importer.ast.kt.element.KtFunction
 import io.verik.importer.ast.kt.element.KtProperty
 import io.verik.importer.ast.kt.element.KtValueParameter
 import io.verik.importer.core.Core
@@ -31,9 +35,7 @@ object DeclarationSerializer {
         if (`class`.valueParameters.isNotEmpty()) {
             serializeContext.appendLine("(")
             serializeContext.indent {
-                serializeContext.serializeJoinAppendLine(`class`.valueParameters) {
-                    serializeContext.serialize(it)
-                }
+                serializeContext.serializeJoinAppendLine(`class`.valueParameters)
             }
             serializeContext.append(")")
         }
@@ -51,10 +53,64 @@ object DeclarationSerializer {
         }
     }
 
+    fun serializeEnum(enum: KtEnum, serializeContext: SerializeContext) {
+        serializeContext.appendLine()
+        serializeDocs(enum, serializeContext)
+        serializeContext.append("enum class ${enum.name}")
+        if (enum.entries.isNotEmpty()) {
+            serializeContext.appendLine(" {")
+            serializeContext.indent {
+                serializeContext.serializeJoinAppendLine(enum.entries)
+            }
+            serializeContext.appendLine("}")
+        } else {
+            serializeContext.appendLine()
+        }
+    }
+
+    fun serializeFunction(function: KtFunction, serializeContext: SerializeContext) {
+        serializeContext.appendLine()
+        serializeDocs(function, serializeContext)
+        function.annotationEntries.forEach {
+            serializeContext.appendLine("@${it.name}")
+        }
+        serializeContext.append("fun ${function.name}")
+        if (function.valueParameters.isNotEmpty()) {
+            serializeContext.appendLine("(")
+            serializeContext.indent {
+                serializeContext.serializeJoinAppendLine(function.valueParameters)
+            }
+            serializeContext.append(")")
+        } else {
+            serializeContext.append("()")
+        }
+        serializeContext.appendLine(": ${function.type} = imported()")
+    }
+
+    fun serializeConstructor(constructor: KtConstructor, serializeContext: SerializeContext) {
+        serializeContext.appendLine()
+        serializeDocs(constructor, serializeContext)
+        serializeContext.append("constructor")
+        if (constructor.valueParameters.isNotEmpty()) {
+            serializeContext.appendLine("(")
+            serializeContext.indent {
+                serializeContext.serializeJoinAppendLine(constructor.valueParameters)
+            }
+            serializeContext.appendLine(")")
+        } else {
+            serializeContext.appendLine("()")
+        }
+    }
+
     fun serializeProperty(property: KtProperty, serializeContext: SerializeContext) {
         serializeContext.appendLine()
         serializeDocs(property, serializeContext)
-        serializeContext.appendLine("val ${property.name}: ${property.type} = imported()")
+        if (property.isMutable) {
+            serializeContext.append("var ")
+        } else {
+            serializeContext.append("val ")
+        }
+        serializeContext.appendLine("${property.name}: ${property.type} = imported()")
     }
 
     fun serializeValueParameter(valueParameter: KtValueParameter, serializeContext: SerializeContext) {
@@ -66,6 +122,10 @@ object DeclarationSerializer {
             false -> serializeContext.append("val ")
         }
         serializeContext.append("${valueParameter.name}: ${valueParameter.type}")
+    }
+
+    fun serializeEnumEntry(enumEntry: KtEnumEntry, serializeContext: SerializeContext) {
+        serializeContext.append(enumEntry.name)
     }
 
     private fun serializeDocs(declaration: KtDeclaration, serializeContext: SerializeContext) {

@@ -20,12 +20,17 @@ import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.antlr.SystemVerilogParserBaseVisitor
 import io.verik.importer.ast.sv.element.common.SvElement
 import io.verik.importer.cast.cast.ClassCaster
+import io.verik.importer.cast.cast.ConstructorCaster
 import io.verik.importer.cast.cast.DescriptorCaster
 import io.verik.importer.cast.cast.ExpressionCaster
+import io.verik.importer.cast.cast.FunctionCaster
 import io.verik.importer.cast.cast.ModuleCaster
 import io.verik.importer.cast.cast.PackageCaster
 import io.verik.importer.cast.cast.PortCaster
 import io.verik.importer.cast.cast.PropertyCaster
+import io.verik.importer.cast.cast.TaskCaster
+import io.verik.importer.cast.cast.TypeDeclarationCaster
+import io.verik.importer.cast.cast.ValueParameterCaster
 import org.antlr.v4.runtime.RuleContext
 
 class CasterVisitor(
@@ -66,8 +71,20 @@ class CasterVisitor(
 
 // A.1.9 Class Items ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+    override fun visitClassMethodTask(ctx: SystemVerilogParser.ClassMethodTaskContext?): SvElement? {
+        return TaskCaster.castTaskFromClassMethodTask(ctx!!, castContext)
+    }
+
+    override fun visitClassMethodFunction(ctx: SystemVerilogParser.ClassMethodFunctionContext?): SvElement? {
+        return FunctionCaster.castTaskFromClassMethodFunction(ctx!!, castContext)
+    }
+
     override fun visitClassMethodExternMethod(ctx: SystemVerilogParser.ClassMethodExternMethodContext?): SvElement? {
         return null
+    }
+
+    override fun visitClassMethodConstructor(ctx: SystemVerilogParser.ClassMethodConstructorContext?): SvElement? {
+        return ConstructorCaster.castConstructorFromClassMethodConstructor(ctx!!, castContext)
     }
 
     override fun visitClassMethodExternConstructor(
@@ -79,7 +96,7 @@ class CasterVisitor(
     override fun visitClassConstructorDeclaration(
         ctx: SystemVerilogParser.ClassConstructorDeclarationContext?
     ): SvElement? {
-        return null
+        return ConstructorCaster.castConstructorFromClassConstructorDeclaration(ctx!!, castContext)
     }
 
 // A.2.1.1 Module Parameter Declarations ///////////////////////////////////////////////////////////////////////////////
@@ -105,7 +122,7 @@ class CasterVisitor(
     }
 
     override fun visitTypeDeclarationData(ctx: SystemVerilogParser.TypeDeclarationDataContext?): SvElement? {
-        return null
+        return TypeDeclarationCaster.castTypeDeclarationFromTypeDeclarationData(ctx!!, castContext)
     }
 
     override fun visitTypeDeclarationMisc(ctx: SystemVerilogParser.TypeDeclarationMiscContext?): SvElement? {
@@ -118,14 +135,46 @@ class CasterVisitor(
         return DescriptorCaster.castDescriptorFromDataTypeVector(ctx!!, castContext)
     }
 
+    override fun visitDataTypeInteger(ctx: SystemVerilogParser.DataTypeIntegerContext?): SvElement? {
+        return DescriptorCaster.castDescriptorFromDataTypeInteger(ctx!!, castContext)
+    }
+
+    override fun visitDataTypeString(ctx: SystemVerilogParser.DataTypeStringContext?): SvElement {
+        return DescriptorCaster.castDescriptorFromDataTypeString(ctx!!, castContext)
+    }
+
+    override fun visitDataTypeTypeIdentifier(ctx: SystemVerilogParser.DataTypeTypeIdentifierContext?): SvElement {
+        return DescriptorCaster.castDescriptorFromDataTypeTypeIdentifier(ctx!!, castContext)
+    }
+
     override fun visitImplicitDataType(ctx: SystemVerilogParser.ImplicitDataTypeContext?): SvElement? {
         return DescriptorCaster.castDescriptorFromImplicitDataType(ctx!!, castContext)
+    }
+
+    override fun visitStructUnionMember(ctx: SystemVerilogParser.StructUnionMemberContext?): SvElement? {
+        return PropertyCaster.castPropertiesFromStructUnionMember(ctx!!, castContext)
+    }
+
+    override fun visitDataTypeOrVoid(ctx: SystemVerilogParser.DataTypeOrVoidContext?): SvElement? {
+        return DescriptorCaster.castDescriptorFromDataTypeOrVoid(ctx!!, castContext)
     }
 
 // A.2.6 Function Declarations /////////////////////////////////////////////////////////////////////////////////////////
 
     override fun visitFunctionDeclaration(ctx: SystemVerilogParser.FunctionDeclarationContext?): SvElement? {
-        return null
+        return FunctionCaster.castFunctionFromFunctionDeclaration(ctx!!, castContext)
+    }
+
+    override fun visitFunctionBodyDeclarationNoPortList(
+        ctx: SystemVerilogParser.FunctionBodyDeclarationNoPortListContext?
+    ): SvElement? {
+        return FunctionCaster.castFunctionFromFunctionBodyDeclarationNoPortList(ctx!!, castContext)
+    }
+
+    override fun visitFunctionBodyDeclarationPortList(
+        ctx: SystemVerilogParser.FunctionBodyDeclarationPortListContext?
+    ): SvElement? {
+        return FunctionCaster.castFunctionFromFunctionBodyDeclarationPortList(ctx!!, castContext)
     }
 
     override fun visitFunctionPrototype(ctx: SystemVerilogParser.FunctionPrototypeContext?): SvElement? {
@@ -135,7 +184,23 @@ class CasterVisitor(
 // A.2.7 Task Declarations /////////////////////////////////////////////////////////////////////////////////////////////
 
     override fun visitTaskDeclaration(ctx: SystemVerilogParser.TaskDeclarationContext?): SvElement? {
-        return null
+        return TaskCaster.castTaskFromTaskDeclaration(ctx!!, castContext)
+    }
+
+    override fun visitTaskBodyDeclarationNoPortList(
+        ctx: SystemVerilogParser.TaskBodyDeclarationNoPortListContext?
+    ): SvElement {
+        return TaskCaster.castTaskFromTaskBodyDeclarationNoPortList(ctx!!, castContext)
+    }
+
+    override fun visitTaskBodyDeclarationPortList(
+        ctx: SystemVerilogParser.TaskBodyDeclarationPortListContext?
+    ): SvElement {
+        return TaskCaster.castTaskFromTaskBodyDeclarationPortList(ctx!!, castContext)
+    }
+
+    override fun visitTfPortItem(ctx: SystemVerilogParser.TfPortItemContext?): SvElement? {
+        return ValueParameterCaster.castValueParameterFromTfPortItem(ctx!!, castContext)
     }
 
     override fun visitTaskPrototype(ctx: SystemVerilogParser.TaskPrototypeContext?): SvElement {

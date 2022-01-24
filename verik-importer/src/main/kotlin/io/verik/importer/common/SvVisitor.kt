@@ -19,16 +19,26 @@ package io.verik.importer.common
 import io.verik.importer.ast.sv.element.common.SvCompilationUnit
 import io.verik.importer.ast.sv.element.common.SvElement
 import io.verik.importer.ast.sv.element.common.SvTypedElement
+import io.verik.importer.ast.sv.element.declaration.SvAbstractFunction
 import io.verik.importer.ast.sv.element.declaration.SvClass
+import io.verik.importer.ast.sv.element.declaration.SvConstructor
 import io.verik.importer.ast.sv.element.declaration.SvContainerDeclaration
 import io.verik.importer.ast.sv.element.declaration.SvDeclaration
+import io.verik.importer.ast.sv.element.declaration.SvEnum
+import io.verik.importer.ast.sv.element.declaration.SvEnumEntry
+import io.verik.importer.ast.sv.element.declaration.SvFunction
 import io.verik.importer.ast.sv.element.declaration.SvModule
 import io.verik.importer.ast.sv.element.declaration.SvPackage
 import io.verik.importer.ast.sv.element.declaration.SvPort
 import io.verik.importer.ast.sv.element.declaration.SvProperty
+import io.verik.importer.ast.sv.element.declaration.SvStruct
+import io.verik.importer.ast.sv.element.declaration.SvTask
+import io.verik.importer.ast.sv.element.declaration.SvTypeDeclaration
+import io.verik.importer.ast.sv.element.declaration.SvValueParameter
 import io.verik.importer.ast.sv.element.descriptor.SvBitDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvPackedDescriptor
+import io.verik.importer.ast.sv.element.descriptor.SvReferenceDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvSimpleDescriptor
 import io.verik.importer.ast.sv.element.expression.SvExpression
 import io.verik.importer.ast.sv.element.expression.SvLiteralExpression
@@ -68,14 +78,52 @@ abstract class SvVisitor {
         visitContainerDeclaration(module)
     }
 
+    open fun visitTypeDeclaration(typeDeclaration: SvTypeDeclaration) {
+        visitDeclaration(typeDeclaration)
+    }
+
+    open fun visitStruct(struct: SvStruct) {
+        visitTypeDeclaration(struct)
+    }
+
+    open fun visitEnum(enum: SvEnum) {
+        visitTypeDeclaration(enum)
+    }
+
+// Function Like ///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    open fun visitAbstractFunction(abstractFunction: SvAbstractFunction) {
+        visitDeclaration(abstractFunction)
+    }
+
+    open fun visitFunction(function: SvFunction) {
+        visitAbstractFunction(function)
+    }
+
+    open fun visitTask(task: SvTask) {
+        visitAbstractFunction(task)
+    }
+
+    open fun visitConstructor(constructor: SvConstructor) {
+        visitAbstractFunction(constructor)
+    }
+
 // Property Like ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     open fun visitProperty(property: SvProperty) {
         visitDeclaration(property)
     }
 
+    open fun visitValueParameter(valueParameter: SvValueParameter) {
+        visitDeclaration(valueParameter)
+    }
+
     open fun visitPort(port: SvPort) {
         visitDeclaration(port)
+    }
+
+    open fun visitEnumEntry(enumEntry: SvEnumEntry) {
+        visitDeclaration(enumEntry)
     }
 
 // Descriptor Like /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -94,6 +142,10 @@ abstract class SvVisitor {
 
     open fun visitPackedDescriptor(packedDescriptor: SvPackedDescriptor) {
         visitDescriptor(packedDescriptor)
+    }
+
+    open fun visitReferenceDescriptor(referenceDescriptor: SvReferenceDescriptor) {
+        visitDescriptor(referenceDescriptor)
     }
 
 // Expression Like /////////////////////////////////////////////////////////////////////////////////////////////////////

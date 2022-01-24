@@ -14,33 +14,27 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.sv.element.declaration
+package io.verik.importer.ast.kt.element
 
-import io.verik.importer.ast.sv.element.descriptor.SvDescriptor
-import io.verik.importer.ast.sv.property.PortType
-import io.verik.importer.common.SvVisitor
+import io.verik.importer.ast.kt.property.AnnotationEntry
+import io.verik.importer.common.KtVisitor
 import io.verik.importer.common.Type
 import io.verik.importer.message.SourceLocation
 
-class SvPort(
+class KtFunction(
     override val location: SourceLocation,
     override val name: String,
-    override var type: Type,
-    val descriptor: SvDescriptor,
-    val portType: PortType
-) : SvDeclaration() {
+    override val signature: String?,
+    override val type: Type,
+    val annotationEntries: List<AnnotationEntry>,
+    val valueParameters: List<KtValueParameter>
+) : KtDeclaration() {
 
-    override var signature: String? = null
-
-    init {
-        descriptor.parent = this
+    override fun accept(visitor: KtVisitor) {
+        visitor.visitFunction(this)
     }
 
-    override fun accept(visitor: SvVisitor) {
-        visitor.visitPort(this)
-    }
-
-    override fun acceptChildren(visitor: SvVisitor) {
-        descriptor.accept(visitor)
+    override fun acceptChildren(visitor: KtVisitor) {
+        valueParameters.forEach { it.accept(visitor) }
     }
 }

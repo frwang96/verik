@@ -16,31 +16,28 @@
 
 package io.verik.importer.ast.sv.element.declaration
 
-import io.verik.importer.ast.sv.element.descriptor.SvDescriptor
-import io.verik.importer.ast.sv.property.PortType
 import io.verik.importer.common.SvVisitor
-import io.verik.importer.common.Type
+import io.verik.importer.core.Core
 import io.verik.importer.message.SourceLocation
 
-class SvPort(
+class SvEnum(
     override val location: SourceLocation,
     override val name: String,
-    override var type: Type,
-    val descriptor: SvDescriptor,
-    val portType: PortType
-) : SvDeclaration() {
-
-    override var signature: String? = null
+    override var signature: String?,
+    val entries: List<SvEnumEntry>
+) : SvTypeDeclaration() {
 
     init {
-        descriptor.parent = this
+        entries.forEach { it.parent = this }
     }
 
+    override var type = Core.C_Unit.toType()
+
     override fun accept(visitor: SvVisitor) {
-        visitor.visitPort(this)
+        visitor.visitEnum(this)
     }
 
     override fun acceptChildren(visitor: SvVisitor) {
-        descriptor.accept(visitor)
+        entries.forEach { it.accept(visitor) }
     }
 }

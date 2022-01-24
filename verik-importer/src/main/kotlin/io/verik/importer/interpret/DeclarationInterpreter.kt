@@ -17,15 +17,27 @@
 package io.verik.importer.interpret
 
 import io.verik.importer.ast.kt.element.KtClass
+import io.verik.importer.ast.kt.element.KtConstructor
 import io.verik.importer.ast.kt.element.KtDeclaration
+import io.verik.importer.ast.kt.element.KtEnum
+import io.verik.importer.ast.kt.element.KtEnumEntry
+import io.verik.importer.ast.kt.element.KtFunction
 import io.verik.importer.ast.kt.element.KtProperty
 import io.verik.importer.ast.kt.element.KtValueParameter
+import io.verik.importer.ast.kt.property.AnnotationEntry
 import io.verik.importer.ast.sv.element.declaration.SvClass
+import io.verik.importer.ast.sv.element.declaration.SvConstructor
 import io.verik.importer.ast.sv.element.declaration.SvDeclaration
+import io.verik.importer.ast.sv.element.declaration.SvEnum
+import io.verik.importer.ast.sv.element.declaration.SvEnumEntry
+import io.verik.importer.ast.sv.element.declaration.SvFunction
 import io.verik.importer.ast.sv.element.declaration.SvModule
 import io.verik.importer.ast.sv.element.declaration.SvPackage
 import io.verik.importer.ast.sv.element.declaration.SvPort
 import io.verik.importer.ast.sv.element.declaration.SvProperty
+import io.verik.importer.ast.sv.element.declaration.SvStruct
+import io.verik.importer.ast.sv.element.declaration.SvTask
+import io.verik.importer.ast.sv.element.declaration.SvValueParameter
 import io.verik.importer.core.Core
 import io.verik.importer.message.Messages
 
@@ -36,11 +48,16 @@ object DeclarationInterpreter {
             is SvPackage -> null
             is SvClass -> interpretClassFromClass(declaration)
             is SvModule -> interpretClassFromModule(declaration)
+            is SvStruct -> interpretClassFromStruct(declaration)
+            is SvEnum -> interpretEnumFromEnum(declaration)
+            is SvFunction -> interpretFunctionFromFunction(declaration)
+            is SvTask -> interpretFunctionFromTask(declaration)
+            is SvConstructor -> interpretConstructorFromConstructor(declaration)
             is SvProperty -> interpretPropertyFromProperty(declaration)
             else -> {
                 Messages.INTERNAL_ERROR.on(
                     declaration,
-                    "Unexpected declaration type: ${declaration::class.simpleName}"
+                    "Unable to interpret declaration: ${declaration::class.simpleName}"
                 )
             }
         }
@@ -71,12 +88,88 @@ object DeclarationInterpreter {
         )
     }
 
+    private fun interpretClassFromStruct(struct: SvStruct): KtClass {
+        val valueParameters = struct.properties.map { interpretValueParameterFromProperty(it) }
+        return KtClass(
+            struct.location,
+            struct.name,
+            struct.signature,
+            Core.C_Struct.toType(),
+            ArrayList(valueParameters),
+            arrayListOf(),
+        )
+    }
+
+    private fun interpretEnumFromEnum(enum: SvEnum): KtEnum {
+        val entries = enum.entries.map { interpretEnumEntryFromEnumEntry(it) }
+        return KtEnum(
+            enum.location,
+            enum.name,
+            enum.signature,
+            entries
+        )
+    }
+
+    private fun interpretFunctionFromFunction(function: SvFunction): KtFunction {
+        val valueParameters = function.valueParameters.map { interpretValueParameterFromValueParameter(it) }
+        return KtFunction(
+            function.location,
+            function.name,
+            function.signature,
+            function.type,
+            listOf(),
+            valueParameters
+        )
+    }
+
+    private fun interpretFunctionFromTask(task: SvTask): KtFunction {
+        val valueParameters = task.valueParameters.map { interpretValueParameterFromValueParameter(it) }
+        return KtFunction(
+            task.location,
+            task.name,
+            task.signature,
+            task.type,
+            listOf(AnnotationEntry("Task")),
+            valueParameters
+        )
+    }
+
+    private fun interpretConstructorFromConstructor(constructor: SvConstructor): KtConstructor {
+        val valueParameters = constructor.valueParameters.map { interpretValueParameterFromValueParameter(it) }
+        return KtConstructor(
+            constructor.location,
+            constructor.signature,
+            valueParameters
+        )
+    }
+
     private fun interpretPropertyFromProperty(property: SvProperty): KtProperty {
         return KtProperty(
             property.location,
             property.name,
             property.signature,
-            property.type
+            property.type,
+            property.isMutable
+        )
+    }
+
+    private fun interpretValueParameterFromProperty(property: SvProperty): KtValueParameter {
+        return KtValueParameter(
+            property.location,
+            property.name,
+            property.type,
+            listOf(),
+            property.isMutable
+        )
+    }
+
+    private fun interpretValueParameterFromValueParameter(valueParameter: SvValueParameter): KtValueParameter {
+        return KtValueParameter(
+            valueParameter.location,
+            valueParameter.name,
+            valueParameter.type,
+            listOf(),
+            null
         )
     }
 
@@ -88,6 +181,13 @@ object DeclarationInterpreter {
             port.type,
             listOf(annotationEntry),
             true
+        )
+    }
+
+    private fun interpretEnumEntryFromEnumEntry(enumEntry: SvEnumEntry): KtEnumEntry {
+        return KtEnumEntry(
+            enumEntry.location,
+            enumEntry.name
         )
     }
 }

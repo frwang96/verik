@@ -20,9 +20,11 @@ import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.ast.sv.element.descriptor.SvBitDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvPackedDescriptor
+import io.verik.importer.ast.sv.element.descriptor.SvReferenceDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvSimpleDescriptor
 import io.verik.importer.cast.common.CastContext
 import io.verik.importer.common.Type
+import io.verik.importer.core.Cardinal
 import io.verik.importer.core.Core
 import io.verik.importer.message.SourceLocation
 
@@ -33,13 +35,51 @@ object DescriptorCaster {
         castContext: CastContext
     ): SvDescriptor? {
         val location = castContext.getLocation(ctx)
-        val isSigned = castIsSignedFromSigning(ctx.signing())
+        val isSigned = castIsSignedFromSigning(ctx.signing()) ?: false
         return castDescriptorFromPackedDimension(
             location,
             ctx.packedDimension(),
             isSigned,
             castContext
         )
+    }
+
+    fun castDescriptorFromDataTypeInteger(
+        ctx: SystemVerilogParser.DataTypeIntegerContext,
+        castContext: CastContext
+    ): SvDescriptor? {
+        val location = castContext.getLocation(ctx)
+        val isSigned = castIsSignedFromSigning(ctx.signing()) ?: true
+        val integerAtomType = ctx.integerAtomType()
+        return when {
+            integerAtomType.INT() != null || integerAtomType.INTEGER() != null -> {
+                if (isSigned) {
+                    SvSimpleDescriptor(location, Core.C_Int.toType())
+                } else {
+                    SvSimpleDescriptor(location, Core.C_Ubit.toType(Cardinal.of(32).toType()))
+                }
+            }
+            integerAtomType.TIME() != null ->
+                SvSimpleDescriptor(location, Core.C_Time.toType())
+            else -> null
+        }
+    }
+
+    fun castDescriptorFromDataTypeString(
+        ctx: SystemVerilogParser.DataTypeStringContext,
+        castContext: CastContext
+    ): SvDescriptor {
+        val location = castContext.getLocation(ctx)
+        return SvSimpleDescriptor(location, Core.C_String.toType())
+    }
+
+    fun castDescriptorFromDataTypeTypeIdentifier(
+        ctx: SystemVerilogParser.DataTypeTypeIdentifierContext,
+        castContext: CastContext
+    ): SvDescriptor {
+        val location = castContext.getLocation(ctx)
+        val name = ctx.typeIdentifier().text
+        return SvReferenceDescriptor(location, Type.unresolved(), name)
     }
 
     fun castDescriptorFromImplicitDataType(
@@ -47,7 +87,7 @@ object DescriptorCaster {
         castContext: CastContext
     ): SvDescriptor? {
         val location = castContext.getLocation(ctx)
-        val isSigned = castIsSignedFromSigning(ctx.signing())
+        val isSigned = castIsSignedFromSigning(ctx.signing()) ?: false
         return castDescriptorFromPackedDimension(
             location,
             ctx.packedDimension(),
@@ -56,11 +96,24 @@ object DescriptorCaster {
         )
     }
 
+    fun castDescriptorFromDataTypeOrVoid(
+        ctx: SystemVerilogParser.DataTypeOrVoidContext,
+        castContext: CastContext
+    ): SvDescriptor? {
+        val dataType = ctx.dataType()
+        return if (dataType != null) {
+            castContext.castDescriptor(dataType)
+        } else {
+            val location = castContext.getLocation(ctx)
+            SvSimpleDescriptor(location, Core.C_Unit.toType())
+        }
+    }
+
     private fun castIsSignedFromSigning(
         ctx: SystemVerilogParser.SigningContext?
-    ): Boolean {
+    ): Boolean? {
         return when {
-            ctx == null -> false
+            ctx == null -> null
             ctx.SIGNED() != null -> true
             else -> false
         }

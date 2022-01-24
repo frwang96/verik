@@ -14,28 +14,21 @@
  * limitations under the License.
  */
 
-package io.verik.importer.cast.common
+package io.verik.importer.ast.sv.element.descriptor
 
-enum class SignatureFragmentKind {
-    TEXT,
-    NULL,
-    NAME,
-    BREAK,
-    INDENT_IN,
-    INDENT_OUT,
-    SEMICOLON,
-    COLON,
-    SHARP,
-    COMMA,
-    COMMA_BREAK,
-    LBRACK,
-    RBRACK,
-    LPAREN,
-    LPAREN_BREAK,
-    RPAREN,
-    RPAREN_BREAK,
-    LBRACE,
-    LBRACE_BREAK,
-    RBRACE,
-    RBRACE_BREAK
+import io.verik.importer.common.SvVisitor
+import io.verik.importer.common.Type
+import io.verik.importer.message.SourceLocation
+
+class SvReferenceDescriptor(
+    override val location: SourceLocation,
+    override var type: Type,
+    val name: String
+) : SvDescriptor() {
+
+    override fun accept(visitor: SvVisitor) {
+        visitor.visitReferenceDescriptor(this)
+    }
+
+    override fun acceptChildren(visitor: SvVisitor) {}
 }

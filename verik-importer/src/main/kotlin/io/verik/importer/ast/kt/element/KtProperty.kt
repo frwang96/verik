@@ -23,8 +23,9 @@ import io.verik.importer.message.SourceLocation
 class KtProperty(
     override val location: SourceLocation,
     override val name: String,
-    override val signature: String,
-    override val type: Type
+    override val signature: String?,
+    override val type: Type,
+    val isMutable: Boolean
 ) : KtDeclaration() {
 
     override fun accept(visitor: KtVisitor) {

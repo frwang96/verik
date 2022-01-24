@@ -20,6 +20,8 @@ import io.verik.importer.ast.sv.element.common.SvContainerElement
 import io.verik.importer.ast.sv.element.common.SvElement
 import io.verik.importer.ast.sv.element.declaration.SvDeclaration
 import io.verik.importer.ast.sv.element.declaration.SvPort
+import io.verik.importer.ast.sv.element.declaration.SvProperty
+import io.verik.importer.ast.sv.element.declaration.SvValueParameter
 import io.verik.importer.ast.sv.element.descriptor.SvDescriptor
 import io.verik.importer.ast.sv.element.expression.SvExpression
 import io.verik.importer.ast.sv.element.expression.SvNothingExpression
@@ -27,6 +29,7 @@ import io.verik.importer.message.Messages
 import io.verik.importer.message.SourceLocation
 import org.antlr.v4.runtime.RuleContext
 import org.antlr.v4.runtime.TokenStream
+import org.antlr.v4.runtime.tree.TerminalNode
 
 class CastContext(
     private val parserTokenStream: TokenStream
@@ -39,12 +42,36 @@ class CastContext(
         return SourceLocation.get(parserTokenStream.get(index))
     }
 
+    fun getLocation(terminalNode: TerminalNode): SourceLocation {
+        return SourceLocation.get(terminalNode)
+    }
+
+    fun castDeclaration(ctx: RuleContext): SvDeclaration? {
+        return when (val element = casterVisitor.getElement<SvElement>(ctx)) {
+            null -> null
+            is SvContainerElement -> {
+                if (element.elements.size != 1)
+                    Messages.INTERNAL_ERROR.on(getLocation(ctx), "Single declaration expected")
+                element.elements.firstOrNull()?.cast()
+            }
+            else -> element.cast()
+        }
+    }
+
     fun castDeclarations(ctx: RuleContext): List<SvDeclaration> {
         return when (val element = casterVisitor.getElement<SvElement>(ctx)) {
             null -> listOf()
             is SvContainerElement -> element.elements.map { it.cast() }
             else -> listOf(element.cast())
         }
+    }
+
+    fun castProperties(ctx: RuleContext): List<SvProperty> {
+        return castDeclarations(ctx).map { it.cast() }
+    }
+
+    fun castValueParameter(ctx: RuleContext): SvValueParameter? {
+        return casterVisitor.getElement(ctx)
     }
 
     fun castPort(ctx: RuleContext): SvPort? {

@@ -80,7 +80,7 @@ object Messages {
 // RESOLVE /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val DECLARATION_NOT_RESOLVED = WarningMessageTemplate1<String>(
-        "Declaration cannot be resolved and will be eliminated: $0"
+        "Declaration could not be resolved and will be eliminated: $0"
     )
 
     init {

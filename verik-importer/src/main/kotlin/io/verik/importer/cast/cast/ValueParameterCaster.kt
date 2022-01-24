@@ -17,20 +17,25 @@
 package io.verik.importer.cast.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.ast.sv.element.declaration.SvClass
+import io.verik.importer.ast.sv.element.declaration.SvValueParameter
 import io.verik.importer.cast.common.CastContext
-import io.verik.importer.cast.common.SignatureBuilder
+import io.verik.importer.common.Type
 
-object ClassCaster {
+object ValueParameterCaster {
 
-    fun castClassFromClassDeclaration(
-        ctx: SystemVerilogParser.ClassDeclarationContext,
+    fun castValueParameterFromTfPortItem(
+        ctx: SystemVerilogParser.TfPortItemContext,
         castContext: CastContext
-    ): SvClass {
-        val location = castContext.getLocation(ctx.CLASS())
-        val name = ctx.classIdentifier()[0].text
-        val signature = SignatureBuilder.buildSignature(ctx, name)
-        val declarations = ctx.classItem().flatMap { castContext.castDeclarations(it) }
-        return SvClass(location, name, signature, ArrayList(declarations))
+    ): SvValueParameter? {
+        val identifier = ctx.portIdentifier()
+        val location = castContext.getLocation(identifier)
+        val name = identifier.text
+        val descriptor = castContext.castDescriptor(ctx.dataTypeOrImplicit()) ?: return null
+        return SvValueParameter(
+            location,
+            name,
+            Type.unresolved(),
+            descriptor
+        )
     }
 }
