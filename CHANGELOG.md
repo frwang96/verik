@@ -9,7 +9,7 @@
 - Descriptor AST element to track types.
 - Document with original signature.
 - Import tasks and functions.
-- Import enum typedefs.
+- Import enum and struct typedefs.
 
 ### Compiler
 - Replace slice function with array indexing notation.

@@ -122,7 +122,15 @@ class SignatureVisitor : SystemVerilogParserBaseVisitor<Unit>() {
     override fun visitDataTypeEnum(ctx: SystemVerilogParser.DataTypeEnumContext?) {
         accept(ctx!!.ENUM())
         accept(ctx.enumBaseType())
-        acceptWrapBraceBreak(ctx.enumNameDeclaration())
+        acceptWrapBraceBreak(ctx.enumNameDeclaration(), true)
+        accept(ctx.packedDimension())
+    }
+
+    override fun visitDataTypeStruct(ctx: SystemVerilogParser.DataTypeStructContext?) {
+        accept(ctx!!.structUnion())
+        accept(ctx.PACKED())
+        accept(ctx.signing())
+        acceptWrapBraceBreak(ctx.structUnionMember(), false)
         accept(ctx.packedDimension())
     }
 
@@ -207,7 +215,7 @@ class SignatureVisitor : SystemVerilogParserBaseVisitor<Unit>() {
         }
     }
 
-    private fun acceptWrapBraceBreak(ctxs: List<RuleContext>) {
+    private fun acceptWrapBraceBreak(ctxs: List<RuleContext>, isCommaBreak: Boolean) {
         if (ctxs.isEmpty()) {
             add(SignatureFragmentKind.LBRACE)
             add(SignatureFragmentKind.RBRACE)
@@ -215,7 +223,11 @@ class SignatureVisitor : SystemVerilogParserBaseVisitor<Unit>() {
             add(SignatureFragmentKind.LBRACE_BREAK)
             accept(ctxs[0])
             ctxs.drop(1).forEach {
-                add(SignatureFragmentKind.COMMA_BREAK)
+                if (isCommaBreak) {
+                    add(SignatureFragmentKind.COMMA_BREAK)
+                } else {
+                    add(SignatureFragmentKind.BREAK)
+                }
                 accept(it)
             }
             add(SignatureFragmentKind.RBRACE_BREAK)

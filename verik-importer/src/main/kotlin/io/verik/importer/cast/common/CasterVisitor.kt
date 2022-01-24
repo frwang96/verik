@@ -151,6 +151,10 @@ class CasterVisitor(
         return DescriptorCaster.castDescriptorFromImplicitDataType(ctx!!, castContext)
     }
 
+    override fun visitStructUnionMember(ctx: SystemVerilogParser.StructUnionMemberContext?): SvElement? {
+        return PropertyCaster.castPropertiesFromStructUnionMember(ctx!!, castContext)
+    }
+
     override fun visitDataTypeOrVoid(ctx: SystemVerilogParser.DataTypeOrVoidContext?): SvElement? {
         return DescriptorCaster.castDescriptorFromDataTypeOrVoid(ctx!!, castContext)
     }

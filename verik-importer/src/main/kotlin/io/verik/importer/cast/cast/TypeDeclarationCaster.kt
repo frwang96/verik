@@ -19,6 +19,7 @@ package io.verik.importer.cast.cast
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.ast.sv.element.declaration.SvEnum
 import io.verik.importer.ast.sv.element.declaration.SvEnumEntry
+import io.verik.importer.ast.sv.element.declaration.SvStruct
 import io.verik.importer.ast.sv.element.declaration.SvTypeDeclaration
 import io.verik.importer.cast.common.CastContext
 import io.verik.importer.cast.common.SignatureBuilder
@@ -31,12 +32,14 @@ object TypeDeclarationCaster {
     ): SvTypeDeclaration? {
         return when (val dataType = ctx.dataType()) {
             is SystemVerilogParser.DataTypeEnumContext ->
-                castEnumFromDataTypeEnumContext(ctx, dataType, castContext)
+                castEnumFromDataTypeEnum(ctx, dataType, castContext)
+            is SystemVerilogParser.DataTypeStructContext ->
+                castStructFromDataTypeStruct(ctx, dataType, castContext)
             else -> null
         }
     }
 
-    private fun castEnumFromDataTypeEnumContext(
+    private fun castEnumFromDataTypeEnum(
         ctx: SystemVerilogParser.TypeDeclarationDataContext,
         dataTypeEnum: SystemVerilogParser.DataTypeEnumContext,
         castContext: CastContext
@@ -52,5 +55,23 @@ object TypeDeclarationCaster {
             SvEnumEntry(entryLocation, entryName)
         }
         return SvEnum(location, name, signature, entries)
+    }
+
+    private fun castStructFromDataTypeStruct(
+        ctx: SystemVerilogParser.TypeDeclarationDataContext,
+        dataTypeStruct: SystemVerilogParser.DataTypeStructContext,
+        castContext: CastContext
+    ): SvStruct {
+        val identifier = ctx.typeIdentifier()
+        val location = castContext.getLocation(identifier)
+        val name = identifier.text
+        val signature = SignatureBuilder.buildSignature(ctx, name)
+        val properties = dataTypeStruct.structUnionMember().flatMap { castContext.castProperties(it) }
+        return SvStruct(
+            location,
+            name,
+            signature,
+            properties
+        )
     }
 }

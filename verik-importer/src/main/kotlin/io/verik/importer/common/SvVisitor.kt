@@ -31,6 +31,7 @@ import io.verik.importer.ast.sv.element.declaration.SvModule
 import io.verik.importer.ast.sv.element.declaration.SvPackage
 import io.verik.importer.ast.sv.element.declaration.SvPort
 import io.verik.importer.ast.sv.element.declaration.SvProperty
+import io.verik.importer.ast.sv.element.declaration.SvStruct
 import io.verik.importer.ast.sv.element.declaration.SvTask
 import io.verik.importer.ast.sv.element.declaration.SvTypeDeclaration
 import io.verik.importer.ast.sv.element.declaration.SvValueParameter
@@ -79,6 +80,10 @@ abstract class SvVisitor {
 
     open fun visitTypeDeclaration(typeDeclaration: SvTypeDeclaration) {
         visitDeclaration(typeDeclaration)
+    }
+
+    open fun visitStruct(struct: SvStruct) {
+        visitTypeDeclaration(struct)
     }
 
     open fun visitEnum(enum: SvEnum) {

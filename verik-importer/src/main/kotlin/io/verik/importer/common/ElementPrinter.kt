@@ -27,6 +27,7 @@ import io.verik.importer.ast.sv.element.declaration.SvModule
 import io.verik.importer.ast.sv.element.declaration.SvPackage
 import io.verik.importer.ast.sv.element.declaration.SvPort
 import io.verik.importer.ast.sv.element.declaration.SvProperty
+import io.verik.importer.ast.sv.element.declaration.SvStruct
 import io.verik.importer.ast.sv.element.declaration.SvTask
 import io.verik.importer.ast.sv.element.declaration.SvValueParameter
 import io.verik.importer.ast.sv.element.descriptor.SvBitDescriptor
@@ -71,6 +72,13 @@ class ElementPrinter : SvVisitor() {
             build(module.name)
             build(module.declarations)
             build(module.ports)
+        }
+    }
+
+    override fun visitStruct(struct: SvStruct) {
+        build("Struct") {
+            build(struct.name)
+            build(struct.properties)
         }
     }
 

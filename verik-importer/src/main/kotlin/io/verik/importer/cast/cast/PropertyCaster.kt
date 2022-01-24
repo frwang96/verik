@@ -51,4 +51,28 @@ object PropertyCaster {
         }
         return SvContainerElement(castContext.getLocation(ctx), properties)
     }
+
+    fun castPropertiesFromStructUnionMember(
+        ctx: SystemVerilogParser.StructUnionMemberContext,
+        castContext: CastContext
+    ): SvContainerElement? {
+        val descriptor = castContext.castDescriptor(ctx.dataTypeOrVoid()) ?: return null
+        val identifiers = ctx.listOfVariableDeclAssignments()
+            .variableDeclAssignment()
+            .filterIsInstance<SystemVerilogParser.VariableDeclAssignmentVariableContext>()
+            .map { it.variableIdentifier() }
+        val properties = identifiers.map {
+            val location = castContext.getLocation(it)
+            val name = it.text
+            SvProperty(
+                location,
+                name,
+                null,
+                Type.unresolved(),
+                ElementCopier.deepCopy(descriptor),
+                true
+            )
+        }
+        return SvContainerElement(castContext.getLocation(ctx), properties)
+    }
 }

@@ -33,4 +33,17 @@ internal class TypeDeclarationCasterTest : BaseTest() {
             "Enum(e, [EnumEntry(A)])"
         ) { it.findDeclaration("e") }
     }
+
+    @Test
+    fun `cast struct from dataTypeStruct`() {
+        driveCasterTest(
+            SystemVerilogParser.DataTypeStructContext::class,
+            """
+                typedef struct {
+                    logic x;
+                } s;
+            """.trimIndent(),
+            "Struct(s, [Property(x, Nothing, SimpleDescriptor(Boolean))])"
+        ) { it.findDeclaration("s") }
+    }
 }

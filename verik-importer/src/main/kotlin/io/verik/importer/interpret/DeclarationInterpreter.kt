@@ -35,6 +35,7 @@ import io.verik.importer.ast.sv.element.declaration.SvModule
 import io.verik.importer.ast.sv.element.declaration.SvPackage
 import io.verik.importer.ast.sv.element.declaration.SvPort
 import io.verik.importer.ast.sv.element.declaration.SvProperty
+import io.verik.importer.ast.sv.element.declaration.SvStruct
 import io.verik.importer.ast.sv.element.declaration.SvTask
 import io.verik.importer.ast.sv.element.declaration.SvValueParameter
 import io.verik.importer.core.Core
@@ -47,6 +48,7 @@ object DeclarationInterpreter {
             is SvPackage -> null
             is SvClass -> interpretClassFromClass(declaration)
             is SvModule -> interpretClassFromModule(declaration)
+            is SvStruct -> interpretClassFromStruct(declaration)
             is SvEnum -> interpretEnumFromEnum(declaration)
             is SvFunction -> interpretFunctionFromFunction(declaration)
             is SvTask -> interpretFunctionFromTask(declaration)
@@ -83,6 +85,18 @@ object DeclarationInterpreter {
             Core.C_Module.toType(),
             ArrayList(valueParameters),
             ArrayList(declarations)
+        )
+    }
+
+    private fun interpretClassFromStruct(struct: SvStruct): KtClass {
+        val valueParameters = struct.properties.map { interpretValueParameterFromProperty(it) }
+        return KtClass(
+            struct.location,
+            struct.name,
+            struct.signature,
+            Core.C_Struct.toType(),
+            ArrayList(valueParameters),
+            arrayListOf(),
         )
     }
 
@@ -135,6 +149,16 @@ object DeclarationInterpreter {
             property.name,
             property.signature,
             property.type,
+            property.isMutable
+        )
+    }
+
+    private fun interpretValueParameterFromProperty(property: SvProperty): KtValueParameter {
+        return KtValueParameter(
+            property.location,
+            property.name,
+            property.type,
+            listOf(),
             property.isMutable
         )
     }

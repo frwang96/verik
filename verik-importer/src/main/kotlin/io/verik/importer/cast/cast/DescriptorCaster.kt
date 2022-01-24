@@ -24,6 +24,7 @@ import io.verik.importer.ast.sv.element.descriptor.SvReferenceDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvSimpleDescriptor
 import io.verik.importer.cast.common.CastContext
 import io.verik.importer.common.Type
+import io.verik.importer.core.Cardinal
 import io.verik.importer.core.Core
 import io.verik.importer.message.SourceLocation
 
@@ -51,8 +52,13 @@ object DescriptorCaster {
         val isSigned = castIsSignedFromSigning(ctx.signing()) ?: true
         val integerAtomType = ctx.integerAtomType()
         return when {
-            isSigned && (integerAtomType.INT() != null || integerAtomType.INTEGER() != null) ->
-                SvSimpleDescriptor(location, Core.C_Int.toType())
+            integerAtomType.INT() != null || integerAtomType.INTEGER() != null -> {
+                if (isSigned) {
+                    SvSimpleDescriptor(location, Core.C_Int.toType())
+                } else {
+                    SvSimpleDescriptor(location, Core.C_Ubit.toType(Cardinal.of(32).toType()))
+                }
+            }
             integerAtomType.TIME() != null ->
                 SvSimpleDescriptor(location, Core.C_Time.toType())
             else -> null

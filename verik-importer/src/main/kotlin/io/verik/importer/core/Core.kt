@@ -30,5 +30,6 @@ object Core {
     val C_Packed = CoreClassDeclaration("Packed")
     val C_Time = CoreClassDeclaration("Time")
 
+    val C_Struct = CoreClassDeclaration("Struct")
     val C_Module = CoreClassDeclaration("Module")
 }

@@ -80,6 +80,22 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `serialize class struct`() {
+        driveTextFileTest(
+            """
+                typedef struct {
+                    logic x;
+                } s;
+            """.trimIndent(),
+            """
+                class s(
+                    var x: Boolean
+                ) : Struct()
+            """.trimIndent()
+        )
+    }
+
+    @Test
     fun `serialize enum`() {
         driveTextFileTest(
             """
