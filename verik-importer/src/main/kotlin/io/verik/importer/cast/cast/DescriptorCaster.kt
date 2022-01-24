@@ -33,7 +33,7 @@ object DescriptorCaster {
         castContext: CastContext
     ): SvDescriptor? {
         val location = castContext.getLocation(ctx)
-        val isSigned = castIsSignedFromSigning(ctx.signing())
+        val isSigned = castIsSignedFromSigning(ctx.signing()) ?: false
         return castDescriptorFromPackedDimension(
             location,
             ctx.packedDimension(),
@@ -42,12 +42,28 @@ object DescriptorCaster {
         )
     }
 
+    fun castDescriptorFromDataTypeInteger(
+        ctx: SystemVerilogParser.DataTypeIntegerContext,
+        castContext: CastContext
+    ): SvDescriptor? {
+        val location = castContext.getLocation(ctx)
+        val isSigned = castIsSignedFromSigning(ctx.signing()) ?: true
+        val integerAtomType = ctx.integerAtomType()
+        return when {
+            isSigned && (integerAtomType.INT() != null || integerAtomType.INTEGER() != null) ->
+                SvSimpleDescriptor(location, Core.C_Int.toType())
+            integerAtomType.TIME() != null ->
+                SvSimpleDescriptor(location, Core.C_Time.toType())
+            else -> null
+        }
+    }
+
     fun castDescriptorFromImplicitDataType(
         ctx: SystemVerilogParser.ImplicitDataTypeContext,
         castContext: CastContext
     ): SvDescriptor? {
         val location = castContext.getLocation(ctx)
-        val isSigned = castIsSignedFromSigning(ctx.signing())
+        val isSigned = castIsSignedFromSigning(ctx.signing()) ?: false
         return castDescriptorFromPackedDimension(
             location,
             ctx.packedDimension(),
@@ -58,9 +74,9 @@ object DescriptorCaster {
 
     private fun castIsSignedFromSigning(
         ctx: SystemVerilogParser.SigningContext?
-    ): Boolean {
+    ): Boolean? {
         return when {
-            ctx == null -> false
+            ctx == null -> null
             ctx.SIGNED() != null -> true
             else -> false
         }

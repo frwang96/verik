@@ -82,6 +82,59 @@ class SignatureBuilderTest : BaseTest() {
     }
 
     @Test
+    fun `signature classMethodTask`() {
+        driveSignatureTest(
+            SystemVerilogParser.TaskBodyDeclarationNoPortListContext::class,
+            """
+                class c;
+                    virtual task t;
+                    endtask
+                endclass
+            """.trimIndent(),
+            """
+                virtual task t;
+                endtask
+            """.trimIndent()
+        ) { it.findDeclaration("t") }
+    }
+
+    @Test
+    fun `signature taskBodyDeclarationNoPortList`() {
+        driveSignatureTest(
+            SystemVerilogParser.TaskBodyDeclarationNoPortListContext::class,
+            """
+                task t;
+                    input x;
+                    ${'$'}display();
+                endtask
+            """.trimIndent(),
+            """
+                task t;
+                    input x;
+                endtask
+            """.trimIndent()
+        ) { it.findDeclaration("t") }
+    }
+
+    @Test
+    fun `signature taskBodyDeclarationPortList`() {
+        driveSignatureTest(
+            SystemVerilogParser.TaskBodyDeclarationPortListContext::class,
+            """
+                task t(logic x);
+                    ${'$'}display();
+                endtask
+            """.trimIndent(),
+            """
+                task t(
+                    logic x
+                );
+                endtask
+            """.trimIndent()
+        ) { it.findDeclaration("t") }
+    }
+
+    @Test
     fun `signature dataDeclarationData`() {
         driveSignatureTest(
             SystemVerilogParser.DataDeclarationDataContext::class,

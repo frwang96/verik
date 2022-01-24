@@ -18,6 +18,7 @@ package io.verik.importer.interpret
 
 import io.verik.importer.ast.kt.element.KtClass
 import io.verik.importer.ast.kt.element.KtDeclaration
+import io.verik.importer.ast.kt.element.KtFunction
 import io.verik.importer.ast.kt.element.KtProperty
 import io.verik.importer.ast.kt.element.KtValueParameter
 import io.verik.importer.ast.sv.element.declaration.SvClass
@@ -26,6 +27,7 @@ import io.verik.importer.ast.sv.element.declaration.SvModule
 import io.verik.importer.ast.sv.element.declaration.SvPackage
 import io.verik.importer.ast.sv.element.declaration.SvPort
 import io.verik.importer.ast.sv.element.declaration.SvProperty
+import io.verik.importer.ast.sv.element.declaration.SvTask
 import io.verik.importer.core.Core
 import io.verik.importer.message.Messages
 
@@ -36,6 +38,7 @@ object DeclarationInterpreter {
             is SvPackage -> null
             is SvClass -> interpretClassFromClass(declaration)
             is SvModule -> interpretClassFromModule(declaration)
+            is SvTask -> interpretFunctionFromTask(declaration)
             is SvProperty -> interpretPropertyFromProperty(declaration)
             else -> {
                 Messages.INTERNAL_ERROR.on(
@@ -68,6 +71,15 @@ object DeclarationInterpreter {
             Core.C_Module.toType(),
             ArrayList(valueParameters),
             ArrayList(declarations)
+        )
+    }
+
+    private fun interpretFunctionFromTask(task: SvTask): KtFunction {
+        return KtFunction(
+            task.location,
+            task.name,
+            task.signature,
+            task.type
         )
     }
 

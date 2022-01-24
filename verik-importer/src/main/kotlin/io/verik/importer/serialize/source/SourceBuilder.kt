@@ -35,6 +35,7 @@ class SourceBuilder(
     private val SUPPRESSED_INSPECTIONS = listOf(
         "unused",
         "ClassName",
+        "FunctionName",
         "LongLine",
         "PropertyName",
         "SpellCheckingInspection"

@@ -26,6 +26,7 @@ import io.verik.importer.cast.cast.ModuleCaster
 import io.verik.importer.cast.cast.PackageCaster
 import io.verik.importer.cast.cast.PortCaster
 import io.verik.importer.cast.cast.PropertyCaster
+import io.verik.importer.cast.cast.TaskCaster
 import org.antlr.v4.runtime.RuleContext
 
 class CasterVisitor(
@@ -65,6 +66,10 @@ class CasterVisitor(
     }
 
 // A.1.9 Class Items ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+    override fun visitClassMethodTask(ctx: SystemVerilogParser.ClassMethodTaskContext?): SvElement? {
+        return TaskCaster.castTaskFromClassMethodTask(ctx!!, castContext)
+    }
 
     override fun visitClassMethodExternMethod(ctx: SystemVerilogParser.ClassMethodExternMethodContext?): SvElement? {
         return null
@@ -118,6 +123,10 @@ class CasterVisitor(
         return DescriptorCaster.castDescriptorFromDataTypeVector(ctx!!, castContext)
     }
 
+    override fun visitDataTypeInteger(ctx: SystemVerilogParser.DataTypeIntegerContext?): SvElement? {
+        return DescriptorCaster.castDescriptorFromDataTypeInteger(ctx!!, castContext)
+    }
+
     override fun visitImplicitDataType(ctx: SystemVerilogParser.ImplicitDataTypeContext?): SvElement? {
         return DescriptorCaster.castDescriptorFromImplicitDataType(ctx!!, castContext)
     }
@@ -135,7 +144,19 @@ class CasterVisitor(
 // A.2.7 Task Declarations /////////////////////////////////////////////////////////////////////////////////////////////
 
     override fun visitTaskDeclaration(ctx: SystemVerilogParser.TaskDeclarationContext?): SvElement? {
-        return null
+        return TaskCaster.castTaskFromTaskDeclaration(ctx!!, castContext)
+    }
+
+    override fun visitTaskBodyDeclarationNoPortList(
+        ctx: SystemVerilogParser.TaskBodyDeclarationNoPortListContext?
+    ): SvElement {
+        return TaskCaster.castTaskFromTaskBodyDeclarationNoPortList(ctx!!, castContext)
+    }
+
+    override fun visitTaskBodyDeclarationPortList(
+        ctx: SystemVerilogParser.TaskBodyDeclarationPortListContext?
+    ): SvElement {
+        return TaskCaster.castTaskFromTaskBodyDeclarationPortList(ctx!!, castContext)
     }
 
     override fun visitTaskPrototype(ctx: SystemVerilogParser.TaskPrototypeContext?): SvElement {

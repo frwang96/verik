@@ -675,10 +675,10 @@ taskDeclaration
 taskBodyDeclaration
     : (interfaceIdentifier DOT | classScope)? taskIdentifier SEMICOLON tfItemDeclaration* statementOrNull* ENDTASK
       (COLON taskIdentifier)?
-      # taskBodyDeclarationNoPorts
+      # taskBodyDeclarationNoPortList
     | (interfaceIdentifier DOT | classScope)? taskIdentifier LPAREN tfPortList? RPAREN SEMICOLON blockItemDeclaration*
       statementOrNull* ENDTASK (COLON taskIdentifier)?
-      # taskBodyDeclarationPorts
+      # taskBodyDeclarationPortList
     ;
 
 tfItemDeclaration

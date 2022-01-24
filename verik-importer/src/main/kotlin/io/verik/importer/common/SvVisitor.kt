@@ -26,6 +26,7 @@ import io.verik.importer.ast.sv.element.declaration.SvModule
 import io.verik.importer.ast.sv.element.declaration.SvPackage
 import io.verik.importer.ast.sv.element.declaration.SvPort
 import io.verik.importer.ast.sv.element.declaration.SvProperty
+import io.verik.importer.ast.sv.element.declaration.SvTask
 import io.verik.importer.ast.sv.element.descriptor.SvBitDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvPackedDescriptor
@@ -66,6 +67,12 @@ abstract class SvVisitor {
 
     open fun visitModule(module: SvModule) {
         visitContainerDeclaration(module)
+    }
+
+// Function Like ///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    open fun visitTask(task: SvTask) {
+        visitDeclaration(task)
     }
 
 // Property Like ///////////////////////////////////////////////////////////////////////////////////////////////////////

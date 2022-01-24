@@ -23,7 +23,7 @@ import io.verik.importer.message.SourceLocation
 class SvModule(
     override val location: SourceLocation,
     override val name: String,
-    override val signature: String,
+    override var signature: String?,
     override var declarations: ArrayList<SvDeclaration>,
     val ports: ArrayList<SvPort>,
 ) : SvContainerDeclaration() {

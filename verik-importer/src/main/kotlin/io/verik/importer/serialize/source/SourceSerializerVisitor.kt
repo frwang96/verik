@@ -18,6 +18,7 @@ package io.verik.importer.serialize.source
 
 import io.verik.importer.ast.kt.element.KtClass
 import io.verik.importer.ast.kt.element.KtElement
+import io.verik.importer.ast.kt.element.KtFunction
 import io.verik.importer.ast.kt.element.KtProperty
 import io.verik.importer.ast.kt.element.KtValueParameter
 import io.verik.importer.common.KtVisitor
@@ -33,6 +34,10 @@ class SourceSerializerVisitor(
 
     override fun visitClass(`class`: KtClass) {
         DeclarationSerializer.serializeClass(`class`, serializeContext)
+    }
+
+    override fun visitFunction(function: KtFunction) {
+        DeclarationSerializer.serializeFunction(function, serializeContext)
     }
 
     override fun visitProperty(property: KtProperty) {

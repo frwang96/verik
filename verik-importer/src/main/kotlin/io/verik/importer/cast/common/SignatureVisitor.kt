@@ -115,6 +115,33 @@ class SignatureVisitor : SystemVerilogParserBaseVisitor<Unit>() {
         accept(ctx.SEMICOLON())
     }
 
+// A.2.7 Task Declarations /////////////////////////////////////////////////////////////////////////////////////////////
+
+    override fun visitTaskBodyDeclarationNoPortList(ctx: SystemVerilogParser.TaskBodyDeclarationNoPortListContext?) {
+        accept(ctx!!.interfaceIdentifier())
+        accept(ctx.DOT())
+        accept(ctx.classScope())
+        add(SignatureFragmentKind.NAME)
+        accept(ctx.SEMICOLON())
+        val tfPortDeclarations = ctx.tfItemDeclaration()
+            .mapNotNull { it.tfPortDeclaration() }
+        acceptWrapBreak(tfPortDeclarations)
+        add(SignatureFragmentKind.BREAK)
+        accept(ctx.ENDTASK())
+    }
+
+    override fun visitTaskBodyDeclarationPortList(ctx: SystemVerilogParser.TaskBodyDeclarationPortListContext?) {
+        accept(ctx!!.interfaceIdentifier())
+        accept(ctx.DOT())
+        accept(ctx.classScope())
+        add(SignatureFragmentKind.NAME)
+        val tfPortItems = ctx.tfPortList()?.tfPortItem() ?: listOf()
+        acceptWrapParenthesisBreak(tfPortItems)
+        accept(ctx.SEMICOLON())
+        add(SignatureFragmentKind.BREAK)
+        accept(ctx.ENDTASK())
+    }
+
 // A.9.1 Attributes ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     override fun visitAttributeInstance(ctx: SystemVerilogParser.AttributeInstanceContext?) {}

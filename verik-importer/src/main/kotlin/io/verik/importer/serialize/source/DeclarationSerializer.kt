@@ -18,6 +18,7 @@ package io.verik.importer.serialize.source
 
 import io.verik.importer.ast.kt.element.KtClass
 import io.verik.importer.ast.kt.element.KtDeclaration
+import io.verik.importer.ast.kt.element.KtFunction
 import io.verik.importer.ast.kt.element.KtProperty
 import io.verik.importer.ast.kt.element.KtValueParameter
 import io.verik.importer.core.Core
@@ -48,6 +49,21 @@ object DeclarationSerializer {
             serializeContext.appendLine("}")
         } else {
             serializeContext.appendLine()
+        }
+    }
+
+    fun serializeFunction(function: KtFunction, serializeContext: SerializeContext) {
+        serializeContext.appendLine()
+        serializeDocs(function, serializeContext)
+        serializeContext.append("fun ${function.name}()")
+        if (function.type.reference != Core.C_Unit) {
+            serializeContext.appendLine(": ${function.type} {")
+            serializeContext.indent {
+                serializeContext.appendLine("return imported()")
+            }
+            serializeContext.appendLine("}")
+        } else {
+            serializeContext.appendLine(" {}")
         }
     }
 

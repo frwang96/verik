@@ -18,13 +18,16 @@ package io.verik.importer.core
 
 object Core {
 
-    val C_Nothing = CoreClassDeclaration("Nothing")
     val C_Any = CoreClassDeclaration("Any")
     val C_Unit = CoreClassDeclaration("Unit")
+    val C_Nothing = CoreClassDeclaration("Nothing")
+    val C_Int = CoreClassDeclaration("Int")
     val C_Boolean = CoreClassDeclaration("Boolean")
+
     val C_Ubit = CoreClassDeclaration("Ubit")
     val C_Sbit = CoreClassDeclaration("Sbit")
     val C_Packed = CoreClassDeclaration("Packed")
+    val C_Time = CoreClassDeclaration("Time")
 
     val C_Module = CoreClassDeclaration("Module")
 }

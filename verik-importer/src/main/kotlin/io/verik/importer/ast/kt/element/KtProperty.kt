@@ -23,7 +23,7 @@ import io.verik.importer.message.SourceLocation
 class KtProperty(
     override val location: SourceLocation,
     override val name: String,
-    override val signature: String,
+    override val signature: String?,
     override val type: Type
 ) : KtDeclaration() {
 

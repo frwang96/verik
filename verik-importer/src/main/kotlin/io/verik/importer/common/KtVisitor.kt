@@ -20,6 +20,7 @@ import io.verik.importer.ast.kt.element.KtClass
 import io.verik.importer.ast.kt.element.KtDeclaration
 import io.verik.importer.ast.kt.element.KtElement
 import io.verik.importer.ast.kt.element.KtFile
+import io.verik.importer.ast.kt.element.KtFunction
 import io.verik.importer.ast.kt.element.KtPackage
 import io.verik.importer.ast.kt.element.KtProject
 import io.verik.importer.ast.kt.element.KtProperty
@@ -47,6 +48,10 @@ abstract class KtVisitor {
 
     open fun visitClass(`class`: KtClass) {
         visitDeclaration(`class`)
+    }
+
+    open fun visitFunction(function: KtFunction) {
+        visitDeclaration(function)
     }
 
     open fun visitProperty(property: KtProperty) {

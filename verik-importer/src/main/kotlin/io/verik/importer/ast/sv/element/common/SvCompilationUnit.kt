@@ -28,7 +28,7 @@ class SvCompilationUnit(
 
     override val location: SourceLocation = SourceLocation.NULL
     override val name = "<unit>"
-    override val signature: String? = null
+    override var signature: String? = null
     override var type = Core.C_Unit.toType()
 
     init {

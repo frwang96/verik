@@ -21,5 +21,5 @@ import io.verik.importer.common.Declaration
 
 abstract class SvDeclaration : SvTypedElement(), Declaration {
 
-    abstract val signature: String?
+    abstract var signature: String?
 }

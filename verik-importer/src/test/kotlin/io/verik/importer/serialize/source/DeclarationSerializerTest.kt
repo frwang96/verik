@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test
 internal class DeclarationSerializerTest : BaseTest() {
 
     @Test
-    fun `serialize class`() {
+    fun `serialize class simple`() {
         driveTextFileTest(
             """
                 class c;
@@ -65,7 +65,20 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize property`() {
+    fun `serialize function task`() {
+        driveTextFileTest(
+            """
+                task t;
+                endtask
+            """.trimIndent(),
+            """
+                fun t() {}
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `serialize property simple`() {
         driveTextFileTest(
             """
                 logic x;

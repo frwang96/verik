@@ -39,6 +39,18 @@ class CastContext(
         return SourceLocation.get(parserTokenStream.get(index))
     }
 
+    fun castDeclaration(ctx: RuleContext): SvDeclaration? {
+        return when (val element = casterVisitor.getElement<SvElement>(ctx)) {
+            null -> null
+            is SvContainerElement -> {
+                if (element.elements.size != 1)
+                    Messages.INTERNAL_ERROR.on(getLocation(ctx), "Single declaration expected")
+                element.elements.firstOrNull()?.cast()
+            }
+            else -> element.cast()
+        }
+    }
+
     fun castDeclarations(ctx: RuleContext): List<SvDeclaration> {
         return when (val element = casterVisitor.getElement<SvElement>(ctx)) {
             null -> listOf()
