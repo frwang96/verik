@@ -17,6 +17,7 @@
 package io.verik.importer.common
 
 import io.verik.importer.ast.kt.element.KtClass
+import io.verik.importer.ast.kt.element.KtConstructor
 import io.verik.importer.ast.kt.element.KtDeclaration
 import io.verik.importer.ast.kt.element.KtElement
 import io.verik.importer.ast.kt.element.KtFile
@@ -52,6 +53,10 @@ abstract class KtVisitor {
 
     open fun visitFunction(function: KtFunction) {
         visitDeclaration(function)
+    }
+
+    open fun visitConstructor(constructor: KtConstructor) {
+        visitDeclaration(constructor)
     }
 
     open fun visitProperty(property: KtProperty) {

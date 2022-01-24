@@ -122,6 +122,26 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `serialize constructor`() {
+        driveTextFileTest(
+            """
+                class c;
+                    function new(logic x);
+                    endfunction
+                endclass
+            """.trimIndent(),
+            """
+                class c {
+                
+                    constructor(
+                        x: Boolean
+                    )
+                }
+            """.trimIndent()
+        )
+    }
+
+    @Test
     fun `serialize property mutable`() {
         driveTextFileTest(
             """

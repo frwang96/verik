@@ -28,6 +28,7 @@ import io.verik.importer.message.Messages
 import io.verik.importer.message.SourceLocation
 import org.antlr.v4.runtime.RuleContext
 import org.antlr.v4.runtime.TokenStream
+import org.antlr.v4.runtime.tree.TerminalNode
 
 class CastContext(
     private val parserTokenStream: TokenStream
@@ -38,6 +39,10 @@ class CastContext(
     fun getLocation(ctx: RuleContext): SourceLocation {
         val index = ctx.sourceInterval.a
         return SourceLocation.get(parserTokenStream.get(index))
+    }
+
+    fun getLocation(terminalNode: TerminalNode): SourceLocation {
+        return SourceLocation.get(terminalNode)
     }
 
     fun castDeclaration(ctx: RuleContext): SvDeclaration? {

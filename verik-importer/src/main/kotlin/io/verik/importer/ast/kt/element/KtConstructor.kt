@@ -14,33 +14,27 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.sv.element.declaration
+package io.verik.importer.ast.kt.element
 
-import io.verik.importer.ast.sv.element.descriptor.SvDescriptor
-import io.verik.importer.common.SvVisitor
+import io.verik.importer.common.KtVisitor
 import io.verik.importer.common.Type
+import io.verik.importer.core.Core
 import io.verik.importer.message.SourceLocation
 
-class SvFunction(
+class KtConstructor(
     override val location: SourceLocation,
-    override val name: String,
-    override var signature: String?,
-    override var type: Type,
-    override val valueParameters: List<SvValueParameter>,
-    val descriptor: SvDescriptor
-) : SvAbstractFunction() {
+    override val signature: String?,
+    val valueParameters: List<KtValueParameter>
+) : KtDeclaration() {
 
-    init {
-        descriptor.parent = this
-        valueParameters.forEach { it.parent = this }
+    override val name: String = "new"
+    override val type: Type = Core.C_Unit.toType()
+
+    override fun accept(visitor: KtVisitor) {
+        visitor.visitConstructor(this)
     }
 
-    override fun accept(visitor: SvVisitor) {
-        visitor.visitFunction(this)
-    }
-
-    override fun acceptChildren(visitor: SvVisitor) {
-        super.acceptChildren(visitor)
-        descriptor.accept(visitor)
+    override fun acceptChildren(visitor: KtVisitor) {
+        valueParameters.forEach { it.accept(visitor) }
     }
 }

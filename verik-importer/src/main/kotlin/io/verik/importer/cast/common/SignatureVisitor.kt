@@ -95,6 +95,17 @@ class SignatureVisitor : SystemVerilogParserBaseVisitor<Unit>() {
         acceptWrapParenthesisBreak(ctx!!.ansiPortDeclaration())
     }
 
+// A.1.9 Class Items ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+    override fun visitClassConstructorDeclaration(ctx: SystemVerilogParser.ClassConstructorDeclarationContext?) {
+        accept(ctx!!.FUNCTION())
+        accept(ctx.classScope())
+        add(SignatureFragmentKind.NAME)
+        val tfPortItems = ctx.tfPortList()?.tfPortItem() ?: listOf()
+        acceptWrapParenthesisBreak(tfPortItems)
+        accept(ctx.SEMICOLON()[0])
+    }
+
 // A.2.1.3 Type Declarations ///////////////////////////////////////////////////////////////////////////////////////////
 
     override fun visitDataDeclarationData(ctx: SystemVerilogParser.DataDeclarationDataContext?) {

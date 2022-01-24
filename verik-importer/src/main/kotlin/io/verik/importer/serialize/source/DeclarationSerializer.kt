@@ -17,6 +17,7 @@
 package io.verik.importer.serialize.source
 
 import io.verik.importer.ast.kt.element.KtClass
+import io.verik.importer.ast.kt.element.KtConstructor
 import io.verik.importer.ast.kt.element.KtDeclaration
 import io.verik.importer.ast.kt.element.KtFunction
 import io.verik.importer.ast.kt.element.KtProperty
@@ -71,6 +72,23 @@ object DeclarationSerializer {
             serializeContext.append("()")
         }
         serializeContext.appendLine(": ${function.type} = imported()")
+    }
+
+    fun serializeConstructor(constructor: KtConstructor, serializeContext: SerializeContext) {
+        serializeContext.appendLine()
+        serializeDocs(constructor, serializeContext)
+        serializeContext.append("constructor")
+        if (constructor.valueParameters.isNotEmpty()) {
+            serializeContext.appendLine("(")
+            serializeContext.indent {
+                serializeContext.serializeJoinAppendLine(constructor.valueParameters) {
+                    serializeContext.serialize(it)
+                }
+            }
+            serializeContext.appendLine(")")
+        } else {
+            serializeContext.appendLine("()")
+        }
     }
 
     fun serializeProperty(property: KtProperty, serializeContext: SerializeContext) {

@@ -58,8 +58,8 @@ object FunctionCaster {
             name,
             null,
             Type.unresolved(),
-            descriptor,
-            listOf()
+            listOf(),
+            descriptor
         )
     }
 
@@ -78,8 +78,8 @@ object FunctionCaster {
             name,
             null,
             Type.unresolved(),
-            descriptor,
-            valueParameters
+            valueParameters,
+            descriptor
         )
     }
 }

@@ -20,6 +20,7 @@ import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.antlr.SystemVerilogParserBaseVisitor
 import io.verik.importer.ast.sv.element.common.SvElement
 import io.verik.importer.cast.cast.ClassCaster
+import io.verik.importer.cast.cast.ConstructorCaster
 import io.verik.importer.cast.cast.DescriptorCaster
 import io.verik.importer.cast.cast.ExpressionCaster
 import io.verik.importer.cast.cast.FunctionCaster
@@ -81,6 +82,10 @@ class CasterVisitor(
         return null
     }
 
+    override fun visitClassMethodConstructor(ctx: SystemVerilogParser.ClassMethodConstructorContext?): SvElement? {
+        return ConstructorCaster.castConstructorFromClassMethodConstructor(ctx!!, castContext)
+    }
+
     override fun visitClassMethodExternConstructor(
         ctx: SystemVerilogParser.ClassMethodExternConstructorContext?
     ): SvElement? {
@@ -90,7 +95,7 @@ class CasterVisitor(
     override fun visitClassConstructorDeclaration(
         ctx: SystemVerilogParser.ClassConstructorDeclarationContext?
     ): SvElement? {
-        return null
+        return ConstructorCaster.castConstructorFromClassConstructorDeclaration(ctx!!, castContext)
     }
 
 // A.2.1.1 Module Parameter Declarations ///////////////////////////////////////////////////////////////////////////////

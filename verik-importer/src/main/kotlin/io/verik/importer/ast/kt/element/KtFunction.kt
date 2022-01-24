@@ -34,5 +34,7 @@ class KtFunction(
         visitor.visitFunction(this)
     }
 
-    override fun acceptChildren(visitor: KtVisitor) {}
+    override fun acceptChildren(visitor: KtVisitor) {
+        valueParameters.forEach { it.accept(visitor) }
+    }
 }

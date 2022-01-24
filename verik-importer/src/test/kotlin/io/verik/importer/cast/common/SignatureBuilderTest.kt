@@ -163,6 +163,25 @@ class SignatureBuilderTest : BaseTest() {
     }
 
     @Test
+    fun `signature classConstructorDeclaration`() {
+        driveSignatureTest(
+            SystemVerilogParser.ClassConstructorDeclarationContext::class,
+            """
+                class c;
+                    function new(logic x);
+                        ${'$'}display();
+                    endfunction
+                endclass
+            """.trimIndent(),
+            """
+                function new(
+                    logic x
+                );
+            """.trimIndent()
+        ) { it.findDeclaration("new") }
+    }
+
+    @Test
     fun `signature dataDeclarationData`() {
         driveSignatureTest(
             SystemVerilogParser.DataDeclarationDataContext::class,

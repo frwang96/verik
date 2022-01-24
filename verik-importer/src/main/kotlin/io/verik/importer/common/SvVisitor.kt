@@ -21,6 +21,7 @@ import io.verik.importer.ast.sv.element.common.SvElement
 import io.verik.importer.ast.sv.element.common.SvTypedElement
 import io.verik.importer.ast.sv.element.declaration.SvAbstractFunction
 import io.verik.importer.ast.sv.element.declaration.SvClass
+import io.verik.importer.ast.sv.element.declaration.SvConstructor
 import io.verik.importer.ast.sv.element.declaration.SvContainerDeclaration
 import io.verik.importer.ast.sv.element.declaration.SvDeclaration
 import io.verik.importer.ast.sv.element.declaration.SvFunction
@@ -84,6 +85,10 @@ abstract class SvVisitor {
 
     open fun visitTask(task: SvTask) {
         visitAbstractFunction(task)
+    }
+
+    open fun visitConstructor(constructor: SvConstructor) {
+        visitAbstractFunction(constructor)
     }
 
 // Property Like ///////////////////////////////////////////////////////////////////////////////////////////////////////

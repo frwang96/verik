@@ -21,29 +21,19 @@ import io.verik.importer.test.BaseTest
 import io.verik.importer.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class FunctionCasterTest : BaseTest() {
+internal class ConstructorCasterTest : BaseTest() {
 
     @Test
-    fun `cast function from functionBodyDeclarationNoPortList simple`() {
+    fun `cast constructor from classConstructorDeclarations`() {
         driveCasterTest(
-            SystemVerilogParser.FunctionBodyDeclarationNoPortListContext::class,
+            SystemVerilogParser.ClassConstructorDeclarationContext::class,
             """
-                function void f;
-                endfunction
+                class c;
+                    function new(logic x);
+                    endfunction
+                endclass
             """.trimIndent(),
-            "Function(f, Nothing, [], SimpleDescriptor(Unit))"
-        ) { it.findDeclaration("f") }
-    }
-
-    @Test
-    fun `cast function from functionBodyDeclarationPortList`() {
-        driveCasterTest(
-            SystemVerilogParser.FunctionBodyDeclarationPortListContext::class,
-            """
-                function void f(logic x);
-                endfunction
-            """.trimIndent(),
-            "Function(f, Nothing, [ValueParameter(x, Nothing, SimpleDescriptor(Boolean))], SimpleDescriptor(Unit))"
-        ) { it.findDeclaration("f") }
+            "Constructor([ValueParameter(x, Nothing, SimpleDescriptor(Boolean))])"
+        ) { it.findDeclaration("new") }
     }
 }

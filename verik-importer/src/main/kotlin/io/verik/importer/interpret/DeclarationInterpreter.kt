@@ -17,12 +17,14 @@
 package io.verik.importer.interpret
 
 import io.verik.importer.ast.kt.element.KtClass
+import io.verik.importer.ast.kt.element.KtConstructor
 import io.verik.importer.ast.kt.element.KtDeclaration
 import io.verik.importer.ast.kt.element.KtFunction
 import io.verik.importer.ast.kt.element.KtProperty
 import io.verik.importer.ast.kt.element.KtValueParameter
 import io.verik.importer.ast.kt.property.AnnotationEntry
 import io.verik.importer.ast.sv.element.declaration.SvClass
+import io.verik.importer.ast.sv.element.declaration.SvConstructor
 import io.verik.importer.ast.sv.element.declaration.SvDeclaration
 import io.verik.importer.ast.sv.element.declaration.SvFunction
 import io.verik.importer.ast.sv.element.declaration.SvModule
@@ -43,6 +45,7 @@ object DeclarationInterpreter {
             is SvModule -> interpretClassFromModule(declaration)
             is SvFunction -> interpretFunctionFromFunction(declaration)
             is SvTask -> interpretFunctionFromTask(declaration)
+            is SvConstructor -> interpretConstructorFromConstructor(declaration)
             is SvProperty -> interpretPropertyFromProperty(declaration)
             else -> {
                 Messages.INTERNAL_ERROR.on(
@@ -98,6 +101,15 @@ object DeclarationInterpreter {
             task.signature,
             task.type,
             listOf(AnnotationEntry("Task")),
+            valueParameters
+        )
+    }
+
+    private fun interpretConstructorFromConstructor(constructor: SvConstructor): KtConstructor {
+        val valueParameters = constructor.valueParameters.map { interpretValueParameterFromValueParameter(it) }
+        return KtConstructor(
+            constructor.location,
+            constructor.signature,
             valueParameters
         )
     }

@@ -16,4 +16,13 @@
 
 package io.verik.importer.ast.sv.element.declaration
 
-abstract class SvAbstractFunction : SvDeclaration()
+import io.verik.importer.common.SvVisitor
+
+abstract class SvAbstractFunction : SvDeclaration() {
+
+    abstract val valueParameters: List<SvValueParameter>
+
+    override fun acceptChildren(visitor: SvVisitor) {
+        valueParameters.forEach { it.accept(visitor) }
+    }
+}

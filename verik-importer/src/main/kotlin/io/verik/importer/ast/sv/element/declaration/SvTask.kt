@@ -24,7 +24,7 @@ class SvTask(
     override val location: SourceLocation,
     override val name: String,
     override var signature: String?,
-    val valueParameters: List<SvValueParameter>
+    override val valueParameters: List<SvValueParameter>
 ) : SvAbstractFunction() {
 
     init {
@@ -35,9 +35,5 @@ class SvTask(
 
     override fun accept(visitor: SvVisitor) {
         visitor.visitTask(this)
-    }
-
-    override fun acceptChildren(visitor: SvVisitor) {
-        valueParameters.forEach { it.accept(visitor) }
     }
 }

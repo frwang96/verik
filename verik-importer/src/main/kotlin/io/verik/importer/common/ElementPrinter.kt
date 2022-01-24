@@ -19,6 +19,7 @@ package io.verik.importer.common
 import io.verik.importer.ast.sv.element.common.SvCompilationUnit
 import io.verik.importer.ast.sv.element.common.SvElement
 import io.verik.importer.ast.sv.element.declaration.SvClass
+import io.verik.importer.ast.sv.element.declaration.SvConstructor
 import io.verik.importer.ast.sv.element.declaration.SvFunction
 import io.verik.importer.ast.sv.element.declaration.SvModule
 import io.verik.importer.ast.sv.element.declaration.SvPackage
@@ -74,8 +75,8 @@ class ElementPrinter : SvVisitor() {
         build("Function") {
             build(function.name)
             build(function.type.toString())
-            build(function.descriptor)
             build(function.valueParameters)
+            build(function.descriptor)
         }
     }
 
@@ -83,6 +84,12 @@ class ElementPrinter : SvVisitor() {
         build("Task") {
             build(task.name)
             build(task.valueParameters)
+        }
+    }
+
+    override fun visitConstructor(constructor: SvConstructor) {
+        build("Constructor") {
+            build(constructor.valueParameters)
         }
     }
 
