@@ -33,6 +33,7 @@ class SourceBuilder(
 
     private val INDENT_LENGTH = 4
     private val SUPPRESSED_INSPECTIONS = listOf(
+        "UNUSED_PARAMETER",
         "unused",
         "ClassName",
         "FunctionName",
@@ -81,12 +82,20 @@ class SourceBuilder(
     }
 
     private fun buildHeader() {
-        val suppressedInspectionsString = SUPPRESSED_INSPECTIONS.joinToString { "\"$it\"" }
-        sourceBuilder.appendLine("@file:Verik")
-        sourceBuilder.appendLine("@file:Suppress($suppressedInspectionsString)")
-        sourceBuilder.appendLine()
-        sourceBuilder.appendLine("package $packageName")
-        sourceBuilder.appendLine()
-        sourceBuilder.appendLine("import io.verik.core.*")
+        appendLine("@file:Verik")
+        appendLine("@file:Suppress(")
+        indent {
+            append("\"${SUPPRESSED_INSPECTIONS[0]}\"")
+            SUPPRESSED_INSPECTIONS.drop(1).forEach {
+                appendLine(",")
+                append("\"$it\"")
+            }
+            appendLine()
+        }
+        appendLine(")")
+        appendLine()
+        appendLine("package $packageName")
+        appendLine()
+        appendLine("import io.verik.core.*")
     }
 }

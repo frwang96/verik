@@ -16,28 +16,29 @@
 
 package io.verik.importer.ast.sv.element.declaration
 
+import io.verik.importer.ast.sv.element.descriptor.SvDescriptor
 import io.verik.importer.common.SvVisitor
-import io.verik.importer.core.Core
+import io.verik.importer.common.Type
 import io.verik.importer.message.SourceLocation
 
-class SvTask(
+class SvValueParameter(
     override val location: SourceLocation,
     override val name: String,
-    override var signature: String?,
-    val valueParameters: List<SvValueParameter>
-) : SvAbstractFunction() {
+    override var type: Type,
+    val descriptor: SvDescriptor
+) : SvDeclaration() {
 
     init {
-        valueParameters.forEach { it.parent = this }
+        descriptor.parent = this
     }
 
-    override var type = Core.C_Unit.toType()
+    override var signature: String? = null
 
     override fun accept(visitor: SvVisitor) {
-        visitor.visitTask(this)
+        visitor.visitValueParameter(this)
     }
 
     override fun acceptChildren(visitor: SvVisitor) {
-        valueParameters.forEach { it.accept(visitor) }
+        descriptor.accept(visitor)
     }
 }

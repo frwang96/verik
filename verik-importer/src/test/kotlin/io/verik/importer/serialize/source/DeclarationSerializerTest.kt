@@ -35,6 +35,23 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `serialize class with property`() {
+        driveTextFileTest(
+            """
+                class c;
+                    logic x;
+                endclass
+            """.trimIndent(),
+            """
+                class c {
+                
+                    var x: Boolean = imported()
+                }
+            """.trimIndent()
+        )
+    }
+
+    @Test
     fun `serialize class module`() {
         driveTextFileTest(
             """
@@ -48,18 +65,16 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize class with property`() {
+    fun `serialize class module with value parameter`() {
         driveTextFileTest(
             """
-                class c;
-                    logic x;
-                endclass
+                module m(input x);
+                endmodule
             """.trimIndent(),
             """
-                class c {
-                
-                    val x: Boolean = imported()
-                }
+                class m(
+                    @In var x: Boolean
+                ) : Module()
             """.trimIndent()
         )
     }
@@ -72,9 +87,22 @@ internal class DeclarationSerializerTest : BaseTest() {
                 endfunction
             """.trimIndent(),
             """
-                fun f(): Int {
-                    return imported()
-                }
+                fun f(): Int = imported()
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `serialize function with value parameter`() {
+        driveTextFileTest(
+            """
+                function void f(int x);
+                endfunction
+            """.trimIndent(),
+            """
+                fun f(
+                    x: Int
+                ): Unit = imported()
             """.trimIndent()
         )
     }
@@ -88,7 +116,7 @@ internal class DeclarationSerializerTest : BaseTest() {
             """.trimIndent(),
             """
                 @Task
-                fun t() {}
+                fun t(): Unit = imported()
             """.trimIndent()
         )
     }
@@ -100,22 +128,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 logic x;
             """.trimIndent(),
             """
-                val x: Boolean = imported()
-            """.trimIndent()
-        )
-    }
-
-    @Test
-    fun `serialize value parameter`() {
-        driveTextFileTest(
-            """
-                module m(input x);
-                endmodule
-            """.trimIndent(),
-            """
-                class m(
-                    @In var x: Boolean
-                ) : Module()
+                var x: Boolean = imported()
             """.trimIndent()
         )
     }

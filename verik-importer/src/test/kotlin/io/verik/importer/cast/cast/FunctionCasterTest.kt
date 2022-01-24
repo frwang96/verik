@@ -31,19 +31,19 @@ internal class FunctionCasterTest : BaseTest() {
                 function void f;
                 endfunction
             """.trimIndent(),
-            "Function(f, Nothing, SimpleDescriptor(Unit))"
+            "Function(f, Nothing, SimpleDescriptor(Unit), [])"
         ) { it.findDeclaration("f") }
     }
 
     @Test
-    fun `cast function from functionBodyDeclarationPortList simple`() {
+    fun `cast function from functionBodyDeclarationPortList`() {
         driveCasterTest(
             SystemVerilogParser.FunctionBodyDeclarationPortListContext::class,
             """
-                function void f();
+                function void f(logic x);
                 endfunction
             """.trimIndent(),
-            "Function(f, Nothing, SimpleDescriptor(Unit))"
+            "Function(f, Nothing, SimpleDescriptor(Unit), [ValueParameter(x, Nothing, SimpleDescriptor(Boolean))])"
         ) { it.findDeclaration("f") }
     }
 }

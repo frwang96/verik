@@ -28,6 +28,7 @@ import io.verik.importer.cast.cast.PackageCaster
 import io.verik.importer.cast.cast.PortCaster
 import io.verik.importer.cast.cast.PropertyCaster
 import io.verik.importer.cast.cast.TaskCaster
+import io.verik.importer.cast.cast.ValueParameterCaster
 import org.antlr.v4.runtime.RuleContext
 
 class CasterVisitor(
@@ -178,6 +179,10 @@ class CasterVisitor(
         ctx: SystemVerilogParser.TaskBodyDeclarationPortListContext?
     ): SvElement {
         return TaskCaster.castTaskFromTaskBodyDeclarationPortList(ctx!!, castContext)
+    }
+
+    override fun visitTfPortItem(ctx: SystemVerilogParser.TfPortItemContext?): SvElement? {
+        return ValueParameterCaster.castValueParameterFromTfPortItem(ctx!!, castContext)
     }
 
     override fun visitTaskPrototype(ctx: SystemVerilogParser.TaskPrototypeContext?): SvElement {

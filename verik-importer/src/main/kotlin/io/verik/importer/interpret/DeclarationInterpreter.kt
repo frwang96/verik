@@ -30,6 +30,7 @@ import io.verik.importer.ast.sv.element.declaration.SvPackage
 import io.verik.importer.ast.sv.element.declaration.SvPort
 import io.verik.importer.ast.sv.element.declaration.SvProperty
 import io.verik.importer.ast.sv.element.declaration.SvTask
+import io.verik.importer.ast.sv.element.declaration.SvValueParameter
 import io.verik.importer.core.Core
 import io.verik.importer.message.Messages
 
@@ -78,22 +79,26 @@ object DeclarationInterpreter {
     }
 
     private fun interpretFunctionFromFunction(function: SvFunction): KtFunction {
+        val valueParameters = function.valueParameters.map { interpretValueParameterFromValueParameter(it) }
         return KtFunction(
             function.location,
             function.name,
             function.signature,
             function.type,
-            listOf()
+            listOf(),
+            valueParameters
         )
     }
 
     private fun interpretFunctionFromTask(task: SvTask): KtFunction {
+        val valueParameters = task.valueParameters.map { interpretValueParameterFromValueParameter(it) }
         return KtFunction(
             task.location,
             task.name,
             task.signature,
             task.type,
-            listOf(AnnotationEntry("Task"))
+            listOf(AnnotationEntry("Task")),
+            valueParameters
         )
     }
 
@@ -103,6 +108,16 @@ object DeclarationInterpreter {
             property.name,
             property.signature,
             property.type
+        )
+    }
+
+    private fun interpretValueParameterFromValueParameter(valueParameter: SvValueParameter): KtValueParameter {
+        return KtValueParameter(
+            valueParameter.location,
+            valueParameter.name,
+            valueParameter.type,
+            listOf(),
+            null
         )
     }
 

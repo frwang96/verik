@@ -25,6 +25,7 @@ import io.verik.importer.ast.sv.element.declaration.SvPackage
 import io.verik.importer.ast.sv.element.declaration.SvPort
 import io.verik.importer.ast.sv.element.declaration.SvProperty
 import io.verik.importer.ast.sv.element.declaration.SvTask
+import io.verik.importer.ast.sv.element.declaration.SvValueParameter
 import io.verik.importer.ast.sv.element.descriptor.SvBitDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvPackedDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvSimpleDescriptor
@@ -74,12 +75,14 @@ class ElementPrinter : SvVisitor() {
             build(function.name)
             build(function.type.toString())
             build(function.descriptor)
+            build(function.valueParameters)
         }
     }
 
     override fun visitTask(task: SvTask) {
         build("Task") {
             build(task.name)
+            build(task.valueParameters)
         }
     }
 
@@ -88,6 +91,14 @@ class ElementPrinter : SvVisitor() {
             build(property.name)
             build(property.type.toString())
             build(property.descriptor)
+        }
+    }
+
+    override fun visitValueParameter(valueParameter: SvValueParameter) {
+        build("ValueParameter") {
+            build(valueParameter.name)
+            build(valueParameter.type.toString())
+            build(valueParameter.descriptor)
         }
     }
 

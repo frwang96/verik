@@ -51,7 +51,7 @@ object TaskCaster {
         val identifier = ctx.taskIdentifier()[0]
         val location = castContext.getLocation(identifier)
         val name = identifier.text
-        return SvTask(location, name, null)
+        return SvTask(location, name, null, listOf())
     }
 
     fun castTaskFromTaskBodyDeclarationPortList(
@@ -61,6 +61,6 @@ object TaskCaster {
         val identifier = ctx.taskIdentifier()[0]
         val location = castContext.getLocation(identifier)
         val name = identifier.text
-        return SvTask(location, name, null)
+        return SvTask(location, name, null, listOf())
     }
 }

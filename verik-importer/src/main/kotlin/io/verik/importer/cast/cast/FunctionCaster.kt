@@ -45,7 +45,6 @@ object FunctionCaster {
         return declaration
     }
 
-    @Suppress("DuplicatedCode")
     fun castFunctionFromFunctionBodyDeclarationNoPortList(
         ctx: SystemVerilogParser.FunctionBodyDeclarationNoPortListContext,
         castContext: CastContext
@@ -59,11 +58,11 @@ object FunctionCaster {
             name,
             null,
             Type.unresolved(),
-            descriptor
+            descriptor,
+            listOf()
         )
     }
 
-    @Suppress("DuplicatedCode")
     fun castFunctionFromFunctionBodyDeclarationPortList(
         ctx: SystemVerilogParser.FunctionBodyDeclarationPortListContext,
         castContext: CastContext
@@ -72,12 +71,15 @@ object FunctionCaster {
         val location = castContext.getLocation(identifier)
         val name = identifier.text
         val descriptor = castContext.castDescriptor(ctx.functionDataTypeOrImplicit()) ?: return null
+        val tfPortItems = ctx.tfPortList()?.tfPortItem() ?: listOf()
+        val valueParameters = tfPortItems.map { castContext.castValueParameter(it) ?: return null }
         return SvFunction(
             location,
             name,
             null,
             Type.unresolved(),
-            descriptor
+            descriptor,
+            valueParameters
         )
     }
 }

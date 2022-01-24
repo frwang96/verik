@@ -58,22 +58,25 @@ object DeclarationSerializer {
         function.annotationEntries.forEach {
             serializeContext.appendLine("@${it.name}")
         }
-        serializeContext.append("fun ${function.name}()")
-        if (function.type.reference != Core.C_Unit) {
-            serializeContext.appendLine(": ${function.type} {")
+        serializeContext.append("fun ${function.name}")
+        if (function.valueParameters.isNotEmpty()) {
+            serializeContext.appendLine("(")
             serializeContext.indent {
-                serializeContext.appendLine("return imported()")
+                serializeContext.serializeJoinAppendLine(function.valueParameters) {
+                    serializeContext.serialize(it)
+                }
             }
-            serializeContext.appendLine("}")
+            serializeContext.append(")")
         } else {
-            serializeContext.appendLine(" {}")
+            serializeContext.append("()")
         }
+        serializeContext.appendLine(": ${function.type} = imported()")
     }
 
     fun serializeProperty(property: KtProperty, serializeContext: SerializeContext) {
         serializeContext.appendLine()
         serializeDocs(property, serializeContext)
-        serializeContext.appendLine("val ${property.name}: ${property.type} = imported()")
+        serializeContext.appendLine("var ${property.name}: ${property.type} = imported()")
     }
 
     fun serializeValueParameter(valueParameter: KtValueParameter, serializeContext: SerializeContext) {

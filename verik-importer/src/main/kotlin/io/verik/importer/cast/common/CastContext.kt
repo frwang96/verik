@@ -20,6 +20,7 @@ import io.verik.importer.ast.sv.element.common.SvContainerElement
 import io.verik.importer.ast.sv.element.common.SvElement
 import io.verik.importer.ast.sv.element.declaration.SvDeclaration
 import io.verik.importer.ast.sv.element.declaration.SvPort
+import io.verik.importer.ast.sv.element.declaration.SvValueParameter
 import io.verik.importer.ast.sv.element.descriptor.SvDescriptor
 import io.verik.importer.ast.sv.element.expression.SvExpression
 import io.verik.importer.ast.sv.element.expression.SvNothingExpression
@@ -57,6 +58,10 @@ class CastContext(
             is SvContainerElement -> element.elements.map { it.cast() }
             else -> listOf(element.cast())
         }
+    }
+
+    fun castValueParameter(ctx: RuleContext): SvValueParameter? {
+        return casterVisitor.getElement(ctx)
     }
 
     fun castPort(ctx: RuleContext): SvPort? {

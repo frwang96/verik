@@ -26,11 +26,13 @@ class SvFunction(
     override val name: String,
     override var signature: String?,
     override var type: Type,
-    var descriptor: SvDescriptor
+    val descriptor: SvDescriptor,
+    val valueParameters: List<SvValueParameter>
 ) : SvAbstractFunction() {
 
     init {
         descriptor.parent = this
+        valueParameters.forEach { it.parent = this }
     }
 
     override fun accept(visitor: SvVisitor) {
@@ -39,5 +41,6 @@ class SvFunction(
 
     override fun acceptChildren(visitor: SvVisitor) {
         descriptor.accept(visitor)
+        valueParameters.forEach { it.accept(visitor) }
     }
 }

@@ -29,6 +29,7 @@ import io.verik.importer.ast.sv.element.declaration.SvPackage
 import io.verik.importer.ast.sv.element.declaration.SvPort
 import io.verik.importer.ast.sv.element.declaration.SvProperty
 import io.verik.importer.ast.sv.element.declaration.SvTask
+import io.verik.importer.ast.sv.element.declaration.SvValueParameter
 import io.verik.importer.ast.sv.element.descriptor.SvBitDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvPackedDescriptor
@@ -89,6 +90,10 @@ abstract class SvVisitor {
 
     open fun visitProperty(property: SvProperty) {
         visitDeclaration(property)
+    }
+
+    open fun visitValueParameter(valueParameter: SvValueParameter) {
+         visitDeclaration(valueParameter)
     }
 
     open fun visitPort(port: SvPort) {

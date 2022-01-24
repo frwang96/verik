@@ -21,29 +21,17 @@ import io.verik.importer.test.BaseTest
 import io.verik.importer.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class TaskCasterTest : BaseTest() {
+internal class ValueParameterCasterTest : BaseTest() {
 
     @Test
-    fun `cast task from taskBodyDeclarationNoPortList simple`() {
+    fun `cast valueParameter from tfPortItem`() {
         driveCasterTest(
-            SystemVerilogParser.TaskBodyDeclarationNoPortListContext::class,
+            SystemVerilogParser.TfPortItemContext::class,
             """
-                task t;
-                endtask
+                function void f(int x);
+                endfunction
             """.trimIndent(),
-            "Task(t, [])"
-        ) { it.findDeclaration("t") }
-    }
-
-    @Test
-    fun `cast task from taskBodyDeclarationPortList simple`() {
-        driveCasterTest(
-            SystemVerilogParser.TaskBodyDeclarationPortListContext::class,
-            """
-                task t();
-                endtask
-            """.trimIndent(),
-            "Task(t, [])"
-        ) { it.findDeclaration("t") }
+            "ValueParameter(x, Nothing, SimpleDescriptor(Int))"
+        ) { it.findDeclaration("x") }
     }
 }
