@@ -7,7 +7,8 @@
 - More rules for lexer and parser.
 - Separate SystemVerilog and Kotlin AST.
 - Descriptor AST element to track types.
-- Document with original signature
+- Document with original signature.
+- Import tasks and functions.
 
 ### Compiler
 - Replace slice function with array indexing notation.

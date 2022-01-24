@@ -51,7 +51,6 @@ class SignatureVisitor : SystemVerilogParserBaseVisitor<Unit>() {
         accept(ctx!!.moduleKeyword())
         accept(ctx.lifetime())
         add(SignatureFragmentKind.NAME)
-        accept(ctx.listOfPorts())
         accept(ctx.SEMICOLON())
     }
 
@@ -74,8 +73,6 @@ class SignatureVisitor : SystemVerilogParserBaseVisitor<Unit>() {
 
     override fun visitModuleDeclarationAnsi(ctx: SystemVerilogParser.ModuleDeclarationAnsiContext?) {
         accept(ctx!!.moduleAnsiHeader())
-        add(SignatureFragmentKind.BREAK)
-        accept(ctx.ENDMODULE())
     }
 
     override fun visitClassDeclaration(ctx: SystemVerilogParser.ClassDeclarationContext?) {
@@ -90,15 +87,9 @@ class SignatureVisitor : SystemVerilogParserBaseVisitor<Unit>() {
         accept(ctx.listOfArguments())
         accept(ctx.RPAREN())
         accept(ctx.SEMICOLON())
-        add(SignatureFragmentKind.BREAK)
-        accept(ctx.ENDCLASS())
     }
 
 // A.1.3 Module Parameters and Ports ///////////////////////////////////////////////////////////////////////////////////
-
-    override fun visitListOfPorts(ctx: SystemVerilogParser.ListOfPortsContext?) {
-        acceptWrapParenthesisBreak(ctx!!.port())
-    }
 
     override fun visitListOfPortDeclarations(ctx: SystemVerilogParser.ListOfPortDeclarationsContext?) {
         acceptWrapParenthesisBreak(ctx!!.ansiPortDeclaration())
@@ -115,8 +106,41 @@ class SignatureVisitor : SystemVerilogParserBaseVisitor<Unit>() {
         accept(ctx.SEMICOLON())
     }
 
+// A.2.6 Function Declarations /////////////////////////////////////////////////////////////////////////////////////////
+
+    @Suppress("DuplicatedCode")
+    override fun visitFunctionBodyDeclarationNoPortList(
+        ctx: SystemVerilogParser.FunctionBodyDeclarationNoPortListContext?
+    ) {
+        accept(ctx!!.functionDataTypeOrImplicit())
+        accept(ctx.interfaceIdentifier())
+        accept(ctx.DOT())
+        accept(ctx.classScope())
+        add(SignatureFragmentKind.NAME)
+        accept(ctx.SEMICOLON())
+        val tfPortDeclarations = ctx.tfItemDeclaration()
+            .mapNotNull { it.tfPortDeclaration() }
+        acceptWrapBreak(tfPortDeclarations)
+        add(SignatureFragmentKind.BREAK)
+        accept(ctx.ENDFUNCTION())
+    }
+
+    override fun visitFunctionBodyDeclarationPortList(
+        ctx: SystemVerilogParser.FunctionBodyDeclarationPortListContext?
+    ) {
+        accept(ctx!!.functionDataTypeOrImplicit())
+        accept(ctx.interfaceIdentifier())
+        accept(ctx.DOT())
+        accept(ctx.classScope())
+        add(SignatureFragmentKind.NAME)
+        val tfPortItems = ctx.tfPortList()?.tfPortItem() ?: listOf()
+        acceptWrapParenthesisBreak(tfPortItems)
+        accept(ctx.SEMICOLON())
+    }
+
 // A.2.7 Task Declarations /////////////////////////////////////////////////////////////////////////////////////////////
 
+    @Suppress("DuplicatedCode")
     override fun visitTaskBodyDeclarationNoPortList(ctx: SystemVerilogParser.TaskBodyDeclarationNoPortListContext?) {
         accept(ctx!!.interfaceIdentifier())
         accept(ctx.DOT())
@@ -138,8 +162,6 @@ class SignatureVisitor : SystemVerilogParserBaseVisitor<Unit>() {
         val tfPortItems = ctx.tfPortList()?.tfPortItem() ?: listOf()
         acceptWrapParenthesisBreak(tfPortItems)
         accept(ctx.SEMICOLON())
-        add(SignatureFragmentKind.BREAK)
-        accept(ctx.ENDTASK())
     }
 
 // A.9.1 Attributes ////////////////////////////////////////////////////////////////////////////////////////////////////

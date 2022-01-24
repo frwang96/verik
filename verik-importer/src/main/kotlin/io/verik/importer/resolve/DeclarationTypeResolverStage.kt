@@ -16,6 +16,7 @@
 
 package io.verik.importer.resolve
 
+import io.verik.importer.ast.sv.element.declaration.SvFunction
 import io.verik.importer.ast.sv.element.declaration.SvPort
 import io.verik.importer.ast.sv.element.declaration.SvProperty
 import io.verik.importer.common.SvTreeVisitor
@@ -29,6 +30,10 @@ object DeclarationTypeResolverStage : ProjectStage() {
     }
 
     private object TypeResolverVisitor : SvTreeVisitor() {
+
+        override fun visitFunction(function: SvFunction) {
+            function.type = function.descriptor.type
+        }
 
         override fun visitProperty(property: SvProperty) {
             property.type = property.descriptor.type

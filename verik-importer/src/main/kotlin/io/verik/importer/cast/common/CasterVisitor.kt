@@ -22,6 +22,7 @@ import io.verik.importer.ast.sv.element.common.SvElement
 import io.verik.importer.cast.cast.ClassCaster
 import io.verik.importer.cast.cast.DescriptorCaster
 import io.verik.importer.cast.cast.ExpressionCaster
+import io.verik.importer.cast.cast.FunctionCaster
 import io.verik.importer.cast.cast.ModuleCaster
 import io.verik.importer.cast.cast.PackageCaster
 import io.verik.importer.cast.cast.PortCaster
@@ -69,6 +70,10 @@ class CasterVisitor(
 
     override fun visitClassMethodTask(ctx: SystemVerilogParser.ClassMethodTaskContext?): SvElement? {
         return TaskCaster.castTaskFromClassMethodTask(ctx!!, castContext)
+    }
+
+    override fun visitClassMethodFunction(ctx: SystemVerilogParser.ClassMethodFunctionContext?): SvElement? {
+        return FunctionCaster.castTaskFromClassMethodFunction(ctx!!, castContext)
     }
 
     override fun visitClassMethodExternMethod(ctx: SystemVerilogParser.ClassMethodExternMethodContext?): SvElement? {
@@ -131,10 +136,26 @@ class CasterVisitor(
         return DescriptorCaster.castDescriptorFromImplicitDataType(ctx!!, castContext)
     }
 
+    override fun visitDataTypeOrVoid(ctx: SystemVerilogParser.DataTypeOrVoidContext?): SvElement? {
+        return DescriptorCaster.castDescriptorFromDataTypeOrVoid(ctx!!, castContext)
+    }
+
 // A.2.6 Function Declarations /////////////////////////////////////////////////////////////////////////////////////////
 
     override fun visitFunctionDeclaration(ctx: SystemVerilogParser.FunctionDeclarationContext?): SvElement? {
-        return null
+        return FunctionCaster.castFunctionFromFunctionDeclaration(ctx!!, castContext)
+    }
+
+    override fun visitFunctionBodyDeclarationNoPortList(
+        ctx: SystemVerilogParser.FunctionBodyDeclarationNoPortListContext?
+    ): SvElement? {
+        return FunctionCaster.castFunctionFromFunctionBodyDeclarationNoPortList(ctx!!, castContext)
+    }
+
+    override fun visitFunctionBodyDeclarationPortList(
+        ctx: SystemVerilogParser.FunctionBodyDeclarationPortListContext?
+    ): SvElement? {
+        return FunctionCaster.castFunctionFromFunctionBodyDeclarationPortList(ctx!!, castContext)
     }
 
     override fun visitFunctionPrototype(ctx: SystemVerilogParser.FunctionPrototypeContext?): SvElement? {

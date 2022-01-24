@@ -24,7 +24,7 @@ class SvTask(
     override val location: SourceLocation,
     override val name: String,
     override var signature: String?
-) : SvDeclaration() {
+) : SvAbstractFunction() {
 
     override var type = Core.C_Unit.toType()
 

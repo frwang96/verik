@@ -72,6 +72,19 @@ object DescriptorCaster {
         )
     }
 
+    fun castDescriptorFromDataTypeOrVoid(
+        ctx: SystemVerilogParser.DataTypeOrVoidContext,
+        castContext: CastContext
+    ): SvDescriptor? {
+        val dataType = ctx.dataType()
+        return if (dataType != null) {
+            castContext.castDescriptor(dataType)
+        } else {
+            val location = castContext.getLocation(ctx)
+            SvSimpleDescriptor(location, Core.C_Unit.toType())
+        }
+    }
+
     private fun castIsSignedFromSigning(
         ctx: SystemVerilogParser.SigningContext?
     ): Boolean? {

@@ -55,6 +55,9 @@ object DeclarationSerializer {
     fun serializeFunction(function: KtFunction, serializeContext: SerializeContext) {
         serializeContext.appendLine()
         serializeDocs(function, serializeContext)
+        function.annotationEntries.forEach {
+            serializeContext.appendLine("@${it.name}")
+        }
         serializeContext.append("fun ${function.name}()")
         if (function.type.reference != Core.C_Unit) {
             serializeContext.appendLine(": ${function.type} {")

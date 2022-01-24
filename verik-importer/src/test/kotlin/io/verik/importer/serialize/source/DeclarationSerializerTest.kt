@@ -65,6 +65,21 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `serialize function simple`() {
+        driveTextFileTest(
+            """
+                function int f();
+                endfunction
+            """.trimIndent(),
+            """
+                fun f(): Int {
+                    return imported()
+                }
+            """.trimIndent()
+        )
+    }
+
+    @Test
     fun `serialize function task`() {
         driveTextFileTest(
             """
@@ -72,6 +87,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 endtask
             """.trimIndent(),
             """
+                @Task
                 fun t() {}
             """.trimIndent()
         )

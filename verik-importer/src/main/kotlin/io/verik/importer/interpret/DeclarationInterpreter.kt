@@ -21,8 +21,10 @@ import io.verik.importer.ast.kt.element.KtDeclaration
 import io.verik.importer.ast.kt.element.KtFunction
 import io.verik.importer.ast.kt.element.KtProperty
 import io.verik.importer.ast.kt.element.KtValueParameter
+import io.verik.importer.ast.kt.property.AnnotationEntry
 import io.verik.importer.ast.sv.element.declaration.SvClass
 import io.verik.importer.ast.sv.element.declaration.SvDeclaration
+import io.verik.importer.ast.sv.element.declaration.SvFunction
 import io.verik.importer.ast.sv.element.declaration.SvModule
 import io.verik.importer.ast.sv.element.declaration.SvPackage
 import io.verik.importer.ast.sv.element.declaration.SvPort
@@ -38,6 +40,7 @@ object DeclarationInterpreter {
             is SvPackage -> null
             is SvClass -> interpretClassFromClass(declaration)
             is SvModule -> interpretClassFromModule(declaration)
+            is SvFunction -> interpretFunctionFromFunction(declaration)
             is SvTask -> interpretFunctionFromTask(declaration)
             is SvProperty -> interpretPropertyFromProperty(declaration)
             else -> {
@@ -74,12 +77,23 @@ object DeclarationInterpreter {
         )
     }
 
+    private fun interpretFunctionFromFunction(function: SvFunction): KtFunction {
+        return KtFunction(
+            function.location,
+            function.name,
+            function.signature,
+            function.type,
+            listOf()
+        )
+    }
+
     private fun interpretFunctionFromTask(task: SvTask): KtFunction {
         return KtFunction(
             task.location,
             task.name,
             task.signature,
-            task.type
+            task.type,
+            listOf(AnnotationEntry("Task"))
         )
     }
 

@@ -35,10 +35,7 @@ class SignatureBuilderTest : BaseTest() {
                 endmodule
             """.trimIndent(),
             """
-                module m(
-                    x,
-                    y
-                );
+                module m;
                     input x;
                     output y;
                 endmodule
@@ -60,7 +57,6 @@ class SignatureBuilderTest : BaseTest() {
                     input x,
                     output y
                 );
-                endmodule
             """.trimIndent()
         ) { it.findDeclaration("m") }
     }
@@ -76,7 +72,6 @@ class SignatureBuilderTest : BaseTest() {
             """.trimIndent(),
             """
                 class c #(type T) extends d #(e);
-                endclass
             """.trimIndent()
         ) { it.findDeclaration("c") }
     }
@@ -84,16 +79,15 @@ class SignatureBuilderTest : BaseTest() {
     @Test
     fun `signature classMethodTask`() {
         driveSignatureTest(
-            SystemVerilogParser.TaskBodyDeclarationNoPortListContext::class,
+            SystemVerilogParser.ClassMethodTaskContext::class,
             """
                 class c;
-                    virtual task t;
+                    virtual task t();
                     endtask
                 endclass
             """.trimIndent(),
             """
-                virtual task t;
-                endtask
+                virtual task t();
             """.trimIndent()
         ) { it.findDeclaration("t") }
     }
@@ -129,9 +123,43 @@ class SignatureBuilderTest : BaseTest() {
                 task t(
                     logic x
                 );
-                endtask
             """.trimIndent()
         ) { it.findDeclaration("t") }
+    }
+
+    @Test
+    fun `signature functionBodyDeclarationNoPortList`() {
+        driveSignatureTest(
+            SystemVerilogParser.FunctionBodyDeclarationNoPortListContext::class,
+            """
+                function int f;
+                    input int x;
+                    return x;
+                endfunction
+            """.trimIndent(),
+            """
+                function int f;
+                    input int x;
+                endfunction
+            """.trimIndent()
+        ) { it.findDeclaration("f") }
+    }
+
+    @Test
+    fun `signature functionBodyDeclarationPortList`() {
+        driveSignatureTest(
+            SystemVerilogParser.FunctionBodyDeclarationPortListContext::class,
+            """
+                function int f(int x);
+                    return x;
+                endfunction
+            """.trimIndent(),
+            """
+                function int f(
+                    int x
+                );
+            """.trimIndent()
+        ) { it.findDeclaration("f") }
     }
 
     @Test

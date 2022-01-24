@@ -14,24 +14,30 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.kt.element
+package io.verik.importer.ast.sv.element.declaration
 
-import io.verik.importer.ast.kt.property.AnnotationEntry
-import io.verik.importer.common.KtVisitor
+import io.verik.importer.ast.sv.element.descriptor.SvDescriptor
+import io.verik.importer.common.SvVisitor
 import io.verik.importer.common.Type
 import io.verik.importer.message.SourceLocation
 
-class KtFunction(
+class SvFunction(
     override val location: SourceLocation,
     override val name: String,
-    override val signature: String?,
-    override val type: Type,
-    val annotationEntries: List<AnnotationEntry>
-) : KtDeclaration() {
+    override var signature: String?,
+    override var type: Type,
+    var descriptor: SvDescriptor
+) : SvAbstractFunction() {
 
-    override fun accept(visitor: KtVisitor) {
+    init {
+        descriptor.parent = this
+    }
+
+    override fun accept(visitor: SvVisitor) {
         visitor.visitFunction(this)
     }
 
-    override fun acceptChildren(visitor: KtVisitor) {}
+    override fun acceptChildren(visitor: SvVisitor) {
+        descriptor.accept(visitor)
+    }
 }
