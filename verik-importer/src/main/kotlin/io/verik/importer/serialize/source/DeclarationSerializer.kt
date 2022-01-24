@@ -76,7 +76,12 @@ object DeclarationSerializer {
     fun serializeProperty(property: KtProperty, serializeContext: SerializeContext) {
         serializeContext.appendLine()
         serializeDocs(property, serializeContext)
-        serializeContext.appendLine("var ${property.name}: ${property.type} = imported()")
+        if (property.isMutable) {
+            serializeContext.append("var ")
+        } else {
+            serializeContext.append("val ")
+        }
+        serializeContext.appendLine("${property.name}: ${property.type} = imported()")
     }
 
     fun serializeValueParameter(valueParameter: KtValueParameter, serializeContext: SerializeContext) {

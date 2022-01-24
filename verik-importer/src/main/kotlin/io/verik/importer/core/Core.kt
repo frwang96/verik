@@ -23,6 +23,7 @@ object Core {
     val C_Nothing = CoreClassDeclaration("Nothing")
     val C_Int = CoreClassDeclaration("Int")
     val C_Boolean = CoreClassDeclaration("Boolean")
+    val C_String = CoreClassDeclaration("String")
 
     val C_Ubit = CoreClassDeclaration("Ubit")
     val C_Sbit = CoreClassDeclaration("Sbit")

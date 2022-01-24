@@ -122,13 +122,25 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize property simple`() {
+    fun `serialize property mutable`() {
         driveTextFileTest(
             """
                 logic x;
             """.trimIndent(),
             """
                 var x: Boolean = imported()
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `serialize property immutable`() {
+        driveTextFileTest(
+            """
+                const string x;
+            """.trimIndent(),
+            """
+                val x: String = imported()
             """.trimIndent()
         )
     }

@@ -58,6 +58,14 @@ object DescriptorCaster {
         }
     }
 
+    fun castDescriptorFromDataTypeString(
+        ctx: SystemVerilogParser.DataTypeStringContext,
+        castContext: CastContext
+    ): SvDescriptor {
+        val location = castContext.getLocation(ctx)
+        return SvSimpleDescriptor(location, Core.C_String.toType())
+    }
+
     fun castDescriptorFromImplicitDataType(
         ctx: SystemVerilogParser.ImplicitDataTypeContext,
         castContext: CastContext

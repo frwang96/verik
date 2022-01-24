@@ -93,7 +93,7 @@ abstract class SvVisitor {
     }
 
     open fun visitValueParameter(valueParameter: SvValueParameter) {
-         visitDeclaration(valueParameter)
+        visitDeclaration(valueParameter)
     }
 
     open fun visitPort(port: SvPort) {

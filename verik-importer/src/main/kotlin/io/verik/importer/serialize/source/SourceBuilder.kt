@@ -36,6 +36,7 @@ class SourceBuilder(
         "UNUSED_PARAMETER",
         "unused",
         "ClassName",
+        "ConvertSecondaryConstructorToPrimary",
         "FunctionName",
         "LongLine",
         "PropertyName",

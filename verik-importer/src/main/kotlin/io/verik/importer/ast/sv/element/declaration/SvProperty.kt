@@ -26,7 +26,8 @@ class SvProperty(
     override val name: String,
     override var signature: String?,
     override var type: Type,
-    val descriptor: SvDescriptor
+    val descriptor: SvDescriptor,
+    val isMutable: Boolean,
 ) : SvDeclaration() {
 
     init {

@@ -107,7 +107,8 @@ object DeclarationInterpreter {
             property.location,
             property.name,
             property.signature,
-            property.type
+            property.type,
+            property.isMutable
         )
     }
 
