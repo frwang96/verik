@@ -24,12 +24,15 @@ import io.verik.importer.ast.sv.element.declaration.SvClass
 import io.verik.importer.ast.sv.element.declaration.SvConstructor
 import io.verik.importer.ast.sv.element.declaration.SvContainerDeclaration
 import io.verik.importer.ast.sv.element.declaration.SvDeclaration
+import io.verik.importer.ast.sv.element.declaration.SvEnum
+import io.verik.importer.ast.sv.element.declaration.SvEnumEntry
 import io.verik.importer.ast.sv.element.declaration.SvFunction
 import io.verik.importer.ast.sv.element.declaration.SvModule
 import io.verik.importer.ast.sv.element.declaration.SvPackage
 import io.verik.importer.ast.sv.element.declaration.SvPort
 import io.verik.importer.ast.sv.element.declaration.SvProperty
 import io.verik.importer.ast.sv.element.declaration.SvTask
+import io.verik.importer.ast.sv.element.declaration.SvTypeDeclaration
 import io.verik.importer.ast.sv.element.declaration.SvValueParameter
 import io.verik.importer.ast.sv.element.descriptor.SvBitDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvDescriptor
@@ -74,6 +77,14 @@ abstract class SvVisitor {
         visitContainerDeclaration(module)
     }
 
+    open fun visitTypeDeclaration(typeDeclaration: SvTypeDeclaration) {
+        visitDeclaration(typeDeclaration)
+    }
+
+    open fun visitEnum(enum: SvEnum) {
+        visitTypeDeclaration(enum)
+    }
+
 // Function Like ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     open fun visitAbstractFunction(abstractFunction: SvAbstractFunction) {
@@ -104,6 +115,10 @@ abstract class SvVisitor {
 
     open fun visitPort(port: SvPort) {
         visitDeclaration(port)
+    }
+
+    open fun visitEnumEntry(enumEntry: SvEnumEntry) {
+        visitDeclaration(enumEntry)
     }
 
 // Descriptor Like /////////////////////////////////////////////////////////////////////////////////////////////////////

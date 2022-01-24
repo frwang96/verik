@@ -29,6 +29,7 @@ import io.verik.importer.cast.cast.PackageCaster
 import io.verik.importer.cast.cast.PortCaster
 import io.verik.importer.cast.cast.PropertyCaster
 import io.verik.importer.cast.cast.TaskCaster
+import io.verik.importer.cast.cast.TypeDeclarationCaster
 import io.verik.importer.cast.cast.ValueParameterCaster
 import org.antlr.v4.runtime.RuleContext
 
@@ -121,7 +122,7 @@ class CasterVisitor(
     }
 
     override fun visitTypeDeclarationData(ctx: SystemVerilogParser.TypeDeclarationDataContext?): SvElement? {
-        return null
+        return TypeDeclarationCaster.castTypeDeclarationFromTypeDeclarationData(ctx!!, castContext)
     }
 
     override fun visitTypeDeclarationMisc(ctx: SystemVerilogParser.TypeDeclarationMiscContext?): SvElement? {

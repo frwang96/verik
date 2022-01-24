@@ -80,6 +80,21 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `serialize enum`() {
+        driveTextFileTest(
+            """
+                typedef enum { A, B } e;
+            """.trimIndent(),
+            """
+                enum class e {
+                    A,
+                    B
+                }
+            """.trimIndent()
+        )
+    }
+
+    @Test
     fun `serialize function simple`() {
         driveTextFileTest(
             """

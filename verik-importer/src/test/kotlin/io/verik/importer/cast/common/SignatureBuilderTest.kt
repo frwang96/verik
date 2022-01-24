@@ -77,6 +77,22 @@ class SignatureBuilderTest : BaseTest() {
     }
 
     @Test
+    fun `signature dataTypeEnum`() {
+        driveSignatureTest(
+            SystemVerilogParser.DataTypeEnumContext::class,
+            """
+                typedef enum { A, B } e;
+            """.trimIndent(),
+            """
+                typedef enum {
+                    A,
+                    B
+                } e;
+            """.trimIndent()
+        ) { it.findDeclaration("e") }
+    }
+
+    @Test
     fun `signature classMethodTask`() {
         driveSignatureTest(
             SystemVerilogParser.ClassMethodTaskContext::class,

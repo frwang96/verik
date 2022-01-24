@@ -34,12 +34,12 @@ class SerializeContext(
         element.accept(sourceSerializerVisitor)
     }
 
-    fun <T> serializeJoinAppendLine(entries: List<T>, serializer: (T) -> Unit) {
+    fun <E : KtElement> serializeJoinAppendLine(entries: List<E>) {
         if (entries.isNotEmpty()) {
-            serializer(entries[0])
+            serialize(entries[0])
             entries.drop(1).forEach {
                 sourceBuilder.appendLine(",")
-                serializer(it)
+                serialize(it)
             }
             sourceBuilder.appendLine()
         }

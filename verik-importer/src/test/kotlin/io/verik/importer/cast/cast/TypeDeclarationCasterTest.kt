@@ -14,28 +14,23 @@
  * limitations under the License.
  */
 
-package io.verik.importer.cast.common
+package io.verik.importer.cast.cast
 
-enum class SignatureFragmentKind {
-    TEXT,
-    NULL,
-    NAME,
-    BREAK,
-    INDENT_IN,
-    INDENT_OUT,
-    SEMICOLON,
-    COLON,
-    SHARP,
-    COMMA,
-    COMMA_BREAK,
-    LBRACK,
-    RBRACK,
-    LPAREN,
-    LPAREN_BREAK,
-    RPAREN,
-    RPAREN_BREAK,
-    LBRACE,
-    LBRACE_BREAK,
-    RBRACE,
-    RBRACE_BREAK
+import io.verik.importer.antlr.SystemVerilogParser
+import io.verik.importer.test.BaseTest
+import io.verik.importer.test.findDeclaration
+import org.junit.jupiter.api.Test
+
+internal class TypeDeclarationCasterTest : BaseTest() {
+
+    @Test
+    fun `cast enum from dataTypeEnum`() {
+        driveCasterTest(
+            SystemVerilogParser.DataTypeEnumContext::class,
+            """
+                typedef enum { A } e;
+            """.trimIndent(),
+            "Enum(e, [EnumEntry(A)])"
+        ) { it.findDeclaration("e") }
+    }
 }

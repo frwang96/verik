@@ -19,6 +19,8 @@ package io.verik.importer.interpret
 import io.verik.importer.ast.kt.element.KtClass
 import io.verik.importer.ast.kt.element.KtConstructor
 import io.verik.importer.ast.kt.element.KtDeclaration
+import io.verik.importer.ast.kt.element.KtEnum
+import io.verik.importer.ast.kt.element.KtEnumEntry
 import io.verik.importer.ast.kt.element.KtFunction
 import io.verik.importer.ast.kt.element.KtProperty
 import io.verik.importer.ast.kt.element.KtValueParameter
@@ -26,6 +28,8 @@ import io.verik.importer.ast.kt.property.AnnotationEntry
 import io.verik.importer.ast.sv.element.declaration.SvClass
 import io.verik.importer.ast.sv.element.declaration.SvConstructor
 import io.verik.importer.ast.sv.element.declaration.SvDeclaration
+import io.verik.importer.ast.sv.element.declaration.SvEnum
+import io.verik.importer.ast.sv.element.declaration.SvEnumEntry
 import io.verik.importer.ast.sv.element.declaration.SvFunction
 import io.verik.importer.ast.sv.element.declaration.SvModule
 import io.verik.importer.ast.sv.element.declaration.SvPackage
@@ -43,6 +47,7 @@ object DeclarationInterpreter {
             is SvPackage -> null
             is SvClass -> interpretClassFromClass(declaration)
             is SvModule -> interpretClassFromModule(declaration)
+            is SvEnum -> interpretEnumFromEnum(declaration)
             is SvFunction -> interpretFunctionFromFunction(declaration)
             is SvTask -> interpretFunctionFromTask(declaration)
             is SvConstructor -> interpretConstructorFromConstructor(declaration)
@@ -50,7 +55,7 @@ object DeclarationInterpreter {
             else -> {
                 Messages.INTERNAL_ERROR.on(
                     declaration,
-                    "Unexpected declaration type: ${declaration::class.simpleName}"
+                    "Unable to interpret declaration: ${declaration::class.simpleName}"
                 )
             }
         }
@@ -78,6 +83,16 @@ object DeclarationInterpreter {
             Core.C_Module.toType(),
             ArrayList(valueParameters),
             ArrayList(declarations)
+        )
+    }
+
+    private fun interpretEnumFromEnum(enum: SvEnum): KtEnum {
+        val entries = enum.entries.map { interpretEnumEntryFromEnumEntry(it) }
+        return KtEnum(
+            enum.location,
+            enum.name,
+            enum.signature,
+            entries
         )
     }
 
@@ -142,6 +157,13 @@ object DeclarationInterpreter {
             port.type,
             listOf(annotationEntry),
             true
+        )
+    }
+
+    private fun interpretEnumEntryFromEnumEntry(enumEntry: SvEnumEntry): KtEnumEntry {
+        return KtEnumEntry(
+            enumEntry.location,
+            enumEntry.name
         )
     }
 }

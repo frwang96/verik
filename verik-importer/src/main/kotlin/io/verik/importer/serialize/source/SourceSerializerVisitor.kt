@@ -19,6 +19,8 @@ package io.verik.importer.serialize.source
 import io.verik.importer.ast.kt.element.KtClass
 import io.verik.importer.ast.kt.element.KtConstructor
 import io.verik.importer.ast.kt.element.KtElement
+import io.verik.importer.ast.kt.element.KtEnum
+import io.verik.importer.ast.kt.element.KtEnumEntry
 import io.verik.importer.ast.kt.element.KtFunction
 import io.verik.importer.ast.kt.element.KtProperty
 import io.verik.importer.ast.kt.element.KtValueParameter
@@ -37,6 +39,10 @@ class SourceSerializerVisitor(
         DeclarationSerializer.serializeClass(`class`, serializeContext)
     }
 
+    override fun visitEnum(enum: KtEnum) {
+        DeclarationSerializer.serializeEnum(enum, serializeContext)
+    }
+
     override fun visitFunction(function: KtFunction) {
         DeclarationSerializer.serializeFunction(function, serializeContext)
     }
@@ -51,5 +57,9 @@ class SourceSerializerVisitor(
 
     override fun visitValueParameter(valueParameter: KtValueParameter) {
         DeclarationSerializer.serializeValueParameter(valueParameter, serializeContext)
+    }
+
+    override fun visitEnumEntry(enumEntry: KtEnumEntry) {
+        DeclarationSerializer.serializeEnumEntry(enumEntry, serializeContext)
     }
 }

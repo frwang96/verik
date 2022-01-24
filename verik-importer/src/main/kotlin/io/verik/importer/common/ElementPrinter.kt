@@ -20,6 +20,8 @@ import io.verik.importer.ast.sv.element.common.SvCompilationUnit
 import io.verik.importer.ast.sv.element.common.SvElement
 import io.verik.importer.ast.sv.element.declaration.SvClass
 import io.verik.importer.ast.sv.element.declaration.SvConstructor
+import io.verik.importer.ast.sv.element.declaration.SvEnum
+import io.verik.importer.ast.sv.element.declaration.SvEnumEntry
 import io.verik.importer.ast.sv.element.declaration.SvFunction
 import io.verik.importer.ast.sv.element.declaration.SvModule
 import io.verik.importer.ast.sv.element.declaration.SvPackage
@@ -72,6 +74,13 @@ class ElementPrinter : SvVisitor() {
         }
     }
 
+    override fun visitEnum(enum: SvEnum) {
+        build("Enum") {
+            build(enum.name)
+            build(enum.entries)
+        }
+    }
+
     override fun visitFunction(function: SvFunction) {
         build("Function") {
             build(function.name)
@@ -116,6 +125,12 @@ class ElementPrinter : SvVisitor() {
             build(port.type.toString())
             build(port.descriptor)
             build(port.portType.toString())
+        }
+    }
+
+    override fun visitEnumEntry(enumEntry: SvEnumEntry) {
+        build("EnumEntry") {
+            build(enumEntry.name)
         }
     }
 

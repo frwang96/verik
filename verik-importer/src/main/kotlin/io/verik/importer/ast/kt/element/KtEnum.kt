@@ -14,28 +14,26 @@
  * limitations under the License.
  */
 
-package io.verik.importer.cast.common
+package io.verik.importer.ast.kt.element
 
-enum class SignatureFragmentKind {
-    TEXT,
-    NULL,
-    NAME,
-    BREAK,
-    INDENT_IN,
-    INDENT_OUT,
-    SEMICOLON,
-    COLON,
-    SHARP,
-    COMMA,
-    COMMA_BREAK,
-    LBRACK,
-    RBRACK,
-    LPAREN,
-    LPAREN_BREAK,
-    RPAREN,
-    RPAREN_BREAK,
-    LBRACE,
-    LBRACE_BREAK,
-    RBRACE,
-    RBRACE_BREAK
+import io.verik.importer.common.KtVisitor
+import io.verik.importer.core.Core
+import io.verik.importer.message.SourceLocation
+
+class KtEnum(
+    override val location: SourceLocation,
+    override val name: String,
+    override val signature: String?,
+    val entries: List<KtEnumEntry>
+) : KtDeclaration() {
+
+    override val type = Core.C_Unit.toType()
+
+    override fun accept(visitor: KtVisitor) {
+        visitor.visitEnum(this)
+    }
+
+    override fun acceptChildren(visitor: KtVisitor) {
+        entries.forEach { it.accept(visitor) }
+    }
 }

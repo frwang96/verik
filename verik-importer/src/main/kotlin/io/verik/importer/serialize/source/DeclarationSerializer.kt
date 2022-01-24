@@ -19,6 +19,8 @@ package io.verik.importer.serialize.source
 import io.verik.importer.ast.kt.element.KtClass
 import io.verik.importer.ast.kt.element.KtConstructor
 import io.verik.importer.ast.kt.element.KtDeclaration
+import io.verik.importer.ast.kt.element.KtEnum
+import io.verik.importer.ast.kt.element.KtEnumEntry
 import io.verik.importer.ast.kt.element.KtFunction
 import io.verik.importer.ast.kt.element.KtProperty
 import io.verik.importer.ast.kt.element.KtValueParameter
@@ -33,9 +35,7 @@ object DeclarationSerializer {
         if (`class`.valueParameters.isNotEmpty()) {
             serializeContext.appendLine("(")
             serializeContext.indent {
-                serializeContext.serializeJoinAppendLine(`class`.valueParameters) {
-                    serializeContext.serialize(it)
-                }
+                serializeContext.serializeJoinAppendLine(`class`.valueParameters)
             }
             serializeContext.append(")")
         }
@@ -53,6 +53,21 @@ object DeclarationSerializer {
         }
     }
 
+    fun serializeEnum(enum: KtEnum, serializeContext: SerializeContext) {
+        serializeContext.appendLine()
+        serializeDocs(enum, serializeContext)
+        serializeContext.append("enum class ${enum.name}")
+        if (enum.entries.isNotEmpty()) {
+            serializeContext.appendLine(" {")
+            serializeContext.indent {
+                serializeContext.serializeJoinAppendLine(enum.entries)
+            }
+            serializeContext.appendLine("}")
+        } else {
+            serializeContext.appendLine()
+        }
+    }
+
     fun serializeFunction(function: KtFunction, serializeContext: SerializeContext) {
         serializeContext.appendLine()
         serializeDocs(function, serializeContext)
@@ -63,9 +78,7 @@ object DeclarationSerializer {
         if (function.valueParameters.isNotEmpty()) {
             serializeContext.appendLine("(")
             serializeContext.indent {
-                serializeContext.serializeJoinAppendLine(function.valueParameters) {
-                    serializeContext.serialize(it)
-                }
+                serializeContext.serializeJoinAppendLine(function.valueParameters)
             }
             serializeContext.append(")")
         } else {
@@ -81,9 +94,7 @@ object DeclarationSerializer {
         if (constructor.valueParameters.isNotEmpty()) {
             serializeContext.appendLine("(")
             serializeContext.indent {
-                serializeContext.serializeJoinAppendLine(constructor.valueParameters) {
-                    serializeContext.serialize(it)
-                }
+                serializeContext.serializeJoinAppendLine(constructor.valueParameters)
             }
             serializeContext.appendLine(")")
         } else {
@@ -111,6 +122,10 @@ object DeclarationSerializer {
             false -> serializeContext.append("val ")
         }
         serializeContext.append("${valueParameter.name}: ${valueParameter.type}")
+    }
+
+    fun serializeEnumEntry(enumEntry: KtEnumEntry, serializeContext: SerializeContext) {
+        serializeContext.append(enumEntry.name)
     }
 
     private fun serializeDocs(declaration: KtDeclaration, serializeContext: SerializeContext) {

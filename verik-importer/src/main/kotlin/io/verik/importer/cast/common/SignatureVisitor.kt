@@ -117,6 +117,15 @@ class SignatureVisitor : SystemVerilogParserBaseVisitor<Unit>() {
         accept(ctx.SEMICOLON())
     }
 
+// A.2.2.1 Net and Variable Types //////////////////////////////////////////////////////////////////////////////////////
+
+    override fun visitDataTypeEnum(ctx: SystemVerilogParser.DataTypeEnumContext?) {
+        accept(ctx!!.ENUM())
+        accept(ctx.enumBaseType())
+        acceptWrapBraceBreak(ctx.enumNameDeclaration())
+        accept(ctx.packedDimension())
+    }
+
 // A.2.6 Function Declarations /////////////////////////////////////////////////////////////////////////////////////////
 
     @Suppress("DuplicatedCode")
@@ -195,6 +204,21 @@ class SignatureVisitor : SystemVerilogParserBaseVisitor<Unit>() {
                 accept(it)
             }
             add(SignatureFragmentKind.RPAREN_BREAK)
+        }
+    }
+
+    private fun acceptWrapBraceBreak(ctxs: List<RuleContext>) {
+        if (ctxs.isEmpty()) {
+            add(SignatureFragmentKind.LBRACE)
+            add(SignatureFragmentKind.RBRACE)
+        } else {
+            add(SignatureFragmentKind.LBRACE_BREAK)
+            accept(ctxs[0])
+            ctxs.drop(1).forEach {
+                add(SignatureFragmentKind.COMMA_BREAK)
+                accept(it)
+            }
+            add(SignatureFragmentKind.RBRACE_BREAK)
         }
     }
 
