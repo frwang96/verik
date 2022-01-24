@@ -29,6 +29,7 @@ import io.verik.importer.ast.sv.element.declaration.SvTask
 import io.verik.importer.ast.sv.element.declaration.SvValueParameter
 import io.verik.importer.ast.sv.element.descriptor.SvBitDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvPackedDescriptor
+import io.verik.importer.ast.sv.element.descriptor.SvReferenceDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvSimpleDescriptor
 import io.verik.importer.ast.sv.element.expression.SvLiteralExpression
 import io.verik.importer.ast.sv.element.expression.SvNothingExpression
@@ -139,6 +140,13 @@ class ElementPrinter : SvVisitor() {
             build(packedDescriptor.descriptor)
             build(packedDescriptor.left)
             build(packedDescriptor.right)
+        }
+    }
+
+    override fun visitReferenceDescriptor(referenceDescriptor: SvReferenceDescriptor) {
+        build("ReferenceDescriptor") {
+            build(referenceDescriptor.type.toString())
+            build(referenceDescriptor.name)
         }
     }
 

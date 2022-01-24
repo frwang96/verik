@@ -102,6 +102,10 @@ class ElementPrinter : Visitor() {
     private val builder = StringBuilder()
     private var first = true
 
+    override fun visitElement(element: EElement) {
+        Messages.INTERNAL_ERROR.on(element, "Unable to print element: $element")
+    }
+
     override fun visitNullExpression(nullExpression: ENullExpression) {
         build("NullExpression") {}
     }

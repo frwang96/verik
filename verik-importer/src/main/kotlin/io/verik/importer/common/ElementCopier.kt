@@ -19,6 +19,7 @@ package io.verik.importer.common
 import io.verik.importer.ast.sv.element.common.SvElement
 import io.verik.importer.ast.sv.element.descriptor.SvBitDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvPackedDescriptor
+import io.verik.importer.ast.sv.element.descriptor.SvReferenceDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvSimpleDescriptor
 import io.verik.importer.ast.sv.element.expression.SvLiteralExpression
 import io.verik.importer.message.Messages
@@ -34,6 +35,7 @@ object ElementCopier {
             is SvSimpleDescriptor -> copySimpleDescriptor(element)
             is SvBitDescriptor -> copyBitDescriptor(element)
             is SvPackedDescriptor -> copyPackedDescriptor(element)
+            is SvReferenceDescriptor -> copyReferenceDescriptor(element)
             is SvLiteralExpression -> copyLiteralExpression(element)
             else -> Messages.INTERNAL_ERROR.on(element, "Unable to copy element: $element")
         }
@@ -70,6 +72,14 @@ object ElementCopier {
             descriptor,
             left,
             right
+        )
+    }
+
+    private fun copyReferenceDescriptor(referenceDescriptor: SvReferenceDescriptor): SvReferenceDescriptor {
+        return SvReferenceDescriptor(
+            referenceDescriptor.location,
+            referenceDescriptor.type,
+            referenceDescriptor.name
         )
     }
 

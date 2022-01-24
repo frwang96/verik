@@ -35,6 +35,17 @@ internal class DescriptorCasterTest : BaseTest() {
     }
 
     @Test
+    fun `cast descriptor from dataTypeTypeIdentifier`() {
+        driveCasterTest(
+            SystemVerilogParser.DataTypeTypeIdentifierContext::class,
+            """
+                t x;
+            """.trimIndent(),
+            "Property(x, Nothing, ReferenceDescriptor(Nothing, t))"
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
     fun `cast descriptor from dataTypeInteger`() {
         driveCasterTest(
             SystemVerilogParser.DataTypeIntegerContext::class,

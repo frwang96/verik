@@ -25,6 +25,7 @@ import io.verik.importer.preprocess.PreprocessorStage
 import io.verik.importer.resolve.DeclarationResolvedCheckerStage
 import io.verik.importer.resolve.DeclarationTypeResolverStage
 import io.verik.importer.resolve.DescriptorResolverStage
+import io.verik.importer.resolve.ReferenceResolverStage
 import io.verik.importer.serialize.general.ConfigFileSerializerStage
 import io.verik.importer.serialize.source.SourceSerializerStage
 
@@ -41,6 +42,7 @@ object StageSequencer {
 
         stageSequence.add(StageType.CAST, CasterStage)
 
+        stageSequence.add(StageType.RESOLVE, ReferenceResolverStage)
         stageSequence.add(StageType.RESOLVE, DescriptorResolverStage)
         stageSequence.add(StageType.RESOLVE, DeclarationTypeResolverStage)
         stageSequence.add(StageType.RESOLVE, DeclarationResolvedCheckerStage)

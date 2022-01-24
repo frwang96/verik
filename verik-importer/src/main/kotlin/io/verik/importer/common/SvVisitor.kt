@@ -34,6 +34,7 @@ import io.verik.importer.ast.sv.element.declaration.SvValueParameter
 import io.verik.importer.ast.sv.element.descriptor.SvBitDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvPackedDescriptor
+import io.verik.importer.ast.sv.element.descriptor.SvReferenceDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvSimpleDescriptor
 import io.verik.importer.ast.sv.element.expression.SvExpression
 import io.verik.importer.ast.sv.element.expression.SvLiteralExpression
@@ -121,6 +122,10 @@ abstract class SvVisitor {
 
     open fun visitPackedDescriptor(packedDescriptor: SvPackedDescriptor) {
         visitDescriptor(packedDescriptor)
+    }
+
+    open fun visitReferenceDescriptor(referenceDescriptor: SvReferenceDescriptor) {
+        visitDescriptor(referenceDescriptor)
     }
 
 // Expression Like /////////////////////////////////////////////////////////////////////////////////////////////////////

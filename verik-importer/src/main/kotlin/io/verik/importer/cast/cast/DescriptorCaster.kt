@@ -20,6 +20,7 @@ import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.ast.sv.element.descriptor.SvBitDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvPackedDescriptor
+import io.verik.importer.ast.sv.element.descriptor.SvReferenceDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvSimpleDescriptor
 import io.verik.importer.cast.common.CastContext
 import io.verik.importer.common.Type
@@ -64,6 +65,15 @@ object DescriptorCaster {
     ): SvDescriptor {
         val location = castContext.getLocation(ctx)
         return SvSimpleDescriptor(location, Core.C_String.toType())
+    }
+
+    fun castDescriptorFromDataTypeTypeIdentifier(
+        ctx: SystemVerilogParser.DataTypeTypeIdentifierContext,
+        castContext: CastContext
+    ): SvDescriptor {
+        val location = castContext.getLocation(ctx)
+        val name = ctx.typeIdentifier().text
+        return SvReferenceDescriptor(location, Type.unresolved(), name)
     }
 
     fun castDescriptorFromImplicitDataType(

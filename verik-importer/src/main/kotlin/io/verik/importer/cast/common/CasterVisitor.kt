@@ -142,6 +142,10 @@ class CasterVisitor(
         return DescriptorCaster.castDescriptorFromDataTypeString(ctx!!, castContext)
     }
 
+    override fun visitDataTypeTypeIdentifier(ctx: SystemVerilogParser.DataTypeTypeIdentifierContext?): SvElement {
+        return DescriptorCaster.castDescriptorFromDataTypeTypeIdentifier(ctx!!, castContext)
+    }
+
     override fun visitImplicitDataType(ctx: SystemVerilogParser.ImplicitDataTypeContext?): SvElement? {
         return DescriptorCaster.castDescriptorFromImplicitDataType(ctx!!, castContext)
     }
