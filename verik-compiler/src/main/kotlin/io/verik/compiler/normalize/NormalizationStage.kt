@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.check.normalize
+package io.verik.compiler.normalize
 
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage

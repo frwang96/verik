@@ -31,4 +31,12 @@ enum class StageType {
             SERIALIZE
         )
     }
+
+    fun checkNormalization(): Boolean {
+        return this in listOf(
+            CAST,
+            RESOLVE,
+            INTERPRET
+        )
+    }
 }

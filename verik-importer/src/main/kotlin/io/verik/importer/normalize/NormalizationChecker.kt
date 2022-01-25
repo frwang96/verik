@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-package io.verik.importer.main
+package io.verik.importer.normalize
 
-abstract class ProjectStage {
+import io.verik.importer.main.ProjectContext
+import io.verik.importer.main.ProjectStage
 
-    abstract fun process(projectContext: ProjectContext)
+object NormalizationChecker {
 
-    override fun toString(): String {
-        return this::class.simpleName.toString()
+    fun process(projectContext: ProjectContext, projectStage: ProjectStage) {
+        ElementParentChecker.process(projectContext, projectStage)
+        ElementAliasChecker.process(projectContext, projectStage)
     }
 }

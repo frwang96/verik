@@ -28,7 +28,7 @@ class ProjectContext(
     var inputFileContexts: List<InputFileContext> = listOf()
     var includedTextFiles: HashMap<Path, TextFile> = HashMap()
     val processedProjectStages = HashSet<ProjectStage>()
-    lateinit var compilationUnit: SvCompilationUnit
-    lateinit var project: KtProject
+    var compilationUnit: SvCompilationUnit = SvCompilationUnit(arrayListOf())
+    var project: KtProject = KtProject(listOf())
     val outputContext = OutputContext()
 }

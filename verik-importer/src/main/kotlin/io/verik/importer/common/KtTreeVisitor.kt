@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,13 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.check.normalize
+package io.verik.importer.common
 
-import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.ProjectStage
+import io.verik.importer.ast.kt.element.KtElement
 
-object NormalizationChecker : NormalizationStage {
+abstract class KtTreeVisitor : KtVisitor() {
 
-    override fun process(projectContext: ProjectContext, projectStage: ProjectStage) {
-        ElementParentChecker.process(projectContext, projectStage)
-        ElementAliasChecker.process(projectContext, projectStage)
-        TypeAliasChecker.process(projectContext, projectStage)
-        DanglingReferenceChecker.process(projectContext, projectStage)
+    override fun visitElement(element: KtElement) {
+        element.acceptChildren(this)
     }
 }

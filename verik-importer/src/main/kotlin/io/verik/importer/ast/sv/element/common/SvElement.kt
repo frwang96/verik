@@ -26,6 +26,11 @@ abstract class SvElement {
 
     var parent: SvElement? = null
 
+    fun parentNotNull(): SvElement {
+        return parent
+            ?: Messages.INTERNAL_ERROR.on(this, "Parent element of $this should not be null")
+    }
+
     inline fun <reified E : SvElement> cast(): E {
         return when (this) {
             is E -> this
