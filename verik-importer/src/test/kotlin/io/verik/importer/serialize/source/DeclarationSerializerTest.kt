@@ -52,6 +52,23 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `serialize class with superType`() {
+        driveTextFileTest(
+            """
+                class d;
+                endclass
+                class c extends d;
+                endclass
+            """.trimIndent(),
+            """
+                open class d
+
+                open class c : d()
+            """.trimIndent()
+        )
+    }
+
+    @Test
     fun `serialize class module`() {
         driveTextFileTest(
             """

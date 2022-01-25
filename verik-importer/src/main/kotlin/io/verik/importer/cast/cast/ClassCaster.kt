@@ -18,19 +18,24 @@ package io.verik.importer.cast.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.ast.sv.element.declaration.SvClass
+import io.verik.importer.ast.sv.element.descriptor.SvSimpleDescriptor
 import io.verik.importer.cast.common.CastContext
 import io.verik.importer.cast.common.SignatureBuilder
+import io.verik.importer.core.Core
 
 object ClassCaster {
 
     fun castClassFromClassDeclaration(
         ctx: SystemVerilogParser.ClassDeclarationContext,
         castContext: CastContext
-    ): SvClass {
+    ): SvClass? {
         val location = castContext.getLocation(ctx.CLASS())
         val name = ctx.classIdentifier()[0].text
         val signature = SignatureBuilder.buildSignature(ctx, name)
         val declarations = ctx.classItem().flatMap { castContext.castDeclarations(it) }
-        return SvClass(location, name, signature, ArrayList(declarations))
+        val superDescriptor = ctx.classType()
+            ?.let { castContext.castDescriptor(it) ?: return null }
+            ?: SvSimpleDescriptor(location, Core.C_Any.toType())
+        return SvClass(location, name, signature, ArrayList(declarations), superDescriptor)
     }
 }

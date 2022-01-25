@@ -72,7 +72,7 @@ object DeclarationInterpreter {
             `class`.location,
             `class`.name,
             `class`.signature,
-            Core.C_Any.toType(),
+            `class`.superType,
             listOf(),
             declarations,
             true

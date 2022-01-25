@@ -31,7 +31,19 @@ internal class ClassCasterTest : BaseTest() {
                 class c;
                 endclass
             """.trimIndent(),
-            "Class(c, [])"
+            "Class(c, [], SimpleDescriptor(Any))"
+        ) { it.findDeclaration("c") }
+    }
+
+    @Test
+    fun `cast class from classDeclaration with extends`() {
+        driveCasterTest(
+            SystemVerilogParser.ClassDeclarationContext::class,
+            """
+                class c extends d;
+                endclass
+            """.trimIndent(),
+            "Class(c, [], ReferenceDescriptor(Nothing, d))"
         ) { it.findDeclaration("c") }
     }
 }

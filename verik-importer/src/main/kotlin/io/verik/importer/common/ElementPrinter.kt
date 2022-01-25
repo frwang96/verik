@@ -62,10 +62,13 @@ class ElementPrinter : SvVisitor() {
         }
     }
 
+// Class Like //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     override fun visitClass(`class`: SvClass) {
         build("Class") {
             build(`class`.name)
             build(`class`.declarations)
+            build(`class`.superDescriptor)
         }
     }
 
@@ -98,6 +101,8 @@ class ElementPrinter : SvVisitor() {
         }
     }
 
+// Function Like ///////////////////////////////////////////////////////////////////////////////////////////////////////
+
     override fun visitFunction(function: SvFunction) {
         build("Function") {
             build(function.name)
@@ -118,6 +123,8 @@ class ElementPrinter : SvVisitor() {
             build(constructor.valueParameters)
         }
     }
+
+// Property Like ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     override fun visitProperty(property: SvProperty) {
         build("Property") {
@@ -146,6 +153,8 @@ class ElementPrinter : SvVisitor() {
             build(enumEntry.name)
         }
     }
+
+// Descriptor Like /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     override fun visitSimpleDescriptor(simpleDescriptor: SvSimpleDescriptor) {
         build("SimpleDescriptor") {
@@ -178,6 +187,8 @@ class ElementPrinter : SvVisitor() {
         }
     }
 
+// Expression Like /////////////////////////////////////////////////////////////////////////////////////////////////////
+
     override fun visitNothingExpression(nothingExpression: SvNothingExpression) {
         build("NothingExpression") {}
     }
@@ -207,8 +218,14 @@ class ElementPrinter : SvVisitor() {
         first = false
     }
 
-    private fun build(element: SvElement) {
-        element.accept(this)
+    private fun build(element: SvElement?) {
+        if (element != null) {
+            element.accept(this)
+        } else {
+            if (!first) builder.append(", ")
+            builder.append("null")
+            first = false
+        }
     }
 
     private fun build(name: String, content: () -> Unit) {
