@@ -79,6 +79,14 @@ object Messages {
 
 // RESOLVE /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    val NAME_ALREADY_DEFINED = WarningMessageTemplate1<String>(
+        "Name has already been defined: $0"
+    )
+
+    val UNRESOLVED_REFERENCE = WarningMessageTemplate1<String>(
+        "Unable to resolve reference: $0"
+    )
+
     val DECLARATION_NOT_RESOLVED = WarningMessageTemplate1<String>(
         "Declaration could not be resolved and will be eliminated: $0"
     )

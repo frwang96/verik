@@ -16,23 +16,58 @@
 
 package io.verik.importer.resolve
 
+import io.verik.importer.ast.sv.element.declaration.SvClass
+import io.verik.importer.ast.sv.element.declaration.SvEnum
+import io.verik.importer.ast.sv.element.declaration.SvStruct
+import io.verik.importer.ast.sv.element.declaration.SvTypeAlias
 import io.verik.importer.ast.sv.element.descriptor.SvReferenceDescriptor
 import io.verik.importer.common.SvTreeVisitor
-import io.verik.importer.core.CoreClassDeclaration
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
+import io.verik.importer.message.Messages
 
 object ReferenceResolverStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.compilationUnit.accept(ReferenceResolverVisitor)
+        val namespaceIndexerVisitor = NamespaceIndexerVisitor()
+        projectContext.compilationUnit.accept(namespaceIndexerVisitor)
+        val referenceResolverVisitor = ReferenceResolverVisitor(namespaceIndexerVisitor.namespace)
+        projectContext.compilationUnit.accept(referenceResolverVisitor)
     }
 
-    private object ReferenceResolverVisitor : SvTreeVisitor() {
+    private class NamespaceIndexerVisitor : SvTreeVisitor() {
+
+        val namespace = Namespace()
+
+        override fun visitClass(`class`: SvClass) {
+            namespace[`class`.name] = `class`
+        }
+
+        override fun visitTypeAlias(typeAlias: SvTypeAlias) {
+            namespace[typeAlias.name] = typeAlias
+        }
+
+        override fun visitStruct(struct: SvStruct) {
+            namespace[struct.name] = struct
+        }
+
+        override fun visitEnum(enum: SvEnum) {
+            namespace[enum.name] = enum
+        }
+    }
+
+    private class ReferenceResolverVisitor(
+        private val namespace: Namespace
+    ) : SvTreeVisitor() {
 
         override fun visitReferenceDescriptor(referenceDescriptor: SvReferenceDescriptor) {
             super.visitReferenceDescriptor(referenceDescriptor)
-            referenceDescriptor.type = CoreClassDeclaration(referenceDescriptor.name).toType()
+            val declaration = namespace[referenceDescriptor.name]
+            if (declaration != null) {
+                referenceDescriptor.type = declaration.toType()
+            } else {
+                Messages.UNRESOLVED_REFERENCE.on(referenceDescriptor, referenceDescriptor.name)
+            }
         }
     }
 }
