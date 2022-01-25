@@ -99,6 +99,12 @@ class CasterVisitor(
         return ConstructorCaster.castConstructorFromClassConstructorDeclaration(ctx!!, castContext)
     }
 
+// A.1.10 Constraints //////////////////////////////////////////////////////////////////////////////////////////////////
+
+    override fun visitConstraintDeclaration(ctx: SystemVerilogParser.ConstraintDeclarationContext?): SvElement? {
+        return null
+    }
+
 // A.2.1.1 Module Parameter Declarations ///////////////////////////////////////////////////////////////////////////////
 
     override fun visitParameterDeclaration(ctx: SystemVerilogParser.ParameterDeclarationContext?): SvElement? {
@@ -220,6 +226,10 @@ class CasterVisitor(
 // A.8.4 Primaries /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     override fun visitConstantPrimaryLiteral(ctx: SystemVerilogParser.ConstantPrimaryLiteralContext?): SvElement {
-        return ExpressionCaster.castExpressionFromConstantPrimaryLiteral(ctx!!, castContext)
+        return ExpressionCaster.castLiteralExpressionFromConstantPrimaryLiteral(ctx!!, castContext)
+    }
+
+    override fun visitConstantPrimaryParameter(ctx: SystemVerilogParser.ConstantPrimaryParameterContext?): SvElement {
+        return ExpressionCaster.castReferenceExpressionFromConstantPrimaryParameter(ctx!!, castContext)
     }
 }

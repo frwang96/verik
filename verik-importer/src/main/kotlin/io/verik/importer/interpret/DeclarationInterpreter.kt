@@ -73,8 +73,8 @@ object DeclarationInterpreter {
             `class`.name,
             `class`.signature,
             Core.C_Any.toType(),
-            ArrayList(),
-            ArrayList(declarations)
+            listOf(),
+            declarations
         )
     }
 
@@ -86,8 +86,8 @@ object DeclarationInterpreter {
             module.name,
             module.signature,
             Core.C_Module.toType(),
-            ArrayList(valueParameters),
-            ArrayList(declarations)
+            valueParameters,
+            declarations
         )
     }
 
@@ -98,8 +98,8 @@ object DeclarationInterpreter {
             struct.name,
             struct.signature,
             Core.C_Struct.toType(),
-            ArrayList(valueParameters),
-            arrayListOf(),
+            valueParameters,
+            listOf(),
         )
     }
 

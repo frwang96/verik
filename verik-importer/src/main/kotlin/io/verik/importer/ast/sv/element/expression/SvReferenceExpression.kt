@@ -14,23 +14,21 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.kt.element
+package io.verik.importer.ast.sv.element.expression
 
-import io.verik.importer.common.KtVisitor
+import io.verik.importer.common.Declaration
+import io.verik.importer.common.SvVisitor
 import io.verik.importer.message.SourceLocation
-import java.nio.file.Path
 
-class KtFile(
+class SvReferenceExpression(
     override val location: SourceLocation,
-    val outputPath: Path,
-    val declarations: List<KtDeclaration>
-) : KtElement() {
+    val name: String,
+    var reference: Declaration?
+) : SvExpression() {
 
-    override fun accept(visitor: KtVisitor) {
-        visitor.visitFile(this)
+    override fun accept(visitor: SvVisitor) {
+        visitor.visitReferenceExpression(this)
     }
 
-    override fun acceptChildren(visitor: KtVisitor) {
-        declarations.forEach { it.accept(visitor) }
-    }
+    override fun acceptChildren(visitor: SvVisitor) {}
 }

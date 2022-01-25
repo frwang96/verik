@@ -27,10 +27,6 @@ class SvStruct(
     val properties: List<SvProperty>
 ) : SvTypeDeclaration() {
 
-    init {
-        properties.forEach { it.parent = this }
-    }
-
     override var type = Core.C_Unit.toType()
 
     override fun accept(visitor: SvVisitor) {

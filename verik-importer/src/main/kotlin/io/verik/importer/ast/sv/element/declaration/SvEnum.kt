@@ -27,10 +27,6 @@ class SvEnum(
     val entries: List<SvEnumEntry>
 ) : SvTypeDeclaration() {
 
-    init {
-        entries.forEach { it.parent = this }
-    }
-
     override var type = Core.C_Unit.toType()
 
     override fun accept(visitor: SvVisitor) {

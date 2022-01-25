@@ -30,10 +30,6 @@ class SvModule(
 
     override var type = Core.C_Unit.toType()
 
-    init {
-        ports.forEach { it.parent = this }
-    }
-
     override fun accept(visitor: SvVisitor) {
         visitor.visitModule(this)
     }

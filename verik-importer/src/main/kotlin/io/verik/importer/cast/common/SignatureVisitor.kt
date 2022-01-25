@@ -34,6 +34,7 @@ class SignatureVisitor : SystemVerilogParserBaseVisitor<Unit>() {
         val signatureFragment = when (val text = node!!.text) {
             ";" -> SignatureFragment(SignatureFragmentKind.SEMICOLON)
             ":" -> SignatureFragment(SignatureFragmentKind.COLON)
+            "::" -> SignatureFragment(SignatureFragmentKind.COLON_COLON)
             "#" -> SignatureFragment(SignatureFragmentKind.SHARP)
             "," -> SignatureFragment(SignatureFragmentKind.COMMA)
             "[" -> SignatureFragment(SignatureFragmentKind.LBRACK)

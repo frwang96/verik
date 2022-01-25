@@ -28,10 +28,6 @@ class SvValueParameter(
     val descriptor: SvDescriptor
 ) : SvDeclaration() {
 
-    init {
-        descriptor.parent = this
-    }
-
     override var signature: String? = null
 
     override fun accept(visitor: SvVisitor) {

@@ -29,10 +29,6 @@ class SvTypeAlias(
     val descriptor: SvDescriptor
 ) : SvTypeDeclaration() {
 
-    init {
-        descriptor.parent = this
-    }
-
     override fun accept(visitor: SvVisitor) {
         visitor.visitTypeAlias(this)
     }

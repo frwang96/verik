@@ -23,7 +23,7 @@ import io.verik.importer.message.SourceLocation
 class KtPackage(
     override val location: SourceLocation,
     override val name: String,
-    val files: ArrayList<KtFile>
+    val files: List<KtFile>
 ) : KtDeclaration() {
 
     override val signature: String? = null

@@ -37,6 +37,7 @@ import io.verik.importer.ast.sv.element.descriptor.SvReferenceDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvSimpleDescriptor
 import io.verik.importer.ast.sv.element.expression.SvLiteralExpression
 import io.verik.importer.ast.sv.element.expression.SvNothingExpression
+import io.verik.importer.ast.sv.element.expression.SvReferenceExpression
 import io.verik.importer.message.Messages
 
 class ElementPrinter : SvVisitor() {
@@ -191,13 +192,20 @@ class ElementPrinter : SvVisitor() {
         }
     }
 
+    override fun visitReferenceExpression(referenceExpression: SvReferenceExpression) {
+        build("ReferenceExpression") {
+            build(referenceExpression.name)
+            build(referenceExpression.reference?.name)
+        }
+    }
+
     private fun build(content: Boolean) {
         if (!first) builder.append(", ")
         builder.append(if (content) "1" else "0")
         first = false
     }
 
-    private fun build(content: String) {
+    private fun build(content: String?) {
         if (!first) builder.append(", ")
         builder.append(content)
         first = false

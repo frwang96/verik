@@ -30,10 +30,6 @@ class SvProperty(
     val isMutable: Boolean,
 ) : SvDeclaration() {
 
-    init {
-        descriptor.parent = this
-    }
-
     override fun accept(visitor: SvVisitor) {
         visitor.visitProperty(this)
     }

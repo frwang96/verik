@@ -24,8 +24,6 @@ abstract class SvElement {
 
     abstract val location: SourceLocation
 
-    var parent: SvElement? = null
-
     inline fun <reified E : SvElement> cast(): E {
         return when (this) {
             is E -> this

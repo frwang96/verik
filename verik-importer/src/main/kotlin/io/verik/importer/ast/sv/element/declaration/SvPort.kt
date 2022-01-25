@@ -32,10 +32,6 @@ class SvPort(
 
     override var signature: String? = null
 
-    init {
-        descriptor.parent = this
-    }
-
     override fun accept(visitor: SvVisitor) {
         visitor.visitPort(this)
     }

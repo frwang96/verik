@@ -27,10 +27,6 @@ class SvTask(
     override val valueParameters: List<SvValueParameter>
 ) : SvAbstractFunction() {
 
-    init {
-        valueParameters.forEach { it.parent = this }
-    }
-
     override var type = Core.C_Unit.toType()
 
     override fun accept(visitor: SvVisitor) {

@@ -22,6 +22,7 @@ import io.verik.importer.ast.sv.element.descriptor.SvPackedDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvReferenceDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvSimpleDescriptor
 import io.verik.importer.ast.sv.element.expression.SvLiteralExpression
+import io.verik.importer.ast.sv.element.expression.SvReferenceExpression
 import io.verik.importer.message.Messages
 
 object ElementCopier {
@@ -37,6 +38,7 @@ object ElementCopier {
             is SvPackedDescriptor -> copyPackedDescriptor(element)
             is SvReferenceDescriptor -> copyReferenceDescriptor(element)
             is SvLiteralExpression -> copyLiteralExpression(element)
+            is SvReferenceExpression -> copyReferenceExpression(element)
             else -> Messages.INTERNAL_ERROR.on(element, "Unable to copy element: $element")
         }
         @Suppress("UNCHECKED_CAST")
@@ -87,6 +89,14 @@ object ElementCopier {
         return SvLiteralExpression(
             literalExpression.location,
             literalExpression.value
+        )
+    }
+
+    private fun copyReferenceExpression(referenceExpression: SvReferenceExpression): SvElement {
+        return SvReferenceExpression(
+            referenceExpression.location,
+            referenceExpression.name,
+            referenceExpression.reference
         )
     }
 }

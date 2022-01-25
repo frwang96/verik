@@ -44,6 +44,7 @@ import io.verik.importer.ast.sv.element.descriptor.SvSimpleDescriptor
 import io.verik.importer.ast.sv.element.expression.SvExpression
 import io.verik.importer.ast.sv.element.expression.SvLiteralExpression
 import io.verik.importer.ast.sv.element.expression.SvNothingExpression
+import io.verik.importer.ast.sv.element.expression.SvReferenceExpression
 
 abstract class SvVisitor {
 
@@ -165,5 +166,9 @@ abstract class SvVisitor {
 
     open fun visitLiteralExpression(literalExpression: SvLiteralExpression) {
         visitExpression(literalExpression)
+    }
+
+    open fun visitReferenceExpression(referenceExpression: SvReferenceExpression) {
+        visitExpression(referenceExpression)
     }
 }

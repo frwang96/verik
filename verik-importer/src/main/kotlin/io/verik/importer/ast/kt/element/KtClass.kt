@@ -26,8 +26,8 @@ class KtClass(
     override val name: String,
     override val signature: String?,
     val superType: Type,
-    val valueParameters: ArrayList<KtValueParameter>,
-    val declarations: ArrayList<KtDeclaration>
+    val valueParameters: List<KtValueParameter>,
+    val declarations: List<KtDeclaration>
 ) : KtDeclaration() {
 
     override val type = Core.C_Unit.toType()

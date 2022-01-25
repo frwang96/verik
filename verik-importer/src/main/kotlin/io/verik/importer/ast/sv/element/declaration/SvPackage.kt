@@ -29,10 +29,6 @@ class SvPackage(
     override var signature: String? = null
     override var type = Core.C_Unit.toType()
 
-    init {
-        declarations.forEach { it.parent = this }
-    }
-
     override fun accept(visitor: SvVisitor) {
         visitor.visitPackage(this)
     }

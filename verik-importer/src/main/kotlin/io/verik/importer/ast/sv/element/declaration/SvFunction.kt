@@ -30,11 +30,6 @@ class SvFunction(
     val descriptor: SvDescriptor
 ) : SvAbstractFunction() {
 
-    init {
-        descriptor.parent = this
-        valueParameters.forEach { it.parent = this }
-    }
-
     override fun accept(visitor: SvVisitor) {
         visitor.visitFunction(this)
     }
