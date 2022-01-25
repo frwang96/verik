@@ -22,7 +22,6 @@ import io.verik.importer.ast.sv.element.declaration.SvProperty
 import io.verik.importer.cast.common.CastContext
 import io.verik.importer.cast.common.SignatureBuilder
 import io.verik.importer.common.ElementCopier
-import io.verik.importer.common.Type
 
 object PropertyCaster {
 
@@ -44,7 +43,6 @@ object PropertyCaster {
                 location,
                 name,
                 signature,
-                Type.unresolved(),
                 ElementCopier.deepCopy(descriptor),
                 isMutable
             )
@@ -68,7 +66,6 @@ object PropertyCaster {
                 location,
                 name,
                 null,
-                Type.unresolved(),
                 ElementCopier.deepCopy(descriptor),
                 true
             )

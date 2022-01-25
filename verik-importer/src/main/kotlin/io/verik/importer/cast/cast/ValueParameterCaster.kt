@@ -21,7 +21,6 @@ import io.verik.importer.ast.sv.element.common.SvContainerElement
 import io.verik.importer.ast.sv.element.declaration.SvValueParameter
 import io.verik.importer.cast.common.CastContext
 import io.verik.importer.common.ElementCopier
-import io.verik.importer.common.Type
 
 object ValueParameterCaster {
 
@@ -36,7 +35,6 @@ object ValueParameterCaster {
         return SvValueParameter(
             location,
             name,
-            Type.unresolved(),
             descriptor
         )
     }
@@ -53,7 +51,6 @@ object ValueParameterCaster {
             SvValueParameter(
                 location,
                 name,
-                Type.unresolved(),
                 ElementCopier.deepCopy(descriptor)
             )
         }

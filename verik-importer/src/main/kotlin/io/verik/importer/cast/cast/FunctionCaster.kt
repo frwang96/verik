@@ -21,7 +21,6 @@ import io.verik.importer.ast.sv.element.declaration.SvDeclaration
 import io.verik.importer.ast.sv.element.declaration.SvFunction
 import io.verik.importer.cast.common.CastContext
 import io.verik.importer.cast.common.SignatureBuilder
-import io.verik.importer.common.Type
 
 object FunctionCaster {
 
@@ -71,7 +70,6 @@ object FunctionCaster {
             location,
             name,
             null,
-            Type.unresolved(),
             valueParameters,
             descriptor
         )
@@ -93,7 +91,6 @@ object FunctionCaster {
             location,
             name,
             null,
-            Type.unresolved(),
             valueParameters,
             descriptor
         )
@@ -114,7 +111,6 @@ object FunctionCaster {
             location,
             name,
             signature,
-            Type.unresolved(),
             valueParameters,
             descriptor
         )

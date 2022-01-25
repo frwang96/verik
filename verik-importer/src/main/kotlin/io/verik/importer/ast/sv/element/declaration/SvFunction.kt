@@ -25,10 +25,11 @@ class SvFunction(
     override val location: SourceLocation,
     override val name: String,
     override var signature: String?,
-    override var type: Type,
     override val valueParameters: List<SvValueParameter>,
     val descriptor: SvDescriptor
 ) : SvAbstractFunction() {
+
+    override var type: Type by descriptor::type
 
     init {
         valueParameters.forEach { it.parent = this }

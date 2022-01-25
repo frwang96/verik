@@ -31,7 +31,7 @@ internal class PortCasterTest : BaseTest() {
                 module m(input x);
                 endmodule
             """.trimIndent(),
-            "Port(x, Nothing, SimpleDescriptor(Boolean), INPUT)"
+            "Port(x, SimpleDescriptor(Boolean), INPUT)"
         ) { it.findDeclaration("x") }
     }
 
@@ -44,7 +44,7 @@ internal class PortCasterTest : BaseTest() {
                     input x;
                 endmodule
             """.trimIndent(),
-            "Port(x, Nothing, SimpleDescriptor(Boolean), INPUT)"
+            "Port(x, SimpleDescriptor(Boolean), INPUT)"
         ) { it.findDeclaration("x") }
     }
 
@@ -57,7 +57,7 @@ internal class PortCasterTest : BaseTest() {
                     output x;
                 endmodule
             """.trimIndent(),
-            "Port(x, Nothing, SimpleDescriptor(Boolean), OUTPUT)"
+            "Port(x, SimpleDescriptor(Boolean), OUTPUT)"
         ) { it.findDeclaration("x") }
     }
 }

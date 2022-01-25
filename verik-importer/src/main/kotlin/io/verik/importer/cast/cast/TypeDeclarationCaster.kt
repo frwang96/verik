@@ -24,7 +24,6 @@ import io.verik.importer.ast.sv.element.declaration.SvTypeAlias
 import io.verik.importer.ast.sv.element.declaration.SvTypeDeclaration
 import io.verik.importer.cast.common.CastContext
 import io.verik.importer.cast.common.SignatureBuilder
-import io.verik.importer.common.Type
 import io.verik.importer.message.SourceLocation
 
 object TypeDeclarationCaster {
@@ -44,7 +43,7 @@ object TypeDeclarationCaster {
                 castStructFromDataTypeStruct(location, name, signature, dataType, castContext)
             else -> {
                 val descriptor = castContext.castDescriptor(dataType) ?: return null
-                SvTypeAlias(location, name, signature, Type.unresolved(), descriptor)
+                SvTypeAlias(location, name, signature, descriptor)
             }
         }
     }

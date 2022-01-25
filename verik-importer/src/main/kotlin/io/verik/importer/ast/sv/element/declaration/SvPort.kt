@@ -25,12 +25,13 @@ import io.verik.importer.message.SourceLocation
 class SvPort(
     override val location: SourceLocation,
     override val name: String,
-    override var type: Type,
     val descriptor: SvDescriptor,
     val portType: PortType
 ) : SvDeclaration() {
 
     override var signature: String? = null
+
+    override var type: Type by descriptor::type
 
     init {
         descriptor.parent = this

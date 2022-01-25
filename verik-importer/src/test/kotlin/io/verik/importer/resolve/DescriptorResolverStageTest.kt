@@ -29,7 +29,7 @@ internal class DescriptorResolverStageTest : BaseTest() {
                 logic [1:0] x;
             """.trimIndent(),
             DescriptorResolverStage::class,
-            "Property(x, Nothing, BitDescriptor(Ubit<`2`>, *, *, *))"
+            "Property(x, BitDescriptor(Ubit<`2`>, *, *, *))"
         ) { it.findDeclaration("x") }
     }
 
@@ -40,7 +40,7 @@ internal class DescriptorResolverStageTest : BaseTest() {
                 logic [1:0][3:0] x;
             """.trimIndent(),
             DescriptorResolverStage::class,
-            "Property(x, Nothing, PackedDescriptor(Packed<`4`, Ubit<`2`>>, *, *, *))"
+            "Property(x, PackedDescriptor(Packed<`4`, Ubit<`2`>>, *, *, *))"
         ) { it.findDeclaration("x") }
     }
 }

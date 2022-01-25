@@ -32,7 +32,7 @@ internal class PackageCasterTest : BaseTest() {
                     logic x;
                 endpackage
             """.trimIndent(),
-            "Package(p, [Property(x, Nothing, SimpleDescriptor(Boolean))])"
+            "Package(p, [Property(x, SimpleDescriptor(Boolean))])"
         ) { it.findDeclaration("p") }
     }
 }

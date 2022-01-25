@@ -30,7 +30,7 @@ internal class PropertyCasterTest : BaseTest() {
             """
                 logic x;
             """.trimIndent(),
-            "Property(x, Nothing, SimpleDescriptor(Boolean))"
+            "Property(x, SimpleDescriptor(Boolean))"
         ) { it.findDeclaration("x") }
     }
 
@@ -43,8 +43,8 @@ internal class PropertyCasterTest : BaseTest() {
             """.trimIndent(),
             """
                 CompilationUnit([
-                    Property(x, Nothing, SimpleDescriptor(Boolean)),
-                    Property(y, Nothing, SimpleDescriptor(Boolean))
+                    Property(x, SimpleDescriptor(Boolean)),
+                    Property(y, SimpleDescriptor(Boolean))
                 ])
             """.trimIndent()
         ) { it }
@@ -59,7 +59,7 @@ internal class PropertyCasterTest : BaseTest() {
                     logic x;
                 } s;
             """.trimIndent(),
-            "Property(x, Nothing, SimpleDescriptor(Boolean))"
+            "Property(x, SimpleDescriptor(Boolean))"
         ) { it.findDeclaration("x") }
     }
 }

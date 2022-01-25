@@ -25,10 +25,11 @@ class SvProperty(
     override val location: SourceLocation,
     override val name: String,
     override var signature: String?,
-    override var type: Type,
     val descriptor: SvDescriptor,
     val isMutable: Boolean,
 ) : SvDeclaration() {
+
+    override var type: Type by descriptor::type
 
     init {
         descriptor.parent = this

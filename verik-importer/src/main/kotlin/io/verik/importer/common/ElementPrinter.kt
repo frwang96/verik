@@ -101,7 +101,6 @@ class ElementPrinter : SvVisitor() {
     override fun visitFunction(function: SvFunction) {
         build("Function") {
             build(function.name)
-            build(function.type.toString())
             build(function.valueParameters)
             build(function.descriptor)
         }
@@ -123,7 +122,6 @@ class ElementPrinter : SvVisitor() {
     override fun visitProperty(property: SvProperty) {
         build("Property") {
             build(property.name)
-            build(property.type.toString())
             build(property.descriptor)
         }
     }
@@ -131,7 +129,6 @@ class ElementPrinter : SvVisitor() {
     override fun visitValueParameter(valueParameter: SvValueParameter) {
         build("ValueParameter") {
             build(valueParameter.name)
-            build(valueParameter.type.toString())
             build(valueParameter.descriptor)
         }
     }
@@ -139,7 +136,6 @@ class ElementPrinter : SvVisitor() {
     override fun visitPort(port: SvPort) {
         build("Port") {
             build(port.name)
-            build(port.type.toString())
             build(port.descriptor)
             build(port.portType.toString())
         }

@@ -55,7 +55,7 @@ object DeclarationResolvedCheckerStage : ProjectStage() {
             super.visitDeclaration(declaration)
             if (!declaration.type.isResolved()) {
                 isResolved = false
-                Messages.DECLARATION_NOT_RESOLVED.on(declaration, declaration.name)
+                Messages.DECLARATION_TYPE_NOT_RESOLVED.on(declaration, declaration.name)
             }
         }
     }

@@ -87,8 +87,8 @@ object Messages {
         "Unable to resolve reference: $0"
     )
 
-    val DECLARATION_NOT_RESOLVED = WarningMessageTemplate1<String>(
-        "Declaration could not be resolved and will be eliminated: $0"
+    val DECLARATION_TYPE_NOT_RESOLVED = WarningMessageTemplate1<String>(
+        "Declaration type could not be resolved: $0"
     )
 
     init {
