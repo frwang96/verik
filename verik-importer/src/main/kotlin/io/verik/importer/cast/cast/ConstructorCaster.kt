@@ -34,14 +34,31 @@ object ConstructorCaster {
         return declaration
     }
 
+    fun castConstructorFromClassMethodExternConstructorContext(
+        ctx: SystemVerilogParser.ClassMethodExternConstructorContext,
+        castContext: CastContext
+    ): SvDeclaration {
+        val location = castContext.getLocation(ctx.classConstructorPrototype().NEW())
+        val signature = SignatureBuilder.buildSignature(ctx, "new")
+        val tfPortItems = ctx.classConstructorPrototype().tfPortList()?.tfPortItem() ?: listOf()
+        val valueParameters = tfPortItems.flatMap { castContext.castValueParameters(it) }
+        return SvConstructor(
+            location,
+            signature,
+            valueParameters
+        )
+    }
+
     fun castConstructorFromClassConstructorDeclaration(
         ctx: SystemVerilogParser.ClassConstructorDeclarationContext,
         castContext: CastContext
     ): SvConstructor? {
+        if (ctx.classScope() != null)
+            return null
         val location = castContext.getLocation(ctx.NEW()[0])
-        val tfPortItems = ctx.tfPortList()?.tfPortItem() ?: listOf()
         val signature = SignatureBuilder.buildSignature(ctx, "new")
-        val valueParameters = tfPortItems.map { castContext.castValueParameter(it) ?: return null }
+        val tfPortItems = ctx.tfPortList()?.tfPortItem() ?: listOf()
+        val valueParameters = tfPortItems.flatMap { castContext.castValueParameters(it) }
         return SvConstructor(
             location,
             signature,

@@ -10,6 +10,7 @@
 - Document with original signature.
 - Import tasks and functions.
 - Import enum and struct typedefs.
+- Import extern tasks and functions.
 
 ### Compiler
 - Replace slice function with array indexing notation.

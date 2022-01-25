@@ -24,14 +24,15 @@ import org.junit.jupiter.api.Test
 internal class FunctionCasterTest : BaseTest() {
 
     @Test
-    fun `cast function from functionBodyDeclarationNoPortList simple`() {
+    fun `cast function from functionBodyDeclarationNoPortList`() {
         driveCasterTest(
             SystemVerilogParser.FunctionBodyDeclarationNoPortListContext::class,
             """
                 function void f;
+                    input x;
                 endfunction
             """.trimIndent(),
-            "Function(f, Nothing, [], SimpleDescriptor(Unit))"
+            "Function(f, Nothing, [ValueParameter(x, Nothing, SimpleDescriptor(Boolean))], SimpleDescriptor(Unit))"
         ) { it.findDeclaration("f") }
     }
 
@@ -42,6 +43,19 @@ internal class FunctionCasterTest : BaseTest() {
             """
                 function void f(logic x);
                 endfunction
+            """.trimIndent(),
+            "Function(f, Nothing, [ValueParameter(x, Nothing, SimpleDescriptor(Boolean))], SimpleDescriptor(Unit))"
+        ) { it.findDeclaration("f") }
+    }
+
+    @Test
+    fun `cast function from functionPrototype`() {
+        driveCasterTest(
+            SystemVerilogParser.FunctionPrototypeContext::class,
+            """
+                class c;
+                    extern function void f(logic x);
+                endclass
             """.trimIndent(),
             "Function(f, Nothing, [ValueParameter(x, Nothing, SimpleDescriptor(Boolean))], SimpleDescriptor(Unit))"
         ) { it.findDeclaration("f") }

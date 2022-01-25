@@ -70,8 +70,8 @@ class CastContext(
         return castDeclarations(ctx).map { it.cast() }
     }
 
-    fun castValueParameter(ctx: RuleContext): SvValueParameter? {
-        return casterVisitor.getElement(ctx)
+    fun castValueParameters(ctx: RuleContext): List<SvValueParameter> {
+        return castDeclarations(ctx).map { it.cast() }
     }
 
     fun castPort(ctx: RuleContext): SvPort? {
