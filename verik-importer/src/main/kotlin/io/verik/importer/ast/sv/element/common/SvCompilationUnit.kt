@@ -26,6 +26,10 @@ class SvCompilationUnit(
     override var declarations: ArrayList<SvDeclaration>
 ) : SvContainerDeclaration() {
 
+    init {
+        declarations.forEach { it.parent = this }
+    }
+
     override val location: SourceLocation = SourceLocation.NULL
     override val name = "<unit>"
     override var signature: String? = null

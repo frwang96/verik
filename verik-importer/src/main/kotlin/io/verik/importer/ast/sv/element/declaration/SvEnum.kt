@@ -29,6 +29,10 @@ class SvEnum(
 
     override var type = Core.C_Unit.toType()
 
+    init {
+        entries.forEach { it.parent = this }
+    }
+
     override fun accept(visitor: SvVisitor) {
         visitor.visitEnum(this)
     }

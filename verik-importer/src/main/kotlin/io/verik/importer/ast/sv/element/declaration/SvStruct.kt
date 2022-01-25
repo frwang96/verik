@@ -29,6 +29,10 @@ class SvStruct(
 
     override var type = Core.C_Unit.toType()
 
+    init {
+        properties.forEach { it.parent = this }
+    }
+
     override fun accept(visitor: SvVisitor) {
         visitor.visitStruct(this)
     }

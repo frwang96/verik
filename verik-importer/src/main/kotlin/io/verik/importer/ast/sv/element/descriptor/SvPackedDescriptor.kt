@@ -29,6 +29,12 @@ class SvPackedDescriptor(
     val right: SvExpression
 ) : SvDescriptor() {
 
+    init {
+        descriptor.parent = this
+        left.parent = this
+        right.parent = this
+    }
+
     override fun accept(visitor: SvVisitor) {
         visitor.visitPackedDescriptor(this)
     }

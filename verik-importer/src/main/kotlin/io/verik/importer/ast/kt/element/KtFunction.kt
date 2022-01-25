@@ -27,7 +27,8 @@ class KtFunction(
     override val signature: String?,
     override val type: Type,
     val annotationEntries: List<AnnotationEntry>,
-    val valueParameters: List<KtValueParameter>
+    val valueParameters: List<KtValueParameter>,
+    val isOpen: Boolean
 ) : KtDeclaration() {
 
     override fun accept(visitor: KtVisitor) {

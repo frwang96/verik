@@ -29,6 +29,10 @@ class SvTask(
 
     override var type = Core.C_Unit.toType()
 
+    init {
+        valueParameters.forEach { it.parent = this }
+    }
+
     override fun accept(visitor: SvVisitor) {
         visitor.visitTask(this)
     }

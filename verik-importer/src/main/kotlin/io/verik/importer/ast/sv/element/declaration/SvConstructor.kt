@@ -30,6 +30,10 @@ class SvConstructor(
     override val name: String = "new"
     override var type: Type = Core.C_Unit.toType()
 
+    init {
+        valueParameters.forEach { it.parent = this }
+    }
+
     override fun accept(visitor: SvVisitor) {
         visitor.visitConstructor(this)
     }

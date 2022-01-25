@@ -56,7 +56,7 @@ object Platform {
     }
 
     fun getPathFromString(path: String): Path {
-        return if (path.matches(Regex("/\\w+:.*"))) {
+        return if (path.matches(Regex("[\\\\/]\\w+:.*"))) {
             Paths.get(path.substring(1))
         } else {
             Paths.get(path)

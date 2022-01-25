@@ -28,6 +28,11 @@ class SvModule(
     val ports: ArrayList<SvPort>,
 ) : SvContainerDeclaration() {
 
+    init {
+        declarations.forEach { it.parent = this }
+        ports.forEach { it.parent = this }
+    }
+
     override var type = Core.C_Unit.toType()
 
     override fun accept(visitor: SvVisitor) {

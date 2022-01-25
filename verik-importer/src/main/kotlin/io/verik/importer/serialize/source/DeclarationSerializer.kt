@@ -32,6 +32,9 @@ object DeclarationSerializer {
     fun serializeClass(`class`: KtClass, serializeContext: SerializeContext) {
         serializeContext.appendLine()
         serializeDocs(`class`, serializeContext)
+        if (`class`.isOpen) {
+            serializeContext.append("open ")
+        }
         serializeContext.append("class ${`class`.name}")
         if (`class`.valueParameters.isNotEmpty()) {
             serializeContext.appendLine("(")
@@ -80,6 +83,9 @@ object DeclarationSerializer {
         serializeDocs(function, serializeContext)
         function.annotationEntries.forEach {
             serializeContext.appendLine("@${it.name}")
+        }
+        if (function.isOpen) {
+            serializeContext.append("open ")
         }
         serializeContext.append("fun ${function.name}")
         if (function.valueParameters.isNotEmpty()) {

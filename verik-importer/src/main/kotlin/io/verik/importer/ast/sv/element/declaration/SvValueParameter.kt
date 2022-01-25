@@ -30,6 +30,10 @@ class SvValueParameter(
 
     override var signature: String? = null
 
+    init {
+        descriptor.parent = this
+    }
+
     override fun accept(visitor: SvVisitor) {
         visitor.visitValueParameter(this)
     }

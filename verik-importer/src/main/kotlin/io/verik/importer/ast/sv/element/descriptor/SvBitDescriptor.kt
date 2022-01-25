@@ -29,6 +29,11 @@ class SvBitDescriptor(
     val isSigned: Boolean
 ) : SvDescriptor() {
 
+    init {
+        left.parent = this
+        right.parent = this
+    }
+
     override fun accept(visitor: SvVisitor) {
         visitor.visitBitDescriptor(this)
     }

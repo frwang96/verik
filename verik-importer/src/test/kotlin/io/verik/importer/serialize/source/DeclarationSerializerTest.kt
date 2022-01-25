@@ -29,7 +29,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 endclass
             """.trimIndent(),
             """
-                class c
+                open class c
             """.trimIndent()
         )
     }
@@ -43,7 +43,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 endclass
             """.trimIndent(),
             """
-                class c {
+                open class c {
                 
                     var x: Boolean = imported()
                 }
@@ -174,7 +174,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 endclass
             """.trimIndent(),
             """
-                class c {
+                open class c {
                 
                     constructor(
                         x: Boolean

@@ -16,6 +16,7 @@
 - Replace slice function with array indexing notation.
 - Consolidate expression evaluation in stages specialize and evaluate.
 - Extended immutability checking for array access expressions.
+- Fix Kotlin compiler error message bug on Windows.
 
 ## [0.1.12]
 ### Compiler

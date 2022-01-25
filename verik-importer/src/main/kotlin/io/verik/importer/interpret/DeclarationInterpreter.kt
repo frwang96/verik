@@ -74,7 +74,8 @@ object DeclarationInterpreter {
             `class`.signature,
             Core.C_Any.toType(),
             listOf(),
-            declarations
+            declarations,
+            true
         )
     }
 
@@ -87,7 +88,8 @@ object DeclarationInterpreter {
             module.signature,
             Core.C_Module.toType(),
             valueParameters,
-            declarations
+            declarations,
+            false
         )
     }
 
@@ -100,6 +102,7 @@ object DeclarationInterpreter {
             Core.C_Struct.toType(),
             valueParameters,
             listOf(),
+            false
         )
     }
 
@@ -124,25 +127,29 @@ object DeclarationInterpreter {
 
     private fun interpretFunctionFromFunction(function: SvFunction): KtFunction {
         val valueParameters = function.valueParameters.map { interpretValueParameterFromValueParameter(it) }
+        val isOpen = function.parent is SvClass
         return KtFunction(
             function.location,
             function.name,
             function.signature,
             function.type,
             listOf(),
-            valueParameters
+            valueParameters,
+            isOpen
         )
     }
 
     private fun interpretFunctionFromTask(task: SvTask): KtFunction {
         val valueParameters = task.valueParameters.map { interpretValueParameterFromValueParameter(it) }
+        val isOpen = task.parent is SvClass
         return KtFunction(
             task.location,
             task.name,
             task.signature,
             task.type,
             listOf(AnnotationEntry("Task")),
-            valueParameters
+            valueParameters,
+            isOpen
         )
     }
 
