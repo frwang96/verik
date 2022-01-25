@@ -23,6 +23,7 @@ import io.verik.importer.ast.kt.element.KtEnum
 import io.verik.importer.ast.kt.element.KtEnumEntry
 import io.verik.importer.ast.kt.element.KtFunction
 import io.verik.importer.ast.kt.element.KtProperty
+import io.verik.importer.ast.kt.element.KtTypeAlias
 import io.verik.importer.ast.kt.element.KtValueParameter
 import io.verik.importer.ast.kt.property.AnnotationEntry
 import io.verik.importer.ast.sv.element.declaration.SvClass
@@ -37,6 +38,7 @@ import io.verik.importer.ast.sv.element.declaration.SvPort
 import io.verik.importer.ast.sv.element.declaration.SvProperty
 import io.verik.importer.ast.sv.element.declaration.SvStruct
 import io.verik.importer.ast.sv.element.declaration.SvTask
+import io.verik.importer.ast.sv.element.declaration.SvTypeAlias
 import io.verik.importer.ast.sv.element.declaration.SvValueParameter
 import io.verik.importer.core.Core
 import io.verik.importer.message.Messages
@@ -50,6 +52,7 @@ object DeclarationInterpreter {
             is SvModule -> interpretClassFromModule(declaration)
             is SvStruct -> interpretClassFromStruct(declaration)
             is SvEnum -> interpretEnumFromEnum(declaration)
+            is SvTypeAlias -> interpretTypeAliasFromTypeAlias(declaration)
             is SvFunction -> interpretFunctionFromFunction(declaration)
             is SvTask -> interpretFunctionFromTask(declaration)
             is SvConstructor -> interpretConstructorFromConstructor(declaration)
@@ -107,6 +110,15 @@ object DeclarationInterpreter {
             enum.name,
             enum.signature,
             entries
+        )
+    }
+
+    private fun interpretTypeAliasFromTypeAlias(typeAlias: SvTypeAlias): KtTypeAlias {
+        return KtTypeAlias(
+            typeAlias.location,
+            typeAlias.name,
+            typeAlias.signature,
+            typeAlias.type
         )
     }
 

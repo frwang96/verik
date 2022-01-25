@@ -65,7 +65,7 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize class module with value parameter`() {
+    fun `serialize class module with valueParameter`() {
         driveTextFileTest(
             """
                 module m(input x);
@@ -111,6 +111,18 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `serialize typeAlias`() {
+        driveTextFileTest(
+            """
+                typedef logic t;
+            """.trimIndent(),
+            """
+                typealias t = Boolean
+            """.trimIndent()
+        )
+    }
+
+    @Test
     fun `serialize function simple`() {
         driveTextFileTest(
             """
@@ -124,7 +136,7 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize function with value parameter`() {
+    fun `serialize function with valueParameter`() {
         driveTextFileTest(
             """
                 function void f(int x);

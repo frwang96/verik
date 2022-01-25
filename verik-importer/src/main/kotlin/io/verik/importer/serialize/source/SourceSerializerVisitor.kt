@@ -23,6 +23,7 @@ import io.verik.importer.ast.kt.element.KtEnum
 import io.verik.importer.ast.kt.element.KtEnumEntry
 import io.verik.importer.ast.kt.element.KtFunction
 import io.verik.importer.ast.kt.element.KtProperty
+import io.verik.importer.ast.kt.element.KtTypeAlias
 import io.verik.importer.ast.kt.element.KtValueParameter
 import io.verik.importer.common.KtVisitor
 import io.verik.importer.message.Messages
@@ -41,6 +42,10 @@ class SourceSerializerVisitor(
 
     override fun visitEnum(enum: KtEnum) {
         DeclarationSerializer.serializeEnum(enum, serializeContext)
+    }
+
+    override fun visitTypeAlias(typeAlias: KtTypeAlias) {
+        DeclarationSerializer.serializeTypeAlias(typeAlias, serializeContext)
     }
 
     override fun visitFunction(function: KtFunction) {

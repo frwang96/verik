@@ -24,6 +24,17 @@ import org.junit.jupiter.api.Test
 internal class TypeDeclarationCasterTest : BaseTest() {
 
     @Test
+    fun `cast typeAlias from dataTypeVector`() {
+        driveCasterTest(
+            SystemVerilogParser.DataTypeVectorContext::class,
+            """
+                typedef logic t;
+            """.trimIndent(),
+            "TypeAlias(t, SimpleDescriptor(Boolean))"
+        ) { it.findDeclaration("t") }
+    }
+
+    @Test
     fun `cast enum from dataTypeEnum`() {
         driveCasterTest(
             SystemVerilogParser.DataTypeEnumContext::class,

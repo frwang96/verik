@@ -27,6 +27,7 @@ import io.verik.importer.ast.kt.element.KtFunction
 import io.verik.importer.ast.kt.element.KtPackage
 import io.verik.importer.ast.kt.element.KtProject
 import io.verik.importer.ast.kt.element.KtProperty
+import io.verik.importer.ast.kt.element.KtTypeAlias
 import io.verik.importer.ast.kt.element.KtValueParameter
 
 abstract class KtVisitor {
@@ -55,6 +56,10 @@ abstract class KtVisitor {
 
     open fun visitEnum(enum: KtEnum) {
         visitDeclaration(enum)
+    }
+
+    open fun visitTypeAlias(typeAlias: KtTypeAlias) {
+        visitDeclaration(typeAlias)
     }
 
     open fun visitFunction(function: KtFunction) {

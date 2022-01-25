@@ -23,6 +23,7 @@ import io.verik.importer.ast.kt.element.KtEnum
 import io.verik.importer.ast.kt.element.KtEnumEntry
 import io.verik.importer.ast.kt.element.KtFunction
 import io.verik.importer.ast.kt.element.KtProperty
+import io.verik.importer.ast.kt.element.KtTypeAlias
 import io.verik.importer.ast.kt.element.KtValueParameter
 import io.verik.importer.core.Core
 
@@ -66,6 +67,12 @@ object DeclarationSerializer {
         } else {
             serializeContext.appendLine()
         }
+    }
+
+    fun serializeTypeAlias(typeAlias: KtTypeAlias, serializeContext: SerializeContext) {
+        serializeContext.appendLine()
+        serializeDocs(typeAlias, serializeContext)
+        serializeContext.appendLine("typealias ${typeAlias.name} = ${typeAlias.type}")
     }
 
     fun serializeFunction(function: KtFunction, serializeContext: SerializeContext) {

@@ -29,6 +29,7 @@ import io.verik.importer.ast.sv.element.declaration.SvPort
 import io.verik.importer.ast.sv.element.declaration.SvProperty
 import io.verik.importer.ast.sv.element.declaration.SvStruct
 import io.verik.importer.ast.sv.element.declaration.SvTask
+import io.verik.importer.ast.sv.element.declaration.SvTypeAlias
 import io.verik.importer.ast.sv.element.declaration.SvValueParameter
 import io.verik.importer.ast.sv.element.descriptor.SvBitDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvPackedDescriptor
@@ -86,6 +87,13 @@ class ElementPrinter : SvVisitor() {
         build("Enum") {
             build(enum.name)
             build(enum.entries)
+        }
+    }
+
+    override fun visitTypeAlias(typeAlias: SvTypeAlias) {
+        build("TypeAlias") {
+            build(typeAlias.name)
+            build(typeAlias.descriptor)
         }
     }
 
