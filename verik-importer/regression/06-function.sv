@@ -14,27 +14,21 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.kt.element
+// test.sv /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-import io.verik.importer.common.KtVisitor
-import io.verik.importer.message.SourceLocation
-import java.nio.file.Path
+function int f0;
+    input x0;
+endfunction
 
-class KtFile(
-    override val location: SourceLocation,
-    val outputPath: Path,
-    val declarations: List<KtDeclaration>
-) : KtElement() {
+class c;
 
-    init {
-        declarations.forEach { it.parent = this }
-    }
+    function logic f1;
+        input int x1;
+    endfunction
 
-    override fun accept(visitor: KtVisitor) {
-        visitor.visitFile(this)
-    }
+    function void f2(logic [3:0] x2, logic x3);
+    endfunction
 
-    override fun acceptChildren(visitor: KtVisitor) {
-        declarations.forEach { it.accept(visitor) }
-    }
-}
+    extern function logic [3:0] f3(int x4, int x5);
+
+endclass

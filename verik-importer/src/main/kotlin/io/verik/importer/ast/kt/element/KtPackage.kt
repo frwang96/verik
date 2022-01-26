@@ -29,6 +29,10 @@ class KtPackage(
     override val signature: String? = null
     override val type = Core.C_Unit.toType()
 
+    init {
+        files.forEach { it.parent = this }
+    }
+
     override fun accept(visitor: KtVisitor) {
         visitor.visitPackage(this)
     }

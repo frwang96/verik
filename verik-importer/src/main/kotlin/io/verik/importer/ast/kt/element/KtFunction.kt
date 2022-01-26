@@ -31,6 +31,10 @@ class KtFunction(
     val isOpen: Boolean
 ) : KtDeclaration() {
 
+    init {
+        valueParameters.forEach { it.parent = this }
+    }
+
     override fun accept(visitor: KtVisitor) {
         visitor.visitFunction(this)
     }

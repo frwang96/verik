@@ -25,6 +25,10 @@ class KtProject(
 
     override val location: SourceLocation = SourceLocation.NULL
 
+    init {
+        packages.forEach { it.parent = this }
+    }
+
     override fun accept(visitor: KtVisitor) {
         visitor.visitProject(this)
     }

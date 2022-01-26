@@ -14,27 +14,33 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.kt.element
+// test.kt /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-import io.verik.importer.common.KtVisitor
-import io.verik.importer.message.SourceLocation
-import java.nio.file.Path
+package imported
 
-class KtFile(
-    override val location: SourceLocation,
-    val outputPath: Path,
-    val declarations: List<KtDeclaration>
-) : KtElement() {
+import io.verik.core.*
 
-    init {
-        declarations.forEach { it.parent = this }
-    }
+@Task
+fun t0(
+    x0: Boolean
+): Unit = imported()
 
-    override fun accept(visitor: KtVisitor) {
-        visitor.visitFile(this)
-    }
+open class c {
 
-    override fun acceptChildren(visitor: KtVisitor) {
-        declarations.forEach { it.accept(visitor) }
-    }
+    @Task
+    open fun t1(
+        x1: Int
+    ): Unit = imported()
+
+    @Task
+    open fun t2(
+        x2: Ubit<`4`>,
+        x3: Boolean
+    ): Unit = imported()
+
+    @Task
+    open fun t3(
+        x4: Int,
+        x5: Int
+    ): Unit = imported()
 }

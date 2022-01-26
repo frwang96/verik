@@ -25,6 +25,7 @@ import io.verik.importer.ast.kt.element.KtFunction
 import io.verik.importer.ast.kt.element.KtProperty
 import io.verik.importer.ast.kt.element.KtTypeAlias
 import io.verik.importer.ast.kt.element.KtValueParameter
+import io.verik.importer.common.Type
 import io.verik.importer.core.Core
 
 object DeclarationSerializer {
@@ -44,7 +45,10 @@ object DeclarationSerializer {
             serializeContext.append(")")
         }
         if (`class`.superType.reference != Core.C_Any) {
-            serializeContext.append(" : ${`class`.superType}()")
+            serializeContext.append(" : ${`class`.superType}")
+            if (`class`.getConstructor() == null) {
+                serializeSuperConstructorCall(`class`.superType, serializeContext)
+            }
         }
         if (`class`.declarations.isNotEmpty()) {
             serializeContext.appendLine(" {")
@@ -109,10 +113,16 @@ object DeclarationSerializer {
             serializeContext.indent {
                 serializeContext.serializeJoinAppendLine(constructor.valueParameters)
             }
-            serializeContext.appendLine(")")
+            serializeContext.append(")")
         } else {
-            serializeContext.appendLine("()")
+            serializeContext.append("()")
         }
+        val `class` = constructor.parentNotNull().cast<KtClass>()
+        if (`class`.superType.reference != Core.C_Any) {
+            serializeContext.append(" : super")
+            serializeSuperConstructorCall(`class`.superType, serializeContext)
+        }
+        serializeContext.appendLine()
     }
 
     fun serializeProperty(property: KtProperty, serializeContext: SerializeContext) {
@@ -139,6 +149,31 @@ object DeclarationSerializer {
 
     fun serializeEnumEntry(enumEntry: KtEnumEntry, serializeContext: SerializeContext) {
         serializeContext.append(enumEntry.name)
+    }
+
+    private fun serializeSuperConstructorCall(type: Type, serializeContext: SerializeContext) {
+        val declaration = type.reference
+        val constructor = if (declaration is KtClass) declaration.getConstructor() else null
+        if (constructor != null) {
+            val parameterCount = constructor.valueParameters.size
+            if (parameterCount != 0) {
+                serializeContext.appendLine("(")
+                serializeContext.indent {
+                    serializeContext.append("imported()")
+                    repeat(parameterCount - 1) {
+                        serializeContext.append(",")
+                        serializeContext.appendLine()
+                        serializeContext.append("imported()")
+                    }
+                    serializeContext.appendLine()
+                }
+                serializeContext.append(")")
+            } else {
+                serializeContext.append("()")
+            }
+        } else {
+            serializeContext.append("()")
+        }
     }
 
     private fun serializeDocs(declaration: KtDeclaration, serializeContext: SerializeContext) {

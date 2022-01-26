@@ -52,7 +52,7 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize class with superType`() {
+    fun `serialize class with parent`() {
         driveTextFileTest(
             """
                 class d;
@@ -166,6 +166,39 @@ internal class DeclarationSerializerTest : BaseTest() {
                 
                     constructor(
                         x: Boolean
+                    )
+                }
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `serialize constructor with parent`() {
+        driveTextFileTest(
+            """
+                class c;
+                    function new(logic x);
+                    endfunction
+                endclass
+                class d extends c;
+                    function new(logic x);
+                    endfunction
+                endclass
+            """.trimIndent(),
+            """
+                open class c {
+                
+                    constructor(
+                        x: Boolean
+                    )
+                }
+
+                open class d : c {
+
+                    constructor(
+                        x: Boolean
+                    ) : super(
+                        imported()
                     )
                 }
             """.trimIndent()
