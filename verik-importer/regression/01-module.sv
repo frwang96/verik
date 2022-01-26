@@ -14,35 +14,19 @@
  * limitations under the License.
  */
 
-// Test.sv /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// test.sv /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-`ifndef VERIK
-`define VERIK
-`timescale 1ns / 1ns
-`endif
+module m0;
+endmodule
 
-module M;
+module m1(
+    input logic x0,
+    input logic [7:0] x1,
+    output logic [3:0][1:0] x2
+);
+endmodule
 
-    task automatic f0();
-        #1;
-    endtask : f0
-
-    task automatic f1(
-        input logic [7:0]  x,
-        output logic [7:0] __0
-    );
-        #1;
-        __0 = ~x;
-        return;
-    endtask : f1
-
-    initial begin : f2
-        logic [7:0] __1;
-        logic [7:0] x;
-        f0();
-        f1(.x(8'h00), .__0(__1));
-        x = __1;
-        $display($sformatf("%h", x));
-    end : f2
-
-endmodule : M
+module m2(x3, x4);
+    input x3;
+    input [7:0] x4;
+endmodule

@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.test
+package io.verik.importer.test
 
-import io.verik.compiler.common.TextFile
-import io.verik.compiler.main.OutputContext
-import io.verik.compiler.main.Platform
-import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.SourceSetConfig
-import io.verik.compiler.main.SourceSetContext
-import io.verik.compiler.main.StageSequencer
-import io.verik.compiler.main.VerikConfig
+import io.verik.importer.common.TextFile
+import io.verik.importer.main.InputFileContext
+import io.verik.importer.main.OutputContext
+import io.verik.importer.main.Platform
+import io.verik.importer.main.ProjectContext
+import io.verik.importer.main.StageSequencer
+import io.verik.importer.main.VerikImporterConfig
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DynamicTest
@@ -39,12 +38,14 @@ import kotlin.io.path.relativeTo
 
 internal class RegressionTest {
 
+    private val DOCSTRING_REGEX = Regex("(\\s*/\\*\\*.*|\\s*\\*.*)")
+
     @TestFactory
     fun regression(): List<DynamicTest> {
         val tests = ArrayList<DynamicTest>()
         val regressionDir = Paths.get("regression")
-        val kotlinFiles = regressionDir.listDirectoryEntries().filter { it.extension == "kt" }
-        kotlinFiles.forEach {
+        val systemVerilogFiles = regressionDir.listDirectoryEntries().filter { it.extension == "sv" }
+        systemVerilogFiles.forEach {
             val match = Regex("regression/\\d+-([\\w-]+)\\.\\w+").matchEntire(Platform.getStringFromPath(it))
             if (match != null) {
                 val name = match.destructured.component1().replace("-", " ")
@@ -57,16 +58,16 @@ internal class RegressionTest {
         return tests
     }
 
-    private fun runTest(kotlinFile: Path) {
-        val systemVerilogFile = kotlinFile.parent.resolve("${kotlinFile.nameWithoutExtension}.sv")
-        assert(kotlinFile.exists())
+    private fun runTest(systemVerilogFile: Path) {
+        val kotlinFile = systemVerilogFile.parent.resolve("${systemVerilogFile.nameWithoutExtension}.kt")
         assert(systemVerilogFile.exists())
-        val kotlinTextFiles = parseTextFiles(Files.readAllLines(kotlinFile))
+        assert(kotlinFile.exists())
         val systemVerilogTextFiles = parseTextFiles(Files.readAllLines(systemVerilogFile))
-        assert(kotlinTextFiles.isNotEmpty()) { "No Kotlin text files found" }
+        val kotlinTextFiles = parseTextFiles(Files.readAllLines(kotlinFile))
         assert(systemVerilogTextFiles.isNotEmpty()) { "No SystemVerilog text files found" }
-        val outputContext = getOutputContext(kotlinTextFiles)
-        val expectedString = getExpectedString(systemVerilogTextFiles)
+        assert(kotlinTextFiles.isNotEmpty()) { "No Kotlin text files found" }
+        val outputContext = getOutputContext(systemVerilogTextFiles)
+        val expectedString = getExpectedString(kotlinTextFiles)
         val actualString = getActualString(outputContext)
         assertEquals(expectedString, actualString)
     }
@@ -96,42 +97,37 @@ internal class RegressionTest {
         return textFiles
     }
 
-    private fun getOutputContext(kotlinTextFiles: List<TextFile>): OutputContext {
-        val projectContext = getProjectContext(kotlinTextFiles)
+    private fun getOutputContext(systemVerilogTextFiles: List<TextFile>): OutputContext {
+        val projectContext = getProjectContext(systemVerilogTextFiles)
         val stageSequence = StageSequencer.getStageSequence()
         stageSequence.processAll(projectContext)
         return projectContext.outputContext
     }
 
-    private fun getProjectContext(kotlinTextFiles: List<TextFile>): ProjectContext {
-        val sourceSetConfig = SourceSetConfig("test", kotlinTextFiles.map { it.path })
-        val config = VerikConfig(
+    private fun getProjectContext(systemVerilogTextFiles: List<TextFile>): ProjectContext {
+        val importedFiles = systemVerilogTextFiles.map { it.path }
+        val config = VerikImporterConfig(
             toolchain = "verik",
             timestamp = "",
             projectName = "test",
             buildDir = Paths.get(""),
-            sourceSetConfigs = listOf(sourceSetConfig),
-            timescale = "1ns / 1ns",
-            entryPoints = listOf(),
-            enableDeadCodeElimination = true,
-            labelLines = false,
-            enableLineDirective = false,
-            indentLength = 4,
-            wrapLength = 80,
+            importedFiles = importedFiles,
+            includeDirs = listOf(),
+            enablePreprocessorOutput = false,
             suppressedWarnings = listOf(),
             promotedWarnings = listOf(),
             maxErrorCount = 0,
             debug = true
         )
         val projectContext = ProjectContext(config)
-        val sourceSetContext = SourceSetContext("test", kotlinTextFiles)
-        projectContext.sourceSetContexts = listOf(sourceSetContext)
+        val inputFileContexts = systemVerilogTextFiles.map { InputFileContext(it) }
+        projectContext.inputFileContexts = inputFileContexts
         return projectContext
     }
 
-    private fun getExpectedString(systemVerilogTextFiles: List<TextFile>): String {
+    private fun getExpectedString(kotlinTextFiles: List<TextFile>): String {
         val builder = StringBuilder()
-        systemVerilogTextFiles.forEach {
+        kotlinTextFiles.forEach {
             val pathLine = "// ${Platform.getStringFromPath(it.path)} ".padEnd(120, '/')
             builder.appendLine(pathLine)
             builder.appendLine()
@@ -145,17 +141,22 @@ internal class RegressionTest {
 
     private fun getActualString(outputContext: OutputContext): String {
         val builder = StringBuilder()
-        val textFiles = outputContext.getTextFiles().filter { it.path.extension in listOf("sv", "svh") }
+        val textFiles = outputContext.getTextFiles().filter { it.path.extension == "kt" }
         textFiles.forEach { textFile ->
-            val path = textFile.path.relativeTo(Paths.get("src"))
+            val path = textFile.path.relativeTo(Paths.get("src/imported"))
             val pathLine = "// ${Platform.getStringFromPath(path)} ".padEnd(120, '/')
             builder.appendLine(pathLine)
             var isHeader = true
             for (line in textFile.content.lines()) {
-                if (isHeader && line.startsWith("//"))
+                if (line.startsWith("package")) {
+                    builder.appendLine()
+                    isHeader = false
+                }
+                if (isHeader)
                     continue
-                isHeader = false
-                builder.appendLine(line)
+                if (!line.matches(DOCSTRING_REGEX)) {
+                    builder.appendLine(line)
+                }
             }
         }
         builder.deleteCharAt(builder.length - 1)

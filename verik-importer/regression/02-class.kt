@@ -14,35 +14,12 @@
  * limitations under the License.
  */
 
-// Test.sv /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// test.kt /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-`ifndef VERIK
-`define VERIK
-`timescale 1ns / 1ns
-`endif
+package imported
 
-module M;
+import io.verik.core.*
 
-    task automatic f0();
-        #1;
-    endtask : f0
+open class c0
 
-    task automatic f1(
-        input logic [7:0]  x,
-        output logic [7:0] __0
-    );
-        #1;
-        __0 = ~x;
-        return;
-    endtask : f1
-
-    initial begin : f2
-        logic [7:0] __1;
-        logic [7:0] x;
-        f0();
-        f1(.x(8'h00), .__0(__1));
-        x = __1;
-        $display($sformatf("%h", x));
-    end : f2
-
-endmodule : M
+open class c1 : c0()

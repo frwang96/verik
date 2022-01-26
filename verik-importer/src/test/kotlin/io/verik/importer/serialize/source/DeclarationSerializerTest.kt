@@ -69,20 +69,7 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize class module`() {
-        driveTextFileTest(
-            """
-                module m;
-                endmodule
-            """.trimIndent(),
-            """
-                class m : Module()
-            """.trimIndent()
-        )
-    }
-
-    @Test
-    fun `serialize class module with valueParameter`() {
+    fun `serialize class with valueParameter`() {
         driveTextFileTest(
             """
                 module m(input x);
@@ -92,22 +79,6 @@ internal class DeclarationSerializerTest : BaseTest() {
                 class m(
                     @In var x: Boolean
                 ) : Module()
-            """.trimIndent()
-        )
-    }
-
-    @Test
-    fun `serialize class struct`() {
-        driveTextFileTest(
-            """
-                typedef struct {
-                    logic x;
-                } s;
-            """.trimIndent(),
-            """
-                class s(
-                    var x: Boolean
-                ) : Struct()
             """.trimIndent()
         )
     }
@@ -168,7 +139,7 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize function task`() {
+    fun `serialize function with annotation`() {
         driveTextFileTest(
             """
                 task t;

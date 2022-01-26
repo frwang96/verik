@@ -14,35 +14,21 @@
  * limitations under the License.
  */
 
-// Test.sv /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// test.kt /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-`ifndef VERIK
-`define VERIK
-`timescale 1ns / 1ns
-`endif
+package imported
 
-module M;
+import io.verik.core.*
 
-    task automatic f0();
-        #1;
-    endtask : f0
+class m0 : Module()
 
-    task automatic f1(
-        input logic [7:0]  x,
-        output logic [7:0] __0
-    );
-        #1;
-        __0 = ~x;
-        return;
-    endtask : f1
+class m1(
+    @In var x0: Boolean,
+    @In var x1: Ubit<`8`>,
+    @Out var x2: Packed<`2`, Ubit<`4`>>
+) : Module()
 
-    initial begin : f2
-        logic [7:0] __1;
-        logic [7:0] x;
-        f0();
-        f1(.x(8'h00), .__0(__1));
-        x = __1;
-        $display($sformatf("%h", x));
-    end : f2
-
-endmodule : M
+class m2(
+    @In var x3: Boolean,
+    @In var x4: Ubit<`8`>
+) : Module()
