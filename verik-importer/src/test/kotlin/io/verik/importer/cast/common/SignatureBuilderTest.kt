@@ -77,38 +77,6 @@ class SignatureBuilderTest : BaseTest() {
     }
 
     @Test
-    fun `signature dataTypeStruct`() {
-        driveSignatureTest(
-            SystemVerilogParser.DataTypeStructContext::class,
-            """
-                typedef struct { logic x; logic y; } s;
-            """.trimIndent(),
-            """
-                typedef struct {
-                    logic x;
-                    logic y;
-                } s;
-            """.trimIndent()
-        ) { it.findDeclaration("s") }
-    }
-
-    @Test
-    fun `signature dataTypeEnum`() {
-        driveSignatureTest(
-            SystemVerilogParser.DataTypeEnumContext::class,
-            """
-                typedef enum { A, B } e;
-            """.trimIndent(),
-            """
-                typedef enum {
-                    A,
-                    B
-                } e;
-            """.trimIndent()
-        ) { it.findDeclaration("e") }
-    }
-
-    @Test
     fun `signature classMethodTask`() {
         driveSignatureTest(
             SystemVerilogParser.ClassMethodTaskContext::class,
@@ -125,73 +93,20 @@ class SignatureBuilderTest : BaseTest() {
     }
 
     @Test
-    fun `signature taskBodyDeclarationNoPortList`() {
+    fun `signature classConstructorPrototype`() {
         driveSignatureTest(
-            SystemVerilogParser.TaskBodyDeclarationNoPortListContext::class,
+            SystemVerilogParser.ClassConstructorPrototypeContext::class,
             """
-                task t;
-                    input x;
-                    ${'$'}display();
-                endtask
+                class c;
+                    extern function new(logic x);
+                endclass
             """.trimIndent(),
             """
-                task t;
-                    input x;
-                endtask
-            """.trimIndent()
-        ) { it.findDeclaration("t") }
-    }
-
-    @Test
-    fun `signature taskBodyDeclarationPortList`() {
-        driveSignatureTest(
-            SystemVerilogParser.TaskBodyDeclarationPortListContext::class,
-            """
-                task t(logic x);
-                    ${'$'}display();
-                endtask
-            """.trimIndent(),
-            """
-                task t(
+                extern function new(
                     logic x
                 );
             """.trimIndent()
-        ) { it.findDeclaration("t") }
-    }
-
-    @Test
-    fun `signature functionBodyDeclarationNoPortList`() {
-        driveSignatureTest(
-            SystemVerilogParser.FunctionBodyDeclarationNoPortListContext::class,
-            """
-                function int f;
-                    input int x;
-                    return x;
-                endfunction
-            """.trimIndent(),
-            """
-                function int f;
-                    input int x;
-                endfunction
-            """.trimIndent()
-        ) { it.findDeclaration("f") }
-    }
-
-    @Test
-    fun `signature functionBodyDeclarationPortList`() {
-        driveSignatureTest(
-            SystemVerilogParser.FunctionBodyDeclarationPortListContext::class,
-            """
-                function int f(int x);
-                    return x;
-                endfunction
-            """.trimIndent(),
-            """
-                function int f(
-                    int x
-                );
-            """.trimIndent()
-        ) { it.findDeclaration("f") }
+        ) { it.findDeclaration("new") }
     }
 
     @Test
@@ -233,5 +148,141 @@ class SignatureBuilderTest : BaseTest() {
             """.trimIndent(),
             "logic [3:0][1:0] x;"
         ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `signature dataTypeStruct`() {
+        driveSignatureTest(
+            SystemVerilogParser.DataTypeStructContext::class,
+            """
+                typedef struct { logic x; logic y; } s;
+            """.trimIndent(),
+            """
+                typedef struct {
+                    logic x;
+                    logic y;
+                } s;
+            """.trimIndent()
+        ) { it.findDeclaration("s") }
+    }
+
+    @Test
+    fun `signature dataTypeEnum`() {
+        driveSignatureTest(
+            SystemVerilogParser.DataTypeEnumContext::class,
+            """
+                typedef enum { A, B } e;
+            """.trimIndent(),
+            """
+                typedef enum {
+                    A,
+                    B
+                } e;
+            """.trimIndent()
+        ) { it.findDeclaration("e") }
+    }
+
+    @Test
+    fun `signature functionBodyDeclarationNoPortList`() {
+        driveSignatureTest(
+            SystemVerilogParser.FunctionBodyDeclarationNoPortListContext::class,
+            """
+                function int f;
+                    input int x;
+                    return x;
+                endfunction
+            """.trimIndent(),
+            """
+                function int f;
+                    input int x;
+                endfunction
+            """.trimIndent()
+        ) { it.findDeclaration("f") }
+    }
+
+    @Test
+    fun `signature functionBodyDeclarationPortList`() {
+        driveSignatureTest(
+            SystemVerilogParser.FunctionBodyDeclarationPortListContext::class,
+            """
+                function int f(int x);
+                    return x;
+                endfunction
+            """.trimIndent(),
+            """
+                function int f(
+                    int x
+                );
+            """.trimIndent()
+        ) { it.findDeclaration("f") }
+    }
+
+    @Test
+    fun `signature functionPrototype`() {
+        driveSignatureTest(
+            SystemVerilogParser.FunctionPrototypeContext::class,
+            """
+                class c;
+                    extern function void f(logic x);
+                endclass
+            """.trimIndent(),
+            """
+                extern function void f(
+                    logic x
+                );
+            """.trimIndent()
+        ) { it.findDeclaration("f") }
+    }
+
+    @Test
+    fun `signature taskBodyDeclarationNoPortList`() {
+        driveSignatureTest(
+            SystemVerilogParser.TaskBodyDeclarationNoPortListContext::class,
+            """
+                task t;
+                    input x;
+                    ${'$'}display();
+                endtask
+            """.trimIndent(),
+            """
+                task t;
+                    input x;
+                endtask
+            """.trimIndent()
+        ) { it.findDeclaration("t") }
+    }
+
+    @Test
+    fun `signature taskBodyDeclarationPortList`() {
+        driveSignatureTest(
+            SystemVerilogParser.TaskBodyDeclarationPortListContext::class,
+            """
+                task t(logic x);
+                    ${'$'}display();
+                endtask
+            """.trimIndent(),
+            """
+                task t(
+                    logic x
+                );
+            """.trimIndent()
+        ) { it.findDeclaration("t") }
+    }
+
+    @Test
+    fun `signature taskPrototype`() {
+        driveSignatureTest(
+            SystemVerilogParser.TaskPrototypeContext::class,
+            """
+                class c;
+                    extern task t(logic x);
+                endclass
+            """.trimIndent(),
+            """
+                extern task t(
+                    logic x
+                );
+            """.trimIndent()
+        ) { it.findDeclaration("t") }
     }
 }

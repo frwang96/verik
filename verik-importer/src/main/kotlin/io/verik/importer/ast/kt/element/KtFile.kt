@@ -23,8 +23,12 @@ import java.nio.file.Path
 class KtFile(
     override val location: SourceLocation,
     val outputPath: Path,
-    val declarations: ArrayList<KtDeclaration>
+    val declarations: List<KtDeclaration>
 ) : KtElement() {
+
+    init {
+        declarations.forEach { it.parent = this }
+    }
 
     override fun accept(visitor: KtVisitor) {
         visitor.visitFile(this)

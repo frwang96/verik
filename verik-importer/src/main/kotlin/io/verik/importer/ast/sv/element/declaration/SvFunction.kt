@@ -18,21 +18,19 @@ package io.verik.importer.ast.sv.element.declaration
 
 import io.verik.importer.ast.sv.element.descriptor.SvDescriptor
 import io.verik.importer.common.SvVisitor
-import io.verik.importer.common.Type
 import io.verik.importer.message.SourceLocation
 
 class SvFunction(
     override val location: SourceLocation,
     override val name: String,
     override var signature: String?,
-    override var type: Type,
     override val valueParameters: List<SvValueParameter>,
     val descriptor: SvDescriptor
 ) : SvAbstractFunction() {
 
     init {
-        descriptor.parent = this
         valueParameters.forEach { it.parent = this }
+        descriptor.parent = this
     }
 
     override fun accept(visitor: SvVisitor) {

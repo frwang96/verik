@@ -55,7 +55,7 @@ class CasterVisitor(
         return ModuleCaster.castModuleFromModuleDeclarationAnsi(ctx!!, castContext)
     }
 
-    override fun visitClassDeclaration(ctx: SystemVerilogParser.ClassDeclarationContext?): SvElement {
+    override fun visitClassDeclaration(ctx: SystemVerilogParser.ClassDeclarationContext?): SvElement? {
         return ClassCaster.castClassFromClassDeclaration(ctx!!, castContext)
     }
 
@@ -76,11 +76,11 @@ class CasterVisitor(
     }
 
     override fun visitClassMethodFunction(ctx: SystemVerilogParser.ClassMethodFunctionContext?): SvElement? {
-        return FunctionCaster.castTaskFromClassMethodFunction(ctx!!, castContext)
+        return FunctionCaster.castFunctionFromClassMethodFunction(ctx!!, castContext)
     }
 
     override fun visitClassMethodExternMethod(ctx: SystemVerilogParser.ClassMethodExternMethodContext?): SvElement? {
-        return null
+        return FunctionCaster.castFunctionFromClassMethodExternMethod(ctx!!, castContext)
     }
 
     override fun visitClassMethodConstructor(ctx: SystemVerilogParser.ClassMethodConstructorContext?): SvElement? {
@@ -89,14 +89,20 @@ class CasterVisitor(
 
     override fun visitClassMethodExternConstructor(
         ctx: SystemVerilogParser.ClassMethodExternConstructorContext?
-    ): SvElement? {
-        return null
+    ): SvElement {
+        return ConstructorCaster.castConstructorFromClassMethodExternConstructorContext(ctx!!, castContext)
     }
 
     override fun visitClassConstructorDeclaration(
         ctx: SystemVerilogParser.ClassConstructorDeclarationContext?
     ): SvElement? {
         return ConstructorCaster.castConstructorFromClassConstructorDeclaration(ctx!!, castContext)
+    }
+
+// A.1.10 Constraints //////////////////////////////////////////////////////////////////////////////////////////////////
+
+    override fun visitConstraintDeclaration(ctx: SystemVerilogParser.ConstraintDeclarationContext?): SvElement? {
+        return null
     }
 
 // A.2.1.1 Module Parameter Declarations ///////////////////////////////////////////////////////////////////////////////
@@ -151,8 +157,8 @@ class CasterVisitor(
         return DescriptorCaster.castDescriptorFromImplicitDataType(ctx!!, castContext)
     }
 
-    override fun visitStructUnionMember(ctx: SystemVerilogParser.StructUnionMemberContext?): SvElement? {
-        return PropertyCaster.castPropertiesFromStructUnionMember(ctx!!, castContext)
+    override fun visitClassType(ctx: SystemVerilogParser.ClassTypeContext?): SvElement {
+        return DescriptorCaster.castDescriptorFromClassType(ctx!!, castContext)
     }
 
     override fun visitDataTypeOrVoid(ctx: SystemVerilogParser.DataTypeOrVoidContext?): SvElement? {
@@ -178,7 +184,7 @@ class CasterVisitor(
     }
 
     override fun visitFunctionPrototype(ctx: SystemVerilogParser.FunctionPrototypeContext?): SvElement? {
-        return null
+        return FunctionCaster.castFunctionFromFunctionPrototype(ctx!!, castContext)
     }
 
 // A.2.7 Task Declarations /////////////////////////////////////////////////////////////////////////////////////////////
@@ -189,13 +195,13 @@ class CasterVisitor(
 
     override fun visitTaskBodyDeclarationNoPortList(
         ctx: SystemVerilogParser.TaskBodyDeclarationNoPortListContext?
-    ): SvElement {
+    ): SvElement? {
         return TaskCaster.castTaskFromTaskBodyDeclarationNoPortList(ctx!!, castContext)
     }
 
     override fun visitTaskBodyDeclarationPortList(
         ctx: SystemVerilogParser.TaskBodyDeclarationPortListContext?
-    ): SvElement {
+    ): SvElement? {
         return TaskCaster.castTaskFromTaskBodyDeclarationPortList(ctx!!, castContext)
     }
 
@@ -203,8 +209,12 @@ class CasterVisitor(
         return ValueParameterCaster.castValueParameterFromTfPortItem(ctx!!, castContext)
     }
 
+    override fun visitTfPortDeclaration(ctx: SystemVerilogParser.TfPortDeclarationContext?): SvElement? {
+        return ValueParameterCaster.castValueParameterFromTfPortDeclaration(ctx!!, castContext)
+    }
+
     override fun visitTaskPrototype(ctx: SystemVerilogParser.TaskPrototypeContext?): SvElement {
-        return super.visitTaskPrototype(ctx)
+        return TaskCaster.castTaskFromTaskPrototype(ctx!!, castContext)
     }
 
 // A.6.2 Procedural Blocks and Assignments /////////////////////////////////////////////////////////////////////////////
@@ -220,6 +230,10 @@ class CasterVisitor(
 // A.8.4 Primaries /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     override fun visitConstantPrimaryLiteral(ctx: SystemVerilogParser.ConstantPrimaryLiteralContext?): SvElement {
-        return ExpressionCaster.castExpressionFromConstantPrimaryLiteral(ctx!!, castContext)
+        return ExpressionCaster.castLiteralExpressionFromConstantPrimaryLiteral(ctx!!, castContext)
+    }
+
+    override fun visitConstantPrimaryParameter(ctx: SystemVerilogParser.ConstantPrimaryParameterContext?): SvElement {
+        return ExpressionCaster.castReferenceExpressionFromConstantPrimaryParameter(ctx!!, castContext)
     }
 }

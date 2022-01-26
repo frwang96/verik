@@ -68,6 +68,9 @@ class SignatureBuilder private constructor(private val name: String) {
             SignatureFragmentKind.COLON -> {
                 builder.append(":")
             }
+            SignatureFragmentKind.COLON_COLON -> {
+                builder.append("::")
+            }
             SignatureFragmentKind.SHARP -> {
                 builder.append("#")
             }
@@ -123,6 +126,7 @@ class SignatureBuilder private constructor(private val name: String) {
         return when {
             lastKind == SignatureFragmentKind.NULL -> false
             lastKind == SignatureFragmentKind.COLON -> false
+            lastKind == SignatureFragmentKind.COLON_COLON -> false
             lastKind == SignatureFragmentKind.SHARP -> false
             lastKind == SignatureFragmentKind.LBRACK -> false
             lastKind == SignatureFragmentKind.LPAREN -> false
@@ -133,6 +137,7 @@ class SignatureBuilder private constructor(private val name: String) {
             kind == SignatureFragmentKind.COMMA -> false
             kind == SignatureFragmentKind.COMMA_BREAK -> false
             kind == SignatureFragmentKind.COLON -> false
+            kind == SignatureFragmentKind.COLON_COLON -> false
             kind == SignatureFragmentKind.RBRACK -> false
             kind == SignatureFragmentKind.RPAREN -> false
             kind == SignatureFragmentKind.RPAREN_BREAK -> false

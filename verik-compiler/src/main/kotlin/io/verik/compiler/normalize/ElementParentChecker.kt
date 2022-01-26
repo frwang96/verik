@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.check.normalize
+package io.verik.compiler.normalize
 
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EProject
@@ -25,9 +25,9 @@ import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.backend.common.pop
 import org.jetbrains.kotlin.backend.common.push
 
-object ElementParentChecker : NormalizationStage {
+object ElementParentChecker : NormalizationChecker {
 
-    override fun process(projectContext: ProjectContext, projectStage: ProjectStage) {
+    override fun check(projectContext: ProjectContext, projectStage: ProjectStage) {
         val elementParentVisitor = ElementParentVisitor(projectStage)
         projectContext.project.accept(elementParentVisitor)
     }

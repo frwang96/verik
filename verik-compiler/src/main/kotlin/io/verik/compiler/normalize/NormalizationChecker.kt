@@ -14,17 +14,22 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.check.normalize
+package io.verik.compiler.normalize
 
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
-object NormalizationChecker : NormalizationStage {
+interface NormalizationChecker {
 
-    override fun process(projectContext: ProjectContext, projectStage: ProjectStage) {
-        ElementParentChecker.process(projectContext, projectStage)
-        ElementAliasChecker.process(projectContext, projectStage)
-        TypeAliasChecker.process(projectContext, projectStage)
-        DanglingReferenceChecker.process(projectContext, projectStage)
+    fun check(projectContext: ProjectContext, projectStage: ProjectStage)
+
+    companion object {
+
+        fun check(projectContext: ProjectContext, projectStage: ProjectStage) {
+            ElementParentChecker.check(projectContext, projectStage)
+            ElementAliasChecker.check(projectContext, projectStage)
+            TypeAliasChecker.check(projectContext, projectStage)
+            DanglingReferenceChecker.check(projectContext, projectStage)
+        }
     }
 }

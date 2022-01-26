@@ -20,9 +20,13 @@ import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.ast.sv.element.declaration.SvEnum
 import io.verik.importer.ast.sv.element.declaration.SvEnumEntry
 import io.verik.importer.ast.sv.element.declaration.SvStruct
+import io.verik.importer.ast.sv.element.declaration.SvStructEntry
+import io.verik.importer.ast.sv.element.declaration.SvTypeAlias
 import io.verik.importer.ast.sv.element.declaration.SvTypeDeclaration
 import io.verik.importer.cast.common.CastContext
 import io.verik.importer.cast.common.SignatureBuilder
+import io.verik.importer.common.ElementCopier
+import io.verik.importer.message.SourceLocation
 
 object TypeDeclarationCaster {
 
@@ -30,48 +34,76 @@ object TypeDeclarationCaster {
         ctx: SystemVerilogParser.TypeDeclarationDataContext,
         castContext: CastContext
     ): SvTypeDeclaration? {
+        val identifier = ctx.typeIdentifier()
+        val location = castContext.getLocation(identifier)
+        val name = identifier.text
+        val signature = SignatureBuilder.buildSignature(ctx, name)
         return when (val dataType = ctx.dataType()) {
             is SystemVerilogParser.DataTypeEnumContext ->
-                castEnumFromDataTypeEnum(ctx, dataType, castContext)
+                castEnumFromDataTypeEnum(location, name, signature, dataType, castContext)
             is SystemVerilogParser.DataTypeStructContext ->
-                castStructFromDataTypeStruct(ctx, dataType, castContext)
-            else -> null
+                castStructFromDataTypeStruct(location, name, signature, dataType, castContext)
+            else -> {
+                val descriptor = castContext.castDescriptor(dataType) ?: return null
+                SvTypeAlias(location, name, signature, descriptor)
+            }
         }
     }
 
     private fun castEnumFromDataTypeEnum(
-        ctx: SystemVerilogParser.TypeDeclarationDataContext,
+        location: SourceLocation,
+        name: String,
+        signature: String,
         dataTypeEnum: SystemVerilogParser.DataTypeEnumContext,
         castContext: CastContext
     ): SvEnum {
-        val identifier = ctx.typeIdentifier()
-        val location = castContext.getLocation(identifier)
-        val name = identifier.text
-        val signature = SignatureBuilder.buildSignature(ctx, name)
         val entries = dataTypeEnum.enumNameDeclaration().map {
-            val entryIdentifier = it.enumIdentifier()
-            val entryLocation = castContext.getLocation(entryIdentifier)
-            val entryName = entryIdentifier.text
-            SvEnumEntry(entryLocation, entryName)
+            castEnumEntryFromEnumNameDeclaration(it, castContext)
         }
         return SvEnum(location, name, signature, entries)
     }
 
+    private fun castEnumEntryFromEnumNameDeclaration(
+        ctx: SystemVerilogParser.EnumNameDeclarationContext,
+        castContext: CastContext
+    ): SvEnumEntry {
+        val identifier = ctx.enumIdentifier()
+        val location = castContext.getLocation(identifier)
+        val name = identifier.text
+        return SvEnumEntry(location, name)
+    }
+
     private fun castStructFromDataTypeStruct(
-        ctx: SystemVerilogParser.TypeDeclarationDataContext,
+        location: SourceLocation,
+        name: String,
+        signature: String,
         dataTypeStruct: SystemVerilogParser.DataTypeStructContext,
         castContext: CastContext
     ): SvStruct {
-        val identifier = ctx.typeIdentifier()
-        val location = castContext.getLocation(identifier)
-        val name = identifier.text
-        val signature = SignatureBuilder.buildSignature(ctx, name)
-        val properties = dataTypeStruct.structUnionMember().flatMap { castContext.castProperties(it) }
+        val entries = dataTypeStruct.structUnionMember().flatMap {
+            castStructEntriesFromStructUnionMember(it, castContext)
+        }
         return SvStruct(
             location,
             name,
             signature,
-            properties
+            entries
         )
+    }
+
+    private fun castStructEntriesFromStructUnionMember(
+        ctx: SystemVerilogParser.StructUnionMemberContext,
+        castContext: CastContext
+    ): List<SvStructEntry> {
+        val descriptor = castContext.castDescriptor(ctx.dataTypeOrVoid()) ?: return listOf()
+        val identifiers = ctx.listOfVariableDeclAssignments()
+            .variableDeclAssignment()
+            .filterIsInstance<SystemVerilogParser.VariableDeclAssignmentVariableContext>()
+            .map { it.variableIdentifier() }
+        return identifiers.map {
+            val location = castContext.getLocation(it)
+            val name = it.text
+            SvStructEntry(location, name, ElementCopier.deepCopy(descriptor))
+        }
     }
 }

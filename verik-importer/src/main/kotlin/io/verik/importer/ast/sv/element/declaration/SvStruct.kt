@@ -17,27 +17,24 @@
 package io.verik.importer.ast.sv.element.declaration
 
 import io.verik.importer.common.SvVisitor
-import io.verik.importer.core.Core
 import io.verik.importer.message.SourceLocation
 
 class SvStruct(
     override val location: SourceLocation,
     override val name: String,
     override var signature: String?,
-    val properties: List<SvProperty>
+    val entries: List<SvStructEntry>
 ) : SvTypeDeclaration() {
 
     init {
-        properties.forEach { it.parent = this }
+        entries.forEach { it.parent = this }
     }
-
-    override var type = Core.C_Unit.toType()
 
     override fun accept(visitor: SvVisitor) {
         visitor.visitStruct(this)
     }
 
     override fun acceptChildren(visitor: SvVisitor) {
-        properties.forEach { it.accept(visitor) }
+        entries.forEach { it.accept(visitor) }
     }
 }

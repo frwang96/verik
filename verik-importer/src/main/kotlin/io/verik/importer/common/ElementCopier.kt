@@ -22,6 +22,7 @@ import io.verik.importer.ast.sv.element.descriptor.SvPackedDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvReferenceDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvSimpleDescriptor
 import io.verik.importer.ast.sv.element.expression.SvLiteralExpression
+import io.verik.importer.ast.sv.element.expression.SvReferenceExpression
 import io.verik.importer.message.Messages
 
 object ElementCopier {
@@ -37,6 +38,7 @@ object ElementCopier {
             is SvPackedDescriptor -> copyPackedDescriptor(element)
             is SvReferenceDescriptor -> copyReferenceDescriptor(element)
             is SvLiteralExpression -> copyLiteralExpression(element)
+            is SvReferenceExpression -> copyReferenceExpression(element)
             else -> Messages.INTERNAL_ERROR.on(element, "Unable to copy element: $element")
         }
         @Suppress("UNCHECKED_CAST")
@@ -44,18 +46,20 @@ object ElementCopier {
     }
 
     private fun copySimpleDescriptor(simpleDescriptor: SvSimpleDescriptor): SvSimpleDescriptor {
+        val type = simpleDescriptor.type.copy()
         return SvSimpleDescriptor(
             simpleDescriptor.location,
-            simpleDescriptor.type
+            type
         )
     }
 
     private fun copyBitDescriptor(bitDescriptor: SvBitDescriptor): SvBitDescriptor {
+        val type = bitDescriptor.type.copy()
         val left = copy(bitDescriptor.left)
         val right = copy(bitDescriptor.right)
         return SvBitDescriptor(
             bitDescriptor.location,
-            bitDescriptor.type,
+            type,
             left,
             right,
             bitDescriptor.isSigned
@@ -63,12 +67,13 @@ object ElementCopier {
     }
 
     private fun copyPackedDescriptor(packedDescriptor: SvPackedDescriptor): SvPackedDescriptor {
+        val type = packedDescriptor.type.copy()
         val descriptor = copy(packedDescriptor.descriptor)
         val left = copy(packedDescriptor.left)
         val right = copy(packedDescriptor.right)
         return SvPackedDescriptor(
             packedDescriptor.location,
-            packedDescriptor.type,
+            type,
             descriptor,
             left,
             right
@@ -76,9 +81,10 @@ object ElementCopier {
     }
 
     private fun copyReferenceDescriptor(referenceDescriptor: SvReferenceDescriptor): SvReferenceDescriptor {
+        val type = referenceDescriptor.type.copy()
         return SvReferenceDescriptor(
             referenceDescriptor.location,
-            referenceDescriptor.type,
+            type,
             referenceDescriptor.name
         )
     }
@@ -87,6 +93,14 @@ object ElementCopier {
         return SvLiteralExpression(
             literalExpression.location,
             literalExpression.value
+        )
+    }
+
+    private fun copyReferenceExpression(referenceExpression: SvReferenceExpression): SvElement {
+        return SvReferenceExpression(
+            referenceExpression.location,
+            referenceExpression.name,
+            referenceExpression.reference
         )
     }
 }

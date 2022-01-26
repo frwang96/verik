@@ -17,11 +17,28 @@
 package io.verik.importer.ast.kt.element
 
 import io.verik.importer.common.KtVisitor
+import io.verik.importer.message.Messages
 import io.verik.importer.message.SourceLocation
 
 abstract class KtElement {
 
     abstract val location: SourceLocation
+
+    var parent: KtElement? = null
+
+    fun parentNotNull(): KtElement {
+        return parent
+            ?: Messages.INTERNAL_ERROR.on(this, "Parent element of $this should not be null")
+    }
+
+    inline fun <reified E : KtElement> cast(): E {
+        return when (this) {
+            is E -> this
+            else -> {
+                Messages.INTERNAL_ERROR.on(this, "Could not cast element: Expected ${E::class.simpleName} actual $this")
+            }
+        }
+    }
 
     abstract fun accept(visitor: KtVisitor)
 

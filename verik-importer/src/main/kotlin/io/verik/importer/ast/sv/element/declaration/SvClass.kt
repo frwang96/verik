@@ -16,21 +16,21 @@
 
 package io.verik.importer.ast.sv.element.declaration
 
+import io.verik.importer.ast.sv.element.descriptor.SvDescriptor
 import io.verik.importer.common.SvVisitor
-import io.verik.importer.core.Core
 import io.verik.importer.message.SourceLocation
 
 class SvClass(
     override val location: SourceLocation,
     override val name: String,
     override var signature: String?,
-    override var declarations: ArrayList<SvDeclaration>
+    override var declarations: ArrayList<SvDeclaration>,
+    val superDescriptor: SvDescriptor
 ) : SvContainerDeclaration() {
-
-    override var type = Core.C_Unit.toType()
 
     init {
         declarations.forEach { it.parent = this }
+        superDescriptor.parent = this
     }
 
     override fun accept(visitor: SvVisitor) {
@@ -39,5 +39,6 @@ class SvClass(
 
     override fun acceptChildren(visitor: SvVisitor) {
         declarations.forEach { it.accept(visitor) }
+        superDescriptor.accept(visitor)
     }
 }

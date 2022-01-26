@@ -29,7 +29,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 endclass
             """.trimIndent(),
             """
-                class c
+                open class c
             """.trimIndent()
         )
     }
@@ -43,7 +43,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 endclass
             """.trimIndent(),
             """
-                class c {
+                open class c {
                 
                     var x: Boolean = imported()
                 }
@@ -52,20 +52,24 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize class module`() {
+    fun `serialize class with parent`() {
         driveTextFileTest(
             """
-                module m;
-                endmodule
+                class d;
+                endclass
+                class c extends d;
+                endclass
             """.trimIndent(),
             """
-                class m : Module()
+                open class d
+
+                open class c : d()
             """.trimIndent()
         )
     }
 
     @Test
-    fun `serialize class module with value parameter`() {
+    fun `serialize class with valueParameter`() {
         driveTextFileTest(
             """
                 module m(input x);
@@ -75,22 +79,6 @@ internal class DeclarationSerializerTest : BaseTest() {
                 class m(
                     @In var x: Boolean
                 ) : Module()
-            """.trimIndent()
-        )
-    }
-
-    @Test
-    fun `serialize class struct`() {
-        driveTextFileTest(
-            """
-                typedef struct {
-                    logic x;
-                } s;
-            """.trimIndent(),
-            """
-                class s(
-                    var x: Boolean
-                ) : Struct()
             """.trimIndent()
         )
     }
@@ -111,6 +99,18 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `serialize typeAlias`() {
+        driveTextFileTest(
+            """
+                typedef logic t;
+            """.trimIndent(),
+            """
+                typealias t = Boolean
+            """.trimIndent()
+        )
+    }
+
+    @Test
     fun `serialize function simple`() {
         driveTextFileTest(
             """
@@ -124,7 +124,7 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize function with value parameter`() {
+    fun `serialize function with valueParameter`() {
         driveTextFileTest(
             """
                 function void f(int x);
@@ -139,7 +139,7 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize function task`() {
+    fun `serialize function with annotation`() {
         driveTextFileTest(
             """
                 task t;
@@ -162,10 +162,43 @@ internal class DeclarationSerializerTest : BaseTest() {
                 endclass
             """.trimIndent(),
             """
-                class c {
+                open class c {
                 
                     constructor(
                         x: Boolean
+                    )
+                }
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `serialize constructor with parent`() {
+        driveTextFileTest(
+            """
+                class c;
+                    function new(logic x);
+                    endfunction
+                endclass
+                class d extends c;
+                    function new(logic x);
+                    endfunction
+                endclass
+            """.trimIndent(),
+            """
+                open class c {
+                
+                    constructor(
+                        x: Boolean
+                    )
+                }
+
+                open class d : c {
+
+                    constructor(
+                        x: Boolean
+                    ) : super(
+                        imported()
                     )
                 }
             """.trimIndent()

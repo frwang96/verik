@@ -31,7 +31,27 @@ internal class ValueParameterCasterTest : BaseTest() {
                 function void f(int x);
                 endfunction
             """.trimIndent(),
-            "ValueParameter(x, Nothing, SimpleDescriptor(Int))"
+            "ValueParameter(x, SimpleDescriptor(Int))"
         ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `cast valueParameter from tfPortDeclaration multiple`() {
+        driveCasterTest(
+            SystemVerilogParser.TfPortDeclarationContext::class,
+            """
+                function void f;
+                    input x, y;
+                endfunction
+            """.trimIndent(),
+            """
+                Function(
+                    f, [
+                        ValueParameter(x, SimpleDescriptor(Boolean)),
+                        ValueParameter(y, SimpleDescriptor(Boolean))
+                    ], SimpleDescriptor(Unit)
+                )
+            """.trimIndent()
+        ) { it.findDeclaration("f") }
     }
 }

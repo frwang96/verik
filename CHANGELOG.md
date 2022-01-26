@@ -10,11 +10,13 @@
 - Document with original signature.
 - Import tasks and functions.
 - Import enum and struct typedefs.
+- Import extern tasks and functions.
 
 ### Compiler
 - Replace slice function with array indexing notation.
 - Consolidate expression evaluation in stages specialize and evaluate.
 - Extended immutability checking for array access expressions.
+- Fix Kotlin compiler error message bug on Windows.
 
 ## [0.1.12]
 ### Compiler

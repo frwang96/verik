@@ -21,15 +21,24 @@ import io.verik.importer.ast.sv.element.declaration.SvDeclaration
 import io.verik.importer.ast.sv.element.declaration.SvFunction
 import io.verik.importer.cast.common.CastContext
 import io.verik.importer.cast.common.SignatureBuilder
-import io.verik.importer.common.Type
 
 object FunctionCaster {
 
-    fun castTaskFromClassMethodFunction(
+    fun castFunctionFromClassMethodFunction(
         ctx: SystemVerilogParser.ClassMethodFunctionContext,
         castContext: CastContext
     ): SvDeclaration? {
         val declaration = castContext.castDeclaration(ctx.functionDeclaration()) ?: return null
+        val signature = SignatureBuilder.buildSignature(ctx, declaration.name)
+        declaration.signature = signature
+        return declaration
+    }
+
+    fun castFunctionFromClassMethodExternMethod(
+        ctx: SystemVerilogParser.ClassMethodExternMethodContext,
+        castContext: CastContext
+    ): SvDeclaration? {
+        val declaration = castContext.castDeclaration(ctx.methodPrototype()) ?: return null
         val signature = SignatureBuilder.buildSignature(ctx, declaration.name)
         declaration.signature = signature
         return declaration
@@ -49,16 +58,19 @@ object FunctionCaster {
         ctx: SystemVerilogParser.FunctionBodyDeclarationNoPortListContext,
         castContext: CastContext
     ): SvFunction? {
+        if (ctx.classScope() != null)
+            return null
         val identifier = ctx.functionIdentifier()[0]
         val location = castContext.getLocation(identifier)
         val name = identifier.text
+        val tfPortDeclarations = ctx.tfItemDeclaration().mapNotNull { it.tfPortDeclaration() }
+        val valueParameters = tfPortDeclarations.flatMap { castContext.castValueParameters(it) }
         val descriptor = castContext.castDescriptor(ctx.functionDataTypeOrImplicit()) ?: return null
         return SvFunction(
             location,
             name,
             null,
-            Type.unresolved(),
-            listOf(),
+            valueParameters,
             descriptor
         )
     }
@@ -67,17 +79,38 @@ object FunctionCaster {
         ctx: SystemVerilogParser.FunctionBodyDeclarationPortListContext,
         castContext: CastContext
     ): SvFunction? {
+        if (ctx.classScope() != null)
+            return null
         val identifier = ctx.functionIdentifier()[0]
         val location = castContext.getLocation(identifier)
         val name = identifier.text
         val descriptor = castContext.castDescriptor(ctx.functionDataTypeOrImplicit()) ?: return null
         val tfPortItems = ctx.tfPortList()?.tfPortItem() ?: listOf()
-        val valueParameters = tfPortItems.map { castContext.castValueParameter(it) ?: return null }
+        val valueParameters = tfPortItems.flatMap { castContext.castValueParameters(it) }
         return SvFunction(
             location,
             name,
             null,
-            Type.unresolved(),
+            valueParameters,
+            descriptor
+        )
+    }
+
+    fun castFunctionFromFunctionPrototype(
+        ctx: SystemVerilogParser.FunctionPrototypeContext,
+        castContext: CastContext
+    ): SvFunction? {
+        val identifier = ctx.functionIdentifier()
+        val location = castContext.getLocation(identifier)
+        val name = identifier.text
+        val signature = SignatureBuilder.buildSignature(ctx, name)
+        val descriptor = castContext.castDescriptor(ctx.dataTypeOrVoid()) ?: return null
+        val tfPortItems = ctx.tfPortList()?.tfPortItem() ?: listOf()
+        val valueParameters = tfPortItems.flatMap { castContext.castValueParameters(it) }
+        return SvFunction(
+            location,
+            name,
+            signature,
             valueParameters,
             descriptor
         )

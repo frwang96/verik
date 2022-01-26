@@ -24,26 +24,40 @@ import org.junit.jupiter.api.Test
 internal class TaskCasterTest : BaseTest() {
 
     @Test
-    fun `cast task from taskBodyDeclarationNoPortList simple`() {
+    fun `cast task from taskBodyDeclarationNoPortList`() {
         driveCasterTest(
             SystemVerilogParser.TaskBodyDeclarationNoPortListContext::class,
             """
                 task t;
+                    input x;
                 endtask
             """.trimIndent(),
-            "Task(t, [])"
+            "Task(t, [ValueParameter(x, SimpleDescriptor(Boolean))])"
         ) { it.findDeclaration("t") }
     }
 
     @Test
-    fun `cast task from taskBodyDeclarationPortList simple`() {
+    fun `cast task from taskBodyDeclarationPortList`() {
         driveCasterTest(
             SystemVerilogParser.TaskBodyDeclarationPortListContext::class,
             """
-                task t();
+                task t(logic x);
                 endtask
             """.trimIndent(),
-            "Task(t, [])"
+            "Task(t, [ValueParameter(x, SimpleDescriptor(Boolean))])"
+        ) { it.findDeclaration("t") }
+    }
+
+    @Test
+    fun `cast task from taskPrototype`() {
+        driveCasterTest(
+            SystemVerilogParser.TaskPrototypeContext::class,
+            """
+                class c;
+                    extern task t(logic x);
+                endclass
+            """.trimIndent(),
+            "Task(t, [ValueParameter(x, SimpleDescriptor(Boolean))])"
         ) { it.findDeclaration("t") }
     }
 }

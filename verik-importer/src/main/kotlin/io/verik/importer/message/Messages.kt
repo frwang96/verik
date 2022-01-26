@@ -16,6 +16,7 @@
 
 package io.verik.importer.message
 
+import io.verik.importer.main.ProjectStage
 import java.nio.file.Path
 import kotlin.reflect.full.declaredMemberProperties
 
@@ -35,6 +36,10 @@ object Messages {
 
     val INCLUDED_FILE_NOT_FOUND = ErrorMessageTemplate1<Path>(
         "Included file not found: $0"
+    )
+
+    val NORMALIZATION_ERROR = FatalMessageTemplate2<ProjectStage, String>(
+        "Normalization error at $0: $1"
     )
 
 // PREPROCESS //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -79,8 +84,12 @@ object Messages {
 
 // RESOLVE /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val DECLARATION_NOT_RESOLVED = WarningMessageTemplate1<String>(
-        "Declaration could not be resolved and will be eliminated: $0"
+    val NAME_ALREADY_DEFINED = WarningMessageTemplate1<String>(
+        "Name has already been defined: $0"
+    )
+
+    val UNRESOLVED_REFERENCE = WarningMessageTemplate1<String>(
+        "Unable to resolve reference: $0"
     )
 
     init {

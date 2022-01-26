@@ -17,6 +17,7 @@
 package io.verik.importer.main
 
 import io.verik.importer.message.MessageCollector
+import io.verik.importer.normalize.NormalizationChecker
 import kotlin.reflect.KClass
 
 class StageSequence {
@@ -41,7 +42,7 @@ class StageSequence {
     fun processAll(projectContext: ProjectContext) {
         StageType.values().forEach { stageType ->
             stages[stageType]!!.forEach {
-                processStage(projectContext, it)
+                processStage(projectContext, stageType, it)
             }
             if (stageType.flushAfter()) {
                 MessageCollector.messageCollector.flush()
@@ -53,7 +54,7 @@ class StageSequence {
         assert(contains(stageClass))
         StageType.values().forEach { stageType ->
             stages[stageType]!!.forEach {
-                processStage(projectContext, it)
+                processStage(projectContext, stageType, it)
                 if (it::class == stageClass)
                     return
             }
@@ -66,9 +67,12 @@ class StageSequence {
         }
     }
 
-    private fun processStage(projectContext: ProjectContext, stage: ProjectStage) {
+    private fun processStage(projectContext: ProjectContext, stageType: StageType, stage: ProjectStage) {
         if (stage !in projectContext.processedProjectStages) {
             stage.process(projectContext)
+            if (stageType.checkNormalization() && projectContext.config.debug) {
+                NormalizationChecker.check(projectContext, stage)
+            }
             projectContext.processedProjectStages.add(stage)
         }
     }

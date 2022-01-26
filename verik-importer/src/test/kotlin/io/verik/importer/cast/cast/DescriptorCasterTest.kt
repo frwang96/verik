@@ -30,7 +30,7 @@ internal class DescriptorCasterTest : BaseTest() {
             """
                 logic x;
             """.trimIndent(),
-            "Property(x, Nothing, SimpleDescriptor(Boolean))"
+            "Property(x, SimpleDescriptor(Boolean))"
         ) { it.findDeclaration("x") }
     }
 
@@ -41,7 +41,7 @@ internal class DescriptorCasterTest : BaseTest() {
             """
                 t x;
             """.trimIndent(),
-            "Property(x, Nothing, ReferenceDescriptor(Nothing, t))"
+            "Property(x, ReferenceDescriptor(Nothing, t))"
         ) { it.findDeclaration("x") }
     }
 
@@ -52,7 +52,7 @@ internal class DescriptorCasterTest : BaseTest() {
             """
                 int x;
             """.trimIndent(),
-            "Property(x, Nothing, SimpleDescriptor(Int))"
+            "Property(x, SimpleDescriptor(Int))"
         ) { it.findDeclaration("x") }
     }
 
@@ -63,7 +63,7 @@ internal class DescriptorCasterTest : BaseTest() {
             """
                 x;
             """.trimIndent(),
-            "Property(x, Nothing, SimpleDescriptor(Boolean))"
+            "Property(x, SimpleDescriptor(Boolean))"
         ) { it.findDeclaration("x") }
     }
 
@@ -74,12 +74,7 @@ internal class DescriptorCasterTest : BaseTest() {
             """
                 logic [1:0] x;
             """.trimIndent(),
-            """
-                Property(
-                    x, Nothing,
-                    BitDescriptor(Nothing, LiteralExpression(1), LiteralExpression(0), 0)
-                )
-            """.trimIndent()
+            "Property(x, BitDescriptor(Nothing, LiteralExpression(1), LiteralExpression(0), 0))"
         ) { it.findDeclaration("x") }
     }
 
@@ -90,12 +85,7 @@ internal class DescriptorCasterTest : BaseTest() {
             """
                 logic [1:0][1:0] x;
             """.trimIndent(),
-            """
-                Property(
-                    x, Nothing,
-                    PackedDescriptor(Nothing, BitDescriptor(*), LiteralExpression(1), LiteralExpression(0))
-                )
-            """.trimIndent()
+            "Property(x, PackedDescriptor(Nothing, BitDescriptor(*), LiteralExpression(1), LiteralExpression(0)))"
         ) { it.findDeclaration("x") }
     }
 }

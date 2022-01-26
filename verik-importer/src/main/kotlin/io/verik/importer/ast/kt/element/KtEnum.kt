@@ -29,6 +29,10 @@ class KtEnum(
 
     override val type = Core.C_Unit.toType()
 
+    init {
+        entries.forEach { it.parent = this }
+    }
+
     override fun accept(visitor: KtVisitor) {
         visitor.visitEnum(this)
     }

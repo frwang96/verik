@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,21 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.check.normalize
+package io.verik.importer.ast.sv.element.expression
 
-import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.ProjectStage
+import io.verik.importer.common.Declaration
+import io.verik.importer.common.SvVisitor
+import io.verik.importer.message.SourceLocation
 
-interface NormalizationStage {
+class SvReferenceExpression(
+    override val location: SourceLocation,
+    val name: String,
+    var reference: Declaration
+) : SvExpression() {
 
-    fun process(projectContext: ProjectContext, projectStage: ProjectStage)
+    override fun accept(visitor: SvVisitor) {
+        visitor.visitReferenceExpression(this)
+    }
+
+    override fun acceptChildren(visitor: SvVisitor) {}
 }

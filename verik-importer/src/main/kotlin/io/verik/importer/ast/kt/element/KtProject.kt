@@ -20,10 +20,14 @@ import io.verik.importer.common.KtVisitor
 import io.verik.importer.message.SourceLocation
 
 class KtProject(
-    val packages: ArrayList<KtPackage>
+    val packages: List<KtPackage>
 ) : KtElement() {
 
     override val location: SourceLocation = SourceLocation.NULL
+
+    init {
+        packages.forEach { it.parent = this }
+    }
 
     override fun accept(visitor: KtVisitor) {
         visitor.visitProject(this)

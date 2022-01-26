@@ -18,7 +18,6 @@ package io.verik.importer.common
 
 import io.verik.importer.ast.sv.element.common.SvCompilationUnit
 import io.verik.importer.ast.sv.element.common.SvElement
-import io.verik.importer.ast.sv.element.common.SvTypedElement
 import io.verik.importer.ast.sv.element.declaration.SvAbstractFunction
 import io.verik.importer.ast.sv.element.declaration.SvClass
 import io.verik.importer.ast.sv.element.declaration.SvConstructor
@@ -32,7 +31,9 @@ import io.verik.importer.ast.sv.element.declaration.SvPackage
 import io.verik.importer.ast.sv.element.declaration.SvPort
 import io.verik.importer.ast.sv.element.declaration.SvProperty
 import io.verik.importer.ast.sv.element.declaration.SvStruct
+import io.verik.importer.ast.sv.element.declaration.SvStructEntry
 import io.verik.importer.ast.sv.element.declaration.SvTask
+import io.verik.importer.ast.sv.element.declaration.SvTypeAlias
 import io.verik.importer.ast.sv.element.declaration.SvTypeDeclaration
 import io.verik.importer.ast.sv.element.declaration.SvValueParameter
 import io.verik.importer.ast.sv.element.descriptor.SvBitDescriptor
@@ -43,17 +44,14 @@ import io.verik.importer.ast.sv.element.descriptor.SvSimpleDescriptor
 import io.verik.importer.ast.sv.element.expression.SvExpression
 import io.verik.importer.ast.sv.element.expression.SvLiteralExpression
 import io.verik.importer.ast.sv.element.expression.SvNothingExpression
+import io.verik.importer.ast.sv.element.expression.SvReferenceExpression
 
 abstract class SvVisitor {
 
     open fun visitElement(element: SvElement) {}
 
-    open fun visitTypedElement(typedElement: SvTypedElement) {
-        visitElement(typedElement)
-    }
-
     open fun visitDeclaration(declaration: SvDeclaration) {
-        visitTypedElement(declaration)
+        visitElement(declaration)
     }
 
     open fun visitContainerDeclaration(containerDeclaration: SvContainerDeclaration) {
@@ -90,6 +88,10 @@ abstract class SvVisitor {
         visitTypeDeclaration(enum)
     }
 
+    open fun visitTypeAlias(typeAlias: SvTypeAlias) {
+        visitTypeDeclaration(typeAlias)
+    }
+
 // Function Like ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     open fun visitAbstractFunction(abstractFunction: SvAbstractFunction) {
@@ -122,6 +124,10 @@ abstract class SvVisitor {
         visitDeclaration(port)
     }
 
+    open fun visitStructEntry(structEntry: SvStructEntry) {
+        visitDeclaration(structEntry)
+    }
+
     open fun visitEnumEntry(enumEntry: SvEnumEntry) {
         visitDeclaration(enumEntry)
     }
@@ -129,7 +135,7 @@ abstract class SvVisitor {
 // Descriptor Like /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     open fun visitDescriptor(descriptor: SvDescriptor) {
-        visitTypedElement(descriptor)
+        visitElement(descriptor)
     }
 
     open fun visitSimpleDescriptor(simpleDescriptor: SvSimpleDescriptor) {
@@ -160,5 +166,9 @@ abstract class SvVisitor {
 
     open fun visitLiteralExpression(literalExpression: SvLiteralExpression) {
         visitExpression(literalExpression)
+    }
+
+    open fun visitReferenceExpression(referenceExpression: SvReferenceExpression) {
+        visitExpression(referenceExpression)
     }
 }

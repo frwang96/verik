@@ -26,11 +26,25 @@ class KtClass(
     override val name: String,
     override val signature: String?,
     val superType: Type,
-    val valueParameters: ArrayList<KtValueParameter>,
-    val declarations: ArrayList<KtDeclaration>
+    val valueParameters: List<KtValueParameter>,
+    val declarations: List<KtDeclaration>,
+    val isOpen: Boolean
 ) : KtDeclaration() {
 
     override val type = Core.C_Unit.toType()
+
+    init {
+        valueParameters.forEach { it.parent = this }
+        declarations.forEach { it.parent = this }
+    }
+
+    fun getConstructor(): KtConstructor? {
+        declarations.forEach {
+            if (it is KtConstructor)
+                return it
+        }
+        return null
+    }
 
     override fun accept(visitor: KtVisitor) {
         visitor.visitClass(this)

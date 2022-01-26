@@ -17,17 +17,28 @@
 package io.verik.importer.cast.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.ast.sv.element.expression.SvExpression
 import io.verik.importer.ast.sv.element.expression.SvLiteralExpression
+import io.verik.importer.ast.sv.element.expression.SvReferenceExpression
 import io.verik.importer.cast.common.CastContext
+import io.verik.importer.core.Core
 
 object ExpressionCaster {
 
-    fun castExpressionFromConstantPrimaryLiteral(
+    fun castLiteralExpressionFromConstantPrimaryLiteral(
         ctx: SystemVerilogParser.ConstantPrimaryLiteralContext,
         castContext: CastContext
-    ): SvExpression {
+    ): SvLiteralExpression {
         val location = castContext.getLocation(ctx)
         return SvLiteralExpression(location, ctx.text)
+    }
+
+    fun castReferenceExpressionFromConstantPrimaryParameter(
+        ctx: SystemVerilogParser.ConstantPrimaryParameterContext,
+        castContext: CastContext
+    ): SvReferenceExpression {
+        val location = castContext.getLocation(ctx)
+        val identifier = ctx.psParameterIdentifier().parameterIdentifier()
+        val name = identifier.text
+        return SvReferenceExpression(location, name, Core.C_Nothing)
     }
 }

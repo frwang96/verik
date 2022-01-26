@@ -14,11 +14,33 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.sv.element.common
+// test.kt /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-import io.verik.importer.common.Type
+package imported
 
-abstract class SvTypedElement : SvElement() {
+import io.verik.core.*
 
-    abstract var type: Type
+@Task
+fun t0(
+    x0: Boolean
+): Unit = imported()
+
+open class c {
+
+    @Task
+    open fun t1(
+        x1: Int
+    ): Unit = imported()
+
+    @Task
+    open fun t2(
+        x2: Ubit<`4`>,
+        x3: Boolean
+    ): Unit = imported()
+
+    @Task
+    open fun t3(
+        x4: Int,
+        x5: Int
+    ): Unit = imported()
 }

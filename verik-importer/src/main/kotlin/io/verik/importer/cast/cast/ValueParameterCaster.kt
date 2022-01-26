@@ -17,9 +17,10 @@
 package io.verik.importer.cast.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
+import io.verik.importer.ast.sv.element.common.SvContainerElement
 import io.verik.importer.ast.sv.element.declaration.SvValueParameter
 import io.verik.importer.cast.common.CastContext
-import io.verik.importer.common.Type
+import io.verik.importer.common.ElementCopier
 
 object ValueParameterCaster {
 
@@ -34,8 +35,25 @@ object ValueParameterCaster {
         return SvValueParameter(
             location,
             name,
-            Type.unresolved(),
             descriptor
         )
+    }
+
+    fun castValueParameterFromTfPortDeclaration(
+        ctx: SystemVerilogParser.TfPortDeclarationContext,
+        castContext: CastContext
+    ): SvContainerElement? {
+        val descriptor = castContext.castDescriptor(ctx.dataTypeOrImplicit()) ?: return null
+        val identifiers = ctx.listOfTfVariableIdentifiers().portIdentifier()
+        val valueParameters = identifiers.map {
+            val location = castContext.getLocation(it)
+            val name = it.text
+            SvValueParameter(
+                location,
+                name,
+                ElementCopier.deepCopy(descriptor)
+            )
+        }
+        return SvContainerElement(castContext.getLocation(ctx), valueParameters)
     }
 }

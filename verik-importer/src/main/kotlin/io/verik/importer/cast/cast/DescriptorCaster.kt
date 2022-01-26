@@ -96,6 +96,16 @@ object DescriptorCaster {
         )
     }
 
+    fun castDescriptorFromClassType(
+        ctx: SystemVerilogParser.ClassTypeContext,
+        castContext: CastContext
+    ): SvDescriptor {
+        val location = castContext.getLocation(ctx)
+        val identifier = ctx.psClassIdentifier().classIdentifier()
+        val name = identifier.text
+        return SvReferenceDescriptor(location, Type.unresolved(), name)
+    }
+
     fun castDescriptorFromDataTypeOrVoid(
         ctx: SystemVerilogParser.DataTypeOrVoidContext,
         castContext: CastContext

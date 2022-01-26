@@ -63,6 +63,8 @@ internal class RegressionTest {
         assert(systemVerilogFile.exists())
         val kotlinTextFiles = parseTextFiles(Files.readAllLines(kotlinFile))
         val systemVerilogTextFiles = parseTextFiles(Files.readAllLines(systemVerilogFile))
+        assert(kotlinTextFiles.isNotEmpty()) { "No Kotlin text files found" }
+        assert(systemVerilogTextFiles.isNotEmpty()) { "No SystemVerilog text files found" }
         val outputContext = getOutputContext(kotlinTextFiles)
         val expectedString = getExpectedString(systemVerilogTextFiles)
         val actualString = getActualString(outputContext)

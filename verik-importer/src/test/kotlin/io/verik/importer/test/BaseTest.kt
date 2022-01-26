@@ -41,7 +41,7 @@ import kotlin.reflect.KClass
 
 abstract class BaseTest {
 
-    private val DOCSTRING_REGEX = Regex("(.*/\\*\\*.*|.*\\*.*)")
+    private val DOCSTRING_REGEX = Regex("(\\s*/\\*\\*.*|\\s*\\*.*)")
 
     fun driveMessageTest(content: String, isError: Boolean, message: String) {
         val projectContext = getProjectContext(content)

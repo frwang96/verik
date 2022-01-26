@@ -16,10 +16,10 @@
 
 package io.verik.importer.ast.sv.element.declaration
 
-import io.verik.importer.ast.sv.element.common.SvTypedElement
+import io.verik.importer.ast.sv.element.common.SvElement
 import io.verik.importer.common.Declaration
 
-abstract class SvDeclaration : SvTypedElement(), Declaration {
+abstract class SvDeclaration : SvElement(), Declaration {
 
     abstract var signature: String?
 }

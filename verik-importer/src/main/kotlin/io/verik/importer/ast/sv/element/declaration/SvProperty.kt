@@ -18,14 +18,12 @@ package io.verik.importer.ast.sv.element.declaration
 
 import io.verik.importer.ast.sv.element.descriptor.SvDescriptor
 import io.verik.importer.common.SvVisitor
-import io.verik.importer.common.Type
 import io.verik.importer.message.SourceLocation
 
 class SvProperty(
     override val location: SourceLocation,
     override val name: String,
     override var signature: String?,
-    override var type: Type,
     val descriptor: SvDescriptor,
     val isMutable: Boolean,
 ) : SvDeclaration() {

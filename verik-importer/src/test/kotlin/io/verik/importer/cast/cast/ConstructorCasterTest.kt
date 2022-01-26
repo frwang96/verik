@@ -24,7 +24,20 @@ import org.junit.jupiter.api.Test
 internal class ConstructorCasterTest : BaseTest() {
 
     @Test
-    fun `cast constructor from classConstructorDeclarations`() {
+    fun `cast constructor from classMethodExternConstructor`() {
+        driveCasterTest(
+            SystemVerilogParser.ClassMethodExternConstructorContext::class,
+            """
+                class c;
+                    extern function new(logic x);
+                endclass
+            """.trimIndent(),
+            "Constructor([ValueParameter(x, SimpleDescriptor(Boolean))])"
+        ) { it.findDeclaration("new") }
+    }
+
+    @Test
+    fun `cast constructor from classConstructorDeclaration`() {
         driveCasterTest(
             SystemVerilogParser.ClassConstructorDeclarationContext::class,
             """
@@ -33,7 +46,7 @@ internal class ConstructorCasterTest : BaseTest() {
                     endfunction
                 endclass
             """.trimIndent(),
-            "Constructor([ValueParameter(x, Nothing, SimpleDescriptor(Boolean))])"
+            "Constructor([ValueParameter(x, SimpleDescriptor(Boolean))])"
         ) { it.findDeclaration("new") }
     }
 }

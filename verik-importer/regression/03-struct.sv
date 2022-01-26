@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,14 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.cast
+// test.sv /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-import io.verik.compiler.test.BaseTest
-import org.junit.jupiter.api.Test
+typedef logic [3:0] t;
 
-internal class DeclarationCastIndexerStageTest : BaseTest() {
+typedef struct {
+    int x0;
+    time x1;
+    t x2;
+} s;
 
-    @Test
-    fun `error name unicode`() {
-        driveMessageTest(
-            """
-                @Suppress("ObjectPropertyName")
-                val αβγ = 0
-            """.trimIndent(),
-            true,
-            "Illegal name: αβγ"
-        )
-    }
-}
+s x3;

@@ -16,12 +16,16 @@
 
 package io.verik.importer.interpret
 
+import io.verik.importer.ast.kt.element.KtClass
 import io.verik.importer.ast.kt.element.KtDeclaration
+import io.verik.importer.ast.kt.element.KtElement
 import io.verik.importer.ast.kt.element.KtFile
 import io.verik.importer.ast.kt.element.KtPackage
 import io.verik.importer.ast.kt.element.KtProject
 import io.verik.importer.ast.sv.element.declaration.SvDeclaration
 import io.verik.importer.ast.sv.element.declaration.SvPackage
+import io.verik.importer.common.KtTreeVisitor
+import io.verik.importer.common.Type
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 import io.verik.importer.message.SourceLocation
@@ -30,41 +34,52 @@ import java.nio.file.Path
 object InterpreterStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        val compilationUnit = projectContext.compilationUnit
+        val interpreterMap = InterpreterMap()
+        val declarationInterpreter = DeclarationInterpreter(interpreterMap)
+        projectContext.project = interpretProject(projectContext, declarationInterpreter)
+        val referenceForwarderVisitor = ReferenceForwarderVisitor(interpreterMap)
+        projectContext.project.accept(referenceForwarderVisitor)
+    }
+
+    private fun interpretProject(
+        projectContext: ProjectContext,
+        declarationInterpreter: DeclarationInterpreter
+    ): KtProject {
         val packages = ArrayList<KtPackage>()
         val rootPackage = interpretPackage(
             SourceLocation.NULL,
             projectContext.config.rootPackageName,
-            compilationUnit.declarations,
-            projectContext.config.rootPackageOutputPath
+            projectContext.compilationUnit.declarations,
+            projectContext.config.rootPackageOutputPath,
+            declarationInterpreter
         )
         if (rootPackage != null)
             packages.add(rootPackage)
 
-        compilationUnit.declarations.forEach {
+        projectContext.compilationUnit.declarations.forEach {
             if (it is SvPackage) {
                 val `package` = interpretPackage(
                     it.location,
                     "${projectContext.config.rootPackageName}.${it.name}",
                     it.declarations,
-                    projectContext.config.rootPackageOutputPath.resolve(it.name)
+                    projectContext.config.rootPackageOutputPath.resolve(it.name),
+                    declarationInterpreter
                 )
                 if (`package` != null)
                     packages.add(`package`)
             }
         }
-
-        val project = KtProject(packages)
-        projectContext.project = project
+        return KtProject(packages)
     }
 
     private fun interpretPackage(
         location: SourceLocation,
         name: String,
         declarations: List<SvDeclaration>,
-        outputPath: Path
+        outputPath: Path,
+        declarationInterpreter: DeclarationInterpreter
     ): KtPackage? {
-        val interpretedDeclarations = declarations.mapNotNull { DeclarationInterpreter.interpretDeclaration(it) }
+        val interpretedDeclarations = declarations.mapNotNull { declarationInterpreter.interpretDeclaration(it) }
         val fileDeclarationsMap = HashMap<String, ArrayList<KtDeclaration>>()
         interpretedDeclarations.forEach {
             val baseFileName = it.location.path.fileName.toString().substringBefore(".")
@@ -87,5 +102,25 @@ object InterpreterStage : ProjectStage() {
         return if (files.isNotEmpty()) {
             KtPackage(location, name, files)
         } else null
+    }
+
+    private class ReferenceForwarderVisitor(
+        private val interpreterMap: InterpreterMap
+    ) : KtTreeVisitor() {
+
+        private fun forwardReferences(type: Type) {
+            type.arguments.forEach { forwardReferences(it) }
+            type.reference = interpreterMap.getDeclaration(type.reference)
+        }
+
+        override fun visitElement(element: KtElement) {
+            super.visitElement(element)
+            if (element is KtDeclaration) {
+                forwardReferences(element.type)
+            }
+            if (element is KtClass) {
+                forwardReferences(element.superType)
+            }
+        }
     }
 }

@@ -41,16 +41,16 @@ import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 import org.jetbrains.kotlin.psi.KtTypeAlias
 import org.jetbrains.kotlin.psi.KtTypeParameter
 
-object DeclarationCastIndexerStage : ProjectStage() {
+object CastIndexerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
         val castContext = CastContext(projectContext.bindingContext)
-        val declarationCastIndexerVisitor = DeclarationCastIndexerVisitor(castContext)
-        projectContext.getKtFiles().forEach { it.accept(declarationCastIndexerVisitor) }
+        val castIndexerVisitor = CastIndexerVisitor(castContext)
+        projectContext.getKtFiles().forEach { it.accept(castIndexerVisitor) }
         projectContext.castContext = castContext
     }
 
-    class DeclarationCastIndexerVisitor(private val castContext: CastContext) : KtTreeVisitorVoid() {
+    class CastIndexerVisitor(private val castContext: CastContext) : KtTreeVisitorVoid() {
 
         override fun visitTypeAlias(alias: KtTypeAlias) {
             super.visitTypeAlias(alias)

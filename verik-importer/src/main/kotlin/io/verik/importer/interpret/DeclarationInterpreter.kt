@@ -23,6 +23,7 @@ import io.verik.importer.ast.kt.element.KtEnum
 import io.verik.importer.ast.kt.element.KtEnumEntry
 import io.verik.importer.ast.kt.element.KtFunction
 import io.verik.importer.ast.kt.element.KtProperty
+import io.verik.importer.ast.kt.element.KtTypeAlias
 import io.verik.importer.ast.kt.element.KtValueParameter
 import io.verik.importer.ast.kt.property.AnnotationEntry
 import io.verik.importer.ast.sv.element.declaration.SvClass
@@ -36,12 +37,16 @@ import io.verik.importer.ast.sv.element.declaration.SvPackage
 import io.verik.importer.ast.sv.element.declaration.SvPort
 import io.verik.importer.ast.sv.element.declaration.SvProperty
 import io.verik.importer.ast.sv.element.declaration.SvStruct
+import io.verik.importer.ast.sv.element.declaration.SvStructEntry
 import io.verik.importer.ast.sv.element.declaration.SvTask
+import io.verik.importer.ast.sv.element.declaration.SvTypeAlias
 import io.verik.importer.ast.sv.element.declaration.SvValueParameter
 import io.verik.importer.core.Core
 import io.verik.importer.message.Messages
 
-object DeclarationInterpreter {
+class DeclarationInterpreter(
+    private val interpreterMap: InterpreterMap
+) {
 
     fun interpretDeclaration(declaration: SvDeclaration): KtDeclaration? {
         return when (declaration) {
@@ -50,6 +55,7 @@ object DeclarationInterpreter {
             is SvModule -> interpretClassFromModule(declaration)
             is SvStruct -> interpretClassFromStruct(declaration)
             is SvEnum -> interpretEnumFromEnum(declaration)
+            is SvTypeAlias -> interpretTypeAliasFromTypeAlias(declaration)
             is SvFunction -> interpretFunctionFromFunction(declaration)
             is SvTask -> interpretFunctionFromTask(declaration)
             is SvConstructor -> interpretConstructorFromConstructor(declaration)
@@ -64,15 +70,19 @@ object DeclarationInterpreter {
     }
 
     private fun interpretClassFromClass(`class`: SvClass): KtClass {
+        val superType = `class`.superDescriptor.type.copy()
         val declarations = `class`.declarations.mapNotNull { interpretDeclaration(it) }
-        return KtClass(
+        val interpretedClass = KtClass(
             `class`.location,
             `class`.name,
             `class`.signature,
-            Core.C_Any.toType(),
-            ArrayList(),
-            ArrayList(declarations)
+            superType,
+            listOf(),
+            declarations,
+            true
         )
+        interpreterMap.addDeclaration(`class`, interpretedClass)
+        return interpretedClass
     }
 
     private fun interpretClassFromModule(module: SvModule): KtClass {
@@ -83,54 +93,77 @@ object DeclarationInterpreter {
             module.name,
             module.signature,
             Core.C_Module.toType(),
-            ArrayList(valueParameters),
-            ArrayList(declarations)
+            valueParameters,
+            declarations,
+            false
         )
     }
 
     private fun interpretClassFromStruct(struct: SvStruct): KtClass {
-        val valueParameters = struct.properties.map { interpretValueParameterFromProperty(it) }
-        return KtClass(
+        val valueParameters = struct.entries.map { interpretValueParameterFromStructEntry(it) }
+        val interpretedClass = KtClass(
             struct.location,
             struct.name,
             struct.signature,
             Core.C_Struct.toType(),
-            ArrayList(valueParameters),
-            arrayListOf(),
+            valueParameters,
+            listOf(),
+            false
         )
+        interpreterMap.addDeclaration(struct, interpretedClass)
+        return interpretedClass
     }
 
     private fun interpretEnumFromEnum(enum: SvEnum): KtEnum {
         val entries = enum.entries.map { interpretEnumEntryFromEnumEntry(it) }
-        return KtEnum(
+        val interpretedClass = KtEnum(
             enum.location,
             enum.name,
             enum.signature,
             entries
         )
+        interpreterMap.addDeclaration(enum, interpretedClass)
+        return interpretedClass
+    }
+
+    private fun interpretTypeAliasFromTypeAlias(typeAlias: SvTypeAlias): KtTypeAlias {
+        val type = typeAlias.descriptor.type.copy()
+        val interpretedTypeAlias = KtTypeAlias(
+            typeAlias.location,
+            typeAlias.name,
+            typeAlias.signature,
+            type
+        )
+        interpreterMap.addDeclaration(typeAlias, interpretedTypeAlias)
+        return interpretedTypeAlias
     }
 
     private fun interpretFunctionFromFunction(function: SvFunction): KtFunction {
+        val type = function.descriptor.type.copy()
         val valueParameters = function.valueParameters.map { interpretValueParameterFromValueParameter(it) }
+        val isOpen = function.parent is SvClass
         return KtFunction(
             function.location,
             function.name,
             function.signature,
-            function.type,
+            type,
             listOf(),
-            valueParameters
+            valueParameters,
+            isOpen
         )
     }
 
     private fun interpretFunctionFromTask(task: SvTask): KtFunction {
         val valueParameters = task.valueParameters.map { interpretValueParameterFromValueParameter(it) }
+        val isOpen = task.parent is SvClass
         return KtFunction(
             task.location,
             task.name,
             task.signature,
-            task.type,
+            Core.C_Unit.toType(),
             listOf(AnnotationEntry("Task")),
-            valueParameters
+            valueParameters,
+            isOpen
         )
     }
 
@@ -144,42 +177,46 @@ object DeclarationInterpreter {
     }
 
     private fun interpretPropertyFromProperty(property: SvProperty): KtProperty {
+        val type = property.descriptor.type.copy()
         return KtProperty(
             property.location,
             property.name,
             property.signature,
-            property.type,
-            property.isMutable
-        )
-    }
-
-    private fun interpretValueParameterFromProperty(property: SvProperty): KtValueParameter {
-        return KtValueParameter(
-            property.location,
-            property.name,
-            property.type,
-            listOf(),
+            type,
             property.isMutable
         )
     }
 
     private fun interpretValueParameterFromValueParameter(valueParameter: SvValueParameter): KtValueParameter {
+        val type = valueParameter.descriptor.type.copy()
         return KtValueParameter(
             valueParameter.location,
             valueParameter.name,
-            valueParameter.type,
+            type,
             listOf(),
             null
         )
     }
 
     private fun interpretValueParameterFromPort(port: SvPort): KtValueParameter {
+        val type = port.descriptor.type.copy()
         val annotationEntry = port.portType.getAnnotationEntry()
         return KtValueParameter(
             port.location,
             port.name,
-            port.type,
+            type,
             listOf(annotationEntry),
+            true
+        )
+    }
+
+    private fun interpretValueParameterFromStructEntry(structEntry: SvStructEntry): KtValueParameter {
+        val type = structEntry.descriptor.type.copy()
+        return KtValueParameter(
+            structEntry.location,
+            structEntry.name,
+            type,
+            listOf(),
             true
         )
     }

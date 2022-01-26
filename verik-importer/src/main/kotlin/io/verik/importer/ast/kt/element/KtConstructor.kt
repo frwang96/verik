@@ -30,6 +30,10 @@ class KtConstructor(
     override val name: String = "new"
     override val type: Type = Core.C_Unit.toType()
 
+    init {
+        valueParameters.forEach { it.parent = this }
+    }
+
     override fun accept(visitor: KtVisitor) {
         visitor.visitConstructor(this)
     }

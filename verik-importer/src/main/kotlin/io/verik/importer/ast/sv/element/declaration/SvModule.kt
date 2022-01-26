@@ -17,7 +17,6 @@
 package io.verik.importer.ast.sv.element.declaration
 
 import io.verik.importer.common.SvVisitor
-import io.verik.importer.core.Core
 import io.verik.importer.message.SourceLocation
 
 class SvModule(
@@ -28,9 +27,8 @@ class SvModule(
     val ports: ArrayList<SvPort>,
 ) : SvContainerDeclaration() {
 
-    override var type = Core.C_Unit.toType()
-
     init {
+        declarations.forEach { it.parent = this }
         ports.forEach { it.parent = this }
     }
 

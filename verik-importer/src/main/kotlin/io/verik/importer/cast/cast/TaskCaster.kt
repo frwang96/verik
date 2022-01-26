@@ -47,20 +47,38 @@ object TaskCaster {
     fun castTaskFromTaskBodyDeclarationNoPortList(
         ctx: SystemVerilogParser.TaskBodyDeclarationNoPortListContext,
         castContext: CastContext
-    ): SvTask {
+    ): SvTask? {
+        if (ctx.classScope() != null)
+            return null
         val identifier = ctx.taskIdentifier()[0]
         val location = castContext.getLocation(identifier)
         val name = identifier.text
-        return SvTask(location, name, null, listOf())
+        val tfPortDeclarations = ctx.tfItemDeclaration().mapNotNull { it.tfPortDeclaration() }
+        val valueParameters = tfPortDeclarations.flatMap { castContext.castValueParameters(it) }
+        return SvTask(location, name, null, valueParameters)
     }
 
     fun castTaskFromTaskBodyDeclarationPortList(
         ctx: SystemVerilogParser.TaskBodyDeclarationPortListContext,
         castContext: CastContext
-    ): SvTask {
+    ): SvTask? {
+        if (ctx.classScope() != null)
+            return null
         val identifier = ctx.taskIdentifier()[0]
         val location = castContext.getLocation(identifier)
         val name = identifier.text
-        return SvTask(location, name, null, listOf())
+        val tfPortItems = ctx.tfPortList()?.tfPortItem() ?: listOf()
+        val valueParameters = tfPortItems.flatMap { castContext.castValueParameters(it) }
+        return SvTask(location, name, null, valueParameters)
+    }
+
+    fun castTaskFromTaskPrototype(ctx: SystemVerilogParser.TaskPrototypeContext, castContext: CastContext): SvTask {
+        val identifier = ctx.taskIdentifier()
+        val location = castContext.getLocation(identifier)
+        val name = identifier.text
+        val signature = SignatureBuilder.buildSignature(ctx, name)
+        val tfPortItems = ctx.tfPortList()?.tfPortItem() ?: listOf()
+        val valueParameters = tfPortItems.flatMap { castContext.castValueParameters(it) }
+        return SvTask(location, name, signature, valueParameters)
     }
 }

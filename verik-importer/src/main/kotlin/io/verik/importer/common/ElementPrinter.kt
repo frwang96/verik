@@ -28,7 +28,9 @@ import io.verik.importer.ast.sv.element.declaration.SvPackage
 import io.verik.importer.ast.sv.element.declaration.SvPort
 import io.verik.importer.ast.sv.element.declaration.SvProperty
 import io.verik.importer.ast.sv.element.declaration.SvStruct
+import io.verik.importer.ast.sv.element.declaration.SvStructEntry
 import io.verik.importer.ast.sv.element.declaration.SvTask
+import io.verik.importer.ast.sv.element.declaration.SvTypeAlias
 import io.verik.importer.ast.sv.element.declaration.SvValueParameter
 import io.verik.importer.ast.sv.element.descriptor.SvBitDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvPackedDescriptor
@@ -36,6 +38,7 @@ import io.verik.importer.ast.sv.element.descriptor.SvReferenceDescriptor
 import io.verik.importer.ast.sv.element.descriptor.SvSimpleDescriptor
 import io.verik.importer.ast.sv.element.expression.SvLiteralExpression
 import io.verik.importer.ast.sv.element.expression.SvNothingExpression
+import io.verik.importer.ast.sv.element.expression.SvReferenceExpression
 import io.verik.importer.message.Messages
 
 class ElementPrinter : SvVisitor() {
@@ -60,10 +63,13 @@ class ElementPrinter : SvVisitor() {
         }
     }
 
+// Class Like //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     override fun visitClass(`class`: SvClass) {
         build("Class") {
             build(`class`.name)
             build(`class`.declarations)
+            build(`class`.superDescriptor)
         }
     }
 
@@ -78,7 +84,7 @@ class ElementPrinter : SvVisitor() {
     override fun visitStruct(struct: SvStruct) {
         build("Struct") {
             build(struct.name)
-            build(struct.properties)
+            build(struct.entries)
         }
     }
 
@@ -89,10 +95,18 @@ class ElementPrinter : SvVisitor() {
         }
     }
 
+    override fun visitTypeAlias(typeAlias: SvTypeAlias) {
+        build("TypeAlias") {
+            build(typeAlias.name)
+            build(typeAlias.descriptor)
+        }
+    }
+
+// Function Like ///////////////////////////////////////////////////////////////////////////////////////////////////////
+
     override fun visitFunction(function: SvFunction) {
         build("Function") {
             build(function.name)
-            build(function.type.toString())
             build(function.valueParameters)
             build(function.descriptor)
         }
@@ -111,10 +125,11 @@ class ElementPrinter : SvVisitor() {
         }
     }
 
+// Property Like ///////////////////////////////////////////////////////////////////////////////////////////////////////
+
     override fun visitProperty(property: SvProperty) {
         build("Property") {
             build(property.name)
-            build(property.type.toString())
             build(property.descriptor)
         }
     }
@@ -122,7 +137,6 @@ class ElementPrinter : SvVisitor() {
     override fun visitValueParameter(valueParameter: SvValueParameter) {
         build("ValueParameter") {
             build(valueParameter.name)
-            build(valueParameter.type.toString())
             build(valueParameter.descriptor)
         }
     }
@@ -130,9 +144,15 @@ class ElementPrinter : SvVisitor() {
     override fun visitPort(port: SvPort) {
         build("Port") {
             build(port.name)
-            build(port.type.toString())
             build(port.descriptor)
             build(port.portType.toString())
+        }
+    }
+
+    override fun visitStructEntry(structEntry: SvStructEntry) {
+        build("StructEntry") {
+            build(structEntry.name)
+            build(structEntry.descriptor)
         }
     }
 
@@ -141,6 +161,8 @@ class ElementPrinter : SvVisitor() {
             build(enumEntry.name)
         }
     }
+
+// Descriptor Like /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     override fun visitSimpleDescriptor(simpleDescriptor: SvSimpleDescriptor) {
         build("SimpleDescriptor") {
@@ -173,6 +195,8 @@ class ElementPrinter : SvVisitor() {
         }
     }
 
+// Expression Like /////////////////////////////////////////////////////////////////////////////////////////////////////
+
     override fun visitNothingExpression(nothingExpression: SvNothingExpression) {
         build("NothingExpression") {}
     }
@@ -183,20 +207,33 @@ class ElementPrinter : SvVisitor() {
         }
     }
 
+    override fun visitReferenceExpression(referenceExpression: SvReferenceExpression) {
+        build("ReferenceExpression") {
+            build(referenceExpression.name)
+            build(referenceExpression.reference.name)
+        }
+    }
+
     private fun build(content: Boolean) {
         if (!first) builder.append(", ")
         builder.append(if (content) "1" else "0")
         first = false
     }
 
-    private fun build(content: String) {
+    private fun build(content: String?) {
         if (!first) builder.append(", ")
         builder.append(content)
         first = false
     }
 
-    private fun build(element: SvElement) {
-        element.accept(this)
+    private fun build(element: SvElement?) {
+        if (element != null) {
+            element.accept(this)
+        } else {
+            if (!first) builder.append(", ")
+            builder.append("null")
+            first = false
+        }
     }
 
     private fun build(name: String, content: () -> Unit) {

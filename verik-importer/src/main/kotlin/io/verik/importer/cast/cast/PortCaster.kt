@@ -20,7 +20,6 @@ import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.ast.sv.element.declaration.SvPort
 import io.verik.importer.ast.sv.property.PortType
 import io.verik.importer.cast.common.CastContext
-import io.verik.importer.common.Type
 
 object PortCaster {
 
@@ -36,7 +35,6 @@ object PortCaster {
         return SvPort(
             location,
             name,
-            Type.unresolved(),
             descriptor,
             portType
         )
@@ -53,7 +51,6 @@ object PortCaster {
         return SvPort(
             location,
             name,
-            Type.unresolved(),
             descriptor,
             PortType.INPUT
         )
@@ -70,7 +67,6 @@ object PortCaster {
         return SvPort(
             location,
             name,
-            Type.unresolved(),
             descriptor,
             PortType.OUTPUT
         )

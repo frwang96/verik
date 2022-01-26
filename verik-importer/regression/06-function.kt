@@ -14,22 +14,29 @@
  * limitations under the License.
  */
 
-package io.verik.importer.resolve
+// test.kt /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-import io.verik.importer.test.BaseTest
-import io.verik.importer.test.findDeclaration
-import org.junit.jupiter.api.Test
+package imported
 
-internal class DeclarationTypeResolverStageTest : BaseTest() {
+import io.verik.core.*
 
-    @Test
-    fun `resolve property`() {
-        driveElementTest(
-            """
-                logic x;
-            """.trimIndent(),
-            DeclarationTypeResolverStage::class,
-            "Property(x, Boolean, SimpleDescriptor(Boolean))"
-        ) { it.findDeclaration("x") }
-    }
+fun f0(
+    x0: Boolean
+): Int = imported()
+
+open class c {
+
+    open fun f1(
+        x1: Int
+    ): Boolean = imported()
+
+    open fun f2(
+        x2: Ubit<`4`>,
+        x3: Boolean
+    ): Unit = imported()
+
+    open fun f3(
+        x4: Int,
+        x5: Int
+    ): Ubit<`4`> = imported()
 }

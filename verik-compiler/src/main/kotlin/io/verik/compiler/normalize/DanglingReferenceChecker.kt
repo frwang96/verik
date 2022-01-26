@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.check.normalize
+package io.verik.compiler.normalize
 
+import io.verik.compiler.ast.element.common.EAbstractClass
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.ast.element.common.EReceiverExpression
+import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.sv.EAbstractComponentInstantiation
 import io.verik.compiler.ast.element.sv.EEnum
@@ -31,9 +32,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
-object DanglingReferenceChecker : NormalizationStage {
+object DanglingReferenceChecker : NormalizationChecker {
 
-    override fun process(projectContext: ProjectContext, projectStage: ProjectStage) {
+    override fun check(projectContext: ProjectContext, projectStage: ProjectStage) {
         val danglingReferenceIndexerVisitor = DanglingReferenceIndexerVisitor()
         projectContext.project.accept(danglingReferenceIndexerVisitor)
         val declarations = danglingReferenceIndexerVisitor.declarations
@@ -78,8 +79,8 @@ object DanglingReferenceChecker : NormalizationStage {
         override fun visitTypedElement(typedElement: ETypedElement) {
             super.visitTypedElement(typedElement)
             checkReference(typedElement.type, typedElement)
-            if (typedElement is EReceiverExpression) {
-                checkReference(typedElement.reference, typedElement)
+            if (typedElement is EAbstractClass) {
+                checkReference(typedElement.superType, typedElement)
             }
             when (typedElement) {
                 is EEnum -> {
@@ -88,7 +89,11 @@ object DanglingReferenceChecker : NormalizationStage {
                 is EAbstractComponentInstantiation -> {
                     typedElement.portInstantiations.forEach { checkReference(it.port, typedElement) }
                 }
+                is EReferenceExpression -> {
+                    checkReference(typedElement.reference, typedElement)
+                }
                 is ECallExpression -> {
+                    checkReference(typedElement.reference, typedElement)
                     typedElement.typeArguments.forEach { checkReference(it, typedElement) }
                 }
                 is EStructLiteralExpression -> {

@@ -16,8 +16,8 @@
 
 package io.verik.compiler.main
 
-import io.verik.compiler.check.normalize.NormalizationChecker
 import io.verik.compiler.message.MessageCollector
+import io.verik.compiler.normalize.NormalizationChecker
 import kotlin.reflect.KClass
 
 class StageSequence {
@@ -80,8 +80,9 @@ class StageSequence {
     private fun processStage(projectContext: ProjectContext, stageType: StageType, stage: ProjectStage) {
         if (stage !in projectContext.processedProjectStages) {
             stage.process(projectContext)
-            if (stageType.checkNormalization() && projectContext.config.debug)
-                NormalizationChecker.process(projectContext, stage)
+            if (stageType.checkNormalization() && projectContext.config.debug) {
+                NormalizationChecker.check(projectContext, stage)
+            }
             projectContext.processedProjectStages.add(stage)
         }
     }
