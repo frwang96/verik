@@ -20,6 +20,7 @@ import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.ast.sv.element.expression.SvLiteralExpression
 import io.verik.importer.ast.sv.element.expression.SvReferenceExpression
 import io.verik.importer.cast.common.CastContext
+import io.verik.importer.core.Core
 
 object ExpressionCaster {
 
@@ -38,6 +39,6 @@ object ExpressionCaster {
         val location = castContext.getLocation(ctx)
         val identifier = ctx.psParameterIdentifier().parameterIdentifier()
         val name = identifier.text
-        return SvReferenceExpression(location, name, null)
+        return SvReferenceExpression(location, name, Core.C_Nothing)
     }
 }

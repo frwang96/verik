@@ -16,10 +16,11 @@
 
 package io.verik.compiler.normalize
 
+import io.verik.compiler.ast.element.common.EAbstractClass
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.ast.element.common.EReceiverExpression
+import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.sv.EAbstractComponentInstantiation
 import io.verik.compiler.ast.element.sv.EEnum
@@ -78,8 +79,8 @@ object DanglingReferenceChecker : NormalizationStage {
         override fun visitTypedElement(typedElement: ETypedElement) {
             super.visitTypedElement(typedElement)
             checkReference(typedElement.type, typedElement)
-            if (typedElement is EReceiverExpression) {
-                checkReference(typedElement.reference, typedElement)
+            if (typedElement is EAbstractClass) {
+                checkReference(typedElement.superType, typedElement)
             }
             when (typedElement) {
                 is EEnum -> {
@@ -88,7 +89,11 @@ object DanglingReferenceChecker : NormalizationStage {
                 is EAbstractComponentInstantiation -> {
                     typedElement.portInstantiations.forEach { checkReference(it.port, typedElement) }
                 }
+                is EReferenceExpression -> {
+                    checkReference(typedElement.reference, typedElement)
+                }
                 is ECallExpression -> {
+                    checkReference(typedElement.reference, typedElement)
                     typedElement.typeArguments.forEach { checkReference(it, typedElement) }
                 }
                 is EStructLiteralExpression -> {

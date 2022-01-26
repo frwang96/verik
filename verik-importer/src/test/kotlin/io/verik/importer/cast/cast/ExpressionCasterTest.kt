@@ -30,7 +30,7 @@ internal class ExpressionCasterTest : BaseTest() {
             """
                 logic [N:0] x;
             """.trimIndent(),
-            "Property(x, BitDescriptor(Nothing, ReferenceExpression(N, null), LiteralExpression(0), 0))"
+            "Property(x, BitDescriptor(Nothing, ReferenceExpression(N, Nothing), LiteralExpression(0), 0))"
         ) { it.findDeclaration("x") }
     }
 }

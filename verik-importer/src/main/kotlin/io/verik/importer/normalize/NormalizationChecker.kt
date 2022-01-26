@@ -23,6 +23,9 @@ object NormalizationChecker {
 
     fun process(projectContext: ProjectContext, projectStage: ProjectStage) {
         ElementParentChecker.process(projectContext, projectStage)
-        ElementAliasChecker.process(projectContext, projectStage)
+        SvElementAliasChecker.process(projectContext, projectStage)
+        KtElementAliasChecker.process(projectContext, projectStage)
+        SvDanglingReferenceChecker.process(projectContext, projectStage)
+        KtDanglingReferenceChecker.process(projectContext, projectStage)
     }
 }

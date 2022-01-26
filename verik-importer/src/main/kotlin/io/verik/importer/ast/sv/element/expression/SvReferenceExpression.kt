@@ -23,7 +23,7 @@ import io.verik.importer.message.SourceLocation
 class SvReferenceExpression(
     override val location: SourceLocation,
     val name: String,
-    var reference: Declaration?
+    var reference: Declaration
 ) : SvExpression() {
 
     override fun accept(visitor: SvVisitor) {

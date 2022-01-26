@@ -16,6 +16,7 @@
 
 package io.verik.compiler.common
 
+import io.verik.compiler.ast.element.common.EAbstractClass
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EReceiverExpression
@@ -61,6 +62,9 @@ class ReferenceUpdater(val projectContext: ProjectContext) {
         override fun visitTypedElement(typedElement: ETypedElement) {
             super.visitTypedElement(typedElement)
             updateTypeReferences(typedElement.type)
+            if (typedElement is EAbstractClass) {
+                updateTypeReferences(typedElement.superType)
+            }
             if (typedElement is EReceiverExpression) {
                 updateReference(typedElement)
             }

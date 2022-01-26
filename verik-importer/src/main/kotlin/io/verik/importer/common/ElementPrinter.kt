@@ -202,7 +202,7 @@ class ElementPrinter : SvVisitor() {
     override fun visitReferenceExpression(referenceExpression: SvReferenceExpression) {
         build("ReferenceExpression") {
             build(referenceExpression.name)
-            build(referenceExpression.reference?.name)
+            build(referenceExpression.reference.name)
         }
     }
 

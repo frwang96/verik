@@ -16,44 +16,26 @@
 
 package io.verik.importer.normalize
 
-import io.verik.importer.ast.kt.element.KtElement
 import io.verik.importer.ast.sv.element.common.SvElement
-import io.verik.importer.common.KtTreeVisitor
 import io.verik.importer.common.SvTreeVisitor
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 import io.verik.importer.message.Messages
 
-object ElementAliasChecker : NormalizationStage {
+object SvElementAliasChecker : NormalizationStage {
 
     override fun process(projectContext: ProjectContext, projectStage: ProjectStage) {
-        val svElementAliasVisitor = SvElementAliasVisitor(projectStage)
-        projectContext.compilationUnit.accept(svElementAliasVisitor)
-        val ktElementAliasVisitor = KtElementAliasVisitor(projectStage)
-        projectContext.project.accept(ktElementAliasVisitor)
+        val elementAliasVisitor = ElementAliasVisitor(projectStage)
+        projectContext.compilationUnit.accept(elementAliasVisitor)
     }
 
-    private class SvElementAliasVisitor(
+    private class ElementAliasVisitor(
         private val projectStage: ProjectStage
     ) : SvTreeVisitor() {
 
         private val elementSet = HashSet<SvElement>()
 
         override fun visitElement(element: SvElement) {
-            super.visitElement(element)
-            if (element in elementSet)
-                Messages.NORMALIZATION_ERROR.on(element, projectStage, "Unexpected element aliasing: $element")
-            elementSet.add(element)
-        }
-    }
-
-    private class KtElementAliasVisitor(
-        private val projectStage: ProjectStage
-    ) : KtTreeVisitor() {
-
-        private val elementSet = HashSet<KtElement>()
-
-        override fun visitElement(element: KtElement) {
             super.visitElement(element)
             if (element in elementSet)
                 Messages.NORMALIZATION_ERROR.on(element, projectStage, "Unexpected element aliasing: $element")
