@@ -92,10 +92,6 @@ object Messages {
         "Unable to resolve reference: $0"
     )
 
-    val DECLARATION_TYPE_NOT_RESOLVED = WarningMessageTemplate1<String>(
-        "Declaration type could not be resolved: $0"
-    )
-
     init {
         Messages::class.declaredMemberProperties.forEach {
             val messageTemplate = it.get(Messages)

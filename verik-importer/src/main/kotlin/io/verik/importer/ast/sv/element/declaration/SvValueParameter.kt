@@ -18,7 +18,6 @@ package io.verik.importer.ast.sv.element.declaration
 
 import io.verik.importer.ast.sv.element.descriptor.SvDescriptor
 import io.verik.importer.common.SvVisitor
-import io.verik.importer.common.Type
 import io.verik.importer.message.SourceLocation
 
 class SvValueParameter(
@@ -28,8 +27,6 @@ class SvValueParameter(
 ) : SvDeclaration() {
 
     override var signature: String? = null
-
-    override var type: Type by descriptor::type
 
     init {
         descriptor.parent = this

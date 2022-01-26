@@ -46,18 +46,20 @@ object ElementCopier {
     }
 
     private fun copySimpleDescriptor(simpleDescriptor: SvSimpleDescriptor): SvSimpleDescriptor {
+        val type = simpleDescriptor.type.copy()
         return SvSimpleDescriptor(
             simpleDescriptor.location,
-            simpleDescriptor.type
+            type
         )
     }
 
     private fun copyBitDescriptor(bitDescriptor: SvBitDescriptor): SvBitDescriptor {
+        val type = bitDescriptor.type.copy()
         val left = copy(bitDescriptor.left)
         val right = copy(bitDescriptor.right)
         return SvBitDescriptor(
             bitDescriptor.location,
-            bitDescriptor.type,
+            type,
             left,
             right,
             bitDescriptor.isSigned
@@ -65,12 +67,13 @@ object ElementCopier {
     }
 
     private fun copyPackedDescriptor(packedDescriptor: SvPackedDescriptor): SvPackedDescriptor {
+        val type = packedDescriptor.type.copy()
         val descriptor = copy(packedDescriptor.descriptor)
         val left = copy(packedDescriptor.left)
         val right = copy(packedDescriptor.right)
         return SvPackedDescriptor(
             packedDescriptor.location,
-            packedDescriptor.type,
+            type,
             descriptor,
             left,
             right
@@ -78,9 +81,10 @@ object ElementCopier {
     }
 
     private fun copyReferenceDescriptor(referenceDescriptor: SvReferenceDescriptor): SvReferenceDescriptor {
+        val type = referenceDescriptor.type.copy()
         return SvReferenceDescriptor(
             referenceDescriptor.location,
-            referenceDescriptor.type,
+            type,
             referenceDescriptor.name
         )
     }

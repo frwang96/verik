@@ -70,12 +70,13 @@ class DeclarationInterpreter(
     }
 
     private fun interpretClassFromClass(`class`: SvClass): KtClass {
+        val superType = `class`.superDescriptor.type.copy()
         val declarations = `class`.declarations.mapNotNull { interpretDeclaration(it) }
         val interpretedClass = KtClass(
             `class`.location,
             `class`.name,
             `class`.signature,
-            `class`.superType,
+            superType,
             listOf(),
             declarations,
             true
@@ -100,7 +101,7 @@ class DeclarationInterpreter(
 
     private fun interpretClassFromStruct(struct: SvStruct): KtClass {
         val valueParameters = struct.entries.map { interpretValueParameterFromStructEntry(it) }
-        return KtClass(
+        val interpretedClass = KtClass(
             struct.location,
             struct.name,
             struct.signature,
@@ -109,35 +110,43 @@ class DeclarationInterpreter(
             listOf(),
             false
         )
+        interpreterMap.addDeclaration(struct, interpretedClass)
+        return interpretedClass
     }
 
     private fun interpretEnumFromEnum(enum: SvEnum): KtEnum {
         val entries = enum.entries.map { interpretEnumEntryFromEnumEntry(it) }
-        return KtEnum(
+        val interpretedClass = KtEnum(
             enum.location,
             enum.name,
             enum.signature,
             entries
         )
+        interpreterMap.addDeclaration(enum, interpretedClass)
+        return interpretedClass
     }
 
     private fun interpretTypeAliasFromTypeAlias(typeAlias: SvTypeAlias): KtTypeAlias {
-        return KtTypeAlias(
+        val type = typeAlias.descriptor.type.copy()
+        val interpretedTypeAlias = KtTypeAlias(
             typeAlias.location,
             typeAlias.name,
             typeAlias.signature,
-            typeAlias.type
+            type
         )
+        interpreterMap.addDeclaration(typeAlias, interpretedTypeAlias)
+        return interpretedTypeAlias
     }
 
     private fun interpretFunctionFromFunction(function: SvFunction): KtFunction {
+        val type = function.descriptor.type.copy()
         val valueParameters = function.valueParameters.map { interpretValueParameterFromValueParameter(it) }
         val isOpen = function.parent is SvClass
         return KtFunction(
             function.location,
             function.name,
             function.signature,
-            function.type,
+            type,
             listOf(),
             valueParameters,
             isOpen
@@ -151,7 +160,7 @@ class DeclarationInterpreter(
             task.location,
             task.name,
             task.signature,
-            task.type,
+            Core.C_Unit.toType(),
             listOf(AnnotationEntry("Task")),
             valueParameters,
             isOpen
@@ -168,41 +177,45 @@ class DeclarationInterpreter(
     }
 
     private fun interpretPropertyFromProperty(property: SvProperty): KtProperty {
+        val type = property.descriptor.type.copy()
         return KtProperty(
             property.location,
             property.name,
             property.signature,
-            property.type,
+            type,
             property.isMutable
         )
     }
 
     private fun interpretValueParameterFromValueParameter(valueParameter: SvValueParameter): KtValueParameter {
+        val type = valueParameter.descriptor.type.copy()
         return KtValueParameter(
             valueParameter.location,
             valueParameter.name,
-            valueParameter.type,
+            type,
             listOf(),
             null
         )
     }
 
     private fun interpretValueParameterFromPort(port: SvPort): KtValueParameter {
+        val type = port.descriptor.type.copy()
         val annotationEntry = port.portType.getAnnotationEntry()
         return KtValueParameter(
             port.location,
             port.name,
-            port.type,
+            type,
             listOf(annotationEntry),
             true
         )
     }
 
     private fun interpretValueParameterFromStructEntry(structEntry: SvStructEntry): KtValueParameter {
+        val type = structEntry.descriptor.type.copy()
         return KtValueParameter(
             structEntry.location,
             structEntry.name,
-            structEntry.type,
+            type,
             listOf(),
             true
         )

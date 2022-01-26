@@ -18,10 +18,10 @@ package io.verik.importer.resolve
 
 import io.verik.importer.ast.sv.element.declaration.SvContainerDeclaration
 import io.verik.importer.ast.sv.element.declaration.SvDeclaration
+import io.verik.importer.ast.sv.element.descriptor.SvDescriptor
 import io.verik.importer.common.SvTreeVisitor
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
-import io.verik.importer.message.Messages
 
 object DeclarationResolvedCheckerStage : ProjectStage() {
 
@@ -49,13 +49,12 @@ object DeclarationResolvedCheckerStage : ProjectStage() {
 
         var isResolved = true
 
-        override fun visitDeclaration(declaration: SvDeclaration) {
+        override fun visitDescriptor(descriptor: SvDescriptor) {
             if (!isResolved)
                 return
-            super.visitDeclaration(declaration)
-            if (!declaration.type.isResolved()) {
+            super.visitDescriptor(descriptor)
+            if (!descriptor.type.isResolved()) {
                 isResolved = false
-                Messages.DECLARATION_TYPE_NOT_RESOLVED.on(declaration, declaration.name)
             }
         }
     }

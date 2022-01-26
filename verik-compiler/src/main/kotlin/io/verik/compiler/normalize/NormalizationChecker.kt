@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,12 +19,17 @@ package io.verik.compiler.normalize
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
-object NormalizationChecker {
+interface NormalizationChecker {
 
-    fun process(projectContext: ProjectContext, projectStage: ProjectStage) {
-        ElementParentChecker.process(projectContext, projectStage)
-        ElementAliasChecker.process(projectContext, projectStage)
-        TypeAliasChecker.process(projectContext, projectStage)
-        DanglingReferenceChecker.process(projectContext, projectStage)
+    fun check(projectContext: ProjectContext, projectStage: ProjectStage)
+
+    companion object {
+
+        fun check(projectContext: ProjectContext, projectStage: ProjectStage) {
+            ElementParentChecker.check(projectContext, projectStage)
+            ElementAliasChecker.check(projectContext, projectStage)
+            TypeAliasChecker.check(projectContext, projectStage)
+            DanglingReferenceChecker.check(projectContext, projectStage)
+        }
     }
 }

@@ -17,7 +17,6 @@
 package io.verik.importer.ast.sv.element.declaration
 
 import io.verik.importer.common.SvVisitor
-import io.verik.importer.core.Core
 import io.verik.importer.message.SourceLocation
 
 class SvStruct(
@@ -26,8 +25,6 @@ class SvStruct(
     override var signature: String?,
     val entries: List<SvStructEntry>
 ) : SvTypeDeclaration() {
-
-    override var type = Core.C_Unit.toType()
 
     init {
         entries.forEach { it.parent = this }

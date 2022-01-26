@@ -22,9 +22,9 @@ import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 import io.verik.importer.message.Messages
 
-object KtElementAliasChecker : NormalizationStage {
+object KtElementAliasChecker : NormalizationChecker {
 
-    override fun process(projectContext: ProjectContext, projectStage: ProjectStage) {
+    override fun check(projectContext: ProjectContext, projectStage: ProjectStage) {
         val elementAliasVisitor = ElementAliasVisitor(projectStage)
         projectContext.project.accept(elementAliasVisitor)
     }

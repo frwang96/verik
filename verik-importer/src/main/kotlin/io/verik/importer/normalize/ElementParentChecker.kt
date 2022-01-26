@@ -23,9 +23,9 @@ import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 import io.verik.importer.message.Messages
 
-object ElementParentChecker : NormalizationStage {
+object ElementParentChecker : NormalizationChecker {
 
-    override fun process(projectContext: ProjectContext, projectStage: ProjectStage) {
+    override fun check(projectContext: ProjectContext, projectStage: ProjectStage) {
         val elementParentVisitor = ElementParentVisitor(projectStage)
         projectContext.compilationUnit.accept(elementParentVisitor)
     }

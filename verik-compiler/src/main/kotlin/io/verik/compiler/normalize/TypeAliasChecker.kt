@@ -26,9 +26,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
-object TypeAliasChecker : NormalizationStage {
+object TypeAliasChecker : NormalizationChecker {
 
-    override fun process(projectContext: ProjectContext, projectStage: ProjectStage) {
+    override fun check(projectContext: ProjectContext, projectStage: ProjectStage) {
         val typeAliasVisitor = TypeAliasVisitor(projectStage)
         projectContext.project.accept(typeAliasVisitor)
     }
@@ -41,9 +41,9 @@ object TypeAliasChecker : NormalizationStage {
 
         private fun addTypeRecursive(type: Type, element: EElement) {
             val hashCode = System.identityHashCode(type)
-            val typeList = typeMap[hashCode]
-            if (typeList != null) {
-                for (typeListType in typeList) {
+            val types = typeMap[hashCode]
+            if (types != null) {
+                for (typeListType in types) {
                     if (type === typeListType) {
                         Messages.NORMALIZATION_ERROR.on(
                             element,
@@ -52,7 +52,7 @@ object TypeAliasChecker : NormalizationStage {
                         )
                     }
                 }
-                typeList.add(type)
+                types.add(type)
             } else {
                 typeMap[hashCode] = arrayListOf(type)
             }

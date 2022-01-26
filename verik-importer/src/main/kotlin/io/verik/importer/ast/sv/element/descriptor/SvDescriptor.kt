@@ -16,6 +16,10 @@
 
 package io.verik.importer.ast.sv.element.descriptor
 
-import io.verik.importer.ast.sv.element.common.SvTypedElement
+import io.verik.importer.ast.sv.element.common.SvElement
+import io.verik.importer.common.Type
 
-abstract class SvDescriptor : SvTypedElement()
+abstract class SvDescriptor : SvElement() {
+
+    abstract var type: Type
+}

@@ -56,7 +56,7 @@ object DescriptorResolverStage : ProjectStage() {
                 val width = abs(leftValue - rightValue) + 1
                 packedDescriptor.type = Core.C_Packed.toType(
                     Cardinal.of(width).toType(),
-                    packedDescriptor.descriptor.type
+                    packedDescriptor.descriptor.type.copy()
                 )
             }
         }

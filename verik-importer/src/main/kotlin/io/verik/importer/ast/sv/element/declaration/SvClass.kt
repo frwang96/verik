@@ -18,8 +18,6 @@ package io.verik.importer.ast.sv.element.declaration
 
 import io.verik.importer.ast.sv.element.descriptor.SvDescriptor
 import io.verik.importer.common.SvVisitor
-import io.verik.importer.common.Type
-import io.verik.importer.core.Core
 import io.verik.importer.message.SourceLocation
 
 class SvClass(
@@ -29,10 +27,6 @@ class SvClass(
     override var declarations: ArrayList<SvDeclaration>,
     val superDescriptor: SvDescriptor
 ) : SvContainerDeclaration() {
-
-    override var type = Core.C_Unit.toType()
-
-    var superType: Type by superDescriptor::type
 
     init {
         declarations.forEach { it.parent = this }

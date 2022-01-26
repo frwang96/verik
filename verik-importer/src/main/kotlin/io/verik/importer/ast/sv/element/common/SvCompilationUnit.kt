@@ -19,7 +19,6 @@ package io.verik.importer.ast.sv.element.common
 import io.verik.importer.ast.sv.element.declaration.SvContainerDeclaration
 import io.verik.importer.ast.sv.element.declaration.SvDeclaration
 import io.verik.importer.common.SvVisitor
-import io.verik.importer.core.Core
 import io.verik.importer.message.SourceLocation
 
 class SvCompilationUnit(
@@ -33,7 +32,6 @@ class SvCompilationUnit(
     override val location: SourceLocation = SourceLocation.NULL
     override val name = "<unit>"
     override var signature: String? = null
-    override var type = Core.C_Unit.toType()
 
     override fun accept(visitor: SvVisitor) {
         visitor.visitCompilationUnit(this)

@@ -32,9 +32,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
-object DanglingReferenceChecker : NormalizationStage {
+object DanglingReferenceChecker : NormalizationChecker {
 
-    override fun process(projectContext: ProjectContext, projectStage: ProjectStage) {
+    override fun check(projectContext: ProjectContext, projectStage: ProjectStage) {
         val danglingReferenceIndexerVisitor = DanglingReferenceIndexerVisitor()
         projectContext.project.accept(danglingReferenceIndexerVisitor)
         val declarations = danglingReferenceIndexerVisitor.declarations

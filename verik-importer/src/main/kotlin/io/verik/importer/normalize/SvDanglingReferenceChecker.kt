@@ -18,9 +18,8 @@ package io.verik.importer.normalize
 
 import io.verik.importer.ast.kt.element.KtDeclaration
 import io.verik.importer.ast.sv.element.common.SvElement
-import io.verik.importer.ast.sv.element.common.SvTypedElement
-import io.verik.importer.ast.sv.element.declaration.SvClass
 import io.verik.importer.ast.sv.element.declaration.SvDeclaration
+import io.verik.importer.ast.sv.element.descriptor.SvDescriptor
 import io.verik.importer.ast.sv.element.expression.SvReferenceExpression
 import io.verik.importer.common.Declaration
 import io.verik.importer.common.SvTreeVisitor
@@ -29,9 +28,9 @@ import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 import io.verik.importer.message.Messages
 
-object SvDanglingReferenceChecker : NormalizationStage {
+object SvDanglingReferenceChecker : NormalizationChecker {
 
-    override fun process(projectContext: ProjectContext, projectStage: ProjectStage) {
+    override fun check(projectContext: ProjectContext, projectStage: ProjectStage) {
         val danglingReferenceIndexerVisitor = DanglingReferenceIndexerVisitor()
         projectContext.compilationUnit.accept(danglingReferenceIndexerVisitor)
         val danglingReferenceCheckerVisitor = DanglingReferenceCheckerVisitor(
@@ -73,16 +72,11 @@ object SvDanglingReferenceChecker : NormalizationStage {
 
         override fun visitElement(element: SvElement) {
             super.visitElement(element)
-            if (element is SvTypedElement) {
+            if (element is SvDescriptor) {
                 checkReference(element.type, element)
             }
-            when (element) {
-                is SvClass -> {
-                    checkReference(element.superType, element)
-                }
-                is SvReferenceExpression -> {
-                    checkReference(element.reference, element)
-                }
+            if (element is SvReferenceExpression) {
+                checkReference(element.reference, element)
             }
         }
     }

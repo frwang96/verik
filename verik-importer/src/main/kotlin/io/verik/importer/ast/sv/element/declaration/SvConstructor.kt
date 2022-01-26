@@ -17,8 +17,6 @@
 package io.verik.importer.ast.sv.element.declaration
 
 import io.verik.importer.common.SvVisitor
-import io.verik.importer.common.Type
-import io.verik.importer.core.Core
 import io.verik.importer.message.SourceLocation
 
 class SvConstructor(
@@ -28,7 +26,6 @@ class SvConstructor(
 ) : SvAbstractFunction() {
 
     override val name: String = "new"
-    override var type: Type = Core.C_Unit.toType()
 
     init {
         valueParameters.forEach { it.parent = this }

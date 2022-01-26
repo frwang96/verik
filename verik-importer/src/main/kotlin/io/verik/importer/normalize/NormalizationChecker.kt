@@ -19,13 +19,19 @@ package io.verik.importer.normalize
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 
-object NormalizationChecker {
+interface NormalizationChecker {
 
-    fun process(projectContext: ProjectContext, projectStage: ProjectStage) {
-        ElementParentChecker.process(projectContext, projectStage)
-        SvElementAliasChecker.process(projectContext, projectStage)
-        KtElementAliasChecker.process(projectContext, projectStage)
-        SvDanglingReferenceChecker.process(projectContext, projectStage)
-        KtDanglingReferenceChecker.process(projectContext, projectStage)
+    fun check(projectContext: ProjectContext, projectStage: ProjectStage)
+
+    companion object {
+
+        fun check(projectContext: ProjectContext, projectStage: ProjectStage) {
+            ElementParentChecker.check(projectContext, projectStage)
+            SvElementAliasChecker.check(projectContext, projectStage)
+            KtElementAliasChecker.check(projectContext, projectStage)
+            TypeAliasChecker.check(projectContext, projectStage)
+            SvDanglingReferenceChecker.check(projectContext, projectStage)
+            KtDanglingReferenceChecker.check(projectContext, projectStage)
+        }
     }
 }

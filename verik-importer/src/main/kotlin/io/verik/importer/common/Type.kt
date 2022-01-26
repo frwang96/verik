@@ -23,6 +23,11 @@ class Type(
     var arguments: ArrayList<Type>
 ) {
 
+    fun copy(): Type {
+        val copyArguments = arguments.map { it.copy() }
+        return Type(reference, ArrayList(copyArguments))
+    }
+
     fun isResolved(): Boolean {
         return if (arguments.any { !it.isResolved() }) {
             false
@@ -36,6 +41,16 @@ class Type(
         return if (arguments.isNotEmpty()) {
             "$referenceName<${arguments.joinToString()}>"
         } else referenceName
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return (other is Type) && (other.reference == reference) && (other.arguments == arguments)
+    }
+
+    override fun hashCode(): Int {
+        var result = reference.hashCode()
+        result = 31 * result + arguments.hashCode()
+        return result
     }
 
     companion object {

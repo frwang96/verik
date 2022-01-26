@@ -81,7 +81,7 @@ class StageSequence {
         if (stage !in projectContext.processedProjectStages) {
             stage.process(projectContext)
             if (stageType.checkNormalization() && projectContext.config.debug) {
-                NormalizationChecker.process(projectContext, stage)
+                NormalizationChecker.check(projectContext, stage)
             }
             projectContext.processedProjectStages.add(stage)
         }

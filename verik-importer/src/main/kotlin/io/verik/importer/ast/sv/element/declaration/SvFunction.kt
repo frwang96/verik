@@ -18,7 +18,6 @@ package io.verik.importer.ast.sv.element.declaration
 
 import io.verik.importer.ast.sv.element.descriptor.SvDescriptor
 import io.verik.importer.common.SvVisitor
-import io.verik.importer.common.Type
 import io.verik.importer.message.SourceLocation
 
 class SvFunction(
@@ -28,8 +27,6 @@ class SvFunction(
     override val valueParameters: List<SvValueParameter>,
     val descriptor: SvDescriptor
 ) : SvAbstractFunction() {
-
-    override var type: Type by descriptor::type
 
     init {
         valueParameters.forEach { it.parent = this }

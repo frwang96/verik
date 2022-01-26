@@ -18,7 +18,6 @@ package io.verik.importer.common
 
 import io.verik.importer.ast.sv.element.common.SvCompilationUnit
 import io.verik.importer.ast.sv.element.common.SvElement
-import io.verik.importer.ast.sv.element.common.SvTypedElement
 import io.verik.importer.ast.sv.element.declaration.SvAbstractFunction
 import io.verik.importer.ast.sv.element.declaration.SvClass
 import io.verik.importer.ast.sv.element.declaration.SvConstructor
@@ -51,12 +50,8 @@ abstract class SvVisitor {
 
     open fun visitElement(element: SvElement) {}
 
-    open fun visitTypedElement(typedElement: SvTypedElement) {
-        visitElement(typedElement)
-    }
-
     open fun visitDeclaration(declaration: SvDeclaration) {
-        visitTypedElement(declaration)
+        visitElement(declaration)
     }
 
     open fun visitContainerDeclaration(containerDeclaration: SvContainerDeclaration) {
@@ -140,7 +135,7 @@ abstract class SvVisitor {
 // Descriptor Like /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     open fun visitDescriptor(descriptor: SvDescriptor) {
-        visitTypedElement(descriptor)
+        visitElement(descriptor)
     }
 
     open fun visitSimpleDescriptor(simpleDescriptor: SvSimpleDescriptor) {

@@ -27,9 +27,9 @@ import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 import io.verik.importer.message.Messages
 
-object KtDanglingReferenceChecker : NormalizationStage {
+object KtDanglingReferenceChecker : NormalizationChecker {
 
-    override fun process(projectContext: ProjectContext, projectStage: ProjectStage) {
+    override fun check(projectContext: ProjectContext, projectStage: ProjectStage) {
         val danglingReferenceIndexerVisitor = DanglingReferenceIndexerVisitor()
         projectContext.project.accept(danglingReferenceIndexerVisitor)
         val danglingReferenceCheckerVisitor = DanglingReferenceCheckerVisitor(
