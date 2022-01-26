@@ -49,17 +49,4 @@ internal class PropertyCasterTest : BaseTest() {
             """.trimIndent()
         ) { it }
     }
-
-    @Test
-    fun `cast property from structUnionMember`() {
-        driveCasterTest(
-            SystemVerilogParser.DataDeclarationContext::class,
-            """
-                typedef struct {
-                    logic x;
-                } s;
-            """.trimIndent(),
-            "Property(x, SimpleDescriptor(Boolean))"
-        ) { it.findDeclaration("x") }
-    }
 }

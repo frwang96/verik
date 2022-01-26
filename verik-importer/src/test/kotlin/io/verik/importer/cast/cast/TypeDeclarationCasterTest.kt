@@ -54,7 +54,7 @@ internal class TypeDeclarationCasterTest : BaseTest() {
                     logic x;
                 } s;
             """.trimIndent(),
-            "Struct(s, [Property(x, SimpleDescriptor(Boolean))])"
+            "Struct(s, [StructEntry(x, SimpleDescriptor(Boolean))])"
         ) { it.findDeclaration("s") }
     }
 }

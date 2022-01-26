@@ -74,10 +74,8 @@ object KtDanglingReferenceChecker : NormalizationStage {
             if (element is KtDeclaration) {
                 checkReference(element.type, element)
             }
-            when (element) {
-                is KtClass -> {
-                    checkReference(element.superType, element)
-                }
+            if (element is KtClass) {
+                checkReference(element.superType, element)
             }
         }
     }

@@ -16,8 +16,8 @@
 
 package io.verik.compiler.main
 
+import io.verik.compiler.cast.CastIndexerStage
 import io.verik.compiler.cast.CasterStage
-import io.verik.compiler.cast.DeclarationCastIndexerStage
 import io.verik.compiler.cast.SmartCastReducerStage
 import io.verik.compiler.check.mid.AnnotationEntryCheckerStage
 import io.verik.compiler.check.mid.ArrayAccessMutabilityChecker
@@ -124,7 +124,7 @@ object StageSequencer {
 
         stageSequence.add(StageType.COMPILE, KotlinCompilerAnalyzerStage)
 
-        stageSequence.add(StageType.CAST, DeclarationCastIndexerStage)
+        stageSequence.add(StageType.CAST, CastIndexerStage)
         stageSequence.add(StageType.CAST, CasterStage)
         stageSequence.add(StageType.CAST, SmartCastReducerStage)
 

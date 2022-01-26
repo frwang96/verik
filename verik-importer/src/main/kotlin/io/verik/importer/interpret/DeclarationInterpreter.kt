@@ -37,13 +37,16 @@ import io.verik.importer.ast.sv.element.declaration.SvPackage
 import io.verik.importer.ast.sv.element.declaration.SvPort
 import io.verik.importer.ast.sv.element.declaration.SvProperty
 import io.verik.importer.ast.sv.element.declaration.SvStruct
+import io.verik.importer.ast.sv.element.declaration.SvStructEntry
 import io.verik.importer.ast.sv.element.declaration.SvTask
 import io.verik.importer.ast.sv.element.declaration.SvTypeAlias
 import io.verik.importer.ast.sv.element.declaration.SvValueParameter
 import io.verik.importer.core.Core
 import io.verik.importer.message.Messages
 
-object DeclarationInterpreter {
+class DeclarationInterpreter(
+    private val interpreterMap: InterpreterMap
+) {
 
     fun interpretDeclaration(declaration: SvDeclaration): KtDeclaration? {
         return when (declaration) {
@@ -68,7 +71,7 @@ object DeclarationInterpreter {
 
     private fun interpretClassFromClass(`class`: SvClass): KtClass {
         val declarations = `class`.declarations.mapNotNull { interpretDeclaration(it) }
-        return KtClass(
+        val interpretedClass = KtClass(
             `class`.location,
             `class`.name,
             `class`.signature,
@@ -77,6 +80,8 @@ object DeclarationInterpreter {
             declarations,
             true
         )
+        interpreterMap.addDeclaration(`class`, interpretedClass)
+        return interpretedClass
     }
 
     private fun interpretClassFromModule(module: SvModule): KtClass {
@@ -94,7 +99,7 @@ object DeclarationInterpreter {
     }
 
     private fun interpretClassFromStruct(struct: SvStruct): KtClass {
-        val valueParameters = struct.properties.map { interpretValueParameterFromProperty(it) }
+        val valueParameters = struct.entries.map { interpretValueParameterFromStructEntry(it) }
         return KtClass(
             struct.location,
             struct.name,
@@ -172,16 +177,6 @@ object DeclarationInterpreter {
         )
     }
 
-    private fun interpretValueParameterFromProperty(property: SvProperty): KtValueParameter {
-        return KtValueParameter(
-            property.location,
-            property.name,
-            property.type,
-            listOf(),
-            property.isMutable
-        )
-    }
-
     private fun interpretValueParameterFromValueParameter(valueParameter: SvValueParameter): KtValueParameter {
         return KtValueParameter(
             valueParameter.location,
@@ -199,6 +194,16 @@ object DeclarationInterpreter {
             port.name,
             port.type,
             listOf(annotationEntry),
+            true
+        )
+    }
+
+    private fun interpretValueParameterFromStructEntry(structEntry: SvStructEntry): KtValueParameter {
+        return KtValueParameter(
+            structEntry.location,
+            structEntry.name,
+            structEntry.type,
+            listOf(),
             true
         )
     }
