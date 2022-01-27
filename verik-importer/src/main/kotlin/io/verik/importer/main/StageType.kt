@@ -22,12 +22,14 @@ enum class StageType {
     CAST,
     RESOLVE,
     INTERPRET,
+    CHECK,
     SERIALIZE;
 
     fun flushAfter(): Boolean {
         return this in listOf(
             PREPROCESS,
             PARSE,
+            CHECK,
             SERIALIZE
         )
     }
