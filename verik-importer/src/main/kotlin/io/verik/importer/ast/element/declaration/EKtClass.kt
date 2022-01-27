@@ -36,6 +36,15 @@ class EKtClass(
         superDescriptor.parent = this
     }
 
+    fun getConstructor(): EKtConstructor? {
+        declarations.forEach {
+            if (it is EKtConstructor) {
+                return it
+            }
+        }
+        return null
+    }
+
     override fun accept(visitor: Visitor) {
         visitor.visitKtClass(this)
     }

@@ -24,7 +24,7 @@ class ETask(
     override val name: String,
     override var signature: String?,
     override val valueParameters: List<ESvValueParameter>
-) : EAbstractFunction() {
+) : ESvAbstractFunction() {
 
     init {
         valueParameters.forEach { it.parent = this }

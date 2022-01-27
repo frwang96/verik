@@ -18,13 +18,15 @@ package io.verik.importer.common
 
 import io.verik.importer.ast.element.common.EElement
 import io.verik.importer.ast.element.common.EProject
-import io.verik.importer.ast.element.declaration.EAbstractFunction
 import io.verik.importer.ast.element.declaration.EContainerDeclaration
 import io.verik.importer.ast.element.declaration.EDeclaration
 import io.verik.importer.ast.element.declaration.EEnum
 import io.verik.importer.ast.element.declaration.EEnumEntry
+import io.verik.importer.ast.element.declaration.EKtAbstractFunction
 import io.verik.importer.ast.element.declaration.EKtClass
+import io.verik.importer.ast.element.declaration.EKtConstructor
 import io.verik.importer.ast.element.declaration.EKtFile
+import io.verik.importer.ast.element.declaration.EKtFunction
 import io.verik.importer.ast.element.declaration.EKtPackage
 import io.verik.importer.ast.element.declaration.EKtValueParameter
 import io.verik.importer.ast.element.declaration.EModule
@@ -32,6 +34,7 @@ import io.verik.importer.ast.element.declaration.EPort
 import io.verik.importer.ast.element.declaration.EProperty
 import io.verik.importer.ast.element.declaration.EStruct
 import io.verik.importer.ast.element.declaration.EStructEntry
+import io.verik.importer.ast.element.declaration.ESvAbstractFunction
 import io.verik.importer.ast.element.declaration.ESvClass
 import io.verik.importer.ast.element.declaration.ESvConstructor
 import io.verik.importer.ast.element.declaration.ESvFunction
@@ -110,20 +113,32 @@ abstract class Visitor {
 
 // Function Like ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    open fun visitAbstractFunction(abstractFunction: EAbstractFunction) {
+    open fun visitSvAbstractFunction(abstractFunction: ESvAbstractFunction) {
         visitDeclaration(abstractFunction)
     }
 
     open fun visitSvFunction(function: ESvFunction) {
-        visitAbstractFunction(function)
+        visitSvAbstractFunction(function)
     }
 
     open fun visitTask(task: ETask) {
-        visitAbstractFunction(task)
+        visitSvAbstractFunction(task)
     }
 
     open fun visitSvConstructor(constructor: ESvConstructor) {
-        visitAbstractFunction(constructor)
+        visitSvAbstractFunction(constructor)
+    }
+
+    open fun visitKtAbstractFunction(abstractFunction: EKtAbstractFunction) {
+        visitDeclaration(abstractFunction)
+    }
+
+    open fun visitKtFunction(function: EKtFunction) {
+        visitKtAbstractFunction(function)
+    }
+
+    open fun visitKtConstructor(constructor: EKtConstructor) {
+        visitKtAbstractFunction(constructor)
     }
 
 // Property Like ///////////////////////////////////////////////////////////////////////////////////////////////////////

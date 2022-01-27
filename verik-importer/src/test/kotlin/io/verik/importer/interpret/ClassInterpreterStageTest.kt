@@ -47,4 +47,17 @@ internal class ClassInterpreterStageTest : BaseTest() {
             "KtClass(m, [], [KtValueParameter(x, SimpleDescriptor(Boolean), [In], 1)], SimpleDescriptor(Module), 0)"
         ) { it.findDeclaration("m") }
     }
+
+    @Test
+    fun `interpret struct`() {
+        driveElementTest(
+            """
+                typedef struct {
+                    logic x;
+                } s;
+            """.trimIndent(),
+            ClassInterpreterStage::class,
+            "KtClass(s, [], [KtValueParameter(x, SimpleDescriptor(Boolean), [], 1)], SimpleDescriptor(Struct), 0)"
+        ) { it.findDeclaration("s") }
+    }
 }

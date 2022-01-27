@@ -19,6 +19,7 @@ package io.verik.importer.interpret
 import io.verik.importer.ast.element.declaration.EKtClass
 import io.verik.importer.ast.element.declaration.EKtValueParameter
 import io.verik.importer.ast.element.declaration.EModule
+import io.verik.importer.ast.element.declaration.EStruct
 import io.verik.importer.ast.element.declaration.ESvClass
 import io.verik.importer.ast.element.descriptor.ESimpleDescriptor
 import io.verik.importer.common.ReferenceUpdater
@@ -79,6 +80,32 @@ object ClassInterpreterStage : ProjectStage() {
                 false
             )
             referenceUpdater.replace(module, interpretedClass)
+        }
+
+        override fun visitStruct(struct: EStruct) {
+            super.visitStruct(struct)
+            val valueParameters = struct.entries.map {
+                val valueParameter = EKtValueParameter(
+                    it.location,
+                    it.name,
+                    it.descriptor,
+                    listOf(),
+                    true
+                )
+                referenceUpdater.update(it, valueParameter)
+                valueParameter
+            }
+            val superDescriptor = ESimpleDescriptor(struct.location, Core.C_Struct.toType())
+            val interpretedClass = EKtClass(
+                struct.location,
+                struct.name,
+                struct.signature,
+                ArrayList(),
+                valueParameters,
+                superDescriptor,
+                false
+            )
+            referenceUpdater.replace(struct, interpretedClass)
         }
     }
 }

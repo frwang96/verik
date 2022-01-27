@@ -20,9 +20,12 @@ import io.verik.importer.ast.element.declaration.EDeclaration
 import io.verik.importer.ast.element.declaration.EEnum
 import io.verik.importer.ast.element.declaration.EEnumEntry
 import io.verik.importer.ast.element.declaration.EKtClass
+import io.verik.importer.ast.element.declaration.EKtConstructor
+import io.verik.importer.ast.element.declaration.EKtFunction
 import io.verik.importer.ast.element.declaration.EKtValueParameter
 import io.verik.importer.ast.element.declaration.EProperty
 import io.verik.importer.ast.element.declaration.ETypeAlias
+import io.verik.importer.ast.element.descriptor.EDescriptor
 import io.verik.importer.core.Core
 
 object DeclarationSerializer {
@@ -42,7 +45,10 @@ object DeclarationSerializer {
             serializeContext.append(")")
         }
         if (`class`.superDescriptor.type.reference != Core.C_Any) {
-            serializeContext.append(" : ${`class`.superDescriptor.type}()")
+            serializeContext.append(" : ${`class`.superDescriptor.type}")
+            if (`class`.getConstructor() == null) {
+                serializeSuperConstructorCall(`class`.superDescriptor, serializeContext)
+            }
         }
         if (`class`.declarations.isNotEmpty()) {
             serializeContext.appendLine(" {")
@@ -76,6 +82,49 @@ object DeclarationSerializer {
         serializeContext.appendLine("typealias ${typeAlias.name} = ${typeAlias.descriptor.type}")
     }
 
+    fun serializeFunction(function: EKtFunction, serializeContext: SerializeContext) {
+        serializeContext.appendLine()
+        serializeDocs(function, serializeContext)
+        function.annotationEntries.forEach {
+            serializeContext.appendLine("@${it.name}")
+        }
+        if (function.isOpen) {
+            serializeContext.append("open ")
+        }
+        serializeContext.append("fun ${function.name}")
+        if (function.valueParameters.isNotEmpty()) {
+            serializeContext.appendLine("(")
+            serializeContext.indent {
+                serializeContext.serializeJoinAppendLine(function.valueParameters)
+            }
+            serializeContext.append(")")
+        } else {
+            serializeContext.append("()")
+        }
+        serializeContext.appendLine(": ${function.descriptor.type} = imported()")
+    }
+
+    fun serializeConstructor(constructor: EKtConstructor, serializeContext: SerializeContext) {
+        serializeContext.appendLine()
+        serializeDocs(constructor, serializeContext)
+        serializeContext.append("constructor")
+        if (constructor.valueParameters.isNotEmpty()) {
+            serializeContext.appendLine("(")
+            serializeContext.indent {
+                serializeContext.serializeJoinAppendLine(constructor.valueParameters)
+            }
+            serializeContext.append(")")
+        } else {
+            serializeContext.append("()")
+        }
+        val `class` = constructor.parentNotNull().cast<EKtClass>()
+        if (`class`.superDescriptor.type.reference != Core.C_Any) {
+            serializeContext.append(" : super")
+            serializeSuperConstructorCall(`class`.superDescriptor, serializeContext)
+        }
+        serializeContext.appendLine()
+    }
+
     fun serializeProperty(property: EProperty, serializeContext: SerializeContext) {
         serializeContext.appendLine()
         serializeDocs(property, serializeContext)
@@ -100,6 +149,31 @@ object DeclarationSerializer {
 
     fun serializeEnumEntry(enumEntry: EEnumEntry, serializeContext: SerializeContext) {
         serializeContext.append(enumEntry.name)
+    }
+
+    private fun serializeSuperConstructorCall(descriptor: EDescriptor, serializeContext: SerializeContext) {
+        val declaration = descriptor.type.reference
+        val constructor = if (declaration is EKtClass) declaration.getConstructor() else null
+        if (constructor != null) {
+            val parameterCount = constructor.valueParameters.size
+            if (parameterCount != 0) {
+                serializeContext.appendLine("(")
+                serializeContext.indent {
+                    serializeContext.append("imported()")
+                    repeat(parameterCount - 1) {
+                        serializeContext.append(",")
+                        serializeContext.appendLine()
+                        serializeContext.append("imported()")
+                    }
+                    serializeContext.appendLine()
+                }
+                serializeContext.append(")")
+            } else {
+                serializeContext.append("()")
+            }
+        } else {
+            serializeContext.append("()")
+        }
     }
 
     private fun serializeDocs(declaration: EDeclaration, serializeContext: SerializeContext) {

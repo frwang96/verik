@@ -18,9 +18,9 @@ package io.verik.importer.ast.element.declaration
 
 import io.verik.importer.common.Visitor
 
-abstract class EAbstractFunction : EDeclaration() {
+abstract class EKtAbstractFunction : EDeclaration() {
 
-    abstract val valueParameters: List<ESvValueParameter>
+    abstract val valueParameters: List<EKtValueParameter>
 
     override fun acceptChildren(visitor: Visitor) {
         valueParameters.forEach { it.accept(visitor) }

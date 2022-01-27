@@ -19,19 +19,19 @@ package io.verik.importer.ast.element.declaration
 import io.verik.importer.common.Visitor
 import io.verik.importer.message.SourceLocation
 
-class ESvConstructor(
+class EKtConstructor(
     override val location: SourceLocation,
     override var signature: String?,
-    override val valueParameters: List<ESvValueParameter>
-) : ESvAbstractFunction() {
+    override val valueParameters: List<EKtValueParameter>
+) : EKtAbstractFunction() {
 
-    override val name: String = "new"
+    override val name = "new"
 
     init {
         valueParameters.forEach { it.parent = this }
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitSvConstructor(this)
+        visitor.visitKtConstructor(this)
     }
 }

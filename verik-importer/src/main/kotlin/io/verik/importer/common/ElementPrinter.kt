@@ -21,7 +21,9 @@ import io.verik.importer.ast.element.common.EProject
 import io.verik.importer.ast.element.declaration.EEnum
 import io.verik.importer.ast.element.declaration.EEnumEntry
 import io.verik.importer.ast.element.declaration.EKtClass
+import io.verik.importer.ast.element.declaration.EKtConstructor
 import io.verik.importer.ast.element.declaration.EKtFile
+import io.verik.importer.ast.element.declaration.EKtFunction
 import io.verik.importer.ast.element.declaration.EKtPackage
 import io.verik.importer.ast.element.declaration.EKtValueParameter
 import io.verik.importer.ast.element.declaration.EModule
@@ -149,6 +151,22 @@ class ElementPrinter : Visitor() {
 
     override fun visitSvConstructor(constructor: ESvConstructor) {
         build("SvConstructor") {
+            build(constructor.valueParameters)
+        }
+    }
+
+    override fun visitKtFunction(function: EKtFunction) {
+        build("KtFunction") {
+            build(function.name)
+            build(function.valueParameters)
+            build(function.descriptor)
+            build(function.annotationEntries.map { it.name })
+            build(function.isOpen)
+        }
+    }
+
+    override fun visitKtConstructor(constructor: EKtConstructor) {
+        build("KtConstructor") {
             build(constructor.valueParameters)
         }
     }

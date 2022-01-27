@@ -17,21 +17,12 @@
 package io.verik.importer.ast.element.declaration
 
 import io.verik.importer.common.Visitor
-import io.verik.importer.message.SourceLocation
 
-class ESvConstructor(
-    override val location: SourceLocation,
-    override var signature: String?,
-    override val valueParameters: List<ESvValueParameter>
-) : ESvAbstractFunction() {
+abstract class ESvAbstractFunction : EDeclaration() {
 
-    override val name: String = "new"
+    abstract val valueParameters: List<ESvValueParameter>
 
-    init {
-        valueParameters.forEach { it.parent = this }
-    }
-
-    override fun accept(visitor: Visitor) {
-        visitor.visitSvConstructor(this)
+    override fun acceptChildren(visitor: Visitor) {
+        valueParameters.forEach { it.accept(visitor) }
     }
 }

@@ -26,7 +26,7 @@ class ESvFunction(
     override var signature: String?,
     override val valueParameters: List<ESvValueParameter>,
     val descriptor: EDescriptor
-) : EAbstractFunction() {
+) : ESvAbstractFunction() {
 
     init {
         valueParameters.forEach { it.parent = this }
