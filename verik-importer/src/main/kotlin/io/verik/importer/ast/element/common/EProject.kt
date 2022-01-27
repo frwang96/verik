@@ -14,27 +14,33 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.kt.element
+package io.verik.importer.ast.element.common
 
-import io.verik.importer.common.KtVisitor
+import io.verik.importer.ast.common.DeclarationContainer
+import io.verik.importer.ast.element.declaration.EDeclaration
+import io.verik.importer.common.Visitor
+import io.verik.importer.common.replaceIfContains
 import io.verik.importer.message.SourceLocation
-import java.nio.file.Path
 
-class KtFile(
-    override val location: SourceLocation,
-    val outputPath: Path,
-    val declarations: List<KtDeclaration>
-) : KtElement() {
+class EProject(
+    var declarations: ArrayList<EDeclaration>
+) : EElement(), DeclarationContainer {
 
     init {
         declarations.forEach { it.parent = this }
     }
 
-    override fun accept(visitor: KtVisitor) {
-        visitor.visitFile(this)
+    override val location: SourceLocation = SourceLocation.NULL
+
+    override fun accept(visitor: Visitor) {
+        visitor.visitProject(this)
     }
 
-    override fun acceptChildren(visitor: KtVisitor) {
+    override fun acceptChildren(visitor: Visitor) {
         declarations.forEach { it.accept(visitor) }
+    }
+
+    override fun replaceChild(oldDeclaration: EDeclaration, newDeclaration: EDeclaration): Boolean {
+        return declarations.replaceIfContains(oldDeclaration, newDeclaration)
     }
 }

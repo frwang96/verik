@@ -26,7 +26,7 @@ object ClassInterpreterStage : ProjectStage() {
     override fun process(projectContext: ProjectContext) {
         val referenceUpdater = ReferenceUpdater(projectContext)
         val classInterpreterVisitor = ClassInterpreterVisitor(referenceUpdater)
-        projectContext.compilationUnit.accept(classInterpreterVisitor)
+        projectContext.project.accept(classInterpreterVisitor)
         referenceUpdater.flush()
     }
 

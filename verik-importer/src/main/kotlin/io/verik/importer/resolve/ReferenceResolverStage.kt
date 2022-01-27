@@ -30,9 +30,9 @@ object ReferenceResolverStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
         val namespaceIndexerVisitor = NamespaceIndexerVisitor()
-        projectContext.compilationUnit.accept(namespaceIndexerVisitor)
+        projectContext.project.accept(namespaceIndexerVisitor)
         val referenceResolverVisitor = ReferenceResolverVisitor(namespaceIndexerVisitor.namespace)
-        projectContext.compilationUnit.accept(referenceResolverVisitor)
+        projectContext.project.accept(referenceResolverVisitor)
     }
 
     private class NamespaceIndexerVisitor : TreeVisitor() {

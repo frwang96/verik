@@ -14,26 +14,26 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.kt.element
+package io.verik.importer.ast.element.declaration
 
-import io.verik.importer.ast.common.Type
-import io.verik.importer.ast.property.AnnotationEntry
-import io.verik.importer.common.KtVisitor
+import io.verik.importer.common.Visitor
 import io.verik.importer.message.SourceLocation
+import java.nio.file.Path
 
-class KtValueParameter(
+class EKtFile(
     override val location: SourceLocation,
-    override val name: String,
-    override val type: Type,
-    val annotationEntries: List<AnnotationEntry>,
-    val isMutable: Boolean?
-) : KtDeclaration() {
+    override var declarations: ArrayList<EDeclaration>,
+    val outputPath: Path
+) : EContainerDeclaration() {
 
-    override val signature: String? = null
+    override var name = outputPath.fileName.toString()
+    override var signature: String? = null
 
-    override fun accept(visitor: KtVisitor) {
-        visitor.visitValueParameter(this)
+    init {
+        declarations.forEach { it.parent = this }
     }
 
-    override fun acceptChildren(visitor: KtVisitor) {}
+    override fun accept(visitor: Visitor) {
+        visitor.visitKtFile(this)
+    }
 }

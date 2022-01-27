@@ -16,8 +16,8 @@
 
 package io.verik.importer.normalize
 
-import io.verik.importer.ast.element.common.ECompilationUnit
 import io.verik.importer.ast.element.common.EElement
+import io.verik.importer.ast.element.common.EProject
 import io.verik.importer.common.TreeVisitor
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
@@ -27,7 +27,7 @@ object ElementParentChecker : NormalizationChecker {
 
     override fun check(projectContext: ProjectContext, projectStage: ProjectStage) {
         val elementParentVisitor = ElementParentVisitor(projectStage)
-        projectContext.compilationUnit.accept(elementParentVisitor)
+        projectContext.project.accept(elementParentVisitor)
     }
 
     private class ElementParentVisitor(
@@ -52,12 +52,12 @@ object ElementParentChecker : NormalizationChecker {
             parentStack.removeLast()
         }
 
-        override fun visitCompilationUnit(compilationUnit: ECompilationUnit) {
-            if (compilationUnit.parent != null) {
-                Messages.NORMALIZATION_ERROR.on(compilationUnit, projectStage, "Parent element should be null")
+        override fun visitProject(project: EProject) {
+            if (project.parent != null) {
+                Messages.NORMALIZATION_ERROR.on(project, projectStage, "Parent element should be null")
             }
-            parentStack.addLast(compilationUnit)
-            compilationUnit.acceptChildren(this)
+            parentStack.addLast(project)
+            project.acceptChildren(this)
             parentStack.removeLast()
         }
     }

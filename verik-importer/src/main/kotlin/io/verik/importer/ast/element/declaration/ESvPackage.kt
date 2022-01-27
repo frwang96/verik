@@ -34,8 +34,4 @@ class ESvPackage(
     override fun accept(visitor: Visitor) {
         visitor.visitSvPackage(this)
     }
-
-    override fun acceptChildren(visitor: Visitor) {
-        declarations.forEach { it.accept(visitor) }
-    }
 }

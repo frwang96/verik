@@ -16,10 +16,12 @@
 
 package io.verik.importer.common
 
-import io.verik.importer.ast.element.common.ECompilationUnit
 import io.verik.importer.ast.element.common.EElement
+import io.verik.importer.ast.element.common.EProject
 import io.verik.importer.ast.element.declaration.EEnum
 import io.verik.importer.ast.element.declaration.EEnumEntry
+import io.verik.importer.ast.element.declaration.EKtFile
+import io.verik.importer.ast.element.declaration.EKtPackage
 import io.verik.importer.ast.element.declaration.EModule
 import io.verik.importer.ast.element.declaration.EPort
 import io.verik.importer.ast.element.declaration.EProperty
@@ -50,9 +52,9 @@ class ElementPrinter : Visitor() {
         Messages.INTERNAL_ERROR.on(element, "Unable to print element: $element")
     }
 
-    override fun visitCompilationUnit(compilationUnit: ECompilationUnit) {
-        build("CompilationUnit") {
-            build(compilationUnit.declarations)
+    override fun visitProject(project: EProject) {
+        build("Project") {
+            build(project.declarations)
         }
     }
 
@@ -60,6 +62,20 @@ class ElementPrinter : Visitor() {
         build("SvPackage") {
             build(`package`.name)
             build(`package`.declarations)
+        }
+    }
+
+    override fun visitKtPackage(`package`: EKtPackage) {
+        build("KtPackage") {
+            build(`package`.name)
+            build(`package`.files)
+        }
+    }
+
+    override fun visitKtFile(file: EKtFile) {
+        build("KtFile") {
+            build(file.name)
+            build(file.declarations)
         }
     }
 

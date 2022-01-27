@@ -26,7 +26,7 @@ object ElementAliasChecker : NormalizationChecker {
 
     override fun check(projectContext: ProjectContext, projectStage: ProjectStage) {
         val elementAliasVisitor = ElementAliasVisitor(projectStage)
-        projectContext.compilationUnit.accept(elementAliasVisitor)
+        projectContext.project.accept(elementAliasVisitor)
     }
 
     private class ElementAliasVisitor(

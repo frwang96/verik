@@ -26,7 +26,7 @@ import io.verik.importer.main.ProjectStage
 object DeclarationResolvedCheckerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.compilationUnit.accept(DeclarationResolvedIndexerVisitor)
+        projectContext.project.accept(DeclarationResolvedIndexerVisitor)
     }
 
     private object DeclarationResolvedIndexerVisitor : TreeVisitor() {

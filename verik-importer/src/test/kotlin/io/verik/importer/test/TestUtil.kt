@@ -16,12 +16,12 @@
 
 package io.verik.importer.test
 
-import io.verik.importer.ast.element.common.ECompilationUnit
 import io.verik.importer.ast.element.common.EElement
+import io.verik.importer.ast.element.common.EProject
 import io.verik.importer.ast.element.declaration.EDeclaration
 import io.verik.importer.common.TreeVisitor
 
-fun ECompilationUnit.findDeclaration(name: String): EDeclaration {
+fun EProject.findDeclaration(name: String): EDeclaration {
     val declarationVisitor = object : TreeVisitor() {
         val declarations = ArrayList<EDeclaration>()
         override fun visitElement(element: EElement) {

@@ -28,7 +28,7 @@ object TypeAliasChecker : NormalizationChecker {
 
     override fun check(projectContext: ProjectContext, projectStage: ProjectStage) {
         val typeIndexerVisitor = TypeIndexerVisitor(projectStage)
-        projectContext.compilationUnit.accept(typeIndexerVisitor)
+        projectContext.project.accept(typeIndexerVisitor)
     }
 
     private class TypeIndexerVisitor(

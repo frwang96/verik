@@ -29,7 +29,7 @@ import kotlin.math.abs
 object DescriptorResolverStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.compilationUnit.accept(DescriptorResolverVisitor)
+        projectContext.project.accept(DescriptorResolverVisitor)
     }
 
     private object DescriptorResolverVisitor : TreeVisitor() {

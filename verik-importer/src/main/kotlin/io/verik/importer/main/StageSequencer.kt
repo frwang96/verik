@@ -18,7 +18,6 @@ package io.verik.importer.main
 
 import io.verik.importer.cast.common.CasterStage
 import io.verik.importer.interpret.ClassInterpreterStage
-import io.verik.importer.interpret.InterpreterStage
 import io.verik.importer.parse.ParserStage
 import io.verik.importer.preprocess.PreprocessorFilterStage
 import io.verik.importer.preprocess.PreprocessorSerializerStage
@@ -47,7 +46,6 @@ object StageSequencer {
         stageSequence.add(StageType.RESOLVE, DeclarationResolvedCheckerStage)
 
         stageSequence.add(StageType.INTERPRET, ClassInterpreterStage)
-        stageSequence.add(StageType.INTERPRET, InterpreterStage)
 
         stageSequence.add(StageType.SERIALIZE, ConfigFileSerializerStage)
         stageSequence.add(StageType.SERIALIZE, SourceSerializerStage)

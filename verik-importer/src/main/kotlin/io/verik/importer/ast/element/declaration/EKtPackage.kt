@@ -14,13 +14,28 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.kt.element
+package io.verik.importer.ast.element.declaration
 
-import io.verik.importer.ast.common.Declaration
-import io.verik.importer.ast.common.Type
+import io.verik.importer.common.Visitor
+import io.verik.importer.message.SourceLocation
 
-abstract class KtDeclaration : KtElement(), Declaration {
+class EKtPackage(
+    override val location: SourceLocation,
+    override val name: String,
+    val files: List<EKtFile>
+) : EDeclaration() {
 
-    abstract val signature: String?
-    abstract val type: Type
+    override var signature: String? = null
+
+    init {
+        files.forEach { it.parent = this }
+    }
+
+    override fun accept(visitor: Visitor) {
+        visitor.visitKtPackage(this)
+    }
+
+    override fun acceptChildren(visitor: Visitor) {
+        files.forEach { it.accept(visitor) }
+    }
 }

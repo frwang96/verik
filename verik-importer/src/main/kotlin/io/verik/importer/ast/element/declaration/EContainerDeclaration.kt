@@ -17,11 +17,16 @@
 package io.verik.importer.ast.element.declaration
 
 import io.verik.importer.ast.common.DeclarationContainer
+import io.verik.importer.common.Visitor
 import io.verik.importer.common.replaceIfContains
 
 abstract class EContainerDeclaration : EDeclaration(), DeclarationContainer {
 
     abstract var declarations: ArrayList<EDeclaration>
+
+    override fun acceptChildren(visitor: Visitor) {
+        declarations.forEach { it.accept(visitor) }
+    }
 
     override fun replaceChild(oldDeclaration: EDeclaration, newDeclaration: EDeclaration): Boolean {
         return declarations.replaceIfContains(oldDeclaration, newDeclaration)

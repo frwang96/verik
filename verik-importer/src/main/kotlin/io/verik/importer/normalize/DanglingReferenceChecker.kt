@@ -31,12 +31,12 @@ object DanglingReferenceChecker : NormalizationChecker {
 
     override fun check(projectContext: ProjectContext, projectStage: ProjectStage) {
         val danglingReferenceIndexerVisitor = DanglingReferenceIndexerVisitor()
-        projectContext.compilationUnit.accept(danglingReferenceIndexerVisitor)
+        projectContext.project.accept(danglingReferenceIndexerVisitor)
         val danglingReferenceCheckerVisitor = DanglingReferenceCheckerVisitor(
             danglingReferenceIndexerVisitor.declarations,
             projectStage
         )
-        projectContext.compilationUnit.accept(danglingReferenceCheckerVisitor)
+        projectContext.project.accept(danglingReferenceCheckerVisitor)
     }
 
     private class DanglingReferenceIndexerVisitor : TreeVisitor() {

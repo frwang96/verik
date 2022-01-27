@@ -36,7 +36,7 @@ class ReferenceUpdater(val projectContext: ProjectContext) {
 
     fun flush() {
         val referenceUpdaterVisitor = ReferenceUpdaterVisitor(referenceMap)
-        projectContext.compilationUnit.accept(referenceUpdaterVisitor)
+        projectContext.project.accept(referenceUpdaterVisitor)
         referenceMap.clear()
     }
 

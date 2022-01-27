@@ -16,7 +16,7 @@
 
 package io.verik.importer.cast.common
 
-import io.verik.importer.ast.element.common.ECompilationUnit
+import io.verik.importer.ast.element.common.EProject
 import io.verik.importer.ast.element.declaration.EDeclaration
 import io.verik.importer.main.InputFileContext
 import io.verik.importer.main.ProjectContext
@@ -29,7 +29,7 @@ object CasterStage : ProjectStage() {
         projectContext.inputFileContexts.forEach {
             declarations.addAll(castDeclarations(it))
         }
-        projectContext.compilationUnit = ECompilationUnit(declarations)
+        projectContext.project = EProject(declarations)
     }
 
     private fun castDeclarations(inputFileContext: InputFileContext): List<EDeclaration> {

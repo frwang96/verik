@@ -17,7 +17,6 @@
 package io.verik.importer.message
 
 import io.verik.importer.ast.element.common.EElement
-import io.verik.importer.ast.kt.element.KtElement
 import org.antlr.v4.runtime.tree.TerminalNode
 
 class WarningMessageTemplate1<A>(
@@ -75,10 +74,6 @@ class FatalMessageTemplate1<A>(
     fun on(element: EElement, a: A): Nothing {
         MessageCollector.messageCollector.fatal(format(a), element.location)
     }
-
-    fun on(element: KtElement, a: A): Nothing {
-        MessageCollector.messageCollector.fatal(format(a), element.location)
-    }
 }
 
 class FatalMessageTemplate2<A, B>(
@@ -86,10 +81,6 @@ class FatalMessageTemplate2<A, B>(
 ) : AbstractMessageTemplate() {
 
     fun on(element: EElement, a: A, b: B): Nothing {
-        MessageCollector.messageCollector.fatal(format(a, b), element.location)
-    }
-
-    fun on(element: KtElement, a: A, b: B): Nothing {
         MessageCollector.messageCollector.fatal(format(a, b), element.location)
     }
 }

@@ -38,7 +38,7 @@ class ESvClass(
     }
 
     override fun acceptChildren(visitor: Visitor) {
-        declarations.forEach { it.accept(visitor) }
+        super.acceptChildren(visitor)
         superDescriptor.accept(visitor)
     }
 }

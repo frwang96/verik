@@ -17,8 +17,8 @@
 package io.verik.importer.test
 
 import io.verik.importer.antlr.SystemVerilogParserBaseVisitor
-import io.verik.importer.ast.element.common.ECompilationUnit
 import io.verik.importer.ast.element.common.EElement
+import io.verik.importer.ast.element.common.EProject
 import io.verik.importer.ast.element.declaration.EDeclaration
 import io.verik.importer.cast.common.CasterStage
 import io.verik.importer.common.ElementPrinter
@@ -74,7 +74,7 @@ abstract class BaseTest {
         ruleContextClass: KClass<out RuleContext>,
         content: String,
         expected: String,
-        selector: (ECompilationUnit) -> EElement
+        selector: (EProject) -> EElement
     ) {
         val projectContext = getProjectContext(content)
         val stageSequence = StageSequencer.getStageSequence()
@@ -86,7 +86,7 @@ abstract class BaseTest {
         assertTrue(ruleContextCheckerVisitor.hasRuleContext) {
             "Rule context not found: ${ruleContextClass.simpleName}"
         }
-        val element = selector(projectContext.compilationUnit)
+        val element = selector(projectContext.project)
         assertElementEquals(getExpectedString(expected), ElementPrinter.dump(element))
     }
 
@@ -94,7 +94,7 @@ abstract class BaseTest {
         ruleContextClass: KClass<out RuleContext>,
         content: String,
         expected: String,
-        selector: (ECompilationUnit) -> EDeclaration
+        selector: (EProject) -> EDeclaration
     ) {
         val projectContext = getProjectContext(content)
         val stageSequence = StageSequencer.getStageSequence()
@@ -106,7 +106,7 @@ abstract class BaseTest {
         assertTrue(ruleContextCheckerVisitor.hasRuleContext) {
             "Rule context not found: ${ruleContextClass.simpleName}"
         }
-        val declaration = selector(projectContext.compilationUnit)
+        val declaration = selector(projectContext.project)
         assertEquals(expected, declaration.signature)
     }
 
@@ -114,12 +114,12 @@ abstract class BaseTest {
         content: String,
         stageClass: KClass<S>,
         expected: String,
-        selector: (ECompilationUnit) -> EElement
+        selector: (EProject) -> EElement
     ) {
         val projectContext = getProjectContext(content)
         val stageSequence = StageSequencer.getStageSequence()
         stageSequence.processUntil(projectContext, stageClass)
-        val element = selector(projectContext.compilationUnit)
+        val element = selector(projectContext.project)
         assertElementEquals(getExpectedString(expected), ElementPrinter.dump(element))
     }
 
