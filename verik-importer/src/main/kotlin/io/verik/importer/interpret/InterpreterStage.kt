@@ -18,7 +18,7 @@ package io.verik.importer.interpret
 
 import io.verik.importer.ast.common.Type
 import io.verik.importer.ast.element.declaration.EDeclaration
-import io.verik.importer.ast.element.declaration.EPackage
+import io.verik.importer.ast.element.declaration.ESvPackage
 import io.verik.importer.ast.kt.element.KtClass
 import io.verik.importer.ast.kt.element.KtDeclaration
 import io.verik.importer.ast.kt.element.KtElement
@@ -57,7 +57,7 @@ object InterpreterStage : ProjectStage() {
             packages.add(rootPackage)
 
         projectContext.compilationUnit.declarations.forEach {
-            if (it is EPackage) {
+            if (it is ESvPackage) {
                 val `package` = interpretPackage(
                     it.location,
                     "${projectContext.config.rootPackageName}.${it.name}",

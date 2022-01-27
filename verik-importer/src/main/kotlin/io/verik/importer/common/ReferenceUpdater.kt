@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.common
+package io.verik.importer.common
 
-import io.verik.compiler.ast.common.Declaration
-import io.verik.compiler.ast.common.Type
-import io.verik.compiler.ast.element.common.EAbstractClass
-import io.verik.compiler.ast.element.common.ECallExpression
-import io.verik.compiler.ast.element.common.EDeclaration
-import io.verik.compiler.ast.element.common.EReceiverExpression
-import io.verik.compiler.ast.element.common.ETypedElement
-import io.verik.compiler.main.ProjectContext
+import io.verik.importer.ast.common.Declaration
+import io.verik.importer.ast.common.Type
+import io.verik.importer.ast.element.common.EElement
+import io.verik.importer.ast.element.declaration.EDeclaration
+import io.verik.importer.ast.element.descriptor.EDescriptor
+import io.verik.importer.ast.element.expression.EReferenceExpression
+import io.verik.importer.main.ProjectContext
 
 class ReferenceUpdater(val projectContext: ProjectContext) {
 
@@ -35,13 +34,9 @@ class ReferenceUpdater(val projectContext: ProjectContext) {
         referenceMap[oldDeclaration] = newDeclaration
     }
 
-    fun update(oldDeclaration: EDeclaration, newDeclaration: EDeclaration) {
-        referenceMap[oldDeclaration] = newDeclaration
-    }
-
     fun flush() {
         val referenceUpdaterVisitor = ReferenceUpdaterVisitor(referenceMap)
-        projectContext.project.accept(referenceUpdaterVisitor)
+        projectContext.compilationUnit.accept(referenceUpdaterVisitor)
         referenceMap.clear()
     }
 
@@ -58,17 +53,13 @@ class ReferenceUpdater(val projectContext: ProjectContext) {
             type.reference = updateReference(type.reference)
         }
 
-        override fun visitTypedElement(typedElement: ETypedElement) {
-            super.visitTypedElement(typedElement)
-            updateTypeReferences(typedElement.type)
-            if (typedElement is EAbstractClass) {
-                updateTypeReferences(typedElement.superType)
+        override fun visitElement(element: EElement) {
+            super.visitElement(element)
+            if (element is EDescriptor) {
+                updateTypeReferences(element.type)
             }
-            if (typedElement is EReceiverExpression) {
-                typedElement.reference = updateReference(typedElement.reference)
-            }
-            if (typedElement is ECallExpression) {
-                typedElement.typeArguments.forEach { updateTypeReferences(it) }
+            if (element is EReferenceExpression) {
+                element.reference = updateReference(element.reference)
             }
         }
     }

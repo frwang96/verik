@@ -14,24 +14,14 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.element.declaration
+package io.verik.importer.common
 
-import io.verik.importer.common.Visitor
-import io.verik.importer.message.SourceLocation
-
-class EConstructor(
-    override val location: SourceLocation,
-    override var signature: String?,
-    override val valueParameters: List<EValueParameter>
-) : EAbstractFunction() {
-
-    override val name: String = "new"
-
-    init {
-        valueParameters.forEach { it.parent = this }
-    }
-
-    override fun accept(visitor: Visitor) {
-        visitor.visitConstructor(this)
+fun <T> ArrayList<T>.replaceIfContains(old: T, new: T): Boolean {
+    val index = indexOf(old)
+    return if (index != -1) {
+        set(index, new)
+        true
+    } else {
+        false
     }
 }

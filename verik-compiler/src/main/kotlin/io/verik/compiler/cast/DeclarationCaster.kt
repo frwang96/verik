@@ -78,7 +78,7 @@ object DeclarationCaster {
         return castedTypeParameter
     }
 
-    fun castKtClass(classOrObject: KtClassOrObject, castContext: CastContext): EKtClass {
+    fun castClass(classOrObject: KtClassOrObject, castContext: CastContext): EKtClass {
         val descriptor = castContext.sliceClass[classOrObject]!!
         val castedClass = castContext.resolveDeclaration(descriptor, classOrObject)
             .cast<EKtClass>(classOrObject)
@@ -132,7 +132,7 @@ object DeclarationCaster {
         return castedClass
     }
 
-    fun castKtFunction(function: KtNamedFunction, castContext: CastContext): EKtFunction {
+    fun castFunction(function: KtNamedFunction, castContext: CastContext): EKtFunction {
         val descriptor = castContext.sliceFunction[function]!!
         val castedFunction = castContext.resolveDeclaration(descriptor, function)
             .cast<EKtFunction>(function)

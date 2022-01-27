@@ -16,21 +16,29 @@
 
 package io.verik.importer.ast.element.declaration
 
+import io.verik.importer.ast.element.descriptor.EDescriptor
 import io.verik.importer.common.Visitor
 import io.verik.importer.message.SourceLocation
 
-class ETask(
+class ESvFunction(
     override val location: SourceLocation,
     override val name: String,
     override var signature: String?,
-    override val valueParameters: List<ESvValueParameter>
+    override val valueParameters: List<ESvValueParameter>,
+    val descriptor: EDescriptor
 ) : EAbstractFunction() {
 
     init {
         valueParameters.forEach { it.parent = this }
+        descriptor.parent = this
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitTask(this)
+        visitor.visitSvFunction(this)
+    }
+
+    override fun acceptChildren(visitor: Visitor) {
+        super.acceptChildren(visitor)
+        descriptor.accept(visitor)
     }
 }

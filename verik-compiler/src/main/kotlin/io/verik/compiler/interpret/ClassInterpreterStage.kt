@@ -108,22 +108,20 @@ object ClassInterpreterStage : ProjectStage() {
                     declarations.add(it)
                 }
             }
-            referenceUpdater.replace(
-                `class`,
-                ESvClass(
-                    `class`.location,
-                    `class`.bodyStartLocation,
-                    `class`.bodyEndLocation,
-                    `class`.name,
-                    `class`.type,
-                    `class`.annotationEntries,
-                    `class`.documentationLines,
-                    `class`.superType,
-                    declarations,
-                    `class`.isAbstract,
-                    `class`.isObject
-                )
+            val interpretedClass = ESvClass(
+                `class`.location,
+                `class`.bodyStartLocation,
+                `class`.bodyEndLocation,
+                `class`.name,
+                `class`.type,
+                `class`.annotationEntries,
+                `class`.documentationLines,
+                `class`.superType,
+                declarations,
+                `class`.isAbstract,
+                `class`.isObject
             )
+            referenceUpdater.replace(`class`, interpretedClass)
         }
 
         private fun interpretConstructorAndInitializer(

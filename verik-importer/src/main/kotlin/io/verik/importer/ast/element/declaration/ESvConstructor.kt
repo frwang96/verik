@@ -16,29 +16,22 @@
 
 package io.verik.importer.ast.element.declaration
 
-import io.verik.importer.ast.element.descriptor.EDescriptor
 import io.verik.importer.common.Visitor
 import io.verik.importer.message.SourceLocation
 
-class EClass(
+class ESvConstructor(
     override val location: SourceLocation,
-    override val name: String,
     override var signature: String?,
-    override var declarations: ArrayList<EDeclaration>,
-    val superDescriptor: EDescriptor
-) : EContainerDeclaration() {
+    override val valueParameters: List<ESvValueParameter>
+) : EAbstractFunction() {
+
+    override val name: String = "new"
 
     init {
-        declarations.forEach { it.parent = this }
-        superDescriptor.parent = this
+        valueParameters.forEach { it.parent = this }
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitClass(this)
-    }
-
-    override fun acceptChildren(visitor: Visitor) {
-        declarations.forEach { it.accept(visitor) }
-        superDescriptor.accept(visitor)
+        visitor.visitSvConstructor(this)
     }
 }

@@ -19,23 +19,23 @@ package io.verik.importer.common
 import io.verik.importer.ast.element.common.ECompilationUnit
 import io.verik.importer.ast.element.common.EElement
 import io.verik.importer.ast.element.declaration.EAbstractFunction
-import io.verik.importer.ast.element.declaration.EClass
-import io.verik.importer.ast.element.declaration.EConstructor
 import io.verik.importer.ast.element.declaration.EContainerDeclaration
 import io.verik.importer.ast.element.declaration.EDeclaration
 import io.verik.importer.ast.element.declaration.EEnum
 import io.verik.importer.ast.element.declaration.EEnumEntry
-import io.verik.importer.ast.element.declaration.EFunction
 import io.verik.importer.ast.element.declaration.EModule
-import io.verik.importer.ast.element.declaration.EPackage
 import io.verik.importer.ast.element.declaration.EPort
 import io.verik.importer.ast.element.declaration.EProperty
 import io.verik.importer.ast.element.declaration.EStruct
 import io.verik.importer.ast.element.declaration.EStructEntry
+import io.verik.importer.ast.element.declaration.ESvClass
+import io.verik.importer.ast.element.declaration.ESvConstructor
+import io.verik.importer.ast.element.declaration.ESvFunction
+import io.verik.importer.ast.element.declaration.ESvPackage
+import io.verik.importer.ast.element.declaration.ESvValueParameter
 import io.verik.importer.ast.element.declaration.ETask
 import io.verik.importer.ast.element.declaration.ETypeAlias
 import io.verik.importer.ast.element.declaration.ETypeDeclaration
-import io.verik.importer.ast.element.declaration.EValueParameter
 import io.verik.importer.ast.element.descriptor.EBitDescriptor
 import io.verik.importer.ast.element.descriptor.EDescriptor
 import io.verik.importer.ast.element.descriptor.EPackedDescriptor
@@ -59,16 +59,16 @@ abstract class Visitor {
     }
 
     open fun visitCompilationUnit(compilationUnit: ECompilationUnit) {
-        visitContainerDeclaration(compilationUnit)
+        visitElement(compilationUnit)
     }
 
-    open fun visitPackage(`package`: EPackage) {
+    open fun visitSvPackage(`package`: ESvPackage) {
         visitContainerDeclaration(`package`)
     }
 
 // Class Like //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    open fun visitClass(`class`: EClass) {
+    open fun visitSvClass(`class`: ESvClass) {
         visitContainerDeclaration(`class`)
     }
 
@@ -98,7 +98,7 @@ abstract class Visitor {
         visitDeclaration(abstractFunction)
     }
 
-    open fun visitFunction(function: EFunction) {
+    open fun visitSvFunction(function: ESvFunction) {
         visitAbstractFunction(function)
     }
 
@@ -106,7 +106,7 @@ abstract class Visitor {
         visitAbstractFunction(task)
     }
 
-    open fun visitConstructor(constructor: EConstructor) {
+    open fun visitSvConstructor(constructor: ESvConstructor) {
         visitAbstractFunction(constructor)
     }
 
@@ -116,7 +116,7 @@ abstract class Visitor {
         visitDeclaration(property)
     }
 
-    open fun visitValueParameter(valueParameter: EValueParameter) {
+    open fun visitSvValueParameter(valueParameter: ESvValueParameter) {
         visitDeclaration(valueParameter)
     }
 

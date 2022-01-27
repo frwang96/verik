@@ -33,9 +33,17 @@ object ConfigFileSerializerStage : ProjectStage() {
 
         val builder = StringBuilder()
         builder.append(fileHeader)
-        builder.appendLine("importedFiles:")
-        projectContext.config.importedFiles.forEach {
-            builder.appendLine("  - ${Platform.getStringFromPath(it.toAbsolutePath())}")
+        if (projectContext.config.importedFiles.isNotEmpty()) {
+            builder.appendLine("importedFiles:")
+            projectContext.config.importedFiles.forEach {
+                builder.appendLine("  - ${Platform.getStringFromPath(it.toAbsolutePath())}")
+            }
+        }
+        if (projectContext.includedTextFiles.keys.isNotEmpty()) {
+            builder.appendLine("includedFiles:")
+            projectContext.includedTextFiles.keys.forEach {
+                builder.appendLine("  - ${Platform.getStringFromPath(it.toAbsolutePath())}")
+            }
         }
         projectContext.outputContext.configTextFile = TextFile(outputPath, builder.toString())
     }

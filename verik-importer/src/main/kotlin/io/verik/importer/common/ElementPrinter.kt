@@ -18,20 +18,20 @@ package io.verik.importer.common
 
 import io.verik.importer.ast.element.common.ECompilationUnit
 import io.verik.importer.ast.element.common.EElement
-import io.verik.importer.ast.element.declaration.EClass
-import io.verik.importer.ast.element.declaration.EConstructor
 import io.verik.importer.ast.element.declaration.EEnum
 import io.verik.importer.ast.element.declaration.EEnumEntry
-import io.verik.importer.ast.element.declaration.EFunction
 import io.verik.importer.ast.element.declaration.EModule
-import io.verik.importer.ast.element.declaration.EPackage
 import io.verik.importer.ast.element.declaration.EPort
 import io.verik.importer.ast.element.declaration.EProperty
 import io.verik.importer.ast.element.declaration.EStruct
 import io.verik.importer.ast.element.declaration.EStructEntry
+import io.verik.importer.ast.element.declaration.ESvClass
+import io.verik.importer.ast.element.declaration.ESvConstructor
+import io.verik.importer.ast.element.declaration.ESvFunction
+import io.verik.importer.ast.element.declaration.ESvPackage
+import io.verik.importer.ast.element.declaration.ESvValueParameter
 import io.verik.importer.ast.element.declaration.ETask
 import io.verik.importer.ast.element.declaration.ETypeAlias
-import io.verik.importer.ast.element.declaration.EValueParameter
 import io.verik.importer.ast.element.descriptor.EBitDescriptor
 import io.verik.importer.ast.element.descriptor.EPackedDescriptor
 import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
@@ -56,8 +56,8 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitPackage(`package`: EPackage) {
-        build("Package") {
+    override fun visitSvPackage(`package`: ESvPackage) {
+        build("SvPackage") {
             build(`package`.name)
             build(`package`.declarations)
         }
@@ -65,8 +65,8 @@ class ElementPrinter : Visitor() {
 
 // Class Like //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitClass(`class`: EClass) {
-        build("Class") {
+    override fun visitSvClass(`class`: ESvClass) {
+        build("SvClass") {
             build(`class`.name)
             build(`class`.declarations)
             build(`class`.superDescriptor)
@@ -104,8 +104,8 @@ class ElementPrinter : Visitor() {
 
 // Function Like ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitFunction(function: EFunction) {
-        build("Function") {
+    override fun visitSvFunction(function: ESvFunction) {
+        build("SvFunction") {
             build(function.name)
             build(function.valueParameters)
             build(function.descriptor)
@@ -119,8 +119,8 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitConstructor(constructor: EConstructor) {
-        build("Constructor") {
+    override fun visitSvConstructor(constructor: ESvConstructor) {
+        build("SvConstructor") {
             build(constructor.valueParameters)
         }
     }
@@ -134,8 +134,8 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitValueParameter(valueParameter: EValueParameter) {
-        build("ValueParameter") {
+    override fun visitSvValueParameter(valueParameter: ESvValueParameter) {
+        build("SvValueParameter") {
             build(valueParameter.name)
             build(valueParameter.descriptor)
         }

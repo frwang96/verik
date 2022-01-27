@@ -16,22 +16,21 @@
 
 package io.verik.importer.ast.element.common
 
-import io.verik.importer.ast.element.declaration.EContainerDeclaration
+import io.verik.importer.ast.common.DeclarationContainer
 import io.verik.importer.ast.element.declaration.EDeclaration
 import io.verik.importer.common.Visitor
+import io.verik.importer.common.replaceIfContains
 import io.verik.importer.message.SourceLocation
 
 class ECompilationUnit(
-    override var declarations: ArrayList<EDeclaration>
-) : EContainerDeclaration() {
+    var declarations: ArrayList<EDeclaration>
+) : EElement(), DeclarationContainer {
 
     init {
         declarations.forEach { it.parent = this }
     }
 
     override val location: SourceLocation = SourceLocation.NULL
-    override val name = "<unit>"
-    override var signature: String? = null
 
     override fun accept(visitor: Visitor) {
         visitor.visitCompilationUnit(this)
@@ -39,5 +38,9 @@ class ECompilationUnit(
 
     override fun acceptChildren(visitor: Visitor) {
         declarations.forEach { it.accept(visitor) }
+    }
+
+    override fun replaceChild(oldDeclaration: EDeclaration, newDeclaration: EDeclaration): Boolean {
+        return declarations.replaceIfContains(oldDeclaration, newDeclaration)
     }
 }

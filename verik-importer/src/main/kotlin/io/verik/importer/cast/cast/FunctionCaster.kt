@@ -18,7 +18,7 @@ package io.verik.importer.cast.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.ast.element.declaration.EDeclaration
-import io.verik.importer.ast.element.declaration.EFunction
+import io.verik.importer.ast.element.declaration.ESvFunction
 import io.verik.importer.cast.common.CastContext
 import io.verik.importer.cast.common.SignatureBuilder
 
@@ -57,7 +57,7 @@ object FunctionCaster {
     fun castFunctionFromFunctionBodyDeclarationNoPortList(
         ctx: SystemVerilogParser.FunctionBodyDeclarationNoPortListContext,
         castContext: CastContext
-    ): EFunction? {
+    ): ESvFunction? {
         if (ctx.classScope() != null)
             return null
         val identifier = ctx.functionIdentifier()[0]
@@ -66,7 +66,7 @@ object FunctionCaster {
         val tfPortDeclarations = ctx.tfItemDeclaration().mapNotNull { it.tfPortDeclaration() }
         val valueParameters = tfPortDeclarations.flatMap { castContext.castValueParameters(it) }
         val descriptor = castContext.castDescriptor(ctx.functionDataTypeOrImplicit()) ?: return null
-        return EFunction(
+        return ESvFunction(
             location,
             name,
             null,
@@ -78,7 +78,7 @@ object FunctionCaster {
     fun castFunctionFromFunctionBodyDeclarationPortList(
         ctx: SystemVerilogParser.FunctionBodyDeclarationPortListContext,
         castContext: CastContext
-    ): EFunction? {
+    ): ESvFunction? {
         if (ctx.classScope() != null)
             return null
         val identifier = ctx.functionIdentifier()[0]
@@ -87,7 +87,7 @@ object FunctionCaster {
         val descriptor = castContext.castDescriptor(ctx.functionDataTypeOrImplicit()) ?: return null
         val tfPortItems = ctx.tfPortList()?.tfPortItem() ?: listOf()
         val valueParameters = tfPortItems.flatMap { castContext.castValueParameters(it) }
-        return EFunction(
+        return ESvFunction(
             location,
             name,
             null,
@@ -99,7 +99,7 @@ object FunctionCaster {
     fun castFunctionFromFunctionPrototype(
         ctx: SystemVerilogParser.FunctionPrototypeContext,
         castContext: CastContext
-    ): EFunction? {
+    ): ESvFunction? {
         val identifier = ctx.functionIdentifier()
         val location = castContext.getLocation(identifier)
         val name = identifier.text
@@ -107,7 +107,7 @@ object FunctionCaster {
         val descriptor = castContext.castDescriptor(ctx.dataTypeOrVoid()) ?: return null
         val tfPortItems = ctx.tfPortList()?.tfPortItem() ?: listOf()
         val valueParameters = tfPortItems.flatMap { castContext.castValueParameters(it) }
-        return EFunction(
+        return ESvFunction(
             location,
             name,
             signature,

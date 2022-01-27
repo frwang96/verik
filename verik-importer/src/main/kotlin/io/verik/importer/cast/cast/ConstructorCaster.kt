@@ -17,8 +17,8 @@
 package io.verik.importer.cast.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.ast.element.declaration.EConstructor
 import io.verik.importer.ast.element.declaration.EDeclaration
+import io.verik.importer.ast.element.declaration.ESvConstructor
 import io.verik.importer.cast.common.CastContext
 import io.verik.importer.cast.common.SignatureBuilder
 
@@ -42,7 +42,7 @@ object ConstructorCaster {
         val signature = SignatureBuilder.buildSignature(ctx, "new")
         val tfPortItems = ctx.classConstructorPrototype().tfPortList()?.tfPortItem() ?: listOf()
         val valueParameters = tfPortItems.flatMap { castContext.castValueParameters(it) }
-        return EConstructor(
+        return ESvConstructor(
             location,
             signature,
             valueParameters
@@ -52,14 +52,14 @@ object ConstructorCaster {
     fun castConstructorFromClassConstructorDeclaration(
         ctx: SystemVerilogParser.ClassConstructorDeclarationContext,
         castContext: CastContext
-    ): EConstructor? {
+    ): ESvConstructor? {
         if (ctx.classScope() != null)
             return null
         val location = castContext.getLocation(ctx.NEW()[0])
         val signature = SignatureBuilder.buildSignature(ctx, "new")
         val tfPortItems = ctx.tfPortList()?.tfPortItem() ?: listOf()
         val valueParameters = tfPortItems.flatMap { castContext.castValueParameters(it) }
-        return EConstructor(
+        return ESvConstructor(
             location,
             signature,
             valueParameters

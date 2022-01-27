@@ -78,7 +78,7 @@ object ExpressionSerializer {
         serializeContext.append(")")
     }
 
-    fun serializeSvUnaryExpression(unaryExpression: ESvUnaryExpression, serializeContext: SerializeContext) {
+    fun serializeUnaryExpression(unaryExpression: ESvUnaryExpression, serializeContext: SerializeContext) {
         val prefix = unaryExpression.kind.serializePrefix()
         if (prefix != null)
             serializeContext.append(prefix)
@@ -88,7 +88,7 @@ object ExpressionSerializer {
             serializeContext.append(postfix)
     }
 
-    fun serializeSvBinaryExpression(binaryExpression: ESvBinaryExpression, serializeContext: SerializeContext) {
+    fun serializeBinaryExpression(binaryExpression: ESvBinaryExpression, serializeContext: SerializeContext) {
         serializeContext.serializeAsExpression(binaryExpression.left)
         serializeContext.hardBreak()
         serializeContext.append(binaryExpression.kind.serialize())
@@ -202,7 +202,7 @@ object ExpressionSerializer {
         serializeContext.append("\"${stringExpression.text}\"")
     }
 
-    fun serializeSvArrayAccessExpression(
+    fun serializeArrayAccessExpression(
         arrayAccessExpression: ESvArrayAccessExpression,
         serializeContext: SerializeContext
     ) {

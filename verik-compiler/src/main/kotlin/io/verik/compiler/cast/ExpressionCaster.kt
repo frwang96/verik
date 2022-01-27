@@ -68,7 +68,7 @@ import org.jetbrains.kotlin.resolve.lazy.descriptors.LazyClassDescriptor
 
 object ExpressionCaster {
 
-    fun castKtBlockExpression(expression: KtBlockExpression, castContext: CastContext): EBlockExpression {
+    fun castBlockExpression(expression: KtBlockExpression, castContext: CastContext): EBlockExpression {
         val location = expression.location()
         val endLocation = expression.endLocation()
         val type = if (expression.parent is KtContainerNodeForControlStructureBody &&
@@ -82,7 +82,7 @@ object ExpressionCaster {
         return EBlockExpression(location, endLocation, type, ArrayList(statements))
     }
 
-    fun castKtUnaryExpressionPrefix(expression: KtPrefixExpression, castContext: CastContext): EKtUnaryExpression {
+    fun castUnaryExpressionPrefix(expression: KtPrefixExpression, castContext: CastContext): EKtUnaryExpression {
         val location = expression.location()
         val type = castContext.castType(expression)
         val kind = KtUnaryOperatorKind.getKindPrefix(expression.operationToken, location)
@@ -90,7 +90,7 @@ object ExpressionCaster {
         return EKtUnaryExpression(location, type, childExpression, kind)
     }
 
-    fun castKtUnaryExpressionPostfix(expression: KtPostfixExpression, castContext: CastContext): EKtUnaryExpression {
+    fun castUnaryExpressionPostfix(expression: KtPostfixExpression, castContext: CastContext): EKtUnaryExpression {
         val location = expression.location()
         val type = castContext.castType(expression)
         val kind = KtUnaryOperatorKind.getKindPostfix(expression.operationToken, location)
@@ -98,7 +98,7 @@ object ExpressionCaster {
         return EKtUnaryExpression(location, type, childExpression, kind)
     }
 
-    fun castKtBinaryExpressionOrCallExpression(
+    fun castBinaryExpressionOrCallExpression(
         expression: KtBinaryExpression,
         castContext: CastContext
     ): EExpression {
@@ -249,7 +249,7 @@ object ExpressionCaster {
         return EFunctionLiteralExpression(location, ArrayList(valueParameters), body)
     }
 
-    fun castKtArrayAccessExpression(
+    fun castArrayAccessExpression(
         expression: KtArrayAccessExpression,
         castContext: CastContext
     ): EKtArrayAccessExpression {
@@ -330,7 +330,7 @@ object ExpressionCaster {
         )
     }
 
-    fun castKtForStatement(expression: KtForExpression, castContext: CastContext): EKtForStatement? {
+    fun castForStatement(expression: KtForExpression, castContext: CastContext): EKtForStatement? {
         val location = expression.location()
         val valueParameter = castContext.castValueParameter(expression.loopParameter!!)
             ?: return null

@@ -16,26 +16,27 @@
 
 package io.verik.importer.ast.element.declaration
 
+import io.verik.importer.ast.element.descriptor.EDescriptor
 import io.verik.importer.common.Visitor
 import io.verik.importer.message.SourceLocation
 
-class EPackage(
+class ESvValueParameter(
     override val location: SourceLocation,
     override val name: String,
-    override var declarations: ArrayList<EDeclaration>
-) : EContainerDeclaration() {
+    val descriptor: EDescriptor
+) : EDeclaration() {
 
     override var signature: String? = null
 
     init {
-        declarations.forEach { it.parent = this }
+        descriptor.parent = this
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitPackage(this)
+        visitor.visitSvValueParameter(this)
     }
 
     override fun acceptChildren(visitor: Visitor) {
-        declarations.forEach { it.accept(visitor) }
+        descriptor.accept(visitor)
     }
 }

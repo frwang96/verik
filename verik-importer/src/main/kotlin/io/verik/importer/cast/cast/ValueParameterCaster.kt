@@ -18,7 +18,7 @@ package io.verik.importer.cast.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.ast.element.common.EContainerElement
-import io.verik.importer.ast.element.declaration.EValueParameter
+import io.verik.importer.ast.element.declaration.ESvValueParameter
 import io.verik.importer.cast.common.CastContext
 import io.verik.importer.common.ElementCopier
 
@@ -27,12 +27,12 @@ object ValueParameterCaster {
     fun castValueParameterFromTfPortItem(
         ctx: SystemVerilogParser.TfPortItemContext,
         castContext: CastContext
-    ): EValueParameter? {
+    ): ESvValueParameter? {
         val identifier = ctx.portIdentifier()
         val location = castContext.getLocation(identifier)
         val name = identifier.text
         val descriptor = castContext.castDescriptor(ctx.dataTypeOrImplicit()) ?: return null
-        return EValueParameter(
+        return ESvValueParameter(
             location,
             name,
             descriptor
@@ -48,7 +48,7 @@ object ValueParameterCaster {
         val valueParameters = identifiers.map {
             val location = castContext.getLocation(it)
             val name = it.text
-            EValueParameter(
+            ESvValueParameter(
                 location,
                 name,
                 ElementCopier.deepCopy(descriptor)

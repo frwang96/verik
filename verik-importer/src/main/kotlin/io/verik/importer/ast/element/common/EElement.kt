@@ -16,6 +16,8 @@
 
 package io.verik.importer.ast.element.common
 
+import io.verik.importer.ast.common.DeclarationContainer
+import io.verik.importer.ast.element.declaration.EDeclaration
 import io.verik.importer.common.Visitor
 import io.verik.importer.message.Messages
 import io.verik.importer.message.SourceLocation
@@ -37,6 +39,15 @@ abstract class EElement {
             else -> {
                 Messages.INTERNAL_ERROR.on(this, "Could not cast element: Expected ${E::class.simpleName} actual $this")
             }
+        }
+    }
+
+    fun replaceChildAsDeclarationContainer(oldDeclaration: EDeclaration, newDeclaration: EDeclaration) {
+        if (this is DeclarationContainer) {
+            if (!this.replaceChild(oldDeclaration, newDeclaration))
+                Messages.INTERNAL_ERROR.on(oldDeclaration, "Could not find $oldDeclaration in $this")
+        } else {
+            Messages.INTERNAL_ERROR.on(oldDeclaration, "Could not replace $oldDeclaration in $this")
         }
     }
 

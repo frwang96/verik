@@ -14,16 +14,11 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.element.declaration
+package io.verik.importer.ast.common
 
-import io.verik.importer.ast.common.DeclarationContainer
-import io.verik.importer.common.replaceIfContains
+import io.verik.importer.ast.element.declaration.EDeclaration
 
-abstract class EContainerDeclaration : EDeclaration(), DeclarationContainer {
+interface DeclarationContainer {
 
-    abstract var declarations: ArrayList<EDeclaration>
-
-    override fun replaceChild(oldDeclaration: EDeclaration, newDeclaration: EDeclaration): Boolean {
-        return declarations.replaceIfContains(oldDeclaration, newDeclaration)
-    }
+    fun replaceChild(oldDeclaration: EDeclaration, newDeclaration: EDeclaration): Boolean
 }

@@ -16,9 +16,9 @@
 
 package io.verik.importer.resolve
 
-import io.verik.importer.ast.element.declaration.EClass
 import io.verik.importer.ast.element.declaration.EEnum
 import io.verik.importer.ast.element.declaration.EStruct
+import io.verik.importer.ast.element.declaration.ESvClass
 import io.verik.importer.ast.element.declaration.ETypeAlias
 import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
 import io.verik.importer.common.TreeVisitor
@@ -39,7 +39,7 @@ object ReferenceResolverStage : ProjectStage() {
 
         val namespace = Namespace()
 
-        override fun visitClass(`class`: EClass) {
+        override fun visitSvClass(`class`: ESvClass) {
             namespace[`class`.name] = `class`
         }
 

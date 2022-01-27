@@ -68,7 +68,7 @@ object DeclarationSerializer {
         serializeContext.appendLine()
     }
 
-    fun serializeSvClass(`class`: ESvClass, serializeContext: SerializeContext) {
+    fun serializeClass(`class`: ESvClass, serializeContext: SerializeContext) {
         if (`class`.isVirtual)
             serializeContext.append("virtual ")
         serializeContext.append("class ${`class`.name}")
@@ -134,7 +134,7 @@ object DeclarationSerializer {
         }
     }
 
-    fun serializeSvFunction(function: ESvFunction, serializeContext: SerializeContext) {
+    fun serializeFunction(function: ESvFunction, serializeContext: SerializeContext) {
         if (function.isStatic()) {
             serializeContext.append("static ")
         }
@@ -293,7 +293,7 @@ object DeclarationSerializer {
         }
     }
 
-    fun serializeSvValueParameter(valueParameter: ESvValueParameter, serializeContext: SerializeContext) {
+    fun serializeValueParameter(valueParameter: ESvValueParameter, serializeContext: SerializeContext) {
         when (valueParameter.isInput) {
             true -> serializeContext.append("input ")
             false -> serializeContext.append("output ")

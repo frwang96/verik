@@ -16,21 +16,21 @@
 
 package io.verik.importer.interpret
 
-import io.verik.importer.ast.element.declaration.EClass
-import io.verik.importer.ast.element.declaration.EConstructor
 import io.verik.importer.ast.element.declaration.EDeclaration
 import io.verik.importer.ast.element.declaration.EEnum
 import io.verik.importer.ast.element.declaration.EEnumEntry
-import io.verik.importer.ast.element.declaration.EFunction
 import io.verik.importer.ast.element.declaration.EModule
-import io.verik.importer.ast.element.declaration.EPackage
 import io.verik.importer.ast.element.declaration.EPort
 import io.verik.importer.ast.element.declaration.EProperty
 import io.verik.importer.ast.element.declaration.EStruct
 import io.verik.importer.ast.element.declaration.EStructEntry
+import io.verik.importer.ast.element.declaration.ESvClass
+import io.verik.importer.ast.element.declaration.ESvConstructor
+import io.verik.importer.ast.element.declaration.ESvFunction
+import io.verik.importer.ast.element.declaration.ESvPackage
+import io.verik.importer.ast.element.declaration.ESvValueParameter
 import io.verik.importer.ast.element.declaration.ETask
 import io.verik.importer.ast.element.declaration.ETypeAlias
-import io.verik.importer.ast.element.declaration.EValueParameter
 import io.verik.importer.ast.kt.element.KtClass
 import io.verik.importer.ast.kt.element.KtConstructor
 import io.verik.importer.ast.kt.element.KtDeclaration
@@ -50,15 +50,15 @@ class DeclarationInterpreter(
 
     fun interpretDeclaration(declaration: EDeclaration): KtDeclaration? {
         return when (declaration) {
-            is EPackage -> null
-            is EClass -> interpretClassFromClass(declaration)
+            is ESvPackage -> null
+            is ESvClass -> interpretClassFromClass(declaration)
             is EModule -> interpretClassFromModule(declaration)
             is EStruct -> interpretClassFromStruct(declaration)
             is EEnum -> interpretEnumFromEnum(declaration)
             is ETypeAlias -> interpretTypeAliasFromTypeAlias(declaration)
-            is EFunction -> interpretFunctionFromFunction(declaration)
+            is ESvFunction -> interpretFunctionFromFunction(declaration)
             is ETask -> interpretFunctionFromTask(declaration)
-            is EConstructor -> interpretConstructorFromConstructor(declaration)
+            is ESvConstructor -> interpretConstructorFromConstructor(declaration)
             is EProperty -> interpretPropertyFromProperty(declaration)
             else -> {
                 Messages.INTERNAL_ERROR.on(
@@ -69,7 +69,7 @@ class DeclarationInterpreter(
         }
     }
 
-    private fun interpretClassFromClass(`class`: EClass): KtClass {
+    private fun interpretClassFromClass(`class`: ESvClass): KtClass {
         val superType = `class`.superDescriptor.type.copy()
         val declarations = `class`.declarations.mapNotNull { interpretDeclaration(it) }
         val interpretedClass = KtClass(
@@ -138,10 +138,10 @@ class DeclarationInterpreter(
         return interpretedTypeAlias
     }
 
-    private fun interpretFunctionFromFunction(function: EFunction): KtFunction {
+    private fun interpretFunctionFromFunction(function: ESvFunction): KtFunction {
         val type = function.descriptor.type.copy()
         val valueParameters = function.valueParameters.map { interpretValueParameterFromValueParameter(it) }
-        val isOpen = function.parent is EClass
+        val isOpen = function.parent is ESvClass
         return KtFunction(
             function.location,
             function.name,
@@ -155,7 +155,7 @@ class DeclarationInterpreter(
 
     private fun interpretFunctionFromTask(task: ETask): KtFunction {
         val valueParameters = task.valueParameters.map { interpretValueParameterFromValueParameter(it) }
-        val isOpen = task.parent is EClass
+        val isOpen = task.parent is ESvClass
         return KtFunction(
             task.location,
             task.name,
@@ -167,7 +167,7 @@ class DeclarationInterpreter(
         )
     }
 
-    private fun interpretConstructorFromConstructor(constructor: EConstructor): KtConstructor {
+    private fun interpretConstructorFromConstructor(constructor: ESvConstructor): KtConstructor {
         val valueParameters = constructor.valueParameters.map { interpretValueParameterFromValueParameter(it) }
         return KtConstructor(
             constructor.location,
@@ -187,7 +187,7 @@ class DeclarationInterpreter(
         )
     }
 
-    private fun interpretValueParameterFromValueParameter(valueParameter: EValueParameter): KtValueParameter {
+    private fun interpretValueParameterFromValueParameter(valueParameter: ESvValueParameter): KtValueParameter {
         val type = valueParameter.descriptor.type.copy()
         return KtValueParameter(
             valueParameter.location,

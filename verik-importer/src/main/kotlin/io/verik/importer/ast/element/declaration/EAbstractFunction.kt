@@ -20,7 +20,7 @@ import io.verik.importer.common.Visitor
 
 abstract class EAbstractFunction : EDeclaration() {
 
-    abstract val valueParameters: List<EValueParameter>
+    abstract val valueParameters: List<ESvValueParameter>
 
     override fun acceptChildren(visitor: Visitor) {
         valueParameters.forEach { it.accept(visitor) }

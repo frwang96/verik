@@ -132,7 +132,7 @@ class SourceSerializerVisitor(
     }
 
     override fun visitSvClass(`class`: ESvClass) {
-        DeclarationSerializer.serializeSvClass(`class`, serializeContext)
+        DeclarationSerializer.serializeClass(`class`, serializeContext)
     }
 
     override fun visitModule(module: EModule) {
@@ -152,7 +152,7 @@ class SourceSerializerVisitor(
     }
 
     override fun visitSvFunction(function: ESvFunction) {
-        DeclarationSerializer.serializeSvFunction(function, serializeContext)
+        DeclarationSerializer.serializeFunction(function, serializeContext)
     }
 
     override fun visitTask(task: ETask) {
@@ -192,7 +192,7 @@ class SourceSerializerVisitor(
     }
 
     override fun visitSvValueParameter(valueParameter: ESvValueParameter) {
-        DeclarationSerializer.serializeSvValueParameter(valueParameter, serializeContext)
+        DeclarationSerializer.serializeValueParameter(valueParameter, serializeContext)
     }
 
     override fun visitPort(port: EPort) {
@@ -212,11 +212,11 @@ class SourceSerializerVisitor(
     }
 
     override fun visitSvUnaryExpression(unaryExpression: ESvUnaryExpression) {
-        ExpressionSerializer.serializeSvUnaryExpression(unaryExpression, serializeContext)
+        ExpressionSerializer.serializeUnaryExpression(unaryExpression, serializeContext)
     }
 
     override fun visitSvBinaryExpression(binaryExpression: ESvBinaryExpression) {
-        ExpressionSerializer.serializeSvBinaryExpression(binaryExpression, serializeContext)
+        ExpressionSerializer.serializeBinaryExpression(binaryExpression, serializeContext)
     }
 
     override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
@@ -264,7 +264,7 @@ class SourceSerializerVisitor(
     }
 
     override fun visitSvArrayAccessExpression(arrayAccessExpression: ESvArrayAccessExpression) {
-        ExpressionSerializer.serializeSvArrayAccessExpression(arrayAccessExpression, serializeContext)
+        ExpressionSerializer.serializeArrayAccessExpression(arrayAccessExpression, serializeContext)
     }
 
     override fun visitConstantPartSelectExpression(constantPartSelectExpression: EConstantPartSelectExpression) {

@@ -17,7 +17,7 @@
 package io.verik.importer.cast.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.ast.element.declaration.EClass
+import io.verik.importer.ast.element.declaration.ESvClass
 import io.verik.importer.ast.element.descriptor.ESimpleDescriptor
 import io.verik.importer.cast.common.CastContext
 import io.verik.importer.cast.common.SignatureBuilder
@@ -28,7 +28,7 @@ object ClassCaster {
     fun castClassFromClassDeclaration(
         ctx: SystemVerilogParser.ClassDeclarationContext,
         castContext: CastContext
-    ): EClass? {
+    ): ESvClass? {
         val location = castContext.getLocation(ctx.CLASS())
         val name = ctx.classIdentifier()[0].text
         val signature = SignatureBuilder.buildSignature(ctx, name)
@@ -36,6 +36,6 @@ object ClassCaster {
         val superDescriptor = ctx.classType()
             ?.let { castContext.castDescriptor(it) ?: return null }
             ?: ESimpleDescriptor(location, Core.C_Any.toType())
-        return EClass(location, name, signature, ArrayList(declarations), superDescriptor)
+        return ESvClass(location, name, signature, ArrayList(declarations), superDescriptor)
     }
 }

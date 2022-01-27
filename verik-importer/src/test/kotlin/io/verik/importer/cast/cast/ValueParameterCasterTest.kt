@@ -31,7 +31,7 @@ internal class ValueParameterCasterTest : BaseTest() {
                 function void f(int x);
                 endfunction
             """.trimIndent(),
-            "ValueParameter(x, SimpleDescriptor(Int))"
+            "SvValueParameter(x, SimpleDescriptor(Int))"
         ) { it.findDeclaration("x") }
     }
 
@@ -45,10 +45,10 @@ internal class ValueParameterCasterTest : BaseTest() {
                 endfunction
             """.trimIndent(),
             """
-                Function(
+                SvFunction(
                     f, [
-                        ValueParameter(x, SimpleDescriptor(Boolean)),
-                        ValueParameter(y, SimpleDescriptor(Boolean))
+                        SvValueParameter(x, SimpleDescriptor(Boolean)),
+                        SvValueParameter(y, SimpleDescriptor(Boolean))
                     ], SimpleDescriptor(Unit)
                 )
             """.trimIndent()
