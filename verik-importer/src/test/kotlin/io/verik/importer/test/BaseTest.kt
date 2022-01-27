@@ -17,9 +17,9 @@
 package io.verik.importer.test
 
 import io.verik.importer.antlr.SystemVerilogParserBaseVisitor
-import io.verik.importer.ast.sv.element.common.SvCompilationUnit
-import io.verik.importer.ast.sv.element.common.SvElement
-import io.verik.importer.ast.sv.element.declaration.SvDeclaration
+import io.verik.importer.ast.element.common.ECompilationUnit
+import io.verik.importer.ast.element.common.EElement
+import io.verik.importer.ast.element.declaration.EDeclaration
 import io.verik.importer.cast.common.CasterStage
 import io.verik.importer.common.ElementPrinter
 import io.verik.importer.common.TextFile
@@ -74,7 +74,7 @@ abstract class BaseTest {
         ruleContextClass: KClass<out RuleContext>,
         content: String,
         expected: String,
-        selector: (SvCompilationUnit) -> SvElement
+        selector: (ECompilationUnit) -> EElement
     ) {
         val projectContext = getProjectContext(content)
         val stageSequence = StageSequencer.getStageSequence()
@@ -94,7 +94,7 @@ abstract class BaseTest {
         ruleContextClass: KClass<out RuleContext>,
         content: String,
         expected: String,
-        selector: (SvCompilationUnit) -> SvDeclaration
+        selector: (ECompilationUnit) -> EDeclaration
     ) {
         val projectContext = getProjectContext(content)
         val stageSequence = StageSequencer.getStageSequence()
@@ -114,7 +114,7 @@ abstract class BaseTest {
         content: String,
         stageClass: KClass<S>,
         expected: String,
-        selector: (SvCompilationUnit) -> SvElement
+        selector: (ECompilationUnit) -> EElement
     ) {
         val projectContext = getProjectContext(content)
         val stageSequence = StageSequencer.getStageSequence()

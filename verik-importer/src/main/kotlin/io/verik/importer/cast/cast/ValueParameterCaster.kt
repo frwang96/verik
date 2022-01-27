@@ -17,8 +17,8 @@
 package io.verik.importer.cast.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.ast.sv.element.common.SvContainerElement
-import io.verik.importer.ast.sv.element.declaration.SvValueParameter
+import io.verik.importer.ast.element.common.EContainerElement
+import io.verik.importer.ast.element.declaration.EValueParameter
 import io.verik.importer.cast.common.CastContext
 import io.verik.importer.common.ElementCopier
 
@@ -27,12 +27,12 @@ object ValueParameterCaster {
     fun castValueParameterFromTfPortItem(
         ctx: SystemVerilogParser.TfPortItemContext,
         castContext: CastContext
-    ): SvValueParameter? {
+    ): EValueParameter? {
         val identifier = ctx.portIdentifier()
         val location = castContext.getLocation(identifier)
         val name = identifier.text
         val descriptor = castContext.castDescriptor(ctx.dataTypeOrImplicit()) ?: return null
-        return SvValueParameter(
+        return EValueParameter(
             location,
             name,
             descriptor
@@ -42,18 +42,18 @@ object ValueParameterCaster {
     fun castValueParameterFromTfPortDeclaration(
         ctx: SystemVerilogParser.TfPortDeclarationContext,
         castContext: CastContext
-    ): SvContainerElement? {
+    ): EContainerElement? {
         val descriptor = castContext.castDescriptor(ctx.dataTypeOrImplicit()) ?: return null
         val identifiers = ctx.listOfTfVariableIdentifiers().portIdentifier()
         val valueParameters = identifiers.map {
             val location = castContext.getLocation(it)
             val name = it.text
-            SvValueParameter(
+            EValueParameter(
                 location,
                 name,
                 ElementCopier.deepCopy(descriptor)
             )
         }
-        return SvContainerElement(castContext.getLocation(ctx), valueParameters)
+        return EContainerElement(castContext.getLocation(ctx), valueParameters)
     }
 }

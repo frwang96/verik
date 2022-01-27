@@ -16,8 +16,8 @@
 
 package io.verik.compiler.target.common
 
+import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.ast.property.Type
 import io.verik.compiler.serialize.source.SerializedType
 import io.verik.compiler.serialize.source.TypeSerializer
 

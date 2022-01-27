@@ -17,8 +17,8 @@
 package io.verik.importer.cast.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.ast.sv.element.declaration.SvDeclaration
-import io.verik.importer.ast.sv.element.declaration.SvFunction
+import io.verik.importer.ast.element.declaration.EDeclaration
+import io.verik.importer.ast.element.declaration.EFunction
 import io.verik.importer.cast.common.CastContext
 import io.verik.importer.cast.common.SignatureBuilder
 
@@ -27,7 +27,7 @@ object FunctionCaster {
     fun castFunctionFromClassMethodFunction(
         ctx: SystemVerilogParser.ClassMethodFunctionContext,
         castContext: CastContext
-    ): SvDeclaration? {
+    ): EDeclaration? {
         val declaration = castContext.castDeclaration(ctx.functionDeclaration()) ?: return null
         val signature = SignatureBuilder.buildSignature(ctx, declaration.name)
         declaration.signature = signature
@@ -37,7 +37,7 @@ object FunctionCaster {
     fun castFunctionFromClassMethodExternMethod(
         ctx: SystemVerilogParser.ClassMethodExternMethodContext,
         castContext: CastContext
-    ): SvDeclaration? {
+    ): EDeclaration? {
         val declaration = castContext.castDeclaration(ctx.methodPrototype()) ?: return null
         val signature = SignatureBuilder.buildSignature(ctx, declaration.name)
         declaration.signature = signature
@@ -47,7 +47,7 @@ object FunctionCaster {
     fun castFunctionFromFunctionDeclaration(
         ctx: SystemVerilogParser.FunctionDeclarationContext,
         castContext: CastContext
-    ): SvDeclaration? {
+    ): EDeclaration? {
         val declaration = castContext.castDeclaration(ctx.functionBodyDeclaration()) ?: return null
         val signature = SignatureBuilder.buildSignature(ctx, declaration.name)
         declaration.signature = signature
@@ -57,7 +57,7 @@ object FunctionCaster {
     fun castFunctionFromFunctionBodyDeclarationNoPortList(
         ctx: SystemVerilogParser.FunctionBodyDeclarationNoPortListContext,
         castContext: CastContext
-    ): SvFunction? {
+    ): EFunction? {
         if (ctx.classScope() != null)
             return null
         val identifier = ctx.functionIdentifier()[0]
@@ -66,7 +66,7 @@ object FunctionCaster {
         val tfPortDeclarations = ctx.tfItemDeclaration().mapNotNull { it.tfPortDeclaration() }
         val valueParameters = tfPortDeclarations.flatMap { castContext.castValueParameters(it) }
         val descriptor = castContext.castDescriptor(ctx.functionDataTypeOrImplicit()) ?: return null
-        return SvFunction(
+        return EFunction(
             location,
             name,
             null,
@@ -78,7 +78,7 @@ object FunctionCaster {
     fun castFunctionFromFunctionBodyDeclarationPortList(
         ctx: SystemVerilogParser.FunctionBodyDeclarationPortListContext,
         castContext: CastContext
-    ): SvFunction? {
+    ): EFunction? {
         if (ctx.classScope() != null)
             return null
         val identifier = ctx.functionIdentifier()[0]
@@ -87,7 +87,7 @@ object FunctionCaster {
         val descriptor = castContext.castDescriptor(ctx.functionDataTypeOrImplicit()) ?: return null
         val tfPortItems = ctx.tfPortList()?.tfPortItem() ?: listOf()
         val valueParameters = tfPortItems.flatMap { castContext.castValueParameters(it) }
-        return SvFunction(
+        return EFunction(
             location,
             name,
             null,
@@ -99,7 +99,7 @@ object FunctionCaster {
     fun castFunctionFromFunctionPrototype(
         ctx: SystemVerilogParser.FunctionPrototypeContext,
         castContext: CastContext
-    ): SvFunction? {
+    ): EFunction? {
         val identifier = ctx.functionIdentifier()
         val location = castContext.getLocation(identifier)
         val name = identifier.text
@@ -107,7 +107,7 @@ object FunctionCaster {
         val descriptor = castContext.castDescriptor(ctx.dataTypeOrVoid()) ?: return null
         val tfPortItems = ctx.tfPortList()?.tfPortItem() ?: listOf()
         val valueParameters = tfPortItems.flatMap { castContext.castValueParameters(it) }
-        return SvFunction(
+        return EFunction(
             location,
             name,
             signature,

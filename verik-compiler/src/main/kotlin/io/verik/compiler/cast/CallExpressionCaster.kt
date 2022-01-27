@@ -16,8 +16,8 @@
 
 package io.verik.compiler.cast
 
+import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.property.Type
 import org.jetbrains.kotlin.descriptors.CallableDescriptor
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtExpression

@@ -16,8 +16,8 @@
 
 package io.verik.compiler.ast.property
 
+import io.verik.compiler.ast.common.Declaration
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.interfaces.Declaration
 
 class StructLiteralEntry(
     val reference: Declaration,

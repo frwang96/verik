@@ -16,8 +16,8 @@
 
 package io.verik.importer.cast.common
 
-import io.verik.importer.ast.sv.element.common.SvCompilationUnit
-import io.verik.importer.ast.sv.element.declaration.SvDeclaration
+import io.verik.importer.ast.element.common.ECompilationUnit
+import io.verik.importer.ast.element.declaration.EDeclaration
 import io.verik.importer.main.InputFileContext
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
@@ -25,14 +25,14 @@ import io.verik.importer.main.ProjectStage
 object CasterStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        val declarations = ArrayList<SvDeclaration>()
+        val declarations = ArrayList<EDeclaration>()
         projectContext.inputFileContexts.forEach {
             declarations.addAll(castDeclarations(it))
         }
-        projectContext.compilationUnit = SvCompilationUnit(declarations)
+        projectContext.compilationUnit = ECompilationUnit(declarations)
     }
 
-    private fun castDeclarations(inputFileContext: InputFileContext): List<SvDeclaration> {
+    private fun castDeclarations(inputFileContext: InputFileContext): List<EDeclaration> {
         val castContext = CastContext(inputFileContext.parserTokenStream)
         return inputFileContext.ruleContext.description().flatMap { castContext.castDeclarations(it) }
     }

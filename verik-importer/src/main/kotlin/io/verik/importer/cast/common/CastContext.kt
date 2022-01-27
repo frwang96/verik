@@ -16,15 +16,14 @@
 
 package io.verik.importer.cast.common
 
-import io.verik.importer.ast.sv.element.common.SvContainerElement
-import io.verik.importer.ast.sv.element.common.SvElement
-import io.verik.importer.ast.sv.element.declaration.SvDeclaration
-import io.verik.importer.ast.sv.element.declaration.SvPort
-import io.verik.importer.ast.sv.element.declaration.SvProperty
-import io.verik.importer.ast.sv.element.declaration.SvValueParameter
-import io.verik.importer.ast.sv.element.descriptor.SvDescriptor
-import io.verik.importer.ast.sv.element.expression.SvExpression
-import io.verik.importer.ast.sv.element.expression.SvNothingExpression
+import io.verik.importer.ast.element.common.EContainerElement
+import io.verik.importer.ast.element.common.EElement
+import io.verik.importer.ast.element.declaration.EDeclaration
+import io.verik.importer.ast.element.declaration.EPort
+import io.verik.importer.ast.element.declaration.EValueParameter
+import io.verik.importer.ast.element.descriptor.EDescriptor
+import io.verik.importer.ast.element.expression.EExpression
+import io.verik.importer.ast.element.expression.ENothingExpression
 import io.verik.importer.message.Messages
 import io.verik.importer.message.SourceLocation
 import org.antlr.v4.runtime.RuleContext
@@ -46,10 +45,10 @@ class CastContext(
         return SourceLocation.get(terminalNode)
     }
 
-    fun castDeclaration(ctx: RuleContext): SvDeclaration? {
-        return when (val element = casterVisitor.getElement<SvElement>(ctx)) {
+    fun castDeclaration(ctx: RuleContext): EDeclaration? {
+        return when (val element = casterVisitor.getElement<EElement>(ctx)) {
             null -> null
-            is SvContainerElement -> {
+            is EContainerElement -> {
                 if (element.elements.size != 1)
                     Messages.INTERNAL_ERROR.on(getLocation(ctx), "Single declaration expected")
                 element.elements.firstOrNull()?.cast()
@@ -58,38 +57,34 @@ class CastContext(
         }
     }
 
-    fun castDeclarations(ctx: RuleContext): List<SvDeclaration> {
-        return when (val element = casterVisitor.getElement<SvElement>(ctx)) {
+    fun castDeclarations(ctx: RuleContext): List<EDeclaration> {
+        return when (val element = casterVisitor.getElement<EElement>(ctx)) {
             null -> listOf()
-            is SvContainerElement -> element.elements.map { it.cast() }
+            is EContainerElement -> element.elements.map { it.cast() }
             else -> listOf(element.cast())
         }
     }
 
-    fun castProperties(ctx: RuleContext): List<SvProperty> {
+    fun castValueParameters(ctx: RuleContext): List<EValueParameter> {
         return castDeclarations(ctx).map { it.cast() }
     }
 
-    fun castValueParameters(ctx: RuleContext): List<SvValueParameter> {
-        return castDeclarations(ctx).map { it.cast() }
-    }
-
-    fun castPort(ctx: RuleContext): SvPort? {
+    fun castPort(ctx: RuleContext): EPort? {
         return casterVisitor.getElement(ctx)
     }
 
-    fun castDescriptor(ctx: RuleContext): SvDescriptor? {
+    fun castDescriptor(ctx: RuleContext): EDescriptor? {
         return casterVisitor.getElement(ctx)
     }
 
-    fun castExpression(ctx: RuleContext): SvExpression {
-        val element = casterVisitor.getElement<SvExpression>(ctx)
+    fun castExpression(ctx: RuleContext): EExpression {
+        val element = casterVisitor.getElement<EExpression>(ctx)
         return if (element != null) {
             element
         } else {
             val location = getLocation(ctx)
             Messages.UNABLE_TO_CAST.on(location, "expression")
-            SvNothingExpression(location)
+            ENothingExpression(location)
         }
     }
 }

@@ -16,12 +16,12 @@
 
 package io.verik.importer.resolve
 
-import io.verik.importer.ast.sv.element.declaration.SvClass
-import io.verik.importer.ast.sv.element.declaration.SvEnum
-import io.verik.importer.ast.sv.element.declaration.SvStruct
-import io.verik.importer.ast.sv.element.declaration.SvTypeAlias
-import io.verik.importer.ast.sv.element.descriptor.SvReferenceDescriptor
-import io.verik.importer.common.SvTreeVisitor
+import io.verik.importer.ast.element.declaration.EClass
+import io.verik.importer.ast.element.declaration.EEnum
+import io.verik.importer.ast.element.declaration.EStruct
+import io.verik.importer.ast.element.declaration.ETypeAlias
+import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
+import io.verik.importer.common.TreeVisitor
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 import io.verik.importer.message.Messages
@@ -35,32 +35,32 @@ object ReferenceResolverStage : ProjectStage() {
         projectContext.compilationUnit.accept(referenceResolverVisitor)
     }
 
-    private class NamespaceIndexerVisitor : SvTreeVisitor() {
+    private class NamespaceIndexerVisitor : TreeVisitor() {
 
         val namespace = Namespace()
 
-        override fun visitClass(`class`: SvClass) {
+        override fun visitClass(`class`: EClass) {
             namespace[`class`.name] = `class`
         }
 
-        override fun visitTypeAlias(typeAlias: SvTypeAlias) {
+        override fun visitTypeAlias(typeAlias: ETypeAlias) {
             namespace[typeAlias.name] = typeAlias
         }
 
-        override fun visitStruct(struct: SvStruct) {
+        override fun visitStruct(struct: EStruct) {
             namespace[struct.name] = struct
         }
 
-        override fun visitEnum(enum: SvEnum) {
+        override fun visitEnum(enum: EEnum) {
             namespace[enum.name] = enum
         }
     }
 
     private class ReferenceResolverVisitor(
         private val namespace: Namespace
-    ) : SvTreeVisitor() {
+    ) : TreeVisitor() {
 
-        override fun visitReferenceDescriptor(referenceDescriptor: SvReferenceDescriptor) {
+        override fun visitReferenceDescriptor(referenceDescriptor: EReferenceDescriptor) {
             super.visitReferenceDescriptor(referenceDescriptor)
             val declaration = namespace[referenceDescriptor.name]
             if (declaration != null) {

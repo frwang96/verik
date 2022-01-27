@@ -16,10 +16,10 @@
 
 package io.verik.compiler.specialize
 
+import io.verik.compiler.ast.common.TypeParameterized
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.kt.EKtClass
 import io.verik.compiler.ast.element.kt.ETypeAlias
-import io.verik.compiler.ast.interfaces.TypeParameterized
 import io.verik.compiler.core.common.AnnotationEntries
 import io.verik.compiler.evaluate.CardinalTypeEvaluatorSubstage
 import io.verik.compiler.evaluate.ConstantPropagatorSubstage

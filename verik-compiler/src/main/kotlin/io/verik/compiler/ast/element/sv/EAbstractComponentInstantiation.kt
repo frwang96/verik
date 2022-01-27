@@ -16,9 +16,9 @@
 
 package io.verik.compiler.ast.element.sv
 
+import io.verik.compiler.ast.common.ExpressionContainer
 import io.verik.compiler.ast.element.common.EAbstractProperty
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.PortInstantiation
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.message.SourceLocation

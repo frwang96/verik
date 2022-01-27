@@ -17,8 +17,8 @@
 package io.verik.importer.cast.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.ast.sv.element.common.SvContainerElement
-import io.verik.importer.ast.sv.element.declaration.SvProperty
+import io.verik.importer.ast.element.common.EContainerElement
+import io.verik.importer.ast.element.declaration.EProperty
 import io.verik.importer.cast.common.CastContext
 import io.verik.importer.cast.common.SignatureBuilder
 import io.verik.importer.common.ElementCopier
@@ -28,7 +28,7 @@ object PropertyCaster {
     fun castPropertiesFromDataDeclarationData(
         ctx: SystemVerilogParser.DataDeclarationDataContext,
         castContext: CastContext
-    ): SvContainerElement? {
+    ): EContainerElement? {
         val isMutable = ctx.CONST() == null
         val descriptor = castContext.castDescriptor(ctx.dataTypeOrImplicit()) ?: return null
         val identifiers = ctx.listOfVariableDeclAssignments()
@@ -39,7 +39,7 @@ object PropertyCaster {
             val location = castContext.getLocation(it)
             val name = it.text
             val signature = SignatureBuilder.buildSignature(ctx, name)
-            SvProperty(
+            EProperty(
                 location,
                 name,
                 signature,
@@ -47,6 +47,6 @@ object PropertyCaster {
                 isMutable
             )
         }
-        return SvContainerElement(castContext.getLocation(ctx), properties)
+        return EContainerElement(castContext.getLocation(ctx), properties)
     }
 }

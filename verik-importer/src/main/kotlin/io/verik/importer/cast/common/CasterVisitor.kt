@@ -18,7 +18,7 @@ package io.verik.importer.cast.common
 
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.antlr.SystemVerilogParserBaseVisitor
-import io.verik.importer.ast.sv.element.common.SvElement
+import io.verik.importer.ast.element.common.EElement
 import io.verik.importer.cast.cast.ClassCaster
 import io.verik.importer.cast.cast.ConstructorCaster
 import io.verik.importer.cast.cast.DescriptorCaster
@@ -35,205 +35,205 @@ import org.antlr.v4.runtime.RuleContext
 
 class CasterVisitor(
     val castContext: CastContext
-) : SystemVerilogParserBaseVisitor<SvElement>() {
+) : SystemVerilogParserBaseVisitor<EElement>() {
 
-    inline fun <reified E : SvElement> getElement(ctx: RuleContext): E? {
+    inline fun <reified E : EElement> getElement(ctx: RuleContext): E? {
         return ctx.accept(this)?.cast()
     }
 
-    override fun aggregateResult(aggregate: SvElement?, nextResult: SvElement?): SvElement? {
+    override fun aggregateResult(aggregate: EElement?, nextResult: EElement?): EElement? {
         return nextResult ?: aggregate
     }
 
 // A.1.2 SystemVerilog Source Text /////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitModuleDeclarationNonAnsi(ctx: SystemVerilogParser.ModuleDeclarationNonAnsiContext?): SvElement? {
+    override fun visitModuleDeclarationNonAnsi(ctx: SystemVerilogParser.ModuleDeclarationNonAnsiContext?): EElement? {
         return ModuleCaster.castModuleFromModuleDeclarationNonAnsi(ctx!!, castContext)
     }
 
-    override fun visitModuleDeclarationAnsi(ctx: SystemVerilogParser.ModuleDeclarationAnsiContext?): SvElement? {
+    override fun visitModuleDeclarationAnsi(ctx: SystemVerilogParser.ModuleDeclarationAnsiContext?): EElement? {
         return ModuleCaster.castModuleFromModuleDeclarationAnsi(ctx!!, castContext)
     }
 
-    override fun visitClassDeclaration(ctx: SystemVerilogParser.ClassDeclarationContext?): SvElement? {
+    override fun visitClassDeclaration(ctx: SystemVerilogParser.ClassDeclarationContext?): EElement? {
         return ClassCaster.castClassFromClassDeclaration(ctx!!, castContext)
     }
 
-    override fun visitPackageDeclaration(ctx: SystemVerilogParser.PackageDeclarationContext?): SvElement {
+    override fun visitPackageDeclaration(ctx: SystemVerilogParser.PackageDeclarationContext?): EElement {
         return PackageCaster.castPackageFromPackageDeclaration(ctx!!, castContext)
     }
 
 // A.1.3 Module Parameters and Ports ///////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitAnsiPortDeclaration(ctx: SystemVerilogParser.AnsiPortDeclarationContext?): SvElement? {
+    override fun visitAnsiPortDeclaration(ctx: SystemVerilogParser.AnsiPortDeclarationContext?): EElement? {
         return PortCaster.castPortFromAnsiPortDeclaration(ctx!!, castContext)
     }
 
 // A.1.9 Class Items ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitClassMethodTask(ctx: SystemVerilogParser.ClassMethodTaskContext?): SvElement? {
+    override fun visitClassMethodTask(ctx: SystemVerilogParser.ClassMethodTaskContext?): EElement? {
         return TaskCaster.castTaskFromClassMethodTask(ctx!!, castContext)
     }
 
-    override fun visitClassMethodFunction(ctx: SystemVerilogParser.ClassMethodFunctionContext?): SvElement? {
+    override fun visitClassMethodFunction(ctx: SystemVerilogParser.ClassMethodFunctionContext?): EElement? {
         return FunctionCaster.castFunctionFromClassMethodFunction(ctx!!, castContext)
     }
 
-    override fun visitClassMethodExternMethod(ctx: SystemVerilogParser.ClassMethodExternMethodContext?): SvElement? {
+    override fun visitClassMethodExternMethod(ctx: SystemVerilogParser.ClassMethodExternMethodContext?): EElement? {
         return FunctionCaster.castFunctionFromClassMethodExternMethod(ctx!!, castContext)
     }
 
-    override fun visitClassMethodConstructor(ctx: SystemVerilogParser.ClassMethodConstructorContext?): SvElement? {
+    override fun visitClassMethodConstructor(ctx: SystemVerilogParser.ClassMethodConstructorContext?): EElement? {
         return ConstructorCaster.castConstructorFromClassMethodConstructor(ctx!!, castContext)
     }
 
     override fun visitClassMethodExternConstructor(
         ctx: SystemVerilogParser.ClassMethodExternConstructorContext?
-    ): SvElement {
+    ): EElement {
         return ConstructorCaster.castConstructorFromClassMethodExternConstructorContext(ctx!!, castContext)
     }
 
     override fun visitClassConstructorDeclaration(
         ctx: SystemVerilogParser.ClassConstructorDeclarationContext?
-    ): SvElement? {
+    ): EElement? {
         return ConstructorCaster.castConstructorFromClassConstructorDeclaration(ctx!!, castContext)
     }
 
 // A.1.10 Constraints //////////////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitConstraintDeclaration(ctx: SystemVerilogParser.ConstraintDeclarationContext?): SvElement? {
+    override fun visitConstraintDeclaration(ctx: SystemVerilogParser.ConstraintDeclarationContext?): EElement? {
         return null
     }
 
 // A.2.1.1 Module Parameter Declarations ///////////////////////////////////////////////////////////////////////////////
 
-    override fun visitParameterDeclaration(ctx: SystemVerilogParser.ParameterDeclarationContext?): SvElement? {
+    override fun visitParameterDeclaration(ctx: SystemVerilogParser.ParameterDeclarationContext?): EElement? {
         return null
     }
 
 // A.2.1.2 Port Declarations ///////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitInputDeclarationNet(ctx: SystemVerilogParser.InputDeclarationNetContext?): SvElement? {
+    override fun visitInputDeclarationNet(ctx: SystemVerilogParser.InputDeclarationNetContext?): EElement? {
         return PortCaster.castPortFromInputDeclarationNet(ctx!!, castContext)
     }
 
-    override fun visitOutputDeclarationNet(ctx: SystemVerilogParser.OutputDeclarationNetContext?): SvElement? {
+    override fun visitOutputDeclarationNet(ctx: SystemVerilogParser.OutputDeclarationNetContext?): EElement? {
         return PortCaster.castPortFromOutputDeclarationNet(ctx!!, castContext)
     }
 
 // A.2.1.3 Type Declarations ///////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitDataDeclarationData(ctx: SystemVerilogParser.DataDeclarationDataContext?): SvElement? {
+    override fun visitDataDeclarationData(ctx: SystemVerilogParser.DataDeclarationDataContext?): EElement? {
         return PropertyCaster.castPropertiesFromDataDeclarationData(ctx!!, castContext)
     }
 
-    override fun visitTypeDeclarationData(ctx: SystemVerilogParser.TypeDeclarationDataContext?): SvElement? {
+    override fun visitTypeDeclarationData(ctx: SystemVerilogParser.TypeDeclarationDataContext?): EElement? {
         return TypeDeclarationCaster.castTypeDeclarationFromTypeDeclarationData(ctx!!, castContext)
     }
 
-    override fun visitTypeDeclarationMisc(ctx: SystemVerilogParser.TypeDeclarationMiscContext?): SvElement? {
+    override fun visitTypeDeclarationMisc(ctx: SystemVerilogParser.TypeDeclarationMiscContext?): EElement? {
         return null
     }
 
 // A.2.2.1 Net and Variable Types //////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitDataTypeVector(ctx: SystemVerilogParser.DataTypeVectorContext?): SvElement? {
+    override fun visitDataTypeVector(ctx: SystemVerilogParser.DataTypeVectorContext?): EElement? {
         return DescriptorCaster.castDescriptorFromDataTypeVector(ctx!!, castContext)
     }
 
-    override fun visitDataTypeInteger(ctx: SystemVerilogParser.DataTypeIntegerContext?): SvElement? {
+    override fun visitDataTypeInteger(ctx: SystemVerilogParser.DataTypeIntegerContext?): EElement? {
         return DescriptorCaster.castDescriptorFromDataTypeInteger(ctx!!, castContext)
     }
 
-    override fun visitDataTypeString(ctx: SystemVerilogParser.DataTypeStringContext?): SvElement {
+    override fun visitDataTypeString(ctx: SystemVerilogParser.DataTypeStringContext?): EElement {
         return DescriptorCaster.castDescriptorFromDataTypeString(ctx!!, castContext)
     }
 
-    override fun visitDataTypeTypeIdentifier(ctx: SystemVerilogParser.DataTypeTypeIdentifierContext?): SvElement {
+    override fun visitDataTypeTypeIdentifier(ctx: SystemVerilogParser.DataTypeTypeIdentifierContext?): EElement {
         return DescriptorCaster.castDescriptorFromDataTypeTypeIdentifier(ctx!!, castContext)
     }
 
-    override fun visitImplicitDataType(ctx: SystemVerilogParser.ImplicitDataTypeContext?): SvElement? {
+    override fun visitImplicitDataType(ctx: SystemVerilogParser.ImplicitDataTypeContext?): EElement? {
         return DescriptorCaster.castDescriptorFromImplicitDataType(ctx!!, castContext)
     }
 
-    override fun visitClassType(ctx: SystemVerilogParser.ClassTypeContext?): SvElement {
+    override fun visitClassType(ctx: SystemVerilogParser.ClassTypeContext?): EElement {
         return DescriptorCaster.castDescriptorFromClassType(ctx!!, castContext)
     }
 
-    override fun visitDataTypeOrVoid(ctx: SystemVerilogParser.DataTypeOrVoidContext?): SvElement? {
+    override fun visitDataTypeOrVoid(ctx: SystemVerilogParser.DataTypeOrVoidContext?): EElement? {
         return DescriptorCaster.castDescriptorFromDataTypeOrVoid(ctx!!, castContext)
     }
 
 // A.2.6 Function Declarations /////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitFunctionDeclaration(ctx: SystemVerilogParser.FunctionDeclarationContext?): SvElement? {
+    override fun visitFunctionDeclaration(ctx: SystemVerilogParser.FunctionDeclarationContext?): EElement? {
         return FunctionCaster.castFunctionFromFunctionDeclaration(ctx!!, castContext)
     }
 
     override fun visitFunctionBodyDeclarationNoPortList(
         ctx: SystemVerilogParser.FunctionBodyDeclarationNoPortListContext?
-    ): SvElement? {
+    ): EElement? {
         return FunctionCaster.castFunctionFromFunctionBodyDeclarationNoPortList(ctx!!, castContext)
     }
 
     override fun visitFunctionBodyDeclarationPortList(
         ctx: SystemVerilogParser.FunctionBodyDeclarationPortListContext?
-    ): SvElement? {
+    ): EElement? {
         return FunctionCaster.castFunctionFromFunctionBodyDeclarationPortList(ctx!!, castContext)
     }
 
-    override fun visitFunctionPrototype(ctx: SystemVerilogParser.FunctionPrototypeContext?): SvElement? {
+    override fun visitFunctionPrototype(ctx: SystemVerilogParser.FunctionPrototypeContext?): EElement? {
         return FunctionCaster.castFunctionFromFunctionPrototype(ctx!!, castContext)
     }
 
 // A.2.7 Task Declarations /////////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitTaskDeclaration(ctx: SystemVerilogParser.TaskDeclarationContext?): SvElement? {
+    override fun visitTaskDeclaration(ctx: SystemVerilogParser.TaskDeclarationContext?): EElement? {
         return TaskCaster.castTaskFromTaskDeclaration(ctx!!, castContext)
     }
 
     override fun visitTaskBodyDeclarationNoPortList(
         ctx: SystemVerilogParser.TaskBodyDeclarationNoPortListContext?
-    ): SvElement? {
+    ): EElement? {
         return TaskCaster.castTaskFromTaskBodyDeclarationNoPortList(ctx!!, castContext)
     }
 
     override fun visitTaskBodyDeclarationPortList(
         ctx: SystemVerilogParser.TaskBodyDeclarationPortListContext?
-    ): SvElement? {
+    ): EElement? {
         return TaskCaster.castTaskFromTaskBodyDeclarationPortList(ctx!!, castContext)
     }
 
-    override fun visitTfPortItem(ctx: SystemVerilogParser.TfPortItemContext?): SvElement? {
+    override fun visitTfPortItem(ctx: SystemVerilogParser.TfPortItemContext?): EElement? {
         return ValueParameterCaster.castValueParameterFromTfPortItem(ctx!!, castContext)
     }
 
-    override fun visitTfPortDeclaration(ctx: SystemVerilogParser.TfPortDeclarationContext?): SvElement? {
+    override fun visitTfPortDeclaration(ctx: SystemVerilogParser.TfPortDeclarationContext?): EElement? {
         return ValueParameterCaster.castValueParameterFromTfPortDeclaration(ctx!!, castContext)
     }
 
-    override fun visitTaskPrototype(ctx: SystemVerilogParser.TaskPrototypeContext?): SvElement {
+    override fun visitTaskPrototype(ctx: SystemVerilogParser.TaskPrototypeContext?): EElement {
         return TaskCaster.castTaskFromTaskPrototype(ctx!!, castContext)
     }
 
 // A.6.2 Procedural Blocks and Assignments /////////////////////////////////////////////////////////////////////////////
 
-    override fun visitInitialConstruct(ctx: SystemVerilogParser.InitialConstructContext?): SvElement? {
+    override fun visitInitialConstruct(ctx: SystemVerilogParser.InitialConstructContext?): EElement? {
         return null
     }
 
-    override fun visitAlwaysConstruct(ctx: SystemVerilogParser.AlwaysConstructContext?): SvElement? {
+    override fun visitAlwaysConstruct(ctx: SystemVerilogParser.AlwaysConstructContext?): EElement? {
         return null
     }
 
 // A.8.4 Primaries /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitConstantPrimaryLiteral(ctx: SystemVerilogParser.ConstantPrimaryLiteralContext?): SvElement {
+    override fun visitConstantPrimaryLiteral(ctx: SystemVerilogParser.ConstantPrimaryLiteralContext?): EElement {
         return ExpressionCaster.castLiteralExpressionFromConstantPrimaryLiteral(ctx!!, castContext)
     }
 
-    override fun visitConstantPrimaryParameter(ctx: SystemVerilogParser.ConstantPrimaryParameterContext?): SvElement {
+    override fun visitConstantPrimaryParameter(ctx: SystemVerilogParser.ConstantPrimaryParameterContext?): EElement {
         return ExpressionCaster.castReferenceExpressionFromConstantPrimaryParameter(ctx!!, castContext)
     }
 }

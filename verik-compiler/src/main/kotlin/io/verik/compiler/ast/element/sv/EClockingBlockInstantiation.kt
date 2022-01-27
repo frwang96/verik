@@ -16,9 +16,9 @@
 
 package io.verik.compiler.ast.element.sv
 
+import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.PortInstantiation
-import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation

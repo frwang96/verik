@@ -16,6 +16,7 @@
 
 package io.verik.compiler.serialize.source
 
+import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.common.EAbstractClass
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EPackage
@@ -23,7 +24,6 @@ import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
 import io.verik.compiler.ast.element.sv.EModuleInterface
 import io.verik.compiler.ast.element.sv.EModulePort
 import io.verik.compiler.ast.element.sv.ETypeDefinition
-import io.verik.compiler.ast.property.Type
 import io.verik.compiler.message.Messages
 import io.verik.compiler.target.common.TargetClassDeclaration
 import io.verik.compiler.target.common.TargetPackage

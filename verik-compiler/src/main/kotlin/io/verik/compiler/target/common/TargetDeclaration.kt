@@ -16,7 +16,7 @@
 
 package io.verik.compiler.target.common
 
-import io.verik.compiler.ast.interfaces.Declaration
+import io.verik.compiler.ast.common.Declaration
 
 interface TargetDeclaration : Declaration {
 

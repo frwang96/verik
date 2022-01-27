@@ -16,9 +16,9 @@
 
 package io.verik.compiler.transform.post
 
+import io.verik.compiler.ast.common.ResizableDeclarationContainer
 import io.verik.compiler.ast.element.sv.ESvFunction
 import io.verik.compiler.ast.element.sv.ETypeDefinition
-import io.verik.compiler.ast.interfaces.ResizableDeclarationContainer
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext

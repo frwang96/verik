@@ -16,16 +16,16 @@
 
 package io.verik.importer.interpret
 
+import io.verik.importer.ast.common.Type
+import io.verik.importer.ast.element.declaration.EDeclaration
+import io.verik.importer.ast.element.declaration.EPackage
 import io.verik.importer.ast.kt.element.KtClass
 import io.verik.importer.ast.kt.element.KtDeclaration
 import io.verik.importer.ast.kt.element.KtElement
 import io.verik.importer.ast.kt.element.KtFile
 import io.verik.importer.ast.kt.element.KtPackage
 import io.verik.importer.ast.kt.element.KtProject
-import io.verik.importer.ast.sv.element.declaration.SvDeclaration
-import io.verik.importer.ast.sv.element.declaration.SvPackage
 import io.verik.importer.common.KtTreeVisitor
-import io.verik.importer.common.Type
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 import io.verik.importer.message.SourceLocation
@@ -57,7 +57,7 @@ object InterpreterStage : ProjectStage() {
             packages.add(rootPackage)
 
         projectContext.compilationUnit.declarations.forEach {
-            if (it is SvPackage) {
+            if (it is EPackage) {
                 val `package` = interpretPackage(
                     it.location,
                     "${projectContext.config.rootPackageName}.${it.name}",
@@ -75,7 +75,7 @@ object InterpreterStage : ProjectStage() {
     private fun interpretPackage(
         location: SourceLocation,
         name: String,
-        declarations: List<SvDeclaration>,
+        declarations: List<EDeclaration>,
         outputPath: Path,
         declarationInterpreter: DeclarationInterpreter
     ): KtPackage? {

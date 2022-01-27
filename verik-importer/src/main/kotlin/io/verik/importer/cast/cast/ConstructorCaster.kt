@@ -17,8 +17,8 @@
 package io.verik.importer.cast.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.ast.sv.element.declaration.SvConstructor
-import io.verik.importer.ast.sv.element.declaration.SvDeclaration
+import io.verik.importer.ast.element.declaration.EConstructor
+import io.verik.importer.ast.element.declaration.EDeclaration
 import io.verik.importer.cast.common.CastContext
 import io.verik.importer.cast.common.SignatureBuilder
 
@@ -27,7 +27,7 @@ object ConstructorCaster {
     fun castConstructorFromClassMethodConstructor(
         ctx: SystemVerilogParser.ClassMethodConstructorContext,
         castContext: CastContext
-    ): SvDeclaration? {
+    ): EDeclaration? {
         val declaration = castContext.castDeclaration(ctx.classConstructorDeclaration()) ?: return null
         val signature = SignatureBuilder.buildSignature(ctx, declaration.name)
         declaration.signature = signature
@@ -37,12 +37,12 @@ object ConstructorCaster {
     fun castConstructorFromClassMethodExternConstructorContext(
         ctx: SystemVerilogParser.ClassMethodExternConstructorContext,
         castContext: CastContext
-    ): SvDeclaration {
+    ): EDeclaration {
         val location = castContext.getLocation(ctx.classConstructorPrototype().NEW())
         val signature = SignatureBuilder.buildSignature(ctx, "new")
         val tfPortItems = ctx.classConstructorPrototype().tfPortList()?.tfPortItem() ?: listOf()
         val valueParameters = tfPortItems.flatMap { castContext.castValueParameters(it) }
-        return SvConstructor(
+        return EConstructor(
             location,
             signature,
             valueParameters
@@ -52,14 +52,14 @@ object ConstructorCaster {
     fun castConstructorFromClassConstructorDeclaration(
         ctx: SystemVerilogParser.ClassConstructorDeclarationContext,
         castContext: CastContext
-    ): SvConstructor? {
+    ): EConstructor? {
         if (ctx.classScope() != null)
             return null
         val location = castContext.getLocation(ctx.NEW()[0])
         val signature = SignatureBuilder.buildSignature(ctx, "new")
         val tfPortItems = ctx.tfPortList()?.tfPortItem() ?: listOf()
         val valueParameters = tfPortItems.flatMap { castContext.castValueParameters(it) }
-        return SvConstructor(
+        return EConstructor(
             location,
             signature,
             valueParameters

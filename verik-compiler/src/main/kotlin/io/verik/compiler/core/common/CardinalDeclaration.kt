@@ -16,6 +16,6 @@
 
 package io.verik.compiler.core.common
 
-import io.verik.compiler.ast.interfaces.Declaration
+import io.verik.compiler.ast.common.Declaration
 
 interface CardinalDeclaration : Declaration

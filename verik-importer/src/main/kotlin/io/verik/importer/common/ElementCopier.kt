@@ -16,48 +16,48 @@
 
 package io.verik.importer.common
 
-import io.verik.importer.ast.sv.element.common.SvElement
-import io.verik.importer.ast.sv.element.descriptor.SvBitDescriptor
-import io.verik.importer.ast.sv.element.descriptor.SvPackedDescriptor
-import io.verik.importer.ast.sv.element.descriptor.SvReferenceDescriptor
-import io.verik.importer.ast.sv.element.descriptor.SvSimpleDescriptor
-import io.verik.importer.ast.sv.element.expression.SvLiteralExpression
-import io.verik.importer.ast.sv.element.expression.SvReferenceExpression
+import io.verik.importer.ast.element.common.EElement
+import io.verik.importer.ast.element.descriptor.EBitDescriptor
+import io.verik.importer.ast.element.descriptor.EPackedDescriptor
+import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
+import io.verik.importer.ast.element.descriptor.ESimpleDescriptor
+import io.verik.importer.ast.element.expression.ELiteralExpression
+import io.verik.importer.ast.element.expression.EReferenceExpression
 import io.verik.importer.message.Messages
 
 object ElementCopier {
 
-    fun <E : SvElement> deepCopy(element: E): E {
+    fun <E : EElement> deepCopy(element: E): E {
         return copy(element)
     }
 
-    private fun <E : SvElement> copy(element: E): E {
-        val copiedElement: SvElement = when (element) {
-            is SvSimpleDescriptor -> copySimpleDescriptor(element)
-            is SvBitDescriptor -> copyBitDescriptor(element)
-            is SvPackedDescriptor -> copyPackedDescriptor(element)
-            is SvReferenceDescriptor -> copyReferenceDescriptor(element)
-            is SvLiteralExpression -> copyLiteralExpression(element)
-            is SvReferenceExpression -> copyReferenceExpression(element)
+    private fun <E : EElement> copy(element: E): E {
+        val copiedElement: EElement = when (element) {
+            is ESimpleDescriptor -> copySimpleDescriptor(element)
+            is EBitDescriptor -> copyBitDescriptor(element)
+            is EPackedDescriptor -> copyPackedDescriptor(element)
+            is EReferenceDescriptor -> copyReferenceDescriptor(element)
+            is ELiteralExpression -> copyLiteralExpression(element)
+            is EReferenceExpression -> copyReferenceExpression(element)
             else -> Messages.INTERNAL_ERROR.on(element, "Unable to copy element: $element")
         }
         @Suppress("UNCHECKED_CAST")
         return copiedElement as E
     }
 
-    private fun copySimpleDescriptor(simpleDescriptor: SvSimpleDescriptor): SvSimpleDescriptor {
+    private fun copySimpleDescriptor(simpleDescriptor: ESimpleDescriptor): ESimpleDescriptor {
         val type = simpleDescriptor.type.copy()
-        return SvSimpleDescriptor(
+        return ESimpleDescriptor(
             simpleDescriptor.location,
             type
         )
     }
 
-    private fun copyBitDescriptor(bitDescriptor: SvBitDescriptor): SvBitDescriptor {
+    private fun copyBitDescriptor(bitDescriptor: EBitDescriptor): EBitDescriptor {
         val type = bitDescriptor.type.copy()
         val left = copy(bitDescriptor.left)
         val right = copy(bitDescriptor.right)
-        return SvBitDescriptor(
+        return EBitDescriptor(
             bitDescriptor.location,
             type,
             left,
@@ -66,12 +66,12 @@ object ElementCopier {
         )
     }
 
-    private fun copyPackedDescriptor(packedDescriptor: SvPackedDescriptor): SvPackedDescriptor {
+    private fun copyPackedDescriptor(packedDescriptor: EPackedDescriptor): EPackedDescriptor {
         val type = packedDescriptor.type.copy()
         val descriptor = copy(packedDescriptor.descriptor)
         val left = copy(packedDescriptor.left)
         val right = copy(packedDescriptor.right)
-        return SvPackedDescriptor(
+        return EPackedDescriptor(
             packedDescriptor.location,
             type,
             descriptor,
@@ -80,24 +80,24 @@ object ElementCopier {
         )
     }
 
-    private fun copyReferenceDescriptor(referenceDescriptor: SvReferenceDescriptor): SvReferenceDescriptor {
+    private fun copyReferenceDescriptor(referenceDescriptor: EReferenceDescriptor): EReferenceDescriptor {
         val type = referenceDescriptor.type.copy()
-        return SvReferenceDescriptor(
+        return EReferenceDescriptor(
             referenceDescriptor.location,
             type,
             referenceDescriptor.name
         )
     }
 
-    private fun copyLiteralExpression(literalExpression: SvLiteralExpression): SvLiteralExpression {
-        return SvLiteralExpression(
+    private fun copyLiteralExpression(literalExpression: ELiteralExpression): ELiteralExpression {
+        return ELiteralExpression(
             literalExpression.location,
             literalExpression.value
         )
     }
 
-    private fun copyReferenceExpression(referenceExpression: SvReferenceExpression): SvElement {
-        return SvReferenceExpression(
+    private fun copyReferenceExpression(referenceExpression: EReferenceExpression): EElement {
+        return EReferenceExpression(
             referenceExpression.location,
             referenceExpression.name,
             referenceExpression.reference

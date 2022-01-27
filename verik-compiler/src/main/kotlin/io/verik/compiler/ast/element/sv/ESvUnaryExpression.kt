@@ -16,11 +16,11 @@
 
 package io.verik.compiler.ast.element.sv
 
+import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.common.EAbstractContainerExpression
 import io.verik.compiler.ast.element.common.EExpression
 import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.ast.property.SvUnaryOperatorKind
-import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 

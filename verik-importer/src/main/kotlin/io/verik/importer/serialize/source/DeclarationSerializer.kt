@@ -16,6 +16,7 @@
 
 package io.verik.importer.serialize.source
 
+import io.verik.importer.ast.common.Type
 import io.verik.importer.ast.kt.element.KtClass
 import io.verik.importer.ast.kt.element.KtConstructor
 import io.verik.importer.ast.kt.element.KtDeclaration
@@ -25,7 +26,6 @@ import io.verik.importer.ast.kt.element.KtFunction
 import io.verik.importer.ast.kt.element.KtProperty
 import io.verik.importer.ast.kt.element.KtTypeAlias
 import io.verik.importer.ast.kt.element.KtValueParameter
-import io.verik.importer.common.Type
 import io.verik.importer.core.Core
 
 object DeclarationSerializer {

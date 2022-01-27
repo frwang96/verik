@@ -16,10 +16,10 @@
 
 package io.verik.importer.resolve
 
-import io.verik.importer.ast.sv.element.declaration.SvContainerDeclaration
-import io.verik.importer.ast.sv.element.declaration.SvDeclaration
-import io.verik.importer.ast.sv.element.descriptor.SvDescriptor
-import io.verik.importer.common.SvTreeVisitor
+import io.verik.importer.ast.element.declaration.EContainerDeclaration
+import io.verik.importer.ast.element.declaration.EDeclaration
+import io.verik.importer.ast.element.descriptor.EDescriptor
+import io.verik.importer.common.TreeVisitor
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 
@@ -29,11 +29,11 @@ object DeclarationResolvedCheckerStage : ProjectStage() {
         projectContext.compilationUnit.accept(DeclarationResolvedIndexerVisitor)
     }
 
-    private object DeclarationResolvedIndexerVisitor : SvTreeVisitor() {
+    private object DeclarationResolvedIndexerVisitor : TreeVisitor() {
 
-        override fun visitContainerDeclaration(containerDeclaration: SvContainerDeclaration) {
+        override fun visitContainerDeclaration(containerDeclaration: EContainerDeclaration) {
             super.visitContainerDeclaration(containerDeclaration)
-            val declarations = ArrayList<SvDeclaration>()
+            val declarations = ArrayList<EDeclaration>()
             containerDeclaration.declarations.forEach {
                 val declarationResolvedCheckerVisitor = DeclarationResolvedCheckerVisitor()
                 it.accept(declarationResolvedCheckerVisitor)
@@ -45,11 +45,11 @@ object DeclarationResolvedCheckerStage : ProjectStage() {
         }
     }
 
-    private class DeclarationResolvedCheckerVisitor : SvTreeVisitor() {
+    private class DeclarationResolvedCheckerVisitor : TreeVisitor() {
 
         var isResolved = true
 
-        override fun visitDescriptor(descriptor: SvDescriptor) {
+        override fun visitDescriptor(descriptor: EDescriptor) {
             if (!isResolved)
                 return
             super.visitDescriptor(descriptor)

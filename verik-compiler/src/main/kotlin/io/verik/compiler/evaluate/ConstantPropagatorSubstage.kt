@@ -16,14 +16,14 @@
 
 package io.verik.compiler.evaluate
 
+import io.verik.compiler.ast.common.Type
+import io.verik.compiler.ast.common.TypeParameterized
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EProperty
 import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.common.ETypedElement
-import io.verik.compiler.ast.interfaces.TypeParameterized
-import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.specialize.SpecializerSubstage

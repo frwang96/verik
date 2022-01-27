@@ -16,8 +16,8 @@
 
 package io.verik.compiler.ast.element.sv
 
+import io.verik.compiler.ast.common.ResizableDeclarationContainer
 import io.verik.compiler.ast.element.common.EDeclaration
-import io.verik.compiler.ast.interfaces.ResizableDeclarationContainer
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.replaceIfContains
 import io.verik.compiler.message.Messages

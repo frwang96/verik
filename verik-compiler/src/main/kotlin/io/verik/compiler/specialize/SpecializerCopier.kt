@@ -16,6 +16,7 @@
 
 package io.verik.compiler.specialize
 
+import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EConstantExpression
@@ -43,7 +44,6 @@ import io.verik.compiler.ast.element.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.kt.EWhenExpression
 import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.LiteralStringEntry
-import io.verik.compiler.ast.property.Type
 import io.verik.compiler.ast.property.WhenEntry
 import io.verik.compiler.message.Messages
 

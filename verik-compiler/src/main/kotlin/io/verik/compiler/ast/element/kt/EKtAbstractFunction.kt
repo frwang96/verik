@@ -16,8 +16,8 @@
 
 package io.verik.compiler.ast.element.kt
 
+import io.verik.compiler.ast.common.TypeParameterized
 import io.verik.compiler.ast.element.common.EAbstractFunction
-import io.verik.compiler.ast.interfaces.TypeParameterized
 import io.verik.compiler.common.TreeVisitor
 
 abstract class EKtAbstractFunction : EAbstractFunction(), TypeParameterized {

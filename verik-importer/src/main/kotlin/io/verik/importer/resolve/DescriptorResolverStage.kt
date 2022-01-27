@@ -16,10 +16,10 @@
 
 package io.verik.importer.resolve
 
-import io.verik.importer.ast.sv.element.descriptor.SvBitDescriptor
-import io.verik.importer.ast.sv.element.descriptor.SvPackedDescriptor
+import io.verik.importer.ast.element.descriptor.EBitDescriptor
+import io.verik.importer.ast.element.descriptor.EPackedDescriptor
 import io.verik.importer.common.ExpressionEvaluator
-import io.verik.importer.common.SvTreeVisitor
+import io.verik.importer.common.TreeVisitor
 import io.verik.importer.core.Cardinal
 import io.verik.importer.core.Core
 import io.verik.importer.main.ProjectContext
@@ -32,9 +32,9 @@ object DescriptorResolverStage : ProjectStage() {
         projectContext.compilationUnit.accept(DescriptorResolverVisitor)
     }
 
-    private object DescriptorResolverVisitor : SvTreeVisitor() {
+    private object DescriptorResolverVisitor : TreeVisitor() {
 
-        override fun visitBitDescriptor(bitDescriptor: SvBitDescriptor) {
+        override fun visitBitDescriptor(bitDescriptor: EBitDescriptor) {
             super.visitBitDescriptor(bitDescriptor)
             val leftValue = ExpressionEvaluator.evaluate(bitDescriptor.left)
             val rightValue = ExpressionEvaluator.evaluate(bitDescriptor.right)
@@ -48,7 +48,7 @@ object DescriptorResolverStage : ProjectStage() {
             }
         }
 
-        override fun visitPackedDescriptor(packedDescriptor: SvPackedDescriptor) {
+        override fun visitPackedDescriptor(packedDescriptor: EPackedDescriptor) {
             super.visitPackedDescriptor(packedDescriptor)
             val leftValue = ExpressionEvaluator.evaluate(packedDescriptor.left)
             val rightValue = ExpressionEvaluator.evaluate(packedDescriptor.right)

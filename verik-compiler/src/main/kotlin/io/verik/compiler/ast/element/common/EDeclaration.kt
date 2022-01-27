@@ -16,8 +16,8 @@
 
 package io.verik.compiler.ast.element.common
 
+import io.verik.compiler.ast.common.Declaration
 import io.verik.compiler.ast.element.kt.EKtClass
-import io.verik.compiler.ast.interfaces.Declaration
 import io.verik.compiler.ast.property.AnnotationEntry
 
 abstract class EDeclaration : ETypedElement(), Declaration {

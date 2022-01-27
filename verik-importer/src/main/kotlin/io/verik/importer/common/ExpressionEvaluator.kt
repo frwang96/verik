@@ -16,13 +16,13 @@
 
 package io.verik.importer.common
 
-import io.verik.importer.ast.sv.element.expression.SvExpression
-import io.verik.importer.ast.sv.element.expression.SvLiteralExpression
+import io.verik.importer.ast.element.expression.EExpression
+import io.verik.importer.ast.element.expression.ELiteralExpression
 
 object ExpressionEvaluator {
 
-    fun evaluate(expression: SvExpression): Int? {
-        return if (expression is SvLiteralExpression) {
+    fun evaluate(expression: EExpression): Int? {
+        return if (expression is ELiteralExpression) {
             expression.value.toIntOrNull()
         } else null
     }

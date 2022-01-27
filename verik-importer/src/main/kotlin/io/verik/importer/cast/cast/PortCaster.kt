@@ -17,8 +17,8 @@
 package io.verik.importer.cast.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.ast.sv.element.declaration.SvPort
-import io.verik.importer.ast.sv.property.PortType
+import io.verik.importer.ast.element.declaration.EPort
+import io.verik.importer.ast.property.PortType
 import io.verik.importer.cast.common.CastContext
 
 object PortCaster {
@@ -26,13 +26,13 @@ object PortCaster {
     fun castPortFromAnsiPortDeclaration(
         ctx: SystemVerilogParser.AnsiPortDeclarationContext,
         castContext: CastContext
-    ): SvPort? {
+    ): EPort? {
         val identifier = ctx.identifier()
         val location = castContext.getLocation(identifier)
         val name = identifier.text
         val descriptor = castContext.castDescriptor(ctx.netPortHeader()) ?: return null
         val portType = castPortType(ctx.netPortHeader())
-        return SvPort(
+        return EPort(
             location,
             name,
             descriptor,
@@ -43,12 +43,12 @@ object PortCaster {
     fun castPortFromInputDeclarationNet(
         ctx: SystemVerilogParser.InputDeclarationNetContext,
         castContext: CastContext
-    ): SvPort? {
+    ): EPort? {
         val identifier = ctx.listOfPortIdentifiers().portIdentifier()[0]
         val location = castContext.getLocation(identifier)
         val name = identifier.text
         val descriptor = castContext.castDescriptor(ctx.netPortType()) ?: return null
-        return SvPort(
+        return EPort(
             location,
             name,
             descriptor,
@@ -59,12 +59,12 @@ object PortCaster {
     fun castPortFromOutputDeclarationNet(
         ctx: SystemVerilogParser.OutputDeclarationNetContext,
         castContext: CastContext
-    ): SvPort? {
+    ): EPort? {
         val identifier = ctx.listOfPortIdentifiers().portIdentifier()[0]
         val location = castContext.getLocation(identifier)
         val name = identifier.text
         val descriptor = castContext.castDescriptor(ctx.netPortType()) ?: return null
-        return SvPort(
+        return EPort(
             location,
             name,
             descriptor,

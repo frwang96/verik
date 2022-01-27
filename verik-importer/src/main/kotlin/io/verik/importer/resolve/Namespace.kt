@@ -16,14 +16,14 @@
 
 package io.verik.importer.resolve
 
-import io.verik.importer.ast.sv.element.declaration.SvDeclaration
+import io.verik.importer.ast.element.declaration.EDeclaration
 import io.verik.importer.message.Messages
 
 class Namespace {
 
-    private val namespace = HashMap<String, SvDeclaration>()
+    private val namespace = HashMap<String, EDeclaration>()
 
-    operator fun set(name: String, declaration: SvDeclaration) {
+    operator fun set(name: String, declaration: EDeclaration) {
         if (name !in namespace) {
             namespace[name] = declaration
         } else {
@@ -31,7 +31,7 @@ class Namespace {
         }
     }
 
-    operator fun get(name: String): SvDeclaration? {
+    operator fun get(name: String): EDeclaration? {
         return namespace[name]
     }
 }

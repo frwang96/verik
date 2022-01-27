@@ -16,10 +16,10 @@
 
 package io.verik.compiler.specialize
 
+import io.verik.compiler.ast.common.Declaration
+import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.ast.interfaces.Declaration
-import io.verik.compiler.ast.property.Type
 import io.verik.compiler.message.Messages
 
 class SpecializeContext {

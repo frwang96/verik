@@ -16,9 +16,9 @@
 
 package io.verik.compiler.ast.element.kt
 
+import io.verik.compiler.ast.common.ExpressionContainer
 import io.verik.compiler.ast.element.common.EBlockExpression
 import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.interfaces.ExpressionContainer
 import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor

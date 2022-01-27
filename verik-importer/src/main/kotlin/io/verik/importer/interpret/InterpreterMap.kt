@@ -16,16 +16,16 @@
 
 package io.verik.importer.interpret
 
+import io.verik.importer.ast.common.Declaration
+import io.verik.importer.ast.element.declaration.EDeclaration
 import io.verik.importer.ast.kt.element.KtDeclaration
-import io.verik.importer.ast.sv.element.declaration.SvDeclaration
-import io.verik.importer.common.Declaration
 import io.verik.importer.message.Messages
 
 class InterpreterMap {
 
-    private val interpreterMap = HashMap<SvDeclaration, KtDeclaration>()
+    private val interpreterMap = HashMap<EDeclaration, KtDeclaration>()
 
-    fun addDeclaration(declaration: SvDeclaration, mappedDeclaration: KtDeclaration) {
+    fun addDeclaration(declaration: EDeclaration, mappedDeclaration: KtDeclaration) {
         if (declaration in interpreterMap) {
             Messages.INTERNAL_ERROR.on(
                 declaration,
@@ -36,7 +36,7 @@ class InterpreterMap {
     }
 
     fun getDeclaration(declaration: Declaration): Declaration {
-        return if (declaration is SvDeclaration) {
+        return if (declaration is EDeclaration) {
             val mappedDeclaration = interpreterMap[declaration]
                 ?: Messages.INTERNAL_ERROR.on(
                     declaration,
