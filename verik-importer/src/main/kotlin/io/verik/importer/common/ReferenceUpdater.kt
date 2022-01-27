@@ -34,6 +34,10 @@ class ReferenceUpdater(val projectContext: ProjectContext) {
         referenceMap[oldDeclaration] = newDeclaration
     }
 
+    fun update(oldDeclaration: EDeclaration, newDeclaration: EDeclaration) {
+        referenceMap[oldDeclaration] = newDeclaration
+    }
+
     fun flush() {
         val referenceUpdaterVisitor = ReferenceUpdaterVisitor(referenceMap)
         projectContext.project.accept(referenceUpdaterVisitor)

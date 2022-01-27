@@ -19,6 +19,8 @@ package io.verik.importer.serialize.source
 import io.verik.importer.ast.element.common.EElement
 import io.verik.importer.ast.element.declaration.EEnum
 import io.verik.importer.ast.element.declaration.EEnumEntry
+import io.verik.importer.ast.element.declaration.EKtClass
+import io.verik.importer.ast.element.declaration.EKtValueParameter
 import io.verik.importer.ast.element.declaration.EProperty
 import io.verik.importer.ast.element.declaration.ETypeAlias
 import io.verik.importer.common.Visitor
@@ -32,6 +34,10 @@ class SourceSerializerVisitor(
         Messages.INTERNAL_ERROR.on(element, "Unable to serialize element: $element")
     }
 
+    override fun visitKtClass(`class`: EKtClass) {
+        DeclarationSerializer.serializeClass(`class`, serializeContext)
+    }
+
     override fun visitEnum(enum: EEnum) {
         DeclarationSerializer.serializeEnum(enum, serializeContext)
     }
@@ -42,6 +48,10 @@ class SourceSerializerVisitor(
 
     override fun visitProperty(property: EProperty) {
         DeclarationSerializer.serializeProperty(property, serializeContext)
+    }
+
+    override fun visitKtValueParameter(valueParameter: EKtValueParameter) {
+        DeclarationSerializer.serializeValueParameter(valueParameter, serializeContext)
     }
 
     override fun visitEnumEntry(enumEntry: EEnumEntry) {

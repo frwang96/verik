@@ -23,8 +23,10 @@ import io.verik.importer.ast.element.declaration.EContainerDeclaration
 import io.verik.importer.ast.element.declaration.EDeclaration
 import io.verik.importer.ast.element.declaration.EEnum
 import io.verik.importer.ast.element.declaration.EEnumEntry
+import io.verik.importer.ast.element.declaration.EKtClass
 import io.verik.importer.ast.element.declaration.EKtFile
 import io.verik.importer.ast.element.declaration.EKtPackage
+import io.verik.importer.ast.element.declaration.EKtValueParameter
 import io.verik.importer.ast.element.declaration.EModule
 import io.verik.importer.ast.element.declaration.EPort
 import io.verik.importer.ast.element.declaration.EProperty
@@ -82,6 +84,10 @@ abstract class Visitor {
         visitContainerDeclaration(`class`)
     }
 
+    open fun visitKtClass(`class`: EKtClass) {
+        visitContainerDeclaration(`class`)
+    }
+
     open fun visitModule(module: EModule) {
         visitContainerDeclaration(module)
     }
@@ -127,6 +133,10 @@ abstract class Visitor {
     }
 
     open fun visitSvValueParameter(valueParameter: ESvValueParameter) {
+        visitDeclaration(valueParameter)
+    }
+
+    open fun visitKtValueParameter(valueParameter: EKtValueParameter) {
         visitDeclaration(valueParameter)
     }
 

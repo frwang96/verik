@@ -16,20 +16,30 @@
 
 package io.verik.importer.ast.element.declaration
 
-import io.verik.importer.ast.common.DeclarationContainer
+import io.verik.importer.ast.element.descriptor.EDescriptor
+import io.verik.importer.ast.property.AnnotationEntry
 import io.verik.importer.common.Visitor
-import io.verik.importer.common.replaceIfContains
+import io.verik.importer.message.SourceLocation
 
-abstract class EContainerDeclaration : EDeclaration(), DeclarationContainer {
+class EKtValueParameter(
+    override val location: SourceLocation,
+    override val name: String,
+    val descriptor: EDescriptor,
+    val annotationEntries: List<AnnotationEntry>,
+    val isMutable: Boolean?
+) : EDeclaration() {
 
-    abstract var declarations: ArrayList<EDeclaration>
+    override var signature: String? = null
 
-    override fun acceptChildren(visitor: Visitor) {
-        declarations.forEach { it.accept(visitor) }
+    init {
+        descriptor.parent = this
     }
 
-    override fun replaceChild(oldDeclaration: EDeclaration, newDeclaration: EDeclaration): Boolean {
-        newDeclaration.parent = this
-        return declarations.replaceIfContains(oldDeclaration, newDeclaration)
+    override fun accept(visitor: Visitor) {
+        visitor.visitKtValueParameter(this)
+    }
+
+    override fun acceptChildren(visitor: Visitor) {
+        descriptor.accept(visitor)
     }
 }

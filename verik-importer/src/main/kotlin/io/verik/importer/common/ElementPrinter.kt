@@ -20,8 +20,10 @@ import io.verik.importer.ast.element.common.EElement
 import io.verik.importer.ast.element.common.EProject
 import io.verik.importer.ast.element.declaration.EEnum
 import io.verik.importer.ast.element.declaration.EEnumEntry
+import io.verik.importer.ast.element.declaration.EKtClass
 import io.verik.importer.ast.element.declaration.EKtFile
 import io.verik.importer.ast.element.declaration.EKtPackage
+import io.verik.importer.ast.element.declaration.EKtValueParameter
 import io.verik.importer.ast.element.declaration.EModule
 import io.verik.importer.ast.element.declaration.EPort
 import io.verik.importer.ast.element.declaration.EProperty
@@ -86,6 +88,16 @@ class ElementPrinter : Visitor() {
             build(`class`.name)
             build(`class`.declarations)
             build(`class`.superDescriptor)
+        }
+    }
+
+    override fun visitKtClass(`class`: EKtClass) {
+        build("KtClass") {
+            build(`class`.name)
+            build(`class`.declarations)
+            build(`class`.valueParameters)
+            build(`class`.superDescriptor)
+            build(`class`.isOpen)
         }
     }
 
@@ -154,6 +166,15 @@ class ElementPrinter : Visitor() {
         build("SvValueParameter") {
             build(valueParameter.name)
             build(valueParameter.descriptor)
+        }
+    }
+
+    override fun visitKtValueParameter(valueParameter: EKtValueParameter) {
+        build("KtValueParameter") {
+            build(valueParameter.name)
+            build(valueParameter.descriptor)
+            build(valueParameter.annotationEntries.map { it.name })
+            build(valueParameter.isMutable)
         }
     }
 
@@ -230,9 +251,13 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    private fun build(content: Boolean) {
+    private fun build(content: Boolean?) {
         if (!first) builder.append(", ")
-        builder.append(if (content) "1" else "0")
+        when (content) {
+            null -> builder.append("null")
+            true -> builder.append("1")
+            false -> builder.append("0")
+        }
         first = false
     }
 
@@ -261,11 +286,16 @@ class ElementPrinter : Visitor() {
         first = false
     }
 
-    private fun build(elements: List<EElement>) {
+    private fun build(elements: List<Any>) {
         if (!first) builder.append(", ")
         builder.append("[")
         first = true
-        elements.forEach { it.accept(this) }
+        elements.forEach {
+            when (it) {
+                is EElement -> it.accept(this)
+                else -> build(it.toString())
+            }
+        }
         builder.append("]")
         first = false
     }

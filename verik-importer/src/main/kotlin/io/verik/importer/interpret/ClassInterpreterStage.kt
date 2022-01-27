@@ -16,8 +16,14 @@
 
 package io.verik.importer.interpret
 
+import io.verik.importer.ast.element.declaration.EKtClass
+import io.verik.importer.ast.element.declaration.EKtValueParameter
+import io.verik.importer.ast.element.declaration.EModule
+import io.verik.importer.ast.element.declaration.ESvClass
+import io.verik.importer.ast.element.descriptor.ESimpleDescriptor
 import io.verik.importer.common.ReferenceUpdater
 import io.verik.importer.common.TreeVisitor
+import io.verik.importer.core.Core
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 
@@ -31,7 +37,48 @@ object ClassInterpreterStage : ProjectStage() {
     }
 
     private class ClassInterpreterVisitor(
-        @Suppress("unused")
         private val referenceUpdater: ReferenceUpdater
-    ) : TreeVisitor()
+    ) : TreeVisitor() {
+
+        override fun visitSvClass(`class`: ESvClass) {
+            super.visitSvClass(`class`)
+            val interpretedClass = EKtClass(
+                `class`.location,
+                `class`.name,
+                `class`.signature,
+                `class`.declarations,
+                listOf(),
+                `class`.superDescriptor,
+                true
+            )
+            referenceUpdater.replace(`class`, interpretedClass)
+        }
+
+        override fun visitModule(module: EModule) {
+            super.visitModule(module)
+            val valueParameters = module.ports.map {
+                val annotationEntry = it.portType.getAnnotationEntry()
+                val valueParameter = EKtValueParameter(
+                    it.location,
+                    it.name,
+                    it.descriptor,
+                    listOf(annotationEntry),
+                    true
+                )
+                referenceUpdater.update(it, valueParameter)
+                valueParameter
+            }
+            val superDescriptor = ESimpleDescriptor(module.location, Core.C_Module.toType())
+            val interpretedClass = EKtClass(
+                module.location,
+                module.name,
+                module.signature,
+                module.declarations,
+                valueParameters,
+                superDescriptor,
+                false
+            )
+            referenceUpdater.replace(module, interpretedClass)
+        }
+    }
 }

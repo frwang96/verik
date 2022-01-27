@@ -14,34 +14,35 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.element.common
+package io.verik.importer.ast.element.declaration
 
-import io.verik.importer.ast.common.DeclarationContainer
-import io.verik.importer.ast.element.declaration.EDeclaration
+import io.verik.importer.ast.element.descriptor.EDescriptor
 import io.verik.importer.common.Visitor
-import io.verik.importer.common.replaceIfContains
 import io.verik.importer.message.SourceLocation
 
-class EProject(
-    var declarations: ArrayList<EDeclaration>
-) : EElement(), DeclarationContainer {
+class EKtClass(
+    override val location: SourceLocation,
+    override val name: String,
+    override var signature: String?,
+    override var declarations: ArrayList<EDeclaration>,
+    val valueParameters: List<EKtValueParameter>,
+    val superDescriptor: EDescriptor,
+    val isOpen: Boolean
+) : EContainerDeclaration() {
 
     init {
         declarations.forEach { it.parent = this }
+        valueParameters.forEach { it.parent = this }
+        superDescriptor.parent = this
     }
 
-    override val location: SourceLocation = SourceLocation.NULL
-
     override fun accept(visitor: Visitor) {
-        visitor.visitProject(this)
+        visitor.visitKtClass(this)
     }
 
     override fun acceptChildren(visitor: Visitor) {
-        declarations.forEach { it.accept(visitor) }
-    }
-
-    override fun replaceChild(oldDeclaration: EDeclaration, newDeclaration: EDeclaration): Boolean {
-        newDeclaration.parent = this
-        return declarations.replaceIfContains(oldDeclaration, newDeclaration)
+        super.acceptChildren(visitor)
+        valueParameters.forEach { it.accept(visitor) }
+        superDescriptor.accept(visitor)
     }
 }

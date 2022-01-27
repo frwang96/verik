@@ -19,10 +19,41 @@ package io.verik.importer.serialize.source
 import io.verik.importer.ast.element.declaration.EDeclaration
 import io.verik.importer.ast.element.declaration.EEnum
 import io.verik.importer.ast.element.declaration.EEnumEntry
+import io.verik.importer.ast.element.declaration.EKtClass
+import io.verik.importer.ast.element.declaration.EKtValueParameter
 import io.verik.importer.ast.element.declaration.EProperty
 import io.verik.importer.ast.element.declaration.ETypeAlias
+import io.verik.importer.core.Core
 
 object DeclarationSerializer {
+
+    fun serializeClass(`class`: EKtClass, serializeContext: SerializeContext) {
+        serializeContext.appendLine()
+        serializeDocs(`class`, serializeContext)
+        if (`class`.isOpen) {
+            serializeContext.append("open ")
+        }
+        serializeContext.append("class ${`class`.name}")
+        if (`class`.valueParameters.isNotEmpty()) {
+            serializeContext.appendLine("(")
+            serializeContext.indent {
+                serializeContext.serializeJoinAppendLine(`class`.valueParameters)
+            }
+            serializeContext.append(")")
+        }
+        if (`class`.superDescriptor.type.reference != Core.C_Any) {
+            serializeContext.append(" : ${`class`.superDescriptor.type}()")
+        }
+        if (`class`.declarations.isNotEmpty()) {
+            serializeContext.appendLine(" {")
+            serializeContext.indent {
+                `class`.declarations.forEach { serializeContext.serialize(it) }
+            }
+            serializeContext.appendLine("}")
+        } else {
+            serializeContext.appendLine()
+        }
+    }
 
     fun serializeEnum(enum: EEnum, serializeContext: SerializeContext) {
         serializeContext.appendLine()
@@ -54,6 +85,17 @@ object DeclarationSerializer {
             serializeContext.append("val ")
         }
         serializeContext.appendLine("${property.name}: ${property.descriptor.type} = imported()")
+    }
+
+    fun serializeValueParameter(valueParameter: EKtValueParameter, serializeContext: SerializeContext) {
+        valueParameter.annotationEntries.forEach {
+            serializeContext.append("@${it.name} ")
+        }
+        when (valueParameter.isMutable) {
+            true -> serializeContext.append("var ")
+            false -> serializeContext.append("val ")
+        }
+        serializeContext.append("${valueParameter.name}: ${valueParameter.descriptor.type}")
     }
 
     fun serializeEnumEntry(enumEntry: EEnumEntry, serializeContext: SerializeContext) {
