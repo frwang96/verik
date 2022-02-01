@@ -32,7 +32,7 @@ open class c {
 
     open fun f2(
         x2: Ubit<`4`>,
-        x3: Boolean
+        x3: Boolean = imported()
     ): Unit = imported()
 
     open fun f3(

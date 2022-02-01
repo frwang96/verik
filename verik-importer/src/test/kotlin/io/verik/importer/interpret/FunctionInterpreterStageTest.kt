@@ -45,7 +45,7 @@ internal class FunctionInterpreterStageTest : BaseTest() {
             """
                 KtFunction(
                     t,
-                    [KtValueParameter(x, SimpleDescriptor(Boolean), [], null)],
+                    [KtValueParameter(x, SimpleDescriptor(Boolean), [], null, 0)],
                     SimpleDescriptor(Unit), [Task], 0
                 )
             """.trimIndent()
@@ -62,7 +62,7 @@ internal class FunctionInterpreterStageTest : BaseTest() {
                 endclass
             """.trimIndent(),
             FunctionInterpreterStage::class,
-            "KtConstructor([KtValueParameter(x, SimpleDescriptor(Boolean), [], null)])"
+            "KtConstructor([KtValueParameter(x, SimpleDescriptor(Boolean), [], null, 0)])"
         ) { it.findDeclaration("new") }
     }
 }

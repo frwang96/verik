@@ -184,6 +184,7 @@ class ElementPrinter : Visitor() {
         build("SvValueParameter") {
             build(valueParameter.name)
             build(valueParameter.descriptor)
+            build(valueParameter.hasDefault)
         }
     }
 
@@ -193,6 +194,7 @@ class ElementPrinter : Visitor() {
             build(valueParameter.descriptor)
             build(valueParameter.annotationEntries.map { it.name })
             build(valueParameter.isMutable)
+            build(valueParameter.hasDefault)
         }
     }
 

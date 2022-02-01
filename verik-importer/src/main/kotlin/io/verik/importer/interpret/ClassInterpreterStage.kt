@@ -60,11 +60,12 @@ object ClassInterpreterStage : ProjectStage() {
             val valueParameters = module.ports.map {
                 val annotationEntry = it.portType.getAnnotationEntry()
                 val valueParameter = EKtValueParameter(
-                    it.location,
-                    it.name,
-                    it.descriptor,
-                    listOf(annotationEntry),
-                    true
+                    location = it.location,
+                    name = it.name,
+                    descriptor = it.descriptor,
+                    annotationEntries = listOf(annotationEntry),
+                    isMutable = true,
+                    hasDefault = false
                 )
                 referenceUpdater.update(it, valueParameter)
                 valueParameter
@@ -86,11 +87,12 @@ object ClassInterpreterStage : ProjectStage() {
             super.visitStruct(struct)
             val valueParameters = struct.entries.map {
                 val valueParameter = EKtValueParameter(
-                    it.location,
-                    it.name,
-                    it.descriptor,
-                    listOf(),
-                    true
+                    location = it.location,
+                    name = it.name,
+                    descriptor = it.descriptor,
+                    annotationEntries = listOf(),
+                    isMutable = true,
+                    hasDefault = false
                 )
                 referenceUpdater.update(it, valueParameter)
                 valueParameter

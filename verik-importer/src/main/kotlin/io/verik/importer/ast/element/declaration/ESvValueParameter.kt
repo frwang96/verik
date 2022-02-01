@@ -23,7 +23,8 @@ import io.verik.importer.message.SourceLocation
 class ESvValueParameter(
     override val location: SourceLocation,
     override val name: String,
-    val descriptor: EDescriptor
+    val descriptor: EDescriptor,
+    val hasDefault: Boolean
 ) : EDeclaration() {
 
     override var signature: String? = null

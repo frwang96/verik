@@ -145,6 +145,9 @@ object DeclarationSerializer {
             false -> serializeContext.append("val ")
         }
         serializeContext.append("${valueParameter.name}: ${valueParameter.descriptor.type}")
+        if (valueParameter.hasDefault) {
+            serializeContext.append(" = imported()")
+        }
     }
 
     fun serializeEnumEntry(enumEntry: EEnumEntry, serializeContext: SerializeContext) {

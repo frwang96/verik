@@ -552,7 +552,11 @@ listOfPortIdentifiers
     ;
 
 listOfTfVariableIdentifiers
-    : portIdentifier variableDimension* (EQ expression)? (COMMA portIdentifier variableDimension* (EQ expression)?)*
+    : tfVariableIdentifier (COMMA tfVariableIdentifier)*
+    ;
+
+tfVariableIdentifier
+    : portIdentifier variableDimension* (EQ expression)?
     ;
 
 listOfTypeAssignments

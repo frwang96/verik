@@ -127,12 +127,12 @@ internal class DeclarationSerializerTest : BaseTest() {
     fun `serialize function with valueParameter`() {
         driveTextFileTest(
             """
-                function void f(int x);
+                function void f(int x = 0);
                 endfunction
             """.trimIndent(),
             """
                 fun f(
-                    x: Int
+                    x: Int = imported()
                 ): Unit = imported()
             """.trimIndent()
         )

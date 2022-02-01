@@ -97,7 +97,8 @@ object FunctionInterpreterStage : ProjectStage() {
                 valueParameter.name,
                 valueParameter.descriptor,
                 listOf(),
-                null
+                null,
+                valueParameter.hasDefault
             )
             referenceUpdater.update(valueParameter, interpretedValueParameter)
             return interpretedValueParameter

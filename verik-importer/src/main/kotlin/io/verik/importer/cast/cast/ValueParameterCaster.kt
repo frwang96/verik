@@ -32,10 +32,12 @@ object ValueParameterCaster {
         val location = castContext.getLocation(identifier)
         val name = identifier.text
         val descriptor = castContext.castDescriptor(ctx.dataTypeOrImplicit()) ?: return null
+        val hasDefault = ctx.expression() != null
         return ESvValueParameter(
             location,
             name,
-            descriptor
+            descriptor,
+            hasDefault
         )
     }
 
@@ -44,14 +46,17 @@ object ValueParameterCaster {
         castContext: CastContext
     ): EContainerElement? {
         val descriptor = castContext.castDescriptor(ctx.dataTypeOrImplicit()) ?: return null
-        val identifiers = ctx.listOfTfVariableIdentifiers().portIdentifier()
-        val valueParameters = identifiers.map {
-            val location = castContext.getLocation(it)
-            val name = it.text
+        val tfVariableIdentifiers = ctx.listOfTfVariableIdentifiers().tfVariableIdentifier()
+        val valueParameters = tfVariableIdentifiers.map {
+            val identifier = it.portIdentifier()
+            val location = castContext.getLocation(identifier)
+            val name = identifier.text
+            val hasDefault = it.expression() != null
             ESvValueParameter(
                 location,
                 name,
-                ElementCopier.deepCopy(descriptor)
+                ElementCopier.deepCopy(descriptor),
+                hasDefault
             )
         }
         return EContainerElement(castContext.getLocation(ctx), valueParameters)

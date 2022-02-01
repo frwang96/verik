@@ -32,7 +32,7 @@ internal class FunctionCasterTest : BaseTest() {
                     input x;
                 endfunction
             """.trimIndent(),
-            "SvFunction(f, [SvValueParameter(x, SimpleDescriptor(Boolean))], SimpleDescriptor(Unit))"
+            "SvFunction(f, [SvValueParameter(x, SimpleDescriptor(Boolean), 0)], SimpleDescriptor(Unit))"
         ) { it.findDeclaration("f") }
     }
 
@@ -44,7 +44,7 @@ internal class FunctionCasterTest : BaseTest() {
                 function void f(logic x);
                 endfunction
             """.trimIndent(),
-            "SvFunction(f, [SvValueParameter(x, SimpleDescriptor(Boolean))], SimpleDescriptor(Unit))"
+            "SvFunction(f, [SvValueParameter(x, SimpleDescriptor(Boolean), 0)], SimpleDescriptor(Unit))"
         ) { it.findDeclaration("f") }
     }
 
@@ -57,7 +57,7 @@ internal class FunctionCasterTest : BaseTest() {
                     extern function void f(logic x);
                 endclass
             """.trimIndent(),
-            "SvFunction(f, [SvValueParameter(x, SimpleDescriptor(Boolean))], SimpleDescriptor(Unit))"
+            "SvFunction(f, [SvValueParameter(x, SimpleDescriptor(Boolean), 0)], SimpleDescriptor(Unit))"
         ) { it.findDeclaration("f") }
     }
 }
