@@ -44,7 +44,11 @@ object TypeDeclarationCaster {
             is SystemVerilogParser.DataTypeStructContext ->
                 castStructFromDataTypeStruct(location, name, signature, dataType, castContext)
             else -> {
-                val descriptor = castContext.castDescriptor(dataType) ?: return null
+                val baseDescriptor = castContext.castDescriptor(dataType) ?: return null
+                val descriptors = ctx.variableDimension().map { castContext.castDescriptor(it) ?: return null }
+                val descriptor = descriptors.fold(baseDescriptor) { accumulatedDescriptor, descriptor ->
+                    accumulatedDescriptor.wrap(descriptor)
+                }
                 ETypeAlias(location, name, signature, descriptor)
             }
         }

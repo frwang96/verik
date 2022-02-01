@@ -24,10 +24,10 @@ import io.verik.importer.message.SourceLocation
 class EPackedDescriptor(
     override val location: SourceLocation,
     override var type: Type,
-    val descriptor: EDescriptor,
+    override var descriptor: EDescriptor,
     val left: EExpression,
     val right: EExpression
-) : EDescriptor() {
+) : EContainerDescriptor() {
 
     init {
         descriptor.parent = this
@@ -40,7 +40,7 @@ class EPackedDescriptor(
     }
 
     override fun acceptChildren(visitor: Visitor) {
-        descriptor.accept(visitor)
+        super.acceptChildren(visitor)
         left.accept(visitor)
         right.accept(visitor)
     }

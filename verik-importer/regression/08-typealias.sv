@@ -14,23 +14,20 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.element.descriptor
+// test.sv /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-import io.verik.importer.ast.common.Type
-import io.verik.importer.ast.element.common.EElement
+typedef logic [7:0] t0;
 
-abstract class EDescriptor : EElement() {
+t0 x0;
 
-    abstract var type: Type
+typedef logic t1 [$];
 
-    fun replace(descriptor: EDescriptor) {
-        parentNotNull().replaceChildAsDescriptorContainer(this, descriptor)
-    }
+t1 x1;
 
-    fun wrap(descriptor: EDescriptor): EDescriptor {
-        val containerDescriptor = descriptor.cast<EContainerDescriptor>()
-        containerDescriptor.descriptor = this
-        this.parent = containerDescriptor
-        return containerDescriptor
-    }
-}
+class c;
+
+    typedef logic t2;
+
+    t2 x2;
+
+endclass

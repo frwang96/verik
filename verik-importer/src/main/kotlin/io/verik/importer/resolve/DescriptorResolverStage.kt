@@ -18,6 +18,7 @@ package io.verik.importer.resolve
 
 import io.verik.importer.ast.element.descriptor.EBitDescriptor
 import io.verik.importer.ast.element.descriptor.EPackedDescriptor
+import io.verik.importer.ast.element.descriptor.EQueueDescriptor
 import io.verik.importer.common.ExpressionEvaluator
 import io.verik.importer.common.TreeVisitor
 import io.verik.importer.core.Cardinal
@@ -59,6 +60,11 @@ object DescriptorResolverStage : ProjectStage() {
                     packedDescriptor.descriptor.type.copy()
                 )
             }
+        }
+
+        override fun visitQueueDescriptor(queueDescriptor: EQueueDescriptor) {
+            super.visitQueueDescriptor(queueDescriptor)
+            queueDescriptor.type = Core.C_ArrayList.toType(queueDescriptor.descriptor.type.copy())
         }
     }
 }

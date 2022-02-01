@@ -21,6 +21,7 @@ import io.verik.importer.ast.common.Type
 import io.verik.importer.ast.element.descriptor.EBitDescriptor
 import io.verik.importer.ast.element.descriptor.EDescriptor
 import io.verik.importer.ast.element.descriptor.EPackedDescriptor
+import io.verik.importer.ast.element.descriptor.EQueueDescriptor
 import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
 import io.verik.importer.ast.element.descriptor.ESimpleDescriptor
 import io.verik.importer.cast.common.CastContext
@@ -36,7 +37,7 @@ object DescriptorCaster {
     ): EDescriptor? {
         val location = castContext.getLocation(ctx)
         val isSigned = castIsSignedFromSigning(ctx.signing()) ?: false
-        return castDescriptorFromPackedDimension(
+        return castDescriptorFromPackedDimensions(
             location,
             ctx.packedDimension(),
             isSigned,
@@ -88,7 +89,7 @@ object DescriptorCaster {
     ): EDescriptor? {
         val location = castContext.getLocation(ctx)
         val isSigned = castIsSignedFromSigning(ctx.signing()) ?: false
-        return castDescriptorFromPackedDimension(
+        return castDescriptorFromPackedDimensions(
             location,
             ctx.packedDimension(),
             isSigned,
@@ -119,6 +120,18 @@ object DescriptorCaster {
         }
     }
 
+    fun castDescriptorFromQueueDimension(
+        ctx: SystemVerilogParser.QueueDimensionContext,
+        castContext: CastContext
+    ): EDescriptor {
+        val location = castContext.getLocation(ctx)
+        return EQueueDescriptor(
+            location,
+            Type.unresolved(),
+            ESimpleDescriptor(location, Core.C_Boolean.toType())
+        )
+    }
+
     private fun castIsSignedFromSigning(
         ctx: SystemVerilogParser.SigningContext?
     ): Boolean? {
@@ -129,7 +142,7 @@ object DescriptorCaster {
         }
     }
 
-    private fun castDescriptorFromPackedDimension(
+    private fun castDescriptorFromPackedDimensions(
         location: SourceLocation,
         ctxs: List<SystemVerilogParser.PackedDimensionContext>,
         isSigned: Boolean,
@@ -142,23 +155,25 @@ object DescriptorCaster {
             if (it is SystemVerilogParser.PackedDimensionRangeContext) it
             else return null
         }
-        val initialDescriptor: EDescriptor = EBitDescriptor(
+        val baseDescriptor: EDescriptor = EBitDescriptor(
             location,
             Type.unresolved(),
             castContext.castExpression(packedDimensionRanges[0].constantRange().constantExpression()[0]),
             castContext.castExpression(packedDimensionRanges[0].constantRange().constantExpression()[1]),
             isSigned
         )
-        return packedDimensionRanges
-            .drop(1)
-            .fold(initialDescriptor) { descriptor, packedDimensionRange ->
-                EPackedDescriptor(
-                    castContext.getLocation(packedDimensionRange),
-                    Type.unresolved(),
-                    descriptor,
-                    castContext.castExpression(packedDimensionRange.constantRange().constantExpression(0)),
-                    castContext.castExpression(packedDimensionRange.constantRange().constantExpression(1))
-                )
-            }
+        val packedDescriptors = packedDimensionRanges.drop(1).map {
+            val packedDescriptorLocation = castContext.getLocation(it)
+            EPackedDescriptor(
+                packedDescriptorLocation,
+                Type.unresolved(),
+                ESimpleDescriptor(packedDescriptorLocation, Core.C_Boolean.toType()),
+                castContext.castExpression(it.constantRange().constantExpression(0)),
+                castContext.castExpression(it.constantRange().constantExpression(1))
+            )
+        }
+        return packedDescriptors.fold(baseDescriptor) { accumulatedDescriptor, descriptor ->
+            accumulatedDescriptor.wrap(descriptor)
+        }
     }
 }

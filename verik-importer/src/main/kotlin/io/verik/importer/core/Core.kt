@@ -32,4 +32,6 @@ object Core {
 
     val C_Struct = CoreClassDeclaration("Struct")
     val C_Module = CoreClassDeclaration("Module")
+
+    val C_ArrayList = CoreClassDeclaration("ArrayList")
 }

@@ -24,12 +24,12 @@ object TargetArrayList : TargetScope(Target.C_ArrayList) {
 
     val F_new = CompositeTargetFunctionDeclaration(
         parent,
-        "_${'$'}new",
+        "__new",
         """
-            static function automatic ArrayList#(E) _${'$'}new();
-                automatic ArrayList#(E) arrayList = new();
+            static function automatic ArrayList#(E) __new();
+                ArrayList#(E) arrayList = new();
                 return arrayList;
-            endfunction : _${'$'}new
+            endfunction : __new
         """.trimIndent(),
         true
     )

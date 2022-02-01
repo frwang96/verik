@@ -40,6 +40,7 @@ import io.verik.importer.ast.element.declaration.ETask
 import io.verik.importer.ast.element.declaration.ETypeAlias
 import io.verik.importer.ast.element.descriptor.EBitDescriptor
 import io.verik.importer.ast.element.descriptor.EPackedDescriptor
+import io.verik.importer.ast.element.descriptor.EQueueDescriptor
 import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
 import io.verik.importer.ast.element.descriptor.ESimpleDescriptor
 import io.verik.importer.ast.element.expression.ELiteralExpression
@@ -236,6 +237,13 @@ class ElementPrinter : Visitor() {
         }
     }
 
+    override fun visitReferenceDescriptor(referenceDescriptor: EReferenceDescriptor) {
+        build("ReferenceDescriptor") {
+            build(referenceDescriptor.type.toString())
+            build(referenceDescriptor.name)
+        }
+    }
+
     override fun visitPackedDescriptor(packedDescriptor: EPackedDescriptor) {
         build("PackedDescriptor") {
             build(packedDescriptor.type.toString())
@@ -245,10 +253,10 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitReferenceDescriptor(referenceDescriptor: EReferenceDescriptor) {
-        build("ReferenceDescriptor") {
-            build(referenceDescriptor.type.toString())
-            build(referenceDescriptor.name)
+    override fun visitQueueDescriptor(queueDescriptor: EQueueDescriptor) {
+        build("QueueDescriptor") {
+            build(queueDescriptor.type.toString())
+            build(queueDescriptor.descriptor)
         }
     }
 

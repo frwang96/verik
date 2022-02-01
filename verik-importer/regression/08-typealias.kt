@@ -14,23 +14,21 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.element.descriptor
+// test.kt /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-import io.verik.importer.ast.common.Type
-import io.verik.importer.ast.element.common.EElement
+package imported
 
-abstract class EDescriptor : EElement() {
+import io.verik.core.*
 
-    abstract var type: Type
+typealias t0 = Ubit<`8`>
 
-    fun replace(descriptor: EDescriptor) {
-        parentNotNull().replaceChildAsDescriptorContainer(this, descriptor)
-    }
+var x0: t0 = imported()
 
-    fun wrap(descriptor: EDescriptor): EDescriptor {
-        val containerDescriptor = descriptor.cast<EContainerDescriptor>()
-        containerDescriptor.descriptor = this
-        this.parent = containerDescriptor
-        return containerDescriptor
-    }
+typealias t1 = ArrayList<Boolean>
+
+var x1: t1 = imported()
+
+open class c {
+
+    var x2: Boolean = imported()
 }

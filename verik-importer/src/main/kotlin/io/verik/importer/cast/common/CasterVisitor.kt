@@ -165,6 +165,12 @@ class CasterVisitor(
         return DescriptorCaster.castDescriptorFromDataTypeOrVoid(ctx!!, castContext)
     }
 
+// A.2.5 Declaration Ranges ////////////////////////////////////////////////////////////////////////////////////////////
+
+    override fun visitQueueDimension(ctx: SystemVerilogParser.QueueDimensionContext?): EElement {
+        return DescriptorCaster.castDescriptorFromQueueDimension(ctx!!, castContext)
+    }
+
 // A.2.6 Function Declarations /////////////////////////////////////////////////////////////////////////////////////////
 
     override fun visitFunctionDeclaration(ctx: SystemVerilogParser.FunctionDeclarationContext?): EElement? {

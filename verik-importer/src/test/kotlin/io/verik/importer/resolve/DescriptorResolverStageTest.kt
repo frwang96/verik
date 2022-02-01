@@ -43,4 +43,15 @@ internal class DescriptorResolverStageTest : BaseTest() {
             "Property(x, PackedDescriptor(Packed<`4`, Ubit<`2`>>, *, *, *))"
         ) { it.findDeclaration("x") }
     }
+
+    @Test
+    fun `resolve queueDescriptor`() {
+        driveElementTest(
+            """
+                logic x [$];
+            """.trimIndent(),
+            DescriptorResolverStage::class,
+            "Property(x, QueueDescriptor(ArrayList<Boolean>, SimpleDescriptor(*)))"
+        ) { it.findDeclaration("x") }
+    }
 }

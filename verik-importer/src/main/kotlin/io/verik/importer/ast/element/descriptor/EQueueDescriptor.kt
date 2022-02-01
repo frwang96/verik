@@ -17,20 +17,20 @@
 package io.verik.importer.ast.element.descriptor
 
 import io.verik.importer.ast.common.Type
-import io.verik.importer.ast.element.common.EElement
+import io.verik.importer.common.Visitor
+import io.verik.importer.message.SourceLocation
 
-abstract class EDescriptor : EElement() {
+class EQueueDescriptor(
+    override val location: SourceLocation,
+    override var type: Type,
+    override var descriptor: EDescriptor
+) : EContainerDescriptor() {
 
-    abstract var type: Type
-
-    fun replace(descriptor: EDescriptor) {
-        parentNotNull().replaceChildAsDescriptorContainer(this, descriptor)
+    init {
+        descriptor.parent = this
     }
 
-    fun wrap(descriptor: EDescriptor): EDescriptor {
-        val containerDescriptor = descriptor.cast<EContainerDescriptor>()
-        containerDescriptor.descriptor = this
-        this.parent = containerDescriptor
-        return containerDescriptor
+    override fun accept(visitor: Visitor) {
+        visitor.visitQueueDescriptor(this)
     }
 }

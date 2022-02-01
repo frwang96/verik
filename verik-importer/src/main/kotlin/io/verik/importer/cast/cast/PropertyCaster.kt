@@ -30,20 +30,26 @@ object PropertyCaster {
         castContext: CastContext
     ): EContainerElement? {
         val isMutable = ctx.CONST() == null
-        val descriptor = castContext.castDescriptor(ctx.dataTypeOrImplicit()) ?: return null
-        val identifiers = ctx.listOfVariableDeclAssignments()
+        val baseDescriptor = castContext.castDescriptor(ctx.dataTypeOrImplicit()) ?: return null
+        val variableDeclAssignmentVariables = ctx.listOfVariableDeclAssignments()
             .variableDeclAssignment()
             .filterIsInstance<SystemVerilogParser.VariableDeclAssignmentVariableContext>()
-            .map { it.variableIdentifier() }
-        val properties = identifiers.map {
-            val location = castContext.getLocation(it)
-            val name = it.text
+        val properties = variableDeclAssignmentVariables.map { variableDeclAssignmentVariable ->
+            val identifier = variableDeclAssignmentVariable.variableIdentifier()
+            val location = castContext.getLocation(identifier)
+            val name = identifier.text
             val signature = SignatureBuilder.buildSignature(ctx, name)
+            val baseDescriptorCopy = ElementCopier.deepCopy(baseDescriptor)
+            val descriptors = variableDeclAssignmentVariable.variableDimension()
+                .map { castContext.castDescriptor(it) ?: return null }
+            val descriptor = descriptors.fold(baseDescriptorCopy) { accumulatedDescriptor, descriptor ->
+                accumulatedDescriptor.wrap(descriptor)
+            }
             EProperty(
                 location,
                 name,
                 signature,
-                ElementCopier.deepCopy(descriptor),
+                descriptor,
                 isMutable
             )
         }

@@ -44,8 +44,10 @@ import io.verik.importer.ast.element.declaration.ETask
 import io.verik.importer.ast.element.declaration.ETypeAlias
 import io.verik.importer.ast.element.declaration.ETypeDeclaration
 import io.verik.importer.ast.element.descriptor.EBitDescriptor
+import io.verik.importer.ast.element.descriptor.EContainerDescriptor
 import io.verik.importer.ast.element.descriptor.EDescriptor
 import io.verik.importer.ast.element.descriptor.EPackedDescriptor
+import io.verik.importer.ast.element.descriptor.EQueueDescriptor
 import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
 import io.verik.importer.ast.element.descriptor.ESimpleDescriptor
 import io.verik.importer.ast.element.expression.EExpression
@@ -181,12 +183,20 @@ abstract class Visitor {
         visitDescriptor(bitDescriptor)
     }
 
+    open fun visitReferenceDescriptor(referenceDescriptor: EReferenceDescriptor) {
+        visitDescriptor(referenceDescriptor)
+    }
+
+    open fun visitContainerDescriptor(containerDescriptor: EContainerDescriptor) {
+        visitDescriptor(containerDescriptor)
+    }
+
     open fun visitPackedDescriptor(packedDescriptor: EPackedDescriptor) {
         visitDescriptor(packedDescriptor)
     }
 
-    open fun visitReferenceDescriptor(referenceDescriptor: EReferenceDescriptor) {
-        visitDescriptor(referenceDescriptor)
+    open fun visitQueueDescriptor(queueDescriptor: EQueueDescriptor) {
+        visitDescriptor(queueDescriptor)
     }
 
 // Expression Like /////////////////////////////////////////////////////////////////////////////////////////////////////
