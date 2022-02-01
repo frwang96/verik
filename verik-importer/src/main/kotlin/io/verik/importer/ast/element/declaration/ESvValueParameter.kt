@@ -16,6 +16,7 @@
 
 package io.verik.importer.ast.element.declaration
 
+import io.verik.importer.ast.common.DescriptorContainer
 import io.verik.importer.ast.element.descriptor.EDescriptor
 import io.verik.importer.common.Visitor
 import io.verik.importer.message.SourceLocation
@@ -23,9 +24,9 @@ import io.verik.importer.message.SourceLocation
 class ESvValueParameter(
     override val location: SourceLocation,
     override val name: String,
-    val descriptor: EDescriptor,
+    var descriptor: EDescriptor,
     val hasDefault: Boolean
-) : EDeclaration() {
+) : EDeclaration(), DescriptorContainer {
 
     override var signature: String? = null
 
@@ -39,5 +40,13 @@ class ESvValueParameter(
 
     override fun acceptChildren(visitor: Visitor) {
         descriptor.accept(visitor)
+    }
+
+    override fun replaceChild(oldDescriptor: EDescriptor, newDescriptor: EDescriptor): Boolean {
+        newDescriptor.parent = this
+        return if (descriptor == oldDescriptor) {
+            descriptor = newDescriptor
+            true
+        } else false
     }
 }

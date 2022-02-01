@@ -22,4 +22,8 @@ import io.verik.importer.ast.element.common.EElement
 abstract class EDescriptor : EElement() {
 
     abstract var type: Type
+
+    fun replace(descriptor: EDescriptor) {
+        parentNotNull().replaceChildAsDescriptorContainer(this, descriptor)
+    }
 }

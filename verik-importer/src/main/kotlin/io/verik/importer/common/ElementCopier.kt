@@ -24,41 +24,48 @@ import io.verik.importer.ast.element.descriptor.ESimpleDescriptor
 import io.verik.importer.ast.element.expression.ELiteralExpression
 import io.verik.importer.ast.element.expression.EReferenceExpression
 import io.verik.importer.message.Messages
+import io.verik.importer.message.SourceLocation
 
 object ElementCopier {
 
-    fun <E : EElement> deepCopy(element: E): E {
-        return copy(element)
+    fun <E : EElement> deepCopy(element: E, location: SourceLocation? = null): E {
+        return copy(element, location)
     }
 
-    private fun <E : EElement> copy(element: E): E {
+    private fun <E : EElement> copy(element: E, location: SourceLocation?): E {
         val copiedElement: EElement = when (element) {
-            is ESimpleDescriptor -> copySimpleDescriptor(element)
-            is EBitDescriptor -> copyBitDescriptor(element)
-            is EPackedDescriptor -> copyPackedDescriptor(element)
-            is EReferenceDescriptor -> copyReferenceDescriptor(element)
-            is ELiteralExpression -> copyLiteralExpression(element)
-            is EReferenceExpression -> copyReferenceExpression(element)
+            is ESimpleDescriptor -> copySimpleDescriptor(element, location)
+            is EBitDescriptor -> copyBitDescriptor(element, location)
+            is EPackedDescriptor -> copyPackedDescriptor(element, location)
+            is EReferenceDescriptor -> copyReferenceDescriptor(element, location)
+            is ELiteralExpression -> copyLiteralExpression(element, location)
+            is EReferenceExpression -> copyReferenceExpression(element, location)
             else -> Messages.INTERNAL_ERROR.on(element, "Unable to copy element: $element")
         }
         @Suppress("UNCHECKED_CAST")
         return copiedElement as E
     }
 
-    private fun copySimpleDescriptor(simpleDescriptor: ESimpleDescriptor): ESimpleDescriptor {
+    private fun copySimpleDescriptor(
+        simpleDescriptor: ESimpleDescriptor,
+        location: SourceLocation?
+    ): ESimpleDescriptor {
         val type = simpleDescriptor.type.copy()
         return ESimpleDescriptor(
-            simpleDescriptor.location,
+            location ?: simpleDescriptor.location,
             type
         )
     }
 
-    private fun copyBitDescriptor(bitDescriptor: EBitDescriptor): EBitDescriptor {
+    private fun copyBitDescriptor(
+        bitDescriptor: EBitDescriptor,
+        location: SourceLocation?,
+    ): EBitDescriptor {
         val type = bitDescriptor.type.copy()
-        val left = copy(bitDescriptor.left)
-        val right = copy(bitDescriptor.right)
+        val left = copy(bitDescriptor.left, location)
+        val right = copy(bitDescriptor.right, location)
         return EBitDescriptor(
-            bitDescriptor.location,
+            location ?: bitDescriptor.location,
             type,
             left,
             right,
@@ -66,13 +73,16 @@ object ElementCopier {
         )
     }
 
-    private fun copyPackedDescriptor(packedDescriptor: EPackedDescriptor): EPackedDescriptor {
+    private fun copyPackedDescriptor(
+        packedDescriptor: EPackedDescriptor,
+        location: SourceLocation?
+    ): EPackedDescriptor {
         val type = packedDescriptor.type.copy()
-        val descriptor = copy(packedDescriptor.descriptor)
-        val left = copy(packedDescriptor.left)
-        val right = copy(packedDescriptor.right)
+        val descriptor = copy(packedDescriptor.descriptor, location)
+        val left = copy(packedDescriptor.left, location)
+        val right = copy(packedDescriptor.right, location)
         return EPackedDescriptor(
-            packedDescriptor.location,
+            location ?: packedDescriptor.location,
             type,
             descriptor,
             left,
@@ -80,25 +90,34 @@ object ElementCopier {
         )
     }
 
-    private fun copyReferenceDescriptor(referenceDescriptor: EReferenceDescriptor): EReferenceDescriptor {
+    private fun copyReferenceDescriptor(
+        referenceDescriptor: EReferenceDescriptor,
+        location: SourceLocation?,
+    ): EReferenceDescriptor {
         val type = referenceDescriptor.type.copy()
         return EReferenceDescriptor(
-            referenceDescriptor.location,
+            location ?: referenceDescriptor.location,
             type,
             referenceDescriptor.name
         )
     }
 
-    private fun copyLiteralExpression(literalExpression: ELiteralExpression): ELiteralExpression {
+    private fun copyLiteralExpression(
+        literalExpression: ELiteralExpression,
+        location: SourceLocation?
+    ): ELiteralExpression {
         return ELiteralExpression(
-            literalExpression.location,
+            location ?: literalExpression.location,
             literalExpression.value
         )
     }
 
-    private fun copyReferenceExpression(referenceExpression: EReferenceExpression): EElement {
+    private fun copyReferenceExpression(
+        referenceExpression: EReferenceExpression,
+        location: SourceLocation?,
+    ): EElement {
         return EReferenceExpression(
-            referenceExpression.location,
+            location ?: referenceExpression.location,
             referenceExpression.name,
             referenceExpression.reference
         )

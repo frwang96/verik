@@ -17,7 +17,9 @@
 package io.verik.importer.ast.element.common
 
 import io.verik.importer.ast.common.DeclarationContainer
+import io.verik.importer.ast.common.DescriptorContainer
 import io.verik.importer.ast.element.declaration.EDeclaration
+import io.verik.importer.ast.element.descriptor.EDescriptor
 import io.verik.importer.common.Visitor
 import io.verik.importer.message.Messages
 import io.verik.importer.message.SourceLocation
@@ -44,10 +46,21 @@ abstract class EElement {
 
     fun replaceChildAsDeclarationContainer(oldDeclaration: EDeclaration, newDeclaration: EDeclaration) {
         if (this is DeclarationContainer) {
-            if (!this.replaceChild(oldDeclaration, newDeclaration))
+            if (!replaceChild(oldDeclaration, newDeclaration)) {
                 Messages.INTERNAL_ERROR.on(oldDeclaration, "Could not find $oldDeclaration in $this")
+            }
         } else {
             Messages.INTERNAL_ERROR.on(oldDeclaration, "Could not replace $oldDeclaration in $this")
+        }
+    }
+
+    fun replaceChildAsDescriptorContainer(oldDescriptor: EDescriptor, newDescriptor: EDescriptor) {
+        if (this is DescriptorContainer) {
+            if (!replaceChild(oldDescriptor, newDescriptor)) {
+                Messages.INTERNAL_ERROR.on(oldDescriptor, "Could not find $oldDescriptor in $this")
+            }
+        } else {
+            Messages.INTERNAL_ERROR.on(oldDescriptor, "Could not replace $oldDescriptor in $this")
         }
     }
 

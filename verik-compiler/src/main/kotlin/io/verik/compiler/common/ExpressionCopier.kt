@@ -45,11 +45,7 @@ object ExpressionCopier {
         return copy(expression, false, null)
     }
 
-    fun <E : EExpression> deepCopy(expression: E): E {
-        return copy(expression, true, null)
-    }
-
-    fun <E : EExpression> deepCopy(expression: E, location: SourceLocation): E {
+    fun <E : EExpression> deepCopy(expression: E, location: SourceLocation? = null): E {
         return copy(expression, true, location)
     }
 
