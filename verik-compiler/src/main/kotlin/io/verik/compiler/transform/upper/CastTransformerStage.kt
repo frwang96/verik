@@ -16,15 +16,15 @@
 
 package io.verik.compiler.transform.upper
 
-import io.verik.compiler.ast.element.common.EBlockExpression
-import io.verik.compiler.ast.element.common.ECallExpression
-import io.verik.compiler.ast.element.common.EIfExpression
-import io.verik.compiler.ast.element.common.EProperty
-import io.verik.compiler.ast.element.common.EPropertyStatement
-import io.verik.compiler.ast.element.common.EReferenceExpression
-import io.verik.compiler.ast.element.kt.EAsExpression
-import io.verik.compiler.ast.element.kt.EIsExpression
-import io.verik.compiler.ast.element.sv.EStringExpression
+import io.verik.compiler.ast.element.declaration.common.EProperty
+import io.verik.compiler.ast.element.expression.common.EBlockExpression
+import io.verik.compiler.ast.element.expression.common.ECallExpression
+import io.verik.compiler.ast.element.expression.common.EIfExpression
+import io.verik.compiler.ast.element.expression.common.EPropertyStatement
+import io.verik.compiler.ast.element.expression.common.EReferenceExpression
+import io.verik.compiler.ast.element.expression.kt.EAsExpression
+import io.verik.compiler.ast.element.expression.kt.EIsExpression
+import io.verik.compiler.ast.element.expression.sv.EStringExpression
 import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core

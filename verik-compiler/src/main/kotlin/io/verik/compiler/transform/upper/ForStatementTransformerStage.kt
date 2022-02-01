@@ -16,16 +16,16 @@
 
 package io.verik.compiler.transform.upper
 
-import io.verik.compiler.ast.element.common.ECallExpression
-import io.verik.compiler.ast.element.common.EConstantExpression
-import io.verik.compiler.ast.element.common.EProperty
-import io.verik.compiler.ast.element.common.EPropertyStatement
-import io.verik.compiler.ast.element.common.EReferenceExpression
-import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
-import io.verik.compiler.ast.element.kt.EKtBinaryExpression
-import io.verik.compiler.ast.element.kt.EKtUnaryExpression
-import io.verik.compiler.ast.element.sv.ESvForStatement
-import io.verik.compiler.ast.element.sv.ESvValueParameter
+import io.verik.compiler.ast.element.declaration.common.EProperty
+import io.verik.compiler.ast.element.declaration.sv.ESvValueParameter
+import io.verik.compiler.ast.element.expression.common.ECallExpression
+import io.verik.compiler.ast.element.expression.common.EConstantExpression
+import io.verik.compiler.ast.element.expression.common.EPropertyStatement
+import io.verik.compiler.ast.element.expression.common.EReferenceExpression
+import io.verik.compiler.ast.element.expression.kt.EFunctionLiteralExpression
+import io.verik.compiler.ast.element.expression.kt.EKtBinaryExpression
+import io.verik.compiler.ast.element.expression.kt.EKtUnaryExpression
+import io.verik.compiler.ast.element.expression.sv.ESvForStatement
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.KtUnaryOperatorKind
 import io.verik.compiler.common.ExpressionCopier

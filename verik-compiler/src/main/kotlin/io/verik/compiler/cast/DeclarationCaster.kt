@@ -17,16 +17,16 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.ast.common.cast
-import io.verik.compiler.ast.element.common.EBlockExpression
-import io.verik.compiler.ast.element.common.ECallExpression
-import io.verik.compiler.ast.element.common.EEnumEntry
-import io.verik.compiler.ast.element.common.EProperty
-import io.verik.compiler.ast.element.common.ETypeParameter
-import io.verik.compiler.ast.element.kt.EKtClass
-import io.verik.compiler.ast.element.kt.EKtFunction
-import io.verik.compiler.ast.element.kt.EKtValueParameter
-import io.verik.compiler.ast.element.kt.EPrimaryConstructor
-import io.verik.compiler.ast.element.kt.ETypeAlias
+import io.verik.compiler.ast.element.declaration.common.EEnumEntry
+import io.verik.compiler.ast.element.declaration.common.EProperty
+import io.verik.compiler.ast.element.declaration.common.ETypeParameter
+import io.verik.compiler.ast.element.declaration.kt.EKtClass
+import io.verik.compiler.ast.element.declaration.kt.EKtFunction
+import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
+import io.verik.compiler.ast.element.declaration.kt.EPrimaryConstructor
+import io.verik.compiler.ast.element.declaration.kt.ETypeAlias
+import io.verik.compiler.ast.element.expression.common.EBlockExpression
+import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.common.location
 import io.verik.compiler.core.common.Core

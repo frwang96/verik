@@ -16,13 +16,13 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.kt.EKtClass
-import io.verik.compiler.ast.element.kt.EKtValueParameter
-import io.verik.compiler.ast.element.sv.EClockingBlock
-import io.verik.compiler.ast.element.sv.EModule
-import io.verik.compiler.ast.element.sv.EModuleInterface
-import io.verik.compiler.ast.element.sv.EModulePort
-import io.verik.compiler.ast.element.sv.EPort
+import io.verik.compiler.ast.element.declaration.kt.EKtClass
+import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
+import io.verik.compiler.ast.element.declaration.sv.EClockingBlock
+import io.verik.compiler.ast.element.declaration.sv.EModule
+import io.verik.compiler.ast.element.declaration.sv.EModuleInterface
+import io.verik.compiler.ast.element.declaration.sv.EModulePort
+import io.verik.compiler.ast.element.declaration.sv.EPort
 import io.verik.compiler.ast.property.PortType
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor

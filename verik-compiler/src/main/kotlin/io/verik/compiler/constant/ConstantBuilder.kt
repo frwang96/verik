@@ -16,8 +16,8 @@
 
 package io.verik.compiler.constant
 
-import io.verik.compiler.ast.element.common.EConstantExpression
-import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.expression.common.EConstantExpression
+import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
 

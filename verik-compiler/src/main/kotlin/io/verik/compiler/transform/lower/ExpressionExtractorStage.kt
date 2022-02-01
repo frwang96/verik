@@ -16,14 +16,14 @@
 
 package io.verik.compiler.transform.lower
 
-import io.verik.compiler.ast.element.common.EBlockExpression
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.common.EProperty
-import io.verik.compiler.ast.element.common.EPropertyStatement
-import io.verik.compiler.ast.element.common.EReferenceExpression
-import io.verik.compiler.ast.element.sv.EConstantPartSelectExpression
-import io.verik.compiler.ast.element.sv.EStreamingExpression
-import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
+import io.verik.compiler.ast.element.declaration.common.EProperty
+import io.verik.compiler.ast.element.expression.common.EBlockExpression
+import io.verik.compiler.ast.element.expression.common.EExpression
+import io.verik.compiler.ast.element.expression.common.EPropertyStatement
+import io.verik.compiler.ast.element.expression.common.EReferenceExpression
+import io.verik.compiler.ast.element.expression.sv.EConstantPartSelectExpression
+import io.verik.compiler.ast.element.expression.sv.EStreamingExpression
+import io.verik.compiler.ast.element.expression.sv.ESvArrayAccessExpression
 import io.verik.compiler.ast.property.ExpressionType
 import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.common.TreeVisitor

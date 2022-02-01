@@ -16,7 +16,7 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.element.kt.EStringTemplateExpression
+import io.verik.compiler.ast.element.expression.kt.EStringTemplateExpression
 import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.LiteralStringEntry
 import io.verik.compiler.ast.property.StringEntry

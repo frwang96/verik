@@ -16,7 +16,7 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.element.common.EReferenceExpression
+import io.verik.compiler.ast.element.expression.common.EReferenceExpression
 import org.jetbrains.kotlin.psi.KtExpression
 
 object ReferenceExpressionCaster {

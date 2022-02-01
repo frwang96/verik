@@ -16,12 +16,12 @@
 
 package io.verik.compiler.reorder
 
-import io.verik.compiler.ast.element.common.EAbstractContainerClass
-import io.verik.compiler.ast.element.common.EDeclaration
-import io.verik.compiler.ast.element.common.EFile
-import io.verik.compiler.ast.element.common.EPackage
 import io.verik.compiler.ast.element.common.EProject
-import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
+import io.verik.compiler.ast.element.declaration.common.EAbstractContainerClass
+import io.verik.compiler.ast.element.declaration.common.EDeclaration
+import io.verik.compiler.ast.element.declaration.common.EFile
+import io.verik.compiler.ast.element.declaration.common.EPackage
+import io.verik.compiler.ast.element.declaration.sv.EAbstractContainerComponent
 import io.verik.compiler.ast.property.PackageType
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext

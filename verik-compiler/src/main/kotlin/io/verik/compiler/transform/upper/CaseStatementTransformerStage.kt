@@ -16,9 +16,9 @@
 
 package io.verik.compiler.transform.upper
 
-import io.verik.compiler.ast.element.common.EBlockExpression
-import io.verik.compiler.ast.element.kt.EWhenExpression
-import io.verik.compiler.ast.element.sv.ECaseStatement
+import io.verik.compiler.ast.element.expression.common.EBlockExpression
+import io.verik.compiler.ast.element.expression.kt.EWhenExpression
+import io.verik.compiler.ast.element.expression.sv.ECaseStatement
 import io.verik.compiler.ast.property.CaseEntry
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.constant.BooleanConstantKind

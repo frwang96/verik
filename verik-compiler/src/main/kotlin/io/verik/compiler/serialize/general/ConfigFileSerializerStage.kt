@@ -16,7 +16,7 @@
 
 package io.verik.compiler.serialize.general
 
-import io.verik.compiler.ast.element.sv.EModule
+import io.verik.compiler.ast.element.declaration.sv.EModule
 import io.verik.compiler.common.TextFile
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext

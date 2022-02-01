@@ -16,8 +16,8 @@
 
 package io.verik.compiler.serialize.general
 
-import io.verik.compiler.ast.element.common.EPackage
-import io.verik.compiler.ast.element.sv.ESvClass
+import io.verik.compiler.ast.element.declaration.common.EPackage
+import io.verik.compiler.ast.element.declaration.sv.ESvClass
 import io.verik.compiler.common.TextFile
 import io.verik.compiler.main.Platform
 import io.verik.compiler.main.ProjectContext

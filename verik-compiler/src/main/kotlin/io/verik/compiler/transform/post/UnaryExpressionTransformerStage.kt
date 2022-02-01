@@ -16,9 +16,9 @@
 
 package io.verik.compiler.transform.post
 
-import io.verik.compiler.ast.element.common.ECallExpression
-import io.verik.compiler.ast.element.kt.EKtUnaryExpression
-import io.verik.compiler.ast.element.sv.ESvUnaryExpression
+import io.verik.compiler.ast.element.expression.common.ECallExpression
+import io.verik.compiler.ast.element.expression.kt.EKtUnaryExpression
+import io.verik.compiler.ast.element.expression.sv.ESvUnaryExpression
 import io.verik.compiler.ast.property.KtUnaryOperatorKind
 import io.verik.compiler.ast.property.SvUnaryOperatorKind
 import io.verik.compiler.common.TreeVisitor

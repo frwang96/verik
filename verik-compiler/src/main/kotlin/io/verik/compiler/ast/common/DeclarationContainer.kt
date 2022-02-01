@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast.common
 
-import io.verik.compiler.ast.element.common.EDeclaration
+import io.verik.compiler.ast.element.declaration.common.EDeclaration
 
 interface DeclarationContainer {
 

@@ -16,11 +16,10 @@
 
 package io.verik.compiler.check.post
 
-import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.ast.element.common.EFile
-import io.verik.compiler.ast.element.common.EPackage
-import io.verik.compiler.ast.element.common.EProject
+import io.verik.compiler.ast.element.declaration.common.EDeclaration
+import io.verik.compiler.ast.element.declaration.common.EFile
+import io.verik.compiler.ast.element.declaration.common.EPackage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
@@ -39,7 +38,7 @@ object PostNameCheckerStage : ProjectStage() {
         override fun visitElement(element: EElement) {
             super.visitElement(element)
             if (element is EDeclaration) {
-                if (element is EProject || element is EPackage || element is EFile)
+                if (element is EPackage || element is EFile)
                     return
                 if (!element.name.matches(nameRegex))
                     Messages.ILLEGAL_NAME.on(element, element.name)

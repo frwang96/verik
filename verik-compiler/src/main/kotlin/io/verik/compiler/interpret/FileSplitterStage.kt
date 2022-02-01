@@ -16,17 +16,17 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.common.EDeclaration
-import io.verik.compiler.ast.element.common.EEnumEntry
-import io.verik.compiler.ast.element.common.EFile
-import io.verik.compiler.ast.element.common.EProperty
-import io.verik.compiler.ast.element.sv.EAbstractComponent
-import io.verik.compiler.ast.element.sv.EEnum
-import io.verik.compiler.ast.element.sv.EInjectedProperty
-import io.verik.compiler.ast.element.sv.EStruct
-import io.verik.compiler.ast.element.sv.ESvClass
-import io.verik.compiler.ast.element.sv.ESvFunction
-import io.verik.compiler.ast.element.sv.ETask
+import io.verik.compiler.ast.element.declaration.common.EDeclaration
+import io.verik.compiler.ast.element.declaration.common.EEnumEntry
+import io.verik.compiler.ast.element.declaration.common.EFile
+import io.verik.compiler.ast.element.declaration.common.EProperty
+import io.verik.compiler.ast.element.declaration.sv.EAbstractComponent
+import io.verik.compiler.ast.element.declaration.sv.EEnum
+import io.verik.compiler.ast.element.declaration.sv.EInjectedProperty
+import io.verik.compiler.ast.element.declaration.sv.EStruct
+import io.verik.compiler.ast.element.declaration.sv.ESvClass
+import io.verik.compiler.ast.element.declaration.sv.ESvFunction
+import io.verik.compiler.ast.element.declaration.sv.ETask
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages

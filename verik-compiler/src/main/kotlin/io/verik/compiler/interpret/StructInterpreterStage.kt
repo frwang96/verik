@@ -16,10 +16,10 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.common.EProperty
-import io.verik.compiler.ast.element.kt.EKtClass
-import io.verik.compiler.ast.element.kt.EKtValueParameter
-import io.verik.compiler.ast.element.sv.EStruct
+import io.verik.compiler.ast.element.declaration.common.EProperty
+import io.verik.compiler.ast.element.declaration.kt.EKtClass
+import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
+import io.verik.compiler.ast.element.declaration.sv.EStruct
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core

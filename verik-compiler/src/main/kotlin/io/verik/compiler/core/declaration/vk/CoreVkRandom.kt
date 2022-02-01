@@ -16,7 +16,7 @@
 
 package io.verik.compiler.core.declaration.vk
 
-import io.verik.compiler.ast.element.common.ECallExpression
+import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope

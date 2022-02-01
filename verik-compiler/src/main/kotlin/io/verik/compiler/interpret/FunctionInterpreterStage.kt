@@ -16,20 +16,20 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.common.EBlockExpression
-import io.verik.compiler.ast.element.common.ECallExpression
-import io.verik.compiler.ast.element.common.EDeclaration
-import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
-import io.verik.compiler.ast.element.kt.EKtFunction
-import io.verik.compiler.ast.element.kt.EKtValueParameter
-import io.verik.compiler.ast.element.sv.EAlwaysComBlock
-import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
-import io.verik.compiler.ast.element.sv.EEventControlExpression
-import io.verik.compiler.ast.element.sv.EInitialBlock
-import io.verik.compiler.ast.element.sv.ESvClass
-import io.verik.compiler.ast.element.sv.ESvFunction
-import io.verik.compiler.ast.element.sv.ESvValueParameter
-import io.verik.compiler.ast.element.sv.ETask
+import io.verik.compiler.ast.element.declaration.common.EDeclaration
+import io.verik.compiler.ast.element.declaration.kt.EKtFunction
+import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
+import io.verik.compiler.ast.element.declaration.sv.EAlwaysComBlock
+import io.verik.compiler.ast.element.declaration.sv.EAlwaysSeqBlock
+import io.verik.compiler.ast.element.declaration.sv.EInitialBlock
+import io.verik.compiler.ast.element.declaration.sv.ESvClass
+import io.verik.compiler.ast.element.declaration.sv.ESvFunction
+import io.verik.compiler.ast.element.declaration.sv.ESvValueParameter
+import io.verik.compiler.ast.element.declaration.sv.ETask
+import io.verik.compiler.ast.element.expression.common.EBlockExpression
+import io.verik.compiler.ast.element.expression.common.ECallExpression
+import io.verik.compiler.ast.element.expression.kt.EFunctionLiteralExpression
+import io.verik.compiler.ast.element.expression.sv.EEventControlExpression
 import io.verik.compiler.ast.property.FunctionQualifierType
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor

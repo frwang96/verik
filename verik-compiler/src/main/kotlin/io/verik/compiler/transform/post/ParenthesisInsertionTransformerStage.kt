@@ -16,11 +16,11 @@
 
 package io.verik.compiler.transform.post
 
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.common.EParenthesizedExpression
-import io.verik.compiler.ast.element.sv.EInlineIfExpression
-import io.verik.compiler.ast.element.sv.ESvBinaryExpression
-import io.verik.compiler.ast.element.sv.ESvUnaryExpression
+import io.verik.compiler.ast.element.expression.common.EExpression
+import io.verik.compiler.ast.element.expression.common.EParenthesizedExpression
+import io.verik.compiler.ast.element.expression.sv.EInlineIfExpression
+import io.verik.compiler.ast.element.expression.sv.ESvBinaryExpression
+import io.verik.compiler.ast.element.expression.sv.ESvUnaryExpression
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext

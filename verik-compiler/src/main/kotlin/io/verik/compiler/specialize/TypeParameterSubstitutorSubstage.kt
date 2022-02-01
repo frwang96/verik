@@ -18,12 +18,12 @@ package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.common.TypeParameterized
-import io.verik.compiler.ast.element.common.ECallExpression
-import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.ast.element.common.ETypeParameter
 import io.verik.compiler.ast.element.common.ETypedElement
-import io.verik.compiler.ast.element.kt.EKtClass
+import io.verik.compiler.ast.element.declaration.common.EDeclaration
+import io.verik.compiler.ast.element.declaration.common.ETypeParameter
+import io.verik.compiler.ast.element.declaration.kt.EKtClass
+import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.CardinalConstantDeclaration
 import io.verik.compiler.message.Messages

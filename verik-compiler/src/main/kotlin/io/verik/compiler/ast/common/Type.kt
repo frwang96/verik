@@ -16,10 +16,10 @@
 
 package io.verik.compiler.ast.common
 
-import io.verik.compiler.ast.element.common.EAbstractClass
 import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.ast.element.common.ETypeParameter
-import io.verik.compiler.ast.element.kt.ETypeAlias
+import io.verik.compiler.ast.element.declaration.common.EAbstractClass
+import io.verik.compiler.ast.element.declaration.common.ETypeParameter
+import io.verik.compiler.ast.element.declaration.kt.ETypeAlias
 import io.verik.compiler.core.common.Cardinal
 import io.verik.compiler.core.common.CardinalConstantDeclaration
 import io.verik.compiler.core.common.CardinalDeclaration

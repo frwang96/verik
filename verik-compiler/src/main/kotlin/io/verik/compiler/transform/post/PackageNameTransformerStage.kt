@@ -16,7 +16,7 @@
 
 package io.verik.compiler.transform.post
 
-import io.verik.compiler.ast.element.common.EPackage
+import io.verik.compiler.ast.element.declaration.common.EPackage
 import io.verik.compiler.ast.property.PackageType
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext

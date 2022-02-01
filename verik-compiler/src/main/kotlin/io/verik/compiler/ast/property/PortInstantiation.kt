@@ -16,8 +16,8 @@
 
 package io.verik.compiler.ast.property
 
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.sv.EPort
+import io.verik.compiler.ast.element.declaration.sv.EPort
+import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.message.SourceLocation
 
 class PortInstantiation(

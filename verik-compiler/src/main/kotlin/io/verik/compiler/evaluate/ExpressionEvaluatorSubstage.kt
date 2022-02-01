@@ -16,8 +16,8 @@
 
 package io.verik.compiler.evaluate
 
-import io.verik.compiler.ast.element.common.EDeclaration
-import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.declaration.common.EDeclaration
+import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.specialize.SpecializerSubstage
 import io.verik.compiler.specialize.TypeParameterBinding

@@ -16,17 +16,17 @@
 
 package io.verik.compiler.transform.post
 
-import io.verik.compiler.ast.element.common.EDeclaration
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.ETypedElement
-import io.verik.compiler.ast.element.kt.EKtBinaryExpression
-import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
-import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
-import io.verik.compiler.ast.element.sv.EClockingBlock
-import io.verik.compiler.ast.element.sv.EConstantPartSelectExpression
-import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
-import io.verik.compiler.ast.element.sv.ESvBinaryExpression
+import io.verik.compiler.ast.element.declaration.common.EDeclaration
+import io.verik.compiler.ast.element.declaration.sv.EAbstractContainerComponent
+import io.verik.compiler.ast.element.declaration.sv.EAlwaysSeqBlock
+import io.verik.compiler.ast.element.declaration.sv.EClockingBlock
+import io.verik.compiler.ast.element.expression.common.EExpression
+import io.verik.compiler.ast.element.expression.common.EReferenceExpression
+import io.verik.compiler.ast.element.expression.kt.EKtBinaryExpression
+import io.verik.compiler.ast.element.expression.sv.EConstantPartSelectExpression
+import io.verik.compiler.ast.element.expression.sv.ESvArrayAccessExpression
+import io.verik.compiler.ast.element.expression.sv.ESvBinaryExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.common.TreeVisitor

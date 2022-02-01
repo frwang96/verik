@@ -17,9 +17,9 @@
 package io.verik.compiler.resolve
 
 import io.verik.compiler.ast.common.Type
-import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypedElement
+import io.verik.compiler.ast.element.expression.common.ECallExpression
 
 sealed class TypeAdapter {
 

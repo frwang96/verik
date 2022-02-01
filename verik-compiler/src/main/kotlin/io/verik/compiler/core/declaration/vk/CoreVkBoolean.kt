@@ -16,9 +16,9 @@
 
 package io.verik.compiler.core.declaration.vk
 
-import io.verik.compiler.ast.element.common.ECallExpression
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.sv.EWidthCastExpression
+import io.verik.compiler.ast.element.expression.common.ECallExpression
+import io.verik.compiler.ast.element.expression.common.EExpression
+import io.verik.compiler.ast.element.expression.sv.EWidthCastExpression
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.core.common.CoreTransformUtil

@@ -16,10 +16,10 @@
 
 package io.verik.compiler.transform.post
 
-import io.verik.compiler.ast.element.common.ECallExpression
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.kt.EStringTemplateExpression
-import io.verik.compiler.ast.element.sv.EStringExpression
+import io.verik.compiler.ast.element.expression.common.ECallExpression
+import io.verik.compiler.ast.element.expression.common.EExpression
+import io.verik.compiler.ast.element.expression.kt.EStringTemplateExpression
+import io.verik.compiler.ast.element.expression.sv.EStringExpression
 import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.LiteralStringEntry
 import io.verik.compiler.common.TreeVisitor

@@ -16,8 +16,8 @@
 
 package io.verik.compiler.check.mid
 
-import io.verik.compiler.ast.element.common.ECallExpression
-import io.verik.compiler.ast.element.kt.EKtFunction
+import io.verik.compiler.ast.element.declaration.kt.EKtFunction
+import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.AnnotationEntries
 import io.verik.compiler.main.ProjectContext

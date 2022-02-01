@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast.common
 
-import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.expression.common.EExpression
 
 interface ExpressionContainer {
 

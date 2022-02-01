@@ -16,14 +16,14 @@
 
 package io.verik.compiler.transform.upper
 
-import io.verik.compiler.ast.element.common.EBlockExpression
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.common.EIfExpression
-import io.verik.compiler.ast.element.common.EProperty
-import io.verik.compiler.ast.element.common.EPropertyStatement
-import io.verik.compiler.ast.element.common.EReferenceExpression
-import io.verik.compiler.ast.element.kt.EKtBinaryExpression
-import io.verik.compiler.ast.element.kt.EWhenExpression
+import io.verik.compiler.ast.element.declaration.common.EProperty
+import io.verik.compiler.ast.element.expression.common.EBlockExpression
+import io.verik.compiler.ast.element.expression.common.EExpression
+import io.verik.compiler.ast.element.expression.common.EIfExpression
+import io.verik.compiler.ast.element.expression.common.EPropertyStatement
+import io.verik.compiler.ast.element.expression.common.EReferenceExpression
+import io.verik.compiler.ast.element.expression.kt.EKtBinaryExpression
+import io.verik.compiler.ast.element.expression.kt.EWhenExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core

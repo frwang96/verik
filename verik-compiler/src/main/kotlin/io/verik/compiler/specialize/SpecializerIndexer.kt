@@ -16,14 +16,14 @@
 
 package io.verik.compiler.specialize
 
-import io.verik.compiler.ast.element.common.ECallExpression
-import io.verik.compiler.ast.element.common.EDeclaration
-import io.verik.compiler.ast.element.common.EEnumEntry
-import io.verik.compiler.ast.element.common.EFile
-import io.verik.compiler.ast.element.common.EReferenceExpression
-import io.verik.compiler.ast.element.kt.EKtAbstractFunction
-import io.verik.compiler.ast.element.kt.EKtClass
-import io.verik.compiler.ast.element.kt.EPrimaryConstructor
+import io.verik.compiler.ast.element.declaration.common.EDeclaration
+import io.verik.compiler.ast.element.declaration.common.EEnumEntry
+import io.verik.compiler.ast.element.declaration.common.EFile
+import io.verik.compiler.ast.element.declaration.kt.EKtAbstractFunction
+import io.verik.compiler.ast.element.declaration.kt.EKtClass
+import io.verik.compiler.ast.element.declaration.kt.EPrimaryConstructor
+import io.verik.compiler.ast.element.expression.common.ECallExpression
+import io.verik.compiler.ast.element.expression.common.EReferenceExpression
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.message.Messages
 

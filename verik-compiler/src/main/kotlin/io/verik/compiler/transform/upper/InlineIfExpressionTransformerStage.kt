@@ -16,10 +16,10 @@
 
 package io.verik.compiler.transform.upper
 
-import io.verik.compiler.ast.element.common.EBlockExpression
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.common.EIfExpression
-import io.verik.compiler.ast.element.sv.EInlineIfExpression
+import io.verik.compiler.ast.element.expression.common.EBlockExpression
+import io.verik.compiler.ast.element.expression.common.EExpression
+import io.verik.compiler.ast.element.expression.common.EIfExpression
+import io.verik.compiler.ast.element.expression.sv.EInlineIfExpression
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage

@@ -16,10 +16,10 @@
 
 package io.verik.compiler.serialize.source
 
-import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.common.EFile
+import io.verik.compiler.ast.element.declaration.common.EDeclaration
+import io.verik.compiler.ast.element.declaration.common.EFile
+import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.message.SourceLocation
 
 class SerializeContext(file: EFile) {

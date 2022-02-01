@@ -16,9 +16,9 @@
 
 package io.verik.compiler.core.common
 
-import io.verik.compiler.ast.element.common.ECallExpression
-import io.verik.compiler.ast.element.common.EConstantExpression
-import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.expression.common.ECallExpression
+import io.verik.compiler.ast.element.expression.common.EConstantExpression
+import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.ast.property.SvUnaryOperatorKind
 import io.verik.compiler.resolve.TypeConstraint

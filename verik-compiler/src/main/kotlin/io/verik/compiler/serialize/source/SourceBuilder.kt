@@ -16,7 +16,7 @@
 
 package io.verik.compiler.serialize.source
 
-import io.verik.compiler.ast.element.common.EFile
+import io.verik.compiler.ast.element.declaration.common.EFile
 import io.verik.compiler.common.TextFile
 import io.verik.compiler.main.Platform
 import io.verik.compiler.main.ProjectContext

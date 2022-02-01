@@ -18,15 +18,15 @@ package io.verik.compiler.normalize
 
 import io.verik.compiler.ast.common.Declaration
 import io.verik.compiler.ast.common.Type
-import io.verik.compiler.ast.element.common.EAbstractClass
-import io.verik.compiler.ast.element.common.ECallExpression
-import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.ast.element.common.EReferenceExpression
 import io.verik.compiler.ast.element.common.ETypedElement
-import io.verik.compiler.ast.element.sv.EAbstractComponentInstantiation
-import io.verik.compiler.ast.element.sv.EEnum
-import io.verik.compiler.ast.element.sv.EStructLiteralExpression
+import io.verik.compiler.ast.element.declaration.common.EAbstractClass
+import io.verik.compiler.ast.element.declaration.common.EDeclaration
+import io.verik.compiler.ast.element.declaration.sv.EAbstractComponentInstantiation
+import io.verik.compiler.ast.element.declaration.sv.EEnum
+import io.verik.compiler.ast.element.expression.common.ECallExpression
+import io.verik.compiler.ast.element.expression.common.EReferenceExpression
+import io.verik.compiler.ast.element.expression.sv.EStructLiteralExpression
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage

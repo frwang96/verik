@@ -16,8 +16,8 @@
 
 package io.verik.compiler.transform.upper
 
-import io.verik.compiler.ast.element.common.ECallExpression
-import io.verik.compiler.ast.element.common.EProperty
+import io.verik.compiler.ast.element.declaration.common.EProperty
+import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext

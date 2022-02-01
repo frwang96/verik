@@ -16,8 +16,8 @@
 
 package io.verik.compiler.ast.property
 
-import io.verik.compiler.ast.element.common.EBlockExpression
-import io.verik.compiler.ast.element.common.EExpression
+import io.verik.compiler.ast.element.expression.common.EBlockExpression
+import io.verik.compiler.ast.element.expression.common.EExpression
 
 class CaseEntry(
     var conditions: ArrayList<EExpression>,

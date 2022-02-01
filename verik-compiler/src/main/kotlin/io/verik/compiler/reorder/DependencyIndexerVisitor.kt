@@ -16,16 +16,16 @@
 
 package io.verik.compiler.reorder
 
-import io.verik.compiler.ast.element.common.EAbstractContainerClass
-import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.ast.element.common.EFile
-import io.verik.compiler.ast.element.common.EPackage
 import io.verik.compiler.ast.element.common.EProject
-import io.verik.compiler.ast.element.common.EProperty
-import io.verik.compiler.ast.element.common.EReceiverExpression
-import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
-import io.verik.compiler.ast.element.sv.ESvClass
+import io.verik.compiler.ast.element.declaration.common.EAbstractContainerClass
+import io.verik.compiler.ast.element.declaration.common.EDeclaration
+import io.verik.compiler.ast.element.declaration.common.EFile
+import io.verik.compiler.ast.element.declaration.common.EPackage
+import io.verik.compiler.ast.element.declaration.common.EProperty
+import io.verik.compiler.ast.element.declaration.sv.EAbstractContainerComponent
+import io.verik.compiler.ast.element.declaration.sv.ESvClass
+import io.verik.compiler.ast.element.expression.common.EReceiverExpression
 import io.verik.compiler.common.TreeVisitor
 import java.lang.Integer.min
 
@@ -49,7 +49,7 @@ class DependencyIndexerVisitor(
             val parent = elementParents[commonParentIndex]
             val fromDeclaration = elementParents[commonParentIndex + 1]
             val toDeclaration = referenceParents[commonParentIndex + 1]
-            if (parent is EDeclaration && fromDeclaration is EDeclaration && toDeclaration is EDeclaration) {
+            if (fromDeclaration is EDeclaration && toDeclaration is EDeclaration) {
                 val dependency = Dependency(fromDeclaration, toDeclaration, element)
                 if (isValidDependency(parent, dependency))
                     dependencyRegistry.add(parent, dependency)
@@ -67,7 +67,7 @@ class DependencyIndexerVisitor(
         return parents.asReversed()
     }
 
-    private fun isValidDependency(parent: EDeclaration, dependency: Dependency): Boolean {
+    private fun isValidDependency(parent: EElement, dependency: Dependency): Boolean {
         return when {
             !isReorderable(parent) -> false
             dependency.fromDeclaration is ESvClass && dependency.toDeclaration is ESvClass -> false
@@ -75,7 +75,7 @@ class DependencyIndexerVisitor(
         }
     }
 
-    private fun isReorderable(parent: EDeclaration): Boolean {
+    private fun isReorderable(parent: EElement): Boolean {
         return parent is EProject ||
             parent is EPackage ||
             parent is EFile ||

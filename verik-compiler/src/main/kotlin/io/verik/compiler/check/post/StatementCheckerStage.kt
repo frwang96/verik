@@ -16,14 +16,14 @@
 
 package io.verik.compiler.check.post
 
-import io.verik.compiler.ast.element.common.EBlockExpression
-import io.verik.compiler.ast.element.common.ECallExpression
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.common.EIfExpression
-import io.verik.compiler.ast.element.sv.EDelayExpression
-import io.verik.compiler.ast.element.sv.EEventControlExpression
-import io.verik.compiler.ast.element.sv.ESvBinaryExpression
-import io.verik.compiler.ast.element.sv.ESvUnaryExpression
+import io.verik.compiler.ast.element.expression.common.EBlockExpression
+import io.verik.compiler.ast.element.expression.common.ECallExpression
+import io.verik.compiler.ast.element.expression.common.EExpression
+import io.verik.compiler.ast.element.expression.common.EIfExpression
+import io.verik.compiler.ast.element.expression.sv.EDelayExpression
+import io.verik.compiler.ast.element.expression.sv.EEventControlExpression
+import io.verik.compiler.ast.element.expression.sv.ESvBinaryExpression
+import io.verik.compiler.ast.element.expression.sv.ESvUnaryExpression
 import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.common.TreeVisitor

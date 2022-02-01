@@ -16,9 +16,9 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.element.common.EBlockExpression
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.kt.EWhenExpression
+import io.verik.compiler.ast.element.expression.common.EBlockExpression
+import io.verik.compiler.ast.element.expression.common.EExpression
+import io.verik.compiler.ast.element.expression.kt.EWhenExpression
 import io.verik.compiler.ast.property.WhenEntry
 import io.verik.compiler.common.location
 import io.verik.compiler.message.Messages

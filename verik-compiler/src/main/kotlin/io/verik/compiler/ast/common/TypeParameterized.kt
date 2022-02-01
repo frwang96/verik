@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast.common
 
-import io.verik.compiler.ast.element.common.ETypeParameter
+import io.verik.compiler.ast.element.declaration.common.ETypeParameter
 
 interface TypeParameterized {
 
