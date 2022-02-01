@@ -21,6 +21,7 @@ enum class StageType {
     PARSE,
     CAST,
     RESOLVE,
+    TRANSFORM,
     INTERPRET,
     CHECK,
     SERIALIZE;
@@ -38,6 +39,7 @@ enum class StageType {
         return this in listOf(
             CAST,
             RESOLVE,
+            TRANSFORM,
             INTERPRET
         )
     }

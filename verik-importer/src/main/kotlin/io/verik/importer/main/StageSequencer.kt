@@ -30,6 +30,7 @@ import io.verik.importer.resolve.DescriptorResolverStage
 import io.verik.importer.resolve.ReferenceResolverStage
 import io.verik.importer.serialize.general.ConfigFileSerializerStage
 import io.verik.importer.serialize.source.SourceSerializerStage
+import io.verik.importer.transform.LocalTypeAliasEliminatorStage
 
 object StageSequencer {
 
@@ -47,6 +48,8 @@ object StageSequencer {
         stageSequence.add(StageType.RESOLVE, ReferenceResolverStage)
         stageSequence.add(StageType.RESOLVE, DescriptorResolverStage)
         stageSequence.add(StageType.RESOLVE, DeclarationResolvedCheckerStage)
+
+        stageSequence.add(StageType.TRANSFORM, LocalTypeAliasEliminatorStage)
 
         stageSequence.add(StageType.INTERPRET, PackageInterpreterStage)
         stageSequence.add(StageType.INTERPRET, ClassInterpreterStage)

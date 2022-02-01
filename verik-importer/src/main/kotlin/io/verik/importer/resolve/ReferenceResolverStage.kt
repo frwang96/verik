@@ -16,10 +16,11 @@
 
 package io.verik.importer.resolve
 
-import io.verik.importer.ast.element.declaration.EEnum
-import io.verik.importer.ast.element.declaration.EStruct
+import io.verik.importer.ast.element.common.EProject
+import io.verik.importer.ast.element.declaration.EDeclaration
+import io.verik.importer.ast.element.declaration.EModule
 import io.verik.importer.ast.element.declaration.ESvClass
-import io.verik.importer.ast.element.declaration.ETypeAlias
+import io.verik.importer.ast.element.declaration.ESvPackage
 import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
 import io.verik.importer.common.TreeVisitor
 import io.verik.importer.main.ProjectContext
@@ -31,38 +32,47 @@ object ReferenceResolverStage : ProjectStage() {
     override fun process(projectContext: ProjectContext) {
         val namespaceIndexerVisitor = NamespaceIndexerVisitor()
         projectContext.project.accept(namespaceIndexerVisitor)
-        val referenceResolverVisitor = ReferenceResolverVisitor(namespaceIndexerVisitor.namespace)
+        val referenceResolverVisitor = ReferenceResolverVisitor(namespaceIndexerVisitor.namespaceMap)
         projectContext.project.accept(referenceResolverVisitor)
     }
 
     private class NamespaceIndexerVisitor : TreeVisitor() {
 
-        val namespace = Namespace()
+        val namespaceMap = NamespaceMap()
+
+        private fun buildNamespace(declarations: List<EDeclaration>): Namespace {
+            val namespace = Namespace()
+            declarations.forEach {
+                if (it !is ESvPackage) {
+                    namespace[it.name] = it
+                }
+            }
+            return namespace
+        }
+
+        override fun visitProject(project: EProject) {
+            super.visitProject(project)
+            namespaceMap[project] = buildNamespace(project.declarations)
+        }
 
         override fun visitSvClass(`class`: ESvClass) {
-            namespace[`class`.name] = `class`
+            super.visitSvClass(`class`)
+            namespaceMap[`class`] = buildNamespace(`class`.declarations)
         }
 
-        override fun visitTypeAlias(typeAlias: ETypeAlias) {
-            namespace[typeAlias.name] = typeAlias
-        }
-
-        override fun visitStruct(struct: EStruct) {
-            namespace[struct.name] = struct
-        }
-
-        override fun visitEnum(enum: EEnum) {
-            namespace[enum.name] = enum
+        override fun visitModule(module: EModule) {
+            super.visitModule(module)
+            namespaceMap[module] = buildNamespace(module.declarations)
         }
     }
 
     private class ReferenceResolverVisitor(
-        private val namespace: Namespace
+        private val namespaceMap: NamespaceMap
     ) : TreeVisitor() {
 
         override fun visitReferenceDescriptor(referenceDescriptor: EReferenceDescriptor) {
             super.visitReferenceDescriptor(referenceDescriptor)
-            val declaration = namespace[referenceDescriptor.name]
+            val declaration = namespaceMap[referenceDescriptor, referenceDescriptor.name]
             if (declaration != null) {
                 referenceDescriptor.type = declaration.toType()
             } else {
