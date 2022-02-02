@@ -18,7 +18,7 @@ package io.verik.importer.cast.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.ast.element.common.EContainerElement
-import io.verik.importer.ast.element.declaration.ESvTypeParameter
+import io.verik.importer.ast.element.declaration.ETypeParameter
 import io.verik.importer.cast.common.CastContext
 
 object TypeParameterCaster {
@@ -39,7 +39,7 @@ object TypeParameterCaster {
         val typeParameters = identifiers.map {
             val location = castContext.getLocation(it)
             val name = it.text
-            ESvTypeParameter(location, name, false)
+            ETypeParameter(location, name, false)
         }
         return EContainerElement(castContext.getLocation(ctx), typeParameters)
     }

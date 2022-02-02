@@ -19,7 +19,7 @@ package io.verik.importer.ast.element.declaration
 import io.verik.importer.common.Visitor
 import io.verik.importer.message.SourceLocation
 
-class ESvTypeParameter(
+class ETypeParameter(
     override val location: SourceLocation,
     override val name: String,
     val isCardinal: Boolean
@@ -28,7 +28,7 @@ class ESvTypeParameter(
     override var signature: String? = null
 
     override fun accept(visitor: Visitor) {
-        visitor.visitSvTypeParameter(this)
+        visitor.visitTypeParameter(this)
     }
 
     override fun acceptChildren(visitor: Visitor) {}

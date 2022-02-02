@@ -32,7 +32,7 @@ internal class ClassInterpreterStageTest : BaseTest() {
                 endclass
             """.trimIndent(),
             ClassInterpreterStage::class,
-            "KtClass(d, [], [], ReferenceDescriptor(c, c), 1)"
+            "KtClass(d, [], [], [], ReferenceDescriptor(c, c), 1)"
         ) { it.findDeclaration("d") }
     }
 
@@ -44,7 +44,12 @@ internal class ClassInterpreterStageTest : BaseTest() {
                 endmodule
             """.trimIndent(),
             ClassInterpreterStage::class,
-            "KtClass(m, [], [KtValueParameter(x, SimpleDescriptor(Boolean), [In], 1, 0)], SimpleDescriptor(Module), 0)"
+            """
+                KtClass(
+                    m, [], [],
+                    [KtValueParameter(x, SimpleDescriptor(Boolean), [In], 1, 0)], SimpleDescriptor(Module), 0
+                )
+            """.trimIndent()
         ) { it.findDeclaration("m") }
     }
 
@@ -57,7 +62,12 @@ internal class ClassInterpreterStageTest : BaseTest() {
                 } s;
             """.trimIndent(),
             ClassInterpreterStage::class,
-            "KtClass(s, [], [KtValueParameter(x, SimpleDescriptor(Boolean), [], 1, 0)], SimpleDescriptor(Struct), 0)"
+            """
+                KtClass(
+                    s, [], [],
+                    [KtValueParameter(x, SimpleDescriptor(Boolean), [], 1, 0)], SimpleDescriptor(Struct), 0
+                )
+            """.trimIndent()
         ) { it.findDeclaration("s") }
     }
 }

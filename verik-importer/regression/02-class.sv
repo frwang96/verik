@@ -21,3 +21,6 @@ endclass
 
 class c1 extends c0;
 endclass
+
+class c2 #(type T, type U);
+endclass

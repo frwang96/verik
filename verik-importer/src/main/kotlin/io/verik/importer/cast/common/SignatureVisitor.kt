@@ -52,6 +52,8 @@ class SignatureVisitor : SystemVerilogParserBaseVisitor<Unit>() {
         accept(ctx!!.moduleKeyword())
         accept(ctx.lifetime())
         add(SignatureFragmentKind.NAME)
+        accept(ctx.parameterPortList())
+        accept(ctx.listOfPorts())
         accept(ctx.SEMICOLON())
     }
 
@@ -59,6 +61,7 @@ class SignatureVisitor : SystemVerilogParserBaseVisitor<Unit>() {
         accept(ctx!!.moduleKeyword())
         accept(ctx.lifetime())
         add(SignatureFragmentKind.NAME)
+        accept(ctx.parameterPortList())
         accept(ctx.listOfPortDeclarations())
         accept(ctx.SEMICOLON())
     }
@@ -91,6 +94,20 @@ class SignatureVisitor : SystemVerilogParserBaseVisitor<Unit>() {
     }
 
 // A.1.3 Module Parameters and Ports ///////////////////////////////////////////////////////////////////////////////////
+
+    override fun visitParameterPortListParamAssign(ctx: SystemVerilogParser.ParameterPortListParamAssignContext?) {
+        accept(ctx!!.SHARP())
+        acceptWrapParenthesisBreak(ctx.listOfParamAssignments().paramAssignment() + ctx.parameterPortDeclaration())
+    }
+
+    override fun visitParameterPortListDeclaration(ctx: SystemVerilogParser.ParameterPortListDeclarationContext?) {
+        accept(ctx!!.SHARP())
+        acceptWrapParenthesisBreak(ctx.parameterPortDeclaration())
+    }
+
+    override fun visitListOfPorts(ctx: SystemVerilogParser.ListOfPortsContext?) {
+        acceptWrapParenthesisBreak(ctx!!.port())
+    }
 
     override fun visitListOfPortDeclarations(ctx: SystemVerilogParser.ListOfPortDeclarationsContext?) {
         acceptWrapParenthesisBreak(ctx!!.ansiPortDeclaration())

@@ -23,3 +23,8 @@ import io.verik.core.*
 open class c0
 
 open class c1 : c0()
+
+open class c2<
+    T,
+    U
+>

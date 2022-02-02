@@ -25,7 +25,7 @@ class ESvClass(
     override val name: String,
     override var signature: String?,
     override var declarations: ArrayList<EDeclaration>,
-    val typeParameters: List<ESvTypeParameter>,
+    val typeParameters: List<ETypeParameter>,
     val superDescriptor: EDescriptor
 ) : EContainerDeclaration() {
 

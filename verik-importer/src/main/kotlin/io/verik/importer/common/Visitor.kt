@@ -39,11 +39,11 @@ import io.verik.importer.ast.element.declaration.ESvClass
 import io.verik.importer.ast.element.declaration.ESvConstructor
 import io.verik.importer.ast.element.declaration.ESvFunction
 import io.verik.importer.ast.element.declaration.ESvPackage
-import io.verik.importer.ast.element.declaration.ESvTypeParameter
 import io.verik.importer.ast.element.declaration.ESvValueParameter
 import io.verik.importer.ast.element.declaration.ETask
 import io.verik.importer.ast.element.declaration.ETypeAlias
 import io.verik.importer.ast.element.declaration.ETypeDeclaration
+import io.verik.importer.ast.element.declaration.ETypeParameter
 import io.verik.importer.ast.element.descriptor.EBitDescriptor
 import io.verik.importer.ast.element.descriptor.EContainerDescriptor
 import io.verik.importer.ast.element.descriptor.EDescriptor
@@ -114,7 +114,7 @@ abstract class Visitor {
         visitTypeDeclaration(typeAlias)
     }
 
-    open fun visitSvTypeParameter(typeParameter: ESvTypeParameter) {
+    open fun visitTypeParameter(typeParameter: ETypeParameter) {
         visitDeclaration(typeParameter)
     }
 

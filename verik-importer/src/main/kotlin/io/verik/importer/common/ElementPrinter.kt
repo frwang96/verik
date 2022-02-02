@@ -35,10 +35,10 @@ import io.verik.importer.ast.element.declaration.ESvClass
 import io.verik.importer.ast.element.declaration.ESvConstructor
 import io.verik.importer.ast.element.declaration.ESvFunction
 import io.verik.importer.ast.element.declaration.ESvPackage
-import io.verik.importer.ast.element.declaration.ESvTypeParameter
 import io.verik.importer.ast.element.declaration.ESvValueParameter
 import io.verik.importer.ast.element.declaration.ETask
 import io.verik.importer.ast.element.declaration.ETypeAlias
+import io.verik.importer.ast.element.declaration.ETypeParameter
 import io.verik.importer.ast.element.descriptor.EBitDescriptor
 import io.verik.importer.ast.element.descriptor.EPackedDescriptor
 import io.verik.importer.ast.element.descriptor.EQueueDescriptor
@@ -100,6 +100,7 @@ class ElementPrinter : Visitor() {
         build("KtClass") {
             build(`class`.name)
             build(`class`.declarations)
+            build(`class`.typeParameters)
             build(`class`.valueParameters)
             build(`class`.superDescriptor)
             build(`class`.isOpen)
@@ -110,6 +111,7 @@ class ElementPrinter : Visitor() {
         build("Module") {
             build(module.name)
             build(module.declarations)
+            build(module.typeParameters)
             build(module.ports)
         }
     }
@@ -135,8 +137,8 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitSvTypeParameter(typeParameter: ESvTypeParameter) {
-        build("SvTypeParameter") {
+    override fun visitTypeParameter(typeParameter: ETypeParameter) {
+        build("TypeParameter") {
             build(typeParameter.name)
             build(typeParameter.isCardinal)
         }

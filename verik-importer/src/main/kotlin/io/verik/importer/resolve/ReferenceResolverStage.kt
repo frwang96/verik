@@ -57,7 +57,7 @@ object ReferenceResolverStage : ProjectStage() {
 
         override fun visitSvClass(`class`: ESvClass) {
             super.visitSvClass(`class`)
-            namespaceMap[`class`] = buildNamespace(`class`.declarations)
+            namespaceMap[`class`] = buildNamespace(`class`.declarations + `class`.typeParameters)
         }
 
         override fun visitModule(module: EModule) {

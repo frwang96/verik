@@ -25,6 +25,7 @@ import io.verik.importer.ast.element.declaration.EKtFunction
 import io.verik.importer.ast.element.declaration.EKtValueParameter
 import io.verik.importer.ast.element.declaration.EProperty
 import io.verik.importer.ast.element.declaration.ETypeAlias
+import io.verik.importer.ast.element.declaration.ETypeParameter
 import io.verik.importer.common.Visitor
 import io.verik.importer.message.Messages
 
@@ -46,6 +47,10 @@ class SourceSerializerVisitor(
 
     override fun visitTypeAlias(typeAlias: ETypeAlias) {
         DeclarationSerializer.serializeTypeAlias(typeAlias, serializeContext)
+    }
+
+    override fun visitTypeParameter(typeParameter: ETypeParameter) {
+        DeclarationSerializer.serializeTypeParameter(typeParameter, serializeContext)
     }
 
     override fun visitKtFunction(function: EKtFunction) {

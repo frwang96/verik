@@ -24,11 +24,13 @@ class EModule(
     override val name: String,
     override var signature: String?,
     override var declarations: ArrayList<EDeclaration>,
+    val typeParameters: List<ETypeParameter>,
     val ports: ArrayList<EPort>,
 ) : EContainerDeclaration() {
 
     init {
         declarations.forEach { it.parent = this }
+        typeParameters.forEach { it.parent = this }
         ports.forEach { it.parent = this }
     }
 
@@ -37,6 +39,8 @@ class EModule(
     }
 
     override fun acceptChildren(visitor: Visitor) {
+        super.acceptChildren(visitor)
+        typeParameters.forEach { it.accept(visitor) }
         ports.forEach { it.accept(visitor) }
     }
 }

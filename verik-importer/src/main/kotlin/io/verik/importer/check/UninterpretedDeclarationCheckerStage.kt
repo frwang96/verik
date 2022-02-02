@@ -27,6 +27,7 @@ import io.verik.importer.ast.element.declaration.EKtPackage
 import io.verik.importer.ast.element.declaration.EKtValueParameter
 import io.verik.importer.ast.element.declaration.EProperty
 import io.verik.importer.ast.element.declaration.ETypeAlias
+import io.verik.importer.ast.element.declaration.ETypeParameter
 import io.verik.importer.common.TreeVisitor
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
@@ -57,6 +58,7 @@ object UninterpretedDeclarationCheckerStage : ProjectStage() {
                 is EKtClass -> true
                 is EEnum -> true
                 is ETypeAlias -> true
+                is ETypeParameter -> true
                 is EKtFunction -> true
                 is EKtConstructor -> true
                 is EProperty -> true

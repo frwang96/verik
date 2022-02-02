@@ -28,14 +28,19 @@ class SignatureBuilderTest : BaseTest() {
         driveSignatureTest(
             SystemVerilogParser.ModuleDeclarationNonAnsiContext::class,
             """
-                module m(x, y);
+                module m #(type T)(x, y);
                     input x;
                     output y;
                     logic z;
                 endmodule
             """.trimIndent(),
             """
-                module m;
+                module m #(
+                    type T
+                )(
+                    x,
+                    y
+                );
                     input x;
                     output y;
                 endmodule
@@ -48,12 +53,14 @@ class SignatureBuilderTest : BaseTest() {
         driveSignatureTest(
             SystemVerilogParser.ModuleDeclarationAnsiContext::class,
             """
-                module m(input x, output y);
+                module m #(type T)(input x, output y);
                     logic z;
                 endmodule
             """.trimIndent(),
             """
-                module m(
+                module m #(
+                    type T
+                )(
                     input x,
                     output y
                 );
@@ -66,12 +73,14 @@ class SignatureBuilderTest : BaseTest() {
         driveSignatureTest(
             SystemVerilogParser.ClassDeclarationContext::class,
             """
-                class c #(type T) extends d #(e);
+                class c #(type T)extends d #(e);
                     logic x;
                 endclass
             """.trimIndent(),
             """
-                class c #(type T) extends d #(e);
+                class c #(
+                    type T
+                ) extends d #(e);
             """.trimIndent()
         ) { it.findDeclaration("c") }
     }

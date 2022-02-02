@@ -31,7 +31,19 @@ internal class TypeParameterCasterTest : BaseTest() {
                 class c #(type T = int);
                 endclass
             """.trimIndent(),
-            "SvClass(c, [], [SvTypeParameter(T, 0)], SimpleDescriptor(Any))"
+            "SvClass(c, [], [TypeParameter(T, 0)], SimpleDescriptor(Any))"
         ) { it.findDeclaration("c") }
+    }
+
+    @Test
+    fun `cast typeParameter from parameterPortDeclarationType multiple`() {
+        driveCasterTest(
+            SystemVerilogParser.ParameterPortDeclarationTypeContext::class,
+            """
+                module m #(type T = int, type U = int);
+                endmodule
+            """.trimIndent(),
+            "Module(m, [], [TypeParameter(T, 0), TypeParameter(U, 0)], [])"
+        ) { it.findDeclaration("m") }
     }
 }

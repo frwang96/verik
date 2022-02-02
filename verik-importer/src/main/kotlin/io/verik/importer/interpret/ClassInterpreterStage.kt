@@ -48,6 +48,7 @@ object ClassInterpreterStage : ProjectStage() {
                 `class`.name,
                 `class`.signature,
                 `class`.declarations,
+                `class`.typeParameters,
                 listOf(),
                 `class`.superDescriptor,
                 true
@@ -76,6 +77,7 @@ object ClassInterpreterStage : ProjectStage() {
                 module.name,
                 module.signature,
                 module.declarations,
+                module.typeParameters,
                 valueParameters,
                 superDescriptor,
                 false
@@ -103,6 +105,7 @@ object ClassInterpreterStage : ProjectStage() {
                 struct.name,
                 struct.signature,
                 ArrayList(),
+                listOf(),
                 valueParameters,
                 superDescriptor,
                 false

@@ -25,6 +25,7 @@ class EKtClass(
     override val name: String,
     override var signature: String?,
     override var declarations: ArrayList<EDeclaration>,
+    val typeParameters: List<ETypeParameter>,
     val valueParameters: List<EKtValueParameter>,
     val superDescriptor: EDescriptor,
     val isOpen: Boolean
@@ -32,6 +33,7 @@ class EKtClass(
 
     init {
         declarations.forEach { it.parent = this }
+        typeParameters.forEach { it.parent = this }
         valueParameters.forEach { it.parent = this }
         superDescriptor.parent = this
     }
@@ -51,6 +53,7 @@ class EKtClass(
 
     override fun acceptChildren(visitor: Visitor) {
         super.acceptChildren(visitor)
+        typeParameters.forEach { it.accept(visitor) }
         valueParameters.forEach { it.accept(visitor) }
         superDescriptor.accept(visitor)
     }

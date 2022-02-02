@@ -25,6 +25,7 @@ import io.verik.importer.ast.element.declaration.EKtFunction
 import io.verik.importer.ast.element.declaration.EKtValueParameter
 import io.verik.importer.ast.element.declaration.EProperty
 import io.verik.importer.ast.element.declaration.ETypeAlias
+import io.verik.importer.ast.element.declaration.ETypeParameter
 import io.verik.importer.ast.element.descriptor.EDescriptor
 import io.verik.importer.core.Core
 
@@ -37,6 +38,13 @@ object DeclarationSerializer {
             serializeContext.append("open ")
         }
         serializeContext.append("class ${`class`.name}")
+        if (`class`.typeParameters.isNotEmpty()) {
+            serializeContext.appendLine("<")
+            serializeContext.indent {
+                serializeContext.serializeJoinAppendLine(`class`.typeParameters)
+            }
+            serializeContext.append(">")
+        }
         if (`class`.valueParameters.isNotEmpty()) {
             serializeContext.appendLine("(")
             serializeContext.indent {
@@ -80,6 +88,13 @@ object DeclarationSerializer {
         serializeContext.appendLine()
         serializeDocs(typeAlias, serializeContext)
         serializeContext.appendLine("typealias ${typeAlias.name} = ${typeAlias.descriptor.type}")
+    }
+
+    fun serializeTypeParameter(typeParameter: ETypeParameter, serializeContext: SerializeContext) {
+        serializeContext.append(typeParameter.name)
+        if (typeParameter.isCardinal) {
+            serializeContext.append(" : `*`")
+        }
     }
 
     fun serializeFunction(function: EKtFunction, serializeContext: SerializeContext) {

@@ -36,7 +36,7 @@ internal class ReferenceResolverStageTest : BaseTest() {
     }
 
     @Test
-    fun `resolve reference typeAlias`() {
+    fun `resolve reference type alias`() {
         driveElementTest(
             """
                 typedef logic t;
@@ -44,6 +44,19 @@ internal class ReferenceResolverStageTest : BaseTest() {
             """.trimIndent(),
             ReferenceResolverStage::class,
             "Property(x, ReferenceDescriptor(t, t))"
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `resolve reference type parameter`() {
+        driveElementTest(
+            """
+                class c #(type T);
+                    T x;
+                endclass
+            """.trimIndent(),
+            ReferenceResolverStage::class,
+            "Property(x, ReferenceDescriptor(T, T))"
         ) { it.findDeclaration("x") }
     }
 }

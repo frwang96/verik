@@ -69,7 +69,22 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize class with valueParameter`() {
+    fun `serialize class with type parameter`() {
+        driveTextFileTest(
+            """
+                module m #(type T=int);
+                endmodule
+            """.trimIndent(),
+            """
+                class m<
+                    T
+                > : Module()
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `serialize class with value parameter`() {
         driveTextFileTest(
             """
                 module m(input x);
@@ -124,7 +139,7 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize function with valueParameter`() {
+    fun `serialize function with value parameter`() {
         driveTextFileTest(
             """
                 function void f(int x = 0);

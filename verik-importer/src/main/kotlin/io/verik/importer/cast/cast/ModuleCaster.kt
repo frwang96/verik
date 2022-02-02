@@ -35,6 +35,9 @@ object ModuleCaster {
         val name = identifier.text
         val signature = SignatureBuilder.buildSignature(ctx, name)
         val declarations = ArrayList<EDeclaration>()
+        val typeParameters = ctx.moduleNonAnsiHeader().parameterPortList()
+            ?.let { castContext.castTypeParameters(it) }
+            ?: listOf()
         val ports = ArrayList<EPort>()
         ctx.moduleItem().forEach {
             if (it is SystemVerilogParser.ModuleItemPortDeclarationContext) {
@@ -53,6 +56,7 @@ object ModuleCaster {
             name,
             signature,
             declarations,
+            typeParameters,
             ports
         )
     }
@@ -67,6 +71,9 @@ object ModuleCaster {
         val name = identifier.text
         val signature = SignatureBuilder.buildSignature(ctx, name)
         val declarations = ctx.nonPortModuleItem().flatMap { castContext.castDeclarations(it) }
+        val typeParameters = ctx.moduleAnsiHeader().parameterPortList()
+            ?.let { castContext.castTypeParameters(it) }
+            ?: listOf()
         val ports = moduleAnsiHeader.listOfPortDeclarations()?.ansiPortDeclaration()?.map {
             castContext.castPort(it) ?: return null
         } ?: listOf()
@@ -75,6 +82,7 @@ object ModuleCaster {
             name,
             signature,
             ArrayList(declarations),
+            typeParameters,
             ArrayList(ports)
         )
     }
