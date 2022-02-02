@@ -30,6 +30,7 @@ import io.verik.importer.cast.cast.PortCaster
 import io.verik.importer.cast.cast.PropertyCaster
 import io.verik.importer.cast.cast.TaskCaster
 import io.verik.importer.cast.cast.TypeDeclarationCaster
+import io.verik.importer.cast.cast.TypeParameterCaster
 import io.verik.importer.cast.cast.ValueParameterCaster
 import org.antlr.v4.runtime.RuleContext
 
@@ -64,6 +65,18 @@ class CasterVisitor(
     }
 
 // A.1.3 Module Parameters and Ports ///////////////////////////////////////////////////////////////////////////////////
+
+    override fun visitParameterPortListDeclaration(
+        ctx: SystemVerilogParser.ParameterPortListDeclarationContext?
+    ): EElement {
+        return TypeParameterCaster.castTypeParametersFromParameterPortListDeclaration(ctx!!, castContext)
+    }
+
+    override fun visitParameterPortDeclarationType(
+        ctx: SystemVerilogParser.ParameterPortDeclarationTypeContext?
+    ): EElement {
+        return TypeParameterCaster.castTypeParameterFromParameterPortDeclarationType(ctx!!, castContext)
+    }
 
     override fun visitAnsiPortDeclaration(ctx: SystemVerilogParser.AnsiPortDeclarationContext?): EElement? {
         return PortCaster.castPortFromAnsiPortDeclaration(ctx!!, castContext)

@@ -33,9 +33,17 @@ object ClassCaster {
         val name = ctx.classIdentifier()[0].text
         val signature = SignatureBuilder.buildSignature(ctx, name)
         val declarations = ctx.classItem().flatMap { castContext.castDeclarations(it) }
+        val typeParameters = ctx.parameterPortList()?.let { castContext.castTypeParameters(it) } ?: listOf()
         val superDescriptor = ctx.classType()
             ?.let { castContext.castDescriptor(it) ?: return null }
             ?: ESimpleDescriptor(location, Core.C_Any.toType())
-        return ESvClass(location, name, signature, ArrayList(declarations), superDescriptor)
+        return ESvClass(
+            location,
+            name,
+            signature,
+            ArrayList(declarations),
+            typeParameters,
+            superDescriptor
+        )
     }
 }

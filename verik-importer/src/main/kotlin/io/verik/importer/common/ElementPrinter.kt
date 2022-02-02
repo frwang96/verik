@@ -35,6 +35,7 @@ import io.verik.importer.ast.element.declaration.ESvClass
 import io.verik.importer.ast.element.declaration.ESvConstructor
 import io.verik.importer.ast.element.declaration.ESvFunction
 import io.verik.importer.ast.element.declaration.ESvPackage
+import io.verik.importer.ast.element.declaration.ESvTypeParameter
 import io.verik.importer.ast.element.declaration.ESvValueParameter
 import io.verik.importer.ast.element.declaration.ETask
 import io.verik.importer.ast.element.declaration.ETypeAlias
@@ -90,6 +91,7 @@ class ElementPrinter : Visitor() {
         build("SvClass") {
             build(`class`.name)
             build(`class`.declarations)
+            build(`class`.typeParameters)
             build(`class`.superDescriptor)
         }
     }
@@ -130,6 +132,13 @@ class ElementPrinter : Visitor() {
         build("TypeAlias") {
             build(typeAlias.name)
             build(typeAlias.descriptor)
+        }
+    }
+
+    override fun visitSvTypeParameter(typeParameter: ESvTypeParameter) {
+        build("SvTypeParameter") {
+            build(typeParameter.name)
+            build(typeParameter.isCardinal)
         }
     }
 

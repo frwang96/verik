@@ -39,6 +39,7 @@ import io.verik.importer.ast.element.declaration.ESvClass
 import io.verik.importer.ast.element.declaration.ESvConstructor
 import io.verik.importer.ast.element.declaration.ESvFunction
 import io.verik.importer.ast.element.declaration.ESvPackage
+import io.verik.importer.ast.element.declaration.ESvTypeParameter
 import io.verik.importer.ast.element.declaration.ESvValueParameter
 import io.verik.importer.ast.element.declaration.ETask
 import io.verik.importer.ast.element.declaration.ETypeAlias
@@ -111,6 +112,10 @@ abstract class Visitor {
 
     open fun visitTypeAlias(typeAlias: ETypeAlias) {
         visitTypeDeclaration(typeAlias)
+    }
+
+    open fun visitSvTypeParameter(typeParameter: ESvTypeParameter) {
+        visitDeclaration(typeParameter)
     }
 
 // Function Like ///////////////////////////////////////////////////////////////////////////////////////////////////////

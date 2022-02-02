@@ -21,29 +21,17 @@ import io.verik.importer.test.BaseTest
 import io.verik.importer.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class ClassCasterTest : BaseTest() {
+internal class TypeParameterCasterTest : BaseTest() {
 
     @Test
-    fun `cast class from classDeclaration`() {
+    fun `cast typeParameter from parameterPortDeclarationType`() {
         driveCasterTest(
-            SystemVerilogParser.ClassDeclarationContext::class,
+            SystemVerilogParser.ParameterPortDeclarationTypeContext::class,
             """
-                class c;
+                class c #(type T = int);
                 endclass
             """.trimIndent(),
-            "SvClass(c, [], [], SimpleDescriptor(Any))"
-        ) { it.findDeclaration("c") }
-    }
-
-    @Test
-    fun `cast class from classDeclaration with extends`() {
-        driveCasterTest(
-            SystemVerilogParser.ClassDeclarationContext::class,
-            """
-                class c extends d;
-                endclass
-            """.trimIndent(),
-            "SvClass(c, [], [], ReferenceDescriptor(Nothing, d))"
+            "SvClass(c, [], [SvTypeParameter(T, 0)], SimpleDescriptor(Any))"
         ) { it.findDeclaration("c") }
     }
 }

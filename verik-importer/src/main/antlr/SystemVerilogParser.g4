@@ -93,14 +93,14 @@ timeunitsDeclaration
 
 parameterPortList
     : SHARP LPAREN listOfParamAssignments (COMMA parameterPortDeclaration)* RPAREN   # parameterPortListParamAssign
-    | SHARP LPAREN parameterPortDeclaration (COMMA parameterPortDeclaration)* RPAREN # parameterPortListNoParamAssign
+    | SHARP LPAREN parameterPortDeclaration (COMMA parameterPortDeclaration)* RPAREN # parameterPortListDeclaration
     | SHARP LPAREN RPAREN                                                            # parameterPortListEmpty
     ;
 
 parameterPortDeclaration
-    : parameterDeclaration
-    | dataType listOfParamAssignments
-    | TYPE listOfParamAssignments
+    : parameterDeclaration            # parameterPortDeclarationParameter
+    | dataType listOfParamAssignments # parameterPortDeclarationDataType
+    | TYPE listOfParamAssignments     # parameterPortDeclarationType
     ;
 
 listOfPorts

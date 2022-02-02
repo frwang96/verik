@@ -20,6 +20,7 @@ import io.verik.importer.ast.element.common.EContainerElement
 import io.verik.importer.ast.element.common.EElement
 import io.verik.importer.ast.element.declaration.EDeclaration
 import io.verik.importer.ast.element.declaration.EPort
+import io.verik.importer.ast.element.declaration.ESvTypeParameter
 import io.verik.importer.ast.element.declaration.ESvValueParameter
 import io.verik.importer.ast.element.descriptor.EDescriptor
 import io.verik.importer.ast.element.expression.EExpression
@@ -63,6 +64,10 @@ class CastContext(
             is EContainerElement -> element.elements.map { it.cast() }
             else -> listOf(element.cast())
         }
+    }
+
+    fun castTypeParameters(ctx: RuleContext): List<ESvTypeParameter> {
+        return castDeclarations(ctx).map { it.cast() }
     }
 
     fun castValueParameters(ctx: RuleContext): List<ESvValueParameter> {
