@@ -22,13 +22,13 @@ import org.junit.jupiter.api.Test
 internal class PortCheckerStageTest : BaseTest() {
 
     @Test
-    fun `input port not mutable`() {
+    fun `output port not mutable`() {
         driveMessageTest(
             """
-                class M(@In val x: Boolean): Module()
+                class M(@Out val x: Boolean): Module()
             """.trimIndent(),
             true,
-            "Input port must be declared as var: x"
+            "Output port must be declared as var: x"
         )
     }
 

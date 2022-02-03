@@ -16,28 +16,33 @@
 
 package io.verik.importer.ast.element.descriptor
 
-import io.verik.importer.ast.common.Declaration
-import io.verik.importer.ast.common.Type
+import io.verik.importer.ast.common.DescriptorContainer
 import io.verik.importer.common.Visitor
 import io.verik.importer.message.SourceLocation
 
-class EReferenceDescriptor(
+class EDescriptorTypeArgument(
     override val location: SourceLocation,
-    override var type: Type,
-    val name: String,
-    var reference: Declaration,
-    val typeArguments: List<ETypeArgument>
-) : EDescriptor() {
+    override val name: String?,
+    var descriptor: EDescriptor
+) : ETypeArgument(), DescriptorContainer {
 
     init {
-        typeArguments.forEach { it.parent = this }
+        descriptor.parent = this
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitReferenceDescriptor(this)
+        visitor.visitDescriptorTypeArgument(this)
     }
 
     override fun acceptChildren(visitor: Visitor) {
-        typeArguments.forEach { it.accept(visitor) }
+        descriptor.accept(visitor)
+    }
+
+    override fun replaceChild(oldDescriptor: EDescriptor, newDescriptor: EDescriptor): Boolean {
+        newDescriptor.parent = this
+        return if (descriptor == oldDescriptor) {
+            descriptor = newDescriptor
+            true
+        } else false
     }
 }

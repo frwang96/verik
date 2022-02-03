@@ -79,7 +79,7 @@ object ReferenceResolverStage : ProjectStage() {
             super.visitReferenceDescriptor(referenceDescriptor)
             val declaration = namespaceMap[referenceDescriptor, referenceDescriptor.name]
             if (declaration != null) {
-                referenceDescriptor.type = declaration.toType()
+                referenceDescriptor.reference = declaration
             } else {
                 Messages.UNRESOLVED_REFERENCE.on(referenceDescriptor, referenceDescriptor.name)
             }

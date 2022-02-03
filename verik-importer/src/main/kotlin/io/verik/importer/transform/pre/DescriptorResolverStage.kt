@@ -16,9 +16,12 @@
 
 package io.verik.importer.transform.pre
 
+import io.verik.importer.ast.common.Type
 import io.verik.importer.ast.element.descriptor.EBitDescriptor
+import io.verik.importer.ast.element.descriptor.EDescriptorTypeArgument
 import io.verik.importer.ast.element.descriptor.EPackedDescriptor
 import io.verik.importer.ast.element.descriptor.EQueueDescriptor
+import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
 import io.verik.importer.common.ExpressionEvaluator
 import io.verik.importer.common.TreeVisitor
 import io.verik.importer.core.Cardinal
@@ -47,6 +50,16 @@ object DescriptorResolverStage : ProjectStage() {
                     Core.C_Ubit.toType(Cardinal.of(width).toType())
                 }
             }
+        }
+
+        override fun visitReferenceDescriptor(referenceDescriptor: EReferenceDescriptor) {
+            super.visitReferenceDescriptor(referenceDescriptor)
+            val typeArguments = referenceDescriptor.typeArguments.map {
+                if (it is EDescriptorTypeArgument) {
+                    it.descriptor.type.copy()
+                } else Type.unresolved()
+            }
+            referenceDescriptor.type = referenceDescriptor.reference.toType(typeArguments)
         }
 
         override fun visitPackedDescriptor(packedDescriptor: EPackedDescriptor) {

@@ -329,7 +329,7 @@ object DeclarationSerializer {
 
     private fun serializePortType(portType: PortType, serializeContext: SerializeContext) {
         when (portType) {
-            PortType.CONSTANT, PortType.INPUT -> serializeContext.append("input  ")
+            PortType.INPUT -> serializeContext.append("input  ")
             PortType.OUTPUT -> serializeContext.append("output ")
             PortType.MODULE_INTERFACE, PortType.MODULE_PORT -> {}
             PortType.CLOCKING_BLOCK -> serializeContext.append("clocking ")

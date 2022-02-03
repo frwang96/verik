@@ -41,7 +41,7 @@ internal class DescriptorCasterTest : BaseTest() {
             """
                 t x;
             """.trimIndent(),
-            "Property(x, ReferenceDescriptor(Nothing, t))"
+            "Property(x, ReferenceDescriptor(Nothing, t, Nothing, []))"
         ) { it.findDeclaration("x") }
     }
 

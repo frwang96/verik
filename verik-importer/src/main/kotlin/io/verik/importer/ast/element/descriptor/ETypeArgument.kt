@@ -14,17 +14,11 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.common
+package io.verik.importer.ast.element.descriptor
 
-interface Declaration {
+import io.verik.importer.ast.element.common.EElement
 
-    val name: String
+abstract class ETypeArgument : EElement() {
 
-    fun toType(vararg arguments: Type): Type {
-        return Type(this, arrayListOf(*arguments))
-    }
-
-    fun toType(arguments: List<Type>): Type {
-        return Type(this, ArrayList(arguments))
-    }
+    abstract val name: String?
 }

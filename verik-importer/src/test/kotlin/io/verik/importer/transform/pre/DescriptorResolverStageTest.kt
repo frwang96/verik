@@ -34,6 +34,21 @@ internal class DescriptorResolverStageTest : BaseTest() {
     }
 
     @Test
+    fun `resolve referenceDescriptor`() {
+        driveElementTest(
+            """
+                class c #(type T);
+                endclass
+                c#(int) x;
+            """.trimIndent(),
+            DescriptorResolverStage::class,
+            """
+                Property(x, ReferenceDescriptor(c<Int>, c, c, [DescriptorTypeArgument(null, SimpleDescriptor(Int))]))
+            """.trimIndent()
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
     fun `resolve packedDescriptor`() {
         driveElementTest(
             """

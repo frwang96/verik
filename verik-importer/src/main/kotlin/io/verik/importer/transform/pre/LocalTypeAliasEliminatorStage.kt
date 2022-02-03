@@ -37,7 +37,7 @@ object LocalTypeAliasEliminatorStage : ProjectStage() {
 
         override fun visitReferenceDescriptor(referenceDescriptor: EReferenceDescriptor) {
             super.visitReferenceDescriptor(referenceDescriptor)
-            val reference = referenceDescriptor.type.reference
+            val reference = referenceDescriptor.reference
             if (reference is ETypeAlias) {
                 val parent = reference.parent
                 if (parent is ESvClass || parent is EModule) {

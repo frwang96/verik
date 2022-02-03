@@ -79,8 +79,16 @@ object PortInstantiationCheckerStage : ProjectStage() {
         }
 
         private fun checkInputPortExpression(expression: EExpression, valueParameter: EKtValueParameter) {
-            if (expression is ECallExpression && expression.reference == Core.Vk.F_nc)
-                Messages.UNCONNECTED_INPUT_PORT.on(expression, valueParameter.name)
+            if (expression is ECallExpression && expression.reference == Core.Vk.F_nc) {
+                Messages.INPUT_PORT_NOT_CONNECTED.on(expression, valueParameter.name)
+            }
+            if (!valueParameter.isMutable) {
+                val inputPortExpressionVisitor = InputPortExpressionVisitor()
+                expression.accept(inputPortExpressionVisitor)
+                if (!inputPortExpressionVisitor.isConstant) {
+                    Messages.INPUT_PORT_NOT_CONSTANT.on(expression, valueParameter.name)
+                }
+            }
         }
 
         private fun checkOutputPortExpression(expression: EExpression) {
@@ -103,6 +111,20 @@ object PortInstantiationCheckerStage : ProjectStage() {
                 }
                 else ->
                     Messages.ILLEGAL_OUTPUT_PORT_EXPRESSION.on(expression)
+            }
+        }
+
+        private class InputPortExpressionVisitor : TreeVisitor() {
+
+            var isConstant = true
+
+            override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
+                super.visitReferenceExpression(referenceExpression)
+                val reference = referenceExpression.reference
+                when {
+                    reference is EProperty && reference.isMutable -> isConstant = false
+                    reference is EKtValueParameter && reference.isMutable -> isConstant = false
+                }
             }
         }
     }
