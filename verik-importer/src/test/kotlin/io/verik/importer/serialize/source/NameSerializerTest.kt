@@ -14,13 +14,22 @@
  * limitations under the License.
  */
 
-// test.sv /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+package io.verik.importer.serialize.source
 
-class c0;
-endclass
+import io.verik.importer.test.BaseTest
+import org.junit.jupiter.api.Test
 
-class c1 extends c0;
-endclass
+internal class NameSerializerTest : BaseTest() {
 
-class c2 #(type T, type U, int V = 0);
-endclass
+    @Test
+    fun `serialize name keyword`() {
+        driveTextFileTest(
+            """
+                logic val;
+            """.trimIndent(),
+            """
+                var `val`: Boolean = imported()
+            """.trimIndent()
+        )
+    }
+}

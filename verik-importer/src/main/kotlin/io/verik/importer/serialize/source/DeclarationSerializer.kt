@@ -37,7 +37,8 @@ object DeclarationSerializer {
         if (`class`.isOpen) {
             serializeContext.append("open ")
         }
-        serializeContext.append("class ${`class`.name}")
+        serializeContext.append("class ")
+        serializeContext.serializeName(`class`)
         if (`class`.typeParameters.isNotEmpty()) {
             serializeContext.appendLine("<")
             serializeContext.indent {
@@ -72,7 +73,8 @@ object DeclarationSerializer {
     fun serializeEnum(enum: EEnum, serializeContext: SerializeContext) {
         serializeContext.appendLine()
         serializeDocs(enum, serializeContext)
-        serializeContext.append("enum class ${enum.name}")
+        serializeContext.append("enum class ")
+        serializeContext.serializeName(enum)
         if (enum.entries.isNotEmpty()) {
             serializeContext.appendLine(" {")
             serializeContext.indent {
@@ -87,11 +89,13 @@ object DeclarationSerializer {
     fun serializeTypeAlias(typeAlias: ETypeAlias, serializeContext: SerializeContext) {
         serializeContext.appendLine()
         serializeDocs(typeAlias, serializeContext)
-        serializeContext.appendLine("typealias ${typeAlias.name} = ${typeAlias.descriptor.type}")
+        serializeContext.append("typealias ")
+        serializeContext.serializeName(typeAlias)
+        serializeContext.appendLine(" = ${typeAlias.descriptor.type}")
     }
 
     fun serializeTypeParameter(typeParameter: ETypeParameter, serializeContext: SerializeContext) {
-        serializeContext.append(typeParameter.name)
+        serializeContext.serializeName(typeParameter)
         if (typeParameter.isCardinal) {
             serializeContext.append(" : `*`")
         }
@@ -106,7 +110,8 @@ object DeclarationSerializer {
         if (function.isOpen) {
             serializeContext.append("open ")
         }
-        serializeContext.append("fun ${function.name}")
+        serializeContext.append("fun ")
+        serializeContext.serializeName(function)
         if (function.valueParameters.isNotEmpty()) {
             serializeContext.appendLine("(")
             serializeContext.indent {
@@ -148,7 +153,8 @@ object DeclarationSerializer {
         } else {
             serializeContext.append("val ")
         }
-        serializeContext.appendLine("${property.name}: ${property.descriptor.type} = imported()")
+        serializeContext.serializeName(property)
+        serializeContext.appendLine(": ${property.descriptor.type} = imported()")
     }
 
     fun serializeValueParameter(valueParameter: EKtValueParameter, serializeContext: SerializeContext) {
@@ -159,14 +165,15 @@ object DeclarationSerializer {
             true -> serializeContext.append("var ")
             false -> serializeContext.append("val ")
         }
-        serializeContext.append("${valueParameter.name}: ${valueParameter.descriptor.type}")
+        serializeContext.serializeName(valueParameter)
+        serializeContext.append(": ${valueParameter.descriptor.type}")
         if (valueParameter.hasDefault) {
             serializeContext.append(" = imported()")
         }
     }
 
     fun serializeEnumEntry(enumEntry: EEnumEntry, serializeContext: SerializeContext) {
-        serializeContext.append(enumEntry.name)
+        serializeContext.serializeName(enumEntry)
     }
 
     private fun serializeSuperConstructorCall(descriptor: EDescriptor, serializeContext: SerializeContext) {

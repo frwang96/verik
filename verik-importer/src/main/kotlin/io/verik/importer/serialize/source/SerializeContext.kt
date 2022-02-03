@@ -17,6 +17,7 @@
 package io.verik.importer.serialize.source
 
 import io.verik.importer.ast.element.common.EElement
+import io.verik.importer.ast.element.declaration.EDeclaration
 import io.verik.importer.common.TextFile
 import io.verik.importer.main.ProjectContext
 import java.nio.file.Path
@@ -32,6 +33,10 @@ class SerializeContext(
 
     fun serialize(element: EElement) {
         element.accept(sourceSerializerVisitor)
+    }
+
+    fun serializeName(declaration: EDeclaration) {
+        NameSerializer.serializeName(declaration, this)
     }
 
     fun <E : EElement> serializeJoinAppendLine(entries: List<E>) {

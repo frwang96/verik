@@ -45,11 +45,13 @@ object StageSequencer {
 
         stageSequence.add(StageType.CAST, CasterStage)
 
-        stageSequence.add(StageType.RESOLVE, ReferenceResolverStage)
-        stageSequence.add(StageType.RESOLVE, DescriptorResolverStage)
+        stageSequence.add(StageType.PRE_RESOLVE, ReferenceResolverStage)
 
-        stageSequence.add(StageType.TRANSFORM, UnresolvedDeclarationEliminatorStage)
-        stageSequence.add(StageType.TRANSFORM, LocalTypeAliasEliminatorStage)
+        stageSequence.add(StageType.PRE_TRANSFORM, LocalTypeAliasEliminatorStage)
+
+        stageSequence.add(StageType.POST_RESOLVE, DescriptorResolverStage)
+
+        stageSequence.add(StageType.POST_TRANSFORM, UnresolvedDeclarationEliminatorStage)
 
         stageSequence.add(StageType.INTERPRET, PackageInterpreterStage)
         stageSequence.add(StageType.INTERPRET, ClassInterpreterStage)

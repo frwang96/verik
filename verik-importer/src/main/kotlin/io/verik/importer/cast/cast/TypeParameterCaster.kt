@@ -31,15 +31,43 @@ object TypeParameterCaster {
         return EContainerElement(castContext.getLocation(ctx), typeParameters)
     }
 
+    fun castTypeParameterFromParameterPortDeclarationDataType(
+        ctx: SystemVerilogParser.ParameterPortDeclarationDataTypeContext,
+        castContext: CastContext
+    ): EContainerElement? {
+        when (val dataType = ctx.dataType()) {
+            is SystemVerilogParser.DataTypeVectorContext -> {
+                if (dataType.packedDimension().size > 1) {
+                    return null
+                }
+            }
+            is SystemVerilogParser.DataTypeIntegerContext -> {}
+            else -> return null
+        }
+        val paramAssignments = ctx.listOfParamAssignments().paramAssignment()
+        val typeParameters = paramAssignments.mapNotNull {
+            val identifier = it.parameterIdentifier()
+            val location = castContext.getLocation(identifier)
+            val name = identifier.text
+            if (it.unpackedDimension().isEmpty()) {
+                ETypeParameter(location, name, true)
+            } else null
+        }
+        return EContainerElement(castContext.getLocation(ctx), typeParameters)
+    }
+
     fun castTypeParameterFromParameterPortDeclarationType(
         ctx: SystemVerilogParser.ParameterPortDeclarationTypeContext,
         castContext: CastContext
     ): EContainerElement {
-        val identifiers = ctx.listOfParamAssignments().paramAssignment().map { it.parameterIdentifier() }
-        val typeParameters = identifiers.map {
-            val location = castContext.getLocation(it)
-            val name = it.text
-            ETypeParameter(location, name, false)
+        val paramAssignments = ctx.listOfParamAssignments().paramAssignment()
+        val typeParameters = paramAssignments.mapNotNull {
+            val identifier = it.parameterIdentifier()
+            val location = castContext.getLocation(identifier)
+            val name = identifier.text
+            if (it.unpackedDimension().isEmpty()) {
+                ETypeParameter(location, name, false)
+            } else null
         }
         return EContainerElement(castContext.getLocation(ctx), typeParameters)
     }

@@ -24,6 +24,18 @@ import org.junit.jupiter.api.Test
 internal class TypeParameterCasterTest : BaseTest() {
 
     @Test
+    fun `cast typeParameter from parameterPortDeclarationDataType`() {
+        driveCasterTest(
+            SystemVerilogParser.ParameterPortDeclarationDataTypeContext::class,
+            """
+                class c #(int N = 1);
+                endclass
+            """.trimIndent(),
+            "SvClass(c, [], [TypeParameter(N, 1)], SimpleDescriptor(Any))"
+        ) { it.findDeclaration("c") }
+    }
+
+    @Test
     fun `cast typeParameter from parameterPortDeclarationType`() {
         driveCasterTest(
             SystemVerilogParser.ParameterPortDeclarationTypeContext::class,

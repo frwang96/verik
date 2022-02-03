@@ -72,6 +72,12 @@ class CasterVisitor(
         return TypeParameterCaster.castTypeParametersFromParameterPortListDeclaration(ctx!!, castContext)
     }
 
+    override fun visitParameterPortDeclarationDataType(
+        ctx: SystemVerilogParser.ParameterPortDeclarationDataTypeContext?
+    ): EElement? {
+        return TypeParameterCaster.castTypeParameterFromParameterPortDeclarationDataType(ctx!!, castContext)
+    }
+
     override fun visitParameterPortDeclarationType(
         ctx: SystemVerilogParser.ParameterPortDeclarationTypeContext?
     ): EElement {
@@ -179,6 +185,26 @@ class CasterVisitor(
     }
 
 // A.2.5 Declaration Ranges ////////////////////////////////////////////////////////////////////////////////////////////
+
+    override fun visitUnpackedDimensionRange(ctx: SystemVerilogParser.UnpackedDimensionRangeContext?): EElement? {
+        return null
+    }
+
+    override fun visitUnpackedDimensionExpression(
+        ctx: SystemVerilogParser.UnpackedDimensionExpressionContext?
+    ): EElement? {
+        return null
+    }
+
+    override fun visitAssociativeDimensionDataType(
+        ctx: SystemVerilogParser.AssociativeDimensionDataTypeContext?
+    ): EElement? {
+        return null
+    }
+
+    override fun visitAssociativeDimensionStar(ctx: SystemVerilogParser.AssociativeDimensionStarContext?): EElement? {
+        return null
+    }
 
     override fun visitQueueDimension(ctx: SystemVerilogParser.QueueDimensionContext?): EElement {
         return DescriptorCaster.castDescriptorFromQueueDimension(ctx!!, castContext)

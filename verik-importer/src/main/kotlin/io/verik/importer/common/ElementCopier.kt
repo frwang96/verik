@@ -19,6 +19,7 @@ package io.verik.importer.common
 import io.verik.importer.ast.element.common.EElement
 import io.verik.importer.ast.element.descriptor.EBitDescriptor
 import io.verik.importer.ast.element.descriptor.EPackedDescriptor
+import io.verik.importer.ast.element.descriptor.EQueueDescriptor
 import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
 import io.verik.importer.ast.element.descriptor.ESimpleDescriptor
 import io.verik.importer.ast.element.expression.ELiteralExpression
@@ -36,8 +37,9 @@ object ElementCopier {
         val copiedElement: EElement = when (element) {
             is ESimpleDescriptor -> copySimpleDescriptor(element, location)
             is EBitDescriptor -> copyBitDescriptor(element, location)
-            is EPackedDescriptor -> copyPackedDescriptor(element, location)
             is EReferenceDescriptor -> copyReferenceDescriptor(element, location)
+            is EPackedDescriptor -> copyPackedDescriptor(element, location)
+            is EQueueDescriptor -> copyQueueDescriptor(element, location)
             is ELiteralExpression -> copyLiteralExpression(element, location)
             is EReferenceExpression -> copyReferenceExpression(element, location)
             else -> Messages.INTERNAL_ERROR.on(element, "Unable to copy element: $element")
@@ -73,6 +75,18 @@ object ElementCopier {
         )
     }
 
+    private fun copyReferenceDescriptor(
+        referenceDescriptor: EReferenceDescriptor,
+        location: SourceLocation?,
+    ): EReferenceDescriptor {
+        val type = referenceDescriptor.type.copy()
+        return EReferenceDescriptor(
+            location ?: referenceDescriptor.location,
+            type,
+            referenceDescriptor.name
+        )
+    }
+
     private fun copyPackedDescriptor(
         packedDescriptor: EPackedDescriptor,
         location: SourceLocation?
@@ -90,15 +104,16 @@ object ElementCopier {
         )
     }
 
-    private fun copyReferenceDescriptor(
-        referenceDescriptor: EReferenceDescriptor,
-        location: SourceLocation?,
-    ): EReferenceDescriptor {
-        val type = referenceDescriptor.type.copy()
-        return EReferenceDescriptor(
-            location ?: referenceDescriptor.location,
+    private fun copyQueueDescriptor(
+        queueDescriptor: EQueueDescriptor,
+        location: SourceLocation?
+    ): EQueueDescriptor {
+        val type = queueDescriptor.type.copy()
+        val descriptor = copy(queueDescriptor.descriptor, location)
+        return EQueueDescriptor(
+            location ?: queueDescriptor.location,
             type,
-            referenceDescriptor.name
+            descriptor
         )
     }
 

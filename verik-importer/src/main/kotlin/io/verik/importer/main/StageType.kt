@@ -20,8 +20,10 @@ enum class StageType {
     PREPROCESS,
     PARSE,
     CAST,
-    RESOLVE,
-    TRANSFORM,
+    PRE_RESOLVE,
+    PRE_TRANSFORM,
+    POST_RESOLVE,
+    POST_TRANSFORM,
     INTERPRET,
     CHECK,
     SERIALIZE;
@@ -38,8 +40,10 @@ enum class StageType {
     fun checkNormalization(): Boolean {
         return this in listOf(
             CAST,
-            RESOLVE,
-            TRANSFORM,
+            PRE_RESOLVE,
+            PRE_TRANSFORM,
+            POST_RESOLVE,
+            POST_TRANSFORM,
             INTERPRET
         )
     }
