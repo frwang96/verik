@@ -42,7 +42,7 @@ object M0 : Module() {
 import io.verik.core.*
 
 class M1(
-    val C: Ubit<`8`>,
+    @In val C: Ubit<`8`>,
     @In var x0: Boolean,
     @In var x1: Ubit<`4`>,
     @Out var x2: Boolean

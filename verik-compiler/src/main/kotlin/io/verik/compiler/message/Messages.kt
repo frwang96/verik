@@ -176,8 +176,12 @@ object Messages {
         "Could not determine directionality of port: $0"
     )
 
-    val UNCONNECTED_INPUT_PORT = ErrorMessageTemplate1<String>(
+    val INPUT_PORT_NOT_CONNECTED = ErrorMessageTemplate1<String>(
         "Input port not connected: $0"
+    )
+
+    val INPUT_PORT_NOT_CONSTANT = ErrorMessageTemplate1<String>(
+        "Constant expression expected for input port declared as val: $0"
     )
 
     val OUTPUT_PORT_NOT_MUTABLE = ErrorMessageTemplate1<String>(

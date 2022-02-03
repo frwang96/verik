@@ -48,10 +48,7 @@ object PortCheckerStage : ProjectStage() {
 
         private fun checkPort(valueParameter: EKtValueParameter) {
             when {
-                valueParameter.hasAnnotationEntry(AnnotationEntries.IN) -> {
-                    if (!valueParameter.isMutable)
-                        Messages.PORT_NOT_MUTABLE.on(valueParameter, "Input", valueParameter.name)
-                }
+                valueParameter.hasAnnotationEntry(AnnotationEntries.IN) -> {}
                 valueParameter.hasAnnotationEntry(AnnotationEntries.OUT) -> {
                     if (!valueParameter.isMutable)
                         Messages.PORT_NOT_MUTABLE.on(valueParameter, "Output", valueParameter.name)
@@ -69,8 +66,7 @@ object PortCheckerStage : ProjectStage() {
                         Messages.PORT_MUTABLE.on(valueParameter, "Clocking block", valueParameter.name)
                 }
                 else -> {
-                    if (valueParameter.isMutable)
-                        Messages.PORT_NO_DIRECTIONALITY.on(valueParameter, valueParameter.name)
+                    Messages.PORT_NO_DIRECTIONALITY.on(valueParameter, valueParameter.name)
                 }
             }
         }

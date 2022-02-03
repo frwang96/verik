@@ -37,6 +37,22 @@ internal class PortInstantiationCheckerStageTest : BaseTest() {
     }
 
     @Test
+    fun `input not constant`() {
+        driveMessageTest(
+            """
+                class M(@In val x: Boolean) : Module()
+                class Top : Module() {
+                    var x: Boolean = nc()
+                    @Make
+                    val m = M(x)
+                }
+            """.trimIndent(),
+            true,
+            "Constant expression expected for input port declared as val: x"
+        )
+    }
+
+    @Test
     fun `output illegal expression`() {
         driveMessageTest(
             """

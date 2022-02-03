@@ -38,13 +38,13 @@ internal class ComponentInterpreterStageTest : BaseTest() {
         driveElementTest(
             """
                 class M(
-                    val x: Boolean,
+                    @In val x: Boolean,
                     @In var y: Boolean,
                     @Out var z: Boolean,
                 ): Module()
             """.trimIndent(),
             ComponentInterpreterStage::class,
-            "Module(M, M, [], [Port(x, Boolean, CONSTANT), Port(y, Boolean, INPUT), Port(z, Boolean, OUTPUT)])"
+            "Module(M, M, [], [Port(x, Boolean, INPUT), Port(y, Boolean, INPUT), Port(z, Boolean, OUTPUT)])"
         ) { it.findDeclaration("M") }
     }
 
