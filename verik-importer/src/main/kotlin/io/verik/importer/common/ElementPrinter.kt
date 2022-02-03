@@ -253,6 +253,8 @@ class ElementPrinter : Visitor() {
         build("ReferenceDescriptor") {
             build(referenceDescriptor.type.toString())
             build(referenceDescriptor.name)
+            build(referenceDescriptor.reference.name)
+            build(referenceDescriptor.argumentDescriptors)
         }
     }
 

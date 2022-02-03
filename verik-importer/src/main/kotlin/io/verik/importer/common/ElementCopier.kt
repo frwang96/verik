@@ -80,10 +80,13 @@ object ElementCopier {
         location: SourceLocation?,
     ): EReferenceDescriptor {
         val type = referenceDescriptor.type.copy()
+        val argumentDescriptors = referenceDescriptor.argumentDescriptors.map { copy(it, location) }
         return EReferenceDescriptor(
             location ?: referenceDescriptor.location,
             type,
-            referenceDescriptor.name
+            referenceDescriptor.name,
+            referenceDescriptor.reference,
+            argumentDescriptors
         )
     }
 

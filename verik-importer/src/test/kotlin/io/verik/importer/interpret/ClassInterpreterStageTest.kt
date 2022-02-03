@@ -32,7 +32,7 @@ internal class ClassInterpreterStageTest : BaseTest() {
                 endclass
             """.trimIndent(),
             ClassInterpreterStage::class,
-            "KtClass(d, [], [], [], ReferenceDescriptor(c, c), 1)"
+            "KtClass(d, [], [], [], ReferenceDescriptor(c, c, c, []), 1)"
         ) { it.findDeclaration("d") }
     }
 

@@ -80,7 +80,7 @@ object DescriptorCaster {
     ): EDescriptor {
         val location = castContext.getLocation(ctx)
         val name = ctx.typeIdentifier().text
-        return EReferenceDescriptor(location, Type.unresolved(), name)
+        return EReferenceDescriptor(location, Type.unresolved(), name, Core.C_Nothing, listOf())
     }
 
     fun castDescriptorFromImplicitDataType(
@@ -104,7 +104,7 @@ object DescriptorCaster {
         val location = castContext.getLocation(ctx)
         val identifier = ctx.psClassIdentifier().classIdentifier()
         val name = identifier.text
-        return EReferenceDescriptor(location, Type.unresolved(), name)
+        return EReferenceDescriptor(location, Type.unresolved(), name, Core.C_Nothing, listOf())
     }
 
     fun castDescriptorFromDataTypeOrVoid(
