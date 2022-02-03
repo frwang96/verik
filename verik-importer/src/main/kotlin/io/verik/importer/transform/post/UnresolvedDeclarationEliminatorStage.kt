@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.importer.transform
+package io.verik.importer.transform.post
 
 import io.verik.importer.ast.element.declaration.EContainerDeclaration
 import io.verik.importer.ast.element.declaration.EDeclaration

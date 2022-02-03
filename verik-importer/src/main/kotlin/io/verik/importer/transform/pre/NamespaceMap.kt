@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.importer.resolve
+package io.verik.importer.transform.pre
 
 import io.verik.importer.ast.element.common.EElement
 import io.verik.importer.ast.element.declaration.EDeclaration

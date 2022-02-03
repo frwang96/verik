@@ -28,7 +28,8 @@ class EKtFunction(
     override val valueParameters: List<EKtValueParameter>,
     val descriptor: EDescriptor,
     val annotationEntries: List<AnnotationEntry>,
-    val isOpen: Boolean
+    val isOpen: Boolean,
+    var isOverride: Boolean
 ) : EKtAbstractFunction() {
 
     init {

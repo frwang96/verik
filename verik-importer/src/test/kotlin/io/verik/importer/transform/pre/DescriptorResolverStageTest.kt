@@ -14,49 +14,44 @@
  * limitations under the License.
  */
 
-package io.verik.importer.resolve
+package io.verik.importer.transform.pre
 
 import io.verik.importer.test.BaseTest
 import io.verik.importer.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class ReferenceResolverStageTest : BaseTest() {
+internal class DescriptorResolverStageTest : BaseTest() {
 
     @Test
-    fun `resolve reference class`() {
+    fun `resolve bitDescriptor`() {
         driveElementTest(
             """
-                class c;
-                endclass
-                c x;
+                logic [1:0] x;
             """.trimIndent(),
-            ReferenceResolverStage::class,
-            "Property(x, ReferenceDescriptor(c, c))"
+            DescriptorResolverStage::class,
+            "Property(x, BitDescriptor(Ubit<`2`>, *, *, *))"
         ) { it.findDeclaration("x") }
     }
 
     @Test
-    fun `resolve reference type alias`() {
+    fun `resolve packedDescriptor`() {
         driveElementTest(
             """
-                typedef logic t;
-                t x;
+                logic [1:0][3:0] x;
             """.trimIndent(),
-            ReferenceResolverStage::class,
-            "Property(x, ReferenceDescriptor(t, t))"
+            DescriptorResolverStage::class,
+            "Property(x, PackedDescriptor(Packed<`4`, Ubit<`2`>>, *, *, *))"
         ) { it.findDeclaration("x") }
     }
 
     @Test
-    fun `resolve reference type parameter`() {
+    fun `resolve queueDescriptor`() {
         driveElementTest(
             """
-                class c #(type T);
-                    T x;
-                endclass
+                logic x [$];
             """.trimIndent(),
-            ReferenceResolverStage::class,
-            "Property(x, ReferenceDescriptor(T, T))"
+            DescriptorResolverStage::class,
+            "Property(x, QueueDescriptor(ArrayList<Boolean>, SimpleDescriptor(*)))"
         ) { it.findDeclaration("x") }
     }
 }

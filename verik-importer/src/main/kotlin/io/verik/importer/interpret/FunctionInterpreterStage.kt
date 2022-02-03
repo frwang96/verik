@@ -57,7 +57,8 @@ object FunctionInterpreterStage : ProjectStage() {
                 valueParameters,
                 function.descriptor,
                 listOf(),
-                isOpen
+                isOpen,
+                false
             )
             referenceUpdater.replace(function, interpretedFunction)
         }
@@ -75,7 +76,8 @@ object FunctionInterpreterStage : ProjectStage() {
                 valueParameters,
                 descriptor,
                 listOf(annotationEntry),
-                isOpen
+                isOpen,
+                false
             )
             referenceUpdater.replace(task, interpretedFunction)
         }

@@ -14,24 +14,25 @@
  * limitations under the License.
  */
 
-package io.verik.importer.resolve
+package io.verik.importer.transform.pre
 
-import io.verik.importer.ast.element.declaration.EDeclaration
-import io.verik.importer.message.Messages
+import io.verik.importer.test.BaseTest
+import io.verik.importer.test.findDeclaration
+import org.junit.jupiter.api.Test
 
-class Namespace {
+internal class LocalTypeAliasEliminatorStageTest : BaseTest() {
 
-    private val namespace = HashMap<String, EDeclaration>()
-
-    operator fun set(name: String, declaration: EDeclaration) {
-        if (name !in namespace) {
-            namespace[name] = declaration
-        } else {
-            Messages.NAME_ALREADY_DEFINED.on(declaration, declaration.name)
-        }
-    }
-
-    operator fun get(name: String): EDeclaration? {
-        return namespace[name]
+    @Test
+    fun `eliminate local type alias`() {
+        driveElementTest(
+            """
+                class c;
+                    typedef logic t;
+                    t x;
+                endclass
+            """.trimIndent(),
+            LocalTypeAliasEliminatorStage::class,
+            "Property(x, SimpleDescriptor(Boolean))"
+        ) { it.findDeclaration("x") }
     }
 }

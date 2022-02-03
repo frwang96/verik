@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.importer.resolve
+package io.verik.importer.transform.pre
 
 import io.verik.importer.ast.element.descriptor.EBitDescriptor
 import io.verik.importer.ast.element.descriptor.EPackedDescriptor

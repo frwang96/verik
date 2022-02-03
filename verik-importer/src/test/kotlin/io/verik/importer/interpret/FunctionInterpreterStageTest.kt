@@ -30,7 +30,7 @@ internal class FunctionInterpreterStageTest : BaseTest() {
                 endfunction
             """.trimIndent(),
             FunctionInterpreterStage::class,
-            "KtFunction(f, [], SimpleDescriptor(Int), [], 0)"
+            "KtFunction(f, [], SimpleDescriptor(Int), [], 0, 0)"
         ) { it.findDeclaration("f") }
     }
 
@@ -46,7 +46,7 @@ internal class FunctionInterpreterStageTest : BaseTest() {
                 KtFunction(
                     t,
                     [KtValueParameter(x, SimpleDescriptor(Boolean), [], null, 0)],
-                    SimpleDescriptor(Unit), [Task], 0
+                    SimpleDescriptor(Unit), [Task], 0, 0
                 )
             """.trimIndent()
         ) { it.findDeclaration("t") }

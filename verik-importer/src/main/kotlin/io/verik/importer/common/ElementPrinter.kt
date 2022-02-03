@@ -174,6 +174,7 @@ class ElementPrinter : Visitor() {
             build(function.descriptor)
             build(function.annotationEntries.map { it.name })
             build(function.isOpen)
+            build(function.isOverride)
         }
     }
 

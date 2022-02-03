@@ -107,8 +107,9 @@ object DeclarationSerializer {
         function.annotationEntries.forEach {
             serializeContext.appendLine("@${it.name}")
         }
-        if (function.isOpen) {
-            serializeContext.append("open ")
+        when {
+            function.isOverride -> serializeContext.append("override ")
+            function.isOpen -> serializeContext.append("open ")
         }
         serializeContext.append("fun ")
         serializeContext.serializeName(function)
